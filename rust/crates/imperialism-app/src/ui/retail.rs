@@ -8,6 +8,7 @@ use bevy::prelude::*;
 use bevy::reflect::Is;
 use bevy::scene::template_value;
 use bevy::text::{EditableText, EditableTextFilter, LineHeight, TextCursorStyle};
+use bevy::ui::picking_backend::UiPickingSettings;
 use bevy::ui::{Checked, InteractionDisabled, Pressed};
 use imperialism_formats::*;
 use std::collections::HashMap;
@@ -29,19 +30,24 @@ pub use super::retail_transport_gauge::{
 
 /// Provenance tag recovered from the retail View resource.
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
+#[component(immutable)]
 pub struct RetailTag(pub FourCc);
 
 /// Generated resource that owns a recovered retail hierarchy.
 #[derive(Component, FromTemplate, Clone, Copy, Debug, Eq, PartialEq)]
+#[component(immutable)]
 pub struct RetailScene(pub &'static str);
 
 /// `TPictureButton::HiliteState` pressed overlay; hidden until `Pressed`.
-#[derive(Component, Clone, Copy, Debug, Default, Reflect)]
-#[reflect(Component)]
+#[derive(Component, Clone, Copy, Debug, Default)]
+#[component(immutable)]
+#[require(ImageNode)]
 pub struct RetailPictureButtonOverlay;
 
 /// Images displayed by a retail picture control in its resting and active states.
 #[derive(Component, Clone, Debug)]
+#[component(immutable)]
+#[require(ImageNode)]
 pub struct RetailPictureSwap {
     pub idle: Handle<Image>,
     pub active: Handle<Image>,
@@ -49,6 +55,8 @@ pub struct RetailPictureSwap {
 
 /// `TMadnessButton::CheckTheLook` bitmap frames: base+0..=4 from checked/pressed/disabled.
 #[derive(Component, Clone, Debug)]
+#[component(immutable)]
+#[require(ImageNode)]
 pub struct RetailMadnessPicture {
     pub frames: [Handle<Image>; 5],
 }
@@ -227,6 +235,8 @@ pub const RADIO_CLUSTER_FRAME_PALETTE: u8 = 0xd2;
 /// Headless `TRadioText` selection fill. `TRadioText::Draw` fills the option
 /// when selected or pressed; picture radios keep their art swap instead.
 #[derive(Component, Clone, Copy, Debug)]
+#[component(immutable)]
+#[require(BackgroundColor)]
 pub struct RetailRadioTextFill {
     pub selected: Color,
     pub pressed: Color,
@@ -435,6 +445,9 @@ pub struct RetailUiPlugin;
 impl Plugin for RetailUiPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<RetailPictureHandles>()
+            .insert_resource(UiPickingSettings {
+                require_markers: true,
+            })
             .add_observer(on_retail_picture_button_overlay::<Add>)
             .add_observer(on_retail_picture_button_overlay::<Remove>)
             .add_observer(on_retail_picture_swap_state::<Add, RetailPictureSwap>)

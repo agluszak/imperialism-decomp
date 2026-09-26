@@ -1,13 +1,15 @@
 use super::GameSession;
-use super::RetailUiAssets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
 use super::generated;
 use super::retail::{AmountBarParts, RetailTree, Step};
 use super::retail_amount_bar::{
-    amount_bar_x_from_normalized, trade_amount_bar_click_value, trade_amount_bar_geometry,
+    amount_bar_x_from_normalized, set_amount_bar_accessibility, trade_amount_bar_click_value,
+    trade_amount_bar_geometry,
 };
+use super::{RetailUiAssets, set_image, set_text, set_visibility};
 use crate::AppState;
+use bevy::a11y::AccessibilityNode;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
@@ -221,6 +223,13 @@ fn bind_trade_row(
 
     let [decrease, increase] = [(fourcc!("left"), -1), (fourcc!("rght"), 1)].map(|(tag, delta)| {
         let step = tree.find(row, tag);
+        commands
+            .entity(step)
+            .insert(AccessibleLabel::new(if delta < 0 {
+                "Decrease trade amount"
+            } else {
+                "Increase trade amount"
+            }));
         commands.entity(step).observe(
             move |step_event: On<Step>,
                   disabled: Query<Has<InteractionDisabled>>,
@@ -338,23 +347,24 @@ fn remember_trade_orders(mut session: ResMut<GameSession>) {
 
 fn render_trade(
     session: Res<GameSession>,
-    view: Single<Ref<TradeView>>,
+    views: Query<Ref<TradeView>>,
     mut assets: RetailUiAssets,
-    mut commands: Commands,
     mut texts: Query<&mut Text>,
     mut images: Query<&mut ImageNode>,
     mut nodes: Query<&mut Node>,
+    mut visibility: Query<&mut Visibility>,
+    mut accessibility: Query<&mut AccessibilityNode>,
 ) {
+    let view = views
+        .single()
+        .expect("Trade state must contain exactly one TradeView");
     if !session.is_changed() && !view.is_added() {
         return;
     }
     let nation = session.active_major_nation();
     let major = session.game.nations().major(nation);
     let capacity = major.economy.capacities.trade_offer;
-    texts
-        .get_mut(view.capacity)
-        .expect("bound trade capacity text must exist")
-        .0 = capacity.to_string();
+    set_text(&mut texts, view.capacity, capacity.to_string());
     let bid_count = view
         .rows
         .iter()
@@ -394,13 +404,13 @@ fn render_trade(
         // C++ `TTradeCluster::DoControlAction`: idle `card` tabs stay shown while
         // `fieldEc < 4`, otherwise `Show(0)`. Opening with `merchantCapacity == 0`
         // forces `fieldEc = 5`, which hides every non-selected bid tab.
-        set_trade_visibility(
-            &mut commands,
+        set_visibility(
+            &mut visibility,
             row.bid,
             trade_bid_tab_visible(capacity, bid_active, bid_count),
         );
-        set_trade_visibility(
-            &mut commands,
+        set_visibility(
+            &mut visibility,
             row.offer,
             trade_offer_tab_visible(
                 capacity,
@@ -412,49 +422,59 @@ fn render_trade(
             PlayerTradeOrder::Sell(quantity) => quantity,
             _ => 0,
         };
-        texts
-            .get_mut(row.quantity)
-            .expect("bound trade quantity text must exist")
-            .0 = if quantity > 0 {
-            quantity.to_string()
-        } else {
-            String::new()
-        };
+        set_text(
+            &mut texts,
+            row.quantity,
+            if quantity > 0 {
+                quantity.to_string()
+            } else {
+                String::new()
+            },
+        );
         let selling = quantity > 0 && capacity > 0;
-        set_trade_visibility(&mut commands, row.decrease, selling);
-        set_trade_visibility(&mut commands, row.increase, selling);
-        set_trade_visibility(&mut commands, row.quantity, selling);
-        set_trade_visibility(&mut commands, row.offer_indicator, selling);
-        set_trade_visibility(&mut commands, row.gauge, selling);
+        set_visibility(&mut visibility, row.decrease, selling);
+        set_visibility(&mut visibility, row.increase, selling);
+        set_visibility(&mut visibility, row.quantity, selling);
+        set_visibility(&mut visibility, row.offer_indicator, selling);
+        set_visibility(&mut visibility, row.gauge, selling);
         let geometry = trade_amount_bar_geometry(capacity);
+        set_amount_bar_accessibility(&mut accessibility, row.gauge, quantity, capacity);
         let stock = major.city.stockpile[commodity.resource()];
         let stock_marker = geometry.span(capacity.saturating_sub(stock));
         let offer_marker = trade_offer_marker(capacity, quantity);
         let mut stock_node = nodes
             .get_mut(row.gauge_fill)
             .expect("bound trade amount bar stock marker");
-        stock_node.left = Val::Px(f32::from(stock_marker.saturating_sub(1)));
+        let stock_left = Val::Px(f32::from(stock_marker.saturating_sub(1)));
+        if stock_node.left != stock_left {
+            stock_node.left = stock_left;
+        }
         let mut offer_node = nodes
             .get_mut(row.gauge_limit)
             .expect("bound trade amount bar offer marker");
-        offer_node.left = Val::Px(f32::from(offer_marker.saturating_sub(1)));
-        set_trade_visibility(&mut commands, row.gauge_fill, stock_marker > 0);
-        set_trade_visibility(&mut commands, row.gauge_limit, offer_marker > 0);
-        texts
-            .get_mut(row.price)
-            .expect("bound trade price text must exist")
-            .0 = format_currency(session.game.market().rows[commodity].price);
-        texts
-            .get_mut(row.stock)
-            .expect("bound trade stock text must exist")
-            .0 = match major.city.stockpile[commodity.resource()] {
-            0 => "--".to_owned(),
-            stock => stock.to_string(),
-        };
+        let offer_left = Val::Px(f32::from(offer_marker.saturating_sub(1)));
+        if offer_node.left != offer_left {
+            offer_node.left = offer_left;
+        }
+        set_visibility(&mut visibility, row.gauge_fill, stock_marker > 0);
+        set_visibility(&mut visibility, row.gauge_limit, offer_marker > 0);
+        set_text(
+            &mut texts,
+            row.price,
+            format_currency(session.game.market().rows[commodity].price),
+        );
+        set_text(
+            &mut texts,
+            row.stock,
+            match major.city.stockpile[commodity.resource()] {
+                0 => "--".to_owned(),
+                stock => stock.to_string(),
+            },
+        );
     }
     for ((_, rule), entity) in TRADE_ADVISORIES.iter().zip(view.advisories) {
-        set_trade_visibility(
-            &mut commands,
+        set_visibility(
+            &mut visibility,
             entity,
             trade_advisory_needed(&session.game, nation, *rule),
         );
@@ -469,16 +489,19 @@ fn render_trade_card(
     images: &mut Query<&mut ImageNode>,
     nodes: &mut Query<&mut Node>,
 ) {
-    let mut image = images
-        .get_mut(entity)
-        .expect("bound trade card image must exist");
-    image.image = picture;
+    set_image(images, entity, picture);
     let mut node = nodes
         .get_mut(entity)
         .expect("bound trade card node must exist");
-    node.width = px(if active { 65 } else { 17 });
+    let width = px(if active { 65 } else { 17 });
+    if node.width != width {
+        node.width = width;
+    }
     if kind == TradeCardKind::Offer {
-        node.left = px(if active { 115 } else { 163 });
+        let left = px(if active { 115 } else { 163 });
+        if node.left != left {
+            node.left = left;
+        }
     }
 }
 
@@ -520,14 +543,6 @@ fn trade_input_short(
             + i32::from(major.economy.need_target_by_type[resource])
     };
     on_hand(primary) + secondary.map_or(0, on_hand) < i32::from(required)
-}
-
-fn set_trade_visibility(commands: &mut Commands, entity: Entity, visible: bool) {
-    commands.entity(entity).insert(if visible {
-        Visibility::Visible
-    } else {
-        Visibility::Hidden
-    });
 }
 
 /// Idle buy tabs follow retail `fieldEc` / merchant-capacity gating.

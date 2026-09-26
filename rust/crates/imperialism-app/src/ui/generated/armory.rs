@@ -15,30 +15,37 @@ pub fn armory_9208() -> impl Scene {
         (
             RetailScene("Armory.rsrc:9208")
             retail_node(fourcc!("WIND"), 60, 62, 370, 410)
+            Pickable::default()
             {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 370, 410)
+                    Pickable::IGNORE
                     retail_picture(7500)
                     Children [
                         (
                             retail_node(fourcc!("unit"), 28, 60, 150, 19)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 1)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("sele"), 200, 50, 165, 346)
+                            Pickable::IGNORE
                             Children [
                                 (
                                     retail_node(fourcc!("clu4"), 91, 92, 64, 76)
+                                    Pickable::IGNORE
                                     Children [
                                         (
                                             retail_node(fourcc!("num4"), 24, 56, 18, 20)
+                                            Pickable::IGNORE
                                             retail_picture(7501)
                                             Children [
                                                 (
                                                     retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                                    Pickable::IGNORE
                                                     Text("")
                                                     retail_text_style(3, 0, 9, 1)
                                                     TextColor(Color::BLACK)
@@ -48,11 +55,13 @@ pub fn armory_9208() -> impl Scene {
                                         ),
                                         (
                                             retail_node(fourcc!("minu"), 3, 56, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(7503, 7504)
                                         ),
                                         (
                                             retail_node(fourcc!("plus"), 42, 56, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(7505, 7506)
                                         ),
@@ -60,19 +69,23 @@ pub fn armory_9208() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("civ4"), 94, 92, 60, 56)
+                                    Pickable::default()
                                     RadioButton
                                     retail_picture_swap(7522, 7523)
                                 ),
                                 (
                                     retail_node(fourcc!("clu6"), 91, 260, 64, 76)
+                                    Pickable::IGNORE
                                     Children [
                                         (
                                             retail_node(fourcc!("num6"), 24, 56, 18, 20)
+                                            Pickable::IGNORE
                                             retail_picture(7501)
                                             Children [
                                                 (
                                                     retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                                    Pickable::IGNORE
                                                     Text("")
                                                     retail_text_style(3, 0, 9, 1)
                                                     TextColor(Color::BLACK)
@@ -82,11 +95,13 @@ pub fn armory_9208() -> impl Scene {
                                         ),
                                         (
                                             retail_node(fourcc!("minu"), 3, 56, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(7503, 7504)
                                         ),
                                         (
                                             retail_node(fourcc!("plus"), 42, 56, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(7505, 7506)
                                         ),
@@ -94,19 +109,23 @@ pub fn armory_9208() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("civ6"), 94, 260, 60, 56)
+                                    Pickable::default()
                                     RadioButton
                                     retail_picture_swap(7522, 7523)
                                 ),
                                 (
                                     retail_node(fourcc!("clu3"), 91, 8, 64, 76)
+                                    Pickable::IGNORE
                                     Children [
                                         (
                                             retail_node(fourcc!("num3"), 24, 56, 18, 20)
+                                            Pickable::IGNORE
                                             retail_picture(7501)
                                             Children [
                                                 (
                                                     retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                                    Pickable::IGNORE
                                                     Text("")
                                                     retail_text_style(3, 0, 9, 1)
                                                     TextColor(Color::BLACK)
@@ -116,11 +135,13 @@ pub fn armory_9208() -> impl Scene {
                                         ),
                                         (
                                             retail_node(fourcc!("minu"), 3, 56, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(7503, 7504)
                                         ),
                                         (
                                             retail_node(fourcc!("plus"), 42, 56, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(7505, 7506)
                                         ),
@@ -128,19 +149,23 @@ pub fn armory_9208() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("civ3"), 94, 9, 60, 56)
+                                    Pickable::default()
                                     RadioButton
                                     retail_picture_swap(7522, 7523)
                                 ),
                                 (
                                     retail_node(fourcc!("clu5"), 91, 176, 64, 76)
+                                    Pickable::IGNORE
                                     Children [
                                         (
                                             retail_node(fourcc!("num5"), 24, 56, 18, 20)
+                                            Pickable::IGNORE
                                             retail_picture(7501)
                                             Children [
                                                 (
                                                     retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                                    Pickable::IGNORE
                                                     Text("")
                                                     retail_text_style(3, 0, 9, 1)
                                                     TextColor(Color::BLACK)
@@ -150,11 +175,13 @@ pub fn armory_9208() -> impl Scene {
                                         ),
                                         (
                                             retail_node(fourcc!("minu"), 3, 56, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(7503, 7504)
                                         ),
                                         (
                                             retail_node(fourcc!("plus"), 42, 56, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(7505, 7506)
                                         ),
@@ -162,19 +189,23 @@ pub fn armory_9208() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("civ5"), 94, 176, 60, 56)
+                                    Pickable::default()
                                     RadioButton
                                     retail_picture_swap(7522, 7523)
                                 ),
                                 (
                                     retail_node(fourcc!("clu2"), 12, 176, 64, 76)
+                                    Pickable::IGNORE
                                     Children [
                                         (
                                             retail_node(fourcc!("num2"), 24, 56, 18, 20)
+                                            Pickable::IGNORE
                                             retail_picture(7501)
                                             Children [
                                                 (
                                                     retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                                    Pickable::IGNORE
                                                     Text("")
                                                     retail_text_style(3, 0, 9, 1)
                                                     TextColor(Color::BLACK)
@@ -184,11 +215,13 @@ pub fn armory_9208() -> impl Scene {
                                         ),
                                         (
                                             retail_node(fourcc!("minu"), 3, 56, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(7503, 7504)
                                         ),
                                         (
                                             retail_node(fourcc!("plus"), 42, 56, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(7505, 7506)
                                         ),
@@ -196,19 +229,23 @@ pub fn armory_9208() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("civ2"), 15, 176, 60, 56)
+                                    Pickable::default()
                                     RadioButton
                                     retail_picture_swap(7522, 7523)
                                 ),
                                 (
                                     retail_node(fourcc!("clu7"), 12, 260, 64, 76)
+                                    Pickable::IGNORE
                                     Children [
                                         (
                                             retail_node(fourcc!("num7"), 24, 56, 18, 20)
+                                            Pickable::IGNORE
                                             retail_picture(7501)
                                             Children [
                                                 (
                                                     retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                                    Pickable::IGNORE
                                                     Text("")
                                                     retail_text_style(3, 0, 9, 1)
                                                     TextColor(Color::BLACK)
@@ -218,11 +255,13 @@ pub fn armory_9208() -> impl Scene {
                                         ),
                                         (
                                             retail_node(fourcc!("minu"), 3, 56, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(7503, 7504)
                                         ),
                                         (
                                             retail_node(fourcc!("plus"), 42, 56, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(7505, 7506)
                                         ),
@@ -230,19 +269,23 @@ pub fn armory_9208() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("civ7"), 15, 260, 60, 56)
+                                    Pickable::default()
                                     RadioButton
                                     retail_picture_swap(7522, 7523)
                                 ),
                                 (
                                     retail_node(fourcc!("clu1"), 12, 92, 64, 76)
+                                    Pickable::IGNORE
                                     Children [
                                         (
                                             retail_node(fourcc!("num1"), 24, 56, 18, 20)
+                                            Pickable::IGNORE
                                             retail_picture(7501)
                                             Children [
                                                 (
                                                     retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                                    Pickable::IGNORE
                                                     Text("")
                                                     retail_text_style(3, 0, 9, 1)
                                                     TextColor(Color::BLACK)
@@ -252,11 +295,13 @@ pub fn armory_9208() -> impl Scene {
                                         ),
                                         (
                                             retail_node(fourcc!("minu"), 3, 56, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(7503, 7504)
                                         ),
                                         (
                                             retail_node(fourcc!("plus"), 42, 56, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(7505, 7506)
                                         ),
@@ -264,19 +309,23 @@ pub fn armory_9208() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("civ1"), 15, 92, 60, 56)
+                                    Pickable::default()
                                     RadioButton
                                     retail_picture_swap(7522, 7523)
                                 ),
                                 (
                                     retail_node(fourcc!("clu0"), 12, 8, 64, 76)
+                                    Pickable::IGNORE
                                     Children [
                                         (
                                             retail_node(fourcc!("num0"), 24, 56, 18, 20)
+                                            Pickable::IGNORE
                                             retail_picture(7501)
                                             Children [
                                                 (
                                                     retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                                    Pickable::IGNORE
                                                     Text("")
                                                     retail_text_style(3, 0, 9, 1)
                                                     TextColor(Color::BLACK)
@@ -286,11 +335,13 @@ pub fn armory_9208() -> impl Scene {
                                         ),
                                         (
                                             retail_node(fourcc!("minu"), 3, 56, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(7503, 7504)
                                         ),
                                         (
                                             retail_node(fourcc!("plus"), 42, 56, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(7505, 7506)
                                         ),
@@ -298,6 +349,7 @@ pub fn armory_9208() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("civ0"), 15, 8, 60, 56)
+                                    Pickable::default()
                                     RadioButton
                                     retail_picture_swap(7522, 7523)
                                 ),
@@ -305,11 +357,13 @@ pub fn armory_9208() -> impl Scene {
                         ),
                         (
                             retail_node(fourcc!("plaq"), 14, 80, 179, 183)
+                            Pickable::IGNORE
                             retail_picture(7584)
                             Children [
                                 (
                                     retail_node(fourcc!("cos0"), -3, 113, 43, 18)
                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 12, -1)
                                     TextColor(Color::BLACK)
@@ -318,6 +372,7 @@ pub fn armory_9208() -> impl Scene {
                                 (
                                     retail_node(fourcc!("cos1"), 48, 113, 43, 18)
                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 12, -1)
                                     TextColor(Color::BLACK)
@@ -326,6 +381,7 @@ pub fn armory_9208() -> impl Scene {
                                 (
                                     retail_node(fourcc!("cos2"), 92, 113, 43, 18)
                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 12, -1)
                                     TextColor(Color::BLACK)
@@ -334,6 +390,7 @@ pub fn armory_9208() -> impl Scene {
                                 (
                                     retail_node(fourcc!("ava0"), -3, 164, 43, 18)
                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 12, -1)
                                     TextColor(Color::BLACK)
@@ -342,6 +399,7 @@ pub fn armory_9208() -> impl Scene {
                                 (
                                     retail_node(fourcc!("ava1"), 48, 164, 43, 18)
                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 12, -1)
                                     TextColor(Color::BLACK)
@@ -350,6 +408,7 @@ pub fn armory_9208() -> impl Scene {
                                 (
                                     retail_node(fourcc!("ava2"), 92, 164, 43, 18)
                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 12, -1)
                                     TextColor(Color::BLACK)
@@ -357,12 +416,14 @@ pub fn armory_9208() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("cost"), 3, 84, 73, 16)
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(1, 0, 0, 0)
                                     TextColor(Color::BLACK)
                                 ),
                                 (
                                     retail_node(fourcc!("avai"), 3, 133, 73, 16)
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(1, 0, 0, 0)
                                     TextColor(Color::BLACK)
@@ -370,6 +431,7 @@ pub fn armory_9208() -> impl Scene {
                                 (
                                     retail_node(fourcc!("sta0"), 75, 5, 36, 18)
                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 12, -1)
                                     TextColor(Color::BLACK)
@@ -377,18 +439,21 @@ pub fn armory_9208() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("cos3"), 127, 96, 51, 16)
+                                    Pickable::IGNORE
                                     Text("$10,000")
                                     retail_text_style(3, 0, 9, 0)
                                     TextColor(Color::BLACK)
                                 ),
                                 (
                                     retail_node(fourcc!("ava3"), 126, 147, 51, 16)
+                                    Pickable::IGNORE
                                     Text("$10,000")
                                     retail_text_style(3, 0, 9, 0)
                                     TextColor(Color::BLACK)
                                 ),
                                 (
                                     retail_node(fourcc!("sta3"), 75, 62, 36, 18)
+                                    Pickable::IGNORE
                                     Text("Yes")
                                     retail_text_style(3, 0, 12, -1)
                                     TextColor(Color::BLACK)
@@ -396,6 +461,7 @@ pub fn armory_9208() -> impl Scene {
                                 (
                                     retail_node(fourcc!("sta1"), 75, 24, 36, 18)
                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 12, -1)
                                     TextColor(Color::BLACK)
@@ -404,6 +470,7 @@ pub fn armory_9208() -> impl Scene {
                                 (
                                     retail_node(fourcc!("sta2"), 75, 43, 36, 18)
                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 12, -1)
                                     TextColor(Color::BLACK)
@@ -411,24 +478,28 @@ pub fn armory_9208() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("lab0"), 3, 5, 71, 18)
+                                    Pickable::IGNORE
                                     Text("Static Text")
                                     retail_text_style(1, 0, 0, 0)
                                     TextColor(Color::BLACK)
                                 ),
                                 (
                                     retail_node(fourcc!("lab1"), 3, 24, 71, 18)
+                                    Pickable::IGNORE
                                     Text("Static Text")
                                     retail_text_style(1, 0, 0, 0)
                                     TextColor(Color::BLACK)
                                 ),
                                 (
                                     retail_node(fourcc!("lab2"), 3, 43, 71, 18)
+                                    Pickable::IGNORE
                                     Text("Static Text")
                                     retail_text_style(1, 0, 0, 0)
                                     TextColor(Color::BLACK)
                                 ),
                                 (
                                     retail_node(fourcc!("lab3"), 3, 62, 71, 18)
+                                    Pickable::IGNORE
                                     Text("Static Text")
                                     retail_text_style(1, 0, 0, 0)
                                     TextColor(Color::BLACK)
@@ -437,12 +508,14 @@ pub fn armory_9208() -> impl Scene {
                         ),
                         (
                             retail_node(fourcc!("desc"), 17, 273, 170, 106)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 0, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("titl"), 102, 9, 158, 33)
+                            Pickable::IGNORE
                             Text("Armory")
                             retail_text_style(1, 0, 24, 1)
                             TextColor(Color::BLACK)

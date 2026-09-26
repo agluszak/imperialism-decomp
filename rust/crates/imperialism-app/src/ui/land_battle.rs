@@ -1046,9 +1046,9 @@ fn animate_land_battle_selection(
     visuals: Query<&LandBattleVisuals>,
     mut lines: Query<(&LandBattleSelection, &mut BackgroundColor)>,
 ) {
-    let Ok(visuals) = visuals.single() else {
-        return;
-    };
+    let visuals = visuals
+        .single()
+        .expect("LandBattle state must contain exactly one visual set");
     let now = time.elapsed().as_millis();
     for (line, mut color) in &mut lines {
         color.0 = match line {
@@ -1274,9 +1274,9 @@ fn animate_land_battle_actions(
             TACTICAL_TRANSPARENT_INDEX,
         );
     }
-    let Ok((field_entity, mut field, visuals, queue, deferred)) = fields.single_mut() else {
-        return;
-    };
+    let (field_entity, mut field, visuals, queue, deferred) = fields
+        .single_mut()
+        .expect("LandBattle state must contain exactly one battlefield");
     let column_count = session
         .game
         .army_battle()
@@ -1525,23 +1525,25 @@ fn spawn_unit_status_flag(
 fn project_land_battle_toolbar(
     mut commands: Commands,
     session: Res<GameSession>,
-    view: Single<&LandBattleView>,
+    views: Query<&LandBattleView>,
     mut fields: Query<(&LandBattlefield, &LandBattleVisuals, &mut HoverHelpText)>,
     mut visibilities: Query<&mut Visibility>,
     mut images: Query<&mut ImageNode>,
-    mut swaps: Query<&mut RetailPictureSwap>,
+    swaps: Query<&RetailPictureSwap>,
     mut helps: Query<&mut HoverHelpText, Without<LandBattlefield>>,
     experience_bars: Query<(), With<LandBattleExperienceBar>>,
     children: Query<&Children>,
     mut assets: RetailUiAssets,
 ) {
+    let view = views
+        .single()
+        .expect("LandBattle state must contain exactly one LandBattleView");
     let Some(battle) = session.game.army_battle() else {
         return;
     };
-    let Ok((field_view, visuals, mut field_help)) = fields.single_mut() else {
-        return;
-    };
-    let view = view.into_inner();
+    let (field_view, visuals, mut field_help) = fields
+        .single_mut()
+        .expect("LandBattle state must contain exactly one battlefield");
     let stage = battle.stage();
     for (entity, live_only) in [(view.target, true), (view.auto, true)] {
         *visibilities
@@ -1568,9 +1570,12 @@ fn project_land_battle_toolbar(
         if let Ok(mut image) = images.get_mut(entity) {
             image.image = idle.clone();
         }
-        if let Ok(mut swap) = swaps.get_mut(entity) {
-            swap.idle = idle;
-            swap.active = active;
+        if let Ok(swap) = swaps.get(entity)
+            && (swap.idle != idle || swap.active != active)
+        {
+            commands
+                .entity(entity)
+                .insert(RetailPictureSwap { idle, active });
         }
         if let Ok(mut help) = helps.get_mut(entity) {
             help.0 = assets.ui_string(0x273d, help_index);
@@ -1909,12 +1914,12 @@ fn scroll_land_battle(
     if !animations.is_empty() {
         return;
     }
-    let Ok(mut view) = fields.single_mut() else {
-        return;
-    };
-    let Ok(cursor) = dialogs.single() else {
-        return;
-    };
+    let mut view = fields
+        .single_mut()
+        .expect("LandBattle state must contain exactly one battlefield");
+    let cursor = dialogs
+        .single()
+        .expect("LandBattle state must contain exactly one edge-scroll region");
     let Some(direction) = tactical_edge_scroll_direction(cursor) else {
         return;
     };
@@ -2097,7 +2102,7 @@ fn apply_land_battle_action(
 
 fn land_battle_keyboard(
     keys: Res<ButtonInput<KeyCode>>,
-    view: Single<&LandBattleView>,
+    views: Query<&LandBattleView>,
     mut commands: Commands,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
@@ -2105,6 +2110,9 @@ fn land_battle_keyboard(
     mut fields: Query<(Entity, &mut LandBattlefield)>,
     animations: Query<(), LandBattleAnimationBlock>,
 ) {
+    let view = views
+        .single()
+        .expect("LandBattle state must contain exactly one LandBattleView");
     if !animations.is_empty() {
         return;
     }

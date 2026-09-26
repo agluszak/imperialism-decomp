@@ -16,26 +16,32 @@ pub fn minister_9480() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 100, 80, 390, 282)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 390, 282)
+                        Pickable::IGNORE
                         retail_picture(9514)
                         Children [
                             (
                                 retail_node(fourcc!("okay"), 310, 248, 61, 23)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
                                 retail_node(fourcc!("rewa"), 112, 18, 167, 109)
+                                Pickable::IGNORE
                                 retail_picture(9480)
                             ),
                             (
                                 retail_node(fourcc!("coat"), 295, 12, 84, 125)
+                                Pickable::IGNORE
                                 retail_picture(9500)
                             ),
                             (
                                 retail_node(fourcc!("info"), 17, 160, 354, 84)
+                                Pickable::IGNORE
                             ),
                         ]
                     ),

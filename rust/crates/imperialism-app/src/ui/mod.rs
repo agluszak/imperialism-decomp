@@ -48,6 +48,9 @@ mod transport;
 mod viewport;
 pub(crate) mod window;
 
+use bevy::prelude::*;
+use bevy::ui::{InteractionDisabled, Pressed};
+
 pub(crate) use battle_reports::BattleReportPlugin;
 pub(crate) use city::CityPlugin;
 pub(crate) use city_site::CitySitePlugin;
@@ -84,6 +87,76 @@ pub(crate) use trade::TradePlugin;
 pub(crate) use transport::TransportPlugin;
 pub(crate) use viewport::RetailViewportPlugin;
 pub(crate) use window::UiWindowPlugin;
+
+pub(in crate::ui) fn set_visibility(
+    visibility: &mut Query<&mut Visibility>,
+    entity: Entity,
+    visible: bool,
+) {
+    set_visibility_value(
+        visibility,
+        entity,
+        if visible {
+            Visibility::Visible
+        } else {
+            Visibility::Hidden
+        },
+    );
+}
+
+pub(in crate::ui) fn set_visibility_value(
+    visibility: &mut Query<&mut Visibility>,
+    entity: Entity,
+    value: Visibility,
+) {
+    visibility
+        .get_mut(entity)
+        .expect("bound UI entity must have Visibility")
+        .set_if_neq(value);
+}
+
+pub(in crate::ui) fn set_text(
+    texts: &mut Query<&mut Text>,
+    entity: Entity,
+    value: impl Into<String>,
+) {
+    texts
+        .get_mut(entity)
+        .expect("bound UI entity must have Text")
+        .set_if_neq(Text::new(value));
+}
+
+pub(in crate::ui) fn set_image(
+    images: &mut Query<&mut ImageNode>,
+    entity: Entity,
+    value: Handle<Image>,
+) {
+    let mut image = images
+        .get_mut(entity)
+        .expect("bound UI entity must have ImageNode");
+    if image.image != value {
+        image.image = value;
+    }
+}
+
+pub(in crate::ui) fn set_interaction_enabled(
+    commands: &mut Commands,
+    states: &Query<(Has<InteractionDisabled>, Has<Pressed>)>,
+    entity: Entity,
+    enabled: bool,
+) {
+    let (disabled, pressed) = states.get(entity).expect("bound UI control must exist");
+    if enabled == disabled {
+        if enabled {
+            commands.entity(entity).remove::<InteractionDisabled>();
+        } else {
+            commands.entity(entity).insert(InteractionDisabled);
+        }
+    }
+    if !enabled && pressed {
+        commands.entity(entity).remove::<Pressed>();
+    }
+}
 
 pub(in crate::ui) fn format_currency(value: i32) -> String {
     let negative = value < 0;

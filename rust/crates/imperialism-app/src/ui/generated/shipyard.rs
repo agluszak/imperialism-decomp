@@ -15,36 +15,44 @@ pub fn shipyard_9207() -> impl Scene {
         (
             RetailScene("Shipyard.rsrc:9207")
             retail_node(fourcc!("WIND"), 125, 62, 370, 410)
+            Pickable::default()
             {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 370, 410)
+                    Pickable::IGNORE
                     retail_picture(9800)
                     Children [
                         (
                             retail_node(fourcc!("sele"), 0, 230, 370, 180)
+                            Pickable::IGNORE
                             Children [
                                 (
                                     retail_node(fourcc!("but0"), 8, 12, 89, 78)
+                                    Pickable::default()
                                     RadioButton
                                     retail_picture_swap(9808, 9809)
                                 ),
                                 (
                                     retail_node(fourcc!("clu0"), 12, 70, 83, 22)
+                                    Pickable::IGNORE
                                     Children [
                                         (
                                             retail_node(fourcc!("numb"), 30, 1, 20, 18)
                                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                            Pickable::IGNORE
                                             Text("")
                                             retail_text_style(3, 0, 10, 1)
                                             retail_text_color(0xd2)
                                         ),
                                         (
                                             retail_node(fourcc!("minu"), 0, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9802, 9803)
                                         ),
                                         (
                                             retail_node(fourcc!("plus"), 60, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9804, 9805)
                                         ),
@@ -52,26 +60,31 @@ pub fn shipyard_9207() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("but1"), 97, 12, 89, 78)
+                                    Pickable::default()
                                     RadioButton
                                     retail_picture_swap(9810, 9811)
                                 ),
                                 (
                                     retail_node(fourcc!("clu1"), 101, 70, 80, 22)
+                                    Pickable::IGNORE
                                     Children [
                                         (
                                             retail_node(fourcc!("numb"), 30, 1, 20, 18)
                                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                            Pickable::IGNORE
                                             Text("")
                                             retail_text_style(3, 0, 10, 1)
                                             retail_text_color(0xd2)
                                         ),
                                         (
                                             retail_node(fourcc!("minu"), 0, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9802, 9803)
                                         ),
                                         (
                                             retail_node(fourcc!("plus"), 60, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9804, 9805)
                                         ),
@@ -79,26 +92,31 @@ pub fn shipyard_9207() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("but2"), 186, 12, 89, 78)
+                                    Pickable::default()
                                     RadioButton
                                     retail_picture_swap(9812, 9813)
                                 ),
                                 (
                                     retail_node(fourcc!("clu2"), 189, 70, 80, 22)
+                                    Pickable::IGNORE
                                     Children [
                                         (
                                             retail_node(fourcc!("numb"), 30, 1, 20, 18)
                                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                            Pickable::IGNORE
                                             Text("")
                                             retail_text_style(3, 0, 10, 1)
                                             retail_text_color(0xd2)
                                         ),
                                         (
                                             retail_node(fourcc!("minu"), 0, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9802, 9803)
                                         ),
                                         (
                                             retail_node(fourcc!("plus"), 60, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9804, 9805)
                                         ),
@@ -106,26 +124,31 @@ pub fn shipyard_9207() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("but3"), 275, 12, 89, 78)
+                                    Pickable::default()
                                     RadioButton
                                     retail_picture_swap(9814, 9815)
                                 ),
                                 (
                                     retail_node(fourcc!("clu3"), 276, 70, 80, 22)
+                                    Pickable::IGNORE
                                     Children [
                                         (
                                             retail_node(fourcc!("numb"), 30, 1, 20, 18)
                                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                            Pickable::IGNORE
                                             Text("")
                                             retail_text_style(3, 0, 10, 1)
                                             retail_text_color(0xd2)
                                         ),
                                         (
                                             retail_node(fourcc!("minu"), 0, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9802, 9803)
                                         ),
                                         (
                                             retail_node(fourcc!("plus"), 60, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9804, 9805)
                                         ),
@@ -133,26 +156,31 @@ pub fn shipyard_9207() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("but4"), 8, 90, 89, 78)
+                                    Pickable::default()
                                     RadioButton
                                     retail_picture_swap(9816, 9817)
                                 ),
                                 (
                                     retail_node(fourcc!("clu4"), 12, 148, 80, 22)
+                                    Pickable::IGNORE
                                     Children [
                                         (
                                             retail_node(fourcc!("numb"), 30, 1, 20, 18)
                                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                            Pickable::IGNORE
                                             Text("")
                                             retail_text_style(3, 0, 10, 1)
                                             retail_text_color(0xd2)
                                         ),
                                         (
                                             retail_node(fourcc!("minu"), 0, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9802, 9803)
                                         ),
                                         (
                                             retail_node(fourcc!("plus"), 60, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9804, 9805)
                                         ),
@@ -160,26 +188,31 @@ pub fn shipyard_9207() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("but5"), 97, 90, 89, 78)
+                                    Pickable::default()
                                     RadioButton
                                     retail_picture_swap(9818, 9819)
                                 ),
                                 (
                                     retail_node(fourcc!("clu5"), 101, 148, 80, 22)
+                                    Pickable::IGNORE
                                     Children [
                                         (
                                             retail_node(fourcc!("numb"), 30, 1, 20, 18)
                                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                            Pickable::IGNORE
                                             Text("")
                                             retail_text_style(3, 0, 10, 1)
                                             retail_text_color(0xd2)
                                         ),
                                         (
                                             retail_node(fourcc!("minu"), 0, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9802, 9803)
                                         ),
                                         (
                                             retail_node(fourcc!("plus"), 60, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9804, 9805)
                                         ),
@@ -187,26 +220,31 @@ pub fn shipyard_9207() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("but6"), 186, 90, 89, 78)
+                                    Pickable::default()
                                     RadioButton
                                     retail_picture_swap(9820, 9821)
                                 ),
                                 (
                                     retail_node(fourcc!("clu6"), 189, 148, 80, 22)
+                                    Pickable::IGNORE
                                     Children [
                                         (
                                             retail_node(fourcc!("numb"), 30, 1, 20, 18)
                                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                            Pickable::IGNORE
                                             Text("")
                                             retail_text_style(3, 0, 10, 1)
                                             retail_text_color(0xd2)
                                         ),
                                         (
                                             retail_node(fourcc!("minu"), 0, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9802, 9803)
                                         ),
                                         (
                                             retail_node(fourcc!("plus"), 60, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9804, 9805)
                                         ),
@@ -214,26 +252,31 @@ pub fn shipyard_9207() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("but7"), 275, 90, 89, 78)
+                                    Pickable::default()
                                     RadioButton
                                     retail_picture_swap(9822, 9823)
                                 ),
                                 (
                                     retail_node(fourcc!("clu7"), 276, 148, 80, 22)
+                                    Pickable::IGNORE
                                     Children [
                                         (
                                             retail_node(fourcc!("numb"), 30, 1, 20, 18)
                                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                            Pickable::IGNORE
                                             Text("")
                                             retail_text_style(3, 0, 10, 1)
                                             retail_text_color(0xd2)
                                         ),
                                         (
                                             retail_node(fourcc!("minu"), 0, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9802, 9803)
                                         ),
                                         (
                                             retail_node(fourcc!("plus"), 60, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9804, 9805)
                                         ),
@@ -243,36 +286,42 @@ pub fn shipyard_9207() -> impl Scene {
                         ),
                         (
                             retail_node(fourcc!("snam"), 105, 55, 165, 19)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 1)
                             retail_text_color(0xd2)
                         ),
                         (
                             retail_node(fourcc!("fix0"), 25, 132, 44, 14)
+                            Pickable::IGNORE
                             Text("Cost:")
                             retail_text_style(3, 0, 10, -2)
                             retail_text_color(0xd2)
                         ),
                         (
                             retail_node(fourcc!("fix1"), 23, 183, 80, 17)
+                            Pickable::IGNORE
                             Text("Available:")
                             retail_text_style(3, 0, 10, -2)
                             retail_text_color(0xd2)
                         ),
                         (
                             retail_node(fourcc!("desc"), 207, 125, 135, 104)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(3, 0, 10, -2)
                             retail_text_color(0xd2)
                         ),
                         (
                             retail_node(fourcc!("titl"), 84, 11, 200, 30)
+                            Pickable::IGNORE
                             Text("Shipyard")
                             retail_text_style(1, 0, 24, 1)
                             retail_text_color(0xd2)
                         ),
                         (
                             retail_node(fourcc!("spic"), 231, 74, 86, 45)
+                            Pickable::IGNORE
                             retail_picture(9835)
                         ),
                     ]

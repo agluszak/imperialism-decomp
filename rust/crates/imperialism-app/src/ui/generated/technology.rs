@@ -16,22 +16,27 @@ pub fn tech_2200() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                Pickable::IGNORE
                 Children [
                     (
                         retail_node(fourcc!("main"), 0, 0, 640, 480)
+                        Pickable::IGNORE
                         retail_picture(2200)
                         Children [
                             (
                                 retail_node(fourcc!("text"), 305, 335, 296, 122)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(3, 0, 12, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("tool"), 3, 6, 237, 90)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("end "), 5, 32, 31, 51)
+                                        Pickable::default()
                                         Button
                                         InteractionDisabled
                                         retail_picture(2228)
@@ -40,12 +45,14 @@ pub fn tech_2200() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 1, 94, 17)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(3, 0, 9, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("trea"), 141, 1, 75, 17)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(3, 0, 9, 1)
                                         TextColor(Color::BLACK)
@@ -54,6 +61,7 @@ pub fn tech_2200() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 247, 7, 341, 17)
+                                Pickable::IGNORE
                                 hover_help_bar()
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
@@ -62,6 +70,7 @@ pub fn tech_2200() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("patc"), 584, 35, 52, 72)
+                                Pickable::IGNORE
                                 retail_picture(2230)
                             ),
                         ]
@@ -79,17 +88,21 @@ pub fn techstore_2300() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                Pickable::IGNORE
                 Children [
                     (
                         retail_node(fourcc!("main"), 0, 0, 640, 480)
                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                        Pickable::IGNORE
                         retail_picture(2300)
                         Children [
                             (
                                 retail_node(fourcc!("tool"), 7, 6, 225, 84)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("end "), 1, 32, 30, 50)
+                                        Pickable::default()
                                         Button
                                         retail_picture(2301)
                                         Visibility::Hidden
@@ -97,12 +110,14 @@ pub fn techstore_2300() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
+                                        Pickable::IGNORE
                                         Text("Winter, 1888")
                                         retail_text_style(3, 0, 9, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("trea"), 141, 4, 75, 17)
+                                        Pickable::IGNORE
                                         Text("$55,555")
                                         retail_text_style(3, 0, 9, 1)
                                         TextColor(Color::BLACK)
@@ -111,24 +126,29 @@ pub fn techstore_2300() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("topB"), 267, 5, 105, 26)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("tran"), 3, 3, 14, 18)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(9455, 9456)
                                     ),
                                     (
                                         retail_node(fourcc!("city"), 31, 3, 14, 18)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(9453, 9454)
                                     ),
                                     (
                                         retail_node(fourcc!("trad"), 59, 3, 14, 18)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(9451, 9452)
                                     ),
                                     (
                                         retail_node(fourcc!("dipl"), 88, 3, 14, 18)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(9449, 9450)
                                     ),
@@ -136,9 +156,11 @@ pub fn techstore_2300() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tbr2"), 600, 31, 30, 48)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("quer"), 8, 9, 22, 38)
+                                        Pickable::default()
                                         Button
                                         retail_picture(2302)
                                         Visibility::Hidden
@@ -148,37 +170,44 @@ pub fn techstore_2300() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("page"), 38, 64, 562, 378)
+                                Pickable::IGNORE
                             ),
                             (
                                 retail_node(fourcc!("lcor"), 17, 445, 32, 30)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(2361, 2362)
                             ),
                             (
                                 retail_node(fourcc!("rcor"), 590, 445, 32, 30)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(2362, 2362)
                             ),
                             (
                                 retail_node(fourcc!("ttl1"), 67, 40, 128, 16)
+                                Pickable::IGNORE
                                 Text("Technologies")
                                 retail_text_style(1, 0, 14, -2)
                                 retail_text_color(0x0)
                             ),
                             (
                                 retail_node(fourcc!("ttl2"), 240, 40, 128, 16)
+                                Pickable::IGNORE
                                 Text("Cost")
                                 retail_text_style(1, 0, 14, -2)
                                 retail_text_color(0x0)
                             ),
                             (
                                 retail_node(fourcc!("ttl3"), 392, 40, 128, 16)
+                                Pickable::IGNORE
                                 Text("Benefits")
                                 retail_text_style(1, 0, 14, -2)
                                 retail_text_color(0x0)
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                Pickable::IGNORE
                                 hover_help_bar()
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
@@ -200,32 +229,38 @@ pub fn techstore_2370() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 151, 128, 360, 295)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 360, 295)
+                        Pickable::IGNORE
                         Children [
                             (
                                 retail_node(fourcc!("top "), 0, 0, 360, 295)
+                                Pickable::IGNORE
                                 retail_picture(2370)
                                 Children [
                                     (
                                         retail_node(fourcc!("titl"), 81, 19, 264, 32)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("pict"), 10, 10, 60, 60)
+                                        Pickable::IGNORE
                                         retail_picture(2373)
                                     ),
                                     (
                                         retail_node(fourcc!("scvw"), 9, 76, 342, 175)
+                                        Pickable::default()
                                         ScrollArea
                                         Node { overflow: Overflow::scroll_y() }
-                                        Pickable
                                     ),
                                     (
                                         retail_node(fourcc!("okay"), 281, 260, 61, 24)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(9410, 9411)
                                     ),

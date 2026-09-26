@@ -7,11 +7,13 @@ from tools.ui_rust_codegen import (
     CAPTIONED_FLOATING_WINDOW,
     CheckboxPictures,
     DEFAULT_WINDOW,
+    HitPolicy,
     Node,
     PictureSwap,
     PressedOverlay,
     StaticPicture,
     _classify_picture_behavior,
+    _classify_hit_policy,
     _is_captioned_floating_window,
     _require_picture,
     _require_slider,
@@ -46,6 +48,14 @@ class UiRustCodegenTests(unittest.TestCase):
         self.assertEqual(
             _classify_picture_behavior(800, "TCzechBox", "chkb", pictures),
             CheckboxPictures(800, 801),
+        )
+
+    def test_hit_policy_normalizes_widget_and_passive_nodes(self) -> None:
+        self.assertEqual(_classify_hit_policy("TControl", "cntl"), HitPolicy.TARGET)
+        self.assertEqual(_classify_hit_policy("TStaticText", "stat"), HitPolicy.IGNORE)
+        self.assertEqual(_classify_hit_policy("TFloatWindow", "fwnd"), HitPolicy.BARRIER)
+        self.assertEqual(
+            _classify_hit_policy("TTwoPicSlider", "pict"), HitPolicy.IGNORE
         )
 
     def test_missing_slider_and_picture_fail_generation(self) -> None:

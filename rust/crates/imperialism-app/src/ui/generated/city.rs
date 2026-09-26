@@ -15,22 +15,27 @@ pub fn citydlog_9200() -> impl Scene {
         (
             RetailScene("Citydlog.rsrc:9200")
             retail_node(fourcc!("WIND"), 98, 166, 270, 120)
+            Pickable::default()
             {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
+                    Pickable::IGNORE
                     retail_picture(9200)
                     Children [
                         (
                             retail_node(fourcc!("equa"), 16, 49, 235, 32)
+                            Pickable::IGNORE
                         ),
                         (
                             retail_node(fourcc!("labV"), 64, 71, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("fabr"), 19, 87, 239, 36)
+                            Pickable::IGNORE
                             Children [
                                 (
                                     retail_node(fourcc!("left"), 49, 4, 13, 13)
@@ -46,51 +51,60 @@ pub fn citydlog_9200() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 63, 14, 21, 11)
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 10, -2)
                                     TextColor(Color::BLACK)
                                 ),
                                 (
                                     retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                    Pickable::default()
                                     retail_production_amount_bar()
                                 ),
                             ]
                         ),
                         (
                             retail_node(fourcc!("expa"), 196, 9, 61, 24)
+                            Pickable::default()
                             Button
                             retail_picture_swap(9244, 9245)
                         ),
                         (
                             retail_node(fourcc!("flag"), 137, 6, 53, 29)
+                            Pickable::IGNORE
                             retail_picture(9246)
                         ),
                         (
                             retail_node(fourcc!("or  "), 126, 59, 30, 15)
+                            Pickable::IGNORE
                             Text("-or-")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("name"), 19, 7, 117, 16)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("capT"), 19, 21, 117, 16)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("cott"), 119, 71, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("wool"), 196, 71, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
@@ -108,22 +122,27 @@ pub fn citydlog_9201() -> impl Scene {
         (
             RetailScene("Citydlog.rsrc:9201")
             retail_node(fourcc!("WIND"), 297, 250, 270, 120)
+            Pickable::default()
             {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
+                    Pickable::IGNORE
                     retail_picture(9201)
                     Children [
                         (
                             retail_node(fourcc!("equa"), 16, 49, 235, 32)
+                            Pickable::IGNORE
                         ),
                         (
                             retail_node(fourcc!("labV"), 88, 71, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("clot"), 19, 87, 239, 36)
+                            Pickable::IGNORE
                             Children [
                                 (
                                     retail_node(fourcc!("left"), 49, 3, 13, 13)
@@ -139,39 +158,46 @@ pub fn citydlog_9201() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 63, 14, 21, 11)
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 10, -2)
                                     TextColor(Color::BLACK)
                                 ),
                                 (
                                     retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                    Pickable::default()
                                     retail_production_amount_bar()
                                 ),
                             ]
                         ),
                         (
                             retail_node(fourcc!("expa"), 196, 9, 61, 24)
+                            Pickable::default()
                             Button
                             retail_picture_swap(9244, 9245)
                         ),
                         (
                             retail_node(fourcc!("flag"), 137, 6, 53, 29)
+                            Pickable::IGNORE
                             retail_picture(9246)
                         ),
                         (
                             retail_node(fourcc!("name"), 19, 7, 117, 16)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("capT"), 19, 21, 117, 16)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("fabr"), 155, 71, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
@@ -189,22 +215,27 @@ pub fn citydlog_9202() -> impl Scene {
         (
             RetailScene("Citydlog.rsrc:9202")
             retail_node(fourcc!("WIND"), 206, 98, 270, 120)
+            Pickable::default()
             {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
+                    Pickable::IGNORE
                     retail_picture(9202)
                     Children [
                         (
                             retail_node(fourcc!("equa"), 16, 49, 235, 32)
+                            Pickable::IGNORE
                         ),
                         (
                             retail_node(fourcc!("labV"), 75, 76, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("stee"), 19, 87, 239, 36)
+                            Pickable::IGNORE
                             Children [
                                 (
                                     retail_node(fourcc!("left"), 49, 4, 13, 13)
@@ -220,45 +251,53 @@ pub fn citydlog_9202() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 63, 14, 21, 11)
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 10, -2)
                                     TextColor(Color::BLACK)
                                 ),
                                 (
                                     retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                    Pickable::default()
                                     retail_production_amount_bar()
                                 ),
                             ]
                         ),
                         (
                             retail_node(fourcc!("expa"), 196, 9, 61, 24)
+                            Pickable::default()
                             Button
                             retail_picture_swap(9244, 9245)
                         ),
                         (
                             retail_node(fourcc!("flag"), 137, 6, 53, 29)
+                            Pickable::IGNORE
                             retail_picture(9246)
                         ),
                         (
                             retail_node(fourcc!("name"), 19, 7, 117, 16)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("capT"), 19, 21, 117, 16)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("coal"), 126, 76, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("iron"), 170, 76, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
@@ -276,22 +315,27 @@ pub fn citydlog_9203() -> impl Scene {
         (
             RetailScene("Citydlog.rsrc:9203")
             retail_node(fourcc!("WIND"), 280, 153, 270, 160)
+            Pickable::default()
             {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 160)
+                    Pickable::IGNORE
                     retail_picture(9203)
                     Children [
                         (
                             retail_node(fourcc!("equa"), 16, 49, 235, 32)
+                            Pickable::IGNORE
                         ),
                         (
                             retail_node(fourcc!("labV"), 64, 71, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("hard"), 19, 92, 239, 36)
+                            Pickable::IGNORE
                             Children [
                                 (
                                     retail_node(fourcc!("left"), 49, 8, 13, 13)
@@ -307,18 +351,21 @@ pub fn citydlog_9203() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 59, 18, 21, 11)
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 10, -2)
                                     TextColor(Color::BLACK)
                                 ),
                                 (
                                     retail_node(fourcc!("bar "), 62, 12, 150, 6)
+                                    Pickable::default()
                                     retail_production_amount_bar()
                                 ),
                             ]
                         ),
                         (
                             retail_node(fourcc!("arma"), 19, 122, 239, 36)
+                            Pickable::IGNORE
                             Children [
                                 (
                                     retail_node(fourcc!("left"), 49, 8, 13, 13)
@@ -334,45 +381,53 @@ pub fn citydlog_9203() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 59, 17, 21, 11)
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 10, -2)
                                     TextColor(Color::BLACK)
                                 ),
                                 (
                                     retail_node(fourcc!("bar "), 62, 12, 150, 6)
+                                    Pickable::default()
                                     retail_production_amount_bar()
                                 ),
                             ]
                         ),
                         (
                             retail_node(fourcc!("expa"), 196, 9, 61, 24)
+                            Pickable::default()
                             Button
                             retail_picture_swap(9244, 9245)
                         ),
                         (
                             retail_node(fourcc!("flag"), 137, 6, 53, 29)
+                            Pickable::IGNORE
                             retail_picture(9246)
                         ),
                         (
                             retail_node(fourcc!("or  "), 188, 59, 30, 15)
+                            Pickable::IGNORE
                             Text("-or-")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("name"), 19, 7, 117, 16)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("capT"), 19, 21, 117, 16)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("stee"), 124, 71, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
@@ -390,22 +445,27 @@ pub fn citydlog_9204() -> impl Scene {
         (
             RetailScene("Citydlog.rsrc:9204")
             retail_node(fourcc!("WIND"), 75, 164, 270, 160)
+            Pickable::default()
             {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 160)
+                    Pickable::IGNORE
                     retail_picture(9204)
                     Children [
                         (
                             retail_node(fourcc!("equa"), 16, 49, 235, 32)
+                            Pickable::IGNORE
                         ),
                         (
                             retail_node(fourcc!("labV"), 63, 71, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("lumb"), 19, 92, 239, 36)
+                            Pickable::IGNORE
                             Children [
                                 (
                                     retail_node(fourcc!("left"), 49, 8, 13, 13)
@@ -421,18 +481,21 @@ pub fn citydlog_9204() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 59, 18, 21, 11)
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 10, -2)
                                     TextColor(Color::BLACK)
                                 ),
                                 (
                                     retail_node(fourcc!("bar "), 62, 12, 150, 6)
+                                    Pickable::default()
                                     retail_production_amount_bar()
                                 ),
                             ]
                         ),
                         (
                             retail_node(fourcc!("pape"), 19, 122, 239, 36)
+                            Pickable::IGNORE
                             Children [
                                 (
                                     retail_node(fourcc!("left"), 49, 8, 13, 13)
@@ -448,45 +511,53 @@ pub fn citydlog_9204() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 59, 18, 21, 11)
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 10, -2)
                                     TextColor(Color::BLACK)
                                 ),
                                 (
                                     retail_node(fourcc!("bar "), 62, 12, 150, 6)
+                                    Pickable::default()
                                     retail_production_amount_bar()
                                 ),
                             ]
                         ),
                         (
                             retail_node(fourcc!("expa"), 196, 9, 61, 24)
+                            Pickable::default()
                             Button
                             retail_picture_swap(9244, 9245)
                         ),
                         (
                             retail_node(fourcc!("flag"), 137, 6, 53, 29)
+                            Pickable::IGNORE
                             retail_picture(9246)
                         ),
                         (
                             retail_node(fourcc!("or  "), 190, 54, 30, 15)
+                            Pickable::IGNORE
                             Text("-or-")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("name"), 19, 7, 117, 16)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("capT"), 19, 21, 117, 16)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("timb"), 121, 71, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
@@ -504,22 +575,27 @@ pub fn citydlog_9205() -> impl Scene {
         (
             RetailScene("Citydlog.rsrc:9205")
             retail_node(fourcc!("WIND"), 245, 271, 270, 120)
+            Pickable::default()
             {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
+                    Pickable::IGNORE
                     retail_picture(9205)
                     Children [
                         (
                             retail_node(fourcc!("equa"), 16, 49, 235, 32)
+                            Pickable::IGNORE
                         ),
                         (
                             retail_node(fourcc!("labV"), 85, 71, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("furn"), 19, 87, 239, 36)
+                            Pickable::IGNORE
                             Children [
                                 (
                                     retail_node(fourcc!("left"), 49, 4, 13, 13)
@@ -535,39 +611,46 @@ pub fn citydlog_9205() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 63, 14, 21, 11)
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 10, -2)
                                     TextColor(Color::BLACK)
                                 ),
                                 (
                                     retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                    Pickable::default()
                                     retail_production_amount_bar()
                                 ),
                             ]
                         ),
                         (
                             retail_node(fourcc!("expa"), 196, 9, 61, 24)
+                            Pickable::default()
                             Button
                             retail_picture_swap(9244, 9245)
                         ),
                         (
                             retail_node(fourcc!("flag"), 137, 6, 53, 29)
+                            Pickable::IGNORE
                             retail_picture(9246)
                         ),
                         (
                             retail_node(fourcc!("name"), 19, 7, 117, 16)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("capT"), 19, 21, 117, 16)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("lumb"), 150, 71, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
@@ -585,22 +668,27 @@ pub fn citydlog_9206() -> impl Scene {
         (
             RetailScene("Citydlog.rsrc:9206")
             retail_node(fourcc!("WIND"), 198, 66, 270, 120)
+            Pickable::default()
             {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
+                    Pickable::IGNORE
                     retail_picture(9206)
                     Children [
                         (
                             retail_node(fourcc!("equa"), 16, 49, 235, 32)
+                            Pickable::IGNORE
                         ),
                         (
                             retail_node(fourcc!("labV"), 86, 71, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("fuel"), 19, 87, 239, 36)
+                            Pickable::IGNORE
                             Children [
                                 (
                                     retail_node(fourcc!("left"), 49, 4, 13, 13)
@@ -616,39 +704,46 @@ pub fn citydlog_9206() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 63, 14, 21, 11)
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 10, -2)
                                     TextColor(Color::BLACK)
                                 ),
                                 (
                                     retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                    Pickable::default()
                                     retail_production_amount_bar()
                                 ),
                             ]
                         ),
                         (
                             retail_node(fourcc!("expa"), 196, 9, 61, 24)
+                            Pickable::default()
                             Button
                             retail_picture_swap(9244, 9245)
                         ),
                         (
                             retail_node(fourcc!("flag"), 137, 6, 53, 29)
+                            Pickable::IGNORE
                             retail_picture(9246)
                         ),
                         (
                             retail_node(fourcc!("name"), 19, 7, 117, 16)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("capT"), 19, 21, 117, 16)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("oil "), 153, 71, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
@@ -666,13 +761,16 @@ pub fn citydlog_9209() -> impl Scene {
         (
             RetailScene("Citydlog.rsrc:9209")
             retail_node(fourcc!("WIND"), 110, 57, 270, 270)
+            Pickable::default()
             {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 270)
+                    Pickable::IGNORE
                     retail_picture(9209)
                     Children [
                         (
                             retail_node(fourcc!("trai"), 20, 152, 239, 36)
+                            Pickable::IGNORE
                             Children [
                                 (
                                     retail_node(fourcc!("left"), 49, 4, 13, 13)
@@ -688,18 +786,21 @@ pub fn citydlog_9209() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 63, 15, 21, 13)
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 10, -2)
                                     TextColor(Color::BLACK)
                                 ),
                                 (
                                     retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                    Pickable::default()
                                     retail_production_amount_bar()
                                 ),
                             ]
                         ),
                         (
                             retail_node(fourcc!("prof"), 20, 233, 239, 36)
+                            Pickable::IGNORE
                             Children [
                                 (
                                     retail_node(fourcc!("left"), 49, 4, 13, 13)
@@ -715,84 +816,100 @@ pub fn citydlog_9209() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 63, 15, 21, 13)
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 10, -2)
                                     TextColor(Color::BLACK)
                                 ),
                                 (
                                     retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                    Pickable::default()
                                     retail_production_amount_bar()
                                 ),
                             ]
                         ),
                         (
                             retail_node(fourcc!("cos1"), 147, 118, 44, 17)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("cos2"), 150, 200, 44, 17)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("name"), 52, 13, 166, 26)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 24, 1)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("equ1"), 8, 57, 56, 32)
+                            Pickable::IGNORE
                         ),
                         (
                             retail_node(fourcc!("equ2"), 68, 57, 75, 32)
+                            Pickable::IGNORE
                         ),
                         (
                             retail_node(fourcc!("equ3"), 149, 57, 111, 32)
+                            Pickable::IGNORE
                         ),
                         (
                             retail_node(fourcc!("pap1"), 116, 136, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("pap2"), 127, 218, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("untV"), 59, 136, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("traV"), 59, 218, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("mon1"), 189, 136, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("mon2"), 189, 218, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("equ4"), 24, 110, 224, 32)
+                            Pickable::IGNORE
                         ),
                         (
                             retail_node(fourcc!("equ5"), 24, 192, 224, 32)
+                            Pickable::IGNORE
                         ),
                     ]
                 ),
@@ -807,16 +924,20 @@ pub fn citydlog_9211() -> impl Scene {
         (
             RetailScene("Citydlog.rsrc:9211")
             retail_node(fourcc!("WIND"), 254, 98, 270, 120)
+            Pickable::default()
             {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
+                    Pickable::IGNORE
                     retail_picture(9211)
                     Children [
                         (
                             retail_node(fourcc!("equa"), 16, 44, 235, 32)
+                            Pickable::IGNORE
                         ),
                         (
                             retail_node(fourcc!("powe"), 19, 81, 239, 36)
+                            Pickable::IGNORE
                             Children [
                                 (
                                     retail_node(fourcc!("left"), 49, 10, 13, 13)
@@ -832,24 +953,28 @@ pub fn citydlog_9211() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 63, 20, 21, 11)
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 10, -2)
                                     TextColor(Color::BLACK)
                                 ),
                                 (
                                     retail_node(fourcc!("bar "), 62, 14, 150, 6)
+                                    Pickable::default()
                                     retail_production_amount_bar()
                                 ),
                             ]
                         ),
                         (
                             retail_node(fourcc!("name"), 19, 7, 117, 16)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("fuel"), 45, 66, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
@@ -867,22 +992,27 @@ pub fn citydlog_9212() -> impl Scene {
         (
             RetailScene("Citydlog.rsrc:9212")
             retail_node(fourcc!("WIND"), 136, 101, 270, 160)
+            Pickable::default()
             {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 160)
+                    Pickable::IGNORE
                     retail_picture(9212)
                     Children [
                         (
                             retail_node(fourcc!("equa"), 16, 49, 235, 60)
+                            Pickable::IGNORE
                         ),
                         (
                             retail_node(fourcc!("labV"), 55, 85, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("food"), 20, 121, 239, 36)
+                            Pickable::IGNORE
                             Children [
                                 (
                                     retail_node(fourcc!("left"), 49, 10, 13, 13)
@@ -898,42 +1028,49 @@ pub fn citydlog_9212() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 63, 20, 21, 11)
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 10, -2)
                                     TextColor(Color::BLACK)
                                 ),
                                 (
                                     retail_node(fourcc!("bar "), 62, 14, 150, 6)
+                                    Pickable::default()
                                     retail_production_amount_bar()
                                 ),
                             ]
                         ),
                         (
                             retail_node(fourcc!("or  "), 172, 69, 30, 15)
+                            Pickable::IGNORE
                             Text("-or-")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("name"), 19, 7, 117, 16)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("prod"), 147, 85, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("grai"), 100, 85, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("fish"), 196, 103, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
@@ -951,14 +1088,17 @@ pub fn citydlog_9213() -> impl Scene {
         (
             RetailScene("Citydlog.rsrc:9213")
             retail_node(fourcc!("WIND"), 71, 61, 176, 300)
+            Pickable::default()
             {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 176, 300)
+                    Pickable::IGNORE
                     retail_picture(9213)
                     Children [
                         (
                             retail_node(fourcc!("fabr"), 84, 35, 36, 17)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::default()
                             Button
                             Text("")
                             retail_text_style(3, 0, 10, 1)
@@ -967,6 +1107,7 @@ pub fn citydlog_9213() -> impl Scene {
                         (
                             retail_node(fourcc!("cott"), 23, 16, 36, 17)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::default()
                             Button
                             Text("")
                             retail_text_style(3, 0, 10, 1)
@@ -975,6 +1116,7 @@ pub fn citydlog_9213() -> impl Scene {
                         (
                             retail_node(fourcc!("timb"), 23, 102, 36, 17)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::default()
                             Button
                             Text("")
                             retail_text_style(3, 0, 10, 1)
@@ -983,6 +1125,7 @@ pub fn citydlog_9213() -> impl Scene {
                         (
                             retail_node(fourcc!("lumb"), 86, 115, 36, 17)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::default()
                             Button
                             Text("")
                             retail_text_style(3, 0, 10, 1)
@@ -991,6 +1134,7 @@ pub fn citydlog_9213() -> impl Scene {
                         (
                             retail_node(fourcc!("coal"), 23, 179, 36, 17)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::default()
                             Button
                             Text("")
                             retail_text_style(3, 0, 10, 1)
@@ -999,6 +1143,7 @@ pub fn citydlog_9213() -> impl Scene {
                         (
                             retail_node(fourcc!("stee"), 86, 173, 36, 17)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::default()
                             Button
                             Text("")
                             retail_text_style(3, 0, 10, 1)
@@ -1007,6 +1152,7 @@ pub fn citydlog_9213() -> impl Scene {
                         (
                             retail_node(fourcc!("arma"), 141, 180, 36, 17)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::default()
                             Button
                             Text("")
                             retail_text_style(3, 0, 10, 1)
@@ -1015,6 +1161,7 @@ pub fn citydlog_9213() -> impl Scene {
                         (
                             retail_node(fourcc!("clot"), 140, 35, 36, 17)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::default()
                             Button
                             Text("")
                             retail_text_style(3, 0, 10, 1)
@@ -1023,6 +1170,7 @@ pub fn citydlog_9213() -> impl Scene {
                         (
                             retail_node(fourcc!("wool"), 23, 49, 36, 17)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::default()
                             Button
                             Text("")
                             retail_text_style(3, 0, 10, 1)
@@ -1031,6 +1179,7 @@ pub fn citydlog_9213() -> impl Scene {
                         (
                             retail_node(fourcc!("pape"), 88, 86, 36, 17)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::default()
                             Button
                             Text("")
                             retail_text_style(3, 0, 10, 1)
@@ -1039,6 +1188,7 @@ pub fn citydlog_9213() -> impl Scene {
                         (
                             retail_node(fourcc!("furn"), 137, 102, 36, 17)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::default()
                             Button
                             Text("")
                             retail_text_style(3, 0, 10, 1)
@@ -1047,6 +1197,7 @@ pub fn citydlog_9213() -> impl Scene {
                         (
                             retail_node(fourcc!("iron"), 23, 153, 36, 17)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::default()
                             Button
                             Text("")
                             retail_text_style(3, 0, 10, 1)
@@ -1055,6 +1206,7 @@ pub fn citydlog_9213() -> impl Scene {
                         (
                             retail_node(fourcc!("hard"), 140, 156, 36, 17)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::default()
                             Button
                             Text("")
                             retail_text_style(3, 0, 10, 1)
@@ -1063,6 +1215,7 @@ pub fn citydlog_9213() -> impl Scene {
                         (
                             retail_node(fourcc!("hors"), 51, 279, 36, 17)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::default()
                             Button
                             Text("")
                             retail_text_style(3, 0, 10, 1)
@@ -1071,6 +1224,7 @@ pub fn citydlog_9213() -> impl Scene {
                         (
                             retail_node(fourcc!("food"), 131, 233, 36, 17)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::default()
                             Button
                             Text("")
                             retail_text_style(3, 0, 10, 1)
@@ -1079,6 +1233,7 @@ pub fn citydlog_9213() -> impl Scene {
                         (
                             retail_node(fourcc!("fuel"), 89, 214, 36, 17)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::default()
                             Button
                             InteractionDisabled
                             Text("")
@@ -1089,6 +1244,7 @@ pub fn citydlog_9213() -> impl Scene {
                         (
                             retail_node(fourcc!("oil "), 24, 212, 36, 17)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::default()
                             Button
                             InteractionDisabled
                             Text("")
@@ -1098,6 +1254,7 @@ pub fn citydlog_9213() -> impl Scene {
                         ),
                         (
                             retail_node(fourcc!("name"), 5, 7, 165, 16)
+                            Pickable::IGNORE
                             Text("Warehouse")
                             retail_text_style(1, 0, 12, 1)
                             retail_text_color(0x0)
@@ -1105,6 +1262,7 @@ pub fn citydlog_9213() -> impl Scene {
                         (
                             retail_node(fourcc!("labo"), 124, 279, 36, 17)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::default()
                             Button
                             Text("")
                             retail_text_style(3, 0, 10, 1)
@@ -1113,6 +1271,7 @@ pub fn citydlog_9213() -> impl Scene {
                         (
                             retail_node(fourcc!("powe"), 137, 214, 36, 17)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::default()
                             Button
                             InteractionDisabled
                             Text("")
@@ -1123,6 +1282,7 @@ pub fn citydlog_9213() -> impl Scene {
                         (
                             retail_node(fourcc!("live"), 72, 241, 36, 17)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::default()
                             Button
                             Text("")
                             retail_text_style(3, 0, 10, 1)
@@ -1131,6 +1291,7 @@ pub fn citydlog_9213() -> impl Scene {
                         (
                             retail_node(fourcc!("prod"), 23, 214, 36, 17)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::default()
                             Button
                             Text("")
                             retail_text_style(3, 0, 10, 1)
@@ -1139,6 +1300,7 @@ pub fn citydlog_9213() -> impl Scene {
                         (
                             retail_node(fourcc!("grai"), 72, 214, 36, 17)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::default()
                             Button
                             Text("")
                             retail_text_style(3, 0, 10, 1)
@@ -1157,22 +1319,27 @@ pub fn citydlog_9214() -> impl Scene {
         (
             RetailScene("Citydlog.rsrc:9214")
             retail_node(fourcc!("WIND"), 210, 90, 270, 120)
+            Pickable::default()
             {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
+                    Pickable::IGNORE
                     retail_picture(9214)
                     Children [
                         (
                             retail_node(fourcc!("equa"), 16, 49, 235, 32)
+                            Pickable::IGNORE
                         ),
                         (
                             retail_node(fourcc!("labV"), 72, 68, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("rail"), 19, 87, 239, 36)
+                            Pickable::IGNORE
                             Children [
                                 (
                                     retail_node(fourcc!("left"), 49, 4, 13, 13)
@@ -1188,30 +1355,35 @@ pub fn citydlog_9214() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 63, 15, 21, 13)
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 10, -2)
                                     TextColor(Color::BLACK)
                                 ),
                                 (
                                     retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                    Pickable::default()
                                     retail_production_amount_bar()
                                 ),
                             ]
                         ),
                         (
                             retail_node(fourcc!("name"), 19, 7, 117, 16)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("stee"), 124, 68, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("lumb"), 174, 68, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
@@ -1229,28 +1401,34 @@ pub fn citydlog_9215() -> impl Scene {
         (
             RetailScene("Citydlog.rsrc:9215")
             retail_node(fourcc!("WIND"), 63, 236, 270, 120)
+            Pickable::default()
             {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 270, 120)
+                    Pickable::IGNORE
                     retail_picture(9216)
                     Children [
                         (
                             retail_node(fourcc!("capT"), 19, 20, 117, 16)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("equa"), 17, 48, 235, 32)
+                            Pickable::IGNORE
                         ),
                         (
                             retail_node(fourcc!("food"), 73, 71, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("popu"), 25, 85, 239, 36)
+                            Pickable::IGNORE
                             Children [
                                 (
                                     retail_node(fourcc!("left"), 49, 4, 13, 13)
@@ -1266,36 +1444,42 @@ pub fn citydlog_9215() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("move"), 63, 15, 21, 13)
+                                    Pickable::IGNORE
                                     Text("")
                                     retail_text_style(3, 0, 10, -2)
                                     TextColor(Color::BLACK)
                                 ),
                                 (
                                     retail_node(fourcc!("bar "), 62, 8, 150, 6)
+                                    Pickable::default()
                                     retail_production_amount_bar()
                                 ),
                             ]
                         ),
                         (
                             retail_node(fourcc!("name"), 19, 6, 117, 16)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("clot"), 124, 71, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("furn"), 165, 71, 14, 14)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
                         ),
                         (
                             retail_node(fourcc!("prov"), 136, 20, 124, 16)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 0)
                             TextColor(Color::BLACK)
@@ -1314,65 +1498,77 @@ pub fn citydlog_9220() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 147, 64, 320, 320)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 320, 320)
+                        Pickable::IGNORE
                         retail_picture(9270)
                         Children [
                             (
                                 retail_node(fourcc!("okay"), 246, 289, 61, 24)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 13, 289, 61, 23)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9412, 9413)
                             ),
                             (
                                 retail_node(fourcc!("tex1"), 20, 194, 281, 36)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 0, -2)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("tex2"), 19, 257, 282, 30)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 0, -2)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("warn"), 226, 283, 84, 32)
+                                Pickable::IGNORE
                                 Text("Insufficient\rMaterials")
                                 retail_text_style(1, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("name"), 14, 6, 290, 15)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("cost"), 227, 47, 86, 35)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("capT"), 14, 19, 290, 15)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("or  "), 205, 235, 30, 15)
+                                Pickable::IGNORE
                                 Text("-or-")
                                 retail_text_style(1, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("buck"), 227, 92, 86, 35)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 12, 0)
                                 TextColor(Color::BLACK)
@@ -1392,41 +1588,49 @@ pub fn citydlog_9221() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 159, 137, 320, 225)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 320, 225)
+                        Pickable::IGNORE
                         retail_picture(9251)
                         Children [
                             (
                                 retail_node(fourcc!("okay"), 243, 194, 61, 24)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 18, 194, 61, 23)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9412, 9413)
                             ),
                             (
                                 retail_node(fourcc!("name"), 14, 6, 290, 15)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("capT"), 14, 19, 290, 15)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("cost"), 227, 47, 86, 35)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("warn"), 231, 190, 84, 32)
+                                Pickable::IGNORE
                                 Text("Insufficient\rMaterials")
                                 retail_text_style(1, 0, 12, 1)
                                 TextColor(Color::BLACK)
@@ -1446,69 +1650,86 @@ pub fn citymain_2011() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                Pickable::IGNORE
                 Children [
                     (
                         retail_node(fourcc!("main"), 0, 0, 640, 480)
                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                        Pickable::default()
                         RelativeCursorPosition
                         Children [
                             (
                                 retail_node(fourcc!("labP"), 6, 110, 39, 35)
+                                Pickable::IGNORE
                                 retail_placard(6013)
                             ),
                             (
                                 retail_node(fourcc!("untr"), 6, 149, 39, 35)
+                                Pickable::IGNORE
                                 retail_placard(6001)
                             ),
                             (
                                 retail_node(fourcc!("trai"), 6, 189, 39, 35)
+                                Pickable::IGNORE
                                 retail_placard(6002)
                             ),
                             (
                                 retail_node(fourcc!("prof"), 6, 229, 39, 35)
+                                Pickable::IGNORE
                                 retail_placard(6003)
                             ),
                             (
                                 retail_node(fourcc!("powe"), 6, 269, 39, 35)
+                                Pickable::IGNORE
                                 retail_placard(6007)
                             ),
                             (
                                 retail_node(fourcc!("sick"), 6, 349, 39, 35)
+                                Pickable::IGNORE
                                 retail_placard(6008)
                             ),
                             (
                                 retail_node(fourcc!("dead"), 6, 389, 39, 35)
+                                Pickable::IGNORE
                                 retail_placard(6009)
                             ),
                             (
                                 retail_node(fourcc!("prod"), 595, 149, 39, 35)
+                                Pickable::IGNORE
                                 retail_placard(6011)
                             ),
                             (
                                 retail_node(fourcc!("grai"), 595, 110, 39, 35)
+                                Pickable::IGNORE
                                 retail_placard(6010)
                             ),
                             (
                                 retail_node(fourcc!("meat"), 595, 189, 39, 80)
+                                Pickable::IGNORE
                                 retail_placard(6012)
                             ),
                             (
                                 retail_node(fourcc!("clot"), 595, 318, 39, 35)
+                                Pickable::IGNORE
                                 retail_placard(6005)
                             ),
                             (
                                 retail_node(fourcc!("hard"), 595, 395, 39, 35)
+                                Pickable::IGNORE
                                 retail_placard(6004)
                             ),
                             (
                                 retail_node(fourcc!("furn"), 595, 357, 39, 35)
+                                Pickable::IGNORE
                                 retail_placard(6006)
                             ),
                             (
                                 retail_node(fourcc!("tool"), 7, 6, 228, 67)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("end "), 5, 27, 27, 37)
+                                        Pickable::default()
                                         Button
                                         retail_picture(6021)
                                         Visibility::Hidden
@@ -1516,12 +1737,14 @@ pub fn citymain_2011() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
+                                        Pickable::IGNORE
                                         Text("Winter, 1888")
                                         retail_text_style(3, 0, 9, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("trea"), 141, 4, 75, 17)
+                                        Pickable::IGNORE
                                         Text("$55,555")
                                         retail_text_style(3, 0, 9, 1)
                                         TextColor(Color::BLACK)
@@ -1530,24 +1753,29 @@ pub fn citymain_2011() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("topB"), 267, 5, 105, 26)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("tran"), 3, 3, 14, 18)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(9455, 9456)
                                     ),
                                     (
                                         retail_node(fourcc!("city"), 31, 3, 14, 18)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(9453, 9454)
                                     ),
                                     (
                                         retail_node(fourcc!("trad"), 59, 3, 14, 18)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(9451, 9452)
                                     ),
                                     (
                                         retail_node(fourcc!("dipl"), 88, 3, 14, 18)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(9449, 9450)
                                     ),
@@ -1555,9 +1783,11 @@ pub fn citymain_2011() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tbr2"), 600, 31, 30, 44)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("quer"), 0, 2, 27, 37)
+                                        Pickable::default()
                                         Button
                                         retail_picture(6020)
                                         Visibility::Hidden
@@ -1567,6 +1797,7 @@ pub fn citymain_2011() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                Pickable::IGNORE
                                 hover_help_bar()
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)

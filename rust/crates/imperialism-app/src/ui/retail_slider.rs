@@ -7,6 +7,7 @@ use crate::RetailAssetsResource;
 use bevy::ecs::template::TemplateContext;
 use bevy::picking::events::{Pointer, Press};
 use bevy::prelude::*;
+use bevy::ui::InteractionDisabled;
 use bevy::ui::UiSystems;
 use bevy::ui_widgets::{
     Slider, SliderOrientation, SliderPrecision, SliderRange, SliderValue, TrackClick, ValueChange,
@@ -16,6 +17,7 @@ use imperialism_formats::PictureId;
 pub const TWO_PIC_SLIDER_SPLIT_PAD: i16 = 0x0c;
 
 #[derive(Component, FromTemplate, Clone, Copy)]
+#[component(immutable)]
 pub struct RetailTwoPicSliderParts {
     pub input: Entity,
     pub lower: Entity,
@@ -23,6 +25,7 @@ pub struct RetailTwoPicSliderParts {
 }
 
 #[derive(Component, FromTemplate, Clone, Copy)]
+#[component(immutable)]
 struct TwoPicSliderZeroStrip {
     input: Entity,
 }
@@ -33,7 +36,9 @@ pub fn retail_two_pic_slider(
     scale: i16,
     off_group: i16,
     off_index: i16,
+    disabled: bool,
 ) -> impl Scene {
+    let input_disabled = disabled.then(|| bsn! { InteractionDisabled });
     bsn! {
         Pickable::IGNORE
         RetailTwoPicSliderParts { input: #Input, lower: #Lower, off: #Off }
@@ -48,11 +53,14 @@ pub fn retail_two_pic_slider(
                 SliderValue(0.0)
                 SliderRange::new(0.0, scale as f32)
                 SliderPrecision(0)
+                Pickable::default()
+                {input_disabled}
             ),
             (
                 #Zero
                 Node { position_type: PositionType::Absolute, left: px(0), right: px(0), bottom: px(0), height: px(TWO_PIC_SLIDER_SPLIT_PAD as f32) }
                 TwoPicSliderZeroStrip { input: #Input }
+                Pickable::default()
             ),
             (
                 #Lower
@@ -92,13 +100,17 @@ pub(super) fn register_slider(app: &mut App) {
 fn on_two_pic_zero_strip_press(
     mut press: On<Pointer<Press>>,
     strips: Query<&TwoPicSliderZeroStrip>,
+    disabled: Query<Has<InteractionDisabled>>,
     mut commands: Commands,
 ) {
     let Ok(strip) = strips.get(press.event_target()) else {
         return;
     };
     press.propagate(false);
-    commands.trigger(ValueChange {
+    if disabled.get(strip.input).unwrap_or(false) {
+        return;
+    }
+    commands.trigger(ValueChange::<f32> {
         source: strip.input,
         value: 0.0,
         is_final: true,
@@ -160,11 +172,70 @@ fn sync_two_pic_slider_visuals(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use bevy::picking::backend::HitData;
+    use bevy::picking::pointer::{Location, PointerButton, PointerId};
+
+    #[derive(Resource, Default)]
+    struct Values(Vec<(Entity, f32)>);
+
+    fn press(entity: Entity, app: &mut App) {
+        app.world_mut().trigger(Pointer::new(
+            PointerId::Mouse,
+            Location {
+                target: bevy::camera::NormalizedRenderTarget::None {
+                    width: 1,
+                    height: 1,
+                },
+                position: Vec2::ZERO,
+            },
+            Press {
+                button: PointerButton::Primary,
+                hit: HitData::new(Entity::from_bits(1), 0.0, None, None),
+                count: 1,
+            },
+            entity,
+        ));
+        app.update();
+    }
 
     #[test]
     fn slider_split_matches_retail_padding() {
         assert_eq!(two_pic_slider_split(0, 91, 100), 0);
         assert_eq!(two_pic_slider_split(100, 91, 100), 91);
         assert_eq!(two_pic_slider_split(0xff, 91, 0xff), 91);
+    }
+
+    #[test]
+    fn zero_strip_emits_only_for_enabled_input() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins).init_resource::<Values>();
+        register_slider(&mut app);
+        app.world_mut()
+            .add_observer(|change: On<ValueChange<f32>>, mut values: ResMut<Values>| {
+                values.0.push((change.source, change.value));
+            });
+        app.update();
+
+        let enabled_input = app.world_mut().spawn_empty().id();
+        let enabled_strip = app
+            .world_mut()
+            .spawn(TwoPicSliderZeroStrip {
+                input: enabled_input,
+            })
+            .id();
+        app.update();
+        press(enabled_strip, &mut app);
+        assert_eq!(app.world().resource::<Values>().0, [(enabled_input, 0.0)]);
+
+        let disabled_input = app.world_mut().spawn(InteractionDisabled).id();
+        let disabled_strip = app
+            .world_mut()
+            .spawn(TwoPicSliderZeroStrip {
+                input: disabled_input,
+            })
+            .id();
+        app.update();
+        press(disabled_strip, &mut app);
+        assert_eq!(app.world().resource::<Values>().0, [(enabled_input, 0.0)]);
     }
 }

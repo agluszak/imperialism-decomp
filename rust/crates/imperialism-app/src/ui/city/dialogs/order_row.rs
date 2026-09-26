@@ -117,6 +117,11 @@ pub(in crate::ui::city) fn bind_recruitment_order_row(
 fn bind_sideways_step(commands: &mut Commands, entity: Entity, order: CityOrderId, delta: i16) {
     commands
         .entity(entity)
+        .insert(AccessibleLabel::new(if delta < 0 {
+            "Decrease production order"
+        } else {
+            "Increase production order"
+        }))
         .observe(move |_: On<Step>, mut session: ResMut<GameSession>| {
             let nation = session.active_major_nation();
             session.game.adjust_city_order(nation, order, delta);

@@ -19,8 +19,8 @@ fn page_corner_pickable() -> Pickable {
 }
 
 /// `lcor` / `rcor` page-corner marker.
-#[derive(Component, FromTemplate, Clone, Copy, Debug, Eq, PartialEq, Reflect)]
-#[reflect(Component)]
+#[derive(Component, FromTemplate, Clone, Copy, Debug, Eq, PartialEq)]
+#[component(immutable)]
 #[require(Button, Pickable = page_corner_pickable())]
 pub enum RetailPageCorner {
     /// `lcor`: accept when local `x < y`.

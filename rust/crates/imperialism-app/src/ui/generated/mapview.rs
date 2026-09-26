@@ -16,59 +16,71 @@ pub fn mapview_1350() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 23, 42, 230, 360)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 230, 360)
+                        Pickable::IGNORE
                         retail_picture(3506)
                         Children [
                             (
                                 retail_node(fourcc!("next"), 157, 335, 69, 19)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(3506, 3507)
                             ),
                             (
                                 retail_node(fourcc!("end "), 3, 336, 69, 19)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(3506, 3507)
                             ),
                             (
                                 retail_node(fourcc!("port"), 4, 4, 222, 151)
+                                Pickable::IGNORE
                                 retail_picture(3506)
                             ),
                             (
                                 retail_node(fourcc!("pgup"), 4, 310, 24, 20)
+                                Pickable::IGNORE
                                 retail_picture(3506)
                             ),
                             (
                                 retail_node(fourcc!("pgdn"), 202, 310, 23, 20)
+                                Pickable::IGNORE
                                 retail_picture(3506)
                             ),
                             (
                                 retail_node(fourcc!("page"), 68, 313, 90, 16)
+                                Pickable::IGNORE
                                 Text("Page 14 of 14")
                                 retail_text_style(3, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("titl"), 6, 164, 217, 23)
+                                Pickable::IGNORE
                                 Text("Skirmish Report")
                                 retail_text_style(3, 4, 12, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("repo"), 7, 191, 214, 62)
+                                Pickable::IGNORE
                                 Text("Haxaco's Powerful Legions\rannhilate\rOrdune's Pathetic Armies")
                                 retail_text_style(3, 1, 12, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("orde"), 53, 298, 119, 14)
+                                Pickable::IGNORE
                                 Text("Order of Battle follows")
                                 retail_text_style(3, 0, 9, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("loss"), 57, 254, 112, 42)
+                                Pickable::IGNORE
                                 Text("Losses\rHaxaco:  light\rOrdune:  heavy")
                                 retail_text_style(3, 0, 10, 1)
                                 TextColor(Color::BLACK)
@@ -88,23 +100,29 @@ pub fn mapview_2013() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                Pickable::IGNORE
                 Children [
                     (
                         retail_node(fourcc!("main"), 0, 0, 640, 480)
                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                        Pickable::IGNORE
                         retail_picture(1031)
                         Children [
                             (
                                 retail_node(fourcc!("DLOG"), 5, 27, 512, 448)
+                                Pickable::IGNORE
                             ),
                             (
                                 retail_node(fourcc!("DOOG"), 1001, 27, 512, 448)
+                                Pickable::IGNORE
                             ),
                             (
                                 retail_node(fourcc!("tool"), 517, 0, 123, 480)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("Flag"), 62, 8, 25, 35)
+                                        Pickable::default()
                                         Button
                                         InteractionDisabled
                                         retail_picture(1300)
@@ -113,11 +131,13 @@ pub fn mapview_2013() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("mmap"), 33, 8, 25, 35)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(1049, 1050)
                                     ),
                                     (
                                         retail_node(fourcc!("quer"), 91, 8, 25, 35)
+                                        Pickable::default()
                                         Button
                                         InteractionDisabled
                                         retail_picture(1307)
@@ -126,120 +146,145 @@ pub fn mapview_2013() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("trad"), 62, 119, 25, 25)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(1109, 1110)
                                     ),
                                     (
                                         retail_node(fourcc!("tran"), 4, 119, 25, 25)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(1111, 1111)
                                     ),
                                     (
                                         retail_node(fourcc!("city"), 33, 119, 25, 25)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(1110, 1111)
                                     ),
                                     (
                                         retail_node(fourcc!("dipl"), 91, 119, 25, 25)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(1108, 1109)
                                     ),
                                     (
                                         retail_node(fourcc!("unav"), 128, 144, 123, 308)
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("back"), 4, 34, 112, 269)
+                                                Pickable::default()
                                                 Button
                                                 retail_picture_swap(1534, 1534)
                                             ),
                                             (
                                                 retail_node(fourcc!("dfnd"), 91, 9, 25, 25)
+                                                Pickable::default()
                                                 Button
                                                 retail_picture_swap(1201, 1202)
                                             ),
                                             (
                                                 retail_node(fourcc!("done"), 62, 9, 25, 25)
+                                                Pickable::default()
                                                 Button
                                                 retail_picture_swap(1203, 1204)
                                             ),
                                             (
                                                 retail_node(fourcc!("bomb"), 4, 9, 25, 25)
+                                                Pickable::default()
                                                 Button
                                                 retail_picture_swap(1205, 1206)
                                             ),
                                             (
                                                 retail_node(fourcc!("next"), 33, 9, 25, 25)
+                                                Pickable::default()
                                                 Button
                                                 retail_picture_swap(1199, 1200)
                                             ),
                                             (
                                                 retail_node(fourcc!("cls0"), 4, 72, 113, 57)
+                                                Pickable::IGNORE
                                                 Children [
                                                     (
                                                         retail_node(fourcc!("ship"), 0, 0, 100, 57)
+                                                        Pickable::IGNORE
                                                         retail_ship_placard(1513)
                                                     ),
                                                     (
                                                         retail_node(fourcc!("arro"), 100, 0, 11, 41)
                                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                        retail_numbered_arrow()
+                                                        Pickable::IGNORE
+                                                        retail_numbered_arrow(false)
                                                     ),
                                                 ]
                                             ),
                                             (
                                                 retail_node(fourcc!("cls1"), 4, 129, 113, 57)
+                                                Pickable::IGNORE
                                                 Children [
                                                     (
                                                         retail_node(fourcc!("ship"), 0, 0, 100, 57)
+                                                        Pickable::IGNORE
                                                         retail_ship_placard(1513)
                                                     ),
                                                     (
                                                         retail_node(fourcc!("arro"), 100, 0, 11, 41)
                                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                        retail_numbered_arrow()
+                                                        Pickable::IGNORE
+                                                        retail_numbered_arrow(false)
                                                     ),
                                                 ]
                                             ),
                                             (
                                                 retail_node(fourcc!("cls2"), 4, 187, 113, 57)
+                                                Pickable::IGNORE
                                                 Children [
                                                     (
                                                         retail_node(fourcc!("ship"), 0, 0, 100, 57)
+                                                        Pickable::IGNORE
                                                         retail_ship_placard(1513)
                                                     ),
                                                     (
                                                         retail_node(fourcc!("arro"), 100, 0, 11, 41)
                                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                        retail_numbered_arrow()
+                                                        Pickable::IGNORE
+                                                        retail_numbered_arrow(false)
                                                     ),
                                                 ]
                                             ),
                                             (
                                                 retail_node(fourcc!("cls3"), 4, 244, 113, 57)
+                                                Pickable::IGNORE
                                                 Children [
                                                     (
                                                         retail_node(fourcc!("ship"), 0, 0, 100, 57)
+                                                        Pickable::IGNORE
                                                         retail_ship_placard(1513)
                                                     ),
                                                     (
                                                         retail_node(fourcc!("arro"), 100, 0, 11, 41)
                                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                        retail_numbered_arrow()
+                                                        Pickable::IGNORE
+                                                        retail_numbered_arrow(false)
                                                     ),
                                                 ]
                                             ),
                                             (
                                                 retail_node(fourcc!("agr0"), 4, 43, 35, 25)
+                                                Pickable::default()
                                                 RadioButton
                                                 retail_picture_swap(1550, 1551)
                                             ),
                                             (
                                                 retail_node(fourcc!("agr1"), 43, 43, 34, 25)
+                                                Pickable::default()
                                                 RadioButton
                                                 retail_picture_swap(1552, 1553)
                                             ),
                                             (
                                                 retail_node(fourcc!("agr2"), 81, 43, 35, 25)
+                                                Pickable::default()
                                                 RadioButton
                                                 retail_picture_swap(1554, 1555)
                                             ),
@@ -247,121 +292,147 @@ pub fn mapview_2013() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("uarm"), 128, 146, 120, 307)
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("arr0"), 46, 36, 11, 41)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_numbered_arrow()
+                                                Pickable::IGNORE
+                                                retail_numbered_arrow(false)
                                             ),
                                             (
                                                 retail_node(fourcc!("arr1"), 46, 89, 11, 41)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_numbered_arrow()
+                                                Pickable::IGNORE
+                                                retail_numbered_arrow(false)
                                             ),
                                             (
                                                 retail_node(fourcc!("arr2"), 46, 142, 11, 41)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_numbered_arrow()
+                                                Pickable::IGNORE
+                                                retail_numbered_arrow(false)
                                             ),
                                             (
                                                 retail_node(fourcc!("arr3"), 46, 195, 11, 41)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_numbered_arrow()
+                                                Pickable::IGNORE
+                                                retail_numbered_arrow(false)
                                             ),
                                             (
                                                 retail_node(fourcc!("arr4"), 104, 36, 11, 41)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_numbered_arrow()
+                                                Pickable::IGNORE
+                                                retail_numbered_arrow(false)
                                             ),
                                             (
                                                 retail_node(fourcc!("arr5"), 104, 89, 11, 41)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_numbered_arrow()
+                                                Pickable::IGNORE
+                                                retail_numbered_arrow(false)
                                             ),
                                             (
                                                 retail_node(fourcc!("arr6"), 104, 142, 11, 41)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_numbered_arrow()
+                                                Pickable::IGNORE
+                                                retail_numbered_arrow(false)
                                             ),
                                             (
                                                 retail_node(fourcc!("arr7"), 104, 195, 11, 41)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_numbered_arrow()
+                                                Pickable::IGNORE
+                                                retail_numbered_arrow(false)
                                             ),
                                             (
                                                 retail_node(fourcc!("arr8"), 46, 248, 11, 41)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_numbered_arrow()
+                                                Pickable::IGNORE
+                                                retail_numbered_arrow(false)
                                             ),
                                             (
                                                 retail_node(fourcc!("arr9"), 104, 248, 11, 41)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
-                                                retail_numbered_arrow()
+                                                Pickable::IGNORE
+                                                retail_numbered_arrow(false)
                                             ),
                                             (
                                                 retail_node(fourcc!("dfnd"), 91, 7, 25, 25)
+                                                Pickable::default()
                                                 Button
                                                 retail_picture_swap(1201, 1202)
                                             ),
                                             (
                                                 retail_node(fourcc!("done"), 62, 7, 25, 25)
+                                                Pickable::default()
                                                 Button
                                                 retail_picture_swap(1203, 1204)
                                             ),
                                             (
                                                 retail_node(fourcc!("garr"), 4, 7, 25, 25)
+                                                Pickable::default()
                                                 Button
                                                 retail_picture_swap(1205, 1206)
                                             ),
                                             (
                                                 retail_node(fourcc!("latr"), 33, 7, 25, 25)
+                                                Pickable::default()
                                                 Button
                                                 retail_picture_swap(1199, 1200)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic0"), 4, 36, 42, 53)
+                                                Pickable::IGNORE
                                                 retail_army_placard(1220)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic1"), 4, 89, 42, 53)
+                                                Pickable::IGNORE
                                                 retail_army_placard(1221)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic2"), 4, 142, 42, 53)
+                                                Pickable::IGNORE
                                                 retail_army_placard(1222)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic3"), 4, 195, 42, 53)
+                                                Pickable::IGNORE
                                                 retail_army_placard(1223)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic4"), 57, 36, 47, 53)
+                                                Pickable::IGNORE
                                                 retail_army_placard(1224)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic5"), 57, 89, 47, 53)
+                                                Pickable::IGNORE
                                                 retail_army_placard(1225)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic6"), 57, 142, 47, 53)
+                                                Pickable::IGNORE
                                                 retail_army_placard(1226)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic7"), 57, 195, 47, 53)
+                                                Pickable::IGNORE
                                                 retail_army_placard(1227)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic8"), 4, 248, 42, 53)
+                                                Pickable::IGNORE
                                                 retail_army_placard(1244)
                                             ),
                                             (
                                                 retail_node(fourcc!("pic9"), 57, 248, 47, 53)
+                                                Pickable::IGNORE
                                                 retail_army_placard(1247)
                                             ),
                                         ]
                                     ),
                                     (
                                         retail_node(fourcc!("DONE"), 4, 453, 112, 19)
+                                        Pickable::default()
                                         Button
                                         retail_picture(1011)
                                         Visibility::Hidden
@@ -369,33 +440,40 @@ pub fn mapview_2013() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("uciv"), 128, 143, 126, 306)
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("unit"), 33, 39, 54, 68)
+                                                Pickable::default()
                                                 Button
                                                 InteractionDisabled
                                                 retail_picture_swap(1080, 1081)
                                             ),
                                             (
                                                 retail_node(fourcc!("back"), 0, 39, 123, 260)
+                                                Pickable::IGNORE
                                             ),
                                             (
                                                 retail_node(fourcc!("dfnd"), 91, 10, 25, 25)
+                                                Pickable::default()
                                                 Button
                                                 retail_picture_swap(1211, 1212)
                                             ),
                                             (
                                                 retail_node(fourcc!("done"), 62, 10, 25, 25)
+                                                Pickable::default()
                                                 Button
                                                 retail_picture_swap(1203, 1204)
                                             ),
                                             (
                                                 retail_node(fourcc!("garr"), 4, 10, 25, 25)
+                                                Pickable::default()
                                                 Button
                                                 retail_picture_swap(1209, 1210)
                                             ),
                                             (
                                                 retail_node(fourcc!("latr"), 33, 10, 25, 25)
+                                                Pickable::default()
                                                 Button
                                                 retail_picture_swap(1199, 1200)
                                             ),
@@ -403,9 +481,11 @@ pub fn mapview_2013() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("ocea"), 1, 5, 29, 40)
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("ZmOt"), 3, 3, 25, 35)
+                                                Pickable::default()
                                                 Button
                                                 retail_picture(1113)
                                                 Visibility::Hidden
@@ -417,15 +497,18 @@ pub fn mapview_2013() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tbr1"), 3, 6, 179, 19)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("seas"), 2, 1, 94, 17)
+                                        Pickable::IGNORE
                                         Text("Winter, 1888")
                                         retail_text_style(3, 0, 9, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("trea"), 99, 1, 75, 17)
+                                        Pickable::IGNORE
                                         Text("$55,555")
                                         retail_text_style(3, 0, 9, 1)
                                         TextColor(Color::BLACK)
@@ -434,6 +517,7 @@ pub fn mapview_2013() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 240, 5, 275, 21)
+                                Pickable::IGNORE
                                 hover_help_bar()
                                 Text("")
                                 retail_text_style(1, 0, 12, -1)
@@ -442,6 +526,7 @@ pub fn mapview_2013() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("send"), 220, 10, 19, 11)
+                                Pickable::default()
                                 Button
                                 InteractionDisabled
                                 retail_picture_swap(9457, 9458)
@@ -461,19 +546,23 @@ pub fn mapview_3012() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("main"), 171, 135, 300, 200)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 300, 200)
+                        Pickable::IGNORE
                         retail_picture(3012)
                         Children [
                             (
                                 retail_node(fourcc!("ttl0"), 13, 12, 278, 19)
+                                Pickable::IGNORE
                                 Text("Civilian Report")
                                 retail_text_style(3, 1, 14, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("okay"), 198, 136, 60, 35)
+                                Pickable::default()
                                 Button
                                 retail_picture(3014)
                                 Visibility::Hidden
@@ -481,6 +570,7 @@ pub fn mapview_3012() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("canc"), 46, 136, 60, 35)
+                                Pickable::default()
                                 Button
                                 retail_picture(3013)
                                 Visibility::Hidden
@@ -488,15 +578,18 @@ pub fn mapview_3012() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("info"), 7, 44, 287, 91)
+                                Pickable::IGNORE
                             ),
                             (
                                 retail_node(fourcc!("ttl1"), 10, 173, 131, 17)
+                                Pickable::IGNORE
                                 Text("Static Text")
                                 retail_text_style(1, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("ttl2"), 164, 173, 130, 17)
+                                Pickable::IGNORE
                                 Text("Static Text")
                                 retail_text_style(1, 0, 0, 1)
                                 TextColor(Color::BLACK)
@@ -516,53 +609,63 @@ pub fn mapview_3100() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 160, 138, 350, 250)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 350, 250)
+                        Pickable::IGNORE
                         retail_picture(1541)
                         Children [
                             (
                                 retail_node(fourcc!("titl"), 12, 27, 326, 23)
+                                Pickable::IGNORE
                                 Text("Army Report")
                                 retail_text_style(3, 1, 18, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("whom"), 16, 107, 150, 87)
+                                Pickable::IGNORE
                                 Text("One hen,\rtwo ducks, \rthree quacking geese.")
                                 retail_text_style(3, 0, 12, -2)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("lab3"), 184, 84, 146, 18)
+                                Pickable::IGNORE
                                 Text("Orders")
                                 retail_text_style(3, 5, 12, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("ords"), 197, 108, 133, 69)
+                                Pickable::IGNORE
                                 Text("Patrol the waters\rof whereever")
                                 retail_text_style(3, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("canc"), 187, 213, 61, 23)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9412, 9413)
                             ),
                             (
                                 retail_node(fourcc!("okay"), 268, 213, 61, 24)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
                                 retail_node(fourcc!("lab2"), 17, 84, 146, 18)
+                                Pickable::IGNORE
                                 Text("Composition")
                                 retail_text_style(3, 5, 12, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("gene"), 15, 201, 151, 27)
+                                Pickable::IGNORE
                                 Text("Adm. Bob of the SS Minnow commanding")
                                 retail_text_style(3, 0, 10, -2)
                                 TextColor(Color::BLACK)
@@ -582,13 +685,16 @@ pub fn mapview_3500() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 17, 51, 480, 400)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 480, 400)
+                        Pickable::IGNORE
                         retail_picture(3500)
                         Children [
                             (
                                 retail_node(fourcc!("page"), 13, 46, 458, 310)
+                                Pickable::IGNORE
                             ),
                             (
                                 retail_node(fourcc!("lcor"), 12, 356, 41, 36)
@@ -600,6 +706,7 @@ pub fn mapview_3500() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("okay"), 28, 11, 29, 29)
+                                Pickable::default()
                                 Button
                                 retail_picture(3507)
                                 Visibility::Hidden
@@ -620,24 +727,29 @@ pub fn mapview_3508() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 160, 138, 260, 100)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 260, 100)
+                        Pickable::IGNORE
                         retail_picture(3508)
                         Children [
                             (
                                 retail_node(fourcc!("cncl"), 16, 68, 61, 23)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9412, 9413)
                             ),
                             (
                                 retail_node(fourcc!("okay"), 185, 67, 61, 24)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
                                 retail_node(fourcc!("name"), 25, 35, 204, 25)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                Pickable::default()
                                 retail_edit_field()
                                 retail_editable_text("", Some(16))
                                 retail_text_style(1, 0, 0, 0)
@@ -645,6 +757,7 @@ pub fn mapview_3508() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("titl"), 28, 12, 201, 15)
+                                Pickable::IGNORE
                                 Text("Static Text")
                                 retail_text_style(1, 0, 0, 1)
                                 TextColor(Color::BLACK)
@@ -664,12 +777,15 @@ pub fn mapview_7200() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 94, 99, 328, 70)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 1, 328, 70)
+                        Pickable::IGNORE
                         Children [
                             (
                                 retail_node(fourcc!("titl"), 40, 4, 240, 16)
+                                Pickable::IGNORE
                                 Text("Construction Options")
                                 retail_text_style(3, 1, 14, 1)
                                 TextColor(Color::BLACK)
@@ -689,14 +805,17 @@ pub fn mapview_9460() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 14, 59, 600, 300)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("    "), 0, 0, 600, 300)
+                        Pickable::IGNORE
                         retail_picture(9461)
                     ),
                     (
                         retail_node(fourcc!("numa"), 136, 21, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -704,12 +823,14 @@ pub fn mapview_9460() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("nama"), 10, 24, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namb"), 10, 47, 110, 15)
+                        Pickable::IGNORE
                         Text("Skirmishers")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
@@ -717,6 +838,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("numb"), 136, 44, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -724,6 +846,7 @@ pub fn mapview_9460() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("namc"), 10, 70, 110, 15)
+                        Pickable::IGNORE
                         Text("Regulars")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
@@ -731,6 +854,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("numc"), 136, 67, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -739,6 +863,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("numd"), 136, 90, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -746,12 +871,14 @@ pub fn mapview_9460() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("namd"), 10, 93, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namg"), 10, 162, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
@@ -759,6 +886,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("numg"), 136, 159, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -767,6 +895,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("numh"), 136, 182, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -774,12 +903,14 @@ pub fn mapview_9460() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("namh"), 10, 185, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namf"), 10, 139, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
@@ -787,6 +918,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("numf"), 136, 136, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -795,6 +927,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("nume"), 136, 113, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -802,12 +935,14 @@ pub fn mapview_9460() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("name"), 10, 116, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("nami"), 192, 25, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
@@ -815,6 +950,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("numi"), 318, 22, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -823,6 +959,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("numj"), 318, 45, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -830,12 +967,14 @@ pub fn mapview_9460() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("namj"), 192, 48, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namk"), 192, 71, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
@@ -843,6 +982,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("numk"), 318, 68, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -851,6 +991,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("numl"), 318, 91, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -858,12 +999,14 @@ pub fn mapview_9460() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("naml"), 192, 94, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namm"), 192, 117, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
@@ -871,6 +1014,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("numm"), 318, 114, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -879,6 +1023,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("numn"), 318, 137, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -886,12 +1031,14 @@ pub fn mapview_9460() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("namn"), 192, 140, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namo"), 192, 163, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
@@ -899,6 +1046,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("numo"), 318, 160, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -907,6 +1055,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("nump"), 318, 183, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -914,12 +1063,14 @@ pub fn mapview_9460() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("namp"), 192, 186, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namq"), 367, 25, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
@@ -927,6 +1078,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("numq"), 493, 22, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -935,6 +1087,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("numr"), 493, 45, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -942,12 +1095,14 @@ pub fn mapview_9460() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("namr"), 367, 48, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("nams"), 367, 71, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
@@ -955,6 +1110,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("nums"), 493, 68, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -963,6 +1119,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("numt"), 493, 91, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -970,12 +1127,14 @@ pub fn mapview_9460() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("namt"), 367, 94, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namu"), 367, 117, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
@@ -983,6 +1142,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("numu"), 493, 114, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -991,6 +1151,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("numv"), 493, 137, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -998,12 +1159,14 @@ pub fn mapview_9460() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("namv"), 367, 140, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namw"), 367, 163, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
@@ -1011,6 +1174,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("numw"), 493, 160, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -1019,6 +1183,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("numy"), 136, 205, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -1026,18 +1191,21 @@ pub fn mapview_9460() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("namy"), 10, 208, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("    "), 450, 239, 61, 24)
+                        Pickable::default()
                         Button
                         retail_picture_swap(9410, 9411)
                     ),
                     (
                         retail_node(fourcc!("numx"), 493, 183, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -1045,12 +1213,14 @@ pub fn mapview_9460() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("namx"), 367, 186, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namz"), 191, 209, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
@@ -1058,6 +1228,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("numz"), 318, 206, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -1065,6 +1236,7 @@ pub fn mapview_9460() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("namx"), 367, 209, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
@@ -1072,6 +1244,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("numx"), 493, 206, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -1079,6 +1252,7 @@ pub fn mapview_9460() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("nam{"), 10, 231, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
@@ -1086,6 +1260,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("num{"), 136, 228, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -1093,6 +1268,7 @@ pub fn mapview_9460() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("nam|"), 191, 232, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
@@ -1100,6 +1276,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("num|"), 318, 229, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -1107,6 +1284,7 @@ pub fn mapview_9460() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("nam~"), 191, 256, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
@@ -1114,6 +1292,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("num~"), 318, 253, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -1121,6 +1300,7 @@ pub fn mapview_9460() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("nam}"), 9, 257, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
@@ -1128,6 +1308,7 @@ pub fn mapview_9460() -> impl Scene {
                     (
                         retail_node(fourcc!("num}"), 136, 254, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -1146,14 +1327,17 @@ pub fn mapview_9462() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 14, 59, 600, 300)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("    "), 0, 0, 600, 300)
+                        Pickable::IGNORE
                         retail_picture(9461)
                     ),
                     (
                         retail_node(fourcc!("numd"), 341, 34, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -1161,12 +1345,14 @@ pub fn mapview_9462() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("namd"), 215, 37, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("name"), 215, 60, 110, 15)
+                        Pickable::IGNORE
                         Text("Skirmishers")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
@@ -1174,6 +1360,7 @@ pub fn mapview_9462() -> impl Scene {
                     (
                         retail_node(fourcc!("nume"), 341, 57, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -1181,6 +1368,7 @@ pub fn mapview_9462() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("namh"), 215, 83, 110, 15)
+                        Pickable::IGNORE
                         Text("Regulars")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
@@ -1188,6 +1376,7 @@ pub fn mapview_9462() -> impl Scene {
                     (
                         retail_node(fourcc!("numh"), 341, 80, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -1196,6 +1385,7 @@ pub fn mapview_9462() -> impl Scene {
                     (
                         retail_node(fourcc!("numi"), 341, 103, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -1203,12 +1393,14 @@ pub fn mapview_9462() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("nami"), 215, 106, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("namm"), 215, 175, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
@@ -1216,6 +1408,7 @@ pub fn mapview_9462() -> impl Scene {
                     (
                         retail_node(fourcc!("owne"), 403, 221, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -1223,6 +1416,7 @@ pub fn mapview_9462() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("naml"), 215, 152, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
@@ -1230,6 +1424,7 @@ pub fn mapview_9462() -> impl Scene {
                     (
                         retail_node(fourcc!("numl"), 341, 149, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -1238,6 +1433,7 @@ pub fn mapview_9462() -> impl Scene {
                     (
                         retail_node(fourcc!("numj"), 341, 126, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -1245,18 +1441,21 @@ pub fn mapview_9462() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("namj"), 215, 129, 110, 15)
+                        Pickable::IGNORE
                         Text("Minuteman")
                         retail_text_style(1, 0, 0, -1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("    "), 287, 240, 61, 24)
+                        Pickable::default()
                         Button
                         retail_picture_swap(9410, 9411)
                     ),
                     (
                         retail_node(fourcc!("numm"), 341, 172, 36, 22)
                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                        Pickable::IGNORE
                         Text("")
                         retail_text_style(1, 0, 0, 0)
                         TextColor(Color::BLACK)
@@ -1275,13 +1474,16 @@ pub fn mapview_9465() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 62, 37, 280, 259)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 280, 259)
+                        Pickable::IGNORE
                         retail_picture(9465)
                         Children [
                             (
                                 retail_node(fourcc!("    "), 198, 221, 61, 24)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9410, 9411)
                             ),
@@ -1300,71 +1502,84 @@ pub fn mapview_9474() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 160, 138, 350, 250)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 350, 250)
+                        Pickable::IGNORE
                         retail_picture(1541)
                         Children [
                             (
                                 retail_node(fourcc!("titl"), 12, 10, 326, 23)
+                                Pickable::IGNORE
                                 Text("Task Force Report")
                                 retail_text_style(3, 1, 18, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("lab1"), 20, 35, 307, 14)
+                                Pickable::IGNORE
                                 Text("Force currently located in the")
                                 retail_text_style(3, 0, 10, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("whom"), 16, 107, 150, 87)
+                                Pickable::IGNORE
                                 Text("One hen,\rtwo ducks, \rthree quacking geese.")
                                 retail_text_style(3, 0, 12, -2)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("lab3"), 184, 84, 146, 18)
+                                Pickable::IGNORE
                                 Text("Orders")
                                 retail_text_style(3, 5, 12, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("ords"), 197, 108, 135, 50)
+                                Pickable::IGNORE
                                 Text("Patrol the waters\rof whereever")
                                 retail_text_style(3, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("agro"), 198, 167, 131, 30)
+                                Pickable::IGNORE
                                 Text("Engage all floating objects")
                                 retail_text_style(3, 2, 10, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("canc"), 187, 213, 61, 23)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9412, 9413)
                             ),
                             (
                                 retail_node(fourcc!("okay"), 268, 213, 61, 24)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
                                 retail_node(fourcc!("lab2"), 17, 84, 146, 18)
+                                Pickable::IGNORE
                                 Text("Composition")
                                 retail_text_style(3, 5, 12, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("adam"), 15, 201, 151, 27)
+                                Pickable::IGNORE
                                 Text("Adm. Bob of the SS Minnow commanding")
                                 retail_text_style(3, 0, 10, -2)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("zone"), 11, 50, 328, 17)
+                                Pickable::IGNORE
                                 Text("Sea of Satanic Salamanders")
                                 retail_text_style(3, 1, 12, 1)
                                 TextColor(Color::BLACK)
@@ -1384,54 +1599,64 @@ pub fn mapview_9475() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 160, 138, 350, 250)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 350, 250)
+                        Pickable::IGNORE
                         retail_picture(1542)
                         Children [
                             (
                                 retail_node(fourcc!("titl"), 5, 10, 340, 25)
+                                Pickable::IGNORE
                                 Text("Foreign Fleet Report")
                                 retail_text_style(3, 1, 18, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("gpee"), 5, 48, 340, 16)
+                                Pickable::IGNORE
                                 Text("Pont")
                                 retail_text_style(3, 1, 14, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("lab1"), 5, 34, 340, 15)
+                                Pickable::IGNORE
                                 Text("Report of the naval forces of")
                                 retail_text_style(3, 0, 10, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("okay"), 275, 216, 61, 24)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
                                 retail_node(fourcc!("ship"), 15, 133, 320, 67)
+                                Pickable::IGNORE
                                 Text("• Half a dozen Ships-of-the-Line\r2\r3\r4")
                                 retail_text_style(3, 0, 12, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("zone"), 5, 79, 340, 19)
+                                Pickable::IGNORE
                                 Text("Sea of Oblongata")
                                 retail_text_style(3, 1, 14, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("lab2"), 5, 66, 340, 13)
+                                Pickable::IGNORE
                                 Text("in the")
                                 retail_text_style(3, 0, 10, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("adam"), 18, 225, 265, 13)
+                                Pickable::IGNORE
                                 Text(" Adm. James T. Kirk of the USS Enterprise")
                                 retail_text_style(3, 2, 10, 0)
                                 TextColor(Color::BLACK)
@@ -1440,12 +1665,14 @@ pub fn mapview_9475() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("lab3"), 5, 112, 340, 18)
+                        Pickable::IGNORE
                         Text("Foreign Shipping Observed")
                         retail_text_style(3, 5, 12, 1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("lab4"), 23, 210, 244, 13)
+                        Pickable::IGNORE
                         Text("as estimated by")
                         retail_text_style(3, 2, 10, -2)
                         TextColor(Color::BLACK)
@@ -1463,54 +1690,64 @@ pub fn mapview_9477() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 160, 138, 350, 275)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 350, 275)
+                        Pickable::IGNORE
                         retail_picture(1541)
                         Children [
                             (
                                 retail_node(fourcc!("titl"), 41, 10, 267, 26)
+                                Pickable::IGNORE
                                 Text("Enemy Trade Interrupted")
                                 retail_text_style(3, 1, 18, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("miss"), 181, 105, 158, 16)
+                                Pickable::IGNORE
                                 Text("Blockade")
                                 retail_text_style(3, 1, 12, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("lab1"), 180, 88, 159, 12)
+                                Pickable::IGNORE
                                 Text("A result of a successful")
                                 retail_text_style(3, 0, 10, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("okay"), 275, 240, 61, 24)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
                                 retail_node(fourcc!("vess"), 190, 191, 140, 43)
+                                Pickable::IGNORE
                                 Text("3 vessels")
                                 retail_text_style(3, 1, 10, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("zone"), 16, 50, 322, 19)
+                                Pickable::IGNORE
                                 Text("Sea of Oblongata")
                                 retail_text_style(3, 1, 14, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("lab2"), 145, 35, 53, 12)
+                                Pickable::IGNORE
                                 Text("in the")
                                 retail_text_style(3, 0, 10, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("adam"), 182, 143, 152, 26)
+                                Pickable::IGNORE
                                 Text(" Adm. James T. Kirk of the USS Enterprise")
                                 retail_text_style(3, 3, 10, 1)
                                 TextColor(Color::BLACK)
@@ -1519,60 +1756,70 @@ pub fn mapview_9477() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("lab1"), 183, 125, 154, 16)
+                        Pickable::IGNORE
                         Text("by a task force commanded by")
                         retail_text_style(3, 0, 10, 1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("lab1"), 177, 174, 166, 15)
+                        Pickable::IGNORE
                         Text("and consisting of")
                         retail_text_style(3, 0, 10, 1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("lab1"), 7, 89, 166, 15)
+                        Pickable::IGNORE
                         Text("Merchants belonging to")
                         retail_text_style(3, 0, 10, 1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("ownr"), 41, 104, 97, 16)
+                        Pickable::IGNORE
                         Text("ownr")
                         retail_text_style(3, 1, 12, 1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("lab1"), 7, 122, 166, 15)
+                        Pickable::IGNORE
                         Text("carrying a cargo of")
                         retail_text_style(3, 0, 10, 1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("gpee"), 41, 141, 97, 16)
+                        Pickable::IGNORE
                         Text("item")
                         retail_text_style(3, 1, 12, 1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("lab1"), 7, 158, 166, 15)
+                        Pickable::IGNORE
                         Text("to")
                         retail_text_style(3, 0, 10, 1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("dest"), 41, 174, 97, 16)
+                        Pickable::IGNORE
                         Text("Pokei")
                         retail_text_style(3, 1, 12, 1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("what"), 9, 192, 161, 29)
+                        Pickable::IGNORE
                         Text("were stopped from completing their trade")
                         retail_text_style(3, 0, 10, 1)
                         TextColor(Color::BLACK)
                     ),
                     (
                         retail_node(fourcc!("siez"), 21, 219, 138, 36)
+                        Pickable::IGNORE
                         Text("1 trader, 6 indiamen")
                         retail_text_style(3, 1, 10, 1)
                         TextColor(Color::BLACK)
@@ -1590,13 +1837,16 @@ pub fn mapview_9478() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 17, 51, 480, 400)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 480, 400)
+                        Pickable::IGNORE
                         retail_picture(3500)
                         Children [
                             (
                                 retail_node(fourcc!("okay"), 26, 11, 29, 29)
+                                Pickable::default()
                                 Button
                                 retail_picture(3507)
                                 Visibility::Hidden
@@ -1604,13 +1854,16 @@ pub fn mapview_9478() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("page"), 13, 46, 458, 310)
+                                Pickable::IGNORE
                             ),
                             (
                                 retail_node(fourcc!("lcor"), 12, 356, 41, 36)
+                                Pickable::IGNORE
                                 retail_picture(3506)
                             ),
                             (
                                 retail_node(fourcc!("rcor"), 432, 356, 41, 36)
+                                Pickable::IGNORE
                                 retail_picture(3505)
                             ),
                         ]

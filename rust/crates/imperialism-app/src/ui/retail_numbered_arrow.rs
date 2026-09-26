@@ -14,7 +14,7 @@ use super::retail::{
 };
 use bevy::prelude::*;
 use bevy::reflect::Is;
-use bevy::ui::{Overflow, Pressed};
+use bevy::ui::{InteractionDisabled, Overflow, Pressed};
 use bevy::ui_widgets::Button;
 use imperialism_formats::PictureId;
 
@@ -51,6 +51,7 @@ const BOTTOM_PRESSED: Rect = Rect {
 
 /// Links a hit-box button to the glyph image whose atlas crop it drives.
 #[derive(Component, FromTemplate, Clone, Copy)]
+#[component(immutable)]
 struct ArrowGlyph {
     image: Entity,
     idle: Rect,
@@ -59,6 +60,7 @@ struct ArrowGlyph {
 
 /// Private structure for the numbered-arrow hierarchy.
 #[derive(Component, FromTemplate, Clone, Copy)]
+#[component(immutable)]
 pub struct NumberedArrowParts {
     pub upper: Entity,
     pub lower: Entity,
@@ -66,7 +68,9 @@ pub struct NumberedArrowParts {
 }
 
 #[rustfmt::skip]
-pub fn retail_numbered_arrow() -> impl Scene {
+pub fn retail_numbered_arrow(disabled: bool) -> impl Scene {
+    let upper_disabled = disabled.then(|| bsn! { InteractionDisabled });
+    let lower_disabled = disabled.then(|| bsn! { InteractionDisabled });
     bsn! {
         Pickable::IGNORE
         Node { overflow: Overflow::visible() }
@@ -94,12 +98,18 @@ pub fn retail_numbered_arrow() -> impl Scene {
                 #Upper
                 Node { position_type: PositionType::Absolute, left: px(0), top: px(UPPER_HIT_TOP), width: px(WIDTH), height: px(UPPER_HIT_HEIGHT) }
                 Button
+                AccessibleLabel::new("Activate one unit")
+                Pickable::default()
+                {upper_disabled}
                 ArrowGlyph { image: #UpperImage, idle: TOP_IDLE, pressed: TOP_PRESSED }
             ),
             (
                 #Lower
                 Node { position_type: PositionType::Absolute, left: px(0), top: px(LOWER_HIT_TOP), width: px(WIDTH), height: px(LOWER_HIT_HEIGHT) }
                 Button
+                AccessibleLabel::new("Deactivate one unit")
+                Pickable::default()
+                {lower_disabled}
                 ArrowGlyph { image: #LowerImage, idle: BOTTOM_IDLE, pressed: BOTTOM_PRESSED }
             ),
             (

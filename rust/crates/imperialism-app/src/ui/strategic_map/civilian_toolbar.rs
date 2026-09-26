@@ -170,9 +170,9 @@ fn sync_civilian_toolbar(
     if !session.is_changed() && !map.is_changed() {
         return;
     }
-    let Ok((mut page, view)) = pages.single_mut() else {
-        return;
-    };
+    let (mut page, view) = pages
+        .single_mut()
+        .expect("StrategicMap state must contain exactly one civilian toolbar");
     let unit = map
         .selection
         .civilian()
