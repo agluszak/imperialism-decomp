@@ -1,14 +1,21 @@
 use super::GamePreferences;
 use super::fill_brackets;
 use super::generated;
+use super::linger::{bind_linger_dialog, spawn_linger_dialog};
 use super::retail::{RetailTree, RetailUiAssets};
 use super::session::{GameSession, apply_turn_stop};
+use super::window::{bind_modal_keys, dismiss_on_activate, spawn_modal_window};
+use crate::media::RetailAudioAssets;
 use crate::{AppState, RetailAssetsResource};
 use bevy::prelude::*;
 use bevy::text::LineHeight;
+use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::Activate;
 use imperialism_core::*;
-use imperialism_formats::{NewsTable, RetailTextStylePreset, fourcc};
+use imperialism_formats::{
+    NewsTable, PictureId, RetailTextStylePreset, SoundId, StringGroup, fourcc,
+};
+use std::collections::VecDeque;
 
 const COLUMN_X: [f32; 3] = [24.0, 226.0, 428.0];
 const COLUMN_WIDTH: f32 = 188.0;
@@ -24,9 +31,343 @@ impl Plugin for NewspaperPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
             OnEnter(AppState::Newspaper),
-            (spawn_newspaper, bind_newspaper).chain(),
+            (spawn_newspaper, bind_newspaper, queue_newspaper_notices).chain(),
+        )
+        .add_systems(
+            Update,
+            (
+                spawn_newspaper_notice_if_pending,
+                bind_status_prompt_notice,
+                bind_turn_summary_notice,
+            )
+                .chain()
+                .run_if(in_state(AppState::Newspaper)),
         );
     }
+}
+
+/// Modal notices retail shows over the newspaper
+/// (`THelpMgr::HandlePostDispatchTurnStateEventUpdates`), in dispatch order.
+#[derive(Clone, Debug, PartialEq, Eq)]
+enum NewspaperNotice {
+    StatusPrompt(PendingStatusPrompt),
+    TurnSummary(PreviousTurnSummary),
+}
+
+#[derive(Resource, Default)]
+struct NewspaperNotices(VecDeque<NewspaperNotice>);
+
+#[derive(Component)]
+struct NewspaperNoticeDialog;
+
+#[derive(Component)]
+struct StatusPromptNotice(PendingStatusPrompt);
+
+#[derive(Component)]
+struct TurnSummaryNotice(PreviousTurnSummary);
+
+fn queue_newspaper_notices(mut commands: Commands, session: Res<GameSession>) {
+    commands.insert_resource(NewspaperNotices(newspaper_notices(&session.game)));
+}
+
+fn newspaper_notices(state: &GameState) -> VecDeque<NewspaperNotice> {
+    let mut notices: VecDeque<NewspaperNotice> = state
+        .pending()
+        .status_prompts
+        .iter()
+        .copied()
+        .map(NewspaperNotice::StatusPrompt)
+        .collect();
+    if let Some(nation) = MajorNationId::from_nation(state.turn().active_nation)
+        && let Some(summary) = state.previous_turn_summary(nation)
+    {
+        notices.push_back(NewspaperNotice::TurnSummary(summary));
+    }
+    notices
+}
+
+fn spawn_newspaper_notice_if_pending(
+    mut commands: Commands,
+    notices: Option<Res<NewspaperNotices>>,
+    existing: Query<(), With<NewspaperNoticeDialog>>,
+) {
+    let Some(notice) = notices.as_deref().and_then(|notices| notices.0.front()) else {
+        return;
+    };
+    if !existing.is_empty() {
+        return;
+    }
+    match notice {
+        NewspaperNotice::StatusPrompt(prompt) => {
+            let (modal, _window) = spawn_modal_window(&mut commands, generated::minister_9480());
+            commands.entity(modal).insert((
+                NewspaperNoticeDialog,
+                StatusPromptNotice(*prompt),
+                DespawnOnExit(AppState::Newspaper),
+            ));
+        }
+        NewspaperNotice::TurnSummary(summary) => {
+            let modal = spawn_linger_dialog(
+                &mut commands,
+                TurnSummaryNotice(summary.clone()),
+                AppState::Newspaper,
+            );
+            commands.entity(modal).insert(NewspaperNoticeDialog);
+        }
+    }
+}
+
+fn on_newspaper_notice_dismiss(_activate: On<Activate>, mut notices: ResMut<NewspaperNotices>) {
+    notices
+        .0
+        .pop_front()
+        .expect("newspaper notice dismissal requires a pending notice");
+}
+
+const MINISTER_REWARD_COAT: PictureId = PictureId::new(0x251c);
+const MINISTER_REWARD_GOLD: PictureId = PictureId::new(0x252a);
+const MINISTER_MESSAGE_GOLD: PictureId = PictureId::new(0x24cd);
+const TURN_OVERLAY_TEXT: StringGroup = StringGroup::new(0x273a);
+const MINISTER_TITLES: StringGroup = StringGroup::new(0x2749);
+const RESOURCE_NAMES: StringGroup = StringGroup::new(0x2716);
+
+/// `TViewMgr::BuildAndShowTurnOverlayByMode` case table: body text, `rewa` picture,
+/// and the dialog context word that selects the `DLOG` gold plate.
+fn status_prompt_presentation(
+    assets: &RetailUiAssets,
+    state: &GameState,
+    nation: MajorNationId,
+    prompt: PendingStatusPrompt,
+) -> (String, PictureId, i16) {
+    let mode = prompt.kind as usize as u16;
+    let payload = prompt.payload;
+    let plain = |assets: &RetailUiAssets| assets.string(TURN_OVERLAY_TEXT.entry(mode));
+    let templated = |assets: &RetailUiAssets, argument: &str| {
+        fill_brackets(&assets.string(TURN_OVERLAY_TEXT.entry(mode)), &[argument])
+    };
+    let nation_name = |payload: i16| {
+        u8::try_from(payload)
+            .ok()
+            .and_then(NationId::try_new)
+            .and_then(|nation| state.nations().display_name(nation))
+            .unwrap_or_default()
+            .to_owned()
+    };
+    let city_name = |payload: i16| {
+        u16::try_from(payload)
+            .ok()
+            .and_then(ProvinceId::try_new)
+            .map(|province| state.map().provinces[province].name.clone())
+            .unwrap_or_default()
+    };
+    let mode_picture = PictureId::new(0x2508).offset(payload_mode(mode));
+    match prompt.kind {
+        PendingActionKind::NavyGrowthReward => {
+            let ship_name = assets.string(RESOURCE_NAMES.entry(payload_mode_from(payload)));
+            let picture = match payload {
+                8 => PictureId::new(0x2515),
+                9 => PictureId::new(0x2516),
+                0xc => PictureId::new(0x2517),
+                _ => PictureId::new(0x2508),
+            };
+            (templated(assets, &ship_name), picture, 1)
+        }
+        PendingActionKind::ArmyGrowthReward => {
+            let general = state.technology().selected_capability_slots[nation]
+                [ArmyUnitCategory::Generals]
+                .retail();
+            let picture = match general {
+                0x1c => PictureId::new(0x2518),
+                0x1d => PictureId::new(0x2519),
+                _ => PictureId::new(0x2509),
+            };
+            (plain(assets), picture, 1)
+        }
+        PendingActionKind::ShipyardIronworkingUpgrade
+        | PendingActionKind::ConquestMonumentArmory => (plain(assets), mode_picture, 1),
+        PendingActionKind::ConqueredCapitalArmoryUpgrade => (
+            templated(assets, &nation_name(payload)),
+            PictureId::new(0x250e),
+            1,
+        ),
+        PendingActionKind::ColonyMonumentMerchantCapacity => (
+            templated(assets, &nation_name(payload)),
+            PictureId::new(0x2512),
+            1,
+        ),
+        PendingActionKind::OverseasDeveloperReward => (plain(assets), PictureId::new(0x250a), 0),
+        PendingActionKind::AnnexedGreatPowerCapitalExpansion
+        | PendingActionKind::CouncilLeadMonument => (plain(assets), mode_picture, 0),
+        PendingActionKind::VillageDevelopment | PendingActionKind::TownDevelopment => {
+            (templated(assets, &city_name(payload)), mode_picture, 2)
+        }
+        PendingActionKind::UniversityExpansion => {
+            let picture = if payload == -1 {
+                PictureId::new(0x251a)
+            } else {
+                PictureId::new(0x250f)
+            };
+            (plain(assets), picture, 2)
+        }
+        PendingActionKind::RailyardExpansion => (plain(assets), PictureId::new(0x2510), 2),
+    }
+}
+
+fn payload_mode(mode: u16) -> i16 {
+    i16::try_from(mode).expect("pending action kind index fits a retail word")
+}
+
+fn payload_mode_from(payload: i16) -> u16 {
+    u16::try_from(payload).unwrap_or_default()
+}
+
+/// `RunNationInfoModalAndReturnNonCancel` reward-dialog sound per prompt kind.
+fn status_prompt_sound(kind: PendingActionKind) -> SoundId {
+    const OVERLAY_SFX: [u16; 13] = [
+        0xbcc, 0xbcd, 0xbce, 0xbcf, 0xbd0, 0xbc2, 0xbd2, 0xbd3, 0xbd5, 0xbd6, 0xbd7, 0xbd7, 0xbd9,
+    ];
+    SoundId::new(OVERLAY_SFX[kind as usize])
+}
+
+fn bind_status_prompt_notice(
+    mut commands: Commands,
+    notice: Option<Single<(Entity, &StatusPromptNotice), Added<StatusPromptNotice>>>,
+    tree: RetailTree,
+    mut assets: RetailUiAssets,
+    session: Res<GameSession>,
+    mut audio: RetailAudioAssets,
+) {
+    let Some(notice) = notice else {
+        return;
+    };
+    let (root, notice) = notice.into_inner();
+    let prompt = notice.0;
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
+        .expect("newspaper requires an active major nation");
+    let (body, reward, context) =
+        status_prompt_presentation(&assets, &session.game, nation, prompt);
+    let gold = assets.picture(MINISTER_REWARD_GOLD.offset(context));
+    commands
+        .entity(tree.find(root, fourcc!("DLOG")))
+        .insert(ImageNode::new(gold));
+    let reward = assets.picture(reward);
+    commands
+        .entity(tree.find(root, fourcc!("rewa")))
+        .insert(ImageNode::new(reward));
+    let coat = assets.picture(MINISTER_REWARD_COAT.offset(i16::from(nation.get())));
+    commands
+        .entity(tree.find(root, fourcc!("coat")))
+        .insert(ImageNode::new(coat));
+    let (font, layout, line_height, _) =
+        assets.text_style(RetailTextStylePreset::explicit(1, 0, 12, 0));
+    commands.entity(tree.find(root, fourcc!("info"))).insert((
+        Text::new(body.replace('\r', "\n")),
+        Label,
+        font,
+        layout,
+        line_height,
+        TextColor(assets.palette_color(0)),
+    ));
+    let okay = tree.find(root, fourcc!("okay"));
+    dismiss_on_activate(&mut commands, okay, root);
+    bind_modal_keys(&mut commands, root, Some(okay), None);
+    commands
+        .entity(okay)
+        .remove::<InteractionDisabled>()
+        .observe(on_newspaper_notice_dismiss);
+    audio.play(&mut commands, status_prompt_sound(prompt.kind));
+}
+
+/// `TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch` text composition.
+fn turn_summary_text(assets: &RetailUiAssets, summary: &PreviousTurnSummary) -> String {
+    let mut text = assets.string(MINISTER_TITLES.entry(9));
+    for entry in &summary.entries {
+        let (order_kind, payload, count) = match *entry {
+            TurnSummary::MilitaryRecruit {
+                unit_type, count, ..
+            } => (3, i16::from(unit_type.retail()), count),
+            TurnSummary::Retail {
+                order_kind,
+                payload,
+                flags,
+                ..
+            } => (order_kind, payload, flags),
+        };
+        let entry_index = payload_mode_from(payload);
+        let plural = count > 1;
+        let entry_text = match order_kind {
+            0 | 1 => assets.get_string(if plural { 0x271a } else { 0x2716 }, entry_index),
+            2 => assets.get_string(if plural { 0x2748 } else { 0x2718 }, entry_index),
+            3 => {
+                if plural {
+                    fill_brackets(
+                        &assets.get_string(0x2747, 1),
+                        &[&assets.get_string(0x2717, entry_index)],
+                    )
+                } else if payload == 0x2508 {
+                    assets.get_string(0x2744, 2)
+                } else if (0x1b..=0x1d).contains(&payload) {
+                    assets.get_string(0x2744, 0)
+                } else {
+                    fill_brackets(
+                        &assets.get_string(0x2747, 0),
+                        &[&assets.get_string(0x2717, entry_index)],
+                    )
+                }
+            }
+            _ => String::new(),
+        };
+        text.push('\n');
+        text.push_str("     ");
+        text.push_str(&count.to_string());
+        text.push(' ');
+        text.push_str(&entry_text);
+    }
+    if let Some(capacity) = summary.aid_capacity {
+        text.push_str("\n\n");
+        text.push_str(&fill_brackets(
+            &assets.get_string(0x2739, 1),
+            &[&capacity.to_string()],
+        ));
+    }
+    text
+}
+
+fn bind_turn_summary_notice(
+    mut commands: Commands,
+    notice: Option<Single<(Entity, &TurnSummaryNotice), Added<TurnSummaryNotice>>>,
+    tree: RetailTree,
+    mut assets: RetailUiAssets,
+    session: Res<GameSession>,
+    mut audio: RetailAudioAssets,
+) {
+    let Some(notice) = notice else {
+        return;
+    };
+    let (root, notice) = notice.into_inner();
+    let nation = MajorNationId::from_nation(session.game.turn().active_nation)
+        .expect("newspaper requires an active major nation");
+    let linger = bind_linger_dialog(&mut commands, root, &tree);
+    // `ModalMessage(text, pos, overlayMode = 2)`: title `0x2749[3]` filled with `0x2749[2]`.
+    let title = fill_brackets(
+        &assets.string(MINISTER_TITLES.entry(3)),
+        &[&assets.string(MINISTER_TITLES.entry(2))],
+    );
+    linger.set_title(&mut commands, &mut assets, title);
+    let body = turn_summary_text(&assets, &notice.0);
+    linger.set_body(&mut commands, &mut assets, body);
+    let gold = assets.picture(MINISTER_MESSAGE_GOLD.offset(2 * 2));
+    commands
+        .entity(tree.find(root, fourcc!("DLOG")))
+        .insert(ImageNode::new(gold));
+    let coat = assets.picture(MINISTER_REWARD_COAT.offset(i16::from(nation.get())));
+    commands.entity(linger.coat).insert(ImageNode::new(coat));
+    commands
+        .entity(linger.okay)
+        .remove::<InteractionDisabled>()
+        .observe(on_newspaper_notice_dismiss);
+    commands.entity(linger.cancel).insert(Visibility::Hidden);
+    audio.play(&mut commands, SoundId::new(0xbcb));
 }
 
 fn spawn_newspaper(mut commands: Commands) {
