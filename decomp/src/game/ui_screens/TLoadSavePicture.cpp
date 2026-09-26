@@ -353,7 +353,7 @@ void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
       CString path;
       BuildSavePathStringForMode(&path, slot, prefix);
       if (TryGetFileMetadataForPath(&path) != 0) {
-        g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(path);
+        g_pAssetMgr->LoadTheGame(path);
       }
     }
   } else {
@@ -505,7 +505,7 @@ void __cdecl SaveGameWithModeAndOptionalLabel(int mode, char* label) {
     savePath += g_pszImpSaveExtension_0065DDD8;
   }
 
-  if (g_pAssetMgr->SaveMainDocumentToPathAndMarkSaved(savePath)) {
+  if (g_pAssetMgr->SaveTheGame(savePath)) {
     if (IsMultiplayerFlowHosting()) {
       g_pGameFlowState->fieldF4 = markSaved;
       g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagSave, markSaved, -2);
@@ -580,5 +580,5 @@ unsigned char __cdecl BuildSaveSlotPathAndProbeMetadata(int slot, const char* la
   if (TryGetFileMetadataForPath(&path) == 0) {
     return 0;
   }
-  return g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(path);
+  return g_pAssetMgr->LoadTheGame(path);
 }

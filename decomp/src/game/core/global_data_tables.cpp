@@ -2750,7 +2750,7 @@ static double s_miniMapViewportCoordinateScale = DefaultMiniMapViewportCoordinat
 short g_defaultMarkerBoxWidth_006a460c =
     static_cast<short>(s_miniMapViewportCoordinateScale * 512.0 - -1.0);
 
-// Profile string keys used by LoadProfileStringAndAssignSharedRef during multiplayer init.
+// Profile string keys used by TAssetMgr::GetPreferenceString during multiplayer init.
 // GLOBAL: IMPERIALISM 0x00698010
 extern "C" const char s_GameName_00698010[] = "GameName";
 // GLOBAL: IMPERIALISM 0x0069801c

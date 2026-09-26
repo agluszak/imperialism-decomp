@@ -164,8 +164,7 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
   autoResCluster->ViewEnable(1, 0);
 
   int autoResEnabled = 0;
-  g_pAssetMgr->LoadSettingValueByKeyIntoOut(&autoResEnabled, g_pGamePreferencesAutoResKey_0065DDCC,
-                                            1);
+  g_pAssetMgr->GetPreferenceInt(autoResEnabled, g_pGamePreferencesAutoResKey_0065DDCC, 1);
   autoResCluster->SetSelectedTextOptionByTag(
       autoResEnabled != 0 ? kControlTagYess : kControlTagNooo, false);
 }

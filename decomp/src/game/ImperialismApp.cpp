@@ -746,6 +746,11 @@ BOOL ImperialismApp::WriteSettingValueToSettingsSection(LPCTSTR key, int value) 
   return WriteProfileInt(g_pRegistrySettingsSectionAlt_0063E044, key, value);
 }
 
+// FUNCTION: IMPERIALISM 0x00415540
+CString ImperialismApp::GetProfileStringFromSettingsSection(LPCTSTR key, LPCTSTR defaultValue) {
+  return GetProfileString(g_pRegistrySettingsSectionAlt_0063E044, key, defaultValue);
+}
+
 // FUNCTION: IMPERIALISM 0x00415580
 BOOL ImperialismApp::SetSettingValueInSettingsSection(LPCTSTR key, LPCTSTR value) {
   return WriteProfileString(g_pRegistrySettingsSectionAlt_0063E044, key, value);

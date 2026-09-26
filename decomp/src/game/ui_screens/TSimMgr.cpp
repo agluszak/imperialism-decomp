@@ -121,13 +121,6 @@ void WriteSettingsPrefIntByIndex(int index, int value) {
   g_pImperialismApp->WriteProfileInt("Settings", key, value);
 }
 
-// FUNCTION: IMPERIALISM 0x00415540
-CString& __stdcall GetProfileStringFromSettingsSection(CString* result, LPCTSTR key,
-                                                       LPCTSTR defaultValue) {
-  *result = g_pImperialismApp->GetProfileString("Settings", key, defaultValue);
-  return *result;
-}
-
 // FUNCTION: IMPERIALISM 0x00549240
 int __cdecl TouchSessionActiveNationId(void) {
   return g_pNetMgr006a6014->GetSessionActiveNationId();
@@ -1556,8 +1549,8 @@ void TSimMgr::ProcessScenarioScript() {
   g_bScenarioScriptTerminationRequested = 0;
   g_nScenarioScriptInstructionCount = 0;
 
-  g_pAssetMgr->BuildScenarioPathForModeAndIndex(static_cast<short>(scenarioMapIndexPlusOne) - 1, 2,
-                                                &scenarioPath);
+  g_pAssetMgr->GetScenarioFileName(static_cast<short>(scenarioMapIndexPlusOne) - 1, 2,
+                                   scenarioPath);
 
   for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
     CString ordinalText;
@@ -2360,12 +2353,4 @@ unsigned char __cdecl TryGetFileMetadataForPath(CString* path) {
 // FUNCTION: IMPERIALISM 0x005d4c40
 void __cdecl DeleteFileWithErrorReporting(CString* path) {
   CFile::Remove(*path);
-}
-
-// FUNCTION: IMPERIALISM 0x005e01a0
-void __stdcall LoadProfileStringAndAssignSharedRef(CString* outString, LPCTSTR key,
-                                                   LPCTSTR defaultValue) {
-  CString result;
-  GetProfileStringFromSettingsSection(&result, key, defaultValue);
-  *outString = result;
 }

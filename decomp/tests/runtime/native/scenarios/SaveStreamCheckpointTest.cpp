@@ -135,7 +135,7 @@ private:
     // Write the save first, through the same document path a real save uses, so the
     // bytes being replayed are this build's own and their provenance is beyond doubt.
     CString path("save/rt_save_stream_checkpoints.imp");
-    if (g_pAssetMgr->SaveMainDocumentToPathAndMarkSaved(path) == 0) {
+    if (g_pAssetMgr->SaveTheGame(path) == 0) {
       FinishReport();
       FailScenario("the document refused to save through the real save path");
       return;

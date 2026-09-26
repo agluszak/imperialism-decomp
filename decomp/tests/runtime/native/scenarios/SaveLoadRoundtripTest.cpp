@@ -28,7 +28,7 @@
 //
 // This is the end-to-end test the serialization epic was built toward, and the only one
 // that exercises DoWrite and DoRead against each other the way the game does:
-// TAssetMgr::SaveMainDocumentToPathAndMarkSaved -> CDocument::OnSaveDocument ->
+// TAssetMgr::SaveTheGame -> CDocument::OnSaveDocument ->
 // CAmbitDocument::Serialize -> DoWrite, and then the mirror through OpenDocumentFile.
 //
 // It needs no committed fixture, which matters: load_saved_game depends on a gitignored
@@ -242,7 +242,7 @@ private:
   }
 
   RuntimeActionResult ReopenSavedGame() {
-    if (g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(savedPath) == 0) {
+    if (g_pAssetMgr->LoadTheGame(savedPath) == 0) {
       return RuntimeActionResult::Failure(
           "the just-written save would not open through the real load path");
     }
