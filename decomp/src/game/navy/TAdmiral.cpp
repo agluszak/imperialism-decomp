@@ -61,19 +61,9 @@ TAdmiral::TAdmiral(NationSlot nationSlotArg)
 // SYNTHETIC: IMPERIALISM 0x00551550
 // TAdmiral::`scalar deleting destructor'
 
-// Inline-expanded into every caller in the original (0x552250 and 0x551850 carry the
-// body verbatim, and 0x5b0500 in another TU still CALLs 0x552250 itself), so it must be
-// `inline` for MSVC500 /Ob1 to reproduce that. Callers spell the clear-backlink steps
-// out on `this->assignedShip` directly (the original re-reads the member after
-// the +0x20 store), so there is no ClearPrimaryOrderBacklink helper.
-static inline void RecomputeMapOrderOwnerActiveSelection(TTaskForce* ownerContext) {
-  if (ownerContext == 0) {
-    return;
-  }
-  ownerContext->flagship = 0;
-  for (TMapOrderChildLinkNode* link = ownerContext->shipList; link != 0; link = link->next) {
-    TShip* activeEntry = ownerContext->flagship;
-    ownerContext->flagship = static_cast<TShip*>(link->payload)->Finest(activeEntry, 0);
+static void RecomputeMapOrderOwnerActiveSelection(TTaskForce* ownerContext) {
+  if (ownerContext != nullptr) {
+    ownerContext->ElectFlagship();
   }
 }
 
@@ -327,7 +317,7 @@ int TAdmiral::EstimateStrengthRating(const TTaskForce* force, int unusedArg) con
   (void)unusedArg;
   int total = 0;
   for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr; node = node->next) {
-    TShip* ship = static_cast<TShip*>(node->payload);
+    TShip* ship = node->payload;
     short resourceType = ship->type;
     short strengthBucket = static_cast<short>(ship->experience / 100);
     const TNavyOrderResourceDescriptor& descriptor =

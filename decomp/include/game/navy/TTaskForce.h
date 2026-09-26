@@ -307,42 +307,11 @@ public:
   // -- same +0x1e-based bucket region DropShips /
   // SinkOrSwimShips use), then recomputes flagship over the
   // survivors.
-  // MATCH: retail inlines both passes here rather than calling ElectFlagship again.
   void FreeAvailables(); // 0x553f10
 
   // ORACLE: Remove(TShip*). Removes the ship's child link, updates its class count and
   // preferred-child cache, then clears the ship's owner backlink.
-  // MATCH: the class-body definition is material:
-  // VC5 both expands it in RegainVirginity and retains its COMDAT copy at 0x553d40.
-  // FUNCTION: IMPERIALISM 0x00553d40
-  void Remove(TShip* ship) {
-    TMapOrderChildLinkNode* matchingLink;
-    if (shipList == 0) {
-      matchingLink = 0;
-    } else if (shipList->payload != ship) {
-      matchingLink = shipList->next->FindNodeMatching(ship);
-    } else {
-      matchingLink = shipList;
-    }
-
-    if (matchingLink != 0) {
-      if (shipList != 0) {
-        if (shipList->payload == ship) {
-          shipList = shipList->DeleteMapOrderChildLinkAndReturnNext();
-        } else {
-          shipList->next->RemoveLinkedOrderNodeByValueRecursive(ship);
-        }
-      }
-      short bucketIndex =
-          static_cast<short>(g_NavyOrderResourceDescriptorTable[ship->type].ToolbarBucketIndex());
-      --shipCountsByToolbarSlot[bucketIndex];
-    }
-
-    if (ship == flagship) {
-      ElectFlagship();
-    }
-    ship->taskForce = 0;
-  }
+  void Remove(TShip* ship); // 0x553d40
 
   // ORACLE: SubmitOrders(eShipOrders, void*). orderContext is interpreted as a
   // TZone* or Province* according to orderType.

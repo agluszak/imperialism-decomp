@@ -2426,7 +2426,7 @@ JSON_Value* CaptureSelectedShips(TMapOrderChildLinkNode* links) {
   JsonArray ships;
   for (TMapOrderChildLinkNode* link = links; link != 0; link = link->next) {
     JsonObject ship;
-    const int shipIndex = RuntimeShipIndex(static_cast<TShip*>(link->payload));
+    const int shipIndex = RuntimeShipIndex(link->payload);
     if (shipIndex < 0) {
       FailSemanticCapture("selected-ship list contains a null ship reference");
     }

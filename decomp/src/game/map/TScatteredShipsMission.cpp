@@ -126,8 +126,8 @@ TShip* SelectNearestInactiveShipToZone(TZone** targetZone, TMapOrderChildLinkNod
   for (TMapOrderChildLinkNode* candidate = best->next; candidate != nullptr;
        candidate = candidate->next) {
     if (candidate->active == 0) {
-      TShip* bestShip = static_cast<TShip*>(best->payload);
-      TShip* candidateShip = static_cast<TShip*>(candidate->payload);
+      TShip* bestShip = best->payload;
+      TShip* candidateShip = candidate->payload;
       short bestDistance =
           bestShip->location->GetCachedMapActionContextDistanceOrRecompute(*targetZone);
       short candidateDistance =
@@ -139,7 +139,7 @@ TShip* SelectNearestInactiveShipToZone(TZone** targetZone, TMapOrderChildLinkNod
   }
 
   best->active = 1;
-  return static_cast<TShip*>(best->payload);
+  return best->payload;
 }
 
 // Deactivates the whole existing shipList chain, then hunts for a port-zone context
@@ -195,8 +195,8 @@ void TScatteredShipsMission::GiveOrders() {
       for (TMapOrderChildLinkNode* candidate = best->next; candidate != nullptr;
            candidate = candidate->next) {
         if (candidate->active == 0) {
-          TZone* candidateZone = static_cast<TShip*>(candidate->payload)->location;
-          TZone* bestZone = static_cast<TShip*>(best->payload)->location;
+          TZone* candidateZone = candidate->payload->location;
+          TZone* bestZone = best->payload->location;
           short candidateDistance =
               candidateZone->GetCachedMapActionContextDistanceOrRecompute(current);
           short bestDistance = bestZone->GetCachedMapActionContextDistanceOrRecompute(current);
@@ -207,7 +207,7 @@ void TScatteredShipsMission::GiveOrders() {
       }
 
       best->active = 1;
-      TShip* target = static_cast<TShip*>(best->payload);
+      TShip* target = best->payload;
       if (target == nullptr) {
         return;
       }

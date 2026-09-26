@@ -21,20 +21,8 @@ IMPLEMENT_DYNCREATE(TExpansionOrder, TItemOrder)
 // FUNCTION: IMPERIALISM 0x004b9010
 void TExpansionOrder::IExpansionOrder(TCity* city, short resourceType, short primaryInputResource,
                                       short secondaryInputResource, short productionSlotValue) {
-  ownerCity = city;
-  productionSummary = city->productionSummary1d8;
-  resourceTypeIndex = resourceType;
-  quantity = 0;
-  for (int resource = 0; resource < kResourceKindCount; ++resource) {
-    trackingSlots[resource] = 0;
-  }
-  accumulatedValue = 0;
-  primaryInputResourceId = primaryInputResource;
-  limitingConstraint = kProductionOrderLimitResources;
-  reservedWorkforce = 0;
-  requestedQuantity4c = 0;
-  secondaryInputResourceId = secondaryInputResource;
-  productionSlot = productionSlotValue;
+  TItemOrder::IItemOrder(city, resourceType, primaryInputResource, secondaryInputResource,
+                         productionSlotValue);
 }
 
 // FUNCTION: IMPERIALISM 0x004b9090

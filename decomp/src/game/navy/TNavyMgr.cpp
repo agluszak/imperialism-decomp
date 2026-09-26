@@ -105,7 +105,7 @@ void BuildMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int side,
     // These children are TShip primary-order nodes (not nested TTaskForce entries --
     // confirmed via the CString read at +0x18, which only lines up with
     // TShip::name; TTaskForce's own +0x18 is location, an int).
-    TShip* child = static_cast<TShip*>(node->payload);
+    TShip* child = node->payload;
     MapOrderBattleSideChildRecord& rec = records[idx];
     rec.resourceType = child->type;
     rec.stockOrRequired = child->strength;
@@ -498,7 +498,7 @@ short TNavyMgr::GetInvasionCapacity(short nationSlot, Province* provinceTarget,
         (contextFilter == nullptr || order->location == contextFilter)) {
       int sum = 0;
       for (TMapOrderChildLinkNode* item = order->shipList; item != nullptr; item = item->next) {
-        TShip* ship = static_cast<TShip*>(item->payload);
+        TShip* ship = item->payload;
         short contribution = 0;
         if (ship->strength > 0) {
           contribution = g_industryActionCostWeightResCode10[ship->type];
@@ -574,10 +574,8 @@ void TNavyMgr::MakeSureAllShipsHaveOrders() {
         TMapOrderChildLinkNode* node = entry->shipList;
         if (node != 0) {
           do {
-            node->active =
-                static_cast<TShip*>(node->payload)->strength <
-                g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
-                    .StockCap();
+            node->active = node->payload->strength <
+                           g_NavyOrderResourceDescriptorTable[node->payload->type].StockCap();
             node = node->next;
           } while (node != 0);
         }
@@ -612,10 +610,9 @@ void TNavyMgr::MakeSureAllShipsHaveOrders() {
           if (node->active != 0) {
             node = node->next;
           } else {
-            static_cast<TShip*>(node->payload)->SetTaskForce(0);
+            node->payload->SetTaskForce(0);
             short bucketIndex = static_cast<short>(
-                g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
-                    .ToolbarBucketIndex());
+                g_NavyOrderResourceDescriptorTable[node->payload->type].ToolbarBucketIndex());
             short* bucketCounter = &entry->shipCountsByToolbarSlot[bucketIndex];
             --*bucketCounter;
             if (node == entry->shipList) {
@@ -626,7 +623,7 @@ void TNavyMgr::MakeSureAllShipsHaveOrders() {
         }
         entry->flagship = 0;
         for (node = entry->shipList; node != 0; node = node->next) {
-          entry->flagship = static_cast<TShip*>(node->payload)->Finest(entry->flagship, 0);
+          entry->flagship = node->payload->Finest(entry->flagship, 0);
         }
         entry->AssertValid();
         if (g_pNavyOrderManager->CommitForce(entry)) {
@@ -868,7 +865,7 @@ TTaskForce* TNavyMgr::AssignEscorts(short requiredCount, short chancePercent) {
 
   if (entry != nullptr) {
     for (TMapOrderChildLinkNode* node = entry->shipList; node != nullptr; node = node->next) {
-      TShip* child = static_cast<TShip*>(node->payload);
+      TShip* child = node->payload;
       unsigned char active;
       char isUnderStrength =
           child->strength < g_NavyOrderResourceDescriptorTable[child->type].StockCap();
@@ -911,7 +908,7 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
   }
   if (nationEntry != nullptr) {
     for (TMapOrderChildLinkNode* node = nationEntry->shipList; node != nullptr; node = node->next) {
-      TShip* child = static_cast<TShip*>(node->payload);
+      TShip* child = node->payload;
       unsigned char active;
       if (child->strength < g_NavyOrderResourceDescriptorTable[child->type].StockCap() ||
           selectionChance <= rand() % 100) {
@@ -1002,7 +999,7 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
       int candidateStrength = 0;
       for (TMapOrderChildLinkNode* candidateNode = entry->shipList; candidateNode != nullptr;
            candidateNode = candidateNode->next) {
-        candidateStrength += static_cast<TShip*>(candidateNode->payload)->GetBattleStrengthRating();
+        candidateStrength += candidateNode->payload->GetBattleStrengthRating();
       }
       int orderTypePriority[3] = {200, 100, 50};
       short nationStrength = static_cast<short>(nationEntry->GetBattleStrengthRating());
@@ -1040,14 +1037,13 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
       int nationStrength = 0;
       for (TMapOrderChildLinkNode* nationStrengthNode = nationEntry->shipList;
            nationStrengthNode != nullptr; nationStrengthNode = nationStrengthNode->next) {
-        nationStrength += CalculateMapOrderInteractionShipStrength(
-            static_cast<TShip*>(nationStrengthNode->payload));
+        nationStrength += CalculateMapOrderInteractionShipStrength(nationStrengthNode->payload);
       }
       int candidateStrength = 0;
       for (TMapOrderChildLinkNode* candidateStrengthNode = entry->shipList;
            candidateStrengthNode != nullptr; candidateStrengthNode = candidateStrengthNode->next) {
-        candidateStrength += CalculateMapOrderInteractionShipStrength(
-            static_cast<TShip*>(candidateStrengthNode->payload));
+        candidateStrength +=
+            CalculateMapOrderInteractionShipStrength(candidateStrengthNode->payload);
       }
       eligible = nationStrength * 3 < candidateStrength;
     }
@@ -1288,7 +1284,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
           short childStrengthDelta = static_cast<short>((strengthDelta * 3) / selectedChildCount);
           for (TMapOrderChildLinkNode* childNode = selection.selectedEntry->shipList;
                childNode != nullptr; childNode = childNode->next) {
-            TShip* ship = static_cast<TShip*>(childNode->payload);
+            TShip* ship = childNode->payload;
             ship->experience = static_cast<short>(ship->experience + childStrengthDelta);
             if (ship->experience >= 500) {
               ship->experience = 499;
@@ -1309,7 +1305,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         int selectedChildIndex = 0;
         for (TMapOrderChildLinkNode* selectedNode = selection.selectedEntry->shipList;
              selectedNode != nullptr; selectedNode = selectedNode->next) {
-          TShip* selectedShip = static_cast<TShip*>(selectedNode->payload);
+          TShip* selectedShip = selectedNode->payload;
           MapOrderBattleSideChildRecord& detail = snapshot.childRecords[0][selectedChildIndex];
           detail.resourceType = selectedShip->type;
           detail.stockOrRequired = selectedShip->strength;
@@ -1394,7 +1390,7 @@ unsigned short TNavyMgr::SelectionCursor(short nTileIndex, int nInputFlags) {
         unsigned short minimumWeight = 10000;
         for (TMapOrderChildLinkNode* node = entry->shipList; node != nullptr; node = node->next) {
           if (node->active != 0) {
-            TShip* ship = static_cast<TShip*>(node->payload);
+            TShip* ship = node->payload;
             short weight = g_NavyOrderResourceDescriptorTable[ship->type].DescriptorWeight();
             if (weight < static_cast<short>(minimumWeight)) {
               minimumWeight = static_cast<unsigned short>(weight);
@@ -1609,7 +1605,7 @@ namespace {
 static float SumTaskForceChildPowerAtOrAboveTier(TTaskForce* force, int minTier) {
   float total = 0.0f;
   for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr; node = node->next) {
-    TShip* child = static_cast<TShip*>(node->payload);
+    TShip* child = node->payload;
     const TNavyOrderResourceDescriptor& descriptor =
         g_NavyOrderResourceDescriptorTable[child->type];
     if (descriptor.PriorityTier() < minTier) {
@@ -1626,8 +1622,7 @@ static float SumTaskForceChildPowerAtOrAboveTier(TTaskForce* force, int minTier)
 static int CountTaskForceChildrenAtOrAboveTier(TTaskForce* force, int minTier) {
   int count = 0;
   for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr; node = node->next) {
-    if (g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
-            .PriorityTier() >= minTier) {
+    if (g_NavyOrderResourceDescriptorTable[node->payload->type].PriorityTier() >= minTier) {
       ++count;
     }
   }
@@ -1658,8 +1653,7 @@ static inline int CalculateActiveChildAverageDescriptorWeightX10(TMapOrderChildL
   int count = 0;
   for (TMapOrderChildLinkNode* node = head; node != 0; node = node->next) {
     if (node->active != 0) {
-      sum += g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
-                 .DescriptorWeight();
+      sum += g_NavyOrderResourceDescriptorTable[node->payload->type].DescriptorWeight();
       ++count;
     }
   }
@@ -1702,7 +1696,7 @@ static void ApplyTaskForceConflictAttrition(TTaskForce* force, float favorRatio,
       if (currentCount == target || static_cast<int>(rand()) % currentCount < target) {
         ++selected;
         int roll = static_cast<int>(rand()) % 100 + static_cast<int>(rand()) % 100 + 100;
-        TShip* child = static_cast<TShip*>(node->payload);
+        TShip* child = node->payload;
         short damage = static_cast<short>(
             0.5 - g_NavyOrderResourceDescriptorTable[child->type].TaskForceWeight() *
                       (roll * 0.005) * favorRatio * -0.01);
@@ -1723,7 +1717,7 @@ PruneMapOrderConflictHeadAndTail(TMapOrderChildLinkNode* head) {
   if (head == nullptr) {
     return nullptr;
   }
-  TShip* child = static_cast<TShip*>(head->payload);
+  TShip* child = head->payload;
   if (child->strength < 1) {
     child->SetTaskForce(nullptr);
     child->Free();
@@ -1754,16 +1748,14 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
 
   int maxTier = 1;
   for (TMapOrderChildLinkNode* node = leftEntry->shipList; node != nullptr; node = node->next) {
-    int tier =
-        g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type].PriorityTier();
+    int tier = g_NavyOrderResourceDescriptorTable[node->payload->type].PriorityTier();
     if (tier > maxTier) {
       maxTier = tier;
     }
   }
   for (TMapOrderChildLinkNode* rightNode = rightEntry->shipList; rightNode != nullptr;
        rightNode = rightNode->next) {
-    int tier = g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(rightNode->payload)->type]
-                   .PriorityTier();
+    int tier = g_NavyOrderResourceDescriptorTable[rightNode->payload->type].PriorityTier();
     if (tier > maxTier) {
       maxTier = tier;
     }
@@ -1936,7 +1928,7 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
         }
       }
       for (TMapOrderChildLinkNode* node = winner->shipList; node != nullptr; node = node->next) {
-        static_cast<TShip*>(node->payload)->Victory(static_cast<short>((bump * 3) / winnerCount));
+        node->payload->Victory(static_cast<short>((bump * 3) / winnerCount));
       }
     }
     loser->defeated = 1;
