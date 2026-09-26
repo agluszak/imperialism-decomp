@@ -3824,7 +3824,7 @@ bool CaptureSaveBackedGameState(RuntimeRun& run, const char* name) {
 
   char saveRelative[260];
   sprintf(saveRelative, "save/rt_native_%s.imp", name);
-  if (g_pAssetMgr->SaveMainDocumentToPathAndMarkSaved(CString(saveRelative)) == 0) {
+  if (g_pAssetMgr->SaveTheGame(CString(saveRelative)) == 0) {
     return false;
   }
 

@@ -307,6 +307,3 @@ void __cdecl DeleteFileWithErrorReporting(CString* path);
 // Posts eventCode to the main frame (message 0x2420) unless it is 0, and latches the
 // bootstrap-complete flag DAT_006a43c0 the turn state machine's case 1 keys off.
 void ReinitializeGameFlowAndPostTurnEventCode(TurnEventId eventCode);
-
-void __stdcall LoadProfileStringAndAssignSharedRef(CString* outString, LPCTSTR key,
-                                                   LPCTSTR defaultValue); // 0x5e01a0

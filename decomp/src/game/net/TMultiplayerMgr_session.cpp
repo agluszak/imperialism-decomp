@@ -240,14 +240,14 @@ void TMultiplayerMgr::IMultiplayerMgr(int idleFrequency) {
   g_pNetMgr006a6014->ResetTurnEventQueueRuntimeRecordBuffer();
 
   GenerateMappedFlavorTextByCurrentContextNation(&playerNameString);
-  LoadProfileStringAndAssignSharedRef(&loadedString, s_PlayerName_0069801c,
-                                      static_cast<LPCSTR>(playerNameString));
+  g_pAssetMgr->GetPreferenceString(loadedString, s_PlayerName_0069801c,
+                                   static_cast<LPCSTR>(playerNameString));
   playerNameString = loadedString;
   playerNameMirror = playerNameString;
 
   GenerateMappedFlavorTextByCurrentContextNation(&gameNameString);
-  LoadProfileStringAndAssignSharedRef(&loadedString, s_GameName_00698010,
-                                      static_cast<LPCSTR>(gameNameString));
+  g_pAssetMgr->GetPreferenceString(loadedString, s_GameName_00698010,
+                                   static_cast<LPCSTR>(gameNameString));
   gameNameString = loadedString;
 }
 
@@ -255,7 +255,7 @@ void TMultiplayerMgr::IMultiplayerMgr(int idleFrequency) {
 void TMultiplayerMgr::Free() {
   {
     CString playerName(playerNameString);
-    g_pAssetMgr->SaveSettingValueFromPointerByKey(&playerName, s_PlayerName_0069801c);
+    g_pAssetMgr->SetPreferenceString(playerName, s_PlayerName_0069801c);
   }
   g_pAmbitApplication->InstallCohandler(this, 0);
   g_pGameFlowState = 0;
@@ -548,8 +548,7 @@ unsigned char TMultiplayerMgr::InitializeProtocolOptionControlFromProvider(TView
   lobbyDialogView40 = provider;
   if (g_pNetMgr006a6014->ResetRuntimeProtocolOptionsAndRebuildSelectionSource(provider)) {
     int defaultProtocolTag;
-    g_pAssetMgr->LoadSettingValueByKeyIntoOut(&defaultProtocolTag, "DefaultProtocol",
-                                              kControlTagPro0);
+    g_pAssetMgr->GetPreferenceInt(defaultProtocolTag, "DefaultProtocol", kControlTagPro0);
     TRadioTextCluster* protControl =
         static_cast<TRadioTextCluster*>(provider->ResolveControlByTag(kControlTagProt));
     protControl->AssertValid();
@@ -589,7 +588,7 @@ unsigned char TMultiplayerMgr::ValidateGameFlowNameAndSelectionContext(int proto
 unsigned char TMultiplayerMgr::ValidateAndPrepareGameFlowNameForDispatch() {
   CString gameName;
   gameName = gameNameString;
-  g_pAssetMgr->SaveSettingValueFromPointerByKey(&gameName, s_GameName_00698010);
+  g_pAssetMgr->SetPreferenceString(gameName, s_GameName_00698010);
 
   int now;
   do {

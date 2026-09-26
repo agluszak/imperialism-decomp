@@ -31,9 +31,9 @@ public:
 
   // Non-virtual resource-stream helpers (every call site loads ECX = g_pAssetMgr;
   // the callees ignore `this`). Used by the battle-setup .tab loader (0x5a4fc0).
-  // Compose the on-disk path for a scenario table resource (mode 1 = map state) into
-  // outPath. 0x5dfd70; `this` ignored (same singleton idiom as the siblings below).
-  void BuildScenarioPathForModeAndIndex(int scenarioIndex, int mode, CString* outPath);
+  // Compose the on-disk path for a scenario table resource (mode 1 = map state).
+  // Mac oracle: GetScenarioFileName(int, int, CStr63&). 0x5dfd70.
+  void GetScenarioFileName(int scenarioIndex, int mode, CString& outPath);
   // Finds "name" as a TABLE resource in the app's own module; if present, loads it and
   // returns a CMemFile attached to the locked resource bytes. If absent, falls back to
   // opening "name" as a real disk file via a plain CFile (asserting on failure unless
@@ -76,26 +76,27 @@ public:
   // Save the MFC document to `savePath`, then restamp its path with the "__saved"
   // marker so later saves re-prompt. `this` is unused; callers still dispatch it
   // through g_pAssetMgr. 0x005e0030.
-  unsigned char SaveMainDocumentToPathAndMarkSaved(const CString& savePath);
+  unsigned char SaveTheGame(const CString& savePath);
   // Open the MFC document from `loadPath` (CWinApp::OpenDocumentFile) and restamp its
   // path with the "__loaded" marker; returns whether a document was opened. `this` is
   // unused; callers dispatch through g_pAssetMgr. 0x005e0150.
-  unsigned char OpenMainDocumentFromPathAndMarkLoaded(const CString& loadPath);
-  // Writes *value under key in the application's "Settings" profile section. `this`
-  // is unused, but all retail callsites dispatch through g_pAssetMgr. 0x5e0260.
-  void SaveSettingValueFromPointerByKey(CString* value, const char* key);
-  // CWinApp::GetProfileInt(key, defaultValue) under the "Settings" section, stored
-  // into *out. `this` is unused; callers dispatch through g_pAssetMgr. 0x5e0290.
-  // Parameter order verified from the 0x5e0290 listing: the OUT pointer is the first
-  // argument ([esp+4] receives the GetProfileInt result), then key, then default.
-  void LoadSettingValueByKeyIntoOut(int* out, LPCSTR key, int defaultValue);
-  void WriteIntegerSettingByValueAndKey(int value, LPCSTR key); // 0x005e02c0
+  unsigned char LoadTheGame(const CString& loadPath);
+  // Mac oracle: GetPreferenceString(CStr255&, const char*, const char*).
+  // Windows uses CString for the destination; the receiver is carried in ECX by all callers.
+  void GetPreferenceString(CString& out, LPCTSTR key, LPCTSTR defaultValue); // 0x005e01a0
+  // Mac oracle: SetPreferenceString(const CStr255&, const char*). The Windows CString
+  // argument is read only and every caller dispatches through g_pAssetMgr. 0x5e0260.
+  void SetPreferenceString(const CString& value, const char* key);
+  // Mac oracle: GetPreferenceInt(int&, const char*, int). Windows stores through
+  // the reference passed first, followed by key and default. 0x5e0290.
+  void GetPreferenceInt(int& out, LPCSTR key, int defaultValue);
+  void SetPreferenceInt(int value, LPCSTR key); // 0x005e02c0
   // Checks for a pending "save/cli_*.imp" client save file (resumable multiplayer
   // session). `this` is unused; callers dispatch through g_pAssetMgr. 0x5e02f0.
-  unsigned char HasPendingClientSaveFile();
+  unsigned char AreThereStrayClientSaves();
   // Deletes every "save/cli_*.imp" legacy client save file, returning the count
   // removed. `this` is unused; callers dispatch through g_pAssetMgr. 0x5e0340.
-  int DeleteLegacyCliSaveImpFiles();
+  int DeleteStrayClientSaves();
   // Register an audio-state callback in the shared slot table and arm its Win32 timer.
   // Every caller loads ECX = g_pAssetMgr even though the body does not read `this`.
   // 0x005e0520.

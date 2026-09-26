@@ -133,20 +133,20 @@ void TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup(const CString& movieNa
 }
 
 // FUNCTION: IMPERIALISM 0x005dfd70
-void TAssetMgr::BuildScenarioPathForModeAndIndex(int scenarioIndex, int mode, CString* outPath) {
+void TAssetMgr::GetScenarioFileName(int scenarioIndex, int mode, CString& outPath) {
   CString numberText;
   numberText.Format(g_szDecimalFormat, scenarioIndex);
   CString fullPath = "Scenario/s" + numberText;
-  *outPath = fullPath;
+  outPath = fullPath;
   switch (mode) {
   case 0:
-    *outPath += ".inf";
+    outPath += ".inf";
     break;
   case 1:
-    *outPath += ".map";
+    outPath += ".map";
     break;
   case 2:
-    *outPath += ".scn";
+    outPath += ".scn";
     break;
   }
 }
@@ -168,26 +168,16 @@ void TAssetMgr::EnsurePictWvDataGobLoadedBySlot(int languageTag) {
     return;
   }
 
-  // Original builds the message with operator+ temporaries (prefix + path + suffix),
-  // not in-place +=; the leading const-char*+CString picks the global operator+.
   AfxMessageBox(
       static_cast<LPCTSTR>(s_MissingFilePrefix_0069B820 + path + s_MissingFileSuffix_0069B810),
       MB_OK, 0);
 }
 
-namespace {
-
-// RAII wait-cursor guard reconstructed from 0x5e0030's EH layout: EH state 1 opens with
-// a fully inlined AfxGetApp()->BeginWaitCursor() and unwinds with the matching inlined
-// EndWaitCursor() — an inline-ctor/dtor guard object, unlike MFC's out-of-line
-// CWaitCursor.
-} // namespace
-
 // Saves the active MFC document to `savePath`, then restamps the document path with the
 // "__saved" marker so the next save re-prompts. Original doc-vtable slots: SetPathName
 // +0x5c, DoSave +0xa0 (both match retail nafxcw).
 // FUNCTION: IMPERIALISM 0x005e0030
-unsigned char TAssetMgr::SaveMainDocumentToPathAndMarkSaved(const CString& savePath) {
+unsigned char TAssetMgr::SaveTheGame(const CString& savePath) {
   CString path(savePath);
   CFrameWnd* frame = static_cast<CFrameWnd*>(AfxGetMainWnd());
   frame->AssertValid();
@@ -200,7 +190,7 @@ unsigned char TAssetMgr::SaveMainDocumentToPathAndMarkSaved(const CString& saveP
 }
 
 // FUNCTION: IMPERIALISM 0x005e0150
-unsigned char TAssetMgr::OpenMainDocumentFromPathAndMarkLoaded(const CString& loadPath) {
+unsigned char TAssetMgr::LoadTheGame(const CString& loadPath) {
   CDocument* document = g_pImperialismApp->OpenDocumentFile(loadPath);
   if (document == 0) {
     return 0;
@@ -209,23 +199,29 @@ unsigned char TAssetMgr::OpenMainDocumentFromPathAndMarkLoaded(const CString& lo
   return 1;
 }
 
+// FUNCTION: IMPERIALISM 0x005e01a0
+void TAssetMgr::GetPreferenceString(CString& out, LPCTSTR key, LPCTSTR defaultValue) {
+  CString result = g_pImperialismApp->GetProfileStringFromSettingsSection(key, defaultValue);
+  out = result;
+}
+
 // FUNCTION: IMPERIALISM 0x005e0260
-void TAssetMgr::SaveSettingValueFromPointerByKey(CString* value, const char* key) {
-  g_pImperialismApp->SetSettingValueInSettingsSection(key, *value);
+void TAssetMgr::SetPreferenceString(const CString& value, const char* key) {
+  g_pImperialismApp->SetSettingValueInSettingsSection(key, value);
 }
 
 // FUNCTION: IMPERIALISM 0x005e0290
-void TAssetMgr::LoadSettingValueByKeyIntoOut(int* out, LPCSTR key, int defaultValue) {
-  *out = g_pImperialismApp->GetSettingValueFromSettingsSection(key, defaultValue);
+void TAssetMgr::GetPreferenceInt(int& out, LPCSTR key, int defaultValue) {
+  out = g_pImperialismApp->GetSettingValueFromSettingsSection(key, defaultValue);
 }
 
 // FUNCTION: IMPERIALISM 0x005e02c0
-void TAssetMgr::WriteIntegerSettingByValueAndKey(int value, LPCSTR key) {
+void TAssetMgr::SetPreferenceInt(int value, LPCSTR key) {
   g_pImperialismApp->WriteSettingValueToSettingsSection(key, value);
 }
 
 // FUNCTION: IMPERIALISM 0x005e02f0
-unsigned char TAssetMgr::HasPendingClientSaveFile() {
+unsigned char TAssetMgr::AreThereStrayClientSaves() {
   _finddata_t fileInfo;
   long findHandle = _findfirst("save/cli_*.imp", &fileInfo);
   _findclose(findHandle);
@@ -233,7 +229,7 @@ unsigned char TAssetMgr::HasPendingClientSaveFile() {
 }
 
 // FUNCTION: IMPERIALISM 0x005e0340
-int TAssetMgr::DeleteLegacyCliSaveImpFiles() {
+int TAssetMgr::DeleteStrayClientSaves() {
   int deletedCount = 0;
   _finddata_t fileInfo;
   long findHandle = _findfirst("save/cli_*.imp", &fileInfo);

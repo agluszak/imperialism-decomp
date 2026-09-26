@@ -3947,7 +3947,7 @@ short TMapMgr::GetProvinceUnitOrderWeight(ProvinceIndexStorage provinceId) {
 // FUNCTION: IMPERIALISM 0x00518540
 char TMapMgr::LoadScenarioMapStateFromTableResource(int scenarioIndex) {
   CString scenarioPath;
-  g_pAssetMgr->BuildScenarioPathForModeAndIndex(scenarioIndex, 1, &scenarioPath);
+  g_pAssetMgr->GetScenarioFileName(scenarioIndex, 1, scenarioPath);
   if (TryGetFileMetadataForPath(&scenarioPath) == 0) {
     return 0;
   }

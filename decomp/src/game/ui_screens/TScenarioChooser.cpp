@@ -57,8 +57,7 @@ void TScenarioChooser::DoPostCreate(int arg) {
     if (scenarioIndex > 8 && scenarioIndex < 0x10 && g_pSimMgr->multiplayerSessionRole != 0) {
       continue;
     }
-    g_pAssetMgr->BuildScenarioPathForModeAndIndex(static_cast<short>(scenarioIndex), 0,
-                                                  &scenarioPath);
+    g_pAssetMgr->GetScenarioFileName(static_cast<short>(scenarioIndex), 0, scenarioPath);
     if (TryGetFileMetadataForPath(&scenarioPath) == 0) {
       continue;
     }
@@ -264,7 +263,7 @@ void TScenarioChooser::StartGame() {
 void TScenarioChooser::ShowInfo(int scenarioIndex) {
   CString path;
   selectedScenarioIndex = static_cast<short>(scenarioIndex);
-  g_pAssetMgr->BuildScenarioPathForModeAndIndex(scenarioIndex, 0, &path);
+  g_pAssetMgr->GetScenarioFileName(scenarioIndex, 0, path);
 
   char* fieldBuffer = new char[0x1950];
   FILE* metadataStream = fopen(path, "rb");
@@ -344,7 +343,7 @@ void TScenarioChooser::ShowInfo(int scenarioIndex) {
   // The map file is the Mac-endian tile record array; byte 4 of each 0x24-byte record is
   // the owner tag the preview draws.
   ScenarioTileDiskRecord* tileRecords = new ScenarioTileDiskRecord[0x1950];
-  g_pAssetMgr->BuildScenarioPathForModeAndIndex(scenarioIndex, 1, &path);
+  g_pAssetMgr->GetScenarioFileName(scenarioIndex, 1, path);
   FILE* mapStream = fopen(path, "rb");
   fread(tileRecords, sizeof(ScenarioTileDiskRecord), 0x1950, mapStream);
   ByteSwapScenarioTileRecordWords(tileRecords);

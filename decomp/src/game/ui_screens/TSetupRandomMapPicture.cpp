@@ -175,8 +175,8 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
     g_pSimMgr->useLocalizedNameTables68 = static_cast<char>(g_pSimMgr->preferenceValues[13]);
     GenerateMappedFlavorTextByCurrentContextNation(&g_cstrCountryNameSettingValue006A4220);
     CString profileName;
-    LoadProfileStringAndAssignSharedRef(&profileName, g_szCountryNameProfileKey00698AE0,
-                                        g_cstrCountryNameSettingValue006A4220);
+    g_pAssetMgr->GetPreferenceString(profileName, g_szCountryNameProfileKey00698AE0,
+                                     g_cstrCountryNameSettingValue006A4220);
     g_cstrCountryNameSettingValue006A4220 = g_pLanguageMgr->StripCodeStr(profileName);
   }
 
@@ -373,7 +373,7 @@ void TSetupRandomMapPicture::StartGame() {
   g_pSimMgr->SetActiveNationSlotAndRefreshCityCapabilityUiHandles(selectedNationSlot9A);
   {
     CString countryName(g_cstrCountryNameSettingValue006A4220);
-    g_pAssetMgr->SaveSettingValueFromPointerByKey(&countryName, g_szCountryNameProfileKey00698AE0);
+    g_pAssetMgr->SetPreferenceString(countryName, g_szCountryNameProfileKey00698AE0);
   }
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
     g_pSimMgr->nationControlModes[nationSlot] = 2;

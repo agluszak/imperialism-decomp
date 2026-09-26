@@ -80,7 +80,7 @@ void TGameSetupMultiplayerPicture::DoPostCreate(int arg) {
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x23, kControlTagJoin);
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x24, kControlTagProt);
 
-  if (g_pAssetMgr->HasPendingClientSaveFile()) {
+  if (g_pAssetMgr->AreThereStrayClientSaves()) {
     TControl* spitControl = static_cast<TControl*>(ResolveControlByTag(kControlTagSpit));
     spitControl->AssertValid();
     spitControl->ViewEnable(1, 0);
@@ -155,9 +155,9 @@ void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceH
             EncodeTurnEventCode(kTurnEventScenarioGameSetup));
       }
     } else if (actionTag == kControlTagSpit) {
-      if (g_pAssetMgr->HasPendingClientSaveFile() &&
+      if (g_pAssetMgr->AreThereStrayClientSaves() &&
           g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x2759, 8, 0, 1)) {
-        int deletedCount = g_pAssetMgr->DeleteLegacyCliSaveImpFiles();
+        int deletedCount = g_pAssetMgr->DeleteStrayClientSaves();
 
         CString message;
         g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&message, 0x2759, 9);
