@@ -449,7 +449,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         continue;
       }
       nation->InitializeDiplomacyNotices();
-      nation->DispatchMissionNodeCallbacksAndClearQueue();
+      nation->DisplayTurnStartEvents();
     }
     g_pSfxPlaybackSystem->ResetDualAudioCuePools();
     g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(2);

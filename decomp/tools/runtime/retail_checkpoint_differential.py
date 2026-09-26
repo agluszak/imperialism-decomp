@@ -5556,7 +5556,7 @@ def _drive_return_to_map(
 ) -> dict[str, object]:
     """Mirror RunReturnToMapClearsNoticeQueues: state 0x12 -> 5, then for each
     eligible major nation run InitializeDiplomacyNotices +
-    DispatchMissionNodeCallbacksAndClearQueue."""
+    DisplayTurnStartEvents."""
     sim_mgr = _u32(session, _SIM_MGR)
     session.assign(f"*(int*)0x{sim_mgr + 0x04:08x}", 0x12)
     session.assign(f"*(int*)0x{sim_mgr + 0x04:08x}", 5)

@@ -1,7 +1,7 @@
 #include "game/nation/TTurnStartEvent.h"
 
 // FUNCTION: IMPERIALISM 0x004e6610
-void TTurnStartEvent::RegainIndependence() {}
+void TTurnStartEvent::Execute() {}
 
 // SYNTHETIC: IMPERIALISM 0x004e6630
 // TTurnStartEvent::`scalar deleting destructor'

@@ -15,6 +15,7 @@
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/nation/TGreatPower.h"
 #include "game/nation/TMinor.h"
+#include "game/nation/TTurnStartEvent.h"
 #include "game/navy/TShip.h"
 #include "game/ui_core/THelpMgr.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -230,8 +231,26 @@ RuntimeActionResult RunReturnToMapClearsNoticeQueues(NativeTransition& transitio
     if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) == 0) {
       continue;
     }
+    if (nationSlot == ActiveNationSlot()) {
+      // The base event's retail Execute is empty. These real objects exercise queue
+      // insertion and destruction without displaying a modal or changing the world.
+      // Insert after Begin: retail's non-serializable event classes cannot be saved.
+      int priorCount = nation->turnStartEvents->GetCount();
+      TTurnStartEvent* first = new TTurnStartEvent();
+      TTurnStartEvent* second = new TTurnStartEvent();
+      nation->AddTurnStartEvent(first);
+      nation->AddTurnStartEvent(second);
+      if (nation->turnStartEvents->GetCount() != priorCount + 2 ||
+          nation->turnStartEvents->GetEntryByOrdinal(priorCount + 1) != first ||
+          nation->turnStartEvents->GetEntryByOrdinal(priorCount + 2) != second) {
+        return RuntimeActionResult::Failure("turn-start events were not appended in order");
+      }
+    }
     nation->InitializeDiplomacyNotices();
-    nation->DispatchMissionNodeCallbacksAndClearQueue();
+    nation->DisplayTurnStartEvents();
+    if (nation->turnStartEvents->GetCount() != 0) {
+      return RuntimeActionResult::Failure("displayed turn-start events were not freed");
+    }
   }
   return transition.Finish();
 }

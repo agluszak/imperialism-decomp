@@ -10,16 +10,11 @@ class TLandSaleEvent : public TTurnStartEvent {
 public:
   DECLARE_DYNCREATE(TLandSaleEvent)
   // FUNCTION: IMPERIALISM 0x004d49d0
-  virtual ~TLandSaleEvent() override {}       // slot 0x01 (scalar deleting destructor)
-  virtual void RegainIndependence() override; // slot 0x0a 0x4e6740
+  virtual ~TLandSaleEvent() override {} // slot 0x01 (scalar deleting destructor)
+  virtual void Execute() override;      // slot 0x0a 0x4e6740
 
   short tileIndex08;  // +0x08 — first ILandSaleEvent argument
   short nationCode0a; // +0x0a — second ILandSaleEvent argument
-
-  // Fully inlined at every construction site (0x4e66c0 CreateObject, 0x54a169 network
-  // receive): only the base 'erra' tag store plus the final vtable store survive, so the
-  // ctor is defined in-class; there is no out-of-line copy in the original.
-  TLandSaleEvent() : TTurnStartEvent() {}
 
   // Second-phase initializer (Mac oracle: TLandSaleEvent::ILandSaleEvent(short, short)).
   // Stores the payload pair and restamps the event tag from 'erra' to 'land'. 0x004e6710.

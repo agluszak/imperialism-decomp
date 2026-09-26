@@ -43,7 +43,7 @@
 #include "game/military/TMilitaryUnit.h"
 #include "game/city_ui/TProvinceDesirabilityList.h"
 #include "game/nation/TMinor.h"
-#include "game/map/TMission.h"
+#include "game/nation/TTurnStartEvent.h"
 #include "game/net/TMultiplayerMgr.h"
 #include "game/ui_widgets/TTradeMgr.h"
 #include "game/navy/TNavyMgr.h"
@@ -139,7 +139,7 @@ TGreatPower::TGreatPower()
       budgetPoolBase(0), budgetPoolDelta(0), turnEventQueue(0), proposalQueue(0), city(0),
       townMarkerList(0), trackedObjectList(0), scenarioInitFlag(0), diplomacyBudgetBase(0),
       escalationCounter(0), pendingCommitmentCost(0), pressureCounter(0), field900(0),
-      turnSummaryQueue(0), missionNodeQueue(0), field910(0), aidAllocationTotal(0),
+      turnSummaryQueue(0), turnStartEvents(0), field910(0), aidAllocationTotal(0),
       militaryExpenses960(0) {
   // TCountry base scalars (identity strings constructed by the TCountry ctor).
   this->nationSlot = 0;
@@ -281,7 +281,7 @@ void TGreatPower::IGreatPower(short nationSlotIndex, short humanControlledFlag) 
   this->turnSummaryQueue = new TPtrList();
   this->turnSummaryQueue->recordSize14 = 8;
 
-  this->missionNodeQueue = new TList();
+  this->turnStartEvents = new TList();
   this->militaryExpenses960 = 0;
 }
 
@@ -333,10 +333,10 @@ void TGreatPower::Free(void) {
     this->turnSummaryQueue->ReleasePtrList();
   }
   this->turnSummaryQueue = 0;
-  if (this->missionNodeQueue != 0) {
-    this->missionNodeQueue->FreePayloadsAndDestroy();
+  if (this->turnStartEvents != 0) {
+    this->turnStartEvents->FreePayloadsAndDestroy();
   }
-  this->missionNodeQueue = 0;
+  this->turnStartEvents = 0;
   if (this->militaryUnitList44 != 0) {
     this->militaryUnitList44->FreePayloadsAndDestroy();
   }
@@ -551,20 +551,14 @@ void TGreatPower::ReadFrom(TStream* stream) {
   stream->ReadBytes(&this->field904, 1);
 
   if (g_nSaveFormatVersion > 0x0E) {
-    TSortedList* missionNodeQueue = this->missionNodeQueue;
-    missionNodeQueue->ReadFrom(stream);
+    this->turnStartEvents->ReadFrom(stream);
 
-    int nodeCount = 0;
-    stream->ReadBytes(&nodeCount, 4);
-    if (nodeCount > 0) {
-      int nodeOrdinal = 1;
-      while (nodeOrdinal <= nodeCount) {
-        unsigned char hasNode = 0;
-        char markerOk = stream->ReadObject(&hasNode);
-        if (markerOk != 0) {
-          missionNodeQueue->AddTail(0);
-        }
-        ++nodeOrdinal;
+    int eventCount = 0;
+    stream->ReadBytes(&eventCount, 4);
+    for (int eventOrdinal = 1; eventOrdinal <= eventCount; ++eventOrdinal) {
+      TTurnStartEvent* event = 0;
+      if (stream->ReadObject(&event) != 0) {
+        this->turnStartEvents->AddTail(event);
       }
     }
   }
@@ -674,12 +668,13 @@ void TGreatPower::WriteTo(TStream* stream) {
   stream->WriteBytes(&this->field900, 4);
   stream->WriteBytes(&this->field904, 1);
 
-  this->missionNodeQueue->WriteTo(stream);
-  int missionNodeCount = this->missionNodeQueue->GetCount();
-  stream->WriteBytes(&missionNodeCount, 4);
-  for (int nodeOrdinal = 1; nodeOrdinal <= missionNodeCount; ++nodeOrdinal) {
-    void* node = this->missionNodeQueue->GetEntryByOrdinal(nodeOrdinal);
-    stream->WriteObject(node, 0);
+  this->turnStartEvents->WriteTo(stream);
+  int eventCount = this->turnStartEvents->GetCount();
+  stream->WriteBytes(&eventCount, 4);
+  for (int eventOrdinal = 1; eventOrdinal <= eventCount; ++eventOrdinal) {
+    TTurnStartEvent* event =
+        static_cast<TTurnStartEvent*>(this->turnStartEvents->GetEntryByOrdinal(eventOrdinal));
+    stream->WriteObject(event, 0);
   }
 
   stream->WriteBytes(&this->field910, 4);
@@ -847,17 +842,17 @@ void TGreatPower::SetNationPendingActionStateAndPayload(int index, short payload
 
 // FUNCTION: IMPERIALISM 0x004daa50
 void TGreatPower::AddTurnStartEvent(TTurnStartEvent* event) {
-  this->missionNodeQueue->AddTail(event);
+  this->turnStartEvents->AddTail(event);
 }
 
 // FUNCTION: IMPERIALISM 0x004daa80
-void TGreatPower::DispatchMissionNodeCallbacksAndClearQueue(void) {
-  CIterator nodeIter(this->missionNodeQueue);
-  for (TMission* node = static_cast<TMission*>(nodeIter.Reset()); nodeIter.More();
-       node = static_cast<TMission*>(nodeIter.Advance())) {
-    node->IsANoBrainer();
+void TGreatPower::DisplayTurnStartEvents() {
+  CIterator eventIter(this->turnStartEvents);
+  for (TTurnStartEvent* event = static_cast<TTurnStartEvent*>(eventIter.Reset()); eventIter.More();
+       event = static_cast<TTurnStartEvent*>(eventIter.Advance())) {
+    event->Execute();
   }
-  this->missionNodeQueue->FreePayloads();
+  this->turnStartEvents->FreePayloads();
 }
 
 // FUNCTION: IMPERIALISM 0x004dab00
