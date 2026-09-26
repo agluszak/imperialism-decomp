@@ -50,15 +50,16 @@ void TArmyTacUnit::ComputeTacticalProjectionScoreVector() {
       static_cast<float>(g_dTacticalQualityFactorBase_00669ED0 -
                          static_cast<short>(sourceUnit38->experiencePercent38 / 100) *
                              g_dTacticalQualityFactorStep_00669EC8);
+  // Retail still evaluates attribute 5, including its integer division, even
+  // though tactical projection does not use the returned terrain adjustment.
   sourceUnit38->GetAttribute(5);
-  float unitFactor = 1.0f;
   float strengthTerm = strength4 * g_fTacticalStrengthProjectionScale_00669F0C;
   float scale = strengthTerm * qualityFactor;
-  field44 = sourceUnit38->GetAttribute(0) * scale * strengthTerm * unitFactor;
-  field48 = sourceUnit38->GetAttribute(1) * scale * unitFactor;
-  field4c = sourceUnit38->GetAttribute(2) * scale;
-  field50 = sourceUnit38->GetAttribute(3) * scale;
-  field54 = sourceUnit38->GetAttribute(4) * scale * unitFactor;
+  projectionScores44[0] = sourceUnit38->GetAttribute(0) * scale * strengthTerm;
+  projectionScores44[1] = sourceUnit38->GetAttribute(1) * scale;
+  projectionScores44[2] = sourceUnit38->GetAttribute(2) * scale;
+  projectionScores44[3] = sourceUnit38->GetAttribute(3) * scale;
+  projectionScores44[4] = sourceUnit38->GetAttribute(4) * scale;
 }
 
 // FUNCTION: IMPERIALISM 0x005a6120

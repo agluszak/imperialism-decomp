@@ -135,40 +135,14 @@ void TArmyBattle::ReadFrom(TStream* stream) {
   stream->ReadBytes(&enemyNationCode, 4);
   stream->ReadBytes(&enemyTileIndex, 4);
 
-  // Only the low word is read from the stream; the loop tests the word and decrements
-  // the full dword, matching the original codegen.
-  int unitRecordCount;
-  stream->ReadBytes(&unitRecordCount, 2);
-  while (static_cast<short>(unitRecordCount--) != 0) {
+  unsigned short unitRecordCount;
+  stream->ReadBytes(&unitRecordCount, sizeof(unitRecordCount));
+  for (int unitIndex = 0; unitIndex < unitRecordCount; ++unitIndex) {
     int unitId;
     stream->ReadBytes(&unitId, 4);
     TMilitaryUnit* sourceUnit = TMilitaryUnit::FindUnitByUID(unitId);
     TArmyTacUnit* record = new TArmyTacUnit();
-    // Field-fill mirrors the TArmyTacUnit base-state init (0x5a5f20) exactly (same
-    // store order) -- the original duplicated this init here.
-    record->unitTypeC = sourceUnit->orderType;
-    record->tileIndex8 = -2;
-    record->selectedFlag18 = 0;
-    record->state1c = 0;
-    record->actionPoints28 = record->GetBaseActionPoints();
-    record->aiStateCode2c = 0;
-    record->attackTarget30 = NULL;
-    record->strength4 = sourceUnit->strength34;
-    record->morale34 = sourceUnit->strength34;
-    record->qualityLevel10 = static_cast<short>(sourceUnit->experiencePercent38 / 100);
-    record->ownerNationIndex14 = sourceUnit->ownerNationSlot18;
-    record->sapTargetTileIndex40 = -1;
-    record->sourceUnit38 = sourceUnit;
-    // int, not unsigned char: the original materializes the flag with `mov eax,1` /
-    // `xor eax,eax` (0x5a4adc / 0x5a4ae3), which is the full-register BOOL shape.
-    int deployedCategory0Flag;
-    if (sourceUnit->unitOrder == 2 &&
-        g_anUnitTypeCombatCategoryByType00669858[record->unitTypeC] == 0) {
-      deployedCategory0Flag = 1;
-    } else {
-      deployedCategory0Flag = 0;
-    }
-    record->flag3c = static_cast<unsigned char>(deployedCategory0Flag);
+    record->IArmyTacUnit(sourceUnit);
     stream->ReadBytes(&record->side20, 4);
     stream->ReadBytes(&record->field24, 2);
     recordList20->AddTail(record);
@@ -182,12 +156,7 @@ void TArmyBattle::ReadFrom(TStream* stream) {
     CIterator linkIter(recordList20);
     for (TArmyTacUnit* candidate = static_cast<TArmyTacUnit*>(linkIter.Reset()); linkIter.More();
          candidate = static_cast<TArmyTacUnit*>(linkIter.Advance())) {
-      int candidateUnitId;
-      if (candidate != 0 && candidate->sourceUnit38 != 0) {
-        candidateUnitId = candidate->sourceUnit38->persistentUnitId20;
-      } else {
-        candidateUnitId = 0;
-      }
+      int candidateUnitId = candidate != 0 ? candidate->GetUID() : 0;
       if (candidateUnitId == linkedUnitId) {
         linkedRecord = candidate;
         break;
@@ -231,7 +200,7 @@ void TArmyBattle::WriteTo(TStream* stream) {
   stream->WriteBytes(&currentSideC, 4);
   stream->WriteBytes(&battleLive10, 4);
 
-  TArmyPlayer* ourPlayer = static_cast<TArmyPlayer*>(tacticalPlayer14);
+  TArmyPlayer* ourPlayer = static_cast<TArmyPlayer*>(players[0]);
   ourPlayer->AssertValid();
   int ourNationIndex = ourPlayer->armyStack28->categoryFlag8;
   stream->WriteBytes(&ourNationIndex, 4);
@@ -240,7 +209,7 @@ void TArmyBattle::WriteTo(TStream* stream) {
   int ourTileIndex = ourPlayer->armyStack28->tileIndex10;
   stream->WriteBytes(&ourTileIndex, 4);
 
-  TArmyPlayer* enemyPlayer = static_cast<TArmyPlayer*>(tacticalPlayer18);
+  TArmyPlayer* enemyPlayer = static_cast<TArmyPlayer*>(players[1]);
   enemyPlayer->AssertValid();
   int enemyNationIndex = enemyPlayer->armyStack28->categoryFlag8;
   stream->WriteBytes(&enemyNationIndex, 4);
@@ -249,29 +218,19 @@ void TArmyBattle::WriteTo(TStream* stream) {
   int enemyTileIndex = enemyPlayer->armyStack28->tileIndex10;
   stream->WriteBytes(&enemyTileIndex, 4);
 
-  int unitRecordCount = recordList20->GetCount();
-  stream->WriteBytes(&unitRecordCount, 2);
+  unsigned short unitRecordCount = static_cast<unsigned short>(recordList20->GetCount());
+  stream->WriteBytes(&unitRecordCount, sizeof(unitRecordCount));
   CIterator recordIter(recordList20);
   for (TArmyTacUnit* record = static_cast<TArmyTacUnit*>(recordIter.Reset()); recordIter.More();
        record = static_cast<TArmyTacUnit*>(recordIter.Advance())) {
-    int recordUnitId;
-    if (record != 0 && record->sourceUnit38 != 0) {
-      recordUnitId = record->sourceUnit38->persistentUnitId20;
-    } else {
-      recordUnitId = 0;
-    }
+    int recordUnitId = record != 0 ? record->GetUID() : 0;
     stream->WriteBytes(&recordUnitId, 4);
     stream->WriteBytes(&record->side20, 4);
     stream->WriteBytes(&record->field24, 2);
   }
 
   TArmyTacUnit* linked = static_cast<TArmyTacUnit*>(selectedUnit1c);
-  int linkedUnitId;
-  if (linked != 0 && linked->sourceUnit38 != 0) {
-    linkedUnitId = linked->sourceUnit38->persistentUnitId20;
-  } else {
-    linkedUnitId = 0;
-  }
+  int linkedUnitId = linked != 0 ? linked->GetUID() : 0;
   stream->WriteBytes(&linkedUnitId, 4);
 
   stream->WriteBytes(&battleSiteIndex38, 4);
@@ -375,12 +334,12 @@ void TArmyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTileInde
     }
   }
   HandleTacticalCommandTag_depl(static_cast<TArmyTacUnit*>(unit), tileIndex, 0);
-  TTacticalPlayer* sidePlayer = (currentSideC == 0) ? tacticalPlayer14 : tacticalPlayer18;
+  TTacticalPlayer* sidePlayer = (currentSideC == 0) ? players[0] : players[1];
   ApplyTacticalDoneSelectionAndRefreshUi(sidePlayer->SelectNextTacticalUnitForDoneCommand());
   for (int planeIndex = 0; planeIndex < tacticalTileCount3c; ++planeIndex) {
     tileMoveCostArray24[planeIndex] = -1;
   }
-  TTacticalPlayer* readyPlayer = (currentSideC == 0) ? tacticalPlayer14 : tacticalPlayer18;
+  TTacticalPlayer* readyPlayer = (currentSideC == 0) ? players[0] : players[1];
   if (readyPlayer->sideReadyFlag10 != 0) {
     HandleTacticalCommandTag_retr(); // side fully deployed -> hand the round over
     return;
@@ -396,8 +355,8 @@ void TArmyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTileInde
 // FUNCTION: IMPERIALISM 0x005a5320
 void TArmyBattle::EndBattle(unsigned char sideWonFlag) {
   battleOutcome44 = kTacticalBattleSide0Victory;
-  tacticalPlayer14->AssertValid();
-  tacticalPlayer18->AssertValid();
+  players[0]->AssertValid();
+  players[1]->AssertValid();
   g_pSfxPlaybackSystem->StopCdAudioPlayback(0);
 
   if (battleView8 != 0) {
@@ -409,6 +368,6 @@ void TArmyBattle::EndBattle(unsigned char sideWonFlag) {
   }
 
   g_pMapContextActionManager->ApplyPostBattleStackOutcomeAndGrowUnitMeters(
-      static_cast<TArmyPlayer*>(tacticalPlayer14)->armyStack28,
-      static_cast<TArmyPlayer*>(tacticalPlayer18)->armyStack28, sideWonFlag, battleSiteIndex38);
+      static_cast<TArmyPlayer*>(players[0])->armyStack28,
+      static_cast<TArmyPlayer*>(players[1])->armyStack28, sideWonFlag, battleSiteIndex38);
 }

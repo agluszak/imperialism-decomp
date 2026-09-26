@@ -25,14 +25,10 @@ public:
   // Mac oracle: SwitchToAutoPlay. Applies the side's confirmation gate before AI control.
   virtual unsigned char SwitchToAutoPlay(); // slot 0x15 0x59ea60
 
-  // Partial slice (object is 0x54): only the side's combatant stack is recovered so
-  // far; stored by IArmyPlayer and read back by
-  // TArmyBattle::WriteTo.
   TArmyStack* armyStack28; // +0x28
-  // Aggregated projection metrics for the side, rebuilt by
-  // AccumulateTacticalProjectionMetricsAndUnitRanges (0x59b5b0) from the active
-  // records' float vectors.
-  float projectionScoreSums2C[5];   // +0x2c
+  // Initially the active units' attribute sums; accumulation then replaces
+  // [0] and [1] with baseline and terrain-profile fitness scores.
+  float projectionMetrics2C[5];     // +0x2c
   short maxUnitRange40;             // +0x40 max GetUnitRange over active units
   short maxNonArtilleryUnitRange42; // +0x42 same, skipping aiClass-2 units
   int lastAppliedCursorMode44;      // +0x44 init -1; SelectAndApply... early-outs on equality
@@ -40,8 +36,8 @@ public:
   int field48;                           // +0x48
   int cachedFortBombardmentTargetTile4c; // +0x4c init -1; cached fort-bombardment target tile for indirect fire
   char randomParityByte50;               // +0x50 coin flip at side init (move-first side?)
-  char field51;                          // +0x51 init 0
-  unsigned char pad52[2];                // +0x52
+  char hasArtilleryOrSappers51; // +0x51 active units only
+  unsigned char pad52[2];       // +0x52
 
   // Both original construction sites (0x5a4790, 0x5a4990) inline the ctor as a bare
   // vptr store.
@@ -58,8 +54,8 @@ public:
   // aiStateCode2c inline. 0x0059c970, __thiscall.
   void ApplyTacticalStanceProfileForCurrentCursorMode();
 
-  // Rebuilds projectionScoreSums2C/maxUnitRange40/42 and field51 (active artillery or
-  // sapper present) from the active records, then folds sums[0]/sums[1] into
+  // Rebuilds projectionMetrics2C/maxUnitRange40/42 and hasArtilleryOrSappers51
+  // from the active records, then folds sums[0]/sums[1] into
   // distribution-similarity scores vs the 0x697870 reference profiles. 0x59b5b0.
   void AccumulateTacticalProjectionMetricsAndUnitRanges();
   // Per-mode stance-profile appliers: set each record's aiStateCode2c by action class
@@ -144,6 +140,8 @@ public:
 };
 
 ASSERT_SIZE(TArmyPlayer, 0x54);
+ASSERT_OFFSET(TArmyPlayer, projectionMetrics2C, 0x2c);
+ASSERT_OFFSET(TArmyPlayer, hasArtilleryOrSappers51, 0x51);
 
 // The per-tile heuristic scorer table type (0x6994c0, declared in
 // global_data_tables.h): entry i pairs with weight column i of

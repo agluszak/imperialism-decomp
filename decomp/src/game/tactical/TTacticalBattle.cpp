@@ -109,8 +109,8 @@ TTacticalBattle::TTacticalBattle() {
 // grid, and publishes the battle to g_pActiveTacticalBattle.
 // FUNCTION: IMPERIALISM 0x0059f890
 void TTacticalBattle::InitTacticalBattle(TTacticalPlayer* ourPlayer, TTacticalPlayer* enemyPlayer) {
-  tacticalPlayer14 = ourPlayer;
-  tacticalPlayer18 = enemyPlayer;
+  players[0] = ourPlayer;
+  players[1] = enemyPlayer;
   ourPlayer->battle14 = this;
   enemyPlayer->battle14 = this;
 
@@ -198,11 +198,11 @@ void TTacticalBattle::Free() {
   if (recordList20 != 0) {
     recordList20->Free();
   }
-  if (tacticalPlayer14 != 0) {
-    tacticalPlayer14->Free();
+  if (players[0] != 0) {
+    players[0]->Free();
   }
-  if (tacticalPlayer18 != 0) {
-    tacticalPlayer18->Free();
+  if (players[1] != 0) {
+    players[1]->Free();
   }
   if (tileGrid4 != 0) {
     delete[] tileGrid4;
@@ -222,16 +222,16 @@ void TTacticalBattle::Free() {
 
 // FUNCTION: IMPERIALISM 0x0059fc20
 void TTacticalBattle::StartBattle() {
-  tacticalPlayer18->StartBattle();
+  players[1]->StartBattle();
 }
 
 // FUNCTION: IMPERIALISM 0x0059fcd0
 void TTacticalBattle::StartTacticalPlayersThatAreNotReady() {
-  if (tacticalPlayer14->sideReadyFlag10 == 0) {
-    tacticalPlayer14->StartBattle();
+  if (players[0]->sideReadyFlag10 == 0) {
+    players[0]->StartBattle();
   }
-  if (tacticalPlayer18->sideReadyFlag10 == 0) {
-    tacticalPlayer18->StartBattle();
+  if (players[1]->sideReadyFlag10 == 0) {
+    players[1]->StartBattle();
   }
 }
 
@@ -240,7 +240,7 @@ void TTacticalBattle::StartTacticalPlayersThatAreNotReady() {
 // FUNCTION: IMPERIALISM 0x0059fd10
 void TTacticalBattle::HandleTacticalCommandTag_retr() {
   currentSideC = (currentSideC == 0);
-  selectedUnit1c = (&tacticalPlayer14)[currentSideC]->SelectNextTacticalUnitForDoneCommand();
+  selectedUnit1c = players[currentSideC]->SelectNextTacticalUnitForDoneCommand();
   if (battleView8 != 0) {
     TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(
         battleView8->ownerContext->ResolveControlByTag(kControlTagTool));
@@ -248,7 +248,7 @@ void TTacticalBattle::HandleTacticalCommandTag_retr() {
     toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(selectedUnit1c);
     toolbar->ForceRedraw();
   }
-  TTacticalPlayer* incomingPlayer = (&tacticalPlayer14)[currentSideC];
+  TTacticalPlayer* incomingPlayer = players[currentSideC];
   if (incomingPlayer->sideReadyFlag10 != 0) {
     FinalizeTacticalTurnStateAndQueueEvent232A();
     return;
@@ -258,8 +258,8 @@ void TTacticalBattle::HandleTacticalCommandTag_retr() {
 
 // FUNCTION: IMPERIALISM 0x0059fdb0
 void TTacticalBattle::FinalizeTacticalTurnStateAndQueueEvent232A() {
-  tacticalPlayer14->RetireUndeployedUnitsToReserveList();
-  tacticalPlayer18->RetireUndeployedUnitsToReserveList();
+  players[0]->RetireUndeployedUnitsToReserveList();
+  players[1]->RetireUndeployedUnitsToReserveList();
   recordList20->SortBy(&CompareTacticalUnitsForTurnOrder, this);
   battleLive10 = 1;
   if (battleView8 != 0) {
@@ -531,7 +531,7 @@ unsigned char TTacticalBattle::AreNeighbors(TacticalTileIndex tileIndex,
 // (0xa), or hovering the selection itself (6). 0 when nothing applies.
 // FUNCTION: IMPERIALISM 0x005a05a0
 int TTacticalBattle::ComputeTacticalHoverCursorStateIndex(TacticalTileIndex tileIndex) {
-  TTacticalPlayer* currentSidePlayer = (&tacticalPlayer14)[currentSideC];
+  TTacticalPlayer* currentSidePlayer = players[currentSideC];
   if (!currentSidePlayer->IsTacticalControllerOwnedByActiveNation()) {
     return 1;
   }
@@ -665,7 +665,7 @@ short TTacticalBattle::ResolveTacticalHoverCursorResourceId(TacticalTileIndex ti
   short cursorsByHoverState[13] = {0,     0x402, 0x3f0, 0x3ec, 0x3ed, 0x3fc, 0x3f0,
                                    0x3ff, 0x41d, 0x3fe, 0x3fd, 0x403, 0x41c};
   int hoverState = ComputeTacticalHoverCursorStateIndex(tileIndex);
-  TTacticalPlayer* player = (&tacticalPlayer14)[currentSideC];
+  TTacticalPlayer* player = players[currentSideC];
   if (player->notWatchedFlagE != 0) {
     return 0x402;
   }
@@ -694,7 +694,7 @@ short TTacticalBattle::ResolveTacticalHoverCursorResourceId(TacticalTileIndex ti
 // is human-watched; then routes the 4-char command tag to the matching handler.
 // FUNCTION: IMPERIALISM 0x005a0c50
 void TTacticalBattle::HandleTacticalBattleCommandTag(int commandTag) {
-  TTacticalPlayer* player = (&tacticalPlayer14)[currentSideC];
+  TTacticalPlayer* player = players[currentSideC];
   if (player->watchFlagD == 0) {
     return;
   }
@@ -715,7 +715,7 @@ void TTacticalBattle::HandleTacticalBattleCommandTag(int commandTag) {
       return;
     }
     if (g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x273d, 0x32, 1, 1)) {
-      player = (&tacticalPlayer14)[currentSideC];
+      player = players[currentSideC];
       player->fieldF = 1;
       player->ProceedAfterBattleIntroAccepted();
     }
@@ -744,8 +744,8 @@ void TTacticalBattle::FinishTacticalActionAndPostNextMoveCommand() {
 void TTacticalBattle::NextMove() {
   if (battleOutcome44 != kTacticalBattleInProgress) {
     unsigned char sideWonFlag = battleOutcome44 == kTacticalBattleSide0Victory;
-    tacticalPlayer14->ApplyChanges(sideWonFlag);
-    tacticalPlayer18->ApplyChanges(sideWonFlag == 0);
+    players[0]->ApplyChanges(sideWonFlag);
+    players[1]->ApplyChanges(sideWonFlag == 0);
     EndBattle(sideWonFlag);
     return;
   }
@@ -804,7 +804,7 @@ void TTacticalBattle::AdvanceToNextTacticalUnitTurnStep() {
         static_cast<TArmyTacUnit*>(candidateUnit));
     return;
   }
-  (&tacticalPlayer14)[currentSideC]->AdvanceTacticalTurnPulse();
+  players[currentSideC]->AdvanceTacticalTurnPulse();
 }
 
 // Tactical command family: each handler echoes the command to multiplayer when it
@@ -859,8 +859,7 @@ void TTacticalBattle::ProcessTacticalUnitState1TurnStep(TTacticalUnit* unit) {
   }
 
   if (unit->state1c == 1) {
-    TList* sideUnitList =
-        (unit->side20 == 0) ? tacticalPlayer18->unitList4 : tacticalPlayer14->unitList4;
+    TList* sideUnitList = (unit->side20 == 0) ? players[1]->unitList4 : players[0]->unitList4;
 
     int nearbyThreshold = 0;
     CIterator cursor(sideUnitList);
@@ -995,7 +994,7 @@ void TTacticalBattle::MoveTacticalUnitTowardTile(TTacticalUnit* unit,
     if (unit->state1c == 1) {
       unitMayLeave = 1;
     } else if (battleView8 != 0) {
-      TTacticalPlayer* sidePlayer = (side == 0) ? tacticalPlayer14 : tacticalPlayer18;
+      TTacticalPlayer* sidePlayer = (side == 0) ? players[0] : players[1];
       unitMayLeave = sidePlayer->AlwaysTrueTacticalPredicate10(unit);
     }
     // Original bug (faithful): unitMayLeave is read uninitialized when the battle runs
@@ -1153,7 +1152,7 @@ void TTacticalBattle::MoveTacticalUnitBetweenTiles(TTacticalUnit* unit,
 unsigned char TTacticalBattle::ResolveTacticalReactionChecksForTile(TacticalTileIndex tileIndex) {
   unsigned char reactionFired = 0;
   TTacticalUnit* occupant = tileGrid4[tileIndex].occupant4;
-  TTacticalPlayer* reactingPlayer = (occupant->side20 == 0) ? tacticalPlayer18 : tacticalPlayer14;
+  TTacticalPlayer* reactingPlayer = (occupant->side20 == 0) ? players[1] : players[0];
   CIterator reactorIter(reactingPlayer->unitList4);
   TTacticalUnit* reactor = static_cast<TTacticalUnit*>(reactorIter.Reset());
   // The original asserts the first record once before entering the loop.
@@ -1294,8 +1293,7 @@ unsigned char TTacticalBattle::HasValidTacticalFollowupTargetForCurrentAction() 
   if (categoryCode == 8) {
     return 0;
   }
-  TTacticalPlayer* opposingPlayer =
-      (selectedUnit->side20 == 0) ? tacticalPlayer18 : tacticalPlayer14;
+  TTacticalPlayer* opposingPlayer = (selectedUnit->side20 == 0) ? players[1] : players[0];
   CIterator enemyIter(opposingPlayer->unitList4);
   for (TTacticalUnit* enemyUnit = static_cast<TTacticalUnit*>(enemyIter.Reset()); enemyIter.More();
        enemyUnit = static_cast<TTacticalUnit*>(enemyIter.Advance())) {
@@ -1451,8 +1449,7 @@ void TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
   // leader units (unit type >= 0x1b), default 2.0.
   float leaderMoraleMultiplier = 2.0f;
   {
-    TTacticalPlayer* defenderPlayer =
-        (defenderUnit->side20 == 0) ? tacticalPlayer14 : tacticalPlayer18;
+    TTacticalPlayer* defenderPlayer = (defenderUnit->side20 == 0) ? players[0] : players[1];
     CIterator leaderIter(defenderPlayer->unitList4);
     for (TTacticalUnit* leaderUnit = static_cast<TTacticalUnit*>(leaderIter.Reset());
          leaderIter.More(); leaderUnit = static_cast<TTacticalUnit*>(leaderIter.Advance())) {
@@ -1483,8 +1480,7 @@ void TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
   ApplyTacticalActionEffectsAndMaybeRemoveUnit(attackerUnit, defenderUnit, targetTileIndex,
                                                (int)damage, (int)moraleDamage, captureEffectCode,
                                                0);
-  TTacticalPlayer* postActionPlayer =
-      (defenderUnit->side20 == 0) ? tacticalPlayer14 : tacticalPlayer18;
+  TTacticalPlayer* postActionPlayer = (defenderUnit->side20 == 0) ? players[0] : players[1];
   postActionPlayer->field20 = 0;
 }
 
@@ -1540,7 +1536,7 @@ void TTacticalBattle::ApplyTacticalActionEffectsAndMaybeRemoveUnit(
 // FUNCTION: IMPERIALISM 0x005a2630
 float TTacticalBattle::FindMoraleBonus(unsigned char side) {
   float moraleBonus = 2.0f;
-  CIterator unitIter((side == 0) ? tacticalPlayer14->unitList4 : tacticalPlayer18->unitList4);
+  CIterator unitIter((side == 0) ? players[0]->unitList4 : players[1]->unitList4);
   for (TTacticalUnit* unit = static_cast<TTacticalUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TTacticalUnit*>(unitIter.Advance())) {
     if (unit->unitTypeC >= 0x1b && unit->state1c == 0) {
@@ -1558,12 +1554,12 @@ float TTacticalBattle::FindMoraleBonus(unsigned char side) {
 // FUNCTION: IMPERIALISM 0x005a2700
 void TTacticalBattle::TransferTacticalUnitToOpposingSide(TTacticalUnit* unit) {
   if (unit->side20 == 0) {
-    TTacticalPlayer* receivingPlayer = tacticalPlayer18;
-    tacticalPlayer14->RemoveTacticalUnitFromUnitList(unit);
+    TTacticalPlayer* receivingPlayer = players[1];
+    players[0]->RemoveTacticalUnitFromUnitList(unit);
     receivingPlayer->AddTacticalUnitToUnitListHead(unit);
   } else {
-    TTacticalPlayer* receivingPlayer = tacticalPlayer14;
-    tacticalPlayer18->RemoveTacticalUnitFromUnitList(unit);
+    TTacticalPlayer* receivingPlayer = players[0];
+    players[1]->RemoveTacticalUnitFromUnitList(unit);
     receivingPlayer->AddTacticalUnitToUnitListHead(unit);
   }
 }
@@ -1607,12 +1603,12 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
     return; // headless battle: outcome recorded, no summary dialog
   }
 
-  unsigned char localIsSide0Player = tacticalPlayer14->IsTacticalControllerOwnedByActiveNation();
+  unsigned char localIsSide0Player = players[0]->IsTacticalControllerOwnedByActiveNation();
   unsigned char localSideWon;
   if ((battleOutcome44 == kTacticalBattleSide0Victory &&
-       tacticalPlayer14->IsTacticalControllerOwnedByActiveNation() != 0) ||
+       players[0]->IsTacticalControllerOwnedByActiveNation() != 0) ||
       (battleOutcome44 == kTacticalBattleSide1Victory &&
-       tacticalPlayer18->IsTacticalControllerOwnedByActiveNation() != 0)) {
+       players[1]->IsTacticalControllerOwnedByActiveNation() != 0)) {
     localSideWon = 1;
   } else {
     localSideWon = 0;
@@ -1701,7 +1697,7 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
     CString side1CasualtyLine;
     CString combinedCasualtyText;
 
-    g_apTerrainTypeDescriptorTable[tacticalPlayer14->nationIndex1C]->FormatOverlayTerrainLabelText(
+    g_apTerrainTypeDescriptorTable[players[0]->nationIndex1C]->FormatOverlayTerrainLabelText(
         &side0NationLabel);
     if (destroyedCountBySide[0] > 1) {
       g_pSimMgr->GetString(0x273d, 0x24, &casualtyTemplate);
@@ -1716,7 +1712,7 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
                              static_cast<const char*>(side0NationLabel));
     }
 
-    g_apTerrainTypeDescriptorTable[tacticalPlayer18->nationIndex1C]->FormatOverlayTerrainLabelText(
+    g_apTerrainTypeDescriptorTable[players[1]->nationIndex1C]->FormatOverlayTerrainLabelText(
         &side1NationLabel);
     if (destroyedCountBySide[1] > 1) {
       g_pSimMgr->GetString(0x273d, 0x24, &casualtyTemplate);
@@ -2197,7 +2193,7 @@ void TTacticalBattle::HandleTacticalCommandTag_targ() {
     return;
   }
   TTacticalUnit* marker = selected->attackTarget30;
-  TList* list = (&tacticalPlayer14)[selected->side20 == 0]->unitList4;
+  TList* list = players[selected->side20 == 0]->unitList4;
 
   // Locate the current target's ordinal in the opposing list (0 if it is gone).
   int position = 0;

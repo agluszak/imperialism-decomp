@@ -95,12 +95,10 @@ public:
   // battleLive10: 0 until the setup/sort step marks the battle live (see
   // "marks the battle live (battleLive10 = 1)" below); tested before per-round work runs.
   int battleLive10; // +0x10 serialized battle-header dword
-  // The two battle players (Mac oracle: TTacticalBattle::InitTacticalBattle(
-  // TTacticalPlayer*, TTacticalPlayer*)). Windows evidence: TTacticalBattle::Free
-  // (0x59fb50) Free()s both; 0x5a2700 dispatches slots 0x0e/0x0f on them; 0x59fc20
-  // dispatches slot 0x0a on the +0x18 one -- all slots TTacticalPlayer carries.
-  TTacticalPlayer* tacticalPlayer14; // +0x14
-  TTacticalPlayer* tacticalPlayer18; // +0x18
+  // Owned side players, indexed by currentSideC and TTacticalUnit::side20.
+  // ABI: SetTargeting (0x5a5b90) indexes pointers at +0x14 with a four-byte stride;
+  // Free (0x59fb50) releases side 0 before side 1.
+  TTacticalPlayer* players[2]; // +0x14 side 0, +0x18 side 1
   // Currently selected/linked unit record; re-resolved by source-unit id in
   // TArmyBattle::ReadFrom, set by ApplyTacticalDoneSelectionAndRefreshUi.
   TTacticalUnit* selectedUnit1c; // +0x1c
@@ -153,7 +151,7 @@ public:
   // (network join). 0x0059fc20.
   void StartBattle();
 
-  // Battle-state assembly; sets tacticalPlayer14/18
+  // Battle-state assembly; sets the two side players
   // and allocates the tile grid. 0x0059f890.
   void InitTacticalBattle(TTacticalPlayer* ourPlayer, TTacticalPlayer* enemyPlayer);
 
@@ -277,6 +275,8 @@ public:
 };
 
 ASSERT_SIZE(TTacticalBattle, 0x78);
+ASSERT_OFFSET(TTacticalBattle, players, 0x14);
+ASSERT_OFFSET(TTacticalBattle, selectedUnit1c, 0x1c);
 
 // Turn-order comparator for the battle record list (0x59fdb0 passes it to
 // SortBy): higher base action points first, then higher quality, then the +0x24

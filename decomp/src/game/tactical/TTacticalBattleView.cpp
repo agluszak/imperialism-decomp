@@ -1517,8 +1517,7 @@ void TTacticalBattleView::SetCurrentPlayer(unsigned char side) {
       static_cast<TPicture*>(ownerContext->ResolveControlByTag(kControlTagCoat));
   coatControl->AssertValid();
   TTacticalBattle* battle = tacticalBattle60;
-  // tacticalPlayer14/18 are indexed as a two-slot array by the current side.
-  TTacticalPlayer* currentPlayer = (&battle->tacticalPlayer14)[battle->currentSideC];
+  TTacticalPlayer* currentPlayer = battle->players[battle->currentSideC];
   coatControl->SetPictureResourceIdAndRefresh(
       static_cast<short>(currentPlayer->nationIndex1C + 0xea6), 1);
 }

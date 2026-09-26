@@ -281,8 +281,8 @@ JSON_Value* CaptureArmyBattleSnapshot(TArmyBattle* battle) {
 }
 
 void StopActiveNationArmyPlayerForInput(TArmyBattle* battle) {
-  TArmyPlayer* ourPlayer = static_cast<TArmyPlayer*>(battle->tacticalPlayer14);
-  TArmyPlayer* enemyPlayer = static_cast<TArmyPlayer*>(battle->tacticalPlayer18);
+  TArmyPlayer* ourPlayer = static_cast<TArmyPlayer*>(battle->players[0]);
+  TArmyPlayer* enemyPlayer = static_cast<TArmyPlayer*>(battle->players[1]);
   ourPlayer->notWatchedFlagE = (ourPlayer->nationIndex1C == ActiveNationSlot()) ? 0 : 1;
   enemyPlayer->notWatchedFlagE = (enemyPlayer->nationIndex1C == ActiveNationSlot()) ? 0 : 1;
 }
@@ -290,8 +290,8 @@ void StopActiveNationArmyPlayerForInput(TArmyBattle* battle) {
 bool PumpArmyBattleToActiveNationInput(TArmyBattle* battle) {
   int guard = 20000;
   while (battle->battleOutcome44 == kTacticalBattleInProgress) {
-    TArmyPlayer* player = static_cast<TArmyPlayer*>(
-        battle->currentSideC == 0 ? battle->tacticalPlayer14 : battle->tacticalPlayer18);
+    TArmyPlayer* player = static_cast<TArmyPlayer*>(battle->currentSideC == 0 ? battle->players[0]
+                                                                              : battle->players[1]);
     if (battle->pendingEndOfActionFlag48 != 0 && player->nationIndex1C == ActiveNationSlot() &&
         player->notWatchedFlagE == 0) {
       return true;
@@ -305,8 +305,8 @@ bool PumpArmyBattleToActiveNationInput(TArmyBattle* battle) {
 }
 
 bool AutoArmyBattleToCommit(TArmyBattle* battle) {
-  TArmyPlayer* ourPlayer = static_cast<TArmyPlayer*>(battle->tacticalPlayer14);
-  TArmyPlayer* enemyPlayer = static_cast<TArmyPlayer*>(battle->tacticalPlayer18);
+  TArmyPlayer* ourPlayer = static_cast<TArmyPlayer*>(battle->players[0]);
+  TArmyPlayer* enemyPlayer = static_cast<TArmyPlayer*>(battle->players[1]);
   int guard = 20000;
   ourPlayer->notWatchedFlagE = 1;
   enemyPlayer->notWatchedFlagE = 1;
@@ -562,7 +562,7 @@ void ProbeNavyDeployTiles(TNavyBattle* battle, TTacticalUnit* unit, JsonArray* t
   if (unit == 0) {
     return;
   }
-  player = (&battle->tacticalPlayer14)[unit->side20];
+  player = battle->players[unit->side20];
   savedTile = unit->tileIndex8;
   savedReady = player->sideReadyFlag10;
   savedCursor = player->cursorIndex18;
@@ -1162,8 +1162,8 @@ RuntimeActionResult RunMilitaryPhaseLandRetreat(NativeTransition& transition) {
   if (!PumpArmyBattleToActiveNationInput(battle)) {
     return RuntimeActionResult::Failure("battle did not reach active-nation input");
   }
-  TArmyPlayer* player = static_cast<TArmyPlayer*>(
-      battle->currentSideC == 0 ? battle->tacticalPlayer14 : battle->tacticalPlayer18);
+  TArmyPlayer* player = static_cast<TArmyPlayer*>(battle->currentSideC == 0 ? battle->players[0]
+                                                                            : battle->players[1]);
   player->fieldF = 1;
   player->notWatchedFlagE = 1;
   player->SelectAndApplyTacticalCursorModeProfile(0);
@@ -1686,8 +1686,8 @@ RuntimeActionResult RunInteractiveArmyBattleRetreat(NativeTransition& transition
     return RuntimeActionResult::Failure("battle did not reach active-nation input");
   }
   JSON_Value* initial = CaptureArmyBattleSnapshot(battle);
-  TArmyPlayer* player = static_cast<TArmyPlayer*>(
-      battle->currentSideC == 0 ? battle->tacticalPlayer14 : battle->tacticalPlayer18);
+  TArmyPlayer* player = static_cast<TArmyPlayer*>(battle->currentSideC == 0 ? battle->players[0]
+                                                                            : battle->players[1]);
   player->fieldF = 1;
   player->notWatchedFlagE = 1;
   player->SelectAndApplyTacticalCursorModeProfile(0);
