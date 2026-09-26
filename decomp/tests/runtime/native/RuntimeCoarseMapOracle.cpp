@@ -257,8 +257,7 @@ int ExpandedProvinceCount(const TMapMaker* mapMaker) {
 }
 
 void FillExpandedTiles(ExpandedTileDto* tiles, const TMapMaker* mapMaker) {
-  const TTerrainStateRecord* source =
-      static_cast<const TTerrainStateRecord*>(static_cast<const void*>(mapMaker->mapTileGrid08));
+  const TTerrainStateRecord* source = mapMaker->tiles;
   for (int index = 0; index < kExpandedTileCount; ++index) {
     tiles[index].terrain_kind = static_cast<signed char>(source[index].GetTerrainKind());
     tiles[index].owner_nation = source[index].ownerNationTag04;
@@ -275,8 +274,7 @@ void FillExpandedProvinces(ExpandedProvinceDto* provinces, int count, const TMap
 }
 
 unsigned int HashTerrainTiles(const TMapMaker* mapMaker, bool ignoreWaterOwnership) {
-  const TTerrainStateRecord* tiles =
-      static_cast<const TTerrainStateRecord*>(static_cast<const void*>(mapMaker->mapTileGrid08));
+  const TTerrainStateRecord* tiles = mapMaker->tiles;
   unsigned int hash = 0x811c9dc5;
   for (int index = 0; index < kExpandedTileCount; ++index) {
     bool water = tiles[index].GetTerrainKind() == kStrategicTerrainWater;
@@ -298,8 +296,7 @@ unsigned int HashTerrainTiles(const TMapMaker* mapMaker, bool ignoreWaterOwnersh
 void FillTerrainStage(TerrainStage& stage, const TMapMaker* mapMaker, unsigned int mapLcg,
                       bool ignoreWaterOwnership) {
   unsigned int counts[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-  const TTerrainStateRecord* tiles =
-      static_cast<const TTerrainStateRecord*>(static_cast<const void*>(mapMaker->mapTileGrid08));
+  const TTerrainStateRecord* tiles = mapMaker->tiles;
   unsigned int riverTileCount = 0;
   for (int index = 0; index < kExpandedTileCount; ++index) {
     int terrain = static_cast<int>(tiles[index].GetTerrainKind());

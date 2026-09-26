@@ -1,8 +1,8 @@
 // TMapMaker::RandomizeRegionTemplateBanksForMismatchedNeighborClasses (0x005293d0) -- a
 // UMapper.cpp pass that, for each of the three neighbour classes differing from the base
 // class, fetches the coarse cell's fine-grid template block (via
-// GetFineGridCellBasePointerFromCoarseIndex) and randomly mirrors 9-dword (one tile-row)
-// template banks within it using the shared map-gen LCG.
+// GetFineGridCellBasePointerFromCoarseIndex) and randomly mirrors full tile records
+// within its template banks using the shared map-gen LCG.
 
 #include "game/map_generation/TMapMaker.h"
 
@@ -19,10 +19,10 @@ unsigned int TMapMaker::RandomizeRegionTemplateBanksForMismatchedNeighborClasses
     unsigned short class5) {
   unsigned int result = class3;
   if (class3 != baseClass) {
-    MapGeneratorTileRecord* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
+    TTerrainStateRecord* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
-    MapGeneratorTileRecord* dst = nullptr;
-    MapGeneratorTileRecord* src = nullptr;
+    TTerrainStateRecord* dst = nullptr;
+    TTerrainStateRecord* src = nullptr;
     bool copy = true;
     switch ((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 5) {
     case 1:
@@ -65,8 +65,8 @@ unsigned int TMapMaker::RandomizeRegionTemplateBanksForMismatchedNeighborClasses
   }
 
   if (class4 != baseClass) {
-    MapGeneratorTileRecord* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
-    MapGeneratorTileRecord* dst = &cell[324];
+    TTerrainStateRecord* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
+    TTerrainStateRecord* dst = &cell[324];
     unsigned int r = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
     if ((r >> 0xc & 1) != 0) {
       dst = &cell[325];
@@ -74,7 +74,7 @@ unsigned int TMapMaker::RandomizeRegionTemplateBanksForMismatchedNeighborClasses
     g_mapGenLcgState_006a38e8 = r * 0x15a4e35 + 1;
     unsigned int r2 = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
     result = r2 / 7;
-    MapGeneratorTileRecord* src = nullptr;
+    TTerrainStateRecord* src = nullptr;
     bool copy = true;
     switch (r2 % 7) {
     case 0:
@@ -99,8 +99,8 @@ unsigned int TMapMaker::RandomizeRegionTemplateBanksForMismatchedNeighborClasses
   }
 
   if (class5 != baseClass) {
-    MapGeneratorTileRecord* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
-    MapGeneratorTileRecord* dst = &cell[326];
+    TTerrainStateRecord* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
+    TTerrainStateRecord* dst = &cell[326];
     unsigned int r = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
     if ((r >> 0xc & 1) != 0) {
       dst = &cell[327];
@@ -113,14 +113,14 @@ unsigned int TMapMaker::RandomizeRegionTemplateBanksForMismatchedNeighborClasses
     case 1:
     case 3:
     case 5: {
-      MapGeneratorTileRecord* src = dst + 108;
+      TTerrainStateRecord* src = dst + 108;
       memcpy(dst, src, sizeof(*dst));
       return result;
     }
     case 2:
     case 4:
     case 6: {
-      MapGeneratorTileRecord* src = dst + 108;
+      TTerrainStateRecord* src = dst + 108;
       memcpy(src, dst, sizeof(*src));
       break;
     }

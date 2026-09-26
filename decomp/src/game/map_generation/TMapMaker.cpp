@@ -22,8 +22,7 @@
 #endif
 
 // Same hex-neighbor math as TMapMgr::GetNeighborTileIDArray, but over
-// TMapMaker's own full-resolution generation grid (mapTileGrid08, 108x60, stride
-// 0x24) rather than the coarse 15x27 region grid.
+// TMapMaker's full-resolution 108x60 tile grid rather than the coarse 15x27 region grid.
 static __inline int ComputeHexAdjacentFullGridTileIndex(int tileIndex, int direction);
 
 // SYNTHETIC: IMPERIALISM 0x00525910
@@ -61,10 +60,10 @@ char TuningKeywordMatches(const char* keyword, const char* text) {
 }
 
 // FUNCTION: IMPERIALISM 0x00525a30
-void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileGrid,
+void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(TTerrainStateRecord* tileGrid,
                                                                      Province* cityTable,
                                                                      CString* tuningString) {
-  mapTileGrid08 = tileGrid;
+  tiles = tileGrid;
   cityScoreTable0c = cityTable;
   g_mapGenDesertQuota_006a38bc = 200;
   g_mapGenMountainQuota_006a3470 = 150;
@@ -288,169 +287,170 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
     // is always skipped) with a per-tile LCG draw.
     const char* text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Dune", text)) {
-      char* tile = mapTileGrid08;
+      TTerrainStateRecord* tile = tiles;
       int t;
       for (t = 0x1950; t != 0; --t) {
-        if (*tile != kStrategicTerrainWater) {
+        if (tile->terrainKindStorage00 != kStrategicTerrainWater) {
           g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
           if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 12) & 0x7fff) % 10 != 0) {
-            *tile = kStrategicTerrainDesert;
+            tile->terrainKindStorage00 = kStrategicTerrainDesert;
           }
         }
-        tile += 0x24;
+        ++tile;
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Congo", text)) {
-      char* tile = mapTileGrid08;
+      TTerrainStateRecord* tile = tiles;
       int t;
       for (t = 0x1950; t != 0; --t) {
-        if (*tile != kStrategicTerrainWater) {
+        if (tile->terrainKindStorage00 != kStrategicTerrainWater) {
           g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
           if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 12) & 0x7fff) % 10 != 0) {
-            *tile = kStrategicTerrainForest;
-            tile[0x13] = 0xd;
+            tile->terrainKindStorage00 = kStrategicTerrainForest;
+            tile->gateFlag = 0xd;
           }
         }
-        tile += 0x24;
+        ++tile;
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Mirkwood", text)) {
-      char* tile = mapTileGrid08;
+      TTerrainStateRecord* tile = tiles;
       int t;
       for (t = 0x1950; t != 0; --t) {
-        if (*tile != kStrategicTerrainWater) {
+        if (tile->terrainKindStorage00 != kStrategicTerrainWater) {
           g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
           if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 12) & 0x7fff) % 10 != 0) {
-            *tile = kStrategicTerrainForest;
+            tile->terrainKindStorage00 = kStrategicTerrainForest;
             g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
-            tile[0x13] = static_cast<char>(((~(g_mapGenLcgState_006a38e8 >> 12) & 1) << 1) | 0xd);
+            tile->gateFlag =
+                static_cast<char>(((~(g_mapGenLcgState_006a38e8 >> 12) & 1) << 1) | 0xd);
           }
         }
-        tile += 0x24;
+        ++tile;
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Yucatan", text) ||
         TuningKeywordMatches("Siberia", static_cast<LPCSTR>(*tuningString))) {
-      char* tile = mapTileGrid08;
+      TTerrainStateRecord* tile = tiles;
       int t;
       for (t = 0x1950; t != 0; --t) {
-        if (*tile != kStrategicTerrainWater) {
+        if (tile->terrainKindStorage00 != kStrategicTerrainWater) {
           g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
           if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 12) & 0x7fff) % 10 != 0) {
-            *tile = kStrategicTerrainForest;
-            tile[0x13] = 0xf;
+            tile->terrainKindStorage00 = kStrategicTerrainForest;
+            tile->gateFlag = 0xf;
           }
         }
-        tile += 0x24;
+        ++tile;
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Antarctica", text)) {
-      char* tile = mapTileGrid08;
+      TTerrainStateRecord* tile = tiles;
       int t;
       for (t = 0x1950; t != 0; --t) {
-        if (*tile != kStrategicTerrainWater) {
+        if (tile->terrainKindStorage00 != kStrategicTerrainWater) {
           g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
           if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 12) & 0x7fff) % 10 != 0) {
-            *tile = kStrategicTerrainDesert;
-            tile[0x13] = 0xc;
+            tile->terrainKindStorage00 = kStrategicTerrainDesert;
+            tile->gateFlag = 0xc;
           }
         }
-        tile += 0x24;
+        ++tile;
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Kansas", text)) {
-      char* tile = mapTileGrid08;
+      TTerrainStateRecord* tile = tiles;
       int t;
       for (t = 0x1950; t != 0; --t) {
-        if (*tile != kStrategicTerrainWater) {
+        if (tile->terrainKindStorage00 != kStrategicTerrainWater) {
           g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
           if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 12) & 0x7fff) % 10 != 0) {
-            *tile = kStrategicTerrainPlains;
+            tile->terrainKindStorage00 = kStrategicTerrainPlains;
           }
         }
-        tile += 0x24;
+        ++tile;
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Eden", text)) {
-      char* tile = mapTileGrid08;
+      TTerrainStateRecord* tile = tiles;
       int t;
       for (t = 0x1950; t != 0; --t) {
-        if (*tile != kStrategicTerrainWater) {
+        if (tile->terrainKindStorage00 != kStrategicTerrainWater) {
           g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
           if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 12) & 0x7fff) % 10 != 0) {
-            *tile = kStrategicTerrainFarmland;
+            tile->terrainKindStorage00 = kStrategicTerrainFarmland;
           }
         }
-        tile += 0x24;
+        ++tile;
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Everglades", text)) {
-      char* tile = mapTileGrid08;
+      TTerrainStateRecord* tile = tiles;
       int t;
       for (t = 0x1950; t != 0; --t) {
-        if (*tile != kStrategicTerrainWater) {
+        if (tile->terrainKindStorage00 != kStrategicTerrainWater) {
           g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
           if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 12) & 0x7fff) % 5 != 0) {
-            *tile = kStrategicTerrainSwamp;
+            tile->terrainKindStorage00 = kStrategicTerrainSwamp;
           }
         }
-        tile += 0x24;
+        ++tile;
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Nepal", text)) {
-      char* tile = mapTileGrid08;
+      TTerrainStateRecord* tile = tiles;
       int t;
       for (t = 0x1950; t != 0; --t) {
-        if (*tile != kStrategicTerrainWater) {
+        if (tile->terrainKindStorage00 != kStrategicTerrainWater) {
           g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
           if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 12) & 0x7fff) % 5 != 0) {
-            *tile = kStrategicTerrainMountain;
+            tile->terrainKindStorage00 = kStrategicTerrainMountain;
           }
         }
-        tile += 0x24;
+        ++tile;
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Scotland", text)) {
-      char* tile = mapTileGrid08;
+      TTerrainStateRecord* tile = tiles;
       int t;
       for (t = 0x1950; t != 0; --t) {
-        if (*tile != kStrategicTerrainWater) {
+        if (tile->terrainKindStorage00 != kStrategicTerrainWater) {
           g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
           if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 12) & 0x7fff) % 5 != 0) {
-            *tile = kStrategicTerrainHills;
+            tile->terrainKindStorage00 = kStrategicTerrainHills;
           }
         }
-        tile += 0x24;
+        ++tile;
       }
     }
     text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Eclectia", text)) {
-      char* tile = mapTileGrid08;
+      TTerrainStateRecord* tile = tiles;
       int t;
       for (t = 0x1950; t != 0; --t) {
-        int bucket = tile[4] % 7;
+        int bucket = tile->ownerNationTag04 % 7;
         if (bucket > 4) {
           ++bucket;
         }
-        if (*tile != kStrategicTerrainWater) {
+        if (tile->terrainKindStorage00 != kStrategicTerrainWater) {
           g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
           if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 12) & 0x7fff) % 5 != 0) {
-            *tile = static_cast<char>(bucket);
+            tile->terrainKindStorage00 = static_cast<char>(bucket);
             if (bucket == kStrategicTerrainForest) {
-              tile[0x13] = 0xf;
+              tile->gateFlag = 0xf;
             }
           }
         }
-        tile += 0x24;
+        ++tile;
       }
     }
 
@@ -556,7 +556,7 @@ char TMapMaker::ValidateAllColumnsHaveAssignedRegionClass() {
 // "seed candidate" tile: a plains, forest, desert, or farmland tile one of whose six hex
 // neighbours is a water tile whose own neighbours all share the seed tile's class. For
 // each qualifying class the chosen candidate index is reservoir-sampled with the map-gen LCG.
-// Grid is 108 (0x6c) columns x 60 (0x3c) rows, tile stride 0x24, tile[4] = terrain class.
+// The grid has 108 columns and 60 rows; ownerNationTag04 holds the terrain class here.
 // 0x005267f0.
 // FUNCTION: IMPERIALISM 0x00526760
 char TMapMaker::ValidateTerrainClassAdjacencyCoverageMask() {
@@ -598,10 +598,9 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
   }
 
   int tileIndex = 0;
-  int tileOffset = 0;
   do {
-    char* tiles = mapTileGrid08;
-    int cls = (int)tiles[tileOffset + 4];
+    TTerrainStateRecord* grid = tiles;
+    int cls = (int)grid[tileIndex].ownerNationTag04;
     if ((cls < 0x17) && (-1 < cls)) {
       if (seedFound[cls] == 0) {
         int row = tileIndex / 0x6c;
@@ -636,7 +635,8 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
           LAB_neighbor_invalid:
             nIdx = -1;
           }
-          if ((nIdx != -1) && (idx = (int)nIdx, tiles[idx * 0x24] == kStrategicTerrainWater)) {
+          if ((nIdx != -1) &&
+              (idx = (int)nIdx, grid[idx].terrainKindStorage00 == kStrategicTerrainWater)) {
             haveCandidate = true;
             int seedRow = idx / 0x6c;
             int seedCol = idx % 0x6c;
@@ -667,7 +667,7 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
                 sCol = -1;
               }
               char nbCls;
-              if (((sCol != -1) && (nbCls = tiles[4 + sCol * 0x24], nbCls < '\x17')) &&
+              if (((sCol != -1) && (nbCls = grid[sCol].ownerNationTag04, nbCls < '\x17')) &&
                   (nbCls != cls)) {
                 haveCandidate = false;
                 break;
@@ -690,16 +690,16 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
         } while (dir < 6);
         char typeByte;
         if (haveCandidate &&
-            (((typeByte = mapTileGrid08[tileOffset], typeByte == kStrategicTerrainPlains) ||
+            (((typeByte = tiles[tileIndex].terrainKindStorage00,
+               typeByte == kStrategicTerrainPlains) ||
               (typeByte == kStrategicTerrainFarmland)) ||
              ((typeByte == kStrategicTerrainForest) || (typeByte == kStrategicTerrainDesert)))) {
           seedFound[cls] = 1;
         }
       }
     }
-    tileOffset = tileOffset + 0x24;
     tileIndex = tileIndex + 1;
-    if (0x38f3f < tileOffset) {
+    if (tileIndex == 0x1950) {
       int* p = seedFound;
       for (i = 0; i < 0x17; i = i + 1) {
         if (*p == 0) {
@@ -1018,9 +1018,7 @@ void TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords() {
 
     int coarseRow = coarseIndex / 0x1b;
     int coarseColumn = coarseIndex % 0x1b;
-    TTerrainStateRecord* tile =
-        static_cast<TTerrainStateRecord*>(static_cast<void*>(mapTileGrid08)) +
-        (coarseRow * 4 * 108 + coarseColumn * 4);
+    TTerrainStateRecord* tile = tiles + (coarseRow * 4 * 108 + coarseColumn * 4);
     if ((coarseRow & 1) != 0) {
       tile -= 2;
     }
@@ -1082,7 +1080,7 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
     do {
       g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
       tileIndex = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 0x1950);
-    } while (mapTileGrid08[tileIndex * 0x24] != kStrategicTerrainPlains);
+    } while (tiles[tileIndex].terrainKindStorage00 != kStrategicTerrainPlains);
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
     int retryBudget = static_cast<int>((seedHigh & 0x7fff) % 0xc) + 3;
     int direction = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 6);
@@ -1093,15 +1091,16 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
   }
 
   for (int hillsSrcTile = 0; hillsSrcTile < 0x1950; ++hillsSrcTile) {
-    if (mapTileGrid08[hillsSrcTile * 0x24] != kStrategicTerrainMountain) {
+    if (tiles[hillsSrcTile].terrainKindStorage00 != kStrategicTerrainMountain) {
       continue;
     }
     for (int hillsDir = 0; hillsDir < 6; ++hillsDir) {
       int neighborTile = ComputeHexAdjacentFullGridTileIndex(hillsSrcTile, hillsDir);
-      if (neighborTile != -1 && mapTileGrid08[neighborTile * 0x24] == kStrategicTerrainPlains) {
+      if (neighborTile != -1 &&
+          tiles[neighborTile].terrainKindStorage00 == kStrategicTerrainPlains) {
         g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
         if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 100) < 0x28) {
-          mapTileGrid08[neighborTile * 0x24] = kStrategicTerrainHills;
+          tiles[neighborTile].terrainKindStorage00 = kStrategicTerrainHills;
           --hillsQuota;
         }
       }
@@ -1114,8 +1113,8 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
   while (hillsQuota > 0) {
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
     int hillsFallbackTile = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 0x1950);
-    if (mapTileGrid08[hillsFallbackTile * 0x24] == kStrategicTerrainPlains) {
-      mapTileGrid08[hillsFallbackTile * 0x24] = kStrategicTerrainHills;
+    if (tiles[hillsFallbackTile].terrainKindStorage00 == kStrategicTerrainPlains) {
+      tiles[hillsFallbackTile].terrainKindStorage00 = kStrategicTerrainHills;
       --hillsQuota;
     }
   }
@@ -1147,10 +1146,10 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
         g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
       }
       for (int fillTile = 0; fillTile < 0x1950; ++fillTile) {
-        if (mapTileGrid08[fillTile * 0x24] == kStrategicTerrainPlains) {
+        if (tiles[fillTile].terrainKindStorage00 == kStrategicTerrainPlains) {
           g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
           if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 100) < 0x2d) {
-            mapTileGrid08[fillTile * 0x24] = kStrategicTerrainFarmland;
+            tiles[fillTile].terrainKindStorage00 = kStrategicTerrainFarmland;
           }
         }
       }
@@ -1165,18 +1164,19 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
     do {
       g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
       swampTile = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 0x1950);
-    } while (mapTileGrid08[swampTile * 0x24] != kStrategicTerrainPlains);
+    } while (tiles[swampTile].terrainKindStorage00 != kStrategicTerrainPlains);
 
     bool allNeighborsClear = true;
     for (int swampDir = 0; swampDir < 6; ++swampDir) {
       int neighborTile = ComputeHexAdjacentFullGridTileIndex(swampTile, swampDir);
-      if (neighborTile != -1 && mapTileGrid08[neighborTile * 0x24] == kStrategicTerrainDesert) {
+      if (neighborTile != -1 &&
+          tiles[neighborTile].terrainKindStorage00 == kStrategicTerrainDesert) {
         allNeighborsClear = false;
       }
     }
     if (allNeighborsClear) {
       --swampQuota;
-      mapTileGrid08[swampTile * 0x24] = kStrategicTerrainSwamp;
+      tiles[swampTile].terrainKindStorage00 = kStrategicTerrainSwamp;
     }
   }
 }
@@ -1194,7 +1194,7 @@ void TMapMaker::CreateRivers() {
       if (attemptsRemaining == 0) {
         return;
       }
-    } while (mapTileGrid08[tileIndex * 0x24] != kStrategicTerrainMountain);
+    } while (tiles[tileIndex].terrainKindStorage00 != kStrategicTerrainMountain);
 
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
     int firstDirection = static_cast<int>((g_mapGenLcgState_006a38e8 >> 12 & 0x7fff) % 5);
@@ -1203,7 +1203,7 @@ void TMapMaker::CreateRivers() {
     do {
       direction = direction == 5 ? 0 : direction + 1;
       neighbor = ComputeHexAdjacentFullGridTileIndex(tileIndex, direction);
-    } while (mapTileGrid08[neighbor * 0x24] == kStrategicTerrainMountain &&
+    } while (tiles[neighbor].terrainKindStorage00 == kStrategicTerrainMountain &&
              direction != firstDirection);
 
     if (direction != firstDirection && GrowRiver(tileIndex, direction, 6, 0, 1)) {
@@ -1215,10 +1215,10 @@ void TMapMaker::CreateRivers() {
 // FUNCTION: IMPERIALISM 0x00527ed0
 char TMapMaker::GrowRiver(long tileIndex, long incomingDirection, long outgoingDirection,
                           long depth, unsigned char startedOnHills) {
-  char* tile = mapTileGrid08 + tileIndex * 0x24;
-  StrategicTerrainKind terrainKind = static_cast<StrategicTerrainKind>(*tile);
+  TTerrainStateRecord* tile = tiles + tileIndex;
+  StrategicTerrainKind terrainKind = tile->GetTerrainKind();
   char beganOnHills = terrainKind == kStrategicTerrainHills;
-  if (tile[2] != 0 || (terrainKind == kStrategicTerrainMountain && depth != 0) ||
+  if (tile->riverSpriteCode != 0 || (terrainKind == kStrategicTerrainMountain && depth != 0) ||
       (terrainKind == kStrategicTerrainHills && startedOnHills == 0)) {
     return 0;
   }
@@ -1226,7 +1226,7 @@ char TMapMaker::GrowRiver(long tileIndex, long incomingDirection, long outgoingD
     if (depth < 5) {
       return 0;
     }
-    tile[2] = static_cast<char>(outgoingDirection + 0x10);
+    tile->riverSpriteCode = static_cast<char>(outgoingDirection + 0x10);
     return 1;
   }
 
@@ -1255,17 +1255,15 @@ char TMapMaker::GrowRiver(long tileIndex, long incomingDirection, long outgoingD
     return 0;
   }
   if (depth == 0) {
-    tile[2] = static_cast<char>(nextDirection + 10);
+    tile->riverSpriteCode = static_cast<char>(nextDirection + 10);
   } else {
-    tile[2] = static_cast<char>(
+    tile->riverSpriteCode = static_cast<char>(
         g_riverConnectionTypeByDirectionPair_00697568[nextDirection][oppositeDirection]);
   }
   return 1;
 }
 
-// Same hex-neighbor math as TMapMgr::GetNeighborTileIDArray, but over
-// TMapMaker's own full-resolution generation grid (mapTileGrid08, 108x60, stride
-// 0x24) rather than the coarse 15x27 region grid.
+// Same hex-neighbor math as TMapMgr::GetNeighborTileIDArray, over the 108x60 tile grid.
 static __inline int ComputeHexAdjacentFullGridTileIndex(int tileIndex, int direction) {
   int parity = tileIndex / 0x6c;
   int colOffset = (parity & 1) == 0 ? g_hexColOffsetEvenRow_00697450[direction]
@@ -1279,7 +1277,7 @@ static __inline int ComputeHexAdjacentFullGridTileIndex(int tileIndex, int direc
   // `cmp ecx,0x6c / jl 0x528c86` as well as the wrap path's fallthrough. Our port
   // duplicated the row check into the wrapping branch only, so a bounded map returned
   // col + row*108 for row -1 or row 60 -- an out-of-grid index handed to callers that
-  // index, recurse on, memcpy from, and form pointers into mapTileGrid08.
+  // index, recurse on, memcpy from, and form pointers into tiles.
   if (g_pGlobalMapState->hexNeighborWrapHorizontally != 0) {
     if (col < 0 || col >= 0x6c) {
       return -1;
@@ -1304,18 +1302,18 @@ static __inline int ComputeHexAdjacentFullGridTileIndex(int tileIndex, int direc
 // FUNCTION: IMPERIALISM 0x00528140
 int TMapMaker::PlaceCityMarkerAndSpreadNeighbors(int tileIndex, int retryBudget,
                                                  char markerVariant) {
-  if (mapTileGrid08[tileIndex * 0x24] != kStrategicTerrainPlains) {
+  if (tiles[tileIndex].terrainKindStorage00 != kStrategicTerrainPlains) {
     return 0;
   }
   for (int dir = 0; dir < 6; ++dir) {
     int neighborTile = ComputeHexAdjacentFullGridTileIndex(tileIndex, dir);
-    if (neighborTile != -1 && mapTileGrid08[neighborTile * 0x24] == kStrategicTerrainDesert) {
+    if (neighborTile != -1 && tiles[neighborTile].terrainKindStorage00 == kStrategicTerrainDesert) {
       return 0;
     }
   }
 
-  mapTileGrid08[tileIndex * 0x24] = kStrategicTerrainForest;
-  mapTileGrid08[tileIndex * 0x24 + 0x13] = (markerVariant == 0) ? 0xd : 0xf;
+  tiles[tileIndex].terrainKindStorage00 = kStrategicTerrainForest;
+  tiles[tileIndex].gateFlag = (markerVariant == 0) ? 0xd : 0xf;
 
   int remaining = retryBudget - 1;
   for (int spreadDir = 0; spreadDir < 6; ++spreadDir) {
@@ -1340,17 +1338,17 @@ int TMapMaker::SeedMountainRange(int tileIndex, int retryBudget, int direction) 
   if (tileIndex < 0 || tileIndex > 0x1950) {
     return 0;
   }
-  if (mapTileGrid08[tileIndex * 0x24] != kStrategicTerrainPlains) {
+  if (tiles[tileIndex].terrainKindStorage00 != kStrategicTerrainPlains) {
     return 0;
   }
   for (int dir = 0; dir < 6; ++dir) {
     int neighborTile = ComputeHexAdjacentFullGridTileIndex(tileIndex, dir);
-    if (neighborTile != -1 && mapTileGrid08[neighborTile * 0x24] == kStrategicTerrainWater) {
+    if (neighborTile != -1 && tiles[neighborTile].terrainKindStorage00 == kStrategicTerrainWater) {
       return 0;
     }
   }
 
-  mapTileGrid08[tileIndex * 0x24] = kStrategicTerrainMountain;
+  tiles[tileIndex].terrainKindStorage00 = kStrategicTerrainMountain;
 
   int nextDirection = direction;
   if (direction == 1 || direction == 4) {
@@ -1420,10 +1418,10 @@ void TMapMaker::CreateDeserts() {
 
 // FUNCTION: IMPERIALISM 0x00528780
 int TMapMaker::TundraBand(int row, int percentChance) {
-  char* tile = mapTileGrid08 + row * 0xf30;
+  TTerrainStateRecord* tile = tiles + row * 0x6c;
   int column = 0;
-  while (*tile != kStrategicTerrainWater && column < 0x6c) {
-    tile += 0x24;
+  while (tile->terrainKindStorage00 != kStrategicTerrainWater && column < 0x6c) {
+    ++tile;
     ++column;
   }
   if (column == 0x6c) {
@@ -1435,25 +1433,25 @@ int TMapMaker::TundraBand(int row, int percentChance) {
   int remaining = 0x6b;
   do {
     ++column;
-    tile += 0x24;
+    ++tile;
     if (column == 0x6c) {
       column = 0;
     }
-    if (ringState == 0 && *tile != kStrategicTerrainWater) {
+    if (ringState == 0 && tile->terrainKindStorage00 != kStrategicTerrainWater) {
       ringState = 1;
     }
     if (ringState == 1) {
-      if (*tile == kStrategicTerrainPlains) {
+      if (tile->terrainKindStorage00 == kStrategicTerrainPlains) {
         g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
         if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 12 & 0x7fff) % 100) < percentChance) {
-          *tile = kStrategicTerrainDesert;
-          tile[0x13] = 12;
+          tile->terrainKindStorage00 = kStrategicTerrainDesert;
+          tile->gateFlag = 12;
           ++marked;
         }
-      } else if (*tile == kStrategicTerrainWater) {
+      } else if (tile->terrainKindStorage00 == kStrategicTerrainWater) {
         ringState = 0;
       }
-    } else if (ringState == 2 && *tile == kStrategicTerrainWater) {
+    } else if (ringState == 2 && tile->terrainKindStorage00 == kStrategicTerrainWater) {
       ringState = 0;
     }
     --remaining;
@@ -1463,10 +1461,10 @@ int TMapMaker::TundraBand(int row, int percentChance) {
 
 // FUNCTION: IMPERIALISM 0x005288a0
 int TMapMaker::DesertBand(int row, int percentChance) {
-  char* tile = mapTileGrid08 + row * 0xf30;
+  TTerrainStateRecord* tile = tiles + row * 0x6c;
   int column = 0;
-  while (*tile != kStrategicTerrainWater && column < 0x6c) {
-    tile += 0x24;
+  while (tile->terrainKindStorage00 != kStrategicTerrainWater && column < 0x6c) {
+    ++tile;
     ++column;
   }
   if (column == 0x6c) {
@@ -1478,50 +1476,50 @@ int TMapMaker::DesertBand(int row, int percentChance) {
   int remaining = 0x6b;
   do {
     ++column;
-    tile += 0x24;
+    ++tile;
     if (column == 0x6c) {
       column = 0;
     }
-    if (ringState == 0 && *tile != kStrategicTerrainWater) {
+    if (ringState == 0 && tile->terrainKindStorage00 != kStrategicTerrainWater) {
       ringState = 1;
     }
     if (ringState == 1) {
-      if (*tile == kStrategicTerrainPlains) {
+      if (tile->terrainKindStorage00 == kStrategicTerrainPlains) {
         g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
         if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 12 & 0x7fff) % 100) < percentChance) {
           int tileIndex = column + row * 0x6c;
-          *tile = kStrategicTerrainDesert;
-          tile[0x13] = 11;
+          tile->terrainKindStorage00 = kStrategicTerrainDesert;
+          tile->gateFlag = 11;
           ++marked;
 
           int neighbor = ComputeHexAdjacentFullGridTileIndex(tileIndex, 5);
-          char* neighborTile = mapTileGrid08 + neighbor * 0x24;
-          if (*neighborTile == kStrategicTerrainPlains) {
+          TTerrainStateRecord* neighborTile = tiles + neighbor;
+          if (neighborTile->terrainKindStorage00 == kStrategicTerrainPlains) {
             g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
             if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 12 & 0x7fff) % 100) <
                 percentChance) {
-              *neighborTile = kStrategicTerrainDesert;
-              tile[0x13] = 11;
+              neighborTile->terrainKindStorage00 = kStrategicTerrainDesert;
+              tile->gateFlag = 11;
               ++marked;
             }
           }
 
           neighbor = ComputeHexAdjacentFullGridTileIndex(tileIndex, 3);
-          neighborTile = mapTileGrid08 + neighbor * 0x24;
-          if (*neighborTile == kStrategicTerrainPlains) {
+          neighborTile = tiles + neighbor;
+          if (neighborTile->terrainKindStorage00 == kStrategicTerrainPlains) {
             g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
             if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 12 & 0x7fff) % 100) <
                 percentChance) {
-              *neighborTile = kStrategicTerrainDesert;
-              tile[0x13] = 11;
+              neighborTile->terrainKindStorage00 = kStrategicTerrainDesert;
+              tile->gateFlag = 11;
               ++marked;
             }
           }
         }
-      } else if (*tile == kStrategicTerrainWater) {
+      } else if (tile->terrainKindStorage00 == kStrategicTerrainWater) {
         ringState = 0;
       }
-    } else if (ringState == 2 && *tile == kStrategicTerrainWater) {
+    } else if (ringState == 2 && tile->terrainKindStorage00 == kStrategicTerrainWater) {
       ringState = 0;
     }
     --remaining;
@@ -1575,7 +1573,7 @@ void ComputeHexTilePixelCenter(int tileIndex, int* outX, int* outY, int cellSize
 // FUNCTION: IMPERIALISM 0x00528e00
 void TMapMaker::WriteTileGridToFile(const char* path) {
   FILE* file = fopen(path, g_szLiteralWb_006976E0);
-  fwrite(mapTileGrid08, 0x6540, 1, file);
+  fwrite(tiles, 0x6540, 1, file);
   fclose(file);
 }
 
@@ -1590,11 +1588,11 @@ void TMapMaker::SmoothCityRegionOwnershipByNeighborSampling() {
   for (int tileIndex = 0x6c; tileIndex < 0x1950 - 0x6c; ++tileIndex) {
     int sameOwnerCount = 0;
     int differingNeighborDir = -1;
-    owner = static_cast<signed char>(mapTileGrid08[tileIndex * 0x24 + 4]);
+    owner = static_cast<signed char>(tiles[tileIndex].ownerNationTag04);
     for (int dir = 0; dir < 6; ++dir) {
       int neighborTile = ComputeHexAdjacentFullGridTileIndex(tileIndex, dir);
       short neighborOwner = (neighborTile != -1)
-                                ? static_cast<signed char>(mapTileGrid08[neighborTile * 0x24 + 4])
+                                ? static_cast<signed char>(tiles[neighborTile].ownerNationTag04)
                                 : -1;
       if (neighborOwner == owner) {
         ++sameOwnerCount;
@@ -1620,17 +1618,17 @@ void TMapMaker::SmoothCityRegionOwnershipByNeighborSampling() {
     }
     if (differingNeighborDir != -1) {
       int neighborTile = ComputeHexAdjacentFullGridTileIndex(tileIndex, differingNeighborDir);
-      memcpy(&mapTileGrid08[tileIndex * 0x24], &mapTileGrid08[neighborTile * 0x24], 0x24);
+      memcpy(&tiles[tileIndex], &tiles[neighborTile], sizeof(TTerrainStateRecord));
     }
   }
 
   for (int isolatedTile = 0x6c; isolatedTile < 0x1950 - 0x6c; ++isolatedTile) {
     bool hasSameOwnerNeighbor = false;
-    owner = static_cast<signed char>(mapTileGrid08[isolatedTile * 0x24 + 4]);
+    owner = static_cast<signed char>(tiles[isolatedTile].ownerNationTag04);
     for (int isoDir = 0; isoDir < 6; ++isoDir) {
       int neighborTile = ComputeHexAdjacentFullGridTileIndex(isolatedTile, isoDir);
       short neighborOwner = (neighborTile != -1)
-                                ? static_cast<signed char>(mapTileGrid08[neighborTile * 0x24 + 4])
+                                ? static_cast<signed char>(tiles[neighborTile].ownerNationTag04)
                                 : -1;
       if (neighborOwner == owner) {
         hasSameOwnerNeighbor = true;
@@ -1641,7 +1639,7 @@ void TMapMaker::SmoothCityRegionOwnershipByNeighborSampling() {
       short randomDir =
           static_cast<short>(static_cast<int>(g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 6);
       int neighborTile = ComputeHexAdjacentFullGridTileIndex(isolatedTile, randomDir);
-      memcpy(&mapTileGrid08[isolatedTile * 0x24], &mapTileGrid08[neighborTile * 0x24], 0x24);
+      memcpy(&tiles[isolatedTile], &tiles[neighborTile], sizeof(TTerrainStateRecord));
     }
   }
 }
@@ -1682,7 +1680,7 @@ void TMapMaker::CopyRegionTemplateBankWithRandomVariant(int coarseIndex, short r
                                                         short unusedClass, short northClass,
                                                         short southClass) {
   (void)unusedClass;
-  MapGeneratorTileRecord* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
+  TTerrainStateRecord* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
 
   if (northClass == regionClass) {
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
@@ -1723,8 +1721,8 @@ void TMapMaker::CopyRegionTemplateBankToNeighborCell(int coarseIndex, short regi
   (void)unusedClass;
   (void)unusedClass2;
   int neighbor = GetAdjacentRegionGridCell(coarseIndex, 2);
-  MapGeneratorTileRecord* cell = GetFineGridCellBasePointerFromCoarseIndex(neighbor);
-  MapGeneratorTileRecord* source = cell - 108;
+  TTerrainStateRecord* cell = GetFineGridCellBasePointerFromCoarseIndex(neighbor);
+  TTerrainStateRecord* source = cell - 108;
 
   if (northClass == regionClass) {
     memcpy(cell, source, sizeof(*cell));
@@ -1739,17 +1737,14 @@ void TMapMaker::CopyRegionTemplateBankToNeighborCell(int coarseIndex, short regi
 }
 
 // FUNCTION: IMPERIALISM 0x005298a0
-MapGeneratorTileRecord* TMapMaker::GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex) {
-  char* cell =
-      (static_cast<short>(coarseIndex % 0x1b) + static_cast<short>(coarseIndex / 0x1b) * 0x6c) *
-          0x90 +
-      mapTileGrid08;
-  if ((coarseIndex / 0x1b & 1U) != 0) {
-    cell -= 0x48;
+TTerrainStateRecord* TMapMaker::GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex) {
+  int coarseRow = coarseIndex / 0x1b;
+  int coarseColumn = coarseIndex % 0x1b;
+  int tileOffset = (static_cast<short>(coarseColumn) + static_cast<short>(coarseRow) * 0x6c) * 4;
+  if ((coarseRow & 1U) != 0) {
+    tileOffset -= 2;
   }
-  // Reviewed application-buffer boundary: mapTileGrid08 is still byte-addressed by the
-  // wider generator, while this virtual exposes its proven 0x24-byte record granularity.
-  return static_cast<MapGeneratorTileRecord*>(static_cast<void*>(cell));
+  return tiles + tileOffset;
 }
 
 // FUNCTION: IMPERIALISM 0x00529f60
@@ -1761,18 +1756,18 @@ void TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders(int mode) {
       g_cityRegionIdRemapTable_006a3498[i] = -1;
     }
 
-    int tileOffset;
-    for (tileOffset = 0; tileOffset < 0x38f40; tileOffset += 0x24) {
-      char* tile = mapTileGrid08 + tileOffset;
+    for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+      TTerrainStateRecord* tile = tiles + tileIndex;
       int oldRegionId = -1;
-      if (tileOffset >= 0 && tile[0] == kStrategicTerrainWater) {
-        oldRegionId = static_cast<signed char>(tile[4]) - 0x17;
+      if (tile->terrainKindStorage00 == kStrategicTerrainWater) {
+        oldRegionId = tile->ownerNationTag04 - 0x17;
       }
       if (oldRegionId > -1) {
         if (g_cityRegionIdRemapTable_006a3498[oldRegionId] == -1) {
           g_cityRegionIdRemapTable_006a3498[oldRegionId] = cityRegionCount2a4++;
         }
-        tile[4] = static_cast<char>(g_cityRegionIdRemapTable_006a3498[oldRegionId] + 0x17);
+        tile->ownerNationTag04 =
+            static_cast<char>(g_cityRegionIdRemapTable_006a3498[oldRegionId] + 0x17);
       }
     }
   } else {
@@ -1799,20 +1794,20 @@ void TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders(int mode) {
 // Mac oracle: IsSeaTile.
 // FUNCTION: IMPERIALISM 0x0052a600
 unsigned char TMapMaker::IsSeaTile(int tileIndex) {
-  return mapTileGrid08[tileIndex * 0x24] == kStrategicTerrainWater;
+  return tiles[tileIndex].terrainKindStorage00 == kStrategicTerrainWater;
 }
 
 // FUNCTION: IMPERIALISM 0x0052a630
 unsigned char TMapMaker::IsSeaTile(int column, int row) {
-  return mapTileGrid08[(column + row * 0x6c) * 0x24] == kStrategicTerrainWater;
+  return tiles[(column + row * 0x6c)].terrainKindStorage00 == kStrategicTerrainWater;
 }
 
 // FUNCTION: IMPERIALISM 0x0052a670
 int TMapMaker::GetCityRegionIdAtTileIndex(int tileIndex) {
   if (tileIndex >= 0) {
-    char* tile = mapTileGrid08 + tileIndex * 0x24;
-    if (*tile == kStrategicTerrainWater) {
-      return tile[4] - 0x17;
+    TTerrainStateRecord* tile = tiles + tileIndex;
+    if (tile->terrainKindStorage00 == kStrategicTerrainWater) {
+      return tile->ownerNationTag04 - 0x17;
     }
   }
   return -1;
@@ -1821,7 +1816,7 @@ int TMapMaker::GetCityRegionIdAtTileIndex(int tileIndex) {
 // Mac oracle: SetSeaZoneIndex.
 // FUNCTION: IMPERIALISM 0x0052a6b0
 void TMapMaker::SetSeaZoneIndex(int tileIndex, char zoneIndex) {
-  mapTileGrid08[tileIndex * 0x24 + 4] = static_cast<char>(zoneIndex + 0x17);
+  tiles[tileIndex].ownerNationTag04 = static_cast<char>(zoneIndex + 0x17);
 }
 
 // FUNCTION: IMPERIALISM 0x0052e840

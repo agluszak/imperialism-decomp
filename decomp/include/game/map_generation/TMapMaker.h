@@ -5,16 +5,9 @@
 #include "game/ui_core/TView.h"
 #include "game/mfc.h"
 #include "game/strategic_terrain.h"
+#include "game/map/map_records.h"
 
 struct Province;
-
-// One full-resolution map-generator tile record. The random-template passes copy the
-// complete 0x24-byte record as nine dwords; individual gameplay fields remain owned by
-// TTerrainStateRecord after generation.
-struct MapGeneratorTileRecord {
-  int words[9];
-};
-ASSERT_SIZE(MapGeneratorTileRecord, 0x24);
 
 // VTABLE: IMPERIALISM 0x006598f8
 class TMapMaker : public TObject {
@@ -102,13 +95,13 @@ public:
   virtual void CopyRegionTemplateBankToNeighborCell(int coarseIndex, short regionClass,
                                                     short unusedClass, short northClass,
                                                     short unusedClass2);
-  virtual MapGeneratorTileRecord*
+  virtual TTerrainStateRecord*
   GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex); // slot 33 / 0x84
 
   // LAYOUT: the vtable ends at slot 0x21, followed by null slots 0x22..0x28. The
   // SeaSegmentStretch and SeapointStretch vtables are adjacent data, not TMapMaker methods.
 
-  // City-region id (tile[4] - 0x17) at a tile index, or -1 if the tile is out of range or
+  // City-region id (ownerNationTag04 - 0x17) at a tile index, or -1 if the tile is out of range or
   // not a water tile. 0x0052a670.
   int GetCityRegionIdAtTileIndex(int tileIndex);
 
@@ -149,7 +142,7 @@ public:
   void AssignRegionIdsToUnclaimedBorderSegmentSides();
 
   // Compacts city-region ids into a contiguous range, propagating labels across same-region
-  // hex neighbours; writes tile[4] = newId + 0x17 and updates cityRegionCount2a4. 0x0052d1f0.
+  // hex neighbours; writes ownerNationTag04 = newId + 0x17 and updates cityRegionCount2a4. 0x0052d1f0.
   void ReindexContiguousCityRegionIds();
 
   // Seeds city regions on a lattice with LCG jitter then floods ids to adjacent city tiles.
@@ -191,7 +184,8 @@ public:
   // the follow-on passes, applies the easter-egg keyword terrain overrides, and
   // retries the whole pipeline until ValidateSeedCandidateExistsForEachTerrainClass
   // accepts the map. 0x525a30, __thiscall, RET 0xc.
-  void GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileGrid, Province* cityTable,
+  void GenerateMapFromTuningStringAndApplyScenarioOverrides(TTerrainStateRecord* tileGrid,
+                                                            Province* cityTable,
                                                             CString* tuningString);
 
   // --- data fields (raw pad except the ones the ported passes read) ---
@@ -225,7 +219,7 @@ public:
   // 0x0052d4b0, __thiscall.
   int RepairOrphanedTileValuesFromNeighbors(short* tileValues);
 
-  char* mapTileGrid08; // +0x08 base of the 6480-tile (108x60) grid, stride 0x24
+  TTerrainStateRecord* tiles; // +0x08, shared 6480-tile runtime grid
 
   // Mac oracle: CountSeaTilesInColumn(int).
   int CountSeaTilesInColumn(int column); // 0x00529910

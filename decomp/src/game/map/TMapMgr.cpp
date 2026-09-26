@@ -288,7 +288,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
         return 0;
       }
     }
-    mapMaker->mapTileGrid08 = static_cast<char*>(static_cast<void*>(terrainStateTable));
+    mapMaker->tiles = terrainStateTable;
     mapMaker->AssignOrCompactCityRegionIdsAndRebuildBorders(1);
   } else if (mapStreamName == 0) {
 #ifdef IMPERIALISM_RUNTIME_TESTS
@@ -304,7 +304,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
       GenerateMappedFlavorTextByCurrentContextNation(&scenarioTagText);
     }
     mapMaker->GenerateMapFromTuningStringAndApplyScenarioOverrides(
-        static_cast<char*>(static_cast<void*>(terrainStateTable)), cityScoreTable,
+        terrainStateTable, cityScoreTable,
         &scenarioTagText);
   }
 

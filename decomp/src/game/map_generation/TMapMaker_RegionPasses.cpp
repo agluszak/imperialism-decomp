@@ -43,10 +43,10 @@ int TMapMaker::ZoneCorner(long nationCode) {
   int selectedRow = 0;
   int currentRun = 0;
   int tileIndex = 0;
-  char* owner = mapTileGrid08 + 4;
+  TTerrainStateRecord* owner = tiles;
 
   do {
-    if (*owner == nationCode) {
+    if (owner->ownerNationTag04 == nationCode) {
       currentRun = currentRun + 1;
     } else {
       if (longestRun < currentRun) {
@@ -56,7 +56,7 @@ int TMapMaker::ZoneCorner(long nationCode) {
       currentRun = 0;
     }
     tileIndex = tileIndex + 1;
-    owner = owner + 0x24;
+    ++owner;
   } while (tileIndex < 0x1950);
 
   int leftEdgeCount = 0;
@@ -65,9 +65,9 @@ int TMapMaker::ZoneCorner(long nationCode) {
   int matchCount = 0;
   int column = 0;
   int selectedRowTile = selectedRow * 0x6c;
-  owner = mapTileGrid08 + selectedRowTile * 0x24 + 4;
+  owner = tiles + selectedRowTile;
   do {
-    if (*owner == nationCode) {
+    if (owner->ownerNationTag04 == nationCode) {
       if (column < 0x19) {
         leftEdgeCount = leftEdgeCount + 1;
       }
@@ -78,7 +78,7 @@ int TMapMaker::ZoneCorner(long nationCode) {
       matchCount = matchCount + 1;
     }
     column = column + 1;
-    owner = owner + 0x24;
+    ++owner;
   } while (column < 0x6c);
 
   if (0 < leftEdgeCount && 0 < rightEdgeCount) {
@@ -100,13 +100,13 @@ int TMapMaker::ComputeOwnedTerritoryCentroidTile(int nationCode, char useWrapOff
   int rowSum = 0;
   int matchCount = 0;
   int tileIndex = 0;
-  char* ownerBase = mapTileGrid08 + 4;
+  TTerrainStateRecord* ownerBase = tiles;
   char leftEdgeCount = '\0';
   char rightEdgeCount = '\0';
 
-  char* owner = ownerBase;
+  TTerrainStateRecord* owner = ownerBase;
   do {
-    if (*owner == nationCode) {
+    if (owner->ownerNationTag04 == nationCode) {
       int column = tileIndex % 0x6c;
       if (column < 0x19) {
         leftEdgeCount = leftEdgeCount + '\x01';
@@ -119,7 +119,7 @@ int TMapMaker::ComputeOwnedTerritoryCentroidTile(int nationCode, char useWrapOff
       matchCount = matchCount + 1;
     }
     tileIndex = tileIndex + 1;
-    owner = owner + 0x24;
+    ++owner;
   } while (tileIndex < 0x1950);
 
   bool wrapsHorizontally;
@@ -134,7 +134,7 @@ int TMapMaker::ComputeOwnedTerritoryCentroidTile(int nationCode, char useWrapOff
       tileIndex = 0;
       owner = ownerBase;
       do {
-        if (*owner == nationCode) {
+        if (owner->ownerNationTag04 == nationCode) {
           int column = tileIndex % 0x6c;
           if (column < 0x36 && leftEdgeCount < rightEdgeCount) {
             column = 0x6b;
@@ -147,7 +147,7 @@ int TMapMaker::ComputeOwnedTerritoryCentroidTile(int nationCode, char useWrapOff
           matchCount = matchCount + 1;
         }
         tileIndex = tileIndex + 1;
-        owner = owner + 0x24;
+        ++owner;
       } while (tileIndex < 0x1950);
       if (matchCount != 0) {
         return (columnSum / matchCount) % 0x6c + (rowSum / matchCount) * 0x6c;
@@ -178,24 +178,20 @@ void TMapMaker::CompactCityRegionIds() {
     remapCursor = remapCursor + 1;
   }
 
-  int byteOffset = 0;
-  do {
-    int regionClass;
-    if (byteOffset < 0 || mapTileGrid08[byteOffset] != '\x05') {
-      regionClass = -1;
-    } else {
-      regionClass = mapTileGrid08[byteOffset + 4] - 0x17;
+  for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+    TTerrainStateRecord& tile = tiles[tileIndex];
+    if (tile.terrainKindStorage00 != kStrategicTerrainWater) {
+      continue;
     }
-    if (-1 < regionClass) {
+    int regionClass = tile.ownerNationTag04 - 0x17;
+    if (regionClass >= 0) {
       if (g_cityRegionIdRemapTable_006a3498[regionClass] == -1) {
-        g_cityRegionIdRemapTable_006a3498[regionClass] = cityRegionCount2a4;
-        cityRegionCount2a4 = cityRegionCount2a4 + 1;
+        g_cityRegionIdRemapTable_006a3498[regionClass] = cityRegionCount2a4++;
       }
-      mapTileGrid08[byteOffset + 4] =
-          static_cast<char>(g_cityRegionIdRemapTable_006a3498[regionClass]) + '\x17';
+      tile.ownerNationTag04 =
+          static_cast<char>(g_cityRegionIdRemapTable_006a3498[regionClass] + 0x17);
     }
-    byteOffset = byteOffset + 0x24;
-  } while (byteOffset < 0x38f40);
+  }
 }
 
 // Repair pass over the whole 6480-tile grid: every entry whose value is below -1 is an
@@ -205,46 +201,29 @@ void TMapMaker::CompactCityRegionIds() {
 // FUNCTION: IMPERIALISM 0x0052d4b0
 int TMapMaker::RepairOrphanedTileValuesFromNeighbors(short* tileValues) {
   int repairedCount = 0;
-  int tileIndex = 0;
-  int byteOffset = 0;
-  short* cursor = tileValues;
-
-  do {
-    if (*cursor < -1) {
-      int direction = 0;
-      do {
-        int neighbor = HexNeighborInline(tileIndex, direction);
-        if (-1 < neighbor && -1 < tileValues[neighbor]) {
-          int ownClass;
-          char* ownRecord;
-          if (byteOffset < 0 || (ownRecord = mapTileGrid08 + byteOffset, *ownRecord != '\x05')) {
-            ownClass = -1;
-          } else {
-            ownClass = ownRecord[4] - 0x17;
-          }
-
-          char* neighborRecord = mapTileGrid08 + neighbor * 0x24;
-          int neighborClass;
-          if (*neighborRecord == '\x05') {
-            neighborClass = neighborRecord[4] - 0x17;
-          } else {
-            neighborClass = -1;
-          }
-
-          if (ownClass == neighborClass) {
-            *cursor = tileValues[neighbor];
-            repairedCount = repairedCount + 1;
-            break;
-          }
-        }
-        direction = direction + 1;
-      } while (direction < 6);
+  for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+    if (tileValues[tileIndex] >= -1) {
+      continue;
     }
-    byteOffset = byteOffset + 0x24;
-    tileIndex = tileIndex + 1;
-    cursor = cursor + 1;
-  } while (byteOffset <= 0x38f3f);
-
+    for (int direction = 0; direction < 6; ++direction) {
+      int neighbor = HexNeighborInline(tileIndex, direction);
+      if (neighbor < 0 || tileValues[neighbor] < 0) {
+        continue;
+      }
+      TTerrainStateRecord& tile = tiles[tileIndex];
+      TTerrainStateRecord& adjacentTile = tiles[neighbor];
+      int ownClass =
+          tile.terrainKindStorage00 == kStrategicTerrainWater ? tile.ownerNationTag04 - 0x17 : -1;
+      int neighborClass = adjacentTile.terrainKindStorage00 == kStrategicTerrainWater
+                              ? adjacentTile.ownerNationTag04 - 0x17
+                              : -1;
+      if (ownClass == neighborClass) {
+        tileValues[tileIndex] = tileValues[neighbor];
+        ++repairedCount;
+        break;
+      }
+    }
+  }
   return repairedCount;
 }
 
