@@ -585,7 +585,7 @@ void ImperialismApp::OnUpdateDeveloperCommand801F(CCmdUI* commandUi) {
 void ImperialismApp::OnDeveloperCommand8020() {}
 
 // Returns the on-disk data directory prefix. Used by TLanguageMgr's table loaders (real
-// caller: TLanguageMgr::LoadNewsTabTexResourcesAndBuildEntries, 0x00507e50).
+// caller: TLanguageMgr::ReadPrepLUT, 0x00507e50).
 // FUNCTION: IMPERIALISM 0x00414850
 const char* GetDataDirectoryPathLiteral() {
   return s_DataDirectoryPath_006942A8;

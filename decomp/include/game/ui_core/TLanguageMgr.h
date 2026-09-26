@@ -35,21 +35,20 @@ public:
   int field30;
 
   TLanguageMgr();
-  bool LoadNewsTabTexResourcesAndBuildEntries(const char* basePath, int languageTag);
-  void FreeNestedPointerTableRowsAndResetDimensions();
-  void BuildNewsTableDimensions(char firstColumn, char lastColumn, char firstPrimaryRow,
-                                char lastPrimaryRow, char firstExtraRow, char lastExtraRow);
-  void ParseNewsTableRow(char* line);
+  bool ReadPrepLUT(const char* basePath, unsigned long languageTag);
+  void FreeTableRows();
+  void AllocateTable(unsigned char firstColumn, unsigned char lastColumn,
+                     unsigned char firstPrimaryRow, unsigned char lastPrimaryRow,
+                     unsigned char firstExtraRow, unsigned char lastExtraRow);
+  void ParseRow(const char* line);
   // Mac CodeWarrior oracle: TLanguageMgr::Localize(const char*, unsigned char) const.
   // Maps a data byte through the news-string table for the requested format column,
   // expanding '*' in the mapped fragment to the raw data string. 0x005083f0.
   CString Localize(const char* data, unsigned char formatChar) const;
   char PickGender(const char* name) const; // 0x00508910
-  // 0x508c50: normalize a player-name credential token (returns the CString by value —
-  // ret 8 with a hidden return slot). Names starting with '(' or an uppercase letter
-  // pass through; otherwise the first character is stripped when the news table is
-  // loaded or the name starts with a space. Turn-event-9 lounge name-label path.
-  CString NormalizeRuntimeCredentialNameToken(CString* name);
-  bool ReloadPreplutNewsTableAndResources(int languageTag);
+  // Mac oracle: StripCodeStr(const CString&) const. The name is read, never modified.
+  // Removes a leading code byte from coded names; parenthesized and uppercase names pass through.
+  CString StripCodeStr(const CString& name) const;
+  bool SetLanguage(unsigned long languageTag);
 };
 ASSERT_SIZE(TLanguageMgr, 0x34);

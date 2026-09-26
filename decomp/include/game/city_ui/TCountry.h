@@ -106,7 +106,7 @@ public:
   // it on g_apTerrainTypeDescriptorTable entries, which are TCountry*, not TGreatPower*.
   void LoadNationDisplayNameSharedRefFromField8(CString* destString);
   // 0x004d7ac0 -- the raw counterpart of the above: copies identitySharedString1
-  // straight out, with no NormalizeRuntimeCredentialNameToken pass.
+  // straight out, with no StripCodeStr pass.
   void LoadNationDisplayNameRawFromField8(CString* destString);
   // 0x4d8430 — sums g_aUnitOrderCostProfileByAbilityId[type][2] over militaryUnitList44.
   int ComputeSelectedMilitaryPowerScore();

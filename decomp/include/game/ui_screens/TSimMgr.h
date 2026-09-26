@@ -97,7 +97,7 @@ public:
   // Copy the per-slot shared credential/name text (sharedTextSlots[slot]) into out and
   // return out. 0x00581b20.
   // Byval return (0x581b20): normalizes sharedTextSlots[slot] through
-  // TLanguageMgr::NormalizeRuntimeCredentialNameToken.
+  // TLanguageMgr::StripCodeStr.
   CString LoadNormalizedCredentialName(short slot);
   // Return a by-value copy of sharedTextSlots[slot] (the copy-constructed hidden-return
   // sibling of LoadNormalizedCredentialName). 0x00581bc0.

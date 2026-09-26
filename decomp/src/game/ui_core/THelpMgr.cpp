@@ -24,6 +24,7 @@
 #include "game/military/TMilitaryUnit.h"
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/core/TStream.h"
+#include "game/core/stream_byteswap.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_text_label_helpers_decls.h"
 
@@ -96,18 +97,16 @@ IMPLEMENT_DYNCREATE(THelpMgr, TObject)
 THelpMgr::THelpMgr() : TObject() {
   pendingDialogView8 = 0;
   pendingDialogViewC = 0;
-  helpIndexReady = 0;
+  tradeAdviceDetailLevel = 0;
   unusedInitializedState1A = 0;
   unusedInitializedState1E = 0;
   unusedInitializedState22 = 0;
   unusedInitializedState26 = 0;
   unusedInitializedState2A = 0;
   unusedInitializedState2C = 0;
-  civilianCompletionCounters10.values[0] = 0;
-  civilianCompletionCounters10.values[1] = 0;
-  civilianCompletionCounters14.values[0] = 0;
-  civilianCompletionCounters14.values[1] = 0;
-  civilianCompletionCounter18 = 0;
+  for (int i = 0; i < 5; ++i) {
+    civilianCompletionCounts[i] = 0;
+  }
   indexList = nullptr;
 }
 
@@ -119,7 +118,7 @@ THelpMgr::~THelpMgr() {}
 
 // FUNCTION: IMPERIALISM 0x00500680
 void THelpMgr::IHelpMgr() {
-  helpIndexReady = 1;
+  tradeAdviceDetailLevel = 1;
   TPtrList* list = new TPtrList();
   list->recordSize14 = sizeof(HelpSetRecord);
   indexList = list;
@@ -169,22 +168,6 @@ void THelpMgr::IHelpMgr() {
   }
 }
 
-namespace {
-
-__inline int ReadLocalizationFlowMode() {
-  return g_pSimMgr->mode;
-}
-
-__inline short ReadLocalizationTurnGateFlag58() {
-  return g_pSimMgr->preferenceValues[8];
-}
-
-__inline short ReadLocalizationPendingEventGate5c() {
-  return g_pSimMgr->preferenceValues[10];
-}
-
-} // namespace
-
 // FUNCTION: IMPERIALISM 0x00500f10
 void THelpMgr::ResetHelpSetRanksAndFlags() {
   for (int index = 1; index <= indexList->GetSize(); ++index) {
@@ -201,17 +184,11 @@ void THelpMgr::ReadFrom(TStream* stream) {
   indexList->InvokePtrListResetHook();
   indexList->ReadFrom(stream);
   if (g_nSaveFormatVersion >= 0x2b) {
-    short* counters = civilianCompletionCounters10.values;
-    stream->ReadBytes(counters, 10);
-    for (int i = 0; i < 5; ++i) {
-      unsigned char* bytes = static_cast<unsigned char*>(static_cast<void*>(&counters[i]));
-      unsigned char first = bytes[0];
-      bytes[0] = bytes[1];
-      bytes[1] = first;
-    }
+    stream->ReadBytes(civilianCompletionCounts, sizeof(civilianCompletionCounts));
+    SwapShortArrayBytes(civilianCompletionCounts, 5);
   }
   if (g_nSaveFormatVersion >= 0x37) {
-    stream->ReadBytes(&helpIndexReady, 2);
+    stream->ReadBytes(&tradeAdviceDetailLevel, 2);
   }
 }
 
@@ -219,16 +196,8 @@ void THelpMgr::ReadFrom(TStream* stream) {
 void THelpMgr::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
   indexList->WriteTo(stream);
-  short* counters = civilianCompletionCounters10.values;
-  for (int i = 0; i < 5; ++i) {
-    short swapped = counters[i];
-    unsigned char* bytes = static_cast<unsigned char*>(static_cast<void*>(&swapped));
-    unsigned char first = bytes[0];
-    bytes[0] = bytes[1];
-    bytes[1] = first;
-    stream->WriteBytes(&swapped, 2);
-  }
-  stream->WriteBytes(&helpIndexReady, 2);
+  WriteShortArrayElems(stream, civilianCompletionCounts, 5);
+  stream->WriteBytes(&tradeAdviceDetailLevel, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x00501070
@@ -280,9 +249,9 @@ void THelpMgr::SelectAndActivatePendingEventForCurrentView() {
 // FUNCTION: IMPERIALISM 0x005011a0
 void THelpMgr::HandlePostDispatchTurnStateEventUpdates() {
   const short nationId = g_pSimMgr->GetActiveNationId();
-  const int flowMode = ReadLocalizationFlowMode();
+  const int flowMode = g_pSimMgr->mode;
   if (flowMode != 0xf) {
-    if (flowMode == 0x6a && ReadLocalizationTurnGateFlag58() != 0) {
+    if (flowMode == 0x6a && g_pSimMgr->preferenceValues[8] != 0) {
       if (g_nTurnFlowNationComparisonAdvisoryTick < g_pSimMgr->GetEconomicTurn()) {
         if (ShowPeriodicNationComparisonAdvisoryIfNeeded() != 0) {
           g_nTurnFlowNationComparisonAdvisoryTick = g_pSimMgr->GetEconomicTurn();
@@ -294,7 +263,7 @@ void THelpMgr::HandlePostDispatchTurnStateEventUpdates() {
   // No null check in the original: the 0xf flow mode guarantees the active nation slot.
   g_apNationStates[nationId]->DispatchPendingStatusPrompts();
   g_apNationStates[nationId]->BuildGreatPowerTurnMessageSummaryAndDispatch();
-  if (ReadLocalizationTurnGateFlag58() != 0) {
+  if (g_pSimMgr->preferenceValues[8] != 0) {
     if (DispatchTurnStateSpecialAdvisoriesAndReturnCount() < 2) {
       ShowPeriodicCapabilityReminderIfNeeded();
     }
@@ -846,7 +815,7 @@ char THelpMgr::HandlePendingEventActivationByCode(TurnEventCodeStorage eventCode
     }
   }
 
-  if (ReadLocalizationPendingEventGate5c() == 0) {
+  if (g_pSimMgr->preferenceValues[10] == 0) {
     if (pendingDialogView8 != 0) {
       pendingDialogView8->CloseAndFree();
       pendingDialogView8 = 0;
@@ -1029,7 +998,7 @@ HelpSetRecord* THelpMgr::FindHelpSetRecordByResourceBase(short helpResourceBaseI
 
 // FUNCTION: IMPERIALISM 0x00503830
 char THelpMgr::IncrementCivilianCompletionCounterAndCheckThreshold(unsigned int index) {
-  short* counters = &civilianCompletionCounters10.values[0];
+  short* counters = &civilianCompletionCounts[0];
   short threshold = -1;
   switch (index) {
   case 0:
@@ -1047,38 +1016,37 @@ char THelpMgr::IncrementCivilianCompletionCounterAndCheckThreshold(unsigned int 
 }
 
 // FUNCTION: IMPERIALISM 0x005038b0
-void THelpMgr::TryShowCivilianCompletionMilestoneNotification(TCivUnit* civilianOrderEntry) {
+void THelpMgr::CheckUnitAdvice(TCivUnit* civilianOrderEntry) {
   int titleStringIndex = -1;
   int messageStringIndex = -1;
 
   if (civilianOrderEntry->orderType == EncodeCivilianUnitKind(kCivilianUnitProspector)) {
-    if (civilianOrderEntry->completionMarker26 == 0x232f &&
-        ++civilianCompletionCounters10.values[0] == 1) {
+    if (civilianOrderEntry->completionMarker26 == 0x232f && ++civilianCompletionCounts[0] == 1) {
       titleStringIndex = 0x2c;
       messageStringIndex = 0x2d;
     }
   } else if (civilianOrderEntry->orderType == EncodeCivilianUnitKind(kCivilianUnitEngineer)) {
     switch (civilianOrderEntry->completionMarker26) {
     case 0x2329:
-      if (++civilianCompletionCounters10.values[1] == 3) {
+      if (++civilianCompletionCounts[1] == 3) {
         titleStringIndex = 0x2e;
         messageStringIndex = 0x2f;
       }
       break;
     case 0x232a:
-      if (++civilianCompletionCounters14.values[0] == 1) {
+      if (++civilianCompletionCounts[2] == 1) {
         titleStringIndex = 0x32;
         messageStringIndex = 0x33;
       }
       break;
     case 0x232b:
-      if (++civilianCompletionCounters14.values[1] == 1) {
+      if (++civilianCompletionCounts[3] == 1) {
         titleStringIndex = 0x34;
         messageStringIndex = 0x35;
       }
       break;
     }
-  } else if (++civilianCompletionCounter18 == 1) {
+  } else if (++civilianCompletionCounts[4] == 1) {
     titleStringIndex = 0x30;
     messageStringIndex = 0x31;
   }
@@ -1114,12 +1082,12 @@ void THelpMgr::EnsureMapActionContextViewAndBuildDefaultTileMenu(int mapContextI
 }
 
 // FUNCTION: IMPERIALISM 0x00503b90
-void THelpMgr::CycleTradeScreenMode0To2() {
-  if (helpIndexReady == 0) {
-    helpIndexReady = 1;
-  } else if (helpIndexReady == 1) {
-    helpIndexReady = 2;
-  } else if (helpIndexReady == 2) {
-    helpIndexReady = 0;
+void THelpMgr::ToggleTradeAdvice() {
+  if (tradeAdviceDetailLevel == 0) {
+    tradeAdviceDetailLevel = 1;
+  } else if (tradeAdviceDetailLevel == 1) {
+    tradeAdviceDetailLevel = 2;
+  } else if (tradeAdviceDetailLevel == 2) {
+    tradeAdviceDetailLevel = 0;
   }
 }

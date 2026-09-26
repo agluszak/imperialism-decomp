@@ -194,8 +194,8 @@ char TLoungeDialog::DoIdle(int action) {
     CString desiredName;
     CString currentName;
     nameLabel->CopyTextTo(&currentName);
-    desiredName = g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(
-        &g_pGameFlowState->defaultNationTextSlots[nationSlot]);
+    desiredName =
+        g_pLanguageMgr->StripCodeStr(g_pGameFlowState->defaultNationTextSlots[nationSlot]);
     if (currentName.Compare(desiredName) != 0) {
       nameLabel->SetTextAndMaybeRefresh(&desiredName, 1);
       if (statusIndex == 4) {

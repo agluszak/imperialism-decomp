@@ -46,8 +46,7 @@ void TJoinSelectorDialog::DoPostCreate(int arg) {
   ConfigureUiControlStyleValueAndCaptionFromStringResource(tgamControl, 0, 0xc, 0x2b6b, -2, 0x2742,
                                                            5);
 
-  CString normalizedPlayerName =
-      g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&g_pGameFlowState->playerNameString);
+  CString normalizedPlayerName = g_pLanguageMgr->StripCodeStr(g_pGameFlowState->playerNameString);
   ApplyControlThemeStyleAndOptionalCaption(nameControl, 0, 0xc, 0x2b6b, 1, normalizedPlayerName);
   nameControl->maxCharacterCount = 0xc;
   if (nameControl->editWindow != nullptr) {

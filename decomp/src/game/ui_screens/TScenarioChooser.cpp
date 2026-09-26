@@ -234,7 +234,7 @@ void TScenarioChooser::StartGame() {
     // the scenario's 'scn0'+index tag before posting event 0x5e4.
     do {
       g_cstrCountryNameSettingValue006A4220 =
-          g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&g_pGameFlowState->playerNameString);
+          g_pLanguageMgr->StripCodeStr(g_pGameFlowState->playerNameString);
       CString promptText;
       g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&promptText, 0x2742, 3);
       g_pViewMgr->MakePlanetSeedDialog(promptText, g_cstrCountryNameSettingValue006A4220, 0, 0, 0,

@@ -1520,7 +1520,7 @@ void TSimMgr::SetSelectedIndex6AAndTriggerRefresh(short index) {
 
 // FUNCTION: IMPERIALISM 0x00581b20
 CString TSimMgr::LoadNormalizedCredentialName(short slot) {
-  CString name = g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&sharedTextSlots[slot]);
+  CString name = g_pLanguageMgr->StripCodeStr(sharedTextSlots[slot]);
   return name;
 }
 

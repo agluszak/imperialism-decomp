@@ -170,15 +170,14 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
 
   if (g_pSimMgr->multiplayerSessionRole != 0) {
     g_cstrCountryNameSettingValue006A4220 =
-        g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&g_pGameFlowState->playerNameMirror);
+        g_pLanguageMgr->StripCodeStr(g_pGameFlowState->playerNameMirror);
   } else {
     g_pSimMgr->useLocalizedNameTables68 = static_cast<char>(g_pSimMgr->preferenceValues[13]);
     GenerateMappedFlavorTextByCurrentContextNation(&g_cstrCountryNameSettingValue006A4220);
     CString profileName;
     LoadProfileStringAndAssignSharedRef(&profileName, g_szCountryNameProfileKey00698AE0,
                                         g_cstrCountryNameSettingValue006A4220);
-    g_cstrCountryNameSettingValue006A4220 =
-        g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&profileName);
+    g_cstrCountryNameSettingValue006A4220 = g_pLanguageMgr->StripCodeStr(profileName);
   }
 
   RefreshActiveControlThenApplyThemeStyleAndCaption(kControlTagCoun, 0, 0xc, 0x2b6b, 1,
