@@ -118,7 +118,7 @@ explicit rejection plus evidence.
 Generation writes `_source_map.json` beside the TUs. It maps every event/node to its
 tag, class, semantic evidence, confidence, and generated line span. The explain command
 selects a node by record offset or tag; the triage command summarizes case coverage and
-confidence before machine-level `just triage` work. There are no C++ body templates or
+confidence before `just compare` inspection. There are no C++ body templates or
 retail inputs in the normal generation path. The generated manifest hashes every
 committed semantic input. Platform deltas are declared directly in
 `config/ui_platform_deltas.yml` and checked by the runtime UI oracle when it needs them.

@@ -12,7 +12,7 @@ binary or copyrighted game assets; use your own legally obtained copy.
 
 - `git` and `git-lfs` for the vendored Ghidra archive.
 - `just` for project commands and `uv` for Python tools.
-- Docker for the MSVC500 build, Wine plus GDB/MI for the native runtime suite, and Ghidra 12.1.2.
+- Docker for the MSVC500 build, Wine plus GDB/MI for the native runtime suite, and Ghidra 12.1.4.
 - `bd` (Beads) for task tracking.
 
 ## First setup
@@ -32,21 +32,22 @@ just build
 `MACOS_IMPERIALISM_DUMP` is only for regenerating vendored Mac evidence. A new worktree needs its own
 `.env` and `reccmp-user.yml`, but can reuse the Docker image and the local Ghidra installation.
 
-## Daily recovery loop
+## Recovery campaigns
 
 ```sh
 bd update <issue> --claim
-just ghidra portprep 0xADDR
-# inspect retail evidence and edit ordinary VC5-compatible C++
+just compare-report build/comparisons/BASELINE --queue --output build/campaign.json
+# inspect retail evidence; fix shared owners across a coherent source batch
 just build
-just triage 0xADDR
+just compare --changed
 just precommit
 ```
 
-Use `just compare 0xADDR` only when the structured triage result needs a raw diff. `just vtable`,
-`just datacmp`, `just stackcmp`, and `just serde-audit` are focused diagnostics. `just precommit` is
-the required full verification: build, source gates, tooling tests, generated-input integrity, and the
-asset-backed runtime suite.
+Start from a saved authored baseline (`just compare --all`), normally cover roughly 50–100 affected
+functions, then rebuild/compare once. Differences are inspection evidence; comparisons do not fail
+for a percentage score. `just vtable`, `just datacmp`, and `just serde-audit` are focused diagnostics.
+Run relevant runtime differentials when behavior may change, and full `just precommit` near the end
+of a source batch. Tooling-only changes use focused tooling tests. See [workflows](docs/workflows.md).
 
 The scoped rules are in `AGENTS.md`. The six focused skills under `.agents/skills/` cover function
 recovery, class recovery, Ghidra, verification, runtime behavior, and source/evidence synchronization.

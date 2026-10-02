@@ -2,7 +2,7 @@
 # Remote environment bootstrap for imperialism-decomp.
 #
 # One-time / from-scratch provisioning of a remote or sandbox host: system
-# packages, just/uv/docker/bd, JDK 21, Ghidra 12.1.2 PUBLIC, the original game
+# packages, just/uv/docker/bd, JDK 21, Ghidra 12.1.4 PUBLIC, the original game
 # binary, decomp-local config, and a first build.
 #
 # Assumes: repo already cloned and this is run from the decomp project root. Works either
@@ -18,7 +18,7 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 GIT_ROOT="$(git -C "$REPO_ROOT" rev-parse --show-toplevel)"
-GHIDRA_VERSION="12.1.2"
+GHIDRA_VERSION="12.1.4"
 GHIDRA_TAG="Ghidra_${GHIDRA_VERSION}_build"
 # Extract directly under /opt so the install dir is /opt/ghidra_<ver>_PUBLIC
 # (the zip's own top-level dir); this reuses an existing install if present.
@@ -156,7 +156,7 @@ if ! command -v bd >/dev/null 2>&1; then
 fi
 
 # ---------------------------------------------------------------------------
-# 6. Ghidra 12.1.2 PUBLIC
+# 6. Ghidra 12.1.4 PUBLIC
 # ---------------------------------------------------------------------------
 log "Ghidra ${GHIDRA_VERSION} PUBLIC"
 $SUDO mkdir -p "$GHIDRA_PARENT_DIR"

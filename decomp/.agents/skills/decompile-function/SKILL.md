@@ -14,6 +14,7 @@ Run from `decomp/`.
    [cpp-recovery.md](references/cpp-recovery.md) for calls, exceptions, ownership, MFC, or layout, and
    [matching.md](references/matching.md) for recurring VC5 code-generation shapes.
 3. Implement the evidenced behavior and source model according to `AGENTS.md`.
-4. Run `just build`, then `just triage 0xADDR` (or `just triage --file path`). Use the structured
-   status to decide whether to revise source, inspect more evidence, or diagnose pairing/comparison.
-5. Repeat through a coherent recovery, then use the `verify` skill for final checks.
+4. Continue through a coherent family of roughly 50–100 affected functions when feasible. Use
+   saved reports and focused retail reads rather than rebuilding after each body.
+5. Rebuild/compare once for the batch with `just build` and `just compare --changed`. Inspect the
+   saved Ghidriff evidence, then use the `verify` skill for final checks.

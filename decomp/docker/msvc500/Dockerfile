@@ -56,10 +56,14 @@ RUN wget -O /tmp/cmake.zip https://github.com/Kitware/CMake/releases/download/v3
  && mv /root/.wine/drive_c/cmake-3.26.6-windows-i386 /root/.wine/drive_c/cmake \
  && rm -f /tmp/cmake.zip
 
-# The pinned reccmp collector uses the LLVM 19 AST and CodeGen APIs.
-RUN apt-get update \
- && apt-get install -y --no-install-recommends llvm-19-dev libclang-19-dev \
- && rm -rf /var/lib/apt/lists/*
+# The pinned reccmp collector uses the LLVM 21 AST and CodeGen APIs.
+RUN echo "deb http://deb.debian.org/debian trixie-backports main" \
+      > /etc/apt/sources.list.d/backports.list \
+ && apt-get update \
+ && apt-get install -y --no-install-recommends -t trixie-backports \
+      clang-21 llvm-21-dev libclang-21-dev libclang-cpp21-dev \
+ && rm -rf /var/lib/apt/lists/* \
+ && ln -sf clang-21 /usr/bin/clang-cl
 
 COPY entrypoint.py /entrypoint.py
 

@@ -16,16 +16,15 @@ bytes shifts everything after it, and nothing downstream can detect or recover f
 
 Two consequences that are easy to get backwards:
 
-- **A low reccmp score does not imply a desync.** `TOcean::ReadFrom` sits below 40% with
-  byte accounting that is exactly right; the gap is EH/codegen shape. `just triage`
-  reports it `inconclusive`, which per AGENTS.md is not evidence of a source defect.
-- **A high score does not imply correctness.** `TDiplomacyMgr::ReadFrom` looked like three
+- **A differing decompilation does not imply a desync.** Inspect stream-call order,
+  byte accounting and runtime fixtures before attributing a difference to serialization.
+- **A similar decompilation does not imply correctness.** `TDiplomacyMgr::ReadFrom` looked like three
   tidy matrix reads while under-reading 2.1 KB, and `TTown::WriteTo` wrote the right
   *number* of bytes in the wrong *order* (raw block where the reader byte-swaps), so
   every resource yield came back corrupted.
 
 `just serde-audit` measures byte accounting specifically, and is the check that matters
-for save/load. Run it after touching a serializer; run `just triage` for the score.
+for save/load. Run it after a serializer batch and inspect its saved Ghidriff comparison.
 
 ## Byte order
 

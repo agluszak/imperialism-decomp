@@ -14,5 +14,6 @@ Run from `decomp/`.
    than resolving them from names.
 3. Update the class declaration and owned definitions according to the source and ABI invariants in
    `AGENTS.md`. Update affected base/override declarations and retire superseded recovery scaffolding.
-4. Run focused builds and triage for affected functions, then `just vtable ClassName`.
+4. Finish the shared-owner batch before rebuilding and running `just compare --changed`, then
+   `just vtable ClassName`. Use saved reports for investigation between batches.
 5. Use `decompile-function` for substantial bodies and `verify` for final checks.
