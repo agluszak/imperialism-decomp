@@ -934,21 +934,24 @@ fn bind_added_garrisons(
             });
             if !row.militia {
                 let unit = row.unit;
-                commands.entity(row_entity).insert(Button).observe(
-                    move |activate: On<Activate>,
-                          mut texts: Query<&mut Text>,
-                          mut session: ResMut<GameSession>,
-                          assets: RetailUiAssets| {
-                        session.game.toggle_garrison_unit_ready(unit);
-                        let Some(state) = session.game.military_unit(unit) else {
-                            return;
-                        };
-                        let kind = garrison_order_text(&assets, state.order().code());
-                        if let Ok(mut text) = texts.get_mut(activate.entity) {
-                            text.0 = format!("{}\n{kind}", state.name());
-                        }
-                    },
-                );
+                commands
+                    .entity(row_entity)
+                    .insert((Button, Pickable::default()))
+                    .observe(
+                        move |activate: On<Activate>,
+                              mut texts: Query<&mut Text>,
+                              mut session: ResMut<GameSession>,
+                              assets: RetailUiAssets| {
+                            session.game.toggle_garrison_unit_ready(unit);
+                            let Some(state) = session.game.military_unit(unit) else {
+                                return;
+                            };
+                            let kind = garrison_order_text(&assets, state.order().code());
+                            if let Ok(mut text) = texts.get_mut(activate.entity) {
+                                text.0 = format!("{}\n{kind}", state.name());
+                            }
+                        },
+                    );
             }
         }
         insert_paged_rows(&mut commands, root, rows, previous, next, last_column);
@@ -995,22 +998,25 @@ fn bind_added_army_rosters(
                 entity: row_entity,
                 column,
             });
-            commands.entity(row_entity).insert(Button).observe(
-                move |_: On<Activate>,
-                      mut map: ResMut<StrategicMapSession>,
-                      mut session: ResMut<GameSession>,
-                      mut commands: Commands| {
-                    map.apply(
-                        &mut session.game,
-                        MapAction::Select(StrategicSelection::Army(Some(province))),
-                    );
-                    session.game.apply_army_province_selection(Some(province));
-                    if let Some(tile) = session.game.map().provinces[province].city_tile() {
-                        map.apply(&mut session.game, MapAction::Center(tile));
-                    }
-                    commands.entity(root).try_despawn();
-                },
-            );
+            commands
+                .entity(row_entity)
+                .insert((Button, Pickable::default()))
+                .observe(
+                    move |_: On<Activate>,
+                          mut map: ResMut<StrategicMapSession>,
+                          mut session: ResMut<GameSession>,
+                          mut commands: Commands| {
+                        map.apply(
+                            &mut session.game,
+                            MapAction::Select(StrategicSelection::Army(Some(province))),
+                        );
+                        session.game.apply_army_province_selection(Some(province));
+                        if let Some(tile) = session.game.map().provinces[province].city_tile() {
+                            map.apply(&mut session.game, MapAction::Center(tile));
+                        }
+                        commands.entity(root).try_despawn();
+                    },
+                );
         }
         insert_paged_rows(&mut commands, root, rows, previous, next, last_column);
     }
@@ -1205,31 +1211,37 @@ fn bind_added_navy_rosters(
                 NavyRosterKind::Nation => {
                     let zone = row.location;
                     let force = row.force;
-                    commands.entity(row_entity).insert(Button).observe(
-                        move |_: On<Activate>,
-                              mut map: ResMut<StrategicMapSession>,
-                              mut session: ResMut<GameSession>,
-                              mut commands: Commands| {
-                            map.select_navy(&mut session.game, zone, force);
-                            commands.entity(root).try_despawn();
-                        },
-                    );
+                    commands
+                        .entity(row_entity)
+                        .insert((Button, Pickable::default()))
+                        .observe(
+                            move |_: On<Activate>,
+                                  mut map: ResMut<StrategicMapSession>,
+                                  mut session: ResMut<GameSession>,
+                                  mut commands: Commands| {
+                                map.select_navy(&mut session.game, zone, force);
+                                commands.entity(root).try_despawn();
+                            },
+                        );
                 }
                 NavyRosterKind::TaskForce(force) => {
                     let force = *force;
                     let ship = row.ship;
                     let selected = row.selected;
-                    commands.entity(row_entity).insert(Button).observe(
-                        move |_: On<Activate>,
-                              mut session: ResMut<GameSession>,
-                              mut commands: Commands| {
-                            session
-                                .game
-                                .set_task_force_ship_selected(force, ship, !selected);
-                            commands.entity(root).try_despawn();
-                            spawn_navy_roster(&mut commands, NavyRosterKind::TaskForce(force));
-                        },
-                    );
+                    commands
+                        .entity(row_entity)
+                        .insert((Button, Pickable::default()))
+                        .observe(
+                            move |_: On<Activate>,
+                                  mut session: ResMut<GameSession>,
+                                  mut commands: Commands| {
+                                session
+                                    .game
+                                    .set_task_force_ship_selected(force, ship, !selected);
+                                commands.entity(root).try_despawn();
+                                spawn_navy_roster(&mut commands, NavyRosterKind::TaskForce(force));
+                            },
+                        );
                 }
             }
         }

@@ -16,16 +16,20 @@ pub fn flagview_8451() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                Pickable::IGNORE
                 Children [
                     (
                         retail_node(fourcc!("main"), 0, 0, 640, 480)
+                        Pickable::IGNORE
                         retail_picture(8452)
                         Children [
                             (
                                 retail_node(fourcc!("tool"), 0, 0, 47, 49)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("end "), 23, 15, 22, 33)
+                                        Pickable::default()
                                         Button
                                         retail_picture(8454)
                                         Visibility::Hidden
@@ -35,9 +39,11 @@ pub fn flagview_8451() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tbr2"), 592, 15, 73, 36)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 22, 33)
+                                        Pickable::default()
                                         Button
                                         retail_picture(8456)
                                         Visibility::Hidden
@@ -47,12 +53,14 @@ pub fn flagview_8451() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("date"), 500, 54, 116, 16)
+                                Pickable::IGNORE
                                 Text("Winter, 1994")
                                 retail_text_style(2, 0, 12, -1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("spec"), 20, 54, 116, 16)
+                                Pickable::IGNORE
                                 Text("Winter, 1994")
                                 retail_text_style(2, 0, 12, -2)
                                 TextColor(Color::BLACK)
@@ -61,6 +69,7 @@ pub fn flagview_8451() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("over"), 0, 475, 640, 5)
+                        Pickable::IGNORE
                         retail_picture(8453)
                     ),
                 ]
@@ -76,22 +85,27 @@ pub fn flagview_8500() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("base"), 0, 0, 640, 480)
+                Pickable::IGNORE
                 Children [
                     (
                         retail_node(fourcc!("main"), 0, 0, 640, 480)
+                        Pickable::IGNORE
                         retail_picture(8530)
                         Children [
                             (
                                 retail_node(fourcc!("tool"), 3, 6, 237, 40)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("seas"), 44, 1, 94, 17)
+                                        Pickable::IGNORE
                                         Text("Winter, 1888")
                                         retail_text_style(3, 0, 9, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("trea"), 141, 1, 75, 17)
+                                        Pickable::IGNORE
                                         Text("$55,555")
                                         retail_text_style(3, 0, 9, 1)
                                         TextColor(Color::BLACK)
@@ -101,13 +115,16 @@ pub fn flagview_8500() -> impl Scene {
                             (
                                 retail_node(fourcc!("tabs"), 558, 45, 31, 423)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::default()
                                 Button
                             ),
                             (
                                 retail_node(fourcc!("shee"), 45, 128, 510, 313)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("mCap"), 411, 284, 37, 15)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 14, 1)
                                         TextColor(Color::BLACK)
@@ -115,15 +132,18 @@ pub fn flagview_8500() -> impl Scene {
                                     (
                                         retail_node(fourcc!("purc"), 119, 201, 33, 19)
                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 14, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("clus"), 30, 221, 33, 17)
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("nomo"), 9, 4, 18, 11)
+                                                Pickable::default()
                                                 Checkbox
                                                 InteractionDisabled
                                                 retail_picture(8501)
@@ -132,6 +152,7 @@ pub fn flagview_8500() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("reje"), 23, 246, 57, 57)
+                                        Pickable::default()
                                         Button
                                         retail_picture(8533)
                                         Visibility::Hidden
@@ -139,6 +160,7 @@ pub fn flagview_8500() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("acce"), 152, 246, 57, 57)
+                                        Pickable::default()
                                         Button
                                         retail_picture(8532)
                                         Visibility::Hidden
@@ -146,37 +168,44 @@ pub fn flagview_8500() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("offe"), 21, 126, 181, 69)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 12, 1)
                                         retail_text_color(0xd2)
                                     ),
                                     (
                                         retail_node(fourcc!("purT"), 12, 200, 100, 19)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 12, -1)
                                         retail_text_color(0xd2)
                                     ),
                                     (
                                         retail_node(fourcc!("noof"), 63, 224, 145, 14)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 12, -2)
                                         retail_text_color(0xd2)
                                     ),
                                     (
                                         retail_node(fourcc!("unit"), 157, 200, 58, 20)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 12, -2)
                                         retail_text_color(0xd2)
                                     ),
                                     (
                                         retail_node(fourcc!("icon"), 97, 68, 32, 24)
+                                        Pickable::IGNORE
                                         retail_picture(700)
                                     ),
                                     (
                                         retail_node(fourcc!("mPic"), 398, 253, 59, 30)
+                                        Pickable::IGNORE
                                     ),
                                     (
                                         retail_node(fourcc!("info"), 349, 4, 153, 249)
+                                        Pickable::IGNORE
                                         Text("Trade Book")
                                         retail_text_style(1, 0, 12, 1)
                                         retail_text_color(0xd2)
@@ -186,31 +215,37 @@ pub fn flagview_8500() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("wait"), 2045, 128, 225, 313)
+                                Pickable::IGNORE
                                 retail_picture(8535)
                                 Children [
                                     (
                                         retail_node(fourcc!("text"), 40, 134, 145, 92)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("icow"), 97, 68, 32, 24)
+                                        Pickable::IGNORE
                                         retail_picture(700)
                                     ),
                                 ]
                             ),
                             (
                                 retail_node(fourcc!("book"), 2000, 45, 499, 426)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("titL"), 43, 9, 157, 21)
+                                        Pickable::IGNORE
                                         Text("Deal Book")
                                         retail_text_style(1, 0, 18, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("rtil"), 271, 9, 199, 20)
+                                        Pickable::IGNORE
                                         Text("Winter 1820")
                                         retail_text_style(1, 0, 18, 1)
                                         TextColor(Color::BLACK)
@@ -218,29 +253,36 @@ pub fn flagview_8500() -> impl Scene {
                                     (
                                         retail_node(fourcc!("done"), 5, 5, 37, 28)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::default()
                                         Button
                                     ),
                                     (
                                         retail_node(fourcc!("lcor"), -1, 392, 38, 34)
+                                        Pickable::IGNORE
                                         retail_picture(8801)
                                     ),
                                     (
                                         retail_node(fourcc!("rcor"), 462, 390, 41, 36)
+                                        Pickable::IGNORE
                                         retail_picture(8802)
                                     ),
                                     (
                                         retail_node(fourcc!("tbou"), 256, 44, 240, 340)
+                                        Pickable::IGNORE
                                     ),
                                     (
                                         retail_node(fourcc!("tsol"), 7, 44, 240, 340)
+                                        Pickable::IGNORE
                                     ),
                                     (
                                         retail_node(fourcc!("list"), 438, 31, 46, 357)
+                                        Pickable::IGNORE
                                     ),
                                 ]
                             ),
                             (
                                 retail_node(fourcc!("curs"), 273, 7, 318, 25)
+                                Pickable::IGNORE
                                 hover_help_bar()
                                 Text("")
                                 retail_text_style(1, 0, 14, 1)
@@ -249,9 +291,11 @@ pub fn flagview_8500() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tbr2"), 608, 39, 30, 40)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("quer"), 0, 0, 23, 39)
+                                        Pickable::default()
                                         Button
                                         retail_picture(8404)
                                         Visibility::Hidden
@@ -261,6 +305,7 @@ pub fn flagview_8500() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("ForM"), 225, 48, 87, 116)
+                                Pickable::default()
                                 Button
                                 retail_picture(8825)
                                 Visibility::Hidden
@@ -281,22 +326,28 @@ pub fn flagview_8800() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                Pickable::IGNORE
                 Children [
                     (
                         retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                        Pickable::IGNORE
                         Children [
                             (
                                 retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("main"), 0, 0, 640, 480)
+                                        Pickable::IGNORE
                                         retail_picture(8800)
                                         Children [
                                             (
                                                 retail_node(fourcc!("tool"), 3, 6, 237, 90)
+                                                Pickable::IGNORE
                                                 Children [
                                                     (
                                                         retail_node(fourcc!("end "), 5, 32, 30, 51)
+                                                        Pickable::default()
                                                         Button
                                                         retail_picture(8814)
                                                         Visibility::Hidden
@@ -304,12 +355,14 @@ pub fn flagview_8800() -> impl Scene {
                                                     ),
                                                     (
                                                         retail_node(fourcc!("seas"), 44, 1, 94, 17)
+                                                        Pickable::IGNORE
                                                         Text("Winter, 1888")
                                                         retail_text_style(3, 0, 9, 1)
                                                         TextColor(Color::BLACK)
                                                     ),
                                                     (
                                                         retail_node(fourcc!("trea"), 141, 1, 75, 17)
+                                                        Pickable::IGNORE
                                                         Text("$55,555")
                                                         retail_text_style(3, 0, 9, 1)
                                                         TextColor(Color::BLACK)
@@ -318,20 +371,25 @@ pub fn flagview_8800() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("rcor"), 520, 435, 41, 36)
+                                                Pickable::IGNORE
                                                 retail_picture(8802)
                                             ),
                                             (
                                                 retail_node(fourcc!("lcor"), 57, 437, 38, 34)
+                                                Pickable::IGNORE
                                                 retail_picture(8801)
                                             ),
                                             (
                                                 retail_node(fourcc!("sold"), 65, 89, 240, 340)
+                                                Pickable::IGNORE
                                             ),
                                             (
                                                 retail_node(fourcc!("boug"), 314, 89, 240, 340)
+                                                Pickable::IGNORE
                                             ),
                                             (
                                                 retail_node(fourcc!("titL"), 101, 54, 157, 22)
+                                                Pickable::IGNORE
                                                 Text("Deal Book")
                                                 retail_text_style(1, 0, 18, 1)
                                                 TextColor(Color::BLACK)
@@ -339,16 +397,20 @@ pub fn flagview_8800() -> impl Scene {
                                             (
                                                 retail_node(fourcc!("tabs"), 558, 45, 31, 423)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                                Pickable::default()
                                                 Button
                                             ),
                                             (
                                                 retail_node(fourcc!("tsol"), 1000, 90, 240, 340)
+                                                Pickable::IGNORE
                                             ),
                                             (
                                                 retail_node(fourcc!("tbou"), 1000, 90, 240, 340)
+                                                Pickable::IGNORE
                                             ),
                                             (
                                                 retail_node(fourcc!("rtil"), 329, 54, 199, 22)
+                                                Pickable::IGNORE
                                                 Text("Winter 1820")
                                                 retail_text_style(1, 0, 18, 1)
                                                 retail_text_color(0x28)
@@ -356,6 +418,7 @@ pub fn flagview_8800() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("mark"), 8, 136, 40, 53)
+                                                Pickable::default()
                                                 Button
                                                 InteractionDisabled
                                                 retail_picture(8812)
@@ -364,9 +427,11 @@ pub fn flagview_8800() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("tbr2"), 608, 40, 22, 37)
+                                                Pickable::IGNORE
                                                 Children [
                                                     (
                                                         retail_node(fourcc!("quer"), 0, 0, 22, 37)
+                                                        Pickable::default()
                                                         Button
                                                         retail_picture(8816)
                                                         Visibility::Hidden
@@ -382,6 +447,7 @@ pub fn flagview_8800() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("curs"), 245, 7, 365, 21)
+                        Pickable::IGNORE
                         hover_help_bar()
                         Text("")
                         retail_text_style(1, 0, 12, 1)

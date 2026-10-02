@@ -149,6 +149,12 @@ class PictureBehaviorKind(Enum):
     MADNESS = auto()
 
 
+class HitPolicy(Enum):
+    TARGET = auto()
+    BARRIER = auto()
+    IGNORE = auto()
+
+
 PICTURE_CLASS_RULES = {
     "T2PictureButton": PictureClassRule(
         PictureBehaviorKind.STATIC, enabled_when_present=True
@@ -192,6 +198,7 @@ class Node:
     window: WindowPresentation | None = None
     slider: tuple[int, int, int, int] | None = None
     picture_behavior: PictureBehavior | None = None
+    hit_policy: HitPolicy = HitPolicy.IGNORE
     children: list[Node] = field(default_factory=list)
 
 
@@ -443,6 +450,7 @@ def _parse_mac_node(row: dict, key: ResourceKey, ev: dict[str, Any]) -> Node:
         picture_behavior=_classify_picture_behavior(
             picture_id, class_name, type_code, ev["pictures"]
         ),
+        hit_policy=_classify_hit_policy(class_name, type_code),
     )
 
 
@@ -508,6 +516,7 @@ def _apply_patches(flat: dict[str, Node], order: list[str], key: ResourceKey, ev
             picture_behavior=_classify_picture_behavior(
                 picture_id, patch["class"], patch["type"], ev["pictures"]
             ),
+            hit_policy=_classify_hit_policy(patch["class"], patch["type"]),
         )
         order.append(node_id)
     for patch in ev["slider_patches"]:
@@ -563,11 +572,36 @@ def _node_from_raw(raw: dict[str, Any], picture_ids: set[int]) -> Node:
             raw["type_code"],
             picture_ids,
         ),
+        hit_policy=_classify_hit_policy(raw["class_name"], raw["type_code"]),
     )
 
 
 def _interaction_disabled(node: Node) -> bool:
     return not node.enabled or not node.input_gate
+
+
+def _classify_hit_policy(class_name: str, type_code: str) -> HitPolicy:
+    if type_code in ("wind", "fwnd"):
+        return HitPolicy.BARRIER
+    if type_code == "edit" or class_name in (
+        BUTTON_CLASSES
+        | CHECKBOX_CLASSES
+        | RADIO_CLASSES
+        | {
+            "TScrollView",
+            "TCityProductionView",
+            "TCitySiteView",
+            "TMapPreviewView",
+            "TIndustryAmtBar",
+            "TRailAmtBar",
+            "TTraderAmtBar",
+            "TTransportPicture",
+        }
+    ):
+        return HitPolicy.TARGET
+    # Page corners and sideways arrows provide their specialized Pickable component
+    # through their semantic component. Composite wrappers delegate picking to children.
+    return HitPolicy.IGNORE
 
 
 def _catalog_active_picture(
@@ -679,7 +713,6 @@ def _emit_scroll_area() -> list[str]:
     return [
         "ScrollArea",
         "Node { overflow: Overflow::scroll_y() }",
-        "Pickable",
     ]
 
 
@@ -781,14 +814,13 @@ def _class_lines(node: Node) -> list[str]:
         lines.extend(_emit_interaction_disabled(node))
         return lines
     if cls == "TNumberedArrowButton":
-        lines = ["retail_numbered_arrow()"]
-        lines.extend(_emit_interaction_disabled(node))
-        return lines
+        return [f"retail_numbered_arrow({str(_interaction_disabled(node)).lower()})"]
     if cls == "TTwoPicSlider":
         s = _require_slider(node)
-        lines = [f"retail_two_pic_slider({s[0]}, {s[1]}, {s[2]}, {s[3]})"]
-        lines.extend(_emit_interaction_disabled(node))
-        return lines
+        return [
+            f"retail_two_pic_slider({s[0]}, {s[1]}, {s[2]}, {s[3]}, "
+            f"{str(_interaction_disabled(node)).lower()})"
+        ]
     if cls == "TTransportPicture":
         lines = _emit_picture_art(node)
         lines.extend(_emit_interaction_disabled(node))
@@ -829,6 +861,15 @@ def _emit_node(node: Node, indent: int) -> list[str]:
     if any(ins):
         lines += [f"{pad}    Node {{ padding: UiRect {{ left: px({ins[0]}), top: px({ins[1]}), "
                   f"right: px({ins[2]}), bottom: px({ins[3]}) }} }}"]
+    # These semantic components require their own Pickable value; emitting a
+    # component here would suppress the required triangular/page-corner policy.
+    if node.class_name not in ("TPageCorner", "TSidewaysArrow", "TRightLeftView"):
+        pickable = (
+            "Pickable::IGNORE"
+            if node.hit_policy is HitPolicy.IGNORE
+            else "Pickable::default()"
+        )
+        lines.append(f"{pad}    {pickable}")
     lines.extend(f"{pad}    {line}" for line in _class_lines(node))
     if node.text and node.type_code == "edit":
         lines.extend(_emit_text_lines(node, pad, field=True))

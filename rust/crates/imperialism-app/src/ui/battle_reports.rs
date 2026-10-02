@@ -1,15 +1,16 @@
 //! Post-combat `TBattleReportView` / `TBattleDetailBook`.
 
-use super::fill_brackets;
 use super::generated;
 use super::retail::RetailTree;
 use super::retail_raster::IndexedRasterExt;
 use super::satellite_preview::nation_owner_palette;
 use super::session::{BattleReportPresentation, GameSession, apply_turn_stop};
 use super::window::{bind_modal_keys, dismiss_on_activate, spawn_modal_window};
+use super::{fill_brackets, set_image, set_interaction_enabled, set_text, set_visibility_value};
 use crate::AppState;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
+use bevy::ui::Pressed;
 use bevy::ui::{InteractionDisabled, RelativeCursorPosition};
 use bevy::ui_widgets::Activate;
 use imperialism_core::*;
@@ -197,9 +198,9 @@ fn bind_battle_report(
                 if count == 0 {
                     return;
                 }
-                let Ok(mut view) = views.single_mut() else {
-                    return;
-                };
+                let mut view = views
+                    .single_mut()
+                    .expect("BattleReport state must contain exactly one view");
                 view.selected = if is_previous {
                     view.selected.saturating_sub(1)
                 } else {
@@ -233,10 +234,12 @@ fn render_battle_report(
     mut assets: super::RetailUiAssets,
     mut texts: Query<&mut Text>,
     mut flags: Query<&mut ImageNode>,
+    mut visibility: Query<&mut Visibility>,
+    interaction: Query<(Has<InteractionDisabled>, Has<Pressed>)>,
 ) {
-    let Ok(view) = views.single() else {
-        return;
-    };
+    let view = views
+        .single()
+        .expect("BattleReport state must contain exactly one view");
     if !session.is_changed() && !view.is_added() && !view.is_changed() && !reports.is_changed() {
         return;
     }
@@ -250,44 +253,49 @@ fn render_battle_report(
             view.friendly_ships,
             view.enemy_ships,
         ] {
-            texts
-                .get_mut(entity)
-                .expect("bound battle-report text")
-                .0
-                .clear();
+            set_text(&mut texts, entity, String::new());
         }
         return;
     };
     let report_text = battle_report_text(Some(&assets), &session, &reports.0, view.selected);
     let participant = report.displayed_side;
     let other = other_side(participant);
-    texts
-        .get_mut(view.result)
-        .expect("bound battle-report text")
-        .0 = battle_report_result_text(&assets, &session.game, report);
-    texts
-        .get_mut(view.location)
-        .expect("bound battle-report text")
-        .0 = battle_report_location_text(&assets, &session.game, report);
-    texts
-        .get_mut(view.friendly_admiral)
-        .expect("bound battle-report text")
-        .0 = report_text[participant].name.clone();
-    texts
-        .get_mut(view.enemy_admiral)
-        .expect("bound battle-report text")
-        .0 = report_text[other].name.clone();
-    texts
-        .get_mut(view.friendly_ships)
-        .expect("bound battle-report text")
-        .0 = report_text[participant].overlay.clone();
-    texts
-        .get_mut(view.enemy_ships)
-        .expect("bound battle-report text")
-        .0 = report_text[other].overlay.clone();
+    set_text(
+        &mut texts,
+        view.result,
+        battle_report_result_text(&assets, &session.game, report),
+    );
+    set_text(
+        &mut texts,
+        view.location,
+        battle_report_location_text(&assets, &session.game, report),
+    );
+    set_text(
+        &mut texts,
+        view.friendly_admiral,
+        report_text[participant].name.clone(),
+    );
+    set_text(
+        &mut texts,
+        view.enemy_admiral,
+        report_text[other].name.clone(),
+    );
+    set_text(
+        &mut texts,
+        view.friendly_ships,
+        report_text[participant].overlay.clone(),
+    );
+    set_text(
+        &mut texts,
+        view.enemy_ships,
+        report_text[other].overlay.clone(),
+    );
     for (flag, side) in [(view.friendly_flag, participant), (view.enemy_flag, other)] {
-        flags.get_mut(flag).expect("bound battle-report flag").image =
-            assets.picture(battle_report_flag_picture(report.sides[side].nation));
+        set_image(
+            &mut flags,
+            flag,
+            assets.picture(battle_report_flag_picture(report.sides[side].nation)),
+        );
     }
     let count = reports_game.len();
     let active = session.game.turn().active_nation;
@@ -297,16 +305,16 @@ fn render_battle_report(
         (view.next, view.selected + 1 < count),
         (view.info, participates),
     ] {
-        commands.entity(entity).insert(if visible {
-            Visibility::Inherited
-        } else {
-            Visibility::Hidden
-        });
-        if visible {
-            commands.entity(entity).remove::<InteractionDisabled>();
-        } else {
-            commands.entity(entity).insert(InteractionDisabled);
-        }
+        set_visibility_value(
+            &mut visibility,
+            entity,
+            if visible {
+                Visibility::Inherited
+            } else {
+                Visibility::Hidden
+            },
+        );
+        set_interaction_enabled(&mut commands, &interaction, entity, visible);
     }
 }
 
@@ -325,9 +333,9 @@ fn render_battle_report_map(
     markers: Query<Entity, With<BattleReportMarker>>,
     mut assets: super::RetailUiAssets,
 ) {
-    let Ok((map_entity, map_image, map_data)) = map.single() else {
-        return;
-    };
+    let (map_entity, map_image, map_data) = map
+        .single()
+        .expect("BattleReport state must contain exactly one map");
     if !session.is_changed() && !reports.is_changed() && !map_data.is_added() {
         return;
     }
@@ -391,9 +399,9 @@ fn blink_selected_battle_report_marker(
     views: Query<&BattleReportView>,
     mut markers: Query<(&BattleReportMarker, &mut ImageNode)>,
 ) {
-    let Ok(view) = views.single() else {
-        return;
-    };
+    let view = views
+        .single()
+        .expect("BattleReport state must contain exactly one view");
     // TBattleReportView flips the selected sprite column every 15 idle ticks.
     let phase = i32::from((time.elapsed().as_millis() / 250) & 1 == 0);
     for (marker, mut image) in &mut markers {
@@ -720,9 +728,9 @@ fn bind_detail(
     views: Query<&BattleReportView>,
 ) {
     let root = *root;
-    let Ok(view) = views.single() else {
-        return;
-    };
+    let view = views
+        .single()
+        .expect("BattleReport state must contain exactly one view");
     let Some(report) = session.game.battle_reports().get(view.selected) else {
         return;
     };
@@ -833,16 +841,18 @@ fn render_detail(
     session: Res<GameSession>,
     reports: Res<BattleReportPresentation>,
     selected: Query<Ref<BattleReportView>>,
-    mut details: Query<&mut BattleReportDetailView>,
+    detail: Option<Single<&mut BattleReportDetailView>>,
     lines: Query<Entity, With<BattleDetailLine>>,
     mut texts: Query<&mut Text>,
     mut images: Query<&mut ImageNode>,
+    mut visibility: Query<&mut Visibility>,
+    interaction: Query<(Has<InteractionDisabled>, Has<Pressed>)>,
     mut assets: super::RetailUiAssets,
 ) {
-    let Ok(selected) = selected.single() else {
-        return;
-    };
-    let Ok(mut detail) = details.single_mut() else {
+    let selected = selected
+        .single()
+        .expect("BattleReport state must contain exactly one selected report view");
+    let Some(mut detail) = detail else {
         return;
     };
     let selection_changed = detail.selected_report != selected.selected;
@@ -911,16 +921,16 @@ fn render_detail(
     }
     let count = detail_page_count(report);
     for (entity, visible) in [(detail.lcor, page > 1), (detail.rcor, page < count)] {
-        commands.entity(entity).insert(if visible {
-            Visibility::Inherited
-        } else {
-            Visibility::Hidden
-        });
-        if visible {
-            commands.entity(entity).remove::<InteractionDisabled>();
-        } else {
-            commands.entity(entity).insert(InteractionDisabled);
-        }
+        set_visibility_value(
+            &mut visibility,
+            entity,
+            if visible {
+                Visibility::Inherited
+            } else {
+                Visibility::Hidden
+            },
+        );
+        set_interaction_enabled(&mut commands, &interaction, entity, visible);
     }
 }
 

@@ -4,6 +4,8 @@
 //! algorithm. Only [`TSidewaysArrow`] also hilites via `TUpDownPictureButton`; mark that
 //! path with [`RetailSidewaysArrowHilite`].
 
+use accesskit::Role;
+use bevy::a11y::AccessibilityNode;
 use bevy::picking::PickingSystems;
 use bevy::picking::events::{Cancel, DragEnd, Pointer, Press, Release};
 use bevy::picking::hover::HoverMap;
@@ -12,26 +14,28 @@ use bevy::prelude::*;
 use bevy::ui::{InteractionDisabled, Pressed};
 
 /// Marker for controls that use retail sideways repeat-step input.
-#[derive(Component, Clone, Copy, Debug, Default, Reflect)]
-#[reflect(Component)]
-#[require(Pickable, RetailSidewaysArrowRepeat)]
+#[derive(Component, Clone, Copy, Debug, Default)]
+#[component(immutable)]
+#[require(
+    Pickable,
+    RetailSidewaysArrowRepeat,
+    AccessibilityNode(accesskit::Node::new(Role::Button))
+)]
 pub struct RetailSidewaysArrow;
 
 /// `TSidewaysArrow` hilite while held; omit on [`TRightLeftView`] replacements.
-#[derive(Component, Clone, Copy, Debug, Default, Reflect)]
-#[reflect(Component)]
+#[derive(Component, Clone, Copy, Debug, Default)]
+#[component(immutable)]
 pub struct RetailSidewaysArrowHilite;
 
 /// Retail `repeatDeadlineTick` survives mouse releases on the control.
-#[derive(Component, Clone, Copy, Debug, Default, Reflect)]
-#[reflect(Component)]
+#[derive(Component, Clone, Copy, Debug, Default)]
 struct RetailSidewaysArrowRepeat {
     repeat_deadline_tick: u32,
 }
 
 /// Semantic quantity step from a sideways arrow (not release-activated).
-#[derive(Copy, Clone, Debug, PartialEq, EntityEvent, Reflect)]
-#[reflect(Event)]
+#[derive(Copy, Clone, Debug, PartialEq, EntityEvent)]
 pub struct Step {
     pub entity: Entity,
 }

@@ -170,9 +170,9 @@ fn sync_army_toolbar(
     if !session.is_changed() && !map.is_changed() {
         return;
     }
-    let Ok((mut page, view)) = pages.single_mut() else {
-        return;
-    };
+    let (mut page, view) = pages
+        .single_mut()
+        .expect("StrategicMap state must contain exactly one army toolbar");
     let Some(province) = map.selection.army() else {
         page.left = Val::Px(PAGE_PARKED.x);
         page.top = Val::Px(PAGE_PARKED.y);

@@ -26,6 +26,7 @@ const ALLOCATION_FILL_PALETTE: u8 = 0x3a;
 
 /// Child refs for a transport-gauge hierarchy.
 #[derive(Component, FromTemplate, Clone, Copy)]
+#[component(immutable)]
 pub struct TransportGaugeParts {
     pub track: Entity,
     pub fill: Entity,

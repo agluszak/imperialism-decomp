@@ -64,11 +64,14 @@ fn bind_technology_advance(
 
 fn render_technology_advance(
     session: Res<GameSession>,
-    view: Single<Ref<TechnologyAdvanceView>>,
+    views: Query<Ref<TechnologyAdvanceView>>,
     mut assets: RetailUiAssets,
     mut pictures: Query<&mut ImageNode>,
     mut texts: Query<&mut Text>,
 ) {
+    let view = views
+        .single()
+        .expect("TechnologyAdvance state must contain exactly one view");
     if !session.is_changed() && !view.is_added() {
         return;
     }

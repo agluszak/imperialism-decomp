@@ -11,6 +11,7 @@ const SYSTEM_10PT_HEIGHT: f32 = 12.0;
 
 /// Text child of any recovered placard variant.
 #[derive(Component, FromTemplate, Clone, Copy)]
+#[component(immutable)]
 pub struct PlacardParts {
     pub text: Entity,
 }

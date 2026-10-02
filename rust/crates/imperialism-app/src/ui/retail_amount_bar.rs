@@ -3,6 +3,8 @@
 //! Screens own interaction and presentation via retained child entity handles.
 
 use super::retail::retail_background_color;
+use accesskit::Role;
+use bevy::a11y::AccessibilityNode;
 use bevy::prelude::*;
 
 pub const INDUSTRY_AMOUNT_BAR: AmountBarGeometry = AmountBarGeometry {
@@ -22,9 +24,36 @@ pub const TRADE_BAR_FILL: u8 = 0xbd;
 ///
 /// Trade bars retain the stock-position and offer-limit markers.
 #[derive(Component, FromTemplate, Clone, Copy)]
+#[component(immutable)]
+#[require(AccessibilityNode(accesskit::Node::new(Role::Slider)))]
 pub struct AmountBarParts {
     pub fill: Entity,
     pub limit: Entity,
+}
+
+pub fn set_amount_bar_accessibility(
+    nodes: &mut Query<&mut AccessibilityNode>,
+    entity: Entity,
+    value: i16,
+    maximum: i16,
+) {
+    let mut node = nodes
+        .get_mut(entity)
+        .expect("bound amount bar must have an accessibility node");
+    let value = f64::from(value);
+    let maximum = f64::from(maximum);
+    if node.numeric_value() != Some(value) {
+        node.set_numeric_value(value);
+    }
+    if node.min_numeric_value() != Some(0.0) {
+        node.set_min_numeric_value(0.0);
+    }
+    if node.max_numeric_value() != Some(maximum) {
+        node.set_max_numeric_value(maximum);
+    }
+    if node.numeric_value_step() != Some(1.0) {
+        node.set_numeric_value_step(1.0);
+    }
 }
 
 /// Production amount bar with fill and limit marker children.

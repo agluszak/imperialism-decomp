@@ -1,5 +1,4 @@
 use super::GameSession;
-use super::RetailUiAssets;
 use super::fill_brackets;
 use super::format_currency;
 use super::game_shell::{bind_game_status_display, bind_native_game_screen_nav};
@@ -10,10 +9,11 @@ use super::retail_resources::ResourceKindRetailResources;
 use super::retail_transport_gauge::{
     TRANSPORT_GAUGE_FULL_PALETTE, TRANSPORT_GAUGE_PARTIAL_PALETTE,
 };
+use super::{RetailUiAssets, set_interaction_enabled, set_text, set_visibility};
 use crate::AppState;
 use crate::ui::retail::Step;
 use bevy::prelude::*;
-use bevy::ui::InteractionDisabled;
+use bevy::ui::{InteractionDisabled, Pressed};
 use imperialism_core::*;
 use imperialism_formats::*;
 
@@ -202,6 +202,13 @@ fn bind_transport_view(
         let [decrease, increase] =
             [(fourcc!("left"), -1), (fourcc!("rght"), 1)].map(|(tag, delta)| {
                 let step = tree.find(row, tag);
+                commands
+                    .entity(step)
+                    .insert(AccessibleLabel::new(if delta < 0 {
+                        "Decrease transport allocation"
+                    } else {
+                        "Increase transport allocation"
+                    }));
                 commands.entity(step).observe(
                     move |step_event: On<Step>,
                           disabled: Query<Has<InteractionDisabled>>,
@@ -236,14 +243,19 @@ fn bind_transport_view(
 
 fn render_transport(
     session: Res<GameSession>,
-    view: Single<Ref<TransportView>>,
+    views: Query<Ref<TransportView>>,
     mut commands: Commands,
     mut texts: Query<&mut Text>,
     mut help: Query<&mut HoverHelpText>,
     mut nodes: Query<&mut Node>,
     mut backgrounds: Query<&mut BackgroundColor>,
+    mut visibility: Query<&mut Visibility>,
+    interaction: Query<(Has<InteractionDisabled>, Has<Pressed>)>,
     assets: RetailUiAssets,
 ) {
+    let view = views
+        .single()
+        .expect("Transport state must contain exactly one TransportView");
     if !session.is_changed() && !view.is_added() {
         return;
     }
@@ -258,7 +270,12 @@ fn render_transport(
             .transport_row_status(nation, binding.allocation);
         help.get_mut(row.row)
             .expect("bound transport hover help must exist")
-            .0 = transport_hover_text(&assets, &session.game, nation, binding.allocation);
+            .set_if_neq(HoverHelpText(transport_hover_text(
+                &assets,
+                &session.game,
+                nation,
+                binding.allocation,
+            )));
         if let Some(money) = row.money {
             let (resource, unit_value) = match binding.allocation {
                 TransportAllocation::GOLD => (ResourceKind::Gold, 200),
@@ -266,14 +283,25 @@ fn render_transport(
                 _ => unreachable!("only gold and gems have transport money captions"),
             };
             let target = economy.need_target_by_type[resource];
-            texts
-                .get_mut(money)
-                .expect("bound transport money text must exist")
-                .0 = format_currency(i32::from(target) * unit_value);
+            set_text(
+                &mut texts,
+                money,
+                format_currency(i32::from(target) * unit_value),
+            );
         }
-        set_transport_visibility(&mut commands, row.row, status.adjustable);
-        set_transport_enabled(&mut commands, row.decrease, status.can_decrease);
-        set_transport_enabled(&mut commands, row.increase, status.can_increase);
+        set_visibility(&mut visibility, row.row, status.adjustable);
+        set_interaction_enabled(
+            &mut commands,
+            &interaction,
+            row.decrease,
+            status.can_decrease,
+        );
+        set_interaction_enabled(
+            &mut commands,
+            &interaction,
+            row.increase,
+            status.can_increase,
+        );
         write_allocation_gauge(
             &row.gauge,
             status.allocated,
@@ -282,7 +310,7 @@ fn render_transport(
             &mut nodes,
             &mut texts,
             &mut backgrounds,
-            &mut commands,
+            &mut visibility,
             partial,
             full,
         );
@@ -308,28 +336,30 @@ fn write_allocation_gauge(
     nodes: &mut Query<&mut Node>,
     texts: &mut Query<&mut Text>,
     backgrounds: &mut Query<&mut BackgroundColor>,
-    commands: &mut Commands,
+    visibility: &mut Query<&mut Visibility>,
     partial: Color,
     full: Color,
 ) {
-    nodes
-        .get_mut(gauge.fill)
-        .expect("transport gauge fill")
-        .width = Val::Px(transport_gauge_width(current, total));
-    texts
-        .get_mut(gauge.caption)
-        .expect("transport gauge caption")
-        .0 = format!("{current}  /  {total}");
+    let mut fill = nodes.get_mut(gauge.fill).expect("transport gauge fill");
+    let width = Val::Px(transport_gauge_width(current, total));
+    if fill.width != width {
+        fill.width = width;
+    }
+    set_text(texts, gauge.caption, format!("{current}  /  {total}"));
     let (visible, limit_visible) = allocation_gauge_visibility(total, limit.is_some());
-    set_transport_visibility(commands, gauge.track, visible);
-    set_transport_visibility(commands, gauge.fill, visible);
+    set_visibility(visibility, gauge.track, visible);
+    set_visibility(visibility, gauge.fill, visible);
     if let Some(limit_entity) = gauge.limit {
-        set_transport_visibility(commands, limit_entity, limit_visible);
+        set_visibility(visibility, limit_entity, limit_visible);
         if let Some(limit) = limit.filter(|_| visible) {
             backgrounds
                 .get_mut(limit_entity)
                 .expect("transport gauge limit")
-                .0 = if current < limit { partial } else { full };
+                .set_if_neq(BackgroundColor(if current < limit {
+                    partial
+                } else {
+                    full
+                }));
         }
     }
 }
@@ -344,43 +374,25 @@ fn write_capacity_gauge(
     partial: Color,
     full: Color,
 ) {
-    nodes
-        .get_mut(gauge.fill)
-        .expect("transport gauge fill")
-        .width = Val::Px(transport_gauge_width(current, total));
-    texts
-        .get_mut(gauge.caption)
-        .expect("transport gauge caption")
-        .0 = format!("{current}  /  {total}");
+    let mut fill = nodes.get_mut(gauge.fill).expect("transport gauge fill");
+    let width = Val::Px(transport_gauge_width(current, total));
+    if fill.width != width {
+        fill.width = width;
+    }
+    set_text(texts, gauge.caption, format!("{current}  /  {total}"));
     backgrounds
         .get_mut(gauge.fill)
         .expect("transport gauge fill colour")
-        .0 = if total > 0 && current == total {
-        full
-    } else {
-        partial
-    };
-}
-
-fn set_transport_visibility(commands: &mut Commands, entity: Entity, visible: bool) {
-    commands.entity(entity).insert(if visible {
-        Visibility::Visible
-    } else {
-        Visibility::Hidden
-    });
+        .set_if_neq(BackgroundColor(if total > 0 && current == total {
+            full
+        } else {
+            partial
+        }));
 }
 
 const fn allocation_gauge_visibility(total: i16, has_limit: bool) -> (bool, bool) {
     let chrome = total > 0;
     (chrome, chrome && has_limit)
-}
-
-fn set_transport_enabled(commands: &mut Commands, entity: Entity, enabled: bool) {
-    if enabled {
-        commands.entity(entity).remove::<InteractionDisabled>();
-    } else {
-        commands.entity(entity).insert(InteractionDisabled);
-    }
 }
 
 fn transport_hover_text(

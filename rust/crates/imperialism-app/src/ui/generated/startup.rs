@@ -16,17 +16,21 @@ pub fn startup_952() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                Pickable::IGNORE
                 Children [
                     (
                         retail_node(fourcc!("main"), 0, 0, 640, 480)
                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                        Pickable::IGNORE
                         retail_picture(1016)
                         Children [
                             (
                                 retail_node(fourcc!("tool"), 517, 0, 123, 480)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("quer"), 91, 8, 26, 36)
+                                        Pickable::default()
                                         Button
                                         retail_picture(1017)
                                         Visibility::Hidden
@@ -34,6 +38,7 @@ pub fn startup_952() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("canc"), 4, 8, 83, 36)
+                                        Pickable::default()
                                         Button
                                         retail_picture(1018)
                                         Visibility::Hidden
@@ -43,16 +48,19 @@ pub fn startup_952() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("DLOG"), 5, 27, 512, 448)
+                                Pickable::default()
                                 RelativeCursorPosition
                             ),
                             (
                                 retail_node(fourcc!("send"), 220, 10, 19, 11)
+                                Pickable::default()
                                 Button
                                 InteractionDisabled
                                 retail_picture_swap(9457, 9458)
                             ),
                             (
                                 retail_node(fourcc!("curs"), 240, 5, 275, 21)
+                                Pickable::IGNORE
                                 hover_help_bar()
                                 Text("")
                                 retail_text_style(1, 0, 12, -1)
@@ -74,35 +82,42 @@ pub fn startup_953() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 160, 138, 328, 175)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 328, 175)
+                        Pickable::IGNORE
                         retail_picture(9420)
                         Children [
                             (
                                 retail_node(fourcc!("titl"), 46, 17, 238, 26)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(3, 1, 14, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("okay"), 255, 142, 61, 24)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 13, 142, 61, 23)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9412, 9413)
                             ),
                             (
                                 retail_node(fourcc!("    "), 17, 92, 168, 14)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(3, 0, 0, -2)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("sust"), 14, 59, 299, 29)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(3, 0, 0, 1)
                                 TextColor(Color::BLACK)
@@ -122,23 +137,28 @@ pub fn startup_966() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 160, 138, 328, 175)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 330, 175)
+                        Pickable::IGNORE
                         retail_picture(4541)
                         Children [
                             (
                                 retail_node(fourcc!("ques"), 12, 14, 301, 33)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(3, 1, 12, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("form"), 18, 52, 290, 85)
+                                Pickable::IGNORE
                                 RadioGroup
                             ),
                             (
                                 retail_node(fourcc!("okay"), 255, 139, 61, 24)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9410, 9411)
                             ),
@@ -157,44 +177,52 @@ pub fn startup_1500() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                Pickable::IGNORE
                 Children [
                     (
                         retail_node(fourcc!("main"), 0, 0, 640, 480)
                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                        Pickable::IGNORE
                         retail_picture(4500)
                         Children [
                             (
                                 retail_node(fourcc!("load"), 61, 111, 137, 84)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::default()
                                 Button
                                 InteractionDisabled
                             ),
                             (
                                 retail_node(fourcc!("rand"), 14, 209, 138, 171)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::default()
                                 Button
                                 InteractionDisabled
                             ),
                             (
                                 retail_node(fourcc!("mult"), 458, 258, 143, 140)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::default()
                                 Button
                                 InteractionDisabled
                             ),
                             (
                                 retail_node(fourcc!("high"), 448, 113, 164, 78)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::default()
                                 Button
                                 InteractionDisabled
                             ),
                             (
                                 retail_node(fourcc!("scen"), 1, 397, 156, 72)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::default()
                                 Button
                                 InteractionDisabled
                             ),
                             (
                                 retail_node(fourcc!("curs"), 180, 424, 274, 52)
+                                Pickable::IGNORE
                                 hover_help_bar()
                                 Text("")
                                 retail_text_style(1, 0, 14, 1)
@@ -204,12 +232,14 @@ pub fn startup_1500() -> impl Scene {
                             (
                                 retail_node(fourcc!("quit"), 221, 102, 195, 195)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::default()
                                 Button
                                 InteractionDisabled
                             ),
                             (
                                 retail_node(fourcc!("pref"), 540, 399, 100, 73)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::default()
                                 Button
                                 InteractionDisabled
                             ),
@@ -228,14 +258,17 @@ pub fn startup_1501() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                Pickable::IGNORE
                 Children [
                     (
                         retail_node(fourcc!("main"), 0, 0, 640, 480)
                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                        Pickable::IGNORE
                         retail_picture(4540)
                         Children [
                             (
                                 retail_node(fourcc!("hot!"), 36, 22, 238, 27)
+                                Pickable::IGNORE
                                 hover_help_bar()
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
@@ -244,13 +277,16 @@ pub fn startup_1501() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("stuf"), 288, 4, 345, 466)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("map "), 14, 10, 324, 180)
+                                        Pickable::default()
                                         RelativeCursorPosition
                                     ),
                                     (
                                         retail_node(fourcc!("tcou"), 66, 230, 144, 16)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 14, 0)
                                         retail_text_color(0x28)
@@ -258,10 +294,12 @@ pub fn startup_1501() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("flag"), 25, 225, 32, 24)
+                                        Pickable::IGNORE
                                     ),
                                     (
                                         retail_node(fourcc!("coun"), 23, 249, 306, 22)
                                         Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                        Pickable::default()
                                         retail_edit_field()
                                         retail_editable_text("", Some(30))
                                         retail_text_style(1, 0, 12, 1)
@@ -269,15 +307,18 @@ pub fn startup_1501() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("okay"), 128, 418, 96, 30)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(4512, 4513)
                                     ),
                                     (
                                         retail_node(fourcc!("diff"), 25, 298, 302, 84)
+                                        Pickable::IGNORE
                                         RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("dif0"), 2, 2, 298, 16)
+                                                Pickable::default()
                                                 RadioButton
                                                 retail_radio_text_fill()
                                                 Text("Introductory")
@@ -287,6 +328,7 @@ pub fn startup_1501() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("dif1"), 2, 18, 298, 16)
+                                                Pickable::default()
                                                 RadioButton
                                                 retail_radio_text_fill()
                                                 Text("Easy")
@@ -296,6 +338,7 @@ pub fn startup_1501() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("dif2"), 2, 34, 298, 16)
+                                                Pickable::default()
                                                 RadioButton
                                                 retail_radio_text_fill()
                                                 Text("Normal")
@@ -305,6 +348,7 @@ pub fn startup_1501() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("dif3"), 2, 50, 298, 16)
+                                                Pickable::default()
                                                 RadioButton
                                                 retail_radio_text_fill()
                                                 Text("Hard")
@@ -314,6 +358,7 @@ pub fn startup_1501() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("dif4"), 2, 66, 298, 16)
+                                                Pickable::default()
                                                 RadioButton
                                                 retail_radio_text_fill()
                                                 Text("Nigh-On Impossible")
@@ -325,6 +370,7 @@ pub fn startup_1501() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("dift"), 26, 278, 159, 18)
+                                        Pickable::IGNORE
                                         Text("Difficulty Setting")
                                         retail_text_style(1, 0, 14, 0)
                                         retail_text_color(0x28)
@@ -332,6 +378,7 @@ pub fn startup_1501() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("tnam"), 26, 392, 63, 16)
+                                        Pickable::IGNORE
                                         Text("Names:")
                                         retail_text_style(1, 0, 14, 0)
                                         retail_text_color(0x28)
@@ -339,10 +386,12 @@ pub fn startup_1501() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("name"), 91, 390, 235, 20)
+                                        Pickable::IGNORE
                                         RadioGroup
                                         Children [
                                             (
                                                 retail_node(fourcc!("hist"), 2, 2, 115, 16)
+                                                Pickable::default()
                                                 RadioButton
                                                 retail_radio_text_fill()
                                                 Text("Historical")
@@ -352,6 +401,7 @@ pub fn startup_1501() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("rand"), 118, 2, 115, 16)
+                                                Pickable::default()
                                                 RadioButton
                                                 retail_radio_text_fill()
                                                 Text("Random")
@@ -366,11 +416,13 @@ pub fn startup_1501() -> impl Scene {
                             (
                                 retail_node(fourcc!("key "), 265, 281, 14, 14)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::default()
                                 Button
                                 InteractionDisabled
                             ),
                             (
                                 retail_node(fourcc!("auto"), 217, 66, 65, 41)
+                                Pickable::IGNORE
                                 Text("All AutoGP's")
                                 retail_text_style(1, 0, 0, 0)
                                 TextColor(Color::BLACK)
@@ -378,21 +430,25 @@ pub fn startup_1501() -> impl Scene {
                             (
                                 retail_node(fourcc!("canc"), 42, 55, 146, 78)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::default()
                                 Button
                                 InteractionDisabled
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 42, 133, 104, 234)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::default()
                                 Button
                                 InteractionDisabled
                             ),
                             (
                                 retail_node(fourcc!("coat"), 173, 333, 70, 94)
+                                Pickable::IGNORE
                                 retail_picture(4557)
                             ),
                             (
                                 retail_node(fourcc!("glob"), 147, 134, 128, 128)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(4560, 4561)
                             ),
@@ -411,42 +467,52 @@ pub fn startup_1503() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                Pickable::IGNORE
                 Children [
                     (
                         retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                        Pickable::IGNORE
                         Children [
                             (
                                 retail_node(fourcc!("main"), 0, 0, 640, 480)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::IGNORE
                                 retail_picture(4503)
                                 Children [
                                     (
                                         retail_node(fourcc!("pmap"), 302, 14, 324, 180)
+                                        Pickable::default()
                                         RelativeCursorPosition
                                         InteractionDisabled
                                     ),
                                     (
                                         retail_node(fourcc!("star"), 416, 422, 96, 30)
+                                        Pickable::default()
                                         Button
                                         InteractionDisabled
                                         retail_picture_swap(4512, 4513)
                                     ),
                                     (
                                         retail_node(fourcc!("cdes"), 309, 230, 310, 185)
+                                        Pickable::IGNORE
                                     ),
                                     (
                                         retail_node(fourcc!("sdes"), 48, 230, 228, 222)
+                                        Pickable::IGNORE
                                     ),
                                     (
                                         retail_node(fourcc!("list"), 39, 61, 244, 110)
+                                        Pickable::IGNORE
                                     ),
                                     (
                                         retail_node(fourcc!("exit"), 0, 62, 37, 240)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::default()
                                         Button
                                     ),
                                     (
                                         retail_node(fourcc!("curs"), 50, 17, 214, 30)
+                                        Pickable::IGNORE
                                         hover_help_bar()
                                         Text("")
                                         retail_text_style(1, 0, 12, 1)
@@ -455,6 +521,7 @@ pub fn startup_1503() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("more"), 40, 176, 242, 20)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 0, 1)
                                         TextColor(Color::BLACK)
@@ -476,17 +543,21 @@ pub fn startup_1504() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                Pickable::IGNORE
                 Children [
                     (
                         retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                        Pickable::IGNORE
                         Children [
                             (
                                 retail_node(fourcc!("main"), 0, 0, 640, 480)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::IGNORE
                                 retail_picture(4590)
                                 Children [
                                     (
                                         retail_node(fourcc!("labl"), 27, 68, 234, 18)
+                                        Pickable::IGNORE
                                         Text("")
                                         retail_text_style(1, 0, 0, 0)
                                         TextColor(Color::BLACK)
@@ -508,14 +579,17 @@ pub fn startup_1506() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                Pickable::IGNORE
                 Children [
                     (
                         retail_node(fourcc!("main"), 0, 0, 640, 480)
                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                        Pickable::IGNORE
                         retail_picture(4200)
                         Children [
                             (
                                 retail_node(fourcc!("okay"), 545, 444, 75, 36)
+                                Pickable::default()
                                 Button
                                 retail_picture(4510)
                                 Visibility::Hidden
@@ -523,6 +597,7 @@ pub fn startup_1506() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 21, 444, 75, 36)
+                                Pickable::default()
                                 Button
                                 retail_picture(4511)
                                 Visibility::Hidden
@@ -530,48 +605,57 @@ pub fn startup_1506() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("txt0"), 264, 171, 138, 18)
+                                Pickable::IGNORE
                                 Text("Static Text")
                                 retail_text_style(1, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("txt1"), 263, 206, 140, 15)
+                                Pickable::IGNORE
                                 Text("Static Text")
                                 retail_text_style(1, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("txt2"), 264, 237, 143, 17)
+                                Pickable::IGNORE
                                 Text("Static Text")
                                 retail_text_style(1, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("txt3"), 264, 270, 139, 16)
+                                Pickable::IGNORE
                                 Text("Static Text")
                                 retail_text_style(1, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("prot"), 222, 104, 48, 208)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("rad0"), 8, 61, 31, 27)
+                                        Pickable::default()
                                         RadioButton
                                         retail_picture_swap(4510, 4511)
                                     ),
                                     (
                                         retail_node(fourcc!("rad1"), 7, 97, 32, 24)
+                                        Pickable::default()
                                         RadioButton
                                         retail_picture_swap(4510, 4511)
                                     ),
                                     (
                                         retail_node(fourcc!("rad2"), 7, 128, 32, 26)
+                                        Pickable::default()
                                         RadioButton
                                         retail_picture_swap(4510, 4511)
                                     ),
                                     (
                                         retail_node(fourcc!("rad3"), 6, 161, 32, 26)
+                                        Pickable::default()
                                         RadioButton
                                         retail_picture_swap(4510, 4511)
                                     ),
@@ -579,26 +663,31 @@ pub fn startup_1506() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("set0"), 413, 170, 30, 24)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(4510, 4511)
                             ),
                             (
                                 retail_node(fourcc!("set1"), 412, 201, 30, 24)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(4510, 4511)
                             ),
                             (
                                 retail_node(fourcc!("set2"), 414, 234, 30, 24)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(4510, 4511)
                             ),
                             (
                                 retail_node(fourcc!("set3"), 412, 265, 30, 24)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(4510, 4511)
                             ),
                             (
                                 retail_node(fourcc!("tgam"), 21, 101, 98, 19)
+                                Pickable::IGNORE
                                 Text("Game name:")
                                 retail_text_style(1, 0, 0, 0)
                                 TextColor(Color::BLACK)
@@ -606,6 +695,7 @@ pub fn startup_1506() -> impl Scene {
                             (
                                 retail_node(fourcc!("game"), 41, 122, 289, 22)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                Pickable::default()
                                 retail_edit_field()
                                 retail_editable_text("", Some(255))
                                 retail_text_style(1, 0, 0, 0)
@@ -613,6 +703,7 @@ pub fn startup_1506() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("labl"), 21, 67, 200, 21)
+                                Pickable::IGNORE
                                 hover_help_bar()
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
@@ -634,38 +725,45 @@ pub fn startup_1509() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                Pickable::IGNORE
                 Children [
                     (
                         retail_node(fourcc!("main"), 0, 0, 640, 480)
                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                        Pickable::IGNORE
                         retail_picture(4200)
                         Children [
                             (
                                 retail_node(fourcc!("load"), 464, 80, 147, 86)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::default()
                                 Button
                                 InteractionDisabled
                             ),
                             (
                                 retail_node(fourcc!("rand"), 442, 218, 138, 171)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::default()
                                 Button
                                 InteractionDisabled
                             ),
                             (
                                 retail_node(fourcc!("mult"), 12, 79, 130, 186)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::default()
                                 Button
                                 InteractionDisabled
                             ),
                             (
                                 retail_node(fourcc!("scen"), 296, 406, 156, 72)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::default()
                                 Button
                                 InteractionDisabled
                             ),
                             (
                                 retail_node(fourcc!("curs"), 34, 18, 233, 33)
+                                Pickable::IGNORE
                                 hover_help_bar()
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
@@ -674,23 +772,27 @@ pub fn startup_1509() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("name"), 245, 381, 165, 19)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("prot"), 163, 88, 256, 175)
+                                Pickable::IGNORE
                                 RadioGroup
                             ),
                             (
                                 retail_node(fourcc!("join"), 29, 282, 160, 152)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::default()
                                 Button
                                 InteractionDisabled
                             ),
                             (
                                 retail_node(fourcc!("spit"), 390, 256, 33, 53)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::default()
                                 Button
                                 InteractionDisabled
                             ),
@@ -709,173 +811,203 @@ pub fn startup_1515() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                Pickable::IGNORE
                 Children [
                     (
                         retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                        Pickable::IGNORE
                         Children [
                             (
                                 retail_node(fourcc!("main"), 0, 0, 640, 480)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::IGNORE
                                 retail_picture(4595)
                                 Children [
                                     (
                                         retail_node(fourcc!("scra"), 118, 165, 120, 16)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrb"), 118, 219, 120, 16)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrc"), 118, 273, 120, 16)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrd"), 118, 309, 120, 48)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scre"), 416, 165, 120, 16)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrf"), 416, 219, 120, 16)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrg"), 416, 265, 120, 32)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrh"), 416, 329, 120, 32)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scri"), 118, 383, 120, 16)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrj"), 344, 381, 120, 16)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrk"), 344, 406, 120, 16)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("scrl"), 346, 440, 120, 24)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numa"), 233, 165, 73, 16)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numb"), 233, 219, 73, 16)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numc"), 233, 273, 73, 16)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numd"), 234, 325, 73, 16)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numi"), 233, 383, 73, 16)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("nume"), 531, 165, 73, 16)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numf"), 531, 219, 73, 16)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numg"), 531, 273, 73, 16)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numh"), 531, 337, 73, 16)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numj"), 531, 381, 73, 16)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numk"), 532, 405, 73, 16)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("numl"), 532, 440, 73, 24)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, -1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("vict"), 130, 44, 396, 72)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("ptfr"), 118, 127, 120, 16)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("done"), 7, 38, 31, 52)
+                                        Pickable::default()
                                         Button
                                         retail_picture(4596)
                                         Visibility::Hidden
@@ -898,20 +1030,25 @@ pub fn startup_20000() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                Pickable::IGNORE
                 Children [
                     (
                         retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                        Pickable::IGNORE
                         Children [
                             (
                                 retail_node(fourcc!("main"), 0, 0, 640, 480)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::IGNORE
                                 retail_picture(20000)
                                 Children [
                                     (
                                         retail_node(fourcc!("sale"), 7, 6, 398, 379)
+                                        Pickable::IGNORE
                                     ),
                                     (
                                         retail_node(fourcc!("show"), 74, 400, 97, 37)
+                                        Pickable::default()
                                         Button
                                         retail_picture(20001)
                                         Visibility::Hidden
@@ -919,6 +1056,7 @@ pub fn startup_20000() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("quit"), 483, 399, 97, 37)
+                                        Pickable::default()
                                         Button
                                         retail_picture(20002)
                                         Visibility::Hidden
@@ -926,21 +1064,25 @@ pub fn startup_20000() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("requ"), 412, 255, 210, 130)
+                                        Pickable::IGNORE
                                     ),
                                     (
                                         retail_node(fourcc!("tsho"), 51, 446, 138, 23)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("tqui"), 459, 445, 138, 23)
+                                        Pickable::IGNORE
                                         Text("Static Text")
                                         retail_text_style(1, 0, 0, 0)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("titl"), 132, 6, 375, 37)
+                                        Pickable::IGNORE
                                     ),
                                 ]
                             ),

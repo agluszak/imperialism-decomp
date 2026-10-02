@@ -16,13 +16,16 @@ pub fn multiplayer_1507() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 160, 110, 307, 324)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 307, 324)
+                        Pickable::IGNORE
                         retail_picture(4640)
                         Children [
                             (
                                 retail_node(fourcc!("tnam"), 18, 18, 270, 18)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(3, 1, 12, 1)
                                 TextColor(Color::BLACK)
@@ -30,6 +33,7 @@ pub fn multiplayer_1507() -> impl Scene {
                             (
                                 retail_node(fourcc!("name"), 18, 39, 270, 21)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                Pickable::default()
                                 retail_edit_field()
                                 retail_editable_text("", Some(30))
                                 retail_text_style(1, 0, 0, 0)
@@ -37,21 +41,25 @@ pub fn multiplayer_1507() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("tgam"), 18, 76, 270, 18)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("game"), 18, 97, 270, 181)
+                                Pickable::IGNORE
                                 RadioGroup
                             ),
                             (
                                 retail_node(fourcc!("okay"), 210, 287, 61, 24)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
                                 retail_node(fourcc!("canc"), 36, 287, 61, 24)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9412, 9413)
                             ),
@@ -70,176 +78,209 @@ pub fn multiplayer_1508() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("base"), 0, 0, 640, 480)
+                Pickable::IGNORE
                 Children [
                     (
                         retail_node(fourcc!("main"), 0, 0, 640, 480)
                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                        Pickable::IGNORE
                         retail_picture(4600)
                         Children [
                             (
                                 retail_node(fourcc!("okay"), 323, 415, 213, 36)
+                                Pickable::default()
                                 Button
                                 InteractionDisabled
                                 retail_picture_swap(4604, 4605)
                             ),
                             (
                                 retail_node(fourcc!("mess"), 333, 425, 192, 19)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("rad0"), 289, 298, 25, 36)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(4606, 4607)
                             ),
                             (
                                 retail_node(fourcc!("rad1"), 289, 337, 25, 36)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(4607, 4608)
                             ),
                             (
                                 retail_node(fourcc!("rad2"), 289, 376, 25, 36)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(4608, 4609)
                             ),
                             (
                                 retail_node(fourcc!("rad3"), 289, 415, 25, 36)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(4609, 4610)
                             ),
                             (
                                 retail_node(fourcc!("rad4"), 511, 298, 25, 36)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(4609, 4610)
                             ),
                             (
                                 retail_node(fourcc!("rad5"), 511, 337, 25, 36)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(4608, 4609)
                             ),
                             (
                                 retail_node(fourcc!("rad6"), 511, 376, 25, 36)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(4607, 4608)
                             ),
                             (
                                 retail_node(fourcc!("pik0"), 108, 307, 26, 20)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(4611, 4612)
                             ),
                             (
                                 retail_node(fourcc!("pik1"), 108, 345, 26, 20)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(4612, 4613)
                             ),
                             (
                                 retail_node(fourcc!("pik2"), 108, 384, 26, 20)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(4613, 4614)
                             ),
                             (
                                 retail_node(fourcc!("pik3"), 108, 422, 26, 20)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(4614, 4615)
                             ),
                             (
                                 retail_node(fourcc!("pik4"), 329, 307, 26, 20)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(4615, 4616)
                             ),
                             (
                                 retail_node(fourcc!("pik5"), 329, 345, 26, 20)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(4616, 4617)
                             ),
                             (
                                 retail_node(fourcc!("pik6"), 329, 384, 26, 20)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(4617, 4618)
                             ),
                             (
                                 retail_node(fourcc!("nam0"), 136, 310, 142, 18)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("nam1"), 136, 349, 142, 19)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("nam2"), 136, 388, 144, 18)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("nam3"), 136, 427, 145, 19)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("nam4"), 358, 309, 147, 20)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("nam5"), 358, 348, 146, 19)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("nam6"), 358, 387, 146, 19)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 0, 0)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("tnam"), 304, 202, 319, 17)
+                                Pickable::IGNORE
                                 Text("")
                                 retail_text_style(1, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("map "), 302, 14, 324, 180)
+                                Pickable::default()
                                 RelativeCursorPosition
                             ),
                             (
                                 retail_node(fourcc!("send"), 230, 204, 55, 60)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::default()
                                 Button
                                 InteractionDisabled
                             ),
                             (
                                 retail_node(fourcc!("coat"), 223, 69, 63, 94)
+                                Pickable::IGNORE
                                 retail_picture(4618)
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 40, 55, 152, 225)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::default()
                                 Button
                                 InteractionDisabled
                             ),
                             (
                                 retail_node(fourcc!("canc"), 40, 278, 55, 86)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::default()
                                 Button
                                 InteractionDisabled
                             ),
                             (
                                 retail_node(fourcc!("jedi"), 0, 396, 76, 47)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::default()
                                 Button
                                 InteractionDisabled
                             ),
                             (
                                 retail_node(fourcc!("labl"), 33, 26, 234, 18)
+                                Pickable::IGNORE
                                 hover_help_bar()
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
@@ -261,24 +302,29 @@ pub fn multiplayer_1510() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 100, 80, 336, 123)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 336, 123)
+                        Pickable::IGNORE
                         retail_picture(4650)
                         Children [
                             (
                                 retail_node(fourcc!("okay"), 249, 89, 61, 24)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 26, 90, 61, 24)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9412, 9413)
                             ),
                             (
                                 retail_node(fourcc!("mesg"), 7, 8, 322, 50)
                                 Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                Pickable::default()
                                 retail_edit_field()
                                 retail_editable_text("", Some(255))
                                 retail_text_style(1, 0, 0, 0)
@@ -286,36 +332,43 @@ pub fn multiplayer_1510() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("box0"), 29, 62, 29, 22)
+                                Pickable::default()
                                 Checkbox
                                 retail_madness_picture(4651)
                             ),
                             (
                                 retail_node(fourcc!("box1"), 70, 62, 29, 22)
+                                Pickable::default()
                                 Checkbox
                                 retail_madness_picture(4656)
                             ),
                             (
                                 retail_node(fourcc!("box2"), 111, 62, 29, 22)
+                                Pickable::default()
                                 Checkbox
                                 retail_madness_picture(4661)
                             ),
                             (
                                 retail_node(fourcc!("box3"), 152, 62, 29, 22)
+                                Pickable::default()
                                 Checkbox
                                 retail_madness_picture(4666)
                             ),
                             (
                                 retail_node(fourcc!("box4"), 193, 62, 29, 22)
+                                Pickable::default()
                                 Checkbox
                                 retail_madness_picture(4671)
                             ),
                             (
                                 retail_node(fourcc!("box5"), 234, 62, 29, 22)
+                                Pickable::default()
                                 Checkbox
                                 retail_madness_picture(4676)
                             ),
                             (
                                 retail_node(fourcc!("box6"), 275, 62, 29, 22)
+                                Pickable::default()
                                 Checkbox
                                 retail_madness_picture(4681)
                             ),
@@ -334,57 +387,69 @@ pub fn join_selector_message() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("WIND"), 125, 169, 336, 123)
+                Pickable::default()
                 Children [
                     (
                         retail_node(fourcc!("DLOG"), 0, 0, 336, 123)
+                        Pickable::IGNORE
                         retail_picture(4650)
                         Children [
                             (
                                 retail_node(fourcc!("okay"), 249, 89, 61, 24)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9410, 9411)
                             ),
                             (
                                 retail_node(fourcc!("cncl"), 26, 90, 61, 24)
+                                Pickable::default()
                                 Button
                                 retail_picture_swap(9412, 9413)
                             ),
                             (
                                 retail_node(fourcc!("mesg"), 7, 8, 322, 50)
                                 Node { padding: UiRect { left: px(3), top: px(3), right: px(3), bottom: px(3) } }
+                                Pickable::default()
                             ),
                             (
                                 retail_node(fourcc!("box0"), 29, 62, 29, 22)
+                                Pickable::default()
                                 Checkbox
                                 retail_picture_swap(4650, 4651)
                             ),
                             (
                                 retail_node(fourcc!("box1"), 70, 62, 29, 22)
+                                Pickable::default()
                                 Checkbox
                                 retail_picture_swap(4656, 4657)
                             ),
                             (
                                 retail_node(fourcc!("box2"), 111, 62, 29, 22)
+                                Pickable::default()
                                 Checkbox
                                 retail_picture_swap(4660, 4661)
                             ),
                             (
                                 retail_node(fourcc!("box3"), 152, 62, 29, 22)
+                                Pickable::default()
                                 Checkbox
                                 retail_picture_swap(4666, 4667)
                             ),
                             (
                                 retail_node(fourcc!("box4"), 193, 62, 29, 22)
+                                Pickable::default()
                                 Checkbox
                                 retail_picture_swap(4670, 4671)
                             ),
                             (
                                 retail_node(fourcc!("box5"), 234, 62, 29, 22)
+                                Pickable::default()
                                 Checkbox
                                 retail_picture_swap(4676, 4677)
                             ),
                             (
                                 retail_node(fourcc!("box6"), 275, 62, 29, 22)
+                                Pickable::default()
                                 Checkbox
                                 retail_picture_swap(4680, 4681)
                             ),

@@ -208,12 +208,12 @@ fn project_naval_battle(
     let Some(pending) = session.game.pending_naval_battle() else {
         return;
     };
-    let Ok(view) = views.single() else {
-        return;
-    };
-    let Ok((mut field_view, children)) = battlefields.get_mut(view.field) else {
-        return;
-    };
+    let view = views
+        .single()
+        .expect("NavalBattle state must contain exactly one NavalBattleView");
+    let (mut field_view, children) = battlefields
+        .get_mut(view.field)
+        .expect("NavalBattleView must reference its battlefield");
     let mut redraw = session.is_changed() || field_view.is_added() || field_view.is_changed();
 
     let caption = navy_battle_caption(&session.game, pending);
@@ -312,9 +312,9 @@ fn scroll_naval_battle(
     mut fields: Query<&mut NavalBattlefield>,
     session: Res<GameSession>,
 ) {
-    let Ok(mut view) = fields.single_mut() else {
-        return;
-    };
+    let mut view = fields
+        .single_mut()
+        .expect("NavalBattle state must contain exactly one battlefield");
     let Some(cursor) = window.cursor_position() else {
         return;
     };

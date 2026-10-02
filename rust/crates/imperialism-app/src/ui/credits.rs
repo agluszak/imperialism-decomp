@@ -42,7 +42,7 @@ fn bind_credits(
 ) {
     commands
         .entity(tree.find(*root, fourcc!("main")))
-        .insert(Button)
+        .insert((Button, Pickable::default()))
         .observe(on_credits_activate)
         .remove::<InteractionDisabled>();
 }

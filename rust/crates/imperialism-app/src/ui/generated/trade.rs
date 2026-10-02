@@ -16,17 +16,21 @@ pub fn trade_2009() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                Pickable::IGNORE
                 Children [
                     (
                         retail_node(fourcc!("main"), 0, 0, 640, 480)
                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                        Pickable::IGNORE
                         retail_picture(2101)
                         Children [
                             (
                                 retail_node(fourcc!("tbr2"), 600, 31, 30, 44)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("quer"), 0, 2, 27, 37)
+                                        Pickable::default()
                                         Button
                                         retail_picture(6020)
                                         Visibility::Hidden
@@ -36,24 +40,30 @@ pub fn trade_2009() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("cott"), 5, 149, 42, 24)
+                                Pickable::IGNORE
                                 retail_picture(1318)
                             ),
                             (
                                 retail_node(fourcc!("wool"), 5, 191, 42, 24)
+                                Pickable::IGNORE
                                 retail_picture(1319)
                             ),
                             (
                                 retail_node(fourcc!("food"), 593, 189, 42, 24)
+                                Pickable::IGNORE
                                 retail_picture(1324)
                             ),
                             (
                                 retail_node(fourcc!("mPic"), 596, 106, 35, 26)
+                                Pickable::IGNORE
                             ),
                             (
                                 retail_node(fourcc!("tool"), 7, 6, 228, 67)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("end "), 5, 27, 27, 37)
+                                        Pickable::default()
                                         Button
                                         retail_picture(6021)
                                         Visibility::Hidden
@@ -61,12 +71,14 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("seas"), 44, 4, 94, 17)
+                                        Pickable::IGNORE
                                         Text("Winter, 1888")
                                         retail_text_style(3, 0, 9, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("trea"), 141, 4, 75, 17)
+                                        Pickable::IGNORE
                                         Text("$55,555")
                                         retail_text_style(3, 0, 9, 1)
                                         TextColor(Color::BLACK)
@@ -76,6 +88,7 @@ pub fn trade_2009() -> impl Scene {
                             (
                                 retail_node(fourcc!("mCap"), 594, 136, 40, 14)
                                 Node { padding: UiRect { left: px(0), top: px(0), right: px(3), bottom: px(0) } }
+                                Pickable::IGNORE
                                 Text("185")
                                 retail_text_style(21, 1, 12, 1)
                                 TextColor(Color::BLACK)
@@ -84,10 +97,12 @@ pub fn trade_2009() -> impl Scene {
                             (
                                 retail_node(fourcc!("gd0 "), 51, 98, 519, 20)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 342, 1, 33, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
@@ -95,10 +110,12 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("card"), 82, 0, 17, 20)
+                                        Pickable::IGNORE
                                         retail_picture(2126)
                                     ),
                                     (
                                         retail_node(fourcc!("offr"), 163, 0, 17, 20)
+                                        Pickable::IGNORE
                                         retail_picture(2128)
                                     ),
                                     (
@@ -115,10 +132,12 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                        Pickable::IGNORE
                                         retail_picture(2120)
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        Pickable::default()
                                         retail_trade_amount_bar()
                                     ),
                                 ]
@@ -126,10 +145,12 @@ pub fn trade_2009() -> impl Scene {
                             (
                                 retail_node(fourcc!("gd1 "), 51, 118, 519, 20)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
@@ -137,14 +158,17 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("card"), 82, 0, 17, 20)
+                                        Pickable::IGNORE
                                         retail_picture(2112)
                                     ),
                                     (
                                         retail_node(fourcc!("offr"), 163, 0, 17, 20)
+                                        Pickable::IGNORE
                                         retail_picture(2114)
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                        Pickable::IGNORE
                                         retail_picture(2120)
                                     ),
                                     (
@@ -161,6 +185,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        Pickable::default()
                                         retail_trade_amount_bar()
                                     ),
                                 ]
@@ -168,10 +193,12 @@ pub fn trade_2009() -> impl Scene {
                             (
                                 retail_node(fourcc!("gd2 "), 51, 138, 519, 20)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 344, 1, 31, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
@@ -179,14 +206,17 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                        Pickable::IGNORE
                                         retail_picture(2112)
                                     ),
                                     (
                                         retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                        Pickable::IGNORE
                                         retail_picture(2114)
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                        Pickable::IGNORE
                                         retail_picture(2120)
                                     ),
                                     (
@@ -203,6 +233,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        Pickable::default()
                                         retail_trade_amount_bar()
                                     ),
                                 ]
@@ -210,10 +241,12 @@ pub fn trade_2009() -> impl Scene {
                             (
                                 retail_node(fourcc!("gd3 "), 51, 158, 519, 20)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
@@ -221,14 +254,17 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                        Pickable::IGNORE
                                         retail_picture(2112)
                                     ),
                                     (
                                         retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                        Pickable::IGNORE
                                         retail_picture(2114)
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                        Pickable::IGNORE
                                         retail_picture(2120)
                                     ),
                                     (
@@ -245,6 +281,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        Pickable::default()
                                         retail_trade_amount_bar()
                                     ),
                                 ]
@@ -252,10 +289,12 @@ pub fn trade_2009() -> impl Scene {
                             (
                                 retail_node(fourcc!("ma2 "), 51, 218, 519, 20)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 344, 1, 31, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
@@ -263,10 +302,12 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                        Pickable::IGNORE
                                         retail_picture(2112)
                                     ),
                                     (
                                         retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                        Pickable::IGNORE
                                         retail_picture(2114)
                                     ),
                                     (
@@ -277,6 +318,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                        Pickable::IGNORE
                                         retail_picture(2120)
                                     ),
                                     (
@@ -287,6 +329,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        Pickable::default()
                                         retail_trade_amount_bar()
                                     ),
                                 ]
@@ -294,10 +337,12 @@ pub fn trade_2009() -> impl Scene {
                             (
                                 retail_node(fourcc!("ma3 "), 51, 238, 519, 20)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
@@ -305,10 +350,12 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                        Pickable::IGNORE
                                         retail_picture(2112)
                                     ),
                                     (
                                         retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                        Pickable::IGNORE
                                         retail_picture(2114)
                                     ),
                                     (
@@ -319,6 +366,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                        Pickable::IGNORE
                                         retail_picture(2120)
                                     ),
                                     (
@@ -329,6 +377,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        Pickable::default()
                                         retail_trade_amount_bar()
                                     ),
                                 ]
@@ -336,10 +385,12 @@ pub fn trade_2009() -> impl Scene {
                             (
                                 retail_node(fourcc!("ma1 "), 51, 198, 519, 20)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
@@ -347,10 +398,12 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                        Pickable::IGNORE
                                         retail_picture(2112)
                                     ),
                                     (
                                         retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                        Pickable::IGNORE
                                         retail_picture(2114)
                                     ),
                                     (
@@ -361,6 +414,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                        Pickable::IGNORE
                                         retail_picture(2120)
                                     ),
                                     (
@@ -371,6 +425,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        Pickable::default()
                                         retail_trade_amount_bar()
                                     ),
                                 ]
@@ -378,10 +433,12 @@ pub fn trade_2009() -> impl Scene {
                             (
                                 retail_node(fourcc!("ma0 "), 51, 178, 519, 20)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
@@ -389,10 +446,12 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                        Pickable::IGNORE
                                         retail_picture(2112)
                                     ),
                                     (
                                         retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                        Pickable::IGNORE
                                         retail_picture(2114)
                                     ),
                                     (
@@ -403,6 +462,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                        Pickable::IGNORE
                                         retail_picture(2120)
                                     ),
                                     (
@@ -413,6 +473,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        Pickable::default()
                                         retail_trade_amount_bar()
                                     ),
                                 ]
@@ -420,10 +481,12 @@ pub fn trade_2009() -> impl Scene {
                             (
                                 retail_node(fourcc!("rs5 "), 51, 378, 519, 20)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
@@ -431,10 +494,12 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                        Pickable::IGNORE
                                         retail_picture(2112)
                                     ),
                                     (
                                         retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                        Pickable::IGNORE
                                         retail_picture(2113)
                                     ),
                                     (
@@ -445,6 +510,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                        Pickable::IGNORE
                                         retail_picture(2120)
                                     ),
                                     (
@@ -455,6 +521,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        Pickable::default()
                                         retail_trade_amount_bar()
                                     ),
                                 ]
@@ -462,10 +529,12 @@ pub fn trade_2009() -> impl Scene {
                             (
                                 retail_node(fourcc!("rs6 "), 51, 398, 519, 20)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
@@ -473,10 +542,12 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                        Pickable::IGNORE
                                         retail_picture(2112)
                                     ),
                                     (
                                         retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                        Pickable::IGNORE
                                         retail_picture(2113)
                                     ),
                                     (
@@ -487,6 +558,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                        Pickable::IGNORE
                                         retail_picture(2120)
                                     ),
                                     (
@@ -497,6 +569,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        Pickable::default()
                                         retail_trade_amount_bar()
                                     ),
                                 ]
@@ -504,10 +577,12 @@ pub fn trade_2009() -> impl Scene {
                             (
                                 retail_node(fourcc!("rs4 "), 51, 358, 519, 20)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
@@ -515,10 +590,12 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                        Pickable::IGNORE
                                         retail_picture(2112)
                                     ),
                                     (
                                         retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                        Pickable::IGNORE
                                         retail_picture(2113)
                                     ),
                                     (
@@ -529,6 +606,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                        Pickable::IGNORE
                                         retail_picture(2120)
                                     ),
                                     (
@@ -539,6 +617,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        Pickable::default()
                                         retail_trade_amount_bar()
                                     ),
                                 ]
@@ -546,10 +625,12 @@ pub fn trade_2009() -> impl Scene {
                             (
                                 retail_node(fourcc!("rs3 "), 51, 338, 519, 20)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
@@ -557,10 +638,12 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                        Pickable::IGNORE
                                         retail_picture(2112)
                                     ),
                                     (
                                         retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                        Pickable::IGNORE
                                         retail_picture(2113)
                                     ),
                                     (
@@ -571,6 +654,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                        Pickable::IGNORE
                                         retail_picture(2120)
                                     ),
                                     (
@@ -581,6 +665,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        Pickable::default()
                                         retail_trade_amount_bar()
                                     ),
                                 ]
@@ -588,10 +673,12 @@ pub fn trade_2009() -> impl Scene {
                             (
                                 retail_node(fourcc!("rs2 "), 51, 318, 519, 20)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
@@ -599,10 +686,12 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                        Pickable::IGNORE
                                         retail_picture(2112)
                                     ),
                                     (
                                         retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                        Pickable::IGNORE
                                         retail_picture(2113)
                                     ),
                                     (
@@ -613,6 +702,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                        Pickable::IGNORE
                                         retail_picture(2120)
                                     ),
                                     (
@@ -623,6 +713,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        Pickable::default()
                                         retail_trade_amount_bar()
                                     ),
                                 ]
@@ -630,10 +721,12 @@ pub fn trade_2009() -> impl Scene {
                             (
                                 retail_node(fourcc!("rs1 "), 51, 298, 519, 20)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
@@ -641,10 +734,12 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                        Pickable::IGNORE
                                         retail_picture(2112)
                                     ),
                                     (
                                         retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                        Pickable::IGNORE
                                         retail_picture(2113)
                                     ),
                                     (
@@ -655,6 +750,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                        Pickable::IGNORE
                                         retail_picture(2120)
                                     ),
                                     (
@@ -665,6 +761,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        Pickable::default()
                                         retail_trade_amount_bar()
                                     ),
                                 ]
@@ -672,10 +769,12 @@ pub fn trade_2009() -> impl Scene {
                             (
                                 retail_node(fourcc!("rs0 "), 51, 278, 519, 20)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
@@ -683,10 +782,12 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                        Pickable::IGNORE
                                         retail_picture(2112)
                                     ),
                                     (
                                         retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                        Pickable::IGNORE
                                         retail_picture(2113)
                                     ),
                                     (
@@ -697,6 +798,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                        Pickable::IGNORE
                                         retail_picture(2120)
                                     ),
                                     (
@@ -707,6 +809,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        Pickable::default()
                                         retail_trade_amount_bar()
                                     ),
                                 ]
@@ -714,10 +817,12 @@ pub fn trade_2009() -> impl Scene {
                             (
                                 retail_node(fourcc!("ma4 "), 51, 258, 519, 20)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
@@ -725,10 +830,12 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                        Pickable::IGNORE
                                         retail_picture(2112)
                                     ),
                                     (
                                         retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                        Pickable::IGNORE
                                         retail_picture(2113)
                                     ),
                                     (
@@ -739,6 +846,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                        Pickable::IGNORE
                                         retail_picture(2120)
                                     ),
                                     (
@@ -749,6 +857,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        Pickable::default()
                                         retail_trade_amount_bar()
                                     ),
                                 ]
@@ -756,10 +865,12 @@ pub fn trade_2009() -> impl Scene {
                             (
                                 retail_node(fourcc!("ma5 "), 51, 418, 519, 20)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Text("0")
                                         retail_text_style(2, 0, 14, -1)
                                         TextColor(Color::BLACK)
@@ -767,10 +878,12 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                        Pickable::IGNORE
                                         retail_picture(2112)
                                     ),
                                     (
                                         retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                        Pickable::IGNORE
                                         retail_picture(2113)
                                     ),
                                     (
@@ -781,6 +894,7 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                        Pickable::IGNORE
                                         retail_picture(2120)
                                     ),
                                     (
@@ -791,66 +905,78 @@ pub fn trade_2009() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                        Pickable::default()
                                         retail_trade_amount_bar()
                                     ),
                                 ]
                             ),
                             (
                                 retail_node(fourcc!("topT"), 54, 37, 533, 20)
+                                Pickable::IGNORE
                                 Text("Board of Trade")
                                 retail_text_style(1, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("comT"), 48, 73, 90, 23)
+                                Pickable::IGNORE
                                 Text("Commodity")
                                 retail_text_style(1, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("ordT"), 138, 73, 90, 23)
+                                Pickable::IGNORE
                                 Text("Orders")
                                 retail_text_style(1, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("priT"), 240, 73, 67, 23)
+                                Pickable::IGNORE
                                 Text("Price")
                                 retail_text_style(1, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("avaT"), 310, 73, 72, 21)
+                                Pickable::IGNORE
                                 Text("Available")
                                 retail_text_style(1, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("qtyT"), 386, 73, 181, 21)
+                                Pickable::IGNORE
                                 Text("Quantity to Offer")
                                 retail_text_style(1, 0, 0, 1)
                                 TextColor(Color::BLACK)
                             ),
                             (
                                 retail_node(fourcc!("topB"), 267, 5, 105, 26)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("tran"), 3, 3, 14, 18)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(9455, 9456)
                                     ),
                                     (
                                         retail_node(fourcc!("city"), 31, 3, 14, 18)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(9453, 9454)
                                     ),
                                     (
                                         retail_node(fourcc!("trad"), 59, 3, 14, 18)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(9451, 9452)
                                     ),
                                     (
                                         retail_node(fourcc!("dipl"), 88, 3, 14, 18)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(9449, 9450)
                                     ),
@@ -858,6 +984,7 @@ pub fn trade_2009() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                                Pickable::IGNORE
                                 hover_help_bar()
                                 Text("")
                                 retail_text_style(1, 0, 12, 1)
@@ -866,30 +993,37 @@ pub fn trade_2009() -> impl Scene {
                             ),
                             (
                                 retail_node(fourcc!("timb"), 5, 231, 42, 24)
+                                Pickable::IGNORE
                                 retail_picture(1320)
                             ),
                             (
                                 retail_node(fourcc!("coal"), 5, 272, 42, 24)
+                                Pickable::IGNORE
                                 retail_picture(1321)
                             ),
                             (
                                 retail_node(fourcc!("iron"), 5, 316, 42, 24)
+                                Pickable::IGNORE
                                 retail_picture(1322)
                             ),
                             (
                                 retail_node(fourcc!("oil "), 5, 356, 42, 24)
+                                Pickable::IGNORE
                                 retail_picture(1323)
                             ),
                             (
                                 retail_node(fourcc!("fabr"), 593, 230, 42, 24)
+                                Pickable::IGNORE
                                 retail_picture(1325)
                             ),
                             (
                                 retail_node(fourcc!("lumb"), 593, 274, 42, 24)
+                                Pickable::IGNORE
                                 retail_picture(1326)
                             ),
                             (
                                 retail_node(fourcc!("stee"), 593, 312, 42, 24)
+                                Pickable::IGNORE
                                 retail_picture(1327)
                             ),
                         ]
@@ -907,20 +1041,25 @@ pub fn trade_2010() -> impl Scene {
         Children [
             (
                 retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                Pickable::IGNORE
                 Children [
                     (
                         retail_node(fourcc!("base"), 0, 0, 2000, 2000)
+                        Pickable::IGNORE
                         Children [
                             (
                                 retail_node(fourcc!("main"), 0, 0, 640, 480)
                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                Pickable::IGNORE
                                 retail_picture(2102)
                                 Children [
                                     (
                                         retail_node(fourcc!("tbr2"), 600, 31, 30, 43)
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("quer"), 0, 2, 27, 37)
+                                                Pickable::default()
                                                 Button
                                                 retail_picture(6020)
                                                 Visibility::Hidden
@@ -931,10 +1070,12 @@ pub fn trade_2010() -> impl Scene {
                                     (
                                         retail_node(fourcc!("gd0 "), 51, 98, 519, 20)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 342, 1, 33, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                                Pickable::IGNORE
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
@@ -942,10 +1083,12 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("card"), 82, 0, 17, 20)
+                                                Pickable::IGNORE
                                                 retail_picture(2126)
                                             ),
                                             (
                                                 retail_node(fourcc!("offr"), 163, 0, 17, 20)
+                                                Pickable::IGNORE
                                                 retail_picture(2128)
                                             ),
                                             (
@@ -962,10 +1105,12 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                                Pickable::IGNORE
                                                 retail_picture(2120)
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                Pickable::default()
                                                 retail_trade_amount_bar()
                                             ),
                                         ]
@@ -973,10 +1118,12 @@ pub fn trade_2010() -> impl Scene {
                                     (
                                         retail_node(fourcc!("gd1 "), 51, 118, 519, 20)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                                Pickable::IGNORE
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
@@ -984,14 +1131,17 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("card"), 82, 0, 17, 20)
+                                                Pickable::IGNORE
                                                 retail_picture(2112)
                                             ),
                                             (
                                                 retail_node(fourcc!("offr"), 163, 0, 17, 20)
+                                                Pickable::IGNORE
                                                 retail_picture(2114)
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                                Pickable::IGNORE
                                                 retail_picture(2120)
                                             ),
                                             (
@@ -1008,6 +1158,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                Pickable::default()
                                                 retail_trade_amount_bar()
                                             ),
                                         ]
@@ -1015,10 +1166,12 @@ pub fn trade_2010() -> impl Scene {
                                     (
                                         retail_node(fourcc!("gd2 "), 51, 138, 519, 20)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 344, 1, 31, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                                Pickable::IGNORE
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
@@ -1026,14 +1179,17 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                                Pickable::IGNORE
                                                 retail_picture(2112)
                                             ),
                                             (
                                                 retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                                Pickable::IGNORE
                                                 retail_picture(2114)
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                                Pickable::IGNORE
                                                 retail_picture(2120)
                                             ),
                                             (
@@ -1050,6 +1206,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                Pickable::default()
                                                 retail_trade_amount_bar()
                                             ),
                                         ]
@@ -1057,10 +1214,12 @@ pub fn trade_2010() -> impl Scene {
                                     (
                                         retail_node(fourcc!("gd3 "), 51, 158, 519, 20)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                                Pickable::IGNORE
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
@@ -1068,14 +1227,17 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                                Pickable::IGNORE
                                                 retail_picture(2112)
                                             ),
                                             (
                                                 retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                                Pickable::IGNORE
                                                 retail_picture(2114)
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                                Pickable::IGNORE
                                                 retail_picture(2120)
                                             ),
                                             (
@@ -1092,6 +1254,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                Pickable::default()
                                                 retail_trade_amount_bar()
                                             ),
                                         ]
@@ -1099,10 +1262,12 @@ pub fn trade_2010() -> impl Scene {
                                     (
                                         retail_node(fourcc!("ma2 "), 51, 218, 519, 20)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 344, 1, 31, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                                Pickable::IGNORE
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
@@ -1110,10 +1275,12 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                                Pickable::IGNORE
                                                 retail_picture(2112)
                                             ),
                                             (
                                                 retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                                Pickable::IGNORE
                                                 retail_picture(2114)
                                             ),
                                             (
@@ -1124,6 +1291,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                                Pickable::IGNORE
                                                 retail_picture(2120)
                                             ),
                                             (
@@ -1134,6 +1302,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                Pickable::default()
                                                 retail_trade_amount_bar()
                                             ),
                                         ]
@@ -1141,10 +1310,12 @@ pub fn trade_2010() -> impl Scene {
                                     (
                                         retail_node(fourcc!("ma3 "), 51, 238, 519, 20)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                                Pickable::IGNORE
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
@@ -1152,10 +1323,12 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                                Pickable::IGNORE
                                                 retail_picture(2112)
                                             ),
                                             (
                                                 retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                                Pickable::IGNORE
                                                 retail_picture(2114)
                                             ),
                                             (
@@ -1166,6 +1339,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                                Pickable::IGNORE
                                                 retail_picture(2120)
                                             ),
                                             (
@@ -1176,6 +1350,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                Pickable::default()
                                                 retail_trade_amount_bar()
                                             ),
                                         ]
@@ -1183,10 +1358,12 @@ pub fn trade_2010() -> impl Scene {
                                     (
                                         retail_node(fourcc!("ma1 "), 51, 198, 519, 20)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                                Pickable::IGNORE
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
@@ -1194,10 +1371,12 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                                Pickable::IGNORE
                                                 retail_picture(2112)
                                             ),
                                             (
                                                 retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                                Pickable::IGNORE
                                                 retail_picture(2114)
                                             ),
                                             (
@@ -1208,6 +1387,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                                Pickable::IGNORE
                                                 retail_picture(2120)
                                             ),
                                             (
@@ -1218,6 +1398,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                Pickable::default()
                                                 retail_trade_amount_bar()
                                             ),
                                         ]
@@ -1225,10 +1406,12 @@ pub fn trade_2010() -> impl Scene {
                                     (
                                         retail_node(fourcc!("ma0 "), 51, 178, 519, 20)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 343, 1, 32, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                                Pickable::IGNORE
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
@@ -1236,10 +1419,12 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                                Pickable::IGNORE
                                                 retail_picture(2112)
                                             ),
                                             (
                                                 retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                                Pickable::IGNORE
                                                 retail_picture(2114)
                                             ),
                                             (
@@ -1250,6 +1435,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                                Pickable::IGNORE
                                                 retail_picture(2120)
                                             ),
                                             (
@@ -1260,6 +1446,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                Pickable::default()
                                                 retail_trade_amount_bar()
                                             ),
                                         ]
@@ -1267,10 +1454,12 @@ pub fn trade_2010() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rs4 "), 51, 378, 519, 20)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                                Pickable::IGNORE
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
@@ -1278,10 +1467,12 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                                Pickable::IGNORE
                                                 retail_picture(2112)
                                             ),
                                             (
                                                 retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                                Pickable::IGNORE
                                                 retail_picture(2113)
                                             ),
                                             (
@@ -1292,6 +1483,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                                Pickable::IGNORE
                                                 retail_picture(2120)
                                             ),
                                             (
@@ -1302,6 +1494,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                Pickable::default()
                                                 retail_trade_amount_bar()
                                             ),
                                         ]
@@ -1309,10 +1502,12 @@ pub fn trade_2010() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rs5 "), 51, 398, 519, 20)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                                Pickable::IGNORE
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
@@ -1320,10 +1515,12 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                                Pickable::IGNORE
                                                 retail_picture(2112)
                                             ),
                                             (
                                                 retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                                Pickable::IGNORE
                                                 retail_picture(2113)
                                             ),
                                             (
@@ -1334,6 +1531,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                                Pickable::IGNORE
                                                 retail_picture(2120)
                                             ),
                                             (
@@ -1344,6 +1542,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                Pickable::default()
                                                 retail_trade_amount_bar()
                                             ),
                                         ]
@@ -1351,10 +1550,12 @@ pub fn trade_2010() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rs3 "), 51, 358, 519, 20)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                                Pickable::IGNORE
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
@@ -1362,10 +1563,12 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                                Pickable::IGNORE
                                                 retail_picture(2112)
                                             ),
                                             (
                                                 retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                                Pickable::IGNORE
                                                 retail_picture(2113)
                                             ),
                                             (
@@ -1376,6 +1579,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                                Pickable::IGNORE
                                                 retail_picture(2120)
                                             ),
                                             (
@@ -1386,6 +1590,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                Pickable::default()
                                                 retail_trade_amount_bar()
                                             ),
                                         ]
@@ -1393,10 +1598,12 @@ pub fn trade_2010() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rs2 "), 51, 338, 519, 20)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                                Pickable::IGNORE
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
@@ -1404,10 +1611,12 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                                Pickable::IGNORE
                                                 retail_picture(2112)
                                             ),
                                             (
                                                 retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                                Pickable::IGNORE
                                                 retail_picture(2113)
                                             ),
                                             (
@@ -1418,6 +1627,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                                Pickable::IGNORE
                                                 retail_picture(2120)
                                             ),
                                             (
@@ -1428,6 +1638,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                Pickable::default()
                                                 retail_trade_amount_bar()
                                             ),
                                         ]
@@ -1435,10 +1646,12 @@ pub fn trade_2010() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rs1 "), 51, 318, 519, 20)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                                Pickable::IGNORE
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
@@ -1446,10 +1659,12 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                                Pickable::IGNORE
                                                 retail_picture(2112)
                                             ),
                                             (
                                                 retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                                Pickable::IGNORE
                                                 retail_picture(2113)
                                             ),
                                             (
@@ -1460,6 +1675,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                                Pickable::IGNORE
                                                 retail_picture(2120)
                                             ),
                                             (
@@ -1470,6 +1686,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                Pickable::default()
                                                 retail_trade_amount_bar()
                                             ),
                                         ]
@@ -1477,10 +1694,12 @@ pub fn trade_2010() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rs0 "), 51, 298, 519, 20)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                                Pickable::IGNORE
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
@@ -1488,10 +1707,12 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                                Pickable::IGNORE
                                                 retail_picture(2112)
                                             ),
                                             (
                                                 retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                                Pickable::IGNORE
                                                 retail_picture(2113)
                                             ),
                                             (
@@ -1502,6 +1723,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                                Pickable::IGNORE
                                                 retail_picture(2120)
                                             ),
                                             (
@@ -1512,6 +1734,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                Pickable::default()
                                                 retail_trade_amount_bar()
                                             ),
                                         ]
@@ -1519,10 +1742,12 @@ pub fn trade_2010() -> impl Scene {
                                     (
                                         retail_node(fourcc!("ma5 "), 51, 278, 519, 20)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                                Pickable::IGNORE
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
@@ -1530,10 +1755,12 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                                Pickable::IGNORE
                                                 retail_picture(2112)
                                             ),
                                             (
                                                 retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                                Pickable::IGNORE
                                                 retail_picture(2113)
                                             ),
                                             (
@@ -1544,6 +1771,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                                Pickable::IGNORE
                                                 retail_picture(2120)
                                             ),
                                             (
@@ -1554,6 +1782,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                Pickable::default()
                                                 retail_trade_amount_bar()
                                             ),
                                         ]
@@ -1561,10 +1790,12 @@ pub fn trade_2010() -> impl Scene {
                                     (
                                         retail_node(fourcc!("ma4 "), 51, 258, 519, 20)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                                Pickable::IGNORE
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
@@ -1572,10 +1803,12 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                                Pickable::IGNORE
                                                 retail_picture(2112)
                                             ),
                                             (
                                                 retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                                Pickable::IGNORE
                                                 retail_picture(2113)
                                             ),
                                             (
@@ -1586,6 +1819,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                                Pickable::IGNORE
                                                 retail_picture(2120)
                                             ),
                                             (
@@ -1596,6 +1830,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                Pickable::default()
                                                 retail_trade_amount_bar()
                                             ),
                                         ]
@@ -1603,10 +1838,12 @@ pub fn trade_2010() -> impl Scene {
                                     (
                                         retail_node(fourcc!("rs6 "), 51, 418, 519, 20)
                                         Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("Sell"), 334, 1, 41, 17)
                                                 Node { padding: UiRect { left: px(1), top: px(0), right: px(0), bottom: px(0) } }
+                                                Pickable::IGNORE
                                                 Text("0")
                                                 retail_text_style(2, 0, 14, -1)
                                                 TextColor(Color::BLACK)
@@ -1614,10 +1851,12 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("card"), 82, 0, 16, 18)
+                                                Pickable::IGNORE
                                                 retail_picture(2112)
                                             ),
                                             (
                                                 retail_node(fourcc!("offr"), 163, 0, 14, 19)
+                                                Pickable::IGNORE
                                                 retail_picture(2113)
                                             ),
                                             (
@@ -1628,6 +1867,7 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("gree"), 399, 6, 100, 7)
+                                                Pickable::IGNORE
                                                 retail_picture(2120)
                                             ),
                                             (
@@ -1638,51 +1878,60 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("bar "), 399, 7, 100, 7)
+                                                Pickable::default()
                                                 retail_trade_amount_bar()
                                             ),
                                         ]
                                     ),
                                     (
                                         retail_node(fourcc!("topT"), 54, 37, 533, 20)
+                                        Pickable::IGNORE
                                         Text("Board of Trade")
                                         retail_text_style(1, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("comT"), 48, 73, 90, 23)
+                                        Pickable::IGNORE
                                         Text("Commodity")
                                         retail_text_style(1, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("ordT"), 138, 73, 90, 23)
+                                        Pickable::IGNORE
                                         Text("Orders")
                                         retail_text_style(1, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("priT"), 240, 73, 67, 23)
+                                        Pickable::IGNORE
                                         Text("Price")
                                         retail_text_style(1, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("avaT"), 310, 73, 72, 21)
+                                        Pickable::IGNORE
                                         Text("Available")
                                         retail_text_style(1, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("qtyT"), 386, 73, 181, 21)
+                                        Pickable::IGNORE
                                         Text("Quantity to Offer")
                                         retail_text_style(1, 0, 0, 1)
                                         TextColor(Color::BLACK)
                                     ),
                                     (
                                         retail_node(fourcc!("tool"), 7, 6, 228, 67)
+                                        Pickable::IGNORE
                                         Children [
                                             (
                                                 retail_node(fourcc!("end "), 5, 27, 27, 37)
+                                                Pickable::default()
                                                 Button
                                                 retail_picture(6021)
                                                 Visibility::Hidden
@@ -1690,12 +1939,14 @@ pub fn trade_2010() -> impl Scene {
                                             ),
                                             (
                                                 retail_node(fourcc!("seas"), 44, 4, 94, 17)
+                                                Pickable::IGNORE
                                                 Text("Winter, 1888")
                                                 retail_text_style(3, 0, 9, 1)
                                                 TextColor(Color::BLACK)
                                             ),
                                             (
                                                 retail_node(fourcc!("trea"), 141, 4, 75, 17)
+                                                Pickable::IGNORE
                                                 Text("$55,555")
                                                 retail_text_style(3, 0, 9, 1)
                                                 TextColor(Color::BLACK)
@@ -1704,10 +1955,12 @@ pub fn trade_2010() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("mPic"), 596, 106, 35, 26)
+                                        Pickable::IGNORE
                                     ),
                                     (
                                         retail_node(fourcc!("mCap"), 594, 136, 40, 14)
                                         Node { padding: UiRect { left: px(0), top: px(0), right: px(3), bottom: px(0) } }
+                                        Pickable::IGNORE
                                         Text("185")
                                         retail_text_style(21, 1, 12, 1)
                                         TextColor(Color::BLACK)
@@ -1715,66 +1968,81 @@ pub fn trade_2010() -> impl Scene {
                                     ),
                                     (
                                         retail_node(fourcc!("cott"), 5, 149, 42, 24)
+                                        Pickable::IGNORE
                                         retail_picture(1318)
                                     ),
                                     (
                                         retail_node(fourcc!("wool"), 5, 191, 42, 24)
+                                        Pickable::IGNORE
                                         retail_picture(1319)
                                     ),
                                     (
                                         retail_node(fourcc!("food"), 593, 189, 42, 24)
+                                        Pickable::IGNORE
                                         retail_picture(1324)
                                     ),
                                     (
                                         retail_node(fourcc!("timb"), 5, 231, 42, 24)
+                                        Pickable::IGNORE
                                         retail_picture(1320)
                                     ),
                                     (
                                         retail_node(fourcc!("coal"), 5, 272, 42, 24)
+                                        Pickable::IGNORE
                                         retail_picture(1321)
                                     ),
                                     (
                                         retail_node(fourcc!("iron"), 5, 316, 42, 24)
+                                        Pickable::IGNORE
                                         retail_picture(1322)
                                     ),
                                     (
                                         retail_node(fourcc!("oil "), 5, 356, 42, 24)
+                                        Pickable::IGNORE
                                         retail_picture(1323)
                                     ),
                                     (
                                         retail_node(fourcc!("fabr"), 593, 230, 42, 24)
+                                        Pickable::IGNORE
                                         retail_picture(1325)
                                     ),
                                     (
                                         retail_node(fourcc!("lumb"), 593, 274, 42, 24)
+                                        Pickable::IGNORE
                                         retail_picture(1326)
                                     ),
                                     (
                                         retail_node(fourcc!("stee"), 593, 312, 42, 24)
+                                        Pickable::IGNORE
                                         retail_picture(1327)
                                     ),
                                 ]
                             ),
                             (
                                 retail_node(fourcc!("topB"), 267, 5, 105, 26)
+                                Pickable::IGNORE
                                 Children [
                                     (
                                         retail_node(fourcc!("tran"), 3, 3, 14, 18)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(9455, 9456)
                                     ),
                                     (
                                         retail_node(fourcc!("city"), 31, 3, 14, 18)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(9453, 9454)
                                     ),
                                     (
                                         retail_node(fourcc!("trad"), 59, 3, 14, 18)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(9451, 9452)
                                     ),
                                     (
                                         retail_node(fourcc!("dipl"), 88, 3, 14, 18)
+                                        Pickable::default()
                                         Button
                                         retail_picture_swap(9449, 9450)
                                     ),
@@ -1784,6 +2052,7 @@ pub fn trade_2010() -> impl Scene {
                     ),
                     (
                         retail_node(fourcc!("curs"), 386, 5, 201, 30)
+                        Pickable::IGNORE
                         hover_help_bar()
                         Text("")
                         retail_text_style(1, 0, 12, 1)

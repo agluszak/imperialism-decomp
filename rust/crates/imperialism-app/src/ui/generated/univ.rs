@@ -15,14 +15,17 @@ pub fn univ_9210() -> impl Scene {
         (
             RetailScene("Univ.rsrc:9210")
             retail_node(fourcc!("WIND"), 51, 61, 370, 410)
+            Pickable::default()
             {captioned_window(bsn_list![
                 (
                     retail_node(fourcc!("DLOG"), 0, 0, 370, 410)
+                    Pickable::IGNORE
                     retail_picture(9900)
                     Children [
                         (
                             retail_node(fourcc!("apap"), 96, 229, 23, 21)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(3, 0, 10, -2)
                             retail_text_color(0xd2)
@@ -30,71 +33,84 @@ pub fn univ_9210() -> impl Scene {
                         (
                             retail_node(fourcc!("cpap"), 96, 186, 23, 21)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(3, 0, 10, -2)
                             retail_text_color(0xd2)
                         ),
                         (
                             retail_node(fourcc!("fix1"), 16, 206, 73, 14)
+                            Pickable::IGNORE
                             Text("Available:")
                             retail_text_style(3, 0, 10, -2)
                             retail_text_color(0xd2)
                         ),
                         (
                             retail_node(fourcc!("fix0"), 16, 162, 73, 14)
+                            Pickable::IGNORE
                             Text("Cost:")
                             retail_text_style(3, 0, 10, -2)
                             retail_text_color(0xd2)
                         ),
                         (
                             retail_node(fourcc!("fix2"), 63, 254, 36, 26)
+                            Pickable::IGNORE
                             Text("Level\r1")
                             retail_text_style(3, 0, 10, 1)
                             retail_text_color(0xd2)
                         ),
                         (
                             retail_node(fourcc!("cash"), 123, 182, 62, 13)
+                            Pickable::IGNORE
                             Text("$1,000")
                             retail_text_style(3, 0, 10, -2)
                             retail_text_color(0xd2)
                         ),
                         (
                             retail_node(fourcc!("desc"), 15, 82, 110, 77)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(3, 0, 10, -2)
                             retail_text_color(0xd2)
                         ),
                         (
                             retail_node(fourcc!("trea"), 120, 224, 64, 14)
+                            Pickable::IGNORE
                             Text("$1,000")
                             retail_text_style(3, 0, 10, -2)
                             retail_text_color(0xd2)
                         ),
                         (
                             retail_node(fourcc!("titl"), 105, 12, 161, 30)
+                            Pickable::IGNORE
                             Text("University")
                             retail_text_style(1, 0, 24, 1)
                             retail_text_color(0xd2)
                         ),
                         (
                             retail_node(fourcc!("unit"), 28, 60, 153, 16)
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(1, 0, 12, 1)
                             retail_text_color(0xd2)
                         ),
                         (
                             retail_node(fourcc!("sele"), 204, 49, 162, 355)
+                            Pickable::IGNORE
                             Children [
                                 (
                                     retail_node(fourcc!("clu0"), 11, 67, 61, 25)
+                                    Pickable::IGNORE
                                     Children [
                                         (
                                             retail_node(fourcc!("num0"), 21, 0, 18, 20)
+                                            Pickable::IGNORE
                                             retail_picture(9906)
                                             Children [
                                                 (
                                                     retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                                    Pickable::IGNORE
                                                     Text("")
                                                     retail_text_style(3, 0, 10, -2)
                                                     retail_text_color(0xd2)
@@ -103,11 +119,13 @@ pub fn univ_9210() -> impl Scene {
                                         ),
                                         (
                                             retail_node(fourcc!("minu"), 0, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9901, 9902)
                                         ),
                                         (
                                             retail_node(fourcc!("plus"), 40, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9903, 9904)
                                         ),
@@ -115,24 +133,29 @@ pub fn univ_9210() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("civ0"), 9, 7, 64, 60)
+                                    Pickable::default()
                                     RadioButton
                                     retail_picture_swap(9920, 9921)
                                 ),
                                 (
                                     retail_node(fourcc!("civ1"), 88, 7, 64, 60)
+                                    Pickable::default()
                                     RadioButton
                                     retail_picture_swap(9922, 9923)
                                 ),
                                 (
                                     retail_node(fourcc!("clu1"), 90, 67, 61, 25)
+                                    Pickable::IGNORE
                                     Children [
                                         (
                                             retail_node(fourcc!("num1"), 21, 0, 18, 20)
+                                            Pickable::IGNORE
                                             retail_picture(9906)
                                             Children [
                                                 (
                                                     retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                                    Pickable::IGNORE
                                                     Text("")
                                                     retail_text_style(3, 0, 10, -2)
                                                     retail_text_color(0xd2)
@@ -141,11 +164,13 @@ pub fn univ_9210() -> impl Scene {
                                         ),
                                         (
                                             retail_node(fourcc!("minu"), 0, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9901, 9902)
                                         ),
                                         (
                                             retail_node(fourcc!("plus"), 40, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9903, 9904)
                                         ),
@@ -153,19 +178,23 @@ pub fn univ_9210() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("civ2"), 9, 91, 64, 60)
+                                    Pickable::default()
                                     RadioButton
                                     retail_picture_swap(9924, 9925)
                                 ),
                                 (
                                     retail_node(fourcc!("clu2"), 11, 151, 61, 25)
+                                    Pickable::IGNORE
                                     Children [
                                         (
                                             retail_node(fourcc!("num2"), 21, 0, 18, 20)
+                                            Pickable::IGNORE
                                             retail_picture(9906)
                                             Children [
                                                 (
                                                     retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                                    Pickable::IGNORE
                                                     Text("")
                                                     retail_text_style(3, 0, 10, -2)
                                                     retail_text_color(0xd2)
@@ -174,11 +203,13 @@ pub fn univ_9210() -> impl Scene {
                                         ),
                                         (
                                             retail_node(fourcc!("minu"), 0, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9901, 9902)
                                         ),
                                         (
                                             retail_node(fourcc!("plus"), 40, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9903, 9904)
                                         ),
@@ -186,19 +217,23 @@ pub fn univ_9210() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("civ3"), 88, 91, 64, 60)
+                                    Pickable::default()
                                     RadioButton
                                     retail_picture_swap(9926, 9927)
                                 ),
                                 (
                                     retail_node(fourcc!("clu3"), 90, 151, 61, 25)
+                                    Pickable::IGNORE
                                     Children [
                                         (
                                             retail_node(fourcc!("num3"), 21, 0, 18, 20)
+                                            Pickable::IGNORE
                                             retail_picture(9906)
                                             Children [
                                                 (
                                                     retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                                    Pickable::IGNORE
                                                     Text("")
                                                     retail_text_style(3, 0, 10, -2)
                                                     retail_text_color(0xd2)
@@ -207,11 +242,13 @@ pub fn univ_9210() -> impl Scene {
                                         ),
                                         (
                                             retail_node(fourcc!("minu"), 0, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9901, 9902)
                                         ),
                                         (
                                             retail_node(fourcc!("plus"), 40, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9903, 9904)
                                         ),
@@ -219,14 +256,17 @@ pub fn univ_9210() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("clu4"), 11, 235, 61, 25)
+                                    Pickable::IGNORE
                                     Children [
                                         (
                                             retail_node(fourcc!("num4"), 21, 0, 18, 20)
+                                            Pickable::IGNORE
                                             retail_picture(9906)
                                             Children [
                                                 (
                                                     retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                                    Pickable::IGNORE
                                                     Text("")
                                                     retail_text_style(3, 0, 10, -2)
                                                     retail_text_color(0xd2)
@@ -235,11 +275,13 @@ pub fn univ_9210() -> impl Scene {
                                         ),
                                         (
                                             retail_node(fourcc!("minu"), 0, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9901, 9902)
                                         ),
                                         (
                                             retail_node(fourcc!("plus"), 40, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9903, 9904)
                                         ),
@@ -247,24 +289,29 @@ pub fn univ_9210() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("civ4"), 9, 175, 64, 60)
+                                    Pickable::default()
                                     RadioButton
                                     retail_picture_swap(9928, 9929)
                                 ),
                                 (
                                     retail_node(fourcc!("civ8"), 88, 259, 64, 60)
+                                    Pickable::default()
                                     RadioButton
                                     retail_picture_swap(9936, 9937)
                                 ),
                                 (
                                     retail_node(fourcc!("clu8"), 90, 319, 61, 25)
+                                    Pickable::IGNORE
                                     Children [
                                         (
                                             retail_node(fourcc!("num8"), 21, 0, 18, 20)
+                                            Pickable::IGNORE
                                             retail_picture(9906)
                                             Children [
                                                 (
                                                     retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                                    Pickable::IGNORE
                                                     Text("")
                                                     retail_text_style(3, 0, 10, -2)
                                                     retail_text_color(0xd2)
@@ -273,11 +320,13 @@ pub fn univ_9210() -> impl Scene {
                                         ),
                                         (
                                             retail_node(fourcc!("minu"), 0, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9901, 9902)
                                         ),
                                         (
                                             retail_node(fourcc!("plus"), 40, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9903, 9904)
                                         ),
@@ -285,14 +334,17 @@ pub fn univ_9210() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("clu5"), 90, 235, 61, 25)
+                                    Pickable::IGNORE
                                     Children [
                                         (
                                             retail_node(fourcc!("num5"), 21, 0, 18, 20)
+                                            Pickable::IGNORE
                                             retail_picture(9906)
                                             Children [
                                                 (
                                                     retail_node(fourcc!("numb"), -1, 0, 19, 17)
                                                     Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                                                    Pickable::IGNORE
                                                     Text("")
                                                     retail_text_style(3, 0, 10, -2)
                                                     retail_text_color(0xd2)
@@ -301,11 +353,13 @@ pub fn univ_9210() -> impl Scene {
                                         ),
                                         (
                                             retail_node(fourcc!("minu"), 0, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9901, 9902)
                                         ),
                                         (
                                             retail_node(fourcc!("plus"), 40, 0, 20, 20)
+                                            Pickable::default()
                                             Button
                                             retail_picture_swap(9903, 9904)
                                         ),
@@ -313,6 +367,7 @@ pub fn univ_9210() -> impl Scene {
                                 ),
                                 (
                                     retail_node(fourcc!("civ5"), 88, 175, 64, 60)
+                                    Pickable::default()
                                     RadioButton
                                     retail_picture_swap(9930, 9931)
                                 ),
@@ -321,6 +376,7 @@ pub fn univ_9210() -> impl Scene {
                         (
                             retail_node(fourcc!("cexp"), 37, 186, 23, 21)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(3, 0, 10, -2)
                             retail_text_color(0xd2)
@@ -328,18 +384,21 @@ pub fn univ_9210() -> impl Scene {
                         (
                             retail_node(fourcc!("aexp"), 37, 229, 23, 21)
                             Node { padding: UiRect { left: px(0), top: px(3), right: px(3), bottom: px(3) } }
+                            Pickable::IGNORE
                             Text("")
                             retail_text_style(3, 0, 10, -2)
                             retail_text_color(0xd2)
                         ),
                         (
                             retail_node(fourcc!("fix3"), 101, 254, 36, 26)
+                            Pickable::IGNORE
                             Text("Level\r1")
                             retail_text_style(3, 0, 10, 1)
                             retail_text_color(0xd2)
                         ),
                         (
                             retail_node(fourcc!("fix4"), 141, 254, 36, 26)
+                            Pickable::IGNORE
                             Text("Level\r1")
                             retail_text_style(3, 0, 10, 1)
                             retail_text_color(0xd2)
