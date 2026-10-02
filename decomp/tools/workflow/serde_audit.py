@@ -1021,11 +1021,9 @@ def main(argv: list[str] | None = None) -> int:
     print("A divergence is a save-file desync candidate. Machine-code similarity is")
     print("irrelevant to this byte-stream audit.")
     print()
-    print("The unprovable widths are NOT an audit gap to chase by hand: a sizeof(...) or")
-    print("count*N becomes a literal in the compiled push, so reccmp compares it against")
-    print("the original's immediate directly. A wrong sizeof shows up as an operand")
-    print("mismatch in `just compare`, not here. Verified by hand on TCity::ReadFrom")
-    print("(13 of them; every sizeof matched the original's literal exactly).")
+    print("Unknown widths and repeat counts are wildcards. A compatible sequence does")
+    print("not prove byte accounting for those operations; inspect retail arguments and")
+    print("runtime coverage before treating them as verified.")
     print()
     print("What this audit still cannot see is a wrong VALUE at the right width -- a")
     print("length prefix that does not equal the number of records that follow it. That")
@@ -1043,8 +1041,7 @@ def main(argv: list[str] | None = None) -> int:
         print()
 
     if reordered:
-        print("same ops in a different order (version-gated if/else laid out the other")
-        print("way round by the compiler; only one arm runs, so no path shifts):")
+        print("same ops in a different order (inspect retail branches and execution paths):")
         for row in reordered:
             print(f"  0x{row['address']:06x} {row['name']}")
         print()
