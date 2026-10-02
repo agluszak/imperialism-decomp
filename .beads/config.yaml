@@ -65,10 +65,9 @@
 # - linear.api_key  → use LINEAR_API_KEY env var instead
 # - github.token    → use GITHUB_TOKEN env var instead
 
-sync.remote: "git+ssh://git@github.com/agluszak/imperialism-decomp.git"
-
 # JSONL export disabled 2026-07-05: Dolt on the git remote (refs/dolt/data) is
 # the source of truth; no integration consumes .beads/issues.jsonl.
 export.auto: false
-
 sync.branch: "beads-sync"
+sync:
+    remote: "git+https://github.com/agluszak/imperialism-decomp.git"
