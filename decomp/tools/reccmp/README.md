@@ -9,7 +9,7 @@ just compare --all --output build/comparisons/BASELINE
 just compare --changed
 just compare --file src/game/map_generation/TMapMaker.cpp
 just compare-report build/comparisons/HEAD --base build/comparisons/BASE
-just compare-report build/comparisons/BASELINE --queue --output build/campaign.json
+just compare-report build/comparisons/BASELINE --queue --campaigns --output build/campaign.json
 just addr 0xADDR
 just vtable ClassName
 just datacmp
@@ -23,6 +23,8 @@ The four outcomes are `no-differences`, `differences`, `unpaired`, and `analysis
 do not produce a failed percentage gate. Saved artifacts preserve code/data findings, inline retry
 results, direct calls, analysis failures, and input identities. Dataset deltas report shared-function
 transitions and added/removed claims separately; they do not infer the cause of a transition.
+Campaign groups count shared original data findings, direct-call targets, and marker owners.
+These are inspection groups, not inferred causes or equivalence judgments.
 
 `just build` refreshes the native source index. `just source-index` refreshes only that projection;
 comparison consumes the existing VC5 executable/PDB. Rebuild the [Docker image](../../docker/msvc500/README.md)

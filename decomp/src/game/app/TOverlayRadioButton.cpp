@@ -32,9 +32,9 @@ void TOverlayRadioButton::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);
   if (overlaySurfaceContext98 != 0) {
     UpdatePaletteIndexWithDefaultFallback(0x10);
-    BlitQuickDrawSurfaces(overlaySurfaceContext98->GetBlitSurface(),
-                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &overlaySrcRect9c,
-                          &overlayDstRectAc, 0x24);
+    BlitRectWithOptionalTransparency(overlaySurfaceContext98->GetBlitSurface(),
+                                     g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                     &overlaySrcRect9c, &overlayDstRectAc, 0x24);
     SetQuickDrawStrokeColor(0x13);
   }
 }

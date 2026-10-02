@@ -131,8 +131,7 @@ extern const int g_NavyMissionIndustrialCostTrailingLookup_0065A920[14];
 
 // TShip.cpp — per-category target-percentage weights (40/30/30/0) used by
 // ComputeNavyOrderDistributionScoreForNation's divergence-score formula. Read via
-// sign-extend (movsx) in the original despite being small positive values, so the
-// storage type must be signed short to match the codegen.
+// sign-extend (movsx) in retail despite containing only small positive values.
 extern const short g_NavyOrderDistributionCategoryWeights_00697978[4];
 
 extern short g_NavyResolveOrderRanking[14];

@@ -5,8 +5,7 @@
 // (bd imperialism-decomp-8mo.15); the remaining TGreatPower.cpp holds the
 // diplomacy/order/advisory bodies of the original Cross/UCountry.cpp.
 // TGreatPower — nation-state object for the seven playable great powers
-// (Mac source: UCountry.cpp / UCountryAuto.cpp). Manual decompilation file;
-// reccmp pairs bodies by the FUNCTION address markers.
+// Mac source: UCountry.cpp / UCountryAuto.cpp.
 
 #include <math.h>
 #include <stddef.h>

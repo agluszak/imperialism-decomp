@@ -1,12 +1,5 @@
 // Real definitions for read-only global data referenced by hand-written code.
 //
-// These exist so reccmp can pair instruction operands that reference named global
-// data (float coefficient tables, named global pointers) instead of bare immediate
-// addresses. reccmp maps the original symbol (config/symbols.csv) to the recomp PDB
-// symbol by name (the C-linkage leading underscore is stripped). Symbol identity and
-// use sites drive function pairing, while the initializers and extents must still
-// reproduce retail because datacmp verifies the data itself.
-//
 // Symbol names below are taken verbatim from config/symbols.csv (including the few
 // historically double-named float tables) so the address mapping resolves.
 
@@ -2083,18 +2076,18 @@ short g_civilianMapCursorTokenByStateIndex_00695680[12] = {0,    1008, 1000, 100
 // These are CSize dynamic initializers, not ordinary callable setters. Their inlined
 // constructors are the tiny bodies at 0x5a6830, 0x5a6860 and 0x5a6890.
 // SYNTHETIC: IMPERIALISM 0x005a6830
-// name: InitializeTacticalTileSize
+// InitializeTacticalTileSize
 // prototype: void __cdecl InitializeTacticalTileSize(void)
 // GLOBAL: IMPERIALISM 0x006a5430
 CSize g_tacticalTileSize_006A5430(0x32, 0x1e);
 // SYNTHETIC: IMPERIALISM 0x005a6860
-// name: InitializeTacticalBattlefieldSurfaceSize
+// InitializeTacticalBattlefieldSurfaceSize
 // prototype: void __cdecl InitializeTacticalBattlefieldSurfaceSize(void)
 // GLOBAL: IMPERIALISM 0x006a5448
 CSize g_tacticalBattlefieldSurfaceSize_006A5448(0x5dc, 0x1c2);
 // The first store is at 0x5a6895; the initializer entry is 0x5a6890.
 // SYNTHETIC: IMPERIALISM 0x005a6890
-// name: InitializeTacticalUnitSpriteCellSize
+// InitializeTacticalUnitSpriteCellSize
 // prototype: void __cdecl InitializeTacticalUnitSpriteCellSize(void)
 // GLOBAL: IMPERIALISM 0x006a5498
 CSize g_tacticalUnitSpriteCellSize_006A5498(0x32, 0x32);
@@ -2800,7 +2793,7 @@ extern "C" const char* const g_pRegistryProfileAppName_0063E050 =
     s_ProfileLiteralIMPERIALISM_006941A8;
 
 // Shared empty-string literal at 0x006a13a0 (the "" passed to CString ctors / string
-// compares). Defined so reccmp pairs the address reference as a DATA symbol.
+// compares).
 #include "decomp_types.h"
 char g_szEmptyString[1] = {0};
 
@@ -2877,7 +2870,7 @@ extern "C" const char s_Chunk_00698C0C[] = "Chunk";
 
 // UI default text-style/command-param block copied into every TControl (the 10-byte
 // dual-view region at offsets 0x78-0x81); same TextStyle shape the
-// widgets carry. Named so reccmp pairs the direct absolute loads in the TControl ctor.
+// widgets carry.
 TextStyle g_UiResourceEntryDefaultTextStyle = {0, 0, 0, 0};
 
 } // extern "C"
@@ -2924,64 +2917,54 @@ int g_suppressUnexpectedDirectPlaySystemMessageAssert006a6020;
 
 // Compiler-emitted out-of-line copy of the MFC inline CPoint constructor used by
 // resource-driven UI builders.
-// TEMPLATE: IMPERIALISM 0x00427100
-// CPoint::CPoint(int, int)
+// LIBRARY: IMPERIALISM 0x00427100
+// CPoint::CPoint
 
-// Compiler-emitted dtor copies for the g_UiWidgetBuildStack006a13e0
-// CList<TView*,TView*> template instantiation. These previously carried invented
-// vtable-address-suffixed placeholder class names.
-// TEMPLATE: IMPERIALISM 0x00415f50
+// CList<TView*, TView*> emissions for g_UiWidgetBuildStack006a13e0.
+// TEMPLATE: IMPERIALISM 0x00415f50 SYMBOL
 // ??0?$CList@PAVTView@@PAV1@@@QAE@H@Z
 
-// TEMPLATE: IMPERIALISM 0x00492a40
+// TEMPLATE: IMPERIALISM 0x00492a40 SYMBOL
 // ?NewNode@?$CList@PAVTWindow@@PAV1@@@IAEPAUCNode@1@PAU21@0@Z
 
-// TEMPLATE: IMPERIALISM 0x00484860
+// TEMPLATE: IMPERIALISM 0x00484860 SYMBOL
 // ?FreeNode@?$CList@PAVTView@@PAV1@@@IAEXPAUCNode@1@@Z
 
-template void CList<TView*, TView*>::FreeNode(CList<TView*, TView*>::CNode*);
-
-// TEMPLATE: IMPERIALISM 0x00492ac0
+// TEMPLATE: IMPERIALISM 0x00492ac0 SYMBOL
 // ?RemoveAll@?$CList@PAVTWindow@@PAV1@@@QAEXXZ
 
-// TEMPLATE: IMPERIALISM 0x00492b00
+// TEMPLATE: IMPERIALISM 0x00492b00 SYMBOL
 // ?FreeNode@?$CList@PAVTWindow@@PAV1@@@IAEXPAUCNode@1@@Z
-
-template void CList<TWindow*, TWindow*>::RemoveAll();
-template void CList<TWindow*, TWindow*>::FreeNode(CList<TWindow*, TWindow*>::CNode*);
 
 // SYNTHETIC: IMPERIALISM 0x00415f90
 // CList<TView *,TView *>::`scalar deleting destructor'
 
-// TEMPLATE: IMPERIALISM 0x00415e70
+// TEMPLATE: IMPERIALISM 0x00415e70 SYMBOL
 // ??1?$CList@PAVTView@@PAV1@@@UAE@XZ
 
-// Compiler-emitted ctor/dtor for the CList<void*,void*> / CArray<void*,void*> template
-// instantiations shared by g_WNetPendingPacketList006a5f40 and
-// g_WNetSerializedPtrArrayA/B006a5f10/28 above (WNetMgr.cpp TU).
 // TEMPLATE: IMPERIALISM 0x005e4540
-// ??0?$CList@PAXPAX@@QAE@H@Z
+// CList::CList
 
 // TEMPLATE: IMPERIALISM 0x005e4580
-// ??1?$CList@PAXPAX@@UAE@XZ
+// CList::~CList
 
 // TEMPLATE: IMPERIALISM 0x005e4610
-// ?Serialize@?$CList@PAXPAX@@UAEXAAVCArchive@@@Z
+// CList::Serialize
 
 // TEMPLATE: IMPERIALISM 0x005e4830
-// ?Serialize@?$CArray@PAXPAX@@UAEXAAVCArchive@@@Z
+// CArray::Serialize
 
 // SYNTHETIC: IMPERIALISM 0x005e4a30
-// CList<void *,void *>::`scalar deleting destructor'
+// CList scalar deleting destructor
 
 // TEMPLATE: IMPERIALISM 0x005e4780
-// ??0?$CArray@PAXPAX@@QAE@XZ
+// CArray::CArray
 
 // SYNTHETIC: IMPERIALISM 0x005e4a60
-// ??_G?$CArray@PAXPAX@@UAEPAXI@Z
+// CArray scalar deleting destructor
 
 // TEMPLATE: IMPERIALISM 0x005e47b0
-// ??1?$CArray@PAXPAX@@UAE@XZ
+// CArray::~CArray
 
 // SYNTHETIC: IMPERIALISM 0x005e2a00
 // DestroyGlobalState_006A5F60_AtExit
@@ -3007,22 +2990,19 @@ CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecor
 
 // Compiler-emitted methods for this TU's RuntimeSelectionRecord pointer-array
 // specialization. The source implementation is the retail MFC CArray template.
-// TEMPLATE: IMPERIALISM 0x00480b20
+// TEMPLATE: IMPERIALISM 0x00480b20 SYMBOL
 // ??0?$CArray@PAURuntimeSelectionRecord@@PAU1@@@QAE@XZ
 
-// TEMPLATE: IMPERIALISM 0x00480b50
+// TEMPLATE: IMPERIALISM 0x00480b50 SYMBOL
 // ??1?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAE@XZ
 
-// TEMPLATE: IMPERIALISM 0x00480bd0
+// TEMPLATE: IMPERIALISM 0x00480bd0 SYMBOL
 // ?Serialize@?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAEXAAVCArchive@@@Z
 
 // SYNTHETIC: IMPERIALISM 0x00480dd0
 // CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>::`scalar deleting destructor'
 
-// SetSize is claimed here but its CArray<void*,void*> twin at 0x005e4a90 is not: retail
-// calls that one out of line from the array's Serialize, while our build inlines it there,
-// so no out-of-line copy is emitted to pair against.
-// TEMPLATE: IMPERIALISM 0x00480e00
+// TEMPLATE: IMPERIALISM 0x00480e00 SYMBOL
 // ?SetSize@?$CArray@PAURuntimeSelectionRecord@@PAU1@@@QAEXHH@Z
 
 // Global TNetMgr (built by new TNetMgr() during multiplayer init, stored here; every
@@ -3123,7 +3103,7 @@ CList<TWindow*, TWindow*> g_LiveViewRegistry;
 // Compiler-emitted members of the CList<TWindow*, TWindow*> specialization shared by the
 // two registries above (vtable 0x0064b580). The source implementation is the retail MFC
 // CList template.
-// SYNTHETIC: IMPERIALISM 0x00492950
+// SYNTHETIC: IMPERIALISM 0x00492950 SYMBOL
 // ??_G?$CList@PAVTWindow@@PAV1@@@UAEPAXI@Z
 
 // TEMPLATE: IMPERIALISM 0x004924e0
@@ -3132,14 +3112,14 @@ CList<TWindow*, TWindow*> g_LiveViewRegistry;
 // TEMPLATE: IMPERIALISM 0x00492550
 // CList<TWindow*, TWindow*>::RemoveAt
 
-// TEMPLATE: IMPERIALISM 0x00492510
+// TEMPLATE: IMPERIALISM 0x00492510 SYMBOL
 // ??0?$CList@PAVTWindow@@PAV1@@@QAE@H@Z
 
-// TEMPLATE: IMPERIALISM 0x004925e0
+// TEMPLATE: IMPERIALISM 0x004925e0 SYMBOL
 // ??1?$CList@PAVTWindow@@PAV1@@@UAE@XZ
 
-// TEMPLATE: IMPERIALISM 0x00492670
-// ?Serialize@?$CList@PAVTWindow@@PAV1@@@UAEXAAVCArchive@@@Z
+// SYNTHETIC: IMPERIALISM 0x00492670
+// CList::Serialize
 
 // GLOBAL: IMPERIALISM 0x006a1b24
 TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry = nullptr;
@@ -3675,7 +3655,6 @@ int g_mapActionContextDisplayNameCacheStep_006984bc = 7;
 
 // === Map-context flavor-text string pool (procedural syllable/grammar .rdata literals
 // referenced by the BuildMapContextStatusString / GenerateMappedFlavorText family).
-// Empty content: reccmp pairs by the // GLOBAL address marker, not by value. ===
 // GLOBAL: IMPERIALISM 0x00695794
 char s_szSpaceSeparator_00695794[] = " ";
 // Gauge caption separator: TTransportPicture::Refresh joins the current and total counts

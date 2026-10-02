@@ -19,7 +19,7 @@ ASSERT_SIZE(VPoint, 0x8);
 // TStream -- the MacApp-derived serialization byte stream the save format is built on.
 // Names come from the Mac CodeWarrior oracle (name oracle only, per AGENTS.md Hard Rule
 // 12); every width below is proven by the corresponding body in TStream.cpp, all of
-// which are ported and 100%-matched.
+// which are implemented below.
 //
 // WATCH THE WIDTHS. These are MacApp names, and MacApp's scalar sizes are not the C++
 // ones a reader expects:

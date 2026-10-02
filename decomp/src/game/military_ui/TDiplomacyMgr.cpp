@@ -36,12 +36,12 @@ struct ScratchSharedString {
 };
 } // namespace
 
-static __inline void InitializeNextTradeCommandForHandler(TNextTradeCommand* packet, int eventTag,
-                                                          TApplication* owner) {
+static void InitializeNextTradeCommandForHandler(TNextTradeCommand* packet, int eventTag,
+                                                 TApplication* owner) {
   packet->ICommand(eventTag, owner, 0, 0, 0);
 }
 
-static __inline TDiplomacyMgr* ReadGlobalTDiplomacyTurnStateManager() {
+static TDiplomacyMgr* ReadGlobalTDiplomacyTurnStateManager() {
   return g_pDiplomacyTurnStateManager;
 }
 
@@ -53,8 +53,7 @@ struct WarTransitionPair {
 // MATCH: retail sign-extends the minor slot for the needLevelByNation index
 // (movsx eax, bx) while using the full register for the *23 matrix row — hence the
 // short cast at the index only. The tie-break is the codebase LCG idiom
-// ((seed >> 12) & 0x7fff) % 2 (signed mod: cdq/xor/sub/and 1/xor/sub). Residual is
-// a ebx/edi register-allocation swap; CFG and instruction sequence match.
+// ((seed >> 12) & 0x7fff) % 2 (signed mod: cdq/xor/sub/and 1/xor/sub).
 // FUNCTION: IMPERIALISM 0x00413250
 int TDiplomacyMgr::GetFavoriteTradePartner(int minorNationSlot) {
   int bestScore = 0;
@@ -65,8 +64,8 @@ int TDiplomacyMgr::GetFavoriteTradePartner(int minorNationSlot) {
     }
 
     int score =
-        (200 - g_apNationStates[majorNation]
-                   ->needLevelByNation[static_cast<short>(minorNationSlot)]) *
+        (200 -
+         g_apNationStates[majorNation]->needLevelByNation[static_cast<short>(minorNationSlot)]) *
         relationStandingScores[minorNationSlot * kNationSlotCount + majorNation];
     if (score > bestScore) {
       selectedNation = majorNation;

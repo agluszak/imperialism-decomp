@@ -46,8 +46,9 @@ public:
   // controlTag at +0x1c -- and no others. idleFrequencyTicks/lastIdleTick are the idle throttle
   // and last-idle stamp and firstBehavior is a list head, none of which a fresh copy
   // inherits.
-  // MATCH: keep this in-class (MSVC5 copy-ctor emission / reccmp pairing).
-  // FUNCTION: IMPERIALISM 0x0048a750
+  // SYNTHETIC: IMPERIALISM 0x0048a750 SYMBOL
+  // ??0TEventHandler@@QAE@ABV0@@Z
+  // Source evidence: unreferenced retained COMDAT in retail.
   TEventHandler(const TEventHandler& source)
       : TObject(), enabled(source.enabled), viewEnabled(source.viewEnabled),
         nextHandler(source.nextHandler), controlTag(source.controlTag) {}

@@ -35,10 +35,10 @@
 
 // No-op bracket hooks around the modal one-time-animation wait (retail build leaves these empty).
 // FUNCTION: IMPERIALISM 0x00498c60
-void NoOpModalAnimWaitBracketHookA_00498c60(void) {}
+void BeginModalAnimationWait(void) {}
 
 // FUNCTION: IMPERIALISM 0x00498c80
-void NoOpModalAnimWaitBracketHookB_00498c80(void) {}
+void EndModalAnimationWait(void) {}
 
 // FUNCTION: IMPERIALISM 0x005a6940
 BOOL __cdecl ClipSrcRectToBoundsAndOffsetDstRect(RECT* bounds, RECT* dstRect, RECT* srcRect) {
@@ -61,11 +61,7 @@ BOOL __cdecl ClipSrcRectToBoundsAndOffsetDstRect(RECT* bounds, RECT* dstRect, RE
   return srcRect->left < srcRect->right && srcRect->top < srcRect->bottom;
 }
 
-// Fills the tactical unit sprite facing-offset table ([unit type][orientation][side] pixel
-// deltas applied by ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset for units on a
-// fresh trench-deploy tile). In the original this runs as a file-scope static initializer
-// (its address sits in the CRT init-pointer table at 0x693134); the assignment order below
-// is the original store order, which the compiler value-groups into cached registers.
+// ORACLE: The retail CRT initializer table at 0x693134 invokes this table setup.
 // FUNCTION: IMPERIALISM 0x005a6a20
 void InitializeTacticalUnitFacingOffsetTable() {
   g_aTacticalUnitFacingOffsetTable[0][2][0].x = 2;
@@ -1283,13 +1279,13 @@ void TTacticalBattleView::PlayAni(RECT* rect, int effectId, int frameCount,
   // CObject-rooted, not TAnimation-derived, so this is a genuine pun confined here.
   g_pUiAnimator->AddObjectToUiTransientRegistry(
       static_cast<TAnimation*>(static_cast<void*>(animation)));
-  NoOpModalAnimWaitBracketHookA_00498c60();
+  BeginModalAnimationWait();
   modalAnimWaitDoneFlag98 = 0;
   while (animation->completeFlag == 0) {
     PumpUiMessagesAndBackgroundTasks(1);
   }
   modalAnimWaitDoneFlag98 = 1;
-  NoOpModalAnimWaitBracketHookB_00498c80();
+  EndModalAnimationWait();
   InvalidateCityDialogRectRegion(rect, 1);
   g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(tileIndex);
 }
@@ -1405,9 +1401,9 @@ void TTacticalBattleView::DoGlideAni() {
         }
         OffsetRect(&screenRect, 0, (primaryDibHeight - screenRect.top) - screenRect.bottom);
       }
-      BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
-                            unitSpriteScratchSurfaceBC->GetBlitSurface(), &screenRect, &scratchRect,
-                            0);
+      BlitRectWithOptionalTransparency(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
+                                       unitSpriteScratchSurfaceBC->GetBlitSurface(), &screenRect,
+                                       &scratchRect, 0);
     }
 
     // Draw the unit sprite for this animation frame onto the scratch surface
@@ -1441,9 +1437,9 @@ void TTacticalBattleView::DoGlideAni() {
         }
         OffsetRect(&tileRect, 0, (scratchDibHeight2 - tileRect.top) - tileRect.bottom);
       }
-      BlitQuickDrawSurfaces(unitSpriteAtlasSurface68->GetBlitSurface(),
-                            unitSpriteScratchSurfaceBC->GetBlitSurface(), &spriteSrcRect, &tileRect,
-                            0x24);
+      BlitRectWithOptionalTransparency(unitSpriteAtlasSurface68->GetBlitSurface(),
+                                       unitSpriteScratchSurfaceBC->GetBlitSurface(), &spriteSrcRect,
+                                       &tileRect, 0x24);
     }
 
     // Composite the finished scratch tile back onto the active surface, clipped to
@@ -1464,9 +1460,9 @@ void TTacticalBattleView::DoGlideAni() {
         OffsetRect(&compositeSrcRect, 0,
                    (activeDibHeight - compositeSrcRect.top) - compositeSrcRect.bottom);
       }
-      BlitQuickDrawSurfaces(unitSpriteScratchSurfaceBC->GetBlitSurface(),
-                            g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &compositeDstRect,
-                            &compositeSrcRect, 0);
+      BlitRectWithOptionalTransparency(unitSpriteScratchSurfaceBC->GetBlitSurface(),
+                                       g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                       &compositeDstRect, &compositeSrcRect, 0);
     }
 
     unsigned int nowTick;

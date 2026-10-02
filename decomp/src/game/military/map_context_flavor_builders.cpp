@@ -995,7 +995,7 @@ void BuildMapContextStatusStringVariantL(CString* out) {
 }
 
 // FUNCTION: IMPERIALISM 0x005ccce0
-void GenerateMappedFlavorTextVariantE_005ccce0(CString* out) {
+void GenerateMappedFlavorTextVariantE(CString* out) {
   int flag = FlavorGateFlag(0xd3, 0xc4);
   int count;
   if (flag == 0) {
@@ -1100,7 +1100,7 @@ void GenerateMappedFlavorTextVariantE_005ccce0(CString* out) {
 // FUNCTION: IMPERIALISM 0x005ce110
 CString GenerateMappedFlavorTextVariantEToSharedString() {
   CString temp;
-  GenerateMappedFlavorTextVariantE_005ccce0(&temp);
+  GenerateMappedFlavorTextVariantE(&temp);
   return temp;
 }
 
@@ -1222,7 +1222,7 @@ CString BuildMapContextStatusStringWithRandomSuffix() {
 }
 
 // FUNCTION: IMPERIALISM 0x005cf1b0
-void GenerateMappedFlavorTextVariantC_005cf1b0(CString* out) {
+void GenerateMappedFlavorTextVariantC(CString* out) {
   int flag = FlavorGateFlag(0xeb, 0xc5);
   int count;
   if (flag == 0) {
@@ -1292,12 +1292,12 @@ void GenerateMappedFlavorTextVariantC_005cf1b0(CString* out) {
 // FUNCTION: IMPERIALISM 0x005cfba0
 CString GenerateMappedFlavorTextVariantCToSharedString() {
   CString temp;
-  GenerateMappedFlavorTextVariantC_005cf1b0(&temp);
+  GenerateMappedFlavorTextVariantC(&temp);
   return temp;
 }
 
 // FUNCTION: IMPERIALISM 0x005cfc40
-void GenerateMappedFlavorTextVariantB_005cfc40(CString* out) {
+void GenerateMappedFlavorTextVariantB(CString* out) {
   int flag = FlavorGateFlag(0xd48, 0xcac);
   int count;
   if (flag == 0) {
@@ -1414,12 +1414,12 @@ void GenerateMappedFlavorTextVariantB_005cfc40(CString* out) {
 // FUNCTION: IMPERIALISM 0x005d1330
 CString GenerateMappedFlavorTextVariantBToSharedString() {
   CString temp;
-  GenerateMappedFlavorTextVariantB_005cfc40(&temp);
+  GenerateMappedFlavorTextVariantB(&temp);
   return temp;
 }
 
 // FUNCTION: IMPERIALISM 0x005d13d0
-void GenerateMappedFlavorTextVariantA_005d13d0(CString* out) {
+void GenerateMappedFlavorTextVariantA(CString* out) {
   int flag = FlavorGateFlag(0x2a6, 0x24a);
   int count;
   if (flag == 0) {
@@ -1566,12 +1566,12 @@ void GenerateMappedFlavorTextVariantA_005d13d0(CString* out) {
 // FUNCTION: IMPERIALISM 0x005d3300
 CString GenerateMappedFlavorTextVariantAToSharedString() {
   CString temp;
-  GenerateMappedFlavorTextVariantA_005d13d0(&temp);
+  GenerateMappedFlavorTextVariantA(&temp);
   return temp;
 }
 
 // FUNCTION: IMPERIALISM 0x005d33a0
-void GenerateMappedFlavorTextVariantD_005d33a0(CString* out) {
+void GenerateMappedFlavorTextVariantD(CString* out) {
   int flag = FlavorGateFlag(0x11e, 0xfd);
   int count;
   if (flag == 0) {
@@ -1665,6 +1665,6 @@ void GenerateMappedFlavorTextVariantD_005d33a0(CString* out) {
 // FUNCTION: IMPERIALISM 0x005d41a0
 CString GenerateMappedFlavorTextVariantDToSharedString() {
   CString temp;
-  GenerateMappedFlavorTextVariantD_005d33a0(&temp);
+  GenerateMappedFlavorTextVariantD(&temp);
   return temp;
 }

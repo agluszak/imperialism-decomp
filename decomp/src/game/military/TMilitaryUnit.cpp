@@ -71,8 +71,6 @@ void TMilitaryUnit::ReadFrom(TStream* stream) {
   // (ReadSharedString, "read shared string with capacity"): args (&name24, 0x20)
   // verified against 0x5c2fd0.
   stream->ReadSharedString(&name24, 0x20);
-  // Both swap loops are inlined at this call site in the original (0x5c3001 / 0x5c3022),
-  // so they go through the shared __inline helper rather than a local out-of-line copy.
   stream->ReadBytes(orderTargetTiles28, 6);
   SwapShortArrayBytes(orderTargetTiles28, 3);
   stream->ReadBytes(orderTargetTilesMirror2E, 6);

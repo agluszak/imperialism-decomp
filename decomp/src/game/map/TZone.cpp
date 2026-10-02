@@ -27,11 +27,11 @@
 
 namespace {
 
-static inline int SignedRemainderByFour(int value) {
+static int SignedRemainderByFour(int value) {
   return value % 4;
 }
 
-static inline short InlineTileIndexFromRowCol(int row, int col) {
+static short TileIndexFromRowCol(int row, int col) {
   if (row < 0 || row >= 0x3c || col < 0 || col >= 0x6c) {
     return -1;
   }
@@ -127,10 +127,10 @@ Province** TZoneSecondaryNeighborStretch::Add(Province* entry) {
   return stretch<Province*>::Add(entry);
 }
 
-// TEMPLATE: IMPERIALISM 0x0055ead0
+// TEMPLATE: IMPERIALISM 0x0055ead0 SYMBOL
 // ?Add@?$stretch@PAVTZone@@@@UAEPAPAVTZone@@PAV2@@Z
 
-// TEMPLATE: IMPERIALISM 0x0055eba0
+// TEMPLATE: IMPERIALISM 0x0055eba0 SYMBOL
 // ?Add@?$stretch@PAUProvince@@@@UAEPAPAUProvince@@PAU2@@Z
 
 // FUNCTION: IMPERIALISM 0x0055ec60
@@ -258,7 +258,6 @@ TZone* FindMapActionContextByNodeId(short nodeId) {
   }
   TZone* node;
   for (node = g_pMapActionContextListHead; node != 0; node = node->prev18) {
-    // Original inlines GetContextOrdinalOrInvalid (null -> -1, unreachable here).
     short ordinal = (node != 0) ? node->contextOrdinal14 : -1;
     if (ordinal == nodeId) {
       break;
@@ -332,7 +331,6 @@ char TZone::HasSecondaryNeighborWithNationTag(short nationTag) {
     return 0;
   }
   for (unsigned int entryIndex = 0; entryIndex < entryCount; ++entryIndex) {
-    // Inlined bounds-guarded stretch element access, as in the original.
     Province* const* entrySlot =
         (entryIndex < entryCount) ? this->secondaryNeighbors.Data() + entryIndex : 0;
     short entryNationTag = (*entrySlot)->ownerNationCode00;
@@ -351,7 +349,6 @@ int TZone::IsZoneMaskOrArrayEntryPresentForKey(short key) {
   }
   unsigned int entryCount = static_cast<unsigned int>(this->secondaryNeighbors.Count());
   for (unsigned int entryIndex = 0; entryIndex < entryCount; ++entryIndex) {
-    // Inlined bounds-guarded stretch element access, as in the original.
     Province* const* entrySlot =
         (entryIndex < entryCount) ? this->secondaryNeighbors.Data() + entryIndex : 0;
     short entryKey = (*entrySlot)->ownerNationCode00;
@@ -533,14 +530,14 @@ void TZone::HandleKeyDown(int key_id) {
             piSlotEntry = 0;
           }
           if ((*piSlotEntry)->ownerNationCode00 == static_cast<char>(sVarSlotId)) {
-            goto LAB_0055fcae;
+            goto activateNationSlot;
           }
           uSlotIndex = uSlotIndex + 1;
         } while (uSlotIndex < uSlotCountLocal);
       }
       bSlotIsActive = false;
     } else {
-    LAB_0055fcae:
+    activateNationSlot:
       bSlotIsActive = true;
     }
 
@@ -758,7 +755,7 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(Province* cont
   TMapMgr::AdvanceSpiralSearchStateAndStepHexCoordinates(&spiral);
 
   while (spiral.ring < 0xc) {
-    short spiralTile = InlineTileIndexFromRowCol(spiral.row, spiral.col);
+    short spiralTile = TileIndexFromRowCol(spiral.row, spiral.col);
 
     bool tileInBounds;
     if ((spiralTile < 0) || (0x194f < spiralTile)) {
@@ -768,12 +765,12 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(Province* cont
     }
 
     if (tileInBounds) {
-      int spiralTileIndex = InlineTileIndexFromRowCol(spiral.row, spiral.col);
+      int spiralTileIndex = TileIndexFromRowCol(spiral.row, spiral.col);
       int candidateScore =
           ScoreCoastalTileForContextAndCityStateAffinity(spiralTileIndex, this, contextProvince);
       if (bestScore < candidateScore) {
         bestScore = candidateScore;
-        tileCandidate = InlineTileIndexFromRowCol(spiral.row, spiral.col);
+        tileCandidate = TileIndexFromRowCol(spiral.row, spiral.col);
       }
     }
 
@@ -1211,9 +1208,8 @@ TZone* TZone::GetNextPortZone() {
 // instruction-for-instruction identical since TPortZone has no unique members of its own
 // -- the original inlined this same body there too instead of calling it out-of-line.
 // Exact-capacity fallback emitted for the primary-neighbor pointer stretch.
-// TEMPLATE: IMPERIALISM 0x005620c0
+// TEMPLATE: IMPERIALISM 0x005620c0 SYMBOL
 // ?SetCapacity@?$stretch@PAVTZone@@@@QAEXI@Z
-template void stretch<TZone*>::SetCapacity(unsigned int);
 
 // FUNCTION: IMPERIALISM 0x005627a0
 TZone::~TZone() {

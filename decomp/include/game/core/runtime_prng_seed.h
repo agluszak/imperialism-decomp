@@ -19,10 +19,8 @@
 #include "RuntimeTestDriver.h"
 #endif
 
-static __inline int ClockDerivedPrngSeed(void) {
 #ifdef IMPERIALISM_RUNTIME_TESTS
-  return static_cast<int>(RuntimeTestDriver::RandomSeed());
+#define ClockDerivedPrngSeed() static_cast<int>(RuntimeTestDriver::RandomSeed())
 #else
-  return static_cast<int>(time(0));
+#define ClockDerivedPrngSeed() static_cast<int>(time(0))
 #endif
-}

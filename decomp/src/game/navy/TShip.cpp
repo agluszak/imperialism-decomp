@@ -18,7 +18,7 @@
 
 #include <new>
 
-static __inline short SignedDiv10(int value) {
+static short SignedDiv10(int value) {
   return static_cast<short>(value / 10);
 }
 

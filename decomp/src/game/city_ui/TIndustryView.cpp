@@ -23,7 +23,7 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-static __inline void SetIndustryControlEnabledIfChanged(TView* control, bool enabled) {
+static void SetIndustryControlEnabledIfChanged(TView* control, bool enabled) {
   if ((control->IsActionable() != 0) != enabled) {
     control->Show(enabled, 1);
   }

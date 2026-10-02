@@ -455,10 +455,8 @@ char TViewMgr::ModalMessage(CString message, const POINT& messagePosition, short
 }
 
 // FUNCTION: IMPERIALISM 0x005d5bc0
-char TViewMgr::ModalMessageGateAssertStub(CString message, int arg2, int arg3, int arg4,
-                                          int arg5, int arg6) {
-  // MATCH: 95.24% raw / 100% modulo stack - the by-value CString arg destructs at a
-  // 4-byte-higher stack slot in the original; identical code otherwise.
+char TViewMgr::ModalMessageGateAssertStub(CString message, int arg2, int arg3, int arg4, int arg5,
+                                          int arg6) {
   if (g_nViewMgrModalAssertGate_006A5BB0 == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x2ac);
   }
@@ -642,7 +640,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   return true;
 }
 
-static __inline void InitializeGameSetupFromDefaultNationPolicies(GameSetup* setup) {
+static void InitializeGameSetupFromDefaultNationPolicies(GameSetup* setup) {
   short* destination = setup->cityMinisterPolicyIds;
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
     destination[-7] = g_aDefaultNationSetupPolicyProfiles[nationSlot][0];
@@ -977,7 +975,7 @@ void TViewMgr::NoOpTurnEventStateVtableSlotD4(int arg) {
   (void)arg;
 }
 
-static __inline void ClearMainViewChildWindowStyle(TView* mainView) {
+static void ClearMainViewChildWindowStyle(TView* mainView) {
   if (mainView->nativeWindow50 != nullptr) {
     mainView->nativeWindow50->ModifyStyle(0, 0x02000000);
   }
@@ -1083,7 +1081,7 @@ inline void ApplyThemeToTaggedTextControl(unsigned int controlTag, int styleWidt
 
 } // namespace turn_event_ui_refresh
 
-static __inline void DispatchPostTurnStateUpdatesTail(TurnEventCodeStorage eventCode) {
+static void DispatchPostTurnStateUpdatesTail(TurnEventCodeStorage eventCode) {
   if (g_pHelpMgr != nullptr && IsTurnFlowCooldownActiveAndResetExpiredState() == 0) {
     g_pHelpMgr->HandlePostDispatchTurnStateEventUpdates();
     g_pHelpMgr->HandlePendingEventActivationByCode(eventCode);
@@ -1489,8 +1487,9 @@ void TViewMgr::ShowDiplomacyScreen(short nationSlot) {
 }
 
 // SYNTHETIC: IMPERIALISM 0x005d8310
-// BindCursorPanelAndStampDiplomacyMapTerrain — dead retained copy of the inline above.
-inline void turn_event_ui_refresh::BindCursorPanelAndStampDiplomacyMapTerrain(TView* mainView, short terrainIndex) {
+// turn_event_ui_refresh::BindCursorPanelAndStampDiplomacyMapTerrain
+inline void turn_event_ui_refresh::BindCursorPanelAndStampDiplomacyMapTerrain(TView* mainView,
+                                                                              short terrainIndex) {
   TControl* cursor = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagCurs));
   g_pCursorControlPanel = static_cast<TInfoBarText*>(cursor);
   cursor->AssertValid();
@@ -1498,8 +1497,7 @@ inline void turn_event_ui_refresh::BindCursorPanelAndStampDiplomacyMapTerrain(TV
 
   TView* diplomacyMap = mainView->ResolveControlByTag(kControlTagMain);
   diplomacyMap->AssertValid();
-  if (diplomacyMap != nullptr &&
-      diplomacyMap->IsKindOf(RUNTIME_CLASS(TDiplomacyMapView)) != 0) {
+  if (diplomacyMap != nullptr && diplomacyMap->IsKindOf(RUNTIME_CLASS(TDiplomacyMapView)) != 0) {
     static_cast<TDiplomacyMapView*>(diplomacyMap)
         ->SetSelectedTerrainIndexForTurnEvent(terrainIndex);
   }
@@ -2407,9 +2405,8 @@ void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) 
   }
 }
 
-static __inline void RefreshMainMenuButtonLabel(TView* mainView, unsigned int controlTag,
-                                                short codeGroup, short stringIndex, int assertLine,
-                                                CString* label) {
+static void RefreshMainMenuButtonLabel(TView* mainView, unsigned int controlTag, short codeGroup,
+                                       short stringIndex, int assertLine, CString* label) {
   TControl* control = static_cast<TControl*>(mainView->ResolveControlByTag(controlTag));
   if (control == nullptr) {
     GAME_FAIL_NIL_POINTER();

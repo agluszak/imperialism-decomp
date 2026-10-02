@@ -405,8 +405,6 @@ void TDiplomacyMapView::InitializeDiplomacyMinisterActionControlsAndLabels() {
 
 // FUNCTION: IMPERIALISM 0x004f48c0
 void TDiplomacyMapView::Draw(RECT* rectBuffer) {
-  // Constructed and destroyed here (EH state 0 while alive) but never touched in the
-  // body -- a dead local in the original, kept for the exact EH/codegen shape.
   CString unusedScratch;
 
   if (interactionModeAt94 == 1) {
@@ -499,7 +497,7 @@ void TDiplomacyMapView::DrawNames(const RECT* presentRect) {
       if (code >= 200) {
         band = code - 200;
       } else if (code >= 100) {
-        band = code - 100; // unreachable given the branch above; kept to match codegen
+        band = code - 100;
       } else {
         band = terrain->nationSlot;
       }
@@ -1131,9 +1129,9 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect
       g_pActiveQuickDrawSurfaceContext->GetBlitSurface()) {
     RECT blitRect;
     CopyRect(&blitRect, presentRect);
-    BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
-                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &blitRect, &blitRect,
-                          0);
+    BlitRectWithOptionalTransparency(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
+                                     g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &blitRect,
+                                     &blitRect, 0);
   }
 
   SetQuickDrawFillColor(0xffffff);
@@ -1212,9 +1210,9 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
     SetGWorld(previousSurface, contextFlags);
   }
 
-  BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
-                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &blitRect, &blitRect,
-                        0);
+  BlitRectWithOptionalTransparency(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
+                                   g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &blitRect,
+                                   &blitRect, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x004f66c0
@@ -1344,9 +1342,9 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
     SetGWorld(previousSurface, contextFlags);
   }
 
-  BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
-                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &blitRect, &blitRect,
-                        0);
+  BlitRectWithOptionalTransparency(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
+                                   g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &blitRect,
+                                   &blitRect, 0);
   (void)presentRect;
 }
 
@@ -1610,9 +1608,9 @@ void TDiplomacyMapView::DrawVoteNuggets() {
         OffsetRect(&destRect, 0, (surfaceHeight - destRect.top) - destRect.bottom);
       }
 
-      BlitQuickDrawSurfaces(g_pMacViewMgr->atlas6b8->GetBlitSurface(),
-                            g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect, &destRect,
-                            0x24);
+      BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas6b8->GetBlitSurface(),
+                                       g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
+                                       &destRect, 0x24);
 
       destRect.left = iconRect->left - 1;
       destRect.top = iconRect->top - 1;

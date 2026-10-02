@@ -6,20 +6,20 @@
 // assigning an unsupported Mac Toolbox identity.
 
 // FUNCTION: IMPERIALISM 0x0049dcc0
-short QuickDrawCompatibilityReturnZeroShort_0049DCC0() {
+short QuickDrawCompatibilityStatus() {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0049dce0
-void QuickDrawCompatibilityNoOp_0049DCE0() {}
+void QuickDrawCompatibilityNoOp() {}
 
 // FUNCTION: IMPERIALISM 0x0049dd00
-int QuickDrawCompatibilityReturnSecondArgument_0049DD00(int unused, int value) {
+int QuickDrawCompatibilityReturnSecondArgument(int unused, int value) {
   (void)unused;
   return value;
 }
 
 // FUNCTION: IMPERIALISM 0x0049dd20
-int QuickDrawCompatibilityReturnZero_0049DD20() {
+int QuickDrawCompatibilityReturnZero() {
   return 0;
 }

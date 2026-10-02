@@ -26,10 +26,6 @@
 
 extern "C" CRuntimeClass PTR_s_TView_006495a0;
 
-#define UI_RESOURCE_BUILDER_INLINE
-#include "game/app/ui_resource_builder_late_inlines.h"
-#undef UI_RESOURCE_BUILDER_INLINE
-
 // FUNCTION: IMPERIALISM 0x00427200
 unsigned short TView::GetCursorID() {
   return cursorId4e;
@@ -99,13 +95,13 @@ void TView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
 
 // TViewChildList's compiler-emitted CList<TView*,TView*>::Serialize body. The real source is
 // the childList44 template type in TView, not a TView method or TEventHandler record pool.
-// TEMPLATE: IMPERIALISM 0x00479be0
+// TEMPLATE: IMPERIALISM 0x00479be0 SYMBOL
 // ?Serialize@?$CList@PAVTView@@PAV1@@@UAEXAAVCArchive@@@Z
 
 // SYNTHETIC: IMPERIALISM 0x00479d50
 // CList<TView *,TView *>::`scalar deleting destructor'
 
-// TEMPLATE: IMPERIALISM 0x00479d80
+// TEMPLATE: IMPERIALISM 0x00479d80 SYMBOL
 // ??1?$CList@PAVTView@@PAV1@@@UAE@XZ
 
 // FUNCTION: IMPERIALISM 0x00489f60
@@ -234,7 +230,7 @@ void TView::AttachChildControl(class TView* child, int flag) {
 // SYNTHETIC: IMPERIALISM 0x0048ada0
 // CList<TView *,TView *>::`scalar deleting destructor'
 
-// TEMPLATE: IMPERIALISM 0x0048add0
+// TEMPLATE: IMPERIALISM 0x0048add0 SYMBOL
 // ??1?$CList@PAVTView@@PAV1@@@UAE@XZ
 
 // IMPLEMENT_DYNCREATE also emits `TView::CreateObject` (`return new TView;`).
@@ -991,15 +987,3 @@ void TView::ZoomByUser(const CPoint& point, short partCode) {
   (void)point;
   (void)partCode;
 }
-
-// MSVC500 emitted a fresh out-of-line copy of the (header-inline) `TView::~TView` in
-// every TU that needed it non-inline: 0x0048cb00, 0x0048ec30, 0x0048ee00 are
-// byte-identical twins of 0x0048a9d0 (verified instruction-for-instruction). reccmp
-// cannot bind two original addresses to one recomp symbol, so the twins stay
-// stub-owned; their symbols.csv rows carry the truthful `TView::~TView` label.
-
-// 0x00607318 CWnd::GetStyle and 0x0060a60a CWnd::RunModalLoop were byte-for-byte MFC
-// library methods hand-ported onto TView (both matched poorly, 24-40%). Retired to
-// // LIBRARY: (see config/msvc500_library_overrides.csv); RunModalLoop's one caller
-// (TModalTemplateDialog::FinalizeModalDialogAndRestoreOwnerFocus) now calls the real
-// CWnd::RunModalLoop on the CWnd base. GetStyle's only caller was RunModalLoop itself.

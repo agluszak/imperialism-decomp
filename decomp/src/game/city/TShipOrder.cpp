@@ -12,7 +12,7 @@
 #include "game/globals/ui_core_globals.h"
 #include "game/ui_core/TViewMgr.h"
 
-static __inline short ReadWeight(const short* tableBase, short index) {
+static short ReadWeight(const short* tableBase, short index) {
   return tableBase[index];
 }
 

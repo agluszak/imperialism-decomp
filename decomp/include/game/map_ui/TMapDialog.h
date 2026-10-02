@@ -113,16 +113,16 @@ public:
   // Mac CodeWarrior identity: TMapDialog::DrawBorder(short, short, short, short, short).
   // The Windows body keeps the four coordinate/nation arguments as full stack dwords.
   virtual void DrawBorder(short relationLevel, int originX, int originY, int nationA, int nationB);
-  virtual void DrawMapDialogGuidePatternSetA_00520970(int originX, int originY, short variant);
-  virtual void DrawMapDialogGuidePatternSetB_00520a90(int originX, int originY, short variant);
-  virtual void DrawMapDialogGuidePatternSetC_00520c10(int originX, int originY, short variant);
-  virtual void DrawMapDialogGuidePatternSetD_00520d20(int originX, int originY, short variant);
+  virtual void DrawMapDialogGuidePatternSetA(int originX, int originY, short variant);
+  virtual void DrawMapDialogGuidePatternSetB(int originX, int originY, short variant);
+  virtual void DrawMapDialogGuidePatternSetC(int originX, int originY, short variant);
+  virtual void DrawMapDialogGuidePatternSetD(int originX, int originY, short variant);
   virtual void DrawMapDialogTileGuidePatternByVariant(int originX, int originY, short variant);
-  virtual void DrawMapDialogGuidePatternSetE_00520fc0(int originX, int originY, short variant);
-  virtual void DrawMapDialogGuidePatternSetF_00521090(int originX, int originY, short variant);
-  virtual void DrawMapDialogGuidePatternSetG_005211c0(int originX, int originY, short variant);
-  virtual void DrawMapDialogGuidePatternSetH_00521340(int originX, int originY, short variant);
-  virtual void DrawMapDialogGuidePatternSetI_00521540(int originX, int originY, short variant);
+  virtual void DrawMapDialogGuidePatternSetE(int originX, int originY, short variant);
+  virtual void DrawMapDialogGuidePatternSetF(int originX, int originY, short variant);
+  virtual void DrawMapDialogGuidePatternSetG(int originX, int originY, short variant);
+  virtual void DrawMapDialogGuidePatternSetH(int originX, int originY, short variant);
+  virtual void DrawMapDialogGuidePatternSetI(int originX, int originY, short variant);
   // Mac CodeWarrior identity: TMapDialog::DrawSeaZoneBorders. Draws the colored ownership
   // dividers between the six sea zones surrounding one map tile. VC5 emits same-name
   // overloads in reverse declaration order in the vtable, so this declaration intentionally

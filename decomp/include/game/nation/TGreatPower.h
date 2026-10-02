@@ -495,10 +495,6 @@ public:
   // operator_new(0xb70) + TAutoGreatPower::TAutoGreatPower() ctor call (thunk 0x407a31
   // -> 0x4e6b50) to actually construct a TAutoGreatPower, not a bare TGreatPower.
 
-  // (All thunk_*_At0040xxxx member wrappers retired: those addresses are pure ILT
-  // `jmp` stubs from incremental linking, not real functions. Callsites now call the
-  // real methods/virtuals directly; reccmp auto-detects the orig-side thunks.)
-
   // Semantic C++ wrappers:
   // - constructor behavior maps to 0x004D8CC0 IGreatPower
   // - TObject::Free override at 0x004D9160 releases owned members then deletes self

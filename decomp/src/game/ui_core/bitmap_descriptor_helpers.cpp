@@ -15,7 +15,7 @@
 namespace {
 
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
-static __inline void ReleaseLoadedBitmapHandle(TBitmapResourceLoader** loaderHandle) {
+static void ReleaseLoadedBitmapHandle(TBitmapResourceLoader** loaderHandle) {
   TBitmapResourceLoader* loader = *loaderHandle;
   loader->ReleaseBitmapResource();
   loader->flags &= static_cast<unsigned char>(~1);

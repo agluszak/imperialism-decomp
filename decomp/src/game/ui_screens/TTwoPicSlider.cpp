@@ -65,14 +65,14 @@ void TTwoPicSlider::Free() {
 
 namespace {
 
-static __inline short ClampSliderSplitForFill(short splitPosition) {
+static short ClampSliderSplitForFill(short splitPosition) {
   if (splitPosition < 0x0c) {
     return 0;
   }
   return splitPosition;
 }
 
-static __inline short ClampSliderInputToHeight(int height, const CPoint& point) {
+static short ClampSliderInputToHeight(int height, const CPoint& point) {
   int requested = static_cast<short>(point.y);
   if (height <= requested) {
     requested = height;
@@ -83,7 +83,7 @@ static __inline short ClampSliderInputToHeight(int height, const CPoint& point) 
   return static_cast<short>(height - requested);
 }
 
-static __inline int SliderScaledValue(TTwoPicSlider* slider, int scale) {
+static int SliderScaledValue(TTwoPicSlider* slider, int scale) {
   short adjustedSplit = 0;
   if (slider->splitPosition >= 0x0c) {
     adjustedSplit = static_cast<short>(slider->splitPosition - 0x0c);
@@ -108,21 +108,23 @@ void TTwoPicSlider::Draw(RECT* rectBuffer) {
     blitRect.right = slider->frameWidth34;
 
     ResetQuickDrawStrokeState();
-    BlitQuickDrawSurfaces(slider->lowerSurface->GetBlitSurface(),
-                          slider->compositeSurface->GetBlitSurface(), &blitRect, &blitRect, 0);
+    BlitRectWithOptionalTransparency(slider->lowerSurface->GetBlitSurface(),
+                                     slider->compositeSurface->GetBlitSurface(), &blitRect,
+                                     &blitRect, 0);
 
     blitRect.bottom = blitRect.top;
     blitRect.top = 0;
-    BlitQuickDrawSurfaces(slider->upperSurface->GetBlitSurface(),
-                          slider->compositeSurface->GetBlitSurface(), &blitRect, &blitRect, 0);
+    BlitRectWithOptionalTransparency(slider->upperSurface->GetBlitSurface(),
+                                     slider->compositeSurface->GetBlitSurface(), &blitRect,
+                                     &blitRect, 0);
 
     blitRect.right = slider->frameWidth34;
     blitRect.bottom = slider->frameHeight38;
     blitRect.left = 0;
     blitRect.top = 0;
-    BlitQuickDrawSurfaces(slider->compositeSurface->GetBlitSurface(),
-                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &blitRect, &blitRect,
-                          0);
+    BlitRectWithOptionalTransparency(slider->compositeSurface->GetBlitSurface(),
+                                     g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &blitRect,
+                                     &blitRect, 0);
 
     if (slider->splitPosition < 0x0c) {
       CString statusText;

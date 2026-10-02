@@ -22,7 +22,7 @@ import re
 from pathlib import Path
 
 from tools.common.repo import repo_root_from_file, resolve_repo_path
-from tools.common.template_aliases import load_aliases
+from tools.common.stub_exclusions import load_stub_exclusions
 from tools.generate_symbols import generate_rows
 from tools.source_model import build_model
 
@@ -46,7 +46,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-dir",
         default=DEFAULT_OUTPUT_DIR,
-        help="Directory for generated stub chunks (default: {})".format(DEFAULT_OUTPUT_DIR),
+        help="Directory for generated stub chunks (default: {})".format(
+            DEFAULT_OUTPUT_DIR
+        ),
     )
     parser.add_argument(
         "--max-functions-per-file",
@@ -113,7 +115,9 @@ def prototype_usable(proto: str) -> bool:
     # Conservative filter: reject member/template/complex forms that frequently fail without
     # full type/class declarations.
     forbidden_tokens = ("::", "<", ">", "operator", "{", "}")
-    return "(" in proto and ")" in proto and not any(t in proto for t in forbidden_tokens)
+    return (
+        "(" in proto and ")" in proto and not any(t in proto for t in forbidden_tokens)
+    )
 
 
 def build_signature(ident: str, prototype: str, use_prototypes: bool) -> str:
@@ -122,7 +126,9 @@ def build_signature(ident: str, prototype: str, use_prototypes: bool) -> str:
         "scanBracketExpressions",
         "BuildUiTextStyleDescriptor",
     }
-    force_prototype = ident in whitelist or function_name_from_prototype(prototype) in whitelist
+    force_prototype = (
+        ident in whitelist or function_name_from_prototype(prototype) in whitelist
+    )
     simple_void_prototype = re.fullmatch(
         r"void(?:\s+__(?:cdecl|stdcall|fastcall))?\s+"
         r"[A-Za-z_][A-Za-z0-9_]*\s*\(\s*(?:void)?\s*\)",
@@ -135,7 +141,9 @@ def build_signature(ident: str, prototype: str, use_prototypes: bool) -> str:
     ):
         candidate = prototype.rstrip().rstrip(";")
         # Replace trailing function-name token if present.
-        candidate = re.sub(r"\b[A-Za-z_][A-Za-z0-9_]*\s*\(", "{}(".format(ident), candidate, count=1)
+        candidate = re.sub(
+            r"\b[A-Za-z_][A-Za-z0-9_]*\s*\(", "{}(".format(ident), candidate, count=1
+        )
         return candidate
     return "undefined4 {}(void)".format(ident)
 
@@ -176,11 +184,11 @@ def compute_stub_rows(
     if model is None:
         model = build_model(repo_root, target)
     claimed = set(model.functions)
-    # Equivalence-alias members (config/template_aliases.csv) are never
-    # independent stub targets: the canonical body is the work item, and a
-    # stub claiming the alias pairs it at a junk score instead of letting the
-    # alias accounting recognize it (bd 5jjn / iftm).
-    alias_members, _alias_errors = load_aliases()
+    # Retained emissions must not acquire generated source APIs. Catalog identity
+    # and alias resolution belong to reccmp.
+    excluded, errors = load_stub_exclusions()
+    if errors:
+        raise ValueError("Invalid stub exclusions: " + "; ".join(errors))
     if overlay_rows is None:
         _fields, overlay_rows, _stats = generate_rows(
             repo_root, target, inventory=symbols_csv, model=model
@@ -195,7 +203,7 @@ def compute_stub_rows(
         if not address_text:
             continue
         address = int(address_text, 16)
-        if address in claimed or address in alias_members:
+        if address in claimed or address in excluded:
             continue
         name = (row.get("name") or "").strip()
         prototype = sanitize_prototype((row.get("prototype") or "").strip())
@@ -302,7 +310,9 @@ def write_stubs(
 
     seen_idents: set[str] = set()
     generated_files: list[str] = []
-    for idx, chunk in enumerate(chunked_rows(function_rows, max_functions_per_file), start=1):
+    for idx, chunk in enumerate(
+        chunked_rows(function_rows, max_functions_per_file), start=1
+    ):
         relpath = "{}{:03d}.cpp".format(chunk_prefix, idx)
         _write_if_changed(
             output_dir / relpath,

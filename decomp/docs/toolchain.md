@@ -131,8 +131,9 @@ Interpretation:
   fix for the duplicate original-side CList instantiations.
 - Practical conclusion: do not adopt `/OPT:REF` to chase duplicate CList rows. Keep the
   real `CList<...>` source model and treat leftover duplicate original template bodies
-  as a reccmp pairing/classification problem. The current alias rows in
-  `config/template_aliases.csv` are consumed directly by stub generation.
+  as a reccmp pairing/classification problem. Historical equivalence groups are
+  no longer comparison inputs; current reccmp owns catalog aliases. Stub generation
+  consumes only the original-address exclusions in `config/stub_exclusions.csv`.
 
 ### ICF matrix (2026-07-23) — /OPT:NOREF,/OPT:NOICF pinned as the matching baseline
 

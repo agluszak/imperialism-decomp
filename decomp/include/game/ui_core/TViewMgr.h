@@ -225,8 +225,6 @@ public:
   // resource word after a -1000 sentinel), fills the 'GOLD'/'coat'/'awer'/'titl'/'info'
   // children, wraps the info text in a fresh TScrollView when it overflows, plays the
   // per-mode sfx, runs the modal loop, and returns false only for a 'cncl' close.
-  // (Ghidra's TCivToolbar attribution was wrong: the placement dispatch is this class's
-  // own virtual slot 0x11 and the only caller passes TViewMgr's `this`.)
   bool RunNationInfoModalAndReturnNonCancel(int messageKind, CString titleSuffix,
                                             const char* messageChars, int messageLength,
                                             const POINT& messagePosition, short contextTag,

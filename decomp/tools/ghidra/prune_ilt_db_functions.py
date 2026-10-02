@@ -2,12 +2,10 @@
 """Delete stray Function entities in the ILT jmp-thunk range from the Ghidra DB.
 
 The start of .text (0x401000..) is a contiguous table of incremental-link 5-byte
-``jmp <real body>`` stubs. reccmp resolves vtable slots and calls *through* these
-thunks only while they stay unannotated in both binaries; a Function entity
-defined on one (left by auto-analysis, an import pass, or repair-code-gaps)
-blocks reccmp's thunk auto-resolution and collapses vtable matching (~400
-functions lost 100% in the 2026-07 gap-repair attempt; the fix then was manual
-``FunctionManager.removeFunction`` surgery — see docs/ghidra-db.md).
+``jmp <real body>`` stubs. A raw inventory export of a Function on one of these
+addresses prevents current reccmp's create_thunks from installing its THUNK/ref
+entry. This prune cleans the evidence database before inventory export; Ghidriff's
+disposable comparison preparation does not repair that catalog input.
 
 ``just prune-ilt-thunks`` cleans the symbols.csv side; this tool cleans the DB
 side. ``just refresh-inventory`` runs it with --apply before the export so a refresh

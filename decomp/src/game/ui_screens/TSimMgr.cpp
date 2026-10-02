@@ -1,3 +1,9 @@
+#include "game/ui_screens/TLoadSavePicture.h"
+#include "game/assets/TCdAudioDevice.h"
+#include "game/military_ui/TNextDiplomationCommand.h"
+#include "game/military_ui/TSortedByRelationshipList.h"
+#include "game/ui_widgets/TSoundPlayer.h"
+#include "game/globals/ui_widgets_globals.h"
 #include "game/gfx/TAmbitApplication.h"
 #include "game/ui_tags_screens.h"
 #include "game/resource_domain_types.h"
@@ -51,20 +57,7 @@
 #include "game/globals/ui_screens_globals.h"
 #include "game/military/mapped_flavor_text.h"
 
-// C++98-compatible compile-time layout guards for the turn/nation-count block. This block
-// was challenged (bd imperialism-decomp-g11y) on the grounds that +0x2c held a short turn
-// counter while the header supposedly placed `int numGreatPowers` there. The header is
-// right; the challenge dropped the TObject vptr at +0x00, which shifts every field by 4.
-// Binary evidence per field:
-//   +0x2c economicTurn        GetEconomicTurn 0x0057d8b0  MOV AX,[ECX+0x2c]
-//                             AdvanceSeason   0x0057d950  INC word ptr [ECX+0x2c]
-//                             GetSeason       0x0057d830  MOVSX then % 4 (4 turns/year)
-//   +0x2e activeNationSlot    MOV word ptr [ESI+0x2e],0xffff   (-1 == no active nation)
-//   +0x30 numGreatPowers      MOV dword ptr [ESI+0x30],0x7     (7 great powers)
-//   +0x34 numMinorCountries   MOV dword ptr [ESI+0x34],0x10    (16 minors)
-//   +0x3c turnFlowStatusFlags SetFlags 0x0057f4b0 / TestTurnFlowStatusFlagMask 0x0057f4d0
-// Access widths in the binary match the declared types throughout (word at 0x2c/0x2e,
-// dword at 0x30/0x34/0x3c), so a failure here is real drift, not a naming argument.
+// LAYOUT: The turn and active-nation fields are words; the following counters are dwords.
 #define TSIMMGR_LAYOUT_ASSERT(name, expr) typedef char name[(expr) ? 1 : -1]
 TSIMMGR_LAYOUT_ASSERT(TSimMgr_Offset_economicTurn_0x2C, offsetof(TSimMgr, economicTurn) == 0x2C);
 TSIMMGR_LAYOUT_ASSERT(TSimMgr_Offset_activeNationSlot_0x2E,
@@ -92,7 +85,7 @@ void RegenerateAllMapActionContextStatusCodes();
   token##Bytes[0] = token##Bytes[3];                                                               \
   token##Bytes[1] = token##Bytes[2]
 
-static inline bool IsNationEligibleForOptionalPhase(short nationSlot) {
+static bool IsNationEligibleForOptionalPhase(short nationSlot) {
   if (nationSlot == -1) {
     return false;
   }
@@ -966,9 +959,600 @@ void TSimMgr::EnterOptionalPhase(int gamePhase) {
   StartNextPhase();
 }
 
-// TSimMgr::AdvanceGlobalTurnStateMachine (0x0057da70) is defined in its own translation unit,
-// src/game/TSimMgr_AdvanceGlobalTurnStateMachine.cpp, so its large inline switch body does not
-// perturb the codegen of the methods in this file.
+// FUNCTION: IMPERIALISM 0x0057da70
+void TSimMgr::AdvanceGlobalTurnStateMachine() {
+  // Source evidence: retail constructs this CString before the defer check.
+  CString emptyString;
+
+  if (turnStateCode == 0x10 && g_nTurnCooldownDeferCounter006A43C4 > 0) {
+    --g_nTurnCooldownDeferCounter006A43C4;
+  }
+  mode = turnStateCode;
+
+  switch (turnStateCode) {
+  case 1:
+    turnStateCode = 3;
+    if (g_bTurnFlowBootstrapComplete == 0) {
+      g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOpeningCinematic), 0);
+      break;
+    }
+    g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventMainMenu), 0);
+    break;
+
+  case 2: {
+    turnStateCode = 0x10;
+    for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+      TGreatPower* nation = g_apNationStates[nationSlot];
+      nation->AssertValid();
+      if (nation->IsRemote() == 0 && g_bMultiplayerScenarioSetupActive == 0) {
+        nation->SetHomeCityTileAndDisplayName(-1, 0);
+      }
+    }
+    if (g_bMultiplayerScenarioSetupActive == 0) {
+      if (scenarioMapIndexPlusOne == 0) {
+        if (multiplayerSessionRole == 0) {
+          NameCapitals();
+        }
+      } else {
+        ProcessScenarioScript();
+      }
+    }
+    TGreatPower* activeNation = g_apNationStates[activeNationSlot];
+    activeNation->ResetDiplomacyNeedScoresAndClearAidAllocationMatrix();
+    activeNation->ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches();
+    g_pHelpMgr->ResetHelpSetRanksAndFlags();
+    if (multiplayerSessionRole != 0) {
+      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
+      turnStateCode = 0x13;
+      StartNextPhase();
+      break;
+    }
+    StartNextPhase();
+    break;
+  }
+
+  case 3:
+    turnStateCode = 2;
+    if (reloadPoliticalMapState != 0) {
+      g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(1);
+      g_pSimMgr->RebuildMapContextAndGlobalMapState(1, s_Chunk_00698C0C, 1);
+    }
+    if (g_bMultiplayerScenarioSetupActive != 0) {
+      break;
+    }
+    RebuildNationStateSlotsAndAvailability(1);
+    if (g_pSimMgr->difficultyLevel > 1 && scenarioMapIndexPlusOne == 0) {
+      g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventCitySiteSelector),
+                                    activeNationSlot);
+    } else {
+      StartNextPhase();
+    }
+    break;
+
+  case 4:
+    turnStateCode = 5;
+    g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventStrategicMap),
+                                  g_pSimMgr->activeNationSlot);
+    if (multiplayerSessionRole != 0) {
+      if (activeNationSlot == -1 || g_apTerrainTypeDescriptorTable[activeNationSlot] == nullptr ||
+          (activeNationSlot <= 6 &&
+           g_apTerrainTypeDescriptorTable[activeNationSlot]->encodedNationSlot >= 100 &&
+           g_apTerrainTypeDescriptorTable[activeNationSlot]->encodedNationSlot <= 199)) {
+        StartNextPhase();
+      }
+    }
+    break;
+
+  case 5: {
+    const char alertsPending = ShowTurnAlertsForActiveNation();
+    alertsPendingFlag38 = alertsPending;
+    if (alertsPending != 0) {
+      break;
+    }
+    bool continueTurn = true;
+    while (multiplayerSessionRole != 2 && ReturnTrueStub() == 0) {
+      CString message;
+      g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&message, 0x2745, 10);
+      if (g_pViewMgr->ModalMessage(message, g_ptTurnTransitionModalMessage, 1, 1) == 0) {
+        continueTurn = false;
+        break;
+      }
+    }
+    if (!continueTurn) {
+      break;
+    }
+    turnStateCode = 6;
+    if (multiplayerSessionRole != 0) {
+      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, 6);
+      turnStateCode = 0x13;
+    }
+    StartNextPhase();
+    break;
+  }
+
+  case 6: {
+    turnStateCode = 7;
+    if (multiplayerSessionRole != 0) {
+      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
+    }
+    if (multiplayerSessionRole != 1) {
+      g_pDiplomacyTurnStateManager->ApplyDiplomacyInterNationStatesForTurn();
+    }
+    if (multiplayerSessionRole == 0) {
+      for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+        TGreatPower* nation = g_apNationStates[nationSlot];
+        if (nation != nullptr && nation->diplomacyEligibilityA0 != 0 &&
+            nation->proposalQueue->GetSize() > 0) {
+          g_pSfxPlaybackSystem->SetActiveAudioCueAndResetQueue(4, true);
+          g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDiplomacyMap),
+                                        activeNationSlot);
+          break;
+        }
+      }
+    } else if (IsNationEligibleForOptionalPhase(activeNationSlot)) {
+      g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDiplomacyMap), activeNationSlot);
+    }
+    for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+      TGreatPower* nation = g_apNationStates[nationSlot];
+      if (nation != nullptr) {
+        nation->ReplyToDiplomacyOffers();
+      }
+    }
+    if (multiplayerSessionRole == 0 ||
+        (multiplayerSessionRole == 1 && !IsNationEligibleForOptionalPhase(activeNationSlot))) {
+      // 0x57df05: new TNextDiplomationCommand() + immediate dispatch; the original
+      // calls the method even when operator new returned null (kept faithfully).
+      TNextDiplomationCommand* nextCommand = new TNextDiplomationCommand();
+      nextCommand->DispatchUiPacketWithTagNEXT();
+    }
+    break;
+  }
+
+  case 7: {
+    turnStateCode = 9;
+    g_pDiplomacyTurnStateManager->SelectPriorityNationIndicesForMinorCapabilityRows();
+    if (multiplayerSessionRole != 0) {
+      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
+      g_pSfxPlaybackSystem->SetActiveAudioCueAndResetQueue(4, true);
+      g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOfferSheet), activeNationSlot);
+      g_pViewMgr->ShowOfferSheet(-1, 0, 0, 0, 0x16);
+    }
+    if (multiplayerSessionRole != 2) {
+      DoTrade();
+    }
+    break;
+  }
+
+  case 8: {
+    turnStateCode = 0xb;
+    DoCityAndTransport();
+    if (multiplayerSessionRole != 0) {
+      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
+      turnStateCode = 0x13;
+      StartNextPhase();
+      break;
+    }
+    StartNextPhase();
+    break;
+  }
+
+  case 9: {
+    turnStateCode = 10;
+    if (multiplayerSessionRole != 2) {
+      DoCivilians();
+      StartNextPhase();
+      break;
+    }
+    StartNextPhase();
+    break;
+  }
+
+  case 10: {
+    turnStateCode = 0x14;
+    g_pSimMgr->DoMilitary();
+    StartNextPhase();
+    break;
+  }
+
+  case 0xb: {
+    turnStateCode = 0xc;
+    char actionNeeded = 0;
+    // For each live nation slot 6..0, slot 0xaf (the pressure-state update, byte 0x2bc)
+    // returns a char: when set, fire the active nation's no-payload turn-event dispatch
+    // (slot 0xab, byte 0x2ac). The original derefs the active nation's vtable with no
+    // null guard here, so this stays a direct virtual call.
+    for (int nationSlot = 6; nationSlot >= 0; --nationSlot) {
+      TGreatPower* nation = g_apNationStates[nationSlot];
+      if (nation == nullptr) {
+        continue;
+      }
+      if (nation->UpdateGreatPowerPressureStateAndDispatchEscalationMessage() == 0) {
+        continue;
+      }
+      TGreatPower* activeNation = g_apNationStates[activeNationSlot];
+      activeNation->SorryYouLose();
+      actionNeeded = 1;
+    }
+    if (actionNeeded == 0) {
+      StartNextPhase();
+    }
+    break;
+  }
+
+  case 0xc: {
+    turnStateCode = 0xe;
+    if (IsNationEligibleForOptionalPhase(activeNationSlot)) {
+      g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDealBook), activeNationSlot);
+      g_pSfxPlaybackSystem->SetActiveAudioCueAndResetQueue(4, true);
+      break;
+    }
+    if (!IsNationEligibleForOptionalPhase(activeNationSlot)) {
+      StartNextPhase();
+    }
+    break;
+  }
+
+  case 0xd: {
+    turnStateCode = 0x19;
+    // Verified against 0x0057e487: real receiver is g_pMapContextActionManager (no null
+    // guard on it, matching the missing-guard pattern used elsewhere in this switch).
+    if (g_pMapContextActionManager->GetByteFlagAtOffset8() != 0 &&
+        IsNationEligibleForOptionalPhase(activeNationSlot)) {
+      g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDiplomacyOffer),
+                                    activeNationSlot);
+      break;
+    }
+    StartNextPhase();
+    break;
+  }
+
+  case 0xe: {
+    turnStateCode = 0x10;
+    if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot != -1) {
+      const short lastProcessed = g_pDiplomacyTurnStateManager->lastProcessedNationSlot;
+      turnStateCode = static_cast<int>(lastProcessed != activeNationSlot) + 0x16;
+    }
+    const short tickA = GetEconomicTurn();
+    const short tickB = GetEconomicTurn();
+    if (tickB % 0x28 != 0 || phaseStateByDecade[tickA / 0x28] == 0) {
+      StartNextPhase();
+    } else {
+      g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOpeningCinematic),
+                                    activeNationSlot);
+    }
+    break;
+  }
+
+  case 0xf: {
+    turnStateCode = 0x12;
+    g_pAssetMgr->OpenFilesFor(0xa);
+    g_pNewsMgr->StartNewsPhase();
+    g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventNewspaperStatus), activeNationSlot);
+    for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
+      if (!IsNationEligibleForOptionalPhase(nationSlot)) {
+        continue;
+      }
+      g_apNationStates[nationSlot]->MarkAllPendingStatusFlagsHandled();
+    }
+    bool saveTurn = false;
+    if (g_nTurnCooldownDeferCounter006A43C4 < 1) {
+      g_nTurnCooldownDeferCounter006A43C4 = 0;
+      g_nTurnCooldownSideFlag00698B10 = 1;
+      saveTurn = true;
+    } else {
+      const int phaseFlags = GetEconomicTurn();
+      if ((phaseFlags & 0xf) == 10) {
+        saveTurn = true;
+      }
+    }
+    if (saveTurn) {
+      if (multiplayerSessionRole == 0) {
+        SaveGameWithModeAndOptionalLabel(0xa1, 0);
+      } else if (multiplayerSessionRole == 1) {
+        g_pGameFlowState->TrySaveGameAndMaybeShowFailureDialog(0xa1, 0, 1);
+      }
+    }
+    if (multiplayerSessionRole != 0) {
+      if (!IsNationEligibleForOptionalPhase(activeNationSlot)) {
+        StartNextPhase();
+      }
+    }
+    break;
+  }
+
+  case 0x10: {
+    turnStateCode = 0x11;
+    alertsPendingFlag38 = 0;
+    turnFlowStatusFlags = 0;
+    AdvanceSeason();
+    StartNextPhase();
+    break;
+  }
+
+  case 0x11: {
+    turnStateCode = 0xf;
+    char actionNeeded = 1;
+    const short capabilityBefore = g_pTechMgr != nullptr ? g_pTechMgr->marker262 : 0;
+    g_pTechMgr->CheckForAdvances();
+    if (capabilityBefore == (g_pTechMgr != nullptr ? g_pTechMgr->marker262 : 0)) {
+      turnFlowStatusFlags |= 0x40;
+    }
+    for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+      if (g_pSimMgr->activeNationSlot == nationSlot && g_nTurnCooldownDeferCounter006A43C4 < 1) {
+        g_nTurnCooldownDeferCounter006A43C4 = 0;
+        g_nTurnCooldownSideFlag00698B10 = 1;
+        if (IsNationEligibleForOptionalPhase(activeNationSlot)) {
+          short unlockSlot =
+              g_pTechMgr->ConsumeFirstPendingAbilityUnlock(static_cast<short>(nationSlot));
+          if (unlockSlot != -1) {
+            g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventTechnologyAdvance),
+                                          unlockSlot);
+            actionNeeded = 0;
+          }
+          continue;
+        }
+      }
+      short unlockSlot =
+          g_pTechMgr->ConsumeFirstPendingAbilityUnlock(static_cast<short>(nationSlot));
+      while (unlockSlot != -1) {
+        unlockSlot = g_pTechMgr->ConsumeFirstPendingAbilityUnlock(static_cast<short>(nationSlot));
+      }
+    }
+    if (actionNeeded != 0) {
+      StartNextPhase();
+    }
+    break;
+  }
+
+  case 0x12: {
+    turnStateCode = 5;
+    g_pAssetMgr->OpenFilesFor(0x13);
+    g_pGlobalMapState->DispatchTurnEvent7DDForActiveNation();
+    g_pViewMgr->RefreshViewSlot48();
+    for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
+      TGreatPower* nation = g_apNationStates[nationSlot];
+      if (nation == nullptr || nationSlot == -1) {
+        continue;
+      }
+      if (!IsNationEligibleForOptionalPhase(nationSlot)) {
+        continue;
+      }
+      nation->InitializeDiplomacyNotices();
+      nation->DisplayTurnStartEvents();
+    }
+    g_pSfxPlaybackSystem->ResetDualAudioCuePools();
+    g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(2);
+    g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(3);
+    g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
+    if (!IsNationEligibleForOptionalPhase(activeNationSlot)) {
+      StartNextPhase();
+    }
+    break;
+  }
+
+  case 0x13: {
+    turnStateCode = g_pGameFlowState->activeNationSlotIndex;
+    g_pGameFlowState->HandleTurnResumeStateTelemetry();
+    g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventNetworkGameOptions),
+                                  activeNationSlot);
+    break;
+  }
+
+  case 0x14: {
+    turnStateCode = 0x15;
+    g_pMapContextActionManager->DoCombatMoves();
+    if (multiplayerSessionRole != 0) {
+      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
+      turnStateCode = 0x13;
+    }
+    break;
+  }
+
+  case 0x15: {
+    turnStateCode = 0xd;
+    g_pNavyOrderManager->ClearAllTransientOrders();
+    if (multiplayerSessionRole != 2) {
+      g_pGlobalMapState->RecomputeTileStrategicScoreHeatmap();
+      RecomputeNationOrderPriorityMetrics();
+      for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
+        if (nationSlot == -1 || g_apTerrainTypeDescriptorTable[nationSlot] == nullptr) {
+          continue;
+        }
+        // Verified against 0x0057e0b7: real receiver is g_apTerrainTypeDescriptorTable[nationSlot]
+        // (a TCountry*), not a bare free-function predicate.
+        if (nationSlot < 7 &&
+            g_apTerrainTypeDescriptorTable[nationSlot]->IsNationProfileInMinorRange100To199()) {
+          continue;
+        }
+        TGreatPower* nation = g_apNationStates[nationSlot];
+        if (nation != nullptr) {
+          nation->RefreshTrackedEntriesAndReplanAiDevelopment(0);
+        }
+      }
+    }
+    for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
+      if (!IsNationEligibleForOptionalPhase(nationSlot)) {
+        continue;
+      }
+      g_apNationStates[nationSlot]->AddPurchasedItems();
+    }
+    const short tickA = GetEconomicTurn();
+    const short tickB = GetEconomicTurn();
+    if (((tickB % 0x28) == 0) && (phaseStateByDecade[tickA / 0x28] != 0) &&
+        multiplayerSessionRole != 2) {
+      g_pDiplomacyTurnStateManager->RebuildDiplomacyStandingAndInfluenceMatrices(
+          phaseStateByDecade[tickA / 0x28]);
+    }
+    if (multiplayerSessionRole != 0) {
+      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
+      turnStateCode = 0x13;
+    }
+    StartNextPhase();
+    break;
+  }
+
+  case 0x17:
+    g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOpeningCinematic), 0);
+    break;
+
+  case 0x19: {
+    turnStateCode = 8;
+    char actionNeeded = 0;
+    // Verified against 0x0057e1be: the original reads g_pSimMgr->activeNationSlot with no
+    // null guard, and when the localization nation's encoded slot is in [100,200) it fires
+    // the active nation's no-payload turn-event dispatch (slot 0xab, byte 0x2ac) with no
+    // arg and no null check on the active nation.
+    {
+      const short localizationNation = g_pSimMgr->activeNationSlot;
+      TGreatPower* localizationNationState = g_apNationStates[localizationNation];
+      if (localizationNationState != nullptr) {
+        const short encoded = localizationNationState->encodedNationSlot;
+        if (encoded > 99 && encoded < 200) {
+          TGreatPower* activeNation = g_apNationStates[activeNationSlot];
+          activeNation->SorryYouLose();
+          actionNeeded = 1;
+        }
+      }
+    }
+    for (int removeNationSlot = 0; removeNationSlot < 7; ++removeNationSlot) {
+      if (g_apTerrainTypeDescriptorTable[removeNationSlot] == nullptr ||
+          g_apNationStates[removeNationSlot] == nullptr) {
+        continue;
+      }
+      if (g_apNationStates[removeNationSlot]->ownedRegionList->GetSize() == 0) {
+        RemoveNationSlotAndNotifyPeers(static_cast<short>(removeNationSlot));
+      }
+    }
+    for (int secondaryIndex = 7; secondaryIndex < 0x17; ++secondaryIndex) {
+      TMinor* secondaryNation = g_apSecondaryNationStateSlots[secondaryIndex];
+      if (secondaryNation != nullptr && secondaryNation->ownedRegionList->GetSize() == 0) {
+        for (short percentNationSlot = 0; percentNationSlot < 7; ++percentNationSlot) {
+          if (!IsNationEligibleForOptionalPhase(percentNationSlot)) {
+            continue;
+          }
+          g_apNationStates[percentNationSlot]->NewStatusFor(secondaryIndex, 500);
+        }
+      }
+    }
+    if (actionNeeded != 0) {
+      break;
+    }
+    int eligibleMinorCount = 0;
+    for (int countNationSlot = 0; countNationSlot < 7; ++countNationSlot) {
+      if (IsNationEligibleForOptionalPhase(static_cast<short>(countNationSlot))) {
+        ++eligibleMinorCount;
+      }
+    }
+    if (eligibleMinorCount == 1 && IsNationEligibleForOptionalPhase(activeNationSlot)) {
+      actionNeeded = 1;
+      UpdatePersistentTopTenNationScores();
+      g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOpeningCinematic), 0);
+    }
+    if (actionNeeded == 0) {
+      StartNextPhase();
+    }
+    break;
+  }
+
+  case 0x16:
+    UpdatePersistentTopTenNationScores();
+    g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOpeningCinematic), 0);
+    break;
+
+  case 100:
+    turnStateCode = 4;
+    g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDealBook), activeNationSlot);
+    break;
+
+  // Jump-table ground truth (0x57dad8, index-byte table 0x57ebec): case 0x71 -> 0x57eabf
+  // (posts 0x104f), case 0x72 -> 0x57ead8 (posts 0x5e4). The old merged port dropped both
+  // event codes.
+  case 0x71:
+    turnStateCode = 4;
+    g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventCredits));
+    break;
+
+  case 0x72:
+    turnStateCode = 4;
+    g_pAmbitApplication->PostTurnEventCodeMessage2420(
+        EncodeTurnEventCode(kTurnEventNetworkGameOptions));
+    break;
+
+  case 0x65:
+    turnStateCode = 4;
+    g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDiplomacyOffer), activeNationSlot);
+    break;
+
+  case 0x66:
+    turnStateCode = 4;
+    g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventNewspaperStatus), activeNationSlot);
+    break;
+
+  case 0x67:
+    turnStateCode = 4;
+    g_pViewMgr->DispatchTurnEvent(
+        g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] != 0
+            ? kTurnEventIndustryOverview
+            : kTurnEventTradeOverview,
+        activeNationSlot);
+    break;
+
+  case 0x68:
+    turnStateCode = 4;
+    g_apNationStates[activeNationSlot]->SetDiplomacyPolicies();
+    g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDiplomacyMap), activeNationSlot);
+    g_pDiplomacyTurnStateManager->SetLastDiploEffort();
+    break;
+
+  case 0x69:
+    turnStateCode = 4;
+    g_apNationStates[activeNationSlot]->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+    g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventTransport), activeNationSlot);
+    break;
+
+  case 0x6a:
+    turnStateCode = 4;
+    g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventCityProduction), activeNationSlot);
+    break;
+
+  case 0x6b:
+    turnStateCode = 4;
+    g_pAmbitApplication->PostTurnEventCodeMessage2420(
+        EncodeTurnEventCode(kTurnEventGamePreferences));
+    break;
+
+  case 0x6c:
+    turnStateCode = 4;
+    g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventUnitHistory), activeNationSlot);
+    break;
+
+  case 0x6d:
+    turnStateCode = 4;
+    turnFlowStatusFlags |= 0x40;
+    g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventTechnologyStore), activeNationSlot);
+    break;
+
+  case 0x6e:
+    turnStateCode = 4;
+    g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventGameStatus), activeNationSlot);
+    break;
+
+  case 0x6f:
+    turnStateCode = 4;
+    g_nSaveFormatVersion = -1;
+    g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventLoadSave), activeNationSlot);
+    break;
+
+  case 0x70:
+    turnStateCode = 4;
+    g_nSaveFormatVersion = -2;
+    g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventLoadSave), activeNationSlot);
+    break;
+
+  default:
+    break;
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x0057f110
 char TSimMgr::InLinearPhase() {
@@ -1464,13 +2048,7 @@ void TSimMgr::UpdatePersistentTopTenNationScores() {
   }
 }
 
-// The "Done/advance" turn-flow bootstrap primitive (free __cdecl in the TSimMgr TU): the
-// single writer of g_bTurnFlowBootstrapComplete and the funnel every menu/score-screen advance routes
-// through. eventCode kTurnEventRandomGameSetup is the "start new game" scenario-setup path: it soft-resets
-// the EXISTING TSimMgr (the reset block is the original's header-inline prefix of
-// ISimMgr, expanded in place at 0x58191a) and jumps the turn
-// state machine to state 3. Every other code tears the manager down and rebuilds it
-// from scratch.
+// Random-game setup resets the existing manager; other events replace it.
 // FUNCTION: IMPERIALISM 0x00581870
 void ReinitializeGameFlowAndPostTurnEventCode(TurnEventId eventCode) {
   if (g_pHelpMgr != 0) {
@@ -1758,9 +2336,6 @@ void TSimMgr::HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders(void*
   }
 }
 
-// Reads a civilian work-order type and terrain row, resolves the row's owner tag, then
-// constructs and registers the corresponding civilian order. The dispatch receiver is
-// TSimMgr; the previous TGreatPower ownership was a Ghidra-attribution error.
 // FUNCTION: IMPERIALISM 0x00582630
 void TSimMgr::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw) {
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
@@ -2118,9 +2693,7 @@ void TSimMgr::HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId(void
   }
 }
 
-// Reads a country slot and fixed 64-byte inline display name. The three otherwise-empty
-// CString locals are present in the original body and are kept so VC5 emits the same EH
-// construction/destruction shape.
+// Source evidence: retail constructs and destroys three unused CString locals.
 // FUNCTION: IMPERIALISM 0x00583070
 void TSimMgr::HandleTurnInstruction_Cnam_AssignCountryName(void* pInstructionRaw) {
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);

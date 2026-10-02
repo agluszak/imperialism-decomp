@@ -2,7 +2,7 @@
 
 import unittest
 
-from tools.reccmp.report import call_queue, report_delta
+from tools.reccmp.report import call_queue, reference_groups, report_delta
 
 
 def summary(rows: list[dict], retail: str = "retail") -> dict:
@@ -53,6 +53,72 @@ class CompareReportTests(unittest.TestCase):
         self.assertEqual(
             call_queue(census), [{"orig": "0x1", "category": "incomplete-body"}]
         )
+
+    def test_reference_groups_report_measured_shared_evidence(self) -> None:
+        report = summary(
+            [
+                {
+                    "orig": "0x1",
+                    "name": "First",
+                    "outcome": "differences",
+                    "source": {"path": "src/Owner.cpp"},
+                    "data": [
+                        {"object": None},
+                        {
+                            "object": {
+                                "orig": "0x10",
+                                "name": "sharedObject",
+                            }
+                        }
+                    ],
+                },
+                {
+                    "orig": "0x2",
+                    "name": "Second",
+                    "outcome": "analysis-failed",
+                    "source": {"path": "src/Owner.cpp"},
+                    "data": [
+                        {
+                            "object": {
+                                "orig": "0x10",
+                                "name": "sharedObject",
+                            }
+                        }
+                    ],
+                },
+                {
+                    "orig": "0x3",
+                    "name": "Clean",
+                    "outcome": "no-differences",
+                    "source": {"path": "src/Owner.cpp"},
+                    "data": [],
+                },
+            ]
+        )
+        census = {
+            "functions": [
+                {
+                    "address": address,
+                    "orig": {
+                        "calls": [
+                            {
+                                "identity": "orig:0x20",
+                                "name": "SharedCallee",
+                            }
+                        ]
+                    },
+                }
+                for address in ("0x1", "0x2", "0x3")
+            ]
+        }
+        groups = reference_groups(report, census)
+        expected = {"0x1", "0x2"}
+        for category in groups.values():
+            self.assertEqual(
+                {item["orig"] for item in category["groups"][0]["functions"]},
+                expected,
+            )
+            self.assertIn("non-clean authored", category["measure"])
 
 
 if __name__ == "__main__":

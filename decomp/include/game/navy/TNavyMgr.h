@@ -77,7 +77,9 @@ public:
   void FreeShipsOf(short nation); // 0x556f60
   // Mac oracle: ClearAllOrders. The class-body definition is material: VC5 expands
   // it in Free() and retains its out-of-line COMDAT copy at 0x556850.
-  // FUNCTION: IMPERIALISM 0x00556850
+  // SYNTHETIC: IMPERIALISM 0x00556850
+  // TNavyMgr::ClearAllOrders
+  // Source evidence: unreferenced retained COMDAT in retail.
   void ClearAllOrders() {
     while (g_pNavyPrimaryOrderListHead != 0) {
       g_pNavyPrimaryOrderListHead->Free();
@@ -173,9 +175,7 @@ public:
   // 0x0055a020 -- resolves and executes a context-sensitive map click action against this
   // manager's active map-order state (dialogs for actions 2..8, set-active-entry for 9,
   // UI-runtime slot 0xf0 for 10, entry-order dialog for 11 which walks orderQueueHead).
-  // Returns true if the click was consumed. Ghidra's `int` prototype is a mislabel --
-  // callers store the result in a `char fHandled` and test `!= '\0'`, and the real codegen
-  // only ever sets/tests AL. Not virtual -- called directly (via an ILT thunk) from
+  // ABI: callers store and test AL. Called directly (via an ILT thunk) from
   // TWorldView::HandleMapClickByInteractionMode and from DoTileClick.
   bool SelectionClick(short nTileIndex, int nInputFlags);
   // 0x0055a160 -- when a click is not consumed by immediate context handling, resolves a

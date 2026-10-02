@@ -16,9 +16,6 @@ void ParseIntFromControlText(CString text, int* outValue);
 
 IMPLEMENT_DYNCREATE(TMyNumberText, TNumberText)
 
-// In the binary the trivial TNumberText ctor body (value = 0) is inlined here after the
-// TEditText base ctor call; the out-of-line TNumberText::TNumberText call this emits is
-// an accepted codegen difference.
 // FUNCTION: IMPERIALISM 0x005b4fd0
 TMyNumberText::TMyNumberText() : TNumberText() {}
 

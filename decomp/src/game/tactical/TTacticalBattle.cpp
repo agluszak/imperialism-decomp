@@ -384,11 +384,7 @@ void TTacticalBattle::ComputeTacticalReachableTileCostsByUnitCategory(TTacticalU
               blockedByAdjacentEnemy = 1;
             }
           }
-          // Transcribed as compiled: the original indexes neighborTiles[1] (or [0] when
-          // direction >= 5), NOT [direction + 1]. The branchless codegen proves the
-          // literal constants; likely an original bug for the intended "next ring
-          // neighbor", kept literal for byte match ((4 < direction) - 1 & 1 == 0 for
-          // direction >= 5, else 1).
+          // ORACLE: retail uses neighbor index 1 for directions 0..4 and 0 otherwise.
           short nextDirection = static_cast<short>((direction >= 5) ? 0 : 1);
           int nextNeighbor = neighborTiles[nextDirection];
           if (nextNeighbor != -1) {

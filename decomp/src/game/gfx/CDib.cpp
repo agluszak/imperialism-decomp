@@ -1177,11 +1177,7 @@ int CDib::BuildMonochromeOutlineMaskInPlace() {
   return 1;
 }
 
-// Outline-polygon scanner behind BitMapToRegion (see the header comment). The
-// heavy local reuse mirrors the original codegen: phase 1 counts every second
-// row containing a non-transparent pixel, phase 2 emits the left edge top-down
-// then the right edge bottom-up and closes the polygon. Y coordinates are
-// flipped through abs(biHeight) because DIB rows are stored bottom-up.
+// DIB rows are stored bottom-up.
 // FUNCTION: IMPERIALISM 0x0047c3d0
 POINT* CDib::BuildNonTransparentOutlinePolygon(unsigned int transparentIndex) {
   byte bVar1;
@@ -1227,14 +1223,14 @@ POINT* CDib::BuildNonTransparentOutlinePolygon(unsigned int transparentIndex) {
       byte_scan = 0;
       byte_idx = (int)(width + (width >> 0x1f & 7U)) >> 3;
       if (byte_idx < 1) {
-      LAB_0047c453:
+      advanceMaskScanRow:
         bit_row = bit_row + 8;
         bit_scan_row = bit_scan_row + col_idx;
       } else {
         do {
           if (bit_scan_row[byte_scan] != 0) {
             transparentIndex = transparentIndex + 1;
-            goto LAB_0047c453;
+            goto advanceMaskScanRow;
           }
           byte_scan = byte_scan + 1;
         } while (byte_scan < byte_idx);
@@ -1248,7 +1244,7 @@ POINT* CDib::BuildNonTransparentOutlinePolygon(unsigned int transparentIndex) {
     transparentIndex = 1;
     height = 0;
     out_iter = points + 1;
-  LAB_0047c48c:
+  scanMaskLeftEdge:
     do {
       row_idx = m_pInfoHeader->bmiHeader.biHeight;
       bit_row = row_idx;
@@ -1264,9 +1260,9 @@ POINT* CDib::BuildNonTransparentOutlinePolygon(unsigned int transparentIndex) {
             row_idx = m_pInfoHeader->bmiHeader.biWidth;
             row_idx = ((int)(row_idx + (row_idx >> 0x1f & 7U)) >> 3) + -1;
             if (-1 < row_idx) {
-            LAB_0047c55c:
+            scanMaskRightByte:
               if (bit_pixels[row_idx + height] == 0) {
-                goto code_r0x0047c562;
+                goto skipEmptyMaskRightByte;
               }
               cVar10 = '\0';
               for (cVar9 = bit_pixels[row_idx + height]; cVar9 != '\0'; cVar9 = cVar9 << 1) {
@@ -1281,7 +1277,7 @@ POINT* CDib::BuildNonTransparentOutlinePolygon(unsigned int transparentIndex) {
               transparentIndex = transparentIndex + 1;
               out_iter = out_iter + 1;
             }
-          LAB_0047c5a0:
+          advanceMaskRightRow:
             width = width + -8;
             height = height + scan_offset * -0x20;
           } while (-1 < width);
@@ -1293,9 +1289,9 @@ POINT* CDib::BuildNonTransparentOutlinePolygon(unsigned int transparentIndex) {
       byte_idx = 0;
       bit_row = (int)(bit_row + (bit_row >> 0x1f & 7U)) >> 3;
       if (0 < bit_row) {
-      LAB_0047c4be:
+      scanMaskLeftByte:
         if (bit_pixels[byte_idx + height] == 0) {
-          goto code_r0x0047c4c4;
+          goto skipEmptyMaskLeftByte;
         }
         cVar9 = '\0';
         for (bVar1 = bit_pixels[byte_idx + height]; bVar1 != 0; bVar1 = bVar1 >> 1) {
@@ -1312,22 +1308,22 @@ POINT* CDib::BuildNonTransparentOutlinePolygon(unsigned int transparentIndex) {
       width = width + 8;
       height = height + col_idx;
     } while (true);
-  code_r0x0047c562:
+  skipEmptyMaskRightByte:
     row_idx = row_idx + -1;
     if (row_idx < 0) {
-      goto LAB_0047c5a0;
+      goto advanceMaskRightRow;
     }
-    goto LAB_0047c55c;
-  code_r0x0047c4c4:
+    goto scanMaskRightByte;
+  skipEmptyMaskLeftByte:
     byte_idx = byte_idx + 1;
     if (bit_row <= byte_idx) {
-      goto code_r0x0047c4c9;
+      goto advanceMaskLeftRow;
     }
-    goto LAB_0047c4be;
-  code_r0x0047c4c9:
+    goto scanMaskLeftByte;
+  advanceMaskLeftRow:
     width = width + 8;
     height = height + col_idx;
-    goto LAB_0047c48c;
+    goto scanMaskLeftEdge;
   }
 
   // 8-bpp path.
@@ -1342,7 +1338,7 @@ POINT* CDib::BuildNonTransparentOutlinePolygon(unsigned int transparentIndex) {
   scan_offset = 0;
   row_stride = stride * 2;
   scan_ptr = pixel_ptr;
-LAB_0047c603:
+countOpaqueRows:
   do {
     col_idx = height;
     if (height < 1) {
@@ -1371,7 +1367,7 @@ LAB_0047c603:
               do {
                 width = width + -1;
                 if (width < 0) {
-                  goto LAB_0047c72a;
+                  goto advanceOpaqueRightRow;
                 }
               } while (pixel_ptr[width] == transparentIndex);
               row_stride = m_pInfoHeader->bmiHeader.biHeight;
@@ -1382,7 +1378,7 @@ LAB_0047c603:
               pair_count = pair_count + 1;
               out_iter->y = (row_stride - height) + -1;
               out_iter = out_iter + 1;
-            LAB_0047c72a:
+            advanceOpaqueRightRow:
               height = height + -2;
               pixel_ptr = pixel_ptr + stride * -2;
             } while (-1 < height);
@@ -1416,15 +1412,15 @@ LAB_0047c603:
       do {
         if (scan_ptr[col_idx] != transparentIndex) {
           row_idx = row_idx + 1;
-          goto LAB_0047c631;
+          goto advanceOpaqueScanRow;
         }
         col_idx = col_idx + 1;
       } while (col_idx < width);
       scan_offset = scan_offset + 2;
       scan_ptr = scan_ptr + row_stride;
-      goto LAB_0047c603;
+      goto countOpaqueRows;
     }
-  LAB_0047c631:
+  advanceOpaqueScanRow:
     scan_offset = scan_offset + 2;
     scan_ptr = scan_ptr + row_stride;
   } while (true);

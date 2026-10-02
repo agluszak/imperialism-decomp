@@ -92,14 +92,14 @@ void TTown::WriteTo(TStream* stream) {
   stream->WriteBoolean(activeFlag);
 }
 
-static __inline short TownNeighborTile(TTown* town, int direction) {
+static short TownNeighborTile(TTown* town, int direction) {
   if (direction < kStrategicHexDirectionCount) {
     return TMapMgr::GetNeighborTileID(town->tileIndex, static_cast<short>(direction));
   }
   return town->tileIndex;
 }
 
-static __inline void AddAdjacentCityDevelopment(TTown* town, short tileIndex) {
+static void AddAdjacentCityDevelopment(TTown* town, short tileIndex) {
   short cityRecordIndex = g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex;
   if (cityRecordIndex == -1 ||
       g_pGlobalMapState->cityScoreTable[cityRecordIndex].cityTileIndex04 != tileIndex) {

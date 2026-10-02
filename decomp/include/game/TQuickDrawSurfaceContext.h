@@ -97,10 +97,4 @@ ASSERT_SIZE(TBitmapSurfaceContextDescriptor, 0x34);
 void __cdecl BlitRectWithOptionalTransparency(TQuickDrawBlitSurface* srcSurface,
                                               TQuickDrawBlitSurface* dstSurface, RECT* srcRect,
                                               RECT* dstRect, unsigned char blitFlags,
-                                              RgnHandle clipRegion);
-
-static __inline void BlitQuickDrawSurfaces(TQuickDrawBlitSurface* srcSurface,
-                                           TQuickDrawBlitSurface* dstSurface, RECT* srcRect,
-                                           RECT* dstRect, unsigned char blitFlags) {
-  BlitRectWithOptionalTransparency(srcSurface, dstSurface, srcRect, dstRect, blitFlags, 0);
-}
+                                              RgnHandle clipRegion = 0);

@@ -74,7 +74,7 @@ const int kAssertLineTradeSellZeroBar = 0x896;
 
 const char kUSuperMapCppPath[] = "D:\\Ambit\\Cross\\USuperMap.cpp";
 
-static __inline short QueryNationTradeCapacity(TGreatPower* nationState) {
+static short QueryNationTradeCapacity(TGreatPower* nationState) {
   return nationState->merchantCapacity;
 }
 

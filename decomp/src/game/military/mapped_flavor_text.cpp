@@ -187,7 +187,7 @@ char* __cdecl AppendInterNationEventSummaryTextEntry_Impl(TSimMgr* sim, const ch
   return sink.Detach();
 }
 
-// TEMPLATE: IMPERIALISM 0x00580460
+// TEMPLATE: IMPERIALISM 0x00580460 SYMBOL
 // ?Add@?$stretch@D@@UAEPADD@Z
 
 // Expands a bracket-token template loaded from TSimMgr::GetString into a growable char
@@ -335,16 +335,16 @@ void GenerateMappedFlavorTextUntilValidationPasses(CString* dest, short variantI
       AppendRandomMapContextStatusSuffixWithProbability(dest);
       break;
     case 1:
-      GenerateMappedFlavorTextVariantC_005cf1b0(dest);
+      GenerateMappedFlavorTextVariantC(dest);
       break;
     case 2:
-      GenerateMappedFlavorTextVariantE_005ccce0(dest);
+      GenerateMappedFlavorTextVariantE(dest);
       break;
     case 3:
-      GenerateMappedFlavorTextVariantA_005d13d0(dest);
+      GenerateMappedFlavorTextVariantA(dest);
       break;
     case 4:
-      GenerateMappedFlavorTextVariantB_005cfc40(dest);
+      GenerateMappedFlavorTextVariantB(dest);
       break;
     case 5:
       BuildMapContextStatusStringVariantH(dest);
@@ -356,7 +356,7 @@ void GenerateMappedFlavorTextUntilValidationPasses(CString* dest, short variantI
       BuildMapContextStatusStringVariantB(dest);
       break;
     case 8:
-      GenerateMappedFlavorTextVariantD_005d33a0(dest);
+      GenerateMappedFlavorTextVariantD(dest);
       break;
     case 9:
       BuildMapContextStatusStringVariantI(dest);

@@ -14,12 +14,22 @@ class TestIsOssified(unittest.TestCase):
         self.assertTrue(is_ossified("thunk_WrapperFor_Bar_At004f6d90"))
 
     def test_wrapperfor_prefix_flagged(self):
-        self.assertTrue(is_ossified("WrapperFor_InvalidateCityDialogRectRegion_At004f6d90"))
-        self.assertTrue(is_ossified("WrapperFor_thunk_SetGlobalUiInvalidationFlag_At0049d900"))
+        self.assertTrue(
+            is_ossified("WrapperFor_InvalidateCityDialogRectRegion_At004f6d90")
+        )
+        self.assertTrue(
+            is_ossified("WrapperFor_thunk_SetGlobalUiInvalidationFlag_At0049d900")
+        )
 
     def test_at_hex_suffix_flagged(self):
         self.assertTrue(is_ossified("Function_At0049d900"))
         self.assertTrue(is_ossified("IsPointInsideHitRegion_At0050d6c0"))
+
+    def test_function_address_names_flagged(self):
+        self.assertTrue(is_ossified("Function_0058bc20"))
+        self.assertTrue(is_ossified("QuickDrawCompatibilityReturnZeroShort_0049DCC0"))
+        self.assertTrue(is_ossified("LAB_0047c453"))
+        self.assertFalse(is_ossified("g_NationFlags_006a1000"))
 
     def test_clean_names_not_flagged(self):
         self.assertFalse(is_ossified("TemporarilyClearAndRestoreUiInvalidationFlag"))
@@ -33,7 +43,9 @@ class TestIsOssified(unittest.TestCase):
 
 class TestStripLineComment(unittest.TestCase):
     def test_full_line_comment_removed(self):
-        self.assertEqual(strip_line_comment("  // slot 0x71 WrapperFor_X_At0049d900").strip(), "")
+        self.assertEqual(
+            strip_line_comment("  // slot 0x71 WrapperFor_X_At0049d900").strip(), ""
+        )
 
     def test_trailing_comment_removed_keeps_code(self):
         code = strip_line_comment("  Foo();  // WrapperFor_X_At0049d900 old name")
@@ -42,7 +54,11 @@ class TestStripLineComment(unittest.TestCase):
 
     def test_code_before_comment_still_scanned(self):
         code = strip_line_comment("  reinterpret_cast<T>(thunk_Foo)(1); // real call")
-        idents = [t for t in code.replace("(", " ").replace(")", " ").split() if is_ossified(t)]
+        idents = [
+            t
+            for t in code.replace("(", " ").replace(")", " ").split()
+            if is_ossified(t)
+        ]
         self.assertIn("thunk_Foo", " ".join(idents))
 
 

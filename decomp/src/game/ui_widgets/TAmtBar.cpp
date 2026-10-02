@@ -98,9 +98,9 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   contentRect.right = contentBounds.right;
   contentRect.bottom = contentBounds.bottom;
 
-  BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
-                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &panelRect,
-                        &contentRect, 0);
+  BlitRectWithOptionalTransparency(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
+                                   g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &panelRect,
+                                   &contentRect, 0);
 
   if (barRange > 0) {
     SetQuickDrawTextOriginWithContextOffset(0, 1);

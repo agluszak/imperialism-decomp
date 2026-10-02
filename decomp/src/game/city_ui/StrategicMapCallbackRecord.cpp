@@ -15,10 +15,10 @@
 // FUNCTION: IMPERIALISM 0x00430750
 StrategicMapCallbackRecord::~StrategicMapCallbackRecord() {}
 
-// TEMPLATE: IMPERIALISM 0x004307a0
+// TEMPLATE: IMPERIALISM 0x004307a0 SYMBOL
 // ?Add@?$stretch@E@@UAEPAEE@Z
 
-// TEMPLATE: IMPERIALISM 0x00430830
+// TEMPLATE: IMPERIALISM 0x00430830 SYMBOL
 // ?Add@?$stretch@H@@UAEPAHH@Z
 
 // FUNCTION: IMPERIALISM 0x004d4b90
@@ -31,7 +31,7 @@ void StrategicMapCallbackRecord::SetDestinationHeightNoOp(int unusedHeight) {
   (void)unusedHeight;
 }
 
-// TEMPLATE: IMPERIALISM 0x004d4dd0
+// TEMPLATE: IMPERIALISM 0x004d4dd0 SYMBOL
 // ?OverStretch@?$stretch@E@@QAEXI@Z
 
 // TEMPLATE: IMPERIALISM 0x004d4e40

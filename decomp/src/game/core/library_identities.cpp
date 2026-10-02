@@ -4,22 +4,22 @@
 // name/symbol/prototype overlays live here as // LIBRARY or // SYNTHETIC markers.
 // Accepting an object-matcher oracle hit means adding a block below.
 
-// LIBRARY: IMPERIALISM 0x00412600
+// LIBRARY: IMPERIALISM 0x00412600 SYMBOL
+// ??_H@YGXPAXIHP6EX0@Z@Z
 // name: `vector constructor iterator'
-// symbol: ??_H@YGXPAXIHP6EX0@Z@Z
 // prototype: void __stdcall `vector constructor iterator'(void * base,unsigned int elementSize,int count,void * (__thiscall * ctor)(void *))
 
 // LIBRARY: IMPERIALISM 0x00412bd0
-// name: CObject::Serialize
+// CObject::Serialize
 
 // LIBRARY: IMPERIALISM 0x00412bf0
-// name: CObject::AssertValid
+// CObject::AssertValid
 
 // LIBRARY: IMPERIALISM 0x00412c10
-// name: CObject::Dump
+// CObject::Dump
 
 // LIBRARY: IMPERIALISM 0x00413380
-// name: CObject::operator delete
+// CObject::operator delete
 
 // LIBRARY: IMPERIALISM 0x004133a0
 // MFC nafxcw registry helper: RegCloseKey on the handle at [ecx], then
@@ -29,40 +29,40 @@
 // MFC/CRT file-find close: if [ecx] holds a find handle (!= -1), calls
 // _findclose and resets it. CFileFind::Close shape.
 
-// LIBRARY: IMPERIALISM 0x00415030
+// LIBRARY: IMPERIALISM 0x00415030 SYMBOL
+// ?DoDataExchange@CWnd@@MAEXPAVCDataExchange@@@Z
 // name: CWnd::DoDataExchange
-// symbol: ?DoDataExchange@CWnd@@MAEXPAVCDataExchange@@@Z
 // prototype: protected: virtual void __thiscall CWnd::DoDataExchange(class CDataExchange *)
 
-// LIBRARY: IMPERIALISM 0x00415050
+// LIBRARY: IMPERIALISM 0x00415050 SYMBOL
+// ?BeginModalState@CWnd@@UAEXXZ
 // name: CWnd::BeginModalState
-// symbol: ?BeginModalState@CWnd@@UAEXXZ
 // prototype: public: virtual void __thiscall CWnd::BeginModalState(void)
 
-// LIBRARY: IMPERIALISM 0x00415070
+// LIBRARY: IMPERIALISM 0x00415070 SYMBOL
+// ?EndModalState@CWnd@@UAEXXZ
 // name: CWnd::EndModalState
-// symbol: ?EndModalState@CWnd@@UAEXXZ
 // prototype: public: virtual void __thiscall CWnd::EndModalState(void)
 
-// LIBRARY: IMPERIALISM 0x00415c00
+// LIBRARY: IMPERIALISM 0x00415c00 SYMBOL
+// ??1CWaitCursor@@QAE@XZ
 // name: CWaitCursor::~CWaitCursor
-// symbol: ??1CWaitCursor@@QAE@XZ
 // prototype: public: __thiscall CWaitCursor::~CWaitCursor(void)
 
 // SYNTHETIC: IMPERIALISM 0x00415f00
-// ownership-only
+// CObject::`scalar deleting destructor'
 
-// LIBRARY: IMPERIALISM 0x00415f30
+// LIBRARY: IMPERIALISM 0x00415f30 SYMBOL
+// ??1CObject@@UAE@XZ
 // name: CObject::~CObject
-// symbol: ??1CObject@@UAE@XZ
 // prototype: public: virtual __thiscall CObject::~CObject(void)
 
 // LIBRARY: IMPERIALISM 0x0041b1c0
-// name: CObject::operator new
+// CObject::operator new
 
-// LIBRARY: IMPERIALISM 0x0041b1e0
+// LIBRARY: IMPERIALISM 0x0041b1e0 SYMBOL
+// ??0CRect@@QAE@HHHH@Z
 // name: CRect::CRect
-// symbol: ??0CRect@@QAE@HHHH@Z
 // prototype: public: __thiscall CRect::CRect(int,int,int,int)
 
 // SYNTHETIC: IMPERIALISM 0x0041b6b0
@@ -116,64 +116,64 @@
 // SYNTHETIC: IMPERIALISM 0x004793a0
 // ownership-only
 
-// LIBRARY: IMPERIALISM 0x00479ba0
+// LIBRARY: IMPERIALISM 0x00479ba0 SYMBOL
+// ?GetFirstDocTemplatePosition@CDocManager@@UBEPAU__POSITION@@XZ
 // name: CDocManager::GetFirstDocTemplatePosition
-// symbol: ?GetFirstDocTemplatePosition@CDocManager@@UBEPAU__POSITION@@XZ
 // prototype: public: virtual struct __POSITION * __thiscall CDocManager::GetFirstDocTemplatePosition(void) const
 
-// SYNTHETIC: IMPERIALISM 0x0047ca90
+// SYNTHETIC: IMPERIALISM 0x0047ca90 SYMBOL
+// ??_GCPalette@@UAEPAXI@Z
 // name: CPalette::`scalar deleting destructor'
-// symbol: ??_GCPalette@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CPalette::`scalar deleting destructor'(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x0047cac0
 // ownership-only
 
-// SYNTHETIC: IMPERIALISM 0x0047cb30
+// SYNTHETIC: IMPERIALISM 0x0047cb30 SYMBOL
+// ??_GCGdiObject@@UAEPAXI@Z
 // name: CGdiObject::`scalar deleting destructor'
-// symbol: ??_GCGdiObject@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CGdiObject::`scalar deleting destructor'(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x0047cb60
 // ownership-only
 
 // LIBRARY: IMPERIALISM 0x0047d960
-// name: CGdiObject::~CGdiObject
+// CGdiObject::~CGdiObject
 
 // LIBRARY: IMPERIALISM 0x0047d9d0
 // ownership-only
 
-// SYNTHETIC: IMPERIALISM 0x0047da40
+// SYNTHETIC: IMPERIALISM 0x0047da40 SYMBOL
+// ??_GCRgn@@UAEPAXI@Z
 // name: CRgn::`scalar deleting destructor'
-// symbol: ??_GCRgn@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CRgn::`scalar deleting destructor'(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x0047da70
 // ownership-only
 
-// SYNTHETIC: IMPERIALISM 0x0047e200
+// SYNTHETIC: IMPERIALISM 0x0047e200 SYMBOL
+// ??_GCButton@@UAEPAXI@Z
 // name: CButton::`scalar deleting destructor'
-// symbol: ??_GCButton@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CButton::`scalar deleting destructor'(unsigned int)
 
-// SYNTHETIC: IMPERIALISM 0x0047e230
+// SYNTHETIC: IMPERIALISM 0x0047e230 SYMBOL
+// ??_GCListBox@@UAEPAXI@Z
 // name: CListBox::`scalar deleting destructor'
-// symbol: ??_GCListBox@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CListBox::`scalar deleting destructor'(unsigned int)
 
-// SYNTHETIC: IMPERIALISM 0x0047e260
+// SYNTHETIC: IMPERIALISM 0x0047e260 SYMBOL
+// ??_GCSliderCtrl@@UAEPAXI@Z
 // name: CSliderCtrl::`scalar deleting destructor'
-// symbol: ??_GCSliderCtrl@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CSliderCtrl::`scalar deleting destructor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0047e550
+// LIBRARY: IMPERIALISM 0x0047e550 SYMBOL
+// ?GetEntryCount@CPalette@@QAEHXZ
 // name: CPalette::GetEntryCount
-// symbol: ?GetEntryCount@CPalette@@QAEHXZ
 // prototype: public: int __thiscall CPalette::GetEntryCount(void)
 
-// LIBRARY: IMPERIALISM 0x0047ec00
+// LIBRARY: IMPERIALISM 0x0047ec00 SYMBOL
+// ??1CFileDialog@@UAE@XZ
 // name: CFileDialog::~CFileDialog
-// symbol: ??1CFileDialog@@UAE@XZ
 // prototype: public: virtual __thiscall CFileDialog::~CFileDialog(void)
 
 // LIBRARY: IMPERIALISM 0x0047f760
@@ -197,38 +197,38 @@
 // DAT_006a1ac4 list (CPlex freelist allocation at DAT_006a1ad0).
 // CFrameWnd modal-state machinery -- MFC library code.
 
-// LIBRARY: IMPERIALISM 0x004919e0
+// LIBRARY: IMPERIALISM 0x004919e0 SYMBOL
+// ?GetStream@COleStreamFile@@QBEPAUIStream@@XZ
 // name: COleStreamFile::GetStream
-// symbol: ?GetStream@COleStreamFile@@QBEPAUIStream@@XZ
 // prototype: public: struct IStream * __thiscall COleStreamFile::GetStream(void) const
 
-// LIBRARY: IMPERIALISM 0x00492420
+// LIBRARY: IMPERIALISM 0x00492420 SYMBOL
+// ?GetFirstDocTemplatePosition@CDocManager@@UBEPAU__POSITION@@XZ
 // name: CDocManager::GetFirstDocTemplatePosition
-// symbol: ?GetFirstDocTemplatePosition@CDocManager@@UBEPAU__POSITION@@XZ
 // prototype: public: virtual struct __POSITION * __thiscall CDocManager::GetFirstDocTemplatePosition(void) const
 
 // LIBRARY: IMPERIALISM 0x004924c0
 // ownership-only
 
-// LIBRARY: IMPERIALISM 0x00494340
+// LIBRARY: IMPERIALISM 0x00494340 SYMBOL
+// ??_GCPen@@UAEPAXI@Z
 // name: CPen::`scalar deleting destructor'
-// symbol: ??_GCPen@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CPen::`scalar deleting destructor'(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x00494370
 // ownership-only
 
 // LIBRARY: IMPERIALISM 0x004943e0
-// name: WrapperFor_AppendPointerToGlobalVectorAsStatus_At004943e0
+// WrapperFor_AppendPointerToGlobalVectorAsStatus_At004943e0
 
 // LIBRARY: IMPERIALISM 0x00494430
-// name: ReleaseQuickDrawCachedFontHandleIfPresent_At00494430
+// ReleaseQuickDrawCachedFontHandleIfPresent_At00494430
 
 // LIBRARY: IMPERIALISM 0x00494460
-// name: WrapperFor_AppendPointerToGlobalVectorAsStatus_At00494460
+// WrapperFor_AppendPointerToGlobalVectorAsStatus_At00494460
 
 // LIBRARY: IMPERIALISM 0x004944b0
-// name: ReleaseCachedGlobalFontObjectIfPresent_At004944b0
+// ReleaseCachedGlobalFontObjectIfPresent_At004944b0
 
 // LIBRARY: IMPERIALISM 0x00497400
 // ownership-only
@@ -236,9 +236,9 @@
 // LIBRARY: IMPERIALISM 0x00497470
 // ownership-only
 
-// LIBRARY: IMPERIALISM 0x00497b00
+// LIBRARY: IMPERIALISM 0x00497b00 SYMBOL
+// ??_GCBrush@@UAEPAXI@Z
 // name: CBrush::`scalar deleting destructor'
-// symbol: ??_GCBrush@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CBrush::`scalar deleting destructor'(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x00497c20
@@ -250,19 +250,18 @@
 // LIBRARY: IMPERIALISM 0x00497c60
 // ownership-only
 
-// LIBRARY: IMPERIALISM 0x004985b0
+// LIBRARY: IMPERIALISM 0x004985b0 SYMBOL
+// ??0CGdiObject@@QAE@XZ
 // name: CGdiObject::CGdiObject
-// symbol: ??0CGdiObject@@QAE@XZ
 // prototype: public: __thiscall CGdiObject::CGdiObject(void)
 
-// LIBRARY: IMPERIALISM 0x004985d0
+// LIBRARY: IMPERIALISM 0x004985d0 SYMBOL
+// ?CreatePen@CPen@@QAEHHHK@Z
 // name: CPen::CreatePen
-// symbol: ?CreatePen@CPen@@QAEHHHK@Z
 // prototype: public: int __thiscall CPen::CreatePen(int,int,unsigned long)
 
 // SYNTHETIC: IMPERIALISM 0x004986a0
-// name: TScopedQuickDrawPen::`scalar deleting destructor'
-// symbol: ??_GTScopedQuickDrawPen@@UAEPAXI@Z
+// TScopedQuickDrawPen::`scalar deleting destructor'
 // prototype: public: virtual void * __thiscall TScopedQuickDrawPen::`scalar deleting destructor'(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x0049eb00
@@ -274,9 +273,9 @@
 // LIBRARY: IMPERIALISM 0x004b0970
 // ownership-only
 
-// LIBRARY: IMPERIALISM 0x004bdcf0
+// LIBRARY: IMPERIALISM 0x004bdcf0 SYMBOL
+// ??0CRect@@QAE@HHHH@Z
 // name: CRect::CRect
-// symbol: ??0CRect@@QAE@HHHH@Z
 // prototype: public: __thiscall CRect::CRect(int,int,int,int)
 // second emission of the 0x41b1e0 body (per-TU duplicate); 9 call sites.
 
@@ -300,22 +299,22 @@
 // CFrameWnd::GetActiveFrame (unique msvc500 oracle hit, winfrm.obj):
 // 3-byte `mov eax,ecx; ret` -- returns this.
 
-// LIBRARY: IMPERIALISM 0x005d5d10
+// LIBRARY: IMPERIALISM 0x005d5d10 SYMBOL
+// ??BCString@@QBEPBDXZ
 // name: CString::operator char const *
-// symbol: ??BCString@@QBEPBDXZ
 // prototype: public: __thiscall CString::operator char const *(void) const
 
 // LIBRARY: IMPERIALISM 0x005db2f0
-// name: CString::GetLength
+// CString::GetLength
 
-// LIBRARY: IMPERIALISM 0x005df610
+// LIBRARY: IMPERIALISM 0x005df610 SYMBOL
+// ??1CObject@@UAE@XZ
 // name: CObject::~CObject
-// symbol: ??1CObject@@UAE@XZ
 // prototype: public: virtual __thiscall CObject::~CObject(void)
 
-// LIBRARY: IMPERIALISM 0x005df630
+// LIBRARY: IMPERIALISM 0x005df630 SYMBOL
+// ??_GCResourceException@@UAEPAXI@Z
 // name: CResourceException::`scalar deleting destructor'
-// symbol: ??_GCResourceException@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CResourceException::`scalar deleting destructor'(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x005df660
@@ -330,7 +329,7 @@
 // MFC container teardown -- see the triplicate note at 0x47f760.
 
 // LIBRARY: IMPERIALISM 0x005e4a90
-// name: CPtrArray::SetSize
+// CPtrArray::SetSize
 
 // LIBRARY: IMPERIALISM 0x005e538c
 // MFC nafxcw handler in the CDialog-derived message maps 0x66fb20/0x673208
@@ -340,594 +339,593 @@
 // MFC nafxcw handler in the CDialog-derived message maps 0x66fb20/0x673208
 // (ON_COMMAND id 1 / id 0x64): `mov eax,[ecx]; jmp [eax+0xcc]` virtual-call forwarder.
 
-// LIBRARY: IMPERIALISM 0x005e539c
+// LIBRARY: IMPERIALISM 0x005e539c SYMBOL
+// ?AfxGetMainWnd@@YGPAVCWnd@@XZ
 // name: AfxGetMainWnd
-// symbol: ?AfxGetMainWnd@@YGPAVCWnd@@XZ
 // prototype: class CWnd * __stdcall AfxGetMainWnd(void)
 
 // LIBRARY: IMPERIALISM 0x005e53bc
-// name: CNoTrackObject::`scalar deleting dtor'
-// symbol: ??_GCNoTrackObject@@UAEPAXI@Z
+// CNoTrackObject::`scalar deleting destructor'
 // prototype: public: virtual void * __thiscall CNoTrackObject::`scalar deleting dtor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e53d8
+// LIBRARY: IMPERIALISM 0x005e53d8 SYMBOL
+// ?CreateObject@?$CThreadLocal@VAFX_MODULE_THREAD_STATE@@@@SGPAVCNoTrackObject@@XZ
 // name: CThreadLocal<class AFX_MODULE_THREAD_STATE>::CreateObject
-// symbol: ?CreateObject@?$CThreadLocal@VAFX_MODULE_THREAD_STATE@@@@SGPAVCNoTrackObject@@XZ
 // prototype: public: static class CNoTrackObject * __stdcall CThreadLocal<class AFX_MODULE_THREAD_STATE>::CreateObject(void)
 
-// LIBRARY: IMPERIALISM 0x005e540c
+// LIBRARY: IMPERIALISM 0x005e540c SYMBOL
+// ?CreateObject@?$CThreadLocal@V_AFX_THREAD_STATE@@@@SGPAVCNoTrackObject@@XZ
 // name: _AFX_THREAD_STATE>::CreateObject
-// symbol: ?CreateObject@?$CThreadLocal@V_AFX_THREAD_STATE@@@@SGPAVCNoTrackObject@@XZ
 // prototype: public: static class CNoTrackObject * __stdcall CThreadLocal<class _AFX_THREAD_STATE>::CreateObject(void)
 
-// LIBRARY: IMPERIALISM 0x005e5440
+// LIBRARY: IMPERIALISM 0x005e5440 SYMBOL
+// ?CreateObject@?$CProcessLocal@V_AFX_CTL3D_STATE@@@@SGPAVCNoTrackObject@@XZ
 // name: _AFX_CTL3D_STATE>::CreateObject
-// symbol: ?CreateObject@?$CProcessLocal@V_AFX_CTL3D_STATE@@@@SGPAVCNoTrackObject@@XZ
 // prototype: public: static class CNoTrackObject * __stdcall CProcessLocal<class _AFX_CTL3D_STATE>::CreateObject(void)
 
-// LIBRARY: IMPERIALISM 0x005e5455
+// LIBRARY: IMPERIALISM 0x005e5455 SYMBOL
+// ??_G_AFX_CTL3D_STATE@@UAEPAXI@Z
 // name: _AFX_CTL3D_STATE::`scalar deleting dtor'
-// symbol: ??_G_AFX_CTL3D_STATE@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall _AFX_CTL3D_STATE::`scalar deleting dtor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e5470
+// LIBRARY: IMPERIALISM 0x005e5470 SYMBOL
+// ?CreateObject@?$CThreadLocal@V_AFX_CTL3D_THREAD@@@@SGPAVCNoTrackObject@@XZ
 // name: _AFX_CTL3D_THREAD>::CreateObject
-// symbol: ?CreateObject@?$CThreadLocal@V_AFX_CTL3D_THREAD@@@@SGPAVCNoTrackObject@@XZ
 // prototype: public: static class CNoTrackObject * __stdcall CThreadLocal<class _AFX_CTL3D_THREAD>::CreateObject(void)
 
-// LIBRARY: IMPERIALISM 0x005e5485
+// LIBRARY: IMPERIALISM 0x005e5485 SYMBOL
+// ??_G_AFX_CTL3D_THREAD@@UAEPAXI@Z
 // name: _AFX_CTL3D_THREAD::`scalar deleting dtor'
-// symbol: ??_G_AFX_CTL3D_THREAD@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall _AFX_CTL3D_THREAD::`scalar deleting dtor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e54a0
+// LIBRARY: IMPERIALISM 0x005e54a0 SYMBOL
+// ?CreateObject@?$CProcessLocal@V_AFX_WIN_STATE@@@@SGPAVCNoTrackObject@@XZ
 // name: _AFX_WIN_STATE>::CreateObject
-// symbol: ?CreateObject@?$CProcessLocal@V_AFX_WIN_STATE@@@@SGPAVCNoTrackObject@@XZ
 // prototype: public: static class CNoTrackObject * __stdcall CProcessLocal<class _AFX_WIN_STATE>::CreateObject(void)
 
-// LIBRARY: IMPERIALISM 0x005e54d1
-// symbol: ?GetOwner@CWnd@@QBEPAV1@XZ
+// LIBRARY: IMPERIALISM 0x005e54d1 SYMBOL
+// ?GetOwner@CWnd@@QBEPAV1@XZ
 
-// LIBRARY: IMPERIALISM 0x005e54e8
+// LIBRARY: IMPERIALISM 0x005e54e8 SYMBOL
+// ??1CHandleMap@@QAE@XZ
 // name: CHandleMap::~CHandleMap
-// symbol: ??1CHandleMap@@QAE@XZ
 // prototype: public: __thiscall CHandleMap::~CHandleMap(void)
 
-// LIBRARY: IMPERIALISM 0x005e5529
+// LIBRARY: IMPERIALISM 0x005e5529 SYMBOL
+// ??1CDragListBox@@UAE@XZ
 // name: CDragListBox::~CDragListBox
-// symbol: ??1CDragListBox@@UAE@XZ
 // prototype: public: virtual __thiscall CDragListBox::~CDragListBox(void)
 
-// LIBRARY: IMPERIALISM 0x005e5561
+// LIBRARY: IMPERIALISM 0x005e5561 SYMBOL
+// ?PreSubclassWindow@CDragListBox@@UAEXXZ
 // name: CDragListBox::PreSubclassWindow
-// symbol: ?PreSubclassWindow@CDragListBox@@UAEXXZ
 // prototype: public: virtual void __thiscall CDragListBox::PreSubclassWindow(void)
 
-// LIBRARY: IMPERIALISM 0x005e556b
+// LIBRARY: IMPERIALISM 0x005e556b SYMBOL
+// ?BeginDrag@CDragListBox@@UAEHVCPoint@@@Z
 // name: CDragListBox::BeginDrag
-// symbol: ?BeginDrag@CDragListBox@@UAEHVCPoint@@@Z
 // prototype: public: virtual int __thiscall CDragListBox::BeginDrag(class CPoint)
 
-// LIBRARY: IMPERIALISM 0x005e5597
+// LIBRARY: IMPERIALISM 0x005e5597 SYMBOL
+// ?CancelDrag@CDragListBox@@UAEXVCPoint@@@Z
 // name: CDragListBox::CancelDrag
-// symbol: ?CancelDrag@CDragListBox@@UAEXVCPoint@@@Z
 // prototype: public: virtual void __thiscall CDragListBox::CancelDrag(class CPoint)
 
-// LIBRARY: IMPERIALISM 0x005e55a4
+// LIBRARY: IMPERIALISM 0x005e55a4 SYMBOL
+// ?Dragging@CDragListBox@@UAEIVCPoint@@@Z
 // name: CDragListBox::Dragging
-// symbol: ?Dragging@CDragListBox@@UAEIVCPoint@@@Z
 // prototype: public: virtual unsigned int __thiscall CDragListBox::Dragging(class CPoint)
 
-// LIBRARY: IMPERIALISM 0x005e55ee
+// LIBRARY: IMPERIALISM 0x005e55ee SYMBOL
+// ?Dropped@CDragListBox@@UAEXHVCPoint@@@Z
 // name: CDragListBox::Dropped
-// symbol: ?Dropped@CDragListBox@@UAEXHVCPoint@@@Z
 // prototype: public: virtual void __thiscall CDragListBox::Dropped(int, class CPoint)
 
-// LIBRARY: IMPERIALISM 0x005e56cd
+// LIBRARY: IMPERIALISM 0x005e56cd SYMBOL
+// ?DrawInsert@CDragListBox@@UAEXH@Z
 // name: CDragListBox::DrawInsert
-// symbol: ?DrawInsert@CDragListBox@@UAEXH@Z
 // prototype: public: virtual void __thiscall CDragListBox::DrawInsert(int)
 
-// LIBRARY: IMPERIALISM 0x005e56f2
+// LIBRARY: IMPERIALISM 0x005e56f2 SYMBOL
+// ?DrawSingle@CDragListBox@@QAEXH@Z
 // name: CDragListBox::DrawSingle
-// symbol: ?DrawSingle@CDragListBox@@QAEXH@Z
 // prototype: public: void __thiscall CDragListBox::DrawSingle(int)
 
-// LIBRARY: IMPERIALISM 0x005e57e9
+// LIBRARY: IMPERIALISM 0x005e57e9 SYMBOL
+// ?OnChildNotify@CDragListBox@@MAEHIIJPAJ@Z
 // name: CDragListBox::OnChildNotify
-// symbol: ?OnChildNotify@CDragListBox@@MAEHIIJPAJ@Z
 // prototype: protected: virtual int __thiscall CDragListBox::OnChildNotify(unsigned int, unsigned int, long, long *)
 
-// LIBRARY: IMPERIALISM 0x005e58ab
+// LIBRARY: IMPERIALISM 0x005e58ab SYMBOL
+// ?Create@CToolBarCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // name: CToolBarCtrl::Create
-// symbol: ?Create@CToolBarCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // prototype: public: int __thiscall CToolBarCtrl::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e58e4
-// symbol: ??1CProgressCtrl@@UAE@XZ
+// LIBRARY: IMPERIALISM 0x005e58e4 SYMBOL
+// ??1CProgressCtrl@@UAE@XZ
 
-// LIBRARY: IMPERIALISM 0x005e591c
+// LIBRARY: IMPERIALISM 0x005e591c SYMBOL
+// ?AddBitmap@CToolBarCtrl@@QAEHHPAVCBitmap@@@Z
 // name: AddBitmap
-// symbol: ?AddBitmap@CToolBarCtrl@@QAEHHPAVCBitmap@@@Z
 // prototype: int __thiscall CToolBarCtrl::AddBitmap(int param_1, CBitmap * param_2)
 
-// LIBRARY: IMPERIALISM 0x005e5950
+// LIBRARY: IMPERIALISM 0x005e5950 SYMBOL
+// ?AddBitmap@CToolBarCtrl@@QAEHHI@Z
 // name: CToolBarCtrl::AddBitmap
-// symbol: ?AddBitmap@CToolBarCtrl@@QAEHHI@Z
 // prototype: public: int __thiscall CToolBarCtrl::AddBitmap(int, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e5987
+// LIBRARY: IMPERIALISM 0x005e5987 SYMBOL
+// ?SaveState@CToolBarCtrl@@QAEXPAUHKEY__@@PBD1@Z
 // name: SaveState
-// symbol: ?SaveState@CToolBarCtrl@@QAEXPAUHKEY__@@PBD1@Z
 // prototype: void __thiscall CToolBarCtrl::SaveState(HKEY__ * param_1, char * param_2, char * param_3)
 
-// LIBRARY: IMPERIALISM 0x005e59b7
+// LIBRARY: IMPERIALISM 0x005e59b7 SYMBOL
+// ?RestoreState@CToolBarCtrl@@QAEXPAUHKEY__@@PBD1@Z
 // name: RestoreState
-// symbol: ?RestoreState@CToolBarCtrl@@QAEXPAUHKEY__@@PBD1@Z
 // prototype: void __thiscall CToolBarCtrl::RestoreState(HKEY__ * param_1, char * param_2, char * param_3)
 
-// LIBRARY: IMPERIALISM 0x005e59e7
+// LIBRARY: IMPERIALISM 0x005e59e7 SYMBOL
+// ?AddString@CToolBarCtrl@@QAEHI@Z
 // name: CToolBarCtrl::AddString
-// symbol: ?AddString@CToolBarCtrl@@QAEHI@Z
 // prototype: public: int __thiscall CToolBarCtrl::AddString(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e5a0d
+// LIBRARY: IMPERIALISM 0x005e5a0d SYMBOL
+// ?OnCreate@CToolBarCtrl@@IAEHPAUtagCREATESTRUCTA@@@Z
 // name: CToolBarCtrl::OnCreate
-// symbol: ?OnCreate@CToolBarCtrl@@IAEHPAUtagCREATESTRUCTA@@@Z
 // prototype: protected: int __thiscall CToolBarCtrl::OnCreate(struct tagCREATESTRUCTA *)
 
-// LIBRARY: IMPERIALISM 0x005e5a36
+// LIBRARY: IMPERIALISM 0x005e5a36 SYMBOL
+// ?Create@CStatusBarCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // name: CStatusBarCtrl::Create
-// symbol: ?Create@CStatusBarCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // prototype: public: int __thiscall CStatusBarCtrl::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e5a6f
-// symbol: ??1CProgressCtrl@@UAE@XZ
+// LIBRARY: IMPERIALISM 0x005e5a6f SYMBOL
+// ??1CProgressCtrl@@UAE@XZ
 
-// LIBRARY: IMPERIALISM 0x005e5ad2
+// LIBRARY: IMPERIALISM 0x005e5ad2 SYMBOL
+// ?GetText@CStatusBarCtrl@@QBE?AVCString@@HPAH@Z
 // name: CStatusBarCtrl::GetText
-// symbol: ?GetText@CStatusBarCtrl@@QBE?AVCString@@HPAH@Z
 // prototype: public: class CString __thiscall CStatusBarCtrl::GetText(int, int *) const
 
-// LIBRARY: IMPERIALISM 0x005e5b9a
+// LIBRARY: IMPERIALISM 0x005e5b9a SYMBOL
+// ?GetBorders@CStatusBarCtrl@@QBEHAAH00@Z
 // name: GetBorders
-// symbol: ?GetBorders@CStatusBarCtrl@@QBEHAAH00@Z
 // prototype: int __thiscall CStatusBarCtrl::GetBorders(int * param_1, int * param_2, int * param_3)
 
-// LIBRARY: IMPERIALISM 0x005e5bd7
-// symbol: ?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z
+// LIBRARY: IMPERIALISM 0x005e5bd7 SYMBOL
+// ?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z
 
-// LIBRARY: IMPERIALISM 0x005e5c0b
+// LIBRARY: IMPERIALISM 0x005e5c0b SYMBOL
+// ?Create@CListCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // name: CListCtrl::Create
-// symbol: ?Create@CListCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // prototype: public: int __thiscall CListCtrl::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e5c44
-// symbol: ??1CProgressCtrl@@UAE@XZ
+// LIBRARY: IMPERIALISM 0x005e5c44 SYMBOL
+// ??1CProgressCtrl@@UAE@XZ
 
-// LIBRARY: IMPERIALISM 0x005e5c9c
+// LIBRARY: IMPERIALISM 0x005e5c9c SYMBOL
+// ?InsertColumn@CListCtrl@@QAEHHPBDHHH@Z
 // name: CListCtrl::InsertColumn
-// symbol: ?InsertColumn@CListCtrl@@QAEHHPBDHHH@Z
 // prototype: public: int __thiscall CListCtrl::InsertColumn(int, char const *, int, int, int)
 
-// LIBRARY: IMPERIALISM 0x005e5cef
+// LIBRARY: IMPERIALISM 0x005e5cef SYMBOL
+// ?InsertItem@CListCtrl@@QAEHIHPBDIIHJ@Z
 // name: CListCtrl::InsertItem
-// symbol: ?InsertItem@CListCtrl@@QAEHIHPBDIIHJ@Z
 // prototype: public: int __thiscall CListCtrl::InsertItem(unsigned int, int, char const *, unsigned int, unsigned int, int, long)
 
-// LIBRARY: IMPERIALISM 0x005e5d3b
+// LIBRARY: IMPERIALISM 0x005e5d3b SYMBOL
+// ?HitTest@CListCtrl@@QBEHVCPoint@@PAI@Z
 // name: HitTest
-// symbol: ?HitTest@CListCtrl@@QBEHVCPoint@@PAI@Z
 // prototype: int __thiscall CListCtrl::HitTest(CPoint param_1, uint * param_2)
 
-// LIBRARY: IMPERIALISM 0x005e5d71
+// LIBRARY: IMPERIALISM 0x005e5d71 SYMBOL
+// ?SetItem@CListCtrl@@QAEHHHIPBDHIIJ@Z
 // name: SetItem
-// symbol: ?SetItem@CListCtrl@@QAEHHHIPBDHIIJ@Z
 // prototype: public: int __thiscall CListCtrl::SetItem(int, int, unsigned int, char const *, int, unsigned int, unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x005e5dbf
+// LIBRARY: IMPERIALISM 0x005e5dbf SYMBOL
+// ?GetItemText@CListCtrl@@QBE?AVCString@@HH@Z
 // name: CListCtrl::GetItemText
-// symbol: ?GetItemText@CListCtrl@@QBE?AVCString@@HH@Z
 // prototype: public: class CString __thiscall CListCtrl::GetItemText(int, int) const
 
-// LIBRARY: IMPERIALISM 0x005e5e64
+// LIBRARY: IMPERIALISM 0x005e5e64 SYMBOL
+// ?GetItemText@CListCtrl@@QBEHHHPADH@Z
 // name: CListCtrl::GetItemText
-// symbol: ?GetItemText@CListCtrl@@QBEHHHPADH@Z
 // prototype: public: int __thiscall CListCtrl::GetItemText(int, int, char *, int) const
 
-// LIBRARY: IMPERIALISM 0x005e5ea9
+// LIBRARY: IMPERIALISM 0x005e5ea9 SYMBOL
+// ?GetItemData@CListCtrl@@QBEKH@Z
 // name: CListCtrl::GetItemData
-// symbol: ?GetItemData@CListCtrl@@QBEKH@Z
 // prototype: public: unsigned long __thiscall CListCtrl::GetItemData(int) const
 
-// LIBRARY: IMPERIALISM 0x005e5eee
-// symbol: ?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z
+// LIBRARY: IMPERIALISM 0x005e5eee SYMBOL
+// ?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z
 
-// LIBRARY: IMPERIALISM 0x005e5f1c
+// LIBRARY: IMPERIALISM 0x005e5f1c SYMBOL
+// ?RemoveImageList@CListCtrl@@IAEXH@Z
 // name: CListCtrl::RemoveImageList
-// symbol: ?RemoveImageList@CListCtrl@@IAEXH@Z
 // prototype: protected: void __thiscall CListCtrl::RemoveImageList(int)
 
-// LIBRARY: IMPERIALISM 0x005e5f55
+// LIBRARY: IMPERIALISM 0x005e5f55 SYMBOL
+// ?OnNcDestroy@CListCtrl@@IAEXXZ
 // name: CListCtrl::OnNcDestroy
-// symbol: ?OnNcDestroy@CListCtrl@@IAEXXZ
 // prototype: protected: void __thiscall CListCtrl::OnNcDestroy(void)
 
-// LIBRARY: IMPERIALISM 0x005e5fe5
+// LIBRARY: IMPERIALISM 0x005e5fe5 SYMBOL
+// ?Create@CTreeCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // name: CTreeCtrl::Create
-// symbol: ?Create@CTreeCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // prototype: public: int __thiscall CTreeCtrl::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e601e
-// symbol: ??1CProgressCtrl@@UAE@XZ
+// LIBRARY: IMPERIALISM 0x005e601e SYMBOL
+// ??1CProgressCtrl@@UAE@XZ
 
-// LIBRARY: IMPERIALISM 0x005e6076
+// LIBRARY: IMPERIALISM 0x005e6076 SYMBOL
+// ?GetItemText@CTreeCtrl@@QBE?AVCString@@PAU_TREEITEM@@@Z
 // name: CTreeCtrl::GetItemText
-// symbol: ?GetItemText@CTreeCtrl@@QBE?AVCString@@PAU_TREEITEM@@@Z
 // prototype: public: class CString __thiscall CTreeCtrl::GetItemText(struct _TREEITEM *) const
 
-// LIBRARY: IMPERIALISM 0x005e6116
+// LIBRARY: IMPERIALISM 0x005e6116 SYMBOL
+// ?GetItemImage@CTreeCtrl@@QBEHPAU_TREEITEM@@AAH1@Z
 // name: CTreeCtrl::GetItemImage
-// symbol: ?GetItemImage@CTreeCtrl@@QBEHPAU_TREEITEM@@AAH1@Z
 // prototype: public: int __thiscall CTreeCtrl::GetItemImage(struct _TREEITEM *, int &, int &) const
 
-// LIBRARY: IMPERIALISM 0x005e6155
+// LIBRARY: IMPERIALISM 0x005e6155 SYMBOL
+// ?GetItemState@CTreeCtrl@@QBEIPAU_TREEITEM@@I@Z
 // name: CTreeCtrl::GetItemState
-// symbol: ?GetItemState@CTreeCtrl@@QBEIPAU_TREEITEM@@I@Z
 // prototype: public: unsigned int __thiscall CTreeCtrl::GetItemState(struct _TREEITEM *, unsigned int) const
 
-// LIBRARY: IMPERIALISM 0x005e618d
+// LIBRARY: IMPERIALISM 0x005e618d SYMBOL
+// ?GetItemData@CTreeCtrl@@QBEKPAU_TREEITEM@@@Z
 // name: CTreeCtrl::GetItemData
-// symbol: ?GetItemData@CTreeCtrl@@QBEKPAU_TREEITEM@@@Z
 // prototype: public: unsigned long __thiscall CTreeCtrl::GetItemData(struct _TREEITEM *) const
 
-// LIBRARY: IMPERIALISM 0x005e61bb
+// LIBRARY: IMPERIALISM 0x005e61bb SYMBOL
+// ?ItemHasChildren@CTreeCtrl@@QBEHPAU_TREEITEM@@@Z
 // name: CTreeCtrl::ItemHasChildren
-// symbol: ?ItemHasChildren@CTreeCtrl@@QBEHPAU_TREEITEM@@@Z
 // prototype: public: int __thiscall CTreeCtrl::ItemHasChildren(struct _TREEITEM *) const
 
-// LIBRARY: IMPERIALISM 0x005e61e9
-// symbol: ?SetItem@CTreeCtrl@@QAEHPAU_TREEITEM@@IPBDHHIIJ@Z
+// LIBRARY: IMPERIALISM 0x005e61e9 SYMBOL
+// ?SetItem@CTreeCtrl@@QAEHPAU_TREEITEM@@IPBDHHIIJ@Z
 
-// LIBRARY: IMPERIALISM 0x005e6237
+// LIBRARY: IMPERIALISM 0x005e6237 SYMBOL
+// ?InsertItem@CTreeCtrl@@QAEPAU_TREEITEM@@IPBDHHIIJPAU2@1@Z
 // name: CTreeCtrl::InsertItem
-// symbol: ?InsertItem@CTreeCtrl@@QAEPAU_TREEITEM@@IPBDHHIIJPAU2@1@Z
 // prototype: public: struct _TREEITEM * __thiscall CTreeCtrl::InsertItem(unsigned int, char const *, int, int, unsigned int, unsigned int, long, struct _TREEITEM *, struct _TREEITEM *)
 
-// LIBRARY: IMPERIALISM 0x005e628b
+// LIBRARY: IMPERIALISM 0x005e628b SYMBOL
+// ?HitTest@CTreeCtrl@@QBEPAU_TREEITEM@@VCPoint@@PAI@Z
 // name: CTreeCtrl::HitTest
-// symbol: ?HitTest@CTreeCtrl@@QBEPAU_TREEITEM@@VCPoint@@PAI@Z
 
-// LIBRARY: IMPERIALISM 0x005e62c1
+// LIBRARY: IMPERIALISM 0x005e62c1 SYMBOL
+// ?RemoveImageList@CTreeCtrl@@IAEXH@Z
 // name: CTreeCtrl::RemoveImageList
-// symbol: ?RemoveImageList@CTreeCtrl@@IAEXH@Z
 // prototype: protected: void __thiscall CTreeCtrl::RemoveImageList(int)
 
-// LIBRARY: IMPERIALISM 0x005e62fa
+// LIBRARY: IMPERIALISM 0x005e62fa SYMBOL
+// ?OnDestroy@CTreeCtrl@@QAEXXZ
 // name: CTreeCtrl::OnDestroy
-// symbol: ?OnDestroy@CTreeCtrl@@QAEXXZ
 // prototype: public: void __thiscall CTreeCtrl::OnDestroy(void)
 
-// LIBRARY: IMPERIALISM 0x005e6379
+// LIBRARY: IMPERIALISM 0x005e6379 SYMBOL
+// ?Create@CSpinButtonCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // name: CSpinButtonCtrl::Create
-// symbol: ?Create@CSpinButtonCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // prototype: public: int __thiscall CSpinButtonCtrl::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e63b2
-// symbol: ??1CProgressCtrl@@UAE@XZ
+// LIBRARY: IMPERIALISM 0x005e63b2 SYMBOL
+// ??1CProgressCtrl@@UAE@XZ
 
-// LIBRARY: IMPERIALISM 0x005e6416
+// LIBRARY: IMPERIALISM 0x005e6416 SYMBOL
+// ?Create@CSliderCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // name: CSliderCtrl::Create
-// symbol: ?Create@CSliderCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // prototype: public: int __thiscall CSliderCtrl::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)
 
 // LIBRARY: IMPERIALISM 0x005e644f
-// name: CProgressCtrl::~CHotKeyCtrl
+// CProgressCtrl::~CHotKeyCtrl
 
-// LIBRARY: IMPERIALISM 0x005e64be
+// LIBRARY: IMPERIALISM 0x005e64be SYMBOL
+// ?SetRange@CSliderCtrl@@QAEXHHH@Z
 // name: CSliderCtrl::SetRange
-// symbol: ?SetRange@CSliderCtrl@@QAEXHHH@Z
 // prototype: public: void __thiscall CSliderCtrl::SetRange(int, int, int)
 
-// LIBRARY: IMPERIALISM 0x005e6557
+// LIBRARY: IMPERIALISM 0x005e6557 SYMBOL
+// ?Create@CProgressCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // name: CProgressCtrl::Create
-// symbol: ?Create@CProgressCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // prototype: public: int __thiscall CProgressCtrl::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e6590
-// symbol: ??1CProgressCtrl@@UAE@XZ
+// LIBRARY: IMPERIALISM 0x005e6590 SYMBOL
+// ??1CProgressCtrl@@UAE@XZ
 
-// LIBRARY: IMPERIALISM 0x005e65c8
+// LIBRARY: IMPERIALISM 0x005e65c8 SYMBOL
+// ?Create@CHeaderCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // name: CHeaderCtrl::Create
-// symbol: ?Create@CHeaderCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // prototype: public: int __thiscall CHeaderCtrl::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e6601
-// symbol: ??1CProgressCtrl@@UAE@XZ
+// LIBRARY: IMPERIALISM 0x005e6601 SYMBOL
+// ??1CProgressCtrl@@UAE@XZ
 
-// LIBRARY: IMPERIALISM 0x005e663c
-// symbol: ?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z
+// LIBRARY: IMPERIALISM 0x005e663c SYMBOL
+// ?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z
 
-// LIBRARY: IMPERIALISM 0x005e666a
+// LIBRARY: IMPERIALISM 0x005e666a SYMBOL
+// ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // name: CHotKeyCtrl::Create
-// symbol: ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // prototype: public: int __thiscall CHotKeyCtrl::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e66a3
-// symbol: ??1CProgressCtrl@@UAE@XZ
+// LIBRARY: IMPERIALISM 0x005e66a3 SYMBOL
+// ??1CProgressCtrl@@UAE@XZ
 
-// LIBRARY: IMPERIALISM 0x005e6710
+// LIBRARY: IMPERIALISM 0x005e6710 SYMBOL
+// ?Create@CTabCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // name: CTabCtrl::Create
-// symbol: ?Create@CTabCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // prototype: public: int __thiscall CTabCtrl::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e6749
-// symbol: ??1CProgressCtrl@@UAE@XZ
+// LIBRARY: IMPERIALISM 0x005e6749 SYMBOL
+// ??1CProgressCtrl@@UAE@XZ
 
-// LIBRARY: IMPERIALISM 0x005e6784
-// symbol: ?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z
+// LIBRARY: IMPERIALISM 0x005e6784 SYMBOL
+// ?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z
 
 // LIBRARY: IMPERIALISM 0x005e67b2
 // MFC nafxcw WM_DESTROY handler in message map 0x670d10 (base CWnd's map
 // 0x670868): sends CB_GETCOUNT (0x1302) to the child combo-box window.
 
-// LIBRARY: IMPERIALISM 0x005e67ec
+// LIBRARY: IMPERIALISM 0x005e67ec SYMBOL
+// ?Create@CAnimateCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // name: CAnimateCtrl::Create
-// symbol: ?Create@CAnimateCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // prototype: public: int __thiscall CAnimateCtrl::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e6825
-// symbol: ??1CProgressCtrl@@UAE@XZ
+// LIBRARY: IMPERIALISM 0x005e6825 SYMBOL
+// ??1CProgressCtrl@@UAE@XZ
 
-// LIBRARY: IMPERIALISM 0x005e685d
-// symbol: ??1CProgressCtrl@@UAE@XZ
+// LIBRARY: IMPERIALISM 0x005e685d SYMBOL
+// ??1CProgressCtrl@@UAE@XZ
 
-// LIBRARY: IMPERIALISM 0x005e68a2
-// symbol: ??_GCGdiObject@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x005e68a2 SYMBOL
+// ??_GCGdiObject@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x005e68be
-// symbol: ??1CBrush@@UAE@XZ
+// LIBRARY: IMPERIALISM 0x005e68be SYMBOL
+// ??1CBrush@@UAE@XZ
 
-// LIBRARY: IMPERIALISM 0x005e68f1
-// symbol: ?Detach@CMenu@@QAEPAUHMENU__@@XZ
+// LIBRARY: IMPERIALISM 0x005e68f1 SYMBOL
+// ?Detach@CMenu@@QAEPAUHMENU__@@XZ
 
-// LIBRARY: IMPERIALISM 0x005e691b
-// symbol: ?afxMapHMENU@@YAPAVCHandleMap@@H@Z
+// LIBRARY: IMPERIALISM 0x005e691b SYMBOL
+// ?afxMapHMENU@@YAPAVCHandleMap@@H@Z
 
-// LIBRARY: IMPERIALISM 0x005e698b
+// LIBRARY: IMPERIALISM 0x005e698b SYMBOL
+// ?DestroyMenu@CMenu@@QAEHXZ
 // name: CMenu::DestroyMenu
-// symbol: ?DestroyMenu@CMenu@@QAEHXZ
 // prototype: public: int __thiscall CMenu::DestroyMenu(void)
 
-// LIBRARY: IMPERIALISM 0x005e69a1
-// symbol: ?DeleteTempMap@CMenu@@SGXXZ
+// LIBRARY: IMPERIALISM 0x005e69a1 SYMBOL
+// ?DeleteTempMap@CMenu@@SGXXZ
 
-// LIBRARY: IMPERIALISM 0x005e69cb
+// LIBRARY: IMPERIALISM 0x005e69cb SYMBOL
+// ?FromHandlePermanent@CMenu@@SGPAV1@PAUHMENU__@@@Z
 // name: CMenu::FromHandlePermanent
-// symbol: ?FromHandlePermanent@CMenu@@SGPAV1@PAUHMENU__@@@Z
 // prototype: public: static class CMenu * __stdcall CMenu::FromHandlePermanent(struct HMENU__*)
 
-// LIBRARY: IMPERIALISM 0x005e69e7
+// LIBRARY: IMPERIALISM 0x005e69e7 SYMBOL
+// ?Create@CImageList@@QAEHHHIHH@Z
 // name: CImageList::Create
-// symbol: ?Create@CImageList@@QAEHHHIHH@Z
 // prototype: public: int __thiscall CImageList::Create(int, int, unsigned int, int, int)
 
-// LIBRARY: IMPERIALISM 0x005e6a0f
+// LIBRARY: IMPERIALISM 0x005e6a0f SYMBOL
+// ?Create@CImageList@@QAEHIHHK@Z
 // name: CImageList::Create
-// symbol: ?Create@CImageList@@QAEHIHHK@Z
 // prototype: public: int __thiscall CImageList::Create(unsigned int, int, int, unsigned long)
 
-// LIBRARY: IMPERIALISM 0x005e6a41
+// LIBRARY: IMPERIALISM 0x005e6a41 SYMBOL
+// ?Create@CImageList@@QAEHPBDHHK@Z
 // name: CImageList::Create
-// symbol: ?Create@CImageList@@QAEHPBDHHK@Z
 // prototype: public: int __thiscall CImageList::Create(char const *, int, int, unsigned long)
 
-// LIBRARY: IMPERIALISM 0x005e6a73
+// LIBRARY: IMPERIALISM 0x005e6a73 SYMBOL
+// ?Create@CImageList@@QAEHAAV1@H0HHH@Z
 // name: CImageList::Create
-// symbol: ?Create@CImageList@@QAEHAAV1@H0HHH@Z
 // prototype: public: int __thiscall CImageList::Create(class CImageList &, int, class CImageList &, int, int, int)
 
-// LIBRARY: IMPERIALISM 0x005e6aa4
+// LIBRARY: IMPERIALISM 0x005e6aa4 SYMBOL
+// ?Attach@CImageList@@QAEHPAU_IMAGELIST@@@Z
 // name: CImageList::Attach
-// symbol: ?Attach@CImageList@@QAEHPAU_IMAGELIST@@@Z
 // prototype: public: int __thiscall CImageList::Attach(struct _IMAGELIST *)
 
-// LIBRARY: IMPERIALISM 0x005e6ad1
+// LIBRARY: IMPERIALISM 0x005e6ad1 SYMBOL
+// ?Read@CImageList@@QAEHPAVCArchive@@@Z
 // name: CImageList::Read
-// symbol: ?Read@CImageList@@QAEHPAVCArchive@@@Z
 // prototype: public: int __thiscall CImageList::Read(class CArchive *)
 
-// LIBRARY: IMPERIALISM 0x005e6afe
+// LIBRARY: IMPERIALISM 0x005e6afe SYMBOL
+// ?Write@CImageList@@QAEHPAVCArchive@@@Z
 // name: CImageList::Write
-// symbol: ?Write@CImageList@@QAEHPAVCArchive@@@Z
 // prototype: public: int __thiscall CImageList::Write(class CArchive *)
 
-// LIBRARY: IMPERIALISM 0x005e6b22
+// LIBRARY: IMPERIALISM 0x005e6b22 SYMBOL
+// ?GetCurSel@CListBox@@QBEHXZ
 // name: CListBox::GetCurSel
-// symbol: ?GetCurSel@CListBox@@QBEHXZ
 // prototype: public: int __thiscall CListBox::GetCurSel(void) const
 
-// LIBRARY: IMPERIALISM 0x005e6b35
-// symbol: ??_GCHeaderCtrl@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x005e6b35 SYMBOL
+// ??_GCHeaderCtrl@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x005e6b51
-// symbol: ??_GCHeaderCtrl@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x005e6b51 SYMBOL
+// ??_GCHeaderCtrl@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x005e6b6d
-// symbol: ??_GCHeaderCtrl@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x005e6b6d SYMBOL
+// ??_GCHeaderCtrl@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x005e6b89
-// symbol: ??_GCHeaderCtrl@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x005e6b89 SYMBOL
+// ??_GCHeaderCtrl@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x005e6ba5
-// symbol: ??_GCHeaderCtrl@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x005e6ba5 SYMBOL
+// ??_GCHeaderCtrl@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x005e6bc1
-// symbol: ??_GCHeaderCtrl@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x005e6bc1 SYMBOL
+// ??_GCHeaderCtrl@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x005e6bdd
-// symbol: ??_GCHeaderCtrl@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x005e6bdd SYMBOL
+// ??_GCHeaderCtrl@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x005e6bf9
-// symbol: ??_GCHeaderCtrl@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x005e6bf9 SYMBOL
+// ??_GCHeaderCtrl@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x005e6c15
-// symbol: ??_GCHeaderCtrl@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x005e6c15 SYMBOL
+// ??_GCHeaderCtrl@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x005e6c31
-// symbol: ??_GCHeaderCtrl@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x005e6c31 SYMBOL
+// ??_GCHeaderCtrl@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x005e6c4d
-// symbol: ??_GCHeaderCtrl@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x005e6c4d SYMBOL
+// ??_GCHeaderCtrl@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x005e6c69
-// symbol: ??_GCHeaderCtrl@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x005e6c69 SYMBOL
+// ??_GCHeaderCtrl@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x005e6c85
-// symbol: ??_GCHeaderCtrl@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x005e6c85 SYMBOL
+// ??_GCHeaderCtrl@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x005e6ca1
-// symbol: ??_GCHeaderCtrl@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x005e6ca1 SYMBOL
+// ??_GCHeaderCtrl@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x005e6cbd
-// symbol: ??_GCHeaderCtrl@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x005e6cbd SYMBOL
+// ??_GCHeaderCtrl@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x005e6cd9
-// symbol: ??_GCHeaderCtrl@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x005e6cd9 SYMBOL
+// ??_GCHeaderCtrl@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x005e6cf5
+// LIBRARY: IMPERIALISM 0x005e6cf5 SYMBOL
+// ?SetFilePath@CFile@@UAEXPBD@Z
 // name: CFile::SetFilePath
-// symbol: ?SetFilePath@CFile@@UAEXPBD@Z
 // prototype: public: virtual void __thiscall CFile::SetFilePath(char const *)
 
-// LIBRARY: IMPERIALISM 0x005e6d04
+// LIBRARY: IMPERIALISM 0x005e6d04 SYMBOL
+// ??6CArchive@@QAEAAV0@E@Z
 // name: CArchive::operator<<
-// symbol: ??6CArchive@@QAEAAV0@E@Z
 // prototype: public: class CArchive & __thiscall CArchive::operator<<(unsigned char)
 
-// LIBRARY: IMPERIALISM 0x005e6d27
+// LIBRARY: IMPERIALISM 0x005e6d27 SYMBOL
+// ??6CArchive@@QAEAAV0@G@Z
 // name: CArchive::operator<<
-// symbol: ??6CArchive@@QAEAAV0@G@Z
 // prototype: public: class CArchive & __thiscall CArchive::operator<<(unsigned short)
 
-// LIBRARY: IMPERIALISM 0x005e6d4e
+// LIBRARY: IMPERIALISM 0x005e6d4e SYMBOL
+// ??6CArchive@@QAEAAV0@K@Z
 // name: CArchive::operator<<
-// symbol: ??6CArchive@@QAEAAV0@K@Z
 // prototype: public: class CArchive & __thiscall CArchive::operator<<(unsigned long)
 
-// LIBRARY: IMPERIALISM 0x005e6d74
+// LIBRARY: IMPERIALISM 0x005e6d74 SYMBOL
+// ??5CArchive@@QAEAAV0@AAE@Z
 // name: CArchive::operator>>
-// symbol: ??5CArchive@@QAEAAV0@AAE@Z
 // prototype: public: class CArchive & __thiscall CArchive::operator>>(unsigned char &)
 
-// LIBRARY: IMPERIALISM 0x005e6da3
+// LIBRARY: IMPERIALISM 0x005e6da3 SYMBOL
+// ??5CArchive@@QAEAAV0@AAG@Z
 // name: CArchive::operator>>
-// symbol: ??5CArchive@@QAEAAV0@AAG@Z
 // prototype: public: class CArchive & __thiscall CArchive::operator>>(unsigned short &)
 
-// LIBRARY: IMPERIALISM 0x005e6dd6
+// LIBRARY: IMPERIALISM 0x005e6dd6 SYMBOL
+// ??5CArchive@@QAEAAV0@AAK@Z
 // name: CArchive::operator>>
-// symbol: ??5CArchive@@QAEAAV0@AAK@Z
 // prototype: public: class CArchive & __thiscall CArchive::operator>>(unsigned long &)
 
-// LIBRARY: IMPERIALISM 0x005e6e08
-// symbol: ??0CMemoryException@@QAE@HI@Z
+// LIBRARY: IMPERIALISM 0x005e6e08 SYMBOL
+// ??0CMemoryException@@QAE@HI@Z
 
-// LIBRARY: IMPERIALISM 0x005e6e32
+// LIBRARY: IMPERIALISM 0x005e6e32 SYMBOL
+// ??_GCResourceException@@UAEPAXI@Z
 // name: CResourceException::`scalar deleting destructor'
-// symbol: ??_GCResourceException@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CResourceException::`scalar deleting destructor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e6e4e
+// LIBRARY: IMPERIALISM 0x005e6e4e SYMBOL
+// ??1CObject@@UAE@XZ
 // name: CObject::~CObject
-// symbol: ??1CObject@@UAE@XZ
 // prototype: public: virtual __thiscall CObject::~CObject(void)
 
-// LIBRARY: IMPERIALISM 0x005e6e55
-// symbol: ??0CMemoryException@@QAE@HI@Z
+// LIBRARY: IMPERIALISM 0x005e6e55 SYMBOL
+// ??0CMemoryException@@QAE@HI@Z
 
-// LIBRARY: IMPERIALISM 0x005e6e7f
+// LIBRARY: IMPERIALISM 0x005e6e7f SYMBOL
+// ??_GCUserException@@UAEPAXI@Z
 // name: CUserException::`scalar deleting destructor'
-// symbol: ??_GCUserException@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CUserException::`scalar deleting destructor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e6e9b
+// LIBRARY: IMPERIALISM 0x005e6e9b SYMBOL
+// ??1CObject@@UAE@XZ
 // name: CObject::~CObject
-// symbol: ??1CObject@@UAE@XZ
 // prototype: public: virtual __thiscall CObject::~CObject(void)
 
 // SYNTHETIC: IMPERIALISM 0x005e6ea2
 // ownership-only
 
-// LIBRARY: IMPERIALISM 0x005e6ebe
+// LIBRARY: IMPERIALISM 0x005e6ebe SYMBOL
+// ?GetCurrentDirectoryA@CFtpConnection@@QBEHPADPAK@Z
 // name: CFtpConnection::GetCurrentDirectoryA
-// symbol: ?GetCurrentDirectoryA@CFtpConnection@@QBEHPADPAK@Z
 // prototype: public: int __thiscall CFtpConnection::GetCurrentDirectoryA(char *, unsigned long *) const
 
-// LIBRARY: IMPERIALISM 0x005e6ed2
+// LIBRARY: IMPERIALISM 0x005e6ed2 SYMBOL
+// ?RectVisible@CDC@@UBEHPBUtagRECT@@@Z
 // name: CDC::RectVisible
-// symbol: ?RectVisible@CDC@@UBEHPBUtagRECT@@@Z
 // prototype: public: virtual int __thiscall CDC::RectVisible(struct tagRECT const *) const
 
-// LIBRARY: IMPERIALISM 0x005e6ee2
+// LIBRARY: IMPERIALISM 0x005e6ee2 SYMBOL
+// ?DrawTextA@CDC@@UAEHPBDHPAUtagRECT@@I@Z
 // name: CDC::DrawTextA
-// symbol: ?DrawTextA@CDC@@UAEHPBDHPAUtagRECT@@I@Z
 // prototype: public: virtual int __thiscall CDC::DrawTextA(char const *, int, struct tagRECT *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e6efe
+// LIBRARY: IMPERIALISM 0x005e6efe SYMBOL
+// ?ExtTextOutA@CDC@@UAEHHHIPBUtagRECT@@PBDIPAH@Z
 // name: CDC::ExtTextOutA
-// symbol: ?ExtTextOutA@CDC@@UAEHHHIPBUtagRECT@@PBDIPAH@Z
 // prototype: public: virtual int __thiscall CDC::ExtTextOutA(int, int, unsigned int, struct tagRECT const *, char const *, unsigned int, int *)
 
-// LIBRARY: IMPERIALISM 0x005e6f23
+// LIBRARY: IMPERIALISM 0x005e6f23 SYMBOL
+// ?TabbedTextOutA@CDC@@UAE?AVCSize@@HHPBDHHPAHH@Z
 // name: CDC::TabbedTextOutA
-// symbol: ?TabbedTextOutA@CDC@@UAE?AVCSize@@HHPBDHHPAHH@Z
 // prototype: public: virtual class CSize __thiscall CDC::TabbedTextOutA(int, int, char const *, int, int, int *, int)
 
-// LIBRARY: IMPERIALISM 0x005e6f5b
+// LIBRARY: IMPERIALISM 0x005e6f5b SYMBOL
+// ?DrawTextA@CDC@@UAEHPBDHPAUtagRECT@@I@Z
 // name: CDC::DrawTextA
-// symbol: ?DrawTextA@CDC@@UAEHPBDHPAUtagRECT@@I@Z
 // prototype: public: virtual int __thiscall CDC::DrawTextA(char const *, int, struct tagRECT *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e6f77
+// LIBRARY: IMPERIALISM 0x005e6f77 SYMBOL
+// ?GrayStringA@CDC@@UAEHPAVCBrush@@P6GHPAUHDC__@@JH@ZJHHHHH@Z
 // name: CDC::GrayStringA
-// symbol: ?GrayStringA@CDC@@UAEHPAVCBrush@@P6GHPAUHDC__@@JH@ZJHHHHH@Z
 // prototype: public: virtual int __thiscall CDC::GrayStringA(class CBrush *, int (__stdcall *)(struct HDC__*, long, int), long, int, int, int, int, int)
 
-// LIBRARY: IMPERIALISM 0x005e6fa7
+// LIBRARY: IMPERIALISM 0x005e6fa7 SYMBOL
+// ?DrawTextA@CDC@@UAEHPBDHPAUtagRECT@@I@Z
 // name: CDC::DrawTextA
-// symbol: ?DrawTextA@CDC@@UAEHPBDHPAUtagRECT@@I@Z
 // prototype: public: virtual int __thiscall CDC::DrawTextA(char const *, int, struct tagRECT *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e6fc3
+// LIBRARY: IMPERIALISM 0x005e6fc3 SYMBOL
+// ??_GCException@@UAEPAXI@Z
 // name: CException::`scalar deleting destructor'
-// symbol: ??_GCException@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CException::`scalar deleting destructor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e6fdf
-// symbol: ??0CMemoryException@@QAE@HI@Z
+// LIBRARY: IMPERIALISM 0x005e6fdf SYMBOL
+// ??0CMemoryException@@QAE@HI@Z
 
-// LIBRARY: IMPERIALISM 0x005e7009
+// LIBRARY: IMPERIALISM 0x005e7009 SYMBOL
+// ??_GCMemoryException@@UAEPAXI@Z
 // name: CMemoryException::`scalar deleting destructor'
-// symbol: ??_GCMemoryException@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CMemoryException::`scalar deleting destructor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e7025
+// LIBRARY: IMPERIALISM 0x005e7025 SYMBOL
+// ??1CObject@@UAE@XZ
 // name: CObject::~CObject
-// symbol: ??1CObject@@UAE@XZ
 // prototype: public: virtual __thiscall CObject::~CObject(void)
 
-// LIBRARY: IMPERIALISM 0x005e702c
-// symbol: ??0CMemoryException@@QAE@HI@Z
+// LIBRARY: IMPERIALISM 0x005e702c SYMBOL
+// ??0CMemoryException@@QAE@HI@Z
 
-// LIBRARY: IMPERIALISM 0x005e7056
+// LIBRARY: IMPERIALISM 0x005e7056 SYMBOL
+// ??_GCNotSupportedException@@UAEPAXI@Z
 // name: CNotSupportedException::`scalar deleting destructor'
-// symbol: ??_GCNotSupportedException@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CNotSupportedException::`scalar deleting destructor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e7072
+// LIBRARY: IMPERIALISM 0x005e7072 SYMBOL
+// ??1CObject@@UAE@XZ
 // name: CObject::~CObject
-// symbol: ??1CObject@@UAE@XZ
 // prototype: public: virtual __thiscall CObject::~CObject(void)
 
 // LIBRARY: IMPERIALISM 0x005e7079
@@ -938,136 +936,136 @@
 // MFC-internal message 0x364.
 
 // LIBRARY: IMPERIALISM 0x005e709d
-// name: CCtrlView::~CListView
+// CCtrlView::~CListView
 
-// LIBRARY: IMPERIALISM 0x005e70ce
-// symbol: ??_GCGdiObject@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x005e70ce SYMBOL
+// ??_GCGdiObject@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x005e70ea
-// symbol: ??1CBrush@@UAE@XZ
+// LIBRARY: IMPERIALISM 0x005e70ea SYMBOL
+// ??1CBrush@@UAE@XZ
 
-// LIBRARY: IMPERIALISM 0x005e711d
+// LIBRARY: IMPERIALISM 0x005e711d SYMBOL
+// ??0CArchiveStream@@QAE@PAVCArchive@@@Z
 // name: CArchiveStream::CArchiveStream
-// symbol: ??0CArchiveStream@@QAE@PAVCArchive@@@Z
 // prototype: public: __thiscall CArchiveStream::CArchiveStream(class CArchive *)
 
-// LIBRARY: IMPERIALISM 0x005e713a
+// LIBRARY: IMPERIALISM 0x005e713a SYMBOL
+// ?QueryInterface@CArchiveStream@@UAGJABU_GUID@@PAPAX@Z
 // name: CArchiveStream::QueryInterface
-// symbol: ?QueryInterface@CArchiveStream@@UAGJABU_GUID@@PAPAX@Z
 // prototype: public: virtual long __stdcall CArchiveStream::QueryInterface(struct _GUID const &, void **)
 
-// LIBRARY: IMPERIALISM 0x005e717e
-// symbol: ?Read@CArchiveStream@@UAGJPAXKPAK@Z
+// LIBRARY: IMPERIALISM 0x005e717e SYMBOL
+// ?Read@CArchiveStream@@UAGJPAXKPAK@Z
 
-// LIBRARY: IMPERIALISM 0x005e71d6
-// symbol: ?Write@CArchiveStream@@UAGJPBXKPAK@Z
+// LIBRARY: IMPERIALISM 0x005e71d6 SYMBOL
+// ?Write@CArchiveStream@@UAGJPBXKPAK@Z
 
-// LIBRARY: IMPERIALISM 0x005e722f
-// symbol: ?Seek@CArchiveStream@@UAGJT_LARGE_INTEGER@@KPAT_ULARGE_INTEGER@@@Z
+// LIBRARY: IMPERIALISM 0x005e722f SYMBOL
+// ?Seek@CArchiveStream@@UAGJT_LARGE_INTEGER@@KPAT_ULARGE_INTEGER@@@Z
 
-// LIBRARY: IMPERIALISM 0x005e72f1
+// LIBRARY: IMPERIALISM 0x005e72f1 SYMBOL
+// ??_GCFileException@@UAEPAXI@Z
 // name: CFileException::`scalar deleting dtor'
-// symbol: ??_GCFileException@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CFileException::`scalar deleting dtor'(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x005e730d
-// name: CFileException::~CArchiveException
+// CFileException::~CArchiveException
 
-// LIBRARY: IMPERIALISM 0x005e7350
+// LIBRARY: IMPERIALISM 0x005e7350 SYMBOL
+// __fpmath
 // name: _fpmath
-// symbol: __fpmath
 
-// LIBRARY: IMPERIALISM 0x005e7370
+// LIBRARY: IMPERIALISM 0x005e7370 SYMBOL
+// __fpclear
 // name: _fpclear
-// symbol: __fpclear
 // prototype: void __cdecl _fpclear(void)
 
-// LIBRARY: IMPERIALISM 0x005e7380
+// LIBRARY: IMPERIALISM 0x005e7380 SYMBOL
+// __cfltcvt_init
 // name: _cfltcvt_init
-// symbol: __cfltcvt_init
 
-// LIBRARY: IMPERIALISM 0x005e73d0
+// LIBRARY: IMPERIALISM 0x005e73d0 SYMBOL
+// __ftol
 // name: _ftol
-// symbol: __ftol
 // prototype: long __cdecl _ftol(void)
 
-// LIBRARY: IMPERIALISM 0x005e7400
-// symbol: ?_JumpToContinuation@@YGXPAXPAUEHRegistrationNode@@@Z
+// LIBRARY: IMPERIALISM 0x005e7400 SYMBOL
+// ?_JumpToContinuation@@YGXPAXPAUEHRegistrationNode@@@Z
 
-// LIBRARY: IMPERIALISM 0x005e7440
+// LIBRARY: IMPERIALISM 0x005e7440 SYMBOL
+// ?_CallMemberFunction0@@YGXPAX0@Z
 // name: _CallMemberFunction0
-// symbol: ?_CallMemberFunction0@@YGXPAX0@Z
 // prototype: void __stdcall _CallMemberFunction0(void *, void *)
 
-// LIBRARY: IMPERIALISM 0x005e7450
-// symbol: ?_CallMemberFunction2@@YGXPAX00H@Z
+// LIBRARY: IMPERIALISM 0x005e7450 SYMBOL
+// ?_CallMemberFunction2@@YGXPAX00H@Z
 
-// LIBRARY: IMPERIALISM 0x005e7460
-// symbol: ?_CallMemberFunction2@@YGXPAX00H@Z
+// LIBRARY: IMPERIALISM 0x005e7460 SYMBOL
+// ?_CallMemberFunction2@@YGXPAX00H@Z
 
-// LIBRARY: IMPERIALISM 0x005e7470
+// LIBRARY: IMPERIALISM 0x005e7470 SYMBOL
+// ?_UnwindNestedFrames@@YGXPAUEHRegistrationNode@@PAUEHExceptionRecord@@@Z
 // name: _UnwindNestedFrames
-// symbol: ?_UnwindNestedFrames@@YGXPAUEHRegistrationNode@@PAUEHExceptionRecord@@@Z
 // prototype: void __stdcall _UnwindNestedFrames(struct EHRegistrationNode *, struct EHExceptionRecord *)
 
-// LIBRARY: IMPERIALISM 0x005e74d0
-// symbol: ___CxxFrameHandler
+// LIBRARY: IMPERIALISM 0x005e74d0 SYMBOL
+// ___CxxFrameHandler
 
-// LIBRARY: IMPERIALISM 0x005e7530
+// LIBRARY: IMPERIALISM 0x005e7530 SYMBOL
+// ?_CallCatchBlock2@@YAPAXPAUEHRegistrationNode@@PBU_s_FuncInfo@@PAXHK@Z
 // name: _CallCatchBlock2
-// symbol: ?_CallCatchBlock2@@YAPAXPAUEHRegistrationNode@@PBU_s_FuncInfo@@PAXHK@Z
 // prototype: void * __cdecl _CallCatchBlock2(struct EHRegistrationNode *, struct _s_FuncInfo const *, void *, int, unsigned long)
 
-// LIBRARY: IMPERIALISM 0x005e7590
-// symbol: ?CatchGuardHandler@@YA?AW4_EXCEPTION_DISPOSITION@@PAUEHExceptionRecord@@PAUCatchGuardRN@@PAX2@Z
+// LIBRARY: IMPERIALISM 0x005e7590 SYMBOL
+// ?CatchGuardHandler@@YA?AW4_EXCEPTION_DISPOSITION@@PAUEHExceptionRecord@@PAUCatchGuardRN@@PAX2@Z
 
-// LIBRARY: IMPERIALISM 0x005e75c0
+// LIBRARY: IMPERIALISM 0x005e75c0 SYMBOL
+// ?_CallSETranslator@@YAHPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAX2PBU_s_FuncInfo@@H1@Z
 // name: _CallSETranslator
-// symbol: ?_CallSETranslator@@YAHPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAX2PBU_s_FuncInfo@@H1@Z
 // prototype: int __cdecl _CallSETranslator(struct EHExceptionRecord *, struct EHRegistrationNode *, void *, void *, struct _s_FuncInfo const *, int, struct EHRegistrationNode *)
 
-// LIBRARY: IMPERIALISM 0x005e7690
-// symbol: ?TranslatorGuardHandler@@YA?AW4_EXCEPTION_DISPOSITION@@PAUEHExceptionRecord@@PAUTranslatorGuardRN@@PAX2@Z
+// LIBRARY: IMPERIALISM 0x005e7690 SYMBOL
+// ?TranslatorGuardHandler@@YA?AW4_EXCEPTION_DISPOSITION@@PAUEHExceptionRecord@@PAUTranslatorGuardRN@@PAX2@Z
 
-// LIBRARY: IMPERIALISM 0x005e7720
+// LIBRARY: IMPERIALISM 0x005e7720 SYMBOL
+// ?_GetRangeOfTrysToCheck@@YAPBU_s_TryBlockMapEntry@@PBU_s_FuncInfo@@HHPAI1@Z
 // name: _GetRangeOfTrysToCheck
-// symbol: ?_GetRangeOfTrysToCheck@@YAPBU_s_TryBlockMapEntry@@PBU_s_FuncInfo@@HHPAI1@Z
 // prototype: struct _s_TryBlockMapEntry const * __cdecl _GetRangeOfTrysToCheck(struct _s_FuncInfo const *, int, int, unsigned int *, unsigned int *)
 
-// LIBRARY: IMPERIALISM 0x005e77a0
-// symbol: __global_unwind2
+// LIBRARY: IMPERIALISM 0x005e77a0 SYMBOL
+// __global_unwind2
 
-// LIBRARY: IMPERIALISM 0x005e77e2
-// symbol: __local_unwind2
+// LIBRARY: IMPERIALISM 0x005e77e2 SYMBOL
+// __local_unwind2
 
-// LIBRARY: IMPERIALISM 0x005e784a
-// symbol: __abnormal_termination
+// LIBRARY: IMPERIALISM 0x005e784a SYMBOL
+// __abnormal_termination
 
-// LIBRARY: IMPERIALISM 0x005e786d
-// symbol: __NLG_Notify1
+// LIBRARY: IMPERIALISM 0x005e786d SYMBOL
+// __NLG_Notify1
 
-// LIBRARY: IMPERIALISM 0x005e7876
-// symbol: __NLG_Notify
+// LIBRARY: IMPERIALISM 0x005e7876 SYMBOL
+// __NLG_Notify
 
-// LIBRARY: IMPERIALISM 0x005e7890
-// symbol: __onexit
+// LIBRARY: IMPERIALISM 0x005e7890 SYMBOL
+// __onexit
 
-// LIBRARY: IMPERIALISM 0x005e7920
+// LIBRARY: IMPERIALISM 0x005e7920 SYMBOL
+// _atexit
 // name: atexit
-// symbol: _atexit
 // prototype: int __cdecl atexit(void (__cdecl*)(void))
 
-// LIBRARY: IMPERIALISM 0x005e7980
+// LIBRARY: IMPERIALISM 0x005e7980 SYMBOL
+// __mbscmp
 // name: _mbscmp
-// symbol: __mbscmp
 
-// LIBRARY: IMPERIALISM 0x005e7a80
+// LIBRARY: IMPERIALISM 0x005e7a80 SYMBOL
+// ?_set_new_handler@@YAP6AHI@ZP6AHI@Z@Z
 // name: _set_new_handler
-// symbol: ?_set_new_handler@@YAP6AHI@ZP6AHI@Z@Z
 // prototype: _PNH __cdecl _set_new_handler(_PNH)
 
-// LIBRARY: IMPERIALISM 0x005e7ac0
-// symbol: __callnewh
+// LIBRARY: IMPERIALISM 0x005e7ac0 SYMBOL
+// __callnewh
 
 // LIBRARY: IMPERIALISM 0x005e7ae0
 // ownership-only
@@ -1076,62 +1074,62 @@
 // ownership-only
 
 // LIBRARY: IMPERIALISM 0x005e7d30
-// name: _findclose
+// _findclose
 
 // LIBRARY: IMPERIALISM 0x005e7d60
-// name: ConvertFileTimeToLocalEpochSeconds
+// ConvertFileTimeToLocalEpochSeconds
 
-// LIBRARY: IMPERIALISM 0x005e7df0
-// symbol: __aullshr
+// LIBRARY: IMPERIALISM 0x005e7df0 SYMBOL
+// __aullshr
 
-// LIBRARY: IMPERIALISM 0x005e7e10
-// symbol: ??_M@YGXPAXIHP6EX0@Z@Z
+// LIBRARY: IMPERIALISM 0x005e7e10 SYMBOL
+// ??_M@YGXPAXIHP6EX0@Z@Z
 
 // LIBRARY: IMPERIALISM 0x005e7e89
 // ownership-only
 
-// LIBRARY: IMPERIALISM 0x005e7ec0
-// symbol: ?__ArrayUnwind@@YGXPAXIHP6EX0@Z@Z
+// LIBRARY: IMPERIALISM 0x005e7ec0 SYMBOL
+// ?__ArrayUnwind@@YGXPAXIHP6EX0@Z@Z
 
 // LIBRARY: IMPERIALISM 0x005e7f50
 // ownership-only
 
-// LIBRARY: IMPERIALISM 0x005e7fc0
+// LIBRARY: IMPERIALISM 0x005e7fc0 SYMBOL
+// _realloc
 // name: _realloc
-// symbol: _realloc
 
-// LIBRARY: IMPERIALISM 0x005e8170
+// LIBRARY: IMPERIALISM 0x005e8170 SYMBOL
+// ??1type_info@@UAE@XZ
 // name: type_info::~type_info
-// symbol: ??1type_info@@UAE@XZ
 // prototype: public: virtual __thiscall type_info::~type_info(void)
 
-// LIBRARY: IMPERIALISM 0x005e81a0
+// LIBRARY: IMPERIALISM 0x005e81a0 SYMBOL
+// ??_Gtype_info@@UAEPAXI@Z
 // name: type_info::`scalar deleting dtor'
-// symbol: ??_Gtype_info@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall type_info::`scalar deleting dtor'(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x005e8310
-// name: AllocateWithGlobalNewMode
+// AllocateWithGlobalNewMode
 
-// LIBRARY: IMPERIALISM 0x005e8330
-// symbol: __nh_malloc
+// LIBRARY: IMPERIALISM 0x005e8330 SYMBOL
+// __nh_malloc
 
-// LIBRARY: IMPERIALISM 0x005e8380
-// symbol: __heap_alloc
+// LIBRARY: IMPERIALISM 0x005e8380 SYMBOL
+// __heap_alloc
 
-// LIBRARY: IMPERIALISM 0x005e83e0
+// LIBRARY: IMPERIALISM 0x005e83e0 SYMBOL
+// _srand
 // name: srand
-// symbol: _srand
 // prototype: void __cdecl srand(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e83f0
+// LIBRARY: IMPERIALISM 0x005e83f0 SYMBOL
+// _rand
 // name: rand
-// symbol: _rand
 // prototype: int __cdecl rand(void)
 
-// LIBRARY: IMPERIALISM 0x005e8420
+// LIBRARY: IMPERIALISM 0x005e8420 SYMBOL
+// _memmove
 // name: memmove
-// symbol: _memmove
 // prototype: void * __cdecl memmove(void *,void const *,unsigned int)
 
 // LIBRARY: IMPERIALISM 0x005e8760
@@ -1141,34 +1139,34 @@
 // ownership-only
 
 // LIBRARY: IMPERIALISM 0x005e8970
-// name: _isdigit
+// _isdigit
 
 // LIBRARY: IMPERIALISM 0x005e89d0
-// name: _isspace
+// _isspace
 
 // LIBRARY: IMPERIALISM 0x005e8bb0
-// name: _vsprintf
+// _vsprintf
 
-// LIBRARY: IMPERIALISM 0x005e8c20
+// LIBRARY: IMPERIALISM 0x005e8c20 SYMBOL
+// __alloca_probe
 // name: _alloca_probe
-// symbol: __alloca_probe
 
-// LIBRARY: IMPERIALISM 0x005e8c50
+// LIBRARY: IMPERIALISM 0x005e8c50 SYMBOL
+// ??_L@YGXPAXIHP6EX0@Z1@Z
 // name: `eh vector ctor iterator'
-// symbol: ??_L@YGXPAXIHP6EX0@Z1@Z
 // prototype: void __stdcall `eh vector ctor iterator'(void *, unsigned int, int, void (__thiscall *)(void *), void (__thiscall *)(void *))
 
 // SYNTHETIC: IMPERIALISM 0x005e8cc8
-// name: SehCleanup_CallCallbackRepeatedly
+// SehCleanup_CallCallbackRepeatedly
 
-// LIBRARY: IMPERIALISM 0x005e8cf0
+// LIBRARY: IMPERIALISM 0x005e8cf0 SYMBOL
+// _localtime
 // name: _localtime
-// symbol: _localtime
 // prototype: struct tm * __cdecl _localtime(long const *)
 
-// LIBRARY: IMPERIALISM 0x005e8ee0
+// LIBRARY: IMPERIALISM 0x005e8ee0 SYMBOL
+// _time
 // name: _time
-// symbol: _time
 // prototype: long __cdecl _time(long *)
 
 // LIBRARY: IMPERIALISM 0x005e9010
@@ -1184,19 +1182,19 @@
 // ownership-only
 
 // LIBRARY: IMPERIALISM 0x005e9120
-// name: _fprintf
+// _fprintf
 
 // LIBRARY: IMPERIALISM 0x005e9170
-// name: _fwrite
+// _fwrite
 
-// LIBRARY: IMPERIALISM 0x005e91b0
-// symbol: __fwrite_lk
+// LIBRARY: IMPERIALISM 0x005e91b0 SYMBOL
+// __fwrite_lk
 
 // LIBRARY: IMPERIALISM 0x005e9300
-// name: _fscanf
+// _fscanf
 
 // LIBRARY: IMPERIALISM 0x005e9340
-// name: _strncpy
+// _strncpy
 
 // LIBRARY: IMPERIALISM 0x005e9440
 // ownership-only
@@ -1207,441 +1205,441 @@
 // LIBRARY: IMPERIALISM 0x005e95c0
 // ownership-only
 
-// LIBRARY: IMPERIALISM 0x005e9620
-// symbol: __itoa
+// LIBRARY: IMPERIALISM 0x005e9620 SYMBOL
+// __itoa
 
 // LIBRARY: IMPERIALISM 0x005e9660
-// name: _xtoa
+// _xtoa
 
 // LIBRARY: IMPERIALISM 0x005e9840
-// name: _sprintf
+// _sprintf
 
 // LIBRARY: IMPERIALISM 0x005e98b0
-// name: _WinMainCRTStartup
+// _WinMainCRTStartup
 
-// LIBRARY: IMPERIALISM 0x005e9a60
+// LIBRARY: IMPERIALISM 0x005e9a60 SYMBOL
+// __amsg_exit
 // name: _amsg_exit
-// symbol: __amsg_exit
 // prototype: void __cdecl _amsg_exit(int)
 
-// LIBRARY: IMPERIALISM 0x005e9a90
+// LIBRARY: IMPERIALISM 0x005e9a90 SYMBOL
+// _memset
 // name: memset
-// symbol: _memset
 // prototype: void * __cdecl memset(void *,int,unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005e9ae8
+// LIBRARY: IMPERIALISM 0x005e9ae8 SYMBOL
+// __EH_prolog
 // name: _EH_prolog
-// symbol: __EH_prolog
 
-// LIBRARY: IMPERIALISM 0x005e9b10
-// symbol: __strdup
+// LIBRARY: IMPERIALISM 0x005e9b10 SYMBOL
+// __strdup
 
-// LIBRARY: IMPERIALISM 0x005e9b60
-// symbol: __cinit
+// LIBRARY: IMPERIALISM 0x005e9b60 SYMBOL
+// __cinit
 
 // LIBRARY: IMPERIALISM 0x005e9b90
-// name: _exit
+// _exit
 
-// LIBRARY: IMPERIALISM 0x005e9bb0
+// LIBRARY: IMPERIALISM 0x005e9bb0 SYMBOL
+// __exit
 // name: _exit
-// symbol: __exit
 // prototype: void __cdecl _exit(int)
 
-// LIBRARY: IMPERIALISM 0x005e9bf0
+// LIBRARY: IMPERIALISM 0x005e9bf0 SYMBOL
+// _doexit
 // name: _doexit
-// symbol: _doexit
 // prototype: void __cdecl _doexit(int status, int quick, int retcaller)
 
-// LIBRARY: IMPERIALISM 0x005e9cb0
-// symbol: __lockexit
+// LIBRARY: IMPERIALISM 0x005e9cb0 SYMBOL
+// __lockexit
 
-// LIBRARY: IMPERIALISM 0x005e9cc0
-// symbol: __unlockexit
+// LIBRARY: IMPERIALISM 0x005e9cc0 SYMBOL
+// __unlockexit
 
-// LIBRARY: IMPERIALISM 0x005e9cd0
-// symbol: __initterm
+// LIBRARY: IMPERIALISM 0x005e9cd0 SYMBOL
+// __initterm
 
 // LIBRARY: IMPERIALISM 0x005e9cf0
-// name: _memcpy
+// _memcpy
 
 // LIBRARY: IMPERIALISM 0x005ea030
-// name: _wcslen
+// _wcslen
 
-// LIBRARY: IMPERIALISM 0x005ea050
-// symbol: __mbschr
+// LIBRARY: IMPERIALISM 0x005ea050 SYMBOL
+// __mbschr
 
-// LIBRARY: IMPERIALISM 0x005ea120
-// symbol: __mbspbrk
+// LIBRARY: IMPERIALISM 0x005ea120 SYMBOL
+// __mbspbrk
 
-// LIBRARY: IMPERIALISM 0x005ea1d0
-// symbol: __mbsupr
+// LIBRARY: IMPERIALISM 0x005ea1d0 SYMBOL
+// __mbsupr
 
-// LIBRARY: IMPERIALISM 0x005ea280
-// symbol: __mbslwr
+// LIBRARY: IMPERIALISM 0x005ea280 SYMBOL
+// __mbslwr
 
-// LIBRARY: IMPERIALISM 0x005ea330
-// symbol: __mbsrev
+// LIBRARY: IMPERIALISM 0x005ea330 SYMBOL
+// __mbsrev
 
-// LIBRARY: IMPERIALISM 0x005ea3b0
-// symbol: __beginthreadex
+// LIBRARY: IMPERIALISM 0x005ea3b0 SYMBOL
+// __beginthreadex
 
-// LIBRARY: IMPERIALISM 0x005ea430
-// symbol: __threadstartex@4
+// LIBRARY: IMPERIALISM 0x005ea430 SYMBOL
+// __threadstartex@4
 
-// LIBRARY: IMPERIALISM 0x005ea4e0
+// LIBRARY: IMPERIALISM 0x005ea4e0 SYMBOL
+// __endthreadex
 // name: _endthreadex
-// symbol: __endthreadex
 // prototype: void __cdecl _endthreadex(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x005ea520
-// name: _memcmp
+// _memcmp
 
-// LIBRARY: IMPERIALISM 0x005ea5d0
-// symbol: __CxxThrowException@8
+// LIBRARY: IMPERIALISM 0x005ea5d0 SYMBOL
+// __CxxThrowException@8
 
-// LIBRARY: IMPERIALISM 0x005ea620
-// symbol: __mbsspn
+// LIBRARY: IMPERIALISM 0x005ea620 SYMBOL
+// __mbsspn
 
-// LIBRARY: IMPERIALISM 0x005ea6d0
-// symbol: __mbscspn
+// LIBRARY: IMPERIALISM 0x005ea6d0 SYMBOL
+// __mbscspn
 
-// LIBRARY: IMPERIALISM 0x005ea780
-// symbol: __mbsrchr
+// LIBRARY: IMPERIALISM 0x005ea780 SYMBOL
+// __mbsrchr
 
-// LIBRARY: IMPERIALISM 0x005ea810
-// symbol: __mbsstr
+// LIBRARY: IMPERIALISM 0x005ea810 SYMBOL
+// __mbsstr
 
-// LIBRARY: IMPERIALISM 0x005ea8b0
+// LIBRARY: IMPERIALISM 0x005ea8b0 SYMBOL
+// __mbclen
 // name: _mbclen
-// symbol: __mbclen
 
-// LIBRARY: IMPERIALISM 0x005ea8d0
-// symbol: __ismbcdigit
+// LIBRARY: IMPERIALISM 0x005ea8d0 SYMBOL
+// __ismbcdigit
 
-// LIBRARY: IMPERIALISM 0x005ea970
-// symbol: __mbsinc
+// LIBRARY: IMPERIALISM 0x005ea970 SYMBOL
+// __mbsinc
 
-// LIBRARY: IMPERIALISM 0x005ea990
-// symbol: __ismbcspace
+// LIBRARY: IMPERIALISM 0x005ea990 SYMBOL
+// __ismbcspace
 
-// LIBRARY: IMPERIALISM 0x005eaa30
+// LIBRARY: IMPERIALISM 0x005eaa30 SYMBOL
+// _abs
 // name: abs
-// symbol: _abs
 // prototype: int __cdecl abs(int)
 
 // LIBRARY: IMPERIALISM 0x005eaa40
-// name: _strtol
+// _strtol
 
 // LIBRARY: IMPERIALISM 0x005eaa60
-// name: _strtoxl
+// _strtoxl
 
 // LIBRARY: IMPERIALISM 0x005eacf0
-// name: _strtoul
+// _strtoul
 
-// LIBRARY: IMPERIALISM 0x005ead10
+// LIBRARY: IMPERIALISM 0x005ead10 SYMBOL
+// __purecall
 // name: _purecall
-// symbol: __purecall
 // prototype: void __cdecl _purecall(void)
 
-// LIBRARY: IMPERIALISM 0x005ead20
-// symbol: __dosmaperr
+// LIBRARY: IMPERIALISM 0x005ead20 SYMBOL
+// __dosmaperr
 
-// LIBRARY: IMPERIALISM 0x005eada0
+// LIBRARY: IMPERIALISM 0x005eada0 SYMBOL
+// __errno
 // name: _errno
-// symbol: __errno
 // prototype: int * __cdecl _errno(void)
 
-// LIBRARY: IMPERIALISM 0x005eadb0
+// LIBRARY: IMPERIALISM 0x005eadb0 SYMBOL
+// ___doserrno
 // name: __doserrno
-// symbol: ___doserrno
 // prototype: unsigned long * __cdecl __doserrno(void)
 
-// LIBRARY: IMPERIALISM 0x005eadc0
+// LIBRARY: IMPERIALISM 0x005eadc0 SYMBOL
+// __expand
 // name: _expand
-// symbol: __expand
 // prototype: void * __cdecl _expand(void *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005eae70
-// symbol: __msize
+// LIBRARY: IMPERIALISM 0x005eae70 SYMBOL
+// __msize
 
-// LIBRARY: IMPERIALISM 0x005eaee0
-// symbol: __setmbcp
+// LIBRARY: IMPERIALISM 0x005eaee0 SYMBOL
+// __setmbcp
 
 // LIBRARY: IMPERIALISM 0x005eb100
-// name: _getSystemCP
+// _getSystemCP
 
 // LIBRARY: IMPERIALISM 0x005eb150
-// name: _CPtoLCID
+// _CPtoLCID
 
 // LIBRARY: IMPERIALISM 0x005eb1b0
-// name: _setSBCS
+// _setSBCS
 
-// LIBRARY: IMPERIALISM 0x005eb1f0
-// symbol: ___initmbctable
+// LIBRARY: IMPERIALISM 0x005eb1f0 SYMBOL
+// ___initmbctable
 
 // LIBRARY: IMPERIALISM 0x005eb200
-// name: _mktime
+// _mktime
 
-// LIBRARY: IMPERIALISM 0x005eb220
-// symbol: __make_time_t
+// LIBRARY: IMPERIALISM 0x005eb220 SYMBOL
+// __make_time_t
 
 // LIBRARY: IMPERIALISM 0x005eb460
-// name: _gmtime
+// _gmtime
 
 // LIBRARY: IMPERIALISM 0x005ebb20
-// name: _strftime
+// _strftime
 
-// LIBRARY: IMPERIALISM 0x005ebb40
-// symbol: __Strftime
+// LIBRARY: IMPERIALISM 0x005ebb40 SYMBOL
+// __Strftime
 
-// LIBRARY: IMPERIALISM 0x005ebc90
-// symbol: __expandtime
+// LIBRARY: IMPERIALISM 0x005ebc90 SYMBOL
+// __expandtime
 
-// LIBRARY: IMPERIALISM 0x005ec230
-// symbol: __store_str
+// LIBRARY: IMPERIALISM 0x005ec230 SYMBOL
+// __store_str
 
-// LIBRARY: IMPERIALISM 0x005ec260
-// symbol: __store_num
+// LIBRARY: IMPERIALISM 0x005ec260 SYMBOL
+// __store_num
 
-// LIBRARY: IMPERIALISM 0x005ec300
-// symbol: __store_number
+// LIBRARY: IMPERIALISM 0x005ec300 SYMBOL
+// __store_number
 
-// LIBRARY: IMPERIALISM 0x005ec370
-// symbol: __store_winword
+// LIBRARY: IMPERIALISM 0x005ec370 SYMBOL
+// __store_winword
 
-// LIBRARY: IMPERIALISM 0x005ec6c0
+// LIBRARY: IMPERIALISM 0x005ec6c0 SYMBOL
+// __setdefaultprecision
 // name: _setdefaultprecision
-// symbol: __setdefaultprecision
 
-// LIBRARY: IMPERIALISM 0x005ec6e0
+// LIBRARY: IMPERIALISM 0x005ec6e0 SYMBOL
+// __ms_p5_test_fdiv
 // name: _ms_p5_test_fdiv
-// symbol: __ms_p5_test_fdiv
 
-// LIBRARY: IMPERIALISM 0x005ec730
+// LIBRARY: IMPERIALISM 0x005ec730 SYMBOL
+// __ms_p5_mp_test_fdiv
 // name: _ms_p5_mp_test_fdiv
-// symbol: __ms_p5_mp_test_fdiv
 
-// LIBRARY: IMPERIALISM 0x005ec760
+// LIBRARY: IMPERIALISM 0x005ec760 SYMBOL
+// __forcdecpt
 // name: _forcdecpt
-// symbol: __forcdecpt
 
-// LIBRARY: IMPERIALISM 0x005ec850
+// LIBRARY: IMPERIALISM 0x005ec850 SYMBOL
+// __fassign
 // name: _fassign
-// symbol: __fassign
 
-// LIBRARY: IMPERIALISM 0x005ec8b0
+// LIBRARY: IMPERIALISM 0x005ec8b0 SYMBOL
+// __cftoe
 // name: _cftoe
-// symbol: __cftoe
 
 // LIBRARY: IMPERIALISM 0x005ec930
-// name: AppendExponentSuffixToNumericBuffer
+// AppendExponentSuffixToNumericBuffer
 
-// LIBRARY: IMPERIALISM 0x005eca30
+// LIBRARY: IMPERIALISM 0x005eca30 SYMBOL
+// __cftof
 // name: _cftof
-// symbol: __cftof
 
 // LIBRARY: IMPERIALISM 0x005ecaa0
-// name: AppendFractionalDigitsAndPadNumericBuffer
+// AppendFractionalDigitsAndPadNumericBuffer
 
-// LIBRARY: IMPERIALISM 0x005ecb60
+// LIBRARY: IMPERIALISM 0x005ecb60 SYMBOL
+// __cftog
 // name: _cftog
-// symbol: __cftog
 
-// LIBRARY: IMPERIALISM 0x005ecc20
+// LIBRARY: IMPERIALISM 0x005ecc20 SYMBOL
+// __cfltcvt
 // name: _cfltcvt
-// symbol: __cfltcvt
 
-// LIBRARY: IMPERIALISM 0x005ecc90
+// LIBRARY: IMPERIALISM 0x005ecc90 SYMBOL
+// __shift
 // name: _shift
-// symbol: __shift
 
-// LIBRARY: IMPERIALISM 0x005eccc0
-// symbol: ___InternalCxxFrameHandler
+// LIBRARY: IMPERIALISM 0x005eccc0 SYMBOL
+// ___InternalCxxFrameHandler
 
-// LIBRARY: IMPERIALISM 0x005ecd90
-// symbol: ?FindHandler@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PAXPBU_s_FuncInfo@@EH1@Z
+// LIBRARY: IMPERIALISM 0x005ecd90 SYMBOL
+// ?FindHandler@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PAXPBU_s_FuncInfo@@EH1@Z
 
-// LIBRARY: IMPERIALISM 0x005ed050
-// symbol: ?FindHandlerForForeignException@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PAXPBU_s_FuncInfo@@HH1@Z
+// LIBRARY: IMPERIALISM 0x005ed050 SYMBOL
+// ?FindHandlerForForeignException@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PAXPBU_s_FuncInfo@@HH1@Z
 
-// LIBRARY: IMPERIALISM 0x005ed130
-// symbol: ___FrameUnwindToState
+// LIBRARY: IMPERIALISM 0x005ed130 SYMBOL
+// ___FrameUnwindToState
 
-// LIBRARY: IMPERIALISM 0x005ed210
-// symbol: ?CatchIt@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PAXPBU_s_FuncInfo@@PBU_s_HandlerType@@PBU_s_CatchableType@@PBU_s_TryBlockMapEntry@@H1@Z
+// LIBRARY: IMPERIALISM 0x005ed210 SYMBOL
+// ?CatchIt@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PAXPBU_s_FuncInfo@@PBU_s_HandlerType@@PBU_s_CatchableType@@PBU_s_TryBlockMapEntry@@H1@Z
 
-// LIBRARY: IMPERIALISM 0x005ed2a0
-// symbol: ?CallCatchBlock@@YAPAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PBU_s_FuncInfo@@PAXHK@Z
+// LIBRARY: IMPERIALISM 0x005ed2a0 SYMBOL
+// ?CallCatchBlock@@YAPAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PBU_s_FuncInfo@@PAXHK@Z
 
 // LIBRARY: IMPERIALISM 0x005ed398
 // ownership-only
 
-// LIBRARY: IMPERIALISM 0x005ed430
-// symbol: ?BuildCatchObject@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PBU_s_HandlerType@@PBU_s_CatchableType@@@Z
+// LIBRARY: IMPERIALISM 0x005ed430 SYMBOL
+// ?BuildCatchObject@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PBU_s_HandlerType@@PBU_s_CatchableType@@@Z
 
-// LIBRARY: IMPERIALISM 0x005ed640
-// symbol: ?_DestructExceptionObject@@YAXPAUEHExceptionRecord@@E@Z
+// LIBRARY: IMPERIALISM 0x005ed640 SYMBOL
+// ?_DestructExceptionObject@@YAXPAUEHExceptionRecord@@E@Z
 
-// LIBRARY: IMPERIALISM 0x005ed6c0
-// symbol: ?AdjustPointer@@YAPAXPAXABUPMD@@@Z
+// LIBRARY: IMPERIALISM 0x005ed6c0 SYMBOL
+// ?AdjustPointer@@YAPAXPAXABUPMD@@@Z
 
-// LIBRARY: IMPERIALISM 0x005ed6f0
-// symbol: __CallSettingFrame@12
+// LIBRARY: IMPERIALISM 0x005ed6f0 SYMBOL
+// __CallSettingFrame@12
 
-// LIBRARY: IMPERIALISM 0x005ed740
-// symbol: __mtinit
+// LIBRARY: IMPERIALISM 0x005ed740 SYMBOL
+// __mtinit
 
-// LIBRARY: IMPERIALISM 0x005ed7d0
-// symbol: __initptd
+// LIBRARY: IMPERIALISM 0x005ed7d0 SYMBOL
+// __initptd
 
-// LIBRARY: IMPERIALISM 0x005ed7f0
-// symbol: __getptd
+// LIBRARY: IMPERIALISM 0x005ed7f0 SYMBOL
+// __getptd
 
-// LIBRARY: IMPERIALISM 0x005ed870
-// symbol: __freeptd
+// LIBRARY: IMPERIALISM 0x005ed870 SYMBOL
+// __freeptd
 
-// LIBRARY: IMPERIALISM 0x005ed930
+// LIBRARY: IMPERIALISM 0x005ed930 SYMBOL
+// ?terminate@@YAXXZ
 // name: terminate
-// symbol: ?terminate@@YAXXZ
 // prototype: void __cdecl terminate(void)
 
-// LIBRARY: IMPERIALISM 0x005ed9c0
+// LIBRARY: IMPERIALISM 0x005ed9c0 SYMBOL
+// ?unexpected@@YAXXZ
 // name: unexpected
-// symbol: ?unexpected@@YAXXZ
 // prototype: void __cdecl unexpected(void)
 
-// LIBRARY: IMPERIALISM 0x005ed9e0
-// symbol: ?_inconsistency@@YAXXZ
+// LIBRARY: IMPERIALISM 0x005ed9e0 SYMBOL
+// ?_inconsistency@@YAXXZ
 
 // SYNTHETIC: IMPERIALISM 0x005eda4e
-// name: TerminateAfterInconsistencyEhCleanup
+// TerminateAfterInconsistencyEhCleanup
 // prototype: void __cdecl TerminateAfterInconsistencyEhCleanup(void)
 
-// LIBRARY: IMPERIALISM 0x005eda70
-// symbol: __mtinitlocks
+// LIBRARY: IMPERIALISM 0x005eda70 SYMBOL
+// __mtinitlocks
 
-// LIBRARY: IMPERIALISM 0x005edb20
+// LIBRARY: IMPERIALISM 0x005edb20 SYMBOL
+// __lock
 // name: _lock
-// symbol: __lock
 
-// LIBRARY: IMPERIALISM 0x005edba0
+// LIBRARY: IMPERIALISM 0x005edba0 SYMBOL
+// __unlock
 // name: _unlock
-// symbol: __unlock
 
 // LIBRARY: IMPERIALISM 0x005edbc0
 // ownership-only
 
-// LIBRARY: IMPERIALISM 0x005edc00
-// symbol: __lock_file2
+// LIBRARY: IMPERIALISM 0x005edc00 SYMBOL
+// __lock_file2
 
 // LIBRARY: IMPERIALISM 0x005edc30
 // ownership-only
 
-// LIBRARY: IMPERIALISM 0x005edc70
-// symbol: __unlock_file2
+// LIBRARY: IMPERIALISM 0x005edc70 SYMBOL
+// __unlock_file2
 
 // LIBRARY: IMPERIALISM 0x005edcc0
-// name: ConvertBrokenDownLocalTimeToEpochSeconds
+// ConvertBrokenDownLocalTimeToEpochSeconds
 
-// LIBRARY: IMPERIALISM 0x005eddb8
+// LIBRARY: IMPERIALISM 0x005eddb8 SYMBOL
+// __except_handler3
 // name: _except_handler3
-// symbol: __except_handler3
 
-// LIBRARY: IMPERIALISM 0x005ede75
-// symbol: __seh_longjmp_unwind@4
+// LIBRARY: IMPERIALISM 0x005ede75 SYMBOL
+// __seh_longjmp_unwind@4
 
-// LIBRARY: IMPERIALISM 0x005ede90
-// symbol: __heap_init
+// LIBRARY: IMPERIALISM 0x005ede90 SYMBOL
+// __heap_init
 
-// LIBRARY: IMPERIALISM 0x005edf40
-// symbol: ___sbh_new_region
+// LIBRARY: IMPERIALISM 0x005edf40 SYMBOL
+// ___sbh_new_region
 
-// LIBRARY: IMPERIALISM 0x005ee0b0
-// symbol: ___sbh_release_region
+// LIBRARY: IMPERIALISM 0x005ee0b0 SYMBOL
+// ___sbh_release_region
 
-// LIBRARY: IMPERIALISM 0x005ee110
-// symbol: ___sbh_decommit_pages
+// LIBRARY: IMPERIALISM 0x005ee110 SYMBOL
+// ___sbh_decommit_pages
 
-// LIBRARY: IMPERIALISM 0x005ee1e0
-// symbol: ___sbh_find_block
+// LIBRARY: IMPERIALISM 0x005ee1e0 SYMBOL
+// ___sbh_find_block
 
-// LIBRARY: IMPERIALISM 0x005ee240
-// symbol: ___sbh_free_block
+// LIBRARY: IMPERIALISM 0x005ee240 SYMBOL
+// ___sbh_free_block
 
-// LIBRARY: IMPERIALISM 0x005ee2a0
-// symbol: ___sbh_alloc_block
+// LIBRARY: IMPERIALISM 0x005ee2a0 SYMBOL
+// ___sbh_alloc_block
 
-// LIBRARY: IMPERIALISM 0x005ee4e0
-// symbol: ___sbh_alloc_block_from_page
+// LIBRARY: IMPERIALISM 0x005ee4e0 SYMBOL
+// ___sbh_alloc_block_from_page
 
-// LIBRARY: IMPERIALISM 0x005ee660
-// symbol: ___sbh_resize_block
+// LIBRARY: IMPERIALISM 0x005ee660 SYMBOL
+// ___sbh_resize_block
 
-// LIBRARY: IMPERIALISM 0x005ee900
-// symbol: __isctype
+// LIBRARY: IMPERIALISM 0x005ee900 SYMBOL
+// __isctype
 
-// LIBRARY: IMPERIALISM 0x005ee9a0
-// symbol: __allmul
+// LIBRARY: IMPERIALISM 0x005ee9a0 SYMBOL
+// __allmul
 
-// LIBRARY: IMPERIALISM 0x005ee9e0
-// symbol: __flsbuf
+// LIBRARY: IMPERIALISM 0x005ee9e0 SYMBOL
+// __flsbuf
 
-// LIBRARY: IMPERIALISM 0x005eeb10
-// symbol: __output
+// LIBRARY: IMPERIALISM 0x005eeb10 SYMBOL
+// __output
 
 // LIBRARY: IMPERIALISM 0x005ef4a0
-// name: _write_char
+// _write_char
 
 // LIBRARY: IMPERIALISM 0x005ef4f0
-// name: _write_multi_char
+// _write_multi_char
 
 // LIBRARY: IMPERIALISM 0x005ef530
-// name: _write_string
+// _write_string
 
 // LIBRARY: IMPERIALISM 0x005ef570
-// name: _get_int_arg
+// _get_int_arg
 
 // LIBRARY: IMPERIALISM 0x005ef590
-// name: _get_int64_arg
+// _get_int64_arg
 
 // LIBRARY: IMPERIALISM 0x005ef5b0
-// name: _get_short_arg
+// _get_short_arg
 
 // LIBRARY: IMPERIALISM 0x005ef5d0
-// name: EnsureRuntimeLocaleTablesInitializedOnce
+// EnsureRuntimeLocaleTablesInitializedOnce
 
-// LIBRARY: IMPERIALISM 0x005ef630
-// symbol: __tzset_lk
+// LIBRARY: IMPERIALISM 0x005ef630 SYMBOL
+// __tzset_lk
 
 // LIBRARY: IMPERIALISM 0x005ef910
-// name: isindst
+// isindst
 
-// LIBRARY: IMPERIALISM 0x005ef940
-// symbol: __isindst_lk
+// LIBRARY: IMPERIALISM 0x005ef940 SYMBOL
+// __isindst_lk
 
 // LIBRARY: IMPERIALISM 0x005efbb0
-// name: _cvtdate
+// _cvtdate
 
 // LIBRARY: IMPERIALISM 0x005efd50
 // ownership-only
 
-// LIBRARY: IMPERIALISM 0x005efdc0
-// symbol: __close_lk
+// LIBRARY: IMPERIALISM 0x005efdc0 SYMBOL
+// __close_lk
 
 // LIBRARY: IMPERIALISM 0x005efe50
 // ownership-only
 
 // LIBRARY: IMPERIALISM 0x005efe90
-// name: _fflush
+// _fflush
 
-// LIBRARY: IMPERIALISM 0x005efed0
-// symbol: __fflush_lk
+// LIBRARY: IMPERIALISM 0x005efed0 SYMBOL
+// __fflush_lk
 
 // LIBRARY: IMPERIALISM 0x005eff10
 // ownership-only
 
 // LIBRARY: IMPERIALISM 0x005eff90
-// name: _flsall
+// _flsall
 
 // LIBRARY: IMPERIALISM 0x005f0050
 // ownership-only
@@ -1649,32 +1647,32 @@
 // LIBRARY: IMPERIALISM 0x005f0220
 // ownership-only
 
-// LIBRARY: IMPERIALISM 0x005f0300
-// symbol: __stbuf
+// LIBRARY: IMPERIALISM 0x005f0300 SYMBOL
+// __stbuf
 
-// LIBRARY: IMPERIALISM 0x005f03a0
-// symbol: __ftbuf
+// LIBRARY: IMPERIALISM 0x005f03a0 SYMBOL
+// __ftbuf
 
-// LIBRARY: IMPERIALISM 0x005f03e0
-// symbol: __write
+// LIBRARY: IMPERIALISM 0x005f03e0 SYMBOL
+// __write
 
-// LIBRARY: IMPERIALISM 0x005f0460
-// symbol: __write_lk
+// LIBRARY: IMPERIALISM 0x005f0460 SYMBOL
+// __write_lk
 
-// LIBRARY: IMPERIALISM 0x005f0670
-// symbol: __input
+// LIBRARY: IMPERIALISM 0x005f0670 SYMBOL
+// __input
 
-// LIBRARY: IMPERIALISM 0x005f13b0
-// symbol: __hextodec
+// LIBRARY: IMPERIALISM 0x005f13b0 SYMBOL
+// __hextodec
 
-// LIBRARY: IMPERIALISM 0x005f13f0
-// symbol: __inc
+// LIBRARY: IMPERIALISM 0x005f13f0 SYMBOL
+// __inc
 
-// LIBRARY: IMPERIALISM 0x005f1420
-// symbol: __un_inc
+// LIBRARY: IMPERIALISM 0x005f1420 SYMBOL
+// __un_inc
 
-// LIBRARY: IMPERIALISM 0x005f1440
-// symbol: __whiteout
+// LIBRARY: IMPERIALISM 0x005f1440 SYMBOL
+// __whiteout
 
 // LIBRARY: IMPERIALISM 0x005f1490
 // ownership-only
@@ -1682,1181 +1680,1181 @@
 // LIBRARY: IMPERIALISM 0x005f1580
 // ownership-only
 
-// LIBRARY: IMPERIALISM 0x005f1600
-// symbol: __read_lk
+// LIBRARY: IMPERIALISM 0x005f1600 SYMBOL
+// __read_lk
 
-// LIBRARY: IMPERIALISM 0x005f1830
-// symbol: __aulldiv
+// LIBRARY: IMPERIALISM 0x005f1830 SYMBOL
+// __aulldiv
 
-// LIBRARY: IMPERIALISM 0x005f18a0
-// symbol: __aullrem
+// LIBRARY: IMPERIALISM 0x005f18a0 SYMBOL
+// __aullrem
 
-// LIBRARY: IMPERIALISM 0x005f1c70
-// symbol: __ismbblead
+// LIBRARY: IMPERIALISM 0x005f1c70 SYMBOL
+// __ismbblead
 
 // LIBRARY: IMPERIALISM 0x005f1ce0
-// name: _x_ismbbtype
+// _x_ismbbtype
 
-// LIBRARY: IMPERIALISM 0x005f1d20
-// symbol: __setenvp
+// LIBRARY: IMPERIALISM 0x005f1d20 SYMBOL
+// __setenvp
 
-// LIBRARY: IMPERIALISM 0x005f1e10
-// symbol: __setargv
+// LIBRARY: IMPERIALISM 0x005f1e10 SYMBOL
+// __setargv
 
 // LIBRARY: IMPERIALISM 0x005f1eb0
-// name: _parse_cmdline
+// _parse_cmdline
 
-// LIBRARY: IMPERIALISM 0x005f22c0
-// symbol: ___crtGetEnvironmentStringsA
+// LIBRARY: IMPERIALISM 0x005f22c0 SYMBOL
+// ___crtGetEnvironmentStringsA
 
-// LIBRARY: IMPERIALISM 0x005f2420
-// symbol: __ioinit
+// LIBRARY: IMPERIALISM 0x005f2420 SYMBOL
+// __ioinit
 
-// LIBRARY: IMPERIALISM 0x005f2690
-// symbol: __FF_MSGBANNER
+// LIBRARY: IMPERIALISM 0x005f2690 SYMBOL
+// __FF_MSGBANNER
 
-// LIBRARY: IMPERIALISM 0x005f26d0
-// symbol: __NMSG_WRITE
+// LIBRARY: IMPERIALISM 0x005f26d0 SYMBOL
+// __NMSG_WRITE
 
 // LIBRARY: IMPERIALISM 0x005f28f0
-// name: _strchr
+// _strchr
 
 // LIBRARY: IMPERIALISM 0x005f29b0
-// name: _strpbrk
+// _strpbrk
 
-// LIBRARY: IMPERIALISM 0x005f29f0
-// symbol: ___crtLCMapStringW
+// LIBRARY: IMPERIALISM 0x005f29f0 SYMBOL
+// ___crtLCMapStringW
 
 // LIBRARY: IMPERIALISM 0x005f2c00
-// name: _wcsncnt
+// _wcsncnt
 
-// LIBRARY: IMPERIALISM 0x005f2c40
-// symbol: ___crtLCMapStringA
+// LIBRARY: IMPERIALISM 0x005f2c40 SYMBOL
+// ___crtLCMapStringA
 
 // LIBRARY: IMPERIALISM 0x005f2e60
-// name: _strncnt
+// _strncnt
 
-// LIBRARY: IMPERIALISM 0x005f2e90
-// symbol: __strrev
+// LIBRARY: IMPERIALISM 0x005f2e90 SYMBOL
+// __strrev
 
 // LIBRARY: IMPERIALISM 0x005f2ec0
-// name: _calloc
+// _calloc
 
-// LIBRARY: IMPERIALISM 0x005f2f70
+// LIBRARY: IMPERIALISM 0x005f2f70 SYMBOL
+// ?__CxxUnhandledExceptionFilter@@YGJPAU_EXCEPTION_POINTERS@@@Z
 // name: __CxxUnhandledExceptionFilter
-// symbol: ?__CxxUnhandledExceptionFilter@@YGJPAU_EXCEPTION_POINTERS@@@Z
 // prototype: long __stdcall __CxxUnhandledExceptionFilter(struct _EXCEPTION_POINTERS *)
 
 // LIBRARY: IMPERIALISM 0x005f3000
-// name: _strspn
+// _strspn
 
 // LIBRARY: IMPERIALISM 0x005f3040
-// name: _strcspn
+// _strcspn
 
 // LIBRARY: IMPERIALISM 0x005f3080
-// name: _strrchr
+// _strrchr
 
 // LIBRARY: IMPERIALISM 0x005f30b0
-// name: _strstr
+// _strstr
 
-// LIBRARY: IMPERIALISM 0x005f3130
-// symbol: ___crtGetStringTypeW
+// LIBRARY: IMPERIALISM 0x005f3130 SYMBOL
+// ___crtGetStringTypeW
 
-// LIBRARY: IMPERIALISM 0x005f32c0
-// symbol: ___crtGetStringTypeA
+// LIBRARY: IMPERIALISM 0x005f32c0 SYMBOL
+// ___crtGetStringTypeA
 
 // LIBRARY: IMPERIALISM 0x005f3400
-// name: _toupper
+// _toupper
 
-// LIBRARY: IMPERIALISM 0x005f3490
-// symbol: __toupper_lk
+// LIBRARY: IMPERIALISM 0x005f3490 SYMBOL
+// __toupper_lk
 
-// LIBRARY: IMPERIALISM 0x005f3ec0
-// symbol: __strcmpi
+// LIBRARY: IMPERIALISM 0x005f3ec0 SYMBOL
+// __strcmpi
 
-// LIBRARY: IMPERIALISM 0x005f3f90
+// LIBRARY: IMPERIALISM 0x005f3f90 SYMBOL
+// __statusfp
 // name: _statusfp
-// symbol: __statusfp
 
-// LIBRARY: IMPERIALISM 0x005f3fb0
+// LIBRARY: IMPERIALISM 0x005f3fb0 SYMBOL
+// __clearfp
 // name: _clearfp
-// symbol: __clearfp
 
-// LIBRARY: IMPERIALISM 0x005f3fd0
+// LIBRARY: IMPERIALISM 0x005f3fd0 SYMBOL
+// __control87
 // name: _control87
-// symbol: __control87
 
-// LIBRARY: IMPERIALISM 0x005f4010
+// LIBRARY: IMPERIALISM 0x005f4010 SYMBOL
+// __controlfp
 // name: _controlfp
-// symbol: __controlfp
 
 // LIBRARY: IMPERIALISM 0x005f4060
-// name: MapFpControlWordToRuntimeControlBits
+// MapFpControlWordToRuntimeControlBits
 
 // LIBRARY: IMPERIALISM 0x005f4100
-// name: StoreMappedFpControlBits_NoOp
+// StoreMappedFpControlBits_NoOp
 
-// LIBRARY: IMPERIALISM 0x005f4190
+// LIBRARY: IMPERIALISM 0x005f4190 SYMBOL
+// __abstract_sw
 // name: _abstract_sw
-// symbol: __abstract_sw
 // prototype: unsigned int __cdecl _abstract_sw(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x005f41e0
-// name: _tolower
+// _tolower
 
-// LIBRARY: IMPERIALISM 0x005f4270
-// symbol: __tolower_lk
+// LIBRARY: IMPERIALISM 0x005f4270 SYMBOL
+// __tolower_lk
 
-// LIBRARY: IMPERIALISM 0x005f4370
+// LIBRARY: IMPERIALISM 0x005f4370 SYMBOL
+// __ZeroTail
 // name: _ZeroTail
-// symbol: __ZeroTail
 
-// LIBRARY: IMPERIALISM 0x005f43e0
+// LIBRARY: IMPERIALISM 0x005f43e0 SYMBOL
+// __IncMan
 // name: _IncMan
-// symbol: __IncMan
 
-// LIBRARY: IMPERIALISM 0x005f4450
+// LIBRARY: IMPERIALISM 0x005f4450 SYMBOL
+// __RoundMan
 // name: _RoundMan
-// symbol: __RoundMan
 
-// LIBRARY: IMPERIALISM 0x005f44f0
+// LIBRARY: IMPERIALISM 0x005f44f0 SYMBOL
+// __CopyMan
 // name: _CopyMan
-// symbol: __CopyMan
 
-// LIBRARY: IMPERIALISM 0x005f4510
+// LIBRARY: IMPERIALISM 0x005f4510 SYMBOL
+// __FillZeroMan
 // name: _FillZeroMan
-// symbol: __FillZeroMan
 
-// LIBRARY: IMPERIALISM 0x005f4520
+// LIBRARY: IMPERIALISM 0x005f4520 SYMBOL
+// __IsZeroMan
 // name: _IsZeroMan
-// symbol: __IsZeroMan
 
-// LIBRARY: IMPERIALISM 0x005f4540
+// LIBRARY: IMPERIALISM 0x005f4540 SYMBOL
+// __ShrMan
 // name: _ShrMan
-// symbol: __ShrMan
 
-// LIBRARY: IMPERIALISM 0x005f4600
+// LIBRARY: IMPERIALISM 0x005f4600 SYMBOL
+// __ld12cvt
 // name: _ld12cvt
-// symbol: __ld12cvt
 
-// LIBRARY: IMPERIALISM 0x005f47d0
+// LIBRARY: IMPERIALISM 0x005f47d0 SYMBOL
+// ___ld12tod
 // name: __ld12tod
-// symbol: ___ld12tod
 // prototype: int __cdecl __ld12tod(_LDBL12 *,double *)
 
-// LIBRARY: IMPERIALISM 0x005f47f0
+// LIBRARY: IMPERIALISM 0x005f47f0 SYMBOL
+// ___ld12tof
 // name: __ld12tof
-// symbol: ___ld12tof
 // prototype: int __cdecl __ld12tof(_LDBL12 *,float *)
 
-// LIBRARY: IMPERIALISM 0x005f4890
+// LIBRARY: IMPERIALISM 0x005f4890 SYMBOL
+// __atodbl
 // name: _atodbl
-// symbol: __atodbl
 // prototype: int __cdecl _atodbl(_CRT_DOUBLE *,char *)
 
-// LIBRARY: IMPERIALISM 0x005f4910
+// LIBRARY: IMPERIALISM 0x005f4910 SYMBOL
+// __atoflt
 // name: _atoflt
-// symbol: __atoflt
 // prototype: int __cdecl _atoflt(_CRT_FLOAT *,char *)
 
-// LIBRARY: IMPERIALISM 0x005f4950
-// symbol: __fptostr
+// LIBRARY: IMPERIALISM 0x005f4950 SYMBOL
+// __fptostr
 
-// LIBRARY: IMPERIALISM 0x005f49f0
+// LIBRARY: IMPERIALISM 0x005f49f0 SYMBOL
+// __fltout2
 // name: _fltout2
-// symbol: __fltout2
 
-// LIBRARY: IMPERIALISM 0x005f4a80
+// LIBRARY: IMPERIALISM 0x005f4a80 SYMBOL
+// ___dtold
 // name: __dtold
-// symbol: ___dtold
 
-// LIBRARY: IMPERIALISM 0x005f4b40
+// LIBRARY: IMPERIALISM 0x005f4b40 SYMBOL
+// __fptrap
 // name: _fptrap
-// symbol: __fptrap
 // prototype: void __cdecl _fptrap(void)
 
-// LIBRARY: IMPERIALISM 0x005f4b50
+// LIBRARY: IMPERIALISM 0x005f4b50 SYMBOL
+// ?_ValidateRead@@YAHPBXI@Z
 // name: _ValidateRead
-// symbol: ?_ValidateRead@@YAHPBXI@Z
 // prototype: int __cdecl _ValidateRead(void const *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005f4b70
+// LIBRARY: IMPERIALISM 0x005f4b70 SYMBOL
+// ?_ValidateWrite@@YAHPAXI@Z
 // name: _ValidateWrite
-// symbol: ?_ValidateWrite@@YAHPAXI@Z
 // prototype: int __cdecl _ValidateWrite(void *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005f4b90
+// LIBRARY: IMPERIALISM 0x005f4b90 SYMBOL
+// ?_ValidateExecute@@YAHP6GHXZ@Z
 // name: _ValidateExecute
-// symbol: ?_ValidateExecute@@YAHP6GHXZ@Z
 // prototype: int __cdecl _ValidateExecute(int (__stdcall *)(void))
 
 // LIBRARY: IMPERIALISM 0x005f4bb0
 // ownership-only
 
-// LIBRARY: IMPERIALISM 0x005f4cb0
-// symbol: __lseek
+// LIBRARY: IMPERIALISM 0x005f4cb0 SYMBOL
+// __lseek
 
-// LIBRARY: IMPERIALISM 0x005f4d30
-// symbol: __lseek_lk
+// LIBRARY: IMPERIALISM 0x005f4d30 SYMBOL
+// __lseek_lk
 
-// LIBRARY: IMPERIALISM 0x005f4db0
-// symbol: __getbuf
+// LIBRARY: IMPERIALISM 0x005f4db0 SYMBOL
+// __getbuf
 
-// LIBRARY: IMPERIALISM 0x005f4e10
-// symbol: __isatty
+// LIBRARY: IMPERIALISM 0x005f4e10 SYMBOL
+// __isatty
 
 // LIBRARY: IMPERIALISM 0x005f4e40
-// name: _wctomb
+// _wctomb
 
-// LIBRARY: IMPERIALISM 0x005f4eb0
-// symbol: __wctomb_lk
+// LIBRARY: IMPERIALISM 0x005f4eb0 SYMBOL
+// __wctomb_lk
 
 // LIBRARY: IMPERIALISM 0x005f4f30
-// name: _wcstombs
+// _wcstombs
 
-// LIBRARY: IMPERIALISM 0x005f4fb0
-// symbol: __wcstombs_lk
+// LIBRARY: IMPERIALISM 0x005f4fb0 SYMBOL
+// __wcstombs_lk
 
 // LIBRARY: IMPERIALISM 0x005f51a0
-// name: _wcsncnt
+// _wcsncnt
 
-// LIBRARY: IMPERIALISM 0x005f5210
-// symbol: __getenv_lk
+// LIBRARY: IMPERIALISM 0x005f5210 SYMBOL
+// __getenv_lk
 
-// LIBRARY: IMPERIALISM 0x005f52a0
-// symbol: __alloc_osfhnd
+// LIBRARY: IMPERIALISM 0x005f52a0 SYMBOL
+// __alloc_osfhnd
 
-// LIBRARY: IMPERIALISM 0x005f5410
-// symbol: __set_osfhnd
+// LIBRARY: IMPERIALISM 0x005f5410 SYMBOL
+// __set_osfhnd
 
-// LIBRARY: IMPERIALISM 0x005f54c0
-// symbol: __free_osfhnd
+// LIBRARY: IMPERIALISM 0x005f54c0 SYMBOL
+// __free_osfhnd
 
-// LIBRARY: IMPERIALISM 0x005f5560
-// symbol: __get_osfhandle
+// LIBRARY: IMPERIALISM 0x005f5560 SYMBOL
+// __get_osfhandle
 
-// LIBRARY: IMPERIALISM 0x005f5660
-// symbol: __lock_fhandle
+// LIBRARY: IMPERIALISM 0x005f5660 SYMBOL
+// __lock_fhandle
 
-// LIBRARY: IMPERIALISM 0x005f56d0
-// symbol: __unlock_fhandle
+// LIBRARY: IMPERIALISM 0x005f56d0 SYMBOL
+// __unlock_fhandle
 
-// LIBRARY: IMPERIALISM 0x005f5700
-// symbol: __commit
+// LIBRARY: IMPERIALISM 0x005f5700 SYMBOL
+// __commit
 
-// LIBRARY: IMPERIALISM 0x005f57c0
-// symbol: __sopen
+// LIBRARY: IMPERIALISM 0x005f57c0 SYMBOL
+// __sopen
 
 // LIBRARY: IMPERIALISM 0x005f5b60
-// name: _mbtowc
+// _mbtowc
 
-// LIBRARY: IMPERIALISM 0x005f5be0
-// symbol: __mbtowc_lk
+// LIBRARY: IMPERIALISM 0x005f5be0 SYMBOL
+// __mbtowc_lk
 
-// LIBRARY: IMPERIALISM 0x005f5ce0
-// symbol: __allshl
+// LIBRARY: IMPERIALISM 0x005f5ce0 SYMBOL
+// __allshl
 
-// LIBRARY: IMPERIALISM 0x005f5d00
+// LIBRARY: IMPERIALISM 0x005f5d00 SYMBOL
+// _ungetc
 // name: ungetc
-// symbol: _ungetc
 // prototype: int __cdecl ungetc(int, FILE *)
 
-// LIBRARY: IMPERIALISM 0x005f5d30
-// symbol: __ungetc_lk
+// LIBRARY: IMPERIALISM 0x005f5d30 SYMBOL
+// __ungetc_lk
 
-// LIBRARY: IMPERIALISM 0x005f5dc0
-// symbol: ___crtMessageBoxA
+// LIBRARY: IMPERIALISM 0x005f5dc0 SYMBOL
+// ___crtMessageBoxA
 
-// LIBRARY: IMPERIALISM 0x005f5e50
+// LIBRARY: IMPERIALISM 0x005f5e50 SYMBOL
+// ___init_time
 // name: ___init_time
-// symbol: ___init_time
 // prototype: int __cdecl ___init_time(void)
 
-// LIBRARY: IMPERIALISM 0x005f5f00
-// symbol: __get_lc_time
+// LIBRARY: IMPERIALISM 0x005f5f00 SYMBOL
+// __get_lc_time
 
-// LIBRARY: IMPERIALISM 0x005f6280
-// symbol: __free_lc_time
+// LIBRARY: IMPERIALISM 0x005f6280 SYMBOL
+// __free_lc_time
 
 // LIBRARY: IMPERIALISM 0x005f64c0
-// name: _storeTimeFmt
+// _storeTimeFmt
 
-// LIBRARY: IMPERIALISM 0x005f65c0
+// LIBRARY: IMPERIALISM 0x005f65c0 SYMBOL
+// ___init_numeric
 // name: ___init_numeric
-// symbol: ___init_numeric
 // prototype: int __cdecl ___init_numeric(void)
 
 // LIBRARY: IMPERIALISM 0x005f67c0
-// name: _fix_grouping
+// _fix_grouping
 
-// LIBRARY: IMPERIALISM 0x005f6800
+// LIBRARY: IMPERIALISM 0x005f6800 SYMBOL
+// ___lconv_init
 // name: ___lconv_init
-// symbol: ___lconv_init
 // prototype: int __cdecl ___lconv_init(void)
 
-// LIBRARY: IMPERIALISM 0x005f68f0
-// symbol: __get_lc_lconv
+// LIBRARY: IMPERIALISM 0x005f68f0 SYMBOL
+// __get_lc_lconv
 
 // LIBRARY: IMPERIALISM 0x005f6a40
-// name: _fix_grouping
+// _fix_grouping
 
-// LIBRARY: IMPERIALISM 0x005f6a80
-// symbol: __free_lc_lconv
+// LIBRARY: IMPERIALISM 0x005f6a80 SYMBOL
+// __free_lc_lconv
 
-// LIBRARY: IMPERIALISM 0x005f6af9
+// LIBRARY: IMPERIALISM 0x005f6af9 SYMBOL
+// ___init_ctype
 // name: ___init_ctype
-// symbol: ___init_ctype
 // prototype: void __cdecl ___init_ctype(void)
 
 // LIBRARY: IMPERIALISM 0x005f6dc0
-// name: _strncmp
+// _strncmp
 
 // LIBRARY: IMPERIALISM 0x005f7300
-// name: _signal
+// _signal
 
-// LIBRARY: IMPERIALISM 0x005f7530
+// LIBRARY: IMPERIALISM 0x005f7530 SYMBOL
+// _ctrlevent_capture@4
 // name: ctrlevent_capture
-// symbol: _ctrlevent_capture@4
 // prototype: int __stdcall ctrlevent_capture(unsigned long)
 
-// LIBRARY: IMPERIALISM 0x005f75c0
+// LIBRARY: IMPERIALISM 0x005f75c0 SYMBOL
+// _raise
 // name: _raise
-// symbol: _raise
 // prototype: int __cdecl _raise(int signal)
 
 // LIBRARY: IMPERIALISM 0x005f77d0
-// name: _siglookup
+// _siglookup
 
-// LIBRARY: IMPERIALISM 0x005f7830
+// LIBRARY: IMPERIALISM 0x005f7830 SYMBOL
+// ___addl
 // name: __addl
-// symbol: ___addl
 
-// LIBRARY: IMPERIALISM 0x005f7860
+// LIBRARY: IMPERIALISM 0x005f7860 SYMBOL
+// ___add_12
 // name: __add_12
-// symbol: ___add_12
 
-// LIBRARY: IMPERIALISM 0x005f78d0
+// LIBRARY: IMPERIALISM 0x005f78d0 SYMBOL
+// ___shl_12
 // name: __shl_12
-// symbol: ___shl_12
 
-// LIBRARY: IMPERIALISM 0x005f7900
+// LIBRARY: IMPERIALISM 0x005f7900 SYMBOL
+// ___shr_12
 // name: __shr_12
-// symbol: ___shr_12
 
-// LIBRARY: IMPERIALISM 0x005f7930
+// LIBRARY: IMPERIALISM 0x005f7930 SYMBOL
+// ___mtold12
 // name: __mtold12
-// symbol: ___mtold12
 
-// LIBRARY: IMPERIALISM 0x005f7a30
+// LIBRARY: IMPERIALISM 0x005f7a30 SYMBOL
+// ___strgtold12
 // name: __strgtold12
-// symbol: ___strgtold12
 // prototype: unsigned int __cdecl __strgtold12(_LDBL12 *,char const * *,char const *,int,int,int,int)
 
-// LIBRARY: IMPERIALISM 0x005f8210
+// LIBRARY: IMPERIALISM 0x005f8210 SYMBOL
+// _$I10_OUTPUT
 // name: $I10_OUTPUT
-// symbol: _$I10_OUTPUT
 // prototype: undefined ConvertExtendedFloatToStringInternal()
 
-// LIBRARY: IMPERIALISM 0x005f8640
-// symbol: __mbsnbicoll
+// LIBRARY: IMPERIALISM 0x005f8640 SYMBOL
+// __mbsnbicoll
 
-// LIBRARY: IMPERIALISM 0x005f8680
-// symbol: ___wtomb_environ
+// LIBRARY: IMPERIALISM 0x005f8680 SYMBOL
+// ___wtomb_environ
 
-// LIBRARY: IMPERIALISM 0x005f8770
-// symbol: __chsize_lk
+// LIBRARY: IMPERIALISM 0x005f8770 SYMBOL
+// __chsize_lk
 
-// LIBRARY: IMPERIALISM 0x005f88c0
-// symbol: ___getlocaleinfo
+// LIBRARY: IMPERIALISM 0x005f88c0 SYMBOL
+// ___getlocaleinfo
 
-// LIBRARY: IMPERIALISM 0x005f8a80
-// symbol: ___crtGetLocaleInfoW
+// LIBRARY: IMPERIALISM 0x005f8a80 SYMBOL
+// ___crtGetLocaleInfoW
 
-// LIBRARY: IMPERIALISM 0x005f8bb0
-// symbol: ___crtGetLocaleInfoA
+// LIBRARY: IMPERIALISM 0x005f8bb0 SYMBOL
+// ___crtGetLocaleInfoA
 
 // LIBRARY: IMPERIALISM 0x005f8d10
-// name: _wcstoxl
+// _wcstoxl
 
-// LIBRARY: IMPERIALISM 0x005f8f10
+// LIBRARY: IMPERIALISM 0x005f8f10 SYMBOL
+// ___ld12mul
 // name: __ld12mul
-// symbol: ___ld12mul
 
-// LIBRARY: IMPERIALISM 0x005f91d0
+// LIBRARY: IMPERIALISM 0x005f91d0 SYMBOL
+// ___multtenpow12
 // name: __multtenpow12
-// symbol: ___multtenpow12
 
-// LIBRARY: IMPERIALISM 0x005f94b0
-// symbol: ___crtCompareStringA
+// LIBRARY: IMPERIALISM 0x005f94b0 SYMBOL
+// ___crtCompareStringA
 
 // LIBRARY: IMPERIALISM 0x005f9780
-// name: _strncnt
+// _strncnt
 
-// LIBRARY: IMPERIALISM 0x005f97b0
-// symbol: ___crtsetenv
+// LIBRARY: IMPERIALISM 0x005f97b0 SYMBOL
+// ___crtsetenv
 
 // LIBRARY: IMPERIALISM 0x005f99c0
-// name: _findenv
+// _findenv
 
 // LIBRARY: IMPERIALISM 0x005f9a40
-// name: _copy_environ
+// _copy_environ
 
-// LIBRARY: IMPERIALISM 0x005f9b20
-// symbol: __setmode_lk
+// LIBRARY: IMPERIALISM 0x005f9b20 SYMBOL
+// __setmode_lk
 
 // LIBRARY: IMPERIALISM 0x005f9b90
-// name: _towupper
+// _towupper
 
-// LIBRARY: IMPERIALISM 0x005f9c20
-// symbol: __towupper_lk
+// LIBRARY: IMPERIALISM 0x005f9c20 SYMBOL
+// __towupper_lk
 
 // LIBRARY: IMPERIALISM 0x005f9ca0
-// name: _iswctype
+// _iswctype
 
 // LIBRARY: IMPERIALISM 0x005fa7c2
 // ownership-only
 
-// LIBRARY: IMPERIALISM 0x005fa7da
+// LIBRARY: IMPERIALISM 0x005fa7da SYMBOL
+// ?AfxInitialize@@YGHHK@Z
 // name: AfxInitialize
-// symbol: ?AfxInitialize@@YGHHK@Z
 // prototype: int __stdcall AfxInitialize(int, unsigned long)
 
-// LIBRARY: IMPERIALISM 0x005fa7f8
+// LIBRARY: IMPERIALISM 0x005fa7f8 SYMBOL
+// ??0_AFX_TERM_APP_STATE@@QAE@XZ
 // name: _AFX_TERM_APP_STATE::_AFX_TERM_APP_STATE
-// symbol: ??0_AFX_TERM_APP_STATE@@QAE@XZ
 // prototype: public: __thiscall _AFX_TERM_APP_STATE::_AFX_TERM_APP_STATE(void)
 
-// LIBRARY: IMPERIALISM 0x005fa80b
+// LIBRARY: IMPERIALISM 0x005fa80b SYMBOL
+// ??1_AFX_TERM_APP_STATE@@QAE@XZ
 // name: _AFX_TERM_APP_STATE::~_AFX_TERM_APP_STATE
-// symbol: ??1_AFX_TERM_APP_STATE@@QAE@XZ
 // prototype: public: __thiscall _AFX_TERM_APP_STATE::~_AFX_TERM_APP_STATE(void)
 
 // LIBRARY: IMPERIALISM 0x005fa815
-// name: InitializeMfcTermAppStateGlobal
+// InitializeMfcTermAppStateGlobal
 // prototype: void __cdecl InitializeMfcTermAppStateGlobal(void)
 
 // SYNTHETIC: IMPERIALISM 0x005fa81f
-// name: ConstructMfcTermAppStateGlobal
+// ConstructMfcTermAppStateGlobal
 // prototype: void __cdecl ConstructMfcTermAppStateGlobal(void)
 
 // SYNTHETIC: IMPERIALISM 0x005fa829
-// name: RegisterMfcGlobalCleanup_005fa835
+// RegisterMfcGlobalCleanup_005fa835
 // prototype: void __cdecl RegisterMfcGlobalCleanup_005fa835(void)
 
 // SYNTHETIC: IMPERIALISM 0x005fa835
-// name: DestroyMfcTermAppStateGlobalAtExit
+// DestroyMfcTermAppStateGlobalAtExit
 // prototype: void __cdecl DestroyMfcTermAppStateGlobalAtExit(void)
 
-// LIBRARY: IMPERIALISM 0x005fa845
+// LIBRARY: IMPERIALISM 0x005fa845 SYMBOL
+// ??0CToolTipCtrl@@QAE@XZ
 // name: CToolTipCtrl::CToolTipCtrl
-// symbol: ??0CToolTipCtrl@@QAE@XZ
 // prototype: public: __thiscall CToolTipCtrl::CToolTipCtrl(void)
 
-// LIBRARY: IMPERIALISM 0x005fa87e
+// LIBRARY: IMPERIALISM 0x005fa87e SYMBOL
+// ??_GCMonikerFile@@UAEPAXI@Z
 // name: CMonikerFile::`scalar deleting dtor'
-// symbol: ??_GCMonikerFile@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CMonikerFile::`scalar deleting dtor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005fa89a
+// LIBRARY: IMPERIALISM 0x005fa89a SYMBOL
+// ?Create@CToolTipCtrl@@QAEHPAVCWnd@@K@Z
 // name: CToolTipCtrl::Create
-// symbol: ?Create@CToolTipCtrl@@QAEHPAVCWnd@@K@Z
 // prototype: public: int __thiscall CToolTipCtrl::Create(class CWnd *, unsigned long)
 
-// LIBRARY: IMPERIALISM 0x005fa8e5
+// LIBRARY: IMPERIALISM 0x005fa8e5 SYMBOL
+// ??1CToolTipCtrl@@UAE@XZ
 // name: CToolTipCtrl::~CToolTipCtrl
-// symbol: ??1CToolTipCtrl@@UAE@XZ
 // prototype: public: virtual __thiscall CToolTipCtrl::~CToolTipCtrl(void)
 
-// LIBRARY: IMPERIALISM 0x005fa92c
+// LIBRARY: IMPERIALISM 0x005fa92c SYMBOL
+// ?DestroyToolTipCtrl@CToolTipCtrl@@QAEHXZ
 // name: CToolTipCtrl::DestroyToolTipCtrl
-// symbol: ?DestroyToolTipCtrl@CToolTipCtrl@@QAEHXZ
 // prototype: public: int __thiscall CToolTipCtrl::DestroyToolTipCtrl(void)
 
-// LIBRARY: IMPERIALISM 0x005fa946
+// LIBRARY: IMPERIALISM 0x005fa946 SYMBOL
+// ?OnAddTool@CToolTipCtrl@@IAEJIJ@Z
 // name: CToolTipCtrl::OnAddTool
-// symbol: ?OnAddTool@CToolTipCtrl@@IAEJIJ@Z
 // prototype: protected: long __thiscall CToolTipCtrl::OnAddTool(unsigned int, long)
 
 // LIBRARY: IMPERIALISM 0x005fa9ba
 // MFC nafxcw handler in message map 0x674468 (base CWnd's map 0x670868),
 // MFC-internal message 0x36c.
 
-// LIBRARY: IMPERIALISM 0x005fa9d1
+// LIBRARY: IMPERIALISM 0x005fa9d1 SYMBOL
+// ?OnWindowFromPoint@CToolTipCtrl@@IAEJIJ@Z
 // name: CToolTipCtrl::OnWindowFromPoint
-// symbol: ?OnWindowFromPoint@CToolTipCtrl@@IAEJIJ@Z
 // prototype: protected: long __thiscall CToolTipCtrl::OnWindowFromPoint(unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x005faa44
+// LIBRARY: IMPERIALISM 0x005faa44 SYMBOL
+// ?AddTool@CToolTipCtrl@@QAEHPAVCWnd@@PBDPBUtagRECT@@I@Z
 // name: CToolTipCtrl::AddTool
-// symbol: ?AddTool@CToolTipCtrl@@QAEHPAVCWnd@@PBDPBUtagRECT@@I@Z
 // prototype: public: int __thiscall CToolTipCtrl::AddTool(class CWnd *, char const *, struct tagRECT const *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005faa92
+// LIBRARY: IMPERIALISM 0x005faa92 SYMBOL
+// ?AddTool@CToolTipCtrl@@QAEHPAVCWnd@@IPBUtagRECT@@I@Z
 // name: CToolTipCtrl::AddTool
-// symbol: ?AddTool@CToolTipCtrl@@QAEHPAVCWnd@@IPBUtagRECT@@I@Z
 // prototype: public: int __thiscall CToolTipCtrl::AddTool(class CWnd *, unsigned int, struct tagRECT const *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005faaec
+// LIBRARY: IMPERIALISM 0x005faaec SYMBOL
+// ?DelTool@CToolTipCtrl@@QAEXPAVCWnd@@I@Z
 // name: CToolTipCtrl::DelTool
-// symbol: ?DelTool@CToolTipCtrl@@QAEXPAVCWnd@@I@Z
 // prototype: public: void __thiscall CToolTipCtrl::DelTool(class CWnd *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005fab1d
+// LIBRARY: IMPERIALISM 0x005fab1d SYMBOL
+// ?GetText@CToolTipCtrl@@QBEXAAVCString@@PAVCWnd@@I@Z
 // name: CToolTipCtrl::GetText
-// symbol: ?GetText@CToolTipCtrl@@QBEXAAVCString@@PAVCWnd@@I@Z
 // prototype: public: void __thiscall CToolTipCtrl::GetText(class CString &, class CWnd *, unsigned int) const
 
-// LIBRARY: IMPERIALISM 0x005fab68
+// LIBRARY: IMPERIALISM 0x005fab68 SYMBOL
+// ?GetToolInfo@CToolTipCtrl@@QBEHAAVCToolInfo@@PAVCWnd@@I@Z
 // name: CToolTipCtrl::GetToolInfo
-// symbol: ?GetToolInfo@CToolTipCtrl@@QBEHAAVCToolInfo@@PAVCWnd@@I@Z
 // prototype: public: int __thiscall CToolTipCtrl::GetToolInfo(class CToolInfo &, class CWnd *, unsigned int) const
 
-// LIBRARY: IMPERIALISM 0x005fab9a
+// LIBRARY: IMPERIALISM 0x005fab9a SYMBOL
+// ?HitTest@CToolTipCtrl@@QBEHPAVCWnd@@VCPoint@@PAUtagTOOLINFOA@@@Z
 // name: CToolTipCtrl::HitTest
-// symbol: ?HitTest@CToolTipCtrl@@QBEHPAVCWnd@@VCPoint@@PAUtagTOOLINFOA@@@Z
 // prototype: public: int __thiscall CToolTipCtrl::HitTest(class CWnd *, class CPoint, struct tagTOOLINFOA *) const
 
-// LIBRARY: IMPERIALISM 0x005fac0d
+// LIBRARY: IMPERIALISM 0x005fac0d SYMBOL
+// ?SetToolRect@CToolTipCtrl@@QAEXPAVCWnd@@IPBUtagRECT@@@Z
 // name: CToolTipCtrl::SetToolRect
-// symbol: ?SetToolRect@CToolTipCtrl@@QAEXPAVCWnd@@IPBUtagRECT@@@Z
 // prototype: public: void __thiscall CToolTipCtrl::SetToolRect(class CWnd *, unsigned int, struct tagRECT const *)
 
-// LIBRARY: IMPERIALISM 0x005fac4f
+// LIBRARY: IMPERIALISM 0x005fac4f SYMBOL
+// ?UpdateTipText@CToolTipCtrl@@QAEXPBDPAVCWnd@@I@Z
 // name: CToolTipCtrl::UpdateTipText
-// symbol: ?UpdateTipText@CToolTipCtrl@@QAEXPBDPAVCWnd@@I@Z
 // prototype: public: void __thiscall CToolTipCtrl::UpdateTipText(char const *, class CWnd *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005fac86
+// LIBRARY: IMPERIALISM 0x005fac86 SYMBOL
+// ?UpdateTipText@CToolTipCtrl@@QAEXIPAVCWnd@@I@Z
 // name: CToolTipCtrl::UpdateTipText
-// symbol: ?UpdateTipText@CToolTipCtrl@@QAEXIPAVCWnd@@I@Z
 // prototype: public: void __thiscall CToolTipCtrl::UpdateTipText(unsigned int, class CWnd *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005facd6
+// LIBRARY: IMPERIALISM 0x005facd6 SYMBOL
+// ?FillInToolInfo@CToolTipCtrl@@QBEXAAUtagTOOLINFOA@@PAVCWnd@@I@Z
 // name: FillInToolInfo
-// symbol: ?FillInToolInfo@CToolTipCtrl@@QBEXAAUtagTOOLINFOA@@PAVCWnd@@I@Z
 // prototype: public: void __thiscall CToolTipCtrl::FillInToolInfo(struct tagTOOLINFOA &, class CWnd *, unsigned int) const
 
-// LIBRARY: IMPERIALISM 0x005fad29
+// LIBRARY: IMPERIALISM 0x005fad29 SYMBOL
+// ?EnableToolTips@CWnd@@QAEHH@Z
 // name: CWnd::EnableToolTips
-// symbol: ?EnableToolTips@CWnd@@QAEHH@Z
 // prototype: public: int __thiscall CWnd::EnableToolTips(int)
 
-// LIBRARY: IMPERIALISM 0x005fadcb
+// LIBRARY: IMPERIALISM 0x005fadcb SYMBOL
+// ?_FilterToolTipMessage@CWnd@@SGXPAUtagMSG@@PAV1@@Z
 // name: CWnd::_FilterToolTipMessage
-// symbol: ?_FilterToolTipMessage@CWnd@@SGXPAUtagMSG@@PAV1@@Z
 // prototype: public: static void __stdcall CWnd::_FilterToolTipMessage(struct tagMSG *, class CWnd *)
 
-// LIBRARY: IMPERIALISM 0x005faddb
+// LIBRARY: IMPERIALISM 0x005faddb SYMBOL
+// ?FilterToolTipMessage@CWnd@@QAEXPAUtagMSG@@@Z
 // name: CWnd::FilterToolTipMessage
-// symbol: ?FilterToolTipMessage@CWnd@@QAEXPAUtagMSG@@@Z
 // prototype: public: void __thiscall CWnd::FilterToolTipMessage(struct tagMSG *)
 
-// LIBRARY: IMPERIALISM 0x005fb0d5
-// symbol: ?RelayToolTipMessage@@YGXPAVCToolTipCtrl@@PAUtagMSG@@@Z
+// LIBRARY: IMPERIALISM 0x005fb0d5 SYMBOL
+// ?RelayToolTipMessage@@YGXPAVCToolTipCtrl@@PAUtagMSG@@@Z
 
-// LIBRARY: IMPERIALISM 0x005feb02
+// LIBRARY: IMPERIALISM 0x005feb02 SYMBOL
+// ?AfxIsValidAddress@@YGHPBXIH@Z
 // name: AfxIsValidAddress
-// symbol: ?AfxIsValidAddress@@YGHPBXIH@Z
 // prototype: int __stdcall AfxIsValidAddress(void const *, unsigned int, int)
 
-// LIBRARY: IMPERIALISM 0x005feb3b
+// LIBRARY: IMPERIALISM 0x005feb3b SYMBOL
+// ??0CString@@QAE@DH@Z
 // name: CString::CString
-// symbol: ??0CString@@QAE@DH@Z
 // prototype: public: __thiscall CString::CString(char, int)
 
-// LIBRARY: IMPERIALISM 0x005feb73
+// LIBRARY: IMPERIALISM 0x005feb73 SYMBOL
+// ??0CString@@QAE@PBDH@Z
 // name: CString::CString
-// symbol: ??0CString@@QAE@PBDH@Z
 // prototype: public: __thiscall CString::CString(char const *, int)
 
-// LIBRARY: IMPERIALISM 0x005feba9
+// LIBRARY: IMPERIALISM 0x005feba9 SYMBOL
+// ??4CString@@QAEABV0@D@Z
 // name: CString::operator=
-// symbol: ??4CString@@QAEABV0@D@Z
 // prototype: public: class CString const & __thiscall CString::operator=(char)
 
-// LIBRARY: IMPERIALISM 0x005febbe
+// LIBRARY: IMPERIALISM 0x005febbe SYMBOL
+// ??H@YG?AVCString@@ABV0@D@Z
 // name: operator+
-// symbol: ??H@YG?AVCString@@ABV0@D@Z
 // prototype: class CString __stdcall operator+(class CString const &, char)
 
-// LIBRARY: IMPERIALISM 0x005fec20
+// LIBRARY: IMPERIALISM 0x005fec20 SYMBOL
+// ??H@YG?AVCString@@DABV0@@Z
 // name: operator+
-// symbol: ??H@YG?AVCString@@DABV0@@Z
 // prototype: class CString __stdcall operator+(char, class CString const &)
 
-// LIBRARY: IMPERIALISM 0x005fec82
+// LIBRARY: IMPERIALISM 0x005fec82 SYMBOL
+// ?Mid@CString@@QBE?AV1@H@Z
 // name: CString::Mid
-// symbol: ?Mid@CString@@QBE?AV1@H@Z
 // prototype: public: class CString __thiscall CString::Mid(int) const
 
-// LIBRARY: IMPERIALISM 0x005feca5
+// LIBRARY: IMPERIALISM 0x005feca5 SYMBOL
+// ?Mid@CString@@QBE?AV1@HH@Z
 // name: CString::Mid
-// symbol: ?Mid@CString@@QBE?AV1@HH@Z
 // prototype: public: class CString __thiscall CString::Mid(int, int) const
 
-// LIBRARY: IMPERIALISM 0x005fed30
+// LIBRARY: IMPERIALISM 0x005fed30 SYMBOL
+// ?Right@CString@@QBE?AV1@H@Z
 // name: CString::Right
-// symbol: ?Right@CString@@QBE?AV1@H@Z
 // prototype: public: class CString __thiscall CString::Right(int) const
 
-// LIBRARY: IMPERIALISM 0x005fedad
+// LIBRARY: IMPERIALISM 0x005fedad SYMBOL
+// ?Left@CString@@QBE?AV1@H@Z
 // name: CString::Left
-// symbol: ?Left@CString@@QBE?AV1@H@Z
 // prototype: public: class CString __thiscall CString::Left(int) const
 
-// LIBRARY: IMPERIALISM 0x005fee24
-// symbol: ?SpanExcluding@CString@@QBE?AV1@PBD@Z
+// LIBRARY: IMPERIALISM 0x005fee24 SYMBOL
+// ?SpanExcluding@CString@@QBE?AV1@PBD@Z
 
-// LIBRARY: IMPERIALISM 0x005fee4e
-// symbol: ?SpanExcluding@CString@@QBE?AV1@PBD@Z
+// LIBRARY: IMPERIALISM 0x005fee4e SYMBOL
+// ?SpanExcluding@CString@@QBE?AV1@PBD@Z
 
-// LIBRARY: IMPERIALISM 0x005fee78
+// LIBRARY: IMPERIALISM 0x005fee78 SYMBOL
+// ?ReverseFind@CString@@QBEHD@Z
 // name: CString::ReverseFind
-// symbol: ?ReverseFind@CString@@QBEHD@Z
 // prototype: public: int __thiscall CString::ReverseFind(char) const
 
-// LIBRARY: IMPERIALISM 0x005fee99
+// LIBRARY: IMPERIALISM 0x005fee99 SYMBOL
+// ?Find@CString@@QBEHPBD@Z
 // name: CString::Find
-// symbol: ?Find@CString@@QBEHPBD@Z
 // prototype: public: int __thiscall CString::Find(char const *) const
 
-// LIBRARY: IMPERIALISM 0x005feeb8
+// LIBRARY: IMPERIALISM 0x005feeb8 SYMBOL
+// ?FormatV@CString@@IAEXPBDPAD@Z
 // name: CString::FormatV
-// symbol: ?FormatV@CString@@IAEXPBDPAD@Z
 // prototype: protected: void __thiscall CString::FormatV(char const *, char *)
 
-// LIBRARY: IMPERIALISM 0x005ff1ba
+// LIBRARY: IMPERIALISM 0x005ff1ba SYMBOL
+// ?FormatMessageA@CString@@QAAXPBDZZ
 // name: CString::FormatMessageA
-// symbol: ?FormatMessageA@CString@@QAAXPBDZZ
 // prototype: public: void __cdecl CString::FormatMessageA(char const *, ...)
 
-// LIBRARY: IMPERIALISM 0x005ff206
+// LIBRARY: IMPERIALISM 0x005ff206 SYMBOL
+// ?FormatMessageA@CString@@QAAXIZZ
 // name: CString::FormatMessageA
-// symbol: ?FormatMessageA@CString@@QAAXIZZ
 // prototype: public: void __cdecl CString::FormatMessageA(unsigned int, ...)
 
-// LIBRARY: IMPERIALISM 0x005ff289
+// LIBRARY: IMPERIALISM 0x005ff289 SYMBOL
+// ?TrimRight@CString@@QAEXXZ
 // name: CString::TrimRight
-// symbol: ?TrimRight@CString@@QAEXXZ
 // prototype: public: void __thiscall CString::TrimRight(void)
 
-// LIBRARY: IMPERIALISM 0x005ff2d2
+// LIBRARY: IMPERIALISM 0x005ff2d2 SYMBOL
+// ?TrimLeft@CString@@QAEXXZ
 // name: CString::TrimLeft
-// symbol: ?TrimLeft@CString@@QAEXXZ
 // prototype: public: void __thiscall CString::TrimLeft(void)
 
-// LIBRARY: IMPERIALISM 0x005ff36a
+// LIBRARY: IMPERIALISM 0x005ff36a SYMBOL
+// ?CopyElements@@YGXPAVCString@@PBV1@H@Z
 // name: CopyElements
-// symbol: ?CopyElements@@YGXPAVCString@@PBV1@H@Z
 // prototype: void __stdcall CopyElements(class CString *, class CString const *, int)
 
-// LIBRARY: IMPERIALISM 0x005ff3cd
-// symbol: ?InitString@CSimpleException@@QAEXXZ
+// LIBRARY: IMPERIALISM 0x005ff3cd SYMBOL
+// ?InitString@CSimpleException@@QAEXXZ
 
-// LIBRARY: IMPERIALISM 0x005ff3f6
+// LIBRARY: IMPERIALISM 0x005ff3f6 SYMBOL
+// ?GetErrorMessage@CSimpleException@@UAEHPADIPAI@Z
 // name: CSimpleException::GetErrorMessage
-// symbol: ?GetErrorMessage@CSimpleException@@UAEHPADIPAI@Z
 // prototype: public: virtual int __thiscall CSimpleException::GetErrorMessage(char *, unsigned int, unsigned int *)
 
-// LIBRARY: IMPERIALISM 0x005ff439
+// LIBRARY: IMPERIALISM 0x005ff439 SYMBOL
+// ?AfxThrowMemoryException@@YGXXZ
 // name: AfxThrowMemoryException
-// symbol: ?AfxThrowMemoryException@@YGXXZ
 // prototype: void __stdcall AfxThrowMemoryException(void)
 
-// LIBRARY: IMPERIALISM 0x005ff454
+// LIBRARY: IMPERIALISM 0x005ff454 SYMBOL
+// ?AfxThrowNotSupportedException@@YGXXZ
 // name: AfxThrowNotSupportedException
-// symbol: ?AfxThrowNotSupportedException@@YGXXZ
 // prototype: void __stdcall AfxThrowNotSupportedException(void)
 
-// LIBRARY: IMPERIALISM 0x005ff46f
+// LIBRARY: IMPERIALISM 0x005ff46f SYMBOL
+// ??0CFileDialog@@QAE@HPBD0K0PAVCWnd@@@Z
 // name: CFileDialog::CFileDialog
-// symbol: ??0CFileDialog@@QAE@HPBD0K0PAVCWnd@@@Z
 // prototype: public: __thiscall CFileDialog::CFileDialog(int, char const *, char const *, unsigned long, char const *, class CWnd *)
 
-// LIBRARY: IMPERIALISM 0x005ff5c5
+// LIBRARY: IMPERIALISM 0x005ff5c5 SYMBOL
+// ??_GCFileDialog@@UAEPAXI@Z
 // name: CFileDialog::`scalar deleting destructor'
-// symbol: ??_GCFileDialog@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CFileDialog::`scalar deleting destructor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x005ff5e1
+// LIBRARY: IMPERIALISM 0x005ff5e1 SYMBOL
+// ?DoModal@CFileDialog@@UAEHXZ
 // name: CFileDialog::DoModal
-// symbol: ?DoModal@CFileDialog@@UAEHXZ
 // prototype: public: virtual int __thiscall CFileDialog::DoModal(void)
 
-// LIBRARY: IMPERIALISM 0x005ff69e
+// LIBRARY: IMPERIALISM 0x005ff69e SYMBOL
+// ?GetPathName@CFileDialog@@QBE?AVCString@@XZ
 // name: CFileDialog::GetPathName
-// symbol: ?GetPathName@CFileDialog@@QBE?AVCString@@XZ
 // prototype: public: class CString __thiscall CFileDialog::GetPathName(void) const
 
-// LIBRARY: IMPERIALISM 0x005ff7ac
+// LIBRARY: IMPERIALISM 0x005ff7ac SYMBOL
+// ?GetFileName@CFileDialog@@QBE?AVCString@@XZ
 // name: CFileDialog::GetFileName
-// symbol: ?GetFileName@CFileDialog@@QBE?AVCString@@XZ
 // prototype: public: class CString __thiscall CFileDialog::GetFileName(void) const
 
-// LIBRARY: IMPERIALISM 0x005ff976
+// LIBRARY: IMPERIALISM 0x005ff976 SYMBOL
+// ?GetFileTitle@CFileDialog@@QBE?AVCString@@XZ
 // name: CFileDialog::GetFileTitle
-// symbol: ?GetFileTitle@CFileDialog@@QBE?AVCString@@XZ
 // prototype: public: class CString __thiscall CFileDialog::GetFileTitle(void) const
 
-// LIBRARY: IMPERIALISM 0x005ff9e2
+// LIBRARY: IMPERIALISM 0x005ff9e2 SYMBOL
+// ?GetNextPathName@CFileDialog@@QBE?AVCString@@AAPAU__POSITION@@@Z
 // name: CFileDialog::GetNextPathName
-// symbol: ?GetNextPathName@CFileDialog@@QBE?AVCString@@AAPAU__POSITION@@@Z
 // prototype: public: class CString __thiscall CFileDialog::GetNextPathName(struct __POSITION *&) const
 
-// LIBRARY: IMPERIALISM 0x005ffc15
+// LIBRARY: IMPERIALISM 0x005ffc15 SYMBOL
+// ?GetFolderPath@CFileDialog@@QBE?AVCString@@XZ
 // name: CFileDialog::GetFolderPath
-// symbol: ?GetFolderPath@CFileDialog@@QBE?AVCString@@XZ
 // prototype: public: class CString __thiscall CFileDialog::GetFolderPath(void) const
 
-// LIBRARY: IMPERIALISM 0x005ffd2d
+// LIBRARY: IMPERIALISM 0x005ffd2d SYMBOL
+// ?OnInitDone@CFileDialog@@MAEXXZ
 // name: CFileDialog::OnInitDone
-// symbol: ?OnInitDone@CFileDialog@@MAEXXZ
 // prototype: protected: virtual void __thiscall CFileDialog::OnInitDone(void)
 
-// LIBRARY: IMPERIALISM 0x005ffd49
+// LIBRARY: IMPERIALISM 0x005ffd49 SYMBOL
+// ?OnNotify@CFileDialog@@MAEHIJPAJ@Z
 // name: CFileDialog::OnNotify
-// symbol: ?OnNotify@CFileDialog@@MAEHIJPAJ@Z
 // prototype: protected: virtual int __thiscall CFileDialog::OnNotify(unsigned int, long, long *)
 
 // LIBRARY: IMPERIALISM 0x005ffe2c
-// name: RegisterCommdlgLbSelChangedNotifyMessage
+// RegisterCommdlgLbSelChangedNotifyMessage
 // prototype: void __cdecl RegisterCommdlgLbSelChangedNotifyMessage(void)
 
 // LIBRARY: IMPERIALISM 0x005ffe42
-// name: RegisterCommdlgShareViolationMessage
+// RegisterCommdlgShareViolationMessage
 // prototype: void __cdecl RegisterCommdlgShareViolationMessage(void)
 
 // LIBRARY: IMPERIALISM 0x005ffe58
-// name: RegisterCommdlgFileNameOkMessage
+// RegisterCommdlgFileNameOkMessage
 // prototype: void __cdecl RegisterCommdlgFileNameOkMessage(void)
 
 // LIBRARY: IMPERIALISM 0x005ffe6e
-// name: RegisterCommdlgColorOkMessage
+// RegisterCommdlgColorOkMessage
 // prototype: void __cdecl RegisterCommdlgColorOkMessage(void)
 
 // LIBRARY: IMPERIALISM 0x005ffe84
-// name: RegisterCommdlgHelpMessage
+// RegisterCommdlgHelpMessage
 // prototype: void __cdecl RegisterCommdlgHelpMessage(void)
 
 // LIBRARY: IMPERIALISM 0x005ffe9a
-// name: RegisterCommdlgSetRgbColorMessage
+// RegisterCommdlgSetRgbColorMessage
 // prototype: void __cdecl RegisterCommdlgSetRgbColorMessage(void)
 
-// LIBRARY: IMPERIALISM 0x005ffeb1
+// LIBRARY: IMPERIALISM 0x005ffeb1 SYMBOL
+// ?_AfxCommDlgProc@@YGIPAUHWND__@@IIJ@Z
 // name: _AfxCommDlgProc
-// symbol: ?_AfxCommDlgProc@@YGIPAUHWND__@@IIJ@Z
 // prototype: unsigned int __stdcall _AfxCommDlgProc(struct HWND__*, unsigned int, unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x005fffe6
+// LIBRARY: IMPERIALISM 0x005fffe6 SYMBOL
+// ?OnOK@CCommonDialog@@MAEXXZ
 // name: CCommonDialog::OnOK
-// symbol: ?OnOK@CCommonDialog@@MAEXXZ
 // prototype: protected: virtual void __thiscall CCommonDialog::OnOK(void)
 
 // LIBRARY: IMPERIALISM 0x00600002
 // MFC nafxcw handler in message map 0x673760 (base CDialog's map 0x66fb20),
 // message 0x53 (WM_HELP).
 
-// LIBRARY: IMPERIALISM 0x0060000a
+// LIBRARY: IMPERIALISM 0x0060000a SYMBOL
+// ??0CTime@@QAE@HHHHHHH@Z
 // name: CTime::CTime
-// symbol: ??0CTime@@QAE@HHHHHHH@Z
 // prototype: public: __thiscall CTime::CTime(int, int, int, int, int, int, int)
 
-// LIBRARY: IMPERIALISM 0x00600056
+// LIBRARY: IMPERIALISM 0x00600056 SYMBOL
+// ??0CTime@@QAE@GGH@Z
 // name: CTime::CTime
-// symbol: ??0CTime@@QAE@GGH@Z
 // prototype: public: __thiscall CTime::CTime(unsigned short, unsigned short, int)
 
-// LIBRARY: IMPERIALISM 0x006000bf
+// LIBRARY: IMPERIALISM 0x006000bf SYMBOL
+// ??0CTime@@QAE@ABU_SYSTEMTIME@@H@Z
 // name: CTime::CTime
-// symbol: ??0CTime@@QAE@ABU_SYSTEMTIME@@H@Z
 // prototype: public: __thiscall CTime::CTime(struct _SYSTEMTIME const &, int)
 
-// LIBRARY: IMPERIALISM 0x0060010b
+// LIBRARY: IMPERIALISM 0x0060010b SYMBOL
+// ??0CTime@@QAE@ABU_FILETIME@@H@Z
 // name: CTime::CTime
-// symbol: ??0CTime@@QAE@ABU_FILETIME@@H@Z
 // prototype: public: __thiscall CTime::CTime(struct _FILETIME const &, int)
 
-// LIBRARY: IMPERIALISM 0x00600196
+// LIBRARY: IMPERIALISM 0x00600196 SYMBOL
+// ?GetLocalTm@CTime@@QBEPAUtm@@PAU2@@Z
 // name: CTime::GetLocalTm
-// symbol: ?GetLocalTm@CTime@@QBEPAUtm@@PAU2@@Z
 // prototype: public: struct tm * __thiscall CTime::GetLocalTm(struct tm *) const
 
-// LIBRARY: IMPERIALISM 0x00600205
+// LIBRARY: IMPERIALISM 0x00600205 SYMBOL
+// ?Format@CTimeSpan@@QBE?AVCString@@PBD@Z
 // name: CTimeSpan::Format
-// symbol: ?Format@CTimeSpan@@QBE?AVCString@@PBD@Z
 // prototype: public: class CString __thiscall CTimeSpan::Format(char const *) const
 
-// LIBRARY: IMPERIALISM 0x00600331
+// LIBRARY: IMPERIALISM 0x00600331 SYMBOL
+// ?Format@CTimeSpan@@QBE?AVCString@@I@Z
 // name: CTimeSpan::Format
-// symbol: ?Format@CTimeSpan@@QBE?AVCString@@I@Z
 // prototype: public: class CString __thiscall CTimeSpan::Format(unsigned int) const
 
-// LIBRARY: IMPERIALISM 0x0060038d
-// symbol: ?FormatGmt@CTime@@QBE?AVCString@@PBD@Z
+// LIBRARY: IMPERIALISM 0x0060038d SYMBOL
+// ?FormatGmt@CTime@@QBE?AVCString@@PBD@Z
 
-// LIBRARY: IMPERIALISM 0x006003de
-// symbol: ?FormatGmt@CTime@@QBE?AVCString@@PBD@Z
+// LIBRARY: IMPERIALISM 0x006003de SYMBOL
+// ?FormatGmt@CTime@@QBE?AVCString@@PBD@Z
 
-// LIBRARY: IMPERIALISM 0x0060042f
-// symbol: ?FormatGmt@CTime@@QBE?AVCString@@I@Z
+// LIBRARY: IMPERIALISM 0x0060042f SYMBOL
+// ?FormatGmt@CTime@@QBE?AVCString@@I@Z
 
-// LIBRARY: IMPERIALISM 0x0060048b
-// symbol: ?FormatGmt@CTime@@QBE?AVCString@@I@Z
+// LIBRARY: IMPERIALISM 0x0060048b SYMBOL
+// ?FormatGmt@CTime@@QBE?AVCString@@I@Z
 
-// LIBRARY: IMPERIALISM 0x00601b74
+// LIBRARY: IMPERIALISM 0x00601b74 SYMBOL
+// ?Create@CPlex@@SGPAU1@AAPAU1@II@Z
 // name: CPlex::Create
-// symbol: ?Create@CPlex@@SGPAU1@AAPAU1@II@Z
 // prototype: public: static struct CPlex * __stdcall CPlex::Create(struct CPlex *&, unsigned int, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00601b94
+// LIBRARY: IMPERIALISM 0x00601b94 SYMBOL
+// ?FreeDataChain@CPlex@@QAEXXZ
 // name: CPlex::FreeDataChain
-// symbol: ?FreeDataChain@CPlex@@QAEXXZ
 // prototype: public: void __thiscall CPlex::FreeDataChain(void)
 
-// LIBRARY: IMPERIALISM 0x00601baa
+// LIBRARY: IMPERIALISM 0x00601baa SYMBOL
+// ??0CPtrArray@@QAE@XZ
 // name: CPtrArray::CPtrArray
-// symbol: ??0CPtrArray@@QAE@XZ
 // prototype: public: __thiscall CPtrArray::CPtrArray(void)
 
-// LIBRARY: IMPERIALISM 0x00601bc1
+// LIBRARY: IMPERIALISM 0x00601bc1 SYMBOL
+// ??_GCUIntArray@@UAEPAXI@Z
 // name: CUIntArray::`scalar deleting dtor'
-// symbol: ??_GCUIntArray@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CUIntArray::`scalar deleting dtor'(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x00601bdd
-// name: CPtrArray::~CPtrArray
+// CPtrArray::~CPtrArray
 
-// LIBRARY: IMPERIALISM 0x00601c14
+// LIBRARY: IMPERIALISM 0x00601c14 SYMBOL
+// ?SetSize@CPtrArray@@QAEXHH@Z
 // name: CPtrArray::SetSize
-// symbol: ?SetSize@CPtrArray@@QAEXHH@Z
 // prototype: public: void __thiscall CPtrArray::SetSize(int, int)
 
-// LIBRARY: IMPERIALISM 0x00601d37
+// LIBRARY: IMPERIALISM 0x00601d37 SYMBOL
+// ?Append@CUIntArray@@QAEHABV1@@Z
 // name: CUIntArray::Append
-// symbol: ?Append@CUIntArray@@QAEHABV1@@Z
 // prototype: public: int __thiscall CUIntArray::Append(class CUIntArray const &)
 
-// LIBRARY: IMPERIALISM 0x00601d71
+// LIBRARY: IMPERIALISM 0x00601d71 SYMBOL
+// ?Copy@CDWordArray@@QAEXABV1@@Z
 // name: CDWordArray::Copy
-// symbol: ?Copy@CDWordArray@@QAEXABV1@@Z
 // prototype: public: void __thiscall CDWordArray::Copy(class CDWordArray const &)
 
-// LIBRARY: IMPERIALISM 0x00601d9d
+// LIBRARY: IMPERIALISM 0x00601d9d SYMBOL
+// ?FreeExtra@CUIntArray@@QAEXXZ
 // name: CUIntArray::FreeExtra
-// symbol: ?FreeExtra@CUIntArray@@QAEXXZ
 // prototype: public: void __thiscall CUIntArray::FreeExtra(void)
 
 // LIBRARY: IMPERIALISM 0x00601de3
-// name: CPtrArray::SetAtGrow
+// CPtrArray::SetAtGrow
 
-// LIBRARY: IMPERIALISM 0x00601e0a
+// LIBRARY: IMPERIALISM 0x00601e0a SYMBOL
+// ?InsertAt@CPtrArray@@QAEXHPAXH@Z
 // name: CPtrArray::InsertAt
-// symbol: ?InsertAt@CPtrArray@@QAEXHPAXH@Z
 // prototype: public: void __thiscall CPtrArray::InsertAt(int, void *, int)
 
 // LIBRARY: IMPERIALISM 0x00601e9f
-// name: CPtrArray::RemoveAt
+// CPtrArray::RemoveAt
 
-// LIBRARY: IMPERIALISM 0x00601f1d
+// LIBRARY: IMPERIALISM 0x00601f1d SYMBOL
+// ??0CPtrList@@QAE@H@Z
 // name: CPtrList::CPtrList
-// symbol: ??0CPtrList@@QAE@H@Z
 // prototype: public: __thiscall CPtrList::CPtrList(int)
 
 // SYNTHETIC: IMPERIALISM 0x00601f40
 // ownership-only
 
-// LIBRARY: IMPERIALISM 0x00601f5c
+// LIBRARY: IMPERIALISM 0x00601f5c SYMBOL
+// ?RemoveAll@CPtrList@@QAEXXZ
 // name: CPtrList::RemoveAll
-// symbol: ?RemoveAll@CPtrList@@QAEXXZ
 // prototype: public: void __thiscall CPtrList::RemoveAll(void)
 
-// LIBRARY: IMPERIALISM 0x00601f7c
+// LIBRARY: IMPERIALISM 0x00601f7c SYMBOL
+// ??1CPtrList@@UAE@XZ
 // name: CPtrList::~CPtrList
-// symbol: ??1CPtrList@@UAE@XZ
 // prototype: public: virtual __thiscall CPtrList::~CPtrList(void)
 
-// LIBRARY: IMPERIALISM 0x00601faf
+// LIBRARY: IMPERIALISM 0x00601faf SYMBOL
+// ?NewNode@CPtrList@@IAEPAUCNode@1@PAU21@0@Z
 // name: CPtrList::NewNode
-// symbol: ?NewNode@CPtrList@@IAEPAUCNode@1@PAU21@0@Z
 // prototype: protected: struct CPtrList::CNode * __thiscall CPtrList::NewNode(struct CPtrList::CNode *, struct CPtrList::CNode *)
 
 // LIBRARY: IMPERIALISM 0x00602004
-// name: CPtrList::FreeNode
+// CPtrList::FreeNode
 
-// LIBRARY: IMPERIALISM 0x0060201d
+// LIBRARY: IMPERIALISM 0x0060201d SYMBOL
+// ?AddHead@CPtrList@@QAEPAU__POSITION@@PAX@Z
 // name: CPtrList::AddHead
-// symbol: ?AddHead@CPtrList@@QAEPAU__POSITION@@PAX@Z
 // prototype: public: struct __POSITION * __thiscall CPtrList::AddHead(void *)
 
-// LIBRARY: IMPERIALISM 0x00602047
+// LIBRARY: IMPERIALISM 0x00602047 SYMBOL
+// ?AddTail@CPtrList@@QAEPAU__POSITION@@PAX@Z
 // name: CPtrList::AddTail
-// symbol: ?AddTail@CPtrList@@QAEPAU__POSITION@@PAX@Z
 // prototype: public: struct __POSITION * __thiscall CPtrList::AddTail(void *)
 
 // LIBRARY: IMPERIALISM 0x006020b9
-// name: CPtrList::RemoveHead
+// CPtrList::RemoveHead
 
 // LIBRARY: IMPERIALISM 0x006020dd
-// name: CPtrList::RemoveTail
+// CPtrList::RemoveTail
 
 // LIBRARY: IMPERIALISM 0x00602101
-// name: CPtrList::InsertBefore
+// CPtrList::InsertBefore
 
 // LIBRARY: IMPERIALISM 0x00602140
-// name: CPtrList::InsertAfter
+// CPtrList::InsertAfter
 
 // LIBRARY: IMPERIALISM 0x0060217d
-// name: CPtrList::RemoveAt
+// CPtrList::RemoveAt
 
 // LIBRARY: IMPERIALISM 0x006021b4
-// name: CPtrList::FindIndex
+// CPtrList::FindIndex
 
 // LIBRARY: IMPERIALISM 0x006021d6
-// name: CPtrList::Find
+// CPtrList::Find
 
-// LIBRARY: IMPERIALISM 0x0060339a
-// symbol: ??0CMapPtrToPtr@@QAE@H@Z
+// LIBRARY: IMPERIALISM 0x0060339a SYMBOL
+// ??0CMapPtrToPtr@@QAE@H@Z
 
-// LIBRARY: IMPERIALISM 0x006033c1
-// symbol: ??_GCGdiObject@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x006033c1 SYMBOL
+// ??_GCGdiObject@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x006033dd
+// LIBRARY: IMPERIALISM 0x006033dd SYMBOL
+// ?InitHashTable@CMapPtrToPtr@@QAEXIH@Z
 // name: CMapPtrToPtr::InitHashTable
-// symbol: ?InitHashTable@CMapPtrToPtr@@QAEXIH@Z
 // prototype: public: void __thiscall CMapPtrToPtr::InitHashTable(unsigned int, int)
 
 // LIBRARY: IMPERIALISM 0x00603423
-// name: CMapPtrToPtr::RemoveAll
+// CMapPtrToPtr::RemoveAll
 
-// LIBRARY: IMPERIALISM 0x0060344e
+// LIBRARY: IMPERIALISM 0x0060344e SYMBOL
+// ??1CMapPtrToPtr@@UAE@XZ
 // name: CMapPtrToPtr::~CMapPtrToPtr
-// symbol: ??1CMapPtrToPtr@@UAE@XZ
 // prototype: public: virtual __thiscall CMapPtrToPtr::~CMapPtrToPtr(void)
 
-// LIBRARY: IMPERIALISM 0x00603481
+// LIBRARY: IMPERIALISM 0x00603481 SYMBOL
+// ?NewAssoc@CMapPtrToPtr@@IAEPAUCAssoc@1@XZ
 // name: CMapPtrToPtr::NewAssoc
-// symbol: ?NewAssoc@CMapPtrToPtr@@IAEPAUCAssoc@1@XZ
 // prototype: protected: struct CMapPtrToPtr::CAssoc * __thiscall CMapPtrToPtr::NewAssoc(void)
 
 // LIBRARY: IMPERIALISM 0x006034cb
-// name: CMapPtrToPtr::FreeAssoc
+// CMapPtrToPtr::FreeAssoc
 
-// LIBRARY: IMPERIALISM 0x006034e4
+// LIBRARY: IMPERIALISM 0x006034e4 SYMBOL
+// ?GetAssocAt@CMapPtrToPtr@@IBEPAUCAssoc@1@PAXAAI@Z
 // name: CMapPtrToPtr::GetAssocAt
-// symbol: ?GetAssocAt@CMapPtrToPtr@@IBEPAUCAssoc@1@PAXAAI@Z
 // prototype: protected: struct CMapPtrToPtr::CAssoc * __thiscall CMapPtrToPtr::GetAssocAt(void *, unsigned int &) const
 
-// LIBRARY: IMPERIALISM 0x00603516
-// symbol: ?GetValueAt@CMapPtrToPtr@@QBEPAXPAX@Z
+// LIBRARY: IMPERIALISM 0x00603516 SYMBOL
+// ?GetValueAt@CMapPtrToPtr@@QBEPAXPAX@Z
 
-// LIBRARY: IMPERIALISM 0x00603549
-// symbol: ?Lookup@CMapPtrToPtr@@QBEHPAXAAPAX@Z
+// LIBRARY: IMPERIALISM 0x00603549 SYMBOL
+// ?Lookup@CMapPtrToPtr@@QBEHPAXAAPAX@Z
 
-// LIBRARY: IMPERIALISM 0x0060356b
+// LIBRARY: IMPERIALISM 0x0060356b SYMBOL
+// ??ACMapPtrToPtr@@QAEAAPAXPAX@Z
 // name: CMapPtrToPtr::operator[]
-// symbol: ??ACMapPtrToPtr@@QAEAAPAXPAX@Z
 // prototype: public: void *& __thiscall CMapPtrToPtr::operator[](void *)
 
 // LIBRARY: IMPERIALISM 0x006035bb
-// name: CMapPtrToPtr::RemoveKey
+// CMapPtrToPtr::RemoveKey
 
-// LIBRARY: IMPERIALISM 0x006035fd
+// LIBRARY: IMPERIALISM 0x006035fd SYMBOL
+// ?GetNextAssoc@CMapPtrToPtr@@QBEXAAPAU__POSITION@@AAPAX1@Z
 // name: CMapPtrToPtr::GetNextAssoc
-// symbol: ?GetNextAssoc@CMapPtrToPtr@@QBEXAAPAU__POSITION@@AAPAX1@Z
 // prototype: public: void __thiscall CMapPtrToPtr::GetNextAssoc(struct __POSITION *&, void *&, void *&) const
 
-// LIBRARY: IMPERIALISM 0x0060366f
+// LIBRARY: IMPERIALISM 0x0060366f SYMBOL
+// ??0CMapStringToPtr@@QAE@H@Z
 // name: CMapStringToPtr::CMapStringToPtr
-// symbol: ??0CMapStringToPtr@@QAE@H@Z
 // prototype: public: __thiscall CMapStringToPtr::CMapStringToPtr(int)
 
-// LIBRARY: IMPERIALISM 0x00603696
-// symbol: ??_GCGdiObject@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x00603696 SYMBOL
+// ??_GCGdiObject@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x006036b2
-// symbol: ?InitHashTable@CMapStringToOb@@QAEXIH@Z
+// LIBRARY: IMPERIALISM 0x006036b2 SYMBOL
+// ?InitHashTable@CMapStringToOb@@QAEXIH@Z
 
-// LIBRARY: IMPERIALISM 0x006036f8
-// symbol: ?RemoveAll@CMapStringToOb@@QAEXXZ
+// LIBRARY: IMPERIALISM 0x006036f8 SYMBOL
+// ?RemoveAll@CMapStringToOb@@QAEXXZ
 
-// LIBRARY: IMPERIALISM 0x0060374a
+// LIBRARY: IMPERIALISM 0x0060374a SYMBOL
+// ??1CMapStringToPtr@@UAE@XZ
 // name: CMapStringToPtr::~CMapStringToPtr
-// symbol: ??1CMapStringToPtr@@UAE@XZ
 // prototype: public: virtual __thiscall CMapStringToPtr::~CMapStringToPtr(void)
 
-// LIBRARY: IMPERIALISM 0x0060377d
-// symbol: ?NewAssoc@CMapStringToOb@@IAEPAUCAssoc@1@XZ
+// LIBRARY: IMPERIALISM 0x0060377d SYMBOL
+// ?NewAssoc@CMapStringToOb@@IAEPAUCAssoc@1@XZ
 
-// LIBRARY: IMPERIALISM 0x006037dd
-// symbol: ?FreeAssoc@CMapStringToOb@@IAEXPAUCAssoc@1@@Z
+// LIBRARY: IMPERIALISM 0x006037dd SYMBOL
+// ?FreeAssoc@CMapStringToOb@@IAEXPAUCAssoc@1@@Z
 
-// LIBRARY: IMPERIALISM 0x00603806
-// symbol: ?GetAssocAt@CMapStringToOb@@IBEPAUCAssoc@1@PBDAAI@Z
+// LIBRARY: IMPERIALISM 0x00603806 SYMBOL
+// ?GetAssocAt@CMapStringToOb@@IBEPAUCAssoc@1@PBDAAI@Z
 
-// LIBRARY: IMPERIALISM 0x00603860
+// LIBRARY: IMPERIALISM 0x00603860 SYMBOL
+// ?Lookup@CMapStringToPtr@@QBEHPBDAAPAX@Z
 // name: CMapStringToPtr::Lookup
-// symbol: ?Lookup@CMapStringToPtr@@QBEHPBDAAPAX@Z
 // prototype: public: int __thiscall CMapStringToPtr::Lookup(char const *, void *&) const
 
-// LIBRARY: IMPERIALISM 0x00603882
+// LIBRARY: IMPERIALISM 0x00603882 SYMBOL
+// ?LookupKey@CMapStringToPtr@@QBEHPBDAAPBD@Z
 // name: CMapStringToPtr::LookupKey
-// symbol: ?LookupKey@CMapStringToPtr@@QBEHPBDAAPBD@Z
 // prototype: public: int __thiscall CMapStringToPtr::LookupKey(char const *, char const *&) const
 
-// LIBRARY: IMPERIALISM 0x006038a4
+// LIBRARY: IMPERIALISM 0x006038a4 SYMBOL
+// ??ACMapStringToPtr@@QAEAAPAXPBD@Z
 // name: CMapStringToPtr::operator[]
-// symbol: ??ACMapStringToPtr@@QAEAAPAXPBD@Z
 // prototype: public: void *& __thiscall CMapStringToPtr::operator[](char const *)
 
-// LIBRARY: IMPERIALISM 0x00603906
-// symbol: ?RemoveKey@CMapStringToOb@@QAEHPBD@Z
+// LIBRARY: IMPERIALISM 0x00603906 SYMBOL
+// ?RemoveKey@CMapStringToOb@@QAEHPBD@Z
 
-// LIBRARY: IMPERIALISM 0x0060396e
+// LIBRARY: IMPERIALISM 0x0060396e SYMBOL
+// ?GetNextAssoc@CMapStringToOb@@QBEXAAPAU__POSITION@@AAVCString@@AAPAVCObject@@@Z
 // name: CMapStringToOb::GetNextAssoc
-// symbol: ?GetNextAssoc@CMapStringToOb@@QBEXAAPAU__POSITION@@AAVCString@@AAPAVCObject@@@Z
 // prototype: public: void __thiscall CMapStringToOb::GetNextAssoc(struct __POSITION *&, class CString &, class CObject *&) const
 
-// LIBRARY: IMPERIALISM 0x00604b68
+// LIBRARY: IMPERIALISM 0x00604b68 SYMBOL
+// ?AfxDlgProc@@YGHPAUHWND__@@IIJ@Z
 // name: AfxDlgProc
-// symbol: ?AfxDlgProc@@YGHPAUHWND__@@IIJ@Z
 // prototype: int __stdcall AfxDlgProc(struct HWND__*, unsigned int, unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x00604ba2
+// LIBRARY: IMPERIALISM 0x00604ba2 SYMBOL
+// ?GetMessageMap@CDialog@@MBEPBUAFX_MSGMAP@@XZ
 // name: CDialog::GetMessageMap
-// symbol: ?GetMessageMap@CDialog@@MBEPBUAFX_MSGMAP@@XZ
 // prototype: protected: virtual struct AFX_MSGMAP const * __thiscall CDialog::GetMessageMap(void)const
 
-// LIBRARY: IMPERIALISM 0x00604ba8
+// LIBRARY: IMPERIALISM 0x00604ba8 SYMBOL
+// ?PreTranslateMessage@CDialog@@UAEHPAUtagMSG@@@Z
 // name: CDialog::PreTranslateMessage
-// symbol: ?PreTranslateMessage@CDialog@@UAEHPAUtagMSG@@@Z
 // prototype: public: virtual int __thiscall CDialog::PreTranslateMessage(struct tagMSG *)
 
-// LIBRARY: IMPERIALISM 0x00604c41
+// LIBRARY: IMPERIALISM 0x00604c41 SYMBOL
+// ?OnCmdMsg@CDialog@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z
 // name: CDialog::OnCmdMsg
-// symbol: ?OnCmdMsg@CDialog@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z
 // prototype: public: virtual int __thiscall CDialog::OnCmdMsg(unsigned int,int,void *,struct AFX_CMDHANDLERINFO *)
 
-// LIBRARY: IMPERIALISM 0x00604cc6
+// LIBRARY: IMPERIALISM 0x00604cc6 SYMBOL
+// ??0CDialog@@QAE@XZ
 // name: CDialog::CDialog
-// symbol: ??0CDialog@@QAE@XZ
 // prototype: public: __thiscall CDialog::CDialog(void)
 
 // LIBRARY: IMPERIALISM 0x00604ce8
 // ownership-only
 
-// LIBRARY: IMPERIALISM 0x00604d04
-// symbol: ??1CDialog@@UAE@XZ
+// LIBRARY: IMPERIALISM 0x00604d04 SYMBOL
+// ??1CDialog@@UAE@XZ
 
-// LIBRARY: IMPERIALISM 0x00604d42
+// LIBRARY: IMPERIALISM 0x00604d42 SYMBOL
+// ?Create@CDialog@@QAEHPBDPAVCWnd@@@Z
 // name: CDialog::Create
-// symbol: ?Create@CDialog@@QAEHPBDPAVCWnd@@@Z
 // prototype: public: int __thiscall CDialog::Create(char const *, class CWnd *)
 
-// LIBRARY: IMPERIALISM 0x00604da4
+// LIBRARY: IMPERIALISM 0x00604da4 SYMBOL
+// ?CreateIndirect@CDialog@@IAEHPAXPAVCWnd@@PAUHINSTANCE__@@@Z
 // name: CDialog::CreateIndirect
-// symbol: ?CreateIndirect@CDialog@@IAEHPAXPAVCWnd@@PAUHINSTANCE__@@@Z
 // prototype: protected: int __thiscall CDialog::CreateIndirect(void *, class CWnd *, struct HINSTANCE__*)
 
-// LIBRARY: IMPERIALISM 0x00604ddd
+// LIBRARY: IMPERIALISM 0x00604ddd SYMBOL
+// ?CreateIndirect@CDialog@@IAEHPBUDLGTEMPLATE@@PAVCWnd@@PAXPAUHINSTANCE__@@@Z
 // name: CDialog::CreateIndirect
-// symbol: ?CreateIndirect@CDialog@@IAEHPBUDLGTEMPLATE@@PAVCWnd@@PAXPAUHINSTANCE__@@@Z
 // prototype: protected: int __thiscall CDialog::CreateIndirect(struct DLGTEMPLATE const *, class CWnd *, void *, struct HINSTANCE__*)
 
-// LIBRARY: IMPERIALISM 0x00604e08
+// LIBRARY: IMPERIALISM 0x00604e08 SYMBOL
+// ?CreateDlg@CWnd@@IAEHPBDPAV1@@Z
 // name: CWnd::CreateDlg
-// symbol: ?CreateDlg@CWnd@@IAEHPBDPAV1@@Z
 // prototype: protected: int __thiscall CWnd::CreateDlg(char const *, class CWnd *)
 
-// LIBRARY: IMPERIALISM 0x00604e4c
+// LIBRARY: IMPERIALISM 0x00604e4c SYMBOL
+// ?CreateDlgIndirect@CWnd@@IAEHPBUDLGTEMPLATE@@PAV1@@Z
 // name: CWnd::CreateDlgIndirect
-// symbol: ?CreateDlgIndirect@CWnd@@IAEHPBUDLGTEMPLATE@@PAV1@@Z
 // prototype: protected: int __thiscall CWnd::CreateDlgIndirect(struct DLGTEMPLATE const *, class CWnd *)
 
-// LIBRARY: IMPERIALISM 0x00604e5e
-// symbol: ?CreateDlgIndirect@CWnd@@IAEHPBUDLGTEMPLATE@@PAV1@PAUHINSTANCE__@@@Z
+// LIBRARY: IMPERIALISM 0x00604e5e SYMBOL
+// ?CreateDlgIndirect@CWnd@@IAEHPBUDLGTEMPLATE@@PAV1@PAUHINSTANCE__@@@Z
 
-// LIBRARY: IMPERIALISM 0x0060507c
+// LIBRARY: IMPERIALISM 0x0060507c SYMBOL
+// ?SetOccDialogInfo@CWnd@@MAEHPAU_AFX_OCC_DIALOG_INFO@@@Z
 // name: CWnd::SetOccDialogInfo
-// symbol: ?SetOccDialogInfo@CWnd@@MAEHPAU_AFX_OCC_DIALOG_INFO@@@Z
 // prototype: protected: virtual int __thiscall CWnd::SetOccDialogInfo(struct _AFX_OCC_DIALOG_INFO *)
 
-// LIBRARY: IMPERIALISM 0x00605081
+// LIBRARY: IMPERIALISM 0x00605081 SYMBOL
+// ?SetOccDialogInfo@CDialog@@MAEHPAU_AFX_OCC_DIALOG_INFO@@@Z
 // name: CDialog::SetOccDialogInfo
-// symbol: ?SetOccDialogInfo@CDialog@@MAEHPAU_AFX_OCC_DIALOG_INFO@@@Z
 // prototype: protected: virtual int __thiscall CDialog::SetOccDialogInfo(struct _AFX_OCC_DIALOG_INFO *)
 
-// LIBRARY: IMPERIALISM 0x0060508e
+// LIBRARY: IMPERIALISM 0x0060508e SYMBOL
+// ??0CDialog@@QAE@PBDPAVCWnd@@@Z
 // name: CDialog::CDialog
-// symbol: ??0CDialog@@QAE@PBDPAVCWnd@@@Z
 // prototype: public: __thiscall CDialog::CDialog(char const *, class CWnd *)
 
-// LIBRARY: IMPERIALISM 0x006050d0
+// LIBRARY: IMPERIALISM 0x006050d0 SYMBOL
+// ??0CDialog@@QAE@IPAVCWnd@@@Z
 // name: CDialog::CDialog
-// symbol: ??0CDialog@@QAE@IPAVCWnd@@@Z
 // prototype: public: __thiscall CDialog::CDialog(unsigned int,class CWnd *)
 
-// LIBRARY: IMPERIALISM 0x00605144
+// LIBRARY: IMPERIALISM 0x00605144 SYMBOL
+// ?PreModal@CDialog@@IAEPAUHWND__@@XZ
 // name: CDialog::PreModal
-// symbol: ?PreModal@CDialog@@IAEPAUHWND__@@XZ
 // prototype: protected: struct HWND__* __thiscall CDialog::PreModal(void)
 
-// LIBRARY: IMPERIALISM 0x0060517b
+// LIBRARY: IMPERIALISM 0x0060517b SYMBOL
+// ?PostModal@CDialog@@IAEXXZ
 // name: CDialog::PostModal
-// symbol: ?PostModal@CDialog@@IAEXXZ
 // prototype: protected: void __thiscall CDialog::PostModal(void)
 
-// LIBRARY: IMPERIALISM 0x006051b9
+// LIBRARY: IMPERIALISM 0x006051b9 SYMBOL
+// ?DoModal@CDialog@@UAEHXZ
 // name: CDialog::DoModal
-// symbol: ?DoModal@CDialog@@UAEHXZ
 // prototype: public: virtual int __thiscall CDialog::DoModal(void)
 
-// LIBRARY: IMPERIALISM 0x0060531e
+// LIBRARY: IMPERIALISM 0x0060531e SYMBOL
+// ?EndDialog@CDialog@@QAEXH@Z
 // name: CDialog::EndDialog
-// symbol: ?EndDialog@CDialog@@QAEXH@Z
 // prototype: public: void __thiscall CDialog::EndDialog(int)
 
 // LIBRARY: IMPERIALISM 0x00605341
 // MFC nafxcw handler in CDialog's message map 0x66fb20, MFC-internal
 // message 0x30: forwards via 0x613a36.
 
-// LIBRARY: IMPERIALISM 0x00605365
+// LIBRARY: IMPERIALISM 0x00605365 SYMBOL
+// ?PreInitDialog@CDialog@@MAEXXZ
 // name: CDialog::PreInitDialog
-// symbol: ?PreInitDialog@CDialog@@MAEXXZ
 // prototype: protected: virtual void __thiscall CDialog::PreInitDialog(void)
 
-// LIBRARY: IMPERIALISM 0x00605366
+// LIBRARY: IMPERIALISM 0x00605366 SYMBOL
+// ?HandleInitDialog@CDialog@@IAEJIJ@Z
 // name: CDialog::HandleInitDialog
-// symbol: ?HandleInitDialog@CDialog@@IAEJIJ@Z
 // prototype: protected: long __thiscall CDialog::HandleInitDialog(unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x006053ee
+// LIBRARY: IMPERIALISM 0x006053ee SYMBOL
+// ?AfxHelpEnabled@@YGHXZ
 // name: AfxHelpEnabled
-// symbol: ?AfxHelpEnabled@@YGHXZ
 // prototype: int __stdcall AfxHelpEnabled(void)
 
-// LIBRARY: IMPERIALISM 0x00605442
+// LIBRARY: IMPERIALISM 0x00605442 SYMBOL
+// ?OnSetFont@CDialog@@UAEXPAVCFont@@@Z
 // name: CDialog::OnSetFont
-// symbol: ?OnSetFont@CDialog@@UAEXPAVCFont@@@Z
 // prototype: protected: virtual void __thiscall CDialog::OnSetFont(class CFont *)
 
-// LIBRARY: IMPERIALISM 0x00605445
+// LIBRARY: IMPERIALISM 0x00605445 SYMBOL
+// ?OnInitDialog@CDialog@@UAEHXZ
 // name: CDialog::OnInitDialog
-// symbol: ?OnInitDialog@CDialog@@UAEHXZ
 // prototype: public: virtual int __thiscall CDialog::OnInitDialog(void)
 
-// LIBRARY: IMPERIALISM 0x006054aa
+// LIBRARY: IMPERIALISM 0x006054aa SYMBOL
+// ?OnOK@CDialog@@MAEXXZ
 // name: CDialog::OnOK
-// symbol: ?OnOK@CDialog@@MAEXXZ
 // prototype: protected: virtual void __thiscall CDialog::OnOK(void)
 
-// LIBRARY: IMPERIALISM 0x006054c3
+// LIBRARY: IMPERIALISM 0x006054c3 SYMBOL
+// ?OnCancel@CDialog@@MAEXXZ
 // name: CDialog::OnCancel
-// symbol: ?OnCancel@CDialog@@MAEXXZ
 // prototype: protected: virtual void __thiscall CDialog::OnCancel(void)
 
-// LIBRARY: IMPERIALISM 0x006054cb
+// LIBRARY: IMPERIALISM 0x006054cb SYMBOL
+// ?CheckAutoCenter@CDialog@@UAEHXZ
 // name: CDialog::CheckAutoCenter
-// symbol: ?CheckAutoCenter@CDialog@@UAEHXZ
 // prototype: public: virtual int __thiscall CDialog::CheckAutoCenter(void)
 
 // LIBRARY: IMPERIALISM 0x00605547
@@ -2871,1699 +2869,1699 @@
 // MFC nafxcw handler in CDialog's message map 0x66fb20, MFC-internal
 // message 0x366: returns [ecx+0x3c] + 0x20000 (HID_COMMAND base).
 
-// LIBRARY: IMPERIALISM 0x006055ae
+// LIBRARY: IMPERIALISM 0x006055ae SYMBOL
+// ?Run@CWinApp@@UAEHXZ
 // name: CWinApp::Run
-// symbol: ?Run@CWinApp@@UAEHXZ
 // prototype: public: virtual int __thiscall CWinApp::Run(void)
 
-// LIBRARY: IMPERIALISM 0x006055d0
+// LIBRARY: IMPERIALISM 0x006055d0 SYMBOL
+// ?WinHelpA@CWinApp@@UAEXKI@Z
 // name: CWinApp::WinHelpA
-// symbol: ?WinHelpA@CWinApp@@UAEXKI@Z
 // prototype: public: virtual void __thiscall CWinApp::WinHelpA(unsigned long, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00605607
+// LIBRARY: IMPERIALISM 0x00605607 SYMBOL
+// ?ProcessWndProcException@CWinApp@@UAEJPAVCException@@PBUtagMSG@@@Z
 // name: CWinApp::ProcessWndProcException
-// symbol: ?ProcessWndProcException@CWinApp@@UAEJPAVCException@@PBUtagMSG@@@Z
 // prototype: public: virtual long __thiscall CWinApp::ProcessWndProcException(class CException *,struct tagMSG const *)
 
-// LIBRARY: IMPERIALISM 0x0060567e
+// LIBRARY: IMPERIALISM 0x0060567e SYMBOL
+// ?OnIdle@CWinApp@@UAEHJ@Z
 // name: CWinApp::OnIdle
-// symbol: ?OnIdle@CWinApp@@UAEHJ@Z
 // prototype: public: virtual int __thiscall CWinApp::OnIdle(long)
 
-// LIBRARY: IMPERIALISM 0x006056e4
+// LIBRARY: IMPERIALISM 0x006056e4 SYMBOL
+// ?DevModeChange@CWinApp@@QAEXPAD@Z
 // name: CWinApp::DevModeChange
-// symbol: ?DevModeChange@CWinApp@@QAEXPAD@Z
 // prototype: public: void __thiscall CWinApp::DevModeChange(char *)
 
-// LIBRARY: IMPERIALISM 0x00605818
+// LIBRARY: IMPERIALISM 0x00605818 SYMBOL
+// ?Release@CString@@IAEXXZ
 // name: CString::Release
-// symbol: ?Release@CString@@IAEXXZ
 // prototype: protected: void __thiscall CString::Release(void)
 
-// LIBRARY: IMPERIALISM 0x0060590b
+// LIBRARY: IMPERIALISM 0x0060590b SYMBOL
+// ?AllocCopy@CString@@IBEXAAV1@HHH@Z
 // name: CString::AllocCopy
-// symbol: ?AllocCopy@CString@@IBEXAAV1@HHH@Z
 // prototype: protected: void __thiscall CString::AllocCopy(class CString &, int, int, int) const
 
-// LIBRARY: IMPERIALISM 0x006059ae
+// LIBRARY: IMPERIALISM 0x006059ae SYMBOL
+// ??0CString@@QAE@PBG@Z
 // name: CString::CString
-// symbol: ??0CString@@QAE@PBG@Z
 // prototype: public: __thiscall CString::CString(unsigned short const *)
 
-// LIBRARY: IMPERIALISM 0x00605a9f
+// LIBRARY: IMPERIALISM 0x00605a9f SYMBOL
+// ??4CString@@QAEABV0@PBG@Z
 // name: CString::operator=
-// symbol: ??4CString@@QAEABV0@PBG@Z
 // prototype: public: class CString const & __thiscall CString::operator=(unsigned short const *)
 
-// LIBRARY: IMPERIALISM 0x00605e12
-// symbol: ?Find@CString@@QBEHD@Z
+// LIBRARY: IMPERIALISM 0x00605e12 SYMBOL
+// ?Find@CString@@QBEHD@Z
 
-// LIBRARY: IMPERIALISM 0x00605e33
-// symbol: ?FindOneOf@CString@@QBEHPBD@Z
+// LIBRARY: IMPERIALISM 0x00605e33 SYMBOL
+// ?FindOneOf@CString@@QBEHPBD@Z
 
 // LIBRARY: IMPERIALISM 0x00605e52
 // ownership-only
 
-// LIBRARY: IMPERIALISM 0x00605e64
-// symbol: ?MakeReverse@CString@@QAEXXZ
+// LIBRARY: IMPERIALISM 0x00605e64 SYMBOL
+// ?MakeReverse@CString@@QAEXXZ
 
-// LIBRARY: IMPERIALISM 0x00605e76
-// symbol: ?MakeReverse@CString@@QAEXXZ
+// LIBRARY: IMPERIALISM 0x00605e76 SYMBOL
+// ?MakeReverse@CString@@QAEXXZ
 
-// LIBRARY: IMPERIALISM 0x00605e88
+// LIBRARY: IMPERIALISM 0x00605e88 SYMBOL
+// ?SetAt@CString@@QAEXHD@Z
 // name: CString::SetAt
-// symbol: ?SetAt@CString@@QAEXHD@Z
 // prototype: public: void __thiscall CString::SetAt(int, char)
 
-// LIBRARY: IMPERIALISM 0x00605ea1
-// symbol: ?OemToCharA@CString@@QAEXXZ
+// LIBRARY: IMPERIALISM 0x00605ea1 SYMBOL
+// ?OemToCharA@CString@@QAEXXZ
 
-// LIBRARY: IMPERIALISM 0x00605eb5
-// symbol: ?OemToCharA@CString@@QAEXXZ
+// LIBRARY: IMPERIALISM 0x00605eb5 SYMBOL
+// ?OemToCharA@CString@@QAEXXZ
 
-// LIBRARY: IMPERIALISM 0x00605ec9
+// LIBRARY: IMPERIALISM 0x00605ec9 SYMBOL
+// ?_wcstombsz@@YAHPADPBGI@Z
 // name: _wcstombsz
-// symbol: ?_wcstombsz@@YAHPADPBGI@Z
 // prototype: int __cdecl _wcstombsz(char *, unsigned short const *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00605eff
+// LIBRARY: IMPERIALISM 0x00605eff SYMBOL
+// ?_mbstowcsz@@YAHPAGPBDI@Z
 // name: _mbstowcsz
-// symbol: ?_mbstowcsz@@YAHPAGPBDI@Z
 // prototype: int __cdecl _mbstowcsz(unsigned short *, char const *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00605f34
+// LIBRARY: IMPERIALISM 0x00605f34 SYMBOL
+// ?AfxA2WHelper@@YGPAGPAGPBDH@Z
 // name: AfxA2WHelper
-// symbol: ?AfxA2WHelper@@YGPAGPAGPBDH@Z
 // prototype: unsigned short * __stdcall AfxA2WHelper(unsigned short *, char const *, int)
 
-// LIBRARY: IMPERIALISM 0x00605f87
-// symbol: ?_AfxThreadEntry@@YGIPAX@Z
+// LIBRARY: IMPERIALISM 0x00605f87 SYMBOL
+// ?_AfxThreadEntry@@YGIPAX@Z
 
-// LIBRARY: IMPERIALISM 0x006060bc
+// LIBRARY: IMPERIALISM 0x006060bc SYMBOL
+// ?AfxGetThread@@YGPAVCWinThread@@XZ
 // name: AfxGetThread
-// symbol: ?AfxGetThread@@YGPAVCWinThread@@XZ
 // prototype: class CWinThread * __stdcall AfxGetThread(void)
 
-// LIBRARY: IMPERIALISM 0x00606155
+// LIBRARY: IMPERIALISM 0x00606155 SYMBOL
+// ?AfxBeginThread@@YGPAVCWinThread@@PAUCRuntimeClass@@HIKPAU_SECURITY_ATTRIBUTES@@@Z
 // name: AfxBeginThread
-// symbol: ?AfxBeginThread@@YGPAVCWinThread@@PAUCRuntimeClass@@HIKPAU_SECURITY_ATTRIBUTES@@@Z
 // prototype: class CWinThread * __stdcall AfxBeginThread(struct CRuntimeClass *, int, unsigned int, unsigned long, struct _SECURITY_ATTRIBUTES *)
 
-// LIBRARY: IMPERIALISM 0x006061b7
+// LIBRARY: IMPERIALISM 0x006061b7 SYMBOL
+// ?AfxEndThread@@YGXIH@Z
 // name: AfxEndThread
-// symbol: ?AfxEndThread@@YGXIH@Z
 // prototype: void __stdcall AfxEndThread(unsigned int, int)
 
-// LIBRARY: IMPERIALISM 0x006061ff
+// LIBRARY: IMPERIALISM 0x006061ff SYMBOL
+// ?AfxInitThread@@YGXXZ
 // name: AfxInitThread
-// symbol: ?AfxInitThread@@YGXXZ
 // prototype: void __stdcall AfxInitThread(void)
 
-// LIBRARY: IMPERIALISM 0x0060625e
+// LIBRARY: IMPERIALISM 0x0060625e SYMBOL
+// ?AfxTermThread@@YGXPAUHINSTANCE__@@@Z
 // name: AfxTermThread
-// symbol: ?AfxTermThread@@YGXPAUHINSTANCE__@@@Z
 // prototype: void __stdcall AfxTermThread(struct HINSTANCE__*)
 
-// LIBRARY: IMPERIALISM 0x006062c2
+// LIBRARY: IMPERIALISM 0x006062c2 SYMBOL
+// ?CreateThread@CWinThread@@QAEHKIPAU_SECURITY_ATTRIBUTES@@@Z
 // name: CWinThread::CreateThread
-// symbol: ?CreateThread@CWinThread@@QAEHKIPAU_SECURITY_ATTRIBUTES@@@Z
 // prototype: public: int __thiscall CWinThread::CreateThread(unsigned long, unsigned int, struct _SECURITY_ATTRIBUTES *)
 
-// LIBRARY: IMPERIALISM 0x006063b8
+// LIBRARY: IMPERIALISM 0x006063b8 SYMBOL
+// ?Delete@CWinThread@@UAEXXZ
 // name: CWinThread::Delete
-// symbol: ?Delete@CWinThread@@UAEXXZ
 // prototype: public: virtual void __thiscall CWinThread::Delete(void)
 
-// LIBRARY: IMPERIALISM 0x006063cd
+// LIBRARY: IMPERIALISM 0x006063cd SYMBOL
+// ?Run@CWinThread@@UAEHXZ
 // name: CWinThread::Run
-// symbol: ?Run@CWinThread@@UAEHXZ
 // prototype: public: virtual int __thiscall CWinThread::Run(void)
 
-// LIBRARY: IMPERIALISM 0x00606451
+// LIBRARY: IMPERIALISM 0x00606451 SYMBOL
+// ?IsIdleMessage@CWinThread@@UAEHPAUtagMSG@@@Z
 // name: CWinThread::IsIdleMessage
-// symbol: ?IsIdleMessage@CWinThread@@UAEHPAUtagMSG@@@Z
 // prototype: public: virtual int __thiscall CWinThread::IsIdleMessage(struct tagMSG *)
 
-// LIBRARY: IMPERIALISM 0x006064b0
+// LIBRARY: IMPERIALISM 0x006064b0 SYMBOL
+// ?OnIdle@CWinThread@@UAEHJ@Z
 // name: CWinThread::OnIdle
-// symbol: ?OnIdle@CWinThread@@UAEHJ@Z
 // prototype: public: virtual int __thiscall CWinThread::OnIdle(long)
 
-// LIBRARY: IMPERIALISM 0x006065c7
+// LIBRARY: IMPERIALISM 0x006065c7 SYMBOL
+// ?DispatchThreadMessageEx@CWinThread@@IAEHPAUtagMSG@@@Z
 // name: CWinThread::DispatchThreadMessageEx
-// symbol: ?DispatchThreadMessageEx@CWinThread@@IAEHPAUtagMSG@@@Z
 // prototype: protected: int __thiscall CWinThread::DispatchThreadMessageEx(struct tagMSG *)
 
-// LIBRARY: IMPERIALISM 0x00606640
+// LIBRARY: IMPERIALISM 0x00606640 SYMBOL
+// ?PreTranslateMessage@CWinThread@@UAEHPAUtagMSG@@@Z
 // name: CWinThread::PreTranslateMessage
-// symbol: ?PreTranslateMessage@CWinThread@@UAEHPAUtagMSG@@@Z
 // prototype: public: virtual int __thiscall CWinThread::PreTranslateMessage(struct tagMSG *)
 
-// LIBRARY: IMPERIALISM 0x00606725
+// LIBRARY: IMPERIALISM 0x00606725 SYMBOL
+// ?ProcessWndProcException@CWinThread@@UAEJPAVCException@@PBUtagMSG@@@Z
 // name: CWinThread::ProcessWndProcException
-// symbol: ?ProcessWndProcException@CWinThread@@UAEJPAVCException@@PBUtagMSG@@@Z
 // prototype: public: virtual long __thiscall CWinThread::ProcessWndProcException(class CException *, struct tagMSG const *)
 
-// LIBRARY: IMPERIALISM 0x0060674a
+// LIBRARY: IMPERIALISM 0x0060674a SYMBOL
+// ?_AfxMsgFilterHook@@YGJHIJ@Z
 // name: _AfxMsgFilterHook
-// symbol: ?_AfxMsgFilterHook@@YGJHIJ@Z
 // prototype: long __stdcall _AfxMsgFilterHook(int, unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x006067a2
+// LIBRARY: IMPERIALISM 0x006067a2 SYMBOL
+// ?ProcessMessageFilter@CWinThread@@UAEHHPAUtagMSG@@@Z
 // name: CWinThread::ProcessMessageFilter
-// symbol: ?ProcessMessageFilter@CWinThread@@UAEHHPAUtagMSG@@@Z
 // prototype: public: virtual int __thiscall CWinThread::ProcessMessageFilter(int, struct tagMSG *)
 
-// LIBRARY: IMPERIALISM 0x006068e9
-// symbol: ?IsHelpKey@@YGHPAUtagMSG@@@Z
+// LIBRARY: IMPERIALISM 0x006068e9 SYMBOL
+// ?IsHelpKey@@YGHPAUtagMSG@@@Z
 
-// LIBRARY: IMPERIALISM 0x00606934
+// LIBRARY: IMPERIALISM 0x00606934 SYMBOL
+// ?GetMainWnd@CWinThread@@UAEPAVCWnd@@XZ
 // name: CWinThread::GetMainWnd
-// symbol: ?GetMainWnd@CWinThread@@UAEPAVCWnd@@XZ
 // prototype: public: virtual class CWnd * __thiscall CWinThread::GetMainWnd(void)
 
-// LIBRARY: IMPERIALISM 0x0060694f
+// LIBRARY: IMPERIALISM 0x0060694f SYMBOL
+// ?PumpMessage@CWinThread@@UAEHXZ
 // name: CWinThread::PumpMessage
-// symbol: ?PumpMessage@CWinThread@@UAEHXZ
 // prototype: public: virtual int __thiscall CWinThread::PumpMessage(void)
 
-// LIBRARY: IMPERIALISM 0x0060698f
+// LIBRARY: IMPERIALISM 0x0060698f SYMBOL
+// ??0CCmdTarget@@QAE@XZ
 // name: CCmdTarget::CCmdTarget
-// symbol: ??0CCmdTarget@@QAE@XZ
 // prototype: public: __thiscall CCmdTarget::CCmdTarget(void)
 
-// LIBRARY: IMPERIALISM 0x006069af
+// LIBRARY: IMPERIALISM 0x006069af SYMBOL
+// ??_GCCmdTarget@@UAEPAXI@Z
 // name: CCmdTarget::`scalar deleting dtor'
-// symbol: ??_GCCmdTarget@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CCmdTarget::`scalar deleting dtor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x006069cb
+// LIBRARY: IMPERIALISM 0x006069cb SYMBOL
+// ??1CCmdTarget@@UAE@XZ
 // name: CCmdTarget::~CCmdTarget
-// symbol: ??1CCmdTarget@@UAE@XZ
 // prototype: public: virtual __thiscall CCmdTarget::~CCmdTarget(void)
 
-// LIBRARY: IMPERIALISM 0x00606a07
+// LIBRARY: IMPERIALISM 0x00606a07 SYMBOL
+// ?OnCmdMsg@CCmdTarget@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z
 // name: CCmdTarget::OnCmdMsg
-// symbol: ?OnCmdMsg@CCmdTarget@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z
 // prototype: public: virtual int __thiscall CCmdTarget::OnCmdMsg(unsigned int, int, void *, struct AFX_CMDHANDLERINFO *)
 
-// LIBRARY: IMPERIALISM 0x00606b1f
-// symbol: ?DispatchCmdMsg@@YAHPAVCCmdTarget@@IHP81@AEXXZPAXIPAUAFX_CMDHANDLERINFO@@@Z
+// LIBRARY: IMPERIALISM 0x00606b1f SYMBOL
+// ?DispatchCmdMsg@@YAHPAVCCmdTarget@@IHP81@AEXXZPAXIPAUAFX_CMDHANDLERINFO@@@Z
 
-// LIBRARY: IMPERIALISM 0x00606c4e
+// LIBRARY: IMPERIALISM 0x00606c4e SYMBOL
+// ?IsInvokeAllowed@CCmdTarget@@UAEHJ@Z
 // name: CCmdTarget::IsInvokeAllowed
-// symbol: ?IsInvokeAllowed@CCmdTarget@@UAEHJ@Z
 // prototype: public: virtual int __thiscall CCmdTarget::IsInvokeAllowed(long)
 
-// LIBRARY: IMPERIALISM 0x00606c54
+// LIBRARY: IMPERIALISM 0x00606c54 SYMBOL
+// ?GetDispatchIID@CCmdTarget@@UAEHPAU_GUID@@@Z
 // name: CCmdTarget::GetDispatchIID
-// symbol: ?GetDispatchIID@CCmdTarget@@UAEHPAU_GUID@@@Z
 // prototype: public: virtual int __thiscall CCmdTarget::GetDispatchIID(struct _GUID *)
 
-// LIBRARY: IMPERIALISM 0x00606c59
+// LIBRARY: IMPERIALISM 0x00606c59 SYMBOL
+// ?GetTypeInfoCount@CCmdTarget@@UAEIXZ
 // name: CCmdTarget::GetTypeInfoCount
-// symbol: ?GetTypeInfoCount@CCmdTarget@@UAEIXZ
 // prototype: public: virtual unsigned int __thiscall CCmdTarget::GetTypeInfoCount(void)
 
-// LIBRARY: IMPERIALISM 0x00606c5c
+// LIBRARY: IMPERIALISM 0x00606c5c SYMBOL
+// ?GetTypeLibCache@CCmdTarget@@UAEPAVCTypeLibCache@@XZ
 // name: CCmdTarget::GetTypeLibCache
-// symbol: ?GetTypeLibCache@CCmdTarget@@UAEPAVCTypeLibCache@@XZ
 // prototype: public: virtual class CTypeLibCache * __thiscall CCmdTarget::GetTypeLibCache(void)
 
-// LIBRARY: IMPERIALISM 0x00606c5f
+// LIBRARY: IMPERIALISM 0x00606c5f SYMBOL
+// ?GetTypeLib@CCmdTarget@@UAEJKPAPAUITypeLib@@@Z
 // name: CCmdTarget::GetTypeLib
-// symbol: ?GetTypeLib@CCmdTarget@@UAEJKPAPAUITypeLib@@@Z
 // prototype: public: virtual long __thiscall CCmdTarget::GetTypeLib(unsigned long,struct ITypeLib * *)
 
-// LIBRARY: IMPERIALISM 0x00606c67
+// LIBRARY: IMPERIALISM 0x00606c67 SYMBOL
+// ?BeginWaitCursor@CCmdTarget@@QAEXXZ
 // name: CCmdTarget::BeginWaitCursor
-// symbol: ?BeginWaitCursor@CCmdTarget@@QAEXXZ
 // prototype: void __thiscall BeginWaitCursor()
 
-// LIBRARY: IMPERIALISM 0x00606c7c
+// LIBRARY: IMPERIALISM 0x00606c7c SYMBOL
+// ?EndWaitCursor@CCmdTarget@@QAEXXZ
 // name: CCmdTarget::EndWaitCursor
-// symbol: ?EndWaitCursor@CCmdTarget@@QAEXXZ
 // prototype: void __thiscall EndWaitCursor()
 
-// LIBRARY: IMPERIALISM 0x00606c91
+// LIBRARY: IMPERIALISM 0x00606c91 SYMBOL
+// ?RestoreWaitCursor@CCmdTarget@@QAEXXZ
 // name: CCmdTarget::RestoreWaitCursor
-// symbol: ?RestoreWaitCursor@CCmdTarget@@QAEXXZ
 // prototype: public: void __thiscall CCmdTarget::RestoreWaitCursor(void)
 
-// LIBRARY: IMPERIALISM 0x00606ca6
+// LIBRARY: IMPERIALISM 0x00606ca6 SYMBOL
+// ?GetMessageMap@CCmdTarget@@MBEPBUAFX_MSGMAP@@XZ
 // name: CCmdTarget::GetMessageMap
-// symbol: ?GetMessageMap@CCmdTarget@@MBEPBUAFX_MSGMAP@@XZ
 // prototype: protected: virtual struct AFX_MSGMAP const * __thiscall CCmdTarget::GetMessageMap(void) const
 
-// LIBRARY: IMPERIALISM 0x00606cac
+// LIBRARY: IMPERIALISM 0x00606cac SYMBOL
+// ?GetDispatchMap@CCmdTarget@@MBEPBUAFX_DISPMAP@@XZ
 // name: CCmdTarget::GetDispatchMap
-// symbol: ?GetDispatchMap@CCmdTarget@@MBEPBUAFX_DISPMAP@@XZ
 // prototype: protected: virtual struct AFX_DISPMAP const * __thiscall CCmdTarget::GetDispatchMap(void)const
 
-// LIBRARY: IMPERIALISM 0x00606cb2
+// LIBRARY: IMPERIALISM 0x00606cb2 SYMBOL
+// ?GetEventSinkMap@CCmdTarget@@MBEPBUAFX_EVENTSINKMAP@@XZ
 // name: CCmdTarget::GetEventSinkMap
-// symbol: ?GetEventSinkMap@CCmdTarget@@MBEPBUAFX_EVENTSINKMAP@@XZ
 // prototype: protected: virtual struct AFX_EVENTSINKMAP const * __thiscall CCmdTarget::GetEventSinkMap(void)const
 
-// LIBRARY: IMPERIALISM 0x00606cb8
+// LIBRARY: IMPERIALISM 0x00606cb8 SYMBOL
+// ?GetInterfaceMap@CCmdTarget@@MBEPBUAFX_INTERFACEMAP@@XZ
 // name: CCmdTarget::GetInterfaceMap
-// symbol: ?GetInterfaceMap@CCmdTarget@@MBEPBUAFX_INTERFACEMAP@@XZ
 // prototype: protected: virtual struct AFX_INTERFACEMAP const * __thiscall CCmdTarget::GetInterfaceMap(void)const
 
-// LIBRARY: IMPERIALISM 0x00606cbe
+// LIBRARY: IMPERIALISM 0x00606cbe SYMBOL
+// ?OnFinalRelease@CCmdTarget@@UAEXXZ
 // name: CCmdTarget::OnFinalRelease
-// symbol: ?OnFinalRelease@CCmdTarget@@UAEXXZ
 // prototype: public: virtual void __thiscall CCmdTarget::OnFinalRelease(void)
 
-// LIBRARY: IMPERIALISM 0x00606cf0
+// LIBRARY: IMPERIALISM 0x00606cf0 SYMBOL
+// ?OnCreateAggregates@CCmdTarget@@UAEHXZ
 // name: CCmdTarget::OnCreateAggregates
-// symbol: ?OnCreateAggregates@CCmdTarget@@UAEHXZ
 // prototype: public: virtual int __thiscall CCmdTarget::OnCreateAggregates(void)
 
-// LIBRARY: IMPERIALISM 0x00606cf4
+// LIBRARY: IMPERIALISM 0x00606cf4 SYMBOL
+// ?GetInterfaceHook@CCmdTarget@@UAEPAUIUnknown@@PBX@Z
 // name: CCmdTarget::GetInterfaceHook
-// symbol: ?GetInterfaceHook@CCmdTarget@@UAEPAUIUnknown@@PBX@Z
 // prototype: public: virtual struct IUnknown * __thiscall CCmdTarget::GetInterfaceHook(void const *)
 
-// LIBRARY: IMPERIALISM 0x00606cf9
+// LIBRARY: IMPERIALISM 0x00606cf9 SYMBOL
+// ?GetConnectionMap@CCmdTarget@@MBEPBUAFX_CONNECTIONMAP@@XZ
 // name: CCmdTarget::GetConnectionMap
-// symbol: ?GetConnectionMap@CCmdTarget@@MBEPBUAFX_CONNECTIONMAP@@XZ
 // prototype: protected: virtual struct AFX_CONNECTIONMAP const * __thiscall CCmdTarget::GetConnectionMap(void)const
 
-// LIBRARY: IMPERIALISM 0x00606cff
+// LIBRARY: IMPERIALISM 0x00606cff SYMBOL
+// ?GetConnectionHook@CCmdTarget@@MAEPAUIConnectionPoint@@ABU_GUID@@@Z
 // name: CCmdTarget::GetConnectionHook
-// symbol: ?GetConnectionHook@CCmdTarget@@MAEPAUIConnectionPoint@@ABU_GUID@@@Z
 // prototype: public: virtual struct IConnectionPoint * __thiscall CCmdTarget::GetConnectionHook(struct _GUID const &)
 
-// LIBRARY: IMPERIALISM 0x00606d04
+// LIBRARY: IMPERIALISM 0x00606d04 SYMBOL
+// ?GetExtraConnectionPoints@CCmdTarget@@MAEHPAVCPtrArray@@@Z
 // name: CCmdTarget::GetExtraConnectionPoints
-// symbol: ?GetExtraConnectionPoints@CCmdTarget@@MAEHPAVCPtrArray@@@Z
 // prototype: public: virtual int __thiscall CCmdTarget::GetExtraConnectionPoints(class CPtrArray *)
 
-// LIBRARY: IMPERIALISM 0x00606d09
+// LIBRARY: IMPERIALISM 0x00606d09 SYMBOL
+// ?GetCommandMap@CCmdTarget@@MBEPBUAFX_OLECMDMAP@@XZ
 // name: CCmdTarget::GetCommandMap
-// symbol: ?GetCommandMap@CCmdTarget@@MBEPBUAFX_OLECMDMAP@@XZ
 // prototype: protected: virtual struct AFX_CMDMAP const * __thiscall CCmdTarget::GetCommandMap(void)const
 
-// LIBRARY: IMPERIALISM 0x00606d1b
+// LIBRARY: IMPERIALISM 0x00606d1b SYMBOL
+// ?GetRoutingFrame@CCmdTarget@@IAEPAVCFrameWnd@@XZ
 // name: CCmdTarget::GetRoutingFrame
-// symbol: ?GetRoutingFrame@CCmdTarget@@IAEPAVCFrameWnd@@XZ
 // prototype: protected: class CFrameWnd * __thiscall CCmdTarget::GetRoutingFrame(void)
 
-// LIBRARY: IMPERIALISM 0x00606d27
+// LIBRARY: IMPERIALISM 0x00606d27 SYMBOL
+// ??0CCmdUI@@QAE@XZ
 // name: CCmdUI::CCmdUI
-// symbol: ??0CCmdUI@@QAE@XZ
 // prototype: public: __thiscall CCmdUI::CCmdUI(void)
 
-// LIBRARY: IMPERIALISM 0x00606d4d
+// LIBRARY: IMPERIALISM 0x00606d4d SYMBOL
+// ?Enable@CCmdUI@@UAEXH@Z
 // name: CCmdUI::Enable
-// symbol: ?Enable@CCmdUI@@UAEXH@Z
 // prototype: public: virtual void __thiscall CCmdUI::Enable(int)
 
-// LIBRARY: IMPERIALISM 0x00606ddd
+// LIBRARY: IMPERIALISM 0x00606ddd SYMBOL
+// ?SetCheck@CCmdUI@@UAEXH@Z
 // name: CCmdUI::SetCheck
-// symbol: ?SetCheck@CCmdUI@@UAEXH@Z
 // prototype: public: virtual void __thiscall CCmdUI::SetCheck(int)
 
-// LIBRARY: IMPERIALISM 0x00606e3f
+// LIBRARY: IMPERIALISM 0x00606e3f SYMBOL
+// ?SetRadio@CCmdUI@@UAEXH@Z
 // name: CCmdUI::SetRadio
-// symbol: ?SetRadio@CCmdUI@@UAEXH@Z
 // prototype: public: virtual void __thiscall CCmdUI::SetRadio(int)
 
-// LIBRARY: IMPERIALISM 0x00606e91
+// LIBRARY: IMPERIALISM 0x00606e91 SYMBOL
+// ?SetText@CCmdUI@@UAEXPBD@Z
 // name: CCmdUI::SetText
-// symbol: ?SetText@CCmdUI@@UAEXPBD@Z
 // prototype: public: virtual void __thiscall CCmdUI::SetText(char const *)
 
-// LIBRARY: IMPERIALISM 0x00606ee7
+// LIBRARY: IMPERIALISM 0x00606ee7 SYMBOL
+// ?DoUpdate@CCmdUI@@QAEHPAVCCmdTarget@@H@Z
 // name: CCmdUI::DoUpdate
-// symbol: ?DoUpdate@CCmdUI@@QAEHPAVCCmdTarget@@H@Z
 // prototype: public: int __thiscall CCmdUI::DoUpdate(class CCmdTarget *, int)
 
-// LIBRARY: IMPERIALISM 0x00606f4e
+// LIBRARY: IMPERIALISM 0x00606f4e SYMBOL
+// ?AfxNewHandler@@YAHI@Z
 // name: AfxNewHandler
-// symbol: ?AfxNewHandler@@YAHI@Z
 // prototype: int __cdecl AfxNewHandler(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00606f5f
+// LIBRARY: IMPERIALISM 0x00606f5f SYMBOL
+// ?AfxSetNewHandler@@YGP6AHI@ZP6AHI@Z@Z
 // name: int
-// symbol: ?AfxSetNewHandler@@YGP6AHI@ZP6AHI@Z@Z
 // prototype: int (__cdecl * __stdcall AfxSetNewHandler(int (__cdecl *)(unsigned int)))(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00606f73
+// LIBRARY: IMPERIALISM 0x00606f73 SYMBOL
+// ??2@YAPAXI@Z
 // name: operator new
-// symbol: ??2@YAPAXI@Z
 // prototype: void * __cdecl operator new(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00606faf
+// LIBRARY: IMPERIALISM 0x00606faf SYMBOL
+// ??3@YAXPAX@Z
 // name: operator delete
-// symbol: ??3@YAXPAX@Z
 // prototype: void __cdecl operator delete(void *)
 
 // LIBRARY: IMPERIALISM 0x00606fba
-// name: CObject::GetRuntimeClass
+// CObject::GetRuntimeClass
 
-// LIBRARY: IMPERIALISM 0x00606fc0
+// LIBRARY: IMPERIALISM 0x00606fc0 SYMBOL
+// ?IsKindOf@CObject@@QBEHPBUCRuntimeClass@@@Z
 // name: CObject::IsKindOf
-// symbol: ?IsKindOf@CObject@@QBEHPBUCRuntimeClass@@@Z
 // prototype: public: int __thiscall CObject::IsKindOf(struct CRuntimeClass const *) const
 
-// LIBRARY: IMPERIALISM 0x00606fd2
+// LIBRARY: IMPERIALISM 0x00606fd2 SYMBOL
+// ?AfxDynamicDownCast@@YAPAVCObject@@PAUCRuntimeClass@@PAV1@@Z
 // name: AfxDynamicDownCast
-// symbol: ?AfxDynamicDownCast@@YAPAVCObject@@PAUCRuntimeClass@@PAV1@@Z
 // prototype: class CObject * __cdecl AfxDynamicDownCast(struct CRuntimeClass *, class CObject *)
 
-// LIBRARY: IMPERIALISM 0x00606ff2
-// symbol: ?CreateObject@CRuntimeClass@@QAEPAVCObject@@XZ
+// LIBRARY: IMPERIALISM 0x00606ff2 SYMBOL
+// ?CreateObject@CRuntimeClass@@QAEPAVCObject@@XZ
 
-// LIBRARY: IMPERIALISM 0x0060704b
+// LIBRARY: IMPERIALISM 0x0060704b SYMBOL
+// ??0AFX_CLASSINIT@@QAE@PAUCRuntimeClass@@@Z
 // name: AFX_CLASSINIT::AFX_CLASSINIT
-// symbol: ??0AFX_CLASSINIT@@QAE@PAUCRuntimeClass@@@Z
 // prototype: public: __thiscall AFX_CLASSINIT::AFX_CLASSINIT(struct CRuntimeClass *)
 
-// LIBRARY: IMPERIALISM 0x00607077
+// LIBRARY: IMPERIALISM 0x00607077 SYMBOL
+// ?IsDerivedFrom@CRuntimeClass@@QBEHPBU1@@Z
 // name: CRuntimeClass::IsDerivedFrom
-// symbol: ?IsDerivedFrom@CRuntimeClass@@QBEHPBU1@@Z
 // prototype: public: int __thiscall CRuntimeClass::IsDerivedFrom(struct CRuntimeClass const *) const
 
-// LIBRARY: IMPERIALISM 0x00607090
+// LIBRARY: IMPERIALISM 0x00607090 SYMBOL
+// ?OnAmbientProperty@CWnd@@UAEHPAVCOleControlSite@@JPAUtagVARIANT@@@Z
 // name: CWnd::OnAmbientProperty
-// symbol: ?OnAmbientProperty@CWnd@@UAEHPAVCOleControlSite@@JPAUtagVARIANT@@@Z
 // prototype: public: virtual int __thiscall CWnd::OnAmbientProperty(class COleControlSite *, long, struct tagVARIANT *)
 
-// LIBRARY: IMPERIALISM 0x006070df
+// LIBRARY: IMPERIALISM 0x006070df SYMBOL
+// ?CheckRadioButton@CWnd@@QAEXHHH@Z
 // name: CWnd::CheckRadioButton
-// symbol: ?CheckRadioButton@CWnd@@QAEXHHH@Z
 // prototype: public: void __thiscall CWnd::CheckRadioButton(int, int, int)
 
-// LIBRARY: IMPERIALISM 0x00607111
+// LIBRARY: IMPERIALISM 0x00607111 SYMBOL
+// ?GetDlgItem@CWnd@@QBEPAV1@H@Z
 // name: CWnd::GetDlgItem
-// symbol: ?GetDlgItem@CWnd@@QBEPAV1@H@Z
 // prototype: public: class CWnd * __thiscall CWnd::GetDlgItem(int) const
 
-// LIBRARY: IMPERIALISM 0x0060713b
+// LIBRARY: IMPERIALISM 0x0060713b SYMBOL
+// ?GetDlgItem@CWnd@@QBEXHPAPAUHWND__@@@Z
 // name: CWnd::GetDlgItem
-// symbol: ?GetDlgItem@CWnd@@QBEXHPAPAUHWND__@@@Z
 // prototype: public: void __thiscall CWnd::GetDlgItem(int, struct HWND__**) const
 
-// LIBRARY: IMPERIALISM 0x00607169
+// LIBRARY: IMPERIALISM 0x00607169 SYMBOL
+// ?GetDlgItemInt@CWnd@@QBEIHPAHH@Z
 // name: CWnd::GetDlgItemInt
-// symbol: ?GetDlgItemInt@CWnd@@QBEIHPAHH@Z
 // prototype: public: unsigned int __thiscall CWnd::GetDlgItemInt(int, int *, int) const
 
-// LIBRARY: IMPERIALISM 0x0060719b
+// LIBRARY: IMPERIALISM 0x0060719b SYMBOL
+// ?GetDlgItemTextA@CWnd@@QBEHHPADH@Z
 // name: CWnd::GetDlgItemTextA
-// symbol: ?GetDlgItemTextA@CWnd@@QBEHHPADH@Z
 // prototype: public: int __thiscall CWnd::GetDlgItemTextA(int, char *, int) const
 
-// LIBRARY: IMPERIALISM 0x006071d0
+// LIBRARY: IMPERIALISM 0x006071d0 SYMBOL
+// ?SendDlgItemMessageA@CWnd@@QAEJHIIJ@Z
 // name: CWnd::SendDlgItemMessageA
-// symbol: ?SendDlgItemMessageA@CWnd@@QAEJHIIJ@Z
 // prototype: public: long __thiscall CWnd::SendDlgItemMessageA(int, unsigned int, unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x0060720b
+// LIBRARY: IMPERIALISM 0x0060720b SYMBOL
+// ?SetDlgItemInt@CWnd@@QAEXHIH@Z
 // name: CWnd::SetDlgItemInt
-// symbol: ?SetDlgItemInt@CWnd@@QAEXHIH@Z
 // prototype: public: void __thiscall CWnd::SetDlgItemInt(int, unsigned int, int)
 
-// LIBRARY: IMPERIALISM 0x0060726f
+// LIBRARY: IMPERIALISM 0x0060726f SYMBOL
+// ?IsDlgButtonChecked@CWnd@@QBEIH@Z
 // name: CWnd::IsDlgButtonChecked
-// symbol: ?IsDlgButtonChecked@CWnd@@QBEIH@Z
 // prototype: public: unsigned int __thiscall CWnd::IsDlgButtonChecked(int) const
 
-// LIBRARY: IMPERIALISM 0x00607296
+// LIBRARY: IMPERIALISM 0x00607296 SYMBOL
+// ?ScrollWindowEx@CWnd@@QAEHHHPBUtagRECT@@0PAVCRgn@@PAU2@I@Z
 // name: CWnd::ScrollWindowEx
-// symbol: ?ScrollWindowEx@CWnd@@QAEHHHPBUtagRECT@@0PAVCRgn@@PAU2@I@Z
 // prototype: public: int __thiscall CWnd::ScrollWindowEx(int, int, struct tagRECT const *, struct tagRECT const *, class CRgn *, struct tagRECT *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x006072e5
+// LIBRARY: IMPERIALISM 0x006072e5 SYMBOL
+// ?IsDialogMessageA@CWnd@@QAEHPAUtagMSG@@@Z
 // name: CWnd::IsDialogMessageA
-// symbol: ?IsDialogMessageA@CWnd@@QAEHPAUtagMSG@@@Z
 // prototype: public: int __thiscall CWnd::IsDialogMessageA(struct tagMSG *)
 
-// LIBRARY: IMPERIALISM 0x00607318
+// LIBRARY: IMPERIALISM 0x00607318 SYMBOL
+// ?GetStyle@CWnd@@QBEKXZ
 // name: CWnd::GetStyle
-// symbol: ?GetStyle@CWnd@@QBEKXZ
 // prototype: public: unsigned long __thiscall CWnd::GetStyle(void)const
 
-// LIBRARY: IMPERIALISM 0x00607332
+// LIBRARY: IMPERIALISM 0x00607332 SYMBOL
+// ?GetExStyle@CWnd@@QBEKXZ
 // name: CWnd::GetExStyle
-// symbol: ?GetExStyle@CWnd@@QBEKXZ
 // prototype: public: unsigned long __thiscall CWnd::GetExStyle(void) const
 
-// LIBRARY: IMPERIALISM 0x0060734c
+// LIBRARY: IMPERIALISM 0x0060734c SYMBOL
+// ?ModifyStyle@CWnd@@QAEHKKI@Z
 // name: CWnd::ModifyStyle
-// symbol: ?ModifyStyle@CWnd@@QAEHKKI@Z
 // prototype: public: int __thiscall CWnd::ModifyStyle(unsigned long, unsigned long, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00607380
+// LIBRARY: IMPERIALISM 0x00607380 SYMBOL
+// ?ModifyStyleEx@CWnd@@QAEHKKI@Z
 // name: CWnd::ModifyStyleEx
-// symbol: ?ModifyStyleEx@CWnd@@QAEHKKI@Z
 // prototype: public: int __thiscall CWnd::ModifyStyleEx(unsigned long, unsigned long, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x006073b4
+// LIBRARY: IMPERIALISM 0x006073b4 SYMBOL
+// ?SetWindowTextA@CWnd@@QAEXPBD@Z
 // name: CWnd::SetWindowText
-// symbol: ?SetWindowTextA@CWnd@@QAEXPBD@Z
 // prototype: public: void __thiscall CWnd::SetWindowText(char const *)
 
-// LIBRARY: IMPERIALISM 0x00607469
+// LIBRARY: IMPERIALISM 0x00607469 SYMBOL
+// ?MoveWindow@CWnd@@QAEXHHHHH@Z
 // name: CWnd::MoveWindow
-// symbol: ?MoveWindow@CWnd@@QAEXHHHHH@Z
 // prototype: public: void __thiscall CWnd::MoveWindow(int, int, int, int, int)
 
-// LIBRARY: IMPERIALISM 0x006074aa
+// LIBRARY: IMPERIALISM 0x006074aa SYMBOL
+// ?SetWindowPos@CWnd@@QAEHPBV1@HHHHI@Z
 // name: CWnd::SetWindowPos
-// symbol: ?SetWindowPos@CWnd@@QAEHPBV1@HHHHI@Z
 // prototype: public: int __thiscall CWnd::SetWindowPos(class CWnd const *, int, int, int, int, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x006074f9
+// LIBRARY: IMPERIALISM 0x006074f9 SYMBOL
+// ?ShowWindow@CWnd@@QAEHH@Z
 // name: CWnd::ShowWindow
-// symbol: ?ShowWindow@CWnd@@QAEHH@Z
 // prototype: public: int __thiscall CWnd::ShowWindow(int)
 
-// LIBRARY: IMPERIALISM 0x00607520
+// LIBRARY: IMPERIALISM 0x00607520 SYMBOL
+// ?IsWindowEnabled@CWnd@@QBEHXZ
 // name: CWnd::IsWindowEnabled
-// symbol: ?IsWindowEnabled@CWnd@@QBEHXZ
 // prototype: public: int __thiscall CWnd::IsWindowEnabled(void) const
 
-// LIBRARY: IMPERIALISM 0x0060753b
+// LIBRARY: IMPERIALISM 0x0060753b SYMBOL
+// ?EnableWindow@CWnd@@QAEHH@Z
 // name: CWnd::EnableWindow
-// symbol: ?EnableWindow@CWnd@@QAEHH@Z
 // prototype: public: int __thiscall CWnd::EnableWindow(int)
 
-// LIBRARY: IMPERIALISM 0x00607562
+// LIBRARY: IMPERIALISM 0x00607562 SYMBOL
+// ?SetFocus@CWnd@@QAEPAV1@XZ
 // name: CWnd::SetFocus
-// symbol: ?SetFocus@CWnd@@QAEPAV1@XZ
 // prototype: public: class CWnd * __thiscall CWnd::SetFocus(void)
 
-// LIBRARY: IMPERIALISM 0x006075ea
+// LIBRARY: IMPERIALISM 0x006075ea SYMBOL
+// ?GetDSCCursor@CWnd@@QAEPAUIUnknown@@XZ
 // name: CWnd::GetDSCCursor
-// symbol: ?GetDSCCursor@CWnd@@QAEPAUIUnknown@@XZ
 // prototype: public: struct IUnknown * __thiscall CWnd::GetDSCCursor(void)
 
-// LIBRARY: IMPERIALISM 0x00607643
-// symbol: ?AttachControlSite@CWnd@@IAEXPAVCHandleMap@@@Z
+// LIBRARY: IMPERIALISM 0x00607643 SYMBOL
+// ?AttachControlSite@CWnd@@IAEXPAVCHandleMap@@@Z
 
-// LIBRARY: IMPERIALISM 0x00607673
+// LIBRARY: IMPERIALISM 0x00607673 SYMBOL
+// ?AttachControlSite@CWnd@@QAEXPAV1@@Z
 // name: CWnd::AttachControlSite
-// symbol: ?AttachControlSite@CWnd@@QAEXPAV1@@Z
 // prototype: public: void __thiscall CWnd::AttachControlSite(class CWnd *)
 
 // LIBRARY: IMPERIALISM 0x006076bd
-// name: RegisterCommctrlDragListMessage
+// RegisterCommctrlDragListMessage
 // prototype: void __cdecl RegisterCommctrlDragListMessage(void)
 
 // LIBRARY: IMPERIALISM 0x006076ce
-// name: InitializeMfcWndTopGlobal
+// InitializeMfcWndTopGlobal
 // prototype: void __cdecl InitializeMfcWndTopGlobal(void)
 
 // LIBRARY: IMPERIALISM 0x006076d8
 // ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x006076e5
-// name: RegisterMfcGlobalCleanup_006076f1
+// RegisterMfcGlobalCleanup_006076f1
 // prototype: void __cdecl RegisterMfcGlobalCleanup_006076f1(void)
 
 // LIBRARY: IMPERIALISM 0x00607706
-// name: CWnd::CWnd
+// CWnd::CWnd
 
 // LIBRARY: IMPERIALISM 0x0060770c
-// name: InitializeMfcWndBottomGlobal
+// InitializeMfcWndBottomGlobal
 // prototype: void __cdecl InitializeMfcWndBottomGlobal(void)
 
 // LIBRARY: IMPERIALISM 0x00607716
 // ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x00607723
-// name: RegisterMfcGlobalCleanup_0060772f
+// RegisterMfcGlobalCleanup_0060772f
 // prototype: void __cdecl RegisterMfcGlobalCleanup_0060772f(void)
 
 // LIBRARY: IMPERIALISM 0x00607744
-// name: CWnd::CWnd_00607744
+// CWnd::CWnd_00607744
 
 // LIBRARY: IMPERIALISM 0x0060774a
-// name: InitializeMfcWndTopMostGlobal
+// InitializeMfcWndTopMostGlobal
 // prototype: void __cdecl InitializeMfcWndTopMostGlobal(void)
 
 // LIBRARY: IMPERIALISM 0x00607754
 // ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x00607761
-// name: RegisterMfcGlobalCleanup_0060776d
+// RegisterMfcGlobalCleanup_0060776d
 // prototype: void __cdecl RegisterMfcGlobalCleanup_0060776d(void)
 
 // LIBRARY: IMPERIALISM 0x00607782
-// name: CWnd::CWnd_00607782
+// CWnd::CWnd_00607782
 
 // LIBRARY: IMPERIALISM 0x00607788
-// name: InitializeMfcWndNoTopMostGlobal
+// InitializeMfcWndNoTopMostGlobal
 // prototype: void __cdecl InitializeMfcWndNoTopMostGlobal(void)
 
 // LIBRARY: IMPERIALISM 0x00607792
 // ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x0060779f
-// name: RegisterMfcGlobalCleanup_006077ab
+// RegisterMfcGlobalCleanup_006077ab
 // prototype: void __cdecl RegisterMfcGlobalCleanup_006077ab(void)
 
 // LIBRARY: IMPERIALISM 0x006077c0
-// name: CWnd::CWnd_006077C0
+// CWnd::CWnd_006077C0
 
-// LIBRARY: IMPERIALISM 0x006077c6
+// LIBRARY: IMPERIALISM 0x006077c6 SYMBOL
+// ??0CWnd@@QAE@XZ
 // name: CWnd::CWnd
-// symbol: ??0CWnd@@QAE@XZ
 // prototype: public: __thiscall CWnd::CWnd(void)
 
-// LIBRARY: IMPERIALISM 0x006077f0
-// symbol: ??_GCWnd@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x006077f0 SYMBOL
+// ??_GCWnd@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x0060780c
+// LIBRARY: IMPERIALISM 0x0060780c SYMBOL
+// ??0CWnd@@AAE@PAUHWND__@@@Z
 // name: CWnd::CWnd
-// symbol: ??0CWnd@@AAE@PAUHWND__@@@Z
 // prototype: private: __thiscall CWnd::CWnd(struct HWND__*)
 
-// LIBRARY: IMPERIALISM 0x00607840
+// LIBRARY: IMPERIALISM 0x00607840 SYMBOL
+// ?ModifyStyle@CWnd@@SGHPAUHWND__@@KKI@Z
 // name: CWnd::ModifyStyle
-// symbol: ?ModifyStyle@CWnd@@SGHPAUHWND__@@KKI@Z
 // prototype: public: static int __stdcall CWnd::ModifyStyle(struct HWND__*, unsigned long, unsigned long, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0060785a
-// symbol: ?_AfxModifyStyle@@YGHPAUHWND__@@HKKI@Z
+// LIBRARY: IMPERIALISM 0x0060785a SYMBOL
+// ?_AfxModifyStyle@@YGHPAUHWND__@@HKKI@Z
 
-// LIBRARY: IMPERIALISM 0x006078a9
+// LIBRARY: IMPERIALISM 0x006078a9 SYMBOL
+// ?ModifyStyleEx@CWnd@@SGHPAUHWND__@@KKI@Z
 // name: CWnd::ModifyStyleEx
-// symbol: ?ModifyStyleEx@CWnd@@SGHPAUHWND__@@KKI@Z
 // prototype: public: static int __stdcall CWnd::ModifyStyleEx(struct HWND__*, unsigned long, unsigned long, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x006078c3
-// symbol: ?AfxCallWndProc@@YGJPAVCWnd@@PAUHWND__@@IIJ@Z
+// LIBRARY: IMPERIALISM 0x006078c3 SYMBOL
+// ?AfxCallWndProc@@YGJPAVCWnd@@PAUHWND__@@IIJ@Z
 
-// LIBRARY: IMPERIALISM 0x006079b3
-// symbol: ?_AfxPreInitDialog@@YGXPAVCWnd@@PAUtagRECT@@PAK@Z
+// LIBRARY: IMPERIALISM 0x006079b3 SYMBOL
+// ?_AfxPreInitDialog@@YGXPAVCWnd@@PAUtagRECT@@PAK@Z
 
-// LIBRARY: IMPERIALISM 0x006079d6
-// symbol: ?_AfxPostInitDialog@@YGXPAVCWnd@@ABUtagRECT@@K@Z
+// LIBRARY: IMPERIALISM 0x006079d6 SYMBOL
+// ?_AfxPostInitDialog@@YGXPAVCWnd@@ABUtagRECT@@K@Z
 
-// LIBRARY: IMPERIALISM 0x00607a4f
+// LIBRARY: IMPERIALISM 0x00607a4f SYMBOL
+// ?GetCurrentMessage@CWnd@@KGPBUtagMSG@@XZ
 // name: CWnd::GetCurrentMessage
-// symbol: ?GetCurrentMessage@CWnd@@KGPBUtagMSG@@XZ
 // prototype: protected: static struct tagMSG const * __stdcall CWnd::GetCurrentMessage(void)
 
-// LIBRARY: IMPERIALISM 0x00607a84
+// LIBRARY: IMPERIALISM 0x00607a84 SYMBOL
+// ?Default@CWnd@@IAEJXZ
 // name: CWnd::Default
-// symbol: ?Default@CWnd@@IAEJXZ
 // prototype: protected: long __thiscall CWnd::Default(void)
 
-// LIBRARY: IMPERIALISM 0x00607aab
-// symbol: ?DeleteTempMap@CMenu@@SGXXZ
+// LIBRARY: IMPERIALISM 0x00607aab SYMBOL
+// ?DeleteTempMap@CMenu@@SGXXZ
 
-// LIBRARY: IMPERIALISM 0x00607abf
-// symbol: ?afxMapHWND@@YAPAVCHandleMap@@H@Z
+// LIBRARY: IMPERIALISM 0x00607abf SYMBOL
+// ?afxMapHWND@@YAPAVCHandleMap@@H@Z
 
-// LIBRARY: IMPERIALISM 0x00607b2f
+// LIBRARY: IMPERIALISM 0x00607b2f SYMBOL
+// ?FromHandle@CWnd@@SGPAV1@PAUHWND__@@@Z
 // name: CWnd::FromHandle
-// symbol: ?FromHandle@CWnd@@SGPAV1@PAUHWND__@@@Z
 // prototype: public: static class CWnd * __stdcall CWnd::FromHandle(struct HWND__*)
 
-// LIBRARY: IMPERIALISM 0x00607b57
+// LIBRARY: IMPERIALISM 0x00607b57 SYMBOL
+// ?FromHandlePermanent@CWnd@@SGPAV1@PAUHWND__@@@Z
 // name: CWnd::FromHandlePermanent
-// symbol: ?FromHandlePermanent@CWnd@@SGPAV1@PAUHWND__@@@Z
 // prototype: public: static class CWnd * __stdcall CWnd::FromHandlePermanent(struct HWND__*)
 
-// LIBRARY: IMPERIALISM 0x00607b73
+// LIBRARY: IMPERIALISM 0x00607b73 SYMBOL
+// ?Attach@CWnd@@QAEHPAUHWND__@@@Z
 // name: CWnd::Attach
-// symbol: ?Attach@CWnd@@QAEHPAUHWND__@@@Z
 // prototype: public: int __thiscall CWnd::Attach(struct HWND__*)
 
-// LIBRARY: IMPERIALISM 0x00607bac
+// LIBRARY: IMPERIALISM 0x00607bac SYMBOL
+// ?Detach@CWnd@@QAEPAUHWND__@@XZ
 // name: CWnd::Detach
-// symbol: ?Detach@CWnd@@QAEPAUHWND__@@XZ
 // prototype: public: struct HWND__* __thiscall CWnd::Detach(void)
 
-// LIBRARY: IMPERIALISM 0x00607bda
+// LIBRARY: IMPERIALISM 0x00607bda SYMBOL
+// ?PreSubclassWindow@CWnd@@UAEXXZ
 // name: CWnd::PreSubclassWindow
-// symbol: ?PreSubclassWindow@CWnd@@UAEXXZ
 // prototype: public: virtual void __thiscall CWnd::PreSubclassWindow(void)
 
-// LIBRARY: IMPERIALISM 0x00607bdb
+// LIBRARY: IMPERIALISM 0x00607bdb SYMBOL
+// ?AfxWndProc@@YGJPAUHWND__@@IIJ@Z
 // name: AfxWndProc
-// symbol: ?AfxWndProc@@YGJPAUHWND__@@IIJ@Z
 // prototype: long __stdcall AfxWndProc(struct HWND__*, unsigned int, unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x00607c0a
+// LIBRARY: IMPERIALISM 0x00607c0a SYMBOL
+// ?AfxGetAfxWndProc@@YGP6GJPAUHWND__@@IIJ@ZXZ
 // name: AfxGetAfxWndProc
-// symbol: ?AfxGetAfxWndProc@@YGP6GJPAUHWND__@@IIJ@ZXZ
 // prototype: long (__stdcall * __stdcall AfxGetAfxWndProc(void))(struct HWND__ *, unsigned int, unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x00607c10
-// symbol: ?_AfxActivationWndProc@@YGJPAUHWND__@@IIJ@Z
+// LIBRARY: IMPERIALISM 0x00607c10 SYMBOL
+// ?_AfxActivationWndProc@@YGJPAUHWND__@@IIJ@Z
 
-// LIBRARY: IMPERIALISM 0x00607d5d
-// symbol: ?_AfxHandleActivate@@YGXPAVCWnd@@I0@Z
+// LIBRARY: IMPERIALISM 0x00607d5d SYMBOL
+// ?_AfxHandleActivate@@YGXPAVCWnd@@I0@Z
 
-// LIBRARY: IMPERIALISM 0x00607dbe
-// symbol: ?_AfxHandleSetCursor@@YGHPAVCWnd@@II@Z
+// LIBRARY: IMPERIALISM 0x00607dbe SYMBOL
+// ?_AfxHandleSetCursor@@YGHPAVCWnd@@II@Z
 
-// LIBRARY: IMPERIALISM 0x00607e36
+// LIBRARY: IMPERIALISM 0x00607e36 SYMBOL
+// ?_AfxGrayBackgroundWndProc@@YGJPAUHWND__@@IIJ@Z
 // name: _AfxGrayBackgroundWndProc
-// symbol: ?_AfxGrayBackgroundWndProc@@YGJPAUHWND__@@IIJ@Z
 // prototype: long __stdcall _AfxGrayBackgroundWndProc(struct HWND__*, unsigned int, unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x00607eb2
+// LIBRARY: IMPERIALISM 0x00607eb2 SYMBOL
+// ?_AfxCbtFilterHook@@YGJHIJ@Z
 // name: _AfxCbtFilterHook
-// symbol: ?_AfxCbtFilterHook@@YGJHIJ@Z
 // prototype: long __stdcall _AfxCbtFilterHook(int, unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x00608040
+// LIBRARY: IMPERIALISM 0x00608040 SYMBOL
+// ?AfxHookWindowCreate@@YGXPAVCWnd@@@Z
 // name: AfxHookWindowCreate
-// symbol: ?AfxHookWindowCreate@@YGXPAVCWnd@@@Z
 // prototype: void __stdcall AfxHookWindowCreate(class CWnd *)
 
-// LIBRARY: IMPERIALISM 0x0060808c
+// LIBRARY: IMPERIALISM 0x0060808c SYMBOL
+// ?AfxUnhookWindowCreate@@YGHXZ
 // name: AfxUnhookWindowCreate
-// symbol: ?AfxUnhookWindowCreate@@YGHXZ
 // prototype: int __stdcall AfxUnhookWindowCreate(void)
 
-// LIBRARY: IMPERIALISM 0x006080ce
+// LIBRARY: IMPERIALISM 0x006080ce SYMBOL
+// ?CreateEx@CWnd@@QAEHKPBD0KABUtagRECT@@PAV1@IPAX@Z
 // name: CWnd::CreateEx
-// symbol: ?CreateEx@CWnd@@QAEHKPBD0KABUtagRECT@@PAV1@IPAX@Z
 // prototype: public: int __thiscall CWnd::CreateEx(unsigned long, char const *, char const *, unsigned long, struct tagRECT const &, class CWnd *, unsigned int, void *)
 
-// LIBRARY: IMPERIALISM 0x00608115
+// LIBRARY: IMPERIALISM 0x00608115 SYMBOL
+// ?CreateEx@CWnd@@QAEHKPBD0KHHHHPAUHWND__@@PAUHMENU__@@PAX@Z
 // name: CWnd::CreateEx
-// symbol: ?CreateEx@CWnd@@QAEHKPBD0KHHHHPAUHWND__@@PAUHMENU__@@PAX@Z
 // prototype: public: int __thiscall CWnd::CreateEx(unsigned long, char const *, char const *, unsigned long, int, int, int, int, struct HWND__*, struct HMENU__*, void *)
 
-// LIBRARY: IMPERIALISM 0x006081d9
+// LIBRARY: IMPERIALISM 0x006081d9 SYMBOL
+// ?PreCreateWindow@CWnd@@UAEHAAUtagCREATESTRUCTA@@@Z
 // name: CWnd::PreCreateWindow
-// symbol: ?PreCreateWindow@CWnd@@UAEHAAUtagCREATESTRUCTA@@@Z
 // prototype: public: virtual int __thiscall CWnd::PreCreateWindow(struct tagCREATESTRUCTA &)
 
-// LIBRARY: IMPERIALISM 0x0060820b
+// LIBRARY: IMPERIALISM 0x0060820b SYMBOL
+// ?Create@CWnd@@UAEHPBD0KABUtagRECT@@PAV1@IPAUCCreateContext@@@Z
 // name: CWnd::Create
-// symbol: ?Create@CWnd@@UAEHPBD0KABUtagRECT@@PAV1@IPAUCCreateContext@@@Z
 // prototype: public: virtual int __thiscall CWnd::Create(char const *, char const *, unsigned long, struct tagRECT const &, class CWnd *, unsigned int, struct CCreateContext *)
 
-// LIBRARY: IMPERIALISM 0x00608257
-// symbol: ??1CWnd@@UAE@XZ
+// LIBRARY: IMPERIALISM 0x00608257 SYMBOL
+// ??1CWnd@@UAE@XZ
 
-// LIBRARY: IMPERIALISM 0x006082d3
+// LIBRARY: IMPERIALISM 0x006082d3 SYMBOL
+// ?OnDestroy@CWnd@@IAEXXZ
 // name: CWnd::OnDestroy
-// symbol: ?OnDestroy@CWnd@@IAEXXZ
 // prototype: protected: void __thiscall CWnd::OnDestroy(void)
 
-// LIBRARY: IMPERIALISM 0x006082f1
+// LIBRARY: IMPERIALISM 0x006082f1 SYMBOL
+// ?OnNcDestroy@CWnd@@IAEXXZ
 // name: CWnd::OnNcDestroy
-// symbol: ?OnNcDestroy@CWnd@@IAEXXZ
 // prototype: protected: void __thiscall CWnd::OnNcDestroy(void)
 
-// LIBRARY: IMPERIALISM 0x00608408
+// LIBRARY: IMPERIALISM 0x00608408 SYMBOL
+// ?PostNcDestroy@CWnd@@MAEXXZ
 // name: CWnd::PostNcDestroy
-// symbol: ?PostNcDestroy@CWnd@@MAEXXZ
 // prototype: protected: virtual void __thiscall CWnd::PostNcDestroy(void)
 
-// LIBRARY: IMPERIALISM 0x00608409
+// LIBRARY: IMPERIALISM 0x00608409 SYMBOL
+// ?OnFinalRelease@CWnd@@UAEXXZ
 // name: CWnd::OnFinalRelease
-// symbol: ?OnFinalRelease@CWnd@@UAEXXZ
 // prototype: public: virtual void __thiscall CWnd::OnFinalRelease(void)
 
-// LIBRARY: IMPERIALISM 0x0060841a
+// LIBRARY: IMPERIALISM 0x0060841a SYMBOL
+// ?DestroyWindow@CWnd@@UAEHXZ
 // name: CWnd::DestroyWindow
-// symbol: ?DestroyWindow@CWnd@@UAEHXZ
 // prototype: public: virtual int __thiscall CWnd::DestroyWindow(void)
 
-// LIBRARY: IMPERIALISM 0x00608467
+// LIBRARY: IMPERIALISM 0x00608467 SYMBOL
+// ?DefWindowProcA@CWnd@@MAEJIIJ@Z
 // name: CWnd::DefWindowProcA
-// symbol: ?DefWindowProcA@CWnd@@MAEJIIJ@Z
 // prototype: protected: virtual long __thiscall CWnd::DefWindowProcA(unsigned int, unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x006084ae
+// LIBRARY: IMPERIALISM 0x006084ae SYMBOL
+// ?GetSuperWndProcAddr@CWnd@@MAEPAP6GJPAUHWND__@@IIJ@ZXZ
 // name: CWnd::GetSuperWndProcAddr
-// symbol: ?GetSuperWndProcAddr@CWnd@@MAEPAP6GJPAUHWND__@@IIJ@ZXZ
 // prototype: protected: virtual long (__stdcall**__thiscall CWnd::GetSuperWndProcAddr(void))(struct HWND__ *,unsigned int,unsigned int,long)
 
-// LIBRARY: IMPERIALISM 0x006084b2
+// LIBRARY: IMPERIALISM 0x006084b2 SYMBOL
+// ?PreTranslateMessage@CWnd@@UAEHPAUtagMSG@@@Z
 // name: CWnd::PreTranslateMessage
-// symbol: ?PreTranslateMessage@CWnd@@UAEHPAUtagMSG@@@Z
 // prototype: public: virtual int __thiscall CWnd::PreTranslateMessage(struct tagMSG *)
 
-// LIBRARY: IMPERIALISM 0x006084d1
+// LIBRARY: IMPERIALISM 0x006084d1 SYMBOL
+// ?CancelToolTips@CWnd@@SGXH@Z
 // name: CWnd::CancelToolTips
-// symbol: ?CancelToolTips@CWnd@@SGXH@Z
 // prototype: public: static void __stdcall CWnd::CancelToolTips(int)
 
-// LIBRARY: IMPERIALISM 0x0060852e
+// LIBRARY: IMPERIALISM 0x0060852e SYMBOL
+// ?OnToolHitTest@CWnd@@UBEHVCPoint@@PAUtagTOOLINFOA@@@Z
 // name: CWnd::OnToolHitTest
-// symbol: ?OnToolHitTest@CWnd@@UBEHVCPoint@@PAUtagTOOLINFOA@@@Z
 // prototype: public: virtual int __thiscall CWnd::OnToolHitTest(struct tagPOINT,struct tagTOOLINFOA *)const
 
-// LIBRARY: IMPERIALISM 0x0060859f
+// LIBRARY: IMPERIALISM 0x0060859f SYMBOL
+// ?GetWindowTextA@CWnd@@QBEXAAVCString@@@Z
 // name: CWnd::GetWindowText
-// symbol: ?GetWindowTextA@CWnd@@QBEXAAVCString@@@Z
 // prototype: public: void __thiscall CWnd::GetWindowText(class CString &)const
 
-// LIBRARY: IMPERIALISM 0x00608657
+// LIBRARY: IMPERIALISM 0x00608657 SYMBOL
+// ?GetWindowPlacement@CWnd@@QBEHPAUtagWINDOWPLACEMENT@@@Z
 // name: CWnd::GetWindowPlacement
-// symbol: ?GetWindowPlacement@CWnd@@QBEHPAUtagWINDOWPLACEMENT@@@Z
 // prototype: public: int __thiscall CWnd::GetWindowPlacement(struct tagWINDOWPLACEMENT *) const
 
-// LIBRARY: IMPERIALISM 0x0060866e
+// LIBRARY: IMPERIALISM 0x0060866e SYMBOL
+// ?GetWindowPlacement@CWnd@@QBEHPAUtagWINDOWPLACEMENT@@@Z
 // name: CWnd::GetWindowPlacement
-// symbol: ?GetWindowPlacement@CWnd@@QBEHPAUtagWINDOWPLACEMENT@@@Z
 // prototype: public: int __thiscall CWnd::GetWindowPlacement(struct tagWINDOWPLACEMENT *) const
 
-// LIBRARY: IMPERIALISM 0x00608685
+// LIBRARY: IMPERIALISM 0x00608685 SYMBOL
+// ?OnDrawItem@CWnd@@IAEXHPAUtagDRAWITEMSTRUCT@@@Z
 // name: CWnd::OnDrawItem
-// symbol: ?OnDrawItem@CWnd@@IAEXHPAUtagDRAWITEMSTRUCT@@@Z
 // prototype: protected: void __thiscall CWnd::OnDrawItem(int, struct tagDRAWITEMSTRUCT *)
 
-// LIBRARY: IMPERIALISM 0x006086c2
+// LIBRARY: IMPERIALISM 0x006086c2 SYMBOL
+// ?OnCompareItem@CWnd@@IAEHHPAUtagCOMPAREITEMSTRUCT@@@Z
 // name: CWnd::OnCompareItem
-// symbol: ?OnCompareItem@CWnd@@IAEHHPAUtagCOMPAREITEMSTRUCT@@@Z
 // prototype: protected: int __thiscall CWnd::OnCompareItem(int, struct tagCOMPAREITEMSTRUCT *)
 
-// LIBRARY: IMPERIALISM 0x0060870c
-// symbol: ?OnCharToItem@CWnd@@IAEHIPAVCListBox@@I@Z
+// LIBRARY: IMPERIALISM 0x0060870c SYMBOL
+// ?OnCharToItem@CWnd@@IAEHIPAVCListBox@@I@Z
 
-// LIBRARY: IMPERIALISM 0x00608737
-// symbol: ?OnCharToItem@CWnd@@IAEHIPAVCListBox@@I@Z
+// LIBRARY: IMPERIALISM 0x00608737 SYMBOL
+// ?OnCharToItem@CWnd@@IAEHIPAVCListBox@@I@Z
 
-// LIBRARY: IMPERIALISM 0x00608762
+// LIBRARY: IMPERIALISM 0x00608762 SYMBOL
+// ?TrackPopupMenu@CMenu@@QAEHIHHPAVCWnd@@PBUtagRECT@@@Z
 // name: CMenu::TrackPopupMenu
-// symbol: ?TrackPopupMenu@CMenu@@QAEHIHHPAVCWnd@@PBUtagRECT@@@Z
 // prototype: public: int __thiscall CMenu::TrackPopupMenu(unsigned int, int, int, class CWnd *, struct tagRECT const *)
 
-// LIBRARY: IMPERIALISM 0x006087b6
+// LIBRARY: IMPERIALISM 0x006087b6 SYMBOL
+// ?OnMeasureItem@CWnd@@IAEXHPAUtagMEASUREITEMSTRUCT@@@Z
 // name: CWnd::OnMeasureItem
-// symbol: ?OnMeasureItem@CWnd@@IAEXHPAUtagMEASUREITEMSTRUCT@@@Z
 // prototype: protected: void __thiscall CWnd::OnMeasureItem(int, struct tagMEASUREITEMSTRUCT *)
 
-// LIBRARY: IMPERIALISM 0x0060882f
-// symbol: ?FindPopupMenuFromID@@YAPAVCMenu@@PAV1@I@Z
+// LIBRARY: IMPERIALISM 0x0060882f SYMBOL
+// ?FindPopupMenuFromID@@YAPAVCMenu@@PAV1@I@Z
 
-// LIBRARY: IMPERIALISM 0x00608892
-// symbol: ?AfxRegisterClass@@YGHPAUtagWNDCLASSA@@@Z
+// LIBRARY: IMPERIALISM 0x00608892 SYMBOL
+// ?AfxRegisterClass@@YGHPAUtagWNDCLASSA@@@Z
 
-// LIBRARY: IMPERIALISM 0x0060893b
+// LIBRARY: IMPERIALISM 0x0060893b SYMBOL
+// ?AfxRegisterWndClass@@YGPBDIPAUHICON__@@PAUHBRUSH__@@0@Z
 // name: AfxRegisterWndClass
-// symbol: ?AfxRegisterWndClass@@YGPBDIPAUHICON__@@PAUHBRUSH__@@0@Z
 // prototype: char const * __stdcall AfxRegisterWndClass(unsigned int, struct HICON__*, struct HBRUSH__*, struct HICON__*)
 
-// LIBRARY: IMPERIALISM 0x006089ef
+// LIBRARY: IMPERIALISM 0x006089ef SYMBOL
+// ?OnNTCtlColor@CWnd@@IAEJIJ@Z
 // name: CWnd::OnNTCtlColor
-// symbol: ?OnNTCtlColor@CWnd@@IAEJIJ@Z
 // prototype: protected: long __thiscall CWnd::OnNTCtlColor(unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x00608a2b
+// LIBRARY: IMPERIALISM 0x00608a2b SYMBOL
+// ?WinHelpA@CWnd@@UAEXKI@Z
 // name: CWnd::WinHelpA
-// symbol: ?WinHelpA@CWnd@@UAEXKI@Z
 // prototype: public: virtual void __thiscall CWnd::WinHelpA(unsigned long,unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00608b11
+// LIBRARY: IMPERIALISM 0x00608b11 SYMBOL
+// ?AfxFindMessageEntry@@YGPBUAFX_MSGMAP_ENTRY@@PBU1@III@Z
 // name: AfxFindMessageEntry
-// symbol: ?AfxFindMessageEntry@@YGPBUAFX_MSGMAP_ENTRY@@PBU1@III@Z
 // prototype: AFX_MSGMAP_ENTRY * __stdcall ?AfxFindMessageEntry@@YGPBUAFX_MSGMAP_ENTRY@@PBU1@III@Z@00608b11(AFX_MSGMAP_ENTRY * param_1, uint param_2, uint param_3, uint param_4)
 
-// LIBRARY: IMPERIALISM 0x00608b66
+// LIBRARY: IMPERIALISM 0x00608b66 SYMBOL
+// ?WindowProc@CWnd@@MAEJIIJ@Z
 // name: CWnd::WindowProc
-// symbol: ?WindowProc@CWnd@@MAEJIIJ@Z
 // prototype: protected: virtual long __thiscall CWnd::WindowProc(unsigned int, unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x00608ba8
-// symbol: ?OnWndMsg@CWnd@@MAEHIIJPAJ@Z
+// LIBRARY: IMPERIALISM 0x00608ba8 SYMBOL
+// ?OnWndMsg@CWnd@@MAEHIIJPAJ@Z
 
-// LIBRARY: IMPERIALISM 0x0060911a
+// LIBRARY: IMPERIALISM 0x0060911a SYMBOL
+// ??0CTestCmdUI@@QAE@XZ
 // name: CTestCmdUI::CTestCmdUI
-// symbol: ??0CTestCmdUI@@QAE@XZ
 // prototype: public: __thiscall CTestCmdUI::CTestCmdUI(void)
 
-// LIBRARY: IMPERIALISM 0x0060914d
+// LIBRARY: IMPERIALISM 0x0060914d SYMBOL
+// ?OnCommand@CWnd@@MAEHIJ@Z
 // name: CWnd::OnCommand
-// symbol: ?OnCommand@CWnd@@MAEHIJ@Z
 // prototype: protected: virtual int __thiscall CWnd::OnCommand(unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x006091d9
+// LIBRARY: IMPERIALISM 0x006091d9 SYMBOL
+// ?OnNotify@CWnd@@MAEHIJPAJ@Z
 // name: CWnd::OnNotify
-// symbol: ?OnNotify@CWnd@@MAEHIJPAJ@Z
 // prototype: protected: virtual int __thiscall CWnd::OnNotify(unsigned int,long,long *)
 
-// LIBRARY: IMPERIALISM 0x00609253
+// LIBRARY: IMPERIALISM 0x00609253 SYMBOL
+// ?GetParentFrame@CWnd@@QBEPAVCFrameWnd@@XZ
 // name: CWnd::GetParentFrame
-// symbol: ?GetParentFrame@CWnd@@QBEPAVCFrameWnd@@XZ
 // prototype: public: class CFrameWnd * __thiscall CWnd::GetParentFrame(void) const
 
-// LIBRARY: IMPERIALISM 0x00609297
+// LIBRARY: IMPERIALISM 0x00609297 SYMBOL
+// ?AfxGetParentOwner@@YGPAUHWND__@@PAU1@@Z
 // name: AfxGetParentOwner
-// symbol: ?AfxGetParentOwner@@YGPAUHWND__@@PAU1@@Z
 // prototype: HWND__ * __stdcall ?AfxGetParentOwner@@YGPAUHWND__@@PAU1@@Z@00609297(HWND__ * param_1)
 
-// LIBRARY: IMPERIALISM 0x006092dc
+// LIBRARY: IMPERIALISM 0x006092dc SYMBOL
+// ?GetTopLevelParent@CWnd@@QBEPAV1@XZ
 // name: CWnd::GetTopLevelParent
-// symbol: ?GetTopLevelParent@CWnd@@QBEPAV1@XZ
 // prototype: public: class CWnd * __thiscall CWnd::GetTopLevelParent(void) const
 
-// LIBRARY: IMPERIALISM 0x0060933b
+// LIBRARY: IMPERIALISM 0x0060933b SYMBOL
+// ?GetParentOwner@CWnd@@QBEPAV1@XZ
 // name: CWnd::GetParentOwner
-// symbol: ?GetParentOwner@CWnd@@QBEPAV1@XZ
 // prototype: public: class CWnd * __thiscall CWnd::GetParentOwner(void) const
 
-// LIBRARY: IMPERIALISM 0x00609382
+// LIBRARY: IMPERIALISM 0x00609382 SYMBOL
+// ?IsTopParentActive@CWnd@@QBEHXZ
 // name: CWnd::IsTopParentActive
-// symbol: ?IsTopParentActive@CWnd@@QBEHXZ
 // prototype: public: int __thiscall CWnd::IsTopParentActive(void) const
 
-// LIBRARY: IMPERIALISM 0x006093b6
-// symbol: ?ActivateTopParent@CWnd@@QAEXXZ
+// LIBRARY: IMPERIALISM 0x006093b6 SYMBOL
+// ?ActivateTopParent@CWnd@@QAEXXZ
 
-// LIBRARY: IMPERIALISM 0x006093f3
+// LIBRARY: IMPERIALISM 0x006093f3 SYMBOL
+// ?GetTopLevelFrame@CWnd@@QBEPAVCFrameWnd@@XZ
 // name: CWnd::GetTopLevelFrame
-// symbol: ?GetTopLevelFrame@CWnd@@QBEPAVCFrameWnd@@XZ
 // prototype: public: class CFrameWnd * __thiscall CWnd::GetTopLevelFrame(void) const
 
-// LIBRARY: IMPERIALISM 0x00609437
+// LIBRARY: IMPERIALISM 0x00609437 SYMBOL
+// ?GetSafeOwner@CWnd@@SGPAV1@PAV1@PAPAUHWND__@@@Z
 // name: CWnd::GetSafeOwner
-// symbol: ?GetSafeOwner@CWnd@@SGPAV1@PAV1@PAPAUHWND__@@@Z
 // prototype: public: static class CWnd * __stdcall CWnd::GetSafeOwner(class CWnd *, struct HWND__**)
 
-// LIBRARY: IMPERIALISM 0x006094d7
+// LIBRARY: IMPERIALISM 0x006094d7 SYMBOL
+// ?GetDescendantWindow@CWnd@@SGPAV1@PAUHWND__@@HH@Z
 // name: CWnd::GetDescendantWindow
-// symbol: ?GetDescendantWindow@CWnd@@SGPAV1@PAUHWND__@@HH@Z
 // prototype: public: static class CWnd * __stdcall CWnd::GetDescendantWindow(struct HWND__*, int, int)
 
-// LIBRARY: IMPERIALISM 0x00609550
+// LIBRARY: IMPERIALISM 0x00609550 SYMBOL
+// ?SendMessageToDescendants@CWnd@@SGXPAUHWND__@@IIJHH@Z
 // name: CWnd::SendMessageToDescendants
-// symbol: ?SendMessageToDescendants@CWnd@@SGXPAUHWND__@@IIJHH@Z
 // prototype: public: static void __stdcall CWnd::SendMessageToDescendants(struct HWND__*, unsigned int, unsigned int, long, int, int)
 
-// LIBRARY: IMPERIALISM 0x006095cd
+// LIBRARY: IMPERIALISM 0x006095cd SYMBOL
+// ?GetScrollBarCtrl@CWnd@@UBEPAVCScrollBar@@H@Z
 // name: CWnd::GetScrollBarCtrl
-// symbol: ?GetScrollBarCtrl@CWnd@@UBEPAVCScrollBar@@H@Z
 // prototype: public: virtual class CScrollBar * __thiscall CWnd::GetScrollBarCtrl(int)const
 
-// LIBRARY: IMPERIALISM 0x006095d2
+// LIBRARY: IMPERIALISM 0x006095d2 SYMBOL
+// ?SetScrollPos@CWnd@@QAEHHHH@Z
 // name: CWnd::SetScrollPos
-// symbol: ?SetScrollPos@CWnd@@QAEHHHH@Z
 // prototype: public: int __thiscall CWnd::SetScrollPos(int, int, int)
 
-// LIBRARY: IMPERIALISM 0x00609602
+// LIBRARY: IMPERIALISM 0x00609602 SYMBOL
+// ?GetScrollPos@CWnd@@QBEHH@Z
 // name: CWnd::GetScrollPos
-// symbol: ?GetScrollPos@CWnd@@QBEHH@Z
 // prototype: public: int __thiscall CWnd::GetScrollPos(int) const
 
-// LIBRARY: IMPERIALISM 0x0060962a
+// LIBRARY: IMPERIALISM 0x0060962a SYMBOL
+// ?SetScrollRange@CWnd@@QAEXHHHH@Z
 // name: CWnd::SetScrollRange
-// symbol: ?SetScrollRange@CWnd@@QAEXHHHH@Z
 // prototype: public: void __thiscall CWnd::SetScrollRange(int, int, int, int)
 
-// LIBRARY: IMPERIALISM 0x0060965d
+// LIBRARY: IMPERIALISM 0x0060965d SYMBOL
+// ?GetScrollRange@CWnd@@QBEXHPAH0@Z
 // name: CWnd::GetScrollRange
-// symbol: ?GetScrollRange@CWnd@@QBEXHPAH0@Z
 // prototype: public: void __thiscall CWnd::GetScrollRange(int, int *, int *) const
 
-// LIBRARY: IMPERIALISM 0x0060968d
+// LIBRARY: IMPERIALISM 0x0060968d SYMBOL
+// ?EnableScrollBarCtrl@CWnd@@QAEXHH@Z
 // name: CWnd::EnableScrollBarCtrl
-// symbol: ?EnableScrollBarCtrl@CWnd@@QAEXHH@Z
 // prototype: public: void __thiscall CWnd::EnableScrollBarCtrl(int, int)
 
-// LIBRARY: IMPERIALISM 0x006096d0
+// LIBRARY: IMPERIALISM 0x006096d0 SYMBOL
+// ?SetScrollInfo@CWnd@@QAEHHPAUtagSCROLLINFO@@H@Z
 // name: CWnd::SetScrollInfo
-// symbol: ?SetScrollInfo@CWnd@@QAEHHPAUtagSCROLLINFO@@H@Z
 // prototype: public: int __thiscall CWnd::SetScrollInfo(int, struct tagSCROLLINFO *, int)
 
-// LIBRARY: IMPERIALISM 0x0060971d
+// LIBRARY: IMPERIALISM 0x0060971d SYMBOL
+// ?GetScrollInfo@CWnd@@QAEHHPAUtagSCROLLINFO@@I@Z
 // name: CWnd::GetScrollInfo
-// symbol: ?GetScrollInfo@CWnd@@QAEHHPAUtagSCROLLINFO@@I@Z
 // prototype: public: int __thiscall CWnd::GetScrollInfo(int, struct tagSCROLLINFO *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0060976a
+// LIBRARY: IMPERIALISM 0x0060976a SYMBOL
+// ?GetScrollLimit@CWnd@@QAEHH@Z
 // name: CWnd::GetScrollLimit
-// symbol: ?GetScrollLimit@CWnd@@QAEHH@Z
 // prototype: public: int __thiscall CWnd::GetScrollLimit(int)
 
-// LIBRARY: IMPERIALISM 0x006097ae
+// LIBRARY: IMPERIALISM 0x006097ae SYMBOL
+// ?ScrollWindow@CWnd@@QAEXHHPBUtagRECT@@0@Z
 // name: CWnd::ScrollWindow
-// symbol: ?ScrollWindow@CWnd@@QAEXHHPBUtagRECT@@0@Z
 // prototype: public: void __thiscall CWnd::ScrollWindow(int, int, struct tagRECT const *, struct tagRECT const *)
 
-// LIBRARY: IMPERIALISM 0x0060986b
+// LIBRARY: IMPERIALISM 0x0060986b SYMBOL
+// ?RepositionBars@CWnd@@QAEXIIIIPAUtagRECT@@PBU2@H@Z
 // name: CWnd::RepositionBars
-// symbol: ?RepositionBars@CWnd@@QAEXIIIIPAUtagRECT@@PBU2@H@Z
 // prototype: public: void __thiscall CWnd::RepositionBars(unsigned int, unsigned int, unsigned int, unsigned int, struct tagRECT *, struct tagRECT const *, int)
 
-// LIBRARY: IMPERIALISM 0x006099a5
+// LIBRARY: IMPERIALISM 0x006099a5 SYMBOL
+// ?AfxRepositionWindow@@YGXPAUAFX_SIZEPARENTPARAMS@@PAUHWND__@@PBUtagRECT@@@Z
 // name: AfxRepositionWindow
-// symbol: ?AfxRepositionWindow@@YGXPAUAFX_SIZEPARENTPARAMS@@PAUHWND__@@PBUtagRECT@@@Z
 // prototype: void __stdcall AfxRepositionWindow(struct AFX_SIZEPARENTPARAMS *, struct HWND__*, struct tagRECT const *)
 
-// LIBRARY: IMPERIALISM 0x00609a3f
+// LIBRARY: IMPERIALISM 0x00609a3f SYMBOL
+// ?CalcWindowRect@CWnd@@UAEXPAUtagRECT@@I@Z
 // name: CWnd::CalcWindowRect
-// symbol: ?CalcWindowRect@CWnd@@UAEXPAUtagRECT@@I@Z
 // prototype: public: virtual void __thiscall CWnd::CalcWindowRect(struct tagRECT *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00609a6a
+// LIBRARY: IMPERIALISM 0x00609a6a SYMBOL
+// ?HandleFloatingSysCommand@CWnd@@QAEHIJ@Z
 // name: CWnd::HandleFloatingSysCommand
-// symbol: ?HandleFloatingSysCommand@CWnd@@QAEHIJ@Z
 // prototype: public: int __thiscall CWnd::HandleFloatingSysCommand(unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x00609b24
+// LIBRARY: IMPERIALISM 0x00609b24 SYMBOL
+// ?WalkPreTranslateTree@CWnd@@SGHPAUHWND__@@PAUtagMSG@@@Z
 // name: CWnd::WalkPreTranslateTree
-// symbol: ?WalkPreTranslateTree@CWnd@@SGHPAUHWND__@@PAUtagMSG@@@Z
 // prototype: public: static int __stdcall CWnd::WalkPreTranslateTree(struct HWND__*, struct tagMSG *)
 
-// LIBRARY: IMPERIALISM 0x00609b66
+// LIBRARY: IMPERIALISM 0x00609b66 SYMBOL
+// ?SendChildNotifyLastMsg@CWnd@@QAEHPAJ@Z
 // name: CWnd::SendChildNotifyLastMsg
-// symbol: ?SendChildNotifyLastMsg@CWnd@@QAEHPAJ@Z
 // prototype: public: int __thiscall CWnd::SendChildNotifyLastMsg(long *)
 
-// LIBRARY: IMPERIALISM 0x00609b93
+// LIBRARY: IMPERIALISM 0x00609b93 SYMBOL
+// ?ReflectLastMsg@CWnd@@KGHPAUHWND__@@PAJ@Z
 // name: CWnd::ReflectLastMsg
-// symbol: ?ReflectLastMsg@CWnd@@KGHPAUHWND__@@PAJ@Z
 // prototype: protected: static int __stdcall CWnd::ReflectLastMsg(struct HWND__*, long *)
 
-// LIBRARY: IMPERIALISM 0x00609c37
+// LIBRARY: IMPERIALISM 0x00609c37 SYMBOL
+// ?OnChildNotify@CWnd@@MAEHIIJPAJ@Z
 // name: CWnd::OnChildNotify
-// symbol: ?OnChildNotify@CWnd@@MAEHIIJPAJ@Z
 // prototype: protected: virtual int __thiscall CWnd::OnChildNotify(unsigned int, unsigned int, long, long *)
 
-// LIBRARY: IMPERIALISM 0x00609c92
+// LIBRARY: IMPERIALISM 0x00609c92 SYMBOL
+// ?ReflectChildNotify@CWnd@@IAEHIIJPAJ@Z
 // name: CWnd::ReflectChildNotify
-// symbol: ?ReflectChildNotify@CWnd@@IAEHIIJPAJ@Z
 // prototype: protected: int __thiscall CWnd::ReflectChildNotify(unsigned int, unsigned int, long, long *)
 
-// LIBRARY: IMPERIALISM 0x00609d88
-// symbol: ?OnParentNotify@CWnd@@IAEXIJ@Z
+// LIBRARY: IMPERIALISM 0x00609d88 SYMBOL
+// ?OnParentNotify@CWnd@@IAEXIJ@Z
 
-// LIBRARY: IMPERIALISM 0x00609dd7
+// LIBRARY: IMPERIALISM 0x00609dd7 SYMBOL
+// ?OnSysColorChange@CWnd@@IAEXXZ
 // name: CWnd::OnSysColorChange
-// symbol: ?OnSysColorChange@CWnd@@IAEXXZ
 // prototype: protected: void __thiscall CWnd::OnSysColorChange(void)
 
-// LIBRARY: IMPERIALISM 0x00609e61
+// LIBRARY: IMPERIALISM 0x00609e61 SYMBOL
+// ?OnSettingChange@CWnd@@IAEXIPBD@Z
 // name: CWnd::OnSettingChange
-// symbol: ?OnSettingChange@CWnd@@IAEXIPBD@Z
 // prototype: protected: void __thiscall CWnd::OnSettingChange(unsigned int, char const *)
 
-// LIBRARY: IMPERIALISM 0x00609eb5
+// LIBRARY: IMPERIALISM 0x00609eb5 SYMBOL
+// ?OnWinIniChange@CWnd@@IAEXPBD@Z
 // name: CWnd::OnWinIniChange
-// symbol: ?OnWinIniChange@CWnd@@IAEXPBD@Z
 // prototype: protected: void __thiscall CWnd::OnWinIniChange(char const *)
 
-// LIBRARY: IMPERIALISM 0x00609f01
+// LIBRARY: IMPERIALISM 0x00609f01 SYMBOL
+// ?OnDevModeChange@CWnd@@IAEXPAD@Z
 // name: CWnd::OnDevModeChange
-// symbol: ?OnDevModeChange@CWnd@@IAEXPAD@Z
 // prototype: protected: void __thiscall CWnd::OnDevModeChange(char *)
 
-// LIBRARY: IMPERIALISM 0x00609f56
+// LIBRARY: IMPERIALISM 0x00609f56 SYMBOL
+// ?OnHelpInfo@CWnd@@IAEHPAUtagHELPINFO@@@Z
 // name: CWnd::OnHelpInfo
-// symbol: ?OnHelpInfo@CWnd@@IAEHPAUtagHELPINFO@@@Z
 // prototype: protected: int __thiscall CWnd::OnHelpInfo(struct tagHELPINFO *)
 
-// LIBRARY: IMPERIALISM 0x00609fba
-// symbol: ?OnDisplayChange@CWnd@@IAEJIJ@Z
+// LIBRARY: IMPERIALISM 0x00609fba SYMBOL
+// ?OnDisplayChange@CWnd@@IAEJIJ@Z
 
-// LIBRARY: IMPERIALISM 0x0060a007
+// LIBRARY: IMPERIALISM 0x0060a007 SYMBOL
+// ?OnDragList@CWnd@@IAEJIJ@Z
 // name: CWnd::OnDragList
-// symbol: ?OnDragList@CWnd@@IAEJIJ@Z
 // prototype: protected: long __thiscall CWnd::OnDragList(unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x0060a031
-// symbol: ?OnVScroll@CWnd@@IAEXIIPAVCScrollBar@@@Z
+// LIBRARY: IMPERIALISM 0x0060a031 SYMBOL
+// ?OnVScroll@CWnd@@IAEXIIPAVCScrollBar@@@Z
 
-// LIBRARY: IMPERIALISM 0x0060a052
-// symbol: ?OnVScroll@CWnd@@IAEXIIPAVCScrollBar@@@Z
+// LIBRARY: IMPERIALISM 0x0060a052 SYMBOL
+// ?OnVScroll@CWnd@@IAEXIIPAVCScrollBar@@@Z
 
-// LIBRARY: IMPERIALISM 0x0060a073
+// LIBRARY: IMPERIALISM 0x0060a073 SYMBOL
+// ?OnEnterIdle@CWnd@@IAEXIPAV1@@Z
 // name: CWnd::OnEnterIdle
-// symbol: ?OnEnterIdle@CWnd@@IAEXIPAV1@@Z
 // prototype: protected: void __thiscall CWnd::OnEnterIdle(unsigned int, class CWnd *)
 
-// LIBRARY: IMPERIALISM 0x0060a0bd
+// LIBRARY: IMPERIALISM 0x0060a0bd SYMBOL
+// ?OnCtlColor@CWnd@@IAEPAUHBRUSH__@@PAVCDC@@PAV1@I@Z
 // name: CWnd::OnCtlColor
-// symbol: ?OnCtlColor@CWnd@@IAEPAUHBRUSH__@@PAVCDC@@PAV1@I@Z
 // prototype: protected: struct HBRUSH__* __thiscall CWnd::OnCtlColor(class CDC *, class CWnd *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0060a0e4
+// LIBRARY: IMPERIALISM 0x0060a0e4 SYMBOL
+// ?OnGrayCtlColor@CWnd@@QAEPAUHBRUSH__@@PAVCDC@@PAV1@I@Z
 // name: CWnd::OnGrayCtlColor
-// symbol: ?OnGrayCtlColor@CWnd@@QAEPAUHBRUSH__@@PAVCDC@@PAV1@I@Z
 // prototype: public: struct HBRUSH__* __thiscall CWnd::OnGrayCtlColor(class CDC *, class CWnd *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0060a147
+// LIBRARY: IMPERIALISM 0x0060a147 SYMBOL
+// ?GrayCtlColor@CWnd@@SGHPAUHDC__@@PAUHWND__@@IPAUHBRUSH__@@K@Z
 // name: CWnd::GrayCtlColor
-// symbol: ?GrayCtlColor@CWnd@@SGHPAUHDC__@@PAUHWND__@@IPAUHBRUSH__@@K@Z
 // prototype: public: static int __stdcall CWnd::GrayCtlColor(struct HDC__*, struct HWND__*, unsigned int, struct HBRUSH__*, unsigned long)
 
 // LIBRARY: IMPERIALISM 0x0060a1bc
 // MFC nafxcw handler in CDialog's message map 0x66fb20, MFC-internal
 // message 0x36f: `mov eax,0xffff; ret 8`.
 
-// LIBRARY: IMPERIALISM 0x0060a1c4
+// LIBRARY: IMPERIALISM 0x0060a1c4 SYMBOL
+// ?UpdateData@CWnd@@QAEHH@Z
 // name: CWnd::UpdateData
-// symbol: ?UpdateData@CWnd@@QAEHH@Z
 // prototype: public: int __thiscall CWnd::UpdateData(int)
 
-// LIBRARY: IMPERIALISM 0x0060a267
+// LIBRARY: IMPERIALISM 0x0060a267 SYMBOL
+// ??0CDataExchange@@QAE@PAVCWnd@@H@Z
 // name: CDataExchange::CDataExchange
-// symbol: ??0CDataExchange@@QAE@PAVCWnd@@H@Z
 // prototype: public: __thiscall CDataExchange::CDataExchange(class CWnd *, int)
 
-// LIBRARY: IMPERIALISM 0x0060a27d
+// LIBRARY: IMPERIALISM 0x0060a27d SYMBOL
+// ?CenterWindow@CWnd@@QAEXPAV1@@Z
 // name: CWnd::CenterWindow
-// symbol: ?CenterWindow@CWnd@@QAEXPAV1@@Z
 // prototype: public: void __thiscall CWnd::CenterWindow(class CWnd *)
 
-// LIBRARY: IMPERIALISM 0x0060a3f7
+// LIBRARY: IMPERIALISM 0x0060a3f7 SYMBOL
+// ?CheckAutoCenter@CWnd@@UAEHXZ
 // name: CWnd::CheckAutoCenter
-// symbol: ?CheckAutoCenter@CWnd@@UAEHXZ
 // prototype: public: virtual int __thiscall CWnd::CheckAutoCenter(void)
 
-// LIBRARY: IMPERIALISM 0x0060a3fb
+// LIBRARY: IMPERIALISM 0x0060a3fb SYMBOL
+// ?ExecuteDlgInit@CWnd@@QAEHPBD@Z
 // name: CWnd::ExecuteDlgInit
-// symbol: ?ExecuteDlgInit@CWnd@@QAEHPBD@Z
 // prototype: public: int __thiscall CWnd::ExecuteDlgInit(char const *)
 
-// LIBRARY: IMPERIALISM 0x0060a44b
+// LIBRARY: IMPERIALISM 0x0060a44b SYMBOL
+// ?ExecuteDlgInit@CWnd@@QAEHPAX@Z
 // name: CWnd::ExecuteDlgInit
-// symbol: ?ExecuteDlgInit@CWnd@@QAEHPAX@Z
 // prototype: public: int __thiscall CWnd::ExecuteDlgInit(void *)
 
-// LIBRARY: IMPERIALISM 0x0060a4d5
+// LIBRARY: IMPERIALISM 0x0060a4d5 SYMBOL
+// ?UpdateDialogControls@CWnd@@QAEXPAVCCmdTarget@@H@Z
 // name: CWnd::UpdateDialogControls
-// symbol: ?UpdateDialogControls@CWnd@@QAEXPAVCCmdTarget@@H@Z
 // prototype: public: void __thiscall CWnd::UpdateDialogControls(class CCmdTarget *, int)
 
-// LIBRARY: IMPERIALISM 0x0060a5da
+// LIBRARY: IMPERIALISM 0x0060a5da SYMBOL
+// ?PreTranslateInput@CWnd@@QAEHPAUtagMSG@@@Z
 // name: CWnd::PreTranslateInput
-// symbol: ?PreTranslateInput@CWnd@@QAEHPAUtagMSG@@@Z
 // prototype: public: int __thiscall CWnd::PreTranslateInput(struct tagMSG *)
 
-// LIBRARY: IMPERIALISM 0x0060a60a
+// LIBRARY: IMPERIALISM 0x0060a60a SYMBOL
+// ?RunModalLoop@CWnd@@QAEHK@Z
 // name: CWnd::RunModalLoop
-// symbol: ?RunModalLoop@CWnd@@QAEHK@Z
 // prototype: public: int __thiscall CWnd::RunModalLoop(unsigned long)
 
-// LIBRARY: IMPERIALISM 0x0060a769
+// LIBRARY: IMPERIALISM 0x0060a769 SYMBOL
+// ?ContinueModal@CWnd@@UAEHXZ
 // name: CWnd::ContinueModal
-// symbol: ?ContinueModal@CWnd@@UAEHXZ
 // prototype: public: virtual int __thiscall CWnd::ContinueModal(void)
 
-// LIBRARY: IMPERIALISM 0x0060a770
+// LIBRARY: IMPERIALISM 0x0060a770 SYMBOL
+// ?EndModalLoop@CWnd@@UAEXH@Z
 // name: CWnd::EndModalLoop
-// symbol: ?EndModalLoop@CWnd@@UAEXH@Z
 // prototype: public: virtual void __thiscall CWnd::EndModalLoop(int)
 
-// LIBRARY: IMPERIALISM 0x0060a794
+// LIBRARY: IMPERIALISM 0x0060a794 SYMBOL
+// ?AfxEndDeferRegisterClass@@YGHF@Z
 // name: AfxEndDeferRegisterClass
-// symbol: ?AfxEndDeferRegisterClass@@YGHF@Z
 // prototype: int __stdcall AfxEndDeferRegisterClass(short)
 
 // LIBRARY: IMPERIALISM 0x0060a8ce
-// name: AfxRegisterWithIcon
+// AfxRegisterWithIcon
 
-// LIBRARY: IMPERIALISM 0x0060a90f
+// LIBRARY: IMPERIALISM 0x0060a90f SYMBOL
+// ?IsFrameWnd@CWnd@@UBEHXZ
 // name: CWnd::IsFrameWnd
-// symbol: ?IsFrameWnd@CWnd@@UBEHXZ
 // prototype: public: virtual int __thiscall CWnd::IsFrameWnd(void)const
 
-// LIBRARY: IMPERIALISM 0x0060a912
+// LIBRARY: IMPERIALISM 0x0060a912 SYMBOL
+// ?IsFrameWnd@CFrameWnd@@UBEHXZ
 // name: CFrameWnd::IsFrameWnd
-// symbol: ?IsFrameWnd@CFrameWnd@@UBEHXZ
 // prototype: public: virtual int __thiscall CFrameWnd::IsFrameWnd(void)const
 
-// LIBRARY: IMPERIALISM 0x0060a916
+// LIBRARY: IMPERIALISM 0x0060a916 SYMBOL
+// ?IsTracking@CFrameWnd@@QBEHXZ
 // name: CFrameWnd::IsTracking
-// symbol: ?IsTracking@CFrameWnd@@QBEHXZ
 // prototype: public: int __thiscall CFrameWnd::IsTracking(void) const
 
-// LIBRARY: IMPERIALISM 0x0060a935
+// LIBRARY: IMPERIALISM 0x0060a935 SYMBOL
+// ?SubclassCtl3d@CWnd@@QAEHH@Z
 // name: CWnd::SubclassCtl3d
-// symbol: ?SubclassCtl3d@CWnd@@QAEHH@Z
 // prototype: public: int __thiscall CWnd::SubclassCtl3d(int)
 
-// LIBRARY: IMPERIALISM 0x0060a97f
+// LIBRARY: IMPERIALISM 0x0060a97f SYMBOL
+// ?SubclassDlg3d@CWnd@@QAEHK@Z
 // name: CWnd::SubclassDlg3d
-// symbol: ?SubclassDlg3d@CWnd@@QAEHK@Z
 // prototype: public: int __thiscall CWnd::SubclassDlg3d(unsigned long)
 
-// LIBRARY: IMPERIALISM 0x0060a9c4
+// LIBRARY: IMPERIALISM 0x0060a9c4 SYMBOL
+// ?SubclassWindow@CWnd@@QAEHPAUHWND__@@@Z
 // name: CWnd::SubclassWindow
-// symbol: ?SubclassWindow@CWnd@@QAEHPAUHWND__@@@Z
 // prototype: public: int __thiscall CWnd::SubclassWindow(struct HWND__*)
 
-// LIBRARY: IMPERIALISM 0x0060aa6e
+// LIBRARY: IMPERIALISM 0x0060aa6e SYMBOL
+// ?UnsubclassWindow@CWnd@@QAEPAUHWND__@@XZ
 // name: CWnd::UnsubclassWindow
-// symbol: ?UnsubclassWindow@CWnd@@QAEPAUHWND__@@XZ
 // prototype: public: struct HWND__* __thiscall CWnd::UnsubclassWindow(void)
 
-// LIBRARY: IMPERIALISM 0x0060aa96
+// LIBRARY: IMPERIALISM 0x0060aa96 SYMBOL
+// ??0CException@@QAE@XZ
 // name: CException::CException
-// symbol: ??0CException@@QAE@XZ
 // prototype: public: __thiscall CException::CException(void)
 
-// LIBRARY: IMPERIALISM 0x0060aaa6
+// LIBRARY: IMPERIALISM 0x0060aaa6 SYMBOL
+// ??0CException@@QAE@H@Z
 // name: CException::CException
-// symbol: ??0CException@@QAE@H@Z
 // prototype: public: __thiscall CException::CException(int)
 
-// LIBRARY: IMPERIALISM 0x0060aab8
+// LIBRARY: IMPERIALISM 0x0060aab8 SYMBOL
+// ?Delete@CException@@QAEXXZ
 // name: CException::Delete
-// symbol: ?Delete@CException@@QAEXXZ
 // prototype: public: void __thiscall CException::Delete(void)
 
-// LIBRARY: IMPERIALISM 0x0060aaeb
+// LIBRARY: IMPERIALISM 0x0060aaeb SYMBOL
+// ?ReportError@CException@@UAEHII@Z
 // name: CException::ReportError
-// symbol: ?ReportError@CException@@UAEHII@Z
 // prototype: public: virtual int __thiscall CException::ReportError(unsigned int, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0060ab40
+// LIBRARY: IMPERIALISM 0x0060ab40 SYMBOL
+// ??0AFX_EXCEPTION_LINK@@QAE@XZ
 // name: AFX_EXCEPTION_LINK::AFX_EXCEPTION_LINK
-// symbol: ??0AFX_EXCEPTION_LINK@@QAE@XZ
 // prototype: public: __thiscall AFX_EXCEPTION_LINK::AFX_EXCEPTION_LINK(void)
 
-// LIBRARY: IMPERIALISM 0x0060ab56
+// LIBRARY: IMPERIALISM 0x0060ab56 SYMBOL
+// ?AfxGetExceptionContext@@YAPAUAFX_EXCEPTION_CONTEXT@@XZ
 // name: AfxGetExceptionContext
-// symbol: ?AfxGetExceptionContext@@YAPAUAFX_EXCEPTION_CONTEXT@@XZ
 // prototype: struct AFX_EXCEPTION_CONTEXT * __cdecl AfxGetExceptionContext(void)
 
-// LIBRARY: IMPERIALISM 0x0060ab7e
+// LIBRARY: IMPERIALISM 0x0060ab7e SYMBOL
+// ?AfxTryCleanup@@YGXXZ
 // name: AfxTryCleanup
-// symbol: ?AfxTryCleanup@@YGXXZ
 // prototype: void __stdcall AfxTryCleanup(void)
 
-// LIBRARY: IMPERIALISM 0x0060abac
+// LIBRARY: IMPERIALISM 0x0060abac SYMBOL
+// ??0CFile@@QAE@XZ
 // name: CFile::CFile
-// symbol: ??0CFile@@QAE@XZ
 // prototype: public: __thiscall CFile::CFile(void)
 
-// LIBRARY: IMPERIALISM 0x0060abec
+// LIBRARY: IMPERIALISM 0x0060abec SYMBOL
+// ??_GCFile@@UAEPAXI@Z
 // name: CFile::`scalar deleting dtor'
-// symbol: ??_GCFile@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CFile::`scalar deleting dtor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0060ac08
+// LIBRARY: IMPERIALISM 0x0060ac08 SYMBOL
+// ??0CFile@@QAE@H@Z
 // name: CFile::CFile
-// symbol: ??0CFile@@QAE@H@Z
 // prototype: public: __thiscall CFile::CFile(int)
 
-// LIBRARY: IMPERIALISM 0x0060ac4c
+// LIBRARY: IMPERIALISM 0x0060ac4c SYMBOL
+// ??0CFile@@QAE@PBDI@Z
 // name: CFile::CFile
-// symbol: ??0CFile@@QAE@PBDI@Z
 // prototype: public: __thiscall CFile::CFile(char const *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0060acf6
+// LIBRARY: IMPERIALISM 0x0060acf6 SYMBOL
+// ??1CFile@@UAE@XZ
 // name: CFile::~CFile
-// symbol: ??1CFile@@UAE@XZ
 // prototype: public: virtual __thiscall CFile::~CFile(void)
 
-// LIBRARY: IMPERIALISM 0x0060ad44
+// LIBRARY: IMPERIALISM 0x0060ad44 SYMBOL
+// ?Duplicate@CFile@@UBEPAV1@XZ
 // name: CFile::Duplicate
-// symbol: ?Duplicate@CFile@@UBEPAV1@XZ
 // prototype: public: virtual class CFile * __thiscall CFile::Duplicate(void) const
 
-// LIBRARY: IMPERIALISM 0x0060add5
+// LIBRARY: IMPERIALISM 0x0060add5 SYMBOL
+// ?Open@CFile@@UAEHPBDIPAVCFileException@@@Z
 // name: CFile::Open
-// symbol: ?Open@CFile@@UAEHPBDIPAVCFileException@@@Z
 // prototype: public: virtual int __thiscall CFile::Open(char const *, unsigned int, class CFileException *)
 
-// LIBRARY: IMPERIALISM 0x0060aefd
+// LIBRARY: IMPERIALISM 0x0060aefd SYMBOL
+// ?Read@CFile@@UAEIPAXI@Z
 // name: CFile::Read
-// symbol: ?Read@CFile@@UAEIPAXI@Z
 // prototype: public: virtual unsigned int __thiscall CFile::Read(void *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0060af37
+// LIBRARY: IMPERIALISM 0x0060af37 SYMBOL
+// ?Write@CFile@@UAEXPBXI@Z
 // name: CFile::Write
-// symbol: ?Write@CFile@@UAEXPBXI@Z
 // prototype: public: virtual void __thiscall CFile::Write(void const *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0060af82
+// LIBRARY: IMPERIALISM 0x0060af82 SYMBOL
+// ?Seek@CFile@@UAEJJI@Z
 // name: CFile::Seek
-// symbol: ?Seek@CFile@@UAEJJI@Z
 // prototype: public: virtual long __thiscall CFile::Seek(long, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0060afb1
+// LIBRARY: IMPERIALISM 0x0060afb1 SYMBOL
+// ?GetPosition@CFile@@UBEKXZ
 // name: CFile::GetPosition
-// symbol: ?GetPosition@CFile@@UBEKXZ
 // prototype: public: virtual unsigned long __thiscall CFile::GetPosition(void) const
 
-// LIBRARY: IMPERIALISM 0x0060afda
+// LIBRARY: IMPERIALISM 0x0060afda SYMBOL
+// ?Flush@CFile@@UAEXXZ
 // name: CFile::Flush
-// symbol: ?Flush@CFile@@UAEXXZ
 // prototype: public: virtual void __thiscall CFile::Flush(void)
 
-// LIBRARY: IMPERIALISM 0x0060affb
+// LIBRARY: IMPERIALISM 0x0060affb SYMBOL
+// ?Close@CFile@@UAEXXZ
 // name: CFile::Close
-// symbol: ?Close@CFile@@UAEXXZ
 // prototype: public: virtual void __thiscall CFile::Close(void)
 
-// LIBRARY: IMPERIALISM 0x0060b03c
+// LIBRARY: IMPERIALISM 0x0060b03c SYMBOL
+// ?Abort@CFile@@UAEXXZ
 // name: CFile::Abort
-// symbol: ?Abort@CFile@@UAEXXZ
 // prototype: public: virtual void __thiscall CFile::Abort(void)
 
-// LIBRARY: IMPERIALISM 0x0060b05c
-// symbol: ?LockRange@CFile@@UAEXKK@Z
+// LIBRARY: IMPERIALISM 0x0060b05c SYMBOL
+// ?LockRange@CFile@@UAEXKK@Z
 
-// LIBRARY: IMPERIALISM 0x0060b085
-// symbol: ?LockRange@CFile@@UAEXKK@Z
+// LIBRARY: IMPERIALISM 0x0060b085 SYMBOL
+// ?LockRange@CFile@@UAEXKK@Z
 
-// LIBRARY: IMPERIALISM 0x0060b0ae
+// LIBRARY: IMPERIALISM 0x0060b0ae SYMBOL
+// ?SetLength@CFile@@UAEXK@Z
 // name: CFile::SetLength
-// symbol: ?SetLength@CFile@@UAEXK@Z
 // prototype: public: virtual void __thiscall CFile::SetLength(unsigned long)
 
-// LIBRARY: IMPERIALISM 0x0060b0da
+// LIBRARY: IMPERIALISM 0x0060b0da SYMBOL
+// ?GetLength@CFile@@UBEKXZ
 // name: CFile::GetLength
-// symbol: ?GetLength@CFile@@UBEKXZ
 // prototype: public: virtual unsigned long __thiscall CFile::GetLength(void) const
 
-// LIBRARY: IMPERIALISM 0x0060b10a
+// LIBRARY: IMPERIALISM 0x0060b10a SYMBOL
+// ?Rename@CFile@@SGXPBD0@Z
 // name: CFile::Rename
-// symbol: ?Rename@CFile@@SGXPBD0@Z
 // prototype: public: static void __stdcall CFile::Rename(char const *, char const *)
 
-// LIBRARY: IMPERIALISM 0x0060b12c
+// LIBRARY: IMPERIALISM 0x0060b12c SYMBOL
+// ?Remove@CFile@@SGXPBD@Z
 // name: CFile::Remove
-// symbol: ?Remove@CFile@@SGXPBD@Z
 // prototype: public: static void __stdcall CFile::Remove(char const *)
 
-// LIBRARY: IMPERIALISM 0x0060b14a
+// LIBRARY: IMPERIALISM 0x0060b14a SYMBOL
+// ??1AFX_COM@@QAE@XZ
 // name: AFX_COM::~AFX_COM
-// symbol: ??1AFX_COM@@QAE@XZ
 // prototype: public: __thiscall AFX_COM::~AFX_COM(void)
 
-// LIBRARY: IMPERIALISM 0x0060b158
+// LIBRARY: IMPERIALISM 0x0060b158 SYMBOL
+// ?CreateInstance@AFX_COM@@QAEJABU_GUID@@PAUIUnknown@@0PAPAX@Z
 // name: AFX_COM::CreateInstance
-// symbol: ?CreateInstance@AFX_COM@@QAEJABU_GUID@@PAUIUnknown@@0PAPAX@Z
 // prototype: public: long __thiscall AFX_COM::CreateInstance(struct _GUID const &, struct IUnknown *, struct _GUID const &, void **)
 
-// LIBRARY: IMPERIALISM 0x0060b19a
+// LIBRARY: IMPERIALISM 0x0060b19a SYMBOL
+// ?GetClassObject@AFX_COM@@QAEJABU_GUID@@0PAPAX@Z
 // name: AFX_COM::GetClassObject
-// symbol: ?GetClassObject@AFX_COM@@QAEJABU_GUID@@0PAPAX@Z
 // prototype: public: long __thiscall AFX_COM::GetClassObject(struct _GUID const &, struct _GUID const &, void **)
 
-// LIBRARY: IMPERIALISM 0x0060b266
+// LIBRARY: IMPERIALISM 0x0060b266 SYMBOL
+// ?AfxStringFromCLSID@@YG?AVCString@@ABU_GUID@@@Z
 // name: AfxStringFromCLSID
-// symbol: ?AfxStringFromCLSID@@YG?AVCString@@ABU_GUID@@@Z
 // prototype: class CString __stdcall AfxStringFromCLSID(struct _GUID const &)
 
-// LIBRARY: IMPERIALISM 0x0060b2d5
+// LIBRARY: IMPERIALISM 0x0060b2d5 SYMBOL
+// ?AfxGetInProcServer@@YGHPBDAAVCString@@@Z
 // name: AfxGetInProcServer
-// symbol: ?AfxGetInProcServer@@YGHPBDAAVCString@@@Z
 // prototype: int __stdcall AfxGetInProcServer(char const *, class CString &)
 
-// LIBRARY: IMPERIALISM 0x0060b381
+// LIBRARY: IMPERIALISM 0x0060b381 SYMBOL
+// ?AfxResolveShortcut@@YGHPAVCWnd@@PBDPADH@Z
 // name: AfxResolveShortcut
-// symbol: ?AfxResolveShortcut@@YGHPAVCWnd@@PBDPADH@Z
 // prototype: int __stdcall AfxResolveShortcut(class CWnd *, char const *, char *, int)
 
-// LIBRARY: IMPERIALISM 0x0060b4cb
+// LIBRARY: IMPERIALISM 0x0060b4cb SYMBOL
+// ?AfxFullPath@@YGHPADPBD@Z
 // name: AfxFullPath
-// symbol: ?AfxFullPath@@YGHPADPBD@Z
 // prototype: int __stdcall AfxFullPath(char *, char const *)
 
-// LIBRARY: IMPERIALISM 0x0060b5a4
+// LIBRARY: IMPERIALISM 0x0060b5a4 SYMBOL
+// ?AfxGetRoot@@YGXPBDAAVCString@@@Z
 // name: AfxGetRoot
-// symbol: ?AfxGetRoot@@YGXPBDAAVCString@@@Z
 // prototype: void __stdcall AfxGetRoot(char const *, class CString &)
 
-// LIBRARY: IMPERIALISM 0x0060b66a
+// LIBRARY: IMPERIALISM 0x0060b66a SYMBOL
+// ?AfxComparePath@@YGHPBD0@Z
 // name: AfxComparePath
-// symbol: ?AfxComparePath@@YGHPBD0@Z
 // prototype: int __stdcall AfxComparePath(char const *, char const *)
 
-// LIBRARY: IMPERIALISM 0x0060b72d
+// LIBRARY: IMPERIALISM 0x0060b72d SYMBOL
+// ?AfxGetFileTitle@@YGIPBDPADI@Z
 // name: AfxGetFileTitle
-// symbol: ?AfxGetFileTitle@@YGIPBDPADI@Z
 // prototype: unsigned int __stdcall AfxGetFileTitle(char const *, char *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0060b783
+// LIBRARY: IMPERIALISM 0x0060b783 SYMBOL
+// ?AfxGetModuleShortFileName@@YGXPAUHINSTANCE__@@AAVCString@@@Z
 // name: AfxGetModuleShortFileName
-// symbol: ?AfxGetModuleShortFileName@@YGXPAUHINSTANCE__@@AAVCString@@@Z
 // prototype: void __stdcall AfxGetModuleShortFileName(struct HINSTANCE__*, class CString &)
 
-// LIBRARY: IMPERIALISM 0x0060b7dd
+// LIBRARY: IMPERIALISM 0x0060b7dd SYMBOL
+// ?GetFileName@CFile@@UBE?AVCString@@XZ
 // name: CFile::GetFileName
-// symbol: ?GetFileName@CFile@@UBE?AVCString@@XZ
 // prototype: public: virtual class CString __thiscall CFile::GetFileName(void) const
 
-// LIBRARY: IMPERIALISM 0x0060b85f
+// LIBRARY: IMPERIALISM 0x0060b85f SYMBOL
+// ?GetFileTitle@CFile@@UBE?AVCString@@XZ
 // name: CFile::GetFileTitle
-// symbol: ?GetFileTitle@CFile@@UBE?AVCString@@XZ
 // prototype: public: virtual class CString __thiscall CFile::GetFileTitle(void) const
 
-// LIBRARY: IMPERIALISM 0x0060b8e1
+// LIBRARY: IMPERIALISM 0x0060b8e1 SYMBOL
+// ?GetFilePath@CFile@@UBE?AVCString@@XZ
 // name: CFile::GetFilePath
-// symbol: ?GetFilePath@CFile@@UBE?AVCString@@XZ
 // prototype: public: virtual class CString __thiscall CFile::GetFilePath(void) const
 
-// LIBRARY: IMPERIALISM 0x0060b910
+// LIBRARY: IMPERIALISM 0x0060b910 SYMBOL
+// ?GetStatus@CFile@@QBEHAAUCFileStatus@@@Z
 // name: CFile::GetStatus
-// symbol: ?GetStatus@CFile@@QBEHAAUCFileStatus@@@Z
 // prototype: public: int __thiscall CFile::GetStatus(struct CFileStatus &) const
 
-// LIBRARY: IMPERIALISM 0x0060b9ea
+// LIBRARY: IMPERIALISM 0x0060b9ea SYMBOL
+// ?GetStatus@CFile@@SGHPBDAAUCFileStatus@@@Z
 // name: CFile::GetStatus
-// symbol: ?GetStatus@CFile@@SGHPBDAAUCFileStatus@@@Z
 // prototype: public: static int __stdcall CFile::GetStatus(char const *, struct CFileStatus &)
 
-// LIBRARY: IMPERIALISM 0x0060ba9c
+// LIBRARY: IMPERIALISM 0x0060ba9c SYMBOL
+// ?AfxTimeToFileTime@@YAXABVCTime@@PAU_FILETIME@@@Z
 // name: AfxTimeToFileTime
-// symbol: ?AfxTimeToFileTime@@YAXABVCTime@@PAU_FILETIME@@@Z
 // prototype: void __cdecl AfxTimeToFileTime(class CTime const &, struct _FILETIME *)
 
-// LIBRARY: IMPERIALISM 0x0060bb4b
+// LIBRARY: IMPERIALISM 0x0060bb4b SYMBOL
+// ?SetStatus@CFile@@SGXPBDABUCFileStatus@@@Z
 // name: CFile::SetStatus
-// symbol: ?SetStatus@CFile@@SGXPBDABUCFileStatus@@@Z
 // prototype: public: static void __stdcall CFile::SetStatus(char const *, struct CFileStatus const &)
 
-// LIBRARY: IMPERIALISM 0x0060bc98
+// LIBRARY: IMPERIALISM 0x0060bc98 SYMBOL
+// ?ThrowOsError@CFileException@@SGXJPBD@Z
 // name: CFileException::ThrowOsError
-// symbol: ?ThrowOsError@CFileException@@SGXJPBD@Z
 // prototype: public: static void __stdcall CFileException::ThrowOsError(long, char const *)
 
-// LIBRARY: IMPERIALISM 0x0060bcdd
+// LIBRARY: IMPERIALISM 0x0060bcdd SYMBOL
+// ?GetErrorMessage@CFileException@@UAEHPADIPAI@Z
 // name: CFileException::GetErrorMessage
-// symbol: ?GetErrorMessage@CFileException@@UAEHPADIPAI@Z
 // prototype: public: virtual int __thiscall CFileException::GetErrorMessage(char *, unsigned int, unsigned int *)
 
-// LIBRARY: IMPERIALISM 0x0060bd7d
+// LIBRARY: IMPERIALISM 0x0060bd7d SYMBOL
+// ?AfxThrowFileException@@YGXHJPBD@Z
 // name: AfxThrowFileException
-// symbol: ?AfxThrowFileException@@YGXHJPBD@Z
 // prototype: void __stdcall AfxThrowFileException(int, long, char const *)
 
-// LIBRARY: IMPERIALISM 0x0060be52
-// symbol: ?OsErrorToException@CFileException@@SGHJ@Z
+// LIBRARY: IMPERIALISM 0x0060be52 SYMBOL
+// ?OsErrorToException@CFileException@@SGHJ@Z
 
-// LIBRARY: IMPERIALISM 0x0060c087
+// LIBRARY: IMPERIALISM 0x0060c087 SYMBOL
+// ??0CDialogTemplate@@QAE@PBUDLGTEMPLATE@@@Z
 // name: CDialogTemplate::CDialogTemplate
-// symbol: ??0CDialogTemplate@@QAE@PBUDLGTEMPLATE@@@Z
 // prototype: public: __thiscall CDialogTemplate::CDialogTemplate(struct DLGTEMPLATE const *)
 
-// LIBRARY: IMPERIALISM 0x0060c0b6
+// LIBRARY: IMPERIALISM 0x0060c0b6 SYMBOL
+// ??0CDialogTemplate@@QAE@PAX@Z
 // name: CDialogTemplate::CDialogTemplate
-// symbol: ??0CDialogTemplate@@QAE@PAX@Z
 // prototype: public: __thiscall CDialogTemplate::CDialogTemplate(void *)
 
-// LIBRARY: IMPERIALISM 0x0060c0f7
+// LIBRARY: IMPERIALISM 0x0060c0f7 SYMBOL
+// ?SetTemplate@CDialogTemplate@@IAEHPBUDLGTEMPLATE@@I@Z
 // name: CDialogTemplate::SetTemplate
-// symbol: ?SetTemplate@CDialogTemplate@@IAEHPBUDLGTEMPLATE@@I@Z
 // prototype: protected: int __thiscall CDialogTemplate::SetTemplate(struct DLGTEMPLATE const *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0060c157
+// LIBRARY: IMPERIALISM 0x0060c157 SYMBOL
+// ??1CDialogTemplate@@QAE@XZ
 // name: CDialogTemplate::~CDialogTemplate
-// symbol: ??1CDialogTemplate@@QAE@XZ
 // prototype: public: __thiscall CDialogTemplate::~CDialogTemplate(void)
 
-// LIBRARY: IMPERIALISM 0x0060c165
+// LIBRARY: IMPERIALISM 0x0060c165 SYMBOL
+// ?Load@CDialogTemplate@@QAEHPBD@Z
 // name: CDialogTemplate::Load
-// symbol: ?Load@CDialogTemplate@@QAEHPBD@Z
 // prototype: public: int __thiscall CDialogTemplate::Load(char const *)
 
-// LIBRARY: IMPERIALISM 0x0060c1ba
+// LIBRARY: IMPERIALISM 0x0060c1ba SYMBOL
+// ?Detach@CDialogTemplate@@QAEPAXXZ
 // name: CDialogTemplate::Detach
-// symbol: ?Detach@CDialogTemplate@@QAEPAXXZ
 // prototype: public: void * __thiscall CDialogTemplate::Detach(void)
 
-// LIBRARY: IMPERIALISM 0x0060c1c0
+// LIBRARY: IMPERIALISM 0x0060c1c0 SYMBOL
+// ?HasFont@CDialogTemplate@@QBEHXZ
 // name: CDialogTemplate::HasFont
-// symbol: ?HasFont@CDialogTemplate@@QBEHXZ
 // prototype: public: int __thiscall CDialogTemplate::HasFont(void) const
 
-// LIBRARY: IMPERIALISM 0x0060c1eb
+// LIBRARY: IMPERIALISM 0x0060c1eb SYMBOL
+// ?GetFontSizeField@CDialogTemplate@@KAPAEPBUDLGTEMPLATE@@@Z
 // name: CDialogTemplate::GetFontSizeField
-// symbol: ?GetFontSizeField@CDialogTemplate@@KAPAEPBUDLGTEMPLATE@@@Z
 // prototype: protected: static unsigned char * __cdecl CDialogTemplate::GetFontSizeField(struct DLGTEMPLATE const *)
 
-// LIBRARY: IMPERIALISM 0x0060c241
+// LIBRARY: IMPERIALISM 0x0060c241 SYMBOL
+// ?GetTemplateSize@CDialogTemplate@@KAIPBUDLGTEMPLATE@@@Z
 // name: CDialogTemplate::GetTemplateSize
-// symbol: ?GetTemplateSize@CDialogTemplate@@KAIPBUDLGTEMPLATE@@@Z
 // prototype: protected: static unsigned int __cdecl CDialogTemplate::GetTemplateSize(struct DLGTEMPLATE const *)
 
-// LIBRARY: IMPERIALISM 0x0060c2f8
+// LIBRARY: IMPERIALISM 0x0060c2f8 SYMBOL
+// ?GetFont@CDialogTemplate@@SAHPBUDLGTEMPLATE@@AAVCString@@AAG@Z
 // name: CDialogTemplate::GetFont
-// symbol: ?GetFont@CDialogTemplate@@SAHPBUDLGTEMPLATE@@AAVCString@@AAG@Z
 // prototype: public: static int __cdecl CDialogTemplate::GetFont(struct DLGTEMPLATE const *, class CString &, unsigned short &)
 
-// LIBRARY: IMPERIALISM 0x0060c367
+// LIBRARY: IMPERIALISM 0x0060c367 SYMBOL
+// ?GetFont@CDialogTemplate@@QBEHAAVCString@@AAG@Z
 // name: CDialogTemplate::GetFont
-// symbol: ?GetFont@CDialogTemplate@@QBEHAAVCString@@AAG@Z
 // prototype: public: int __thiscall CDialogTemplate::GetFont(class CString &, unsigned short &) const
 
-// LIBRARY: IMPERIALISM 0x0060c395
+// LIBRARY: IMPERIALISM 0x0060c395 SYMBOL
+// ?SetFont@CDialogTemplate@@QAEHPBDG@Z
 // name: CDialogTemplate::SetFont
-// symbol: ?SetFont@CDialogTemplate@@QAEHPBDG@Z
 // prototype: public: int __thiscall CDialogTemplate::SetFont(char const *, unsigned short)
 
-// LIBRARY: IMPERIALISM 0x0060c4ac
+// LIBRARY: IMPERIALISM 0x0060c4ac SYMBOL
+// ?SetSystemFont@CDialogTemplate@@QAEHG@Z
 // name: CDialogTemplate::SetSystemFont
-// symbol: ?SetSystemFont@CDialogTemplate@@QAEHG@Z
 // prototype: public: int __thiscall CDialogTemplate::SetSystemFont(unsigned short)
 
-// LIBRARY: IMPERIALISM 0x0060c53d
+// LIBRARY: IMPERIALISM 0x0060c53d SYMBOL
+// ?GetSizeInDialogUnits@CDialogTemplate@@QBEXPAUtagSIZE@@@Z
 // name: CDialogTemplate::GetSizeInDialogUnits
-// symbol: ?GetSizeInDialogUnits@CDialogTemplate@@QBEXPAUtagSIZE@@@Z
 // prototype: public: void __thiscall CDialogTemplate::GetSizeInDialogUnits(struct tagSIZE *) const
 
-// LIBRARY: IMPERIALISM 0x0060c57d
+// LIBRARY: IMPERIALISM 0x0060c57d SYMBOL
+// ?GetSizeInPixels@CDialogTemplate@@QBEXPAUtagSIZE@@@Z
 // name: CDialogTemplate::GetSizeInPixels
-// symbol: ?GetSizeInPixels@CDialogTemplate@@QBEXPAUtagSIZE@@@Z
 // prototype: public: void __thiscall CDialogTemplate::GetSizeInPixels(struct tagSIZE *) const
 
-// LIBRARY: IMPERIALISM 0x0060c622
-// symbol: ?ConvertDialogUnitsToPixels@@YAXPBDGHHPAUtagSIZE@@@Z
+// LIBRARY: IMPERIALISM 0x0060c622 SYMBOL
+// ?ConvertDialogUnitsToPixels@@YAXPBDGHHPAUtagSIZE@@@Z
 
-// LIBRARY: IMPERIALISM 0x0060c723
+// LIBRARY: IMPERIALISM 0x0060c723 SYMBOL
+// ??0CRecentFileList@@QAE@IPBD0HH@Z
 // name: CRecentFileList::CRecentFileList
-// symbol: ??0CRecentFileList@@QAE@IPBD0HH@Z
 // prototype: public: __thiscall CRecentFileList::CRecentFileList(unsigned int, char const *, char const *, int, int)
 
-// LIBRARY: IMPERIALISM 0x0060c7df
+// LIBRARY: IMPERIALISM 0x0060c7df SYMBOL
+// ??_GCRecentFileList@@UAEPAXI@Z
 // name: CRecentFileList::`scalar deleting dtor'
-// symbol: ??_GCRecentFileList@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CRecentFileList::`scalar deleting dtor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0060c7fb
+// LIBRARY: IMPERIALISM 0x0060c7fb SYMBOL
+// ??_ECString@@QAEPAXI@Z
 // name: CString::`vector deleting dtor'
-// symbol: ??_ECString@@QAEPAXI@Z
 // prototype: public: void * __thiscall CString::`vector deleting dtor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0060c837
+// LIBRARY: IMPERIALISM 0x0060c837 SYMBOL
+// ??1CRecentFileList@@UAE@XZ
 // name: CRecentFileList::~CRecentFileList
-// symbol: ??1CRecentFileList@@UAE@XZ
 // prototype: public: virtual __thiscall CRecentFileList::~CRecentFileList(void)
 
-// LIBRARY: IMPERIALISM 0x0060c894
+// LIBRARY: IMPERIALISM 0x0060c894 SYMBOL
+// ?Add@CRecentFileList@@UAEXPBD@Z
 // name: CRecentFileList::Add
-// symbol: ?Add@CRecentFileList@@UAEXPBD@Z
 // prototype: public: virtual void __thiscall CRecentFileList::Add(char const *)
 
-// LIBRARY: IMPERIALISM 0x0060c900
+// LIBRARY: IMPERIALISM 0x0060c900 SYMBOL
+// ?Remove@CRecentFileList@@UAEXH@Z
 // name: CRecentFileList::Remove
-// symbol: ?Remove@CRecentFileList@@UAEXH@Z
 // prototype: public: virtual void __thiscall CRecentFileList::Remove(int)
 
-// LIBRARY: IMPERIALISM 0x0060c93b
+// LIBRARY: IMPERIALISM 0x0060c93b SYMBOL
+// ?GetDisplayName@CRecentFileList@@QBEHAAVCString@@HPBDHH@Z
 // name: CRecentFileList::GetDisplayName
-// symbol: ?GetDisplayName@CRecentFileList@@QBEHAAVCString@@HPBDHH@Z
 // prototype: public: int __thiscall CRecentFileList::GetDisplayName(class CString &, int, char const *, int, int) const
 
-// LIBRARY: IMPERIALISM 0x0060ca44
+// LIBRARY: IMPERIALISM 0x0060ca44 SYMBOL
+// ?UpdateMenu@CRecentFileList@@UAEXPAVCCmdUI@@@Z
 // name: CRecentFileList::UpdateMenu
-// symbol: ?UpdateMenu@CRecentFileList@@UAEXPAVCCmdUI@@@Z
 // prototype: public: virtual void __thiscall CRecentFileList::UpdateMenu(class CCmdUI *)
 
-// LIBRARY: IMPERIALISM 0x0060cc8e
+// LIBRARY: IMPERIALISM 0x0060cc8e SYMBOL
+// ?WriteList@CRecentFileList@@UAEXXZ
 // name: CRecentFileList::WriteList
-// symbol: ?WriteList@CRecentFileList@@UAEXXZ
 // prototype: public: virtual void __thiscall CRecentFileList::WriteList(void)
 
-// LIBRARY: IMPERIALISM 0x0060cd0c
+// LIBRARY: IMPERIALISM 0x0060cd0c SYMBOL
+// ?ReadList@CRecentFileList@@UAEXXZ
 // name: CRecentFileList::ReadList
-// symbol: ?ReadList@CRecentFileList@@UAEXXZ
 // prototype: public: virtual void __thiscall CRecentFileList::ReadList(void)
 
-// LIBRARY: IMPERIALISM 0x0060cda8
-// symbol: ?AbbreviateName@@YAXPADHH@Z
+// LIBRARY: IMPERIALISM 0x0060cda8 SYMBOL
+// ?AbbreviateName@@YAXPADHH@Z
 
-// LIBRARY: IMPERIALISM 0x0060ce85
+// LIBRARY: IMPERIALISM 0x0060ce85 SYMBOL
+// ?LoadStringA@CString@@QAEHI@Z
 // name: CString::LoadStringA
-// symbol: ?LoadStringA@CString@@QAEHI@Z
 // prototype: public: int __thiscall CString::LoadStringA(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0060cf09
+// LIBRARY: IMPERIALISM 0x0060cf09 SYMBOL
+// ?AfxLoadString@@YGHIPADI@Z
 // name: AfxLoadString
-// symbol: ?AfxLoadString@@YGHIPADI@Z
 // prototype: int __stdcall AfxLoadString(unsigned int, char *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0060cf30
+// LIBRARY: IMPERIALISM 0x0060cf30 SYMBOL
+// ?AfxExtractSubString@@YGHAAVCString@@PBDHD@Z
 // name: AfxExtractSubString
-// symbol: ?AfxExtractSubString@@YGHAAVCString@@PBDHD@Z
 // prototype: int __stdcall AfxExtractSubString(class CString &, char const *, int, char)
 
-// LIBRARY: IMPERIALISM 0x0060cfa8
+// LIBRARY: IMPERIALISM 0x0060cfa8 SYMBOL
+// ?UpdateSysColors@AUX_DATA@@QAEXXZ
 // name: AUX_DATA::UpdateSysColors
-// symbol: ?UpdateSysColors@AUX_DATA@@QAEXXZ
 // prototype: public: void __thiscall AUX_DATA::UpdateSysColors(void)
 
-// LIBRARY: IMPERIALISM 0x0060cfec
+// LIBRARY: IMPERIALISM 0x0060cfec SYMBOL
+// ?UpdateSysMetrics@AUX_DATA@@QAEXXZ
 // name: AUX_DATA::UpdateSysMetrics
-// symbol: ?UpdateSysMetrics@AUX_DATA@@QAEXXZ
 // prototype: public: void __thiscall AUX_DATA::UpdateSysMetrics(void)
 
-// LIBRARY: IMPERIALISM 0x0060d044
-// symbol: ?DeleteTempMap@CMenu@@SGXXZ
+// LIBRARY: IMPERIALISM 0x0060d044 SYMBOL
+// ?DeleteTempMap@CMenu@@SGXXZ
 
 // LIBRARY: IMPERIALISM 0x0060d058
-// name: afxMapHMENU_60d058
+// afxMapHMENU_60d058
 
-// LIBRARY: IMPERIALISM 0x0060d0c8
+// LIBRARY: IMPERIALISM 0x0060d0c8 SYMBOL
+// ?FromHandle@CMenu@@SGPAV1@PAUHMENU__@@@Z
 // name: CMenu::FromHandle
-// symbol: ?FromHandle@CMenu@@SGPAV1@PAUHMENU__@@@Z
 // prototype: public: static class CMenu * __stdcall CMenu::FromHandle(struct HMENU__*)
 
-// LIBRARY: IMPERIALISM 0x0060d0de
+// LIBRARY: IMPERIALISM 0x0060d0de SYMBOL
+// ?FromHandlePermanent@CMenu@@SGPAV1@PAUHMENU__@@@Z
 // name: CMenu::FromHandlePermanent
-// symbol: ?FromHandlePermanent@CMenu@@SGPAV1@PAUHMENU__@@@Z
 // prototype: public: static class CMenu * __stdcall CMenu::FromHandlePermanent(struct HMENU__*)
 
-// LIBRARY: IMPERIALISM 0x0060d127
+// LIBRARY: IMPERIALISM 0x0060d127 SYMBOL
+// ?Detach@CGdiObject@@QAEPAXXZ
 // name: CGdiObject::Detach
-// symbol: ?Detach@CGdiObject@@QAEPAXXZ
 // prototype: public: void * __thiscall CGdiObject::Detach(void)
 
 // LIBRARY: IMPERIALISM 0x0060d151
-// name: CMenu::DeleteObject
+// CMenu::DeleteObject
 
-// LIBRARY: IMPERIALISM 0x0060d16d
+// LIBRARY: IMPERIALISM 0x0060d16d SYMBOL
+// ?AfxLockTempMaps@@YGXXZ
 // name: AfxLockTempMaps
-// symbol: ?AfxLockTempMaps@@YGXXZ
 // prototype: void __stdcall AfxLockTempMaps(void)
 
-// LIBRARY: IMPERIALISM 0x0060d176
+// LIBRARY: IMPERIALISM 0x0060d176 SYMBOL
+// ?AfxUnlockTempMaps@@YGHH@Z
 // name: AfxUnlockTempMaps
-// symbol: ?AfxUnlockTempMaps@@YGHH@Z
 // prototype: int __stdcall AfxUnlockTempMaps(int)
 
-// LIBRARY: IMPERIALISM 0x0060d264
+// LIBRARY: IMPERIALISM 0x0060d264 SYMBOL
+// ??0CHandleMap@@QAE@PAUCRuntimeClass@@IH@Z
 // name: CHandleMap::CHandleMap
-// symbol: ??0CHandleMap@@QAE@PAUCRuntimeClass@@IH@Z
 // prototype: public: __thiscall CHandleMap::CHandleMap(struct CRuntimeClass *, unsigned int, int)
 
-// LIBRARY: IMPERIALISM 0x0060d2c0
-// symbol: ?FromHandle@CHandleMap@@QAEPAVCObject@@PAX@Z
+// LIBRARY: IMPERIALISM 0x0060d2c0 SYMBOL
+// ?FromHandle@CHandleMap@@QAEPAVCObject@@PAX@Z
 
-// LIBRARY: IMPERIALISM 0x0060d39b
+// LIBRARY: IMPERIALISM 0x0060d39b SYMBOL
+// ?DeleteTemp@CHandleMap@@QAEXXZ
 // name: CHandleMap::DeleteTemp
-// symbol: ?DeleteTemp@CHandleMap@@QAEXXZ
 // prototype: public: void __thiscall CHandleMap::DeleteTemp(void)
 
-// LIBRARY: IMPERIALISM 0x0060d3fc
+// LIBRARY: IMPERIALISM 0x0060d3fc SYMBOL
+// ?AfxWinMain@@YGHPAUHINSTANCE__@@0PADH@Z
 // name: AfxWinMain
-// symbol: ?AfxWinMain@@YGHPAUHINSTANCE__@@0PADH@Z
 // prototype: int __stdcall AfxWinMain(struct HINSTANCE__*, struct HINSTANCE__*, char *, int)
 
 // LIBRARY: IMPERIALISM 0x0061069f
 // MFC nafxcw handler in message map 0x66fd60 (base 0x670560 = CCmdTarget),
 // ON_COMMAND 0xe141: SendMessage(m_hWnd, WM_CLOSE) forwarder.
 
-// LIBRARY: IMPERIALISM 0x006106bd
+// LIBRARY: IMPERIALISM 0x006106bd SYMBOL
+// ??0CSingleDocTemplate@@QAE@IPAUCRuntimeClass@@00@Z
 // name: CSingleDocTemplate::CSingleDocTemplate
-// symbol: ??0CSingleDocTemplate@@QAE@IPAUCRuntimeClass@@00@Z
 // prototype: public: __thiscall CSingleDocTemplate::CSingleDocTemplate(unsigned int, struct CRuntimeClass *, struct CRuntimeClass *, struct CRuntimeClass *)
 
-// LIBRARY: IMPERIALISM 0x006106e5
+// LIBRARY: IMPERIALISM 0x006106e5 SYMBOL
+// ??_GCSingleDocTemplate@@UAEPAXI@Z
 // name: CSingleDocTemplate::`scalar deleting destructor'
-// symbol: ??_GCSingleDocTemplate@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CSingleDocTemplate::`scalar deleting destructor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00610701
+// LIBRARY: IMPERIALISM 0x00610701 SYMBOL
+// ??1CSingleDocTemplate@@UAE@XZ
 // name: CSingleDocTemplate::~CSingleDocTemplate
-// symbol: ??1CSingleDocTemplate@@UAE@XZ
 // prototype: public: virtual __thiscall CSingleDocTemplate::~CSingleDocTemplate(void)
 
-// LIBRARY: IMPERIALISM 0x00610728
+// LIBRARY: IMPERIALISM 0x00610728 SYMBOL
+// ?AddDocument@CSingleDocTemplate@@UAEXPAVCDocument@@@Z
 // name: CSingleDocTemplate::AddDocument
-// symbol: ?AddDocument@CSingleDocTemplate@@UAEXPAVCDocument@@@Z
 // prototype: public: virtual void __thiscall CSingleDocTemplate::AddDocument(class CDocument *)
 
-// LIBRARY: IMPERIALISM 0x0061073e
+// LIBRARY: IMPERIALISM 0x0061073e SYMBOL
+// ?RemoveDocument@CSingleDocTemplate@@UAEXPAVCDocument@@@Z
 // name: CSingleDocTemplate::RemoveDocument
-// symbol: ?RemoveDocument@CSingleDocTemplate@@UAEXPAVCDocument@@@Z
 // prototype: public: virtual void __thiscall CSingleDocTemplate::RemoveDocument(class CDocument *)
 
-// LIBRARY: IMPERIALISM 0x00610752
+// LIBRARY: IMPERIALISM 0x00610752 SYMBOL
+// ?OpenDocumentFile@CSingleDocTemplate@@UAEPAVCDocument@@PBDH@Z
 // name: CSingleDocTemplate::OpenDocumentFile
-// symbol: ?OpenDocumentFile@CSingleDocTemplate@@UAEPAVCDocument@@PBDH@Z
 // prototype: public: virtual class CDocument * __thiscall CSingleDocTemplate::OpenDocumentFile(char const *, int)
 
-// LIBRARY: IMPERIALISM 0x006108fe
+// LIBRARY: IMPERIALISM 0x006108fe SYMBOL
+// ?SetDefaultTitle@CSingleDocTemplate@@UAEXPAVCDocument@@@Z
 // name: CSingleDocTemplate::SetDefaultTitle
-// symbol: ?SetDefaultTitle@CSingleDocTemplate@@UAEXPAVCDocument@@@Z
 // prototype: public: virtual void __thiscall CSingleDocTemplate::SetDefaultTitle(class CDocument *)
 
-// LIBRARY: IMPERIALISM 0x00610965
+// LIBRARY: IMPERIALISM 0x00610965 SYMBOL
+// ?GetMessageMap@CDocument@@MBEPBUAFX_MSGMAP@@XZ
 // name: CDocument::GetMessageMap
-// symbol: ?GetMessageMap@CDocument@@MBEPBUAFX_MSGMAP@@XZ
 // prototype: protected: virtual struct AFX_MSGMAP const * __thiscall CDocument::GetMessageMap(void) const
 
-// LIBRARY: IMPERIALISM 0x0061096b
+// LIBRARY: IMPERIALISM 0x0061096b SYMBOL
+// ??0CDocument@@QAE@XZ
 // name: CDocument::CDocument
-// symbol: ??0CDocument@@QAE@XZ
 // prototype: public: __thiscall CDocument::CDocument(void)
 
 // SYNTHETIC: IMPERIALISM 0x006109cf
 // ownership-only
 
-// LIBRARY: IMPERIALISM 0x006109eb
+// LIBRARY: IMPERIALISM 0x006109eb SYMBOL
+// ??1CDocument@@UAE@XZ
 // name: CDocument::DestructCDocumentBaseState
-// symbol: ??1CDocument@@UAE@XZ
 
-// LIBRARY: IMPERIALISM 0x00610a57
+// LIBRARY: IMPERIALISM 0x00610a57 SYMBOL
+// ?OnFinalRelease@CDocument@@UAEXXZ
 // name: CDocument::OnFinalRelease
-// symbol: ?OnFinalRelease@CDocument@@UAEXXZ
 // prototype: public: virtual void __thiscall CDocument::OnFinalRelease(void)
 
-// LIBRARY: IMPERIALISM 0x00610a5f
+// LIBRARY: IMPERIALISM 0x00610a5f SYMBOL
+// ?DisconnectViews@CDocument@@QAEXXZ
 // name: CDocument::DisconnectViews
-// symbol: ?DisconnectViews@CDocument@@QAEXXZ
 // prototype: public: void __thiscall CDocument::DisconnectViews(void)
 
-// LIBRARY: IMPERIALISM 0x00610a80
+// LIBRARY: IMPERIALISM 0x00610a80 SYMBOL
+// ?SetTitle@CDocument@@UAEXPBD@Z
 // name: CDocument::SetTitle
-// symbol: ?SetTitle@CDocument@@UAEXPBD@Z
 // prototype: public: virtual void __thiscall CDocument::SetTitle(char const *)
 
-// LIBRARY: IMPERIALISM 0x00610a9d
+// LIBRARY: IMPERIALISM 0x00610a9d SYMBOL
+// ?DeleteContents@CDocument@@UAEXXZ
 // name: CDocument::DeleteContents
-// symbol: ?DeleteContents@CDocument@@UAEXXZ
 // prototype: public: virtual void __thiscall CDocument::DeleteContents(void)
 
-// LIBRARY: IMPERIALISM 0x00610a9e
+// LIBRARY: IMPERIALISM 0x00610a9e SYMBOL
+// ?OnChangedViewList@CDocument@@UAEXXZ
 // name: CDocument::OnChangedViewList
-// symbol: ?OnChangedViewList@CDocument@@UAEXXZ
 // prototype: public: virtual void __thiscall CDocument::OnChangedViewList(void)
 
-// LIBRARY: IMPERIALISM 0x00610aba
+// LIBRARY: IMPERIALISM 0x00610aba SYMBOL
+// ?UpdateFrameCounts@CDocument@@UAEXXZ
 // name: CDocument::UpdateFrameCounts
-// symbol: ?UpdateFrameCounts@CDocument@@UAEXXZ
 // prototype: public: virtual void __thiscall CDocument::UpdateFrameCounts(void)
 
-// LIBRARY: IMPERIALISM 0x00610bbd
+// LIBRARY: IMPERIALISM 0x00610bbd SYMBOL
+// ?CanCloseFrame@CDocument@@UAEHPAVCFrameWnd@@@Z
 // name: CDocument::CanCloseFrame
-// symbol: ?CanCloseFrame@CDocument@@UAEHPAVCFrameWnd@@@Z
 // prototype: public: virtual int __thiscall CDocument::CanCloseFrame(class CFrameWnd *)
 
 // LIBRARY: IMPERIALISM 0x00610c08
-// name: CDocument::PreCloseFrame
+// CDocument::PreCloseFrame
 
-// LIBRARY: IMPERIALISM 0x00610c0b
+// LIBRARY: IMPERIALISM 0x00610c0b SYMBOL
+// ?SetPathName@CDocument@@UAEXPBDH@Z
 // name: CDocument::SetPathName
-// symbol: ?SetPathName@CDocument@@UAEXPBDH@Z
 // prototype: public: virtual void __thiscall CDocument::SetPathName(char const *, int)
 
-// LIBRARY: IMPERIALISM 0x00610c87
+// LIBRARY: IMPERIALISM 0x00610c87 SYMBOL
+// ?OnFileClose@CDocument@@IAEXXZ
 // name: CDocument::OnFileClose
-// symbol: ?OnFileClose@CDocument@@IAEXXZ
 // prototype: protected: void __thiscall CDocument::OnFileClose(void)
 
 // LIBRARY: IMPERIALISM 0x00610ca2
@@ -4574,694 +4572,694 @@
 // MFC nafxcw handler in CDocument's message map 0x672078 (ON_COMMAND
 // 0xe104): `push 1; push 0; call [eax+0xa0]` virtual forwarder.
 
-// LIBRARY: IMPERIALISM 0x00610cb7
+// LIBRARY: IMPERIALISM 0x00610cb7 SYMBOL
+// ?DoFileSave@CDocument@@UAEHXZ
 // name: CDocument::DoFileSave
-// symbol: ?DoFileSave@CDocument@@UAEHXZ
 // prototype: public: virtual int __thiscall CDocument::DoFileSave(void)
 
-// LIBRARY: IMPERIALISM 0x00610ce5
-// symbol: ?DoSave@CDocument@@UAEHPBDH@Z
+// LIBRARY: IMPERIALISM 0x00610ce5 SYMBOL
+// ?DoSave@CDocument@@UAEHPBDH@Z
 
-// LIBRARY: IMPERIALISM 0x00610e6f
+// LIBRARY: IMPERIALISM 0x00610e6f SYMBOL
+// ?SaveModified@CDocument@@UAEHXZ
 // name: CDocument::SaveModified
-// symbol: ?SaveModified@CDocument@@UAEHXZ
 // prototype: public: virtual int __thiscall CDocument::SaveModified(void)
 
 // LIBRARY: IMPERIALISM 0x00610f84
-// name: CDocument::GetDefaultMenu
+// CDocument::GetDefaultMenu
 
 // LIBRARY: IMPERIALISM 0x00610f87
-// name: CDocument::GetDefaultAccelerator
+// CDocument::GetDefaultAccelerator
 
-// LIBRARY: IMPERIALISM 0x00610f8a
+// LIBRARY: IMPERIALISM 0x00610f8a SYMBOL
+// ?ReportSaveLoadException@CDocument@@UAEXPBDPAVCException@@HI@Z
 // name: CDocument::ReportSaveLoadException
-// symbol: ?ReportSaveLoadException@CDocument@@UAEXPBDPAVCException@@HI@Z
 // prototype: public: virtual void __thiscall CDocument::ReportSaveLoadException(char const *, class CException *, int, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x006110fa
+// LIBRARY: IMPERIALISM 0x006110fa SYMBOL
+// ?Open@CMirrorFile@@UAEHPBDIPAVCFileException@@@Z
 // name: CMirrorFile::Open
-// symbol: ?Open@CMirrorFile@@UAEHPBDIPAVCFileException@@@Z
 // prototype: public: virtual int __thiscall CMirrorFile::Open(char const *, unsigned int, class CFileException *)
 
-// LIBRARY: IMPERIALISM 0x006112c1
+// LIBRARY: IMPERIALISM 0x006112c1 SYMBOL
+// ?Abort@CMirrorFile@@UAEXXZ
 // name: CMirrorFile::Abort
-// symbol: ?Abort@CMirrorFile@@UAEXXZ
 // prototype: public: virtual void __thiscall CMirrorFile::Abort(void)
 
-// LIBRARY: IMPERIALISM 0x006112da
+// LIBRARY: IMPERIALISM 0x006112da SYMBOL
+// ?Close@CMirrorFile@@UAEXXZ
 // name: CMirrorFile::Close
-// symbol: ?Close@CMirrorFile@@UAEXXZ
 // prototype: public: virtual void __thiscall CMirrorFile::Close(void)
 
-// LIBRARY: IMPERIALISM 0x00611334
+// LIBRARY: IMPERIALISM 0x00611334 SYMBOL
+// ?GetFile@CDocument@@UAEPAVCFile@@PBDIPAVCFileException@@@Z
 // name: CDocument::GetFile
-// symbol: ?GetFile@CDocument@@UAEPAVCFile@@PBDIPAVCFileException@@@Z
 // prototype: public: virtual class CFile * __thiscall CDocument::GetFile(char const *, unsigned int, class CFileException *)
 
-// LIBRARY: IMPERIALISM 0x006113aa
-// symbol: ??_GCCtrlView@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x006113aa SYMBOL
+// ??_GCCtrlView@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x006113c6
+// LIBRARY: IMPERIALISM 0x006113c6 SYMBOL
+// ??1CMirrorFile@@UAE@XZ
 // name: CMirrorFile::~CMirrorFile
-// symbol: ??1CMirrorFile@@UAE@XZ
 // prototype: public: virtual __thiscall CMirrorFile::~CMirrorFile(void)
 
-// LIBRARY: IMPERIALISM 0x006113f7
+// LIBRARY: IMPERIALISM 0x006113f7 SYMBOL
+// ?ReleaseFile@CDocument@@UAEXPAVCFile@@H@Z
 // name: CDocument::ReleaseFile
-// symbol: ?ReleaseFile@CDocument@@UAEXPAVCFile@@H@Z
 // prototype: public: virtual void __thiscall CDocument::ReleaseFile(class CFile *, int)
 
-// LIBRARY: IMPERIALISM 0x00611420
+// LIBRARY: IMPERIALISM 0x00611420 SYMBOL
+// ?OnNewDocument@CDocument@@UAEHXZ
 // name: CDocument::OnNewDocument
-// symbol: ?OnNewDocument@CDocument@@UAEHXZ
 // prototype: public: virtual int __thiscall CDocument::OnNewDocument(void)
 
-// LIBRARY: IMPERIALISM 0x00611443
-// symbol: ?OnOpenDocument@CDocument@@UAEHPBD@Z
+// LIBRARY: IMPERIALISM 0x00611443 SYMBOL
+// ?OnOpenDocument@CDocument@@UAEHPBD@Z
 
-// LIBRARY: IMPERIALISM 0x0061160e
-// symbol: ?OnSaveDocument@CDocument@@UAEHPBD@Z
+// LIBRARY: IMPERIALISM 0x0061160e SYMBOL
+// ?OnSaveDocument@CDocument@@UAEHPBD@Z
 
-// LIBRARY: IMPERIALISM 0x006117b5
+// LIBRARY: IMPERIALISM 0x006117b5 SYMBOL
+// ?OnCloseDocument@CDocument@@UAEXXZ
 // name: CDocument::OnCloseDocument
-// symbol: ?OnCloseDocument@CDocument@@UAEXXZ
 // prototype: public: virtual void __thiscall CDocument::OnCloseDocument(void)
 
 // LIBRARY: IMPERIALISM 0x0061180f
-// name: CDocument::OnIdle
+// CDocument::OnIdle
 
-// LIBRARY: IMPERIALISM 0x00611810
+// LIBRARY: IMPERIALISM 0x00611810 SYMBOL
+// ?AddView@CDocument@@QAEXPAVCView@@@Z
 // name: CDocument::AddView
-// symbol: ?AddView@CDocument@@QAEXPAVCView@@@Z
 // prototype: public: void __thiscall CDocument::AddView(class CView *)
 
-// LIBRARY: IMPERIALISM 0x00611830
+// LIBRARY: IMPERIALISM 0x00611830 SYMBOL
+// ?RemoveView@CDocument@@QAEXPAVCView@@@Z
 // name: CDocument::RemoveView
-// symbol: ?RemoveView@CDocument@@QAEXPAVCView@@@Z
 // prototype: public: void __thiscall CDocument::RemoveView(class CView *)
 
-// LIBRARY: IMPERIALISM 0x0061185f
+// LIBRARY: IMPERIALISM 0x0061185f SYMBOL
+// ?GetFirstViewPosition@CDocument@@UBEPAU__POSITION@@XZ
 // name: CDocument::GetFirstViewPosition
-// symbol: ?GetFirstViewPosition@CDocument@@UBEPAU__POSITION@@XZ
 // prototype: public: virtual struct __POSITION * __thiscall CDocument::GetFirstViewPosition(void)const
 
-// LIBRARY: IMPERIALISM 0x00611863
+// LIBRARY: IMPERIALISM 0x00611863 SYMBOL
+// ?GetNextView@CDocument@@UBEPAVCView@@AAPAU__POSITION@@@Z
 // name: CDocument::GetNextView
-// symbol: ?GetNextView@CDocument@@UBEPAVCView@@AAPAU__POSITION@@@Z
 // prototype: public: virtual class CView * __thiscall CDocument::GetNextView(struct __POSITION * &)const
 
-// LIBRARY: IMPERIALISM 0x00611877
+// LIBRARY: IMPERIALISM 0x00611877 SYMBOL
+// ?UpdateAllViews@CDocument@@QAEXPAVCView@@JPAVCObject@@@Z
 // name: CDocument::UpdateAllViews
-// symbol: ?UpdateAllViews@CDocument@@QAEXPAVCView@@JPAVCObject@@@Z
 // prototype: public: void __thiscall CDocument::UpdateAllViews(class CView *, long, class CObject *)
 
-// LIBRARY: IMPERIALISM 0x006118ba
+// LIBRARY: IMPERIALISM 0x006118ba SYMBOL
+// ?SendInitialUpdate@CDocument@@QAEXXZ
 // name: CDocument::SendInitialUpdate
-// symbol: ?SendInitialUpdate@CDocument@@QAEXXZ
 // prototype: public: void __thiscall CDocument::SendInitialUpdate(void)
 
-// LIBRARY: IMPERIALISM 0x006118ed
+// LIBRARY: IMPERIALISM 0x006118ed SYMBOL
+// ?OnCmdMsg@CDocument@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z
 // name: CDocument::OnCmdMsg
-// symbol: ?OnCmdMsg@CDocument@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z
 // prototype: public: virtual int __thiscall CDocument::OnCmdMsg(unsigned int, int, void *, struct AFX_CMDHANDLERINFO *)
 
-// LIBRARY: IMPERIALISM 0x00611930
+// LIBRARY: IMPERIALISM 0x00611930 SYMBOL
+// ??6@YGAAVCArchive@@AAV0@ABVCString@@@Z
 // name: operator<<
-// symbol: ??6@YGAAVCArchive@@AAV0@ABVCString@@@Z
 // prototype: class CArchive & __stdcall operator<<(class CArchive &, class CString const &)
 
-// LIBRARY: IMPERIALISM 0x006119aa
+// LIBRARY: IMPERIALISM 0x006119aa SYMBOL
+// ??5@YGAAVCArchive@@AAV0@AAVCString@@@Z
 // name: operator>>
-// symbol: ??5@YGAAVCArchive@@AAV0@AAVCString@@@Z
 // prototype: class CArchive & __stdcall operator>>(class CArchive &, class CString &)
 
-// LIBRARY: IMPERIALISM 0x00611a47
-// symbol: ?ReadStringLength@@YGIAAVCArchive@@@Z
+// LIBRARY: IMPERIALISM 0x00611a47 SYMBOL
+// ?ReadStringLength@@YGIAAVCArchive@@@Z
 
-// LIBRARY: IMPERIALISM 0x00611a9e
+// LIBRARY: IMPERIALISM 0x00611a9e SYMBOL
+// ?SerializeElements@@YGXAAVCArchive@@PAVCString@@H@Z
 // name: SerializeElements
-// symbol: ?SerializeElements@@YGXAAVCArchive@@PAVCString@@H@Z
 // prototype: void __stdcall SerializeElements(class CArchive &, class CString *, int)
 
-// LIBRARY: IMPERIALISM 0x00611aec
+// LIBRARY: IMPERIALISM 0x00611aec SYMBOL
+// ?Load@CRuntimeClass@@SGPAU1@AAVCArchive@@PAI@Z
 // name: CRuntimeClass::Load
-// symbol: ?Load@CRuntimeClass@@SGPAU1@AAVCArchive@@PAI@Z
 // prototype: public: static struct CRuntimeClass * __stdcall CRuntimeClass::Load(class CArchive &, unsigned int *)
 
-// LIBRARY: IMPERIALISM 0x00611b7c
+// LIBRARY: IMPERIALISM 0x00611b7c SYMBOL
+// ?Store@CRuntimeClass@@QBEXAAVCArchive@@@Z
 // name: CRuntimeClass::Store
-// symbol: ?Store@CRuntimeClass@@QBEXAAVCArchive@@@Z
 // prototype: public: void __thiscall CRuntimeClass::Store(class CArchive &) const
 
-// LIBRARY: IMPERIALISM 0x00611bb4
+// LIBRARY: IMPERIALISM 0x00611bb4 SYMBOL
+// ??0CArchive@@QAE@PAVCFile@@IHPAX@Z
 // name: CArchive::CArchive
-// symbol: ??0CArchive@@QAE@PAVCFile@@IHPAX@Z
 // prototype: public: __thiscall CArchive::CArchive(class CFile *, unsigned int, int, void *)
 
-// LIBRARY: IMPERIALISM 0x00611c90
+// LIBRARY: IMPERIALISM 0x00611c90 SYMBOL
+// ??1CArchive@@QAE@XZ
 // name: CArchive::~CArchive
-// symbol: ??1CArchive@@QAE@XZ
 // prototype: public: __thiscall CArchive::~CArchive(void)
 
-// LIBRARY: IMPERIALISM 0x00611cd6
+// LIBRARY: IMPERIALISM 0x00611cd6 SYMBOL
+// ?Abort@CArchive@@QAEXXZ
 // name: CArchive::Abort
-// symbol: ?Abort@CArchive@@QAEXXZ
 // prototype: public: void __thiscall CArchive::Abort(void)
 
-// LIBRARY: IMPERIALISM 0x00611d18
+// LIBRARY: IMPERIALISM 0x00611d18 SYMBOL
+// ?Close@CArchive@@QAEXXZ
 // name: CArchive::Close
-// symbol: ?Close@CArchive@@QAEXXZ
 // prototype: public: void __thiscall CArchive::Close(void)
 
-// LIBRARY: IMPERIALISM 0x00611d26
+// LIBRARY: IMPERIALISM 0x00611d26 SYMBOL
+// ?Read@CArchive@@QAEIPAXI@Z
 // name: CArchive::Read
-// symbol: ?Read@CArchive@@QAEIPAXI@Z
 // prototype: public: unsigned int __thiscall CArchive::Read(void *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00611e34
+// LIBRARY: IMPERIALISM 0x00611e34 SYMBOL
+// ?Write@CArchive@@QAEXPBXI@Z
 // name: CArchive::Write
-// symbol: ?Write@CArchive@@QAEXPBXI@Z
 // prototype: public: void __thiscall CArchive::Write(void const *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00611ec4
+// LIBRARY: IMPERIALISM 0x00611ec4 SYMBOL
+// ?Flush@CArchive@@QAEXXZ
 // name: CArchive::Flush
-// symbol: ?Flush@CArchive@@QAEXXZ
 // prototype: public: void __thiscall CArchive::Flush(void)
 
-// LIBRARY: IMPERIALISM 0x00611f3e
+// LIBRARY: IMPERIALISM 0x00611f3e SYMBOL
+// ?FillBuffer@CArchive@@QAEXI@Z
 // name: CArchive::FillBuffer
-// symbol: ?FillBuffer@CArchive@@QAEXI@Z
 // prototype: public: void __thiscall CArchive::FillBuffer(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00612000
+// LIBRARY: IMPERIALISM 0x00612000 SYMBOL
+// ?WriteCount@CArchive@@QAEXK@Z
 // name: CArchive::WriteCount
-// symbol: ?WriteCount@CArchive@@QAEXK@Z
 // prototype: public: void __thiscall CArchive::WriteCount(unsigned long)
 
-// LIBRARY: IMPERIALISM 0x0061202e
+// LIBRARY: IMPERIALISM 0x0061202e SYMBOL
+// ?ReadCount@CArchive@@QAEKXZ
 // name: CArchive::ReadCount
-// symbol: ?ReadCount@CArchive@@QAEKXZ
 // prototype: public: unsigned long __thiscall CArchive::ReadCount(void)
 
-// LIBRARY: IMPERIALISM 0x0061205e
+// LIBRARY: IMPERIALISM 0x0061205e SYMBOL
+// ?WriteString@CArchive@@QAEXPBD@Z
 // name: CArchive::WriteString
-// symbol: ?WriteString@CArchive@@QAEXPBD@Z
 // prototype: public: void __thiscall CArchive::WriteString(char const *)
 
-// LIBRARY: IMPERIALISM 0x0061207b
-// symbol: ?ReadString@CArchive@@QAEPADPADI@Z
+// LIBRARY: IMPERIALISM 0x0061207b SYMBOL
+// ?ReadString@CArchive@@QAEPADPADI@Z
 
-// LIBRARY: IMPERIALISM 0x00612132
+// LIBRARY: IMPERIALISM 0x00612132 SYMBOL
+// ?ReadString@CArchive@@QAEHAAVCString@@@Z
 // name: CArchive::ReadString
-// symbol: ?ReadString@CArchive@@QAEHAAVCString@@@Z
 // prototype: public: int __thiscall CArchive::ReadString(class CString &)
 
-// LIBRARY: IMPERIALISM 0x006121cd
+// LIBRARY: IMPERIALISM 0x006121cd SYMBOL
+// ?CheckCount@CArchive@@QAEXXZ
 // name: CArchive::CheckCount
-// symbol: ?CheckCount@CArchive@@QAEXXZ
 // prototype: public: void __thiscall CArchive::CheckCount(void)
 
-// LIBRARY: IMPERIALISM 0x006121e1
+// LIBRARY: IMPERIALISM 0x006121e1 SYMBOL
+// ?WriteObject@CArchive@@QAEXPBVCObject@@@Z
 // name: CArchive::WriteObject
-// symbol: ?WriteObject@CArchive@@QAEXPBVCObject@@@Z
 // prototype: public: void __thiscall CArchive::WriteObject(class CObject const *)
 
-// LIBRARY: IMPERIALISM 0x0061225e
+// LIBRARY: IMPERIALISM 0x0061225e SYMBOL
+// ?ReadObject@CArchive@@QAEPAVCObject@@PBUCRuntimeClass@@@Z
 // name: CArchive::ReadObject
-// symbol: ?ReadObject@CArchive@@QAEPAVCObject@@PBUCRuntimeClass@@@Z
 // prototype: public: class CObject * __thiscall CArchive::ReadObject(struct CRuntimeClass const *)
 
-// LIBRARY: IMPERIALISM 0x00612315
+// LIBRARY: IMPERIALISM 0x00612315 SYMBOL
+// ?MapObject@CArchive@@QAEXPBVCObject@@@Z
 // name: CArchive::MapObject
-// symbol: ?MapObject@CArchive@@QAEXPBVCObject@@@Z
 // prototype: public: void __thiscall CArchive::MapObject(class CObject const *)
 
-// LIBRARY: IMPERIALISM 0x0061240d
+// LIBRARY: IMPERIALISM 0x0061240d SYMBOL
+// ?WriteClass@CArchive@@QAEXPBUCRuntimeClass@@@Z
 // name: CArchive::WriteClass
-// symbol: ?WriteClass@CArchive@@QAEXPBUCRuntimeClass@@@Z
 // prototype: public: void __thiscall CArchive::WriteClass(struct CRuntimeClass const *)
 
-// LIBRARY: IMPERIALISM 0x0061249e
+// LIBRARY: IMPERIALISM 0x0061249e SYMBOL
+// ?ReadClass@CArchive@@QAEPAUCRuntimeClass@@PBU2@PAIPAK@Z
 // name: CArchive::ReadClass
-// symbol: ?ReadClass@CArchive@@QAEPAUCRuntimeClass@@PBU2@PAIPAK@Z
 // prototype: public: struct CRuntimeClass * __thiscall CArchive::ReadClass(struct CRuntimeClass const *, unsigned int *, unsigned long *)
 
-// LIBRARY: IMPERIALISM 0x00612682
+// LIBRARY: IMPERIALISM 0x00612682 SYMBOL
+// ??0CDC@@QAE@XZ
 // name: CDC::CDC
-// symbol: ??0CDC@@QAE@XZ
 // prototype: public: __thiscall CDC::CDC(void)
 
-// LIBRARY: IMPERIALISM 0x00612696
+// LIBRARY: IMPERIALISM 0x00612696 SYMBOL
+// ??_GCDC@@UAEPAXI@Z
 // name: CDC::`scalar deleting dtor'
-// symbol: ??_GCDC@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CDC::`scalar deleting dtor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x006126b2
-// symbol: ?DeleteTempMap@CMenu@@SGXXZ
+// LIBRARY: IMPERIALISM 0x006126b2 SYMBOL
+// ?DeleteTempMap@CMenu@@SGXXZ
 
-// LIBRARY: IMPERIALISM 0x006126c6
-// symbol: ?afxMapHDC@@YAPAVCHandleMap@@H@Z
+// LIBRARY: IMPERIALISM 0x006126c6 SYMBOL
+// ?afxMapHDC@@YAPAVCHandleMap@@H@Z
 
-// LIBRARY: IMPERIALISM 0x00612736
+// LIBRARY: IMPERIALISM 0x00612736 SYMBOL
+// ?FromHandle@CDC@@SGPAV1@PAUHDC__@@@Z
 // name: CDC::FromHandle
-// symbol: ?FromHandle@CDC@@SGPAV1@PAUHDC__@@@Z
 // prototype: public: static class CDC * __stdcall CDC::FromHandle(struct HDC__*)
 
-// LIBRARY: IMPERIALISM 0x0061274c
+// LIBRARY: IMPERIALISM 0x0061274c SYMBOL
+// ?Attach@CDC@@QAEHPAUHDC__@@@Z
 // name: CDC::Attach
-// symbol: ?Attach@CDC@@QAEHPAUHDC__@@@Z
 // prototype: public: int __thiscall CDC::Attach(struct HDC__*)
 
-// LIBRARY: IMPERIALISM 0x00612783
+// LIBRARY: IMPERIALISM 0x00612783 SYMBOL
+// ?Detach@CDC@@QAEPAUHDC__@@XZ
 // name: CDC::Detach
-// symbol: ?Detach@CDC@@QAEPAUHDC__@@XZ
 // prototype: public: struct HDC__* __thiscall CDC::Detach(void)
 
-// LIBRARY: IMPERIALISM 0x006127ca
+// LIBRARY: IMPERIALISM 0x006127ca SYMBOL
+// ??1CDC@@UAE@XZ
 // name: CDC::~CDC
-// symbol: ??1CDC@@UAE@XZ
 // prototype: public: virtual __thiscall CDC::~CDC(void)
 
-// LIBRARY: IMPERIALISM 0x00612828
+// LIBRARY: IMPERIALISM 0x00612828 SYMBOL
+// ?StartDocA@CDC@@QAEHPBD@Z
 // name: CDC::StartDocA
-// symbol: ?StartDocA@CDC@@QAEHPBD@Z
 // prototype: public: int __thiscall CDC::StartDocA(char const *)
 
-// LIBRARY: IMPERIALISM 0x00612860
+// LIBRARY: IMPERIALISM 0x00612860 SYMBOL
+// ?SaveDC@CDC@@UAEHXZ
 // name: CDC::SaveDC
-// symbol: ?SaveDC@CDC@@UAEHXZ
 // prototype: public: virtual int __thiscall CDC::SaveDC(void)
 
-// LIBRARY: IMPERIALISM 0x00612897
+// LIBRARY: IMPERIALISM 0x00612897 SYMBOL
+// ?RestoreDC@CDC@@UAEHH@Z
 // name: CDC::RestoreDC
-// symbol: ?RestoreDC@CDC@@UAEHH@Z
 // prototype: public: virtual int __thiscall CDC::RestoreDC(int)
 
-// LIBRARY: IMPERIALISM 0x006128ec
+// LIBRARY: IMPERIALISM 0x006128ec SYMBOL
+// ?SelectStockObject@CDC@@UAEPAVCGdiObject@@H@Z
 // name: CDC::SelectStockObject
-// symbol: ?SelectStockObject@CDC@@UAEPAVCGdiObject@@H@Z
 // prototype: public: virtual class CGdiObject * __thiscall CDC::SelectStockObject(int)
 
-// LIBRARY: IMPERIALISM 0x00612931
+// LIBRARY: IMPERIALISM 0x00612931 SYMBOL
+// ?SelectObject@CDC@@QAEPAVCPen@@PAV2@@Z
 // name: CDC::SelectObject
-// symbol: ?SelectObject@CDC@@QAEPAVCPen@@PAV2@@Z
 // prototype: public: class CPen * __thiscall CDC::SelectObject(class CPen *)
 
-// LIBRARY: IMPERIALISM 0x00612984
-// symbol: ?SelectObject@CDC@@QAEPAVCBrush@@PAV2@@Z
+// LIBRARY: IMPERIALISM 0x00612984 SYMBOL
+// ?SelectObject@CDC@@QAEPAVCBrush@@PAV2@@Z
 
-// LIBRARY: IMPERIALISM 0x006129d7
+// LIBRARY: IMPERIALISM 0x006129d7 SYMBOL
+// ?SelectObject@CDC@@UAEPAVCFont@@PAV2@@Z
 // name: CDC::SelectObject
-// symbol: ?SelectObject@CDC@@UAEPAVCFont@@PAV2@@Z
 // prototype: public: virtual class CFont * __thiscall CDC::SelectObject(class CFont *)
 
 // LIBRARY: IMPERIALISM 0x00612a2a
-// name: CDC::SelectClipRgn
+// CDC::SelectClipRgn
 
 // LIBRARY: IMPERIALISM 0x00612a78
 // ownership-only
 
-// LIBRARY: IMPERIALISM 0x00612a9a
-// symbol: ?SetPolyFillMode@CDC@@QAEHH@Z
+// LIBRARY: IMPERIALISM 0x00612a9a SYMBOL
+// ?SetPolyFillMode@CDC@@QAEHH@Z
 
-// LIBRARY: IMPERIALISM 0x00612ad2
+// LIBRARY: IMPERIALISM 0x00612ad2 SYMBOL
+// ?SetBkMode@CDC@@QAEHH@Z
 // name: CDC::SetBkMode
-// symbol: ?SetBkMode@CDC@@QAEHH@Z
 // prototype: public: int __thiscall CDC::SetBkMode(int)
 
-// LIBRARY: IMPERIALISM 0x00612b0a
-// symbol: ?SetPolyFillMode@CDC@@QAEHH@Z
+// LIBRARY: IMPERIALISM 0x00612b0a SYMBOL
+// ?SetPolyFillMode@CDC@@QAEHH@Z
 
-// LIBRARY: IMPERIALISM 0x00612b42
-// symbol: ?SetPolyFillMode@CDC@@QAEHH@Z
+// LIBRARY: IMPERIALISM 0x00612b42 SYMBOL
+// ?SetPolyFillMode@CDC@@QAEHH@Z
 
-// LIBRARY: IMPERIALISM 0x00612b7a
-// symbol: ?SetPolyFillMode@CDC@@QAEHH@Z
+// LIBRARY: IMPERIALISM 0x00612b7a SYMBOL
+// ?SetPolyFillMode@CDC@@QAEHH@Z
 
-// LIBRARY: IMPERIALISM 0x00612bb2
-// symbol: ?SetPolyFillMode@CDC@@QAEHH@Z
+// LIBRARY: IMPERIALISM 0x00612bb2 SYMBOL
+// ?SetPolyFillMode@CDC@@QAEHH@Z
 
-// LIBRARY: IMPERIALISM 0x00612bea
+// LIBRARY: IMPERIALISM 0x00612bea SYMBOL
+// ?SetMapMode@CDC@@UAEHH@Z
 // name: CDC::SetMapMode
-// symbol: ?SetMapMode@CDC@@UAEHH@Z
 // prototype: public: virtual int __thiscall CDC::SetMapMode(int)
 
-// LIBRARY: IMPERIALISM 0x00612c22
-// symbol: ?MoveTo@CDC@@QAE?AVCPoint@@HH@Z
+// LIBRARY: IMPERIALISM 0x00612c22 SYMBOL
+// ?MoveTo@CDC@@QAE?AVCPoint@@HH@Z
 
-// LIBRARY: IMPERIALISM 0x00612c6e
-// symbol: ?MoveTo@CDC@@QAE?AVCPoint@@HH@Z
+// LIBRARY: IMPERIALISM 0x00612c6e SYMBOL
+// ?MoveTo@CDC@@QAE?AVCPoint@@HH@Z
 
-// LIBRARY: IMPERIALISM 0x00612cba
-// symbol: ?MoveTo@CDC@@QAE?AVCPoint@@HH@Z
+// LIBRARY: IMPERIALISM 0x00612cba SYMBOL
+// ?MoveTo@CDC@@QAE?AVCPoint@@HH@Z
 
-// LIBRARY: IMPERIALISM 0x00612d06
-// symbol: ?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z
+// LIBRARY: IMPERIALISM 0x00612d06 SYMBOL
+// ?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z
 
-// LIBRARY: IMPERIALISM 0x00612d5e
+// LIBRARY: IMPERIALISM 0x00612d5e SYMBOL
+// ?SetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z
 // name: CDC::SetWindowOrg
-// symbol: ?SetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z
 // prototype: public: class CPoint __thiscall CDC::SetWindowOrg(int, int)
 
-// LIBRARY: IMPERIALISM 0x00612daa
-// symbol: ?MoveTo@CDC@@QAE?AVCPoint@@HH@Z
+// LIBRARY: IMPERIALISM 0x00612daa SYMBOL
+// ?MoveTo@CDC@@QAE?AVCPoint@@HH@Z
 
-// LIBRARY: IMPERIALISM 0x00612df6
-// symbol: ?MoveTo@CDC@@QAE?AVCPoint@@HH@Z
+// LIBRARY: IMPERIALISM 0x00612df6 SYMBOL
+// ?MoveTo@CDC@@QAE?AVCPoint@@HH@Z
 
-// LIBRARY: IMPERIALISM 0x00612e42
-// symbol: ?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z
+// LIBRARY: IMPERIALISM 0x00612e42 SYMBOL
+// ?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z
 
-// LIBRARY: IMPERIALISM 0x00612e9a
+// LIBRARY: IMPERIALISM 0x00612e9a SYMBOL
+// ?GetClipBox@CDC@@UBEHPAUtagRECT@@@Z
 // name: CDC::GetClipBox
-// symbol: ?GetClipBox@CDC@@UBEHPAUtagRECT@@@Z
 // prototype: public: virtual int __thiscall CDC::GetClipBox(struct tagRECT *) const
 
-// LIBRARY: IMPERIALISM 0x00612eaa
-// symbol: ?SelectClipRgn@CDC@@QAEHPAVCRgn@@@Z
+// LIBRARY: IMPERIALISM 0x00612eaa SYMBOL
+// ?SelectClipRgn@CDC@@QAEHPAVCRgn@@@Z
 
-// LIBRARY: IMPERIALISM 0x00612ef8
-// symbol: ?ExcludeClipRect@CDC@@QAEHHHHH@Z
+// LIBRARY: IMPERIALISM 0x00612ef8 SYMBOL
+// ?ExcludeClipRect@CDC@@QAEHHHHH@Z
 
-// LIBRARY: IMPERIALISM 0x00612f42
-// symbol: ?ExcludeClipRect@CDC@@QAEHPBUtagRECT@@@Z
+// LIBRARY: IMPERIALISM 0x00612f42 SYMBOL
+// ?ExcludeClipRect@CDC@@QAEHPBUtagRECT@@@Z
 
-// LIBRARY: IMPERIALISM 0x00612f8e
-// symbol: ?IntersectClipRect@CDC@@QAEHHHHH@Z
+// LIBRARY: IMPERIALISM 0x00612f8e SYMBOL
+// ?IntersectClipRect@CDC@@QAEHHHHH@Z
 
-// LIBRARY: IMPERIALISM 0x00612fd8
-// symbol: ?IntersectClipRect@CDC@@QAEHPBUtagRECT@@@Z
+// LIBRARY: IMPERIALISM 0x00612fd8 SYMBOL
+// ?IntersectClipRect@CDC@@QAEHPBUtagRECT@@@Z
 
-// LIBRARY: IMPERIALISM 0x00613024
-// symbol: ?OffsetClipRgn@CDC@@QAEHHH@Z
+// LIBRARY: IMPERIALISM 0x00613024 SYMBOL
+// ?OffsetClipRgn@CDC@@QAEHHH@Z
 
-// LIBRARY: IMPERIALISM 0x00613062
-// symbol: ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z
+// LIBRARY: IMPERIALISM 0x00613062 SYMBOL
+// ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z
 
-// LIBRARY: IMPERIALISM 0x006130a0
-// symbol: ?MoveTo@CDC@@QAE?AVCPoint@@HH@Z
+// LIBRARY: IMPERIALISM 0x006130a0 SYMBOL
+// ?MoveTo@CDC@@QAE?AVCPoint@@HH@Z
 
-// LIBRARY: IMPERIALISM 0x006130ec
+// LIBRARY: IMPERIALISM 0x006130ec SYMBOL
+// ?LineTo@CDC@@QAEHHH@Z
 // name: LineTo
-// symbol: ?LineTo@CDC@@QAEHHH@Z
 // prototype: int __thiscall CDC::LineTo(int param_1, int param_2)
 
-// LIBRARY: IMPERIALISM 0x00613121
+// LIBRARY: IMPERIALISM 0x00613121 SYMBOL
+// ?SetTextAlign@CDC@@QAEII@Z
 // name: CDC::SetTextAlign
-// symbol: ?SetTextAlign@CDC@@QAEII@Z
 // prototype: public: unsigned int __thiscall CDC::SetTextAlign(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x00613155
-// name: CDC::OffsetClipRgn
+// CDC::OffsetClipRgn
 
-// LIBRARY: IMPERIALISM 0x00613193
-// symbol: ?SetPolyFillMode@CDC@@QAEHH@Z
+// LIBRARY: IMPERIALISM 0x00613193 SYMBOL
+// ?SetPolyFillMode@CDC@@QAEHH@Z
 
-// LIBRARY: IMPERIALISM 0x006131cb
-// symbol: ?SetMapperFlags@CDC@@QAEKK@Z
+// LIBRARY: IMPERIALISM 0x006131cb SYMBOL
+// ?SetMapperFlags@CDC@@QAEKK@Z
 
-// LIBRARY: IMPERIALISM 0x00613203
-// symbol: ?ArcTo@CDC@@QAEHHHHHHHHH@Z
+// LIBRARY: IMPERIALISM 0x00613203 SYMBOL
+// ?ArcTo@CDC@@QAEHHHHHHHHH@Z
 
-// LIBRARY: IMPERIALISM 0x0061325b
-// symbol: ?SetPolyFillMode@CDC@@QAEHH@Z
+// LIBRARY: IMPERIALISM 0x0061325b SYMBOL
+// ?SetPolyFillMode@CDC@@QAEHH@Z
 
-// LIBRARY: IMPERIALISM 0x00613293
-// symbol: ?PolyDraw@CDC@@QAEHPBUtagPOINT@@PBEH@Z
+// LIBRARY: IMPERIALISM 0x00613293 SYMBOL
+// ?PolyDraw@CDC@@QAEHPBUtagPOINT@@PBEH@Z
 
-// LIBRARY: IMPERIALISM 0x006132dc
-// symbol: ?PolyBezierTo@CDC@@QAEHPBUtagPOINT@@H@Z
+// LIBRARY: IMPERIALISM 0x006132dc SYMBOL
+// ?PolyBezierTo@CDC@@QAEHPBUtagPOINT@@H@Z
 
-// LIBRARY: IMPERIALISM 0x00613322
-// symbol: ?SetPolyFillMode@CDC@@QAEHH@Z
+// LIBRARY: IMPERIALISM 0x00613322 SYMBOL
+// ?SetPolyFillMode@CDC@@QAEHH@Z
 
-// LIBRARY: IMPERIALISM 0x0061335a
-// symbol: ?PolyBezierTo@CDC@@QAEHPBUtagPOINT@@H@Z
+// LIBRARY: IMPERIALISM 0x0061335a SYMBOL
+// ?PolyBezierTo@CDC@@QAEHPBUtagPOINT@@H@Z
 
-// LIBRARY: IMPERIALISM 0x006133a0
+// LIBRARY: IMPERIALISM 0x006133a0 SYMBOL
+// ?SelectClipPath@CDC@@QAEHH@Z
 // name: CDC::SelectClipPath
-// symbol: ?SelectClipPath@CDC@@QAEHH@Z
 // prototype: public: int __thiscall CDC::SelectClipPath(int)
 
-// LIBRARY: IMPERIALISM 0x006133fe
+// LIBRARY: IMPERIALISM 0x006133fe SYMBOL
+// ?SelectClipRgn@CDC@@QAEHPAVCRgn@@H@Z
 // name: CDC::SelectClipRgn
-// symbol: ?SelectClipRgn@CDC@@QAEHPAVCRgn@@H@Z
 // prototype: public: int __thiscall CDC::SelectClipRgn(class CRgn *, int)
 
-// LIBRARY: IMPERIALISM 0x00613452
+// LIBRARY: IMPERIALISM 0x00613452 SYMBOL
+// ?AfxEnumMetaFileProc@@YGHPAUHDC__@@PAUtagHANDLETABLE@@PAUtagMETARECORD@@HJ@Z
 // name: AfxEnumMetaFileProc
-// symbol: ?AfxEnumMetaFileProc@@YGHPAUHDC__@@PAUtagHANDLETABLE@@PAUtagMETARECORD@@HJ@Z
 // prototype: int __stdcall AfxEnumMetaFileProc(struct HDC__*, struct tagHANDLETABLE *, struct tagMETARECORD *, int, long)
 
-// LIBRARY: IMPERIALISM 0x00613686
+// LIBRARY: IMPERIALISM 0x00613686 SYMBOL
+// ?PlayMetaFile@CDC@@QAEHPAUHMETAFILE__@@@Z
 // name: PlayMetaFile
-// symbol: ?PlayMetaFile@CDC@@QAEHPAUHMETAFILE__@@@Z
 // prototype: int __thiscall CDC::PlayMetaFile(HMETAFILE__ * param_1)
 
-// LIBRARY: IMPERIALISM 0x006136bf
+// LIBRARY: IMPERIALISM 0x006136bf SYMBOL
+// ?LPtoDP@CDC@@QBEXPAUtagSIZE@@@Z
 // name: CDC::LPtoDP
-// symbol: ?LPtoDP@CDC@@QBEXPAUtagSIZE@@@Z
 // prototype: public: void __thiscall CDC::LPtoDP(struct tagSIZE *) const
 
-// LIBRARY: IMPERIALISM 0x00613728
+// LIBRARY: IMPERIALISM 0x00613728 SYMBOL
+// ?DPtoLP@CDC@@QBEXPAUtagSIZE@@@Z
 // name: CDC::DPtoLP
-// symbol: ?DPtoLP@CDC@@QBEXPAUtagSIZE@@@Z
 // prototype: public: void __thiscall CDC::DPtoLP(struct tagSIZE *) const
 
-// LIBRARY: IMPERIALISM 0x00613791
+// LIBRARY: IMPERIALISM 0x00613791 SYMBOL
+// ??0CClientDC@@QAE@PAVCWnd@@@Z
 // name: CClientDC::CClientDC
-// symbol: ??0CClientDC@@QAE@PAVCWnd@@@Z
 // prototype: public: __thiscall CClientDC::CClientDC(class CWnd *)
 
 // LIBRARY: IMPERIALISM 0x006137e7
 // ownership-only
 
-// LIBRARY: IMPERIALISM 0x00613803
+// LIBRARY: IMPERIALISM 0x00613803 SYMBOL
+// ??1CClientDC@@UAE@XZ
 // name: CClientDC::~CClientDC
-// symbol: ??1CClientDC@@UAE@XZ
 // prototype: public: virtual __thiscall CClientDC::~CClientDC(void)
 
-// LIBRARY: IMPERIALISM 0x00613845
+// LIBRARY: IMPERIALISM 0x00613845 SYMBOL
+// ??0CWindowDC@@QAE@PAVCWnd@@@Z
 // name: CWindowDC::CWindowDC
-// symbol: ??0CWindowDC@@QAE@PAVCWnd@@@Z
 // prototype: public: __thiscall CWindowDC::CWindowDC(class CWnd *)
 
-// LIBRARY: IMPERIALISM 0x0061389b
+// LIBRARY: IMPERIALISM 0x0061389b SYMBOL
+// ??_GCClientDC@@UAEPAXI@Z
 // name: CClientDC::`scalar deleting dtor'
-// symbol: ??_GCClientDC@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CClientDC::`scalar deleting dtor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x006138b7
+// LIBRARY: IMPERIALISM 0x006138b7 SYMBOL
+// ??1CWindowDC@@UAE@XZ
 // name: CWindowDC::~CWindowDC
-// symbol: ??1CWindowDC@@UAE@XZ
 // prototype: public: virtual __thiscall CWindowDC::~CWindowDC(void)
 
-// LIBRARY: IMPERIALISM 0x006138f9
+// LIBRARY: IMPERIALISM 0x006138f9 SYMBOL
+// ??0CPaintDC@@QAE@PAVCWnd@@@Z
 // name: CPaintDC::CPaintDC
-// symbol: ??0CPaintDC@@QAE@PAVCWnd@@@Z
 // prototype: public: __thiscall CPaintDC::CPaintDC(class CWnd *)
 
-// LIBRARY: IMPERIALISM 0x0061394f
-// symbol: ??_GCPaintDC@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x0061394f SYMBOL
+// ??_GCPaintDC@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x0061396b
-// symbol: ??1CPaintDC@@UAE@XZ
+// LIBRARY: IMPERIALISM 0x0061396b SYMBOL
+// ??1CPaintDC@@UAE@XZ
 
-// LIBRARY: IMPERIALISM 0x006139b2
-// symbol: ?DeleteTempMap@CMenu@@SGXXZ
+// LIBRARY: IMPERIALISM 0x006139b2 SYMBOL
+// ?DeleteTempMap@CMenu@@SGXXZ
 
-// LIBRARY: IMPERIALISM 0x006139c6
-// symbol: ?afxMapHGDIOBJ@@YGPAVCHandleMap@@H@Z
+// LIBRARY: IMPERIALISM 0x006139c6 SYMBOL
+// ?afxMapHGDIOBJ@@YGPAVCHandleMap@@H@Z
 
-// LIBRARY: IMPERIALISM 0x00613a36
+// LIBRARY: IMPERIALISM 0x00613a36 SYMBOL
+// ?FromHandle@CGdiObject@@SGPAV1@PAX@Z
 // name: CGdiObject::FromHandle
-// symbol: ?FromHandle@CGdiObject@@SGPAV1@PAX@Z
 // prototype: public: static class CGdiObject * __stdcall CGdiObject::FromHandle(void *)
 
-// LIBRARY: IMPERIALISM 0x00613a4c
+// LIBRARY: IMPERIALISM 0x00613a4c SYMBOL
+// ?Attach@CGdiObject@@QAEHPAX@Z
 // name: CGdiObject::Attach
-// symbol: ?Attach@CGdiObject@@QAEHPAX@Z
 // prototype: public: int __thiscall CGdiObject::Attach(void *)
 
-// LIBRARY: IMPERIALISM 0x00613a79
-// symbol: ?Detach@CMenu@@QAEPAUHMENU__@@XZ
+// LIBRARY: IMPERIALISM 0x00613a79 SYMBOL
+// ?Detach@CMenu@@QAEPAUHMENU__@@XZ
 
-// LIBRARY: IMPERIALISM 0x00613aa3
+// LIBRARY: IMPERIALISM 0x00613aa3 SYMBOL
+// ?DeleteObject@CGdiObject@@QAEHXZ
 // name: CGdiObject::DeleteObject
-// symbol: ?DeleteObject@CGdiObject@@QAEHXZ
 // prototype: public: int __thiscall CGdiObject::DeleteObject(void)
 
-// LIBRARY: IMPERIALISM 0x00613ab9
+// LIBRARY: IMPERIALISM 0x00613ab9 SYMBOL
+// ??0CPen@@QAE@HHK@Z
 // name: CPen::CPen
-// symbol: ??0CPen@@QAE@HHK@Z
 // prototype: public: __thiscall CPen::CPen(int, int, unsigned long)
 
-// LIBRARY: IMPERIALISM 0x00613b09
+// LIBRARY: IMPERIALISM 0x00613b09 SYMBOL
+// ??0CPen@@QAE@HHPBUtagLOGBRUSH@@HPBK@Z
 // name: CPen::CPen
-// symbol: ??0CPen@@QAE@HHPBUtagLOGBRUSH@@HPBK@Z
 // prototype: public: __thiscall CPen::CPen(int, int, struct tagLOGBRUSH const *, int, unsigned long const *)
 
-// LIBRARY: IMPERIALISM 0x00613b5f
+// LIBRARY: IMPERIALISM 0x00613b5f SYMBOL
+// ??0CBrush@@QAE@K@Z
 // name: CBrush::CBrush
-// symbol: ??0CBrush@@QAE@K@Z
 // prototype: public: __thiscall CBrush::CBrush(unsigned long)
 
-// LIBRARY: IMPERIALISM 0x00613ba9
+// LIBRARY: IMPERIALISM 0x00613ba9 SYMBOL
+// ??0CBrush@@QAE@HK@Z
 // name: CBrush::CBrush
-// symbol: ??0CBrush@@QAE@HK@Z
 // prototype: public: __thiscall CBrush::CBrush(int, unsigned long)
 
-// LIBRARY: IMPERIALISM 0x00613bf6
+// LIBRARY: IMPERIALISM 0x00613bf6 SYMBOL
+// ??0CBrush@@QAE@PAVCBitmap@@@Z
 // name: CBrush::CBrush
-// symbol: ??0CBrush@@QAE@PAVCBitmap@@@Z
 // prototype: public: __thiscall CBrush::CBrush(class CBitmap *)
 
-// LIBRARY: IMPERIALISM 0x00613c43
-// symbol: ?CreateDIBPatternBrush@CBrush@@QAEHPAXI@Z
+// LIBRARY: IMPERIALISM 0x00613c43 SYMBOL
+// ?CreateDIBPatternBrush@CBrush@@QAEHPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x00613c75
+// LIBRARY: IMPERIALISM 0x00613c75 SYMBOL
+// ?AfxThrowResourceException@@YGXXZ
 // name: AfxThrowResourceException
-// symbol: ?AfxThrowResourceException@@YGXXZ
 // prototype: void __stdcall AfxThrowResourceException(void)
 
-// LIBRARY: IMPERIALISM 0x00613c90
+// LIBRARY: IMPERIALISM 0x00613c90 SYMBOL
+// ?AfxThrowUserException@@YGXXZ
 // name: AfxThrowUserException
-// symbol: ?AfxThrowUserException@@YGXXZ
 // prototype: void __stdcall AfxThrowUserException(void)
 
-// LIBRARY: IMPERIALISM 0x00613cb1
+// LIBRARY: IMPERIALISM 0x00613cb1 SYMBOL
+// ??0CView@@IAE@XZ
 // name: CView::CView
-// symbol: ??0CView@@IAE@XZ
 // prototype: protected: __thiscall CView::CView(void)
 
-// LIBRARY: IMPERIALISM 0x00613cc7
+// LIBRARY: IMPERIALISM 0x00613cc7 SYMBOL
+// ??_GCView@@UAEPAXI@Z
 // name: CView::`scalar deleting dtor'
-// symbol: ??_GCView@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CView::`scalar deleting dtor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00613ce3
+// LIBRARY: IMPERIALISM 0x00613ce3 SYMBOL
+// ??1CView@@UAE@XZ
 // name: CView::~CView
-// symbol: ??1CView@@UAE@XZ
 // prototype: public: virtual __thiscall CView::~CView(void)
 
-// LIBRARY: IMPERIALISM 0x00613d23
+// LIBRARY: IMPERIALISM 0x00613d23 SYMBOL
+// ?PreCreateWindow@CView@@MAEHAAUtagCREATESTRUCTA@@@Z
 // name: CView::PreCreateWindow
-// symbol: ?PreCreateWindow@CView@@MAEHAAUtagCREATESTRUCTA@@@Z
 // prototype: protected: virtual int __thiscall CView::PreCreateWindow(struct tagCREATESTRUCTA &)
 
-// LIBRARY: IMPERIALISM 0x00613d76
+// LIBRARY: IMPERIALISM 0x00613d76 SYMBOL
+// ?OnCreate@CView@@IAEHPAUtagCREATESTRUCTA@@@Z
 // name: CView::OnCreate
-// symbol: ?OnCreate@CView@@IAEHPAUtagCREATESTRUCTA@@@Z
 // prototype: protected: int __thiscall CView::OnCreate(struct tagCREATESTRUCTA *)
 
-// LIBRARY: IMPERIALISM 0x00613da6
+// LIBRARY: IMPERIALISM 0x00613da6 SYMBOL
+// ?OnDestroy@CView@@IAEXXZ
 // name: CView::OnDestroy
-// symbol: ?OnDestroy@CView@@IAEXXZ
 // prototype: protected: void __thiscall CView::OnDestroy(void)
 
-// LIBRARY: IMPERIALISM 0x00613dd5
+// LIBRARY: IMPERIALISM 0x00613dd5 SYMBOL
+// ?PostNcDestroy@CView@@MAEXXZ
 // name: CView::PostNcDestroy
-// symbol: ?PostNcDestroy@CView@@MAEXXZ
 // prototype: protected: virtual void __thiscall CView::PostNcDestroy(void)
 
-// LIBRARY: IMPERIALISM 0x00613de1
+// LIBRARY: IMPERIALISM 0x00613de1 SYMBOL
+// ?CalcWindowRect@CView@@UAEXPAUtagRECT@@I@Z
 // name: CView::CalcWindowRect
-// symbol: ?CalcWindowRect@CView@@UAEXPAUtagRECT@@I@Z
 // prototype: public: virtual void __thiscall CView::CalcWindowRect(struct tagRECT *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00613e49
+// LIBRARY: IMPERIALISM 0x00613e49 SYMBOL
+// ?OnCmdMsg@CView@@MAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z
 // name: CView::OnCmdMsg
-// symbol: ?OnCmdMsg@CView@@MAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z
 // prototype: protected: virtual int __thiscall CView::OnCmdMsg(unsigned int, int, void *, struct AFX_CMDHANDLERINFO *)
 
-// LIBRARY: IMPERIALISM 0x00613eb0
+// LIBRARY: IMPERIALISM 0x00613eb0 SYMBOL
+// ?OnPaint@CView@@IAEXXZ
 // name: CView::OnPaint
-// symbol: ?OnPaint@CView@@IAEXXZ
 // prototype: protected: void __thiscall CView::OnPaint(void)
 
-// LIBRARY: IMPERIALISM 0x00613f04
+// LIBRARY: IMPERIALISM 0x00613f04 SYMBOL
+// ?OnInitialUpdate@CView@@UAEXXZ
 // name: CView::OnInitialUpdate
-// symbol: ?OnInitialUpdate@CView@@UAEXXZ
 // prototype: public: virtual void __thiscall CView::OnInitialUpdate(void)
 
-// LIBRARY: IMPERIALISM 0x00613f12
+// LIBRARY: IMPERIALISM 0x00613f12 SYMBOL
+// ?OnUpdate@CView@@MAEXPAV1@JPAVCObject@@@Z
 // name: CView::OnUpdate
-// symbol: ?OnUpdate@CView@@MAEXPAV1@JPAVCObject@@@Z
 // prototype: protected: virtual void __thiscall CView::OnUpdate(class CView *, long, class CObject *)
 
-// LIBRARY: IMPERIALISM 0x00613f22
+// LIBRARY: IMPERIALISM 0x00613f22 SYMBOL
+// ?OnPrint@CView@@MAEXPAVCDC@@PAUCPrintInfo@@@Z
 // name: CView::OnPrint
-// symbol: ?OnPrint@CView@@MAEXPAVCDC@@PAUCPrintInfo@@@Z
 // prototype: protected: virtual void __thiscall CView::OnPrint(class CDC *, struct CPrintInfo *)
 
-// LIBRARY: IMPERIALISM 0x00613f34
+// LIBRARY: IMPERIALISM 0x00613f34 SYMBOL
+// ?IsSelected@CView@@UBEHPBVCObject@@@Z
 // name: CView::IsSelected
-// symbol: ?IsSelected@CView@@UBEHPBVCObject@@@Z
 // prototype: public: virtual int __thiscall CView::IsSelected(class CObject const *)const
 
-// LIBRARY: IMPERIALISM 0x00613f39
+// LIBRARY: IMPERIALISM 0x00613f39 SYMBOL
+// ?OnActivateView@CView@@MAEXHPAV1@0@Z
 // name: CView::OnActivateView
-// symbol: ?OnActivateView@CView@@MAEXHPAV1@0@Z
 // prototype: protected: virtual void __thiscall CView::OnActivateView(int, class CView *, class CView *)
 
-// LIBRARY: IMPERIALISM 0x00613f57
+// LIBRARY: IMPERIALISM 0x00613f57 SYMBOL
+// ?OnActivateFrame@CView@@MAEXIPAVCFrameWnd@@@Z
 // name: CView::OnActivateFrame
-// symbol: ?OnActivateFrame@CView@@MAEXIPAVCFrameWnd@@@Z
 // prototype: protected: virtual void __thiscall CView::OnActivateFrame(unsigned int,class CFrameWnd *)
 
-// LIBRARY: IMPERIALISM 0x00613f5a
+// LIBRARY: IMPERIALISM 0x00613f5a SYMBOL
+// ?OnMouseActivate@CView@@IAEHPAVCWnd@@II@Z
 // name: CView::OnMouseActivate
-// symbol: ?OnMouseActivate@CView@@IAEHPAVCWnd@@II@Z
 // prototype: protected: int __thiscall CView::OnMouseActivate(class CWnd *, unsigned int, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00613fc7
+// LIBRARY: IMPERIALISM 0x00613fc7 SYMBOL
+// ?OnScroll@CView@@UAEHIIH@Z
 // name: CView::OnScroll
-// symbol: ?OnScroll@CView@@UAEHIIH@Z
 // prototype: public: virtual int __thiscall CView::OnScroll(unsigned int,unsigned int,int)
 
-// LIBRARY: IMPERIALISM 0x00613fcc
+// LIBRARY: IMPERIALISM 0x00613fcc SYMBOL
+// ?OnScrollBy@CView@@UAEHVCSize@@H@Z
 // name: CView::OnScrollBy
-// symbol: ?OnScrollBy@CView@@UAEHVCSize@@H@Z
 // prototype: public: virtual int __thiscall CView::OnScrollBy(class CSize,int)
 
-// LIBRARY: IMPERIALISM 0x00613fd1
+// LIBRARY: IMPERIALISM 0x00613fd1 SYMBOL
+// ?OnDragScroll@CView@@UAEKKVCPoint@@@Z
 // name: CView::OnDragScroll
-// symbol: ?OnDragScroll@CView@@UAEKKVCPoint@@@Z
 // prototype: public: virtual unsigned long __thiscall CView::OnDragScroll(unsigned long,class CPoint)
 
-// LIBRARY: IMPERIALISM 0x00613fd9
+// LIBRARY: IMPERIALISM 0x00613fd9 SYMBOL
+// ?OnDragEnter@CView@@UAEKPAVCOleDataObject@@KVCPoint@@@Z
 // name: CView::OnDragEnter
-// symbol: ?OnDragEnter@CView@@UAEKPAVCOleDataObject@@KVCPoint@@@Z
 // prototype: public: virtual unsigned long __thiscall CView::OnDragEnter(class COleDataObject *,unsigned long,class CPoint)
 
-// LIBRARY: IMPERIALISM 0x00613fde
+// LIBRARY: IMPERIALISM 0x00613fde SYMBOL
+// ?OnDragOver@CView@@UAEKPAVCOleDataObject@@KVCPoint@@@Z
 // name: CView::OnDragOver
-// symbol: ?OnDragOver@CView@@UAEKPAVCOleDataObject@@KVCPoint@@@Z
 // prototype: public: virtual unsigned long __thiscall CView::OnDragOver(class COleDataObject *,unsigned long,class CPoint)
 
-// LIBRARY: IMPERIALISM 0x00613fe3
+// LIBRARY: IMPERIALISM 0x00613fe3 SYMBOL
+// ?OnDrop@CView@@UAEHPAVCOleDataObject@@KVCPoint@@@Z
 // name: CView::OnDrop
-// symbol: ?OnDrop@CView@@UAEHPAVCOleDataObject@@KVCPoint@@@Z
 // prototype: public: virtual int __thiscall CView::OnDrop(class COleDataObject *,unsigned long,class CPoint)
 
-// LIBRARY: IMPERIALISM 0x00613fe8
+// LIBRARY: IMPERIALISM 0x00613fe8 SYMBOL
+// ?OnDropEx@CView@@UAEKPAVCOleDataObject@@KKVCPoint@@@Z
 // name: CView::OnDropEx
-// symbol: ?OnDropEx@CView@@UAEKPAVCOleDataObject@@KKVCPoint@@@Z
 // prototype: public: virtual unsigned long __thiscall CView::OnDropEx(class COleDataObject *,unsigned long,unsigned long,class CPoint)
 
-// LIBRARY: IMPERIALISM 0x00613fee
+// LIBRARY: IMPERIALISM 0x00613fee SYMBOL
+// ?OnDragLeave@CView@@UAEXXZ
 // name: CView::OnDragLeave
-// symbol: ?OnDragLeave@CView@@UAEXXZ
 // prototype: public: virtual void __thiscall CView::OnDragLeave(void)
 
-// LIBRARY: IMPERIALISM 0x00613fef
+// LIBRARY: IMPERIALISM 0x00613fef SYMBOL
+// ?GetParentSplitter@CView@@SGPAVCSplitterWnd@@PBVCWnd@@H@Z
 // name: CView::GetParentSplitter
-// symbol: ?GetParentSplitter@CView@@SGPAVCSplitterWnd@@PBVCWnd@@H@Z
 // prototype: public: static class CSplitterWnd * __stdcall CView::GetParentSplitter(class CWnd const *, int)
 
-// LIBRARY: IMPERIALISM 0x0061404d
+// LIBRARY: IMPERIALISM 0x0061404d SYMBOL
+// ?GetScrollBarCtrl@CView@@UBEPAVCScrollBar@@H@Z
 // name: CView::GetScrollBarCtrl
-// symbol: ?GetScrollBarCtrl@CView@@UBEPAVCScrollBar@@H@Z
 // prototype: public: virtual class CScrollBar * __thiscall CView::GetScrollBarCtrl(int)const
 
 // LIBRARY: IMPERIALISM 0x006140c2
@@ -5280,563 +5278,563 @@
 // MFC nafxcw handler in message map 0x672aa0 (base CWnd), ON_COMMAND
 // 0xe150/0xe151 -- MFC frame/window command family.
 
-// LIBRARY: IMPERIALISM 0x0061416e
+// LIBRARY: IMPERIALISM 0x0061416e SYMBOL
+// ?OnPrepareDC@CView@@UAEXPAVCDC@@PAUCPrintInfo@@@Z
 // name: CView::OnPrepareDC
-// symbol: ?OnPrepareDC@CView@@UAEXPAVCDC@@PAUCPrintInfo@@@Z
 // prototype: public: virtual void __thiscall CView::OnPrepareDC(class CDC *, struct CPrintInfo *)
 
-// LIBRARY: IMPERIALISM 0x00614193
+// LIBRARY: IMPERIALISM 0x00614193 SYMBOL
+// ?OnPreparePrinting@CView@@MAEHPAUCPrintInfo@@@Z
 // name: CView::OnPreparePrinting
-// symbol: ?OnPreparePrinting@CView@@MAEHPAUCPrintInfo@@@Z
 // prototype: protected: virtual int __thiscall CView::OnPreparePrinting(struct CPrintInfo *)
 
-// LIBRARY: IMPERIALISM 0x00614199
+// LIBRARY: IMPERIALISM 0x00614199 SYMBOL
+// ?OnBeginPrinting@CView@@MAEXPAVCDC@@PAUCPrintInfo@@@Z
 // name: CView::OnBeginPrinting
-// symbol: ?OnBeginPrinting@CView@@MAEXPAVCDC@@PAUCPrintInfo@@@Z
 // prototype: protected: virtual void __thiscall CView::OnBeginPrinting(class CDC *,struct CPrintInfo *)
 
-// LIBRARY: IMPERIALISM 0x0061419c
+// LIBRARY: IMPERIALISM 0x0061419c SYMBOL
+// ?OnEndPrinting@CView@@MAEXPAVCDC@@PAUCPrintInfo@@@Z
 // name: CView::OnEndPrinting
-// symbol: ?OnEndPrinting@CView@@MAEXPAVCDC@@PAUCPrintInfo@@@Z
 // prototype: protected: virtual void __thiscall CView::OnEndPrinting(class CDC *,struct CPrintInfo *)
 
-// LIBRARY: IMPERIALISM 0x0061419f
+// LIBRARY: IMPERIALISM 0x0061419f SYMBOL
+// ?OnEndPrintPreview@CView@@MAEXPAVCDC@@PAUCPrintInfo@@UtagPOINT@@PAVCPreviewView@@@Z
 // name: CView::OnEndPrintPreview
-// symbol: ?OnEndPrintPreview@CView@@MAEXPAVCDC@@PAUCPrintInfo@@UtagPOINT@@PAVCPreviewView@@@Z
 // prototype: protected: virtual void __thiscall CView::OnEndPrintPreview(class CDC *,struct CPrintInfo *,struct tagPOINT,class CPreviewView *)
 
-// LIBRARY: IMPERIALISM 0x006142c0
-// symbol: ??_GCCtrlView@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x006142c0 SYMBOL
+// ??_GCCtrlView@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x006142dc
+// LIBRARY: IMPERIALISM 0x006142dc SYMBOL
+// ?PreCreateWindow@CCtrlView@@MAEHAAUtagCREATESTRUCTA@@@Z
 // name: CCtrlView::PreCreateWindow
-// symbol: ?PreCreateWindow@CCtrlView@@MAEHAAUtagCREATESTRUCTA@@@Z
 // prototype: protected: virtual int __thiscall CCtrlView::PreCreateWindow(struct tagCREATESTRUCTA &)
 
-// LIBRARY: IMPERIALISM 0x00614331
+// LIBRARY: IMPERIALISM 0x00614331 SYMBOL
+// ?AfxCustomLogFont@@YGHIPAUtagLOGFONTA@@@Z
 // name: AfxCustomLogFont
-// symbol: ?AfxCustomLogFont@@YGHIPAUtagLOGFONTA@@@Z
 // prototype: int __stdcall AfxCustomLogFont(unsigned int, struct tagLOGFONTA *)
 
-// LIBRARY: IMPERIALISM 0x006143a9
+// LIBRARY: IMPERIALISM 0x006143a9 SYMBOL
+// ?_AfxIsComboBoxControl@@YGHPAUHWND__@@I@Z
 // name: _AfxIsComboBoxControl
-// symbol: ?_AfxIsComboBoxControl@@YGHPAUHWND__@@I@Z
 // prototype: int __stdcall _AfxIsComboBoxControl(struct HWND__*, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x006143f3
+// LIBRARY: IMPERIALISM 0x006143f3 SYMBOL
+// ?_AfxCompareClassName@@YGHPAUHWND__@@PBD@Z
 // name: _AfxCompareClassName
-// symbol: ?_AfxCompareClassName@@YGHPAUHWND__@@PBD@Z
 // prototype: int __stdcall _AfxCompareClassName(struct HWND__*, char const *)
 
-// LIBRARY: IMPERIALISM 0x0061441e
+// LIBRARY: IMPERIALISM 0x0061441e SYMBOL
+// ?_AfxChildWindowFromPoint@@YGPAUHWND__@@PAU1@UtagPOINT@@@Z
 // name: _AfxChildWindowFromPoint
-// symbol: ?_AfxChildWindowFromPoint@@YGPAUHWND__@@PAU1@UtagPOINT@@@Z
 // prototype: struct HWND__* __stdcall _AfxChildWindowFromPoint(struct HWND__*, struct tagPOINT)
 
-// LIBRARY: IMPERIALISM 0x00614493
+// LIBRARY: IMPERIALISM 0x00614493 SYMBOL
+// ?AfxSetWindowText@@YGXPAUHWND__@@PBD@Z
 // name: AfxSetWindowText
-// symbol: ?AfxSetWindowText@@YGXPAUHWND__@@PBD@Z
 // prototype: void __stdcall AfxSetWindowText(struct HWND__*, char const *)
 
-// LIBRARY: IMPERIALISM 0x006144eb
+// LIBRARY: IMPERIALISM 0x006144eb SYMBOL
+// ?AfxDeleteObject@@YGXPAPAX@Z
 // name: AfxDeleteObject
-// symbol: ?AfxDeleteObject@@YGXPAPAX@Z
 // prototype: void __stdcall AfxDeleteObject(void **)
 
-// LIBRARY: IMPERIALISM 0x00614504
+// LIBRARY: IMPERIALISM 0x00614504 SYMBOL
+// ?AfxCancelModes@@YGXPAUHWND__@@@Z
 // name: AfxCancelModes
-// symbol: ?AfxCancelModes@@YGXPAUHWND__@@@Z
 // prototype: void __stdcall AfxCancelModes(struct HWND__*)
 
-// LIBRARY: IMPERIALISM 0x0061457b
+// LIBRARY: IMPERIALISM 0x0061457b SYMBOL
+// ?AfxGlobalFree@@YGXPAX@Z
 // name: AfxGlobalFree
-// symbol: ?AfxGlobalFree@@YGXPAX@Z
 // prototype: void __stdcall AfxGlobalFree(void *)
 
-// LIBRARY: IMPERIALISM 0x006145b1
+// LIBRARY: IMPERIALISM 0x006145b1 SYMBOL
+// ?AfxCriticalNewHandler@@YAHI@Z
 // name: AfxCriticalNewHandler
-// symbol: ?AfxCriticalNewHandler@@YAHI@Z
 // prototype: int __cdecl AfxCriticalNewHandler(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00614603
+// LIBRARY: IMPERIALISM 0x00614603 SYMBOL
+// ?OpenDocumentFile@CDocManager@@UAEPAVCDocument@@PBD@Z
 // name: CDocManager::OpenDocumentFile
-// symbol: ?OpenDocumentFile@CDocManager@@UAEPAVCDocument@@PBD@Z
 // prototype: public: virtual class CDocument * __thiscall CDocManager::OpenDocumentFile(char const *)
 
-// LIBRARY: IMPERIALISM 0x00614744
+// LIBRARY: IMPERIALISM 0x00614744 SYMBOL
+// ?GetOpenDocumentCount@CDocManager@@UAEHXZ
 // name: CDocManager::GetOpenDocumentCount
-// symbol: ?GetOpenDocumentCount@CDocManager@@UAEHXZ
 // prototype: public: virtual int __thiscall CDocManager::GetOpenDocumentCount(void)
 
-// LIBRARY: IMPERIALISM 0x00614790
+// LIBRARY: IMPERIALISM 0x00614790 SYMBOL
+// ??0CDocTemplate@@IAE@IPAUCRuntimeClass@@00@Z
 // name: CDocTemplate::CDocTemplate
-// symbol: ??0CDocTemplate@@IAE@IPAUCRuntimeClass@@00@Z
 // prototype: protected: __thiscall CDocTemplate::CDocTemplate(unsigned int, struct CRuntimeClass *, struct CRuntimeClass *, struct CRuntimeClass *)
 
-// LIBRARY: IMPERIALISM 0x00614893
+// LIBRARY: IMPERIALISM 0x00614893 SYMBOL
+// ??_GCDocTemplate@@UAEPAXI@Z
 // name: CDocTemplate::`scalar deleting dtor'
-// symbol: ??_GCDocTemplate@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CDocTemplate::`scalar deleting dtor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x006148af
+// LIBRARY: IMPERIALISM 0x006148af SYMBOL
+// ?LoadTemplate@CDocTemplate@@UAEXXZ
 // name: CDocTemplate::LoadTemplate
-// symbol: ?LoadTemplate@CDocTemplate@@UAEXXZ
 // prototype: public: virtual void __thiscall CDocTemplate::LoadTemplate(void)
 
-// LIBRARY: IMPERIALISM 0x0061499c
+// LIBRARY: IMPERIALISM 0x0061499c SYMBOL
+// ??1CDocTemplate@@UAE@XZ
 // name: CDocTemplate::~CDocTemplate
-// symbol: ??1CDocTemplate@@UAE@XZ
 // prototype: public: virtual __thiscall CDocTemplate::~CDocTemplate(void)
 
-// LIBRARY: IMPERIALISM 0x00614a04
+// LIBRARY: IMPERIALISM 0x00614a04 SYMBOL
+// ?GetDocString@CDocTemplate@@UBEHAAVCString@@W4DocStringIndex@1@@Z
 // name: CDocTemplate::GetDocString
-// symbol: ?GetDocString@CDocTemplate@@UBEHAAVCString@@W4DocStringIndex@1@@Z
 // prototype: public: virtual int __thiscall CDocTemplate::GetDocString(class CString &, enum CDocTemplate::DocStringIndex) const
 
-// LIBRARY: IMPERIALISM 0x00614a19
+// LIBRARY: IMPERIALISM 0x00614a19 SYMBOL
+// ?AddDocument@CDocTemplate@@UAEXPAVCDocument@@@Z
 // name: CDocTemplate::AddDocument
-// symbol: ?AddDocument@CDocTemplate@@UAEXPAVCDocument@@@Z
 // prototype: public: virtual void __thiscall CDocTemplate::AddDocument(class CDocument *)
 
-// LIBRARY: IMPERIALISM 0x00614a23
+// LIBRARY: IMPERIALISM 0x00614a23 SYMBOL
+// ?RemoveDocument@CDocTemplate@@UAEXPAVCDocument@@@Z
 // name: CDocTemplate::RemoveDocument
-// symbol: ?RemoveDocument@CDocTemplate@@UAEXPAVCDocument@@@Z
 // prototype: public: virtual void __thiscall CDocTemplate::RemoveDocument(class CDocument *)
 
-// LIBRARY: IMPERIALISM 0x00614a2e
+// LIBRARY: IMPERIALISM 0x00614a2e SYMBOL
+// ?MatchDocType@CDocTemplate@@UAE?AW4Confidence@1@PBDAAPAVCDocument@@@Z
 // name: CDocTemplate::MatchDocType
-// symbol: ?MatchDocType@CDocTemplate@@UAE?AW4Confidence@1@PBDAAPAVCDocument@@@Z
 // prototype: public: virtual enum CDocTemplate::Confidence __thiscall CDocTemplate::MatchDocType(char const *, class CDocument *&)
 
-// LIBRARY: IMPERIALISM 0x00614aeb
+// LIBRARY: IMPERIALISM 0x00614aeb SYMBOL
+// ?CreateNewDocument@CDocTemplate@@UAEPAVCDocument@@XZ
 // name: CDocTemplate::CreateNewDocument
-// symbol: ?CreateNewDocument@CDocTemplate@@UAEPAVCDocument@@XZ
 // prototype: public: virtual class CDocument * __thiscall CDocTemplate::CreateNewDocument(void)
 
-// LIBRARY: IMPERIALISM 0x00614b12
+// LIBRARY: IMPERIALISM 0x00614b12 SYMBOL
+// ?CreateNewFrame@CDocTemplate@@UAEPAVCFrameWnd@@PAVCDocument@@PAV2@@Z
 // name: CDocTemplate::CreateNewFrame
-// symbol: ?CreateNewFrame@CDocTemplate@@UAEPAVCFrameWnd@@PAVCDocument@@PAV2@@Z
 // prototype: public: virtual class CFrameWnd * __thiscall CDocTemplate::CreateNewFrame(class CDocument *, class CFrameWnd *)
 
-// LIBRARY: IMPERIALISM 0x00614b7b
+// LIBRARY: IMPERIALISM 0x00614b7b SYMBOL
+// ?CreateOleFrame@CDocTemplate@@QAEPAVCFrameWnd@@PAVCWnd@@PAVCDocument@@H@Z
 // name: CDocTemplate::CreateOleFrame
-// symbol: ?CreateOleFrame@CDocTemplate@@QAEPAVCFrameWnd@@PAVCWnd@@PAVCDocument@@H@Z
 // prototype: public: class CFrameWnd * __thiscall CDocTemplate::CreateOleFrame(class CWnd *, class CDocument *, int)
 
-// LIBRARY: IMPERIALISM 0x00614bef
+// LIBRARY: IMPERIALISM 0x00614bef SYMBOL
+// ?InitialUpdateFrame@CDocTemplate@@UAEXPAVCFrameWnd@@PAVCDocument@@H@Z
 // name: CDocTemplate::InitialUpdateFrame
-// symbol: ?InitialUpdateFrame@CDocTemplate@@UAEXPAVCFrameWnd@@PAVCDocument@@H@Z
 // prototype: public: virtual void __thiscall CDocTemplate::InitialUpdateFrame(class CFrameWnd *, class CDocument *, int)
 
-// LIBRARY: IMPERIALISM 0x00614c03
+// LIBRARY: IMPERIALISM 0x00614c03 SYMBOL
+// ?SaveAllModified@CDocTemplate@@UAEHXZ
 // name: CDocTemplate::SaveAllModified
-// symbol: ?SaveAllModified@CDocTemplate@@UAEHXZ
 // prototype: public: virtual int __thiscall CDocTemplate::SaveAllModified(void)
 
-// LIBRARY: IMPERIALISM 0x00614c41
+// LIBRARY: IMPERIALISM 0x00614c41 SYMBOL
+// ?CloseAllDocuments@CDocTemplate@@UAEXH@Z
 // name: CDocTemplate::CloseAllDocuments
-// symbol: ?CloseAllDocuments@CDocTemplate@@UAEXH@Z
 // prototype: public: virtual void __thiscall CDocTemplate::CloseAllDocuments(int)
 
-// LIBRARY: IMPERIALISM 0x00614c76
+// LIBRARY: IMPERIALISM 0x00614c76 SYMBOL
+// ?OnIdle@CDocTemplate@@UAEXXZ
 // name: CDocTemplate::OnIdle
-// symbol: ?OnIdle@CDocTemplate@@UAEXXZ
 // prototype: public: virtual void __thiscall CDocTemplate::OnIdle(void)
 
-// LIBRARY: IMPERIALISM 0x00614ca9
+// LIBRARY: IMPERIALISM 0x00614ca9 SYMBOL
+// ?OnCmdMsg@CDocTemplate@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z
 // name: CDocTemplate::OnCmdMsg
-// symbol: ?OnCmdMsg@CDocTemplate@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z
 // prototype: public: virtual int __thiscall CDocTemplate::OnCmdMsg(unsigned int, int, void *, struct AFX_CMDHANDLERINFO *)
 
-// LIBRARY: IMPERIALISM 0x00614cfa
+// LIBRARY: IMPERIALISM 0x00614cfa SYMBOL
+// ?_AfxGetMouseScrollLines@@YAIH@Z
 // name: _AfxGetMouseScrollLines
-// symbol: ?_AfxGetMouseScrollLines@@YAIH@Z
 // prototype: unsigned int __cdecl _AfxGetMouseScrollLines(int)
 
-// LIBRARY: IMPERIALISM 0x00614e71
+// LIBRARY: IMPERIALISM 0x00614e71 SYMBOL
+// ??0CScrollView@@IAE@XZ
 // name: CScrollView::CScrollView
-// symbol: ??0CScrollView@@IAE@XZ
 // prototype: protected: __thiscall CScrollView::CScrollView(void)
 
-// LIBRARY: IMPERIALISM 0x00614e98
+// LIBRARY: IMPERIALISM 0x00614e98 SYMBOL
+// ??_GCScrollView@@UAEPAXI@Z
 // name: CScrollView::`scalar deleting destructor'
-// symbol: ??_GCScrollView@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CScrollView::`scalar deleting destructor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00614eb4
+// LIBRARY: IMPERIALISM 0x00614eb4 SYMBOL
+// ??1CScrollView@@UAE@XZ
 // name: CScrollView::~CScrollView
-// symbol: ??1CScrollView@@UAE@XZ
 // prototype: public: virtual __thiscall CScrollView::~CScrollView(void)
 
-// LIBRARY: IMPERIALISM 0x00614ebf
+// LIBRARY: IMPERIALISM 0x00614ebf SYMBOL
+// ?OnPrepareDC@CScrollView@@UAEXPAVCDC@@PAUCPrintInfo@@@Z
 // name: CScrollView::OnPrepareDC
-// symbol: ?OnPrepareDC@CScrollView@@UAEXPAVCDC@@PAUCPrintInfo@@@Z
 // prototype: public: virtual void __thiscall CScrollView::OnPrepareDC(class CDC *, struct CPrintInfo *)
 
-// LIBRARY: IMPERIALISM 0x00614f95
+// LIBRARY: IMPERIALISM 0x00614f95 SYMBOL
+// ?SetScaleToFitSize@CScrollView@@QAEXUtagSIZE@@@Z
 // name: CScrollView::SetScaleToFitSize
-// symbol: ?SetScaleToFitSize@CScrollView@@QAEXUtagSIZE@@@Z
 // prototype: public: void __thiscall CScrollView::SetScaleToFitSize(struct tagSIZE)
 
-// LIBRARY: IMPERIALISM 0x00615020
+// LIBRARY: IMPERIALISM 0x00615020 SYMBOL
+// ?SetScrollSizes@CScrollView@@QAEXHUtagSIZE@@ABU2@1@Z
 // name: CScrollView::SetScrollSizes
-// symbol: ?SetScrollSizes@CScrollView@@QAEXHUtagSIZE@@ABU2@1@Z
 // prototype: public: void __thiscall CScrollView::SetScrollSizes(int, struct tagSIZE, struct tagSIZE const &, struct tagSIZE const &)
 
-// LIBRARY: IMPERIALISM 0x00615152
+// LIBRARY: IMPERIALISM 0x00615152 SYMBOL
+// ?GetScrollPosition@CScrollView@@QBE?AVCPoint@@XZ
 // name: CScrollView::GetScrollPosition
-// symbol: ?GetScrollPosition@CScrollView@@QBE?AVCPoint@@XZ
 // prototype: public: class CPoint __thiscall CScrollView::GetScrollPosition(void) const
 
-// LIBRARY: IMPERIALISM 0x006151d6
+// LIBRARY: IMPERIALISM 0x006151d6 SYMBOL
+// ?ScrollToPosition@CScrollView@@QAEXUtagPOINT@@@Z
 // name: CScrollView::ScrollToPosition
-// symbol: ?ScrollToPosition@CScrollView@@QAEXUtagPOINT@@@Z
 // prototype: public: void __thiscall CScrollView::ScrollToPosition(struct tagPOINT)
 
-// LIBRARY: IMPERIALISM 0x00615277
+// LIBRARY: IMPERIALISM 0x00615277 SYMBOL
+// ?GetDeviceScrollPosition@CScrollView@@QBE?AVCPoint@@XZ
 // name: CScrollView::GetDeviceScrollPosition
-// symbol: ?GetDeviceScrollPosition@CScrollView@@QBE?AVCPoint@@XZ
 // prototype: public: class CPoint __thiscall CScrollView::GetDeviceScrollPosition(void) const
 
-// LIBRARY: IMPERIALISM 0x00615329
+// LIBRARY: IMPERIALISM 0x00615329 SYMBOL
+// ?ScrollToDevicePosition@CScrollView@@IAEXUtagPOINT@@@Z
 // name: CScrollView::ScrollToDevicePosition
-// symbol: ?ScrollToDevicePosition@CScrollView@@IAEXUtagPOINT@@@Z
 // prototype: protected: void __thiscall CScrollView::ScrollToDevicePosition(struct tagPOINT)
 
-// LIBRARY: IMPERIALISM 0x0061537b
+// LIBRARY: IMPERIALISM 0x0061537b SYMBOL
+// ?FillOutsideRect@CScrollView@@QAEXPAVCDC@@PAVCBrush@@@Z
 // name: CScrollView::FillOutsideRect
-// symbol: ?FillOutsideRect@CScrollView@@QAEXPAVCDC@@PAVCBrush@@@Z
 // prototype: public: void __thiscall CScrollView::FillOutsideRect(class CDC *, class CBrush *)
 
-// LIBRARY: IMPERIALISM 0x006153fe
+// LIBRARY: IMPERIALISM 0x006153fe SYMBOL
+// ?ResizeParentToFit@CScrollView@@QAEXH@Z
 // name: CScrollView::ResizeParentToFit
-// symbol: ?ResizeParentToFit@CScrollView@@QAEXH@Z
 // prototype: public: void __thiscall CScrollView::ResizeParentToFit(int)
 
-// LIBRARY: IMPERIALISM 0x00615517
+// LIBRARY: IMPERIALISM 0x00615517 SYMBOL
+// ?OnSize@CScrollView@@QAEXIHH@Z
 // name: CScrollView::OnSize
-// symbol: ?OnSize@CScrollView@@QAEXIHH@Z
 // prototype: public: void __thiscall CScrollView::OnSize(unsigned int, int, int)
 
-// LIBRARY: IMPERIALISM 0x0061553f
+// LIBRARY: IMPERIALISM 0x0061553f SYMBOL
+// ?CenterOnPoint@CScrollView@@IAEXVCPoint@@@Z
 // name: CScrollView::CenterOnPoint
-// symbol: ?CenterOnPoint@CScrollView@@IAEXVCPoint@@@Z
 // prototype: protected: void __thiscall CScrollView::CenterOnPoint(class CPoint)
 
-// LIBRARY: IMPERIALISM 0x006155ed
+// LIBRARY: IMPERIALISM 0x006155ed SYMBOL
+// ?GetScrollBarSizes@CScrollView@@IAEXAAVCSize@@@Z
 // name: CScrollView::GetScrollBarSizes
-// symbol: ?GetScrollBarSizes@CScrollView@@IAEXAAVCSize@@@Z
 // prototype: protected: void __thiscall CScrollView::GetScrollBarSizes(class CSize &)
 
-// LIBRARY: IMPERIALISM 0x00615647
+// LIBRARY: IMPERIALISM 0x00615647 SYMBOL
+// ?GetTrueClientSize@CScrollView@@IAEHAAVCSize@@0@Z
 // name: CScrollView::GetTrueClientSize
-// symbol: ?GetTrueClientSize@CScrollView@@IAEHAAVCSize@@0@Z
 // prototype: protected: int __thiscall CScrollView::GetTrueClientSize(class CSize &, class CSize &)
 
-// LIBRARY: IMPERIALISM 0x006156bc
+// LIBRARY: IMPERIALISM 0x006156bc SYMBOL
+// ?GetScrollBarState@CScrollView@@IAEXVCSize@@AAV2@1AAVCPoint@@H@Z
 // name: CScrollView::GetScrollBarState
-// symbol: ?GetScrollBarState@CScrollView@@IAEXVCSize@@AAV2@1AAVCPoint@@H@Z
 // prototype: protected: void __thiscall CScrollView::GetScrollBarState(class CSize, class CSize &, class CSize &, class CPoint &, int)
 
-// LIBRARY: IMPERIALISM 0x00615778
+// LIBRARY: IMPERIALISM 0x00615778 SYMBOL
+// ?UpdateBars@CScrollView@@IAEXXZ
 // name: CScrollView::UpdateBars
-// symbol: ?UpdateBars@CScrollView@@IAEXXZ
 // prototype: protected: void __thiscall CScrollView::UpdateBars(void)
 
-// LIBRARY: IMPERIALISM 0x006158ee
+// LIBRARY: IMPERIALISM 0x006158ee SYMBOL
+// ?CalcWindowRect@CScrollView@@UAEXPAUtagRECT@@I@Z
 // name: CScrollView::CalcWindowRect
-// symbol: ?CalcWindowRect@CScrollView@@UAEXPAUtagRECT@@I@Z
 // prototype: public: virtual void __thiscall CScrollView::CalcWindowRect(struct tagRECT *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00615975
+// LIBRARY: IMPERIALISM 0x00615975 SYMBOL
+// ?OnHScroll@CScrollView@@QAEXIIPAVCScrollBar@@@Z
 // name: CScrollView::OnHScroll
-// symbol: ?OnHScroll@CScrollView@@QAEXIIPAVCScrollBar@@@Z
 // prototype: public: void __thiscall CScrollView::OnHScroll(unsigned int, unsigned int, class CScrollBar *)
 
-// LIBRARY: IMPERIALISM 0x006159b9
+// LIBRARY: IMPERIALISM 0x006159b9 SYMBOL
+// ?OnVScroll@CScrollView@@QAEXIIPAVCScrollBar@@@Z
 // name: CScrollView::OnVScroll
-// symbol: ?OnVScroll@CScrollView@@QAEXIIPAVCScrollBar@@@Z
 // prototype: public: void __thiscall CScrollView::OnVScroll(unsigned int, unsigned int, class CScrollBar *)
 
-// LIBRARY: IMPERIALISM 0x00615a00
+// LIBRARY: IMPERIALISM 0x00615a00 SYMBOL
+// ?OnMouseWheel@CScrollView@@QAEHIFVCPoint@@@Z
 // name: CScrollView::OnMouseWheel
-// symbol: ?OnMouseWheel@CScrollView@@QAEHIFVCPoint@@@Z
 // prototype: public: int __thiscall CScrollView::OnMouseWheel(unsigned int, short, class CPoint)
 
-// LIBRARY: IMPERIALISM 0x00615a34
+// LIBRARY: IMPERIALISM 0x00615a34 SYMBOL
+// ?DoMouseWheel@CScrollView@@QAEHIFVCPoint@@@Z
 // name: CScrollView::DoMouseWheel
-// symbol: ?DoMouseWheel@CScrollView@@QAEHIFVCPoint@@@Z
 // prototype: public: int __thiscall CScrollView::DoMouseWheel(unsigned int, short, class CPoint)
 
-// LIBRARY: IMPERIALISM 0x00615b58
+// LIBRARY: IMPERIALISM 0x00615b58 SYMBOL
+// ?OnScroll@CScrollView@@UAEHIIH@Z
 // name: CScrollView::OnScroll
-// symbol: ?OnScroll@CScrollView@@UAEHIIH@Z
 // prototype: public: virtual int __thiscall CScrollView::OnScroll(unsigned int, unsigned int, int)
 
-// LIBRARY: IMPERIALISM 0x00615c28
+// LIBRARY: IMPERIALISM 0x00615c28 SYMBOL
+// ?OnScrollBy@CScrollView@@UAEHVCSize@@H@Z
 // name: CScrollView::OnScrollBy
-// symbol: ?OnScrollBy@CScrollView@@UAEHVCSize@@H@Z
 // prototype: public: virtual int __thiscall CScrollView::OnScrollBy(class CSize, int)
 
-// LIBRARY: IMPERIALISM 0x00615d2b
+// LIBRARY: IMPERIALISM 0x00615d2b SYMBOL
+// ?GetErrorMessage@CArchiveException@@UAEHPADIPAI@Z
 // name: CArchiveException::GetErrorMessage
-// symbol: ?GetErrorMessage@CArchiveException@@UAEHPADIPAI@Z
 // prototype: public: virtual int __thiscall CArchiveException::GetErrorMessage(char *, unsigned int, unsigned int *)
 
-// LIBRARY: IMPERIALISM 0x00615dcb
+// LIBRARY: IMPERIALISM 0x00615dcb SYMBOL
+// ?AfxThrowArchiveException@@YGXHPBD@Z
 // name: AfxThrowArchiveException
-// symbol: ?AfxThrowArchiveException@@YGXHPBD@Z
 // prototype: void __stdcall AfxThrowArchiveException(int, char const *)
 
-// LIBRARY: IMPERIALISM 0x0061842f
+// LIBRARY: IMPERIALISM 0x0061842f SYMBOL
+// ?OnFileNew@CWinApp@@IAEXXZ
 // name: CWinApp::OnFileNew
-// symbol: ?OnFileNew@CWinApp@@IAEXXZ
 // prototype: protected: void __thiscall CWinApp::OnFileNew(void)
 
 // LIBRARY: IMPERIALISM 0x0061843f
 // MFC nafxcw handler in message map 0x63e068 (base 0x66fd60), ON_COMMAND
 // 0xe101: `mov ecx,[ecx+0x80]; jmp [eax+0x40]` inner-object forwarder.
 
-// LIBRARY: IMPERIALISM 0x0061844a
+// LIBRARY: IMPERIALISM 0x0061844a SYMBOL
+// ?DoPromptFileName@CWinApp@@QAEHAAVCString@@IKHPAVCDocTemplate@@@Z
 // name: CWinApp::DoPromptFileName
-// symbol: ?DoPromptFileName@CWinApp@@QAEHAAVCString@@IKHPAVCDocTemplate@@@Z
 // prototype: public: int __thiscall CWinApp::DoPromptFileName(class CString &, unsigned int, unsigned long, int, class CDocTemplate *)
 
-// LIBRARY: IMPERIALISM 0x0061846b
+// LIBRARY: IMPERIALISM 0x0061846b SYMBOL
+// ?HideApplication@CWinApp@@QAEXXZ
 // name: CWinApp::HideApplication
-// symbol: ?HideApplication@CWinApp@@QAEXXZ
 // prototype: public: void __thiscall CWinApp::HideApplication(void)
 
-// LIBRARY: IMPERIALISM 0x0061849d
+// LIBRARY: IMPERIALISM 0x0061849d SYMBOL
+// ?DoWaitCursor@CWinApp@@UAEXH@Z
 // name: CWinApp::DoWaitCursor
-// symbol: ?DoWaitCursor@CWinApp@@UAEXH@Z
 // prototype: public: virtual void __thiscall CWinApp::DoWaitCursor(int)
 
-// LIBRARY: IMPERIALISM 0x006184fc
+// LIBRARY: IMPERIALISM 0x006184fc SYMBOL
+// ?EnableModeless@CWinApp@@QAEXH@Z
 // name: CWinApp::EnableModeless
-// symbol: ?EnableModeless@CWinApp@@QAEXH@Z
 // prototype: public: void __thiscall CWinApp::EnableModeless(int)
 
-// LIBRARY: IMPERIALISM 0x0061852a
+// LIBRARY: IMPERIALISM 0x0061852a SYMBOL
+// ?DoMessageBox@CWinApp@@UAEHPBDII@Z
 // name: CWinApp::DoMessageBox
-// symbol: ?DoMessageBox@CWinApp@@UAEHPBDII@Z
 // prototype: public: virtual int __thiscall CWinApp::DoMessageBox(char const *, unsigned int, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x006185e4
+// LIBRARY: IMPERIALISM 0x006185e4 SYMBOL
+// ?AfxMessageBox@@YGHPBDII@Z
 // name: AfxMessageBox
-// symbol: ?AfxMessageBox@@YGHPBDII@Z
 // prototype: int __stdcall AfxMessageBox(char const *, unsigned int, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00618605
+// LIBRARY: IMPERIALISM 0x00618605 SYMBOL
+// ?AfxMessageBox@@YGHIII@Z
 // name: AfxMessageBox
-// symbol: ?AfxMessageBox@@YGHIII@Z
 // prototype: int __stdcall AfxMessageBox(unsigned int, unsigned int, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x006186a4
+// LIBRARY: IMPERIALISM 0x006186a4 SYMBOL
+// ?SaveAllModified@CWinApp@@UAEHXZ
 // name: CWinApp::SaveAllModified
-// symbol: ?SaveAllModified@CWinApp@@UAEHXZ
 // prototype: public: virtual int __thiscall CWinApp::SaveAllModified(void)
 
-// LIBRARY: IMPERIALISM 0x006186b7
+// LIBRARY: IMPERIALISM 0x006186b7 SYMBOL
+// ?AddToRecentFileList@CWinApp@@UAEXPBD@Z
 // name: CWinApp::AddToRecentFileList
-// symbol: ?AddToRecentFileList@CWinApp@@UAEXPBD@Z
 // prototype: public: virtual void __thiscall CWinApp::AddToRecentFileList(char const *)
 
-// LIBRARY: IMPERIALISM 0x006186f2
+// LIBRARY: IMPERIALISM 0x006186f2 SYMBOL
+// ?OpenDocumentFile@CWinApp@@UAEPAVCDocument@@PBD@Z
 // name: CWinApp::OpenDocumentFile
-// symbol: ?OpenDocumentFile@CWinApp@@UAEPAVCDocument@@PBD@Z
 // prototype: public: virtual class CDocument * __thiscall CWinApp::OpenDocumentFile(char const *)
 
-// LIBRARY: IMPERIALISM 0x00618704
+// LIBRARY: IMPERIALISM 0x00618704 SYMBOL
+// ?CloseAllDocuments@CWinApp@@QAEXH@Z
 // name: CWinApp::CloseAllDocuments
-// symbol: ?CloseAllDocuments@CWinApp@@QAEXH@Z
 // prototype: public: void __thiscall CWinApp::CloseAllDocuments(int)
 
 // LIBRARY: IMPERIALISM 0x0061871a
 // MFC nafxcw handler in message map 0x66fd60 (base CCmdTarget), ON_COMMAND
 // 0xe110: control-site check via [ecx+0xa8] then command forward.
 
-// LIBRARY: IMPERIALISM 0x0061873c
+// LIBRARY: IMPERIALISM 0x0061873c SYMBOL
+// ?OnDDECommand@CWinApp@@UAEHPAD@Z
 // name: CWinApp::OnDDECommand
-// symbol: ?OnDDECommand@CWinApp@@UAEHPAD@Z
 // prototype: public: virtual int __thiscall CWinApp::OnDDECommand(char *)
 
 // LIBRARY: IMPERIALISM 0x00618756
 // MFC nafxcw handler in message map 0x66fd60 (base CCmdTarget), ON_COMMAND
 // 0xe110: id-range 0xe110 decode via [ecx+0xa8] control-site.
 
-// LIBRARY: IMPERIALISM 0x0061878f
+// LIBRARY: IMPERIALISM 0x0061878f SYMBOL
+// ?AddDocTemplate@CWinApp@@QAEXPAVCDocTemplate@@@Z
 // name: CWinApp::AddDocTemplate
-// symbol: ?AddDocTemplate@CWinApp@@QAEXPAVCDocTemplate@@@Z
 // prototype: public: void __thiscall CWinApp::AddDocTemplate(class CDocTemplate *)
 
-// LIBRARY: IMPERIALISM 0x006187eb
+// LIBRARY: IMPERIALISM 0x006187eb SYMBOL
+// ?GetFirstDocTemplatePosition@CWinApp@@QBEPAU__POSITION@@XZ
 // name: CWinApp::GetFirstDocTemplatePosition
-// symbol: ?GetFirstDocTemplatePosition@CWinApp@@QBEPAU__POSITION@@XZ
 // prototype: public: struct __POSITION * __thiscall CWinApp::GetFirstDocTemplatePosition(void) const
 
-// LIBRARY: IMPERIALISM 0x006187fd
+// LIBRARY: IMPERIALISM 0x006187fd SYMBOL
+// ?GetNextDocTemplate@CWinApp@@QBEPAVCDocTemplate@@AAPAU__POSITION@@@Z
 // name: CWinApp::GetNextDocTemplate
-// symbol: ?GetNextDocTemplate@CWinApp@@QBEPAVCDocTemplate@@AAPAU__POSITION@@@Z
 // prototype: public: class CDocTemplate * __thiscall CWinApp::GetNextDocTemplate(struct __POSITION *&) const
 
-// LIBRARY: IMPERIALISM 0x0061880f
+// LIBRARY: IMPERIALISM 0x0061880f SYMBOL
+// ?WriteProfileInt@CWinApp@@QAEHPBD0H@Z
 // name: CWinApp::WriteProfileInt
-// symbol: ?WriteProfileInt@CWinApp@@QAEHPBD0H@Z
 // prototype: public: int __thiscall CWinApp::WriteProfileInt(char const *, char const *, int)
 
-// LIBRARY: IMPERIALISM 0x00618884
+// LIBRARY: IMPERIALISM 0x00618884 SYMBOL
+// ?WriteProfileStringA@CWinApp@@QAEHPBD00@Z
 // name: CWinApp::WriteProfileStringA
-// symbol: ?WriteProfileStringA@CWinApp@@QAEHPBD00@Z
 // prototype: public: int __thiscall CWinApp::WriteProfileStringA(char const *, char const *, char const *)
 
-// LIBRARY: IMPERIALISM 0x00618924
+// LIBRARY: IMPERIALISM 0x00618924 SYMBOL
+// ?WriteProfileBinary@CWinApp@@QAEHPBD0PAEI@Z
 // name: CWinApp::WriteProfileBinary
-// symbol: ?WriteProfileBinary@CWinApp@@QAEHPBD0PAEI@Z
 // prototype: public: int __thiscall CWinApp::WriteProfileBinary(char const *, char const *, unsigned char *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x006189c5
+// LIBRARY: IMPERIALISM 0x006189c5 SYMBOL
+// ?PrepareEditCtrl@CDataExchange@@QAEPAUHWND__@@H@Z
 // name: CDataExchange::PrepareEditCtrl
-// symbol: ?PrepareEditCtrl@CDataExchange@@QAEPAUHWND__@@H@Z
 // prototype: public: struct HWND__* __thiscall CDataExchange::PrepareEditCtrl(int)
 
-// LIBRARY: IMPERIALISM 0x006189dc
+// LIBRARY: IMPERIALISM 0x006189dc SYMBOL
+// ?PrepareCtrl@CDataExchange@@QAEPAUHWND__@@H@Z
 // name: CDataExchange::PrepareCtrl
-// symbol: ?PrepareCtrl@CDataExchange@@QAEPAUHWND__@@H@Z
 // prototype: public: struct HWND__* __thiscall CDataExchange::PrepareCtrl(int)
 
-// LIBRARY: IMPERIALISM 0x00618a0b
+// LIBRARY: IMPERIALISM 0x00618a0b SYMBOL
+// ?Fail@CDataExchange@@QAEXXZ
 // name: CDataExchange::Fail
-// symbol: ?Fail@CDataExchange@@QAEXXZ
 // prototype: public: void __thiscall CDataExchange::Fail(void)
 
-// LIBRARY: IMPERIALISM 0x00618a40
+// LIBRARY: IMPERIALISM 0x00618a40 SYMBOL
+// ?DDX_Text@@YGXPAVCDataExchange@@HAAE@Z
 // name: DDX_Text
-// symbol: ?DDX_Text@@YGXPAVCDataExchange@@HAAE@Z
 // prototype: void __stdcall DDX_Text(class CDataExchange *, int, unsigned char &)
 
-// LIBRARY: IMPERIALISM 0x00618ab1
-// symbol: ?DDX_TextWithFormat@@YAXPAVCDataExchange@@HPBDIZZ
+// LIBRARY: IMPERIALISM 0x00618ab1 SYMBOL
+// ?DDX_TextWithFormat@@YAXPAVCDataExchange@@HPBDIZZ
 
-// LIBRARY: IMPERIALISM 0x00618b21
-// symbol: ?AfxSimpleScanf@@YGHPBD0PAD@Z
+// LIBRARY: IMPERIALISM 0x00618b21 SYMBOL
+// ?AfxSimpleScanf@@YGHPBD0PAD@Z
 
-// LIBRARY: IMPERIALISM 0x00618bc6
+// LIBRARY: IMPERIALISM 0x00618bc6 SYMBOL
+// ?DDX_Text@@YGXPAVCDataExchange@@HAAF@Z
 // name: DDX_Text
-// symbol: ?DDX_Text@@YGXPAVCDataExchange@@HAAF@Z
 // prototype: void __stdcall DDX_Text(class CDataExchange *, int, short &)
 
-// LIBRARY: IMPERIALISM 0x00618c01
-// symbol: ?DDX_Text@@YGXPAVCDataExchange@@HAAJ@Z
+// LIBRARY: IMPERIALISM 0x00618c01 SYMBOL
+// ?DDX_Text@@YGXPAVCDataExchange@@HAAJ@Z
 
-// LIBRARY: IMPERIALISM 0x00618c30
-// symbol: ?DDX_Text@@YGXPAVCDataExchange@@HAAK@Z
+// LIBRARY: IMPERIALISM 0x00618c30 SYMBOL
+// ?DDX_Text@@YGXPAVCDataExchange@@HAAK@Z
 
-// LIBRARY: IMPERIALISM 0x00618c5f
-// symbol: ?DDX_Text@@YGXPAVCDataExchange@@HAAH@Z
+// LIBRARY: IMPERIALISM 0x00618c5f SYMBOL
+// ?DDX_Text@@YGXPAVCDataExchange@@HAAH@Z
 
-// LIBRARY: IMPERIALISM 0x00618c8e
-// symbol: ?DDX_Text@@YGXPAVCDataExchange@@HAAI@Z
+// LIBRARY: IMPERIALISM 0x00618c8e SYMBOL
+// ?DDX_Text@@YGXPAVCDataExchange@@HAAI@Z
 
-// LIBRARY: IMPERIALISM 0x00618cbd
+// LIBRARY: IMPERIALISM 0x00618cbd SYMBOL
+// ?DDX_Text@@YGXPAVCDataExchange@@HAAVCString@@@Z
 // name: DDX_Text
-// symbol: ?DDX_Text@@YGXPAVCDataExchange@@HAAVCString@@@Z
 // prototype: void __stdcall DDX_Text(class CDataExchange *, int, class CString &)
 
-// LIBRARY: IMPERIALISM 0x00618d0f
+// LIBRARY: IMPERIALISM 0x00618d0f SYMBOL
+// ?DDX_Check@@YGXPAVCDataExchange@@HAAH@Z
 // name: DDX_Check
-// symbol: ?DDX_Check@@YGXPAVCDataExchange@@HAAH@Z
 // prototype: void __stdcall DDX_Check(class CDataExchange *, int, int &)
 
-// LIBRARY: IMPERIALISM 0x00618d61
+// LIBRARY: IMPERIALISM 0x00618d61 SYMBOL
+// ?DDX_Radio@@YGXPAVCDataExchange@@HAAH@Z
 // name: DDX_Radio
-// symbol: ?DDX_Radio@@YGXPAVCDataExchange@@HAAH@Z
 // prototype: void __stdcall DDX_Radio(class CDataExchange *, int, int &)
 
 // LIBRARY: IMPERIALISM 0x00618df2
-// name: DDX_LBString
+// DDX_LBString
 
 // LIBRARY: IMPERIALISM 0x00618e72
-// name: DDX_LBStringExact
+// DDX_LBStringExact
 
-// LIBRARY: IMPERIALISM 0x00618ec3
+// LIBRARY: IMPERIALISM 0x00618ec3 SYMBOL
+// ?DDX_CBString@@YGXPAVCDataExchange@@HAAVCString@@@Z
 // name: DDX_CBString
-// symbol: ?DDX_CBString@@YGXPAVCDataExchange@@HAAVCString@@@Z
 // prototype: void __stdcall DDX_CBString(class CDataExchange *, int, class CString &)
 
-// LIBRARY: IMPERIALISM 0x00618f43
+// LIBRARY: IMPERIALISM 0x00618f43 SYMBOL
+// ?DDX_CBStringExact@@YGXPAVCDataExchange@@HAAVCString@@@Z
 // name: DDX_CBStringExact
-// symbol: ?DDX_CBStringExact@@YGXPAVCDataExchange@@HAAVCString@@@Z
 // prototype: void __stdcall DDX_CBStringExact(class CDataExchange *, int, class CString &)
 
-// LIBRARY: IMPERIALISM 0x00618f94
+// LIBRARY: IMPERIALISM 0x00618f94 SYMBOL
+// ?DDX_LBIndex@@YGXPAVCDataExchange@@HAAH@Z
 // name: DDX_LBIndex
-// symbol: ?DDX_LBIndex@@YGXPAVCDataExchange@@HAAH@Z
 // prototype: void __stdcall DDX_LBIndex(class CDataExchange *, int, int &)
 
-// LIBRARY: IMPERIALISM 0x00618fd6
+// LIBRARY: IMPERIALISM 0x00618fd6 SYMBOL
+// ?DDX_CBIndex@@YGXPAVCDataExchange@@HAAH@Z
 // name: DDX_CBIndex
-// symbol: ?DDX_CBIndex@@YGXPAVCDataExchange@@HAAH@Z
 // prototype: void __stdcall DDX_CBIndex(class CDataExchange *, int, int &)
 
-// LIBRARY: IMPERIALISM 0x00619018
+// LIBRARY: IMPERIALISM 0x00619018 SYMBOL
+// ?DDX_Scroll@@YGXPAVCDataExchange@@HAAH@Z
 // name: DDX_Scroll
-// symbol: ?DDX_Scroll@@YGXPAVCDataExchange@@HAAH@Z
 // prototype: void __stdcall DDX_Scroll(class CDataExchange *, int, int &)
 
-// LIBRARY: IMPERIALISM 0x00619053
+// LIBRARY: IMPERIALISM 0x00619053 SYMBOL
+// ?DDV_MinMaxByte@@YGXPAVCDataExchange@@EEE@Z
 // name: DDV_MinMaxByte
-// symbol: ?DDV_MinMaxByte@@YGXPAVCDataExchange@@EEE@Z
 // prototype: void __stdcall DDV_MinMaxByte(class CDataExchange *, unsigned char, unsigned char, unsigned char)
 
-// LIBRARY: IMPERIALISM 0x00619083
-// symbol: ?FailMinMaxWithFormat@@YGXPAVCDataExchange@@JJPBDI@Z
+// LIBRARY: IMPERIALISM 0x00619083 SYMBOL
+// ?FailMinMaxWithFormat@@YGXPAVCDataExchange@@JJPBDI@Z
 
-// LIBRARY: IMPERIALISM 0x00619116
+// LIBRARY: IMPERIALISM 0x00619116 SYMBOL
+// ?DDV_MinMaxShort@@YGXPAVCDataExchange@@FFF@Z
 // name: DDV_MinMaxShort
-// symbol: ?DDV_MinMaxShort@@YGXPAVCDataExchange@@FFF@Z
 // prototype: void __stdcall DDV_MinMaxShort(class CDataExchange *, short, short, short)
 
-// LIBRARY: IMPERIALISM 0x00619149
-// symbol: ?DDV_MinMaxLong@@YGXPAVCDataExchange@@JJJ@Z
+// LIBRARY: IMPERIALISM 0x00619149 SYMBOL
+// ?DDV_MinMaxLong@@YGXPAVCDataExchange@@JJJ@Z
 
-// LIBRARY: IMPERIALISM 0x00619175
-// symbol: ?DDV_MinMaxLong@@YGXPAVCDataExchange@@JJJ@Z
+// LIBRARY: IMPERIALISM 0x00619175 SYMBOL
+// ?DDV_MinMaxLong@@YGXPAVCDataExchange@@JJJ@Z
 
-// LIBRARY: IMPERIALISM 0x006191a1
-// symbol: ?DDV_MinMaxUInt@@YGXPAVCDataExchange@@III@Z
+// LIBRARY: IMPERIALISM 0x006191a1 SYMBOL
+// ?DDV_MinMaxUInt@@YGXPAVCDataExchange@@III@Z
 
-// LIBRARY: IMPERIALISM 0x006191cd
-// symbol: ?DDV_MinMaxUInt@@YGXPAVCDataExchange@@III@Z
+// LIBRARY: IMPERIALISM 0x006191cd SYMBOL
+// ?DDV_MinMaxUInt@@YGXPAVCDataExchange@@III@Z
 
-// LIBRARY: IMPERIALISM 0x006191f9
+// LIBRARY: IMPERIALISM 0x006191f9 SYMBOL
+// ?DDV_MaxChars@@YGXPAVCDataExchange@@ABVCString@@H@Z
 // name: DDV_MaxChars
-// symbol: ?DDV_MaxChars@@YGXPAVCDataExchange@@ABVCString@@H@Z
 // prototype: void __stdcall DDV_MaxChars(class CDataExchange *, class CString const &, int)
 
-// LIBRARY: IMPERIALISM 0x006192a1
+// LIBRARY: IMPERIALISM 0x006192a1 SYMBOL
+// ?DDX_Control@@YGXPAVCDataExchange@@HAAVCWnd@@@Z
 // name: DDX_Control
-// symbol: ?DDX_Control@@YGXPAVCDataExchange@@HAAVCWnd@@@Z
 // prototype: void __stdcall DDX_Control(class CDataExchange *, int, class CWnd &)
 
-// LIBRARY: IMPERIALISM 0x006192ed
+// LIBRARY: IMPERIALISM 0x006192ed SYMBOL
+// ?AfxFailMaxChars@@YGXPAVCDataExchange@@H@Z
 // name: AfxFailMaxChars
-// symbol: ?AfxFailMaxChars@@YGXPAVCDataExchange@@H@Z
 // prototype: void __stdcall AfxFailMaxChars(class CDataExchange *, int)
 
-// LIBRARY: IMPERIALISM 0x00619365
+// LIBRARY: IMPERIALISM 0x00619365 SYMBOL
+// ?AfxFailRadio@@YGXPAVCDataExchange@@@Z
 // name: AfxFailRadio
-// symbol: ?AfxFailRadio@@YGXPAVCDataExchange@@@Z
 // prototype: void __stdcall AfxFailRadio(class CDataExchange *)
 
-// LIBRARY: IMPERIALISM 0x006193c5
+// LIBRARY: IMPERIALISM 0x006193c5 SYMBOL
+// ?OnHelp@CWnd@@QAEXXZ
 // name: CWnd::OnHelp
-// symbol: ?OnHelp@CWnd@@QAEXXZ
 // prototype: public: void __thiscall CWnd::OnHelp(void)
 
-// LIBRARY: IMPERIALISM 0x00619467
+// LIBRARY: IMPERIALISM 0x00619467 SYMBOL
+// ?OnHelp@CFrameWnd@@IAEXXZ
 // name: CFrameWnd::OnHelp
-// symbol: ?OnHelp@CFrameWnd@@IAEXXZ
 // prototype: protected: void __thiscall CFrameWnd::OnHelp(void)
 
 // LIBRARY: IMPERIALISM 0x006194b1
@@ -5845,1371 +5843,1371 @@
 // (entities name it TMacViewMgr_OnCommand_ID_E143_E147 from the map; the body
 // is stock MFC dispatch machinery, not game code).
 
-// LIBRARY: IMPERIALISM 0x006194df
-// symbol: ?CanEnterHelpMode@CFrameWnd@@QAEHXZ
+// LIBRARY: IMPERIALISM 0x006194df SYMBOL
+// ?CanEnterHelpMode@CFrameWnd@@QAEHXZ
 
-// LIBRARY: IMPERIALISM 0x00619539
+// LIBRARY: IMPERIALISM 0x00619539 SYMBOL
+// ?OnContextHelp@CFrameWnd@@QAEXXZ
 // name: CFrameWnd::OnContextHelp
-// symbol: ?OnContextHelp@CFrameWnd@@QAEXXZ
 // prototype: public: void __thiscall CFrameWnd::OnContextHelp(void)
 
-// LIBRARY: IMPERIALISM 0x006196e1
+// LIBRARY: IMPERIALISM 0x006196e1 SYMBOL
+// ?SetHelpCapture@CFrameWnd@@IAEPAUHWND__@@UtagPOINT@@PAH@Z
 // name: CFrameWnd::SetHelpCapture
-// symbol: ?SetHelpCapture@CFrameWnd@@IAEPAUHWND__@@UtagPOINT@@PAH@Z
 // prototype: protected: struct HWND__* __thiscall CFrameWnd::SetHelpCapture(struct tagPOINT, int *)
 
-// LIBRARY: IMPERIALISM 0x006197f7
+// LIBRARY: IMPERIALISM 0x006197f7 SYMBOL
+// ?ProcessHelpMsg@CFrameWnd@@IAEHAAUtagMSG@@PAK@Z
 // name: CFrameWnd::ProcessHelpMsg
-// symbol: ?ProcessHelpMsg@CFrameWnd@@IAEHAAUtagMSG@@PAK@Z
 // prototype: protected: int __thiscall CFrameWnd::ProcessHelpMsg(struct tagMSG &, unsigned long *)
 
-// LIBRARY: IMPERIALISM 0x006199fd
-// symbol: ?MapClientArea@@YGKPAUHWND__@@UtagPOINT@@@Z
+// LIBRARY: IMPERIALISM 0x006199fd SYMBOL
+// ?MapClientArea@@YGKPAUHWND__@@UtagPOINT@@@Z
 
-// LIBRARY: IMPERIALISM 0x00619a92
-// symbol: ?MapNonClientArea@@YGKH@Z
+// LIBRARY: IMPERIALISM 0x00619a92 SYMBOL
+// ?MapNonClientArea@@YGKH@Z
 
-// LIBRARY: IMPERIALISM 0x00619aac
+// LIBRARY: IMPERIALISM 0x00619aac SYMBOL
+// ??0CMemFile@@QAE@I@Z
 // name: CMemFile::CMemFile
-// symbol: ??0CMemFile@@QAE@I@Z
 // prototype: public: __thiscall CMemFile::CMemFile(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00619adc
+// LIBRARY: IMPERIALISM 0x00619adc SYMBOL
+// ??_GCMemFile@@UAEPAXI@Z
 // name: CMemFile::`scalar deleting dtor'
-// symbol: ??_GCMemFile@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CMemFile::`scalar deleting dtor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00619af8
+// LIBRARY: IMPERIALISM 0x00619af8 SYMBOL
+// ??0CMemFile@@QAE@PAEII@Z
 // name: CMemFile::CMemFile
-// symbol: ??0CMemFile@@QAE@PAEII@Z
 // prototype: public: __thiscall CMemFile::CMemFile(unsigned char *, unsigned int, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00619b34
+// LIBRARY: IMPERIALISM 0x00619b34 SYMBOL
+// ?Attach@CMemFile@@QAEXPAEII@Z
 // name: CMemFile::Attach
-// symbol: ?Attach@CMemFile@@QAEXPAEII@Z
 // prototype: public: void __thiscall CMemFile::Attach(unsigned char *, unsigned int, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00619b71
+// LIBRARY: IMPERIALISM 0x00619b71 SYMBOL
+// ??1CMemFile@@UAE@XZ
 // name: CMemFile::~CMemFile
-// symbol: ??1CMemFile@@UAE@XZ
 // prototype: public: virtual __thiscall CMemFile::~CMemFile(void)
 
-// LIBRARY: IMPERIALISM 0x00619bbd
+// LIBRARY: IMPERIALISM 0x00619bbd SYMBOL
+// ?Alloc@CMemFile@@MAEPAEK@Z
 // name: CMemFile::Alloc
-// symbol: ?Alloc@CMemFile@@MAEPAEK@Z
 // prototype: protected: virtual unsigned char * __thiscall CMemFile::Alloc(unsigned long)
 
-// LIBRARY: IMPERIALISM 0x00619bca
+// LIBRARY: IMPERIALISM 0x00619bca SYMBOL
+// ?Realloc@CMemFile@@MAEPAEPAEK@Z
 // name: CMemFile::Realloc
-// symbol: ?Realloc@CMemFile@@MAEPAEPAEK@Z
 // prototype: protected: virtual unsigned char * __thiscall CMemFile::Realloc(unsigned char *, unsigned long)
 
-// LIBRARY: IMPERIALISM 0x00619bdc
+// LIBRARY: IMPERIALISM 0x00619bdc SYMBOL
+// ?Memcpy@CMemFile@@MAEPAEPAEPBEI@Z
 // name: CMemFile::Memcpy
-// symbol: ?Memcpy@CMemFile@@MAEPAEPAEPBEI@Z
 // prototype: protected: virtual unsigned char * __thiscall CMemFile::Memcpy(unsigned char *, unsigned char const *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00619c01
+// LIBRARY: IMPERIALISM 0x00619c01 SYMBOL
+// ?Free@CMemFile@@MAEXPAE@Z
 // name: CMemFile::Free
-// symbol: ?Free@CMemFile@@MAEXPAE@Z
 // prototype: protected: virtual void __thiscall CMemFile::Free(unsigned char *)
 
-// LIBRARY: IMPERIALISM 0x00619c0e
+// LIBRARY: IMPERIALISM 0x00619c0e SYMBOL
+// ?GetPosition@CMemFile@@UBEKXZ
 // name: CMemFile::GetPosition
-// symbol: ?GetPosition@CMemFile@@UBEKXZ
 // prototype: public: virtual unsigned long __thiscall CMemFile::GetPosition(void) const
 
-// LIBRARY: IMPERIALISM 0x00619c12
+// LIBRARY: IMPERIALISM 0x00619c12 SYMBOL
+// ?GrowFile@CMemFile@@MAEXK@Z
 // name: CMemFile::GrowFile
-// symbol: ?GrowFile@CMemFile@@MAEXK@Z
 // prototype: protected: virtual void __thiscall CMemFile::GrowFile(unsigned long)
 
-// LIBRARY: IMPERIALISM 0x00619c6b
+// LIBRARY: IMPERIALISM 0x00619c6b SYMBOL
+// ?SetLength@CMemFile@@UAEXK@Z
 // name: CMemFile::SetLength
-// symbol: ?SetLength@CMemFile@@UAEXK@Z
 // prototype: public: virtual void __thiscall CMemFile::SetLength(unsigned long)
 
-// LIBRARY: IMPERIALISM 0x00619c8e
+// LIBRARY: IMPERIALISM 0x00619c8e SYMBOL
+// ?Read@CMemFile@@UAEIPAXI@Z
 // name: CMemFile::Read
-// symbol: ?Read@CMemFile@@UAEIPAXI@Z
 // prototype: public: virtual unsigned int __thiscall CMemFile::Read(void *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00619ccf
+// LIBRARY: IMPERIALISM 0x00619ccf SYMBOL
+// ?Write@CMemFile@@UAEXPBXI@Z
 // name: CMemFile::Write
-// symbol: ?Write@CMemFile@@UAEXPBXI@Z
 // prototype: public: virtual void __thiscall CMemFile::Write(void const *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00619d11
+// LIBRARY: IMPERIALISM 0x00619d11 SYMBOL
+// ?Seek@CMemFile@@UAEJJI@Z
 // name: CMemFile::Seek
-// symbol: ?Seek@CMemFile@@UAEJJI@Z
 // prototype: public: virtual long __thiscall CMemFile::Seek(long, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00619d57
+// LIBRARY: IMPERIALISM 0x00619d57 SYMBOL
+// ?Flush@CMemFile@@UAEXXZ
 // name: CMemFile::Flush
-// symbol: ?Flush@CMemFile@@UAEXXZ
 // prototype: public: virtual void __thiscall CMemFile::Flush(void)
 
-// LIBRARY: IMPERIALISM 0x00619d58
+// LIBRARY: IMPERIALISM 0x00619d58 SYMBOL
+// ?Close@CMemFile@@UAEXXZ
 // name: CMemFile::Close
-// symbol: ?Close@CMemFile@@UAEXXZ
 // prototype: public: virtual void __thiscall CMemFile::Close(void)
 
-// LIBRARY: IMPERIALISM 0x00619d82
+// LIBRARY: IMPERIALISM 0x00619d82 SYMBOL
+// ?Abort@CMemFile@@UAEXXZ
 // name: CMemFile::Abort
-// symbol: ?Abort@CMemFile@@UAEXXZ
 // prototype: public: virtual void __thiscall CMemFile::Abort(void)
 
-// LIBRARY: IMPERIALISM 0x00619d87
+// LIBRARY: IMPERIALISM 0x00619d87 SYMBOL
+// ?LockRange@CMemFile@@UAEXKK@Z
 // name: CMemFile::LockRange
-// symbol: ?LockRange@CMemFile@@UAEXKK@Z
 // prototype: public: virtual void __thiscall CMemFile::LockRange(unsigned long, unsigned long)
 
-// LIBRARY: IMPERIALISM 0x00619d8f
+// LIBRARY: IMPERIALISM 0x00619d8f SYMBOL
+// ?UnlockRange@CMemFile@@UAEXKK@Z
 // name: CMemFile::UnlockRange
-// symbol: ?UnlockRange@CMemFile@@UAEXKK@Z
 // prototype: public: virtual void __thiscall CMemFile::UnlockRange(unsigned long, unsigned long)
 
-// LIBRARY: IMPERIALISM 0x00619d97
+// LIBRARY: IMPERIALISM 0x00619d97 SYMBOL
+// ?Duplicate@CMemFile@@UBEPAVCFile@@XZ
 // name: CMemFile::Duplicate
-// symbol: ?Duplicate@CMemFile@@UBEPAVCFile@@XZ
 // prototype: public: virtual class CFile * __thiscall CMemFile::Duplicate(void) const
 
-// LIBRARY: IMPERIALISM 0x00619d9f
+// LIBRARY: IMPERIALISM 0x00619d9f SYMBOL
+// ?GetBufferPtr@CMemFile@@UAEIIIPAPAX0@Z
 // name: CMemFile::GetBufferPtr
-// symbol: ?GetBufferPtr@CMemFile@@UAEIIIPAPAX0@Z
 // prototype: public: virtual unsigned int __thiscall CMemFile::GetBufferPtr(unsigned int, unsigned int, void **, void **)
 
-// LIBRARY: IMPERIALISM 0x00619e4e
+// LIBRARY: IMPERIALISM 0x00619e4e SYMBOL
+// ?OnInitDialog@CNewTypeDlg@@MAEHXZ
 // name: CNewTypeDlg::OnInitDialog
-// symbol: ?OnInitDialog@CNewTypeDlg@@MAEHXZ
 // prototype: protected: virtual int __thiscall CNewTypeDlg::OnInitDialog(void)
 
-// LIBRARY: IMPERIALISM 0x00619f62
+// LIBRARY: IMPERIALISM 0x00619f62 SYMBOL
+// ?OnOK@CNewTypeDlg@@MAEXXZ
 // name: CNewTypeDlg::OnOK
-// symbol: ?OnOK@CNewTypeDlg@@MAEXXZ
 // prototype: protected: virtual void __thiscall CNewTypeDlg::OnOK(void)
 
-// LIBRARY: IMPERIALISM 0x00619faa
+// LIBRARY: IMPERIALISM 0x00619faa SYMBOL
+// ?AddDocTemplate@CDocManager@@UAEXPAVCDocTemplate@@@Z
 // name: CDocManager::AddDocTemplate
-// symbol: ?AddDocTemplate@CDocManager@@UAEXPAVCDocTemplate@@@Z
 // prototype: public: virtual void __thiscall CDocManager::AddDocTemplate(class CDocTemplate *)
 
-// LIBRARY: IMPERIALISM 0x0061a027
+// LIBRARY: IMPERIALISM 0x0061a027 SYMBOL
+// ?SaveAllModified@CDocManager@@UAEHXZ
 // name: CDocManager::SaveAllModified
-// symbol: ?SaveAllModified@CDocManager@@UAEHXZ
 // prototype: public: virtual int __thiscall CDocManager::SaveAllModified(void)
 
-// LIBRARY: IMPERIALISM 0x0061a049
+// LIBRARY: IMPERIALISM 0x0061a049 SYMBOL
+// ?CloseAllDocuments@CDocManager@@UAEXH@Z
 // name: CDocManager::CloseAllDocuments
-// symbol: ?CloseAllDocuments@CDocManager@@UAEXH@Z
 // prototype: public: virtual void __thiscall CDocManager::CloseAllDocuments(int)
 
-// LIBRARY: IMPERIALISM 0x0061a06a
+// LIBRARY: IMPERIALISM 0x0061a06a SYMBOL
+// ?DoPromptFileName@CDocManager@@UAEHAAVCString@@IKHPAVCDocTemplate@@@Z
 // name: CDocManager::DoPromptFileName
-// symbol: ?DoPromptFileName@CDocManager@@UAEHAAVCString@@IKHPAVCDocTemplate@@@Z
 // prototype: public: virtual int __thiscall CDocManager::DoPromptFileName(class CString &, unsigned int, unsigned long, int, class CDocTemplate *)
 
-// LIBRARY: IMPERIALISM 0x0061a216
-// symbol: ?AppendFilterSuffix@@YAXAAVCString@@AAUtagOFNA@@PAVCDocTemplate@@PAV1@@Z
+// LIBRARY: IMPERIALISM 0x0061a216 SYMBOL
+// ?AppendFilterSuffix@@YAXAAVCString@@AAUtagOFNA@@PAVCDocTemplate@@PAV1@@Z
 
-// LIBRARY: IMPERIALISM 0x0061a2ef
+// LIBRARY: IMPERIALISM 0x0061a2ef SYMBOL
+// ?OnDDECommand@CDocManager@@UAEHPAD@Z
 // name: CDocManager::OnDDECommand
-// symbol: ?OnDDECommand@CDocManager@@UAEHPAD@Z
 // prototype: public: virtual int __thiscall CDocManager::OnDDECommand(char *)
 
-// LIBRARY: IMPERIALISM 0x0061a8dd
+// LIBRARY: IMPERIALISM 0x0061a8dd SYMBOL
+// ?OnFileNew@CDocManager@@UAEXXZ
 // name: CDocManager::OnFileNew
-// symbol: ?OnFileNew@CDocManager@@UAEXXZ
 // prototype: public: virtual void __thiscall CDocManager::OnFileNew(void)
 
-// LIBRARY: IMPERIALISM 0x0061a982
+// LIBRARY: IMPERIALISM 0x0061a982 SYMBOL
+// ??1CNewTypeDlg@@UAE@XZ
 // name: CNewTypeDlg::~CNewTypeDlg
-// symbol: ??1CNewTypeDlg@@UAE@XZ
 // prototype: public: virtual __thiscall CNewTypeDlg::~CNewTypeDlg(void)
 
-// LIBRARY: IMPERIALISM 0x0061a98d
+// LIBRARY: IMPERIALISM 0x0061a98d SYMBOL
+// ??_GCNewTypeDlg@@UAEPAXI@Z
 // name: CNewTypeDlg::`scalar deleting destructor'
-// symbol: ??_GCNewTypeDlg@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CNewTypeDlg::`scalar deleting destructor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0061a9a9
+// LIBRARY: IMPERIALISM 0x0061a9a9 SYMBOL
+// ?OnFileOpen@CDocManager@@UAEXXZ
 // name: CDocManager::OnFileOpen
-// symbol: ?OnFileOpen@CDocManager@@UAEXXZ
 // prototype: public: virtual void __thiscall CDocManager::OnFileOpen(void)
 
-// LIBRARY: IMPERIALISM 0x0061aa0e
+// LIBRARY: IMPERIALISM 0x0061aa0e SYMBOL
+// ?AfxFormatStrings@@YGXAAVCString@@IPBQBDH@Z
 // name: AfxFormatStrings
-// symbol: ?AfxFormatStrings@@YGXAAVCString@@IPBQBDH@Z
 // prototype: void __stdcall AfxFormatStrings(class CString &, unsigned int, char const *const *, int)
 
-// LIBRARY: IMPERIALISM 0x0061aa48
+// LIBRARY: IMPERIALISM 0x0061aa48 SYMBOL
+// ?AfxFormatStrings@@YGXAAVCString@@PBDPBQBDH@Z
 // name: AfxFormatStrings
-// symbol: ?AfxFormatStrings@@YGXAAVCString@@PBDPBQBDH@Z
 // prototype: void __stdcall AfxFormatStrings(class CString &, char const *, char const *const *, int)
 
-// LIBRARY: IMPERIALISM 0x0061ab47
+// LIBRARY: IMPERIALISM 0x0061ab47 SYMBOL
+// ?AfxFormatString1@@YGXAAVCString@@IPBD@Z
 // name: AfxFormatString1
-// symbol: ?AfxFormatString1@@YGXAAVCString@@IPBD@Z
 // prototype: void __stdcall AfxFormatString1(class CString &, unsigned int, char const *)
 
-// LIBRARY: IMPERIALISM 0x0061ab5e
+// LIBRARY: IMPERIALISM 0x0061ab5e SYMBOL
+// ?AfxFormatString2@@YGXAAVCString@@IPBD1@Z
 // name: AfxFormatString2
-// symbol: ?AfxFormatString2@@YGXAAVCString@@IPBD1@Z
 // prototype: void __stdcall AfxFormatString2(class CString &, unsigned int, char const *, char const *)
 
 // LIBRARY: IMPERIALISM 0x0061c55e
-// name: ResetMouseWheelTrackingGlobals
+// ResetMouseWheelTrackingGlobals
 // prototype: void __cdecl ResetMouseWheelTrackingGlobals(void)
 
 // LIBRARY: IMPERIALISM 0x0061c581
-// name: RegisterMouseWheelRollMessageForLegacyWindows
+// RegisterMouseWheelRollMessageForLegacyWindows
 // prototype: void __cdecl RegisterMouseWheelRollMessageForLegacyWindows(void)
 
-// LIBRARY: IMPERIALISM 0x0061c5dc
+// LIBRARY: IMPERIALISM 0x0061c5dc SYMBOL
+// ??0CFrameWnd@@QAE@XZ
 // name: CFrameWnd::CFrameWnd
-// symbol: ??0CFrameWnd@@QAE@XZ
 // prototype: public: __thiscall CFrameWnd::CFrameWnd(void)
 
-// LIBRARY: IMPERIALISM 0x0061c6a2
+// LIBRARY: IMPERIALISM 0x0061c6a2 SYMBOL
+// ??_GCFrameWnd@@UAEPAXI@Z
 // name: CFrameWnd::`scalar deleting dtor'
-// symbol: ??_GCFrameWnd@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CFrameWnd::`scalar deleting dtor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0061c6be
+// LIBRARY: IMPERIALISM 0x0061c6be SYMBOL
+// ??1CFrameWnd@@UAE@XZ
 // name: CFrameWnd::~CFrameWnd
-// symbol: ??1CFrameWnd@@UAE@XZ
 // prototype: public: virtual __thiscall CFrameWnd::~CFrameWnd(void)
 
-// LIBRARY: IMPERIALISM 0x0061c725
+// LIBRARY: IMPERIALISM 0x0061c725 SYMBOL
+// ?AddFrameWnd@CFrameWnd@@IAEXXZ
 // name: CFrameWnd::AddFrameWnd
-// symbol: ?AddFrameWnd@CFrameWnd@@IAEXXZ
 // prototype: protected: void __thiscall CFrameWnd::AddFrameWnd(void)
 
-// LIBRARY: IMPERIALISM 0x0061c749
+// LIBRARY: IMPERIALISM 0x0061c749 SYMBOL
+// ?RemoveFrameWnd@CFrameWnd@@IAEXXZ
 // name: CFrameWnd::RemoveFrameWnd
-// symbol: ?RemoveFrameWnd@CFrameWnd@@IAEXXZ
 // prototype: protected: void __thiscall CFrameWnd::RemoveFrameWnd(void)
 
-// LIBRARY: IMPERIALISM 0x0061c76d
+// LIBRARY: IMPERIALISM 0x0061c76d SYMBOL
+// ?LoadAccelTable@CFrameWnd@@QAEHPBD@Z
 // name: CFrameWnd::LoadAccelTable
-// symbol: ?LoadAccelTable@CFrameWnd@@QAEHPBD@Z
 // prototype: public: int __thiscall CFrameWnd::LoadAccelTable(char const *)
 
-// LIBRARY: IMPERIALISM 0x0061c793
+// LIBRARY: IMPERIALISM 0x0061c793 SYMBOL
+// ?GetDefaultAccelerator@CFrameWnd@@UAEPAUHACCEL__@@XZ
 // name: CFrameWnd::GetDefaultAccelerator
-// symbol: ?GetDefaultAccelerator@CFrameWnd@@UAEPAUHACCEL__@@XZ
 // prototype: public: virtual struct HACCEL__* __thiscall CFrameWnd::GetDefaultAccelerator(void)
 
-// LIBRARY: IMPERIALISM 0x0061c7b7
+// LIBRARY: IMPERIALISM 0x0061c7b7 SYMBOL
+// ?PreTranslateMessage@CFrameWnd@@UAEHPAUtagMSG@@@Z
 // name: CFrameWnd::PreTranslateMessage
-// symbol: ?PreTranslateMessage@CFrameWnd@@UAEHPAUtagMSG@@@Z
 // prototype: public: virtual int __thiscall CFrameWnd::PreTranslateMessage(struct tagMSG *)
 
-// LIBRARY: IMPERIALISM 0x0061c82e
+// LIBRARY: IMPERIALISM 0x0061c82e SYMBOL
+// ?PostNcDestroy@CFrameWnd@@MAEXXZ
 // name: CFrameWnd::PostNcDestroy
-// symbol: ?PostNcDestroy@CFrameWnd@@MAEXXZ
 // prototype: protected: virtual void __thiscall CFrameWnd::PostNcDestroy(void)
 
-// LIBRARY: IMPERIALISM 0x0061c83a
+// LIBRARY: IMPERIALISM 0x0061c83a SYMBOL
+// ?OnPaletteChanged@CFrameWnd@@IAEXPAVCWnd@@@Z
 // name: CFrameWnd::OnPaletteChanged
-// symbol: ?OnPaletteChanged@CFrameWnd@@IAEXPAVCWnd@@@Z
 // prototype: protected: void __thiscall CFrameWnd::OnPaletteChanged(class CWnd *)
 
-// LIBRARY: IMPERIALISM 0x0061c856
+// LIBRARY: IMPERIALISM 0x0061c856 SYMBOL
+// ?OnQueryNewPalette@CFrameWnd@@IAEHXZ
 // name: CFrameWnd::OnQueryNewPalette
-// symbol: ?OnQueryNewPalette@CFrameWnd@@IAEHXZ
 // prototype: protected: int __thiscall CFrameWnd::OnQueryNewPalette(void)
 
-// LIBRARY: IMPERIALISM 0x0061c877
+// LIBRARY: IMPERIALISM 0x0061c877 SYMBOL
+// ?ExitHelpMode@CFrameWnd@@UAEXXZ
 // name: CFrameWnd::ExitHelpMode
-// symbol: ?ExitHelpMode@CFrameWnd@@UAEXXZ
 // prototype: public: virtual void __thiscall CFrameWnd::ExitHelpMode(void)
 
-// LIBRARY: IMPERIALISM 0x0061c8e2
+// LIBRARY: IMPERIALISM 0x0061c8e2 SYMBOL
+// ?OnSetCursor@CFrameWnd@@IAEHPAVCWnd@@II@Z
 // name: CFrameWnd::OnSetCursor
-// symbol: ?OnSetCursor@CFrameWnd@@IAEHPAVCWnd@@II@Z
 // prototype: protected: int __thiscall CFrameWnd::OnSetCursor(class CWnd *, unsigned int, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0061c90c
+// LIBRARY: IMPERIALISM 0x0061c90c SYMBOL
+// ?OnCommandHelp@CFrameWnd@@IAEJIJ@Z
 // name: CFrameWnd::OnCommandHelp
-// symbol: ?OnCommandHelp@CFrameWnd@@IAEJIJ@Z
 // prototype: protected: long __thiscall CFrameWnd::OnCommandHelp(unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x0061c976
+// LIBRARY: IMPERIALISM 0x0061c976 SYMBOL
+// ?OnCommand@CFrameWnd@@MAEHIJ@Z
 // name: CFrameWnd::OnCommand
-// symbol: ?OnCommand@CFrameWnd@@MAEHIJ@Z
 // prototype: protected: virtual int __thiscall CFrameWnd::OnCommand(unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x0061c9ed
+// LIBRARY: IMPERIALISM 0x0061c9ed SYMBOL
+// ?AfxIsDescendant@@YGHPAUHWND__@@0@Z
 // name: AfxIsDescendant
-// symbol: ?AfxIsDescendant@@YGHPAUHWND__@@0@Z
 // prototype: int __stdcall AfxIsDescendant(struct HWND__*, struct HWND__*)
 
-// LIBRARY: IMPERIALISM 0x0061ca0d
+// LIBRARY: IMPERIALISM 0x0061ca0d SYMBOL
+// ?BeginModalState@CFrameWnd@@UAEXXZ
 // name: CFrameWnd::BeginModalState
-// symbol: ?BeginModalState@CFrameWnd@@UAEXXZ
 // prototype: public: virtual void __thiscall CFrameWnd::BeginModalState(void)
 
-// LIBRARY: IMPERIALISM 0x0061cb3a
+// LIBRARY: IMPERIALISM 0x0061cb3a SYMBOL
+// ?EndModalState@CFrameWnd@@UAEXXZ
 // name: CFrameWnd::EndModalState
-// symbol: ?EndModalState@CFrameWnd@@UAEXXZ
 // prototype: public: virtual void __thiscall CFrameWnd::EndModalState(void)
 
-// LIBRARY: IMPERIALISM 0x0061cba9
+// LIBRARY: IMPERIALISM 0x0061cba9 SYMBOL
+// ?ShowOwnedWindows@CFrameWnd@@QAEXH@Z
 // name: CFrameWnd::ShowOwnedWindows
-// symbol: ?ShowOwnedWindows@CFrameWnd@@QAEXH@Z
 // prototype: public: void __thiscall CFrameWnd::ShowOwnedWindows(int)
 
-// LIBRARY: IMPERIALISM 0x0061cc4b
+// LIBRARY: IMPERIALISM 0x0061cc4b SYMBOL
+// ?OnEnable@CFrameWnd@@IAEXH@Z
 // name: CFrameWnd::OnEnable
-// symbol: ?OnEnable@CFrameWnd@@IAEXH@Z
 // prototype: protected: void __thiscall CFrameWnd::OnEnable(int)
 
-// LIBRARY: IMPERIALISM 0x0061cd09
+// LIBRARY: IMPERIALISM 0x0061cd09 SYMBOL
+// ?NotifyFloatingWindows@CFrameWnd@@QAEXK@Z
 // name: CFrameWnd::NotifyFloatingWindows
-// symbol: ?NotifyFloatingWindows@CFrameWnd@@QAEXK@Z
 // prototype: public: void __thiscall CFrameWnd::NotifyFloatingWindows(unsigned long)
 
-// LIBRARY: IMPERIALISM 0x0061cdb3
+// LIBRARY: IMPERIALISM 0x0061cdb3 SYMBOL
+// ?PreCreateWindow@CFrameWnd@@MAEHAAUtagCREATESTRUCTA@@@Z
 // name: CFrameWnd::PreCreateWindow
-// symbol: ?PreCreateWindow@CFrameWnd@@MAEHAAUtagCREATESTRUCTA@@@Z
 // prototype: protected: virtual int __thiscall CFrameWnd::PreCreateWindow(struct tagCREATESTRUCTA &)
 
-// LIBRARY: IMPERIALISM 0x0061ce0b
+// LIBRARY: IMPERIALISM 0x0061ce0b SYMBOL
+// ?Create@CFrameWnd@@QAEHPBD0KABUtagRECT@@PAVCWnd@@0KPAUCCreateContext@@@Z
 // name: CFrameWnd::Create
-// symbol: ?Create@CFrameWnd@@QAEHPBD0KABUtagRECT@@PAVCWnd@@0KPAUCCreateContext@@@Z
 // prototype: public: int __thiscall CFrameWnd::Create(char const *, char const *, unsigned long, struct tagRECT const &, class CWnd *, char const *, unsigned long, struct CCreateContext *)
 
-// LIBRARY: IMPERIALISM 0x0061cea3
+// LIBRARY: IMPERIALISM 0x0061cea3 SYMBOL
+// ?CreateView@CFrameWnd@@QAEPAVCWnd@@PAUCCreateContext@@I@Z
 // name: CFrameWnd::CreateView
-// symbol: ?CreateView@CFrameWnd@@QAEPAVCWnd@@PAUCCreateContext@@I@Z
 // prototype: public: class CWnd * __thiscall CFrameWnd::CreateView(struct CCreateContext *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0061cf1b
+// LIBRARY: IMPERIALISM 0x0061cf1b SYMBOL
+// ?OnCreateClient@CFrameWnd@@MAEHPAUtagCREATESTRUCTA@@PAUCCreateContext@@@Z
 // name: CFrameWnd::OnCreateClient
-// symbol: ?OnCreateClient@CFrameWnd@@MAEHPAUtagCREATESTRUCTA@@PAUCCreateContext@@@Z
 // prototype: protected: virtual int __thiscall CFrameWnd::OnCreateClient(struct tagCREATESTRUCTA *, struct CCreateContext *)
 
-// LIBRARY: IMPERIALISM 0x0061cf3d
+// LIBRARY: IMPERIALISM 0x0061cf3d SYMBOL
+// ?OnCreate@CFrameWnd@@IAEHPAUtagCREATESTRUCTA@@@Z
 // name: CFrameWnd::OnCreate
-// symbol: ?OnCreate@CFrameWnd@@IAEHPAUtagCREATESTRUCTA@@@Z
 // prototype: protected: int __thiscall CFrameWnd::OnCreate(struct tagCREATESTRUCTA *)
 
-// LIBRARY: IMPERIALISM 0x0061cf4c
+// LIBRARY: IMPERIALISM 0x0061cf4c SYMBOL
+// ?OnCreateHelper@CFrameWnd@@IAEHPAUtagCREATESTRUCTA@@PAUCCreateContext@@@Z
 // name: CFrameWnd::OnCreateHelper
-// symbol: ?OnCreateHelper@CFrameWnd@@IAEHPAUtagCREATESTRUCTA@@PAUCCreateContext@@@Z
 // prototype: protected: int __thiscall CFrameWnd::OnCreateHelper(struct tagCREATESTRUCTA *, struct CCreateContext *)
 
-// LIBRARY: IMPERIALISM 0x0061cf9b
+// LIBRARY: IMPERIALISM 0x0061cf9b SYMBOL
+// ?GetIconWndClass@CFrameWnd@@IAEPBDKI@Z
 // name: CFrameWnd::GetIconWndClass
-// symbol: ?GetIconWndClass@CFrameWnd@@IAEPBDKI@Z
 // prototype: protected: char const * __thiscall CFrameWnd::GetIconWndClass(unsigned long, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0061d01e
+// LIBRARY: IMPERIALISM 0x0061d01e SYMBOL
+// ?LoadFrame@CFrameWnd@@UAEHIKPAVCWnd@@PAUCCreateContext@@@Z
 // name: CFrameWnd::LoadFrame
-// symbol: ?LoadFrame@CFrameWnd@@UAEHIKPAVCWnd@@PAUCCreateContext@@@Z
 // prototype: public: virtual int __thiscall CFrameWnd::LoadFrame(unsigned int, unsigned long, class CWnd *, struct CCreateContext *)
 
-// LIBRARY: IMPERIALISM 0x0061d109
+// LIBRARY: IMPERIALISM 0x0061d109 SYMBOL
+// ?OnUpdateFrameMenu@CFrameWnd@@UAEXPAUHMENU__@@@Z
 // name: CFrameWnd::OnUpdateFrameMenu
-// symbol: ?OnUpdateFrameMenu@CFrameWnd@@UAEXPAUHMENU__@@@Z
 // prototype: public: virtual void __thiscall CFrameWnd::OnUpdateFrameMenu(struct HMENU__*)
 
-// LIBRARY: IMPERIALISM 0x0061d143
+// LIBRARY: IMPERIALISM 0x0061d143 SYMBOL
+// ?InitialUpdateFrame@CFrameWnd@@QAEXPAVCDocument@@H@Z
 // name: CFrameWnd::InitialUpdateFrame
-// symbol: ?InitialUpdateFrame@CFrameWnd@@QAEXPAVCDocument@@H@Z
 // prototype: public: void __thiscall CFrameWnd::InitialUpdateFrame(class CDocument *, int)
 
-// LIBRARY: IMPERIALISM 0x0061d205
+// LIBRARY: IMPERIALISM 0x0061d205 SYMBOL
+// ?OnClose@CFrameWnd@@IAEXXZ
 // name: CFrameWnd::OnClose
-// symbol: ?OnClose@CFrameWnd@@IAEXXZ
 // prototype: protected: void __thiscall CFrameWnd::OnClose(void)
 
-// LIBRARY: IMPERIALISM 0x0061d30e
+// LIBRARY: IMPERIALISM 0x0061d30e SYMBOL
+// ?OnDestroy@CFrameWnd@@IAEXXZ
 // name: CFrameWnd::OnDestroy
-// symbol: ?OnDestroy@CFrameWnd@@IAEXXZ
 // prototype: protected: void __thiscall CFrameWnd::OnDestroy(void)
 
-// LIBRARY: IMPERIALISM 0x0061d37e
+// LIBRARY: IMPERIALISM 0x0061d37e SYMBOL
+// ?OnCmdMsg@CFrameWnd@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z
 // name: CFrameWnd::OnCmdMsg
-// symbol: ?OnCmdMsg@CFrameWnd@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z
 // prototype: public: virtual int __thiscall CFrameWnd::OnCmdMsg(unsigned int, int, void *, struct AFX_CMDHANDLERINFO *)
 
-// LIBRARY: IMPERIALISM 0x0061d4b8
+// LIBRARY: IMPERIALISM 0x0061d4b8 SYMBOL
+// ?OnActivate@CFrameWnd@@IAEXIPAVCWnd@@H@Z
 // name: CFrameWnd::OnActivate
-// symbol: ?OnActivate@CFrameWnd@@IAEXIPAVCWnd@@H@Z
 // prototype: protected: void __thiscall CFrameWnd::OnActivate(unsigned int, class CWnd *, int)
 
-// LIBRARY: IMPERIALISM 0x0061d58c
+// LIBRARY: IMPERIALISM 0x0061d58c SYMBOL
+// ?OnNcActivate@CFrameWnd@@IAEHH@Z
 // name: CFrameWnd::OnNcActivate
-// symbol: ?OnNcActivate@CFrameWnd@@IAEHH@Z
 // prototype: protected: int __thiscall CFrameWnd::OnNcActivate(int)
 
-// LIBRARY: IMPERIALISM 0x0061d5c3
+// LIBRARY: IMPERIALISM 0x0061d5c3 SYMBOL
+// ?OnSysCommand@CFrameWnd@@IAEXIJ@Z
 // name: CFrameWnd::OnSysCommand
-// symbol: ?OnSysCommand@CFrameWnd@@IAEXIJ@Z
 // prototype: protected: void __thiscall CFrameWnd::OnSysCommand(unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x0061d65a
+// LIBRARY: IMPERIALISM 0x0061d65a SYMBOL
+// ?OnDropFiles@CFrameWnd@@IAEXPAUHDROP__@@@Z
 // name: CFrameWnd::OnDropFiles
-// symbol: ?OnDropFiles@CFrameWnd@@IAEXPAUHDROP__@@@Z
 // prototype: protected: void __thiscall CFrameWnd::OnDropFiles(struct HDROP__*)
 
-// LIBRARY: IMPERIALISM 0x0061d6d5
+// LIBRARY: IMPERIALISM 0x0061d6d5 SYMBOL
+// ?OnQueryEndSession@CFrameWnd@@IAEHXZ
 // name: CFrameWnd::OnQueryEndSession
-// symbol: ?OnQueryEndSession@CFrameWnd@@IAEHXZ
 // prototype: protected: int __thiscall CFrameWnd::OnQueryEndSession(void)
 
-// LIBRARY: IMPERIALISM 0x0061d6f6
+// LIBRARY: IMPERIALISM 0x0061d6f6 SYMBOL
+// ?OnEndSession@CFrameWnd@@IAEXH@Z
 // name: CFrameWnd::OnEndSession
-// symbol: ?OnEndSession@CFrameWnd@@IAEXH@Z
 // prototype: protected: void __thiscall CFrameWnd::OnEndSession(int)
 
-// LIBRARY: IMPERIALISM 0x0061d72a
+// LIBRARY: IMPERIALISM 0x0061d72a SYMBOL
+// ?OnDDEInitiate@CFrameWnd@@IAEJIJ@Z
 // name: CFrameWnd::OnDDEInitiate
-// symbol: ?OnDDEInitiate@CFrameWnd@@IAEJIJ@Z
 // prototype: protected: long __thiscall CFrameWnd::OnDDEInitiate(unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x0061d7e5
+// LIBRARY: IMPERIALISM 0x0061d7e5 SYMBOL
+// ?OnDDEExecute@CFrameWnd@@IAEJIJ@Z
 // name: CFrameWnd::OnDDEExecute
-// symbol: ?OnDDEExecute@CFrameWnd@@IAEJIJ@Z
 // prototype: protected: long __thiscall CFrameWnd::OnDDEExecute(unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x0061d89b
+// LIBRARY: IMPERIALISM 0x0061d89b SYMBOL
+// ?GetActiveView@CFrameWnd@@QBEPAVCView@@XZ
 // name: CFrameWnd::GetActiveView
-// symbol: ?GetActiveView@CFrameWnd@@QBEPAVCView@@XZ
 // prototype: public: class CView * __thiscall CFrameWnd::GetActiveView(void) const
 
-// LIBRARY: IMPERIALISM 0x0061d8a2
+// LIBRARY: IMPERIALISM 0x0061d8a2 SYMBOL
+// ?SetActiveView@CFrameWnd@@QAEXPAVCView@@H@Z
 // name: CFrameWnd::SetActiveView
-// symbol: ?SetActiveView@CFrameWnd@@QAEXPAVCView@@H@Z
 // prototype: public: void __thiscall CFrameWnd::SetActiveView(class CView *, int)
 
-// LIBRARY: IMPERIALISM 0x0061d917
+// LIBRARY: IMPERIALISM 0x0061d917 SYMBOL
+// ?GetActiveDocument@CFrameWnd@@UAEPAVCDocument@@XZ
 // name: CFrameWnd::GetActiveDocument
-// symbol: ?GetActiveDocument@CFrameWnd@@UAEPAVCDocument@@XZ
 // prototype: public: virtual class CDocument * __thiscall CFrameWnd::GetActiveDocument(void)
 
-// LIBRARY: IMPERIALISM 0x0061d927
+// LIBRARY: IMPERIALISM 0x0061d927 SYMBOL
+// ?ShowControlBar@CFrameWnd@@QAEXPAVCControlBar@@HH@Z
 // name: CFrameWnd::ShowControlBar
-// symbol: ?ShowControlBar@CFrameWnd@@QAEXPAVCControlBar@@HH@Z
 // prototype: public: void __thiscall CFrameWnd::ShowControlBar(class CControlBar *, int, int)
 
-// LIBRARY: IMPERIALISM 0x0061da22
+// LIBRARY: IMPERIALISM 0x0061da22 SYMBOL
+// ?OnInitMenuPopup@CFrameWnd@@IAEXPAVCMenu@@IH@Z
 // name: CFrameWnd::OnInitMenuPopup
-// symbol: ?OnInitMenuPopup@CFrameWnd@@IAEXPAVCMenu@@IH@Z
 // prototype: protected: void __thiscall CFrameWnd::OnInitMenuPopup(class CMenu *, unsigned int, int)
 
-// LIBRARY: IMPERIALISM 0x0061db87
+// LIBRARY: IMPERIALISM 0x0061db87 SYMBOL
+// ?OnMenuSelect@CFrameWnd@@IAEXIIPAUHMENU__@@@Z
 // name: CFrameWnd::OnMenuSelect
-// symbol: ?OnMenuSelect@CFrameWnd@@IAEXIIPAUHMENU__@@@Z
 // prototype: protected: void __thiscall CFrameWnd::OnMenuSelect(unsigned int, unsigned int, struct HMENU__*)
 
-// LIBRARY: IMPERIALISM 0x0061dc76
+// LIBRARY: IMPERIALISM 0x0061dc76 SYMBOL
+// ?GetMessageString@CFrameWnd@@UBEXIAAVCString@@@Z
 // name: CFrameWnd::GetMessageString
-// symbol: ?GetMessageString@CFrameWnd@@UBEXIAAVCString@@@Z
 // prototype: public: virtual void __thiscall CFrameWnd::GetMessageString(unsigned int, class CString &) const
 
-// LIBRARY: IMPERIALISM 0x0061dcdd
+// LIBRARY: IMPERIALISM 0x0061dcdd SYMBOL
+// ?OnSetMessageString@CFrameWnd@@IAEJIJ@Z
 // name: CFrameWnd::OnSetMessageString
-// symbol: ?OnSetMessageString@CFrameWnd@@IAEJIJ@Z
 // prototype: protected: long __thiscall CFrameWnd::OnSetMessageString(unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x0061ddb2
+// LIBRARY: IMPERIALISM 0x0061ddb2 SYMBOL
+// ?GetMessageBar@CFrameWnd@@UAEPAVCWnd@@XZ
 // name: CFrameWnd::GetMessageBar
-// symbol: ?GetMessageBar@CFrameWnd@@UAEPAVCWnd@@XZ
 // prototype: public: virtual class CWnd * __thiscall CFrameWnd::GetMessageBar(void)
 
-// LIBRARY: IMPERIALISM 0x0061ddc2
+// LIBRARY: IMPERIALISM 0x0061ddc2 SYMBOL
+// ?OnEnterIdle@CFrameWnd@@IAEXIPAVCWnd@@@Z
 // name: CFrameWnd::OnEnterIdle
-// symbol: ?OnEnterIdle@CFrameWnd@@IAEXIPAVCWnd@@@Z
 // prototype: protected: void __thiscall CFrameWnd::OnEnterIdle(unsigned int, class CWnd *)
 
-// LIBRARY: IMPERIALISM 0x0061de0a
+// LIBRARY: IMPERIALISM 0x0061de0a SYMBOL
+// ?SetMessageText@CFrameWnd@@QAEXI@Z
 // name: CFrameWnd::SetMessageText
-// symbol: ?SetMessageText@CFrameWnd@@QAEXI@Z
 // prototype: public: void __thiscall CFrameWnd::SetMessageText(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0061de21
+// LIBRARY: IMPERIALISM 0x0061de21 SYMBOL
+// ?DestroyDockBars@CFrameWnd@@QAEXXZ
 // name: CFrameWnd::DestroyDockBars
-// symbol: ?DestroyDockBars@CFrameWnd@@QAEXXZ
 // prototype: public: void __thiscall CFrameWnd::DestroyDockBars(void)
 
-// LIBRARY: IMPERIALISM 0x0061df4c
+// LIBRARY: IMPERIALISM 0x0061df4c SYMBOL
+// ?OnToolTipText@CFrameWnd@@IAEHIPAUtagNMHDR@@PAJ@Z
 // name: CFrameWnd::OnToolTipText
-// symbol: ?OnToolTipText@CFrameWnd@@IAEHIPAUtagNMHDR@@PAJ@Z
 // prototype: protected: int __thiscall CFrameWnd::OnToolTipText(unsigned int, struct tagNMHDR *, long *)
 
-// LIBRARY: IMPERIALISM 0x0061e08e
+// LIBRARY: IMPERIALISM 0x0061e08e SYMBOL
+// ?OnUpdateContextHelp@CFrameWnd@@IAEXPAVCCmdUI@@@Z
 // name: CFrameWnd::OnUpdateContextHelp
-// symbol: ?OnUpdateContextHelp@CFrameWnd@@IAEXPAVCCmdUI@@@Z
 // prototype: protected: void __thiscall CFrameWnd::OnUpdateContextHelp(class CCmdUI *)
 
-// LIBRARY: IMPERIALISM 0x0061e0bd
-// symbol: ?OnUpdateFrameTitle@CFrameWnd@@UAEXH@Z
+// LIBRARY: IMPERIALISM 0x0061e0bd SYMBOL
+// ?OnUpdateFrameTitle@CFrameWnd@@UAEXH@Z
 
-// LIBRARY: IMPERIALISM 0x0061e101
+// LIBRARY: IMPERIALISM 0x0061e101 SYMBOL
+// ?UpdateFrameTitleForDocument@CFrameWnd@@IAEXPBD@Z
 // name: CFrameWnd::UpdateFrameTitleForDocument
-// symbol: ?UpdateFrameTitleForDocument@CFrameWnd@@IAEXPBD@Z
 // prototype: protected: void __thiscall CFrameWnd::UpdateFrameTitleForDocument(char const *)
 
-// LIBRARY: IMPERIALISM 0x0061e1fe
+// LIBRARY: IMPERIALISM 0x0061e1fe SYMBOL
+// ?OnSetPreviewMode@CFrameWnd@@UAEXHPAUCPrintPreviewState@@@Z
 // name: CFrameWnd::OnSetPreviewMode
-// symbol: ?OnSetPreviewMode@CFrameWnd@@UAEXHPAUCPrintPreviewState@@@Z
 // prototype: public: virtual void __thiscall CFrameWnd::OnSetPreviewMode(int, struct CPrintPreviewState *)
 
-// LIBRARY: IMPERIALISM 0x0061e419
+// LIBRARY: IMPERIALISM 0x0061e419 SYMBOL
+// ?DelayUpdateFrameMenu@CFrameWnd@@UAEXPAUHMENU__@@@Z
 // name: CFrameWnd::DelayUpdateFrameMenu
-// symbol: ?DelayUpdateFrameMenu@CFrameWnd@@UAEXPAUHMENU__@@@Z
 // prototype: public: virtual void __thiscall CFrameWnd::DelayUpdateFrameMenu(struct HMENU__ *)
 
-// LIBRARY: IMPERIALISM 0x0061e42d
+// LIBRARY: IMPERIALISM 0x0061e42d SYMBOL
+// ?OnIdleUpdateCmdUI@CFrameWnd@@IAEXXZ
 // name: CFrameWnd::OnIdleUpdateCmdUI
-// symbol: ?OnIdleUpdateCmdUI@CFrameWnd@@IAEXXZ
 // prototype: protected: void __thiscall CFrameWnd::OnIdleUpdateCmdUI(void)
 
-// LIBRARY: IMPERIALISM 0x0061e49c
+// LIBRARY: IMPERIALISM 0x0061e49c SYMBOL
+// ?GetActiveFrame@CFrameWnd@@UAEPAV1@XZ
 // name: CFrameWnd::GetActiveFrame
-// symbol: ?GetActiveFrame@CFrameWnd@@UAEPAV1@XZ
 // prototype: public: virtual class CFrameWnd * __thiscall CFrameWnd::GetActiveFrame(void)
 
-// LIBRARY: IMPERIALISM 0x0061e49f
+// LIBRARY: IMPERIALISM 0x0061e49f SYMBOL
+// ?RecalcLayout@CFrameWnd@@UAEXH@Z
 // name: CFrameWnd::RecalcLayout
-// symbol: ?RecalcLayout@CFrameWnd@@UAEXH@Z
 // prototype: public: virtual void __thiscall CFrameWnd::RecalcLayout(int)
 
-// LIBRARY: IMPERIALISM 0x0061e58c
+// LIBRARY: IMPERIALISM 0x0061e58c SYMBOL
+// ?NegotiateBorderSpace@CFrameWnd@@UAEHIPAUtagRECT@@@Z
 // name: CFrameWnd::NegotiateBorderSpace
-// symbol: ?NegotiateBorderSpace@CFrameWnd@@UAEHIPAUtagRECT@@@Z
 // prototype: public: virtual int __thiscall CFrameWnd::NegotiateBorderSpace(unsigned int, struct tagRECT *)
 
-// LIBRARY: IMPERIALISM 0x0061e606
+// LIBRARY: IMPERIALISM 0x0061e606 SYMBOL
+// ?OnSize@CFrameWnd@@IAEXIHH@Z
 // name: CFrameWnd::OnSize
-// symbol: ?OnSize@CFrameWnd@@IAEXIHH@Z
 // prototype: protected: void __thiscall CFrameWnd::OnSize(unsigned int, int, int)
 
-// LIBRARY: IMPERIALISM 0x0061e63b
+// LIBRARY: IMPERIALISM 0x0061e63b SYMBOL
+// ?OnRegisteredMouseWheel@CFrameWnd@@IAEJIJ@Z
 // name: CFrameWnd::OnRegisteredMouseWheel
-// symbol: ?OnRegisteredMouseWheel@CFrameWnd@@IAEJIJ@Z
 // prototype: protected: long __thiscall CFrameWnd::OnRegisteredMouseWheel(unsigned int, long)
 
-// LIBRARY: IMPERIALISM 0x0061e6e3
+// LIBRARY: IMPERIALISM 0x0061e6e3 SYMBOL
+// ?ActivateFrame@CFrameWnd@@UAEXH@Z
 // name: CFrameWnd::ActivateFrame
-// symbol: ?ActivateFrame@CFrameWnd@@UAEXH@Z
 // prototype: public: virtual void __thiscall CFrameWnd::ActivateFrame(int)
 
-// LIBRARY: IMPERIALISM 0x0061e733
-// symbol: ?BringToTop@CFrameWnd@@IAEXH@Z
+// LIBRARY: IMPERIALISM 0x0061e733 SYMBOL
+// ?BringToTop@CFrameWnd@@IAEXH@Z
 
-// LIBRARY: IMPERIALISM 0x0061e762
+// LIBRARY: IMPERIALISM 0x0061e762 SYMBOL
+// ?GetDockingFrame@CControlBar@@QBEPAVCFrameWnd@@XZ
 // name: CControlBar::GetDockingFrame
-// symbol: ?GetDockingFrame@CControlBar@@QBEPAVCFrameWnd@@XZ
 // prototype: public: class CFrameWnd * __thiscall CControlBar::GetDockingFrame(void) const
 
-// LIBRARY: IMPERIALISM 0x0061e773
+// LIBRARY: IMPERIALISM 0x0061e773 SYMBOL
+// ?IsFloating@CControlBar@@QBEHXZ
 // name: CControlBar::IsFloating
-// symbol: ?IsFloating@CControlBar@@QBEHXZ
 // prototype: public: int __thiscall CControlBar::IsFloating(void) const
 
-// LIBRARY: IMPERIALISM 0x0061e79d
-// symbol: ?Create@CButton@@QAEHPBDKABUtagRECT@@PAVCWnd@@I@Z
+// LIBRARY: IMPERIALISM 0x0061e79d SYMBOL
+// ?Create@CButton@@QAEHPBDKABUtagRECT@@PAVCWnd@@I@Z
 
-// LIBRARY: IMPERIALISM 0x0061e7bf
-// symbol: ??1CProgressCtrl@@UAE@XZ
+// LIBRARY: IMPERIALISM 0x0061e7bf SYMBOL
+// ??1CProgressCtrl@@UAE@XZ
 
-// LIBRARY: IMPERIALISM 0x0061e7f7
-// symbol: ?Create@CButton@@QAEHPBDKABUtagRECT@@PAVCWnd@@I@Z
+// LIBRARY: IMPERIALISM 0x0061e7f7 SYMBOL
+// ?Create@CButton@@QAEHPBDKABUtagRECT@@PAVCWnd@@I@Z
 
 // LIBRARY: IMPERIALISM 0x0061e819
-// name: CProgressCtrl::~CHotKeyCtrl
+// CProgressCtrl::~CHotKeyCtrl
 
-// LIBRARY: IMPERIALISM 0x0061e851
+// LIBRARY: IMPERIALISM 0x0061e851 SYMBOL
+// ?GetCheckedRadioButton@CWnd@@QAEHHH@Z
 // name: CWnd::GetCheckedRadioButton
-// symbol: ?GetCheckedRadioButton@CWnd@@QAEHHH@Z
 // prototype: public: int __thiscall CWnd::GetCheckedRadioButton(int, int)
 
-// LIBRARY: IMPERIALISM 0x0061e87c
-// symbol: ?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z
+// LIBRARY: IMPERIALISM 0x0061e87c SYMBOL
+// ?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z
 
 // LIBRARY: IMPERIALISM 0x0061e8cb
-// name: Dtor_CListBox_61e8cb
+// Dtor_CListBox_61e8cb
 
-// LIBRARY: IMPERIALISM 0x0061e911
+// LIBRARY: IMPERIALISM 0x0061e911 SYMBOL
+// ?VKeyToItem@CListBox@@UAEHII@Z
 // name: CListBox::VKeyToItem
-// symbol: ?VKeyToItem@CListBox@@UAEHII@Z
 // prototype: public: virtual int __thiscall CListBox::VKeyToItem(unsigned int, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0061e919
+// LIBRARY: IMPERIALISM 0x0061e919 SYMBOL
+// ?CharToItem@CListBox@@UAEHII@Z
 // name: CListBox::CharToItem
-// symbol: ?CharToItem@CListBox@@UAEHII@Z
 // prototype: public: virtual int __thiscall CListBox::CharToItem(unsigned int, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0061e921
+// LIBRARY: IMPERIALISM 0x0061e921 SYMBOL
+// ?OnChildNotify@CListBox@@MAEHIIJPAJ@Z
 // name: CListBox::OnChildNotify
-// symbol: ?OnChildNotify@CListBox@@MAEHIIJPAJ@Z
 // prototype: protected: virtual int __thiscall CListBox::OnChildNotify(unsigned int, unsigned int, long, long *)
 
-// LIBRARY: IMPERIALISM 0x0061e9ba
+// LIBRARY: IMPERIALISM 0x0061e9ba SYMBOL
+// ?GetText@CListBox@@QBEXHAAVCString@@@Z
 // name: CListBox::GetText
-// symbol: ?GetText@CListBox@@QBEXHAAVCString@@@Z
 // prototype: public: void __thiscall CListBox::GetText(int, class CString &) const
 
-// LIBRARY: IMPERIALISM 0x0061ea56
-// symbol: ??1CProgressCtrl@@UAE@XZ
+// LIBRARY: IMPERIALISM 0x0061ea56 SYMBOL
+// ??1CProgressCtrl@@UAE@XZ
 
-// LIBRARY: IMPERIALISM 0x0061ea9c
+// LIBRARY: IMPERIALISM 0x0061ea9c SYMBOL
+// ?OnChildNotify@CComboBox@@MAEHIIJPAJ@Z
 // name: CComboBox::OnChildNotify
-// symbol: ?OnChildNotify@CComboBox@@MAEHIIJPAJ@Z
 // prototype: protected: virtual int __thiscall CComboBox::OnChildNotify(unsigned int, unsigned int, long, long *)
 
-// LIBRARY: IMPERIALISM 0x0061eb46
+// LIBRARY: IMPERIALISM 0x0061eb46 SYMBOL
+// ?Create@CComboBox@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // name: CComboBox::Create
-// symbol: ?Create@CComboBox@@QAEHKABUtagRECT@@PAVCWnd@@I@Z
 // prototype: public: int __thiscall CComboBox::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0061eb67
-// symbol: ??1CProgressCtrl@@UAE@XZ
+// LIBRARY: IMPERIALISM 0x0061eb67 SYMBOL
+// ??1CProgressCtrl@@UAE@XZ
 
-// LIBRARY: IMPERIALISM 0x0061ebc0
-// symbol: ??1CProgressCtrl@@UAE@XZ
+// LIBRARY: IMPERIALISM 0x0061ebc0 SYMBOL
+// ??1CProgressCtrl@@UAE@XZ
 
 // LIBRARY: IMPERIALISM 0x0061ebf8
-// name: InitializeMfcDcHandleMapThreadLocal
+// InitializeMfcDcHandleMapThreadLocal
 // prototype: void __cdecl InitializeMfcDcHandleMapThreadLocal(void)
 
 // SYNTHETIC: IMPERIALISM 0x0061ec02
-// name: InitializeMfcDcHandleMapPointerState
+// InitializeMfcDcHandleMapPointerState
 // prototype: void __cdecl InitializeMfcDcHandleMapPointerState(void)
 
 // SYNTHETIC: IMPERIALISM 0x0061ec03
-// name: RegisterMfcGlobalCleanup_0061ec0f
+// RegisterMfcGlobalCleanup_0061ec0f
 // prototype: void __cdecl RegisterMfcGlobalCleanup_0061ec0f(void)
 
 // SYNTHETIC: IMPERIALISM 0x0061ec0f
-// name: DestroyMfcDcHandleMapPointerStateAtExit
+// DestroyMfcDcHandleMapPointerStateAtExit
 // prototype: void __cdecl DestroyMfcDcHandleMapPointerStateAtExit(void)
 
-// LIBRARY: IMPERIALISM 0x0061ec1a
+// LIBRARY: IMPERIALISM 0x0061ec1a SYMBOL
+// ?DPtoHIMETRIC@CDC@@QBEXPAUtagSIZE@@@Z
 // name: CDC::DPtoHIMETRIC
-// symbol: ?DPtoHIMETRIC@CDC@@QBEXPAUtagSIZE@@@Z
 // prototype: public: void __thiscall CDC::DPtoHIMETRIC(struct tagSIZE *) const
 
-// LIBRARY: IMPERIALISM 0x0061ecab
+// LIBRARY: IMPERIALISM 0x0061ecab SYMBOL
+// ?HIMETRICtoDP@CDC@@QBEXPAUtagSIZE@@@Z
 // name: CDC::HIMETRICtoDP
-// symbol: ?HIMETRICtoDP@CDC@@QBEXPAUtagSIZE@@@Z
 // prototype: public: void __thiscall CDC::HIMETRICtoDP(struct tagSIZE *) const
 
-// LIBRARY: IMPERIALISM 0x0061ed3c
+// LIBRARY: IMPERIALISM 0x0061ed3c SYMBOL
+// ?LPtoHIMETRIC@CDC@@QBEXPAUtagSIZE@@@Z
 // name: CDC::LPtoHIMETRIC
-// symbol: ?LPtoHIMETRIC@CDC@@QBEXPAUtagSIZE@@@Z
 // prototype: public: void __thiscall CDC::LPtoHIMETRIC(struct tagSIZE *) const
 
-// LIBRARY: IMPERIALISM 0x0061ed57
+// LIBRARY: IMPERIALISM 0x0061ed57 SYMBOL
+// ?HIMETRICtoLP@CDC@@QBEXPAUtagSIZE@@@Z
 // name: CDC::HIMETRICtoLP
-// symbol: ?HIMETRICtoLP@CDC@@QBEXPAUtagSIZE@@@Z
 // prototype: public: void __thiscall CDC::HIMETRICtoLP(struct tagSIZE *) const
 
-// LIBRARY: IMPERIALISM 0x0061ed72
+// LIBRARY: IMPERIALISM 0x0061ed72 SYMBOL
+// ?GetHalftoneBrush@CDC@@SGPAVCBrush@@XZ
 // name: CDC::GetHalftoneBrush
-// symbol: ?GetHalftoneBrush@CDC@@SGPAVCBrush@@XZ
 // prototype: public: static class CBrush * __stdcall CDC::GetHalftoneBrush(void)
 
-// LIBRARY: IMPERIALISM 0x0061ede5
+// LIBRARY: IMPERIALISM 0x0061ede5 SYMBOL
+// ?DrawDragRect@CDC@@QAEXPBUtagRECT@@UtagSIZE@@01PAVCBrush@@2@Z
 // name: CDC::DrawDragRect
-// symbol: ?DrawDragRect@CDC@@QAEXPBUtagRECT@@UtagSIZE@@01PAVCBrush@@2@Z
 // prototype: public: void __thiscall CDC::DrawDragRect(struct tagRECT const *, struct tagSIZE, struct tagRECT const *, struct tagSIZE, class CBrush *, class CBrush *)
 
-// LIBRARY: IMPERIALISM 0x0061f0fa
+// LIBRARY: IMPERIALISM 0x0061f0fa SYMBOL
+// ?FillSolidRect@CDC@@QAEXPBUtagRECT@@K@Z
 // name: FillSolidRect
-// symbol: ?FillSolidRect@CDC@@QAEXPBUtagRECT@@K@Z
 // prototype: void __thiscall CDC::FillSolidRect(tagRECT * param_1, ulong param_2)
 
-// LIBRARY: IMPERIALISM 0x0061f124
+// LIBRARY: IMPERIALISM 0x0061f124 SYMBOL
+// ?FillSolidRect@CDC@@QAEXHHHHK@Z
 // name: CDC::FillSolidRect
-// symbol: ?FillSolidRect@CDC@@QAEXHHHHK@Z
 // prototype: public: void __thiscall CDC::FillSolidRect(int, int, int, int, unsigned long)
 
-// LIBRARY: IMPERIALISM 0x0061f19b
+// LIBRARY: IMPERIALISM 0x0061f19b SYMBOL
+// ?Draw3dRect@CDC@@QAEXHHHHKK@Z
 // name: CDC::Draw3dRect
-// symbol: ?Draw3dRect@CDC@@QAEXHHHHKK@Z
 // prototype: public: void __thiscall CDC::Draw3dRect(int, int, int, int, unsigned long, unsigned long)
 
-// LIBRARY: IMPERIALISM 0x0061f205
+// LIBRARY: IMPERIALISM 0x0061f205 SYMBOL
+// ?CreatePointFont@CFont@@QAEHHPBDPAVCDC@@@Z
 // name: CFont::CreatePointFont
-// symbol: ?CreatePointFont@CFont@@QAEHHPBDPAVCDC@@@Z
 // prototype: public: int __thiscall CFont::CreatePointFont(int, char const *, class CDC *)
 
-// LIBRARY: IMPERIALISM 0x0061f24a
+// LIBRARY: IMPERIALISM 0x0061f24a SYMBOL
+// ?CreatePointFontIndirect@CFont@@QAEHPBUtagLOGFONTA@@PAVCDC@@@Z
 // name: CFont::CreatePointFontIndirect
-// symbol: ?CreatePointFontIndirect@CFont@@QAEHPBUtagLOGFONTA@@PAVCDC@@@Z
 // prototype: public: int __thiscall CFont::CreatePointFontIndirect(struct tagLOGFONTA const *, class CDC *)
 
-// LIBRARY: IMPERIALISM 0x0061f307
+// LIBRARY: IMPERIALISM 0x0061f307 SYMBOL
+// ?InflateRect@CRect@@QAEXPBUtagRECT@@@Z
 // name: CRect::InflateRect
-// symbol: ?InflateRect@CRect@@QAEXPBUtagRECT@@@Z
 // prototype: public: void __thiscall CRect::InflateRect(struct tagRECT const *)
 
-// LIBRARY: IMPERIALISM 0x0061f342
+// LIBRARY: IMPERIALISM 0x0061f342 SYMBOL
+// ?DeflateRect@CRect@@QAEXPBUtagRECT@@@Z
 // name: CRect::DeflateRect
-// symbol: ?DeflateRect@CRect@@QAEXPBUtagRECT@@@Z
 // prototype: public: void __thiscall CRect::DeflateRect(struct tagRECT const *)
 
-// LIBRARY: IMPERIALISM 0x0061f37d
+// LIBRARY: IMPERIALISM 0x0061f37d SYMBOL
+// ?MulDiv@CRect@@QBE?AV1@HH@Z
 // name: CRect::MulDiv
-// symbol: ?MulDiv@CRect@@QBE?AV1@HH@Z
 // prototype: public: class CRect __thiscall CRect::MulDiv(int, int) const
 
-// LIBRARY: IMPERIALISM 0x0061f423
+// LIBRARY: IMPERIALISM 0x0061f423 SYMBOL
+// ?AfxOleCanExitApp@@YGHXZ
 // name: AfxOleCanExitApp
-// symbol: ?AfxOleCanExitApp@@YGHXZ
 // prototype: int __stdcall AfxOleCanExitApp(void)
 
-// LIBRARY: IMPERIALISM 0x0061f45c
+// LIBRARY: IMPERIALISM 0x0061f45c SYMBOL
+// ?AfxOleSetUserCtrl@@YGXH@Z
 // name: AfxOleSetUserCtrl
-// symbol: ?AfxOleSetUserCtrl@@YGXH@Z
 // prototype: void __stdcall AfxOleSetUserCtrl(int)
 
-// LIBRARY: IMPERIALISM 0x0061f46b
+// LIBRARY: IMPERIALISM 0x0061f46b SYMBOL
+// ?AfxOleGetUserCtrl@@YGHXZ
 // name: AfxOleGetUserCtrl
-// symbol: ?AfxOleGetUserCtrl@@YGHXZ
 // prototype: int __stdcall AfxOleGetUserCtrl(void)
 
-// LIBRARY: IMPERIALISM 0x0062103a
+// LIBRARY: IMPERIALISM 0x0062103a SYMBOL
+// ?OutputString@CDumpContext@@IAEXPBD@Z
 // name: CDumpContext::OutputString
-// symbol: ?OutputString@CDumpContext@@IAEXPBD@Z
 // prototype: protected: void __thiscall CDumpContext::OutputString(char const *)
 
-// LIBRARY: IMPERIALISM 0x00621089
+// LIBRARY: IMPERIALISM 0x00621089 SYMBOL
+// ??6CDumpContext@@QAEAAV0@PBD@Z
 // name: CDumpContext::operator<<
-// symbol: ??6CDumpContext@@QAEAAV0@PBD@Z
 // prototype: public: class CDumpContext & __thiscall CDumpContext::operator<<(char const *)
 
-// LIBRARY: IMPERIALISM 0x00621112
+// LIBRARY: IMPERIALISM 0x00621112 SYMBOL
+// ??6CDumpContext@@QAEAAV0@E@Z
 // name: CDumpContext::operator<<
-// symbol: ??6CDumpContext@@QAEAAV0@E@Z
 // prototype: public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned char)
 
-// LIBRARY: IMPERIALISM 0x00621144
+// LIBRARY: IMPERIALISM 0x00621144 SYMBOL
+// ??6CDumpContext@@QAEAAV0@G@Z
 // name: CDumpContext::operator<<
-// symbol: ??6CDumpContext@@QAEAAV0@G@Z
 // prototype: public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned short)
 
-// LIBRARY: IMPERIALISM 0x00621176
-// symbol: ??6CDumpContext@@QAEAAV0@H@Z
+// LIBRARY: IMPERIALISM 0x00621176 SYMBOL
+// ??6CDumpContext@@QAEAAV0@H@Z
 
-// LIBRARY: IMPERIALISM 0x006211a6
-// symbol: ??6CDumpContext@@QAEAAV0@I@Z
+// LIBRARY: IMPERIALISM 0x006211a6 SYMBOL
+// ??6CDumpContext@@QAEAAV0@I@Z
 
-// LIBRARY: IMPERIALISM 0x006211d6
-// symbol: ??6CDumpContext@@QAEAAV0@J@Z
+// LIBRARY: IMPERIALISM 0x006211d6 SYMBOL
+// ??6CDumpContext@@QAEAAV0@J@Z
 
-// LIBRARY: IMPERIALISM 0x00621206
-// symbol: ??6CDumpContext@@QAEAAV0@K@Z
+// LIBRARY: IMPERIALISM 0x00621206 SYMBOL
+// ??6CDumpContext@@QAEAAV0@K@Z
 
-// LIBRARY: IMPERIALISM 0x00621236
+// LIBRARY: IMPERIALISM 0x00621236 SYMBOL
+// ??6CDumpContext@@QAEAAV0@PBVCObject@@@Z
 // name: CDumpContext::operator<<
-// symbol: ??6CDumpContext@@QAEAAV0@PBVCObject@@@Z
 // prototype: public: class CDumpContext & __thiscall CDumpContext::operator<<(class CObject const *)
 
-// LIBRARY: IMPERIALISM 0x00621267
-// symbol: ??6CDumpContext@@QAEAAV0@ABVCObject@@@Z
+// LIBRARY: IMPERIALISM 0x00621267 SYMBOL
+// ??6CDumpContext@@QAEAAV0@ABVCObject@@@Z
 
-// LIBRARY: IMPERIALISM 0x00621297
+// LIBRARY: IMPERIALISM 0x00621297 SYMBOL
+// ?HexDump@CDumpContext@@QAEXPBDPAEHH@Z
 // name: CDumpContext::HexDump
-// symbol: ?HexDump@CDumpContext@@QAEXPBDPAEHH@Z
 // prototype: public: void __thiscall CDumpContext::HexDump(char const *, unsigned char *, int, int)
 
-// LIBRARY: IMPERIALISM 0x0062132a
+// LIBRARY: IMPERIALISM 0x0062132a SYMBOL
+// ??6CDumpContext@@QAEAAV0@PBG@Z
 // name: CDumpContext::operator<<
-// symbol: ??6CDumpContext@@QAEAAV0@PBG@Z
 // prototype: public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned short const *)
 
-// LIBRARY: IMPERIALISM 0x00622442
+// LIBRARY: IMPERIALISM 0x00622442 SYMBOL
+// ?GetRuntimeClass@CDialog@@UBEPAUCRuntimeClass@@XZ
 // name: CDialog::GetRuntimeClass
-// symbol: ?GetRuntimeClass@CDialog@@UBEPAUCRuntimeClass@@XZ
 // prototype: public: virtual struct CRuntimeClass * __thiscall CDialog::GetRuntimeClass(void)const
 
-// LIBRARY: IMPERIALISM 0x00622448
+// LIBRARY: IMPERIALISM 0x00622448 SYMBOL
+// ??0_AFX_WIN_STATE@@QAE@XZ
 // name: _AFX_WIN_STATE::_AFX_WIN_STATE
-// symbol: ??0_AFX_WIN_STATE@@QAE@XZ
 // prototype: public: __thiscall _AFX_WIN_STATE::_AFX_WIN_STATE(void)
 
-// LIBRARY: IMPERIALISM 0x00622451
+// LIBRARY: IMPERIALISM 0x00622451 SYMBOL
+// ??_G_AFX_WIN_STATE@@UAEPAXI@Z
 // name: _AFX_WIN_STATE::`scalar deleting dtor'
-// symbol: ??_G_AFX_WIN_STATE@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall _AFX_WIN_STATE::`scalar deleting dtor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0062246c
+// LIBRARY: IMPERIALISM 0x0062246c SYMBOL
+// ??0CWinApp@@QAE@PBD@Z
 // name: CWinApp::CWinApp
-// symbol: ??0CWinApp@@QAE@PBD@Z
 // prototype: public: __thiscall CWinApp::CWinApp(char const *)
 
-// LIBRARY: IMPERIALISM 0x00622556
+// LIBRARY: IMPERIALISM 0x00622556 SYMBOL
+// ??_GCWinApp@@UAEPAXI@Z
 // name: CWinApp::`scalar deleting dtor'
-// symbol: ??_GCWinApp@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CWinApp::`scalar deleting dtor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00622572
+// LIBRARY: IMPERIALISM 0x00622572 SYMBOL
+// ?InitApplication@CWinApp@@UAEHXZ
 // name: CWinApp::InitApplication
-// symbol: ?InitApplication@CWinApp@@UAEHXZ
 // prototype: public: virtual int __thiscall CWinApp::InitApplication(void)
 
-// LIBRARY: IMPERIALISM 0x00622632
+// LIBRARY: IMPERIALISM 0x00622632 SYMBOL
+// ?ParseCommandLine@CWinApp@@QAEXAAVCCommandLineInfo@@@Z
 // name: ParseCommandLine
-// symbol: ?ParseCommandLine@CWinApp@@QAEXAAVCCommandLineInfo@@@Z
 // prototype: public: void __thiscall CWinApp::ParseCommandLine(class CCommandLineInfo &)
 
-// LIBRARY: IMPERIALISM 0x00622690
+// LIBRARY: IMPERIALISM 0x00622690 SYMBOL
+// ??0CCommandLineInfo@@QAE@XZ
 // name: CCommandLineInfo::CCommandLineInfo
-// symbol: ??0CCommandLineInfo@@QAE@XZ
 // prototype: public: __thiscall CCommandLineInfo::CCommandLineInfo(void)
 
-// LIBRARY: IMPERIALISM 0x006226ff
+// LIBRARY: IMPERIALISM 0x006226ff SYMBOL
+// ??_GCCommandLineInfo@@UAEPAXI@Z
 // name: CCommandLineInfo::`scalar deleting dtor'
-// symbol: ??_GCCommandLineInfo@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CCommandLineInfo::`scalar deleting dtor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x0062271b
+// LIBRARY: IMPERIALISM 0x0062271b SYMBOL
+// ??1CCommandLineInfo@@UAE@XZ
 // name: CCommandLineInfo::~CCommandLineInfo
-// symbol: ??1CCommandLineInfo@@UAE@XZ
 // prototype: public: virtual __thiscall CCommandLineInfo::~CCommandLineInfo(void)
 
-// LIBRARY: IMPERIALISM 0x00622778
+// LIBRARY: IMPERIALISM 0x00622778 SYMBOL
+// ?ParseParam@CCommandLineInfo@@UAEXPBDHH@Z
 // name: ParseParam
-// symbol: ?ParseParam@CCommandLineInfo@@UAEXPBDHH@Z
 // prototype: public: virtual void __thiscall CCommandLineInfo::ParseParam(char const *, int, int)
 
-// LIBRARY: IMPERIALISM 0x006227a1
+// LIBRARY: IMPERIALISM 0x006227a1 SYMBOL
+// ?ParseParamFlag@CCommandLineInfo@@IAEXPBD@Z
 // name: CCommandLineInfo::ParseParamFlag
-// symbol: ?ParseParamFlag@CCommandLineInfo@@IAEXPBD@Z
 // prototype: protected: void __thiscall CCommandLineInfo::ParseParamFlag(char const *)
 
-// LIBRARY: IMPERIALISM 0x0062285f
+// LIBRARY: IMPERIALISM 0x0062285f SYMBOL
+// ?ParseParamNotFlag@CCommandLineInfo@@IAEXPBD@Z
 // name: CCommandLineInfo::ParseParamNotFlag
-// symbol: ?ParseParamNotFlag@CCommandLineInfo@@IAEXPBD@Z
 // prototype: protected: void __thiscall CCommandLineInfo::ParseParamNotFlag(char const *)
 
-// LIBRARY: IMPERIALISM 0x006228af
+// LIBRARY: IMPERIALISM 0x006228af SYMBOL
+// ?ParseLast@CCommandLineInfo@@IAEXH@Z
 // name: CCommandLineInfo::ParseLast
-// symbol: ?ParseLast@CCommandLineInfo@@IAEXH@Z
 // prototype: protected: void __thiscall CCommandLineInfo::ParseLast(int)
 
-// LIBRARY: IMPERIALISM 0x006228de
+// LIBRARY: IMPERIALISM 0x006228de SYMBOL
+// ??1CWinApp@@UAE@XZ
 // name: CWinApp::~CWinApp
-// symbol: ??1CWinApp@@UAE@XZ
 // prototype: public: virtual __thiscall CWinApp::~CWinApp(void)
 
-// LIBRARY: IMPERIALISM 0x00622a13
+// LIBRARY: IMPERIALISM 0x00622a13 SYMBOL
+// ?SaveStdProfileSettings@CWinApp@@IAEXXZ
 // name: CWinApp::SaveStdProfileSettings
-// symbol: ?SaveStdProfileSettings@CWinApp@@IAEXXZ
 // prototype: protected: void __thiscall CWinApp::SaveStdProfileSettings(void)
 
-// LIBRARY: IMPERIALISM 0x00622a4f
+// LIBRARY: IMPERIALISM 0x00622a4f SYMBOL
+// ?ExitInstance@CWinApp@@UAEHXZ
 // name: CWinApp::ExitInstance
-// symbol: ?ExitInstance@CWinApp@@UAEHXZ
 // prototype: public: virtual int __thiscall CWinApp::ExitInstance(void)
 
-// LIBRARY: IMPERIALISM 0x00622a85
+// LIBRARY: IMPERIALISM 0x00622a85 SYMBOL
+// ?GetRuntimeClass@CWinApp@@UBEPAUCRuntimeClass@@XZ
 // name: CWinApp::GetRuntimeClass
-// symbol: ?GetRuntimeClass@CWinApp@@UBEPAUCRuntimeClass@@XZ
 // prototype: public: virtual struct CRuntimeClass * __thiscall CWinApp::GetRuntimeClass(void)const
 
 // LIBRARY: IMPERIALISM 0x00622a8b
-// name: InitializeMfcWinAppThreadLocalGlobal
+// InitializeMfcWinAppThreadLocalGlobal
 // prototype: void __cdecl InitializeMfcWinAppThreadLocalGlobal(void)
 
 // SYNTHETIC: IMPERIALISM 0x00622a95
-// name: InitializeMfcWinStateProcessLocalStorage
+// InitializeMfcWinStateProcessLocalStorage
 // prototype: void __cdecl InitializeMfcWinStateProcessLocalStorage(void)
 
 // SYNTHETIC: IMPERIALISM 0x00622a96
-// name: RegisterMfcGlobalCleanup_00622aa2
+// RegisterMfcGlobalCleanup_00622aa2
 // prototype: void __cdecl RegisterMfcGlobalCleanup_00622aa2(void)
 
 // SYNTHETIC: IMPERIALISM 0x00622aa2
-// name: DestroyMfcWinStateProcessLocalAtExit
+// DestroyMfcWinStateProcessLocalAtExit
 // prototype: void __cdecl DestroyMfcWinStateProcessLocalAtExit(void)
 
-// LIBRARY: IMPERIALISM 0x00622b3c
-// symbol: ??_GCWinThread@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x00622b3c SYMBOL
+// ??_GCWinThread@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x00622b58
+// LIBRARY: IMPERIALISM 0x00622b58 SYMBOL
+// ??0CWinThread@@QAE@XZ
 // name: CWinThread::CWinThread
-// symbol: ??0CWinThread@@QAE@XZ
 // prototype: public: __thiscall CWinThread::CWinThread(void)
 
-// LIBRARY: IMPERIALISM 0x00622b95
+// LIBRARY: IMPERIALISM 0x00622b95 SYMBOL
+// ?CommonConstruct@CWinThread@@QAEXXZ
 // name: CWinThread::CommonConstruct
-// symbol: ?CommonConstruct@CWinThread@@QAEXXZ
 // prototype: public: void __thiscall CWinThread::CommonConstruct(void)
 
-// LIBRARY: IMPERIALISM 0x00622bcd
-// symbol: ?_AfxLoadDotBitmap@@YGXXZ
+// LIBRARY: IMPERIALISM 0x00622bcd SYMBOL
+// ?_AfxLoadDotBitmap@@YGXXZ
 
-// LIBRARY: IMPERIALISM 0x00622cad
+// LIBRARY: IMPERIALISM 0x00622cad SYMBOL
+// ?GetRuntimeClass@CCmdTarget@@UBEPAUCRuntimeClass@@XZ
 // name: CCmdTarget::GetRuntimeClass
-// symbol: ?GetRuntimeClass@CCmdTarget@@UBEPAUCRuntimeClass@@XZ
 // prototype: public: virtual struct CRuntimeClass * __thiscall CCmdTarget::GetRuntimeClass(void) const
 
-// LIBRARY: IMPERIALISM 0x00622cb3
+// LIBRARY: IMPERIALISM 0x00622cb3 SYMBOL
+// ?ProcessShellCommand@CWinApp@@QAEHAAVCCommandLineInfo@@@Z
 // name: CWinApp::ProcessShellCommand
-// symbol: ?ProcessShellCommand@CWinApp@@QAEHAAVCCommandLineInfo@@@Z
 // prototype: public: int __thiscall CWinApp::ProcessShellCommand(class CCommandLineInfo &)
 
-// LIBRARY: IMPERIALISM 0x00622dfc
+// LIBRARY: IMPERIALISM 0x00622dfc SYMBOL
+// ?Unregister@CWinApp@@QAEHXZ
 // name: CWinApp::Unregister
-// symbol: ?Unregister@CWinApp@@QAEHXZ
 // prototype: public: int __thiscall CWinApp::Unregister(void)
 
-// LIBRARY: IMPERIALISM 0x00622f2b
+// LIBRARY: IMPERIALISM 0x00622f2b SYMBOL
+// ?DelRegTree@CWinApp@@QAEJPAUHKEY__@@ABVCString@@@Z
 // name: CWinApp::DelRegTree
-// symbol: ?DelRegTree@CWinApp@@QAEJPAUHKEY__@@ABVCString@@@Z
 // prototype: public: long __thiscall CWinApp::DelRegTree(struct HKEY__*, class CString const &)
 
-// LIBRARY: IMPERIALISM 0x00623006
+// LIBRARY: IMPERIALISM 0x00623006 SYMBOL
+// ?EnableShellOpen@CWinApp@@IAEXXZ
 // name: CWinApp::EnableShellOpen
-// symbol: ?EnableShellOpen@CWinApp@@IAEXXZ
 // prototype: protected: void __thiscall CWinApp::EnableShellOpen(void)
 
-// LIBRARY: IMPERIALISM 0x00623050
+// LIBRARY: IMPERIALISM 0x00623050 SYMBOL
+// ?UnregisterShellFileTypes@CWinApp@@IAEXXZ
 // name: CWinApp::UnregisterShellFileTypes
-// symbol: ?UnregisterShellFileTypes@CWinApp@@IAEXXZ
 // prototype: protected: void __thiscall CWinApp::UnregisterShellFileTypes(void)
 
-// LIBRARY: IMPERIALISM 0x00623061
+// LIBRARY: IMPERIALISM 0x00623061 SYMBOL
+// ?SetRegistryKey@CWinApp@@IAEXPBD@Z
 // name: CWinApp::SetRegistryKey
-// symbol: ?SetRegistryKey@CWinApp@@IAEXPBD@Z
 // prototype: protected: void __thiscall CWinApp::SetRegistryKey(char const *)
 
-// LIBRARY: IMPERIALISM 0x00623099
+// LIBRARY: IMPERIALISM 0x00623099 SYMBOL
+// ?SetRegistryKey@CWinApp@@IAEXI@Z
 // name: CWinApp::SetRegistryKey
-// symbol: ?SetRegistryKey@CWinApp@@IAEXI@Z
 // prototype: protected: void __thiscall CWinApp::SetRegistryKey(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x006230cc
+// LIBRARY: IMPERIALISM 0x006230cc SYMBOL
+// ?GetAppRegistryKey@CWinApp@@QAEPAUHKEY__@@XZ
 // name: CWinApp::GetAppRegistryKey
-// symbol: ?GetAppRegistryKey@CWinApp@@QAEPAUHKEY__@@XZ
 // prototype: public: struct HKEY__* __thiscall CWinApp::GetAppRegistryKey(void)
 
-// LIBRARY: IMPERIALISM 0x00623160
+// LIBRARY: IMPERIALISM 0x00623160 SYMBOL
+// ?GetSectionKey@CWinApp@@QAEPAUHKEY__@@PBD@Z
 // name: GetSectionKey
-// symbol: ?GetSectionKey@CWinApp@@QAEPAUHKEY__@@PBD@Z
 // prototype: public: struct HKEY__* __thiscall CWinApp::GetSectionKey(char const *)
 
-// LIBRARY: IMPERIALISM 0x006231a6
+// LIBRARY: IMPERIALISM 0x006231a6 SYMBOL
+// ?GetProfileIntA@CWinApp@@QAEIPBD0H@Z
 // name: CWinApp::GetProfileIntA
-// symbol: ?GetProfileIntA@CWinApp@@QAEIPBD0H@Z
 // prototype: public: unsigned int __thiscall CWinApp::GetProfileIntA(char const *, char const *, int)
 
-// LIBRARY: IMPERIALISM 0x00623212
+// LIBRARY: IMPERIALISM 0x00623212 SYMBOL
+// ?GetProfileStringA@CWinApp@@QAE?AVCString@@PBD00@Z
 // name: CWinApp::GetProfileStringA
-// symbol: ?GetProfileStringA@CWinApp@@QAE?AVCString@@PBD00@Z
 // prototype: public: class CString __thiscall CWinApp::GetProfileStringA(char const *, char const *, char const *)
 
-// LIBRARY: IMPERIALISM 0x00623324
+// LIBRARY: IMPERIALISM 0x00623324 SYMBOL
+// ?GetProfileBinary@CWinApp@@QAEHPBD0PAPAEPAI@Z
 // name: CWinApp::GetProfileBinary
-// symbol: ?GetProfileBinary@CWinApp@@QAEHPBD0PAPAEPAI@Z
 // prototype: public: int __thiscall CWinApp::GetProfileBinary(char const *, char const *, unsigned char **, unsigned int *)
 
-// LIBRARY: IMPERIALISM 0x0062343f
+// LIBRARY: IMPERIALISM 0x0062343f SYMBOL
+// ?CreateObject@CWnd@@SGPAVCObject@@XZ
 // name: CWnd::CreateObject
-// symbol: ?CreateObject@CWnd@@SGPAVCObject@@XZ
 // prototype: public: static class CObject * __stdcall CWnd::CreateObject(void)
 
-// LIBRARY: IMPERIALISM 0x00623471
+// LIBRARY: IMPERIALISM 0x00623471 SYMBOL
+// ?GetRuntimeClass@CWnd@@UBEPAUCRuntimeClass@@XZ
 // name: CWnd::GetRuntimeClass
-// symbol: ?GetRuntimeClass@CWnd@@UBEPAUCRuntimeClass@@XZ
 // prototype: public: virtual CRuntimeClass * __thiscall CWnd::GetRuntimeClass(void) const
 
-// LIBRARY: IMPERIALISM 0x00623477
+// LIBRARY: IMPERIALISM 0x00623477 SYMBOL
+// ??0_AFX_THREAD_STATE@@QAE@XZ
 // name: _AFX_THREAD_STATE::_AFX_THREAD_STATE
-// symbol: ??0_AFX_THREAD_STATE@@QAE@XZ
 // prototype: public: __thiscall _AFX_THREAD_STATE::_AFX_THREAD_STATE(void)
 
-// LIBRARY: IMPERIALISM 0x0062348e
+// LIBRARY: IMPERIALISM 0x0062348e SYMBOL
+// ??_G_AFX_THREAD_STATE@@UAEPAXI@Z
 // name: _AFX_THREAD_STATE::`scalar deleting dtor'
-// symbol: ??_G_AFX_THREAD_STATE@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall _AFX_THREAD_STATE::`scalar deleting dtor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x006234a9
+// LIBRARY: IMPERIALISM 0x006234a9 SYMBOL
+// ??1_AFX_THREAD_STATE@@UAE@XZ
 // name: _AFX_THREAD_STATE::~_AFX_THREAD_STATE
-// symbol: ??1_AFX_THREAD_STATE@@UAE@XZ
 // prototype: public: virtual __thiscall _AFX_THREAD_STATE::~_AFX_THREAD_STATE(void)
 
-// LIBRARY: IMPERIALISM 0x00623523
+// LIBRARY: IMPERIALISM 0x00623523 SYMBOL
+// ?AfxGetThreadState@@YGPAV_AFX_THREAD_STATE@@XZ
 // name: AfxGetThreadState
-// symbol: ?AfxGetThreadState@@YGPAV_AFX_THREAD_STATE@@XZ
 // prototype: class _AFX_THREAD_STATE * __stdcall AfxGetThreadState(void)
 
-// LIBRARY: IMPERIALISM 0x00623559
+// LIBRARY: IMPERIALISM 0x00623559 SYMBOL
+// ??0AFX_MODULE_STATE@@QAE@H@Z
 // name: AFX_MODULE_STATE::AFX_MODULE_STATE
-// symbol: ??0AFX_MODULE_STATE@@QAE@H@Z
 // prototype: public: __thiscall AFX_MODULE_STATE::AFX_MODULE_STATE(int)
 
-// LIBRARY: IMPERIALISM 0x006235bd
-// symbol: ??_G_AFX_BASE_MODULE_STATE@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x006235bd SYMBOL
+// ??_G_AFX_BASE_MODULE_STATE@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x006235d8
+// LIBRARY: IMPERIALISM 0x006235d8 SYMBOL
+// ??1AFX_MODULE_STATE@@UAE@XZ
 // name: AFX_MODULE_STATE::~AFX_MODULE_STATE
-// symbol: ??1AFX_MODULE_STATE@@UAE@XZ
 // prototype: public: virtual __thiscall AFX_MODULE_STATE::~AFX_MODULE_STATE(void)
 
-// LIBRARY: IMPERIALISM 0x0062368b
+// LIBRARY: IMPERIALISM 0x0062368b SYMBOL
+// ??0AFX_MODULE_THREAD_STATE@@QAE@XZ
 // name: AFX_MODULE_THREAD_STATE::AFX_MODULE_THREAD_STATE
-// symbol: ??0AFX_MODULE_THREAD_STATE@@QAE@XZ
 // prototype: public: __thiscall AFX_MODULE_THREAD_STATE::AFX_MODULE_THREAD_STATE(void)
 
-// LIBRARY: IMPERIALISM 0x006236f6
+// LIBRARY: IMPERIALISM 0x006236f6 SYMBOL
+// ??_GAFX_MODULE_THREAD_STATE@@UAEPAXI@Z
 // name: AFX_MODULE_THREAD_STATE::`scalar deleting dtor'
-// symbol: ??_GAFX_MODULE_THREAD_STATE@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall AFX_MODULE_THREAD_STATE::`scalar deleting dtor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00623711
+// LIBRARY: IMPERIALISM 0x00623711 SYMBOL
+// ??1AFX_MODULE_THREAD_STATE@@UAE@XZ
 // name: AFX_MODULE_THREAD_STATE::~AFX_MODULE_THREAD_STATE
-// symbol: ??1AFX_MODULE_THREAD_STATE@@UAE@XZ
 // prototype: public: virtual __thiscall AFX_MODULE_THREAD_STATE::~AFX_MODULE_THREAD_STATE(void)
 
-// LIBRARY: IMPERIALISM 0x00623824
+// LIBRARY: IMPERIALISM 0x00623824 SYMBOL
+// ?CreateObject@?$CProcessLocal@V_AFX_BASE_MODULE_STATE@@@@SGPAVCNoTrackObject@@XZ
 // name: _AFX_BASE_MODULE_STATE>::CreateObject
-// symbol: ?CreateObject@?$CProcessLocal@V_AFX_BASE_MODULE_STATE@@@@SGPAVCNoTrackObject@@XZ
 // prototype: public: static class CNoTrackObject * __stdcall CProcessLocal<class _AFX_BASE_MODULE_STATE>::CreateObject(void)
 
-// LIBRARY: IMPERIALISM 0x00623866
-// symbol: ??_G_AFX_BASE_MODULE_STATE@@UAEPAXI@Z
+// LIBRARY: IMPERIALISM 0x00623866 SYMBOL
+// ??_G_AFX_BASE_MODULE_STATE@@UAEPAXI@Z
 
-// LIBRARY: IMPERIALISM 0x00623886
+// LIBRARY: IMPERIALISM 0x00623886 SYMBOL
+// ?AfxGetModuleState@@YGPAVAFX_MODULE_STATE@@XZ
 // name: AfxGetModuleState
-// symbol: ?AfxGetModuleState@@YGPAVAFX_MODULE_STATE@@XZ
 // prototype: class AFX_MODULE_STATE * __stdcall AfxGetModuleState(void)
 
-// LIBRARY: IMPERIALISM 0x006238ac
+// LIBRARY: IMPERIALISM 0x006238ac SYMBOL
+// ?AfxGetModuleThreadState@@YGPAVAFX_MODULE_THREAD_STATE@@XZ
 // name: AfxGetModuleThreadState
-// symbol: ?AfxGetModuleThreadState@@YGPAVAFX_MODULE_THREAD_STATE@@XZ
 // prototype: AFX_MODULE_THREAD_STATE * __stdcall ?AfxGetModuleThreadState@@YGPAVAFX_MODULE_THREAD_STATE@@XZ@006238ac(void)
 
-// LIBRARY: IMPERIALISM 0x006238c3
-// symbol: ?Unlock@CTypeLibCache@@QAEXXZ
+// LIBRARY: IMPERIALISM 0x006238c3 SYMBOL
+// ?Unlock@CTypeLibCache@@QAEXXZ
 
-// LIBRARY: IMPERIALISM 0x00623996
+// LIBRARY: IMPERIALISM 0x00623996 SYMBOL
+// ?GetRuntimeClass@CEdit@@UBEPAUCRuntimeClass@@XZ
 // name: CEdit::GetRuntimeClass
-// symbol: ?GetRuntimeClass@CEdit@@UBEPAUCRuntimeClass@@XZ
 // prototype: public: virtual struct CRuntimeClass * __thiscall CEdit::GetRuntimeClass(void)const
 
-// LIBRARY: IMPERIALISM 0x006239a2
+// LIBRARY: IMPERIALISM 0x006239a2 SYMBOL
+// ?GetRuntimeClass@CDocument@@UBEPAUCRuntimeClass@@XZ
 // name: CDocument::GetRuntimeClass
-// symbol: ?GetRuntimeClass@CDocument@@UBEPAUCRuntimeClass@@XZ
 // prototype: public: virtual struct CRuntimeClass * __thiscall CDocument::GetRuntimeClass(void) const
 
 // LIBRARY: IMPERIALISM 0x006239ae
-// name: InitializeMfcGlobalExceptionObjectA
+// InitializeMfcGlobalExceptionObjectA
 // prototype: void __cdecl InitializeMfcGlobalExceptionObjectA(void)
 
 // LIBRARY: IMPERIALISM 0x006239b8
 // ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x006239ca
-// name: RegisterMfcGlobalCleanup_006239d6
+// RegisterMfcGlobalCleanup_006239d6
 // prototype: void __cdecl RegisterMfcGlobalCleanup_006239d6(void)
 
 // LIBRARY: IMPERIALISM 0x006239e6
-// name: InitializeMfcGlobalExceptionObjectB
+// InitializeMfcGlobalExceptionObjectB
 // prototype: void __cdecl InitializeMfcGlobalExceptionObjectB(void)
 
 // LIBRARY: IMPERIALISM 0x006239f0
 // ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x00623a02
-// name: RegisterMfcGlobalCleanup_00623a0e
+// RegisterMfcGlobalCleanup_00623a0e
 // prototype: void __cdecl RegisterMfcGlobalCleanup_00623a0e(void)
 
-// LIBRARY: IMPERIALISM 0x00623a82
+// LIBRARY: IMPERIALISM 0x00623a82 SYMBOL
+// ?GetRuntimeClass@CPen@@UBEPAUCRuntimeClass@@XZ
 // name: CPen::GetRuntimeClass
-// symbol: ?GetRuntimeClass@CPen@@UBEPAUCRuntimeClass@@XZ
 // prototype: public: virtual struct CRuntimeClass * __thiscall CPen::GetRuntimeClass(void) const
 
 // LIBRARY: IMPERIALISM 0x00623a9a
-// name: CPalette::GetRuntimeClass
+// CPalette::GetRuntimeClass
 
 // LIBRARY: IMPERIALISM 0x00623ab2
-// name: InitializeMfcGlobalExceptionObjectC
+// InitializeMfcGlobalExceptionObjectC
 // prototype: void __cdecl InitializeMfcGlobalExceptionObjectC(void)
 
 // LIBRARY: IMPERIALISM 0x00623abc
 // ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x00623ace
-// name: RegisterMfcGlobalCleanup_00623ada
+// RegisterMfcGlobalCleanup_00623ada
 // prototype: void __cdecl RegisterMfcGlobalCleanup_00623ada(void)
 
 // LIBRARY: IMPERIALISM 0x00623aea
-// name: InitializeMfcGlobalExceptionObjectD
+// InitializeMfcGlobalExceptionObjectD
 // prototype: void __cdecl InitializeMfcGlobalExceptionObjectD(void)
 
 // LIBRARY: IMPERIALISM 0x00623af4
 // ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x00623b06
-// name: RegisterMfcGlobalCleanup_00623b12
+// RegisterMfcGlobalCleanup_00623b12
 // prototype: void __cdecl RegisterMfcGlobalCleanup_00623b12(void)
 
 // LIBRARY: IMPERIALISM 0x00623b3a
-// name: CPtrList::GetRuntimeClass
+// CPtrList::GetRuntimeClass
 
-// LIBRARY: IMPERIALISM 0x00623b40
+// LIBRARY: IMPERIALISM 0x00623b40 SYMBOL
+// ?GetRuntimeClass@CFileException@@UBEPAUCRuntimeClass@@XZ
 // name: CFileException::GetRuntimeClass
-// symbol: ?GetRuntimeClass@CFileException@@UBEPAUCRuntimeClass@@XZ
 // prototype: public: virtual struct CRuntimeClass * __thiscall CFileException::GetRuntimeClass(void) const
 
-// LIBRARY: IMPERIALISM 0x00623b46
+// LIBRARY: IMPERIALISM 0x00623b46 SYMBOL
+// ?GetRuntimeClass@CMemFile@@UBEPAUCRuntimeClass@@XZ
 // name: CMemFile::GetRuntimeClass
-// symbol: ?GetRuntimeClass@CMemFile@@UBEPAUCRuntimeClass@@XZ
 // prototype: public: virtual struct CRuntimeClass * __thiscall CMemFile::GetRuntimeClass(void) const
 
-// LIBRARY: IMPERIALISM 0x00623b4c
+// LIBRARY: IMPERIALISM 0x00623b4c SYMBOL
+// ?AddHead@CSimpleList@@QAEXPAX@Z
 // name: CSimpleList::AddHead
-// symbol: ?AddHead@CSimpleList@@QAEXPAX@Z
 // prototype: public: void __thiscall CSimpleList::AddHead(void *)
 
-// LIBRARY: IMPERIALISM 0x00623b5f
+// LIBRARY: IMPERIALISM 0x00623b5f SYMBOL
+// ?Remove@CSimpleList@@QAEHPAX@Z
 // name: CSimpleList::Remove
-// symbol: ?Remove@CSimpleList@@QAEHPAX@Z
 // prototype: public: int __thiscall CSimpleList::Remove(void *)
 
-// LIBRARY: IMPERIALISM 0x00623baa
+// LIBRARY: IMPERIALISM 0x00623baa SYMBOL
+// ??2CNoTrackObject@@SGPAXI@Z
 // name: new
-// symbol: ??2CNoTrackObject@@SGPAXI@Z
 // prototype: public: static void * __stdcall CNoTrackObject::operator new(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00623bc8
+// LIBRARY: IMPERIALISM 0x00623bc8 SYMBOL
+// ??3CNoTrackObject@@SGXPAX@Z
 // name: delete
-// symbol: ??3CNoTrackObject@@SGXPAX@Z
 // prototype: public: static void __stdcall CNoTrackObject::operator delete(void *)
 
-// LIBRARY: IMPERIALISM 0x00623bdc
+// LIBRARY: IMPERIALISM 0x00623bdc SYMBOL
+// ??0CThreadSlotData@@QAE@XZ
 // name: CThreadSlotData::CThreadSlotData
-// symbol: ??0CThreadSlotData@@QAE@XZ
 // prototype: public: __thiscall CThreadSlotData::CThreadSlotData(void)
 
-// LIBRARY: IMPERIALISM 0x00623c1e
+// LIBRARY: IMPERIALISM 0x00623c1e SYMBOL
+// ??1CThreadSlotData@@QAE@XZ
 // name: CThreadSlotData::~CThreadSlotData
-// symbol: ??1CThreadSlotData@@QAE@XZ
 // prototype: public: __thiscall CThreadSlotData::~CThreadSlotData(void)
 
-// LIBRARY: IMPERIALISM 0x00623c75
+// LIBRARY: IMPERIALISM 0x00623c75 SYMBOL
+// ?AllocSlot@CThreadSlotData@@QAEHXZ
 // name: CThreadSlotData::AllocSlot
-// symbol: ?AllocSlot@CThreadSlotData@@QAEHXZ
 // prototype: public: int __thiscall CThreadSlotData::AllocSlot(void)
 
-// LIBRARY: IMPERIALISM 0x00623d87
+// LIBRARY: IMPERIALISM 0x00623d87 SYMBOL
+// ?FreeSlot@CThreadSlotData@@QAEXH@Z
 // name: CThreadSlotData::FreeSlot
-// symbol: ?FreeSlot@CThreadSlotData@@QAEXH@Z
 // prototype: public: void __thiscall CThreadSlotData::FreeSlot(int)
 
-// LIBRARY: IMPERIALISM 0x00623de4
+// LIBRARY: IMPERIALISM 0x00623de4 SYMBOL
+// ?SetValue@CThreadSlotData@@QAEXHPAX@Z
 // name: CThreadSlotData::SetValue
-// symbol: ?SetValue@CThreadSlotData@@QAEXHPAX@Z
 // prototype: public: void __thiscall CThreadSlotData::SetValue(int, void *)
 
-// LIBRARY: IMPERIALISM 0x00623eb2
+// LIBRARY: IMPERIALISM 0x00623eb2 SYMBOL
+// ??_GCNoTrackObject@@UAEPAXI@Z
 // name: CNoTrackObject::`scalar deleting dtor'
-// symbol: ??_GCNoTrackObject@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CNoTrackObject::`scalar deleting dtor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00623ecd
+// LIBRARY: IMPERIALISM 0x00623ecd SYMBOL
+// ??1CNoTrackObject@@UAE@XZ
 // name: CNoTrackObject::~CNoTrackObject
-// symbol: ??1CNoTrackObject@@UAE@XZ
 // prototype: public: virtual __thiscall CNoTrackObject::~CNoTrackObject(void)
 
-// LIBRARY: IMPERIALISM 0x00623ed4
+// LIBRARY: IMPERIALISM 0x00623ed4 SYMBOL
+// ?AssignInstance@CThreadSlotData@@QAEXPAUHINSTANCE__@@@Z
 // name: CThreadSlotData::AssignInstance
-// symbol: ?AssignInstance@CThreadSlotData@@QAEXPAUHINSTANCE__@@@Z
 // prototype: public: void __thiscall CThreadSlotData::AssignInstance(struct HINSTANCE__*)
 
-// LIBRARY: IMPERIALISM 0x00623f15
+// LIBRARY: IMPERIALISM 0x00623f15 SYMBOL
+// ?DeleteValues@CThreadSlotData@@QAEXPAUCThreadData@@PAUHINSTANCE__@@@Z
 // name: CThreadSlotData::DeleteValues
-// symbol: ?DeleteValues@CThreadSlotData@@QAEXPAUCThreadData@@PAUHINSTANCE__@@@Z
 // prototype: public: void __thiscall CThreadSlotData::DeleteValues(struct CThreadData *, struct HINSTANCE__*)
 
-// LIBRARY: IMPERIALISM 0x00623f9d
+// LIBRARY: IMPERIALISM 0x00623f9d SYMBOL
+// ?DeleteValues@CThreadSlotData@@QAEXPAUHINSTANCE__@@H@Z
 // name: CThreadSlotData::DeleteValues
-// symbol: ?DeleteValues@CThreadSlotData@@QAEXPAUHINSTANCE__@@H@Z
 // prototype: public: void __thiscall CThreadSlotData::DeleteValues(struct HINSTANCE__*, int)
 
-// LIBRARY: IMPERIALISM 0x00623ff6
+// LIBRARY: IMPERIALISM 0x00623ff6 SYMBOL
+// ?GetData@CThreadLocalObject@@QAEPAVCNoTrackObject@@P6GPAV2@XZ@Z
 // name: CThreadLocalObject::GetData
-// symbol: ?GetData@CThreadLocalObject@@QAEPAVCNoTrackObject@@P6GPAV2@XZ@Z
 // prototype: public: class CNoTrackObject * __thiscall CThreadLocalObject::GetData(class CNoTrackObject * (__stdcall *)(void))
 
-// LIBRARY: IMPERIALISM 0x0062406d
+// LIBRARY: IMPERIALISM 0x0062406d SYMBOL
+// ?GetDataNA@CThreadLocalObject@@QAEPAVCNoTrackObject@@XZ
 // name: CThreadLocalObject::GetDataNA
-// symbol: ?GetDataNA@CThreadLocalObject@@QAEPAVCNoTrackObject@@XZ
 // prototype: public: class CNoTrackObject * __thiscall CThreadLocalObject::GetDataNA(void)
 
-// LIBRARY: IMPERIALISM 0x0062409a
+// LIBRARY: IMPERIALISM 0x0062409a SYMBOL
+// ??1CThreadLocalObject@@QAE@XZ
 // name: CThreadLocalObject::~CThreadLocalObject
-// symbol: ??1CThreadLocalObject@@QAE@XZ
 // prototype: public: __thiscall CThreadLocalObject::~CThreadLocalObject(void)
 
-// LIBRARY: IMPERIALISM 0x006240b8
-// symbol: ?GetData@CProcessLocalObject@@QAEPAVCNoTrackObject@@P6GPAV2@XZ@Z
+// LIBRARY: IMPERIALISM 0x006240b8 SYMBOL
+// ?GetData@CProcessLocalObject@@QAEPAVCNoTrackObject@@P6GPAV2@XZ@Z
 
-// LIBRARY: IMPERIALISM 0x00624123
-// symbol: ??1CProcessLocalObject@@QAE@XZ
+// LIBRARY: IMPERIALISM 0x00624123 SYMBOL
+// ??1CProcessLocalObject@@QAE@XZ
 
-// LIBRARY: IMPERIALISM 0x0062415e
+// LIBRARY: IMPERIALISM 0x0062415e SYMBOL
+// ?AfxTermLocalData@@YGXPAUHINSTANCE__@@H@Z
 // name: AfxTermLocalData
-// symbol: ?AfxTermLocalData@@YGXPAUHINSTANCE__@@H@Z
 // prototype: void __stdcall AfxTermLocalData(struct HINSTANCE__*, int)
 
 // LIBRARY: IMPERIALISM 0x006241a7
-// name: InitializeMfcAuxDataGlobal
+// InitializeMfcAuxDataGlobal
 // prototype: void __cdecl InitializeMfcAuxDataGlobal(void)
 
 // SYNTHETIC: IMPERIALISM 0x006241b1
-// name: ConstructMfcAuxDataGlobal
+// ConstructMfcAuxDataGlobal
 // prototype: void __cdecl ConstructMfcAuxDataGlobal(void)
 
 // SYNTHETIC: IMPERIALISM 0x006241bb
-// name: RegisterMfcGlobalCleanup_006241c7
+// RegisterMfcGlobalCleanup_006241c7
 // prototype: void __cdecl RegisterMfcGlobalCleanup_006241c7(void)
 
-// LIBRARY: IMPERIALISM 0x006241d1
+// LIBRARY: IMPERIALISM 0x006241d1 SYMBOL
+// ?AfxEnableWin40Compatibility@@YGXXZ
 // name: AfxEnableWin40Compatibility
-// symbol: ?AfxEnableWin40Compatibility@@YGXXZ
 // prototype: void __stdcall AfxEnableWin40Compatibility(void)
 
-// LIBRARY: IMPERIALISM 0x00624201
+// LIBRARY: IMPERIALISM 0x00624201 SYMBOL
+// ?AfxEnableWin31Compatibility@@YGXXZ
 // name: AfxEnableWin31Compatibility
-// symbol: ?AfxEnableWin31Compatibility@@YGXXZ
 // prototype: void __stdcall AfxEnableWin31Compatibility(void)
 
-// LIBRARY: IMPERIALISM 0x00624223
+// LIBRARY: IMPERIALISM 0x00624223 SYMBOL
+// ??0AUX_DATA@@QAE@XZ
 // name: AUX_DATA::AUX_DATA
-// symbol: ??0AUX_DATA@@QAE@XZ
 // prototype: public: __thiscall AUX_DATA::AUX_DATA(void)
 
-// LIBRARY: IMPERIALISM 0x006242de
+// LIBRARY: IMPERIALISM 0x006242de SYMBOL
+// ??1_AFX_CTL3D_STATE@@UAE@XZ
 // name: _AFX_CTL3D_STATE::~_AFX_CTL3D_STATE
-// symbol: ??1_AFX_CTL3D_STATE@@UAE@XZ
 // prototype: public: virtual __thiscall _AFX_CTL3D_STATE::~_AFX_CTL3D_STATE(void)
 
-// LIBRARY: IMPERIALISM 0x00624325
+// LIBRARY: IMPERIALISM 0x00624325 SYMBOL
+// ??1_AFX_CTL3D_THREAD@@UAE@XZ
 // name: _AFX_CTL3D_THREAD::~_AFX_CTL3D_THREAD
-// symbol: ??1_AFX_CTL3D_THREAD@@UAE@XZ
 // prototype: public: virtual __thiscall _AFX_CTL3D_THREAD::~_AFX_CTL3D_THREAD(void)
 
 // LIBRARY: IMPERIALISM 0x00624487
-// name: InitializeMfcThreadLocalGlobal_006a7d70
+// InitializeMfcThreadLocalGlobal_006a7d70
 // prototype: void __cdecl InitializeMfcThreadLocalGlobal_006a7d70(void)
 
 // SYNTHETIC: IMPERIALISM 0x00624491
-// name: InitializeMfcThreadLocalStorage006a7d70
+// InitializeMfcThreadLocalStorage006a7d70
 // prototype: void __cdecl InitializeMfcThreadLocalStorage006a7d70(void)
 
 // SYNTHETIC: IMPERIALISM 0x00624492
-// name: RegisterMfcGlobalCleanup_0062449e
+// RegisterMfcGlobalCleanup_0062449e
 // prototype: void __cdecl RegisterMfcGlobalCleanup_0062449e(void)
 
 // SYNTHETIC: IMPERIALISM 0x0062449e
-// name: DestroyMfcThreadLocalGlobal_006a7d70
+// DestroyMfcThreadLocalGlobal_006a7d70
 // prototype: void __cdecl DestroyMfcThreadLocalGlobal_006a7d70(void)
 
 // SYNTHETIC: IMPERIALISM 0x006244b7
-// name: InitializeMfcCtl3dProcessLocalStorage
+// InitializeMfcCtl3dProcessLocalStorage
 // prototype: void __cdecl InitializeMfcCtl3dProcessLocalStorage(void)
 
 // SYNTHETIC: IMPERIALISM 0x006244b8
-// name: RegisterMfcGlobalCleanup_006244c4
+// RegisterMfcGlobalCleanup_006244c4
 // prototype: void __cdecl RegisterMfcGlobalCleanup_006244c4(void)
 
 // SYNTHETIC: IMPERIALISM 0x006244c4
-// name: DestroyMfcCtl3dProcessLocalAtExit
+// DestroyMfcCtl3dProcessLocalAtExit
 // prototype: void __cdecl DestroyMfcCtl3dProcessLocalAtExit(void)
 
-// LIBRARY: IMPERIALISM 0x006244d3
+// LIBRARY: IMPERIALISM 0x006244d3 SYMBOL
+// ?AfxCriticalInit@@YGHXZ
 // name: AfxCriticalInit
-// symbol: ?AfxCriticalInit@@YGHXZ
 // prototype: int __stdcall AfxCriticalInit(void)
 
-// LIBRARY: IMPERIALISM 0x0062456f
+// LIBRARY: IMPERIALISM 0x0062456f SYMBOL
+// ?AfxLockGlobals@@YGXH@Z
 // name: AfxLockGlobals
-// symbol: ?AfxLockGlobals@@YGXH@Z
 // prototype: void __stdcall AfxLockGlobals(int)
 
-// LIBRARY: IMPERIALISM 0x006245df
+// LIBRARY: IMPERIALISM 0x006245df SYMBOL
+// ?AfxUnlockGlobals@@YGXH@Z
 // name: AfxUnlockGlobals
-// symbol: ?AfxUnlockGlobals@@YGXH@Z
 // prototype: void __stdcall AfxUnlockGlobals(int)
 
-// LIBRARY: IMPERIALISM 0x00624606
+// LIBRARY: IMPERIALISM 0x00624606 SYMBOL
+// ?_AfxDeleteRegKey@@YGHPBD@Z
 // name: _AfxDeleteRegKey
-// symbol: ?_AfxDeleteRegKey@@YGHPBD@Z
 // prototype: int __stdcall _AfxDeleteRegKey(char const *)
 
-// LIBRARY: IMPERIALISM 0x00624693
+// LIBRARY: IMPERIALISM 0x00624693 SYMBOL
+// ??0CDocManager@@QAE@XZ
 // name: CDocManager::CDocManager
-// symbol: ??0CDocManager@@QAE@XZ
 // prototype: public: __thiscall CDocManager::CDocManager(void)
 
-// LIBRARY: IMPERIALISM 0x006246cd
+// LIBRARY: IMPERIALISM 0x006246cd SYMBOL
+// ??_GCDocManager@@UAEPAXI@Z
 // name: CDocManager::`scalar deleting dtor'
-// symbol: ??_GCDocManager@@UAEPAXI@Z
 // prototype: public: virtual void * __thiscall CDocManager::`scalar deleting dtor'(unsigned int)
 
-// LIBRARY: IMPERIALISM 0x006246e9
+// LIBRARY: IMPERIALISM 0x006246e9 SYMBOL
+// ?UnregisterShellFileTypes@CDocManager@@QAEXXZ
 // name: CDocManager::UnregisterShellFileTypes
-// symbol: ?UnregisterShellFileTypes@CDocManager@@QAEXXZ
 // prototype: public: void __thiscall CDocManager::UnregisterShellFileTypes(void)
 
-// LIBRARY: IMPERIALISM 0x0062496b
+// LIBRARY: IMPERIALISM 0x0062496b SYMBOL
+// ?RegisterShellFileTypes@CDocManager@@UAEXH@Z
 // name: CDocManager::RegisterShellFileTypes
-// symbol: ?RegisterShellFileTypes@CDocManager@@UAEXH@Z
 // prototype: public: virtual void __thiscall CDocManager::RegisterShellFileTypes(int)
 
-// LIBRARY: IMPERIALISM 0x00624dda
-// symbol: ?SetRegKey@@YGHPBD00@Z
+// LIBRARY: IMPERIALISM 0x00624dda SYMBOL
+// ?SetRegKey@@YGHPBD00@Z
 
-// LIBRARY: IMPERIALISM 0x00624e73
+// LIBRARY: IMPERIALISM 0x00624e73 SYMBOL
+// ?AfxWinInit@@YGHPAUHINSTANCE__@@0PADH@Z
 // name: AfxWinInit
-// symbol: ?AfxWinInit@@YGHPAUHINSTANCE__@@0PADH@Z
 // prototype: int __stdcall AfxWinInit(struct HINSTANCE__*, struct HINSTANCE__*, char *, int)
 
-// LIBRARY: IMPERIALISM 0x00624ed6
+// LIBRARY: IMPERIALISM 0x00624ed6 SYMBOL
+// ?SetCurrentHandles@CWinApp@@QAEXXZ
 // name: CWinApp::SetCurrentHandles
-// symbol: ?SetCurrentHandles@CWinApp@@QAEXXZ
 // prototype: public: void __thiscall CWinApp::SetCurrentHandles(void)
 
-// LIBRARY: IMPERIALISM 0x00624ff3
+// LIBRARY: IMPERIALISM 0x00624ff3 SYMBOL
+// ?AfxGetFileName@@YGIPBDPADI@Z
 // name: AfxGetFileName
-// symbol: ?AfxGetFileName@@YGIPBDPADI@Z
 // prototype: unsigned int __stdcall AfxGetFileName(char const *, char *, unsigned int)
 
-// LIBRARY: IMPERIALISM 0x00626b59
+// LIBRARY: IMPERIALISM 0x00626b59 SYMBOL
+// ??1_AFX_WIN_STATE@@UAE@XZ
 // name: _AFX_WIN_STATE::~_AFX_WIN_STATE
-// symbol: ??1_AFX_WIN_STATE@@UAE@XZ
 // prototype: public: virtual __thiscall _AFX_WIN_STATE::~_AFX_WIN_STATE(void)
 
-// LIBRARY: IMPERIALISM 0x00626b90
+// LIBRARY: IMPERIALISM 0x00626b90 SYMBOL
+// ?AfxPostQuitMessage@@YGXH@Z
 // name: AfxPostQuitMessage
-// symbol: ?AfxPostQuitMessage@@YGXH@Z
 // prototype: void __stdcall ?AfxPostQuitMessage@@YGXH@Z@00626b90(int param_1)
 
-// LIBRARY: IMPERIALISM 0x00626bb3
-// symbol: ??1CWinThread@@UAE@XZ
+// LIBRARY: IMPERIALISM 0x00626bb3 SYMBOL
+// ??1CWinThread@@UAE@XZ
 
-// LIBRARY: IMPERIALISM 0x00626c02
+// LIBRARY: IMPERIALISM 0x00626c02 SYMBOL
+// ??1AUX_DATA@@QAE@XZ
 // name: AUX_DATA::~AUX_DATA
-// symbol: ??1AUX_DATA@@QAE@XZ
 // prototype: public: __thiscall AUX_DATA::~AUX_DATA(void)
 
-// LIBRARY: IMPERIALISM 0x00626c0c
+// LIBRARY: IMPERIALISM 0x00626c0c SYMBOL
+// ??1CDocManager@@UAE@XZ
 // name: CDocManager::~CDocManager
-// symbol: ??1CDocManager@@UAE@XZ
 // prototype: public: virtual __thiscall CDocManager::~CDocManager(void)
 
-// LIBRARY: IMPERIALISM 0x00626c7d
+// LIBRARY: IMPERIALISM 0x00626c7d SYMBOL
+// ?AfxWinTerm@@YGXXZ
 // name: AfxWinTerm
-// symbol: ?AfxWinTerm@@YGXXZ
 // prototype: void __stdcall AfxWinTerm(void)
 
 // Called from _WinMainCRTStartup (0x5e9974) before main: LoadLibrary's the bundled
@@ -7217,5 +7215,5 @@
 // auxGetVolume and auxSetVolume into the 0x6ab5xx import table, continuing startup
 // even on failure. Vendor/toolchain glue, not game source.
 // LIBRARY: IMPERIALISM 0x00707081
-// name: InitializeWinmmImportBindings
+// InitializeWinmmImportBindings
 // prototype: void InitializeWinmmImportBindings(void)

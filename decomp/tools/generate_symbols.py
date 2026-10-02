@@ -31,7 +31,10 @@ from pathlib import Path
 
 from tools.common.pipe_csv import read_pipe_table
 from tools.common.repo import repo_root_from_file, resolve_repo_path
-from tools.common.vtable_extents import containing_vtable_extent, load_verified_vtable_extents
+from tools.common.vtable_extents import (
+    containing_vtable_extent,
+    load_verified_vtable_extents,
+)
 from tools.ghidra.merge_curated_symbols import write_symbols_csv
 from tools.source_model import Claim, build_model
 
@@ -40,19 +43,24 @@ DEFAULT_GEN_DIR = "build-msvc500/generated"
 
 
 def identity_overlay_claims(model) -> dict[int, Claim]:
-    """LIBRARY claims, plus SYNTHETIC claims that carry linker identity fields."""
+    """LIBRARY claims and identity-bearing SYNTHETIC claims."""
     out: dict[int, Claim] = {}
     for address, claim in model.functions.items():
         if claim.kind == "LIBRARY":
             out[address] = claim
-        elif claim.kind == "SYNTHETIC" and (claim.symbol or claim.prototype):
+        elif claim.kind == "SYNTHETIC" and (
+            claim.name or claim.symbol or claim.prototype
+        ):
             out[address] = claim
     return out
 
 
-def generate_rows(repo_root: Path, target: str = "IMPERIALISM",
-                  inventory: str = DEFAULT_INVENTORY,
-                  model=None) -> tuple[list[str], list[dict], dict]:
+def generate_rows(
+    repo_root: Path,
+    target: str = "IMPERIALISM",
+    inventory: str = DEFAULT_INVENTORY,
+    model=None,
+) -> tuple[list[str], list[dict], dict]:
     """(fieldnames, rows, stats) — the overlaid symbol table, in memory."""
     inv_path = resolve_repo_path(repo_root, inventory)
     if not inv_path.is_file():
@@ -61,16 +69,26 @@ def generate_rows(repo_root: Path, target: str = "IMPERIALISM",
     if model is None:
         model = build_model(repo_root, target)
     vtables = model.vtables
-    extents = load_verified_vtable_extents(repo_root / "config" / "verified_vtable_extents.csv")
+    extents = load_verified_vtable_extents(
+        repo_root / "config" / "verified_vtable_extents.csv"
+    )
     identities = identity_overlay_claims(model)
     # Source-derived spellings: only FUNCTION-kind claims are name-authoritative
     # (a real parsed C++ declaration).
-    source_named = {a: c for a, c in model.functions.items()
-                    if c.origin in ("marker", "generated")
-                    and c.kind == "FUNCTION" and c.name}
+    source_named = {
+        a: c
+        for a, c in model.functions.items()
+        if c.origin in ("marker", "generated") and c.kind == "FUNCTION" and c.name
+    }
 
     kept: list[dict] = []
-    stats = {"dropped": 0, "dropped_interior": 0, "identity": 0, "source": 0, "added": 0}
+    stats = {
+        "dropped": 0,
+        "dropped_interior": 0,
+        "identity": 0,
+        "source": 0,
+        "added": 0,
+    }
     seen: set[int] = set()
     for row in rows:
         addr_text = (row.get("address") or "").strip()
@@ -89,8 +107,11 @@ def generate_rows(repo_root: Path, target: str = "IMPERIALISM",
         if identity is not None:
             seen.add(addr)
             changed = False
-            for val, dst_key in ((identity.name, "name"), (identity.symbol, "symbol"),
-                                 (identity.prototype, "prototype")):
+            for val, dst_key in (
+                (identity.name, "name"),
+                (identity.symbol, "symbol"),
+                (identity.prototype, "prototype"),
+            ):
                 if val and (row.get(dst_key) or "") != val:
                     row[dst_key] = val
                     changed = True
@@ -118,17 +139,23 @@ def generate_rows(repo_root: Path, target: str = "IMPERIALISM",
         kept.append(row)
 
     for addr, identity in sorted(identities.items()):
-        if addr in seen or addr in vtables or containing_vtable_extent(addr, extents) is not None:
+        if (
+            addr in seen
+            or addr in vtables
+            or containing_vtable_extent(addr, extents) is not None
+        ):
             continue
-        kept.append({
-            "address": format(addr, "x"),
-            "name": identity.name,
-            "symbol": identity.symbol,
-            "size": "",
-            "type": "function",
-            "prototype": identity.prototype,
-            "provenance": "library_identity_marker",
-        })
+        kept.append(
+            {
+                "address": format(addr, "x"),
+                "name": identity.name,
+                "symbol": identity.symbol,
+                "size": "",
+                "type": "function",
+                "prototype": identity.prototype,
+                "provenance": "library_identity_marker",
+            }
+        )
         stats["added"] += 1
     return fieldnames, kept, stats
 
@@ -154,7 +181,12 @@ def main() -> int:
     parser.add_argument("--gen-dir", default=DEFAULT_GEN_DIR)
     args = parser.parse_args()
     repo_root = repo_root_from_file(__file__, levels_up=1)
-    generate(repo_root, args.target, args.inventory, resolve_repo_path(repo_root, args.gen_dir))
+    generate(
+        repo_root,
+        args.target,
+        args.inventory,
+        resolve_repo_path(repo_root, args.gen_dir),
+    )
     return 0
 
 

@@ -58,16 +58,16 @@ void TNumberedArrowButton::Draw(RECT* rectBuffer) {
   srcRect.bottom = 0x10;
   RECT dstRect = {0, 0, 0xb, 0x10};
   TQuickDrawSurfaceContext* hintSource = g_pMacViewMgr->atlas694[4];
-  BlitQuickDrawSurfaces(hintSource->GetBlitSurface(),
-                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect, &dstRect,
-                        0x24);
+  BlitRectWithOptionalTransparency(hintSource->GetBlitSurface(),
+                                   g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
+                                   &dstRect, 0x24);
   srcRect.left = (value86 != 1) ? 0x21 : 0x16;
   srcRect.right = srcRect.left + 0xb;
   dstRect.top = 0x19;
   dstRect.bottom = 0x29;
-  BlitQuickDrawSurfaces(hintSource->GetBlitSurface(),
-                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect, &dstRect,
-                        0x24);
+  BlitRectWithOptionalTransparency(hintSource->GetBlitSurface(),
+                                   g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
+                                   &dstRect, 0x24);
   UpdatePaletteIndexWithDefaultFallback(0x13);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b67);
   SetQuickDrawTextOriginWithContextOffset(7, 0);

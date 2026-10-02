@@ -26,7 +26,7 @@ installation are machine-wide. A worktree beneath a dot-directory needs a dot-fr
 ```sh
 bd update <issue> --claim
 # inspect a saved comparison and choose a shared source-model cause
-just compare-report build/comparisons/BASELINE --queue --output build/campaign.json
+just compare-report build/comparisons/BASELINE --queue --campaigns --output build/campaign.json
 # batch the unanswered retail reads; edit canonical owners and their consumers
 # normally cover roughly 50–100 affected functions before expensive verification
 just build
@@ -66,6 +66,8 @@ Each run saves reccmp's manifest, summary, Ghidriff report, direct-call census, 
 selection provenance and full datacmp/vtable diagnostics. `compare-report` counts outcomes, inline
 retries and retries that become clean, data issues, and vtable match/different/unpaired results. Its
 call queue is an inspection queue, not proof of manual inlining or incorrect behavior. The optional
+campaign groups count shared original data findings, direct-call targets, and source owners;
+they do not infer which reference caused a difference. The optional
 base report must be a whole-authored dataset built at the current merge base; dataset additions and
 removals are reported separately from shared-function outcome transitions.
 

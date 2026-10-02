@@ -14,7 +14,7 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include <cstring>
 
-static __inline CDC* ResolveActiveQuickDrawDc() {
+static CDC* ResolveActiveQuickDrawDc() {
   CDC* dc = g_pQuickDrawMemoryDc;
   if (dc == 0) {
     dc = g_pScopedMapQuickDrawDcHandleObject;

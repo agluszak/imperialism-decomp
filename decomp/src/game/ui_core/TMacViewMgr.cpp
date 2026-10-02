@@ -53,13 +53,9 @@
 // Genuine __cdecl(void*, int) heap-block reallocator; cast at call sites (same pattern
 // as TAutoGreatPower.cpp/TCountry.cpp). Returns the new block, or 0 on failure.
 
-// These are file-scope helpers only so the three big refresh bodies can share them; the
-// original inlines every one of them. The build uses /Ob1, which inlines ONLY
-// inline-marked functions, so a plain `static` helper compiles to a CALL the original
-// does not have. __inline folds them back into the caller.
 namespace {
 
-static __inline TTransportPicture* ResolveTaggedPanelOrFail(TView* hostView, unsigned int tag) {
+static TTransportPicture* ResolveTaggedPanelOrFail(TView* hostView, unsigned int tag) {
   TTransportPicture* panel = static_cast<TTransportPicture*>(hostView->ResolveControlByTag(tag));
   if (panel == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -68,7 +64,7 @@ static __inline TTransportPicture* ResolveTaggedPanelOrFail(TView* hostView, uns
   return panel;
 }
 
-static __inline TControl* ResolveTaggedChildOrFail(TControl* panel, unsigned int tag) {
+static TControl* ResolveTaggedChildOrFail(TControl* panel, unsigned int tag) {
   TControl* child = static_cast<TControl*>(panel->ResolveControlByTag(tag));
   if (child == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -77,7 +73,7 @@ static __inline TControl* ResolveTaggedChildOrFail(TControl* panel, unsigned int
   return child;
 }
 
-static __inline void CopyViewLayoutFieldsToStack(int* layout0, int* layout1, TControl* srcControl) {
+static void CopyViewLayoutFieldsToStack(int* layout0, int* layout1, TControl* srcControl) {
   TView* srcView = srcControl;
   layout0[0] = srcView->ownerLocalX;
   layout0[1] = srcView->ownerLocalY;
@@ -85,9 +81,9 @@ static __inline void CopyViewLayoutFieldsToStack(int* layout0, int* layout1, TCo
   layout1[1] = srcView->frameHeight38;
 }
 
-static __inline void ScanBracketExpressionsInto(CString* dest, const CString& templateText,
-                                                const CString& token1, const CString& token2,
-                                                const CString& token3) {
+static void ScanBracketExpressionsInto(CString* dest, const CString& templateText,
+                                       const CString& token1, const CString& token2,
+                                       const CString& token3) {
   // The scanner is variadic: omitting these three source CString values made [1]-[3]
   // consume unrelated stack slots and corrupted the transport ledger hover text.
   scanBracketExpressions(g_pSimMgr, dest, static_cast<LPCSTR>(templateText),
@@ -95,17 +91,17 @@ static __inline void ScanBracketExpressionsInto(CString* dest, const CString& te
                          static_cast<LPCSTR>(token3));
 }
 
-static __inline unsigned char QueryPointInsideHitRegion(CPoint* point, RgnHandle region) {
+static unsigned char QueryPointInsideHitRegion(CPoint* point, RgnHandle region) {
   return PtInRgn(point, region);
 }
 
-static __inline void InvokeBuildHexNeighborHighlightPolygonForTile(short tileId, int tileIndex) {
+static void InvokeBuildHexNeighborHighlightPolygonForTile(short tileId, int tileIndex) {
   BuildHexNeighborHighlightPolygonForTile(tileId, tileIndex);
 }
 
 // The loader's original vtable has no destructor slot; every caller owns this exact type.
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
-static __inline void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
+static void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
   if (loaderHandle == nullptr) {
     return;
   }
@@ -114,7 +110,7 @@ static __inline void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHan
 }
 IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 
-static __inline void ResolveAndBlitBitmapResourceToActiveAtlas(int resourceId, RECT* dstRect) {
+static void ResolveAndBlitBitmapResourceToActiveAtlas(int resourceId, RECT* dstRect) {
   TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(resourceId);
   TBitmapResourceLoader* loader = loaderHandle != 0 ? *loaderHandle : 0;
   if (loader != 0) {

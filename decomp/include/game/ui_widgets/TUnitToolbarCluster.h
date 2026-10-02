@@ -13,7 +13,9 @@ public:
                        TEvent* event) override;                      // slot 0x0f 0x00586090
   virtual void SetSelectedChildTagAndRefresh(int childTag) override; // slot 0x72 0x586170
   virtual char IsTradeControlAtMinimum() override;                   // slot 0x73 0x586150
-  // FUNCTION: IMPERIALISM 0x00586010
+  // SYNTHETIC: IMPERIALISM 0x00586010
+  // TUnitToolbarCluster::TUnitToolbarCluster
+  // Source evidence: unreferenced retained COMDAT in retail.
   TUnitToolbarCluster() : TUberCluster() {}
   DECLARE_DYNCREATE(TUnitToolbarCluster)
 };

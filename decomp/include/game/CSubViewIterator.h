@@ -10,8 +10,7 @@
 // child's payload while advancing the position. The single-arg constructor at 0x004919a0
 // defaults the direction to forward and sets the identifier filter to "    " (no filter).
 // The Windows port carries an explicit MoreSubViews() validity check; the Mac loop instead
-// tests FirstSubView()/NextSubView()'s returned TView* against nil. reccmp pairs the four
-// members by address (definitions in TTurnEventDialogFactoryRegistry.cpp, the owning TU).
+// tests FirstSubView()/NextSubView()'s returned TView* against nil.
 class CSubViewIterator {
 public:
   CSubViewIterator(const TView* owner); // 0x004919a0 (default forward)

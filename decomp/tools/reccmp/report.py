@@ -53,6 +53,109 @@ def call_queue(census: dict) -> list[dict]:
     return rows
 
 
+def reference_groups(summary: dict, census: dict) -> dict:
+    non_clean = {
+        row["orig"]: row
+        for row in summary["functions"]
+        if row["outcome"] != "no-differences"
+    }
+
+    def rows(groups: dict[str, dict]) -> list[dict]:
+        return sorted(
+            (
+                {
+                    **group["identity"],
+                    "functions": sorted(
+                        group["functions"],
+                        key=lambda item: int(item["orig"], 16),
+                    ),
+                }
+                for group in groups.values()
+                if len(group["functions"]) > 1
+            ),
+            key=lambda group: (-len(group["functions"]), str(group)),
+        )
+
+    data_groups: dict[str, dict] = {}
+    source_groups: dict[str, dict] = {}
+    for address, function in non_clean.items():
+        reference = {key: function[key] for key in ("orig", "name", "outcome")}
+        source = function.get("source")
+        if source and source.get("path"):
+            path = source["path"]
+            source_groups.setdefault(
+                path,
+                {"identity": {"path": path}, "functions": []},
+            )["functions"].append(reference)
+        seen_objects: set[str] = set()
+        for difference in function.get("data", []):
+            obj = difference.get("object")
+            if obj is None:
+                continue
+            original = obj.get("orig")
+            if not original or original in seen_objects:
+                continue
+            seen_objects.add(original)
+            data_groups.setdefault(
+                original,
+                {
+                    "identity": {
+                        "orig": original,
+                        "name": obj.get("name", ""),
+                    },
+                    "functions": [],
+                },
+            )["functions"].append(reference)
+
+    call_groups: dict[str, dict] = {}
+    for function in census["functions"]:
+        reference = non_clean.get(function["address"])
+        calls = function["orig"]["calls"]
+        if reference is None or calls is None:
+            continue
+        seen_targets: set[str] = set()
+        for call in calls:
+            target = call["identity"]
+            if target in seen_targets:
+                continue
+            seen_targets.add(target)
+            call_groups.setdefault(
+                target,
+                {
+                    "identity": {
+                        "identity": target,
+                        "name": call.get("name", ""),
+                    },
+                    "functions": [],
+                },
+            )["functions"].append(
+                {key: reference[key] for key in ("orig", "name", "outcome")}
+            )
+
+    return {
+        "data_references": {
+            "measure": (
+                "non-clean authored reports that contain a difference record for "
+                "the same original object"
+            ),
+            "groups": rows(data_groups),
+        },
+        "direct_call_targets": {
+            "measure": (
+                "non-clean authored functions that directly call the same original "
+                "target in the saved census"
+            ),
+            "groups": rows(call_groups),
+        },
+        "source_owners": {
+            "measure": (
+                "non-clean authored functions whose markers are in the same source file"
+            ),
+            "groups": rows(source_groups),
+        },
+    }
+
+
 def saved_report(directory: Path) -> dict:
     summary = read_summary(directory)
     checks = json.loads((directory / "checks.json").read_text())
@@ -77,6 +180,11 @@ def main() -> int:
     parser.add_argument(
         "--queue", action="store_true", help="include direct-call asymmetry queue"
     )
+    parser.add_argument(
+        "--campaigns",
+        action="store_true",
+        help="group non-clean saved evidence by shared references and source owners",
+    )
     args = parser.parse_args()
     result: dict[str, object] = {"head": saved_report(args.report)}
     if args.base:
@@ -95,9 +203,12 @@ def main() -> int:
         result["delta"] = report_delta(
             read_summary(args.report), read_summary(args.base)
         )
-    if args.queue:
+    if args.queue or args.campaigns:
         census = json.loads((args.report / "direct-calls.json").read_text())
-        result["call_asymmetries"] = call_queue(census)
+        if args.queue:
+            result["call_asymmetries"] = call_queue(census)
+        if args.campaigns:
+            result["campaigns"] = reference_groups(read_summary(args.report), census)
     encoded = json.dumps(result, indent=1) + "\n"
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)

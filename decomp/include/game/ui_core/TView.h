@@ -27,23 +27,7 @@ struct TToolboxEvent;
 // the 0x427060 call sites).
 class TUiStyleBytes {
 public:
-  // Inline default ctor: zero the 8 style bytes byte-wise. Inlined at the
-  // new-expressions in TView::EnsureField48Buffer (0x48b810) and
-  // ReplaceUiResourceContextPairBuffer (0x427060); the factory-builder TUs call the
-  // out-of-line Reset body (0x41b420) instead.
-  TUiStyleBytes() {
-    // MATCH: VC5 emits the retail constructor's eight byte stores from this
-    // character view while the payload retains its recovered typed fields.
-    unsigned char* bytes = reinterpret_cast<unsigned char*>(this);
-    bytes[0] = 0;
-    bytes[1] = 0;
-    bytes[2] = 0;
-    bytes[3] = 0;
-    bytes[4] = 0;
-    bytes[5] = 0;
-    bytes[6] = 0;
-    bytes[7] = 0;
-  }
+  TUiStyleBytes() : packedColor(0), styleWord(0) {}
   TUiStyleBytes* Reset(); // 0x41b420 — same zeroing, out-of-line (thiscall, returns this)
   int packedColor;        // +0
   int styleWord;          // +4
@@ -196,9 +180,6 @@ public:
   // TView's real vtable is 104 slots (0x00-0x19c). Slots 0x1A0+ belong to the sibling
   // branches (TControl, TCivDescription, TAmtBar, ...). The destructor is slot 1
   // (TEventHandler override), so its declaration position is irrelevant.
-  //
-  // MATCH: keep the destructor out-of-line; header inlining emits unwanted per-TU COMDATs
-  // and lowers similarity in unrelated translation units.
   virtual ~TView() override;
 };
 ASSERT_SIZE(TView, 0x60);

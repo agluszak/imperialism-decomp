@@ -26,11 +26,11 @@ void scanBracketExpressions(TSimMgr* ctx, CString* out, const char* input, ...);
 void __cdecl BuildUiMessageTextFromBracketTemplate(TSimMgr* sim, CString* out, int groupA,
                                                    int indexA, int groupB, int indexB);
 void GenerateMappedFlavorTextByCurrentContextNation(CString* dest);
-void GenerateMappedFlavorTextVariantC_005cf1b0(CString* out);
-void GenerateMappedFlavorTextVariantE_005ccce0(CString* out);
-void GenerateMappedFlavorTextVariantB_005cfc40(CString* out);
-void GenerateMappedFlavorTextVariantA_005d13d0(CString* out);
-void GenerateMappedFlavorTextVariantD_005d33a0(CString* out);
+void GenerateMappedFlavorTextVariantC(CString* out);
+void GenerateMappedFlavorTextVariantE(CString* out);
+void GenerateMappedFlavorTextVariantB(CString* out);
+void GenerateMappedFlavorTextVariantA(CString* out);
+void GenerateMappedFlavorTextVariantD(CString* out);
 void BuildRandomMapContextStatusBaseString(CString* out);
 CString AssignRandomMapContextStatusBaseString();
 void AppendRandomMapContextStatusSuffixWithProbability(CString* dest);

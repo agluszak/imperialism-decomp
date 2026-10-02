@@ -37,12 +37,6 @@
 
 IMPLEMENT_DYNCREATE(TShipyardView, TBuildingView)
 
-// 0x4c82c0 is a real out-of-line ctor: base ctor call, vptr store (0x651b30), then a
-// single `xor eax,eax` reused for BOTH dword [this+0x94] and [this+0x98], then
-// `mov eax,esi` return-this -- so zero both inherited TBuildingView fields. Zeroing only
-// productionView98 left this body byte-identical to its TBuildingView siblings' ctors,
-// which is what previously made the address fail to pair uniquely; with city94 stored as
-// well the claim pairs at 90%.
 // FUNCTION: IMPERIALISM 0x004c82c0
 TShipyardView::TShipyardView() {
   city94 = 0;

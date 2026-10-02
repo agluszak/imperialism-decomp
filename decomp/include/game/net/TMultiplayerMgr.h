@@ -136,7 +136,7 @@ public:
   // Dead predicate: every populated nationSessionIds[] slot (skipping 0/-2) equals the
   // net session's active nation id. No surviving caller. 0x54cbb0.
   char AreAllSessionSlotsOwnedByActiveNation();
-  void SendNewsEvent(int nationSlot, NewsEvent* event);               // 0x549540 (Mac oracle)
+  void SendNewsEvent(int nationSlot, NewsEvent* event); // 0x549540 (Mac oracle)
   void CreateAndSendTurnEvent1B_FiveShortsAndDword(short shortA, short shortB, short shortC,
                                                    short shortD, short shortE,
                                                    int trailingValue); // 0x5498d0
@@ -249,8 +249,7 @@ public:
 
   // Refresh defaultNationTextSlots/nationDisplayNameSlots/nationStatusTags for one slot,
   // or all seven when nationSlot == -1 (dead slots get 'dead'; ineligible names are
-  // wrapped in parentheses and the tag set to 'deca'). 0x54cc00 (Ghidra mis-attributed
-  // it to TToolBarCluster).
+  // wrapped in parentheses and the tag set to 'deca'). 0x54cc00.
   // 0x543910: post-resume diplomacy turn-event dispatcher — switches on
   // pendingNationSlotIndex (the received turn-event code) and re-broadcasts the
   // matching game-state snapshot family; every path except code 6 ends with the

@@ -313,19 +313,7 @@ bool TInvadeMission::Matches(eMissionType missionType, int key, TZone* zoneConte
 int TInvadeMission::AccumulateLack(int* accumulatedLack, unsigned char includeExistingLack) const {
   float vector[5] = {0};
   int total = 0;
-  CIterator iter(orderListAt18);
-  for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
-    TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
-    unit->AssertValid();
-    short weightIndex = unit->GetTurnDistanceTo(GetPresentLocation());
-    if (weightIndex > 5) {
-      weightIndex = 5;
-    }
-    float distanceWeight = g_MissionOrderDistanceDecayWeightTable_006978c8[weightIndex];
-    AccumulateUnitOrderPriorityVectorContribution(
-        unit, vector, distanceWeight,
-        static_cast<float>(g_pGlobalMapState->GetProvinceUnitOrderWeight(GetPresentLocation())));
-  }
+  AccumulateOrderPriorityVector(vector);
 
   for (int i = 0; i < 5; ++i) {
     float value;

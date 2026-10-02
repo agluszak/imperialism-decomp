@@ -310,8 +310,7 @@ void CMcWindow::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 }
 
 // SYNTHETIC: IMPERIALISM 0x00493d30
-// s_charEvent function-local static dynamic atexit destructor
-// (mov ecx,0x6a1c40; jmp TUiEvent::~TUiEvent)
+// CMcWindow::OnChar::s_charEvent destructor
 
 // Message 0x36a is MFC's idle-update hook for this native host. Its wParam is ignored;
 // lParam is the idle count forwarded through ImperialismApp's real OnIdle virtual.

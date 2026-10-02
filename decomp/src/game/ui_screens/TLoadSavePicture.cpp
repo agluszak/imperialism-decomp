@@ -314,11 +314,11 @@ namespace {
 // helpers: every original site materializes the comparison into a byte register
 // (sete/setne + test al,al) before branching, the Mac-style unsigned-char Boolean shape
 // under /Ob1.
-static __inline unsigned char IsMultiplayerFlowHosting() {
+static unsigned char IsMultiplayerFlowHosting() {
   return g_pSimMgr->multiplayerSessionRole == 1;
 }
 
-static __inline unsigned char IsMultiplayerFlowActive() {
+static unsigned char IsMultiplayerFlowActive() {
   return g_pSimMgr->multiplayerSessionRole != 0;
 }
 

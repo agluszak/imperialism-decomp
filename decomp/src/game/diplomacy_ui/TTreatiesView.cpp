@@ -50,9 +50,6 @@ void TTreatiesView::DoPostCreate(int arg) {
 void TTreatiesView::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
   CString labelText;
-  // Constructed and destroyed here (EH state tracked) but never touched in the body
-  // -- a dead local in the original, kept for the exact EH/codegen shape (same
-  // pattern as TDiplomacyMapView::Draw's unusedScratch).
   CString unusedScratch;
 
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xe, 0x2b68, 1);

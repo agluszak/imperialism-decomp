@@ -84,9 +84,9 @@ void TMapPreviewView::Draw(RECT* rectBuffer) {
 
   RECT previewRect = {0, 0, frameWidth34, frameHeight38};
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  BlitQuickDrawSurfaces(previewSurface60->GetBlitSurface(),
-                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &previewRect,
-                        &previewRect, 0x24);
+  BlitRectWithOptionalTransparency(previewSurface60->GetBlitSurface(),
+                                   g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &previewRect,
+                                   &previewRect, 0x24);
 
   if (selectedRegion64 != -1) {
     short columnX2;
@@ -100,9 +100,9 @@ void TMapPreviewView::Draw(RECT* rectBuffer) {
     markerDest.top = (static_cast<int>(row) - 3) * 3;
     markerDest.right = markerDest.left + 0x12;
     markerDest.bottom = markerDest.top + 0x12;
-    BlitQuickDrawSurfaces(g_pMacViewMgr->atlas694[3]->GetBlitSurface(),
-                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &markerSource,
-                          &markerDest, 0x24);
+    BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[3]->GetBlitSurface(),
+                                     g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                     &markerSource, &markerDest, 0x24);
   }
 
   SetQuickDrawStrokeColor(0xffffff);
@@ -112,7 +112,7 @@ namespace {
 
 // Resolve a map owner tag to the palette byte stored in the preview surface. Minor
 // nations share palette entry 0xb; -1 is off-map and -2 is a contested hex corner.
-static __inline unsigned char ResolvePreviewMapOwnerTagPaletteByte(int ownerTag) {
+static unsigned char ResolvePreviewMapOwnerTagPaletteByte(int ownerTag) {
   if (ownerTag >= 7 && ownerTag < 0x17) {
     ownerTag = 0xb;
   }

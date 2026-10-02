@@ -101,13 +101,13 @@ TTurnEventDialogFactoryRegistry::TTurnEventDialogFactoryRegistry() : TObject(), 
 // The `factories` CList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc> member's own
 // compiler-emitted serializer/destructor, called through the member's CList vtable and from
 // the complete-object destructor above.
-// TEMPLATE: IMPERIALISM 0x004927e0
+// TEMPLATE: IMPERIALISM 0x004927e0 SYMBOL
 // ?Serialize@?$CList@P6APAVTView@@PAVCWnd@@H@ZP6APAV1@0H@Z@@UAEXAAVCArchive@@@Z
 
 // SYNTHETIC: IMPERIALISM 0x00492980
 // CList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc>::`scalar deleting destructor'
 
-// TEMPLATE: IMPERIALISM 0x004929b0
+// TEMPLATE: IMPERIALISM 0x004929b0 SYMBOL
 // ??1?$CList@P6APAVTView@@PAVCWnd@@H@ZP6APAV1@0H@Z@@UAE@XZ
 
 // Empty in source: the 116 bytes at 0x00491b40 are all compiler output (EH frame plus
@@ -149,11 +149,6 @@ TView* TTurnEventDialogFactoryRegistry::RunRegisteredDialogFactoriesByEventCode(
     }
     if (anchorPoint.y != 0 || anchorPoint.x != 0) {
       CPoint position;
-      // Operand order follows the original: ADD EDX,EAX is anchor[0] + ownerLocalX
-      // (0x00491d16) but ADD EAX,ECX is ownerLocalY + anchor[1] (0x00491d1b).
-      // VC5 still schedules the +0x28 load ahead of +0x24 here and neither operand
-      // reordering nor sequencing the first load into a local changes that (both
-      // measured, both 92.59%), so the residual is left alone rather than contorted.
       position.x = anchorPoint.x + result->ownerLocalX;
       position.y = result->ownerLocalY + anchorPoint.y;
       result->Locate(position, 0);
