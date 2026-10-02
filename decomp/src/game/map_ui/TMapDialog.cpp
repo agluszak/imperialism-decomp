@@ -1560,34 +1560,34 @@ void TMapDialog::DrawBorder(short relationLevel, int originX, int originY, int n
   SetQuickDrawPenSizeAndMarkDirty(2, 2);
   switch (relationLevel) {
   case 0:
-    DrawMapDialogGuidePatternSetA_00520970(originX, originY, 1);
+    DrawMapDialogGuidePatternSetA(originX, originY, 1);
     break;
   case 1:
-    DrawMapDialogGuidePatternSetB_00520a90(originX, originY, 1);
+    DrawMapDialogGuidePatternSetB(originX, originY, 1);
     break;
   case 2:
-    DrawMapDialogGuidePatternSetC_00520c10(originX, originY, 1);
+    DrawMapDialogGuidePatternSetC(originX, originY, 1);
     break;
   case 3:
-    DrawMapDialogGuidePatternSetD_00520d20(originX, originY, 1);
+    DrawMapDialogGuidePatternSetD(originX, originY, 1);
     break;
   case 4:
     DrawMapDialogTileGuidePatternByVariant(originX, originY, 1);
     break;
   case 5:
-    DrawMapDialogGuidePatternSetE_00520fc0(originX, originY, 1);
+    DrawMapDialogGuidePatternSetE(originX, originY, 1);
     break;
   case 6:
-    DrawMapDialogGuidePatternSetF_00521090(originX, originY, 1);
+    DrawMapDialogGuidePatternSetF(originX, originY, 1);
     break;
   case 7:
-    DrawMapDialogGuidePatternSetG_005211c0(originX, originY, 1);
+    DrawMapDialogGuidePatternSetG(originX, originY, 1);
     break;
   case 8:
-    DrawMapDialogGuidePatternSetH_00521340(originX, originY, 1);
+    DrawMapDialogGuidePatternSetH(originX, originY, 1);
     break;
   case 9:
-    DrawMapDialogGuidePatternSetI_00521540(originX, originY, 1);
+    DrawMapDialogGuidePatternSetI(originX, originY, 1);
     break;
   }
   if (g_pDiplomacyTurnStateManager->IsGreatPower(nationB) == 0) {
@@ -1597,40 +1597,40 @@ void TMapDialog::DrawBorder(short relationLevel, int originX, int originY, int n
   }
   switch (relationLevel) {
   case 0:
-    DrawMapDialogGuidePatternSetA_00520970(originX, originY, 2);
+    DrawMapDialogGuidePatternSetA(originX, originY, 2);
     break;
   case 1:
-    DrawMapDialogGuidePatternSetB_00520a90(originX, originY, 2);
+    DrawMapDialogGuidePatternSetB(originX, originY, 2);
     break;
   case 2:
-    DrawMapDialogGuidePatternSetC_00520c10(originX, originY, 2);
+    DrawMapDialogGuidePatternSetC(originX, originY, 2);
     break;
   case 3:
-    DrawMapDialogGuidePatternSetD_00520d20(originX, originY, 2);
+    DrawMapDialogGuidePatternSetD(originX, originY, 2);
     break;
   case 4:
     DrawMapDialogTileGuidePatternByVariant(originX, originY, 2);
     break;
   case 5:
-    DrawMapDialogGuidePatternSetE_00520fc0(originX, originY, 2);
+    DrawMapDialogGuidePatternSetE(originX, originY, 2);
     break;
   case 6:
-    DrawMapDialogGuidePatternSetF_00521090(originX, originY, 2);
+    DrawMapDialogGuidePatternSetF(originX, originY, 2);
     break;
   case 7:
-    DrawMapDialogGuidePatternSetG_005211c0(originX, originY, 2);
+    DrawMapDialogGuidePatternSetG(originX, originY, 2);
     break;
   case 8:
-    DrawMapDialogGuidePatternSetH_00521340(originX, originY, 2);
+    DrawMapDialogGuidePatternSetH(originX, originY, 2);
     break;
   case 9:
-    DrawMapDialogGuidePatternSetI_00521540(originX, originY, 2);
+    DrawMapDialogGuidePatternSetI(originX, originY, 2);
     break;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00520970
-void TMapDialog::DrawMapDialogGuidePatternSetA_00520970(int originX, int originY, short variant) {
+void TMapDialog::DrawMapDialogGuidePatternSetA(int originX, int originY, short variant) {
   int y1;
   int y2;
   if (variant == 0) {
@@ -1659,7 +1659,7 @@ void TMapDialog::DrawMapDialogGuidePatternSetA_00520970(int originX, int originY
 }
 
 // FUNCTION: IMPERIALISM 0x00520a90
-void TMapDialog::DrawMapDialogGuidePatternSetB_00520a90(int originX, int originY, short variant) {
+void TMapDialog::DrawMapDialogGuidePatternSetB(int originX, int originY, short variant) {
   if (variant == 0) {
     SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 8);
     DrawCenteredGuideLineOnMapDc(originX + 0x36, originY + 0xd);
@@ -1686,7 +1686,7 @@ void TMapDialog::DrawMapDialogGuidePatternSetB_00520a90(int originX, int originY
 }
 
 // FUNCTION: IMPERIALISM 0x00520c10
-void TMapDialog::DrawMapDialogGuidePatternSetC_00520c10(int originX, int originY, short variant) {
+void TMapDialog::DrawMapDialogGuidePatternSetC(int originX, int originY, short variant) {
   int x1;
   int x2;
   int x3;
@@ -1715,7 +1715,7 @@ void TMapDialog::DrawMapDialogGuidePatternSetC_00520c10(int originX, int originY
 }
 
 // FUNCTION: IMPERIALISM 0x00520d20
-void TMapDialog::DrawMapDialogGuidePatternSetD_00520d20(int originX, int originY, short variant) {
+void TMapDialog::DrawMapDialogGuidePatternSetD(int originX, int originY, short variant) {
   if (variant == 1) {
     SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 10);
     DrawCenteredGuideLineOnMapDc(originX + 0x39, originY);
@@ -1764,7 +1764,7 @@ void TMapDialog::DrawMapDialogTileGuidePatternByVariant(int originX, int originY
 }
 
 // FUNCTION: IMPERIALISM 0x00520fc0
-void TMapDialog::DrawMapDialogGuidePatternSetE_00520fc0(int originX, int originY, short variant) {
+void TMapDialog::DrawMapDialogGuidePatternSetE(int originX, int originY, short variant) {
   if (variant == 1) {
     SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 0x36);
     DrawCenteredGuideLineOnMapDc(originX + 0x39, originY + 0x3e);
@@ -1780,7 +1780,7 @@ void TMapDialog::DrawMapDialogGuidePatternSetE_00520fc0(int originX, int originY
 }
 
 // FUNCTION: IMPERIALISM 0x00521090
-void TMapDialog::DrawMapDialogGuidePatternSetF_00521090(int originX, int originY, short variant) {
+void TMapDialog::DrawMapDialogGuidePatternSetF(int originX, int originY, short variant) {
   int x1;
   int x2;
   if (variant == 1) {
@@ -1813,7 +1813,7 @@ void TMapDialog::DrawMapDialogGuidePatternSetF_00521090(int originX, int originY
 }
 
 // FUNCTION: IMPERIALISM 0x005211c0
-void TMapDialog::DrawMapDialogGuidePatternSetG_005211c0(int originX, int originY, short variant) {
+void TMapDialog::DrawMapDialogGuidePatternSetG(int originX, int originY, short variant) {
   if (variant == 0) {
     SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 0x38);
     DrawCenteredGuideLineOnMapDc(originX + 0x36, originY + 0x33);
@@ -1840,7 +1840,7 @@ void TMapDialog::DrawMapDialogGuidePatternSetG_005211c0(int originX, int originY
 }
 
 // FUNCTION: IMPERIALISM 0x00521340
-void TMapDialog::DrawMapDialogGuidePatternSetH_00521340(int originX, int originY, short variant) {
+void TMapDialog::DrawMapDialogGuidePatternSetH(int originX, int originY, short variant) {
   if (variant == 0) {
     SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 0x38);
     DrawCenteredGuideLineOnMapDc(originX + 0x36, originY + 0x33);
@@ -1873,7 +1873,7 @@ void TMapDialog::DrawMapDialogGuidePatternSetH_00521340(int originX, int originY
 }
 
 // FUNCTION: IMPERIALISM 0x00521540
-void TMapDialog::DrawMapDialogGuidePatternSetI_00521540(int originX, int originY, short variant) {
+void TMapDialog::DrawMapDialogGuidePatternSetI(int originX, int originY, short variant) {
   int y1;
   if (variant == 0) {
     SetQuickDrawTextOriginWithContextOffset(originX + 0x18, originY + 0x40);
@@ -1908,26 +1908,26 @@ void TMapDialog::DrawCityBorderSegmentsByMask(unsigned char borderMask, int scre
     SetQuickDrawPenSizeAndMarkDirty(1, 1);
     SetQuickDrawFillColor(0xffffff);
     if ((borderMask & 1) == 0) {
-      DrawMapDialogGuidePatternSetC_00520c10(screenX, screenY, 0);
+      DrawMapDialogGuidePatternSetC(screenX, screenY, 0);
     } else {
-      DrawMapDialogGuidePatternSetB_00520a90(screenX, screenY, 0);
+      DrawMapDialogGuidePatternSetB(screenX, screenY, 0);
       if ((borderMask & 0x40) != 0) {
         SetQuickDrawPenSizeAndMarkDirty(1, 1);
         SetQuickDrawFillColor(0xffffff);
-        DrawMapDialogGuidePatternSetD_00520d20(screenX, screenY, 0);
+        DrawMapDialogGuidePatternSetD(screenX, screenY, 0);
       }
     }
 
     SetQuickDrawPenSizeAndMarkDirty(1, 1);
     SetQuickDrawFillColor(0xffffff);
     if ((borderMask & 4) == 0) {
-      DrawMapDialogGuidePatternSetF_00521090(screenX, screenY, 0);
+      DrawMapDialogGuidePatternSetF(screenX, screenY, 0);
     } else {
-      DrawMapDialogGuidePatternSetG_005211c0(screenX, screenY, 0);
+      DrawMapDialogGuidePatternSetG(screenX, screenY, 0);
       if ((borderMask & 0x80) != 0) {
         SetQuickDrawPenSizeAndMarkDirty(1, 1);
         SetQuickDrawFillColor(0xffffff);
-        DrawMapDialogGuidePatternSetE_00520fc0(screenX, screenY, 0);
+        DrawMapDialogGuidePatternSetE(screenX, screenY, 0);
       }
     }
   }
@@ -1935,21 +1935,21 @@ void TMapDialog::DrawCityBorderSegmentsByMask(unsigned char borderMask, int scre
   if ((borderMask & 1) != 0) {
     SetQuickDrawPenSizeAndMarkDirty(1, 1);
     SetQuickDrawFillColor(0xffffff);
-    DrawMapDialogGuidePatternSetA_00520970(screenX, screenY, 0);
+    DrawMapDialogGuidePatternSetA(screenX, screenY, 0);
     if (!direction1) {
       SetQuickDrawPenSizeAndMarkDirty(1, 1);
       SetQuickDrawFillColor(0xffffff);
-      DrawMapDialogGuidePatternSetD_00520d20(screenX, screenY, 0);
+      DrawMapDialogGuidePatternSetD(screenX, screenY, 0);
     }
   }
   if ((borderMask & 4) != 0) {
     SetQuickDrawPenSizeAndMarkDirty(1, 1);
     SetQuickDrawFillColor(0xffffff);
-    DrawMapDialogGuidePatternSetI_00521540(screenX, screenY, 0);
+    DrawMapDialogGuidePatternSetI(screenX, screenY, 0);
     if (!direction1) {
       SetQuickDrawPenSizeAndMarkDirty(1, 1);
       SetQuickDrawFillColor(0xffffff);
-      DrawMapDialogGuidePatternSetE_00520fc0(screenX, screenY, 0);
+      DrawMapDialogGuidePatternSetE(screenX, screenY, 0);
     }
   }
 
@@ -1962,8 +1962,8 @@ void TMapDialog::DrawCityBorderSegmentsByMask(unsigned char borderMask, int scre
         (borderMask & 0x20) != 0 && !direction1) {
       SetQuickDrawPenSizeAndMarkDirty(1, 1);
       SetQuickDrawFillColor(0xffffff);
-      DrawMapDialogGuidePatternSetA_00520970(screenX, screenY, 0);
-      DrawMapDialogGuidePatternSetD_00520d20(screenX, screenY, 0);
+      DrawMapDialogGuidePatternSetA(screenX, screenY, 0);
+      DrawMapDialogGuidePatternSetD(screenX, screenY, 0);
     }
 
     neighborTile = g_pGlobalMapState->GetNeighborTileID(tileIndex, kStrategicHexDirectionSouthEast);
@@ -1973,8 +1973,8 @@ void TMapDialog::DrawCityBorderSegmentsByMask(unsigned char borderMask, int scre
         (borderMask & 8) != 0 && !direction1) {
       SetQuickDrawPenSizeAndMarkDirty(1, 1);
       SetQuickDrawFillColor(0xffffff);
-      DrawMapDialogGuidePatternSetE_00520fc0(screenX, screenY, 0);
-      DrawMapDialogGuidePatternSetI_00521540(screenX, screenY, 0);
+      DrawMapDialogGuidePatternSetE(screenX, screenY, 0);
+      DrawMapDialogGuidePatternSetI(screenX, screenY, 0);
     }
     SetQuickDrawPenSizeAndMarkDirty(1, 1);
   }

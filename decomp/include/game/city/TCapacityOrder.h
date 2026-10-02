@@ -23,7 +23,7 @@ public:
   void Produce() override; // slot 0x0d 0x4b8dd0
   // MacApp-style initializer: `new TCapacityOrder()` then ICapacityOrder(...), which is
   // how TCity builds it. This is the ONLY construction path -- 0x004b8d50 does the field
-  // init (including the trackingSlots clear as a REP STOSD) and matches at 100%.
+  // initialization, including the trackingSlots clear.
   virtual void ICapacityOrder(TCity* city, short resourceType, short primaryInputResource,
                               short secondaryInputResource,
                               short productionSlot); // slot 0x12 0x4b8d50

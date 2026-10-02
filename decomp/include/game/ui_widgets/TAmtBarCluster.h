@@ -15,7 +15,9 @@ public:
   virtual void SetMoveAmount(short amount);          // slot 0x74 0x586ff0
 
   // No own fields: RTTI proves TAmtBarCluster is exactly TUberCluster's size (0x88).
-  // FUNCTION: IMPERIALISM 0x00586ce0
+  // SYNTHETIC: IMPERIALISM 0x00586ce0
+  // TAmtBarCluster::TAmtBarCluster
+  // Source evidence: unreferenced retained COMDAT in retail.
   TAmtBarCluster() : TUberCluster() {}
   DECLARE_DYNCREATE(TAmtBarCluster)
 };

@@ -32,7 +32,7 @@ struct MinisterPriorityEntry {
   short rank;
 };
 
-static __inline int SelectDevelopmentGrantAmount(int availableBudget) {
+static int SelectDevelopmentGrantAmount(int availableBudget) {
   if (availableBudget < 3000) {
     return 1000;
   }
@@ -695,8 +695,6 @@ char TForeignMinister::DeservesToBeEnemy(int nationCode) {
 
 // FUNCTION: IMPERIALISM 0x00530b30
 void TForeignMinister::DoSelectEnemy() {
-  // The original reloads the owning great power (this->ownerContextAt04) at each use
-  // rather than caching it; access it inline so the same reload codegen is emitted.
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
     if (this->ownerContextAt04->HasActiveCandidateNationSlots() != 0) {
       return;

@@ -21,7 +21,7 @@
 
 namespace {
 
-static __inline unsigned int ByteSwapNewsTableDword(unsigned int value) {
+static unsigned int ByteSwapNewsTableDword(unsigned int value) {
   return ((value & 0x000000ffU) << 24) | ((value & 0x0000ff00U) << 8) |
          ((value & 0x00ff0000U) >> 8) | ((value & 0xff000000U) >> 24);
 }
@@ -784,9 +784,6 @@ unsigned char TNewsMgr::EvaluateFeatureStory(const newsEntry* templateRow, newsS
 // Mac oracle: ClearStoryParms.
 // FUNCTION: IMPERIALISM 0x0055d090
 void TNewsMgr::ClearStoryParms(newsStory* story) {
-  // 40%: semantically exact. The original biases the pointer once (add eax,0x10)
-  // and writes at +0..+0xc; MSVC folds our equivalent back into displacements.
-  // Not worth contorting the source for one addressing-mode difference.
   story->parmKind[0] = 0;
   story->parmKind[1] = 0;
   story->parmKind[2] = 0;

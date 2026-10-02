@@ -1,7 +1,7 @@
 # Reference
 
 Durable layout contracts and game-domain knowledge. These are lookup references, not
-workflow guides (those are in `.claude/skills/`), not the active backlog (use Beads),
+workflow guides (those are in `.agents/skills/`), not the active backlog,
 and not the change log (use clear git commit messages for change-specific commands,
 validation, and score deltas).
 
@@ -38,9 +38,3 @@ validation, and score deltas).
 - `strenu-strings.tsv` (+ `strenu-index-sample.txt`) — extracted UI/localization string
   table (`id`, `block`, `index`, `text`); the fastest text→resource-ID lookup.
 - `manual_text.txt` — extracted game manual; baseline gameplay/mechanics reference.
-
-## Moved backlog
-
-Former plan/worklist documents were removed after their full text was preserved in
-Beads issue design fields. Use the Big Goal epic (`imperialism-decomp-1uj`) and
-`bd ready` for active work.

@@ -31,9 +31,14 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 from pathlib import Path
 import re
 import subprocess
+from functools import lru_cache
+
+from tools.common import ghidra_env
+from tools.common.pe import PeImage
 import sys
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -115,7 +120,7 @@ MULTI_HELPERS = {
     "WriteIntListToStream": [("write", 4, 1), ("write", 4, None)],
 }
 
-SOURCE_OPS = set(SLOT_BY_NAME) | set(HELPERS) | set(MULTI_HELPERS)
+SOURCE_OPS: set[str] = set(SLOT_BY_NAME) | set(HELPERS) | set(MULTI_HELPERS)
 
 # ---------------------------------------------------------------------------
 # Binary side: replay the listing, tracking where the slot pointer lives.
@@ -146,26 +151,22 @@ ILT_RANGE = (0x401000, 0x409AB5)
 _ILT_TARGETS: dict[int, int] = {}
 
 
+@lru_cache(maxsize=None)
+def retail_image() -> PeImage:
+    ghidra_env.load_dotenv()
+    return PeImage(Path(os.environ["ORIGINAL_BINARY"]).read_bytes())
+
+
 def resolve_call_target(address: int) -> int:
     """Chase an ILT jmp thunk to its real target (cached); other addresses pass through."""
     if not (ILT_RANGE[0] <= address <= ILT_RANGE[1]):
         return address
     if address in _ILT_TARGETS:
         return _ILT_TARGETS[address]
-    # The ILT row renders as "0x004083a0  (no function) JMP 0x004f2a60", which the
-    # instruction filter in listing_lines() drops, so query it raw.
-    result = subprocess.run(
-        ["uv", "run", "python", "-m", "tools.ghidra.query", "listing", hex(address)],
-        capture_output=True,
-        text=True,
-        cwd=REPO_ROOT,
-    )
+    data = retail_image().read(address, 5)
     target = address
-    for line in result.stdout.splitlines():
-        match = re.search(r"JMP (0x[0-9a-f]+)", line)
-        if match:
-            target = int(match.group(1), 16)
-            break
+    if data is not None and len(data) == 5 and data[0] == 0xE9:
+        target = address + 5 + int.from_bytes(data[1:], "little", signed=True)
     _ILT_TARGETS[address] = target
     return target
 PUSH_IMM = re.compile(r"^\S+\s+PUSH (0x[0-9a-f]+|\d+)$")
@@ -192,6 +193,7 @@ def listing_lines(address: int, refresh: bool = False) -> list[str]:
         capture_output=True,
         text=True,
         cwd=REPO_ROOT,
+        check=True,
     )
     lines = [line for line in result.stdout.splitlines() if INSN_RE.match(line)]
     cache[key] = lines
@@ -200,7 +202,11 @@ def listing_lines(address: int, refresh: bool = False) -> list[str]:
     return lines
 
 
-def binary_stream_ops(address: int) -> tuple[list[dict], list[str]]:
+def binary_stream_ops(
+    address: int,
+    serializers: set[int] | None = None,
+    active: tuple[int, ...] = (),
+) -> tuple[list[dict], list[str]]:
     """Stream ops in the original body, preferring the strict (vtable-verified) pass.
 
     Strict tracking requires proving the dispatched slot came from the *stream's* vtable.
@@ -208,10 +214,12 @@ def binary_stream_ops(address: int) -> tuple[list[dict], list[str]]:
     strict pass silently reports nothing -- which would read as "the original does no I/O"
     and flag a false desync. Fall back to the offset-only pass in that case and say so.
     """
-    strict, warnings = _scan(address, strict=True)
+    strict, warnings = _scan(address, strict=True, serializers=serializers, active=active)
     if strict:
         return strict, warnings
-    relaxed, relaxed_warnings = _scan(address, strict=False)
+    relaxed, relaxed_warnings = _scan(
+        address, strict=False, serializers=serializers, active=active
+    )
     # Only trust the relaxed pass when it found a raw block read/write. Every real
     # serializer moves bytes through ReadBytes/WriteBytes; a relaxed pass that
     # turned up only typed-accessor slots has almost certainly matched some other
@@ -224,7 +232,12 @@ def binary_stream_ops(address: int) -> tuple[list[dict], list[str]]:
     return strict, warnings
 
 
-def _scan(address: int, strict: bool) -> tuple[list[dict], list[str]]:
+def _scan(
+    address: int,
+    strict: bool,
+    serializers: set[int] | None = None,
+    active: tuple[int, ...] = (),
+) -> tuple[list[dict], list[str]]:
     ops: list[dict] = []
     warnings: list[str] = []
     reg_slot: dict[str, int] = {}
@@ -415,8 +428,11 @@ def _scan(address: int, strict: bool) -> tuple[list[dict], list[str]]:
         abs_call = CALL_ABS.match(line)
         if stack_call or mem_call or reg_call or abs_call:
             helper = None
+            serializer = None
             if abs_call:
-                helper = HELPER_FUNCS.get(resolve_call_target(int(abs_call.group(1), 16)))
+                target = resolve_call_target(int(abs_call.group(1), 16))
+                helper = HELPER_FUNCS.get(target)
+                serializer = target if serializers and target in serializers else None
             if slot is not None and slot in SLOTS:
                 esp += emit(slot, where)
             elif helper is not None:
@@ -425,13 +441,25 @@ def _scan(address: int, strict: bool) -> tuple[list[dict], list[str]]:
                             "count": pending_imms[-1] if pending_imms else None,
                             "at": int(where, 16)})
                 esp += pushed_since_call
+            elif serializer is not None:
+                if serializer in active:
+                    warnings.append(f"{where}: recursive serializer call to {serializer:#x}")
+                else:
+                    nested, nested_warnings = binary_stream_ops(
+                        serializer, serializers, (*active, address)
+                    )
+                    ops.extend({**op, "at": int(where, 16)} for op in nested)
+                    warnings.extend(nested_warnings)
+                esp += pushed_since_call
             else:
-                # Unknown callee. A __cdecl callee leaves cleanup to the caller, which
-                # shows up as the next instruction being ADD ESP,n -- let that line do
-                # the adjustment or the pushes get counted twice. Otherwise the callee
-                # popped its own arguments.
-                following = lines[position + 1].rstrip() if position + 1 < len(lines) else ""
-                if not ADD_ESP.match(following):
+                caller_cleanup = False
+                for following in lines[position + 1:]:
+                    if ADD_ESP.match(following):
+                        caller_cleanup = True
+                        break
+                    if PUSH_ANY.match(following) or POP_ANY.match(following) or " CALL " in following or ANY_JUMP.match(following):
+                        break
+                if not caller_cleanup:
                     esp += pushed_since_call
             pushed_since_call = 0
             pending_imms = []
@@ -526,7 +554,11 @@ def expand_loops(lines: list[str], ops: list[dict]) -> list[dict]:
 MARKER_RE = re.compile(
     r"// FUNCTION: IMPERIALISM (0x[0-9a-fA-F]+)\n[^\n]*?\b(\w+)::(ReadFrom|WriteTo)\s*\("
 )
-CALL_RE = re.compile(r"\b(" + "|".join(sorted(SOURCE_OPS, key=len, reverse=True)) + r")\s*\(")
+CALL_RE = re.compile(
+    r"\b(\w+(?:::|\.|->)(?:ReadFrom|WriteTo)|"
+    + "|".join(sorted(SOURCE_OPS, key=lambda name: len(name), reverse=True))
+    + r")\s*\("
+)
 
 
 def _balanced(text: str, start: int, opener: str, closer: str) -> str:
@@ -666,14 +698,55 @@ def _variant_spans(body: str) -> list[tuple[int, int]]:
     return spans
 
 
-def source_stream_ops(body: str) -> list[dict]:
+def source_stream_ops(
+    body: str,
+    serializers: dict[str, str] | None = None,
+    active: tuple[str, ...] = (),
+    bases: dict[str, str] | None = None,
+    direct_owners: set[str] | None = None,
+) -> list[dict]:
     ops: list[dict] = []
     blocks = _loop_blocks(body)
     variants = _variant_spans(body)
+    local_types = {
+        variable: owner
+        for owner, variable in re.findall(
+            r"\b(\w+)\s*(?:\*|&)?\s+(\w+)\s*(?:[;=])", body
+        )
+    }
     for match in CALL_RE.finditer(body):
         name = match.group(1)
         raw = _balanced(body, body.index("(", match.end() - 1), "(", ")")[1:-1]
         args = _split_args(raw)
+        member = re.fullmatch(r"(\w+)(?:\.|->)(ReadFrom|WriteTo)", name)
+        if member:
+            owner = local_types.get(member.group(1))
+            if owner is None or (direct_owners is not None and owner not in direct_owners):
+                continue
+            name = f"{owner}::{member.group(2)}"
+        if "::" in name:
+            owner, method = name.split("::")
+            visited = set()
+            while serializers is not None and name not in serializers and bases:
+                if owner in visited or owner not in bases:
+                    break
+                visited.add(owner)
+                owner = bases[owner]
+                name = f"{owner}::{method}"
+            if serializers is None or name not in serializers:
+                raise ValueError(f"Unresolved serializer call: {name}")
+            if name in active:
+                raise ValueError(f"Recursive serializer call: {name}")
+            for op in source_stream_ops(
+                serializers[name], serializers, (*active, name), bases, direct_owners
+            ):
+                ops.append(
+                    {
+                        **op,
+                        "count": _multiplier(blocks, match.start(), op["count"]),
+                    }
+                )
+            continue
         if name in MULTI_HELPERS:
             for direction, width, count in MULTI_HELPERS[name]:
                 ops.append(
@@ -721,17 +794,32 @@ def source_stream_ops(body: str) -> list[dict]:
 
 def ported_serializers() -> dict[int, dict]:
     found: dict[int, dict] = {}
+    bodies: dict[str, str] = {}
+    bases = {}
+    direct_owners = set()
+    for path in sorted((REPO_ROOT / "include/game").rglob("*.h")):
+        text = path.read_text(encoding="utf-8", errors="replace")
+        bases.update(re.findall(r"\bclass\s+(\w+)\s*:\s*public\s+(\w+)", text))
+        for declaration in re.finditer(r"\b(?:class|struct)\s+(\w+)\s*\{", text):
+            body = _balanced(text, declaration.end() - 1, "{", "}")
+            if not re.search(r"\bvirtual\b|\bDECLARE_\w+", body):
+                direct_owners.add(declaration.group(1))
     for path in sorted((REPO_ROOT / "src").rglob("*.cpp")):
         text = path.read_text(encoding="utf-8", errors="replace")
         if "ReadFrom" not in text and "WriteTo" not in text:
             continue
         for match in MARKER_RE.finditer(text):
             body = _balanced(text, text.index("{", match.end() - 1), "{", "}")
+            name = f"{match.group(2)}::{match.group(3)}"
+            bodies[name] = body
             found[int(match.group(1), 16)] = {
-                "name": f"{match.group(2)}::{match.group(3)}",
+                "name": name,
                 "file": str(path.relative_to(REPO_ROOT)),
-                "ops": source_stream_ops(body),
             }
+    for info in found.values():
+        info["ops"] = source_stream_ops(
+            bodies[info["name"]], bodies, (info["name"],), bases, direct_owners
+        )
     return found
 
 
@@ -877,6 +965,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     serializers = ported_serializers()
+    serializer_addresses = set(serializers)
     if args.addr:
         wanted = {int(value, 16) for value in args.addr}
         serializers = {a: v for a, v in serializers.items() if a in wanted}
@@ -884,7 +973,9 @@ def main(argv: list[str] | None = None) -> int:
     divergent, aligned, reordered = [], [], []
 
     for address, info in sorted(serializers.items()):
-        original, warnings = binary_stream_ops(address)
+        original, warnings = binary_stream_ops(
+            address, serializer_addresses, (address,)
+        )
         row = {
             "address": address,
             "name": info["name"],
@@ -930,15 +1021,13 @@ def main(argv: list[str] | None = None) -> int:
     print("A divergence is a save-file desync candidate. Machine-code similarity is")
     print("irrelevant to this byte-stream audit.")
     print()
-    print("The unprovable widths are NOT an audit gap to chase by hand: a sizeof(...) or")
-    print("count*N becomes a literal in the compiled push, so reccmp compares it against")
-    print("the original's immediate directly. A wrong sizeof shows up as an operand")
-    print("mismatch in `just compare`, not here. Verified by hand on TCity::ReadFrom")
-    print("(13 of them; every sizeof matched the original's literal exactly).")
+    print("Unknown widths and repeat counts are wildcards. A compatible sequence does")
+    print("not prove byte accounting for those operations; inspect retail arguments and")
+    print("runtime coverage before treating them as verified.")
     print()
     print("What this audit still cannot see is a wrong VALUE at the right width -- a")
     print("length prefix that does not equal the number of records that follow it. That")
-    print("class needs the runtime roundtrip test (see imperialism-decomp-cinw.19).")
+    print("class needs the runtime roundtrip test.")
     print()
 
     for row in sorted(divergent, key=lambda r: r["index"]):
@@ -952,8 +1041,7 @@ def main(argv: list[str] | None = None) -> int:
         print()
 
     if reordered:
-        print("same ops in a different order (version-gated if/else laid out the other")
-        print("way round by the compiler; only one arm runs, so no path shifts):")
+        print("same ops in a different order (inspect retail branches and execution paths):")
         for row in reordered:
             print(f"  0x{row['address']:06x} {row['name']}")
         print()

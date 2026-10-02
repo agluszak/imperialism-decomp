@@ -1165,9 +1165,7 @@ void TOceanDialog::CenterOn(int tileIndex) {
 void TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay(unsigned char directionFlags) {
   // Nudged values are passed to the slot-0x1e4 virtual (SetMapViewCellCoordinates), which is
   // a genuine 3-byte RET-8 no-op in every reachable override -- VERIFIED, so the nudge is
-  // effectively discarded and no persistence happens. Residual <100% here is the original's
-  // 16-bit partial-register load idiom (`mov ax, [+0x7e]`, no sign-extend), which clean C++
-  // can't reproduce without a type-pun; kept as the natural `int` load.
+  // effectively discarded and no persistence happens.
   int col = scrollColOffset7e;
   int row = scrollRowOffset7c;
   if ((directionFlags & 1) != 0) {

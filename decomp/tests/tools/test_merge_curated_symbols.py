@@ -143,7 +143,7 @@ if __name__ == "__main__":
 
 
 class EmbeddedOwnerSizeTest(unittest.TestCase):
-    """bd imperialism-decomp-777c: repaired Ghidra body sizes must reach curated rows.
+    """Repaired Ghidra body sizes must reach curated rows.
 
     The embedded-owner override exists because Ghidra can promote labels inside a
     function's body to functions of their own, truncating the owner's recorded body. It

@@ -88,7 +88,7 @@ public:
   TWorldView* subviewAc;
   // 0xb0..0xbf: per-category ('uciv'/'uarm'/'unav'/unused) sub-controls resolved by
   // DoPostCreate via ResolveControlByTag. NOT a homogeneous TMapUberPicture array
-  // (that was the old theory): bd 4yz's evidence disproves it two ways. (a) TCivMgr's
+  // (that was the old theory): (a) TCivMgr's
   // SetActiveCivilianSelection (0x4d2c60) makes a direct non-virtual call from
   // categoryPages[0] to TCivToolbar::RefreshCivilianCommandPanelForSelection (0x58eb20,
   // ground-truth-confirmed, not a vtable dispatch), which only produces correct behavior
@@ -169,7 +169,7 @@ public:
   // Cycles map interaction selection to the next civilian/province/map-order candidate
   // after a handled click (priority: civilian, then province, then map-order entry;
   // clears the active pointer if none remain). 0x00597a80, __thiscall, 0 args, 996 bytes.
-  // Re-attributed from a `TCivToolbar::` mis-label (symbols.csv/bd 4yz): its body reads
+  // Its body reads
   // this+0x96 (activeUnitCategoryIndex96, MOV BL,byte[ESI+0x96]) and both real call sites
   // (TCivMgr::OrderAndCycle's thunk 0x408b93, and
   // TArmyToolbar.cpp's own call) load ECX from g_pViewMgr->mapUberPictureF0

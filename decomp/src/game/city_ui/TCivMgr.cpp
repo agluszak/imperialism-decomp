@@ -874,9 +874,6 @@ void TCivMgr::RelinkCivilianOrderTileAndInvalidateMapTiles(short nNewTileIndex,
 // is active (g_pSimMgr->multiplayerSessionRole != 0).
 // FUNCTION: IMPERIALISM 0x004d4390
 void TCivMgr::ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
-  // Case bodies are written in the original's physical block layout (5, 8, 3, 1, 2, 0, 7 --
-  // not ascending case-value order) so MSVC500's jump-table codegen lays them out the same
-  // way; the jump table itself (built from the case labels) is unaffected by text order.
   switch (order->unitOrder - kUnitOrderLayRail) {
   case 5: {
     bool selectHighNibble = order->orderType == EncodeCivilianUnitKind(kCivilianUnitMiner) ||

@@ -16,7 +16,7 @@ class TView;
 // CFrameWnd::m_pViewActive for the SDI main frame, so it is what
 // GetMainViewHostFromActiveThread() (0x00412a70) actually returns — not a TView.
 //
-// It is also the main-screen paint host (bd 1uj.10): the whole activeDialog TView tree's
+// It is also the main-screen paint host: the whole activeDialog TView tree's
 // nativeWindow50 is this view (propagated by SetUiRuntimeContextAndActivateMain at init
 // and re-propagated by the 0x4ef message handler after each turn-event dialog factory
 // runs), and every on-screen paint of that tree flows through OnDraw's slot-0x43

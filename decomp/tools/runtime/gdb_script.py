@@ -8,22 +8,17 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
-import sys
 import tempfile
 
+from tools.runtime.debug.session import WineGdbProxy
+from tools.runtime.display import virtual_display
+from tools.runtime.wine import ensure_template_prefix, prefix_environment
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 BUILD_DIR = REPO_ROOT / "build-msvc500"
 DEFAULT_PORT = 47632
 
-if str(REPO_ROOT) not in sys.path:
-    sys.path.insert(0, str(REPO_ROOT))
-
-from tools.runtime.display import virtual_display
-from tools.runtime.wine import ensure_template_prefix, prefix_environment
-
 _DISPLAY_HANDLES: dict[str, object] = {}
-from tools.runtime.debug.session import WineGdbProxy
 
 
 def game_dir() -> Path:

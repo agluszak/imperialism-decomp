@@ -28,7 +28,7 @@ const double kSeaAngleScale = 11733.857334728455;
 // Functions are emitted in ascending original-address order (decomplint requirement), so
 // the Seapoint/SeaSegment record methods interleave with the two stretch arrays' methods.
 
-// TEMPLATE: IMPERIALISM 0x0052a760
+// TEMPLATE: IMPERIALISM 0x0052a760 SYMBOL
 // ?Add@?$stretch@USeaSegment@@@@UAEPAUSeaSegment@@U2@@Z
 
 // Debug/authoring path: rebuild the region-border segment lattice from a "coords.txt"
@@ -353,10 +353,10 @@ void SeaSegment::InitFromPoints(const Seapoint* p0, const Seapoint* p1) {
       static_cast<int>(atan2(static_cast<double>(dy), static_cast<double>(dx)) * kSeaAngleScale));
 }
 
-// TEMPLATE: IMPERIALISM 0x0052b3e0
+// TEMPLATE: IMPERIALISM 0x0052b3e0 SYMBOL
 // ?OverStretch@?$stretch@USeaSegment@@@@QAEXI@Z
 
-// TEMPLATE: IMPERIALISM 0x0052b460
+// TEMPLATE: IMPERIALISM 0x0052b460 SYMBOL
 // ??A?$stretch@USeaSegment@@@@QAEAAUSeaSegment@@I@Z
 
 // TEMPLATE: IMPERIALISM 0x0052b500
@@ -505,7 +505,7 @@ unsigned short SeaSegment::SelectAttrByAngle() const {
 
 // --- SeapointStretch (0x10-byte elements) ----------------------------------------------
 
-// TEMPLATE: IMPERIALISM 0x0052c0a0
+// TEMPLATE: IMPERIALISM 0x0052c0a0 SYMBOL
 // ?Add@?$stretch@USeapoint@@@@UAEPAUSeapoint@@U2@@Z
 
 // TEMPLATE: IMPERIALISM 0x0052ca00
@@ -555,10 +555,10 @@ double Seapoint::WrappedDeltaMetric(const Seapoint* other) const {
   return sqrt(static_cast<double>(colDelta * colDelta * rowDelta * rowDelta));
 }
 
-// TEMPLATE: IMPERIALISM 0x0052d0d0
+// TEMPLATE: IMPERIALISM 0x0052d0d0 SYMBOL
 // ?OverStretch@?$stretch@USeapoint@@@@QAEXI@Z
 
-// TEMPLATE: IMPERIALISM 0x0052d150
+// TEMPLATE: IMPERIALISM 0x0052d150 SYMBOL
 // ??A?$stretch@USeapoint@@@@QAEAAUSeapoint@@I@Z
 
 // TEMPLATE: IMPERIALISM 0x0052e310

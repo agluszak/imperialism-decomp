@@ -20,9 +20,8 @@ IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 template <typename T> class stretch {
 public:
   stretch() : data(0), capacity(0), count(0) {}
-  // TEMPLATE: IMPERIALISM 0x004c1fc0
-  // ??0?$stretch@F@@QAE@H@Z — retail stores fields then allocates only when
-  // initialCapacity > 0.
+  // TEMPLATE: IMPERIALISM 0x004c1fc0 SYMBOL
+  // ??0?$stretch@F@@QAE@H@Z
   stretch(int initialCapacity) : data(0), capacity(0), count(0) {
     if (0 < initialCapacity) {
       data = static_cast<T*>(realloc(0, static_cast<size_t>(initialCapacity) * sizeof(T)));
@@ -35,12 +34,12 @@ public:
   // delete[]). Ground truth: TZone::~TZone (0x5627a0) frees primaryNeighbors/
   // secondaryNeighbors this same way as part of member teardown.
   // Retained, unreferenced VC5 copies of this inline template destructor.
-  // TEMPLATE: IMPERIALISM 0x0055eaa0
-  // ??1?$stretch@PAVTZone@@@@QAE@XZ
-  // TEMPLATE: IMPERIALISM 0x0055eb70
-  // ??1?$stretch@PAUProvince@@@@QAE@XZ
-  // TEMPLATE: IMPERIALISM 0x00580430
-  // ??1?$stretch@D@@QAE@XZ
+  // SYNTHETIC: IMPERIALISM 0x0055eaa0
+  // stretch::~stretch
+  // SYNTHETIC: IMPERIALISM 0x0055eb70
+  // stretch::~stretch
+  // SYNTHETIC: IMPERIALISM 0x00580430
+  // stretch::~stretch
   ~stretch() {
     if (data != 0) {
       free(data);

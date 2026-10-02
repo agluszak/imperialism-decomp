@@ -27,9 +27,7 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
-// The original repeats this DIB vertical-flip adjustment before every atlas blit;
-// defined inline so MSVC5 (/Ob1) inlines it back to the original's straight-line form.
-static inline void OffsetRectForSurfaceDibFlip(TQuickDrawSurfaceContext* ctx, RECT* r) {
+static void OffsetRectForSurfaceDibFlip(TQuickDrawSurfaceContext* ctx, RECT* r) {
   if (ctx->blitSurface.surfaceDib != 0) {
     int height = ctx->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
     if (height < 1) {
@@ -144,8 +142,9 @@ void TTacArmyView::InitializeBattlefieldView(int compositionClass, TArmyBattle* 
       ResetQuickDrawStrokeState();
       UpdatePaletteIndexWithDefaultFallback(0x13);
       SetQuickDrawFillColorFromPaletteIndex(0);
-      BlitQuickDrawSurfaces(fortStripSurface->GetBlitSurface(),
-                            battlefieldSurface64->GetBlitSurface(), &bounds, &overlayBounds, 0);
+      BlitRectWithOptionalTransparency(fortStripSurface->GetBlitSurface(),
+                                       battlefieldSurface64->GetBlitSurface(), &bounds,
+                                       &overlayBounds, 0);
       g_pDisplayMgr->RemoveGWorld(fortStripSurface);
     }
 
@@ -261,9 +260,9 @@ void TTacArmyView::Draw(RECT* rectBuffer) {
     OffsetRect(&backdropDstRect, 0, (primaryHeight - backdropDstRect.top) - backdropDstRect.bottom);
   }
   // Backdrop: battlefield surface -> primary render surface.
-  BlitQuickDrawSurfaces(battlefieldSurface64->GetBlitSurface(),
-                        g_pPrimaryRenderSurfaceContext->GetBlitSurface(), &backdropSrcRect,
-                        &backdropDstRect, 0);
+  BlitRectWithOptionalTransparency(battlefieldSurface64->GetBlitSurface(),
+                                   g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
+                                   &backdropSrcRect, &backdropDstRect, 0);
 
   if (tacticalBattle60 != 0) {
     // Save/restore the QuickDraw clip around the per-tile pass.
@@ -280,9 +279,9 @@ void TTacArmyView::Draw(RECT* rectBuffer) {
   ResetQuickDrawStrokeState();
   SetQuickDrawStrokeColor(0xffffff);
   // Present: primary render surface -> the restored active surface.
-  BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
-                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &clipRect,
-                        &presentDstRect, 0);
+  BlitRectWithOptionalTransparency(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
+                                   g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &clipRect,
+                                   &presentDstRect, 0);
   DoGlideAni();
   UnlockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
   UnlockPixels(GetGWorldPixMap(battlefieldSurface64));

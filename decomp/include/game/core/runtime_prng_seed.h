@@ -6,7 +6,7 @@
 //
 // It also means one seed does not imply one map, which made every map-oracle runtime
 // test flaky: three different maps were observed for seed 1 (representative tiles 1360,
-// 4061 and 1998) with nothing changed but wall-clock time (imperialism-decomp-nhot).
+// 4061 and 1998) with nothing changed but wall-clock time.
 // Under the runtime-test profile every clock-derived PRNG seed therefore comes from the
 // scenario.
 //
@@ -19,10 +19,8 @@
 #include "RuntimeTestDriver.h"
 #endif
 
-static __inline int ClockDerivedPrngSeed(void) {
 #ifdef IMPERIALISM_RUNTIME_TESTS
-  return static_cast<int>(RuntimeTestDriver::RandomSeed());
+#define ClockDerivedPrngSeed() static_cast<int>(RuntimeTestDriver::RandomSeed())
 #else
-  return static_cast<int>(time(0));
+#define ClockDerivedPrngSeed() static_cast<int>(time(0))
 #endif
-}

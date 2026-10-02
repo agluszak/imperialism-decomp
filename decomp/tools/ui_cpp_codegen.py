@@ -13,17 +13,15 @@ import argparse
 import csv
 import hashlib
 import json
-import re
 from dataclasses import dataclass, replace
 from pathlib import Path
-from typing import Iterable
+from typing import Iterable, TypedDict
 
 import yaml
 
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.turn_event_vocabulary import load_turn_event_vocabulary
 from tools.workflow.macos_resource_evidence import validate_view_structure
-
 
 MANIFEST_PATH = "config/ui_factory_codegen.yml"
 IR_PATH = "vendor/macos_codewarrior/evidence/resources/ui_views.json"
@@ -181,8 +179,6 @@ class UiSemanticFamily:
     window: UiWindowPayload | None = None
 
 
-
-
 @dataclass(frozen=True)
 class UiSemanticNode:
     node_id: str
@@ -237,8 +233,6 @@ class UiChildNodePatch:
     geometry: tuple[int, int, int, int]
     family: UiSemanticFamily
     evidence: str
-
-
 
 
 _GAME_HEADER_CACHE: dict[str, dict[str, str]] = {}
@@ -332,7 +326,10 @@ def load_recipes(repo_root: Path) -> list[UiFactoryRecipe]:
                     "text_source",
                     "evidence",
                 }
-                if set(override) - allowed_override_fields or "evidence" not in override:
+                if (
+                    set(override) - allowed_override_fields
+                    or "evidence" not in override
+                ):
                     raise ValueError(
                         f"{override_context}: expected enabled and/or style plus evidence"
                     )
@@ -345,13 +342,16 @@ def load_recipes(repo_root: Path) -> list[UiFactoryRecipe]:
                 )
                 content_insets = None
                 if "content_insets" in override:
-                    content_insets = tuple(
-                        int(value)
-                        for value in _sequence(
-                            override["content_insets"],
-                            4,
-                            f"{override_context}/content_insets",
-                        )
+                    insets = _sequence(
+                        override["content_insets"],
+                        4,
+                        f"{override_context}/content_insets",
+                    )
+                    content_insets = (
+                        int(insets[0]),
+                        int(insets[1]),
+                        int(insets[2]),
+                        int(insets[3]),
                     )
                 style = override.get("style")
                 style_word = None
@@ -365,9 +365,7 @@ def load_recipes(repo_root: Path) -> list[UiFactoryRecipe]:
                     style_word = int(style_mapping["word"])
                     packed_color = int(style_mapping["packed_color"])
                 text_source = (
-                    str(override["text_source"])
-                    if "text_source" in override
-                    else None
+                    str(override["text_source"]) if "text_source" in override else None
                 )
                 if (
                     enabled is None
@@ -376,7 +374,9 @@ def load_recipes(repo_root: Path) -> list[UiFactoryRecipe]:
                     and style is None
                     and text_source is None
                 ):
-                    raise ValueError(f"{override_context}: expected a semantic override")
+                    raise ValueError(
+                        f"{override_context}: expected a semantic override"
+                    )
                 if not override_evidence:
                     raise ValueError(f"{override_context}: evidence is required")
                 if enabled is not None and enabled not in (0, 1):
@@ -393,7 +393,10 @@ def load_recipes(repo_root: Path) -> list[UiFactoryRecipe]:
                         override_evidence,
                     )
                 )
-            if sum((resource is not None, windows_view is not None, bool(rejected))) != 1:
+            if (
+                sum((resource is not None, windows_view is not None, bool(rejected)))
+                != 1
+            ):
                 raise ValueError(
                     f"{MANIFEST_PATH}: 0x{address:08x}/0x{event:x} must have exactly "
                     "one of resource, windows_view, or rejected"
@@ -459,9 +462,13 @@ def load_class_substitutions(repo_root: Path) -> dict[str, str]:
     for mac_class, raw_row in rows.items():
         row = _mapping(raw_row, f"{context}/{mac_class}")
         if set(row) != {"windows_class", "reason", "evidence"}:
-            raise ValueError(f"{context}/{mac_class}: expected windows_class, reason, evidence")
+            raise ValueError(
+                f"{context}/{mac_class}: expected windows_class, reason, evidence"
+            )
         if not all(str(row[key]).strip() for key in row):
-            raise ValueError(f"{context}/{mac_class}: empty class substitution evidence")
+            raise ValueError(
+                f"{context}/{mac_class}: empty class substitution evidence"
+            )
         substitutions[str(mac_class)] = str(row["windows_class"])
     return substitutions
 
@@ -511,13 +518,17 @@ def load_windows_child_node_patches(repo_root: Path) -> tuple[UiChildNodePatch, 
                 type_code=_fourcc(row["type"], f"{context}/type"),
                 tag=tag,
                 class_name=str(row["class"]),
-                geometry=tuple(int(value) for value in geometry),
+                geometry=(
+                    int(geometry[0]),
+                    int(geometry[1]),
+                    int(geometry[2]),
+                    int(geometry[3]),
+                ),
                 family=_parse_windows_family(family_row, f"{context}/family"),
                 evidence=evidence,
             )
         )
     return tuple(patches)
-
 
 
 def _validate_windows_family(family: dict, context: str) -> None:
@@ -615,17 +626,16 @@ def _parse_windows_family(family: dict, context: str) -> UiSemanticFamily:
             style_ref=int(text_row.get("style_ref", 0)),
             theme=int(text_row.get("theme", 1)),
             color_index=(
-                int(text_row["color_index"])
-                if "color_index" in text_row
-                else None
+                int(text_row["color_index"]) if "color_index" in text_row else None
             ),
             shadow_color_index=(
                 int(text_row["shadow_color_index"])
                 if "shadow_color_index" in text_row
                 else None
             ),
-            shadow_offset=tuple(
-                int(value) for value in text_row.get("shadow_offset", (0, 0))
+            shadow_offset=(
+                int(text_row.get("shadow_offset", (0, 0))[0]),
+                int(text_row.get("shadow_offset", (0, 0))[1]),
             ),
             center_vertically=bool(text_row.get("center_vertically", False)),
         )
@@ -669,11 +679,14 @@ def _parse_windows_family(family: dict, context: str) -> UiSemanticFamily:
         )
     insets_row = family.get("content_insets")
     return UiSemanticFamily(
-        frame_style=(
-            int(family["frame_style"]) if "frame_style" in family else None
-        ),
+        frame_style=(int(family["frame_style"]) if "frame_style" in family else None),
         content_insets=(
-            tuple(int(value) for value in insets_row)
+            (
+                int(insets_row[0]),
+                int(insets_row[1]),
+                int(insets_row[2]),
+                int(insets_row[3]),
+            )
             if isinstance(insets_row, list)
             else None
         ),
@@ -725,9 +738,7 @@ def load_windows_views(repo_root: Path) -> dict[str, UiSemanticView]:
             geometry = _sequence(
                 node_row.get("geometry"), 4, f"{node_context}/geometry"
             )
-            family_row = _mapping(
-                node_row.get("family", {}), f"{node_context}/family"
-            )
+            family_row = _mapping(node_row.get("family", {}), f"{node_context}/family")
             family = _parse_windows_family(family_row, f"{node_context}/family")
             node_evidence = int(node_row["evidence"])
             if not evidence_start <= node_evidence < evidence_end:
@@ -743,7 +754,12 @@ def load_windows_views(repo_root: Path) -> dict[str, UiSemanticView]:
                         if node_row.get("parent") is not None
                         else None
                     ),
-                    geometry=tuple(int(value) for value in geometry),
+                    geometry=(
+                        int(geometry[0]),
+                        int(geometry[1]),
+                        int(geometry[2]),
+                        int(geometry[3]),
+                    ),
                     state=int(node_row.get("state", defaults.get("state", 1))),
                     enabled=int(node_row.get("enabled", defaults.get("enabled", 1))),
                     input_gate=int(
@@ -755,9 +771,7 @@ def load_windows_views(repo_root: Path) -> dict[str, UiSemanticView]:
                         )
                     ),
                     control_value=int(
-                        node_row.get(
-                            "control_value", defaults.get("control_value", 0)
-                        )
+                        node_row.get("control_value", defaults.get("control_value", 0))
                     ),
                     family=family,
                     source=f"Windows evidence at 0x{node_evidence:08x}",
@@ -785,7 +799,9 @@ def _resolved_class(node: dict, class_substitutions: dict[str, str]) -> str:
 
 def _fixed_24_8(value: int, context: str) -> int:
     if value % 0x100:
-        raise ValueError(f"{context}: fixed 24.8 value 0x{value & 0xFFFFFFFF:x} is fractional")
+        raise ValueError(
+            f"{context}: fixed 24.8 value 0x{value & 0xFFFFFFFF:x} is fractional"
+        )
     return value // 0x100
 
 
@@ -861,15 +877,16 @@ def normalize_resource_view(
                 and len(insets) == 4
             ):
                 frame_style = raw_frame_style
-                content_insets = tuple(
-                    _fixed_24_8(int(value), f"{key.text()} node 0x{offset:04x}")
-                    for value in insets
+                content_insets = (
+                    _fixed_24_8(int(insets[0]), f"{key.text()} node 0x{offset:04x}"),
+                    _fixed_24_8(int(insets[1]), f"{key.text()} node 0x{offset:04x}"),
+                    _fixed_24_8(int(insets[2]), f"{key.text()} node 0x{offset:04x}"),
+                    _fixed_24_8(int(insets[3]), f"{key.text()} node 0x{offset:04x}"),
                 )
         raw_picture_id = raw_family.get("picture_id")
         picture_id = (
             int(raw_picture_id)
-            if type_code in ("pict", "radb", "chkb")
-            and isinstance(raw_picture_id, int)
+            if type_code in ("pict", "radb", "chkb") and isinstance(raw_picture_id, int)
             else None
         )
         raw_control_state = raw_family.get("control_state")
@@ -1026,7 +1043,9 @@ def apply_case_windows_overrides(
         nodes.append(
             replace(
                 node,
-                enabled=(override.enabled if override.enabled is not None else node.enabled),
+                enabled=(
+                    override.enabled if override.enabled is not None else node.enabled
+                ),
                 control_value=(
                     override.control_value
                     if override.control_value is not None
@@ -1037,9 +1056,6 @@ def apply_case_windows_overrides(
             )
         )
     return replace(view, nodes=tuple(nodes))
-
-
-
 
 
 def _case_for_resource(
@@ -1120,12 +1136,6 @@ def apply_windows_child_node_patches(
     return replace(semantic_view, nodes=tuple(nodes))
 
 
-
-
-
-
-
-
 def _validate_semantic_view(
     repo_root: Path, context: str, view: UiSemanticView
 ) -> list[str]:
@@ -1134,7 +1144,9 @@ def _validate_semantic_view(
         return [f"{context}: semantic view emits no nodes"]
     roots = sum(node.parent_id is None for node in view.nodes)
     if roots != 1:
-        errors.append(f"{context}: semantic view must have exactly one root, found {roots}")
+        errors.append(
+            f"{context}: semantic view must have exactly one root, found {roots}"
+        )
     open_ancestors: list[str] = []
     seen: set[str] = set()
     for node in view.nodes:
@@ -1200,12 +1212,12 @@ def validate(
                 referenced_windows.add(case.windows_view)
                 view = windows_views.get(case.windows_view)
                 if view is None:
-                    errors.append(f"{context}: missing Windows view {case.windows_view!r}")
+                    errors.append(
+                        f"{context}: missing Windows view {case.windows_view!r}"
+                    )
                     continue
                 if view.event != case.event:
-                    errors.append(
-                        f"{context}: Windows view has event 0x{view.event:x}"
-                    )
+                    errors.append(f"{context}: Windows view has event 0x{view.event:x}")
             elif case.resource is not None:
                 raw_view = views.get(case.resource)
                 if raw_view is None:
@@ -1213,7 +1225,9 @@ def validate(
                     continue
                 if int(raw_view["view_id"]) != case.event:
                     errors.append(f"{context}: resource ID does not equal event ID")
-                errors.extend(validate_view_structure(raw_view, require_cluster_counts=True))
+                errors.extend(
+                    validate_view_structure(raw_view, require_cluster_counts=True)
+                )
                 try:
                     view = normalize_resource_view(
                         case.resource, raw_view, text_resources, class_substitutions
@@ -1226,7 +1240,9 @@ def validate(
                 continue
             errors.extend(_validate_semantic_view(repo_root, context, view))
     if len(recipe_list) != 17:
-        errors.append(f"factory manifest must own 17 functions, found {len(recipe_list)}")
+        errors.append(
+            f"factory manifest must own 17 functions, found {len(recipe_list)}"
+        )
     if set(windows_views) != referenced_windows:
         errors.append(
             f"{WINDOWS_VIEW_PATH}: view keys do not exactly match manifest references"
@@ -1342,8 +1358,7 @@ def _emit_semantic_view(
             )
         if family.control_state is not None:
             lines.append(
-                f"{indent}{variable}->HiliteState("
-                f"{_hex(family.control_state)}, 0);"
+                f"{indent}{variable}->HiliteState({_hex(family.control_state)}, 0);"
             )
         if family.style is not None:
             lines.append(
@@ -1354,9 +1369,7 @@ def _emit_semantic_view(
         if family.text is not None:
             text = family.text
             source = (
-                _cpp_string(text.value)
-                if text.value is not None
-                else str(text.source)
+                _cpp_string(text.value) if text.value is not None else str(text.source)
             )
             lines.append(
                 f"{indent}BindUiResourceTextAndStyle("
@@ -1425,7 +1438,7 @@ def _render_factory_with_map(
     )
     body: list[str] = []
     classes: set[str] = set()
-    case_maps: dict[str, object] = {}
+    case_maps: dict[str, dict] = {}
     if annotation_kind != "none":
         body.append(f"// {annotation_kind}: IMPERIALISM 0x{recipe.address:08x}")
     body.extend((recipe.prototype + " {", "  g_pUiResourceHead = 0;"))
@@ -1570,11 +1583,14 @@ def write_generated(
             }
         )
         source_maps[f"0x{recipe.address:08x}"] = source_map
-    source_map_text = json.dumps(
-        {"functions": source_maps},
-        indent=2,
-        sort_keys=True,
-    ) + "\n"
+    source_map_text = (
+        json.dumps(
+            {"functions": source_maps},
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n"
+    )
     _write_if_changed(output_dir / "_source_map.json", source_map_text)
     manifest = {
         "manifest_sha256": _sha256(repo_root / MANIFEST_PATH),
@@ -1598,7 +1614,17 @@ def generated_output_paths(repo_root: Path) -> list[str]:
     ]
 
 
-def generated_claim_rows(repo_root: Path) -> list[dict[str, object]]:
+class GeneratedClaimRow(TypedDict):
+    address: int
+    kind: str
+    file: str
+    line: int
+    name: str
+    prototype: str
+    origin: str
+
+
+def generated_claim_rows(repo_root: Path) -> list[GeneratedClaimRow]:
     return [
         {
             "address": recipe.address,
@@ -1678,7 +1704,9 @@ def _print_source_map_explanation(
             if key == node_key or node.get("tag") == selector
         ]
         if not selected:
-            raise SystemExit(f"{function['function']}/{event_key}: no node {selector!r}")
+            raise SystemExit(
+                f"{function['function']}/{event_key}: no node {selector!r}"
+            )
     generated = resolve_repo_path(repo_root, gen_dir) / function["generated_file"]
     print(f"{function['function']} {function['name']} / case {event_key}")
     print(f"source: {case['source']}")
@@ -1695,7 +1723,9 @@ def _print_source_map_triage(repo_root: Path, gen_dir: str, raw_address: str) ->
     source_map = _load_generated_source_map(repo_root, gen_dir)
     function = _function_map(source_map, raw_address)
     print(f"{function['function']} {function['name']}")
-    print(f"generated: {resolve_repo_path(repo_root, gen_dir) / function['generated_file']}")
+    print(
+        f"generated: {resolve_repo_path(repo_root, gen_dir) / function['generated_file']}"
+    )
     for event, case in sorted(function.get("cases", {}).items()):
         nodes = case.get("nodes", {})
         confidence_counts: dict[str, int] = {}

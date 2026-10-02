@@ -27,9 +27,9 @@ class StructuredMarkerTests(unittest.TestCase):
         repo = Path(tempfile.mkdtemp())
         _write(
             repo / "src" / "lib.cpp",
-            "// LIBRARY: IMPERIALISM 0x005e83f0\n"
+            "// LIBRARY: IMPERIALISM 0x005e83f0 SYMBOL\n"
+            "// _rand\n"
             "// name: rand\n"
-            "// symbol: _rand\n"
             "// prototype: int __cdecl rand(void)\n",
         )
         (repo / "include").mkdir(exist_ok=True)
@@ -56,9 +56,9 @@ class ApplySymbolsTests(unittest.TestCase):
         repo = self._repo(
             "5e83f0|GenerateThreadLocalRandom15||45|function|"
             "undefined GenerateThreadLocalRandom15()|\n",
-            "// LIBRARY: IMPERIALISM 0x005e83f0\n"
+            "// LIBRARY: IMPERIALISM 0x005e83f0 SYMBOL\n"
+            "// _rand\n"
             "// name: rand\n"
-            "// symbol: _rand\n"
             "// prototype: int __cdecl rand(void)\n",
         )
         out = generate(repo, "IMPERIALISM", "config/original_entities.csv", repo / "gen")
@@ -72,9 +72,9 @@ class ApplySymbolsTests(unittest.TestCase):
     def test_overlay_adds_missing_row(self) -> None:
         repo = self._repo(
             "400000|other||4|function|undefined other()|\n",
-            "// LIBRARY: IMPERIALISM 0x005e83f0\n"
+            "// LIBRARY: IMPERIALISM 0x005e83f0 SYMBOL\n"
+            "// _rand\n"
             "// name: rand\n"
-            "// symbol: _rand\n"
             "// prototype: int __cdecl rand(void)\n",
         )
         out = generate(repo, "IMPERIALISM", "config/original_entities.csv", repo / "gen")
@@ -102,9 +102,9 @@ class ApplySymbolsTests(unittest.TestCase):
         repo = self._repo(
             "5e83f0|GenerateThreadLocalRandom15||45|function|"
             "undefined GenerateThreadLocalRandom15()|\n",
-            "// LIBRARY: IMPERIALISM 0x005e83f0\n"
+            "// LIBRARY: IMPERIALISM 0x005e83f0 SYMBOL\n"
+            "// _rand\n"
             "// name: rand\n"
-            "// symbol: _rand\n"
             "// prototype: int __cdecl rand(void)\n",
         )
         out1 = generate(repo, "IMPERIALISM", "config/original_entities.csv", repo / "gen")

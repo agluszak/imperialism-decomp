@@ -24,7 +24,7 @@ public:
   // No current caller in ported code (manual or autogen); kept as a virtual at its
   // existing slot rather than eliminated, since there is no evidence either way whether
   // the original dispatches it via vtable or a direct call, and this class has a prior
-  // revert history from vtable-signature mistakes (bd imperialism-decomp-1uj.39).
+  // revert history from vtable-signature mistakes.
   virtual void IPopGrowthOrder(TCity* city); // slot 0x11 0x4b8160, Mac-style second-phase init
 
   // NOOP: verified empty in original 0x004b8112 (no standalone TPopGrowthOrder::TPopGrowthOrder body exists: construction is fully inlined into CreateObject 0x004b8110; that address is its operator-new call site)

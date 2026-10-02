@@ -7,13 +7,13 @@ import hashlib
 import json
 import logging
 import os
-from pathlib import Path
 import shlex
 import subprocess
+from pathlib import Path
 
 import reccmp.source.batch
-from reccmp.source.index import SourceIndex
 import yaml
+from reccmp.source.index import SourceIndex
 
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.workflow.gen_compile_commands import rewrite
@@ -64,11 +64,11 @@ def collect(repo: Path, build: Path, image: str, jobs: int) -> Path:
             [
                 "docker", "run", "--rm", "--network", "none",
                 "-v", f"{cache}:{cache}", "-v", f"{source}:/indexer.cpp:ro",
-                "--entrypoint", "clang++-19", image,
+                "--entrypoint", "clang++-21", image,
                 "-O2", "-std=c++17", "-fno-rtti", "-fno-exceptions",
-                "-I/usr/lib/llvm-19/include", "/indexer.cpp", "-o", str(binary),
-                "/usr/lib/llvm-19/lib/libclang-cpp.so.19.1",
-                "/usr/lib/llvm-19/lib/libLLVM.so",
+                "-I/usr/lib/llvm-21/include", "/indexer.cpp", "-o", str(binary),
+                "/usr/lib/llvm-21/lib/libclang-cpp.so.21.1",
+                "/usr/lib/llvm-21/lib/libLLVM.so",
             ],
             check=True,
         )
@@ -95,10 +95,11 @@ def collect(repo: Path, build: Path, image: str, jobs: int) -> Path:
         })
         for target, config in project["targets"].items()
     }
-    SourceIndex.from_compile_database(
+    index = SourceIndex.from_compile_database(
         repo, database, targets, clang="/usr/bin/clang-cl", jobs=jobs, cache_dir=cache
     )
     output = cache / "source-index.json"
+    index.write(output)
     config_path = build / "reccmp-build.yml"
     config = yaml.safe_load(config_path.read_text())
     config.pop("source_index", None)

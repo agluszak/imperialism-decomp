@@ -14,9 +14,6 @@
 
 IMPLEMENT_DYNCREATE(TDropShadowNumberText, TPictureNumberText)
 
-// In the binary the trivial TNumberText/TPictureNumberText ctor bodies are inlined here
-// after the TEditText base ctor call; the out-of-line base ctor call this emits is an
-// accepted codegen difference.
 // FUNCTION: IMPERIALISM 0x005b5910
 TDropShadowNumberText::TDropShadowNumberText() : TPictureNumberText() {
   shadowColorAc = g_defaultDropShadowTextColor;

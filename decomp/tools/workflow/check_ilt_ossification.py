@@ -14,13 +14,14 @@ hand-written game source, and both must stay at zero:
 2. **History-encoded names.** A real body whose name is ``WrapperFor_thunk_Foo_At0049d900``
    or ``Foo_At004f6d90`` leaks the discovery path (an intermediate thunk name + the
    raw address) into the source-level API. Rename to the semantic role, or — when the
-   role is unknown — a neutral ``<Owner>Slot<NN>`` / ``Function_004xxxxx`` name, with
+   role is unknown — a stable owner/role name, with
    the address living only in the ``// FUNCTION:`` marker.
 
 This gate flags any identifier in manual source (``src/game``, ``include/game``) that
 - begins with ``thunk_`` or ``ILT_``,
 - begins with ``WrapperFor_``, or
-- ends with ``_At<8 hex digits>``,
+- ends with ``_At<8 hex digits>`` or a function-address suffix, or
+- has the form ``Function_<8 hex digits>``,
 outside of comments. This is a baseline-free HARD BAN: the debt was fully eradicated,
 so ANY offender fails -- there is no baseline file and no update escape hatch. A new
 offender is always a source defect to fix (call the real target / use a semantic name).
@@ -40,7 +41,9 @@ from tools.common.repo import normalize_repo_relative_path, repo_root_from_file
 DEFAULT_PATHS = ("include/game", "src/game")
 
 IDENT_RE = re.compile(r"[A-Za-z_]\w*")
-_AT_SUFFIX_RE = re.compile(r"_At[0-9A-Fa-f]{8}$")
+_AT_SUFFIX_RE = re.compile(
+    r"_At[0-9A-Fa-f]{8}$|_00[45][0-9A-Fa-f]{5}$|^Function_[0-9A-Fa-f]{8}$"
+)
 
 
 def is_ossified(identifier: str) -> bool:
@@ -80,8 +83,12 @@ def main() -> int:
     offenders = sorted(collect_offenders(args.paths, repo_root))
 
     if offenders:
-        print("ILT-ossification gate failed (hard ban): linker/thunk-name identifier(s) in manual source.")
-        print("Call the real target (resolve the thunk via just ghidra portprep) or use a semantic/slot name;")
+        print(
+            "ILT-ossification gate failed (hard ban): linker/thunk-name identifier(s) in manual source."
+        )
+        print(
+            "Call the real target (resolve the thunk via just ghidra portprep) or use a semantic/slot name;"
+        )
         print("the address belongs only in the // FUNCTION: marker.")
         print("This is a hard ban with no baseline: fix the source, do not bless it.")
         for rel, ident in offenders:

@@ -148,11 +148,6 @@ public:
   // 0x537900.
   void BuildNavyOrderCategoryVectorForNationWithExclusion(float* vector, TZone* nearZone,
                                                           short distanceThreshold, TZone* farZone);
-  // Builds a per-category priority vector over every orderList24 ship, each weighted by
-  // (strength/normalizationBase) * a distance-decay factor (0.8^hopDistance to the
-  // active target zone, clamped to index 5) -- same per-ship math as
-  // AccumulateNavyOrderCategoryVectorWithScale, but the original inlines its own copy here
-  // rather than calling out to 0x537c60, so the body is reproduced inline to match. 0x537d40.
   void BuildMissionQueuedOrderCategoryVector(float* vector);
   // Builds the queued category vector for missionTargetZone/resolvedPortZone and returns
   // its similarity to the required category vector. 0x537eb0.

@@ -188,13 +188,13 @@ void TApplication::DoMenuCommand(int command) {
 
 // TApplication::cohandlers' compiler-emitted CList<void*,void*>::Serialize body.
 // The real source is the embedded cohandlers template list, not a TApplication vtable slot.
-// TEMPLATE: IMPERIALISM 0x00486df0
+// TEMPLATE: IMPERIALISM 0x00486df0 SYMBOL
 // ?Serialize@?$CList@PAXPAX@@UAEXAAVCArchive@@@Z
 
 // SYNTHETIC: IMPERIALISM 0x00486f60
 // CList<void *,void *>::`scalar deleting destructor'
 
-// TEMPLATE: IMPERIALISM 0x00486f90
+// TEMPLATE: IMPERIALISM 0x00486f90 SYMBOL
 // ??1?$CList@PAXPAX@@UAE@XZ
 
 // FUNCTION: IMPERIALISM 0x0049e500

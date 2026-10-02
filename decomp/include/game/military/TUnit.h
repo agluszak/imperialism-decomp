@@ -38,7 +38,7 @@ public:
   // civilian target tile by TMapMgr and matched against the terrain table by
   // TGreatPower slot 0x298), but for TMilitaryUnit it holds the stationed
   // city-record index (0..0x180 rows of TMapMgr::cityScoreTable) — established at
-  // TMapMgr 0x518d90 and by the TSuperArmyRoster selection flow (bd 7v4).
+  // TMapMgr 0x518d90 and by the TSuperArmyRoster selection flow.
   short tileIndex06;
   UnitOrder unitOrder;      // 0x08
   short orderTargetIndex0C; // 0x0c

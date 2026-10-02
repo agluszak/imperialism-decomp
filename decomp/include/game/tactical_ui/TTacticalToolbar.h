@@ -20,8 +20,7 @@ public:
   virtual void DoPostCreate(int arg) override;  // slot 0x37 0x5ac840
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x5ac950
   // Updates the toolbar's current-unit 'curr' control from the newly selected unit
-  // (stores it at +0x8c, reads its unitTypeC/side20). The old "Diplomacy" name was a
-  // Ghidra mislabel.
+  // (stores it at +0x8c, reads its unitTypeC/side20).
   virtual void
   UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalUnit* unit); // slot 0x73 0x5acb50
   // Mirror of slot 0x73 for the other side: stores the unit at +0x90 and drives the

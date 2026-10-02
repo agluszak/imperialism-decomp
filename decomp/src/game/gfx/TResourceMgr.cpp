@@ -109,8 +109,7 @@ int TResourceMgr::LoadUiStringResourceById(CString* out, unsigned int stringId) 
 // (group * 100 + index) from the primary data module. On load failure falls back to the
 // shared empty string. Resource id = group*100 + index matches LoadStringA's id arithmetic.
 // FUNCTION: IMPERIALISM 0x004994c0
-int TResourceMgr::LoadUiStringResourceByGroupAndIndex(CString* out, int group,
-                                                                        int index) {
+int TResourceMgr::LoadUiStringResourceByGroupAndIndex(CString* out, int group, int index) {
   LPSTR buffer = out->GetBuffer(0x100);
   int length = LoadStringA(m_primaryModule, index + group * 100, buffer, 0x100);
   out->ReleaseBuffer(-1);
@@ -192,8 +191,8 @@ CDib* TResourceMgr::LoadBmpResourceByIdCached(short bmpId) {
 }
 
 // FUNCTION: IMPERIALISM 0x00499b40
-CDib* TResourceMgr::BuildIndexedBmpResourceById(short bmpId, int width,
-                                                                  int height, int patternMode) {
+CDib* TResourceMgr::BuildIndexedBmpResourceById(short bmpId, int width, int height,
+                                                int patternMode) {
   CDib* dib = new CDib(width, height, 8);
   if (dib == NULL) {
     return NULL;
@@ -324,8 +323,7 @@ void TResourceMgr::ReleaseRecordByHandle(void* handle) {
 }
 
 // FUNCTION: IMPERIALISM 0x0049a590
-CString TResourceMgr::LoadLocalizedStringByPackedGroupAndIndex(
-    unsigned int packedGroupAndIndex) {
+CString TResourceMgr::LoadLocalizedStringByPackedGroupAndIndex(unsigned int packedGroupAndIndex) {
   CString result;
   char* buffer = result.GetBuffer(0x100);
   int group = packedGroupAndIndex >> 8;
@@ -359,8 +357,8 @@ CString TResourceMgr::LoadLocalizedStringByGroupAndIndex(int group, int index) {
 // (counting from `templateId`: [0] = templateId, [1] = first vararg) through the same cache
 // and appending the localized result. Non-digit bracket groups are skipped through ']'.
 // FUNCTION: IMPERIALISM 0x0049a910
-CString* renderTemplateOrExpandTokens(TResourceMgr* cache, CString* out,
-                                      unsigned int templateId, ...) {
+CString* renderTemplateOrExpandTokens(TResourceMgr* cache, CString* out, unsigned int templateId,
+                                      ...) {
   CString result;
   CString templateText = cache->LoadLocalizedStringByPackedGroupAndIndex(templateId);
   char* t = (char*)(LPCSTR)templateText;
@@ -399,8 +397,7 @@ CString* renderTemplateOrExpandTokens(TResourceMgr* cache, CString* out,
 }
 
 // FUNCTION: IMPERIALISM 0x0049aac0
-BOOL TResourceMgr::LoadPaletteResourceByName(CPalette* palette,
-                                                               LPCSTR resourceName) {
+BOOL TResourceMgr::LoadPaletteResourceByName(CPalette* palette, LPCSTR resourceName) {
   if (g_paletteResourceNameAssertGate == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szResourceMgrSourcePath, 0x22f);
   }
@@ -441,8 +438,7 @@ BOOL TResourceMgr::LoadPaletteResourceByName(CPalette* palette,
 }
 
 // FUNCTION: IMPERIALISM 0x0049abd0
-BOOL TResourceMgr::LoadPaletteResource(CPalette* palette,
-                                                         unsigned long resourceId) {
+BOOL TResourceMgr::LoadPaletteResource(CPalette* palette, unsigned long resourceId) {
   if (g_paletteResourceIdAssertGate == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szResourceMgrSourcePath, 0x252);
   }
@@ -462,21 +458,6 @@ BOOL TResourceMgr::LoadPaletteResource(CPalette* palette,
 // FUNCTION: IMPERIALISM 0x0049ace0
 COLORREF TResourceMgr::ResolvePaletteIndexColor(unsigned int packedColor) {
   if (m_dibPalette != NULL && (packedColor & 0xff000000) == 0x01000000) {
-    // Reads green then blue then red off one PALETTEENTRY& binding. This scores 82.61%;
-    // the residual is a load-order difference, not a layout error. The original loads
-    // green through the full indexed form ([ecx+eax*4+5]) and only then folds
-    // base+index*4+4 into a LEA, so blue and red become [ecx+2] and [ecx]; ours binds the
-    // address first and so emits blue before green. PALETTEENTRY is a Windows struct, so
-    // peRed/peGreen/peBlue are certainly +0/+1/+2 and no field declaration can move them.
-    //
-    // Three rewrites aimed at the original's order were measured and are all WORSE -- do
-    // not retry them (bd b0tp):
-    //   three separate array expressions, no reference      66.67% (pins the index in ESI,
-    //                                                              adds a push/pop pair)
-    //   reference bound after green, mask written twice     rebuilt the whole prologue
-    //   reference bound after green, index hoisted to local 54.17%
-    // Closing the last 17% needs the register allocator to keep the index live across the
-    // green load without spilling, which no source-level ordering here reproduces.
     PALETTEENTRY& entry = m_dibPalette->m_pLogPalette->palPalEntry[packedColor & 0xffff];
     COLORREF green = entry.peGreen;
     COLORREF paletteRgb = entry.peBlue | 0x200;
@@ -492,44 +473,43 @@ COLORREF TResourceMgr::ResolvePaletteIndexColor(unsigned int packedColor) {
 // Compiler-emitted destructors for the two embedded CMap<> members above (m_recordsByResourceId,
 // m_recordsByObject); MSVC500 instantiates and calls these automatically as part of
 // ~TResourceMgr(), so there is no source body to write.
-// TEMPLATE: IMPERIALISM 0x0049ae30
+// TEMPLATE: IMPERIALISM 0x0049ae30 SYMBOL
 // ??1?$CMap@FFPAUCacheRecord@@PAU1@@@UAE@XZ
 
 // VC5 emits afxtempl.h's archive loop for the short-key cache specialization. The body
 // serializes each two-byte key and four-byte CacheRecord pointer, and rebuilds the map
 // through CMap::SetAt while loading.
-// TEMPLATE: IMPERIALISM 0x0049aef0
+// TEMPLATE: IMPERIALISM 0x0049aef0 SYMBOL
 // ?Serialize@?$CMap@FFPAUCacheRecord@@PAU1@@@UAEXAAVCArchive@@@Z
 
 // VC5 afxtempl.h body for the pointer-key m_recordsByObject member.
-// TEMPLATE: IMPERIALISM 0x0049b190
+// TEMPLATE: IMPERIALISM 0x0049b190 SYMBOL
 // ?RemoveKey@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@QAEHPAX@Z
-template BOOL CMap<void*, void*, CacheRecord*, CacheRecord*>::RemoveKey(void*);
 
-// TEMPLATE: IMPERIALISM 0x0049b270
+// TEMPLATE: IMPERIALISM 0x0049b270 SYMBOL
 // ??1?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@UAE@XZ
 
 // The pointer-key cache uses the same VC5 afxtempl.h archive loop, with four-byte key
 // and value elements.
-// TEMPLATE: IMPERIALISM 0x0049b330
+// TEMPLATE: IMPERIALISM 0x0049b330 SYMBOL
 // ?Serialize@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@UAEXAAVCArchive@@@Z
 
 // VC5 afxtempl.h CPlex teardown for the short-key m_recordsByResourceId member.
-// TEMPLATE: IMPERIALISM 0x0049b630
+// TEMPLATE: IMPERIALISM 0x0049b630 SYMBOL
 // ?RemoveAll@?$CMap@FFPAUCacheRecord@@PAU1@@@QAEXXZ
 
 // VC5 emits afxtempl.h's InitHashTable body for each embedded CMap specialization.
 // These are MFC template code, not game-owned resize helpers.
-// TEMPLATE: IMPERIALISM 0x0049b6a0
+// TEMPLATE: IMPERIALISM 0x0049b6a0 SYMBOL
 // ?InitHashTable@?$CMap@FFPAUCacheRecord@@PAU1@@@QAEXIH@Z
 
-// TEMPLATE: IMPERIALISM 0x0049b7f0
+// TEMPLATE: IMPERIALISM 0x0049b7f0 SYMBOL
 // ?InitHashTable@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@QAEXIH@Z
 
 // The remaining bodies are likewise emitted from the two real CMap<> members. Their
 // protected node-management methods are MFC template implementation details, not source
 // APIs to recreate in game code.
-// TEMPLATE: IMPERIALISM 0x0049ad50
+// TEMPLATE: IMPERIALISM 0x0049ad50 SYMBOL
 // ?RemoveKey@?$CMap@FFPAUCacheRecord@@PAU1@@@QAEHF@Z
 
 // SYNTHETIC: IMPERIALISM 0x0049b5d0
@@ -538,17 +518,17 @@ template BOOL CMap<void*, void*, CacheRecord*, CacheRecord*>::RemoveKey(void*);
 // SYNTHETIC: IMPERIALISM 0x0049b600
 // CMap<void*,void*,CacheRecord*,CacheRecord*>::`scalar deleting destructor'
 
-// TEMPLATE: IMPERIALISM 0x0049b720
+// TEMPLATE: IMPERIALISM 0x0049b720 SYMBOL
 // ?NewAssoc@?$CMap@FFPAUCacheRecord@@PAU1@@@IAEPAUCAssoc@1@XZ
 
-// TEMPLATE: IMPERIALISM 0x0049b7a0
+// TEMPLATE: IMPERIALISM 0x0049b7a0 SYMBOL
 // ?GetAssocAt@?$CMap@FFPAUCacheRecord@@PAU1@@@IBEPAUCAssoc@1@FAAI@Z
 
-// TEMPLATE: IMPERIALISM 0x0049b870
+// TEMPLATE: IMPERIALISM 0x0049b870 SYMBOL
 // ?NewAssoc@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@IAEPAUCAssoc@1@XZ
 
-// TEMPLATE: IMPERIALISM 0x0049b8f0
+// TEMPLATE: IMPERIALISM 0x0049b8f0 SYMBOL
 // ?FreeAssoc@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@IAEXPAUCAssoc@1@@Z
 
-// TEMPLATE: IMPERIALISM 0x0049b980
+// TEMPLATE: IMPERIALISM 0x0049b980 SYMBOL
 // ?GetAssocAt@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@IBEPAUCAssoc@1@PAXAAI@Z

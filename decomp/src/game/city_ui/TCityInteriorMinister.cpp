@@ -49,7 +49,7 @@ short __stdcall TraceDescendingTileScoreGradientToSource(short startTile, char* 
 // +0x04 value tested at 0x004c2c23 is TTask::citySlotIndex, not TUnit::orderType.
 static const short kPendingProspectorRecruitmentCitySlot = 0x22;
 
-template <class T> static __inline T* AllocateCityMinisterScratchArray(int count, int assertLine) {
+template <class T> static T* AllocateCityMinisterScratchArray(int count, int assertLine) {
   T* result = new T[count];
   if (result == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityMinister_006964B0, assertLine);
@@ -1258,10 +1258,6 @@ void TCityInteriorMinister::DispatchBuilders() {
   }
 }
 
-// MATCH: retail calls the stretch<short> ctor out-of-line for `candidateTiles` at this
-// site while faithful source makes VC5 inline it in this TU (~20 extra blocks). The
-// residual is constructor placement plus register scheduling, not a source defect
-// (reccmp 0.1.7: non_isomorphic_cfg, modulo-stack 27%).
 // FUNCTION: IMPERIALISM 0x004c1ac0
 void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
   RequestMissingCivilianOrderTypes();

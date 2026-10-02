@@ -1,6 +1,7 @@
 """Imperialism-specific commands loaded into GDB's embedded Python."""
 
 import json
+import os
 import pathlib
 import struct
 
@@ -209,9 +210,6 @@ def capture_runtime_snapshot(address, sim_mgr_global=0, nation_aux_array=0):
     snapshot["registers"] = registers
     snapshot["register_objects"] = register_objects
     return snapshot
-
-
-import os
 
 
 RUNTIME_INVARIANT_STATIONED_MILITARY_UNIT_DESTRUCTOR = 1

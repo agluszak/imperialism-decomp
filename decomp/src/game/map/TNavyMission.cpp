@@ -430,7 +430,7 @@ void TNavyMission::QueueMissionOrdersByPriorityForContext(TZone* location, TShip
         short target1 = (*selectedOrder)->GetTurnDistanceTo(missionTargetZone);
         short target2 = topOrder->GetTurnDistanceTo(missionTargetZone);
         if (target1 < target2) {
-          goto LAB_0053711a;
+          goto activateSelectedOrders;
         }
       }
       *selectedOrder = topOrder;
@@ -438,7 +438,7 @@ void TNavyMission::QueueMissionOrdersByPriorityForContext(TZone* location, TShip
     }
   }
 
-LAB_0053711a:
+activateSelectedOrders:
   TShip* startOrder = *selectedOrder;
   for (TShip* order = startOrder; (order == startOrder || order == topOrder) && order != nullptr;
        order += topOrder - startOrder) {
@@ -673,33 +673,9 @@ void TNavyMission::BuildNavyOrderCategoryVectorForNationWithExclusion(float* vec
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
     TShip* ship = node->payload;
     if (nearZone == nullptr || ship->GetTurnDistanceTo(nearZone) <= distanceThreshold) {
-      short normBase = ship->GetMaxStrength();
-      float ratio = static_cast<float>(ship->strength / normBase);
-      vector[0] +=
-          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
-          ratio;
-      vector[1] +=
-          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1)) *
-          ratio;
-      vector[2] +=
-          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2)) *
-          ratio;
-      vector[3] +=
-          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3));
+      AccumulateNavyOrderCategoryVectorWithScale(ship, vector, 1.0f);
     } else if (farZone != nullptr && ship->GetTurnDistanceTo(farZone) <= distanceThreshold) {
-      short normBase = ship->GetMaxStrength();
-      float ratio = static_cast<float>(ship->strength / normBase);
-      vector[0] +=
-          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
-          ratio;
-      vector[1] +=
-          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1)) *
-          ratio;
-      vector[2] +=
-          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2)) *
-          ratio;
-      vector[3] +=
-          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3));
+      AccumulateNavyOrderCategoryVectorWithScale(ship, vector, 1.0f);
     }
   }
 }
@@ -785,15 +761,7 @@ void TNavyMission::BuildMissionQueuedOrderCategoryVector(float* vector) {
       distanceIndex = 5;
     }
     float weight = g_MissionOrderDistanceDecayWeightTable_006978c8[distanceIndex];
-    float ratio = static_cast<float>(ship->strength / ship->GetMaxStrength()) * weight;
-    vector[0] +=
-        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0)) * ratio;
-    vector[1] +=
-        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1)) * ratio;
-    vector[2] +=
-        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2)) * ratio;
-    vector[3] +=
-        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3)) * weight;
+    AccumulateNavyOrderCategoryVectorWithScale(ship, vector, weight);
   }
 }
 
@@ -850,14 +818,6 @@ float TNavyMission::GetWeightedSatisfaction() {
   }
   return numerator / denominator;
 }
-// Weights all 4 categories uniformly by (strength/normalizationBase) * a
-// distance-decay factor (0.8^hopDistance, clamped to index 5) from a per-ship
-// accumulator, over every existing orderList24 ship plus `candidateOrder`, then scores
-// the resulting vector against requiredShipEquipageByCategory via a Bhattacharyya-coefficient-style
-// similarity. The per-ship accumulation is reproduced inline at both call sites (the
-// loop body and the trailing candidate-ship call) rather than factored into a shared
-// helper -- factoring it collapsed the codegen shape and tanked the score (9.48% vs the
-// ~30%+ this idiom otherwise reaches), matching the original's per-callsite inlining.
 // FUNCTION: IMPERIALISM 0x00538120
 float TNavyMission::ComputeMissionOrderMatchScoreWithCandidateNavyOrder(TShip* candidateOrder) {
   float vector[4] = {

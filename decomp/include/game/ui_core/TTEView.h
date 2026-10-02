@@ -31,8 +31,7 @@ public:
   // SizeDeterminer, SizeDeterminer, const VRect&, const TextStyle&, short,
   // unsigned char, unsigned char). The owning document and the two trailing byte flags
   // are recovered here; the VPoint/VRect/SizeDeterminer parameters still carry their
-  // flattened int*/RECT*/int forms (bd nwld class 3 -- those types are ABI-identical and
-  // want recovering as real types across the whole view hierarchy, not one method).
+  // flattened int*/RECT*/int forms across the view hierarchy.
   void ITEView(TDocument* document, TView* panel, int* offsetLayout, int* sizeLayout,
                int layoutParam5, int layoutParam6, RECT* insetRect, TextStyle* style,
                short styleWord90, unsigned char unusedB, unsigned char unusedC);

@@ -1,5 +1,5 @@
 [ghidra]
-version = "12.1.2"
+version = "12.1.4"
 release = "PUBLIC"
 program_name = "Imperialism.exe"
 

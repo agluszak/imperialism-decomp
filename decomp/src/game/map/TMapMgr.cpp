@@ -870,7 +870,7 @@ static const short kOppositeHexDirection[6] = {3, 4, 5, 0, 1, 2};
 
 // Byte-swap one big-endian short in place (the scenario table resources are Mac-order;
 // the original inlines this two-byte exchange at every fixup site).
-static __inline void SwapShortBytes(void* value) {
+static void SwapShortBytes(void* value) {
   char* bytes = static_cast<char*>(value);
   char low = bytes[0];
   char high = bytes[1];
@@ -3818,7 +3818,7 @@ namespace {
 // read up to 44 bytes past that table, into the globals that immediately follow it at
 // 0x696df8..0x696e23. Preserve those exact bytes without crossing C++ array objects.
 const unsigned char kHeatmapPackedDevelopmentOverflow[44] = {
-    0, 0, 0, 1, 1, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0,  1, 1, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     1, 0, 10, 0, 4, 0, 7, 0, 6, 0, 8, 0, 0, 0, 9, 0, 5, 0, 1, 0, 2, 0};
 
 unsigned char GetHeatmapRequirementLevel(int resourceType, signed char packedDevelopment) {
@@ -3826,8 +3826,8 @@ unsigned char GetHeatmapRequirementLevel(int resourceType, signed char packedDev
   if (flatIndex < static_cast<int>(sizeof(g_abUniversityRequirementLevelById))) {
     return g_abUniversityRequirementLevelById[flatIndex / 4][flatIndex % 4];
   }
-  return kHeatmapPackedDevelopmentOverflow
-      [flatIndex - static_cast<int>(sizeof(g_abUniversityRequirementLevelById))];
+  return kHeatmapPackedDevelopmentOverflow[flatIndex - static_cast<int>(sizeof(
+                                                           g_abUniversityRequirementLevelById))];
 }
 
 } // namespace
@@ -4196,84 +4196,21 @@ const unsigned char kGateFlagScoreBucket[15] = {0, 0, 0, 0, 1, 1, 2, 2, 2, 3, 4,
 
 // FUNCTION: IMPERIALISM 0x00518d90
 void TMapMgr::MarkDirectionalMapOverlayFlagsForNationOrders() {
-  // Real prefix: clears perTileVisitedFlag0f across all 0x1950 tiles. Same body as the
-  // standalone DimmingOff (0x515db0), duplicated inline here to
-  // match the original, which inlines it rather than sharing one out-of-line call.
-  for (int tileIndex = 0; tileIndex < kGlobalMapTileCount; ++tileIndex) {
-    terrainStateTable[tileIndex].perTileVisitedFlag0f = 0;
-  }
+  DimmingOff();
 
-  // Per active-nation order (TUnit::orderTargetIndex0C is the order's own city-record index;
-  // tileIndex06 is read as the "stationed province id" for this unit type, per
-  // TMilitaryUnit.h -- both are city-record indices, not raw map tiles, resolving the
-  // earlier "unrecovered geometry helper" TODO): mark the hex-adjacent tile in the
-  // direction from the order's city toward the stationed province with a
-  // war/peace-coded direction overlay. Same computation as the real, separately-
-  // addressed sibling MarkAdjacentHexOrderDirectionAndSelectTile (0x518bd0) -- the
-  // original inlines it at both call sites rather than sharing one out-of-line body,
-  // so it is duplicated here rather than called, to match that shape.
   short activeNationId = g_pSimMgr->GetActiveNationId();
   CIterator cursor(g_apNationStates[activeNationId]->militaryUnitList44);
   TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset());
   while (cursor.More()) {
     if (unit->orderTargetIndex0C != -1) {
-      bool atWar = g_pDiplomacyTurnStateManager->IsNationPairAtWar(
+      char atWar = g_pDiplomacyTurnStateManager->IsNationPairAtWar(
           activeNationId, cityScoreTable[unit->orderTargetIndex0C].ownerNationCode00);
-
-      short anchorTile = cityScoreTable[unit->orderTargetIndex0C].cityTileIndex04;
-      short direction =
-          GetDirectionFrom(anchorTile, cityScoreTable[unit->tileIndex06].cityTileIndex04);
-
-      int row = anchorTile / 0x6c;
-      int col = anchorTile % 0x6c;
-
-      short hexAreaX = static_cast<short>(
-          row % 2 + col * 2 +
-          g_Build_Hex_Area_LookupTable_00696E70[direction < 0    ? direction + 6
-                                                : direction <= 5 ? direction
-                                                                 : direction - 6]);
-      short hexAreaY = static_cast<short>(
-          g_Build_Hex_Area_LookupTable_00696E80[direction < 0    ? direction + 6
-                                                : direction <= 5 ? direction
-                                                                 : direction - 6] +
-          row);
-
-      if (hexAreaX > 0xd7) {
-        hexAreaX -= 0xd9;
-      } else if (hexAreaX < 0) {
-        hexAreaX += 0xd8;
-      }
-
-      if (hexAreaY < 0) {
-        hexAreaY = 0;
-      } else if (hexAreaY > 0x3b) {
-        hexAreaY = 0x3b;
-      }
-
-      short finalTileIndex = static_cast<short>(hexAreaX / 2 + hexAreaY * 0x6c);
-      if (finalTileIndex < 0 || finalTileIndex >= 0x1950) {
-        finalTileIndex = -1;
-      }
-
-      if (finalTileIndex != -1) {
-        signed char directionCode = static_cast<signed char>((direction + 3) % 6 + 1);
-        if (atWar != 0) {
-          directionCode += 6;
-        }
-        terrainStateTable[finalTileIndex].perTileVisitedFlag0f = directionCode;
-        if (g_pViewMgr->mapUberPictureF0 != nullptr) {
-          g_pViewMgr->mapUberPictureF0->InvalidateTile(finalTileIndex);
-        }
-      }
+      MarkAdjacentHexOrderDirectionAndSelectTile(unit->tileIndex06, unit->orderTargetIndex0C,
+                                                 atWar);
     }
     unit = static_cast<TMilitaryUnit*>(cursor.Advance());
   }
 }
-
-// Sum the developer purchase cost of the two edge resources on a tile: for each real
-// resource type (< 0x11) weight it via the trade manager's proposal-weight metric (slot
-// 0x13) scaled x20; fixed surcharges for the special types 0x15 (10000) and 0x16 (4000).
-// (Ghidra mis-attributed this to TCivToolbar; `this->field0c` is TMapMgr::terrainStateTable.)
 
 // FUNCTION: IMPERIALISM 0x00519010
 int TMapMgr::ClassifyCityGateTerrainComposition(int cityIndex) {
@@ -4522,7 +4459,7 @@ void TMapMgr::ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot) {
 // Reset a tile's resource-icon edge cache: resolve resourceTypeByEdge[0] from a fixed 16-entry
 // lookup indexed by the tile's gateFlag, and force resourceTypeByEdge[1] to 0xff.
 // FUNCTION: IMPERIALISM 0x0051da60
-void __stdcall OrphanDeadLeaf_NoRefs_0051da60(StrategicTileIndex nTileIndex) {
+void __stdcall UnusedMapManagerLeaf(StrategicTileIndex nTileIndex) {
   unsigned short lookup[16];
   lookup[0] = 0xffff;
   lookup[1] = 0xffff;

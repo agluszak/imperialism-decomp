@@ -21,7 +21,6 @@
 // VTABLE: IMPERIALISM 0x0063e478
 class ImperialismCommandLineInfo : public CCommandLineInfo {
 public:
-  // Inlined at every construction site in the original; keep the definition in-class.
   explicit ImperialismCommandLineInfo(CString* languageName)
       : m_pLanguageName24(languageName), field_28(0x20), m_bQuitAfterLanguageScan2c(0),
         m_bShowSetupDialog30(0), m_bClearRegistrySettings34(0), m_strMainWindowTitle38(),

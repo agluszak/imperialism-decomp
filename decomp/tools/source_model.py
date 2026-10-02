@@ -33,29 +33,26 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from tools.common.file_scan import iter_files, is_generated_source_path
+from tools.common.file_scan import is_generated_source_path, iter_files
 from tools.common.markers import function_marker_regex
 from tools.common.repo import repo_root_from_file, resolve_repo_path
+from tools.ui_cpp_codegen import generated_claim_rows
 
 DEFAULT_GEN_DIR = "build-msvc500/generated"
 MODEL_NAME = "source_model.json"
 
 _KINDS = ("FUNCTION", "STUB", "TEMPLATE", "SYNTHETIC", "LIBRARY")
-_VTABLE_RE = re.compile(r"//\s*VTABLE\s*:\s*(\w+)\s+(?:0x)?([0-9a-fA-F]+)", re.IGNORECASE)
+_VTABLE_RE = re.compile(
+    r"//\s*VTABLE\s*:\s*(\w+)\s+(?:0x)?([0-9a-fA-F]+)", re.IGNORECASE
+)
 _GLOBAL_RE = re.compile(
     r"//\s*GLOBAL\s*:\s*(\w+)\s+(?:0x)?([0-9a-fA-F]+)", re.IGNORECASE
 )
 _CLASS_DECL_RE = re.compile(r"^\s*(?:class|struct)\s+([A-Za-z_]\w*)")
 # Declaration head: `Ret [Class::]Name(args`. Qualified or free.
-_DEF_RE = re.compile(
-    r"^[\w:<>*&~\s]*?\b((?:[A-Za-z_]\w*::)*~?[A-Za-z_]\w*)\s*\("
-)
-_NAME_COMMENT_RE = re.compile(r"^//\s*((?:[A-Za-z_]\w*::)*~?[A-Za-z_]\w*)\s*$")
-# Linker-symbol spellings: MSVC C++ mangles start with '?', C symbols carry the
-# cdecl underscore on top of any source underscores (`___ld12tod` = __ld12tod).
-_MANGLED_COMMENT_RE = re.compile(r"^//\s*(\?\S+|\S*@\S*|___\S+)\s*$")
+_DEF_RE = re.compile(r"^[\w:<>*&~\s]*?\b((?:[A-Za-z_]\w*::)*~?[A-Za-z_]\w*)\s*\(")
 _STRUCTURED_FIELD_RE = re.compile(
-    r"^//\s*(name|symbol|prototype)\s*:\s*(.*\S)?\s*$", re.IGNORECASE
+    r"^//\s*(name|prototype)\s*:\s*(.*\S)?\s*$", re.IGNORECASE
 )
 # Names that are C++ keywords/control flow can never be function names.
 _NOT_NAMES = frozenset(
@@ -112,39 +109,30 @@ def _claim_name(kind: str, lines: list[str], marker_idx: int) -> tuple[str, str,
     if kind == "FUNCTION":
         name, proto = _parse_decl(lines, marker_idx + 1)
         return name, proto, ""
-    # SYNTHETIC/TEMPLATE/LIBRARY: optional structured metadata comments
-    # (`// name:`, `// symbol:`, `// prototype:`), else a single legacy
-    # name-or-mangle convention comment under the marker.
     name = proto = symbol = ""
-    saw_structured = False
-    for j in range(marker_idx + 1, min(marker_idx + 8, len(lines))):
+    if marker_idx + 1 >= len(lines):
+        return name, proto, symbol
+    identity = lines[marker_idx + 1].strip()
+    if not identity.startswith("//"):
+        return name, proto, symbol
+    identity = identity[2:].strip()
+    if identity == "ownership-only":
+        return name, proto, symbol
+    if lines[marker_idx].split()[-1].upper() == "SYMBOL":
+        symbol = identity
+    else:
+        name = identity
+    for j in range(marker_idx + 2, min(marker_idx + 8, len(lines))):
         text = lines[j].strip()
-        if not text:
-            break
-        if not text.startswith("//"):
-            break
         field = _STRUCTURED_FIELD_RE.match(text)
-        if field:
-            saw_structured = True
-            key = field.group(1).lower()
-            value = (field.group(2) or "").strip()
-            if key == "name":
-                name = value
-            elif key == "symbol":
-                symbol = value
-            elif key == "prototype":
-                proto = value
-            continue
-        if saw_structured:
-            # Freeform notes may follow structured fields; stop parsing fields.
+        if not field:
             break
-        m = _MANGLED_COMMENT_RE.match(text)
-        if m:
-            return "", "", m.group(1)
-        m = _NAME_COMMENT_RE.match(text)
-        if m:
-            return m.group(1), "", ""
-        break
+        key = field.group(1).lower()
+        value = (field.group(2) or "").strip()
+        if key == "name":
+            name = value
+        elif key == "prototype":
+            proto = value
     return name, proto, symbol
 
 
@@ -168,8 +156,15 @@ def build_model(repo_root: Path, target: str = "IMPERIALISM") -> SourceModel:
                 kind = next((k for k in _KINDS if k in line.upper()), "FUNCTION")
                 addr = int(m.group(1), 16)
                 name, proto, symbol = _claim_name(kind, lines, i)
-                claim = Claim(address=addr, kind=kind, file=rel, line=i + 1,
-                              name=name, prototype=proto, symbol=symbol)
+                claim = Claim(
+                    address=addr,
+                    kind=kind,
+                    file=rel,
+                    line=i + 1,
+                    name=name,
+                    prototype=proto,
+                    symbol=symbol,
+                )
                 per_addr.setdefault(addr, []).append(claim)
                 continue
             vm = _VTABLE_RE.search(line)
@@ -187,8 +182,9 @@ def build_model(repo_root: Path, target: str = "IMPERIALISM") -> SourceModel:
                 gname = ""
                 if i + 1 < len(lines):
                     # Name comes from the following declaration: `Type g_name... =`.
-                    dm = re.search(r"\b([A-Za-z_]\w*)\s*(?:\[[^\]]*\])?\s*(?:=|;)",
-                                   lines[i + 1])
+                    dm = re.search(
+                        r"\b([A-Za-z_]\w*)\s*(?:\[[^\]]*\])?\s*(?:=|;)", lines[i + 1]
+                    )
                     if dm:
                         gname = dm.group(1)
                 if gname:
@@ -196,8 +192,6 @@ def build_model(repo_root: Path, target: str = "IMPERIALISM") -> SourceModel:
 
     generated_manifest = repo_root / "config" / "ui_factory_codegen.yml"
     if target.upper() == "IMPERIALISM" and generated_manifest.is_file():
-        from tools.ui_cpp_codegen import generated_claim_rows
-
         for row in generated_claim_rows(repo_root):
             claim = Claim(**row)
             per_addr.setdefault(claim.address, []).append(claim)
@@ -214,14 +208,20 @@ def build_model(repo_root: Path, target: str = "IMPERIALISM") -> SourceModel:
 # Serialization
 # ---------------------------------------------------------------------------
 
+
 def model_to_json(model: SourceModel) -> dict:
     return {
         "target": model.target,
         "functions": [
             {
-                "address": "0x{:08x}".format(c.address), "kind": c.kind,
-                "file": c.file, "line": c.line, "name": c.name,
-                "prototype": c.prototype, "symbol": c.symbol, "origin": c.origin,
+                "address": "0x{:08x}".format(c.address),
+                "kind": c.kind,
+                "file": c.file,
+                "line": c.line,
+                "name": c.name,
+                "prototype": c.prototype,
+                "symbol": c.symbol,
+                "origin": c.origin,
             }
             for _a, c in sorted(model.functions.items())
         ],
@@ -236,7 +236,9 @@ def model_to_json(model: SourceModel) -> dict:
     }
 
 
-def write_model(repo_root: Path, target: str, gen_dir: Path) -> tuple[Path, SourceModel]:
+def write_model(
+    repo_root: Path, target: str, gen_dir: Path
+) -> tuple[Path, SourceModel]:
     model = build_model(repo_root, target)
     gen_dir.mkdir(parents=True, exist_ok=True)
     out = gen_dir / MODEL_NAME
@@ -250,15 +252,20 @@ def main() -> int:
     parser.add_argument("--gen-dir", default=DEFAULT_GEN_DIR)
     args = parser.parse_args()
     repo_root = repo_root_from_file(__file__, levels_up=1)
-    out, model = write_model(repo_root, args.target,
-                             resolve_repo_path(repo_root, args.gen_dir))
+    out, model = write_model(
+        repo_root, args.target, resolve_repo_path(repo_root, args.gen_dir)
+    )
     marker_fns = sum(1 for c in model.functions.values() if c.origin == "marker")
     named = sum(1 for c in model.functions.values() if c.name)
-    print(f"Wrote {out} ({marker_fns} marker claims, "
-          f"{named} named, "
-          f"{len(model.vtables)} vtables, {len(model.globals)} globals)")
+    print(
+        f"Wrote {out} ({marker_fns} marker claims, "
+        f"{named} named, "
+        f"{len(model.vtables)} vtables, {len(model.globals)} globals)"
+    )
     if model.duplicates:
-        print("source-model FAILED: duplicate function-kind claims (one address, one owner):")
+        print(
+            "source-model FAILED: duplicate function-kind claims (one address, one owner):"
+        )
         for addr in sorted(model.duplicates):
             for c in model.duplicates[addr]:
                 print("  0x{:08x} {} {}:{}".format(addr, c.kind, c.file, c.line))

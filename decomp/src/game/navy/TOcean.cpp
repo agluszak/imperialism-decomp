@@ -720,7 +720,7 @@ void TOcean::RemovePortZoneByTile(short nTileIndex) {
   }
 }
 
-// bd 1uj.16: TTaskForce::OrderEvade / OrderSailTowards's
+// TTaskForce::OrderEvade / OrderSailTowards's
 // final notification step (0x5642e0). Only runs when the entry belongs to the active
 // nation. It re-marks the entry's map tile (TTaskForce::UpdateNavyOrderMapMarkerByOrder-
 // Type), lights the entry's TZone map-order UI flag iff the active nation still has a

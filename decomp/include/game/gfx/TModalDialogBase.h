@@ -21,10 +21,7 @@
 // vtable 0x0063e5a0 = CDialog's vtable (0x0066fc2c) with: slot index 1 the class
 // scalar-deleting destructor, slot index 48 (byte 0xc0) DoModal overridden with the game's
 // modal loop, and two new tail virtuals at indices 54/55 (bytes 0xd8/0xdc)
-// PrepareAndCreateModalFromTemplate / CleanupModalCreateState. A // VTABLE: marker is not
-// claimed yet: reccmp can only pair the ~50 inherited CWnd/CDialog slots once the full MFC
-// dialog vtable is annotated as LIBRARY (a separate prerequisite); the four dialog-specific
-// slots here are already modelled as real virtuals.
+// PrepareAndCreateModalFromTemplate / CleanupModalCreateState.
 // VTABLE: IMPERIALISM 0x0063e5a0
 class TModalDialogBase : public CDialog {
 public:

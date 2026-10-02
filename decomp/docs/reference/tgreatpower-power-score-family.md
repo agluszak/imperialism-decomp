@@ -133,8 +133,7 @@ are now real typed members on both classes.
 
 ## Residual Notes
 
-- Slot 0xa3 (0x004e1f40, 452B, war-commitment threshold) is tracked as Beads
-  issue `imperialism-decomp-1uj.33`.
+- Slot 0xa3 (0x004e1f40, 452B, war-commitment threshold) remains to be investigated.
 - Residual score gaps in the family are register allocation / x87 scheduling noise,
   not structure; slot 0x9e (51%) additionally inlines `joinsWar` flag spills.
 - 0x00517c30 (36%) is shape-correct; the original keeps its `found` flag in AL while

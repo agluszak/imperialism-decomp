@@ -266,12 +266,6 @@ void TArmyMgr::ReadFrom(TStream* stream) {
       record.ReadFrom(stream);
       mapContextActionRecordList04->AppendCopiedRecordToPtrList(&record);
       flag8 = 1;
-      // Redundant re-store (both branches write the same 1); preserved to match codegen
-      // (same idiom as AppendMapContextActionRecordAndResetWorkingFields, which reads the
-      // same byte global at 0x006a42dc).
-      if (g_bRandomMapDeveloperCheatFlag != 0) {
-        flag8 = 1;
-      }
 
       // The copied record in the list now owns these arrays; reset our local's copies
       // (ground truth re-zeroes them here too, matching the ctor-time defaults).
@@ -1983,10 +1977,6 @@ void TArmyMgr::AppendMapContextActionRecordAndResetWorkingFields(MapOrderBattleS
   record->childCount[1] = 0;         // +0x24c
   record->childCount[0] = 0;         // +0x24a
   flag8 = 1;
-  // Redundant re-store (both branches write the same 1); preserved to match codegen.
-  if (g_bRandomMapDeveloperCheatFlag != 0) {
-    flag8 = 1;
-  }
 }
 
 // FUNCTION: IMPERIALISM 0x004a6ef0

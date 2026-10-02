@@ -1,89 +1,166 @@
-"""Batch compare: score many functions from a single reccmp PDB parse.
-
-Loads and pairs symbols once, then compares the requested addresses or every
-`// FUNCTION` marker in a source file. Callee pairing remains complete even when
-only a few function bodies are selected for comparison.
-
-Usage:
-    python -m tools.reccmp.compare_batch --target IMPERIALISM --build-dir <dir> \
-        [ADDR ...] [--file SRC.cpp ...]
-
-Exit status is non-zero if any requested function is below 100%, so it doubles
-as a regression gate over a batch.
-"""
+"""Select authored FUNCTION claims and run current reccmp/Ghidriff."""
 
 from __future__ import annotations
 
 import argparse
-import re
-import sys
+import json
+import subprocess
+from datetime import datetime, timezone
 from pathlib import Path
 
-from tools.common.reccmp_report import run_report
-from tools.common.report_score import effective_matching
+from reccmp.source.index import SourceIndex
 
-MARKER_RE = re.compile(r"//\s*FUNCTION:\s*\w+\s+0x([0-9A-Fa-f]+)")
-
-
-def norm(addr: str) -> int:
-    return int(addr, 16)
+from tools.common.reccmp_report import function_counts, run_report
+from tools.common.repo import repo_root_from_file
+from tools.source_model import Claim, build_model
 
 
-def addrs_from_file(path: Path) -> list[int]:
-    out: list[int] = []
-    for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
-        m = MARKER_RE.search(line)
-        if m:
-            out.append(int(m.group(1), 16))
-    return out
+def authored_claims(repo: Path, target: str) -> dict[int, Claim]:
+    model = build_model(repo, target)
+    if model.duplicates:
+        raise ValueError("Duplicate source claims; run the marker gate")
+    return {
+        address: claim
+        for address, claim in model.functions.items()
+        if claim.kind == "FUNCTION" and claim.origin == "marker"
+    }
+
+
+def changed_files(repo: Path, base: str) -> set[str]:
+    names = subprocess.check_output(
+        ["git", "diff", "--name-only", "-z", "--relative", base, "--", "."],
+        cwd=repo,
+        text=True,
+    ).split("\0")
+    untracked = subprocess.check_output(
+        ["git", "ls-files", "--others", "--exclude-standard", "-z"],
+        cwd=repo,
+        text=True,
+    ).split("\0")
+    return {name for name in names + untracked if name}
+
+
+def select_addresses(
+    claims: dict[int, Claim],
+    selectors: list[str],
+    files: list[str],
+    *,
+    all_functions: bool = False,
+    dependencies: dict[str, tuple[str, ...]] | None = None,
+) -> list[int]:
+    if all_functions:
+        return sorted(claims)
+    wanted = set()
+    for selector in selectors:
+        try:
+            address = int(selector, 16)
+        except ValueError:
+            matches = {
+                address
+                for address, claim in claims.items()
+                if selector.lower() in claim.name.lower()
+            }
+        else:
+            matches = {address} if address in claims else set()
+        if not matches:
+            raise ValueError(f"No authored FUNCTION matches {selector!r}")
+        wanted.update(matches)
+    for file in files:
+        owners = {file}
+        if Path(file).suffix in {".h", ".hpp"}:
+            if dependencies is None:
+                raise ValueError(
+                    "Header selection needs the built source index; run just source-index"
+                )
+            owners.update(
+                unit for unit, includes in dependencies.items() if file in includes
+            )
+        wanted.update(
+            address for address, claim in claims.items() if claim.file in owners
+        )
+    return sorted(wanted)
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--target", required=True)
-    ap.add_argument("--build-dir", required=True, type=Path)
-    ap.add_argument("--file", action="append", default=[], type=Path,
-                    help="source file(s); compare every // FUNCTION marker in it")
-    ap.add_argument("addrs", nargs="*", help="original-binary offsets (hex)")
-    args = ap.parse_args()
-
-    wanted: list[int] = [norm(a) for a in args.addrs]
-    for f in args.file:
-        wanted.extend(addrs_from_file(f))
-    if not wanted:
-        print("no addresses given (pass hex offsets and/or --file SRC.cpp)", file=sys.stderr)
-        return 2
-    wanted_set = set(wanted)
-
-    rows = run_report(
-        args.target, args.build_dir, diet=True, orig_addresses=wanted_set
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--target", default="IMPERIALISM")
+    parser.add_argument("--build-dir", type=Path, default=Path("build-msvc500"))
+    parser.add_argument(
+        "--all", action="store_true", help="every authored FUNCTION marker"
     )
-    by_addr = {norm(r["address"]): r for r in rows}
-
-    passed = failed = missing = 0
-    fails: list[str] = []
-    for a in sorted(wanted_set):
-        r = by_addr.get(a)
-        if r is None:
-            missing += 1
-            print(f"  0x{a:08x}  ???.??%  <not found in reccmp output>")
-            fails.append(f"0x{a:08x}(missing)")
-            continue
-        pct = effective_matching(r) * 100.0
-        effective = pct >= 100.0 and r["matching"] < 1.0
-        mark = "OK " if pct >= 100.0 else "   "
-        note = " (effective)" if effective else ""
-        print(f"{mark}0x{a:08x}  {pct:6.2f}%  {r['name']}{note}")
-        if pct >= 100.0:
-            passed += 1
-        else:
-            failed += 1
-            fails.append(f"0x{a:08x}({pct:.2f}%)")
-
-    print(f"\n{passed} at 100%, {failed} below, {missing} missing (of {len(wanted_set)})")
-    if fails:
-        print("BELOW 100%: " + " ".join(fails))
-        return 1
+    parser.add_argument(
+        "--file", action="append", default=[], help="source file or header"
+    )
+    parser.add_argument("--changed", action="store_true")
+    parser.add_argument("--base", default="origin/main")
+    parser.add_argument("--output", type=Path, help="new saved report directory")
+    parser.add_argument(
+        "selectors", nargs="*", help="original addresses or source-name substrings"
+    )
+    args = parser.parse_args()
+    repo = repo_root_from_file(__file__)
+    files = list(args.file)
+    if args.all and (files or args.selectors or args.changed):
+        parser.error("--all cannot be combined with selectors")
+    if args.changed:
+        base = subprocess.check_output(
+            ["git", "merge-base", "HEAD", args.base],
+            cwd=repo,
+            text=True,
+        ).strip()
+        files.extend(changed_files(repo, base))
+    if not (args.all or files or args.selectors or args.changed):
+        parser.error("Select addresses/names, --file, --changed, or --all")
+    files = [(repo / file).resolve().relative_to(repo).as_posix() for file in files]
+    dependencies = None
+    if any(Path(file).suffix in {".h", ".hpp"} for file in files):
+        dependencies = SourceIndex.read(
+            args.build_dir / "reccmp-source/source-index.json"
+        ).unit_dependencies
+    claims = authored_claims(repo, args.target)
+    addresses = select_addresses(
+        claims,
+        args.selectors,
+        files,
+        all_functions=args.all,
+        dependencies=dependencies,
+    )
+    if not addresses:
+        print("No authored functions selected.")
+        return 0
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S.%fZ")
+    output = args.output or repo / "build/comparisons" / stamp
+    selection = {
+        "scope": "all-authored" if args.all else "selected-authored",
+        "revision": subprocess.check_output(
+            ["git", "rev-parse", "HEAD"],
+            cwd=repo,
+            text=True,
+        ).strip(),
+        "dirty": subprocess.check_output(
+            ["git", "status", "--porcelain"],
+            cwd=repo,
+            text=True,
+        ).splitlines(),
+        "functions": [
+            {
+                "orig": hex(address),
+                "file": claims[address].file,
+                "line": claims[address].line,
+                "name": claims[address].name,
+            }
+            for address in addresses
+        ],
+    }
+    summary = run_report(
+        args.target,
+        args.build_dir,
+        orig_addresses=addresses,
+        output=output,
+        selection=selection,
+    )
+    print(json.dumps(function_counts(summary["functions"]), indent=1))
+    print(f"Saved comparison: {output}")
     return 0
 
 

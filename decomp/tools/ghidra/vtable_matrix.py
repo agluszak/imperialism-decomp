@@ -56,7 +56,8 @@ def main() -> int:
         try:
           val = mem.getInt(af.getAddress(vt + slot * 4)) & 0xFFFFFFFF
         except Exception:
-          cells.append("<unreadable>"); continue
+          cells.append("<unreadable>")
+          continue
         _, nm = resolve(val)
         cells.append(nm)
       print(f"{slot:#04x} " + "".join(f"| {c:<34}" for c in cells))

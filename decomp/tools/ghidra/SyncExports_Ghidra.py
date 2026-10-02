@@ -16,6 +16,7 @@
 import json
 import os
 import re
+from typing import TYPE_CHECKING
 
 from java.io import StringWriter
 from java.util import ArrayList
@@ -32,6 +33,8 @@ from ghidra.program.model.data import (
 )
 from ghidra.program.model.listing import Function
 from ghidra.program.model.symbol import SourceType, SymbolType
+if TYPE_CHECKING:
+    from ghidra.ghidra_builtins import currentProgram, getScriptArgs, monitor
 
 DEFAULT_EXPECTED_GHIDRA_VERSION = "12.1"
 DEFAULT_EXPECTED_GHIDRA_RELEASE = "PUBLIC"

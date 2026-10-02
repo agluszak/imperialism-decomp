@@ -21,21 +21,59 @@ installation are machine-wide. A worktree beneath a dot-directory needs a dot-fr
 (`vendor-msvc500-headers`, `bootstrap-reccmp`, …) remain invokable even when hidden from
 `just --list`.
 
-## Recover a function
+## Recovery campaigns
 
 ```sh
-bd update <issue> --claim
-just ghidra portprep 0xADDR
-just ghidra listing 0xADDR
-# edit the manual C++ source
+# inspect a saved comparison and choose a shared source-model cause
+just compare-report build/comparisons/BASELINE --queue --campaigns --output build/campaign.json
+# batch the unanswered retail reads; edit canonical owners and their consumers
+# normally cover roughly 50–100 affected functions before expensive verification
 just build
-just triage 0xADDR
+just compare --changed
+# run the relevant runtime differential when observable behavior may change
 just precommit
 ```
 
-Read the scoped `AGENTS.md` and matching skill before editing. Work from instructions and data, not a
-decompiler label. `triage` is the comparison authority: act on `mismatch`; accept `effective`; investigate
-the metadata/evidence behind `inconclusive`. `just compare 0xADDR` is the optional raw-diff view.
+Read the scoped `AGENTS.md` and matching skill before editing. Start with saved reports, group by
+shared type/layout/data defects, then signatures/ownership, then behavioral control flow. Fix the
+canonical owner across a coherent batch. Use focused comparisons only to resolve a concrete
+uncertainty. Rebuild and compare once per substantial batch; full precommit belongs near its end.
+
+## Comparison evidence
+
+```sh
+just compare --all --output build/comparisons/BASELINE
+just compare 0xADDR TMapMaker:: --file src/game/map_generation/TMapMaker.cpp
+just compare --changed --base origin/main
+just compare-report build/comparisons/HEAD --base build/comparisons/BASE
+just addr 0xADDR
+just datacmp
+just vtable ClassName
+```
+
+`--all` selects only authored `// FUNCTION:` claims from the existing source model. `--file` accepts
+source files and headers; headers select their includers through the native source index. Explicit
+address selectors must have an authored claim. `--changed` selects changes against the merge base,
+including local edits and untracked source files. Build/toolchain changes require `--all`.
+
+reccmp owns pairing and analysis preparation; Ghidriff owns decompiled-code differences. Results are
+`no-differences`, `differences`, `unpaired`, and `analysis-failed`. A difference is evidence to inspect,
+not a failed percentage test. A clean decompilation does not establish original source spelling.
+Retail instructions and runtime differential fixtures remain the stronger evidence.
+
+Each run saves reccmp's manifest, summary, Ghidriff report, direct-call census, and logs, plus authored
+selection provenance and full datacmp/vtable diagnostics. `compare-report` counts outcomes, inline
+retries and retries that become clean, data issues, and vtable match/different/unpaired results. Its
+call queue is an inspection queue, not proof of manual inlining or incorrect behavior. The optional
+campaign groups count shared original data findings, direct-call targets, and source owners;
+they do not infer which reference caused a difference. The optional
+base report must be a whole-authored dataset built at the current merge base; dataset additions and
+removals are reported separately from shared-function outcome transitions.
+
+Comparison keeps disposable analysis in `build/reccmp-ghidra/`. It reads reviewed signatures from
+the restored committed Imperialism Ghidra archive; it never exports comparison state over that
+archive. Preserve saved reports before source changes. Keep VC5 `/Ob1`; inline normalization does
+not establish that a helper or translation-unit split existed in the original source.
 
 ## Ownership and generated inputs
 

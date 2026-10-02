@@ -13,7 +13,7 @@ CPP_HEADER_PATTERNS = ("*.cpp", "*.cc", "*.cxx", "*.h", "*.hpp", "*.hh", "*.hxx"
 # under .claude/worktrees/<id>/ and contain a full checkout of every source file with
 # the same // FUNCTION:/// VTABLE:/// GLOBAL: markers. A repo-wide source scan that
 # descends into them registers every marker address twice, corrupting duplicate-address
-# dedup (see bd imperialism-decomp-idi). Bounded roots (src/, include/) never reach them,
+# dedup. Bounded roots (src/, include/) never reach them,
 # but exclude defensively so a scan rooted at the repo root stays correct too.
 #
 # Caveat: when the SCAN ITSELF is rooted inside a `.claude/worktrees/<id>/` checkout

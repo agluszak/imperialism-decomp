@@ -37,7 +37,9 @@ public:
   unsigned char padding9D;
   short embeddedPageIndex9E;
 
-  // FUNCTION: IMPERIALISM 0x004c6eb0
+  // SYNTHETIC: IMPERIALISM 0x004c6eb0
+  // TBuildingView::TBuildingView
+  // Source evidence: unreferenced retained COMDAT in retail.
   TBuildingView() : TNoHilitePicture() {
     city94 = 0;
   }

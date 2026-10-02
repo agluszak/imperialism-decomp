@@ -53,8 +53,7 @@ static void CALLBACK UiCursorTickTimerProc(HWND hWnd, UINT uMsg, UINT idEvent, D
 // into the active TView tree. Layout/type shared with TGameWindow::DoKeyEvent (which reads
 // commandCode/handledMarker) and the CMcWindow WM_CHAR handler 0x493ce0 via
 // game/TUiEvent.h (TToolboxEvent).
-static __inline void PopulateKeyCommandBlock(TToolboxEvent& block, UINT nChar, UINT nRepCnt,
-                                             UINT nFlags) {
+static void PopulateKeyCommandBlock(TToolboxEvent& block, UINT nChar, UINT nRepCnt, UINT nFlags) {
   block.commandCode = (nChar == VK_F1) ? 0x68 : static_cast<short>(nChar);
   block.keyFlags = static_cast<short>(nFlags & 0xf);
   block.handledMarker = static_cast<short>(nRepCnt);
@@ -106,7 +105,7 @@ CIncludeView::CIncludeView()
 // SYNTHETIC: IMPERIALISM 0x004829f0
 // CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::`scalar deleting destructor'
 
-// TEMPLATE: IMPERIALISM 0x00482a20
+// TEMPLATE: IMPERIALISM 0x00482a20 SYMBOL
 // ??1?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAE@XZ
 
 // FUNCTION: IMPERIALISM 0x00482ab0
@@ -291,7 +290,8 @@ void CIncludeView::UpdateAndRenderMapTileHintOverlayQueue(CDC* dc, RECT* clipRec
   // Pass 1: blit each not-yet-processed hint rect into the offscreen surface.
   m_overlayRectQueue.cursor = m_overlayRectQueue.records.GetHeadPosition();
   while (m_overlayRectQueue.cursor != 0) {
-    IncludeViewOverlayRectRecord& rec = m_overlayRectQueue.records.GetNext(m_overlayRectQueue.cursor);
+    IncludeViewOverlayRectRecord& rec =
+        m_overlayRectQueue.records.GetNext(m_overlayRectQueue.cursor);
     if (rec.processedFlag10 == 0) {
       rec.processedFlag10 = 1;
       CPoint dimensions;
@@ -313,7 +313,8 @@ void CIncludeView::UpdateAndRenderMapTileHintOverlayQueue(CDC* dc, RECT* clipRec
   // Pass 2: repaint the hosted dialog tree over each remaining unprocessed rect.
   m_overlayRectQueue.cursor = m_overlayRectQueue.records.GetHeadPosition();
   while (m_overlayRectQueue.cursor != 0) {
-    IncludeViewOverlayRectRecord& rec = m_overlayRectQueue.records.GetNext(m_overlayRectQueue.cursor);
+    IncludeViewOverlayRectRecord& rec =
+        m_overlayRectQueue.records.GetNext(m_overlayRectQueue.cursor);
     if (rec.processedFlag10 == 0) {
       rec.processedFlag10 = 1;
       RECT paintRect;
@@ -330,7 +331,8 @@ void CIncludeView::UpdateAndRenderMapTileHintOverlayQueue(CDC* dc, RECT* clipRec
   m_overlayRectQueue.cursor = m_overlayRectQueue.records.GetHeadPosition();
   while (m_overlayRectQueue.cursor != 0) {
     POSITION current = m_overlayRectQueue.cursor;
-    IncludeViewOverlayRectRecord& rec = m_overlayRectQueue.records.GetNext(m_overlayRectQueue.cursor);
+    IncludeViewOverlayRectRecord& rec =
+        m_overlayRectQueue.records.GetNext(m_overlayRectQueue.cursor);
     if (rec.processedFlag10 == 2) {
       RECT flushRect = rec.rect;
       m_overlayRectQueue.records.RemoveAt(current);
@@ -620,8 +622,7 @@ void CIncludeViewOverlayRectQueue::AddHead(RECT* rect, int processedFlag, int fi
 
 // FUNCTION: IMPERIALISM 0x00483d10
 IncludeViewOverlayRectRecord*
-CIncludeViewOverlayRectQueue::UpdateNextRecordProcessedFlagFromCursor(int matchFlag,
-                                                                    int newFlag) {
+CIncludeViewOverlayRectQueue::UpdateNextRecordProcessedFlagFromCursor(int matchFlag, int newFlag) {
   while (cursor != 0) {
     IncludeViewOverlayRectRecord& rec = records.GetNext(cursor);
     if (rec.processedFlag10 == matchFlag) {
@@ -841,13 +842,13 @@ void CIncludeView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
   Default();
 }
 
-// TEMPLATE: IMPERIALISM 0x00484610
+// TEMPLATE: IMPERIALISM 0x00484610 SYMBOL
 // ?Serialize@?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEXAAVCArchive@@@Z
 
 // SYNTHETIC: IMPERIALISM 0x004847a0
 // CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::`scalar deleting destructor'
 
-// TEMPLATE: IMPERIALISM 0x004847d0
+// TEMPLATE: IMPERIALISM 0x004847d0 SYMBOL
 // ??1?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAE@XZ
 
 // One-shot "AmbitCadreEgout" window-class registration returning the class-name
@@ -869,8 +870,7 @@ LPCSTR RegisterAmbitCadreEgoutWindowClass() {
     }
     g_AmbitCadreEgoutWndClassAtom_006A1834 = AfxRegisterClass(&wndClass);
   }
-  return g_AmbitCadreEgoutWndClassAtom_006A1834 != 0 ? g_szAmbitCadreEgoutClassName_00694D40
-                                                   : NULL;
+  return g_AmbitCadreEgoutWndClassAtom_006A1834 != 0 ? g_szAmbitCadreEgoutClassName_00694D40 : NULL;
 }
 
 // Native host view (TView::nativeWindow50) of the top window on the modal stack.

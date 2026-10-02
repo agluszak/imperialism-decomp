@@ -73,13 +73,7 @@ bool TArmyMission::IsANoBrainer() const {
 // SYNTHETIC: IMPERIALISM 0x0053c1d0
 // TArmyMission::`scalar deleting destructor'
 
-// Shared accumulation loop over orderListAt18 (0x53c620 / 0x53ceb0 / 0x53d020 / 0x53d200 /
-// 0x53fc10 all repeat this exact per-unit vector-contribution pattern -- kept `inline` and
-// TU-local: giving it real external linkage (tried during bd 1uj.16.7) changed this TU's own
-// inlining decisions at its two callers below and regressed 4 sibling functions by 8-25pp, so
-// TInvadeMission::AccumulateLack duplicates the loop body instead of calling this, matching
-// the original's own apparent per-callsite inlining).
-inline void TArmyMission::AccumulateOrderPriorityVector(float* vector) const {
+void TArmyMission::AccumulateOrderPriorityVector(float* vector) const {
   CIterator iter(orderListAt18);
   for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);

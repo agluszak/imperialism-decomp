@@ -48,7 +48,7 @@ MARKER_RE = re.compile(
 NOOP_RE = re.compile(r"//\s*NOOP:.*?0x(?P<addr>[0-9a-fA-F]+)")
 SLOT_COMMENT_RE = re.compile(r"//\s*0x[0-9a-fA-F]{1,3}\s+0x(?P<addr>[0-9a-fA-F]{5,8})")
 
-# trivial_return_but_big was promoted out of AUDIT_KINDS (bd rziq) once its last 19
+# trivial_return_but_big was promoted out of AUDIT_KINDS once its last 19
 # findings were recovered from the listings: a bare `return <literal>;` in front of a real
 # retail body is the same silent-no-op failure mode as empty_but_big, just spelled
 # deceptively, so it must not be reintroducible.
@@ -58,7 +58,7 @@ VIOLATION_KINDS = (
     "empty_unresolved",
     "noop_contradicted",
     "trivial_return_but_big",
-    # bd kwee: an empty, init-list-free ctor whose original stores to offsets
+    # An empty, init-list-free ctor whose original stores to offsets
     # beyond the base-class size — the derived fields are seeded in the retail
     # binary but not by our port. Promoted after the audit ran clean.
     "ctor_missing_derived_init",
@@ -342,7 +342,7 @@ def scan_file(
         ctor_dtor = is_ctor_or_dtor(qual, name)
 
         if trivial_return:
-            # bd kwee blind spot 2: `return 0;` over a big original is the same
+            # `return 0;` over a big original is the same
             # silent no-op as an empty body, spelled deceptively.
             if (
                 marker_kind not in ("STUB", "LIBRARY")
@@ -371,7 +371,7 @@ def scan_file(
             ctor_dtor=ctor_dtor,
             max_noop_size=max_noop_size,
         )
-        # bd kwee blind spot 1: the ctor exemption only holds when the original
+        # The ctor exemption only holds when the original
         # ctor adds no derived-field stores of its own. Decode the original and
         # flag stores landing at/beyond the base-class size.
         if (

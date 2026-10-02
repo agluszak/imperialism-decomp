@@ -284,7 +284,7 @@ def initialize_wine_prefix(prefix: Path, environment: dict[str, str]) -> None:
     on any filesystem without reflink support (build-runtime-tests is on ext4 here), plus
     an rmtree of the same size on teardown, for isolation that a per-worktree prefix
     already provides -- each agent works in its own worktree, so nobody shares a
-    wineserver with anybody else. See imperialism-decomp-3sn1.
+    wineserver with anybody else.
     """
     virtual_desktop = bool(environment.get("IMPERIALISM_WINE_VIRTUAL_DESKTOP"))
     template = ensure_template_prefix(virtual_desktop)

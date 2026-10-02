@@ -16,16 +16,35 @@ bytes shifts everything after it, and nothing downstream can detect or recover f
 
 Two consequences that are easy to get backwards:
 
-- **A low reccmp score does not imply a desync.** `TOcean::ReadFrom` sits below 40% with
-  byte accounting that is exactly right; the gap is EH/codegen shape. `just triage`
-  reports it `inconclusive`, which per AGENTS.md is not evidence of a source defect.
-- **A high score does not imply correctness.** `TDiplomacyMgr::ReadFrom` looked like three
+- **A differing decompilation does not imply a desync.** Inspect stream-call order,
+  byte accounting and runtime fixtures before attributing a difference to serialization.
+- **A similar decompilation does not imply correctness.** `TDiplomacyMgr::ReadFrom` looked like three
   tidy matrix reads while under-reading 2.1 KB, and `TTown::WriteTo` wrote the right
   *number* of bytes in the wrong *order* (raw block where the reader byte-swaps), so
   every resource yield came back corrupted.
 
 `just serde-audit` measures byte accounting specifically, and is the check that matters
-for save/load. Run it after touching a serializer; run `just triage` for the score.
+for save/load. Run it after a serializer batch and inspect its saved Ghidriff comparison.
+
+### Static audit limits
+
+The audit expands qualified base serializers and direct retail serializer calls. Its
+listing replay and source parser do not reconstruct every execution path:
+
+- `TSortedPtrList::WriteTo` (`0x5e1f10`) writes the two-byte record size and four-byte
+  count, then `recordSize14` bytes per record. At `0x5e1f55` the size argument is pushed
+  before the nested virtual entry lookup. That lookup consumes only its index argument;
+  the size remains for the `WriteBytes` call at `0x5e1f60`. The audit's unknown-call
+  stack-cleanup estimate loses that final stream call.
+- `TTechMgr::ReadFrom` (`0x5af460`) lays out both version branches in the listing. The
+  new-format four-byte read and old-format nine-byte read share the call at `0x5af58e`.
+  The source parser records both operations; the listing has one shared call site.
+
+These are extraction limitations, rather than evidence of missing source fields. Keep
+the candidates visible and verify their paths against retail instructions. An unknown
+width or repeat count is a wildcard, so a compatible sequence alone does not prove
+byte accounting or correct record counts. Runtime fixtures provide separate evidence
+for the paths they execute.
 
 ## Byte order
 
@@ -42,8 +61,7 @@ the choice is per call site — the listing shows which:
 | `ReadByteSwappedShortArrayFromStream` (0x4f2a60), `WriteByteSwappedShortArrayToStream` (0x4b94a0) | out-of-line array read/write |
 | `SwapShortArrayBytes`, `ReverseDwordArrayBytes`, `SwapFloat`, `WriteShortArrayElems`, `WriteIntArrayElems` (`static __inline`) | the original inlined the loop at the call site |
 
-Forcing an inlined site through the out-of-line helper (or the reverse) changes codegen
-and costs match.
+Call versus inline emission does not change the required byte-order contract.
 
 `0x4f2970` and `0x4b9340` are byte-identical twins: the original emits one copy per
 module that uses the helper, so the image carries two bodies for one source function. We

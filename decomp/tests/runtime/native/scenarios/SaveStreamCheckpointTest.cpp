@@ -37,7 +37,7 @@
 //
 // It replays a save this build just WROTE, not a committed fixture. The fixture that used
 // to back this test was itself produced by an older build of ours and was stale, which
-// made a correct reader look broken (imperialism-decomp-cinw.17) -- a save whose
+// made a correct reader look broken -- a save whose
 // provenance cannot be checked in is worse than no save at all. Self-saving costs the
 // retail-fidelity half of the question and keeps the reader-vs-writer half, which is the
 // half that finds desyncs; pointing this at a genuine retail save is strictly stronger and
@@ -124,7 +124,7 @@ private:
     // TSimMgr::ReadFrom's rebuild frees every nation's units without unlinking them from
     // cityScoreTable[P].stationedUnitChain98 (TUnit::Free, verified faithful at 0x5c2680, does not
     // unlink; nor does TCountry::Free at 0x4d6ba0). The freshly seeded units are then linked in
-    // front of those freed ones, and walking that tail is imperialism-decomp-srql. Detaching first,
+    // front of those freed ones, and walking that tail dereferences freed units. Detaching first,
     // through each unit's own DetachUnitOrderFromOwnerAndReset, removes the difference between this
     // replay and a menu load rather than papering over what the rebuild does. Reading into the
     // live managers is what the real load does; a replay that read into throwaway objects would

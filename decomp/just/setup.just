@@ -7,7 +7,7 @@ docker-build:
 [group('setup')]
 bootstrap-reccmp:
   : "${ORIGINAL_BINARY:?Set ORIGINAL_BINARY in .env}"
-  uv run reccmp-project create --originals "$ORIGINAL_BINARY" --scm
+  uv run reccmp-project detect --what original --search-path "$(dirname "$ORIGINAL_BINARY")"
 
 # Generate ./compile_commands.json (clang-lint flavor, host paths) for clangd/LSP
 # navigation. Not for matching questions — the reccmp build is MSVC500. The lint

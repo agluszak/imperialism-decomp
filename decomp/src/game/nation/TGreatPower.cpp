@@ -1,6 +1,5 @@
 // TGreatPower — nation-state object for the seven playable great powers
-// (Mac source: UCountry.cpp / UCountryAuto.cpp). Manual decompilation file;
-// reccmp pairs bodies by the FUNCTION address markers.
+// Mac source: UCountry.cpp / UCountryAuto.cpp.
 
 #include <math.h>
 #include "game/ui_tags_common.h"
@@ -75,7 +74,7 @@ static const int kDiplomacyTrackedSlotCount = 0x11;
 
 static const float kOne = 1.0f;
 
-static __inline int SumMilitaryUnitPowerWeightsForScore(TSortedList* unitList) {
+static int SumMilitaryUnitPowerWeightsForScore(TSortedList* unitList) {
   int powerSum = 0;
   CIterator unitIter(unitList);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
@@ -85,7 +84,7 @@ static __inline int SumMilitaryUnitPowerWeightsForScore(TSortedList* unitList) {
   return powerSum;
 }
 
-static __inline float SumAlliedArmyScoreFactorsForScore(int targetNation) {
+static float SumAlliedArmyScoreFactorsForScore(int targetNation) {
   float allySum = 0.0f;
   int allyIndex = 0;
   if (g_pDiplomacyTurnStateManager->GetNumAllies(targetNation) > 0) {
@@ -98,7 +97,7 @@ static __inline float SumAlliedArmyScoreFactorsForScore(int targetNation) {
   return allySum;
 }
 
-static __inline float SumAlliedNavyScoreFactorsForScore(int targetNation) {
+static float SumAlliedNavyScoreFactorsForScore(int targetNation) {
   float allySum = 0.0f;
   int allyIndex = 0;
   if (g_pDiplomacyTurnStateManager->GetNumAllies(targetNation) > 0) {
@@ -111,11 +110,11 @@ static __inline float SumAlliedNavyScoreFactorsForScore(int targetNation) {
   return allySum;
 }
 
-static __inline short* GetRelationStandingRowForScore(short nationSlot) {
+static short* GetRelationStandingRowForScore(short nationSlot) {
   return &g_pDiplomacyTurnStateManager->relationStandingScores[nationSlot * kNationSlotCount];
 }
 
-static __inline int GetClampedQuarterYearTermForScore() {
+static int GetClampedQuarterYearTermForScore() {
   int yearTerm = static_cast<short>(g_pSimMgr->economicTurn / 4);
   if (yearTerm >= 0x3c) {
     yearTerm = 0x3c;
@@ -2511,8 +2510,6 @@ short TGreatPower::ComputeNationRuntimeAdvisoryMetricCase6() {
   if (nationCity != 0) {
     TPopulationMgr* summary = nationCity->productionSummary1d8;
     TLaborPool* bucket = summary->productionSlots14;
-    // 100% at a file-tail position; the register-allocator picks an esi-spill form here
-    // (position-dependent wobble, heuristics 18/47) - keep the natural expression.
     short folded = static_cast<short>(bucket->highSkillCount08 * 2 + bucket->mediumSkillCount06);
     folded = static_cast<short>(folded * 2 + bucket->lowSkillCount04);
     return static_cast<short>(folded + summary->extraAt1e);
@@ -3762,11 +3759,6 @@ float TGreatPower::ComputeMapActionContextCompositeScoreForNation(TZone* zone) {
 
   return compositeScore;
 }
-
-// Ghidra mislabels this 0x005b7f50 leaf "PurchaseItem_Impl";
-// the body is a pure range predicate (no resource delta, no nation totals), renamed by
-// behavior per Hard Rule 6. Genuinely __stdcall (RET 0x4, single stacked short, no ecx);
-// FPO leaf (no ebp frame) so it is wrapped in the frame-pointer-omission pragma.
 
 // FUNCTION: IMPERIALISM 0x005b7f50
 char __stdcall IsSpecialNationInteractionResource(short resourceIndex) {

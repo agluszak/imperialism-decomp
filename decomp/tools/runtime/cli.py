@@ -354,7 +354,7 @@ def prune_run_bundles(args: argparse.Namespace) -> int:
     """Apply bundle retention across every test name, not just the one that just ran.
 
     Each bundle stages its own read-only game/ sandbox, so this is the supported way to
-    reclaim the space: hand-deleting one needs a chmod first (imperialism-decomp-mx2a).
+    reclaim the space: hand-deleting one needs a chmod first.
     """
     keep = bundle_retention() if args.keep is None else max(args.keep, 0)
     if not RESULT_DIR.is_dir():

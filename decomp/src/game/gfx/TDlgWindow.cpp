@@ -7,7 +7,7 @@
 
 // The original reaches the shared UI invalidation-flag helper through the incremental-link
 // thunk; this only retypes the args of a genuine __cdecl(void) thunk (Hard Rule 9).
-static __inline void AssertUGameWindowInvalidation(const char* path, int line) {
+static void AssertUGameWindowInvalidation(const char* path, int line) {
   TemporarilyClearAndRestoreUiInvalidationFlag();
 }
 // SYNTHETIC: IMPERIALISM 0x00500280

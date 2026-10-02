@@ -72,3 +72,54 @@ void ReadByteSwappedShortArrayFromStream(TStream* stream, short* values, int sho
     } while (shortCount != 0);
   }
 }
+
+void SwapShortArrayBytes(void* base, int count) {
+  unsigned char* bytes = static_cast<unsigned char*>(base);
+  for (int i = 0; i < count; ++i) {
+    unsigned char value = bytes[0];
+    bytes[0] = bytes[1];
+    bytes[1] = value;
+    bytes += 2;
+  }
+}
+
+void ReverseDwordArrayBytes(void* base, int count) {
+  unsigned char* bytes = static_cast<unsigned char*>(base);
+  for (int i = 0; i < count; ++i) {
+    unsigned char byte0 = bytes[0];
+    unsigned char byte1 = bytes[1];
+    bytes[0] = bytes[3];
+    bytes[1] = bytes[2];
+    bytes[2] = byte1;
+    bytes[3] = byte0;
+    bytes += 4;
+  }
+}
+
+void WriteShortArrayElems(TStream* stream, const short* values, int count) {
+  for (int remaining = count; remaining != 0; --remaining) {
+    short value = *values++;
+    SwapFirstTwoBytesInBuffer(&value);
+    stream->WriteBytes(&value, 2);
+  }
+}
+
+void WriteShortArrayElemsRev(TStream* stream, const short* values, int count) {
+  WriteShortArrayElems(stream, values, count);
+}
+
+void WriteFloatArrayElems(TStream* stream, const float* values, int count) {
+  for (int remaining = count; remaining != 0; --remaining) {
+    float value = *values++;
+    ReverseDwordArrayBytes(&value, 1);
+    stream->WriteBytes(&value, 4);
+  }
+}
+
+void WriteIntArrayElems(TStream* stream, const int* values, int count) {
+  for (int remaining = count; remaining != 0; --remaining) {
+    int value = *values++;
+    ReverseDwordArrayBytes(&value, 1);
+    stream->WriteBytes(&value, 4);
+  }
+}

@@ -83,11 +83,10 @@ public:
   float
   ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(TMilitaryUnit* candidateUnit); // 0x53d200
 
-private:
-  // Shared accumulation loop over orderListAt18 (0x53c620 / 0x53ceb0 both repeat
-  // this exact per-unit vector-contribution pattern).
+protected:
   void AccumulateOrderPriorityVector(float* vector) const;
 
+private:
   // Mac oracle: ComputeProvinceImportance. Scores a province for this mission: its
   // cityScoreValue, scaled by one plus the fraction of adjacent regions whose owner
   // matches this mission's nation, then normalised by 5000 -- the province analogue of

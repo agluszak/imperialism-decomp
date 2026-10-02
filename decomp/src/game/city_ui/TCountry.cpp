@@ -35,7 +35,7 @@
 
 static const unsigned int kAddrClassDescTCountry = 0x00653670;
 
-static __inline bool IsRecruitQuarterTickGate(short tickRaw) {
+static bool IsRecruitQuarterTickGate(short tickRaw) {
   int tick = static_cast<int>(tickRaw);
   int quarterIndex = (tick + ((tick >> 0x1f) & 3)) >> 2;
   if ((quarterIndex & 1) == 0) {

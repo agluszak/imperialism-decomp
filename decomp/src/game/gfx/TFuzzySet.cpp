@@ -42,6 +42,17 @@ void TFuzzySet::Free() {
   delete this;
 }
 
+// FUNCTION: IMPERIALISM 0x004ff7d0
+void TFuzzySet::AllocateAndAppendRecord(float value0, float value1, float value2, float value3) {
+  TFuzzyVar* record = new TFuzzyVar();
+  record->values[0] = value0;
+  record->values[1] = value1;
+  record->values[2] = value2;
+  record->values[3] = value3;
+  m_members[m_memberCount] = record;
+  ++m_memberCount;
+}
+
 // FUNCTION: IMPERIALISM 0x004ff840
 int TFuzzySet::SelectWeightedMemberIndex(float input) {
   float weights[10];
@@ -78,8 +89,3 @@ int TFuzzySet::SelectWeightedMemberIndex(float input) {
   }
   return index < 10 ? index : -1;
 }
-
-// AllocateAndAppendRecord (0x4ff7d0) is defined in its own TU
-// (TFuzzySet_AllocateAndAppendRecord.cpp) to keep it out of this file's PDB line
-// table, which otherwise crosses its symbol with the adjacent Free() and makes reccmp
-// mis-pair both.

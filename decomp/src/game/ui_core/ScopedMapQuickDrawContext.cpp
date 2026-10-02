@@ -7,7 +7,7 @@
 
 typedef void* hwnd_t;
 
-static __inline int BindScopedMapQuickDrawDcHandleInline(TView* view, CDC* existingDc) {
+static int BindScopedMapQuickDrawDcHandleInline(TView* view, CDC* existingDc) {
   g_pScopedMapQuickDrawViewContext = view;
   CDC* dcHandleObject = existingDc;
   if (existingDc == 0) {
@@ -24,7 +24,7 @@ static __inline int BindScopedMapQuickDrawDcHandleInline(TView* view, CDC* exist
   return dcHandleObject != 0;
 }
 
-static __inline void ReleaseScopedMapQuickDrawDcHandleInline(TView* view, CDC* existingDc) {
+static void ReleaseScopedMapQuickDrawDcHandleInline(TView* view, CDC* existingDc) {
   if (existingDc == 0) {
     ReleaseDC(view->nativeWindow50->m_hWnd, g_pScopedMapQuickDrawDcHandleObject->m_hDC);
   }
@@ -32,7 +32,7 @@ static __inline void ReleaseScopedMapQuickDrawDcHandleInline(TView* view, CDC* e
   g_pScopedMapQuickDrawViewContext = 0;
 }
 
-static __inline void BindScopedMapQuickDrawClientDcInline(TView* view, CDC* clientDc) {
+static void BindScopedMapQuickDrawClientDcInline(TView* view, CDC* clientDc) {
   g_pScopedMapQuickDrawViewContext = view;
   if (clientDc != 0) {
     g_pScopedMapQuickDrawDcHandleObject = clientDc;

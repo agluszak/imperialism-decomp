@@ -6,13 +6,6 @@
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
-// The base TCommand constructor installs vtable 0x648e28; this constructor then
-// installs 0x66da90 (compiler-emitted from the // VTABLE: annotation). No manual
-// vptr store. Besides inlined copies at `new TNextTradeCommand()` call sites, a
-// standalone out-of-line copy exists at 0x5ba400 (Ghidra name:
-// ConstructTNextTradeCommandBaseState), called by the diplomacy turn-event
-// state machine.
-
 // FUNCTION: IMPERIALISM 0x005ba400
 TNextTradeCommand::TNextTradeCommand() : TCommand() {}
 

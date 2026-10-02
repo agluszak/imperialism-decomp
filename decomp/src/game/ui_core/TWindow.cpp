@@ -19,7 +19,7 @@
 // One-shot McAppUI invalidation-flag assert. The original reaches the shared invalidation
 // helper through the incremental-link thunk; each call site is gated by its own
 // g_McAppUiFlag_* one-shot so the assert fires at most once.
-static __inline void AssertMcAppUiInvalidation(const char* path, int line) {
+static void AssertMcAppUiInvalidation(const char* path, int line) {
   TemporarilyClearAndRestoreUiInvalidationFlag(path, line);
 }
 
@@ -64,8 +64,7 @@ TWindow::~TWindow() {
 // Dead helper whose whole body is the unconditional McAppUI.cpp:0x8c9 assert call; all
 // five arguments are unused and no callers survive. 0x0048d870, __stdcall.
 // FUNCTION: IMPERIALISM 0x0048d870
-void __stdcall AssertMcAppUiDialogStateAndReturn(int arg1, int arg2, int arg3, int arg4,
-                                               int arg5) {
+void __stdcall AssertMcAppUiDialogStateAndReturn(int arg1, int arg2, int arg3, int arg4, int arg5) {
   AssertMcAppUiInvalidation(g_szMcAppUiSourcePath_006950B0, 0x8c9);
 }
 

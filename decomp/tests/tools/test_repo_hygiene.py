@@ -1,4 +1,4 @@
-"""Tests for the repository-hygiene gate (bd imperialism-decomp-ej4d).
+"""Tests for the repository-hygiene gate.
 
 Each test builds a throwaway git repo and tracks a file in it, so the assertions are about
 what `git ls-files` actually reports rather than about string matching on a path list. The

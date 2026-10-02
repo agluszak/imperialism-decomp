@@ -1844,8 +1844,6 @@ short TTaskForce::CountSelectedShips() const {
 
 // FUNCTION: IMPERIALISM 0x00556280
 bool TTaskForce::AllShipsSelected() const {
-  // MATCH: 80.00% - residual diff is VC5 register allocation (retail keeps the
-  // node payload in ECX and the bool temp in EDX; recomp swaps them).
   if (this == 0) {
     return true;
   }
@@ -1937,12 +1935,7 @@ int TTaskForce::GetNationalIndex() const {
 // FUNCTION: IMPERIALISM 0x00556410
 void TTaskForce::CreateIngot() {
   int markerType = -1;
-  // Clear the tile this entry previously marked (same body as DestroyIngot,
-  // inlined by the original rather than called).
-  if (ingotTileIndex != -1) {
-    g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(ingotTileIndex, -1);
-    ingotTileIndex = -1;
-  }
+  DestroyIngot();
   // `shipOrders` (+0x08) is the order kind; each kind marks a different tile with a
   // different state byte. In these map-order contexts `target`/`location` are the
   // order's zone -- the disassembly dispatches through TZone's tile-search virtuals

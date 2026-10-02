@@ -7,10 +7,9 @@ linker artifacts, not source functions: reccmp auto-detects unannotated jmp
 thunks in both binaries (EntityType.THUNK, skip=True) and excludes them from
 the report, and hand-writing bodies for them is forbidden (fake source).
 
-ANY symbols.csv row at a thunk address — `function` or `global`/label — becomes
-a reccmp entity that blocks the thunk auto-detection and breaks call/vtable
-resolution through the thunk (mass score drops; ~583 label rows re-imported on
-2026-07-02 cost 238 functions similarity until pruned).
+Current reccmp's create_thunks skips addresses already in its entity database.
+An inventory row at a thunk address therefore prevents the native THUNK/ref
+entry. Pruning keeps raw inventory imports from blocking call/vtable resolution.
 
 A row is pruned only when ALL of these hold:
   1. the address lies inside the contiguous ILT region;
@@ -18,7 +17,7 @@ A row is pruned only when ALL of these hold:
   3. no manual source file claims the address with a FUNCTION/STUB/SYNTHETIC
      marker (those need a separate retirement pass first);
   4. no manual source references the symbol name (the sanctioned
-     extern-thunk-cast callsite pattern still needs the autogen stub to link).
+     source still needs that generated symbol to link).
 
 Two further junk-row classes are pruned under the same keep-rules (3)+(4):
 
@@ -149,15 +148,10 @@ def ilt_keep_reason(
 ) -> str | None:
     """Why an ILT-range function row/entity must be kept (shared with the DB-side
     prune in tools/ghidra/prune_ilt_db_functions.py): a manual marker claims the
-    address, or manual source references the symbol name (the sanctioned
-    extern-thunk-cast callsite pattern still needs the autogen stub to link)."""
+    address, or manual source references the symbol name."""
     if addr in claimed:
         return "claimed"
-    # Match the FULL symbol as a source identifier. Splitting off the namespace here
-    # (name.split("::")[-1]) once kept `thunk_TPictureButton::TPictureButton` because the
-    # plain class name "TPictureButton" appears everywhere in manual source — and one such
-    # surviving ILT-range row degrades reccmp call rendering image-wide (bd ztdv:
-    # 192 functions dropped ~10 pp each until the row was pruned).
+    # Match the full symbol, not a class name shared by unrelated source references.
     ident = re.sub(r"[^A-Za-z0-9_]", "_", name)
     # Ghidra disambiguates duplicate names with an address suffix
     # (thunk_Foo_004061D1); manual source references the bare name.

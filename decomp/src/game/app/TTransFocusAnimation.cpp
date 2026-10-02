@@ -98,9 +98,9 @@ void TTransFocusAnimation::UpdateBackground() {
                (transientHeight - destinationRect.top) - destinationRect.bottom);
   }
 
-  BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
-                        transientSurfaceContext->GetBlitSurface(), &sourceRect, &destinationRect,
-                        0);
+  BlitRectWithOptionalTransparency(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
+                                   transientSurfaceContext->GetBlitSurface(), &sourceRect,
+                                   &destinationRect, 0);
   SetClip(surface.tempRgn);
 }
 
@@ -142,8 +142,9 @@ void TTransFocusAnimation::DrawNextFrame(POINT* offset) {
     OffsetRect(&clipRect, 0, (animatorTargetHeight - destinationRect.top) - destinationRect.bottom);
   }
 
-  BlitQuickDrawSurfaces(transientSurfaceContext->GetBlitSurface(), animatorTarget->GetBlitSurface(),
-                        &destinationRect, &clipRect, 0);
+  BlitRectWithOptionalTransparency(transientSurfaceContext->GetBlitSurface(),
+                                   animatorTarget->GetBlitSurface(), &destinationRect, &clipRect,
+                                   0);
 
   if (enabledFlag != 0) {
     RECT overlayRect;
@@ -152,8 +153,9 @@ void TTransFocusAnimation::DrawNextFrame(POINT* offset) {
     overlayRect.top = 0;
     overlayRect.bottom = height;
     UpdatePaletteIndexWithDefaultFallback(0x10);
-    BlitQuickDrawSurfaces(insetBitmapSurface->GetBlitSurface(), animatorTarget->GetBlitSurface(),
-                          &overlayRect, &clipRect, 0x24);
+    BlitRectWithOptionalTransparency(insetBitmapSurface->GetBlitSurface(),
+                                     animatorTarget->GetBlitSurface(), &overlayRect, &clipRect,
+                                     0x24);
   }
 
   ClipAndPaste();

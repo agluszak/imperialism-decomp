@@ -61,8 +61,6 @@ public:
   // boughtTradesView..cachedBuyPageView, resets the 'mark'/'tabs' labels and the page-mode flag, refreshes
   // the nation title ('loot'), reapplies this dialog's slot-0x73 theme, plays the refresh
   // sfx, and rebuilds the 'titL'/'rtil' title/subtitle labels + 'rocl'/'rocr' buttons.
-  // (Ghidra mis-attributed this to TControl; it is contiguous with this class's methods
-  // and uses its exact field layout + slot 0x73.)
   void Startup(short startupValue);
 };
 

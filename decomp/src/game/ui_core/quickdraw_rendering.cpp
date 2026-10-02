@@ -14,7 +14,7 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include <cstring>
 
-static __inline CDC* ResolveActiveQuickDrawDc() {
+static CDC* ResolveActiveQuickDrawDc() {
   CDC* dc = g_pQuickDrawMemoryDc;
   if (dc == 0) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
@@ -150,7 +150,7 @@ CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TextStyle* styl
 }
 
 // GLOBAL: IMPERIALISM 0x00695120
-static unsigned char g_reversedDwordScratchBuffer[5];
+static unsigned char g_reversedDwordScratchBuffer[5] = {'\'', 'a', 'b', 'c', 'd'};
 
 // Dead byte-order helper: writes `value` big-endian into the static scratch buffer
 // after its leading byte and returns the buffer base (matching the original's

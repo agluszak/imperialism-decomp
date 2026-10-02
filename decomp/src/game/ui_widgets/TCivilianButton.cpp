@@ -62,8 +62,8 @@ void TCivilianButton::Draw(RECT* rectBuffer) {
 
   RECT dstRect = {0, 2, 0x40, 0x42};
   TQuickDrawSurfaceContext* hintSource = g_pMacViewMgr->atlas66c;
-  BlitQuickDrawSurfaces(hintSource->GetBlitSurface(),
-                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect, &dstRect,
-                        0x24);
+  BlitRectWithOptionalTransparency(hintSource->GetBlitSurface(),
+                                   g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
+                                   &dstRect, 0x24);
   UpdatePaletteIndexWithDefaultFallback(0x13);
 }

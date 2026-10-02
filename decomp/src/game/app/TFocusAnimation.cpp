@@ -109,8 +109,9 @@ void TFocusAnimation::ClipAndPaste() {
     }
   }
 
-  BlitQuickDrawSurfaces(&srcContext->blitSurface, &g_pActiveQuickDrawSurfaceContext->blitSurface,
-                        &sourceRect, &destinationRect, 0);
+  BlitRectWithOptionalTransparency(&srcContext->blitSurface,
+                                   &g_pActiveQuickDrawSurfaceContext->blitSurface, &sourceRect,
+                                   &destinationRect, 0);
 }
 
 // SYNTHETIC: IMPERIALISM 0x004a0050

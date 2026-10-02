@@ -34,10 +34,10 @@ reccmp matching and must not influence the MSVC500 build.
 
 The LLVM 19 evaluation over all manually owned `src/game/*.cpp` translation
 units produced 664 source-visible diagnostics in 131 files. The largest owned
-families are signed-char conversions (136, `imperialism-decomp-1uj.99.7`),
-redundant casts (116, `imperialism-decomp-1uj.99.2`), analyzer null/call paths
+families are signed-char conversions (136),
+redundant casts (116), analyzer null/call paths
 (282), suspicious call arguments (38), and enum casts outside the currently
-declared domain (28, `imperialism-decomp-1uj.99.8`). Smaller high-signal groups
+declared domain (28). Smaller high-signal groups
 include casts through `void*` (17), branch clones (17), assignment in conditions
 (12), dead stores (9), redundant expressions (4), `sizeof` misuse (2), macro
 parenthesization (2), and implicit multiplication widening (1). These are audit
@@ -131,8 +131,9 @@ Interpretation:
   fix for the duplicate original-side CList instantiations.
 - Practical conclusion: do not adopt `/OPT:REF` to chase duplicate CList rows. Keep the
   real `CList<...>` source model and treat leftover duplicate original template bodies
-  as a reccmp pairing/classification problem. The current alias rows in
-  `config/template_aliases.csv` are consumed directly by stub generation.
+  as a reccmp pairing/classification problem. Historical equivalence groups are
+  no longer comparison inputs; current reccmp owns catalog aliases. Stub generation
+  consumes only the original-address exclusions in `config/stub_exclusions.csv`.
 
 ### ICF matrix (2026-07-23) — /OPT:NOREF,/OPT:NOICF pinned as the matching baseline
 
@@ -164,7 +165,7 @@ Interpretation:
   bodies and 440/444 vtables lose slot pairings — while the *average similarity* rises
   (+4.13 pp) because honest low-scoring tiny pairings disappear: never judge a linker
   experiment by the unweighted average. Fold-awareness belongs in reccmp equivalence
-  metadata (bd 5jjn), never in our link flags; the VC5 service-pack axis is bd fh2r.
+  metadata, never in our link flags.
 
 ### VC5 service-pack probe (2026-07-23) — RTM confirmed on three independent axes
 

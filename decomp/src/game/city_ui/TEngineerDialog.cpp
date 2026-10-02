@@ -80,9 +80,9 @@ void TEngineerDialog::Draw(RECT* rectBuffer) {
   dstRect.left = 0;
   dstRect.right = 0x148;
 
-  BlitQuickDrawSurfaces(this->headerSurface60->GetBlitSurface(),
-                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &headerRect,
-                        &headerRect, 0);
+  BlitRectWithOptionalTransparency(this->headerSurface60->GetBlitSurface(),
+                                   g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &headerRect,
+                                   &headerRect, 0);
 
   bodyY = 0x38;
   int bodyRowCount = (static_cast<short>(this->frameHeight38) - 0x46) / 0x0e;
@@ -90,9 +90,9 @@ void TEngineerDialog::Draw(RECT* rectBuffer) {
     do {
       dstRect.top = bodyY;
       dstRect.bottom = bodyY + 0x0e;
-      BlitQuickDrawSurfaces(this->bodyTileSurface68->GetBlitSurface(),
-                            g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &bodyTileRect,
-                            &dstRect, 0);
+      BlitRectWithOptionalTransparency(this->bodyTileSurface68->GetBlitSurface(),
+                                       g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                       &bodyTileRect, &dstRect, 0);
       bodyY = static_cast<short>(bodyY + 0x0e);
       bodyRowCount = bodyRowCount - 1;
     } while (bodyRowCount != 0);
@@ -100,9 +100,9 @@ void TEngineerDialog::Draw(RECT* rectBuffer) {
 
   dstRect.top = bodyY;
   dstRect.bottom = bodyY + 0x0e;
-  BlitQuickDrawSurfaces(this->footerSurface64->GetBlitSurface(),
-                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &bodyTileRect, &dstRect,
-                        0);
+  BlitRectWithOptionalTransparency(this->footerSurface64->GetBlitSurface(),
+                                   g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                   &bodyTileRect, &dstRect, 0);
 
   (void)rectBuffer;
 }

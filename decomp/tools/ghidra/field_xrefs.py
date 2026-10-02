@@ -24,7 +24,6 @@ import re
 import sys
 
 from tools.common import ghidra_env
-from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file
 from tools.common.symbols import names_by_address
 

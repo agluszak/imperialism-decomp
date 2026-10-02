@@ -11,12 +11,11 @@
 // a separate forwarder (which broke pairing at those call sites).
 int TemporarilyClearAndRestoreUiInvalidationFlag(...);
 
-// Inline helper for nil-pointer asserts with source path
-static __inline void FailNilPointerWithAssert(const char* sourcePath, int line) {
-  GAME_FAIL_NIL_POINTER();
-  TemporarilyClearAndRestoreUiInvalidationFlag(sourcePath, line);
-}
+#define FailNilPointerWithAssert(sourcePath, line)                                                 \
+  do {                                                                                             \
+    GAME_FAIL_NIL_POINTER();                                                                       \
+    TemporarilyClearAndRestoreUiInvalidationFlag(sourcePath, line);                                \
+  } while (0)
 
-static __inline void FailNilPointerInUSmallViews(int line) {
-  FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, line);
-}
+#define FailNilPointerInUSmallViews(line)                                                          \
+  FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, line)

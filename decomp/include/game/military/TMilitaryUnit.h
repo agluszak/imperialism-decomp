@@ -57,7 +57,7 @@ public:
   virtual ~TMilitaryUnit() override;
 
   // Mac name oracle: IMilitaryUnit. Four-stack-arg thiscall (ret 0x10); the trailing short forwards into
-  // RegisterUnitOrderWithOwnerManager (default 0 preserves the 3-arg callers' codegen).
+  // RegisterUnitOrderWithOwnerManager.
   void IMilitaryUnit(MilitaryUnitKindStorage unitKind, int nodeContext, short nationSlot,
                      short registerArg3 = 0);
 

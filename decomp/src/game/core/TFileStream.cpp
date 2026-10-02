@@ -9,14 +9,14 @@ typedef void* hwnd_t;
 
 // Nil-pointer assert: pop a message box, then forward to the game's assert
 // reporter with the source path and line.
-static __inline void FailNilPointer(int line) {
+static void FailNilPointer(int line) {
   GAME_FAIL_NIL_POINTER();
   TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\McAppStream.cpp", line);
 }
 
 // The backing pointer is an ArchiveStreamAdapter whose archive field holds the
 // CArchive that actually moves bytes.
-static __inline CArchive* BackingArchive(ArchiveStreamAdapter* backingArchiveOrStream) {
+static CArchive* BackingArchive(ArchiveStreamAdapter* backingArchiveOrStream) {
   return backingArchiveOrStream->archive;
 }
 // SYNTHETIC: IMPERIALISM 0x004890c0

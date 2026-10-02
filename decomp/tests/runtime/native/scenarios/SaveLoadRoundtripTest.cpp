@@ -182,7 +182,7 @@ protected:
     // A load rebuilds the world under the units the live game already had, and re-threads the map's
     // unit chains as it goes. A chain left holding a non-pointer survives silently until something
     // walks it, and then it is a page fault inside TMilitaryUnit::MoveTo with no context
-    // (imperialism-decomp-ilfs) -- so the reloaded game is held to walkable chains here, where the
+    // -- so the reloaded game is held to walkable chains here, where the
     // invariant is unambiguous.
     RT_DO("confirm the reloaded map's unit chains",
           UnitChainProbe::VerifyChainsAreWalkable("the reload"));
