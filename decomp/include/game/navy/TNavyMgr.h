@@ -28,7 +28,7 @@ public:
   virtual void Free() override;                    // slot 0x07 0x5567a0
   // Head of the global task-force order queue (was `void*`; retyped once
   // TTaskForce -- née TMapOrderEntry -- was RTTI-confirmed as the real
-  // element class, see bd 1uj.16). TTaskForce::Free/OrderEvade/
+  // element class). TTaskForce::Free/OrderEvade/
   // OrderSailTowards (TTaskForce.cpp) all read/write this same
   // field via the g_pNavyOrderManager global.
   TTaskForce* orderQueueHead;

@@ -2,7 +2,7 @@
 // (ctor, Free, ReadFrom/WriteTo, status prompts, pending-action state
 // machine). Split from TGreatPower.cpp along the address-contiguous
 // 0x4d84b0-0x4db6xx region preceding the UCountry module sample
-// (bd imperialism-decomp-8mo.15); the remaining TGreatPower.cpp holds the
+//; the remaining TGreatPower.cpp holds the
 // diplomacy/order/advisory bodies of the original Cross/UCountry.cpp.
 // TGreatPower — nation-state object for the seven playable great powers
 // Mac source: UCountry.cpp / UCountryAuto.cpp.

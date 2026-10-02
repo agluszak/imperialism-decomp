@@ -25,8 +25,7 @@ namespace {
 // garrison unit SetOrders(2) when difficultyLevel < 2, so on Easy no unit is idle on turn 1 and the
 // ratio arrows -- whose value is the idle count -- can only ever read zero. At difficulty 2 and
 // above the same units keep the idle order RegisterUnitOrderWithOwnerManager gave them, which is
-// the state this scenario is about. (imperialism-decomp-5tf4: that mismatch, not a toolbar defect,
-// is why this test failed when its body first ran.)
+// the state this scenario is about.
 //
 // The whole sequence is synchronous, so the script has no waits.
 class ArmyMenuTestCase : public CombinedMapScriptScenario {

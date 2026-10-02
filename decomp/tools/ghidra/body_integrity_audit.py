@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Read-only: audit Ghidra function-body integrity against the curated inventory.
 
-Detects the defect classes that slipped past the symbol-integrity gate before
-(bd 6q2 / b69m):
+Detects the defect classes that slipped past the symbol-integrity gate before:
 
   - multi-range bodies: a function whose body has holes where demoted inner
     functions were never reassigned (punctured body). Gaps are classified by

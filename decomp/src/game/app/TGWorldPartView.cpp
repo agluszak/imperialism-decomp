@@ -28,7 +28,7 @@ IMPLEMENT_DYNCREATE(TGWorldPartView, TView)
 // TruncateTextToFitWidthWithEllipsis) pass startPos = 1 and count = GetLength() - 1,
 // i.e. "drop the last character", which is the step those truncation loops repeat.
 //
-// Receiver caveat (imperialism-decomp-1uj.98.4): the original is __thiscall with ECX
+// Receiver caveat: the original is __thiscall with ECX
 // holding a plain CString* -- 0x5d4cb5 loads CStringData::nDataLength from
 // [m_pchData - 8] on the very object it then passes in ECX -- and takes (dest, start,
 // count) on the stack, RET 0xc. There is no game class to own it (no CString-derived

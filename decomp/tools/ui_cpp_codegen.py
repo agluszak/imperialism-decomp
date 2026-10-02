@@ -23,7 +23,6 @@ from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.turn_event_vocabulary import load_turn_event_vocabulary
 from tools.workflow.macos_resource_evidence import validate_view_structure
 
-
 MANIFEST_PATH = "config/ui_factory_codegen.yml"
 IR_PATH = "vendor/macos_codewarrior/evidence/resources/ui_views.json"
 STRINGS_PATH = "vendor/macos_codewarrior/evidence/resources/strings.csv"

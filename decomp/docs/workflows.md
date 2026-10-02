@@ -24,7 +24,6 @@ installation are machine-wide. A worktree beneath a dot-directory needs a dot-fr
 ## Recovery campaigns
 
 ```sh
-bd update <issue> --claim
 # inspect a saved comparison and choose a shared source-model cause
 just compare-report build/comparisons/BASELINE --queue --campaigns --output build/campaign.json
 # batch the unanswered retail reads; edit canonical owners and their consumers

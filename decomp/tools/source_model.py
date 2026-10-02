@@ -33,7 +33,7 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from tools.common.file_scan import iter_files, is_generated_source_path
+from tools.common.file_scan import is_generated_source_path, iter_files
 from tools.common.markers import function_marker_regex
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.ui_cpp_codegen import generated_claim_rows

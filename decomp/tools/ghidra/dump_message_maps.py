@@ -3,7 +3,7 @@
 for each class, the full message->handler table joined against function ownership.
 
 The UI runs on MFC message maps as much as on vtables, and message-map handlers are
-invisible to vtable audits. This is Audit C (bd 1uj.58.3).
+invisible to vtable audits.
 
 Ground truth the compiler left intact (MSVC500 / MFC 4.2):
 
@@ -28,7 +28,7 @@ map, walk the entry array (resolving ILT jmp thunks to real handler bodies), and
 owning class from the CRuntimeClass descriptor that sits just before the map in rdata
 (the DYNCREATE layout; cross-checked below).
 
-Validation targets (bd 1uj.58.3):
+Validation targets:
   * CMcWindow  map @ 0x64b5e8, entries @ 0x64b5f0, WM_PAINT(0xf) -> OnPaint 0x4938c0.
   * CIncludeView map @ 0x6481e8, includes 0x4ef -> 0x482c1c, and NO WM_PAINT.
 
@@ -42,7 +42,6 @@ usage:
 from __future__ import annotations
 
 import csv
-import os
 import sys
 
 from tools.common import ghidra_env

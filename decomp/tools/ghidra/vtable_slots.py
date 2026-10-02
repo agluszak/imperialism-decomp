@@ -28,7 +28,7 @@ import json
 import sys
 
 from tools.common import ghidra_env
-from tools.workflow.vtable_extent_rules import extent_decision, is_rtti_getter
+from tools.workflow.vtable_extent_rules import extent_decision
 
 MAX_SLOTS = 512
 

@@ -34,7 +34,6 @@ from pathlib import Path
 
 from reccmp.cvdump.demangler import msvc_demangle
 
-from tools.common.hexutil import parse_hex_address
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.mfc.coff import LibraryFunction, mask_bytes, parse_library, _trim_padding

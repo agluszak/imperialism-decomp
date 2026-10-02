@@ -7,13 +7,13 @@ import hashlib
 import json
 import logging
 import os
-from pathlib import Path
 import shlex
 import subprocess
+from pathlib import Path
 
 import reccmp.source.batch
-from reccmp.source.index import SourceIndex
 import yaml
+from reccmp.source.index import SourceIndex
 
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.workflow.gen_compile_commands import rewrite

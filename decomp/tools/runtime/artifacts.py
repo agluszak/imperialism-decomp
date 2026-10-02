@@ -75,7 +75,7 @@ def remove_run_dir(path: Path) -> bool:
 
     shutil.rmtree(..., ignore_errors=True) is not enough here: it hides the
     PermissionError from the staged assets and leaves the whole bundle behind, which is
-    how 250 of them (43 GB) accumulated before anyone noticed (imperialism-decomp-mx2a).
+    how 250 of them (43 GB) accumulated before anyone noticed.
     """
     if not path.exists():
         return True

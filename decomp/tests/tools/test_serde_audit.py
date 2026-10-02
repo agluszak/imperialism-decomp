@@ -24,6 +24,49 @@ from tools.workflow.serde_audit import (
 
 
 class SourceExtractionTest(unittest.TestCase):
+    def test_base_serializers_expand_in_call_order_and_keep_unknown_widths(self):
+        serializers = {
+            "Root::WriteTo": "{ stream->WriteInteger(1); }",
+            "Base::WriteTo": """{
+                Root::WriteTo(stream);
+                stream->WriteBytes(trackingSlots, sizeof(trackingSlots));
+                stream->WriteLong(2);
+            }""",
+        }
+        ops = source_stream_ops(
+            "{ Base::WriteTo(stream); stream->WriteBytes(&field, 2); }", serializers
+        )
+        self.assertEqual(
+            [(op["dir"], op["bytes"], op["count"]) for op in ops],
+            [("write", 2, 1), ("write", None, 1), ("write", 4, 1), ("write", 2, 1)],
+        )
+
+    def test_base_serializer_inside_loop_inherits_the_repeat_count(self):
+        ops = source_stream_ops(
+            "{ for (int i = 0; i < 3; ++i) { Base::ReadFrom(stream); } }",
+            {"Base::ReadFrom": "{ stream->ReadLong(); }"},
+        )
+        self.assertEqual(ops[0]["count"], 3)
+
+    def test_unknown_base_serializer_does_not_silently_drop_stream_operations(self):
+        with self.assertRaisesRegex(ValueError, "Unresolved serializer call"):
+            source_stream_ops("{ Missing::WriteTo(stream); }")
+
+    def test_qualified_inherited_serializer_resolves_to_its_source_owner(self):
+        ops = source_stream_ops(
+            "{ Derived::ReadFrom(stream); stream->ReadLong(); }",
+            {"Root::ReadFrom": "{ stream->ReadInteger(); }"},
+            bases={"Derived": "Base", "Base": "Root"},
+        )
+        self.assertEqual([op["bytes"] for op in ops], [2, 4])
+
+    def test_recursive_serializer_does_not_claim_a_complete_stream_sequence(self):
+        with self.assertRaisesRegex(ValueError, "Recursive serializer call"):
+            source_stream_ops(
+                "{ Base::ReadFrom(stream); }",
+                {"Base::ReadFrom": "{ Base::ReadFrom(stream); }"},
+            )
+
     def test_literal_sizes_and_direction(self):
         ops = source_stream_ops(
             """{
@@ -223,6 +266,18 @@ class BinaryExtractionTest(unittest.TestCase):
         )
         ops, _ = binary_stream_ops(0x1000)
         self.assertEqual(ops, [])
+
+    def test_out_of_line_base_serializer_expands_in_the_binary_sequence(self):
+        caller = self.PROLOGUE + ["00001006  CALL 0x00002000"]
+        base = self.PROLOGUE + [
+            "00002006  MOV EBX,dword ptr [EAX + 0x50]",
+            "0000200a  CALL EBX",
+        ]
+        self.audit.listing_lines = (
+            lambda address, refresh=False: caller if address == 0x1000 else base
+        )
+        ops, _ = binary_stream_ops(0x1000, {0x1000, 0x2000}, (0x1000,))
+        self.assertEqual([(op["dir"], op["bytes"]) for op in ops], [("read", 4)])
 
     def test_non_literal_size_operand_is_reported_not_invented(self):
         self.patch_listing(

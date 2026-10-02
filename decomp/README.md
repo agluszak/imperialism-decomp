@@ -13,7 +13,6 @@ binary or copyrighted game assets; use your own legally obtained copy.
 - `git` and `git-lfs` for the vendored Ghidra archive.
 - `just` for project commands and `uv` for Python tools.
 - Docker for the MSVC500 build, Wine plus GDB/MI for the native runtime suite, and Ghidra 12.1.4.
-- `bd` (Beads) for task tracking.
 
 ## First setup
 
@@ -24,7 +23,6 @@ just vendor-msvc500-headers
 just restore-project
 just docker-build
 just bootstrap-reccmp
-bd prime
 just build
 ```
 
@@ -35,7 +33,6 @@ just build
 ## Recovery campaigns
 
 ```sh
-bd update <issue> --claim
 just compare-report build/comparisons/BASELINE --queue --output build/campaign.json
 # inspect retail evidence; fix shared owners across a coherent source batch
 just build

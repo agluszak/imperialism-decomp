@@ -12,7 +12,7 @@ work:
   0x4cb8a0 TUniversityView::DoEvent -- recorded 301 bytes, actually 506. The missing tail
     contains the ILT-thunked call to TControl::DoEvent, so a byte scan of the recorded
     range "proved" a base delegation was invented when it is right there in the original.
-    That false positive is what made the imperialism-decomp-4km.17 audit unsound and led
+    That false positive made the audit unsound and led
     to seven correct base calls being deleted and restored.
 
 So a truncated extent corrupts two things at once: the reccmp score, and any analysis

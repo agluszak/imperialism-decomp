@@ -9,16 +9,15 @@ import os
 from pathlib import Path
 import sys
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
-BUILD_DIR = REPO_ROOT / "build-runtime-tests"
-sys.path.insert(0, str(REPO_ROOT))
-
 from tools.runtime.runner import (
     RunRequest,
     RunnerDependencies,
     RuntimeRunner,
     format_console_summary,
 )
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+BUILD_DIR = REPO_ROOT / "build-runtime-tests"
 
 
 def fixture_directory() -> Path:

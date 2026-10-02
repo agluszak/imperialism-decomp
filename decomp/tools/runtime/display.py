@@ -24,7 +24,7 @@ off-screen, because window decorations shift the mapping from pixel to tile. The
 map-state expectations are therefore display-specific, and the difference is real game
 state (a few terrain counts move) rather than a harness artifact. Committing a second
 set of expectations would just move the problem, so the honest fix is to make those
-scenarios address tiles rather than pixels. Tracked as imperialism-decomp-0kr0.
+scenarios address tiles rather than pixels.
 
 Everything else passes off-screen: the whole serialization suite, load_saved_game,
 random_game_easy_skips_capital, and the manager/boot tests -- the ones worth running

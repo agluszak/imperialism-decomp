@@ -1,5 +1,5 @@
-# Pre-existing config/symbols.csv function-range overlaps (bd: file follow-up beads
-# per class as they're cleaned up). Format: outer_addr:inner_addr  # note
+# Pre-existing config/symbols.csv function-range overlaps.
+# Format: outer_addr:inner_addr  # note
 #
 # Each pair is a `type=="function"` row whose byte range fully or partially swallows
 # another row's start address -- a linker-layout impossibility, so one row's
@@ -8,7 +8,7 @@
 # leaf helpers whose caller's size wasn't trimmed. Do not add a new pair here without
 # root-causing it -- this file tracks known debt, not a general suppression.
 
-5f28f0:5f29b0  # _strpbrk starts inside _strchr: VERIFIED benign (bd ztdv). _strchr's real code
+5f28f0:5f29b0  # _strpbrk starts inside _strchr: VERIFIED benign. _strchr's real code
                # ends at its RET 0x5f29ab + int3 padding to 0x5f29af; the recorded 193-byte
                # extent spans one byte into _strpbrk's entry. Both are LIBRARY CRT leaves whose
                # bodies never get hand-ported, so the 1-byte span overlap is retail layout noise,

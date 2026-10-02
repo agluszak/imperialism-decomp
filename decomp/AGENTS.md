@@ -105,7 +105,7 @@ runbooks.
   generator, not the generated files.
 - Keep concise `ABI:`, `MATCH:`, `ORACLE:`, and `LAYOUT:` comments only for non-obvious current
   contracts. Compiler experiments, failed reconstructions, call-site inventories, and matching
-  archaeology belong in focused evidence docs, Ghidra, Beads, and Git rather than normal source.
+  archaeology belong in focused evidence docs, Ghidra, and Git rather than normal source.
 - The vendored Ghidra project is authoritative for confirmed database knowledge. Keep manual source
   and committed database evidence synchronized through their existing generators and exports.
 - Do not hide a mismatch with reccmp ignores, allowlists, generated-file exceptions, fake bridges, or

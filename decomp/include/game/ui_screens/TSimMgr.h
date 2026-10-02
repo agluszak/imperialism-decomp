@@ -241,7 +241,7 @@ public:
   int multiplayerSessionRole;
   // +0x48 — settings-preference slots. Ground truth: InitializeOrLoadEntryArray14AndClampLimits
   // (0x581412 `[this + i*2 + 0x48]`) anchors the array at +0x48, not +0x44 (the earlier
-  // +0x44 base — bd 1uj.4's -4 shift — folded multiplayerSessionRole into the array
+  // +0x44 base folded multiplayerSessionRole into the array
   // and skewed every index by one slot). 14 shorts end at +0x63, so field_64 lands at
   // its literal +0x64 with no padding gap. Known slots: [2] clamped 0..100, [3] master
   // volume 0..0xff

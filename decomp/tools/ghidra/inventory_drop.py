@@ -9,7 +9,7 @@ entity list, so a wrong delete silently shrinks what can pair.
 But when an entity really is removed -- `just demote-functions`, `just delete-labels`, a
 fragment reabsorbed by `just fix-function-bounds` -- its row outlives it, then overlaps
 whatever took its bytes and fails `just symbols-integrity-gate`. Hand-editing the CSV was
-the only way out (imperialism-decomp-e5ik).
+the only way out.
 
 This drops exactly the addresses you name, and only after checking, against the live DB,
 that each one has no function and no label, and that no manual-source marker claims it.

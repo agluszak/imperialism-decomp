@@ -2,7 +2,7 @@
 # Remote environment bootstrap for imperialism-decomp.
 #
 # One-time / from-scratch provisioning of a remote or sandbox host: system
-# packages, just/uv/docker/bd, JDK 21, Ghidra 12.1.4 PUBLIC, the original game
+# packages, just/uv/docker, JDK 21, Ghidra 12.1.4 PUBLIC, the original game
 # binary, decomp-local config, and a first build.
 #
 # Assumes: repo already cloned and this is run from the decomp project root. Works either
@@ -38,7 +38,7 @@ log() { printf '\n=== %s ===\n' "$1"; }
 # Privileged-command shim: no-op when already root, otherwise sudo.
 if [ "$(id -u)" -eq 0 ]; then SUDO=""; else SUDO="sudo"; fi
 
-# Make uv/bd (installed into ~/.local/bin) visible for the rest of this script.
+# Make uv (installed into ~/.local/bin) visible for the rest of this script.
 export PATH="$HOME/.local/bin:$PATH"
 
 # ---------------------------------------------------------------------------
@@ -146,16 +146,6 @@ run_just_docker() {
 }
 
 # ---------------------------------------------------------------------------
-# 5. bd / beads (issue tracking; not required for build/compare)
-# ---------------------------------------------------------------------------
-log "bd (beads)"
-if ! command -v bd >/dev/null 2>&1; then
-  curl -sSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/install.sh | bash \
-    || echo "WARN: bd install failed; issue tracking unavailable, build/compare unaffected" >&2
-  export PATH="$HOME/.local/bin:$PATH"
-fi
-
-# ---------------------------------------------------------------------------
 # 6. Ghidra 12.1.4 PUBLIC
 # ---------------------------------------------------------------------------
 log "Ghidra ${GHIDRA_VERSION} PUBLIC"
@@ -243,10 +233,6 @@ just restore-project
 
 log "docker-build"
 run_just_docker docker-build
-
-log "bd prime"
-(cd "$GIT_ROOT" && bd prime >/dev/null) \
-  || echo "WARN: bd prime failed; issue tracking unavailable" >&2
 
 log "first build"
 run_just_docker build

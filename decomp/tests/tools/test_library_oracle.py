@@ -9,7 +9,6 @@ vendored archives.
 from __future__ import annotations
 
 import unittest
-from pathlib import Path
 
 from tools.common.repo import repo_root_from_file
 from tools.mfc.coff import _trim_padding, mask_bytes, parse_library

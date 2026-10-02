@@ -106,8 +106,7 @@ def orphan_is_unclaimed(row: dict[str, str], claimed_addresses: set[int]) -> boo
     omits things the DB still holds (`__seh_longjmp_unwind@4` and the `_$E3xx` EH thunks
     are in the DB and absent from every export). Deleting on this signal alone removed
     nine live entities from the inventory when it was tried, so this feeds a report and
-    `just inventory-drop`, which re-checks each address against the DB before touching it
-    (imperialism-decomp-e5ik).
+    `just inventory-drop`, which re-checks each address against the DB before touching it.
     """
     if (row.get("provenance") or "").strip():
         return False
@@ -126,7 +125,7 @@ def resolve_embedded_owner_size(exported_size: str, curated_size: str) -> str | 
     It used to win unconditionally, which broke repair in the other direction: after
     `fix_function_bounds ... --apply` grew an owner's body in the DB, `refresh-inventory`
     put the old smaller curated number straight back, and the stale size then hid genuine
-    range overlaps from the symbols-integrity gate (bd imperialism-decomp-777c, reproduced
+    range overlaps from the symbols-integrity gate (reproduced
     on 0x43dbc0 at 18464 vs 29558 and 0x4601b0 at 41928 vs 47351).
 
     Both directions are handled by asking which number is larger. Fragmentation can only

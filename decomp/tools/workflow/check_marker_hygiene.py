@@ -7,7 +7,7 @@ Each address may own at most one `// FUNCTION` marker across the whole tree
         (manual source and generated stubs combined). The same uniqueness holds for
         `// GLOBAL` markers: two definitions carrying one original address means one
         original object modeled twice (reccmp silently drops one and the recomp emits
-        duplicate .data bytes -- see imperialism-decomp-j59o).
+        duplicate .data bytes).
 
 This is a check-only gate; it never edits files.
 """
@@ -42,7 +42,7 @@ def normalize_offset(raw: str) -> str:
     are one key. Every marker in the tree is currently written zero-padded to eight
     digits, so this changes nothing today -- but without it a duplicate implementation
     spelled with a different width would slip past the uniqueness check, which is the
-    one thing this gate exists to prevent (bd imperialism-decomp-x1cl).
+    one thing this gate exists to prevent.
     """
     digits = raw.lower().removeprefix("0x").lstrip("0")
     return f"0x{digits or '0'}"

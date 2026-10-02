@@ -14,13 +14,6 @@
 /.ghidra-query.*
 /.ghidra-daemon.log
 
-# Shared Beads / Dolt runtime state
-/.dolt/
-/*.db
-/.beads-credential-key
-/.beads/proxieddb/
-/.beads/interactions.jsonl
-
 # OS files
 .DS_Store
 Thumbs.db

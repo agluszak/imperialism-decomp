@@ -15,7 +15,7 @@ void RuntimeTestObserveBuiltUiTree(int eventCode, TView* root);
 // (g_UiWidgetBuildStack006a13e0) and the g_pUiResourceHead/g_pUiResourceContext pair — see
 // include/game/global_data_tables.h. It is a builder, not a pool.
 
-// 4-byte by-value style-ref wrapper (bd 1uj.51.2): constructed in place on the stack as
+// 4-byte by-value style-ref wrapper: constructed in place on the stack as
 // BindUiResourceTextAndStyle's styleRef argument. Factory-builder call sites convert an
 // int through the out-of-line converting ctor 0x4270e0 (~200 calls across the cluster);
 // sites passing an existing TUiStyleRef copy it trivially (plain push, no call).

@@ -1,4 +1,4 @@
-"""Detection tests for check_generated_integrity (bd imperialism-decomp-x1cl).
+"""Detection tests for check_generated_integrity.
 
 Thirteenth of the eighteen. Unlike the first twelve this gate has no pure helper to
 exercise -- it shells out to `git diff` against a merge base -- so each test builds a

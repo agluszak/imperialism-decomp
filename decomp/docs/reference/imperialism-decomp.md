@@ -122,7 +122,7 @@ Native Windows smoke remains the acceptance check.
 
 | Type | Id | Hex | Size |
 |------|-----|-----|------|
-| DIALOG | 152 | 0x98 | 0xba | Low-disk prompt (init-chain backlog: Beads `imperialism-decomp-1uj.14`) |
+| DIALOG | 152 | 0x98 | 0xba | Low-disk prompt |
 | DIALOG | 251 | 0xfb | 0xf0 | Auto-resolution prompt |
 
 Recomp build links `resources/imperialism_game.rc` (minimal MENU+ACCEL id 128) via
@@ -959,7 +959,7 @@ Interpretation:
 
 These functions improve readability of the strategic-map cache pipeline and confirm more runtime writes for `+0x03/+0x04/+0x06/+0x07/+0x1C`.
 
-### tile+0x17 runtime writer identified (bd imperialism-decomp-1uj.38, 2026-07-06)
+### tile+0x17 runtime writer identified (2026-07-06)
 
 `tile+0x17` is `TTerrainStateRecordView::railFlags17` (`include/game/TMapMgr.h:38`). Its
 only runtime writer is **`TMapMgr::ApplyRailSectionEndpointDirectionFlags`

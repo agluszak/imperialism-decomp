@@ -19,4 +19,4 @@ Run implementation commands from the relevant subproject directory and follow it
 - [Rust implementation guide](rust/README.md)
 - [Retail fixtures](fixtures/retail/)
 
-Repository-wide agent, Beads, Git, and concurrency rules are in [AGENTS.md](AGENTS.md).
+Repository-wide agent, Git, and concurrency rules are in [AGENTS.md](AGENTS.md).

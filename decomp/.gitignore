@@ -72,14 +72,6 @@ vendor/directx/lib/
 # reccmp detect output at repo root (build artifact)
 /detect.log
 
-# Beads / Dolt files (added by bd init).
-# `*.db` stays root-anchored. Beads' own .beads/.gitignore covers .beads/*.db.
-.dolt/
-/*.db
-.beads-credential-key
-.beads/proxieddb/
-.beads/interactions.jsonl
-
 # Ghidra query daemon runtime state (tools/ghidra/daemon.py)
 .ghidra-query.sock
 .ghidra-query.pid

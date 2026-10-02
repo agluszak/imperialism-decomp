@@ -219,7 +219,7 @@ def main() -> int:
                     # the single byte is a bare RET (0xC3): the image really
                     # does contain one-byte no-op functions reached through
                     # ILT thunks, and dropping those keeps them permanently
-                    # missing from the inventory (bd 0ykr).
+                    # missing from the inventory.
                     fm.removeFunction(taddr)
                     degenerate.append((t, why))
                 else:

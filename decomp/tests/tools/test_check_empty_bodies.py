@@ -1,4 +1,4 @@
-"""Tests for the silent no-op detector, including the bd-kwee audit extensions
+"""Tests for the silent no-op detector, including the audit extensions
 (trivial-return bodies over big originals, ctor missing derived-field init)."""
 
 from __future__ import annotations
@@ -91,7 +91,7 @@ class TestTrivialReturnClassification(unittest.TestCase):
         self.assertEqual(findings, [])
 
     def test_promoted_kind_is_counted_by_the_gate(self):
-        """bd rziq: trivial_return_but_big is a gated violation, not audit-only."""
+        """trivial_return_but_big is a gated violation, not audit-only."""
         import tempfile
 
         with tempfile.TemporaryDirectory() as d:

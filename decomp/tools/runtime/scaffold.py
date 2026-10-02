@@ -149,7 +149,7 @@ def catalog_entry(test_name: str, factory_name: str, fixture: str | None) -> str
     # RuntimeTestSpec defaults required_oracles to ("ui",), which fails a skeleton that
     # requests no snapshots. Start with none and let the author add them with the
     # native_snapshots they actually capture.
-    entry += f"        required_oracles=(),\n" f"    ),\n"
+    entry += "        required_oracles=(),\n" "    ),\n"
     return entry
 
 

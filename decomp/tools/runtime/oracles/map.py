@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
+from tools.runtime.protocol import read_json_file
+
 
 def compare_map_state(map_state: dict, expected: dict) -> dict:
     differences = {
@@ -11,10 +15,6 @@ def compare_map_state(map_state: dict, expected: dict) -> dict:
     }
     return {"status": "failed" if differences else "passed", "differences": differences}
 
-
-from pathlib import Path
-
-from tools.runtime.protocol import read_json_file
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 

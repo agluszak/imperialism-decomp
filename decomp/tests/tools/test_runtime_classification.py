@@ -81,8 +81,8 @@ class ClassifyExitTests(unittest.TestCase):
 
         Wine, X or the wineserver failing to come up under load exits non-zero with no
         result file, exactly like a crashing game. Reporting both as `crash` sent an
-        investigation hunting for a port bug that was not there (see
-        imperialism-decomp-gdqr), so the two are now distinguishable from the result
+        investigation hunting for a port bug that was not there, so the two are
+        distinguishable from the result
         line alone.
         """
         self.assertEqual(

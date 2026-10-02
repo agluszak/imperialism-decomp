@@ -29,7 +29,6 @@ truth. Follow the nearest scoped `AGENTS.md` and run commands from that subproje
 - Standing architectural invariant -> nearest `AGENTS.md`
 - Repeatable task procedure -> skill
 - Recovered evidence or explanation -> focused docs or Ghidra
-- Durable unfinished work -> Beads
 - History -> Git
 
 Do not add worklogs, checked-in agent plans, or review-specific prohibitions to `AGENTS.md`. Prefer

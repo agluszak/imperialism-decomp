@@ -20,7 +20,7 @@ edges (m_pBaseClass chain), all without trusting Ghidra's provisional labels.
 
 CAVEAT on (c): base_name records the IMPLEMENT_DYN* macro's second argument as the
 retail programmers wrote it, which is NOT always the direct C++ base. Verified
-retail skips/typos (bd 223u, 2026-07): TMapMaker names TControl (C++ base TObject),
+retail skips/typos (2026-07): TMapMaker names TControl (C++ base TObject),
 TMilitaryUnit names TObject (C++ base TUnit), TRailAmtBar names TAmtBar (C++ base
 TIndustryAmtBar), TNumberedItem names TView (C++ base TMegaPicture), TMultiplayerMgr
 names TObject (C++ base TEventHandler), the six TForeignMinister personalities name

@@ -92,8 +92,7 @@ public:
   // Forwards to g_pMacViewMgr's own vtable slot 0x5c/0x60/0x68/0x6c/
   // 0x70/0x74 (TMacViewMgr) -- verified via disassembly (0057db14-style pattern:
   // `mov ecx,[g_pMacViewMgr]; mov eax,[ecx]; jmp [eax+0xNN]`, no
-  // wrapping logic). Real orig names embed the target slot's byte offset. bd
-  // imperialism-decomp-kdm.
+  // wrapping logic).
   virtual void RefreshCityProductionUi();                     // 0xac 0x5d7f70
   virtual void ClearActiveCityBuildingViewSlot(short param1); // 0xb0 0x5d7f90
   // Opens the New City dialog (event 0x3b9) and stuffs the pending town into its
