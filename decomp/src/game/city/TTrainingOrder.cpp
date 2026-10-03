@@ -6,16 +6,7 @@
 #include "game/nation/TGreatPower.h"
 #include "game/ui_core/TViewMgr.h"
 
-// SYNTHETIC: IMPERIALISM 0x004b6a60
-// TTrainingOrder::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004b6a90
-// TTrainingOrder::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TTrainingOrder, TProductionOrder)
-
-// SYNTHETIC: IMPERIALISM 0x004b6ad0
-// TTrainingOrder::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004b6b20
 void TTrainingOrder::ITrainingOrder(TCity* city, short resourceType) {

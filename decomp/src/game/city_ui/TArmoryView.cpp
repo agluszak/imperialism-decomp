@@ -22,11 +22,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
-// SYNTHETIC: IMPERIALISM 0x004cece0
-// TArmoryView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004ced80
-// TArmoryView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TArmoryView, TBuildingView)
 
@@ -36,8 +31,6 @@ TArmoryView::TArmoryView() {
   productionView98 = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x004cedd0
-// TArmoryView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004cee00
 TArmoryView::~TArmoryView() {}
 

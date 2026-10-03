@@ -13,8 +13,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
 
-// SYNTHETIC: IMPERIALISM 0x00573df0
-// TScrollBarView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00573e20
 TScrollBarView::~TScrollBarView() {}
 
@@ -25,12 +23,6 @@ void TScrollBarView::RefreshCityDialogScrollableViewportWithQuickDrawContext() {
   RECT rect = {0, word88, frameWidth34, static_cast<int>(word8a) + 0x12};
   Draw(&rect);
 }
-
-// SYNTHETIC: IMPERIALISM 0x005743f0
-// TScrollBarView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00574490
-// TScrollBarView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TScrollBarView, TControl)
 

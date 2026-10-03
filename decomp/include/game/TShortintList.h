@@ -13,13 +13,9 @@ class TShortintList : public stretch<short> {
 public:
   TShortintList() : stretch<short>() {}
   TShortintList(int initialCapacity) : stretch<short>(initialCapacity) {}
-  // SYNTHETIC: IMPERIALISM 0x004c1960
-  // TShortintList::~TShortintList
 };
 IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 
 ASSERT_SIZE(TShortintList, 0x10);
 
 // The stretch<short>::Add instantiation emitted for this class.
-// TEMPLATE: IMPERIALISM 0x004c18a0 SYMBOL
-// ?Add@?$stretch@F@@UAEPAFF@Z

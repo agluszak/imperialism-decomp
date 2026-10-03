@@ -11,19 +11,12 @@
 #include "game/gfx/ui_invalidation_guard.h"
 
 #include <stdlib.h>
-// SYNTHETIC: IMPERIALISM 0x0051ba70
-// TTownNameDialog::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0051baf0
-// TTownNameDialog::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTownNameDialog, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x0051bb10
 TTownNameDialog::TTownNameDialog() : TNoHilitePicture() {}
 
-// SYNTHETIC: IMPERIALISM 0x0051bb40
-// TTownNameDialog::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0051bb70
 TTownNameDialog::~TTownNameDialog() {}
 

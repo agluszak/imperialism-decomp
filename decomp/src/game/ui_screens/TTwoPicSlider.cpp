@@ -18,12 +18,6 @@
 #include "game/core/CString.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x0056e120
-// TTwoPicSlider::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0056e1e0
-// TTwoPicSlider::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TTwoPicSlider, TControl)
 
 // A standalone out-of-line ctor does exist at 0x0043d610 (45 bytes: base TControl ctor,
@@ -36,8 +30,6 @@ IMPLEMENT_DYNCREATE(TTwoPicSlider, TControl)
 TTwoPicSlider::TTwoPicSlider()
     : TControl(), lowerSurface(0), upperSurface(0), splitPosition(0), mode(0) {}
 
-// SYNTHETIC: IMPERIALISM 0x0043d650
-// TTwoPicSlider::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0043d680
 TTwoPicSlider::~TTwoPicSlider() {}
 

@@ -15,12 +15,6 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x005ba680
-// TTradeScreenPicture::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005ba700
-// TTradeScreenPicture::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TTradeScreenPicture, TPicture)
 
 #ifdef IMPERIALISM_RUNTIME_TESTS
@@ -41,8 +35,6 @@ int RuntimeTradeTransparentTextDrawCount() {
 // FUNCTION: IMPERIALISM 0x005ba720
 TTradeScreenPicture::TTradeScreenPicture() {}
 
-// SYNTHETIC: IMPERIALISM 0x005ba750
-// TTradeScreenPicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005ba780
 TTradeScreenPicture::~TTradeScreenPicture() {}
 

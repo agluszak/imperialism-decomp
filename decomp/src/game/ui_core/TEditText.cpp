@@ -8,11 +8,6 @@
 #include "game/ui_core/CMcEditWindow.h"
 #include "game/app/TObject.h"
 #include "game/pointer_representation.h"
-// SYNTHETIC: IMPERIALISM 0x00490210
-// TEditText::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00490380
-// TEditText::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TEditText, TStaticText)
 
@@ -252,6 +247,3 @@ void TEditText::UpdateCoordinates() {
     }
   }
 }
-
-// SYNTHETIC: IMPERIALISM 0x00492f30
-// TEditText::`scalar deleting destructor'

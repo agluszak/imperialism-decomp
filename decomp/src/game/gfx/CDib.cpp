@@ -13,19 +13,8 @@ const WORD kBitmapFileSignature = 0x4d42;
 
 } // namespace
 
-// SYNTHETIC: IMPERIALISM 0x00479e40
-// CDib::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00479ed0
-// CDib::GetRuntimeClass
-
-// SYNTHETIC: IMPERIALISM 0x00479ef0
-// `dynamic initializer for '_init_CDib''
-
 // The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
 //   CArchive& AFXAPI operator>>(CArchive&, CDib*&)
-// SYNTHETIC: IMPERIALISM 0x00479f10
-// operator>>
 IMPLEMENT_SERIAL(CDib, CObject, 0)
 
 // FUNCTION: IMPERIALISM 0x00479f40
@@ -39,8 +28,6 @@ CDib::CDib() : CObject() {
 }
 
 // The scalar deleting destructor is compiler-generated from the virtual dtor.
-// SYNTHETIC: IMPERIALISM 0x00479fb0
-// CDib::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00479fe0
 CDib::CDib(int width, int height, int bitDepth) : CObject() {

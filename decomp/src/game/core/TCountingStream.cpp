@@ -1,11 +1,5 @@
 #include "game/core/TCountingStream.h"
 
-// SYNTHETIC: IMPERIALISM 0x004893c0
-// TCountingStream::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004893f0
-// TCountingStream::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TCountingStream, TStream)
 
 // ReadBytes (slot 0x3c, 0x00488b40) is inherited unchanged from TStream;
@@ -16,12 +10,6 @@ TCountingStream::TCountingStream() {
   this->maxExtentOrLimit = 0;
   this->positionOrByteCount = 0;
 }
-
-// SYNTHETIC: IMPERIALISM 0x00489440
-// TCountingStream::`scalar deleting destructor'
-
-// SYNTHETIC: IMPERIALISM 0x00489470
-// TCountingStream::~TCountingStream
 
 // FUNCTION: IMPERIALISM 0x00489490
 void TCountingStream::PrepareForUse() {}

@@ -38,16 +38,9 @@ const int kScenarioRecordTags[] = {
 // FUNCTION: IMPERIALISM 0x0058aef0
 TTraderAmtBar::TTraderAmtBar() : TAmtBar() {}
 
-// SYNTHETIC: IMPERIALISM 0x0058ae30
-// TTraderAmtBar::CreateObject
-// SYNTHETIC: IMPERIALISM 0x0058aed0
-// TTraderAmtBar::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TTraderAmtBar, TAmtBar)
 
 // Destructors are compiler-generated (implicit) from real inheritance.
-// SYNTHETIC: IMPERIALISM 0x0058af30
-// TTraderAmtBar::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058af80
 void TTraderAmtBar::DoPostCreate(int arg) {

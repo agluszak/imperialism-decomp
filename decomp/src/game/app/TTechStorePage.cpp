@@ -17,16 +17,8 @@ TTechStorePage::TTechStorePage() {}
 // 0x606xxx/0x610xxx/0x611xxx MFC addresses) belong to the adjacent TScroller
 // vtable / MFC library, not to TTechStorePage.
 
-// SYNTHETIC: IMPERIALISM 0x004600f0
-// TTechStorePage::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00460120
 TTechStorePage::~TTechStorePage() {}
-
-// SYNTHETIC: IMPERIALISM 0x005b0e70
-// TTechStorePage::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005b0ef0
-// TTechStorePage::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTechStorePage, TPageView)
 

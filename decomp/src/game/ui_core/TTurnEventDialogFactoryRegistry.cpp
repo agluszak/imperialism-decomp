@@ -95,20 +95,9 @@ void RegisterStartupDialogFactoryCallbacks(TTurnEventDialogFactoryRegistry* regi
 // FUNCTION: IMPERIALISM 0x00491ad0
 TTurnEventDialogFactoryRegistry::TTurnEventDialogFactoryRegistry() : TObject(), factories(10) {}
 
-// SYNTHETIC: IMPERIALISM 0x00491b10
-// TTurnEventDialogFactoryRegistry::`scalar deleting destructor'
-
 // The `factories` CList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc> member's own
 // compiler-emitted serializer/destructor, called through the member's CList vtable and from
 // the complete-object destructor above.
-// TEMPLATE: IMPERIALISM 0x004927e0 SYMBOL
-// ?Serialize@?$CList@P6APAVTView@@PAVCWnd@@H@ZP6APAV1@0H@Z@@UAEXAAVCArchive@@@Z
-
-// SYNTHETIC: IMPERIALISM 0x00492980
-// CList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc>::`scalar deleting destructor'
-
-// TEMPLATE: IMPERIALISM 0x004929b0 SYMBOL
-// ??1?$CList@P6APAVTView@@PAVCWnd@@H@ZP6APAV1@0H@Z@@UAE@XZ
 
 // Empty in source: the 116 bytes at 0x00491b40 are all compiler output (EH frame plus
 // the inlined destruction of the `factories` CList member).

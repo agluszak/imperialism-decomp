@@ -29,12 +29,6 @@ __inline unsigned int PointerSeedBits(const void* pointer) {
 
 } // namespace
 
-// SYNTHETIC: IMPERIALISM 0x005512d0
-// TAdmiral::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00551410
-// TAdmiral::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TAdmiral, TObject)
 
 // FUNCTION: IMPERIALISM 0x00551430
@@ -57,9 +51,6 @@ TAdmiral::TAdmiral(NationSlot nationSlotArg)
     }
   }
 }
-
-// SYNTHETIC: IMPERIALISM 0x00551550
-// TAdmiral::`scalar deleting destructor'
 
 static void RecomputeMapOrderOwnerActiveSelection(TTaskForce* ownerContext) {
   if (ownerContext != nullptr) {

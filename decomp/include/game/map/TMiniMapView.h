@@ -48,8 +48,6 @@ public:
   // Mac oracle: SetScreenSize(VPoint&). Retail retains a dead standalone COMDAT at
   // 0x0059a4c0; the live sites in TMapUberPicture carry the same field sequence
   // inline (VC5 declines to inline this body in the recomp TUs).
-  // SYNTHETIC: IMPERIALISM 0x0059a4c0
-  // TMiniMapView::SetScreenSize
   void SetScreenSize(const POINT& size) {
     markerBoxWidth98 = size.x;
     markerBoxHeight9c = size.y;

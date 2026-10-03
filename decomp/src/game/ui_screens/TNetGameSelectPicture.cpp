@@ -8,15 +8,8 @@
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
-// SYNTHETIC: IMPERIALISM 0x00576b20
-// TNetGameSelectPicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00576b50
 TNetGameSelectPicture::~TNetGameSelectPicture() {}
-// SYNTHETIC: IMPERIALISM 0x00576aa0
-// TNetGameSelectPicture::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00576b70
-// TNetGameSelectPicture::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TNetGameSelectPicture, TNoHilitePicture)
 

@@ -43,7 +43,7 @@ from tools.common.symbols import functions_by_name
 _CPP = Language(tree_sitter_cpp.language())
 VOID_CAST_RE = re.compile(rb"^\(\s*void\s*\)\s*\w+\s*;$")
 MARKER_RE = re.compile(
-    r"//\s*(?P<kind>FUNCTION|SYNTHETIC|STUB|LIBRARY):\s*\w+\s+0x(?P<addr>[0-9a-fA-F]+)"
+    r"//\s*(?P<kind>FUNCTION|STUB|LIBRARY):\s*\w+\s+0x(?P<addr>[0-9a-fA-F]+)"
 )
 NOOP_RE = re.compile(r"//\s*NOOP:.*?0x(?P<addr>[0-9a-fA-F]+)")
 SLOT_COMMENT_RE = re.compile(r"//\s*0x[0-9a-fA-F]{1,3}\s+0x(?P<addr>[0-9a-fA-F]{5,8})")
@@ -97,7 +97,7 @@ def classify_finding(
         if size is not None and size > max_noop_size:
             return "noop_contradicted"
         return "EMPTY-VERIFIED"
-    if marker_kind in ("FUNCTION", "SYNTHETIC"):
+    if marker_kind in ("FUNCTION", "EMISSION"):
         assert marker_addr is not None
         if size is not None and size > max_noop_size and not ctor_dtor:
             return "empty_but_big"  # visible to reccmp, but still a fake body
@@ -263,6 +263,7 @@ def scan_file(
     addr_sizes: dict[int, int],
     max_noop_size: int,
     ctx: "OriginalBinaryContext | None" = None,
+    emissions=None,
 ) -> list[dict]:
     raw = path.read_bytes()
     tree = Parser(_CPP).parse(raw)
@@ -339,6 +340,16 @@ def scan_file(
         size = addr_sizes.get(resolved) if resolved is not None else None
 
         marker_kind = marker.group("kind") if marker else None
+        if marker is None:
+            # An exact catalog identity preserves the former emission annotation's
+            # visibility without turning it into an authored-source claim.
+            identities = [entry for entry in (emissions or {}).values()
+                          if entry.name == qualified and
+                          (not entry.file or path.as_posix().endswith("/" + entry.file))]
+            if len(identities) == 1:
+                marker_kind = "EMISSION"
+                marker_addr = resolved = identities[0].address
+                size = addr_sizes.get(resolved)
         ctor_dtor = is_ctor_or_dtor(qual, name)
 
         if trivial_return:
@@ -367,7 +378,9 @@ def scan_file(
             marker_addr=marker_addr,
             noop_addr=noop_addr,
             resolved_addr=resolved,
-            size=size,
+            # A NOOP annotation can refer to an inline site distinct from the
+            # retained emission. Validate the address it actually states.
+            size=addr_sizes.get(noop_addr) if noop_addr is not None else size,
             ctor_dtor=ctor_dtor,
             max_noop_size=max_noop_size,
         )
@@ -417,6 +430,9 @@ def scan_file(
 
 
 def collect_findings(repo_root: Path, roots: list[str], max_noop_size: int) -> list[dict]:
+    from tools.emissions import load_emissions
+
+    emissions = load_emissions(repo_root)
     symbols = functions_by_name(repo_root)
     addr_sizes = sizes_by_address(symbols)
     ctx = OriginalBinaryContext(repo_root)
@@ -431,7 +447,7 @@ def collect_findings(repo_root: Path, roots: list[str], max_noop_size: int) -> l
                 continue
             if path.suffix.lower() not in (".cpp", ".h", ".hpp", ".cc"):
                 continue
-            findings.extend(scan_file(path, symbols, addr_sizes, max_noop_size, ctx))
+            findings.extend(scan_file(path, symbols, addr_sizes, max_noop_size, ctx, emissions))
     return findings
 
 

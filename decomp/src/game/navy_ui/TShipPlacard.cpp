@@ -8,19 +8,11 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x005691d0
-// TShipPlacard::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00569250
-// TShipPlacard::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TShipPlacard, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x00569270
 TShipPlacard::TShipPlacard() {}
 
-// SYNTHETIC: IMPERIALISM 0x005692a0
-// TShipPlacard::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005692d0
 TShipPlacard::~TShipPlacard() {}
 

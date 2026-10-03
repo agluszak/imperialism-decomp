@@ -3,19 +3,12 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/globals/ui_core_globals.h"
 
-// SYNTHETIC: IMPERIALISM 0x00491e00
-// TFloatWindow::CreateObject
-// SYNTHETIC: IMPERIALISM 0x00491f90
-// TFloatWindow::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TFloatWindow, TWindow)
 
 // FUNCTION: IMPERIALISM 0x00491fb0
 TFloatWindow::TFloatWindow() : TWindow() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
-// SYNTHETIC: IMPERIALISM 0x00492110
-// TFloatWindow::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00492140
 TFloatWindow::~TFloatWindow() {}
 

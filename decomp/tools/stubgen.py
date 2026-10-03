@@ -23,6 +23,7 @@ from pathlib import Path
 
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.common.stub_exclusions import load_stub_exclusions
+from tools.emissions import load_emissions
 from tools.generate_symbols import generate_rows
 from tools.source_model import build_model
 
@@ -189,6 +190,7 @@ def compute_stub_rows(
     excluded, errors = load_stub_exclusions()
     if errors:
         raise ValueError("Invalid stub exclusions: " + "; ".join(errors))
+    excluded.update(load_emissions(repo_root))
     if overlay_rows is None:
         _fields, overlay_rows, _stats = generate_rows(
             repo_root, target, inventory=symbols_csv, model=model

@@ -10,15 +10,8 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x004af040
-// TNavyBoyView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004af070
 TNavyBoyView::~TNavyBoyView() {}
-// SYNTHETIC: IMPERIALISM 0x004aefd0
-// TNavyBoyView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004af090
-// TNavyBoyView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TNavyBoyView, TView)
 

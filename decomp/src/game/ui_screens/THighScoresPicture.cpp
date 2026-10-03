@@ -15,15 +15,8 @@
 // FUNCTION: IMPERIALISM 0x0045ada0
 void THighScoresPicture::Hilite() {}
 
-// SYNTHETIC: IMPERIALISM 0x0045adc0
-// THighScoresPicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0045adf0
 THighScoresPicture::~THighScoresPicture() {}
-// SYNTHETIC: IMPERIALISM 0x00575280
-// THighScoresPicture::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00575300
-// THighScoresPicture::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(THighScoresPicture, TNoHilitePicture)
 

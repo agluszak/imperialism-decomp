@@ -46,11 +46,6 @@ TObject* TControl::ShallowClone() {
 }
 // IMPLEMENT_DYNCREATE also emits `TControl::CreateObject`; the original copy at
 // 0x48e430 has the TControl ctor inlined into it.
-// SYNTHETIC: IMPERIALISM 0x0048e430
-// TControl::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0048e500
-// TControl::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TControl, TView)
 
@@ -60,9 +55,6 @@ TControl::TControl()
       textStyle78(g_UiResourceEntryDefaultTextStyle) {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
-
-// SYNTHETIC: IMPERIALISM 0x0048e590
-// TControl::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0048e640
 void TControl::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {

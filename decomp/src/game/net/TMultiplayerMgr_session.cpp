@@ -185,12 +185,6 @@ const char* GetGamePhaseNameString(int gamePhase) {
   return "?";
 }
 
-// SYNTHETIC: IMPERIALISM 0x005425d0
-// TMultiplayerMgr::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00542650
-// TMultiplayerMgr::GetRuntimeClass
-
 // Binary descriptor base is TObject (0x694eb8), not TEventHandler — original macro arg.
 IMPLEMENT_DYNCREATE(TMultiplayerMgr, TObject)
 
@@ -204,9 +198,6 @@ TMultiplayerMgr::TMultiplayerMgr()
   sessionPhaseTag = kControlTagNada;
   fieldF4 = 0;
 }
-
-// SYNTHETIC: IMPERIALISM 0x005427e0
-// TMultiplayerMgr::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00542810
 TMultiplayerMgr::~TMultiplayerMgr() {}

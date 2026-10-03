@@ -125,15 +125,10 @@ const unsigned int kAddrClassDescTViewMgr = 0x0066f0b8;
 
 HCURSOR LoadTurnEventCursorByResourceIdOffset1000(short cursorResourceId);
 
-// SYNTHETIC: IMPERIALISM 0x005d4fd0
-// TViewMgr::CreateObject
 // `IMPLEMENT_DYNCREATE` emits this static MFC allocation factory. The original allocates
 // 0xfc bytes, installs TViewMgr's vptr, and performs the same initialization as the
 // adjacent real constructor; do not hand-write a factory body.
 IMPLEMENT_DYNCREATE(TViewMgr, TObject)
-
-// SYNTHETIC: IMPERIALISM 0x005d5040
-// TViewMgr::GetRuntimeClass
 
 // FUNCTION: IMPERIALISM 0x005d5060
 TViewMgr::TViewMgr() : TObject() {
@@ -146,12 +141,7 @@ TViewMgr::TViewMgr() : TObject() {
   this->fieldF8 = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x005d50b0
-// TViewMgr::`scalar deleting destructor'
 TViewMgr::~TViewMgr() {}
-
-// SYNTHETIC: IMPERIALISM 0x005d50e0
-// TViewMgr::~TViewMgr
 
 // FUNCTION: IMPERIALISM 0x005d5100
 void TViewMgr::LoadTurnEventCursorTable() {
@@ -1486,8 +1476,6 @@ void TViewMgr::ShowDiplomacyScreen(short nationSlot) {
   }
 }
 
-// SYNTHETIC: IMPERIALISM 0x005d8310
-// turn_event_ui_refresh::BindCursorPanelAndStampDiplomacyMapTerrain
 inline void turn_event_ui_refresh::BindCursorPanelAndStampDiplomacyMapTerrain(TView* mainView,
                                                                               short terrainIndex) {
   TControl* cursor = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagCurs));

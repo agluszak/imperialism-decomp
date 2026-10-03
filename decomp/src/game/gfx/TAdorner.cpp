@@ -4,12 +4,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 
-// SYNTHETIC: IMPERIALISM 0x0049d650
-// TAdorner::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0049d6d0
-// TAdorner::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TAdorner, TObject)
 
 static void PulseUiInvalidationFlag() {
@@ -62,6 +56,3 @@ unsigned char TAdorner::DoesAdorn(TView*) {
   PulseUiInvalidationFlag();
   return 0;
 }
-
-// SYNTHETIC: IMPERIALISM 0x0049dab0
-// TAdorner::`scalar deleting destructor'

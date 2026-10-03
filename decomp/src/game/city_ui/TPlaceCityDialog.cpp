@@ -16,19 +16,12 @@
 #include "game/military/mapped_flavor_text.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
-// SYNTHETIC: IMPERIALISM 0x004d1760
-// TPlaceCityDialog::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004d17e0
-// TPlaceCityDialog::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TPlaceCityDialog, TPicture)
 
 // FUNCTION: IMPERIALISM 0x004d1800
 TPlaceCityDialog::TPlaceCityDialog() {}
 
-// SYNTHETIC: IMPERIALISM 0x004d1830
-// TPlaceCityDialog::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004d1860
 TPlaceCityDialog::~TPlaceCityDialog() {}
 

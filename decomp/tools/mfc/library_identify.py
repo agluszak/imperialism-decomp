@@ -4,7 +4,7 @@
     just library-identify 0x005e83f0
 
 Aggregates every maintained identity signal for an address — current curated
-symbols.csv row, ownership, source LIBRARY/SYNTHETIC identity marker, and the
+symbols.csv row, ownership, source LIBRARY identity marker or binary emission catalog, and the
 relocation-masked object match — into a single verdict. Run this before naming
 any function in the MSVC/MFC library range, or any CRT-shaped callee elsewhere.
 """

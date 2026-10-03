@@ -7,12 +7,6 @@
 #include "game/city_ui/TLongintList.h"
 #include "game/ui_screens/TLineData.h"
 
-// SYNTHETIC: IMPERIALISM 0x0056f8e0
-// TPageView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0056f9a0
-// TPageView::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TPageView, TView)
 
 // FUNCTION: IMPERIALISM 0x0056f9c0
@@ -23,8 +17,6 @@ TPageView::TPageView() {
   this->visibleColumnCount = 1;
 }
 
-// SYNTHETIC: IMPERIALISM 0x0056fa00
-// TPageView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0056fa30
 TPageView::~TPageView() {}
 

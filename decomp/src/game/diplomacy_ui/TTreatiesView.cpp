@@ -17,15 +17,8 @@ TTreatiesView::TTreatiesView() {
   diplomacyMapView60 = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x00430350
-// TTreatiesView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00430380
 TTreatiesView::~TTreatiesView() {}
-// SYNTHETIC: IMPERIALISM 0x004f7a10
-// TTreatiesView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004f7aa0
-// TTreatiesView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTreatiesView, TPanelView)
 

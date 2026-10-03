@@ -17,15 +17,8 @@
 
 // FUNCTION: IMPERIALISM 0x005c2470
 void TUnit::DetachUnitOrderFromOwnerAndReset() {}
-// SYNTHETIC: IMPERIALISM 0x005c2430
-// TUnit::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005c2490
-// TUnit::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TUnit, TObject)
-// SYNTHETIC: IMPERIALISM 0x005c24e0
-// TUnit::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005c2530
 void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,

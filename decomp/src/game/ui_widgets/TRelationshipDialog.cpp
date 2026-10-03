@@ -11,15 +11,8 @@
 #include "game/globals/ui_widgets_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
-// SYNTHETIC: IMPERIALISM 0x005b2d30
-// TRelationshipDialog::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005b2d60
 TRelationshipDialog::~TRelationshipDialog() {}
-// SYNTHETIC: IMPERIALISM 0x005b2ca0
-// TRelationshipDialog::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005b2d80
-// TRelationshipDialog::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TRelationshipDialog, TDialogView)
 

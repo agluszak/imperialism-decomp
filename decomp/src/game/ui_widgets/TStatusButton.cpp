@@ -6,10 +6,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 #include "game/mfc.h"
-// SYNTHETIC: IMPERIALISM 0x00586280
-// TStatusButton::CreateObject
-// SYNTHETIC: IMPERIALISM 0x00586310
-// TStatusButton::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TStatusButton, TButton)
 
@@ -17,8 +13,6 @@ IMPLEMENT_DYNCREATE(TStatusButton, TButton)
 TStatusButton::TStatusButton() : TButton() {}
 
 // Destructor is compiler-generated (implicit) from real TButton inheritance.
-// SYNTHETIC: IMPERIALISM 0x005863b0
-// TStatusButton::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00586400
 void TStatusButton::DoEvent(int selectedIndex, TEventHandler* sourceHandler, TEvent* event) {

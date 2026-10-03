@@ -19,15 +19,8 @@
 // FUNCTION: IMPERIALISM 0x004ab800
 void TMiniCivView::Hilite() {}
 
-// SYNTHETIC: IMPERIALISM 0x004ab820
-// TMiniCivView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004ab850
 TMiniCivView::~TMiniCivView() {}
-// SYNTHETIC: IMPERIALISM 0x004ab8c0
-// TMiniCivView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004ab950
-// TMiniCivView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TMiniCivView, TControl)
 

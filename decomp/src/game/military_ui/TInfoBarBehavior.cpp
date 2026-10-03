@@ -5,19 +5,12 @@
 #include "game/ui_core/TView.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
-// SYNTHETIC: IMPERIALISM 0x004b0c90
-// TInfoBarBehavior::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004b0d10
-// TInfoBarBehavior::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TInfoBarBehavior, TBehavior)
 
 // FUNCTION: IMPERIALISM 0x004b0d30
 TInfoBarBehavior::TInfoBarBehavior() : TBehavior() {}
 
-// SYNTHETIC: IMPERIALISM 0x004b0da0
-// TInfoBarBehavior::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004b0dd0
 TInfoBarBehavior::~TInfoBarBehavior() {}
 

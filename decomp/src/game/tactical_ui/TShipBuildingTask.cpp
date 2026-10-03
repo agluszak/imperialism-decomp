@@ -9,19 +9,11 @@
 #include "game/globals/global_types.h"
 #include "game/globals/nation_globals.h"
 #include "game/globals/shared_globals.h"
-// SYNTHETIC: IMPERIALISM 0x005ae650
-// TShipBuildingTask::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005ae680
-// TShipBuildingTask::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TShipBuildingTask, TCityTask)
 
 // FUNCTION: IMPERIALISM 0x005ae6a0
 TShipBuildingTask::TShipBuildingTask() : TCityTask() {}
-
-// SYNTHETIC: IMPERIALISM 0x005ae6c0
-// TShipBuildingTask::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005ae710
 void TShipBuildingTask::IShipBuildingTask(short citySlotType, TCity* owner,

@@ -14,16 +14,7 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/TViewMgr.h"
 
-// SYNTHETIC: IMPERIALISM 0x004b6f20
-// TUnitOrder::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004b6f50
-// TUnitOrder::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TUnitOrder, TProductionOrder)
-
-// SYNTHETIC: IMPERIALISM 0x004b6f90
-// TUnitOrder::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004b6fe0
 void TUnitOrder::IUnitOrder(TCity* city, short nEntryId, short nPrimaryInputResourceId,

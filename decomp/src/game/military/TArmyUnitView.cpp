@@ -23,19 +23,12 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
-// SYNTHETIC: IMPERIALISM 0x004a9450
-// TArmyUnitView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004a94c0
-// TArmyUnitView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TArmyUnitView, TView)
 
 // FUNCTION: IMPERIALISM 0x004a94e0
 TArmyUnitView::TArmyUnitView() : TView() {}
 
-// SYNTHETIC: IMPERIALISM 0x004a9510
-// TArmyUnitView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004a9540
 TArmyUnitView::~TArmyUnitView() {}
 

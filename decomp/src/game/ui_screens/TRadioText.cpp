@@ -12,15 +12,8 @@
 // FUNCTION: IMPERIALISM 0x0043d990
 TRadioText::TRadioText() : TDropShadowText() {}
 
-// SYNTHETIC: IMPERIALISM 0x0043daa0
-// TRadioText::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0043db60
 TRadioText::~TRadioText() {}
-// SYNTHETIC: IMPERIALISM 0x005793f0
-// TRadioText::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00579470
-// TRadioText::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TRadioText, TDropShadowText)
 

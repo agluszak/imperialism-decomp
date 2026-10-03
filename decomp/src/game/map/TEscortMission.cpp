@@ -16,14 +16,7 @@
 
 // The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
 //   CArchive& AFXAPI operator>>(CArchive&, TEscortMission*&)
-// SYNTHETIC: IMPERIALISM 0x005399f0
-// operator>>
-// SYNTHETIC: IMPERIALISM 0x005399d0
-// `dynamic initializer for '_init_TEscortMission''
 IMPLEMENT_SERIAL(TEscortMission, TNavyMission, 1)
-
-// SYNTHETIC: IMPERIALISM 0x00539840
-// TEscortMission::CreateObject
 
 // FUNCTION: IMPERIALISM 0x00539900
 TMission* TEscortMission::GetReplacementSlot48() {
@@ -39,14 +32,9 @@ bool TEscortMission::IsHospitalMission() const {
 bool TEscortMission::IsDefensiveSeaZoneMission() const {
   return false;
 }
-// SYNTHETIC: IMPERIALISM 0x00539960
-// TEscortMission::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00539990
 TEscortMission::~TEscortMission() {}
-
-// SYNTHETIC: IMPERIALISM 0x005399b0
-// TEscortMission::GetRuntimeClass
 
 // The original inlines the whole TNavyMission(TZone*) body here (only the TMission()
 // base ctor stays an out-of-line call); the recompile emits a call to 0x535470 instead,

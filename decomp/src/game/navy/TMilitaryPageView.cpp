@@ -19,16 +19,9 @@
 // inlining it, which is only possible if the definition is not visible to them.
 // FUNCTION: IMPERIALISM 0x00564920
 TMilitaryPageView::TMilitaryPageView() : TPageView(), primaryUnitAtlas84(0) {}
-// SYNTHETIC: IMPERIALISM 0x00564860
-// TMilitaryPageView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00564900
-// TMilitaryPageView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TMilitaryPageView, TPageView)
 
-// SYNTHETIC: IMPERIALISM 0x00564950
-// TMilitaryPageView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00564980
 TMilitaryPageView::~TMilitaryPageView() {}
 

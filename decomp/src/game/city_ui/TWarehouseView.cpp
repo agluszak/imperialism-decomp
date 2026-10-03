@@ -13,19 +13,12 @@
 #include "game/ui_widgets/TPictureNumberText.h"
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/shared_globals.h"
-// SYNTHETIC: IMPERIALISM 0x004c71f0
-// TWarehouseView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004c7290
-// TWarehouseView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TWarehouseView, TBuildingView)
 
 // FUNCTION: IMPERIALISM 0x004c72b0
 TWarehouseView::TWarehouseView() : TBuildingView() {}
 
-// SYNTHETIC: IMPERIALISM 0x004c72e0
-// TWarehouseView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004c7310
 TWarehouseView::~TWarehouseView() {}
 

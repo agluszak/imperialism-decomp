@@ -11,15 +11,8 @@ TGWorldPartView::TGWorldPartView() : TView() {
   sourceSurface60 = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x0045b030
-// TGWorldPartView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0045b060
 TGWorldPartView::~TGWorldPartView() {}
-// SYNTHETIC: IMPERIALISM 0x004ac7d0
-// TGWorldPartView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004ac860
-// TGWorldPartView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TGWorldPartView, TView)
 

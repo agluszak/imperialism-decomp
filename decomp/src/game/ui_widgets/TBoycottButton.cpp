@@ -5,20 +5,12 @@
 #include "game/GameAssert.h"
 #include "game/mfc.h"
 
-// SYNTHETIC: IMPERIALISM 0x005846e0
-// TBoycottButton::CreateObject
-// SYNTHETIC: IMPERIALISM 0x00584760
-// TBoycottButton::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TBoycottButton, TToggleButton)
 
 // FUNCTION: IMPERIALISM 0x00584780
 TBoycottButton::TBoycottButton() : TToggleButton() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
-
-// SYNTHETIC: IMPERIALISM 0x005847b0
-// TBoycottButton::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005847e0
 TBoycottButton::~TBoycottButton() {}

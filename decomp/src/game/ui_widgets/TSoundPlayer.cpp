@@ -56,21 +56,12 @@ char UpdateDeferredCdAudioFade() {
   return 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x005932b0
-// TSoundPlayer::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00593350
-// TSoundPlayer::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TSoundPlayer, TEventHandler)
 
 // FUNCTION: IMPERIALISM 0x00593370
 TSoundPlayer::TSoundPlayer()
     : TEventHandler(), audioCuePool(0), remainingRandomAudioCues(0), cdAudioPlaybackActive(0),
       unused79(0), unused7A(0), fadeStartTick16(0) {}
-
-// SYNTHETIC: IMPERIALISM 0x005933b0
-// TSoundPlayer::`scalar deleting destructor'
 
 // Slot 0x13 override — pump the audio playback state machine / schedule random cues.
 

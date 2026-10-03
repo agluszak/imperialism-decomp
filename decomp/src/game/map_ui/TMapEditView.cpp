@@ -27,15 +27,8 @@ const int kCityRecordCount = 0x180;
 
 } // namespace
 
-// SYNTHETIC: IMPERIALISM 0x0051cbf0
-// TMapEditView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0051cc20
 TMapEditView::~TMapEditView() {}
-// SYNTHETIC: IMPERIALISM 0x0051cab0
-// TMapEditView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0051cc40
-// TMapEditView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TMapEditView, TMapDialog)
 // FUNCTION: IMPERIALISM 0x0051cc60

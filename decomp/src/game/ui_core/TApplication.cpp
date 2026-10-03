@@ -35,12 +35,6 @@ void TApplication::PostTurnEventCodeMessage2420(TurnEventCodeStorage eventCode) 
   ::PostMessage(AfxGetMainWnd()->m_hWnd, 0x2420, eventCode, 0);
 }
 
-// SYNTHETIC: IMPERIALISM 0x00486680
-// TApplication::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00486740
-// TApplication::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TApplication, TCommandHandler)
 
 // FUNCTION: IMPERIALISM 0x00486760
@@ -48,9 +42,6 @@ TApplication::TApplication()
     : TCommandHandler(), currentTarget(0), screenModeAt24(0), cohandlers() {
   g_pApplication = this;
 }
-
-// SYNTHETIC: IMPERIALISM 0x004867b0
-// TApplication::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004867e0
 TApplication::~TApplication() {
@@ -188,14 +179,6 @@ void TApplication::DoMenuCommand(int command) {
 
 // TApplication::cohandlers' compiler-emitted CList<void*,void*>::Serialize body.
 // The real source is the embedded cohandlers template list, not a TApplication vtable slot.
-// TEMPLATE: IMPERIALISM 0x00486df0 SYMBOL
-// ?Serialize@?$CList@PAXPAX@@UAEXAAVCArchive@@@Z
-
-// SYNTHETIC: IMPERIALISM 0x00486f60
-// CList<void *,void *>::`scalar deleting destructor'
-
-// TEMPLATE: IMPERIALISM 0x00486f90 SYMBOL
-// ??1?$CList@PAXPAX@@UAE@XZ
 
 // FUNCTION: IMPERIALISM 0x0049e500
 void TApplication::CreateAndQueueTurnEventPacketTagGWEN() {

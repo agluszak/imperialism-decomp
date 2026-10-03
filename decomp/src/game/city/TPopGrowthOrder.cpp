@@ -5,14 +5,6 @@
 #include "game/nation/TGreatPower.h"
 #include "game/ui_core/TViewMgr.h"
 
-// SYNTHETIC: IMPERIALISM 0x004b3050
-// TPopGrowthOrder::`scalar deleting destructor'
-// SYNTHETIC: IMPERIALISM 0x004b8110
-// TPopGrowthOrder::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004b8140
-// TPopGrowthOrder::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TPopGrowthOrder, TProductionOrder)
 
 // FUNCTION: IMPERIALISM 0x004b8160

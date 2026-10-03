@@ -23,15 +23,7 @@
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
-// SYNTHETIC: IMPERIALISM 0x00585f70
-// TUnitToolbarCluster::CreateObject
-// SYNTHETIC: IMPERIALISM 0x00585ff0
-// TUnitToolbarCluster::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TUnitToolbarCluster, TUberCluster)
-
-// SYNTHETIC: IMPERIALISM 0x00586040
-// TUnitToolbarCluster::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00586070
 TUnitToolbarCluster::~TUnitToolbarCluster() {}

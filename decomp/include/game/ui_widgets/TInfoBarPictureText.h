@@ -18,8 +18,6 @@ public:
   // field init seen inline at CreateObject 0x005b5ac0. The standalone emission at
   // 0x005b5bd0 is this ctor's retained COMDAT (base zeroing inlined, derived vptr
   // 0x66d288 stored last).
-  // SYNTHETIC: IMPERIALISM 0x005b5bd0
-  // TInfoBarPictureText::TInfoBarPictureText
   TInfoBarPictureText() {}
 };
 ASSERT_SIZE(TInfoBarPictureText, 0xb4);

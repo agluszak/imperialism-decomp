@@ -3,19 +3,11 @@
 
 #include "game/TEvent.h"
 #include "game/ui_core/TView.h"
-// SYNTHETIC: IMPERIALISM 0x004b0af0
-// THotspotBehavior::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004b0b60
-// THotspotBehavior::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(THotspotBehavior, TBehavior)
 
 // FUNCTION: IMPERIALISM 0x004b0b80
 THotspotBehavior::THotspotBehavior() : TBehavior() {}
-
-// SYNTHETIC: IMPERIALISM 0x004b0bb0
-// THotspotBehavior::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004b0c00
 unsigned char THotspotBehavior::DoSetCursor(CPoint* point, RgnHandle region) {

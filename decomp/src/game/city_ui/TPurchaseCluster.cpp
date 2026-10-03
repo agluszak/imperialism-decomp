@@ -10,19 +10,12 @@
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
-// SYNTHETIC: IMPERIALISM 0x004cc300
-// TPurchaseCluster::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004cc3a0
-// TPurchaseCluster::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TPurchaseCluster, TCluster)
 
 // FUNCTION: IMPERIALISM 0x004cc3c0
 TPurchaseCluster::TPurchaseCluster() : TCluster(), field88(0) {}
 
-// SYNTHETIC: IMPERIALISM 0x004cc3f0
-// TPurchaseCluster::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004cc420
 TPurchaseCluster::~TPurchaseCluster() {}
 

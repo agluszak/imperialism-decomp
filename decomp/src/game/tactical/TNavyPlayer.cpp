@@ -5,17 +5,6 @@
 #include "game/ui_core/CIterator.h"
 #include "game/tactical/TNavyTacUnit.h"
 #include "game/navy/TTaskForce.h"
-// SYNTHETIC: IMPERIALISM 0x0059eb80
-// TNavyPlayer::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0059ebb0
-// TNavyPlayer::`scalar deleting destructor'
-
-// SYNTHETIC: IMPERIALISM 0x0059ebe0
-// TNavyPlayer::~TNavyPlayer
-
-// SYNTHETIC: IMPERIALISM 0x0059ec00
-// TNavyPlayer::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TNavyPlayer, TTacticalPlayer)
 

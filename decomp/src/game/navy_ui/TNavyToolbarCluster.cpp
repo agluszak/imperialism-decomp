@@ -12,19 +12,12 @@
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
-// SYNTHETIC: IMPERIALISM 0x00569430
-// TNavyToolbarCluster::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005694b0
-// TNavyToolbarCluster::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TNavyToolbarCluster, TUberCluster)
 
 // FUNCTION: IMPERIALISM 0x005694d0
 TNavyToolbarCluster::TNavyToolbarCluster() {}
 
-// SYNTHETIC: IMPERIALISM 0x00569500
-// TNavyToolbarCluster::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00569530
 TNavyToolbarCluster::~TNavyToolbarCluster() {}
 

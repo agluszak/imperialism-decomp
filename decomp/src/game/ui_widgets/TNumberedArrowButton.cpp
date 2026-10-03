@@ -13,19 +13,12 @@
 #include "game/ui_text_label_helpers_decls.h"
 #include <new>
 
-// SYNTHETIC: IMPERIALISM 0x0058c1e0
-// TNumberedArrowButton::CreateObject
-// SYNTHETIC: IMPERIALISM 0x0058c280
-// TNumberedArrowButton::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TNumberedArrowButton, TControl)
 
 // FUNCTION: IMPERIALISM 0x0058c2a0
 TNumberedArrowButton::TNumberedArrowButton() : TControl(), value84(0), value86(0) {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
-// SYNTHETIC: IMPERIALISM 0x0058c2e0
-// TNumberedArrowButton::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058c330
 void TNumberedArrowButton::SetValue(short value84Arg, unsigned char refreshFlag) {

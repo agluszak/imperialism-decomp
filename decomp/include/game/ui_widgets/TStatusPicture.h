@@ -34,8 +34,6 @@ public:
   // Mac oracle: CalcStandardGraph(). Retained VC5 copy of the mode-0 score fill
   // inlined at all three live callsites (DoPostCreate, SetComparisonModeAndRefresh,
   // DoEvent).
-  // SYNTHETIC: IMPERIALISM 0x00594830
-  // TStatusPicture::CalcStandardGraph
   void CalcStandardGraph() {
     g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
     for (int i = 0; i < 7; ++i) {
@@ -57,8 +55,6 @@ public:
     SortSevenEntriesAndUpdatePictureWidgets();
   }
   // Retained VC5 copy of a method inlined at its only live callsite.
-  // SYNTHETIC: IMPERIALISM 0x00594d30
-  // TStatusPicture::NormalizeAsNeeded
   void NormalizeAsNeeded() {
     int maxValue = values94[0];
     if (maxValue > 400) {

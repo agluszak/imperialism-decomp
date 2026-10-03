@@ -18,15 +18,8 @@ TCreditsPicture::TCreditsPicture() {}
 // FUNCTION: IMPERIALISM 0x0043d9f0
 void TCreditsPicture::Hilite() {}
 
-// SYNTHETIC: IMPERIALISM 0x0043dad0
-// TCreditsPicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0043db80
 TCreditsPicture::~TCreditsPicture() {}
-// SYNTHETIC: IMPERIALISM 0x0056edb0
-// TCreditsPicture::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0056ee30
-// TCreditsPicture::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TCreditsPicture, TPicture)
 

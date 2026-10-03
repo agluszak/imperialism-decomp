@@ -31,12 +31,6 @@ void TEventHandler::SetIdleFreq(int value) {
   idleFrequencyTicks = value;
 }
 
-// SYNTHETIC: IMPERIALISM 0x0048a0a0
-// TEventHandler::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0048a0e0
-// TEventHandler::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TEventHandler, TObject)
 
 // MATCH: this address-owning base constructor stays out-of-line.
@@ -46,8 +40,6 @@ TEventHandler::TEventHandler()
 
 // Destructor is compiler-generated (implicit virtual dtor); the scalar deleting
 // destructor at 0x0048a130 is emitted by the compiler from real inheritance.
-// SYNTHETIC: IMPERIALISM 0x0048a130
-// TEventHandler::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0048a180
 void TEventHandler::IEventHandler(TEventHandler* nextHandler) {

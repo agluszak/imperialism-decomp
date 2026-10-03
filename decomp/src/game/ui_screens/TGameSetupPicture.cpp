@@ -13,19 +13,11 @@
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
-// SYNTHETIC: IMPERIALISM 0x005757c0
-// TGameSetupPicture::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00575840
-// TGameSetupPicture::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TGameSetupPicture, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x00575860
 TGameSetupPicture::TGameSetupPicture() : TNoHilitePicture() {}
 
-// SYNTHETIC: IMPERIALISM 0x00575890
-// TGameSetupPicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005758c0
 TGameSetupPicture::~TGameSetupPicture() {}
 

@@ -4,16 +4,8 @@
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/TViewMgr.h"
-// SYNTHETIC: IMPERIALISM 0x004b57b0
-// TOrItemOrder::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004b57e0
-// TOrItemOrder::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TOrItemOrder, TItemOrder)
-
-// SYNTHETIC: IMPERIALISM 0x004b5820
-// TOrItemOrder::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004b5870
 void TOrItemOrder::IOrItemOrder(TCity* city, short resourceType, short primaryInputResource,

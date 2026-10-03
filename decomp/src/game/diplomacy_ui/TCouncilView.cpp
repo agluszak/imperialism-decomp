@@ -39,16 +39,8 @@ const unsigned int kEndControlTagReselectAlt = kControlTagScoreCaps; // mode 0x1
 // FUNCTION: IMPERIALISM 0x00430630
 TCouncilView::TCouncilView() : TDiplomacyMapView() {}
 
-// SYNTHETIC: IMPERIALISM 0x00430660
-// TCouncilView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00430690
 TCouncilView::~TCouncilView() {}
-
-// SYNTHETIC: IMPERIALISM 0x004fb9d0
-// TCouncilView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004fba50
-// TCouncilView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TCouncilView, TDiplomacyMapView)
 

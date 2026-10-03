@@ -125,12 +125,6 @@ static void ResolveAndBlitBitmapResourceToActiveAtlas(int resourceId, RECT* dstR
 
 } // namespace
 
-// SYNTHETIC: IMPERIALISM 0x00509c00
-// TMacViewMgr::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00509c80
-// TMacViewMgr::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TMacViewMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x00509ca0
@@ -173,8 +167,6 @@ RgnHandle TMacViewMgr::GetClipRegionSlotByIndex(short index) {
   return regionSlots[index];
 }
 
-// SYNTHETIC: IMPERIALISM 0x00509e30
-// TMacViewMgr::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00509e60
 TMacViewMgr::~TMacViewMgr() {}
 

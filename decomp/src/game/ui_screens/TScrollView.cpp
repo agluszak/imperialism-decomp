@@ -6,15 +6,8 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 
-// SYNTHETIC: IMPERIALISM 0x0043d7f0
-// TScrollView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0043d820
 TScrollView::~TScrollView() {}
-// SYNTHETIC: IMPERIALISM 0x00573c20
-// TScrollView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00573c90
-// TScrollView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TScrollView, TView)
 

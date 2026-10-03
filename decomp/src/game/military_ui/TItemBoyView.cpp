@@ -10,15 +10,8 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x004af980
-// TItemBoyView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004af9b0
 TItemBoyView::~TItemBoyView() {}
-// SYNTHETIC: IMPERIALISM 0x004af910
-// TItemBoyView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004af9d0
-// TItemBoyView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TItemBoyView, TView)
 

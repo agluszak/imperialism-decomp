@@ -21,19 +21,11 @@
 #include <cstring>
 #include <new>
 
-// SYNTHETIC: IMPERIALISM 0x005e3390
-// TNetMgr::CreateObject
-
 IMPLEMENT_DYNCREATE(TNetMgr, TObject)
-
-// SYNTHETIC: IMPERIALISM 0x005e33c0
-// TNetMgr::GetRuntimeClass
 
 // FUNCTION: IMPERIALISM 0x005e33e0
 TNetMgr::TNetMgr() : TObject() {}
 
-// SYNTHETIC: IMPERIALISM 0x005e3400
-// TNetMgr::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005e3430
 TNetMgr::~TNetMgr() {}
 

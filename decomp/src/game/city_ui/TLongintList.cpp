@@ -14,24 +14,11 @@ void TLongintList::NoOpReadFrom(TStream* stream) {
   (void)stream;
 }
 
-// SYNTHETIC: IMPERIALISM 0x004bec10
-// TLongintList::`scalar deleting destructor'
-
 // Compiler-emitted copies of the CList<long,long> base destructor. The 0x650a50
 // table is this template base, not a standalone linked-block state class.
-// TEMPLATE: IMPERIALISM 0x004bec40 SYMBOL
-// ??1?$CList@JJ@@UAE@XZ
-
-// SYNTHETIC: IMPERIALISM 0x004c6aa0 SYMBOL
-// ??_G?$CList@JJ@@UAEPAXI@Z
-
-// TEMPLATE: IMPERIALISM 0x004c6ad0 SYMBOL
-// ??1?$CList@JJ@@UAE@XZ
 
 // The CList<long,long> base's compiler-emitted Serialize instantiation (this class
 // does not override Serialize; the vtable slot points at the template body).
-// TEMPLATE: IMPERIALISM 0x004c65d0 SYMBOL
-// ?Serialize@?$CList@JJ@@UAEXAAVCArchive@@@Z
 
 // FUNCTION: IMPERIALISM 0x004c6740
 void TLongintList::InsertLast(long value) {

@@ -81,12 +81,6 @@ static inline void SetTedStyleAdvancedResourceBid(TForeignMinister* minister, sh
 
 // ===================== TTedForeignMinister (0x659d70) =====================
 
-// SYNTHETIC: IMPERIALISM 0x00531130
-// TTedForeignMinister::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005311b0
-// TTedForeignMinister::GetRuntimeClass
-
 // Binary descriptor base is TMinister (0x659a80), not TForeignMinister — original macro arg.
 IMPLEMENT_DYNCREATE(TTedForeignMinister, TMinister)
 
@@ -95,9 +89,6 @@ TTedForeignMinister::TTedForeignMinister() : TForeignMinister() {
   tradeBidRefreshInterval1a = 4;
   this->skillIndexC = 5;
 }
-
-// SYNTHETIC: IMPERIALISM 0x00531240
-// TTedForeignMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00531290
 void TTedForeignMinister::SetBuyPriorities() {
@@ -278,12 +269,6 @@ void TTedForeignMinister::MakeNewCity(TCity* city) {
 
 // ===================== TBillForeignMinister (0x659e30) =====================
 
-// SYNTHETIC: IMPERIALISM 0x00531b30
-// TBillForeignMinister::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00531bc0
-// TBillForeignMinister::GetRuntimeClass
-
 // Binary descriptor base is TMinister (0x659a80), not TForeignMinister — original macro arg.
 IMPLEMENT_DYNCREATE(TBillForeignMinister, TMinister)
 
@@ -295,9 +280,6 @@ TBillForeignMinister::TBillForeignMinister() : TForeignMinister() {
   tradeBidRefreshInterval1a = 4;
   skillIndexC = 4;
 }
-
-// SYNTHETIC: IMPERIALISM 0x00531c50
-// TBillForeignMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00531ca0
 void TBillForeignMinister::ReadFrom(TStream* stream) {
@@ -497,12 +479,6 @@ void TBillForeignMinister::MakeNewCity(TCity* city) {
 
 // ===================== TDiplomatForeignMinister (0x659f48) =====================
 
-// SYNTHETIC: IMPERIALISM 0x005326e0
-// TDiplomatForeignMinister::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00532760
-// TDiplomatForeignMinister::GetRuntimeClass
-
 // Binary descriptor base is TMinister (0x659a80), not TForeignMinister — original macro arg.
 IMPLEMENT_DYNCREATE(TDiplomatForeignMinister, TMinister)
 
@@ -510,9 +486,6 @@ IMPLEMENT_DYNCREATE(TDiplomatForeignMinister, TMinister)
 TDiplomatForeignMinister::TDiplomatForeignMinister() : TForeignMinister() {
   skillIndexC = 3;
 }
-
-// SYNTHETIC: IMPERIALISM 0x005327f0
-// TDiplomatForeignMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00532840
 void TDiplomatForeignMinister::DoFirstTurnDiplomacy() {
@@ -682,12 +655,6 @@ void TDiplomatForeignMinister::MakeNewCity(TCity* city) {
 
 // ===================== TTextileForeignMinister (0x65a008) =====================
 
-// SYNTHETIC: IMPERIALISM 0x00533070
-// TTextileForeignMinister::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005330f0
-// TTextileForeignMinister::GetRuntimeClass
-
 // Binary descriptor base is TMinister (0x659a80), not TForeignMinister — original macro arg.
 IMPLEMENT_DYNCREATE(TTextileForeignMinister, TMinister)
 
@@ -696,9 +663,6 @@ TTextileForeignMinister::TTextileForeignMinister() : TForeignMinister() {
   skillIndexC = 2;
   field48 = 1;
 }
-
-// SYNTHETIC: IMPERIALISM 0x00533180
-// TTextileForeignMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005331d0
 void TTextileForeignMinister::SetBuyPriorities() {
@@ -804,12 +768,6 @@ void TTextileForeignMinister::MakeNewCity(TCity* city) {
 
 // ===================== TTraderForeignMinister (0x65a0c8) =====================
 
-// SYNTHETIC: IMPERIALISM 0x00533800
-// TTraderForeignMinister::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00533880
-// TTraderForeignMinister::GetRuntimeClass
-
 // Binary descriptor base is TMinister (0x659a80), not TForeignMinister — original macro arg.
 IMPLEMENT_DYNCREATE(TTraderForeignMinister, TMinister)
 
@@ -817,9 +775,6 @@ IMPLEMENT_DYNCREATE(TTraderForeignMinister, TMinister)
 TTraderForeignMinister::TTraderForeignMinister() : TForeignMinister() {
   skillIndexC = 1;
 }
-
-// SYNTHETIC: IMPERIALISM 0x00533910
-// TTraderForeignMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00533960
 void TTraderForeignMinister::SetBuyPriorities() {
@@ -928,12 +883,6 @@ void TTraderForeignMinister::MakeNewCity(TCity* city) {
 
 // ===================== TArmsForeignMinister (0x65a188) =====================
 
-// SYNTHETIC: IMPERIALISM 0x00533f70
-// TArmsForeignMinister::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00533ff0
-// TArmsForeignMinister::GetRuntimeClass
-
 // Binary descriptor base is TMinister (0x659a80), not TForeignMinister — original macro arg.
 IMPLEMENT_DYNCREATE(TArmsForeignMinister, TMinister)
 
@@ -944,9 +893,6 @@ TArmsForeignMinister::TArmsForeignMinister() : TForeignMinister() {
   interiorOrderKind1c = 1;
   skillIndexC = 0;
 }
-
-// SYNTHETIC: IMPERIALISM 0x00534080
-// TArmsForeignMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005340d0
 void TArmsForeignMinister::SetBuyPriorities() {

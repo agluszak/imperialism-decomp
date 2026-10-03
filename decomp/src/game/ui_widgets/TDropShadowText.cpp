@@ -2,19 +2,12 @@
 
 #include "game/ui_core/ScopedMapQuickDrawContext.h"
 #include "game/ui_core/quickdraw_rendering.h"
-// SYNTHETIC: IMPERIALISM 0x005b54a0
-// TDropShadowText::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005b5570
-// TDropShadowText::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TDropShadowText, TPictureText)
 
 // FUNCTION: IMPERIALISM 0x005b5590
 TDropShadowText::TDropShadowText() : TPictureText(), shadowColor94(0) {}
 
-// SYNTHETIC: IMPERIALISM 0x005b5600
-// TDropShadowText::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005b5630
 TDropShadowText::~TDropShadowText() {}
 

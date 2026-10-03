@@ -4,15 +4,8 @@
 
 #include "game/ui_core/TControl.h"
 
-// SYNTHETIC: IMPERIALISM 0x00430b00
-// TBattleDetailBook::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00430b30
 TBattleDetailBook::~TBattleDetailBook() {}
-// SYNTHETIC: IMPERIALISM 0x004ae9d0
-// TBattleDetailBook::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004aea70
-// TBattleDetailBook::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TBattleDetailBook, TBook)
 

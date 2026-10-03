@@ -21,19 +21,12 @@
 #include "game/city/TCity.h"
 #include "game/ui_core/quickdraw_rendering.h"
 
-// SYNTHETIC: IMPERIALISM 0x00589110
-// TIndustryAmtBar::CreateObject
-// SYNTHETIC: IMPERIALISM 0x005891b0
-// TIndustryAmtBar::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TIndustryAmtBar, TAmtBar)
 
 // FUNCTION: IMPERIALISM 0x005891d0
 TIndustryAmtBar::TIndustryAmtBar() : TAmtBar(), selectedMetricRecord(0) {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
-// SYNTHETIC: IMPERIALISM 0x00589210
-// TIndustryAmtBar::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00589260
 void TIndustryAmtBar::DoPostCreate(int arg) {

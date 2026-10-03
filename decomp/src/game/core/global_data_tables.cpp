@@ -97,10 +97,6 @@ extern const char g_szResourceMgrSourcePath[] = "D:\\Ambit\\ResourceMgr.cpp";
 extern const char g_szPaletteResourceIdFormat[] = "#%lu";
 }
 
-// SYNTHETIC: IMPERIALISM 0x0049baa0
-// `dynamic initializer for 'g_debugTraceDialog''
-// SYNTHETIC: IMPERIALISM 0x0049bad0
-// TD0TemplateDialog::`dynamic atexit destructor'
 // GLOBAL: IMPERIALISM 0x006a1e78
 TD0TemplateDialog g_debugTraceDialog(0);
 
@@ -278,10 +274,6 @@ TView* g_McAppUiActiveRenderContext_006A1AF4 = 0;
 int g_McAppUiDefaultPosX_006A1A60 = 0;
 // GLOBAL: IMPERIALISM 0x006a1a64
 int g_McAppUiDefaultPosY_006A1A64 = 0;
-// SYNTHETIC: IMPERIALISM 0x00489ab0
-// `dynamic initializer for 'g_McAppMouseCaptureState''
-// SYNTHETIC: IMPERIALISM 0x00489ae0
-// `dynamic atexit destructor for 'g_McAppMouseCaptureState''
 // GLOBAL: IMPERIALISM 0x006a1a68
 TMouseCaptureState g_McAppMouseCaptureState;
 // GLOBAL: IMPERIALISM 0x006a1adc
@@ -509,608 +501,308 @@ int g_McAppUiFlag_006A143C = 0;
 int g_dibCompressAssertGate_006A1484 = 0;
 // GLOBAL: IMPERIALISM 0x006a14e0
 double g_gfxScale6A14E0 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x0047cfa0
-// `dynamic initializer for 'g_scaledShortConst_6A1528''
 // GLOBAL: IMPERIALISM 0x006a1528
 short g_scaledShortConst_6A1528 = static_cast<short>(g_gfxScale6A14E0 * 512.0 - -1.0);
 // GLOBAL: IMPERIALISM 0x006a1580
 double g_gfxScale6A1580 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x0047f250
-// `dynamic initializer for 'g_scaledShortConst_6A15C8''
 // GLOBAL: IMPERIALISM 0x006a15c8
 short g_scaledShortConst_6A15C8 = static_cast<short>(g_gfxScale6A1580 * 512.0 - -1.0);
 // Each original translation unit emitted a 1/64 coordinate scale and its derived
 // 512-unit short. Keep the globals distinct so VC5 emits the corresponding initializers.
-// SYNTHETIC: IMPERIALISM 0x004125a0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A12F8''
 // GLOBAL: IMPERIALISM 0x006a12f8
 double g_gfxCoordinateScale_6A12F8 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x004125d0
-// `dynamic initializer for 'g_scaledShortConst_6A1340''
 // GLOBAL: IMPERIALISM 0x006a1340
 short g_scaledShortConst_6A1340 = static_cast<short>(g_gfxCoordinateScale_6A12F8 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x00415dc0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A13A8''
 // GLOBAL: IMPERIALISM 0x006a13a8
 double g_gfxCoordinateScale_6A13A8 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x00415df0
-// `dynamic initializer for 'g_scaledShortConst_6A1418''
 // GLOBAL: IMPERIALISM 0x006a1418
 short g_scaledShortConst_6A1418 = static_cast<short>(g_gfxCoordinateScale_6A13A8 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x00481090
-// `dynamic initializer for 'g_gfxCoordinateScale_6A1638''
 // GLOBAL: IMPERIALISM 0x006a1638
 double g_gfxCoordinateScale_6A1638 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x004810c0
-// `dynamic initializer for 'g_scaledShortConst_6A1680''
 // GLOBAL: IMPERIALISM 0x006a1680
 short g_scaledShortConst_6A1680 = static_cast<short>(g_gfxCoordinateScale_6A1638 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x00481340
-// `dynamic initializer for 'g_gfxCoordinateScale_6A1690''
 // GLOBAL: IMPERIALISM 0x006a1690
 double g_gfxCoordinateScale_6A1690 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x00481370
-// `dynamic initializer for 'g_scaledShortConst_6A16D8''
 // GLOBAL: IMPERIALISM 0x006a16d8
 short g_scaledShortConst_6A16D8 = static_cast<short>(g_gfxCoordinateScale_6A1690 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x00482700
-// `dynamic initializer for 'g_gfxCoordinateScale_6A1730''
 // GLOBAL: IMPERIALISM 0x006a1730
 double g_gfxCoordinateScale_6A1730 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x00482730
-// `dynamic initializer for 'g_scaledShortConst_6A177C''
 // GLOBAL: IMPERIALISM 0x006a177c
 short g_scaledShortConst_6A177C = static_cast<short>(g_gfxCoordinateScale_6A1730 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x00484a90
-// `dynamic initializer for 'g_gfxCoordinateScale_6A17E8''
 // GLOBAL: IMPERIALISM 0x006a17e8
 double g_gfxCoordinateScale_6A17E8 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x00484ac0
-// `dynamic initializer for 'g_scaledShortConst_6A1830''
 // GLOBAL: IMPERIALISM 0x006a1830
 short g_scaledShortConst_6A1830 = static_cast<short>(g_gfxCoordinateScale_6A17E8 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x00487120
-// `dynamic initializer for 'g_gfxCoordinateScale_6A18F0''
 // GLOBAL: IMPERIALISM 0x006a18f0
 double g_gfxCoordinateScale_6A18F0 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x00487150
-// `dynamic initializer for 'g_scaledShortConst_6A1938''
 // GLOBAL: IMPERIALISM 0x006a1938
 short g_scaledShortConst_6A1938 = static_cast<short>(g_gfxCoordinateScale_6A18F0 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x004899f0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A1A30''
 // GLOBAL: IMPERIALISM 0x006a1a30
 double g_gfxCoordinateScale_6A1A30 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x00489a20
-// `dynamic initializer for 'g_scaledShortConst_6A1AB8''
 // GLOBAL: IMPERIALISM 0x006a1ab8
 short g_scaledShortConst_6A1AB8 = static_cast<short>(g_gfxCoordinateScale_6A1A30 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x00493370
-// `dynamic initializer for 'g_gfxCoordinateScale_6A1BF0''
 // GLOBAL: IMPERIALISM 0x006a1bf0
 double g_gfxCoordinateScale_6A1BF0 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x004933a0
-// `dynamic initializer for 'g_scaledShortConst_6A1C38''
 // GLOBAL: IMPERIALISM 0x006a1c38
 short g_scaledShortConst_6A1C38 = static_cast<short>(g_gfxCoordinateScale_6A1BF0 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x00493f00
-// `dynamic initializer for 'g_gfxCoordinateScale_6A1CD8''
 // GLOBAL: IMPERIALISM 0x006a1cd8
 double g_gfxCoordinateScale_6A1CD8 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x00493f30
-// `dynamic initializer for 'g_scaledShortConst_6A1D88''
 // GLOBAL: IMPERIALISM 0x006a1d88
 short g_scaledShortConst_6A1D88 = static_cast<short>(g_gfxCoordinateScale_6A1CD8 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x0049efa0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A21F8''
 // GLOBAL: IMPERIALISM 0x006a21f8
 double g_gfxCoordinateScale_6A21F8 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x0049efd0
-// `dynamic initializer for 'g_scaledShortConst_6A2248''
 // GLOBAL: IMPERIALISM 0x006a2248
 short g_scaledShortConst_6A2248 = static_cast<short>(g_gfxCoordinateScale_6A21F8 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x004a1230
-// `dynamic initializer for 'g_gfxCoordinateScale_6A2268''
 // GLOBAL: IMPERIALISM 0x006a2268
 double g_gfxCoordinateScale_6A2268 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x004a1260
-// `dynamic initializer for 'g_scaledShortConst_6A22D8''
 // GLOBAL: IMPERIALISM 0x006a22d8
 short g_scaledShortConst_6A22D8 = static_cast<short>(g_gfxCoordinateScale_6A2268 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x004a8710
-// `dynamic initializer for 'g_gfxCoordinateScale_6A2308''
 // GLOBAL: IMPERIALISM 0x006a2308
 double g_gfxCoordinateScale_6A2308 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x004a8740
-// `dynamic initializer for 'g_scaledShortConst_6A2350''
 // GLOBAL: IMPERIALISM 0x006a2350
 short g_scaledShortConst_6A2350 = static_cast<short>(g_gfxCoordinateScale_6A2308 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x004ac540
-// `dynamic initializer for 'g_gfxCoordinateScale_6A2360''
 // GLOBAL: IMPERIALISM 0x006a2360
 double g_gfxCoordinateScale_6A2360 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x004ac570
-// `dynamic initializer for 'g_scaledShortConst_6A23B0''
 // GLOBAL: IMPERIALISM 0x006a23b0
 short g_scaledShortConst_6A23B0 = static_cast<short>(g_gfxCoordinateScale_6A2360 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x004b0a90
-// `dynamic initializer for 'g_gfxCoordinateScale_6A23D0''
 // GLOBAL: IMPERIALISM 0x006a23d0
 double g_gfxCoordinateScale_6A23D0 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x004b0ac0
-// `dynamic initializer for 'g_scaledShortConst_6A2418''
 // GLOBAL: IMPERIALISM 0x006a2418
 short g_scaledShortConst_6A2418 = static_cast<short>(g_gfxCoordinateScale_6A23D0 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x004b1340
-// `dynamic initializer for 'g_gfxCoordinateScale_6A2428''
 // GLOBAL: IMPERIALISM 0x006a2428
 double g_gfxCoordinateScale_6A2428 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x004b1370
-// `dynamic initializer for 'g_scaledShortConst_6A2470''
 // GLOBAL: IMPERIALISM 0x006a2470
 short g_scaledShortConst_6A2470 = static_cast<short>(g_gfxCoordinateScale_6A2428 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x004b2070
-// `dynamic initializer for 'g_gfxCoordinateScale_6A2488''
 // GLOBAL: IMPERIALISM 0x006a2488
 double g_gfxCoordinateScale_6A2488 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x004b20a0
-// `dynamic initializer for 'g_scaledShortConst_6A24D0''
 // GLOBAL: IMPERIALISM 0x006a24d0
 short g_scaledShortConst_6A24D0 = static_cast<short>(g_gfxCoordinateScale_6A2488 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x004b9540
-// `dynamic initializer for 'g_gfxCoordinateScale_6A2968''
 // GLOBAL: IMPERIALISM 0x006a2968
 double g_gfxCoordinateScale_6A2968 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x004b9570
-// `dynamic initializer for 'g_scaledShortConst_6A2AB8''
 // GLOBAL: IMPERIALISM 0x006a2ab8
 short g_scaledShortConst_6A2AB8 = static_cast<short>(g_gfxCoordinateScale_6A2968 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x004bde20
-// `dynamic initializer for 'g_gfxCoordinateScale_6A2BF8''
 // GLOBAL: IMPERIALISM 0x006a2bf8
 double g_gfxCoordinateScale_6A2BF8 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x004bde50
-// `dynamic initializer for 'g_scaledShortConst_6A2C60''
 // GLOBAL: IMPERIALISM 0x006a2c60
 short g_scaledShortConst_6A2C60 = static_cast<short>(g_gfxCoordinateScale_6A2BF8 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x004c6c80
-// `dynamic initializer for 'g_gfxCoordinateScale_6A2C98''
 // GLOBAL: IMPERIALISM 0x006a2c98
 double g_gfxCoordinateScale_6A2C98 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x004c6cb0
-// `dynamic initializer for 'g_scaledShortConst_6A2D00''
 // GLOBAL: IMPERIALISM 0x006a2d00
 short g_scaledShortConst_6A2D00 = static_cast<short>(g_gfxCoordinateScale_6A2C98 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x004d1f80
-// `dynamic initializer for 'g_gfxCoordinateScale_6A2D30''
 // GLOBAL: IMPERIALISM 0x006a2d30
 double g_gfxCoordinateScale_6A2D30 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x004d1fb0
-// `dynamic initializer for 'g_scaledShortConst_6A2D80''
 // GLOBAL: IMPERIALISM 0x006a2d80
 short g_scaledShortConst_6A2D80 = static_cast<short>(g_gfxCoordinateScale_6A2D30 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x004d64a0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A2DE0''
 // GLOBAL: IMPERIALISM 0x006a2de0
 double g_gfxCoordinateScale_6A2DE0 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x004d64d0
-// `dynamic initializer for 'g_scaledShortConst_6A2E28''
 // GLOBAL: IMPERIALISM 0x006a2e28
 short g_scaledShortConst_6A2E28 = static_cast<short>(g_gfxCoordinateScale_6A2DE0 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x004e6a10
-// `dynamic initializer for 'g_gfxCoordinateScale_6A2E38''
 // GLOBAL: IMPERIALISM 0x006a2e38
 double g_gfxCoordinateScale_6A2E38 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x004e6a40
-// `dynamic initializer for 'g_scaledShortConst_6A2E80''
 // GLOBAL: IMPERIALISM 0x006a2e80
 short g_scaledShortConst_6A2E80 = static_cast<short>(g_gfxCoordinateScale_6A2E38 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x004ea5b0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A2E90''
 // GLOBAL: IMPERIALISM 0x006a2e90
 double g_gfxCoordinateScale_6A2E90 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x004ea5e0
-// `dynamic initializer for 'g_scaledShortConst_6A2EE8''
 // GLOBAL: IMPERIALISM 0x006a2ee8
 short g_scaledShortConst_6A2EE8 = static_cast<short>(g_gfxCoordinateScale_6A2E90 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x004ebfc0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A2F00''
 // GLOBAL: IMPERIALISM 0x006a2f00
 double g_gfxCoordinateScale_6A2F00 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x004ebff0
-// `dynamic initializer for 'g_scaledShortConst_6A2F48''
 // GLOBAL: IMPERIALISM 0x006a2f48
 short g_scaledShortConst_6A2F48 = static_cast<short>(g_gfxCoordinateScale_6A2F00 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x004ee450
-// `dynamic initializer for 'g_gfxCoordinateScale_6A2F58''
 // GLOBAL: IMPERIALISM 0x006a2f58
 double g_gfxCoordinateScale_6A2F58 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x004ee480
-// `dynamic initializer for 'g_scaledShortConst_6A2FA0''
 // GLOBAL: IMPERIALISM 0x006a2fa0
 short g_scaledShortConst_6A2FA0 = static_cast<short>(g_gfxCoordinateScale_6A2F58 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x004f2ae0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A2FB0''
 // GLOBAL: IMPERIALISM 0x006a2fb0
 double g_gfxCoordinateScale_6A2FB0 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x004f2b10
-// `dynamic initializer for 'g_scaledShortConst_6A3018''
 // GLOBAL: IMPERIALISM 0x006a3018
 short g_scaledShortConst_6A3018 = static_cast<short>(g_gfxCoordinateScale_6A2FB0 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x004fe640
-// `dynamic initializer for 'g_gfxCoordinateScale_6A3048''
 // GLOBAL: IMPERIALISM 0x006a3048
 double g_gfxCoordinateScale_6A3048 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x004fe670
-// `dynamic initializer for 'g_scaledShortConst_6A30A0''
 // GLOBAL: IMPERIALISM 0x006a30a0
 short g_scaledShortConst_6A30A0 = static_cast<short>(g_gfxCoordinateScale_6A3048 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x004ffad0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A3118''
 // GLOBAL: IMPERIALISM 0x006a3118
 double g_gfxCoordinateScale_6A3118 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x004ffb00
-// `dynamic initializer for 'g_scaledShortConst_6A3160''
 // GLOBAL: IMPERIALISM 0x006a3160
 short g_scaledShortConst_6A3160 = static_cast<short>(g_gfxCoordinateScale_6A3118 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x005004f0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A3170''
 // GLOBAL: IMPERIALISM 0x006a3170
 double g_gfxCoordinateScale_6A3170 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x00500520
-// `dynamic initializer for 'g_scaledShortConst_6A31B8''
 // GLOBAL: IMPERIALISM 0x006a31b8
 short g_scaledShortConst_6A31B8 = static_cast<short>(g_gfxCoordinateScale_6A3170 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x00505ef0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A31D8''
 // GLOBAL: IMPERIALISM 0x006a31d8
 double g_gfxCoordinateScale_6A31D8 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x00505f20
-// `dynamic initializer for 'g_scaledShortConst_6A3220''
 // GLOBAL: IMPERIALISM 0x006a3220
 short g_scaledShortConst_6A3220 = static_cast<short>(g_gfxCoordinateScale_6A31D8 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x00507b60
-// `dynamic initializer for 'g_gfxCoordinateScale_6A3230''
 // GLOBAL: IMPERIALISM 0x006a3230
 double g_gfxCoordinateScale_6A3230 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x00507b90
-// `dynamic initializer for 'g_scaledShortConst_6A3278''
 // GLOBAL: IMPERIALISM 0x006a3278
 short g_scaledShortConst_6A3278 = static_cast<short>(g_gfxCoordinateScale_6A3230 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x00508eb0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A3290''
 // GLOBAL: IMPERIALISM 0x006a3290
 double g_gfxCoordinateScale_6A3290 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x00508ee0
-// `dynamic initializer for 'g_scaledShortConst_6A32E0''
 // GLOBAL: IMPERIALISM 0x006a32e0
 short g_scaledShortConst_6A32E0 = static_cast<short>(g_gfxCoordinateScale_6A3290 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x00525890
-// `dynamic initializer for 'g_gfxCoordinateScale_6A3488''
 // GLOBAL: IMPERIALISM 0x006a3488
 double g_gfxCoordinateScale_6A3488 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x005258c0
-// `dynamic initializer for 'g_scaledShortConst_6A38F4''
 // GLOBAL: IMPERIALISM 0x006a38f4
 short g_scaledShortConst_6A38F4 = static_cast<short>(g_gfxCoordinateScale_6A3488 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x0052ead0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A3A08''
 // GLOBAL: IMPERIALISM 0x006a3a08
 double g_gfxCoordinateScale_6A3A08 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x0052eb00
-// `dynamic initializer for 'g_scaledShortConst_6A3A50''
 // GLOBAL: IMPERIALISM 0x006a3a50
 short g_scaledShortConst_6A3A50 = static_cast<short>(g_gfxCoordinateScale_6A3A08 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x00534a50
-// `dynamic initializer for 'g_gfxCoordinateScale_6A3A78''
 // GLOBAL: IMPERIALISM 0x006a3a78
 double g_gfxCoordinateScale_6A3A78 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x00534a80
-// `dynamic initializer for 'g_scaledShortConst_6A3B80''
 // GLOBAL: IMPERIALISM 0x006a3b80
 short g_scaledShortConst_6A3B80 = static_cast<short>(g_gfxCoordinateScale_6A3A78 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x00536260
-// `dynamic initializer for 'g_gfxCoordinateScale_6A3BF8''
 // GLOBAL: IMPERIALISM 0x006a3bf8
 double g_gfxCoordinateScale_6A3BF8 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x00536290
-// `dynamic initializer for 'g_scaledShortConst_6A3C64''
 // GLOBAL: IMPERIALISM 0x006a3c64
 short g_scaledShortConst_6A3C64 = static_cast<short>(g_gfxCoordinateScale_6A3BF8 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x005407e0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A3C88''
 // GLOBAL: IMPERIALISM 0x006a3c88
 double g_gfxCoordinateScale_6A3C88 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x00540810
-// `dynamic initializer for 'g_scaledShortConst_6A3CD0''
 // GLOBAL: IMPERIALISM 0x006a3cd0
 short g_scaledShortConst_6A3CD0 = static_cast<short>(g_gfxCoordinateScale_6A3C88 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x00541f30
-// `dynamic initializer for 'g_gfxCoordinateScale_6A3CE8''
 // GLOBAL: IMPERIALISM 0x006a3ce8
 double g_gfxCoordinateScale_6A3CE8 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x00541f60
-// `dynamic initializer for 'g_scaledShortConst_6A3D50''
 // GLOBAL: IMPERIALISM 0x006a3d50
 short g_scaledShortConst_6A3D50 = static_cast<short>(g_gfxCoordinateScale_6A3CE8 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x0054d5f0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A3D88''
 // GLOBAL: IMPERIALISM 0x006a3d88
 double g_gfxCoordinateScale_6A3D88 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x0054d620
-// `dynamic initializer for 'g_scaledShortConst_6A3DD0''
 // GLOBAL: IMPERIALISM 0x006a3dd0
 short g_scaledShortConst_6A3DD0 = static_cast<short>(g_gfxCoordinateScale_6A3D88 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x0054ef80
-// `dynamic initializer for 'g_gfxCoordinateScale_6A3DE8''
 // GLOBAL: IMPERIALISM 0x006a3de8
 double g_gfxCoordinateScale_6A3DE8 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x0054efb0
-// `dynamic initializer for 'g_scaledShortConst_6A3EB8''
 // GLOBAL: IMPERIALISM 0x006a3eb8
 short g_scaledShortConst_6A3EB8 = static_cast<short>(g_gfxCoordinateScale_6A3DE8 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x0055b610
-// `dynamic initializer for 'g_gfxCoordinateScale_6A3F18''
 // GLOBAL: IMPERIALISM 0x006a3f18
 double g_gfxCoordinateScale_6A3F18 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x0055b640
-// `dynamic initializer for 'g_scaledShortConst_6A3F60''
 // GLOBAL: IMPERIALISM 0x006a3f60
 short g_scaledShortConst_6A3F60 = static_cast<short>(g_gfxCoordinateScale_6A3F18 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x0055e300
-// `dynamic initializer for 'g_gfxCoordinateScale_6A3F70''
 // GLOBAL: IMPERIALISM 0x006a3f70
 double g_gfxCoordinateScale_6A3F70 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x0055e330
-// `dynamic initializer for 'g_scaledShortConst_6A3FB8''
 // GLOBAL: IMPERIALISM 0x006a3fb8
 short g_scaledShortConst_6A3FB8 = static_cast<short>(g_gfxCoordinateScale_6A3F70 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x005647a0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A3FE0''
 // GLOBAL: IMPERIALISM 0x006a3fe0
 double g_gfxCoordinateScale_6A3FE0 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x005647d0
-// `dynamic initializer for 'g_scaledShortConst_6A4028''
 // GLOBAL: IMPERIALISM 0x006a4028
 short g_scaledShortConst_6A4028 = static_cast<short>(g_gfxCoordinateScale_6A3FE0 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x0056a4b0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A4038''
 // GLOBAL: IMPERIALISM 0x006a4038
 double g_gfxCoordinateScale_6A4038 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x0056a4e0
-// `dynamic initializer for 'g_scaledShortConst_6A4080''
 // GLOBAL: IMPERIALISM 0x006a4080
 short g_scaledShortConst_6A4080 = static_cast<short>(g_gfxCoordinateScale_6A4038 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x0056f300
-// `dynamic initializer for 'g_gfxCoordinateScale_6A4098''
 // GLOBAL: IMPERIALISM 0x006a4098
 double g_gfxCoordinateScale_6A4098 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x0056f330
-// `dynamic initializer for 'g_scaledShortConst_6A40E0''
 // GLOBAL: IMPERIALISM 0x006a40e0
 short g_scaledShortConst_6A40E0 = static_cast<short>(g_gfxCoordinateScale_6A4098 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x005706f0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A40F0''
 // GLOBAL: IMPERIALISM 0x006a40f0
 double g_gfxCoordinateScale_6A40F0 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x00570720
-// `dynamic initializer for 'g_scaledShortConst_6A4138''
 // GLOBAL: IMPERIALISM 0x006a4138
 short g_scaledShortConst_6A4138 = static_cast<short>(g_gfxCoordinateScale_6A40F0 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x00572a20
-// `dynamic initializer for 'g_gfxCoordinateScale_6A4148''
 // GLOBAL: IMPERIALISM 0x006a4148
 double g_gfxCoordinateScale_6A4148 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x00572a50
-// `dynamic initializer for 'g_scaledShortConst_6A4190''
 // GLOBAL: IMPERIALISM 0x006a4190
 short g_scaledShortConst_6A4190 = static_cast<short>(g_gfxCoordinateScale_6A4148 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x00573bc0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A41B0''
 // GLOBAL: IMPERIALISM 0x006a41b0
 double g_gfxCoordinateScale_6A41B0 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x00573bf0
-// `dynamic initializer for 'g_scaledShortConst_6A41F8''
 // GLOBAL: IMPERIALISM 0x006a41f8
 short g_scaledShortConst_6A41F8 = static_cast<short>(g_gfxCoordinateScale_6A41B0 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x00575100
-// `dynamic initializer for 'g_gfxCoordinateScale_6A4208''
 // GLOBAL: IMPERIALISM 0x006a4208
 double g_gfxCoordinateScale_6A4208 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x00575130
-// `dynamic initializer for 'g_scaledShortConst_6A4260''
 // GLOBAL: IMPERIALISM 0x006a4260
 short g_scaledShortConst_6A4260 = static_cast<short>(g_gfxCoordinateScale_6A4208 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x0057b880
-// `dynamic initializer for 'g_gfxCoordinateScale_6A42E0''
 // GLOBAL: IMPERIALISM 0x006a42e0
 double g_gfxCoordinateScale_6A42E0 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x0057b8b0
-// `dynamic initializer for 'g_scaledShortConst_6A43BC''
 // GLOBAL: IMPERIALISM 0x006a43bc
 short g_scaledShortConst_6A43BC = static_cast<short>(g_gfxCoordinateScale_6A42E0 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x00583850
-// `dynamic initializer for 'g_gfxCoordinateScale_6A4440''
 // GLOBAL: IMPERIALISM 0x006a4440
 double g_gfxCoordinateScale_6A4440 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x00583880
-// `dynamic initializer for 'g_scaledShortConst_6A4488''
 // GLOBAL: IMPERIALISM 0x006a4488
 short g_scaledShortConst_6A4488 = static_cast<short>(g_gfxCoordinateScale_6A4440 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x005931b0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A44D0''
 // GLOBAL: IMPERIALISM 0x006a44d0
 double g_gfxCoordinateScale_6A44D0 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x005931e0
-// `dynamic initializer for 'g_scaledShortConst_6A4518''
 // GLOBAL: IMPERIALISM 0x006a4518
 short g_scaledShortConst_6A4518 = static_cast<short>(g_gfxCoordinateScale_6A44D0 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x00593e20
-// `dynamic initializer for 'g_gfxCoordinateScale_6A4538''
 // GLOBAL: IMPERIALISM 0x006a4538
 double g_gfxCoordinateScale_6A4538 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x00593e50
-// `dynamic initializer for 'g_scaledShortConst_6A4580''
 // GLOBAL: IMPERIALISM 0x006a4580
 short g_scaledShortConst_6A4580 = static_cast<short>(g_gfxCoordinateScale_6A4538 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x0059acc0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A4630''
 // GLOBAL: IMPERIALISM 0x006a4630
 double g_gfxCoordinateScale_6A4630 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x0059acf0
-// `dynamic initializer for 'g_scaledShortConst_6A46A0''
 // GLOBAL: IMPERIALISM 0x006a46a0
 short g_scaledShortConst_6A46A0 = static_cast<short>(g_gfxCoordinateScale_6A4630 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x0059f590
-// `dynamic initializer for 'g_gfxCoordinateScale_6A46D8''
 // GLOBAL: IMPERIALISM 0x006a46d8
 double g_gfxCoordinateScale_6A46D8 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x0059f5c0
-// `dynamic initializer for 'g_scaledShortConst_6A4748''
 // GLOBAL: IMPERIALISM 0x006a4748
 short g_scaledShortConst_6A4748 = static_cast<short>(g_gfxCoordinateScale_6A46D8 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x005a67b0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A5438''
 // GLOBAL: IMPERIALISM 0x006a5438
 double g_gfxCoordinateScale_6A5438 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x005a67e0
-// `dynamic initializer for 'g_scaledShortConst_6A54A8''
 // GLOBAL: IMPERIALISM 0x006a54a8
 short g_scaledShortConst_6A54A8 = static_cast<short>(g_gfxCoordinateScale_6A5438 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x005adae0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A5760''
 // GLOBAL: IMPERIALISM 0x006a5760
 double g_gfxCoordinateScale_6A5760 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x005adb10
-// `dynamic initializer for 'g_scaledShortConst_6A57A8''
 // GLOBAL: IMPERIALISM 0x006a57a8
 short g_scaledShortConst_6A57A8 = static_cast<short>(g_gfxCoordinateScale_6A5760 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x005aeed0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A57B8''
 // GLOBAL: IMPERIALISM 0x006a57b8
 double g_gfxCoordinateScale_6A57B8 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x005aef00
-// `dynamic initializer for 'g_scaledShortConst_6A5800''
 // GLOBAL: IMPERIALISM 0x006a5800
 short g_scaledShortConst_6A5800 = static_cast<short>(g_gfxCoordinateScale_6A57B8 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x005b0e10
-// `dynamic initializer for 'g_gfxCoordinateScale_6A5810''
 // GLOBAL: IMPERIALISM 0x006a5810
 double g_gfxCoordinateScale_6A5810 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x005b0e40
-// `dynamic initializer for 'g_scaledShortConst_6A5858''
 // GLOBAL: IMPERIALISM 0x006a5858
 short g_scaledShortConst_6A5858 = static_cast<short>(g_gfxCoordinateScale_6A5810 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x005b26e0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A5868''
 // GLOBAL: IMPERIALISM 0x006a5868
 double g_gfxCoordinateScale_6A5868 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x005b2710
-// `dynamic initializer for 'g_scaledShortConst_6A58B0''
 // GLOBAL: IMPERIALISM 0x006a58b0
 short g_scaledShortConst_6A58B0 = static_cast<short>(g_gfxCoordinateScale_6A5868 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x005b4eb0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A58C0''
 // GLOBAL: IMPERIALISM 0x006a58c0
 double g_gfxCoordinateScale_6A58C0 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x005b4ee0
-// `dynamic initializer for 'g_scaledShortConst_6A5908''
 // GLOBAL: IMPERIALISM 0x006a5908
 short g_scaledShortConst_6A5908 = static_cast<short>(g_gfxCoordinateScale_6A58C0 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x005b6bb0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A5920''
 // GLOBAL: IMPERIALISM 0x006a5920
 double g_gfxCoordinateScale_6A5920 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x005b6be0
-// `dynamic initializer for 'g_scaledShortConst_6A5968''
 // GLOBAL: IMPERIALISM 0x006a5968
 short g_scaledShortConst_6A5968 = static_cast<short>(g_gfxCoordinateScale_6A5920 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x005b7970
-// `dynamic initializer for 'g_gfxCoordinateScale_6A5978''
 // GLOBAL: IMPERIALISM 0x006a5978
 double g_gfxCoordinateScale_6A5978 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x005b79a0
-// `dynamic initializer for 'g_scaledShortConst_6A59C0''
 // GLOBAL: IMPERIALISM 0x006a59c0
 short g_scaledShortConst_6A59C0 = static_cast<short>(g_gfxCoordinateScale_6A5978 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x005ba5d0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A59D0''
 // GLOBAL: IMPERIALISM 0x006a59d0
 double g_gfxCoordinateScale_6A59D0 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x005ba600
-// `dynamic initializer for 'g_scaledShortConst_6A5A20''
 // GLOBAL: IMPERIALISM 0x006a5a20
 short g_scaledShortConst_6A5A20 = static_cast<short>(g_gfxCoordinateScale_6A59D0 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x005c23d0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A5A48''
 // GLOBAL: IMPERIALISM 0x006a5a48
 double g_gfxCoordinateScale_6A5A48 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x005c2400
-// `dynamic initializer for 'g_scaledShortConst_6A5A90''
 // GLOBAL: IMPERIALISM 0x006a5a90
 short g_scaledShortConst_6A5A90 = static_cast<short>(g_gfxCoordinateScale_6A5A48 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x005c3aa0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A5AA0''
 // GLOBAL: IMPERIALISM 0x006a5aa0
 double g_gfxCoordinateScale_6A5AA0 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x005c3ad0
-// `dynamic initializer for 'g_scaledShortConst_6A5AE8''
 // GLOBAL: IMPERIALISM 0x006a5ae8
 short g_scaledShortConst_6A5AE8 = static_cast<short>(g_gfxCoordinateScale_6A5AA0 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x005d4ed0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A5B48''
 // GLOBAL: IMPERIALISM 0x006a5b48
 double g_gfxCoordinateScale_6A5B48 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x005d4f00
-// `dynamic initializer for 'g_scaledShortConst_6A5BA8''
 // GLOBAL: IMPERIALISM 0x006a5ba8
 short g_scaledShortConst_6A5BA8 = static_cast<short>(g_gfxCoordinateScale_6A5B48 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x005dcc30
-// `dynamic initializer for 'g_gfxCoordinateScale_6A5BD0''
 // GLOBAL: IMPERIALISM 0x006a5bd0
 double g_gfxCoordinateScale_6A5BD0 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x005dcc60
-// `dynamic initializer for 'g_scaledShortConst_6A5C18''
 // GLOBAL: IMPERIALISM 0x006a5c18
 short g_scaledShortConst_6A5C18 = static_cast<short>(g_gfxCoordinateScale_6A5BD0 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x005dedf0
-// `dynamic initializer for 'g_gfxCoordinateScale_6A5C28''
 // GLOBAL: IMPERIALISM 0x006a5c28
 double g_gfxCoordinateScale_6A5C28 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x005dee20
-// `dynamic initializer for 'g_scaledShortConst_6A5C70''
 // GLOBAL: IMPERIALISM 0x006a5c70
 short g_scaledShortConst_6A5C70 = static_cast<short>(g_gfxCoordinateScale_6A5C28 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x005df170
-// `dynamic initializer for 'g_gfxCoordinateScale_6A5C80''
 // GLOBAL: IMPERIALISM 0x006a5c80
 double g_gfxCoordinateScale_6A5C80 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x005df1a0
-// `dynamic initializer for 'g_scaledShortConst_6A5CF0''
 // GLOBAL: IMPERIALISM 0x006a5cf0
 short g_scaledShortConst_6A5CF0 = static_cast<short>(g_gfxCoordinateScale_6A5C80 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x005e1b60
-// `dynamic initializer for 'g_gfxCoordinateScale_6A5DE0''
 // GLOBAL: IMPERIALISM 0x006a5de0
 double g_gfxCoordinateScale_6A5DE0 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x005e1b90
-// `dynamic initializer for 'g_scaledShortConst_6A5E28''
 // GLOBAL: IMPERIALISM 0x006a5e28
 short g_scaledShortConst_6A5E28 = static_cast<short>(g_gfxCoordinateScale_6A5DE0 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x005e2670
-// `dynamic initializer for 'g_gfxCoordinateScale_6A5EC8''
 // GLOBAL: IMPERIALISM 0x006a5ec8
 double g_gfxCoordinateScale_6A5EC8 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x005e26a0
-// `dynamic initializer for 'g_scaledShortConst_6A5F3C''
 // GLOBAL: IMPERIALISM 0x006a5f3c
 short g_scaledShortConst_6A5F3C = static_cast<short>(g_gfxCoordinateScale_6A5EC8 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x005e4d20
-// `dynamic initializer for 'g_gfxCoordinateScale_6A6070''
 // GLOBAL: IMPERIALISM 0x006a6070
 double g_gfxCoordinateScale_6A6070 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x005e4d50
-// `dynamic initializer for 'g_scaledShortConst_6A60B8''
 // GLOBAL: IMPERIALISM 0x006a60b8
 short g_scaledShortConst_6A60B8 = static_cast<short>(g_gfxCoordinateScale_6A6070 * 512.0 - -1.0);
 // GLOBAL: IMPERIALISM 0x00698ab8
@@ -1193,10 +885,6 @@ int g_nQuickDrawResolvedTextOriginY = 0;
 int g_nUiFrameClipOriginX = 0;
 // GLOBAL: IMPERIALISM 0x006a545c
 int g_nUiFrameClipOriginY = 0;
-// SYNTHETIC: IMPERIALISM 0x00493f90
-// `dynamic initializer for 'g_defaultQuickDrawSurfaceSentinel''
-// SYNTHETIC: IMPERIALISM 0x00493fc0
-// TBitmapSurfaceContextDescriptor::`dynamic atexit destructor'
 // GLOBAL: IMPERIALISM 0x006a1ca0
 TBitmapSurfaceContextDescriptor g_defaultQuickDrawSurfaceSentinel;
 // Statically initialized to the sentinel address (the dword at 0x006950f8 holds
@@ -1427,8 +1115,6 @@ short g_nCityBuildingDrawYOffsetIndex = 0;
 
 // GLOBAL: IMPERIALISM 0x006a2980
 CRect g_cityBuildingHoverFallbackRect_006a2980;
-// SYNTHETIC: IMPERIALISM 0x004b95c0
-// `dynamic initializer for 'g_aCityBuildingHoverSelectionRects''
 // GLOBAL: IMPERIALISM 0x006a2998
 CRect g_aCityBuildingHoverSelectionRects[16] = {
     CRect(g_anCityBuildingSlotCoords[0], g_anCityBuildingSlotCoords[1],
@@ -1470,8 +1156,6 @@ CRect g_aCityBuildingHoverSelectionRects[16] = {
 // TCityProductionView::DoPostCreate (0x4ba3b0) reads
 // the whole table with a row*3+action stride from base 0x6a24e8, which is why this is
 // one array and not a 41/31 split -- the split point is mid-row (41 = 13*3 + 2).
-// SYNTHETIC: IMPERIALISM 0x004b98b0
-// `dynamic initializer for 'g_aCityBuildingLayoutRects''
 // GLOBAL: IMPERIALISM 0x006a24e8
 CRect g_aCityBuildingLayoutRects[72] = {CRect(0x110, 0xfc, 0x11f, 0x10a),
                                         CRect(0, 0, 0, 0),
@@ -1745,226 +1429,120 @@ extern short g_mapProjectionSeamColumn_006a3348;
 // prove their source types: two dword stores are CPoint(0,0), four are CRect(0,0,0,0),
 // and four byte stores are the default CRGBColor constructor. Keep them as real objects so
 // VC5 owns the compiler helpers rather than exposing reset functions as source APIs.
-// SYNTHETIC: IMPERIALISM 0x00498e70
-// `dynamic initializer for 'g_defaultPoint_006A1CF8''
 // GLOBAL: IMPERIALISM 0x006a1cf8
 CPoint g_defaultPoint_006A1CF8(0, 0);
-// SYNTHETIC: IMPERIALISM 0x00498e90
-// `dynamic initializer for 'g_defaultPoint_006A1D78''
 // GLOBAL: IMPERIALISM 0x006a1d78
 CPoint g_defaultPoint_006A1D78(0, 0);
-// SYNTHETIC: IMPERIALISM 0x00498eb0
-// `dynamic initializer for 'g_defaultRect_006A1D30''
 // GLOBAL: IMPERIALISM 0x006a1d30
 CRect g_defaultRect_006A1D30(0, 0, 0, 0);
-// SYNTHETIC: IMPERIALISM 0x00498ee0
-// `dynamic initializer for 'g_defaultRect_006A1D68''
 // GLOBAL: IMPERIALISM 0x006a1d68
 CRect g_defaultRect_006A1D68(0, 0, 0, 0);
-// SYNTHETIC: IMPERIALISM 0x00498f30
-// `dynamic initializer for 'g_defaultRgbColor_006A1CE0''
 // GLOBAL: IMPERIALISM 0x006a1ce0
 CRGBColor g_defaultRgbColor_006A1CE0;
-// SYNTHETIC: IMPERIALISM 0x0049b9d0
-// `dynamic initializer for 'g_defaultPoint_006A1E20''
 // GLOBAL: IMPERIALISM 0x006a1e20
 CPoint g_defaultPoint_006A1E20(0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049b9f0
-// `dynamic initializer for 'g_defaultPoint_006A1E48''
 // GLOBAL: IMPERIALISM 0x006a1e48
 CPoint g_defaultPoint_006A1E48(0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049ba10
-// `dynamic initializer for 'g_defaultRect_006A1E28''
 // GLOBAL: IMPERIALISM 0x006a1e28
 CRect g_defaultRect_006A1E28(0, 0, 0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049ba40
-// `dynamic initializer for 'g_defaultRect_006A1E38''
 // GLOBAL: IMPERIALISM 0x006a1e38
 CRect g_defaultRect_006A1E38(0, 0, 0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049ba70
-// `dynamic initializer for 'g_defaultRgbColor_006A1E18''
 // GLOBAL: IMPERIALISM 0x006a1e18
 CRGBColor g_defaultRgbColor_006A1E18;
-// SYNTHETIC: IMPERIALISM 0x0049bc00
-// `dynamic initializer for 'g_defaultPoint_006A1E70''
 // GLOBAL: IMPERIALISM 0x006a1e70
 CPoint g_defaultPoint_006A1E70(0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049bc20
-// `dynamic initializer for 'g_defaultPoint_006A1F38''
 // GLOBAL: IMPERIALISM 0x006a1f38
 CPoint g_defaultPoint_006A1F38(0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049bc40
-// `dynamic initializer for 'g_defaultRect_006A1F18''
 // GLOBAL: IMPERIALISM 0x006a1f18
 CRect g_defaultRect_006A1F18(0, 0, 0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049bc70
-// `dynamic initializer for 'g_defaultRect_006A1F28''
 // GLOBAL: IMPERIALISM 0x006a1f28
 CRect g_defaultRect_006A1F28(0, 0, 0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049bca0
-// `dynamic initializer for 'g_defaultRgbColor_006A1E68''
 // GLOBAL: IMPERIALISM 0x006a1e68
 CRGBColor g_defaultRgbColor_006A1E68;
-// SYNTHETIC: IMPERIALISM 0x0049bff0
-// `dynamic initializer for 'g_defaultPoint_006A1F78''
 // GLOBAL: IMPERIALISM 0x006a1f78
 CPoint g_defaultPoint_006A1F78(0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049c010
-// `dynamic initializer for 'g_defaultPoint_006A1FA8''
 // GLOBAL: IMPERIALISM 0x006a1fa8
 CPoint g_defaultPoint_006A1FA8(0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049c030
-// `dynamic initializer for 'g_defaultRect_006A1F88''
 // GLOBAL: IMPERIALISM 0x006a1f88
 CRect g_defaultRect_006A1F88(0, 0, 0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049c060
-// `dynamic initializer for 'g_defaultRect_006A1F98''
 // GLOBAL: IMPERIALISM 0x006a1f98
 CRect g_defaultRect_006A1F98(0, 0, 0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049c090
-// `dynamic initializer for 'g_defaultRgbColor_006A1F70''
 // GLOBAL: IMPERIALISM 0x006a1f70
 CRGBColor g_defaultRgbColor_006A1F70;
-// SYNTHETIC: IMPERIALISM 0x0049c0c0
-// `dynamic initializer for 'g_ScaleDefault6A1FE8''
 // GLOBAL: IMPERIALISM 0x006a1fe8
 double g_ScaleDefault6A1FE8 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x0049c0f0
-// `dynamic initializer for 'g_ScaleDefault6A1FC0''
 // GLOBAL: IMPERIALISM 0x006a1fc0
 double g_ScaleDefault6A1FC0 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x0049c120
-// `dynamic initializer for 'g_scaledDefaultWidth_006A2008''
 // GLOBAL: IMPERIALISM 0x006a2008
 short g_scaledDefaultWidth_006A2008 = static_cast<short>(g_ScaleDefault6A1FC0 * 512.0 - -1.0);
-// SYNTHETIC: IMPERIALISM 0x0049cac0
-// `dynamic initializer for 'g_defaultPoint_006A1FD0''
 // GLOBAL: IMPERIALISM 0x006a1fd0
 CPoint g_defaultPoint_006A1FD0(0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049cae0
-// `dynamic initializer for 'g_defaultPoint_006A2000''
 // GLOBAL: IMPERIALISM 0x006a2000
 CPoint g_defaultPoint_006A2000(0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049cb00
-// `dynamic initializer for 'g_defaultRect_006A1FD8''
 // GLOBAL: IMPERIALISM 0x006a1fd8
 CRect g_defaultRect_006A1FD8(0, 0, 0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049cb30
-// `dynamic initializer for 'g_defaultRect_006A1FF0''
 // GLOBAL: IMPERIALISM 0x006a1ff0
 CRect g_defaultRect_006A1FF0(0, 0, 0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049cb60
-// `dynamic initializer for 'g_defaultRgbColor_006A1FC8''
 // GLOBAL: IMPERIALISM 0x006a1fc8
 CRGBColor g_defaultRgbColor_006A1FC8;
-// SYNTHETIC: IMPERIALISM 0x0049d290
-// `dynamic initializer for 'g_defaultPoint_006A2020''
 // GLOBAL: IMPERIALISM 0x006a2020
 CPoint g_defaultPoint_006A2020(0, 0);
 
 // Additional QuickDraw.cpp file-scope geometry defaults found by auditing raw code
 // islands that the Ghidra function inventory omitted.
-// SYNTHETIC: IMPERIALISM 0x0049d2b0
-// `dynamic initializer for 'g_defaultPoint_006A2048''
 // GLOBAL: IMPERIALISM 0x006a2048
 CPoint g_defaultPoint_006A2048(0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049d2d0
-// `dynamic initializer for 'g_defaultRect_006A2028''
 // GLOBAL: IMPERIALISM 0x006a2028
 CRect g_defaultRect_006A2028(0, 0, 0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049d300
-// `dynamic initializer for 'g_defaultRect_006A2038''
 // GLOBAL: IMPERIALISM 0x006a2038
 CRect g_defaultRect_006A2038(0, 0, 0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049d330
-// `dynamic initializer for 'g_defaultRgbColor_006A201C''
 // GLOBAL: IMPERIALISM 0x006a201c
 CRGBColor g_defaultRgbColor_006A201C;
 
-// SYNTHETIC: IMPERIALISM 0x0049d550
-// `dynamic initializer for 'g_defaultPoint_006A2070''
 // GLOBAL: IMPERIALISM 0x006a2070
 CPoint g_defaultPoint_006A2070(0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049d570
-// `dynamic initializer for 'g_defaultPoint_006A2098''
 // GLOBAL: IMPERIALISM 0x006a2098
 CPoint g_defaultPoint_006A2098(0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049d590
-// `dynamic initializer for 'g_defaultRect_006A2078''
 // GLOBAL: IMPERIALISM 0x006a2078
 CRect g_defaultRect_006A2078(0, 0, 0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049d5c0
-// `dynamic initializer for 'g_defaultRect_006A2088''
 // GLOBAL: IMPERIALISM 0x006a2088
 CRect g_defaultRect_006A2088(0, 0, 0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049d5f0
-// `dynamic initializer for 'g_defaultRgbColor_006A2068''
 // GLOBAL: IMPERIALISM 0x006a2068
 CRGBColor g_defaultRgbColor_006A2068;
 
-// SYNTHETIC: IMPERIALISM 0x0049d7b0
-// `dynamic initializer for 'g_defaultPoint_006A20B8''
 // GLOBAL: IMPERIALISM 0x006a20b8
 CPoint g_defaultPoint_006A20B8(0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049d7d0
-// `dynamic initializer for 'g_defaultPoint_006A20E0''
 // GLOBAL: IMPERIALISM 0x006a20e0
 CPoint g_defaultPoint_006A20E0(0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049d7f0
-// `dynamic initializer for 'g_defaultRect_006A20C0''
 // GLOBAL: IMPERIALISM 0x006a20c0
 CRect g_defaultRect_006A20C0(0, 0, 0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049d820
-// `dynamic initializer for 'g_defaultRect_006A20D0''
 // GLOBAL: IMPERIALISM 0x006a20d0
 CRect g_defaultRect_006A20D0(0, 0, 0, 0);
-// SYNTHETIC: IMPERIALISM 0x0049d850
-// `dynamic initializer for 'g_defaultRgbColor_006A20B0''
 // GLOBAL: IMPERIALISM 0x006a20b0
 CRGBColor g_defaultRgbColor_006A20B0;
 
 // The two 1/64 coordinate scales and their derived 512-unit short mirror the earlier
 // 0x49c0c0-0x49c120 initializer trio.
-// SYNTHETIC: IMPERIALISM 0x0049db00
-// `dynamic initializer for 'g_ScaleDefault6A2140''
 // GLOBAL: IMPERIALISM 0x006a2140
 double g_ScaleDefault6A2140 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x0049db30
-// `dynamic initializer for 'g_ScaleDefault6A2108''
 // GLOBAL: IMPERIALISM 0x006a2108
 double g_ScaleDefault6A2108 = DefaultGfxCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x0049db60
-// `dynamic initializer for 'g_scaledShortConst_6A21AC''
 // GLOBAL: IMPERIALISM 0x006a21ac
 short g_scaledShortConst_6A21AC = static_cast<short>(g_ScaleDefault6A2108 * 512.0 - -1.0);
 
 // Nonzero CPoint defaults emitted as direct dword stores.
-// SYNTHETIC: IMPERIALISM 0x0049db90
-// `dynamic initializer for 'g_defaultPoint_006A2150''
 // GLOBAL: IMPERIALISM 0x006a2150
 CPoint g_defaultPoint_006A2150(0x80, 0x80);
-// SYNTHETIC: IMPERIALISM 0x0049dbb0
-// `dynamic initializer for 'g_defaultPoint_006A2100''
 // GLOBAL: IMPERIALISM 0x006a2100
 CPoint g_defaultPoint_006A2100(0x32, 0x1e);
-// SYNTHETIC: IMPERIALISM 0x0049dbe0
-// `dynamic initializer for 'g_defaultPoint_006A2118''
 // GLOBAL: IMPERIALISM 0x006a2118
 CPoint g_defaultPoint_006A2118(0x5dc, 0x1c2);
-// SYNTHETIC: IMPERIALISM 0x0049dc10
-// `dynamic initializer for 'g_defaultPoint_006A2198''
 // GLOBAL: IMPERIALISM 0x006a2198
 CPoint g_defaultPoint_006A2198(0x32, 0x32);
-// SYNTHETIC: IMPERIALISM 0x0049dc30
-// `dynamic initializer for 'g_defaultPoint_006A2160''
 // GLOBAL: IMPERIALISM 0x006a2160
 CPoint g_defaultPoint_006A2160(0x50, 0x2d);
-// SYNTHETIC: IMPERIALISM 0x0049dc60
-// `dynamic initializer for 'g_defaultPoint_006A2120''
 // GLOBAL: IMPERIALISM 0x006a2120
 CPoint g_defaultPoint_006A2120(0x208, 0x384);
-// SYNTHETIC: IMPERIALISM 0x0049dc90
-// `dynamic initializer for 'g_defaultPoint_006A21B0''
 // GLOBAL: IMPERIALISM 0x006a21b0
 CPoint g_defaultPoint_006A21B0(0x50, 0x2d);
 
@@ -2075,20 +1653,11 @@ short g_civilianMapCursorTokenByStateIndex_00695680[12] = {0,    1008, 1000, 100
 
 // These are CSize dynamic initializers, not ordinary callable setters. Their inlined
 // constructors are the tiny bodies at 0x5a6830, 0x5a6860 and 0x5a6890.
-// SYNTHETIC: IMPERIALISM 0x005a6830
-// InitializeTacticalTileSize
-// prototype: void __cdecl InitializeTacticalTileSize(void)
 // GLOBAL: IMPERIALISM 0x006a5430
 CSize g_tacticalTileSize_006A5430(0x32, 0x1e);
-// SYNTHETIC: IMPERIALISM 0x005a6860
-// InitializeTacticalBattlefieldSurfaceSize
-// prototype: void __cdecl InitializeTacticalBattlefieldSurfaceSize(void)
 // GLOBAL: IMPERIALISM 0x006a5448
 CSize g_tacticalBattlefieldSurfaceSize_006A5448(0x5dc, 0x1c2);
 // The first store is at 0x5a6895; the initializer entry is 0x5a6890.
-// SYNTHETIC: IMPERIALISM 0x005a6890
-// InitializeTacticalUnitSpriteCellSize
-// prototype: void __cdecl InitializeTacticalUnitSpriteCellSize(void)
 // GLOBAL: IMPERIALISM 0x006a5498
 CSize g_tacticalUnitSpriteCellSize_006A5498(0x32, 0x32);
 
@@ -2503,8 +2072,6 @@ POINT g_aTacticalUnitFacingOffsetTable[29][7][2];
 // GLOBAL: IMPERIALISM 0x00656f60
 extern const char* const g_pszEmptyTextPointer_00656f60 = g_szEmptyString;
 
-// SYNTHETIC: IMPERIALISM 0x00576ea0
-// InitializeSharedStringRef_006A4220_AndRegisterAtExit
 TZone* g_pMapActionContextListHead = 0;
 // GLOBAL: IMPERIALISM 0x006a3fbc
 TOcean* g_pActiveMapOrderContext = 0;
@@ -2569,8 +2136,6 @@ TSoundPlayer* g_pSfxPlaybackSystem = 0;
 short g_randomAudioCuePollCounter = 0;
 // GLOBAL: IMPERIALISM 0x006a43cc
 TTradeMgr* g_pTradeMgr = 0;
-// SYNTHETIC: IMPERIALISM 0x00576ed0
-// DestroySharedStringRef_006A4220_AtExit
 // GLOBAL: IMPERIALISM 0x006a4220
 CString g_cstrCountryNameSettingValue006A4220;
 // GLOBAL: IMPERIALISM 0x006a4268
@@ -2737,8 +2302,6 @@ static inline double DefaultMiniMapViewportCoordinateScale() {
 }
 
 static double s_miniMapViewportCoordinateScale = DefaultMiniMapViewportCoordinateScale();
-// SYNTHETIC: IMPERIALISM 0x00594ed0
-// `dynamic initializer for 'g_scaledShortConst_6A460C''
 // GLOBAL: IMPERIALISM 0x006a460c
 short g_defaultMarkerBoxWidth_006a460c =
     static_cast<short>(s_miniMapViewportCoordinateScale * 512.0 - -1.0);
@@ -2880,22 +2443,12 @@ const char* g_cstrTradeTotalsBalanceSubstitution0066DB50 = g_szEmptyString;
 
 #include "game/net/TWNetSessionManager.h"
 
-// SYNTHETIC: IMPERIALISM 0x00415e20
-// InitializeUiResourcePoolStateAndRegisterAtExit
 // UGameWindow/dialog-factory widget build stack. The list element type is TView*: its
 // vtable family uses the CList<TView*,TView*> serializer/destructors, not the WNet
 // CList<void*,void*> copies below.
-// SYNTHETIC: IMPERIALISM 0x00415e50
-// DestroyUiResourcePoolStateAtExit
 // GLOBAL: IMPERIALISM 0x006a13e0
 CList<TView*, TView*> g_UiWidgetBuildStack006a13e0;
 
-// SYNTHETIC: IMPERIALISM 0x005e2770
-// InitializeWNetSerializedPtrArrayAAndRegisterAtExit
-// SYNTHETIC: IMPERIALISM 0x005e2720
-// InitializeWNetSerializedPtrArrayBAndRegisterAtExit
-// SYNTHETIC: IMPERIALISM 0x005e26d0
-// InitializeRuntimeClassState_0066FA50_AndRegisterAtExit
 // WNetMgr.cpp file-scope statics; g_ptNetworkModalMessage006a5ed8 is the POINT passed
 // to TViewMgr::ModalMessage, while g_WNetPendingPacketList006a5f40 is the
 // local-player pending-packet queue that TNetMgr::Send appends heap packet copies to
@@ -2906,8 +2459,6 @@ POINT g_ptNetworkModalMessage006a5ed8 = {0, 0};
 CArray<WNetSelectionRecord*, WNetSelectionRecord*> g_WNetSerializedPtrArrayA006a5f10;
 // GLOBAL: IMPERIALISM 0x006a5f28
 CArray<WNetSelectionRecord*, WNetSelectionRecord*> g_WNetSerializedPtrArrayB006a5f28;
-// SYNTHETIC: IMPERIALISM 0x005e2700
-// DestroyRuntimeClassState_0066FA50_AtExit
 // GLOBAL: IMPERIALISM 0x006a5f40
 CList<void*, void*> g_WNetPendingPacketList006a5f40(10);
 
@@ -2921,55 +2472,7 @@ int g_suppressUnexpectedDirectPlaySystemMessageAssert006a6020;
 // CPoint::CPoint
 
 // CList<TView*, TView*> emissions for g_UiWidgetBuildStack006a13e0.
-// TEMPLATE: IMPERIALISM 0x00415f50 SYMBOL
-// ??0?$CList@PAVTView@@PAV1@@@QAE@H@Z
 
-// TEMPLATE: IMPERIALISM 0x00492a40 SYMBOL
-// ?NewNode@?$CList@PAVTWindow@@PAV1@@@IAEPAUCNode@1@PAU21@0@Z
-
-// TEMPLATE: IMPERIALISM 0x00484860 SYMBOL
-// ?FreeNode@?$CList@PAVTView@@PAV1@@@IAEXPAUCNode@1@@Z
-
-// TEMPLATE: IMPERIALISM 0x00492ac0 SYMBOL
-// ?RemoveAll@?$CList@PAVTWindow@@PAV1@@@QAEXXZ
-
-// TEMPLATE: IMPERIALISM 0x00492b00 SYMBOL
-// ?FreeNode@?$CList@PAVTWindow@@PAV1@@@IAEXPAUCNode@1@@Z
-
-// SYNTHETIC: IMPERIALISM 0x00415f90
-// CList<TView *,TView *>::`scalar deleting destructor'
-
-// TEMPLATE: IMPERIALISM 0x00415e70 SYMBOL
-// ??1?$CList@PAVTView@@PAV1@@@UAE@XZ
-
-// TEMPLATE: IMPERIALISM 0x005e4540
-// CList::CList
-
-// TEMPLATE: IMPERIALISM 0x005e4580
-// CList::~CList
-
-// TEMPLATE: IMPERIALISM 0x005e4610
-// CList::Serialize
-
-// TEMPLATE: IMPERIALISM 0x005e4830
-// CArray::Serialize
-
-// SYNTHETIC: IMPERIALISM 0x005e4a30
-// CList scalar deleting destructor
-
-// TEMPLATE: IMPERIALISM 0x005e4780
-// CArray::CArray
-
-// SYNTHETIC: IMPERIALISM 0x005e4a60
-// CArray scalar deleting destructor
-
-// TEMPLATE: IMPERIALISM 0x005e47b0
-// CArray::~CArray
-
-// SYNTHETIC: IMPERIALISM 0x005e2a00
-// DestroyGlobalState_006A5F60_AtExit
-// SYNTHETIC: IMPERIALISM 0x005e29d0
-// InitializeNetManagerInstanceAndRegisterAtExit
 // DirectPlay session manager object embedded at a fixed address (not a pointer).
 // GLOBAL: IMPERIALISM 0x006a5f60
 TWNetSessionManager g_NetworkSessionManager006a5f60;
@@ -2979,31 +2482,13 @@ TWNetSessionManager g_NetworkSessionManager006a5f60;
 const GUID g_ImperialismDirectPlayApplicationGuid0066f968 = {
     0xc55dc2ef, 0xfd3e, 0x11d0, {0xbc, 0x16, 0x44, 0x45, 0x53, 0x54, 0x00, 0x00}};
 
-// SYNTHETIC: IMPERIALISM 0x0047f710
-// InitializeRuntimeSelectionRecordArrayStateAndRegisterAtExit
 // Heap-owned runtime selection records used by the DirectPlay session chooser.
 // This TU's CArray specialization has vtable 0x00646fb0 and ctor 0x00480b20.
-// SYNTHETIC: IMPERIALISM 0x0047f740
-// DestroyRuntimeSelectionRecordArrayStateAtExit
 // GLOBAL: IMPERIALISM 0x006a15e0
 CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecords006a15e0;
 
 // Compiler-emitted methods for this TU's RuntimeSelectionRecord pointer-array
 // specialization. The source implementation is the retail MFC CArray template.
-// TEMPLATE: IMPERIALISM 0x00480b20 SYMBOL
-// ??0?$CArray@PAURuntimeSelectionRecord@@PAU1@@@QAE@XZ
-
-// TEMPLATE: IMPERIALISM 0x00480b50 SYMBOL
-// ??1?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAE@XZ
-
-// TEMPLATE: IMPERIALISM 0x00480bd0 SYMBOL
-// ?Serialize@?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAEXAAVCArchive@@@Z
-
-// SYNTHETIC: IMPERIALISM 0x00480dd0
-// CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>::`scalar deleting destructor'
-
-// TEMPLATE: IMPERIALISM 0x00480e00 SYMBOL
-// ?SetSize@?$CArray@PAURuntimeSelectionRecord@@PAU1@@@QAEXHH@Z
 
 // Global TNetMgr (built by new TNetMgr() during multiplayer init, stored here; every
 // turn-event emitter dispatches TNetMgr::Send through it).
@@ -3037,8 +2522,6 @@ const short g_ShipRosterAtlasHorizontalOffsetByResourceType_006985E8[14] = {
 };
 
 // Palette entries used to color ocean-map previews by their owning nation tag.
-// SYNTHETIC: IMPERIALISM 0x00564800
-// `dynamic initializer for 'g_aOceanMapOwnerPaletteIndexByNationTag''
 // GLOBAL: IMPERIALISM 0x006985b8
 unsigned char g_aOceanMapOwnerPaletteIndexByNationTag[24] = {
     0xf3, 0x2a, 0x25, 0x1d, 0xf6, 0x8c,
@@ -3059,8 +2542,6 @@ const unsigned char g_bDrawOceanZoneLabels = 1;
 const unsigned char g_bDrawOceanNationLabels = 1;
 
 // Border/transition colors paired with the owner-fill table immediately above.
-// SYNTHETIC: IMPERIALISM 0x00564830
-// `dynamic initializer for 'g_aOceanMapBorderPaletteIndexByNationTag''
 // GLOBAL: IMPERIALISM 0x006985d0
 unsigned char g_aOceanMapBorderPaletteIndexByNationTag[24] = {
     0x15, 0x2d, 0x1e, 0x1c, 0x30, 0xae,
@@ -3080,21 +2561,13 @@ POINT g_ptControlStringModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a1ab0
 CPoint g_turnEventDialogAnchorPoint(0, 0);
 
-// SYNTHETIC: IMPERIALISM 0x0048d240
-// InitializeViewModalStateNodeBlockChainHeadAndRegisterAtExit
 // McAppUI-wide modal-window stack (base 0x006a1ac0). TWindow::
 // ExecuteViewModalStateWithPushPopChain pushes the active window on entry and pops it on
 // exit, disabling/re-enabling the window beneath it across the modal run. Shares the
 // CList<TWindow*, TWindow*> specialization (vtable 0x0064b580) with g_LiveViewRegistry.
-// SYNTHETIC: IMPERIALISM 0x0048d270
-// DestroyViewModalStateNodeBlockChainAtExit
 // GLOBAL: IMPERIALISM 0x006a1ac0
 CList<TWindow*, TWindow*> g_ModalViewStack;
 
-// SYNTHETIC: IMPERIALISM 0x0048d4d0
-// DestroyTWindowUnlinkDestructState_006A1A40_AtExitOnce
-// SYNTHETIC: IMPERIALISM 0x0048d4a0
-// InitializeTWindowUnlinkDestructState_006A1A40_AndRegisterAtExit
 // McAppUI live-view registry: every TWindow links itself in on construction and unlinks on
 // teardown; the window-manager iterator (CWMgrIterator) sweeps it.
 // GLOBAL: IMPERIALISM 0x006a1a40
@@ -3103,23 +2576,6 @@ CList<TWindow*, TWindow*> g_LiveViewRegistry;
 // Compiler-emitted members of the CList<TWindow*, TWindow*> specialization shared by the
 // two registries above (vtable 0x0064b580). The source implementation is the retail MFC
 // CList template.
-// SYNTHETIC: IMPERIALISM 0x00492950 SYMBOL
-// ??_G?$CList@PAVTWindow@@PAV1@@@UAEPAXI@Z
-
-// TEMPLATE: IMPERIALISM 0x004924e0
-// CList<TWindow*, TWindow*>::GetPrev
-
-// TEMPLATE: IMPERIALISM 0x00492550
-// CList<TWindow*, TWindow*>::RemoveAt
-
-// TEMPLATE: IMPERIALISM 0x00492510 SYMBOL
-// ??0?$CList@PAVTWindow@@PAV1@@@QAE@H@Z
-
-// TEMPLATE: IMPERIALISM 0x004925e0 SYMBOL
-// ??1?$CList@PAVTWindow@@PAV1@@@UAE@XZ
-
-// SYNTHETIC: IMPERIALISM 0x00492670
-// CList::Serialize
 
 // GLOBAL: IMPERIALISM 0x006a1b24
 TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry = nullptr;
@@ -3475,8 +2931,6 @@ short g_awTacticalFireSfxTokenByUnitType[32] = {
 // GLOBAL: IMPERIALISM 0x006a4758
 char g_nForceTacticalBattleViewFlag_006A4758;
 
-// SYNTHETIC: IMPERIALISM 0x004fe6a0
-// InitializeSharedStringRefBatch_006A3060_AndRegisterAtExit
 // Save-game path construction strings.
 // GLOBAL: IMPERIALISM 0x00698708
 char g_szImpSaveExtension_00698708[] = ".imp";
@@ -3533,8 +2987,6 @@ char g_szUiOpenParen_0069806C[] = "(";
 POINT g_ptCivilianOrderModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a2df0
 POINT g_ptGreatPowerModalMessage = {0, 0};
-// SYNTHETIC: IMPERIALISM 0x004fe6e0
-// DestroySharedStringRefBatch_006A3060_AtExit
 // GLOBAL: IMPERIALISM 0x006a3060
 CString g_cstrUiFontBelweLight;
 // GLOBAL: IMPERIALISM 0x006a3080
@@ -3550,18 +3002,10 @@ int g_nUiInvalidationAssertFlagLine495 = 0;
 
 // --- UMapper coastline/region overlay tables. The per-tile-edge Seapoint quads are matched
 // into region-border SeaSegments that MergeSmallCityRegionsAndCompactIds consumes. ---
-// SYNTHETIC: IMPERIALISM 0x0052c060
-// `dynamic initializer for 'g_seapointQuadTable_006a3478''
-// SYNTHETIC: IMPERIALISM 0x0052c170
-// `dynamic atexit destructor for 'g_seapointQuadTable_006a3478''
 // GLOBAL: IMPERIALISM 0x006a3478
 SeapointStretch g_seapointQuadTable_006a3478;
 // GLOBAL: IMPERIALISM 0x006a3498
 int g_cityRegionIdRemapTable_006a3498[0x100];
-// SYNTHETIC: IMPERIALISM 0x0052a720
-// `dynamic initializer for 'g_regionBorderLinkTable_006a3900''
-// SYNTHETIC: IMPERIALISM 0x0052a820
-// `dynamic atexit destructor for 'g_regionBorderLinkTable_006a3900''
 // GLOBAL: IMPERIALISM 0x006a3900
 SeaSegmentStretch g_regionBorderLinkTable_006a3900;
 
@@ -3642,8 +3086,6 @@ int g_streamLine596AssertGuard = 0;
 
 // Zone status-code PRNG seed (0x006a5aec) + display-name cache key (0x006984b8);
 // see global_data_tables.h. Runtime-initialized.
-// SYNTHETIC: IMPERIALISM 0x005c3b00
-// `dynamic initializer for 'g_zoneStatusCodePrngSeed_006a5aec''
 // GLOBAL: IMPERIALISM 0x006a5aec
 unsigned int g_zoneStatusCodePrngSeed_006a5aec = GetTickCountDiv16();
 // GLOBAL: IMPERIALISM 0x006a5af0

@@ -1,18 +1,11 @@
 #include "game/tactical_ui/TTaskList.h"
 #include "game/tactical_ui/TTask.h"
-// SYNTHETIC: IMPERIALISM 0x005aeaf0
-// TTaskList::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005aeb70
-// TTaskList::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTaskList, TList)
 
 // FUNCTION: IMPERIALISM 0x005aeb90
 TTaskList::TTaskList() : TList() {}
 
-// SYNTHETIC: IMPERIALISM 0x005aec00
-// TTaskList::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005aec30
 TTaskList::~TTaskList() {}
 

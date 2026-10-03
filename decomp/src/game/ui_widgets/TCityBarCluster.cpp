@@ -22,18 +22,11 @@ const int kAssertLineTradeSummaryRtnu = 0x67d;
 const int kAssertLineTradeSummaryIart = 0x682;
 const int kAssertLineTradeSummaryProf = 0x687;
 
-// SYNTHETIC: IMPERIALISM 0x00586590
-// TCityBarCluster::CreateObject
-// SYNTHETIC: IMPERIALISM 0x00586610
-// TCityBarCluster::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TCityBarCluster, TUberCluster)
 
 // FUNCTION: IMPERIALISM 0x00586630
 TCityBarCluster::TCityBarCluster() : TUberCluster() {}
 
-// SYNTHETIC: IMPERIALISM 0x00586660
-// TCityBarCluster::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00586690
 TCityBarCluster::~TCityBarCluster() {}
 

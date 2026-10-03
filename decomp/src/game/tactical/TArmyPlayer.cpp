@@ -69,17 +69,6 @@ short __cdecl CompareTacticalCursorEntriesByActionClassPriority(void* a, void* b
   // Explicitly cross from the logical comparison into the integer comparator domain.
   return static_cast<short>(-static_cast<int>(priorityA != priorityB));
 }
-// SYNTHETIC: IMPERIALISM 0x0059b110
-// TArmyPlayer::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0059b140
-// TArmyPlayer::`scalar deleting destructor'
-
-// SYNTHETIC: IMPERIALISM 0x0059b170
-// TArmyPlayer::~TArmyPlayer
-
-// SYNTHETIC: IMPERIALISM 0x0059b190
-// TArmyPlayer::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TArmyPlayer, TTacticalPlayer)
 

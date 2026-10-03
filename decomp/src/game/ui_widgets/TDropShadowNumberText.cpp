@@ -6,12 +6,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
 
-// SYNTHETIC: IMPERIALISM 0x005b5820
-// TDropShadowNumberText::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005b58f0
-// TDropShadowNumberText::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TDropShadowNumberText, TPictureNumberText)
 
 // FUNCTION: IMPERIALISM 0x005b5910
@@ -19,8 +13,6 @@ TDropShadowNumberText::TDropShadowNumberText() : TPictureNumberText() {
   shadowColorAc = g_defaultDropShadowTextColor;
 }
 
-// SYNTHETIC: IMPERIALISM 0x005b5960
-// TDropShadowNumberText::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005b5990
 TDropShadowNumberText::~TDropShadowNumberText() {}
 

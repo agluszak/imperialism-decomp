@@ -12,13 +12,7 @@
 #include "game/quickdraw_guards.h"
 #include "game/ui_core/quickdraw_rendering.h"
 
-// SYNTHETIC: IMPERIALISM 0x0058ab40
-// TShipAmtBar::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TShipAmtBar, TAmtBar)
-
-// SYNTHETIC: IMPERIALISM 0x0058aaa0
-// TShipAmtBar::CreateObject
 
 // FUNCTION: IMPERIALISM 0x0058ab60
 TShipAmtBar::TShipAmtBar() : TAmtBar() {
@@ -29,8 +23,6 @@ TShipAmtBar::TShipAmtBar() : TAmtBar() {
 }
 
 // Destructors are compiler-generated (implicit) from real inheritance.
-// SYNTHETIC: IMPERIALISM 0x0058aba0
-// TShipAmtBar::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058abf0
 void TShipAmtBar::DoPostCreate(int arg) {

@@ -3,12 +3,6 @@
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
-// SYNTHETIC: IMPERIALISM 0x004877c0
-// TCommand::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00487800
-// TCommand::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TCommand, TEvent)
 
 // The compiler emits the 0x648e28 vtable write from the // VTABLE: annotation.
@@ -21,9 +15,6 @@ TCommand::TCommand() : targetContext(0) {}
 // Vtable-shape placeholder bodies (the real slot implementations live elsewhere;
 // these exist so the class emits its native vtable and derived classes can
 // override individual slots through real C++ inheritance).
-
-// SYNTHETIC: IMPERIALISM 0x00487850
-// TCommand::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004878a0
 void TCommand::ICommand(long itsCommandNumber, TCommandHandler* itsContext, unsigned char canUndo,

@@ -15,19 +15,12 @@
 #include "game/gfx/ui_invalidation_guard.h"
 
 #include <io.h>
-// SYNTHETIC: IMPERIALISM 0x005df1d0
-// TAssetMgr::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005df260
-// TAssetMgr::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TAssetMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x005df280
 TAssetMgr::TAssetMgr() : TObject(), sharedTextSlots() {}
 
-// SYNTHETIC: IMPERIALISM 0x005df300
-// TAssetMgr::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005df330
 TAssetMgr::~TAssetMgr() {}
 

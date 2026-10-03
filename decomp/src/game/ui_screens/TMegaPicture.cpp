@@ -8,11 +8,6 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_core/TBitmapResourceLoader.h"
 #include "game/ui_core/bitmap_descriptor_helpers.h"
-// SYNTHETIC: IMPERIALISM 0x005730d0
-// TMegaPicture::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00573170
-// TMegaPicture::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TMegaPicture, TNoHilitePicture)
 
@@ -22,8 +17,6 @@ TMegaPicture::TMegaPicture() : TNoHilitePicture() {
   flags98 = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x005731d0
-// TMegaPicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00573200
 TMegaPicture::~TMegaPicture() {}
 

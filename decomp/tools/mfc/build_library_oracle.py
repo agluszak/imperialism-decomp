@@ -18,7 +18,7 @@ secondary evidence — the symbol the address already carries — before falling
 to a review queue. Output: build-msvc500/evidence/library/msvc500_library_oracle.csv with
 address|name|symbol|prototype|library|member|match_kind|confidence|candidate_count.
 
-Unique matches: accept by adding a `// LIBRARY:` (or identity `// SYNTHETIC:`)
+Unique matches: accept by adding a `// LIBRARY:` marker or binary emission catalog entry
 marker block to `src/game/core/library_identities.cpp`; ambiguous rows stay a
 review queue rather than receiving an invented name.
 """

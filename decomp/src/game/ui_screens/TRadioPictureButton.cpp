@@ -1,10 +1,5 @@
 #include "game/ui_screens/TRadioPictureButton.h"
 #include "game/ui_core/TControl.h"
-// SYNTHETIC: IMPERIALISM 0x00571700
-// TRadioPictureButton::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005717a0
-// TRadioPictureButton::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TRadioPictureButton, TUpDownPictureButton)
 
@@ -15,9 +10,6 @@ TRadioPictureButton::TRadioPictureButton() : TUpDownPictureButton() {
 }
 
 // Destructors are compiler-generated (implicit) from real inheritance.
-
-// SYNTHETIC: IMPERIALISM 0x00571800
-// TRadioPictureButton::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00571830
 TRadioPictureButton::~TRadioPictureButton() {}

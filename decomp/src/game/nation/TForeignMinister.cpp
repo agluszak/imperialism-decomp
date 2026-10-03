@@ -43,11 +43,6 @@ static int SelectDevelopmentGrantAmount(int availableBudget) {
 }
 
 } // namespace
-// SYNTHETIC: IMPERIALISM 0x0052efd0
-// TForeignMinister::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0052f050
-// TForeignMinister::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TForeignMinister, TMinister)
 
@@ -60,9 +55,6 @@ TForeignMinister::TForeignMinister() : TMinister() {
   tradeBidRefreshInterval1a = 5;
   interiorOrderKind1c = 2;
 }
-
-// SYNTHETIC: IMPERIALISM 0x0052f0e0
-// TForeignMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0052f130
 void TForeignMinister::IForeignMinister(TGreatPower* owner) {

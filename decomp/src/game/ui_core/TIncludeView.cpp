@@ -11,11 +11,6 @@
 // IMPLEMENT_DYNCREATE also emits `TIncludeView::CreateObject`; the original copy at
 // 0x48cc40 has the TIncludeView ctor fully inlined into it (same TU, inline-eligible),
 // so the pairing is structural, not byte-exact.
-// SYNTHETIC: IMPERIALISM 0x0048cc40
-// TIncludeView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0048cd50
-// TIncludeView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TIncludeView, TView)
 
@@ -29,8 +24,6 @@ TIncludeView::TIncludeView()
   enabled = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x0048ce40
-// TIncludeView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0048ce70
 TIncludeView::~TIncludeView() {}
 

@@ -15,12 +15,6 @@
 // FUNCTION: IMPERIALISM 0x00430750
 StrategicMapCallbackRecord::~StrategicMapCallbackRecord() {}
 
-// TEMPLATE: IMPERIALISM 0x004307a0 SYMBOL
-// ?Add@?$stretch@E@@UAEPAEE@Z
-
-// TEMPLATE: IMPERIALISM 0x00430830 SYMBOL
-// ?Add@?$stretch@H@@UAEPAHH@Z
-
 // FUNCTION: IMPERIALISM 0x004d4b90
 StrategicMapCallbackRecord::StrategicMapCallbackRecord()
     : opcodeAppendCursor10(0), opcodeAlignmentOffset14(0), hadTrailingPadding18(0),
@@ -30,18 +24,6 @@ StrategicMapCallbackRecord::StrategicMapCallbackRecord()
 void StrategicMapCallbackRecord::SetDestinationHeightNoOp(int unusedHeight) {
   (void)unusedHeight;
 }
-
-// TEMPLATE: IMPERIALISM 0x004d4dd0 SYMBOL
-// ?OverStretch@?$stretch@E@@QAEXI@Z
-
-// TEMPLATE: IMPERIALISM 0x004d4e40
-// stretch::operator[]
-
-// TEMPLATE: IMPERIALISM 0x004d4ed0
-// stretch::OverStretch
-
-// TEMPLATE: IMPERIALISM 0x004d4f50
-// stretch::operator[]
 
 // Patches the generated packed-color write program and applies it to the destination pixels.
 // FUNCTION: IMPERIALISM 0x004d4bf0
@@ -255,9 +237,6 @@ void StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment() {
   }
 }
 
-// TEMPLATE: IMPERIALISM 0x004d5970
-// stretch::SetCapacity
-
 // Edge test against a QuickDraw hit region: true when (x, y) is inside the region and,
 // with neighbour checking enabled, at least one of its four orthogonal neighbours falls
 // outside it -- i.e. the point sits on the region's boundary. With checkNeighbours off it
@@ -404,6 +383,3 @@ void StrategicMapCallbackRecord::BuildDiplomacyOverlayHitMaskOpcodeStream(
     FinalizeOpcodeBufferAlignment();
   }
 }
-
-// TEMPLATE: IMPERIALISM 0x004d62d0
-// stretch::Compact

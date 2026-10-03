@@ -16,19 +16,11 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x0051bd60
-// TCitySiteView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0051be90
-// TCitySiteView::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TCitySiteView, TMapDialog)
 
 // FUNCTION: IMPERIALISM 0x0051beb0
 TCitySiteView::TCitySiteView() {}
 
-// SYNTHETIC: IMPERIALISM 0x0051bfa0
-// TCitySiteView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0051bfd0
 TCitySiteView::~TCitySiteView() {}
 

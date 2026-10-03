@@ -98,9 +98,6 @@ float TCityInteriorMinister::GetAiDevelopmentResourceBudgetScale(int* resourcePo
   return g_AiDevelopmentResourceBudgetScale_00650758;
 }
 
-// SYNTHETIC: IMPERIALISM 0x004be710
-// TCityInteriorMinister::CreateObject
-
 // FUNCTION: IMPERIALISM 0x004be7b0
 short TCityInteriorMinister::GetExteriorNeedFor(int arg) {
   return orderTypeTable12A[arg];
@@ -116,16 +113,10 @@ void TCityInteriorMinister::ResetHistoricalNeedFor(int arg) {
   orderTypeTable158[arg] = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x004be820
-// TCityInteriorMinister::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TCityInteriorMinister, TInteriorMinister)
 
 // FUNCTION: IMPERIALISM 0x004be840
 TCityInteriorMinister::TCityInteriorMinister() : TInteriorMinister(), orderList18c(0) {}
-
-// SYNTHETIC: IMPERIALISM 0x004be880
-// TCityInteriorMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004be8d0
 void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {

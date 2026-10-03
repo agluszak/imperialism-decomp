@@ -4,21 +4,12 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_widgets/TSoundPlayer.h"
 
-// SYNTHETIC: IMPERIALISM 0x00570750
-// TPictureButton::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005707d0
-// TPictureButton::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TPictureButton, TPicture)
 
 // TPictureButton's ctor is defined inline in the header (marker there): the original
 // inlines it into every derived ctor.
 
 // Destructors are compiler-generated (implicit) from real inheritance.
-
-// SYNTHETIC: IMPERIALISM 0x00570820
-// TPictureButton::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00570850
 TPictureButton::~TPictureButton() {}

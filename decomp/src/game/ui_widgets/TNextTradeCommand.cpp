@@ -9,15 +9,8 @@
 // FUNCTION: IMPERIALISM 0x005ba400
 TNextTradeCommand::TNextTradeCommand() : TCommand() {}
 
-// SYNTHETIC: IMPERIALISM 0x005ba430
-// TNextTradeCommand::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005ba460
 TNextTradeCommand::~TNextTradeCommand() {}
-// SYNTHETIC: IMPERIALISM 0x005ba370
-// TNextTradeCommand::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005ba3e0
-// TNextTradeCommand::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TNextTradeCommand, TCommand)
 

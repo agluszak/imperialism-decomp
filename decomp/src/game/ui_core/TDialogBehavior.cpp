@@ -18,12 +18,6 @@
 #include "RuntimeTestDriver.h"
 #endif
 
-// SYNTHETIC: IMPERIALISM 0x00487300
-// TDialogBehavior::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00487350
-// TDialogBehavior::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TDialogBehavior, TBehavior)
 
 // FUNCTION: IMPERIALISM 0x00487370
@@ -31,9 +25,6 @@ TDialogBehavior::TDialogBehavior()
     : TBehavior(), armed(0), defaultCommandCode(kControlTagSpSpSpSp),
       cancelCommandCode(kControlTagSpSpSpSp), armedCommandCode(kControlTagSpSpSpSp),
       dismissPending(1) {}
-
-// SYNTHETIC: IMPERIALISM 0x004873b0
-// TDialogBehavior::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00487400
 void TDialogBehavior::SetUiColorDescriptorGoldTriplet(unsigned char flag, int colorA, int colorB) {

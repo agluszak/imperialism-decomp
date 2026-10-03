@@ -9,15 +9,8 @@
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
-// SYNTHETIC: IMPERIALISM 0x004aa4d0
-// TSuperArmyRoster::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004aa500
 TSuperArmyRoster::~TSuperArmyRoster() {}
-// SYNTHETIC: IMPERIALISM 0x004aa450
-// TSuperArmyRoster::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004aa520
-// TSuperArmyRoster::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TSuperArmyRoster, TPageView)
 

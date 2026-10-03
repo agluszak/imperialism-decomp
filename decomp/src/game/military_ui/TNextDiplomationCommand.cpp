@@ -15,17 +15,8 @@ void TNextDiplomationCommand::DoIt() {
   g_pDiplomacyTurnStateManager->ProcessQueuedWarTransitions();
 }
 
-// SYNTHETIC: IMPERIALISM 0x004f0dd0
-// TNextDiplomationCommand::`scalar deleting destructor'
-
 // FUNCTION: IMPERIALISM 0x004f0e00
 TNextDiplomationCommand::~TNextDiplomationCommand() {}
-
-// SYNTHETIC: IMPERIALISM 0x004f28a0
-// TNextDiplomationCommand::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004f2910
-// TNextDiplomationCommand::GetRuntimeClass
 
 // FUNCTION: IMPERIALISM 0x004f2930
 void TNextDiplomationCommand::DispatchUiPacketWithTagNEXT() {

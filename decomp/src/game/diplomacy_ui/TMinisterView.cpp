@@ -11,19 +11,12 @@
 #include "game/globals/diplomacy_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
-// SYNTHETIC: IMPERIALISM 0x004f2bb0
-// TMinisterView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004f2c40
-// TMinisterView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TMinisterView, TView)
 
 // FUNCTION: IMPERIALISM 0x004f2c60
 TMinisterView::TMinisterView() : TView(), field60(0) {}
 
-// SYNTHETIC: IMPERIALISM 0x004f2c90
-// TMinisterView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004f2cc0
 TMinisterView::~TMinisterView() {}
 

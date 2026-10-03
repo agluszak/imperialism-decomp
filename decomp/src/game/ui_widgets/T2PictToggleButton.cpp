@@ -1,20 +1,12 @@
 #include "game/ui_widgets/T2PictToggleButton.h"
 #include "game/mfc.h"
 
-// SYNTHETIC: IMPERIALISM 0x00584890
-// T2PictToggleButton::CreateObject
-// SYNTHETIC: IMPERIALISM 0x00584910
-// T2PictToggleButton::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(T2PictToggleButton, TToggleButton)
 
 // FUNCTION: IMPERIALISM 0x00584930
 T2PictToggleButton::T2PictToggleButton() : TToggleButton() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
-
-// SYNTHETIC: IMPERIALISM 0x00584960
-// T2PictToggleButton::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00584990
 T2PictToggleButton::~T2PictToggleButton() {}

@@ -8,11 +8,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/gfx/quickdraw_regions.h"
 #include "game/ui_core/quickdraw_rendering.h"
-// SYNTHETIC: IMPERIALISM 0x005795b0
-// TRadioTextCluster::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00579680
-// TRadioTextCluster::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TRadioTextCluster, TCluster)
 
@@ -25,8 +20,6 @@ TRadioTextCluster::TRadioTextCluster() : TCluster() {
   itemVerticalSpacing94 = 2;
 }
 
-// SYNTHETIC: IMPERIALISM 0x005796f0
-// TRadioTextCluster::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00579720
 TRadioTextCluster::~TRadioTextCluster() {}
 

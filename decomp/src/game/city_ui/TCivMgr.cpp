@@ -31,19 +31,11 @@
 #include "game/pointer_representation.h"
 #include "game/ui_core/ui_message_pump.h"
 
-// SYNTHETIC: IMPERIALISM 0x004d2000
-// TCivMgr::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004d2030
-// TCivMgr::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TCivMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x004d2050
 TCivMgr::TCivMgr() {}
 
-// SYNTHETIC: IMPERIALISM 0x004d2070
-// TCivMgr::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004d20a0
 TCivMgr::~TCivMgr() {}
 

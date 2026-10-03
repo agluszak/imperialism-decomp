@@ -8,15 +8,8 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x004af710
-// TMerchantBoyView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004af740
 TMerchantBoyView::~TMerchantBoyView() {}
-// SYNTHETIC: IMPERIALISM 0x004af6a0
-// TMerchantBoyView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004af760
-// TMerchantBoyView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TMerchantBoyView, TView)
 

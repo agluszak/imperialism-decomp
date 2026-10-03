@@ -21,20 +21,11 @@
 
 #include <new>
 
-// SYNTHETIC: IMPERIALISM 0x0058a4d0
-// TShipyardCluster::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0058a570
-// TShipyardCluster::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TShipyardCluster, TAmtBarCluster)
 
 // FUNCTION: IMPERIALISM 0x0058a590
 TShipyardCluster::TShipyardCluster()
     : TAmtBarCluster(), selectedMetricOrder(0), selectedMetricValue(0), selectedMetricStep(0) {}
-
-// SYNTHETIC: IMPERIALISM 0x0058a5c0
-// TShipyardCluster::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058a5f0
 TShipyardCluster::~TShipyardCluster() {}

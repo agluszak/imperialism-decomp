@@ -10,19 +10,11 @@
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
-// SYNTHETIC: IMPERIALISM 0x005c0cf0
-// TDealLine::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005c0d60
-// TDealLine::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TDealLine, TLineData)
 
 // FUNCTION: IMPERIALISM 0x005c0d80
 TDealLine::TDealLine() : TLineData() {}
-
-// SYNTHETIC: IMPERIALISM 0x005c0db0
-// TDealLine::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005c0e00
 void TDealLine::IDealLine(short rowArg, short colArg, int* bounds, short commoditySlot,

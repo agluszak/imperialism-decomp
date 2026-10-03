@@ -18,18 +18,11 @@
 #include "game/globals/ui_widgets_globals.h"
 #include "game/mfc.h"
 
-// SYNTHETIC: IMPERIALISM 0x0058de40
-// TArmyToolbar::CreateObject
-// SYNTHETIC: IMPERIALISM 0x0058dec0
-// TArmyToolbar::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TArmyToolbar, TUnitToolbarCluster)
 
 // FUNCTION: IMPERIALISM 0x0058dee0
 TArmyToolbar::TArmyToolbar() : TUnitToolbarCluster() {}
 
-// SYNTHETIC: IMPERIALISM 0x0058df10
-// TArmyToolbar::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0058df40
 TArmyToolbar::~TArmyToolbar() {}
 

@@ -19,19 +19,7 @@
 
 // The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
 //   CArchive& AFXAPI operator>>(CArchive&, TAttackProvinceMission*&)
-// SYNTHETIC: IMPERIALISM 0x0053d750
-// operator>>
-// SYNTHETIC: IMPERIALISM 0x0053d730
-// `dynamic initializer for '_init_TAttackProvinceMission''
 IMPLEMENT_SERIAL(TAttackProvinceMission, TArmyMission, 1)
-
-// SYNTHETIC: IMPERIALISM 0x0053d670
-// TAttackProvinceMission::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0053d710
-// TAttackProvinceMission::GetRuntimeClass
-// SYNTHETIC: IMPERIALISM 0x0053d7c0
-// TAttackProvinceMission::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0053d6f0
 bool TAttackProvinceMission::IsHospitalMission() const {

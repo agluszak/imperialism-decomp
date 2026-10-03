@@ -15,19 +15,11 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x00503bd0
-// THelpPicture::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00503c70
-// THelpPicture::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(THelpPicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x00503c90
 THelpPicture::THelpPicture() : TPicture(), currentHelpSet90(0), topicListText94(0) {}
 
-// SYNTHETIC: IMPERIALISM 0x00503cc0
-// THelpPicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00503cf0
 THelpPicture::~THelpPicture() {}
 

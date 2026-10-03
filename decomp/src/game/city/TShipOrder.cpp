@@ -25,16 +25,7 @@ enum {
   kResourceWeightIndex10 = 16,
 };
 
-// SYNTHETIC: IMPERIALISM 0x004b8470
-// TShipOrder::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004b84a0
-// TShipOrder::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TShipOrder, TProductionOrder)
-
-// SYNTHETIC: IMPERIALISM 0x004b84e0
-// TShipOrder::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004b85a0
 bool TShipOrder::AutoCanMakeProduct() {

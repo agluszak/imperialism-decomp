@@ -2,14 +2,6 @@
 
 #include "game/trade_ui/TTradeBidNationView.h"
 
-// SYNTHETIC: IMPERIALISM 0x005bd900
-// TTradeBidNationLine::`scalar deleting destructor'
-// SYNTHETIC: IMPERIALISM 0x005bd950
-// TTradeBidNationLine::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005bd9c0
-// TTradeBidNationLine::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TTradeBidNationLine, TLineData)
 
 // FUNCTION: IMPERIALISM 0x005bd9e0

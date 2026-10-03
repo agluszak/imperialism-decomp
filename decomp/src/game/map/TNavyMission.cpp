@@ -50,21 +50,8 @@ TMission* TNavyMission::GetNavyMission() {
   return this;
 }
 
-// SYNTHETIC: IMPERIALISM 0x00535560
-// TNavyMission::`scalar deleting destructor'
-
-// SYNTHETIC: IMPERIALISM 0x00536390
-// TNavyMission::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00536450
-// TNavyMission::GetRuntimeClass
-
 // The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
 //   CArchive& AFXAPI operator>>(CArchive&, TNavyMission*&)
-// SYNTHETIC: IMPERIALISM 0x00536490
-// operator>>
-// SYNTHETIC: IMPERIALISM 0x00536470
-// `dynamic initializer for '_init_TNavyMission''
 IMPLEMENT_SERIAL(TNavyMission, TMission, 1)
 
 // FUNCTION: IMPERIALISM 0x005364c0

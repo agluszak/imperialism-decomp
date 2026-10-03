@@ -6,12 +6,6 @@
 #include "game/pointer_representation.h"
 #include "game/mfc.h"
 
-// SYNTHETIC: IMPERIALISM 0x00488030
-// TSortedPtrList::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004883e0
-// TSortedPtrList::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TSortedPtrList, CPtrArray)
 
 // FUNCTION: IMPERIALISM 0x004880a0
@@ -112,13 +106,8 @@ short TSortedPtrList::Compare(void* a, void* b) {
   return 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x00488390
-// TSortedPtrList::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004883c0
 TSortedPtrList::~TSortedPtrList() {}
-
-// SYNTHETIC: IMPERIALISM 0x00488400
-// TPtrList::CreateObject
 
 // FUNCTION: IMPERIALISM 0x005e1e50
 void TSortedPtrList::ReadFrom(TStream* stream) {

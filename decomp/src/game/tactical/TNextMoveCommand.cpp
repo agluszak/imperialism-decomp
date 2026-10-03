@@ -8,16 +8,8 @@
 #include "game/gfx/TAmbitApplication.h"
 #include "game/globals/shared_globals.h"
 
-// SYNTHETIC: IMPERIALISM 0x005a64d0
-// TNextMoveCommand::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005a6540
-// TNextMoveCommand::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TNextMoveCommand, TCommand)
 
-// SYNTHETIC: IMPERIALISM 0x005a6590
-// TNextMoveCommand::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005a65c0
 TNextMoveCommand::~TNextMoveCommand() {}
 

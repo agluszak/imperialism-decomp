@@ -28,11 +28,6 @@ static void SetIndustryControlEnabledIfChanged(TView* control, bool enabled) {
     control->Show(enabled, 1);
   }
 }
-// SYNTHETIC: IMPERIALISM 0x004cc6b0
-// TIndustryView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004cc770
-// TIndustryView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TIndustryView, TBuildingView)
 
@@ -41,8 +36,6 @@ TIndustryView::TIndustryView()
     : TBuildingView(), unresolvedZeroA0(0), selectedIndustryUnitTypeA4(static_cast<short>(0xffff)) {
 }
 
-// SYNTHETIC: IMPERIALISM 0x004cc7d0
-// TIndustryView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004cc800
 TIndustryView::~TIndustryView() {}
 

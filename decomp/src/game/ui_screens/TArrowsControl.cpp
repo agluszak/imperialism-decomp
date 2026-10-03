@@ -1,9 +1,4 @@
 #include "game/ui_screens/TArrowsControl.h"
-// SYNTHETIC: IMPERIALISM 0x005838b0
-// TArrowsControl::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00583950
-// TArrowsControl::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TArrowsControl, TPicture)
 
@@ -12,8 +7,6 @@ IMPLEMENT_DYNCREATE(TArrowsControl, TPicture)
 // FUNCTION: IMPERIALISM 0x00583970
 TArrowsControl::TArrowsControl() : TPicture(), timingDword90(0) {}
 
-// SYNTHETIC: IMPERIALISM 0x005839a0
-// TArrowsControl::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005839d0
 TArrowsControl::~TArrowsControl() {}
 

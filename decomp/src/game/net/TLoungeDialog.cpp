@@ -28,15 +28,8 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x0044fae0
-// TLoungeDialog::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0044fb60
 TLoungeDialog::~TLoungeDialog() {}
-// SYNTHETIC: IMPERIALISM 0x0054d650
-// TLoungeDialog::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0054d6d0
-// TLoungeDialog::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TLoungeDialog, TNoHilitePicture)
 

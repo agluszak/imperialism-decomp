@@ -90,11 +90,6 @@ int TDiplomacyMgr::GetFavoriteTradePartner(int minorNationSlot) {
   }
   return selectedNation;
 }
-// SYNTHETIC: IMPERIALISM 0x004ee650
-// TDiplomacyMgr::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004ee6a0
-// TDiplomacyMgr::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TDiplomacyMgr, TObject)
 
@@ -104,8 +99,6 @@ TDiplomacyMgr::TDiplomacyMgr() : relationMatrixBaselineCopy(0), relationMatrixBa
   lastProcessedNationSlot = -1;
 }
 
-// SYNTHETIC: IMPERIALISM 0x004ee700
-// TDiplomacyMgr::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004ee730
 TDiplomacyMgr::~TDiplomacyMgr() {}
 

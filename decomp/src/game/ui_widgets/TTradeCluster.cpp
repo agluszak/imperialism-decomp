@@ -78,19 +78,10 @@ static short QueryNationTradeCapacity(TGreatPower* nationState) {
   return nationState->merchantCapacity;
 }
 
-// SYNTHETIC: IMPERIALISM 0x00587010
-// TTradeCluster::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00587090
-// TTradeCluster::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TTradeCluster, TAmtBarCluster)
 
 // FUNCTION: IMPERIALISM 0x005870b0
 TTradeCluster::TTradeCluster() : TAmtBarCluster() {}
-
-// SYNTHETIC: IMPERIALISM 0x005870e0
-// TTradeCluster::`scalar deleting destructor'
 
 // Initializes Sell/Bar/Arrow control style and enabled state for the current
 // nation/resource context, then initializes the move/bar controls baseline.

@@ -32,8 +32,6 @@ public:
 
   // The retained constructor copy and inlined CreateObject path both clear the inherited
   // quantity word after installing the derived vptr.
-  // SYNTHETIC: IMPERIALISM 0x004b5220
-  // TItemOrder::TItemOrder
   TItemOrder() {
     quantity = 0;
   }
