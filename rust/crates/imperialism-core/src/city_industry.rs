@@ -34,6 +34,11 @@ const fn weights(random_draw_block: i16, allocation: i16, average: i16) -> ShipT
     }
 }
 
+/// Retail `GetResourceDescriptorWeightWord0ByType`: merchant capacity per hull.
+pub(crate) fn ship_type_merchant_weight(ship_type: crate::ShipType) -> i16 {
+    SHIP_TYPE_WEIGHTS[ship_type].allocation
+}
+
 impl CityState {
     pub(crate) fn merchant_capacity(&self) -> i16 {
         SHIP_TYPE_WEIGHTS

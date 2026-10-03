@@ -556,6 +556,11 @@ impl GameState {
                 PhaseCode::NEWSPAPER => {
                     self.turn.phase = PhaseCode::RETURN_TO_MAP;
                     self.construct_newspaper_pages();
+                    self.pending.status_prompts =
+                        match MajorNationId::from_nation(self.turn.active_nation) {
+                            Some(active) => self.dispatch_pending_status_prompts(active),
+                            None => Vec::new(),
+                        };
                     self.mark_all_pending_status_flags_handled();
                     return TurnStop::Newspaper;
                 }
