@@ -213,17 +213,10 @@ impl GameState {
     }
 
     /// Turn-machine case `0x0e` decade check after any congress-result rewrite.
-    pub fn quarter_gate(&mut self) -> QuarterGateResult {
-        if let Some(last) = self.diplomacy.last_processed_nation {
-            self.turn.phase = if last.nation() == self.turn.active_nation {
-                PhaseCode::TOP_TEN_SCORES
-            } else {
-                PhaseCode::OPENING_CINEMATIC
-            };
-        } else {
-            self.turn.phase = PhaseCode::SEASON_ADVANCE;
-        }
-
+    ///
+    /// Both outcomes reach [`Self::post_quarter_gate`]'s phase; the cinematic result
+    /// only interposes the `"vote"` movie and the Council of Governors.
+    pub fn quarter_gate(&self) -> QuarterGateResult {
         let tick = self.turn.economic_turn;
         let decade = Decade::for_economic_turn(tick);
         if tick % 40 != 0
@@ -235,17 +228,26 @@ impl GameState {
         }
     }
 
+    /// Phase the case `0x0e` gate selects, matching retail's write before the gate branch.
+    pub(crate) fn post_quarter_gate(&self) -> PostQuarterGate {
+        match self.diplomacy.last_processed_nation {
+            Some(last) if last.nation() == self.turn.active_nation => PostQuarterGate::TopTenScores,
+            Some(_) => PostQuarterGate::OpeningCinematicLose,
+            None => PostQuarterGate::SeasonAdvance,
+        }
+    }
+
     /// Turn-machine case `0x10`: clear turn-flow flags, advance the season, and
     /// post the technology phase.
     pub fn advance_season_phase(&mut self) {
-        self.turn.phase = PhaseCode::TECHNOLOGY_ADVANCES;
+        self.turn_flow = TurnFlow::TechnologyAdvances;
         self.turn.turn_flow_status_flags = 0;
         self.turn.advance_season();
     }
 
     /// Turn-machine case `0x12` reset work, then the strategic map.
     pub fn return_to_map(&mut self) {
-        self.turn.phase = PhaseCode::STRATEGIC_MAP;
+        self.turn_flow = TurnFlow::StrategicMap;
         for nation in MajorNationId::all() {
             if !self.event_eligible(nation.nation()) {
                 continue;
@@ -550,12 +552,12 @@ mod tests {
         let mut state = game_state();
         state.turn.economic_turn = 39;
         assert_eq!(state.quarter_gate(), QuarterGateResult::Continue);
-        assert_eq!(state.turn.phase, PhaseCode::SEASON_ADVANCE);
+        assert_eq!(state.post_quarter_gate(), PostQuarterGate::SeasonAdvance);
 
         state.diplomacy.last_processed_nation = Some(MajorNationId::new(0));
         state.turn.active_nation = NationId::new(0);
         assert_eq!(state.quarter_gate(), QuarterGateResult::Continue);
-        assert_eq!(state.turn.phase, PhaseCode::TOP_TEN_SCORES);
+        assert_eq!(state.post_quarter_gate(), PostQuarterGate::TopTenScores);
 
         state.turn.economic_turn = 40;
         state.turn.phase_state_by_decade[Decade::Second as usize] = 1;
@@ -573,7 +575,10 @@ mod tests {
         state.advance_season_phase();
         assert_eq!(state.turn.economic_turn, 5);
         assert_eq!(state.turn.turn_flow_status_flags, 0);
-        assert_eq!(state.turn.phase, PhaseCode::TECHNOLOGY_ADVANCES);
+        assert_eq!(
+            state.turn_flow,
+            TurnFlow::TechnologyAdvances
+        );
     }
 
     #[test]
@@ -593,7 +598,7 @@ mod tests {
                 tag: 1,
             });
         state.return_to_map();
-        assert_eq!(state.turn.phase, PhaseCode::STRATEGIC_MAP);
+        assert_eq!(state.turn_flow, TurnFlow::StrategicMap);
         assert!(state.pending.nations[nation].turn_events.is_empty());
         assert!(state.pending.nations[nation].turn_start_events.is_empty());
     }

@@ -489,16 +489,14 @@ mod tests {
             parts.turn.economic_turn,
             parts.turn.diplomacy_year_term_raw,
             parts.turn.selected_asset_set,
-            PhaseCode::COMBAT_MOVES,
             parts.turn.turn_flow_status_flags,
             parts.turn.phase_state_by_decade,
             parts.turn.difficulty,
             player,
         );
-        parts.continuation = TurnContinuation::NavalBattle(
+        parts.turn_flow = TurnFlow::NavalBattle(
             NavyOrdersContinuation::player_encounter(attacker_force, defender_force),
         );
-
         GameState::from_parts(parts)
     }
 

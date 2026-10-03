@@ -2323,12 +2323,12 @@ mod tests {
             parts.turn.economic_turn,
             parts.turn.diplomacy_year_term_raw,
             parts.turn.selected_asset_set,
-            PhaseCode::COMBAT_MOVES,
             parts.turn.turn_flow_status_flags,
             parts.turn.phase_state_by_decade,
             parts.turn.difficulty,
             parts.turn.active_nation,
         );
+        parts.turn_flow = TurnFlow::CombatMoves;
 
         let mut state = GameState::from_parts(parts);
         assert_eq!(state.advance_turn(), TurnStop::LandBattle);

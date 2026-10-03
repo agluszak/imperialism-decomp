@@ -3,10 +3,10 @@
 use anyhow::{Context, Result, bail};
 use imperialism_core::{
     Difficulty, GameState, MajorNationId, NationId, NewsState, PendingWorkState, PhaseCode,
-    RngState, ScenarioMapId, Technology, TurnContinuation, TurnState, UnitIdAllocator,
+    RngState, ScenarioMapId, TurnFlow, TurnState, UnitIdAllocator,
 };
 use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
-use serde::de::{DeserializeOwned, Error};
+use serde::de::DeserializeOwned;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fmt::Debug;
@@ -34,8 +34,6 @@ struct EphemeralGameState {
     pending: PendingWorkState,
     #[serde(default)]
     last_processed_nation: Option<MajorNationId>,
-    #[serde(default, deserialize_with = "deserialize_native_continuation")]
-    continuation: TurnContinuation,
 }
 
 #[derive(Debug, Deserialize)]
@@ -60,7 +58,6 @@ impl NativeTurnState {
             self.economic_turn,
             self.diplomacy_year_term_raw,
             0,
-            self.phase,
             self.turn_flow_status_flags,
             phase_state_by_decade,
             self.difficulty,
@@ -69,24 +66,6 @@ impl NativeTurnState {
         turn.last_turn_alert_tick = self.last_turn_alert_tick;
         turn
     }
-}
-
-fn deserialize_native_continuation<'de, D>(deserializer: D) -> Result<TurnContinuation, D::Error>
-where
-    D: serde::Deserializer<'de>,
-{
-    let value = serde_json::Value::deserialize(deserializer)?;
-    if let Some(technology) = value
-        .get("TechnologyReport")
-        .and_then(serde_json::Value::as_u64)
-    {
-        let technology = u8::try_from(technology)
-            .ok()
-            .and_then(Technology::from_index)
-            .ok_or_else(|| D::Error::custom("invalid C++ technology report id"))?;
-        return Ok(TurnContinuation::TechnologyReport(technology));
-    }
-    serde_json::from_value(value).map_err(D::Error::custom)
 }
 
 /// Save bytes plus the runtime-only overlay the `.imp` does not store.
@@ -180,24 +159,34 @@ where
 }
 
 pub fn load_save_backed_state(capture: SaveBackedState) -> Result<GameState> {
-    let turn = capture.ephemeral.turn.into_core();
+    let native_phase = capture.ephemeral.turn.phase;
     let save = LegacySaveV62::parse(&capture.save);
     let mut parts = save.game_state_parts(LegacyGameStateContext {
         crt_rand_state: capture.ephemeral.rng.crt_rand.state(),
         map_generation_lcg: capture.ephemeral.rng.map_generation.state(),
         zone_status_lcg: capture.ephemeral.rng.zone_status.state(),
     });
-    parts.turn = turn;
+    parts.turn = capture.ephemeral.turn.into_core();
+    parts.turn_flow = TurnFlow::from_retail_phase(native_phase);
     parts.unit_ids = capture.ephemeral.unit_ids;
     parts.rng = capture.ephemeral.rng;
     parts.news = capture.ephemeral.news;
     parts.pending = capture.ephemeral.pending;
     parts.diplomacy.last_processed_nation = capture.ephemeral.last_processed_nation;
-    parts.continuation = capture.ephemeral.continuation;
     Ok(GameState::from_parts(parts))
 }
 
 pub fn assert_game_state_eq(expected: &GameState, actual: &GameState) -> Result<()> {
+    // `turnStateCode` is all the oracle can report, and it names the phase retail already
+    // advanced to rather than the interrupt the turn stopped at. Compare that projection;
+    // the flow behind it has no counterpart in the capture.
+    if expected.retail_phase() != actual.retail_phase() {
+        bail!(
+            "turn phase differs: C++ {:?}, Rust {:?}",
+            expected.retail_phase(),
+            actual.retail_phase()
+        );
+    }
     let mut expected_json =
         serde_json::to_value(expected).context("serializing native game state")?;
     let mut actual_json = serde_json::to_value(actual).context("serializing Rust game state")?;
@@ -221,6 +210,7 @@ fn discard_process_local_allocator_state(state: &mut serde_json::Value, game: &G
         .as_object_mut()
         .expect("GameState serializes as an object");
     state.remove("object_ids");
+    state.remove("turn_flow");
     discard_uncalculated_new_town_adjacent_city(state);
 
     // Retail saves these ordered lists but not their object pointers. Loader-assigned numeric

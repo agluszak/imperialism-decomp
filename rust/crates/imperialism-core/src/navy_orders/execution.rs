@@ -68,8 +68,8 @@ impl NavyOrdersContinuation {
 
 impl GameState {
     pub fn pending_naval_battle(&self) -> Option<&PendingNavalBattle> {
-        match &self.continuation {
-            crate::turn_flow::TurnContinuation::NavalBattle(continuation) => {
+        match &self.turn_flow {
+            TurnFlow::NavalBattle(continuation) => {
                 Some(&continuation.battle)
             }
             _ => None,
@@ -79,15 +79,16 @@ impl GameState {
     /// Continues the retained `CarryOutOrders` scan after the tactical naval
     /// battle has applied its outcome to the two authoritative task forces.
     pub fn resume_after_naval_battle(&mut self) -> crate::TurnStop {
-        let crate::turn_flow::TurnContinuation::NavalBattle(continuation) =
-            std::mem::take(&mut self.continuation)
-        else {
+        let TurnFlow::NavalBattle(continuation) = std::mem::replace(
+            &mut self.turn_flow,
+            TurnFlow::Military,
+        ) else {
             panic!("naval-battle resume requires a navy-orders continuation");
         };
-        if let Some(continuation) = self.resume_navy_orders(continuation) {
-            self.continuation = crate::turn_flow::TurnContinuation::NavalBattle(continuation);
-            return crate::TurnStop::NavalBattle;
-        }
+        self.turn_flow = match self.resume_navy_orders(continuation) {
+            Some(continuation) => TurnFlow::NavalBattle(continuation),
+            None => TurnFlow::CombatMoves,
+        };
         self.advance_turn()
     }
 
@@ -1697,7 +1698,7 @@ mod tests {
         let continuation = state.carry_out_navy_orders().expect("player encounter");
         assert_eq!(continuation.battle.attacker, attacker_force);
         assert_eq!(continuation.battle.defender, defender_force);
-        state.continuation = crate::turn_flow::TurnContinuation::NavalBattle(continuation);
+        state.turn_flow = TurnFlow::NavalBattle(continuation);
 
         let mut expected_rng = state.rng;
         expected_rng.next_crt_rand();

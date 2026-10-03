@@ -122,7 +122,7 @@ impl LegacySaveV62 {
             language_code: 0,
             economic_turn: turn.economic_turn as i16,
             active_nation: i16::from(turn.active_nation.get()),
-            turn_state_code: turn.phase().retail() as i16,
+            turn_state_code: state.retail_phase().retail() as i16,
             mode: 0,
             previous_turn_state_code: 0,
             previous_mode: 0,
