@@ -36,18 +36,8 @@ short TArmyMission::GetPresentLocation() const {
   return presentLocation14;
 }
 
-// SYNTHETIC: IMPERIALISM 0x0053bfb0
-// TArmyMission::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0053c030
-// TArmyMission::GetRuntimeClass
-
 // The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
 //   CArchive& AFXAPI operator>>(CArchive&, TArmyMission*&)
-// SYNTHETIC: IMPERIALISM 0x0053c070
-// operator>>
-// SYNTHETIC: IMPERIALISM 0x0053c050
-// `dynamic initializer for '_init_TArmyMission''
 IMPLEMENT_SERIAL(TArmyMission, TMission, 1)
 
 // FUNCTION: IMPERIALISM 0x0053c0a0
@@ -70,8 +60,6 @@ TArmyMission::TArmyMission(int nodeKey) : TMission() {
 bool TArmyMission::IsANoBrainer() const {
   return false;
 }
-// SYNTHETIC: IMPERIALISM 0x0053c1d0
-// TArmyMission::`scalar deleting destructor'
 
 void TArmyMission::AccumulateOrderPriorityVector(float* vector) const {
   CIterator iter(orderListAt18);

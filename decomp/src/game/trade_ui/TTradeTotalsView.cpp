@@ -10,19 +10,11 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x005c1a80
-// TTradeTotalsView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005c1af0
-// TTradeTotalsView::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TTradeTotalsView, TView)
 
 // FUNCTION: IMPERIALISM 0x005c1b10
 TTradeTotalsView::TTradeTotalsView() : TView() {}
 
-// SYNTHETIC: IMPERIALISM 0x005c1b40
-// TTradeTotalsView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005c1b70
 TTradeTotalsView::~TTradeTotalsView() {}
 

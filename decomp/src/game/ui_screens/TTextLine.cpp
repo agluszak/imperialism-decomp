@@ -6,11 +6,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h" // BuildUiTextStyleDescriptor
 #include "game/ui_text_label_helpers_decls.h"
-// SYNTHETIC: IMPERIALISM 0x005701d0
-// TTextLine::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00570270
-// TTextLine::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTextLine, TLineData)
 
@@ -21,8 +16,6 @@ TTextLine::TTextLine() : TLineData() {
   styleDescriptor14.textColor = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x00570310
-// TTextLine::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00570340
 TTextLine::~TTextLine() {}
 

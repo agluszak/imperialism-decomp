@@ -6,12 +6,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/map/TMapMgr.h"
 
-// SYNTHETIC: IMPERIALISM 0x00541c10
-// TRemoteMinor::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00541d70
-// TRemoteMinor::GetRuntimeClass
-
 // Binary descriptor base points at itself (0x65b020), not TMinor — reproducing the
 // original IMPLEMENT_DYNCREATE(TRemoteMinor, TRemoteMinor) copy-paste bug byte-for-byte.
 IMPLEMENT_DYNCREATE(TRemoteMinor, TRemoteMinor)
@@ -28,8 +22,6 @@ void TRemoteMinor::PurchaseItem(short resourceKind, short amount, short price) {
   (void)price;
 }
 
-// SYNTHETIC: IMPERIALISM 0x00541cd0
-// TRemoteMinor::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00541d00
 TRemoteMinor::~TRemoteMinor() {}
 

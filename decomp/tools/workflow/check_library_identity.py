@@ -3,8 +3,7 @@
 
 `symbols-integrity-gate` checks inventory *structure* (header, addresses, overlap)
 but not whether library identities are semantically correct. This gate closes that
-hole: every `// LIBRARY:` claim (and identity-bearing `// SYNTHETIC:` claim with a
-linker symbol or prototype) must project exactly into generated `symbols.csv`.
+hole: every `// LIBRARY:` claim and binary emission identity must project exactly into generated `symbols.csv`.
 
 Identity carriers live in manual source — primarily
 `src/game/core/library_identities.cpp` and `CString.cpp`. Accepting an
@@ -17,13 +16,12 @@ identity and library ownership.
 
 Failures:
   - an identity claim is not applied to symbols.csv (name/symbol/prototype/type drift);
-  - an identity address is not owned as library/synthetic in the source model;
+  - an identity address is not owned as library in the source model;
   - an identity claim is internally inconsistent (prototype does not declare the name);
-  - a named `// SYNTHETIC:` claim's source_model name does not match symbols.csv.
+  - a binary emission identity does not match symbols.csv.
 
-Blank-name SYNTHETIC markers are ownership-only and are not name-checked.
-Named SYNTHETIC validation uses `tools.source_model` — there is no second marker
-parser.
+Unnamed catalog entries still prevent generated source stubs.
+Emission validation uses the binary catalog through `tools.emissions`.
 
 Oracle-aware extras: a high-confidence unique library match must not be labeled
 manual game code (unless allowlisted in `config/library_oracle_gamecode_allowlist.csv`).
@@ -39,6 +37,7 @@ from pathlib import Path
 
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
+from tools.emissions import load_emissions
 from tools.generate_symbols import identity_overlay_claims
 from tools.source_model import build_model
 
@@ -204,7 +203,7 @@ def check_override(
             problems.append(f"{tag}: symbols.csv type={row.get('type')!r} != 'function'")
 
     owner = ownership.get(ov.address)
-    expected_owner = "manual" if ov.kind == "SYNTHETIC" else "library"
+    expected_owner = "library"
     if owner != expected_owner:
         problems.append(
             f"{tag}: ownership={owner!r} != {expected_owner!r} "
@@ -214,20 +213,18 @@ def check_override(
     return problems
 
 
-def check_named_synthetic(
+def check_emission(
     claim, symbols: dict[int, dict[str, str]]
 ) -> list[str]:
-    """Name-only SYNTHETIC markers must match the generated symbols.csv name."""
-    if not claim.name:
-        return []
-    tag = f"0x{claim.address:08x} ({claim.name})"
+    """Catalog identities must project exactly without becoming source claims."""
     row = symbols.get(claim.address)
+    tag = f"0x{claim.address:08x} ({claim.name or claim.symbol})"
     if row is None:
-        return [f"{tag}: no symbols.csv row for named SYNTHETIC claim"]
-    actual = (row.get("name") or "").strip()
-    if actual != claim.name:
-        return [f"{tag}: symbols.csv name={actual!r} != {claim.name!r}"]
-    return []
+        return [f"{tag}: no symbols.csv row for emission"]
+    return [f"{tag}: symbols.csv {key}={row.get(key)!r} != {value!r}"
+            for key, value in (("name", claim.name), ("symbol", claim.symbol),
+                               ("prototype", claim.prototype))
+            if value and row.get(key) != value]
 
 
 def main() -> int:
@@ -247,12 +244,10 @@ def main() -> int:
     for ov in overrides:
         problems.extend(check_override(ov, symbols, ownership))
 
-    named_synthetic = 0
-    for claim in model.functions.values():
-        if claim.kind != "SYNTHETIC" or not claim.name or claim.address in covered:
-            continue
-        named_synthetic += 1
-        problems.extend(check_named_synthetic(claim, symbols))
+    emissions = load_emissions(repo_root)
+    for claim in emissions.values():
+        if claim.address not in covered:
+            problems.extend(check_emission(claim, symbols))
 
     problems.extend(
         check_oracle_gamecode_conflicts(
@@ -270,7 +265,7 @@ def main() -> int:
 
     print(
         f"library-identity gate passed: {applied_count} library identities and "
-        f"{named_synthetic} named SYNTHETIC claims project exactly."
+        f"{len(emissions)} binary emission identities project exactly."
     )
     return 0
 

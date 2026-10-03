@@ -1,19 +1,12 @@
 #include "game/ui_screens/TRightLeftView.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_core/TControl.h"
-// SYNTHETIC: IMPERIALISM 0x00583e70
-// TRightLeftView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00583f10
-// TRightLeftView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TRightLeftView, TControl)
 
 // FUNCTION: IMPERIALISM 0x00583f30
 TRightLeftView::TRightLeftView() : TControl(), timingDword84(0) {}
 
-// SYNTHETIC: IMPERIALISM 0x00583f60
-// TRightLeftView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00583f90
 TRightLeftView::~TRightLeftView() {}
 

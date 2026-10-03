@@ -27,12 +27,6 @@
 
 const int kAssertLineRatioA = 0xd1d;
 
-// SYNTHETIC: IMPERIALISM 0x00589660
-// TRailCluster::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00589700
-// TRailCluster::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TRailCluster, TAmtBarCluster)
 
 // FUNCTION: IMPERIALISM 0x00589720
@@ -40,9 +34,6 @@ TRailCluster::TRailCluster() : TAmtBarCluster() {
   this->selectedMetricOrder = 0;
   this->selectedMetricStep = 0;
 }
-
-// SYNTHETIC: IMPERIALISM 0x00589760
-// TRailCluster::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00589790
 TRailCluster::~TRailCluster() {}

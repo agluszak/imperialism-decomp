@@ -32,11 +32,6 @@
 double TDefenseMinister::GetStategicEscalationMultiplier(unsigned char) {
   return g_DefenseMinisterWeightZero_006548E0;
 }
-// SYNTHETIC: IMPERIALISM 0x004ec020
-// TDefenseMinister::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004ec0c0
-// TDefenseMinister::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TDefenseMinister, TMinister)
 
@@ -44,9 +39,6 @@ IMPLEMENT_DYNCREATE(TDefenseMinister, TMinister)
 TDefenseMinister::TDefenseMinister() : TMinister() {}
 
 // Destructor is compiler-generated (implicit) from real TMinister inheritance.
-
-// SYNTHETIC: IMPERIALISM 0x004ec110
-// TDefenseMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004ec160
 void TDefenseMinister::InitializeBaseOrderArrayMetrics(TGreatPower* owner) {

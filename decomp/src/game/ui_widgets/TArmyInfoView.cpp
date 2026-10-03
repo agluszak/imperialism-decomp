@@ -15,11 +15,6 @@
 #include "game/ui_tags_map.h"
 #include "game/globals/ui_widgets_globals.h"
 
-// SYNTHETIC: IMPERIALISM 0x00591500
-// TArmyInfoView::CreateObject
-// SYNTHETIC: IMPERIALISM 0x00591580
-// TArmyInfoView::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TArmyInfoView, TPicture)
 
 // FUNCTION: IMPERIALISM 0x005915a0
@@ -27,8 +22,6 @@ TArmyInfoView::TArmyInfoView() : TPicture() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 
-// SYNTHETIC: IMPERIALISM 0x005915d0
-// TArmyInfoView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00591600
 TArmyInfoView::~TArmyInfoView() {}
 

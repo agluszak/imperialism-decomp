@@ -31,12 +31,6 @@ TMilitaryUnit* TArmyStack::AdvanceCursorAndGetUnit() {
   return nullptr;
 }
 
-// SYNTHETIC: IMPERIALISM 0x004a76a0
-// TArmyStack::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004a76d0
-// TArmyStack::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TArmyStack, TObject)
 
 // FUNCTION: IMPERIALISM 0x004a76f0
@@ -45,8 +39,6 @@ TArmyStack::TArmyStack() {
   cursor18 = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x004a7720
-// TArmyStack::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004a7750
 TArmyStack::~TArmyStack() {}
 

@@ -7,14 +7,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x005bcf70
-// TTradeOfferNationLine::`scalar deleting destructor'
-// SYNTHETIC: IMPERIALISM 0x005bcfc0
-// TTradeOfferNationLine::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005bd030
-// TTradeOfferNationLine::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TTradeOfferNationLine, TLineData)
 
 // FUNCTION: IMPERIALISM 0x005bd050

@@ -12,15 +12,8 @@
 #include "game/globals/ui_widgets_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
-// SYNTHETIC: IMPERIALISM 0x005b3b70
-// TGPTreatyDialog::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005b3ba0
 TGPTreatyDialog::~TGPTreatyDialog() {}
-// SYNTHETIC: IMPERIALISM 0x005b3ae0
-// TGPTreatyDialog::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005b3bc0
-// TGPTreatyDialog::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TGPTreatyDialog, TDialogView)
 

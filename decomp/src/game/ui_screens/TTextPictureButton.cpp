@@ -3,11 +3,6 @@
 #include "game/ui_core/ScopedMapQuickDrawContext.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
-// SYNTHETIC: IMPERIALISM 0x005724e0
-// TTextPictureButton::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005725b0
-// TTextPictureButton::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTextPictureButton, TUpDownPictureButton)
 
@@ -15,8 +10,6 @@ IMPLEMENT_DYNCREATE(TTextPictureButton, TUpDownPictureButton)
 TTextPictureButton::TTextPictureButton()
     : TUpDownPictureButton(), pointSize98(0), themeCode9A(0), themeCode9C(0) {}
 
-// SYNTHETIC: IMPERIALISM 0x00572670
-// TTextPictureButton::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005726a0
 TTextPictureButton::~TTextPictureButton() {}
 

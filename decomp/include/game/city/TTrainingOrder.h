@@ -19,8 +19,6 @@ public:
                               short quantity) override;         // slot 0x10 0x4b6de0
   virtual void ITrainingOrder(TCity* city, short resourceType); // slot 0x11 0x4b6b20
 
-  // SYNTHETIC: IMPERIALISM 0x004b6ab0
-  // TTrainingOrder::TTrainingOrder
   TTrainingOrder() {}
 };
 ASSERT_SIZE(TTrainingOrder, 0x4c);

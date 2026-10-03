@@ -6,19 +6,12 @@
 #include "game/ui_screens/TToggleButton.h"
 #include "game/resource_manifest_tags.h"
 #include "game/ui_tags_common.h"
-// SYNTHETIC: IMPERIALISM 0x00584040
-// TDipDlgCluster::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005840c0
-// TDipDlgCluster::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TDipDlgCluster, TUberCluster)
 
 // FUNCTION: IMPERIALISM 0x005840e0
 TDipDlgCluster::TDipDlgCluster() {}
 
-// SYNTHETIC: IMPERIALISM 0x00584110
-// TDipDlgCluster::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00584140
 TDipDlgCluster::~TDipDlgCluster() {}
 

@@ -22,12 +22,6 @@ static short __cdecl DispatchTSortedListDefaultCompare(void* a, void* b, void* c
   return static_cast<TSortedList*>(context)->Compare(a, b);
 }
 
-// SYNTHETIC: IMPERIALISM 0x00487a90
-// TSortedList::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00487b10
-// TSortedList::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TSortedList, TObject)
 
 // FUNCTION: IMPERIALISM 0x00487b30
@@ -222,6 +216,3 @@ void TSortedList::SetAtOrdinal(int ordinal, void** entryPtr, int unusedFlag) {
     this->listState.SetAt(pos, *entryPtr);
   }
 }
-
-// SYNTHETIC: IMPERIALISM 0x004888f0
-// TSortedList::`scalar deleting destructor'

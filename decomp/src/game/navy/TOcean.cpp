@@ -51,17 +51,8 @@ void TOcean::AllocateRouteNodeStateBufferByCount(short count) {
   }
 }
 
-// SYNTHETIC: IMPERIALISM 0x00562100
-// TOcean::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00562140
-// TOcean::`scalar deleting destructor'
-
 // FUNCTION: IMPERIALISM 0x00562170
 TOcean::~TOcean() {}
-
-// SYNTHETIC: IMPERIALISM 0x00562190
-// TOcean::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TOcean, TObject)
 

@@ -17,14 +17,7 @@
 
 // The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
 //   CArchive& AFXAPI operator>>(CArchive&, TInvadeMission*&)
-// SYNTHETIC: IMPERIALISM 0x0053f2a0
-// operator>>
-// SYNTHETIC: IMPERIALISM 0x0053f280
-// `dynamic initializer for '_init_TInvadeMission''
 IMPLEMENT_SERIAL(TInvadeMission, TAttackProvinceMission, 1)
-
-// SYNTHETIC: IMPERIALISM 0x0053f080
-// TInvadeMission::CreateObject
 
 // FUNCTION: IMPERIALISM 0x0053f120
 TMission* TInvadeMission::GetNavyMission() {
@@ -71,9 +64,6 @@ bool TInvadeMission::IsHospitalMission() const {
   return false;
 }
 
-// SYNTHETIC: IMPERIALISM 0x0053f260
-// TInvadeMission::GetRuntimeClass
-
 // FUNCTION: IMPERIALISM 0x0053f2d0
 TInvadeMission::TInvadeMission(TZone* beachheadZone, short targetProvince)
     : TAttackProvinceMission(targetProvince, -1), beachhead34(nullptr) {
@@ -81,8 +71,6 @@ TInvadeMission::TInvadeMission(TZone* beachheadZone, short targetProvince)
     beachhead34 = new TBeachheadMission(beachheadZone, this);
   }
 }
-// SYNTHETIC: IMPERIALISM 0x0053f3c0
-// TInvadeMission::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0053f3f0
 TInvadeMission::~TInvadeMission() {}

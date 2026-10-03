@@ -10,19 +10,12 @@
 static void AssertUGameWindowInvalidation(const char* path, int line) {
   TemporarilyClearAndRestoreUiInvalidationFlag();
 }
-// SYNTHETIC: IMPERIALISM 0x00500280
-// TDlgWindow::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00500300
-// TDlgWindow::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TDlgWindow, TWindow)
 
 // FUNCTION: IMPERIALISM 0x00500320
 TDlgWindow::TDlgWindow() : TWindow() {}
 
-// SYNTHETIC: IMPERIALISM 0x00500350
-// TDlgWindow::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00500380
 TDlgWindow::~TDlgWindow() {}
 

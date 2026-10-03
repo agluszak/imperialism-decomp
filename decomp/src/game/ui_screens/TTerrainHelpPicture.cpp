@@ -23,15 +23,8 @@
 // FUNCTION: IMPERIALISM 0x0043d770
 TTerrainHelpPicture::TTerrainHelpPicture() {}
 
-// SYNTHETIC: IMPERIALISM 0x0043d7a0
-// TTerrainHelpPicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0043d7d0
 TTerrainHelpPicture::~TTerrainHelpPicture() {}
-// SYNTHETIC: IMPERIALISM 0x00504df0
-// TTerrainHelpPicture::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00504e70
-// TTerrainHelpPicture::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTerrainHelpPicture, TPicture)
 

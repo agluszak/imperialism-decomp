@@ -8,19 +8,11 @@
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
-// SYNTHETIC: IMPERIALISM 0x005c1430
-// TCommodityLine::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005c14a0
-// TCommodityLine::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TCommodityLine, TLineData)
 
 // FUNCTION: IMPERIALISM 0x005c14c0
 TCommodityLine::TCommodityLine() : TLineData() {}
-
-// SYNTHETIC: IMPERIALISM 0x005c14f0
-// TCommodityLine::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005c1540
 void TCommodityLine::ICommodityLine(short rowArg, short colArg, int* bounds, short value) {

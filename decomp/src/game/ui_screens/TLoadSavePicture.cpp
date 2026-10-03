@@ -34,15 +34,8 @@ TLoadSavePicture::TLoadSavePicture() {
   styleAt9e.textColor = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x0043da40
-// TLoadSavePicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0043db20
 TLoadSavePicture::~TLoadSavePicture() {}
-// SYNTHETIC: IMPERIALISM 0x0056bbd0
-// TLoadSavePicture::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0056bca0
-// TLoadSavePicture::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TLoadSavePicture, TPicture)
 

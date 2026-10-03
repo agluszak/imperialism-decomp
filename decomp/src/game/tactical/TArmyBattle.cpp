@@ -30,14 +30,6 @@
 #include "game/globals/tactical_ui_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 
-// SYNTHETIC: IMPERIALISM 0x004a5c50
-// TArmyBattle::`scalar deleting destructor'
-// SYNTHETIC: IMPERIALISM 0x005a4710
-// TArmyBattle::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005a4750
-// TArmyBattle::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TArmyBattle, TTacticalBattle)
 
 // Not the constructor: neither original construction site calls this (both inline the

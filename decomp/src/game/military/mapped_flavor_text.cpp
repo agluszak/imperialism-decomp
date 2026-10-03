@@ -187,9 +187,6 @@ char* __cdecl AppendInterNationEventSummaryTextEntry_Impl(TSimMgr* sim, const ch
   return sink.Detach();
 }
 
-// TEMPLATE: IMPERIALISM 0x00580460 SYMBOL
-// ?Add@?$stretch@D@@UAEPADD@Z
-
 // Expands a bracket-token template loaded from TSimMgr::GetString into a growable char
 // buffer. Literal characters are copied through; each "[N]" (N an ASCII digit) selects the
 // N-th trailing (codeGroup, offset) argument pair, resolves it through GetString, and — when

@@ -21,12 +21,6 @@ struct PictureFallbackSizeScratch {
   void Set(int newWidth, int newHeight);
 };
 
-// SYNTHETIC: IMPERIALISM 0x0048eeb0
-// TPicture::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0048efa0
-// TPicture::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TPicture, TControl)
 
 // FUNCTION: IMPERIALISM 0x0048efc0
@@ -65,9 +59,6 @@ void TPicture::CopyPictureStateFromSource(TPicture* source) {
     g_pResourceMgr->IncrementRecordRefCountById(glyphBase84);
   }
 }
-
-// SYNTHETIC: IMPERIALISM 0x0048f050
-// TPicture::`scalar deleting destructor'
 
 // Real destructor body at 0x48f250, shared by the scalar deleting destructors of
 // TPicture-derived classes. Releases the glyph/animation slot cached in glyphBase84 and

@@ -3,16 +3,8 @@
 #include "game/city/TCity.h"
 #include "game/core/TStream.h"
 
-// SYNTHETIC: IMPERIALISM 0x004b4eb0
-// TProductionOrder::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004b4ee0
-// TProductionOrder::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TProductionOrder, TObject)
 
-// SYNTHETIC: IMPERIALISM 0x004b4f20
-// TProductionOrder::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004b4f70
 void TProductionOrder::IProductionOrder(TCity* city, short resourceType) {
   ownerCity = city;

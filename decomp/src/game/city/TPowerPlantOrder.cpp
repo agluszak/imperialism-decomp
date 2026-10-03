@@ -6,16 +6,7 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/TViewMgr.h"
 
-// SYNTHETIC: IMPERIALISM 0x004b79f0
-// TPowerPlantOrder::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004b7a20
-// TPowerPlantOrder::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TPowerPlantOrder, TProductionOrder)
-
-// SYNTHETIC: IMPERIALISM 0x004b7a60
-// TPowerPlantOrder::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004b7ab0
 void TPowerPlantOrder::IPowerPlantOrder(TCity* city) {

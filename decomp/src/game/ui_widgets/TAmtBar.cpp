@@ -22,17 +22,9 @@ short TAmtBar::ApplyMoveClamp(int baseValue, short requestedValue) {
   return baseValue;
 }
 
-// SYNTHETIC: IMPERIALISM 0x005884c0
-// TAmtBar::CreateObject
-// SYNTHETIC: IMPERIALISM 0x00588560
-// TAmtBar::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TAmtBar, TView)
 
 // Destructors are compiler-generated (implicit) from real inheritance.
-
-// SYNTHETIC: IMPERIALISM 0x005885c0
-// TAmtBar::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005885f0
 TAmtBar::~TAmtBar() {}

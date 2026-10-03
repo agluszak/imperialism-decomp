@@ -10,15 +10,8 @@
 #include "game/globals/shared_globals.h"
 #include "game/navy_order.h"
 
-// SYNTHETIC: IMPERIALISM 0x00569870
-// TSuperNavyRoster::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005698a0
 TSuperNavyRoster::~TSuperNavyRoster() {}
-// SYNTHETIC: IMPERIALISM 0x005697d0
-// TSuperNavyRoster::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005698c0
-// TSuperNavyRoster::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TSuperNavyRoster, TPageView)
 

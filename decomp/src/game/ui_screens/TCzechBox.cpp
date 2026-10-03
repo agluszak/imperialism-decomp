@@ -1,9 +1,4 @@
 #include "game/ui_screens/TCzechBox.h"
-// SYNTHETIC: IMPERIALISM 0x00571b60
-// TCzechBox::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00571c00
-// TCzechBox::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TCzechBox, TUpDownPictureButton)
 
@@ -12,8 +7,6 @@ IMPLEMENT_DYNCREATE(TCzechBox, TUpDownPictureButton)
 // FUNCTION: IMPERIALISM 0x00571c20
 TCzechBox::TCzechBox() : isOn94(0) {}
 
-// SYNTHETIC: IMPERIALISM 0x00571c60
-// TCzechBox::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00571c90
 TCzechBox::~TCzechBox() {}
 

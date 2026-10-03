@@ -18,20 +18,12 @@
 
 #include <new>
 
-// SYNTHETIC: IMPERIALISM 0x00586840
-// TProductionCluster::CreateObject
-// SYNTHETIC: IMPERIALISM 0x00586900
-// TProductionCluster::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TProductionCluster, TUberCluster)
 
 // FUNCTION: IMPERIALISM 0x00586920
 TProductionCluster::TProductionCluster()
     : TUberCluster(), field88(0), laborRate8c(0), stockpileRate8e(0), currentStockpile90(0),
       maximumStockpile94(0) {}
-
-// SYNTHETIC: IMPERIALISM 0x00586970
-// TProductionCluster::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005869a0
 TProductionCluster::~TProductionCluster() {}

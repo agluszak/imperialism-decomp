@@ -6,9 +6,6 @@
 #include "game/pointer_representation.h"
 #include <afxpriv.h>
 
-// SYNTHETIC: IMPERIALISM 0x00413c00
-// TModalDialogBase::`scalar deleting destructor'
-
 // FUNCTION: IMPERIALISM 0x00413b80
 TModalDialogBase::~TModalDialogBase() {
   if (finalizeState != 0) {

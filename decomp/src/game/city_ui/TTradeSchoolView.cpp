@@ -14,19 +14,11 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x004cd760
-// TTradeSchoolView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004cd820
-// TTradeSchoolView::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TTradeSchoolView, TIndustryView)
 
 // FUNCTION: IMPERIALISM 0x004cd840
 TTradeSchoolView::TTradeSchoolView() : TIndustryView() {}
 
-// SYNTHETIC: IMPERIALISM 0x004cd880
-// TTradeSchoolView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004cd8b0
 TTradeSchoolView::~TTradeSchoolView() {}
 

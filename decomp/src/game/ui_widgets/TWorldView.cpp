@@ -41,16 +41,11 @@ short TWorldView::QueryMinusOneWordSlot77() {
 }
 // FUNCTION: IMPERIALISM 0x00519b10
 TWorldView::~TWorldView() {}
-// SYNTHETIC: IMPERIALISM 0x00594f20
-// TWorldView::CreateObject
 
 // FUNCTION: IMPERIALISM 0x00594fc0
 void TWorldView::CenterOn(int tileIndex) {
   (void)tileIndex;
 }
-
-// SYNTHETIC: IMPERIALISM 0x00594fe0
-// TWorldView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TWorldView, TView)
 
@@ -62,9 +57,6 @@ TWorldView::TWorldView() {
   paintedTileCityRecordIndex = 0;
   stridedCellRecordIndex = -1;
 }
-
-// SYNTHETIC: IMPERIALISM 0x00595040
-// TWorldView::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00595090
 void TWorldView::DoPostCreate(int arg) {

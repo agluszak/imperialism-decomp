@@ -17,15 +17,8 @@ TGrantsView::TGrantsView() {
   diplomacyMapView60 = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x004303d0
-// TGrantsView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00430400
 TGrantsView::~TGrantsView() {}
-// SYNTHETIC: IMPERIALISM 0x004f7fd0
-// TGrantsView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004f8060
-// TGrantsView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TGrantsView, TPanelView)
 

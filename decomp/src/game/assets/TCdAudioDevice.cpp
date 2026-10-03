@@ -5,8 +5,6 @@
 #include "game/globals/assets_globals.h"
 #include "game/globals/shared_globals.h"
 
-// SYNTHETIC: IMPERIALISM 0x005e4de0
-// `dynamic initializer for 'g_cdAudioDevice''
 TCdAudioDevice g_cdAudioDevice; // 0x006a60bc
 
 // FUNCTION: IMPERIALISM 0x0047cca0

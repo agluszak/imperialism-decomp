@@ -56,16 +56,8 @@ TCivDescription::TCivDescription() : TView() {
 // target), handled markerless via config/function_ownership.csv (name_paired_no_marker)
 // like the other ILT compiler symbols — no explicit hand-marker on the ILT slot.
 
-// SYNTHETIC: IMPERIALISM 0x0044a7a0
-// TCivDescription::`scalar deleting destructor'
-
 // FUNCTION: IMPERIALISM 0x0044a7d0
 TCivDescription::~TCivDescription() {}
-
-// SYNTHETIC: IMPERIALISM 0x0058f050
-// TCivDescription::CreateObject
-// SYNTHETIC: IMPERIALISM 0x0058f0f0
-// TCivDescription::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TCivDescription, TView)
 

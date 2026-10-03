@@ -8,15 +8,8 @@
 #include "game/globals/ui_widgets_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
-// SYNTHETIC: IMPERIALISM 0x005b4650
-// TAutomatedPlayDialog::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005b4680
 TAutomatedPlayDialog::~TAutomatedPlayDialog() {}
-// SYNTHETIC: IMPERIALISM 0x005b45c0
-// TAutomatedPlayDialog::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005b46a0
-// TAutomatedPlayDialog::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TAutomatedPlayDialog, TDialogView)
 

@@ -24,14 +24,6 @@ float TTacticalUnit::GetDamageScale() {
   return g_fTacticalRetreatQualityWeightDefault_00669EC0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x005a5dc0
-// TTacticalUnit::`scalar deleting destructor'
-// SYNTHETIC: IMPERIALISM 0x005a5d10
-// TTacticalUnit::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005a5e10
-// TTacticalUnit::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TTacticalUnit, TObject)
 
 // FUNCTION: IMPERIALISM 0x005a5e30

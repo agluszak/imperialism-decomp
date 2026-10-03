@@ -12,10 +12,6 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/mfc.h"
-// SYNTHETIC: IMPERIALISM 0x0058b340
-// TCivilianButton::CreateObject
-// SYNTHETIC: IMPERIALISM 0x0058b3c0
-// TCivilianButton::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TCivilianButton, TRadioPictureButton)
 
@@ -26,8 +22,6 @@ TCivilianButton::TCivilianButton() : TRadioPictureButton() {
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 
-// SYNTHETIC: IMPERIALISM 0x0058b410
-// TCivilianButton::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0058b440
 TCivilianButton::~TCivilianButton() {}
 

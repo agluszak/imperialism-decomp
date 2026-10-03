@@ -20,15 +20,7 @@ const int kAssertLineMoveAdjustMove = 0x749;
 const int kAssertLineMoveAdjustAvailable = 0x74d;
 const int kAssertLineMoveAdjustMoveMinus = 0x759;
 
-// SYNTHETIC: IMPERIALISM 0x00586c40
-// TAmtBarCluster::CreateObject
-// SYNTHETIC: IMPERIALISM 0x00586cc0
-// TAmtBarCluster::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TAmtBarCluster, TUberCluster)
-
-// SYNTHETIC: IMPERIALISM 0x00586d10
-// TAmtBarCluster::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00586d40
 TAmtBarCluster::~TAmtBarCluster() {}

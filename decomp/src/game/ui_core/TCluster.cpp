@@ -17,12 +17,6 @@
 
 #include "decomp_types.h"
 
-// SYNTHETIC: IMPERIALISM 0x00491300
-// TCluster::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004913e0
-// TCluster::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TCluster, TControl)
 
 // FUNCTION: IMPERIALISM 0x00491400
@@ -31,8 +25,6 @@ TCluster::TCluster() {
   this->selectedChildTag = kControlTagSpSpSpSp;
 }
 
-// SYNTHETIC: IMPERIALISM 0x00491480
-// TCluster::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004914b0
 TCluster::~TCluster() {}
 

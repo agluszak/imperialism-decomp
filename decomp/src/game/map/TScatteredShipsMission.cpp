@@ -14,19 +14,7 @@
 
 // The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
 //   CArchive& AFXAPI operator>>(CArchive&, TScatteredShipsMission*&)
-// SYNTHETIC: IMPERIALISM 0x0053bb60
-// operator>>
-// SYNTHETIC: IMPERIALISM 0x0053bb40
-// `dynamic initializer for '_init_TScatteredShipsMission''
 IMPLEMENT_SERIAL(TScatteredShipsMission, TNavyMission, 1)
-
-// SYNTHETIC: IMPERIALISM 0x0053ba60
-// TScatteredShipsMission::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0053bb20
-// TScatteredShipsMission::GetRuntimeClass
-// SYNTHETIC: IMPERIALISM 0x005356a0
-// TScatteredShipsMission::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00535640
 bool TScatteredShipsMission::IsHospitalMission() const {

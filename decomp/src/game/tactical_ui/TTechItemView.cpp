@@ -19,15 +19,8 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x005b1200
-// TTechItemView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005b1230
 TTechItemView::~TTechItemView() {}
-// SYNTHETIC: IMPERIALISM 0x005b1250
-// TTechItemView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005b12c0
-// TTechItemView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTechItemView, TView)
 

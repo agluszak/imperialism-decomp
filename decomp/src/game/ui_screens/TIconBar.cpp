@@ -5,19 +5,12 @@
 #include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
-// SYNTHETIC: IMPERIALISM 0x00505f50
-// TIconBar::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00505fd0
-// TIconBar::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TIconBar, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x00505ff0
 TIconBar::TIconBar() : TNoHilitePicture() {}
 
-// SYNTHETIC: IMPERIALISM 0x00506020
-// TIconBar::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00506050
 TIconBar::~TIconBar() {}
 

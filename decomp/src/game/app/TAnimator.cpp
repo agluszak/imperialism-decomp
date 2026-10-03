@@ -15,11 +15,6 @@
 #include "RuntimeObservation.h"
 #include "RuntimeTestDriver.h"
 #endif
-// SYNTHETIC: IMPERIALISM 0x004a09f0
-// TAnimator::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004a0a80
-// TAnimator::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TAnimator, TEventHandler)
 
@@ -29,9 +24,6 @@ IMPLEMENT_DYNCREATE(TAnimator, TEventHandler)
 // FUNCTION: IMPERIALISM 0x004a0aa0
 TAnimator::TAnimator()
     : TEventHandler(), renderSurfaceContext(0), registryList24(0), mapUberPicture2c(0) {}
-
-// SYNTHETIC: IMPERIALISM 0x004a0ad0
-// TAnimator::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004a0b20
 void TAnimator::IAnimator(int idleFrequency) {

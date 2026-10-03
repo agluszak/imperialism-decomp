@@ -3,10 +3,10 @@
 
 Everything the pipeline knows about the source model is built here, once:
 
-  - **marker claims** — every `// FUNCTION/STUB/TEMPLATE/SYNTHETIC/LIBRARY:`
+  - **marker claims** — every `// FUNCTION/STUB/LIBRARY:`
     marker in `src/` + `include/`, with the qualified name and prototype parsed
     from the C++ declaration that follows (FUNCTION) or the convention comment
-    line under the marker (SYNTHETIC/TEMPLATE/LIBRARY). Free-function names are
+    line under the marker (LIBRARY). Free-function names are
     first-class — a parsed name does not need `::`.
   - **vtables** — every `// VTABLE:` annotation with its owning class (parsed
     from the following `class`/`struct` declaration).
@@ -14,7 +14,7 @@ Everything the pipeline knows about the source model is built here, once:
   - **generated UI factory claims** — `config/ui_factory_codegen.yml` owns the
     declarations emitted into the build tree (origin "generated").
 
-CRT/MFC library identities are ordinary `// LIBRARY:` / `// SYNTHETIC:` markers
+CRT/MFC library identities are ordinary `// LIBRARY:` markers
 (primarily in `src/game/core/library_identities.cpp` and `CString.cpp`).
 
 Downstream consumers (generate_symbols, stubgen, apply_source, and gates)
@@ -36,12 +36,13 @@ from pathlib import Path
 from tools.common.file_scan import is_generated_source_path, iter_files
 from tools.common.markers import function_marker_regex
 from tools.common.repo import repo_root_from_file, resolve_repo_path
+from tools.emissions import CATALOG
 from tools.ui_cpp_codegen import generated_claim_rows
 
 DEFAULT_GEN_DIR = "build-msvc500/generated"
 MODEL_NAME = "source_model.json"
 
-_KINDS = ("FUNCTION", "STUB", "TEMPLATE", "SYNTHETIC", "LIBRARY")
+_KINDS = ("FUNCTION", "STUB", "LIBRARY")
 _VTABLE_RE = re.compile(
     r"//\s*VTABLE\s*:\s*(\w+)\s+(?:0x)?([0-9a-fA-F]+)", re.IGNORECASE
 )
@@ -63,7 +64,7 @@ _NOT_NAMES = frozenset(
 @dataclass(frozen=True)
 class Claim:
     address: int
-    kind: str  # FUNCTION/STUB/TEMPLATE/SYNTHETIC/LIBRARY
+    kind: str  # FUNCTION/STUB/LIBRARY
     file: str  # repo-relative posix path ("" for reviewed rows)
     line: int  # 1-based marker line (0 for reviewed rows)
     name: str = ""  # source-derived qualified/free name ("" if unparsable)
@@ -151,6 +152,8 @@ def build_model(repo_root: Path, target: str = "IMPERIALISM") -> SourceModel:
         rel = path.resolve().relative_to(repo_root.resolve()).as_posix()
         lines = text.splitlines()
         for i, line in enumerate(lines):
+            if re.search(r"//\s*(?:SYNTHETIC|TEMPLATE)\s*:", line, re.IGNORECASE):
+                raise ValueError(f"Compiler emission belongs in {CATALOG}, not {rel}:{i + 1}")
             m = rx.search(line)
             if m:
                 kind = next((k for k in _KINDS if k in line.upper()), "FUNCTION")

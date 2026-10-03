@@ -34,14 +34,6 @@ unsigned char TTacticalPlayer::AlwaysTrueTacticalPredicate10(TTacticalUnit* unit
 
 // FUNCTION: IMPERIALISM 0x0059ae10
 void TTacticalPlayer::ProceedAfterBattleIntroAccepted() {}
-// SYNTHETIC: IMPERIALISM 0x0059ad40
-// TTacticalPlayer::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0059ae30
-// TTacticalPlayer::`scalar deleting destructor'
-
-// SYNTHETIC: IMPERIALISM 0x0059ae80
-// TTacticalPlayer::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTacticalPlayer, TObject)
 

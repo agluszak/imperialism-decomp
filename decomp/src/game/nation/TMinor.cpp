@@ -26,18 +26,10 @@
 
 #include <new>
 
-// SYNTHETIC: IMPERIALISM 0x004e3660
-// TMinor::CreateObject
-// SYNTHETIC: IMPERIALISM 0x004e36f0
-// TMinor::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TMinor, TCountry)
 
 // FUNCTION: IMPERIALISM 0x004e3710
 TMinor::TMinor() {}
-
-// SYNTHETIC: IMPERIALISM 0x004e3790
-// TMinor::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004e3830
 void TMinor::IMinor(NationSlot nationSlot) {

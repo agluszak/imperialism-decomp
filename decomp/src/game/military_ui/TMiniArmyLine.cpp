@@ -12,14 +12,6 @@
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x004aa840
-// TMiniArmyLine::`scalar deleting destructor'
-// SYNTHETIC: IMPERIALISM 0x004aa890
-// TMiniArmyLine::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004aa900
-// TMiniArmyLine::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TMiniArmyLine, TLineData)
 
 // FUNCTION: IMPERIALISM 0x004aa920

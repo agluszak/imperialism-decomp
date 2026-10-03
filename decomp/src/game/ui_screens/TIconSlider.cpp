@@ -2,11 +2,6 @@
 
 #include "game/ui_core/bitmap_descriptor_helpers.h"
 #include "game/gfx/quickdraw_regions.h"
-// SYNTHETIC: IMPERIALISM 0x005062d0
-// TIconSlider::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005063a0
-// TIconSlider::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TIconSlider, TIconBar)
 
@@ -19,8 +14,6 @@ TIconSlider::TIconSlider()
   knobBaseRect.bottom = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x00506430
-// TIconSlider::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00506460
 TIconSlider::~TIconSlider() {}
 

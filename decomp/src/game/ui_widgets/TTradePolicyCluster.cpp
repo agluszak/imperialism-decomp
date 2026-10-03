@@ -5,19 +5,12 @@
 #include "game/ui_core/TCluster.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/globals/ui_widgets_globals.h"
-// SYNTHETIC: IMPERIALISM 0x00584200
-// TTradePolicyCluster::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00584280
-// TTradePolicyCluster::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTradePolicyCluster, TUberCluster)
 
 // FUNCTION: IMPERIALISM 0x005842a0
 TTradePolicyCluster::TTradePolicyCluster() {}
 
-// SYNTHETIC: IMPERIALISM 0x005842d0
-// TTradePolicyCluster::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00584300
 TTradePolicyCluster::~TTradePolicyCluster() {}
 

@@ -7,12 +7,6 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_core/bitmap_descriptor_helpers.h"
 
-// SYNTHETIC: IMPERIALISM 0x00572080
-// TGWorldButton::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00572110
-// TGWorldButton::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TGWorldButton, TControl)
 
 // FUNCTION: IMPERIALISM 0x00572130
@@ -20,8 +14,6 @@ TGWorldButton::TGWorldButton() {
   field84 = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x00572160
-// TGWorldButton::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00572190
 TGWorldButton::~TGWorldButton() {}
 

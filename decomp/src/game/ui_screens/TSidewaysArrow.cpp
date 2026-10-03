@@ -5,12 +5,6 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_core/quickdraw_rendering.h"
 
-// SYNTHETIC: IMPERIALISM 0x00583a90
-// TSidewaysArrow::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00583b30
-// TSidewaysArrow::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TSidewaysArrow, TUpDownPictureButton)
 
 // FUNCTION: IMPERIALISM 0x00583b50
@@ -52,6 +46,3 @@ void TSidewaysArrow::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pr
 
   this->HandleEvent(101, this, nullptr);
 }
-
-// SYNTHETIC: IMPERIALISM 0x00583b80
-// TSidewaysArrow::`scalar deleting destructor'

@@ -17,8 +17,6 @@ public:
                             short secondaryInputResource,
                             short productionSlot); // slot 0x12 0x4b5870
 
-  // SYNTHETIC: IMPERIALISM 0x004b5800
-  // TOrItemOrder::TOrItemOrder
   TOrItemOrder() {}
 };
 ASSERT_SIZE(TOrItemOrder, 0x54);

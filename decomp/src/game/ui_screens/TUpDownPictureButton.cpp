@@ -4,19 +4,12 @@
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_widgets/TSoundPlayer.h"
-// SYNTHETIC: IMPERIALISM 0x00571500
-// TUpDownPictureButton::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00571580
-// TUpDownPictureButton::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TUpDownPictureButton, TPicture)
 
 // TUpDownPictureButton's ctor is defined inline in the header (marker there): the
 // original inlines it into every derived ctor.
 
-// SYNTHETIC: IMPERIALISM 0x005715d0
-// TUpDownPictureButton::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00571600
 TUpDownPictureButton::~TUpDownPictureButton() {}
 

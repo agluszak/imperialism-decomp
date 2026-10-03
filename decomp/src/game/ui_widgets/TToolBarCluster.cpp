@@ -39,19 +39,11 @@
 // this class's own methods.
 void DispatchUiRuntimeMessage102CAndRefreshActiveView();
 
-// SYNTHETIC: IMPERIALISM 0x00584d80
-// TToolBarCluster::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00584e00
-// TToolBarCluster::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TToolBarCluster, TCluster)
 
 // FUNCTION: IMPERIALISM 0x00584e20
 TToolBarCluster::TToolBarCluster() {}
 
-// SYNTHETIC: IMPERIALISM 0x00584e50
-// TToolBarCluster::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00584e80
 TToolBarCluster::~TToolBarCluster() {}
 

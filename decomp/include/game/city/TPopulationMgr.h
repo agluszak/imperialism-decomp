@@ -71,8 +71,6 @@ public:
   // serialize all 23 shorts as a single persistent block.
   short predictedNeedByResource22[kResourceKindCount];
 
-  // SYNTHETIC: IMPERIALISM 0x004b5b90
-  // TPopulationMgr::TPopulationMgr
   TPopulationMgr() {}
 };
 ASSERT_SIZE(TPopulationMgr, 0x50);

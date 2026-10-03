@@ -2,14 +2,6 @@
 
 #include "game/tactical_ui/TTechItemView.h"
 
-// SYNTHETIC: IMPERIALISM 0x005b1040
-// TTechItemLine::`scalar deleting destructor'
-// SYNTHETIC: IMPERIALISM 0x005b1090
-// TTechItemLine::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005b1100
-// TTechItemLine::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TTechItemLine, TLineData)
 
 // FUNCTION: IMPERIALISM 0x005b1120

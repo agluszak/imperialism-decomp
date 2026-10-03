@@ -38,11 +38,6 @@
 
 static const char kUCityCppPath[] = "D:\\Ambit\\Cross\\UCity.cpp";
 static const unsigned int kAddrClassDescTCity = 0x0064f338;
-// SYNTHETIC: IMPERIALISM 0x004b2410
-// TCity::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004b2490
-// TCity::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TCity, TObject)
 
@@ -60,9 +55,6 @@ TCity::TCity() {
   foodSubstitutionCount06 = 0;
   starvationPopulationLoss08 = 0;
 }
-
-// SYNTHETIC: IMPERIALISM 0x004b2520
-// TCity::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004b2550
 TCity::~TCity() {}

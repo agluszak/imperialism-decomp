@@ -21,8 +21,6 @@ public:
   virtual void LaunchShip();                                            // slot 0x13 0x4b89a0
 
   // Construction stores only the derived vptr; it does not clear tracking slots.
-  // SYNTHETIC: IMPERIALISM 0x004b84c0
-  // TShipOrder::TShipOrder
   TShipOrder() : TProductionOrder() {}
 
   // TShipOrder adds no fields of its own: `config/rtti_class_oracle.csv` gives

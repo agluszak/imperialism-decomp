@@ -10,15 +10,8 @@
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
-// SYNTHETIC: IMPERIALISM 0x0056b800
-// TGameInfoPicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0056b830
 TGameInfoPicture::~TGameInfoPicture() {}
-// SYNTHETIC: IMPERIALISM 0x0056b780
-// TGameInfoPicture::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0056b850
-// TGameInfoPicture::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TGameInfoPicture, TPicture)
 

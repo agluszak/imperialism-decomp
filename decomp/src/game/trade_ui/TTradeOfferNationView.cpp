@@ -12,15 +12,8 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x005bd1a0
-// TTradeOfferNationView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005bd1d0
 TTradeOfferNationView::~TTradeOfferNationView() {}
-// SYNTHETIC: IMPERIALISM 0x005bd1f0
-// TTradeOfferNationView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005bd260
-// TTradeOfferNationView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTradeOfferNationView, TView)
 

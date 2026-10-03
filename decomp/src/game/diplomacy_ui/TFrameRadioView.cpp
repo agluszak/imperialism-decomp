@@ -3,15 +3,8 @@
 #include "game/gfx/quickdraw_regions.h"
 #include "game/ui_core/quickdraw_rendering.h"
 
-// SYNTHETIC: IMPERIALISM 0x004fdf50
-// TFrameRadioView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004fdf80
 TFrameRadioView::~TFrameRadioView() {}
-// SYNTHETIC: IMPERIALISM 0x004fded0
-// TFrameRadioView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004fdfa0
-// TFrameRadioView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TFrameRadioView, TControl)
 

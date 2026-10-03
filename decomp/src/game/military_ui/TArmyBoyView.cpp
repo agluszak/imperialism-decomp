@@ -9,15 +9,8 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x004aeb50
-// TArmyBoyView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004aeb80
 TArmyBoyView::~TArmyBoyView() {}
-// SYNTHETIC: IMPERIALISM 0x004aeae0
-// TArmyBoyView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004aeba0
-// TArmyBoyView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TArmyBoyView, TView)
 

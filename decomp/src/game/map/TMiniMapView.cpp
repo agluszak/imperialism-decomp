@@ -11,12 +11,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
 
-// SYNTHETIC: IMPERIALISM 0x0059a290
-// TMiniMapView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0059a360
-// TMiniMapView::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TMiniMapView, TControl)
 
 // FUNCTION: IMPERIALISM 0x0059a380
@@ -25,8 +19,6 @@ TMiniMapView::TMiniMapView()
       markerBoxX90(0), markerBoxY94(0), markerBoxWidth98(g_defaultMarkerBoxWidth_006a460c),
       markerBoxHeight9c(8) {}
 
-// SYNTHETIC: IMPERIALISM 0x0059a3f0
-// TMiniMapView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0059a420
 TMiniMapView::~TMiniMapView() {}
 

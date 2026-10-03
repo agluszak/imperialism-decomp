@@ -1,11 +1,6 @@
 #include "game/ui_screens/TOnOffRadioButton.h"
 
 #include "game/ui_core/TControl.h"
-// SYNTHETIC: IMPERIALISM 0x00571930
-// TOnOffRadioButton::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005719d0
-// TOnOffRadioButton::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TOnOffRadioButton, TPictureButton)
 
@@ -18,8 +13,6 @@ TOnOffRadioButton::TOnOffRadioButton() : TPictureButton() {
   state94 = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x00571a30
-// TOnOffRadioButton::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00571a60
 TOnOffRadioButton::~TOnOffRadioButton() {}
 

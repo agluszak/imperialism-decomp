@@ -17,14 +17,6 @@
 #include "game/mfc.h"
 #include "game/ui_core/quickdraw_rendering.h"
 
-// SYNTHETIC: IMPERIALISM 0x0049ff20
-// TCouncilTickerAnimation::`scalar deleting destructor'
-// SYNTHETIC: IMPERIALISM 0x0049fef0
-// TCouncilTickerAnimation::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0049ff70
-// TCouncilTickerAnimation::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TCouncilTickerAnimation, TAnimation)
 
 // FUNCTION: IMPERIALISM 0x0049ff90

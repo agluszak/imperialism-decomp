@@ -5,19 +5,12 @@
 #include "game/turn_event_codes.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
-// SYNTHETIC: IMPERIALISM 0x00584a50
-// TCloseButton::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00584ad0
-// TCloseButton::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TCloseButton, TPictureButton)
 
 // FUNCTION: IMPERIALISM 0x00584af0
 TCloseButton::TCloseButton() {}
 
-// SYNTHETIC: IMPERIALISM 0x00584b20
-// TCloseButton::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00584b50
 TCloseButton::~TCloseButton() {}
 

@@ -18,15 +18,8 @@ void TTacNavyToolbar::UpdateTacticalOtherSideUnitControl(TArmyTacUnit* unit) {
   (void)unit;
 }
 
-// SYNTHETIC: IMPERIALISM 0x005ad110
-// TTacNavyToolbar::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005ad140
 TTacNavyToolbar::~TTacNavyToolbar() {}
-// SYNTHETIC: IMPERIALISM 0x005ad030
-// TTacNavyToolbar::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005ad160
-// TTacNavyToolbar::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTacNavyToolbar, TTacticalToolbar)
 

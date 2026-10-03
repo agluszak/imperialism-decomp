@@ -134,19 +134,9 @@ void __cdecl PopUiResourcePoolNode(unsigned int nameTag) {
 
 // The early builders also call the const GetTail specialization to recover the current
 // TView* from the stack's tail node.
-// TEMPLATE: IMPERIALISM 0x00426f60 SYMBOL
-// ?GetTail@?$CList@PAVTView@@PAV1@@@QBEPAVTView@@XZ
-
-// TEMPLATE: IMPERIALISM 0x00479a80 SYMBOL
-// ?RemoveTail@?$CList@PAVTView@@PAV1@@@QAEPAVTView@@XZ
 
 // The builder TU emits two identical AddTail COMDATs. 0x426ec0 is reached by the
 // early giant dialog builders; 0x479b00 is the later copy used by the shared stack helpers.
-// TEMPLATE: IMPERIALISM 0x00479b00 SYMBOL
-// ?AddTail@?$CList@PAVTView@@PAV1@@@QAEPAU__POSITION@@PAVTView@@@Z
-
-// TEMPLATE: IMPERIALISM 0x00479bc0
-// CList<TView*, TView*>::GetAt(POSITION)
 
 // FUNCTION: IMPERIALISM 0x00426f80
 void __cdecl UiResourceBuildCallback() {}

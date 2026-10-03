@@ -15,15 +15,8 @@
 // FUNCTION: IMPERIALISM 0x004305c0
 void TNominationView::Hilite() {}
 
-// SYNTHETIC: IMPERIALISM 0x004305e0
-// TNominationView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00430610
 TNominationView::~TNominationView() {}
-// SYNTHETIC: IMPERIALISM 0x004fb6e0
-// TNominationView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004fb760
-// TNominationView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TNominationView, TPicture)
 

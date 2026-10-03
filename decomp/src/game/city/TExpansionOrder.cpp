@@ -7,16 +7,7 @@
 #include "game/nation/TGreatPower.h"
 #include "game/ui_core/TViewMgr.h"
 
-// SYNTHETIC: IMPERIALISM 0x004b8f50
-// TExpansionOrder::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004b8f80
-// TExpansionOrder::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TExpansionOrder, TItemOrder)
-
-// SYNTHETIC: IMPERIALISM 0x004b8fc0
-// TExpansionOrder::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004b9010
 void TExpansionOrder::IExpansionOrder(TCity* city, short resourceType, short primaryInputResource,

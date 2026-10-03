@@ -3,11 +3,6 @@
 
 #include <stdlib.h>
 
-// SYNTHETIC: IMPERIALISM 0x004ee4b0
-// TSortedByRelationshipList::CreateObject
-// SYNTHETIC: IMPERIALISM 0x004ee520
-// TSortedByRelationshipList::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TSortedByRelationshipList, TSortedPtrList)
 
 // FUNCTION: IMPERIALISM 0x004ee540
@@ -19,8 +14,6 @@ void TSortedByRelationshipList::ISortedByRelationshipList() {
 }
 
 // Destructors are compiler-generated (implicit) from real inheritance.
-// SYNTHETIC: IMPERIALISM 0x004ee570
-// TSortedByRelationshipList::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004ee5e0
 short TSortedByRelationshipList::Compare(void* a, void* b) {

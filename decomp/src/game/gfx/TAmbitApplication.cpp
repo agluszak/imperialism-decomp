@@ -19,8 +19,6 @@
 
 #include <mmsystem.h>
 
-// SYNTHETIC: IMPERIALISM 0x004135f0
-// TAmbitApplication::`scalar deleting destructor'
 //
 // No own destructor: the original's slot is an ILT thunk to ~TApplication (0x004867e0), i.e.
 // the base's. The implicit destructor the compiler gives this class is what the scalar
@@ -43,11 +41,6 @@ unsigned int GetTickCountDiv16() {
 void SetCachedShowSplashFlag(BOOL showSplash) {
   g_cachedShowSplashFlag = showSplash;
 }
-// SYNTHETIC: IMPERIALISM 0x0049de40
-// TAmbitApplication::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0049deb0
-// TAmbitApplication::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TAmbitApplication, TApplication)
 

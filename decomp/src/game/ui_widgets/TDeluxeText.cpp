@@ -11,15 +11,8 @@
 TDeluxeText::TDeluxeText()
     : TTEView(), textColor98(0), shadowTextColor9C(0), dropShadowEnabledA0(false) {}
 
-// SYNTHETIC: IMPERIALISM 0x004309e0
-// TDeluxeText::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00430a10
 TDeluxeText::~TDeluxeText() {}
-// SYNTHETIC: IMPERIALISM 0x005b5ee0
-// TDeluxeText::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005b5fd0
-// TDeluxeText::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TDeluxeText, TTEView)
 

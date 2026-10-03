@@ -2,15 +2,8 @@
 
 #include "game/ui_core/TCluster.h"
 
-// SYNTHETIC: IMPERIALISM 0x005b2900
-// TMapEditCluster::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005b2930
 TMapEditCluster::~TMapEditCluster() {}
-// SYNTHETIC: IMPERIALISM 0x005b2880
-// TMapEditCluster::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005b2950
-// TMapEditCluster::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TMapEditCluster, TCluster)
 

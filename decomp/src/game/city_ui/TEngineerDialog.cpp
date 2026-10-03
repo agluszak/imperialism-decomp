@@ -23,12 +23,6 @@
 #include "game/ui_tags_common.h"
 #include "game/mfc.h"
 
-// SYNTHETIC: IMPERIALISM 0x004d04b0
-// TEngineerDialog::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004d0540
-// TEngineerDialog::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TEngineerDialog, TView)
 
 // FUNCTION: IMPERIALISM 0x004d0560
@@ -37,9 +31,6 @@ TEngineerDialog::TEngineerDialog() {
   this->footerSurface64 = 0;
   this->bodyTileSurface68 = 0;
 }
-
-// SYNTHETIC: IMPERIALISM 0x004d0590
-// TEngineerDialog::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004d05c0
 TEngineerDialog::~TEngineerDialog() {}

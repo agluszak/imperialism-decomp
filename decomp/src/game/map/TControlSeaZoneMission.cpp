@@ -28,19 +28,7 @@
 
 // The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
 //   CArchive& AFXAPI operator>>(CArchive&, TControlSeaZoneMission*&)
-// SYNTHETIC: IMPERIALISM 0x005387c0
-// operator>>
-// SYNTHETIC: IMPERIALISM 0x005387a0
-// `dynamic initializer for '_init_TControlSeaZoneMission''
 IMPLEMENT_SERIAL(TControlSeaZoneMission, TNavyMission, 1)
-
-// SYNTHETIC: IMPERIALISM 0x005386c0
-// TControlSeaZoneMission::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00538780
-// TControlSeaZoneMission::GetRuntimeClass
-// SYNTHETIC: IMPERIALISM 0x005355f0
-// TControlSeaZoneMission::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005355b0
 bool TControlSeaZoneMission::IsHospitalMission() const {

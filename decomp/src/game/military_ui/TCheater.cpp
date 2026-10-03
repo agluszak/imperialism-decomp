@@ -6,19 +6,12 @@
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
-// SYNTHETIC: IMPERIALISM 0x004b13a0
-// TCheater::CreateObject
 
 // FUNCTION: IMPERIALISM 0x004b1410
 void TCheater::ApplyCheats() {}
 
-// SYNTHETIC: IMPERIALISM 0x004b1430
-// TCheater::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004b1460
 TCheater::~TCheater() {}
-
-// SYNTHETIC: IMPERIALISM 0x004b1480
-// TCheater::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TCheater, TView)
 // FUNCTION: IMPERIALISM 0x004b14a0

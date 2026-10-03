@@ -7,12 +7,6 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x00507700
-// TNumberedItem::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005077a0
-// TNumberedItem::GetRuntimeClass
-
 // Binary descriptor base is TView (0x6495a0), not TMegaPicture — original macro arg.
 IMPLEMENT_DYNCREATE(TNumberedItem, TView)
 
@@ -22,8 +16,6 @@ TNumberedItem::TNumberedItem() : TMegaPicture() {
   badgeCountAe = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x00507800
-// TNumberedItem::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00507830
 TNumberedItem::~TNumberedItem() {}
 

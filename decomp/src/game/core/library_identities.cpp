@@ -49,9 +49,6 @@
 // name: CWaitCursor::~CWaitCursor
 // prototype: public: __thiscall CWaitCursor::~CWaitCursor(void)
 
-// SYNTHETIC: IMPERIALISM 0x00415f00
-// CObject::`scalar deleting destructor'
-
 // LIBRARY: IMPERIALISM 0x00415f30 SYMBOL
 // ??1CObject@@UAE@XZ
 // name: CObject::~CObject
@@ -65,74 +62,13 @@
 // name: CRect::CRect
 // prototype: public: __thiscall CRect::CRect(int,int,int,int)
 
-// SYNTHETIC: IMPERIALISM 0x0041b6b0
-// ownership-only
-
-// SYNTHETIC: IMPERIALISM 0x00427310
-// ownership-only
-
-// SYNTHETIC: IMPERIALISM 0x00429580
-// ownership-only
-
-// SYNTHETIC: IMPERIALISM 0x00430c30
-// ownership-only
-
-// SYNTHETIC: IMPERIALISM 0x00435790
-// ownership-only
-
-// SYNTHETIC: IMPERIALISM 0x0043dba0
-// ownership-only
-
-// SYNTHETIC: IMPERIALISM 0x0044a7f0
-// ownership-only
-
-// SYNTHETIC: IMPERIALISM 0x0044af70
-// ownership-only
-
-// SYNTHETIC: IMPERIALISM 0x0044fba0
-// ownership-only
-
-// SYNTHETIC: IMPERIALISM 0x00453880
-// ownership-only
-
-// SYNTHETIC: IMPERIALISM 0x0045b0e0
-// ownership-only
-
-// SYNTHETIC: IMPERIALISM 0x0045d500
-// ownership-only
-
-// SYNTHETIC: IMPERIALISM 0x0045e090
-// ownership-only
-
-// SYNTHETIC: IMPERIALISM 0x00460190
-// ownership-only
-
-// SYNTHETIC: IMPERIALISM 0x0046fcf0
-// ownership-only
-
-// SYNTHETIC: IMPERIALISM 0x00474980
-// ownership-only
-
-// SYNTHETIC: IMPERIALISM 0x004793a0
-// ownership-only
-
 // LIBRARY: IMPERIALISM 0x00479ba0 SYMBOL
 // ?GetFirstDocTemplatePosition@CDocManager@@UBEPAU__POSITION@@XZ
 // name: CDocManager::GetFirstDocTemplatePosition
 // prototype: public: virtual struct __POSITION * __thiscall CDocManager::GetFirstDocTemplatePosition(void) const
 
-// SYNTHETIC: IMPERIALISM 0x0047ca90 SYMBOL
-// ??_GCPalette@@UAEPAXI@Z
-// name: CPalette::`scalar deleting destructor'
-// prototype: public: virtual void * __thiscall CPalette::`scalar deleting destructor'(unsigned int)
-
 // LIBRARY: IMPERIALISM 0x0047cac0
 // ownership-only
-
-// SYNTHETIC: IMPERIALISM 0x0047cb30 SYMBOL
-// ??_GCGdiObject@@UAEPAXI@Z
-// name: CGdiObject::`scalar deleting destructor'
-// prototype: public: virtual void * __thiscall CGdiObject::`scalar deleting destructor'(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x0047cb60
 // ownership-only
@@ -143,28 +79,8 @@
 // LIBRARY: IMPERIALISM 0x0047d9d0
 // ownership-only
 
-// SYNTHETIC: IMPERIALISM 0x0047da40 SYMBOL
-// ??_GCRgn@@UAEPAXI@Z
-// name: CRgn::`scalar deleting destructor'
-// prototype: public: virtual void * __thiscall CRgn::`scalar deleting destructor'(unsigned int)
-
 // LIBRARY: IMPERIALISM 0x0047da70
 // ownership-only
-
-// SYNTHETIC: IMPERIALISM 0x0047e200 SYMBOL
-// ??_GCButton@@UAEPAXI@Z
-// name: CButton::`scalar deleting destructor'
-// prototype: public: virtual void * __thiscall CButton::`scalar deleting destructor'(unsigned int)
-
-// SYNTHETIC: IMPERIALISM 0x0047e230 SYMBOL
-// ??_GCListBox@@UAEPAXI@Z
-// name: CListBox::`scalar deleting destructor'
-// prototype: public: virtual void * __thiscall CListBox::`scalar deleting destructor'(unsigned int)
-
-// SYNTHETIC: IMPERIALISM 0x0047e260 SYMBOL
-// ??_GCSliderCtrl@@UAEPAXI@Z
-// name: CSliderCtrl::`scalar deleting destructor'
-// prototype: public: virtual void * __thiscall CSliderCtrl::`scalar deleting destructor'(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x0047e550 SYMBOL
 // ?GetEntryCount@CPalette@@QAEHXZ
@@ -259,10 +175,6 @@
 // ?CreatePen@CPen@@QAEHHHK@Z
 // name: CPen::CreatePen
 // prototype: public: int __thiscall CPen::CreatePen(int,int,unsigned long)
-
-// SYNTHETIC: IMPERIALISM 0x004986a0
-// TScopedQuickDrawPen::`scalar deleting destructor'
-// prototype: public: virtual void * __thiscall TScopedQuickDrawPen::`scalar deleting destructor'(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x0049eb00
 // ownership-only
@@ -854,9 +766,6 @@
 // name: CObject::~CObject
 // prototype: public: virtual __thiscall CObject::~CObject(void)
 
-// SYNTHETIC: IMPERIALISM 0x005e6ea2
-// ownership-only
-
 // LIBRARY: IMPERIALISM 0x005e6ebe SYMBOL
 // ?GetCurrentDirectoryA@CFtpConnection@@QBEHPADPAK@Z
 // name: CFtpConnection::GetCurrentDirectoryA
@@ -1155,9 +1064,6 @@
 // ??_L@YGXPAXIHP6EX0@Z1@Z
 // name: `eh vector ctor iterator'
 // prototype: void __stdcall `eh vector ctor iterator'(void *, unsigned int, int, void (__thiscall *)(void *), void (__thiscall *)(void *))
-
-// SYNTHETIC: IMPERIALISM 0x005e8cc8
-// SehCleanup_CallCallbackRepeatedly
 
 // LIBRARY: IMPERIALISM 0x005e8cf0 SYMBOL
 // _localtime
@@ -1510,10 +1416,6 @@
 
 // LIBRARY: IMPERIALISM 0x005ed9e0 SYMBOL
 // ?_inconsistency@@YAXXZ
-
-// SYNTHETIC: IMPERIALISM 0x005eda4e
-// TerminateAfterInconsistencyEhCleanup
-// prototype: void __cdecl TerminateAfterInconsistencyEhCleanup(void)
 
 // LIBRARY: IMPERIALISM 0x005eda70 SYMBOL
 // __mtinitlocks
@@ -2133,18 +2035,6 @@
 // InitializeMfcTermAppStateGlobal
 // prototype: void __cdecl InitializeMfcTermAppStateGlobal(void)
 
-// SYNTHETIC: IMPERIALISM 0x005fa81f
-// ConstructMfcTermAppStateGlobal
-// prototype: void __cdecl ConstructMfcTermAppStateGlobal(void)
-
-// SYNTHETIC: IMPERIALISM 0x005fa829
-// RegisterMfcGlobalCleanup_005fa835
-// prototype: void __cdecl RegisterMfcGlobalCleanup_005fa835(void)
-
-// SYNTHETIC: IMPERIALISM 0x005fa835
-// DestroyMfcTermAppStateGlobalAtExit
-// prototype: void __cdecl DestroyMfcTermAppStateGlobalAtExit(void)
-
 // LIBRARY: IMPERIALISM 0x005fa845 SYMBOL
 // ??0CToolTipCtrl@@QAE@XZ
 // name: CToolTipCtrl::CToolTipCtrl
@@ -2559,9 +2449,6 @@
 // ??0CPtrList@@QAE@H@Z
 // name: CPtrList::CPtrList
 // prototype: public: __thiscall CPtrList::CPtrList(int)
-
-// SYNTHETIC: IMPERIALISM 0x00601f40
-// ownership-only
 
 // LIBRARY: IMPERIALISM 0x00601f5c SYMBOL
 // ?RemoveAll@CPtrList@@QAEXXZ
@@ -3379,10 +3266,6 @@
 // LIBRARY: IMPERIALISM 0x006076d8
 // ownership-only
 
-// SYNTHETIC: IMPERIALISM 0x006076e5
-// RegisterMfcGlobalCleanup_006076f1
-// prototype: void __cdecl RegisterMfcGlobalCleanup_006076f1(void)
-
 // LIBRARY: IMPERIALISM 0x00607706
 // CWnd::CWnd
 
@@ -3392,10 +3275,6 @@
 
 // LIBRARY: IMPERIALISM 0x00607716
 // ownership-only
-
-// SYNTHETIC: IMPERIALISM 0x00607723
-// RegisterMfcGlobalCleanup_0060772f
-// prototype: void __cdecl RegisterMfcGlobalCleanup_0060772f(void)
 
 // LIBRARY: IMPERIALISM 0x00607744
 // CWnd::CWnd_00607744
@@ -3407,10 +3286,6 @@
 // LIBRARY: IMPERIALISM 0x00607754
 // ownership-only
 
-// SYNTHETIC: IMPERIALISM 0x00607761
-// RegisterMfcGlobalCleanup_0060776d
-// prototype: void __cdecl RegisterMfcGlobalCleanup_0060776d(void)
-
 // LIBRARY: IMPERIALISM 0x00607782
 // CWnd::CWnd_00607782
 
@@ -3420,10 +3295,6 @@
 
 // LIBRARY: IMPERIALISM 0x00607792
 // ownership-only
-
-// SYNTHETIC: IMPERIALISM 0x0060779f
-// RegisterMfcGlobalCleanup_006077ab
-// prototype: void __cdecl RegisterMfcGlobalCleanup_006077ab(void)
 
 // LIBRARY: IMPERIALISM 0x006077c0
 // CWnd::CWnd_006077C0
@@ -4508,9 +4379,6 @@
 // ??0CDocument@@QAE@XZ
 // name: CDocument::CDocument
 // prototype: public: __thiscall CDocument::CDocument(void)
-
-// SYNTHETIC: IMPERIALISM 0x006109cf
-// ownership-only
 
 // LIBRARY: IMPERIALISM 0x006109eb SYMBOL
 // ??1CDocument@@UAE@XZ
@@ -6475,18 +6343,6 @@
 // InitializeMfcDcHandleMapThreadLocal
 // prototype: void __cdecl InitializeMfcDcHandleMapThreadLocal(void)
 
-// SYNTHETIC: IMPERIALISM 0x0061ec02
-// InitializeMfcDcHandleMapPointerState
-// prototype: void __cdecl InitializeMfcDcHandleMapPointerState(void)
-
-// SYNTHETIC: IMPERIALISM 0x0061ec03
-// RegisterMfcGlobalCleanup_0061ec0f
-// prototype: void __cdecl RegisterMfcGlobalCleanup_0061ec0f(void)
-
-// SYNTHETIC: IMPERIALISM 0x0061ec0f
-// DestroyMfcDcHandleMapPointerStateAtExit
-// prototype: void __cdecl DestroyMfcDcHandleMapPointerStateAtExit(void)
-
 // LIBRARY: IMPERIALISM 0x0061ec1a SYMBOL
 // ?DPtoHIMETRIC@CDC@@QBEXPAUtagSIZE@@@Z
 // name: CDC::DPtoHIMETRIC
@@ -6716,18 +6572,6 @@
 // InitializeMfcWinAppThreadLocalGlobal
 // prototype: void __cdecl InitializeMfcWinAppThreadLocalGlobal(void)
 
-// SYNTHETIC: IMPERIALISM 0x00622a95
-// InitializeMfcWinStateProcessLocalStorage
-// prototype: void __cdecl InitializeMfcWinStateProcessLocalStorage(void)
-
-// SYNTHETIC: IMPERIALISM 0x00622a96
-// RegisterMfcGlobalCleanup_00622aa2
-// prototype: void __cdecl RegisterMfcGlobalCleanup_00622aa2(void)
-
-// SYNTHETIC: IMPERIALISM 0x00622aa2
-// DestroyMfcWinStateProcessLocalAtExit
-// prototype: void __cdecl DestroyMfcWinStateProcessLocalAtExit(void)
-
 // LIBRARY: IMPERIALISM 0x00622b3c SYMBOL
 // ??_GCWinThread@@UAEPAXI@Z
 
@@ -6905,20 +6749,12 @@
 // LIBRARY: IMPERIALISM 0x006239b8
 // ownership-only
 
-// SYNTHETIC: IMPERIALISM 0x006239ca
-// RegisterMfcGlobalCleanup_006239d6
-// prototype: void __cdecl RegisterMfcGlobalCleanup_006239d6(void)
-
 // LIBRARY: IMPERIALISM 0x006239e6
 // InitializeMfcGlobalExceptionObjectB
 // prototype: void __cdecl InitializeMfcGlobalExceptionObjectB(void)
 
 // LIBRARY: IMPERIALISM 0x006239f0
 // ownership-only
-
-// SYNTHETIC: IMPERIALISM 0x00623a02
-// RegisterMfcGlobalCleanup_00623a0e
-// prototype: void __cdecl RegisterMfcGlobalCleanup_00623a0e(void)
 
 // LIBRARY: IMPERIALISM 0x00623a82 SYMBOL
 // ?GetRuntimeClass@CPen@@UBEPAUCRuntimeClass@@XZ
@@ -6935,20 +6771,12 @@
 // LIBRARY: IMPERIALISM 0x00623abc
 // ownership-only
 
-// SYNTHETIC: IMPERIALISM 0x00623ace
-// RegisterMfcGlobalCleanup_00623ada
-// prototype: void __cdecl RegisterMfcGlobalCleanup_00623ada(void)
-
 // LIBRARY: IMPERIALISM 0x00623aea
 // InitializeMfcGlobalExceptionObjectD
 // prototype: void __cdecl InitializeMfcGlobalExceptionObjectD(void)
 
 // LIBRARY: IMPERIALISM 0x00623af4
 // ownership-only
-
-// SYNTHETIC: IMPERIALISM 0x00623b06
-// RegisterMfcGlobalCleanup_00623b12
-// prototype: void __cdecl RegisterMfcGlobalCleanup_00623b12(void)
 
 // LIBRARY: IMPERIALISM 0x00623b3a
 // CPtrList::GetRuntimeClass
@@ -7063,14 +6891,6 @@
 // InitializeMfcAuxDataGlobal
 // prototype: void __cdecl InitializeMfcAuxDataGlobal(void)
 
-// SYNTHETIC: IMPERIALISM 0x006241b1
-// ConstructMfcAuxDataGlobal
-// prototype: void __cdecl ConstructMfcAuxDataGlobal(void)
-
-// SYNTHETIC: IMPERIALISM 0x006241bb
-// RegisterMfcGlobalCleanup_006241c7
-// prototype: void __cdecl RegisterMfcGlobalCleanup_006241c7(void)
-
 // LIBRARY: IMPERIALISM 0x006241d1 SYMBOL
 // ?AfxEnableWin40Compatibility@@YGXXZ
 // name: AfxEnableWin40Compatibility
@@ -7099,30 +6919,6 @@
 // LIBRARY: IMPERIALISM 0x00624487
 // InitializeMfcThreadLocalGlobal_006a7d70
 // prototype: void __cdecl InitializeMfcThreadLocalGlobal_006a7d70(void)
-
-// SYNTHETIC: IMPERIALISM 0x00624491
-// InitializeMfcThreadLocalStorage006a7d70
-// prototype: void __cdecl InitializeMfcThreadLocalStorage006a7d70(void)
-
-// SYNTHETIC: IMPERIALISM 0x00624492
-// RegisterMfcGlobalCleanup_0062449e
-// prototype: void __cdecl RegisterMfcGlobalCleanup_0062449e(void)
-
-// SYNTHETIC: IMPERIALISM 0x0062449e
-// DestroyMfcThreadLocalGlobal_006a7d70
-// prototype: void __cdecl DestroyMfcThreadLocalGlobal_006a7d70(void)
-
-// SYNTHETIC: IMPERIALISM 0x006244b7
-// InitializeMfcCtl3dProcessLocalStorage
-// prototype: void __cdecl InitializeMfcCtl3dProcessLocalStorage(void)
-
-// SYNTHETIC: IMPERIALISM 0x006244b8
-// RegisterMfcGlobalCleanup_006244c4
-// prototype: void __cdecl RegisterMfcGlobalCleanup_006244c4(void)
-
-// SYNTHETIC: IMPERIALISM 0x006244c4
-// DestroyMfcCtl3dProcessLocalAtExit
-// prototype: void __cdecl DestroyMfcCtl3dProcessLocalAtExit(void)
 
 // LIBRARY: IMPERIALISM 0x006244d3 SYMBOL
 // ?AfxCriticalInit@@YGHXZ

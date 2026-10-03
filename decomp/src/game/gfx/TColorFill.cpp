@@ -5,15 +5,8 @@
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
-// SYNTHETIC: IMPERIALISM 0x004ff150
-// TColorFill::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004ff180
 TColorFill::~TColorFill() {}
-// SYNTHETIC: IMPERIALISM 0x004ff0c0
-// TColorFill::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004ff1a0
-// TColorFill::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TColorFill, TAdorner)
 

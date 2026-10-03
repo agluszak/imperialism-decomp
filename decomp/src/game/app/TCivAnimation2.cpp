@@ -4,14 +4,6 @@
 
 #include "game/ui_core/TView.h"
 
-// SYNTHETIC: IMPERIALISM 0x0049f630
-// TCivAnimation2::`scalar deleting destructor'
-// SYNTHETIC: IMPERIALISM 0x0049f600
-// TCivAnimation2::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0049f680
-// TCivAnimation2::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TCivAnimation2, TAnimation)
 
 // FUNCTION: IMPERIALISM 0x0049f6a0

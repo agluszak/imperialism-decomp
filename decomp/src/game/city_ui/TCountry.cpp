@@ -51,9 +51,6 @@ static bool IsRecruitQuarterTickGate(short tickRaw) {
   return static_cast<short>(mod4) == 2;
 }
 
-// SYNTHETIC: IMPERIALISM 0x004d66a0
-// TCountry::CreateObject
-
 // FUNCTION: IMPERIALISM 0x004d6730
 bool TCountry::IsClient(void) const {
   return false;
@@ -76,16 +73,10 @@ void TCountry::PlopDownCity(short selectedRegion, const char* mapCellLabel) {
   (void)mapCellLabel;
 }
 
-// SYNTHETIC: IMPERIALISM 0x004d67b0
-// TCountry::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TCountry, TObject)
 
 // FUNCTION: IMPERIALISM 0x004d67d0
 TCountry::TCountry() {}
-
-// SYNTHETIC: IMPERIALISM 0x004d6850
-// TCountry::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004d68f0
 void TCountry::InitializeNationStateIdentityAndOwnedRegionList(NationSlot nationSlot) {

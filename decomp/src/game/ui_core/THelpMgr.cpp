@@ -85,12 +85,6 @@ void SetTurnAlertObservationOnlyForRuntimeTest(bool enabled) {
 }
 #endif
 
-// SYNTHETIC: IMPERIALISM 0x00500550
-// THelpMgr::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005005c0
-// THelpMgr::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(THelpMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x005005e0
@@ -109,9 +103,6 @@ THelpMgr::THelpMgr() : TObject() {
   }
   indexList = nullptr;
 }
-
-// SYNTHETIC: IMPERIALISM 0x00500630
-// THelpMgr::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00500660
 THelpMgr::~THelpMgr() {}

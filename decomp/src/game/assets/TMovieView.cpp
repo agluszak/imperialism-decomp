@@ -7,9 +7,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/MciMovieWindowState.h"
 
-// SYNTHETIC: IMPERIALISM 0x005e2100
-// TMovieView::CreateObject
-
 IMPLEMENT_DYNCREATE(TMovieView, TPicture)
 
 // The original calls AfxGetThread() twice (once to null-check, once to fetch
@@ -36,8 +33,6 @@ TMovieView::TMovieView() : TPicture() {
 // The scalar deleting destructor is compiler-generated from the virtual dtor; it is a
 // thin wrapper that calls the real destructor body below (verified at 0x5e22f0: a
 // 30-byte thunk that calls 0x4058df -> 0x5e2320) then conditionally frees.
-// SYNTHETIC: IMPERIALISM 0x005e22f0
-// TMovieView::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005e2320
 TMovieView::~TMovieView() {
@@ -114,6 +109,3 @@ char TMovieView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoi
   }
   return TPicture::HandleMouseDown(point, event, origin);
 }
-
-// SYNTHETIC: IMPERIALISM 0x005e2210
-// TMovieView::GetRuntimeClass

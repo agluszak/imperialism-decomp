@@ -8,15 +8,8 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
 
-// SYNTHETIC: IMPERIALISM 0x00435540
-// TDealTabControl::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00435570
 TDealTabControl::~TDealTabControl() {}
-// SYNTHETIC: IMPERIALISM 0x005bc690
-// TDealTabControl::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005bc760
-// TDealTabControl::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TDealTabControl, TControl)
 

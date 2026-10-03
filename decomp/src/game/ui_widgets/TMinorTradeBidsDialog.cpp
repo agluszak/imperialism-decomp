@@ -10,15 +10,8 @@
 #include "game/globals/ui_widgets_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
-// SYNTHETIC: IMPERIALISM 0x005b2a30
-// TMinorTradeBidsDialog::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005b2a60
 TMinorTradeBidsDialog::~TMinorTradeBidsDialog() {}
-// SYNTHETIC: IMPERIALISM 0x005b29a0
-// TMinorTradeBidsDialog::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005b2a80
-// TMinorTradeBidsDialog::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TMinorTradeBidsDialog, TDialogView)
 

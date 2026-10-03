@@ -16,15 +16,8 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x0044fab0
-// TJoinSelectorDialog::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0044fb40
 TJoinSelectorDialog::~TJoinSelectorDialog() {}
-// SYNTHETIC: IMPERIALISM 0x0054e690
-// TJoinSelectorDialog::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0054e710
-// TJoinSelectorDialog::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TJoinSelectorDialog, TNoHilitePicture)
 

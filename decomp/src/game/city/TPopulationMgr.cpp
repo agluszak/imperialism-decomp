@@ -7,16 +7,9 @@
 #include "game/core/TStream.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
-// SYNTHETIC: IMPERIALISM 0x004b5b40
-// TPopulationMgr::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004b5b70
-// TPopulationMgr::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TPopulationMgr, TObject)
 
-// SYNTHETIC: IMPERIALISM 0x004b5bb0
-// TPopulationMgr::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004b5be0
 TPopulationMgr::~TPopulationMgr() {}
 

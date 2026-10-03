@@ -23,11 +23,6 @@ namespace {
 const short kUiCommandHandledMarker = 0x29a;
 
 } // namespace
-// SYNTHETIC: IMPERIALISM 0x004ffb30
-// TGameWindow::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004ffbf0
-// TGameWindow::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TGameWindow, TWindow)
 
@@ -40,8 +35,6 @@ TGameWindow::TGameWindow() {
   fieldAtAc = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x004ffc60
-// TGameWindow::`scalar deleting destructor'
 // The teardown runs through the real TWindow base destructor (registry/modal unlink) via
 // inheritance; TGameWindow adds no destruction of its own.
 // FUNCTION: IMPERIALISM 0x004ffc90

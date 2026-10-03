@@ -22,11 +22,6 @@
 #include "game/gfx/quickdraw_regions.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
-// SYNTHETIC: IMPERIALISM 0x004caba0
-// TUniversityView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004cac40
-// TUniversityView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TUniversityView, TBuildingView)
 
@@ -35,8 +30,6 @@ TUniversityView::TUniversityView() {
   productionView98 = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x004cac90
-// TUniversityView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004cacc0
 TUniversityView::~TUniversityView() {}
 

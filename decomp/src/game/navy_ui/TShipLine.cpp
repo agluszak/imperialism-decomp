@@ -14,14 +14,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x00564f90
-// TShipLine::`scalar deleting destructor'
-// SYNTHETIC: IMPERIALISM 0x00565030
-// TShipLine::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005650a0
-// TShipLine::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TShipLine, TLineData)
 
 // FUNCTION: IMPERIALISM 0x005650c0

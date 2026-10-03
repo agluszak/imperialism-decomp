@@ -12,14 +12,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
 
-// SYNTHETIC: IMPERIALISM 0x004d49a0
-// TLandSaleEvent::`scalar deleting destructor'
-// SYNTHETIC: IMPERIALISM 0x004e66c0
-// TLandSaleEvent::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004e66f0
-// TLandSaleEvent::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TLandSaleEvent, TTurnStartEvent)
 
 // FUNCTION: IMPERIALISM 0x004e6710

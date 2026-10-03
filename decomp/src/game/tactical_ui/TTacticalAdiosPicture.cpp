@@ -10,15 +10,8 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x0045d430
-// TTacticalAdiosPicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0045d460
 TTacticalAdiosPicture::~TTacticalAdiosPicture() {}
-// SYNTHETIC: IMPERIALISM 0x005ad430
-// TTacticalAdiosPicture::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005ad4b0
-// TTacticalAdiosPicture::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTacticalAdiosPicture, TPicture)
 

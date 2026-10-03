@@ -73,8 +73,6 @@ public:
   // Retained VC5 copy of the class-index purge inlined inside
   // RunMapGenerationAttempt (clears regionClassGrid10 cells and
   // groupMemberLists1a8 entries equal to classIndex).
-  // SYNTHETIC: IMPERIALISM 0x00526fd0
-  // TMapMaker::ClearRegionClassIndexReferences
   void ClearRegionClassIndexReferences(int classIndex) {
     signed char* regionClassGridFlat = &regionClassGrid10[0][0];
     for (int cell = 0; cell < 15 * 27; ++cell) {

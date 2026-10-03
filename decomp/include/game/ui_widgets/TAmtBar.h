@@ -13,8 +13,6 @@ public:
   short auxValueA;             // 0x64
   short auxValueB;             // 0x66
 
-  // SYNTHETIC: IMPERIALISM 0x00588580
-  // TAmtBar::TAmtBar
   // Source evidence: unreferenced retained COMDAT in retail.
   TAmtBar() : TView(), rangeOrMaxValue(0), stepOrCurrentValue(0), auxValueA(0), auxValueB(0) {}
   DECLARE_DYNCREATE(TAmtBar)

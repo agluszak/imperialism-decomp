@@ -17,15 +17,8 @@ TMapKey::TMapKey() {
   viewMode90 = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x00430900
-// TMapKey::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00430930
 TMapKey::~TMapKey() {}
-// SYNTHETIC: IMPERIALISM 0x004fc9c0
-// TMapKey::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004fca70
-// TMapKey::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TMapKey, TPicture)
 

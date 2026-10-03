@@ -14,14 +14,9 @@
 
 IMPLEMENT_DYNCREATE(TStratReportView, TView)
 
-// SYNTHETIC: IMPERIALISM 0x0058e330
-// TStratReportView::CreateObject
-
 // FUNCTION: IMPERIALISM 0x0058e3c0
 TStratReportView::TStratReportView() : TView() {}
 
-// SYNTHETIC: IMPERIALISM 0x0058e3f0
-// TStratReportView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0058e420
 TStratReportView::~TStratReportView() {}
 
@@ -86,6 +81,3 @@ void TStratReportView::Draw(RECT* rectBuffer) {
     }
   }
 }
-
-// SYNTHETIC: IMPERIALISM 0x0058e3a0
-// TStratReportView::GetRuntimeClass

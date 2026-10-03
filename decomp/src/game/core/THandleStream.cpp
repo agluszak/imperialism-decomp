@@ -2,12 +2,6 @@
 
 #include <string.h>
 
-// SYNTHETIC: IMPERIALISM 0x00489580
-// THandleStream::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004895c0
-// THandleStream::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(THandleStream, TStream)
 
 // FUNCTION: IMPERIALISM 0x004895e0
@@ -18,12 +12,6 @@ THandleStream::THandleStream() {
   this->unclassifiedByte14 = 0;
   this->attachedSizeBytes = 0;
 }
-
-// SYNTHETIC: IMPERIALISM 0x00489610
-// THandleStream::`scalar deleting destructor'
-
-// SYNTHETIC: IMPERIALISM 0x00489640
-// THandleStream::~THandleStream
 
 // FUNCTION: IMPERIALISM 0x00489660
 void THandleStream::AttachGlobalMemoryHandleAndResetPosition(HGLOBAL memoryHandle, int growthSize) {

@@ -68,8 +68,6 @@ short __cdecl CompareTacticalUnitsForTurnOrder(void* a, void* b, void* context) 
   }
   return (unitA->field24 <= unitB->field24) ? 1 : -1;
 }
-// SYNTHETIC: IMPERIALISM 0x0059f6d0
-// TTacticalBattle::CreateObject
 
 // FUNCTION: IMPERIALISM 0x0059f710
 void TTacticalBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
@@ -81,9 +79,6 @@ void TTacticalBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTile
 void TTacticalBattle::EndBattle(unsigned char) {
   battleOutcome44 = kTacticalBattleSide0Victory;
 }
-
-// SYNTHETIC: IMPERIALISM 0x0059f750
-// TTacticalBattle::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTacticalBattle, TObject)
 
@@ -100,8 +95,6 @@ TTacticalBattle::TTacticalBattle() {
   recordList20 = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x0059f7a0
-// TTacticalBattle::`scalar deleting destructor'
 // Battle-state assembly (Mac oracle: InitTacticalBattle): links both players to the
 // battle, tags each side's units (side20 = 0/1) with a random field24 seed and collects
 // them into recordList20, seeds the selection from the +0x18 side, sizes battlefieldColumnCount34 from

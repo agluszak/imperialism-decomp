@@ -6,16 +6,9 @@
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
-// SYNTHETIC: IMPERIALISM 0x004c6df0
-// TBuildingView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004c6e90
-// TBuildingView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TBuildingView, TNoHilitePicture)
 
-// SYNTHETIC: IMPERIALISM 0x004c6ee0
-// TBuildingView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004c6f10
 TBuildingView::~TBuildingView() {}
 

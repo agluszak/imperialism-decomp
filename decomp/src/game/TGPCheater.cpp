@@ -20,16 +20,9 @@ void TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel(int* offsetLayout,
   TStaticText* caption = new TStaticText();
   caption->IStaticText(this, captionOffset, captionSize, 5, 5, static_cast<short>(captionStringResourceGroup), 0x18);
 }
-// SYNTHETIC: IMPERIALISM 0x004b19b0
-// TGPCheater::CreateObject
 
-// SYNTHETIC: IMPERIALISM 0x004b1a20
-// TGPCheater::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004b1a50
 TGPCheater::~TGPCheater() {}
-
-// SYNTHETIC: IMPERIALISM 0x004b1a70
-// TGPCheater::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TGPCheater, TCheater)
 

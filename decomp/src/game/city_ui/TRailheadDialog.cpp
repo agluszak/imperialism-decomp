@@ -11,15 +11,8 @@
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
-// SYNTHETIC: IMPERIALISM 0x004bcfd0
-// TRailheadDialog::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004bd000
 TRailheadDialog::~TRailheadDialog() {}
-// SYNTHETIC: IMPERIALISM 0x004bcf40
-// TRailheadDialog::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004bd020
-// TRailheadDialog::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TRailheadDialog, TDialogView)
 

@@ -29,11 +29,6 @@
 #include "RuntimeCoarseMapOracle.h"
 #endif
 
-// SYNTHETIC: IMPERIALISM 0x00525910
-// TMapMaker::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00525950
-// TMapMaker::GetRuntimeClass
 // The original descriptor's m_pBaseClass (0x6598b8) points at TControl's CRuntimeClass —
 // the retail macro named TControl even though the C++ base is TObject (the 44-slot vtable
 // at 0x6598f8 rules out a TControl-branch layout). Reproduce the retail macro argument.
@@ -42,9 +37,6 @@ IMPLEMENT_DYNCREATE(TMapMaker, TControl)
 // FUNCTION: IMPERIALISM 0x00525970
 TMapMaker::TMapMaker() : TObject() {}
 
-// SYNTHETIC: IMPERIALISM 0x00525990
-// TMapMaker::`scalar deleting destructor'
-
 // FUNCTION: IMPERIALISM 0x005259c0
 TMapMaker::~TMapMaker() {}
 
@@ -52,8 +44,6 @@ TMapMaker::~TMapMaker() {}
 // loop at each site): true when `text` begins with `keyword` followed by NUL or ' '.
 // The retained standalone emission at 0x5259e0 drives the loop on arg1, so keyword is
 // the first parameter in the source-era signature.
-// SYNTHETIC: IMPERIALISM 0x005259e0
-// TuningKeywordMatches
 char TuningKeywordMatches(const char* keyword, const char* text) {
   while (*keyword != 0) {
     if (*keyword++ != *text++) {
