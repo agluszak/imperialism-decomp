@@ -41,9 +41,10 @@ def campaign(
     propagate_enums: list[str],
     boolean_expressions: bool,
     promote_bool: bool,
+    narrow_casts: bool = False,
 ) -> dict:
-    if (boolean_expressions or promote_bool) and not patch:
-        raise ValueError("--boolean-expressions and --promote-bool require --patch")
+    if (boolean_expressions or promote_bool or narrow_casts) and not patch:
+        raise ValueError("--boolean-expressions, --promote-bool and --narrow-casts require --patch")
     configure = build / "reccmp-source/cmake"
     database = configure / "compile_commands.json"
     if not database.is_file():
@@ -71,6 +72,7 @@ def campaign(
         "propagate_source_enums": propagate_enums,
         "simplify_boolean_expressions": boolean_expressions,
         "promote_bool": promote_bool,
+        "narrow_casts": narrow_casts,
     }
     write_json(directory / "manifest.json", manifest)
     facts = directory / "facts"
@@ -123,6 +125,8 @@ def campaign(
                 replay.append("--boolean-expressions")
             if promote_bool:
                 replay.append("--promote-bool")
+            if narrow_casts:
+                replay.append("--narrow-casts")
         with (directory / "solve.log").open("w", encoding="utf-8") as log:
             subprocess.run(replay, stdout=log, stderr=subprocess.STDOUT, check=True)
         subprocess.run(
@@ -194,6 +198,7 @@ def main() -> int:
     parser.add_argument("--propagate-enum", action="append", default=[])
     parser.add_argument("--boolean-expressions", action="store_true")
     parser.add_argument("--promote-bool", action="store_true")
+    parser.add_argument("--narrow-casts", action="store_true")
     args = parser.parse_args()
     repo = repo_root_from_file(__file__)
     summary = campaign(
@@ -207,6 +212,7 @@ def main() -> int:
         propagate_enums=args.propagate_enum,
         boolean_expressions=args.boolean_expressions,
         promote_bool=args.promote_bool,
+        narrow_casts=args.narrow_casts,
     )
     print(json.dumps(summary, indent=1))
     return 0

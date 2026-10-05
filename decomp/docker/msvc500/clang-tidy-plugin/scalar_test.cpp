@@ -325,3 +325,14 @@ void CallSlot(SlotBase* slot)
     slot->Show(1);
     slot->Show(0);
 }
+void TakeShort(short value);
+void NarrowFixture(int tileIndex, int mixedValue)
+{
+    TakeShort(static_cast<short>(tileIndex));
+    TakeShort(static_cast<short>(mixedValue));
+    TakeShort(static_cast<short>(mixedValue + 1));
+}
+void CallNarrowFixture(short tile)
+{
+    NarrowFixture(tile, 70000);
+}

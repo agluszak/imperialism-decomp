@@ -543,6 +543,11 @@ def main() -> None:
             action="store_true",
             help="retype proven 0/1 byte declarations in recovered source as bool",
         )
+        parser.add_argument(
+            "--narrow-casts",
+            action="store_true",
+            help="narrow integer declarations whose every read converts to one narrower type",
+        )
         options = parser.parse_args(sys.argv[2:])
         report = write_integer_report(
             options.facts,
@@ -561,6 +566,7 @@ def main() -> None:
                 propagate_enums=options.propagate_enum,
                 boolean_expressions=options.boolean_expressions,
                 promote_bool=options.promote_bool,
+                narrow_casts=options.narrow_casts,
                 bool_scopes=SCOPES,
             )
             options.output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")

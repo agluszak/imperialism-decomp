@@ -2305,6 +2305,152 @@ def boolean_expression_edits(facts: ScalarFacts, source):
     return edits
 
 
+_INTEGER_WIDTH = {
+    "char": 8, "signed char": 8, "unsigned char": 8, "short": 16, "unsigned short": 16,
+    "int": 32, "unsigned int": 32, "long": 32, "unsigned long": 32,
+}
+
+
+def _integer_range(type_name: str) -> tuple[int, int]:
+    width = _INTEGER_WIDTH[type_name]
+    if type_name.startswith("unsigned"):
+        return 0, (1 << width) - 1
+    return -(1 << (width - 1)), (1 << (width - 1)) - 1
+
+
+def _parameter_slot(key: str) -> tuple[str, str] | None:
+    """(qualified function, position) for a canonical parameter key."""
+    _, _, tail = key.partition(":parameter:")
+    function, separator, position = tail.rpartition("::#")
+    return (function, position) if separator else None
+
+
+def narrowing_proposals(facts: ScalarFacts, scopes: tuple[str, ...]) -> dict:
+    """Integer parameters/locals whose every read narrows to one type T.
+
+    A 32-bit declaration is narrowed when each outgoing transfer is an
+    explicit or implicit conversion to the same narrower builtin T, it takes
+    part in no arithmetic, comparison, indexing or escape, every producer
+    already fits T (another candidate, a declaration no wider than T, or an
+    in-range constant), and every override of a virtual slot narrows together.
+    Explicit casts to T on its reads become redundant and are removed.
+    """
+    conversions: dict[tuple[str, str], set[str]] = defaultdict(set)
+    sources: dict[tuple[str, str], set[str]] = defaultdict(set)
+    for target, source, from_type, to_type in facts.conversions:
+        conversions[target, source].add(to_type)
+        sources[target, source].add(from_type)
+    outgoing: dict[str, list[Flow]] = defaultdict(list)
+    incoming: dict[str, list[Flow]] = defaultdict(list)
+    for flow in facts.flows:
+        outgoing[flow.source].append(flow)
+        incoming[flow.target].append(flow)
+    used = {use.key for use in facts.operations} | {operand[0] for operand in facts.operands}
+    escaped = {
+        use.key
+        for use in facts.escapes
+        if use.detail not in {"explicit conversion", "virtual slot"}
+    }
+    candidates: dict[str, str] = {}
+    rejected: dict[str, str] = {}
+    for key, declaration in facts.declarations.items():
+        if (
+            declaration.kind not in {"parameter", "variable"}
+            or declaration.domain != "integer"
+            or declaration.width != 32
+            or not declaration.file.startswith(scopes)
+            or key in facts.linkage
+            or not outgoing.get(key)
+        ):
+            continue
+        targets = set()
+        for flow in outgoing[key]:
+            if flow.role == "explicit-conversion":
+                targets |= conversions.get((flow.target, key), {"?"})
+            elif flow.role in {"argument", "initializer", "assignment", "return"}:
+                consumer = facts.declarations.get(flow.target)
+                targets.add(
+                    consumer.spelling
+                    if consumer and consumer.domain == "integer" and consumer.width < 32
+                    else "?"
+                )
+            else:
+                targets.add("?")
+        if len(targets) != 1 or next(iter(targets)) not in _INTEGER_WIDTH:
+            continue
+        type_name = targets.pop()
+        if _INTEGER_WIDTH[type_name] >= 32:
+            continue
+        if key in used:
+            rejected[key] = "arithmetic, comparison or indexing use"
+        elif key in escaped:
+            rejected[key] = "escapes"
+        else:
+            candidates[key] = type_name
+    slots: dict[tuple[str, str], set[str]] = defaultdict(set)
+    functions = {}
+    for function, (name, *_rest) in facts.signatures.items():
+        functions[function] = name
+    parent = {function: function for function in functions}
+
+    def find(function: str) -> str:
+        while parent.setdefault(function, function) != function:
+            function = parent[function]
+        return function
+
+    for base, overriders in facts.overrides.items():
+        for overrider in overriders:
+            parent[find(overrider)] = find(base)
+    closure: dict[str, str] = {}
+    for function, name in functions.items():
+        closure.setdefault(name, find(function))
+    for key in facts.declarations:
+        slot = _parameter_slot(key)
+        if slot and slot[0] in closure:
+            slots[closure[slot[0]], slot[1]].add(key)
+    virtual = {use.key for use in facts.escapes if use.detail == "virtual slot"}
+    changed = True
+    while changed:
+        changed = False
+        for key, type_name in list(candidates.items()):
+            low, high = _integer_range(type_name)
+            reason = None
+            for flow in incoming.get(key, ()):
+                producer = facts.declarations.get(flow.source)
+                if candidates.get(flow.source) == type_name:
+                    continue
+                widths = sources.get((key, flow.source)) if flow.role == "explicit-conversion" else None
+                if widths and all(_INTEGER_WIDTH.get(width, 64) <= _INTEGER_WIDTH[type_name] for width in widths):
+                    continue
+                if (
+                    producer is not None
+                    and producer.domain in {"integer", "enum", "bool", "character"}
+                    and producer.width <= _INTEGER_WIDTH[type_name]
+                    and (producer.signedness == "signed") == (not type_name.startswith("unsigned"))
+                ):
+                    continue
+                reason = "a producer does not fit " + type_name
+                break
+            if not reason and any(not low <= value <= high for value in facts.constants.get(key, ())):
+                reason = "a constant producer does not fit " + type_name
+            if not reason and key in virtual:
+                slot = _parameter_slot(key)
+                group = slots.get((closure.get(slot[0], ""), slot[1]), set()) if slot else set()
+                if not group or any(candidates.get(member) != type_name for member in group):
+                    reason = "another override of this virtual slot does not narrow"
+            if reason:
+                rejected[key] = reason
+                del candidates[key]
+                changed = True
+    casts = sorted(
+        (flow.file, flow.line, flow.column, key, candidates[key])
+        for key in candidates
+        for flow in outgoing[key]
+        if flow.role == "explicit-conversion"
+    )
+    return {"candidates": candidates, "casts": casts, "rejected": rejected}
+
+
 def write_recovery_patch(
     facts: ScalarFacts,
     claims: list[dict],
@@ -2315,6 +2461,7 @@ def write_recovery_patch(
     propagate_enums: list[str] | None = None,
     boolean_expressions: bool = False,
     promote_bool: bool = False,
+    narrow_casts: bool = False,
     bool_scopes: tuple[str, ...] = (),
 ) -> dict:
     """Emit reviewable whole-component patches, never mutate source files.
@@ -2537,6 +2684,50 @@ def write_recovery_patch(
             if proposed.get((key, "type"), "bool") != "bool":
                 raise ValueError("conflicting accepted recovery properties for " + key)
             proposed[key, "type"] = "bool"
+    narrowed = narrowing_proposals(facts, bool_scopes) if narrow_casts else None
+    cast_edits = []
+    if narrowed:
+        for key, reason in sorted(narrowed["rejected"].items()):
+            rejected.append({"members": [key], "property": "width", "reason": reason})
+        for key, type_name in sorted(narrowed["candidates"].items()):
+            reason = None
+            if not spans[key, "type"]:
+                reason = "no editable source component"
+            for file, offset, length, text, digest in spans[key, "type"]:
+                if reason:
+                    break
+                if text not in _INTEGER_WIDTH:
+                    reason = f"non-builtin spelling {text!r}"
+                elif not owners[file, offset, length] <= set(narrowed["candidates"]):
+                    reason = "type atom shared with an unchanged declaration"
+            if reason:
+                rejected.append({"members": [key], "property": "width", "reason": reason})
+                continue
+            if proposed.get((key, "type"), type_name) != type_name:
+                raise ValueError("conflicting accepted recovery properties for " + key)
+            proposed[key, "type"] = type_name
+        line_starts: dict[str, list[int]] = {}
+        digests = {span[2]: span[6] for span in facts.spans}
+        for file, line, _column, key, type_name in narrowed["casts"]:
+            if (key, "type") not in proposed or file not in digests:
+                continue
+            original = source(file, digests[file])
+            if file not in line_starts:
+                line_starts[file] = [0] + [i + 1 for i, byte in enumerate(original) if byte == 10]
+            start = line_starts[file][line - 1]
+            end = original.find(b"\n", start)
+            text = original[start:end].decode()
+            name = facts.declarations[key].name.rsplit("::", 1)[-1]
+            for pattern in (
+                rf"static_cast<{re.escape(type_name)}>\(\s*{re.escape(name)}\s*\)",
+                rf"\({re.escape(type_name)}\)\s*{re.escape(name)}\b",
+            ):
+                for match in re.finditer(pattern, text):
+                    prefix = len(text[: match.start()].encode())
+                    cast_edits.append(
+                        (key, file, start + prefix, len(match.group(0).encode()),
+                         match.group(0).encode(), name.encode())
+                    )
     file_edits: dict[str, dict[tuple[int, int], tuple[bytes, bytes]]] = defaultdict(dict)
     for (key, kind), replacement in proposed.items():
         for file, offset, length, text, digest in spans[key, kind]:
@@ -2554,7 +2745,7 @@ def write_recovery_patch(
                 raise ValueError("conflicting shared type atom")
             file_edits[file][offset, length] = atom
     expressions = boolean_expression_edits(facts, source) if boolean_expressions else []
-    for _, file, offset, length, text, replacement in expressions:
+    for _, file, offset, length, text, replacement in expressions + cast_edits:
         file_edits[file][offset, length] = text, replacement
     patch = []
     for file, edits in sorted(file_edits.items()):

@@ -405,3 +405,12 @@ slot_members = {
 assert len(slot_members) == 2, slot_members
 assert slot_members <= proven_bool_declarations(facts), slot_members
 print("project virtual slots are proven across their override closure")
+
+result = write_recovery_patch(
+    facts, [], root, patch, narrow_casts=True, bool_scopes=(str(root) + "/",)
+)
+narrowed = patch.read_text()
+assert "+void NarrowFixture(short tileIndex, int mixedValue)" in narrowed, narrowed
+assert "+    TakeShort(tileIndex);" in narrowed, narrowed
+assert "-    TakeShort(static_cast<short>(mixedValue));" not in narrowed, narrowed
+print("integer reads that all narrow to one type narrow their declaration")
