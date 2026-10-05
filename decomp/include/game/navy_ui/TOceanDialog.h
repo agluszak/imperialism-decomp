@@ -28,7 +28,7 @@ public:
   virtual void RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, CRect* dstRect,
                                                              int flag) override;
   virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
-                                                             unsigned char altOverlay) override;
+                                                             bool altOverlay) override;
   virtual void RenderStrategicTileSelectionAndNeighborHighlights() override;
   virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
                                                                    const CPoint* viewportOrigin,

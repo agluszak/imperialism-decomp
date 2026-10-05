@@ -103,7 +103,7 @@ void TShip::Free() {
     this->previous->next = this->next;
   }
   if (mission != 0) {
-    mission->RejectConstituent(this, 1);
+    mission->RejectConstituent(this, true);
   }
   if (taskForce != 0) {
     TTaskForce* owner = taskForce;
@@ -843,7 +843,7 @@ void TShip::Capture(short nation) {
 
   TMission* missionBackref = mission;
   if (missionBackref != 0 && missionBackref->nationId04 != nation) {
-    missionBackref->RejectConstituent(this, 1);
+    missionBackref->RejectConstituent(this, true);
   }
 
   this->nation = nation;

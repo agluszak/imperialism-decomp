@@ -19,7 +19,7 @@ char TClosePicture::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPo
   char result = TControl::HandleMouseUp(point, event, origin);
   TWindow* window = GetWindow();
   if (window != 0) {
-    window->Dismiss(controlTag, 1);
+    window->Dismiss(controlTag, true);
   }
   return result;
 }

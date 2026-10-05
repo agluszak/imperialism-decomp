@@ -21,7 +21,7 @@ TNumberedArrowButton::TNumberedArrowButton() : TControl(), value84(0), value86(0
 // Destructors are compiler-generated (implicit) from real inheritance.
 
 // FUNCTION: IMPERIALISM 0x0058c330
-void TNumberedArrowButton::SetValue(short value84Arg, unsigned char refreshFlag) {
+void TNumberedArrowButton::SetValue(short value84Arg, bool refreshFlag) {
   value84 = value84Arg;
   if (refreshFlag != '\0') {
     RefreshControl();
@@ -69,7 +69,7 @@ void TNumberedArrowButton::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x0058c640
 void TNumberedArrowButton::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
-                                      CPoint& currentPoint, unsigned char commandFlag) {
+                                      CPoint& currentPoint, bool commandFlag) {
   (void)commandFlag;
   (void)startPoint;
   (void)previousPoint;

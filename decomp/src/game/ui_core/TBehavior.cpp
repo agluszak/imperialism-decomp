@@ -27,7 +27,7 @@ unsigned char TBehavior::IsEnabled() {
 }
 
 // FUNCTION: IMPERIALISM 0x004872c0
-void TBehavior::SetEnabled(unsigned char isEnabled) {
+void TBehavior::SetEnabled(bool isEnabled) {
   enabled = isEnabled;
 }
 

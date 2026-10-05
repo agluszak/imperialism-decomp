@@ -354,7 +354,7 @@ void CIncludeView::BeginTracking(CPoint* startPoint, TControl* tracker) {
   m_captureCurrentPoint = *startPoint;
 
   tracker->TrackMouse(kTrackPhaseBegin, m_captureStartPoint, m_captureLastPoint,
-                      m_captureCurrentPoint, 1);
+                      m_captureCurrentPoint, true);
 }
 
 // Install this view as the native host window for the given TView (and its whole
@@ -530,7 +530,7 @@ void CIncludeView::OnMouseMove(UINT nFlags, CPoint point) {
     m_captureLastPoint = m_captureCurrentPoint;
     m_captureCurrentPoint = controlRelativePoint;
     m_capturedControl->TrackMouse(kTrackPhaseUpdate, m_captureStartPoint, m_captureLastPoint,
-                                  m_captureCurrentPoint, 1);
+                                  m_captureCurrentPoint, true);
   }
   g_pAmbitApplication->HandleCursor(point.x, point.y, 0);
   if (m_activeDialogContext != 0 && GetMcAppUiActiveFlag() != 0) {

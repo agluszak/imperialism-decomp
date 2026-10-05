@@ -100,12 +100,12 @@ void TRelationshipDialog::StuffValues() {
     if (horizontalLabel == 0) {
       FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x207);
     }
-    horizontalLabel->SetTextAndMaybeRefresh(&label, 0);
+    horizontalLabel->SetTextAndMaybeRefresh(&label, false);
     TStaticText* verticalLabel =
         static_cast<TStaticText*>(verticalNames->ResolveControlByTag(nameTags[nation]));
     if (verticalLabel == 0) {
       FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x20a);
     }
-    verticalLabel->SetTextAndMaybeRefresh(&label, 0);
+    verticalLabel->SetTextAndMaybeRefresh(&label, false);
   }
 }

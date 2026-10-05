@@ -54,7 +54,7 @@ public:
   virtual void SetDealResults(NationSlot sourceNation, NationSlot targetNation, short amount,
                               short maximumAmount, ResourceKindStorage commodityType,
                               unsigned char shortfallFlag,
-                              unsigned char remoteReplay);          // 0x18 0x5b94d0
+                              bool remoteReplay);                   // 0x18 0x5b94d0
   virtual void UpdatePrice(short item, short value);                // 0x19 0x5b9790
   virtual void RunNationUpdatePassesAndResetTransitionFlags();      // 0x1a 0x5b97c0
   virtual void SetMinorsTradeBids();                                // 0x1b 0x5b9890

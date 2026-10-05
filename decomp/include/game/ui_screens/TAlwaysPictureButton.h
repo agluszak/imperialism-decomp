@@ -10,7 +10,7 @@ public:
   virtual ~TAlwaysPictureButton() override; // slot 0x01 (scalar deleting destructor)
   TAlwaysPictureButton();
   DECLARE_DYNCREATE(TAlwaysPictureButton)
-  void HiliteState(unsigned char enabledState, unsigned char refreshNow) override;
+  void HiliteState(unsigned char enabledState, bool refreshNow) override;
   virtual void Select(bool isPressed, bool notifyParent); // slot 0x1d0
 };
 

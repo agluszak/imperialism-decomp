@@ -95,7 +95,7 @@ void TMilitaryUnit::ClearPath() {
 // FUNCTION: IMPERIALISM 0x005c31c0
 void TMilitaryUnit::DetachUnitOrderFromOwnerAndReset() {
   if (ownerMission != 0) {
-    ownerMission->RejectConstituent(this, 1);
+    ownerMission->RejectConstituent(this, true);
   }
   MoveTo(-1);
   ClearPath();

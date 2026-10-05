@@ -37,14 +37,14 @@ void TInvadeMission::ForgetTaskForce(TTaskForce* taskForce) {
 }
 
 // FUNCTION: IMPERIALISM 0x0053f190
-void TInvadeMission::AcceptReenforcement(TShip* ship, unsigned char notify) {
+void TInvadeMission::AcceptReenforcement(TShip* ship, bool notify) {
   if (beachhead34 != nullptr) {
     beachhead34->AcceptReenforcement(ship, notify);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0053f1c0
-void TInvadeMission::RejectConstituent(TShip* ship, unsigned char notify) {
+void TInvadeMission::RejectConstituent(TShip* ship, bool notify) {
   if (beachhead34 != nullptr) {
     beachhead34->RejectConstituent(ship, notify);
   }
@@ -113,7 +113,7 @@ char TInvadeMission::SmokeEmIfYouGotEm() {
   for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
     if (unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
-      armyMission->RejectConstituent(unit, 1);
+      armyMission->RejectConstituent(unit, true);
     }
   }
   return 1;
@@ -277,7 +277,7 @@ float TInvadeMission::ValueOf(TShip* candidate) {
 }
 
 // FUNCTION: IMPERIALISM 0x0053fb90
-void TInvadeMission::Hold(unsigned char value) {
+void TInvadeMission::Hold(bool value) {
   flag10 = value;
   if (beachhead34 != nullptr) {
     beachhead34->Hold(value);
@@ -298,14 +298,14 @@ bool TInvadeMission::Matches(eMissionType missionType, int key, TZone* zoneConte
 // Each resulting float is converted through VC5's _ftol path before the beachhead child's
 // own slot-0x2c contribution is added to the returned total.
 // FUNCTION: IMPERIALISM 0x0053fc10
-int TInvadeMission::AccumulateLack(int* accumulatedLack, unsigned char includeExistingLack) const {
+int TInvadeMission::AccumulateLack(int* accumulatedLack, bool includeExistingLack) const {
   float vector[5] = {0};
   int total = 0;
   AccumulateOrderPriorityVector(vector);
 
   for (int i = 0; i < 5; ++i) {
     float value;
-    if (includeExistingLack != 0 && requiredEquipageByClass[i] <= vector[i]) {
+    if (includeExistingLack && requiredEquipageByClass[i] <= vector[i]) {
       float difference = requiredEquipageByClass[i] - vector[i];
       value = difference * g_InvadeMissionSuppressedPriorContributionScale_0065A95C +
               static_cast<float>(accumulatedLack[i]);

@@ -33,15 +33,15 @@ void TFlagOptionsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
     unsigned int tag = sourceHandler->controlTag;
     if (tag == kControlTagGowy) {
       TWindow* owner = GetWindow();
-      owner->Dismiss(tag, 0);
+      owner->Dismiss(tag, false);
     } else if (tag == kControlTagCred) {
       TWindow* owner = GetWindow();
-      owner->Dismiss(kControlTagOkay, 0);
+      owner->Dismiss(kControlTagOkay, false);
       g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalCredits);
     } else if (tag == kControlTagNewg || tag == kControlTagQuit) {
       if (g_pViewMgr->DispatchGameStateEventIfLocalizedPromptAccepted(tag)) {
         TWindow* owner = GetWindow();
-        owner->Dismiss(tag, 0);
+        owner->Dismiss(tag, false);
         if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
           int saveResult = 0;
           if (g_pGameFlowState->fieldF4 != 0) {
@@ -60,16 +60,16 @@ void TFlagOptionsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
         g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x2737, 0x34, 0, 0);
       } else {
         TWindow* owner = GetWindow();
-        owner->Dismiss(tag, 0);
+        owner->Dismiss(tag, false);
         g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalLoadGame);
       }
     } else if (tag == kControlTagPref) {
       TWindow* owner = GetWindow();
-      owner->Dismiss(tag, 0);
+      owner->Dismiss(tag, false);
       g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalGamePreferences);
     } else if (tag == kControlTagSave) {
       TWindow* owner = GetWindow();
-      owner->Dismiss(tag, 0);
+      owner->Dismiss(tag, false);
       if (g_pSimMgr->multiplayerSessionRole == kSessionRoleClient) {
         g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&text, 0x2742, 0x13);
         g_pViewMgr->ModalMessage(text, g_ptQueryFloaterModalMessage, 0, 0);
@@ -99,7 +99,7 @@ void TFlagOptionsPicture::DoPostCreate(int arg) {
     } else {
       ApplyUiTextStyleAndThemeFlags(control, 0, 0xe, 0x2b6b, 0x2b6c);
     }
-    control->SetTextAlignmentAndMaybeRefresh(i > 1 ? -2 : 1, 0);
-    control->SetTextAndMaybeRefresh(&text, 0);
+    control->SetTextAlignmentAndMaybeRefresh(i > 1 ? -2 : 1, false);
+    control->SetTextAndMaybeRefresh(&text, false);
   }
 }

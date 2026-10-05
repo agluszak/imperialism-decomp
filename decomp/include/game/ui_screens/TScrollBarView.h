@@ -20,7 +20,7 @@ public:
                               CPoint origin) override; // slot 0x47 0x574830
   virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
                           CPoint& currentPoint,
-                          unsigned char commandFlag) override; // slot 0x68 0x574d10
+                          bool commandFlag) override; // slot 0x68 0x574d10
 
   // Layout past TControl (0x84): allocation size 0x94 (`new` at 0x573d15). The three
   // words at 0x88..0x8c are the bounded-value triple seeded by

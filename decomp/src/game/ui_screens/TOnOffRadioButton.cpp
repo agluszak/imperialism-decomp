@@ -38,7 +38,7 @@ void TOnOffRadioButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
 }
 
 // FUNCTION: IMPERIALISM 0x00571b20
-void TOnOffRadioButton::SetState(unsigned char on, unsigned char drawImmediate) {
+void TOnOffRadioButton::SetState(bool on, bool drawImmediate) {
   if (IsEnabled() != 0) {
     HiliteState(on, drawImmediate);
   }

@@ -10,6 +10,6 @@ TScrollerButton::~TScrollerButton() {}
 
 // FUNCTION: IMPERIALISM 0x00574fc0
 void TScrollerButton::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
-                                 CPoint& currentPoint, unsigned char commandFlag) {
+                                 CPoint& currentPoint, bool commandFlag) {
   (void)commandFlag;
 }

@@ -68,7 +68,7 @@ void TCivReport::PopulateCivilianReportContent(TCivUnit* civilianOrderEntry) {
 
   case kUnitOrderDevelopResource:
     if (civilianOrderEntry->orderType == kCivilianUnitMiner &&
-        g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 1) == 0) {
+        g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, true) == 0) {
       resourceCount = 0;
       for (short edgeIndex = 0; edgeIndex < 2; ++edgeIndex) {
         short resourceType =
@@ -130,10 +130,10 @@ void TCivReport::PopulateCivilianReportContent(TCivUnit* civilianOrderEntry) {
 
   TDeluxeText* infoControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagInfo));
   infoControl->AssertValid();
-  infoControl->UpdateTextEntrySharedStringAndMaybeNotify(&reportText, 0);
+  infoControl->UpdateTextEntrySharedStringAndMaybeNotify(&reportText, false);
   infoControl->SetTextStyle(0, 12, 0x2b6a);
-  infoControl->SetTextAlignmentAndMaybeRefresh(1, 0);
-  infoControl->CenterVertically(1);
+  infoControl->SetTextAlignmentAndMaybeRefresh(1, false);
+  infoControl->CenterVertically(true);
 
   for (int titleIndex = 0; titleIndex < 3; ++titleIndex) {
     TextStyle titleStyle;
@@ -146,8 +146,8 @@ void TCivReport::PopulateCivilianReportContent(TCivUnit* civilianOrderEntry) {
     TStaticText* titleControl = static_cast<TStaticText*>(
         ResolveControlByTag(IMPERIALISM_FOURCC('t', 't', 'l', '0') + titleIndex));
     titleControl->AssertValid();
-    titleControl->SetTextFromStringResource(0x2724, static_cast<short>(titleIndex + 12), 1);
+    titleControl->SetTextFromStringResource(0x2724, static_cast<short>(titleIndex + 12), true);
     titleControl->InstallTextStyle(titleStyle, 0);
-    titleControl->SetTextAlignmentAndMaybeRefresh(1, 0);
+    titleControl->SetTextAlignmentAndMaybeRefresh(1, false);
   }
 }

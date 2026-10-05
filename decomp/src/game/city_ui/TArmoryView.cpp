@@ -91,7 +91,7 @@ void TArmoryView::DoStartup() {
   TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl)); // 'titl'
   title->AssertValid();
   title->InstallTextStyle(style.desc, 1);
-  title->SetTextFromStringResource(0x271c, 0x20, 1);
+  title->SetTextFromStringResource(0x271c, 0x20, true);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b6b);
   TStaticText* unit = static_cast<TStaticText*>(ResolveControlByTag(kControlTagUnit)); // 'unit'
@@ -103,12 +103,12 @@ void TArmoryView::DoStartup() {
       static_cast<TStaticText*>(ResolveControlByTag(kControlTagCostLower)); // 'cost'
   cost->AssertValid();
   cost->InstallTextStyle(style.desc, 1);
-  cost->SetTextFromStringResource(0x271c, 0x1e, 1);
+  cost->SetTextFromStringResource(0x271c, 0x1e, true);
 
   TStaticText* avai = static_cast<TStaticText*>(ResolveControlByTag(kControlTagAvai)); // 'avai'
   avai->AssertValid();
   avai->InstallTextStyle(style.desc, 1);
-  avai->SetTextFromStringResource(0x271c, 0x1f, 1);
+  avai->SetTextFromStringResource(0x271c, 0x1f, true);
 
   for (short column = 0; column < 4; ++column) {
     TStaticText* current = static_cast<TStaticText*>(
@@ -130,7 +130,7 @@ void TArmoryView::DoStartup() {
         ResolveControlByTag(IMPERIALISM_FOURCC('l', 'a', 'b', '0') + column)); // 'lab0'+column
     label->AssertValid();
     label->InstallTextStyle(style.desc, 1);
-    label->SetTextFromStringResource(0x271c, static_cast<short>(column + 1), 1);
+    label->SetTextFromStringResource(0x271c, static_cast<short>(column + 1), true);
   }
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
@@ -251,7 +251,7 @@ void TArmoryView::UpdateFields() {
   TStaticText* treasuryAvailable =
       static_cast<TStaticText*>(ResolveControlByTag(kControlTagAva3)); // 'ava3'
   treasuryAvailable->AssertValid();
-  treasuryAvailable->SetTextAndMaybeRefresh(&treasuryText, 0);
+  treasuryAvailable->SetTextAndMaybeRefresh(&treasuryText, false);
   treasuryAvailable->SetTextColorAndMaybeRefresh(
       treasury < selectedUnitOrder->cashCostPerUnit ? &warningTextColor : &normalTextColor, false);
   treasuryAvailable->QueryBounds(&invalidRect);
@@ -321,7 +321,7 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xc1a);
   }
-  unit->SetTextFromStringResource(0x2717, static_cast<short>(order->resourceTypeIndex + 1), 0);
+  unit->SetTextFromStringResource(0x2717, static_cast<short>(order->resourceTypeIndex + 1), false);
   CRect bounds;
   unit->QueryBounds(&bounds);
   RECT copiedBounds;
@@ -363,7 +363,7 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'o', 's', '3')));
   cos3->AssertValid();
   g_pSimMgr->NumToCurrency(selectedUnitOrder->cashCostPerUnit, &currencyText);
-  cos3->SetTextAndMaybeRefresh(&currencyText, 1);
+  cos3->SetTextAndMaybeRefresh(&currencyText, true);
 
   short resourceType = order->resourceTypeIndex;
   TNumberText* stat0 =
@@ -396,7 +396,7 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 't', 'a', '3')));
   stat3->AssertValid();
   stat3->SetTextFromStringResource(
-      0x271c, static_cast<short>(g_MapContextStaticTable_00695448[resourceType] + 0x21), 1);
+      0x271c, static_cast<short>(g_MapContextStaticTable_00695448[resourceType] + 0x21), true);
   stat3->QueryBounds(&bounds);
   CopyRect(&copiedBounds, &bounds);
   plaq->InvalidateCityDialogRectRegion(&copiedBounds, 1);
@@ -407,7 +407,7 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xc57);
   }
-  description->SetTextFromStringResource(0x2750, static_cast<short>(resourceType + 1), 0);
+  description->SetTextFromStringResource(0x2750, static_cast<short>(resourceType + 1), false);
   description->QueryBounds(&bounds);
   CopyRect(&copiedBounds, &bounds);
   InvalidateCityDialogRectRegion(&copiedBounds, 1);

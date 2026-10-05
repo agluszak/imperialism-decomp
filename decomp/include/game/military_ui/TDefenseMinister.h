@@ -76,7 +76,7 @@ public:
   // Not a factory despite the old Ghidra 'Create*Instance' names: every body
   // FLDs a per-personality FP weight constant (base 0.0f; the flag selects
   // between a pair on the conditional personalities). slot 0x60 (0x4ec0a0)
-  virtual double GetStategicEscalationMultiplier(unsigned char flag); // Mac oracle spelling
+  virtual double GetStategicEscalationMultiplier(bool flag); // Mac oracle spelling
 
   // +0x10..0x94 -- own block (RTTI m_nObjectSize proves this range is TDefenseMinister-
   // only, not shared TMinister base state; see TMinister.h). Fully recovered from

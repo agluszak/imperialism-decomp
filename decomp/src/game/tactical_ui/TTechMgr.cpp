@@ -523,10 +523,10 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
     if (record->ownerNationTag04 == nationSlot && (record->activeFlags1c & 1) != 0) {
       short maxCap = static_cast<char>(
           g_pGlobalMapState->FindMaxResourceCapabilityValueForTile(tileIndex, 0, nationSlot));
-      if (static_cast<char>(
-              g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 0)) < maxCap) {
-        g_pGlobalMapState->SetCivilianDevelopmentClassNibble(tileIndex, 0,
-                                                             static_cast<unsigned char>(maxCap), 1);
+      if (static_cast<char>(g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(
+              tileIndex, false)) < maxCap) {
+        g_pGlobalMapState->SetCivilianDevelopmentClassNibble(
+            tileIndex, false, static_cast<unsigned char>(maxCap), true);
       }
     }
   }

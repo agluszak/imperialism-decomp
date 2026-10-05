@@ -70,7 +70,7 @@ void TDealTabControl::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x005bc9f0
 void TDealTabControl::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
-                                 CPoint& currentPoint, unsigned char commandFlag) {
+                                 CPoint& currentPoint, bool commandFlag) {
   (void)startPoint;
   (void)previousPoint;
   (void)commandFlag;

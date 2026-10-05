@@ -34,8 +34,8 @@ void TTradeSchoolView::DoStartup() {
   if (nameText != 0) {
     g_pSimMgr->GetString(0x2719, embeddedPageIndex9E, &text);
     nameText->InstallTextStyle(titleStyle, 0);
-    nameText->SetTextAlignmentAndMaybeRefresh(1, 0);
-    nameText->SetTextAndMaybeRefresh(&text, 0);
+    nameText->SetTextAlignmentAndMaybeRefresh(1, false);
+    nameText->SetTextAndMaybeRefresh(&text, false);
   }
 
   SetControlHoverHelpText(CString(g_szEmptyString), this);
@@ -69,7 +69,7 @@ void TTradeSchoolView::DoStartup() {
       continue;
     }
     valueText->InstallTextStyle(valueStyle, 0);
-    valueText->SetTextAndMaybeRefresh(&mappedValueText, 0);
+    valueText->SetTextAndMaybeRefresh(&mappedValueText, false);
   }
 
   TextStyle costStyle;
@@ -84,7 +84,7 @@ void TTradeSchoolView::DoStartup() {
     }
     g_pSimMgr->NumToCurrency(costs[costIndex], &text);
     costText->InstallTextStyle(costStyle, 0);
-    costText->SetTextAndMaybeRefresh(&text, 0);
+    costText->SetTextAndMaybeRefresh(&text, false);
   }
 }
 

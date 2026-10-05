@@ -94,6 +94,6 @@ void TDealLine::InstallViews(TView* panel, int* offsetLayout) {
     }
   }
 
-  text->SetTextAndMaybeRefresh(&displayText, 1);
+  text->SetTextAndMaybeRefresh(&displayText, true);
   SetQuickDrawFillColorFromPaletteIndex(0);
 }

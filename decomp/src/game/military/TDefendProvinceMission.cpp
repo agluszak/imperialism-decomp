@@ -137,7 +137,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
     if (candidateNation < 7) {
       int candidateNationIndex = static_cast<int>(candidateNation);
       if (candidateNationIndex != sourceNation &&
-          g_pDiplomacyTurnStateManager->IsNationPairAtWar(candidateNation, sourceNation) != 0) {
+          g_pDiplomacyTurnStateManager->IsNationPairAtWar(candidateNation, sourceNation)) {
         if (g_pGlobalMapState->IsProvinceAdjacentTo(nodeContext, regionIndex) != 0) {
           short checkedRegion = static_cast<short>(regionIndex);
           TMilitaryUnit* unit = 0;

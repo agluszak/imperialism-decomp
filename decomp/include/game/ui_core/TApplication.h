@@ -28,7 +28,7 @@ public:
                                       void* cursorRegion); // slot 0x28 0x486990
   // MacApp TApplication::InstallCohandler(TEventHandler*, Boolean).
   virtual void InstallCohandler(TEventHandler* cohandler,
-                                unsigned char install); // slot 0x29 0x4869b0
+                                bool install); // slot 0x29 0x4869b0
   // MacApp TApplication::Idle(IdlePhase): HandleIdle every installed cohandler.
   virtual void Idle(int idlePhase); // slot 0x2a 0x486b10
   TApplication();

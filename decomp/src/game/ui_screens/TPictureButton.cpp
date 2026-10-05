@@ -15,7 +15,7 @@ IMPLEMENT_DYNCREATE(TPictureButton, TPicture)
 TPictureButton::~TPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00570870
-void TPictureButton::HiliteState(unsigned char enabledState, unsigned char refreshNow) {
+void TPictureButton::HiliteState(unsigned char enabledState, bool refreshNow) {
   if (static_cast<unsigned char>(enabledState) != this->controlState64) {
     this->controlState64 = enabledState;
     this->Show(enabledState, true);

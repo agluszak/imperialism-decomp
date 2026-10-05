@@ -136,7 +136,7 @@ void TArmyMission::ReadFrom(TStream* stream) {
     TSortedList* unitList = g_apNationStates[nationId04]->militaryUnitList44;
     TMilitaryUnit* unit =
         static_cast<TMilitaryUnit*>(unitList->GetEntryByOrdinal(stream->ReadInteger()));
-    AcceptReenforcement(unit, 0);
+    AcceptReenforcement(unit, false);
   }
 }
 
@@ -149,7 +149,7 @@ char TArmyMission::SmokeEmIfYouGotEm() {
       TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
       ArmyUnitCategoryStorage category = unit->GetCategory();
       if (category != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
-        RejectConstituent(unit, 1);
+        RejectConstituent(unit, true);
       }
       item = iter.Advance();
     }
@@ -158,7 +158,7 @@ char TArmyMission::SmokeEmIfYouGotEm() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053c570
-void TArmyMission::AcceptReenforcement(TMilitaryUnit* unit, unsigned char notify) {
+void TArmyMission::AcceptReenforcement(TMilitaryUnit* unit, bool notify) {
   unit->AssertValid();
   TMission* owner = unit->ownerMission;
   if (owner != nullptr) {
@@ -172,7 +172,7 @@ void TArmyMission::AcceptReenforcement(TMilitaryUnit* unit, unsigned char notify
 }
 
 // FUNCTION: IMPERIALISM 0x0053c5e0
-void TArmyMission::RejectConstituent(TMilitaryUnit* unit, unsigned char notify) {
+void TArmyMission::RejectConstituent(TMilitaryUnit* unit, bool notify) {
   (void)notify;
   if (orderList != nullptr) {
     POSITION pos = orderList->listState.Find(unit);
@@ -184,7 +184,7 @@ void TArmyMission::RejectConstituent(TMilitaryUnit* unit, unsigned char notify) 
 }
 
 // FUNCTION: IMPERIALISM 0x0053c620
-int TArmyMission::AccumulateLack(int* accumulatedLack, unsigned char includeExistingLack) const {
+int TArmyMission::AccumulateLack(int* accumulatedLack, bool includeExistingLack) const {
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
   CIterator iter(orderList);
   for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
@@ -203,7 +203,7 @@ int TArmyMission::AccumulateLack(int* accumulatedLack, unsigned char includeExis
   int total = 0;
   for (int i = 0; i < 5; ++i) {
     float value;
-    if (includeExistingLack != 0 && requiredEquipageByClass[i] <= vector[i]) {
+    if (includeExistingLack && requiredEquipageByClass[i] <= vector[i]) {
       float difference = requiredEquipageByClass[i] - vector[i];
       value = difference * g_InvadeMissionSuppressedPriorContributionScale_0065A95C +
               static_cast<float>(accumulatedLack[i]);

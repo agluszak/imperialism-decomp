@@ -87,7 +87,7 @@ void TUniversityView::DoStartup() {
   TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl)); // 'titl'
   title->AssertValid();
   title->InstallTextStyle(style.desc, 1);
-  title->SetTextFromStringResource(0x2723, 0xa, 1);
+  title->SetTextFromStringResource(0x2723, 0xa, true);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b6b);
   TStaticText* unit = static_cast<TStaticText*>(ResolveControlByTag(kControlTagUnit)); // 'unit'
@@ -100,7 +100,7 @@ void TUniversityView::DoStartup() {
         ResolveControlByTag(kControlTagFix0 + fixedLabelIndex)); // 'fix0'/'fix1'
     label->AssertValid();
     label->InstallTextStyle(style.desc, 1);
-    label->SetTextFromStringResource(0x2723, static_cast<short>(0xb + fixedLabelIndex), 1);
+    label->SetTextFromStringResource(0x2723, static_cast<short>(0xb + fixedLabelIndex), true);
   }
 
   TStaticText* description =
@@ -113,9 +113,9 @@ void TUniversityView::DoStartup() {
         ResolveControlByTag(kControlTagFix2 + requirementLabelIndex)); // 'fix2'..'fix4'
     label->AssertValid();
     label->InstallTextStyle(style.desc, 1);
-    label->SetTextFromStringResource(0x2723, static_cast<short>(0xe + requirementLabelIndex), 1);
+    label->SetTextFromStringResource(0x2723, static_cast<short>(0xe + requirementLabelIndex), true);
     label->Show(0, 1);
-    label->SetTextAlignmentAndMaybeRefresh(1, 0);
+    label->SetTextAlignmentAndMaybeRefresh(1, false);
   }
 
   static const unsigned int kStyledValueTags[6] = {kControlTagCash, kControlTagTrea,
@@ -149,7 +149,7 @@ void TUniversityView::SetUnit(short recruitmentCategory) {
   CRect invalidRect;
   TStaticText* unit = static_cast<TStaticText*>(ResolveControlByTag(kControlTagUnit)); // 'unit'
   unit->AssertValid();
-  unit->SetTextFromStringResource(0x2718, static_cast<short>(recruitmentCategory + 1), 0);
+  unit->SetTextFromStringResource(0x2718, static_cast<short>(recruitmentCategory + 1), false);
   unit->QueryBounds(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
@@ -163,14 +163,14 @@ void TUniversityView::SetUnit(short recruitmentCategory) {
   TStaticText* cashCost = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCash)); // 'cash'
   cashCost->AssertValid();
   g_pSimMgr->NumToCurrency(order->cashCostPerUnit, &currencyText);
-  cashCost->SetTextAndMaybeRefresh(&currencyText, 0);
+  cashCost->SetTextAndMaybeRefresh(&currencyText, false);
   cashCost->QueryBounds(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
   TStaticText* description =
       static_cast<TStaticText*>(ResolveControlByTag(kControlTagDesc)); // 'desc'
   description->AssertValid();
-  description->SetTextFromStringResource(0x2751, recruitmentCategory, 0);
+  description->SetTextFromStringResource(0x2751, recruitmentCategory, false);
   description->QueryBounds(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
@@ -299,7 +299,7 @@ void TUniversityView::UpdateFields() {
   TStaticText* treasuryAvailable =
       static_cast<TStaticText*>(ResolveControlByTag(kControlTagTrea)); // 'trea'
   treasuryAvailable->AssertValid();
-  treasuryAvailable->SetTextAndMaybeRefresh(&treasuryText, 0);
+  treasuryAvailable->SetTextAndMaybeRefresh(&treasuryText, false);
   treasuryAvailable->SetTextColorAndMaybeRefresh(
       treasury < selectedRecruitmentOrder->cashCostPerUnit ? &warningTextColor : &normalTextColor,
       true);
@@ -329,7 +329,7 @@ void TUniversityView::Draw(RECT* rectBuffer) {
 
   int nHighestRequirementLevel = 0;
   short baseOffset =
-      g_pGlobalMapState->GetMapImprovementSpriteBaseOffset(selectedRecruitmentCategory, 0, 1);
+      g_pGlobalMapState->GetMapImprovementSpriteBaseOffset(selectedRecruitmentCategory, false, 1);
   UpdatePaletteIndexWithDefaultFallback(0x10);
 
   RECT panelRect = {0x7c, 0x5c, 0xbc, 0x9c};

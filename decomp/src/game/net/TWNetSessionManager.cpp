@@ -517,7 +517,7 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
 
   TWindow* dialog = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMultiplayerPickGame));
-  dialog->SetModality(1);
+  dialog->SetModality(true);
   TDialogBehavior* behavior = dialog->GetDialogBehavior();
   if (behavior != 0) {
     behavior->defaultCommandCode = kControlTagOkay; // 'okay'
@@ -525,7 +525,7 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
 
   CPoint placement;
   g_pViewMgr->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
-  dialog->Resize(placement, 0);
+  dialog->Resize(placement, false);
 
   TJoinSelectorDialog* selector =
       static_cast<TJoinSelectorDialog*>(dialog->ResolveControlByTag(kControlTagDialog)); // 'GOLD'

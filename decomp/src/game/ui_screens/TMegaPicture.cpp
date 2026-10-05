@@ -24,7 +24,7 @@ TMegaPicture::~TMegaPicture() {}
 void TMegaPicture::IMegaPicture(TView* panel, int* offsetLayout, int* sizeLayout, int layoutParam4,
                                 int layoutParam5, short pictureId, unsigned short flags) {
   IPicture(panel, offsetLayout, sizeLayout, layoutParam4, layoutParam5, pictureId);
-  AssignFlags98AndMaybeRefresh(flags, 0);
+  AssignFlags98AndMaybeRefresh(flags, false);
 }
 
 // Blits the picture's own bitmap to its transformed (screen-space) rect. Normally
@@ -128,7 +128,7 @@ void TMegaPicture::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x00573690
-void TMegaPicture::AssignFlags98AndMaybeRefresh(unsigned short value, char refreshNow) {
+void TMegaPicture::AssignFlags98AndMaybeRefresh(unsigned short value, bool refreshNow) {
   flags98 = value;
   if (refreshNow) {
     RefreshControl();

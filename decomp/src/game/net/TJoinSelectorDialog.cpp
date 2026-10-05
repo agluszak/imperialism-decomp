@@ -59,7 +59,7 @@ void TJoinSelectorDialog::AddJoinableGameOptionEntry(const char* label,
   unsigned long recordTag = (unsigned long)record;
   TRadioText* item = gameControl->AddItem(recordTag, (int)record, label, 0x12, -1);
   ApplyUiTextStyleAndThemeFlags(item, 0, 0xc, 0x2b6b, 0x2b6c);
-  item->SetTextAlignmentAndMaybeRefresh(-2, 0);
+  item->SetTextAlignmentAndMaybeRefresh(-2, false);
   gameControl->SetSelectedTextOptionByTag((int)record, false);
 }
 
@@ -77,7 +77,7 @@ void TJoinSelectorDialog::DoEvent(int commandId, TEventHandler* sourceHandler, T
       (sourceHandler->controlTag == kControlTagCanc ||
        sourceHandler->controlTag == kControlTagCncl ||
        sourceHandler->controlTag == kControlTagOkay)) {
-    GetWindow()->Dismiss(sourceHandler->controlTag, 1);
+    GetWindow()->Dismiss(sourceHandler->controlTag, true);
   }
   TControl::DoEvent(commandId, sourceHandler, event);
 }

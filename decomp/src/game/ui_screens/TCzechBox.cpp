@@ -13,7 +13,7 @@ TCzechBox::~TCzechBox() {}
 // FUNCTION: IMPERIALISM 0x00571cb0
 void TCzechBox::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == kControlCommandHiliteToggle) {
-    Toggle(1);
+    Toggle(true);
   }
   TUpDownPictureButton::DoEvent(commandId, sourceHandler, event);
 }
@@ -25,7 +25,7 @@ void TCzechBox::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x00571d10
-void TCzechBox::HiliteState(unsigned char fEnabledState, unsigned char fRefreshNow) {
+void TCzechBox::HiliteState(unsigned char fEnabledState, bool fRefreshNow) {
   if (controlState64 != fEnabledState) {
     controlState64 = fEnabledState;
     CheckTheLook(fRefreshNow);
@@ -62,7 +62,7 @@ void TCzechBox::SetState(unsigned char isOn, unsigned char refreshNow) {
 }
 
 // FUNCTION: IMPERIALISM 0x00571e40
-void TCzechBox::Toggle(unsigned char refreshNow) {
+void TCzechBox::Toggle(bool refreshNow) {
   SetState(static_cast<unsigned char>(IsOn() == 0), refreshNow);
 }
 

@@ -121,12 +121,12 @@ void TShipView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
         if (shipFraction->selectedShipCount < shipFraction->availableShipCount) {
           short newValue = static_cast<short>(shipFraction->selectedShipCount + 1);
           shipFraction->selectedShipCount = newValue;
-          shipFraction->shipCountButton->SetValue(newValue, 1);
+          shipFraction->shipCountButton->SetValue(newValue, true);
         }
       } else if (shipFraction->selectedShipCount > 0) {
         short newValue = static_cast<short>(shipFraction->selectedShipCount - 1);
         shipFraction->selectedShipCount = newValue;
-        shipFraction->shipCountButton->SetValue(newValue, 1);
+        shipFraction->shipCountButton->SetValue(newValue, true);
       }
     }
   } else if (sourceHandler->controlTag == kControlTagName) {
@@ -157,7 +157,7 @@ void TShipView::RunEngineerOrderNameEditDialogAndApply() {
 
   TStaticText* titleControl = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagTitl));
   titleControl->AssertValid();
-  titleControl->SetTextFromStringResource(0x2746, 5, 1);
+  titleControl->SetTextFromStringResource(0x2746, 5, true);
   titleControl->textStyle78 = style;
 
   TEditText* nameControl = static_cast<TEditText*>(node->ResolveControlByTag(kControlTagName));

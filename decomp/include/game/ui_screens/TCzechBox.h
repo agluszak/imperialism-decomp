@@ -14,13 +14,13 @@ public:
                        TEvent* event) override; // slot 0x0f 0x00571cb0
   virtual void DoPostCreate(int arg) override;  // slot 0x37 0x571cf0
   virtual void HiliteState(unsigned char fEnabledState,
-                           unsigned char fRefreshNow) override; // slot 0x70 0x571d10
+                           bool fRefreshNow) override; // slot 0x70 0x571d10
   // Mac CodeWarrior identifies these five state operations as IsOn, SetState,
   // CheckTheLook, Toggle, and ToggleIf; the Windows slot order and byte widths agree.
   virtual unsigned char IsOn();                                        // slot 0x74 0x571de0
   virtual void SetState(unsigned char isOn, unsigned char refreshNow); // slot 0x75 0x571e00
   virtual void CheckTheLook(unsigned char refreshNow);                 // slot 0x76 0x571d40
-  virtual void Toggle(unsigned char refreshNow);                       // slot 0x77 0x571e40
+  virtual void Toggle(bool refreshNow);                                // slot 0x77 0x571e40
   virtual void ToggleIf(unsigned char expectedState,
                         unsigned char refreshNow); // slot 0x78 0x571e80
 

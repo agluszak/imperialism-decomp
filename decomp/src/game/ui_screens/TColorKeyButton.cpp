@@ -10,7 +10,7 @@ TColorKeyButton::TColorKeyButton() {}
 TColorKeyButton::~TColorKeyButton() {}
 
 // FUNCTION: IMPERIALISM 0x00571ff0
-void TColorKeyButton::HiliteState(unsigned char fEnabledState, unsigned char fRefreshNow) {
+void TColorKeyButton::HiliteState(unsigned char fEnabledState, bool fRefreshNow) {
   if (controlState64 != fEnabledState) {
     controlState64 = fEnabledState;
     short pictureId =

@@ -15,11 +15,11 @@ public:
   virtual void DoPostCreate(int arg) override;  // slot 0x37 0x4aa2f0
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4aa100
   virtual void HiliteState(unsigned char hilited,
-                           unsigned char drawImmediate) override;       // slot 0x70 0x4aa310
+                           bool drawImmediate) override;                // slot 0x70 0x4aa310
   virtual unsigned char IsOn();                                         // slot 0x71 0x4aa340
   virtual void SetState(unsigned char on, unsigned char drawImmediate); // slot 0x72 0x4aa360
   virtual void CheckTheLook(unsigned char drawImmediate);               // slot 0x73 0x4aa030
-  virtual void Toggle(unsigned char drawImmediate);                     // slot 0x74 0x4aa3a0
+  virtual void Toggle(bool drawImmediate);                              // slot 0x74 0x4aa3a0
   virtual void ToggleIf(unsigned char expectedState,
                         unsigned char drawImmediate); // slot 0x75 0x4aa3e0
   virtual void DrawImmediate();                       // slot 0x76 0x4aa430

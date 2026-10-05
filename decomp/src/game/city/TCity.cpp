@@ -956,7 +956,7 @@ short TCity::GetNextBuildingType(short buildingSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b4c80
-void TCity::SetBuildingWindowState(short productionSlot, char flag, short current, short accum) {
+void TCity::SetBuildingWindowState(short productionSlot, bool flag, short current, short accum) {
   this->productionFlags[productionSlot] = flag;
   this->production22c[productionSlot] = current;
   this->production24c[productionSlot] = accum;
@@ -979,14 +979,14 @@ short TCity::IsCapacityCenter(short resourceSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b4d50
-void TCity::BuildPowerPlant(char enableUpgrade) {
-  if (enableUpgrade != 0 && this->powerPlantUpgradeQueuedFlag == 0) {
+void TCity::BuildPowerPlant(bool enableUpgrade) {
+  if (enableUpgrade && this->powerPlantUpgradeQueuedFlag == 0) {
     this->ownerNationAc->AddToTreasury(-5000);
     this->powerPlantUpgradeQueuedFlag = 1;
     return;
   }
 
-  if (this->powerPlantUpgradeQueuedFlag != 0 && enableUpgrade == 0) {
+  if (this->powerPlantUpgradeQueuedFlag != 0 && !enableUpgrade) {
     this->ownerNationAc->AddToTreasury(5000);
     this->powerPlantUpgradeQueuedFlag = 0;
   }

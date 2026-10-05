@@ -138,7 +138,7 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
           kControlTagArmyRatioFirst + g_awTacticalUnitCategoryCodeBySlot[militaryUnit->orderType];
       TNumberedArrowButton* arrow =
           static_cast<TNumberedArrowButton*>(activeToolbar->ResolveControlByTag(arrowTag));
-      arrow->SetValue(static_cast<short>(arrow->value84 + availableCountDelta), 1);
+      arrow->SetValue(static_cast<short>(arrow->value84 + availableCountDelta), true);
       g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
     }
   } else if (sourceHandler->controlTag == kControlTagUpgr) {
@@ -157,7 +157,8 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       TStaticText* tbr1 = static_cast<TStaticText*>(
           g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagTbr1));
       tbr1->AssertValid();
-      tbr1->SetTextAlignmentAndMaybeRefresh(static_cast<short>(g_pSimMgr->GetPlayerCountry()), 0);
+      tbr1->SetTextAlignmentAndMaybeRefresh(static_cast<short>(g_pSimMgr->GetPlayerCountry()),
+                                            false);
     } else {
       CString msg;
       g_pSimMgr->GetString(0x2745, 3, &msg);
@@ -188,7 +189,7 @@ void TArmyUnitView::HandleCrossUArmyViewsNameCommand() {
 
   TStaticText* titleControl = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagTitl));
   titleControl->AssertValid();
-  titleControl->SetTextFromStringResource(0x2746, 1, 1);
+  titleControl->SetTextFromStringResource(0x2746, 1, true);
   titleControl->textStyle78 = style;
 
   TEditText* nameControl = static_cast<TEditText*>(node->ResolveControlByTag(kControlTagName));
@@ -199,7 +200,7 @@ void TArmyUnitView::HandleCrossUArmyViewsNameCommand() {
   nameControl->InitDialogWindowAndSyncTitleIfChanged(&editedName, 1);
   nameControl->textStyle78 = style;
 
-  node->SetModality(1);
+  node->SetModality(true);
   TDialogBehavior* behavior = node->GetDialogBehavior();
   if (behavior != nullptr) {
     behavior->defaultCommandCode = kControlTagOkay; // 'okay'

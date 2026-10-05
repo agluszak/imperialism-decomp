@@ -59,7 +59,7 @@ void TTacticalHolaPicture::ConfigureBattleIntroCoatsAndSiteLabels(int nationA, i
   infoControl->AssertValid();
   infoControl->UpdateTextEntrySharedString(&siteLabelText);
   infoControl->SetTextStyle(0, 0xc, 0x2b6a);
-  infoControl->CenterVertically(1);
+  infoControl->CenterVertically(true);
 
   TMapPreviewView* previewMap =
       static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagPreviewMap));

@@ -350,14 +350,14 @@ bool TView::IsActionable() {
          ownerContext != 0 && ownerContext->IsActionable();
 }
 // FUNCTION: IMPERIALISM 0x0048b250
-void TView::Locate(const CPoint& position, unsigned char refresh) {
-  if (refresh != 0 && IsActionable()) {
+void TView::Locate(const CPoint& position, bool refresh) {
+  if (refresh && IsActionable()) {
     InvalidateCityDialogRectRegion(0, 1);
   }
   ownerLocalX = position.x;
   ownerLocalY = position.y;
   UpdateCoordinates();
-  if (refresh != 0 && IsActionable()) {
+  if (refresh && IsActionable()) {
     InvalidateCityDialogRectRegion(0, 0);
   }
 }
@@ -387,8 +387,8 @@ void TView::UpdateCoordinates() {
   }
 }
 // FUNCTION: IMPERIALISM 0x0048b3f0
-void TView::Resize(const CPoint& size, unsigned char refresh) {
-  if (refresh != 0) {
+void TView::Resize(const CPoint& size, bool refresh) {
+  if (refresh) {
     CRect oldRect;
     GetDrawableQDRect(&oldRect);
     frameWidth = size.x;
@@ -794,11 +794,11 @@ void TView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
   SetCursor(hCursor);
 }
 // FUNCTION: IMPERIALISM 0x0048c380
-void TView::ApplyBounds(CRect* newBounds, unsigned char modeFlag) {
+void TView::ApplyBounds(CRect* newBounds, bool modeFlag) {
   CRect current;
   QueryBounds(&current);
   if (EqualRect(newBounds, &current) == 0) {
-    if (modeFlag != 0 && IsActionable()) {
+    if (modeFlag && IsActionable()) {
       InvalidateCityDialogRectRegion(0, 1);
     }
     ownerLocalX = newBounds->left;
@@ -806,7 +806,7 @@ void TView::ApplyBounds(CRect* newBounds, unsigned char modeFlag) {
     frameWidth = newBounds->right - newBounds->left;
     frameHeight = newBounds->bottom - newBounds->top;
     UpdateCoordinates();
-    if (modeFlag != 0 && IsActionable()) {
+    if (modeFlag && IsActionable()) {
       InvalidateCityDialogRectRegion(0, 0);
     }
   }

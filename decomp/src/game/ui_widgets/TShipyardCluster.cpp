@@ -71,7 +71,7 @@ void TShipyardCluster::SetMoveAmount(short amount) {
   CPoint moveControlPosition;
   moveControlPosition.x = barControl->ownerLocalX - 2;
   moveControlPosition.y = barControl->ownerLocalY + barControl->frameHeight;
-  moveControl->Locate(moveControlPosition, 1);
+  moveControl->Locate(moveControlPosition, true);
   moveControl->QueryBounds(&moveRect);
   OffsetRect(&moveRect, this->ownerLocalX, this->ownerLocalY);
   CopyRect(&invalidateRect, &moveRect);

@@ -230,7 +230,7 @@ void TBattleReportView::DoPostCreate(int arg) {
   g_pCursorControlPanel = cursorPanel;
   cursorPanel->AssertValid();
   g_pCursorControlPanel->SetTextStyle(0, 0xe, 0x2b6b);
-  g_pCursorControlPanel->SetTextAlignmentAndMaybeRefresh(1, 1);
+  g_pCursorControlPanel->SetTextAlignmentAndMaybeRefresh(1, true);
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b67, 0x2b6c);
 
   SetControlHoverHelpText(g_pBattleReportSharedText_0064dc30,
@@ -334,7 +334,7 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
         TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UBattleReportViews.cpp",
                                                      0x1ef);
       }
-      dialog->SetModality(1);
+      dialog->SetModality(true);
 
       TBook* book = static_cast<TBook*>(dialog->ResolveControlByTag(kControlTagDialog));
       book->AssertValid();
@@ -379,15 +379,15 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       rightNation->AssertValid();
       ApplyUiTextStyleAndThemeFlags(leftNation, 0, 0xe, 0x2b6b, 0x2b6c);
       ApplyUiTextStyleAndThemeFlags(rightNation, 0, 0xe, 0x2b6b, 0x2b6c);
-      leftNation->SetTextAlignmentAndMaybeRefresh(1, 0);
-      rightNation->SetTextAlignmentAndMaybeRefresh(1, 0);
+      leftNation->SetTextAlignmentAndMaybeRefresh(1, false);
+      rightNation->SetTextAlignmentAndMaybeRefresh(1, false);
       {
         CString leftName(eventBattleRecord->nameBuffer[0].data);
-        leftNation->SetTextAndMaybeRefresh(&leftName, 0);
+        leftNation->SetTextAndMaybeRefresh(&leftName, false);
       }
       {
         CString rightName(eventBattleRecord->nameBuffer[1].data);
-        rightNation->SetTextAndMaybeRefresh(&rightName, 0);
+        rightNation->SetTextAndMaybeRefresh(&rightName, false);
       }
 
       SetControlHoverHelpText(CString(g_pBattleReportSharedText_0064dc30), dialog);
@@ -395,7 +395,7 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
                                                  book->ResolveControlByTag(kControlTagOkay));
       CPoint placement;
       g_pViewMgr->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
-      dialog->Locate(placement, 0);
+      dialog->Locate(placement, false);
       TDialogBehavior* behavior = dialog->GetDialogBehavior();
       if (behavior != 0) {
         behavior->defaultCommandCode = kControlTagOkay;
@@ -593,7 +593,7 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     scanBracketExpressions(g_pSimMgr, &combinedStr, static_cast<LPCSTR>(locationTemplate),
                            static_cast<LPCSTR>(strLocation), static_cast<LPCSTR>(strTerrain));
     combinedStr += " ";
-    locaText->SetTextAndMaybeRefresh(&combinedStr, 1);
+    locaText->SetTextAndMaybeRefresh(&combinedStr, true);
     break;
   }
   case kMapContextReportSeaBattle:
@@ -602,7 +602,7 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     locaText->AssertValid();
     CString nameStr;
     static_cast<TZone*>(record->location08)->AssignZoneDisplayNameToOutputRef(&nameStr);
-    locaText->SetTextAndMaybeRefresh(&nameStr, 1);
+    locaText->SetTextAndMaybeRefresh(&nameStr, true);
     break;
   }
   default:
@@ -681,34 +681,34 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
   g_pSimMgr->GetString(userStringGroup, static_cast<short>(userStringIndex), &userStr);
   TStaticText* userText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagResu));
   userText->AssertValid();
-  userText->SetTextAndMaybeRefresh(&userStr, 1);
+  userText->SetTextAndMaybeRefresh(&userStr, true);
 
   {
     TStaticText* mdafText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagFadm));
     mdafText->AssertValid();
     CString mdafStr(record->nameBuffer[participantIndex].data);
-    mdafText->SetTextAndMaybeRefresh(&mdafStr, 1);
+    mdafText->SetTextAndMaybeRefresh(&mdafStr, true);
   }
 
   {
     TStaticText* phsfText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagFshp));
     phsfText->AssertValid();
     CString phsfStr(record->overlayLabel[participantIndex].data);
-    phsfText->SetTextAndMaybeRefresh(&phsfStr, 1);
+    phsfText->SetTextAndMaybeRefresh(&phsfStr, true);
   }
 
   {
     TStaticText* mdaeText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagEadm));
     mdaeText->AssertValid();
     CString mdaeStr(record->nameBuffer[otherParticipantIndex].data);
-    mdaeText->SetTextAndMaybeRefresh(&mdaeStr, 1);
+    mdaeText->SetTextAndMaybeRefresh(&mdaeStr, true);
   }
 
   {
     TStaticText* phseText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagEshp));
     phseText->AssertValid();
     CString phseStr(record->overlayLabel[otherParticipantIndex].data);
-    phseText->SetTextAndMaybeRefresh(&phseStr, 1);
+    phseText->SetTextAndMaybeRefresh(&phseStr, true);
   }
 
   bool hasPrevious = selectedReportIndex > 1;

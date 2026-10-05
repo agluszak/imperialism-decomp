@@ -237,7 +237,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
     fortLabel->IDeluxeText(this, fortLabelOff, optionLabelSize, &fortLabelInset, &titleStyle, -2);
     fortLabel->BuildCityViewProductionControls_Impl(0x1c20,
                                                     static_cast<short>(homeProv->fortLevel03 + 3));
-    fortLabel->CenterVertically(0);
+    fortLabel->CenterVertically(false);
     layoutY = 0x52;
   }
 
@@ -255,7 +255,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
     RECT railLabelInset = {0, 0, 0, 0};
     railLabel->IDeluxeText(this, railLabelOff, optionLabelSize, &railLabelInset, &titleStyle, -2);
     railLabel->BuildCityViewProductionControls_Impl(0x1c20, 1);
-    railLabel->CenterVertically(0);
+    railLabel->CenterVertically(false);
 
     layoutY = static_cast<short>(layoutY + 0x2a);
 
@@ -286,7 +286,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
     RECT portLabelInset = {0, 0, 0, 0};
     portLabel->IDeluxeText(this, portLabelOff, optionLabelSize, &portLabelInset, &titleStyle, -2);
     portLabel->BuildCityViewProductionControls_Impl(0x1c20, 2);
-    portLabel->CenterVertically(0);
+    portLabel->CenterVertically(false);
 
     layoutY = static_cast<short>(layoutY + 0x2a);
 
@@ -322,11 +322,11 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
   CRect bounds;
   window->QueryBounds(&bounds);
   bounds.bottom = bounds.top + layoutY;
-  window->ApplyBounds(&bounds, 1);
+  window->ApplyBounds(&bounds, true);
 
   QueryBounds(&bounds);
   bounds.bottom = bounds.top + layoutY;
-  ApplyBounds(&bounds, 1);
+  ApplyBounds(&bounds, true);
 
   TDialogBehavior* behavior = window->GetDialogBehavior();
   if (behavior != 0) {

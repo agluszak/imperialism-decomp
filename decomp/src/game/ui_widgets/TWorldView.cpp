@@ -399,7 +399,7 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
       RenderTacticalStackCountIndicatorAndUnitBadge(previewTile, &badgeRect, 1);
     } else if (interactionMode == 2) {
       badgeRect.SetRect(outY, outX, outY + previewSquareRadius, outX + previewSquareRadius);
-      RenderMapDialogTerrainOverlayFrameByTileOwner(previewTile, &badgeRect, 1);
+      RenderMapDialogTerrainOverlayFrameByTileOwner(previewTile, &badgeRect, true);
     }
   }
 
@@ -426,7 +426,7 @@ void TWorldView::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, 
 
 // FUNCTION: IMPERIALISM 0x00596060
 void TWorldView::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
-                                                               unsigned char altOverlay) {
+                                                               bool altOverlay) {
   (void)tileIndex;
   (void)dstRect;
   (void)altOverlay;
@@ -580,39 +580,35 @@ void TWorldView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFla
   char handled;
   switch (static_cast<TMapUberPicture*>(ownerContext)->activeUnitCategoryIndex) {
   case 0:
-    if (g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) !=
-            0 ||
-        g_pNavyOrderManager->SelectionClick(nTileIndex, nInputFlags) != 0) {
+    if (g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) ||
+        g_pNavyOrderManager->SelectionClick(nTileIndex, nInputFlags)) {
       goto refresh;
     }
     handled = g_pSelectedCivilianOrderState->HandleCivilianTileOrderAction(nTileIndex, nInputFlags);
     goto cycle;
   case 1:
-    if (g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) !=
-            0 ||
+    if (g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) ||
         g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(nTileIndex,
-                                                                                nInputFlags) != 0 ||
-        g_pNavyOrderManager->SelectionClick(nTileIndex, nInputFlags) != 0) {
+                                                                                nInputFlags) ||
+        g_pNavyOrderManager->SelectionClick(nTileIndex, nInputFlags)) {
       goto refresh;
     }
     handled =
         g_pMapContextActionManager->HandleMapClickByCivilianCursorState(nTileIndex, nInputFlags);
     goto cycle;
   case 2:
-    if (g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) !=
-            0 ||
+    if (g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) ||
         g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(nTileIndex,
-                                                                                nInputFlags) != 0) {
+                                                                                nInputFlags)) {
       RefreshControl();
       goto tail;
     }
     handled = static_cast<char>(g_pNavyOrderManager->DoTileClick(nTileIndex, nInputFlags));
     goto cycle;
   case 3:
-    if (g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) ==
-            0 &&
-        g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(nTileIndex,
-                                                                                nInputFlags) == 0) {
+    if (!g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) &&
+        !g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(nTileIndex,
+                                                                                 nInputFlags)) {
       g_pNavyOrderManager->SelectionClick(nTileIndex, nInputFlags);
     }
     goto tail;

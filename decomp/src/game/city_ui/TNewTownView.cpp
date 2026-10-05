@@ -38,11 +38,11 @@ void TNewTownView::StuffValues(TTown* town) {
   CRect bounds;
   owner->QueryBounds(&bounds);
   bounds.bottom += extraHeight;
-  owner->ApplyBounds(&bounds, 1);
+  owner->ApplyBounds(&bounds, true);
 
   QueryBounds(&bounds);
   bounds.bottom += extraHeight;
-  ApplyBounds(&bounds, 1);
+  ApplyBounds(&bounds, true);
 
   TView* cancel = ResolveControlByTag(kControlTagCncl); // 'cncl'
   if (cancel == 0) {
@@ -50,7 +50,7 @@ void TNewTownView::StuffValues(TTown* town) {
   }
   cancel->QueryBounds(&bounds);
   OffsetRect(&bounds, 0, extraHeight);
-  cancel->ApplyBounds(&bounds, 1);
+  cancel->ApplyBounds(&bounds, true);
 
   TView* okay = ResolveControlByTag(kControlTagOkay); // 'okay'
   if (okay == 0) {
@@ -58,7 +58,7 @@ void TNewTownView::StuffValues(TTown* town) {
   }
   okay->QueryBounds(&bounds);
   OffsetRect(&bounds, 0, extraHeight);
-  okay->ApplyBounds(&bounds, 1);
+  okay->ApplyBounds(&bounds, true);
 
   int y = 0x40;
   for (short iconResourceType = 0; iconResourceType < kResourceKindCount; ++iconResourceType) {

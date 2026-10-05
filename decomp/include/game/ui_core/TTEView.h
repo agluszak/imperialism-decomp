@@ -17,7 +17,7 @@ public:
   virtual ~TTEView() override; // slot 0x01 (scalar deleting destructor)
   short GetNumberOfChars();
   void SetOneStyle(short start, short end, short styleMask, const TextStyle& style,
-                   unsigned char refreshNow);
+                   bool refreshNow);
   void StuffTERects(const CRect& textRect);
   // Measures the wrapped text height produced by DrawText(DT_CALCRECT) inside the
   // inset content rectangle. The original returns bounds.bottom - bounds.top.
@@ -40,7 +40,7 @@ public:
   // members previously sat at the head of TDeluxeText, but the RTTI sizes prove
   // they belong here: sizeof(TTEView)=0x98 and TDeluxeText's remaining fields
   // then land exactly on their offset-suffixed names (cursorThemeCode98 @0x98).
-  unsigned char field94;      // +0x94
+  bool field94;               // +0x94
   unsigned char field95;      // +0x95
   unsigned char padding96[2]; // +0x96
 };

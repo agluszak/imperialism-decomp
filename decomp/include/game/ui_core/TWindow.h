@@ -41,7 +41,7 @@ public:
   virtual void ResizeByUser(const CPoint& point) override;                // slot 0x62 0x48e240
   virtual void ZoomByUser(const CPoint& point, short partCode) override;  // slot 0x63 0x48e270
   virtual void WindowToLocal(CPoint* point) override;                     // slot 0x67 0x492d60
-  virtual void SetModality(unsigned char modal);                          // slot 0x68 0x48da40
+  virtual void SetModality(bool modal);                                   // slot 0x68 0x48da40
   virtual void SetDialogItems(unsigned long defaultCommandCode,
                               unsigned long cancelCommandCode); // slot 0x69 0x48d8a0
   virtual unsigned char IsModal();                              // slot 0x6a 0x48da10
@@ -51,17 +51,17 @@ public:
   // no behavior is attached), which stashes commandCode as armedCommandCode and
   // dispatches it to the behavior's owner. 0x48dc90.
   virtual void Dismiss(unsigned long commandCode,
-                       unsigned char accepted); // slot 0x6d 0x48dc90
+                       bool accepted);          // slot 0x6d 0x48dc90
   virtual TDialogBehavior* GetDialogBehavior(); // slot 0x6e 0x48dcc0
   virtual void AssertMcAppUILine2554();         // slot 0x6f 0x48dce0
   // Switching notifies the previous and new targets through TEventHandler slots.
   virtual void SetWindowTarget(TEventHandler* target); // slot 0x70 0x48ddc0
   // Centers the real MFC CWnd (CenterWindow) when one is attached; otherwise computes
   // ownerLocalX/Y directly against the fixed 0x280x0x1e0 work area, per flag.
-  virtual void Center(unsigned char centerX, unsigned char centerY,
-                      unsigned char unused);                    // slot 0x71 0x48e150
-  virtual void Activate(unsigned char active);                  // slot 0x72 0x48d8d0
-  virtual void Show(unsigned char show, unsigned char refresh); // slot 0x73 0x48d900
+  virtual void Center(bool centerX, bool centerY,
+                      bool unused);                    // slot 0x71 0x48e150
+  virtual void Activate(unsigned char active);         // slot 0x72 0x48d8d0
+  virtual void Show(unsigned char show, bool refresh); // slot 0x73 0x48d900
   // MacApp TWindow::CloseAndFree(): Close (slot 0x28) then Free (slot 0x07).
   virtual void CloseAndFree();                 // slot 0x74 0x48e120
   virtual void SetTitle(const CString* title); // slot 0x75 0x48d9c0

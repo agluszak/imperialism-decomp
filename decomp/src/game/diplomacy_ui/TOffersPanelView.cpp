@@ -47,17 +47,17 @@ void TOffersPanelView::DoPostCreate(int arg) {
   // SetTextStyle/SetTextAlignmentAndMaybeRefresh exactly.
   TDeluxeText* propControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagProp));
   propControl->AssertValid();
-  propControl->SetTextStyle(sharedStyle, 0);
+  propControl->SetTextStyle(sharedStyle, false);
   propControl->shadowTextColor = sharedStyle.textColor;
   propControl->dropShadowEnabledA0 = true;
-  propControl->SetTextAlignmentAndMaybeRefresh(1, 0);
+  propControl->SetTextAlignmentAndMaybeRefresh(1, false);
 
   TDeluxeText* textControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagText));
   textControl->AssertValid();
-  textControl->SetTextStyle(sharedStyle, 0);
+  textControl->SetTextStyle(sharedStyle, false);
   textControl->shadowTextColor = sharedStyle.textColor;
   textControl->dropShadowEnabledA0 = true;
-  textControl->SetTextAlignmentAndMaybeRefresh(1, 0);
+  textControl->SetTextAlignmentAndMaybeRefresh(1, false);
 
   CString acceHint;
   g_pSimMgr->GetString(0x274a, 6, &acceHint);
@@ -192,16 +192,16 @@ char TOffersPanelView::PoseOffer(short sourceNation, short targetNation, short o
   if (isNotice) {
     message = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagText));
     message->AssertValid();
-    sheet->Locate(g_diplomacyPopupOffscreenPosition_006a3020, 1);
-    wait->Locate(g_diplomacyPopupVisiblePosition_006a2fe0, 1);
+    sheet->Locate(g_diplomacyPopupOffscreenPosition_006a3020, true);
+    wait->Locate(g_diplomacyPopupVisiblePosition_006a2fe0, true);
   } else {
     message = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagProp));
     message->AssertValid();
-    wait->Locate(g_diplomacyPopupOffscreenPosition_006a3020, 1);
-    sheet->Locate(g_diplomacyPopupVisiblePosition_006a2fe0, 1);
+    wait->Locate(g_diplomacyPopupOffscreenPosition_006a3020, true);
+    sheet->Locate(g_diplomacyPopupVisiblePosition_006a2fe0, true);
   }
-  message->UpdateTextEntrySharedStringAndMaybeNotify(&proposalText, 1);
-  message->CenterVertically(1);
+  message->UpdateTextEntrySharedStringAndMaybeNotify(&proposalText, true);
+  message->CenterVertically(true);
   RefreshControl();
   ForceRedraw();
 
@@ -241,8 +241,8 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
   if (promptCode == 0x0a) {
     for (nationSlot = 0; nationSlot < 7 && !addsEntanglements; ++nationSlot) {
       if (nationSlot != enemyNationSlot &&
-          g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, minorNationSlot) != 0 &&
-          g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, sourceNationSlot) == 0) {
+          g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, minorNationSlot) &&
+          !g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, sourceNationSlot)) {
         addsEntanglements = true;
       }
     }
@@ -256,7 +256,7 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
       if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
               static_cast<short>(enemyNationSlot), static_cast<short>(nationSlot)) ==
               kDiplomacyRelationshipAlliance &&
-          g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, sourceNationSlot) == 0) {
+          !g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, sourceNationSlot)) {
         addsEntanglements = true;
       }
     }
@@ -268,8 +268,8 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
   } else if (promptCode == 0x0b) {
     for (nationSlot = 0; nationSlot < 7 && !addsEntanglements; ++nationSlot) {
       if (nationSlot != enemyNationSlot &&
-          g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, minorNationSlot) != 0 &&
-          g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, sourceNationSlot) == 0) {
+          g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, minorNationSlot) &&
+          !g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, sourceNationSlot)) {
         addsEntanglements = true;
       }
     }
@@ -283,7 +283,7 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
       if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
               static_cast<short>(minorNationSlot), static_cast<short>(nationSlot)) ==
               kDiplomacyRelationshipAlliance &&
-          g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, sourceNationSlot) == 0) {
+          !g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, sourceNationSlot)) {
         addsEntanglements = true;
       }
     }
@@ -296,10 +296,10 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
 
   TView* sheet = ResolveControlByTag(kControlTagShee);
   TView* wait = ResolveControlByTag(kControlTagWait);
-  wait->Locate(g_diplomacyPopupOffscreenPosition_006a3020, 0);
-  sheet->Locate(g_diplomacyPopupVisiblePosition_006a2fe0, 1);
-  proposalText->UpdateTextEntrySharedStringAndMaybeNotify(&formattedMessage, 1);
-  proposalText->CenterVertically(1);
+  wait->Locate(g_diplomacyPopupOffscreenPosition_006a3020, false);
+  sheet->Locate(g_diplomacyPopupVisiblePosition_006a2fe0, true);
+  proposalText->UpdateTextEntrySharedStringAndMaybeNotify(&formattedMessage, true);
+  proposalText->CenterVertically(true);
   RefreshControl();
   ForceRedraw();
 

@@ -97,13 +97,13 @@ void TMinorRelationshipDialog::StuffValues() {
     if (nameControl == 0) {
       FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x26c);
     }
-    nameControl->SetTextAndMaybeRefresh(&label, 0);
+    nameControl->SetTextAndMaybeRefresh(&label, false);
     nameControl =
         static_cast<TStaticText*>(majorNames2->ResolveControlByTag(nameTags[majorNation]));
     if (nameControl == 0) {
       FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x26f);
     }
-    nameControl->SetTextAndMaybeRefresh(&label, 0);
+    nameControl->SetTextAndMaybeRefresh(&label, false);
   }
 
   // Minor-nation name columns: 'col1' lists minors 7..14, 'col2' minors 15..22.
@@ -123,7 +123,7 @@ void TMinorRelationshipDialog::StuffValues() {
       if (rowControl == 0) {
         FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x27f);
       }
-      rowControl->SetTextAndMaybeRefresh(&label, 0);
+      rowControl->SetTextAndMaybeRefresh(&label, false);
     }
     if (g_apTerrainTypeDescriptorTable[row + 15] != 0) {
       g_apTerrainTypeDescriptorTable[row + 15]->FormatOverlayTerrainLabelText(&label);
@@ -132,7 +132,7 @@ void TMinorRelationshipDialog::StuffValues() {
       if (rowControl == 0) {
         FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x287);
       }
-      rowControl->SetTextAndMaybeRefresh(&label, 0);
+      rowControl->SetTextAndMaybeRefresh(&label, false);
     }
   }
 }

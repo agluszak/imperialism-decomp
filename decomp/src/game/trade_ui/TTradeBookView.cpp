@@ -46,7 +46,7 @@ void TTradeBookView::DoPostCreate(int arg) {
 
   CString combined;
   combined = quarterText + s_szSpaceSeparator_00695794 + formattedText;
-  rtilControl->SetTextAndMaybeRefresh(&combined, 0);
+  rtilControl->SetTextAndMaybeRefresh(&combined, false);
   rtilControl->Show(1, 1);
 }
 
@@ -69,7 +69,7 @@ void TTradeBookView::SetItem(short categorySlot) {
     g_pSimMgr->GetString(0x2711, categorySlot, &categoryName);
     scanBracketExpressions(g_pSimMgr, &composedTitle, static_cast<LPCSTR>(titleTemplate),
                            static_cast<LPCSTR>(categoryName));
-    title->SetTextAndMaybeRefresh(&composedTitle, 0);
+    title->SetTextAndMaybeRefresh(&composedTitle, false);
 
     CRect titleBounds;
     title->QueryBounds(&titleBounds);

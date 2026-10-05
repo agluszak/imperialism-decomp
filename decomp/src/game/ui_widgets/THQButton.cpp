@@ -29,7 +29,7 @@ void THQButton::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058b750
-void THQButton::HiliteState(unsigned char enabledState, unsigned char refreshNow) {
+void THQButton::HiliteState(unsigned char enabledState, bool refreshNow) {
   if (enabledState != controlState64) {
     controlState64 = enabledState;
     short bitmapId = 0;
@@ -56,7 +56,7 @@ void THQButton::HiliteState(unsigned char enabledState, unsigned char refreshNow
 void THQButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
     if (controlState64 == 0) {
-      SetState(1, 1);
+      SetState(true, true);
     }
     TControl::DoEvent(commandId, sourceHandler, event);
     return;
@@ -66,14 +66,14 @@ void THQButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
       TControl::DoEvent(commandId, sourceHandler, event);
       return;
     }
-    SetState(0, 1);
+    SetState(false, true);
     return;
   }
-  SetState(1, 1);
+  SetState(true, true);
 }
 
 // FUNCTION: IMPERIALISM 0x0058b890
-void THQButton::SetState(unsigned char value, unsigned char refreshNow) {
+void THQButton::SetState(bool value, bool refreshNow) {
   if (IsEnabled()) {
     HiliteState(value, refreshNow);
   }

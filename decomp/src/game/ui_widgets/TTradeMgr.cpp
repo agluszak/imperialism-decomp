@@ -224,8 +224,8 @@ void TTradeMgr::CalculateDealOrder() {
           int source = 0;
           do {
             if ((g_apTerrainTypeDescriptorTable[source] != 0) && (cells[row * 0x50 + source] < 0) &&
-                (g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, target) == 0) &&
-                (g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, target) == 0)) {
+                (!g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, target)) &&
+                (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, target))) {
               TradeDealEntry event;
               event.sourceNationSlot = static_cast<short>(source);
               event.targetNationSlot = static_cast<short>(target);
@@ -258,8 +258,8 @@ void TTradeMgr::CalculateDealOrder() {
           int source = 0;
           do {
             if ((g_apTerrainTypeDescriptorTable[source] != 0) && (cells[row * 0x50 + source] < 0) &&
-                (g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, secTarget) == 0) &&
-                (g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, secTarget) == 0)) {
+                (!g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, secTarget)) &&
+                (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, secTarget))) {
               TradeDealEntry event;
               event.sourceNationSlot = static_cast<short>(source);
               event.targetNationSlot = static_cast<short>(secTarget);
@@ -295,8 +295,8 @@ void TTradeMgr::CalculateDealOrder() {
           do {
             if ((g_apTerrainTypeDescriptorTable[source] != 0) &&
                 (cells[midRow * 0x50 + source] < 0) &&
-                (g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, target) == 0) &&
-                (g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, target) == 0)) {
+                (!g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, target)) &&
+                (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, target))) {
               TradeDealEntry event;
               event.sourceNationSlot = static_cast<short>(source);
               event.targetNationSlot = static_cast<short>(target);
@@ -330,9 +330,8 @@ void TTradeMgr::CalculateDealOrder() {
             int source = 0;
             do {
               if ((g_apTerrainTypeDescriptorTable[source] != 0) && (cells[7 * 0x50 + source] < 0) &&
-                  (g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, secTarget) ==
-                   0) &&
-                  (g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, secTarget) == 0)) {
+                  (!g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, secTarget)) &&
+                  (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, secTarget))) {
                 TradeDealEntry event;
                 event.sourceNationSlot = static_cast<short>(source);
                 event.targetNationSlot = static_cast<short>(secTarget);
@@ -370,8 +369,8 @@ void TTradeMgr::CalculateDealOrder() {
           do {
             if ((g_apTerrainTypeDescriptorTable[source] != 0) &&
                 (cells[lastRow * 0x50 + source] < 0) &&
-                (g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, target) == 0) &&
-                (g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, target) == 0)) {
+                (!g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(source, target)) &&
+                (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(source, target))) {
               TradeDealEntry event;
               event.sourceNationSlot = static_cast<short>(source);
               event.targetNationSlot = static_cast<short>(target);
@@ -391,9 +390,9 @@ void TTradeMgr::CalculateDealOrder() {
           do {
             if ((g_apTerrainTypeDescriptorTable[secondarySource] != 0) &&
                 (cells[lastRow * 0x50 + secondarySource] < 0) &&
-                (g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(secondarySource, target) ==
-                 0) &&
-                (g_pDiplomacyTurnStateManager->IsNationPairAtWar(secondarySource, target) == 0)) {
+                (!g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(secondarySource,
+                                                                          target)) &&
+                (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(secondarySource, target))) {
               TradeDealEntry event;
               event.sourceNationSlot = static_cast<short>(secondarySource);
               event.targetNationSlot = static_cast<short>(target);
@@ -491,7 +490,7 @@ short TTradeMgr::GetAmtOffered(short item) {
 
 // FUNCTION: IMPERIALISM 0x005b8da0
 int TTradeMgr::GetDealPrice(short sourceSlot, short targetSlot, short scoreA, short scoreB) {
-  if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(sourceSlot, targetSlot) != 0) {
+  if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(sourceSlot, targetSlot)) {
     return -1;
   }
 
@@ -519,7 +518,7 @@ int TTradeMgr::GetDealPrice(short sourceSlot, short targetSlot, short scoreA, sh
     return (scoreA > scoreB) ? scoreA : scoreB;
   }
 
-  if (g_pDiplomacyTurnStateManager->IsGreatPower(targetSlot) != 0) {
+  if (g_pDiplomacyTurnStateManager->IsGreatPower(targetSlot)) {
     int relation = g_apNationStates[targetSlot]->needLevelByNation[sourceSlot];
     if (relation == 100) {
       return scoreA;
@@ -574,8 +573,8 @@ void TTradeMgr::OfferItemDeals(short item) {
     TradeDealEntry* entry =
         static_cast<TradeDealEntry*>(list->GetPtrListEntryByOneBasedIndex(entryOrdinal));
     short transfer = g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetAmtUnsold(item);
-    if (g_pDiplomacyTurnStateManager->IsGreatPower(entry->targetNationSlot) != 0 &&
-        g_pDiplomacyTurnStateManager->IsGreatPower(entry->sourceNationSlot) == 0 &&
+    if (g_pDiplomacyTurnStateManager->IsGreatPower(entry->targetNationSlot) &&
+        !g_pDiplomacyTurnStateManager->IsGreatPower(entry->sourceNationSlot) &&
         transfer > g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetMerchantCapacity()) {
       transfer = g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetMerchantCapacity();
     }
@@ -622,8 +621,8 @@ void TTradeMgr::NextTradeDeal() {
 
     int relationDelta =
         g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetAmtUnsold(dispatchIdx);
-    if (g_pDiplomacyTurnStateManager->IsGreatPower(entry->targetNationSlot) != 0 &&
-        g_pDiplomacyTurnStateManager->IsGreatPower(entry->sourceNationSlot) == 0) {
+    if (g_pDiplomacyTurnStateManager->IsGreatPower(entry->targetNationSlot) &&
+        !g_pDiplomacyTurnStateManager->IsGreatPower(entry->sourceNationSlot)) {
       if (g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetMerchantCapacity() <
           relationDelta) {
         relationDelta =
@@ -740,8 +739,8 @@ void TTradeMgr::OfferTradeDeals() {
 // FUNCTION: IMPERIALISM 0x005b94d0
 void TTradeMgr::SetDealResults(NationSlot sourceNation, NationSlot targetNation, short amount,
                                short maximumAmount, ResourceKindStorage commodityType,
-                               unsigned char shortfallFlag, unsigned char remoteReplay) {
-  if (remoteReplay == 0) {
+                               unsigned char shortfallFlag, bool remoteReplay) {
+  if (!remoteReplay) {
     bool isClient = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
     if (isClient) {
       g_pGameFlowState->CreateAndSendTurnEvent1C_BoolAndSixShorts(
@@ -755,7 +754,7 @@ void TTradeMgr::SetDealResults(NationSlot sourceNation, NationSlot targetNation,
         false, sourceNation, targetNation, amount, maximumAmount, commodityType, shortfallFlag);
   }
 
-  if (shortfallFlag != 0 && g_pDiplomacyTurnStateManager->IsGreatPower(sourceNation) != 0) {
+  if (shortfallFlag != 0 && g_pDiplomacyTurnStateManager->IsGreatPower(sourceNation)) {
     g_apNationStates[sourceNation]->ClearTradeOfferForResource(commodityType);
   }
   if (amount > 0) {
@@ -764,8 +763,8 @@ void TTradeMgr::SetDealResults(NationSlot sourceNation, NationSlot targetNation,
                                                                     maximumAmount);
     g_apTerrainTypeDescriptorTable[targetNation]->PurchaseItem(commodityType, -amount,
                                                                maximumAmount);
-    if (g_pDiplomacyTurnStateManager->IsGreatPower(targetNation) != 0 &&
-        g_pDiplomacyTurnStateManager->IsGreatPower(sourceNation) == 0) {
+    if (g_pDiplomacyTurnStateManager->IsGreatPower(targetNation) &&
+        !g_pDiplomacyTurnStateManager->IsGreatPower(sourceNation)) {
       g_apTerrainTypeDescriptorTable[targetNation]->DeliverItem(amount);
     }
     short relationBump = g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
@@ -775,15 +774,15 @@ void TTradeMgr::SetDealResults(NationSlot sourceNation, NationSlot targetNation,
       short standingScore = g_pDiplomacyTurnStateManager->relationStandingScores[matrixIndex];
       g_pDiplomacyTurnStateManager->SetRelationship(sourceNation, targetNation, standingScore + 1);
     }
-    if (g_pDiplomacyTurnStateManager->IsGreatPower(targetNation) != 0) {
+    if (g_pDiplomacyTurnStateManager->IsGreatPower(targetNation)) {
       g_apNationStates[targetNation]->AddToDealBook(kTrackedSlotAcceptEntry, sourceNation, amount,
                                                     commodityType, maximumAmount);
     }
-    if (g_pDiplomacyTurnStateManager->IsGreatPower(sourceNation) != 0) {
+    if (g_pDiplomacyTurnStateManager->IsGreatPower(sourceNation)) {
       g_apNationStates[sourceNationIndex]->AddToDealBook(kTrackedSlotOfferEntry, targetNation,
                                                          amount, commodityType, maximumAmount);
     }
-  } else if (g_pDiplomacyTurnStateManager->IsGreatPower(sourceNation) != 0) {
+  } else if (g_pDiplomacyTurnStateManager->IsGreatPower(sourceNation)) {
     g_apNationStates[sourceNation]->AddToDealBook(kTrackedSlotOfferEntry, targetNation, amount,
                                                   commodityType, maximumAmount);
   }

@@ -115,7 +115,7 @@ void TMiniMapView::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x0059a920
 void TMiniMapView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
-                              CPoint& currentPoint, unsigned char commandFlag) {
+                              CPoint& currentPoint, bool commandFlag) {
   (void)startPoint;
   (void)previousPoint;
   (void)commandFlag;

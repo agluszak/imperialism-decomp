@@ -64,9 +64,9 @@ void TWarningView::DoPostCreate(int arg) {
   title->InstallTextStyle(style, 0);
   {
     CString titleText("Ministers request orders:");
-    title->SetTextAndMaybeRefresh(&titleText, 0);
+    title->SetTextAndMaybeRefresh(&titleText, false);
   }
-  title->SetTextAlignmentAndMaybeRefresh(1, 0);
+  title->SetTextAlignmentAndMaybeRefresh(1, false);
   title->Show(1, 0);
 
   TStaticText* endTurn = static_cast<TStaticText*>(panel->ResolveControlByTag(kControlTagMsg5));
@@ -74,7 +74,7 @@ void TWarningView::DoPostCreate(int arg) {
   endTurn->InstallTextStyle(style, 0);
   {
     CString endTurnText("End Turn Now");
-    endTurn->SetTextAndMaybeRefresh(&endTurnText, 0);
+    endTurn->SetTextAndMaybeRefresh(&endTurnText, false);
   }
   endTurn->Show(1, 0);
 
@@ -90,7 +90,7 @@ void TWarningView::DoPostCreate(int arg) {
     diplomacy->InstallTextStyle(style, 0);
     {
       CString diplomacyText("Diplomacy");
-      diplomacy->SetTextAndMaybeRefresh(&diplomacyText, 0);
+      diplomacy->SetTextAndMaybeRefresh(&diplomacyText, false);
     }
     diplomacy->Show(1, 0);
     TView* picture = panel->ResolveControlByTag(kControlTagPic1);
@@ -105,7 +105,7 @@ void TWarningView::DoPostCreate(int arg) {
     transport->InstallTextStyle(style, 0);
     {
       CString transportText("Transport");
-      transport->SetTextAndMaybeRefresh(&transportText, 0);
+      transport->SetTextAndMaybeRefresh(&transportText, false);
     }
     transport->Show(1, 0);
     TView* picture = panel->ResolveControlByTag(kControlTagPic1 + 3);
@@ -120,7 +120,7 @@ void TWarningView::DoPostCreate(int arg) {
     trade->InstallTextStyle(style, 0);
     {
       CString tradeText("Trade");
-      trade->SetTextAndMaybeRefresh(&tradeText, 0);
+      trade->SetTextAndMaybeRefresh(&tradeText, false);
     }
     trade->Show(1, 0);
     TView* picture = panel->ResolveControlByTag(kControlTagPic1 + 1);
@@ -135,7 +135,7 @@ void TWarningView::DoPostCreate(int arg) {
     industry->InstallTextStyle(style, 0);
     {
       CString industryText("Industry");
-      industry->SetTextAndMaybeRefresh(&industryText, 0);
+      industry->SetTextAndMaybeRefresh(&industryText, false);
     }
     industry->Show(1, 0);
     TView* picture = panel->ResolveControlByTag(kControlTagPic1 + 2);

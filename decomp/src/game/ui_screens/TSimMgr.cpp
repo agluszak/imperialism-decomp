@@ -2439,7 +2439,7 @@ void TSimMgr::ScSetDevLevel(STurnInstructionCursor* instruction) {
   }
   unsigned char* valueTokenBytes = static_cast<unsigned char*>(static_cast<void*>(&valueToken));
   unsigned char value = valueTokenBytes[3];
-  g_pGlobalMapState->SetCivilianDevelopmentClassNibble(tileIndex, selectHighNibble, value, 1);
+  g_pGlobalMapState->SetCivilianDevelopmentClassNibble(tileIndex, selectHighNibble, value, true);
 }
 
 // Reads one big-endian short tile index, resolves that tile's owner nation, queues a depot

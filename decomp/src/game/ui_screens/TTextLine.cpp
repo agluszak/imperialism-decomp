@@ -62,8 +62,8 @@ void TTextLine::SetTextAlignmentCode(short value) {
 void TTextLine::InstallViews(TView* panel, int* offsetLayout) {
   TStaticText* text = new TStaticText();
   text->IStaticText(panel, offsetLayout, &layoutWidth, 5, 5, -1, 0);
-  text->SetTextAndMaybeRefresh(&captionText, 0);
+  text->SetTextAndMaybeRefresh(&captionText, false);
   text->InstallTextStyle(styleDescriptor14, 0);
-  text->SetTextAlignmentAndMaybeRefresh(textAlignmentCode, 0);
+  text->SetTextAlignmentAndMaybeRefresh(textAlignmentCode, false);
   text->RefreshControl();
 }

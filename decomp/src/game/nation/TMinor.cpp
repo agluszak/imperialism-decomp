@@ -665,12 +665,12 @@ bool TMinor::StillBuyingItem(ResourceKindStorage resourceKind) {
 // FUNCTION: IMPERIALISM 0x004e4f50
 char TMinor::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                                ResourceKindStorage resourceKind) {
-  if (this->StillBuyingItem(resourceKind) == 0) {
+  if (!this->StillBuyingItem(resourceKind)) {
     return 0;
   }
 
   g_pTradeMgr->SetDealResults(this->nationSlot, targetNationSlot, amount, price, resourceKind, 1,
-                              0);
+                              false);
   return 0;
 }
 
@@ -682,7 +682,7 @@ void TMinor::SetTradePolicyTo(NationSlot nationSlot, short tradePolicy) {
     if (policyValue != this->needLevelByNation[targetNationSlot]) {
       this->needLevelByNation[targetNationSlot] = policyValue;
       if (policyValue == 300) {
-        this->DeportCiviliansIn(-1, 0);
+        this->DeportCiviliansIn(-1, false);
       }
     }
   }
@@ -725,8 +725,8 @@ void TMinor::AddOfferFrom(NationSlot sourceNationSlot, DiplomacyProposalCodeStor
       canPropose = this->WouldAcceptOffer(targetNation, proposalCode);
     }
     if (canPropose != 0) {
-      if (g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(this->nationSlot,
-                                                                      targetNation) == 0) {
+      if (!g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(this->nationSlot,
+                                                                       targetNation)) {
         this->ChangeMaster(targetNation, 1);
         g_pNewsMgr->AddTreatyEvent(kInterNationEventJoinEmpireAccepted, this->nationSlot,
                                    targetNation, false);
@@ -929,7 +929,7 @@ void TMinor::BecomeColonyOf(int targetNationSlot) {
   this->SetBoycottPoliciesToMatch(static_cast<NationSlot>(targetNationSlot));
   g_pDiplomacyTurnStateManager->SetRelationshipsToMatch(this->nationSlot, targetNationSlot);
   this->KillEnemyCiviliansIn(-1);
-  this->DeportCiviliansIn(-1, 0);
+  this->DeportCiviliansIn(-1, false);
 
   if (targetNation->pendingActionStatus.byAction[10] < '3') {
     targetNation->SetNationPendingActionStateAndPayload(10, this->nationSlot);
@@ -966,7 +966,7 @@ void TMinor::RegainIndependence(void) {
 // FUNCTION: IMPERIALISM 0x004e5a40
 void TMinor::SetBoycottPoliciesToMatch(int targetNationSlot) {
   for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
-    if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(targetNationSlot, nationSlot) == 0 &&
+    if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(targetNationSlot, nationSlot) &&
         (nationSlot == this->nationSlot ||
          (g_apNationStates[targetNationSlot] != 0 &&
           g_apNationStates[targetNationSlot]->colonyBoycottFlags[nationSlot] == 0))) {
@@ -1069,7 +1069,7 @@ void TMinor::KillEnemyCiviliansIn(int provinceId) {
   for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     relationMaskByNation[nationSlot] = 0;
     if (g_apTerrainTypeDescriptorTable[nationSlot] != 0 && nationSlot != ownerNationSlot &&
-        g_pDiplomacyTurnStateManager->IsNationPairAtWar(ownerNationSlot, nationSlot) != 0) {
+        g_pDiplomacyTurnStateManager->IsNationPairAtWar(ownerNationSlot, nationSlot)) {
       relationMaskByNation[nationSlot] = 1;
     }
   }
@@ -1163,8 +1163,8 @@ void TMinor::AssimilateTroopsOf(int priorOwnerNationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e6150
-void TMinor::DeportCiviliansIn(int provinceId, unsigned char includeAllPolicyTargets) {
-  if (includeAllPolicyTargets == 0) {
+void TMinor::DeportCiviliansIn(int provinceId, bool includeAllPolicyTargets) {
+  if (!includeAllPolicyTargets) {
     this->KillBoycottedForeignCompanies();
   }
 
@@ -1185,8 +1185,8 @@ void TMinor::DeportCiviliansIn(int provinceId, unsigned char includeAllPolicyTar
   for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     relationMaskByNation[nationSlot] = 0;
     if (g_apTerrainTypeDescriptorTable[nationSlot] != 0 && nationSlot != ownerNationSlot &&
-        (includeAllPolicyTargets != 0 || g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(
-                                             this->nationSlot, nationSlot) != 0)) {
+        (includeAllPolicyTargets ||
+         g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(this->nationSlot, nationSlot))) {
       relationMaskByNation[nationSlot] = 1;
     }
   }
@@ -1263,7 +1263,7 @@ void TMinor::LoseProvince(int regionId) {
   this->ownedRegionList->Delete(regionId);
   this->ClearTileActivityOverlayByProvinceId(regionId);
   this->KillEnemyCiviliansIn(regionId);
-  this->DeportCiviliansIn(regionId, 1);
+  this->DeportCiviliansIn(regionId, true);
 }
 
 // FUNCTION: IMPERIALISM 0x004e64f0

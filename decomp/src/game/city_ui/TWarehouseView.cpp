@@ -46,9 +46,9 @@ void TWarehouseView::DoStartup() {
   TStaticText* name =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('n', 'a', 'm', 'e')));
   name->InstallTextStyle(style.desc, 0);
-  name->SetTextAlignmentAndMaybeRefresh(1, 0);
+  name->SetTextAlignmentAndMaybeRefresh(1, false);
   g_pSimMgr->GetString(0x2719, 0xd, &hoverText);
-  name->SetTextAndMaybeRefresh(&hoverText, 0);
+  name->SetTextAndMaybeRefresh(&hoverText, false);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b67);
 
@@ -61,7 +61,7 @@ void TWarehouseView::DoStartup() {
     *commodityControl = static_cast<TPictureNumberText*>(control);
     if (control != nullptr) {
       control->InstallTextStyle(style.desc, 0);
-      control->SetTextAlignmentAndMaybeRefresh(1, 0);
+      control->SetTextAlignmentAndMaybeRefresh(1, false);
     }
     ++commodityTag;
     ++commodityControl;
@@ -73,7 +73,7 @@ void TWarehouseView::DoStartup() {
       static_cast<TPictureNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('l', 'a', 'b', 'o')));
   if (laborValueControl != nullptr) {
     laborValueControl->InstallTextStyle(style.desc, 0);
-    laborValueControl->SetTextAlignmentAndMaybeRefresh(1, 0);
+    laborValueControl->SetTextAlignmentAndMaybeRefresh(1, false);
   }
 
   // 'powe' -- power value control.
@@ -81,7 +81,7 @@ void TWarehouseView::DoStartup() {
       static_cast<TPictureNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'o', 'w', 'e')));
   if (powerValueControl != nullptr) {
     powerValueControl->InstallTextStyle(style.desc, 0);
-    powerValueControl->SetTextAlignmentAndMaybeRefresh(1, 0);
+    powerValueControl->SetTextAlignmentAndMaybeRefresh(1, false);
   }
 
   if (g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId] != 0) {
@@ -98,10 +98,10 @@ void TWarehouseView::DoStartup() {
     cachedBitmap->CopyBitmapDimensionsToPoint(&bitmapSize);
     CRect expandedBounds(windowBounds.left, windowBounds.top, windowBounds.left + bitmapSize.x,
                          windowBounds.top + bitmapSize.y);
-    window->ApplyBounds(&expandedBounds, 1);
+    window->ApplyBounds(&expandedBounds, true);
 
     CRect pictureBounds(0, 0, bitmapSize.x, bitmapSize.y);
-    ApplyBounds(&pictureBounds, 0);
+    ApplyBounds(&pictureBounds, false);
 
     unsigned int shiftedControlTags[6] = {
         IMPERIALISM_FOURCC('h', 'o', 'r', 's'), IMPERIALISM_FOURCC('f', 'o', 'o', 'd'),
@@ -116,7 +116,7 @@ void TWarehouseView::DoStartup() {
       shiftedControl->QueryBounds(&shiftedBounds);
       shiftedBounds.top += static_cast<short>(bitmapSize.x);
       shiftedBounds.bottom += static_cast<short>(bitmapSize.x);
-      shiftedControl->ApplyBounds(&shiftedBounds, 0);
+      shiftedControl->ApplyBounds(&shiftedBounds, false);
       ++shiftedTag;
       --shiftedCount;
     } while (shiftedCount != 0);
@@ -166,7 +166,7 @@ void TWarehouseView::DoStartup() {
         CRect hoverBounds;
         hoverControl->QueryBounds(&hoverBounds);
         hoverBounds.left -= 0x28;
-        hoverControl->ApplyBounds(&hoverBounds, 1);
+        hoverControl->ApplyBounds(&hoverBounds, true);
         break;
       }
       default:

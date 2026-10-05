@@ -9,7 +9,7 @@ TDisappearingButton::TDisappearingButton() {}
 TDisappearingButton::~TDisappearingButton() {}
 
 // FUNCTION: IMPERIALISM 0x00568c40
-void TDisappearingButton::HiliteState(unsigned char fEnabledState, unsigned char fRefreshNow) {
+void TDisappearingButton::HiliteState(unsigned char fEnabledState, bool fRefreshNow) {
   if (controlState64 != fEnabledState) {
     controlState64 = fEnabledState;
     Show(fEnabledState == 0, true);

@@ -12,7 +12,7 @@ public:
   virtual ~TScrollerButton() override; // slot 0x01 (scalar deleting destructor)
   virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
                           CPoint& currentPoint,
-                          unsigned char commandFlag) override; // slot 0x68 0x574fc0
+                          bool commandFlag) override; // slot 0x68 0x574fc0
 
   TScrollerButton();
 };

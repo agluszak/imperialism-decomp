@@ -29,7 +29,7 @@
 // Slot 24 (0x60) — body 0x4ec0a0; placed first because it is the lowest address.
 
 // FUNCTION: IMPERIALISM 0x004ec0a0
-double TDefenseMinister::GetStategicEscalationMultiplier(unsigned char) {
+double TDefenseMinister::GetStategicEscalationMultiplier(bool) {
   return g_DefenseMinisterWeightZero_006548E0;
 }
 
@@ -374,8 +374,8 @@ int* TDefenseMinister::CreateEnemyPowerMap(unsigned char excludeEnemyTiles) {
 
   bool atWarWithNation[0x17];
   for (int nation = 0; nation < 0x17; ++nation) {
-    atWarWithNation[nation] = g_pDiplomacyTurnStateManager->IsNationPairAtWar(
-                                  ownNationSlot, static_cast<short>(nation)) != 0;
+    atWarWithNation[nation] =
+        g_pDiplomacyTurnStateManager->IsNationPairAtWar(ownNationSlot, static_cast<short>(nation));
   }
 
   int* weightSum = new int[0x1950];

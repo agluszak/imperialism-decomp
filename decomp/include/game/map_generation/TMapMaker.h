@@ -57,11 +57,11 @@ public:
   // neighbour of each converted tile. slot 21 / 0x54
   virtual int DesertBand(int row, int percentChance);
   // Places a city marker and probabilistically spreads it to neighbors. slot 22 / 0x58
-  virtual int PlaceCityMarkerAndSpreadNeighbors(int tileIndex, int retryBudget, char markerVariant);
+  virtual int PlaceCityMarkerAndSpreadNeighbors(int tileIndex, int retryBudget, bool markerVariant);
   virtual void CreateRivers(); // slot 23 / 0x5c
   // Recursively grows a river segment toward water. slot 24 / 0x60
   virtual char GrowRiver(long tileIndex, long incomingDirection, long outgoingDirection, long depth,
-                         unsigned char startedOnHills);
+                         bool startedOnHills);
   // Finalizes or compacts city-region ids and rebuilds their borders. slot 25 / 0x64
   virtual void AssignOrCompactCityRegionIdsAndRebuildBorders(int mode);
   // Post-attempt validity probe: nonzero means the driver must regenerate. slot 26 / 0x68

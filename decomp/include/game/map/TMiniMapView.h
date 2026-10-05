@@ -19,7 +19,7 @@ public:
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x59a540
   virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
                           CPoint& currentPoint,
-                          unsigned char commandFlag) override; // slot 0x68 0x59a920
+                          bool commandFlag) override; // slot 0x68 0x59a920
   // TControl ends at 0x84; this object's own slice runs 0x84-0x9f (object size 0xa0).
   // Owning TMapUberPicture backref -- set by DisplayMiniMap right after
   // construction (not by the ctor itself; ctor leaves it untouched).

@@ -43,7 +43,7 @@ int TTEView::MeasureCurrentTextHeightInLayoutRect() {
 // FUNCTION: IMPERIALISM 0x004861f0
 void TTEView::SetText(const CString& newText) {
   CString copiedText(newText);
-  SetTextAndMaybeRefresh(&copiedText, 0);
+  SetTextAndMaybeRefresh(&copiedText, false);
 }
 
 // FUNCTION: IMPERIALISM 0x004862b0
@@ -53,7 +53,7 @@ short TTEView::GetNumberOfChars() {
 
 // FUNCTION: IMPERIALISM 0x004862d0
 void TTEView::SetOneStyle(short start, short end, short styleMask, const TextStyle& style,
-                          unsigned char refreshNow) {
+                          bool refreshNow) {
   (void)start;
   (void)end;
   (void)styleMask;

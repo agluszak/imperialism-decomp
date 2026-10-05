@@ -28,13 +28,13 @@ void TNominationView::DoPostCreate(int arg) {
 
   TStaticText* countryControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCoun));
   countryControl->AssertValid();
-  countryControl->SetTextFromStringResource(0x2733, 0x5f, 1);
+  countryControl->SetTextFromStringResource(0x2733, 0x5f, true);
   BuildUiTextStyleDescriptor(&style, 0, 0x12, 0x2b6c);
   countryControl->InstallTextStyle(style, 1);
 
   TStaticText* titleControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl));
   titleControl->AssertValid();
-  titleControl->SetTextFromStringResource(0x2733, 0x60, 1);
+  titleControl->SetTextFromStringResource(0x2733, 0x60, true);
   BuildUiTextStyleDescriptor(&style, 0, 0xe, 0x2b6c);
   titleControl->InstallTextStyle(style, 1);
 
@@ -43,7 +43,7 @@ void TNominationView::DoPostCreate(int arg) {
   TGreatPower* nation0 =
       g_apNationStates[g_pDiplomacyTurnStateManager->congressLeadership.chairmanNationSlot];
   nation0->FormatOverlayTerrainLabelText(&text);
-  candidate0Control->SetTextAndMaybeRefresh(&text, 1);
+  candidate0Control->SetTextAndMaybeRefresh(&text, true);
   candidate0Control->InstallTextStyle(style, 1);
 
   TStaticText* candidate1Control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCan1));
@@ -51,7 +51,7 @@ void TNominationView::DoPostCreate(int arg) {
   TGreatPower* nation1 =
       g_apNationStates[g_pDiplomacyTurnStateManager->congressLeadership.counterpartNationSlot];
   nation1->FormatOverlayTerrainLabelText(&text);
-  candidate1Control->SetTextAndMaybeRefresh(&text, 1);
+  candidate1Control->SetTextAndMaybeRefresh(&text, true);
   candidate1Control->InstallTextStyle(style, 1);
 }
 

@@ -922,7 +922,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
     TextStyle styleDescriptor;
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
     textEntry->InstallTextStyle(styleDescriptor, 0);
-    textEntry->SetTextAlignmentAndMaybeRefresh(0, 0);
+    textEntry->SetTextAlignmentAndMaybeRefresh(0, false);
     textEntry->controlTag = kControlTagText;
 
     g_pSimMgr->GetString(0x2735, 1, &scratch38);
@@ -1236,7 +1236,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   TextStyle styleDescriptor;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
   textEntry->InstallTextStyle(styleDescriptor, 0);
-  textEntry->SetTextAlignmentAndMaybeRefresh(0, 0);
+  textEntry->SetTextAlignmentAndMaybeRefresh(0, false);
   textEntry->controlTag = kControlTagText;
 
   g_pSimMgr->GetString(0x2735, 4, &scratch38);
@@ -1249,7 +1249,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
     int valueSize[2] = {0x3c, 0xb};
     valueEntry->IStaticText(panel, valueOffset, valueSize, 5, 5, -1, 0);
     valueEntry->InstallTextStyle(styleDescriptor, 0);
-    valueEntry->SetTextAlignmentAndMaybeRefresh(0, 0);
+    valueEntry->SetTextAlignmentAndMaybeRefresh(0, false);
     valueEntry->controlTag = kControlTagValu;
   }
 
@@ -1270,9 +1270,8 @@ void TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag(int unusedArg1, i
 }
 
 // FUNCTION: IMPERIALISM 0x0050d360
-TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city,
-                                               unsigned char closeAfterOpen,
-                                               unsigned char isEmbeddedPage,
+TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city, bool closeAfterOpen,
+                                               bool isEmbeddedPage,
                                                TCityProductionView* productionView) {
   TWindow* dialog = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(
       static_cast<TurnEventId>(buildingSlot + kTurnEventTextileMill));
@@ -1282,11 +1281,11 @@ TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city,
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMacViewMgr_00696D68, 0xb4f);
   }
-  buildingView->ApplyCityViewSelectionPayloadAndRefreshControls(city, isEmbeddedPage != 0,
+  buildingView->ApplyCityViewSelectionPayloadAndRefreshControls(city, isEmbeddedPage,
                                                                 productionView, buildingSlot);
   dialog->controlValue3c = 0x65;
-  if (closeAfterOpen != 0) {
-    dialog->SetModality(1);
+  if (closeAfterOpen) {
+    dialog->SetModality(true);
     dialog->PoseModally();
     dialog->Close();
     dialog->Free();
@@ -1298,7 +1297,7 @@ TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city,
 
 // FUNCTION: IMPERIALISM 0x0050d470
 TBuildingView* TMacViewMgr::RestoreBuildingWindowAtSavedPosition(
-    short buildingSlot, TCity* city, unsigned char closeAfterOpen, unsigned char isEmbeddedPage,
+    short buildingSlot, TCity* city, bool closeAfterOpen, bool isEmbeddedPage,
     TCityProductionView* productionView, short savedX, short savedY) {
   TWindow* dialog = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(
       static_cast<TurnEventId>(buildingSlot + kTurnEventTextileMill));
@@ -1308,13 +1307,13 @@ TBuildingView* TMacViewMgr::RestoreBuildingWindowAtSavedPosition(
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMacViewMgr_00696D68, 0xb62);
   }
-  buildingView->ApplyCityViewSelectionPayloadAndRefreshControls(city, isEmbeddedPage != 0,
+  buildingView->ApplyCityViewSelectionPayloadAndRefreshControls(city, isEmbeddedPage,
                                                                 productionView, buildingSlot);
   dialog->controlValue3c = 0x65;
   CPoint placement(savedX, savedY);
-  dialog->Locate(placement, 0);
-  if (closeAfterOpen != 0) {
-    dialog->SetModality(1);
+  dialog->Locate(placement, false);
+  if (closeAfterOpen) {
+    dialog->SetModality(true);
     dialog->PoseModally();
     dialog->Close();
     dialog->Free();
@@ -1336,7 +1335,7 @@ void TMacViewMgr::OpenConstructionWindow(short buildingSlot, TCity* city,
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMacViewMgr_00696D68, 0xb98);
   }
   constructionView->StuffValues(buildingSlot, city, productionView);
-  dialog->SetModality(1);
+  dialog->SetModality(true);
   unsigned long dialogAction = dialog->PoseModally();
   dialog->Close();
   constructionView->DoClosingAction(dialogAction);

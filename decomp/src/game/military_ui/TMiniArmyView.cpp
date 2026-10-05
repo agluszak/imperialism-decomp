@@ -88,7 +88,8 @@ void TMiniArmyView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       TStaticText* tbr1 = static_cast<TStaticText*>(
           g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagTbr1));
       tbr1->AssertValid();
-      tbr1->SetTextAlignmentAndMaybeRefresh(static_cast<short>(g_pSimMgr->GetPlayerCountry()), 0);
+      tbr1->SetTextAlignmentAndMaybeRefresh(static_cast<short>(g_pSimMgr->GetPlayerCountry()),
+                                            false);
     } else {
       CString msg;
       g_pSimMgr->GetString(0x2745, 3, &msg);

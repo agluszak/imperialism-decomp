@@ -72,14 +72,14 @@ void TMinorTreatyDialog::StuffValues() {
     if (firstRowName == 0) {
       FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x316);
     }
-    firstRowName->SetTextAndMaybeRefresh(&nationName, 0);
+    firstRowName->SetTextAndMaybeRefresh(&nationName, false);
 
     TStaticText* secondRowName =
         static_cast<TStaticText*>(secondMajorNameRow->ResolveControlByTag(nameTags[nationSlot]));
     if (secondRowName == 0) {
       FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x319);
     }
-    secondRowName->SetTextAndMaybeRefresh(&nationName, 0);
+    secondRowName->SetTextAndMaybeRefresh(&nationName, false);
   }
 
   TView* firstMinorNameColumn = ResolveControlByTag(kControlTagCol1); // 'col1'
@@ -100,7 +100,7 @@ void TMinorTreatyDialog::StuffValues() {
       if (firstColumnName == 0) {
         FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x329);
       }
-      firstColumnName->SetTextAndMaybeRefresh(&nationName, 0);
+      firstColumnName->SetTextAndMaybeRefresh(&nationName, false);
     }
 
     int secondNationSlot = row + 15;
@@ -111,7 +111,7 @@ void TMinorTreatyDialog::StuffValues() {
       if (secondColumnName == 0) {
         FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x331);
       }
-      secondColumnName->SetTextAndMaybeRefresh(&nationName, 0);
+      secondColumnName->SetTextAndMaybeRefresh(&nationName, false);
     }
   }
 }

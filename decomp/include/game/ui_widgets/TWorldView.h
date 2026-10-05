@@ -35,7 +35,7 @@ public:
   // Written by SetMapOverlayModeAndRenderPreview (this+0x74=flagByte), read as a byte gate by
   // TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner (selects the overlay style:
   // 0 = terrain-frame overlay, nonzero = the alternate palette-index blit).
-  unsigned char alternateOverlayEnabled;
+  bool alternateOverlayEnabled;
   unsigned char pad75;
   // projectionScale: passed as the scale arg to
   // ForwardProjectTileIndexToWrappedScreenOffsetByScale when projecting a tile to screen
@@ -73,7 +73,7 @@ public:
   virtual void RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, CRect* dstRect,
                                                              int flag);
   virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
-                                                             unsigned char altOverlay);
+                                                             bool altOverlay);
   virtual void RenderStrategicTileSelectionAndNeighborHighlights();
   virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
                                                                    const CPoint* viewportOrigin,

@@ -41,7 +41,7 @@ void TDeluxeText::SetSelectedFlagAndState(char param_1) {
 void TDeluxeText::SetTextFromUiStringResourceId(short stringId) {
   CString text;
   g_pResourceMgr->LoadUiStringResourceById(&text, stringId);
-  this->UpdateTextEntrySharedStringAndMaybeNotify(&text, 1);
+  this->UpdateTextEntrySharedStringAndMaybeNotify(&text, true);
 }
 
 // FUNCTION: IMPERIALISM 0x005b6170
@@ -63,7 +63,7 @@ void TDeluxeText::Draw(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b62a0
-void TDeluxeText::SetTextStyle(const TextStyle& style, unsigned char refreshNow) {
+void TDeluxeText::SetTextStyle(const TextStyle& style, bool refreshNow) {
   textColor98 = style.textColor;
   SetOneStyle(0, GetNumberOfChars(), 0xf, style, refreshNow);
 }
@@ -74,7 +74,7 @@ void TDeluxeText::SetTextStyle(int fontStyleFlags, int pointSize, int themeCode)
   style.textColor = 0;
   BuildUiTextStyleDescriptor(&style, fontStyleFlags, pointSize, themeCode);
   textColor98 = style.textColor;
-  SetOneStyle(0, GetNumberOfChars(), 0xf, style, 1);
+  SetOneStyle(0, GetNumberOfChars(), 0xf, style, true);
 }
 
 // FUNCTION: IMPERIALISM 0x005b6360
@@ -85,7 +85,7 @@ void TDeluxeText::SetTextEntryFromChars(const char* textChars, int textLength) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b63e0
-short TDeluxeText::CenterVertically(unsigned char refreshNow) {
+short TDeluxeText::CenterVertically(bool refreshNow) {
   contentInsets.bottom = 0;
   contentInsets.top = 0;
   int measuredHeight = MeasureCurrentTextHeightInLayoutRect();
@@ -99,7 +99,7 @@ short TDeluxeText::CenterVertically(unsigned char refreshNow) {
   contentInsets.top = inset;
   CRect textRect(0, inset, frameWidth, frameHeight - inset);
   StuffTERects(textRect);
-  if (refreshNow != 0) {
+  if (refreshNow) {
     RefreshControl();
   }
   return measuredHeight;
@@ -111,9 +111,9 @@ void TDeluxeText::UpdateTextEntrySharedString(CString* text) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b64a0
-void TDeluxeText::UpdateTextEntrySharedStringAndMaybeNotify(CString* text, char notifyFlag) {
+void TDeluxeText::UpdateTextEntrySharedStringAndMaybeNotify(CString* text, bool notifyFlag) {
   TStaticText::SetText(text);
-  if (notifyFlag != 0) {
+  if (notifyFlag) {
     RefreshControl();
   }
 }

@@ -21,7 +21,7 @@ VOID CALLBACK NotifyGlobalCaptureOwnerState1WithCachedCoords(HWND hwnd, UINT mes
     g_McAppMouseCaptureState.lastPoint = g_McAppMouseCaptureState.currentPoint;
     captured->TrackMouse(kTrackPhaseUpdate, g_McAppMouseCaptureState.startPoint,
                          g_McAppMouseCaptureState.lastPoint, g_McAppMouseCaptureState.currentPoint,
-                         1);
+                         true);
   }
 }
 
@@ -37,7 +37,7 @@ void TMouseCaptureState::BeginMouseCaptureForControlAndStartRepeatTimer(CPoint* 
   startPoint = *point;
   lastPoint = *point;
   currentPoint = *point;
-  control->TrackMouse(kTrackPhaseBegin, startPoint, lastPoint, currentPoint, 1);
+  control->TrackMouse(kTrackPhaseBegin, startPoint, lastPoint, currentPoint, true);
   if (g_McAppUiMouseCaptureTimerId_006A1ADC == 0) {
     g_McAppUiMouseCaptureTimerId_006A1ADC =
         ::SetTimer(control->nativeWindow50->m_hWnd, 0xef, 0x11,
@@ -61,7 +61,7 @@ void TMouseCaptureState::NotifyCaptureOwnerState1AndMaybeUpdateCoords(unsigned i
   if ((nFlags & 0x20) == 0) {
     currentPoint = ownerRelativePoint;
   }
-  capturedControl->TrackMouse(kTrackPhaseUpdate, startPoint, lastPoint, currentPoint, 1);
+  capturedControl->TrackMouse(kTrackPhaseUpdate, startPoint, lastPoint, currentPoint, true);
 }
 
 // FUNCTION: IMPERIALISM 0x00489d40
@@ -80,7 +80,7 @@ void TMouseCaptureState::EndMouseCaptureAndStopRepeatTimer(unsigned int nFlags, 
   lastPoint = currentPoint;
   // Owner-relative, as in Notify... above (0x489db2 reloads the converted stack local).
   currentPoint = ownerRelativePoint;
-  capturedControl->TrackMouse(kTrackPhaseEnd, startPoint, lastPoint, currentPoint, 1);
+  capturedControl->TrackMouse(kTrackPhaseEnd, startPoint, lastPoint, currentPoint, true);
   capturedControl = 0;
 }
 

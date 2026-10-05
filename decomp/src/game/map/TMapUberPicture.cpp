@@ -166,11 +166,11 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
   }
 
   if (previousMode < 3) {
-    categoryPages[previousMode]->Locate(g_MapUberModeLayoutScratch_006a45e8, 1);
+    categoryPages[previousMode]->Locate(g_MapUberModeLayoutScratch_006a45e8, true);
   }
   this->activeUnitCategoryIndex = nMode;
   if (nMode < 3) {
-    categoryPages[nMode]->Locate(g_MapUberModeLayoutTable_006a4590[nMode], 1);
+    categoryPages[nMode]->Locate(g_MapUberModeLayoutTable_006a4590[nMode], true);
   }
 }
 
@@ -507,7 +507,7 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0x728);
   }
-  dialog->SetModality(1);
+  dialog->SetModality(true);
 
   CString text;
   CString value;
@@ -516,7 +516,7 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
       static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagZone)); // zone
   control->AssertValid();
   taskForce->location->AssignZoneDisplayNameToOutputRef(&text);
-  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(bodyStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagAdam)); // adam
@@ -525,13 +525,13 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
   g_pSimMgr->GetString(0x2762, 0, &reportTemplate);
   scanBracketExpressions(g_pSimMgr, &text, static_cast<LPCSTR>(reportTemplate),
                          static_cast<LPCSTR>(value));
-  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(detailStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagWhom)); // whom
   control->AssertValid();
   taskForce->GetCompositionDescription(&text);
-  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(detailStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagOrds)); // ords
@@ -562,37 +562,37 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
     g_pSimMgr->GetString(0x2762, 3, &text);
     break;
   }
-  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(detailStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagAgro)); // agro
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(taskForce->aggression + 4), &text);
-  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(attributionStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagTitl)); // titl
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, 7, &text);
-  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(titleStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagLab1)); // lab1
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, 8, &text);
-  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(detailStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagLab2)); // lab2
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, 9, &text);
-  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(bodyStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagLab3)); // lab3
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, 0xa, &text);
-  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(bodyStyle, 0);
 
   TDialogBehavior* behavior = dialog->GetDialogBehavior();
@@ -698,7 +698,7 @@ void TMapUberPicture::PromptAndQueueMilitaryProvincePurgeOrders(short provinceIn
     GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USuperMap.cpp", 0x846);
   }
-  dialog->SetModality(1);
+  dialog->SetModality(true);
 
   short ownerNation = g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationCode00;
 
@@ -707,7 +707,7 @@ void TMapUberPicture::PromptAndQueueMilitaryProvincePurgeOrders(short provinceIn
     TStaticText* nameLabel = static_cast<TStaticText*>(
         dialog->ResolveControlByTag(IMPERIALISM_FOURCC('n', 'a', 'm', 'a') + slot));
     nameLabel->AssertValid();
-    nameLabel->SetTextFromStringResource(0x2717, static_cast<short>(slot + 1), 1);
+    nameLabel->SetTextFromStringResource(0x2717, static_cast<short>(slot + 1), true);
   }
   dialog->PoseModally();
 
@@ -755,14 +755,14 @@ void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* po
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0x8cc);
   }
-  dialog->SetModality(1);
+  dialog->SetModality(true);
 
   short index;
   for (index = 0; index < 29; ++index) {
     TStaticText* nameControl =
         static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagNama + index)); // 'nama'
     if (nameControl != 0) {
-      nameControl->SetTextFromStringResource(0x2716, static_cast<short>(index + 1), 1);
+      nameControl->SetTextFromStringResource(0x2716, static_cast<short>(index + 1), true);
     }
   }
 
@@ -834,7 +834,7 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0x923);
   }
-  dialog->SetModality(1);
+  dialog->SetModality(true);
 
   CString text;
   CString reportTemplate;
@@ -842,13 +842,13 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
       static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagGpee)); // gpee
   control->AssertValid();
   g_apTerrainTypeDescriptorTable[nation]->FormatOverlayTerrainLabelText(&text);
-  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(bodyStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagZone)); // zone
   control->AssertValid();
   zone->AssignZoneDisplayNameToOutputRef(&text);
-  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(bodyStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagAdam)); // adam
@@ -861,7 +861,7 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
   } else {
     zone->BuildNavalIntelligenceSourceDescription(&text, g_pSimMgr->GetPlayerCountry());
   }
-  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(attributionStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagShip)); // ship
@@ -872,38 +872,38 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
     TAdmiral* observer = zone->FindReportingAdmiralForNation(g_pSimMgr->GetPlayerCountry());
     observer->GetFleetReport(&text, zone, nation);
   }
-  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(detailStyle, 0);
 
   int stringIndex = cachedTaskForce != 0 ? 0x2e : 0x29;
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagTitl)); // titl
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex++), &text);
-  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(titleStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagLab1)); // lab1
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex++), &text);
-  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(detailStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagLab2)); // lab2
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex++), &text);
-  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(detailStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagLab3)); // lab3
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex++), &text);
-  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(bodyStyle, 0);
 
   control = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagLab4)); // lab4
   control->AssertValid();
   g_pSimMgr->GetString(0x2762, static_cast<short>(stringIndex), &text);
-  control->SetTextAndMaybeRefresh(&text, 0);
+  control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(attributionStyle, 0);
 
   TDialogBehavior* behavior = dialog->GetDialogBehavior();
@@ -1021,8 +1021,8 @@ void TMapUberPicture::EnterMapInteractionOverlayMode(TView* controlOverride) {
 
   subview2A8->CenterOn(goodGoldTagControl->ComputeWrappedTileIndexFromObjectOffset7C7E());
 
-  this->goodGoldTagControl->Locate(g_MapUberModeLayoutScratch_006a45e8, 0);
-  this->subview2A8->Locate(g_MapUberModeSecondaryLayoutScratch_006a45b8, 1);
+  this->goodGoldTagControl->Locate(g_MapUberModeLayoutScratch_006a45e8, false);
+  this->subview2A8->Locate(g_MapUberModeSecondaryLayoutScratch_006a45b8, true);
   this->subview = this->subview2A8;
 
   if (this->miniMapView != nullptr) {
@@ -1048,8 +1048,8 @@ void TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews(TView* controlOve
     }
     invalidationFlag = false;
     goodGoldTagControl->CenterOn(subview2A8->GetCenterTile());
-    subview2A8->Locate(g_MapUberModeLayoutScratch_006a45e8, 0);
-    goodGoldTagControl->Locate(g_MapUberModeSecondaryLayoutScratch_006a45b8, 1);
+    subview2A8->Locate(g_MapUberModeLayoutScratch_006a45e8, false);
+    goodGoldTagControl->Locate(g_MapUberModeSecondaryLayoutScratch_006a45b8, true);
     TMiniMapView* miniMap = miniMapView;
     subview = goodGoldTagControl;
 

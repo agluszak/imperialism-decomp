@@ -78,7 +78,7 @@ void TDealBookPicture::Startup(short startupValue) {
   // 'titL' title label.
   TStaticText* titLControl = static_cast<TStaticText*>(this->ResolveControlByTag(kControlTagTitL));
   titLControl->AssertValid();
-  titLControl->SetTextFromStringResource(0x2740, 0x19, 0);
+  titLControl->SetTextFromStringResource(0x2740, 0x19, false);
   CRect titLBounds;
   titLControl->QueryBounds(&titLBounds);
   RECT titLInval;
@@ -89,7 +89,7 @@ void TDealBookPicture::Startup(short startupValue) {
   TDropShadowText* rtilControl =
       static_cast<TDropShadowText*>(this->ResolveControlByTag(kControlTagRtil));
   rtilControl->AssertValid();
-  rtilControl->SetTextFromStringResource(0x2740, 0x1a, 0);
+  rtilControl->SetTextFromStringResource(0x2740, 0x1a, false);
   CRect rtilBounds;
   rtilControl->QueryBounds(&rtilBounds);
   RECT rtilInval;
@@ -309,7 +309,7 @@ void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
       CString composedTitle;
       scanBracketExpressions(g_pSimMgr, &composedTitle, static_cast<LPCSTR>(templateText),
                              static_cast<LPCSTR>(categoryName));
-      titLControl->SetTextAndMaybeRefresh(&composedTitle, 0);
+      titLControl->SetTextAndMaybeRefresh(&composedTitle, false);
 
       CRect titleBounds;
       titLControl->QueryBounds(&titleBounds);
@@ -326,7 +326,7 @@ void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         yearText.Format(g_szDecimalFormat, 0x717 + g_pSimMgr->economicTurn / 4);
         g_pSimMgr->GetSeason(&seasonName);
         CString headerText = seasonName + s_szSpaceSeparator_00695794 + yearText;
-        rtilControl->SetTextAndMaybeRefresh(&headerText, 0);
+        rtilControl->SetTextAndMaybeRefresh(&headerText, false);
         rtilControl->Show(1, 1);
       }
       g_pSfxPlaybackSystem->PlaySoundEffect(0x13f0, 0, 1);
@@ -371,7 +371,7 @@ void TDealBookPicture::SwitchPages() {
     yearText.Format(g_szDecimalFormat, 0x717 + g_pSimMgr->economicTurn / 4);
     g_pSimMgr->GetSeason(&seasonName);
     CString headerText = seasonName + s_szSpaceSeparator_00695794 + yearText;
-    rtilControl->SetTextAndMaybeRefresh(&headerText, 0);
+    rtilControl->SetTextAndMaybeRefresh(&headerText, false);
 
     CRect titleBounds;
     rtilControl->QueryBounds(&titleBounds);
@@ -397,14 +397,14 @@ void TDealBookPicture::SwitchPages() {
 
     TStaticText* titLControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitL));
     titLControl->AssertValid();
-    titLControl->SetTextFromStringResource(0x2740, 0x19, 0);
+    titLControl->SetTextFromStringResource(0x2740, 0x19, false);
     CRect titLBounds;
     titLControl->QueryBounds(&titLBounds);
     InvalidateCityDialogRectRegion(&titLBounds, 1);
 
     TStaticText* rtilControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagRtil));
     rtilControl->AssertValid();
-    rtilControl->SetTextFromStringResource(0x2740, 0x1a, 0);
+    rtilControl->SetTextFromStringResource(0x2740, 0x1a, false);
     CRect rtilBounds;
     rtilControl->QueryBounds(&rtilBounds);
     InvalidateCityDialogRectRegion(&rtilBounds, 1);
@@ -424,13 +424,13 @@ void TDealBookPicture::SwitchPages() {
   }
 
   CPoint captureBuffer1(1000, 1000);
-  hiddenPage1->Locate(captureBuffer1, 1);
+  hiddenPage1->Locate(captureBuffer1, true);
   CPoint captureBuffer2(1000, 1000);
-  hiddenPage2->Locate(captureBuffer2, 1);
+  hiddenPage2->Locate(captureBuffer2, true);
   CPoint captureBuffer3(0x41, 0x59);
-  visibleSellPage->Locate(captureBuffer3, 1);
+  visibleSellPage->Locate(captureBuffer3, true);
   CPoint captureBuffer4(0x13a, 0x59);
-  visibleBuyPage->Locate(captureBuffer4, 1);
+  visibleBuyPage->Locate(captureBuffer4, true);
 
   cachedSellPageView = visibleSellPage;
   cachedBuyPageView = visibleBuyPage;

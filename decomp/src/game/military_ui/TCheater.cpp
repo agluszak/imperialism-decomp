@@ -46,5 +46,5 @@ void TCheater::CenterWindowUsingSize(const CPoint* size) {
   bounds.left = 0x140 - size->x / 2;
   bounds.bottom = bounds.top + size->y;
   bounds.right = bounds.left + size->x;
-  window->ApplyBounds(&bounds, 1);
+  window->ApplyBounds(&bounds, true);
 }

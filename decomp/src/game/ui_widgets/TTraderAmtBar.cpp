@@ -109,7 +109,7 @@ void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
     if (control->IsActionable()) {
       CRect boundsRect(0, 0, 0, 0);
       control->QueryBounds(&boundsRect);
-      control->ApplyBounds(&boundsRect, 1);
+      control->ApplyBounds(&boundsRect, true);
       control->QueryBounds(&boundsRect);
       CPoint translatedOrigin(g_nOverlayClipCacheParamX, g_nOverlayClipCacheParamY);
       control->TranslatePointToParentChain4E(&translatedOrigin);

@@ -29,7 +29,7 @@ IMPLEMENT_DYNCREATE(TStaticText, TControl)
 
 // FUNCTION: IMPERIALISM 0x00486290
 void TStaticText::SetText(CString* text) {
-  TStaticText::SetTextAndMaybeRefresh(text, 0);
+  TStaticText::SetTextAndMaybeRefresh(text, false);
 }
 
 // FUNCTION: IMPERIALISM 0x0048f890
@@ -107,16 +107,16 @@ void TStaticText::IStaticText(TView* panel, int* offsetLayout, int* sizeLayout, 
     CString loadedString;
     g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&loadedString, stringResourceGroup,
                                                         stringResourceIndex);
-    SetTextAndMaybeRefresh(&loadedString, 0);
+    SetTextAndMaybeRefresh(&loadedString, false);
   }
   DoSetCursor(0, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0048fe60
-void TStaticText::SetTextAndMaybeRefresh(CString* sharedString, char refreshNow) {
+void TStaticText::SetTextAndMaybeRefresh(CString* sharedString, bool refreshNow) {
   if (sharedString->Compare(*text) != 0) {
     *text = *sharedString;
-    if (refreshNow != 0) {
+    if (refreshNow) {
       RefreshControl();
     }
   }
@@ -124,7 +124,7 @@ void TStaticText::SetTextAndMaybeRefresh(CString* sharedString, char refreshNow)
 
 // FUNCTION: IMPERIALISM 0x0048fed0
 void TStaticText::SetTextFromStringResource(short stringResourceGroup, short stringResourceIndex,
-                                            char refreshNow) {
+                                            bool refreshNow) {
   CString loadedString;
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&loadedString, stringResourceGroup,
                                                       stringResourceIndex);
@@ -132,9 +132,9 @@ void TStaticText::SetTextFromStringResource(short stringResourceGroup, short str
 }
 
 // FUNCTION: IMPERIALISM 0x0048ff70
-void TStaticText::SetTextAlignmentAndMaybeRefresh(short alignmentCode, char refreshFlag) {
+void TStaticText::SetTextAlignmentAndMaybeRefresh(short alignmentCode, bool refreshFlag) {
   textAlignmentCode = alignmentCode;
-  if (refreshFlag != 0) {
+  if (refreshFlag) {
     PaintOrInvalidateControl(0);
   }
 }

@@ -95,7 +95,7 @@ void TScrollView::ScrollRelative(short horizontalDelta, short verticalDelta) {
     origin.y = 0;
   }
 
-  contentView->Locate(origin, 1);
+  contentView->Locate(origin, true);
 
   short trackRange = scrollBar->word8a - scrollBar->word88;
   short newValue =
@@ -121,7 +121,7 @@ void TScrollView::ScrollToPercent(int percent) {
       CPoint origin(
           contentView->ownerLocalX,
           -static_cast<short>((percent * heightDiff + (percent * heightDiff >> 31 & 0x3ff)) >> 10));
-      contentView->Locate(origin, 1);
+      contentView->Locate(origin, true);
     }
   }
 }
@@ -131,7 +131,7 @@ void TScrollView::SyncBoundedValueAndToggleControlStates() {
   CPoint contentOrigin;
   contentOrigin.x = contentView->ownerLocalX;
   contentOrigin.y = 0;
-  contentView->Locate(contentOrigin, 1);
+  contentView->Locate(contentOrigin, true);
 
   TScrollBarView* bar = scrollBar;
   bar->word8c = bar->word88;

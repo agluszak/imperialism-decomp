@@ -14,7 +14,7 @@ public:
                        TEvent* event) override; // slot 0x0f 0x004fe060
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4fdfc0
   virtual void HiliteState(unsigned char fEnabledState,
-                           unsigned char fRefreshNow) override; // slot 0x70 0x4fe190
+                           bool fRefreshNow) override; // slot 0x70 0x4fe190
 
   // NOOP: verified empty in original 0x004fdf06 (no standalone TFrameRadioView::TFrameRadioView body exists: CreateObject 0x004fded0 inlines this default ctor, calling the TControl base ctor directly at that site)
   TFrameRadioView() {}

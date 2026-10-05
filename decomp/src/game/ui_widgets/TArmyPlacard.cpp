@@ -26,7 +26,7 @@ TArmyPlacard::TArmyPlacard() : TPicture() {
 TArmyPlacard::~TArmyPlacard() {}
 
 // FUNCTION: IMPERIALISM 0x0058bf50
-void TArmyPlacard::SetValue(short value, unsigned char refreshNow) {
+void TArmyPlacard::SetValue(short value, bool refreshNow) {
   short activeNationId = g_pSimMgr->GetPlayerCountry();
   short capValue = g_pTechMgr->nationCapRows1e8[activeNationId]
                        .slots[this->controlTag - kControlTagArmyPlacardFirst];
@@ -76,7 +76,7 @@ void TArmyPlacard::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
     short tileIndex = g_pMapContextActionManager->pendingMapActionIndex;
     short unitCount = g_pMapContextActionManager->ActivateFirstActiveTacticalUnitByCategoryAtTile(
         categoryId, tileIndex);
-    this->SetValue(unitCount, 1);
+    this->SetValue(unitCount, true);
     return;
   }
   if (sourceHandler->controlTag == kControlTagMinu) { // "minu"
@@ -84,6 +84,6 @@ void TArmyPlacard::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
     short tileIndex = g_pMapContextActionManager->pendingMapActionIndex;
     short unitCount = g_pMapContextActionManager->ActivateFirstIdleTacticalUnitByCategoryAtTile(
         categoryId, tileIndex);
-    this->SetValue(unitCount, 1);
+    this->SetValue(unitCount, true);
   }
 }

@@ -47,13 +47,13 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
     CRect ownerBounds;
     owner->QueryBounds(&ownerBounds);
     ownerBounds.bottom += extraHeight;
-    owner->ApplyBounds(&ownerBounds, 1);
+    owner->ApplyBounds(&ownerBounds, true);
   }
 
   CRect dialogBounds;
   QueryBounds(&dialogBounds);
   dialogBounds.bottom += extraHeight;
-  ApplyBounds(&dialogBounds, 1);
+  ApplyBounds(&dialogBounds, true);
 
   const unsigned int buttonTags[2] = {kControlTagCncl, kControlTagOkay}; // 'cncl', 'okay'
   const int buttonAssertLines[2] = {0xde2, 0xde8};
@@ -68,7 +68,7 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
     CRect buttonBounds;
     button->QueryBounds(&buttonBounds);
     OffsetRect(&buttonBounds, 0, extraHeight);
-    button->ApplyBounds(&buttonBounds, 1);
+    button->ApplyBounds(&buttonBounds, true);
   }
 
   short x = static_cast<short>(frameWidth);
@@ -122,7 +122,7 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
 
   TStaticText* sustainability =
       static_cast<TStaticText*>(ResolveControlByTag(kControlTagSust)); // 'sust'
-  sustainability->SetTextAndMaybeRefresh(&summaryText, 1);
+  sustainability->SetTextAndMaybeRefresh(&summaryText, true);
   TextStyle style;
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6a);
   sustainability->InstallTextStyle(style, 0);
@@ -132,7 +132,7 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
   BuildUiTextStyleDescriptor(&style, 0, 0xe, 0x2b6a);
   title->InstallTextStyle(style, 0);
   g_pSimMgr->GetString(0x273f, 7, &templateText);
-  title->SetTextAndMaybeRefresh(&templateText, 1);
+  title->SetTextAndMaybeRefresh(&templateText, true);
 }
 
 // FUNCTION: IMPERIALISM 0x004d1e40

@@ -247,7 +247,7 @@ void TMultiplayerMgr::Free() {
     CString playerName(playerNameString);
     g_pAssetMgr->SaveSettingValueFromPointerByKey(&playerName, s_PlayerName_0069801c);
   }
-  g_pAmbitApplication->InstallCohandler(this, 0);
+  g_pAmbitApplication->InstallCohandler(this, false);
   g_pGameFlowState = 0;
   g_pNetMgr006a6014->Free();
   g_pNetMgr006a6014 = 0;
@@ -448,7 +448,7 @@ void TMultiplayerMgr::EnsureGameFlowStateAndPostTurnEvent5E5() {
   }
 
   ReturnTrueRuntimeCredentialInitStub();
-  g_pAmbitApplication->InstallCohandler(self, 1);
+  g_pAmbitApplication->InstallCohandler(self, true);
   g_pAmbitApplication->PostTurnEventCodeMessage2420(
       EncodeTurnEventCode(kTurnEventMultiplayerGameSetup));
   self->sessionPhaseTag = kSessionTagPrep; // 'prep'
@@ -456,7 +456,7 @@ void TMultiplayerMgr::EnsureGameFlowStateAndPostTurnEvent5E5() {
 
 // FUNCTION: IMPERIALISM 0x00544630
 void TMultiplayerMgr::ResetDiplomacyRuntimeSelectionAndSetModeNada() {
-  g_pAmbitApplication->InstallCohandler(g_pGameFlowState, 0);
+  g_pAmbitApplication->InstallCohandler(g_pGameFlowState, false);
   g_pSimMgr->multiplayerSessionRole = kSessionRoleStandalone;
   if (g_pNetMgr006a6014 != 0) {
     g_pNetMgr006a6014->ResetRuntimeSelectionRecordBufferAndReturnTrue();
@@ -557,7 +557,7 @@ unsigned char TMultiplayerMgr::InitializeProtocolOptionControlFromProvider(TView
 // FUNCTION: IMPERIALISM 0x00544f30
 unsigned char TMultiplayerMgr::ResetGameFlowStateAndPostTurnEvent5DC() {
   lobbyDialogView = 0;
-  g_pAmbitApplication->InstallCohandler(g_pGameFlowState, 0);
+  g_pAmbitApplication->InstallCohandler(g_pGameFlowState, false);
   g_pSimMgr->multiplayerSessionRole = kSessionRoleStandalone;
   if (g_pNetMgr006a6014 != 0) {
     g_pNetMgr006a6014->ResetRuntimeSelectionRecordBufferAndReturnTrue();
@@ -619,7 +619,7 @@ TMultiplayerMgr::InitializeRuntimeSelectionCredentialsFromProviderAndConnect(TVi
 // FUNCTION: IMPERIALISM 0x00545290
 unsigned char TMultiplayerMgr::ResetGameFlowStateAndPostTurnEvent5DCAlt() {
   lobbyDialogView = 0;
-  g_pAmbitApplication->InstallCohandler(g_pGameFlowState, 0);
+  g_pAmbitApplication->InstallCohandler(g_pGameFlowState, false);
   g_pSimMgr->multiplayerSessionRole = kSessionRoleStandalone;
   if (g_pNetMgr006a6014 != 0) {
     g_pNetMgr006a6014->ResetRuntimeSelectionRecordBufferAndReturnTrue();
@@ -665,7 +665,7 @@ unsigned char TMultiplayerMgr::ResetNationStatusSlotsAndInitializeNameControls(T
     TStaticText* nameControl =
         static_cast<TStaticText*>(panel->ResolveControlByTag(kControlTagNam0 + i)); // 'nam0'-'nam6'
     nameControl->AssertValid();
-    nameControl->SetTextAndMaybeRefresh(&loadedString, 1);
+    nameControl->SetTextAndMaybeRefresh(&loadedString, true);
   }
 
   TView* okayControl = panel->ResolveControlByTag(kControlTagOkay); // 'okay'

@@ -78,8 +78,8 @@ void TApplication::GetDefaultCursorRegion(int x, int y, void* cursorRegion) {
 // vtable slot 0x29 (0x004869b0): MacApp TApplication::InstallCohandler — register or
 // remove a TEventHandler on the idle cohandler list at +0x2c.
 // FUNCTION: IMPERIALISM 0x004869b0
-void TApplication::InstallCohandler(TEventHandler* cohandler, unsigned char install) {
-  if (install != 0) {
+void TApplication::InstallCohandler(TEventHandler* cohandler, bool install) {
+  if (install) {
     cohandlers.AddHead(cohandler);
     return;
   }

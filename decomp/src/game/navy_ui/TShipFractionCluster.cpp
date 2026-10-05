@@ -53,7 +53,7 @@ void TShipFractionCluster::DoEvent(int commandId, TEventHandler* sourceHandler, 
   if (commandId == 0x64) {
     if (selectedShipCount < availableShipCount) {
       selectedShipCount = static_cast<short>(selectedShipCount + 1);
-      shipCountButton->SetValue(selectedShipCount, 1);
+      shipCountButton->SetValue(selectedShipCount, true);
       g_pActiveMapOrderContext->selectedTaskForce14->Select(static_cast<short>(controlTag - 0x7330),
                                                             1);
       mainSelectionView->UpdateRoster();
@@ -61,7 +61,7 @@ void TShipFractionCluster::DoEvent(int commandId, TEventHandler* sourceHandler, 
   } else if (commandId == 0x65) {
     if (selectedShipCount > 0) {
       selectedShipCount = static_cast<short>(selectedShipCount - 1);
-      shipCountButton->SetValue(selectedShipCount, 1);
+      shipCountButton->SetValue(selectedShipCount, true);
       g_pActiveMapOrderContext->selectedTaskForce14->Select(static_cast<short>(controlTag - 0x7330),
                                                             0);
       mainSelectionView->UpdateRoster();
@@ -101,7 +101,7 @@ void TShipFractionCluster::SetAvailableAndSelectedShipCounts(int availableCount,
     selectedShipCount = static_cast<short>(selectedCount);
   }
   if (availableCount > 0) {
-    shipCountButton->SetValue(selectedShipCount, 1);
+    shipCountButton->SetValue(selectedShipCount, true);
   }
 }
 
@@ -109,7 +109,7 @@ void TShipFractionCluster::SetAvailableAndSelectedShipCounts(int availableCount,
 void TShipFractionCluster::IncrementSelectedShipCount(unsigned char displayOnly) {
   if (selectedShipCount < availableShipCount) {
     selectedShipCount = static_cast<short>(selectedShipCount + 1);
-    shipCountButton->SetValue(selectedShipCount, 1);
+    shipCountButton->SetValue(selectedShipCount, true);
     if (displayOnly == 0) {
       g_pActiveMapOrderContext->selectedTaskForce14->Select(static_cast<short>(controlTag - 0x7330),
                                                             1);
@@ -122,7 +122,7 @@ void TShipFractionCluster::IncrementSelectedShipCount(unsigned char displayOnly)
 void TShipFractionCluster::DecrementSelectedShipCount(unsigned char displayOnly) {
   if (selectedShipCount > 0) {
     selectedShipCount = static_cast<short>(selectedShipCount - 1);
-    shipCountButton->SetValue(selectedShipCount, 1);
+    shipCountButton->SetValue(selectedShipCount, true);
     if (displayOnly == 0) {
       g_pActiveMapOrderContext->selectedTaskForce14->Select(static_cast<short>(controlTag - 0x7330),
                                                             0);

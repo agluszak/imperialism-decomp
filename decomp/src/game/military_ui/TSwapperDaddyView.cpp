@@ -16,11 +16,11 @@ TView* TSwapperDaddyView::SelectSwapperItemByTag(int tag) {
     while (iter.MoreSubViews()) {
       if (child->controlTag == tag) {
         CPoint matchLayout(0, 0);
-        child->Locate(matchLayout, 1);
+        child->Locate(matchLayout, true);
         matched = child;
       } else {
         CPoint offscreenLayout(1000, 1000);
-        child->Locate(offscreenLayout, 0);
+        child->Locate(offscreenLayout, false);
       }
       child = iter.NextSubView();
     }

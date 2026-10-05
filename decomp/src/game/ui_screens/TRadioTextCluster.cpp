@@ -102,7 +102,7 @@ TRadioText* TRadioTextCluster::AddItem(unsigned long tag, int value, const char*
   item->controlTag = static_cast<int>(tag);
   item->controlValue3c = value;
   CString itemText(text);
-  item->SetTextAndMaybeRefresh(&itemText, 1);
+  item->SetTextAndMaybeRefresh(&itemText, true);
   item->SetEnable(1);
   return item;
 }

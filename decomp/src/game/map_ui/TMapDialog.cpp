@@ -141,7 +141,7 @@ static inline bool LandTilesHaveDifferentNationOwners(short firstTile, short sec
 
 static inline void SetMapBorderColorForTileOwner(short tileIndex) {
   short nation = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
-  if (g_pDiplomacyTurnStateManager->IsGreatPower(nation) == 0) {
+  if (!g_pDiplomacyTurnStateManager->IsGreatPower(nation)) {
     nation = 0x35;
   }
   g_pViewMgr->SetForeColor(nation);
@@ -797,7 +797,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
                        &mainText);
   numberText.Format(g_szDecimalFormat, tileIndex);
   mainText += " (#" + numberText + g_szUiCloseParen_006973C8;
-  static_cast<TStaticText*>(titleControl)->SetTextAndMaybeRefresh(&mainText, 1);
+  static_cast<TStaticText*>(titleControl)->SetTextAndMaybeRefresh(&mainText, true);
 
   TView* infoControl = ResolveControlByTag(kControlTagInfo); // 'info'
   if (infoControl == 0) {
@@ -837,7 +837,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
         mainText += numberText + " " + nameText + "\n";
       }
     }
-    static_cast<TStaticText*>(infoControl)->SetTextAndMaybeRefresh(&mainText, 1);
+    static_cast<TStaticText*>(infoControl)->SetTextAndMaybeRefresh(&mainText, true);
 
     g_pGlobalMapState->AssignCityRecordDisplayName(cityIndex, &cityName);
     TCountry* owner = g_apTerrainTypeDescriptorTable[g_pGlobalMapState->terrainStateTable[tileIndex]
@@ -880,7 +880,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMapDlog_006973D0, 0x4ab);
     }
   }
-  static_cast<TStaticText*>(locationControl)->SetTextAndMaybeRefresh(&mainText, 1);
+  static_cast<TStaticText*>(locationControl)->SetTextAndMaybeRefresh(&mainText, true);
 }
 
 // FUNCTION: IMPERIALISM 0x0051e0b0
@@ -1326,10 +1326,10 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   }
 
   if ((activeFlags & 3) == 0 || terrain.gateFlag == 0) {
-    const char lowImprovementClass =
-        static_cast<char>(g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 0));
-    const char highImprovementClass =
-        static_cast<char>(g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 1));
+    const char lowImprovementClass = static_cast<char>(
+        g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, false));
+    const char highImprovementClass = static_cast<char>(
+        g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, true));
     const signed char firstResourceType = terrain.resourceTypeByEdge[0];
     const bool firstResourceIsProspectable =
         firstResourceType == kResourceCoal || firstResourceType == kResourceIron ||
@@ -1425,7 +1425,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
           static_cast<short>(screenX + 0x1b), static_cast<short>(screenY + 0x1c));
     }
 
-    if (g_pDiplomacyTurnStateManager->IsGreatPower(terrain.ownerNationTag04) == 0 &&
+    if (!g_pDiplomacyTurnStateManager->IsGreatPower(terrain.ownerNationTag04) &&
         terrain.secondaryOwnerNationTag != -1) {
       g_pMacViewMgr->BlitStrategicMapUnitActivityOverlayFrame(
           destinationSurfaceObject, terrain.secondaryOwnerNationTag,
@@ -1542,7 +1542,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
 // FUNCTION: IMPERIALISM 0x00520670
 void TMapDialog::DrawBorder(short relationLevel, int originX, int originY, int nationA,
                             int nationB) {
-  if (g_pDiplomacyTurnStateManager->IsGreatPower(nationA) == 0) {
+  if (!g_pDiplomacyTurnStateManager->IsGreatPower(nationA)) {
     g_pViewMgr->SetForeColor(0x35);
   } else {
     g_pViewMgr->SetForeColor(nationA);
@@ -1580,7 +1580,7 @@ void TMapDialog::DrawBorder(short relationLevel, int originX, int originY, int n
     DrawMapDialogGuidePatternSetI(originX, originY, 1);
     break;
   }
-  if (g_pDiplomacyTurnStateManager->IsGreatPower(nationB) == 0) {
+  if (!g_pDiplomacyTurnStateManager->IsGreatPower(nationB)) {
     g_pViewMgr->SetForeColor(0x35);
   } else {
     g_pViewMgr->SetForeColor(nationB);
@@ -2473,7 +2473,7 @@ void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projec
       flag == 0 ? quickDrawSurface350 : g_pActiveQuickDrawSurfaceContext;
   CRect destinationRect(projectedY, projectedX, projectedY + 0x40, projectedX + 0x40);
 
-  if (flag != 0 && alternateOverlayEnabled == 0) {
+  if (flag != 0 && !alternateOverlayEnabled) {
     signed char markerIndex =
         g_pGlobalMapState->terrainStateTable[orderEntry->tileIndex06].markerSlotIndex;
     if (markerIndex != -1) {
@@ -2536,7 +2536,7 @@ void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, 
     return;
   }
 
-  if (flag != 0 && alternateOverlayEnabled == 0) {
+  if (flag != 0 && !alternateOverlayEnabled) {
     signed char markerIndex = tile.markerSlotIndex;
     if (markerIndex == -1) {
       return;
@@ -2606,14 +2606,14 @@ void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, 
 
 // FUNCTION: IMPERIALISM 0x00523ff0
 void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
-                                                               unsigned char altOverlay) {
+                                                               bool altOverlay) {
   MapTileActionStateStorage tileActionClass =
       g_pGlobalMapState->terrainStateTable[tileIndex].tileActionState16;
   if (tileActionClass < 0 || tileActionClass >= kMapTileActionStateOceanAtlasFrameCount) {
     return;
   }
 
-  if (altOverlay == 0) {
+  if (!altOverlay) {
     CRect sourceRect(tileActionClass << 6, 0, (tileActionClass + 1) << 6, 0x40);
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas690->GetBlitSurface(),
@@ -2623,7 +2623,7 @@ void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
     return;
   }
 
-  if (alternateOverlayEnabled == 0) {
+  if (!alternateOverlayEnabled) {
     signed char terrainFrameIndex = g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex;
     if (terrainFrameIndex == -1) {
       return;

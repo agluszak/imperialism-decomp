@@ -35,7 +35,7 @@ void TSpecialQuitPicture::DoPostCreate(int arg) {
   saleControl->QueryBounds(&saleBounds);
   saleBounds.right = 0x28;
   saleBounds.bottom = 0x11;
-  saleControl->ApplyBounds(&saleBounds, 1);
+  saleControl->ApplyBounds(&saleBounds, true);
 
   TDeluxeText* shotControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTsho));
   shotControl->AssertValid();
@@ -54,7 +54,7 @@ void TSpecialQuitPicture::DoPostCreate(int arg) {
   TDeluxeText* titlControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTitl));
   titlControl->AssertValid();
   titlControl->SetTextStyle(0, 0xe, 0x2b6c);
-  titlControl->SetTextAlignmentAndMaybeRefresh(1, 1);
+  titlControl->SetTextAlignmentAndMaybeRefresh(1, true);
 }
 
 // FUNCTION: IMPERIALISM 0x005b4a10

@@ -438,7 +438,7 @@ void TArmyMgr::ResolveNextMove() {
           static_cast<short>(stack->categoryFlag)) {
         stack->ReseatChainUnitsAndClearOrders();
       } else {
-        battleViewCreated = this->ResolveConflict(stack, stack->ownerNationCodeE) != 0;
+        battleViewCreated = this->ResolveConflict(stack, stack->ownerNationCodeE);
       }
     }
     stackCount = this->pendingUnitPool->GetCount();
@@ -733,8 +733,8 @@ bool TArmyMgr::ResolveConflict(TArmyStack* stack, short ownerNationCode) {
       enemyStack->AddUnitToChainHead(enemyUnit);
     }
 
-    if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
-            ourStack->categoryFlag, cachedOwnerAtTile) == 0) {
+    if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
+            ourStack->categoryFlag, cachedOwnerAtTile)) {
       // Relation is current: no battle -- dispatch the peaceful army-context path and
       // relocate our own stack instead.
       BuildArmyContextActionRecordsAndDispatchLabel(ourStack, enemyStack, 0, ownerNationCodeInt, 0);
@@ -1836,7 +1836,7 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyMgr_0069573C, 0xa4d);
   }
-  node->SetModality(1);
+  node->SetModality(true);
 
   // MapView.rsrc view 9475's children, in the order the original fills them.
   CString scratchText;
@@ -1846,7 +1846,7 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
   g_apTerrainTypeDescriptorTable[g_pGlobalMapState->cityScoreTable[cityRecordIndex]
                                      .ownerNationCode00]
       ->FormatOverlayTerrainLabelText(&scratchText);
-  ownerLabel->SetTextAndMaybeRefresh(&scratchText, 0);
+  ownerLabel->SetTextAndMaybeRefresh(&scratchText, false);
   ownerLabel->InstallTextStyle(styleB, 0);
 
   TStaticText* zoneLabel =
@@ -1856,36 +1856,36 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
   g_pGlobalMapState->AssignCityRecordDisplayName(static_cast<ProvinceIndex>(cityRecordIndex),
                                                  &cityDisplayName);
   scratchText = cityDisplayName;
-  zoneLabel->SetTextAndMaybeRefresh(&scratchText, 0);
+  zoneLabel->SetTextAndMaybeRefresh(&scratchText, false);
   zoneLabel->InstallTextStyle(styleB, 0);
 
   TStaticText* defenderLabel =
       static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagAdam)); // 'adam'
   defenderLabel->AssertValid();
-  defenderLabel->SetTextAndMaybeRefresh(&defenderSummary, 0);
+  defenderLabel->SetTextAndMaybeRefresh(&defenderSummary, false);
   defenderLabel->InstallTextStyle(styleC, 0);
 
   TStaticText* garrisonLabel =
       static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagShip)); // 'ship'
   garrisonLabel->AssertValid();
   CString quotedGarrison = CString(g_szDoubleQuote) + garrisonSummary + g_szDoubleQuote;
-  garrisonLabel->SetTextAndMaybeRefresh(&quotedGarrison, 0);
+  garrisonLabel->SetTextAndMaybeRefresh(&quotedGarrison, false);
   garrisonLabel->InstallTextStyle(styleC, 0);
 
   TStaticText* titleLabel =
       static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagTitl)); // 'titl'
   titleLabel->AssertValid();
-  titleLabel->SetTextFromStringResource(0x2744, 5, 0);
+  titleLabel->SetTextFromStringResource(0x2744, 5, false);
   titleLabel->InstallTextStyle(styleA, 0);
 
   TStaticText* label1 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab1));
   label1->AssertValid();
-  label1->SetTextFromStringResource(0x2744, 6, 0);
+  label1->SetTextFromStringResource(0x2744, 6, false);
   label1->InstallTextStyle(styleC, 0);
 
   TStaticText* label2 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab2));
   label2->AssertValid();
-  label2->SetTextFromStringResource(0x2744, 7, 0);
+  label2->SetTextFromStringResource(0x2744, 7, false);
   label2->InstallTextStyle(styleC, 0);
 
   TStaticText* label3 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab3));
@@ -1895,7 +1895,7 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
 
   TStaticText* label4 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab4));
   label4->AssertValid();
-  label4->SetTextFromStringResource(0x2744, 8, 0);
+  label4->SetTextFromStringResource(0x2744, 8, false);
   label4->InstallTextStyle(styleD, 0);
 
   TDialogBehavior* behavior = node->GetDialogBehavior();

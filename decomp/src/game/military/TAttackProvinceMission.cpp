@@ -100,7 +100,7 @@ char TAttackProvinceMission::SmokeEmIfYouGotEm() {
           for (unit = static_cast<TMilitaryUnit*>(queueIter.Reset()); queueIter.More();
                unit = static_cast<TMilitaryUnit*>(queueIter.Advance())) {
             if (unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
-              RejectConstituent(unit, 1);
+              RejectConstituent(unit, true);
             }
           }
           return 1;
@@ -115,7 +115,7 @@ char TAttackProvinceMission::SmokeEmIfYouGotEm() {
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(queueIter.Reset()); queueIter.More();
        unit = static_cast<TMilitaryUnit*>(queueIter.Advance())) {
     if (unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
-      RejectConstituent(unit, 1);
+      RejectConstituent(unit, true);
     }
   }
   return 1;

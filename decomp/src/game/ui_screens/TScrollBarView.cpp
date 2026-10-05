@@ -212,7 +212,7 @@ void TScrollBarView::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x00574d10
 void TScrollBarView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
-                                CPoint& currentPoint, unsigned char commandFlag) {
+                                CPoint& currentPoint, bool commandFlag) {
   (void)startPoint;
   (void)previousPoint;
   (void)commandFlag;
@@ -248,7 +248,7 @@ void TScrollBarView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pr
   CPoint origin;
   origin.y = -(ratio * heightDiff / 1024);
   origin.x = content->ownerLocalX;
-  content->Locate(origin, 1);
+  content->Locate(origin, true);
 }
 // FUNCTION: IMPERIALISM 0x00574e20
 void TScrollBarView::SetThumb(int percent, unsigned char refresh) {

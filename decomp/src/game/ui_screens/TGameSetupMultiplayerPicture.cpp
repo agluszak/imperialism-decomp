@@ -60,9 +60,9 @@ void TGameSetupMultiplayerPicture::DoPostCreate(int arg) {
   styleDescriptor.fontSize = 0;
   styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xe, 0x2b6c);
-  cursControl->SetTextStyle(styleDescriptor, 1);
+  cursControl->SetTextStyle(styleDescriptor, true);
   cursControl->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
-  cursControl->SetTextAlignmentAndMaybeRefresh(1, 0);
+  cursControl->SetTextAlignmentAndMaybeRefresh(1, false);
 
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x1f, kControlTagRand);

@@ -370,7 +370,7 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
     GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x223);
   }
-  node->SetModality(1);
+  node->SetModality(true);
   if (node->ResolveControlByTag(kControlTagDialog) == nullptr) { // 'GOLD'
     GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x227);
@@ -382,7 +382,7 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
 
   CPoint placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
-  node->Locate(placement, 0);
+  node->Locate(placement, false);
 
   TPicture* gold = static_cast<TPicture*>(node->ResolveControlByTag(kControlTagDialog)); // 'DLOG'
   gold->AssertValid();
@@ -494,7 +494,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x2e9);
   }
-  dialog->SetModality(1);
+  dialog->SetModality(true);
   TDialogBehavior* content = dialog->GetDialogBehavior();
   if (content != 0) {
     content->defaultCommandCode = kControlTagOkay; // 'okay'
@@ -502,7 +502,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
 
   CPoint placement;
   this->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
-  dialog->Locate(placement, 0);
+  dialog->Locate(placement, false);
 
   TPicture* gold = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagDialog)); // 'DLOG'
   gold->AssertValid();
@@ -548,25 +548,25 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x31a);
     }
     title->InstallTextStyle(styleDescriptor, 0);
-    title->SetTextAlignmentAndMaybeRefresh(1, 0);
+    title->SetTextAlignmentAndMaybeRefresh(1, false);
     BuildUiMessageTextFromBracketTemplate(g_pSimMgr, &titleText, 0x2749, messageKind, 0x2749,
                                           contextTagSx);
     titleText += '\r';
     titleText += '\r';
     titleText += titleSuffix;
-    title->SetTextAndMaybeRefresh(&titleText, 0);
+    title->SetTextAndMaybeRefresh(&titleText, false);
   }
 
   TDeluxeText* info =
       static_cast<TDeluxeText*>(dialog->ResolveControlByTag(kControlTagInfo)); // 'info'
   info->AssertValid();
   info->SetTextEntryFromChars(messageChars, messageLength);
-  info->SetTextStyle(styleDescriptor, 0);
+  info->SetTextStyle(styleDescriptor, false);
   int measuredHeight = static_cast<short>(info->MeasureCurrentTextHeightInLayoutRect());
   if (measuredHeight > info->frameHeight) {
     info->QueryBounds(&bounds);
     bounds.right = bounds.top - 10;
-    info->ApplyBounds(&bounds, 0);
+    info->ApplyBounds(&bounds, false);
     if (measuredHeight > info->frameHeight) {
       TScrollView* scrollView = new TScrollView();
       scrollView->IScrollView(gold, &info->ownerLocalX, &info->frameWidth);
@@ -577,7 +577,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
       bounds.left = 0;
       bounds.bottom = measuredHeight;
       bounds.right = info->frameWidth - 0x1c;
-      info->ApplyBounds(&bounds, 0);
+      info->ApplyBounds(&bounds, false);
       scrollView->contentView = info;
       scrollView->SyncBoundedValueAndToggleControlStates();
     }
@@ -860,7 +860,7 @@ void TViewMgr::MakeMinorsTradeBidsDialog(int dialogContext) {
   if (dialog != nullptr) {
     dialog->StuffValues();
   }
-  node->SetModality(1);
+  node->SetModality(true);
   node->PoseModally();
   node->Close();
   node->Free();
@@ -886,7 +886,7 @@ void TViewMgr::MakeMinorRelationshipDialog(int dialogContext) {
   if (dialog != nullptr) {
     dialog->StuffValues();
   }
-  node->SetModality(1);
+  node->SetModality(true);
   node->PoseModally();
   node->Close();
   node->Free();
@@ -907,7 +907,7 @@ void TViewMgr::MakeGPTreatyDialog(int dialogContext) {
   if (dialog != nullptr) {
     dialog->StuffValues();
   }
-  node->SetModality(1);
+  node->SetModality(true);
   node->PoseModally();
   node->Close();
   node->Free();
@@ -928,7 +928,7 @@ void TViewMgr::MakeMinorTreatyDialog(int dialogContext) {
   if (dialog != nullptr) {
     dialog->StuffValues();
   }
-  node->SetModality(1);
+  node->SetModality(true);
   node->PoseModally();
   node->Close();
   node->Free();
@@ -1546,14 +1546,14 @@ void TViewMgr::ShowTransportScreen(short nationSlot) {
   leftTitle->AssertValid();
   ApplyUiTextStyleAndThemeFlags(leftTitle, 0, 0x12, 0x2b6b, 0x2b6c);
   g_pSimMgr->GetString(0x2735, 5, &text);
-  leftTitle->SetTextAndMaybeRefresh(&text, 0);
+  leftTitle->SetTextAndMaybeRefresh(&text, false);
 
   TDropShadowText* rightTitle =
       static_cast<TDropShadowText*>(hostView->ResolveControlByTag(kControlTagTitR));
   rightTitle->AssertValid();
   ApplyUiTextStyleAndThemeFlags(rightTitle, 0, 0x12, 0x2b6b, 0x2b6c);
   g_pSimMgr->GetString(0x2735, 6, &text);
-  rightTitle->SetTextAndMaybeRefresh(&text, 0);
+  rightTitle->SetTextAndMaybeRefresh(&text, false);
 
   g_pMacViewMgr->RefreshCityProductionDetailPanelAndArrowWidgets(-1, nationSlot, hostView);
   for (short row = 0; row < 0x17; ++row) {
@@ -1592,7 +1592,7 @@ void TViewMgr::RefreshTechnologyStorePageAndHudText(int nationSlot) {
     titleControl->AssertValid();
     ApplyUiTextStyleAndThemeFlags(titleControl, 0, 0xe, 0x2b6a, 0x2b68);
     g_pSimMgr->GetString(0x274f, static_cast<short>(titleIndex + 4), &title);
-    titleControl->SetTextAndMaybeRefresh(&title, 1);
+    titleControl->SetTextAndMaybeRefresh(&title, true);
   }
 
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
@@ -1643,11 +1643,11 @@ void TViewMgr::ShowAbilityStatusReport(short abilityIndex) {
   statusText += '\r';
   statusText += '\r';
   statusText += prefix;
-  textControl->SetTextAndMaybeRefresh(&statusText, 1);
+  textControl->SetTextAndMaybeRefresh(&statusText, true);
 
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6b);
   textControl->InstallTextStyle(style, 0);
-  textControl->SetTextAlignmentAndMaybeRefresh(-2, 0);
+  textControl->SetTextAlignmentAndMaybeRefresh(-2, false);
   activeDialog->ForceRedraw();
 }
 
@@ -1750,7 +1750,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   title->AssertValid();
   ApplyUiTextStyleAndThemeFlags(title, 0, 0x10, 0x2b6c, 0x2b67);
   g_pSimMgr->GetString(0x2731, 0xc, &sharedString);
-  title->SetTextAndMaybeRefresh(&sharedString, 0);
+  title->SetTextAndMaybeRefresh(&sharedString, false);
 
   TDropShadowText* commodityTitle =
       static_cast<TDropShadowText*>(mainView->ResolveControlByTag(kTagCommodityTitle));
@@ -1758,14 +1758,14 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   ApplyUiTextStyleAndThemeFlags(commodityTitle, 0, 0xc, 0x2b6c, 0x2b67);
   g_pSimMgr->GetString(0x2731, 0, &sharedString);
   g_pSimMgr->GetString(0x2731, 0xd, &sharedString);
-  commodityTitle->SetTextAndMaybeRefresh(&sharedString, 0);
+  commodityTitle->SetTextAndMaybeRefresh(&sharedString, false);
 
   TDropShadowText* ordersTitle =
       static_cast<TDropShadowText*>(mainView->ResolveControlByTag(kTagOrdersTitle));
   ordersTitle->AssertValid();
   ApplyUiTextStyleAndThemeFlags(ordersTitle, 0, 0xc, 0x2b6c, 0x2b67);
   g_pSimMgr->GetString(0x2731, 0xe, &sharedString);
-  ordersTitle->SetTextAndMaybeRefresh(&sharedString, 0);
+  ordersTitle->SetTextAndMaybeRefresh(&sharedString, false);
 
   BuildUiTextStyleDescriptor(&columnStyle, 0, 0xc, 0x2b68);
   TStaticText* priceTitle =
@@ -1773,21 +1773,21 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   priceTitle->AssertValid();
   priceTitle->InstallTextStyle(columnStyle, 0);
   g_pSimMgr->GetString(0x2731, 0xf, &sharedString);
-  priceTitle->SetTextAndMaybeRefresh(&sharedString, 0);
+  priceTitle->SetTextAndMaybeRefresh(&sharedString, false);
 
   TStaticText* availableTitle =
       static_cast<TStaticText*>(mainView->ResolveControlByTag(kTagAvailableTitle));
   availableTitle->AssertValid();
   availableTitle->InstallTextStyle(columnStyle, 0);
   g_pSimMgr->GetString(0x2731, 0x10, &sharedString);
-  availableTitle->SetTextAndMaybeRefresh(&sharedString, 0);
+  availableTitle->SetTextAndMaybeRefresh(&sharedString, false);
 
   TStaticText* quantityTitle =
       static_cast<TStaticText*>(mainView->ResolveControlByTag(kTagQuantityTitle));
   quantityTitle->AssertValid();
   quantityTitle->InstallTextStyle(columnStyle, 0);
   g_pSimMgr->GetString(0x2731, 0x11, &sharedString);
-  quantityTitle->SetTextAndMaybeRefresh(&sharedString, 0);
+  quantityTitle->SetTextAndMaybeRefresh(&sharedString, false);
 
   TView* miniPicture = mainView->ResolveControlByTag(kTagMiniPicture);
   miniPicture->AssertValid();
@@ -1801,7 +1801,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xa52);
   }
   ApplyUiNumberTextStyleAndThemeColor(capacity, 0, 0xa, 0x2b6c, 0x2b67);
-  capacity->SetTextAlignmentAndMaybeRefresh(1, 0);
+  capacity->SetTextAlignmentAndMaybeRefresh(1, false);
   capacity->SetControlValue(g_apNationStates[nationSlot]->merchantCapacity, 0);
 
   TCity* city = g_apNationStates[nationSlot] == 0 ? 0 : g_apNationStates[nationSlot]->city;
@@ -2011,9 +2011,9 @@ void TViewMgr::ShowDealBookScreen(short nationSlot) {
       static_cast<TDropShadowText*>(mainControl->ResolveControlByTag(kControlTagTitL)); // 'titL'
   titleControl->AssertValid();
   ApplyUiTextStyleAndThemeFlags(titleControl, 0, 0x12, 0x2b6c, 0x2b6b);
-  titleControl->SetTextAlignmentAndMaybeRefresh(1, 0);
+  titleControl->SetTextAlignmentAndMaybeRefresh(1, false);
   g_pSimMgr->GetString(0x2741, 0, &sharedString);
-  titleControl->SetTextAndMaybeRefresh(&sharedString, 0);
+  titleControl->SetTextAndMaybeRefresh(&sharedString, false);
   // 0x5bac50 is invoked on the 'main' deal-book control (the binary's receiver), not 'titL'.
   static_cast<TDealBookPicture*>(mainControl)->Startup(nationSlot);
 }
@@ -2424,8 +2424,8 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF8() {
 
   TextStyle styleDescriptor = {0, 0, 0, 0};
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xe, 0x2b6c);
-  g_pCursorControlPanel->SetTextStyle(styleDescriptor, 1);
-  g_pCursorControlPanel->SetTextAlignmentAndMaybeRefresh(1, 0);
+  g_pCursorControlPanel->SetTextStyle(styleDescriptor, true);
+  g_pCursorControlPanel->SetTextAlignmentAndMaybeRefresh(1, false);
 
   COLORREF mappedStyleFlags = 0;
   ResolveUiThemeColor(0x2b6b, &mappedStyleFlags);
@@ -2551,7 +2551,7 @@ void TViewMgr::ShowBuildingExpansionDialog(short buildingSlotId, TCity* city,
     GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf50);
   }
-  node->SetModality(1);
+  node->SetModality(true);
   // MapView.rsrc view 9221's 'DLOG' pict is a TBuildingExpansionView (Mac resource
   // oracle), whose slots 0x73/0x74 are StuffValues and DoClosingAction.
   TBuildingExpansionView* expansionView =
@@ -2564,7 +2564,7 @@ void TViewMgr::ShowBuildingExpansionDialog(short buildingSlotId, TCity* city,
   expansionView->StuffValues(buildingSlotId, city, productionView);
   CPoint placement;
   this->ComputeTurnEventDialogPlacementByCode(node, &placement);
-  node->Locate(placement, 0);
+  node->Locate(placement, false);
   int dialogAction = node->PoseModally();
   expansionView->DoClosingAction(static_cast<unsigned long>(dialogAction));
   node->Close();
@@ -2646,7 +2646,7 @@ void TViewMgr::ShowUnitHistory(short nationSlot) {
         activeDialog->ResolveControlByTag(kControlTagTxtAt + entryOrdinal));
     if (textControl != 0) {
       textControl->Show(1, 1);
-      textControl->SetTextAndMaybeRefresh(&lineText, 1);
+      textControl->SetTextAndMaybeRefresh(&lineText, true);
     }
 
     ++entryOrdinal;

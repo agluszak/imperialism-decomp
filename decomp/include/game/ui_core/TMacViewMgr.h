@@ -48,16 +48,15 @@ public:
   virtual void DispatchTurnEvent3B8AndWaitForCompletionFlag(int unusedArg1,
                                                             int unusedArg2); // slot 0x13 0x50d310
   virtual TBuildingView* RestoreBuildingWindowAtSavedPosition(short buildingSlot, TCity* city,
-                                                              unsigned char closeAfterOpen,
-                                                              unsigned char isEmbeddedPage,
+                                                              bool closeAfterOpen,
+                                                              bool isEmbeddedPage,
                                                               TCityProductionView* productionView,
                                                               short savedX,
                                                               short savedY); // slot 0x14 0x50d470
   // Mac CodeWarrior oracle signatures. `closeAfterOpen` selects the modal path,
   // which consumes the dialog and therefore returns null.
   virtual TBuildingView*
-  OpenBuildingWindow(short buildingSlot, TCity* city, unsigned char closeAfterOpen,
-                     unsigned char isEmbeddedPage,
+  OpenBuildingWindow(short buildingSlot, TCity* city, bool closeAfterOpen, bool isEmbeddedPage,
                      TCityProductionView* productionView); // slot 0x15 0x50d360
   virtual void OpenConstructionWindow(short buildingSlot, TCity* city,
                                       TCityProductionView* productionView); // slot 0x16 0x50d5b0

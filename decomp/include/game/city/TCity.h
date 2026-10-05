@@ -80,9 +80,9 @@ public:
   // slot 0x17 — body 0x004b4940. Mac oracle: GetNextBuildingType(short).
   virtual short GetNextBuildingType(short buildingSlot);
   // slot 0x18 — body 0x004b4d50 (vtable stores direct body, not ILT 0x0040494e).
-  virtual void BuildPowerPlant(char enableUpgrade);
+  virtual void BuildPowerPlant(bool enableUpgrade);
   // slot 0x19 — body 0x004b4c80: write the production flag/current/accum for a slot.
-  virtual void SetBuildingWindowState(short productionSlot, char flag, short current, short accum);
+  virtual void SetBuildingWindowState(short productionSlot, bool flag, short current, short accum);
   // slot 0x1a — body 0x004b4cc0: read the production flag byte (+0x21c) and the two
   // production shorts (+0x22c/+0x24c) for a slot.
   virtual char GetBuildingWindowState(short productionSlot, short* outCurrent, short* outAccum);

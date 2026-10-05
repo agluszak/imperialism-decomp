@@ -95,7 +95,7 @@ void TScenarioChooser::DoPostCreate(int arg) {
       static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagMore)); // 'more'
   moreLabel->AssertValid();
   g_pSimMgr->GetString(0x2758, 0x20, &headingText);
-  moreLabel->SetTextAndMaybeRefresh(&headingText, 0);
+  moreLabel->SetTextAndMaybeRefresh(&headingText, false);
   moreLabel->InstallTextStyle(headingStyle, 1);
   moreLabel->shadowColor94 = shadowColor;
   moreLabel->ViewEnable(1, 0);
@@ -105,11 +105,11 @@ void TScenarioChooser::DoPostCreate(int arg) {
   TDeluxeText* scenarioDescription =
       static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagScenarioDescription));
   scenarioDescription->AssertValid();
-  scenarioDescription->SetTextStyle(bodyStyle, 0);
+  scenarioDescription->SetTextStyle(bodyStyle, false);
   TDeluxeText* nationDescription =
       static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCountryDescription));
   nationDescription->AssertValid();
-  nationDescription->SetTextStyle(bodyStyle, 0);
+  nationDescription->SetTextStyle(bodyStyle, false);
 
   for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     nationDescriptionTextByNation[nationSlot] = new char[0x400];
@@ -120,7 +120,7 @@ void TScenarioChooser::DoPostCreate(int arg) {
   g_pCursorControlPanel = cursorPanel;
   cursorPanel->AssertValid();
   cursorPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
-  cursorPanel->SetTextAlignmentAndMaybeRefresh(1, 1);
+  cursorPanel->SetTextAlignmentAndMaybeRefresh(1, true);
 
   LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x18, this);
   LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x14, ResolveControlByTag(kControlTagExit));

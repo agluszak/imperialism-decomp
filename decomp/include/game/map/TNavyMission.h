@@ -57,7 +57,7 @@ public:
   Free() override; // slot 0x1c (TObject) 0x5364c0 -- releases orderList and deletes self
 
   virtual bool IsANoBrainer() const override; // slot 0x28 0x535500
-  virtual int AccumulateLack(int* accumulatedLack, unsigned char includeExistingLack)
+  virtual int AccumulateLack(int* accumulatedLack, bool includeExistingLack)
       const override; // slot 0x2c 0x536840 -- accumulates remaining ship-equipage lack
   virtual void Reassess() override;   // slot 0x40 0x536b30 -- updates order-selection-mode state
   virtual void GiveOrders() override; // slot 0x44 0x536e40 -- processes queued-order context mode
@@ -73,12 +73,12 @@ public:
   virtual float
   FitnessOf(TShip* candidate,
             float* targetProfile) override; // slot 0x7c 0x537610 -- order penalty vs target profile
-  virtual void AcceptReenforcement(
-      TShip* ship,
-      unsigned char notify) override; // slot 0x84 0x536780 -- attach order child and notify
-  virtual void RejectConstituent(
-      TShip* ship,
-      unsigned char notify) override; // slot 0x8c 0x5367d0 -- detach and clear primary
+  virtual void
+  AcceptReenforcement(TShip* ship,
+                      bool notify) override; // slot 0x84 0x536780 -- attach order child and notify
+  virtual void
+  RejectConstituent(TShip* ship,
+                    bool notify) override; // slot 0x8c 0x5367d0 -- detach and clear primary
   virtual void ForgetTaskForce(
       TTaskForce* taskForce) override; // slot 0x90 0x536810 -- clear secondary order if match
   virtual char SmokeEmIfYouGotEm()

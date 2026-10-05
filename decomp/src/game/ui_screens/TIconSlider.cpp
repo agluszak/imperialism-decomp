@@ -96,7 +96,7 @@ void TIconSlider::GetKnobRect(RECT& knobRect) {
 
 // FUNCTION: IMPERIALISM 0x005067a0
 void TIconSlider::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
-                             CPoint& currentPoint, unsigned char commandFlag) {
+                             CPoint& currentPoint, bool commandFlag) {
   (void)commandFlag;
   RECT previousKnobRect;
   GetKnobRect(previousKnobRect);

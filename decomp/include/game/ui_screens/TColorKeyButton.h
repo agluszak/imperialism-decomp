@@ -11,8 +11,8 @@ public:
   DECLARE_DYNCREATE(TColorKeyButton)
   virtual ~TColorKeyButton() override; // slot 0x01 (scalar deleting destructor)
   virtual void HiliteState(unsigned char fEnabledState,
-                           unsigned char fRefreshNow) override; // slot 0x70 0x571ff0
-  virtual void DrawImmediate();                                 // slot 0x74 0x572060
+                           bool fRefreshNow) override; // slot 0x70 0x571ff0
+  virtual void DrawImmediate();                        // slot 0x74 0x572060
 
   TColorKeyButton();
 

@@ -146,7 +146,7 @@ void TTwoPicSlider::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x0056e640
 void TTwoPicSlider::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
-                               CPoint& currentPoint, unsigned char commandFlag) {
+                               CPoint& currentPoint, bool commandFlag) {
   (void)commandFlag;
   TTwoPicSlider* slider = this;
   // ORIG_CALLCONV: __thiscall; Mac CodeWarrior evidence calls this TTwoPicSlider::TrackMouse.

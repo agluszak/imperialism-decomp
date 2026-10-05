@@ -63,7 +63,7 @@ void TOfferDeskPicture::DoPostCreate(int arg) {
   maximum->AssertValid();
   ApplyUiNumberTextStyleAndThemeColor(maximum, 0, 0xc, 0x2b6c, 0x2b6b);
   LoadUiStringByGroupAndIndexToControlObject(0x2740, 1, maximum);
-  maximum->SetTextAlignmentAndMaybeRefresh(0, 1);
+  maximum->SetTextAlignmentAndMaybeRefresh(0, true);
 
   TDealTabControl* tabs = static_cast<TDealTabControl*>(ResolveControlByTag(kControlTagTabs));
   tabs->AssertValid();
@@ -104,7 +104,7 @@ void TOfferDeskPicture::DoPostCreate(int arg) {
   waitStyle.textColor = 0;
   BuildUiTextStyleDescriptor(&waitStyle, 0, 0xe, 0x2b67);
   waitText->InstallTextStyle(waitStyle, 0);
-  waitText->SetTextAlignmentAndMaybeRefresh(1, 0);
+  waitText->SetTextAlignmentAndMaybeRefresh(1, false);
 
   acceptButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagAcce));
   acceptButton->AssertValid();
@@ -187,15 +187,15 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
     }
     scanBracketExpressions(g_pSimMgr, &waitingText, static_cast<LPCSTR>(messageTemplate),
                            static_cast<LPCSTR>(commodityName));
-    text->SetTextAndMaybeRefresh(&waitingText, 1);
+    text->SetTextAndMaybeRefresh(&waitingText, true);
 
     if (wait->ownerLocalX != g_offerDeskOffscreenPosition_006a5a28.x ||
         wait->ownerLocalY != g_offerDeskOffscreenPosition_006a5a28.y) {
-      wait->Locate(g_offerDeskOffscreenPosition_006a5a28, 1);
+      wait->Locate(g_offerDeskOffscreenPosition_006a5a28, true);
     }
     if (!selectionActive && (sheet->ownerLocalX != g_offerDeskSheetPosition_006a5a00.x ||
                              sheet->ownerLocalY != g_offerDeskSheetPosition_006a5a00.y)) {
-      sheet->Locate(g_offerDeskSheetPosition_006a5a00, 1);
+      sheet->Locate(g_offerDeskSheetPosition_006a5a00, true);
     }
 
     TView* formatButton = ResolveControlByTag(kControlTagForM);
@@ -206,8 +206,8 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   }
 
   UpdateTradeSelectionStateAndRefreshUiIfChanged(0);
-  sheet->Locate(g_offerDeskSheetPosition_006a5a00, 0);
-  wait->Locate(g_offerDeskOffscreenPosition_006a5a28, 0);
+  sheet->Locate(g_offerDeskSheetPosition_006a5a00, false);
+  wait->Locate(g_offerDeskOffscreenPosition_006a5a28, false);
 
   TView* acceptButton = ResolveControlByTag(kControlTagAcce);
   acceptButton->AssertValid();
@@ -238,21 +238,21 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   offerText->AssertValid();
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6b);
   offerText->InstallTextStyle(style, 0);
-  offerText->SetTextAlignmentAndMaybeRefresh(1, 0);
-  offerText->SetTextAndMaybeRefresh(&displayText, 0);
+  offerText->SetTextAlignmentAndMaybeRefresh(1, false);
+  offerText->SetTextAndMaybeRefresh(&displayText, false);
 
   TStaticText* purchaseTitle =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'u', 'r', 'T')));
   purchaseTitle->AssertValid();
   purchaseTitle->InstallTextStyle(style, 0);
-  purchaseTitle->SetTextAlignmentAndMaybeRefresh(-1, 0);
-  purchaseTitle->SetTextFromStringResource(0x2740, 0xe, 1);
+  purchaseTitle->SetTextAlignmentAndMaybeRefresh(-1, false);
+  purchaseTitle->SetTextFromStringResource(0x2740, 0xe, true);
 
   TStaticText* unitText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagUnit));
   unitText->AssertValid();
   unitText->InstallTextStyle(style, 0);
-  unitText->SetTextAlignmentAndMaybeRefresh(-2, 0);
-  unitText->SetTextFromStringResource(0x2740, 0xf, 1);
+  unitText->SetTextAlignmentAndMaybeRefresh(-2, false);
+  unitText->SetTextFromStringResource(0x2740, 0xf, true);
 
   g_pSimMgr->GetString(0x2740, 0xf, &offerTemplate);
   scanBracketExpressions(g_pSimMgr, &displayText, static_cast<LPCSTR>(offerTemplate),
@@ -261,8 +261,8 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('n', 'o', 'o', 'f')));
   numberOfText->AssertValid();
   numberOfText->InstallTextStyle(style, 0);
-  numberOfText->SetTextAlignmentAndMaybeRefresh(-2, 0);
-  numberOfText->SetTextAndMaybeRefresh(&displayText, 0);
+  numberOfText->SetTextAlignmentAndMaybeRefresh(-2, false);
+  numberOfText->SetTextAndMaybeRefresh(&displayText, false);
 
   short capacity =
       g_apTerrainTypeDescriptorTable[g_pSimMgr->GetPlayerCountry()]->GetMerchantCapacity();
@@ -271,8 +271,8 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   maximumText->AssertValid();
   BuildUiTextStyleDescriptor(&style, 0, 0xe, 0x2b67);
   maximumText->InstallTextStyle(style, 0);
-  maximumText->SetTextAlignmentAndMaybeRefresh(1, 0);
-  maximumText->SetTextAndMaybeRefresh(&capacityText, 1);
+  maximumText->SetTextAlignmentAndMaybeRefresh(1, false);
+  maximumText->SetTextAndMaybeRefresh(&capacityText, true);
   maximumText->RefreshControl();
 
   sheet = ResolveControlByTag(kControlTagShee);
@@ -289,7 +289,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   purchaseControl->maximumValue = proposedAmount;
   BuildUiTextStyleDescriptor(&style, 0, 0xe, 0x2b67);
   purchaseControl->InstallTextStyle(style, 0);
-  purchaseControl->SetTextAlignmentAndMaybeRefresh(1, 0);
+  purchaseControl->SetTextAlignmentAndMaybeRefresh(1, false);
   purchaseControl->SetControlValue(proposedAmount, 0);
   purchaseControl->BecomeTarget();
   purchaseControl->GetCurrentText(&proposedAmountText);
@@ -328,7 +328,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   TDropShadowText* info = static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagInfo));
   info->AssertValid();
   ApplyUiTextStyleAndThemeFlags(info, 0, 0xc, 0x2b6c, 0x2b6b);
-  info->SetTextAlignmentAndMaybeRefresh(-2, 0);
+  info->SetTextAlignmentAndMaybeRefresh(-2, false);
 
   selectionActive = false;
   RefreshSelectedNationOrderCompatibilityInfo();
@@ -420,7 +420,7 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
 
   TStaticText* info = static_cast<TStaticText*>(ResolveControlByTag(kControlTagInfo));
   info->AssertValid();
-  info->SetTextAlignmentAndMaybeRefresh(-2, 0);
+  info->SetTextAlignmentAndMaybeRefresh(-2, false);
 
   {
     strTargetNation = g_pSimMgr->LoadNormalizedCredentialName(offeringNationSlot);
@@ -432,7 +432,7 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
 
   if (g_pHelpMgr->tradeAdviceDetailLevel == 0) {
     g_pSimMgr->GetString(0x2740, 9, &strFinal);
-    info->SetTextAlignmentAndMaybeRefresh(1, 0);
+    info->SetTextAlignmentAndMaybeRefresh(1, false);
   } else if (g_pHelpMgr->tradeAdviceDetailLevel == 1) {
     if (compat >= 1 &&
         g_apTerrainTypeDescriptorTable[offeringNationSlot]->IsColonyOf(respondingNationSlot) == 0) {
@@ -545,7 +545,7 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
   RECT inval;
   ::CopyRect(&inval, &grown);
   info->ownerContext->InvalidateCityDialogRectRegion(&inval, 1);
-  info->SetTextAndMaybeRefresh(&strFinal, 1);
+  info->SetTextAndMaybeRefresh(&strFinal, true);
 }
 
 // Reads the 'clus'->kControlTagNomo checkbox state and the 'purc' quantity field, validates the
@@ -586,7 +586,7 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
 
   if (quantityValid) {
     g_pTradeMgr->SetDealResults(respondingNationSlot, offeringNationSlot, proposedAmount, maxAmount,
-                                commodityType, static_cast<char>(suppressEventFlag), 0);
+                                commodityType, static_cast<char>(suppressEventFlag), false);
 
     TView* acceptButton = ResolveControlByTag(kControlTagAcce);
     acceptButton->AssertValid();
@@ -656,8 +656,8 @@ void TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged(unsigned 
   purchaseControl->Show(activate == 0, 0);
   if (activate != 0) {
     CPoint bookLayout(0x3a, 0x2d);
-    bookControl->Locate(bookLayout, 0);
-    sheetControl->Locate(g_offerDeskOffscreenPosition_006a5a28, 0);
+    bookControl->Locate(bookLayout, false);
+    sheetControl->Locate(g_offerDeskOffscreenPosition_006a5a28, false);
     SetPictureResourceIdAndRefresh(0x226f, 1);
     g_pSfxPlaybackSystem->PlaySoundEffect(0x13ee, 0, 1);
     TDealTabControl* tabsControl =
@@ -670,8 +670,8 @@ void TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged(unsigned 
     listControl->AssertValid();
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 1, listControl);
   } else {
-    bookControl->Locate(g_offerDeskOffscreenPosition_006a5a28, 0);
-    sheetControl->Locate(g_offerDeskSheetPosition_006a5a00, 0);
+    bookControl->Locate(g_offerDeskOffscreenPosition_006a5a28, false);
+    sheetControl->Locate(g_offerDeskSheetPosition_006a5a00, false);
     SetPictureResourceIdAndRefresh(0x2152, 1);
     g_pSfxPlaybackSystem->PlaySoundEffect(0x13ef, 0, 1);
     static_cast<TTradeBookView*>(bookControl)->SetItem(-1);

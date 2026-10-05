@@ -40,5 +40,5 @@ void TFloatWindow::Close() {
       child->Close();
     }
   }
-  Show(0, 1);
+  Show(0, true);
 }

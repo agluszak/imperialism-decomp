@@ -53,8 +53,8 @@ void TIndustryView::DoStartup() {
   if (nameText != 0) {
     g_pSimMgr->GetString(0x2719, embeddedPageIndex9E, &displayText);
     nameText->InstallTextStyle(headingStyle, 0);
-    nameText->SetTextAlignmentAndMaybeRefresh(-2, 0);
-    nameText->SetTextAndMaybeRefresh(&displayText, 0);
+    nameText->SetTextAlignmentAndMaybeRefresh(-2, false);
+    nameText->SetTextAndMaybeRefresh(&displayText, false);
   }
 
   TStaticText* capacityText =
@@ -67,8 +67,8 @@ void TIndustryView::DoStartup() {
     scanBracketExpressions(g_pSimMgr, &displayText, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(numberText));
     capacityText->InstallTextStyle(headingStyle, 0);
-    capacityText->SetTextAlignmentAndMaybeRefresh(-2, 0);
-    capacityText->SetTextAndMaybeRefresh(&displayText, 0);
+    capacityText->SetTextAlignmentAndMaybeRefresh(-2, false);
+    capacityText->SetTextAndMaybeRefresh(&displayText, false);
   }
 
   TStaticText* provinceText =
@@ -81,8 +81,8 @@ void TIndustryView::DoStartup() {
     scanBracketExpressions(g_pSimMgr, &displayText, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(numberText));
     provinceText->InstallTextStyle(headingStyle, 0);
-    provinceText->SetTextAlignmentAndMaybeRefresh(-2, 0);
-    provinceText->SetTextAndMaybeRefresh(&displayText, 0);
+    provinceText->SetTextAlignmentAndMaybeRefresh(-2, false);
+    provinceText->SetTextAndMaybeRefresh(&displayText, false);
   }
 
   TStaticText* conjunctionText =
@@ -90,8 +90,8 @@ void TIndustryView::DoStartup() {
   if (conjunctionText != 0) {
     g_pSimMgr->GetString(0x2738, 0x11, &displayText);
     conjunctionText->InstallTextStyle(headingStyle, 0);
-    conjunctionText->SetTextAlignmentAndMaybeRefresh(1, 0);
-    conjunctionText->SetTextAndMaybeRefresh(&displayText, 0);
+    conjunctionText->SetTextAlignmentAndMaybeRefresh(1, false);
+    conjunctionText->SetTextAndMaybeRefresh(&displayText, false);
   }
 
   SetControlHoverHelpText(CString(g_szEmptyString), this);
@@ -126,7 +126,7 @@ void TIndustryView::DoStartup() {
       static_cast<TStaticText*>(ResolveControlByTag(kControlTagLabV)); // 'Vbal'
   if (valueBalanceText != 0) {
     valueBalanceText->InstallTextStyle(valueStyle, 0);
-    valueBalanceText->SetTextAndMaybeRefresh(&mappedValueText, 0);
+    valueBalanceText->SetTextAndMaybeRefresh(&mappedValueText, false);
   }
 
   CSubViewIterator iterator(this);
@@ -137,7 +137,7 @@ void TIndustryView::DoStartup() {
         if (child->controlTag == g_pTradeSummarySelectionMap[resource]) {
           TStaticText* resourceText = static_cast<TStaticText*>(child);
           resourceText->InstallTextStyle(valueStyle, 0);
-          resourceText->SetTextAndMaybeRefresh(&mappedValueText, 0);
+          resourceText->SetTextAndMaybeRefresh(&mappedValueText, false);
           break;
         }
       }

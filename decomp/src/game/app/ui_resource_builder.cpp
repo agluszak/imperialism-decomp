@@ -89,7 +89,7 @@ void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, const char* 
   TStaticText* context = static_cast<TStaticText*>(g_pUiResourceContext);
   {
     CString text(szText);
-    context->SetTextAndMaybeRefresh(&text, 0);
+    context->SetTextAndMaybeRefresh(&text, false);
   }
   TextStyle style;
   style.fontFamily = nMode;
@@ -97,7 +97,7 @@ void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, const char* 
   style.fontSize = nPointSize;
   style.textColor = styleRef.value;
   context->InstallTextStyle(style, 0);
-  context->SetTextAlignmentAndMaybeRefresh(nThemeCode, 0);
+  context->SetTextAlignmentAndMaybeRefresh(nThemeCode, false);
 }
 
 // FUNCTION: IMPERIALISM 0x0041b570

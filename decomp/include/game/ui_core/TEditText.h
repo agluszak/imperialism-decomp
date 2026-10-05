@@ -32,7 +32,7 @@ public:
   void Draw(RECT* rectBuffer) override;
   char HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
   void UpdateCoordinates() override;
-  void SetTextAlignmentAndMaybeRefresh(short alignmentCode, char refreshFlag) override;
+  void SetTextAlignmentAndMaybeRefresh(short alignmentCode, bool refreshFlag) override;
   // Third param is pushed by callers (e.g. SelectOwner) but unused by this
   // body — kept to match the real 3-stack-arg thiscall (confirmed by `ret 0xc`).
   virtual void SetEditSelectionAndScrollCaret(short selStart, short selEnd, int unusedFlag);

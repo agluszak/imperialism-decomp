@@ -20,9 +20,9 @@ public:
                                                            RgnHandle hitArg) override;
   void Draw(RECT* rectBuffer) override;
   void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint, CPoint& currentPoint,
-                  unsigned char commandFlag) override;
+                  bool commandFlag) override;
 
-  virtual void SetValue(short value84, unsigned char refreshFlag); // slot 0x71 0x58c330
+  virtual void SetValue(short value84, bool refreshFlag); // slot 0x71 0x58c330
   void SetState(short value86, unsigned char refreshFlag);
 };
 ASSERT_SIZE(TNumberedArrowButton, 0x88);

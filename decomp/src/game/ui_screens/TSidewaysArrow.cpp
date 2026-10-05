@@ -16,7 +16,7 @@ TSidewaysArrow::TSidewaysArrow() : TUpDownPictureButton() {
 
 // FUNCTION: IMPERIALISM 0x00583bd0
 void TSidewaysArrow::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
-                                CPoint& currentPoint, unsigned char commandFlag) {
+                                CPoint& currentPoint, bool commandFlag) {
   TUpDownPictureButton::TrackMouse(phase, startPoint, previousPoint, currentPoint, commandFlag);
 
   if (phase == kTrackPhaseEnd) {

@@ -51,7 +51,7 @@ void TLoadSavePicture::DoPostCreate(int arg) {
   g_pCursorControlPanel = cursorPanel;
   cursorPanel->AssertValid();
   cursorPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b6b);
-  cursorPanel->SetTextAlignmentAndMaybeRefresh(1, 1);
+  cursorPanel->SetTextAlignmentAndMaybeRefresh(1, true);
 
   CString slotPath;
   CString slotCaption;
@@ -73,7 +73,7 @@ void TLoadSavePicture::DoPostCreate(int arg) {
         slotControl->Show(0, 1);
         slotControl->ViewEnable(0, 0);
       } else {
-        slotControl->SetTextFromStringResource(0x2737, 0xd, 1);
+        slotControl->SetTextFromStringResource(0x2737, 0xd, true);
       }
     } else {
       char saveHeader[0x2c];
@@ -81,7 +81,7 @@ void TLoadSavePicture::DoPostCreate(int arg) {
       fread(saveHeader, 1, sizeof(saveHeader), slotFile);
       fclose(slotFile);
       slotCaption = saveHeader + 0xc;
-      slotControl->SetTextAndMaybeRefresh(&slotCaption, 1);
+      slotControl->SetTextAndMaybeRefresh(&slotCaption, true);
     }
     slotControl->InstallTextStyle(styleAt9e, 0);
   }
@@ -177,7 +177,7 @@ void TLoadSavePicture::RefreshSlotPreviewFromSaveFile(short slotMode) {
   CString slotNationName;
   g_pSimMgr->GetString(0x2737, oneByteFieldA + 0xd, &slotNationName);
   CString infoText = yearText + ", " + slotNationName;
-  infoControl->SetTextAndMaybeRefresh(&infoText, 0);
+  infoControl->SetTextAndMaybeRefresh(&infoText, false);
 
   CRect infoBounds;
   infoControl->QueryBounds(&infoBounds);

@@ -14,7 +14,7 @@ public:
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x5bc7f0
   virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
                           CPoint& currentPoint,
-                          unsigned char commandFlag) override;                // slot 0x68 0x5bc9f0
+                          bool commandFlag) override;                         // slot 0x68 0x5bc9f0
   virtual void Setup(short bitmapResourceId, unsigned char useAlternatePair); // slot 0x71 0x5bc780
   // Vertical fill-bar slice read by Draw: negative selectedRow means "no
   // selection" (draw the whole strip empty); otherwise the highlight band spans

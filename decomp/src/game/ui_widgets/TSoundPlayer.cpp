@@ -413,7 +413,7 @@ void TSoundPlayer::ISoundPlayer(int idleFrequency) {
   g_cdAudioDevice.EnsureCdAudioDeviceHandleInitialized();
   this->idleFrequencyTicks = idleFrequency;
   // Register for idle ticks on the global UI root controller (virtual slot 0x29).
-  g_pAmbitApplication->InstallCohandler(this, 1);
+  g_pAmbitApplication->InstallCohandler(this, true);
 }
 
 // FUNCTION: IMPERIALISM 0x005e4f60

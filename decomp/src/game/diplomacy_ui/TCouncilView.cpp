@@ -70,7 +70,7 @@ void TCouncilView::DoPostCreate(int arg) {
       static_cast<TDropShadowText*>(this->ResolveControlByTag(kControlTagTitl));
   titleControl->AssertValid();
   ApplyUiTextStyleAndThemeFlags(titleControl, 0, 0x10, 0x2b6c, 0x2b67);
-  titleControl->SetTextAlignmentAndMaybeRefresh(-2, 0);
+  titleControl->SetTextAlignmentAndMaybeRefresh(-2, false);
 
   if (g_pSimMgr->mode == kGamePhaseCouncilDefeat || g_pSimMgr->mode == kGamePhaseCouncilVictory) {
     // Map-interaction mode: title shows "<terrain/country name>" expanded through the
@@ -83,7 +83,7 @@ void TCouncilView::DoPostCreate(int arg) {
     CString finalTitle;
     scanBracketExpressions(g_pSimMgr, &finalTitle, static_cast<LPCSTR>(titleTemplate),
                            static_cast<LPCSTR>(terrainLabel));
-    titleControl->SetTextAndMaybeRefresh(&finalTitle, 0);
+    titleControl->SetTextAndMaybeRefresh(&finalTitle, false);
     DisplayStats();
 
     if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot == g_pSimMgr->GetPlayerCountry()) {
@@ -96,7 +96,7 @@ void TCouncilView::DoPostCreate(int arg) {
     // ticker panel and the "end"/"quer" council-action button captions.
     CString titleText;
     g_pSimMgr->GetString(0x2733, 0x5e, &titleText);
-    titleControl->SetTextAndMaybeRefresh(&titleText, 0);
+    titleControl->SetTextAndMaybeRefresh(&titleText, false);
 
     ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
 
@@ -188,25 +188,25 @@ void TCouncilView::DisplayStats() {
     TStaticText* titleLabel = static_cast<TStaticText*>(
         this->ResolveControlByTag(IMPERIALISM_FOURCC('t', 't', 'l', '0') + row));
     titleLabel->AssertValid();
-    titleLabel->SetTextFromStringResource(0x2733, static_cast<short>(0x5a + row), 1);
+    titleLabel->SetTextFromStringResource(0x2733, static_cast<short>(0x5a + row), true);
     titleLabel->InstallTextStyle(style, 0);
-    titleLabel->SetTextAlignmentAndMaybeRefresh(1, 0);
+    titleLabel->SetTextAlignmentAndMaybeRefresh(1, false);
     titleLabel->Show(1, 0);
 
     TStaticText* majorField = static_cast<TStaticText*>(
         this->ResolveControlByTag(IMPERIALISM_FOURCC('n', 'u', 'm', '0') + row));
     majorField->AssertValid();
     text.Format(g_szDecimalFormat, categoryCounts[row]);
-    majorField->SetTextAndMaybeRefresh(&text, 1);
+    majorField->SetTextAndMaybeRefresh(&text, true);
     majorField->InstallTextStyle(style, 0);
-    majorField->SetTextAlignmentAndMaybeRefresh(-1, 0);
+    majorField->SetTextAlignmentAndMaybeRefresh(-1, false);
     majorField->Show(1, 1);
 
     TStaticText* minorField = static_cast<TStaticText*>(
         this->ResolveControlByTag(IMPERIALISM_FOURCC('n', 'u', 'm', '4') + row));
     minorField->AssertValid();
     text.Format(g_szDecimalFormat, categoryCounts[row + 4]);
-    minorField->SetTextAndMaybeRefresh(&text, 1);
+    minorField->SetTextAndMaybeRefresh(&text, true);
     minorField->InstallTextStyle(style, 0);
     minorField->Show(1, 1);
   }
@@ -222,7 +222,7 @@ void TCouncilView::DisplayStats() {
   sourceScore->AssertValid();
   scoreText.Format(g_szDecimalFormat,
                    g_pDiplomacyTurnStateManager->congressSupport.chairmanSupportCount);
-  sourceScore->SetTextAndMaybeRefresh(&scoreText, 1);
+  sourceScore->SetTextAndMaybeRefresh(&scoreText, true);
   sourceScore->InstallTextStyle(style, 0);
   sourceScore->shadowColor94 = scoreShadowColor;
   sourceScore->Show(1, 1);
@@ -232,7 +232,7 @@ void TCouncilView::DisplayStats() {
   targetScore->AssertValid();
   scoreText.Format(g_szDecimalFormat,
                    g_pDiplomacyTurnStateManager->congressSupport.counterpartSupportCount);
-  targetScore->SetTextAndMaybeRefresh(&scoreText, 1);
+  targetScore->SetTextAndMaybeRefresh(&scoreText, true);
   targetScore->InstallTextStyle(style, 0);
   targetScore->shadowColor94 = scoreShadowColor;
   targetScore->Show(1, 1);
@@ -254,14 +254,14 @@ void TCouncilView::StartVoting() {
   can0->AssertValid();
   g_apNationStates[g_pDiplomacyTurnStateManager->congressLeadership.chairmanNationSlot]
       ->LoadNationDisplayNameSharedRefFromField8(&candidateName);
-  can0->SetTextAndMaybeRefresh(&candidateName, 1);
+  can0->SetTextAndMaybeRefresh(&candidateName, true);
   can0->InstallTextStyle(councilTextStyle, 0);
 
   TStaticText* can1 = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCan1));
   can1->AssertValid();
   g_apNationStates[g_pDiplomacyTurnStateManager->congressLeadership.counterpartNationSlot]
       ->LoadNationDisplayNameSharedRefFromField8(&candidateName);
-  can1->SetTextAndMaybeRefresh(&candidateName, 1);
+  can1->SetTextAndMaybeRefresh(&candidateName, true);
   can1->InstallTextStyle(councilTextStyle, 0);
 
   TPicture* coat0 = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoa0));

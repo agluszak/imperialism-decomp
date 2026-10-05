@@ -12,7 +12,7 @@
 
 // Slot 24 (0x60) override — factory hook on this minister variant.
 // FUNCTION: IMPERIALISM 0x004ed490
-double TNapoleonMinister::GetStategicEscalationMultiplier(unsigned char flag) {
+double TNapoleonMinister::GetStategicEscalationMultiplier(bool flag) {
   return flag ? g_MinisterWeightHalf_006548E8 : g_MinisterWeightOne_006548F0;
 }
 
@@ -44,7 +44,7 @@ void TNapoleonMinister::MakeNewCity(TCity* city) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ed7c0
-double TBismarckMinister::GetStategicEscalationMultiplier(unsigned char flag) {
+double TBismarckMinister::GetStategicEscalationMultiplier(bool flag) {
   return flag ? g_BismarckWeightHigh_006548F8 : g_BismarckWeightLow_00654900;
 }
 
@@ -71,7 +71,7 @@ void TBismarckMinister::MakeNewCity(TCity* city) {
 }
 
 // FUNCTION: IMPERIALISM 0x004edab0
-double TPirateMinister::GetStategicEscalationMultiplier(unsigned char flag) {
+double TPirateMinister::GetStategicEscalationMultiplier(bool flag) {
   return flag ? g_MinisterWeightHalf_006548E8 : g_MinisterWeightOne_006548F0;
 }
 
@@ -98,7 +98,7 @@ void TPirateMinister::MakeNewCity(TCity* city) {
 }
 
 // FUNCTION: IMPERIALISM 0x004edda0
-double TDefenderMinister::GetStategicEscalationMultiplier(unsigned char) {
+double TDefenderMinister::GetStategicEscalationMultiplier(bool) {
   return g_DefenderMinisterWeight_00654908;
 }
 
@@ -125,7 +125,7 @@ void TDefenderMinister::MakeNewCity(TCity* city) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ee080
-double TBullyMinister::GetStategicEscalationMultiplier(unsigned char flag) {
+double TBullyMinister::GetStategicEscalationMultiplier(bool flag) {
   return flag ? g_BullyWeightLow_00654910 : g_BullyWeightHigh_00654918;
 }
 

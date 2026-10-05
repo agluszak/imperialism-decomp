@@ -14,7 +14,7 @@ public:
   DECLARE_DYNCREATE(TDialogBehavior)
   // FUNCTION: IMPERIALISM 0x004873e0
   virtual ~TDialogBehavior() override {} // slot 0x01 (scalar deleting destructor)
-  virtual void Dismiss(unsigned long commandCode, unsigned char accepted); // slot 0x0e 0x487430
+  virtual void Dismiss(unsigned long commandCode, bool accepted); // slot 0x0e 0x487430
   virtual void DoEvent(long commandId, TEventHandler* sourceHandler,
                        TEvent* event);                  // slot 0x0f 0x487470
   virtual void DoKeyEvent(TToolboxEvent* event);        // slot 0x10 0x4874b0
@@ -27,7 +27,7 @@ public:
   // field14/18 hold 4-char command codes (default '    ' == "    " == unbound); the
   // keyboard handlers (slots 0x10/0x11) fire the default command on Enter/Return and the
   // cancel command on Escape/Delete. ---
-  unsigned char armed; // 0x10 — state/flag byte
+  bool armed; // 0x10 — state/flag byte
   unsigned char padding_11_13[0x03];
   unsigned long defaultCommandCode; // 0x14 — command fired on Enter/Return
   unsigned long cancelCommandCode;  // 0x18 — command fired on Escape/Delete

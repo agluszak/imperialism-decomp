@@ -921,7 +921,7 @@ void TOceanDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int proj
 
   CRect destinationRect(projectedY, projectedX, projectedY + 0x10, projectedX + 0x10);
   short spriteStripOffset = 0xe0;
-  if (alternateOverlayEnabled != 0) {
+  if (alternateOverlayEnabled) {
     spriteStripOffset = 0xf0;
   } else {
     int ownerNation = static_cast<int>(
@@ -957,7 +957,7 @@ void TOceanDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex
   }
 
   short spriteStripOffset = g_pGlobalMapState->GetMapImprovementTileSpriteOffset(tileIndex);
-  if (alternateOverlayEnabled != 0) {
+  if (alternateOverlayEnabled) {
     spriteStripOffset = static_cast<short>(spriteStripOffset + 0x10);
   } else {
     int ownerNation =
@@ -980,7 +980,7 @@ void TOceanDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex
 
 // FUNCTION: IMPERIALISM 0x005682d0
 void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
-                                                                 unsigned char altOverlay) {
+                                                                 bool altOverlay) {
   (void)altOverlay;
 
   signed char tileActionClass = g_pGlobalMapState->terrainStateTable[tileIndex].tileActionState16;
@@ -989,7 +989,7 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
   }
 
   short spriteX = static_cast<short>(tileActionClass * 0x10);
-  if (alternateOverlayEnabled == 0) {
+  if (!alternateOverlayEnabled) {
     ScopedOceanMapPaletteSelection paletteSelection;
     g_pViewMgr->ApplyLegendSplitSlot34(0x32);
     FillRectWithQuickDrawBrushAndContextOffset(dstRect);
@@ -1010,7 +1010,7 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
 
   CRect leftSatelliteRect(dstRect->left - 8, dstRect->top - 0x10, dstRect->left + 8, dstRect->top);
   ClipRect(&leftSatelliteRect);
-  if (alternateOverlayEnabled == 0) {
+  if (!alternateOverlayEnabled) {
     ScopedOceanMapPaletteSelection paletteSelection;
     g_pViewMgr->ApplyLegendSplitSlot34(0x32);
     FillRectWithQuickDrawBrushAndContextOffset(&leftSatelliteRect);
@@ -1026,7 +1026,7 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
   CRect rightSatelliteRect(dstRect->left + 8, dstRect->top - 0x10, dstRect->left + 0x18,
                            dstRect->top);
   ClipRect(&rightSatelliteRect);
-  if (alternateOverlayEnabled == 0) {
+  if (!alternateOverlayEnabled) {
     ScopedOceanMapPaletteSelection paletteSelection;
     g_pViewMgr->ApplyLegendSplitSlot34(0x32);
     FillRectWithQuickDrawBrushAndContextOffset(&rightSatelliteRect);

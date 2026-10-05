@@ -65,12 +65,12 @@ void TArmyToolbar::SetProvince(short provinceIndex) {
   for (int category = 0; category < 10; ++category) {
     TArmyPlacard* placard =
         static_cast<TArmyPlacard*>(ResolveControlByTag(kControlTagArmyPlacardFirst + category));
-    placard->SetValue(static_cast<short>(totalUnitCounts[category]), 1);
+    placard->SetValue(static_cast<short>(totalUnitCounts[category]), true);
 
     TNumberedArrowButton* arrow = static_cast<TNumberedArrowButton*>(
         ResolveControlByTag(kControlTagArmyRatioFirst + category));
     if (totalUnitCounts[category] != 0 && category != 0) {
-      arrow->SetValue(static_cast<short>(availableUnitCounts[category]), 1);
+      arrow->SetValue(static_cast<short>(availableUnitCounts[category]), true);
       arrow->Show(1, 1);
     } else {
       arrow->Show(0, 1);
@@ -102,7 +102,7 @@ void TArmyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
           g_pMapContextActionManager->ActivateFirstIdleTacticalUnitByCategoryAtTile(
               categoryId, selectedProvinceIndex);
     }
-    static_cast<TNumberedArrowButton*>(sourceHandler)->SetValue(selectedRatioOrMode, 1);
+    static_cast<TNumberedArrowButton*>(sourceHandler)->SetValue(selectedRatioOrMode, true);
     g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
     return;
   }

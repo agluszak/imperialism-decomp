@@ -28,19 +28,19 @@ void TQueryFloater::DoPostCreate(int arg) {
 
   TStaticText* titleControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl));
   titleControl->AssertValid();
-  titleControl->SetTextFromStringResource(0x2757, 1, 1);
+  titleControl->SetTextFromStringResource(0x2757, 1, true);
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6a);
   titleControl->InstallTextStyle(style, 0);
-  titleControl->SetTextAlignmentAndMaybeRefresh(1, 0);
+  titleControl->SetTextAlignmentAndMaybeRefresh(1, false);
 
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6c);
   for (int i = 0; i < 7; ++i) {
     TStaticText* lineControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTex0 + i));
     lineControl->AssertValid();
-    lineControl->SetTextFromStringResource(0x2757, static_cast<short>(i + 2), 1);
+    lineControl->SetTextFromStringResource(0x2757, static_cast<short>(i + 2), true);
     lineControl->InstallTextStyle(style, 0);
     if (i == 6) {
-      lineControl->SetTextAlignmentAndMaybeRefresh(1, 0);
+      lineControl->SetTextAlignmentAndMaybeRefresh(1, false);
     }
   }
 }
@@ -54,7 +54,7 @@ void TQueryFloater::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
   unsigned int tag = sourceHandler->controlTag;
   if (tag == kControlTagAdvi) {
     TWindow* owner = GetWindow();
-    owner->Dismiss(kControlTagOkay, 0);
+    owner->Dismiss(kControlTagOkay, false);
     g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
   } else if (tag == kControlTagBatt) {
     short activeNationId = g_pSimMgr->GetPlayerCountry();
@@ -67,28 +67,28 @@ void TQueryFloater::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       g_pViewMgr->ModalMessage(text, g_ptQueryFloaterModalMessage, 1, 0);
     } else {
       TWindow* owner = GetWindow();
-      owner->Dismiss(kControlTagOkay, 0);
+      owner->Dismiss(kControlTagOkay, false);
       g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalBattleReport);
     }
   } else if (tag == kControlTagChar) {
     TWindow* owner = GetWindow();
-    owner->Dismiss(kControlTagOkay, 0);
+    owner->Dismiss(kControlTagOkay, false);
     g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalGameStatus);
   } else if (tag == kControlTagClnc) {
     TWindow* owner = GetWindow();
-    owner->Dismiss(kControlTagOkay, 0);
+    owner->Dismiss(kControlTagOkay, false);
   } else if (tag == kControlTagDeal) {
     if (g_pSimMgr->GetEconomicTurn() == 1) {
       g_pSimMgr->GetString(0x2741, 9, &text);
       g_pViewMgr->ModalMessage(text, g_ptQueryFloaterModalMessage, 1, 0);
     } else {
       TWindow* owner = GetWindow();
-      owner->Dismiss(kControlTagOkay, 0);
+      owner->Dismiss(kControlTagOkay, false);
       g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalDealBook);
     }
   } else if (tag == kControlTagNews) {
     TWindow* owner = GetWindow();
-    owner->Dismiss(kControlTagOkay, 0);
+    owner->Dismiss(kControlTagOkay, false);
     if (g_pNewsMgr->perNationStoryLastUsedTick[0] != nullptr) {
       g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalNewspaper);
     } else {
@@ -96,7 +96,7 @@ void TQueryFloater::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     }
   } else if (tag == kControlTagOref) {
     TWindow* owner = GetWindow();
-    owner->Dismiss(kControlTagOkay, 0);
+    owner->Dismiss(kControlTagOkay, false);
     g_pHelpMgr->SelectAndActivatePendingEventType1A0A();
   }
 }

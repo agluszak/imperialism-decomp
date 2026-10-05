@@ -26,7 +26,7 @@ bool TMission::IsANoBrainer() const {
   return false;
 }
 // FUNCTION: IMPERIALISM 0x00534c20
-int TMission::AccumulateLack(int* accumulatedLack, unsigned char includeExistingLack) const {
+int TMission::AccumulateLack(int* accumulatedLack, bool includeExistingLack) const {
   (void)accumulatedLack;
   (void)includeExistingLack;
   return 0;
@@ -118,22 +118,22 @@ float TMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVector) 
   return g_MissionDefaultScore_0065a468;
 }
 // FUNCTION: IMPERIALISM 0x00534ed0
-void TMission::AcceptReenforcement(TShip* ship, unsigned char notify) {
+void TMission::AcceptReenforcement(TShip* ship, bool notify) {
   (void)ship;
   (void)notify;
 }
 // FUNCTION: IMPERIALISM 0x00534ef0
-void TMission::AcceptReenforcement(TMilitaryUnit* unit, unsigned char notify) {
+void TMission::AcceptReenforcement(TMilitaryUnit* unit, bool notify) {
   (void)unit;
   (void)notify;
 }
 // FUNCTION: IMPERIALISM 0x00534f10
-void TMission::RejectConstituent(TShip* ship, unsigned char notify) {
+void TMission::RejectConstituent(TShip* ship, bool notify) {
   (void)ship;
   (void)notify;
 }
 // FUNCTION: IMPERIALISM 0x00534f30
-void TMission::RejectConstituent(TMilitaryUnit* unit, unsigned char notify) {
+void TMission::RejectConstituent(TMilitaryUnit* unit, bool notify) {
   (void)unit;
   (void)notify;
 }
@@ -142,7 +142,7 @@ void TMission::ForgetTaskForce(TTaskForce* taskForce) {
   (void)taskForce;
 }
 // FUNCTION: IMPERIALISM 0x00534f70
-void TMission::Hold(unsigned char value) {
+void TMission::Hold(bool value) {
   flag10 = value;
 }
 // FUNCTION: IMPERIALISM 0x00534f90

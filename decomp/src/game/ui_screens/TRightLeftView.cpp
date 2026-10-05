@@ -14,7 +14,7 @@ TRightLeftView::~TRightLeftView() {}
 
 // FUNCTION: IMPERIALISM 0x00583fb0
 void TRightLeftView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
-                                CPoint& currentPoint, unsigned char commandFlag) {
+                                CPoint& currentPoint, bool commandFlag) {
   (void)startPoint;
   (void)previousPoint;
   (void)commandFlag;

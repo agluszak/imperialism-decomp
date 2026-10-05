@@ -55,7 +55,7 @@ void TLoungeDialog::DoPostCreate(int arg) {
   lablControl->AssertValid();
   lablControl->SetTextStyle(0, 0xe, 0x2b6b);
   lablControl->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
-  lablControl->SetTextAlignmentAndMaybeRefresh(1, 0);
+  lablControl->SetTextAlignmentAndMaybeRefresh(1, false);
 
   // Per-nation-slot roster rows: a ready-state radio ('rad0'-'rad6'), a portrait/pick
   // button ('pik0'-'pik6'), and a name label ('nam0'-'nam6'), each initialized with a
@@ -190,7 +190,7 @@ char TLoungeDialog::DoIdle(int action) {
     desiredName =
         g_pLanguageMgr->StripCodeStr(g_pGameFlowState->defaultNationTextSlots[nationSlot]);
     if (currentName.Compare(desiredName) != 0) {
-      nameLabel->SetTextAndMaybeRefresh(&desiredName, 1);
+      nameLabel->SetTextAndMaybeRefresh(&desiredName, true);
       if (statusIndex == 4) {
         ApplyUiTextStyleAndThemeFlags(nameLabel, 0, 0xe, 0x2b67, 0x2b6a);
       } else if (isLocalSeat) {
@@ -225,7 +225,7 @@ char TLoungeDialog::DoIdle(int action) {
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&messageText, 0x2742, messageStringIndex);
   TStaticText* messageControl = static_cast<TStaticText*>(ResolveControlByTag(kSessionTagMess));
   messageControl->AssertValid();
-  messageControl->SetTextAndMaybeRefresh(&messageText, 1);
+  messageControl->SetTextAndMaybeRefresh(&messageText, true);
   return 0;
 }
 
@@ -351,6 +351,6 @@ void TLoungeDialog::RefreshMapAndMessageControlsForCurrentContext() {
   messControl->AssertValid();
   CString messageText;
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&messageText, 0x2742, 0x10);
-  messControl->SetTextAndMaybeRefresh(&messageText, 1);
+  messControl->SetTextAndMaybeRefresh(&messageText, true);
   RefreshControl();
 }

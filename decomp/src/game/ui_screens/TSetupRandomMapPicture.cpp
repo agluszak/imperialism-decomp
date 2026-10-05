@@ -119,7 +119,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   g_pCursorControlPanel->AssertValid();
   g_pCursorControlPanel->SetTextStyle(0, 0xe, 0x2b6b);
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
-  g_pCursorControlPanel->SetTextAlignmentAndMaybeRefresh(1, 0);
+  g_pCursorControlPanel->SetTextAlignmentAndMaybeRefresh(1, false);
 
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagKeyP);
@@ -142,14 +142,14 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
       static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagTcou));
   countryTitle->AssertValid();
   ApplyUiTextStyleAndThemeFlags(countryTitle, 0, 0xe, 0x2b6a, 0x2b6c);
-  countryTitle->SetTextFromStringResource(0x2737, 0x1e, 0);
+  countryTitle->SetTextFromStringResource(0x2737, 0x1e, false);
 
   TMapPreviewView* mapPreview = static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagMapP));
   mapPreview->AssertValid();
   mapPreview->selectedNation68 = selectedNationSlot9A;
 
   GroundControlToMajorTom(1);
-  g_pCursorControlPanel->SetTextAlignmentAndMaybeRefresh(1, 0);
+  g_pCursorControlPanel->SetTextAlignmentAndMaybeRefresh(1, false);
 
   TGWorldPartView* flagView = static_cast<TGWorldPartView*>(ResolveControlByTag(kControlTagFlag));
   flagView->AssertValid();
@@ -187,13 +187,13 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   ApplyUiTextStyleAndThemeFlags(difficultyTitle, 0, 0xe, 0x2b6a, 0x2b6c);
   CString labelText;
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&labelText, 0x2758, 2);
-  difficultyTitle->SetTextAndMaybeRefresh(&labelText, 0);
+  difficultyTitle->SetTextAndMaybeRefresh(&labelText, false);
 
   TDropShadowText* namesTitle = static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagTnam));
   namesTitle->AssertValid();
   ApplyUiTextStyleAndThemeFlags(namesTitle, 0, 0xe, 0x2b6a, 0x2b6c);
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&labelText, 0x2758, 3);
-  namesTitle->SetTextAndMaybeRefresh(&labelText, 0);
+  namesTitle->SetTextAndMaybeRefresh(&labelText, false);
 
   TRadioTextCluster* namesCluster =
       static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagName));
@@ -206,18 +206,18 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
       static_cast<TRadioText*>(namesCluster->ResolveControlByTag(kControlTagHist));
   historicalNames->AssertValid();
   ApplyUiTextStyleAndThemeFlags(historicalNames, 0, 0xc, 0x2b6b, 0x2b6c);
-  historicalNames->SetTextAlignmentAndMaybeRefresh(1, 0);
+  historicalNames->SetTextAlignmentAndMaybeRefresh(1, false);
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&labelText, 0x2758, 4);
-  historicalNames->SetTextAndMaybeRefresh(&labelText, 0);
+  historicalNames->SetTextAndMaybeRefresh(&labelText, false);
   historicalNames->controlValue3c = kControlTagHist;
 
   TRadioText* randomNames =
       static_cast<TRadioText*>(namesCluster->ResolveControlByTag(kControlTagRand));
   randomNames->AssertValid();
   ApplyUiTextStyleAndThemeFlags(randomNames, 0, 0xc, 0x2b6b, 0x2b6c);
-  randomNames->SetTextAlignmentAndMaybeRefresh(1, 0);
+  randomNames->SetTextAlignmentAndMaybeRefresh(1, false);
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&labelText, 0x2758, 5);
-  randomNames->SetTextAndMaybeRefresh(&labelText, 0);
+  randomNames->SetTextAndMaybeRefresh(&labelText, false);
   randomNames->controlValue3c = kControlTagRand;
 
   for (int difficulty = 0; difficulty < 5; ++difficulty) {
@@ -225,9 +225,9 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
         difficultyCluster->ResolveControlByTag(kControlTagDif0 + difficulty));
     option->AssertValid();
     ApplyUiTextStyleAndThemeFlags(option, 0, 0xc, 0x2b6b, 0x2b6c);
-    option->SetTextAlignmentAndMaybeRefresh(1, 0);
+    option->SetTextAlignmentAndMaybeRefresh(1, false);
     g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&labelText, 0x2737, difficulty + 0xe);
-    option->SetTextAndMaybeRefresh(&labelText, 0);
+    option->SetTextAndMaybeRefresh(&labelText, false);
     option->controlValue3c = difficulty;
   }
 
@@ -404,8 +404,8 @@ void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
   infoBar->AssertValid();
   CString generatingText;
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&generatingText, 0x2758, 7);
-  infoBar->UpdateTextEntrySharedStringAndMaybeNotify(&generatingText, 1);
-  infoBar->CenterVertically(1);
+  infoBar->UpdateTextEntrySharedStringAndMaybeNotify(&generatingText, true);
+  infoBar->CenterVertically(true);
 
   TEditText* countryControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagCoun));
   countryControl->AssertValid();
@@ -415,7 +415,7 @@ void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
   settingsPanel->AssertValid();
   CPoint hiddenSettingsPanelPosition(0x7d0, 0x898);
   CPoint visibleSettingsPanelPosition(0x120, 4);
-  settingsPanel->Locate(hiddenSettingsPanelPosition, 0);
+  settingsPanel->Locate(hiddenSettingsPanelPosition, false);
 
   SetPictureResourceIdAndRefresh(0x1195, true);
   TPicture* coatView = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoat));
@@ -441,12 +441,12 @@ void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
   mapPreview->EnhancePhoto();
 
   countryControl->Show(1, 0);
-  settingsPanel->Locate(visibleSettingsPanelPosition, 0);
+  settingsPanel->Locate(visibleSettingsPanelPosition, false);
   SetPictureResourceIdAndRefresh(0x11bc, true);
   coatView->SetPictureResourceIdAndRefresh(static_cast<short>(selectedNationSlot9A + 0x11c6), true);
 
   CString emptyText(g_szEmptyString);
-  infoBar->UpdateTextEntrySharedStringAndMaybeNotify(&emptyText, 1);
+  infoBar->UpdateTextEntrySharedStringAndMaybeNotify(&emptyText, true);
   RecheckCountryName();
 }
 

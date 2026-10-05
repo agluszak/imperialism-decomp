@@ -494,8 +494,8 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
     short current;
     short accum;
     if (city->GetBuildingWindowState(slot, &current, &accum)) {
-      buildingViews[slot] =
-          g_pMacViewMgr->RestoreBuildingWindowAtSavedPosition(slot, city, 0, 0, 0, current, accum);
+      buildingViews[slot] = g_pMacViewMgr->RestoreBuildingWindowAtSavedPosition(
+          slot, city, false, false, 0, current, accum);
     }
   }
 
@@ -759,7 +759,7 @@ void TCityProductionView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CP
 
   if (buildingSlot == 15 && buildingViews[15] == 0) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0xbdb, 0, 1);
-    buildingViews[15] = g_pMacViewMgr->OpenBuildingWindow(15, city94, 0, 0, 0);
+    buildingViews[15] = g_pMacViewMgr->OpenBuildingWindow(15, city94, false, false, 0);
     UpdateToolbar();
     return;
   }
@@ -772,7 +772,7 @@ void TCityProductionView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CP
         available = g_pTechMgr->orderCapRows277[nationId].techStatusByTechId[19] == 2;
       }
       if (available) {
-        TrackMouse(kTrackPhaseEnd, localPoint, localPoint, localPoint, 0);
+        TrackMouse(kTrackPhaseEnd, localPoint, localPoint, localPoint, false);
         UpdateToolbar();
         return;
       }
@@ -781,7 +781,7 @@ void TCityProductionView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CP
       g_pSfxPlaybackSystem->PlaySoundEffect(
           static_cast<short>(g_cityBuildingSoundCueOffsets[buildingSlot] + 3000), 0, 1);
       buildingViews[buildingSlot] =
-          g_pMacViewMgr->OpenBuildingWindow(buildingSlot, city94, 0, 0, 0);
+          g_pMacViewMgr->OpenBuildingWindow(buildingSlot, city94, false, false, 0);
     }
   }
   UpdateToolbar();
@@ -789,7 +789,7 @@ void TCityProductionView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CP
 
 // FUNCTION: IMPERIALISM 0x004bc870
 void TCityProductionView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
-                                     CPoint& currentPoint, unsigned char commandFlag) {
+                                     CPoint& currentPoint, bool commandFlag) {
   (void)commandFlag;
   (void)startPoint;
   (void)previousPoint;
@@ -813,13 +813,13 @@ void TCityProductionView::CloseAndSaveWindows() {
     TBuildingView* buildingView = buildingViews[buildingSlot];
     if (buildingView != 0) {
       TWindow* window = buildingView->GetWindow();
-      city94->SetBuildingWindowState(buildingSlot, 1, static_cast<short>(window->ownerLocalX),
+      city94->SetBuildingWindowState(buildingSlot, true, static_cast<short>(window->ownerLocalX),
                                      static_cast<short>(window->ownerLocalY));
       window->Close();
       window->Free();
       buildingViews[buildingSlot] = 0;
     } else {
-      city94->SetBuildingWindowState(buildingSlot, 0, 0, 0);
+      city94->SetBuildingWindowState(buildingSlot, false, 0, 0);
     }
   }
 }
@@ -875,7 +875,7 @@ void TCityProductionView::UpdateFields() {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x5ea);
   }
-  summary->SetTextAndMaybeRefresh(&summaryText, 1);
+  summary->SetTextAndMaybeRefresh(&summaryText, true);
 
   total = 0;
   for (i = 25; i < 29; ++i) {
@@ -893,7 +893,7 @@ void TCityProductionView::UpdateFields() {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x5f8);
   }
-  summary->SetTextAndMaybeRefresh(&summaryText, 1);
+  summary->SetTextAndMaybeRefresh(&summaryText, true);
 
   total = 0;
   for (i = 34; i < 39; ++i) {
@@ -911,6 +911,6 @@ void TCityProductionView::UpdateFields() {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x606);
   }
-  summary->SetTextAndMaybeRefresh(&summaryText, 1);
+  summary->SetTextAndMaybeRefresh(&summaryText, true);
   UpdateToolbar();
 }

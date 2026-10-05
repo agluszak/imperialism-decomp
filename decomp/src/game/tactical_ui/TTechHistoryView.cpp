@@ -26,7 +26,7 @@ void TTechHistoryView::PopulateTechHistory(short techId) {
   TDropShadowText* titleControl =
       static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagTitl));
   titleControl->AssertValid();
-  titleControl->SetTextFromStringResource(0x2712, static_cast<short>(techId + 1), 1);
+  titleControl->SetTextFromStringResource(0x2712, static_cast<short>(techId + 1), true);
   ApplyUiTextStyleAndThemeFlags(titleControl, 0, 0x12, 0x2b6a, 0x2b68);
 
   TPicture* pictControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagPict));
@@ -48,11 +48,11 @@ void TTechHistoryView::PopulateTechHistory(short techId) {
   CRect descBounds;
   descText->QueryBounds(&descBounds);
   descBounds.bottom = descBounds.top + static_cast<short>(measuredHeight);
-  descText->ApplyBounds(&descBounds, 1);
+  descText->ApplyBounds(&descBounds, true);
 
   scrollView->contentView = descText;
   scrollView->SyncBoundedValueAndToggleControlStates();
 
   CPoint titleLayout(0x8c, 0xf0 - titleControl->frameHeight / 2);
-  titleControl->Locate(titleLayout, 1);
+  titleControl->Locate(titleLayout, true);
 }

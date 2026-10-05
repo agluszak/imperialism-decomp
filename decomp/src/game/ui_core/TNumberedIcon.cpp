@@ -16,7 +16,7 @@ void TNumberedIcon::INumberedIcon(TView* panel, int* offsetLayout, int* sizeLayo
                                   short value) {
   IMegaPicture(panel, offsetLayout, sizeLayout, layoutParam4, layoutParam5, pictureId, 5);
   InstallNumberText();
-  SetValue(value, 1);
+  SetValue(value, true);
 
   if (numberTextAc != 0) {
     // A 16x16 box hung off the icon's bottom-right corner.
@@ -25,14 +25,14 @@ void TNumberedIcon::INumberedIcon(TView* panel, int* offsetLayout, int* sizeLayo
     numberBounds.bottom = frameHeight;
     numberBounds.left = numberBounds.right - 0x10;
     numberBounds.top = numberBounds.bottom - 0x10;
-    numberTextAc->ApplyBounds(&numberBounds, 1);
+    numberTextAc->ApplyBounds(&numberBounds, true);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005074e0
 void TNumberedIcon::DoPostCreate(int arg) {
   TMegaPicture::DoPostCreate(arg);
-  AssignFlags98AndMaybeRefresh(5, 1);
+  AssignFlags98AndMaybeRefresh(5, true);
   InstallNumberText();
   if (numberTextAc != 0) {
     // 0x00507511 loads +0x34 before +0x38. MSVC evaluates constructor arguments
@@ -41,7 +41,7 @@ void TNumberedIcon::DoPostCreate(int arg) {
     int iconWidth = frameWidth;
     int iconHeight = frameHeight;
     CRect numberBounds(iconWidth - 0x10, iconHeight - 0x10, iconWidth, iconHeight);
-    numberTextAc->ApplyBounds(&numberBounds, 1);
+    numberTextAc->ApplyBounds(&numberBounds, true);
   }
 }
 
@@ -67,7 +67,7 @@ void TNumberedIcon::InstallNumberText() {
 }
 
 // FUNCTION: IMPERIALISM 0x005076d0
-void TNumberedIcon::SetValue(short value, unsigned char refresh) {
+void TNumberedIcon::SetValue(short value, bool refresh) {
   if (numberTextAc != 0) {
     numberTextAc->SetControlValue(value, refresh);
   }

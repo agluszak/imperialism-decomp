@@ -1186,7 +1186,7 @@ int TMapMgr::ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex) {
           code == 0x23 || code == 0x15 || code == 0x25 || code == 0x2c || code == 0x34) {
         return 0x17;
       }
-      if (CheckTileVariantCodeMembershipSetB(nTileIndex - 1) == 0) {
+      if (!CheckTileVariantCodeMembershipSetB(nTileIndex - 1)) {
         g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
         return (g_mapGenLcgState_006a38e8 >> 0xc & 1) + 0x17;
       }
@@ -1202,8 +1202,8 @@ int TMapMgr::ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex) {
         g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
         return 0x2d - (unsigned int)((g_mapGenLcgState_006a38e8 >> 0xc & 1) != 0);
       }
-      if (CheckTileVariantCodeMembershipSetC(nTileIndex - 0x6b) == 0) {
-        if (CheckTileVariantCodeMembershipSetD(nTileIndex - 0x6b) == 0) {
+      if (!CheckTileVariantCodeMembershipSetC(nTileIndex - 0x6b)) {
+        if (!CheckTileVariantCodeMembershipSetD(nTileIndex - 0x6b)) {
           g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
           return (g_mapGenLcgState_006a38e8 >> 0xc & 1) + 0x2c;
         }
@@ -1215,10 +1215,10 @@ int TMapMgr::ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex) {
     case 0xd:
       return 0x2f;
     case 0xe:
-      if (CheckTileVariantCodeMembershipSetA(nTileIndex - 1) != 0) {
+      if (CheckTileVariantCodeMembershipSetA(nTileIndex - 1)) {
         return 0x30;
       }
-      if (CheckTileVariantCodeMembershipSetB(nTileIndex - 1) == 0) {
+      if (!CheckTileVariantCodeMembershipSetB(nTileIndex - 1)) {
         g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
         return (g_mapGenLcgState_006a38e8 >> 0xc & 1) + 0x30;
       }
@@ -1233,10 +1233,10 @@ int TMapMgr::ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex) {
       case 0x10:
         return 0x37;
       case 0x11:
-        if (CheckTileVariantCodeMembershipSetA(nTileIndex - 1) != 0) {
+        if (CheckTileVariantCodeMembershipSetA(nTileIndex - 1)) {
           return 0x38;
         }
-        if (CheckTileVariantCodeMembershipSetB(nTileIndex - 1) == 0) {
+        if (!CheckTileVariantCodeMembershipSetB(nTileIndex - 1)) {
           g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
           return (g_mapGenLcgState_006a38e8 >> 0xc & 1) + 0x38;
         }
@@ -1251,8 +1251,8 @@ int TMapMgr::ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex) {
           g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
           return 0x35 - (unsigned int)((g_mapGenLcgState_006a38e8 >> 0xc & 1) != 0);
         }
-        if (CheckTileVariantCodeMembershipSetC(nTileIndex - 0x6b) == 0) {
-          if (CheckTileVariantCodeMembershipSetD(nTileIndex - 0x6b) == 0) {
+        if (!CheckTileVariantCodeMembershipSetC(nTileIndex - 0x6b)) {
+          if (!CheckTileVariantCodeMembershipSetD(nTileIndex - 0x6b)) {
             g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
             return (g_mapGenLcgState_006a38e8 >> 0xc & 1) + 0x34;
           }
@@ -2040,7 +2040,7 @@ void TMapMgr::ChangeProvinceOwner(ProvinceIndexStorage cityRecordIndex, short ne
   g_pMapContextActionManager->perTileOwnerNationCodeCache1c[cityRecordIndex] =
       static_cast<short>(newNationTag);
 
-  bool isPrimary = g_pDiplomacyTurnStateManager->IsGreatPower(newNationTag) != 0;
+  bool isPrimary = g_pDiplomacyTurnStateManager->IsGreatPower(newNationTag);
   if (isPrimary && g_pSimMgr->multiplayerSessionRole != kSessionRoleClient) {
     g_apNationStates[newNationTag]->AddNoticeFrom(oldNationCode, 0x135);
   }
@@ -2114,7 +2114,7 @@ byte TMapMgr::FindResourceCapabilityRequirementLevel(StrategicTileIndex tileInde
 
 // FUNCTION: IMPERIALISM 0x00513660
 char TMapMgr::GetTileCivilianWorkOrderCostClassNibble(StrategicTileIndex nTileIndex,
-                                                      char fUseHighNibble) {
+                                                      bool fUseHighNibble) {
   if (fUseHighNibble) {
     char costClass = terrainStateTable[nTileIndex].developmentClassNibbles;
     costClass >>= 4;
@@ -2126,8 +2126,8 @@ char TMapMgr::GetTileCivilianWorkOrderCostClassNibble(StrategicTileIndex nTileIn
 }
 
 // FUNCTION: IMPERIALISM 0x005136a0
-void TMapMgr::SetCivilianDevelopmentClassNibble(StrategicTileIndex tileIndex, char selectHighNibble,
-                                                byte value, char param4) {
+void TMapMgr::SetCivilianDevelopmentClassNibble(StrategicTileIndex tileIndex, bool selectHighNibble,
+                                                byte value, bool param4) {
   unsigned char packed = terrainStateTable[tileIndex].developmentClassNibbles;
   if (selectHighNibble) {
     packed = (packed & 0xf) | (value << 4);
@@ -2136,7 +2136,7 @@ void TMapMgr::SetCivilianDevelopmentClassNibble(StrategicTileIndex tileIndex, ch
   }
   terrainStateTable[tileIndex].developmentClassNibbles = packed;
   if (selectHighNibble) {
-    if (static_cast<signed char>(value) > 0 && param4 != 0) {
+    if (static_cast<signed char>(value) > 0 && param4) {
       terrainStateTable[tileIndex].pendingDevelopmentFlag = 0x7f;
     }
   }
@@ -2692,7 +2692,7 @@ void TMapMgr::PlaceCity(StrategicTileIndex nTileIndex, short nOwnerNationId) {
       }
     }
     if (eligible) {
-      SetCivilianDevelopmentClassNibble(neighborTile, 0, 1, 1);
+      SetCivilianDevelopmentClassNibble(neighborTile, false, 1, true);
     }
   }
 
@@ -3513,16 +3513,16 @@ short TMapMgr::GetMapImprovementTierBucketOffset(short tier) {
 // FUNCTION: IMPERIALISM 0x00517710
 short TMapMgr::ApplyMapImprovementSelectionState(TCivUnit* civUnit) {
   if (civUnit->militaryRegistrationFlag != 0) {
-    return GetMapImprovementSpriteBaseOffset(civUnit->orderType, 1, 0);
+    return GetMapImprovementSpriteBaseOffset(civUnit->orderType, true, 0);
   }
   char idleState = civUnit->IsInIdleSelectionState();
-  return GetMapImprovementSpriteBaseOffset(civUnit->orderType, 0, idleState);
+  return GetMapImprovementSpriteBaseOffset(civUnit->orderType, false, idleState);
 }
 
 // FUNCTION: IMPERIALISM 0x00517780
-short TMapMgr::GetMapImprovementSpriteBaseOffset(short param_1, char param_2, char param_3) {
+short TMapMgr::GetMapImprovementSpriteBaseOffset(short param_1, bool param_2, char param_3) {
   short offset;
-  if (param_2 == 0) {
+  if (!param_2) {
     offset = g_anMapImprovementSpriteClassByOrderType[param_1] << 6;
     if (param_3 == 0) {
       return offset + 0x480;

@@ -70,7 +70,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
     yearText.Format(g_szDecimalFormat, 0x717 + g_pTechMgr->prioritySlots[techId] / 4);
     labelText = techName + "\n" + yearText;
     titleControl->UpdateTextEntrySharedString(&labelText);
-    titleControl->CenterVertically(0);
+    titleControl->CenterVertically(false);
   }
 
   // Description text.
@@ -84,7 +84,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
     descText->dropShadowEnabledA0 = true;
     g_pSimMgr->GetString(0x274e, static_cast<short>(techId - 1), &labelText);
     descText->UpdateTextEntrySharedString(&labelText);
-    descText->CenterVertically(0);
+    descText->CenterVertically(false);
   }
 
   // Status area: completion date, buy button, or missing-prerequisites line.
@@ -103,7 +103,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
     scanBracketExpressions(g_pSimMgr, &assembledText, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(yearText));
     dateControl->UpdateTextEntrySharedString(&assembledText);
-    dateControl->CenterVertically(0);
+    dateControl->CenterVertically(false);
   } else if (techMgr->AreTechItemPrerequisitePairCompleted(techId, nationSlot)) {
     short labelIndex;
     if (techMgr->orderCapRows277[nationSlot].techStatusByTechId[techId] == 1) {
@@ -144,7 +144,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
                              static_cast<LPCSTR>(labelText), static_cast<LPCSTR>(techName));
     }
     prereqControl->UpdateTextEntrySharedString(&assembledText);
-    prereqControl->CenterVertically(0);
+    prereqControl->CenterVertically(false);
   }
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), controlTag);
 }
@@ -194,8 +194,8 @@ void TTechItemView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 
       CPoint placement;
       g_pViewMgr->ComputeTurnEventDialogPlacementByCode(node, &placement);
-      node->Locate(placement, 0);
-      node->SetModality(1);
+      node->Locate(placement, false);
+      node->SetModality(true);
       TDialogBehavior* behavior = node->GetDialogBehavior();
       if (behavior != nullptr) {
         behavior->defaultCommandCode = kControlTagOkay; // 'okay'

@@ -109,9 +109,9 @@ public:
   }
 
   virtual void DeportCiviliansIn(int provinceId,
-                                 unsigned char includeAllPolicyTargets); // slot 0x32 0x4e6150
-  virtual void AssimilateTroopsOf(int priorOwnerNationSlot);             // slot 0x33 0x4e6040
-  virtual void ChangeArmyOwnership(int destinationNationSlot);           // slot 0x34 0x4e6520
+                                 bool includeAllPolicyTargets); // slot 0x32 0x4e6150
+  virtual void AssimilateTroopsOf(int priorOwnerNationSlot);    // slot 0x33 0x4e6040
+  virtual void ChangeArmyOwnership(int destinationNationSlot);  // slot 0x34 0x4e6520
 
   // Full (re)initialization of a minor nation's per-session state: nation identity +
   // owned-region list, diplomacy policy defaults, the five per-resource tables and

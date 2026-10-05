@@ -38,7 +38,7 @@ void TCommodityLine::InstallViews(TView* panel, int* offsetLayout) {
   TMyStaticText* text = new TMyStaticText();
   text->IStaticText(panel, textOffset, textSize, 5, 5, -1, 1);
   text->InstallTextStyle(textStyle, 0);
-  text->SetTextAndMaybeRefresh(&displayText, 1);
+  text->SetTextAndMaybeRefresh(&displayText, true);
 
   int iconSize[2] = {0x20, 0x18};
   TColorKeyPicture* icon = new TColorKeyPicture();

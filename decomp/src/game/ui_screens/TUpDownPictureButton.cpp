@@ -14,7 +14,7 @@ IMPLEMENT_DYNCREATE(TUpDownPictureButton, TPicture)
 TUpDownPictureButton::~TUpDownPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00571620
-void TUpDownPictureButton::HiliteState(unsigned char enabledState, unsigned char refreshNow) {
+void TUpDownPictureButton::HiliteState(unsigned char enabledState, bool refreshNow) {
   if (enabledState != controlState64) {
     controlState64 = enabledState;
     SetPictureResourceIdAndRefresh(enabledState != 0 ? static_cast<short>(glyphBase84 + 1)

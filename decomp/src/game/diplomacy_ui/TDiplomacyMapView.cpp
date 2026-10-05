@@ -390,7 +390,7 @@ void TDiplomacyMapView::InitializeDiplomacyMinisterActionControlsAndLabels() {
   } else {
     TView* offrControl = ResolveControlByTag(g_aDiplomacyActionTopicTabTags[5]);
     SetControlHoverHelpText(CString(g_szEmptyString), offrControl);
-    offrControl->Locate(g_diplomacyPopupOffscreenPosition_006a3020, 0);
+    offrControl->Locate(g_diplomacyPopupOffscreenPosition_006a3020, false);
   }
 }
 
@@ -1445,9 +1445,9 @@ void TDiplomacyMapView::ChangeSelectedActionTopic(int topicIndex) {
   }
 
   CPoint layoutPosition(0x39, 0x320);
-  actionButtons[stateFlag]->Locate(layoutPosition, 1);
+  actionButtons[stateFlag]->Locate(layoutPosition, true);
   layoutPosition.y = 0x162;
-  actionButtons[newTopic]->Locate(layoutPosition, 1);
+  actionButtons[newTopic]->Locate(layoutPosition, true);
 
   TPicture* ltabControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagLtab));
   ltabControl->AssertValid();
@@ -1640,7 +1640,7 @@ void ShowDiplomacyActionRejectedNotice() {
 // FUNCTION: IMPERIALISM 0x004f74f0
 char TDiplomacyMapView::CheckEntanglements(int targetNationSlot, eDipAction action) {
   if (g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(targetNationSlot,
-                                                                  selectedTerrainIndex) != 0) {
+                                                                  selectedTerrainIndex)) {
     CString formattedIntro;
     CString entangledNations;
     CString unusedSuffix;
@@ -1660,7 +1660,7 @@ char TDiplomacyMapView::CheckEntanglements(int targetNationSlot, eDipAction acti
     entangledNations = CString(g_pDiplomacyPanelEmptyText_00654ec8);
     for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
       if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(static_cast<short>(targetNationSlot),
-                                                          static_cast<short>(nationSlot)) != 0) {
+                                                          static_cast<short>(nationSlot))) {
         CString nationName;
         g_apTerrainTypeDescriptorTable[nationSlot]->FormatOverlayTerrainLabelText(&nationName);
         entangledNations += "   " + nationName + "\n";

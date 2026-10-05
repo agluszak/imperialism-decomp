@@ -14,7 +14,7 @@ public:
   virtual ~TGWorldButton() override;            // slot 0x01 (scalar deleting destructor)
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x572270
   virtual void HiliteState(unsigned char fEnabledState,
-                           unsigned char fRefreshNow) override; // slot 0x70 0x572200
+                           bool fRefreshNow) override; // slot 0x70 0x572200
 
   TGWorldButton();
   void IGWorldButton(TView* panel, int* offsetLayout, int* sizeLayout,

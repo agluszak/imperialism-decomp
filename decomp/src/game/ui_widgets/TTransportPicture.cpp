@@ -186,7 +186,7 @@ void TTransportPicture::Refresh() {
   currentText.Format(g_szDecimalFormat, static_cast<int>(splitValue94));
   totalText.Format(g_szDecimalFormat, static_cast<int>(splitValue96));
   gaugeText = currentText + s_szGaugeCountSeparator_0069936C + totalText;
-  text->SetTextAndMaybeRefresh(&gaugeText, 1);
+  text->SetTextAndMaybeRefresh(&gaugeText, true);
 
   // The two money rows caption their allocation in currency rather than units.
   if (resourceMetricSlot == 0x16) {
@@ -195,14 +195,14 @@ void TTransportPicture::Refresh() {
       FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1a63);
     }
     g_pSimMgr->NumToCurrency(static_cast<int>(splitValue94) * 200, &gaugeText);
-    value->SetTextAndMaybeRefresh(&gaugeText, 1);
+    value->SetTextAndMaybeRefresh(&gaugeText, true);
   } else if (resourceMetricSlot == 0x15) {
     TStaticText* value = static_cast<TStaticText*>(ResolveControlByTag(kControlTagValu));
     if (value == 0) {
       FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1a6a);
     }
     g_pSimMgr->NumToCurrency(static_cast<int>(splitValue94) * 500, &gaugeText);
-    value->SetTextAndMaybeRefresh(&gaugeText, 1);
+    value->SetTextAndMaybeRefresh(&gaugeText, true);
   }
 
   if (controlTag != static_cast<int>(kControlTagTota)) {

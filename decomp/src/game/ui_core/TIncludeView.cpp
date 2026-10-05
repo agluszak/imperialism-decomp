@@ -59,9 +59,9 @@ void TIncludeView::DoPostCreate(int arg) {
   if (turnEventCode60 != -1 && g_pTurnEventDialogFactoryRegistry != nullptr) {
     TurnEventId eventCode = DecodeTurnEventCode(turnEventCode60);
     if (ownerContext != nullptr) {
-      Locate(g_turnEventDialogAnchorPoint, 0);
+      Locate(g_turnEventDialogAnchorPoint, false);
       CPoint ownerSize(ownerContext->frameWidth, ownerContext->frameHeight);
-      Resize(ownerSize, 0);
+      Resize(ownerSize, false);
     }
     TView* dialog = g_pTurnEventDialogFactoryRegistry->InvokeDialogFactoryFromPacket(
         0, this, eventCode, g_turnEventDialogAnchorPoint);

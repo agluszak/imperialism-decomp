@@ -51,7 +51,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   this->SetPictureResourceIdAndRefresh(static_cast<short>((buildingSlotId + 0x73a) * 5), 1);
 
   if (buildingSlotId == 0xb) {
-    city->BuildPowerPlant(0);
+    city->BuildPowerPlant(false);
   } else {
     city->cityStockLumber =
         static_cast<short>(city->cityStockLumber + city->GetBuildingType(buildingSlotId));
@@ -84,8 +84,8 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x47b);
   }
   tex1->InstallTextStyle(style.desc, 0);
-  tex1->SetTextAlignmentAndMaybeRefresh(-2, 0);
-  tex1->SetTextFromStringResource(static_cast<short>(buildingSlotId + 0x2422), 1, 1);
+  tex1->SetTextAlignmentAndMaybeRefresh(-2, false);
+  tex1->SetTextFromStringResource(static_cast<short>(buildingSlotId + 0x2422), 1, true);
 
   // 'tex2' — sub text. Retail passes the low word of the third argument as the group.
   TStaticText* tex2 =
@@ -95,15 +95,15 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x481);
   }
   tex2->InstallTextStyle(style.desc, 0);
-  tex2->SetTextAlignmentAndMaybeRefresh(-2, 0);
+  tex2->SetTextAlignmentAndMaybeRefresh(-2, false);
   tex2->SetTextFromStringResource(static_cast<short>(reinterpret_cast<int>(productionView98)), 2,
-                                  1);
+                                  true);
   if (buildingSlotId == 0xb) {
     CRect tex2Bounds;
     tex2->QueryBounds(&tex2Bounds);
     tex2Bounds.top = tex2Bounds.top + 5;
     tex2Bounds.bottom = tex2Bounds.bottom + 5;
-    tex2->ApplyBounds(&tex2Bounds, 1);
+    tex2->ApplyBounds(&tex2Bounds, true);
   }
 
   // 'name' — localized building title (string group 0x2719, indexed by slot).
@@ -115,9 +115,9 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x493);
   }
   nameCtrl->InstallTextStyle(style.desc, 0);
-  nameCtrl->SetTextAlignmentAndMaybeRefresh(1, 0);
+  nameCtrl->SetTextAlignmentAndMaybeRefresh(1, false);
   g_pSimMgr->GetString(0x2719, buildingSlotId, &textBuffer);
-  nameCtrl->SetTextAndMaybeRefresh(&textBuffer, 0);
+  nameCtrl->SetTextAndMaybeRefresh(&textBuffer, false);
 
   // 'cost' — localized cost label (string group 0x2738, index 0x14).
   TStaticText* costCtrl =
@@ -127,9 +127,9 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x49a);
   }
   costCtrl->InstallTextStyle(style.desc, 0);
-  costCtrl->SetTextAlignmentAndMaybeRefresh(1, 0);
+  costCtrl->SetTextAlignmentAndMaybeRefresh(1, false);
   g_pSimMgr->GetString(0x2738, 0x14, &textBuffer);
-  costCtrl->SetTextAndMaybeRefresh(&textBuffer, 0);
+  costCtrl->SetTextAndMaybeRefresh(&textBuffer, false);
 
   // 'capT' — capacity value expanded into the bracket template (0x2738/0x10). Slot 11
   // uses the fixed University text (0x2738/0x15) rather than a formatted number.
@@ -147,8 +147,8 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   scanBracketExpressions(g_pSimMgr, &textBuffer, static_cast<LPCSTR>(capTemplate),
                          static_cast<LPCSTR>(capValue));
   capTCtrl->InstallTextStyle(style.desc, 0);
-  capTCtrl->SetTextAlignmentAndMaybeRefresh(1, 0);
-  capTCtrl->SetTextAndMaybeRefresh(&textBuffer, 0);
+  capTCtrl->SetTextAlignmentAndMaybeRefresh(1, false);
+  capTCtrl->SetTextAndMaybeRefresh(&textBuffer, false);
 
   // 'or  ' — connective label, hidden except for slots 0/3/4 where it is repositioned.
   TStaticText* orCtrl =
@@ -162,8 +162,8 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   } else {
     g_pSimMgr->GetString(0x2738, 0x11, &textBuffer);
     orCtrl->InstallTextStyle(style.desc, 0);
-    orCtrl->SetTextAlignmentAndMaybeRefresh(1, 0);
-    orCtrl->SetTextAndMaybeRefresh(&textBuffer, 0);
+    orCtrl->SetTextAlignmentAndMaybeRefresh(1, false);
+    orCtrl->SetTextAndMaybeRefresh(&textBuffer, false);
 
     CRect orBounds;
     orCtrl->QueryBounds(&orBounds);
@@ -180,7 +180,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     orBounds.left = offset;
     orBounds.right = offset + width;
     orBounds.bottom = orBounds.top + height;
-    orCtrl->ApplyBounds(&orBounds, 0);
+    orCtrl->ApplyBounds(&orBounds, false);
     orCtrl->Show(1, 0);
   }
 
@@ -207,9 +207,9 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     buckCtrl->AssertValid();
     buckCtrl->Show(1, 0);
     buckCtrl->InstallTextStyle(style.desc, 0);
-    buckCtrl->SetTextAlignmentAndMaybeRefresh(1, 0);
+    buckCtrl->SetTextAlignmentAndMaybeRefresh(1, false);
     g_pSimMgr->NumToCurrency(0x1388, &buckCost);
-    buckCtrl->SetTextAndMaybeRefresh(&buckCost, 1);
+    buckCtrl->SetTextAndMaybeRefresh(&buckCost, true);
   } else {
     // Other slots: eligible if the pending order can be raised to the missing capacity.
     TProductionOrder* order = city->trailingOrderSlots[slot + 2];
@@ -231,9 +231,9 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   if (!eligible) {
     BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b69);
     warnCtrl->InstallTextStyle(style.desc, 0);
-    warnCtrl->SetTextAlignmentAndMaybeRefresh(1, 0);
+    warnCtrl->SetTextAlignmentAndMaybeRefresh(1, false);
     g_pSimMgr->GetString(0x2738, (slot == 0xb) ? 0x16 : 0x17, &textBuffer);
-    warnCtrl->SetTextAndMaybeRefresh(&textBuffer, 0);
+    warnCtrl->SetTextAndMaybeRefresh(&textBuffer, false);
     warnCtrl->Show(1, 0);
     okButton->Show(0, 0);
     okButton->ViewEnable(0, 0);
@@ -259,7 +259,7 @@ void TBuildingConstructionView::DoClosingAction(unsigned long dialogActionTag) {
       order->SetQuantity(0);
     }
   } else if (dialogActionTag == kControlTagOkay) { // 'okay'
-    city90->BuildPowerPlant(1);
+    city90->BuildPowerPlant(true);
   }
 
   productionView98->SetBuildingPicture(

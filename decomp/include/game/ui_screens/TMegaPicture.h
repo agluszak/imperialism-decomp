@@ -19,7 +19,7 @@ public:
                                                      char refreshNow); // slot 0x74 0x5736c0
   // Overwrites flags98 wholesale, then optionally refreshes.
   virtual void AssignFlags98AndMaybeRefresh(unsigned short value,
-                                            char refreshNow); // slot 0x75 0x573690
+                                            bool refreshNow); // slot 0x75 0x573690
   // TNoHilitePicture adds a 1-byte field90 at +0x90 and tail-pads to a 4-byte boundary
   // as a base subobject (MSVC does not reuse base tail padding for derived members), so
   // these fields (read by Draw) start immediately at +0x94, with no gap.

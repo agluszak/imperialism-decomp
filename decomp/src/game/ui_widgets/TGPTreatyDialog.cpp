@@ -74,13 +74,13 @@ void TGPTreatyDialog::StuffValues() {
     if (horizontalName == 0) {
       FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x2d0);
     }
-    horizontalName->SetTextAndMaybeRefresh(&nationName, 0);
+    horizontalName->SetTextAndMaybeRefresh(&nationName, false);
 
     TStaticText* verticalName =
         static_cast<TStaticText*>(verticalNames->ResolveControlByTag(nameTags[nationSlot]));
     if (verticalName == 0) {
       FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x2d3);
     }
-    verticalName->SetTextAndMaybeRefresh(&nationName, 0);
+    verticalName->SetTextAndMaybeRefresh(&nationName, false);
   }
 }

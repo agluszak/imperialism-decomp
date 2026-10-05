@@ -64,14 +64,14 @@ public:
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5358a0
   virtual bool IsANoBrainer() const;               // 0x0a 0x534c00
   virtual int AccumulateLack(int* accumulatedLack,
-                             unsigned char includeExistingLack) const; // 0x0b 0x534c20
-  virtual void Initialize();                                           // 0x0c 0x534c40
-  virtual void SetStateByte8To2();                                     // 0x0d 0x534c60
-  virtual void CalculateImportance();                                  // 0x0e 0x534c80
-  virtual void CalculateNeeds();                                       // 0x0f 0x534ca0
-  virtual void Reassess();                                             // 0x10 0x534cc0
-  virtual void GiveOrders();                                           // 0x11 0x534cf0
-  virtual TMission* GetReplacementSlot48();                            // 0x12 0x534d10
+                             bool includeExistingLack) const; // 0x0b 0x534c20
+  virtual void Initialize();                                  // 0x0c 0x534c40
+  virtual void SetStateByte8To2();                            // 0x0d 0x534c60
+  virtual void CalculateImportance();                         // 0x0e 0x534c80
+  virtual void CalculateNeeds();                              // 0x0f 0x534ca0
+  virtual void Reassess();                                    // 0x10 0x534cc0
+  virtual void GiveOrders();                                  // 0x11 0x534cf0
+  virtual TMission* GetReplacementSlot48();                   // 0x12 0x534d10
   // Mac: Matches(eMissionType, long, TZone*) const.
   virtual bool Matches(eMissionType missionType, int key,
                        TZone* zoneContext) const; // 0x13 0x534d30
@@ -90,15 +90,15 @@ public:
   virtual float
   FitnessOf(TMilitaryUnit* candidateUnit,
             float* referenceVector); // 0x1e 0x534eb0 (ret 8 -- verified against base stub)
-  virtual void AcceptReenforcement(TShip* ship, unsigned char notify); // 0x21 0x534ed0
+  virtual void AcceptReenforcement(TShip* ship, bool notify); // 0x21 0x534ed0
   virtual void AcceptReenforcement(TMilitaryUnit* unit,
-                                   unsigned char notify);            // 0x20 0x534ef0
-  virtual void RejectConstituent(TShip* ship, unsigned char notify); // 0x23 0x534f10
+                                   bool notify);            // 0x20 0x534ef0
+  virtual void RejectConstituent(TShip* ship, bool notify); // 0x23 0x534f10
   virtual void RejectConstituent(TMilitaryUnit* unit,
-                                 unsigned char notify); // 0x22 0x534f30
-  virtual void ForgetTaskForce(TTaskForce* taskForce);  // 0x24 0x534f50
-  virtual void Hold(unsigned char value);               // 0x25 0x534f70
-  virtual char SmokeEmIfYouGotEm();                     // 0x26 0x534f90
+                                 bool notify);         // 0x22 0x534f30
+  virtual void ForgetTaskForce(TTaskForce* taskForce); // 0x24 0x534f50
+  virtual void Hold(bool value);                       // 0x25 0x534f70
+  virtual char SmokeEmIfYouGotEm();                    // 0x26 0x534f90
 
   void AdoptUnitSlot80(TMilitaryUnit* unit, bool flag) {
     AcceptReenforcement(unit, flag);

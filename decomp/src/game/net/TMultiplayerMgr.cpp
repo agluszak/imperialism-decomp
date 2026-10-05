@@ -912,7 +912,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         TStaticText* nameLabel = (TStaticText*)lounge->ResolveControlByTag(kControlTagNam0 + slot9);
         nameLabel->AssertValid();
         CString normalizedName = g_pLanguageMgr->StripCodeStr(statusText);
-        nameLabel->SetTextAndMaybeRefresh(&normalizedName, 1);
+        nameLabel->SetTextAndMaybeRefresh(&normalizedName, true);
         ApplyUiTextStyleAndThemeFlags((TDropShadowText*)nameLabel, 0, 0xe,
                                       isLocal ? 0x2b6c : 0x2b6b, isLocal ? 0x2b6b : 0x2b6c);
         if (oldSessionId == g_pNetMgr006a6014->GetSessionActiveNationId() ||
@@ -1040,14 +1040,14 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     if (dialog == 0) {
       FailNilPointerWithAssert(s_SourcePathUMultiplayerMgr_00698040, 0x7ef);
     }
-    dialog->SetModality(1);
+    dialog->SetModality(true);
     TDialogBehavior* content = dialog->GetDialogBehavior();
     if (content != 0) {
       content->defaultCommandCode = kControlTagOkay; // 'okay'
     }
     CPoint placement;
     g_pViewMgr->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
-    dialog->Locate(placement, 0);
+    dialog->Locate(placement, false);
     TPicture* goldPicture = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagDialog));
     goldPicture->AssertValid();
     if (goldPicture == 0) {
@@ -1067,14 +1067,14 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       FailNilPointerWithAssert(s_SourcePathUMultiplayerMgr_00698040, 0x807);
     }
     titleControl->InstallTextStyle(styleDescriptor, 0);
-    titleControl->SetTextAlignmentAndMaybeRefresh(1, 0);
-    titleControl->SetTextAndMaybeRefresh(&titleText, 0);
+    titleControl->SetTextAlignmentAndMaybeRefresh(1, false);
+    titleControl->SetTextAndMaybeRefresh(&titleText, false);
     TDeluxeText* infoControl =
         static_cast<TDeluxeText*>(dialog->ResolveControlByTag(kControlTagInfo));
     infoControl->AssertValid();
     infoControl->SetTextEntryFromChars(static_cast<const char*>(messageTextC),
                                        messageTextC.GetLength());
-    infoControl->SetTextStyle(styleDescriptor, 0);
+    infoControl->SetTextStyle(styleDescriptor, false);
     unsigned char savedProcessPrimary = g_pGameFlowState->processPrimaryEventQueue;
     g_pGameFlowState->processPrimaryEventQueue = 0;
     if (kickerNation != -1 || localSlot != -1) {
@@ -1355,8 +1355,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
             action->nation1C, targetNation, relationMode);
       }
     } else if (action->actionCode1F == 'i' && action->flag21 != 0) {
-      if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(action->nation1C, action->nationB1E) ==
-          0) {
+      if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(action->nation1C, action->nationB1E)) {
         g_apNationStates[action->nation1C]->QueueWarTransitionAndNotifyThirdPartyIfNeeded(
             action->nationB1E, 1, action->nationA1D);
       } else {
@@ -1413,7 +1412,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         static_cast<TurnEvent1CProposalAmountPacket*>(packet);
     g_pTradeMgr->SetDealResults(proposalAmount->ownerNation1C, proposalAmount->sourceContext,
                                 proposalAmount->amount24, proposalAmount->maxAmount20,
-                                proposalAmount->targetNation22, proposalAmount->emitEventFlag, 1);
+                                proposalAmount->targetNation22, proposalAmount->emitEventFlag,
+                                true);
     bool hosting1C = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
     if (!hosting1C) {
       return 1;
@@ -3150,7 +3150,7 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
       g_apTerrainTypeDescriptorTable[nationSlot] = newNation;
       newNation->QueueMapActionMissionsForPortZoneCandidates();
       for (int targetSlot = 0; targetSlot < 0x17; ++targetSlot) {
-        if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, targetSlot) != 0) {
+        if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, targetSlot)) {
           newNation->candidateNationFlags[targetSlot] = 1;
         }
       }

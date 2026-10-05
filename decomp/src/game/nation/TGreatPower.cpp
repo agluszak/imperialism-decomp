@@ -569,7 +569,7 @@ char TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages(CString*
   bool found = false;
   int nationSlot;
   for (nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, this->nationSlot) != 0 &&
+    if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, this->nationSlot) &&
         g_pSimMgr->ReallyInTheGame(nationSlot) != 0) {
       found = true;
     }
@@ -588,7 +588,7 @@ char TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages(CString*
         short candidate;
         for (candidate = 0; candidate < 7; ++candidate) {
           if (candidate != this->nationSlot &&
-              g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, candidate) != 0) {
+              g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, candidate)) {
             unsigned char candidateMask = static_cast<unsigned char>(1 << candidate);
             if ((contextEntry->nationKeyMask & candidateMask) != 0) {
               unsigned char selfMask = static_cast<unsigned char>(1 << this->nationSlot);
@@ -619,7 +619,7 @@ char TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(
   bool anyMessage = false;
   int nationSlot;
   for (nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, this->nationSlot) != 0 &&
+    if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, this->nationSlot) &&
         g_pSimMgr->ReallyInTheGame(nationSlot) != 0) {
       found = true;
     }
@@ -1063,8 +1063,7 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
     while (!foundFallbackNation) {
       fallbackNationSlot = rand() % 7;
       if (g_pSimMgr->ReallyInTheGame(fallbackNationSlot) != 0 &&
-          g_pDiplomacyTurnStateManager->IsNationPairAtWar(fallbackNationSlot, this->nationSlot) ==
-              0 &&
+          !g_pDiplomacyTurnStateManager->IsNationPairAtWar(fallbackNationSlot, this->nationSlot) &&
           fallbackNationSlot != this->nationSlot) {
         foundFallbackNation = true;
       }
@@ -1224,7 +1223,7 @@ void TGreatPower::RememberTradeBids(void) {
 // FUNCTION: IMPERIALISM 0x004ddbb0
 char TGreatPower::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                                     ResourceKindStorage resourceKind) {
-  if (this->StillBuyingItem(resourceKind) != 0) {
+  if (this->StillBuyingItem(resourceKind)) {
     TViewMgr* uiRuntimeContext = g_pViewMgr;
     uiRuntimeContext->ShowOfferSheet(this->nationSlot, targetNationSlot, amount, price,
                                      resourceKind);
@@ -1289,7 +1288,7 @@ void TGreatPower::AddToDealBook(short kind, NationSlot targetNation, short value
   packet.value = value;
   if (kind == kTrackedSlotOfferEntry ||
       (kind == kTrackedSlotAcceptEntry &&
-       g_pDiplomacyTurnStateManager->IsGreatPower(targetNation) == 0)) {
+       !g_pDiplomacyTurnStateManager->IsGreatPower(targetNation))) {
     packet.eligibility = 1;
   } else {
     packet.eligibility = 0;
@@ -1423,8 +1422,7 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetC
         resolvedNationSlot = terrainDescriptor->nationSlot;
       }
 
-      if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, resolvedNationSlot) ==
-          0) {
+      if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, resolvedNationSlot)) {
         terrainDescriptor = g_apTerrainTypeDescriptorTable[targetClass];
         encodedNationSlot = terrainDescriptor->encodedNationSlot;
         if (encodedNationSlot >= 200) {
@@ -1851,7 +1849,7 @@ void TGreatPower::AddNoticeFrom(short arg1, short arg2) {
   int nationSlot = static_cast<int>(this->nationSlot);
 
   if (proposalCode == kDiplomacyProposalPeaceTreaty &&
-      g_pDiplomacyTurnStateManager->IsGreatPower(arg1) != 0) {
+      g_pDiplomacyTurnStateManager->IsGreatPower(arg1)) {
     for (int slot = 0; slot < kMajorNationCount; ++slot) {
       if (g_pSimMgr->ReallyInTheGame(slot) == 0) {
         continue;
@@ -1863,7 +1861,7 @@ void TGreatPower::AddNoticeFrom(short arg1, short arg2) {
         continue;
       }
 
-      if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(slot, arg1) != 0) {
+      if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(slot, arg1)) {
         g_pDiplomacyTurnStateManager->ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(
             nationSlot, slot, 1);
       }
@@ -1879,11 +1877,11 @@ void TGreatPower::AddNoticeFrom(short arg1, short arg2) {
       continue;
     }
 
-    if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(slot, arg1) == 0) {
+    if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(slot, arg1)) {
       continue;
     }
 
-    if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(slot, nationSlot) == 0) {
+    if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(slot, nationSlot)) {
       this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(slot, 2, static_cast<short>(arg1));
     }
   }
@@ -1936,8 +1934,8 @@ void TGreatPower::AcceptOffer(short proposalIndex) {
                                static_cast<int>(proposal->sourceNationSlot), false);
     for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
       if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(
-              nationSlot, static_cast<int>(proposal->sourceNationSlot)) != 0 &&
-          g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, nationSlot) == 0) {
+              nationSlot, static_cast<int>(proposal->sourceNationSlot)) &&
+          !g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, nationSlot)) {
         this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(
             nationSlot, kDiplomacyRelationshipAlliance,
             static_cast<int>(proposal->sourceNationSlot));
@@ -1958,13 +1956,13 @@ void TGreatPower::AcceptOffer(short proposalIndex) {
         this->nationSlot, proposal->sourceNationSlot, kDiplomacyRelationshipPeace);
     g_pNewsMgr->AddTreatyEvent(kInterNationEventPeaceTreatyAccepted, this->nationSlot,
                                static_cast<int>(proposal->sourceNationSlot), false);
-    if (g_pDiplomacyTurnStateManager->IsGreatPower(proposal->sourceNationSlot) != 0) {
+    if (g_pDiplomacyTurnStateManager->IsGreatPower(proposal->sourceNationSlot)) {
       for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
         if (g_pSimMgr->ReallyInTheGame(nationSlot) != 0 &&
             g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
                 this->nationSlot, nationSlot) == kDiplomacyRelationshipAlliance &&
             g_pDiplomacyTurnStateManager->IsNationPairAtWar(
-                nationSlot, static_cast<int>(proposal->sourceNationSlot)) != 0) {
+                nationSlot, static_cast<int>(proposal->sourceNationSlot))) {
           g_pDiplomacyTurnStateManager->ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(
               this->nationSlot, nationSlot, 1);
         }
@@ -1986,7 +1984,7 @@ void TGreatPower::AcceptOffer(short proposalIndex) {
     break;
   }
 
-  if (g_pDiplomacyTurnStateManager->IsGreatPower(proposal->sourceNationSlot) != 0 &&
+  if (g_pDiplomacyTurnStateManager->IsGreatPower(proposal->sourceNationSlot) &&
       g_pSimMgr->ReallyInTheGame(static_cast<int>(proposal->sourceNationSlot)) != 0) {
     g_apNationStates[static_cast<int>(proposal->sourceNationSlot)]->AddNoticeFrom(
         this->nationSlot, proposal->proposalCode);
@@ -2006,7 +2004,7 @@ void TGreatPower::RejectOffer(short proposalQueueIndex) {
   short targetNation = proposalEntry[1];
 
   TDiplomacyMgr* diplomacyManager = g_pDiplomacyTurnStateManager;
-  if (diplomacyManager->IsGreatPower(targetNation) != 0) {
+  if (diplomacyManager->IsGreatPower(targetNation)) {
     TGreatPower* nationState = g_apNationStates[targetNation];
     if (nationState != 0) {
       nationState->AddNoticeFrom(this->nationSlot, -proposalCode);
@@ -2132,9 +2130,8 @@ void TGreatPower::ReplyToDiplomacyOffers(void) {
         } else if (proposalCode == kDiplomacyProposalJoinEmpireWithWarEntanglements) {
           int checkNation = 0;
           do {
-            if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(targetNation, checkNation) != 0 &&
-                g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, checkNation) ==
-                    0) {
+            if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(targetNation, checkNation) &&
+                !g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, checkNation)) {
               this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(
                   checkNation, kDiplomacyProposalJoinEmpireWithWarEntanglements, targetNation);
             }
@@ -2860,7 +2857,7 @@ char TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation) {
         if (g_pSimMgr->ReallyInTheGame(otherNation) != 0 &&
             g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
                 this->nationSlot, otherNation) == kDiplomacyRelationshipAlliance &&
-            g_pDiplomacyTurnStateManager->IsNationPairAtWar(otherNation, targetNation) != 0) {
+            g_pDiplomacyTurnStateManager->IsNationPairAtWar(otherNation, targetNation)) {
           g_pDiplomacyTurnStateManager->ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(
               this->nationSlot, otherNation, 1);
         }
@@ -2947,7 +2944,7 @@ float TGreatPower::GetPeaceThreat(int targetNation) {
 
   int nationIndex = 0;
   while (nationIndex < kMajorNationCount) {
-    if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationIndex, this->nationSlot) != 0 &&
+    if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationIndex, this->nationSlot) &&
         g_pSimMgr->ReallyInTheGame(nationIndex) != 0 && nationIndex != targetNation) {
       TGreatPower* allyState = g_apNationStates[nationIndex];
       alliedArmyForSelf += allyState->GetMilitaryPower();
@@ -2958,7 +2955,7 @@ float TGreatPower::GetPeaceThreat(int targetNation) {
 
   nationIndex = 0;
   while (nationIndex < kMajorNationCount) {
-    if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationIndex, targetNation) != 0 &&
+    if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationIndex, targetNation) &&
         g_pSimMgr->ReallyInTheGame(nationIndex) != 0 && nationIndex != this->nationSlot) {
       TGreatPower* allyState = g_apNationStates[nationIndex];
       alliedArmyForTarget += allyState->GetMilitaryPower();
@@ -3076,7 +3073,7 @@ void TGreatPower::NewStatusFor(int targetNationSlot, int policyCode) {
     }
     if (this->candidateNationFlags[resolvedNation] == 0) {
       TDiplomacyMgr* diplomacyManager = g_pDiplomacyTurnStateManager;
-      if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, resolvedNation) == 0) {
+      if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, resolvedNation)) {
         this->StopBeingEnemiesWith(targetNation);
         return;
       }
@@ -3116,7 +3113,7 @@ void TGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetNatio
   this->SetTradePolicyTo(static_cast<NationSlot>(targetNation), 100);
   this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNation, -1);
   for (int nation = 0; nation < 0x17; ++nation) {
-    if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, nation) != 0) {
+    if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, nation)) {
       this->DeclareWarOnTargetForAlignedMinors(nation);
     }
   }
@@ -3133,7 +3130,7 @@ void TGreatPower::DeclareWarOnTargetForAlignedMinors(int targetNationSlot) {
     if (g_apTerrainTypeDescriptorTable[7 + tableIndex] != 0) {
       TMinor* auxRuntimeState = g_apNationAuxRuntimeStateSlots[tableIndex];
       if (auxRuntimeState->IsColonyOf(this->nationSlot) != 0 &&
-          g_pDiplomacyTurnStateManager->IsNationPairAtWar(minorNationSlot, targetNationSlot) == 0) {
+          !g_pDiplomacyTurnStateManager->IsNationPairAtWar(minorNationSlot, targetNationSlot)) {
         g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCode(
             minorNationSlot, targetNationSlot, kDiplomacyRelationshipWar, 0);
         if (targetNationSlot < kMajorNationCount &&
@@ -3611,7 +3608,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
     if (claimantTag == nationSlot) {
       short ownerTag = record->ownerNationCode00;
       if (ownerTag != nationSlot &&
-          g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, ownerTag) != 0) {
+          g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, ownerTag)) {
         return result * g_Compute_Advisory_OnePointFive_00654008;
       }
     }
@@ -3632,7 +3629,7 @@ float TGreatPower::ComputeAdvisoryMapNodeCompositeScore(int cityRecordIndex, int
 float TGreatPower::ComputeAdvisoryMapNodeCompositeScoreByMode(int cityRecordIndex, int mode,
                                                               int linkCityRecordIndex) {
   int ownerTag = g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationCode00;
-  if (g_pDiplomacyTurnStateManager->IsGreatPower(ownerTag) != 0) {
+  if (g_pDiplomacyTurnStateManager->IsGreatPower(ownerTag)) {
     if (mode == 0) {
       float f1 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(1, cityRecordIndex, 0, ownerTag);
       float f3 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(3, cityRecordIndex, 0, ownerTag);

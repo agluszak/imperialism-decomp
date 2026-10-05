@@ -87,16 +87,16 @@ void TRailCluster::DoPostCreate(int styleSeed) {
 
   this->selectedMetricOrder = city->orderSlots[recordIndex];
   TAmtBarCluster::DoPostCreate(styleSeed);
-  this->SetMoveAmount(this->selectedMetricOrder->quantity, 1);
+  this->SetMoveAmount(this->selectedMetricOrder->quantity, true);
 }
 
 // FUNCTION: IMPERIALISM 0x005899c0
 void TRailCluster::SetMoveAmount(short amount) {
-  this->SetMoveAmount(amount, 0);
+  this->SetMoveAmount(amount, false);
 }
 
 // FUNCTION: IMPERIALISM 0x005899f0
-void TRailCluster::SetMoveAmount(short dragValue, unsigned char updateFlag) {
+void TRailCluster::SetMoveAmount(short dragValue, bool updateFlag) {
   short step = this->selectedMetricStep;
   int quantizedDragValue = ((step / 2 + dragValue) / step) * step;
   TProductionOrder* selectedOrder = this->selectedMetricOrder;
@@ -148,7 +148,7 @@ void TRailCluster::SetMoveAmount(short dragValue, unsigned char updateFlag) {
   CPoint moveControlPosition;
   moveControlPosition.x = barControl->ownerLocalX + static_cast<short>(scaledMoveAmount) - 2;
   moveControlPosition.y = barControl->ownerLocalY + barControl->frameHeight;
-  moveControl->Locate(moveControlPosition, 1);
+  moveControl->Locate(moveControlPosition, true);
   moveControl->QueryBounds(&moveBoundsRect);
   OffsetRect(&moveBoundsRect, this->ownerLocalX, this->ownerLocalY);
   CopyRect(&moveInvalidRect, &moveBoundsRect);

@@ -903,7 +903,7 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
 
     CPoint placement;
     g_pViewMgr->ComputeTurnEventDialogPlacementByCode(pendingDialogView8, &placement);
-    pendingDialogView8->Locate(placement, 0);
+    pendingDialogView8->Locate(placement, false);
     pendingDialogView8->Open();
   }
 
@@ -942,11 +942,11 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
   TStaticText* title = static_cast<TStaticText*>(helpPicture->ResolveControlByTag(kControlTagTitl));
   title->Show(1, 1);
   title->ViewEnable(0, 1);
-  title->SetTextAlignmentAndMaybeRefresh(1, 0);
+  title->SetTextAlignmentAndMaybeRefresh(1, false);
   title->InstallTextStyle(titleStyle, 0);
   BuildUiMessageTextFromBracketTemplate(g_pSimMgr, &titleText, 0x2749, 6, 0x2749,
                                         pendingEntry->contextId);
-  title->SetTextAndMaybeRefresh(&titleText, 0);
+  title->SetTextAndMaybeRefresh(&titleText, false);
   helpPicture->ShowTopicList();
 }
 
@@ -1062,7 +1062,7 @@ void THelpMgr::EnsureMapActionContextViewAndBuildDefaultTileMenu(int mapContextI
 
     CPoint placement;
     g_pViewMgr->ComputeTurnEventDialogPlacementByCode(pendingDialogViewC, &placement);
-    pendingDialogViewC->Locate(placement, 0);
+    pendingDialogViewC->Locate(placement, false);
     pendingDialogViewC->Open();
   }
 

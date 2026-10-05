@@ -145,7 +145,7 @@ void TShipyardView::DoStartup() {
   TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl)); // 'titl'
   title->AssertValid();
   title->InstallTextStyle(style.desc, 1);
-  title->SetTextFromStringResource(0x2736, 0xe, 1);
+  title->SetTextFromStringResource(0x2736, 0xe, true);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
   for (int i = 0; i < 2; ++i) {
@@ -153,7 +153,7 @@ void TShipyardView::DoStartup() {
         static_cast<TStaticText*>(ResolveControlByTag(kControlTagFix0 + i)); // 'fix0'/'fix1'
     fixedLabel->AssertValid();
     fixedLabel->InstallTextStyle(style.desc, 1);
-    fixedLabel->SetTextFromStringResource(0x2736, static_cast<short>(i + 0xf), 1);
+    fixedLabel->SetTextFromStringResource(0x2736, static_cast<short>(i + 0xf), true);
   }
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b6b);
@@ -260,14 +260,14 @@ void TShipyardView::SetShip(short shipType) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x408);
   }
-  shipName->SetTextFromStringResource(0x2716, static_cast<short>(shipType + 1), 0);
+  shipName->SetTextFromStringResource(0x2716, static_cast<short>(shipType + 1), false);
   shipName->QueryBounds(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
   TStaticText* description =
       static_cast<TStaticText*>(ResolveControlByTag(kControlTagDesc)); // 'desc'
   description->AssertValid();
-  description->SetTextFromStringResource(0x2752, shipType, 0);
+  description->SetTextFromStringResource(0x2752, shipType, false);
   description->QueryBounds(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
@@ -462,7 +462,7 @@ void TShipyardView::SetStats(short shipType) {
   TStaticText* shipName = static_cast<TStaticText*>(ResolveControlByTag(kControlTagSnam)); // 'snam'
   shipName->AssertValid();
   g_pSimMgr->GetString(0x2716, shipType, &shipNameText);
-  shipName->SetTextAndMaybeRefresh(&shipNameText, 0);
+  shipName->SetTextAndMaybeRefresh(&shipNameText, false);
   shipName->QueryBounds(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
@@ -471,7 +471,7 @@ void TShipyardView::SetStats(short shipType) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x410);
   }
-  history->SetTextFromStringResource(0x23f7, shipType, 0);
+  history->SetTextFromStringResource(0x23f7, shipType, false);
   history->QueryBounds(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 

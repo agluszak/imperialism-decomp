@@ -95,7 +95,7 @@ void TArmyCheckBox::Draw(RECT* rectBuffer) {
 void TArmyCheckBox::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == kControlCommandHiliteToggle) {
     if ((GetAsyncKeyState(0x11) & 0x8000) != 0 || isOn84 != 0) {
-      Toggle(1);
+      Toggle(true);
     }
   }
   TControl::DoEvent(commandId, sourceHandler, event);
@@ -108,7 +108,7 @@ void TArmyCheckBox::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x004aa310
-void TArmyCheckBox::HiliteState(unsigned char hilited, unsigned char drawImmediate) {
+void TArmyCheckBox::HiliteState(unsigned char hilited, bool drawImmediate) {
   if (controlState64 != hilited) {
     controlState64 = hilited;
     CheckTheLook(drawImmediate);
@@ -129,7 +129,7 @@ void TArmyCheckBox::SetState(unsigned char on, unsigned char drawImmediate) {
 }
 
 // FUNCTION: IMPERIALISM 0x004aa3a0
-void TArmyCheckBox::Toggle(unsigned char drawImmediate) {
+void TArmyCheckBox::Toggle(bool drawImmediate) {
   SetState(static_cast<unsigned char>(IsOn() == 0), drawImmediate);
 }
 

@@ -271,7 +271,7 @@ void TDisplayMgr::CloseFloaters() {
     if (window != 0) {
       if (window->IsActionable() && window->controlValue3c == kClass99WindowId) {
         if (window->IsModal() != 0) {
-          window->Dismiss(kControlTagOkok, 1);
+          window->Dismiss(kControlTagOkok, true);
         } else {
           window->CloseAndFree();
         }

@@ -18,7 +18,8 @@ void TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel(int* offsetLayout,
   int captionSize[2] = {0x80, 0x18};
   int captionOffset[2] = {offsetLayout[0] + 0xac, offsetLayout[1]};
   TStaticText* caption = new TStaticText();
-  caption->IStaticText(this, captionOffset, captionSize, 5, 5, static_cast<short>(captionStringResourceGroup), 0x18);
+  caption->IStaticText(this, captionOffset, captionSize, 5, 5,
+                       static_cast<short>(captionStringResourceGroup), 0x18);
 }
 
 // FUNCTION: IMPERIALISM 0x004b1a50
@@ -66,7 +67,7 @@ void TGPCheater::RefreshGPCheaterNationValues(int nationSlot) {
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   nation->FormatOverlayTerrainLabelText(&nameText);
-  name->SetTextAndMaybeRefresh(&nameText, 1);
+  name->SetTextAndMaybeRefresh(&nameText, true);
 
   TNumberText* treasury =
       static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('t', 'r', 'e', 'a')));

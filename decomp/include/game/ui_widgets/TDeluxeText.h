@@ -19,7 +19,7 @@ public:
   // declaration had dropped the argument).
   virtual void SetTextFromUiStringResourceId(short stringId); // slot 0x77 0x5b60d0
   virtual void SetTextStyle(const TextStyle& style,
-                            unsigned char refreshNow); // slot 0x79 0x5b62a0
+                            bool refreshNow); // slot 0x79 0x5b62a0
   // VC5 emits an overload set's virtual entries in reverse declaration order, so this
   // declaration follows the reference overload while occupying the preceding slot.
   // The Mac build used shorts, but the Windows body forwards all three full dword
@@ -29,7 +29,7 @@ public:
   virtual void BuildCityViewProductionControls_Impl(short codeGroup,
                                                     short stringIndex); // slot 0x7a 0x5b64e0
   virtual void UpdateTextEntrySharedStringAndMaybeNotify(CString* text,
-                                                         char notifyFlag); // slot 0x7b 0x5b64a0
+                                                         bool notifyFlag); // slot 0x7b 0x5b64a0
   virtual void UpdateTextEntrySharedString(CString* text);                 // slot 0x7c 0x5b6480
   // Assign the entry text from a raw char pointer; the length argument is accepted but
   // unused by the body (ret 8 proves the two-arg shape).
@@ -37,7 +37,7 @@ public:
                                      int textLength); // slot 0x7d 0x5b6360
   // Vertically centers the wrapped text when its measured height is smaller than the
   // control frame, then optionally invalidates the control.
-  virtual short CenterVertically(unsigned char refreshNow); // slot 0x7e 0x5b63e0
+  virtual short CenterVertically(bool refreshNow); // slot 0x7e 0x5b63e0
   // field94/field95/padding96 moved to the base TTEView (its RTTI object size is
   // 0x98; TDeluxeText's own fields start at 0x98 — see TTEView.h).
   COLORREF textColor98;       // +0x98

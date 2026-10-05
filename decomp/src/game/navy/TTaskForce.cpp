@@ -1383,8 +1383,8 @@ TTaskForce* TTaskForce::RemoveStragglers() {
   case 5: {
     int cityIndex = static_cast<Province*>(target)->GetIndex();
     char ownerNation = g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode00;
-    if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(nation, ownerNation) ==
-        0) {
+    if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(nation,
+                                                                              ownerNation)) {
       TTaskForce* result = nextForce->RemoveStragglers();
       Free();
       return result;
@@ -1480,12 +1480,12 @@ bool TTaskForce::Encounter(TTaskForce* other) {
         other->defeated != 0) {
       resolved = false;
     } else {
-      resolved = (AttemptToEvade(other) == 0);
+      resolved = (!AttemptToEvade(other));
     }
-  } else if (other->IsAfraidOf(this) == 0) {
+  } else if (!other->IsAfraidOf(this)) {
     resolved = true;
   } else {
-    resolved = (other->AttemptToEvade(this) == 0);
+    resolved = (!other->AttemptToEvade(this));
   }
 
   if (!resolved) {

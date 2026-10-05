@@ -25,7 +25,7 @@ void TInfoBarText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {
     layoutRectA4.right = layoutRect->right;
     layoutRectA4.bottom = layoutRect->bottom;
     UpdateTextEntrySharedString(&text);
-    CenterVertically(1);
+    CenterVertically(true);
   }
 }
 
@@ -38,7 +38,7 @@ void TInfoBarText::ClearTextAndLayoutRect(int) {
   layoutRectA4.right = 0;
   layoutRectA4.bottom = 0;
   UpdateTextEntrySharedString(&text);
-  CenterVertically(1);
+  CenterVertically(true);
 }
 
 // FUNCTION: IMPERIALISM 0x005b6810
@@ -50,8 +50,8 @@ void TInfoBarText::ApplyDefaultMapHintTextStyle() {
 void TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary, int styleSecondary) {
   TextStyle styleDescriptor = {0, 0, 0, 0};
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, styleSecondary);
-  SetTextStyle(styleDescriptor, 0);
-  SetTextAlignmentAndMaybeRefresh(static_cast<short>(-1), 0);
+  SetTextStyle(styleDescriptor, false);
+  SetTextAlignmentAndMaybeRefresh(static_cast<short>(-1), false);
   layoutRectA4.left = 0;
   layoutRectA4.top = 0;
   layoutRectA4.right = 0;

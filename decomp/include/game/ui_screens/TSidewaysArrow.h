@@ -14,7 +14,7 @@ public:
 
   virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
                           CPoint& currentPoint,
-                          unsigned char commandFlag) override; // slot 0x68 0x583bd0
+                          bool commandFlag) override; // slot 0x68 0x583bd0
 };
 
 ASSERT_SIZE(TSidewaysArrow, 0x98);

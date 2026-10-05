@@ -28,7 +28,7 @@ public:
   virtual void Free() override;                    // slot 0x07 0x53f410
 
   virtual int AccumulateLack(int* accumulatedLack,
-                             unsigned char includeExistingLack) const override; // 0x53fc10
+                             bool includeExistingLack) const override; // 0x53fc10
 
   virtual void Initialize() override;       // slot 0x0c 0x53f580 -- init from nation/target tile
   virtual void SetStateByte8To2() override; // slot 0x0d 0x53f5f0 -- state08 = 2
@@ -58,12 +58,12 @@ public:
 
   using TAttackProvinceMission::AcceptReenforcement;
   virtual void AcceptReenforcement(TShip* ship,
-                                   unsigned char notify) override; // slot 0x21 0x53f190
+                                   bool notify) override; // slot 0x21 0x53f190
   using TAttackProvinceMission::RejectConstituent;
   virtual void RejectConstituent(TShip* ship,
-                                 unsigned char notify) override; // slot 0x23 0x53f1c0
-  virtual void ForgetTaskForce(TTaskForce* taskForce) override;  // slot 0x24 0x53f160
-  virtual void Hold(unsigned char value) override;               // slot 0x25 0x53fb90
+                                 bool notify) override;         // slot 0x23 0x53f1c0
+  virtual void ForgetTaskForce(TTaskForce* taskForce) override; // slot 0x24 0x53f160
+  virtual void Hold(bool value) override;                       // slot 0x25 0x53fb90
 
   virtual char
   SmokeEmIfYouGotEm() override; // slot 0x26 0x53f4e0 -- evaluate beachhead + queue eligible units

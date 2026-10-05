@@ -927,12 +927,12 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
       activeContextMatch = (entry->location == *slot);
     }
 
-    bool relatedToNation = entry->nation != nation &&
-                           g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
-                               entry->nation, nation) != 0;
+    bool relatedToNation =
+        entry->nation != nation &&
+        g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(entry->nation, nation);
     bool relatedToPortOwner = portOwnerNation >= 7 && entry->shipOrders == 6 &&
                               g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
-                                  entry->nation, portOwnerNation) != 0;
+                                  entry->nation, portOwnerNation);
 
     if (!(contextMatch || activeContextMatch) || !(relatedToNation || relatedToPortOwner)) {
       continue;
@@ -986,7 +986,7 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
     if (nationEntryUnavailable) {
       eligible = true;
     } else if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
-                   nation, entry->nation) != 0) {
+                   nation, entry->nation)) {
       int candidateStrength = 0;
       for (TMapOrderChildLinkNode* candidateNode = entry->shipList; candidateNode != nullptr;
            candidateNode = candidateNode->next) {
@@ -1047,8 +1047,8 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
     outResult->offerNationCode = entry->nation;
     outResult->selectedEntry = entry;
     outResult->directionFlags = flags;
-    if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(nation,
-                                                                             entry->nation) == 0) {
+    if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(nation,
+                                                                              entry->nation)) {
       return 1;
     }
     short roll = static_cast<short>(rand() % 100);
@@ -1469,7 +1469,7 @@ bool TNavyMgr::SelectionClick(short nTileIndex, int nInputFlags) {
 // FUNCTION: IMPERIALISM 0x0055a160
 int TNavyMgr::DoTileClick(short nTileIndex, int nInputFlags) {
   // A context-only action consumes the click without any queue mutation.
-  if (SelectionClick(nTileIndex, nInputFlags) != 0) {
+  if (SelectionClick(nTileIndex, nInputFlags)) {
     return 0;
   }
   TTaskForce* entry = GetActiveMapOrderEntry();

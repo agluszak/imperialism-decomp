@@ -55,13 +55,13 @@ void TMapKey::DoPostCreate(int arg) {
     CRect zeroRect(&emptyRect);
     int offsetXY[2] = {legendX[i] - baseX, static_cast<short>(legendY[i] - baseY - 0xf)};
     legendText->IDeluxeText(this, offsetXY, sizeXY, &zeroRect, &style, -2);
-    legendText->UpdateTextEntrySharedStringAndMaybeNotify(&label, 0);
+    legendText->UpdateTextEntrySharedStringAndMaybeNotify(&label, false);
     legendText->Show(0, 0);
     legendText->controlTag = kControlTagNam0 + i; // 'nam0'-'nam6'
-    legendText->CenterVertically(0);
+    legendText->CenterVertically(false);
     legendText->shadowTextColor = shadowStyleFlags;
     legendText->dropShadowEnabledA0 = true;
-    legendText->SetTextStyle(style, 1);
+    legendText->SetTextStyle(style, true);
   }
 }
 

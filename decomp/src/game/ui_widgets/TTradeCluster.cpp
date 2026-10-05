@@ -95,13 +95,13 @@ void TTradeCluster::DoPostCreate(int styleSeed) {
     TextStyle style;
     InitializeUiTextStyleDescriptor(&style, 0, 0xe, 0x2b68, 2);
     sellControl->InstallTextStyle(style, 0);
-    sellControl->SetTextAlignmentAndMaybeRefresh(-1, 0);
+    sellControl->SetTextAlignmentAndMaybeRefresh(-1, false);
     CRect boundsBuffer;
     boundsBuffer.left = 0;
     boundsBuffer.top = 0;
     sellControl->QueryBounds(&boundsBuffer);
     boundsBuffer.top = boundsBuffer.top - 2;
-    sellControl->ApplyBounds(&boundsBuffer, 1);
+    sellControl->ApplyBounds(&boundsBuffer, true);
   }
 
   TAmtBar* barControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagBar));
@@ -347,7 +347,7 @@ void TTradeCluster::DoControlAction() {
   }
 
   CPoint size(0x11, 0x14);
-  bidControl->Resize(size, 1);
+  bidControl->Resize(size, true);
 
   if (g_pViewMgr->GetPendingTurnOverlayCode() < 4) {
     bidControl->Show(1, 1);
@@ -381,7 +381,7 @@ void TTradeCluster::SetTradeBidControlBitmap() {
   }
 
   CPoint size(0x41, 0x14);
-  bidControl->Resize(size, 1);
+  bidControl->Resize(size, true);
 
   TView* greenControl = this->ResolveControlByTag(kControlTagGree);
   if (greenControl == 0) {
@@ -424,9 +424,9 @@ void TTradeCluster::SetTradeOfferControlBitmap() {
   }
 
   CPoint size(0x41, 0x14);
-  offerControl->Resize(size, 1);
+  offerControl->Resize(size, true);
   CPoint layoutCaptureF0(0x73, 0);
-  offerControl->Locate(layoutCaptureF0, 1);
+  offerControl->Locate(layoutCaptureF0, true);
 
   TView* greenControl = this->ResolveControlByTag(kControlTagGree);
   if (greenControl == 0) {
@@ -462,7 +462,7 @@ void TTradeCluster::SetTradeOfferSecondaryBitmap() {
   }
 
   CPoint size(0x11, 0x14);
-  offerControl->Resize(size, 1);
+  offerControl->Resize(size, true);
 
   short activeNationSlot = g_pSimMgr->GetPlayerCountry();
   TGreatPower* activeNationState = g_apNationStates[activeNationSlot];
@@ -479,7 +479,7 @@ void TTradeCluster::SetTradeOfferSecondaryBitmap() {
         offerControl->SetPictureResourceIdAndRefresh(kTradeBitmapOfferSecondaryStateA, 0);
       }
       CPoint layoutCaptureF0(0xa3, 0);
-      offerControl->Locate(layoutCaptureF0, 1);
+      offerControl->Locate(layoutCaptureF0, true);
     } else {
       offerControl->Show(0, 1);
     }

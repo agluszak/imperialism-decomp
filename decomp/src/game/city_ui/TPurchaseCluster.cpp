@@ -22,7 +22,7 @@ TPurchaseCluster::~TPurchaseCluster() {}
 // FUNCTION: IMPERIALISM 0x004cc440
 void TPurchaseCluster::SetValueControlAndSyncAmount(TEventHandler* control) {
   field88 = control;
-  SetCityViewValueControlAmount(static_cast<short>(control->enabled), 1);
+  SetCityViewValueControlAmount(static_cast<short>(control->enabled), true);
 }
 
 // FUNCTION: IMPERIALISM 0x004cc470
@@ -36,13 +36,13 @@ void TPurchaseCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     } else if (sourceHandler->controlTag == kControlTagRaro) {
       field88->SetEnable(static_cast<char>(UpdateCityViewValueControl() + 1));
     }
-    SetCityViewValueControlAmount(static_cast<short>(field88->enabled), 1);
+    SetCityViewValueControlAmount(static_cast<short>(field88->enabled), true);
   }
   TCluster::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x004cc550
-void TPurchaseCluster::SetCityViewValueControlAmount(short nValue, char redrawFlag) {
+void TPurchaseCluster::SetCityViewValueControlAmount(short nValue, bool redrawFlag) {
   // 'valu' is a TAmtBar (already the established typing at this exact tag in
   // TProductionCluster.cpp); confirmed here by TAmtBar's own SetControlValueSlot1E4(int,
   // int) matching this callsite's slot 0x1e4 dispatch and (nValue, 0) argument shape exactly
@@ -54,7 +54,7 @@ void TPurchaseCluster::SetCityViewValueControlAmount(short nValue, char redrawFl
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x781);
   }
   valueControl->SetControlValue(nValue, 0);
-  if (redrawFlag == 0) {
+  if (!redrawFlag) {
     return;
   }
 

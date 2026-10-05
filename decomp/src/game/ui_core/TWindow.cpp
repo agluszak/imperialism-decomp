@@ -75,14 +75,14 @@ void TWindow::Activate(unsigned char) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048d900
-void TWindow::Show(unsigned char show, unsigned char refresh) {
+void TWindow::Show(unsigned char show, bool refresh) {
   if (nativeWindow50 != 0 && nativeWindow50->m_hWnd != 0) {
     WPARAM wParam = show == 0 ? 3 : 2;
     SendMessageA(nativeWindow50->m_hWnd, 0x468, wParam, controlTag);
   }
   if ((int)show != viewEnabled) {
     viewEnabled = (int)show;
-    if (refresh != 0) {
+    if (refresh) {
       RefreshControl();
     }
   }
@@ -114,7 +114,7 @@ unsigned char TWindow::IsModal() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048da40
-void TWindow::SetModality(unsigned char modal) {
+void TWindow::SetModality(bool modal) {
   dialogBehavior.armed = modal;
 }
 
@@ -125,9 +125,9 @@ void TWindow::SetModality(unsigned char modal) {
 // FUNCTION: IMPERIALISM 0x0048da60
 int TWindow::PoseModally() {
   TDialogBehavior* behavior = GetDialogBehavior();
-  unsigned char wasArmed = behavior->armed;
-  if (wasArmed == 0) {
-    SetModality(1);
+  bool wasArmed = behavior->armed;
+  if (!wasArmed) {
+    SetModality(true);
   }
   if (!g_ModalViewStack.IsEmpty()) {
     TWindow* top = g_ModalViewStack.GetHead();
@@ -153,8 +153,8 @@ int TWindow::PoseModally() {
       }
     }
   }
-  if (wasArmed == 0) {
-    SetModality(0);
+  if (!wasArmed) {
+    SetModality(false);
   }
   g_pImperialismApp->RestoreWaitCursorIfStartupBusy();
   return armedCommand;
@@ -170,7 +170,7 @@ unsigned char TWindow::IsDismissed() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048dc90
-void TWindow::Dismiss(unsigned long commandCode, unsigned char accepted) {
+void TWindow::Dismiss(unsigned long commandCode, bool accepted) {
   TDialogBehavior* behavior = GetDialogBehavior();
   if (behavior != 0) {
     behavior->Dismiss(commandCode, accepted);
@@ -247,7 +247,7 @@ CWnd* TWindow::Open() {
     if (activeLinkedWindow != 0) {
       activeLinkedWindow->SelectOwner(0);
     }
-    Show(1, 1);
+    Show(1, true);
   }
   if (childList != 0) {
     POSITION pos = childList->GetHeadPosition();
@@ -274,7 +274,7 @@ void TWindow::Close() {
       child->Close();
     }
   }
-  Show(0, 1);
+  Show(0, true);
 }
 
 // FUNCTION: IMPERIALISM 0x0048e120
@@ -284,16 +284,16 @@ void TWindow::CloseAndFree() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048e150
-void TWindow::Center(unsigned char centerX, unsigned char centerY, unsigned char unused) {
+void TWindow::Center(bool centerX, bool centerY, bool unused) {
   (void)unused;
   if (nativeWindow50 != 0) {
     nativeWindow50->CenterWindow(0);
     return;
   }
-  if (centerX != 0) {
+  if (centerX) {
     ownerLocalX = (0x280 - frameWidth) / 2;
   }
-  if (centerY != 0) {
+  if (centerY) {
     ownerLocalY = (0x1e0 - frameHeight) / 2;
   }
 }

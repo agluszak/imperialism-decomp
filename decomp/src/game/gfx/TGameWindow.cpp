@@ -178,7 +178,7 @@ void TGameWindow::UpdateTurnOrderNavigationWindowLayout() {
     boundsRect.top = globalRect.top;
     boundsRect.right = globalRect.right;
     boundsRect.bottom = globalRect.bottom;
-    ApplyBounds(&boundsRect, 1);
+    ApplyBounds(&boundsRect, true);
   }
   NoOpTurnOrderNavigationVtableSlotA();
 }

@@ -123,8 +123,8 @@ public:
   virtual void RefreshControl();                                         // 0x39 0x48b6d0
   virtual TView* GetRootView();                                          // 0x3a 0x48b1a0
   virtual bool IsActionable();                                           // 0x3b 0x48b200
-  virtual void Locate(const CPoint& position, unsigned char refresh);    // 0x3c 0x48b250
-  virtual void Resize(const CPoint& size, unsigned char refresh);        // 0x3d 0x48b3f0
+  virtual void Locate(const CPoint& position, bool refresh);             // 0x3c 0x48b250
+  virtual void Resize(const CPoint& size, bool refresh);                 // 0x3d 0x48b3f0
   virtual char PrepareForDrawing();                                      // 0x3e 0x48b770
   virtual void PostRender();                                             // 0x3f
   // The "DC handle" flowing through slots 0x40/0x41/0x43/0x45 is a caller-supplied MFC
@@ -161,9 +161,9 @@ public:
   virtual void GetDrawableQDRect(CRect* rectOut); // 0x57 0x429410
   virtual CRect* GetQDExtent(CRect* rectOut);
   virtual void UpdateCoordinates();
-  virtual void ApplyBounds(CRect* newBounds, unsigned char modeFlag); // 0x5a 0x48c380
-  virtual char PointInBoundsAndActionable(CPoint* point);             // 0x5b 0x48c6d0
-  virtual void AttachChildControl(class TView* child, int flag);      // 0x5c 0x48abe0
+  virtual void ApplyBounds(CRect* newBounds, bool modeFlag);     // 0x5a 0x48c380
+  virtual char PointInBoundsAndActionable(CPoint* point);        // 0x5b 0x48c6d0
+  virtual void AttachChildControl(class TView* child, int flag); // 0x5c 0x48abe0
   virtual void DetachChildFromOwnerList(class TView* child);
   virtual unsigned short GetHelpState();
   virtual short ContainsMouse(const CPoint& point);

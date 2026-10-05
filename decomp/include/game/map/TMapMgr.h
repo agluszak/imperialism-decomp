@@ -338,13 +338,13 @@ public:
   virtual byte FindResourceCapabilityRequirementLevel(StrategicTileIndex tileIndex,
                                                       short edgeIndex); // slot 0x31 0x513610
   virtual char GetTileCivilianWorkOrderCostClassNibble(StrategicTileIndex nTileIndex,
-                                                       char fUseHighNibble); // slot 0x32 0x513660
+                                                       bool fUseHighNibble); // slot 0x32 0x513660
   // Packs value into developmentClassNibbles's low or high nibble (selectHighNibble
   // picks which); when writing the high nibble with a positive value and param4 != 0,
   // also sets pendingDevelopmentFlag = 0x7f.
   virtual void SetCivilianDevelopmentClassNibble(StrategicTileIndex tileIndex,
-                                                 char selectHighNibble, byte value,
-                                                 char param4); // slot 0x33 0x5136a0
+                                                 bool selectHighNibble, byte value,
+                                                 bool param4); // slot 0x33 0x5136a0
   // For each of tileIndex's 2 resourceTypeByEdge entries (skipping the -1 sentinel) whose
   // g_abResourceTypeCapabilityCategory matches categoryCode, reads
   // g_pTechMgr->capabilityValueByNationAndResource[nationSlot][resourceType]
@@ -430,7 +430,7 @@ public:
   virtual short GetMapImprovementTierBucketOffset(short tier); // slot 0x44 0x5176e0
   // Bitmap-strip base offset for a map-improvement class: 0x6c0 flat if param_2, else
   // g_anMapImprovementSpriteClassByOrderType[param_1]*64, +0x480 unless param_3.
-  virtual short GetMapImprovementSpriteBaseOffset(short param_1, char param_2,
+  virtual short GetMapImprovementSpriteBaseOffset(short param_1, bool param_2,
                                                   char param_3); // slot 0x45 0x517780
   // Looks up and returns the improvement sprite base offset for civUnit's own order
   // type/idle state via the slot above. TMiniCivView::Draw (0x4ac000) is a

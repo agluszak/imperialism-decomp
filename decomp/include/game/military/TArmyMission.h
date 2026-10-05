@@ -31,7 +31,7 @@ public:
 
   virtual bool
   IsANoBrainer() const override; // slot 0x28 0x53c1b0 -- army attack/invade capability flag
-  virtual int AccumulateLack(int* accumulatedLack, unsigned char includeExistingLack)
+  virtual int AccumulateLack(int* accumulatedLack, bool includeExistingLack)
       const override; // slot 0x2c 0x53c620 -- accumulates remaining equipage lack, returns total
   virtual TMission* GetReplacementSlot48() override; // slot 0x48 0x53d630
   virtual bool
@@ -47,9 +47,9 @@ public:
   virtual float FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVector)
       override; // slot 0x78 0x53d4a0 -- candidate vector distance score
   virtual void AcceptReenforcement(TMilitaryUnit* unit,
-                                   unsigned char notify) override; // slot 0x80 0x53c570
+                                   bool notify) override; // slot 0x80 0x53c570
   virtual void RejectConstituent(TMilitaryUnit* unit,
-                                 unsigned char notify) override; // slot 0x88 0x53c5e0
+                                 bool notify) override; // slot 0x88 0x53c5e0
   virtual char
   SmokeEmIfYouGotEm() override; // slot 0x98 0x53c4f0 -- queue eligible units by movement class
 

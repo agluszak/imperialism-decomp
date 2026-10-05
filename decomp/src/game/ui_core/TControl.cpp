@@ -71,7 +71,7 @@ void TControl::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin
   g_McAppMouseCaptureState.currentPoint.x = startX;
   g_McAppMouseCaptureState.currentPoint.y = startY;
   TrackMouse(kTrackPhaseBegin, g_McAppMouseCaptureState.startPoint,
-             g_McAppMouseCaptureState.lastPoint, g_McAppMouseCaptureState.currentPoint, 1);
+             g_McAppMouseCaptureState.lastPoint, g_McAppMouseCaptureState.currentPoint, true);
   if (g_McAppUiMouseCaptureTimerId_006A1ADC == 0) {
     g_McAppUiMouseCaptureTimerId_006A1ADC = SetTimer(
         nativeWindow50->m_hWnd, 0xef, 0x11, NotifyGlobalCaptureOwnerState1WithCachedCoords);
@@ -81,15 +81,15 @@ void TControl::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin
 // FUNCTION: IMPERIALISM 0x0048e710
 void TControl::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == kControlCommandHiliteOn) {
-    HiliteState(1, 1);
+    HiliteState(1, true);
     return;
   }
   if (commandId == kControlCommandHiliteOff) {
-    HiliteState(0, 1);
+    HiliteState(0, true);
     return;
   }
   if (commandId == kControlCommandHiliteToggle) {
-    HiliteState(controlState64 == 0, 1);
+    HiliteState(controlState64 == 0, true);
     return;
   }
   TEventHandler* child = GetNextHandler();
@@ -115,7 +115,7 @@ void TControl::InstallTextStyle(const TextStyle& style, char refreshNow) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048e810
-void TControl::HiliteState(unsigned char enabledState, unsigned char refreshNow) {
+void TControl::HiliteState(unsigned char enabledState, bool refreshNow) {
   if (controlState64 != static_cast<unsigned char>(enabledState)) {
     controlState64 = static_cast<unsigned char>(enabledState);
     if (refreshNow) {
@@ -126,16 +126,16 @@ void TControl::HiliteState(unsigned char enabledState, unsigned char refreshNow)
 
 // FUNCTION: IMPERIALISM 0x0048e850
 void TControl::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
-                          CPoint& currentPoint, unsigned char commandFlag) {
+                          CPoint& currentPoint, bool commandFlag) {
   (void)startPoint;
   (void)previousPoint;
   (void)commandFlag;
   if (phase == kTrackPhaseBegin) {
-    HiliteState(1, 1);
+    HiliteState(1, true);
     return;
   }
   if (phase == kTrackPhaseUpdate) {
-    HiliteState(PointInBoundsAndActionable(&currentPoint), 1);
+    HiliteState(PointInBoundsAndActionable(&currentPoint), true);
     return;
   }
   if (phase == kTrackPhaseEnd && PointInBoundsAndActionable(&currentPoint) != 0) {

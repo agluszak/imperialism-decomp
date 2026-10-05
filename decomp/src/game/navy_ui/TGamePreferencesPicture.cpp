@@ -66,9 +66,9 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
       label->Show(1, 0);
       g_pSimMgr->GetString(0x2743, static_cast<short>(row * 2 + 0x10), &text);
       label->SetTextStyle(0, 0xc, 0x38);
-      label->SetTextAlignmentAndMaybeRefresh(1, 0);
+      label->SetTextAlignmentAndMaybeRefresh(1, false);
       label->UpdateTextEntrySharedString(&text);
-      label->CenterVertically(0);
+      label->CenterVertically(false);
       continue;
     }
 
@@ -95,9 +95,9 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
       TDeluxeText* caption = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTxta + row));
       caption->AssertValid();
       caption->SetTextStyle(0, 0xc, 0x38);
-      label->SetTextAlignmentAndMaybeRefresh(1, 0);
-      caption->UpdateTextEntrySharedStringAndMaybeNotify(&text, 0);
-      caption->CenterVertically(0);
+      label->SetTextAlignmentAndMaybeRefresh(1, false);
+      caption->UpdateTextEntrySharedStringAndMaybeNotify(&text, false);
+      caption->CenterVertically(false);
     }
   }
 
@@ -136,20 +136,20 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&promptText, 0x2763, 0x18);
   TDeluxeText* promptLabel = static_cast<TDeluxeText*>(autoResPrompt);
   promptLabel->SetTextStyle(0, 0xc, 0x38);
-  promptLabel->SetTextAlignmentAndMaybeRefresh(1, 0);
-  promptLabel->UpdateTextEntrySharedStringAndMaybeNotify(&promptText, 0);
-  promptLabel->CenterVertically(0);
+  promptLabel->SetTextAlignmentAndMaybeRefresh(1, false);
+  promptLabel->UpdateTextEntrySharedStringAndMaybeNotify(&promptText, false);
+  promptLabel->CenterVertically(false);
 
   TDropShadowText* yesOption = static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagYess));
   yesOption->AssertValid();
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&promptText, 0x2763, 0x16);
-  yesOption->SetTextAndMaybeRefresh(&promptText, 0);
+  yesOption->SetTextAndMaybeRefresh(&promptText, false);
   ApplyUiTextStyleAndThemeFlags(yesOption, 0, 0xc, 0x2b6a, 0x2b6c);
 
   TDropShadowText* noOption = static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagNooo));
   noOption->AssertValid();
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&promptText, 0x2763, 0x17);
-  noOption->SetTextAndMaybeRefresh(&promptText, 0);
+  noOption->SetTextAndMaybeRefresh(&promptText, false);
   ApplyUiTextStyleAndThemeFlags(noOption, 0, 0xc, 0x2b6a, 0x2b6c);
 
   autoResCluster->frameThemeCode90 = 0x2b6c;
@@ -242,8 +242,8 @@ void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandle
       g_pSimMgr->GetString(0x2743, static_cast<short>((checked ? 0 : 1) + idx * 2 + 0x10), &text);
       TDeluxeText* tooltip = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTxta + idx));
       tooltip->AssertValid();
-      tooltip->UpdateTextEntrySharedStringAndMaybeNotify(&text, 1);
-      tooltip->CenterVertically(1);
+      tooltip->UpdateTextEntrySharedStringAndMaybeNotify(&text, true);
+      tooltip->CenterVertically(true);
     }
   }
 }

@@ -80,7 +80,7 @@ void TProxyGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary() 
 // FUNCTION: IMPERIALISM 0x00540ba0
 char TProxyGreatPower::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                                          ResourceKindStorage resourceKind) {
-  if (this->StillBuyingItem(resourceKind) != 0) {
+  if (this->StillBuyingItem(resourceKind)) {
     g_pGameFlowState->DispatchTurnEvent1AWithNationActionPayload(this->nationSlot, targetNationSlot,
                                                                  amount, price, resourceKind);
     return 1;

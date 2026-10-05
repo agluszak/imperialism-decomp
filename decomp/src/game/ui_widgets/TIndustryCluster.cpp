@@ -57,23 +57,23 @@ void TIndustryCluster::DoPostCreate(int styleSeed) {
       static_cast<TItemOrder*>(selectedMetricRecord)->productionSlot));
 
   TAmtBarCluster::DoPostCreate(styleSeed);
-  this->SetMoveAmount(selectedMetricRecord->quantity, 1);
+  this->SetMoveAmount(selectedMetricRecord->quantity, true);
 }
 
 // FUNCTION: IMPERIALISM 0x00588c30
 void TIndustryCluster::SetMoveAmount(short amount) {
-  this->SetMoveAmount(amount, 0);
+  this->SetMoveAmount(amount, false);
 }
 
 // FUNCTION: IMPERIALISM 0x00588c60
-void TIndustryCluster::SetMoveAmount(short dragValue, unsigned char updateControls) {
+void TIndustryCluster::SetMoveAmount(short dragValue, bool updateControls) {
   TProductionOrder* selectedOrder = this->selectedMetricOrder;
   short previousValue = selectedOrder->quantity;
   if (selectedOrder != 0) {
     selectedOrder->SetQuantity(dragValue);
   }
 
-  if ((updateControls == 0) && (selectedOrder->quantity == previousValue)) {
+  if ((!updateControls) && (selectedOrder->quantity == previousValue)) {
     return;
   }
 
@@ -116,7 +116,7 @@ void TIndustryCluster::SetMoveAmount(short dragValue, unsigned char updateContro
   CPoint moveControlPosition;
   moveControlPosition.x = barControl->ownerLocalX + static_cast<short>(scaledMoveAmount) - 2;
   moveControlPosition.y = barControl->ownerLocalY + barControl->frameHeight;
-  moveControl->Locate(moveControlPosition, 1);
+  moveControl->Locate(moveControlPosition, true);
   moveControl->QueryBounds(&moveBoundsRect);
   OffsetRect(&moveBoundsRect, this->ownerLocalX, this->ownerLocalY);
   CopyRect(&moveInvalidRect, &moveBoundsRect);

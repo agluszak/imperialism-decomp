@@ -1116,8 +1116,7 @@ unsigned int TZone::HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(int 
   }
   int candidate = 0;
   while ((mask & (1u << (candidate & 0x1f))) == 0 ||
-         g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(candidate, nation) ==
-             0) {
+         !g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(candidate, nation)) {
     ++candidate;
     if (candidate > 6) {
       return 0;

@@ -47,7 +47,7 @@ public:
   virtual char PointInBoundsAndActionable(CPoint* point) override; // slot 0x5b 0x48e940
   virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
                           CPoint& currentPoint,
-                          unsigned char commandFlag); // slot 0x68 0x48e850
+                          bool commandFlag); // slot 0x68 0x48e850
   // Build this control's content bounds (via QueryContentBounds) then deflate by
   // contentInsets -- the shared "content rect with margins applied" primitive used by
   // Draw-family paint code. Some subclasses (e.g. TCivDescription) repurpose
@@ -65,7 +65,7 @@ public:
                                            bool refreshNow); // slot 0x6e 0x48e7a0
   virtual char LogUnhandledDialogMethodAndReturnFalse();     // slot 0x6f 0x4294a0
   virtual void HiliteState(unsigned char enabledState,
-                           unsigned char refreshNow); // slot 0x70 0x48e810
+                           bool refreshNow); // slot 0x70 0x48e810
   void SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNation);
 
   // 0x60 -- command/event number returned by GetEventNumber and dispatched by DoEvent.

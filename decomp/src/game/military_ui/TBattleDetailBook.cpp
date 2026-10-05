@@ -12,7 +12,7 @@ IMPLEMENT_DYNCREATE(TBattleDetailBook, TBook)
 // FUNCTION: IMPERIALISM 0x004aea90
 void TBattleDetailBook::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xa && sourceHandler->controlTag == kControlTagOkay) {
-    GetWindow()->Dismiss(sourceHandler->controlTag, 1);
+    GetWindow()->Dismiss(sourceHandler->controlTag, true);
     return;
   }
   TBook::DoEvent(commandId, sourceHandler, event);

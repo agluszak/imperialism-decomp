@@ -56,7 +56,7 @@ void TNewspaperView::StuffValues(int pageNation) {
   g_pSimMgr->GetSeason(&dateText);
   formatText.Format(g_szDecimalFormat, static_cast<short>(g_pSimMgr->economicTurn / 4) + 0x717);
   panelText = dateText + g_szListSeparator_00695760 + formatText;
-  dateControl->SetTextAndMaybeRefresh(&panelText, 1);
+  dateControl->SetTextAndMaybeRefresh(&panelText, true);
   dateControl->InstallTextStyle(titleStyle, 1);
 
   TStaticText* specialControl =
@@ -104,7 +104,7 @@ void TNewspaperView::StuffValues(int pageNation) {
       break;
     }
   }
-  specialControl->SetTextAndMaybeRefresh(&panelText, 1);
+  specialControl->SetTextAndMaybeRefresh(&panelText, true);
   specialControl->InstallTextStyle(titleStyle, 1);
 
   for (int col = 0; col < 3; col++) {
@@ -296,6 +296,6 @@ int TNewspaperView::AppendInterNationEventSummaryTextEntry(int column, int y, in
   CRect bounds;
   text->QueryBounds(&bounds);
   bounds.bottom = consumedHeight + bounds.top;
-  text->ApplyBounds(&bounds, 0);
+  text->ApplyBounds(&bounds, false);
   return consumedHeight;
 }

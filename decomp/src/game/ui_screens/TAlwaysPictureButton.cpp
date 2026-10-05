@@ -12,7 +12,7 @@ TAlwaysPictureButton::TAlwaysPictureButton() : TPictureButton() {}
 TAlwaysPictureButton::~TAlwaysPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00570a70
-void TAlwaysPictureButton::HiliteState(unsigned char enabledState, unsigned char refreshNow) {
+void TAlwaysPictureButton::HiliteState(unsigned char enabledState, bool refreshNow) {
   if (static_cast<unsigned char>(enabledState) != this->controlState64) {
     this->controlState64 = enabledState;
     short pictureId;

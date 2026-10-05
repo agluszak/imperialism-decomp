@@ -1199,7 +1199,7 @@ void TMapMaker::CreateRivers() {
     } while (mapTileGrid08[neighbor * 0x24] == kStrategicTerrainMountain &&
              direction != firstDirection);
 
-    if (direction != firstDirection && GrowRiver(tileIndex, direction, 6, 0, 1)) {
+    if (direction != firstDirection && GrowRiver(tileIndex, direction, 6, 0, true)) {
       --riversRemaining;
     }
   }
@@ -1207,12 +1207,12 @@ void TMapMaker::CreateRivers() {
 
 // FUNCTION: IMPERIALISM 0x00527ed0
 char TMapMaker::GrowRiver(long tileIndex, long incomingDirection, long outgoingDirection,
-                          long depth, unsigned char startedOnHills) {
+                          long depth, bool startedOnHills) {
   char* tile = mapTileGrid08 + tileIndex * 0x24;
   StrategicTerrainKind terrainKind = static_cast<StrategicTerrainKind>(*tile);
   bool beganOnHills = terrainKind == kStrategicTerrainHills;
   if (tile[2] != 0 || (terrainKind == kStrategicTerrainMountain && depth != 0) ||
-      (terrainKind == kStrategicTerrainHills && startedOnHills == 0)) {
+      (terrainKind == kStrategicTerrainHills && !startedOnHills)) {
     return 0;
   }
   if (terrainKind == kStrategicTerrainWater) {
@@ -1262,7 +1262,7 @@ char TMapMaker::GrowRiver(long tileIndex, long incomingDirection, long outgoingD
 // Returns the number of successful spreads.
 // FUNCTION: IMPERIALISM 0x00528140
 int TMapMaker::PlaceCityMarkerAndSpreadNeighbors(int tileIndex, int retryBudget,
-                                                 char markerVariant) {
+                                                 bool markerVariant) {
   if (mapTileGrid08[tileIndex * 0x24] != kStrategicTerrainPlains) {
     return 0;
   }
@@ -1274,7 +1274,7 @@ int TMapMaker::PlaceCityMarkerAndSpreadNeighbors(int tileIndex, int retryBudget,
   }
 
   mapTileGrid08[tileIndex * 0x24] = kStrategicTerrainForest;
-  mapTileGrid08[tileIndex * 0x24 + 0x13] = (markerVariant == 0) ? 0xd : 0xf;
+  mapTileGrid08[tileIndex * 0x24 + 0x13] = (!markerVariant) ? 0xd : 0xf;
 
   int remaining = retryBudget - 1;
   for (int spreadDir = 0; spreadDir < 6; ++spreadDir) {

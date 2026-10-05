@@ -873,7 +873,7 @@ void TCivMgr::ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
     byte result = g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(order->tileIndex06,
                                                                              selectHighNibble);
     g_pGlobalMapState->SetCivilianDevelopmentClassNibble(order->tileIndex06, selectHighNibble,
-                                                         static_cast<byte>(result + 1), 1);
+                                                         static_cast<byte>(result + 1), true);
     break;
   }
   case 8:

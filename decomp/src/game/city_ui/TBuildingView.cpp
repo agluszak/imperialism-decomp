@@ -33,7 +33,7 @@ void TBuildingView::DoStartup() {}
 
 // FUNCTION: IMPERIALISM 0x004c6ff0
 void TBuildingView::SetUniversityDialogTextAndRefresh(TStaticText* label, CString text) {
-  label->SetTextAndMaybeRefresh(&text, 0);
+  label->SetTextAndMaybeRefresh(&text, false);
   CRect labelBounds;
   label->QueryBounds(&labelBounds);
   RECT invalidateRect;
@@ -45,7 +45,7 @@ void TBuildingView::SetUniversityDialogTextAndRefresh(TStaticText* label, CStrin
 void TBuildingView::SetUniversityDialogLocalizedTextAndRefresh(TStaticText* label,
                                                                short stringGroup,
                                                                short stringIndex) {
-  label->SetTextFromStringResource(stringGroup, stringIndex, 0);
+  label->SetTextFromStringResource(stringGroup, stringIndex, false);
   CRect labelBounds;
   label->QueryBounds(&labelBounds);
   RECT invalidateRect;

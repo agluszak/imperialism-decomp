@@ -54,7 +54,7 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x18fd);
   }
   g_pSimMgr->GetString(0x2744, 0xb, &reportText);
-  control->SetTextAndMaybeRefresh(&reportText, 1);
+  control->SetTextAndMaybeRefresh(&reportText, true);
   control->InstallTextStyle(titleStyle, 0);
 
   control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagLab2));
@@ -63,7 +63,7 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x1902);
   }
   g_pSimMgr->GetString(0x2744, 0xc, &reportText);
-  control->SetTextAndMaybeRefresh(&reportText, 1);
+  control->SetTextAndMaybeRefresh(&reportText, true);
   control->InstallTextStyle(bodyStyle, 0);
 
   control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagLab3));
@@ -72,7 +72,7 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x1907);
   }
   g_pSimMgr->GetString(0x2744, 0xd, &reportText);
-  control->SetTextAndMaybeRefresh(&reportText, 1);
+  control->SetTextAndMaybeRefresh(&reportText, true);
   control->InstallTextStyle(bodyStyle, 0);
 
   {
@@ -100,7 +100,7 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x191b);
   }
-  control->SetTextAndMaybeRefresh(&reportText, 1);
+  control->SetTextAndMaybeRefresh(&reportText, true);
   control->InstallTextStyle(smallStyle, 0);
 
   control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagGene));
@@ -110,7 +110,7 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
   }
   {
     CString emptyGeneralText(g_pSmallViewsEmptyText_00662B90);
-    control->SetTextAndMaybeRefresh(&emptyGeneralText, 1);
+    control->SetTextAndMaybeRefresh(&emptyGeneralText, true);
   }
   control->InstallTextStyle(smallStyle, 0);
 
@@ -127,6 +127,6 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x192c);
   }
-  control->SetTextAndMaybeRefresh(&reportText, 1);
+  control->SetTextAndMaybeRefresh(&reportText, true);
   control->InstallTextStyle(smallStyle, 0);
 }

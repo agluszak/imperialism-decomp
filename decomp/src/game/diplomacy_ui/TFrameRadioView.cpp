@@ -30,20 +30,20 @@ void TFrameRadioView::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
   case 0xc:
     if (controlState64 == 0) {
       if (IsEnabled() != 0) {
-        HiliteState(1, 0);
+        HiliteState(1, false);
       }
     }
     TControl::DoEvent(commandId, sourceHandler, event);
     return;
   case 0x1f:
     if (IsEnabled() != 0) {
-      HiliteState(1, 1);
+      HiliteState(1, true);
       return;
     }
     break;
   case 0x20:
     if (IsEnabled() != 0) {
-      HiliteState(0, 1);
+      HiliteState(0, true);
       return;
     }
     break;
@@ -54,7 +54,7 @@ void TFrameRadioView::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
 }
 
 // FUNCTION: IMPERIALISM 0x004fe190
-void TFrameRadioView::HiliteState(unsigned char fEnabledState, unsigned char fRefreshNow) {
+void TFrameRadioView::HiliteState(unsigned char fEnabledState, bool fRefreshNow) {
   if (static_cast<unsigned char>(fEnabledState) != controlState64) {
     controlState64 = static_cast<unsigned char>(fEnabledState);
     if (fRefreshNow) {

@@ -15,7 +15,7 @@ public:
   virtual void Draw(RECT* rectBuffer) override;
   virtual char HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
   virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
-                          CPoint& currentPoint, unsigned char commandFlag) override;
+                          CPoint& currentPoint, bool commandFlag) override;
   virtual void SetNumIcons(short numIcons) override;
   virtual void SetMax(short maxValue);
   virtual char KnobContainsMouse(const CPoint& point);

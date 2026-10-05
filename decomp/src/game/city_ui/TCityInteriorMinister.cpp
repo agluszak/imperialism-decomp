@@ -1567,7 +1567,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors() {
         }
 
         char currentClass =
-            g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 1);
+            g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, true);
         if (!g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(tileIndex) ||
             g_pGlobalMapState->HasCivilianUnitKind(tileIndex,
                                                    EncodeCivilianUnitKind(kCivilianUnitMiner))) {
@@ -2185,7 +2185,7 @@ void TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand() {
     orderMetricTable40[0x33] = 0;
   }
   if (hasOilTechnology && city->GetBuildingType(11) == 0) {
-    city->BuildPowerPlant(1);
+    city->BuildPowerPlant(true);
   }
 
   short priorityOrder[7] = {0, 1, 2, 3, 4, 5, 6};
@@ -2615,10 +2615,11 @@ void TCityInteriorMinister::SeekResources(TShortintList* ownedTiles, char* prima
       short developedCapability =
           g_pGlobalMapState->FindMaxResourceCapabilityValueForTile(tileIndex, 1, nationSlot);
       short developedCost =
-          g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 1);
+          g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, true);
       short currentCapability = g_pGlobalMapState->FindMaxResourceCapabilityValueForTile(
           tileIndex, 0, greatPower->nationSlot);
-      short currentCost = g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 0);
+      short currentCost =
+          g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, false);
       for (int edge = 0; edge < 2; ++edge) {
         short edgeResource = tile.resourceTypeByEdge[edge];
         if (edgeResource != -1) {

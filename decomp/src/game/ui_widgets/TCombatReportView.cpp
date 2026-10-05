@@ -102,7 +102,7 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
     MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x1349);
   }
-  titleControl->SetTextAndMaybeRefresh(&reportText, 1);
+  titleControl->SetTextAndMaybeRefresh(&reportText, true);
 
   g_apTerrainTypeDescriptorTable[reportContext->nationIdA]->FormatOverlayTerrainLabelText(
       &reportText);
@@ -149,7 +149,7 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
     MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x137c);
   }
-  reportControl->SetTextAndMaybeRefresh(&reportText, 1);
+  reportControl->SetTextAndMaybeRefresh(&reportText, true);
 
   reportText = CString(s_szCombatLossesHeading_00699324);
   g_apTerrainTypeDescriptorTable[reportContext->nationIdA]->FormatOverlayTerrainLabelText(
@@ -175,7 +175,7 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
     MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x1394);
   }
-  lossControl->SetTextAndMaybeRefresh(&reportText, 1);
+  lossControl->SetTextAndMaybeRefresh(&reportText, true);
 
   reportValue = 0;
   TStaticText* pageControl =
@@ -187,7 +187,7 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
     pageText = "Page " + pageNumber + " of ";
     pageNumber.Format(g_szDecimalFormat, totalPages + 1);
     pageText += pageNumber;
-    pageControl->SetTextAndMaybeRefresh(&pageText, 1);
+    pageControl->SetTextAndMaybeRefresh(&pageText, true);
   }
 }
 
@@ -398,7 +398,7 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       pageText = pageText + " of ";
       pageNumber.Format(g_szDecimalFormat, totalPages + 1);
       pageText += pageNumber;
-      static_cast<TStaticText*>(page)->SetTextAndMaybeRefresh(&pageText, 1);
+      static_cast<TStaticText*>(page)->SetTextAndMaybeRefresh(&pageText, true);
     }
   }
 

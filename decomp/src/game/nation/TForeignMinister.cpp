@@ -238,8 +238,8 @@ void TForeignMinister::ArrangeMaterialsOffers() {
       }
       fallbackNationSlot = rand() % 7;
       if (g_pSimMgr->ReallyInTheGame(static_cast<short>(fallbackNationSlot)) != 0) {
-        if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(fallbackNationSlot,
-                                                            owner->nationSlot) == 0 &&
+        if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(fallbackNationSlot,
+                                                             owner->nationSlot) &&
             fallbackNationSlot != owner->nationSlot) {
           foundFallbackNation = true;
         }
@@ -331,7 +331,7 @@ void TForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3, sho
       g_pTradeMgr->SetDealResults(
           owner->nationSlot, arg1,
           static_cast<int>(owner->GetMerchantCapacityForProposal(resourceCode)), arg3, resourceCode,
-          0, 0);
+          0, false);
       return;
     }
   } else {
@@ -351,7 +351,7 @@ void TForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3, sho
     *ledgerEntry = static_cast<short>(*ledgerEntry - static_cast<short>(dispatchAmount));
   }
   g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, static_cast<int>(dispatchAmount), arg3,
-                              resourceCode, 0, 0);
+                              resourceCode, 0, false);
 }
 
 // FUNCTION: IMPERIALISM 0x0052fcc0
@@ -504,8 +504,8 @@ void TForeignMinister::DoProposeTreaties() {
       continue;
     }
     if (minor->WouldAcceptOffer(greatPower->nationSlot, kDiplomacyProposalJoinEmpire) != 0) {
-      if (g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(
-              minorNation, greatPower->nationSlot) == 0) {
+      if (!g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(minorNation,
+                                                                       greatPower->nationSlot)) {
         greatPower->ApplyDiplomacyPolicyStateForTargetWithCostChecks(minorNation,
                                                                      kDiplomacyProposalJoinEmpire);
       }
@@ -582,8 +582,8 @@ void TForeignMinister::DoProposeTreaties() {
       if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
               greatPower->nationSlot, static_cast<short>(candidateNation)) !=
               kDiplomacyRelationshipAlliance &&
-          g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(
-              candidateNation, greatPower->nationSlot) == 0) {
+          !g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(candidateNation,
+                                                                       greatPower->nationSlot)) {
         selectedNation = candidateNation;
       }
     }
@@ -597,8 +597,8 @@ void TForeignMinister::DoProposeTreaties() {
   for (int policyTargetNation = 0; policyTargetNation < 7; ++policyTargetNation) {
     if (policyTargetNation == greatPower->nationSlot ||
         g_pSimMgr->ReallyInTheGame(static_cast<short>(policyTargetNation)) == 0 ||
-        g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
-            greatPower->nationSlot, policyTargetNation) == 0) {
+        !g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
+            greatPower->nationSlot, policyTargetNation)) {
       continue;
     }
 
@@ -818,8 +818,8 @@ void TForeignMinister::ReplyToDiplomacyOffers(short queueIndex) {
                                  false);
       break;
     case kDiplomacyProposalJoinEmpireWithWarEntanglements:
-      valid = (g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(targetNation,
-                                                                           gp->nationSlot) == 0);
+      valid = (!g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(targetNation,
+                                                                            gp->nationSlot));
       break;
     }
   }

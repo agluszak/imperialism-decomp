@@ -58,7 +58,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
       scanBracketExpressions(g_pSimMgr, &displayText, static_cast<LPCSTR>(templateText),
                              static_cast<LPCSTR>(argumentText));
     }
-    label->SetTextAndMaybeRefresh(&displayText, 1);
+    label->SetTextAndMaybeRefresh(&displayText, true);
 
     TDropShadowText* value =
         static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagNuma + row)); // 'numa'..
@@ -80,7 +80,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
       displayText.Format(g_szDecimalFormat,
                          g_apNationStates[g_pSimMgr->GetPlayerCountry()]->gameScoreRows[row]);
     }
-    value->SetTextAndMaybeRefresh(&displayText, 1);
+    value->SetTextAndMaybeRefresh(&displayText, true);
   }
 
   TDropShadowText* victory =
@@ -90,7 +90,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
   g_apNationStates[g_pSimMgr->GetPlayerCountry()]->FormatOverlayTerrainLabelText(&argumentText);
   scanBracketExpressions(g_pSimMgr, &displayText, static_cast<LPCSTR>(templateText),
                          static_cast<LPCSTR>(argumentText));
-  victory->SetTextAndMaybeRefresh(&displayText, 1);
+  victory->SetTextAndMaybeRefresh(&displayText, true);
   InitializeUiTextStyleDescriptor(&scoreStyle, 0, 24, 0x2b68, 1);
   victory->InstallTextStyle(scoreStyle, 1);
   victory->shadowColor94 = shadowColor;
@@ -99,7 +99,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
       static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagPtfr)); // 'ptfr'
   pointsFor->AssertValid();
   g_pSimMgr->GetString(0x2761, 1, &displayText);
-  pointsFor->SetTextAndMaybeRefresh(&displayText, 1);
+  pointsFor->SetTextAndMaybeRefresh(&displayText, true);
   BuildUiTextStyleDescriptor(&scoreStyle, 0, 14, 0x2b68);
   pointsFor->InstallTextStyle(scoreStyle, 1);
   pointsFor->shadowColor94 = shadowColor;

@@ -140,7 +140,7 @@ TView* TTurnEventDialogFactoryRegistry::RunRegisteredDialogFactoriesByEventCode(
       CPoint position;
       position.x = anchorPoint.x + result->ownerLocalX;
       position.y = result->ownerLocalY + anchorPoint.y;
-      result->Locate(position, 0);
+      result->Locate(position, false);
     }
   }
 
