@@ -54,7 +54,7 @@ enum TurnEventId {
   // Not a view code. 0x0f0a is the base id of the tactical-map PICT family
   // (Mac: PICT 3850 "Tactical Map 001", TacMaps.rsrc); StuffValues
   // forms picture ids from it (0x5a9eaa ADD EAX,0xf0a). Only the dead vtable slot
-  // TViewMgr::HandleTurnEventDialogFactorySlotE8 hands it to the view resolver.
+  // TViewMgr::ShowUnreachableCityDialog hands it to the view resolver.
   kTurnEventTacticalMapPictureBase = 0x0f0a,
   kTurnEventTacticalDeployChoice = 0x0f19,
   kTurnEventTacticalStatusRefresh = 0x0f3c,
@@ -69,7 +69,7 @@ enum TurnEventId {
   // Not a view code. 0x1c52 is a string-list id (Mac: STR# 7250 "Town names",
   // Linger.rsrc/Trade.rsrc); DoPostCreate 0x51bc1a picks a random entry from it
   // via (listId, index). Only the dead vtable slot
-  // TViewMgr::HandleTurnEventDialogFactorySlotE4 hands it to the view resolver.
+  // TViewMgr::ShowTownNameDialog hands it to the view resolver.
   kTurnEventTownNamesStringList = 0x1c52,
   kTurnEventNewspaperStatus = 0x2103,
   kTurnEventOfferSheet = 0x2134,

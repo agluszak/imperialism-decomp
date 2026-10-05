@@ -1281,7 +1281,7 @@ bool TArmyMgr::HandleMapClickByCivilianCursorState(short tileIndex, short mode) 
     this->MarchSelectedArmies(tileIndex);
     return false;
   case 7:
-    g_pViewMgr->HandleTurnEventDialogFactorySlotEC(this->pendingMapActionIndex);
+    g_pViewMgr->MakeGarrisonWindow(this->pendingMapActionIndex);
     return false;
   case 8:
     this->ShowSpyReport(cityRecordIndex);

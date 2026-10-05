@@ -43,7 +43,7 @@ public:
   virtual void SetForeColor(short colorCode);                                  // slot 0x0d 0x5d5750
   virtual int ClassifyTurnStateForOverlayMode();                               // slot 0x0e 0x5d5960
   virtual void BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg); // slot 0x0f 0x5d6480
-  virtual void HandleTurnEventVtableSlot40RefreshGoldDialog();                 // slot 0x10 0x5d57b0
+  virtual void VerifyEndTurn();                 // slot 0x10 0x5d57b0
   virtual void GetTopLeftFor(TView* dialogView,
                                                      POINT* outPlacement); // slot 0x11 0x5d69b0
   virtual void RefreshMainViewNationIndicatorForCurrentTurnEvent();        // slot 0x12 0x5d6b70
@@ -120,19 +120,16 @@ public:
   virtual void ShowCombatReportDialog(TCombatReportContext* reportContext); // 0xd8 0x5dcf20
   virtual int ShowConstructionOptionsDialog(int dialogValue = 0);           // 0xdc
   virtual void HandleGlobalMapNationContextSelection(int nationSlot, int unused = 0); // 0xe0
-  // Opens factory dialog 0x1c52, places it, and sets the 'GOLD'->'name' text from a
-  // localized string code (0x5dd220).
-  virtual void HandleTurnEventDialogFactorySlotE4(int stringCode);  // 0xe4
-  virtual void HandleTurnEventDialogFactorySlotE8(void* selection); // 0xe8
-  // Refreshes the 0xdac factory dialog's 'page' roster for a tile-selection map click
-  // (0x5dd900); reached from TArmyToolbar's map-tile-selection handler.
-  virtual void HandleTurnEventDialogFactorySlotEC(int mapSelection); // 0xec
+  // Modal town-name notice; stringCode indexes the town-names string list.
+  virtual void ShowTownNameDialog(int stringCode);  // 0xe4
+  virtual void ShowUnreachableCityDialog(void* selection); // 0xe8
+  virtual void MakeGarrisonWindow(int tileIndex); // 0xec; Mac oracle
   // Mac oracle: TViewMgr::MakeNavyRosterDialog(TTaskForce*). Resolves the 0x2506
   // Navy Roster's TNavyRoster page, populates it from the supplied task force, and
   // returns the page after the modal dialog closes (0x5dd340).
   virtual TNavyRoster* MakeNavyRosterDialog(TTaskForce* activeMapOrderEntry); // 0xf0
-  virtual void HandleTurnEventDialogFactorySlotF4();                          // 0xf4
-  virtual void HandleTurnEventDialogFactorySlotF8();                          // 0xf8
+  virtual void StartPhaseMovie();                          // 0xf4
+  virtual void SetUpMainMenuScreen();                          // 0xf8
   virtual void NoOpTurnEventStateVtableSlotFC(); // 0xfc 0x5dbd10 -- real body is a bare `ret`
   // Turn-event 0x5DE: re-assert + refresh the 'main' view panel (sibling of the 0x5DF
   // handler; the original brackets the body with a scoped empty CString). 0x5dbd30.

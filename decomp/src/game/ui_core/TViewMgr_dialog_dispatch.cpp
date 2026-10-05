@@ -243,7 +243,7 @@ void TViewMgr::HandleGlobalMapNationContextSelection(int nationSlot, int unused)
 }
 
 // FUNCTION: IMPERIALISM 0x005dd220
-void TViewMgr::HandleTurnEventDialogFactorySlotE4(int stringCode) {
+void TViewMgr::ShowTownNameDialog(int stringCode) {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTownNamesStringList));
   if (node == nullptr) {
@@ -347,7 +347,7 @@ void TViewMgr::ShowNavyRosterDialogAndApplySelection() {
 }
 
 // FUNCTION: IMPERIALISM 0x005dd770
-void TViewMgr::HandleTurnEventDialogFactorySlotE8(void* selection) {
+void TViewMgr::ShowUnreachableCityDialog(void* selection) {
   turn_event_dialog::TurnEventMapSelection* mapSelection =
       static_cast<turn_event_dialog::TurnEventMapSelection*>(selection);
 
@@ -384,7 +384,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE8(void* selection) {
 }
 
 // FUNCTION: IMPERIALISM 0x005dd900
-void TViewMgr::HandleTurnEventDialogFactorySlotEC(int mapSelection) {
+void TViewMgr::MakeGarrisonWindow(int tileIndex) {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGarrison));
   if (node == nullptr) {
@@ -398,7 +398,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotEC(int mapSelection) {
   }
   // Mac identity plus the Windows +0x8c tile-index store recover the concrete page as
   // TGarrisonView. StuffValues rebuilds its TArmyUnitLine roster for this map tile.
-  static_cast<TGarrisonView*>(page)->StuffValues(static_cast<short>(mapSelection));
+  static_cast<TGarrisonView*>(page)->StuffValues(static_cast<short>(tileIndex));
 
   CPoint placement;
   this->GetTopLeftFor(node, &placement);
@@ -410,7 +410,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotEC(int mapSelection) {
 
   TMapUberPicture* mapView = mapUberPictureF0;
   static_cast<TArmyToolbar*>(mapView->categoryPages[mapView->activeUnitCategoryIndex])
-      ->SetProvince(static_cast<short>(mapSelection));
+      ->SetProvince(static_cast<short>(tileIndex));
 }
 
 // Replace the factory dialog's generic 'page' child with the resource-backed army roster.

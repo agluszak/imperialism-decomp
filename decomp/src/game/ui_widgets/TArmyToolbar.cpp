@@ -116,7 +116,7 @@ void TArmyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
 
     short mapSelection = g_pMapContextActionManager->pendingMapActionIndex;
     if (mapSelection != -1) {
-      g_pViewMgr->HandleTurnEventDialogFactorySlotEC(mapSelection);
+      g_pViewMgr->MakeGarrisonWindow(mapSelection);
     }
     return;
   }

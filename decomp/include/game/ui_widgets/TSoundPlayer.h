@@ -92,7 +92,7 @@ public:
   void UpdateAudioPlaybackStateAndScheduleRandomCue();
 
   // Non-virtual: reset both channel peers' active playback (StopOrResetActivePlaybackSlot30
-  // on each). Callsite 0x5db798 (TViewMgr::HandleTurnEventDialogFactorySlotF8) loads ECX = g_pSfxPlaybackSystem.
+  // on each). Callsite 0x5db798 (TViewMgr::SetUpMainMenuScreen) loads ECX = g_pSfxPlaybackSystem.
   void ResetDualAudioCuePools(); // 0x593730
   // Non-virtual: push cueId onto both channel peers' queues (InsertLast on
   // each). Same callsite as above.

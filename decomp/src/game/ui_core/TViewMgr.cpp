@@ -360,7 +360,7 @@ void TViewMgr::SetBackColor(short colorCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d57b0
-void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
+void TViewMgr::VerifyEndTurn() {
   if (IsTurnFlowCooldownActiveAndResetExpiredState()) {
     return;
   }
@@ -1243,7 +1243,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
   if (newCode > kTurnEventMapEditor) {
     if (newCode < kTurnEventRandomGameSetup) {
       if (newCode == kTurnEventMainMenu) {
-        this->HandleTurnEventDialogFactorySlotF8();
+        this->SetUpMainMenuScreen();
       } else if (newCode == kTurnEventBattleReport) {
         turn_event_ui_refresh::BindCursorPanelAndStampDiplomacyMapTerrain(mainView, secondary);
         g_pAmbitApplication->dispatchBusyFlag = true;
@@ -1277,7 +1277,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
         g_pAmbitApplication->dispatchBusyFlag = true;
         clearDispatchBusyFlag = false;
       } else if (newCode == kTurnEventOpeningCinematic) {
-        this->HandleTurnEventDialogFactorySlotF4();
+        this->StartPhaseMovie();
       } else if (newCode == kTurnEventUnitHistory) {
         this->ShowUnitHistory(payload);
         clearDispatchBusyFlag = false;
@@ -2317,7 +2317,7 @@ void TViewMgr::ShowTerrainMap(short nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x005db3b0
-void TViewMgr::HandleTurnEventDialogFactorySlotF4() {
+void TViewMgr::StartPhaseMovie() {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
   TMovieView* movieView =
       static_cast<TMovieView*>(activeDialog->ResolveControlByTag(kControlTagMovi));
@@ -2404,11 +2404,11 @@ static void RefreshMainMenuButtonLabel(TView* mainView, unsigned int controlTag,
   control->SetHoverHelpText(*label);
 }
 
-// Main-menu screen setup (turn-event 0x5dc): resets the background-music cue pools, then
+// Main-menu screen setup: resets the background-music cue pools, then
 // configures the 'curs' cursor-info panel's style/theme and finally sets every menu button's
 // localized label (the 'main' council-ticker slot is cleared instead of labeled).
 // FUNCTION: IMPERIALISM 0x005db780
-void TViewMgr::HandleTurnEventDialogFactorySlotF8() {
+void TViewMgr::SetUpMainMenuScreen() {
   TView* mainView = g_pDisplayMgr->activeDialog;
 
   g_pSfxPlaybackSystem->ResetDualAudioCuePools();
