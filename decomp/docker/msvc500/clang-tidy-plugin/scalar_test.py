@@ -135,7 +135,7 @@ assert status["value_domain"] == "tri-state-values"
 assert status["observed_values"] == [-1, 0, 1]
 assert status["complete_value_domain"]
 
-from scalar_facts import anchored_report, write_recovery_patch
+from scalar_facts import anchored_report, proven_bool_declarations, write_recovery_patch
 
 pointer_key = by_name["fixture_storage"]
 pointer_seed = {
@@ -396,3 +396,12 @@ assert "compared with storage" in rejected["kPromotionOpen"], rejected
 assert "external declaration" in rejected["FixtureTwinFlag"], rejected
 assert "selector-named" in rejected["edge_side"], rejected
 print("proven byte domains promote to bool only with truth-value evidence")
+
+slot_members = {
+    key
+    for key, declaration in facts.declarations.items()
+    if declaration.kind == "parameter" and key.endswith("::Show::#0")
+}
+assert len(slot_members) == 2, slot_members
+assert slot_members <= proven_bool_declarations(facts), slot_members
+print("project virtual slots are proven across their override closure")

@@ -358,6 +358,17 @@ public:
         if (!function.empty()) emit({"B", function});
     }
 
+    // One member of a project virtual slot: overrides share the slot's ABI, so the
+    // solver proves each byte position across the whole override closure.
+    void virtual_slot(const NamedDecl* declaration, const std::string& slot,
+                      const std::string& position)
+    {
+        const std::string declaration_key = key(declaration);
+        if (!declaration_key.empty() && !slot.empty()) {
+            emit({"VB", declaration_key, slot, position});
+        }
+    }
+
     void support(const std::string& declaration_key, SourceLocation location)
     {
         const SourcePoint point = source_point(sources_, location);
@@ -483,10 +494,29 @@ public:
             }
         }
         // Overrides share one slot ABI and are reached through calls that name
-        // only the base declaration; their byte domains are not proven per body.
+        // only the base declaration. A project slot is proven as one unit; a slot
+        // rooted in a system header (MFC) keeps the framework's arbitrary callers.
         if (const auto* method = dyn_cast<CXXMethodDecl>(function)) {
             if (method->isVirtual()) {
-                escape_signature(method, method->getLocation());
+                const CXXMethodDecl* root = method->getCanonicalDecl();
+                while (root->size_overridden_methods() > 0) {
+                    root = (*root->begin_overridden_methods())->getCanonicalDecl();
+                }
+                const std::string slot = function_identity(root);
+                if (slot.empty()) {
+                    escape_signature(method, method->getLocation());
+                } else {
+                    if (const NamedDecl* candidate = canonical_candidate(function)) {
+                        writer_.virtual_slot(candidate, slot, "return");
+                    }
+                    unsigned index = 0;
+                    for (const ParmVarDecl* parameter : function->parameters()) {
+                        if (const NamedDecl* candidate = canonical_candidate(parameter)) {
+                            writer_.virtual_slot(candidate, slot, "#" + std::to_string(index));
+                        }
+                        ++index;
+                    }
+                }
             }
         }
         return true;

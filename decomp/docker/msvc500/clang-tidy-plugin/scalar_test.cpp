@@ -302,3 +302,26 @@ void TestTwinFlag()
     if (FixtureTwinFlag()) {
     }
 }
+
+// A project virtual slot is proven across its override closure.
+struct SlotBase {
+    virtual void Show(unsigned char refreshNow);
+};
+struct SlotDerived : SlotBase {
+    void Show(unsigned char refreshNow) override;
+};
+void SlotBase::Show(unsigned char refreshNow)
+{
+    if (refreshNow) {
+    }
+}
+void SlotDerived::Show(unsigned char refreshNow)
+{
+    if (refreshNow) {
+    }
+}
+void CallSlot(SlotBase* slot)
+{
+    slot->Show(1);
+    slot->Show(0);
+}

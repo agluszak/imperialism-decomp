@@ -91,6 +91,8 @@ class ScalarFacts:
     bool_supported: set[str] = field(default_factory=set)
     bool_pending: set[tuple[str, str]] = field(default_factory=set)
     bool_bodies: set[str] = field(default_factory=set)
+    # Byte declaration -> (virtual slot root, position) for project virtual slots.
+    bool_slots: dict[str, tuple[str, str]] = field(default_factory=dict)
 
 
 def decode_field(value: str) -> str:
@@ -309,6 +311,10 @@ def read_scalar_facts(directory: Path) -> ScalarFacts:
                         facts.locations.append((parts[1], parts[2], int(parts[3])))
                     elif tag == "B":
                         facts.bool_bodies.add(parts[1])
+                    elif tag == "VB":
+                        if len(parts) != 4:
+                            raise ValueError("virtual slot member requires 4 fields")
+                        facts.bool_slots[parts[1]] = (parts[2], parts[3])
                     elif tag == "W":
                         dependencies = tuple(filter(None, parts[3].split(",")))
                         write = (parts[2], dependencies)
@@ -377,12 +383,33 @@ _RETAIL_EXTENTS = {"indexing-range", "serialized-extent", "allocation-stride", "
 _EXTENT_KINDS = _RETAIL_EXTENTS | {"declaration-contract"}
 
 
-_SELECTOR_NAME = re.compile(r"(?:side|mode|kind|type|code|index|selector)$", re.IGNORECASE)
+_SELECTOR_NAME = re.compile(
+    r"(?:side|mode|kind|type|code|index|selector|height|width|size|count|amount|level|number)$",
+    re.IGNORECASE,
+)
 
 
 def proven_bool_declarations(facts: ScalarFacts) -> set[str]:
     """Byte candidates whose every write is 0/1 or a proven bool, anchored by a literal."""
     writes, invalid, escaped = facts.bool_writes, facts.bool_invalid, facts.bool_escaped
+    # A virtual slot position is one domain: every override shares its writes,
+    # numeric uses and escapes, so the slot is proven only as a whole.
+    groups: dict[tuple[str, str], set[str]] = defaultdict(set)
+    for key, slot in facts.bool_slots.items():
+        groups[slot].add(key)
+    if groups:
+        writes, invalid, escaped = defaultdict(list, writes), set(invalid), set(escaped)
+        for members in groups.values():
+            combined = [write for key in members for write in facts.bool_writes.get(key, ())]
+            if any(key in facts.bool_invalid for key in members) or any(
+                not facts.declarations.get(key) or not facts.declarations[key].byte_candidate
+                for key in members
+            ):
+                invalid.update(members)
+            if any(key in facts.bool_escaped for key in members):
+                escaped.update(members)
+            for key in members:
+                writes[key] = list(dict.fromkeys(combined))
     survivors = {
         key
         for key, declaration in facts.declarations.items()
@@ -2128,7 +2155,13 @@ _BOOL_INDEX = r"(?:\[\s*(?:[A-Za-z_]\w*|[0-9]+)(?:\+\+|--)?\s*\])?"
 _BOOL_OBJECT = r"[A-Za-z_]\w*" + _BOOL_INDEX + r"(?:(?:\.|->|::)[A-Za-z_]\w*" + _BOOL_INDEX + r")*"
 _BOOL_LEFT = re.compile(r"(?P<value>" + _BOOL_OBJECT + r"|\(\s*" + _BOOL_OBJECT + r"\s*\))\s*$")
 _BOOL_RIGHT = re.compile(r"\s*(?P<value>" + _BOOL_OBJECT + r"|\(\s*" + _BOOL_OBJECT + r"\s*\))")
-_BOOL_CALL = _BOOL_OBJECT + r"\(\s*\)"
+# The AST establishes the whole operand as a direct bool-returning call.
+# Bound balanced argument syntax rather than finding an arbitrary inner call;
+# strings, comments, braced initializers and deeper nesting stay unchanged.
+_BOOL_ARGUMENTS = r"[^(){};\"'\\/]*"
+for _depth in range(4):
+    _BOOL_ARGUMENTS = r"(?:[^(){};\"'\\/]|\(" + _BOOL_ARGUMENTS + r"\))*"
+_BOOL_CALL = _BOOL_OBJECT + r"\(" + _BOOL_ARGUMENTS + r"\)"
 _BOOL_CALL_LEFT = re.compile(r"(?P<value>" + _BOOL_CALL + r"|\(\s*" + _BOOL_CALL + r"\s*\))\s*$")
 _BOOL_CALL_RIGHT = re.compile(r"\s*(?P<value>" + _BOOL_CALL + r"|\(\s*" + _BOOL_CALL + r"\s*\))")
 _BOOL_LITERAL = r"(?:[01][uUlL]*|false|true)\b"
@@ -2138,7 +2171,7 @@ def boolean_expression_edits(facts: ScalarFacts, source):
     """Simplify AST-resolved bool objects and calls, without inferring source types.
 
     Operand observations bind the operator to its canonical declaration. Restrict
-    source spelling to direct objects/member paths and calls without arguments.
+    source spelling to direct objects/member paths and balanced direct calls.
     Unfamiliar expressions and macros remain unchanged. A same-named byte/int declaration is never an anchor.
     """
     hashes = defaultdict(set)
@@ -2435,20 +2468,34 @@ def write_recovery_patch(
         for key, declaration in facts.declarations.items():
             if facts.linkage.get(key, ("",))[0] == "external":
                 external_names[declaration.kind, declaration.name].add(key)
+        slots: dict[tuple[str, str], set[str]] = defaultdict(set)
+        for member, slot in facts.bool_slots.items():
+            slots[slot].add(member)
+
+        def slot_members(key: str) -> set[str]:
+            slot = facts.bool_slots.get(key)
+            return slots[slot] if slot else set()
+
         compared_with_storage = {
             key
             for operands in comparisons.values()
             if not operands <= proven
             for key in operands & proven
         }
+        accepted: set[str] = set()
         for key in sorted(proven):
             declaration = facts.declarations[key]
             if not declaration.file.startswith(bool_scopes):
                 continue
             reason = None
-            tested = key in facts.bool_supported or any(
-                mode == "R" for mode, _ in facts.bool_writes[key]
+            # Overrides of one virtual slot share their evidence.
+            group = slot_members(key) | {key}
+            tested = any(
+                member in facts.bool_supported
+                or any(mode == "R" for mode, _ in facts.bool_writes.get(member, ()))
+                for member in group
             )
+            constants = {value for member in group for value in facts.constants.get(member, ())}
             base_name = declaration.name.rsplit("::", 1)[-1].rstrip("0123456789_")
             if _SELECTOR_NAME.search(base_name):
                 # 0/1 literals at every call site do not distinguish a flag from a
@@ -2458,9 +2505,9 @@ def write_recovery_patch(
                 reason = "an external declaration of the same name is not proven"
             elif key in compared_with_storage:
                 reason = "compared with storage outside the proven boolean domain"
-            elif not tested and facts.constants.get(key) == {0}:
+            elif not tested and constants == {0}:
                 reason = "only zero is ever written and nothing tests it; no boolean evidence"
-            elif not tested and "[" in declaration.spelling and not facts.constants.get(key):
+            elif not tested and "[" in declaration.spelling and not constants:
                 # Whole-array zero fills record no constant; they show no truth value.
                 reason = "byte array is only cleared and never tested; no boolean evidence"
             elif not spans[key, "type"]:
@@ -2476,6 +2523,16 @@ def write_recovery_patch(
                     reason = "type atom shared with an unproven declaration"
             if reason:
                 rejected.append({"members": [key], "property": "bool", "reason": reason})
+                continue
+            accepted.add(key)
+        # Overrides keep one signature: a slot changes only when every member does.
+        for key in sorted(accepted):
+            if not slot_members(key) <= accepted:
+                rejected.append(
+                    {"members": [key], "property": "bool", "reason": "another override of this virtual slot is not promoted"}
+                )
+        for key in sorted(accepted):
+            if not slot_members(key) <= accepted:
                 continue
             if proposed.get((key, "type"), "bool") != "bool":
                 raise ValueError("conflicting accepted recovery properties for " + key)
