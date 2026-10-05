@@ -17,8 +17,8 @@ void TIndexAndRankList::IIndexAndRankList() {
 
 // FUNCTION: IMPERIALISM 0x00534910
 short TIndexAndRankList::Compare(void* a, void* b) {
-  short aKey = static_cast<short*>(a)[1];
-  short bKey = static_cast<short*>(b)[1];
+  short aKey = static_cast<IndexAndRankRecord*>(a)->value;
+  short bKey = static_cast<IndexAndRankRecord*>(b)->value;
   if (aKey < bKey) {
     return 1;
   }

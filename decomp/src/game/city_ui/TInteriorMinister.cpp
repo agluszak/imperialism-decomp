@@ -85,8 +85,8 @@ void TInteriorMinister::SetParameters(short firstParameter, short secondParamete
 // FUNCTION: IMPERIALISM 0x004be480
 short TInteriorMinister::GetNumShipsToBuild() {
   short needCap;
-  if (ownerContextAt04 != 0) {
-    needCap = ownerContextAt04->transportCapacity;
+  if (greatPower != 0) {
+    needCap = greatPower->transportCapacity;
   } else {
     needCap = 0;
   }
@@ -98,7 +98,7 @@ short TInteriorMinister::GetNumShipsToBuild() {
 
 // FUNCTION: IMPERIALISM 0x004be4c0
 short TInteriorMinister::GetNumCarsToBuild() {
-  if (ownerContextAt04->merchantCapacity > 0x31) {
+  if (greatPower->merchantCapacity > 0x31) {
     capabilityFlag14 = 0;
   }
   return capabilityFlag14;
@@ -117,16 +117,16 @@ void TInteriorMinister::ClearPersistedReservedTable() {
 void TInteriorMinister::SetCityPolicies() {
   short i = 0;
   do {
-    short capRemaining = static_cast<short>(ownerContextAt04->transportCapacity -
-                                            ownerContextAt04->reservedTransportCapacity);
+    short capRemaining =
+        static_cast<short>(greatPower->transportCapacity - greatPower->reservedTransportCapacity);
     if (capRemaining == 0) {
       break;
     }
     short needIndex = g_aInteriorMinisterNeedPriorityOrder_00696408[i];
     ++i;
-    short current = ownerContextAt04->needCurrentByType[needIndex];
+    short current = greatPower->needCurrentByType[needIndex];
     short value = (current <= capRemaining) ? current : capRemaining;
-    ownerContextAt04->UpdateNeedTargetAndAccumulateOverCap(needIndex, value);
+    greatPower->UpdateNeedTargetAndAccumulateOverCap(needIndex, value);
   } while (i < 10);
 }
 
@@ -144,12 +144,12 @@ void TInteriorMinister::FillOrders() {
     accumulated = 0;
   }
 
-  if (ownerContextAt04->IsTransportCapacityExceeded()) {
+  if (greatPower->IsTransportCapacityExceeded()) {
     short count2 = GetNumShipsToBuild();
     if (count2 > 0) {
       int remaining = count2;
       do {
-        accumulated += ownerContextAt04->IncreaseRollingStock();
+        accumulated += greatPower->IncreaseRollingStock();
         --remaining;
       } while (remaining != 0);
     }
@@ -166,15 +166,15 @@ void TInteriorMinister::FillOrders() {
 // FUNCTION: IMPERIALISM 0x004be650
 char TInteriorMinister::DoIncreasedTransport() {
   char result = 0;
-  if (ownerContextAt04->GetMerchantCapacity() == 0) {
-    result = ownerContextAt04->IncreaseMerchantMarine();
+  if (greatPower->GetMerchantCapacity() == 0) {
+    result = greatPower->IncreaseMerchantMarine();
   }
   return result;
 }
 
 // FUNCTION: IMPERIALISM 0x004be690
 void TInteriorMinister::AdvanceNeedTargetRoundRobin() {
-  ownerContextAt04->TryIncrementNationResourceNeedTargetTowardCurrent(field10);
+  greatPower->TryIncrementNationResourceNeedTargetTowardCurrent(field10);
   ++field10;
   if (field10 > 4) {
     field10 = 0;

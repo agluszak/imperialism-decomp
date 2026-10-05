@@ -109,14 +109,14 @@ short TDefenseMinister::GetRankingCriterionForGP(short nationSlot) {
 // FUNCTION: IMPERIALISM 0x004ec450
 void TDefenseMinister::GoShopping() {
   if (g_pSimMgr->GetEconomicTurn() > 6 && rand() % 100 < 33) {
-    ownerContextAt04->interiorMinister->PleaseBuildLandUnit(static_cast<short>(rand() % 7 + 1));
+    greatPower->interiorMinister->PleaseBuildLandUnit(static_cast<short>(rand() % 7 + 1));
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004ec4c0
 void TDefenseMinister::DoArmyMovement() {
   // See TAttackProvinceMission::Free: the tail AI state block is TAutoGreatPower-only.
-  TAutoGreatPower* owner = static_cast<TAutoGreatPower*>(ownerContextAt04);
+  TAutoGreatPower* owner = static_cast<TAutoGreatPower*>(greatPower);
   owner->AssertValid();
   CIterator missionCursor(owner->missionQueue);
   TMission* mission = static_cast<TMission*>(missionCursor.Reset());
@@ -130,7 +130,7 @@ void TDefenseMinister::DoArmyMovement() {
 
 // FUNCTION: IMPERIALISM 0x004ec540
 void TDefenseMinister::DoPeacetimeDeployment() {
-  TGreatPower* owner = ownerContextAt04;
+  TGreatPower* owner = greatPower;
   int totalUnitCount = owner->militaryUnitList44->GetCount();
 
   TCity* city = owner ? owner->city : 0;
@@ -249,7 +249,7 @@ void TDefenseMinister::DoPeacetimeDeployment() {
 
 // FUNCTION: IMPERIALISM 0x004ecbb0
 unsigned char* TDefenseMinister::CreatePeaceDefenseMap(TLongintList* ownedRegions) {
-  int ownNationSlot = ownerContextAt04->nationSlot;
+  int ownNationSlot = greatPower->nationSlot;
   int regionCount = ownedRegions->GetSize();
 
   unsigned char* priorityMap = new unsigned char[0x1950];
@@ -337,7 +337,7 @@ unsigned char* TDefenseMinister::CreatePeaceDefenseMap(TLongintList* ownedRegion
 
 // FUNCTION: IMPERIALISM 0x004ecf20
 int* TDefenseMinister::CreateHomeValueMap() {
-  short ownNationSlot = ownerContextAt04->nationSlot;
+  short ownNationSlot = greatPower->nationSlot;
 
   int* heatmap = new int[0x1950];
   memset(heatmap, 0, 0x1950 * sizeof(int));
@@ -370,7 +370,7 @@ int* TDefenseMinister::CreateHomeValueMap() {
 
 // FUNCTION: IMPERIALISM 0x004ed050
 int* TDefenseMinister::CreateEnemyPowerMap(unsigned char excludeEnemyTiles) {
-  short ownNationSlot = ownerContextAt04->nationSlot;
+  short ownNationSlot = greatPower->nationSlot;
 
   bool atWarWithNation[0x17];
   for (int nation = 0; nation < 0x17; ++nation) {

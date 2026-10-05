@@ -29,7 +29,7 @@ void TNapoleonMinister::MakeNewCity(TCity* city) {
   int infantryOrdersRemaining = 3;
   do {
     TMilitaryUnit* recruitOrder = new TMilitaryUnit();
-    recruitOrder->IMilitaryUnit(2, 0, ownerContextAt04->nationSlot, 0);
+    recruitOrder->IMilitaryUnit(2, 0, greatPower->nationSlot, 0);
     ++recruitOrderCountByType[2];
     --infantryOrdersRemaining;
   } while (infantryOrdersRemaining != 0);
@@ -37,7 +37,7 @@ void TNapoleonMinister::MakeNewCity(TCity* city) {
   int artilleryOrdersRemaining = 2;
   do {
     TMilitaryUnit* recruitOrder = new TMilitaryUnit();
-    recruitOrder->IMilitaryUnit(4, 0, ownerContextAt04->nationSlot, 0);
+    recruitOrder->IMilitaryUnit(4, 0, greatPower->nationSlot, 0);
     ++recruitOrderCountByType[4];
     --artilleryOrdersRemaining;
   } while (artilleryOrdersRemaining != 0);
@@ -61,7 +61,7 @@ void TBismarckMinister::MakeNewCity(TCity* city) {
   int recruitOrdersRemaining = 2;
   do {
     TMilitaryUnit* recruitOrder = new TMilitaryUnit();
-    recruitOrder->IMilitaryUnit(2, 0, ownerContextAt04->nationSlot, 0);
+    recruitOrder->IMilitaryUnit(2, 0, greatPower->nationSlot, 0);
     ++recruitOrderCountByType[2];
     --recruitOrdersRemaining;
   } while (recruitOrdersRemaining != 0);
@@ -88,7 +88,7 @@ void TPirateMinister::MakeNewCity(TCity* city) {
   int recruitOrdersRemaining = 3;
   do {
     TMilitaryUnit* recruitOrder = new TMilitaryUnit();
-    recruitOrder->IMilitaryUnit(2, 0, ownerContextAt04->nationSlot, 0);
+    recruitOrder->IMilitaryUnit(2, 0, greatPower->nationSlot, 0);
     ++recruitOrderCountByType[2];
     --recruitOrdersRemaining;
   } while (recruitOrdersRemaining != 0);
@@ -115,7 +115,7 @@ void TDefenderMinister::MakeNewCity(TCity* city) {
   int recruitOrdersRemaining = 3;
   do {
     TMilitaryUnit* recruitOrder = new TMilitaryUnit();
-    recruitOrder->IMilitaryUnit(2, 0, ownerContextAt04->nationSlot, 0);
+    recruitOrder->IMilitaryUnit(2, 0, greatPower->nationSlot, 0);
     ++recruitOrderCountByType[2];
     --recruitOrdersRemaining;
   } while (recruitOrdersRemaining != 0);
@@ -142,7 +142,7 @@ void TBullyMinister::MakeNewCity(TCity* city) {
   int infantryOrdersRemaining = 2;
   do {
     TMilitaryUnit* recruitOrder = new TMilitaryUnit();
-    recruitOrder->IMilitaryUnit(2, 0, ownerContextAt04->nationSlot, 0);
+    recruitOrder->IMilitaryUnit(2, 0, greatPower->nationSlot, 0);
     ++recruitOrderCountByType[2];
     --infantryOrdersRemaining;
   } while (infantryOrdersRemaining != 0);
@@ -150,7 +150,7 @@ void TBullyMinister::MakeNewCity(TCity* city) {
   int artilleryOrdersRemaining = 3;
   do {
     TMilitaryUnit* recruitOrder = new TMilitaryUnit();
-    recruitOrder->IMilitaryUnit(4, 0, ownerContextAt04->nationSlot, 0);
+    recruitOrder->IMilitaryUnit(4, 0, greatPower->nationSlot, 0);
     ++recruitOrderCountByType[4];
     --artilleryOrdersRemaining;
   } while (artilleryOrdersRemaining != 0);
