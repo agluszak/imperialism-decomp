@@ -333,7 +333,7 @@ char TInvadeMission::TryResolveTargetTerrainClass() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053fe10
-TMission* TInvadeMission::GetReplacementSlot48() {
+TMission* TInvadeMission::GetReplacement() {
   presentLocation = -1;
-  return TAttackProvinceMission::GetReplacementSlot48();
+  return TAttackProvinceMission::GetReplacement();
 }

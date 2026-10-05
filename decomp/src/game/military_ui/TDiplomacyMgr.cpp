@@ -1558,10 +1558,10 @@ void TDiplomacyMgr::SetNationPairDiplomacyRelationCode(NationSlot sourceNationSl
     relationSideEffectMatrix[forwardIndex] = 0;
     relationSideEffectMatrix[reverseIndex] = 0;
     if (IsGreatPower(sourceNationSlot)) {
-      g_apNationStates[source]->PruneInvalidTrackedEntriesAndNotifyOwner();
+      g_apNationStates[source]->ReplaceObsoleteMissions();
     }
     if (IsGreatPower(targetNationSlot)) {
-      g_apNationStates[target]->PruneInvalidTrackedEntriesAndNotifyOwner();
+      g_apNationStates[target]->ReplaceObsoleteMissions();
     }
     if (static_cast<char>(updateMode) == 1) {
       InflictWarPenalty(sourceNationSlot, targetNationSlot, 1);

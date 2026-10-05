@@ -1335,7 +1335,7 @@ extern const float g_MissionDefaultScore_0065a468 = 0.0f;
 extern const double g_MissionScoreOneConstant_0065a470 = 1.0;
 
 // Same conceptual pair as above (0.0f mul/div selector, 1.0 "remaining priority" base),
-// read by AssignTrackedEntryActionsByProfileToOrdersOrUnits' (0x4eb8b0) inline scoring.
+// read by AssignUnitsToMissions' (0x4eb8b0) inline scoring.
 // Per-personality defense-minister FP weights returned by the slot-0x60
 // weight getter (0x4ec0a0 family; flag selects between the pair).
 // GLOBAL: IMPERIALISM 0x006548e0

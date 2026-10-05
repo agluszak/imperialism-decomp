@@ -354,7 +354,7 @@ bool TDefendProvinceMission::Matches(eMissionType missionType, int key, TZone* z
 }
 
 // FUNCTION: IMPERIALISM 0x0053f040
-TMission* TDefendProvinceMission::GetReplacementSlot48() {
+TMission* TDefendProvinceMission::GetReplacement() {
   short tileOwnerNationCode =
       g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(presentLocation);
   return (tileOwnerNationCode == nationId04) ? this : nullptr;

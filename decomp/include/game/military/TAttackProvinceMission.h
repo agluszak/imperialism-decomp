@@ -34,7 +34,7 @@ public:
       override; // slot 0x0f 0x53e290 -- populates requiredEquipageByClass from target province
 
   virtual void GiveOrders() override;                // slot 0x11 0x53de00
-  virtual TMission* GetReplacementSlot48() override; // slot 0x12 0x53e050
+  virtual TMission* GetReplacement() override; // slot 0x12 0x53e050
   virtual bool Matches(eMissionType missionType, int key,
                        TZone* zoneContext) const override; // slot 0x13 0x53e5b0
 

@@ -26,7 +26,7 @@ public:
   virtual void Reassess() override; // slot 0x10 0x53bbb0 -- state-update pipeline
   virtual void
   GiveOrders() override; // slot 0x11 0x53bdd0 -- select context, promote mission order chain
-  virtual TMission* GetReplacementSlot48() override; // slot 0x12 0x53bbe0 -- passthrough
+  virtual TMission* GetReplacement() override; // slot 0x12 0x53bbe0 -- passthrough
   virtual bool Matches(eMissionType missionType, int key,
                        TZone* zoneContext) const override; // slot 0x13 0x53bcc0
 

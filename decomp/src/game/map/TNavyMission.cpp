@@ -342,7 +342,7 @@ TZone* TNavyMission::RefreshMissionPortZoneContextForNation() {
 }
 
 // FUNCTION: IMPERIALISM 0x00536fc0
-TMission* TNavyMission::GetReplacementSlot48() {
+TMission* TNavyMission::GetReplacement() {
   if (resolvedPortZone != nullptr) {
     if (resolvedPortZone->QueryPortZoneCapability()) {
       if (!resolvedPortZone->QueryZoneCapabilityFlagD(nationId04)) {

@@ -16,7 +16,7 @@ char TRemoteGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessag
 }
 
 // FUNCTION: IMPERIALISM 0x00541880
-void TRemoteGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) {}
+void TRemoteGreatPower::FinishCityPhase(void) {}
 
 // FUNCTION: IMPERIALISM 0x005418a0
 void TRemoteGreatPower::CalculatePotentials(void) {}

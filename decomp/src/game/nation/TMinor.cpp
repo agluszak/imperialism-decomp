@@ -924,7 +924,7 @@ void TMinor::BecomeColonyOf(int targetNationSlot) {
   g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(this->nationSlot);
 
   TGreatPower* targetNation = g_apNationStates[targetNationSlot];
-  targetNation->ResetNationDiplomacySlotsAndMarkRelatedNations(this->nationSlot);
+  targetNation->AddColony(this->nationSlot);
   this->ChangeArmyOwnership(targetNationSlot);
   this->SetBoycottPoliciesToMatch(static_cast<NationSlot>(targetNationSlot));
   g_pDiplomacyTurnStateManager->SetRelationshipsToMatch(this->nationSlot, targetNationSlot);

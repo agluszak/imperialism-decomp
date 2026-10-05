@@ -495,7 +495,7 @@ float TArmyMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVect
 }
 
 // FUNCTION: IMPERIALISM 0x0053d630
-TMission* TArmyMission::GetReplacementSlot48() {
+TMission* TArmyMission::GetReplacement() {
   short tileOwnerNationCode =
       g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(presentLocation);
   return (tileOwnerNationCode == nationId04) ? this : nullptr;

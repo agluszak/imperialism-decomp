@@ -516,7 +516,7 @@ void TForeignMinister::DoProposeTreaties() {
     }
   }
 
-  if (greatPower->HasActiveCandidateNationSlots() == 0) {
+  if (greatPower->HasEnemy() == 0) {
     DoSelectEnemy();
   }
 
@@ -685,7 +685,7 @@ char TForeignMinister::DeservesToBeEnemy(int nationCode) {
 // FUNCTION: IMPERIALISM 0x00530b30
 void TForeignMinister::DoSelectEnemy() {
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    if (this->greatPower->HasActiveCandidateNationSlots() != 0) {
+    if (this->greatPower->HasEnemy() != 0) {
       return;
     }
     if (nationSlot != this->greatPower->nationSlot && g_pSimMgr->ReallyInTheGame(nationSlot) != 0 &&

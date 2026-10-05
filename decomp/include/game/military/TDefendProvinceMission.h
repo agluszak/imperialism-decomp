@@ -24,7 +24,7 @@ public:
   virtual bool IsHospitalMission() const override; // slot 0x64 0x535790
   virtual void
   GiveOrders() override; // slot 0x44 0x535770 -- propagates target tile to linked units
-  virtual TMission* GetReplacementSlot48() override; // slot 0x48 0x53f040
+  virtual TMission* GetReplacement() override; // slot 0x48 0x53f040
   virtual bool Matches(eMissionType missionType, int key,
                        TZone* zoneContext) const override; // slot 0x4c 0x53f010
 

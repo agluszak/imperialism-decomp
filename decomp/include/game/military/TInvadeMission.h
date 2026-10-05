@@ -38,7 +38,7 @@ public:
   virtual void Reassess() override;   // slot 0x10 0x53f7d0 -- advance composite handlers
   virtual void GiveOrders() override; // slot 0x11 0x53f780 -- refresh beachhead node / repath
   virtual TMission*
-  GetReplacementSlot48() override; // slot 0x12 0x53fe10 -- reset target terrain class + refresh
+  GetReplacement() override; // slot 0x12 0x53fe10 -- reset target terrain class + refresh
   virtual bool Matches(eMissionType missionType, int key,
                        TZone* zoneContext) const override; // slot 0x13 0x53fbc0
 

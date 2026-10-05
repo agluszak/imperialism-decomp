@@ -250,7 +250,7 @@ void TAttackProvinceMission::GiveOrders() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053e050
-TMission* TAttackProvinceMission::GetReplacementSlot48() {
+TMission* TAttackProvinceMission::GetReplacement() {
   if (presentLocation == -1) {
     TryResolveTargetTerrainClass();
   }

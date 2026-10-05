@@ -71,7 +71,7 @@ public:
   virtual void CalculateNeeds();                              // 0x0f 0x534ca0
   virtual void Reassess();                                    // 0x10 0x534cc0
   virtual void GiveOrders();                                  // 0x11 0x534cf0
-  virtual TMission* GetReplacementSlot48();                   // 0x12 0x534d10
+  virtual TMission* GetReplacement();                   // 0x12 0x534d10
   // Mac: Matches(eMissionType, long, TZone*) const.
   virtual bool Matches(eMissionType missionType, int key,
                        TZone* zoneContext) const; // 0x13 0x534d30
@@ -99,10 +99,6 @@ public:
   virtual void ForgetTaskForce(TTaskForce* taskForce); // 0x24 0x534f50
   virtual void Hold(bool value);                       // 0x25 0x534f70
   virtual char SmokeEmIfYouGotEm();                    // 0x26 0x534f90
-
-  void AdoptUnitSlot80(TMilitaryUnit* unit, bool flag) {
-    AcceptReenforcement(unit, flag);
-  }
 
   void InitializeMissionWithNationIdAndResetPathMarker(NationSlot nationSlot);
 

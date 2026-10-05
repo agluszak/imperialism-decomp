@@ -53,7 +53,7 @@ void TMission::Reassess() {
 // FUNCTION: IMPERIALISM 0x00534cf0
 void TMission::GiveOrders() {}
 // FUNCTION: IMPERIALISM 0x00534d10
-TMission* TMission::GetReplacementSlot48() {
+TMission* TMission::GetReplacement() {
   return this;
 }
 // FUNCTION: IMPERIALISM 0x00534d30

@@ -3,7 +3,7 @@
 // TBeachheadMission and TBlockadePortMission both derive from this class
 // (confirmed via RTTI CRuntimeClass ancestry), not from TNavyMission directly.
 // Several overrides here (Initialize, SetStateByte8To2, CalculateImportance,
-// GetReplacementSlot48, RefreshMissionPortZoneContextForNation) are therefore
+// GetReplacement, RefreshMissionPortZoneContextForNation) are therefore
 // inherited unchanged by TBeachheadMission and/or TBlockadePortMission rather
 // than being separately overridden there -- this file owns the `//
 // FUNCTION:` marker for each.
@@ -66,7 +66,7 @@ void TControlSeaZoneMission::Initialize() {
 // resolvedPortZone via RefreshMissionPortZoneContextForNation; returns `this` iff resolvedPortZone ends
 // up non-null.
 // FUNCTION: IMPERIALISM 0x00538900
-TMission* TControlSeaZoneMission::GetReplacementSlot48() {
+TMission* TControlSeaZoneMission::GetReplacement() {
   bool foundCoverage = false;
   for (int terrainIndex = 0; terrainIndex < kTerrainTypeDescriptorTableCount; ++terrainIndex) {
     TCountry* nation = g_apTerrainTypeDescriptorTable[terrainIndex];

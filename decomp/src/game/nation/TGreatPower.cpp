@@ -645,7 +645,7 @@ char TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(
 }
 
 // FUNCTION: IMPERIALISM 0x004dc9f0
-void TGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) {
+void TGreatPower::FinishCityPhase(void) {
   if (this->city == 0) {
     return;
   }
@@ -887,7 +887,7 @@ void TGreatPower::RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004dd1b0
-void TGreatPower::ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void) {
+void TGreatPower::InitializeTradeStatus(void) {
   this->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
 
   this->unfilledTradeOfferCount = 0;
@@ -988,7 +988,7 @@ int TGreatPower::ComputeRemainingDiplomacyAidBudget(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004dd470
-void TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void) {
+void TGreatPower::SetTradeBids(void) {
   TSimMgr* simMgr = g_pSimMgr;
   if (simMgr->difficultyLevel != kDifficultyIntroductory || simMgr->mode != kGamePhaseStartGame) {
     return;
@@ -1703,14 +1703,14 @@ void TGreatPower::BecomeProtectorateOf(int arg1) {
   this->grantTotalCost = 0;
   this->unfilledTradeOfferCount = 0;
 
-  unsigned char* candidateNationFlags = this->candidateNationFlags;
+  unsigned char* enemyFlags = this->enemyFlags;
   short* needLevelByNation = this->needLevelByNation;
 
   int idx;
   for (idx = 0; idx < kNationSlotCount; ++idx) {
     this->diplomacyPolicyByNation[idx] = static_cast<short>(-1);
     this->diplomacyGrantByNation[idx] = static_cast<short>(-1);
-    candidateNationFlags[idx] = 0;
+    enemyFlags[idx] = 0;
     needLevelByNation[idx] = 100;
   }
 
@@ -2383,7 +2383,7 @@ void TGreatPower::MoveArmy(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e0400
-char TGreatPower::HasActiveCandidateNationSlots() {
+char TGreatPower::HasEnemy() {
   return 0;
 }
 
@@ -2921,7 +2921,7 @@ int TGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation,
 }
 
 // FUNCTION: IMPERIALISM 0x004e1f20
-void TGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {}
+void TGreatPower::SelectAndQueueAdvisoryMapMissions(void) {}
 
 // FUNCTION: IMPERIALISM 0x004e1f40
 float TGreatPower::GetPeaceThreat(int targetNation) {
@@ -2986,7 +2986,7 @@ float TGreatPower::GetPeaceThreat(int targetNation) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e2190
-void TGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner(void) {}
+void TGreatPower::ReplaceObsoleteMissions(void) {}
 
 // FUNCTION: IMPERIALISM 0x004e21b0
 void TGreatPower::ChangeMaster(int targetNationSlot, int mode) {
@@ -3060,7 +3060,7 @@ void TGreatPower::NewStatusFor(int targetNationSlot, int policyCode) {
     return;
   }
 
-  if (this->candidateNationFlags[targetNation] == 0) {
+  if (this->enemyFlags[targetNation] == 0) {
     TCountry* terrainDescriptor = g_apTerrainTypeDescriptorTable[targetNation];
     short encodedNationSlot = terrainDescriptor->encodedNationSlot;
     short resolvedNation;
@@ -3071,7 +3071,7 @@ void TGreatPower::NewStatusFor(int targetNationSlot, int policyCode) {
     } else {
       resolvedNation = terrainDescriptor->nationSlot;
     }
-    if (this->candidateNationFlags[resolvedNation] == 0) {
+    if (this->enemyFlags[resolvedNation] == 0) {
       TDiplomacyMgr* diplomacyManager = g_pDiplomacyTurnStateManager;
       if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, resolvedNation)) {
         this->StopBeingEnemiesWith(targetNation);
@@ -3109,7 +3109,7 @@ void TGreatPower::KillUnitsIn(int ownerClass) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e25c0
-void TGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetNation) {
+void TGreatPower::AddColony(int targetNation) {
   this->SetTradePolicyTo(static_cast<NationSlot>(targetNation), 100);
   this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNation, -1);
   for (int nation = 0; nation < 0x17; ++nation) {
@@ -3692,7 +3692,7 @@ float TGreatPower::ComputeAdvisoryMapNodeCompositeScoreByMode(int cityRecordInde
 
 // FUNCTION: IMPERIALISM 0x004e9060
 float TGreatPower::ComputeMapActionContextCompositeScoreForNation(TZone* zone) {
-  unsigned char* candidateFlags = this->candidateNationFlags;
+  unsigned char* candidateFlags = this->enemyFlags;
   int activeCandidateCount = 0;
   int selectedCandidateIndex = 0;
   float compositeScore = 0.0f;

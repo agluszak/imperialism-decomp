@@ -48,7 +48,7 @@ void TScatteredShipsMission::Reassess() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053bbe0
-TMission* TScatteredShipsMission::GetReplacementSlot48() {
+TMission* TScatteredShipsMission::GetReplacement() {
   return this;
 }
 

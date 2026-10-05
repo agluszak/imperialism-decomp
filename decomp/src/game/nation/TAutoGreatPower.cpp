@@ -261,7 +261,7 @@ void TAutoGreatPower::SorryYouLose(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e7550
-void TAutoGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) {
+void TAutoGreatPower::FinishCityPhase(void) {
   if (this->city != 0) {
     this->RebuildNationResourceYieldCountersAndDevelopmentTargets();
     this->AdvanceOwnedRegionDevelopmentCountersAndHandleEvents();
@@ -333,7 +333,7 @@ void TAutoGreatPower::SetTradeOffersFor(short resourceKind, short offerContext) 
 }
 
 // FUNCTION: IMPERIALISM 0x004e7810
-void TAutoGreatPower::ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void) {
+void TAutoGreatPower::InitializeTradeStatus(void) {
   int total = 0;
   for (int resourceType = 0; static_cast<short>(resourceType) < 0x0E; ++resourceType) {
     total += TShip::GetTypeCargoHold(resourceType) *
@@ -383,7 +383,7 @@ void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0(CString* me
 void TAutoGreatPower::RememberTradeBids(void) {}
 
 // FUNCTION: IMPERIALISM 0x004e7990
-void TAutoGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void) {
+void TAutoGreatPower::SetTradeBids(void) {
   this->foreignMinister->SetTradeBids();
   this->foreignMinister->DoUsualSubsidyRule();
 }
@@ -692,7 +692,7 @@ void TAutoGreatPower::SetConquerLust(int nationSlot, char makeEnemy) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e83d0
-void TAutoGreatPower::QueueMapActionMissionsForPortZoneCandidates() {
+void TAutoGreatPower::CreateInitialMissions() {
   TLongintList* regionList = this->ownedRegionList;
   for (int i = 1; i <= regionList->GetSize(); i++) {
     int regionId = regionList->At(i);
@@ -778,7 +778,7 @@ void TAutoGreatPower::RemoveMission(eMissionType missionType, int key, TZone* zo
   }
 }
 // province's map-action-context link is unavailable for this nation, in which case it's
-// forced to 0 -- the same gate/array QueueMapActionMissionsForPortZoneCandidates above
+// forced to 0 -- the same gate/array CreateInitialMissions above
 // already uses directly.
 // FUNCTION: IMPERIALISM 0x004e8b50
 void TAutoGreatPower::SetProvinceStatus(int provinceIndex, eMissionDesirability value) {
@@ -807,7 +807,7 @@ void TAutoGreatPower::SetZoneStatus(int contextOrdinal, eMissionDesirability val
 }
 
 // FUNCTION: IMPERIALISM 0x004e92b0
-void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
+void TAutoGreatPower::MarkEnemyProvinceCandidates() {
   int orderTypes[4];
   orderTypes[0] = 2;
   orderTypes[1] = 3;
@@ -826,7 +826,7 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
   // eligible slots) the minors whose capability rows decode to that slot.
   int slot;
   for (slot = 0; slot < 7; ++slot) {
-    if (g_apNationStates[slot] != 0 && candidateNationFlags[slot] != 0) {
+    if (g_apNationStates[slot] != 0 && enemyFlags[slot] != 0) {
       int j;
       for (j = 1; j <= g_apNationStates[slot]->ownedRegionList->GetSize(); ++j) {
         int region = g_apNationStates[slot]->ownedRegionList->At(j);
@@ -865,7 +865,7 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
   // Same marking for every flagged minor's own regions.
   int minorSlot;
   for (minorSlot = 0; minorSlot < 16; ++minorSlot) {
-    if (candidateNationFlags[7 + minorSlot] != 0) {
+    if (enemyFlags[7 + minorSlot] != 0) {
       int j;
       for (j = 1; j <= g_apSecondaryNationStateSlots[7 + minorSlot]->ownedRegionList->GetSize();
            ++j) {
@@ -991,7 +991,7 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
 }
 
 // FUNCTION: IMPERIALISM 0x004e9a50
-void TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
+void TAutoGreatPower::SelectAndQueueAdvisoryMapMissions(void) {
   // Declaration order fixes the frame slot layout (0x12..0x34); the split
   // assignment blocks mirror the original's two init waves around the city gate.
   bool hasActiveMission;
@@ -1021,7 +1021,7 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
   secondBestDirectScore = 0.0f;
   secondBestDirectRegion = -1;
 
-  PopulateCase16AdvisoryMapNodeCandidateState();
+  MarkEnemyProvinceCandidates();
 
   int region;
   for (region = 0; region < 0x180; ++region) {
@@ -1159,21 +1159,21 @@ void TAutoGreatPower::QueueWarTransitionAndNotifyThirdPartyIfNeeded(int targetNa
 }
 
 // FUNCTION: IMPERIALISM 0x004e9f10
-char TAutoGreatPower::HasActiveCandidateNationSlots(void) {
+char TAutoGreatPower::HasEnemy(void) {
   bool anyActive = false;
   int candidate;
   for (candidate = 0; candidate < 7; ++candidate) {
     if (g_apNationStates[candidate] == 0) {
-      this->candidateNationFlags[candidate] = 0;
-    } else if (this->candidateNationFlags[candidate] != 0) {
+      this->enemyFlags[candidate] = 0;
+    } else if (this->enemyFlags[candidate] != 0) {
       anyActive = true;
     }
   }
   TMinor** minorCursor = g_apNationAuxRuntimeStateSlots;
   do {
-    if (this->candidateNationFlags[candidate] != 0) {
+    if (this->enemyFlags[candidate] != 0) {
       if ((*minorCursor)->ownedRegionList->GetSize() == 0) {
-        this->candidateNationFlags[candidate] = 0;
+        this->enemyFlags[candidate] = 0;
         if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, candidate)) {
           g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
               this->nationSlot, candidate, kDiplomacyRelationshipPeace);
@@ -1190,7 +1190,7 @@ char TAutoGreatPower::HasActiveCandidateNationSlots(void) {
 
 // FUNCTION: IMPERIALISM 0x004e9ff0
 void TAutoGreatPower::SetEnemy(int targetNation) {
-  if (this->HasActiveCandidateNationSlots() != 0) {
+  if (this->HasEnemy() != 0) {
     int nation = 0;
     TCountry** descriptorCursor = g_apTerrainTypeDescriptorTable;
     do {
@@ -1204,7 +1204,7 @@ void TAutoGreatPower::SetEnemy(int targetNation) {
       ++nation;
     } while (descriptorCursor < g_apTerrainTypeDescriptorTable + 0x17);
   }
-  this->candidateNationFlags[targetNation] = 1;
+  this->enemyFlags[targetNation] = 1;
   if (g_apTerrainTypeDescriptorTable[targetNation] != 0) {
     if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetSize() > 0) {
       short ownerTag;
@@ -1223,7 +1223,7 @@ void TAutoGreatPower::SetEnemy(int targetNation) {
 
 // FUNCTION: IMPERIALISM 0x004ea0e0
 void TAutoGreatPower::StopBeingEnemiesWith(int targetNation) {
-  this->candidateNationFlags[targetNation] = 0;
+  this->enemyFlags[targetNation] = 0;
   if (g_apTerrainTypeDescriptorTable[targetNation] != 0) {
     if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetSize() > 0) {
       TZone* portZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(
@@ -1283,8 +1283,8 @@ void TAutoGreatPower::AddProvince(int regionId) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ea300
-void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetNation) {
-  TGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(targetNation);
+void TAutoGreatPower::AddColony(int targetNation) {
+  TGreatPower::AddColony(targetNation);
   int ordinal = 1;
   TLongintList* regionList = g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList;
   if (regionList->GetSize() > 0) {
@@ -1543,7 +1543,7 @@ void TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
         unit->GetCategory() == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
       TMission* mission =
           TMission::Find(missionQueue, kMissionTypeDefendProvince, unit->tileIndex06, nullptr);
-      mission->AdoptUnitSlot80(unit, true);
+      mission->AcceptReenforcement(unit, true);
     }
   }
 
@@ -1553,17 +1553,17 @@ void TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
     mission->Reassess();
   }
 
-  TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner();
+  TAutoGreatPower::ReplaceObsoleteMissions();
   UpdateTrackedEntryEligibilityByClassMaskAndRatio(0);
-  AssignTrackedEntryActionsByProfileToOrdersOrUnits(0);
+  AssignUnitsToMissions(0);
   PlanAiDevelopmentActionsFromResourcePools(0);
 }
 
 // For every unassigned (ownerMission == nullptr) militia-category unit in
 // militaryUnitList44, finds the queued mission (kind 3, keyed by the unit's own tileIndex06)
-// in missionQueue and adopts the unit into it (AdoptUnitSlot80).
+// in missionQueue and adopts the unit into it (AcceptReenforcement).
 // FUNCTION: IMPERIALISM 0x004eafa0
-void TAutoGreatPower::SeedTrackedEntryAssignmentsFromEligibleUnits() {
+void TAutoGreatPower::AssignMilitiaToDefendMissions() {
   CIterator iter(militaryUnitList44);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(iter.Reset()); iter.More();
        unit = static_cast<TMilitaryUnit*>(iter.Advance())) {
@@ -1571,7 +1571,7 @@ void TAutoGreatPower::SeedTrackedEntryAssignmentsFromEligibleUnits() {
         unit->GetCategory() == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
       TMission* handler =
           TMission::Find(missionQueue, kMissionTypeDefendProvince, unit->tileIndex06, nullptr);
-      handler->AdoptUnitSlot80(unit, true);
+      handler->AcceptReenforcement(unit, true);
     }
   }
 }
@@ -1586,7 +1586,7 @@ void TAutoGreatPower::MReassess() {
 }
 
 // FUNCTION: IMPERIALISM 0x004eb0d0
-void TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner(void) {
+void TAutoGreatPower::ReplaceObsoleteMissions(void) {
   for (;;) {
     CIterator missionCursor(this->missionQueue);
     TMission* mission = static_cast<TMission*>(missionCursor.Reset());
@@ -1595,7 +1595,7 @@ void TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner(void) {
       if (missionCursor.More() == 0) {
         return;
       }
-      replacement = mission->GetReplacementSlot48();
+      replacement = mission->GetReplacement();
       if (replacement != mission) {
         break;
       }
@@ -1811,7 +1811,7 @@ inline float ComputeMissionRemainingPriorityScore(TMission* mission) {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x004eb8b0
-void TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unused) {
+void TAutoGreatPower::AssignUnitsToMissions(int unused) {
   (void)unused;
   {
     CIterator resetIter(missionQueue);
@@ -1971,7 +1971,7 @@ void TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unus
     if (bestUnit == nullptr) {
       return;
     }
-    bestArmy->AdoptUnitSlot80(bestUnit, true);
+    bestArmy->AcceptReenforcement(bestUnit, true);
   }
 }
 

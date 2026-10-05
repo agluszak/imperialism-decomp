@@ -147,7 +147,7 @@ RuntimeActionResult RunAiCapitalSelectionTradeBids(NativeTransition& transition)
     return started;
   }
 
-  nation->ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches();
+  nation->SetTradeBids();
   return transition.Finish();
 }
 
@@ -186,7 +186,7 @@ RuntimeActionResult RunPlayerTradePhaseReset(NativeTransition& transition) {
     return started;
   }
 
-  nation->ResetDiplomacyNeedScoresAndClearAidAllocationMatrix();
+  nation->InitializeTradeStatus();
   return transition.Finish();
 }
 

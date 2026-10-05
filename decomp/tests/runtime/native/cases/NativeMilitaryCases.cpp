@@ -1245,7 +1245,7 @@ RuntimeActionResult RunAdvisoryMapMissionsCase16(NativeTransition& transition) {
       continue;
     }
     found = 1;
-    nation->SelectAndQueueAdvisoryMapMissionsCase16();
+    nation->SelectAndQueueAdvisoryMapMissions();
   }
   if (found == 0) {
     return RuntimeActionResult::Failure("the loaded fixture has no AutoGreatPower");

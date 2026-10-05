@@ -359,7 +359,7 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
         }
       }
       g_apNationStates[g_pSimMgr->GetPlayerCountry()]
-          ->ResetDiplomacyNeedScoresAndClearAidAllocationMatrix();
+          ->InitializeTradeStatus();
       EmitTurnEvent19NationStateArraysForSlot(g_pSimMgr->GetPlayerCountry(), -1);
       EmitTurnEvent2CNationStateCompositeForSlot(g_pSimMgr->GetPlayerCountry(), -1);
       TurnEventFResumeAckPacket packet;
@@ -1475,7 +1475,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       nation19->SetCityStockCounterAndRefresh(static_cast<short>(stockSlot19),
                                               stateArrays->externalStateByTarget[stockSlot19]);
     }
-    nation19->ResetDiplomacyNeedScoresAndClearAidAllocationMatrix();
+    nation19->InitializeTradeStatus();
     for (int metricSlot19 = 0; metricSlot19 < 0x11; ++metricSlot19) {
       nation19->SetItemPotentials(static_cast<short>(metricSlot19),
                                   stateArrays->metricBySlot7C[metricSlot19]);
@@ -3136,8 +3136,8 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
       TSortedList* trackedObjects = newNation->trackedObjectList;
       newNation->trackedObjectList = oldNation->trackedObjectList;
       oldNation->trackedObjectList = trackedObjects;
-      memcpy(newNation->candidateNationFlags, oldNation->candidateNationFlags,
-             sizeof(newNation->candidateNationFlags));
+      memcpy(newNation->enemyFlags, oldNation->enemyFlags,
+             sizeof(newNation->enemyFlags));
       // Copy the complete 13-byte pending-action block; field8d5 is deliberately left at
       // its freshly constructed value.
       memcpy(&newNation->pendingActionStatus, &oldNation->pendingActionStatus,
@@ -3148,10 +3148,10 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
 
       g_apNationStates[nationSlot] = newNation;
       g_apTerrainTypeDescriptorTable[nationSlot] = newNation;
-      newNation->QueueMapActionMissionsForPortZoneCandidates();
+      newNation->CreateInitialMissions();
       for (int targetSlot = 0; targetSlot < 0x17; ++targetSlot) {
         if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, targetSlot)) {
-          newNation->candidateNationFlags[targetSlot] = 1;
+          newNation->enemyFlags[targetSlot] = 1;
         }
       }
       g_pSimMgr->nationControlModes[nationSlot] = 2;

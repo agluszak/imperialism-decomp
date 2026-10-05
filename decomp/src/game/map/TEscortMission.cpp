@@ -19,7 +19,7 @@
 IMPLEMENT_SERIAL(TEscortMission, TNavyMission, 1)
 
 // FUNCTION: IMPERIALISM 0x00539900
-TMission* TEscortMission::GetReplacementSlot48() {
+TMission* TEscortMission::GetReplacement() {
   return this;
 }
 

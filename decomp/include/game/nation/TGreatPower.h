@@ -139,7 +139,7 @@ public:
   char* BuildCityInfluenceLevelMap();
 
   // ---- turn-event message dispatch ----
-  virtual void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void);
+  virtual void FinishCityPhase(void);
   virtual void CalculatePotentials(void);
   virtual void FillInteriorMinisterOrders(void);
   // slot 0x39 — body 0x004df810: loads the scenario-level preset row (table 0x653570)
@@ -215,7 +215,7 @@ public:
   virtual void SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(int targetNationSlot,
                                                                             int isBoycottEnabled);
   virtual void RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void);
-  virtual void ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void);
+  virtual void InitializeTradeStatus(void);
   // ORACLE: Mac names TGreatPower::RecallTradeBids().
   virtual void RecallTradeBids(void);
   virtual void InitializeDealBook(void); // slot 0x5c
@@ -224,7 +224,7 @@ public:
   virtual int SumAidAllocationMatrixColumnForTarget(NationSlot targetNationSlot);
   virtual int SumAidAllocationMatrixAllCells(void); // slot 0x5f
   virtual int ComputeRemainingDiplomacyAidBudget(void);
-  virtual void ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void);
+  virtual void SetTradeBids(void);
   virtual void AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void);
   virtual void SetCityStockCounterAndRefresh(short targetSlot, short value);   // slot 0x63
   virtual void AddToCityStockCounterAndRefresh(short targetSlot, short value); // slot 0x64
@@ -286,8 +286,8 @@ public:
 
   // ---- map-action mission scoring ----
   // slot 0x20c — base no-op; TAutoGreatPower override 0x004e9f10 prunes
-  // candidateNationFlags and reports whether any candidate remains active.
-  virtual char HasActiveCandidateNationSlots(void);
+  // enemyFlags and reports whether any candidate remains active.
+  virtual char HasEnemy(void);
   // index 132 / vtable+0x210. Evidence: 0x004e9ed0 calls this on `this`
   // with one target-nation argument; return value ignored.
   // ORACLE: Mac names TGreatPower::SetEnemy(long) and StopBeingEnemiesWith(long).
@@ -348,11 +348,11 @@ public:
                                                              int sourceNationSlot);
   // slot 0xa2 — base body 0x004e1f20 is an empty hook; TAutoGreatPower's override
   // (0x004e9a50) selects and queues the case-16 advisory map missions.
-  virtual void SelectAndQueueAdvisoryMapMissionsCase16(void); // body 0x004e1f20
+  virtual void SelectAndQueueAdvisoryMapMissions(void); // body 0x004e1f20
   // slot 0xa3 — body 0x004e1f40; war-commitment threshold consumed by
   // slot 0x9e (compared against GetAcceptPeaceNumber).
   virtual float GetPeaceThreat(int targetNation);
-  virtual void PruneInvalidTrackedEntriesAndNotifyOwner(); // slot 0xa4 — body 0x004e2190
+  virtual void ReplaceObsoleteMissions(); // slot 0xa4 — body 0x004e2190
   // ORACLE: Mac names TGreatPower::ClearCivilianOrders().
   virtual void ClearCivilianOrders(void);
   // slot 0x298 — fired by RemoveRegionIdAndRunTrackedObjectCleanup (0x004e2270).
@@ -360,7 +360,7 @@ public:
   virtual void KillUnitsIn(int regionId);
   // slot 0x29c — body 0x004e25c0: reset diplomacy level/grants for targetNation and
   // fire slot 0x2a0 for every nation with an active policy link.
-  virtual void ResetNationDiplomacySlotsAndMarkRelatedNations(int targetNation);
+  virtual void AddColony(int targetNation);
   virtual void DeclareWarOnTargetForAlignedMinors(int targetNation);
   virtual void MakePeaceWithTargetForAlignedMinors(int targetNation);
   // slot 0x2a8 — body 0x004e27b0: mode-dispatched diplomacy slot action (mode 6 ->
@@ -440,7 +440,7 @@ public:
   TCity* city;
   TSortedList* townMarkerList;
   TSortedList* trackedObjectList;
-  unsigned char candidateNationFlags[kNationSlotCount];
+  unsigned char enemyFlags[kNationSlotCount];
   unsigned char scenarioInitFlag;
   unsigned char pad_8b8[0x8c8 - 0x8b8];
   // 0x8c8..0x8d4 — complete 13-byte pending-action status record. Listings use signed
@@ -518,7 +518,7 @@ public:
   // screen's "Total" row (TGrantsView::Draw).
   int SumDiplomacyGrantEntriesMaskedToValueBits();
   // 0x004e9060 — composite advisory score for the nation selected from
-  // candidateNationFlags (or from the diplomacy standing list when no flag is set):
+  // enemyFlags (or from the diplomacy standing list when no flag is set):
   // product of metric factors 5*7*2*4 for (zone, selected nation). `zone` is the
   // map-action context the caller resolved for the scored node; it flows unchanged
   // into metric 4 (navy-order zone match) and metric 7 (zone value average).

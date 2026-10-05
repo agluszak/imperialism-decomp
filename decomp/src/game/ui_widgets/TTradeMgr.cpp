@@ -799,7 +799,7 @@ void TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags() {
   TGreatPower** np = g_apNationStates;
   do {
     if ((g_pSimMgr->ReallyInTheGame(static_cast<short>(slot)) != 0) && (*np != 0)) {
-      (*np)->ResetDiplomacyNeedScoresAndClearAidAllocationMatrix();
+      (*np)->InitializeTradeStatus();
     }
     slot = slot + 1;
     np = np + 1;
@@ -819,7 +819,7 @@ void TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags() {
   np = g_apNationStates;
   do {
     if ((g_pSimMgr->ReallyInTheGame(static_cast<short>(slot)) != 0) && (*np != 0)) {
-      (*np)->ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches();
+      (*np)->SetTradeBids();
     }
     slot = slot + 1;
     np = np + 1;

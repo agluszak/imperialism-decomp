@@ -13,7 +13,7 @@ public:
 
   bool IsRemote(void) const override;
   void PlopDownCity(short selectedRegion, const char* mapCellLabel) override;
-  void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) override;
+  void FinishCityPhase(void) override;
   void CalculatePotentials(void) override;
   void FillInteriorMinisterOrders(void) override;
   void SortTrackedOrdersByTypePriority(void) override;

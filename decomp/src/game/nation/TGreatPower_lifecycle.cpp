@@ -263,7 +263,7 @@ void TGreatPower::IGreatPower(short nationSlotIndex, short humanControlledFlag) 
 
   int candidateIndex = 0;
   while (candidateIndex < kNationSlotCount) {
-    this->candidateNationFlags[candidateIndex] = 0;
+    this->enemyFlags[candidateIndex] = 0;
     ++candidateIndex;
   }
   this->field904 = 1;
@@ -531,7 +531,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
   // loop and before the budget fields. WriteTo has always emitted it (0x4d9e9c), so
   // omitting it here left every nation record 23 bytes short and desynced the rest of
   // the stream from this point on.
-  stream->ReadBytes(this->candidateNationFlags, 0x17);
+  stream->ReadBytes(this->enemyFlags, 0x17);
 
   stream->ReadBytes(&this->diplomacyBudgetBase, 4);
   stream->ReadBytes(&this->escalationCounter, 1);
@@ -650,7 +650,7 @@ void TGreatPower::WriteTo(TStream* stream) {
     }
   }
 
-  stream->WriteBytes(this->candidateNationFlags, 0x17);
+  stream->WriteBytes(this->enemyFlags, 0x17);
   stream->WriteBytes(&this->diplomacyBudgetBase, 4);
   stream->WriteBytes(&this->escalationCounter, 1);
   stream->WriteBytes(&this->pendingCommitmentCost, 4);

@@ -73,7 +73,7 @@ void TProxyGreatPower::AddOfferFrom(NationSlot sourceNationSlot,
 }
 
 // FUNCTION: IMPERIALISM 0x00540b80
-void TProxyGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary() {}
+void TProxyGreatPower::FinishCityPhase() {}
 
 // Same split as the TGreatPower base (0x4ddbb0), but a proxy nation routes the accepted
 // action to the host over the wire instead of into the local UI runtime context.

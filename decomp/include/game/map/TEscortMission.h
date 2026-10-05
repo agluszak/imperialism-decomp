@@ -23,7 +23,7 @@ public:
 
   virtual void GiveOrders()
       override; // slot 0x11 0x53a290 -- reset beachhead-child flags, dispatch field5 context
-  virtual TMission* GetReplacementSlot48() override; // slot 0x12 0x539900 -- passthrough
+  virtual TMission* GetReplacement() override; // slot 0x12 0x539900 -- passthrough
   virtual bool Matches(eMissionType missionType, int key,
                        TZone* zoneContext) const override; // slot 0x13 0x53a250
 

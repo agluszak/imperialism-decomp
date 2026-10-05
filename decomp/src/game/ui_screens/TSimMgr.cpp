@@ -767,7 +767,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
         TCity* city = pTVar5 != nullptr ? pTVar5->city : nullptr;
         pTVar5->ApplyScenarioRelationPresetAndSpawnFrogCity(city);
       }
-      pTVar5->QueueMapActionMissionsForPortZoneCandidates();
+      pTVar5->CreateInitialMissions();
       pTVar5->NameUnits();
     }
   } else {
@@ -991,8 +991,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       }
     }
     TGreatPower* activeNation = g_apNationStates[activeNationSlot];
-    activeNation->ResetDiplomacyNeedScoresAndClearAidAllocationMatrix();
-    activeNation->ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches();
+    activeNation->InitializeTradeStatus();
+    activeNation->SetTradeBids();
     g_pHelpMgr->ResetHelpSetRanksAndFlags();
     if (multiplayerSessionRole != kSessionRoleStandalone) {
       g_pGameFlowState->SetSyncPhases(mode, turnStateCode);
@@ -1570,7 +1570,7 @@ void TSimMgr::DoCityAndTransport() {
       (*nation)->FillInteriorMinisterOrders();
       (*nation)->CalculatePotentials();
       (*nation)->ExecuteNationPendingActionStateMachine();
-      (*nation)->RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary();
+      (*nation)->FinishCityPhase();
       (*nation)->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
     }
     --nation;
@@ -1607,7 +1607,7 @@ void TSimMgr::DoMilitary() {
     }
     TGreatPower* nation = g_apNationStates[nationSlot];
     nation->PayForMilitary();
-    nation->SelectAndQueueAdvisoryMapMissionsCase16();
+    nation->SelectAndQueueAdvisoryMapMissions();
     nation->MoveArmy();
   }
 

@@ -35,7 +35,7 @@ public:
   virtual void
   CalculateNeeds() override; // slot 0x0f 0x5393a0 -- resource weights from allied navy pressure
 
-  virtual TMission* GetReplacementSlot48()
+  virtual TMission* GetReplacement()
       override; // slot 0x12 0x538900 -- validate terrain coverage / refresh target (shared)
   virtual bool Matches(eMissionType missionType, int key,
                        TZone* zoneContext) const override; // slot 0x13 0x539600
@@ -45,7 +45,7 @@ public:
 
   virtual void GiveActionOrders(TTaskForce* mapOrderEntry)
       override; // slot 0x27 0x539640 -- resolve+queue port-zone map order
-  // Returns the resolved port-zone context TZone* (GetReplacementSlot48 consumes it,
+  // Returns the resolved port-zone context TZone* (GetReplacement consumes it,
   // storing the result back into resolvedPortZone -- confirmed by 0x538900's disassembly,
   // which calls this virtual and assigns EAX into resolvedPortZone); base TNavyMission
   // declares it void, but every known caller of the base slot is this override.

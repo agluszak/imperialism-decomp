@@ -39,7 +39,7 @@ public:
   CalculateNeeds() override; // slot 0x0f 0x53aeb0 -- resource weights from navy context
 
   virtual TMission*
-  GetReplacementSlot48() override; // slot 0x12 0x53adf0 -- validate context / refresh child
+  GetReplacement() override; // slot 0x12 0x53adf0 -- validate context / refresh child
   virtual bool Matches(eMissionType missionType, int key,
                        TZone* zoneContext) const override; // slot 0x13 0x53ba10
 

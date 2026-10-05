@@ -33,7 +33,7 @@ public:
   IsANoBrainer() const override; // slot 0x28 0x53c1b0 -- army attack/invade capability flag
   virtual int AccumulateLack(int* accumulatedLack, bool includeExistingLack)
       const override; // slot 0x2c 0x53c620 -- accumulates remaining equipage lack, returns total
-  virtual TMission* GetReplacementSlot48() override; // slot 0x48 0x53d630
+  virtual TMission* GetReplacement() override; // slot 0x48 0x53d630
   virtual bool
   IsArmyMission() const override; // slot 0x50 0x5356f0 -- army mission capability flag (true)
   virtual TMission* GetArmyMission() override; // slot 0x58 0x535710 -- returns this
