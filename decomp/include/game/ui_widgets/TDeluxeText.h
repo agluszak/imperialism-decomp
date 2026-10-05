@@ -12,7 +12,7 @@ public:
   virtual ~TDeluxeText() override;                    // slot 0x01 (scalar deleting destructor)
   virtual void DoPostCreate(int arg) override;        // slot 0x37 0x5b6060
   virtual void Draw(RECT* rectBuffer) override;       // slot 0x44 0x5b6170
-  virtual void EnableEditing(char param_1); // slot 0x76 0x5b60a0
+  virtual void EnableEditing(char enable); // slot 0x76 0x5b60a0
   // Loads the localized UI string `stringId` from the module cache and assigns it
   // via UpdateTextEntrySharedStringAndMaybeNotify (verified 1-arg thiscall, RET 4;
   // the old InitializeTechHistoryViewTitleAndMapKeyControls name was junk and the

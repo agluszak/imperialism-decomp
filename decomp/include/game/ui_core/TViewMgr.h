@@ -94,7 +94,7 @@ public:
   // `mov ecx,[g_pMacViewMgr]; mov eax,[ecx]; jmp [eax+0xNN]`, no
   // wrapping logic).
   virtual void RefreshCityProductionUi();                     // 0xac 0x5d7f70
-  virtual void ClearActiveCityBuildingViewSlot(short param1); // 0xb0 0x5d7f90
+  virtual void CloseBuilding(short buildingSlot); // 0xb0 0x5d7f90
   // Opens the New City dialog (event 0x3b9) and stuffs the pending town into its
   // TPlaceCityDialog 'DLOG' child.
   virtual char ShowNewCityDialog(TTown* town); // 0xb4 0x5dcdf0

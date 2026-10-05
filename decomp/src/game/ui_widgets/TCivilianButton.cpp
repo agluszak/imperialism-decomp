@@ -33,7 +33,7 @@ void TCivilianButton::SetButton(TCivUnit* selectedOrder) {
     Show(1, 0);
     ViewEnable(1, 0);
 
-    short mappedValue = g_pGlobalMapState->ApplyMapImprovementSelectionState(selectedOrder);
+    short mappedValue = g_pGlobalMapState->GetUnitOffset(selectedOrder);
     this->mappedSelection = mappedValue;
     return;
   }

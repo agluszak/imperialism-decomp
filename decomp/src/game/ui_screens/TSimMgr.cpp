@@ -533,7 +533,7 @@ void TSimMgr::CreateSimObjects(bool flag) {
 }
 
 // FUNCTION: IMPERIALISM 0x0057c7c0
-void TSimMgr::CreatePlanet(int arg1, const char* arg2, int arg3) {
+void TSimMgr::CreatePlanet(int rebuild, const char* mapName, int wrapHorizontally) {
   int i;
   if (!g_bMultiplayerScenarioSetupActive) {
     CString local_10;
@@ -543,7 +543,7 @@ void TSimMgr::CreatePlanet(int arg1, const char* arg2, int arg3) {
     }
   }
 
-  char rebuildFlag = static_cast<char>(arg1);
+  char rebuildFlag = static_cast<char>(rebuild);
   if (((rebuildFlag != 0) && (!g_bMultiplayerScenarioSetupActive)) ||
       ((rebuildFlag == 0) && (g_bMultiplayerScenarioSetupActive))) {
     if (g_pActiveMapOrderContext != nullptr) {
@@ -564,8 +564,8 @@ void TSimMgr::CreatePlanet(int arg1, const char* arg2, int arg3) {
     g_pGlobalMapState->IMapMgr();
 
     if (!g_bMultiplayerScenarioSetupActive) {
-      g_pGlobalMapState->hexNeighborWrapHorizontally = static_cast<char>(arg3);
-      g_pGlobalMapState->BuildOrLoadGlobalMapStateForSession(nullptr, const_cast<char*>(arg2));
+      g_pGlobalMapState->hexNeighborWrapHorizontally = static_cast<char>(wrapHorizontally);
+      g_pGlobalMapState->BuildOrLoadGlobalMapStateForSession(nullptr, const_cast<char*>(mapName));
     } else {
       g_pGlobalMapState->AllocateAndResetTerrainAndCityScoreTables();
     }

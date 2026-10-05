@@ -126,7 +126,7 @@ public:
   void UpdatePreferences(bool writeBack); // Mac oracle
   void AddHighScore(); // Mac oracle; inserts the player into scores.dat's top ten. 0x581510
   void CreateSimObjects(bool flag);                              // Mac oracle; 0x57c3b0
-  void CreatePlanet(int param1, const char* param2, int param3); // Mac oracle; 0x57c7c0
+  void CreatePlanet(int rebuild, const char* mapName, int wrapHorizontally); // Mac oracle; 0x57c7c0
   unsigned char LoadScenario(int scenarioIndex);                 // Mac oracle; 0x57c9a0
   void CreateCountries(int flag);                                // Mac oracle; 0x57cad0
   // Mac retail identities for the two state-2 setup branches.

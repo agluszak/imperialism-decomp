@@ -222,11 +222,11 @@ struct TurnEvent22PacketM : TimelyMessageHeader {
 
 // Event-0x1A nation action + per-nation counterA2 words.
 struct TurnEvent1ANationActionPacket : TimelyNetMessagePrefix {
-  short sourceNation1C;     // +0x1c
-  short param1E;            // +0x1e
-  short param20;            // +0x20
-  short param22;            // +0x22
-  short param24;            // +0x24
+  short respondingNation; // +0x1c
+  short offeringNation;   // +0x1e
+  short proposedAmount;   // +0x20
+  short maxAmount;        // +0x22
+  short commodityType;    // +0x24
   short counterA2BySlot[7]; // +0x26, total 0x34
 };
 
@@ -1383,17 +1383,17 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         }
       }
     }
-    short sourceNation = nationAction->sourceNation1C;
+    short sourceNation = nationAction->respondingNation;
     if (sourceNation != g_pSimMgr->GetPlayerCountry()) {
-      g_pViewMgr->ShowOfferSheet(sourceNation, nationAction->param1E, 0, 0, 0);
+      g_pViewMgr->ShowOfferSheet(sourceNation, nationAction->offeringNation, 0, 0, 0);
       return 1;
     }
     bool stillClientSession = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
     if (!stillClientSession) {
       return 1;
     }
-    g_pViewMgr->ShowOfferSheet(sourceNation, nationAction->param1E, nationAction->param20,
-                               nationAction->param22, 0);
+    g_pViewMgr->ShowOfferSheet(sourceNation, nationAction->offeringNation,
+                               nationAction->proposedAmount, nationAction->maxAmount, 0);
     break;
   }
   case 0x1b: {
@@ -1737,7 +1737,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     case kControlTagRege: { // 'rege' - regenerate client map clip regions
       bool clientSessionRege = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
       if (clientSessionRege) {
-        g_pMacViewMgr->RebuildNationClipRegionsAndDispatchMapEvent();
+        g_pMacViewMgr->RegenerateCountryRegions();
       }
       return 1;
     }
@@ -2203,9 +2203,9 @@ void TMultiplayerMgr::CreateAndSendTurnEvent22_ByteAndShort(unsigned char byteVa
 }
 
 // FUNCTION: IMPERIALISM 0x005497b0
-void TMultiplayerMgr::SendTradeOffer(short param0, short param1,
-                                                                 short param2, short param3,
-                                                                 short param4) {
+void TMultiplayerMgr::SendTradeOffer(short respondingNation, short offeringNation,
+                                     short proposedAmount, short maxAmount,
+                                     short commodityType) {
   TurnEvent1ANationActionPacket packet;
   packet.eventCode = 0x1a;
   packet.fromNetworkId = 0;
@@ -2214,11 +2214,11 @@ void TMultiplayerMgr::SendTradeOffer(short param0, short param1,
   packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
-  packet.sourceNation1C = param0;
-  packet.param1E = param1;
-  packet.param20 = param2;
-  packet.param22 = param3;
-  packet.param24 = param4;
+  packet.respondingNation = respondingNation;
+  packet.offeringNation = offeringNation;
+  packet.proposedAmount = proposedAmount;
+  packet.maxAmount = maxAmount;
+  packet.commodityType = commodityType;
   for (int nationIndex = 0; nationIndex < 7; ++nationIndex) {
     TGreatPower* nationState = g_apNationStates[nationIndex];
     if (nationState != 0) {
@@ -2398,7 +2398,7 @@ struct TaggedGameStateTurnEventPacket : NetMessage {
   unsigned char pad15[3];
   int resolvedNationId;
   int tagParam;
-  int valueParam;
+  int value;
 };
 
 // Mac oracle: ReceiveStreamMessage.
@@ -2492,7 +2492,7 @@ void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
 IMPERIALISM_END_RETAIL_POLYMORPHIC_BYTE_COPY
 
 // FUNCTION: IMPERIALISM 0x0054a340
-void TMultiplayerMgr::DispatchTaggedGameStateEvent1F20(int packetTag, int param2,
+void TMultiplayerMgr::DispatchTaggedGameStateEvent1F20(int packetTag, int value,
                                                        int nationSlotOrMode) {
   TaggedGameStateTurnEventPacket packet;
   packet.eventCode = 0x1f;
@@ -2502,7 +2502,7 @@ void TMultiplayerMgr::DispatchTaggedGameStateEvent1F20(int packetTag, int param2
   packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packet.tagParam = packetTag;
-  packet.valueParam = param2;
+  packet.value = value;
   if ((nationSlotOrMode == -2) || (nationSlotOrMode == -3)) {
     packet.resolvedNationId = 0;
   } else if (nationSlotOrMode == -1) {

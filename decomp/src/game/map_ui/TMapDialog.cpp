@@ -1305,7 +1305,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   }
 
   if ((activeFlags & 0x14) != 0 && (activeFlags & 1) == 0) {
-    int transportOffset = g_pGlobalMapState->GetMapImprovementOffsetByTownTransportLink(
+    int transportOffset = g_pGlobalMapState->GetTownOffset(
         tileIndex, terrain.ownerNationTag04);
     if (transportOffset != 0) {
       Blit64x64StrategicMapAtlasTile(g_pMacViewMgr->atlas66c, quickDrawSurface350, transportOffset,
@@ -1337,7 +1337,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
         firstResourceType == kResourceGold;
     if (firstResourceIsProspectable) {
       if (highImprovementClass != 0) {
-        g_pMacViewMgr->DrawStrategicMapUnitIconOverlay(
+        g_pMacViewMgr->CopyDevelopmentIcon(
             destinationSurfaceObject, static_cast<unsigned short>(firstResourceType),
             highImprovementClass, static_cast<short>(screenX + 2), static_cast<short>(screenY + 2));
       } else {
@@ -1359,7 +1359,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
       if (lowImprovementClass != 0) {
         IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_IMPROVEMENT(tileIndex, firstResourceType,
                                                           lowImprovementClass);
-        g_pMacViewMgr->DrawStrategicMapUnitIconOverlay(
+        g_pMacViewMgr->CopyDevelopmentIcon(
             destinationSurfaceObject, static_cast<unsigned short>(firstResourceType),
             lowImprovementClass, static_cast<short>(screenX + 0x1b),
             static_cast<short>(screenY + 2));
@@ -1396,7 +1396,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
         secondResourceType == kResourceGold;
     if (secondResourceIsProspectable) {
       if (highImprovementClass != 0) {
-        g_pMacViewMgr->DrawStrategicMapUnitIconOverlay(
+        g_pMacViewMgr->CopyDevelopmentIcon(
             destinationSurfaceObject, static_cast<unsigned short>(secondResourceType),
             highImprovementClass, static_cast<short>(screenX + 2),
             static_cast<short>(screenY + 0x1c));
@@ -1420,7 +1420,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
     if (secondResourceType == kResourceLivestock &&
         (firstResourceType == kResourceCoal || firstResourceType == kResourceIron) &&
         lowImprovementClass != 0) {
-      g_pMacViewMgr->DrawStrategicMapUnitIconOverlay(
+      g_pMacViewMgr->CopyDevelopmentIcon(
           destinationSurfaceObject, kResourceLivestock, lowImprovementClass,
           static_cast<short>(screenX + 0x1b), static_cast<short>(screenY + 0x1c));
     }
@@ -2492,7 +2492,7 @@ void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projec
     return;
   }
 
-  short spriteOffset = g_pGlobalMapState->ApplyMapImprovementSelectionState(orderEntry);
+  short spriteOffset = g_pGlobalMapState->GetUnitOffset(orderEntry);
   if (flag != 0) {
     spriteOffset = static_cast<short>(spriteOffset + 0x240);
   }
@@ -2504,7 +2504,7 @@ void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projec
 
   if (flag == 0 && !belongsToActiveNation) {
     short ownerBadgeX =
-        g_pGlobalMapState->GetMapImprovementTierBucketOffset(orderEntry->ownerNationSlot18);
+        g_pGlobalMapState->GetFortFlagOffset(orderEntry->ownerNationSlot18);
     CRect ownerSourceRect(ownerBadgeX, 0, ownerBadgeX + 9, 6);
     CRect ownerDestinationRect(destinationRect.left + 0x1c, destinationRect.bottom - 8,
                                destinationRect.left + 0x25, destinationRect.bottom - 2);
@@ -2588,7 +2588,7 @@ void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, 
                                    destinationSurface->GetBlitSurface(), &countSourceRect,
                                    &countDestinationRect, 0x24, 0);
 
-  short ownerBadgeX = g_pGlobalMapState->GetMapImprovementTierBucketOffset(tile.ownerNationTag04);
+  short ownerBadgeX = g_pGlobalMapState->GetFortFlagOffset(tile.ownerNationTag04);
   CRect ownerSourceRect(ownerBadgeX, 0, ownerBadgeX + 9, 6);
   CRect ownerDestinationRect;
   if (destinationSurface->blitSurface.surfaceDib != 0) {

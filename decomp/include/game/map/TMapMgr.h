@@ -301,7 +301,7 @@ public:
   // Real body is just `ret 0xc` (pops 3 stack dwords, no other instructions) -- no evidence
   // for the real parameter types since none are read; typed as unused ints to match the
   // stack-cleanup byte count.
-  virtual void NoOpVirtualSlot2D(int param_1, int param_2, int param_3); // slot 0x2d 0x515de0
+  virtual void NoOpVirtualSlot2D(int, int, int); // slot 0x2d 0x515de0
   // Reassigns cityRecordIndex's ownerNationCode00 to newNationTag: first tells
   // SetOwner to update every one of the city's linkedTileIndices42,
   // then updates the city's own owned-region-list membership through TCountry, sets
@@ -326,11 +326,11 @@ public:
   // g_apTerrainTypeDescriptorTable[nationSlotParam]->homeTileIndex used as a
   // terrainStateTable index -- one index into tables keyed by the same tile/region domain
   // (cf. Province::cityTileIndex04), not a re-typed slot) as
-  // developmentStage 2. param_2 is unused
+  // developmentStage 2.
   // by this body but the original callee epilogue pops 8 bytes (2 stack args), matching
   // slot 0x2f's signature.
   virtual void SetCapitalCityDevelopmentStageIfValidNationSlot(int nationSlotParam,
-                                                               int param_2); // slot 0x30 0x516100
+                                                               int unused); // slot 0x30 0x516100
   // Looks up terrainStateTable[tileIndex].resourceTypeByEdge[edgeIndex], then indexes
   // g_abUniversityRequirementLevelById[resourceType][developmentClassNibbles's high
   // nibble if g_abResourceTypeUsesHighNibbleFlag[resourceType] is set, else the raw
@@ -340,11 +340,11 @@ public:
   virtual char GetTileCivilianWorkOrderCostClassNibble(StrategicTileIndex nTileIndex,
                                                        bool fUseHighNibble); // slot 0x32 0x513660
   // Packs value into developmentClassNibbles's low or high nibble (selectHighNibble
-  // picks which); when writing the high nibble with a positive value and param4 != 0,
+  // picks which); when writing the high nibble with a positive value and markPending,
   // also sets pendingDevelopmentFlag = 0x7f.
   virtual void SetDevelopmentLevel(StrategicTileIndex tileIndex,
                                                  bool selectHighNibble, byte value,
-                                                 bool param4); // slot 0x33 0x5136a0
+                                                 bool markPending); // slot 0x33 0x5136a0
   // For each of tileIndex's 2 resourceTypeByEdge entries (skipping the -1 sentinel) whose
   // g_abResourceTypeCapabilityCategory matches categoryCode, reads
   // g_pTechMgr->capabilityValueByNationAndResource[nationSlot][resourceType]
@@ -400,7 +400,7 @@ public:
   // Real signature has 3 stack args (RET 0xc), not 0 -- see body for the exact combination
   // of 3 calls into GetCoastTileNumber (slot 0x3c).
   virtual short GetDeltaTileOffset(char bitmaskIndex, char direction,
-                                                               short param3); // slot 0x3e 0x517480
+                                                               short terrainPict); // slot 0x3e 0x517480
   // Real body is just `mov ax, 0xc80; ret` -- a bare constant, no callers besides the
   // vtable itself so its purpose isn't identified.
   virtual short GetFixedConstant0xc80(); // slot 0x3f 0x517520
@@ -411,36 +411,25 @@ public:
   virtual int
   GetMapImprovementOffsetByActiveFlagsAndCityStage(StrategicTileIndex tileIndex,
                                                    short categoryCode); // slot 0x40 0x517540
-  // Real signature has 2 stack slots (RET 8); the second is never read. Dispatches to
-  // FindTownMarkerForTileByOwnerNation (slot 0x36) and combines its transportLinked
-  // with activeFlags1c bits 2/4 to pick one of 6 fixed bitmap offsets.
-  virtual short GetMapImprovementOffsetByTownTransportLink(StrategicTileIndex tileIndex,
-                                                           int unusedParam2); // slot 0x41 0x517600
+  // Mac oracle. Town-marker sprite offset from the town's rail link and the tile's town
+  // flags; the second argument is unused (RET 8).
+  virtual short GetTownOffset(StrategicTileIndex tileIndex, int unused); // slot 0x41 0x517600
   // (index + 0x23) << 6 -- a bitmap-strip row offset, 64 bytes/row; sits in the same
-  // "map improvement" offset family as the following GetMapImprovementTierBucketOffset/
-  // GetMapImprovementSpriteBaseOffset slots (also 64-byte-row arithmetic). No callers other
-  // than the vtable itself, so the specific bitmap it indexes isn't identified.
+  // map sprite offset family. Only the vtable references it.
   virtual int GetMapImprovementBitmapRowOffsetForIndex(int index); // slot 0x42 0x5176a0
   // index * 36 -- matches the terrainStateTable record stride (sizeof(TTerrainStateRecord)
   // == 0x24) used inline throughout this file; no `this` use and no other callers, so this
   // is modeled as the raw arithmetic it computes rather than presumed to index a specific array.
   virtual int ComputeTerrainRecordByteOffsetForIndex(int index); // slot 0x43 0x5176c0
-  // Bitmap-strip row offset (64-byte rows) for a map-improvement tier: tier*9 below tier 7,
-  // else a fixed overflow row.
-  virtual short GetMapImprovementTierBucketOffset(short tier); // slot 0x44 0x5176e0
-  // Bitmap-strip base offset for a map-improvement class: 0x6c0 flat if param_2, else
-  // g_anMapImprovementSpriteClassByOrderType[param_1]*64, +0x480 unless param_3.
-  virtual short GetMapImprovementSpriteBaseOffset(short param_1, bool param_2,
-                                                  char param_3); // slot 0x45 0x517780
-  // Looks up and returns the improvement sprite base offset for civUnit's own order
-  // type/idle state via the slot above. TMiniCivView::Draw (0x4ac000) is a
-  // real external caller that consumes the returned short (AX) to position an icon-strip
-  // blit rect, so despite the name this is a getter, not a pure state mutator.
-  virtual short ApplyMapImprovementSelectionState(class TCivUnit* civUnit); // slot 0x46 0x517710
-  // Real signature has 2 stack slots (RET 8); the second is never read -- same pattern as
-  // GetMapImprovementOffsetByTownTransportLink above.
-  virtual int GetMapImprovementTileOffsetFromClass(char classCode,
-                                                   int unusedParam2); // slot 0x47 0x5177d0
+  // Mac oracle. Flag-strip offset for a great power; other owners use the neutral flag.
+  virtual short GetFortFlagOffset(short nation); // slot 0x44 0x5176e0
+  // Mac oracle GetUnitOffset(short, unsigned char, unsigned char): unit-strip offset for an
+  // order type; registered military units share one sprite and active units use the
+  // moving row.
+  virtual short GetUnitOffset(short orderType, bool military, char idle); // slot 0x45 0x517780
+  virtual short GetUnitOffset(class TCivUnit* unit); // slot 0x46 0x517710, Mac oracle
+  // Mac oracle GetTinyIngotOffset(char, short); the body ignores the second argument.
+  virtual int GetTinyIngotOffset(char ingotKind, int unused); // slot 0x47 0x5177d0
   // Bitmap tile-sprite offset (16-byte cells) for a tile's improvement class, gated on
   // activeFlags1c bits 0/5/2 (checked in that priority order) and scaled by
   // ownerNationTag04 below tier 7, else a fixed overflow cell.

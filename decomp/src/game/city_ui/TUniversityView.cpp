@@ -319,7 +319,7 @@ void TUniversityView::Free() {
 
 // Two dialog sections, each SectRect-gated against the passed-in paint rect: (1) a
 // fixed 0x40x0x40 preview-panel blit whose source frame is selected by
-// GetMapImprovementSpriteBaseOffset(selectedRecruitmentCategory); (2) the selected
+// GetUnitOffset(selectedRecruitmentCategory); (2) the selected
 // recruitment category's four-row resource requirement grid. Each occupied row blits
 // the resource icon and draws the requirement values through the active nation's highest
 // capability level.
@@ -329,7 +329,7 @@ void TUniversityView::Draw(RECT* rectBuffer) {
 
   int nHighestRequirementLevel = 0;
   short baseOffset =
-      g_pGlobalMapState->GetMapImprovementSpriteBaseOffset(selectedRecruitmentCategory, false, 1);
+      g_pGlobalMapState->GetUnitOffset(selectedRecruitmentCategory, false, 1);
   UpdatePaletteIndexWithDefaultFallback(0x10);
 
   RECT panelRect = {0x7c, 0x5c, 0xbc, 0x9c};

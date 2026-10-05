@@ -16,8 +16,8 @@ public:
 
   // Build one numeric-entry row of the GP-cheater dialog: a TNumberText value field (range
   // -30000..3000) plus a TStaticText caption offset 0xac to its right. 0x004b1710.
-  void ConstructNumericEntryDialogCoreAndValueLabel(int* offsetLayout, int param2, short value,
-                                                    int param4);
+  void ConstructNumericEntryDialogCoreAndValueLabel(int* offsetLayout, int fieldIndex, short value,
+                                                    int fieldTag);
 
   // Two-phase init: chain to TCheater's base frame, add the 'name' caption, then build the
   // five treasury/mercenary/pact/sale/purchase numeric-entry rows. 0x004b1a90.

@@ -132,7 +132,7 @@ TMacViewMgr::TMacViewMgr() : TObject() {
   activeCityProductionView = 0;
   int index = 0;
   while (index < 0x17) {
-    regionSlots[index] = 0;
+    countryRegions[index] = 0;
     ++index;
   }
   index = 0;
@@ -163,8 +163,8 @@ TMacViewMgr::TMacViewMgr() : TObject() {
 }
 
 // FUNCTION: IMPERIALISM 0x00509e10
-RgnHandle TMacViewMgr::GetClipRegionSlotByIndex(short index) {
-  return regionSlots[index];
+RgnHandle TMacViewMgr::GetCountryRegion(short index) {
+  return countryRegions[index];
 }
 
 // FUNCTION: IMPERIALISM 0x00509e60
@@ -173,7 +173,7 @@ TMacViewMgr::~TMacViewMgr() {}
 // FUNCTION: IMPERIALISM 0x00509f20
 void TMacViewMgr::IMacViewMgr() {
   g_pAssetMgr->OpenFilesFor(3);
-  BuildStrategicMapCommodityIconAtlasFrom700To722();
+  CreateCommodityIconsGWorld();
   LoadStrategicMapUnitIconAtlas750();
   LoadStrategicMapUnitOverlayAtlas751();
   LoadStrategicMapOverlayAtlas8699();
@@ -186,9 +186,9 @@ void TMacViewMgr::IMacViewMgr() {
 void TMacViewMgr::Free() {
   int index = 0;
   while (index < 0x17) {
-    if (regionSlots[index] != 0) {
-      DisposeRgn(regionSlots[index]);
-      regionSlots[index] = 0;
+    if (countryRegions[index] != 0) {
+      DisposeRgn(countryRegions[index]);
+      countryRegions[index] = 0;
     }
     ++index;
   }
@@ -237,7 +237,7 @@ void TMacViewMgr::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x0050a1a0
-void TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722() {
+void TMacViewMgr::CreateCommodityIconsGWorld() {
   RECT atlasBounds;
   TQuickDrawSurfaceContext* savedContext;
   int savedFlags;
@@ -798,11 +798,11 @@ void TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
     cityRecordIndex = cityRecordIndex + 1;
     tileSlot = tileSlot + 1;
   }
-  RebuildNationClipRegionsAndDispatchMapEvent();
+  RegenerateCountryRegions();
 }
 
 // FUNCTION: IMPERIALISM 0x0050bad0
-void TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent() {
+void TMacViewMgr::RegenerateCountryRegions() {
   if (g_pSimMgr->numGreatPowers == 1) {
     g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagRege, 0, 0xfffffffd);
   }
@@ -820,7 +820,7 @@ void TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent() {
         cityRecordIndex = cityRecordIndex + 1;
         tileSlot = tileSlot + 1;
       }
-      EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(regionWrapper,
+      SetCountryRgn(regionWrapper,
                                                         static_cast<short>(nationIndex));
       nationIndex = nationIndex + 1;
     }
@@ -1343,24 +1343,24 @@ void TMacViewMgr::OpenConstructionWindow(short buildingSlot, TCity* city,
 }
 
 // FUNCTION: IMPERIALISM 0x0050d680
-void TMacViewMgr::EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(RgnHandle sourceRegion,
+void TMacViewMgr::SetCountryRgn(RgnHandle sourceRegion,
                                                                     short slotIndex) {
-  if (regionSlots[slotIndex] == 0) {
-    regionSlots[slotIndex] = NewRgn();
+  if (countryRegions[slotIndex] == 0) {
+    countryRegions[slotIndex] = NewRgn();
   }
-  CopyRgn(sourceRegion, regionSlots[slotIndex]);
+  CopyRgn(sourceRegion, countryRegions[slotIndex]);
 }
 
 // FUNCTION: IMPERIALISM 0x0050d6c0
-unsigned char TMacViewMgr::IsPointInsideClipRegionSlot(CPoint* point, short regionIndex) {
-  if (regionSlots[regionIndex] != 0) {
-    return QueryPointInsideHitRegion(point, regionSlots[regionIndex]);
+unsigned char TMacViewMgr::PtInCountry(CPoint* point, short regionIndex) {
+  if (countryRegions[regionIndex] != 0) {
+    return QueryPointInsideHitRegion(point, countryRegions[regionIndex]);
   }
   return false;
 }
 
 // FUNCTION: IMPERIALISM 0x0050d700
-void TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1) {
+void TMacViewMgr::MakeCountryRegion(int country) {
   TQuickDrawSurfaceContext* savedContext;
   int savedFlags;
   RECT resourceBounds;
@@ -1368,9 +1368,9 @@ void TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1) {
   // MakeNewGWorld; the previous port misread that slot as
   // resourceBounds.right and passed the rect width around as a "context".
   TQuickDrawSurfaceContext* tileSurface = 0;
-  regionSlots[param_1] = NewRgn();
+  countryRegions[country] = NewRgn();
   GetGWorld(&savedContext, &savedFlags);
-  TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(param_1 + 4000);
+  TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(country + 4000);
   CopyRect(&resourceBounds, &(*loaderHandle)->bitmapRect);
   g_pDisplayMgr->MakeNewGWorld(tileSurface, 1, resourceBounds);
   SetGWorld(tileSurface, savedFlags);
@@ -1387,9 +1387,9 @@ void TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1) {
   TBitmapSurfaceNode** surfaceHandle =
       static_cast<TBitmapSurfaceNode**>(GetGWorldPixMap(tileSurface));
   // The region rebuild consumes the node itself (it reads node->dib at +0x1c).
-  if (BitMapToRegion(regionSlots[param_1], *surfaceHandle) != 0) {
-    BitMapToRegion(regionSlots[param_1], *surfaceHandle);
-    BitMapToRegion(regionSlots[param_1], *surfaceHandle);
+  if (BitMapToRegion(countryRegions[country], *surfaceHandle) != 0) {
+    BitMapToRegion(countryRegions[country], *surfaceHandle);
+    BitMapToRegion(countryRegions[country], *surfaceHandle);
   }
   g_pDisplayMgr->RemoveGWorld(tileSurface);
   // Faithful to the original: the slot is already zeroed here, so this reads
@@ -1406,7 +1406,7 @@ void TMacViewMgr::RefreshActiveCityBuildingActionAvailabilityIndicators() {
 }
 
 // FUNCTION: IMPERIALISM 0x0050d8f0
-void TMacViewMgr::ClearActiveCityBuildingViewSlot(short buildingSlot) {
+void TMacViewMgr::CloseBuilding(short buildingSlot) {
   if (activeCityProductionView != 0) {
     activeCityProductionView->buildingViews[buildingSlot] = 0;
   }
@@ -1454,17 +1454,16 @@ void TMacViewMgr::FastDrawPicture(TBitmapResourceLoader** loaderHandle,
 }
 
 // FUNCTION: IMPERIALISM 0x0050da80
-void TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10(TBitmapSurfaceNode** dstSurface,
-                                                          short param_2, short param_3,
-                                                          short param_4) {
+void TMacViewMgr::CopyMapIcon(TBitmapSurfaceNode** dstSurface, short iconIndex, short x,
+                              short y) {
   TBitmapSurfaceNode** atlasSurface;
   short srcRowOffset;
-  if (param_2 < 100) {
+  if (iconIndex < 100) {
     atlasSurface = static_cast<TBitmapSurfaceNode**>(GetGWorldPixMap(atlas674));
-    srcRowOffset = static_cast<short>(param_2 << 5);
+    srcRowOffset = static_cast<short>(iconIndex << 5);
   } else {
     atlasSurface = static_cast<TBitmapSurfaceNode**>(GetGWorldPixMap(atlas680));
-    srcRowOffset = static_cast<short>((param_2 - 100) * 0x20);
+    srcRowOffset = static_cast<short>((iconIndex - 100) * 0x20);
   }
   ushort dstStrideRaw = static_cast<ushort>((*dstSurface)->stride);
   LockPixels(atlasSurface);
@@ -1473,7 +1472,7 @@ void TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10(TBitmapSurfaceNode** d
   unsigned char* dstPixels = GetPixBaseAddr(dstSurface);
   int dstStrideBytes = static_cast<short>(dstStrideRaw & 0x3fff);
   unsigned char* srcRow = srcPixels + srcRowOffset;
-  unsigned char* dstRow = dstPixels + param_4 * dstStrideBytes + param_3;
+  unsigned char* dstRow = dstPixels + y * dstStrideBytes + x;
   int rowsRemaining = 0x18;
   do {
     if (srcRow[0] != '\x10')
@@ -1609,7 +1608,7 @@ void TMacViewMgr::DrawStrategicMapUnitIcon(TBitmapSurfaceNode** pDstSurface, sho
 }
 
 // FUNCTION: IMPERIALISM 0x0050df40
-void TMacViewMgr::DrawStrategicMapUnitIconOverlay(TBitmapSurfaceNode** pDstSurface,
+void TMacViewMgr::CopyDevelopmentIcon(TBitmapSurfaceNode** pDstSurface,
                                                   ushort wOverlayIconId, short nVariantRow,
                                                   short nDstX, short nYShift) {
   TBitmapSurfaceNode** atlasSurface = GetGWorldPixMap(unitOverlayAtlas);

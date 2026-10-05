@@ -10,10 +10,9 @@
 // slot `out`, character by character; each `[N]` escape where N is a single ASCII
 // digit is replaced by the N-th trailing string argument, counting from `fmt` itself
 // ([0] = fmt, [1] = first vararg, ...). A bracket group whose first char is not a
-// digit is skipped through its closing ']'. `param_1` is an unused leading argument.
+// digit is skipped through its closing ']'. 
 // FUNCTION: IMPERIALISM 0x0049a7f0
-CString* FilterStringByCharacterTypeFlag4AndAppend(int param_1, CString* out, char* fmt, ...) {
-  (void)param_1;
+CString* FilterStringByCharacterTypeFlag4AndAppend(int, CString* out, char* fmt, ...) {
   CString result;
   int i = 0;
   char c;

@@ -676,7 +676,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     barRect.right = barRect.left + (static_cast<TArmyTacUnit*>(occupant)->morale34 + 0x18) / 0x19;
     FillRectWithQuickDrawBrushAndContextOffset(&barRect);
 
-    short tierOffset = g_pGlobalMapState->GetMapImprovementTierBucketOffset(0);
+    short tierOffset = g_pGlobalMapState->GetFortFlagOffset(0);
     RECT flagSrc = {0, tierOffset, 6, tierOffset + 9};
     RECT flagDst = {barRect.left - 0xc, barRect.bottom - 6, barRect.left - 3, barRect.bottom};
     OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &flagDst);

@@ -2127,7 +2127,7 @@ char TMapMgr::GetTileCivilianWorkOrderCostClassNibble(StrategicTileIndex nTileIn
 
 // FUNCTION: IMPERIALISM 0x005136a0
 void TMapMgr::SetDevelopmentLevel(StrategicTileIndex tileIndex, bool selectHighNibble,
-                                                byte value, bool param4) {
+                                                byte value, bool markPending) {
   unsigned char packed = terrainStateTable[tileIndex].developmentClassNibbles;
   if (selectHighNibble) {
     packed = (packed & 0xf) | (value << 4);
@@ -2136,7 +2136,7 @@ void TMapMgr::SetDevelopmentLevel(StrategicTileIndex tileIndex, bool selectHighN
   }
   terrainStateTable[tileIndex].developmentClassNibbles = packed;
   if (selectHighNibble) {
-    if (static_cast<signed char>(value) > 0 && param4) {
+    if (static_cast<signed char>(value) > 0 && markPending) {
       terrainStateTable[tileIndex].pendingDevelopmentFlag = 0x7f;
     }
   }
@@ -3250,10 +3250,7 @@ void TMapMgr::DimmingOff() {
 }
 
 // FUNCTION: IMPERIALISM 0x00515de0
-void TMapMgr::NoOpVirtualSlot2D(int param_1, int param_2, int param_3) {
-  (void)param_1;
-  (void)param_2;
-  (void)param_3;
+void TMapMgr::NoOpVirtualSlot2D(int, int, int) {
 }
 
 // FUNCTION: IMPERIALISM 0x00515e00
@@ -3335,12 +3332,12 @@ StrategicTileIndex TMapMgr::FindLinkedTileForAdjacentProvince(ProvinceIndex city
 }
 
 // FUNCTION: IMPERIALISM 0x00516100
-void TMapMgr::SetCapitalCityDevelopmentStageIfValidNationSlot(int nationSlotParam, int param_2) {
-  (void)param_2;
+void TMapMgr::SetCapitalCityDevelopmentStageIfValidNationSlot(int nation, int unused) {
+  (void)unused;
   short capitalTileIndex =
-      static_cast<short>(g_apTerrainTypeDescriptorTable[nationSlotParam]->homeTileIndex);
+      static_cast<short>(g_apTerrainTypeDescriptorTable[nation]->homeTileIndex);
   short cityRecordIndex = terrainStateTable[capitalTileIndex].cityRecordIndex;
-  if (nationSlotParam < 7) {
+  if (nation < 7) {
     cityScoreTable[cityRecordIndex].developmentStage = 2;
   }
 }
@@ -3423,14 +3420,14 @@ short TMapMgr::GetCoastTileOffset(char bitmaskIndex, char direction,
 
 // FUNCTION: IMPERIALISM 0x00517480
 short TMapMgr::GetDeltaTileOffset(char bitmaskIndex, char direction,
-                                                              short param3) {
+                                                              short terrainPict) {
   if (GetCoastTileNumber(bitmaskIndex, direction) == 0) {
     return 0;
   }
   short offset = GetCoastTileNumber(bitmaskIndex, direction);
   offset = (offset + 0x29) << 6;
   if (GetCoastTileNumber(bitmaskIndex, direction) == 1) {
-    if (param3 == 0x33 || param3 == 0x36 || param3 == 0x3a || param3 == 0x39) {
+    if (terrainPict == 0x33 || terrainPict == 0x36 || terrainPict == 0x3a || terrainPict == 0x39) {
       offset += 0xc0;
     }
   }
@@ -3474,9 +3471,9 @@ int TMapMgr::GetMapImprovementOffsetByActiveFlagsAndCityStage(StrategicTileIndex
 }
 
 // FUNCTION: IMPERIALISM 0x00517600
-short TMapMgr::GetMapImprovementOffsetByTownTransportLink(StrategicTileIndex tileIndex,
-                                                          int unusedParam2) {
-  (void)unusedParam2;
+short TMapMgr::GetTownOffset(StrategicTileIndex tileIndex,
+                                                          int unused) {
+  (void)unused;
   unsigned short flags = terrainStateTable[tileIndex].activeFlags1c;
   TTown* town = FindTownMarkerForTileByOwnerNation(tileIndex);
   bool linked = (town != nullptr) ? town->transportLinked : 1;
@@ -3503,28 +3500,28 @@ int TMapMgr::ComputeTerrainRecordByteOffsetForIndex(int index) {
 }
 
 // FUNCTION: IMPERIALISM 0x005176e0
-short TMapMgr::GetMapImprovementTierBucketOffset(short tier) {
-  if (tier < 7) {
-    return tier * 9;
+short TMapMgr::GetFortFlagOffset(short nation) {
+  if (nation < 7) {
+    return nation * 9;
   }
   return 0x3f;
 }
 
 // FUNCTION: IMPERIALISM 0x00517710
-short TMapMgr::ApplyMapImprovementSelectionState(TCivUnit* civUnit) {
-  if (civUnit->militaryRegistrationFlag != 0) {
-    return GetMapImprovementSpriteBaseOffset(civUnit->orderType, true, 0);
+short TMapMgr::GetUnitOffset(TCivUnit* unit) {
+  if (unit->militaryRegistrationFlag != 0) {
+    return GetUnitOffset(unit->orderType, true, 0);
   }
-  char idleState = civUnit->IsInIdleSelectionState();
-  return GetMapImprovementSpriteBaseOffset(civUnit->orderType, false, idleState);
+  char idle = unit->IsInIdleSelectionState();
+  return GetUnitOffset(unit->orderType, false, idle);
 }
 
 // FUNCTION: IMPERIALISM 0x00517780
-short TMapMgr::GetMapImprovementSpriteBaseOffset(short param_1, bool param_2, char param_3) {
+short TMapMgr::GetUnitOffset(short orderType, bool military, char idle) {
   short offset;
-  if (!param_2) {
-    offset = g_anMapImprovementSpriteClassByOrderType[param_1] << 6;
-    if (param_3 == 0) {
+  if (!military) {
+    offset = g_anMapImprovementSpriteClassByOrderType[orderType] << 6;
+    if (idle == 0) {
       return offset + 0x480;
     }
   } else {
@@ -3534,9 +3531,9 @@ short TMapMgr::GetMapImprovementSpriteBaseOffset(short param_1, bool param_2, ch
 }
 
 // FUNCTION: IMPERIALISM 0x005177d0
-int TMapMgr::GetMapImprovementTileOffsetFromClass(char classCode, int unusedParam2) {
-  (void)unusedParam2;
-  return classCode * 16;
+int TMapMgr::GetTinyIngotOffset(char ingotKind, int unused) {
+  (void)unused;
+  return ingotKind * 16;
 }
 
 // FUNCTION: IMPERIALISM 0x005177f0

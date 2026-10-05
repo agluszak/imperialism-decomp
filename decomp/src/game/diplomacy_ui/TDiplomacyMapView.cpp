@@ -207,7 +207,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
   regionAt9c = NewRgn();
   for (short terrain = 0; terrain < 0x17; ++terrain) {
     if (g_apTerrainTypeDescriptorTable[terrain] != 0) {
-      UnionRgn(regionAt9c, g_pMacViewMgr->GetClipRegionSlotByIndex(terrain), regionAt9c);
+      UnionRgn(regionAt9c, g_pMacViewMgr->GetCountryRegion(terrain), regionAt9c);
     }
   }
 
@@ -220,7 +220,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
 
   for (short nationIndex = 0; nationIndex < 0x17; ++nationIndex) {
     DiplomacyMaskBufferRun* run = &maskRuns[nationIndex];
-    RgnHandle nationRgn = g_pMacViewMgr->GetClipRegionSlotByIndex(nationIndex);
+    RgnHandle nationRgn = g_pMacViewMgr->GetCountryRegion(nationIndex);
     (*nationRgn)->RefreshBoundingBox();
     CopyRect(&run->boundsAt04, &(*nationRgn)->rgnBBox);
     run->boundsAt04.right =
@@ -250,7 +250,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
     CString nationName;
     TCountry* nation = g_apTerrainTypeDescriptorTable[nationIndex];
     if (nation != 0) {
-      if (EmptyRgn(g_pMacViewMgr->GetClipRegionSlotByIndex(nationIndex)) == 0) {
+      if (EmptyRgn(g_pMacViewMgr->GetCountryRegion(nationIndex)) == 0) {
         short anchorTile = nation->GetOrComputeOverlayAnchorTileIndex();
         int labelCenterX = (anchorTile % 0x6c) * 5 + 0x31;
         int labelY = (anchorTile / 0x6c + 9) * 5;
@@ -410,7 +410,7 @@ void TDiplomacyMapView::Draw(RECT* rectBuffer) {
 
   SetQuickDrawFillColor(0xffffff);
   RgnHandle frameRegion =
-      g_pMacViewMgr->GetClipRegionSlotByIndex(static_cast<short>(frameRegionSelector));
+      g_pMacViewMgr->GetCountryRegion(static_cast<short>(frameRegionSelector));
   QDFrameRgn(frameRegion);
   SetQuickDrawFillColor(0);
 
@@ -956,7 +956,7 @@ eDipAction TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPo
   do {
     if (g_apTerrainTypeDescriptorTable[terrainIndex] != 0) {
       char hit =
-          g_pMacViewMgr->IsPointInsideClipRegionSlot(&localPoint, static_cast<short>(terrainIndex));
+          g_pMacViewMgr->PtInCountry(&localPoint, static_cast<short>(terrainIndex));
       if (hit != 0) {
         break;
       }
@@ -1013,7 +1013,7 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
   do {
     if (g_apTerrainTypeDescriptorTable[static_cast<short>(hitIndex)] != 0) {
       char regionHit =
-          g_pMacViewMgr->IsPointInsideClipRegionSlot(&localPoint, static_cast<short>(hitIndex));
+          g_pMacViewMgr->PtInCountry(&localPoint, static_cast<short>(hitIndex));
       if (regionHit != 0) {
         hit = true;
         break;
@@ -1126,7 +1126,7 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect
 
   SetQuickDrawFillColor(0xffffff);
   RgnHandle frameRegion =
-      g_pMacViewMgr->GetClipRegionSlotByIndex(static_cast<short>(frameRegionSelector));
+      g_pMacViewMgr->GetCountryRegion(static_cast<short>(frameRegionSelector));
   QDFrameRgn(frameRegion);
   SetQuickDrawFillColor(0);
 }
@@ -1140,7 +1140,7 @@ void TDiplomacyMapView::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
   do {
     if (*terrainDescriptors != 0) {
       RgnHandle frameRegion =
-          g_pMacViewMgr->GetClipRegionSlotByIndex(static_cast<short>(terrainIndex));
+          g_pMacViewMgr->GetCountryRegion(static_cast<short>(terrainIndex));
       UnionRgn(region, frameRegion, region);
     }
     terrainIndex = static_cast<short>(terrainIndex + 1);
@@ -1576,7 +1576,7 @@ void TDiplomacyMapView::DrawVoteNuggets() {
     int iconCode = g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix[policyIndex];
     if (tileHasOwnerFlags[policyIndex] && iconCode != -1 && tierValue <= selectedTier) {
       RECT* iconRect = &tileMarkerRects[policyIndex];
-      short iconX = g_pGlobalMapState->GetMapImprovementTierBucketOffset(iconCode);
+      short iconX = g_pGlobalMapState->GetFortFlagOffset(iconCode);
 
       RECT srcRect;
       srcRect.left = iconX;

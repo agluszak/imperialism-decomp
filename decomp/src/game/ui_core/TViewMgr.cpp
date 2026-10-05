@@ -1401,8 +1401,8 @@ void TViewMgr::RefreshCityProductionUi() {
 }
 
 // FUNCTION: IMPERIALISM 0x005d7f90
-void TViewMgr::ClearActiveCityBuildingViewSlot(short param1) {
-  g_pMacViewMgr->ClearActiveCityBuildingViewSlot(param1);
+void TViewMgr::CloseBuilding(short buildingSlot) {
+  g_pMacViewMgr->CloseBuilding(buildingSlot);
 }
 
 // FUNCTION: IMPERIALISM 0x005d7fc0

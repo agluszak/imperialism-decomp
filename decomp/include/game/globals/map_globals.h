@@ -53,7 +53,7 @@ extern char g_szFmtYear_00697248[];
 extern "C" {
 
 // Per-civilian-unit-kind map-improvement sprite class (0x697040), read by
-// TMapMgr::GetMapImprovementSpriteBaseOffset via TCivUnit::orderType.
+// TMapMgr::GetUnitOffset via TCivUnit::orderType.
 extern short g_anMapImprovementSpriteClassByOrderType[kCivilianUnitKindCount];
 
 extern "C" const char s_szDoubleNewline_00699438[];

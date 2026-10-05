@@ -9,8 +9,8 @@
 #include "game/mfc.h"
 
 // FUNCTION: IMPERIALISM 0x004b1710
-void TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel(int* offsetLayout, int param2,
-                                                              short value, int param4) {
+void TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel(int* offsetLayout, int fieldIndex,
+                                                              short value, int fieldTag) {
   int valueFieldSize[2] = {0x20, 0x16};
   TNumberText* valueField = new TNumberText();
   valueField->INumberText(this, offsetLayout, valueFieldSize, value, 0xffff8ad0, 3000);

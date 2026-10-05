@@ -151,13 +151,13 @@ public:
                                                  unsigned char byteB); // 0x5495e0
   void CreateAndSendTurnEvent21_ThreeBytes(unsigned char byte0, unsigned char byte1,
                                            unsigned char byte2); // 0x549680
-  void SendTradeOffer(short param0, short param1, short param2,
-                                                  short param3, short param4); // 0x5497b0
+  void SendTradeOffer(short respondingNation, short offeringNation, short proposedAmount,
+                      short maxAmount, short commodityType); // 0x5497b0
   // Mac oracle: SendStreamObject(unsigned long, TObject*, int). Wraps a {tag, object}
   // pair and sends it through event 0x31. Town/depot/port creation uses 'town' and -2.
   void SendStreamObject(unsigned long payloadTag, TObject* payloadObject,
                         int destinationSlot); // 0x549a90
-  void DispatchTaggedGameStateEvent1F20(int packetTag, int param2,
+  void DispatchTaggedGameStateEvent1F20(int packetTag, int value,
                                         int nationSlotOrMode); // 0x54a340
   // Event-8 lobby text packet: source slot plus the manager's player-name pair.
   void DispatchLobbyTextPairEvent8(unsigned char sourceNationSlot); // 0x54a410

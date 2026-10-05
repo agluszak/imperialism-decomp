@@ -317,7 +317,7 @@ void TArmyMgr::EndBattlePhase() {
   this->DoOwnershipChanges();
 
   if (this->needsTerrainRefreshFlag) {
-    g_pMacViewMgr->RebuildNationClipRegionsAndDispatchMapEvent();
+    g_pMacViewMgr->RegenerateCountryRegions();
     for (int i = 0; i < kTerrainTypeDescriptorTableCount; ++i) {
       if (g_apTerrainTypeDescriptorTable[i] != nullptr) {
         g_apTerrainTypeDescriptorTable[i]->SetSerializedField8c(-1);
