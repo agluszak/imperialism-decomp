@@ -1187,8 +1187,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
               if (resourceCount == 0) {
                 continue;
               }
-              if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(resourceList)),
-                          reinterpret_cast<const unsigned char*>(g_szEmptyString)) != 0) {
+              if (resourceList.Compare(g_szEmptyString) != 0) {
                 resourceList += g_szListSeparator_00695760;
               }
               CString resourceLabel;

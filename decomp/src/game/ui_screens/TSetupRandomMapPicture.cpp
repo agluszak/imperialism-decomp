@@ -286,10 +286,7 @@ void TSetupRandomMapPicture::DoEvent(int commandId, TEventHandler* sourceHandler
                                                        0, 0, 0, false);
       wrapHorizontally98 = resultTag == kControlTagOne1;
 
-      if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(planetSeed)),
-                  reinterpret_cast<const unsigned char*>(g_szEmptyString)) != 0 &&
-          _mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(planetSeed)),
-                  reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(planetSeed94))) != 0) {
+      if (planetSeed.Compare(g_szEmptyString) != 0 && planetSeed.Compare(planetSeed94) != 0) {
         planetSeed94 = planetSeed;
         MajorTomToGroundControl(1);
       } else {
@@ -316,9 +313,7 @@ void TSetupRandomMapPicture::StartGame() {
     for (int nationSlot = 0; nationSlot < 0x17 && !duplicateName; ++nationSlot) {
       if (nationSlot != selectedNationSlot9A) {
         g_pSimMgr->GetString(0x2715, static_cast<short>(nationSlot), &localizedName);
-        duplicateName =
-            _mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(localizedName)),
-                    reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(countryText))) == 0;
+        duplicateName = localizedName.Compare(countryText) == 0;
       }
     }
     if (duplicateName) {

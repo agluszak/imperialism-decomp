@@ -158,13 +158,10 @@ void TShip::IShip(short shipType, TZone* zone, short nationArg, const char* name
 
   if (nameOverride == 0) {
     // The owning country names the ship; if that name collides with an existing
-    // ship's, the name is re-rolled until unique. The casts below are the CRT's
-    // signature (_mbscmp takes const unsigned char*), not a model shortcut.
+    // ship's, the name is re-rolled until unique.
     g_apTerrainTypeDescriptorTable[nation]->GenerateEthnicName(&name);
     for (TShip* other = g_pNavyPrimaryOrderListHead; other != 0; other = other->next) {
-      if (other != this &&
-          _mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(other->name)),
-                  reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(name))) == 0) {
+      if (other != this && other->name.Compare(name) == 0) {
         NameThyself();
         break;
       }
@@ -223,9 +220,7 @@ void TShip::NameThyself() {
       if (existing == this) {
         continue;
       }
-      bool duplicate =
-          (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(existing->name)),
-                   reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(name))) == 0);
+      bool duplicate = (existing->name.Compare(name) == 0);
       if (duplicate) {
         goto retry;
       }

@@ -354,8 +354,7 @@ void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
     TEditText* slotNameControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagSlot));
     slotNameControl->AssertValid();
     slotNameControl->GetCurrentText(&enteredName);
-    if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(enteredName)),
-                reinterpret_cast<const unsigned char*>(g_szEmptyString)) == 0) {
+    if (enteredName.Compare(g_szEmptyString) == 0) {
       enteredName = BuildSharedStringFromMappedFlavorTextIndex(0xd);
       slotNameControl->InitDialogWindowAndSyncTitleIfChanged(&enteredName, 1);
       slotNameControl->ForceRedraw();
