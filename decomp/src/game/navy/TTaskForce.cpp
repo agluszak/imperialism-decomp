@@ -1504,10 +1504,6 @@ bool TTaskForce::Encounter(TTaskForce* other) {
   return false;
 }
 
-// Standalone sibling of the identical inline "shouldAttempt" computation in
-// Encounter: bails if either side has no active
-// children; force-attempts for ship-order kinds 5/6; else rolls against a priority-gap
-// threshold (childRating average delta + child-count overflow past 10).
 // FUNCTION: IMPERIALISM 0x00555720
 bool TTaskForce::TryToSpot(const TTaskForce* other) const {
   short thisShipCount = 0;

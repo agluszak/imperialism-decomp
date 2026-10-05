@@ -259,10 +259,9 @@ public:
   // hands off to TNavyMgr::ResolveStrategicBattle and returns false.
   bool Encounter(TTaskForce* other); // 0x555420
 
-  // Standalone sibling of the identical inline "shouldAttempt" computation in
-  // Encounter: bails if either side has no active
-  // children; force-attempts for ship-order kinds 5/6; else rolls against a priority-gap
-  // threshold (childRating average delta + child-count overflow past 10).
+  // Spotting roll: kinds 5/6 always spot, otherwise speed gap plus ship-count overflow.
+  // Encounter and TNavyMgr::CarryOutOrders carry their own copies of this gate: retail
+  // calls CountShips/GetDeciSpeed there but counts inline here, so it was not inlined.
   bool TryToSpot(const TTaskForce* other) const; // 0x555720
 
   // Direct sibling of Encounter/ComputeTaskForceOrder-
