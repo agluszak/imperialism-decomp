@@ -483,11 +483,11 @@ ASSERT_SIZE(TE0TemplateDialog, 0x74);
 void ShowBlockingWaitOverlayDialog(void); // 0x00498cc0
 
 // VTABLE: IMPERIALISM 0x00647428
-class TGameSetupDialog : public CDialog {
+class TGameSetupOptionsDialog : public CDialog {
 public:
   // FUNCTION: IMPERIALISM 0x004814b0
-  ~TGameSetupDialog() override {}
-  TGameSetupDialog(void* initParam);        // 0x004813a0
+  ~TGameSetupOptionsDialog() override {}
+  TGameSetupOptionsDialog(void* initParam);        // 0x004813a0
   void SetGameSetupValues(GameSetup* setup); // 0x004821d0
 
   CSliderCtrl slider5c; // +0x5c
@@ -505,4 +505,4 @@ protected:
   DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x004815d0 (vtable index 12)
 };
 
-ASSERT_SIZE(TGameSetupDialog, 0x11c);
+ASSERT_SIZE(TGameSetupOptionsDialog, 0x11c);

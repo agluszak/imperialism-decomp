@@ -159,8 +159,8 @@ address|name|symbol|prototype|type|source_file|provenance
 00481200|T102TemplateDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
 00481340|`dynamic initializer for 'g_gfxCoordinateScale_6A1690''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 00481370|`dynamic initializer for 'g_scaledShortConst_6A16D8''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
-00481480|TGameSetupDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
-004815d0|TGameSetupDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
+00481480|TGameSetupOptionsDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
+004815d0|TGameSetupOptionsDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
 00481620|TA5TemplateDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
 00481690|TA5TemplateDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
 004816e0|TA6TemplateDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker

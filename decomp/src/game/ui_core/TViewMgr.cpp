@@ -2557,7 +2557,7 @@ void TViewMgr::ShowUnitHistory(short nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x005dcaa0
 void TViewMgr::MakeGameSetupDialog() {
-  TGameSetupDialog dialog(NULL);
+  TGameSetupOptionsDialog dialog(NULL);
 
   GameSetup* setup = new GameSetup;
   if (setup != 0) {

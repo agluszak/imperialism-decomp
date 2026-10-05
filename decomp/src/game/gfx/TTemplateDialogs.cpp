@@ -365,12 +365,12 @@ BOOL T102TemplateDialog::OnInitDialog() {
 }
 
 // FUNCTION: IMPERIALISM 0x004813a0
-TGameSetupDialog::TGameSetupDialog(void* initParam)
+TGameSetupOptionsDialog::TGameSetupOptionsDialog(void* initParam)
     : CDialog(0xa1, static_cast<CWnd*>(initParam)), slider5c(), slider98(), sliderD4(), check110(0),
       check114(0) {}
 
 // FUNCTION: IMPERIALISM 0x00481540
-void TGameSetupDialog::DoDataExchange(CDataExchange* pDX) {
+void TGameSetupOptionsDialog::DoDataExchange(CDataExchange* pDX) {
   DDX_Control(pDX, 0x3fa, slider5c);
   DDX_Control(pDX, 0x406, slider98);
   DDX_Control(pDX, 0x3f9, sliderD4);
@@ -379,7 +379,7 @@ void TGameSetupDialog::DoDataExchange(CDataExchange* pDX) {
 }
 
 #ifndef IMPERIALISM_LINT
-BEGIN_MESSAGE_MAP(TGameSetupDialog, CDialog)
+BEGIN_MESSAGE_MAP(TGameSetupOptionsDialog, CDialog)
 ON_CONTROL(BN_DOUBLECLICKED, IDOK, OnDoubleClickedOk)
 END_MESSAGE_MAP()
 #endif
@@ -551,12 +551,12 @@ END_MESSAGE_MAP()
 #endif
 
 // FUNCTION: IMPERIALISM 0x004821d0
-void TGameSetupDialog::SetGameSetupValues(GameSetup* setup) {
+void TGameSetupOptionsDialog::SetGameSetupValues(GameSetup* setup) {
   state118 = setup;
 }
 
 // FUNCTION: IMPERIALISM 0x004821f0
-BOOL TGameSetupDialog::OnInitDialog() {
+BOOL TGameSetupOptionsDialog::OnInitDialog() {
   CDialog::OnInitDialog();
   check110 = (state118->nationControlModes[0] == 1);
   slider5c.SetRange(0, 5, FALSE);
@@ -570,10 +570,10 @@ BOOL TGameSetupDialog::OnInitDialog() {
 }
 
 // FUNCTION: IMPERIALISM 0x004822e0
-void TGameSetupDialog::OnDoubleClickedOk() {}
+void TGameSetupOptionsDialog::OnDoubleClickedOk() {}
 
 // FUNCTION: IMPERIALISM 0x00482300
-void TGameSetupDialog::OnOK() {
+void TGameSetupOptionsDialog::OnOK() {
   CDialog::OnOK();
   state118->nationControlModes[0] = static_cast<short>(2 - (check110 != 0));
   state118->cityMinisterPolicyIds[0] = static_cast<short>(slider5c.GetPos());
