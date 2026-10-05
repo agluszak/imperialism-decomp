@@ -40,7 +40,7 @@ void TProxyGreatPower::AddToTreasury(int amount) {
 
   TurnEvent14NationMetricPacket packet;
   packet.messageTag = kControlTagTime;
-  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packet.eventCode = 0x14;
   packet.fromNetworkId = 0;
   packet.toNetworkId = 0;
@@ -61,7 +61,7 @@ void TProxyGreatPower::AddOfferFrom(NationSlot sourceNationSlot,
 
   TurnEvent16DiplomacyProposalPacket packetPayload;
   packetPayload.messageTag = kControlTagTime;
-  packetPayload.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packetPayload.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packetPayload.nationSlot18 = this->nationSlot;
   packetPayload.eventCode = 0x16;
   packetPayload.messageLength = 0x20;
@@ -116,7 +116,7 @@ void TProxyGreatPower::SorryYouLose() {
 int TProxyGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNation) {
   TurnEvent1DWarTransitionPacket packet;
   packet.messageTag = kControlTagTime;
-  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packet.eventCode = 0x1d;
   packet.fromNetworkId = 0;
   packet.toNetworkId = 0;
@@ -138,7 +138,7 @@ int TProxyGreatPower::HandleWarTransitionRequestWithRoleSwap(int targetNation, i
                                                              char swapRoles) {
   TurnEvent1DWarTransitionPacket packet;
   packet.messageTag = kControlTagTime;
-  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packet.eventCode = 0x1d;
   packet.fromNetworkId = 0;
   packet.toNetworkId = 0;

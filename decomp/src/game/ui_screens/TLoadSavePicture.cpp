@@ -99,7 +99,7 @@ void TLoadSavePicture::DoPostCreate(int arg) {
         static_cast<TMapPreviewView*>(plateControl->ResolveControlByTag(kControlTagMapP));
     preview->AssertValid();
     preview->TakeSatellitePhoto(0);
-    preview->selectedNation68 = g_pSimMgr->GetActiveNationId();
+    preview->selectedNation68 = g_pSimMgr->GetPlayerCountry();
     preview->EnhancePhoto();
   }
 

@@ -41,7 +41,7 @@ TRailCluster::~TRailCluster() {}
 // FUNCTION: IMPERIALISM 0x005897b0
 void TRailCluster::DoPostCreate(int styleSeed) {
   short recordIndex = static_cast<short>(styleSeed);
-  short activeNationId = g_pSimMgr->GetActiveNationId();
+  short activeNationId = g_pSimMgr->GetPlayerCountry();
   TGreatPower* activeNationState = g_apNationStates[activeNationId];
   TCity* city = activeNationState == 0 ? 0 : activeNationState->GetCityState();
 

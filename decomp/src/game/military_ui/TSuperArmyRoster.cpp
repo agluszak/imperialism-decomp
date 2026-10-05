@@ -21,7 +21,7 @@ void TSuperArmyRoster::PopulateArmyOrderPageEntries(TView* panel, int* offsetLay
   controlTag = kControlTagPage; // 'page'
   TPageView::DoPostCreate(0);
 
-  short activeNation = g_pSimMgr->GetActiveNationId();
+  short activeNation = g_pSimMgr->GetPlayerCountry();
   for (int tileIndex = 0; tileIndex < 0x180; ++tileIndex) {
     if (g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(tileIndex) != activeNation) {
       continue;

@@ -141,7 +141,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
   ConfigureUiControlStyleValueAndCaptionFromStringResource(title, 0, 0xe, 0x2b6a, 1, 0x1c20, 6);
 
   // Active nation, its city influence map, and the anchor tile's six hex neighbours.
-  short activeNation = g_pSimMgr->GetActiveNationId();
+  short activeNation = g_pSimMgr->GetPlayerCountry();
   char* influenceMap = g_apNationStates[activeNation]->BuildCityInfluenceLevelMap();
   StrategicTileIndex neighborTiles[6];
   TMapMgr::GetNeighborTileIDArray(nBuildingSlotId, neighborTiles,
@@ -176,7 +176,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
       if (t->gateFlag == 0) {
         continue;
       }
-      if (t->ownerNationTag04 != g_pSimMgr->GetActiveNationId()) {
+      if (t->ownerNationTag04 != g_pSimMgr->GetPlayerCountry()) {
         continue;
       }
       for (int edge = 0; edge < 2; edge++) {
@@ -207,7 +207,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
         continue;
       }
       TTerrainStateRecord* t = &mapState->terrainStateTable[tile];
-      if (t->ownerNationTag04 == g_pSimMgr->GetActiveNationId() && t->riverSpriteCode != 0) {
+      if (t->ownerNationTag04 == g_pSimMgr->GetPlayerCountry() && t->riverSpriteCode != 0) {
         portAccum[19] = static_cast<short>(portAccum[19] + 1);
       } else if (t->gateFlag == 0) {
         portAccum[19] = static_cast<short>(portAccum[19] + 1);
@@ -222,7 +222,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
   // Fort up/down button: only when the anchor province can still raise its fort level.
   short homeProvIndex = mapState->terrainStateTable[nBuildingSlotId].cityRecordIndex;
   Province* homeProv = &mapState->cityScoreTable[homeProvIndex];
-  short fortCap = g_pTechMgr->GetNationFortLevelCap(g_pSimMgr->GetActiveNationId());
+  short fortCap = g_pTechMgr->GetNationFortLevelCap(g_pSimMgr->GetPlayerCountry());
   if (homeProv->fortLevel03 < fortCap && homeProv->cityTileIndex04 == nBuildingSlotId) {
     TUpDownPictureButton* fortBtn = new TUpDownPictureButton();
     int fortOff[2] = {0x11, 0x29};

@@ -407,7 +407,7 @@ int TNetMgr::ProbeNationReachabilityAndMarkAwolBitmask() {
   int awolBitmask = 0;
   TurnEvent2BPresenceMaskPacket probe;
   probe.messageTag = kControlTagTime;
-  probe.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  probe.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   probe.eventCode = 0;
   probe.fromNetworkId = 0;
   probe.eventCode = 0x2b;
@@ -415,7 +415,7 @@ int TNetMgr::ProbeNationReachabilityAndMarkAwolBitmask() {
   probe.messageLength = 0;
   probe.messageLength = 0x1c;
   probe.replyRequestFlag = 0;
-  probe.nationMask = static_cast<signed char>(g_pSimMgr->GetActiveNationId());
+  probe.nationMask = static_cast<signed char>(g_pSimMgr->GetPlayerCountry());
   for (int slot = 0; slot < 7; ++slot) {
     TGreatPower* nation = g_apNationStates[slot];
     if (nation != 0 && nation->diplomacyEligibility != 0 && nation->IsRemote()) {

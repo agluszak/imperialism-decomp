@@ -82,13 +82,13 @@ void TCityProductionView::DoPostCreate(int arg) {
   TPicture::DoPostCreate(arg);
   g_pAmbitApplication->cursorRegionInvalid = 1;
 
-  TGreatPower* actionNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+  TGreatPower* actionNation = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
   TCity* actionCity = (actionNation != 0) ? actionNation->city : 0;
 
   // Per building slot: build a mouse clip region from the slot bitmap's outline polygon.
   for (int slot = 0; slot < 16; ++slot) {
     buildingClipRegions[slot] = NewRgn();
-    TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+    TGreatPower* nation = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
     TCity* city = (nation != 0) ? nation->city : 0;
     short level = city->GetNextBuildingType(slot);
     CDib* bitmap = g_pResourceMgr->LoadBmpResourceByIdCached(
@@ -191,7 +191,7 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
   for (int orderIndex = 0; orderIndex < 16; ++orderIndex) {
     SetGWorld(scratchContext, savedFlags);
     short slot = g_anCityBuildingSlotOrder[orderIndex];
-    TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+    TGreatPower* nation = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
     TCity* city = (nation != 0) ? nation->city : 0;
     short level = city->GetNextBuildingType(slot);
 
@@ -303,7 +303,7 @@ IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 
 // FUNCTION: IMPERIALISM 0x004badd0
 void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh() {
-  TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+  TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
   TCity* subObject = 0;
   if (nationState != 0) {
     subObject = nationState->city; // +0x894
@@ -385,7 +385,7 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
     CString assembledText;
     CString templateText;
 
-    TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+    TGreatPower* nation = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
     TCity* city = (nation != 0) ? nation->city : 0;
     short nextBuildingType = city->GetNextBuildingType(slot);
     bool available = city->IsCapacityCenter(slot) != 0;
@@ -393,7 +393,7 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
     bool restrictedSlot = slot == 6 || slot == 0xb;
     bool technologyAvailable = true;
     if (restrictedSlot) {
-      short activeNation = g_pSimMgr->GetActiveNationId();
+      short activeNation = g_pSimMgr->GetPlayerCountry();
       if (g_pTechMgr->orderCapRows277[activeNation].techStatusByTechId[0x13] != 2) {
         technologyAvailable = false;
         available = false;
@@ -476,7 +476,7 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
 // FUNCTION: IMPERIALISM 0x004bb7a0
 void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dialogRoot) {
   CString assembled;
-  TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+  TGreatPower* nation = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
   CString templateText;
   CString value3;
   CString value2;
@@ -768,7 +768,7 @@ void TCityProductionView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CP
     if (city94->GetBuildingType(buildingSlot) == 0 && city94->IsCapacityCenter(buildingSlot)) {
       bool available = true;
       if (buildingSlot == 6 || buildingSlot == 11) {
-        short nationId = g_pSimMgr->GetActiveNationId();
+        short nationId = g_pSimMgr->GetPlayerCountry();
         available = g_pTechMgr->orderCapRows277[nationId].techStatusByTechId[19] == 2;
       }
       if (available) {

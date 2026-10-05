@@ -97,7 +97,7 @@ void TToolBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
       break;
     }
     {
-      short nationId = g_pSimMgr->GetActiveNationId();
+      short nationId = g_pSimMgr->GetPlayerCountry();
       short abilityIndex = g_pTechMgr->ConsumeFirstPendingAbilityUnlock(nationId);
       if (abilityIndex != -1) {
         g_pViewMgr->ShowAbilityStatusReport(abilityIndex);
@@ -299,10 +299,10 @@ void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls() {
 // FUNCTION: IMPERIALISM 0x00585ba0
 void TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(short nationId) {
   // 'trea' tag: the active nation's treasury balance, only when the slot is eligible
-  // for event processing (matches TSimMgr::IsNationSlotEligibleForEventProcessing's
+  // for event processing (matches TSimMgr::ReallyInTheGame's
   // major-slot/profile-band gate).
   CString treaText;
-  if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationId)) {
+  if (g_pSimMgr->ReallyInTheGame(nationId)) {
     g_pSimMgr->NumToCurrency(g_apNationStates[nationId]->treasuryValue10, &treaText);
   }
   TView* treaControl = this->ResolveControlByTag(kControlTagTrea); // 'trea'

@@ -7,7 +7,7 @@ extern CString g_cstrCountryNameSettingValue006A4220;
 extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
 extern short g_creditsPlaybackActive_006a4084;
 extern "C" int g_nRandomMapSelectedNationSlot00698AB0;
-extern "C" void (TSimMgr::* g_apfnScenarioScriptInstructionHandlers[27])(void*);
+extern "C" void (TSimMgr::* g_apfnScenarioScriptInstructionHandlers[27])(STurnInstructionCursor*);
 
 extern POINT g_ptTechItemModalMessage;
 extern POINT g_ptFormattedErrorModalMessage;
@@ -61,7 +61,7 @@ extern "C" bool g_bTurnFlowBootstrapComplete;
 extern char g_szConanCheatFileName_00698BEC[];
 
 // TSimMgr's opaque debug tag literal, passed as the label argument to
-// RebuildMapContextAndGlobalMapState from AdvanceGlobalTurnStateMachine.
+// CreatePlanet from AdvanceGlobalTurnStateMachine.
 extern const char s_Chunk_00698C0C[];
 
 } // extern "C"

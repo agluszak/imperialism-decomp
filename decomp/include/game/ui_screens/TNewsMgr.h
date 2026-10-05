@@ -39,7 +39,7 @@ struct newsStory {
 
 // The newspaper / inter-nation event manager (Mac oracle: TNewsMgr; the singleton at
 // g_pNewsMgr 0x6a43e8 is `new TNewsMgr()` + INewsMgr — proven by
-// RebuildGlobalOrderManagersAndCapabilityState 0x57c3b0 storing exactly that). Gameplay
+// CreateSimObjects 0x57c3b0 storing exactly that). Gameplay
 // code queues inter-nation event records into the per-nation buckets / shared queue;
 // the turn machine's news phase (StartNewsPhase, turn case 0xf) turns them into the
 // per-nation 3x3 newspaper story pages.

@@ -31,7 +31,7 @@ TTransportPicture::~TTransportPicture() {}
 // FUNCTION: IMPERIALISM 0x00591f10
 void TTransportPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId >= 100 && commandId <= 0x65) {
-    short nationId = g_pSimMgr->GetActiveNationId();
+    short nationId = g_pSimMgr->GetPlayerCountry();
     TGreatPower* nation = g_apNationStates[nationId];
     int metricSlot = static_cast<int>(resourceMetricSlot);
     short targetAmount;
@@ -206,7 +206,7 @@ void TTransportPicture::Refresh() {
   }
 
   if (controlTag != static_cast<int>(kControlTagTota)) {
-    TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+    TGreatPower* nation = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
     TTransportPicture* totalPicture =
         static_cast<TTransportPicture*>(ownerContext->ResolveControlByTag(kControlTagTota));
     if (totalPicture == 0) {

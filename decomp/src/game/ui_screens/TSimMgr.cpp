@@ -180,10 +180,10 @@ void TSimMgr::ISimMgr() {
   turnStateCode = kGamePhaseStartup;
   turnFlowStatusFlags = 0;
   field_64 = 0;
-  phaseStateByDecade[0] = 0;
-  // Ten bytes 0x6f..0x78 (phaseStateByDecade[1..9] + field78) are filled with 1 in one
+  councilByDecade[0] = 0;
+  // Ten bytes 0x6f..0x78 (councilByDecade[1..9] + field78) are filled with 1 in one
   // pass (dword/dword/word stores in the original); field78 is then overwritten with 2.
-  memset(&phaseStateByDecade[1], 0x01, sizeof(phaseStateByDecade));
+  memset(&councilByDecade[1], 0x01, sizeof(councilByDecade));
   field79 = true;
   field78 = 2;
   // Developer-cheat probe: stat a file literally named "Conan" in the working directory;
@@ -194,9 +194,9 @@ void TSimMgr::ISimMgr() {
   g_bRandomMapDeveloperCheatFlag = false;
   ReinitializeRandomSeed();
   difficultyLevel = kDifficultyIntroductory;
-  InitializeOrLoadEntryArray14AndClampLimits(false);
+  UpdatePreferences(false);
   field6a = 0;
-  field6c = 0x77a;
+  finalCouncilYear = 0x77a;
   gateFlag7a = false;
 }
 
@@ -208,16 +208,16 @@ void TSimMgr::ResetTurnFlowStateAndRandomSeed() {
   turnStateCode = kGamePhaseStartup;
   turnFlowStatusFlags = 0;
   field_64 = 0;
-  phaseStateByDecade[0] = 0;
-  phaseStateByDecade[1] = 1;
-  phaseStateByDecade[2] = 1;
-  phaseStateByDecade[3] = 1;
-  phaseStateByDecade[4] = 1;
-  phaseStateByDecade[5] = 1;
-  phaseStateByDecade[6] = 1;
-  phaseStateByDecade[7] = 1;
-  phaseStateByDecade[8] = 1;
-  phaseStateByDecade[9] = 1;
+  councilByDecade[0] = 0;
+  councilByDecade[1] = 1;
+  councilByDecade[2] = 1;
+  councilByDecade[3] = 1;
+  councilByDecade[4] = 1;
+  councilByDecade[5] = 1;
+  councilByDecade[6] = 1;
+  councilByDecade[7] = 1;
+  councilByDecade[8] = 1;
+  councilByDecade[9] = 1;
   field79 = true;
   field78 = 2;
 
@@ -367,16 +367,16 @@ void TSimMgr::ReadFrom(TStream* stream) {
   g_pMacViewMgr->ReloadBitmap244AndRefreshUiCaches();
 
   if (g_nSaveFormatVersion >= 0x36) {
-    stream->ReadBytes(&field6c, 2);
+    stream->ReadBytes(&finalCouncilYear, 2);
   }
 
   if (g_nSaveFormatVersion < 0x3b) {
-    memset(phaseStateByDecade, 0x01, sizeof(phaseStateByDecade));
+    memset(councilByDecade, 0x01, sizeof(councilByDecade));
     field79 = true;
-    phaseStateByDecade[0] = 0;
-    phaseStateByDecade[(field6c - 0x717) / 10] = 2;
+    councilByDecade[0] = 0;
+    councilByDecade[(finalCouncilYear - 0x717) / 10] = 2;
   } else {
-    stream->ReadBytes(phaseStateByDecade, 0xc);
+    stream->ReadBytes(councilByDecade, 0xc);
   }
 
   for (i = 0; i < 0x17; ++i) {
@@ -391,9 +391,9 @@ void TSimMgr::ReadFrom(TStream* stream) {
   }
 
   g_pAssetMgr->OpenFilesFor(1);
-  RebuildGlobalOrderManagersAndCapabilityState(false);
-  RebuildMapContextAndGlobalMapState(0, nullptr, 0);
-  RebuildNationStateSlotsAndAvailability(0);
+  CreateSimObjects(false);
+  CreatePlanet(0, nullptr, 0);
+  CreateCountries(0);
 
   turnStateCode = kGamePhaseShowMap;
   StartNextPhase();
@@ -427,8 +427,8 @@ void TSimMgr::WriteTo(TStream* stream) {
 
   stream->WriteBytes(&preferenceValues[10], 2);
   stream->WriteBytes(&field6a, 2);
-  stream->WriteBytes(&field6c, 2);
-  stream->WriteBytes(phaseStateByDecade, 0xc);
+  stream->WriteBytes(&finalCouncilYear, 2);
+  stream->WriteBytes(councilByDecade, 0xc);
 
   for (i = 0; i < 0x17; ++i) {
     stream->WriteSharedString(&sharedTextSlots[i]);
@@ -439,7 +439,7 @@ void TSimMgr::WriteTo(TStream* stream) {
 void TSimMgr::RebuildNationStateSlotsNoOp() {}
 
 // FUNCTION: IMPERIALISM 0x0057c3b0
-void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(bool flag) {
+void TSimMgr::CreateSimObjects(bool flag) {
   int i;
   if ((flag && !g_bMultiplayerScenarioSetupActive) ||
       (!flag && g_bMultiplayerScenarioSetupActive)) {
@@ -533,7 +533,7 @@ void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(bool flag) {
 }
 
 // FUNCTION: IMPERIALISM 0x0057c7c0
-void TSimMgr::RebuildMapContextAndGlobalMapState(int arg1, const char* arg2, int arg3) {
+void TSimMgr::CreatePlanet(int arg1, const char* arg2, int arg3) {
   int i;
   if (!g_bMultiplayerScenarioSetupActive) {
     CString local_10;
@@ -573,7 +573,7 @@ void TSimMgr::RebuildMapContextAndGlobalMapState(int arg1, const char* arg2, int
 }
 
 // FUNCTION: IMPERIALISM 0x0057c9a0
-unsigned char TSimMgr::RecreateActiveMapContextAndInitializeGlobalMapState(int scenarioIndex) {
+unsigned char TSimMgr::LoadScenario(int scenarioIndex) {
   scenarioMapIndexPlusOne = static_cast<short>(scenarioIndex + 1);
 
   if (g_pActiveMapOrderContext != nullptr) {
@@ -595,7 +595,7 @@ unsigned char TSimMgr::RecreateActiveMapContextAndInitializeGlobalMapState(int s
 }
 
 // FUNCTION: IMPERIALISM 0x0057cad0
-void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
+void TSimMgr::CreateCountries(int activate) {
   int i;
   if (!g_bMultiplayerScenarioSetupActive) {
     short profileBySlot[8];
@@ -1007,13 +1007,13 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case kGamePhaseSetUpMap:
     turnStateCode = kGamePhaseStartGame;
     if (reloadPoliticalMapState) {
-      g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(true);
-      g_pSimMgr->RebuildMapContextAndGlobalMapState(1, s_Chunk_00698C0C, 1);
+      g_pSimMgr->CreateSimObjects(true);
+      g_pSimMgr->CreatePlanet(1, s_Chunk_00698C0C, 1);
     }
     if (g_bMultiplayerScenarioSetupActive) {
       break;
     }
-    RebuildNationStateSlotsAndAvailability(1);
+    CreateCountries(1);
     if (g_pSimMgr->difficultyLevel > kDifficultyEasy && scenarioMapIndexPlusOne == 0) {
       g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventCitySiteSelector),
                                     activeNationSlot);
@@ -1208,7 +1208,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     }
     const short tickA = GetEconomicTurn();
     const short tickB = GetEconomicTurn();
-    if (tickB % 0x28 != 0 || phaseStateByDecade[tickA / 0x28] == 0) {
+    if (tickB % 0x28 != 0 || councilByDecade[tickA / 0x28] == 0) {
       StartNextPhase();
     } else {
       g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOpeningCinematic),
@@ -1372,10 +1372,10 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     }
     const short tickA = GetEconomicTurn();
     const short tickB = GetEconomicTurn();
-    if (((tickB % 0x28) == 0) && (phaseStateByDecade[tickA / 0x28] != 0) &&
+    if (((tickB % 0x28) == 0) && (councilByDecade[tickA / 0x28] != 0) &&
         multiplayerSessionRole != kSessionRoleClient) {
       g_pDiplomacyTurnStateManager->RebuildDiplomacyStandingAndInfluenceMatrices(
-          phaseStateByDecade[tickA / 0x28]);
+          councilByDecade[tickA / 0x28]);
     }
     if (multiplayerSessionRole != kSessionRoleStandalone) {
       g_pGameFlowState->SetSyncPhases(mode, turnStateCode);
@@ -1414,7 +1414,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         continue;
       }
       if (g_apNationStates[removeNationSlot]->ownedRegionList->GetSize() == 0) {
-        RemoveNationSlotAndNotifyPeers(static_cast<short>(removeNationSlot));
+        EliminateGP(static_cast<short>(removeNationSlot));
       }
     }
     for (int secondaryIndex = 7; secondaryIndex < 0x17; ++secondaryIndex) {
@@ -1439,7 +1439,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     }
     if (eligibleMinorCount == 1 && IsNationEligibleForOptionalPhase(activeNationSlot)) {
       actionNeeded = true;
-      UpdatePersistentTopTenNationScores();
+      AddHighScore();
       g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOpeningCinematic), 0);
     }
     if (!actionNeeded) {
@@ -1449,7 +1449,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   }
 
   case kGamePhaseCouncilVictory:
-    UpdatePersistentTopTenNationScores();
+    AddHighScore();
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOpeningCinematic), 0);
     break;
 
@@ -1890,12 +1890,12 @@ int TSimMgr::GetNumCountries() {
 }
 
 // FUNCTION: IMPERIALISM 0x00581260
-NationSlot TSimMgr::GetActiveNationId() {
+NationSlot TSimMgr::GetPlayerCountry() {
   return activeNationSlot;
 }
 
 // FUNCTION: IMPERIALISM 0x00581280
-char TSimMgr::IsNationSlotEligibleForEventProcessing(NationSlot nationSlot) {
+char TSimMgr::ReallyInTheGame(NationSlot nationSlot) {
   if (nationSlot == -1) {
     return 0;
   }
@@ -1919,7 +1919,7 @@ char TSimMgr::IsNationSlotEligibleForEventProcessing(NationSlot nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x00581300
-void TSimMgr::RemoveNationSlotAndNotifyPeers(NationSlot nationSlot) {
+void TSimMgr::EliminateGP(NationSlot nationSlot) {
   // Neutralize the removed nation's diplomacy percent field on every other live slot. For
   // the seven great-power slots a nation whose terrain profile is in the reserved band
   // [100,200) is left alone; minor slots (i >= 7) and unreserved great powers are reset.
@@ -1951,7 +1951,7 @@ void TSimMgr::NotifyActiveNationLost() {
 }
 
 // FUNCTION: IMPERIALISM 0x00581400
-void TSimMgr::InitializeOrLoadEntryArray14AndClampLimits(bool writeBack) {
+void TSimMgr::UpdatePreferences(bool writeBack) {
   if (writeBack) {
     for (int writeIndex = 0; writeIndex < 14; ++writeIndex) {
       WriteSettingsPrefIntByIndex(writeIndex, preferenceValues[writeIndex]);
@@ -1992,7 +1992,7 @@ void TSimMgr::InitializeOrLoadEntryArray14AndClampLimits(bool writeBack) {
 }
 
 // FUNCTION: IMPERIALISM 0x00581510
-void TSimMgr::UpdatePersistentTopTenNationScores() {
+void TSimMgr::AddHighScore() {
   CString path;
   CString ownNationName;
   GetString(0x2737, 0xd, &ownNationName);
@@ -2061,8 +2061,8 @@ void ReinitializeGameFlowAndPostTurnEventCode(TurnEventId eventCode) {
     simMgr->turnStateCode = kGamePhaseStartup;
     simMgr->turnFlowStatusFlags = 0;
     simMgr->field_64 = 0;
-    simMgr->phaseStateByDecade[0] = 0;
-    memset(&simMgr->phaseStateByDecade[1], 0x01, sizeof(simMgr->phaseStateByDecade));
+    simMgr->councilByDecade[0] = 0;
+    memset(&simMgr->councilByDecade[1], 0x01, sizeof(simMgr->councilByDecade));
     simMgr->field79 = true;
     simMgr->field78 = 2;
     CFileStatus conanFileStatus;
@@ -2186,8 +2186,7 @@ void TSimMgr::ProcessScenarioScript() {
 // tier buckets, need totals), kicks off a resource-yield rebuild, and notifies the nation's
 // defense minister (if any) via its slot-0x14 hook.
 // FUNCTION: IMPERIALISM 0x00582120
-void TSimMgr::HandleTurnInstruction_Labo_SetNationLaborTierCounts(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScSetLabor(STurnInstructionCursor* instruction) {
 
   unsigned int ownerToken;
   ownerToken = *instruction->tokenCursor;
@@ -2225,8 +2224,7 @@ void TSimMgr::HandleTurnInstruction_Labo_SetNationLaborTierCounts(void* pInstruc
 // big-endian short value; sets that nation's capital-city production-order slot to the
 // value while accumulating the delta (value - old) into the parallel running-total slot.
 // FUNCTION: IMPERIALISM 0x005822c0
-void TSimMgr::HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScSetCapacity(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
 
   unsigned int nationToken;
@@ -2264,8 +2262,7 @@ void TSimMgr::HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta(void* pIn
 // big-endian short amount; writes the amount into that nation's capital-city commodity
 // stock counter and re-verifies the city's stock invariants.
 // FUNCTION: IMPERIALISM 0x005823e0
-void TSimMgr::HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScSetWarehouse(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
 
   unsigned int nationToken;
@@ -2300,8 +2297,7 @@ void TSimMgr::HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh(void*
 // taken from the map-state city-score row; each requested order is registered there and
 // put into order mode 2 with the original -1 payload.
 // FUNCTION: IMPERIALISM 0x005824c0
-void TSimMgr::HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScAddArmy(STurnInstructionCursor* instruction) {
 
   unsigned int regionToken;
   regionToken = *instruction->tokenCursor;
@@ -2331,8 +2327,7 @@ void TSimMgr::HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders(void*
 }
 
 // FUNCTION: IMPERIALISM 0x00582630
-void TSimMgr::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScAddCivilian(STurnInstructionCursor* instruction) {
 
   unsigned int orderTypeToken;
   orderTypeToken = *instruction->tokenCursor;
@@ -2353,8 +2348,7 @@ void TSimMgr::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pIn
 // Reads nation, navy-order type, map-action-context id, and count. It updates the
 // nation's parallel city count then creates that many primary navy-order nodes.
 // FUNCTION: IMPERIALISM 0x00582720
-void TSimMgr::HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScAddShip(STurnInstructionCursor* instruction) {
 
   unsigned int nationToken;
   nationToken = *instruction->tokenCursor;
@@ -2398,8 +2392,7 @@ void TSimMgr::HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders(void*
 // Reads a big-endian 32-bit nation slot then a big-endian short transport-capacity value,
 // stored into that nation's transportCapacity field.
 // FUNCTION: IMPERIALISM 0x00582860
-void TSimMgr::HandleTurnInstruction_Tran_SetNationTransportStat(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScSetTransport(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
 
   unsigned int nationToken;
@@ -2422,8 +2415,7 @@ void TSimMgr::HandleTurnInstruction_Tran_SetNationTransportStat(void* pInstructi
 // civilian development-class nibble -- selecting the high nibble only when the tile's
 // resource/edge byte is one of the qualifying terrain codes.
 // FUNCTION: IMPERIALISM 0x005828f0
-void TSimMgr::HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScSetDevLevel(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
 
   unsigned int tileToken;
@@ -2454,8 +2446,7 @@ void TSimMgr::HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry(void* pInstruc
 // construction order there, and grants the owner a 2000 cash bonus when it is not
 // diplomacy-eligible.
 // FUNCTION: IMPERIALISM 0x005829b0
-void TSimMgr::HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScAddRailhead(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
   unsigned int token;
   token = *cursor;
@@ -2473,8 +2464,7 @@ void TSimMgr::HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus(void* pI
 // construction order there, and grants the owner a 3000 cash bonus when it is not
 // diplomacy-eligible.
 // FUNCTION: IMPERIALISM 0x00582a40
-void TSimMgr::HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScAddPort(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
   unsigned int token;
   token = *cursor;
@@ -2491,8 +2481,7 @@ void TSimMgr::HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus(void* pI
 // Reads two big-endian 32-bit tokens (forced nation slot, then tech id) and applies the
 // tech unlock via the city-order capability state singleton.
 // FUNCTION: IMPERIALISM 0x00582ad0
-void TSimMgr::HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScAddTech(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
 
   unsigned int nationToken;
@@ -2514,8 +2503,7 @@ void TSimMgr::HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations(void* p
 // Reads two big-endian 16-bit tokens (metric category, then value) and applies the value
 // via the trade manager's per-nation metric cell setter.
 // FUNCTION: IMPERIALISM 0x00582b70
-void TSimMgr::HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScSetPrice(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
 
   unsigned int categoryToken;
@@ -2537,8 +2525,7 @@ void TSimMgr::HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry(void* pInstruc
 // writes the value symmetrically into both [A][B] and [B][A] of the diplomacy manager's
 // side-effect relation matrix.
 // FUNCTION: IMPERIALISM 0x00582bf0
-void TSimMgr::HandleTurnInstruction_Emba_SetEmbassyRelationFlags(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScSetEmbassy(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
 
   unsigned int nationAToken;
@@ -2570,8 +2557,7 @@ void TSimMgr::HandleTurnInstruction_Emba_SetEmbassyRelationFlags(void* pInstruct
 // Reads a big-endian 32-bit owner-nation index plus two big-endian 16-bit tokens (target
 // nation slot, then reset level) and applies them via the owner's diplomacy-level resetter.
 // FUNCTION: IMPERIALISM 0x00582ce0
-void TSimMgr::HandleTurnInstruction_Subs_ApplyNationSubsidyEntry(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScSetSubsidy(STurnInstructionCursor* instruction) {
 
   unsigned int ownerToken;
   ownerToken = *instruction->tokenCursor;
@@ -2595,8 +2581,7 @@ void TSimMgr::HandleTurnInstruction_Subs_ApplyNationSubsidyEntry(void* pInstruct
 // Reads source nation, target nation, and relation code, applies the diplomacy entry,
 // and performs the symmetric relation-side-effect update used by code 5.
 // FUNCTION: IMPERIALISM 0x00582da0
-void TSimMgr::HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScSetTreaty(STurnInstructionCursor* instruction) {
 
   unsigned int sourceToken;
   sourceToken = *instruction->tokenCursor;
@@ -2632,8 +2617,7 @@ void TSimMgr::HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry(void* pInst
 // Reads one big-endian short token (the scenario year) and stores it, scaled to quarter
 // ticks (year * 4), into the turn-flow tick field at +0x2c.
 // FUNCTION: IMPERIALISM 0x00582ed0
-void TSimMgr::HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScSetYear(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
   unsigned int token;
   token = *cursor;
@@ -2645,8 +2629,7 @@ void TSimMgr::HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(void* 
 // Reads a big-endian short city-record index and a big-endian nation tag, then dispatches
 // the province formation-entry action on the global map state.
 // FUNCTION: IMPERIALISM 0x00582f20
-void TSimMgr::HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScSetProvince(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
 
   unsigned int cityToken;
@@ -2668,8 +2651,7 @@ void TSimMgr::HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(void* pIns
 // Reads a map-action-context id and a fixed 64-byte inline name, then updates the
 // matching context's display name.
 // FUNCTION: IMPERIALISM 0x00582fa0
-void TSimMgr::HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScSetSeazoneName(STurnInstructionCursor* instruction) {
 
   unsigned int contextToken;
   contextToken = *instruction->tokenCursor;
@@ -2689,8 +2671,7 @@ void TSimMgr::HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId(void
 
 // Source evidence: retail constructs and destroys three unused CString locals.
 // FUNCTION: IMPERIALISM 0x00583070
-void TSimMgr::HandleTurnInstruction_Cnam_AssignCountryName(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScSetCountryName(STurnInstructionCursor* instruction) {
 
   unsigned int countryToken;
   countryToken = *instruction->tokenCursor;
@@ -2714,8 +2695,7 @@ void TSimMgr::HandleTurnInstruction_Cnam_AssignCountryName(void* pInstructionRaw
 // Reads three big-endian 16-bit tokens (source nation, target nation, then relation
 // score) and applies them via the diplomacy manager's standing-score setter.
 // FUNCTION: IMPERIALISM 0x005831d0
-void TSimMgr::HandleTurnInstruction_Rela_SetNationRelationValue(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScSetRelationship(STurnInstructionCursor* instruction) {
 
   unsigned int sourceToken;
   sourceToken = *instruction->tokenCursor;
@@ -2738,8 +2718,7 @@ void TSimMgr::HandleTurnInstruction_Rela_SetNationRelationValue(void* pInstructi
 // Reads a big-endian 32-bit tile-index token followed by a fixed 64-byte inline C-string
 // (the province name) and applies it via the global map state's shared-label setter.
 // FUNCTION: IMPERIALISM 0x00583270
-void TSimMgr::HandleTurnInstruction_Pnam_AssignProvinceName(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScSetProvinceName(STurnInstructionCursor* instruction) {
 
   unsigned int tileToken;
   tileToken = *instruction->tokenCursor;
@@ -2757,8 +2736,7 @@ void TSimMgr::HandleTurnInstruction_Pnam_AssignProvinceName(void* pInstructionRa
 // Reads two big-endian 32-bit tokens (nation slot, then cash amount) and writes the amount
 // into that nation's treasury field.
 // FUNCTION: IMPERIALISM 0x00583360
-void TSimMgr::HandleTurnInstruction_Cash_SetNationCash(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScSetTreasury(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
 
   unsigned int nationToken;
@@ -2780,8 +2758,7 @@ void TSimMgr::HandleTurnInstruction_Cash_SetNationCash(void* pInstructionRaw) {
 // selected-index field, and refreshes the picture-word-data language pack + strategic map
 // bitmap cache (the inlined body of SetSelectedIndex6AAndTriggerRefresh).
 // FUNCTION: IMPERIALISM 0x00583400
-void TSimMgr::HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScSetFlags(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
   unsigned int token;
   token = *cursor;
@@ -2796,8 +2773,7 @@ void TSimMgr::HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void* pInstruct
 // Reads two big-endian 32-bit tokens (priority-slot index, then value) and applies the
 // value (offset by 1) via the city-order capability state's tier setter.
 // FUNCTION: IMPERIALISM 0x00583470
-void TSimMgr::HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScSetTechDate(STurnInstructionCursor* instruction) {
 
   unsigned int indexToken;
   indexToken = *instruction->tokenCursor;
@@ -2821,8 +2797,7 @@ void TSimMgr::HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue(void* p
 // = the type selector, or the capped current reading for the 0/0x14 case) via the need
 // target/over-cap accumulator.
 // FUNCTION: IMPERIALISM 0x00583510
-void TSimMgr::HandleTurnInstruction_Tbar_SetNationRelationBarValue(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScSetTransportBar(STurnInstructionCursor* instruction) {
 
   unsigned int ownerToken;
   ownerToken = *instruction->tokenCursor;
@@ -2863,8 +2838,7 @@ void TSimMgr::HandleTurnInstruction_Tbar_SetNationRelationBarValue(void* pInstru
 // Reads a big-endian 32-bit nation slot, then rebuilds that nation's resource-yield /
 // development targets and clears all 0x17 need targets back to zero.
 // FUNCTION: IMPERIALISM 0x00583670
-void TSimMgr::HandleTurnInstruction_Tclr_ResetNationRelationBars(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScClearTransport(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
   unsigned int nationToken;
   nationToken = *cursor;
@@ -2882,11 +2856,10 @@ void TSimMgr::HandleTurnInstruction_Tclr_ResetNationRelationBars(void* pInstruct
 }
 
 // Reads a big-endian 32-bit country slot and a big-endian 32-bit state code. Stores the
-// state's low byte into phaseStateByDecade, and when the state is
-// exactly 2 latches field6c to slot*10 + 0x717.
+// state's low byte into councilByDecade, and when the state is
+// exactly 2 latches finalCouncilYear to slot*10 + 0x717.
 // FUNCTION: IMPERIALISM 0x00583700
-void TSimMgr::HandleTurnInstruction_Coun_SetCountrySlotState(void* pInstructionRaw) {
-  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+void TSimMgr::ScSetCouncilMeeting(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
 
   unsigned int slotToken;
@@ -2902,9 +2875,9 @@ void TSimMgr::HandleTurnInstruction_Coun_SetCountrySlotState(void* pInstructionR
   DECODE_SCENARIO_DWORD_TOKEN(stateToken);
 
   int slot = static_cast<int>(slotToken);
-  phaseStateByDecade[slot] = static_cast<unsigned char>(stateToken);
+  councilByDecade[slot] = static_cast<unsigned char>(stateToken);
   if (stateToken == 2) {
-    field6c = static_cast<short>(static_cast<short>(slotToken) * 10 + 0x717);
+    finalCouncilYear = static_cast<short>(static_cast<short>(slotToken) * 10 + 0x717);
   }
 }
 
@@ -2912,7 +2885,7 @@ void TSimMgr::HandleTurnInstruction_Coun_SetCountrySlotState(void* pInstructionR
 #undef DECODE_SCENARIO_DWORD_TOKEN
 
 // FUNCTION: IMPERIALISM 0x005837c0
-void TSimMgr::SetActiveNationSlotAndRefreshCityCapabilityUiHandles(NationSlot nationSlot) {
+void TSimMgr::SetPlayerCountry(NationSlot nationSlot) {
   activeNationSlot = nationSlot;
   g_pMacViewMgr->RefreshCityCapabilityUiHandlesForActiveNation();
 }

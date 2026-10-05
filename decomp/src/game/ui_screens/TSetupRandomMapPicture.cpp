@@ -113,7 +113,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   countryControl->maxCharacterCount = 0xc;
 
   g_bMultiplayerScenarioSetupActive = false;
-  g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(true);
+  g_pSimMgr->CreateSimObjects(true);
 
   g_pCursorControlPanel = static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagHot));
   g_pCursorControlPanel->AssertValid();
@@ -349,7 +349,7 @@ void TSetupRandomMapPicture::StartGame() {
   nameCluster->AssertValid();
   g_pSimMgr->useLocalizedNameTables = nameCluster->selectedTag88 != kControlTagRand;
   g_pSimMgr->preferenceValues[13] = static_cast<short>(g_pSimMgr->useLocalizedNameTables);
-  g_pSimMgr->InitializeOrLoadEntryArray14AndClampLimits(true);
+  g_pSimMgr->UpdatePreferences(true);
 
   g_nRandomMapSelectedNationSlot00698AB0 = selectedNationSlot9A;
   if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
@@ -361,7 +361,7 @@ void TSetupRandomMapPicture::StartGame() {
     return;
   }
 
-  g_pSimMgr->SetActiveNationSlotAndRefreshCityCapabilityUiHandles(selectedNationSlot9A);
+  g_pSimMgr->SetPlayerCountry(selectedNationSlot9A);
   {
     CString countryName(g_cstrCountryNameSettingValue006A4220);
     g_pAssetMgr->SaveSettingValueFromPointerByKey(&countryName, g_szCountryNameProfileKey00698AE0);
@@ -435,8 +435,8 @@ void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
   lastGlobeTick = GetTickCountDiv16();
   globeFrameA0 = 0;
   SpinYourGlobe();
-  g_pSimMgr->RebuildMapContextAndGlobalMapState(1, static_cast<LPCSTR>(planetSeed94),
-                                                static_cast<int>(wrapHorizontally98));
+  g_pSimMgr->CreatePlanet(1, static_cast<LPCSTR>(planetSeed94),
+                          static_cast<int>(wrapHorizontally98));
   g_pActiveRandomMapSetupPicture006A4268 = 0;
   SpinYourGlobe();
 

@@ -26,7 +26,7 @@ TShipAmtBar::TShipAmtBar() : TAmtBar() {
 
 // FUNCTION: IMPERIALISM 0x0058abf0
 void TShipAmtBar::DoPostCreate(int arg) {
-  TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+  TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
   TCity* province = nationState != 0 ? nationState->GetCityState() : 0;
   selectedMetricRecord = province->shipOrderSlots[0];
   short productionCap = province->productionSummary->strength;

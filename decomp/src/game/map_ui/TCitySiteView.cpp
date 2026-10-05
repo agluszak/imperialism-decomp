@@ -55,7 +55,7 @@ void TCitySiteView::DoPostCreate(int arg) {
   minRow = 1000;
   maxRow = -1000;
 
-  short activeNationId = g_pSimMgr->GetActiveNationId();
+  short activeNationId = g_pSimMgr->GetPlayerCountry();
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     if (activeNationId != g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04) {
       continue;
@@ -137,7 +137,7 @@ void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
     updateNeighborHighlights = true;
     TMapMgr::GetNeighborTileIDArray(currentTile, neighborTiles,
                                     g_pGlobalMapState->hexNeighborWrapHorizontally);
-    short activeNation = g_pSimMgr->GetActiveNationId();
+    short activeNation = g_pSimMgr->GetPlayerCountry();
     for (int i = 0; i < 6; ++i) {
       short neighbor = neighborTiles[i];
       if (neighbor != -1 &&
@@ -207,7 +207,7 @@ void TCitySiteView::HandleMapClickByInteractionMode(short nTileIndex, int nInput
   TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[nTileIndex];
   StrategicTerrainKind terrainKind = tile.GetTerrainKind();
   signed char ownerNation = tile.ownerNationTag04;
-  short activeNation = g_pSimMgr->GetActiveNationId();
+  short activeNation = g_pSimMgr->GetPlayerCountry();
 
   if (ownerNation != activeNation) {
     PlayDefaultMessageBeep(1);

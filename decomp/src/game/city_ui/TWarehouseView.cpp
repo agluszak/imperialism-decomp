@@ -123,7 +123,7 @@ void TWarehouseView::DoStartup() {
   }
 
   int hoverSize[2] = {0x20, 0x18};
-  TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+  TGreatPower* nation = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
   CString hoverTemplate;
   CString commodityName;
   CString valueText;

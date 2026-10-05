@@ -44,7 +44,7 @@ void TDealBookPicture::Startup(short startupValue) {
       static_cast<TToolBarCluster*>(this->ResolveControlByTag(kControlTagTool));
   toolControl->AssertValid();
   toolControl->RefreshTurnOrderStatusPanelTextsAndControls();
-  toolControl->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetActiveNationId());
+  toolControl->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetPlayerCountry());
   toolControl->RefreshControl();
 
   // Re-cache the six commodity sub-controls.

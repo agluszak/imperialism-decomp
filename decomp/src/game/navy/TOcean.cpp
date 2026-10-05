@@ -413,7 +413,7 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
   // 4) For every context flagged for the active nation (mask bit or secondary-neighbor
   // city match), refresh the order-UI flag and repaint the other six nations' slot
   // markers.
-  short activeNationId = g_pSimMgr->GetActiveNationId();
+  short activeNationId = g_pSimMgr->GetPlayerCountry();
   if (g_pMapActionContextListHead != 0) {
     unsigned char activeNationBit = static_cast<unsigned char>(1 << activeNationId);
     for (TZone* ctxZone = g_pMapActionContextListHead; ctxZone != 0; ctxZone = ctxZone->prev18) {
@@ -421,7 +421,7 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
                            ctxZone->HasSecondaryNeighborWithNationTag(activeNationId) != 0;
       if (nationFlagged) {
         ctxZone->ShowFocusIngot(
-            ctxZone->CanDisplayMapOrderEntryInCurrentContext(g_pSimMgr->GetActiveNationId(), true));
+            ctxZone->CanDisplayMapOrderEntryInCurrentContext(g_pSimMgr->GetPlayerCountry(), true));
         int slotCursor = activeNationId + 1;
         int slotsRemaining = 6;
         do {
@@ -444,7 +444,7 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
   // coastal tile and store the entry's within-nation order rank in the tile's +0x1a word.
   for (TTaskForce* rankEntry = g_pNavyOrderManager->orderQueueHead; rankEntry != 0;
        rankEntry = rankEntry->nextForce) {
-    if (rankEntry->nation == g_pSimMgr->GetActiveNationId()) {
+    if (rankEntry->nation == g_pSimMgr->GetPlayerCountry()) {
       continue;
     }
     bool isTaskForceEntry = (rankEntry->shipOrders == 5);
@@ -453,7 +453,7 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
     }
     int cityIndex = static_cast<Province*>(rankEntry->target)->GetIndex();
     if (static_cast<short>(g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode00) !=
-        g_pSimMgr->GetActiveNationId()) {
+        g_pSimMgr->GetPlayerCountry()) {
       continue;
     }
     // location is the anchoring map-action context TZone*; target is the
@@ -720,7 +720,7 @@ void TOcean::RemovePortZoneByTile(short nTileIndex) {
 // FUNCTION: IMPERIALISM 0x005642e0
 void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
   short entryNation = entry->nation;
-  if (entryNation != g_pSimMgr->GetActiveNationId()) {
+  if (entryNation != g_pSimMgr->GetPlayerCountry()) {
     return;
   }
   entry->CreateIngot();
@@ -728,9 +728,9 @@ void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
   // location (+0x18) is the entry's owning map-order zone (see the TZone casts in
   // TNavyMgr/TToolBarCluster); slot 0x58 is TZone::ShowFocusIngot.
   TZone* zone = entry->location;
-  int nation = g_pSimMgr->GetActiveNationId();
+  int nation = g_pSimMgr->GetPlayerCountry();
   if (nation == -1) {
-    nation = g_pSimMgr->GetActiveNationId();
+    nation = g_pSimMgr->GetPlayerCountry();
   }
   bool hasPendingNode = false;
   if ((zone->nationKeyMask & static_cast<unsigned char>(1 << nation)) != 0) {
@@ -765,7 +765,7 @@ void TOcean::ForgetForce(TTaskForce* entry) {
   if (selectedTaskForce14 == entry) {
     selectedTaskForce14 = 0;
   }
-  short nation = g_pSimMgr->GetActiveNationId();
+  short nation = g_pSimMgr->GetPlayerCountry();
   if (entry->nation != nation) {
     return;
   }
@@ -775,9 +775,9 @@ void TOcean::ForgetForce(TTaskForce* entry) {
   if (zone == 0) {
     return;
   }
-  nation = g_pSimMgr->GetActiveNationId();
+  nation = g_pSimMgr->GetPlayerCountry();
   if (nation == -1) {
-    nation = g_pSimMgr->GetActiveNationId();
+    nation = g_pSimMgr->GetPlayerCountry();
   }
 
   bool hasUnassignedShip = false;
@@ -834,7 +834,7 @@ TTaskForce* TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* pMapOr
   // If a different context zone is now selected, drop the cached task force's per-nation
   // order nodes; and if the new context is null, free and forget the cached task force.
   if (selectedTaskForce14 != nullptr && selectedTaskForce14->location != pMapOrderContextZone) {
-    selectedTaskForce14->RegainVirginity(g_pSimMgr->GetActiveNationId(), pMapOrderContextZone);
+    selectedTaskForce14->RegainVirginity(g_pSimMgr->GetPlayerCountry(), pMapOrderContextZone);
     if (pMapOrderContextZone == nullptr) {
       TTaskForce* previous = selectedTaskForce14;
       selectedTaskForce14 = nullptr;
@@ -844,7 +844,7 @@ TTaskForce* TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* pMapOr
   if (selectedTaskForce14 == nullptr) {
     if (pMapOrderContextZone != nullptr) {
       selectedTaskForce14 = pMapOrderContextZone->CreateTaskForceFromNavyOrdersForNationIfEligible(
-          g_pSimMgr->GetActiveNationId());
+          g_pSimMgr->GetPlayerCountry());
       return selectedTaskForce14;
     }
   } else if (pMapOrderContextZone != nullptr) {

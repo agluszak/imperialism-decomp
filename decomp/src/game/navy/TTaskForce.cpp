@@ -226,7 +226,7 @@ void TTaskForce::ReadFrom(TStream* stream) {
     }
   }
 
-  bool isActiveNation = nation == g_pSimMgr->GetActiveNationId();
+  bool isActiveNation = nation == g_pSimMgr->GetPlayerCountry();
   if (ingotTileIndex == -1) {
     if (isActiveNation) {
       CreateIngot();
@@ -951,10 +951,10 @@ int TTaskForce::MouseCodeForTarget(TZone* candidate) const {
   if (!candidate->QueryPortZoneCapability()) {
     return candidate->QueryZoneCapabilityFlagA() ? 0x0f : 1;
   }
-  if (candidate->QueryZoneCapabilityFlagD(g_pSimMgr->GetActiveNationId())) {
+  if (candidate->QueryZoneCapabilityFlagD(g_pSimMgr->GetPlayerCountry())) {
     return 0x0d;
   }
-  if (candidate->QueryZoneCapabilityFlagE(g_pSimMgr->GetActiveNationId())) {
+  if (candidate->QueryZoneCapabilityFlagE(g_pSimMgr->GetPlayerCountry())) {
     if (candidate->primaryNeighbors[0] == activeContext) {
       return 0x0e;
     }
@@ -1123,7 +1123,7 @@ void TTaskForce::CancelOrders(unsigned char cancellationMode) {
   Free();
 
   if (cancelsBeachhead) {
-    g_pMapContextActionManager->ReassessLanding(g_pSimMgr->GetActiveNationId(), cityIndex);
+    g_pMapContextActionManager->ReassessLanding(g_pSimMgr->GetPlayerCountry(), cityIndex);
   }
   g_pViewMgr->mapUberPictureF0->SetActiveMapOrderEntry(previousContext);
 }
@@ -1496,8 +1496,7 @@ bool TTaskForce::Encounter(TTaskForce* other) {
   }
 
   if (g_pSimMgr->preferenceValues[1] != 0) {
-    if (g_pSimMgr->GetActiveNationId() == nation ||
-        g_pSimMgr->GetActiveNationId() == other->nation) {
+    if (g_pSimMgr->GetPlayerCountry() == nation || g_pSimMgr->GetPlayerCountry() == other->nation) {
       return true;
     }
   }
@@ -1698,8 +1697,7 @@ bool TTaskForce::BattleWith(TTaskForce* other, TTaskForce*& unresolvedForce) {
     return false;
   }
   if (g_pSimMgr->preferenceValues[1] != 0) {
-    if (g_pSimMgr->GetActiveNationId() == nation ||
-        g_pSimMgr->GetActiveNationId() == other->nation) {
+    if (g_pSimMgr->GetPlayerCountry() == nation || g_pSimMgr->GetPlayerCountry() == other->nation) {
       return true;
     }
   }

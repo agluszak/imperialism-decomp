@@ -62,13 +62,13 @@ void TNewspaperView::StuffValues(int pageNation) {
   TStaticText* specialControl =
       static_cast<TStaticText*>(ResolveControlByTag(kControlTagSpec)); // 'spec'
   specialControl->AssertValid();
-  if (g_apNationStates[g_pSimMgr->GetActiveNationId()] == 0) {
+  if (g_apNationStates[g_pSimMgr->GetPlayerCountry()] == 0) {
     panelText = CString(g_szEmptyString);
   } else {
     switch (static_cast<short>(g_pSimMgr->economicTurn % 4)) {
     case 0:
       dateText.Format(g_szDecimalFormat,
-                      g_apNationStates[g_pSimMgr->GetActiveNationId()]->escalationCounter);
+                      g_apNationStates[g_pSimMgr->GetPlayerCountry()]->escalationCounter);
       g_pSimMgr->GetString(0x275e, 0, &formatText);
       scanBracketExpressions(g_pSimMgr, &panelText, static_cast<LPCSTR>(formatText),
                              static_cast<LPCSTR>(dateText));
@@ -88,7 +88,7 @@ void TNewspaperView::StuffValues(int pageNation) {
       g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
       dateText.Format(
           g_szDecimalFormat,
-          g_pDiplomacyTurnStateManager->comparativePowerRows[g_pSimMgr->GetActiveNationId()][3]);
+          g_pDiplomacyTurnStateManager->comparativePowerRows[g_pSimMgr->GetPlayerCountry()][3]);
       g_pSimMgr->GetString(0x275e, 2, &formatText);
       scanBracketExpressions(g_pSimMgr, &panelText, static_cast<LPCSTR>(formatText),
                              static_cast<LPCSTR>(dateText));
@@ -97,7 +97,7 @@ void TNewspaperView::StuffValues(int pageNation) {
       g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
       dateText.Format(
           g_szDecimalFormat,
-          g_pDiplomacyTurnStateManager->comparativePowerRows[g_pSimMgr->GetActiveNationId()][0]);
+          g_pDiplomacyTurnStateManager->comparativePowerRows[g_pSimMgr->GetPlayerCountry()][0]);
       g_pSimMgr->GetString(0x275e, 3, &formatText);
       scanBracketExpressions(g_pSimMgr, &panelText, static_cast<LPCSTR>(formatText),
                              static_cast<LPCSTR>(dateText));

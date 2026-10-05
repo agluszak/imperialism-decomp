@@ -259,7 +259,7 @@ int TZone::ComputeMapActionContextNodeValueAverage() {
     int ownerTag =
         g_pGlobalMapState->terrainStateTable[static_cast<TPortZone*>(this)->portTileIndex]
             .ownerNationTag04;
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(ownerTag) != 0) {
+    if (g_pSimMgr->ReallyInTheGame(ownerTag) != 0) {
       return g_pGlobalMapState
           ->cityScoreTable[g_apTerrainTypeDescriptorTable[ownerTag]->GetCapitolProvince()]
           .cityScoreValue;
@@ -500,7 +500,7 @@ void TZone::HandleKeyDown(int key_id) {
   if ((nationKeyMask & (1U << ((unsigned char)key_id & 0x1f))) == 0) {
     nationKeyMask =
         static_cast<unsigned short>(nationKeyMask | (1U << ((unsigned char)key_id & 0x1f)));
-    sVarSlotId = g_pSimMgr->GetActiveNationId();
+    sVarSlotId = g_pSimMgr->GetPlayerCountry();
 
     if ((nationKeyMask & (1U << ((unsigned char)sVarSlotId & 0x1f))) == 0) {
       uSlotCountLocal = slotCount;
@@ -548,9 +548,9 @@ void TZone::HandleKeyDown(int key_id) {
     }
   }
 
-  sVarActiveSlot = g_pSimMgr->GetActiveNationId();
+  sVarActiveSlot = g_pSimMgr->GetPlayerCountry();
   if (sVarActiveSlot == -1) {
-    sVarActiveSlot = g_pSimMgr->GetActiveNationId();
+    sVarActiveSlot = g_pSimMgr->GetPlayerCountry();
   }
 
   if ((nationKeyMask & (1U << ((unsigned char)sVarActiveSlot & 0x1f))) != 0) {
@@ -777,9 +777,9 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(Province* cont
 
 // FUNCTION: IMPERIALISM 0x005604e0
 void TZone::ReconsiderFocusIngot() {
-  short activeNation = g_pSimMgr->GetActiveNationId();
+  short activeNation = g_pSimMgr->GetPlayerCountry();
   if (activeNation == -1) {
-    activeNation = g_pSimMgr->GetActiveNationId();
+    activeNation = g_pSimMgr->GetPlayerCountry();
   }
 
   if ((nationKeyMask & (1U << (static_cast<unsigned char>(activeNation) & 0x1f))) != 0) {
@@ -877,7 +877,7 @@ TAdmiral* TZone::FindReportingAdmiralForNation(int nation) {
 TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation) {
   int resolvedNation = nation;
   if (resolvedNation == -1) {
-    resolvedNation = g_pSimMgr->GetActiveNationId();
+    resolvedNation = g_pSimMgr->GetPlayerCountry();
   }
   unsigned char nationBit = static_cast<unsigned char>(1 << static_cast<short>(resolvedNation));
   if ((nationKeyMask & nationBit) != 0) {
@@ -899,7 +899,7 @@ TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation
 // FUNCTION: IMPERIALISM 0x00560b00
 char TZone::CanDisplayMapOrderEntryInCurrentContext(int nation, bool skipField34Check) {
   if (nation == -1) {
-    nation = g_pSimMgr->GetActiveNationId();
+    nation = g_pSimMgr->GetPlayerCountry();
   }
   unsigned char nationBit = static_cast<unsigned char>(1 << nation);
   if ((nationKeyMask & nationBit) == 0) {

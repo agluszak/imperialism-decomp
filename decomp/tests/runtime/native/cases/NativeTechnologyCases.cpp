@@ -73,7 +73,7 @@ RuntimeActionResult RunCheckTechnologyAdvancesAiPurchase(NativeTransition& trans
     return RuntimeActionResult::Failure("technology state is unavailable");
   }
 
-  const short activeNationSlot = g_pSimMgr->GetActiveNationId();
+  const short activeNationSlot = g_pSimMgr->GetPlayerCountry();
   const short aiNationSlot = activeNationSlot == 0 ? 1 : 0;
   TGreatPower* aiNation = g_apNationStates[aiNationSlot];
   if (aiNation == 0) {
@@ -100,7 +100,7 @@ RuntimeActionResult RunCheckTechnologyAdvancesAiPurchase(NativeTransition& trans
 }
 
 RuntimeActionResult RunTechnologyNavalCapabilityUpgrade(NativeTransition& transition) {
-  const short activeNationSlot = g_pSimMgr->GetActiveNationId();
+  const short activeNationSlot = g_pSimMgr->GetPlayerCountry();
   const short nationSlot = activeNationSlot == 0 ? 1 : 0;
   TGreatPower* nation = g_apNationStates[nationSlot];
   TZone* zone = g_pMapActionContextListHead;
@@ -145,7 +145,7 @@ RuntimeActionResult RunTechnologyNavalCapabilityUpgrade(NativeTransition& transi
 }
 
 RuntimeActionResult RunTechnologyNavalCapabilitySequence(NativeTransition& transition) {
-  const short activeNationSlot = g_pSimMgr->GetActiveNationId();
+  const short activeNationSlot = g_pSimMgr->GetPlayerCountry();
   const short nationSlot = activeNationSlot == 0 ? 1 : 0;
   TGreatPower* nation = g_apNationStates[nationSlot];
   if (nation == 0 || nation->city == 0) {
@@ -187,7 +187,7 @@ RuntimeActionResult RunTechnologyTurnStop(NativeTransition& transition) {
 
   const int technologyId = 3;
   ClearScheduledUnlocksExcept(-1, 1);
-  const short activeNationSlot = g_pSimMgr->GetActiveNationId();
+  const short activeNationSlot = g_pSimMgr->GetPlayerCountry();
   g_pTechMgr->orderCapRows277[activeNationSlot].techStatusByTechId[technologyId] = 1;
   g_pSimMgr->turnStateCode = kGamePhaseTechnology;
 

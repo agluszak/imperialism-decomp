@@ -40,6 +40,7 @@ class TOcean;
 class TSetupRandomMapPicture;
 class TShip;
 class TSimMgr;
+struct STurnInstructionCursor;
 class TSoundPlayer;
 class TSoundResourceManager;
 class TTaskForce;

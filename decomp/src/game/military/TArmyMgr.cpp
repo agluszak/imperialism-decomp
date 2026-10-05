@@ -907,7 +907,7 @@ void TArmyMgr::DoOwnershipChanges() {
     bool proceed = true;
     if (cachedOwner < 7 && currentOwner > 6 &&
         g_apTerrainTypeDescriptorTable[currentOwner]->encodedNationSlot == -1) {
-      bool eligible = g_pSimMgr->IsNationSlotEligibleForEventProcessing(cachedOwner) != 0;
+      bool eligible = g_pSimMgr->ReallyInTheGame(cachedOwner) != 0;
       bool blockedByPeerBand = g_apNationStates[cachedOwner] != nullptr &&
                                g_apNationStates[cachedOwner]->encodedNationSlot > 99 &&
                                g_apNationStates[cachedOwner]->encodedNationSlot < 200;
@@ -988,7 +988,7 @@ bool TArmyMgr::CommitCityActionGateCostIfAffordable(int contextArg) {
     }
   }
 
-  short nationSlot = g_pSimMgr->GetActiveNationId();
+  short nationSlot = g_pSimMgr->GetPlayerCountry();
   if (totalCost == 0) {
     return false;
   }
@@ -1245,14 +1245,14 @@ static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode) {
     return 0;
   }
   short ownerTag = rec->ownerNationTag04;
-  short activeNationId = g_pSimMgr->GetActiveNationId();
-  if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(activeNationId) == 0) {
+  short activeNationId = g_pSimMgr->GetPlayerCountry();
+  if (g_pSimMgr->ReallyInTheGame(activeNationId) == 0) {
     return 8;
   }
-  activeNationId = g_pSimMgr->GetActiveNationId();
+  activeNationId = g_pSimMgr->GetPlayerCountry();
   if (ownerTag != activeNationId) {
     TCountry* owner = g_apTerrainTypeDescriptorTable[ownerTag];
-    activeNationId = g_pSimMgr->GetActiveNationId();
+    activeNationId = g_pSimMgr->GetPlayerCountry();
     if (owner->IsColonyOf(activeNationId) == 0) {
       return 8;
     }
@@ -1439,7 +1439,7 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
       return false;
     }
 
-    short activeNationId = g_pSimMgr->GetActiveNationId();
+    short activeNationId = g_pSimMgr->GetPlayerCountry();
     TCountry* activeCountry = g_apTerrainTypeDescriptorTable[activeNationId];
     int reinforcementCost = 0;
     CIterator orderIter(activeCountry->militaryUnitList44);
@@ -1505,7 +1505,7 @@ void TArmyMgr::MarchSelectedArmies(short tileIndex) {
   short neighborTile = TMapMgr::GetNeighborTileID(tileIndex, direction);
   short cityRecordIndex = g_pGlobalMapState->terrainStateTable[neighborTile].cityRecordIndex;
 
-  short activeNationId = g_pSimMgr->GetActiveNationId();
+  short activeNationId = g_pSimMgr->GetPlayerCountry();
   TGreatPower* nationState = g_apNationStates[activeNationId];
   int categoryCounts[10] = {0};
 
@@ -1527,7 +1527,7 @@ void TArmyMgr::MarchSelectedArmies(short tileIndex) {
   }
 
   if (!g_pViewMgr->DispatchProvinceOrderOverlayConfirmDialog(cityRecordIndex, categoryCounts)) {
-    short activeNationId2 = g_pSimMgr->GetActiveNationId();
+    short activeNationId2 = g_pSimMgr->GetPlayerCountry();
     bool sameOwner =
         g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationCode00 == activeNationId2;
 
@@ -1538,7 +1538,7 @@ void TArmyMgr::MarchSelectedArmies(short tileIndex) {
         if (sameOwner &&
             !g_pGlobalMapState->IsProvinceAdjacentTo(unit->tileIndex06, cityRecordIndex)) {
           short cost = static_cast<TMilitaryUnit*>(unit)->GetArmsCarried();
-          short activeNationId3 = g_pSimMgr->GetActiveNationId();
+          short activeNationId3 = g_pSimMgr->GetPlayerCountry();
           g_apNationStates[activeNationId3]->field900 += cost;
         }
         unit->SetOrders(kUnitOrderIdle, -1);
@@ -1657,7 +1657,7 @@ bool TArmyMgr::GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummar
     do {
       short regionId = g_pGlobalMapState->cityScoreTable[cityRecordIndex].adjacentRegionIds[i];
       if (g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(regionId) ==
-          g_pSimMgr->GetActiveNationId()) {
+          g_pSimMgr->GetPlayerCountry()) {
         TMilitaryUnit* unit = nullptr;
         if (regionId >= 0 && regionId < 0x180) {
           unit = static_cast<TMilitaryUnit*>(
@@ -1691,7 +1691,7 @@ bool TArmyMgr::GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummar
   // fallback.
   TShip* bestShip = nullptr;
   for (TShip* ship = TShip::GetFirst(); ship != nullptr; ship = ship->next) {
-    if (ship->nation == g_pSimMgr->GetActiveNationId() &&
+    if (ship->nation == g_pSimMgr->GetPlayerCountry() &&
         ship->location->ContainsCityStatePointerInZoneArrayByCityIndex(cityRecordIndex)) {
       bestShip = ship->Finest(bestShip, false);
     }
@@ -1725,7 +1725,7 @@ bool TArmyMgr::GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummar
   // per-strength-tier weighted roll, seeded from the city/turn/nation. The category
   // result is biased by 3: 4 selects the misc bucket, 5 selects a random bucket, and
   // every other result selects the unit's movement class.
-  short activeNationId = g_pSimMgr->GetActiveNationId();
+  short activeNationId = g_pSimMgr->GetPlayerCountry();
   short turnTick = g_pSimMgr->GetEconomicTurn();
   int seed = cityRecordIndex + turnTick + activeNationId;
   if (seed == 0) {

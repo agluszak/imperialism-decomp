@@ -1015,8 +1015,8 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
         TTaskForce* survivingEntry;
         if (CountMapOrderChildren(entry->shipList) != 0 && nationEntry->CountShips() != 0 &&
             (g_pSimMgr->preferenceValues[1] == 0 ||
-             (g_pSimMgr->GetActiveNationId() != entry->nation &&
-              g_pSimMgr->GetActiveNationId() != nationEntry->nation))) {
+             (g_pSimMgr->GetPlayerCountry() != entry->nation &&
+              g_pSimMgr->GetPlayerCountry() != nationEntry->nation))) {
           g_pNavyOrderManager->ResolveStrategicBattle(entry, nationEntry);
           survivingEntry = nullptr;
         }

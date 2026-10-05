@@ -6,6 +6,7 @@
 #include "game/nation_domain_types.h"
 #include "game/app/TObject.h"
 #include "game/turn_event_codes.h"
+#include "game/TTurnInstructionCursor.h"
 #include "game/difficulty.h"
 #include "game/game_phase.h"
 #include "game/session_role.h"
@@ -38,18 +39,9 @@ struct DiplomacyNotice {
 
 ASSERT_SIZE(DiplomacyNotice, 4);
 
-// TSimMgr — the global turn-flow / simulation manager (historically reached through the
-// `g_pSimMgr` singleton @ 0x6a20f8; it also owns the UI string/format helpers,
-// which is why callers treat it as a "localization table"). It drives the per-turn state
-// machine, rebuilds the nation-state slot tables, and tears the order managers back down.
-//
-// Parent class recovered from the intact MFC CRuntimeClass chain (m_pBaseClass at +0x10):
-//   TSimMgr -> TObject -> CObject
-// so TSimMgr is a normal DECLARE_DYNAMIC game object. Its vtable (0x00662a58) has 35 slots
-// (0x00..0x88). Slots 0x08/0x0c/0x10/0x20/0x24 (Serialize/AssertValid/Dump/ShallowClone/
-// ShallowFree) inherit TObject unchanged and are not redeclared here. The remaining slots are
-// declared below in exact vtable order so external virtual call sites resolve to the right
-// byte offset.
+// The g_pSimMgr singleton: the turn-flow state machine, the countries it creates and
+// eliminates, and the game's string/number formatting helpers. Virtuals are declared in
+// vtable order; slots 0x08-0x10 and 0x20/0x24 inherit TObject.
 //
 // VTABLE: IMPERIALISM 0x00662a58
 class TSimMgr : public TObject {
@@ -106,8 +98,7 @@ public:
   virtual CString
   DiplomacyNoticeString(const DiplomacyNotice* notice); // 0x88 0x00580790, Mac oracle
 
-  // 0x57f4d0 — out-of-line in the original build; do not define in-class or MSVC
-  // inlines it at every callsite and mismatches all 11 original call instructions.
+  // 0x57f4d0, out of line in retail.
   unsigned char TestTurnFlowStatusFlagMask(unsigned int mask);
 
   // --- non-virtual helpers ---
@@ -119,98 +110,61 @@ public:
   // pushed dword to TGreatPower slot 0xae, so retain the observed Windows argument width.
   void DoPerTurnMissionAIStuff(int replanMode); // 0x57d7a0
 
-  // Active great-power slot (this+0x2e). Every original callsite loads ECX from
-  // g_pSimMgr (0x6a20f8) — this getter belongs to TSimMgr, not the view
-  // managers that many older ports called it on.
-  NationSlot GetActiveNationId(); // 0x581260
-  // 0x581280 -- real __thiscall on the TSimMgr singleton (ret 4; every caller loads
-  // g_pSimMgr into ecx); `this` is unused by the body. Slot is eligible when its
-  // terrain descriptor exists and (for great powers) isn't a 100..199 profile.
-  char IsNationSlotEligibleForEventProcessing(NationSlot nationSlot);
-  // 0x581300 -- removes a nation slot at end of turn: neutralizes the removed nation's
-  // percent field on every still-active great power, calls the removed nation's Free(),
-  // clears its state/descriptor slots and the per-slot flag byte, decrements the active
-  // count, then resets its diplomacy relation matrices via g_pDiplomacyTurnStateManager.
-  void RemoveNationSlotAndNotifyPeers(NationSlot nationSlot);
-  // 0x5813d0 -- tail-forwarder: hands the "this nation leaves play" transition to the
-  // active great power's SorryYouLose (vtable byte offset 0x2ac).
+  NationSlot GetPlayerCountry(); // Mac oracle; 0x581260
+  // Mac oracle: the country exists and has not been absorbed. ABI: thiscall; the body
+  // ignores `this`. 0x581280.
+  char ReallyInTheGame(NationSlot nationSlot);
+  void EliminateGP(NationSlot nationSlot); // Mac oracle; 0x581300
+  // Forwards to the player's TGreatPower::SorryYouLose. 0x5813d0.
   void NotifyActiveNationLost();
-  // Mac symbol oracle: SetDifficultyLevel(eDifficulty). Store the selected difficulty
-  // into +0x40 and set the +0x5c short flag only for the zero-valued level; values 1..4
-  // and out-of-range values clear it. Windows 0x57d870.
+  // Mac oracle. Also sets preferenceValues[10] only for Introductory. 0x57d870.
   void SetDifficultyLevel(eDifficulty difficulty);
   void ISimMgr();
   // 0x57bc90. Resets the transient turn-flow state and PRNG seed without changing
   // difficulty, scenario selection, or persisted preference values.
   void ResetTurnFlowStateAndRandomSeed();
-  void InitializeOrLoadEntryArray14AndClampLimits(bool writeBack);
-  // 0x581510. Loads the 10-entry {score, name} table from scores.dat (defaulting each
-  // slot to {0, this nation's own name} when the file/entry is missing), recomputes the
-  // active nation's economy/diplomacy summary, and if its score beats one of the ten
-  // entries, shifts the lower entries down and inserts {score, active nation's overlay
-  // label} at that position, rewriting the whole table back to scores.dat.
-  void UpdatePersistentTopTenNationScores();
-  // 0x57c3b0. Verified against AdvanceGlobalTurnStateMachine's case-3 callsite
-  // (0x0057db25): a real __thiscall on TSimMgr (receiver g_pSimMgr), not a
-  // free function -- writes into the GameSetup policy rows regions at +0xe8 on `this`.
-  void RebuildGlobalOrderManagersAndCapabilityState(bool flag);
-  // 0x57c7c0. Same callsite family (0x0057db32); real __thiscall, 3 stack args
-  // (`RET 0xc` confirms the count); param2 is the string literal "Chunk", not a
-  // raw address.
-  void RebuildMapContextAndGlobalMapState(int param1, const char* param2, int param3);
-  // 0x57c9a0: rebuild the active map context + global map state for a numbered
-  // scenario ('scn0'..'scz9' session-init tags); returns whether the scenario data loaded.
-  unsigned char RecreateActiveMapContextAndInitializeGlobalMapState(int scenarioIndex);
-  // 0x57cad0. Verified against 0x0057db53: real __thiscall on `this` (not
-  // g_pSimMgr this time), 1 stack arg (`RET 0x4`).
-  void RebuildNationStateSlotsAndAvailability(int flag);
+  void UpdatePreferences(bool writeBack); // Mac oracle
+  void AddHighScore(); // Mac oracle; inserts the player into scores.dat's top ten. 0x581510
+  void CreateSimObjects(bool flag);                              // Mac oracle; 0x57c3b0
+  void CreatePlanet(int param1, const char* param2, int param3); // Mac oracle; 0x57c7c0
+  unsigned char LoadScenario(int scenarioIndex);                 // Mac oracle; 0x57c9a0
+  void CreateCountries(int flag);                                // Mac oracle; 0x57cad0
   // Mac retail identities for the two state-2 setup branches.
   void NameCapitals();          // 0x581c00
   void ProcessScenarioScript(); // 0x581e60
-  // 0x581ae0. Sets field6a, then reloads the picture-word-data language pack for
-  // that index (EnsurePictWvDataGobLoadedBySlot) and refreshes the strategic map
-  // view's cached bitmap 244 (TMacViewMgr::ReloadBitmap244AndRefreshUiCaches on
-  // g_pMacViewMgr).
+  // Sets field6a and reloads that picture language pack. 0x581ae0.
   void SetSelectedIndex6AAndTriggerRefresh(short index);
-  void SetActiveNationSlotAndRefreshCityCapabilityUiHandles(NationSlot nationSlot); // 0x5837c0
+  void SetPlayerCountry(NationSlot nationSlot); // Mac oracle; 0x5837c0
 
-  // --- turn-instruction stream handlers (dispatched by FourCC through the table at
-  //     0x698b50 inside ProcessScenarioScript; each reads one or
-  //     more big-endian tokens from the cursor and mutates this manager / global state) ---
-  void
-  HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(void* pInstructionRaw); // 0x582ed0
-  void HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void* pInstructionRaw);     // 0x583400
-  void
-  HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue(void* pInstructionRaw);   // 0x583470
-  void HandleTurnInstruction_Tbar_SetNationRelationBarValue(void* pInstructionRaw);    // 0x583510
-  void HandleTurnInstruction_Cash_SetNationCash(void* pInstructionRaw);                // 0x583360
-  void HandleTurnInstruction_Tran_SetNationTransportStat(void* pInstructionRaw);       // 0x582860
-  void HandleTurnInstruction_Tclr_ResetNationRelationBars(void* pInstructionRaw);      // 0x583670
-  void HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(void* pInstructionRaw); // 0x582f20
-  void HandleTurnInstruction_Rela_SetNationRelationValue(void* pInstructionRaw);       // 0x5831d0
-  void HandleTurnInstruction_Pnam_AssignProvinceName(void* pInstructionRaw);           // 0x583270
-  void HandleTurnInstruction_Coun_SetCountrySlotState(void* pInstructionRaw);          // 0x583700
-  void HandleTurnInstruction_Emba_SetEmbassyRelationFlags(void* pInstructionRaw);      // 0x582bf0
-  void
-  HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh(void* pInstructionRaw);  // 0x5823e0
-  void HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta(void* pInstructionRaw); // 0x5822c0
-  void HandleTurnInstruction_Labo_SetNationLaborTierCounts(void* pInstructionRaw);      // 0x582120
-  void
-  HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders(void* pInstructionRaw);  // 0x5824c0
-  void HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw); // 0x582630
-  void
-  HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders(void* pInstructionRaw);   // 0x582720
-  void HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus(void* pInstructionRaw); // 0x5829b0
-  void HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus(void* pInstructionRaw); // 0x582a40
-  void HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry(void* pInstructionRaw);       // 0x5828f0
-  void
-  HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations(void* pInstructionRaw);  // 0x582ad0
-  void HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry(void* pInstructionRaw);    // 0x582b70
-  void HandleTurnInstruction_Subs_ApplyNationSubsidyEntry(void* pInstructionRaw);     // 0x582ce0
-  void HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry(void* pInstructionRaw); // 0x582da0
-  void
-  HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId(void* pInstructionRaw); // 0x582fa0
-  void HandleTurnInstruction_Cnam_AssignCountryName(void* pInstructionRaw);             // 0x583070
+  // --- scenario script handlers (Mac Sc*(char*&)), dispatched by FourCC through
+  //     g_apfnScenarioScriptInstructionHandlers from ProcessScenarioScript ---
+  void ScSetYear(STurnInstructionCursor* instruction);           // 0x582ed0
+  void ScSetFlags(STurnInstructionCursor* instruction);          // 0x583400
+  void ScSetTechDate(STurnInstructionCursor* instruction);       // 0x583470
+  void ScSetTransportBar(STurnInstructionCursor* instruction);   // 0x583510
+  void ScSetTreasury(STurnInstructionCursor* instruction);       // 0x583360
+  void ScSetTransport(STurnInstructionCursor* instruction);      // 0x582860
+  void ScClearTransport(STurnInstructionCursor* instruction);    // 0x583670
+  void ScSetProvince(STurnInstructionCursor* instruction);       // 0x582f20
+  void ScSetRelationship(STurnInstructionCursor* instruction);   // 0x5831d0
+  void ScSetProvinceName(STurnInstructionCursor* instruction);   // 0x583270
+  void ScSetCouncilMeeting(STurnInstructionCursor* instruction); // 0x583700
+  void ScSetEmbassy(STurnInstructionCursor* instruction);        // 0x582bf0
+  void ScSetWarehouse(STurnInstructionCursor* instruction);      // 0x5823e0
+  void ScSetCapacity(STurnInstructionCursor* instruction);       // 0x5822c0
+  void ScSetLabor(STurnInstructionCursor* instruction);          // 0x582120
+  void ScAddArmy(STurnInstructionCursor* instruction);           // 0x5824c0
+  void ScAddCivilian(STurnInstructionCursor* instruction);       // 0x582630
+  void ScAddShip(STurnInstructionCursor* instruction);           // 0x582720
+  void ScAddRailhead(STurnInstructionCursor* instruction);       // 0x5829b0
+  void ScAddPort(STurnInstructionCursor* instruction);           // 0x582a40
+  void ScSetDevLevel(STurnInstructionCursor* instruction);       // 0x5828f0
+  void ScAddTech(STurnInstructionCursor* instruction);           // 0x582ad0
+  void ScSetPrice(STurnInstructionCursor* instruction);          // 0x582b70
+  void ScSetSubsidy(STurnInstructionCursor* instruction);        // 0x582ce0
+  void ScSetTreaty(STurnInstructionCursor* instruction);         // 0x582da0
+  void ScSetSeazoneName(STurnInstructionCursor* instruction);    // 0x582fa0
+  void ScSetCountryName(STurnInstructionCursor* instruction);    // 0x583070
 
   // --- fields (offsets and declaration order are load-bearing) ---
   // The save stream keeps only the low word of each phase.
@@ -224,39 +178,25 @@ public:
   NationSlot activeNationSlot;
   int numGreatPowers;
   int numMinorCountries;
-  // +0x38 — sign-extended char result of ShowTurnAlertsForActiveNation stored by
-  // AdvanceGlobalTurnStateMachine (0x57dcd5). The save stream deliberately skips
-  // this transient alert result.
+  // Transient; not saved.
   unsigned int alertsPendingFlag;
-  // +0x3c — session/turn-flow flag word: zeroed by the ctor, OR'd with 0x40 by
-  // AdvanceGlobalTurnStateMachine, masked by Merge/TestTurnFlowStatusFlagMask
-  // (0x57f4b0/0x57f4d0 both use [ecx+0x3c]), and serialized as a full dword.
   unsigned int turnFlowStatusFlags;
-  // +0x40 — difficulty level (Mac eDifficulty; normally 0..4), consumed throughout
-  // TCountry/TGreatPower/TDiplomacyMgr balancing logic. Save streams encode it through
-  // the integer-byte slot.
+  // Saved as one byte.
   eDifficulty difficultyLevel;
   // ReinitializeGameFlowAndPostTurnEventCode recreates g_pGameFlowState for any session.
   MultiplayerSessionRole multiplayerSessionRole;
-  // +0x48 — settings-preference slots. Ground truth: InitializeOrLoadEntryArray14AndClampLimits
-  // (0x581412 `[this + i*2 + 0x48]`) anchors the array at +0x48, not +0x44 (the earlier
-  // +0x44 base folded multiplayerSessionRole into the array
-  // and skewed every index by one slot). 14 shorts end at +0x63, so field_64 lands at
-  // its literal +0x64 with no padding gap. Known slots: [2] clamped 0..100, [3] master
-  // volume 0..0xff
-  // (TTwoPicSlider writes +0x4e), [8] = the +0x58 turn-gate flag, [10] = the +0x5c
-  // difficulty-zero gate (SetDifficultyLevel writes +0x5c).
+  // Profile "Pref%d" settings: [2] 0..100, [3] master volume, [8] turn-gate flag,
+  // [10] Introductory gate, [11] last chosen difficulty.
   short preferenceValues[14];
   int field_64;
-  // +0x68 — nonzero: city/nation names come from the localized string table
-  // (GetString group 0x2715) instead of the generated flavor-text variants
-  // (SetSharedStringFromMappedFlavorTextWithLengthClamp @ 0x5d4410).
+  // Names come from string group 0x2715 instead of generated flavor text.
   char useLocalizedNameTables;
   unsigned char pad69;
   short field6a;
-  short field6c;
-  // +0x6e — ten decade-bucket phase-state bytes, indexed by economicTurn / 40.
-  unsigned char phaseStateByDecade[10];
+  short finalCouncilYear; // calendar year; 1914 by default
+  // Council of Governors schedule per decade (economicTurn / 40): 0 none, 1 meeting,
+  // 2 final meeting (ScSetCouncilMeeting, finalCouncilYear).
+  unsigned char councilByDecade[10];
   unsigned char field78;
   bool field79;
   bool gateFlag7a;
@@ -271,8 +211,6 @@ public:
   short defenseMinisterPolicyIds[7];
   bool reloadPoliticalMapState;
   unsigned char pad113;
-  // 0x114 — nonzero switches TGreatPower seeding/home-region resolution to the
-  // direct-map path (0x004d71b0 / 0x004dfae0 / 0x004df810).
   short scenarioMapIndexPlusOne;
 };
 

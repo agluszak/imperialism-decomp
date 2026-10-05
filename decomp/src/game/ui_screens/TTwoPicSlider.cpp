@@ -178,7 +178,7 @@ void TTwoPicSlider::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pre
         g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(static_cast<short>(volumeScalar));
         // Original: mov eax,[0x6a20f8]; mov [eax+0x4e],di — the master-volume
         // preference slot (index 3, clamped 0..0xff by
-        // InitializeOrLoadEntryArray14AndClampLimits) on the TSimMgr singleton.
+        // UpdatePreferences) on the TSimMgr singleton.
         g_pSimMgr->preferenceValues[3] = static_cast<short>(volumeScalar);
       }
     }

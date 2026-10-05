@@ -498,8 +498,7 @@ int TAutoGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNati
     if (nation >= 7) {
       break;
     }
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(nation) != 0 &&
-        nation != this->nationSlot) {
+    if (g_pSimMgr->ReallyInTheGame(nation) != 0 && nation != this->nationSlot) {
       if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, nation) == 0 &&
           g_pDiplomacyTurnStateManager->IsNationPairAtWar(targetNation, nation) != 0) {
         char borderLinked =
@@ -631,7 +630,7 @@ char TAutoGreatPower::PassesDiplomacyStrengthThresholdForTarget(int targetNation
   float strongestPeer = 0.0f;
   for (int peerSlot = 0; peerSlot < 7; ++peerSlot) {
     TGreatPower* peer = g_apNationStates[peerSlot];
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(peerSlot) != 0) {
+    if (g_pSimMgr->ReallyInTheGame(peerSlot) != 0) {
       float peerArmy = peer->GetMilitaryPower();
       if (strongestPeer < peerArmy) {
         strongestPeer = peerArmy;
@@ -841,7 +840,7 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
           provinceStatus[region] = markValue;
         }
       }
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(slot) != 0) {
+      if (g_pSimMgr->ReallyInTheGame(slot) != 0) {
         int minorIndex;
         for (minorIndex = 0; minorIndex < 9; ++minorIndex) {
           TCountry* minorDescriptor = g_apTerrainTypeDescriptorTable[7 + minorIndex];
@@ -955,7 +954,7 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
         } candidate;
         candidate.regionIndex = static_cast<short>(rec);
         candidate.score = score;
-        if (owner < 7 && g_pSimMgr->IsNationSlotEligibleForEventProcessing(owner) != 0) {
+        if (owner < 7 && g_pSimMgr->ReallyInTheGame(owner) != 0) {
           candidate.score = static_cast<short>(candidate.score + 0x14);
         }
         candidates->InsertCopiedRecordSortedByComparator(&candidate);
@@ -1130,7 +1129,7 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
   int n;
   for (n = 0; n < 7 && !anyEligibleAtWar; ++n) {
     if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(static_cast<short>(n), nationSlot) != 0 &&
-        g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(n)) != 0) {
+        g_pSimMgr->ReallyInTheGame(static_cast<short>(n)) != 0) {
       anyEligibleAtWar = true;
     }
   }

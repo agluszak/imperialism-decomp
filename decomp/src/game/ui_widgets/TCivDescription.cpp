@@ -339,13 +339,13 @@ void TCivDescription::DrawEngineer(RECT* boundsBuffer) {
   // legend: Depot, Port, Fort, then the terrain types that are still unavailable.
   unsigned char cannotBuildTerrain[4];
   cannotBuildTerrain[0] =
-      g_pTechMgr->orderCapRows277[g_pSimMgr->GetActiveNationId()].techStatusByTechId[6] != 2;
+      g_pTechMgr->orderCapRows277[g_pSimMgr->GetPlayerCountry()].techStatusByTechId[6] != 2;
   cannotBuildTerrain[1] =
-      g_pTechMgr->orderCapRows277[g_pSimMgr->GetActiveNationId()].techStatusByTechId[12] != 2;
+      g_pTechMgr->orderCapRows277[g_pSimMgr->GetPlayerCountry()].techStatusByTechId[12] != 2;
   cannotBuildTerrain[2] =
-      g_pTechMgr->orderCapRows277[g_pSimMgr->GetActiveNationId()].techStatusByTechId[12] != 2;
+      g_pTechMgr->orderCapRows277[g_pSimMgr->GetPlayerCountry()].techStatusByTechId[12] != 2;
   cannotBuildTerrain[3] =
-      g_pTechMgr->orderCapRows277[g_pSimMgr->GetActiveNationId()].techStatusByTechId[23] != 2;
+      g_pTechMgr->orderCapRows277[g_pSimMgr->GetPlayerCountry()].techStatusByTechId[23] != 2;
 
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 10, 0x2b6c, 3);
 
@@ -446,7 +446,7 @@ void TCivDescription::DrawProspector(RECT* bounds) {
   unsigned long themeColor = 0;
 
   bool oilUnlocked =
-      g_pTechMgr->orderCapRows277[g_pSimMgr->GetActiveNationId()].techStatusByTechId[4] == 2;
+      g_pTechMgr->orderCapRows277[g_pSimMgr->GetPlayerCountry()].techStatusByTechId[4] == 2;
 
   // Per-column mineral-icon lists drawn under each terrain header
   // (coal/iron; coal/iron/gems/gold; oil; oil; oil).
@@ -574,7 +574,7 @@ void TCivDescription::DrawDeveloper(RECT* bounds) {
       }
       int reached =
           g_pTechMgr
-              ->capabilityValueByNationAndResource[g_pSimMgr->GetActiveNationId()][resourceType] -
+              ->capabilityValueByNationAndResource[g_pSimMgr->GetPlayerCountry()][resourceType] -
           1;
       if (level <= reached) {
         level = reached;
@@ -629,7 +629,7 @@ void TCivDescription::DrawDeveloper(RECT* bounds) {
                                               static_cast<short>(destinationRect.bottom - 4));
       short capabilityValue =
           g_pTechMgr
-              ->capabilityValueByNationAndResource[g_pSimMgr->GetActiveNationId()][resourceType];
+              ->capabilityValueByNationAndResource[g_pSimMgr->GetPlayerCountry()][resourceType];
       text.Format(
           g_szDecimalFormat,
           static_cast<int>(g_abUniversityRequirementLevelById[resourceType][capabilityValue]));
@@ -640,7 +640,7 @@ void TCivDescription::DrawDeveloper(RECT* bounds) {
     // capability loses its last row.
     short rowLimit = maxRowsByClass[civilianClass];
     if (civilianClass == 2 &&
-        g_pTechMgr->capabilityValueByNationAndResource[g_pSimMgr->GetActiveNationId()][0] == 0) {
+        g_pTechMgr->capabilityValueByNationAndResource[g_pSimMgr->GetPlayerCountry()][0] == 0) {
       --rowLimit;
     }
     if (rowLimit > 0) {

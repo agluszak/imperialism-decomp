@@ -333,9 +333,9 @@ const NativeCase* FindNativeCase(const char* name) {
 }
 
 TGreatPower* ActiveNation() {
-  return g_apNationStates[g_pSimMgr->GetActiveNationId()];
+  return g_apNationStates[g_pSimMgr->GetPlayerCountry()];
 }
 
 short ActiveNationSlot() {
-  return g_pSimMgr->GetActiveNationId();
+  return g_pSimMgr->GetPlayerCountry();
 }

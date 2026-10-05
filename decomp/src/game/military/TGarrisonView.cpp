@@ -89,7 +89,7 @@ void TGarrisonView::Close() {
                     reinterpret_cast<const unsigned char*>(g_szGarrisonSecretUnitNameSnidely)) == 0;
             if (isSecretUnit) {
               CString activeNationName;
-              short activeNation = g_pSimMgr->GetActiveNationId();
+              short activeNation = g_pSimMgr->GetPlayerCountry();
               g_apTerrainTypeDescriptorTable[activeNation]->FormatOverlayTerrainLabelText(
                   &activeNationName);
               bool isSecretNation =
@@ -98,7 +98,7 @@ void TGarrisonView::Close() {
                       reinterpret_cast<const unsigned char*>(g_szGarrisonSecretNationNameFrog)) ==
                   0;
               if (isSecretNation) {
-                activeNation = g_pSimMgr->GetActiveNationId();
+                activeNation = g_pSimMgr->GetPlayerCountry();
                 if (g_apTerrainTypeDescriptorTable[activeNation]->GetCapitolProvince() ==
                     selectedTileIndex) {
                   g_nationInfoGoldResourceOverride_006a5bac = 0x24d0;

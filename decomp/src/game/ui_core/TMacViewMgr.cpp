@@ -367,20 +367,20 @@ void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
   if (atlas690 != 0) {
     g_pDisplayMgr->RemoveGWorld(atlas690);
   }
-  nationId = g_pSimMgr->GetActiveNationId();
+  nationId = g_pSimMgr->GetPlayerCountry();
   if (nationId < 0) {
     return;
   }
   g_pAssetMgr->OpenFilesFor(3);
-  nationId = g_pSimMgr->GetActiveNationId();
+  nationId = g_pSimMgr->GetPlayerCountry();
   variant = g_pTechMgr->orderCapRows277[nationId].techStatusByTechId[0x0f] != 0;
-  nationId = g_pSimMgr->GetActiveNationId();
+  nationId = g_pSimMgr->GetPlayerCountry();
   if (g_pTechMgr->orderCapRows277[nationId].techStatusByTechId[0x18] != 0) {
     variant = 2;
   }
-  nationId = g_pSimMgr->GetActiveNationId();
+  nationId = g_pSimMgr->GetPlayerCountry();
   atlas68c = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(nationId + 0x579 + variant * 7);
-  nationId = g_pSimMgr->GetActiveNationId();
+  nationId = g_pSimMgr->GetPlayerCountry();
   atlas690 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(nationId + 0x564 + variant * 7);
 }
 

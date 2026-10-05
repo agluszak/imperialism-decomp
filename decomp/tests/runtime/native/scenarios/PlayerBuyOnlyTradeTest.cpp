@@ -31,7 +31,7 @@ protected:
   void Script() override {
     RT_BEGIN();
 
-    activeNationSlot = g_pSimMgr->GetActiveNationId();
+    activeNationSlot = g_pSimMgr->GetPlayerCountry();
     RT_REQUIRE_NOT_NULL(Player());
     RT_REQUIRE_NE(0, static_cast<int>(Player()->diplomacyEligibility));
 

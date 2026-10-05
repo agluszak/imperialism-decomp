@@ -26,7 +26,7 @@ protected:
 
 private:
   bool OnePaidOrderProducesPopulationOnce() {
-    TGreatPower* player = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+    TGreatPower* player = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
     TCity* city = player != 0 ? player->city : 0;
     if (city == 0 || city->productionSummary == 0) {
       return false;

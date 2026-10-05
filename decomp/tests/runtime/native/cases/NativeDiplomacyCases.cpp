@@ -224,7 +224,7 @@ RuntimeActionResult RunDiplomacyReset(NativeTransition& transition) {
 }
 
 RuntimeActionResult RunDiplomacyPhase(NativeTransition& transition) {
-  const short activeNationSlot = g_pSimMgr->GetActiveNationId();
+  const short activeNationSlot = g_pSimMgr->GetPlayerCountry();
   TGreatPower* nation = g_apNationStates[activeNationSlot];
   if (nation == 0 || g_pDiplomacyTurnStateManager == 0) {
     return RuntimeActionResult::Failure("the loaded player has no diplomacy state");

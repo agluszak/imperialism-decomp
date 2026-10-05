@@ -117,7 +117,7 @@ private:
   enum { kOrderedTileReportCursor = 0x3f3 };
 
   short ActiveNation() const {
-    return g_pSimMgr->GetActiveNationId();
+    return g_pSimMgr->GetPlayerCountry();
   }
 
   TGreatPower* Player() const {

@@ -523,9 +523,9 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x301);
   }
-  if (g_pSimMgr->GetActiveNationId() >= 0 && g_pSimMgr->GetActiveNationId() < 7) {
-    coat->SetPictureResourceIdAndRefresh(
-        static_cast<short>(g_pSimMgr->GetActiveNationId() + 0x251c), 0);
+  if (g_pSimMgr->GetPlayerCountry() >= 0 && g_pSimMgr->GetPlayerCountry() < 7) {
+    coat->SetPictureResourceIdAndRefresh(static_cast<short>(g_pSimMgr->GetPlayerCountry() + 0x251c),
+                                         0);
   } else {
     coat->Show(0, 0);
   }
@@ -673,7 +673,7 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
   case 1: {
     g_pSimMgr->GetString(0x273a, 1, &messageText);
     dialogContext = 1;
-    short nationId = g_pSimMgr->GetActiveNationId();
+    short nationId = g_pSimMgr->GetPlayerCountry();
     int cap = g_pTechMgr->nationCapRows1e8[nationId].slots[9];
     if (cap == 0x1c) {
       resourceId = 0x2518;
@@ -799,7 +799,7 @@ void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent() {
   }
   if (control != nullptr) {
     static_cast<TToolBarCluster*>(control)->UpdateControlTagTreaTextFromNationAndMapContext(
-        g_pSimMgr->GetActiveNationId());
+        g_pSimMgr->GetPlayerCountry());
   }
 }
 
@@ -1020,7 +1020,7 @@ inline void RefreshToolBarClusterByTag(unsigned int controlTag) {
   }
   control->AssertValid();
   TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(control);
-  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetActiveNationId());
+  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetPlayerCountry());
   toolbar->RefreshTurnOrderStatusPanelTextsAndControls();
 }
 
@@ -1573,7 +1573,7 @@ void TViewMgr::RefreshTechnologyStorePageAndHudText(int nationSlot) {
   TToolBarCluster* toolbar =
       static_cast<TToolBarCluster*>(mainView->ResolveControlByTag(kControlTagTool));
   toolbar->AssertValid();
-  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetActiveNationId());
+  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetPlayerCountry());
   toolbar->RefreshTurnOrderStatusPanelTextsAndControls();
 
   g_pCursorControlPanel =
@@ -1623,7 +1623,7 @@ void TViewMgr::ShowAbilityStatusReport(short abilityIndex) {
       static_cast<TControl*>(activeDialog->ResolveControlByTag(kControlTagTool));
   toolControl->AssertValid();
   TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(toolControl);
-  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetActiveNationId());
+  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetPlayerCountry());
   toolbar->RefreshTurnOrderStatusPanelTextsAndControls();
 
   g_pCursorControlPanel =
@@ -2028,7 +2028,7 @@ void TViewMgr::ShowTerrainMap(short nationSlot) {
   TView* mainView = g_pDisplayMgr->activeDialog;
   CString sharedString;
 
-  if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(g_pSimMgr->GetActiveNationId()) == 0) {
+  if (g_pSimMgr->ReallyInTheGame(g_pSimMgr->GetPlayerCountry()) == 0) {
     g_pSimMgr->SetFlags(static_cast<unsigned int>(-1));
   }
 
@@ -2343,7 +2343,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF4() {
     movieName = CString("lose");
     break;
   case kGamePhaseEliminations:
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(g_pSimMgr->GetActiveNationId())) {
+    if (g_pSimMgr->ReallyInTheGame(g_pSimMgr->GetPlayerCountry())) {
       movieName = CString("win");
     } else {
       movieName = CString("lose");
@@ -2384,7 +2384,7 @@ void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) 
         EncodeTurnEventCode(kTurnEventCouncilOfGovernors));
     return;
   case kGamePhaseEliminations:
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(g_pSimMgr->GetActiveNationId())) {
+    if (g_pSimMgr->ReallyInTheGame(g_pSimMgr->GetPlayerCountry())) {
       g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventGameScore));
       return;
     }

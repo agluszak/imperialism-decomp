@@ -157,7 +157,7 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
         SetControlHoverHelpTextAltEntry(hoverHelp, caption);
       }
 
-      toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetActiveNationId());
+      toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetPlayerCountry());
     }
 
     if (nMode == 0) {
@@ -282,7 +282,7 @@ void TMapUberPicture::DoMenuCommand(int command) {
 
   case 3:
     CenterOn(
-        g_pGlobalMapState->ComputeRepresentativeTileIndexForNation(g_pSimMgr->GetActiveNationId()));
+        g_pGlobalMapState->ComputeRepresentativeTileIndexForNation(g_pSimMgr->GetPlayerCountry()));
     return;
   }
 }
@@ -381,8 +381,8 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
   bool selectionResolved = false;
   unsigned char previousMode = modeCursor;
 
-  short activeNation = g_pSimMgr->GetActiveNationId();
-  if (!g_pSimMgr->IsNationSlotEligibleForEventProcessing(activeNation)) {
+  short activeNation = g_pSimMgr->GetPlayerCountry();
+  if (!g_pSimMgr->ReallyInTheGame(activeNation)) {
     visitedModes = 7;
   }
 
@@ -391,12 +391,12 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
     case 0: {
       if (previousMode != 0) {
         g_pSelectedCivilianOrderState->ClearCivilianSelectionHighlightsForNation(
-            g_pSimMgr->GetActiveNationId());
+            g_pSimMgr->GetPlayerCountry());
         visitedModes |= 1;
       }
 
       TCivUnit* civilian = g_pSelectedCivilianOrderState->SelectFirstAvailableCivilianForNation(
-          g_pSimMgr->GetActiveNationId());
+          g_pSimMgr->GetPlayerCountry());
       if (civilian != nullptr) {
         selectionResolved = true;
         if (activeUnitCategoryIndex != 0) {
@@ -419,12 +419,12 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
     case 1: {
       if (previousMode != 1) {
         g_pMapContextActionManager->ClearProvinceSelectionHighlightsForNation(
-            g_pSimMgr->GetActiveNationId());
+            g_pSimMgr->GetPlayerCountry());
         visitedModes |= 2;
       }
 
       short province = g_pMapContextActionManager->FindNextSelectableProvinceForNation(
-          g_pSimMgr->GetActiveNationId());
+          g_pSimMgr->GetPlayerCountry());
       if (province != -1) {
         if (activeUnitCategoryIndex != 1) {
           SetMapInteractionMode(1);
@@ -859,7 +859,7 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
         g_pSimMgr, &text, static_cast<LPCSTR>(reportTemplate),
         static_cast<LPCSTR>(static_cast<Province*>(cachedTaskForce->target)->cityNameA4));
   } else {
-    zone->BuildNavalIntelligenceSourceDescription(&text, g_pSimMgr->GetActiveNationId());
+    zone->BuildNavalIntelligenceSourceDescription(&text, g_pSimMgr->GetPlayerCountry());
   }
   control->SetTextAndMaybeRefresh(&text, 0);
   control->InstallTextStyle(attributionStyle, 0);
@@ -869,7 +869,7 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
   if (cachedTaskForce != 0) {
     cachedTaskForce->GetCompositionDescription(&text);
   } else {
-    TAdmiral* observer = zone->FindReportingAdmiralForNation(g_pSimMgr->GetActiveNationId());
+    TAdmiral* observer = zone->FindReportingAdmiralForNation(g_pSimMgr->GetPlayerCountry());
     observer->GetFleetReport(&text, zone, nation);
   }
   control->SetTextAndMaybeRefresh(&text, 0);

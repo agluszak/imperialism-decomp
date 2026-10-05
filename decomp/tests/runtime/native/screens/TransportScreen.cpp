@@ -198,12 +198,12 @@ RuntimeActionResult TransportScreen::ClickCommodityArrow(short slot, int arrowTa
 }
 
 short TransportScreen::CommodityNeedTarget(short slot) const {
-  TGreatPower* nation = g_pSimMgr != 0 ? g_apNationStates[g_pSimMgr->GetActiveNationId()] : 0;
+  TGreatPower* nation = g_pSimMgr != 0 ? g_apNationStates[g_pSimMgr->GetPlayerCountry()] : 0;
   return nation != 0 && slot >= 0 && slot < 0x17 ? nation->needTargetByType[slot] : -1;
 }
 
 short TransportScreen::ReservedTransportCapacity() const {
-  TGreatPower* nation = g_pSimMgr != 0 ? g_apNationStates[g_pSimMgr->GetActiveNationId()] : 0;
+  TGreatPower* nation = g_pSimMgr != 0 ? g_apNationStates[g_pSimMgr->GetPlayerCountry()] : 0;
   return nation != 0 ? nation->reservedTransportCapacity : -1;
 }
 

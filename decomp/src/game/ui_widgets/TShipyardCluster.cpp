@@ -32,7 +32,7 @@ TShipyardCluster::~TShipyardCluster() {}
 
 // FUNCTION: IMPERIALISM 0x0058a610
 void TShipyardCluster::DoPostCreate(int styleSeed) {
-  TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+  TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
   TCity* province = nationState == 0 ? 0 : nationState->GetCityState();
   selectedMetricOrder = province->shipOrderSlots[0];
   selectedMetricValue = 999;

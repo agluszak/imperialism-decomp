@@ -38,7 +38,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
   BuildUiTextStyleDescriptor(&scoreStyle, 0, 14, 0x2b68);
   ResolveUiThemeColor(0x2b6a, &shadowColor);
 
-  g_apNationStates[g_pSimMgr->GetActiveNationId()]->GenerateGameScore();
+  g_apNationStates[g_pSimMgr->GetPlayerCountry()]->GenerateGameScore();
 
   for (int row = 0; row < 12; ++row) {
     TDropShadowText* label =
@@ -67,7 +67,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
     value->shadowColor94 = shadowColor;
 
     if (row == 10) {
-      int difficultyPercent = g_apNationStates[g_pSimMgr->GetActiveNationId()]
+      int difficultyPercent = g_apNationStates[g_pSimMgr->GetPlayerCountry()]
                                   ->gameScoreRows[TGreatPower::kGameScoreDifficultyPercent];
       if (difficultyPercent % 10 > 0) {
         FormatNonnegativeFloatToLocalizedSharedString(static_cast<float>(difficultyPercent) * 0.1f,
@@ -78,7 +78,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
       displayText = g_szLowercaseX + displayText;
     } else {
       displayText.Format(g_szDecimalFormat,
-                         g_apNationStates[g_pSimMgr->GetActiveNationId()]->gameScoreRows[row]);
+                         g_apNationStates[g_pSimMgr->GetPlayerCountry()]->gameScoreRows[row]);
     }
     value->SetTextAndMaybeRefresh(&displayText, 1);
   }
@@ -87,7 +87,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
       static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagVict)); // 'vict'
   victory->AssertValid();
   g_pSimMgr->GetString(0x2761, 0, &templateText);
-  g_apNationStates[g_pSimMgr->GetActiveNationId()]->FormatOverlayTerrainLabelText(&argumentText);
+  g_apNationStates[g_pSimMgr->GetPlayerCountry()]->FormatOverlayTerrainLabelText(&argumentText);
   scanBracketExpressions(g_pSimMgr, &displayText, static_cast<LPCSTR>(templateText),
                          static_cast<LPCSTR>(argumentText));
   victory->SetTextAndMaybeRefresh(&displayText, 1);

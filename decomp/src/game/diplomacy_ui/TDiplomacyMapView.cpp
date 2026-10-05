@@ -350,7 +350,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
     tileRect->bottom = tileRect->top + 6;
   }
 
-  short activeNation = g_pSimMgr->GetActiveNationId();
+  short activeNation = g_pSimMgr->GetPlayerCountry();
   selectedTerrainIndex = activeNation;
   frameRegionSelector = activeNation;
   activeNationC2 = activeNation;
@@ -911,7 +911,7 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
 refresh_toolbar: {
   TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(ResolveControlByTag(kControlTagTool));
   toolbar->AssertValid();
-  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetActiveNationId());
+  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetPlayerCountry());
 }
 
 finalize_action:

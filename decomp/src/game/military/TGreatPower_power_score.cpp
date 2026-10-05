@@ -17,7 +17,7 @@
 
 // Recomputes per-nation navy/army order-priority metrics from queued map-order
 // distributions. Runs in game-flow state 0x15, before the per-nation +0x2B8/+0x108
-// passes. For each eligible nation (g_pSimMgr->IsNationSlotEligibleForEventProcessing):
+// passes. For each eligible nation (g_pSimMgr->ReallyInTheGame):
 //  1. Blends the 4-category TShip navy-order contribution percentages for that
 //     nation's ships into a queue-demand divergence score, strength-scaling the
 //     first three categories, then normalizing against
@@ -38,7 +38,7 @@
 // FUNCTION: IMPERIALISM 0x0053fe30
 void RecomputeNationOrderPriorityMetrics() {
   for (short nationIdx = 0; nationIdx < 7; ++nationIdx) {
-    if (!g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationIdx)) {
+    if (!g_pSimMgr->ReallyInTheGame(nationIdx)) {
       continue;
     }
     TGreatPower* nation = g_apNationStates[nationIdx];
@@ -159,7 +159,7 @@ void RecomputeNationOrderPriorityMetrics() {
   }
 
   for (short finalNationIdx = 0; finalNationIdx < 7; ++finalNationIdx) {
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(finalNationIdx)) {
+    if (g_pSimMgr->ReallyInTheGame(finalNationIdx)) {
       g_apNationStates[finalNationIdx]->RecomputeAiExpansionAndMissionPressureScores();
     }
   }

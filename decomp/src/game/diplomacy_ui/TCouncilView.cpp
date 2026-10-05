@@ -86,7 +86,7 @@ void TCouncilView::DoPostCreate(int arg) {
     titleControl->SetTextAndMaybeRefresh(&finalTitle, 0);
     DisplayStats();
 
-    if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot == g_pSimMgr->GetActiveNationId()) {
+    if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot == g_pSimMgr->GetPlayerCountry()) {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1f43, 0, 1);
     } else {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1f44, 0, 1);
@@ -360,11 +360,11 @@ void TCouncilView::NextTick() {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1f42, 0, 1);
     } else {
       bool allowAdvance = false;
-      short activeNation = g_pSimMgr->GetActiveNationId();
+      short activeNation = g_pSimMgr->GetPlayerCountry();
       if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot == activeNation &&
           g_pSimMgr->multiplayerSessionRole == kSessionRoleStandalone) {
         short tick = g_pSimMgr->GetEconomicTurn();
-        unsigned char* phaseTable = g_pSimMgr->phaseStateByDecade;
+        unsigned char* phaseTable = g_pSimMgr->councilByDecade;
         if (phaseTable[tick / 40] != 2) {
           allowAdvance = g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x275d, 7, 0, 1) == 0;
         }

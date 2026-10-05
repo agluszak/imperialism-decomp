@@ -35,7 +35,7 @@ TRailAmtBar::TRailAmtBar() : TIndustryAmtBar() {}
 
 // FUNCTION: IMPERIALISM 0x0058a020
 void TRailAmtBar::DoPostCreate(int arg) {
-  TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+  TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
   TCity* province = nationState != 0 ? nationState->GetCityState() : 0;
   int summaryTag = this->ownerContext->controlTag;
 

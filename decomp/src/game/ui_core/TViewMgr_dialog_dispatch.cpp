@@ -718,7 +718,7 @@ char TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag) {
     bool isClientSession = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
     if (isClientSession) {
       g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagAbdi,
-                                                         g_pSimMgr->GetActiveNationId(), -2);
+                                                         g_pSimMgr->GetPlayerCountry(), -2);
     }
   }
   return accepted;

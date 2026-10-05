@@ -37,7 +37,7 @@ public:
   void CalcStandardGraph() {
     g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
     for (int i = 0; i < 7; ++i) {
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(i)) != 0) {
+      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(i)) != 0) {
         int sum = 0;
         int* metric = g_pDiplomacyTurnStateManager->comparativePowerRows[i];
         int metricCount = 4;

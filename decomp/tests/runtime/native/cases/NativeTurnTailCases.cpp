@@ -181,7 +181,7 @@ RuntimeActionResult RunDiplomacyOfferGate(NativeTransition& transition) {
   }
 
   const bool showOffer = g_pMapContextActionManager->HasBattlesToReport() &&
-                         g_pSimMgr->IsNationSlotEligibleForEventProcessing(ActiveNationSlot()) != 0;
+                         g_pSimMgr->ReallyInTheGame(ActiveNationSlot()) != 0;
   return transition.Finish(showOffer);
 }
 
@@ -208,7 +208,7 @@ RuntimeActionResult RunQuarterGateOffDecade(NativeTransition& transition) {
 
   const short tick = g_pSimMgr->GetEconomicTurn();
   const bool decadeCinematic =
-      (tick % 0x28) == 0 && g_pSimMgr->phaseStateByDecade[tick / 0x28] != 0;
+      (tick % 0x28) == 0 && g_pSimMgr->councilByDecade[tick / 0x28] != 0;
   return transition.Finish(decadeCinematic);
 }
 
@@ -230,7 +230,7 @@ RuntimeActionResult RunReturnToMapClearsNoticeQueues(NativeTransition& transitio
     if (nation == 0) {
       continue;
     }
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) == 0) {
+    if (g_pSimMgr->ReallyInTheGame(nationSlot) == 0) {
       continue;
     }
     if (nationSlot == ActiveNationSlot()) {
@@ -309,7 +309,7 @@ RuntimeActionResult RunNewspaperNavyGrowthRewardLevels(NativeTransition& transit
   }
 
   for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) == 0) {
+    if (g_pSimMgr->ReallyInTheGame(nationSlot) == 0) {
       continue;
     }
     TGreatPower* slotNation = g_apNationStates[nationSlot];
@@ -447,7 +447,7 @@ RuntimeActionResult RunNewspaperPendingStatus(NativeTransition& transition) {
   }
 
   for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) == 0) {
+    if (g_pSimMgr->ReallyInTheGame(nationSlot) == 0) {
       continue;
     }
     TGreatPower* nation = g_apNationStates[nationSlot];
@@ -468,7 +468,7 @@ RuntimeActionResult RunNewspaperPendingStatus(NativeTransition& transition) {
   }
 
   for (short eligibleSlot = 0; eligibleSlot < 7; ++eligibleSlot) {
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(eligibleSlot) == 0) {
+    if (g_pSimMgr->ReallyInTheGame(eligibleSlot) == 0) {
       continue;
     }
     TGreatPower* nation = g_apNationStates[eligibleSlot];

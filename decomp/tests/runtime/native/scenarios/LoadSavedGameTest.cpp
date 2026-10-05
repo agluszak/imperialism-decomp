@@ -58,7 +58,7 @@ private:
   // -1 when every commodity's history is consistent; otherwise the first offending resource,
   // so the assertion reports which one rather than only that one exists.
   short FirstResourceWithMixedTradeHistory() const {
-    TGreatPower* player = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+    TGreatPower* player = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
     if (player == 0) {
       return -1;
     }

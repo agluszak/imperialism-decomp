@@ -237,8 +237,7 @@ void TForeignMinister::ArrangeMaterialsOffers() {
         break;
       }
       fallbackNationSlot = rand() % 7;
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(
-              static_cast<short>(fallbackNationSlot)) != 0) {
+      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(fallbackNationSlot)) != 0) {
         if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(fallbackNationSlot,
                                                             owner->nationSlot) == 0 &&
             fallbackNationSlot != owner->nationSlot) {
@@ -405,7 +404,7 @@ void TForeignMinister::GoodsMatchShipping() {
   int nation = 0;
   do {
     if (static_cast<short>(nation) != owner->nationSlot) {
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(nation) != 0) {
+      if (g_pSimMgr->ReallyInTheGame(nation) != 0) {
         if (matched &&
             g_pDiplomacyTurnStateManager
                     ->relationStandingScores[owner->nationSlot * kNationSlotCount + nation] <
@@ -553,7 +552,7 @@ void TForeignMinister::DoProposeTreaties() {
   for (int targetNation = 0; targetNation < 7; ++targetNation) {
     targetStrengthRatio[targetNation] = 0.0f;
     if (targetNation == greatPower->nationSlot ||
-        g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(targetNation)) == 0) {
+        g_pSimMgr->ReallyInTheGame(static_cast<short>(targetNation)) == 0) {
       continue;
     }
 
@@ -597,8 +596,7 @@ void TForeignMinister::DoProposeTreaties() {
 
   for (int policyTargetNation = 0; policyTargetNation < 7; ++policyTargetNation) {
     if (policyTargetNation == greatPower->nationSlot ||
-        g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(policyTargetNation)) ==
-            0 ||
+        g_pSimMgr->ReallyInTheGame(static_cast<short>(policyTargetNation)) == 0 ||
         g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
             greatPower->nationSlot, policyTargetNation) == 0) {
       continue;
@@ -669,7 +667,7 @@ char TForeignMinister::DeservesToBeEnemy(int nationCode) {
     if (thresholdA < ownerGP->ComputeSelectedMilitaryPowerScore()) {
       int scoreA = static_cast<int>(ownerGP->ComputeArmyScoreRatioVsNation(nationCode));
       int scoreB = static_cast<int>(ownerGP->ComputeArmyScoreStandingRatioVsNation(nationCode));
-      int calendarYear = g_pSimMgr->field6c;
+      int calendarYear = g_pSimMgr->finalCouncilYear;
       int difficultyDivisors[5] = {calendarYear, calendarYear / 2, calendarYear / 3,
                                    calendarYear / 5, 0};
       int campaignProgress = (g_pSimMgr->economicTurn / 4 + calendarYear) /
@@ -690,8 +688,7 @@ void TForeignMinister::DoSelectEnemy() {
     if (this->greatPower->HasActiveCandidateNationSlots() != 0) {
       return;
     }
-    if (nationSlot != this->greatPower->nationSlot &&
-        g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) != 0 &&
+    if (nationSlot != this->greatPower->nationSlot && g_pSimMgr->ReallyInTheGame(nationSlot) != 0 &&
         this->DeservesToBeEnemy(nationSlot) != 0) {
       this->greatPower->SetEnemy(nationSlot);
     }

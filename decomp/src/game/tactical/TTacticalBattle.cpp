@@ -1612,7 +1612,7 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
   TPicture* headerPicture = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagDialog));
   headerPicture->AssertValid();
   headerPicture->SetPictureResourceIdAndRefresh(
-      g_pSimMgr->GetActiveNationId() + (localSideWon ? 0xeed : 0xefb), 0);
+      g_pSimMgr->GetPlayerCountry() + (localSideWon ? 0xeed : 0xefb), 0);
 
   TStaticText* titleControl =
       static_cast<TStaticText*>(headerPicture->ResolveControlByTag(kControlTagTitl));

@@ -107,7 +107,7 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
   g_apTerrainTypeDescriptorTable[reportContext->nationIdA]->FormatOverlayTerrainLabelText(
       &reportText);
   reportText += "'s ";
-  g_pSimMgr->GetString(static_cast<short>(reportContext->nationIdA != g_pSimMgr->GetActiveNationId()
+  g_pSimMgr->GetString(static_cast<short>(reportContext->nationIdA != g_pSimMgr->GetPlayerCountry()
                                               ? 0x2722
                                               : 0x2721),
                        static_cast<short>(rand() % 6), &scratchText);
@@ -135,7 +135,7 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
   g_apTerrainTypeDescriptorTable[reportContext->nationIdB]->FormatOverlayTerrainLabelText(
       &scratchText);
   reportText += scratchText + "'s ";
-  g_pSimMgr->GetString(static_cast<short>(reportContext->nationIdB != g_pSimMgr->GetActiveNationId()
+  g_pSimMgr->GetString(static_cast<short>(reportContext->nationIdB != g_pSimMgr->GetPlayerCountry()
                                               ? 0x2722
                                               : 0x2721),
                        static_cast<short>(rand() % 6), &scratchText);

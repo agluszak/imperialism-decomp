@@ -178,7 +178,7 @@ private:
   }
 
   short ActiveNation() const {
-    return g_pSimMgr->GetActiveNationId();
+    return g_pSimMgr->GetPlayerCountry();
   }
 
   TGreatPower* Player() const {

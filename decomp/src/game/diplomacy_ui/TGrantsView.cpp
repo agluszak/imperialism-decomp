@@ -90,7 +90,7 @@ void TGrantsView::Draw(RECT* rectBuffer) {
   }
 
   g_pSimMgr->GetString(0x2733, 0x25, &labelText);
-  TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+  TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
   int grantSum = activeNation->SumDiplomacyGrantEntriesMaskedToValueBits();
   g_pSimMgr->NumToCurrency(grantSum, &sumText);
   labelText += s_szSpaceSeparator_00695794 + sumText;

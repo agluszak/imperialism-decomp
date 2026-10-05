@@ -63,7 +63,7 @@ pub(crate) struct GamePreferences {
 
 impl Default for GamePreferences {
     fn default() -> Self {
-        // `TSimMgr::InitializeOrLoadEntryArray14AndClampLimits(false)` before the INI overlay.
+        // `TSimMgr::UpdatePreferences(false)` before the INI overlay.
         Self {
             values: EnumMap::from_array([
                 0, 0, 100, 0xff, 0x101, 0x101, 0x101, 0x101, 0x101, 0x101, 0, 0, 0, 0x101,

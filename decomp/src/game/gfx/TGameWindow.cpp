@@ -97,7 +97,7 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
         g_pSimMgr->StartNextPhase();
         return;
       }
-      short nationId = g_pSimMgr->GetActiveNationId();
+      short nationId = g_pSimMgr->GetPlayerCountry();
       short abilityIndex = g_pTechMgr->ConsumeFirstPendingAbilityUnlock(nationId);
       if (abilityIndex != -1) {
         g_pViewMgr->ShowAbilityStatusReport(abilityIndex);

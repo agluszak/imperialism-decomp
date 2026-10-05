@@ -1584,7 +1584,7 @@ void TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress() {
 // FUNCTION: IMPERIALISM 0x00511ed0
 void TMapMgr::DispatchTurnEvent7DDForActiveNation() {
   TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress();
-  short nationId = g_pSimMgr->GetActiveNationId();
+  short nationId = g_pSimMgr->GetPlayerCountry();
   g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventStrategicMap), nationId);
 }
 
@@ -4189,7 +4189,7 @@ const unsigned char kGateFlagScoreBucket[15] = {0, 0, 0, 0, 1, 1, 2, 2, 2, 3, 4,
 void TMapMgr::MarkDirectionalMapOverlayFlagsForNationOrders() {
   DimmingOff();
 
-  short activeNationId = g_pSimMgr->GetActiveNationId();
+  short activeNationId = g_pSimMgr->GetPlayerCountry();
   CIterator cursor(g_apNationStates[activeNationId]->militaryUnitList44);
   TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset());
   while (cursor.More()) {

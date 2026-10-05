@@ -147,7 +147,7 @@ RuntimeScriptStatus EndTurnFlow::Advance() {
                         kObserveModalPopped | kObserveUiStateChanged);
     } else if (OfferScreen::IsCurrent() && (rejectOffers || acceptOffers)) {
       sawOfferDesk = true;
-      RT_FRAGMENT_REQUIRE(OfferDesk().IsAddressedTo(g_pSimMgr != 0 ? g_pSimMgr->GetActiveNationId()
+      RT_FRAGMENT_REQUIRE(OfferDesk().IsAddressedTo(g_pSimMgr != 0 ? g_pSimMgr->GetPlayerCountry()
                                                                    : static_cast<short>(-1)));
       RT_FRAGMENT_AWAIT(OfferDesk().ResponseControlsAreReady(),
                         kObserveGameStateChanged | kObservePaintCompleted);

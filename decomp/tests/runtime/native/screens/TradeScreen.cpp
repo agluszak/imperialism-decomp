@@ -203,7 +203,7 @@ bool TradeScreen::RenderedTransparentText() const {
 namespace {
 
 TGreatPower* ActiveNationState() {
-  return g_pSimMgr != 0 ? g_apNationStates[g_pSimMgr->GetActiveNationId()] : 0;
+  return g_pSimMgr != 0 ? g_apNationStates[g_pSimMgr->GetPlayerCountry()] : 0;
 }
 
 } // namespace

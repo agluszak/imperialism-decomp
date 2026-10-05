@@ -9575,7 +9575,7 @@ def _drive_auto_resolve_land_battle(
 
 # --- army_movement_give_orders / advisory_map_missions_case16 ------------------
 # Both loop the great-power slots, keep TAutoGreatPower instances eligible via
-# TSimMgr::IsNationSlotEligibleForEventProcessing (0x581280), then dispatch the
+# TSimMgr::ReallyInTheGame (0x581280), then dispatch the
 # minister entry point through the nation vtable (MoveArmy byte 0x15c, case-16
 # advisory queueing byte 0x288).
 

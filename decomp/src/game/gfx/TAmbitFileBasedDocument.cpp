@@ -109,7 +109,7 @@ void TAmbitFileBasedDocument::DoRead(ArchiveStreamAdapter* file, unsigned char f
   stream->Free();
 
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot)) != 0 &&
+    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot)) != 0 &&
         !g_apNationStates[nationSlot]->IsRemote()) {
       g_apNationStates[nationSlot]->BuildTransportLinkedInfluenceMap(0);
     }
@@ -146,7 +146,7 @@ void TAmbitFileBasedDocument::DoWrite(ArchiveStreamAdapter* file, unsigned char 
   stream->WriteBytes(&economicQuarter, 2);
   unsigned char difficultyLevel = static_cast<unsigned char>(g_pSimMgr->difficultyLevel);
   stream->WriteBytes(&difficultyLevel, 1);
-  unsigned char activeNationSlot = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  unsigned char activeNationSlot = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   stream->WriteBytes(&activeNationSlot, 1);
 
   CString activeNationName;

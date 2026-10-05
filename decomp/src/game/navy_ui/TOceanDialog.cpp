@@ -170,7 +170,7 @@ void TOceanDialog::ConvertPoint(const CPoint& point, short& outColumn, short& ou
     TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
     if ((tile.activeFlags1c & 1) != 0) {
       short ownerNation = static_cast<short>(tile.ownerNationTag04);
-      if (ownerNation == g_pSimMgr->GetActiveNationId() || ownerNation >= 7) {
+      if (ownerNation == g_pSimMgr->GetPlayerCountry() || ownerNation >= 7) {
         outRegionBand = 1;
       }
     }

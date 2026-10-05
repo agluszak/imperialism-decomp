@@ -1,6 +1,6 @@
 //! Retail `scores.dat`: ten `(i32 score, 32-byte NUL-terminated name)` records.
 //!
-//! `TSimMgr::UpdatePersistentTopTenNationScores` (0x00581510) inserts the active
+//! `TSimMgr::AddHighScore` (0x00581510) inserts the active
 //! nation's `GenerateGameScore` total at the first index where `score > stored`.
 //! Equal scores rank lower.
 

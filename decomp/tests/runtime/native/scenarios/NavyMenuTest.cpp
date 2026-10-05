@@ -66,11 +66,11 @@ private:
     if (g_pActiveMapOrderContext == 0 || g_pSimMgr == 0) {
       return 0;
     }
-    return g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(g_pSimMgr->GetActiveNationId());
+    return g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(g_pSimMgr->GetPlayerCountry());
   }
 
   void SpawnTwoFrigates(TZone* zone) {
-    const short nation = g_pSimMgr->GetActiveNationId();
+    const short nation = g_pSimMgr->GetPlayerCountry();
     TShip* first = new TShip();
     first->IShip(kFrigateType, zone, nation, "navy-menu-a");
     TShip* second = new TShip();

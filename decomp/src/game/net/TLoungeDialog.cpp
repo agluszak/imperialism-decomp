@@ -105,7 +105,7 @@ void TLoungeDialog::DoPostCreate(int arg) {
     TPicture* coatControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoat)); // 'coat'
     coatControl->AssertValid();
     coatControl->SetPictureResourceIdAndRefresh(
-        static_cast<short>(g_pSimMgr->GetActiveNationId() + 0x120a), 0);
+        static_cast<short>(g_pSimMgr->GetPlayerCountry() + 0x120a), 0);
     coatControl->Show(1, 0);
     if (g_pGameFlowState->GetNationStatusCodeForSlotOrActiveNation(-1) != kSessionTagBusy) {
       SetPictureResourceIdAndRefresh(0x11f9, 0);

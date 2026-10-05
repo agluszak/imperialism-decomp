@@ -83,7 +83,7 @@ void TMiniShipView::Draw(RECT* rectBuffer) {
     // An admiral is assigned: draw the per-nation admiral-rank badge from the badge
     // strip's (nationId + 7)-th 16px row.
     TQuickDrawBlitSurface* badgeStripSurface = g_pMacViewMgr->atlas68c->GetBlitSurface();
-    short nationId = g_pSimMgr->GetActiveNationId();
+    short nationId = g_pSimMgr->GetPlayerCountry();
     short badgeRow = (nationId + 7) * 0x10;
     RECT badgeSrcRect = {0, badgeRow, 0x10, badgeRow + 0x10};
     RECT badgeDstRect = {0x64, 0, 0x74, 0x10};

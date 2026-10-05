@@ -89,5 +89,5 @@ void TRemoteGreatPower::PlopDownCity(short selectedRegion, const char* mapCellLa
 
 // FUNCTION: IMPERIALISM 0x00541be0
 void TRemoteGreatPower::SorryYouLose(void) {
-  g_pSimMgr->RemoveNationSlotAndNotifyPeers(nationSlot);
+  g_pSimMgr->EliminateGP(nationSlot);
 }

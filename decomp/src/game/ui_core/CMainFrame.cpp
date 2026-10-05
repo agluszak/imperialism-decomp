@@ -262,7 +262,7 @@ void CMainFrame::OnCommand8013() {
       }
     }
 
-    dialog.listbox.SetSel(0, g_pSimMgr->GetActiveNationId());
+    dialog.listbox.SetSel(0, g_pSimMgr->GetPlayerCountry());
     dialog.listbox.SetCurSel(0);
     if (dialog.DoModal() != 1) {
       break;
@@ -274,7 +274,7 @@ void CMainFrame::OnCommand8013() {
 // FUNCTION: IMPERIALISM 0x00485920
 LRESULT CMainFrame::HandleCustomMessage2420DispatchTurnEvent(WPARAM wParam, LPARAM lParam) {
   (void)lParam;
-  g_pViewMgr->DispatchTurnEvent(static_cast<short>(wParam), g_pSimMgr->GetActiveNationId());
+  g_pViewMgr->DispatchTurnEvent(static_cast<short>(wParam), g_pSimMgr->GetPlayerCountry());
   return 0;
 }
 

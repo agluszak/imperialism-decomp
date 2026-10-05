@@ -80,7 +80,7 @@ bool IsPerRowBuilding(CityBuildingKind kind) {
 }
 
 TGreatPower* ActiveNationState() {
-  return g_pSimMgr != 0 ? g_apNationStates[g_pSimMgr->GetActiveNationId()] : 0;
+  return g_pSimMgr != 0 ? g_apNationStates[g_pSimMgr->GetPlayerCountry()] : 0;
 }
 
 } // namespace
@@ -367,7 +367,7 @@ RuntimeActionResult CityBuildingScreen::VerifyArmoryState() const {
                        CString("the slot opened the wrong view class"));
   }
   TArmoryView* armory = static_cast<TArmoryView*>(buildingView);
-  const short nationSlot = g_pSimMgr->GetActiveNationId();
+  const short nationSlot = g_pSimMgr->GetPlayerCountry();
   bool foundRaisableOrder = false;
   bool foundDifferentPicture = false;
   short firstPictureId = -1;

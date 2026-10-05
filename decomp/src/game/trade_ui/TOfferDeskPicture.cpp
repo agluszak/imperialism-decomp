@@ -73,7 +73,7 @@ void TOfferDeskPicture::DoPostCreate(int arg) {
   TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(ResolveControlByTag(kControlTagTool));
   toolbar->AssertValid();
   toolbar->RefreshTurnOrderStatusPanelTextsAndControls();
-  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetActiveNationId());
+  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetPlayerCountry());
 
   TView* miniPicture = ResolveControlByTag(kControlTagMPic);
   miniPicture->AssertValid();
@@ -123,9 +123,9 @@ void TOfferDeskPicture::DoPostCreate(int arg) {
 void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNation,
                                        short proposedAmount, short maxAmount, short commodityType) {
   bool waitingForLocalReply =
-      respondingNation == -1 || respondingNation != g_pSimMgr->GetActiveNationId();
+      respondingNation == -1 || respondingNation != g_pSimMgr->GetPlayerCountry();
   if (respondingNation == -1) {
-    respondingNation = g_pSimMgr->GetActiveNationId();
+    respondingNation = g_pSimMgr->GetPlayerCountry();
     offeringNation = respondingNation;
   }
 
@@ -265,7 +265,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   numberOfText->SetTextAndMaybeRefresh(&displayText, 0);
 
   short capacity =
-      g_apTerrainTypeDescriptorTable[g_pSimMgr->GetActiveNationId()]->GetMerchantCapacity();
+      g_apTerrainTypeDescriptorTable[g_pSimMgr->GetPlayerCountry()]->GetMerchantCapacity();
   capacityText.Format(g_szDecimalFormat, static_cast<int>(capacity));
   TStaticText* maximumText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagMCap));
   maximumText->AssertValid();
@@ -320,7 +320,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
 
   TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(ResolveControlByTag(kControlTagTool));
   toolbar->AssertValid();
-  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetActiveNationId());
+  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetPlayerCountry());
 
   InvalidateCityDialogRectRegion(&offerInvalidRect, 1);
   InvalidateCityDialogRectRegion(&iconInvalidRect, 1);

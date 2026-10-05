@@ -283,7 +283,7 @@ void TTechMgr::CheckForAdvances() {
 
     for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
       TGreatPower* nation = g_apNationStates[nationSlot];
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot)) != 0 &&
+      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot)) != 0 &&
           nation->diplomacyEligibility == 0 &&
           orderCapRows277[nationSlot].techStatusByTechId[techId] != 2) {
         nation->AddToTreasury(-g_anTechItemPurchaseCostBySlot_0066aae8[techId]);
@@ -409,7 +409,7 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
     break;
   case 0xf:
     UpdateSelectionAndRecalculateScores(8, nationSlot);
-    if (g_pSimMgr->GetActiveNationId() == nationSlot) {
+    if (g_pSimMgr->GetPlayerCountry() == nationSlot) {
       g_pMacViewMgr->RefreshCityCapabilityUiHandlesForActiveNation();
     }
     break;
@@ -473,7 +473,7 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
   case 0x18:
     UpdateSelectionAndRecalculateScores(0xb, nationSlot);
     UpdateSelectionAndRecalculateScores(0xa, nationSlot);
-    if (g_pSimMgr->GetActiveNationId() == nationSlot) {
+    if (g_pSimMgr->GetPlayerCountry() == nationSlot) {
       g_pMacViewMgr->RefreshCityCapabilityUiHandlesForActiveNation();
     }
     break;
@@ -556,7 +556,7 @@ void TTechMgr::ActivateSlotAndUpdateUI(int abilityId, int nationSlot) {
                                  g_aUnitOrderCostProfileByAbilityId[abilityId][6]);
     }
   } else {
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot)) != 0) {
+    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot)) != 0) {
       CIterator cursor(g_apTerrainTypeDescriptorTable[nationSlot]->militaryUnitList44);
       TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset());
       while (cursor.More()) {
@@ -649,7 +649,7 @@ void TTechMgr::UpdateSelectionAndRecalculateScores(int resourceType, int nationS
     }
   }
 
-  if (nationSlot == g_pSimMgr->GetActiveNationId() && matchedCount > 0) {
+  if (nationSlot == g_pSimMgr->GetPlayerCountry() && matchedCount > 0) {
     CString countString;
     CString templateText;
     CString formattedMessage;

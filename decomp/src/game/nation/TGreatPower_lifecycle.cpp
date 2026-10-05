@@ -73,7 +73,7 @@ int TGreatPower::ClassifyNationMilitaryPowerBandAgainstGlobalMean() {
   float sumPowerSq = 0.0f;
 
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    if (!g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot))) {
+    if (!g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot))) {
       continue;
     }
 

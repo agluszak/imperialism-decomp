@@ -28,7 +28,7 @@ IMPLEMENT_DYNCREATE(TClientGreatPower, TGreatPower)
 void TClientGreatPower::AcceptOffer(short proposalIndex) {
   TurnEvent17ProposalResolutionPacket packet;
   packet.messageTag = kControlTagTime;
-  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packet.eventCode = 0x17;
   packet.fromNetworkId = 0;
   packet.toNetworkId = -1;
@@ -43,7 +43,7 @@ void TClientGreatPower::AcceptOffer(short proposalIndex) {
 void TClientGreatPower::RejectOffer(short proposalQueueIndex) {
   TurnEvent17ProposalResolutionPacket packet;
   packet.messageTag = kControlTagTime;
-  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packet.eventCode = 0x17;
   packet.fromNetworkId = 0;
   packet.toNetworkId = -1;
@@ -60,7 +60,7 @@ void TClientGreatPower::ReplyToDiplomacyOffers(void) {
 
   TurnEventFResumeAckPacket packet;
   packet.messageTag = kControlTagTime;
-  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packet.eventCode = 0;
   packet.fromNetworkId = 0;
   packet.eventCode = 0xf;
@@ -69,7 +69,7 @@ void TClientGreatPower::ReplyToDiplomacyOffers(void) {
   packet.messageLength = 0;
   packet.messageLength = 0x20;
   packet.SetTimeEmitPacketGameFlowTurnId();
-  packet.nationSlot1C = static_cast<short>(g_pSimMgr->GetActiveNationId());
+  packet.nationSlot1C = static_cast<short>(g_pSimMgr->GetPlayerCountry());
   g_pNetMgr006a6014->Send(&packet, false);
 
   g_pViewMgr->MakeDiplomacyOfferDialog(nationSlot, nationSlot, 0x29a);
@@ -91,13 +91,13 @@ int TClientGreatPower::HandleWarTransitionRequestWithRoleSwap(int targetNation, 
       TGreatPower::HandleWarTransitionRequestWithRoleSwap(targetNation, sourceNation, swapRoles);
   TurnEvent1EPacketPayload packetPayload;
   packetPayload.messageTag = kControlTagTime;
-  packetPayload.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packetPayload.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packetPayload.eventCode = 0x1e;
   packetPayload.messageLength = 0x24;
   packetPayload.SetTimeEmitPacketGameFlowTurnId();
   packetPayload.toNetworkId = -1;
   packetPayload.activeNationIdBeforePayload =
-      static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+      static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packetPayload.targetNation = static_cast<unsigned char>(targetNation);
   packetPayload.sourceNation = static_cast<unsigned char>(sourceNation);
   packetPayload.commandCode = 0x61;
@@ -120,13 +120,13 @@ int TClientGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNa
   int accepted = TGreatPower::HandleWarTransitionRequest(targetNation, sourceNation);
   TurnEvent1EPacketPayload packetPayload;
   packetPayload.messageTag = kControlTagTime;
-  packetPayload.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packetPayload.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packetPayload.eventCode = 0x1E;
   packetPayload.messageLength = 0x24;
   packetPayload.SetTimeEmitPacketGameFlowTurnId();
   packetPayload.toNetworkId = -1;
   packetPayload.activeNationIdBeforePayload =
-      static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+      static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packetPayload.acceptedFlag = accepted != 0 ? 1 : 0;
   packetPayload.commandCode = 0x69;
   packetPayload.commandArgA = static_cast<unsigned char>(targetNation);

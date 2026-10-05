@@ -59,7 +59,7 @@ int TDiplomacyMgr::GetFavoriteTradePartner(int minorNationSlot) {
   int bestScore = 0;
   int selectedNation = -1;
   for (int majorNation = 0; majorNation < 7; ++majorNation) {
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(majorNation)) == 0) {
+    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(majorNation)) == 0) {
       continue;
     }
 
@@ -165,10 +165,8 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
       relationSideEffectMatrix[reverseIndex] = 0;
 
       short standingScore = 0x5a;
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(sourceNation)) !=
-              0 &&
-          g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(targetNation)) !=
-              0) {
+      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(sourceNation)) != 0 &&
+          g_pSimMgr->ReallyInTheGame(static_cast<short>(targetNation)) != 0) {
         if (sourceNation < 7 && g_apNationStates[sourceNation]->diplomacyEligibility == 0 &&
             g_pSimMgr->difficultyLevel > kDifficultyNormal) {
           standingScore = static_cast<short>(
@@ -185,10 +183,8 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
     for (targetNation = 7; targetNation < kNationSlotCount; ++targetNation) {
       int pairIndex = sourceNation * kNationSlotCount + targetNation;
       short standingScore = 0x5a;
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(sourceNation)) !=
-              0 &&
-          g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(targetNation)) !=
-              0) {
+      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(sourceNation)) != 0 &&
+          g_pSimMgr->ReallyInTheGame(static_cast<short>(targetNation)) != 0) {
         standingScore =
             sourceMinor->IsInConsortiumWith(static_cast<short>(targetNation)) != 0 ? 0x96 : 0x6e;
       }
@@ -755,7 +751,7 @@ void TDiplomacyMgr::InflictWarPenalty(NationSlot sourceNationSlot, NationSlot ta
   TCountry** terrainCursor = g_apTerrainTypeDescriptorTable;
   do {
     TMinor* candidateTerrain = static_cast<TMinor*>(*terrainCursor);
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(candidateNationSlot) != 0 &&
+    if (g_pSimMgr->ReallyInTheGame(candidateNationSlot) != 0 &&
         candidateNationSlot != sourceNationSlot && candidateNationSlot != targetNationSlot &&
         candidateTerrain->encodedNationSlot == -1) {
       int divisorTier;
@@ -934,7 +930,7 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
     unsigned int randSeed2 = 0;
 
     for (int gpSlot = 0; gpSlot < 7; gpSlot++) {
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<NationSlot>(gpSlot))) {
+      if (g_pSimMgr->ReallyInTheGame(static_cast<NationSlot>(gpSlot))) {
         int standingIndex = minorSlot * kNationSlotCount + gpSlot;
         int sideEffectIndex = gpSlot * kNationSlotCount + minorSlot;
         if (relationSideEffectMatrix[sideEffectIndex] != 0) {
@@ -998,7 +994,7 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
       int priorOfferNation = specialRelationSourceSlots[minorSlot - 7];
       if (!isOfferTie && priorOfferNation != bestOfferNation && priorOfferNation != -1 &&
           relationSideEffectMatrix[priorOfferNation * kNationSlotCount + minorSlot] >= 1 &&
-          g_pSimMgr->IsNationSlotEligibleForEventProcessing(priorOfferNation) != 0) {
+          g_pSimMgr->ReallyInTheGame(priorOfferNation) != 0) {
         g_apTerrainTypeDescriptorTable[priorOfferNation]->AddNoticeFrom(minorSlot, 0x13a);
       }
       specialRelationSourceSlots[minorSlot - 7] = static_cast<NationSlot>(bestOfferNation);
@@ -1006,8 +1002,7 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
     if (bestRelationNation != -1) {
       int priorRelationNation = specialRelationTargetSlots[minorSlot - 7];
       if (!isRelationTie && priorRelationNation != bestRelationNation &&
-          priorRelationNation != -1 &&
-          g_pSimMgr->IsNationSlotEligibleForEventProcessing(priorRelationNation) != 0 &&
+          priorRelationNation != -1 && g_pSimMgr->ReallyInTheGame(priorRelationNation) != 0 &&
           relationSideEffectMatrix[priorRelationNation * kNationSlotCount + minorSlot] >= 1 &&
           g_apTerrainTypeDescriptorTable[priorRelationNation] != 0) {
         g_apTerrainTypeDescriptorTable[priorRelationNation]->AddNoticeFrom(minorSlot, 0x13b);
@@ -1259,16 +1254,14 @@ void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMod
   if (secondSideCount < topSideCount) {
     if (forceFullClear || topSideCount >= totalOwnedCount * 2 / 3) {
       winnerNationSlot = topNationSlot;
-    } else if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(
-                   static_cast<short>(topNationSlot)) &&
+    } else if (g_pSimMgr->ReallyInTheGame(static_cast<short>(topNationSlot)) &&
                g_apNationStates[topNationSlot]->pendingActionStatus.byAction[11] < '3') {
       g_apNationStates[topNationSlot]->SetNationPendingActionStateAndPayload(0xb, -1);
     }
   } else if (topSideCount < secondSideCount) {
     if (forceFullClear || secondSideCount >= totalOwnedCount * 2 / 3) {
       winnerNationSlot = secondNationSlot;
-    } else if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(
-                   static_cast<short>(secondNationSlot)) &&
+    } else if (g_pSimMgr->ReallyInTheGame(static_cast<short>(secondNationSlot)) &&
                g_apNationStates[secondNationSlot]->pendingActionStatus.byAction[11] < '3') {
       g_apNationStates[secondNationSlot]->SetNationPendingActionStateAndPayload(0xb, -1);
     }
@@ -1368,7 +1361,7 @@ void TDiplomacyMgr::RecomputeNationComparativePowerMetrics() {
   int techScore[7];
   int i;
   for (i = 0; i < 7; i++) {
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) == 0) {
+    if (g_pSimMgr->ReallyInTheGame(i) == 0) {
       continue;
     }
     int army = g_apNationStates[i]->ComputeNationNavyOrderWeightedMovementScore() + 0x1f4;
@@ -1399,7 +1392,7 @@ void TDiplomacyMgr::RecomputeNationComparativePowerMetrics() {
     }
   }
   for (i = 0; i < 7; i++) {
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0) {
+    if (g_pSimMgr->ReallyInTheGame(i) != 0) {
       comparativePowerRows[i][0] = comparativePowerRows[i][0] * 100 / maxArmy;
       comparativePowerRows[i][1] = comparativePowerRows[i][1] * 100 / maxRelation;
       comparativePowerRows[i][3] = comparativePowerRows[i][3] * 100 / maxCommodity;
@@ -1744,7 +1737,7 @@ void TDiplomacyMgr::RebuildMinorNationDispositionLookupTables(NationSlot nationC
     TCountry* capabilityObject = g_apTerrainTypeDescriptorTable[7 + auxIndex];
 
     for (int majorSlot = 0; majorSlot < 7; ++majorSlot) {
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(majorSlot)) {
+      if (g_pSimMgr->ReallyInTheGame(majorSlot)) {
         relationStandingScores[majorSlot * kNationSlotCount + minorSlot] = 0x5a;
         relationStandingScores[minorSlot * kNationSlotCount + majorSlot] = 0x5a;
         relationPropagationMatrix[majorSlot * kNationSlotCount + minorSlot] =
@@ -1757,7 +1750,7 @@ void TDiplomacyMgr::RebuildMinorNationDispositionLookupTables(NationSlot nationC
     for (int otherMinorSlot = 7; otherMinorSlot < kNationSlotCount; ++otherMinorSlot) {
       short standingValue;
       DiplomacyRelationshipStorage propagationValue;
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(otherMinorSlot)) {
+      if (g_pSimMgr->ReallyInTheGame(otherMinorSlot)) {
         TCountry* otherMinorCandidate = g_apTerrainTypeDescriptorTable[otherMinorSlot];
         if (otherMinorCandidate->encodedNationSlot >= 200) {
           short normalizedSlot = capabilityObject->DecodeOwnerNationSlot();
@@ -1782,7 +1775,7 @@ void TDiplomacyMgr::RebuildMinorNationDispositionLookupTables(NationSlot nationC
     }
 
     for (int notifySlot = 0; notifySlot < 7; ++notifySlot) {
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(notifySlot)) {
+      if (g_pSimMgr->ReallyInTheGame(notifySlot)) {
         g_apNationStates[notifySlot]->SetTradePolicyTo(minorSlot, 100);
       }
     }

@@ -51,7 +51,7 @@ void TGameInfoPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     return;
   }
   if (tag == kControlTagButm) { // 'butm' — military/battle report
-    short activeNationId = g_pSimMgr->GetActiveNationId();
+    short activeNationId = g_pSimMgr->GetPlayerCountry();
     if (g_pMapContextActionManager->HasBattlesInvolvingGP(activeNationId)) {
       g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalBattleReport);
     } else {

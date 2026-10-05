@@ -29,8 +29,8 @@ void TTradePageBuyView::RebuildNationBidRowsForCategory(short categorySlot) {
   ResetPageLayout();
 
   if (categorySlot != -1) {
-    if (g_pTradeMgr->DidBidOn(categorySlot, g_pSimMgr->GetActiveNationId()) ||
-        g_pTradeMgr->DidOffer(categorySlot, g_pSimMgr->GetActiveNationId())) {
+    if (g_pTradeMgr->DidBidOn(categorySlot, g_pSimMgr->GetPlayerCountry()) ||
+        g_pTradeMgr->DidOffer(categorySlot, g_pSimMgr->GetPlayerCountry())) {
       TTextLine* headerRow = new TTextLine();
       int headerBounds[2];
       headerBounds[0] = 0x24;

@@ -388,7 +388,7 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
       updateNeighborHighlights = true;
       TMapMgr::GetNeighborTileIDArray(hoveredTile, neighborTiles,
                                       g_pGlobalMapState->hexNeighborWrapHorizontally);
-      short activeNation = g_pSimMgr->GetActiveNationId();
+      short activeNation = g_pSimMgr->GetPlayerCountry();
       for (int i = 0; i < 6; ++i) {
         short neighbor = neighborTiles[i];
         if (neighbor != -1) {
@@ -1011,7 +1011,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
           cachedMarkerIndex = static_cast<signed char>(cacheSearchIndex);
         } else {
           TCivUnit* unit =
-              g_pGlobalMapState->GetTileUnitEntryByOwner(tileIndex, g_pSimMgr->GetActiveNationId());
+              g_pGlobalMapState->GetTileUnitEntryByOwner(tileIndex, g_pSimMgr->GetPlayerCountry());
           int animationTag = PointerAddressLong32(unit);
           if (unit != 0 && unit->unitOrder > static_cast<UnitOrder>(4) &&
               g_pUiAnimator->FindRegisteredAnimationByTag(animationTag) == 0) {
@@ -1341,7 +1341,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
             destinationSurfaceObject, static_cast<unsigned short>(firstResourceType),
             highImprovementClass, static_cast<short>(screenX + 2), static_cast<short>(screenY + 2));
       } else {
-        const int activeNation = g_pSimMgr->GetActiveNationId();
+        const int activeNation = g_pSimMgr->GetPlayerCountry();
         bool tileVisible = (terrain.pendingDevelopmentFlag & (1 << activeNation)) != 0;
         if (!tileVisible && g_pGlobalMapState->field24) {
           tileVisible = terrain.GetTerrainKind() == kStrategicTerrainHills ||
@@ -1364,7 +1364,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
             lowImprovementClass, static_cast<short>(screenX + 0x1b),
             static_cast<short>(screenY + 2));
       }
-      const int activeNation = g_pSimMgr->GetActiveNationId();
+      const int activeNation = g_pSimMgr->GetPlayerCountry();
       bool tileVisible = (terrain.pendingDevelopmentFlag & (1 << activeNation)) != 0;
       if (!tileVisible && g_pGlobalMapState->field24) {
         tileVisible = terrain.GetTerrainKind() == kStrategicTerrainHills ||
@@ -1401,7 +1401,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
             highImprovementClass, static_cast<short>(screenX + 2),
             static_cast<short>(screenY + 0x1c));
       } else {
-        const int activeNation = g_pSimMgr->GetActiveNationId();
+        const int activeNation = g_pSimMgr->GetPlayerCountry();
         bool tileVisible = (terrain.pendingDevelopmentFlag & (1 << activeNation)) != 0;
         if (!tileVisible && g_pGlobalMapState->field24) {
           tileVisible = terrain.GetTerrainKind() == kStrategicTerrainHills ||
@@ -1515,7 +1515,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
     return;
   }
 
-  const int activeNation = g_pSimMgr->GetActiveNationId();
+  const int activeNation = g_pSimMgr->GetPlayerCountry();
   TCivUnit* civilianOrder =
       g_pGlobalMapState->GetTileUnitEntryByOwner(tileIndex, static_cast<short>(activeNation));
   if (civilianOrder == 0) {
@@ -2453,7 +2453,7 @@ void TMapDialog::DrawTile(short tileIndex, short screenX, short screenY) {
 // FUNCTION: IMPERIALISM 0x00523640
 void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projectedX,
                                                 int projectedY, int flag, short tileIndex) {
-  bool belongsToActiveNation = orderEntry->ownerNationSlot18 == g_pSimMgr->GetActiveNationId();
+  bool belongsToActiveNation = orderEntry->ownerNationSlot18 == g_pSimMgr->GetPlayerCountry();
   if (orderEntry->unitOrder > static_cast<UnitOrder>(4) && belongsToActiveNation) {
     int animationTag = PointerAddressLong32(orderEntry);
     if (g_pUiAnimator->FindRegisteredAnimationByTag(animationTag) == 0) {

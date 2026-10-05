@@ -19,7 +19,7 @@ class TTaskForce;
 class TOcean : public TObject {
 public:
   // No standalone address: VC5 inlines this constructor at both allocation sites,
-  // including TSimMgr::RebuildMapContextAndGlobalMapState (0x57c7c0).
+  // including TSimMgr::CreatePlanet (0x57c7c0).
   TOcean()
       : TObject(), nationCount(0), contextArray(0), routeNodeCount(0), routeSegments(0),
         selectedTaskForce14(0) {}
@@ -102,7 +102,7 @@ public:
   void ForgetForce(TTaskForce* entry); // 0x564400
 
   // Frees the previously-tracked task force if the new map-order context zone is null,
-  // or resolves/caches one for it via GetActiveNationId(); returns the (possibly
+  // or resolves/caches one for it via GetPlayerCountry(); returns the (possibly
   // updated) cached task force. The map-order "entry" is the selected context TZone
   // (its CreateTaskForceFromNavyOrders... factory produces the task force). 0x00564600.
   TTaskForce* EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* pMapOrderContextZone);

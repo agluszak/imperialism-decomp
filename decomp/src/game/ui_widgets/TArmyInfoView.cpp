@@ -115,7 +115,7 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
   control->InstallTextStyle(smallStyle, 0);
 
   short cityOwner = g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(cityRecordIndex);
-  short activeNation = g_pSimMgr->GetActiveNationId();
+  short activeNation = g_pSimMgr->GetPlayerCountry();
   short orderTemplateIndex = static_cast<short>(cityOwner == activeNation ? 0xa : 0xe);
   g_pSimMgr->GetString(0x2744, orderTemplateIndex, &orderTemplate);
   g_pGlobalMapState->AssignCityRecordDisplayName(cityRecordIndex, &cityName);

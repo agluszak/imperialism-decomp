@@ -24,7 +24,7 @@ void TSuperCivRoster::InitializeLedgerRosterPages(TView* pOwnerContext, int* pOf
   // devirtualized direct call (TSuperCivRoster doesn't override this slot).
   TPageView::DoPostCreate(0);
 
-  short activeNationId = g_pSimMgr->GetActiveNationId();
+  short activeNationId = g_pSimMgr->GetPlayerCountry();
   CIterator cursor(g_apNationStates[activeNationId]->trackedObjectList);
   void* current = cursor.Reset();
   while (cursor.More()) {

@@ -189,10 +189,10 @@ void TBattleReportView::DoPostCreate(int arg) {
     record->markerPixelY = mapViewportRect.top + markerRow * 5 - 9;
 
     short spriteBase;
-    if (record->nationIds[record->reportParticipantIndex] == g_pSimMgr->GetActiveNationId()) {
+    if (record->nationIds[record->reportParticipantIndex] == g_pSimMgr->GetPlayerCountry()) {
       spriteBase = 0;
     } else if (record->nationIds[1 - record->reportParticipantIndex] ==
-               g_pSimMgr->GetActiveNationId()) {
+               g_pSimMgr->GetPlayerCountry()) {
       spriteBase = 4;
     } else {
       spriteBase = 8;
@@ -561,18 +561,18 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
   int activeSideRelation;
   if (static_cast<signed char>(
           record->nationIds[static_cast<signed char>(record->reportParticipantIndex)]) ==
-      g_pSimMgr->GetActiveNationId()) {
+      g_pSimMgr->GetPlayerCountry()) {
     activeSideRelation = 1;
   } else if (static_cast<signed char>(
                  record->nationIds[1 - static_cast<signed char>(record->reportParticipantIndex)]) ==
-             g_pSimMgr->GetActiveNationId()) {
+             g_pSimMgr->GetPlayerCountry()) {
     activeSideRelation = -1;
   } else {
     activeSideRelation = 0;
   }
   bool displayedParticipantIsActive =
       static_cast<signed char>(record->nationIds[participantIndex]) ==
-      g_pSimMgr->GetActiveNationId();
+      g_pSimMgr->GetPlayerCountry();
 
   switch (record->reportKind04) {
   case kMapContextReportLandBattle:
@@ -639,16 +639,16 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
   } else {
     userStringGroup = 0x273d;
     int activeHomeRegion =
-        g_apTerrainTypeDescriptorTable[g_pSimMgr->GetActiveNationId()]->GetCapitolProvince();
+        g_apTerrainTypeDescriptorTable[g_pSimMgr->GetPlayerCountry()]->GetCapitolProvince();
     bool activeNationOwnsBattleSite = activeHomeRegion == reinterpret_cast<int>(record->location08);
     bool reportSidesAreSame = record->displayedParticipantIndex == record->reportParticipantIndex;
     bool reportParticipantIsActive =
         static_cast<signed char>(
             record->nationIds[static_cast<signed char>(record->reportParticipantIndex)]) ==
-        g_pSimMgr->GetActiveNationId();
+        g_pSimMgr->GetPlayerCountry();
     bool activeNationIsOtherReportSide = activeSideRelation != 0 && !reportParticipantIsActive;
     int otherNation = static_cast<signed char>(record->nationIds[0]);
-    if (otherNation == g_pSimMgr->GetActiveNationId()) {
+    if (otherNation == g_pSimMgr->GetPlayerCountry()) {
       otherNation = static_cast<signed char>(record->nationIds[1]);
     }
     bool otherNationOwnsBattleSite =
@@ -726,8 +726,8 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
   nextCtrl->Show(hasNext, 1);
 
   bool enableInfo =
-      (static_cast<signed char>(record->nationIds[0]) == g_pSimMgr->GetActiveNationId() ||
-       static_cast<signed char>(record->nationIds[1]) == g_pSimMgr->GetActiveNationId());
+      (static_cast<signed char>(record->nationIds[0]) == g_pSimMgr->GetPlayerCountry() ||
+       static_cast<signed char>(record->nationIds[1]) == g_pSimMgr->GetPlayerCountry());
   TControl* infoCtrl = static_cast<TControl*>(ResolveControlByTag(kControlTagInfo));
   infoCtrl->AssertValid();
   infoCtrl->ViewEnable(enableInfo, 0);

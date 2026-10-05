@@ -29,8 +29,8 @@ void TTradePageSellView::RebuildNationOfferRowsForCategory(short categorySlot) {
   ResetPageLayout();
 
   bool buildGrid =
-      categorySlot != -1 && (g_pTradeMgr->DidBidOn(categorySlot, g_pSimMgr->GetActiveNationId()) ||
-                             g_pTradeMgr->DidOffer(categorySlot, g_pSimMgr->GetActiveNationId()));
+      categorySlot != -1 && (g_pTradeMgr->DidBidOn(categorySlot, g_pSimMgr->GetPlayerCountry()) ||
+                             g_pTradeMgr->DidOffer(categorySlot, g_pSimMgr->GetPlayerCountry()));
 
   if (buildGrid) {
     TTextLine* headerRow = new TTextLine();

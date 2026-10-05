@@ -91,7 +91,7 @@ void TNewsMgr::StartNewsPhase() {
   for (short slot = 0; slot < 7; ++slot) {
     TGreatPower* nation = g_apNationStates[slot];
     if ((nation != 0 && nation->diplomacyEligibility != 0) ||
-        g_pSimMgr->GetActiveNationId() == slot) {
+        g_pSimMgr->GetPlayerCountry() == slot) {
       CreateNewspaper(slot);
     }
   }

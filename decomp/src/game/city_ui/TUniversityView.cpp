@@ -47,7 +47,7 @@ void TUniversityView::DoStartup() {
   style.tail[3] = 0;
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
-  short activeNation = g_pSimMgr->GetActiveNationId();
+  short activeNation = g_pSimMgr->GetPlayerCountry();
   for (short category = 0; category < 9; ++category) {
     if (category == 6 || category == 7) {
       continue;
@@ -182,7 +182,7 @@ void TUniversityView::SetUnit(short recruitmentCategory) {
 
   if (selectedRecruitmentCategory > -1) {
     short highestRequirementLevel = 0;
-    short activeNation = g_pSimMgr->GetActiveNationId();
+    short activeNation = g_pSimMgr->GetPlayerCountry();
     for (short row = 0; row < 4; ++row) {
       short resourceType = static_cast<short>(
           g_anUniversityRequirementIdByRecruitRow[selectedRecruitmentCategory][row]);
@@ -356,7 +356,7 @@ void TUniversityView::Draw(RECT* rectBuffer) {
                                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                          &reqSrcRect, &reqDstRect, 0x24, 0);
 
-        short activeNationId = g_pSimMgr->GetActiveNationId();
+        short activeNationId = g_pSimMgr->GetPlayerCountry();
         short capabilityLevel =
             g_pTechMgr->capabilityValueByNationAndResource[activeNationId][nCommoditySpriteId];
         if (nHighestRequirementLevel < capabilityLevel) {

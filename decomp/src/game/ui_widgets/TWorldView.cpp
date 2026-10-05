@@ -67,7 +67,7 @@ void TWorldView::DoPostCreate(int arg) {
 void TWorldView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x78 && stridedCellRecordIndex != -1) {
     g_pViewMgr->HandleGlobalMapNationContextSelection(stridedCellRecordIndex,
-                                                      g_pSimMgr->GetActiveNationId());
+                                                      g_pSimMgr->GetPlayerCountry());
   }
   TEventHandler::DoEvent(commandId, sourceHandler, event);
 }
@@ -137,23 +137,23 @@ void TWorldView::DoKeyEvent(TToolboxEvent* event) {
   case 'W':
   case 'w':
     g_pSelectedCivilianOrderState->ClearNationCivilianActionModesAndCycleSelection(
-        g_pSimMgr->GetActiveNationId());
+        g_pSimMgr->GetPlayerCountry());
     return;
 
   case 'N':
   case 'n':
-    g_pMapContextActionManager->WakeAll(g_pSimMgr->GetActiveNationId());
+    g_pMapContextActionManager->WakeAll(g_pSimMgr->GetPlayerCountry());
     return;
 
   case 'A':
   case 'a':
-    g_pNavyOrderManager->FreeShipsOf(g_pSimMgr->GetActiveNationId());
+    g_pNavyOrderManager->FreeShipsOf(g_pSimMgr->GetPlayerCountry());
     return;
 
   case 'X':
   case 'x':
     CenterOn(
-        g_pGlobalMapState->ComputeRepresentativeTileIndexForNation(g_pSimMgr->GetActiveNationId()));
+        g_pGlobalMapState->ComputeRepresentativeTileIndexForNation(g_pSimMgr->GetPlayerCountry()));
     return;
 
   case 'Z':

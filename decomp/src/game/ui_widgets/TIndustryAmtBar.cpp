@@ -31,7 +31,7 @@ TIndustryAmtBar::TIndustryAmtBar() : TAmtBar(), selectedMetricRecord(0) {}
 // FUNCTION: IMPERIALISM 0x00589260
 void TIndustryAmtBar::DoPostCreate(int arg) {
   // ORIG_CALLCONV: __thiscall
-  TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+  TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
   TCity* province = nationState != 0 ? nationState->GetCityState() : 0;
   short summaryTagIndex = 0;
   int mappedTag = g_pTradeSummarySelectionMap[summaryTagIndex];

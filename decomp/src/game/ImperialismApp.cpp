@@ -425,16 +425,16 @@ void ImperialismApp::OnSelectActiveNation() {
   TDBTemplateDialog dialog(0);
   dialog.PrepareAndCreateModalFromTemplate();
   dialog.slider.SetRange(0, 6, FALSE);
-  dialog.slider.SetPos(g_pSimMgr->GetActiveNationId());
+  dialog.slider.SetPos(g_pSimMgr->GetPlayerCountry());
 
   if (dialog.DoModal() == IDOK) {
     short nationSlot = static_cast<short>(dialog.slider.GetPos());
-    g_pSimMgr->SetActiveNationSlotAndRefreshCityCapabilityUiHandles(nationSlot);
+    g_pSimMgr->SetPlayerCountry(nationSlot);
     if (g_pSimMgr->mode == kGamePhaseTechnology) {
-      g_apNationStates[g_pSimMgr->GetActiveNationId()]
+      g_apNationStates[g_pSimMgr->GetPlayerCountry()]
           ->RebuildNationResourceYieldCountersAndDevelopmentTargets();
     }
-    g_pViewMgr->DispatchTurnEvent(g_pViewMgr->currentTurnEventCode, g_pSimMgr->GetActiveNationId());
+    g_pViewMgr->DispatchTurnEvent(g_pViewMgr->currentTurnEventCode, g_pSimMgr->GetPlayerCountry());
   }
 }
 
@@ -461,7 +461,7 @@ void ImperialismApp::OnAdjustNationResourcesAndPopulation() {
   TDETemplateDialog dialog(0);
   dialog.PrepareAndCreateModalFromTemplate();
   dialog.slider.SetRange(0, 6, FALSE);
-  dialog.slider.SetPos(g_pSimMgr->GetActiveNationId());
+  dialog.slider.SetPos(g_pSimMgr->GetPlayerCountry());
 
   if (dialog.DoModal() == IDOK) {
     int nationSlot = dialog.slider.GetPos();

@@ -72,7 +72,7 @@ void THostGreatPower::SorryYouLose(void) {
   for (int nationIndex = 0; nationIndex < 7; ++nationIndex) {
     TGreatPower* nation = g_apNationStates[nationIndex];
     if (nationIndex != nationSlot &&
-        g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationIndex)) != 0 &&
+        g_pSimMgr->ReallyInTheGame(static_cast<short>(nationIndex)) != 0 &&
         nation->diplomacyEligibility != 0) {
       ++eligibleOtherNationCount;
     }

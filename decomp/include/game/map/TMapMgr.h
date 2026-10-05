@@ -681,7 +681,7 @@ public:
   // open. Slots are ranked by how isolated their region class is (unique / shared with a
   // minor / shared with another great power) and profiles are handed out in a fixed
   // priority order. 0x00519610, __thiscall on g_pGlobalMapState, one short* stack arg
-  // (`RET 0x4`); the sole caller is TSimMgr::RebuildNationStateSlotsAndAvailability, which
+  // (`RET 0x4`); the sole caller is TSimMgr::CreateCountries, which
   // loads ECX from g_pGlobalMapState (0x6a43d4) rather than passing its own `this`.
   void ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot);
 

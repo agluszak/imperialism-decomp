@@ -156,7 +156,7 @@ void TTechItemView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       TTextPictureButton* purchaseButton = static_cast<TTextPictureButton*>(sourceHandler);
       TTechMgr* techMgr = g_pTechMgr;
       if (techMgr->orderCapRows277[nationSlot60].techStatusByTechId[techId64] == 0) {
-        short activeNationId = g_pSimMgr->GetActiveNationId();
+        short activeNationId = g_pSimMgr->GetPlayerCountry();
         int availableBudget = g_apNationStates[activeNationId]->ComputeAvailableDiplomacyBudget();
         if (g_anTechItemResearchCostByTechId[techId64] > availableBudget) {
           CString msg;

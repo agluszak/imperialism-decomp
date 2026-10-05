@@ -507,7 +507,7 @@ RuntimeActionResult RunTradePhaseCase(NativeTransition& transition, bool buyClot
     return RuntimeActionResult::Failure("the loaded game has no trade market");
   }
 
-  const short nationSlot = g_pSimMgr->GetActiveNationId();
+  const short nationSlot = g_pSimMgr->GetPlayerCountry();
   TGreatPower* nation = g_apNationStates[nationSlot];
   if (nation == 0 || nation->city == 0 || nation->diplomacyEligibility == 0) {
     return RuntimeActionResult::Failure("the loaded active nation is not a human great power");

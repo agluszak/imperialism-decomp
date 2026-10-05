@@ -196,34 +196,16 @@ extern const unsigned int g_anScenarioScriptInstructionTags[27] = {
     kManifestTagTclr, kControlTagCoun,
 };
 // GLOBAL: IMPERIALISM 0x00698b50
-void (TSimMgr::* g_apfnScenarioScriptInstructionHandlers[27])(void*) = {
-    &TSimMgr::HandleTurnInstruction_Labo_SetNationLaborTierCounts,
-    &TSimMgr::HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta,
-    &TSimMgr::HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh,
-    &TSimMgr::HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders,
-    &TSimMgr::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder,
-    &TSimMgr::HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders,
-    &TSimMgr::HandleTurnInstruction_Tran_SetNationTransportStat,
-    &TSimMgr::HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry,
-    &TSimMgr::HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus,
-    &TSimMgr::HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus,
-    &TSimMgr::HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations,
-    &TSimMgr::HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry,
-    &TSimMgr::HandleTurnInstruction_Emba_SetEmbassyRelationFlags,
-    &TSimMgr::HandleTurnInstruction_Subs_ApplyNationSubsidyEntry,
-    &TSimMgr::HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry,
-    &TSimMgr::HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4,
-    &TSimMgr::HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry,
-    &TSimMgr::HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId,
-    &TSimMgr::HandleTurnInstruction_Cnam_AssignCountryName,
-    &TSimMgr::HandleTurnInstruction_Rela_SetNationRelationValue,
-    &TSimMgr::HandleTurnInstruction_Pnam_AssignProvinceName,
-    &TSimMgr::HandleTurnInstruction_Cash_SetNationCash,
-    &TSimMgr::HandleTurnInstruction_Flag_SetNationFlagAndRefresh,
-    &TSimMgr::HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue,
-    &TSimMgr::HandleTurnInstruction_Tbar_SetNationRelationBarValue,
-    &TSimMgr::HandleTurnInstruction_Tclr_ResetNationRelationBars,
-    &TSimMgr::HandleTurnInstruction_Coun_SetCountrySlotState,
+void (TSimMgr::* g_apfnScenarioScriptInstructionHandlers[27])(STurnInstructionCursor*) = {
+    &TSimMgr::ScSetLabor,        &TSimMgr::ScSetCapacity,     &TSimMgr::ScSetWarehouse,
+    &TSimMgr::ScAddArmy,         &TSimMgr::ScAddCivilian,     &TSimMgr::ScAddShip,
+    &TSimMgr::ScSetTransport,    &TSimMgr::ScSetDevLevel,     &TSimMgr::ScAddRailhead,
+    &TSimMgr::ScAddPort,         &TSimMgr::ScAddTech,         &TSimMgr::ScSetPrice,
+    &TSimMgr::ScSetEmbassy,      &TSimMgr::ScSetSubsidy,      &TSimMgr::ScSetTreaty,
+    &TSimMgr::ScSetYear,         &TSimMgr::ScSetProvince,     &TSimMgr::ScSetSeazoneName,
+    &TSimMgr::ScSetCountryName,  &TSimMgr::ScSetRelationship, &TSimMgr::ScSetProvinceName,
+    &TSimMgr::ScSetTreasury,     &TSimMgr::ScSetFlags,        &TSimMgr::ScSetTechDate,
+    &TSimMgr::ScSetTransportBar, &TSimMgr::ScClearTransport,  &TSimMgr::ScSetCouncilMeeting,
 };
 // GLOBAL: IMPERIALISM 0x006a4398
 bool g_bScenarioScriptTerminationRequested = false;
@@ -2426,7 +2408,7 @@ extern "C" short g_aDefaultNationSetupPolicyProfiles[7][4] = {
     {1, 2, 3, 3}, {2, 2, 5, 2}, {2, 1, 4, 1}, {2, 3, 3, 3},
     {2, 3, 2, 4}, {2, 2, 1, 3}, {2, 0, 4, 0}};
 
-// Debug/trace tag literal passed to TSimMgr::RebuildMapContextAndGlobalMapState
+// Debug/trace tag literal passed to TSimMgr::CreatePlanet
 // (0x0057c7c0) from case 3 of AdvanceGlobalTurnStateMachine.
 // GLOBAL: IMPERIALISM 0x00698c0c
 extern "C" const char s_Chunk_00698C0C[] = "Chunk";

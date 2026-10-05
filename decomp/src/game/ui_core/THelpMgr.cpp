@@ -239,7 +239,7 @@ void THelpMgr::SelectAndActivatePendingEventForCurrentView() {
 
 // FUNCTION: IMPERIALISM 0x005011a0
 void THelpMgr::HandlePostDispatchTurnStateEventUpdates() {
-  const short nationId = g_pSimMgr->GetActiveNationId();
+  const short nationId = g_pSimMgr->GetPlayerCountry();
   const eGamePhaseNewStyle phase = g_pSimMgr->mode;
   if (phase != kGamePhaseNews) {
     if (phase == kGamePhaseOptionalCityScreen && g_pSimMgr->preferenceValues[8] != 0) {
@@ -264,7 +264,7 @@ void THelpMgr::HandlePostDispatchTurnStateEventUpdates() {
 // FUNCTION: IMPERIALISM 0x00501270
 short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
   g_pSimMgr->GetEconomicTurn();
-  short activeNation = g_pSimMgr->GetActiveNationId();
+  short activeNation = g_pSimMgr->GetPlayerCountry();
   CString titleText;
   CString templateText;
   CString nationNameText;
@@ -363,7 +363,7 @@ short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
 // FUNCTION: IMPERIALISM 0x00501a20
 void THelpMgr::ShowPeriodicCapabilityReminderIfNeeded() {
   short tickMod = static_cast<short>(g_pSimMgr->GetEconomicTurn() % 10);
-  short activeNation = g_pSimMgr->GetActiveNationId();
+  short activeNation = g_pSimMgr->GetPlayerCountry();
   CString titleText;
   CString messageText;
   // Constructed and destroyed unused in the original (EH state 2).
@@ -382,7 +382,7 @@ void THelpMgr::ShowPeriodicCapabilityReminderIfNeeded() {
 // nation's, a localized advisory (string group 0x2753) is formatted and dispatched.
 // FUNCTION: IMPERIALISM 0x00501be0
 char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
-  short activeNation = g_pSimMgr->GetActiveNationId();
+  short activeNation = g_pSimMgr->GetPlayerCountry();
   CString formatText;
   CString templateText;
   CString nationName;
@@ -395,7 +395,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     short best = (active != 0) ? active->transportCapacity : 0;
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0) {
+      if (g_pSimMgr->ReallyInTheGame(i) != 0) {
         TGreatPower* nation = g_apNationStates[i];
         short value = (nation != 0) ? nation->transportCapacity : 0;
         if (value > best) {
@@ -422,8 +422,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     short best = g_apNationStates[activeNation]->merchantCapacity;
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
-          g_apNationStates[i]->merchantCapacity > best) {
+      if (g_pSimMgr->ReallyInTheGame(i) != 0 && g_apNationStates[i]->merchantCapacity > best) {
         best = g_apNationStates[i]->merchantCapacity;
         bestNation = i;
       }
@@ -444,7 +443,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     short best = g_apNationStates[activeNation]->ComputeNationRuntimeAdvisoryMetricCase6();
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
+      if (g_pSimMgr->ReallyInTheGame(i) != 0 &&
           g_apNationStates[i]->ComputeNationRuntimeAdvisoryMetricCase6() > best) {
         best = g_apNationStates[i]->ComputeNationRuntimeAdvisoryMetricCase6();
         bestNation = i;
@@ -466,7 +465,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     int best = g_apNationStates[activeNation]->GetBuildingCapacity(0);
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
+      if (g_pSimMgr->ReallyInTheGame(i) != 0 &&
           g_apNationStates[i]->GetBuildingCapacity(0) > best) {
         best = g_apNationStates[i]->GetBuildingCapacity(0);
         bestNation = i;
@@ -488,7 +487,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     int best = g_apNationStates[activeNation]->GetBuildingCapacity(2);
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
+      if (g_pSimMgr->ReallyInTheGame(i) != 0 &&
           g_apNationStates[i]->GetBuildingCapacity(2) > best) {
         best = g_apNationStates[i]->GetBuildingCapacity(2);
         bestNation = i;
@@ -510,7 +509,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     int best = g_apNationStates[activeNation]->GetBuildingCapacity(4);
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
+      if (g_pSimMgr->ReallyInTheGame(i) != 0 &&
           g_apNationStates[i]->GetBuildingCapacity(4) > best) {
         best = g_apNationStates[i]->GetBuildingCapacity(4);
         bestNation = i;
@@ -536,7 +535,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
       int best = 0;
       short bestNation = activeNation;
       for (short i = 0; i < 7; ++i) {
-        if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
+        if (g_pSimMgr->ReallyInTheGame(i) != 0 &&
             g_apNationStates[i]->GetBuildingCapacity(6) > best) {
           best = g_apNationStates[i]->GetBuildingCapacity(6);
           bestNation = i;
@@ -566,7 +565,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
       int best = g_apNationStates[activeNation]->GetBuildingCapacity(6);
       short bestNation = activeNation;
       for (short i = 0; i < 7; ++i) {
-        if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
+        if (g_pSimMgr->ReallyInTheGame(i) != 0 &&
             g_apNationStates[i]->GetBuildingCapacity(6) > best) {
           best = g_apNationStates[i]->GetBuildingCapacity(6);
           bestNation = i;
@@ -590,7 +589,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     int best = firstValue;
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (i != activeNation && g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
+      if (i != activeNation && g_pSimMgr->ReallyInTheGame(i) != 0 &&
           g_apNationStates[i]->ComputeSelectedMilitaryPowerScore() > best) {
         best = g_apNationStates[i]->ComputeSelectedMilitaryPowerScore();
         bestNation = i;
@@ -613,7 +612,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     int best = firstValue;
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (i != activeNation && g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
+      if (i != activeNation && g_pSimMgr->ReallyInTheGame(i) != 0 &&
           g_apNationStates[i]->GetArmsInNavy() > best) {
         best = g_apNationStates[i]->GetArmsInNavy();
         bestNation = i;
@@ -643,7 +642,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
 // later block; the remaining blocks are individually gated on turn-flow flags.
 // FUNCTION: IMPERIALISM 0x00502b60
 bool ShowTurnAlertsForActiveNation() {
-  short nationId = g_pSimMgr->GetActiveNationId();
+  short nationId = g_pSimMgr->GetPlayerCountry();
   CString titleText;
   CString bodyText;
   CString scratchC;
@@ -821,7 +820,7 @@ char THelpMgr::HandlePendingEventActivationByCode(TurnEventCodeStorage eventCode
         HelpSetRecord* entry =
             static_cast<HelpSetRecord*>(indexList->GetPtrListEntryByOneBasedIndex(index));
         if (entry->contextId == eventCode) {
-          // NOT GetActiveNationId — original loads ECX from g_pSimMgr and
+          // NOT GetPlayerCountry — original loads ECX from g_pSimMgr and
           // dispatches vtable slot 0x3c (GetEconomicTurn), same call as the currentTurn
           // check above. entry->rank stores a turn tick here, not a nation id.
           const short currentTick = g_pSimMgr->GetEconomicTurn();
@@ -889,7 +888,7 @@ void THelpMgr::HandlePostPendingEventActivationNoOp(TurnEventCodeStorage eventCo
 void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
   CString titleText;
   pendingEntry->flagByte = 1;
-  pendingEntry->rank = g_pSimMgr->GetActiveNationId();
+  pendingEntry->rank = g_pSimMgr->GetPlayerCountry();
 
   TextStyle titleStyle;
   InitializeUiTextStyleDescriptor(&titleStyle, 0, 12, 0x2b67, 1);
@@ -933,9 +932,9 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUHelpMgr_00696C58, 0x5f0);
   }
 
-  if (g_pSimMgr->GetActiveNationId() >= 0 && g_pSimMgr->GetActiveNationId() < 7) {
+  if (g_pSimMgr->GetPlayerCountry() >= 0 && g_pSimMgr->GetPlayerCountry() < 7) {
     coatPicture->SetPictureResourceIdAndRefresh(
-        static_cast<short>(g_pSimMgr->GetActiveNationId() + 0x251c), 0);
+        static_cast<short>(g_pSimMgr->GetPlayerCountry() + 0x251c), 0);
   } else {
     coatPicture->Show(0, 0);
   }

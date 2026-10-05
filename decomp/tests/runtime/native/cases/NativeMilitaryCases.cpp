@@ -1241,7 +1241,7 @@ RuntimeActionResult RunAdvisoryMapMissionsCase16(NativeTransition& transition) {
     if (nation == 0 || nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0) {
       continue;
     }
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) == 0) {
+    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(slot)) == 0) {
       continue;
     }
     found = 1;
@@ -1268,7 +1268,7 @@ RuntimeActionResult RunArmyMovementGiveOrders(NativeTransition& transition) {
     if (nation == 0 || nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0) {
       continue;
     }
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) == 0) {
+    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(slot)) == 0) {
       continue;
     }
     found = 1;
@@ -1856,7 +1856,7 @@ static TAutoGreatPower* ConfigureAiNavalDevelopmentPressure(short* nationSlotOut
   for (short slot = 0; slot < 7; ++slot) {
     TGreatPower* nation = g_apNationStates[slot];
     if (nation != 0 && nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) != 0 &&
-        g_pSimMgr->IsNationSlotEligibleForEventProcessing(slot) != 0) {
+        g_pSimMgr->ReallyInTheGame(slot) != 0) {
       autoNation = static_cast<TAutoGreatPower*>(nation);
       nationSlot = slot;
       break;
@@ -1945,7 +1945,7 @@ static bool ConfigureDamagedHostileSeaMission(short* nationSlotOut) {
     if (nation == 0 || nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0) {
       continue;
     }
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) == 0) {
+    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(slot)) == 0) {
       continue;
     }
     TAutoGreatPower* autoNation = static_cast<TAutoGreatPower*>(nation);
@@ -1971,7 +1971,7 @@ static bool ConfigureDamagedHostileSeaMission(short* nationSlotOut) {
       if (nation == 0 || nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0) {
         continue;
       }
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) == 0) {
+      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(slot)) == 0) {
         continue;
       }
       hostNation = nation;
@@ -2034,7 +2034,7 @@ RuntimeActionResult RunReassessControlSeaMissions(NativeTransition& transition) 
     if (nation == 0 || nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0) {
       continue;
     }
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) == 0) {
+    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(slot)) == 0) {
       continue;
     }
     TAutoGreatPower* autoNation = static_cast<TAutoGreatPower*>(nation);
@@ -2070,7 +2070,7 @@ RuntimeActionResult RunReassessControlSeaMissionsDamagedShip(NativeTransition& t
     if (nation == 0 || nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0) {
       continue;
     }
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) == 0) {
+    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(slot)) == 0) {
       continue;
     }
     TAutoGreatPower* autoNation = static_cast<TAutoGreatPower*>(nation);

@@ -76,7 +76,7 @@ private:
   enum { kCityRecordCount = 0x180 };
 
   short CapitalProvince() const {
-    const short activeNation = g_pSimMgr->GetActiveNationId();
+    const short activeNation = g_pSimMgr->GetPlayerCountry();
     if (g_apTerrainTypeDescriptorTable[activeNation] == 0) {
       return -1;
     }

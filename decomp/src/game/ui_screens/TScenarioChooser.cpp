@@ -218,8 +218,8 @@ void TScenarioChooser::StartGame() {
   TMapPreviewView* mapControl =
       static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagPreviewMap));
   mapControl->AssertValid();
-  g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(true);
-  g_pSimMgr->RecreateActiveMapContextAndInitializeGlobalMapState(selectedScenarioIndex);
+  g_pSimMgr->CreateSimObjects(true);
+  g_pSimMgr->LoadScenario(selectedScenarioIndex);
   g_pSimMgr->SetDifficultyLevel(
       static_cast<eDifficulty>(difficultyLevelByNation[mapControl->selectedNation68]));
 
@@ -246,7 +246,7 @@ void TScenarioChooser::StartGame() {
     g_pGameFlowState->scenarioSelectionTag = kControlTagScn0 + selectedScenarioIndex;
     g_pAmbitApplication->PostTurnEventCodeMessage2420(kTurnEventNetworkGameOptions);
   } else {
-    g_pSimMgr->SetActiveNationSlotAndRefreshCityCapabilityUiHandles(mapControl->selectedNation68);
+    g_pSimMgr->SetPlayerCountry(mapControl->selectedNation68);
     for (int i = 0; i < kMajorNationCount; ++i) {
       g_pSimMgr->nationControlModes[i] = 2;
     }

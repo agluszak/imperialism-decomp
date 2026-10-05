@@ -41,7 +41,7 @@ void TDefenseMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler, 
     }
   } else if (commandId == 0x14) {
     if (tag == kControlTagCann) {
-      short activeNationId = g_pSimMgr->GetActiveNationId();
+      short activeNationId = g_pSimMgr->GetPlayerCountry();
       if (g_pMapContextActionManager->HasBattlesInvolvingGP(activeNationId)) {
         if (g_pSimMgr->field14 == 0) {
           TWindow* owner = GetWindow();

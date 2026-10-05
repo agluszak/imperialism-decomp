@@ -799,8 +799,7 @@ void TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags() {
   int slot = 0;
   TGreatPower** np = g_apNationStates;
   do {
-    if ((g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) != 0) &&
-        (*np != 0)) {
+    if ((g_pSimMgr->ReallyInTheGame(static_cast<short>(slot)) != 0) && (*np != 0)) {
       (*np)->ResetDiplomacyNeedScoresAndClearAidAllocationMatrix();
     }
     slot = slot + 1;
@@ -820,8 +819,7 @@ void TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags() {
   slot = 0;
   np = g_apNationStates;
   do {
-    if ((g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) != 0) &&
-        (*np != 0)) {
+    if ((g_pSimMgr->ReallyInTheGame(static_cast<short>(slot)) != 0) && (*np != 0)) {
       (*np)->ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches();
     }
     slot = slot + 1;
@@ -871,7 +869,7 @@ void TTradeMgr::TallyTradeBids() {
   int nation = 0;
   TGreatPower** np = g_apNationStates;
   do {
-    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nation)) != 0) {
+    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nation)) != 0) {
       (*np)->AssignFallbackNationsToUnfilledDiplomacyNeedSlots();
     }
     nation = nation + 1;
@@ -886,7 +884,7 @@ void TTradeMgr::TallyTradeBids() {
     np = g_apNationStates;
     int slot = 0;
     do {
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) != 0) {
+      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(slot)) != 0) {
         short metric = (*np)->GetTradeOffersFor(static_cast<short>(metricRow));
         cells[metricRow * 0x50 + col] = metric;
         if (metric < 0) {

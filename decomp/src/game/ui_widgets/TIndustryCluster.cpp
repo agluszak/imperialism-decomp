@@ -37,7 +37,7 @@ TIndustryCluster::~TIndustryCluster() {}
 // FUNCTION: IMPERIALISM 0x00588b70
 void TIndustryCluster::DoPostCreate(int styleSeed) {
   short tagIndex = 0;
-  short activeNationId = g_pSimMgr->GetActiveNationId();
+  short activeNationId = g_pSimMgr->GetPlayerCountry();
   TGreatPower* activeNationState = g_apNationStates[activeNationId];
   TCity* province = activeNationState == 0 ? 0 : activeNationState->GetCityState();
 

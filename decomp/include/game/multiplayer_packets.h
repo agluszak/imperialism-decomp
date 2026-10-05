@@ -75,7 +75,7 @@ struct LobbyTextPairEvent8Packet : TimelyMessageHeader {
 
 // Event-0xE host session-init record.
 struct TurnEventESessionInitPacket : TimelyMessageHeader {
-  char mapSeedText[0x21];        // +0x18 - passed to RebuildMapContextAndGlobalMapState
+  char mapSeedText[0x21];        // +0x18 - passed to CreatePlanet
   unsigned char mapParamByte39;  // +0x39 - third Rebuild arg
   char hostGameName3A[0x22];     // +0x3a
   int saveSlotDword5C;           // +0x5c -> queueSyncDword

@@ -45,7 +45,7 @@ IMPLEMENT_DYNCREATE(TTraderAmtBar, TAmtBar)
 // FUNCTION: IMPERIALISM 0x0058af80
 void TTraderAmtBar::DoPostCreate(int arg) {
   (void)arg;
-  TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+  TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
   int scenarioTag = this->ownerContext->controlTag;
 
   short recordIndex = 0;
@@ -87,7 +87,7 @@ short TTraderAmtBar::ApplyMoveClamp(int baseValue, short requestedValue) {
     // 0x0058b083-0x0058b091 inlines the active-nation lookup; 0x0058b09f divides
     // frameWidth (+0x34), not frameHeight, and the original guards the IDIV with
     // nothing -- there is no merchantCapacity != 0 test in the binary.
-    TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+    TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
     short merchantCapacity = nationState->merchantCapacity;
     if ((int)requestedValue < (static_cast<int>(this->frameWidth) / (int)merchantCapacity)) {
       if (this->ownerContext->ResolveControlByTag(kControlTagSell) != 0) {

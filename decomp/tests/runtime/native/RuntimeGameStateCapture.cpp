@@ -1123,14 +1123,14 @@ JSON_Value* CaptureTurn(const RuntimeRun& run) {
     object.SetNull("scenario_map");
   }
   object.Set("economic_turn", g_pSimMgr->economicTurn);
-  object.Set("diplomacy_year_term_raw", static_cast<int>(g_pSimMgr->field6c));
+  object.Set("diplomacy_year_term_raw", static_cast<int>(g_pSimMgr->finalCouncilYear));
   object.Set("phase", g_pSimMgr->turnStateCode);
   object.Set("turn_flow_status_flags", g_pSimMgr->turnFlowStatusFlags);
   object.Set("dispatched_event",
              g_pViewMgr != 0 ? static_cast<int>(g_pViewMgr->currentTurnEventCode) : -1);
   JsonArray quarterGateByDecade;
   for (int decade = 0; decade < 10; ++decade) {
-    quarterGateByDecade.Add(static_cast<int>(g_pSimMgr->phaseStateByDecade[decade]));
+    quarterGateByDecade.Add(static_cast<int>(g_pSimMgr->councilByDecade[decade]));
   }
   object.Set("quarter_gate_by_decade", quarterGateByDecade.Release());
   object.Set("difficulty", DifficultyName(g_pSimMgr->difficultyLevel));
@@ -3325,7 +3325,7 @@ JSON_Value* CaptureCityTransportEphemeral() {
     nations.Add(entry.Release());
   }
   JsonArray regions;
-  TGreatPower* active = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+  TGreatPower* active = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
   if (active != 0 && active->ownedRegionList != 0 &&
       g_pGlobalMapState != 0 && g_pGlobalMapState->cityScoreTable != 0) {
     TLongintList* owned = active->ownedRegionList;
