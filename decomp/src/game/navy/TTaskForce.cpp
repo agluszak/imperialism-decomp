@@ -30,12 +30,6 @@
 // Navy order priority uses four category weights over the current entry's
 // aggression, nation, and map marker state.
 
-// SYNTHETIC: IMPERIALISM 0x00552770
-// TTaskForce::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005527e0
-// TTaskForce::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TTaskForce, TObject)
 // FUNCTION: IMPERIALISM 0x00552800
 TTaskForce::TTaskForce(TZone* locationArg, short nationArg)
@@ -44,9 +38,6 @@ TTaskForce::TTaskForce(TZone* locationArg, short nationArg)
       ingotTileIndex(-1) {
   memset(shipCountsByToolbarSlot, 0, sizeof(shipCountsByToolbarSlot));
 }
-
-// SYNTHETIC: IMPERIALISM 0x00552870
-// TTaskForce::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005528a0
 TTaskForce::~TTaskForce() {}

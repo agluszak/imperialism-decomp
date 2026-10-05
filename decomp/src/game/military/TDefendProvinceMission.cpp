@@ -18,10 +18,6 @@
 
 // The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
 //   CArchive& AFXAPI operator>>(CArchive&, TDefendProvinceMission*&)
-// SYNTHETIC: IMPERIALISM 0x0053e6b0
-// operator>>
-// SYNTHETIC: IMPERIALISM 0x0053e690
-// `dynamic initializer for '_init_TDefendProvinceMission''
 IMPLEMENT_SERIAL(TDefendProvinceMission, TArmyMission, 1)
 
 #include "game/ui_core/CIterator.h"
@@ -40,8 +36,6 @@ bool TDefendProvinceMission::IsHospitalMission() const {
 bool TDefendProvinceMission::IsANoBrainer() const {
   return true;
 }
-// SYNTHETIC: IMPERIALISM 0x005357d0
-// TDefendProvinceMission::`scalar deleting destructor'
 
 // Global factory function
 // FUNCTION: IMPERIALISM 0x00535800
@@ -95,9 +89,6 @@ void TDefendProvinceMission::PropagateTargetTileToLinkedUnitsIfDifferent(short n
   }
 }
 
-// SYNTHETIC: IMPERIALISM 0x0053e5f0
-// TDefendProvinceMission::CreateObject
-
 namespace {
 
 inline float NormalizeFiveComponentPriorityVector(const float* vector, float sum,
@@ -121,9 +112,6 @@ inline float NormalizeFiveComponentPriorityVector(const float* vector, float sum
 }
 
 } // namespace
-
-// SYNTHETIC: IMPERIALISM 0x0053e670
-// TDefendProvinceMission::GetRuntimeClass
 
 // FUNCTION: IMPERIALISM 0x0053e6e0
 float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeContext) {

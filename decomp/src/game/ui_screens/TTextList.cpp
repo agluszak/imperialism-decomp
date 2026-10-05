@@ -9,14 +9,6 @@
 #include "game/mfc.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x0045af30
-// TTextList::`scalar deleting destructor'
-
-// SYNTHETIC: IMPERIALISM 0x0057ab70
-// TTextList::CreateObject
-// SYNTHETIC: IMPERIALISM 0x0057ac30
-// TTextList::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TTextList, TView)
 
 // FUNCTION: IMPERIALISM 0x0045aee0

@@ -21,16 +21,8 @@ short TInteriorMinister::GetHistoricalNeedFor(int arg) {
 
 // FUNCTION: IMPERIALISM 0x004be190
 void TInteriorMinister::ResetHistoricalNeedFor(int) {}
-// SYNTHETIC: IMPERIALISM 0x004be0d0
-// TInteriorMinister::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004be1b0
-// TInteriorMinister::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TInteriorMinister, TMinister)
-
-// SYNTHETIC: IMPERIALISM 0x004be200
-// TInteriorMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004be250
 void TInteriorMinister::IInteriorMinister(TGreatPower* owner) {

@@ -5,16 +5,7 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/TViewMgr.h"
 
-// SYNTHETIC: IMPERIALISM 0x004b7dc0
-// TFoodProcessingOrder::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004b7df0
-// TFoodProcessingOrder::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TFoodProcessingOrder, TProductionOrder)
-
-// SYNTHETIC: IMPERIALISM 0x004b7e30
-// TFoodProcessingOrder::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004b7e80
 void TFoodProcessingOrder::IFoodProcessingOrder(TCity* city) {

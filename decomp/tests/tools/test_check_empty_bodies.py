@@ -139,3 +139,36 @@ class TestDerivedStoreOffsets(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestEmissionCatalogVisibility(unittest.TestCase):
+    def test_empty_lifecycle_body_uses_catalog_not_a_source_marker(self):
+        import tempfile
+        from tools.emissions import Emission
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "Fake.cpp"
+            path.write_text("Known::~Known() {}\n")
+            entry = Emission(0x401000, "Known::~Known", "", "", "synthetic", "")
+            findings = scan_file(path, {}, {0x401000: 80}, 16, emissions={entry.address: entry})
+            self.assertEqual(findings, [])
+
+    def test_inline_noop_and_retained_emission_have_distinct_sizes(self):
+        import tempfile
+        from tools.emissions import Emission
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "Fake.cpp"
+            path.write_text("// NOOP: verified empty in original 0x00402000\nKnown::~Known() {}\n")
+            entry = Emission(0x401000, "Known::~Known", "", "", "synthetic", "")
+            findings = scan_file(path, {}, {0x401000: 80, 0x402000: 1}, 16,
+                                 emissions={entry.address: entry})
+            self.assertEqual(findings, [])
+
+    def test_catalog_cannot_vouch_for_fake_empty_ordinary_body(self):
+        import tempfile
+        from tools.emissions import Emission
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "Fake.cpp"
+            path.write_text("void Known::Generated() {}\n")
+            entry = Emission(0x401000, "Known::Generated", "", "", "synthetic", "")
+            findings = scan_file(path, {}, {0x401000: 80}, 16, emissions={entry.address: entry})
+            self.assertEqual([f["kind"] for f in findings], ["empty_but_big"])

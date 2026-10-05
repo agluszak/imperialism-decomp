@@ -1,18 +1,10 @@
 #include "game/tactical_ui/TTask.h"
 #include "game/core/TStream.h"
-// SYNTHETIC: IMPERIALISM 0x005adb40
-// TTask::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005adb70
-// TTask::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTask, TObject)
 
 // FUNCTION: IMPERIALISM 0x005adb90
 TTask::TTask() {}
-
-// SYNTHETIC: IMPERIALISM 0x005adbb0
-// TTask::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005adc00
 void TTask::ITask(short citySlotType) {

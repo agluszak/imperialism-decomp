@@ -19,19 +19,11 @@ struct MinisterTerrainPreferenceEntry {
 };
 
 } // namespace
-// SYNTHETIC: IMPERIALISM 0x0052eb30
-// TMinister::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0052eb60
-// TMinister::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TMinister, TObject)
 
 // FUNCTION: IMPERIALISM 0x0052eb80
 TMinister::TMinister() : ownerContextAt04(nullptr), field_8(0), skillIndexC(0) {}
-
-// SYNTHETIC: IMPERIALISM 0x0052eba0
-// TMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0052ebf0
 void TMinister::IMinister(TGreatPower* ownerContext) {

@@ -26,16 +26,9 @@ static void AssertMcAppUiInvalidation(const char* path, int line) {
 // IMPLEMENT_DYNCREATE also emits `TWindow::CreateObject`; the original copy at
 // 0x48d090 has the TWindow ctor (including the inlined g_LiveViewRegistry AddHead
 // CPlex node code on the 0x6a1a44/0x6a1a50/0x6a1a54/0x6a1a58 globals) inlined into it.
-// SYNTHETIC: IMPERIALISM 0x0048d090
-// TWindow::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0048d220
-// TWindow::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TWindow, TView)
 
-// SYNTHETIC: IMPERIALISM 0x0048d640
-// TWindow::`scalar deleting destructor'
 //
 // The real (non-deleting) destructor unlinks this window from the global live-view
 // registry and from the modal stack; when a window is left on top of the modal stack it

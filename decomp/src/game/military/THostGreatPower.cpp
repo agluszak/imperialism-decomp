@@ -13,15 +13,8 @@ bool THostGreatPower::IsHost(void) const {
   return true;
 }
 
-// SYNTHETIC: IMPERIALISM 0x00540f40
-// THostGreatPower::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00540f70
 THostGreatPower::~THostGreatPower() {}
-// SYNTHETIC: IMPERIALISM 0x00540e90
-// THostGreatPower::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00540fe0
-// THostGreatPower::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(THostGreatPower, TGreatPower)
 

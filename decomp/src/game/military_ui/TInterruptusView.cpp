@@ -6,15 +6,8 @@
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
 
-// SYNTHETIC: IMPERIALISM 0x004afd30
-// TInterruptusView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004afd60
 TInterruptusView::~TInterruptusView() {}
-// SYNTHETIC: IMPERIALISM 0x004afcc0
-// TInterruptusView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004afd80
-// TInterruptusView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TInterruptusView, TItemBoyView)
 

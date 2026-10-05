@@ -29,11 +29,6 @@
 #include "game/gfx/quickdraw_regions.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
-// SYNTHETIC: IMPERIALISM 0x004c8200
-// TShipyardView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004c82a0
-// TShipyardView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TShipyardView, TBuildingView)
 
@@ -43,8 +38,6 @@ TShipyardView::TShipyardView() {
   productionView98 = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x004c82f0
-// TShipyardView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004c8320
 TShipyardView::~TShipyardView() {}
 

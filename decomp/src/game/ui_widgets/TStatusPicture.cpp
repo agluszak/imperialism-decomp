@@ -22,15 +22,8 @@ TStatusPicture::TStatusPicture() {
   comparisonMode90 = -1;
 }
 
-// SYNTHETIC: IMPERIALISM 0x0043d870
-// TStatusPicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0043d8a0
 TStatusPicture::~TStatusPicture() {}
-// SYNTHETIC: IMPERIALISM 0x00593e80
-// TStatusPicture::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00593f00
-// TStatusPicture::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TStatusPicture, TPicture)
 

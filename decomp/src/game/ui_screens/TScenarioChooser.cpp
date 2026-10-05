@@ -29,15 +29,8 @@ void ReadLineFromBufferedStreamUntilTerminator(char* destination, int maxLength,
 // FUNCTION: IMPERIALISM 0x0045ae60
 TScenarioChooser::TScenarioChooser() {}
 
-// SYNTHETIC: IMPERIALISM 0x0045ae90
-// TScenarioChooser::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0045aec0
 TScenarioChooser::~TScenarioChooser() {}
-// SYNTHETIC: IMPERIALISM 0x00579ae0
-// TScenarioChooser::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00579b60
-// TScenarioChooser::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TScenarioChooser, TNoHilitePicture)
 

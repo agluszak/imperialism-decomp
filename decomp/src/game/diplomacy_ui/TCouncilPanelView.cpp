@@ -14,15 +14,8 @@ TCouncilPanelView::TCouncilPanelView() {
   diplomacyMapView60 = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x00430570
-// TCouncilPanelView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004305a0
 TCouncilPanelView::~TCouncilPanelView() {}
-// SYNTHETIC: IMPERIALISM 0x004faf80
-// TCouncilPanelView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004fb010
-// TCouncilPanelView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TCouncilPanelView, TPanelView)
 

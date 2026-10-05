@@ -6,14 +6,7 @@ void TSpaceCommand::DoIt() {
   setupPicture18->MajorTomToGroundControl(mode1c);
 }
 
-// SYNTHETIC: IMPERIALISM 0x00575210
-// TSpaceCommand::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00575240
 TSpaceCommand::~TSpaceCommand() {}
-// SYNTHETIC: IMPERIALISM 0x00575180
-// TSpaceCommand::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00575260
-// TSpaceCommand::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TSpaceCommand, TCommand)

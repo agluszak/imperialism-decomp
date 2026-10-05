@@ -8,19 +8,10 @@
 #include "game/city/TUnitOrder.h"
 #include "game/order_sheet.h"
 
-// SYNTHETIC: IMPERIALISM 0x005adcd0
-// TCityTask::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005add00
-// TCityTask::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TCityTask, TTask)
 
 // FUNCTION: IMPERIALISM 0x005add20
 TCityTask::TCityTask() {}
-
-// SYNTHETIC: IMPERIALISM 0x005add40
-// TCityTask::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005add90
 void TCityTask::ICityTask(short citySlotType, TCity* owner, short amount) {

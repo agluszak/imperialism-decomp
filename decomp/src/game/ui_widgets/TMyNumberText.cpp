@@ -8,19 +8,11 @@
 // Defined below, in the original's address order.
 void ParseIntFromControlText(CString text, int* outValue);
 
-// SYNTHETIC: IMPERIALISM 0x005b4f10
-// TMyNumberText::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005b4fb0
-// TMyNumberText::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TMyNumberText, TNumberText)
 
 // FUNCTION: IMPERIALISM 0x005b4fd0
 TMyNumberText::TMyNumberText() : TNumberText() {}
 
-// SYNTHETIC: IMPERIALISM 0x005b5000
-// TMyNumberText::`scalar deleting destructor'
 // No own destructor: the original's 0x005b5030 is an ILT thunk to the base's
 // ~TEditText (0x004904d0), so this class inherits it. The scalar deleting destructor above is what
 // the vtable slot holds.

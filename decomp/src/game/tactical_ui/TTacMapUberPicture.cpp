@@ -11,8 +11,6 @@ void TTacMapUberPicture::Scroll(MapScrollEdgeMaskStorage edgeMask) {
   }
 }
 
-// SYNTHETIC: IMPERIALISM 0x0045d3e0
-// TTacMapUberPicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0045d410
 TTacMapUberPicture::~TTacMapUberPicture() {}
 // FUNCTION: IMPERIALISM 0x005ad290
@@ -22,12 +20,6 @@ void TTacMapUberPicture::SetWindPictureResourceIdAndRefresh(int resourceBase) {
   windPicture->AssertValid();
   windPicture->SetPictureResourceIdAndRefresh(static_cast<short>(resourceBase + 0xf00), 1);
 }
-
-// SYNTHETIC: IMPERIALISM 0x005ad2e0
-// TTacMapUberPicture::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005ad380
-// TTacMapUberPicture::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTacMapUberPicture, TMapUberUberPicture)
 // FUNCTION: IMPERIALISM 0x005ad3a0

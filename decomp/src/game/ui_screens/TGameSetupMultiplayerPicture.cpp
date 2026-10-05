@@ -20,19 +20,11 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x00575e90
-// TGameSetupMultiplayerPicture::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00575f10
-// TGameSetupMultiplayerPicture::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TGameSetupMultiplayerPicture, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x00575f30
 TGameSetupMultiplayerPicture::TGameSetupMultiplayerPicture() {}
 
-// SYNTHETIC: IMPERIALISM 0x00575f60
-// TGameSetupMultiplayerPicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00575f90
 TGameSetupMultiplayerPicture::~TGameSetupMultiplayerPicture() {}
 

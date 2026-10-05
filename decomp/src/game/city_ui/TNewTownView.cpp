@@ -11,15 +11,8 @@
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
-// SYNTHETIC: IMPERIALISM 0x004bd810
-// TNewTownView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004bd840
 TNewTownView::~TNewTownView() {}
-// SYNTHETIC: IMPERIALISM 0x004bd7a0
-// TNewTownView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004bd860
-// TNewTownView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TNewTownView, TView)
 

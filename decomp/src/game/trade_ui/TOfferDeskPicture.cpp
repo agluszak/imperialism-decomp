@@ -40,11 +40,6 @@
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/gfx/ui_invalidation_guard.h"
-// SYNTHETIC: IMPERIALISM 0x005be4b0
-// TOfferDeskPicture::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005be550
-// TOfferDeskPicture::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TOfferDeskPicture, TPicture)
 
@@ -52,8 +47,6 @@ IMPLEMENT_DYNCREATE(TOfferDeskPicture, TPicture)
 TOfferDeskPicture::TOfferDeskPicture()
     : TPicture(), selectionActive(false), acceptButton(0), rejectButton(0) {}
 
-// SYNTHETIC: IMPERIALISM 0x005be5b0
-// TOfferDeskPicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005be5e0
 TOfferDeskPicture::~TOfferDeskPicture() {}
 

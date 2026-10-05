@@ -14,15 +14,8 @@
 // FUNCTION: IMPERIALISM 0x0045acb0
 void TSpecialQuitPicture::Hilite() {}
 
-// SYNTHETIC: IMPERIALISM 0x0045acd0
-// TSpecialQuitPicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0045ad00
 TSpecialQuitPicture::~TSpecialQuitPicture() {}
-// SYNTHETIC: IMPERIALISM 0x005b4760
-// TSpecialQuitPicture::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005b47f0
-// TSpecialQuitPicture::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TSpecialQuitPicture, TPicture)
 

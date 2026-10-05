@@ -95,14 +95,6 @@ void TView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
 
 // TViewChildList's compiler-emitted CList<TView*,TView*>::Serialize body. The real source is
 // the childList44 template type in TView, not a TView method or TEventHandler record pool.
-// TEMPLATE: IMPERIALISM 0x00479be0 SYMBOL
-// ?Serialize@?$CList@PAVTView@@PAV1@@@UAEXAAVCArchive@@@Z
-
-// SYNTHETIC: IMPERIALISM 0x00479d50
-// CList<TView *,TView *>::`scalar deleting destructor'
-
-// TEMPLATE: IMPERIALISM 0x00479d80 SYMBOL
-// ??1?$CList@PAVTView@@PAV1@@@UAE@XZ
 
 // FUNCTION: IMPERIALISM 0x00489f60
 TView* TViewChildList::FindByTag(unsigned int tag) {
@@ -138,12 +130,8 @@ void TViewChildList::FreeAll() {
     GetHead()->Free();
   }
 }
-// SYNTHETIC: IMPERIALISM 0x0048a840
-// TView::CreateObject
 
 // TView slot 0x00 override: return this class's MFC CRuntimeClass descriptor.
-// SYNTHETIC: IMPERIALISM 0x0048a8c0
-// TView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TView, TEventHandler)
 
@@ -153,9 +141,6 @@ TView::TView()
       childList44(0), stylePayload48(0), inputGateFlag4c(1), childHitTestFlag4d(1),
       cursorId4e(0xffff), nativeWindow50(0), helpState54(1), hoverHelpText58(),
       hoverHelpEnabled5c(0) {}
-
-// SYNTHETIC: IMPERIALISM 0x0048a9a0
-// TView::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0048a9d0
 TView::~TView() {
@@ -227,11 +212,6 @@ void TView::AttachChildControl(class TView* child, int flag) {
 
   child->UpdateCoordinates();
 }
-// SYNTHETIC: IMPERIALISM 0x0048ada0
-// CList<TView *,TView *>::`scalar deleting destructor'
-
-// TEMPLATE: IMPERIALISM 0x0048add0 SYMBOL
-// ??1?$CList@PAVTView@@PAV1@@@UAE@XZ
 
 // IMPLEMENT_DYNCREATE also emits `TView::CreateObject` (`return new TView;`).
 

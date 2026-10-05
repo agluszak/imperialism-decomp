@@ -11,11 +11,6 @@
 #include "game/globals/global_types.h"
 #include "game/globals/diplomacy_ui_globals.h"
 #include "game/globals/shared_globals.h"
-// SYNTHETIC: IMPERIALISM 0x004f3240
-// TDefenseMinisterView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004f32d0
-// TDefenseMinisterView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TDefenseMinisterView, TMinisterView)
 
@@ -24,8 +19,6 @@ IMPLEMENT_DYNCREATE(TDefenseMinisterView, TMinisterView)
 // FUNCTION: IMPERIALISM 0x004f32f0
 TDefenseMinisterView::TDefenseMinisterView() : TMinisterView() {}
 
-// SYNTHETIC: IMPERIALISM 0x004f3320
-// TDefenseMinisterView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004f3350
 TDefenseMinisterView::~TDefenseMinisterView() {}
 

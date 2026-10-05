@@ -8,11 +8,6 @@
 #include "game/ui_core/TWindow.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
-// SYNTHETIC: IMPERIALISM 0x004f2f20
-// TForeignMinisterView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004f2fb0
-// TForeignMinisterView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TForeignMinisterView, TMinisterView)
 
@@ -23,8 +18,6 @@ IMPLEMENT_DYNCREATE(TForeignMinisterView, TMinisterView)
 // FUNCTION: IMPERIALISM 0x004f2fd0
 TForeignMinisterView::TForeignMinisterView() : TMinisterView() {}
 
-// SYNTHETIC: IMPERIALISM 0x004f3000
-// TForeignMinisterView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004f3030
 TForeignMinisterView::~TForeignMinisterView() {}
 

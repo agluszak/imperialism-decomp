@@ -3,19 +3,11 @@
 #include "game/ui_core/TStaticText.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_tags_widgets.h"
-// SYNTHETIC: IMPERIALISM 0x004b0fe0
-// TDropShadowTextBehavior::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004b1080
-// TDropShadowTextBehavior::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TDropShadowTextBehavior, TBehavior)
 
 // FUNCTION: IMPERIALISM 0x004b10a0
 TDropShadowTextBehavior::TDropShadowTextBehavior() : TBehavior(), shadowColor10(0) {}
-
-// SYNTHETIC: IMPERIALISM 0x004b10d0
-// TDropShadowTextBehavior::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004b1120
 void TDropShadowTextBehavior::IDropShadowTextBehavior(COLORREF shadowColor) {

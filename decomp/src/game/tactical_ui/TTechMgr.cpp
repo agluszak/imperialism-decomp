@@ -46,19 +46,11 @@ short GetEnabledIndustryCapabilitySlotByClass(short classId) {
   }
   return slot;
 }
-// SYNTHETIC: IMPERIALISM 0x005aef30
-// TTechMgr::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005aef60
-// TTechMgr::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTechMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x005aef80
 TTechMgr::TTechMgr() {}
-
-// SYNTHETIC: IMPERIALISM 0x005aefa0
-// TTechMgr::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005aefd0
 TTechMgr::~TTechMgr() {}

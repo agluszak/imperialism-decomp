@@ -20,8 +20,6 @@ public:
                                short secondaryInputResource,
                                short productionSlot); // slot 0x12 0x4b9010
 
-  // SYNTHETIC: IMPERIALISM 0x004b8fa0
-  // TExpansionOrder::TExpansionOrder
   TExpansionOrder() {}
 };
 ASSERT_SIZE(TExpansionOrder, 0x54);

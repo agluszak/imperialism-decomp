@@ -7,15 +7,8 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
 
-// SYNTHETIC: IMPERIALISM 0x004a9400
-// TArmyCheckBox::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004a9430
 TArmyCheckBox::~TArmyCheckBox() {}
-// SYNTHETIC: IMPERIALISM 0x004a9f20
-// TArmyCheckBox::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004a9fc0
-// TArmyCheckBox::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TArmyCheckBox, TControl)
 

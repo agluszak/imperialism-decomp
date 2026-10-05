@@ -13,11 +13,6 @@
 #include "game/globals/navy_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
-// SYNTHETIC: IMPERIALISM 0x00564c30
-// TNavyRoster::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00564d00
-// TNavyRoster::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TNavyRoster, TMilitaryPageView)
 
@@ -32,8 +27,6 @@ TNavyRoster::TNavyRoster() {
   classControls90[3] = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x00564d70
-// TNavyRoster::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00564da0
 TNavyRoster::~TNavyRoster() {}
 

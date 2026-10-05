@@ -134,12 +134,6 @@ void MapContextActionRecord::WriteTo(TStream* stream) {
   }
 }
 
-// SYNTHETIC: IMPERIALISM 0x004a1810
-// TArmyMgr::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004a1850
-// TArmyMgr::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TArmyMgr, TObject)
 
 // Own-source function (not a TArmyMgr method -- ground truth doesn't touch `this`).
@@ -158,8 +152,6 @@ TArmyMgr::TArmyMgr() {
   mapContextActionRecordList04 = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x004a18a0
-// TArmyMgr::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004a18d0
 TArmyMgr::~TArmyMgr() {}
 

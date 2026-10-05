@@ -11,15 +11,8 @@ TBattleUnitsView::TBattleUnitsView() {
   secondaryUnitAtlas88 = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x00430b80
-// TBattleUnitsView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00430bb0
 TBattleUnitsView::~TBattleUnitsView() {}
-// SYNTHETIC: IMPERIALISM 0x004b0630
-// TBattleUnitsView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004b06d0
-// TBattleUnitsView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TBattleUnitsView, TMilitaryPageView)
 

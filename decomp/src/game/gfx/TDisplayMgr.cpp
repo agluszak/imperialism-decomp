@@ -54,11 +54,6 @@ int InitializeTurnOrderNavigationDialogByViewportSize_Impl(int arg) {
   (void)arg;
   return 0;
 }
-// SYNTHETIC: IMPERIALISM 0x004fe710
-// TDisplayMgr::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004fe780
-// TDisplayMgr::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TDisplayMgr, TObject)
 
@@ -76,8 +71,6 @@ TDisplayMgr::TDisplayMgr()
   savedHiliteColor.rgbReserved = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x004fe7f0
-// TDisplayMgr::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004fe820
 TDisplayMgr::~TDisplayMgr() {}
 

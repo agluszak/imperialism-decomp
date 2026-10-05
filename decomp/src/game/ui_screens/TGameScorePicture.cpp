@@ -16,15 +16,8 @@
 // FUNCTION: IMPERIALISM 0x0045af80
 TGameScorePicture::TGameScorePicture() {}
 
-// SYNTHETIC: IMPERIALISM 0x0045afb0
-// TGameScorePicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0045afe0
 TGameScorePicture::~TGameScorePicture() {}
-// SYNTHETIC: IMPERIALISM 0x0057b000
-// TGameScorePicture::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0057b080
-// TGameScorePicture::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TGameScorePicture, TNoHilitePicture)
 

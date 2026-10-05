@@ -1,18 +1,8 @@
 #include "game/TFuzzyVar.h"
-// SYNTHETIC: IMPERIALISM 0x004ff460
-// TFuzzyVar::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004ff490
-// TFuzzyVar::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TFuzzyVar, TObject)
 
-// SYNTHETIC: IMPERIALISM 0x004ff500
-// TFuzzyVar::~TFuzzyVar
 TFuzzyVar::~TFuzzyVar() {}
-
-// SYNTHETIC: IMPERIALISM 0x004ff4d0
-// TFuzzyVar::`scalar deleting destructor'
 
 // Mac oracle: IFuzzyVar.
 // FUNCTION: IMPERIALISM 0x004ff520

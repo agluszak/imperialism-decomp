@@ -6,10 +6,6 @@
 #include "game/quickdraw_guards.h"
 #include "game/mfc.h"
 #include <new>
-// SYNTHETIC: IMPERIALISM 0x0058b5c0
-// THQButton::CreateObject
-// SYNTHETIC: IMPERIALISM 0x0058b640
-// THQButton::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(THQButton, TPicture)
 
@@ -18,8 +14,6 @@ THQButton::THQButton() : TPicture() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 
-// SYNTHETIC: IMPERIALISM 0x0058b690
-// THQButton::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0058b6c0
 THQButton::~THQButton() {}
 // FUNCTION: IMPERIALISM 0x0058b6e0

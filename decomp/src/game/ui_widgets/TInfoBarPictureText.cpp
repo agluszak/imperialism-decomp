@@ -1,14 +1,7 @@
 #include "game/ui_widgets/TInfoBarPictureText.h"
-// SYNTHETIC: IMPERIALISM 0x005b5ac0
-// TInfoBarPictureText::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005b5bb0
-// TInfoBarPictureText::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TInfoBarPictureText, TInfoBarText)
 
-// SYNTHETIC: IMPERIALISM 0x005b5c60
-// TInfoBarPictureText::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005b5c90
 TInfoBarPictureText::~TInfoBarPictureText() {}
 

@@ -16,11 +16,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 
-// SYNTHETIC: IMPERIALISM 0x00591d90
-// TTransportPicture::CreateObject
-// SYNTHETIC: IMPERIALISM 0x00591e50
-// TTransportPicture::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TTransportPicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x00591e70
@@ -29,8 +24,6 @@ TTransportPicture::TTransportPicture()
       splitLimit98((short)0xffff) {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
-// SYNTHETIC: IMPERIALISM 0x00591ec0
-// TTransportPicture::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00591ef0
 TTransportPicture::~TTransportPicture() {}

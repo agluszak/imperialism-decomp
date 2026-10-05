@@ -1,15 +1,8 @@
 #include "game/debug/TLaborPool.h"
 
 #include "game/core/TStream.h"
-// SYNTHETIC: IMPERIALISM 0x004b20d0
-// TLaborPool::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004b2110
-// TLaborPool::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TLaborPool, TObject)
-// SYNTHETIC: IMPERIALISM 0x004b2160
-// TLaborPool::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004b2190
 TLaborPool::~TLaborPool() {}
 

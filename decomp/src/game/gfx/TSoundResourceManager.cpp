@@ -18,14 +18,7 @@
 extern "C" int __stdcall DirectSoundCreate(void* pcGuidDevice, IDirectSound** ppDS,
                                            void* pUnkOuter);
 
-// SYNTHETIC: IMPERIALISM 0x005e4d80
-// `dynamic initializer for 'g_soundResourceManager''
-// SYNTHETIC: IMPERIALISM 0x005e4dc0
-// TSoundResourceManager::`dynamic atexit destructor'
 TSoundResourceManager g_soundResourceManager;
-
-// SYNTHETIC: IMPERIALISM 0x0049c3b0
-// WaveLoadDescriptor::~WaveLoadDescriptor
 
 // FUNCTION: IMPERIALISM 0x0049c150
 int TSoundResourceManager::CreateChannelBuffer(IDirectSoundBuffer** ppChannel) {

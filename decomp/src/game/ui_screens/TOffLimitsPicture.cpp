@@ -2,19 +2,11 @@
 
 #include "game/ui_core/ScopedMapQuickDrawContext.h"
 
-// SYNTHETIC: IMPERIALISM 0x00573710
-// TOffLimitsPicture::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005737b0
-// TOffLimitsPicture::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TOffLimitsPicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x005737d0
 TOffLimitsPicture::TOffLimitsPicture() : TPicture(), ownClipRegion90(nullptr) {}
 
-// SYNTHETIC: IMPERIALISM 0x00573800
-// TOffLimitsPicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00573830
 TOffLimitsPicture::~TOffLimitsPicture() {}
 

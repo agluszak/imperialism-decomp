@@ -28,9 +28,6 @@ const double kSeaAngleScale = 11733.857334728455;
 // Functions are emitted in ascending original-address order (decomplint requirement), so
 // the Seapoint/SeaSegment record methods interleave with the two stretch arrays' methods.
 
-// TEMPLATE: IMPERIALISM 0x0052a760 SYMBOL
-// ?Add@?$stretch@USeaSegment@@@@UAEPAUSeaSegment@@U2@@Z
-
 // Debug/authoring path: rebuild the region-border segment lattice from a "coords.txt"
 // file of "<col0> <row0> <col1> <row1>" lines instead of the generated lattice
 // (RebuildRegionBorderLinkLattice). Rows clamp to [0, 0x3c] and columns wrap at the
@@ -353,15 +350,6 @@ void SeaSegment::InitFromPoints(const Seapoint* p0, const Seapoint* p1) {
       static_cast<int>(atan2(static_cast<double>(dy), static_cast<double>(dx)) * kSeaAngleScale));
 }
 
-// TEMPLATE: IMPERIALISM 0x0052b3e0 SYMBOL
-// ?OverStretch@?$stretch@USeaSegment@@@@QAEXI@Z
-
-// TEMPLATE: IMPERIALISM 0x0052b460 SYMBOL
-// ??A?$stretch@USeaSegment@@@@QAEAAUSeaSegment@@I@Z
-
-// TEMPLATE: IMPERIALISM 0x0052b500
-// stretch::Detach
-
 // Flood a region id along a chain of border segments. Starting from one segment/edge-side,
 // stamp the side's carried attribute with regionId, then find the segment whose matching
 // endpoint coincides (after horizontal map wrap) and whose heading turns least, and repeat
@@ -500,16 +488,7 @@ unsigned short SeaSegment::SelectAttrByAngle() const {
   return static_cast<unsigned short>(attr10);
 }
 
-// TEMPLATE: IMPERIALISM 0x0052c030
-// stretch::At
-
 // --- SeapointStretch (0x10-byte elements) ----------------------------------------------
-
-// TEMPLATE: IMPERIALISM 0x0052c0a0 SYMBOL
-// ?Add@?$stretch@USeapoint@@@@UAEPAUSeapoint@@U2@@Z
-
-// TEMPLATE: IMPERIALISM 0x0052ca00
-// stretch::Detach
 
 // FUNCTION: IMPERIALISM 0x0052ca20
 void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b, int extra) {
@@ -554,12 +533,3 @@ double Seapoint::WrappedDeltaMetric(const Seapoint* other) const {
   }
   return sqrt(static_cast<double>(colDelta * colDelta * rowDelta * rowDelta));
 }
-
-// TEMPLATE: IMPERIALISM 0x0052d0d0 SYMBOL
-// ?OverStretch@?$stretch@USeapoint@@@@QAEXI@Z
-
-// TEMPLATE: IMPERIALISM 0x0052d150 SYMBOL
-// ??A?$stretch@USeapoint@@@@QAEAAUSeapoint@@I@Z
-
-// TEMPLATE: IMPERIALISM 0x0052e310
-// stretch::SetCapacity

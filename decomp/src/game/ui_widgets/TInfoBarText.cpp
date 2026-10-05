@@ -10,15 +10,8 @@
 // FUNCTION: IMPERIALISM 0x00429330
 TInfoBarText::TInfoBarText() : TDeluxeText() {}
 
-// SYNTHETIC: IMPERIALISM 0x004293c0
-// TInfoBarText::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004293f0
 TInfoBarText::~TInfoBarText() {}
-// SYNTHETIC: IMPERIALISM 0x005b65a0
-// TInfoBarText::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005b6690
-// TInfoBarText::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TInfoBarText, TDeluxeText)
 

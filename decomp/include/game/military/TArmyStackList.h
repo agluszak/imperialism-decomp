@@ -18,8 +18,6 @@ public:
   // Defined inline, like TSortedList's own ctor: the construction site inlines the base
   // TObject-vtbl + CPtrList(10) sequence and then stores this class's vtable (0x4a193a).
   // The marker claims the COMDAT copy the binary also carries.
-  // SYNTHETIC: IMPERIALISM 0x004a8450
-  // TArmyStackList::TArmyStackList
   // Source evidence: unreferenced retained COMDAT in retail.
   TArmyStackList() : TSortedList() {}
 };

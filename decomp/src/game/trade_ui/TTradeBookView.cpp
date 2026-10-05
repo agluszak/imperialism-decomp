@@ -14,15 +14,8 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x00435690
-// TTradeBookView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004356c0
 TTradeBookView::~TTradeBookView() {}
-// SYNTHETIC: IMPERIALISM 0x005bde30
-// TTradeBookView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005bded0
-// TTradeBookView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTradeBookView, TView)
 

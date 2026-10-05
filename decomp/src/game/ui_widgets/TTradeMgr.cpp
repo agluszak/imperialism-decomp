@@ -18,19 +18,10 @@
 #include "game/net/TMultiplayerMgr.h"
 #include "game/nation_stream_serialization.h"
 
-// SYNTHETIC: IMPERIALISM 0x005b79d0
-// TTradeMgr::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005b7a00
-// TTradeMgr::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TTradeMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x005b7a20
 TTradeMgr::TTradeMgr() {}
-
-// SYNTHETIC: IMPERIALISM 0x005b7a40
-// TTradeMgr::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005b7a70
 TTradeMgr::~TTradeMgr() {}

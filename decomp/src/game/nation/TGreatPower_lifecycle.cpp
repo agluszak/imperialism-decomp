@@ -122,12 +122,6 @@ int TGreatPower::ClassifyNationMilitaryPowerBandAgainstGlobalMean() {
   return 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x004d8950
-// TGreatPower::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004d89d0
-// TGreatPower::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TGreatPower, TCountry)
 
 // FUNCTION: IMPERIALISM 0x004d89f0
@@ -205,9 +199,6 @@ void TGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
 short TGreatPower::GetMerchantCapacity(void) {
   return this->availableMerchantCapacity;
 }
-
-// SYNTHETIC: IMPERIALISM 0x004d8c20
-// TGreatPower::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004d8cc0
 void TGreatPower::IGreatPower(short nationSlotIndex, short humanControlledFlag) {

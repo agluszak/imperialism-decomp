@@ -1,11 +1,6 @@
 #include "game/ui_screens/TAlwaysPictureButton.h"
 #include "game/mfc.h"
 
-// SYNTHETIC: IMPERIALISM 0x00570950
-// TAlwaysPictureButton::CreateObject
-// SYNTHETIC: IMPERIALISM 0x005709d0
-// TAlwaysPictureButton::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TAlwaysPictureButton, TPictureButton)
 
 // FUNCTION: IMPERIALISM 0x005709f0
@@ -13,8 +8,6 @@ TAlwaysPictureButton::TAlwaysPictureButton() : TPictureButton() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 
-// SYNTHETIC: IMPERIALISM 0x00570a20
-// TAlwaysPictureButton::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00570a50
 TAlwaysPictureButton::~TAlwaysPictureButton() {}
 

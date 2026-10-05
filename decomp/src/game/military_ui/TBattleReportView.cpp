@@ -37,16 +37,7 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
-// SYNTHETIC: IMPERIALISM 0x00430a30
-// TBattleReportView::`scalar deleting destructor'
-// SYNTHETIC: IMPERIALISM 0x00430a60
-// TBattleReportView::~TBattleReportView
 TBattleReportView::~TBattleReportView() {}
-// SYNTHETIC: IMPERIALISM 0x004acaa0
-// TBattleReportView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004acb40
-// TBattleReportView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TBattleReportView, TDiplomacyMapView)
 

@@ -4,15 +4,8 @@
 #include <stdlib.h>
 
 // Destructors are compiler-generated (implicit) from real inheritance.
-// SYNTHETIC: IMPERIALISM 0x00429530
-// TNumberText::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00429560
 TNumberText::~TNumberText() {}
-// SYNTHETIC: IMPERIALISM 0x00490ed0
-// TNumberText::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00491040
-// TNumberText::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TNumberText, TEditText)
 

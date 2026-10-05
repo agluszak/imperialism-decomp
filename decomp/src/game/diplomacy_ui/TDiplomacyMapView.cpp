@@ -135,12 +135,6 @@ void __cdecl ClampRectWithinBoundsPreservingSize(RECT* rect, RECT* bounds) {
   }
 }
 
-// SYNTHETIC: IMPERIALISM 0x004f3ae0
-// TDiplomacyMapView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004f3b60
-// TDiplomacyMapView::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TDiplomacyMapView, TPicture)
 
 // FUNCTION: IMPERIALISM 0x004f3b80
@@ -158,9 +152,6 @@ TDiplomacyMapView::TDiplomacyMapView() : TPicture() {
 DiplomacyMaskBufferRun::DiplomacyMaskBufferRun() {
   maskBytesAt00 = 0;
 }
-
-// SYNTHETIC: IMPERIALISM 0x004f3c90
-// TDiplomacyMapView::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004f3d60
 void TDiplomacyMapView::DoPostCreate(int arg) {

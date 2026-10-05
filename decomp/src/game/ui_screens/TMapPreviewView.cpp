@@ -19,15 +19,8 @@ TMapPreviewView::TMapPreviewView() : TView() {
   selectedRegion64 = -1;
 }
 
-// SYNTHETIC: IMPERIALISM 0x0043d5c0
-// TMapPreviewView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0043d5f0
 TMapPreviewView::~TMapPreviewView() {}
-// SYNTHETIC: IMPERIALISM 0x005787b0
-// TMapPreviewView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00578830
-// TMapPreviewView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TMapPreviewView, TView)
 

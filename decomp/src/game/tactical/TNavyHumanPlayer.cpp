@@ -3,17 +3,6 @@
 #include "game/TList.h"
 #include "game/tactical/TTacticalBattle.h"
 #include "game/tactical/TTacticalUnit.h"
-// SYNTHETIC: IMPERIALISM 0x0059eef0
-// TNavyHumanPlayer::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0059ef20
-// TNavyHumanPlayer::`scalar deleting destructor'
-
-// SYNTHETIC: IMPERIALISM 0x0059ef50
-// TNavyHumanPlayer::~TNavyHumanPlayer
-
-// SYNTHETIC: IMPERIALISM 0x0059ef70
-// TNavyHumanPlayer::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TNavyHumanPlayer, TNavyPlayer)
 

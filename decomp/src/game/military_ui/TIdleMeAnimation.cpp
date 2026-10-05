@@ -5,14 +5,6 @@
 #include "game/globals/military_ui_globals.h"
 #include "game/globals/shared_globals.h"
 
-// SYNTHETIC: IMPERIALISM 0x004ac950
-// TIdleMeAnimation::`scalar deleting destructor'
-// SYNTHETIC: IMPERIALISM 0x004ac920
-// TIdleMeAnimation::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004ac9a0
-// TIdleMeAnimation::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TIdleMeAnimation, TAnimation)
 
 // FUNCTION: IMPERIALISM 0x004ac9c0

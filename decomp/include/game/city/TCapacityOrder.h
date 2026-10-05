@@ -13,8 +13,6 @@ class TCity;
 class TCapacityOrder : public TItemOrder {
 public:
   DECLARE_DYNCREATE(TCapacityOrder)
-  // SYNTHETIC: IMPERIALISM 0x004b8ce0
-  // TCapacityOrder::TCapacityOrder
   TCapacityOrder() {}
 
   // FUNCTION: IMPERIALISM 0x004b8d30

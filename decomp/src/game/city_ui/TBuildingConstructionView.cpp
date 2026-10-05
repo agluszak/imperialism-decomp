@@ -15,11 +15,6 @@
 #include "game/ui_core/TStaticText.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/gfx/ui_invalidation_guard.h"
-// SYNTHETIC: IMPERIALISM 0x004c9d70
-// TBuildingConstructionView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004c9e10
-// TBuildingConstructionView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TBuildingConstructionView, TPicture)
 
@@ -27,8 +22,6 @@ IMPLEMENT_DYNCREATE(TBuildingConstructionView, TPicture)
 TBuildingConstructionView::TBuildingConstructionView()
     : TPicture(), city90(0), productionView98(0) {}
 
-// SYNTHETIC: IMPERIALISM 0x004c9e60
-// TBuildingConstructionView::`scalar deleting destructor'
 // No own destructor: the original's 0x004c9e90 is an ILT thunk to the base's
 // ~TPicture (0x0048f250), so this class inherits it. The scalar deleting destructor above is what
 // the vtable slot holds.

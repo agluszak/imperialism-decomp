@@ -28,19 +28,11 @@
 void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
 void SetControlHoverHelpTextAltEntry(CString sharedString, TView* control);
 
-// SYNTHETIC: IMPERIALISM 0x005bab00
-// TDealBookPicture::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005baba0
-// TDealBookPicture::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TDealBookPicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x005babc0
 TDealBookPicture::TDealBookPicture() : TPicture(), selectedNationSlot(8), deadByteB2(0) {}
 
-// SYNTHETIC: IMPERIALISM 0x005bac00
-// TDealBookPicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005bac30
 TDealBookPicture::~TDealBookPicture() {}
 

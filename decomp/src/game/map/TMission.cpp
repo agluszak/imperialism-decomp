@@ -16,15 +16,8 @@
 #include "game/core/TStream.h"
 #include "game/map/TZone.h"
 
-// SYNTHETIC: IMPERIALISM 0x00534bc0
-// TMission::CreateObject
-
 // The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
 //   CArchive& AFXAPI operator>>(CArchive&, TMission*&)
-// SYNTHETIC: IMPERIALISM 0x00534ff0
-// operator>>
-// SYNTHETIC: IMPERIALISM 0x00534fd0
-// `dynamic initializer for '_init_TMission''
 IMPLEMENT_SERIAL(TMission, TObject, 1)
 
 // --- TMission default-mission virtual stubs (concrete missions override) ---
@@ -157,14 +150,8 @@ char TMission::SmokeEmIfYouGotEm() {
   return 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x00534fb0
-// TMission::GetRuntimeClass
-
 // FUNCTION: IMPERIALISM 0x00535020
 TMission::TMission() : state08(2), importanceScore0c(0.0f), marker11(0xff) {}
-
-// SYNTHETIC: IMPERIALISM 0x00535050
-// TMission::`scalar deleting destructor'
 
 // Sets the common mission owner and path sentinel, then dispatches the concrete
 // mission's initialization hook. TInvadeMission uses this to initialize its

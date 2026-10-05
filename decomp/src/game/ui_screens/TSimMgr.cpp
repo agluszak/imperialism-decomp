@@ -131,11 +131,6 @@ void __cdecl ResetPortZoneGlobalContextCounters(void) {
   g_nMapActionContextCount = 0;
   g_nMapActionContextDistanceCacheSizedFor = -1;
 }
-// SYNTHETIC: IMPERIALISM 0x0057b940
-// TSimMgr::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0057b9c0
-// TSimMgr::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TSimMgr, TObject)
 
@@ -174,8 +169,6 @@ TSimMgr::TSimMgr() : sharedTextSlots() {
   multiplayerSessionRole = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x0057bb50
-// TSimMgr::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0057bb80
 TSimMgr::~TSimMgr() {}
 

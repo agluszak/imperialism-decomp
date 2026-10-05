@@ -50,12 +50,6 @@ private:
 
 } // namespace
 
-// SYNTHETIC: IMPERIALISM 0x00565db0
-// TOceanDialog::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00565e70
-// TOceanDialog::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TOceanDialog, TWorldView)
 
 // FUNCTION: IMPERIALISM 0x00565e90
@@ -70,8 +64,6 @@ TOceanDialog::TOceanDialog() : scrollRowOffset7c(0), scrollColOffset7e(0) {
   previewSquareRadius = 0x10;
 }
 
-// SYNTHETIC: IMPERIALISM 0x00565ee0
-// TOceanDialog::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00565f10
 TOceanDialog::~TOceanDialog() {}
 

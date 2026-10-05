@@ -878,12 +878,6 @@ void InitializeTacticalUnitFacingOffsetTable() {
   g_aTacticalUnitFacingOffsetTable[28][6][1].y = 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x005a82b0
-// TTacticalBattleView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005a8330
-// TTacticalBattleView::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TTacticalBattleView, TView)
 
 // The original zeroes the offscreen-surface slots and anim state with body assignments in
@@ -909,8 +903,6 @@ void TTacticalBattleView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) 
   (void)clipRect;
 }
 
-// SYNTHETIC: IMPERIALISM 0x005a83e0
-// TTacticalBattleView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005a8410
 TTacticalBattleView::~TTacticalBattleView() {}
 

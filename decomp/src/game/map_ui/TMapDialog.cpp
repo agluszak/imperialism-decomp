@@ -164,8 +164,6 @@ double g_mapCellRowScale_006a3360 = DefaultMapCellScale();
 double g_mapCellColumnScale_006a3388 = DefaultMapCellScale();
 double g_mapProjectionColumnScale_006a32f8 = DefaultMapCellScale();
 double g_mapProjectionRowScale_006a3320 = DefaultMapCellScale();
-// SYNTHETIC: IMPERIALISM 0x0050e290
-// `dynamic initializer for 'g_scaledShortConst_6A3348''
 short g_mapProjectionSeamColumn_006a3348 =
     static_cast<short>(g_mapProjectionColumnScale_006a32f8 * 512.0 - -1.0);
 
@@ -304,12 +302,6 @@ void InitializeMapDialogViewportTileSpan() {
 
 static int g_mapDialogViewportTileSpanInitializer = (InitializeMapDialogViewportTileSpan(), 0);
 
-// SYNTHETIC: IMPERIALISM 0x005199c0
-// TMapDialog::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00519b30
-// TMapDialog::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TMapDialog, TWorldView)
 
 // Zero the marker/overlay state, center the view on the map's current tile (splitting
@@ -336,8 +328,6 @@ TMapDialog::TMapDialog() : TWorldView() {
   tileDebugOverlayEnabled360 = false;
 }
 
-// SYNTHETIC: IMPERIALISM 0x00519c40
-// TMapDialog::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00519c70
 TMapDialog::~TMapDialog() {}
 

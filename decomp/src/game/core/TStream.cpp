@@ -7,12 +7,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
-// SYNTHETIC: IMPERIALISM 0x004889a0
-// TStream::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004889d0
-// TStream::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TStream, TObject)
 // FUNCTION: IMPERIALISM 0x00488a80
 char TStream::IsAtEnd() {
@@ -263,6 +257,3 @@ char TStream::ReadObject(void*) {
 
 // FUNCTION: IMPERIALISM 0x004899a0
 void TStream::WriteObject(void*, int) {}
-
-// SYNTHETIC: IMPERIALISM 0x00488a10
-// TStream::`scalar deleting destructor'

@@ -64,12 +64,6 @@ TMilitaryUnit* TMapMgr::GetMilitaryMaster(short provinceIndex) {
 // doubled-hex-coordinate ("diagonal") position: diag = (row % 2) + col*2. Keep the signed
 // remainder: the retail arithmetic preserves a negative parity for negative/sentinel tile values.
 
-// SYNTHETIC: IMPERIALISM 0x0050e2f0
-// TMapMgr::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0050e3b0
-// TMapMgr::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TMapMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x0050e3d0
@@ -81,9 +75,6 @@ TMapMgr::TMapMgr() : TObject(), cityScoreTable(0), scenarioTagText() {
   field24 = 0;
   pendingRiverMouthTile = -1;
 }
-
-// SYNTHETIC: IMPERIALISM 0x0050e460
-// TMapMgr::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0050e490
 TMapMgr::~TMapMgr() {}

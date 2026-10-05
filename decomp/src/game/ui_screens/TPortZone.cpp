@@ -13,9 +13,6 @@
 #include "game/military/mapped_flavor_text.h"
 #include "game/mfc.h"
 
-// SYNTHETIC: IMPERIALISM 0x005615e0
-// TPortZone::CreateObject
-
 // slot 0x0d — TZone::QueryZoneCapabilityFlagA override.
 // FUNCTION: IMPERIALISM 0x00561660
 bool TPortZone::QueryZoneCapabilityFlagA() {
@@ -34,8 +31,6 @@ bool TPortZone::QueryZoneCapabilityFlagC() {
   return false;
 }
 
-// SYNTHETIC: IMPERIALISM 0x005616c0
-// TPortZone::`scalar deleting destructor'
 //
 // TPortZone has no members of its own to destruct, so this body is empty; the original
 // inlined TZone::~TZone's real cleanup body (0x5627a0) directly here instead of calling
@@ -45,8 +40,6 @@ bool TPortZone::QueryZoneCapabilityFlagC() {
 TPortZone::~TPortZone() {}
 
 // slot 0x00 — GetRuntimeClass override.
-// SYNTHETIC: IMPERIALISM 0x005617d0
-// TPortZone::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TPortZone, TZone)
 

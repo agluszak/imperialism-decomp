@@ -77,8 +77,6 @@ public:
   void FreeShipsOf(short nation); // 0x556f60
   // Mac oracle: ClearAllOrders. The class-body definition is material: VC5 expands
   // it in Free() and retains its out-of-line COMDAT copy at 0x556850.
-  // SYNTHETIC: IMPERIALISM 0x00556850
-  // TNavyMgr::ClearAllOrders
   // Source evidence: unreferenced retained COMDAT in retail.
   void ClearAllOrders() {
     while (g_pNavyPrimaryOrderListHead != 0) {

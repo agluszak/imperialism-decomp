@@ -29,16 +29,8 @@ char TProxyGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage
   return 0;
 }
 
-// SYNTHETIC: IMPERIALISM 0x00540940
-// TProxyGreatPower::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00540970
 TProxyGreatPower::~TProxyGreatPower() {}
-
-// SYNTHETIC: IMPERIALISM 0x00540840
-// TProxyGreatPower::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005409e0
-// TProxyGreatPower::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TProxyGreatPower, TGreatPower)
 

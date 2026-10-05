@@ -10,15 +10,8 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
-// SYNTHETIC: IMPERIALISM 0x004fe240
-// TScoreGraph::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004fe270
 TScoreGraph::~TScoreGraph() {}
-// SYNTHETIC: IMPERIALISM 0x004fe1d0
-// TScoreGraph::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004fe290
-// TScoreGraph::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TScoreGraph, TView)
 

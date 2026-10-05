@@ -14,19 +14,12 @@
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
-// SYNTHETIC: IMPERIALISM 0x004ce480
-// TBuildingExpansionView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004ce500
-// TBuildingExpansionView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TBuildingExpansionView, TPicture)
 
 // FUNCTION: IMPERIALISM 0x004ce520
 TBuildingExpansionView::TBuildingExpansionView() {}
 
-// SYNTHETIC: IMPERIALISM 0x004ce550
-// TBuildingExpansionView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004ce580
 TBuildingExpansionView::~TBuildingExpansionView() {}
 

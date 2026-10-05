@@ -13,19 +13,11 @@
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_text_label_helpers_decls.h"
-// SYNTHETIC: IMPERIALISM 0x004a8ca0
-// TArmyUnitLine::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004a8d10
-// TArmyUnitLine::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TArmyUnitLine, TLineData)
 
 // FUNCTION: IMPERIALISM 0x004a8d30
 TArmyUnitLine::TArmyUnitLine() : TLineData() {}
-
-// SYNTHETIC: IMPERIALISM 0x004a8d60
-// TArmyUnitLine::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004a8db0
 void TArmyUnitLine::IArmyUnitLine(short rowArg, short colArg, int* bounds, TMilitaryUnit* item) {

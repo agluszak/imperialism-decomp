@@ -36,22 +36,12 @@
 
 #include <stdlib.h>
 
-// SYNTHETIC: IMPERIALISM 0x00576ca0
-// TSetupRandomMapPicture::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00576d60
-// TSetupRandomMapPicture::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TSetupRandomMapPicture, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x00576d80
 TSetupRandomMapPicture::TSetupRandomMapPicture()
     : TNoHilitePicture(), planetSeed94(), wrapHorizontally98(0), countryControlReadyA4(0) {}
 
-// SYNTHETIC: IMPERIALISM 0x00576e00
-// TSetupRandomMapPicture::`scalar deleting destructor'
-// SYNTHETIC: IMPERIALISM 0x00576e30
-// TSetupRandomMapPicture::~TSetupRandomMapPicture
 TSetupRandomMapPicture::~TSetupRandomMapPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00576ef0

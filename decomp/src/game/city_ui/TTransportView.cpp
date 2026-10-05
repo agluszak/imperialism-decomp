@@ -10,15 +10,8 @@
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
-// SYNTHETIC: IMPERIALISM 0x004bd370
-// TTransportView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004bd3a0
 TTransportView::~TTransportView() {}
-// SYNTHETIC: IMPERIALISM 0x004bd300
-// TTransportView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004bd3c0
-// TTransportView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTransportView, TView)
 

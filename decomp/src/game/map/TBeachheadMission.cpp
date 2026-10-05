@@ -24,14 +24,7 @@
 
 // The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
 //   CArchive& AFXAPI operator>>(CArchive&, TBeachheadMission*&)
-// SYNTHETIC: IMPERIALISM 0x0053a460
-// operator>>
-// SYNTHETIC: IMPERIALISM 0x0053a440
-// `dynamic initializer for '_init_TBeachheadMission''
 IMPLEMENT_SERIAL(TBeachheadMission, TControlSeaZoneMission, 1)
-
-// SYNTHETIC: IMPERIALISM 0x0053a2d0
-// TBeachheadMission::CreateObject
 
 // FUNCTION: IMPERIALISM 0x0053a390
 bool TBeachheadMission::IsHospitalMission() const {
@@ -43,14 +36,8 @@ bool TBeachheadMission::IsDefensiveSeaZoneMission() const {
   return false;
 }
 
-// SYNTHETIC: IMPERIALISM 0x0053a3d0 (approx -- see symbols.csv)
-// TBeachheadMission::`scalar deleting destructor'
-
 // FUNCTION: IMPERIALISM 0x0053a400
 TBeachheadMission::~TBeachheadMission() {}
-
-// SYNTHETIC: IMPERIALISM 0x0053a420
-// TBeachheadMission::GetRuntimeClass
 
 // FUNCTION: IMPERIALISM 0x0053a490
 TBeachheadMission::TBeachheadMission(TZone* targetZone, TInvadeMission* parentMission)

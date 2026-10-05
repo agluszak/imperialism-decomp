@@ -7,7 +7,7 @@ automatically). It derives everything from the two canonical inputs:
 
   1. **The source model** (tools.source_model — the single scanner/parser):
      marker claims with names parsed from the C++ declarations, library
-     identity markers (`// LIBRARY:` / identity `// SYNTHETIC:`), `// VTABLE:`
+     library identity markers and binary emission metadata, `// VTABLE:`
      classes, and `// GLOBAL:` names.
   2. **The raw inventory** (config/original_entities.csv): fallback advisory
      names ONLY for claimed addresses whose source spelling could not be
@@ -101,7 +101,7 @@ def main() -> int:
         vtables = {a: n for a, n in vtables.items() if a in selected}
         embedded_labels = [(a, n) for a, n in embedded_labels if a in selected]
     # Claimed entities only: source spelling when parsed, identity-marker
-    # name for LIBRARY/SYNTHETIC overlays, inventory advisory ONLY as fallback
+    # name for library/emission overlays, inventory advisory ONLY as fallback
     # addresses whose spelling could not be parsed. Unclaimed addresses are
     # never pushed — the DB's own analysis stands.
     inventory = {}

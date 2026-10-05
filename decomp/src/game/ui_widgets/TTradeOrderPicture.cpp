@@ -6,19 +6,12 @@
 #include "game/ui_widgets/TTradeCluster.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
-// SYNTHETIC: IMPERIALISM 0x005843e0
-// TTradeOrderPicture::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00584460
-// TTradeOrderPicture::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TTradeOrderPicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x00584480
 TTradeOrderPicture::TTradeOrderPicture() {}
 
-// SYNTHETIC: IMPERIALISM 0x005844b0
-// TTradeOrderPicture::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005844e0
 TTradeOrderPicture::~TTradeOrderPicture() {}
 

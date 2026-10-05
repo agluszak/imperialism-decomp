@@ -14,9 +14,6 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/app/TAnimator.h"
 
-// SYNTHETIC: IMPERIALISM 0x004a0020
-// TFocusAnimation::CreateObject
-
 IMPLEMENT_DYNCREATE(TFocusAnimation, TAnimation)
 
 // FUNCTION: IMPERIALISM 0x004a00c0
@@ -113,9 +110,3 @@ void TFocusAnimation::ClipAndPaste() {
                                    &g_pActiveQuickDrawSurfaceContext->blitSurface, &sourceRect,
                                    &destinationRect, 0);
 }
-
-// SYNTHETIC: IMPERIALISM 0x004a0050
-// TFocusAnimation::`scalar deleting destructor'
-
-// SYNTHETIC: IMPERIALISM 0x004a00a0
-// TFocusAnimation::GetRuntimeClass

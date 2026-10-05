@@ -17,15 +17,8 @@
 // FUNCTION: IMPERIALISM 0x00569d50
 void TMiniShipView::Hilite() {}
 
-// SYNTHETIC: IMPERIALISM 0x00569d70
-// TMiniShipView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00569da0
 TMiniShipView::~TMiniShipView() {}
-// SYNTHETIC: IMPERIALISM 0x00569dc0
-// TMiniShipView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00569e40
-// TMiniShipView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TMiniShipView, TControl)
 

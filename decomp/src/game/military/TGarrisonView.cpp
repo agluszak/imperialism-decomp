@@ -12,11 +12,6 @@
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
-// SYNTHETIC: IMPERIALISM 0x004a8770
-// TGarrisonView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004a87f0
-// TGarrisonView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TGarrisonView, TMilitaryPageView)
 
@@ -25,8 +20,6 @@ TGarrisonView::TGarrisonView() : TMilitaryPageView() {
   selectedTileIndex8C = -1;
 }
 
-// SYNTHETIC: IMPERIALISM 0x004a8840
-// TGarrisonView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004a8870
 TGarrisonView::~TGarrisonView() {}
 

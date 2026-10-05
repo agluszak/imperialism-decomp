@@ -23,14 +23,7 @@
 
 // The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
 //   CArchive& AFXAPI operator>>(CArchive&, TBlockadePortMission*&)
-// SYNTHETIC: IMPERIALISM 0x0053ab20
-// operator>>
-// SYNTHETIC: IMPERIALISM 0x0053ab00
-// `dynamic initializer for '_init_TBlockadePortMission''
 IMPLEMENT_SERIAL(TBlockadePortMission, TControlSeaZoneMission, 1)
-
-// SYNTHETIC: IMPERIALISM 0x0053a990
-// TBlockadePortMission::CreateObject
 
 // FUNCTION: IMPERIALISM 0x0053aa50
 bool TBlockadePortMission::IsHospitalMission() const {
@@ -41,14 +34,9 @@ bool TBlockadePortMission::IsHospitalMission() const {
 bool TBlockadePortMission::IsDefensiveSeaZoneMission() const {
   return false;
 }
-// SYNTHETIC: IMPERIALISM 0x0053aa90
-// TBlockadePortMission::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0053aac0
 TBlockadePortMission::~TBlockadePortMission() {}
-
-// SYNTHETIC: IMPERIALISM 0x0053aae0
-// TBlockadePortMission::GetRuntimeClass
 
 // The mission factory (TMission::CreateMission, case 4) builds a
 // blockade mission from a map-order context node (a TZone). It lazily ensures the

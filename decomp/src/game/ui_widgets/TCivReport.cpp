@@ -15,11 +15,6 @@
 #include "game/ui_widgets/TDeluxeText.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x00590b90
-// TCivReport::CreateObject
-// SYNTHETIC: IMPERIALISM 0x00590c10
-// TCivReport::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TCivReport, TPicture)
 
 // FUNCTION: IMPERIALISM 0x00590c30
@@ -27,8 +22,6 @@ TCivReport::TCivReport() : TPicture() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 
-// SYNTHETIC: IMPERIALISM 0x00590c60
-// TCivReport::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00590c90
 TCivReport::~TCivReport() {}
 

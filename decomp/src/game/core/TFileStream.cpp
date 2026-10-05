@@ -19,11 +19,6 @@ static void FailNilPointer(int line) {
 static CArchive* BackingArchive(ArchiveStreamAdapter* backingArchiveOrStream) {
   return backingArchiveOrStream->archive;
 }
-// SYNTHETIC: IMPERIALISM 0x004890c0
-// TFileStream::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004890f0
-// TFileStream::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TFileStream, TStream)
 
@@ -34,8 +29,6 @@ TFileStream::TFileStream() {
 
 // Destructors are compiler-generated (implicit) from real TStream inheritance.
 
-// SYNTHETIC: IMPERIALISM 0x00489130
-// TFileStream::`scalar deleting destructor'
 TFileStream::~TFileStream() {}
 
 // FUNCTION: IMPERIALISM 0x00489160

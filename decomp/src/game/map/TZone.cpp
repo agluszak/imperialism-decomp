@@ -44,14 +44,6 @@ enum { kFirstMapRegionNationTag = 0x17 };
 // helper -- call the real library function directly (LIBRARY: IMPERIALISM 0x005e7f50).
 } // namespace
 
-// TEMPLATE: IMPERIALISM 0x00558860
-// stretch::operator[]
-// SYNTHETIC: IMPERIALISM 0x0055e660
-// TZone::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0055e6e0
-// TZone::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TZone, TObject)
 
 // FUNCTION: IMPERIALISM 0x0055e700
@@ -126,12 +118,6 @@ Province** TZoneSecondaryNeighborStretch::Add(Province* entry) {
   }
   return stretch<Province*>::Add(entry);
 }
-
-// TEMPLATE: IMPERIALISM 0x0055ead0 SYMBOL
-// ?Add@?$stretch@PAVTZone@@@@UAEPAPAVTZone@@PAV2@@Z
-
-// TEMPLATE: IMPERIALISM 0x0055eba0 SYMBOL
-// ?Add@?$stretch@PAUProvince@@@@UAEPAPAUProvince@@PAU2@@Z
 
 // FUNCTION: IMPERIALISM 0x0055ec60
 void TZone::Free() {
@@ -466,9 +452,6 @@ void TZone::GenerateMapActionContextDisplayNameAndHeadline(unsigned char* usedCi
   scanBracketExpressions(g_pSimMgr, &expanded, headlineTemplate, static_cast<LPCSTR>(displayName));
   displayName = expanded;
 }
-
-// TEMPLATE: IMPERIALISM 0x0055fae0
-// stretch::OverStretch
 
 // FUNCTION: IMPERIALISM 0x0055fb60
 void TZone::SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int tileIndex) {
@@ -1070,9 +1053,6 @@ short TZone::GetCachedMapActionContextDistanceOrRecompute(TZone* other) {
   return cachedDistance;
 }
 
-// TEMPLATE: IMPERIALISM 0x00561300
-// stretch::OverStretch
-
 // FUNCTION: IMPERIALISM 0x00561380
 int TZone::CountDiplomaticallyRelatedNationsInKeyMask(int nation) {
   int count = 0;
@@ -1208,8 +1188,6 @@ TZone* TZone::GetNextPortZone() {
 // instruction-for-instruction identical since TPortZone has no unique members of its own
 // -- the original inlined this same body there too instead of calling it out-of-line.
 // Exact-capacity fallback emitted for the primary-neighbor pointer stretch.
-// TEMPLATE: IMPERIALISM 0x005620c0 SYMBOL
-// ?SetCapacity@?$stretch@PAVTZone@@@@QAEXI@Z
 
 // FUNCTION: IMPERIALISM 0x005627a0
 TZone::~TZone() {
@@ -1227,9 +1205,6 @@ TZone::~TZone() {
 }
 
 // PortZone vtable bodies (0x005616c0..0x00561e40) live in TPortZone.cpp.
-
-// SYNTHETIC: IMPERIALISM 0x00562880
-// TZone::`vector deleting destructor'
 
 // Reseeds the zone status-code PRNG from a hash of the scenario tag string (falling back
 // to the wall clock when the tag hashes to zero), then walks the whole map-action-context

@@ -23,12 +23,6 @@
 #include "game/quickdraw_guards.h"
 #include <new>
 
-// SYNTHETIC: IMPERIALISM 0x00589ed0
-// TRailAmtBar::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00589f70
-// TRailAmtBar::GetRuntimeClass
-
 // The original descriptor's m_pBaseClass (0x662ff0) points at TAmtBar's CRuntimeClass —
 // the retail macro skipped the real C++ base TIndustryAmtBar (both classes are 0x6c with
 // the same inlined ctor chain down to TView). Reproduce the retail macro argument.
@@ -38,8 +32,6 @@ IMPLEMENT_DYNCREATE(TRailAmtBar, TAmtBar)
 TRailAmtBar::TRailAmtBar() : TIndustryAmtBar() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
-// SYNTHETIC: IMPERIALISM 0x00589fd0
-// TRailAmtBar::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058a020
 void TRailAmtBar::DoPostCreate(int arg) {

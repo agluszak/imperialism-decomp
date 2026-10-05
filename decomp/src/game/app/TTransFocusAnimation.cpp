@@ -16,16 +16,7 @@
 #include "game/quickdraw_guards.h"
 #include "game/ui_core/bitmap_descriptor_helpers.h"
 
-// SYNTHETIC: IMPERIALISM 0x004a03f0
-// TTransFocusAnimation::CreateObject
-
 IMPLEMENT_DYNCREATE(TTransFocusAnimation, TFocusAnimation)
-
-// SYNTHETIC: IMPERIALISM 0x004a0430
-// TTransFocusAnimation::`scalar deleting destructor'
-
-// SYNTHETIC: IMPERIALISM 0x004a0480
-// TTransFocusAnimation::GetRuntimeClass
 
 // FUNCTION: IMPERIALISM 0x004a04a0
 void TTransFocusAnimation::ITransFocusAnimation(TView* target, RECT* bounds, short frameCountArg,

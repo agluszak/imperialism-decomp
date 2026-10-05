@@ -6,15 +6,8 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/TQuickDrawSurfaceContext.h"
 
-// SYNTHETIC: IMPERIALISM 0x004ff280
-// TGWorldPeeker::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004ff2b0
 TGWorldPeeker::~TGWorldPeeker() {}
-// SYNTHETIC: IMPERIALISM 0x004ff1f0
-// TGWorldPeeker::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004ff2d0
-// TGWorldPeeker::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TGWorldPeeker, TView)
 // FUNCTION: IMPERIALISM 0x004ff2f0

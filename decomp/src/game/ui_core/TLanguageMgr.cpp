@@ -24,12 +24,6 @@ const char kPreplutPath[] = "preplut.";
 const char kReadTextMode[] = "rt";
 } // namespace
 
-// SYNTHETIC: IMPERIALISM 0x00507bc0
-// TLanguageMgr::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00507c40
-// TLanguageMgr::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TLanguageMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x00507c60
@@ -44,9 +38,6 @@ TLanguageMgr::TLanguageMgr() : TObject() {
   delimiter = 0x20;
   field30 = 6;
 }
-
-// SYNTHETIC: IMPERIALISM 0x00507d80
-// TLanguageMgr::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00507db0
 TLanguageMgr::~TLanguageMgr() {}

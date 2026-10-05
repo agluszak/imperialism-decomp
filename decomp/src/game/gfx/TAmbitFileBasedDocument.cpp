@@ -24,19 +24,12 @@
 #include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
-// SYNTHETIC: IMPERIALISM 0x0049e5a0
-// TAmbitFileBasedDocument::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0049e5d0
-// TAmbitFileBasedDocument::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TAmbitFileBasedDocument, TFileBasedDocument)
 
 // FUNCTION: IMPERIALISM 0x0049e5f0
 TAmbitFileBasedDocument::TAmbitFileBasedDocument() {}
 
-// SYNTHETIC: IMPERIALISM 0x0049e610
-// TAmbitFileBasedDocument::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0049e640
 TAmbitFileBasedDocument::~TAmbitFileBasedDocument() {}
 

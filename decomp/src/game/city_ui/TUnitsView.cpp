@@ -3,19 +3,12 @@
 #include "game/CSubViewIterator.h"
 #include "game/city/TCity.h"
 #include "game/ui_screens/TColorKeyPicture.h"
-// SYNTHETIC: IMPERIALISM 0x004c7f10
-// TUnitsView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004c7fb0
-// TUnitsView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TUnitsView, TBuildingView)
 
 // FUNCTION: IMPERIALISM 0x004c7fd0
 TUnitsView::TUnitsView() : TBuildingView() {}
 
-// SYNTHETIC: IMPERIALISM 0x004c8000
-// TUnitsView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004c8030
 TUnitsView::~TUnitsView() {}
 

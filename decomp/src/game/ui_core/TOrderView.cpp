@@ -9,19 +9,12 @@
 #include "game/city/TItemOrder.h"
 #include "game/city/TPopulationMgr.h"
 #include "game/gfx/ui_invalidation_guard.h"
-// SYNTHETIC: IMPERIALISM 0x005069d0
-// TOrderView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00506a60
-// TOrderView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TOrderView, TView)
 
 // FUNCTION: IMPERIALISM 0x00506a80
 TOrderView::TOrderView() : TView(), city60(0) {}
 
-// SYNTHETIC: IMPERIALISM 0x00506ab0
-// TOrderView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00506ae0
 TOrderView::~TOrderView() {}
 

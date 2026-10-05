@@ -10,11 +10,6 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x00592860
-// TWarningView::CreateObject
-// SYNTHETIC: IMPERIALISM 0x005928e0
-// TWarningView::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TWarningView, TPicture)
 
 // FUNCTION: IMPERIALISM 0x00592900
@@ -22,8 +17,6 @@ TWarningView::TWarningView() : TPicture() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 
-// SYNTHETIC: IMPERIALISM 0x00592930
-// TWarningView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00592960
 TWarningView::~TWarningView() {}
 

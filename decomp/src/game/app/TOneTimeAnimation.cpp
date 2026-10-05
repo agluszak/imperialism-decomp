@@ -10,15 +10,6 @@
 #include "game/quickdraw_guards.h"
 #include <new>
 
-// SYNTHETIC: IMPERIALISM 0x0049fcc0
-// TOneTimeAnimation::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0049fcf0
-// TOneTimeAnimation::`scalar deleting destructor'
-
-// SYNTHETIC: IMPERIALISM 0x0049fd40
-// TOneTimeAnimation::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TOneTimeAnimation, TAnimation)
 
 // FUNCTION: IMPERIALISM 0x0049fd60

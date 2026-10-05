@@ -19,8 +19,6 @@ public:
                               short quantity) override; // slot 0x10 0x4b80c0
   virtual void IFoodProcessingOrder(TCity* city);       // slot 0x11 0x4b7e80
 
-  // SYNTHETIC: IMPERIALISM 0x004b7e10
-  // TFoodProcessingOrder::TFoodProcessingOrder
   TFoodProcessingOrder() {}
 };
 ASSERT_SIZE(TFoodProcessingOrder, 0x4c);

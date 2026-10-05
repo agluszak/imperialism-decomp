@@ -16,15 +16,8 @@
 // FUNCTION: IMPERIALISM 0x0044a6f0
 TShipFractionCluster::TShipFractionCluster() {}
 
-// SYNTHETIC: IMPERIALISM 0x0044a720
-// TShipFractionCluster::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0044a750
 TShipFractionCluster::~TShipFractionCluster() {}
-// SYNTHETIC: IMPERIALISM 0x00568cd0
-// TShipFractionCluster::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00568d50
-// TShipFractionCluster::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TShipFractionCluster, TCluster)
 

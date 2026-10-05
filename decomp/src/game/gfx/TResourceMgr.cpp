@@ -473,62 +473,21 @@ COLORREF TResourceMgr::ResolvePaletteIndexColor(unsigned int packedColor) {
 // Compiler-emitted destructors for the two embedded CMap<> members above (m_recordsByResourceId,
 // m_recordsByObject); MSVC500 instantiates and calls these automatically as part of
 // ~TResourceMgr(), so there is no source body to write.
-// TEMPLATE: IMPERIALISM 0x0049ae30 SYMBOL
-// ??1?$CMap@FFPAUCacheRecord@@PAU1@@@UAE@XZ
 
 // VC5 emits afxtempl.h's archive loop for the short-key cache specialization. The body
 // serializes each two-byte key and four-byte CacheRecord pointer, and rebuilds the map
 // through CMap::SetAt while loading.
-// TEMPLATE: IMPERIALISM 0x0049aef0 SYMBOL
-// ?Serialize@?$CMap@FFPAUCacheRecord@@PAU1@@@UAEXAAVCArchive@@@Z
 
 // VC5 afxtempl.h body for the pointer-key m_recordsByObject member.
-// TEMPLATE: IMPERIALISM 0x0049b190 SYMBOL
-// ?RemoveKey@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@QAEHPAX@Z
-
-// TEMPLATE: IMPERIALISM 0x0049b270 SYMBOL
-// ??1?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@UAE@XZ
 
 // The pointer-key cache uses the same VC5 afxtempl.h archive loop, with four-byte key
 // and value elements.
-// TEMPLATE: IMPERIALISM 0x0049b330 SYMBOL
-// ?Serialize@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@UAEXAAVCArchive@@@Z
 
 // VC5 afxtempl.h CPlex teardown for the short-key m_recordsByResourceId member.
-// TEMPLATE: IMPERIALISM 0x0049b630 SYMBOL
-// ?RemoveAll@?$CMap@FFPAUCacheRecord@@PAU1@@@QAEXXZ
 
 // VC5 emits afxtempl.h's InitHashTable body for each embedded CMap specialization.
 // These are MFC template code, not game-owned resize helpers.
-// TEMPLATE: IMPERIALISM 0x0049b6a0 SYMBOL
-// ?InitHashTable@?$CMap@FFPAUCacheRecord@@PAU1@@@QAEXIH@Z
-
-// TEMPLATE: IMPERIALISM 0x0049b7f0 SYMBOL
-// ?InitHashTable@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@QAEXIH@Z
 
 // The remaining bodies are likewise emitted from the two real CMap<> members. Their
 // protected node-management methods are MFC template implementation details, not source
 // APIs to recreate in game code.
-// TEMPLATE: IMPERIALISM 0x0049ad50 SYMBOL
-// ?RemoveKey@?$CMap@FFPAUCacheRecord@@PAU1@@@QAEHF@Z
-
-// SYNTHETIC: IMPERIALISM 0x0049b5d0
-// CMap<short,short,CacheRecord*,CacheRecord*>::`scalar deleting destructor'
-
-// SYNTHETIC: IMPERIALISM 0x0049b600
-// CMap<void*,void*,CacheRecord*,CacheRecord*>::`scalar deleting destructor'
-
-// TEMPLATE: IMPERIALISM 0x0049b720 SYMBOL
-// ?NewAssoc@?$CMap@FFPAUCacheRecord@@PAU1@@@IAEPAUCAssoc@1@XZ
-
-// TEMPLATE: IMPERIALISM 0x0049b7a0 SYMBOL
-// ?GetAssocAt@?$CMap@FFPAUCacheRecord@@PAU1@@@IBEPAUCAssoc@1@FAAI@Z
-
-// TEMPLATE: IMPERIALISM 0x0049b870 SYMBOL
-// ?NewAssoc@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@IAEPAUCAssoc@1@XZ
-
-// TEMPLATE: IMPERIALISM 0x0049b8f0 SYMBOL
-// ?FreeAssoc@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@IAEXPAUCAssoc@1@@Z
-
-// TEMPLATE: IMPERIALISM 0x0049b980 SYMBOL
-// ?GetAssocAt@?$CMap@PAXPAXPAUCacheRecord@@PAU1@@@IBEPAUCAssoc@1@PAXAAI@Z

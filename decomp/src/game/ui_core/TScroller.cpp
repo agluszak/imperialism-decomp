@@ -3,15 +3,7 @@
 
 #include "game/mfc.h"
 
-// SYNTHETIC: IMPERIALISM 0x0048ca60
-// TScroller::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0048cb90
-// TScroller::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TScroller, TView)
-// SYNTHETIC: IMPERIALISM 0x0048cad0
-// TScroller::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0048cb00
 TScroller::~TScroller() {}
 

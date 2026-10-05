@@ -3,15 +3,8 @@
 #include "game/ui_core/TView.h"
 #include "game/ui_tags_common.h"
 
-// SYNTHETIC: IMPERIALISM 0x004302d0
-// TPageCorner::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00430300
 TPageCorner::~TPageCorner() {}
-// SYNTHETIC: IMPERIALISM 0x0056f7b0
-// TPageCorner::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0056f830
-// TPageCorner::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TPageCorner, TColorKeyPicture)
 

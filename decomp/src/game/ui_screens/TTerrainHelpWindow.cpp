@@ -5,19 +5,11 @@
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
 
-// SYNTHETIC: IMPERIALISM 0x00504ca0
-// TTerrainHelpWindow::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00504d20
-// TTerrainHelpWindow::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TTerrainHelpWindow, TFloatWindow)
 
 // FUNCTION: IMPERIALISM 0x00504d40
 TTerrainHelpWindow::TTerrainHelpWindow() : TFloatWindow() {}
 
-// SYNTHETIC: IMPERIALISM 0x00504d70
-// TTerrainHelpWindow::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00504da0
 TTerrainHelpWindow::~TTerrainHelpWindow() {}
 

@@ -3,27 +3,15 @@
 #include <stdlib.h>
 
 #include "game/TFuzzyVar.h"
-// SYNTHETIC: IMPERIALISM 0x004ff690
-// TFuzzySet::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004ff6c0
-// TFuzzySet::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TFuzzySet, TObject)
 
 // Own-vtable-set ctor body, called out-of-line from InitializeCityInteriorMinister;
 // inlined directly within CreateObject. Ghidra had named this ConstructTFuzzySetBaseState.
-// SYNTHETIC: IMPERIALISM 0x004ff6e0
-// TFuzzySet::TFuzzySet
 TFuzzySet::TFuzzySet() {}
-
-// SYNTHETIC: IMPERIALISM 0x004ff700
-// TFuzzySet::`scalar deleting destructor'
 
 // Complete-object destructor tail, called from the scalar deleting destructor
 // at 0x4ff700. Ghidra had named this DestructTFuzzySetAndMaybeFree_Impl.
-// SYNTHETIC: IMPERIALISM 0x004ff730
-// TFuzzySet::~TFuzzySet
 TFuzzySet::~TFuzzySet() {}
 
 // FUNCTION: IMPERIALISM 0x004ff750

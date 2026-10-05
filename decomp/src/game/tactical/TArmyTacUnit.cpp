@@ -5,17 +5,6 @@
 #include "game/globals/tactical_globals.h"
 #include "game/globals/shared_globals.h"
 
-// SYNTHETIC: IMPERIALISM 0x0059b390
-// TArmyTacUnit::`scalar deleting destructor'
-
-// SYNTHETIC: IMPERIALISM 0x0059b3c0
-// TArmyTacUnit::~TArmyTacUnit
-// SYNTHETIC: IMPERIALISM 0x005a5ed0
-// TArmyTacUnit::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005a5f00
-// TArmyTacUnit::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TArmyTacUnit, TTacticalUnit)
 
 // FUNCTION: IMPERIALISM 0x005a5f20

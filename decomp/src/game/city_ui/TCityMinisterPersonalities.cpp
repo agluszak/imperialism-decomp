@@ -5,11 +5,6 @@
 
 // Each derived city minister overrides only GetRuntimeClass, the scalar deleting
 // destructor, and the slot-0x80 priority-preset hook (FillLists).
-// SYNTHETIC: IMPERIALISM 0x004c5900
-// TSteelCityMinister::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004c59c0
-// TSteelCityMinister::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TSteelCityMinister, TCityInteriorMinister)
 
@@ -18,9 +13,6 @@ TSteelCityMinister::TSteelCityMinister() : TCityInteriorMinister() {
   capabilityFlag14 = 1;
   capabilityFlag16 = 1;
 }
-
-// SYNTHETIC: IMPERIALISM 0x004c5a20
-// TSteelCityMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004c5a70
 void TSteelCityMinister::ISteelCityMinister(TGreatPower* owner) {
@@ -59,11 +51,6 @@ void TSteelCityMinister::FillLists() {
   list2c->InsertLast(4);
   list2c->InsertLast(2);
 }
-// SYNTHETIC: IMPERIALISM 0x004c5c00
-// TShipBuilderCityMinister::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004c5cc0
-// TShipBuilderCityMinister::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TShipBuilderCityMinister, TCityInteriorMinister)
 
@@ -72,9 +59,6 @@ TShipBuilderCityMinister::TShipBuilderCityMinister() : TCityInteriorMinister() {
   capabilityFlag14 = 1;
   capabilityFlag16 = 1;
 }
-
-// SYNTHETIC: IMPERIALISM 0x004c5d20
-// TShipBuilderCityMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004c5d70
 void TShipBuilderCityMinister::IShipBuilderCityMinister(TGreatPower* owner) {
@@ -113,11 +97,6 @@ void TShipBuilderCityMinister::FillLists() {
   list2c->InsertLast(4);
   list2c->InsertLast(2);
 }
-// SYNTHETIC: IMPERIALISM 0x004c5f00
-// TEvenCityMinister::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004c5fc0
-// TEvenCityMinister::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TEvenCityMinister, TCityInteriorMinister)
 
@@ -126,9 +105,6 @@ TEvenCityMinister::TEvenCityMinister() : TCityInteriorMinister() {
   capabilityFlag14 = 1;
   capabilityFlag16 = 1;
 }
-
-// SYNTHETIC: IMPERIALISM 0x004c6020
-// TEvenCityMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004c6070
 void TEvenCityMinister::IEvenCityMinister(TGreatPower* owner) {
@@ -168,11 +144,6 @@ void TEvenCityMinister::FillLists() {
   list2c->InsertLast(2);
   list2c->InsertLast(0);
 }
-// SYNTHETIC: IMPERIALISM 0x004c6210
-// TRailCityMinister::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004c62d0
-// TRailCityMinister::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TRailCityMinister, TCityInteriorMinister)
 
@@ -181,9 +152,6 @@ TRailCityMinister::TRailCityMinister() : TCityInteriorMinister() {
   capabilityFlag14 = 1;
   capabilityFlag16 = 1;
 }
-
-// SYNTHETIC: IMPERIALISM 0x004c6330
-// TRailCityMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004c6380
 void TRailCityMinister::IRailCityMinister(TGreatPower* owner) {

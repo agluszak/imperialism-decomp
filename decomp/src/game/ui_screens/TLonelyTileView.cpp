@@ -11,19 +11,12 @@
 #include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
-// SYNTHETIC: IMPERIALISM 0x00505a50
-// TLonelyTileView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00505ac0
-// TLonelyTileView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TLonelyTileView, TView)
 
 // FUNCTION: IMPERIALISM 0x00505ae0
 TLonelyTileView::TLonelyTileView() : TView() {}
 
-// SYNTHETIC: IMPERIALISM 0x00505b10
-// TLonelyTileView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00505b40
 TLonelyTileView::~TLonelyTileView() {}
 

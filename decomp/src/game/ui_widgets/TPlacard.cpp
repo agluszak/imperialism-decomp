@@ -6,10 +6,6 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
-// SYNTHETIC: IMPERIALISM 0x0058b960
-// TPlacard::CreateObject
-// SYNTHETIC: IMPERIALISM 0x0058b9f0
-// TPlacard::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TPlacard, TPicture)
 
@@ -19,8 +15,6 @@ TPlacard::TPlacard() : TPicture() {
 }
 
 // Destructors are compiler-generated (implicit) from real inheritance.
-// SYNTHETIC: IMPERIALISM 0x0058ba40
-// TPlacard::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058ba90
 TPlacard::~TPlacard() {}

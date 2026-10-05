@@ -158,19 +158,10 @@ void FormatLocalizedCommodityCountLabelByIndex(CString* out, unsigned int commod
   }
 }
 
-// SYNTHETIC: IMPERIALISM 0x00556530
-// TNavyMgr::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00556570
-// TNavyMgr::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TNavyMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x00556590
 TNavyMgr::TNavyMgr() : orderQueueHead(0), executionPhase(-1), pendingOrderEntry(nullptr) {}
-
-// SYNTHETIC: IMPERIALISM 0x005565c0
-// TNavyMgr::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005565f0
 TNavyMgr::~TNavyMgr() {}

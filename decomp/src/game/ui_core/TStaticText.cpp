@@ -24,11 +24,6 @@ void TStaticText::CopyTextTo(CString* out) {
 // MFC RTTI slot 0x00 override: return this class's CRuntimeClass descriptor (0x649678).
 // 0x48f710 is the IMPLEMENT_DYNCREATE-generated CreateObject (was previously modeled as
 // a banned free-function factory; retired in favor of the macro's real static).
-// SYNTHETIC: IMPERIALISM 0x0048f710
-// TStaticText::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0048f870
-// TStaticText::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TStaticText, TControl)
 
@@ -58,10 +53,6 @@ TStaticText::TStaticText(const TStaticText& source)
 // bytes) in addition to the vtable-slot scalar deleting destructor (0x48f9a0)
 // — same pattern as heuristic #39 (TFuzzySet/TFuzzyVar dtor split). It was
 // still being served by a dummy autogen stub before this claim.
-// SYNTHETIC: IMPERIALISM 0x0048f9a0
-// TStaticText::`scalar deleting destructor'
-// SYNTHETIC: IMPERIALISM 0x0048fc30
-// TStaticText::~TStaticText
 
 TStaticText::~TStaticText() {
   delete text;

@@ -33,8 +33,6 @@ class TestSourceModelClaims(unittest.TestCase):
                     "// LIBRARY: IMPERIALISM 0x00402000\nvoid L() {}\n"
                 ),
                 "include/game/A.h": (
-                    "// SYNTHETIC: IMPERIALISM 0x00403000\n"
-                    "// TEMPLATE: IMPERIALISM 0x00404000\n"
                     "// STUB: IMPERIALISM 0x00405000\n"
                 ),
             }
@@ -46,8 +44,6 @@ class TestSourceModelClaims(unittest.TestCase):
             {
                 (0x401000, "FUNCTION"),
                 (0x402000, "LIBRARY"),
-                (0x403000, "SYNTHETIC"),
-                (0x404000, "TEMPLATE"),
                 (0x405000, "STUB"),
             },
         )
@@ -136,14 +132,11 @@ class TestDeclarationParsing(unittest.TestCase):
         self.assertEqual(c.name, "TFoo::Bar")
         self.assertEqual(c.prototype, "void TFoo::Bar(int a, int b)")
 
-    def test_synthetic_comment_name(self):
-        m = self._model(
-            {
-                "src/game/A.cpp": "// SYNTHETIC: IMPERIALISM 0x00401000\n"
-                "// CAmbitDocument::GetRuntimeClass\n"
-            }
-        )
-        self.assertEqual(m.functions[0x401000].name, "CAmbitDocument::GetRuntimeClass")
+    def test_compiler_markers_are_rejected(self):
+        for kind in ("SYNTHETIC", "TEMPLATE"):
+            with self.assertRaisesRegex(ValueError, "compiler_emissions.csv"):
+                self._model({"src/game/A.cpp": f"// {kind}: IMPERIALISM 0x00401000\n"
+                             "// CAmbitDocument::GetRuntimeClass\n"})
 
     def test_library_mangled_comment_is_symbol_not_name(self):
         m = self._model(

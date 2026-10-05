@@ -9,21 +9,12 @@
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
-// SYNTHETIC: IMPERIALISM 0x005c2860
-// TCivUnit::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005c28a0
-// TCivUnit::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TCivUnit, TUnit)
 
 // FUNCTION: IMPERIALISM 0x005c28c0
 TCivUnit::TCivUnit() {
   unitOrder = kUnitOrderIdle;
 }
-
-// SYNTHETIC: IMPERIALISM 0x005c28f0
-// TCivUnit::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005c2940
 void TCivUnit::ICivUnit(CivilianUnitKind unitKind, int anchorIndex, int nOrderOwnerNationId) {

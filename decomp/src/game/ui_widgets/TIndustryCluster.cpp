@@ -25,20 +25,11 @@
 
 const int kAssertLineRatioB = 0xb73;
 
-// SYNTHETIC: IMPERIALISM 0x00588a30
-// TIndustryCluster::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00588ad0
-// TIndustryCluster::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TIndustryCluster, TAmtBarCluster)
 
 // FUNCTION: IMPERIALISM 0x00588af0
 TIndustryCluster::TIndustryCluster()
     : TAmtBarCluster(), selectedMetricOrder(0), selectedMetricValue(0), selectedMetricStep(0) {}
-
-// SYNTHETIC: IMPERIALISM 0x00588b20
-// TIndustryCluster::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00588b50
 TIndustryCluster::~TIndustryCluster() {}

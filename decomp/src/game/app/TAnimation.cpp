@@ -9,14 +9,6 @@
 #include "game/ui_core/TView.h"
 #include "game/ui_core/quickdraw_rendering.h"
 
-// SYNTHETIC: IMPERIALISM 0x0049f020
-// TAnimation::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0049f050
-// TAnimation::`scalar deleting destructor'
-// SYNTHETIC: IMPERIALISM 0x0049f0a0
-// TAnimation::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TAnimation, TObject)
 
 // FUNCTION: IMPERIALISM 0x0049f0c0

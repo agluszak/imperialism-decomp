@@ -10,14 +10,6 @@
 #include "game/military_ui/TMerchantBoyView.h"
 #include "game/military_ui/TNavyBoyView.h"
 
-// SYNTHETIC: IMPERIALISM 0x004affd0
-// TBatRepDetLine::`scalar deleting destructor'
-// SYNTHETIC: IMPERIALISM 0x004aff60
-// TBatRepDetLine::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004b0020
-// TBatRepDetLine::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TBatRepDetLine, TLineData)
 
 // FUNCTION: IMPERIALISM 0x004b0040

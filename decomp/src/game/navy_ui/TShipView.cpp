@@ -22,15 +22,8 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// SYNTHETIC: IMPERIALISM 0x005653b0
-// TShipView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005653e0
 TShipView::~TShipView() {}
-// SYNTHETIC: IMPERIALISM 0x00565400
-// TShipView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00565470
-// TShipView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TShipView, TView)
 

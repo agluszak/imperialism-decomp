@@ -5,20 +5,12 @@
 #include "game/ui_core/TCluster.h"
 #include "game/mfc.h"
 
-// SYNTHETIC: IMPERIALISM 0x00571050
-// TToggleButton::CreateObject
-// SYNTHETIC: IMPERIALISM 0x005710d0
-// TToggleButton::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TToggleButton, TPicture)
 
 // FUNCTION: IMPERIALISM 0x005710f0
 TToggleButton::TToggleButton() : TPicture() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
-
-// SYNTHETIC: IMPERIALISM 0x00571120
-// TToggleButton::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00571150
 TToggleButton::~TToggleButton() {}

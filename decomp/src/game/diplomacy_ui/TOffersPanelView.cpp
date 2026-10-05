@@ -19,19 +19,12 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_core/ui_message_pump.h"
 #include "game/ui_text_label_helpers_decls.h"
-// SYNTHETIC: IMPERIALISM 0x004f8ec0
-// TOffersPanelView::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x004f8f50
-// TOffersPanelView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TOffersPanelView, TPanelView)
 
 // FUNCTION: IMPERIALISM 0x004f8f70
 TOffersPanelView::TOffersPanelView() : TPanelView(), acceptButton(0), rejectButton(0) {}
 
-// SYNTHETIC: IMPERIALISM 0x004f8fa0
-// TOffersPanelView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004f8fd0
 TOffersPanelView::~TOffersPanelView() {}
 

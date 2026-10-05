@@ -49,16 +49,10 @@ static const int kAidAllocationColumnCount = 0x17;
 static const int kMapNodeCount = 0x180;
 static const int kPortZoneCount = 0x70;
 
-// SYNTHETIC: IMPERIALISM 0x004e6a70
-// TAutoGreatPower::CreateObject
-
 // FUNCTION: IMPERIALISM 0x004e6b10
 char TAutoGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
   return 0;
 }
-
-// SYNTHETIC: IMPERIALISM 0x004e6b30
-// TAutoGreatPower::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TAutoGreatPower, TGreatPower)
 
@@ -66,9 +60,6 @@ IMPLEMENT_DYNCREATE(TAutoGreatPower, TGreatPower)
 TAutoGreatPower::TAutoGreatPower() : TGreatPower() {
   missionQueue = 0;
 }
-
-// SYNTHETIC: IMPERIALISM 0x004e6b80
-// TAutoGreatPower::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004e6bb0
 TAutoGreatPower::~TAutoGreatPower() {}

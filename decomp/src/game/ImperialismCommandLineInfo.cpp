@@ -32,6 +32,3 @@ void ImperialismCommandLineInfo::ParseParam(LPCSTR pszParam, BOOL bFlag, BOOL bL
   }
   CCommandLineInfo::ParseParam(pszParam, bFlag, bLast);
 }
-
-// SYNTHETIC: IMPERIALISM 0x00413550
-// ImperialismCommandLineInfo::`scalar deleting destructor'

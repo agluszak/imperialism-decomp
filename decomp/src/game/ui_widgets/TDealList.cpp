@@ -5,19 +5,11 @@
 #include "game/ui_core/TSortedPtrList.h"
 #include "game/ui_widgets/TradeDealEntry.h"
 
-// SYNTHETIC: IMPERIALISM 0x005ba130
-// TDealList::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x005ba1a0
-// TDealList::GetRuntimeClass
-
 IMPLEMENT_DYNCREATE(TDealList, TSortedPtrList)
 
 // FUNCTION: IMPERIALISM 0x005ba1c0
 TDealList::TDealList() : TSortedPtrList() {}
 
-// SYNTHETIC: IMPERIALISM 0x005ba1f0
-// TDealList::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x005ba220
 TDealList::~TDealList() {}
 

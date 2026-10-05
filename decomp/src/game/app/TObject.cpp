@@ -33,22 +33,9 @@ TObject* TObject::ShallowClone() {
   return ShallowFree();
 }
 
-// SYNTHETIC: IMPERIALISM 0x00484990
-// TObject::`scalar deleting destructor'
-
-// SYNTHETIC: IMPERIALISM 0x00485df0
-// TObject::CreateObject
-
 // The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
 //   CArchive& AFXAPI operator>>(CArchive&, TObject*&)
-// SYNTHETIC: IMPERIALISM 0x00485e60
-// operator>>
-// SYNTHETIC: IMPERIALISM 0x00485e40
-// `dynamic initializer for '_init_TObject''
 IMPLEMENT_SERIAL(TObject, CObject, 1)
-
-// SYNTHETIC: IMPERIALISM 0x00485e20
-// TObject::GetRuntimeClass
 
 // FUNCTION: IMPERIALISM 0x00485e90
 void TObject::Serialize(CArchive& archive) {

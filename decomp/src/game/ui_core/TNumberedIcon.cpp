@@ -1,19 +1,12 @@
 #include "game/ui_core/TNumberedIcon.h"
 #include "game/ui_core/TNumberText.h"
 #include "game/ui_widgets/TMyNumberText.h"
-// SYNTHETIC: IMPERIALISM 0x005072e0
-// TNumberedIcon::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00507380
-// TNumberedIcon::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TNumberedIcon, TMegaPicture)
 
 // FUNCTION: IMPERIALISM 0x005073a0
 TNumberedIcon::TNumberedIcon() : TMegaPicture(), numberTextAc(0) {}
 
-// SYNTHETIC: IMPERIALISM 0x005073d0
-// TNumberedIcon::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00507400
 TNumberedIcon::~TNumberedIcon() {}
 

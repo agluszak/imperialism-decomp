@@ -74,11 +74,6 @@ float ComputeNavyOrderDistributionScoreForNation(short nation) {
   return total * (static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08) -
                   diffSum * static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA00));
 }
-// SYNTHETIC: IMPERIALISM 0x0054f460
-// TShip::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0054f4e0
-// TShip::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TShip, TObject)
 
@@ -93,8 +88,6 @@ TShip::TShip()
   }
 }
 
-// SYNTHETIC: IMPERIALISM 0x0054f5c0
-// TShip::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x0054f5f0
 TShip::~TShip() {}
 

@@ -12,10 +12,6 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/ui_text_label_helpers_decls.h"
-// SYNTHETIC: IMPERIALISM 0x0058be30
-// TArmyPlacard::CreateObject
-// SYNTHETIC: IMPERIALISM 0x0058beb0
-// TArmyPlacard::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TArmyPlacard, TPicture)
 
@@ -25,9 +21,6 @@ TArmyPlacard::TArmyPlacard() : TPicture() {
 }
 
 // Destructors are compiler-generated (implicit) from real inheritance.
-
-// SYNTHETIC: IMPERIALISM 0x0058bf00
-// TArmyPlacard::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058bf30
 TArmyPlacard::~TArmyPlacard() {}

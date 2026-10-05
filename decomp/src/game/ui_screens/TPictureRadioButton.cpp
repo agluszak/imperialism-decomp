@@ -3,19 +3,12 @@
 #include "game/gfx/CDib.h"
 #include "game/ui_core/TCluster.h"
 #include "game/ui_screens/TUberCluster.h"
-// SYNTHETIC: IMPERIALISM 0x00570cc0
-// TPictureRadioButton::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00570d40
-// TPictureRadioButton::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TPictureRadioButton, TToggleButton)
 
 // FUNCTION: IMPERIALISM 0x00570d60
 TPictureRadioButton::TPictureRadioButton() {}
 
-// SYNTHETIC: IMPERIALISM 0x00570d90
-// TPictureRadioButton::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00570dc0
 TPictureRadioButton::~TPictureRadioButton() {}
 
