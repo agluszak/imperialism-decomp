@@ -131,7 +131,7 @@ RuntimeActionResult RunNewspaperTurnStop(NativeTransition& transition) {
   if (!loaded.Succeeded()) {
     return loaded;
   }
-  g_pSimMgr->turnStateCode = 0xf;
+  g_pSimMgr->turnStateCode = kGamePhaseNews;
 
   JsonObject operation;
   operation.Set("story_ids", storyIds.Release());
@@ -157,7 +157,7 @@ RuntimeActionResult RunSecondTurnSequence(NativeTransition& transition) {
   }
 
   g_pSimMgr->economicTurn = 2;
-  g_pSimMgr->turnStateCode = 5;
+  g_pSimMgr->turnStateCode = kGamePhaseEndTurn;
   g_pSimMgr->preferenceValues[8] = 0;
   for (int techId = 3; techId < 0x1d; ++techId) {
     g_pTechMgr->perTechUnlockFlag180[techId] = 0;
@@ -175,11 +175,11 @@ RuntimeActionResult RunSecondTurnSequence(NativeTransition& transition) {
   // rand() streams across the whole turn sequence.
   srand(0x1234);
   int stepCount = 0;
-  while (g_pSimMgr->turnStateCode != 0xe && stepCount < 32) {
+  while (g_pSimMgr->turnStateCode != kGamePhaseCouncil && stepCount < 32) {
     g_pSimMgr->AdvanceGlobalTurnStateMachine();
     ++stepCount;
   }
-  if (g_pSimMgr->turnStateCode != 0xe) {
+  if (g_pSimMgr->turnStateCode != kGamePhaseCouncil) {
     return RuntimeActionResult::Failure("turn sequence did not reach the Deal Book");
   }
 
@@ -187,18 +187,18 @@ RuntimeActionResult RunSecondTurnSequence(NativeTransition& transition) {
   JsonArray rngStates;
   stops.Add("deal_book");
   rngStates.Add(RuntimeCrtRandStateForTests());
-  while (g_pSimMgr->turnStateCode != 0x12 && stepCount < 48) {
+  while (g_pSimMgr->turnStateCode != kGamePhaseTurnStart && stepCount < 48) {
     g_pSimMgr->AdvanceGlobalTurnStateMachine();
     ++stepCount;
   }
-  if (g_pSimMgr->turnStateCode != 0x12) {
+  if (g_pSimMgr->turnStateCode != kGamePhaseTurnStart) {
     return RuntimeActionResult::Failure("turn sequence did not reach the newspaper");
   }
   stops.Add("newspaper");
   rngStates.Add(RuntimeCrtRandStateForTests());
 
   g_pSimMgr->AdvanceGlobalTurnStateMachine();
-  if (g_pSimMgr->turnStateCode != 5) {
+  if (g_pSimMgr->turnStateCode != kGamePhaseEndTurn) {
     return RuntimeActionResult::Failure("turn sequence did not return to player orders");
   }
   stops.Add("player_orders");
@@ -223,7 +223,7 @@ RuntimeActionResult RunConsecutiveTurnSequence(NativeTransition& transition) {
   }
 
   g_pSimMgr->economicTurn = 2;
-  g_pSimMgr->turnStateCode = 5;
+  g_pSimMgr->turnStateCode = kGamePhaseEndTurn;
   g_pSimMgr->preferenceValues[8] = 0;
   for (int techId = 3; techId < 0x1d; ++techId) {
     g_pTechMgr->perTechUnlockFlag180[techId] = 0;
@@ -245,28 +245,28 @@ RuntimeActionResult RunConsecutiveTurnSequence(NativeTransition& transition) {
   JsonArray economicTurns;
   for (int turn = 0; turn < 12; ++turn) {
     int stepCount = 0;
-    while (g_pSimMgr->turnStateCode != 0xe && stepCount < 32) {
+    while (g_pSimMgr->turnStateCode != kGamePhaseCouncil && stepCount < 32) {
       g_pSimMgr->AdvanceGlobalTurnStateMachine();
       ++stepCount;
     }
-    if (g_pSimMgr->turnStateCode != 0xe) {
+    if (g_pSimMgr->turnStateCode != kGamePhaseCouncil) {
       return RuntimeActionResult::Failure("turn sequence did not reach the Deal Book");
     }
     stops.Add("deal_book");
     rngStates.Add(RuntimeCrtRandStateForTests());
 
-    while (g_pSimMgr->turnStateCode != 0x12 && stepCount < 48) {
+    while (g_pSimMgr->turnStateCode != kGamePhaseTurnStart && stepCount < 48) {
       g_pSimMgr->AdvanceGlobalTurnStateMachine();
       ++stepCount;
     }
-    if (g_pSimMgr->turnStateCode != 0x12) {
+    if (g_pSimMgr->turnStateCode != kGamePhaseTurnStart) {
       return RuntimeActionResult::Failure("turn sequence did not reach the newspaper");
     }
     stops.Add("newspaper");
     rngStates.Add(RuntimeCrtRandStateForTests());
 
     g_pSimMgr->AdvanceGlobalTurnStateMachine();
-    if (g_pSimMgr->turnStateCode != 5) {
+    if (g_pSimMgr->turnStateCode != kGamePhaseEndTurn) {
       return RuntimeActionResult::Failure("turn sequence did not return to player orders");
     }
     stops.Add("player_orders");

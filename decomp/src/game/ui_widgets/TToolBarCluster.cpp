@@ -77,22 +77,22 @@ void TToolBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
     g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventGameScore));
     break;
   case kControlTagCity:
-    g_pSimMgr->EnterOptionalPhase(0x6a);
+    g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalCityScreen);
     break;
   case kControlTagDipl:
-    g_pSimMgr->EnterOptionalPhase(0x68);
+    g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalDiplomacyMap);
     break;
   case kControlTagMmap:
-    g_pSimMgr->EnterOptionalPhase(0x6d);
+    g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalTechStore);
     break;
   case kControlTagTrad:
-    g_pSimMgr->EnterOptionalPhase(0x67);
+    g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalTradeOverview);
     break;
   case kControlTagTran:
-    g_pSimMgr->EnterOptionalPhase(0x69);
+    g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalTransport);
     break;
   case kControlTagEnd:
-    if (g_pSimMgr->mode != 0x11) {
+    if (g_pSimMgr->mode != kGamePhaseTechnology) {
       g_pSimMgr->StartNextPhase();
       break;
     }
@@ -107,7 +107,8 @@ void TToolBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
     }
     break;
   case kControlTagQuer:
-    if (g_pSimMgr->mode == 4 || g_pSimMgr->mode == 0x12 || g_pSimMgr->mode == 5) {
+    if (g_pSimMgr->mode == kGamePhaseShowMap || g_pSimMgr->mode == kGamePhaseTurnStart ||
+        g_pSimMgr->mode == kGamePhaseEndTurn) {
       g_pViewMgr->DispatchUiRuntimeMessage101AAndRefreshActiveView();
     } else {
       g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
@@ -379,8 +380,8 @@ void DispatchUiRuntimeMessage102CAndRefreshActiveView() {
 // resolved through the factory registry, then closes and frees it.
 // FUNCTION: IMPERIALISM 0x005dc600
 void PoseGamePreferencesDialogModally() {
-  TWindow* node = static_cast<TWindow*>(
-      g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
+  TWindow* node =
+      static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           kTurnEventGamePreferences, 0));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);

@@ -170,10 +170,8 @@ public:
   // IArmyMgr. Walked ordinally by the battle-report layout hook
   // (0x4acb60).
   class TSortedPtrList* mapContextActionRecordList04;
-  // +0x08 -- read by GetByteFlagAtOffset8 (0x4a6dd0, a bare `this+8` thiscall getter);
-  // sole call site is TSimMgr::AdvanceGlobalTurnStateMachine case 0xd, gating whether the
-  // terrain-eligibility branch runs. No confirmed writer site yet.
-  bool flag8;
+  // Set by every appended battle record; CleanUpStacks clears it.
+  bool battlesToReport;
   unsigned char pad09[0x0c - 0x09];
   // +0x0c -- a TSortedList (GetCount/GetEntryByOrdinal evidence from
   // FormStacks's ground truth); freed at the top of
@@ -382,12 +380,10 @@ public:
   void TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, int cityIndex,
                                                        struct MapOrderBattleSnapshot* snapshot);
 
-  // Bare `this+8` accessor; sole caller is TSimMgr::AdvanceGlobalTurnStateMachine
-  // (g_pMapContextActionManager->GetByteFlagAtOffset8()). 0x4a6dd0.
-  unsigned char GetByteFlagAtOffset8();
+  bool HasBattlesToReport() const; // Mac oracle; 0x4a6dd0
 
   // Mac oracle: CleanUpStacks. Frees the two owned side-child buffers in every copied
-  // map-context action record, clears the record list, and resets flag8. 0x004a6df0.
+  // map-context action record, clears the record list, and resets battlesToReport. 0x004a6df0.
   void CleanUpStacks();
 
   // Called by TArmyBattle::EndBattle once a tactical battle's
@@ -404,10 +400,9 @@ public:
 
   // Appends the built map-context battle record to mapContextActionRecordList04 (via its
   // sorted-insert virtual, slot 0x0f), clears the record's scratch working fields, and
-  // marks flag8. `unusedArg2` is present only for stack-cleanup fidelity (RET 8) -- the
+  // marks battlesToReport. `unusedArg2` is present only for stack-cleanup fidelity (RET 8) -- the
   // body never reads it. 0x4a6e80, __thiscall.
-  void AppendMapContextActionRecordAndResetWorkingFields(struct MapOrderBattleSnapshot* record,
-                                                         int unusedArg2);
+  void AddBattleRecord(struct MapOrderBattleSnapshot* record, int unusedArg2);
   void IArmyMgr();
 
   // Scans mapContextActionRecordList04 from its last entry down to the first for a

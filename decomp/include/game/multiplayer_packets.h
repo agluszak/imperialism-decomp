@@ -14,6 +14,7 @@
 // byte, and the pending-nation slot via TimelyMessageHeader/TimelyNetMessagePrefix.
 
 #include "compat.h"
+#include "game/game_phase.h"
 #include "game/multiplayer_session_tags.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_military.h"
@@ -123,7 +124,7 @@ struct TurnEventBNationDirectoryPacket : NetMessage {
   int packetTag;                // +0x10 'time'
   unsigned char activeNationId; // +0x14
   unsigned char pad15[3];
-  short pendingNationSlot; // +0x18
+  GamePhaseStorage syncPhase; // +0x18
   unsigned char pad1a[2];
   short homeTileBySlot[0x17];        // +0x1c
   char cityNameBySlot[0x17][0x17];   // +0x4a
@@ -140,7 +141,7 @@ struct TurnEvent18DiplomacyArraysPacket : NetMessage {
   int packetTag;                // +0x10 'time'
   unsigned char activeNationId; // +0x14
   unsigned char pad15[3];
-  short pendingNationSlot; // +0x18
+  GamePhaseStorage syncPhase; // +0x18
   unsigned char pad1a[2];
   short diplomacyPolicyByNation[7][0x17]; // +0x1c
   short diplomacyGrantByNation[7][0x17];  // +0x15e
@@ -161,7 +162,7 @@ struct TurnEvent23TileStatePacket : NetMessage {
   int packetTag;                // +0x10 'time'
   unsigned char activeNationId; // +0x14
   unsigned char pad15[3];
-  short pendingNationSlot; // +0x18
+  GamePhaseStorage syncPhase; // +0x18
   unsigned char pad1a[2];
   short tileIndex; // +0x1c
   unsigned char pad1e[2];

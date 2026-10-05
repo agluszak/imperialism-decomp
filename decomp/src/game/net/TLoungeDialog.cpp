@@ -122,7 +122,7 @@ void TLoungeDialog::DoPostCreate(int arg) {
         g_pGameFlowState->GetNationStatusCodeForSlotOrActiveNation(-1) == kSessionTagBusy ? 0x24
                                                                                           : 0x10;
   } else {
-    messageStringIndex = static_cast<short>(g_pSimMgr->mode == 1 ? 0x10 : 0x18);
+    messageStringIndex = static_cast<short>(g_pSimMgr->mode == kGamePhaseStartup ? 0x10 : 0x18);
   }
   ConfigureUiControlStyleValueAndCaptionFromStringResource(
       static_cast<TStaticText*>(ResolveControlByTag(kSessionTagMess)), 0, 0xe, 0x2b6c, 1, 0x2742,
@@ -215,7 +215,7 @@ char TLoungeDialog::DoIdle(int action) {
         SetPictureResourceIdAndRefresh(0x11f9, 1);
       }
     }
-  } else if (g_pSimMgr->mode == 1 || anyLocalSeat) {
+  } else if (g_pSimMgr->mode == kGamePhaseStartup || anyLocalSeat) {
     messageStringIndex = 0x10;
   } else {
     messageStringIndex = static_cast<short>(g_pGlobalMapState != 0 ? 0x2c : 0x18);

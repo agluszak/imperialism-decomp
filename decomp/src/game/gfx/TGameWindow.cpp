@@ -93,7 +93,7 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap &&
         mainControl->ResolveControlByTag(kControlTagEnd) != 0) { // 'end '
       g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
-      if (g_pSimMgr->mode != 0x11) {
+      if (g_pSimMgr->mode != kGamePhaseTechnology) {
         g_pSimMgr->StartNextPhase();
         return;
       }
@@ -118,40 +118,42 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
     return;
   }
 
-  if (g_pSimMgr != 0 &&
-      (g_pSimMgr->mode == 0x69 || g_pSimMgr->mode == 0x68 || g_pSimMgr->mode == 0x67 ||
-       g_pSimMgr->mode == 0x6a || g_pSimMgr->mode == 0x6d ||
-       g_pViewMgr->currentTurnEventCode == kTurnEventStrategicMap)) {
+  if (g_pSimMgr != 0 && (g_pSimMgr->mode == kGamePhaseOptionalTransport ||
+                         g_pSimMgr->mode == kGamePhaseOptionalDiplomacyMap ||
+                         g_pSimMgr->mode == kGamePhaseOptionalTradeOverview ||
+                         g_pSimMgr->mode == kGamePhaseOptionalCityScreen ||
+                         g_pSimMgr->mode == kGamePhaseOptionalTechStore ||
+                         g_pViewMgr->currentTurnEventCode == kTurnEventStrategicMap)) {
     switch (commandEvent->commandCode) {
     case 0x31:
       if (g_pViewMgr->currentTurnEventCode != kTurnEventTransport) {
         g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
-        g_pSimMgr->EnterOptionalPhase(0x69);
+        g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalTransport);
       }
       return;
     case 0x32:
       if (g_pViewMgr->currentTurnEventCode != kTurnEventCityProduction) {
         g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
-        g_pSimMgr->EnterOptionalPhase(0x6a);
+        g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalCityScreen);
       }
       return;
     case 0x33:
       if (g_pViewMgr->currentTurnEventCode != kTurnEventTradeOverview &&
           g_pViewMgr->currentTurnEventCode != kTurnEventIndustryOverview) {
         g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
-        g_pSimMgr->EnterOptionalPhase(0x67);
+        g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalTradeOverview);
       }
       return;
     case 0x34:
       if (g_pViewMgr->currentTurnEventCode != kTurnEventDiplomacyMap) {
         g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
-        g_pSimMgr->EnterOptionalPhase(0x68);
+        g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalDiplomacyMap);
       }
       return;
     case 0x35:
       if (g_pViewMgr->currentTurnEventCode != kTurnEventTechnologyStore) {
         g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
-        g_pSimMgr->EnterOptionalPhase(0x6d);
+        g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalTechStore);
       }
       return;
     default:

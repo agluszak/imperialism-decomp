@@ -14,7 +14,7 @@ enum TurnEventId {
   kTurnEventVerbFormDialog = 0x03c6,
   kTurnEventDefaultView = 0x03ea,
   kTurnEventCombatReport = 0x0546,
-  kTurnEventDiplomacyOffer = 0x0547,
+  kTurnEventBattleReport = 0x0547,
   kTurnEventDetailedBattleReport = 0x0548,
   kTurnEventMainMenu = 0x05dc,
   kTurnEventRandomGameSetup = 0x05dd,

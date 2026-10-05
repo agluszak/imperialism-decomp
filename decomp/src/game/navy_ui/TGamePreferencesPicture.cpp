@@ -172,7 +172,7 @@ void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandle
           static_cast<short>(originalSoundVolumePercent));
       g_pSimMgr->preferenceValues[3] = static_cast<short>(originalSoundVolumePercent);
       g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(g_pSimMgr->preferenceValues[3]);
-      if (g_pSimMgr->mode == 1) {
+      if (g_pSimMgr->mode == kGamePhaseStartup) {
         g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventMainMenu));
       } else {
         g_pSimMgr->StartNextPhase();
@@ -211,7 +211,7 @@ void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandle
           (soundPosition * 100) / static_cast<short>(soundSlider->frameHeight38 - 0xc));
 
       g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(g_pSimMgr->preferenceValues[3]);
-      if (g_pSimMgr->mode == 1 || g_pSimMgr->mode == 3) {
+      if (g_pSimMgr->mode == kGamePhaseStartup || g_pSimMgr->mode == kGamePhaseSetUpMap) {
         g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventMainMenu));
       } else {
         g_pSimMgr->StartNextPhase();

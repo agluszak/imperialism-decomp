@@ -37,7 +37,7 @@ void TFlagOptionsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
     } else if (tag == kControlTagCred) {
       TWindow* owner = GetWindow();
       owner->Dismiss(kControlTagOkay, 0);
-      g_pSimMgr->EnterOptionalPhase(0x71);
+      g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalCredits);
     } else if (tag == kControlTagNewg || tag == kControlTagQuit) {
       if (g_pViewMgr->DispatchGameStateEventIfLocalizedPromptAccepted(tag)) {
         TWindow* owner = GetWindow();
@@ -61,12 +61,12 @@ void TFlagOptionsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
       } else {
         TWindow* owner = GetWindow();
         owner->Dismiss(tag, 0);
-        g_pSimMgr->EnterOptionalPhase(0x70);
+        g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalLoadGame);
       }
     } else if (tag == kControlTagPref) {
       TWindow* owner = GetWindow();
       owner->Dismiss(tag, 0);
-      g_pSimMgr->EnterOptionalPhase(0x6b);
+      g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalGamePreferences);
     } else if (tag == kControlTagSave) {
       TWindow* owner = GetWindow();
       owner->Dismiss(tag, 0);
@@ -74,7 +74,7 @@ void TFlagOptionsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
         g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&text, 0x2742, 0x13);
         g_pViewMgr->ModalMessage(text, g_ptQueryFloaterModalMessage, 0, 0);
       } else {
-        g_pSimMgr->EnterOptionalPhase(0x6f);
+        g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalSaveGame);
       }
     } else {
       TControl::DoEvent(commandId, sourceHandler, event);

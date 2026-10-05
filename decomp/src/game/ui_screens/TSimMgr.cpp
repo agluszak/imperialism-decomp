@@ -136,10 +136,10 @@ IMPLEMENT_DYNCREATE(TSimMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x0057b9e0
 TSimMgr::TSimMgr() : sharedTextSlots() {
-  turnStateCode = 1;
-  mode = 1;
-  previousTurnStateCode = 1;
-  previousMode = 1;
+  turnStateCode = kGamePhaseStartup;
+  mode = kGamePhaseStartup;
+  previousTurnStateCode = kGamePhaseStartup;
+  previousMode = kGamePhaseStartup;
   field14 = 0;
 
   // Fused loop: fill field15[0..0x16] with 1 AND assign g_szEmptyString to each shared-text
@@ -177,7 +177,7 @@ void TSimMgr::ISimMgr() {
   economicTurn = 0;
   activeNationSlot = -1;
   field14 = 0;
-  turnStateCode = 1;
+  turnStateCode = kGamePhaseStartup;
   turnFlowStatusFlags = 0;
   field_64 = 0;
   phaseStateByDecade[0] = 0;
@@ -205,7 +205,7 @@ void TSimMgr::ResetTurnFlowStateAndRandomSeed() {
   economicTurn = 0;
   activeNationSlot = -1;
   field14 = 0;
-  turnStateCode = 1;
+  turnStateCode = kGamePhaseStartup;
   turnFlowStatusFlags = 0;
   field_64 = 0;
   phaseStateByDecade[0] = 0;
@@ -395,7 +395,7 @@ void TSimMgr::ReadFrom(TStream* stream) {
   RebuildMapContextAndGlobalMapState(0, nullptr, 0);
   RebuildNationStateSlotsAndAvailability(0);
 
-  turnStateCode = 4;
+  turnStateCode = kGamePhaseShowMap;
   StartNextPhase();
 }
 
@@ -931,21 +931,21 @@ void TSimMgr::StartNextPhase() {
 }
 
 // FUNCTION: IMPERIALISM 0x0057d990
-void TSimMgr::EnterOptionalPhase(int gamePhase) {
+void TSimMgr::EnterOptionalPhase(eGamePhaseNewStyle gamePhase) {
   bool mayEnterPhase = IsNationEligibleForOptionalPhase(activeNationSlot);
   if (!mayEnterPhase) {
     switch (gamePhase) {
-    case 100:
-    case 0x67:
-    case 0x68:
-    case 0x69:
-    case 0x6a:
-    case 0x6d:
+    case kGamePhaseOptionalDealBook:
+    case kGamePhaseOptionalTradeOverview:
+    case kGamePhaseOptionalDiplomacyMap:
+    case kGamePhaseOptionalTransport:
+    case kGamePhaseOptionalCityScreen:
+    case kGamePhaseOptionalTechStore:
       return;
     }
   }
 
-  int oldPhase = this->turnStateCode;
+  eGamePhaseNewStyle oldPhase = this->turnStateCode;
   this->turnStateCode = gamePhase;
   this->previousMode = mode;
   previousTurnStateCode = oldPhase;
@@ -957,14 +957,14 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   // Source evidence: retail constructs this CString before the defer check.
   CString emptyString;
 
-  if (turnStateCode == 0x10 && g_nTurnCooldownDeferCounter006A43C4 > 0) {
+  if (turnStateCode == kGamePhaseAdvanceSeason && g_nTurnCooldownDeferCounter006A43C4 > 0) {
     --g_nTurnCooldownDeferCounter006A43C4;
   }
   mode = turnStateCode;
 
   switch (turnStateCode) {
-  case 1:
-    turnStateCode = 3;
+  case kGamePhaseStartup:
+    turnStateCode = kGamePhaseSetUpMap;
     if (!g_bTurnFlowBootstrapComplete) {
       g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOpeningCinematic), 0);
       break;
@@ -972,8 +972,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventMainMenu), 0);
     break;
 
-  case 2: {
-    turnStateCode = 0x10;
+  case kGamePhaseStartGame: {
+    turnStateCode = kGamePhaseAdvanceSeason;
     for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
       TGreatPower* nation = g_apNationStates[nationSlot];
       nation->AssertValid();
@@ -995,8 +995,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     activeNation->ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches();
     g_pHelpMgr->ResetHelpSetRanksAndFlags();
     if (multiplayerSessionRole != 0) {
-      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
-      turnStateCode = 0x13;
+      g_pGameFlowState->SetSyncPhases(mode, turnStateCode);
+      turnStateCode = kGamePhaseNetworkSync;
       StartNextPhase();
       break;
     }
@@ -1004,8 +1004,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     break;
   }
 
-  case 3:
-    turnStateCode = 2;
+  case kGamePhaseSetUpMap:
+    turnStateCode = kGamePhaseStartGame;
     if (reloadPoliticalMapState) {
       g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(true);
       g_pSimMgr->RebuildMapContextAndGlobalMapState(1, s_Chunk_00698C0C, 1);
@@ -1022,8 +1022,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     }
     break;
 
-  case 4:
-    turnStateCode = 5;
+  case kGamePhaseShowMap:
+    turnStateCode = kGamePhaseEndTurn;
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventStrategicMap),
                                   g_pSimMgr->activeNationSlot);
     if (multiplayerSessionRole != 0) {
@@ -1036,7 +1036,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     }
     break;
 
-  case 5: {
+  case kGamePhaseEndTurn: {
     const bool alertsPending = ShowTurnAlertsForActiveNation();
     alertsPendingFlag38 = alertsPending;
     if (alertsPending) {
@@ -1054,19 +1054,19 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     if (!continueTurn) {
       break;
     }
-    turnStateCode = 6;
+    turnStateCode = kGamePhaseDiplomacy;
     if (multiplayerSessionRole != 0) {
-      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, 6);
-      turnStateCode = 0x13;
+      g_pGameFlowState->SetSyncPhases(mode, kGamePhaseDiplomacy);
+      turnStateCode = kGamePhaseNetworkSync;
     }
     StartNextPhase();
     break;
   }
 
-  case 6: {
-    turnStateCode = 7;
+  case kGamePhaseDiplomacy: {
+    turnStateCode = kGamePhaseTrade;
     if (multiplayerSessionRole != 0) {
-      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
+      g_pGameFlowState->SetSyncPhases(mode, turnStateCode);
     }
     if (multiplayerSessionRole != 1) {
       g_pDiplomacyTurnStateManager->ApplyDiplomacyInterNationStatesForTurn();
@@ -1101,11 +1101,11 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     break;
   }
 
-  case 7: {
-    turnStateCode = 9;
+  case kGamePhaseTrade: {
+    turnStateCode = kGamePhaseCivilians;
     g_pDiplomacyTurnStateManager->SelectPriorityNationIndicesForMinorCapabilityRows();
     if (multiplayerSessionRole != 0) {
-      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
+      g_pGameFlowState->SetSyncPhases(mode, turnStateCode);
       g_pSfxPlaybackSystem->SetActiveAudioCueAndResetQueue(4, true);
       g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOfferSheet), activeNationSlot);
       g_pViewMgr->ShowOfferSheet(-1, 0, 0, 0, 0x16);
@@ -1116,12 +1116,12 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     break;
   }
 
-  case 8: {
-    turnStateCode = 0xb;
+  case kGamePhaseCityAndTransport: {
+    turnStateCode = kGamePhaseLossCheck;
     DoCityAndTransport();
     if (multiplayerSessionRole != 0) {
-      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
-      turnStateCode = 0x13;
+      g_pGameFlowState->SetSyncPhases(mode, turnStateCode);
+      turnStateCode = kGamePhaseNetworkSync;
       StartNextPhase();
       break;
     }
@@ -1129,8 +1129,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     break;
   }
 
-  case 9: {
-    turnStateCode = 10;
+  case kGamePhaseCivilians: {
+    turnStateCode = kGamePhaseMilitary;
     if (multiplayerSessionRole != 2) {
       DoCivilians();
       StartNextPhase();
@@ -1140,15 +1140,15 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     break;
   }
 
-  case 10: {
-    turnStateCode = 0x14;
+  case kGamePhaseMilitary: {
+    turnStateCode = kGamePhaseCombat;
     g_pSimMgr->DoMilitary();
     StartNextPhase();
     break;
   }
 
-  case 0xb: {
-    turnStateCode = 0xc;
+  case kGamePhaseLossCheck: {
+    turnStateCode = kGamePhaseDealBook;
     bool actionNeeded = false;
     // For each live nation slot 6..0, slot 0xaf (the pressure-state update, byte 0x2bc)
     // returns a char: when set, fire the active nation's no-payload turn-event dispatch
@@ -1172,8 +1172,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     break;
   }
 
-  case 0xc: {
-    turnStateCode = 0xe;
+  case kGamePhaseDealBook: {
+    turnStateCode = kGamePhaseCouncil;
     if (IsNationEligibleForOptionalPhase(activeNationSlot)) {
       g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDealBook), activeNationSlot);
       g_pSfxPlaybackSystem->SetActiveAudioCueAndResetQueue(4, true);
@@ -1185,25 +1185,25 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     break;
   }
 
-  case 0xd: {
-    turnStateCode = 0x19;
+  case kGamePhaseBattleReport: {
+    turnStateCode = kGamePhaseEliminations;
     // Verified against 0x0057e487: real receiver is g_pMapContextActionManager (no null
     // guard on it, matching the missing-guard pattern used elsewhere in this switch).
-    if (g_pMapContextActionManager->GetByteFlagAtOffset8() != 0 &&
+    if (g_pMapContextActionManager->HasBattlesToReport() &&
         IsNationEligibleForOptionalPhase(activeNationSlot)) {
-      g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDiplomacyOffer),
-                                    activeNationSlot);
+      g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventBattleReport), activeNationSlot);
       break;
     }
     StartNextPhase();
     break;
   }
 
-  case 0xe: {
-    turnStateCode = 0x10;
+  case kGamePhaseCouncil: {
+    turnStateCode = kGamePhaseAdvanceSeason;
     if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot != -1) {
       const short lastProcessed = g_pDiplomacyTurnStateManager->lastProcessedNationSlot;
-      turnStateCode = static_cast<int>(lastProcessed != activeNationSlot) + 0x16;
+      turnStateCode =
+          lastProcessed == activeNationSlot ? kGamePhaseCouncilVictory : kGamePhaseCouncilDefeat;
     }
     const short tickA = GetEconomicTurn();
     const short tickB = GetEconomicTurn();
@@ -1216,8 +1216,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     break;
   }
 
-  case 0xf: {
-    turnStateCode = 0x12;
+  case kGamePhaseNews: {
+    turnStateCode = kGamePhaseTurnStart;
     g_pAssetMgr->OpenFilesFor(0xa);
     g_pNewsMgr->StartNewsPhase();
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventNewspaperStatus), activeNationSlot);
@@ -1253,8 +1253,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     break;
   }
 
-  case 0x10: {
-    turnStateCode = 0x11;
+  case kGamePhaseAdvanceSeason: {
+    turnStateCode = kGamePhaseTechnology;
     alertsPendingFlag38 = 0;
     turnFlowStatusFlags = 0;
     AdvanceSeason();
@@ -1262,8 +1262,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     break;
   }
 
-  case 0x11: {
-    turnStateCode = 0xf;
+  case kGamePhaseTechnology: {
+    turnStateCode = kGamePhaseNews;
     bool actionNeeded = true;
     const short capabilityBefore = g_pTechMgr != nullptr ? g_pTechMgr->marker262 : 0;
     g_pTechMgr->CheckForAdvances();
@@ -1297,8 +1297,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     break;
   }
 
-  case 0x12: {
-    turnStateCode = 5;
+  case kGamePhaseTurnStart: {
+    turnStateCode = kGamePhaseEndTurn;
     g_pAssetMgr->OpenFilesFor(0x13);
     g_pGlobalMapState->DispatchTurnEvent7DDForActiveNation();
     g_pViewMgr->RefreshViewSlot48();
@@ -1323,26 +1323,26 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     break;
   }
 
-  case 0x13: {
-    turnStateCode = g_pGameFlowState->activeNationSlotIndex;
+  case kGamePhaseNetworkSync: {
+    turnStateCode = g_pGameFlowState->resumePhase;
     g_pGameFlowState->HandleTurnResumeStateTelemetry();
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventNetworkGameOptions),
                                   activeNationSlot);
     break;
   }
 
-  case 0x14: {
-    turnStateCode = 0x15;
+  case kGamePhaseCombat: {
+    turnStateCode = kGamePhaseProduction;
     g_pMapContextActionManager->DoCombatMoves();
     if (multiplayerSessionRole != 0) {
-      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
-      turnStateCode = 0x13;
+      g_pGameFlowState->SetSyncPhases(mode, turnStateCode);
+      turnStateCode = kGamePhaseNetworkSync;
     }
     break;
   }
 
-  case 0x15: {
-    turnStateCode = 0xd;
+  case kGamePhaseProduction: {
+    turnStateCode = kGamePhaseBattleReport;
     g_pNavyOrderManager->ClearAllTransientOrders();
     if (multiplayerSessionRole != 2) {
       g_pGlobalMapState->RecomputeTileStrategicScoreHeatmap();
@@ -1377,19 +1377,19 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
           phaseStateByDecade[tickA / 0x28]);
     }
     if (multiplayerSessionRole != 0) {
-      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
-      turnStateCode = 0x13;
+      g_pGameFlowState->SetSyncPhases(mode, turnStateCode);
+      turnStateCode = kGamePhaseNetworkSync;
     }
     StartNextPhase();
     break;
   }
 
-  case 0x17:
+  case kGamePhaseCouncilDefeat:
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOpeningCinematic), 0);
     break;
 
-  case 0x19: {
-    turnStateCode = 8;
+  case kGamePhaseEliminations: {
+    turnStateCode = kGamePhaseCityAndTransport;
     bool actionNeeded = false;
     // Verified against 0x0057e1be: the original reads g_pSimMgr->activeNationSlot with no
     // null guard, and when the localization nation's encoded slot is in [100,200) it fires
@@ -1447,42 +1447,42 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     break;
   }
 
-  case 0x16:
+  case kGamePhaseCouncilVictory:
     UpdatePersistentTopTenNationScores();
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOpeningCinematic), 0);
     break;
 
-  case 100:
-    turnStateCode = 4;
+  case kGamePhaseOptionalDealBook:
+    turnStateCode = kGamePhaseShowMap;
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDealBook), activeNationSlot);
     break;
 
   // Jump-table ground truth (0x57dad8, index-byte table 0x57ebec): case 0x71 -> 0x57eabf
   // (posts 0x104f), case 0x72 -> 0x57ead8 (posts 0x5e4). The old merged port dropped both
   // event codes.
-  case 0x71:
-    turnStateCode = 4;
+  case kGamePhaseOptionalCredits:
+    turnStateCode = kGamePhaseShowMap;
     g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventCredits));
     break;
 
-  case 0x72:
-    turnStateCode = 4;
+  case kGamePhaseOptionalNetworkGameOptions:
+    turnStateCode = kGamePhaseShowMap;
     g_pAmbitApplication->PostTurnEventCodeMessage2420(
         EncodeTurnEventCode(kTurnEventNetworkGameOptions));
     break;
 
-  case 0x65:
-    turnStateCode = 4;
-    g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDiplomacyOffer), activeNationSlot);
+  case kGamePhaseOptionalBattleReport:
+    turnStateCode = kGamePhaseShowMap;
+    g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventBattleReport), activeNationSlot);
     break;
 
-  case 0x66:
-    turnStateCode = 4;
+  case kGamePhaseOptionalNewspaper:
+    turnStateCode = kGamePhaseShowMap;
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventNewspaperStatus), activeNationSlot);
     break;
 
-  case 0x67:
-    turnStateCode = 4;
+  case kGamePhaseOptionalTradeOverview:
+    turnStateCode = kGamePhaseShowMap;
     g_pViewMgr->DispatchTurnEvent(
         g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] != 0
             ? kTurnEventIndustryOverview
@@ -1490,54 +1490,54 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         activeNationSlot);
     break;
 
-  case 0x68:
-    turnStateCode = 4;
+  case kGamePhaseOptionalDiplomacyMap:
+    turnStateCode = kGamePhaseShowMap;
     g_apNationStates[activeNationSlot]->SetDiplomacyPolicies();
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDiplomacyMap), activeNationSlot);
     g_pDiplomacyTurnStateManager->SetLastDiploEffort();
     break;
 
-  case 0x69:
-    turnStateCode = 4;
+  case kGamePhaseOptionalTransport:
+    turnStateCode = kGamePhaseShowMap;
     g_apNationStates[activeNationSlot]->RebuildNationResourceYieldCountersAndDevelopmentTargets();
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventTransport), activeNationSlot);
     break;
 
-  case 0x6a:
-    turnStateCode = 4;
+  case kGamePhaseOptionalCityScreen:
+    turnStateCode = kGamePhaseShowMap;
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventCityProduction), activeNationSlot);
     break;
 
-  case 0x6b:
-    turnStateCode = 4;
+  case kGamePhaseOptionalGamePreferences:
+    turnStateCode = kGamePhaseShowMap;
     g_pAmbitApplication->PostTurnEventCodeMessage2420(
         EncodeTurnEventCode(kTurnEventGamePreferences));
     break;
 
-  case 0x6c:
-    turnStateCode = 4;
+  case kGamePhaseOptionalUnitHistory:
+    turnStateCode = kGamePhaseShowMap;
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventUnitHistory), activeNationSlot);
     break;
 
-  case 0x6d:
-    turnStateCode = 4;
+  case kGamePhaseOptionalTechStore:
+    turnStateCode = kGamePhaseShowMap;
     turnFlowStatusFlags |= 0x40;
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventTechnologyStore), activeNationSlot);
     break;
 
-  case 0x6e:
-    turnStateCode = 4;
+  case kGamePhaseOptionalGameStatus:
+    turnStateCode = kGamePhaseShowMap;
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventGameStatus), activeNationSlot);
     break;
 
-  case 0x6f:
-    turnStateCode = 4;
+  case kGamePhaseOptionalSaveGame:
+    turnStateCode = kGamePhaseShowMap;
     g_nSaveFormatVersion = -1;
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventLoadSave), activeNationSlot);
     break;
 
-  case 0x70:
-    turnStateCode = 4;
+  case kGamePhaseOptionalLoadGame:
+    turnStateCode = kGamePhaseShowMap;
     g_nSaveFormatVersion = -2;
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventLoadSave), activeNationSlot);
     break;
@@ -1549,8 +1549,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
 // FUNCTION: IMPERIALISM 0x0057f110
 char TSimMgr::InLinearPhase() {
-  int phase = turnStateCode;
-  bool linear = (phase < 4) || (phase > 5);
+  eGamePhaseNewStyle phase = turnStateCode;
+  bool linear = (phase < kGamePhaseShowMap) || (phase > kGamePhaseEndTurn);
   return linear;
 }
 
@@ -1692,8 +1692,8 @@ void TSimMgr::ResetTurnFlags() {
 void TSimMgr::PrepareMultiplayerTurnResume() {
   bool hasMultiplayerSession = multiplayerSessionRole != 0;
   if (hasMultiplayerSession) {
-    g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
-    turnStateCode = 0x13;
+    g_pGameFlowState->SetSyncPhases(mode, turnStateCode);
+    turnStateCode = kGamePhaseNetworkSync;
   }
 }
 
@@ -2057,7 +2057,7 @@ void ReinitializeGameFlowAndPostTurnEventCode(TurnEventId eventCode) {
     simMgr->economicTurn = 0;
     simMgr->activeNationSlot = -1;
     simMgr->field14 = 0;
-    simMgr->turnStateCode = 1;
+    simMgr->turnStateCode = kGamePhaseStartup;
     simMgr->turnFlowStatusFlags = 0;
     simMgr->field_64 = 0;
     simMgr->phaseStateByDecade[0] = 0;
@@ -2068,7 +2068,7 @@ void ReinitializeGameFlowAndPostTurnEventCode(TurnEventId eventCode) {
     CFile::GetStatus(g_szConanCheatFileName_00698BEC, conanFileStatus);
     g_bRandomMapDeveloperCheatFlag = false;
     simMgr->ReinitializeRandomSeed();
-    g_pSimMgr->turnStateCode = 3;
+    g_pSimMgr->turnStateCode = kGamePhaseSetUpMap;
     g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(eventCode));
   } else {
     g_pSimMgr->Free();

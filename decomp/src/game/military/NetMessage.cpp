@@ -27,7 +27,7 @@ void NetMessage::DestinateTo(int nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x00542120
 void TimelyNetMessagePrefix::SetTimeEmitPacketGameFlowTurnId() {
-  uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
 }
 
 // FUNCTION: IMPERIALISM 0x005438e0

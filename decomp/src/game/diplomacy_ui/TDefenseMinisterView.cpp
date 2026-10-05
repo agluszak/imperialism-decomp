@@ -46,7 +46,7 @@ void TDefenseMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler, 
         if (g_pSimMgr->field14 == 0) {
           TWindow* owner = GetWindow();
           g_pAmbitApplication->CloseAndFreeWindow(owner);
-          g_pSimMgr->EnterOptionalPhase(0x65);
+          g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalBattleReport);
         }
       } else {
         CString message;

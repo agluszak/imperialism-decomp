@@ -430,7 +430,7 @@ void ImperialismApp::OnSelectActiveNation() {
   if (dialog.DoModal() == IDOK) {
     short nationSlot = static_cast<short>(dialog.slider.GetPos());
     g_pSimMgr->SetActiveNationSlotAndRefreshCityCapabilityUiHandles(nationSlot);
-    if (g_pSimMgr->mode == 0x11) {
+    if (g_pSimMgr->mode == kGamePhaseTechnology) {
       g_apNationStates[g_pSimMgr->GetActiveNationId()]
           ->RebuildNationResourceYieldCountersAndDevelopmentTargets();
     }

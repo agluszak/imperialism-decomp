@@ -72,7 +72,7 @@ void TCouncilView::DoPostCreate(int arg) {
   ApplyUiTextStyleAndThemeFlags(titleControl, 0, 0x10, 0x2b6c, 0x2b67);
   titleControl->SetTextAlignmentAndMaybeRefresh(-2, 0);
 
-  if (g_pSimMgr->mode == 0x17 || g_pSimMgr->mode == 0x16) {
+  if (g_pSimMgr->mode == kGamePhaseCouncilDefeat || g_pSimMgr->mode == kGamePhaseCouncilVictory) {
     // Map-interaction mode: title shows "<terrain/country name>" expanded through the
     // localized "[0]" template, plus a self-vs-other SFX cue for the highlighted nation.
     CString terrainLabel;
@@ -277,8 +277,8 @@ void TCouncilView::StartVoting() {
                          kCouncilCoatOfArmsPictureBase),
       1);
 
-  const short localizationMode = static_cast<short>(g_pSimMgr->mode);
-  if (localizationMode == 0x16 || localizationMode == 0x17) {
+  const short phase = static_cast<short>(g_pSimMgr->mode);
+  if (phase == kGamePhaseCouncilVictory || phase == kGamePhaseCouncilDefeat) {
     for (int provinceIndex = 0; provinceIndex < 0x180; ++provinceIndex) {
       if (g_pGlobalMapState->cityScoreTable[provinceIndex].ownerNationCode00 != -1) {
         tileHasOwnerFlags52C[provinceIndex] = true;
@@ -290,7 +290,7 @@ void TCouncilView::StartVoting() {
     if (endControl != nullptr) {
       endControl->AssertValid();
       endControl->controlTag =
-          (localizationMode == 0x17) ? kEndControlTagReselect : kEndControlTagReselectAlt;
+          (phase == kGamePhaseCouncilDefeat) ? kEndControlTagReselect : kEndControlTagReselectAlt;
     }
     return;
   }
@@ -379,7 +379,7 @@ void TCouncilView::NextTick() {
         return;
       }
       g_pDiplomacyTurnStateManager->lastProcessedNationSlot = -1;
-      g_pSimMgr->turnStateCode = 0x10;
+      g_pSimMgr->turnStateCode = kGamePhaseAdvanceSeason;
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1f42, 0, 1);
     }
     // Both surviving paths (slot78e == -1 at 0x4fc86b, and the allow-advance branch at

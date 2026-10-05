@@ -1858,7 +1858,7 @@ BuildTurnEvent2ByteArraySyncPacketDeltaOrFull(unsigned int byteCount, unsigned c
     packet->toNetworkId = 0;
     packet->messageLength = 0;
     packet->messageLength = 0x1c;
-    packet->pendingNationSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+    packet->syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
     packet->messageLength = packetSize;
     packet->eventCode = 2;
     packet->toNetworkId = 0;
@@ -1874,9 +1874,9 @@ BuildTurnEvent2ByteArraySyncPacketDeltaOrFull(unsigned int byteCount, unsigned c
   packet->toNetworkId = 0;
   packet->messageLength = 0;
   packet->messageLength = 0x1c;
-  short pendingSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  GamePhaseStorage syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
   packet->messageLength = packetSize;
-  packet->pendingNationSlot = pendingSlot;
+  packet->syncPhase = syncPhase;
   packet->eventCode = 2;
   packet->toNetworkId = 0;
   packet->deltaKind21 = 1;
@@ -1924,7 +1924,7 @@ TurnEvent2SyncPacket* __cdecl BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned
     packet->toNetworkId = 0;
     packet->messageLength = 0;
     packet->messageLength = 0x1c;
-    packet->pendingNationSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+    packet->syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
     packet->messageLength = packetSize;
     packet->eventCode = 2;
     packet->toNetworkId = 0;
@@ -1940,9 +1940,9 @@ TurnEvent2SyncPacket* __cdecl BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned
   packet->toNetworkId = 0;
   packet->messageLength = 0;
   packet->messageLength = 0x1c;
-  short pendingSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  GamePhaseStorage syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
   packet->messageLength = packetSize;
-  packet->pendingNationSlot = pendingSlot;
+  packet->syncPhase = syncPhase;
   packet->eventCode = 2;
   packet->toNetworkId = 0;
   packet->deltaKind21 = 2;
@@ -1993,7 +1993,7 @@ BuildTurnEvent2IntArraySyncPacketDeltaOrFull(int intCount, int* current, int* ba
     packet->toNetworkId = 0;
     packet->messageLength = 0;
     packet->messageLength = 0x1c;
-    packet->pendingNationSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+    packet->syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
     packet->messageLength = packetSize;
     packet->eventCode = 2;
     packet->toNetworkId = 0;
@@ -2009,9 +2009,9 @@ BuildTurnEvent2IntArraySyncPacketDeltaOrFull(int intCount, int* current, int* ba
   packet->toNetworkId = 0;
   packet->messageLength = 0;
   packet->messageLength = 0x1c;
-  short pendingSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  GamePhaseStorage syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
   packet->messageLength = packetSize;
-  packet->pendingNationSlot = pendingSlot;
+  packet->syncPhase = syncPhase;
   packet->eventCode = 2;
   packet->toNetworkId = 0;
   packet->deltaKind21 = 3;

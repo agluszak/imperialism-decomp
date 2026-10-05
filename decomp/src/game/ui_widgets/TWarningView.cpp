@@ -26,19 +26,19 @@ void TWarningView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
     unsigned int controlTag = sourceHandler->controlTag;
     switch (controlTag) {
     case kControlTagPic1:
-      g_pSimMgr->EnterOptionalPhase(0x68);
+      g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalDiplomacyMap);
       break;
     case kControlTagPic1 + 1:
-      g_pSimMgr->EnterOptionalPhase(0x67);
+      g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalTradeOverview);
       break;
     case kControlTagPic1 + 2:
-      g_pSimMgr->EnterOptionalPhase(0x6a);
+      g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalCityScreen);
       break;
     case kControlTagPic1 + 3:
-      g_pSimMgr->EnterOptionalPhase(0x69);
+      g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalTransport);
       break;
     case kControlTagPic5:
-      g_pSimMgr->EnterOptionalPhase(5);
+      g_pSimMgr->EnterOptionalPhase(kGamePhaseEndTurn);
       break;
     }
   }

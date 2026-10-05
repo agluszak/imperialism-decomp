@@ -568,7 +568,7 @@ RuntimeActionResult RunTradeTurnStop(NativeTransition& transition) {
     SeedTradeableStocks(major);
   }
   SeedHumanTradeOrders(nation, true);
-  g_pSimMgr->turnStateCode = 7;
+  g_pSimMgr->turnStateCode = kGamePhaseTrade;
   srand(0x1234);
 
   RuntimeActionResult started = transition.Begin(JsonNullValue());

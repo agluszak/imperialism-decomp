@@ -68,12 +68,12 @@ void TQueryFloater::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     } else {
       TWindow* owner = GetWindow();
       owner->Dismiss(kControlTagOkay, 0);
-      g_pSimMgr->EnterOptionalPhase(0x65);
+      g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalBattleReport);
     }
   } else if (tag == kControlTagChar) {
     TWindow* owner = GetWindow();
     owner->Dismiss(kControlTagOkay, 0);
-    g_pSimMgr->EnterOptionalPhase(0x6e);
+    g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalGameStatus);
   } else if (tag == kControlTagClnc) {
     TWindow* owner = GetWindow();
     owner->Dismiss(kControlTagOkay, 0);
@@ -84,13 +84,13 @@ void TQueryFloater::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     } else {
       TWindow* owner = GetWindow();
       owner->Dismiss(kControlTagOkay, 0);
-      g_pSimMgr->EnterOptionalPhase(0x64);
+      g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalDealBook);
     }
   } else if (tag == kControlTagNews) {
     TWindow* owner = GetWindow();
     owner->Dismiss(kControlTagOkay, 0);
     if (g_pNewsMgr->perNationStoryLastUsedTick[0] != nullptr) {
-      g_pSimMgr->EnterOptionalPhase(0x66);
+      g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalNewspaper);
     } else {
       g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x275e, 6, 2, 0);
     }

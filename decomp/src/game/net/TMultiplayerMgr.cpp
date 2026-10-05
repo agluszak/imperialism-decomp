@@ -40,7 +40,7 @@ struct TurnEvent2CPacket : NetMessage {
   int packetTag;                // +0x10 'time'
   unsigned char activeNationId; // +0x14
   unsigned char pad15[3];
-  short pendingNationSlot; // +0x18
+  GamePhaseStorage syncPhase; // +0x18
   unsigned char pad1a[2];
   short nationSlot; // +0x1c
   unsigned char pad1e[2];
@@ -73,7 +73,7 @@ struct TurnEvent19Packet : NetMessage {
   int packetTag;                // +0x10 'time'
   unsigned char activeNationId; // +0x14
   unsigned char pad15[3];
-  short pendingNationSlot; // +0x18
+  GamePhaseStorage syncPhase; // +0x18
   unsigned char pad1a[2];
   short nationSlot;                                 // +0x1c
   short transportCapacity;                          // +0x1e
@@ -318,13 +318,13 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
       packet.messageLength = 0x1c;
       packet.toNetworkId = 0;
       g_pNetMgr006a6014->Send(&packet, false);
-      if (pendingNationBitmask == 0 && pendingNationSlotIndex != -1) {
+      if (pendingNationBitmask == 0 && syncPhase != kGamePhaseNone) {
         HandleDiplomacyTurnEventPacketByCode();
       }
     }
   } else {
-    switch (pendingNationSlotIndex) {
-    case 2: {
+    switch (syncPhase) {
+    case kGamePhaseStartGame: {
       CString cityName;
       EmitTurnEvent19NationStateArraysForSlot(g_pSimMgr->GetActiveNationId(), -1);
       EmitTurnEvent2CNationStateCompositeForSlot(g_pSimMgr->GetActiveNationId(), -1);
@@ -338,7 +338,7 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
       packet.toNetworkId = -1;
       packet.messageLength = 0;
       packet.messageLength = 0x44;
-      packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+      packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
       int nationId = static_cast<char>(g_pSimMgr->GetActiveNationId());
       packet.nationId1C = nationId;
       packet.homeTile1E = (short)g_apTerrainTypeDescriptorTable[nationId]->homeTileIndex;
@@ -348,7 +348,7 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
       g_pNetMgr006a6014->Send(&packet, false);
       break;
     }
-    case 5: {
+    case kGamePhaseEndTurn: {
       SendStreamMessage(0x2e, -1, g_pSimMgr->GetActiveNationId());
       SendStreamMessage(0x2f, -1, g_pSimMgr->GetActiveNationId());
       SendStreamMessage(0x30, -1, g_pSimMgr->GetActiveNationId());
@@ -372,12 +372,12 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
       packet.toNetworkId = -1;
       packet.messageLength = 0;
       packet.messageLength = 0x20;
-      packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+      packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
       packet.nationSlot1C = g_pSimMgr->GetActiveNationId();
       g_pNetMgr006a6014->Send(&packet, false);
       break;
     }
-    case 8: {
+    case kGamePhaseCityAndTransport: {
       EmitTurnEvent2CNationStateCompositeForSlot(g_pSimMgr->GetActiveNationId(), -1);
       TurnEventFResumeAckPacket packet;
       packet.messageTag = kControlTagTime;
@@ -389,13 +389,13 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
       packet.toNetworkId = -1;
       packet.messageLength = 0;
       packet.messageLength = 0x20;
-      packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+      packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
       packet.nationSlot1C = g_pSimMgr->GetActiveNationId();
       g_pNetMgr006a6014->Send(&packet, false);
       break;
     }
-    case 0x14:
-    case 0x15: {
+    case kGamePhaseCombat:
+    case kGamePhaseProduction: {
       TurnEventFResumeAckPacket packet;
       packet.messageTag = kControlTagTime;
       packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
@@ -406,7 +406,7 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
       packet.toNetworkId = -1;
       packet.messageLength = 0;
       packet.messageLength = 0x20;
-      packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+      packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
       packet.nationSlot1C = g_pSimMgr->GetActiveNationId();
       g_pNetMgr006a6014->Send(&packet, false);
       break;
@@ -438,19 +438,18 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
   g_pNetMgr006a6014->Send(&packet, false);
 }
 
-// Post-resume diplomacy turn-event dispatcher: switches on pendingNationSlotIndex (the
-// received turn-event code) and re-broadcasts the matching game-state snapshot family.
-// Code 2 pushes the full session bootstrap (relation-matrix sync, nation directory,
-// per-capital tile/city records, navy/terrain/nation descriptor dispatches, per-nation
-// state arrays, minor need levels); 5 probes reachability (autosaving when everyone is
-// reachable) then sends the diplomacy policy/grant/need arrays; 6 posts the 'NeXT'
-// diplomacy command; 8 re-sends the per-nation state arrays; 0x15 re-syncs descriptors
-// plus the 'army' tagged payload and per-nation need snapshots. Every path except code
-// 6 ends with the event-3 tick acknowledge.
+// Re-broadcast the game-state snapshot family for the synchronized phase. StartGame
+// pushes the full session bootstrap (relation-matrix sync, nation directory, per-capital
+// tile/city records, navy/terrain/nation descriptor dispatches, per-nation state arrays,
+// minor need levels); EndTurn probes reachability (autosaving when everyone is reachable)
+// then sends the diplomacy policy/grant/need arrays; Diplomacy posts the 'NeXT' command;
+// CityAndTransport re-sends the per-nation state arrays; Combat and Production re-sync
+// descriptors plus the 'army' payload and per-nation need snapshots. Every path except
+// Diplomacy ends with the event-3 tick acknowledge.
 // FUNCTION: IMPERIALISM 0x00543910
 void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
-  switch (pendingNationSlotIndex) {
-  case 2: {
+  switch (syncPhase) {
+  case kGamePhaseStartGame: {
     TurnEvent2SyncPacket* syncPacket =
         g_pDiplomacyTurnStateManager
             ->BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy();
@@ -470,7 +469,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
       packet.toNetworkId = 0;
       packet.messageLength = 0;
       packet.messageLength = 0x668;
-      packet.pendingNationSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+      packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
       for (int slot = 0; slot < 0x17; ++slot) {
         packet.homeTileBySlot[slot] = (short)g_apTerrainTypeDescriptorTable[slot]->homeTileIndex;
         int cityRecordIndex = g_apTerrainTypeDescriptorTable[slot]->GetCapitolProvince();
@@ -507,7 +506,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
           packet.toNetworkId = 0;
           packet.messageLength = 0;
           packet.messageLength = 0x44;
-          packet.pendingNationSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+          packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
           packet.tileIndex = tileIndex;
           packet.record = g_pGlobalMapState->terrainStateTable[tileIndex];
           g_pNetMgr006a6014->Send(&packet, false);
@@ -524,7 +523,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
       packet.toNetworkId = 0;
       packet.messageLength = 0;
       packet.messageLength = 0xc8;
-      packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+      packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
       packet.cityRecordIndex = cityRecordIndex;
       packet.record = g_pGlobalMapState->cityScoreTable[cityRecordIndex];
       g_pNetMgr006a6014->Send(&packet, false);
@@ -555,7 +554,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
         packet.toNetworkId = -1;
         packet.messageLength = 0;
         packet.messageLength = 0x4c;
-        packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+        packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
         packet.DestinateTo(-2);
         packet.nationSlot = minorSlot;
         for (short j = 0; j < 0x17; ++j) {
@@ -571,7 +570,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
     break;
   }
 
-  case 5: {
+  case kGamePhaseEndTurn: {
     bool allReachable = g_pNetMgr006a6014->ProbeNationReachabilityAndMarkAwolBitmask() == 0;
     if (allReachable) {
       SaveGameWithModeAndOptionalLabel(0xa2, 0);
@@ -586,7 +585,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
     packet.toNetworkId = 0;
     packet.messageLength = 0;
     packet.messageLength = 0x3e4;
-    packet.pendingNationSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+    packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
     for (int slot = 0; slot < 7; ++slot) {
       TGreatPower* nation = g_apNationStates[slot];
       if (nation != 0) {
@@ -603,13 +602,13 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
     break;
   }
 
-  case 6: {
+  case kGamePhaseDiplomacy: {
     TNextDiplomationCommand* command = new TNextDiplomationCommand();
     command->DispatchUiPacketWithTagNEXT();
     return;
   }
 
-  case 8: {
+  case kGamePhaseCityAndTransport: {
     for (int stateSlot = 0; stateSlot < 7; ++stateSlot) {
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(stateSlot)) != 0) {
         EmitTurnEvent19NationStateArraysForSlot(static_cast<short>(stateSlot), -2);
@@ -627,7 +626,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
         packet.toNetworkId = -1;
         packet.messageLength = 0;
         packet.messageLength = 0x4c;
-        packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+        packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
         packet.toNetworkId = 0;
         packet.nationSlot = minorSlot;
         for (short j = 0; j < 0x17; ++j) {
@@ -641,11 +640,11 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
     break;
   }
 
-  case 0x14:
+  case kGamePhaseCombat:
     EmitTurnEvent3Mode18WithActiveNation();
     break;
 
-  case 0x15: {
+  case kGamePhaseProduction: {
     SendStreamMessage(0x2e, -2, -1);
     for (int descriptorSlot = 0; descriptorSlot < 0x17; ++descriptorSlot) {
       if (g_apTerrainTypeDescriptorTable[descriptorSlot] != 0) {
@@ -734,7 +733,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   }
   sendPendingMask:
     g_pNetMgr006a6014->Send(&pendingMaskPacket, false);
-    if (pendingNationBitmask == 0 && pendingNationSlotIndex != -1) {
+    if (pendingNationBitmask == 0 && syncPhase != kGamePhaseNone) {
       HandleDiplomacyTurnEventPacketByCode();
       return 1;
     }
@@ -1181,8 +1180,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // Enter the 'goin' phase; a session with no nation slot posts the cancel command,
     // otherwise the local nation goes 'busy' and the event-0x25 status board goes out.
     sessionPhaseTag = kSessionTagGoin; // 'goin'
-    activeNationSlotIndex = -1;
-    pendingNationSlotIndex = -1;
+    resumePhase = kGamePhaseNone;
+    syncPhase = kGamePhaseNone;
     int sessionId3 = g_pNetMgr006a6014->GetSessionActiveNationId();
     int matchSlot = 0;
     int* sessionIdCursor = nationSessionIds;
@@ -2217,7 +2216,7 @@ void TMultiplayerMgr::DispatchTurnEvent1AWithNationActionPayload(short param0, s
   packet.messageLength = 0x34;
   packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
-  packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
   packet.sourceNation1C = param0;
   packet.param1E = param1;
   packet.param20 = param2;
@@ -2238,7 +2237,7 @@ struct TurnEvent1BPacket : NetMessage {
   int packetTag;
   unsigned char activeNationId;
   unsigned char pad15[3];
-  short pendingNationSlot;
+  GamePhaseStorage syncPhase;
   unsigned char pad1a[2];
   short shortA;
   short shortB;
@@ -2263,7 +2262,7 @@ void TMultiplayerMgr::CreateAndSendTurnEvent1B_FiveShortsAndDword(short shortA, 
   packet.eventCode = 0x1b;
   packet.messageLength = 0x2c;
   packet.toNetworkId = 0;
-  packet.pendingNationSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
   packet.shortA = shortA;
   packet.shortB = shortB;
   packet.shortC = shortC;
@@ -2277,7 +2276,7 @@ struct TurnEvent1CPacket : NetMessage {
   int packetTag;
   unsigned char activeNationId;
   unsigned char pad15[3];
-  short pendingNationSlotIndexLow;
+  GamePhaseStorage syncPhase;
   short shortA;
   short shortB;
   // Ground truth stores shortD/shortE before shortC (declaration order matches the
@@ -2300,7 +2299,7 @@ void TMultiplayerMgr::CreateAndSendTurnEvent1C_BoolAndSixShorts(bool broadcastFl
   packet.messageLength = 0x28;
   packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
-  packet.pendingNationSlotIndexLow = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
   packet.shortA = shortA;
   packet.shortB = shortB;
   packet.shortD = shortD;
@@ -2349,7 +2348,7 @@ void TMultiplayerMgr::WriteMessageTo(TStream* stream, short eventTag, short dest
   header.messageLength = 0x1c;
   header.eventCode = tag;
   int dest = destinationSlot;
-  header.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  header.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
   if (dest == -2 || dest == -3) {
     header.toNetworkId = 0;
   } else if (dest == -1) {
@@ -2540,7 +2539,7 @@ struct CityRedrawInvalidateTurnEventPacket : NetMessage {
   int packetTag;
   unsigned char activeNationId;
   unsigned char pad15;
-  short uiTurnToken;
+  GamePhaseStorage syncPhase;
   short cityId;
   unsigned char cityHeader00[4];
   short cityWord04;
@@ -2565,7 +2564,7 @@ struct TileRedrawInvalidateTurnEventPacket : NetMessage {
   int packetTag;
   unsigned char activeNationId;
   unsigned char pad15;
-  short uiTurnToken;
+  GamePhaseStorage syncPhase;
   short tileIndex;
   TTerrainStateRecord tileSnapshot;
 };
@@ -2726,7 +2725,7 @@ extern "C" void __stdcall DispatchTileRedrawInvalidateEvent(short tileIndex) {
   packet.messageLength = 0x44;
   packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
-  packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
   packet.tileIndex = tileIndex;
   packet.tileSnapshot = g_pGlobalMapState->terrainStateTable[tileIndex];
 
@@ -2751,7 +2750,7 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
   packet.messageLength = 200;
   packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
-  packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
   packet.cityId = cityId;
 
   const Province* src = &g_pGlobalMapState->cityScoreTable[cityId];
@@ -3192,7 +3191,7 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
       packet.toNetworkId = 0;
       packet.pendingMask = pendingNationBitmask;
       g_pNetMgr006a6014->Send(&packet, false);
-      if (pendingNationBitmask == 0 && pendingNationSlotIndex != -1) {
+      if (pendingNationBitmask == 0 && syncPhase != kGamePhaseNone) {
         HandleDiplomacyTurnEventPacketByCode();
       }
     }
@@ -3296,8 +3295,8 @@ void TMultiplayerMgr::ResetNationStatusArraysAndTurnEventContext() {
     nationDisplayNameSlots[nationSlot] = statusText;
     defaultNationTextSlots[nationSlot] = nationDisplayNameSlots[nationSlot];
   }
-  activeNationSlotIndex = -1;
-  pendingNationSlotIndex = -1;
+  resumePhase = kGamePhaseNone;
+  syncPhase = kGamePhaseNone;
   queueSyncDword = 0;
   g_pNetMgr006a6014->ResetTurnEventQueueRuntimeRecordBuffer();
 }
@@ -3470,7 +3469,7 @@ void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
   packet.fromNetworkId = 0;
   packet.messageLength = 0x18c;
   packet.eventCode = 0x2c;
-  packet.pendingNationSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
   if (destinationSlot == -2 || destinationSlot == -3) {
     packet.toNetworkId = 0;
   } else if (destinationSlot == -1) {
@@ -3552,7 +3551,7 @@ void TMultiplayerMgr::EmitTurnEvent19NationStateArraysForSlot(short nationSlot,
   packet.toNetworkId = -1;
   packet.messageLength = 0;
   packet.messageLength = 0x118;
-  packet.pendingNationSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
   if (destinationSlot == -2 || destinationSlot == -3) {
     packet.toNetworkId = 0;
   } else if (destinationSlot == -1) {
@@ -3595,7 +3594,7 @@ void TMultiplayerMgr::CreateAndSendTurnEvent2D_TableRowShortArray(short nationSl
   packet.messageLength = 0;
   packet.messageLength = 0x4c;
   packet.eventCode = 0x2d;
-  packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
   if (destinationSlot == -2 || destinationSlot == -3) {
     packet.toNetworkId = 0;
   } else if (destinationSlot == -1) {

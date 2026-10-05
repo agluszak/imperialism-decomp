@@ -406,25 +406,25 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
 // FUNCTION: IMPERIALISM 0x005d5960
 int TViewMgr::ClassifyTurnStateForOverlayMode() {
   switch (static_cast<short>(g_pSimMgr->mode)) {
-  case 6:
-  case 0xc:
-  case 0xe:
-  case 0xf:
-  case 100:
-  case 0x66:
-  case 0x67:
-  case 0x68:
+  case kGamePhaseDiplomacy:
+  case kGamePhaseDealBook:
+  case kGamePhaseCouncil:
+  case kGamePhaseNews:
+  case kGamePhaseOptionalDealBook:
+  case kGamePhaseOptionalNewspaper:
+  case kGamePhaseOptionalTradeOverview:
+  case kGamePhaseOptionalDiplomacyMap:
     return 0;
-  case 10:
-  case 0xd:
-  case 0x14:
-  case 0x15:
-  case 0x16:
-  case 0x17:
-  case 0x19:
-  case 0x65:
+  case kGamePhaseMilitary:
+  case kGamePhaseBattleReport:
+  case kGamePhaseCombat:
+  case kGamePhaseProduction:
+  case kGamePhaseCouncilVictory:
+  case kGamePhaseCouncilDefeat:
+  case kGamePhaseEliminations:
+  case kGamePhaseOptionalBattleReport:
     return 1;
-  case 0x6a:
+  case kGamePhaseOptionalCityScreen:
     return 2;
   default:
     return 2;
@@ -1112,16 +1112,16 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
   // Sound cue when the turn-flow mode is in the 0x67..0x6a band and the code changed.
   if (newCode != this->currentTurnEventCode) {
     switch (static_cast<short>(g_pSimMgr->mode)) {
-    case 0x67:
+    case kGamePhaseOptionalTradeOverview:
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5b);
       break;
-    case 0x68:
+    case kGamePhaseOptionalDiplomacyMap:
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5c);
       break;
-    case 0x69:
+    case kGamePhaseOptionalTransport:
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5e);
       break;
-    case 0x6a:
+    case kGamePhaseOptionalCityScreen:
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5d);
       break;
     }
@@ -1174,14 +1174,14 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
     }
     if (newCode == kTurnEventNetworkGameOptions) {
       QueueDeferredUiEventPacket(mainView, 0x29a, mainView);
-    } else if (newCode == kTurnEventDiplomacyOffer) {
+    } else if (newCode == kTurnEventBattleReport) {
       mainView->RefreshControl();
       turn_event_ui_refresh::BindCursorPanelAndStampDiplomacyMapTerrain(mainView, secondary);
     } else if (newCode == kTurnEventTechnologyStore) {
       mainView->RefreshControl();
       this->RefreshTechnologyStorePageAndHudText(payload);
     } else if (newCode == kTurnEventDiplomacyMap) {
-      if (static_cast<short>(g_pSimMgr->mode) == 0x68) {
+      if (static_cast<short>(g_pSimMgr->mode) == kGamePhaseOptionalDiplomacyMap) {
         mainView->RefreshControl();
         this->ShowDiplomacyScreen(static_cast<short>(payload));
       }
@@ -1244,7 +1244,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
     if (newCode < kTurnEventRandomGameSetup) {
       if (newCode == kTurnEventMainMenu) {
         this->HandleTurnEventDialogFactorySlotF8();
-      } else if (newCode == kTurnEventDiplomacyOffer) {
+      } else if (newCode == kTurnEventBattleReport) {
         turn_event_ui_refresh::BindCursorPanelAndStampDiplomacyMapTerrain(mainView, secondary);
         g_pAmbitApplication->dispatchBusyFlag4c = true;
         clearDispatchBusyFlag = false;
@@ -2327,22 +2327,22 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF4() {
 
   CString movieName;
   switch (g_pSimMgr->mode) {
-  case 1:
+  case kGamePhaseStartup:
     movieName = CString("open");
     if (movieView->nextHandler != 0) {
       static_cast<TView*>(movieView->nextHandler)->ViewEnable(0, 0);
     }
     break;
-  case 0xe:
+  case kGamePhaseCouncil:
     movieName = CString("vote");
     break;
-  case 0x16:
+  case kGamePhaseCouncilVictory:
     movieName = CString("win");
     break;
-  case 0x17:
+  case kGamePhaseCouncilDefeat:
     movieName = CString("lose");
     break;
-  case 0x19:
+  case kGamePhaseEliminations:
     if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(g_pSimMgr->GetActiveNationId())) {
       movieName = CString("win");
     } else {
@@ -2374,16 +2374,16 @@ void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) 
   g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(g_pSimMgr->preferenceValues[3]);
   this->activeMovieViewF4 = 0;
   switch (g_pSimMgr->mode) {
-  case 1:
+  case kGamePhaseStartup:
     g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventMainMenu));
     return;
-  case 0xe:
-  case 0x16:
-  case 0x17:
+  case kGamePhaseCouncil:
+  case kGamePhaseCouncilVictory:
+  case kGamePhaseCouncilDefeat:
     g_pAmbitApplication->PostTurnEventCodeMessage2420(
         EncodeTurnEventCode(kTurnEventCouncilOfGovernors));
     return;
-  case 0x19:
+  case kGamePhaseEliminations:
     if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(g_pSimMgr->GetActiveNationId())) {
       g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventGameScore));
       return;

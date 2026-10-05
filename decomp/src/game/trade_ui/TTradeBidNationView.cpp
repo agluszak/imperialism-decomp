@@ -39,7 +39,7 @@ void TTradeBidNationView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(0x28, 0xc);
   DrawTextWithCachedQuickDrawStyleState(&label);
 
-  if (nationSlot < 7 && g_pSimMgr->mode == 7) {
+  if (nationSlot < 7 && g_pSimMgr->mode == kGamePhaseTrade) {
     short counter = g_apNationStates[nationSlot]->GetMerchantCapacity();
     label.Format(g_szDecimalFormat, static_cast<int>(counter));
     short measuredWidth = MeasureTextExtentWithCachedQuickDrawStyle(&label);

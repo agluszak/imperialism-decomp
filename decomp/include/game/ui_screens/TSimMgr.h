@@ -6,6 +6,7 @@
 #include "game/nation_domain_types.h"
 #include "game/app/TObject.h"
 #include "game/turn_event_codes.h"
+#include "game/game_phase.h"
 
 class TStream;
 
@@ -72,20 +73,18 @@ public:
   virtual void AdvanceSeason();                      // 0x40  0x0057d950
   // Mac oracle: StartNextPhase(). Windows posts command 100 to the main window so the
   // turn-flow state machine advances asynchronously.
-  virtual void StartNextPhase(); // 0x44  0x0057d970
-  // Mac oracle: EnterOptionalPhase(eGamePhaseNewStyle). The Windows phase enum is not
-  // yet named, so retain its ABI-equivalent int representation.
-  virtual void EnterOptionalPhase(int gamePhase); // 0x48  0x0057d990
-  virtual void AdvanceGlobalTurnStateMachine();   // 0x4c  0x0057da70
-  virtual char InLinearPhase();                   // 0x50  0x0057f110
-  virtual void DoCityAndTransport();              // 0x54  0x0057f140, Mac oracle
-  virtual void DoCivilians();                     // 0x58  0x0057f200, Mac oracle
-  virtual void DoMilitary();                      // 0x5c  0x0057f280, Mac oracle
-  virtual void DoTrade();                         // 0x60  0x0057f3c0, Mac oracle
-  virtual char AllHumansFinished();               // 0x64  0x0057f4f0
-  virtual void ResetTurnFlags();                  // 0x68  0x0057f530
-  void PrepareMultiplayerTurnResume();            // 0x0057f570
-  virtual int PlayerLost();                       // 0x6c  0x0057f490, Mac oracle
+  virtual void StartNextPhase();                                 // 0x44  0x0057d970
+  virtual void EnterOptionalPhase(eGamePhaseNewStyle gamePhase); // 0x48  0x0057d990, Mac oracle
+  virtual void AdvanceGlobalTurnStateMachine();                  // 0x4c  0x0057da70
+  virtual char InLinearPhase();                                  // 0x50  0x0057f110
+  virtual void DoCityAndTransport();                             // 0x54  0x0057f140, Mac oracle
+  virtual void DoCivilians();                                    // 0x58  0x0057f200, Mac oracle
+  virtual void DoMilitary();                                     // 0x5c  0x0057f280, Mac oracle
+  virtual void DoTrade();                                        // 0x60  0x0057f3c0, Mac oracle
+  virtual char AllHumansFinished();                              // 0x64  0x0057f4f0
+  virtual void ResetTurnFlags();                                 // 0x68  0x0057f530
+  void PrepareMultiplayerTurnResume();                           // 0x0057f570
+  virtual int PlayerLost();                                      // 0x6c  0x0057f490, Mac oracle
   // Mac oracle: SetFlags(short). Windows reads and merges the full pushed dword.
   virtual void SetFlags(unsigned int flags);                  // 0x70  0x0057f4b0
   virtual void NumToCurrency(int value, CString* destString); // 0x74  0x0057f5b0
@@ -212,10 +211,11 @@ public:
   void HandleTurnInstruction_Cnam_AssignCountryName(void* pInstructionRaw);             // 0x583070
 
   // --- fields (offsets and declaration order are load-bearing) ---
-  int turnStateCode;
-  int mode;
-  int previousTurnStateCode;
-  int previousMode;
+  // The save stream keeps only the low word of each phase.
+  eGamePhaseNewStyle turnStateCode;
+  eGamePhaseNewStyle mode;
+  eGamePhaseNewStyle previousTurnStateCode;
+  eGamePhaseNewStyle previousMode;
   unsigned char field14;
   unsigned char field15[0x17];
   short economicTurn;

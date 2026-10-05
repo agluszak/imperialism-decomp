@@ -1209,13 +1209,10 @@ JSON_Value* CaptureNewsStory(const newsStory& story, const newsEntry* templates,
   if (story.entry.storyId < -0x8000 || story.entry.storyId > 0x7fff) {
     FailSemanticCapture("newspaper story id is outside the signed-short range");
   }
-  if (story.feature38 > 1) {
-    FailSemanticCapture("newspaper feature flag is not boolean");
-  }
   JsonObject object;
   object.Set("template_index", FindNewsTemplateIndex(story.entry, templates, templateCount));
   object.Set("story_id", story.entry.storyId);
-  object.Set("feature", story.feature38 != 0);
+  object.Set("feature", story.feature38);
   JsonArray arguments;
   for (int argument = 0; argument < 4; ++argument) {
     arguments.Add(CaptureNewsArgument(story.parmKind[argument], story.parmValue[argument]));
@@ -2958,7 +2955,7 @@ JSON_Value* CaptureBattleReports() {
   TSortedPtrList* list = g_pMapContextActionManager->mapContextActionRecordList04;
   const int combatReportCount = list->GetSize();
   if (combatReportCount < 0 ||
-      (g_pMapContextActionManager->GetByteFlagAtOffset8() != 0) != (combatReportCount != 0)) {
+      g_pMapContextActionManager->HasBattlesToReport() != (combatReportCount != 0)) {
     FailSemanticCapture("combat-report count and gate flag disagree");
   }
   const char* const kKindNames[] = {"land_battle", "sea_battle", "merchant_interception",

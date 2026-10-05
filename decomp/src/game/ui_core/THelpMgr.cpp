@@ -240,9 +240,9 @@ void THelpMgr::SelectAndActivatePendingEventForCurrentView() {
 // FUNCTION: IMPERIALISM 0x005011a0
 void THelpMgr::HandlePostDispatchTurnStateEventUpdates() {
   const short nationId = g_pSimMgr->GetActiveNationId();
-  const int flowMode = g_pSimMgr->mode;
-  if (flowMode != 0xf) {
-    if (flowMode == 0x6a && g_pSimMgr->preferenceValues[8] != 0) {
+  const eGamePhaseNewStyle phase = g_pSimMgr->mode;
+  if (phase != kGamePhaseNews) {
+    if (phase == kGamePhaseOptionalCityScreen && g_pSimMgr->preferenceValues[8] != 0) {
       if (g_nTurnFlowNationComparisonAdvisoryTick < g_pSimMgr->GetEconomicTurn()) {
         if (ShowPeriodicNationComparisonAdvisoryIfNeeded() != 0) {
           g_nTurnFlowNationComparisonAdvisoryTick = g_pSimMgr->GetEconomicTurn();
@@ -251,7 +251,7 @@ void THelpMgr::HandlePostDispatchTurnStateEventUpdates() {
     }
     return;
   }
-  // No null check in the original: the 0xf flow mode guarantees the active nation slot.
+  // No null check in the original: the news phase guarantees the active nation slot.
   g_apNationStates[nationId]->DispatchPendingStatusPrompts();
   g_apNationStates[nationId]->BuildGreatPowerTurnMessageSummaryAndDispatch();
   if (g_pSimMgr->preferenceValues[8] != 0) {

@@ -160,7 +160,7 @@ void TDiplomacyMapView::DoPostCreate(int arg) {
   InitializeDiplomacyMinisterActionControlsAndLabels();
   SetControlHoverHelpText(CString(g_szEmptyString), this);
 
-  if (g_pSimMgr->mode == 6) {
+  if (g_pSimMgr->mode == kGamePhaseDiplomacy) {
     TView* endControl = ResolveControlByTag(kControlTagEnd);
     if (endControl != nullptr) {
       endControl->Free();
@@ -377,7 +377,7 @@ void TDiplomacyMapView::InitializeDiplomacyMinisterActionControlsAndLabels() {
     SetControlHoverHelpText(text, hoverControl);
   }
 
-  if (g_pSimMgr->mode == 6) {
+  if (g_pSimMgr->mode == kGamePhaseDiplomacy) {
     TView* trtyHover = ResolveControlByTag(g_aDiplomacyActionTopicTabTags[1]);
     g_pSimMgr->GetString(0x274a, 5, &text);
     SetControlHoverHelpTextAltEntry(text, trtyHover);
@@ -1432,7 +1432,7 @@ void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskInde
 // FUNCTION: IMPERIALISM 0x004f6d90
 void TDiplomacyMapView::ChangeSelectedActionTopic(int topicIndex) {
   int newTopic = topicIndex;
-  if (g_pSimMgr->mode == 6) {
+  if (g_pSimMgr->mode == kGamePhaseDiplomacy) {
     if (newTopic == 2 || newTopic == 3) {
       return;
     }
@@ -1466,7 +1466,7 @@ void TDiplomacyMapView::ChangeSelectedActionTopic(int topicIndex) {
   } else {
     ltabControl->Show(0, 1);
     rtabControl->Show(1, 1);
-    if (g_pSimMgr->mode == 6) {
+    if (g_pSimMgr->mode == kGamePhaseDiplomacy) {
       rtabControl->SetPictureResourceIdAndRefresh(0x20da, 1);
     } else {
       rtabControl->SetPictureResourceIdAndRefresh(static_cast<short>(newTopic + 0x138a), 1);

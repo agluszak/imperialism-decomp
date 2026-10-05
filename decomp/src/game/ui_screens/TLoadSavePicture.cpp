@@ -276,7 +276,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
 
 // FUNCTION: IMPERIALISM 0x0056d190
 void TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC() {
-  if (g_pSimMgr->previousTurnStateCode != 1) {
+  if (g_pSimMgr->previousTurnStateCode != kGamePhaseStartup) {
     g_pSimMgr->StartNextPhase();
     return;
   }
@@ -335,7 +335,7 @@ void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
     return;
   }
   if (loadModeFlag90) {
-    if (g_pSimMgr->mode == 1 ||
+    if (g_pSimMgr->mode == kGamePhaseStartup ||
         g_pViewMgr->DispatchGameStateEventIfLocalizedPromptAccepted(kControlTagLoad) != 0) {
       GetWindow()->ForceRedraw();
       char* prefix = (char*)g_pszMultiplayerSavePrefix_0065DDD4;

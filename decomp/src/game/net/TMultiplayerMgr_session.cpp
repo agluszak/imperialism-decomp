@@ -226,8 +226,8 @@ void TMultiplayerMgr::IMultiplayerMgr(int idleFrequency) {
   }
 
   queueSyncDword = 0;
-  activeNationSlotIndex = -1;
-  pendingNationSlotIndex = -1;
+  resumePhase = kGamePhaseNone;
+  syncPhase = kGamePhaseNone;
   g_pNetMgr006a6014->ResetTurnEventQueueRuntimeRecordBuffer();
 
   GenerateMappedFlavorTextByCurrentContextNation(&playerNameString);
@@ -389,10 +389,10 @@ bool TMultiplayerMgr::IsEverybodyConnected() const {
 }
 
 // FUNCTION: IMPERIALISM 0x00543120
-void TMultiplayerMgr::ConfigureTurnResumeStateAndNationMask(int pendingNationSlot,
-                                                            int activeNationSlot) {
-  pendingNationSlotIndex = pendingNationSlot;
-  activeNationSlotIndex = activeNationSlot;
+void TMultiplayerMgr::SetSyncPhases(eGamePhaseNewStyle completedPhase,
+                                    eGamePhaseNewStyle nextPhase) {
+  syncPhase = completedPhase;
+  resumePhase = nextPhase;
   pendingNationBitmask = 0;
   for (int nationSlot = 0; nationSlot < kMajorNationSessionSlotCount; ++nationSlot) {
     if (g_apTerrainTypeDescriptorTable[nationSlot] != nullptr) {
@@ -428,7 +428,7 @@ void TMultiplayerMgr::ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(int 
     packet.pendingMask = pendingNationBitmask;
     g_pNetMgr006a6014->Send(&packet, false);
   }
-  if (pendingNationBitmask == 0 && pendingNationSlotIndex != -1) {
+  if (pendingNationBitmask == 0 && syncPhase != kGamePhaseNone) {
     HandleDiplomacyTurnEventPacketByCode();
   }
 }
@@ -723,7 +723,7 @@ void TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue() {
     return;
   }
 
-  if (pendingNationSlotIndex != -1) {
+  if (syncPhase != kGamePhaseNone) {
     while (primaryTurnEventQueueHead != 0) {
       TurnEventQueuePacket* packet = primaryTurnEventQueueHead;
       primaryTurnEventQueueHead = packet->nextQueuePacket;
@@ -749,7 +749,7 @@ void TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue() {
       g_pNetMgr006a6014->PopNextTurnEventPacketOrProcessSpecialQueueRecords();
   while (packet != 0) {
     bool deferUntilTurnEvent = false;
-    if (pendingNationSlotIndex == -1) {
+    if (syncPhase == kGamePhaseNone) {
       switch (packet->eventCode) {
       case 1:
       case 2:

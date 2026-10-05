@@ -28,7 +28,8 @@ short OtherGreatPowerSlot(short activeNationSlot) {
   return activeNationSlot == 0 ? 1 : 0;
 }
 
-RuntimeActionResult RunProductionTurnState(NativeTransition& transition, int turnStateCode) {
+RuntimeActionResult RunProductionTurnState(NativeTransition& transition,
+                                           eGamePhaseNewStyle turnStateCode) {
   if (g_pSimMgr == 0) {
     return RuntimeActionResult::Failure("turn state is unavailable");
   }
@@ -111,14 +112,14 @@ RuntimeActionResult RunSeasonAdvanceClearsStatusFlags(NativeTransition& transiti
 
   g_pSimMgr->economicTurn = 4;
   g_pSimMgr->turnFlowStatusFlags = 0x51;
-  g_pSimMgr->turnStateCode = 0x10;
+  g_pSimMgr->turnStateCode = kGamePhaseAdvanceSeason;
 
   RuntimeActionResult started = transition.Begin(JsonNullValue());
   if (!started.Succeeded()) {
     return started;
   }
 
-  g_pSimMgr->turnStateCode = 0x11;
+  g_pSimMgr->turnStateCode = kGamePhaseTechnology;
   g_pSimMgr->turnFlowStatusFlags = 0;
   g_pSimMgr->AdvanceSeason();
   return transition.Finish();
@@ -179,7 +180,7 @@ RuntimeActionResult RunDiplomacyOfferGate(NativeTransition& transition) {
     return started;
   }
 
-  const bool showOffer = g_pMapContextActionManager->GetByteFlagAtOffset8() != 0 &&
+  const bool showOffer = g_pMapContextActionManager->HasBattlesToReport() &&
                          g_pSimMgr->IsNationSlotEligibleForEventProcessing(ActiveNationSlot()) != 0;
   return transition.Finish(showOffer);
 }
@@ -197,11 +198,12 @@ RuntimeActionResult RunQuarterGateOffDecade(NativeTransition& transition) {
     return started;
   }
 
-  g_pSimMgr->turnStateCode = 0x10;
+  g_pSimMgr->turnStateCode = kGamePhaseAdvanceSeason;
   if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot != -1) {
     const short lastProcessed = g_pDiplomacyTurnStateManager->lastProcessedNationSlot;
-    g_pSimMgr->turnStateCode =
-        static_cast<int>(lastProcessed != g_pSimMgr->activeNationSlot) + 0x16;
+    g_pSimMgr->turnStateCode = lastProcessed == g_pSimMgr->activeNationSlot
+                                   ? kGamePhaseCouncilVictory
+                                   : kGamePhaseCouncilDefeat;
   }
 
   const short tick = g_pSimMgr->GetEconomicTurn();
@@ -215,14 +217,14 @@ RuntimeActionResult RunReturnToMapClearsNoticeQueues(NativeTransition& transitio
     return RuntimeActionResult::Failure("turn state is unavailable");
   }
 
-  g_pSimMgr->turnStateCode = 0x12;
+  g_pSimMgr->turnStateCode = kGamePhaseTurnStart;
 
   RuntimeActionResult started = transition.Begin(JsonNullValue());
   if (!started.Succeeded()) {
     return started;
   }
 
-  g_pSimMgr->turnStateCode = 5;
+  g_pSimMgr->turnStateCode = kGamePhaseEndTurn;
   for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
     TGreatPower* nation = g_apNationStates[nationSlot];
     if (nation == 0) {
@@ -256,15 +258,15 @@ RuntimeActionResult RunReturnToMapClearsNoticeQueues(NativeTransition& transitio
 }
 
 RuntimeActionResult RunTurnStateDiplomacyPhase(NativeTransition& transition) {
-  return RunProductionTurnState(transition, 6);
+  return RunProductionTurnState(transition, kGamePhaseDiplomacy);
 }
 
 RuntimeActionResult RunTurnStateDiplomacyOfferGate(NativeTransition& transition) {
   if (g_pMapContextActionManager == 0) {
     return RuntimeActionResult::Failure("diplomacy-offer gate state is unavailable");
   }
-  g_pMapContextActionManager->flag8 = 0;
-  return RunProductionTurnState(transition, 0xd);
+  g_pMapContextActionManager->battlesToReport = false;
+  return RunProductionTurnState(transition, kGamePhaseBattleReport);
 }
 
 RuntimeActionResult RunTurnStateQuarterGate(NativeTransition& transition) {
@@ -273,15 +275,15 @@ RuntimeActionResult RunTurnStateQuarterGate(NativeTransition& transition) {
   }
   g_pSimMgr->economicTurn = 1;
   g_pDiplomacyTurnStateManager->lastProcessedNationSlot = ActiveNationSlot();
-  return RunProductionTurnState(transition, 0xe);
+  return RunProductionTurnState(transition, kGamePhaseCouncil);
 }
 
 RuntimeActionResult RunTurnStateReturnToMap(NativeTransition& transition) {
-  return RunProductionTurnState(transition, 0x12);
+  return RunProductionTurnState(transition, kGamePhaseTurnStart);
 }
 
 RuntimeActionResult RunTurnStateCombatMoves(NativeTransition& transition) {
-  return RunProductionTurnState(transition, 0x14);
+  return RunProductionTurnState(transition, kGamePhaseCombat);
 }
 
 RuntimeActionResult RunTurnStateMilitaryCleanup(NativeTransition& transition) {
@@ -289,7 +291,7 @@ RuntimeActionResult RunTurnStateMilitaryCleanup(NativeTransition& transition) {
     return RuntimeActionResult::Failure("turn state is unavailable");
   }
   g_pSimMgr->economicTurn = 2;
-  return RunProductionTurnState(transition, 0x15);
+  return RunProductionTurnState(transition, kGamePhaseProduction);
 }
 
 RuntimeActionResult RunNewspaperNavyGrowthRewardLevels(NativeTransition& transition) {
@@ -332,7 +334,7 @@ RuntimeActionResult RunEliminationPhaseWithLandedGreatPowers(NativeTransition& t
   // 0x19: the elimination/game-over case of AdvanceGlobalTurnStateMachine —
   // player-loss check, region-less major removal, minor-slot status updates,
   // then victory/next-phase dispatch.
-  g_pSimMgr->turnStateCode = 0x19;
+  g_pSimMgr->turnStateCode = kGamePhaseEliminations;
   g_pSimMgr->AdvanceGlobalTurnStateMachine();
   return transition.Finish();
 }
@@ -391,7 +393,7 @@ RuntimeActionResult RunDealBookTurnStop(NativeTransition& transition) {
   if (g_pSimMgr == 0) {
     return RuntimeActionResult::Failure("turn state is unavailable");
   }
-  g_pSimMgr->turnStateCode = 0xc;
+  g_pSimMgr->turnStateCode = kGamePhaseDealBook;
 
   RuntimeActionResult started = transition.Begin(JsonNullValue());
   if (!started.Succeeded()) {
@@ -405,13 +407,13 @@ RuntimeActionResult RunCityAndTransportTurnStop(NativeTransition& transition) {
   if (g_pSimMgr == 0) {
     return RuntimeActionResult::Failure("turn state is unavailable");
   }
-  g_pSimMgr->turnStateCode = 8;
+  g_pSimMgr->turnStateCode = kGamePhaseCityAndTransport;
 
   RuntimeActionResult started = transition.Begin(JsonNullValue());
   if (!started.Succeeded()) {
     return started;
   }
-  g_pSimMgr->turnStateCode = 0xb;
+  g_pSimMgr->turnStateCode = kGamePhaseLossCheck;
   g_pSimMgr->DoCityAndTransport();
   return transition.Finish();
 }

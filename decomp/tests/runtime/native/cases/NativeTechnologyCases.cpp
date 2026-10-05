@@ -189,7 +189,7 @@ RuntimeActionResult RunTechnologyTurnStop(NativeTransition& transition) {
   ClearScheduledUnlocksExcept(-1, 1);
   const short activeNationSlot = g_pSimMgr->GetActiveNationId();
   g_pTechMgr->orderCapRows277[activeNationSlot].techStatusByTechId[technologyId] = 1;
-  g_pSimMgr->turnStateCode = 0x11;
+  g_pSimMgr->turnStateCode = kGamePhaseTechnology;
 
   RuntimeActionResult started = transition.Begin(JsonNullValue());
   if (!started.Succeeded()) {

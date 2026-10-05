@@ -1,6 +1,7 @@
 #pragma once
 
 #include "decomp_types.h"
+#include "game/game_phase.h"
 #include "game/ui_tags_common.h"
 #include "game/nation_domain_types.h"
 
@@ -37,11 +38,11 @@ struct TurnEventQueuePacket : NetMessage {
 // 'time'-tagged ('time') timely-message variant whose turn-token word sits at +0x18
 // (three-byte pad after the active-nation byte). Used by the advisory/diplomacy emitters
 // (0x540cf0..0x5416b0 band); 0x542120 writes word [this+0x18] from
-// TMultiplayerMgr::pendingNationSlotIndex.
+// TMultiplayerMgr::syncPhase.
 // 'time'-tagged header shared by every timely packet family: the stamp helper writes
 // only the tag + active-nation byte, so payloads that reuse +0x18 for their own fields
 // (the event-0x25 status tags, the event-9 chat slot byte) derive from this base while
-// the turn-token variant below adds uiTurnToken.
+// the turn-token variant below adds syncPhase.
 struct TimelyMessageHeader : NetMessage {
   int messageTag;               // +0x10 — 'time'
   unsigned char activeNationId; // +0x14
@@ -53,7 +54,7 @@ struct TimelyMessageHeader : NetMessage {
 };
 
 struct TimelyNetMessagePrefix : TimelyMessageHeader {
-  short uiTurnToken; // +0x18
+  GamePhaseStorage syncPhase; // +0x18
 
   void SetTimeEmitPacketGameFlowTurnId();
 };
@@ -129,12 +130,12 @@ struct TurnEvent2DeltaPayload {
 // 0x89c-short block, delta form (deltaKind21 == 2) carries (index, value) pairs for the
 // entries that differ from the baseline.
 struct TurnEvent2SyncPacket : NetMessage {
-  int pad10;                    // +0x10 - zeroed, no 'time' tag on this packet
-  int pad14;                    // +0x14
-  NationSlot pendingNationSlot; // +0x18
-  unsigned char pad1a[6];       // +0x1a
-  bool flag20;                  // +0x20 - cleared by the caller after the baseline refresh
-  unsigned char deltaKind21;    // +0x21 - 2 = delta pairs, 0 = full block
+  int pad10;                  // +0x10 - zeroed, no 'time' tag on this packet
+  int pad14;                  // +0x14
+  GamePhaseStorage syncPhase; // +0x18
+  unsigned char pad1a[6];     // +0x1a
+  bool flag20;                // +0x20 - cleared by the caller after the baseline refresh
+  unsigned char deltaKind21;  // +0x21 - 2 = delta pairs, 0 = full block
   unsigned char pad22[2];
   TurnEvent2DeltaPayload payload; // +0x24 - variable-length wire records
 

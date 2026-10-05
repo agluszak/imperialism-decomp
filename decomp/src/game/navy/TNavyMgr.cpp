@@ -1010,7 +1010,7 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
         BuildMapOrderBattleSideSnapshot(&snapshot, 1, nationEntry);
         RefreshMapOrderBattleSideSnapshot(&snapshot, 0, entry);
         RefreshMapOrderBattleSideSnapshot(&snapshot, 1, nationEntry);
-        g_pMapContextActionManager->AppendMapContextActionRecordAndResetWorkingFields(&snapshot, 0);
+        g_pMapContextActionManager->AddBattleRecord(&snapshot, 0);
       } else {
         TTaskForce* survivingEntry;
         if (CountMapOrderChildren(entry->shipList) != 0 && nationEntry->CountShips() != 0 &&
@@ -1307,7 +1307,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
           ++selectedChildIndex;
         }
 
-        g_pMapContextActionManager->AppendMapContextActionRecordAndResetWorkingFields(&snapshot, 0);
+        g_pMapContextActionManager->AddBattleRecord(&snapshot, 0);
 
         if (modeIsOffer) {
           int treasuryDelta = static_cast<int>(entryValue) * entryPayload;
@@ -1929,5 +1929,5 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
                                     leftEntry->shipList != nullptr ? leftEntry : nullptr);
   RefreshMapOrderBattleSideSnapshot(&snapshot, 1,
                                     rightEntry->shipList != nullptr ? rightEntry : nullptr);
-  g_pMapContextActionManager->AppendMapContextActionRecordAndResetWorkingFields(&snapshot, 0);
+  g_pMapContextActionManager->AddBattleRecord(&snapshot, 0);
 }

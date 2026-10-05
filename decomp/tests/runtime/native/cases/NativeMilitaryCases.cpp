@@ -1921,7 +1921,7 @@ RuntimeActionResult RunTurnStateAiReplanPerturbed(NativeTransition& transition) 
   }
 
   g_pSimMgr->economicTurn = 2;
-  g_pSimMgr->turnStateCode = 0x15;
+  g_pSimMgr->turnStateCode = kGamePhaseProduction;
 
   JsonObject args;
   args.Set("nation", static_cast<int>(nationSlot));
@@ -2004,7 +2004,7 @@ RuntimeActionResult RunTurnStateAiReassessDamagedShip(NativeTransition& transiti
   }
 
   g_pSimMgr->economicTurn = 2;
-  g_pSimMgr->turnStateCode = 0x15;
+  g_pSimMgr->turnStateCode = kGamePhaseProduction;
 
   JsonObject args;
   args.Set("nation", static_cast<int>(nationSlot));

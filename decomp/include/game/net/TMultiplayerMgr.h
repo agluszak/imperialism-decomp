@@ -1,6 +1,7 @@
 #pragma once
 
 #include "compat.h"
+#include "game/game_phase.h"
 #include "game/multiplayer_session_tags.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_map.h"
@@ -68,12 +69,14 @@ public:
                                   // ('load', 'rand', 'scn0'..'szz9')
   unsigned char sessionReadyFlag; // +0xe4
   unsigned char padE5[3];
-  int pendingNationBitmask;   // +0xe8 — one bit per nation slot; the turn-state machine
-                              // loads it whole from the code-1 sync packet and clears the
-                              // sender's bit on code-0x32 acknowledgements
-  int activeNationSlotIndex;  // +0xec
-  int pendingNationSlotIndex; // +0xf0
-  unsigned char fieldF4;      // +0xf4
+  int pendingNationBitmask; // +0xe8 — one bit per nation slot; the turn-state machine
+                            // loads it whole from the code-1 sync packet and clears the
+                            // sender's bit on code-0x32 acknowledgements
+  // +0xec/+0xf0 -- SetSyncPhases: the phase TSimMgr resumes after kGamePhaseNetworkSync and
+  // the completed phase whose state the session synchronizes (kGamePhaseNone when idle).
+  eGamePhaseNewStyle resumePhase;
+  eGamePhaseNewStyle syncPhase;
+  unsigned char fieldF4; // +0xf4
   unsigned char padF5[3];
 
   virtual ~TMultiplayerMgr() override;             // slot 0x01 0x5427e0
@@ -240,19 +243,15 @@ public:
   // after the null check. 0x544540.
   void EnsureGameFlowStateAndPostTurnEvent5E5();
 
-  // Stores the turn-state pair and recomputes pendingNationBitmask from which of the
-  // first kMajorNationSessionSlotCount terrain descriptor slots are populated. Every callsite
-  // (TSimMgr::AdvanceGlobalTurnStateMachine) loads ECX from g_pGameFlowState, so this is
-  // a real TMultiplayerMgr method, not a free function. 0x543120.
   bool IsEverybodyConnected() const; // 0x00543100
-  void ConfigureTurnResumeStateAndNationMask(int pendingNationSlot, int activeNationSlot);
+  // Mac oracle. Stores both phases and marks every populated major-nation slot pending.
+  void SetSyncPhases(eGamePhaseNewStyle completedPhase, eGamePhaseNewStyle nextPhase); // 0x543120
 
   // Refresh defaultNationTextSlots/nationDisplayNameSlots/nationStatusTags for one slot,
   // or all seven when nationSlot == -1 (dead slots get 'dead'; ineligible names are
   // wrapped in parentheses and the tag set to 'deca'). 0x54cc00.
-  // 0x543910: post-resume diplomacy turn-event dispatcher — switches on
-  // pendingNationSlotIndex (the received turn-event code) and re-broadcasts the
-  // matching game-state snapshot family; every path except code 6 ends with the
+  // 0x543910: once every nation acknowledged syncPhase, re-broadcast that phase's
+  // game-state snapshot family; every path except kGamePhaseDiplomacy ends with the
   // event-3 tick acknowledge.
   void HandleDiplomacyTurnEventPacketByCode();
   // 0x5431a0: clear the slot's turn-resume pending bit, broadcast the remaining mask

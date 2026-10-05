@@ -44,7 +44,7 @@ void TGameInfoPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
   unsigned int tag = sourceHandler->controlTag;
   if (tag == kControlTagButn) { // 'butn' — newspaper
     if (g_pNewsMgr->perNationStoryLastUsedTick[0] != 0) {
-      g_pSimMgr->EnterOptionalPhase(0x66);
+      g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalNewspaper);
     } else {
       g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x275e, 6, 2, 0);
     }
@@ -53,7 +53,7 @@ void TGameInfoPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
   if (tag == kControlTagButm) { // 'butm' — military/battle report
     short activeNationId = g_pSimMgr->GetActiveNationId();
     if (g_pMapContextActionManager->ScanMapContextActionEntriesForCodeMatch(activeNationId)) {
-      g_pSimMgr->EnterOptionalPhase(0x65);
+      g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalBattleReport);
     } else {
       g_pSimMgr->GetString(0x273d, 0x12, &message);
       g_pViewMgr->ModalMessage(message, g_ptQueryFloaterModalMessage, 1, 0);
@@ -65,7 +65,7 @@ void TGameInfoPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
       g_pSimMgr->GetString(0x2741, 9, &message);
       g_pViewMgr->ModalMessage(message, g_ptQueryFloaterModalMessage, 0, 0);
     } else {
-      g_pSimMgr->EnterOptionalPhase(0x64);
+      g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalDealBook);
     }
     return;
   }

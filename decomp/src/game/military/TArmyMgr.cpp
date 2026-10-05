@@ -166,7 +166,7 @@ void TArmyMgr::IArmyMgr() {
   activeBattleView3a4 = 0;
   mapContextActionRecordList04 = new TSortedPtrList();
   mapContextActionRecordList04->recordSize14 = sizeof(MapContextActionRecord);
-  flag8 = false;
+  battlesToReport = false;
 }
 
 // FUNCTION: IMPERIALISM 0x004a1a00
@@ -190,7 +190,7 @@ void TArmyMgr::Free() {
     }
     mapContextActionRecordList04->ClearAndFreeAllPtrListRecords();
   }
-  flag8 = false;
+  battlesToReport = false;
 
   if (mapContextActionRecordList04 != 0) {
     int ordinal = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
@@ -242,7 +242,7 @@ void TArmyMgr::ReadFrom(TStream* stream) {
     }
     mapContextActionRecordList04->ClearAndFreeAllPtrListRecords();
   }
-  flag8 = false;
+  battlesToReport = false;
   if (g_nSaveFormatVersion >= 0x25) {
     int count = stream->ReadInteger();
     while (count-- != 0) {
@@ -257,7 +257,7 @@ void TArmyMgr::ReadFrom(TStream* stream) {
 
       record.ReadFrom(stream);
       mapContextActionRecordList04->AppendCopiedRecordToPtrList(&record);
-      flag8 = true;
+      battlesToReport = true;
 
       // The copied record in the list now owns these arrays; reset our local's copies
       // (ground truth re-zeroes them here too, matching the ctor-time defaults).
@@ -689,9 +689,9 @@ static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
   record.sideChildRecords250[0] = 0;
   record.childCount24a[1] = 0;
   record.childCount24a[0] = 0;
-  g_pMapContextActionManager->flag8 = true;
+  g_pMapContextActionManager->battlesToReport = true;
   if (g_bRandomMapDeveloperCheatFlag) {
-    g_pMapContextActionManager->flag8 = true;
+    g_pMapContextActionManager->battlesToReport = true;
   }
 
   (void)ourBestUnit;
@@ -1935,8 +1935,8 @@ bool TArmyMgr::ScanMapContextActionEntriesForCodeMatch(short activeNationId) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a6dd0
-unsigned char TArmyMgr::GetByteFlagAtOffset8() {
-  return flag8;
+bool TArmyMgr::HasBattlesToReport() const {
+  return battlesToReport;
 }
 
 // FUNCTION: IMPERIALISM 0x004a6df0
@@ -1955,19 +1955,18 @@ void TArmyMgr::CleanUpStacks() {
     }
     mapContextActionRecordList04->ClearAndFreeAllPtrListRecords();
   }
-  flag8 = false;
+  battlesToReport = false;
 }
 
 // FUNCTION: IMPERIALISM 0x004a6e80
-void TArmyMgr::AppendMapContextActionRecordAndResetWorkingFields(MapOrderBattleSnapshot* record,
-                                                                 int unusedArg2) {
+void TArmyMgr::AddBattleRecord(MapOrderBattleSnapshot* record, int unusedArg2) {
   (void)unusedArg2;
   mapContextActionRecordList04->AppendCopiedRecordToPtrList(record);
   record->childRecords[1] = nullptr; // +0x254
   record->childRecords[0] = nullptr; // +0x250
   record->childCount[1] = 0;         // +0x24c
   record->childCount[0] = 0;         // +0x24a
-  flag8 = true;
+  battlesToReport = true;
 }
 
 // FUNCTION: IMPERIALISM 0x004a6ef0
