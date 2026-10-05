@@ -887,7 +887,7 @@ TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation
         // distinct from the active-nation-resolved slot used above.
         TTaskForce* taskForce = new TTaskForce(this, nation);
         taskForce->ITaskForce();
-        taskForce->MaxOut(false);
+        taskForce->MaxOut(0);
         taskForce->DemocraticallyDetermineAggressionLevel();
         return taskForce;
       }

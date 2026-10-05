@@ -274,6 +274,7 @@ __declspec(dllexport) int FixtureExported(int exported)
 struct PromotionFixture {
     unsigned char ready_flag;
     unsigned char never_set;
+    unsigned char edge_side;
 };
 struct PromotionStates {
     unsigned char states[4];
@@ -284,6 +285,9 @@ void PromoteFixture(PromotionFixture* fixture, PromotionStates* states, int left
     const unsigned char kPromotionOpen = 1;
     fixture->ready_flag = left < right;
     fixture->never_set = 0;
+    fixture->edge_side = 1;
+    if (fixture->edge_side) {
+    }
     if (fixture->ready_flag) {
     }
     if (states->states[index] != kPromotionOpen) {

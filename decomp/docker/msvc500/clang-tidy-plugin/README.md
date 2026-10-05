@@ -165,7 +165,8 @@ by the command.
 truth-valued producer, with no arithmetic, relational, shift, subscript, switch or escaping use.
 Storage stays one byte. A declaration is rejected when only zero is ever written and nothing tests
 it, when a byte array is only cleared, when it is compared with storage outside the proven domain,
-or when an atom also declares an unproven entity. Every redeclaration changes together.
+when it is named as a side, mode, kind, type, code, index or selector, when a same-named
+external declaration elsewhere is unproven, or when an atom also declares an unproven entity. Every redeclaration changes together.
 
 ## Propagate accepted source enums
 

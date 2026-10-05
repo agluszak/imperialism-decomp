@@ -111,7 +111,7 @@ struct SeaSegment {
   unsigned short SelectAttrByAngle() const;
   // Write endpoint 1 (side 0) or endpoint 0 (side != 0) as [x,y] into out, applying the
   // horizontal wrap when the map wraps. 0x0052bef0.
-  void ExtractWrappedEndpoint(int* out, bool side) const;
+  void ExtractWrappedEndpoint(int* out, char side) const;
 };
 
 // The Seapoint stretch. Vtable is adjacent to TMapMaker's (0x006599a0); left unannotated
@@ -138,11 +138,11 @@ ASSERT_OFFSET(SeaSegment, angle14, 0x14);
 // to [0, 0x3c], the column doubles and picks up the row-parity stagger, side 0 steps to the
 // next row and shifts two columns right, and the result wraps at the 0xd8-wide grid.
 // 0x0052b160, __cdecl.
-int OverlayCoordFromTileColumnRowAndSide(int column, int row, bool side);
+int OverlayCoordFromTileColumnRowAndSide(int column, int row, char side);
 
 // Convert a tile index + edge side to an overlay coord, sort the two attribute values, and
 // append the resulting Seapoint to the overlay-quad table global (0x006a3478). 0x0052ca20.
-void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, bool side, int a, int b, int extra);
+void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b, int extra);
 
 // Rebuild the region-border segment lattice global (0x006a3900) from scratch: free the old
 // backing store, then walk the staggered column/row lattice appending three SeaSegments per
@@ -152,4 +152,4 @@ void RebuildRegionBorderLinkLattice();
 // Flood a region id along a chain of border segments starting at one segment/edge side,
 // hopping to the segment whose matching endpoint coincides and whose heading turns least.
 // Stops when the next side is already stamped. 0x0052b520, __cdecl.
-void AssignRegionIdAlongBorderSegmentChain(unsigned int index, bool side, short regionId);
+void AssignRegionIdAlongBorderSegmentChain(unsigned int index, char side, short regionId);

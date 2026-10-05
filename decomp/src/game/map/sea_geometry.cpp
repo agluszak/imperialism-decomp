@@ -235,11 +235,11 @@ void RebuildRegionBorderLinkLattice() {
       // rows apart.
       int laneColumn = columnStagger + column;
       Seapoint laneStart;
-      laneStart.InitSorted(OverlayCoordFromTileColumnRowAndSide(laneColumn, row + 0xa, true), -1,
-                           -1, 5);
+      laneStart.InitSorted(OverlayCoordFromTileColumnRowAndSide(laneColumn, row + 0xa, 1), -1, -1,
+                           5);
       Seapoint laneEnd;
-      laneEnd.InitSorted(OverlayCoordFromTileColumnRowAndSide(laneColumn, row + 0xa - 8, true), -1,
-                         -1, 2);
+      laneEnd.InitSorted(OverlayCoordFromTileColumnRowAndSide(laneColumn, row + 0xa - 8, 1), -1, -1,
+                         2);
       SeaSegment laneSegment;
       laneSegment.InitFromPoints(&laneEnd, &laneStart);
       g_regionBorderLinkTable_006a3900[index] = laneSegment;
@@ -254,9 +254,9 @@ void RebuildRegionBorderLinkLattice() {
   int edgeColumn = 8;
   do {
     Seapoint topPoint;
-    topPoint.InitSorted(OverlayCoordFromTileColumnRowAndSide(edgeColumn, 1000, true), -1, -1, 4);
+    topPoint.InitSorted(OverlayCoordFromTileColumnRowAndSide(edgeColumn, 1000, 1), -1, -1, 4);
     Seapoint topNeighbor;
-    topNeighbor.InitSorted(OverlayCoordFromTileColumnRowAndSide(edgeColumn - 6, 1000, true), -1, -1,
+    topNeighbor.InitSorted(OverlayCoordFromTileColumnRowAndSide(edgeColumn - 6, 1000, 1), -1, -1,
                            1);
     SeaSegment topSegment;
     topSegment.InitFromPoints(&topNeighbor, &topPoint);
@@ -264,11 +264,10 @@ void RebuildRegionBorderLinkLattice() {
     index = index + 1;
 
     Seapoint bottomPoint;
-    bottomPoint.InitSorted(OverlayCoordFromTileColumnRowAndSide(edgeColumn + 6, 1000, true), -1, -1,
+    bottomPoint.InitSorted(OverlayCoordFromTileColumnRowAndSide(edgeColumn + 6, 1000, 1), -1, -1,
                            4);
     Seapoint bottomNeighbor;
-    bottomNeighbor.InitSorted(OverlayCoordFromTileColumnRowAndSide(edgeColumn, 1000, true), -1, -1,
-                              1);
+    bottomNeighbor.InitSorted(OverlayCoordFromTileColumnRowAndSide(edgeColumn, 1000, 1), -1, -1, 1);
     SeaSegment bottomSegment;
     bottomSegment.InitFromPoints(&bottomNeighbor, &bottomPoint);
     g_regionBorderLinkTable_006a3900[index] = bottomSegment;
@@ -279,7 +278,7 @@ void RebuildRegionBorderLinkLattice() {
 }
 
 // FUNCTION: IMPERIALISM 0x0052b160
-int OverlayCoordFromTileColumnRowAndSide(int column, int row, bool side) {
+int OverlayCoordFromTileColumnRowAndSide(int column, int row, char side) {
   if (row < 0) {
     row = 0;
   }
@@ -359,7 +358,7 @@ void SeaSegment::InitFromPoints(const Seapoint* p0, const Seapoint* p1) {
 // Both parameters are re-assigned per hop, which is why they are locals rather than a
 // recursion: the original mutates its own argument slots and jumps back to the top.
 // FUNCTION: IMPERIALISM 0x0052b520
-void AssignRegionIdAlongBorderSegmentChain(unsigned int index, bool side, short regionId) {
+void AssignRegionIdAlongBorderSegmentChain(unsigned int index, char side, short regionId) {
   while (true) {
     int sideIndex = side == '\0';
     // The record is taken before the slot is stretched, and the stretch's result is
@@ -448,7 +447,7 @@ void AssignRegionIdAlongBorderSegmentChain(unsigned int index, bool side, short 
 }
 
 // FUNCTION: IMPERIALISM 0x0052bef0
-void SeaSegment::ExtractWrappedEndpoint(int* out, bool side) const {
+void SeaSegment::ExtractWrappedEndpoint(int* out, char side) const {
   if (side != '\0') {
     int cx = x0;
     short cy = y0;
@@ -492,7 +491,7 @@ unsigned short SeaSegment::SelectAttrByAngle() const {
 // --- SeapointStretch (0x10-byte elements) ----------------------------------------------
 
 // FUNCTION: IMPERIALISM 0x0052ca20
-void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, bool side, int a, int b, int extra) {
+void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b, int extra) {
   unsigned int row = tileIndex / 0x6c;
   int overlayX = (row & 1) + (tileIndex % 0x6c) * 2;
   if (side == '\0') {

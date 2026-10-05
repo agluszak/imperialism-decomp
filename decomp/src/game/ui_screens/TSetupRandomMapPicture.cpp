@@ -147,7 +147,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   mapPreview->AssertValid();
   mapPreview->selectedNation68 = selectedNationSlot9A;
 
-  GroundControlToMajorTom(true);
+  GroundControlToMajorTom(1);
   g_pCursorControlPanel->SetTextAlignmentAndMaybeRefresh(1, 0);
 
   TGWorldPartView* flagView = static_cast<TGWorldPartView*>(ResolveControlByTag(kControlTagFlag));
@@ -383,7 +383,7 @@ void TSetupRandomMapPicture::ExitScreen() {
 }
 
 // FUNCTION: IMPERIALISM 0x00578230
-void TSetupRandomMapPicture::GroundControlToMajorTom(bool mode) {
+void TSetupRandomMapPicture::GroundControlToMajorTom(unsigned char mode) {
   TSpaceCommand* command = new TSpaceCommand();
   command->ICommand(kControlTagNASA, g_pAmbitApplication, 0, 0, 0);
   command->setupPicture18 = this;

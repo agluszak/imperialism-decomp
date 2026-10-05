@@ -462,7 +462,7 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
   // A completed traversal wraps the navy chain once: the failed navy scan cleared the
   // current cursor, so this second scan starts at g_pMapActionContextListHead.
   if (visitedModes == 7 && !selectionResolved) {
-    selectionResolved = TrySelectNextValidMapOrderEntry(false) ? 1 : 0;
+    selectionResolved = TrySelectNextValidMapOrderEntry(false);
   }
 
   if (selectionResolved) {
@@ -605,7 +605,7 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
 
   if (result == kControlTagCanc) { // 'canc'
     TZone* previousContext = taskForce->location;
-    taskForce->CancelOrders(false);
+    taskForce->CancelOrders(0);
     SetMapInteractionMode(2);
     goodGoldTagControlA4->InvalidateZone(orderEntryContext98);
     orderEntryContext98 = previousContext;

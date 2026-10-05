@@ -24,7 +24,7 @@ int GetNeighborTileIndexOnMap108x60(int tileIndex, int direction);
 int* WrapExtendedMapXCoordinateInPlace(int* x);
 
 // Converts a hex tile index to its overlay-grid coordinate for the given edge side.
-int ConvertTileIndexToOverlayCoord216BySide(int tileIndex, bool side); // 0x0052c990
+int ConvertTileIndexToOverlayCoord216BySide(int tileIndex, char side); // 0x0052c990
 
 // Maps a clicked tile to a map-context action code used by the map-order handlers. See the
 // .cpp for the per-class breakdown. 0x00559a70.

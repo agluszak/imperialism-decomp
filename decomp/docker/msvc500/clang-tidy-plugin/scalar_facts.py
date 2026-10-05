@@ -377,6 +377,9 @@ _RETAIL_EXTENTS = {"indexing-range", "serialized-extent", "allocation-stride", "
 _EXTENT_KINDS = _RETAIL_EXTENTS | {"declaration-contract"}
 
 
+_SELECTOR_NAME = re.compile(r"(?:side|mode|kind|type|code|index|selector)$", re.IGNORECASE)
+
+
 def proven_bool_declarations(facts: ScalarFacts) -> set[str]:
     """Byte candidates whose every write is 0/1 or a proven bool, anchored by a literal."""
     writes, invalid, escaped = facts.bool_writes, facts.bool_invalid, facts.bool_escaped
@@ -2446,7 +2449,12 @@ def write_recovery_patch(
             tested = key in facts.bool_supported or any(
                 mode == "R" for mode, _ in facts.bool_writes[key]
             )
-            if not external_names.get((declaration.kind, declaration.name), set()) <= proven | {key}:
+            base_name = declaration.name.rsplit("::", 1)[-1].rstrip("0123456789_")
+            if _SELECTOR_NAME.search(base_name):
+                # 0/1 literals at every call site do not distinguish a flag from a
+                # two-valued selector such as a tile side or mode.
+                reason = "selector-named storage requires independent boolean evidence"
+            elif not external_names.get((declaration.kind, declaration.name), set()) <= proven | {key}:
                 reason = "an external declaration of the same name is not proven"
             elif key in compared_with_storage:
                 reason = "compared with storage outside the proven boolean domain"

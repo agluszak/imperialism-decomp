@@ -1621,9 +1621,9 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
   {
     int titleMessageIndex;
     if (localIsSide0Player) {
-      titleMessageIndex = (localSideWon) ? 3 : 1;
+      titleMessageIndex = localSideWon ? 3 : 1;
     } else {
-      titleMessageIndex = (localSideWon) ? 6 : 4;
+      titleMessageIndex = localSideWon ? 6 : 4;
     }
     CString titleText;
     g_pSimMgr->GetString(0x273d, titleMessageIndex, &titleText);

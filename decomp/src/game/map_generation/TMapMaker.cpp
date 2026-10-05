@@ -2339,8 +2339,7 @@ const char kUMapperPath[] = "D:\\Ambit\\Cross\\UMapper.cpp";
 
 void AppendBorderQuad(int tileIndex, int regionA, int regionB, int sideCode) {
   Seapoint sp;
-  sp.InitSorted(ConvertTileIndexToOverlayCoord216BySide(tileIndex, true), regionA, regionB,
-                sideCode);
+  sp.InitSorted(ConvertTileIndexToOverlayCoord216BySide(tileIndex, 1), regionA, regionB, sideCode);
   stretch<Seapoint>* quad = &g_seapointQuadTable_006a3478;
   quad->Add(sp);
 }
@@ -2591,13 +2590,13 @@ void TMapMaker::BuildCityRegionBorderOverlaySegments() {
     }
     if (rThis != dir1region && rThis != otherDir2 && dir1region != otherDir2) {
       if (otherDir2 != -1) {
-        EmitOverlaySegmentFromTileEdgeSorted(t3, false, rThis, dir1region, codeMid);
-        EmitOverlaySegmentFromTileEdgeSorted(t3, false, rThis, otherDir2, codeB);
+        EmitOverlaySegmentFromTileEdgeSorted(t3, 0, rThis, dir1region, codeMid);
+        EmitOverlaySegmentFromTileEdgeSorted(t3, 0, rThis, otherDir2, codeB);
         rThis = dir1region;
         dir1region = otherDir2;
         codeMid = codeA;
       }
-      EmitOverlaySegmentFromTileEdgeSorted(t3, false, rThis, dir1region, codeMid);
+      EmitOverlaySegmentFromTileEdgeSorted(t3, 0, rThis, dir1region, codeMid);
     }
     t3 += 1;
     off3 += 0x24;
@@ -2606,7 +2605,7 @@ void TMapMaker::BuildCityRegionBorderOverlaySegments() {
         int r1 = GetCityRegionIdAtTileIndex(t3);
         int r2 = GetCityRegionIdAtTileIndex(GetNeighborTileIndexOnMap108x60(t3, 1));
         if (r1 != r2 && r1 != -1 && r2 != -1) {
-          EmitOverlaySegmentFromTileEdgeSorted(t3, false, r1, r2, 5);
+          EmitOverlaySegmentFromTileEdgeSorted(t3, 0, r1, r2, 5);
         }
       }
       return;

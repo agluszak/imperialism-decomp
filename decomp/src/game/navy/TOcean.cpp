@@ -848,7 +848,7 @@ TTaskForce* TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* pMapOr
       return selectedTaskForce14;
     }
   } else if (pMapOrderContextZone != nullptr) {
-    selectedTaskForce14->MaxOut(false);
+    selectedTaskForce14->MaxOut(0);
   }
   return selectedTaskForce14;
 }

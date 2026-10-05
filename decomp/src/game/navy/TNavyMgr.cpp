@@ -396,7 +396,7 @@ void TNavyMgr::FreeShipsOf(short nation) {
     if (matching == 0) {
       break;
     }
-    matching->CancelOrders(true);
+    matching->CancelOrders(1);
   }
 
   for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->next) {

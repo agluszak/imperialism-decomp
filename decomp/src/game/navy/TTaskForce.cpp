@@ -300,7 +300,7 @@ void TTaskForce::OrderEvade() {
 // Sibling of OrderEvade for map-order kind 3/4 (see the header comment).
 // FUNCTION: IMPERIALISM 0x005530f0
 void TTaskForce::OrderPatrol(bool useType4) {
-  shipOrders = (useType4) ? 4 : 3;
+  shipOrders = useType4 ? 4 : 3;
   FreeAvailables();
 
   AssertValid();
@@ -572,7 +572,7 @@ void TTaskForce::OrderSendInTheMarines(Province* orderTarget) {
 }
 
 // FUNCTION: IMPERIALISM 0x005539c0
-void TTaskForce::MaxOut(bool mode) {
+void TTaskForce::MaxOut(unsigned char mode) {
   for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != nullptr; ship = ship->next) {
     if (ship->location == location && ship->nation == nation && ship->taskForce == 0) {
       Add(ship);
@@ -581,7 +581,7 @@ void TTaskForce::MaxOut(bool mode) {
 
   for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
     // Same node+0x34 overrun documented on Add.
-    node->active = !(!mode && node->payload->selection != 0);
+    node->active = !(mode == 0 && node->payload->selection != 0);
   }
 }
 
@@ -590,7 +590,7 @@ void TTaskForce::DropShips(bool reserveExtraSlot) {
   for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
     if (node->active != 0) {
       // Same node+0x34 overrun documented on Add.
-      node->payload->selection = (reserveExtraSlot) ? 1u : 2u;
+      node->payload->selection = reserveExtraSlot ? 1u : 2u;
     }
   }
 
@@ -1096,7 +1096,7 @@ void TTaskForce::CommitToOrders() {
 
 // Mac oracle: TTaskForce::CancelOrders(unsigned char).
 // FUNCTION: IMPERIALISM 0x005547d0
-void TTaskForce::CancelOrders(bool cancellationMode) {
+void TTaskForce::CancelOrders(unsigned char cancellationMode) {
   (void)cancellationMode;
   bool cancelsBeachhead = shipOrders == 5;
   short cityIndex = cancelsBeachhead

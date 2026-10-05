@@ -99,7 +99,7 @@ public:
   void DemocraticallyDetermineAggressionLevel();
   // 0x005539c0 — recomputes this task force's per-order selection flags for the active
   // nation's current orders (`mode` selects the pass; the caller passes 0).
-  void MaxOut(bool mode);
+  void MaxOut(unsigned char mode);
   // 0x00553fe0 — frees the head child order node when defeated (nation <= 0),
   // prunes remaining defeated children, rebinds shipList/flagship;
   // returns 1 (marking this entry eliminated) when no child survives.
@@ -178,9 +178,9 @@ public:
   // Mac oracle: GetAuthority / CancelOrders. GetAuthority names the admiral or
   // captain commanding flagship; CancelOrders removes this queue entry.
   // Mac oracle: null-safe preferred-ship officer lookup.
-  TAdmiral* GetSeniorOfficer() const;       // 0x5551a0
-  void GetAuthority(CString* out) const;    // 0x5551d0
-  void CancelOrders(bool cancellationMode); // 0x5547d0
+  TAdmiral* GetSeniorOfficer() const;                // 0x5551a0
+  void GetAuthority(CString* out) const;             // 0x5551d0
+  void CancelOrders(unsigned char cancellationMode); // 0x5547d0
 
   // Null-safe tail-recursive nextForce walk used by TNavyMgr::CarryOutOrders
   // to rebuild the order queue head: prunes (Free()s) any entry with no active children,
