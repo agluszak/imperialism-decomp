@@ -70,7 +70,7 @@ public:
   void BecomeProtectorateOf(int targetNationSlot) override; // slot 0x14
   // slot 0x18 — body 0x004e2270: drop regionId from ownedRegionList then fire the
   // slot 0x298 hook. TAutoGreatPower overrides it (0x004ea1c0) to also drop the
-  // matching mission from missionQueue and clear mapNodeStateFlags.
+  // matching mission from missionQueue and clear provinceStatus.
   void LoseProvince(int regionId) override;
   void AddProvince(int regionId) override;
   void NewStatusFor(int targetNationSlot, int policyCode) override;
@@ -486,8 +486,8 @@ public:
   int militaryExpenses960;
   // Object ends here at 0x964 (== CRuntimeClass::m_nObjectSize for TGreatPower and
   // for TProxyGreatPower/TClientGreatPower/TRemoteGreatPower; THostGreatPower adds one
-  // more dword). The AI-only tail block (actionMetricByQuarter/mapNodeStateFlags/
-  // portZoneStateFlags/missionQueue/floatB64/floatB68) that used to be declared here
+  // more dword). The AI-only tail block (actionMetricByQuarter/provinceStatus/
+  // zoneStatus/missionQueue/floatB64/floatB68) that used to be declared here
   // moved to TAutoGreatPower (RTTI size 0xb70) -- see TSimMgr::RebuildPrimaryNationState
   // ForSlot (0x57cda0): every non-Auto concrete subclass allocates exactly its own
   // RTTI-reported size with no room for that block, and the one "bare TGreatPower"-

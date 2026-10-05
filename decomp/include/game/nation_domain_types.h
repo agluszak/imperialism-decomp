@@ -5,6 +5,13 @@
 #include "game/diplomacy_domain_types.h"
 
 typedef short NationSlot;
+// Mac CodeWarrior names a great power's per-province and per-zone mission target state
+// eMissionDesirability (TAutoGreatPower::SetProvinceStatus). The AI stores it in bytes.
+enum eMissionDesirability {
+  kMissionDesirabilityUnmarked = 0,
+  kMissionDesirabilityCandidate = 1,
+  kMissionDesirabilityQueued = 2
+};
 enum { kMajorNationCount = 7, kNationSlotCount = 23, kMinorNationFirstSlot = kMajorNationCount };
 // Serialized terrain/nation ownership tag. -1 means unassigned; 0..22 is a direct
 // NationSlot, 100..122 and 200..222 are ownership-mode encodings. Decode before using

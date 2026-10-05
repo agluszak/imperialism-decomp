@@ -175,8 +175,8 @@ void TAutoGreatPower::IAutoGreatPower(int nationSlot, int nationInitializationMo
   }
   }
 
-  memset(mapNodeStateFlags, 0, sizeof(mapNodeStateFlags));
-  memset(portZoneStateFlags, 0, sizeof(portZoneStateFlags));
+  memset(provinceStatus, 0, sizeof(provinceStatus));
+  memset(zoneStatus, 0, sizeof(zoneStatus));
   missionQueue = new TList();
 }
 
@@ -207,8 +207,8 @@ void TAutoGreatPower::ReadFrom(TStream* stream) {
   stream->ReadBytes(this->actionMetricByQuarter, 0x0C);
   SwapShortArrayBytes(this->actionMetricByQuarter, 6);
 
-  stream->ReadBytes(this->mapNodeStateFlags, 0x180);
-  stream->ReadBytes(this->portZoneStateFlags, 0x70);
+  stream->ReadBytes(this->provinceStatus, 0x180);
+  stream->ReadBytes(this->zoneStatus, 0x70);
 
   // The queue pointer is reloaded from the object at every use (0x4e7317, 0x4e7326,
   // 0x4e7331, 0x4e7372), so it is not cached in a local here.
@@ -237,8 +237,8 @@ void TAutoGreatPower::WriteTo(TStream* stream) {
 
   WriteShortArrayElems(stream, this->actionMetricByQuarter, 6);
 
-  stream->WriteBytes(this->mapNodeStateFlags, 0x180);
-  stream->WriteBytes(this->portZoneStateFlags, 0x70);
+  stream->WriteBytes(this->provinceStatus, 0x180);
+  stream->WriteBytes(this->zoneStatus, 0x70);
 
   // 0x4e747a writes the queue COUNT, not a zero word: GetCount()'s result is stored into
   // the local at esp+0x10 (0x4e7483) and that local's address is what WriteBytes receives.
@@ -680,17 +680,17 @@ void TAutoGreatPower::SetPortZoneStateForNation(int nationSlot, char makeEnemy) 
       }
     }
     if (!isMinorNation) {
-      portZoneStateFlags[g_pActiveMapOrderContext
-                             ->FindFirstPortZoneContextByNation(static_cast<short>(nationSlot))
-                             ->GetContextOrdinalOrInvalid()] = 1;
+      zoneStatus[g_pActiveMapOrderContext
+                     ->FindFirstPortZoneContextByNation(static_cast<short>(nationSlot))
+                     ->GetContextOrdinalOrInvalid()] = kMissionDesirabilityCandidate;
       return;
     }
     return;
   }
 
-  portZoneStateFlags[g_pActiveMapOrderContext
-                         ->FindFirstPortZoneContextByNation(static_cast<short>(nationSlot))
-                         ->GetContextOrdinalOrInvalid()] = 0;
+  zoneStatus[g_pActiveMapOrderContext
+                 ->FindFirstPortZoneContextByNation(static_cast<short>(nationSlot))
+                 ->GetContextOrdinalOrInvalid()] = kMissionDesirabilityUnmarked;
 }
 
 // FUNCTION: IMPERIALISM 0x004e83d0
@@ -700,7 +700,8 @@ void TAutoGreatPower::QueueMapActionMissionsForPortZoneCandidates() {
     int regionId = regionList->At(i);
     bool unavailable = g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
         regionId, this->nationSlot);
-    this->mapNodeStateFlags[regionId] = (!unavailable);
+    this->provinceStatus[regionId] =
+        unavailable ? kMissionDesirabilityUnmarked : kMissionDesirabilityCandidate;
     CreateMission(kMissionTypeDefendProvince, regionId, 0, -1);
   }
 
@@ -709,11 +710,11 @@ void TAutoGreatPower::QueueMapActionMissionsForPortZoneCandidates() {
   TZone* firstEntry = portZone->primaryNeighbors[0];
 
   short index = firstEntry->GetContextOrdinalOrInvalid();
-  this->portZoneStateFlags[index] = 1;
+  this->zoneStatus[index] = kMissionDesirabilityCandidate;
   CreateMission(kMissionTypeDefendProvince, -1, firstEntry, -1);
 
   index = portZone->GetContextOrdinalOrInvalid();
-  this->portZoneStateFlags[index] = 1;
+  this->zoneStatus[index] = kMissionDesirabilityCandidate;
   CreateMission(kMissionTypeDefendProvince, -1, portZone, -1);
 
   CreateMission(kMissionTypeScatteredShips, -1, 0, -1);
@@ -722,16 +723,14 @@ void TAutoGreatPower::QueueMapActionMissionsForPortZoneCandidates() {
 // FUNCTION: IMPERIALISM 0x004e8540
 void TAutoGreatPower::CreateMission(eMissionType missionType, int mapNodeIndex, TZone* zoneContext,
                                     int relatedMapNodeIndex) {
-  const unsigned char kNodeStateAvailable = 1;
-  const unsigned char kNodeStateQueued = 2;
 
-  if (mapNodeIndex != -1 && this->mapNodeStateFlags[mapNodeIndex] != kNodeStateAvailable) {
+  if (mapNodeIndex != -1 && this->provinceStatus[mapNodeIndex] != kMissionDesirabilityCandidate) {
     return;
   }
 
   if ((zoneContext != 0) && (relatedMapNodeIndex == -1)) {
     short index = zoneContext->GetContextOrdinalOrInvalid();
-    if (this->portZoneStateFlags[index] != kNodeStateAvailable) {
+    if (this->zoneStatus[index] != kMissionDesirabilityCandidate) {
       return;
     }
   }
@@ -753,14 +752,14 @@ void TAutoGreatPower::CreateMission(eMissionType missionType, int mapNodeIndex, 
   missionQueue->AddTail(missionObj);
 
   if (mapNodeIndex != -1) {
-    this->mapNodeStateFlags[mapNodeIndex] = kNodeStateQueued;
+    this->provinceStatus[mapNodeIndex] = kMissionDesirabilityQueued;
   }
   if ((zoneContext != 0) && (relatedMapNodeIndex == -1)) {
     short index = zoneContext->GetContextOrdinalOrInvalid();
-    this->portZoneStateFlags[index] = kNodeStateQueued;
+    this->zoneStatus[index] = kMissionDesirabilityQueued;
   }
   if (relatedMapNodeIndex != -1) {
-    this->mapNodeStateFlags[relatedMapNodeIndex] = kNodeStateQueued;
+    this->provinceStatus[relatedMapNodeIndex] = kMissionDesirabilityQueued;
   }
 }
 
@@ -784,27 +783,29 @@ void TAutoGreatPower::RemoveMission(eMissionType missionType, int key, TZone* zo
 // forced to 0 -- the same gate/array QueueMapActionMissionsForPortZoneCandidates above
 // already uses directly.
 // FUNCTION: IMPERIALISM 0x004e8b50
-void TAutoGreatPower::SetProvinceStatus(int provinceIndex, int value) {
-  if (value == 1 && g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
-                        provinceIndex, nationSlot)) {
-    value = 0;
+void TAutoGreatPower::SetProvinceStatus(int provinceIndex, eMissionDesirability value) {
+  if (value == kMissionDesirabilityCandidate &&
+      g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(provinceIndex,
+                                                                              nationSlot)) {
+    value = kMissionDesirabilityUnmarked;
   }
-  mapNodeStateFlags[provinceIndex] = static_cast<unsigned char>(value);
+  provinceStatus[provinceIndex] = static_cast<unsigned char>(value);
 }
 
 // FUNCTION: IMPERIALISM 0x004e8ba0
-void TAutoGreatPower::SetProvinceStatus(int provinceIndex, int status, unsigned char bypassGate) {
-  if (status == 1 && bypassGate == 0 &&
+void TAutoGreatPower::SetProvinceStatus(int provinceIndex, eMissionDesirability status,
+                                        unsigned char bypassGate) {
+  if (status == kMissionDesirabilityCandidate && bypassGate == 0 &&
       g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(provinceIndex,
                                                                               nationSlot)) {
-    status = 0;
+    status = kMissionDesirabilityUnmarked;
   }
-  mapNodeStateFlags[provinceIndex] = static_cast<unsigned char>(status);
+  provinceStatus[provinceIndex] = static_cast<unsigned char>(status);
 }
 
 // FUNCTION: IMPERIALISM 0x004e8bf0
-void TAutoGreatPower::SetByteFlagAtOffsetAF0ByIndex(int contextOrdinal, char value) {
-  portZoneStateFlags[contextOrdinal] = static_cast<unsigned char>(value);
+void TAutoGreatPower::SetZoneStatus(int contextOrdinal, eMissionDesirability value) {
+  zoneStatus[contextOrdinal] = static_cast<unsigned char>(value);
 }
 
 // FUNCTION: IMPERIALISM 0x004e92b0
@@ -818,8 +819,8 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
   // Reset the transient (value 1) candidate flags; sticky values survive.
   int i;
   for (i = 0; i < 0x180; ++i) {
-    if (mapNodeStateFlags[i] == 1) {
-      mapNodeStateFlags[i] = 0;
+    if (provinceStatus[i] == kMissionDesirabilityCandidate) {
+      provinceStatus[i] = kMissionDesirabilityUnmarked;
     }
   }
 
@@ -831,13 +832,13 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
       int j;
       for (j = 1; j <= g_apNationStates[slot]->ownedRegionList->GetSize(); ++j) {
         int region = g_apNationStates[slot]->ownedRegionList->At(j);
-        if (mapNodeStateFlags[region] == 0) {
-          bool markValue = true;
+        if (provinceStatus[region] == kMissionDesirabilityUnmarked) {
+          eMissionDesirability markValue = kMissionDesirabilityCandidate;
           if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
                   region, this->nationSlot) != 0) {
-            markValue = false;
+            markValue = kMissionDesirabilityUnmarked;
           }
-          mapNodeStateFlags[region] = markValue;
+          provinceStatus[region] = markValue;
         }
       }
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(slot) != 0) {
@@ -848,13 +849,13 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
             int m;
             for (m = 1; m <= minorDescriptor->ownedRegionList->GetSize(); ++m) {
               int minorRegion = minorDescriptor->ownedRegionList->At(m);
-              if (mapNodeStateFlags[minorRegion] == 0) {
-                bool markValue = true;
+              if (provinceStatus[minorRegion] == kMissionDesirabilityUnmarked) {
+                eMissionDesirability markValue = kMissionDesirabilityCandidate;
                 if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
                         minorRegion, this->nationSlot) != 0) {
-                  markValue = false;
+                  markValue = kMissionDesirabilityUnmarked;
                 }
-                mapNodeStateFlags[minorRegion] = markValue;
+                provinceStatus[minorRegion] = markValue;
               }
             }
           }
@@ -871,13 +872,13 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
       for (j = 1; j <= g_apSecondaryNationStateSlots[7 + minorSlot]->ownedRegionList->GetSize();
            ++j) {
         int region = g_apSecondaryNationStateSlots[7 + minorSlot]->ownedRegionList->At(j);
-        if (mapNodeStateFlags[region] == 0) {
-          bool markValue = true;
+        if (provinceStatus[region] == kMissionDesirabilityUnmarked) {
+          eMissionDesirability markValue = kMissionDesirabilityCandidate;
           if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
                   region, this->nationSlot) != 0) {
-            markValue = false;
+            markValue = kMissionDesirabilityUnmarked;
           }
-          mapNodeStateFlags[region] = markValue;
+          provinceStatus[region] = markValue;
         }
       }
     }
@@ -923,7 +924,7 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
             continue;
           }
         }
-        if (mapNodeStateFlags[rec] != 0) {
+        if (provinceStatus[rec] != kMissionDesirabilityUnmarked) {
           continue;
         }
         if (((1 << orderTypes[t]) & g_pGlobalMapState->cityScoreTable[rec].resourcePresenceMask) ==
@@ -964,24 +965,24 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
       if (candidates->GetSize() != 0) {
         short* topRecord = static_cast<short*>(candidates->GetPtrListEntryByOneBasedIndex(1));
         int topRegion = topRecord[0];
-        if (mapNodeStateFlags[topRegion] == 0) {
-          bool markValue = true;
+        if (provinceStatus[topRegion] == kMissionDesirabilityUnmarked) {
+          eMissionDesirability markValue = kMissionDesirabilityCandidate;
           if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
                   topRegion, this->nationSlot) != 0) {
-            markValue = false;
+            markValue = kMissionDesirabilityUnmarked;
           }
-          mapNodeStateFlags[topRegion] = markValue;
+          provinceStatus[topRegion] = markValue;
         }
         if (candidates->GetSize() >= 2) {
           short* secondRecord = static_cast<short*>(candidates->GetPtrListEntryByOneBasedIndex(2));
           int secondRegion = secondRecord[0];
-          if (mapNodeStateFlags[secondRegion] == 0) {
-            bool markValue = true;
+          if (provinceStatus[secondRegion] == kMissionDesirabilityUnmarked) {
+            eMissionDesirability markValue = kMissionDesirabilityCandidate;
             if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
                     secondRegion, this->nationSlot) != 0) {
-              markValue = false;
+              markValue = kMissionDesirabilityUnmarked;
             }
-            mapNodeStateFlags[secondRegion] = markValue;
+            provinceStatus[secondRegion] = markValue;
           }
         }
       }
@@ -991,8 +992,6 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
     }
   }
 }
-
-// Sets mapNodeStateFlags[provinceIndex] to `value`, except when value == 1 and the
 
 // FUNCTION: IMPERIALISM 0x004e9a50
 void TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
@@ -1029,9 +1028,9 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
 
   int region;
   for (region = 0; region < 0x180; ++region) {
-    unsigned char nodeFlag = mapNodeStateFlags[region];
+    unsigned char nodeFlag = provinceStatus[region];
     int linkRegion = -1;
-    if (nodeFlag != 1) {
+    if (nodeFlag != kMissionDesirabilityCandidate) {
       continue;
     }
     float score;
@@ -1054,7 +1053,7 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
       tier = 2;
     } else {
       score = g_Compute_Advisory_Zero_00653FD0;
-      mapNodeStateFlags[region] = 0;
+      provinceStatus[region] = kMissionDesirabilityUnmarked;
     }
     if (score > bestScore) {
       bestScore = score;
@@ -1071,7 +1070,7 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
   // Port-zone contexts flagged available (state 1) compete with the region winner.
   TZone* zone;
   for (zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
-    if (portZoneStateFlags[zone->GetContextOrdinalOrInvalid()] == 1) {
+    if (zoneStatus[zone->GetContextOrdinalOrInvalid()] == kMissionDesirabilityCandidate) {
       float zoneScore = ComputeMapActionContextCompositeScoreForNation(zone);
       if (zoneScore > bestScore) {
         bestPortZone = zone;
@@ -1109,7 +1108,7 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
           if (contextZone != 0) {
             CreateMission(static_cast<eMissionType>(tier), -1, contextZone, bestRegion);
           } else {
-            mapNodeStateFlags[bestRegion] = 0;
+            provinceStatus[bestRegion] = kMissionDesirabilityUnmarked;
           }
         } else if (bestLinkRegion != -1) {
           CreateMission(static_cast<eMissionType>(tier), bestLinkRegion, 0, bestRegion);
@@ -1138,14 +1137,14 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
   if (anyEligibleAtWar) {
     for (zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
       short contextOrdinal = zone->GetContextOrdinalOrInvalid();
-      if (portZoneStateFlags[contextOrdinal] != 2 &&
+      if (zoneStatus[contextOrdinal] != kMissionDesirabilityQueued &&
           zone->HasSecondaryNeighborWithNationTag(nationSlot) != 0) {
         for (n = 0; n < 7; ++n) {
           if (n != nationSlot &&
               g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, static_cast<short>(n)) !=
                   0 &&
               (zone->nationKeyMask & static_cast<unsigned char>(1 << n)) != 0) {
-            portZoneStateFlags[contextOrdinal] = 1;
+            zoneStatus[contextOrdinal] = kMissionDesirabilityCandidate;
             CreateMission(kMissionTypeDefendProvince, -1, zone, -1);
           }
         }
@@ -1220,7 +1219,7 @@ void TAutoGreatPower::SetEnemy(int targetNation) {
         TZone* portZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(
             static_cast<short>(targetNation));
         short portZoneId = portZone->GetContextOrdinalOrInvalid();
-        this->portZoneStateFlags[portZoneId] = 1;
+        this->zoneStatus[portZoneId] = kMissionDesirabilityCandidate;
       }
     }
   }
@@ -1234,7 +1233,7 @@ void TAutoGreatPower::StopBeingEnemiesWith(int targetNation) {
       TZone* portZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(
           static_cast<short>(targetNation));
       short portZoneId = portZone->GetContextOrdinalOrInvalid();
-      this->portZoneStateFlags[portZoneId] = 0;
+      this->zoneStatus[portZoneId] = kMissionDesirabilityUnmarked;
     }
   }
 }
@@ -1248,10 +1247,10 @@ void TAutoGreatPower::BecomeProtectorateOf(int targetNationSlot) {
     this->actionMetricByQuarter[i] = 0;
   }
   for (i = 0; i < kMapNodeCount; ++i) {
-    this->mapNodeStateFlags[i] = 0;
+    this->provinceStatus[i] = kMissionDesirabilityUnmarked;
   }
   for (i = 0; i < kPortZoneCount; ++i) {
-    this->portZoneStateFlags[i] = 0;
+    this->zoneStatus[i] = kMissionDesirabilityUnmarked;
   }
   KillMissions();
 }
@@ -1272,18 +1271,18 @@ void TAutoGreatPower::LoseProvince(int regionId) {
     }
     mission = static_cast<TMission*>(missionCursor.Advance());
   }
-  this->mapNodeStateFlags[regionId] = 0;
+  this->provinceStatus[regionId] = kMissionDesirabilityUnmarked;
   TGreatPower::LoseProvince(regionId);
 }
 
 // FUNCTION: IMPERIALISM 0x004ea290
 void TAutoGreatPower::AddProvince(int regionId) {
   TGreatPower::AddProvince(regionId);
-  this->mapNodeStateFlags[regionId] =
+  this->provinceStatus[regionId] =
       g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(regionId,
                                                                               this->nationSlot)
-          ? 0
-          : 1;
+          ? kMissionDesirabilityUnmarked
+          : kMissionDesirabilityCandidate;
   this->CreateMission(kMissionTypeDefendProvince, regionId, 0, -1);
 }
 
@@ -1295,7 +1294,7 @@ void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetN
   if (regionList->GetSize() > 0) {
     do {
       int regionId = regionList->At(ordinal);
-      this->mapNodeStateFlags[regionId] = 1;
+      this->provinceStatus[regionId] = kMissionDesirabilityCandidate;
       this->CreateMission(kMissionTypeDefendProvince, regionId, 0, -1);
       ++ordinal;
     } while (ordinal <= regionList->GetSize());
@@ -1304,7 +1303,7 @@ void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetN
       g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
   TZone* firstOrder = portZone->primaryNeighbors[0];
   short portZoneId = firstOrder->GetContextOrdinalOrInvalid();
-  this->portZoneStateFlags[portZoneId] = 1;
+  this->zoneStatus[portZoneId] = kMissionDesirabilityCandidate;
   this->CreateMission(kMissionTypeDefendProvince, -1, firstOrder, -1);
 }
 

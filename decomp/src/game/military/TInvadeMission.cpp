@@ -81,7 +81,7 @@ void TInvadeMission::Free() {
 
   TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
   nationState->AssertValid();
-  nationState->SetProvinceStatus(targetProvince30, 0);
+  nationState->SetProvinceStatus(targetProvince30, kMissionDesirabilityUnmarked);
 
   CIterator iter(orderList);
   TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(iter.Reset());

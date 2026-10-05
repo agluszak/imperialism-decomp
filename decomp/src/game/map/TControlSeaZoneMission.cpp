@@ -87,7 +87,7 @@ TMission* TControlSeaZoneMission::GetReplacementSlot48() {
     TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
     nationState->AssertValid();
     short contextOrdinal = missionTargetZone->GetContextOrdinalOrInvalid();
-    nationState->SetByteFlagAtOffsetAF0ByIndex(contextOrdinal, 0);
+    nationState->SetZoneStatus(contextOrdinal, kMissionDesirabilityUnmarked);
     return nullptr;
   }
 

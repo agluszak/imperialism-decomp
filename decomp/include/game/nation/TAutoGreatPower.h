@@ -157,21 +157,17 @@ public:
   // from flagged nations'/minors' owned-region lists, and (when not at war) scores and
   // flags the top provinces per advisory order type {2,3,4,6}. 0x4e92b0, __thiscall.
   void PopulateCase16AdvisoryMapNodeCandidateState();
-  // Writes `value` into portZoneStateFlags[contextOrdinal] (`contextOrdinal` is a
-  // TZone::GetContextOrdinalOrInvalid() result). Called from
-  // TControlSeaZoneMission::GetReplacementSlot48's terrain-coverage-not-found path
-  // (0x5389a9) to clear this nation's flag for the target port zone's context ordinal.
-  void SetByteFlagAtOffsetAF0ByIndex(int contextOrdinal, char value); // 0x4e8bf0
+  // Zone counterpart of SetProvinceStatus; `contextOrdinal` is a
+  // TZone::GetContextOrdinalOrInvalid() result.
+  void SetZoneStatus(int contextOrdinal, eMissionDesirability value); // 0x4e8bf0
   // Non-virtual helper that marks (or clears) the given nation's first port-zone
-  // context in portZoneStateFlags. Only nations that hold regions are considered, and
+  // context in zoneStatus. Only nations that hold regions are considered, and
   // a minor nation (encoded slot 100..199) is never marked -- only cleared.
   void SetPortZoneStateForNation(int nationSlot, char makeEnemy); // 0x004e8300
-  // Sets mapNodeStateFlags[provinceIndex] to `value`, except when value == 1 and the
-  // province's map-action-context link is unavailable (no active context for this
-  // nation), in which case it's forced to 0 instead. Same gate/array
-  // QueueMapActionMissionsForPortZoneCandidates already uses directly. 0x4e8b50.
-  void SetProvinceStatus(int provinceIndex, int status);
-  void SetProvinceStatus(int provinceIndex, int status, unsigned char bypassGate);
+  // Stores `status`, except that a candidate province whose map-action-context link is
+  // unavailable for this nation is stored unmarked unless `bypassGate` is set. 0x4e8b50.
+  void SetProvinceStatus(int provinceIndex, eMissionDesirability status); // Mac oracle
+  void SetProvinceStatus(int provinceIndex, eMissionDesirability status, unsigned char bypassGate);
 
   // Tail AI-state block: moved here from TGreatPower (RTTI m_nObjectSize proves this
   // data is TAutoGreatPower-only -- see the comment at the end of TGreatPower's field
@@ -179,8 +175,9 @@ public:
   // is 0xb70 (CRuntimeClass m_nObjectSize), so the trailing 4 bytes below are still not
   // semantically recovered.
   short actionMetricByQuarter[6];
-  unsigned char mapNodeStateFlags[0x180];
-  unsigned char portZoneStateFlags[0x70];
+  // eMissionDesirability bytes.
+  unsigned char provinceStatus[0x180];
+  unsigned char zoneStatus[0x70];
   TSortedList* missionQueue;
   float expansionPressurePerCompatibleRegion;
   float averageUnitDivergencePerOwnedRegion;

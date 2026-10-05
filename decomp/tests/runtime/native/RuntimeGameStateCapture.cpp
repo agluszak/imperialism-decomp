@@ -904,23 +904,23 @@ JSON_Value* CaptureAiZoneTargets(TGreatPower* nation) {
   JsonArray targets;
   int ordinal;
   for (ordinal = 0; ordinal < liveCount; ++ordinal) {
-    switch (automaticNation->portZoneStateFlags[ordinal]) {
-    case 0:
+    switch (automaticNation->zoneStatus[ordinal]) {
+    case kMissionDesirabilityUnmarked:
       targets.Add("unmarked");
       break;
-    case 1:
+    case kMissionDesirabilityCandidate:
       targets.Add("candidate");
       break;
-    case 2:
+    case kMissionDesirabilityQueued:
       targets.Add("mission_queued");
       break;
     default:
       FailSemanticCapture("live AI zone target has an invalid state");
     }
   }
-  for (ordinal = liveCount; ordinal < static_cast<int>(sizeof(automaticNation->portZoneStateFlags));
+  for (ordinal = liveCount; ordinal < static_cast<int>(sizeof(automaticNation->zoneStatus));
        ++ordinal) {
-    if (automaticNation->portZoneStateFlags[ordinal] != 0) {
+    if (automaticNation->zoneStatus[ordinal] != kMissionDesirabilityUnmarked) {
       FailSemanticCapture("unused AI zone target has a nonzero state");
     }
   }
@@ -935,14 +935,14 @@ JSON_Value* CaptureAiProvinceTargets(TGreatPower* nation) {
   TAutoGreatPower* automaticNation = static_cast<TAutoGreatPower*>(nation);
   JsonArray targets;
   for (int province = 0; province < 0x180; ++province) {
-    switch (automaticNation->mapNodeStateFlags[province]) {
-    case 0:
+    switch (automaticNation->provinceStatus[province]) {
+    case kMissionDesirabilityUnmarked:
       targets.Add("unmarked");
       break;
-    case 1:
+    case kMissionDesirabilityCandidate:
       targets.Add("candidate");
       break;
-    case 2:
+    case kMissionDesirabilityQueued:
       targets.Add("mission_queued");
       break;
     default:

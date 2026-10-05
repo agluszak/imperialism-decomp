@@ -218,7 +218,7 @@ void TDefendProvinceMission::Free() {
   TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
   nationState->AssertValid();
 
-  nationState->SetProvinceStatus(presentLocation, 0);
+  nationState->SetProvinceStatus(presentLocation, kMissionDesirabilityUnmarked);
 
   CIterator iter(orderList);
   void* current = iter.Reset();
