@@ -9,6 +9,7 @@ from collections import Counter
 from pathlib import Path
 
 from reccmp.compare.call_census import call_delta
+from reccmp.ghidriff.report import selected_comparison
 
 from tools.common.reccmp_report import function_counts, read_summary
 from tools.common.repo import repo_root_from_file
@@ -88,7 +89,7 @@ def reference_groups(summary: dict, census: dict) -> dict:
                 {"identity": {"path": path}, "functions": []},
             )["functions"].append(reference)
         seen_objects: set[str] = set()
-        for difference in function.get("data", []):
+        for difference in selected_comparison(function)["data"]:
             obj = difference.get("object")
             if obj is None:
                 continue

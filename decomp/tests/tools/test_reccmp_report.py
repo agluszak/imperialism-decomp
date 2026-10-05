@@ -26,12 +26,16 @@ class ReccmpReportTests(unittest.TestCase):
                     path.write_bytes(name.encode())
                 (root / "evidence.gpr").touch()
                 target = SimpleNamespace(
+                    target_id="TEST",
                     original_path=inputs["orig"],
                     recompiled_path=inputs["recomp"],
                     recompiled_pdb=inputs["pdb"],
                     source_index=None,
                 )
                 output = root / "report"
+                manifest = SimpleNamespace(
+                    functions=[SimpleNamespace(orig_addr=1)], to_json=dict
+                )
 
                 def compare(*args, **kwargs):
                     summary = {
@@ -55,6 +59,11 @@ class ReccmpReportTests(unittest.TestCase):
                 with (
                     patch("tools.common.reccmp_report.ghidra_env") as environment,
                     patch("tools.common.reccmp_report.RecCmpProject") as project,
+                    patch("tools.common.reccmp_report.Compare"),
+                    patch(
+                        "tools.common.reccmp_report.build_manifest",
+                        return_value=manifest,
+                    ),
                     patch(
                         "tools.common.reccmp_report.subprocess.run", side_effect=compare
                     ),
@@ -73,24 +82,33 @@ class ReccmpReportTests(unittest.TestCase):
                             selection={},
                         )
                 self.assertTrue((output / "selection.json").is_file())
+                self.assertTrue((output / "manifest.json").is_file())
 
-    def test_counts_distinguish_inline_retry_from_direct_clean_result(self) -> None:
+    def test_counts_read_producer_selected_pass(self) -> None:
+        def row(outcome, selected="ordinary", signature=None):
+            evidence = {"outcome": outcome, "signature_diff": signature}
+            passes = {"ordinary": {"outcome": "differences", "signature_diff": None}}
+            passes[selected] = evidence
+            return {"outcome": outcome, "selected_pass": selected, "passes": passes}
+
         rows = [
-            {"outcome": "no-differences", "inline_normalized_diff": None},
-            {"outcome": "no-differences", "inline_normalized_diff": []},
-            {"outcome": "differences", "inline_normalized_diff": ["changed"]},
-            {"outcome": "unpaired", "inline_normalized_diff": None},
-            {"outcome": "analysis-failed", "inline_normalized_diff": None},
+            row("no-differences"),
+            row("no-differences", signature=["-int", "+bool"]),
+            row("no-differences", "inline"),
+            row("differences", "inline"),
+            row("unpaired"),
+            row("analysis-failed"),
         ]
         self.assertEqual(
             function_counts(rows),
             {
                 "outcomes": {
-                    "no-differences": 2,
+                    "no-differences": 3,
                     "differences": 1,
                     "unpaired": 1,
                     "analysis-failed": 1,
                 },
+                "signature_differences": 1,
                 "inline_retries": 2,
                 "inline_retries_clean": 1,
             },

@@ -55,44 +55,22 @@ class CompareReportTests(unittest.TestCase):
         )
 
     def test_reference_groups_report_measured_shared_evidence(self) -> None:
+        def row(address, name, outcome, data):
+            return {
+                "orig": address,
+                "name": name,
+                "outcome": outcome,
+                "source": {"path": "src/Owner.cpp"},
+                "selected_pass": "ordinary",
+                "passes": {"ordinary": {"data": data}},
+            }
+
+        shared = {"object": {"orig": "0x10", "name": "sharedObject"}}
         report = summary(
             [
-                {
-                    "orig": "0x1",
-                    "name": "First",
-                    "outcome": "differences",
-                    "source": {"path": "src/Owner.cpp"},
-                    "data": [
-                        {"object": None},
-                        {
-                            "object": {
-                                "orig": "0x10",
-                                "name": "sharedObject",
-                            }
-                        }
-                    ],
-                },
-                {
-                    "orig": "0x2",
-                    "name": "Second",
-                    "outcome": "analysis-failed",
-                    "source": {"path": "src/Owner.cpp"},
-                    "data": [
-                        {
-                            "object": {
-                                "orig": "0x10",
-                                "name": "sharedObject",
-                            }
-                        }
-                    ],
-                },
-                {
-                    "orig": "0x3",
-                    "name": "Clean",
-                    "outcome": "no-differences",
-                    "source": {"path": "src/Owner.cpp"},
-                    "data": [],
-                },
+                row("0x1", "First", "differences", [{"object": None}, shared]),
+                row("0x2", "Second", "analysis-failed", [shared]),
+                row("0x3", "Clean", "no-differences", []),
             ]
         )
         census = {

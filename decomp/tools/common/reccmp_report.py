@@ -10,8 +10,10 @@ from collections import Counter
 from pathlib import Path
 
 from reccmp.compare import Compare
+from reccmp.compare.manifest import build_manifest
 from reccmp.compare.variables import CompareResult
 from reccmp.compare.vtables import SlotStatus, compare_vtable
+from reccmp.ghidriff.report import selected_comparison
 from reccmp.ghidriff.results import Outcome
 from reccmp.project.detect import RecCmpProject
 from reccmp.types import EntityType, ImageId
@@ -38,9 +40,13 @@ def read_summary(report: Path) -> dict:
 
 def function_counts(rows: list[dict]) -> dict:
     counts = Counter(row["outcome"] for row in rows)
-    retried = [row for row in rows if row["inline_normalized_diff"] is not None]
+    retried = [row for row in rows if row["selected_pass"] == "inline"]
     return {
         "outcomes": {outcome.value: counts[outcome.value] for outcome in Outcome},
+        # Inferred declarations differ independently of body quality.
+        "signature_differences": sum(
+            bool(selected_comparison(row)["signature_diff"]) for row in rows
+        ),
         "inline_retries": len(retried),
         "inline_retries_clean": sum(
             row["outcome"] == Outcome.NO_DIFFERENCES.value for row in retried
@@ -175,14 +181,28 @@ def run_report(
         name: hashlib.sha256(path.read_bytes()).hexdigest()
         for name, path in input_paths.items()
     }
+    wanted = set(orig_addresses)
+    manifest = build_manifest(
+        Compare.from_target(project_target, orig_addrs=sorted(wanted)),
+        target_id=project_target.target_id,
+        orig_path=project_target.original_path,
+        recomp_path=project_target.recompiled_path,
+        select=lambda entity: entity.orig_addr in wanted,
+    )
+    selected = {entry.orig_addr for entry in manifest.functions}
+    if selected != wanted:
+        raise ValueError(
+            f"Selection differs from the catalog: missing={sorted(wanted - selected)}, "
+            f"unexpected={sorted(selected - wanted)}"
+        )
     ghidra_env._evict_daemon_if_running()
     repo = Path(__file__).resolve().parents[2]
     argv = [
         sys.executable,
         "-m",
         "reccmp.tools.compare",
-        "--target",
-        target,
+        "--manifest",
+        str((output / "manifest.json").resolve()),
         "--output",
         str(output.resolve()),
         "--ghidra-projects",
@@ -192,10 +212,12 @@ def run_report(
         "--orig-ghidra-program",
         "/" + ghidra_env.program_name().lstrip("/"),
     ]
-    for address in sorted(set(orig_addresses)):
-        argv.extend(("--orig-address", hex(address)))
     output.mkdir(parents=True)
     (output / "selection.json").write_text(json.dumps(selection, indent=1) + "\n")
+    # reccmp revalidates both binary hashes before analyzing this frozen pairing.
+    (output / "manifest.json").write_text(
+        json.dumps(manifest.to_json(), indent=1) + "\n"
+    )
     with (output / "compare.log").open("w", encoding="utf-8") as log:
         result = subprocess.run(
             argv,
@@ -220,7 +242,6 @@ def run_report(
     ):
         raise ValueError("Native report used different input binaries")
     actual = {int(row["orig"], 16) for row in summary["functions"]}
-    wanted = set(orig_addresses)
     if actual != wanted:
         raise ValueError(
             f"Selection differs from the catalog: missing={sorted(wanted - actual)}, "

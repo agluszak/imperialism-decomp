@@ -20,8 +20,11 @@ library, stub, and generated factory claims retain their pairing identities with
 authored dataset. No function ignore list or effective-score layer duplicates that classification.
 
 The four outcomes are `no-differences`, `differences`, `unpaired`, and `analysis-failed`. Differences
-do not produce a failed percentage gate. Saved artifacts preserve code/data findings, inline retry
-results, direct calls, analysis failures, and input identities. Dataset deltas report shared-function
+do not produce a failed percentage gate. Each run freezes its pairing in `manifest.json` before
+analysis, and reccmp rejects it if either binary hash changed. Every row keeps the complete ordinary
+and inline-retry passes; counts and groups read only the producer's `selected_pass`. Inferred
+signature differences are counted separately and never make a body differ. Saved artifacts preserve
+code/data findings, direct calls, analysis failures, and input identities. Dataset deltas report shared-function
 transitions and added/removed claims separately; they do not infer the cause of a transition.
 Campaign groups count shared original data findings, direct-call targets, and marker owners.
 These are inspection groups, not inferred causes or equivalence judgments.
