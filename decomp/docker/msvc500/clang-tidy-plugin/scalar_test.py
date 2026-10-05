@@ -393,4 +393,5 @@ rejected = {
 }
 assert "only zero" in rejected["never_set"], rejected
 assert "compared with storage" in rejected["kPromotionOpen"], rejected
+assert "external declaration" in rejected["FixtureTwinFlag"], rejected
 print("proven byte domains promote to bool only with truth-value evidence")

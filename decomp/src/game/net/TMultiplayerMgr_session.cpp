@@ -71,7 +71,6 @@
 #include <cstring>
 
 // Cross/UMissionSubs.cpp session and lobby lifecycle extent (0x5421a0-0x545930).
-char ReturnTrueRuntimeCredentialInitStub();
 
 // FUNCTION: IMPERIALISM 0x00542170
 int FindNationSlotIndexBySessionIdInGameFlowList(int sessionId) {

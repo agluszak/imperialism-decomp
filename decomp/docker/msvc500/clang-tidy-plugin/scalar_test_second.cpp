@@ -16,3 +16,10 @@ void InvokeFixtureCallback()
     int callback_argument = 7;
     int callback_result = fixture_callback(callback_argument);
 }
+
+// A separately declared external twin keeps its numeric use out of the bool domain.
+unsigned char FixtureTwinFlag();
+int CountTwinFlag()
+{
+    return FixtureTwinFlag() + 1;
+}

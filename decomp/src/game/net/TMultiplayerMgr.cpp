@@ -3630,8 +3630,6 @@ unsigned char TMultiplayerMgr::TrySaveGameAndMaybeShowFailureDialog(int mode, ch
   return allReachable;
 }
 
-// Trivial credential-init stub reused across the networking cluster (0x5e34b0):
-// unconditionally reports success regardless of receiver.
 // FUNCTION: IMPERIALISM 0x005e34b0
 bool ReturnTrueRuntimeCredentialInitStub() {
   return true;

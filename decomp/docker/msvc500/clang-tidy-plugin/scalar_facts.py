@@ -2427,6 +2427,11 @@ def write_recovery_patch(
         for use in facts.operations:
             if use.detail in {"==", "!="}:
                 comparisons[use.file, use.line, use.column].add(use.key)
+        # Separately declared external entities in other units share one symbol.
+        external_names: dict[tuple[str, str], set[str]] = defaultdict(set)
+        for key, declaration in facts.declarations.items():
+            if facts.linkage.get(key, ("",))[0] == "external":
+                external_names[declaration.kind, declaration.name].add(key)
         compared_with_storage = {
             key
             for operands in comparisons.values()
@@ -2441,7 +2446,9 @@ def write_recovery_patch(
             tested = key in facts.bool_supported or any(
                 mode == "R" for mode, _ in facts.bool_writes[key]
             )
-            if key in compared_with_storage:
+            if not external_names.get((declaration.kind, declaration.name), set()) <= proven | {key}:
+                reason = "an external declaration of the same name is not proven"
+            elif key in compared_with_storage:
                 reason = "compared with storage outside the proven boolean domain"
             elif not tested and facts.constants.get(key) == {0}:
                 reason = "only zero is ever written and nothing tests it; no boolean evidence"

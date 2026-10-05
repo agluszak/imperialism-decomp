@@ -346,6 +346,8 @@ public:
 // session's active nation id, or -1. Free __cdecl function.
 int FindNationSlotIndexBySessionIdInGameFlowList(int sessionId);
 int FindActiveNationSlotIndexInGameFlowList();
+// Always-true networking credential-init stub. 0x5e34b0.
+bool ReturnTrueRuntimeCredentialInitStub();
 
 ASSERT_SIZE(TMultiplayerMgr, 0xf8);
 

@@ -289,3 +289,12 @@ void PromoteFixture(PromotionFixture* fixture, PromotionStates* states, int left
     if (states->states[index] != kPromotionOpen) {
     }
 }
+unsigned char FixtureTwinFlag()
+{
+    return 1;
+}
+void TestTwinFlag()
+{
+    if (FixtureTwinFlag()) {
+    }
+}
