@@ -18,7 +18,7 @@ MainMenuFlow::MainMenuFlow() : phase(kComplete), checkpoint(kRuntimeNoCheckpoint
 void MainMenuFlow::Start(RuntimeScenario& scenario) {
   checkpoint = kRuntimeNoCheckpoint;
   phase = kWaitingForMainMenu;
-  g_pAmbitApplication->PostTurnEventCodeMessage2420(0x5dc);
+  g_pAmbitApplication->PostTurnEventCodeMessage(0x5dc);
   scenario.EnterFlowPhase("waiting_for_main_menu", "post_turn_event_0x05dc");
   scenario.ContinueAfterAction();
 }

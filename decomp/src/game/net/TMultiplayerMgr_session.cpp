@@ -433,7 +433,7 @@ void TMultiplayerMgr::ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(int 
 }
 
 // FUNCTION: IMPERIALISM 0x00544540
-void TMultiplayerMgr::EnsureGameFlowStateAndPostTurnEvent5E5() {
+void TMultiplayerMgr::EnsureGameFlowStateAndShowMultiplayerSetup() {
   TMultiplayerMgr* self = this;
   if (self == 0) {
     self = new TMultiplayerMgr();
@@ -449,7 +449,7 @@ void TMultiplayerMgr::EnsureGameFlowStateAndPostTurnEvent5E5() {
 
   ReturnTrueRuntimeCredentialInitStub();
   g_pAmbitApplication->InstallCohandler(self, true);
-  g_pAmbitApplication->PostTurnEventCodeMessage2420(
+  g_pAmbitApplication->PostTurnEventCodeMessage(
       EncodeTurnEventCode(kTurnEventMultiplayerGameSetup));
   self->sessionPhaseTag = kSessionTagPrep; // 'prep'
 }
@@ -555,7 +555,7 @@ unsigned char TMultiplayerMgr::InitializeProtocolOptionControlFromProvider(TView
 }
 
 // FUNCTION: IMPERIALISM 0x00544f30
-unsigned char TMultiplayerMgr::ResetGameFlowStateAndPostTurnEvent5DC() {
+unsigned char TMultiplayerMgr::ResetGameFlowStateAndShowMainMenu() {
   lobbyDialogView = 0;
   g_pAmbitApplication->InstallCohandler(g_pGameFlowState, false);
   g_pSimMgr->multiplayerSessionRole = kSessionRoleStandalone;
@@ -564,7 +564,7 @@ unsigned char TMultiplayerMgr::ResetGameFlowStateAndPostTurnEvent5DC() {
   }
   sessionPhaseTag = kControlTagNada; // 'nada'
   lobbyDialogView = 0;
-  g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventMainMenu));
+  g_pAmbitApplication->PostTurnEventCodeMessage(EncodeTurnEventCode(kTurnEventMainMenu));
   return 1;
 }
 
@@ -617,7 +617,7 @@ TMultiplayerMgr::InitializeRuntimeSelectionCredentialsFromProviderAndConnect(TVi
 }
 
 // FUNCTION: IMPERIALISM 0x00545290
-unsigned char TMultiplayerMgr::ResetGameFlowStateAndPostTurnEvent5DCAlt() {
+unsigned char TMultiplayerMgr::ResetSessionAndShowMainMenu() {
   lobbyDialogView = 0;
   g_pAmbitApplication->InstallCohandler(g_pGameFlowState, false);
   g_pSimMgr->multiplayerSessionRole = kSessionRoleStandalone;
@@ -626,12 +626,12 @@ unsigned char TMultiplayerMgr::ResetGameFlowStateAndPostTurnEvent5DCAlt() {
   }
   sessionPhaseTag = kControlTagNada; // 'nada'
   lobbyDialogView = 0;
-  g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventMainMenu));
+  g_pAmbitApplication->PostTurnEventCodeMessage(EncodeTurnEventCode(kTurnEventMainMenu));
   return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00545320
-unsigned char TMultiplayerMgr::ApplyJoinGameSelectionAndPostTurnEvent5E4(int selectionTag) {
+unsigned char TMultiplayerMgr::ApplyJoinGameSelectionAndShowNetworkGameOptions(int selectionTag) {
   CString defaultGameName("Frog");
   unsigned char joined = g_pNetMgr006a6014->SelectGame(
       selectionTag, &playerNameString, defaultGameName);
@@ -639,7 +639,7 @@ unsigned char TMultiplayerMgr::ApplyJoinGameSelectionAndPostTurnEvent5E4(int sel
     playerNameMirror = playerNameString;
     lobbyDialogView = 0;
     g_pSimMgr->multiplayerSessionRole = kSessionRoleClient;
-    g_pAmbitApplication->PostTurnEventCodeMessage2420(
+    g_pAmbitApplication->PostTurnEventCodeMessage(
         EncodeTurnEventCode(kTurnEventNetworkGameOptions));
     return 1;
   }
@@ -689,10 +689,10 @@ unsigned char TMultiplayerMgr::ResetNationStatusSlotsAndInitializeNameControls(T
 }
 
 // FUNCTION: IMPERIALISM 0x00545660
-unsigned char TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5() {
+unsigned char TMultiplayerMgr::ResetLocalUiStateAndShowMultiplayerSetup() {
   lobbyDialogView = 0;
   ResetNationStatusArraysAndTurnEventContext();
-  g_pAmbitApplication->PostTurnEventCodeMessage2420(
+  g_pAmbitApplication->PostTurnEventCodeMessage(
       EncodeTurnEventCode(kTurnEventMultiplayerGameSetup));
   queueSyncDword = 0;
   return 1;

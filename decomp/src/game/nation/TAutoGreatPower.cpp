@@ -336,7 +336,7 @@ void TAutoGreatPower::SetTradeOffersFor(short resourceKind, short offerContext) 
 void TAutoGreatPower::ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void) {
   int total = 0;
   for (int resourceType = 0; static_cast<short>(resourceType) < 0x0E; ++resourceType) {
-    total += GetResourceDescriptorWeightWord0ByType(resourceType) *
+    total += TShip::GetTypeCargoHold(resourceType) *
              this->city->orderCountByType5c[resourceType];
   }
 
@@ -487,7 +487,7 @@ void TAutoGreatPower::AddNoticeFrom(short sourceNation, short actionCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e7ca0
-void TAutoGreatPower::DispatchTurnEvent2103WithNationFromRecord() {}
+void TAutoGreatPower::ShowNewspaperForRecordNation() {}
 
 // FUNCTION: IMPERIALISM 0x004e7cc0
 int TAutoGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNation) {

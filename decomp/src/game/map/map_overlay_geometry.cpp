@@ -378,7 +378,7 @@ int __stdcall GetActiveMapOrderEntryActionCode(short nTileIndex, int dwInputFlag
         short minWeight = 10000;
         for (TMapOrderChildLinkNode* node = entry->shipList; node != 0; node = node->next) {
           if (node->active != 0) {
-            short weight = g_NavyOrderResourceDescriptorTable[node->payload->type].ResolveWeight();
+            short weight = g_NavyOrderResourceDescriptorTable[node->payload->type].Firepower();
             if (weight < minWeight) {
               minWeight = weight;
             }

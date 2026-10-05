@@ -26,7 +26,7 @@ public:
   TTacArmyView() {}
 
   // Initializes the live battle-view state from the freshly set-up TArmyBattle
-  // (called by InitializeBattleSetupAndMaybeDispatchTurnEventED8 after resolving the
+  // (called by InitializeBattleSetupAndMaybeShowTacticalView after resolving the
   // 'DLOG' control). Not a real constructor despite the symbols.csv name.
   // 0x5a9d90, __thiscall, ret 8.
   void StuffValues(int compositionClass, class TArmyBattle* battle);

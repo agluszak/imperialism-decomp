@@ -9,55 +9,55 @@
 // as full dwords. Keep one physical array model rather than overlapping named and indexed views.
 struct TNavyOrderResourceDescriptor {
   enum Column {
-    kResolveWeight = 0,
-    kCalculateWeight = 1,
-    kTaskForceWeight = 2,
-    kStockCap = 3,
-    kNavyPriorityWeight = 4,
-    kResourceDescriptorWeightWord0 = 5,
-    kToolbarBucketIndex = 6,
-    kDescriptorWeight = 7,
+    kFirepower = 0,
+    kBattleRange = 1,
+    kArmor = 2,
+    kHullPoints = 3,
+    kBattleSpeed = 4,
+    kCargoHold = 5,
+    kToolbarSlot = 6,
+    kSailingSpeed = 7,
     kPriorityTier = 8,
     kColumnCount = 9
   };
 
   int valueByColumn[kColumnCount];
 
-  __inline int ResolveWeightDword() const {
-    return valueByColumn[kResolveWeight];
+  __inline int FirepowerDword() const {
+    return valueByColumn[kFirepower];
   }
-  __inline short ResolveWeight() const {
-    return static_cast<short>(valueByColumn[kResolveWeight]);
+  __inline short Firepower() const {
+    return static_cast<short>(valueByColumn[kFirepower]);
   }
-  __inline int CalculateWeightDword() const {
-    return valueByColumn[kCalculateWeight];
+  __inline int BattleRangeDword() const {
+    return valueByColumn[kBattleRange];
   }
-  __inline short CalculateWeight() const {
-    return static_cast<short>(valueByColumn[kCalculateWeight]);
+  __inline short BattleRange() const {
+    return static_cast<short>(valueByColumn[kBattleRange]);
   }
-  __inline short TaskForceWeight() const {
-    return static_cast<short>(valueByColumn[kTaskForceWeight]);
+  __inline short Armor() const {
+    return static_cast<short>(valueByColumn[kArmor]);
   }
-  __inline short StockCap() const {
-    return static_cast<short>(valueByColumn[kStockCap]);
+  __inline short HullPoints() const {
+    return static_cast<short>(valueByColumn[kHullPoints]);
   }
-  __inline int NavyPriorityWeightDword() const {
-    return valueByColumn[kNavyPriorityWeight];
+  __inline int BattleSpeedDword() const {
+    return valueByColumn[kBattleSpeed];
   }
-  __inline short NavyPriorityWeight() const {
-    return static_cast<short>(valueByColumn[kNavyPriorityWeight]);
+  __inline short BattleSpeed() const {
+    return static_cast<short>(valueByColumn[kBattleSpeed]);
   }
-  __inline short ResourceDescriptorWeightWord0() const {
-    return static_cast<short>(valueByColumn[kResourceDescriptorWeightWord0]);
+  __inline short CargoHold() const {
+    return static_cast<short>(valueByColumn[kCargoHold]);
   }
-  __inline int ToolbarBucketIndexDword() const {
-    return valueByColumn[kToolbarBucketIndex];
+  __inline int ToolbarSlotDword() const {
+    return valueByColumn[kToolbarSlot];
   }
-  __inline short ToolbarBucketIndex() const {
-    return static_cast<short>(valueByColumn[kToolbarBucketIndex]);
+  __inline short ToolbarSlot() const {
+    return static_cast<short>(valueByColumn[kToolbarSlot]);
   }
-  __inline short DescriptorWeight() const {
-    return static_cast<short>(valueByColumn[kDescriptorWeight]);
+  __inline short SailingSpeed() const {
+    return static_cast<short>(valueByColumn[kSailingSpeed]);
   }
   __inline short PriorityTier() const {
     return static_cast<short>(valueByColumn[kPriorityTier]);
@@ -66,14 +66,6 @@ struct TNavyOrderResourceDescriptor {
 ASSERT_SIZE(TNavyOrderResourceDescriptor, 0x24);
 
 void RecomputeGlobalCapabilityAverages(void);
-short GetResourceTypeRandomDrawBlockFlag(short resourceType);
-short GetResourceDescriptorWord0CByType(short resourceType);
-short GetResourceDescriptorWord10ByType(short resourceType);
-short GetResourceDescriptorWord14ByType(short resourceType);
-short GetResourceDescriptorWord18ByType(short resourceType);
-short GetResourceDescriptorWeightWord1ByType(int resourceType);
-short GetResourceDescriptorWord20ByType(short resourceType);
-short GetResourceDescriptorStatByColumn(short resourceType, short statColumn);
 void FormatLocalizedCommodityCountLabelByIndex(CString* out, unsigned int commodityCode,
                                                short count);
 int GetNavyOrderCategoryBaseline(int category);

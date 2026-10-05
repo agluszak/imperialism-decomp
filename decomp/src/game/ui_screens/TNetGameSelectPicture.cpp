@@ -23,7 +23,7 @@ void TNetGameSelectPicture::DoPostCreate(int arg) {
 void TNetGameSelectPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x14 || commandId == 0xa || commandId == 0x22) {
     if (sourceHandler->controlTag == kControlTagCncl) {
-      g_pGameFlowState->ResetGameFlowStateAndPostTurnEvent5DCAlt();
+      g_pGameFlowState->ResetSessionAndShowMainMenu();
     } else if (sourceHandler->controlTag == kControlTagHost) {
       g_pGameFlowState->AssignStringAtB4FromB0AndResetState40();
     } else if (sourceHandler->controlTag == kControlTagJoin) {
@@ -31,7 +31,7 @@ void TNetGameSelectPicture::DoEvent(int commandId, TEventHandler* sourceHandler,
       gameControl->AssertValid();
       int selectedGameTag = gameControl->GetSelectedChildTag();
       TView* selectedGameOption = ResolveControlByTag(selectedGameTag);
-      g_pGameFlowState->ApplyJoinGameSelectionAndPostTurnEvent5E4(
+      g_pGameFlowState->ApplyJoinGameSelectionAndShowNetworkGameOptions(
           selectedGameOption->controlValue3c);
     }
   }

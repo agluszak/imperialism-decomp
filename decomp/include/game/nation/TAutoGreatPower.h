@@ -112,7 +112,7 @@ public:
   // slot 0x6a — 0x004e7970: AI leaves the base 1c6→250 snapshot empty.
   void RememberTradeBids(void) override;
   // slot 0x80 — 0x004e7ca0.
-  void DispatchTurnEvent2103WithNationFromRecord() override;
+  void ShowNewspaperForRecordNation() override;
   // slots 0x2c8/0x2cc — base vtable NULL; TAutoGreatPower fills these entries.
   // slot 0xb2 — 0x004e75c0: raise the three AI planning metrics for needSlot.
   virtual void RaiseNeedPlanningMetrics(int needSlot);

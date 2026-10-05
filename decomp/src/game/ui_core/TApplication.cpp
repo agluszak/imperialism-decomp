@@ -31,7 +31,7 @@ void TApplication::PostWmCloseToMainThreadWindow() {
 }
 
 // FUNCTION: IMPERIALISM 0x00414720
-void TApplication::PostTurnEventCodeMessage2420(TurnEventCodeStorage eventCode) {
+void TApplication::PostTurnEventCodeMessage(TurnEventCodeStorage eventCode) {
   ::PostMessage(AfxGetMainWnd()->m_hWnd, 0x2420, eventCode, 0);
 }
 

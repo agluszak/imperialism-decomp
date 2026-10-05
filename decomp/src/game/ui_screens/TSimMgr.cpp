@@ -1301,7 +1301,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case kGamePhaseTurnStart: {
     turnStateCode = kGamePhaseEndTurn;
     g_pAssetMgr->OpenFilesFor(0x13);
-    g_pGlobalMapState->DispatchTurnEvent7DDForActiveNation();
+    g_pGlobalMapState->ShowStrategicMapForPlayer();
     g_pViewMgr->RefreshViewSlot48();
     for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
       TGreatPower* nation = g_apNationStates[nationSlot];
@@ -1463,12 +1463,12 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   // event codes.
   case kGamePhaseOptionalCredits:
     turnStateCode = kGamePhaseShowMap;
-    g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventCredits));
+    g_pAmbitApplication->PostTurnEventCodeMessage(EncodeTurnEventCode(kTurnEventCredits));
     break;
 
   case kGamePhaseOptionalNetworkGameOptions:
     turnStateCode = kGamePhaseShowMap;
-    g_pAmbitApplication->PostTurnEventCodeMessage2420(
+    g_pAmbitApplication->PostTurnEventCodeMessage(
         EncodeTurnEventCode(kTurnEventNetworkGameOptions));
     break;
 
@@ -1511,7 +1511,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case kGamePhaseOptionalGamePreferences:
     turnStateCode = kGamePhaseShowMap;
-    g_pAmbitApplication->PostTurnEventCodeMessage2420(
+    g_pAmbitApplication->PostTurnEventCodeMessage(
         EncodeTurnEventCode(kTurnEventGamePreferences));
     break;
 
@@ -2070,14 +2070,14 @@ void ReinitializeGameFlowAndPostTurnEventCode(TurnEventId eventCode) {
     g_bRandomMapDeveloperCheatFlag = false;
     simMgr->ReinitializeRandomSeed();
     g_pSimMgr->turnStateCode = kGamePhaseSetUpMap;
-    g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(eventCode));
+    g_pAmbitApplication->PostTurnEventCodeMessage(EncodeTurnEventCode(eventCode));
   } else {
     g_pSimMgr->Free();
     g_pSimMgr = new TSimMgr();
     g_pSimMgr->ISimMgr();
     g_pSimMgr->StartNextPhase();
     if (eventCode != 0) {
-      g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(eventCode));
+      g_pAmbitApplication->PostTurnEventCodeMessage(EncodeTurnEventCode(eventCode));
     }
   }
   g_bTurnFlowBootstrapComplete = true;

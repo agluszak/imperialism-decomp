@@ -1582,7 +1582,7 @@ void TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress() {
 }
 
 // FUNCTION: IMPERIALISM 0x00511ed0
-void TMapMgr::DispatchTurnEvent7DDForActiveNation() {
+void TMapMgr::ShowStrategicMapForPlayer() {
   TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress();
   short nationId = g_pSimMgr->GetPlayerCountry();
   g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventStrategicMap), nationId);

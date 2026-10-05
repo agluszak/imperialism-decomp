@@ -105,7 +105,7 @@ void THighScoresPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TE
   (void)sourceHandler;
   (void)event;
   if (commandId == 0xa) {
-    g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventMainMenu));
+    g_pAmbitApplication->PostTurnEventCodeMessage(EncodeTurnEventCode(kTurnEventMainMenu));
     g_pSfxPlaybackSystem->ResetDualAudioCuePools();
     g_pSfxPlaybackSystem->AddToPlayList(0xb);
     g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();

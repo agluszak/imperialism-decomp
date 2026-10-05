@@ -1,3 +1,4 @@
+#include "game/navy/TShip.h"
 #include "game/city_ui/TShipyardView.h"
 #include "game/ui_tags_city.h"
 #include "game/ui_tags_common.h"
@@ -399,22 +400,22 @@ void TShipyardView::Draw(RECT* rectBuffer) {
       bool haveMetric = true;
       switch (column) {
       case 0:
-        metricValue = GetResourceTypeRandomDrawBlockFlag(nCommoditySpriteId) / 100;
+        metricValue = TShip::GetTypeFirepower(nCommoditySpriteId) / 100;
         break;
       case 1:
-        metricValue = GetResourceDescriptorWord0CByType(nCommoditySpriteId);
+        metricValue = TShip::GetTypeBattleRange(nCommoditySpriteId);
         break;
       case 2:
-        metricValue = 100 - GetResourceDescriptorWord10ByType(nCommoditySpriteId);
+        metricValue = 100 - TShip::GetTypeArmor(nCommoditySpriteId);
         break;
       case 3:
         metricValue = caseThreeMetricByShipType[nCommoditySpriteId];
         break;
       case 4:
-        metricValue = GetResourceDescriptorWord18ByType(nCommoditySpriteId);
+        metricValue = TShip::GetTypeBattleSpeed(nCommoditySpriteId);
         break;
       case 5:
-        metricValue = GetResourceDescriptorWeightWord0ByType(nCommoditySpriteId);
+        metricValue = TShip::GetTypeCargoHold(nCommoditySpriteId);
         break;
       default:
         haveMetric = false;
@@ -482,7 +483,7 @@ void TShipyardView::SetStats(short shipType) {
       MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x418);
     }
-    stat->SetControlValue(GetResourceDescriptorStatByColumn(shipType, statIndex), 0);
+    stat->SetControlValue(TShip::GetTypeStat(shipType, statIndex), 0);
     stat->QueryBounds(&invalidRect);
     InvalidateCityDialogRectRegion(&invalidRect, 1);
   }

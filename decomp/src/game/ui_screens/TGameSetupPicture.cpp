@@ -56,15 +56,15 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
     postEventCode = EncodeTurnEventCode(kTurnEventLoadSave);
   } else if (controlTag == kControlTagMult) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
-    // TMultiplayerMgr::EnsureGameFlowStateAndPostTurnEvent5E5 already posts turn
+    // TMultiplayerMgr::EnsureGameFlowStateAndShowMultiplayerSetup already posts turn
     // event 0x5e5 itself -- falls straight to the base-class forward below (matches
-    // the original, no PostTurnEventCodeMessage2420 call here). Safe to call through
+    // the original, no PostTurnEventCodeMessage call here). Safe to call through
     // a null g_pGameFlowState: the method is non-virtual and checks `this` before
     // touching any member.
-    g_pGameFlowState->EnsureGameFlowStateAndPostTurnEvent5E5();
+    g_pGameFlowState->EnsureGameFlowStateAndShowMultiplayerSetup();
   } else if (controlTag == kControlTagQuit) {
     g_pAmbitApplication->PostWmCloseToMainThreadWindow();
-    // no PostTurnEventCodeMessage2420 on this path (matches the original).
+    // no PostTurnEventCodeMessage on this path (matches the original).
   } else if (controlTag == kControlTagPref) {
     postEventCode = EncodeTurnEventCode(kTurnEventGamePreferences);
   } else if (controlTag == kControlTagRand) {
@@ -114,7 +114,7 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
   }
 
   if (postEventCode >= 0) {
-    g_pAmbitApplication->PostTurnEventCodeMessage2420(postEventCode);
+    g_pAmbitApplication->PostTurnEventCodeMessage(postEventCode);
   }
   TNoHilitePicture::DoEvent(commandId, sourceHandler, event);
 }

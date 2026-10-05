@@ -588,10 +588,10 @@ void TTechMgr::UpdateSelectionAndRecalculateScores(int resourceType, int nationS
   slotMap[13] = 6;
   int mapped = slotMap[resourceType];
 
-  int selectedGroup = GetResourceDescriptorWord20ByType(static_cast<short>(resourceType));
+  int selectedGroup = TShip::GetTypeToolbarSlot(static_cast<short>(resourceType));
   int i;
   for (i = 0; i < 0xe; ++i) {
-    if (GetResourceDescriptorWord20ByType(static_cast<short>(i)) == selectedGroup &&
+    if (TShip::GetTypeToolbarSlot(static_cast<short>(i)) == selectedGroup &&
         i != resourceType) {
       capRowsB333[nationSlot].selectedByResourceType[i] = 0;
     }

@@ -42,7 +42,7 @@ public:
   // stacks, a composition class from TMapMgr::ClassifyCityGateTerrainComposition, the
   // battle-site fort level, and the cityScoreTable row of the site. 0x005a4790,
   // __thiscall, ret 0x14.
-  void InitializeBattleSetupAndMaybeDispatchTurnEventED8(class TArmyStack* ourStack,
+  void InitializeBattleSetupAndMaybeShowTacticalView(class TArmyStack* ourStack,
                                                          class TArmyStack* enemyStack,
                                                          int compositionClass, int fortLevel,
                                                          int battleSiteIndex);

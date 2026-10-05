@@ -42,9 +42,9 @@ public:
   // (also called directly from OnCommand8009 and palette replacement).
   afx_msg BOOL OnQueryNewPalette();                    // 0x00484ff0
   CDibPal* ReplacePaletteAndRealize(CDibPal* palette); // 0x00485150
-  // Message 0x2420 (posted by TApplication::PostTurnEventCodeMessage2420): dispatch the
+  // Message 0x2420 (posted by TApplication::PostTurnEventCodeMessage): dispatch the
   // carried turn-event code into the UI runtime with the active nation as payload.
-  afx_msg LRESULT HandleCustomMessage2420DispatchTurnEvent(WPARAM wParam, LPARAM lParam);
+  afx_msg LRESULT OnTurnEventCodeMessage(WPARAM wParam, LPARAM lParam);
   afx_msg void OnCommand8009();
   afx_msg void OnCommand800C();
   afx_msg void OnCommand8013();                                           // 0x004855b0

@@ -351,7 +351,7 @@ public:
   // Searches shipList for an existing link to `node`; if none exists,
   // allocates (operator new, 0x606f73) and inserts a new TMapOrderChildLinkNode
   // in priority-sorted order (by g_NavyOrderResourceDescriptorTable[node->type]
-  // .ToolbarBucketIndex()), bumps this entry's bucket counter, sets
+  // .ToolbarSlot()), bumps this entry's bucket counter, sets
   // node->taskForce = this, then calls this->AssertValid() (CObject virtual, slot
   // 0xc) and copies this entry's aggression dword and
   // ship-order-kind gate onto `node` -- the same fields/gate

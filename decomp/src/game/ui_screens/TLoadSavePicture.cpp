@@ -254,7 +254,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
 
   if (commandId == 0x14) {
     if (sourceHandler->controlTag == kControlTagCncl) { // 'clnc'
-      HandleTurnFlowStateTickOrPostTurnEvent5DC();
+      HandleTurnFlowStateTickOrShowMainMenu();
     }
     if (loadModeFlag && sourceHandler->controlTag == kControlTagOtto) {
       if (selectedSlot92 != -1 && selectedSlot92 != 0xa1) {
@@ -275,16 +275,16 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
 }
 
 // FUNCTION: IMPERIALISM 0x0056d190
-void TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC() {
+void TLoadSavePicture::HandleTurnFlowStateTickOrShowMainMenu() {
   if (g_pSimMgr->previousTurnStateCode != kGamePhaseStartup) {
     g_pSimMgr->StartNextPhase();
     return;
   }
   if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
-    g_pGameFlowState->ResetLocalUiStateAndPostTurnEvent5E5();
+    g_pGameFlowState->ResetLocalUiStateAndShowMultiplayerSetup();
     return;
   }
-  g_pAmbitApplication->PostTurnEventCodeMessage2420(kTurnEventMainMenu);
+  g_pAmbitApplication->PostTurnEventCodeMessage(kTurnEventMainMenu);
 }
 
 // FUNCTION: IMPERIALISM 0x0056d1e0

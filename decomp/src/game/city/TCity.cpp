@@ -31,7 +31,7 @@
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
 #include "game/gfx/ui_invalidation_guard.h"
-#include "game/navy/TShip.h" // GetResourceDescriptorWeightWord0ByType
+#include "game/navy/TShip.h"
 #include "game/core/TStream.h"
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/nation_stream_serialization.h"
@@ -531,7 +531,7 @@ void TCity::ProduceUnits() {
       short pendingCount = (*shipCursor)->quantity;
       short tileId = (*shipCursor)->resourceTypeIndex;
       if (pendingCount != 0) {
-        if (!static_cast<bool>(GetResourceTypeRandomDrawBlockFlag(tileId))) {
+        if (!static_cast<bool>(TShip::GetTypeFirepower(tileId))) {
           this->ownerNationAc->AnnounceLater(1, tileId, pendingCount);
         } else {
           this->ownerNationAc->AnnounceLater(0, tileId, pendingCount);
@@ -681,7 +681,7 @@ int TCity::ComputeAverageWeightWord1TimesTenFromResourceCounts() {
   int totalCount = 0;
   for (int type = 0; type < 0xe; ++type) {
     short count = orderCountByType5c[type];
-    weightedSum += GetResourceDescriptorWeightWord1ByType(type) * count;
+    weightedSum += TShip::GetTypeSailingSpeed(type) * count;
     totalCount += count;
   }
   if (totalCount != 0) {
@@ -696,7 +696,7 @@ int TCity::ComputeAverageWeightWord0TimesTenFromResourceCounts() {
   int totalCount = 0;
   for (int type = 0; type < 0xe; ++type) {
     short count = orderCountByType5c[type];
-    weightedSum += GetResourceDescriptorWeightWord0ByType(type) * count;
+    weightedSum += TShip::GetTypeCargoHold(type) * count;
     totalCount += count;
   }
   if (totalCount != 0) {
@@ -710,7 +710,7 @@ int TCity::AllocateRandomResourceCountsWithinWeightBudget(short maxWeight, short
   int allocatedWeight = 0;
   short remaining = 0;
   for (int type = 0; type < 0xe; ++type) {
-    if (GetResourceTypeRandomDrawBlockFlag(static_cast<short>(type)) == 0) {
+    if (TShip::GetTypeFirepower(static_cast<short>(type)) == 0) {
       remaining = static_cast<short>(remaining + orderCountByType5c[type]);
     }
   }
@@ -718,7 +718,7 @@ int TCity::AllocateRandomResourceCountsWithinWeightBudget(short maxWeight, short
     int roll = static_cast<int>(rand()) % remaining + 1;
     int type = 0;
     for (;;) {
-      if (GetResourceTypeRandomDrawBlockFlag(static_cast<short>(type)) == 0) {
+      if (TShip::GetTypeFirepower(static_cast<short>(type)) == 0) {
         roll -= orderCountByType5c[type];
         if (roll < 1) {
           break;
@@ -726,14 +726,14 @@ int TCity::AllocateRandomResourceCountsWithinWeightBudget(short maxWeight, short
       }
       ++type;
     }
-    short weight = GetResourceDescriptorWeightWord0ByType(static_cast<short>(type));
-    if (maxWeight < weight && GetResourceDescriptorWeightWord0ByType(static_cast<short>(type)) - 1 <
+    short weight = TShip::GetTypeCargoHold(static_cast<short>(type));
+    if (maxWeight < weight && TShip::GetTypeCargoHold(static_cast<short>(type)) - 1 <
                                   static_cast<int>(rand()) % maxWeight) {
       break;
     }
     outCounts[type] = static_cast<short>(outCounts[type] + 1);
     orderCountByType5c[type] = static_cast<short>(orderCountByType5c[type] - 1);
-    allocatedWeight += GetResourceDescriptorWeightWord0ByType(static_cast<short>(type));
+    allocatedWeight += TShip::GetTypeCargoHold(static_cast<short>(type));
     remaining = static_cast<short>(remaining - 1);
   }
   return (static_cast<short>(allocatedWeight) >= maxWeight) ? maxWeight : allocatedWeight;

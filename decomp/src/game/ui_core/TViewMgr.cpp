@@ -1319,7 +1319,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
       }
     }
   } else if (newCode == kTurnEventMapEditor) {
-    this->ConfigureActiveDialogGoldValueGridForTurnEvent3C0();
+    this->ConfigureMapEditorGoldValueGrid();
   } else if (newCode == kTurnEventCitySiteSelector) {
     this->InitializeCitySiteSelectionScreenForNation(payload);
   }
@@ -1333,7 +1333,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d7c40
-void TViewMgr::DispatchTurnEvent3B8AndWaitForCompletion(int payload, TEventHandler* waitTarget) {
+void TViewMgr::ShowCitySiteSelectorAndWait(int payload, TEventHandler* waitTarget) {
   DispatchTurnEvent(EncodeTurnEventCode(kTurnEventCitySiteSelector), payload);
   while (static_cast<short>(waitTarget->lastIdleTick) == 0) {
     if (PumpUiMessagesAndBackgroundTasks(1) == 0) {
@@ -2375,17 +2375,17 @@ void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) 
   this->activeMovieViewF4 = 0;
   switch (g_pSimMgr->mode) {
   case kGamePhaseStartup:
-    g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventMainMenu));
+    g_pAmbitApplication->PostTurnEventCodeMessage(EncodeTurnEventCode(kTurnEventMainMenu));
     return;
   case kGamePhaseCouncil:
   case kGamePhaseCouncilVictory:
   case kGamePhaseCouncilDefeat:
-    g_pAmbitApplication->PostTurnEventCodeMessage2420(
+    g_pAmbitApplication->PostTurnEventCodeMessage(
         EncodeTurnEventCode(kTurnEventCouncilOfGovernors));
     return;
   case kGamePhaseEliminations:
     if (g_pSimMgr->ReallyInTheGame(g_pSimMgr->GetPlayerCountry())) {
-      g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventGameScore));
+      g_pAmbitApplication->PostTurnEventCodeMessage(EncodeTurnEventCode(kTurnEventGameScore));
       return;
     }
   default:
@@ -2535,7 +2535,7 @@ void TViewMgr::InitializeCitySiteSelectionScreenForNation(int nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x005dc3f0
-void TViewMgr::ConfigureActiveDialogGoldValueGridForTurnEvent3C0() {
+void TViewMgr::ConfigureMapEditorGoldValueGrid() {
   TWorldView* mapDialog = static_cast<TWorldView*>(static_cast<TView*>(
       g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDialog))); // 'DLOG'
   mapDialog->AssertValid();

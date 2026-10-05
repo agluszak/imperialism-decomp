@@ -14,9 +14,9 @@ void TCdAudioDevice::ResetAndOpenCdAudioDeviceHandle() {
 }
 
 // FUNCTION: IMPERIALISM 0x0047ccd0
-void TCdAudioDevice::SendMciCommand804IfDeviceOpenAndClearHandle() {
+void TCdAudioDevice::CloseDevice() {
   if (m_deviceId != 0) {
-    SendMciCommand804ToDevice(m_deviceId);
+    CloseMciDevice(m_deviceId);
     m_deviceId = 0;
   }
 }
@@ -31,7 +31,7 @@ void TCdAudioDevice::EnsureCdAudioDeviceHandleInitialized() {
 // FUNCTION: IMPERIALISM 0x0047cd30
 void TCdAudioDevice::CloseDeviceAndClearHandle() {
   if (m_deviceId != 0) {
-    SendMciCommand804ToDevice(m_deviceId);
+    CloseMciDevice(m_deviceId);
     m_deviceId = 0;
   }
 }
@@ -60,22 +60,22 @@ int TCdAudioDevice::ApplyAuxOutputVolumeFromScalar(int scalar) {
 
 // FUNCTION: IMPERIALISM 0x0047cdf0
 BOOL TCdAudioDevice::IsPlaybackActive() {
-  return SendMciStatusCommand814AndIgnoreFailure(m_deviceId);
+  return IsCdAudioPlaying(m_deviceId);
 }
 
 // FUNCTION: IMPERIALISM 0x0047ce10
-unsigned int TCdAudioDevice::QueryMciStatusField5() const {
-  return QueryMciStatusField5ViaCommand814(m_deviceId);
+unsigned int TCdAudioDevice::GetMediaPresent() const {
+  return GetCdMediaPresent(m_deviceId);
 }
 
 // FUNCTION: IMPERIALISM 0x0047ce30
-unsigned int TCdAudioDevice::QueryMciStatusField8() const {
-  return QueryMciStatusField8ViaCommand814(m_deviceId);
+unsigned int TCdAudioDevice::GetCurrentTrack() const {
+  return GetCdCurrentTrack(m_deviceId);
 }
 
 // FUNCTION: IMPERIALISM 0x0047ce50
-unsigned int TCdAudioDevice::QueryMciStatusField3() const {
-  return QueryMciStatusField3ViaCommand814(m_deviceId);
+unsigned int TCdAudioDevice::GetTrackCount() const {
+  return GetCdTrackCount(m_deviceId);
 }
 
 // FUNCTION: IMPERIALISM 0x005df8d0
@@ -156,36 +156,36 @@ int __stdcall GetAuxOutputVolumeFromFirstCompatibleDevice(unsigned int* outVolum
 }
 
 // FUNCTION: IMPERIALISM 0x005e16f0
-BOOL __stdcall SendMciStatusCommand814AndIgnoreFailure(MCIDEVICEID device) {
+BOOL __stdcall IsCdAudioPlaying(MCIDEVICEID device) {
   MCI_STATUS_PARMS parms;
-  parms.dwItem = 4;
+  parms.dwItem = MCI_STATUS_MODE;
   MCIERROR err = mciSendCommandA(device, MCI_STATUS, MCI_STATUS_ITEM, (DWORD)&parms);
   if (err != 0) {
     return FALSE;
   }
-  return parms.dwReturn != 0x20d;
+  return parms.dwReturn != MCI_MODE_STOP;
 }
 
 // FUNCTION: IMPERIALISM 0x005e1760
-unsigned int QueryMciStatusField5ViaCommand814(MCIDEVICEID device) {
+unsigned int GetCdMediaPresent(MCIDEVICEID device) {
   MCI_STATUS_PARMS parms;
-  parms.dwItem = 5;
+  parms.dwItem = MCI_STATUS_MEDIA_PRESENT;
   MCIERROR err = mciSendCommandA(device, MCI_STATUS, MCI_STATUS_ITEM, (DWORD)&parms);
   return err == 0 ? parms.dwReturn : 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005e17b0
-unsigned int QueryMciStatusField8ViaCommand814(MCIDEVICEID device) {
+unsigned int GetCdCurrentTrack(MCIDEVICEID device) {
   MCI_STATUS_PARMS parms;
-  parms.dwItem = 8;
+  parms.dwItem = MCI_STATUS_CURRENT_TRACK;
   MCIERROR err = mciSendCommandA(device, MCI_STATUS, MCI_STATUS_ITEM, (DWORD)&parms);
   return err == 0 ? parms.dwReturn : 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005e1800
-unsigned int QueryMciStatusField3ViaCommand814(MCIDEVICEID device) {
+unsigned int GetCdTrackCount(MCIDEVICEID device) {
   MCI_STATUS_PARMS parms;
-  parms.dwItem = 3;
+  parms.dwItem = MCI_STATUS_NUMBER_OF_TRACKS;
   MCIERROR err = mciSendCommandA(device, MCI_STATUS, MCI_STATUS_ITEM, (DWORD)&parms);
   return err == 0 ? parms.dwReturn : 0;
 }
@@ -244,7 +244,7 @@ WORD OpenCdAudioAndProbeAuxOutputDevice(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x005e19e0
-bool __stdcall SendMciCommand804ToDevice(MCIDEVICEID device) {
+bool __stdcall CloseMciDevice(MCIDEVICEID device) {
   MCIERROR err = mciSendCommandA(device, 0x804, 0, 0);
   return err == 0;
 }

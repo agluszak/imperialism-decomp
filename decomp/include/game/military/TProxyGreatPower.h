@@ -22,7 +22,7 @@ public:
   void AddTurnStartEvent(TTurnStartEvent* event) override;               // slot 0x2f 0x540c70
   virtual void
   RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary() override;           // slot 0x36 0x540b80
-  virtual void DispatchTurnEvent2103WithNationFromRecord() override;           // slot 0x80 0x540aa0
+  virtual void ShowNewspaperForRecordNation() override;           // slot 0x80 0x540aa0
   virtual void ReplyToDiplomacyOffers() override;                              // slot 0x81 0x540900
   int ConsiderWarOfIntervention(int targetNation, int sourceNation) override; // slot 0x9f 0x540cf0
   int ConsiderWarOfAlliance(int targetNation, int sourceNation,

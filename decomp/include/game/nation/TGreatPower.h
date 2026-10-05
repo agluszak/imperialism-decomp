@@ -278,7 +278,7 @@ public:
                                                          int targetNation);
   virtual void InitializeDiplomacyOffers(void);
   virtual void InitializeDiplomacyNotices(void);
-  virtual void DispatchTurnEvent2103WithNationFromRecord(void);
+  virtual void ShowNewspaperForRecordNation(void);
   virtual void ReplyToDiplomacyOffers(void);
   // slot 0x82 — body 0x004e2880: ranks this nation's summed building production against
   // the mean/stddev across all eligible nations; returns tier 0..4.

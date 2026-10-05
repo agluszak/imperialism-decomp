@@ -22,7 +22,7 @@ struct TCdAudioDevice {
   // 0x0047cca0 — clear then (re)open the device handle.
   void ResetAndOpenCdAudioDeviceHandle();
   // 0x0047ccd0 — if a device is open, send MCI command 0x804 to it and clear the handle.
-  void SendMciCommand804IfDeviceOpenAndClearHandle();
+  void CloseDevice();
   void CloseDeviceAndClearHandle(); // 0x0047cd30
   // 0x0047cd00 — open the device handle only if it is not already set.
   void EnsureCdAudioDeviceHandleInitialized();
@@ -33,9 +33,9 @@ struct TCdAudioDevice {
   // 0x0047cdf0 — true while the current MCI device is not stopped (and its status query succeeds).
   BOOL IsPlaybackActive();
   int GetAuxOutputVolume();                  // 0x0047cda0
-  unsigned int QueryMciStatusField5() const; // 0x0047ce10
-  unsigned int QueryMciStatusField8() const; // 0x0047ce30
-  unsigned int QueryMciStatusField3() const; // 0x0047ce50
+  unsigned int GetMediaPresent() const; // 0x0047ce10
+  unsigned int GetCurrentTrack() const; // 0x0047ce30
+  unsigned int GetTrackCount() const; // 0x0047ce50
 };
 // g_cdAudioDevice (0x006a60bc) is declared in game/global_data_tables.h.
 
@@ -61,7 +61,7 @@ void __stdcall SetMciPlaybackRangeByTrackIndexAndDevice(int trackIndex, MCIDEVIC
 WORD OpenCdAudioAndProbeAuxOutputDevice(void);
 
 // 0x005e19e0 — send MCI command 0x804 to the given device; returns true on success.
-bool __stdcall SendMciCommand804ToDevice(MCIDEVICEID device);
+bool __stdcall CloseMciDevice(MCIDEVICEID device);
 
 // 0x005e1a10 — send MCI_STOP to the given device. The parameter block pointer is ignored
 // for this command, but the retail helper passes the address of its device argument.
@@ -73,7 +73,7 @@ int ReturnTrueStub(void);
 
 // 0x5e16f0 / 0x5e1760 / 0x5e17b0 / 0x5e1800 — MCI_STATUS (0x814) queries on a CD-audio device
 // for dwItem 4/5/8/3; the Query* variants mask dwReturn to 0 on MCI failure.
-BOOL __stdcall SendMciStatusCommand814AndIgnoreFailure(MCIDEVICEID device);
-unsigned int QueryMciStatusField5ViaCommand814(MCIDEVICEID device);
-unsigned int QueryMciStatusField8ViaCommand814(MCIDEVICEID device);
-unsigned int QueryMciStatusField3ViaCommand814(MCIDEVICEID device);
+BOOL __stdcall IsCdAudioPlaying(MCIDEVICEID device);
+unsigned int GetCdMediaPresent(MCIDEVICEID device);
+unsigned int GetCdCurrentTrack(MCIDEVICEID device);
+unsigned int GetCdTrackCount(MCIDEVICEID device);

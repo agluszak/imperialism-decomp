@@ -313,13 +313,13 @@ int TAdmiral::EstimateStrengthRating(const TTaskForce* force, int unusedArg) con
     short strengthBucket = static_cast<short>(ship->experience / 100);
     const TNavyOrderResourceDescriptor& descriptor =
         g_NavyOrderResourceDescriptorTable[resourceType];
-    int navyPriorityScore = strengthBucket + 5 + descriptor.NavyPriorityWeightDword() * 10;
+    int navyPriorityScore = strengthBucket + 5 + descriptor.BattleSpeedDword() * 10;
     short navyPriorityBucket = static_cast<short>(navyPriorityScore / 10);
-    int resolveScore = strengthBucket + 5 + descriptor.ResolveWeightDword() * 10;
+    int resolveScore = strengthBucket + 5 + descriptor.FirepowerDword() * 10;
     short resolveBucket = static_cast<short>(resolveScore / 10);
-    total += ((navyPriorityBucket + descriptor.CalculateWeight()) * 100 + resolveBucket +
+    total += ((navyPriorityBucket + descriptor.BattleRange()) * 100 + resolveBucket +
               ship->strength) /
-             descriptor.TaskForceWeight();
+             descriptor.Armor();
   }
   return total;
 }

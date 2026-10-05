@@ -1,3 +1,4 @@
+#include "game/navy/TShip.h"
 #include "game/military_ui/TNavyBoyView.h"
 
 #include "game/battle_report_records.h"
@@ -61,7 +62,7 @@ void TNavyBoyView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(0x50, 0x18);
   DrawTextWithCachedQuickDrawStyleState(&finalLabel);
 
-  short levelDivisor = GetResourceDescriptorWord14ByType(battleDetail->resourceType);
+  short levelDivisor = TShip::GetTypeHullPoints(battleDetail->resourceType);
   short level = battleDetail->stockOrRequired;
   short sVar2 = (level * 0x14) / levelDivisor + 1;
   if (sVar2 > 0x14) {

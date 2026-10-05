@@ -1259,7 +1259,7 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot,
 }
 
 // FUNCTION: IMPERIALISM 0x0050d310
-void TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag(int unusedArg1, int unusedArg2) {
+void TMacViewMgr::ShowCitySiteSelectorAndWaitForFlag(int unusedArg1, int unusedArg2) {
   TView* dialog = activeCityProductionView;
   g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventCitySiteSelector), 0);
   short completionFlag = static_cast<short>(dialog->lastIdleTick);

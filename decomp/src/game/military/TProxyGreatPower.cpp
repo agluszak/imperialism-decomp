@@ -52,7 +52,7 @@ void TProxyGreatPower::AddToTreasury(int amount) {
 }
 
 // FUNCTION: IMPERIALISM 0x00540aa0
-void TProxyGreatPower::DispatchTurnEvent2103WithNationFromRecord() {}
+void TProxyGreatPower::ShowNewspaperForRecordNation() {}
 
 // FUNCTION: IMPERIALISM 0x00540ac0
 void TProxyGreatPower::AddOfferFrom(NationSlot sourceNationSlot,

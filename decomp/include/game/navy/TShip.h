@@ -73,6 +73,16 @@ public:
   static void FreeAll();
   static TShip* GetFirst();
   static TShip* GetLast();
+  // Mac oracle per-type stats from g_NavyOrderResourceDescriptorTable.
+  static short GetTypeFirepower(short shipType);    // 0x550d80
+  static short GetTypeBattleRange(short shipType);  // 0x550db0
+  static short GetTypeArmor(short shipType);        // 0x550de0
+  static short GetTypeHullPoints(short shipType);   // 0x550e10
+  static short GetTypeBattleSpeed(short shipType);  // 0x550e40
+  static short GetTypeCargoHold(short shipType);    // 0x550e70
+  static short GetTypeToolbarSlot(short shipType);  // 0x550ea0
+  static short GetTypeSailingSpeed(short shipType); // 0x550ed0
+  static short GetTypeStat(short shipType, short statColumn); // 0x550f30, Mac oracle
   static TShip* GetNth(short index);
   static short GetTypeSlot(short shipType);
   static int GetTypeAttribute(int attribute, short shipType);

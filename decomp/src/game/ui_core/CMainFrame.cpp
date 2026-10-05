@@ -52,7 +52,7 @@ ON_COMMAND(ID_DEFAULT_HELP, CFrameWnd::OnHelpFinder)
 ON_COMMAND(100, OnStartupCommand100)
 ON_MESSAGE(0x464, OnMsg0464)
 ON_MESSAGE(0xBC0, OnMsg0BC0)
-ON_MESSAGE(0x2420, HandleCustomMessage2420DispatchTurnEvent)
+ON_MESSAGE(0x2420, OnTurnEventCodeMessage)
 END_MESSAGE_MAP()
 #endif
 
@@ -272,7 +272,7 @@ void CMainFrame::OnCommand8013() {
 }
 
 // FUNCTION: IMPERIALISM 0x00485920
-LRESULT CMainFrame::HandleCustomMessage2420DispatchTurnEvent(WPARAM wParam, LPARAM lParam) {
+LRESULT CMainFrame::OnTurnEventCodeMessage(WPARAM wParam, LPARAM lParam) {
   (void)lParam;
   g_pViewMgr->DispatchTurnEvent(static_cast<short>(wParam), g_pSimMgr->GetPlayerCountry());
   return 0;

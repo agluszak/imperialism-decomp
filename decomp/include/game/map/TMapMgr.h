@@ -129,11 +129,11 @@ public:
   // If field8 is idle: forces hexNeighborWrapHorizontally and (re)opens the "mapdata"
   // session stream via BuildOrLoadGlobalMapStateForSession. If the strategic-map palette
   // preview is not ready, renders it through the strategic map view. Called from
-  // DispatchTurnEvent7DDForActiveNation.
+  // ShowStrategicMapForPlayer.
   virtual void TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress(); // slot 0x12 0x511e80
   // Ensures the map data stream is ready (slot 0x12), then dispatches turn-event 0x7dd
   // (a UI refresh notification) to g_pViewMgr for the active nation.
-  virtual void DispatchTurnEvent7DDForActiveNation();     // slot 0x13 0x511ed0
+  virtual void ShowStrategicMapForPlayer();     // slot 0x13 0x511ed0
   virtual void ResetAllTileMarkerSlotIndicesToSentinel(); // slot 0x14 0x5178c0
   // Mac oracle; 0x0050f740.
   void GenerateProvinceNames();
@@ -660,7 +660,7 @@ public:
   // composition class from their relative sizes (3 if the city's own owner-nation tile has
   // activeFlags1c bit 0 set, short-circuiting the tally). Consumed by
   // TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup as
-  // TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8's 3rd argument; the
+  // TArmyBattle::InitializeBattleSetupAndMaybeShowTacticalView's 3rd argument; the
   // exact real-world meaning of the bucket totals or the 0-3 codes isn't recovered.
   // 0x00519010, __thiscall, one int stack arg.
   int ClassifyCityGateTerrainComposition(int cityIndex);

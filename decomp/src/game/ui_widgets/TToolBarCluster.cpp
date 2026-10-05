@@ -74,7 +74,7 @@ void TToolBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
     ReinitializeGameFlowAndPostTurnEventCode(kTurnEventRebuildRegisteredWindows);
     break;
   case kControlTagScoreCaps:
-    g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventGameScore));
+    g_pAmbitApplication->PostTurnEventCodeMessage(EncodeTurnEventCode(kTurnEventGameScore));
     break;
   case kControlTagCity:
     g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalCityScreen);

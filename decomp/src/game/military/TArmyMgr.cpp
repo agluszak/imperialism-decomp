@@ -1602,7 +1602,7 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
 
   TArmyBattle* newBattle = new TArmyBattle();
   newBattle->AllocateRecordList();
-  newBattle->InitializeBattleSetupAndMaybeDispatchTurnEventED8(
+  newBattle->InitializeBattleSetupAndMaybeShowTacticalView(
       ourStack, enemyStack, compositionClass, fortLevel, ownerNationCodeInt);
 
   this->ourStackBattle39c = ourStack;

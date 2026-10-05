@@ -184,9 +184,9 @@ void TScenarioChooser::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
 // FUNCTION: IMPERIALISM 0x0057a2d0
 void TScenarioChooser::ExitScreen() {
   if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
-    g_pGameFlowState->ResetLocalUiStateAndPostTurnEvent5E5();
+    g_pGameFlowState->ResetLocalUiStateAndShowMultiplayerSetup();
   } else {
-    g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventMainMenu));
+    g_pAmbitApplication->PostTurnEventCodeMessage(EncodeTurnEventCode(kTurnEventMainMenu));
   }
 }
 
@@ -244,7 +244,7 @@ void TScenarioChooser::StartGame() {
     g_pGameFlowState->activeNationTagIndex =
         static_cast<unsigned char>(mapControl->selectedNation68);
     g_pGameFlowState->scenarioSelectionTag = kControlTagScn0 + selectedScenarioIndex;
-    g_pAmbitApplication->PostTurnEventCodeMessage2420(kTurnEventNetworkGameOptions);
+    g_pAmbitApplication->PostTurnEventCodeMessage(kTurnEventNetworkGameOptions);
   } else {
     g_pSimMgr->SetPlayerCountry(mapControl->selectedNation68);
     for (int i = 0; i < kMajorNationCount; ++i) {

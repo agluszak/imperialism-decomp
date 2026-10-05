@@ -348,7 +348,7 @@ void TSetupRandomMapPicture::StartGame() {
 
   g_nRandomMapSelectedNationSlot00698AB0 = selectedNationSlot9A;
   if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
-    g_pAmbitApplication->PostTurnEventCodeMessage2420(
+    g_pAmbitApplication->PostTurnEventCodeMessage(
         EncodeTurnEventCode(kTurnEventNetworkGameOptions));
     g_pGameFlowState->playerNameMirror = g_cstrCountryNameSettingValue006A4220;
     g_pGameFlowState->playerNameString = g_cstrCountryNameSettingValue006A4220;
@@ -372,10 +372,10 @@ void TSetupRandomMapPicture::StartGame() {
 void TSetupRandomMapPicture::ExitScreen() {
   bool multiplayerSessionActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
   if (multiplayerSessionActive) {
-    g_pGameFlowState->ResetLocalUiStateAndPostTurnEvent5E5();
+    g_pGameFlowState->ResetLocalUiStateAndShowMultiplayerSetup();
     return;
   }
-  g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventMainMenu));
+  g_pAmbitApplication->PostTurnEventCodeMessage(EncodeTurnEventCode(kTurnEventMainMenu));
 }
 
 // FUNCTION: IMPERIALISM 0x00578230

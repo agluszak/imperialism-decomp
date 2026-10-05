@@ -11,7 +11,7 @@ void TCancelGameOptionsCommand::DoIt() {
   TMultiplayerMgr* flowState = g_pGameFlowState;
   flowState->lobbyDialogView = 0;
   flowState->ResetNationStatusArraysAndTurnEventContext();
-  g_pAmbitApplication->PostTurnEventCodeMessage2420(kTurnEventMultiplayerGameSetup);
+  g_pAmbitApplication->PostTurnEventCodeMessage(kTurnEventMultiplayerGameSetup);
   flowState->queueSyncDword = 0;
 }
 

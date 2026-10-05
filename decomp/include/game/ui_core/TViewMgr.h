@@ -86,7 +86,7 @@ public:
                               short maxAmount, short commodityType); // 0x98; Mac oracle
   virtual void ShowNewspaper(int pageIndex = 0);                     // 0x9c; Mac oracle uses long
   virtual void SyncTacticalStatusPanelRegion();                      // 0xa0
-  virtual void DispatchTurnEvent3B8AndWaitForCompletion(int payload,
+  virtual void ShowCitySiteSelectorAndWait(int payload,
                                                         TEventHandler* waitTarget); // 0xa4
   virtual void ShowCityProductionView(short nationSlot); // 0xa8; Mac oracle
   // Forwards to g_pMacViewMgr's own vtable slot 0x5c/0x60/0x68/0x6c/
@@ -143,7 +143,7 @@ public:
   virtual void ShowHighScoreScreen(); // 0x108; Mac oracle
   // Resolves the active map dialog's 'DLOG' view and sets its cell coordinates to
   // (0x14, 0x14) through TWorldView's slot-0x79 virtual (0x5dc3f0).
-  virtual void ConfigureActiveDialogGoldValueGridForTurnEvent3C0(); // 0x10c 0x5dc3f0
+  virtual void ConfigureMapEditorGoldValueGrid(); // 0x10c 0x5dc3f0
   virtual void ShowUnitHistory(short nationSlot);                   // 0x110 0x5dc690
 
   void ApplyLegendSplitSlot34(int split) {
@@ -268,7 +268,7 @@ public:
 
   // Screen-exit backbone: stash the followup turn state in fieldF8; on state 0,
   // re-apply volume preferences and post the followup turn-event code (0x5dc menu /
-  // 0x7e0 / 0x5eb) via g_pAmbitApplication->PostTurnEventCodeMessage2420.
+  // 0x7e0 / 0x5eb) via g_pAmbitApplication->PostTurnEventCodeMessage.
   void HandleTurnStateExitAndPostFollowupEventCode(short followupState); // 0x5db620
 };
 

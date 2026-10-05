@@ -123,7 +123,7 @@ void TShip::Free() {
       owner->shipList = head;
 
       short bucketIndex =
-          static_cast<short>(g_NavyOrderResourceDescriptorTable[type].ToolbarBucketIndex());
+          static_cast<short>(g_NavyOrderResourceDescriptorTable[type].ToolbarSlot());
       --owner->shipCountsByToolbarSlot[bucketIndex];
     }
     if (owner->flagship == this) {
@@ -173,7 +173,7 @@ void TShip::IShip(short shipType, TZone* zone, short nationArg, const char* name
     name = suppliedName;
   }
 
-  strength = g_NavyOrderResourceDescriptorTable[shipType].StockCap();
+  strength = g_NavyOrderResourceDescriptorTable[shipType].HullPoints();
   if (location != 0) {
     location->HandleKeyDown(nation);
   }
@@ -240,14 +240,14 @@ int TShip::GetTypeAttribute(int attribute, short shipType) {
   const TNavyOrderResourceDescriptor& descriptor = g_NavyOrderResourceDescriptorTable[shipType];
   switch (attribute) {
   case 0: {
-    int value = descriptor.CalculateWeight();
-    return descriptor.ResolveWeight() * value * value;
+    int value = descriptor.BattleRange();
+    return descriptor.Firepower() * value * value;
   }
   case 1:
-    return (descriptor.CalculateWeight() * descriptor.StockCap() * 100) /
-           descriptor.TaskForceWeight();
+    return (descriptor.BattleRange() * descriptor.HullPoints() * 100) /
+           descriptor.Armor();
   case 2:
-    return descriptor.NavyPriorityWeight();
+    return descriptor.BattleSpeed();
   case 3:
     return g_industryActionCostWeightResCode10[shipType];
   default:
@@ -277,7 +277,7 @@ void RecomputeGlobalCapabilityAverages(void) {
     // The enabled gate tests the record's first column as a DWORD, while the case-0
     // blend reads its low word. The descriptor accessors preserve both widths without
     // overlapping storage declarations.
-    if (0 < g_NavyOrderResourceDescriptorTable[i].ResolveWeightDword() &&
+    if (0 < g_NavyOrderResourceDescriptorTable[i].FirepowerDword() &&
         g_pTechMgr->resourceTypeEnabled19d[type] != 0) {
       ++enabledCount;
       int category;
@@ -285,17 +285,17 @@ void RecomputeGlobalCapabilityAverages(void) {
         int contribution;
         switch (category) {
         case 0: {
-          short calc = g_NavyOrderResourceDescriptorTable[type].CalculateWeight();
-          contribution = g_NavyOrderResourceDescriptorTable[type].ResolveWeight() * calc * calc;
+          short calc = g_NavyOrderResourceDescriptorTable[type].BattleRange();
+          contribution = g_NavyOrderResourceDescriptorTable[type].Firepower() * calc * calc;
           break;
         }
         case 1:
-          contribution = (g_NavyOrderResourceDescriptorTable[type].CalculateWeight() *
-                          g_NavyOrderResourceDescriptorTable[type].StockCap() * 100) /
-                         g_NavyOrderResourceDescriptorTable[type].TaskForceWeight();
+          contribution = (g_NavyOrderResourceDescriptorTable[type].BattleRange() *
+                          g_NavyOrderResourceDescriptorTable[type].HullPoints() * 100) /
+                         g_NavyOrderResourceDescriptorTable[type].Armor();
           break;
         case 2:
-          contribution = g_NavyOrderResourceDescriptorTable[type].NavyPriorityWeight();
+          contribution = g_NavyOrderResourceDescriptorTable[type].BattleSpeed();
           break;
         case 3:
           contribution = g_industryActionCostWeightResCode10[type];
@@ -334,17 +334,17 @@ short TShip::ComputeNavyOrderPriorityContributionPercentByCategory(int category)
   switch (category) {
   case 0: {
     const TNavyOrderResourceDescriptor& descriptor = g_NavyOrderResourceDescriptorTable[type];
-    int weight = descriptor.CalculateWeight();
-    int quantityTerm = experience / 100 + descriptor.ResolveWeightDword() * 10 + 5;
+    int weight = descriptor.BattleRange();
+    int quantityTerm = experience / 100 + descriptor.FirepowerDword() * 10 + 5;
     return (SignedDiv10(quantityTerm) * weight * weight * 100) / divisor;
   }
   case 1: {
     const TNavyOrderResourceDescriptor& descriptor = g_NavyOrderResourceDescriptorTable[type];
-    int weight = descriptor.CalculateWeight();
-    return (weight * static_cast<int>(strength) * 10000) / (descriptor.TaskForceWeight() * divisor);
+    int weight = descriptor.BattleRange();
+    return (weight * static_cast<int>(strength) * 10000) / (descriptor.Armor() * divisor);
   }
   case 2:
-    return (static_cast<int>(g_NavyOrderResourceDescriptorTable[type].DescriptorWeight()) * 100) /
+    return (static_cast<int>(g_NavyOrderResourceDescriptorTable[type].SailingSpeed()) * 100) /
            divisor;
   case 3:
     if (strength < 1) {
@@ -367,16 +367,16 @@ int GetNormalizedIndustryActionResourceCostPercent(int nCategory, short nResourc
   const TNavyOrderResourceDescriptor& desc = g_NavyOrderResourceDescriptorTable[nResourceType];
   switch (nCategory) {
   case 0:
-    return (static_cast<int>(desc.ResolveWeight()) * static_cast<int>(desc.CalculateWeight()) *
-            static_cast<int>(desc.CalculateWeight()) * 100) /
+    return (static_cast<int>(desc.Firepower()) * static_cast<int>(desc.BattleRange()) *
+            static_cast<int>(desc.BattleRange()) * 100) /
            divisor;
   case 1:
-    return (((static_cast<int>(desc.CalculateWeight()) * static_cast<int>(desc.StockCap()) * 100) /
-             static_cast<int>(desc.TaskForceWeight())) *
+    return (((static_cast<int>(desc.BattleRange()) * static_cast<int>(desc.HullPoints()) * 100) /
+             static_cast<int>(desc.Armor())) *
             100) /
            divisor;
   case 2:
-    return (desc.NavyPriorityWeight() * 100) / divisor;
+    return (desc.BattleSpeed() * 100) / divisor;
   case 3:
     return (g_industryActionCostWeightResCode10[nResourceType] * 100) / divisor;
   default:
@@ -393,23 +393,23 @@ int TShip::ComputeValueForMission(int missionType) const {
     switch (category) {
     case 0: {
       int quantityTerm = static_cast<short>(experience / 100) + 5 +
-                         g_NavyOrderResourceDescriptorTable[type].ResolveWeightDword() * 10;
-      int weight = g_NavyOrderResourceDescriptorTable[type].CalculateWeight();
+                         g_NavyOrderResourceDescriptorTable[type].FirepowerDword() * 10;
+      int weight = g_NavyOrderResourceDescriptorTable[type].BattleRange();
       contribution = static_cast<short>(
           (static_cast<short>(quantityTerm / 10) * weight * weight * 100) / divisor);
       break;
     }
     case 1: {
       int requiredCountValue = strength;
-      int weight = g_NavyOrderResourceDescriptorTable[type].CalculateWeight();
+      int weight = g_NavyOrderResourceDescriptorTable[type].BattleRange();
       contribution = static_cast<short>(
           (weight * requiredCountValue * 10000) /
-          (g_NavyOrderResourceDescriptorTable[type].TaskForceWeight() * divisor));
+          (g_NavyOrderResourceDescriptorTable[type].Armor() * divisor));
       break;
     }
     case 2:
       contribution = static_cast<short>(
-          (static_cast<int>(g_NavyOrderResourceDescriptorTable[type].DescriptorWeight()) * 100) /
+          (static_cast<int>(g_NavyOrderResourceDescriptorTable[type].SailingSpeed()) * 100) /
           divisor);
       break;
     case 3: {
@@ -463,7 +463,7 @@ TTaskForce* TShip::DemandExclusiveTaskForce() {
         owner_ctx->shipList = head->RemoveLinkedOrderNodeByValueRecursive(this);
 
         short bucketIndex =
-            static_cast<short>(g_NavyOrderResourceDescriptorTable[type].ToolbarBucketIndex());
+            static_cast<short>(g_NavyOrderResourceDescriptorTable[type].ToolbarSlot());
         --owner_ctx->shipCountsByToolbarSlot[bucketIndex];
       }
       if (this == owner_ctx->flagship) {
@@ -490,18 +490,18 @@ TTaskForce* TShip::DemandExclusiveTaskForce() {
 
 // FUNCTION: IMPERIALISM 0x00550510
 short TShip::GetToolbarSlot() const {
-  return static_cast<short>(g_NavyOrderResourceDescriptorTable[type].ToolbarBucketIndex());
+  return static_cast<short>(g_NavyOrderResourceDescriptorTable[type].ToolbarSlot());
 }
 
 // FUNCTION: IMPERIALISM 0x00550530
 short TShip::GetBattleSpeed() const {
-  return g_NavyOrderResourceDescriptorTable[type].DescriptorWeight();
+  return g_NavyOrderResourceDescriptorTable[type].SailingSpeed();
 }
 
 // FUNCTION: IMPERIALISM 0x00550550
 short TShip::GetTurnDistanceTo(TZone* otherZone) const {
   short hopDistance = location->GetCachedMapActionContextDistanceOrRecompute(otherZone);
-  short descriptorWeight = g_NavyOrderResourceDescriptorTable[type].DescriptorWeight();
+  short descriptorWeight = g_NavyOrderResourceDescriptorTable[type].SailingSpeed();
   return static_cast<short>((descriptorWeight - 1 + hopDistance) / descriptorWeight);
 }
 
@@ -510,7 +510,7 @@ short TShip::GetTurnDistanceTo(TZone* otherZone) const {
 // callsite loads the ship receiver into ECX and the body reads type at +0x04.
 // FUNCTION: IMPERIALISM 0x005505a0
 short TShip::GetMaxStrength() const {
-  return g_NavyOrderResourceDescriptorTable[type].StockCap();
+  return g_NavyOrderResourceDescriptorTable[type].HullPoints();
 }
 
 // FUNCTION: IMPERIALISM 0x005505c0
@@ -614,26 +614,26 @@ TShip* TShip::Finest(TShip* candidate, bool preferUnassigned) {
 
 // FUNCTION: IMPERIALISM 0x005507b0
 int TShip::GetFirepower() const {
-  int scaledBase = g_NavyOrderResourceDescriptorTable[type].ResolveWeightDword() * 5;
+  int scaledBase = g_NavyOrderResourceDescriptorTable[type].FirepowerDword() * 5;
   short experienceTier = static_cast<short>(experience / 100);
   return (experienceTier + scaledBase * 2 + 5) / 10;
 }
 
 // FUNCTION: IMPERIALISM 0x00550820
 short TShip::GetRange() const {
-  return g_NavyOrderResourceDescriptorTable[type].CalculateWeight();
+  return g_NavyOrderResourceDescriptorTable[type].BattleRange();
 }
 
 // FUNCTION: IMPERIALISM 0x00550840
 int TShip::GetSpeed() const {
   const TNavyOrderResourceDescriptor& desc = g_NavyOrderResourceDescriptorTable[type];
   short strengthBucket = static_cast<short>(experience / 100);
-  return (strengthBucket + 5 + desc.NavyPriorityWeightDword() * 10) / 10;
+  return (strengthBucket + 5 + desc.BattleSpeedDword() * 10) / 10;
 }
 
 // FUNCTION: IMPERIALISM 0x005508b0
 short TShip::GetArmorFactor() const {
-  return g_NavyOrderResourceDescriptorTable[type].TaskForceWeight();
+  return g_NavyOrderResourceDescriptorTable[type].Armor();
 }
 
 // FUNCTION: IMPERIALISM 0x005508d0
@@ -704,13 +704,13 @@ int TShip::GetBattleStrengthRating() const {
   short strengthBucket = static_cast<short>(experience / 100);
 
   const TNavyOrderResourceDescriptor& desc = g_NavyOrderResourceDescriptorTable[resourceType];
-  int navyPriorityScore = strengthBucket + 5 + desc.NavyPriorityWeightDword() * 10;
+  int navyPriorityScore = strengthBucket + 5 + desc.BattleSpeedDword() * 10;
   short navyPriorityBucket = static_cast<short>(navyPriorityScore / 10);
-  int resolveScore = strengthBucket + 5 + desc.ResolveWeightDword() * 10;
+  int resolveScore = strengthBucket + 5 + desc.FirepowerDword() * 10;
   short resolveBucket = static_cast<short>(resolveScore / 10);
 
-  return ((navyPriorityBucket + desc.CalculateWeight()) * 100 + resolveBucket + strength) /
-         desc.TaskForceWeight();
+  return ((navyPriorityBucket + desc.BattleRange()) * 100 + resolveBucket + strength) /
+         desc.Armor();
 }
 
 // FUNCTION: IMPERIALISM 0x00550b60
@@ -718,19 +718,19 @@ int TShip::GetStudliness() const {
   const TNavyOrderResourceDescriptor& descriptor = g_NavyOrderResourceDescriptorTable[type];
   short quantityTerm = static_cast<short>(experience / 100);
   short navyTerm =
-      static_cast<short>((quantityTerm + descriptor.NavyPriorityWeightDword() * 10 + 5) / 10);
+      static_cast<short>((quantityTerm + descriptor.BattleSpeedDword() * 10 + 5) / 10);
   // The resolve-weight column is read as a full dword here; other callers use its low
   // signed word. The descriptor accessors preserve both widths.
-  return ((navyTerm + descriptor.CalculateWeight()) * 100 +
-          static_cast<short>((quantityTerm + descriptor.ResolveWeightDword() * 10 + 5) / 10) +
+  return ((navyTerm + descriptor.BattleRange()) * 100 +
+          static_cast<short>((quantityTerm + descriptor.FirepowerDword() * 10 + 5) / 10) +
           strength) /
-         descriptor.TaskForceWeight();
+         descriptor.Armor();
 }
 
 // FUNCTION: IMPERIALISM 0x00550e70
-short GetResourceDescriptorWeightWord0ByType(int resourceType) {
-  return g_NavyOrderResourceDescriptorTable[static_cast<short>(resourceType)]
-      .ResourceDescriptorWeightWord0();
+short TShip::GetTypeCargoHold(short shipType) {
+  return g_NavyOrderResourceDescriptorTable[shipType]
+      .CargoHold();
 }
 
 // FUNCTION: IMPERIALISM 0x00550f00
@@ -751,9 +751,9 @@ void TShip::Damage(short decrement) {
 // FUNCTION: IMPERIALISM 0x00550fa0
 void TShip::Repair() {
   const TNavyOrderResourceDescriptor& descriptor = g_NavyOrderResourceDescriptorTable[type];
-  strength = static_cast<short>(strength + descriptor.StockCap() / 4);
-  if (strength > descriptor.StockCap()) {
-    strength = descriptor.StockCap();
+  strength = static_cast<short>(strength + descriptor.HullPoints() / 4);
+  if (strength > descriptor.HullPoints()) {
+    strength = descriptor.HullPoints();
   }
 }
 
@@ -786,7 +786,7 @@ void TShip::ReassignToForce(TTaskForce* newOwnerEntry) {
       // SinkOrSwimShips use on the entry (0x551066 disassembly:
       // `dec word ptr [edi + eax*2 + 0x1e]` -- confirmed +0x1e, not +0x18).
       short bucket_offset =
-          static_cast<short>(g_NavyOrderResourceDescriptorTable[type].ToolbarBucketIndex());
+          static_cast<short>(g_NavyOrderResourceDescriptorTable[type].ToolbarSlot());
       --owner_ctx->shipCountsByToolbarSlot[bucket_offset];
     }
 
@@ -826,7 +826,7 @@ void TShip::Capture(short nation) {
       parent->shipList = head;
 
       short bucketIndex =
-          static_cast<short>(g_NavyOrderResourceDescriptorTable[type].ToolbarBucketIndex());
+          static_cast<short>(g_NavyOrderResourceDescriptorTable[type].ToolbarSlot());
       --parent->shipCountsByToolbarSlot[bucketIndex];
     }
 

@@ -14,7 +14,7 @@ public:
   virtual void DoKeyEvent(TToolboxEvent* event) override;   // slot 0x12 0x56d1e0
   virtual void DoPostCreate(int arg) override;              // slot 0x37 0x56bcc0
   virtual void HandleSaveGameSlotSelectionAndPromptFlow();  // slot 0x73 0x56d2a0
-  virtual void HandleTurnFlowStateTickOrPostTurnEvent5DC(); // slot 0x74 0x56d190
+  virtual void HandleTurnFlowStateTickOrShowMainMenu(); // slot 0x74 0x56d190
 
   // 0x56c740, RET 4 (non-virtual). Builds the slot's save path (same recipe as
   // BuildSavePathStringForMode) and, when the file exists, reloads its header into a

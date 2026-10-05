@@ -36,8 +36,8 @@ functions:
       - {event: 0x07db, resource: Citymain.rsrc:2011}
 
   - address: 0x004295a0
-    name: BuildTurnEventDialogResourcesForEvent547Or7D8
-    prototype: TView* __cdecl BuildTurnEventDialogResourcesForEvent547Or7D8(CWnd* pHostWindow, int nEventCode)
+    name: BuildBattleReportOrDiplomacyMapDialogResources
+    prototype: TView* __cdecl BuildBattleReportOrDiplomacyMapDialogResources(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x0548, resource: Diplo.rsrc:1352}
       - {event: 0x0547, resource: Diplo.rsrc:1351}
@@ -148,8 +148,8 @@ functions:
       - {event: 0x0ed8, resource: Tactical.rsrc:3800}
 
   - address: 0x0045d520
-    name: BuildTurnEventDialogResourcesForEvent898
-    prototype: TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int nEventCode)
+    name: BuildTechnologyAdvanceDialogResources
+    prototype: TView* __cdecl BuildTechnologyAdvanceDialogResources(CWnd* pHostWindow, int nEventCode)
     cases:
       - event: 0x0898
         resource: Tech.rsrc:2200
@@ -173,8 +173,8 @@ functions:
             evidence: "original builder 0x0045dcc7 passes the retail string global at 0x006943b0"
 
   - address: 0x0045e0b0
-    name: BuildTurnEventDialogResourcesForEvent8FC
-    prototype: TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int nEventCode)
+    name: BuildTechnologyStoreDialogResources
+    prototype: TView* __cdecl BuildTechnologyStoreDialogResources(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x0942, resource: TechStore.rsrc:2370}
       - {event: 0x08fc, resource: TechStore.rsrc:2300}
@@ -187,8 +187,8 @@ functions:
       - {event: 0x07d9, resource: Trade.rsrc:2009}
 
   - address: 0x0046fd10
-    name: BuildTurnEventDialogResourcesForEvent7DE
-    prototype: TView* __cdecl BuildTurnEventDialogResourcesForEvent7DE(CWnd* pHostWindow, int nEventCode)
+    name: BuildTransportDialogResources
+    prototype: TView* __cdecl BuildTransportDialogResources(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x07de, resource: Transport.rsrc:2014}
 

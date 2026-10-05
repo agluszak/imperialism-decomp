@@ -300,7 +300,7 @@ void TLoungeDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
           if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
             g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagCgam, -1, -2);
           }
-          g_pGameFlowState->ResetLocalUiStateAndPostTurnEvent5E5();
+          g_pGameFlowState->ResetLocalUiStateAndShowMultiplayerSetup();
         }
       }
     } else if (controlTag >= kSessionTagRad0 && controlTag <= kSessionTagRad6) { // 'rad0'..'rad6'

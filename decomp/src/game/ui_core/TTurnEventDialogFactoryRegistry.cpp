@@ -70,7 +70,7 @@ void RegisterStartupDialogFactoryCallbacks(TTurnEventDialogFactoryRegistry* regi
       BuildTradeSchoolDialogControls,
       InitializeIndustryOverviewPlacardsAndTradeStatusTags,
       InitializeIndustryViewTradeMoveControlsAndCommodityRows,
-      BuildTurnEventDialogResourcesForEvent547Or7D8,
+      BuildBattleReportOrDiplomacyMapDialogResources,
       InitializeDealBookScreenControlsAndCommandTags,
       BuildTurnEventDialogUiByCode,
       InitializeArmyNavyReportViewsAndCommandTags,
@@ -79,10 +79,10 @@ void RegisterStartupDialogFactoryCallbacks(TTurnEventDialogFactoryRegistry* regi
       BuildUiResourceTreeByTemplateIdAndBindScreenContext,
       InitializeGameSetupScreenControlsAndModeTags,
       InitializeTacticalBattleViewToolbarAndDialogControls,
-      BuildTurnEventDialogResourcesForEvent898,
-      BuildTurnEventDialogResourcesForEvent8FC,
+      BuildTechnologyAdvanceDialogResources,
+      BuildTechnologyStoreDialogResources,
       InitializeTradeScreenBitmapControls,
-      BuildTurnEventDialogResourcesForEvent7DE,
+      BuildTransportDialogResources,
       BuildUniversityDialogShell,
   };
   const int factoryCount = sizeof(kStartupFactories) / sizeof(kStartupFactories[0]);

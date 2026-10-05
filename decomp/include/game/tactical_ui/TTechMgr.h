@@ -83,7 +83,7 @@ public:
   // Per-nation selected-order-type row (true base 0x333, stride 0xe): one byte per
   // navy-order resource type (0..13), 1 = this type currently selected for the nation.
   // Init sets types [0..4] = 1; UpdateSelectionAndRecalculateScores (0x5b0500) clears
-  // the same-group siblings (via GetResourceDescriptorWord20ByType) and sets the new one.
+  // the same-group siblings (via TShip::GetTypeToolbarSlot) and sets the new one.
   struct CapRowB {
     unsigned char selectedByResourceType[0xe];
   };

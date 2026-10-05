@@ -16,7 +16,7 @@ TView* __cdecl InitializeIndustryOverviewPlacardsAndTradeStatusTags(CWnd* pHostW
                                                                     int nEventCode);
 TView* __cdecl InitializeIndustryViewTradeMoveControlsAndCommodityRows(CWnd* pHostWindow,
                                                                        int nEventCode);
-TView* __cdecl BuildTurnEventDialogResourcesForEvent547Or7D8(CWnd* pHostWindow, int nEventCode);
+TView* __cdecl BuildBattleReportOrDiplomacyMapDialogResources(CWnd* pHostWindow, int nEventCode);
 TView* __cdecl InitializeDealBookScreenControlsAndCommandTags(CWnd* pHostWindow, int nEventCode);
 TView* __cdecl BuildTurnEventDialogUiByCode(CWnd* pHostWindow, int nEventCode);
 TView* __cdecl InitializeArmyNavyReportViewsAndCommandTags(CWnd* pHostWindow, int nEventCode);
@@ -28,8 +28,8 @@ TView* __cdecl BuildUiResourceTreeByTemplateIdAndBindScreenContext(CWnd* pHostWi
 TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, int nEventCode);
 TView* __cdecl InitializeTacticalBattleViewToolbarAndDialogControls(CWnd* pHostWindow,
                                                                     int nEventCode);
-TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int nEventCode);
-TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int nEventCode);
+TView* __cdecl BuildTechnologyAdvanceDialogResources(CWnd* pHostWindow, int nEventCode);
+TView* __cdecl BuildTechnologyStoreDialogResources(CWnd* pHostWindow, int nEventCode);
 TView* __cdecl InitializeTradeScreenBitmapControls(CWnd* pHostWindow, int nEventCode);
-TView* __cdecl BuildTurnEventDialogResourcesForEvent7DE(CWnd* pHostWindow, int nEventCode);
+TView* __cdecl BuildTransportDialogResources(CWnd* pHostWindow, int nEventCode);
 TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode);

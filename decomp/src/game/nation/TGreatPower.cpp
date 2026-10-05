@@ -878,7 +878,7 @@ void TGreatPower::SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(
 void TGreatPower::RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void) {
   int total = 0;
   for (int resourceType = 0; resourceType < kIndustryActionSlotCount; ++resourceType) {
-    total += GetResourceDescriptorWeightWord0ByType(resourceType) *
+    total += TShip::GetTypeCargoHold(resourceType) *
              this->city->orderCountByType5c[resourceType];
   }
 
@@ -2082,7 +2082,7 @@ void TGreatPower::InitializeDiplomacyNotices(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004df5c0
-void TGreatPower::DispatchTurnEvent2103WithNationFromRecord(void) {
+void TGreatPower::ShowNewspaperForRecordNation(void) {
   TViewMgr* uiRuntimeContext = g_pViewMgr;
   uiRuntimeContext->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventNewspaperStatus),
                                       this->nationSlot);
@@ -3311,7 +3311,7 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
       switch (entry->orderKind) {
       case 1: {
         short grantCount = entry->flags;
-        totalGrantValue += GetResourceDescriptorWeightWord0ByType(entry->payload) * grantCount;
+        totalGrantValue += TShip::GetTypeCargoHold(entry->payload) * grantCount;
         if (grantCount > 1) {
           g_pSimMgr->GetString(0x271a, entry->payload, &entryText);
         } else {

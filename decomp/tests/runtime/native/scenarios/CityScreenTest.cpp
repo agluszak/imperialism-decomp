@@ -264,7 +264,7 @@ private:
     owner->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
     const short expectedCapacity = static_cast<short>(
         shipBefore.merchantCapacity +
-        GetResourceDescriptorWeightWord0ByType(resourceType) * completedQuantity);
+        TShip::GetTypeCargoHold(resourceType) * completedQuantity);
     const int expectedArms =
         shipBefore.armsInNavy +
         GetIndustryActionCostWeightByResourceType(resourceType) * completedQuantity;

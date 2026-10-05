@@ -26,7 +26,7 @@ void TNetSelectPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
   }
   if (commandId == 0x14 || commandId == 0xa || commandId == 0x22) {
     if (sourceHandler->controlTag == kControlTagCncl) {
-      g_pGameFlowState->ResetGameFlowStateAndPostTurnEvent5DC();
+      g_pGameFlowState->ResetGameFlowStateAndShowMainMenu();
     } else if (sourceHandler->controlTag == kControlTagOkay) {
       TCluster* protControl = static_cast<TCluster*>(ResolveControlByTag(kControlTagProt));
       protControl->AssertValid();

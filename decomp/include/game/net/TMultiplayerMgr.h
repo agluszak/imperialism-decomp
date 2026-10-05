@@ -169,11 +169,11 @@ public:
   unsigned char ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet); // 0x545940
   // IFuzzySet the active lobby context, rebuild the seven nation-status rows, post
   // setup event 0x5e5, and clear the queue synchronization word.
-  unsigned char ResetLocalUiStateAndPostTurnEvent5E5(); // 0x545660
+  unsigned char ResetLocalUiStateAndShowMultiplayerSetup(); // 0x545660
   // Uninstall this manager as the app's cohandler, clear the DirectPlay runtime
   // selection buffer (if a session exists), reset the phase tag to 'nada' and the
   // lobby dialog view, and post setup event 0x5dc.
-  unsigned char ResetGameFlowStateAndPostTurnEvent5DC(); // 0x544f30
+  unsigned char ResetGameFlowStateAndShowMainMenu(); // 0x544f30
   // Forwards to TNetMgr's DirectPlay session-open path with this manager's
   // gameNameString as the copy-out buffer.
   unsigned char ValidateGameFlowNameAndSelectionContext(int protocolValue,
@@ -188,22 +188,22 @@ public:
   // DirectPlay session finalize stub's result (always true).
   unsigned char
   InitializeRuntimeSelectionCredentialsFromProviderAndConnect(TView* provider); // 0x545110
-  // Compiled twin of ResetGameFlowStateAndPostTurnEvent5DC (same body, separate
+  // Compiled twin of ResetGameFlowStateAndShowMainMenu (same body, separate
   // out-of-line copy in the binary).
-  unsigned char ResetGameFlowStateAndPostTurnEvent5DCAlt(); // 0x545290
+  unsigned char ResetSessionAndShowMainMenu(); // 0x545290
   // Hosting a new game: backs up playerNameString into playerNameMirror and clears
   // the lobby dialog view. No DirectPlay session-join step (unlike
-  // ApplyJoinGameSelectionAndPostTurnEvent5E4).
+  // ApplyJoinGameSelectionAndShowNetworkGameOptions).
   unsigned char AssignStringAtB4FromB0AndResetState40(); // 0x545480
   // Joins the DirectPlay session named by selectionTag via TNetMgr, staging
   // playerNameString as both the seed and the round-tripped result buffer. On
   // success, mirrors the resolved name, clears the lobby dialog view, marks the sim
   // client role (kSessionRoleClient), and posts setup event 0x5e4. On failure,
   // restores playerNameString from playerNameMirror.
-  unsigned char ApplyJoinGameSelectionAndPostTurnEvent5E4(int selectionTag); // 0x545320
+  unsigned char ApplyJoinGameSelectionAndShowNetworkGameOptions(int selectionTag); // 0x545320
   // Uninstalls this manager as the app's cohandler, clears the DirectPlay runtime
   // selection buffer, and resets the phase tag to 'nada' and the lobby dialog view
-  // -- same as the ResetGameFlowStateAndPostTurnEvent5DC* pair but without posting
+  // -- same as the ResetGameFlowStateAndShowMainMenu* pair but without posting
   // a setup event.
   void ResetDiplomacyRuntimeSelectionAndSetModeNada(); // 0x544630
   // Rebuilds the protocol-option list for `provider`'s 'prot' cluster and selects
@@ -234,14 +234,14 @@ public:
   void RouteAndProcessDiplomacyTurnStateEventQueue();                    // 0x545730
 
   // Unlike the emitters above, `this` IS used here: called as
-  // g_pGameFlowState->EnsureGameFlowStateAndPostTurnEvent5E5() where g_pGameFlowState may
+  // g_pGameFlowState->EnsureGameFlowStateAndShowMultiplayerSetup() where g_pGameFlowState may
   // still be null (every real call site loads ECX from that global first, even when it's
   // null -- non-virtual calls don't dereference `this`). Lazily constructs+installs a
   // fresh TMultiplayerMgr into g_pGameFlowState if it was null, then (whether freshly
   // constructed or already present) registers it as an idle cohandler and posts turn
   // event 0x5e5. Safe to call through a null `this` since member access only happens
   // after the null check. 0x544540.
-  void EnsureGameFlowStateAndPostTurnEvent5E5();
+  void EnsureGameFlowStateAndShowMultiplayerSetup();
 
   bool IsEverybodyConnected() const; // 0x00543100
   // Mac oracle. Stores both phases and marks every populated major-nation slot pending.

@@ -58,7 +58,7 @@ void TArmyBattle::ComputeBattlefieldColumnCountFromUnitRanges() {
 }
 
 // FUNCTION: IMPERIALISM 0x005a4790
-void TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8(TArmyStack* ourStack,
+void TArmyBattle::InitializeBattleSetupAndMaybeShowTacticalView(TArmyStack* ourStack,
                                                                     TArmyStack* enemyStack,
                                                                     int compositionClass,
                                                                     int fortLevel,
@@ -182,7 +182,7 @@ void TArmyBattle::ReadFrom(TStream* stream) {
     targetStack->AddUnitToChainHead(deployRecord->sourceUnit38);
   }
 
-  InitializeBattleSetupAndMaybeDispatchTurnEventED8(
+  InitializeBattleSetupAndMaybeShowTacticalView(
       ourBattleStack, enemyBattleStack, compositionClass50, fortLevel49, battleSiteIndex38);
 }
 
