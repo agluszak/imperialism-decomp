@@ -318,7 +318,7 @@ BOOL TDirectPlaySessionManagerBase::ExtendEnumSessionsTimeoutWhileCtrlHeld(DWORD
 
 // FUNCTION: IMPERIALISM 0x00480500
 BOOL TDirectPlaySessionManagerBase::SelectRuntimeProvider(GUID* providerGuid) {
-  T104TemplateDialog dialog(0);
+  TPickGameDialog dialog(0);
   for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
     RuntimeSelectionRecord* record = g_RuntimeSelectionRecords006a15e0[index];
     int row = dialog.listbox.AddString(record->label);

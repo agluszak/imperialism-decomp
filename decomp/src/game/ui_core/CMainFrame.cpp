@@ -23,7 +23,7 @@
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 
 // Entry order follows the original map at 0x648648. ON_COMMAND(kCmdConductDiplomacy) dispatches to the
-// recovered 0x4855b0 terrain-overlay dialog builder owned by TC2TemplateDialog.cpp.
+// recovered 0x4855b0 terrain-overlay dialog builder owned by TWarpToScreenDialog.cpp.
 //
 // clang-cl's lint build rejects the MFC message-map macros' unqualified `&OnPaint`-style
 // address-of-member-function (a long-standing MSVC extension clang doesn't implement for
@@ -186,7 +186,7 @@ void CMainFrame::OnResetPalette() {
 
 // FUNCTION: IMPERIALISM 0x004851b0
 void CMainFrame::OnWarpToScreen() {
-  TC2TemplateDialog dialog(0);
+  TWarpToScreenDialog dialog(0);
   dialog.PrepareAndCreateModalFromTemplate();
 
   dialog.slider.SetRange(0, 6, FALSE);
@@ -235,7 +235,7 @@ void CMainFrame::OnShowDealBook() {
 // FUNCTION: IMPERIALISM 0x004855b0
 void CMainFrame::OnConductDiplomacy() {
   while (true) {
-    TD2TemplateDialog dialog(0);
+    TConductDiplomacyDialog dialog(0);
     dialog.PrepareAndCreateModalFromTemplate();
 
     int nationIndex = 0;

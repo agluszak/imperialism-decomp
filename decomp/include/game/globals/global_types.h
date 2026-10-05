@@ -25,7 +25,7 @@ class TAssetMgr;
 class TBackdropWindow;
 class TCivMgr;
 class TControl;
-class TD0TemplateDialog;
+class TTraceDialog;
 class TDiplomacyMgr;
 class THelpMgr;
 class TInfoBarText;

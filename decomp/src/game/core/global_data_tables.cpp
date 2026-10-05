@@ -98,7 +98,7 @@ extern const char g_szPaletteResourceIdFormat[] = "#%lu";
 }
 
 // GLOBAL: IMPERIALISM 0x006a1e78
-TD0TemplateDialog g_debugTraceDialog(0);
+TTraceDialog g_debugTraceDialog(0);
 
 extern "C" {
 
@@ -264,7 +264,7 @@ unsigned int g_McAppUiMouseCaptureTimerId_006A1ADC = 0;
 char g_szMcAppUiSourcePath_006950B0[] = "D:\\Ambit\\McAppUI.cpp";
 // GLOBAL: IMPERIALISM 0x00695168
 char g_szQuickDrawSourcePath_00695168[] = "D:\\Ambit\\QuickDraw.cpp";
-// FindOneOf() set used by TD0TemplateDialog to split accumulated trace text into
+// FindOneOf() set used by TTraceDialog to split accumulated trace text into
 // listbox lines. Newline precedes carriage return in the original pool.
 // GLOBAL: IMPERIALISM 0x00695200
 char g_szTraceLineBreakChars_00695200[] = "\n\r";
@@ -293,7 +293,7 @@ const char* const g_apszQuickDrawFontFaceNames[5] = {
 char g_szUiPlaceholderSeason_006943BC[] = "Winter, 1888";
 // GLOBAL: IMPERIALISM 0x00694a98
 char g_szUiPlaceholderSampleText_00694A98[] = "Sample Text 1\n2\n3\n4\n5\n6\n7\n8";
-// Selects the CDib picture-preview blit path in TDDTemplateDialog::OnPaint (0x0047d5f0):
+// Selects the CDib picture-preview blit path in TDibPreviewDialog::OnPaint (0x0047d5f0):
 // nonzero (1 in the binary) uses CreateCompatibleDC + BitBlt with a device bitmap; zero
 // uses StretchDIBits with the stored DIB bits.
 // GLOBAL: IMPERIALISM 0x00694c50

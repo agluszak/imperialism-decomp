@@ -37,7 +37,7 @@ extern CString g_cstrUiFontBelweBdBt;
 
 // Process-lifetime trace dialog whose source-level global definition causes VC5 to emit
 // the dynamic initializer at 0x0049baa0 and its registered cleanup at 0x0049bad0.
-extern TD0TemplateDialog g_debugTraceDialog;
+extern TTraceDialog g_debugTraceDialog;
 
 // File-scope zero geometry/color defaults recovered from the VC5 dynamic-initializer
 // bodies in the 0x0049b9d0-0x0049cb60 cluster. They have no retail readers, but their
@@ -304,7 +304,7 @@ extern int g_diplomacyDialogAssertGuard_006A15CC;
 // One-slot CTemporaryRegion reuse cache (see CTemporaryRegion.h).
 extern RgnHandle g_pTemporaryRegionCache;
 
-// Selects the CDib blit path in TDDTemplateDialog::OnPaint (0x00694c50).
+// Selects the CDib blit path in TDibPreviewDialog::OnPaint (0x00694c50).
 extern int g_useCompatibleBitmapBlit;
 
 extern "C" const char g_szDiplomacyDialogsSourcePath_00694CC0[];

@@ -14,11 +14,11 @@ struct GameSetup;
 // through the TModalDialogBase template helpers. Used by the ID_800C
 // city-view-selection and ID_8013 terrain-overlay command handlers.
 // VTABLE: IMPERIALISM 0x006461f0
-class TC2TemplateDialog : public TModalDialogBase {
+class TWarpToScreenDialog : public TModalDialogBase {
 public:
   // FUNCTION: IMPERIALISM 0x0047d0c0
-  ~TC2TemplateDialog() override {}
-  TC2TemplateDialog(void* initParam); // 0x0047cfd0
+  ~TWarpToScreenDialog() override {}
+  TWarpToScreenDialog(void* initParam); // 0x0047cfd0
 
   CSliderCtrl slider; // +0x74
   CListBox listbox;   // +0xb0
@@ -28,18 +28,18 @@ protected:
   DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x0047d1a0 (vtable index 12)
 };
 
-ASSERT_SIZE(TC2TemplateDialog, 0xec);
+ASSERT_SIZE(TWarpToScreenDialog, 0xec);
 
 // Sibling "D2" template dialog (template id 0xd2, own vtable 0x646300): same
 // TModalDialogBase base with a single embedded CListBox at +0x74. Built by
 // InitializeDialogTemplateD2WithTextState (0x0047d1c0); used by the ID_8013
 // terrain-overlay command handler.
 // VTABLE: IMPERIALISM 0x00646300
-class TD2TemplateDialog : public TModalDialogBase {
+class TConductDiplomacyDialog : public TModalDialogBase {
 public:
   // FUNCTION: IMPERIALISM 0x0047d280
-  ~TD2TemplateDialog() override {}
-  TD2TemplateDialog(void* initParam); // 0x0047d1c0
+  ~TConductDiplomacyDialog() override {}
+  TConductDiplomacyDialog(void* initParam); // 0x0047d1c0
 
   CListBox listbox; // +0x74
 
@@ -48,17 +48,17 @@ protected:
   DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x0047d340 (vtable index 12)
 };
 
-ASSERT_SIZE(TD2TemplateDialog, 0xb0);
+ASSERT_SIZE(TConductDiplomacyDialog, 0xb0);
 
 // Sibling "DB" template dialog (template id 0xdb, own vtable 0x646410): same TModalDialogBase
 // base with a single embedded CSliderCtrl at +0x74 (ctor installs the CSliderCtrl vtable
 // 0x6714cc). Built by InitializeDialogTemplateDBWithTextState (0x0047d360).
 // VTABLE: IMPERIALISM 0x00646410
-class TDBTemplateDialog : public TModalDialogBase {
+class TSwitchGreatPowerDialog : public TModalDialogBase {
 public:
   // FUNCTION: IMPERIALISM 0x00413ed0
-  ~TDBTemplateDialog() override {}
-  TDBTemplateDialog(void* initParam); // 0x0047d360
+  ~TSwitchGreatPowerDialog() override {}
+  TSwitchGreatPowerDialog(void* initParam); // 0x0047d360
 
   CSliderCtrl slider; // +0x74
 
@@ -67,17 +67,17 @@ protected:
   DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x0047d450 (vtable index 12)
 };
 
-ASSERT_SIZE(TDBTemplateDialog, 0xb0);
+ASSERT_SIZE(TSwitchGreatPowerDialog, 0xb0);
 
 // Sibling "DC" template dialog (template id 0xdc, own vtable 0x646520): a TModalDialogBase
 // with a single edit field exchanged as a 0..999 UINT (no embedded control object). Built by
 // InitializeDialogTemplateDCBaseState (0x0047d470).
 // VTABLE: IMPERIALISM 0x00646520
-class TDCTemplateDialog : public TModalDialogBase {
+class TRunOffTurnsDialog : public TModalDialogBase {
 public:
   // FUNCTION: IMPERIALISM 0x00414070
-  ~TDCTemplateDialog() override {}
-  TDCTemplateDialog(void* initParam); // 0x0047d470
+  ~TRunOffTurnsDialog() override {}
+  TRunOffTurnsDialog(void* initParam); // 0x0047d470
 
   unsigned int value74; // +0x74 — DDX_Text edit value (validated 0..999)
 
@@ -86,18 +86,18 @@ protected:
   DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x0047d520 (vtable index 12)
 };
 
-ASSERT_SIZE(TDCTemplateDialog, 0x78);
+ASSERT_SIZE(TRunOffTurnsDialog, 0x78);
 
 // Sibling "DE" template dialog (template id 0xde, own vtable 0x646630): a TModalDialogBase
 // with an embedded CSliderCtrl at +0x74 (ctor installs CSliderCtrl vtable 0x6714cc) plus two
 // DDX_Text UINT fields at +0xb0/+0xb4. Built by InitializeDialogTemplateDEWithTextState
 // (0x0047dba0).
 // VTABLE: IMPERIALISM 0x00646630
-class TDETemplateDialog : public TModalDialogBase {
+class TBequeathGoodiesDialog : public TModalDialogBase {
 public:
   // FUNCTION: IMPERIALISM 0x00414320
-  ~TDETemplateDialog() override {}
-  TDETemplateDialog(void* initParam); // 0x0047dba0
+  ~TBequeathGoodiesDialog() override {}
+  TBequeathGoodiesDialog(void* initParam); // 0x0047dba0
 
   CSliderCtrl slider;                // +0x74
   unsigned int populationAdjustment; // +0xb0 — DDX_Text control 0x422
@@ -108,7 +108,7 @@ protected:
   DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x0047dcc0 (vtable index 12)
 };
 
-ASSERT_SIZE(TDETemplateDialog, 0xb8);
+ASSERT_SIZE(TBequeathGoodiesDialog, 0xb8);
 
 // Sibling "DF" template dialog (template id 0xdf, own vtable 0x646740). Unlike its
 // TModalDialogBase siblings this is a PLAIN CDialog subclass: vtable slot 0xc0 is the library
@@ -117,11 +117,11 @@ ASSERT_SIZE(TDETemplateDialog, 0xb8);
 // — one edit value + five checkbox flags — occupies 0x5c-0x70, right after the CDialog base
 // (0x5c). Built by InitializeDialogTemplateDFBaseState (0x0047dce0).
 // VTABLE: IMPERIALISM 0x00646740
-class TDFTemplateDialog : public CDialog {
+class TPeekAtDibDialog : public CDialog {
 public:
   // FUNCTION: IMPERIALISM 0x004145d0
-  ~TDFTemplateDialog() override {}
-  TDFTemplateDialog(void* initParam); // 0x0047dce0
+  ~TPeekAtDibDialog() override {}
+  TPeekAtDibDialog(void* initParam); // 0x0047dce0
 
   int editValue5c; // 0x5c — DDX_Text control 0x421
   int checkFlag60; // 0x60 — DDX_Check control 0x3f5
@@ -136,7 +136,7 @@ protected:
   DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x0047ddf0 (vtable index 12)
 };
 
-ASSERT_SIZE(TDFTemplateDialog, 0x74);
+ASSERT_SIZE(TPeekAtDibDialog, 0x74);
 
 // Sibling "FA" template dialog (template id 0xfa, own vtable 0x646848): TModalDialogBase with an
 // embedded CListBox at +0x74 (vtable 0x671d1c). Its DoDataExchange override is an empty stub —
@@ -186,11 +186,11 @@ ASSERT_SIZE(TADTemplateDialog, 0xb0);
 // an embedded CListBox at +0x74 (DDX_Control 0x435). Built by
 // InitializeDialogTemplate104WithRegionState (0x00480a10).
 // VTABLE: IMPERIALISM 0x00646ea0
-class T104TemplateDialog : public TModalDialogBase {
+class TPickGameDialog : public TModalDialogBase {
 public:
   // FUNCTION: IMPERIALISM 0x00480790
-  ~T104TemplateDialog() override {}
-  T104TemplateDialog(void* initParam); // 0x00480a10
+  ~TPickGameDialog() override {}
+  TPickGameDialog(void* initParam); // 0x00480a10
 
   CListBox listbox; // +0x74
 
@@ -199,7 +199,7 @@ protected:
   DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x00480b00 (vtable index 12)
 };
 
-ASSERT_SIZE(T104TemplateDialog, 0xb0);
+ASSERT_SIZE(TPickGameDialog, 0xb0);
 
 // Template-0x102 modal dialog (own vtable 0x647050). It adds no state beyond
 // TModalDialogBase and only supplies an empty DDX override plus a trivial
@@ -452,10 +452,10 @@ ASSERT_SIZE(TB1TemplateDialog, 0x60);
 // non-transparent pixels (heap buffer at +0x8c, freed in the destructor). Built by
 // InitializeDialogTemplateDDPictureState (0x0047d540).
 // VTABLE: IMPERIALISM 0x0063e6b0
-class TDDTemplateDialog : public TModalDialogBase {
+class TDibPreviewDialog : public TModalDialogBase {
 public:
-  TDDTemplateDialog(void* initParam); // 0x0047d540
-  ~TDDTemplateDialog() override;      // 0x00413c30 — frees the outline buffer
+  TDibPreviewDialog(void* initParam); // 0x0047d540
+  ~TDibPreviewDialog() override;      // 0x00413c30 — frees the outline buffer
 
   CDib* picture;         // 0x74 source picture/DIB (not owned here; set by the caller)
   int drawOutline;       // 0x78 != 0 -> draw red silhouette polyline in OnPaint
@@ -474,7 +474,7 @@ protected:
   DECLARE_MESSAGE_MAP() // GetMessageMap 0x0047d5d0 (vtable index 12)
 };
 
-ASSERT_SIZE(TDDTemplateDialog, 0x94);
+ASSERT_SIZE(TDibPreviewDialog, 0x94);
 
 // Sibling "64" template dialog (template id 0x64, own vtable 0x63e498): a PLAIN CDialog subclass
 // with no data members and a trivial OnInitDialog override. Constructed inline by its only
@@ -501,11 +501,11 @@ ASSERT_SIZE(T64TemplateDialog, 0x74);
 // close) and OnCancel minimizes instead of closing. Built by
 // InitializeDialogTemplateD0WithTextState (0x0049bcd0).
 // VTABLE: IMPERIALISM 0x0064bac0
-class TD0TemplateDialog : public CDialog {
+class TTraceDialog : public CDialog {
 public:
   // FUNCTION: IMPERIALISM 0x0049baf0
-  ~TD0TemplateDialog() override {}
-  TD0TemplateDialog(void* initParam); // 0x0049bcd0
+  ~TTraceDialog() override {}
+  TTraceDialog(void* initParam); // 0x0049bcd0
 
   CListBox listbox; // +0x5c
 
@@ -524,7 +524,7 @@ protected:
   DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x0049bf90 (vtable index 12)
 };
 
-ASSERT_SIZE(TD0TemplateDialog, 0x9c);
+ASSERT_SIZE(TTraceDialog, 0x9c);
 
 // Sibling "E0" full-screen overlay template dialog (template id 0xe0, own vtable 0x64b960): a
 // PLAIN CDialog subclass with no DDX members. Overrides PreCreateWindow (forces a huge window)
@@ -564,11 +564,11 @@ void ShowBlockingWaitOverlayDialog(void); // 0x00498cc0
 // Windows game-setup dialog (template id 0xa1, own vtable 0x647428): three policy sliders,
 // two DDX checkboxes, and the caller-owned GameSetup record at +0x118.
 // VTABLE: IMPERIALISM 0x00647428
-class TA1TemplateDialog : public CDialog {
+class TGameSetupDialog : public CDialog {
 public:
   // FUNCTION: IMPERIALISM 0x004814b0
-  ~TA1TemplateDialog() override {}
-  TA1TemplateDialog(void* initParam);        // 0x004813a0
+  ~TGameSetupDialog() override {}
+  TGameSetupDialog(void* initParam);        // 0x004813a0
   void SetGameSetupValues(GameSetup* setup); // 0x004821d0
 
   CSliderCtrl slider5c; // +0x5c
@@ -586,4 +586,4 @@ protected:
   DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x004815d0 (vtable index 12)
 };
 
-ASSERT_SIZE(TA1TemplateDialog, 0x11c);
+ASSERT_SIZE(TGameSetupDialog, 0x11c);

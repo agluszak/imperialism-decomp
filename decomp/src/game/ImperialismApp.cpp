@@ -423,7 +423,7 @@ void ImperialismApp::OnTestSomething() {
 // event for the newly selected nation.
 // FUNCTION: IMPERIALISM 0x00413d20
 void ImperialismApp::OnSwitchGreatPower() {
-  TDBTemplateDialog dialog(0);
+  TSwitchGreatPowerDialog dialog(0);
   dialog.PrepareAndCreateModalFromTemplate();
   dialog.slider.SetRange(0, 6, FALSE);
   dialog.slider.SetPos(g_pSimMgr->GetPlayerCountry());
@@ -443,7 +443,7 @@ void ImperialismApp::OnSwitchGreatPower() {
 // into the side flag, and ask the main frame to advance command 100 asynchronously.
 // FUNCTION: IMPERIALISM 0x00413f60
 void ImperialismApp::OnRunOffTurns() {
-  TDCTemplateDialog dialog(0);
+  TRunOffTurnsDialog dialog(0);
   dialog.PrepareAndCreateModalFromTemplate();
   short savedCooldown = g_nTurnCooldownDeferCounter006A43C4;
 
@@ -459,7 +459,7 @@ void ImperialismApp::OnRunOffTurns() {
 // which is the original UI's way of adding population in each skill band.
 // FUNCTION: IMPERIALISM 0x004140f0
 void ImperialismApp::OnBequeathGoodies() {
-  TDETemplateDialog dialog(0);
+  TBequeathGoodiesDialog dialog(0);
   dialog.PrepareAndCreateModalFromTemplate();
   dialog.slider.SetRange(0, 6, FALSE);
   dialog.slider.SetPos(g_pSimMgr->GetPlayerCountry());
@@ -485,7 +485,7 @@ void ImperialismApp::OnBequeathGoodies() {
 // fill and rendering controls.
 // FUNCTION: IMPERIALISM 0x004143b0
 void ImperialismApp::OnPeekAtDib() {
-  TDFTemplateDialog inputDialog(0);
+  TPeekAtDibDialog inputDialog(0);
   if (inputDialog.DoModal() != IDOK) {
     return;
   }
@@ -500,7 +500,7 @@ void ImperialismApp::OnPeekAtDib() {
 
   if (dib != 0 && AfxIsValidAddress(dib, sizeof(CDib), FALSE) &&
       dib->IsKindOf(RUNTIME_CLASS(CDib))) {
-    TDDTemplateDialog previewDialog(0);
+    TDibPreviewDialog previewDialog(0);
     if (inputDialog.checkFlag60 != 0) {
       dib->BuildMonochromeOutlineMaskInPlace();
     }

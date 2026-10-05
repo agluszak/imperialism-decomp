@@ -11,7 +11,7 @@ address|name|symbol|prototype|type|source_file|provenance
 00413670|T64TemplateDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
 004136e0|T64TemplateDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
 00413c00|TModalDialogBase::`scalar deleting destructor'|||synthetic|src/game/gfx/TModalDialogBase.cpp|legacy-marker
-00413cd0|TDDTemplateDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
+00413cd0|TDibPreviewDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
 00415dc0|`dynamic initializer for 'g_gfxCoordinateScale_6A13A8''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 00415df0|`dynamic initializer for 'g_scaledShortConst_6A1418''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 00415e20|InitializeUiResourcePoolStateAndRegisterAtExit|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
@@ -115,20 +115,20 @@ address|name|symbol|prototype|type|source_file|provenance
 0047ca90|CPalette::`scalar deleting destructor'|??_GCPalette@@UAEPAXI@Z|public: virtual void * __thiscall CPalette::`scalar deleting destructor'(unsigned int)|synthetic|src/game/core/library_identities.cpp|legacy-marker
 0047cb30|CGdiObject::`scalar deleting destructor'|??_GCGdiObject@@UAEPAXI@Z|public: virtual void * __thiscall CGdiObject::`scalar deleting destructor'(unsigned int)|synthetic|src/game/core/library_identities.cpp|legacy-marker
 0047cfa0|`dynamic initializer for 'g_scaledShortConst_6A1528''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
-0047d090|TC2TemplateDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
-0047d1a0|TC2TemplateDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
-0047d250|TD2TemplateDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
-0047d340|TD2TemplateDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
-0047d3f0|TDBTemplateDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
-0047d450|TDBTemplateDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
-0047d4b0|TDCTemplateDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
-0047d520|TDCTemplateDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
-0047d5d0|TDDTemplateDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
+0047d090|TWarpToScreenDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
+0047d1a0|TWarpToScreenDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
+0047d250|TConductDiplomacyDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
+0047d340|TConductDiplomacyDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
+0047d3f0|TSwitchGreatPowerDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
+0047d450|TSwitchGreatPowerDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
+0047d4b0|TRunOffTurnsDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
+0047d520|TRunOffTurnsDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
+0047d5d0|TDibPreviewDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
 0047da40|CRgn::`scalar deleting destructor'|??_GCRgn@@UAEPAXI@Z|public: virtual void * __thiscall CRgn::`scalar deleting destructor'(unsigned int)|synthetic|src/game/core/library_identities.cpp|legacy-marker
-0047dc40|TDETemplateDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
-0047dcc0|TDETemplateDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
-0047dd30|TDFTemplateDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
-0047ddf0|TDFTemplateDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
+0047dc40|TBequeathGoodiesDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
+0047dcc0|TBequeathGoodiesDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
+0047dd30|TPeekAtDibDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
+0047ddf0|TPeekAtDibDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
 0047ded0|TFATemplateDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
 0047dfb0|TFATemplateDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
 0047e090|TAutoResolutionDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TAutoResolutionDialog.cpp|legacy-marker
@@ -146,8 +146,8 @@ address|name|symbol|prototype|type|source_file|provenance
 0047f600|TADTemplateDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
 0047f710|InitializeRuntimeSelectionRecordArrayStateAndRegisterAtExit|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 0047f740|DestroyRuntimeSelectionRecordArrayStateAtExit|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
-00480aa0|T104TemplateDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
-00480b00|T104TemplateDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
+00480aa0|TPickGameDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
+00480b00|TPickGameDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
 00480b20||??0?$CArray@PAURuntimeSelectionRecord@@PAU1@@@QAE@XZ||template|src/game/core/global_data_tables.cpp|legacy-marker
 00480b50||??1?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAE@XZ||template|src/game/core/global_data_tables.cpp|legacy-marker
 00480bd0||?Serialize@?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAEXAAVCArchive@@@Z||template|src/game/core/global_data_tables.cpp|legacy-marker
@@ -159,8 +159,8 @@ address|name|symbol|prototype|type|source_file|provenance
 00481200|T102TemplateDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
 00481340|`dynamic initializer for 'g_gfxCoordinateScale_6A1690''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 00481370|`dynamic initializer for 'g_scaledShortConst_6A16D8''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
-00481480|TA1TemplateDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
-004815d0|TA1TemplateDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
+00481480|TGameSetupDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
+004815d0|TGameSetupDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
 00481620|TA5TemplateDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
 00481690|TA5TemplateDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
 004816e0|TA6TemplateDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
@@ -385,15 +385,15 @@ address|name|symbol|prototype|type|source_file|provenance
 0049ba40|`dynamic initializer for 'g_defaultRect_006A1E38''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 0049ba70|`dynamic initializer for 'g_defaultRgbColor_006A1E18''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 0049baa0|`dynamic initializer for 'g_debugTraceDialog''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
-0049bad0|TD0TemplateDialog::`dynamic atexit destructor'|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
+0049bad0|TTraceDialog::`dynamic atexit destructor'|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 0049bc00|`dynamic initializer for 'g_defaultPoint_006A1E70''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 0049bc20|`dynamic initializer for 'g_defaultPoint_006A1F38''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 0049bc40|`dynamic initializer for 'g_defaultRect_006A1F18''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 0049bc70|`dynamic initializer for 'g_defaultRect_006A1F28''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 0049bca0|`dynamic initializer for 'g_defaultRgbColor_006A1E68''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
-0049bd60|TD0TemplateDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
+0049bd60|TTraceDialog::`scalar deleting destructor'|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
 0049bf40|CString function-local static dynamic atexit destructor|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
-0049bf90|TD0TemplateDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
+0049bf90|TTraceDialog::GetMessageMap|||synthetic|src/game/gfx/TTemplateDialogs.cpp|legacy-marker
 0049bff0|`dynamic initializer for 'g_defaultPoint_006A1F78''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 0049c010|`dynamic initializer for 'g_defaultPoint_006A1FA8''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 0049c030|`dynamic initializer for 'g_defaultRect_006A1F88''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
