@@ -11,6 +11,11 @@ docker build -t imperialism-msvc500 -f docker/msvc500/Dockerfile docker/msvc500
 Rebuild this image after updating its Dockerfile. The native reccmp source collector requires the
 LLVM 21 development libraries installed by the image; older images cannot run `just source-index`.
 
+The image also builds the [whole-program scalar facts](clang-tidy-plugin/README.md) clang-tidy
+plugin against LLVM 21 and runs its fixtures. `just scalar-facts` collects every translation unit of
+the production Clang profile and writes reports and reviewable patches under
+`build-msvc500/scalar-campaigns/`.
+
 `just build` collects Clang source facts after building the VC5 executable and recording its PDB.
 The collector reads the production sources and generated factories through the existing Clang CMake
 profile, without compiling a replacement executable. Its cached output lives under

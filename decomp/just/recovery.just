@@ -44,3 +44,8 @@ mac-resource-evidence-check:
   uv run python -m tools.workflow.macos_resource_evidence \
     --workspace "{{macos_workspace}}" \
     --check
+
+[doc('Whole-program scalar facts over the production Clang profile; --patch writes a reviewable patch')]
+[group('recovery')]
+scalar-facts *args:
+  uv run python -m tools.workflow.scalar_campaign --build-dir "{{build_dir}}" --image "{{docker_image}}" {{args}}
