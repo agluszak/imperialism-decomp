@@ -12,7 +12,7 @@ public:
   DECLARE_DYNCREATE(TArmyBoyView)
   virtual ~TArmyBoyView() override;             // slot 0x01 (scalar deleting destructor)
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4aebc0
-  BattleReportDetailRecord* battleDetail60;     // +0x60
+  BattleReportDetailRecord* battleDetail;       // +0x60
 
   // NOOP: verified empty in original 0x004aeb13 (no standalone TArmyBoyView::TArmyBoyView body exists: CreateObject 0x004aeae0 inlines this default ctor, calling the TView base ctor directly at that site)
   TArmyBoyView() {}

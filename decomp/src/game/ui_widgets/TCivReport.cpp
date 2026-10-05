@@ -122,7 +122,7 @@ void TCivReport::PopulateCivilianReportContent(TCivUnit* civilianOrderEntry) {
 
   if (appendTurnCount) {
     g_pSimMgr->GetString(0x2724, 9, &templateText);
-    valueText.Format(g_szDecimalFormat, civilianOrderEntry->remainingTurns24 * 3);
+    valueText.Format(g_szDecimalFormat, civilianOrderEntry->remainingTurns * 3);
     scanBracketExpressions(g_pSimMgr, &expandedText, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(valueText));
     reportText += expandedText;

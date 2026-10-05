@@ -8,7 +8,7 @@
 
 // FUNCTION: IMPERIALISM 0x00430b50
 TBattleUnitsView::TBattleUnitsView() {
-  secondaryUnitAtlas88 = 0;
+  secondaryUnitAtlas = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00430bb0
@@ -22,15 +22,15 @@ void TBattleUnitsView::StuffValues(BattleRecord& battleRecord, int participantIn
   case kMapContextReportLandBattle:
   case kMapContextReportPreemptedLandBattle:
   case kMapContextReportUncontestedTakeover:
-    primaryUnitAtlas84 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdb8);
+    primaryUnitAtlas = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdb8);
     break;
   case kMapContextReportSeaBattle:
-    primaryUnitAtlas84 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdb8);
-    secondaryUnitAtlas88 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdba);
+    primaryUnitAtlas = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdb8);
+    secondaryUnitAtlas = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdba);
     break;
   case kMapContextReportMerchantInterception:
-    primaryUnitAtlas84 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdbb);
-    secondaryUnitAtlas88 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdba);
+    primaryUnitAtlas = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdbb);
+    secondaryUnitAtlas = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdba);
     break;
   }
 
@@ -42,7 +42,7 @@ void TBattleUnitsView::StuffValues(BattleRecord& battleRecord, int participantIn
     int lineBounds[2] = {0xec, 0x31};
     line->SetLineDataRowAndBounds(0, 0, lineBounds);
     line->battleRecord10 = &battleRecord;
-    line->battleDetail14 = &battleRecord.sideChildRecords250[participantIndex][detailIndex];
+    line->battleDetail = &battleRecord.sideChildRecords[participantIndex][detailIndex];
     AddOrderedEntry(line);
   }
 
@@ -54,10 +54,10 @@ void TBattleUnitsView::StuffValues(BattleRecord& battleRecord, int participantIn
 // FUNCTION: IMPERIALISM 0x004b0900
 void TBattleUnitsView::Close() {
   TMilitaryPageView::Close();
-  if (primaryUnitAtlas84 != 0) {
-    g_pDisplayMgr->RemoveGWorld(primaryUnitAtlas84);
+  if (primaryUnitAtlas != 0) {
+    g_pDisplayMgr->RemoveGWorld(primaryUnitAtlas);
   }
-  if (secondaryUnitAtlas88 != 0) {
-    g_pDisplayMgr->RemoveGWorld(secondaryUnitAtlas88);
+  if (secondaryUnitAtlas != 0) {
+    g_pDisplayMgr->RemoveGWorld(secondaryUnitAtlas);
   }
 }

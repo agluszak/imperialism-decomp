@@ -38,7 +38,7 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
   }
 
   int extraHeight =
-      static_cast<short>(((visibleResourceCount * 0x2c) / (frameWidth34 - 0x20) + 1) * 0x20);
+      static_cast<short>(((visibleResourceCount * 0x2c) / (frameWidth - 0x20) + 1) * 0x20);
 
   TView* owner = GetWindow();
   if (owner == 0) {
@@ -71,7 +71,7 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
     button->ApplyBounds(&buttonBounds, 1);
   }
 
-  short x = static_cast<short>(frameWidth34);
+  short x = static_cast<short>(frameWidth);
   short y = 0x50;
   for (short resourceIndex = 0; resourceIndex < kResourceKindCount; ++resourceIndex) {
     short count = town->resourceYieldByType[resourceIndex];
@@ -80,7 +80,7 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
     }
 
     x = static_cast<short>(x + 0x2c);
-    if (x > frameWidth34 - 0x10) {
+    if (x > frameWidth - 0x10) {
       x = 0x10;
       y = static_cast<short>(y + 0x20);
     }

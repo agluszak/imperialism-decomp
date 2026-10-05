@@ -22,10 +22,10 @@ struct ScenarioTileDiskRecord {
   unsigned char bytes05[0x14 - 0x05];
   unsigned char cityRecordIndex14[2];
   unsigned char bytes16[0x1a - 0x16];
-  unsigned char tileActionOrdinal1a[2];
+  unsigned char tileActionOrdinal[2];
   unsigned char activeFlags1c[2];
   unsigned char bytes1e[2];
-  int transientPointerBits20;
+  int transientPointerBits;
 };
 ASSERT_SIZE(ScenarioTileDiskRecord, 0x24);
 
@@ -47,36 +47,36 @@ struct TTerrainStateRecord {
   void SetTerrainKind(StrategicTerrainKind terrainKind) {
     terrainKindStorage00 = static_cast<StrategicTerrainKindStorage>(terrainKind);
   }
-  signed char spriteVariantIndex01;
+  signed char spriteVariantIndex;
   // High bit marks a staged editor value; finalized variants are 0x0b..0x3a.
   RiverSpriteCodeStorage riverSpriteCode;
   // Previous owner used by the map context's "formerly of" label.
-  signed char formerOwnerNationTag03;
+  signed char formerOwnerNationTag;
   signed char ownerNationTag04;
-  signed char regionSubtypeTag05;
+  signed char regionSubtypeTag;
   signed char adjacencyBits06;
-  unsigned char ownerBorderMask07;
-  unsigned char cityBorderMask08;
-  unsigned char waterAdjacencyMask09;
+  unsigned char ownerBorderMask;
+  unsigned char cityBorderMask;
+  unsigned char waterAdjacencyMask;
   // Per-direction coastline and region/water border masks.
   unsigned char adjacencyMaskA0a;
   unsigned char adjacencyMaskB0b;
-  signed char developmentClassNibbles0c;
+  signed char developmentClassNibbles;
   // 0 or 0x7f; gates recruit-search eligibility.
-  unsigned char pendingDevelopmentFlag0d;
+  unsigned char pendingDevelopmentFlag;
   unsigned char recruitSearchVisited0e;
-  signed char perTileVisitedFlag0f;
-  signed char markerSlotIndex10;
+  signed char perTileVisitedFlag;
+  signed char markerSlotIndex;
   signed char resourceTypeByEdge[2];
   signed char gateFlag;
   ProvinceIndexStorage cityRecordIndex;
   // Fleet/zone marker state; -1 is the reset sentinel.
   MapTileActionStateStorage tileActionState16;
-  unsigned char railFlags17;
-  signed char secondaryOwnerNationTag18;
+  unsigned char railFlags;
+  signed char secondaryOwnerNationTag;
   unsigned char pad19;
   // Position within the tile action-state bucket.
-  short tileActionOrdinal1a;
+  short tileActionOrdinal;
   unsigned short activeFlags1c;
   unsigned char pad1e[0x20 - 0x1e];
   TCivUnit* firstCivilianOrder20; // queue head for this tile
@@ -101,23 +101,23 @@ struct Province {
   short lastTurnTick;
   signed char adjacentRegionCount08;
   unsigned char pad09;
-  ProvinceIndexStorage adjacentRegionIds0A[0xc]; // -1-terminated, up to 12
+  ProvinceIndexStorage adjacentRegionIds[0xc]; // -1-terminated, up to 12
   // Parallel representative tiles for each adjacent province.
-  StrategicTileIndex adjacentRegionAnchorTiles22[0xc];
+  StrategicTileIndex adjacentRegionAnchorTiles[0xc];
   signed char linkedRegionCount;
   unsigned char byte3B;
   unsigned char byte3C;
   unsigned char pad3D;
-  StrategicTileIndex secondaryNeighborTileIndex3e;
-  StrategicTileIndex primaryNeighborTileIndex40;
+  StrategicTileIndex secondaryNeighborTileIndex;
+  StrategicTileIndex primaryNeighborTileIndex;
   StrategicTileIndex linkedTileIndices42[0x20];
-  short resourceDevelopmentCounts82[10]; // resource types 7..0x10
+  short resourceDevelopmentCounts[10]; // resource types 7..0x10
   unsigned char pad96[2];
-  TMilitaryUnit* stationedUnitChain98;
+  TMilitaryUnit* stationedUnitChain;
   int cityScoreValue;
   unsigned char navyOrderReachableA0; // transient navy-order eligibility
-  unsigned char exploredByNationMaskA1;
-  signed char resourcePresenceMaskA2;
+  unsigned char exploredByNationMask;
+  signed char resourcePresenceMask;
   signed char regionClassA3;
   CString cityNameA4;
 };

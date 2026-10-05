@@ -14,12 +14,12 @@ void TFoodProcessingOrder::IFoodProcessingOrder(TCity* city) {
 
 // FUNCTION: IMPERIALISM 0x004b7ed0
 short TFoodProcessingOrder::MaxOrder() {
-  short limit = static_cast<short>(ownerCity->cityStockGrainD8 / 2);
+  short limit = static_cast<short>(ownerCity->cityStockGrain / 2);
   short fishAndLivestock =
-      static_cast<short>(ownerCity->cityStockFishDC + ownerCity->cityStockLivestockDE);
+      static_cast<short>(ownerCity->cityStockFish + ownerCity->cityStockLivestock);
   short workforceLimit = static_cast<short>(productionSummary->strength / 2);
-  if (ownerCity->cityStockFruitDA < limit) {
-    limit = ownerCity->cityStockFruitDA;
+  if (ownerCity->cityStockFruit < limit) {
+    limit = ownerCity->cityStockFruit;
   }
   if (fishAndLivestock < limit) {
     limit = fishAndLivestock;
@@ -42,21 +42,20 @@ bool TFoodProcessingOrder::SetQuantity(short quantity) {
   this->quantity = quantity;
 
   short halfDelta = static_cast<short>((quantity - previousQuantity) / 2);
-  ownerCity->cityStockGrainD8 = static_cast<short>(ownerCity->cityStockGrainD8 - halfDelta * 2);
+  ownerCity->cityStockGrain = static_cast<short>(ownerCity->cityStockGrain - halfDelta * 2);
   ownerCity->VerifyStocks();
-  ownerCity->cityStockFruitDA = static_cast<short>(ownerCity->cityStockFruitDA - halfDelta);
+  ownerCity->cityStockFruit = static_cast<short>(ownerCity->cityStockFruit - halfDelta);
   ownerCity->VerifyStocks();
   productionSummary->strength = static_cast<short>(productionSummary->strength - halfDelta * 2);
 
-  short livestock = ownerCity->cityStockLivestockDE;
+  short livestock = ownerCity->cityStockLivestock;
   if (livestock < halfDelta) {
-    ownerCity->cityStockLivestockDE = 0;
+    ownerCity->cityStockLivestock = 0;
     ownerCity->VerifyStocks();
-    ownerCity->cityStockFishDC =
-        static_cast<short>(ownerCity->cityStockFishDC - (halfDelta - livestock));
+    ownerCity->cityStockFish =
+        static_cast<short>(ownerCity->cityStockFish - (halfDelta - livestock));
   } else {
-    ownerCity->cityStockLivestockDE =
-        static_cast<short>(ownerCity->cityStockLivestockDE - halfDelta);
+    ownerCity->cityStockLivestock = static_cast<short>(ownerCity->cityStockLivestock - halfDelta);
   }
   ownerCity->VerifyStocks();
   g_pViewMgr->RefreshCityProductionUi();

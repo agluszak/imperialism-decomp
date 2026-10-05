@@ -16,8 +16,8 @@ TFloatWindow::~TFloatWindow() {}
 // flag word 0x80 on its second argument (loaded while the assert's pushed args are
 // still on the stack). Five-argument __stdcall; no callers survive.
 // FUNCTION: IMPERIALISM 0x004922d0
-void __stdcall AssertMcAppUiDialogStateAndMarkWindow(int arg1, TWindow* window, int arg3,
-                                                    int arg4, int arg5) {
+void __stdcall AssertMcAppUiDialogStateAndMarkWindow(int arg1, TWindow* window, int arg3, int arg4,
+                                                     int arg5) {
   TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0x8c9);
   window->windowFlags = 0x80;
 }
@@ -29,14 +29,14 @@ int TFloatWindow::GetWindowTypeTag() {
 
 // FUNCTION: IMPERIALISM 0x00492330
 void TFloatWindow::Close() {
-  busyFlag98 = 0;
+  busyFlag = 0;
   if (nativeWindow50 != 0 && nativeWindow50->m_hWnd != 0) {
     SendMessageA(nativeWindow50->m_hWnd, 0x468, 1, controlTag);
   }
-  if (childList44 != 0) {
-    POSITION pos = childList44->GetHeadPosition();
+  if (childList != 0) {
+    POSITION pos = childList->GetHeadPosition();
     while (pos != NULL) {
-      TView* child = static_cast<TView*>(childList44->GetNext(pos));
+      TView* child = static_cast<TView*>(childList->GetNext(pos));
       child->Close();
     }
   }

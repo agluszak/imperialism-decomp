@@ -36,7 +36,7 @@ TArmoryView::~TArmoryView() {}
 
 // FUNCTION: IMPERIALISM 0x004cee20
 void TArmoryView::DoStartup() {
-  productionView98 = g_pMacViewMgr->activeCityProductionView04;
+  productionView98 = g_pMacViewMgr->activeCityProductionView;
 
   struct {
     TextStyle desc;
@@ -50,7 +50,7 @@ void TArmoryView::DoStartup() {
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
 
   for (short row = 0; row < 8; ++row) {
-    TUnitOrder* order = city94->buildOrderSlots148[row];
+    TUnitOrder* order = city94->buildOrderSlots[row];
     short resourceType = order->resourceTypeIndex;
     short pictureVariant;
     if (g_awTacticalUnitCategoryCodeBySlot[resourceType] == 8) {
@@ -139,8 +139,8 @@ void TArmoryView::DoStartup() {
   description->AssertValid();
   description->InstallTextStyle(style.desc, 1);
 
-  selectedRowIndexA4 = -1;
-  selectedUnitOrderA8 = 0;
+  selectedRowIndex = -1;
+  selectedUnitOrder = 0;
   TCluster* selection = static_cast<TCluster*>(ResolveControlByTag(kControlTagSele)); // 'sele'
   selection->AssertValid();
   selection->SetSelectedChildTagAndRefresh(kControlTagCiv0); // 'civ0'
@@ -152,15 +152,15 @@ void TArmoryView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
   if (commandId == 0xc) {
     short index = static_cast<short>(sourceHandler->controlTag) - 0x7630; // 'rec0'..'rec8'
     if (index >= 0 && index < 9) {
-      selectedRowIndexA4 = index;
+      selectedRowIndex = index;
       RefreshCityViewProductionDetails(index);
     }
   } else if (commandId == 0xa) {
     TView* ownerView = static_cast<TView*>(sourceHandler)->ownerContext;
     short index = static_cast<short>(ownerView->controlTag) - 0x7530;
     if (index >= 0 && index < 9) {
-      if (selectedRowIndexA4 != index) {
-        selectedRowIndexA4 = index;
+      if (selectedRowIndex != index) {
+        selectedRowIndex = index;
         RefreshCityViewProductionDetails(index);
 
         // 'sele' is a TCluster (see TUniversityView::DoEvent's identical tail).
@@ -169,15 +169,14 @@ void TArmoryView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
         sele->SetSelectedChildTagAndRefresh(kControlTagCiv0 + index); // 'civ0'+index
       }
 
-      short newValue = selectedUnitOrderA8->quantity;
+      short newValue = selectedUnitOrder->quantity;
       if (sourceHandler->controlTag == kControlTagPlus) { // 'plus'
         newValue++;
       } else {
         newValue--;
       }
-      if (selectedUnitOrderA8->SetQuantity(newValue)) {
-        TView* numXControl =
-            ResolveControlByTag(kControlTagNum0 + selectedRowIndexA4); // 'num0'+idx
+      if (selectedUnitOrder->SetQuantity(newValue)) {
+        TView* numXControl = ResolveControlByTag(kControlTagNum0 + selectedRowIndex); // 'num0'+idx
         if (numXControl == nullptr) {
           MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
           TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xb87);
@@ -214,19 +213,19 @@ void TArmoryView::UpdateFields() {
   ResolveUiThemeColor(0x2b6b, &normalTextColor);
   ResolveUiThemeColor(0x2b69, &warningTextColor);
 
-  if (selectedUnitOrderA8 == 0) {
+  if (selectedUnitOrder == 0) {
     return;
   }
 
   TNumberText* primaryAvailable =
       static_cast<TNumberText*>(ResolveControlByTag(kControlTagAva1)); // 'ava1'
   primaryAvailable->AssertValid();
-  short primaryResource = selectedUnitOrderA8->primaryInputResourceId;
+  short primaryResource = selectedUnitOrder->primaryInputResourceId;
   if (primaryResource != -1) {
     short available = city94->CityStockByType(primaryResource);
     primaryAvailable->SetControlValue(available, 0);
     primaryAvailable->SetTextColorAndMaybeRefresh(
-        available < selectedUnitOrderA8->primaryInputPerUnit ? &warningTextColor : &normalTextColor,
+        available < selectedUnitOrder->primaryInputPerUnit ? &warningTextColor : &normalTextColor,
         false);
   }
   CRect invalidRect;
@@ -236,12 +235,12 @@ void TArmoryView::UpdateFields() {
   TNumberText* secondaryAvailable =
       static_cast<TNumberText*>(ResolveControlByTag(kControlTagAva2)); // 'ava2'
   secondaryAvailable->AssertValid();
-  short secondaryResource = selectedUnitOrderA8->secondaryInputResourceId;
+  short secondaryResource = selectedUnitOrder->secondaryInputResourceId;
   if (secondaryResource != -1) {
     short available = city94->CityStockByType(secondaryResource);
     secondaryAvailable->SetControlValue(available, 0);
     secondaryAvailable->SetTextColorAndMaybeRefresh(
-        available < selectedUnitOrderA8->primaryInputPerUnit ? &warningTextColor : &normalTextColor,
+        available < selectedUnitOrder->primaryInputPerUnit ? &warningTextColor : &normalTextColor,
         false);
   }
   secondaryAvailable->QueryBounds(&invalidRect);
@@ -254,27 +253,26 @@ void TArmoryView::UpdateFields() {
   treasuryAvailable->AssertValid();
   treasuryAvailable->SetTextAndMaybeRefresh(&treasuryText, 0);
   treasuryAvailable->SetTextColorAndMaybeRefresh(
-      treasury < selectedUnitOrderA8->cashCostPerUnit ? &warningTextColor : &normalTextColor,
-      false);
+      treasury < selectedUnitOrder->cashCostPerUnit ? &warningTextColor : &normalTextColor, false);
   treasuryAvailable->QueryBounds(&invalidRect);
   availabilityPanel->InvalidateCityDialogRectRegion(&invalidRect, 1);
 
-  TPopulationMgr* population = city94->productionSummary1d8;
+  TPopulationMgr* population = city94->productionSummary;
   short workforceAvailable;
-  if (selectedUnitOrderA8->workforceMode == kLowSkillWorkforceMode) {
+  if (selectedUnitOrder->workforceMode == kLowSkillWorkforceMode) {
     workforceAvailable = population->strength;
-    if (population->productionSlots14->lowSkillCount04 < workforceAvailable) {
-      workforceAvailable = population->productionSlots14->lowSkillCount04;
+    if (population->productionSlots->lowSkillCount04 < workforceAvailable) {
+      workforceAvailable = population->productionSlots->lowSkillCount04;
     }
-  } else if (selectedUnitOrderA8->workforceMode == kMediumSkillWorkforceMode) {
+  } else if (selectedUnitOrder->workforceMode == kMediumSkillWorkforceMode) {
     workforceAvailable = static_cast<short>(population->strength / 2);
-    if (population->productionSlots14->mediumSkillCount06 < workforceAvailable) {
-      workforceAvailable = population->productionSlots14->mediumSkillCount06;
+    if (population->productionSlots->mediumSkillCount06 < workforceAvailable) {
+      workforceAvailable = population->productionSlots->mediumSkillCount06;
     }
   } else {
     workforceAvailable = static_cast<short>(population->strength / 4);
-    if (population->productionSlots14->highSkillCount08 < workforceAvailable) {
-      workforceAvailable = population->productionSlots14->highSkillCount08;
+    if (population->productionSlots->highSkillCount08 < workforceAvailable) {
+      workforceAvailable = population->productionSlots->highSkillCount08;
     }
   }
 
@@ -296,11 +294,11 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
   CString currencyText;
   CString resourceName;
 
-  TUnitOrder* order = city94->buildOrderSlots148[nBuildingSlotId];
-  if (selectedUnitOrderA8 == order) {
+  TUnitOrder* order = city94->buildOrderSlots[nBuildingSlotId];
+  if (selectedUnitOrder == order) {
     return;
   }
-  selectedUnitOrderA8 = order;
+  selectedUnitOrder = order;
 
   struct {
     TextStyle desc;
@@ -364,7 +362,7 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
   TStaticText* cos3 =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'o', 's', '3')));
   cos3->AssertValid();
-  g_pSimMgr->NumToCurrency(selectedUnitOrderA8->cashCostPerUnit, &currencyText);
+  g_pSimMgr->NumToCurrency(selectedUnitOrder->cashCostPerUnit, &currencyText);
   cos3->SetTextAndMaybeRefresh(&currencyText, 1);
 
   short resourceType = order->resourceTypeIndex;

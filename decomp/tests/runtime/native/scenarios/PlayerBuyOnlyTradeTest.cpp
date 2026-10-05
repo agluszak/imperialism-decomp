@@ -33,7 +33,7 @@ protected:
 
     activeNationSlot = g_pSimMgr->GetActiveNationId();
     RT_REQUIRE_NOT_NULL(Player());
-    RT_REQUIRE_NE(0, static_cast<int>(Player()->diplomacyEligibilityA0));
+    RT_REQUIRE_NE(0, static_cast<int>(Player()->diplomacyEligibility));
 
     // Seed the sell order the scenario is about, and snapshot the bid state the game compares
     // against when the turn is processed.

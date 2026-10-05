@@ -31,9 +31,9 @@ void TGWorldButton::HiliteState(unsigned char fEnabledState, unsigned char fRefr
   }
   controlState64 = static_cast<unsigned char>(fEnabledState);
   if (fEnabledState == 0) {
-    field84 = static_cast<short>(field84 - frameWidth34);
+    field84 = static_cast<short>(field84 - frameWidth);
   } else {
-    field84 = static_cast<short>(field84 + frameWidth34);
+    field84 = static_cast<short>(field84 + frameWidth);
   }
   RefreshControl();
   if (fRefreshNow) {
@@ -47,7 +47,7 @@ void TGWorldButton::Draw(RECT* rectBuffer) {
   if (field88 != 0) {
     CRect destRect;
     QueryContentBounds(&destRect);
-    RECT srcRect = {field84, 0, static_cast<int>(field84 + frameWidth34), frameHeight38};
+    RECT srcRect = {field84, 0, static_cast<int>(field84 + frameWidth), frameHeight};
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency(field88->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,

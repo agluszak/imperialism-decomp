@@ -146,18 +146,18 @@ void TScenarioChooser::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     TMapPreviewView* mapPreview =
         static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagPreviewMap)); // 'pmap'
     mapPreview->AssertValid();
-    if (difficultyLevelByNation[mapPreview->pendingNation6C] != -1 &&
-        mapPreview->pendingNation6C != mapPreview->selectedNation68) {
+    if (difficultyLevelByNation[mapPreview->pendingNation] != -1 &&
+        mapPreview->pendingNation != mapPreview->selectedNation68) {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
-      mapPreview->selectedNation68 = mapPreview->pendingNation6C;
+      mapPreview->selectedNation68 = mapPreview->pendingNation;
       mapPreview->EnhancePhoto();
       mapPreview->RefreshControl();
       TDeluxeText* descControl =
           static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCountryDescription));
       descControl->AssertValid();
       descControl->SetTextEntryFromChars(
-          nationDescriptionTextByNation[mapPreview->pendingNation6C],
-          nationDescriptionLengthByNation[mapPreview->pendingNation6C]);
+          nationDescriptionTextByNation[mapPreview->pendingNation],
+          nationDescriptionLengthByNation[mapPreview->pendingNation]);
       descControl->Show(1, 0);
       descControl->RefreshControl();
     }
@@ -169,7 +169,7 @@ void TScenarioChooser::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     if (sourceHandler->controlTag == kControlTagMore) {                                // 'more'
       TTextList* list = static_cast<TTextList*>(ResolveControlByTag(kControlTagList)); // 'list'
       list->AssertValid();
-      int newOffset = list->frameHeight38 / list->itemHeight + list->scrollOffset;
+      int newOffset = list->frameHeight / list->itemHeight + list->scrollOffset;
       list->scrollOffset = (newOffset > list->totalItems) ? 0 : newOffset;
       list->RefreshControl();
     }

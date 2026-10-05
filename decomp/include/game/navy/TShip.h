@@ -17,7 +17,7 @@ struct CRuntimeClass;
 // (head g_pNavyPrimaryOrderListHead @ 0x6A3EDC): TShip() prepends itself and
 // Free() unlinks. A ship can additionally be queued as a child order node under a
 // TTaskForce entry (taskForce + the entry's shipList /
-// TNavyMission::orderList24 link cells -- TMapOrderChildLinkNode payloads are
+// TNavyMission::orderList link cells -- TMapOrderChildLinkNode payloads are
 // TShip* in both lists).
 // VTABLE: IMPERIALISM 0x0065c438
 class TShip : public TObject {
@@ -81,7 +81,7 @@ public:
   // by callers that accumulate a 4-component category vector. Sibling of
   // GetStudliness (same lookup tables, different blend
   // per category). 0x54ff00; every call site walks ship nodes (the primary
-  // roster or an orderList24/shipList chain).
+  // roster or an orderList/shipList chain).
   short ComputeNavyOrderPriorityContributionPercentByCategory(int category);
   // Per-type normalization base (the "stock cap" field of the shared
   // per-resource-type descriptor table); inline wrapper over the by-resource-type
@@ -94,7 +94,7 @@ public:
   // location's TZone::QueryPortZoneCapability virtual. 0x00550f60.
   bool IsInHomePort() const;
   // Position of `this` in the primary navy order roster, counted from
-  // g_pNavyPrimaryOrderListHead (used when serializing orderList24 nodes by index;
+  // g_pNavyPrimaryOrderListHead (used when serializing orderList nodes by index;
   // Mac oracle: TShip::GetIndex).
   int GetIndex() const;
   // BFS zone-graph "hop" distance from this ship's own zone (location) to

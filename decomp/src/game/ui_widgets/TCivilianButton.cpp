@@ -28,13 +28,13 @@ TCivilianButton::~TCivilianButton() {}
 // FUNCTION: IMPERIALISM 0x0058b460
 void TCivilianButton::SetSelectedCivilianOrderAndEnableButton(TCivUnit* selectedOrder) {
   this->eventNumber60 = 0xc;
-  this->selectedCivilianOrder9c = selectedOrder;
+  this->selectedCivilianOrder = selectedOrder;
   if (selectedOrder != 0) {
     Show(1, 0);
     ViewEnable(1, 0);
 
     short mappedValue = g_pGlobalMapState->ApplyMapImprovementSelectionState(selectedOrder);
-    this->mappedSelection98 = mappedValue;
+    this->mappedSelection = mappedValue;
     return;
   }
   Show(0, 1);
@@ -49,7 +49,7 @@ void TCivilianButton::Draw(RECT* rectBuffer) {
   UpdatePaletteIndexWithDefaultFallback(0x10);
 
   RECT srcRect;
-  srcRect.left = mappedSelection98;
+  srcRect.left = mappedSelection;
   srcRect.top = 0;
   srcRect.right = srcRect.left + 0x40;
   srcRect.bottom = 0x40;

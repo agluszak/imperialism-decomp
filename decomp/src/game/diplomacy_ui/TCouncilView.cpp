@@ -53,16 +53,16 @@ void TCouncilView::DoPostCreate(int arg) {
   this->TView::DoPostCreate(arg);
 
   interactionModeAt94 = 5;
-  tickerSlots24ca[0] = 0;
-  tickerSlots24ca[1] = 0;
-  tickerSlots24ca[2] = 0;
-  tickerSlots24ca[3] = 0;
-  tickerSlots24ca[4] = 0;
-  tickerSlots24ca[5] = 0;
-  tickerSlots24ca[6] = 0;
-  tickerSlots24ca[7] = 0;
-  tickerSlots24ca[8] = 0;
-  tickerSlots24ca[9] = 0;
+  tickerSlots[0] = 0;
+  tickerSlots[1] = 0;
+  tickerSlots[2] = 0;
+  tickerSlots[3] = 0;
+  tickerSlots[4] = 0;
+  tickerSlots[5] = 0;
+  tickerSlots[6] = 0;
+  tickerSlots[7] = 0;
+  tickerSlots[8] = 0;
+  tickerSlots[9] = 0;
 
   this->BuildDiplomacyNationOverlayGeometryAndHitMasks();
 
@@ -115,7 +115,7 @@ void TCouncilView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
   if (commandId == 10) {
     if (sourceHandler->controlTag == kControlTagStar) { // "star"
       // Rebuild council controls + restart the vote ticker. 0x4fc2e0's receiver is a
-      // TCouncilView (verified: it writes councilNationCount24c8/visibleVoteTier528 and resolves its
+      // TCouncilView (verified: it writes councilNationCount/visibleVoteTier and resolves its
       // own controls via the TView vtable), so it is owned by this class, not the small
       // TCouncilTickerAnimation it was previously attributed to.
       this->StartVoting();
@@ -238,7 +238,7 @@ void TCouncilView::DisplayStats() {
   targetScore->Show(1, 1);
 }
 
-// Receiver confirmed to be TCouncilView (writes councilNationCount24c8 / visibleVoteTier528 and
+// Receiver confirmed to be TCouncilView (writes councilNationCount / visibleVoteTier and
 // resolves its own controls via the TView vtable).
 // FUNCTION: IMPERIALISM 0x004fc2e0
 void TCouncilView::StartVoting() {
@@ -248,7 +248,7 @@ void TCouncilView::StartVoting() {
   councilTextStyle.textColor = 0;
   BuildUiTextStyleDescriptor(&councilTextStyle, 0, 0xe, 0x2b6a);
 
-  councilNationCount24c8 = 0;
+  councilNationCount = 0;
 
   TStaticText* can0 = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCan0));
   can0->AssertValid();
@@ -281,10 +281,10 @@ void TCouncilView::StartVoting() {
   if (phase == kGamePhaseCouncilVictory || phase == kGamePhaseCouncilDefeat) {
     for (int provinceIndex = 0; provinceIndex < 0x180; ++provinceIndex) {
       if (g_pGlobalMapState->cityScoreTable[provinceIndex].ownerNationCode00 != -1) {
-        tileHasOwnerFlags52C[provinceIndex] = true;
+        tileHasOwnerFlags[provinceIndex] = true;
       }
     }
-    visibleVoteTier528 = kCouncilTickerIntervalMapMode;
+    visibleVoteTier = kCouncilTickerIntervalMapMode;
 
     TControl* endControl = static_cast<TControl*>(ResolveControlByTag(kControlTagEnd));
     if (endControl != nullptr) {
@@ -295,15 +295,15 @@ void TCouncilView::StartVoting() {
     return;
   }
 
-  short maxPendingTier = councilNationCount24c8;
+  short maxPendingTier = councilNationCount;
   for (int tierIndex = 0; tierIndex < kDiplomacyPairMatrixEntries; ++tierIndex) {
     const short tierValue = g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix[tierIndex];
     if (tierValue != -1 && maxPendingTier < tierValue) {
       maxPendingTier = tierValue;
     }
   }
-  councilNationCount24c8 = maxPendingTier;
-  visibleVoteTier528 = 0;
+  councilNationCount = maxPendingTier;
+  visibleVoteTier = 0;
 
   TCouncilTickerAnimation* tickerAnimation = new TCouncilTickerAnimation();
   if (tickerAnimation != nullptr) {
@@ -325,12 +325,12 @@ void TCouncilView::StartVoting() {
 // FUNCTION: IMPERIALISM 0x004fc630
 void TCouncilView::NextTick() {
   CString unusedMsg; // constructed/destructed; never populated in the observed binary
-  ++visibleVoteTier528;
+  ++visibleVoteTier;
 
   for (int idx = 0; idx < kDiplomacyPairMatrixEntries; ++idx) {
     short tier = g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix[idx];
-    if (tier != -1 && (tier == visibleVoteTier528 || tier == visibleVoteTier528 - 1)) {
-      RECT* tileRect = &tileMarkerRects6AC[idx];
+    if (tier != -1 && (tier == visibleVoteTier || tier == visibleVoteTier - 1)) {
+      RECT* tileRect = &tileMarkerRects[idx];
       RECT inflated = {tileRect->left - 1, tileRect->top - 1, tileRect->right + 2,
                        tileRect->bottom + 2};
       InvalidateCityDialogRectRegion(&inflated, 1);
@@ -341,7 +341,7 @@ void TCouncilView::NextTick() {
     ScopedMapQuickDrawContext quickDraw(this);
     PrepareForDrawing();
     DrawVoteNuggets();
-    RECT rect = {0, 0, frameWidth34, 300};
+    RECT rect = {0, 0, frameWidth, 300};
     ValidateControlRectIfWindowActive(&rect);
   }
 
@@ -350,7 +350,7 @@ void TCouncilView::NextTick() {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1f41, 0, 1);
   }
 
-  if (visibleVoteTier528 == councilNationCount24c8 + 2) {
+  if (visibleVoteTier == councilNationCount + 2) {
     SetCursor(LoadCursorA(nullptr, IDC_ARROW));
     TView* endControlTarget = ResolveControlByTag(kControlTagEnd);
     endControlTarget->AssertValid();
@@ -394,7 +394,7 @@ void TCouncilView::NextTick() {
 void TCouncilView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                                        RgnHandle hitArg) {
   TView::HandleCursorHoverSelectionByChildHitTestAndFallback(point, hitArg);
-  if ((int)visibleVoteTier528 < councilNationCount24c8 + 2) {
+  if ((int)visibleVoteTier < councilNationCount + 2) {
     SetCursor(g_pViewMgr->turnEventCursors[26]);
   }
 }

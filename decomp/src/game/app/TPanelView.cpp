@@ -13,5 +13,5 @@ IMPLEMENT_DYNCREATE(TPanelView, TView)
 // FUNCTION: IMPERIALISM 0x004f79e0
 void TPanelView::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
-  diplomacyMapView60 = static_cast<TDiplomacyMapView*>(ownerContext);
+  diplomacyMapView = static_cast<TDiplomacyMapView*>(ownerContext);
 }

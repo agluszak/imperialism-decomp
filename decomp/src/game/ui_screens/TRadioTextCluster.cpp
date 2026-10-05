@@ -16,8 +16,8 @@ TRadioTextCluster::TRadioTextCluster() : TCluster() {
   word8C = 0x4b;
   word8E = 0x49;
   frameThemeCode90 = -1;
-  itemInset92 = 0;
-  itemVerticalSpacing94 = 2;
+  itemInset = 0;
+  itemVerticalSpacing = 2;
 }
 
 // FUNCTION: IMPERIALISM 0x00579720
@@ -37,8 +37,8 @@ void TRadioTextCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
   TCluster::DoEvent(commandId, sourceHandler, event);
 }
 
-// Syncs selectedTag88 to `tag`, then walks childList44 marking the TRadioText child whose
-// controlTag matches as selected (isSelectedOption98) and clearing the others, refreshing
+// Syncs selectedTag88 to `tag`, then walks childList marking the TRadioText child whose
+// controlTag matches as selected (isSelectedOption) and clearing the others, refreshing
 // each child whose selection state changed (only when refreshOnChange is set).
 // FUNCTION: IMPERIALISM 0x005797c0
 void TRadioTextCluster::SetSelectedTextOptionByTag(int tag, bool refreshOnChange) {
@@ -50,17 +50,17 @@ void TRadioTextCluster::SetSelectedTextOptionByTag(int tag, bool refreshOnChange
   }
   selectedTag88 = tag;
   // The original walks the children with the shared bidirectional cursor (which handles a
-  // null childList44 internally), not a raw GetHeadPosition/GetNext loop.
+  // null childList internally), not a raw GetHeadPosition/GetNext loop.
   CSubViewIterator iter(this);
   TRadioText* child = static_cast<TRadioText*>(iter.FirstSubView());
   if (iter.MoreSubViews()) {
     do {
       child->AssertValid();
-      // Original compares the raw isSelectedOption98 byte directly (cmp al,cl) -- it never
+      // Original compares the raw isSelectedOption byte directly (cmp al,cl) -- it never
       // holds anything but 0/1, so no `!= 0` normalization is emitted.
       bool shouldBeSelected = static_cast<unsigned char>(child->controlTag == selectedTag88);
-      if (shouldBeSelected != child->isSelectedOption98) {
-        child->isSelectedOption98 = shouldBeSelected;
+      if (shouldBeSelected != child->isSelectedOption) {
+        child->isSelectedOption = shouldBeSelected;
         if (refreshOnChange) {
           child->RefreshControl();
         }
@@ -74,15 +74,15 @@ void TRadioTextCluster::SetSelectedTextOptionByTag(int tag, bool refreshOnChange
 TRadioText* TRadioTextCluster::AddItem(unsigned long tag, int value, const char* text, int height,
                                        int bottom) {
   if (bottom == -1) {
-    bottom = itemInset92;
+    bottom = itemInset;
     // The original accumulates the max child bottom via the shared cursor (which handles a
-    // null childList44 internally), not a raw GetHeadPosition/GetNext loop.
+    // null childList internally), not a raw GetHeadPosition/GetNext loop.
     CSubViewIterator iter(this);
     TView* child = iter.FirstSubView();
     if (iter.MoreSubViews()) {
       do {
         child->AssertValid();
-        int childBottom = child->ownerLocalY + child->frameHeight38 + itemVerticalSpacing94;
+        int childBottom = child->ownerLocalY + child->frameHeight + itemVerticalSpacing;
         if (childBottom > bottom) {
           bottom = childBottom;
         }
@@ -94,9 +94,9 @@ TRadioText* TRadioTextCluster::AddItem(unsigned long tag, int value, const char*
   TRadioText* item = new TRadioText();
   int offset[2];
   int size[2];
-  offset[0] = itemInset92;
+  offset[0] = itemInset;
   offset[1] = bottom;
-  size[0] = frameWidth34 - itemInset92 * 2;
+  size[0] = frameWidth - itemInset * 2;
   size[1] = height;
   item->IStaticText(this, offset, size, 5, 5, -1, 1);
   item->controlTag = static_cast<int>(tag);
@@ -111,7 +111,7 @@ TRadioText* TRadioTextCluster::AddItem(unsigned long tag, int value, const char*
 void TRadioTextCluster::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
   if (frameThemeCode90 > -1) {
-    RECT frame = {0, 0, frameWidth34, frameHeight38};
+    RECT frame = {0, 0, frameWidth, frameHeight};
     g_pViewMgr->ApplyLegendSplitSlot34(frameThemeCode90);
     QDFrameRect(&frame);
     SetQuickDrawFillColor(0);

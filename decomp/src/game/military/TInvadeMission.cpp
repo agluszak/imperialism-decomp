@@ -83,18 +83,18 @@ void TInvadeMission::Free() {
   nationState->AssertValid();
   nationState->SetProvinceStatus(targetProvince30, 0);
 
-  CIterator iter(orderListAt18);
+  CIterator iter(orderList);
   TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(iter.Reset());
   while (iter.More()) {
-    unit->ownerMission40 = nullptr;
+    unit->ownerMission = nullptr;
     unit = static_cast<TMilitaryUnit*>(iter.Advance());
   }
 
-  orderListAt18->RemoveAll();
-  if (orderListAt18 != nullptr) {
-    orderListAt18->FreePayloadsAndDestroy();
+  orderList->RemoveAll();
+  if (orderList != nullptr) {
+    orderList->FreePayloadsAndDestroy();
   }
-  orderListAt18 = nullptr;
+  orderList = nullptr;
 
   if (this != nullptr) {
     delete this;
@@ -108,7 +108,7 @@ char TInvadeMission::SmokeEmIfYouGotEm() {
   if (!beachhead34->SmokeEmIfYouGotEm()) {
     return 0;
   }
-  CIterator iter(orderListAt18);
+  CIterator iter(orderList);
   TArmyMission* armyMission = this;
   for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
@@ -124,7 +124,7 @@ void TInvadeMission::Initialize() {
   beachhead34->InitializeMissionWithNationIdAndResetPathMarker(nationId04);
   marker11 = 1;
   if (targetProvince30 != -1) {
-    pathMarker06 =
+    pathMarker =
         static_cast<short>(g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00);
   }
   marker11 = 3;
@@ -173,7 +173,7 @@ void TInvadeMission::GiveOrders() {
     beachhead34->GiveOrders();
   }
   // Per-region, per-nation dispatch-dirty bitmask gate.
-  if (g_pGlobalMapState->cityScoreTable[targetProvince30].exploredByNationMaskA1 &
+  if (g_pGlobalMapState->cityScoreTable[targetProvince30].exploredByNationMask &
       (1 << (nationId04 & 0x1f))) {
     TAttackProvinceMission::GiveOrders();
   }
@@ -190,7 +190,7 @@ void TInvadeMission::Reassess() {
 // FUNCTION: IMPERIALISM 0x0053f800
 float TInvadeMission::CalculatePriority() {
   float currentUnitCost = 0.0f;
-  CIterator costIterator(orderListAt18);
+  CIterator costIterator(orderList);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(costIterator.Reset()); costIterator.More();
        unit = static_cast<TMilitaryUnit*>(costIterator.Advance())) {
     currentUnitCost += static_cast<float>(unit->GetArmsCarried());
@@ -199,7 +199,7 @@ float TInvadeMission::CalculatePriority() {
   int resourcePools[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
   float committedResources[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
   int totalResourceDemand = 0;
-  CIterator unitIterator(orderListAt18);
+  CIterator unitIterator(orderList);
   for (TMilitaryUnit* selectedUnit = static_cast<TMilitaryUnit*>(unitIterator.Reset());
        unitIterator.More(); selectedUnit = static_cast<TMilitaryUnit*>(unitIterator.Advance())) {
     selectedUnit->AssertValid();
@@ -254,7 +254,7 @@ float TInvadeMission::ValueOf(TMilitaryUnit* candidateUnit) {
   float delta;
   if (flag10 != 0) {
     delta = 0.0f;
-  } else if (candidateUnit->ownerMission40 == this) {
+  } else if (candidateUnit->ownerMission == this) {
     delta = GetWeightedSatisfaction() -
             ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(candidateUnit);
   } else {
@@ -322,18 +322,18 @@ int TInvadeMission::AccumulateLack(int* accumulatedLack, unsigned char includeEx
 
 // FUNCTION: IMPERIALISM 0x0053fdc0
 char TInvadeMission::TryResolveTargetTerrainClass() {
-  presentLocation14 = -1;
+  presentLocation = -1;
   if (TAttackProvinceMission::TryResolveTargetTerrainClass() != 0) {
-    presentLocation14 = -1;
+    presentLocation = -1;
     return 0;
   }
-  presentLocation14 =
+  presentLocation =
       static_cast<short>(g_apTerrainTypeDescriptorTable[nationId04]->GetCapitolProvince());
   return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x0053fe10
 TMission* TInvadeMission::GetReplacementSlot48() {
-  presentLocation14 = -1;
+  presentLocation = -1;
   return TAttackProvinceMission::GetReplacementSlot48();
 }

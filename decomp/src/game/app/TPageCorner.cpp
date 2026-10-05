@@ -20,7 +20,7 @@ char TPageCorner::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPo
     if (point.x < point.y) {
       return TView::HandleMouseDown(point, event, origin);
     }
-  } else if (frameHeight38 - point.y < point.x) {
+  } else if (frameHeight - point.y < point.x) {
     return TView::HandleMouseDown(point, event, origin);
   }
   return 0;

@@ -19,10 +19,10 @@ public:
   TMiniArmyLine() {}
 
   // Two-phase init (MacApp IViewClass idiom): sets the shared TLineData row/bounds
-  // then this line's militaryUnit10. 0x004aa920, __thiscall.
+  // then this line's militaryUnit. 0x004aa920, __thiscall.
   void IMiniArmyLine(short rowArg, short colArg, int* bounds, TMilitaryUnit* item);
 
   // Army unit represented by this roster row.
-  TMilitaryUnit* militaryUnit10;
+  TMilitaryUnit* militaryUnit;
 };
 ASSERT_SIZE(TMiniArmyLine, 0x14);

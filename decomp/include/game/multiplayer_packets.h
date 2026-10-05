@@ -70,18 +70,18 @@ struct LobbyChatEvent9Packet : TimelyMessageHeader {
 struct LobbyTextPairEvent8Packet : TimelyMessageHeader {
   unsigned char sourceNationSlot18;
   char playerName19[0x21];
-  char playerNameMirror3A[0x22];
+  char playerNameMirror[0x22];
 };
 
 // Event-0xE host session-init record.
 struct TurnEventESessionInitPacket : TimelyMessageHeader {
-  char mapSeedText18[0x21];      // +0x18 - passed to RebuildMapContextAndGlobalMapState
+  char mapSeedText[0x21];        // +0x18 - passed to RebuildMapContextAndGlobalMapState
   unsigned char mapParamByte39;  // +0x39 - third Rebuild arg
   char hostGameName3A[0x22];     // +0x3a
   int saveSlotDword5C;           // +0x5c -> queueSyncDword
   int scenarioTag60;             // +0x60 -> scenarioSelectionTag
   signed char difficultyLevel64; // +0x64
-  unsigned char nameTableFlag65; // +0x65 -> useLocalizedNameTables68
+  unsigned char nameTableFlag;   // +0x65 -> useLocalizedNameTables
   unsigned char pad66[2];        // total 0x68
 };
 
@@ -89,7 +89,7 @@ struct TurnEventESessionInitPacket : TimelyMessageHeader {
 struct TurnEvent13NewsPacket : TimelyMessageHeader {
   short nationSlot18; // +0x18
   unsigned char pad1a[2];
-  NewsEvent newsEvent1C; // +0x1c, total 0x40
+  NewsEvent newsEvent; // +0x1c, total 0x40
 };
 
 // Event-0x26 full diplomacy-matrix snapshot.
@@ -183,9 +183,9 @@ struct NationStatusEvent25Packet : TimelyMessageHeader {
 // Turn-event-0x2B presence/ack mask exchange; also emitted by TNetMgr's reachability
 // probe (which sends its own nation id with no reply requested).
 struct TurnEvent2BPresenceMaskPacket : TimelyMessageHeader {
-  unsigned char replyRequestFlag18; // +0x18 - nonzero requests the echo reply
-  signed char nationMask19;         // +0x19 - OR'd (signed) into the accumulator
-  unsigned char pad1a[2];           // total 0x1c
+  unsigned char replyRequestFlag; // +0x18 - nonzero requests the echo reply
+  signed char nationMask;         // +0x19 - OR'd (signed) into the accumulator
+  unsigned char pad1a[2];         // total 0x1c
 };
 
 // Turn-event-0x2D payload: a minor nation's need-level array.

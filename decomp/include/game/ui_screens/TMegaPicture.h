@@ -23,11 +23,11 @@ public:
   // TNoHilitePicture adds a 1-byte field90 at +0x90 and tail-pads to a 4-byte boundary
   // as a base subobject (MSVC does not reuse base tail padding for derived members), so
   // these fields (read by Draw) start immediately at +0x94, with no gap.
-  struct TQuickDrawSurfaceContext* surfaceContext94; // +0x94 the picture's own bitmap
+  struct TQuickDrawSurfaceContext* surfaceContext; // +0x94 the picture's own bitmap
   unsigned short flags98; // +0x98 bit0 = transparent-blit + opaque-fill-first, bit2 =
-                          // use contentSubRect9c instead of the full passed-in rect
+                          // use contentSubRect instead of the full passed-in rect
   unsigned char pad9a[2];
-  CRect contentSubRect9c; // +0x9c cached content sub-rect (used when flags98 & 4)
+  CRect contentSubRect; // +0x9c cached content sub-rect (used when flags98 & 4)
 
   TMegaPicture();
 

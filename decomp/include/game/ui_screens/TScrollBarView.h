@@ -30,20 +30,20 @@ public:
   // 0x84 — cached ownerContext (both builders store it + AssertValid). Always the
   // owning TScrollView (0x573d37/0x5744b0's `panel` argument is that TScrollView's
   // `this`) -- confirmed via TScrollView::ScrollRelative (0x573f60),
-  // which reads TScrollView::contentView60/scrollBar64 at +0x60/+0x64 off this pointer.
+  // which reads TScrollView::contentView/scrollBar at +0x60/+0x64 off this pointer.
   class TScrollView* ownerView84;
   short word88; // 0x88 — bounded-value component A (button span, seeded 0x12)
-  short word8a; // 0x8a — bounded-value component B (frameHeight38 - 0x24)
+  short word8a; // 0x8a — bounded-value component B (frameHeight - 0x24)
   short word8c; // 0x8c — clamped current value (seeded 0x12)
   short word8e; // 0x8e — allocation padding/unobserved so far
   // 0x90 — 8-bit offscreen surface from
   // TDisplayMgr::MakeNewGWorld; released in Free().
-  struct TQuickDrawSurfaceContext* surfaceContext90;
+  struct TQuickDrawSurfaceContext* surfaceContext;
 
   // Inline in the original: the only construction site (0x573d37) expands to the
   // TControl base ctor + vptr store + this one field init.
   // NOOP: verified empty in original 0x00573d44
-  TScrollBarView() : surfaceContext90(0) {}
+  TScrollBarView() : surfaceContext(0) {}
 
   // 0x005744b0 — frame into `panel` with (4,4) margins, cache+assert the owner, seed
   // the bounded-value words, allocate the 8-bit surface for the full frame rect, and
@@ -52,7 +52,7 @@ public:
   void InitializeScrollBar(class TScrollView* panel, int* offsetLayout, int* sizeLayout);
 
   // 0x005740a0 — RAII-scoped map QuickDraw context around a PrepareForDrawing() + viewport rect
-  // rebuild (Draw): rect = {0, word88, frameWidth34, word8a + 0x12}.
+  // rebuild (Draw): rect = {0, word88, frameWidth, word8a + 0x12}.
   void RefreshCityDialogScrollableViewportWithQuickDrawContext();
   void SetThumb(int percent, unsigned char refresh); // 0x574e20
 };

@@ -91,7 +91,7 @@ void TTradeTotalsView::Draw(RECT* rectBuffer) {
 
   y += 2;
   SetQuickDrawTextOriginWithContextOffset(8, y);
-  DrawCenteredGuideLineOnMapDc(static_cast<short>(frameWidth34 - 8), static_cast<short>(y));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(frameWidth - 8), static_cast<short>(y));
 
   g_pSimMgr->NumToCurrency(nation->ComputeRemainingDiplomacyAidBudget(), &strA);
   short remainingX;

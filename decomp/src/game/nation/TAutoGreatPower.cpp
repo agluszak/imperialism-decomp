@@ -296,7 +296,7 @@ void TAutoGreatPower::PurchaseItem(short resourceKind, short amount, short price
 
 // FUNCTION: IMPERIALISM 0x004e7680
 void TAutoGreatPower::SetTradeOffersFor(short resourceKind, short offerContext) {
-  if (g_apNationStates[static_cast<short>(offerContext)]->diplomacyEligibilityA0 != 0) {
+  if (g_apNationStates[static_cast<short>(offerContext)]->diplomacyEligibility != 0) {
     if (static_cast<short>(resourceKind) != 5) {
       short relationScore =
           g_pDiplomacyTurnStateManager->relationStandingScores[this->nationSlot * kNationSlotCount +
@@ -926,8 +926,8 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
         if (mapNodeStateFlags[rec] != 0) {
           continue;
         }
-        if (((1 << orderTypes[t]) &
-             g_pGlobalMapState->cityScoreTable[rec].resourcePresenceMaskA2) == 0) {
+        if (((1 << orderTypes[t]) & g_pGlobalMapState->cityScoreTable[rec].resourcePresenceMask) ==
+            0) {
           continue;
         }
 
@@ -1085,7 +1085,7 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
   int tier = bestTier;
   if (tier != -1) {
     bool acceptMission = false;
-    if (g_afAdvisoryMissionTierThresholdByMinisterSkill_00653F18[defenseMinister->skillIndexC]
+    if (g_afAdvisoryMissionTierThresholdByMinisterSkill_00653F18[defenseMinister->skillIndex]
                                                                 [tier] < bestScore) {
       acceptMission = true;
     } else if (g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(nationSlot) != 0) {
@@ -1144,7 +1144,7 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
           if (n != nationSlot &&
               g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, static_cast<short>(n)) !=
                   0 &&
-              (zone->nationKeyMask10 & static_cast<unsigned char>(1 << n)) != 0) {
+              (zone->nationKeyMask & static_cast<unsigned char>(1 << n)) != 0) {
             portZoneStateFlags[contextOrdinal] = 1;
             CreateMission(kMissionTypeDefendProvince, -1, zone, -1);
           }
@@ -1448,7 +1448,7 @@ void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
 
   float ownUnitDivergence = g_afNationCombinedUnitDivergence_006a3b50[nationSlot] -
                             g_afNationMobileUnitDivergence_006a3ae0[nationSlot];
-  averageUnitDivergencePerOwnedRegionB68 = ownUnitDivergence / static_cast<float>(totalRegionCount);
+  averageUnitDivergencePerOwnedRegion = ownUnitDivergence / static_cast<float>(totalRegionCount);
 
   float maximumAdjustedMilitaryScore = 0.0f;
   float maximumAdjustedMissionScore = 0.0f;
@@ -1504,8 +1504,8 @@ void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
   }
 
   float militaryRatio =
-      maximumRawMilitaryScore / (g_afNationMobileUnitDivergence_006a3ae0[nationSlot] +
-                                 averageUnitDivergencePerOwnedRegionB68);
+      maximumRawMilitaryScore /
+      (g_afNationMobileUnitDivergence_006a3ae0[nationSlot] + averageUnitDivergencePerOwnedRegion);
   if (militaryRatio > g_MissionScoreOneConstant_006545d8) {
     militaryRatio = g_AiPressureRatioCap_006545e0;
   }
@@ -1524,7 +1524,7 @@ void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
   if (compatibleRegionCount != 0) {
     expansionPressure /= static_cast<float>(compatibleRegionCount);
   }
-  expansionPressurePerCompatibleRegionB64 = expansionPressure;
+  expansionPressurePerCompatibleRegion = expansionPressure;
 
   if (activeMissionCount == 0) {
     activeMissionPressureAverageB6c = maximumAdjustedMissionScore;
@@ -1544,7 +1544,7 @@ void TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
   CIterator unitIter(militaryUnitList44);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
-    if (unit->ownerMission40 == nullptr &&
+    if (unit->ownerMission == nullptr &&
         unit->GetCategory() == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
       TMission* mission =
           TMission::Find(missionQueue, kMissionTypeDefendProvince, unit->tileIndex06, nullptr);
@@ -1564,7 +1564,7 @@ void TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
   PlanAiDevelopmentActionsFromResourcePools(0);
 }
 
-// For every unassigned (ownerMission40 == nullptr) militia-category unit in
+// For every unassigned (ownerMission == nullptr) militia-category unit in
 // militaryUnitList44, finds the queued mission (kind 3, keyed by the unit's own tileIndex06)
 // in missionQueue and adopts the unit into it (AdoptUnitSlot80).
 // FUNCTION: IMPERIALISM 0x004eafa0
@@ -1572,7 +1572,7 @@ void TAutoGreatPower::SeedTrackedEntryAssignmentsFromEligibleUnits() {
   CIterator iter(militaryUnitList44);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(iter.Reset()); iter.More();
        unit = static_cast<TMilitaryUnit*>(iter.Advance())) {
-    if (unit->ownerMission40 == nullptr &&
+    if (unit->ownerMission == nullptr &&
         unit->GetCategory() == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
       TMission* handler =
           TMission::Find(missionQueue, kMissionTypeDefendProvince, unit->tileIndex06, nullptr);
@@ -1635,10 +1635,10 @@ void TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools(int unused) {
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
     if (unit->CanUpgrade()) {
-      int qualityLevel = unit->experiencePercent38 / 100;
+      int qualityLevel = unit->experiencePercent / 100;
       short unitType = unit->orderType;
       if (bestUnitByType[unitType] == 0 ||
-          bestUnitByType[unitType]->experiencePercent38 / 100 < qualityLevel) {
+          bestUnitByType[unitType]->experiencePercent / 100 < qualityLevel) {
         bestUnitByType[unitType] = unit;
       }
     }
@@ -1963,7 +1963,7 @@ void TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unus
       CIterator unitIter(militaryUnitList44);
       for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
            unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
-        if (unit->ownerMission40 == nullptr) {
+        if (unit->ownerMission == nullptr) {
           float score = bestArmy->FitnessOf(unit, weightFractions);
           if (bestUnit == nullptr || bestUnitScore < score) {
             bestUnitScore = score;
@@ -1998,7 +1998,7 @@ bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePoo
 
   float bestScore = 0.0f;
   for (short actionSlot = 0; actionSlot < 30; ++actionSlot) {
-    if (g_pTechMgr->abilityActiveRows395[nationSlot].abilityActiveById[actionSlot] == 0) {
+    if (g_pTechMgr->abilityActiveRows[nationSlot].abilityActiveById[actionSlot] == 0) {
       continue;
     }
     if (TMilitaryUnit::GetTypeCategory(actionSlot) ==
@@ -2046,7 +2046,7 @@ bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePoo
         weightedCost += static_cast<float>(costDelta * resourcePools[poolIndex]);
       }
     }
-    int qualityMultiplier = (bestUnitByType[unitType]->experiencePercent38 / 100 + 10) / 10;
+    int qualityMultiplier = (bestUnitByType[unitType]->experiencePercent / 100 + 10) / 10;
     weightedCost *= static_cast<float>(qualityMultiplier);
     float score = weightedCost / static_cast<TAutoGreatPower*>(g_apNationStates[nationSlot])
                                      ->ComputeAiCityActionCostFromSlotAndMode(upgradeSlot, true);

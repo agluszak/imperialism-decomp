@@ -110,7 +110,7 @@ void BuildMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int side,
     rec.resourceType = child->type;
     rec.stockOrRequired = child->strength;
     CopyCStringIntoFixedBuffer(rec.nameBuffer, 0x20, static_cast<LPCSTR>(child->name));
-    rec.detailIdentity28 = reinterpret_cast<unsigned int>(child);
+    rec.detailIdentity = reinterpret_cast<unsigned int>(child);
     rec.strengthBucket = static_cast<short>(child->experience / 100);
     ++idx;
   }
@@ -122,7 +122,7 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
   short count = snapshot->childCount[side];
   for (int i = 0; i < count; ++i) {
     MapOrderBattleSideChildRecord& rec = snapshot->childRecords[side][i];
-    TShip* child = reinterpret_cast<TShip*>(rec.detailIdentity28);
+    TShip* child = reinterpret_cast<TShip*>(rec.detailIdentity);
     bool stillPresent = entry != nullptr && entry->shipList->FindNodeMatching(child) != nullptr;
     if (stillPresent) {
       rec.stockOrRequired = child->strength;
@@ -132,7 +132,7 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
     }
     // Finalize the working pointer slot into the report-row category consumed by
     // TBatRepDetLine::InstallViews.
-    rec.detailIdentity28 = kControlTagNavy; // 'navy'
+    rec.detailIdentity = kControlTagNavy; // 'navy'
   }
 
   if (entry != nullptr && entry->shipOrders == 5) {
@@ -630,8 +630,8 @@ void TNavyMgr::MakeSureAllShipsHaveOrders() {
 void TNavyMgr::PrepareToCarryOutAllOrders(short phaseId) {
   for (int provinceIndex = 0; provinceIndex < 0x180; ++provinceIndex) {
     Province* record = &g_pGlobalMapState->cityScoreTable[provinceIndex];
-    if (record->exploredByNationMaskA1 != 0) {
-      record->exploredByNationMaskA1 = 0;
+    if (record->exploredByNationMask != 0) {
+      record->exploredByNationMask = 0;
       bool shouldInvalidateCity = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
       if (shouldInvalidateCity) {
         g_pGameFlowState->DispatchCityRedrawInvalidateEvent(static_cast<short>(provinceIndex));
@@ -1003,9 +1003,9 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
         snapshot.childRecords[0] = nullptr;
         snapshot.childRecords[1] = nullptr;
         snapshot.reportKind04 = kMapContextReportSeaBattle;
-        snapshot.targetObject08 = entry->location;
-        snapshot.displayedParticipantIndex03 = 0;
-        snapshot.reportParticipantIndex02 = 1;
+        snapshot.targetObject = entry->location;
+        snapshot.displayedParticipantIndex = 0;
+        snapshot.reportParticipantIndex = 1;
         BuildMapOrderBattleSideSnapshot(&snapshot, 0, entry);
         BuildMapOrderBattleSideSnapshot(&snapshot, 1, nationEntry);
         RefreshMapOrderBattleSideSnapshot(&snapshot, 0, entry);
@@ -1110,10 +1110,10 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         snapshot.childRecords[1] = nullptr;
         snapshot.nationIds[0] = static_cast<unsigned char>(selection.offerNationCode);
         snapshot.nationIds[1] = static_cast<unsigned char>(nation);
-        snapshot.reportParticipantIndex02 = 0;
-        snapshot.displayedParticipantIndex03 = 0;
+        snapshot.reportParticipantIndex = 0;
+        snapshot.displayedParticipantIndex = 0;
         snapshot.reportKind04 = kMapContextReportMerchantInterception;
-        snapshot.targetObject08 = selection.selectedEntry->location;
+        snapshot.targetObject = selection.selectedEntry->location;
 
         CString labelScratch;
         g_apTerrainTypeDescriptorTable[selection.offerNationCode]->FormatOverlayTerrainLabelText(
@@ -1200,7 +1200,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
                 MapOrderBattleSideChildRecord& detail = snapshot.childRecords[1][reportIndex];
                 detail.resourceType = static_cast<short>(resourceType);
                 detail.stockOrRequired = static_cast<short>((directionFlags >> 1) & 1);
-                detail.detailIdentity28 = kControlTagMerc; // 'merc'
+                detail.detailIdentity = kControlTagMerc; // 'merc'
                 ++reportIndex;
               }
             }
@@ -1230,7 +1230,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
                 MapOrderBattleSideChildRecord& item = snapshot.childRecords[1][reportIndex];
                 item.resourceType = slot;
                 item.stockOrRequired = transferredWeight;
-                item.detailIdentity28 = kControlTagItem; // 'item'
+                item.detailIdentity = kControlTagItem; // 'item'
               }
 
               for (int resourceType2 = 0; resourceType2 < kIndustryActionSlotCount;
@@ -1260,7 +1260,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         interaction.resourceType = slot;
         interaction.stockOrRequired = entryValue;
         interaction.strengthBucket = entryTargetNation;
-        interaction.detailIdentity28 = kControlTagRupt; // 'rupt'
+        interaction.detailIdentity = kControlTagRupt; // 'rupt'
 
         int selectedChildCount = CountMapOrderChildren(selection.selectedEntry->shipList);
         if (selection.selectedEntry->flagship != nullptr &&
@@ -1303,7 +1303,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
           CopyCStringIntoFixedBuffer(detail.nameBuffer, 0x20,
                                      static_cast<LPCSTR>(selectedShip->name));
           detail.strengthBucket = static_cast<short>(selectedShip->experience / 100);
-          detail.detailIdentity28 = kControlTagNavy; // 'navy'
+          detail.detailIdentity = kControlTagNavy; // 'navy'
           ++selectedChildIndex;
         }
 
@@ -1725,8 +1725,8 @@ PruneMapOrderConflictHeadAndTail(TMapOrderChildLinkNode* head) {
 void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEntry) {
   MapOrderBattleSnapshot snapshot;
   snapshot.reportKind04 = kMapContextReportSeaBattle;
-  snapshot.targetObject08 = leftEntry->location;
-  snapshot.displayedParticipantIndex03 = 0;
+  snapshot.targetObject = leftEntry->location;
+  snapshot.displayedParticipantIndex = 0;
   snapshot.childCount[0] = 0;
   snapshot.childCount[1] = 0;
   snapshot.childRecords[0] = 0;
@@ -1901,7 +1901,7 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
   } else {
     outcome = static_cast<signed char>(rightThresholdFailed ? 0 : -1);
   }
-  snapshot.reportParticipantIndex02 = static_cast<unsigned char>(outcome);
+  snapshot.reportParticipantIndex = static_cast<unsigned char>(outcome);
   if (outcome != -1) {
     TTaskForce* loser = outcome == 1 ? leftEntry : rightEntry;
     TTaskForce* winner = outcome == 1 ? rightEntry : leftEntry;

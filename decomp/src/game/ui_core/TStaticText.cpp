@@ -64,7 +64,7 @@ void TStaticText::CopyViewStateFromSource(TView* source) {
   TStaticText* src = static_cast<TStaticText*>(source);
   this->eventNumber60 = src->eventNumber60;
   this->controlState64 = src->controlState64;
-  this->contentInsets68 = src->contentInsets68;
+  this->contentInsets = src->contentInsets;
   this->textStyle78 = src->textStyle78;
   this->text = new CString();
   *this->text = *src->text;
@@ -94,8 +94,8 @@ void TStaticText::IStaticText(TView* panel, int* offsetLayout, int* sizeLayout, 
   nextHandler = panel;
   ownerLocalX = offsetLayout[0];
   ownerLocalY = offsetLayout[1];
-  frameWidth34 = sizeLayout[0];
-  frameHeight38 = sizeLayout[1];
+  frameWidth = sizeLayout[0];
+  frameHeight = sizeLayout[1];
   if (panel != 0) {
     panel->AttachChildControl(this, 0);
   }
@@ -152,7 +152,7 @@ void TStaticText::Draw(RECT* rectBuffer) {
   dc->SetBkMode(TRANSPARENT);
   CRect bounds;
   GetQDExtent(&bounds);
-  bounds.DeflateRect(&contentInsets68);
+  bounds.DeflateRect(&contentInsets);
   CFont* font = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&textStyle78);
   CFont* oldFont = dc->SelectObject(font);
   COLORREF textColor;

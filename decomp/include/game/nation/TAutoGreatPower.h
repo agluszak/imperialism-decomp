@@ -128,7 +128,7 @@ public:
   // via AcceptReenforcement and restarting. (2) Otherwise pick the best-scoring TArmyMission
   // (GetArmyMission identity filter, with a state08/marker11 tie-break against a
   // runner-up candidate), build its weight profile, and pair it with the best unassigned
-  // (ownerMission40 == nullptr) militaryUnitList44 unit (FitnessOf),
+  // (ownerMission == nullptr) militaryUnitList44 unit (FitnessOf),
   // dispatching via AdoptUnitSlot80 and restarting. Stops when neither pass finds a
   // candidate to act on.
   void AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unused);
@@ -148,7 +148,7 @@ public:
                      int relatedMapNodeIndex);
   void RemoveMission(eMissionType missionType, int key, TZone* zoneContext);
   void MReassess();
-  // For every unassigned (ownerMission40 == nullptr) militia-category unit in
+  // For every unassigned (ownerMission == nullptr) militia-category unit in
   // militaryUnitList44, finds the queued mission (kind 3, keyed by the
   // unit's own tileIndex06) in missionQueue and adopts the unit into it. 0x4eafa0.
   void SeedTrackedEntryAssignmentsFromEligibleUnits();
@@ -182,8 +182,8 @@ public:
   unsigned char mapNodeStateFlags[0x180];
   unsigned char portZoneStateFlags[0x70];
   TSortedList* missionQueue;
-  float expansionPressurePerCompatibleRegionB64;
-  float averageUnitDivergencePerOwnedRegionB68;
+  float expansionPressurePerCompatibleRegion;
+  float averageUnitDivergencePerOwnedRegion;
   float activeMissionPressureAverageB6c;
 };
 ASSERT_SIZE(TAutoGreatPower, 0xb70);

@@ -16,7 +16,7 @@ public:
   // TBuildingView's slice ends at 0xa0; RTTI oracle confirms sizeof(TIndustryView) == 0xa8.
   // The +0xa0 dword has only the constructor's zero write. DoStartup maps the inherited
   // building category to a concrete industry unit type at +0xa4.
-  int unresolvedZeroA0;
+  int unresolvedZero;
   short selectedIndustryUnitTypeA4;
   short padA6; // +0xa6
 

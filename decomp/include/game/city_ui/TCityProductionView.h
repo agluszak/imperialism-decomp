@@ -62,18 +62,18 @@ private:
   TView* dialogRoot98;
   unsigned char padding9C[8];
   short selectedBuildingSlotA4;
-  bool needsRefreshAtA6;
+  bool needsRefresh;
   unsigned char paddingA7;
-  short currentMonthAtA8;
-  short currentWeekAtAA;
+  short currentMonth;
+  short currentWeek;
   // InitializeCityProductionDialog loops over all 16 city production slots and stores
   // each constructed building page from +0xac through +0xe8. TBuildingView::Close clears
   // the indexed entry directly when the page is embedded.
-  TBuildingView* buildingViewsAC[16];
+  TBuildingView* buildingViews[16];
   // One region handle per building slot, disposed by Free().
-  RgnHandle buildingClipRegionsEC[16];
+  RgnHandle buildingClipRegions[16];
   // Eight action groups, each with three synchronized transition animations.
-  TTransFocusAnimation* buildingActionAnimations12C[8][3];
+  TTransFocusAnimation* buildingActionAnimations[8][3];
 };
 
 ASSERT_SIZE(TCityProductionView, 0x18c);

@@ -33,7 +33,7 @@ TCityBarCluster::~TCityBarCluster() {}
 // FUNCTION: IMPERIALISM 0x005866b0
 void TCityBarCluster::ApplyMoveValue(TCity* city) {
   TGreatPower* nation = city->ownerNationAc;
-  TPopulationMgr* population = city->productionSummary1d8;
+  TPopulationMgr* population = city->productionSummary;
 
   TNumberText* areaControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagTrea));
   if (areaControl != 0) {
@@ -46,17 +46,17 @@ void TCityBarCluster::ApplyMoveValue(TCity* city) {
   if (returnControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryRtnu);
   }
-  returnControl->SetControlValue(population->baselineSlots10->lowSkillCount04, 1);
+  returnControl->SetControlValue(population->baselineSlots->lowSkillCount04, 1);
 
   TNumberText* airControl = static_cast<TNumberText*>(this->ResolveControlByTag(kSummaryTagTrai));
   if (airControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryIart);
   }
-  airControl->SetControlValue(population->baselineSlots10->mediumSkillCount06, 1);
+  airControl->SetControlValue(population->baselineSlots->mediumSkillCount06, 1);
 
   TNumberText* profControl = static_cast<TNumberText*>(this->ResolveControlByTag(kSummaryTagProf));
   if (profControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryProf);
   }
-  profControl->SetControlValue(population->baselineSlots10->highSkillCount08, 1);
+  profControl->SetControlValue(population->baselineSlots->highSkillCount08, 1);
 }

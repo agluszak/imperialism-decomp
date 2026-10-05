@@ -226,14 +226,14 @@ void TDDTemplateDialog::OnLButtonDblClk(UINT nFlags, CPoint point) {
 
 // FUNCTION: IMPERIALISM 0x0047dba0
 TDETemplateDialog::TDETemplateDialog(void* initParam)
-    : TModalDialogBase(0xde, static_cast<CWnd*>(initParam)), slider(), populationAdjustmentB0(0),
-      commodityAdjustmentB4(0) {}
+    : TModalDialogBase(0xde, static_cast<CWnd*>(initParam)), slider(), populationAdjustment(0),
+      commodityAdjustment(0) {}
 
 // FUNCTION: IMPERIALISM 0x0047dc70
 void TDETemplateDialog::DoDataExchange(CDataExchange* pDX) {
   DDX_Control(pDX, 0x3f8, slider);
-  DDX_Text(pDX, 0x422, populationAdjustmentB0);
-  DDX_Text(pDX, 0x421, commodityAdjustmentB4);
+  DDX_Text(pDX, 0x422, populationAdjustment);
+  DDX_Text(pDX, 0x421, commodityAdjustment);
 }
 
 #ifndef IMPERIALISM_LINT

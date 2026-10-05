@@ -25,8 +25,8 @@ bool FindVisibleTileCenters(TMapDialog* mapDialog, CPoint* first, CPoint* second
     ProjectTileIndexToWrappedScreenOffsetByScale(tile, &mapDialog->viewportOrigin, &projectedY,
                                                  &projectedX, 1);
     CPoint center(projectedX + 0x20, projectedY + 0x20);
-    if (center.x < 1 || center.y < 1 || center.x >= mapDialog->frameWidth34 - 1 ||
-        center.y >= mapDialog->frameHeight38 - 1) {
+    if (center.x < 1 || center.y < 1 || center.x >= mapDialog->frameWidth - 1 ||
+        center.y >= mapDialog->frameHeight - 1) {
       continue;
     }
     if (!foundFirst) {
@@ -57,7 +57,7 @@ RuntimeActionResult StrategicMapProbe::VerifyRendering() {
     return RuntimeActionResult::Failure(
         "strategic coast corners do not match the adjacency-selected atlas composite");
   }
-  if (!VerifyRuntimeMiniMapViewportFrame(mapView->miniMapViewC0)) {
+  if (!VerifyRuntimeMiniMapViewportFrame(mapView->miniMapView)) {
     return RuntimeActionResult::Failure(
         "mini-map viewport frame did not alter the rendered thumbnail");
   }
@@ -104,8 +104,8 @@ RuntimeActionResult StrategicMapProbe::VerifyHoverCache() {
   TQuickDrawSurfaceContext* savedSurface;
   int savedSurfaceFlags;
   GetGWorld(&savedSurface, &savedSurfaceFlags);
-  short savedInteractionMode = mapView->activeUnitCategoryIndex96;
-  mapView->activeUnitCategoryIndex96 = 5;
+  short savedInteractionMode = mapView->activeUnitCategoryIndex;
+  mapView->activeUnitCategoryIndex = 5;
   mapDialog->HandleCursorHoverSelectionByChildHitTestAndFallback(&firstHoverPoint, 0);
   bool firstHoverKeptCache = memcmp(beforeHover, mapCache->pixelBits, mapCacheBytes) == 0;
   mapDialog->HandleCursorHoverSelectionByChildHitTestAndFallback(&secondHoverPoint, 0);
@@ -120,7 +120,7 @@ RuntimeActionResult StrategicMapProbe::VerifyHoverCache() {
          sizeof(savedStrategicNeighbors));
   memcpy(g_aCitySiteNeighborHighlightTiles_00697320, savedCitySiteNeighbors,
          sizeof(savedCitySiteNeighbors));
-  mapView->activeUnitCategoryIndex96 = savedInteractionMode;
+  mapView->activeUnitCategoryIndex = savedInteractionMode;
   SetGWorld(savedSurface, savedSurfaceFlags);
   delete[] beforeHover;
 

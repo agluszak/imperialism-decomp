@@ -26,13 +26,13 @@ void TMerchantBoyView::Draw(RECT* rectBuffer) {
   CString unusedLabel;
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xc, 0x2b6a, 3);
 
-  short commodityCode = battleDetail60->resourceType;
+  short commodityCode = battleDetail->resourceType;
   FormatLocalizedCommodityCountLabelByIndex(&label, commodityCode, -1);
 
   SetQuickDrawTextOriginWithContextOffset(0x50, 0x18);
   DrawTextWithCachedQuickDrawStyleState(&label);
 
-  short statusFlag = battleDetail60->stockOrRequired;
+  short statusFlag = battleDetail->stockOrRequired;
   int themeCode;
   if (statusFlag != 0) {
     g_pSimMgr->GetString(0x273c, 0x1c, &label);

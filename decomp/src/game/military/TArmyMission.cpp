@@ -33,7 +33,7 @@ TMission* TArmyMission::GetNavyMission() {
 
 // FUNCTION: IMPERIALISM 0x00535750
 short TArmyMission::GetPresentLocation() const {
-  return presentLocation14;
+  return presentLocation;
 }
 
 // The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
@@ -42,10 +42,10 @@ IMPLEMENT_SERIAL(TArmyMission, TMission, 1)
 
 // FUNCTION: IMPERIALISM 0x0053c0a0
 TArmyMission::TArmyMission(int nodeKey) : TMission() {
-  presentLocation14 = static_cast<short>(nodeKey);
+  presentLocation = static_cast<short>(nodeKey);
 
   TList* list = new TList;
-  orderListAt18 = list;
+  orderList = list;
   if (list == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMissionSubs.cpp", 0x842);
@@ -62,7 +62,7 @@ bool TArmyMission::IsANoBrainer() const {
 }
 
 void TArmyMission::AccumulateOrderPriorityVector(float* vector) const {
-  CIterator iter(orderListAt18);
+  CIterator iter(orderList);
   for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
     unit->AssertValid();
@@ -78,17 +78,17 @@ void TArmyMission::AccumulateOrderPriorityVector(float* vector) const {
 
 // FUNCTION: IMPERIALISM 0x0053c220
 void TArmyMission::Free() {
-  if (orderListAt18 != nullptr) {
-    CIterator iter(orderListAt18);
+  if (orderList != nullptr) {
+    CIterator iter(orderList);
     void* current = iter.Reset();
     while (iter.More()) {
-      static_cast<TMilitaryUnit*>(current)->ownerMission40 = nullptr;
+      static_cast<TMilitaryUnit*>(current)->ownerMission = nullptr;
       current = iter.Advance();
     }
 
-    orderListAt18->RemoveAll();
-    orderListAt18->FreePayloadsAndDestroy();
-    orderListAt18 = nullptr;
+    orderList->RemoveAll();
+    orderList->FreePayloadsAndDestroy();
+    orderList = nullptr;
   }
 
   if (this != nullptr) {
@@ -99,13 +99,13 @@ void TArmyMission::Free() {
 // FUNCTION: IMPERIALISM 0x0053c2b0
 void TArmyMission::WriteTo(TStream* stream) {
   TMission::WriteTo(stream);
-  stream->WriteBytes(&presentLocation14, 2);
+  stream->WriteBytes(&presentLocation, 2);
   WriteFloatArrayElems(stream, requiredEquipageByClass, 5);
 
-  stream->WriteInteger(orderListAt18->GetCount());
+  stream->WriteInteger(orderList->GetCount());
 
   // The nation lookup stays inside the loop, as at 0x53c350.
-  CIterator iter(orderListAt18);
+  CIterator iter(orderList);
   void* currentUnit = iter.Reset();
   while (iter.More()) {
     stream->WriteInteger(
@@ -117,7 +117,7 @@ void TArmyMission::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x0053c3d0
 void TArmyMission::ReadFrom(TStream* stream) {
   TMission::ReadFrom(stream);
-  stream->ReadBytes(&presentLocation14, 2);
+  stream->ReadBytes(&presentLocation, 2);
   if (g_nSaveFormatVersion < 0xb) {
     stream->ReadBytes(&requiredEquipageByClass[0], 0x10);
     requiredEquipageByClass[4] = 0.0f;
@@ -142,8 +142,8 @@ void TArmyMission::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x0053c4f0
 char TArmyMission::SmokeEmIfYouGotEm() {
-  if (orderListAt18 != nullptr) {
-    CIterator iter(orderListAt18);
+  if (orderList != nullptr) {
+    CIterator iter(orderList);
     void* item = iter.Reset();
     while (iter.More()) {
       TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
@@ -160,12 +160,12 @@ char TArmyMission::SmokeEmIfYouGotEm() {
 // FUNCTION: IMPERIALISM 0x0053c570
 void TArmyMission::AcceptReenforcement(TMilitaryUnit* unit, unsigned char notify) {
   unit->AssertValid();
-  TMission* owner = unit->ownerMission40;
+  TMission* owner = unit->ownerMission;
   if (owner != nullptr) {
     owner->RejectConstituent(unit, notify);
   }
-  unit->ownerMission40 = this;
-  orderListAt18->AddHead(unit);
+  unit->ownerMission = this;
+  orderList->AddHead(unit);
   if (static_cast<char>(notify) != 0) {
     Reassess();
   }
@@ -174,19 +174,19 @@ void TArmyMission::AcceptReenforcement(TMilitaryUnit* unit, unsigned char notify
 // FUNCTION: IMPERIALISM 0x0053c5e0
 void TArmyMission::RejectConstituent(TMilitaryUnit* unit, unsigned char notify) {
   (void)notify;
-  if (orderListAt18 != nullptr) {
-    POSITION pos = orderListAt18->listState.Find(unit);
+  if (orderList != nullptr) {
+    POSITION pos = orderList->listState.Find(unit);
     if (pos != nullptr) {
-      orderListAt18->listState.RemoveAt(pos);
+      orderList->listState.RemoveAt(pos);
     }
   }
-  unit->ownerMission40 = nullptr;
+  unit->ownerMission = nullptr;
 }
 
 // FUNCTION: IMPERIALISM 0x0053c620
 int TArmyMission::AccumulateLack(int* accumulatedLack, unsigned char includeExistingLack) const {
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
-  CIterator iter(orderListAt18);
+  CIterator iter(orderList);
   for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
     unit->AssertValid();
@@ -229,7 +229,7 @@ float TArmyMission::ComputeProvinceImportance(short provinceIndex) {
     int index = 0;
     do {
       if (missionNation == g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(
-                               province.adjacentRegionIds0A[index])) {
+                               province.adjacentRegionIds[index])) {
         ++ownedNeighbors;
       }
       ++index;
@@ -259,7 +259,7 @@ float ComputeProvinceImportanceForNation(short provinceIndex, short nation) {
     int index = 0;
     do {
       int neighborOwner = g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(
-          province.adjacentRegionIds0A[index]);
+          province.adjacentRegionIds[index]);
       if (targetNation == neighborOwner) {
         ++ownedNeighbors;
       }
@@ -281,7 +281,7 @@ void TArmyMission::ProjectEquipage(float* vector, short targetTile, short bypass
   for (int i = 0; i < 5; ++i) {
     vector[i] = 0.0f;
   }
-  CIterator iter(orderListAt18);
+  CIterator iter(orderList);
   for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
     unit->AssertValid();
@@ -326,7 +326,7 @@ void TArmyMission::AccumulateMissionUnitPriorityContributionWithScaleMode(TMilit
 // FUNCTION: IMPERIALISM 0x0053cc10
 void AccumulateUnitOrderPriorityVectorContribution(TMilitaryUnit* unit, float* vector, float scale,
                                                    float weight) {
-  short quality = unit->experiencePercent38;
+  short quality = unit->experiencePercent;
   short stat5 = unit->GetAttribute(5);
   short strength = unit->strength34;
   float dampen = 1.0f - static_cast<float>(stat5) * weight * -0.0001f;
@@ -346,7 +346,7 @@ void TArmyMission::GetWeightedEquipage(float* vector) const {
     vector[i] = 0.0f;
   }
 
-  CIterator iter(orderListAt18);
+  CIterator iter(orderList);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(iter.Reset()); iter.More();
        unit = static_cast<TMilitaryUnit*>(iter.Advance())) {
     unit->AssertValid();
@@ -449,7 +449,7 @@ float TArmyMission::ValueOf(TMilitaryUnit* candidateUnit) {
     return g_Recompute_Nation_Order_LookupTable_0065A9E8;
   }
 
-  if (candidateUnit->ownerMission40 == this) {
+  if (candidateUnit->ownerMission == this) {
     float ownScore = GetWeightedSatisfaction();
     return ownScore - ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(candidateUnit);
   }
@@ -497,6 +497,6 @@ float TArmyMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVect
 // FUNCTION: IMPERIALISM 0x0053d630
 TMission* TArmyMission::GetReplacementSlot48() {
   short tileOwnerNationCode =
-      g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(presentLocation14);
+      g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(presentLocation);
   return (tileOwnerNationCode == nationId04) ? this : nullptr;
 }

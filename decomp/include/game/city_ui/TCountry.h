@@ -143,7 +143,7 @@ public:
   // 0x48 — per-unit-type counter of names already issued (slot 0x0f increments the
   // type's entry after assigning "<ordinal> <type name>").
   short unitNameOrdinalByType[0x1e];
-  short unitNameCounter84; // 0x84 — monotonically increasing name tag (stored at +0x1a)
+  short unitNameCounter; // 0x84 — monotonically increasing name tag (stored at +0x1a)
   short pad_86;
   // 0x88 — home region/tile index (the terrainStateTable row of the capital;
   // -1 = unset). The TGreatPower bodies access it as a full dword (0x004dfae0

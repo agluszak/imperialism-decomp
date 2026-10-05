@@ -25,9 +25,9 @@ IMPLEMENT_DYNCREATE(TShipFractionCluster, TCluster)
 void TShipFractionCluster::DoPostCreate(int arg) {
   TCluster::DoPostCreate(arg);
 
-  mainSelectionView8c =
+  mainSelectionView =
       static_cast<TMapUberPicture*>(GetWindow()->ResolveControlByTag(kControlTagMain));
-  mainSelectionView8c->AssertValid();
+  mainSelectionView->AssertValid();
 
   TPicture* shipControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagShip));
   shipControl->AssertValid();
@@ -43,28 +43,28 @@ void TShipFractionCluster::DoPostCreate(int arg) {
     SetControlHoverHelpText(CString(g_pShipFractionSharedText_0065c830), this);
   }
 
-  shipCountButton90 = static_cast<TNumberedArrowButton*>(ResolveControlByTag(kControlTagArro));
-  availableShipCount88 = 1;
+  shipCountButton = static_cast<TNumberedArrowButton*>(ResolveControlByTag(kControlTagArro));
+  availableShipCount = 1;
   SetAvailableAndSelectedShipCounts(0, -1);
 }
 
 // FUNCTION: IMPERIALISM 0x00568eb0
 void TShipFractionCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x64) {
-    if (selectedShipCount94 < availableShipCount88) {
-      selectedShipCount94 = static_cast<short>(selectedShipCount94 + 1);
-      shipCountButton90->SetValue(selectedShipCount94, 1);
+    if (selectedShipCount < availableShipCount) {
+      selectedShipCount = static_cast<short>(selectedShipCount + 1);
+      shipCountButton->SetValue(selectedShipCount, 1);
       g_pActiveMapOrderContext->selectedTaskForce14->Select(static_cast<short>(controlTag - 0x7330),
                                                             1);
-      mainSelectionView8c->UpdateRoster();
+      mainSelectionView->UpdateRoster();
     }
   } else if (commandId == 0x65) {
-    if (selectedShipCount94 > 0) {
-      selectedShipCount94 = static_cast<short>(selectedShipCount94 - 1);
-      shipCountButton90->SetValue(selectedShipCount94, 1);
+    if (selectedShipCount > 0) {
+      selectedShipCount = static_cast<short>(selectedShipCount - 1);
+      shipCountButton->SetValue(selectedShipCount, 1);
       g_pActiveMapOrderContext->selectedTaskForce14->Select(static_cast<short>(controlTag - 0x7330),
                                                             0);
-      mainSelectionView8c->UpdateRoster();
+      mainSelectionView->UpdateRoster();
     }
   } else {
     TCluster::DoEvent(commandId, sourceHandler, event);
@@ -73,7 +73,7 @@ void TShipFractionCluster::DoEvent(int commandId, TEventHandler* sourceHandler, 
 
 // The original names this via a stale/reused symbol ("TToolBarCluster::..."); confirmed as
 // a real TShipFractionCluster method by receiver evidence (ResolveControlByTag('ship'),
-// availableShipCount88/shipCountButton90 matching this class's own layout). The Mac
+// availableShipCount/shipCountButton matching this class's own layout). The Mac
 // symbol oracle calls this method Set(int, int); Windows callers pass the available and
 // selected ship counts respectively.
 // FUNCTION: IMPERIALISM 0x00568f90
@@ -81,52 +81,52 @@ void TShipFractionCluster::SetAvailableAndSelectedShipCounts(int availableCount,
                                                              int selectedCount) {
   TView* shipControl = ResolveControlByTag(kControlTagShip);
   if (availableCount != 0) {
-    if (availableShipCount88 == 0) {
+    if (availableShipCount == 0) {
       short slot = GetEnabledIndustryCapabilitySlotByClass(static_cast<short>(controlTag - 0x7330));
       shipControl->Show(1, 1);
-      shipCountButton90->Show(1, 1);
+      shipCountButton->Show(1, 1);
       LoadUiStringByGroupAndIndexToGlobalControlTag(0x2716, static_cast<short>(slot + 1),
                                                     controlTag);
     }
-  } else if (availableShipCount88 != 0) {
+  } else if (availableShipCount != 0) {
     shipControl->Show(0, 1);
-    shipCountButton90->Show(0, 1);
+    shipCountButton->Show(0, 1);
     SetControlHoverHelpTextAltEntry(CString(g_pShipFractionSharedText_0065c830), this);
   }
 
   RefreshControl();
-  availableShipCount88 = static_cast<short>(availableCount);
-  selectedShipCount94 = static_cast<short>(availableCount);
+  availableShipCount = static_cast<short>(availableCount);
+  selectedShipCount = static_cast<short>(availableCount);
   if (selectedCount > -1) {
-    selectedShipCount94 = static_cast<short>(selectedCount);
+    selectedShipCount = static_cast<short>(selectedCount);
   }
   if (availableCount > 0) {
-    shipCountButton90->SetValue(selectedShipCount94, 1);
+    shipCountButton->SetValue(selectedShipCount, 1);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005690d0
 void TShipFractionCluster::IncrementSelectedShipCount(unsigned char displayOnly) {
-  if (selectedShipCount94 < availableShipCount88) {
-    selectedShipCount94 = static_cast<short>(selectedShipCount94 + 1);
-    shipCountButton90->SetValue(selectedShipCount94, 1);
+  if (selectedShipCount < availableShipCount) {
+    selectedShipCount = static_cast<short>(selectedShipCount + 1);
+    shipCountButton->SetValue(selectedShipCount, 1);
     if (displayOnly == 0) {
       g_pActiveMapOrderContext->selectedTaskForce14->Select(static_cast<short>(controlTag - 0x7330),
                                                             1);
-      mainSelectionView8c->UpdateRoster();
+      mainSelectionView->UpdateRoster();
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00569150
 void TShipFractionCluster::DecrementSelectedShipCount(unsigned char displayOnly) {
-  if (selectedShipCount94 > 0) {
-    selectedShipCount94 = static_cast<short>(selectedShipCount94 - 1);
-    shipCountButton90->SetValue(selectedShipCount94, 1);
+  if (selectedShipCount > 0) {
+    selectedShipCount = static_cast<short>(selectedShipCount - 1);
+    shipCountButton->SetValue(selectedShipCount, 1);
     if (displayOnly == 0) {
       g_pActiveMapOrderContext->selectedTaskForce14->Select(static_cast<short>(controlTag - 0x7330),
                                                             0);
-      mainSelectionView8c->UpdateRoster();
+      mainSelectionView->UpdateRoster();
     }
   }
 }

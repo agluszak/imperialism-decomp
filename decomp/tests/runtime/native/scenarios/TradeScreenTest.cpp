@@ -54,13 +54,13 @@ TTextLine* CreatePaginationLine(const char* caption, short headerIndex, short fo
 }
 
 bool HasPageTextAt(TPageView* page, const char* caption, int y) {
-  if (page->childList44 == 0) {
+  if (page->childList == 0) {
     return false;
   }
-  POSITION position = page->childList44->GetHeadPosition();
+  POSITION position = page->childList->GetHeadPosition();
   while (position != 0) {
     // This detached fixture contains only children created by TTextLine::InstallViews.
-    TStaticText* text = static_cast<TStaticText*>(page->childList44->GetNext(position));
+    TStaticText* text = static_cast<TStaticText*>(page->childList->GetNext(position));
     if (text->text->Compare(caption) == 0 && text->ownerLocalX == 0 && text->ownerLocalY == y) {
       return true;
     }
@@ -77,8 +77,8 @@ RuntimeActionResult CheckPagePagination() {
   grouped->AddOrderedEntry(CreatePaginationLine("Second", 1, 0));
   grouped->BuildPageLayout();
   grouped->ShowPage(1);
-  bool groupedCorrect = grouped->pageCount == 1 && grouped->childList44 != 0 &&
-                        grouped->childList44->GetCount() == 3 &&
+  bool groupedCorrect = grouped->pageCount == 1 && grouped->childList != 0 &&
+                        grouped->childList->GetCount() == 3 &&
                         HasPageTextAt(grouped, "Header", 0) &&
                         HasPageTextAt(grouped, "First", 30) && HasPageTextAt(grouped, "Second", 60);
   grouped->Free();
@@ -96,7 +96,7 @@ RuntimeActionResult CheckPagePagination() {
                        ungrouped->pageStartIndices->At(1) == 1 &&
                        ungrouped->pageStartIndices->At(2) == 4;
   ungrouped->ShowPage(2);
-  bool rowsCorrect = ungrouped->childList44 != 0 && ungrouped->childList44->GetCount() == 3 &&
+  bool rowsCorrect = ungrouped->childList != 0 && ungrouped->childList->GetCount() == 3 &&
                      HasPageTextAt(ungrouped, "Four", 0) && HasPageTextAt(ungrouped, "Five", 30) &&
                      HasPageTextAt(ungrouped, "Six", 60);
   ungrouped->Free();

@@ -40,7 +40,7 @@ IMPLEMENT_DYNCREATE(TSetupRandomMapPicture, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x00576d80
 TSetupRandomMapPicture::TSetupRandomMapPicture()
-    : TNoHilitePicture(), planetSeed94(), wrapHorizontally98(0), countryControlReadyA4(0) {}
+    : TNoHilitePicture(), planetSeed94(), wrapHorizontally98(0), countryControlReady(0) {}
 
 TSetupRandomMapPicture::~TSetupRandomMapPicture() {}
 
@@ -50,18 +50,18 @@ void TSetupRandomMapPicture::SetSelectedNationSlot(short nationSlot) {
 
   TGWorldPartView* flagView = static_cast<TGWorldPartView*>(ResolveControlByTag(kControlTagFlag));
   flagView->AssertValid();
-  int flagStripRight = (selectedNationSlot9A + 1) * flagView->frameWidth34;
-  flagView->sourceRect64.left = selectedNationSlot9A * flagView->frameWidth34;
-  flagView->sourceRect64.top = 0;
-  flagView->sourceRect64.right = flagStripRight;
-  flagView->sourceRect64.bottom = flagView->frameHeight38;
+  int flagStripRight = (selectedNationSlot9A + 1) * flagView->frameWidth;
+  flagView->sourceRect.left = selectedNationSlot9A * flagView->frameWidth;
+  flagView->sourceRect.top = 0;
+  flagView->sourceRect.right = flagStripRight;
+  flagView->sourceRect.bottom = flagView->frameHeight;
   flagView->RefreshControl();
 
   TPicture* coatView = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoat));
   coatView->AssertValid();
   coatView->SetPictureResourceIdAndRefresh(static_cast<short>(selectedNationSlot9A + 0x11c6), true);
 
-  if (!countryControlReadyA4) {
+  if (!countryControlReady) {
     bool sessionInactive = g_pSimMgr->multiplayerSessionRole == kSessionRoleStandalone;
     if (sessionInactive) {
       TEditText* countryControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagCoun));
@@ -72,7 +72,7 @@ void TSetupRandomMapPicture::SetSelectedNationSlot(short nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x00576fe0
 void TSetupRandomMapPicture::RecheckCountryName() {
-  if (!countryControlReadyA4) {
+  if (!countryControlReady) {
     bool sessionInactive = g_pSimMgr->multiplayerSessionRole == kSessionRoleStandalone;
     if (sessionInactive) {
       TEditText* countryControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagCoun));
@@ -103,7 +103,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
     TMapPreviewView* mapPreview =
         static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagMapP));
     mapPreview->AssertValid();
-    mapPreview->pendingNation6C = selectedNationSlot9A;
+    mapPreview->pendingNation = selectedNationSlot9A;
   }
 
   RefreshActiveControlThenApplyThemeStyleAndCaption(kControlTagCoun, 0, 0xc, 0x2b6b, 1,
@@ -154,16 +154,16 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   TGWorldPartView* flagView = static_cast<TGWorldPartView*>(ResolveControlByTag(kControlTagFlag));
   flagView->AssertValid();
   flagView->sourceSurface60 = g_pMacViewMgr->atlas680;
-  flagView->sourceRect64.left = selectedNationSlot9A * flagView->frameWidth34;
-  flagView->sourceRect64.top = 0;
-  flagView->sourceRect64.right = (selectedNationSlot9A + 1) * flagView->frameWidth34;
-  flagView->sourceRect64.bottom = flagView->frameHeight38;
+  flagView->sourceRect.left = selectedNationSlot9A * flagView->frameWidth;
+  flagView->sourceRect.top = 0;
+  flagView->sourceRect.right = (selectedNationSlot9A + 1) * flagView->frameWidth;
+  flagView->sourceRect.bottom = flagView->frameHeight;
 
   if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
     g_cstrCountryNameSettingValue006A4220 =
         g_pLanguageMgr->StripCodeStr(g_pGameFlowState->playerNameMirror);
   } else {
-    g_pSimMgr->useLocalizedNameTables68 = static_cast<char>(g_pSimMgr->preferenceValues[13]);
+    g_pSimMgr->useLocalizedNameTables = static_cast<char>(g_pSimMgr->preferenceValues[13]);
     GenerateMappedFlavorTextByCurrentContextNation(&g_cstrCountryNameSettingValue006A4220);
     CString profileName;
     LoadProfileStringAndAssignSharedRef(&profileName, g_szCountryNameProfileKey00698AE0,
@@ -239,7 +239,7 @@ void TSetupRandomMapPicture::DoEvent(int commandId, TEventHandler* sourceHandler
   if (commandId == kControlTagPick) {
     TMapPreviewView* mapPreview = static_cast<TMapPreviewView*>(sourceHandler);
     mapPreview->AssertValid();
-    mapPreview->selectedNation68 = mapPreview->pendingNation6C;
+    mapPreview->selectedNation68 = mapPreview->pendingNation;
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
     selectedNationSlot9A = static_cast<short>(mapPreview->selectedNation68);
 
@@ -310,7 +310,7 @@ void TSetupRandomMapPicture::StartGame() {
 
   CString countryText;
   countryControl->GetCurrentText(&countryText);
-  if (g_pSimMgr->useLocalizedNameTables68 != 0) {
+  if (g_pSimMgr->useLocalizedNameTables != 0) {
     CString localizedName;
     bool duplicateName = false;
     for (int nationSlot = 0; nationSlot < 0x17 && !duplicateName; ++nationSlot) {
@@ -347,8 +347,8 @@ void TSetupRandomMapPicture::StartGame() {
   TRadioTextCluster* nameCluster =
       static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagName));
   nameCluster->AssertValid();
-  g_pSimMgr->useLocalizedNameTables68 = nameCluster->selectedTag88 != kControlTagRand;
-  g_pSimMgr->preferenceValues[13] = static_cast<short>(g_pSimMgr->useLocalizedNameTables68);
+  g_pSimMgr->useLocalizedNameTables = nameCluster->selectedTag88 != kControlTagRand;
+  g_pSimMgr->preferenceValues[13] = static_cast<short>(g_pSimMgr->useLocalizedNameTables);
   g_pSimMgr->InitializeOrLoadEntryArray14AndClampLimits(true);
 
   g_nRandomMapSelectedNationSlot00698AB0 = selectedNationSlot9A;
@@ -432,7 +432,7 @@ void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
   }
 
   g_pActiveRandomMapSetupPicture006A4268 = this;
-  lastGlobeTick9C = GetTickCountDiv16();
+  lastGlobeTick = GetTickCountDiv16();
   globeFrameA0 = 0;
   SpinYourGlobe();
   g_pSimMgr->RebuildMapContextAndGlobalMapState(1, static_cast<LPCSTR>(planetSeed94),
@@ -458,8 +458,8 @@ void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
 // FUNCTION: IMPERIALISM 0x00578680
 void TSetupRandomMapPicture::SpinYourGlobe() {
   unsigned int now = GetTickCountDiv16();
-  if (now > lastGlobeTick9C) {
-    lastGlobeTick9C = GetTickCountDiv16();
+  if (now > lastGlobeTick) {
+    lastGlobeTick = GetTickCountDiv16();
     ++globeFrameA0;
     if (globeFrameA0 >= 24) {
       globeFrameA0 = 0;

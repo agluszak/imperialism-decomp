@@ -21,7 +21,7 @@ TOrderView::~TOrderView() {}
 // FUNCTION: IMPERIALISM 0x00506b00
 void TOrderView::StuffValues(TGreatPower* power, short orderSlot) {
   city60 = power != 0 ? power->city : 0;
-  order64 = static_cast<TItemOrder*>(city60->orderSlotsE4[orderSlot]);
+  order64 = static_cast<TItemOrder*>(city60->orderSlots[orderSlot]);
   if (order64 == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x210);
   }
@@ -57,7 +57,7 @@ void TOrderView::StuffValues(TGreatPower* power, short orderSlot) {
   if (supplyLabor == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x229);
   }
-  supplyLabor->SetNumIcons(city60->productionSummary1d8->strength);
+  supplyLabor->SetNumIcons(city60->productionSummary->strength);
   supplyLabor->SetPictureResourceIdAndRefresh(0x148, true);
 
   TIconBar* usePrimary = static_cast<TIconBar*>(ResolveControlByTag(kControlTagUse1));
@@ -117,7 +117,7 @@ void TOrderView::UpdateFields() {
   if (supplyLabor == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x262);
   }
-  supplyLabor->SetNumIcons(city60->productionSummary1d8->strength);
+  supplyLabor->SetNumIcons(city60->productionSummary->strength);
   supplyLabor->RefreshControl();
 
   TIconBar* usePrimary = static_cast<TIconBar*>(ResolveControlByTag(kControlTagUse1));

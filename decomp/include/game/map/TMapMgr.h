@@ -91,15 +91,15 @@ public:
   // ResolveRegionTileSubtypeCodeForTileIndex, then for each hex neighbor clears the
   // corresponding "opposite direction" bit in that neighbor's adjacencyMaskA0a if set.
   virtual void InitializeTileNeighborConnectionMaskIfNeeded(int tileIndex); // slot 0x0e 0x5107e0
-  // Recomputes tileIndex's ownerBorderMask07/cityBorderMask08/waterAdjacencyMask09 from its 6
+  // Recomputes tileIndex's ownerBorderMask/cityBorderMask/waterAdjacencyMask from its 6
   // hex neighbors. For each direction: if the neighbor is off-map, always counts as a border
   // (bit set unconditionally); if tileIndex is water, only counts a differently-owned water
   // neighbor as a border when mode==0; if tileIndex is land, a water neighbor sets
-  // waterAdjacencyMask09, a differently-owned land neighbor sets ownerBorderMask07, and (when
-  // mode != 2) a different-cityRecordIndex neighbor sets cityBorderMask08. For a water tile,
+  // waterAdjacencyMask, a differently-owned land neighbor sets ownerBorderMask, and (when
+  // mode != 2) a different-cityRecordIndex neighbor sets cityBorderMask. For a water tile,
   // a second pass checks each adjacent pair of hex directions (d, (d+1)%6) across the water
   // gap for a land/land owner or city mismatch. Finishes by OR-ing in 0x40/0x80 compound
-  // flags on cityBorderMask08 and ownerBorderMask07 based on specific neighbor-pair
+  // flags on cityBorderMask and ownerBorderMask based on specific neighbor-pair
   // mismatches.
   virtual void UpdateTileNeighborBorderInfluenceCounters(StrategicTileIndex tileIndex,
                                                          short mode); // slot 0x0f 0x50fe10
@@ -191,7 +191,7 @@ public:
   virtual void ResetRecruitSearchVisitedState(); // slot 0x20 0x514ef0
   // Seeds recruitSearchVisited0e excluding terrainStateTable[pCivilianOrderEntry->tileIndex06]'s
   // owner (like SeedRecruitSearchVisitedStateExcludingNation, inlined here rather than
-  // called). If orderType is 1 or 7, militaryRegistrationFlag1C == 0, and the reference tile's
+  // called). If orderType is 1 or 7, militaryRegistrationFlag == 0, and the reference tile's
   // activeFlags1c/gateFlag or bit-2 gate passes, and (when the reference tile is owned by
   // pCivilianOrderEntry->ownerNationSlot18) its FindTownMarkerForTileByOwnerNation entry is
   // enabled: clears recruitSearchVisited0e for every not-at-war minor nation's
@@ -203,7 +203,7 @@ public:
   // `candidates` (fixed 6 slots) for the last non-null entry, seeds recruitSearchVisited0e =
   // 1 across all tiles and clears it for the found unit's own tile
   // (TUnit::tileIndex06), then clears it for the 6 hex neighbors of either the unit's
-  // orderTargetTiles28[orderTargetSlot-1] (when orderTargetSlot != 0) or its own tile,
+  // orderTargetTiles[orderTargetSlot-1] (when orderTargetSlot != 0) or its own tile,
   // provided the neighbor is owned by the same nation (TUnit::ownerNationSlot18) or is at war with it
   // (TDiplomacyMgr::IsNationPairAtWar). Bails immediately if no candidate is non-null.
   virtual void SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates(
@@ -217,21 +217,21 @@ public:
   // gateFlag being in {8,9} (or {10,11,12} when
   // g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[0x13]
   // == 2), and finally on this nation's bit not already being set in
-  // pendingDevelopmentFlag0d.
+  // pendingDevelopmentFlag.
   virtual void DimByProspecting(class TCivUnit* pCivilianOrderEntry); // slot 0x23 0x515330
   // Mac oracle: TMapMgr::DimByDevelopment(TUnit*). TCivMgr dispatches order type 7
   // (Developer) here (0x004d2270 calls vtable byte offset 0x90 for case 7).
   // Seeds recruitSearchVisited0e (defaults to 1/ineligible, unlike the sibling slot above):
   // requires the tile be diplomatically compatible
   // (TDiplomacyMgr::LookupOrderCompatibilityMatrixValue == 2, ownerNationTag04 >= 7),
-  // secondaryOwnerNationTag18 == -1, g_abGateFlagQualifies[gateFlag] != 0, and at least one
+  // secondaryOwnerNationTag == -1, g_abGateFlagQualifies[gateFlag] != 0, and at least one
   // of its two edge resourceTypes qualifying (0/1/2 always; 3/4/0x15/0x16, or 6 when
   // techStatusByTechId[0x13] == 2, only when this nation's bit is already set in
-  // pendingDevelopmentFlag0d).
+  // pendingDevelopmentFlag).
   virtual void DimByDevelopment(class TCivUnit* pCivilianOrderEntry); // slot 0x24 0x515460
   // Seeds recruitSearchVisited0e like the SeedRecruitSearchVisitedState* family, but each
   // tile is eligible only if it's owned by pCivilianOrderEntry->ownerNationSlot18 (via
-  // ownerNationTag04 or secondaryOwnerNationTag18) and pendingDevelopmentFlag0d != 0, and
+  // ownerNationTag04 or secondaryOwnerNationTag) and pendingDevelopmentFlag != 0, and
   // then gated on whether its high development nibble is below the max capability value
   // (over its qualifying resourceTypeByEdge entries) from
   // g_pTechMgr->capabilityValueByNationAndResource. Which resourceTypes
@@ -239,12 +239,12 @@ public:
   virtual void DimByMining(class TCivUnit* pCivilianOrderEntry); // slot 0x25 0x5155c0
   // Seeds recruitSearchVisited0e = 1 across all tiles, then for each of the order's nation's
   // enabled TTown markers, clears it (0) on any hex-adjacent water tile that shares the
-  // town's regionSubtypeTag05 and whose developmentClassNibbles0c is below
+  // town's regionSubtypeTag and whose developmentClassNibbles is below
   // TTechMgr::capabilityValueByNationAndResource[nationTag][19].
   virtual void DimByFishing(class TCivUnit* pCivilianOrderEntry); // slot 0x26 0x515720
   // Sibling of SeedRecruitSearchVisitedStateByCapabilityThreshold: defaults every tile to
   // blocked, then clears it if owned by pCivilianOrderEntry->ownerNationSlot18 (via
-  // ownerNationTag04 or secondaryOwnerNationTag18) and g_abGateFlagQualifies[gateFlag] is
+  // ownerNationTag04 or secondaryOwnerNationTag) and g_abGateFlagQualifies[gateFlag] is
   // set, and the max capability value (over qualifying resourceTypeByEdge entries -- an
   // entry qualifies if g_anResourceTypeRequiredOrderType[resourceType] matches
   // pCivilianOrderEntry->orderType, and either g_abResourceTypeAlwaysQualifies[resourceType]
@@ -261,13 +261,13 @@ public:
   // Same shape as ProfileA (slot 0x28), but the terrain-kind gate is a per-call local
   // 8-entry table built from the same 3 OrderCapRow checks (rather than ProfileA's shared
   // global table), and it additionally clears the origin tile's own recruitSearchVisited0e
-  // when its regionSubtypeTag05 is -1 or its city's fortLevel03 is below 3.
+  // when its regionSubtypeTag is -1 or its city's fortLevel03 is below 3.
   virtual void DimByEngineering(class TCivUnit* pCivilianOrderEntry); // slot 0x29 0x515b10
   // Picks 2 of cityRecordIndex's 6 hex neighbors as "linked" tiles, ranked by
   // g_anStrategicTerrainNeighborLinkPriority[GetTerrainKind()] (same-cityRecordIndex neighbors get a
   // +0x14 bonus in the second pass): the top-ranked same-city neighbor becomes
-  // primaryNeighborTileIndex40, then the next-best remaining neighbor (any city) becomes
-  // secondaryNeighborTileIndex3e. The original assumes both passes find a direction;
+  // primaryNeighborTileIndex, then the next-best remaining neighbor (any city) becomes
+  // secondaryNeighborTileIndex. The original assumes both passes find a direction;
   // callers must provide a real city anchor with eligible neighbors.
   virtual void UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(
       ProvinceIndex cityRecordIndex); // slot 0x2a 0x50fca0
@@ -277,7 +277,7 @@ public:
   virtual void ApplyUnitMovementClassForTileIfValid(int tileIndex); // slot 0x2b 0x515d60
   // Recursive region-class flood: stamps cityScoreTable[recordIndex].regionClassA3 =
   // classCode (no-op when already stamped) and recurses over the record's
-  // adjacentRegionIds0A children. 0x0050f6b0, RET 8.
+  // adjacentRegionIds children. 0x0050f6b0, RET 8.
   void SetMapRecordFlagA3AndPropagateToChildren(int recordIndex, int classCode);
   // Assign a compact class code to every populated, still-unclassified province and
   // propagate that code through its adjacent-region tree. 0x0050f5f0.
@@ -310,10 +310,10 @@ public:
   // turn-12 event when running in multiplayer-host mode.
   virtual void ChangeProvinceOwner(ProvinceIndexStorage cityRecordIndex,
                                    short newNationTag); // slot 0x2e 0x513290
-  // Searches cityScoreTable[cityRecordIndex].adjacentRegionIds0A[0..11] for regionId;
+  // Searches cityScoreTable[cityRecordIndex].adjacentRegionIds[0..11] for regionId;
   // on a hit returns the parallel entry at [i+12] (see TMultiplayerMgr's
   // CityRedrawInvalidateTurnEventPacket, which already splits this same 24-entry array
-  // into adjacentRegionIds0A[12]/adjacentRegionIds22[12] for wire serialization). Returns
+  // into adjacentRegionIds[12]/adjacentRegionIds22[12] for wire serialization). Returns
   // -1 if not found. Kept as one raw 24-entry array (not split into two named 12-entry
   // fields) because RedistributeUnitOrderQueueToRandomAdjacentRegion (0x4a35e0) scans all 24
   // as one flat, -1-terminated list. The [0..11]/[12..23] split (region id / parallel
@@ -332,16 +332,16 @@ public:
   virtual void SetCapitalCityDevelopmentStageIfValidNationSlot(int nationSlotParam,
                                                                int param_2); // slot 0x30 0x516100
   // Looks up terrainStateTable[tileIndex].resourceTypeByEdge[edgeIndex], then indexes
-  // g_abUniversityRequirementLevelById[resourceType][developmentClassNibbles0c's high
+  // g_abUniversityRequirementLevelById[resourceType][developmentClassNibbles's high
   // nibble if g_abResourceTypeUsesHighNibbleFlag[resourceType] is set, else the raw
   // (unmasked) byte].
   virtual byte FindResourceCapabilityRequirementLevel(StrategicTileIndex tileIndex,
                                                       short edgeIndex); // slot 0x31 0x513610
   virtual char GetTileCivilianWorkOrderCostClassNibble(StrategicTileIndex nTileIndex,
                                                        char fUseHighNibble); // slot 0x32 0x513660
-  // Packs value into developmentClassNibbles0c's low or high nibble (selectHighNibble
+  // Packs value into developmentClassNibbles's low or high nibble (selectHighNibble
   // picks which); when writing the high nibble with a positive value and param4 != 0,
-  // also sets pendingDevelopmentFlag0d = 0x7f.
+  // also sets pendingDevelopmentFlag = 0x7f.
   virtual void SetCivilianDevelopmentClassNibble(StrategicTileIndex tileIndex,
                                                  char selectHighNibble, byte value,
                                                  char param4); // slot 0x33 0x5136a0
@@ -370,7 +370,7 @@ public:
   // updating TTown::ownerNation.
   virtual void SetOwner(short regionId, short newNationTag); // slot 0x37 0x5133f0
   // Rendering-variant lookup family: pick a bitmap-strip byte offset for a tile's
-  // sprite, indexed by gateFlag and/or spriteVariantIndex01. Tables verified via
+  // sprite, indexed by gateFlag and/or spriteVariantIndex. Tables verified via
   // raw-listing + ghidra-read-data at 0x38: 0x696f10, 0x39: 0x696f50, 0x3a: 0x696f60,
   // 0x3b: 0x697000.
   virtual short LookupTileSpriteVariantOffsetByTerrainAndGate(
@@ -386,7 +386,7 @@ public:
   // as a local (non-static) initializer to match. Column 0 always equals the row index
   // (bitmaskIndex, 0-63 = a 6-bit adjacency mask, matching the file's 6-hex-direction
   // domain); columns 1-6 are small 0-3 variant codes, same value range as
-  // gateFlag/spriteVariantIndex01 in the sibling rendering-variant family
+  // gateFlag/spriteVariantIndex in the sibling rendering-variant family
   // (0x516150 etc.) directly above this slot. No callers besides the vtable itself, so
   // the exact semantic role of each column beyond "some adjacency-keyed variant code"
   // isn't identified.
@@ -458,7 +458,7 @@ public:
   // SetRegionTileSubtypeAndRefreshNeighborFlags), sets its activeFlags1c to 0x37 (0x17 then
   // OR 0x20), and calls FloodFillTileRegionMarker(nTileIndex, nOwnerNationId). Then, for each
   // of the 6 hex neighbors plus nTileIndex itself (direction 6 is a self special-case, not a
-  // 7th real hex direction), if that tile shares nTileIndex's regionSubtypeTag05 and has a
+  // 7th real hex direction), if that tile shares nTileIndex's regionSubtypeTag and has a
   // port/depot-eligible resourceTypeByEdge entry (17 or 18) whose gateFlag qualifies
   // (g_abGateFlagQualifies), calls SetCivilianDevelopmentClassNibble(neighborTile, 0, 1, 1) on
   // it. Finishes by calling EnsurePortZoneForTile(nTileIndex) and refreshing nTileIndex's
@@ -489,7 +489,7 @@ public:
   unsigned char field9;                   // +0x09 -- 1-byte stream read
   unsigned char pad0a[2];                 // +0x0a -- alignment gap before the +0x0c pointer
   TTerrainStateRecord* terrainStateTable; // +0x0c
-  // True when any province adjacent to `provinceIndex` (its adjacentRegionIds0A list,
+  // True when any province adjacent to `provinceIndex` (its adjacentRegionIds list,
   // bounded by adjacentRegionCount08) carries `ownerNationCode` in ownerNationCode00.
   // 0x00517d40, __thiscall.
   bool HasAdjacentProvinceOwnedByNation(int provinceIndex, int ownerNationCode);
@@ -583,9 +583,9 @@ public:
   int CollectSecondDegreeLinksMatchingNodeType(ProvinceIndex cityRecordIndex, int nationTag,
                                                int* nodeBuffer);
 
-  // 0x518d90 (thiscall, no explicit args). Clears perTileVisitedFlag0f across the whole
+  // 0x518d90 (thiscall, no explicit args). Clears perTileVisitedFlag across the whole
   // terrainStateTable, then walks the active nation's militaryUnitList44 (CIterator) and,
-  // for each order whose orderTargetIndex0C (city-record index) is set, computes the war/peace-coded
+  // for each order whose orderTargetIndex (city-record index) is set, computes the war/peace-coded
   // direction overlay via MarkAdjacentHexOrderDirectionAndSelectTile (the same computation
   // that function already implements for its own caller) and stamps/notifies through it.
   void MarkDirectionalMapOverlayFlagsForNationOrders();
@@ -656,7 +656,7 @@ public:
   // cityScoreTable[tileIndex]'s tile (GetDirectionFrom +
   // g_Build_Hex_Area_LookupTable_00696E70/E80's per-direction offsets), clamps it onto
   // the wrapped map grid, and -- if the resulting tile is on-map -- stamps its
-  // perTileVisitedFlag0f with a direction-overlay code ((direction+3)%6+1, or +7 when
+  // perTileVisitedFlag with a direction-overlay code ((direction+3)%6+1, or +7 when
   // `flag` is set) and forwards it through mapUberPictureF0's slot-0x76
   // InvalidateTile.
   void MarkAdjacentHexOrderDirectionAndSelectTile(int tileIndex, int contextArg, bool flag);
@@ -690,7 +690,7 @@ public:
   // 0x004a4190, __thiscall, one stack argument.
   TMilitaryUnit* GetMilitaryMaster(short provinceIndex);
 
-  // ORACLE: Mac TMapMgr::DimmingOff(). Clears perTileVisitedFlag0f for all 0x1950
+  // ORACLE: Mac TMapMgr::DimmingOff(). Clears perTileVisitedFlag for all 0x1950
   // strategic-map tiles. 0x00515db0, __thiscall, no args.
   void DimmingOff();
 

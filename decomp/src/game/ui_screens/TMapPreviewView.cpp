@@ -65,7 +65,7 @@ void TMapPreviewView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
     unsigned short nationPalette =
         static_cast<unsigned short>(g_pViewMgr->GetColor(static_cast<short>(nation)));
     if (nationPalette == clickedPalette) {
-      pendingNation6C = nation;
+      pendingNation = nation;
       ownerContext->DoEvent(kControlTagPick, this, 0);
     }
   }
@@ -75,7 +75,7 @@ void TMapPreviewView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
 void TMapPreviewView::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
 
-  RECT previewRect = {0, 0, frameWidth34, frameHeight38};
+  RECT previewRect = {0, 0, frameWidth, frameHeight};
   UpdatePaletteIndexWithDefaultFallback(0x10);
   BlitRectWithOptionalTransparency(previewSurface60->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &previewRect,

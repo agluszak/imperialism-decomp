@@ -22,9 +22,9 @@ public:
   // DoStartup resolves the 23 FourCC tags in g_pTradeSummarySelectionMap into
   // TPictureNumberText controls, then resolves the separate 'labo' and 'powe'
   // controls. UpdateFields reads and writes them through TNumberText's slots 0x79/0x7a.
-  TPictureNumberText* commodityValueControlsA0[23];
-  TPictureNumberText* laborValueControlFC;
-  TPictureNumberText* powerValueControl100;
+  TPictureNumberText* commodityValueControls[23];
+  TPictureNumberText* laborValueControl;
+  TPictureNumberText* powerValueControl;
 };
 
 ASSERT_SIZE(TWarehouseView, 0x104);

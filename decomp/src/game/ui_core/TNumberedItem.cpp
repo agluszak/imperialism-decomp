@@ -12,8 +12,8 @@ IMPLEMENT_DYNCREATE(TNumberedItem, TView)
 
 // FUNCTION: IMPERIALISM 0x005077c0
 TNumberedItem::TNumberedItem() : TMegaPicture() {
-  iconRowIndexAc = 0;
-  badgeCountAe = 0;
+  iconRowIndex = 0;
+  badgeCount = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00507830
@@ -23,17 +23,17 @@ TNumberedItem::~TNumberedItem() {}
 void TNumberedItem::InitializeNumberedResourceItem(TView* panel, int* position, int* size,
                                                    short resourceIconIndex, short count) {
   InitializeUiResourceEntryFrameAndParent(panel->resourceContext, panel, position, size, 5, 5, 0);
-  iconRowIndexAc = resourceIconIndex;
-  badgeCountAe = count;
+  iconRowIndex = resourceIconIndex;
+  badgeCount = count;
 }
 
-// Draws the numbered badge background (row iconRowIndexAc of a shared icon strip)
+// Draws the numbered badge background (row iconRowIndex of a shared icon strip)
 // then the badge count as decimal text, positioned to clear more digits' worth of
 // space as the count grows past 1/2/3 digits.
 // FUNCTION: IMPERIALISM 0x005078a0
 void TNumberedItem::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws
-  RECT srcRect = {iconRowIndexAc * 0x20, 0, iconRowIndexAc * 0x20 + 0x1f, 0x17};
+  RECT srcRect = {iconRowIndex * 0x20, 0, iconRowIndex * 0x20 + 0x1f, 0x17};
   RECT dstRect = {0, 0, 0x1f, 0x17};
   ResetQuickDrawStrokeState();
   UpdatePaletteIndexWithDefaultFallback(0x10);
@@ -44,16 +44,16 @@ void TNumberedItem::Draw(RECT* rectBuffer) {
   UpdatePaletteIndexWithDefaultFallback(0x13);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 9, 0x2b67);
   short x;
-  short y = static_cast<short>(frameHeight38) - 5;
-  if (badgeCountAe < 10) {
-    x = static_cast<short>(frameWidth34) - 8;
-  } else if (badgeCountAe < 100) {
-    x = static_cast<short>(frameWidth34) - 0x10;
+  short y = static_cast<short>(frameHeight) - 5;
+  if (badgeCount < 10) {
+    x = static_cast<short>(frameWidth) - 8;
+  } else if (badgeCount < 100) {
+    x = static_cast<short>(frameWidth) - 0x10;
   } else {
-    x = static_cast<short>(frameWidth34) - 0x18;
+    x = static_cast<short>(frameWidth) - 0x18;
   }
   SetQuickDrawTextOriginWithContextOffset(x, y);
   CString countText;
-  countText.Format(g_szDecimalFormat, static_cast<int>(badgeCountAe));
+  countText.Format(g_szDecimalFormat, static_cast<int>(badgeCount));
   DrawTextWithCachedQuickDrawStyleState(&countText);
 }

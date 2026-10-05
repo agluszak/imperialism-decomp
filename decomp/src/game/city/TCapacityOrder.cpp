@@ -59,8 +59,8 @@ void TCapacityOrder::Produce() {
 
     newValue = static_cast<short>(newValue + this->quantity);
     deltaToAccum = static_cast<short>(newValue - city->productionOrderTable1dc[slotIndex]);
-    city->productionAccum1fc[slotIndex] =
-        static_cast<short>(city->productionAccum1fc[slotIndex] + deltaToAccum);
+    city->productionAccum[slotIndex] =
+        static_cast<short>(city->productionAccum[slotIndex] + deltaToAccum);
     city->productionOrderTable1dc[slotIndex] = newValue;
   }
 

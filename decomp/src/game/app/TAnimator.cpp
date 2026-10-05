@@ -23,7 +23,7 @@ IMPLEMENT_DYNCREATE(TAnimator, TEventHandler)
 // the real base-ctor call instead -- the usual accepted ctor-inlining divergence.
 // FUNCTION: IMPERIALISM 0x004a0aa0
 TAnimator::TAnimator()
-    : TEventHandler(), renderSurfaceContext(0), registryList24(0), mapUberPicture2c(0) {}
+    : TEventHandler(), renderSurfaceContext(0), registryList(0), mapUberPicture2c(0) {}
 
 // FUNCTION: IMPERIALISM 0x004a0b20
 void TAnimator::IAnimator(int idleFrequency) {
@@ -35,7 +35,7 @@ void TAnimator::IAnimator(int idleFrequency) {
   bounds.right = g_ptUiAnimatorSurfaceBounds.x;
   bounds.bottom = g_ptUiAnimatorSurfaceBounds.y;
   g_pDisplayMgr->MakeNewGWorld(renderSurfaceContext, 8, bounds);
-  registryList24 = new TList();
+  registryList = new TList();
   overlayPhaseTickCount = 0;
 }
 
@@ -59,7 +59,7 @@ char TAnimator::DoIdle(int action) {
   }
 
   if (action == 1) {
-    CIterator cursor(registryList24);
+    CIterator cursor(registryList);
     TAnimation* animation = static_cast<TAnimation*>(cursor.Reset());
     while (cursor.More()) {
       animation->Tick();
@@ -71,7 +71,7 @@ char TAnimator::DoIdle(int action) {
 
 // FUNCTION: IMPERIALISM 0x004a0d10
 void TAnimator::AddObjectToUiTransientRegistry(TAnimation* animationObject) {
-  registryList24->AddTail(animationObject);
+  registryList->AddTail(animationObject);
 #ifdef IMPERIALISM_RUNTIME_TESTS
   RuntimeTestDriver::ObserveDeferred(kObserveAnimationAdded);
 #endif
@@ -82,7 +82,7 @@ TAnimation* TAnimator::FindRegisteredAnimationByTag(int tag) {
   // The original null-checks the receiver: call sites invoke this on g_pUiAnimator
   // without guarding it.
   if (this != 0) {
-    CIterator cursor(registryList24);
+    CIterator cursor(registryList);
     TAnimation* animation = static_cast<TAnimation*>(cursor.Reset());
     while (cursor.More() && animation->registryTag != tag) {
       animation = static_cast<TAnimation*>(cursor.Advance());
@@ -97,8 +97,8 @@ TAnimation* TAnimator::FindRegisteredAnimationByTag(int tag) {
 // FUNCTION: IMPERIALISM 0x004a0dc0
 void TAnimator::Free() {
   g_pAmbitApplication->InstallCohandler(this, 0);
-  if (registryList24 != 0) {
-    registryList24->FreePayloadsAndDestroy();
+  if (registryList != 0) {
+    registryList->FreePayloadsAndDestroy();
   }
   g_pDisplayMgr->RemoveGWorld(renderSurfaceContext);
   TEventHandler::Free();
@@ -123,7 +123,7 @@ void TAnimator::TranslateListRectsAndDropNonIntersectingEntries(int dx, int dy, 
   // The original null-checks the receiver: the call site invokes this on g_pUiAnimator
   // without guarding it.
   if (this != 0) {
-    CIterator cursor(registryList24);
+    CIterator cursor(registryList);
     TAnimation* entry = static_cast<TAnimation*>(cursor.Reset());
     while (cursor.More()) {
       entry->screenRect.left += dx;
@@ -132,7 +132,7 @@ void TAnimator::TranslateListRectsAndDropNonIntersectingEntries(int dx, int dy, 
       entry->screenRect.bottom += dy;
       RECT scratch;
       if (!SectRect(&entry->screenRect, &clipRect, &scratch)) {
-        CPtrList* list = &registryList24->listState;
+        CPtrList* list = &registryList->listState;
         POSITION pos = list->Find(entry, 0);
         if (pos != 0) {
           list->RemoveAt(pos);
@@ -147,7 +147,7 @@ void TAnimator::TranslateListRectsAndDropNonIntersectingEntries(int dx, int dy, 
 // FUNCTION: IMPERIALISM 0x004a0f80
 void TAnimator::FreeUiTransientRegistryPayloads() {
   if (this != 0) {
-    registryList24->FreePayloads();
+    registryList->FreePayloads();
 #ifdef IMPERIALISM_RUNTIME_TESTS
     RuntimeTestDriver::ObserveDeferred(kObserveAnimationRemoved);
 #endif
@@ -160,9 +160,9 @@ void TAnimator::FreeUiTransientRegistryPayloads() {
 void TAnimator::RemoveUiTransientRegistryObjectByTag(int tag) {
   TAnimation* animation = FindRegisteredAnimationByTag(tag);
   if (animation != 0) {
-    POSITION pos = registryList24->listState.Find(animation, 0);
+    POSITION pos = registryList->listState.Find(animation, 0);
     if (pos != 0) {
-      registryList24->listState.RemoveAt(pos);
+      registryList->listState.RemoveAt(pos);
     }
     animation->Free();
 #ifdef IMPERIALISM_RUNTIME_TESTS

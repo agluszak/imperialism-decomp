@@ -15,13 +15,13 @@ public:
   virtual void DoPostCreate(int arg) override;  // slot 0x37 0x573850
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x573890
   // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill
-  // arity mismatch: merges srcRegion into this object's own ownClipRegion90.
+  // arity mismatch: merges srcRegion into this object's own ownClipRegion.
   virtual void ForwardCopyRgn(RgnHandle srcRegion); // slot 0x73 0x573940
   // TPicture ends at 0x90; this object's own 4-byte slice is a lazily-created clip
   // region wrapper (destroyed by Free(), merged into by
   // ForwardCopyRgn, and read/written by
   // TMapUberPicture::DisplayMiniMap -- see its own evidence).
-  RgnHandle ownClipRegion90;
+  RgnHandle ownClipRegion;
 
   TOffLimitsPicture();
 };

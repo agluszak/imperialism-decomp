@@ -23,7 +23,7 @@ struct MinisterTerrainPreferenceEntry {
 IMPLEMENT_DYNCREATE(TMinister, TObject)
 
 // FUNCTION: IMPERIALISM 0x0052eb80
-TMinister::TMinister() : ownerContextAt04(nullptr), field_8(0), skillIndexC(0) {}
+TMinister::TMinister() : ownerContextAt04(nullptr), field_8(0), skillIndex(0) {}
 
 // FUNCTION: IMPERIALISM 0x0052ebf0
 void TMinister::IMinister(TGreatPower* ownerContext) {
@@ -44,13 +44,13 @@ void TMinister::Free() {
 // FUNCTION: IMPERIALISM 0x0052ecc0
 void TMinister::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
-  stream->ReadBytes(&this->skillIndexC, 2);
+  stream->ReadBytes(&this->skillIndex, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x0052ecf0
 void TMinister::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytes(&this->skillIndexC, 2);
+  stream->WriteBytes(&this->skillIndex, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x0052ed20

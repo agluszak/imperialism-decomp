@@ -14,7 +14,7 @@
 
 // FUNCTION: IMPERIALISM 0x00430320
 TTreatiesView::TTreatiesView() {
-  diplomacyMapView60 = 0;
+  diplomacyMapView = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00430380
@@ -89,14 +89,14 @@ void TTreatiesView::Setup() {
   TCluster* scrollCluster = static_cast<TCluster*>(ResolveControlByTag(kControlTagScro)); // 'scro'
   SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText_00654ec8), scrollCluster);
   scrollCluster->SetSelectedChildTagAndRefresh(kControlTagScr5); // 'scr5'
-  diplomacyMapView60->actionCodeBC = kDipActionBuildConsulate;
+  diplomacyMapView->actionCodeBC = kDipActionBuildConsulate;
 }
 
 // FUNCTION: IMPERIALISM 0x004f7f80
 void TTreatiesView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
     unsigned int tag = sourceHandler->controlTag;
-    TDiplomacyMapView* mapView = diplomacyMapView60;
+    TDiplomacyMapView* mapView = diplomacyMapView;
     if (tag < kControlTagScr0 + 5) {
       mapView->actionCodeBC =
           static_cast<eDipAction>((tag - kControlTagScr0) + kDipActionJoinEmpire);

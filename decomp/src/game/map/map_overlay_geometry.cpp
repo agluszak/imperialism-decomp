@@ -317,7 +317,7 @@ int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags) {
   }
   if (actionClass >= kMapTileActionStateNationOrderFirst &&
       actionClass <= kMapTileActionStateNationOrderLast) {
-    short ordinal = tile.tileActionOrdinal1a;
+    short ordinal = tile.tileActionOrdinal;
     g_pCachedMapActionContext = 0;
     if (ordinal != -1) {
       int matchIndex = 0;
@@ -338,8 +338,8 @@ int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags) {
   if (actionClass >= kMapTileActionStateLinkedZoneFirst &&
       actionClass <= kMapTileActionStateLinkedZoneLast) {
     TZone* activeOrderContext = 0;
-    if (g_pViewMgr->mapUberPictureF0->activeUnitCategoryIndex96 == 2) {
-      activeOrderContext = g_pViewMgr->mapUberPictureF0->orderEntryContext98;
+    if (g_pViewMgr->mapUberPictureF0->activeUnitCategoryIndex == 2) {
+      activeOrderContext = g_pViewMgr->mapUberPictureF0->orderEntryContext;
     }
     TZone* resolvedZone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
     return resolvedZone == activeOrderContext ? 10 : 9;

@@ -249,7 +249,7 @@ void TControlSeaZoneMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
   }
 
   TZone* entryContext = mapOrderEntry->location;
-  if ((entryContext->nationKeyMask10 & nationBitmask) == 0 && firstMatchContext != nullptr) {
+  if ((entryContext->nationKeyMask & nationBitmask) == 0 && firstMatchContext != nullptr) {
     mapOrderEntry->OrderBlockade(firstMatchContext);
     return;
   }

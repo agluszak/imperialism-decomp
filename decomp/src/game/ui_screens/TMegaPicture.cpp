@@ -13,7 +13,7 @@ IMPLEMENT_DYNCREATE(TMegaPicture, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x00573190
 TMegaPicture::TMegaPicture() : TNoHilitePicture() {
-  surfaceContext94 = 0;
+  surfaceContext = 0;
   flags98 = 0;
 }
 
@@ -29,13 +29,13 @@ void TMegaPicture::IMegaPicture(TView* panel, int* offsetLayout, int* sizeLayout
 
 // Blits the picture's own bitmap to its transformed (screen-space) rect. Normally
 // samples the whole passed-in rect; when flags98&4 is set, samples/positions from
-// contentSubRect9c instead (optionally filling the transformed rect white first when
+// contentSubRect instead (optionally filling the transformed rect white first when
 // flags98&1 is clear), and applies transparent-color blitting (flags98&1).
 // FUNCTION: IMPERIALISM 0x00573270
 void TMegaPicture::Draw(RECT* rectBuffer) {
   CRect contentRect(*rectBuffer);
   CRect screenRect = ViewToQDRect(&contentRect);
-  if (surfaceContext94 == nullptr) {
+  if (surfaceContext == nullptr) {
     return;
   }
   ResetQuickDrawStrokeState();
@@ -48,8 +48,8 @@ void TMegaPicture::Draw(RECT* rectBuffer) {
       SetQuickDrawFillColor(0xffffff);
       FillRectWithQuickDrawBrushAndContextOffset(&screenRect);
     }
-    srcRect = contentSubRect9c;
-    screenRect = ViewToQDRect(&contentSubRect9c);
+    srcRect = contentSubRect;
+    screenRect = ViewToQDRect(&contentSubRect);
   }
 
   unsigned char blitFlags = 0;
@@ -60,7 +60,7 @@ void TMegaPicture::Draw(RECT* rectBuffer) {
   }
   UpdatePaletteIndexWithDefaultFallback(paletteIndex);
   SetQuickDrawFillColor(0);
-  BlitRectWithOptionalTransparency(surfaceContext94->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(surfaceContext->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                    &screenRect, blitFlags, 0);
   UpdatePaletteIndexWithDefaultFallback(0x13);
@@ -71,10 +71,10 @@ void TMegaPicture::Draw(RECT* rectBuffer) {
 // bounds, blit the resource into it, then run the base TPicture refresh.
 // FUNCTION: IMPERIALISM 0x00573430
 void TMegaPicture::SetPictureResourceIdAndRefresh(short nPictureId, unsigned char fRefreshNow) {
-  if (surfaceContext94 != 0) {
-    g_pDisplayMgr->RemoveGWorld(surfaceContext94);
+  if (surfaceContext != 0) {
+    g_pDisplayMgr->RemoveGWorld(surfaceContext);
   }
-  surfaceContext94 = 0;
+  surfaceContext = 0;
   ResetPictureResourceEntry();
 
   // The original parks the loader handle in the +0x88 slot (TPicture::bitmapId/
@@ -88,14 +88,14 @@ void TMegaPicture::SetPictureResourceIdAndRefresh(short nPictureId, unsigned cha
   }
   RECT resourceBounds;
   CopyRect(&resourceBounds, &loader->bitmapRect);
-  contentSubRect9c = resourceBounds;
+  contentSubRect = resourceBounds;
 
   TQuickDrawSurfaceContext* savedContext = 0;
   int savedFlags = 0;
   GetGWorld(&savedContext, &savedFlags);
-  g_pDisplayMgr->MakeNewGWorld(surfaceContext94, 8, resourceBounds);
-  SetGWorld(surfaceContext94, savedFlags);
-  TBitmapSurfaceNode** pixMap = GetGWorldPixMap(surfaceContext94);
+  g_pDisplayMgr->MakeNewGWorld(surfaceContext, 8, resourceBounds);
+  SetGWorld(surfaceContext, savedFlags);
+  TBitmapSurfaceNode** pixMap = GetGWorldPixMap(surfaceContext);
   LockPixels(pixMap);
 
   QDLoadResource(loaderHandle);
@@ -112,7 +112,7 @@ void TMegaPicture::SetPictureResourceIdAndRefresh(short nPictureId, unsigned cha
     delete *loaderHandle;
     IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
     delete loaderHandle;
-    UnlockPixels(GetGWorldPixMap(surfaceContext94));
+    UnlockPixels(GetGWorldPixMap(surfaceContext));
     SetGWorld(savedContext, savedFlags);
     TPicture::SetPictureResourceIdAndRefresh(nPictureId, fRefreshNow);
   }
@@ -120,10 +120,10 @@ void TMegaPicture::SetPictureResourceIdAndRefresh(short nPictureId, unsigned cha
 
 // FUNCTION: IMPERIALISM 0x00573650
 void TMegaPicture::Free() {
-  if (surfaceContext94 != 0) {
-    g_pDisplayMgr->RemoveGWorld(surfaceContext94);
+  if (surfaceContext != 0) {
+    g_pDisplayMgr->RemoveGWorld(surfaceContext);
   }
-  surfaceContext94 = 0;
+  surfaceContext = 0;
   TView::Free();
 }
 

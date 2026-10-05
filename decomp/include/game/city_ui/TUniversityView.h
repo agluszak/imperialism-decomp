@@ -27,11 +27,11 @@ public:
   // Selected recruitment category (0-8), written/read as a 16-bit value by
   // DoEvent's commandId 0xa/0xc branches; the upper half of the +0xa4 dword is
   // never touched by either writer, so it's split out rather than declared as int.
-  short selectedRecruitmentCategoryA4;
+  short selectedRecruitmentCategory;
   unsigned char paddingA6[2];
-  // Selected city recruitment recipe. SetUnit indexes city94->buildOrderSlots148 at
+  // Selected city recruitment recipe. SetUnit indexes city94->buildOrderSlots at
   // recruitmentCategory + 0x22; those entries are TUnitOrder objects, and UpdateFields
   // reads their per-unit paper and cash costs.
-  TUnitOrder* selectedRecruitmentOrderA8;
+  TUnitOrder* selectedRecruitmentOrder;
 };
 ASSERT_SIZE(TUniversityView, 0xac);

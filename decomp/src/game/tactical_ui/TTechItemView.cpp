@@ -64,10 +64,10 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
     int titleSize[2] = {0x69, 0x3f};
     titleControl->IDeluxeText(this, titleOffset, titleSize, &zeroRect, &textStyle, -2);
     titleControl->textColor98 = titleStyleFlags;
-    titleControl->shadowTextColor9C = shadowStyleFlags;
+    titleControl->shadowTextColor = shadowStyleFlags;
     titleControl->dropShadowEnabledA0 = true;
     g_pSimMgr->GetString(0x2712, static_cast<short>(techId), &techName);
-    yearText.Format(g_szDecimalFormat, 0x717 + g_pTechMgr->prioritySlots04[techId] / 4);
+    yearText.Format(g_szDecimalFormat, 0x717 + g_pTechMgr->prioritySlots[techId] / 4);
     labelText = techName + "\n" + yearText;
     titleControl->UpdateTextEntrySharedString(&labelText);
     titleControl->CenterVertically(0);
@@ -80,7 +80,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
     int descSize[2] = {0x10d, 0x3f};
     descText->IDeluxeText(this, descOffset, descSize, &zeroRect, &textStyle, -2);
     descText->textColor98 = titleStyleFlags;
-    descText->shadowTextColor9C = shadowStyleFlags;
+    descText->shadowTextColor = shadowStyleFlags;
     descText->dropShadowEnabledA0 = true;
     g_pSimMgr->GetString(0x274e, static_cast<short>(techId - 1), &labelText);
     descText->UpdateTextEntrySharedString(&labelText);
@@ -95,7 +95,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
     int dateSize[2] = {0x53, 0x3f};
     dateControl->IDeluxeText(this, dateOffset, dateSize, &zeroRect, &textStyle, 1);
     dateControl->textColor98 = titleStyleFlags;
-    dateControl->shadowTextColor9C = shadowStyleFlags;
+    dateControl->shadowTextColor = shadowStyleFlags;
     dateControl->dropShadowEnabledA0 = true;
     g_pSimMgr->GetString(0x274f, 0, &templateText);
     yearText.Format(g_szDecimalFormat,
@@ -129,7 +129,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
     int prereqSize[2] = {0x53, 0x3f};
     prereqControl->IDeluxeText(this, prereqOffset, prereqSize, &zeroRect, &textStyle, 1);
     prereqControl->textColor98 = titleStyleFlags;
-    prereqControl->shadowTextColor9C = shadowStyleFlags;
+    prereqControl->shadowTextColor = shadowStyleFlags;
     prereqControl->dropShadowEnabledA0 = true;
     if (missing2 == 0) {
       g_pSimMgr->GetString(0x274f, 2, &templateText);

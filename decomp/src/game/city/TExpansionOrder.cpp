@@ -49,8 +49,8 @@ void TExpansionOrder::Produce() {
 
   newValue = static_cast<short>(newValue + quantity);
   short delta = static_cast<short>(newValue - city->productionOrderTable1dc[resourceTypeIndex]);
-  city->productionAccum1fc[resourceTypeIndex] =
-      static_cast<short>(city->productionAccum1fc[resourceTypeIndex] + delta);
+  city->productionAccum[resourceTypeIndex] =
+      static_cast<short>(city->productionAccum[resourceTypeIndex] + delta);
   city->productionOrderTable1dc[resourceTypeIndex] = newValue;
   requestedQuantity4c = zero;
   quantity = zero;

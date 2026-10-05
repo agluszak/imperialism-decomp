@@ -25,7 +25,7 @@ struct DiplomacyMaskBufferRun {
   // BuildDiplomacyOverlayHitMaskOpcodeStream, which calls it eight times.
   bool IsMaskPixelSet(int x, int y) const;
 
-  unsigned char* maskBytesAt00;
+  unsigned char* maskBytes;
   CRect boundsAt04;
 };
 
@@ -41,7 +41,7 @@ inline bool DiplomacyMaskBufferRun::IsMaskPixelSet(int x, int y) const {
   int xOffset = x - boundsAt04.left;
   int rowStride = (boundsAt04.right - boundsAt04.left) >> 3;
   int byteIndex = (y - boundsAt04.top) * rowStride + (xOffset >> 3);
-  return (maskBytesAt00[byteIndex] & (1 << (xOffset & 7))) != 0;
+  return (maskBytes[byteIndex] & (1 << (xOffset & 7))) != 0;
 }
 
 // Is the mask pixel set, and is it on the region's edge? With `edgeOnly` clear this is just
@@ -102,7 +102,7 @@ public:
   void DrawVoteNuggets();
   void SetOverlay(int overlay); // 0x4f7170, Mac oracle eDipDrawStatus
   // 0x4f4a30 -- Mac CodeWarrior names this TDiplomacyMapView::DrawNames(const VRect&).
-  // Draws the per-nation map labels over nationLabelRects234: great powers 0..6,
+  // Draws the per-nation map labels over nationLabelRects: great powers 0..6,
   // then minors 7..22 with the default DIB palette selected for their theme colors.
   // presentRect is an ignored stack arg the original threads through.
   void DrawNames(const RECT* presentRect);
@@ -110,13 +110,13 @@ public:
   // Called unconditionally from Draw for interactionModeAt94 in
   // {1,2,4}: for every terrain-descriptor slot whose hit rect intersects presentRect,
   // draws a diplomacy-compatibility highlight (LookupOrderCompatibilityMatrixValue) into
-  // nationAnchorRects3A4, a mode-specific status icon into nationTextHitRectsC4 (need/
+  // nationAnchorRects, a mode-specific status icon into nationTextHitRects (need/
   // grant level for mode 1, relation tier for mode 2, policy level for mode 4), and an
   // optional colony-boycott overlay. presentRect is only read, never threaded onward.
   void DrawIcons(RECT* presentRect);
 
   void SetSelectedTerrainIndexForTurnEvent(short terrainIndex) {
-    selectedTerrainIndexAt90 = terrainIndex;
+    selectedTerrainIndex = terrainIndex;
   }
 
   // 0x4f4620 -- resolves the 6 minister action-topic buttons (info/trty/gran/trad/
@@ -149,12 +149,12 @@ protected:
   // 0x90 — compared against a terrain-descriptor index in
   // ResolveDiplomacyActionFromClickAndUpdateTarget (matched to `actionCode != 0xd`); reset to 0
   // in the constructor.
-  short selectedTerrainIndexAt90;
+  short selectedTerrainIndex;
   char pad_92[0x02];
   // 0x94 — a mode/state code compared to 5 (`== 5` short-circuits the click handler); reset to
   // 0 in the constructor.
   int interactionModeAt94;
-  short frameRegionSelectorAt98;
+  short frameRegionSelector;
   char pad_9a[0x02];
   // 0x9c — QuickDraw region handle; disposed and cleared in Free (0x4f3e60), reset to 0 in the
   // constructor.
@@ -168,27 +168,27 @@ protected:
   // array carrying a mixed element type. Index 5 (the 'offr' button) is also
   // childControlAtB4's established "panel's child control" role -- not a conflict, just
   // two names for the same slot, kept below as a reference alias.
-  // actionButtonsA0[5] (the 'offr' button) is also the panel's child control, read in
+  // actionButtons[5] (the 'offr' button) is also the panel's child control, read in
   // InvalidateAndForwardTabSwitchToChild / PoseWarOffer. Element 0's
   // real class (TInfoPanelView) is a TPanelView sibling, not a TControl descendant, so
   // this array is typed as TView* (their common base) rather than TControl* -- callers
   // cast each element to its own real type at the point of use.
-  TView* actionButtonsA0[6];
+  TView* actionButtons[6];
   // 0xb8 — a state code compared to 5 (mirrors interactionModeAt94's pattern); reset to 0 by
   // Close (slot 0xa0) and in the constructor.
-  int stateFlagAtB8;
+  int stateFlag;
 
 public:
   // 0xbc -- action code written 0xd at the end of the overlay rebuild (matches
-  // selectedTerrainIndexAt90's `actionCode != 0xd` comparison site); also written 7/8
-  // by TGrantsView::DoEvent (via TPanelView::diplomacyMapView60) keyed off the parity of a
+  // selectedTerrainIndex's `actionCode != 0xd` comparison site); also written 7/8
+  // by TGrantsView::DoEvent (via TPanelView::diplomacyMapView) keyed off the parity of a
   // clicked control's tag -- public because that sibling panel writes it directly
   // through the panel's owner pointer, with no accessor method in the original.
   eDipAction actionCodeBC;
   // 0xc0 -- a row/index value derived from a clicked control's tag
   // ((controlTag - 0x6330) / 2), written by TGrantsView::DoEvent through
-  // TPanelView::diplomacyMapView60.
-  short selectedGrantRowC0;
+  // TPanelView::diplomacyMapView.
+  short selectedGrantRow;
 
 protected:
   // 0xc2 -- active-nation snapshot stamped alongside 0x90/0x98 by the overlay rebuild.
@@ -196,20 +196,20 @@ protected:
   // Three consecutive per-nation RECT arrays filling 0xc4..0x514 exactly (23 nations):
   // text hit rects, name-label rects ([entry+0x170] writes), anchor marker rects
   // ([entry+0x2e0] writes) -- all rebuilt by BuildDiplomacyNationOverlayGeometryAndHitMasks.
-  CRect nationTextHitRectsC4[23]; // 0x0c4..0x234
-  CRect nationLabelRects234[23];  // 0x234..0x3a4
-  CRect nationAnchorRects3A4[23]; // 0x3a4..0x514
+  CRect nationTextHitRects[23]; // 0x0c4..0x234
+  CRect nationLabelRects[23];   // 0x234..0x3a4
+  CRect nationAnchorRects[23];  // 0x3a4..0x514
   // +0x514..+0x520 -- map origin/extents.
-  CRect mapViewportRect514;
-  int legendSurfaceModeAt524;
+  CRect mapViewportRect;
+  int legendSurfaceMode;
   // 0x528 — highest pending-policy tier currently visible in the council vote animation.
   // DrawVoteNuggets draws entries at or below it; TCouncilView advances/resets it.
-  short visibleVoteTier528;
+  short visibleVoteTier;
   short currentCursorResourceId52A;
   // 0x52c -- per-tile flag: owner byte in g_pDiplomacyTurnStateManager's table != -1.
-  bool tileHasOwnerFlags52C[0x180];
+  bool tileHasOwnerFlags[0x180];
   // 0x6ac -- per-tile 10x7 marker rect anchored at the tile's hex-raster position.
-  CRect tileMarkerRects6AC[0x180]; // 0x6ac..0x1eac
+  CRect tileMarkerRects[0x180]; // 0x6ac..0x1eac
   // 0x1eac -- per-nation overlay hit-mask runs; 0x2078 -- per-nation label opcode
   // records (both rebuilt by BuildDiplomacyNationOverlayGeometryAndHitMasks).
   DiplomacyMaskBufferRun maskRuns[0x17];

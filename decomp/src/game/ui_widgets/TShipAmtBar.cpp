@@ -28,9 +28,9 @@ TShipAmtBar::TShipAmtBar() : TAmtBar() {
 void TShipAmtBar::DoPostCreate(int arg) {
   TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetActiveNationId()];
   TCity* province = nationState != 0 ? nationState->GetCityState() : 0;
-  selectedMetricRecord = province->shipOrderSlots190[0];
-  short productionCap = province->productionSummary1d8->strength;
-  stepOrCurrentValue = (short)this->frameWidth34;
+  selectedMetricRecord = province->shipOrderSlots[0];
+  short productionCap = province->productionSummary->strength;
+  stepOrCurrentValue = (short)this->frameWidth;
   auxValueA = productionCap;
   auxValueB = 0x3a;
   rangeOrMaxValue = (short)(0 / (int)productionCap);
@@ -64,7 +64,7 @@ void TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       SetQuickDrawTextOriginWithContextOffset(stepOrCurrentValue, 0);
       SetQuickDrawFillColor(0);
       ResetQuickDrawStrokeState();
-      DrawCenteredGuideLineOnMapDc(stepOrCurrentValue, (short)(frameHeight38 - 2));
+      DrawCenteredGuideLineOnMapDc(stepOrCurrentValue, (short)(frameHeight - 2));
 
       SetClip(surface.tempRgn);
       TView* owner = control->GetWindow();

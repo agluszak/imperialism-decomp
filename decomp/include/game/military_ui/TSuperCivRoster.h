@@ -19,16 +19,16 @@ public:
   // Object slice from the inline-expanded ctor at 0x5ddde1 (inside
   // TViewMgr::ShowCivilianLedgerDialogAndSelectUnit): base TPageView ctor, own vptr,
   // then the selected-entry index seeded to -1. TPageView is 0x84 bytes, so
-  // selectedTileIndex84 is the first own field.
+  // selectedTileIndex is the first own field.
   // +0x84: the selected civilian's map tile index (-1 = none). TMiniCivView::DoEvent
   // (0x4ac320) stores civUnit84->tileIndex06 here, and the ledger driver feeds it
   // straight to NoticeTile, so both ends agree it is a tile index.
-  short selectedTileIndex84;
+  short selectedTileIndex;
 
   // Defined inline: the original constructor exists only inline-expanded at its
-  // call sites (TPageView ctor call + vptr store + selectedTileIndex84 = -1).
+  // call sites (TPageView ctor call + vptr store + selectedTileIndex = -1).
   TSuperCivRoster() : TPageView() {
-    selectedTileIndex84 = -1;
+    selectedTileIndex = -1;
   }
 };
 

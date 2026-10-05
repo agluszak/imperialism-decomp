@@ -22,7 +22,7 @@ public:
     if (dc == 0) {
       dc = g_pScopedMapQuickDrawDcHandleObject;
     }
-    previousPen08 = dc->SelectObject(this);
+    previousPen = dc->SelectObject(this);
   }
 
   // FUNCTION: IMPERIALISM 0x00498610
@@ -31,9 +31,9 @@ public:
     if (dc == 0) {
       dc = g_pScopedMapQuickDrawDcHandleObject;
     }
-    dc->SelectObject(previousPen08);
+    dc->SelectObject(previousPen);
   }
 
-  CPen* previousPen08;
+  CPen* previousPen;
 };
 ASSERT_SIZE(TScopedQuickDrawPen, 0x0c);

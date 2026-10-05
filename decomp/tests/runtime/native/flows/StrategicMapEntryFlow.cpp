@@ -131,7 +131,7 @@ RuntimeFlowStatus StrategicMapEntryFlow::Advance(RuntimeScenario& scenario) {
                                    ? static_cast<TMapUberPicture*>(mainView)
                                    : 0;
     if (g_pViewMgr->currentTurnEventCode != 0x3b8 || mapView == 0 || g_pGlobalMapState == 0 ||
-        mapView->subview2A8 == 0 || mapView->miniMapViewC0 == 0 ||
+        mapView->subview2A8 == 0 || mapView->miniMapView == 0 ||
         mapView->ResolveControlByTag(kControlTagCanc) == 0 ||
         mapView->ResolveControlByTag(kControlTagQuer) == 0) {
       scenario.FailScenario("capital-selection map is missing navigation prerequisites");

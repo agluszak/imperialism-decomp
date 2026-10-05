@@ -68,7 +68,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
 
     if (row == 10) {
       int difficultyPercent = g_apNationStates[g_pSimMgr->GetActiveNationId()]
-                                  ->gameScoreRows930[TGreatPower::kGameScoreDifficultyPercent];
+                                  ->gameScoreRows[TGreatPower::kGameScoreDifficultyPercent];
       if (difficultyPercent % 10 > 0) {
         FormatNonnegativeFloatToLocalizedSharedString(static_cast<float>(difficultyPercent) * 0.1f,
                                                       &displayText);
@@ -78,7 +78,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
       displayText = g_szLowercaseX + displayText;
     } else {
       displayText.Format(g_szDecimalFormat,
-                         g_apNationStates[g_pSimMgr->GetActiveNationId()]->gameScoreRows930[row]);
+                         g_apNationStates[g_pSimMgr->GetActiveNationId()]->gameScoreRows[row]);
     }
     value->SetTextAndMaybeRefresh(&displayText, 1);
   }

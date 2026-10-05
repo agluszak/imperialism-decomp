@@ -192,7 +192,7 @@ RuntimeActionResult DiplomacyScreen::PoseNonAggressionOffer(short sourceNation,
 
 bool DiplomacyScreen::LastResponseWas(int responseTag) const {
   TOffersPanelView* offers = OffersPanel();
-  return offers != 0 && offers->lastNegotiationResponseTag64 == responseTag;
+  return offers != 0 && offers->lastNegotiationResponseTag == responseTag;
 }
 
 bool DiplomacyScreen::LastResponseWasAccept() const {

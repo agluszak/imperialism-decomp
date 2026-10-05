@@ -12,8 +12,8 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x668a60
 class TSoundPlayer : public TEventHandler {
 public:
-  unsigned char directSoundInitOkAt20; // 0x20 — set by InitializeSoundSubsystem
-  bool directSoundInitPendingAt21;     // 0x21 — set by RequestDirectSoundInitIfAllowed
+  unsigned char directSoundInitOk; // 0x20 — set by InitializeSoundSubsystem
+  bool directSoundInitPending;     // 0x21 — set by RequestDirectSoundInitIfAllowed
   char pad22[0x4a];
   TLongintList* audioCuePool;
   TLongintList* remainingRandomAudioCues;

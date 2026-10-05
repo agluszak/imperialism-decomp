@@ -10,17 +10,17 @@ IMPLEMENT_DYNCREATE(TNavyPlayer, TTacticalPlayer)
 
 // FUNCTION: IMPERIALISM 0x0059ec20
 void TNavyPlayer::INavyPlayer(TTaskForce* force, char isOurSide, bool watchFlag, int nationIndex) {
-  isOurSideFlagC = isOurSide;
-  sideReadyFlag10 = false;
+  isOurSideFlag = isOurSide;
+  sideReadyFlag = false;
   watchFlagD = watchFlag;
   nationIndex1C = nationIndex;
-  cursorIndex18 = 0;
+  cursorIndex = 0;
   fieldF = false;
   field20 = false;
   targetingMode2c = kNavyTargetingHull;
 
   unitList4 = new TList();
-  sideReadyFlag10 = false;
+  sideReadyFlag = false;
 
   for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr; node = node->next) {
     TShip* ship = node->payload;
@@ -29,11 +29,11 @@ void TNavyPlayer::INavyPlayer(TTaskForce* force, char isOurSide, bool watchFlag,
     unitList4->AddTail(unit);
     // The enemy side starts with every unit flagged; our own side does not.
     if (isOurSide == 0) {
-      unit->selectedFlag18 = 1;
+      unit->selectedFlag = 1;
     }
   }
 
-  cursorIndex18 = 0;
+  cursorIndex = 0;
   taskForce28 = force;
 }
 // Writes each surviving ship's losses back to its source fleet (nation drops

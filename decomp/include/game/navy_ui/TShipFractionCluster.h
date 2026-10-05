@@ -27,14 +27,14 @@ public:
   // 0x88. Available ship count and upper bound for the selected count. The original
   // writes/reads it with 16-bit instructions throughout; TShipPlacard::Draw
   // also renders this count through its ownerContext.
-  short availableShipCount88;
+  short availableShipCount;
   short pad8a;
   // The 'main'-tagged control on GetWindow(), resolved by DoPostCreate.
-  class TMapUberPicture* mainSelectionView8c;
+  class TMapUberPicture* mainSelectionView;
   // The 'arro' TNumberedArrowButton, resolved by DoPostCreate. Windows calls its
   // TNumberedArrowButton::SetValue slot at vtable offset 0x1c4.
-  TNumberedArrowButton* shipCountButton90;
-  short selectedShipCount94;
+  TNumberedArrowButton* shipCountButton;
+  short selectedShipCount;
   short pad96;
 };
 ASSERT_SIZE(TShipFractionCluster, 0x98);

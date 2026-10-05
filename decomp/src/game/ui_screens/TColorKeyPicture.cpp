@@ -40,13 +40,13 @@ void TColorKeyPicture::Draw(RECT* rectBuffer) {
   CPoint position;
   GetAbsolutePosition(&position);
   background->cachedBitmap->BlitSurfaceRectSkippingTransparentColor(
-      g_pColorKeyCompositeDib, position.x, position.y, frameWidth34, frameHeight38, 0, 0, -1);
-  cachedBitmap->BlitSurfaceRectSkippingTransparentColor(g_pColorKeyCompositeDib, 0, 0, frameWidth34,
-                                                        frameHeight38, 0, 0, 0x1000010);
+      g_pColorKeyCompositeDib, position.x, position.y, frameWidth, frameHeight, 0, 0, -1);
+  cachedBitmap->BlitSurfaceRectSkippingTransparentColor(g_pColorKeyCompositeDib, 0, 0, frameWidth,
+                                                        frameHeight, 0, 0, 0x1000010);
 
   g_pResourceMgr->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(GetActiveQuickDrawDc(), FALSE);
-  int width = frameWidth34;
-  int height = frameHeight38;
+  int width = frameWidth;
+  int height = frameHeight;
   g_pColorKeyCompositeDib->StretchDibitsFromStoredBitmapToHdcSimple(
       GetActiveQuickDrawDc(), position.x, position.y, width, height);
 

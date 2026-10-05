@@ -46,7 +46,7 @@ public:
   TTaskForce* pendingOrderEntry;
 
   void RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short nationSlot);
-  // Clears every cityScoreTable record's exploredByNationMaskA1 flag (dispatching a
+  // Clears every cityScoreTable record's exploredByNationMask flag (dispatching a
   // per-province redraw-invalidate event through g_pGameFlowState while g_pSimMgr's
   // multiplayerSessionRole == kSessionRoleHost, for each record found dirty), stores
   // `phaseId` into executionPhase, revalidates/requeues the map-order queue for the new turn

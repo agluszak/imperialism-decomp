@@ -11,16 +11,16 @@ IMPLEMENT_DYNCREATE(TArmyTacUnit, TTacticalUnit)
 void TArmyTacUnit::IArmyTacUnit(TMilitaryUnit* source) {
   unitTypeC = source->orderType;
   tileIndex8 = -2;
-  selectedFlag18 = 0;
+  selectedFlag = 0;
   state1c = 0;
   actionPoints28 = GetBaseActionPoints();
   aiStateCode2c = 0;
-  attackTarget30 = NULL;
+  attackTarget = NULL;
   strength4 = source->strength34;
   morale34 = source->strength34;
-  qualityLevel10 = static_cast<short>(source->experiencePercent38 / 100);
+  qualityLevel10 = static_cast<short>(source->experiencePercent / 100);
   ownerNationIndex14 = source->ownerNationSlot18;
-  sapTargetTileIndex40 = -1;
+  sapTargetTileIndex = -1;
   sourceUnit38 = source;
   bool deployedCategory0Flag;
   if (source->unitOrder == 2 && g_anUnitTypeCombatCategoryByType00669858[unitTypeC] == 0) {
@@ -34,21 +34,21 @@ void TArmyTacUnit::IArmyTacUnit(TMilitaryUnit* source) {
 // FUNCTION: IMPERIALISM 0x005a5fe0
 void TArmyTacUnit::ComputeTacticalProjectionScoreVector() {
   // Quality is recomputed from the source unit's raw experience field (not the
-  // cached qualityLevel10): (short)(experiencePercent38 / 100), same derivation as the ctor.
+  // cached qualityLevel10): (short)(experiencePercent / 100), same derivation as the ctor.
   float qualityFactor =
       static_cast<float>(g_dTacticalQualityFactorBase_00669ED0 -
-                         static_cast<short>(sourceUnit38->experiencePercent38 / 100) *
+                         static_cast<short>(sourceUnit38->experiencePercent / 100) *
                              g_dTacticalQualityFactorStep_00669EC8);
   // Retail still evaluates attribute 5, including its integer division, even
   // though tactical projection does not use the returned terrain adjustment.
   sourceUnit38->GetAttribute(5);
   float strengthTerm = strength4 * g_fTacticalStrengthProjectionScale_00669F0C;
   float scale = strengthTerm * qualityFactor;
-  projectionScores44[0] = sourceUnit38->GetAttribute(0) * scale * strengthTerm;
-  projectionScores44[1] = sourceUnit38->GetAttribute(1) * scale;
-  projectionScores44[2] = sourceUnit38->GetAttribute(2) * scale;
-  projectionScores44[3] = sourceUnit38->GetAttribute(3) * scale;
-  projectionScores44[4] = sourceUnit38->GetAttribute(4) * scale;
+  projectionScores[0] = sourceUnit38->GetAttribute(0) * scale * strengthTerm;
+  projectionScores[1] = sourceUnit38->GetAttribute(1) * scale;
+  projectionScores[2] = sourceUnit38->GetAttribute(2) * scale;
+  projectionScores[3] = sourceUnit38->GetAttribute(3) * scale;
+  projectionScores[4] = sourceUnit38->GetAttribute(4) * scale;
 }
 
 // FUNCTION: IMPERIALISM 0x005a6120

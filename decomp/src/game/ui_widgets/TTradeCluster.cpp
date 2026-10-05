@@ -537,7 +537,7 @@ void TTradeCluster::SetMoveAmount(short metricClampMax) {
     FailNilPointerInUSmallViews(kAssertLineUpdateGree);
   }
 
-  int barRange = barControl->frameWidth34;
+  int barRange = barControl->frameWidth;
   if (tradeMetricValue != 0) {
     int barSteps = barControl->auxValueA;
     float barScale = 9999.0f;

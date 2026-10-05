@@ -23,12 +23,12 @@ typedef int TacticalBattleOutcomeStorage;
 // bitmask: bits 0-5 = hex directions, 0x80 = first dig on a bare tile, 0x40 replaces
 // it once a link exists.
 struct TacticalTileRecord {
-  int terrainType0;           // +0x00 terrain code 0..4 (indexes the move-cost table row)
-  TTacticalUnit* occupant4;   // +0x04
-  int deployMark8;            // +0x08 1 = trench-deploy mark; > 1 = fort-wall level
-  int mineRunStateC;          // +0x0c sap/mine-run state: -1 clear, 2 queued, 0/1 advance
-  unsigned char trenchMask10; // +0x10
-  unsigned char pad11[3];     // +0x11
+  int terrainType0;         // +0x00 terrain code 0..4 (indexes the move-cost table row)
+  TTacticalUnit* occupant4; // +0x04
+  int deployMark;           // +0x08 1 = trench-deploy mark; > 1 = fort-wall level
+  int mineRunStateC;        // +0x0c sap/mine-run state: -1 clear, 2 queued, 0/1 advance
+  unsigned char trenchMask; // +0x10
+  unsigned char pad11[3];   // +0x11
 };
 
 // Runs one tactical battle (army or navy branch): owns the hex battle grid, the two
@@ -104,12 +104,12 @@ public:
   TTacticalUnit* selectedUnit1c; // +0x1c
   // Allocated by TArmyBattle::AllocateRecordList (0x59f7f0), called separately after
   // construction; TArmyBattle::ReadFrom appends the deserialized units here.
-  TList* recordList20; // +0x20
+  TList* recordList; // +0x20
   // Four owned per-tile work planes, (re)allocated by InitTacticalBattle
   // and freed (POD operator delete) by Free (0x59fb50).
-  short* tileMoveCostArray24;   // +0x24 per-tile move cost (-1 unreached); filled by slot 0x0a
-  char* tileThreatLevelArray28; // +0x28 per-tile threat level; filled by slot 0x0b
-  // +0x2c: the AI's per-tile candidate-score plane. Allocated as tacticalTileCount3c
+  short* tileMoveCostArray;   // +0x24 per-tile move cost (-1 unreached); filled by slot 0x0a
+  char* tileThreatLevelArray; // +0x28 per-tile threat level; filled by slot 0x0b
+  // +0x2c: the AI's per-tile candidate-score plane. Allocated as tacticalTileCount
   // ints and zero-filled by InitTacticalBattle (0x59fa15/0x59fa29)
   // and freed by Free (0x59fbaf) -- the only three accesses through a TTacticalBattle*
   // receiver. Its real writers reach it through TArmyPlayer::battle14:
@@ -117,20 +117,20 @@ public:
   // candidate's zone-cell score, and SelectBestTacticalTileByWeightedHeuristics
   // (0x59d530) stores the weighted-heuristic score for every reachable tile.
   int* tileCandidateScorePlane2c;
-  int* tileIntArray30;          // +0x30 advance-distance field (0x5a4460); -1 = unreached
-  int battlefieldColumnCount34; // +0x34 playable column count of this battle
-  int battleSiteIndex38;        // +0x38 cityScoreTable row of the battle site
-  int tacticalTileCount3c;      // +0x3c = 0x1b3 (435 = 15*29 battle tiles)
-  int tacticalTileStride40;     // +0x40 = 0x1d (29)
+  int* tileIntArray;          // +0x30 advance-distance field (0x5a4460); -1 = unreached
+  int battlefieldColumnCount; // +0x34 playable column count of this battle
+  int battleSiteIndex38;      // +0x38 cityScoreTable row of the battle site
+  int tacticalTileCount;      // +0x3c = 0x1b3 (435 = 15*29 battle tiles)
+  int tacticalTileStride40;   // +0x40 = 0x1d (29)
   // Serialized outcome. EvaluateTacticalSideStateAndShowBattleSummaryDialog chooses the
   // surviving side; TNextMoveCommand consumes it before EndBattle marks finalization.
   TacticalBattleOutcomeStorage battleOutcome44; // +0x44
-  // pendingEndOfActionFlag48: cleared when the 0x232a end-of-action turn event is queued
+  // pendingEndOfActionFlag: cleared when the 0x232a end-of-action turn event is queued
   // (news a TCommand) and re-armed by TNextMoveCommand::DoIt before advancing the turn.
   // TArmyPlayer's move/target-selection loops gate on it being nonzero.
-  char pendingEndOfActionFlag48; // +0x48
-  char fortLevel49;              // +0x49 serialized; nonzero suppresses depl trench-marking
-  unsigned char pad4a[2];        // +0x4a
+  char pendingEndOfActionFlag; // +0x48
+  char fortLevel49;            // +0x49 serialized; nonzero suppresses depl trench-marking
+  unsigned char pad4a[2];      // +0x4a
   // Hover/action code chosen for the current tile (0..0xc). Code 7 is a dig action,
   // so MoveTacticalUnitBetweenTiles suppresses its ordinary move animation.
   int currentTacticalActionCode4c; // +0x4c serialized
@@ -138,10 +138,10 @@ public:
   // Per-row-pair fort strength pools (one slot per two grid rows, tile/58), seeded by
   // LoadBattleSetupTabDataByIndex from g_anFortStrengthPointsByFortLevel; consumed by
   // the mine action, gates passability in slot 0x0a.
-  int fortStrengthPoints54[8]; // +0x54
-  // roundCounter74: current battle round; battleOutcome44 is only decided once a side
-  // has no live units and roundCounter74 < 0x23 (35).
-  int roundCounter74; // +0x74
+  int fortStrengthPoints[8]; // +0x54
+  // roundCounter: current battle round; battleOutcome44 is only decided once a side
+  // has no live units and roundCounter < 0x23 (35).
+  int roundCounter; // +0x74
 
   TTacticalBattle();
 
@@ -216,15 +216,15 @@ public:
   void ConsumeFortStrengthPointsAndInvalidateIfDepleted(TacticalTileIndex tileIndex,
                                                         int consumeAmount); // 0x5a3c20
   void EvaluateTacticalSideStateAndShowBattleSummaryDialog();               // 0x5a2750
-  // Queues the 0x232a end-of-action turn event (news a TCommand and clears pendingEndOfActionFlag48).
+  // Queues the 0x232a end-of-action turn event (news a TCommand and clears pendingEndOfActionFlag).
   // 0x5a0d60, __thiscall.
   void FinishTacticalActionAndPostNextMoveCommand();
-  // Advances the turn cursor to the next live unit in recordList20's turn order,
-  // skipping destroyed (state1c == 3) records; on wraparound bumps roundCounter74 and
+  // Advances the turn cursor to the next live unit in recordList's turn order,
+  // skipping destroyed (state1c == 3) records; on wraparound bumps roundCounter and
   // ends the battle once it reaches 35 rounds (EvaluateTacticalSideStateAndShowBattle-
   // SummaryDialog + FinishTacticalActionAndPostNextMoveCommand). Selects the found unit and either
   // runs its morale-broken turn step, its sap/mine tile-state advance (category 8 with
-  // a pending sapTargetTileIndex40), or the current side's AdvanceTacticalTurnPulse.
+  // a pending sapTargetTileIndex), or the current side's AdvanceTacticalTurnPulse.
   // Called from TNextMoveCommand::DoIt (0x5a6620) when the battle isn't yet decided.
   // 0x5a0ea0, __thiscall, no args.
   void AdvanceToNextTacticalUnitTurnStep();
@@ -258,7 +258,7 @@ public:
   // target (5), adjacent melee attack target (0xa). 0 when nothing applies. 0x5a05a0.
   int ComputeTacticalHoverCursorStateIndex(TacticalTileIndex tileIndex);
   short ResolveTacticalHoverCursorResourceId(TacticalTileIndex tileIndex); // 0x005a0a90
-  // Builds the per-tile distance field into tileIntArray30 for the given side
+  // Builds the per-tile distance field into tileIntArray for the given side
   // (consumed by the AI advance heuristic). 0x5a4460.
   void BuildTacticalDistanceFieldForSide(char ourSideFlag);
   // Whether the tile sits on a fort-wall gun-slot row (5/7/9) at the wall column.
@@ -269,8 +269,8 @@ public:
   unsigned char ApplyGridColumnSelectionGuard(TacticalTileIndex tileIndex);
   // True when there is no fort or a wall section is breached (curated name kept).
   unsigned char IsTacticalSideCategoryCoverageIncompleteOrFlagOff();
-  // True when tileIndex is a fort-wall tile (deployMark8 > 1) whose double-row group
-  // still has a positive fortStrengthPoints54 entry (garrison intact). 0x5a42e0.
+  // True when tileIndex is a fort-wall tile (deployMark > 1) whose double-row group
+  // still has a positive fortStrengthPoints entry (garrison intact). 0x5a42e0.
   bool HasFortWallGarrison(TacticalTileIndex tileIndex);
 };
 

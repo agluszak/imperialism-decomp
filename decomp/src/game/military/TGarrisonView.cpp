@@ -17,7 +17,7 @@ IMPLEMENT_DYNCREATE(TGarrisonView, TMilitaryPageView)
 
 // FUNCTION: IMPERIALISM 0x004a8810
 TGarrisonView::TGarrisonView() : TMilitaryPageView() {
-  selectedTileIndex8C = -1;
+  selectedTileIndex = -1;
 }
 
 // FUNCTION: IMPERIALISM 0x004a8870
@@ -29,11 +29,11 @@ void TGarrisonView::StuffValues(short tileIndex) {
 
   CString unusedTextA;
   CString unusedTextB;
-  selectedTileIndex8C = tileIndex;
+  selectedTileIndex = tileIndex;
 
   TMilitaryUnit* unit = 0;
   if (tileIndex >= 0 && tileIndex < 0x180) {
-    unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain98;
+    unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain;
   }
 
   int lineBounds[2] = {0xec, 0x31};
@@ -41,10 +41,10 @@ void TGarrisonView::StuffValues(short tileIndex) {
     if (unit->unitOrder != kUnitOrderRedeploy) {
       TArmyUnitLine* line = new TArmyUnitLine;
       line->SetLineDataRowAndBounds(0, 0, lineBounds);
-      line->militaryUnit10 = unit;
+      line->militaryUnit = unit;
       AddOrderedEntry(line);
     }
-    unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14);
+    unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation);
   }
 
   AfterStuffValues();
@@ -54,18 +54,18 @@ void TGarrisonView::StuffValues(short tileIndex) {
 void TGarrisonView::Close() {
   enum { kDismissOnCloseOrderState = 0x0e };
 
-  short tileIndex = selectedTileIndex8C;
+  short tileIndex = selectedTileIndex;
   if (tileIndex != -1) {
     unsigned char hasDismissibleOrder = 0;
     TMilitaryUnit* unit = 0;
     if (tileIndex >= 0 && tileIndex < 0x180) {
-      unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain98;
+      unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain;
     }
     while (unit != 0 && hasDismissibleOrder == 0) {
       if (unit->unitOrder == static_cast<UnitOrder>(kDismissOnCloseOrderState)) {
         hasDismissibleOrder = 1;
       }
-      unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14);
+      unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation);
     }
 
     if (hasDismissibleOrder != 0) {
@@ -73,14 +73,14 @@ void TGarrisonView::Close() {
         hasDismissibleOrder = g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x2746, 9, 1, 1);
       }
       if (hasDismissibleOrder != 0) {
-        tileIndex = selectedTileIndex8C;
+        tileIndex = selectedTileIndex;
         unit = 0;
         if (tileIndex >= 0 && tileIndex < 0x180) {
-          unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain98;
+          unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain;
         }
         while (unit != 0) {
           if (unit->unitOrder == static_cast<UnitOrder>(kDismissOnCloseOrderState)) {
-            TMilitaryUnit* nextUnit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14);
+            TMilitaryUnit* nextUnit = static_cast<TMilitaryUnit*>(unit->nextAtLocation);
             CString unitName;
             unitName = unit->name24;
             bool isSecretUnit =
@@ -100,7 +100,7 @@ void TGarrisonView::Close() {
               if (isSecretNation) {
                 activeNation = g_pSimMgr->GetActiveNationId();
                 if (g_apTerrainTypeDescriptorTable[activeNation]->GetCapitolProvince() ==
-                    selectedTileIndex8C) {
+                    selectedTileIndex) {
                   g_nationInfoGoldResourceOverride_006a5bac = 0x24d0;
                 }
               }
@@ -109,7 +109,7 @@ void TGarrisonView::Close() {
             unit->Free();
             unit = nextUnit;
           } else {
-            unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14);
+            unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation);
           }
         }
       }

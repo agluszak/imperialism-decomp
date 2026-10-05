@@ -89,7 +89,7 @@ bool CapturePersistentGameState(const RuntimeRun& run, CString& persistentState)
     json_value_free(value);
     return false;
   }
-  // TTerrainStateRecord::markerSlotIndex10 is map-view scratch state. It is not serialized,
+  // TTerrainStateRecord::markerSlotIndex is map-view scratch state. It is not serialized,
   // and TMapDialog resets every slot to -1 when the reloaded strategic map is constructed.
   for (size_t index = 0; index < json_array_get_count(tiles); ++index) {
     JSON_Object* tile = json_array_get_object(tiles, index);
@@ -206,7 +206,7 @@ private:
   bool CreatePersistedNavyState() {
     TGreatPower* player = g_apNationStates[savedNation];
     TCity* city = player != 0 ? player->city : 0;
-    TShipOrder* order = city != 0 ? city->shipOrderSlots190[kFirstNavyShipyardRow] : 0;
+    TShipOrder* order = city != 0 ? city->shipOrderSlots[kFirstNavyShipyardRow] : 0;
     if (order == 0) {
       return false;
     }
@@ -215,12 +215,12 @@ private:
     // retail costs, then use the ordinary SetQuantity/Produce path so the save fixture contains
     // state created by the game rather than a hand-built TShip or TTaskForce.
     const short type = order->resourceTypeIndex;
-    city->cityStockLumberC8 = g_industryActionCostWeightResCode09[type];
+    city->cityStockLumber = g_industryActionCostWeightResCode09[type];
     city->cityStockFabricC6 = g_industryActionCostWeightResCode08[type];
-    city->cityStockArmsD6 = g_industryActionCostWeightResCode10[type];
-    city->cityStockSteelCC = g_industryActionCostWeightResCode0B[type];
-    city->cityStockCoalBC = g_industryActionCostWeightResCode03[type];
-    city->cityStockFuelCE = g_industryActionCostWeightResCode0C[type];
+    city->cityStockArms = g_industryActionCostWeightResCode10[type];
+    city->cityStockSteel = g_industryActionCostWeightResCode0B[type];
+    city->cityStockCoal = g_industryActionCostWeightResCode03[type];
+    city->cityStockFuel = g_industryActionCostWeightResCode0C[type];
     if (!order->SetQuantity(1)) {
       return false;
     }

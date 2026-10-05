@@ -43,7 +43,7 @@ void TIconBar::SetNumIcons(short numIcons, unsigned char refreshNow) {
 // Draws numIcons96 copies of the atlas674 icon frame selected by iconAtlasFrame94 evenly spaced
 // across the bar's inset content rect (BuildInsetContentRect), dividing the content
 // width by (numIcons96+1) ticks and clamping each tick's width to 0x20 (32px). The
-// computed tick width is cached in iconSpacing98 for TIconSlider's thumb-position
+// computed tick width is cached in iconSpacing for TIconSlider's thumb-position
 // helpers.
 // FUNCTION: IMPERIALISM 0x00506150
 void TIconBar::Draw(RECT* rectBuffer) {
@@ -55,7 +55,7 @@ void TIconBar::Draw(RECT* rectBuffer) {
   if (slotWidth > 0x20) {
     slotWidth = 0x20;
   }
-  iconSpacing98 = slotWidth;
+  iconSpacing = slotWidth;
 
   RECT srcRect = {iconAtlasFrame94 * 0x20, 0, iconAtlasFrame94 * 0x20 + 0x20, 0x18};
   RECT dstRect = {contentRect.left, contentRect.top, contentRect.left + 0x20,

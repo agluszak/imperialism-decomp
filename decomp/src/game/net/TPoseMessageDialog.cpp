@@ -9,7 +9,7 @@
 
 // FUNCTION: IMPERIALISM 0x0054aff0
 void TPoseMessageDialog::DoIt() {
-  g_pGameFlowState->RefreshPoseMessageDialogNationSelectionControls(kickedByNationSlot18);
+  g_pGameFlowState->RefreshPoseMessageDialogNationSelectionControls(kickedByNationSlot);
 }
 
 // FUNCTION: IMPERIALISM 0x0054b040
@@ -20,7 +20,7 @@ IMPLEMENT_DYNCREATE(TPoseMessageDialog, TCommand)
 // FUNCTION: IMPERIALISM 0x0054b0f0
 void __cdecl QueuePoseMessageDialogForNationSlot(int nationSlot) {
   TPoseMessageDialog* command = new TPoseMessageDialog();
-  command->kickedByNationSlot18 = nationSlot;
+  command->kickedByNationSlot = nationSlot;
   command->ICommand(kSessionTagPose, g_pAmbitApplication, 0, 0, 0); // 'pose'
   g_pAmbitApplication->DispatchUiSelectionToHandler(command);
 }

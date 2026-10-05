@@ -15,7 +15,7 @@ CSubViewIterator::CSubViewIterator(const TView* owner, char forward) {
   // position00 is likewise left uninitialised until FirstSubView().
   ownerView04 = owner;
   direction08 = forward;
-  identTag0c = kControlTagSpSpSpSp;
+  identTag = kControlTagSpSpSpSp;
   currentChild10 = nullptr;
 }
 
@@ -25,13 +25,13 @@ CSubViewIterator::CSubViewIterator(const TView* owner) {
   // uninitialised until FirstSubView(), matching the original (which never writes +0 here).
   ownerView04 = owner;
   direction08 = 1;
-  identTag0c = kControlTagSpSpSpSp;
+  identTag = kControlTagSpSpSpSp;
   currentChild10 = nullptr;
 }
 
 // FUNCTION: IMPERIALISM 0x00491a00
 TView* CSubViewIterator::FirstSubView() {
-  TViewChildList* list = ownerView04->childList44;
+  TViewChildList* list = ownerView04->childList;
   if (list == nullptr) {
     position00 = nullptr;
   } else {
@@ -51,9 +51,9 @@ TView* CSubViewIterator::NextSubView() {
     currentChild10 = nullptr;
     return currentChild10;
   }
-  // GetNext/GetPrev only touch the node, not the list object; the owner's childList44 is
+  // GetNext/GetPrev only touch the node, not the list object; the owner's childList is
   // named only to satisfy the member-call form and is optimised away.
-  TViewChildList* list = ownerView04->childList44;
+  TViewChildList* list = ownerView04->childList;
   currentChild10 = (direction08 != 0) ? list->GetNext(position00) : list->GetPrev(position00);
   return currentChild10;
 }

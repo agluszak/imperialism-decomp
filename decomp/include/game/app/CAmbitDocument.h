@@ -30,7 +30,7 @@ public:
 
   afx_msg void OnCommand8003(); // 0x00479940, command 0x8003
 
-  TAmbitFileBasedDocument* fileBasedDocument50; // +0x50 (4-byte T-tree document adapter)
+  TAmbitFileBasedDocument* fileBasedDocument; // +0x50 (4-byte T-tree document adapter)
 
   DECLARE_MESSAGE_MAP()
 };

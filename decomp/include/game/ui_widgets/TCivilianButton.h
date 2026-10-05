@@ -10,9 +10,9 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x666da8
 class TCivilianButton : public TRadioPictureButton {
 public:
-  short mappedSelection98;
+  short mappedSelection;
   short reserved9a;
-  TCivUnit* selectedCivilianOrder9c;
+  TCivUnit* selectedCivilianOrder;
 
   TCivilianButton();
   virtual ~TCivilianButton() override;

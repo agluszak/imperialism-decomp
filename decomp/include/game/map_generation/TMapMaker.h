@@ -72,7 +72,7 @@ public:
   virtual void EraseZones(long coarseIndex);
   // Retained VC5 copy of the class-index purge inlined inside
   // RunMapGenerationAttempt (clears regionClassGrid10 cells and
-  // groupMemberLists1a8 entries equal to classIndex).
+  // groupMemberLists entries equal to classIndex).
   void ClearRegionClassIndexReferences(int classIndex) {
     signed char* regionClassGridFlat = &regionClassGrid10[0][0];
     for (int cell = 0; cell < 15 * 27; ++cell) {
@@ -82,8 +82,8 @@ public:
     }
     for (int group = 0; group < 7; ++group) {
       for (int member = 0; member < 3; ++member) {
-        if (groupMemberLists1a8[group][member] == classIndex) {
-          groupMemberLists1a8[group][member] = -1;
+        if (groupMemberLists[group][member] == classIndex) {
+          groupMemberLists[group][member] = -1;
         }
       }
     }
@@ -143,11 +143,11 @@ public:
 
   // Give every still-unclaimed border-segment side its own region id: walk the
   // region-border table and, for each side whose carried attribute is still -1, take the
-  // next ordinal from cityRegionCount2a4 and flood it along that side's chain. 0x0052b820.
+  // next ordinal from cityRegionCount and flood it along that side's chain. 0x0052b820.
   void AssignRegionIdsToUnclaimedBorderSegmentSides();
 
   // Compacts city-region ids into a contiguous range, propagating labels across same-region
-  // hex neighbours; writes tile[4] = newId + 0x17 and updates cityRegionCount2a4. 0x0052d1f0.
+  // hex neighbours; writes tile[4] = newId + 0x17 and updates cityRegionCount. 0x0052d1f0.
   void ReindexContiguousCityRegionIds();
 
   // Seeds city regions on a lattice with LCG jitter then floods ids to adjacent city tiles.
@@ -197,7 +197,7 @@ public:
   // Compact the city-region ids in place: walk every grid record, map each distinct
   // region class (record[4] - 0x17) to the next free ordinal through
   // g_cityRegionIdRemapTable_006a3498, write the remapped id back, and leave the final
-  // ordinal count in cityRegionCount2a4. 0x0052a0a0, __thiscall.
+  // ordinal count in cityRegionCount. 0x0052a0a0, __thiscall.
   void CompactCityRegionIds();
 
   // For each active city region, find the first entry still carrying its negative
@@ -243,19 +243,19 @@ public:
   char pad_1a5[0x1a8 - 0x1a5]; // +0x1a5
   // +0x1a8 per-class-index union-find group-membership lists: up to 3 member class
   // indices per group id (index 0..6 = major-nation groups), -1 terminated. Read/written
-  // alongside cityRegionNextId1fc/cityRegionIds200 by the region-merge slots
+  // alongside cityRegionNextId1fc/cityRegionIds by the region-merge slots
   // (TryMergeRegionGroupWithNeighborsRestrictedToMajors/TryMergeRegionGroupWithNeighbors,
   // 0x527300/0x5274d0) and reset here by RunMapGenerationAttempt.
-  int groupMemberLists1a8[7][3];
+  int groupMemberLists[7][3];
   // +0x1fc next city-region id + the 0x17-entry id table the driver backfills
   // (-1 slots get ++cityRegionNextId1fc).
   int cityRegionNextId1fc;
-  int cityRegionIds200[0x17];
+  int cityRegionIds[0x17];
   // +0x25c..+0x29c: a 0x40-byte hole with no observed access. RunMapGenerationAttempt's
   // three inits stop exactly at +0x25c (regionClassGrid10 is 0x65 dwords + 1 byte from
-  // +0x10, groupMemberLists1a8 is 7x3 dwords, and cityRegionIds200 is 7 + 16 dwords from
+  // +0x10, groupMemberLists is 7x3 dwords, and cityRegionIds is 7 + 16 dwords from
   // +0x200), a field-xref sweep at every dword offset in the range returns zero
-  // accesses, and no indexed access reaches past cityRegionIds200[0x17]. Kept opaque
+  // accesses, and no indexed access reaches past cityRegionIds[0x17]. Kept opaque
   // rather than overlaid with invented fields.
   char unusedHole25c[0x29c - 0x25c];
   // Reset to -1 by RunMapGenerationAttempt alongside the other per-attempt scratch
@@ -265,7 +265,7 @@ public:
   // +0x2a1 mode byte copied in by the BuildOrLoadGlobalMapStateForSession caller.
   unsigned char modeByte2a1;
   char pad_2a2[2];
-  int cityRegionCount2a4; // +0x2a4 number of active city regions
+  int cityRegionCount; // +0x2a4 number of active city regions
 };
 
 ASSERT_SIZE(TMapMaker, 0x2a8);

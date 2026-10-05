@@ -46,10 +46,10 @@ void __cdecl RegisterUiResourceEntry(unsigned int nameTag, unsigned int controlT
 }
 
 // FUNCTION: IMPERIALISM 0x0041b3a0
-void __cdecl SetUiResourceStateFlags(bool inputGateFlag4c, bool childHitTestFlag4d) {
+void __cdecl SetUiResourceStateFlags(bool inputGateFlag, bool childHitTestFlag) {
   TView* context = g_pUiResourceContext;
-  context->inputGateFlag4c = inputGateFlag4c;
-  context->childHitTestFlag4d = childHitTestFlag4d;
+  context->inputGateFlag = inputGateFlag;
+  context->childHitTestFlag = childHitTestFlag;
 }
 
 // FUNCTION: IMPERIALISM 0x0041b3d0
@@ -76,7 +76,7 @@ void __cdecl SetUiResourceEventNumberAndInsets(int eventNumber, int rectLeft, in
   TControl* context = static_cast<TControl*>(g_pUiResourceContext);
   context->eventNumber60 = eventNumber;
   CRect contentInsets(rectLeft, rectTop, rectRight, rectBottom);
-  context->contentInsets68 = contentInsets;
+  context->contentInsets = contentInsets;
 }
 
 // FUNCTION: IMPERIALISM 0x0041b490
@@ -145,10 +145,10 @@ void __cdecl UiResourceBuildCallback() {}
 void __cdecl SetUiResourceContextFlagsAndMetrics(short nField9C, short nStyleType, bool f70,
                                                  bool f6f, bool f6e, bool f6d, bool f6c, bool f71) {
   TWindow* window = static_cast<TWindow*>(g_pUiResourceContext);
-  window->topmostFlag70 = f70;
+  window->topmostFlag = f70;
   window->resourceFlag6f = f6f;
   window->resourceFlag6e = f6e;
-  window->useCaptionedFrameFlag6d = f6d;
+  window->useCaptionedFrameFlag = f6d;
   window->resourceFlag6c = f6c;
   window->resourceFlag71 = f71;
   window->windowFlags = static_cast<unsigned short>(nField9C);

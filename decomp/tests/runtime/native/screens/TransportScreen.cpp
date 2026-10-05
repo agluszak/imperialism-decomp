@@ -92,7 +92,7 @@ bool TransportScreen::CommodityHelpIsSubstituted(short commodityIndex) const {
   if (commodity == 0) {
     return false;
   }
-  LPCSTR help = static_cast<LPCSTR>(commodity->hoverHelpText58);
+  LPCSTR help = static_cast<LPCSTR>(commodity->hoverHelpText);
   return help != 0 && strstr(help, kWarehouseLabel) != 0 && strstr(help, kNeededLabel) != 0 &&
          strchr(help, '[') == 0;
 }
@@ -128,8 +128,8 @@ bool TransportScreen::CapacityLabelMatchesSplit() const {
 bool TransportScreen::CapacityLabelHasRetailGeometry() const {
   TStaticText* label = CapacityLabel();
   return label != 0 && label->ownerLocalX == kCapacityLabelX &&
-         label->ownerLocalY == kCapacityLabelY && label->frameWidth34 == kCapacityLabelWidth &&
-         label->frameHeight38 == kCapacityLabelHeight;
+         label->ownerLocalY == kCapacityLabelY && label->frameWidth == kCapacityLabelWidth &&
+         label->frameHeight == kCapacityLabelHeight;
 }
 
 TTransportPicture* TransportScreen::CommodityRow(short slot) const {
@@ -187,7 +187,7 @@ RuntimeActionResult TransportScreen::ClickCommodityArrow(short slot, int arrowTa
   event.mouseY = windowPoint.y;
   event.commandCode = 0;
   event.keyFlags = 0;
-  event.mouseButton24 = 0;
+  event.mouseButton = 0;
   CPoint windowOrigin(0, 0); // RUNTIME_COORDINATE_EXPLAINED: origin of the owning window
   if (window->HandleMouseDown(windowPoint, &event, windowOrigin) == 0 ||
       g_McAppMouseCaptureState.capturedControl != arrow) {

@@ -8,10 +8,10 @@ struct CRuntimeClass;
 class TTransportPicture : public TPicture {
 public:
   short gaugeMetricId90;
-  short resourceMetricSlot92;
+  short resourceMetricSlot;
   short splitValue94;
   short splitValue96;
-  short splitLimit98;
+  short splitLimit;
 
   TTransportPicture();
   virtual ~TTransportPicture() override;

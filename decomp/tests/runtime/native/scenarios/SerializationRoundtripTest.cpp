@@ -126,7 +126,7 @@ private:
         {"TTechMgr", g_pTechMgr, true, 0},
         // WriteTo emits terrainStateTable and cityScoreTable as raw blocks, and those
         // records carry live pointers (firstCivilianOrder20 at +0x20 of a 0x24 record,
-        // stationedUnitChain98 in the city record). ReadFrom deliberately nulls them
+        // stationedUnitChain in the city record). ReadFrom deliberately nulls them
         // afterwards, so the second write cannot reproduce the first. That is the
         // original's design; the bytes are still accounted for, which is what matters.
         {"TMapMgr", g_pGlobalMapState, true,

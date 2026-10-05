@@ -53,24 +53,24 @@ public:
   struct TQuickDrawSurfaceContext* fortLevelAtlasSurface6C;  // +0x6c fort bitmap 0xee6+lvl/0xee7
   struct TQuickDrawSurfaceContext* tileScratchSurface70;     // +0x70 one-tile scratch
   struct TQuickDrawSurfaceContext* effectAtlasSurface74;     // +0x74 bitmap 0xeeb effects
-  short viewOriginX78;            // +0x78 horizontal scroll origin (pixels)
-  short scrollableContentWidth7A; // +0x7a total content width (scroll clamp max)
-  unsigned char pad7c[4];         // +0x7c
-  int tileColumnsPerRow80;        // +0x80 = 0x1d (grid stride)
-  int hoveredTileIndex;           // +0x84 currently highlighted tile, -1 when none
-  int tileWidthPx88;              // +0x88 tile width in pixels
-  int tileRowHeightPx8C;          // +0x8c tile row height in pixels
-  int unitSpriteCellWidth90;      // +0x90 sprite-sheet cell width
-  int unitSpriteCellHeight94;     // +0x94 sprite-sheet cell height / facing-row offset
-  bool modalAnimWaitDoneFlag98;   // +0x98 0 during the 0x5a9170 modal wait, then 1
-  unsigned char pad99[3];         // +0x99
-  int moveAnimStepX9C;            // +0x9c (toX-fromX)/3 animation step
-  int moveAnimStepYA0;            // +0xa0 (toY-fromY)/3 animation step
-  int moveAnimUnitOffsetXA4;      // +0xa4 unit x offset in the anim rect; -1 = idle
-  int moveAnimUnitOffsetYA8;      // +0xa8 unit y offset in the anim rect
-  RECT moveAnimSpriteSrcRectAC;   // +0xac sprite-sheet source rect
+  short viewOriginX;            // +0x78 horizontal scroll origin (pixels)
+  short scrollableContentWidth; // +0x7a total content width (scroll clamp max)
+  unsigned char pad7c[4];       // +0x7c
+  int tileColumnsPerRow;        // +0x80 = 0x1d (grid stride)
+  int hoveredTileIndex;         // +0x84 currently highlighted tile, -1 when none
+  int tileWidthPx;              // +0x88 tile width in pixels
+  int tileRowHeightPx;          // +0x8c tile row height in pixels
+  int unitSpriteCellWidth;      // +0x90 sprite-sheet cell width
+  int unitSpriteCellHeight;     // +0x94 sprite-sheet cell height / facing-row offset
+  bool modalAnimWaitDoneFlag;   // +0x98 0 during the 0x5a9170 modal wait, then 1
+  unsigned char pad99[3];       // +0x99
+  int moveAnimStepX;            // +0x9c (toX-fromX)/3 animation step
+  int moveAnimStepY;            // +0xa0 (toY-fromY)/3 animation step
+  int moveAnimUnitOffsetX;      // +0xa4 unit x offset in the anim rect; -1 = idle
+  int moveAnimUnitOffsetY;      // +0xa8 unit y offset in the anim rect
+  RECT moveAnimSpriteSrcRect;   // +0xac sprite-sheet source rect
   struct TQuickDrawSurfaceContext* unitSpriteScratchSurfaceBC; // +0xbc 2x3-cell scratch
-  RECT moveAnimScreenRectC0;                                   // +0xc0 on-screen animation rect
+  RECT moveAnimScreenRect;                                     // +0xc0 on-screen animation rect
   // +0xd0 zeroed by ctor; the only subclass (TTacArmyView, 0x5a9d90) resolves the
   // 'tool' control here and stores it as a TTacticalToolbar*.
   TTacticalToolbar* toolbarD0;

@@ -235,8 +235,8 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
     }
     int i;
     for (i = 0x17; i != 0; --i) {
-      if (cityRegionIds200[0x17 - i] == -1) {
-        cityRegionIds200[0x17 - i] = ++cityRegionNextId1fc;
+      if (cityRegionIds[0x17 - i] == -1) {
+        cityRegionIds[0x17 - i] = ++cityRegionNextId1fc;
       }
     }
 
@@ -720,9 +720,9 @@ void TMapMaker::PickRandomRegionGridCell(unsigned int* outColumn, unsigned int* 
 // FUNCTION: IMPERIALISM 0x00526c20
 void TMapMaker::RunMapGenerationAttempt() {
   memset(regionClassGrid10, -1, sizeof(regionClassGrid10));
-  memset(groupMemberLists1a8, -1, sizeof(groupMemberLists1a8));
+  memset(groupMemberLists, -1, sizeof(groupMemberLists));
   cityRegionNextId1fc = -1;
-  memset(cityRegionIds200, -1, sizeof(cityRegionIds200));
+  memset(cityRegionIds, -1, sizeof(cityRegionIds));
   lastMinorSeedCandidate29c = -1;
 
   signed char* regionClassGridFlat = &regionClassGrid10[0][0];
@@ -733,7 +733,7 @@ void TMapMaker::RunMapGenerationAttempt() {
     }
     int assigned;
     do {
-      cityRegionIds200[classIndex] = -1;
+      cityRegionIds[classIndex] = -1;
       for (int cell = 0; cell < 15 * 27; ++cell) {
         if (regionClassGridFlat[cell] == classIndex) {
           regionClassGridFlat[cell] = -1;
@@ -741,8 +741,8 @@ void TMapMaker::RunMapGenerationAttempt() {
       }
       for (int group = 0; group < 7; ++group) {
         for (int member = 0; member < 3; ++member) {
-          if (groupMemberLists1a8[group][member] == classIndex) {
-            groupMemberLists1a8[group][member] = -1;
+          if (groupMemberLists[group][member] == classIndex) {
+            groupMemberLists[group][member] = -1;
           }
         }
       }
@@ -766,7 +766,7 @@ void TMapMaker::RunMapGenerationAttempt() {
     int parity = (minorClassIndex - 7) >> 2;
     int assigned;
     do {
-      cityRegionIds200[minorClassIndex] = -1;
+      cityRegionIds[minorClassIndex] = -1;
       for (int minorCell = 0; minorCell < 15 * 27; ++minorCell) {
         if (regionClassGridFlat[minorCell] == minorClassIndex) {
           regionClassGridFlat[minorCell] = -1;
@@ -774,8 +774,8 @@ void TMapMaker::RunMapGenerationAttempt() {
       }
       for (int minorGroup = 0; minorGroup < 7; ++minorGroup) {
         for (int minorMember = 0; minorMember < 3; ++minorMember) {
-          if (groupMemberLists1a8[minorGroup][minorMember] == minorClassIndex) {
-            groupMemberLists1a8[minorGroup][minorMember] = -1;
+          if (groupMemberLists[minorGroup][minorMember] == minorClassIndex) {
+            groupMemberLists[minorGroup][minorMember] = -1;
           }
         }
       }
@@ -892,12 +892,12 @@ int TMapMaker::AssignRegionClassToCellAndNeighbors(int cellIndex, int mode, int 
 // neighbor's assigned class: if a neighbor has a different already-assigned class,
 // join the two classes into one group (allocating a new group id, adopting the
 // neighbor's group, or absorbing the neighbor into this class's group -- in any
-// direction, tracking up to 3 member classes per group in groupMemberLists1a8).
+// direction, tracking up to 3 member classes per group in groupMemberLists).
 // Returns false the moment two neighbors' classes already belong to two DIFFERENT
 // established groups (a genuine conflict) or a group's member list is full.
 // FUNCTION: IMPERIALISM 0x005272c0
 void TMapMaker::TranslateZones() {
-  int* zone = cityRegionIds200;
+  int* zone = cityRegionIds;
   int remaining = 0x17;
   do {
     if (*zone == -1) {
@@ -917,36 +917,36 @@ char TMapMaker::TryMergeRegionGroupWithNeighborsRestrictedToMajors(int cellIndex
     if (neighborClass == -1 || neighborClass == classIndex) {
       continue;
     }
-    int myGroupId = cityRegionIds200[classIndex];
-    int neighborGroupId = cityRegionIds200[neighborClass];
+    int myGroupId = cityRegionIds[classIndex];
+    int neighborGroupId = cityRegionIds[neighborClass];
     if (myGroupId == -1) {
       if (neighborGroupId == -1) {
         int newGroupId = ++cityRegionNextId1fc;
-        groupMemberLists1a8[newGroupId][0] = classIndex;
-        groupMemberLists1a8[newGroupId][1] = neighborClass;
-        cityRegionIds200[classIndex] = newGroupId;
-        cityRegionIds200[neighborClass] = newGroupId;
+        groupMemberLists[newGroupId][0] = classIndex;
+        groupMemberLists[newGroupId][1] = neighborClass;
+        cityRegionIds[classIndex] = newGroupId;
+        cityRegionIds[neighborClass] = newGroupId;
       } else {
         int slot = 0;
-        while (slot < 3 && groupMemberLists1a8[neighborGroupId][slot] != -1) {
+        while (slot < 3 && groupMemberLists[neighborGroupId][slot] != -1) {
           ++slot;
         }
         if (slot == 3) {
           return 0;
         }
-        groupMemberLists1a8[neighborGroupId][slot] = classIndex;
-        cityRegionIds200[classIndex] = neighborGroupId;
+        groupMemberLists[neighborGroupId][slot] = classIndex;
+        cityRegionIds[classIndex] = neighborGroupId;
       }
     } else if (neighborGroupId == -1) {
       int slot = 0;
-      while (slot < 3 && groupMemberLists1a8[myGroupId][slot] != -1) {
+      while (slot < 3 && groupMemberLists[myGroupId][slot] != -1) {
         ++slot;
       }
       if (slot == 3) {
         return 0;
       }
-      groupMemberLists1a8[myGroupId][slot] = neighborClass;
-      cityRegionIds200[neighborClass] = myGroupId;
+      groupMemberLists[myGroupId][slot] = neighborClass;
+      cityRegionIds[neighborClass] = myGroupId;
     } else if (myGroupId != neighborGroupId) {
       return 0;
     }
@@ -955,7 +955,7 @@ char TMapMaker::TryMergeRegionGroupWithNeighborsRestrictedToMajors(int cellIndex
 }
 
 // Same union-find neighbor-merge as TryMergeRegionGroupWithNeighborsRestrictedToMajors
-// above, but without the groupMemberLists1a8 bookkeeping: a class with an existing
+// above, but without the groupMemberLists bookkeeping: a class with an existing
 // group can only merge by adopting a neighbor's group (or forming a new one when
 // neither has one yet) -- if this class already has a group and the neighbor doesn't,
 // that's treated as a conflict rather than expanding this class's group.
@@ -968,15 +968,15 @@ char TMapMaker::TryMergeRegionGroupWithNeighbors(int cellIndex, int classIndex) 
     if (neighborClass == -1 || neighborClass == classIndex) {
       continue;
     }
-    int myGroupId = cityRegionIds200[classIndex];
-    int neighborGroupId = cityRegionIds200[neighborClass];
+    int myGroupId = cityRegionIds[classIndex];
+    int neighborGroupId = cityRegionIds[neighborClass];
     if (myGroupId == -1) {
       if (neighborGroupId == -1) {
         int newGroupId = ++cityRegionNextId1fc;
-        cityRegionIds200[classIndex] = newGroupId;
-        cityRegionIds200[neighborClass] = newGroupId;
+        cityRegionIds[classIndex] = newGroupId;
+        cityRegionIds[neighborClass] = newGroupId;
       } else {
-        cityRegionIds200[classIndex] = neighborGroupId;
+        cityRegionIds[classIndex] = neighborGroupId;
       }
     } else if (myGroupId != neighborGroupId) {
       return 0;
@@ -1006,7 +1006,7 @@ void TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords() {
       ++cityRecordIndex;
       cityScoreTable0c[linkedCityRecord].ownerNationCode00 = ownerNation;
       cityScoreTable0c[linkedCityRecord].regionClassA3 =
-          static_cast<signed char>(cityRegionIds200[static_cast<short>(ownerNation)]);
+          static_cast<signed char>(cityRegionIds[static_cast<short>(ownerNation)]);
     }
 
     int coarseRow = coarseIndex / 0x1b;
@@ -2096,12 +2096,12 @@ int TMapMaker::ComputeOwnedTerritoryCentroidTile(int nationCode, char useWrapOff
 // Compact the city-region ids stored in each grid record's owner byte: every distinct
 // region class (record[4] - 0x17) is assigned the next free ordinal via the shared remap
 // table, the record is rewritten with the remapped id, and the number of distinct regions
-// is left in cityRegionCount2a4.
+// is left in cityRegionCount.
 // FUNCTION: IMPERIALISM 0x00529f60
 void TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders(int mode) {
   if (static_cast<unsigned char>(mode) != 0) {
     int i;
-    cityRegionCount2a4 = 0;
+    cityRegionCount = 0;
     for (i = 0; i < 0x100; ++i) {
       g_cityRegionIdRemapTable_006a3498[i] = -1;
     }
@@ -2115,7 +2115,7 @@ void TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders(int mode) {
       }
       if (oldRegionId > -1) {
         if (g_cityRegionIdRemapTable_006a3498[oldRegionId] == -1) {
-          g_cityRegionIdRemapTable_006a3498[oldRegionId] = cityRegionCount2a4++;
+          g_cityRegionIdRemapTable_006a3498[oldRegionId] = cityRegionCount++;
         }
         tile[4] = static_cast<char>(g_cityRegionIdRemapTable_006a3498[oldRegionId] + 0x17);
       }
@@ -2144,7 +2144,7 @@ void TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders(int mode) {
 // Mac oracle: IsSeaTile.
 // FUNCTION: IMPERIALISM 0x0052a0a0
 void TMapMaker::CompactCityRegionIds() {
-  cityRegionCount2a4 = 0;
+  cityRegionCount = 0;
 
   int* remapCursor = g_cityRegionIdRemapTable_006a3498;
   for (int remaining = 0x100; remaining != 0; remaining = remaining - 1) {
@@ -2162,8 +2162,8 @@ void TMapMaker::CompactCityRegionIds() {
     }
     if (-1 < regionClass) {
       if (g_cityRegionIdRemapTable_006a3498[regionClass] == -1) {
-        g_cityRegionIdRemapTable_006a3498[regionClass] = cityRegionCount2a4;
-        cityRegionCount2a4 = cityRegionCount2a4 + 1;
+        g_cityRegionIdRemapTable_006a3498[regionClass] = cityRegionCount;
+        cityRegionCount = cityRegionCount + 1;
       }
       mapTileGrid08[byteOffset + 4] =
           static_cast<char>(g_cityRegionIdRemapTable_006a3498[regionClass]) + '\x17';
@@ -2190,7 +2190,7 @@ void TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation() {
          2;
     p = p + 1;
   } while (i < 0x1950);
-  cityRegionCount2a4 = 0;
+  cityRegionCount = 0;
 
   // Phase 2: scatter region-centre seeds across the lattice, spiralling out to the nearest
   // still-empty water tile.
@@ -2227,8 +2227,8 @@ void TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation() {
               neighbor = col + row * 0x6c;
             }
             if (neighbor != -1 && labels[neighbor] == -1) {
-              labels[neighbor] = static_cast<short>(cityRegionCount2a4);
-              cityRegionCount2a4 = cityRegionCount2a4 + 1;
+              labels[neighbor] = static_cast<short>(cityRegionCount);
+              cityRegionCount = cityRegionCount + 1;
               break;
             }
             radius = radius + 1;
@@ -2348,21 +2348,21 @@ void AppendBorderQuad(int tileIndex, int regionA, int regionB, int sideCode) {
 
 // FUNCTION: IMPERIALISM 0x0052b820
 void TMapMaker::AssignRegionIdsToUnclaimedBorderSegmentSides() {
-  cityRegionCount2a4 = 0;
+  cityRegionCount = 0;
 
   unsigned int index = 0;
   unsigned int count = g_regionBorderLinkTable_006a3900.count;
   if (index < count) {
     do {
       if (g_regionBorderLinkTable_006a3900.At(index)->attr10 == -1) {
-        int regionId = cityRegionCount2a4;
-        cityRegionCount2a4 = regionId + 1;
+        int regionId = cityRegionCount;
+        cityRegionCount = regionId + 1;
         AssignRegionIdAlongBorderSegmentChain(index, '\x01', static_cast<short>(regionId));
         count = g_regionBorderLinkTable_006a3900.count;
       }
       if (g_regionBorderLinkTable_006a3900.At(index)->attr12 == -1) {
-        int regionId = cityRegionCount2a4;
-        cityRegionCount2a4 = regionId + 1;
+        int regionId = cityRegionCount;
+        cityRegionCount = regionId + 1;
         AssignRegionIdAlongBorderSegmentChain(index, '\0', static_cast<short>(regionId));
         count = g_regionBorderLinkTable_006a3900.count;
       }
@@ -2411,7 +2411,7 @@ void TMapMaker::AssignWaterRegionIdsFromOverlayScanlineIntersections() {
         if (leftEdge != rightEdge && seg->y0 != seg->y1 && scanY >= seg->y0 && seg->y1 > scanY) {
           if (seg->x0 != seg->x1) {
             int dx;
-            if (seg->wrap16 == 0) {
+            if (seg->wrap == 0) {
               dx = seg->x1 - seg->x0;
             } else {
               if (spanLo < 0x6c) {
@@ -2751,7 +2751,7 @@ void TMapMaker::ReindexContiguousCityRegionIds() {
   int newCount = 0;
   do {
     // Assign the next compacted id to the first tile carrying each old label value.
-    int remaining = cityRegionCount2a4;
+    int remaining = cityRegionCount;
     int assigned = 0;
     if (remaining > 0) {
       int label = -2;
@@ -2785,7 +2785,7 @@ void TMapMaker::ReindexContiguousCityRegionIds() {
         off = off + 0x24;
         pw = pw + 1;
       } while (off < 0x38f40);
-      cityRegionCount2a4 = newCount;
+      cityRegionCount = newCount;
       return;
     }
 
@@ -2870,7 +2870,7 @@ int TMapMaker::AssignSequentialValuesToRegionPlaceholders(short* tileValues, int
   int regionOrdinal = 0;
   int assignedCount = 0;
 
-  if (0 < cityRegionCount2a4) {
+  if (0 < cityRegionCount) {
     int placeholder = -2;
     do {
       int tileIndex = 0;
@@ -2887,7 +2887,7 @@ int TMapMaker::AssignSequentialValuesToRegionPlaceholders(short* tileValues, int
       } while (tileIndex < 0x1950);
       regionOrdinal = regionOrdinal + 1;
       placeholder = placeholder + -1;
-    } while (regionOrdinal < cityRegionCount2a4);
+    } while (regionOrdinal < cityRegionCount);
   }
 
   return assignedCount;
@@ -2895,18 +2895,18 @@ int TMapMaker::AssignSequentialValuesToRegionPlaceholders(short* tileValues, int
 
 // FUNCTION: IMPERIALISM 0x0052d750
 void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
-  int* tileCounts = new int[cityRegionCount2a4];
+  int* tileCounts = new int[cityRegionCount];
   if (tileCounts == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMapper.cpp", 0x11c5);
   }
-  char* mergedFlags = new char[cityRegionCount2a4];
+  char* mergedFlags = new char[cityRegionCount];
   if (mergedFlags == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMapper.cpp", 0x11c8);
   }
 
-  for (int r = cityRegionCount2a4 - 1; r >= 0; --r) {
+  for (int r = cityRegionCount - 1; r >= 0; --r) {
     tileCounts[r] = 0;
     mergedFlags[r] = 0;
   }
@@ -2920,7 +2920,7 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
 
   // Phase 2: from the last region down, merge each undersized region into its best neighbour and
   // compact ids by swapping the emptied slot with the last active region.
-  int region = cityRegionCount2a4;
+  int region = cityRegionCount;
   while (true) {
     --region;
     if (region < 0) {
@@ -3065,25 +3065,25 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
 
     // Phase 3: if this region ended up empty, compact by swapping in the last active region.
     if (tileCounts[region] == 0) {
-      int last = cityRegionCount2a4 - 1;
-      cityRegionCount2a4 = last;
+      int last = cityRegionCount - 1;
+      cityRegionCount = last;
       tileCounts[region] = tileCounts[last];
-      mergedFlags[region] = mergedFlags[cityRegionCount2a4];
+      mergedFlags[region] = mergedFlags[cityRegionCount];
       for (int off = 0; off < kTileGridBytes; off += kTileStride) {
         if (mapTileGrid08[off] == kStrategicTerrainWater &&
-            TileRegionId(mapTileGrid08, off) == cityRegionCount2a4) {
+            TileRegionId(mapTileGrid08, off) == cityRegionCount) {
           mapTileGrid08[off + 4] = static_cast<char>(regionByte) + kRegionIdBias;
         }
       }
       for (unsigned int li = 0;
            li < static_cast<unsigned int>(g_regionBorderLinkTable_006a3900.Count()); ++li) {
         SeaSegment* link = &g_regionBorderLinkTable_006a3900[li];
-        if (link->BorderRegionA() == cityRegionCount2a4) {
+        if (link->BorderRegionA() == cityRegionCount) {
           link = &g_regionBorderLinkTable_006a3900[li];
           link->BorderRegionA() = static_cast<short>(regionByte);
         }
         link = &g_regionBorderLinkTable_006a3900[li];
-        if (link->BorderRegionB() == cityRegionCount2a4) {
+        if (link->BorderRegionB() == cityRegionCount) {
           link = &g_regionBorderLinkTable_006a3900[li];
           link->BorderRegionB() = static_cast<short>(regionByte);
         }
@@ -3137,7 +3137,7 @@ void TMapMaker::RebuildUMapperRouteRecordsAndActiveMapRects() {
   }
 
   g_pActiveMapOrderContext->InitializeMapActionContextsForNationCountUsingCostField(
-      cityRegionCount2a4);
+      cityRegionCount);
 
   // --- Pass 3: wire mutual primary-neighbour adjacency between each link's two contexts ---
   int k = 0;

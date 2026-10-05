@@ -21,8 +21,8 @@ void ClearTileYieldSources(StrategicTileIndex tileIndex) {
   const ProvinceIndex cityRecordIndex = tile.cityRecordIndex;
   if (cityRecordIndex >= 0 && cityRecordIndex < 0x180 &&
       g_pGlobalMapState->cityScoreTable[cityRecordIndex].cityTileIndex04 == tileIndex) {
-    memset(g_pGlobalMapState->cityScoreTable[cityRecordIndex].resourceDevelopmentCounts82, 0,
-           sizeof(g_pGlobalMapState->cityScoreTable[cityRecordIndex].resourceDevelopmentCounts82));
+    memset(g_pGlobalMapState->cityScoreTable[cityRecordIndex].resourceDevelopmentCounts, 0,
+           sizeof(g_pGlobalMapState->cityScoreTable[cityRecordIndex].resourceDevelopmentCounts));
   }
 }
 
@@ -45,7 +45,7 @@ RuntimeActionResult RunNationResourceYieldRebuild(NativeTransition& transition) 
 RuntimeActionResult RunAiNationResourceYieldRebuildClampsTargets(NativeTransition& transition) {
   const NationSlot nationSlot = 0;
   TGreatPower* nation = g_apNationStates[nationSlot];
-  TTown* town = nation->city->homeTownMarkerB0;
+  TTown* town = nation->city->homeTownMarker;
   const StrategicTileIndex homeTileIndex = town->tileIndex;
 
   short neighbors[6];
@@ -64,7 +64,7 @@ RuntimeActionResult RunAiNationResourceYieldRebuildClampsTargets(NativeTransitio
   town->enabledFlag = 0;
   town->activeFlag = true;
   homeTile.gateFlag = 1;
-  homeTile.developmentClassNibbles0c = 3;
+  homeTile.developmentClassNibbles = 3;
   homeTile.resourceTypeByEdge[0] = static_cast<signed char>(kResourceFish);
   homeTile.resourceTypeByEdge[1] = static_cast<signed char>(kResourceCotton);
 
@@ -98,7 +98,7 @@ RuntimeActionResult RunAiNationResourceYieldRebuildClampsTargets(NativeTransitio
 RuntimeActionResult RunNationResourceYieldRebuildMultipleTowns(NativeTransition& transition) {
   const NationSlot nationSlot = 0;
   TGreatPower* nation = g_apNationStates[nationSlot];
-  TTown* homeTown = nation->city->homeTownMarkerB0;
+  TTown* homeTown = nation->city->homeTownMarker;
 
   homeTown->enabledFlag = 0;
   homeTown->activeFlag = true;

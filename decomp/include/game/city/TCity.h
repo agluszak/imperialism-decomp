@@ -115,12 +115,12 @@ public:
   int ComputeAverageWeightWord1TimesTenFromResourceCounts();
   int ComputeAverageWeightWord0TimesTenFromResourceCounts();
 
-  unsigned char powerPlantUpgradeQueuedFlag04; // +0x04 — BuildPowerPlant queue flag
+  unsigned char powerPlantUpgradeQueuedFlag; // +0x04 — BuildPowerPlant queue flag
   unsigned char pad05;
   short foodSubstitutionCount06;    // +0x06 — workers reassigned after food substitution
   short starvationPopulationLoss08; // +0x08 — population lost during the last Eat pass
   short serializedState0a;
-  short cityPhaseCounter0c;
+  short cityPhaseCounter;
   // +0x0e..+0x4a — cumulative military recruit deltas by MilitaryUnitKind
   // (TUnitOrder specialist path does not bump these in retail; the array is still
   // saved/synced). +0x4a..+0x5c — cumulative civilian recruit deltas by
@@ -135,8 +135,8 @@ public:
   // +0x78 — exponentially decayed item-production activity. TItemOrder::Produce
   // accumulates completed quantities here; EndCityPhase applies old*0.9 + new*10.
   int rollingItemProductionScore78;
-  unsigned char lowProductionFlag7c; // +0x7c — PredictedNeeds
-  unsigned char lowStockFlag7d;      // +0x7d — PredictedNeeds
+  unsigned char lowProductionFlag; // +0x7c — PredictedNeeds
+  unsigned char lowStockFlag;      // +0x7d — PredictedNeeds
   // +0x7e..0xac — per-resource reserved amounts subtracted from the summary
   // (entry 0x13 doubles as the +0xa4 labor reserve in 0x004b44d0).
   short reservedByType7e[kResourceKindCount];
@@ -150,34 +150,34 @@ public:
   // merely coincided between the two classes.
   // The town marker occupying this city's tile -- the city's harvesting agent, not a
   // second city. See TTown.h for the one-city/many-towns relationship.
-  TTown* homeTownMarkerB0; // +0xb0
+  TTown* homeTownMarker; // +0xb0
   // +0xB4 — city power value displayed by TWarehouseView's 'powe' control and
   // snapshotted by the turn-event-0x2c packet.
   short powerAvailableB4;
   // 0xB6..0xE4 — city commodity stock/need counters, commodity order:
   // Cotton..Gold (bitmap ids 700..722 / strings 17077..17099).
-  short cityStockCottonB6;
-  short cityStockWoolB8;
-  short cityStockTimberBA;
-  short cityStockCoalBC;
-  short cityStockIronBE;
-  short cityStockHorsesC0;
-  short cityStockOilC2;
+  short cityStockCotton;
+  short cityStockWool;
+  short cityStockTimber;
+  short cityStockCoal;
+  short cityStockIron;
+  short cityStockHorses;
+  short cityStockOil;
   short cityStockCannedFoodC4;
   short cityStockFabricC6;
-  short cityStockLumberC8;
-  short cityStockPaperCA;
-  short cityStockSteelCC;
-  short cityStockFuelCE;
-  short cityStockClothingD0;
+  short cityStockLumber;
+  short cityStockPaper;
+  short cityStockSteel;
+  short cityStockFuel;
+  short cityStockClothing;
   short cityStockFurnitureD2;
   short cityStockHardwareD4;
-  short cityStockArmsD6;
-  short cityStockGrainD8;
-  short cityStockFruitDA;
-  short cityStockFishDC;
-  short cityStockLivestockDE;
-  short cityStockGemsE0;
+  short cityStockArms;
+  short cityStockGrain;
+  short cityStockFruit;
+  short cityStockFish;
+  short cityStockLivestock;
+  short cityStockGems;
   short cityStockGoldE2;
   // +0xe4..+0x1d8 — city production-order fields (0x3d pointer slots).
   // Band boundaries traced from ICity (0x004b2570):
@@ -187,27 +187,27 @@ public:
   //   0x2b..0x32 TShipOrder (navy orders, LEA [ESI+0x190] loop of 8)
   //   0x33..0x3c trailing TProductionOrder-derived slots, including the power plant
   //              order at 0x34.
-  TProductionOrder* orderSlotsE4[0x19];          // +0xe4..+0x147
-  TUnitOrder* buildOrderSlots148[0x12];          // +0x148..+0x18f
-  TShipOrder* shipOrderSlots190[8];              // +0x190..+0x1af
-  TProductionOrder* trailingOrderSlots1b0[0x0a]; // +0x1b0..+0x1d7
+  TProductionOrder* orderSlots[0x19];         // +0xe4..+0x147
+  TUnitOrder* buildOrderSlots[0x12];          // +0x148..+0x18f
+  TShipOrder* shipOrderSlots[8];              // +0x190..+0x1af
+  TProductionOrder* trailingOrderSlots[0x0a]; // +0x1b0..+0x1d7
   TPopulationMgr*
-      productionSummary1d8; // 0x1D8 — city population / summary (TPopulationMgr vtbl 0x64f9b0)
+      productionSummary; // 0x1D8 — city population / summary (TPopulationMgr vtbl 0x64f9b0)
   // 0x1DC — 16-entry per-city production order table (0x004b4dc0, ctor-cleared).
   short productionOrderTable1dc[0x10];
-  short productionAccum1fc[0x10];         // 0x1FC — ctor-cleared
-  unsigned char productionFlags21c[0x10]; // 0x21C — ctor-cleared
-  short production22c[0x10];              // 0x22C — GetBuildingWindowState outCurrent
-  short production24c[0x10];              // 0x24C — GetBuildingWindowState outAccum
-  short populationGrowthPenaltyTicks26c;  // 0x26C — GrowthRate penalty counter
+  short productionAccum[0x10];         // 0x1FC — ctor-cleared
+  unsigned char productionFlags[0x10]; // 0x21C — ctor-cleared
+  short production22c[0x10];           // 0x22C — GetBuildingWindowState outCurrent
+  short production24c[0x10];           // 0x24C — GetBuildingWindowState outAccum
+  short populationGrowthPenaltyTicks;  // 0x26C — GrowthRate penalty counter
   short pad26e;
-  TTaskList* trackedOrderList270; // 0x270 — released via FreePayloadsAndDestroy
+  TTaskList* trackedOrderList; // 0x270 — released via FreePayloadsAndDestroy
   // 0x274 — TPtrList (vtable 0x649068, recordSize14 4; allocated in
   // ICity 0x4b2dca); released via ReleasePtrList.
   class TPtrList* eventQueue274;
   // +0x278 — per-resource failed-request counters maintained by the interior
   // minister when a production sheet cannot be fully transported.
-  short unmetResourceRetryCount278[kResourceKindCount];
+  short unmetResourceRetryCount[kResourceKindCount];
   // +0x2a6 — one short per resource type. Existing consumers use entries 13..16;
   // ReadFrom/WriteTo serialize and byte-swap all 23 entries as one array.
   short consumedProductionInputByType2a6[kResourceKindCount];
@@ -215,14 +215,14 @@ public:
   TCity(); // 0x004b24b0 ("InitializeCityModel")
 
   short& CityStockByType(int index) {
-    return (&cityStockCottonB6)[index];
+    return (&cityStockCotton)[index];
   }
   // Marker-less accessor: the original inlines this at every call site, so it must
   // be defined in the header to inline across translation units under MSVC500.
   short HomeTownTileId() const {
-    if (homeTownMarkerB0 != 0) {
+    if (homeTownMarker != 0) {
       short tileId;
-      tileId = homeTownMarkerB0->tileIndex;
+      tileId = homeTownMarker->tileIndex;
       return tileId;
     }
     return 1;

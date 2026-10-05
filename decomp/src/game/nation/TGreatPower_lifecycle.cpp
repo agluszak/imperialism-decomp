@@ -126,7 +126,7 @@ IMPLEMENT_DYNCREATE(TGreatPower, TCountry)
 
 // FUNCTION: IMPERIALISM 0x004d89f0
 TGreatPower::TGreatPower()
-    : foreignMinister(0), interiorMinister(0), defenseMinister(0), diplomacyEligibilityA0(0),
+    : foreignMinister(0), interiorMinister(0), defenseMinister(0), diplomacyEligibility(0),
       availableMerchantCapacity(0), merchantCapacity(0), transportCapacity(0),
       reservedTransportCapacity(0), grantTotalCost(0), unfilledTradeOfferCount(0),
       budgetPoolBase(0), budgetPoolDelta(0), turnEventQueue(0), proposalQueue(0), city(0),
@@ -206,7 +206,7 @@ void TGreatPower::IGreatPower(short nationSlotIndex, short humanControlledFlag) 
 
   this->treasuryValue10 = g_anNationStartingTreasuryByLocale[g_pSimMgr->difficultyLevel];
 
-  this->diplomacyEligibilityA0 = (humanControlledFlag == 1) ? 1 : 0;
+  this->diplomacyEligibility = (humanControlledFlag == 1) ? 1 : 0;
 
   TCity* cityModel = new TCity();
   if (cityModel != 0) {
@@ -226,7 +226,7 @@ void TGreatPower::IGreatPower(short nationSlotIndex, short humanControlledFlag) 
   this->proposalQueue = new TPtrList();
   this->proposalQueue->recordSize14 = 4;
 
-  if (this->diplomacyEligibilityA0 != 0) {
+  if (this->diplomacyEligibility != 0) {
     TForeignMinister* foreignMinister = new TForeignMinister();
     foreignMinister->IForeignMinister(this);
     this->foreignMinister = foreignMinister;
@@ -341,7 +341,7 @@ void TGreatPower::Free(void) {
 // FUNCTION: IMPERIALISM 0x004d92e0
 void TGreatPower::ReadFrom(TStream* stream) {
   TCountry::ReadFrom(stream);
-  stream->ReadBytes(&this->diplomacyEligibilityA0, 1);
+  stream->ReadBytes(&this->diplomacyEligibility, 1);
   stream->ReadBytes(&this->availableMerchantCapacity, 2);
   stream->ReadBytes(&this->merchantCapacity, 2);
   stream->ReadBytes(&this->transportCapacity, 2);
@@ -569,7 +569,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
 void TGreatPower::WriteTo(TStream* stream) {
   TCountry::WriteTo(stream);
 
-  stream->WriteBytes(&this->diplomacyEligibilityA0, 1);
+  stream->WriteBytes(&this->diplomacyEligibility, 1);
   stream->WriteBytes(&this->availableMerchantCapacity, 2);
   stream->WriteBytes(&this->merchantCapacity, 2);
   stream->WriteBytes(&this->transportCapacity, 2);
@@ -722,12 +722,12 @@ void TGreatPower::DispatchPendingStatusPrompts(void) {
   if (flags[7] == 0x32) {
     if (this->field8d6[7] == 2) {
       TCity* cityPtr = this->city;
-      cityPtr->cityStockPaperCA = cityPtr->cityStockPaperCA + 10;
+      cityPtr->cityStockPaper = cityPtr->cityStockPaper + 10;
       cityPtr->VerifyStocks();
       g_pViewMgr->QueueTurnStatusPromptSlot3C(7, this->field8d6[7]);
     } else if (this->field8d6[7] == 3) {
       TCity* cityPtr = this->city;
-      cityPtr->cityStockPaperCA = cityPtr->cityStockPaperCA + 10;
+      cityPtr->cityStockPaper = cityPtr->cityStockPaper + 10;
       cityPtr->VerifyStocks();
       g_pViewMgr->QueueTurnStatusPromptSlot3C(7, -1);
     }
@@ -748,7 +748,7 @@ void TGreatPower::DispatchPendingStatusPrompts(void) {
     g_pViewMgr->QueueTurnStatusPromptSlot3C(12, this->field8d6[12]);
   }
   if (flags[0] == 0x32) {
-    g_pViewMgr->QueueTurnStatusPromptSlot3C(0, g_pTechMgr->activeZoneIndex1d4);
+    g_pViewMgr->QueueTurnStatusPromptSlot3C(0, g_pTechMgr->activeZoneIndex);
   }
   if (flags[1] == 0x32) {
     g_pViewMgr->QueueTurnStatusPromptSlot3C(1, this->field8d6[1]);
@@ -866,18 +866,18 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
 
   // Navy primary/secondary order (pending status 0 == '2').
   if (this->pendingActionStatus.byAction[0] == 0x32) {
-    short zoneIndex = g_pTechMgr->activeZoneIndex1d4;
+    short zoneIndex = g_pTechMgr->activeZoneIndex;
     TZone* portZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationSlot);
     TShip* primaryOrder =
         CreateNavyPrimaryOrderNodeAndAssignDisplayName(zoneIndex, portZone, nationSlot, 0);
 
-    ++cityPtr->orderCountByType5c[g_pTechMgr->activeZoneIndex1d4];
+    ++cityPtr->orderCountByType5c[g_pTechMgr->activeZoneIndex];
 
     TAdmiral* secondaryNode = new TAdmiral(nationSlot);
     secondaryNode->AssignToShip(primaryOrder);
 
     this->AnnounceLater(3, 0x2508, 1);
-    this->AnnounceLater(0, g_pTechMgr->activeZoneIndex1d4, 1);
+    this->AnnounceLater(0, g_pTechMgr->activeZoneIndex, 1);
   }
 
   // Civil work order (pending status 2 < '3').
@@ -973,7 +973,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
 
     short nationSlot = static_cast<short>(*nationCursor);
     TCity* cityPtr = this->city;
-    short* relationDeltaPtr = (&cityPtr->cityStockCottonB6) + nationSlot;
+    short* relationDeltaPtr = (&cityPtr->cityStockCotton) + nationSlot;
     short relationDelta = *relationDeltaPtr;
     if (relationDelta > 0) {
       *relationDeltaPtr = 0;

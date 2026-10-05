@@ -35,36 +35,36 @@ IMPLEMENT_DYNCREATE(TTerrainHelpPicture, TPicture)
 void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   TextStyle itemStyle;
   itemStyle.textColor = 0;
-  memset(menuItemIds94, 0, sizeof(menuItemIds94));
+  memset(menuItemIds, 0, sizeof(menuItemIds));
   short count = 0;
 
   // Build the item-id list from the selected tile's record.
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags1c & 1) {
-    menuItemIds94[count++] = 0x11;
+    menuItemIds[count++] = 0x11;
   }
-  menuItemIds94[count++] =
+  menuItemIds[count++] =
       static_cast<short>(g_pGlobalMapState->terrainStateTable[nTileIndex].gateFlag + 1);
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].riverSpriteCode != kRiverSpriteCodeNone) {
-    menuItemIds94[count++] = 0x16;
+    menuItemIds[count++] = 0x16;
   }
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].ownerBorderMask07 != 0) {
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].ownerBorderMask != 0) {
     if (g_pGlobalMapState->terrainStateTable[nTileIndex].GetTerrainKind() !=
         kStrategicTerrainWater) {
-      menuItemIds94[count++] = 0x13;
+      menuItemIds[count++] = 0x13;
     } else {
-      menuItemIds94[count++] = 0x32;
+      menuItemIds[count++] = 0x32;
     }
   }
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].cityBorderMask08 != 0 &&
-      g_pGlobalMapState->terrainStateTable[nTileIndex].cityBorderMask08 !=
-          g_pGlobalMapState->terrainStateTable[nTileIndex].ownerBorderMask07) {
-    menuItemIds94[count++] = 0x12;
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].cityBorderMask != 0 &&
+      g_pGlobalMapState->terrainStateTable[nTileIndex].cityBorderMask !=
+          g_pGlobalMapState->terrainStateTable[nTileIndex].ownerBorderMask) {
+    menuItemIds[count++] = 0x12;
   }
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags1c & 0x14) {
-    menuItemIds94[count++] = 0x14;
+    menuItemIds[count++] = 0x14;
   }
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags1c & 0x20) {
-    menuItemIds94[count++] = 0x1d;
+    menuItemIds[count++] = 0x1d;
   }
 
   if (g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(nTileIndex, 0) != 0 ||
@@ -91,49 +91,49 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
     default:
       break;
     }
-    menuItemIds94[count++] = itemId;
+    menuItemIds[count++] = itemId;
   }
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].secondaryOwnerNationTag18 != -1) {
-    menuItemIds94[count++] = 0x1c;
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].secondaryOwnerNationTag != -1) {
+    menuItemIds[count++] = 0x1c;
   }
   for (CivilianUnitKindStorage civilianUnitKind = 0; civilianUnitKind <= kCivilianUnitDriller;
        ++civilianUnitKind) {
     if (g_pGlobalMapState->HasCivilianUnitKind(nTileIndex, civilianUnitKind)) {
-      menuItemIds94[count++] = static_cast<short>(civilianUnitKind + 0x21);
+      menuItemIds[count++] = static_cast<short>(civilianUnitKind + 0x21);
     }
   }
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].perTileVisitedFlag0f > 0) {
-    menuItemIds94[count++] = 0x2a;
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].perTileVisitedFlag > 0) {
+    menuItemIds[count++] = 0x2a;
   }
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
       kMapTileActionStateBlockadingFleet) {
-    menuItemIds94[count++] = 0x2b;
+    menuItemIds[count++] = 0x2b;
   }
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
       kMapTileActionStateAnchor) {
-    menuItemIds94[count++] = 0x2c;
+    menuItemIds[count++] = 0x2c;
   }
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
       kMapTileActionStateMovingFleet) {
-    menuItemIds94[count++] = 0x2d;
+    menuItemIds[count++] = 0x2d;
   }
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
       kMapTileActionStatePatrollingFleet) {
-    menuItemIds94[count++] = 0x2e;
+    menuItemIds[count++] = 0x2e;
   }
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
       kMapTileActionStateInvadingFleet) {
-    menuItemIds94[count++] = 0x2f;
+    menuItemIds[count++] = 0x2f;
   }
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
       kMapTileActionStateDockedFleet) {
-    menuItemIds94[count++] = 0x30;
+    menuItemIds[count++] = 0x30;
   }
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
           kMapTileActionStateFleetFrameFirst ||
       g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
           kMapTileActionStateFleetFrameLast) {
-    menuItemIds94[count++] = 0x31;
+    menuItemIds[count++] = 0x31;
   }
 
   // Push the list into the 12 'i00a'..'i00l' item panes.
@@ -141,7 +141,7 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   for (short i = 0; i < 12; i++) {
     TStaticText* itemPane = static_cast<TStaticText*>(ResolveControlByTag(kControlTagI00a + i));
     itemPane->InstallTextStyle(itemStyle, 1);
-    short itemId = menuItemIds94[i];
+    short itemId = menuItemIds[i];
     if (itemId != 0) {
       itemPane->SetTextFromStringResource(0x2755, itemId, 1);
       itemPane->Show(1, 0);
@@ -223,7 +223,7 @@ void TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText(int sele
   InitializeUiTextStyleDescriptor(&captionStyle, 0, 0xc, 0x2b67, 1);
 
   TStaticText* captionPane = static_cast<TStaticText*>(ResolveControlByTag(kControlTagItem));
-  captionPane->SetTextFromStringResource(0x2755, menuItemIds94[selectedIndex], 1);
+  captionPane->SetTextFromStringResource(0x2755, menuItemIds[selectedIndex], 1);
   captionPane->Show(1, 1);
   captionPane->ViewEnable(0, 1);
   captionPane->SetTextAlignmentAndMaybeRefresh(1, 0);
@@ -235,7 +235,7 @@ void TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText(int sele
   }
 
   CString detailText;
-  g_pSimMgr->GetString(0x2756, static_cast<short>(menuItemIds94[selectedIndex] - 1), &detailText);
+  g_pSimMgr->GetString(0x2756, static_cast<short>(menuItemIds[selectedIndex] - 1), &detailText);
   infoTextPane90->UpdateTextEntrySharedStringAndMaybeNotify(&detailText, 1);
   infoTextPane90->Show(1, 1);
 }

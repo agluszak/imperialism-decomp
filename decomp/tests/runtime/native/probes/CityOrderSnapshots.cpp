@@ -24,14 +24,14 @@ void UnitOrderSnapshot::CaptureFrom(TUnitOrder* order) {
   treasury = order->ownerCity->ownerNationAc->treasuryValue10;
   TPopulationMgr* population = order->productionSummary;
   strength = population->strength;
-  populationCount = population->populationCount08;
-  populationFloat = population->populationCountFloat0c;
-  baselineLow = population->baselineSlots10->lowSkillCount04;
-  baselineMedium = population->baselineSlots10->mediumSkillCount06;
-  baselineHigh = population->baselineSlots10->highSkillCount08;
-  productionLow = population->productionSlots14->lowSkillCount04;
-  productionMedium = population->productionSlots14->mediumSkillCount06;
-  productionHigh = population->productionSlots14->highSkillCount08;
+  populationCount = population->populationCount;
+  populationFloat = population->populationCountFloat;
+  baselineLow = population->baselineSlots->lowSkillCount04;
+  baselineMedium = population->baselineSlots->mediumSkillCount06;
+  baselineHigh = population->baselineSlots->highSkillCount08;
+  productionLow = population->productionSlots->lowSkillCount04;
+  productionMedium = population->productionSlots->mediumSkillCount06;
+  productionHigh = population->productionSlots->highSkillCount08;
 }
 
 ShipOrderSnapshot::ShipOrderSnapshot()
@@ -51,10 +51,10 @@ TrainingOrderSnapshot::TrainingOrderSnapshot()
 
 void TrainingOrderSnapshot::CaptureFrom(TTrainingOrder* order) {
   quantity = order->quantity;
-  paperStock = order->ownerCity->cityStockPaperCA;
+  paperStock = order->ownerCity->cityStockPaper;
   treasury = order->ownerCity->ownerNationAc->treasuryValue10;
-  baselineLow = order->productionSummary->baselineSlots10->lowSkillCount04;
-  baselineMedium = order->productionSummary->baselineSlots10->mediumSkillCount06;
+  baselineLow = order->productionSummary->baselineSlots->lowSkillCount04;
+  baselineMedium = order->productionSummary->baselineSlots->mediumSkillCount06;
 }
 
 ItemOrderSnapshot::ItemOrderSnapshot()
@@ -74,5 +74,5 @@ void ItemOrderSnapshot::CaptureFrom(TItemOrder* order) {
                           : order->trackingSlots[order->secondaryInputResourceId];
   strength = order->productionSummary->strength;
   reservedWorkforce = order->reservedWorkforce;
-  productionAccum = order->ownerCity->productionAccum1fc[order->productionSlot];
+  productionAccum = order->ownerCity->productionAccum[order->productionSlot];
 }

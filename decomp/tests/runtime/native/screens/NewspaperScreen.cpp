@@ -38,17 +38,17 @@ RuntimeActionResult NewspaperScreen::Close() {
 }
 
 int NewspaperScreen::SummaryPageIndex() const {
-  return newspaper != 0 ? newspaper->summaryPageIndex90 : -1;
+  return newspaper != 0 ? newspaper->summaryPageIndex : -1;
 }
 
 int NewspaperScreen::NonEmptyTextChildCount() const {
-  if (newspaper == 0 || newspaper->childList44 == 0) {
+  if (newspaper == 0 || newspaper->childList == 0) {
     return 0;
   }
   int count = 0;
-  POSITION position = newspaper->childList44->GetHeadPosition();
+  POSITION position = newspaper->childList->GetHeadPosition();
   while (position != 0) {
-    TView* child = newspaper->childList44->GetNext(position);
+    TView* child = newspaper->childList->GetNext(position);
     if (child == 0 || child->IsKindOf(RUNTIME_CLASS(TDeluxeText)) == 0) {
       continue;
     }

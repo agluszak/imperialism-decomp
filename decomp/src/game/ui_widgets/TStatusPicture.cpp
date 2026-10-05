@@ -135,11 +135,11 @@ void TStatusPicture::Draw(RECT* rectBuffer) {
 
   int rowY = 100;
   for (int i = 0; i < 7; ++i, rowY += 0x37) {
-    if (pictureIds_b0[i] == -1) {
+    if (pictureIds[i] == -1) {
       continue;
     }
     CString label;
-    g_apNationStates[pictureIds_b0[i]]->FormatOverlayTerrainLabelText(&label);
+    g_apNationStates[pictureIds[i]]->FormatOverlayTerrainLabelText(&label);
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b6a);
     SetQuickDrawTextOriginWithContextOffset(0x9a, rowY - 8);
     DrawTextWithCachedQuickDrawStyleState(&label);
@@ -150,7 +150,7 @@ void TStatusPicture::Draw(RECT* rectBuffer) {
     SetQuickDrawFillColor(0);
     FillRectWithQuickDrawBrushAndContextOffset(&swatch);
     OffsetRect(&swatch, -1, -1);
-    g_pViewMgr->SetForeColor(static_cast<short>(pictureIds_b0[i]));
+    g_pViewMgr->SetForeColor(static_cast<short>(pictureIds[i]));
     FillRectWithQuickDrawBrushAndContextOffset(&swatch);
   }
 }
@@ -166,7 +166,7 @@ void TStatusPicture::DrawBar(short rowY, short width, short nationSlot) {
 }
 
 // Fills values94[nation] with the per-nation metric selected by comparisonMode90 (and
-// pictureIds_b0[nation] with the nation slot, or -1 when the slot is ineligible), sorts the
+// pictureIds[nation] with the nation slot, or -1 when the slot is ineligible), sorts the
 // seven entries, then rescales them so the largest is at most 400.
 // FUNCTION: IMPERIALISM 0x00594900
 void TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale() {
@@ -196,8 +196,8 @@ void TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale() {
       }
       case 7: {
         TCity* city = (nation == nullptr) ? nullptr : nation->city;
-        TPopulationMgr* stats = city->productionSummary1d8;
-        TLaborPool* units = stats->productionSlots14;
+        TPopulationMgr* stats = city->productionSummary;
+        TLaborPool* units = stats->productionSlots;
         values94[i] =
             static_cast<short>((units->highSkillCount08 * 2 + units->mediumSkillCount06) * 2 +
                                stats->extraAt1e + units->lowSkillCount04)
@@ -213,9 +213,9 @@ void TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale() {
       default:
         break;
       }
-      pictureIds_b0[i] = static_cast<short>(i);
+      pictureIds[i] = static_cast<short>(i);
     } else {
-      pictureIds_b0[i] = -1;
+      pictureIds[i] = -1;
     }
   }
 
@@ -229,7 +229,7 @@ void TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets() {
   // Selection sort: move the highest-value entry with a live id to the front on each pass;
   // empty (-1) ids sink toward the end.
   int* valOuter = values94;
-  short* idOuter = pictureIds_b0;
+  short* idOuter = pictureIds;
   int outer = 1;
   do {
     if (outer < 7) {
@@ -258,7 +258,7 @@ void TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets() {
   } while (outer < 7);
 
   // Push each sorted entry's picture id into its child picture widget.
-  short* idPtr = pictureIds_b0;
+  short* idPtr = pictureIds;
   int index = 0;
   do {
     if (*idPtr != -1) {

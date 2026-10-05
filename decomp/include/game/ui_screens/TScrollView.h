@@ -21,8 +21,8 @@ public:
   // Layout past TView (0x60): allocation size 0x68 (`new` at 0x5d60d5), the slot-0x37
   // builder (0x573ce0) stores the 'scro'-tagged content view at +0x60 and the freshly
   // built TScrollBarView at +0x64.
-  TView* contentView60;        // 0x60 — the scrolled content view
-  TScrollBarView* scrollBar64; // 0x64 — companion scrollbar control
+  TView* contentView;        // 0x60 — the scrolled content view
+  TScrollBarView* scrollBar; // 0x64 — companion scrollbar control
 
   // Inline in the original: callsites (0x5d60ee) expand this to the TView base ctor +
   // vptr store with no field init, so the body must stay empty and in the header.
@@ -36,7 +36,7 @@ public:
   // to min(word88, word8a), and enable/disable the bar by content overflow.
   void SyncBoundedValueAndToggleControlStates();
   // 0x00573f60 — shift the content view's origin by (mode, delta), clamp to the
-  // scrollable range, re-layout the content, and re-derive scrollBar64's word8c
+  // scrollable range, re-layout the content, and re-derive scrollBar's word8c
   // track position from the new offset.
   void ScrollOnce(int direction);
   void ScrollPage(int direction);

@@ -160,8 +160,8 @@ RuntimeActionResult RunSecondTurnSequence(NativeTransition& transition) {
   g_pSimMgr->turnStateCode = kGamePhaseEndTurn;
   g_pSimMgr->preferenceValues[8] = 0;
   for (int techId = 3; techId < 0x1d; ++techId) {
-    g_pTechMgr->perTechUnlockFlag180[techId] = 0;
-    g_pTechMgr->prioritySlots04[techId] = 0;
+    g_pTechMgr->perTechUnlockFlag[techId] = 0;
+    g_pTechMgr->prioritySlots[techId] = 0;
   }
 
   JsonObject operation;
@@ -226,8 +226,8 @@ RuntimeActionResult RunConsecutiveTurnSequence(NativeTransition& transition) {
   g_pSimMgr->turnStateCode = kGamePhaseEndTurn;
   g_pSimMgr->preferenceValues[8] = 0;
   for (int techId = 3; techId < 0x1d; ++techId) {
-    g_pTechMgr->perTechUnlockFlag180[techId] = 0;
-    g_pTechMgr->prioritySlots04[techId] = 0;
+    g_pTechMgr->perTechUnlockFlag[techId] = 0;
+    g_pTechMgr->prioritySlots[techId] = 0;
   }
 
   JsonObject operation;

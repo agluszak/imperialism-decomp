@@ -105,7 +105,7 @@ public:
   }
   NationSlot GetConsortiumMember(int index) const {
     ASSERT(index >= 0 && index < 4);
-    return diplomacySaveFields134[index];
+    return diplomacySaveFields[index];
   }
 
   virtual void DeportCiviliansIn(int provinceId,
@@ -137,7 +137,7 @@ private:
   short diplomacyPolicyGate130;
   short diplomacyPolicyGate132;
   // The four persisted consortium nation slots consumed by IsInConsortiumWith.
-  short diplomacySaveFields134[4]; // 0x134
+  short diplomacySaveFields[4]; // 0x134
 public:
   // Resource-edge counts on this minor's independently controlled tiles. Serialized
   // starting with save format 0x3a and ranked by TInfoPanelView::SetInfoCountry when

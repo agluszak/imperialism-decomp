@@ -20,7 +20,7 @@ TScrollBarView::~TScrollBarView() {}
 void TScrollBarView::RefreshCityDialogScrollableViewportWithQuickDrawContext() {
   ScopedMapQuickDrawContext quickDrawContext(this);
   PrepareForDrawing();
-  RECT rect = {0, word88, frameWidth34, static_cast<int>(word8a) + 0x12};
+  RECT rect = {0, word88, frameWidth, static_cast<int>(word8a) + 0x12};
   Draw(&rect);
 }
 
@@ -34,16 +34,16 @@ void TScrollBarView::InitializeScrollBar(TScrollView* panel, int* offsetLayout, 
   ownerView84 = static_cast<TScrollView*>(ownerContext);
   ownerView84->AssertValid();
   word88 = 0x12;
-  word8a = static_cast<short>(frameHeight38) - 0x24;
+  word8a = static_cast<short>(frameHeight) - 0x24;
   word8c = 0x12;
 
   {
     RECT surfaceRect;
     surfaceRect.left = 0;
     surfaceRect.top = 0;
-    surfaceRect.right = frameWidth34;
-    surfaceRect.bottom = frameHeight38;
-    g_pDisplayMgr->MakeNewGWorld(surfaceContext90, 8, surfaceRect);
+    surfaceRect.right = frameWidth;
+    surfaceRect.bottom = frameHeight;
+    g_pDisplayMgr->MakeNewGWorld(surfaceContext, 8, surfaceRect);
   }
 
   TPictureButton* upButton = new TPictureButton();
@@ -65,7 +65,7 @@ void TScrollBarView::InitializeScrollBar(TScrollView* panel, int* offsetLayout, 
     int buttonOffset[2];
     int buttonSize[2];
     buttonOffset[0] = 3;
-    buttonOffset[1] = frameHeight38 - 0x12;
+    buttonOffset[1] = frameHeight - 0x12;
     buttonSize[0] = 0x12;
     buttonSize[1] = 0x12;
     downButton->IPicture(this, buttonOffset, buttonSize, 5, 5, 0xbbc);
@@ -77,8 +77,8 @@ void TScrollBarView::InitializeScrollBar(TScrollView* panel, int* offsetLayout, 
 
 // FUNCTION: IMPERIALISM 0x005746e0
 void TScrollBarView::Free() {
-  if (surfaceContext90 != 0) {
-    g_pDisplayMgr->RemoveGWorld(surfaceContext90);
+  if (surfaceContext != 0) {
+    g_pDisplayMgr->RemoveGWorld(surfaceContext);
   }
   TView::Free();
 }
@@ -96,10 +96,10 @@ void TScrollBarView::DoPostCreate(int arg) {
   RECT surfaceRect;
   surfaceRect.left = 0;
   surfaceRect.top = 0;
-  surfaceRect.bottom = frameHeight38;
-  word8a = static_cast<short>(frameHeight38) - 0x24;
-  surfaceRect.right = frameWidth34;
-  g_pDisplayMgr->MakeNewGWorld(surfaceContext90, 8, surfaceRect);
+  surfaceRect.bottom = frameHeight;
+  word8a = static_cast<short>(frameHeight) - 0x24;
+  surfaceRect.right = frameWidth;
+  g_pDisplayMgr->MakeNewGWorld(surfaceContext, 8, surfaceRect);
 }
 
 // FUNCTION: IMPERIALISM 0x005747c0
@@ -116,7 +116,7 @@ void TScrollBarView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
 
 // FUNCTION: IMPERIALISM 0x00574830
 void TScrollBarView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
-  RECT thumbRect = {0, word8c, frameWidth34, static_cast<int>(word8c) + 0x12};
+  RECT thumbRect = {0, word8c, frameWidth, static_cast<int>(word8c) + 0x12};
   if (PtInRect(&thumbRect, point)) {
     TControl::DoMouseCommand(point, event, origin);
     return;
@@ -125,7 +125,7 @@ void TScrollBarView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint 
   int y = point.y;
   if (y >= word88 && y < word8c) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58);
-    ownerView84->ScrollRelative(0, static_cast<short>(ownerView84->frameHeight38));
+    ownerView84->ScrollRelative(0, static_cast<short>(ownerView84->frameHeight));
     return;
   }
 
@@ -133,7 +133,7 @@ void TScrollBarView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint 
     return;
   }
   g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58);
-  ownerView84->ScrollRelative(0, -static_cast<short>(ownerView84->frameHeight38));
+  ownerView84->ScrollRelative(0, -static_cast<short>(ownerView84->frameHeight));
 }
 
 // FUNCTION: IMPERIALISM 0x00574970
@@ -145,7 +145,7 @@ void TScrollBarView::Draw(RECT* rectBuffer) {
   RECT srcRect;
   RECT dstRect;
   srcRect.bottom = word8c;
-  srcRect.right = frameWidth34;
+  srcRect.right = frameWidth;
   srcRect.left = 0;
   dstRect.left = 0;
   srcRect.top = 0;
@@ -156,15 +156,15 @@ void TScrollBarView::Draw(RECT* rectBuffer) {
     int h = g_pMacViewMgr->atlas694[5]->blitSurface.surfaceDib->GetAbsoluteHeight();
     OffsetRect(&srcRect, 0, (h - srcRect.top) - srcRect.bottom);
   }
-  if (surfaceContext90->blitSurface.surfaceDib != nullptr) {
-    int h = surfaceContext90->blitSurface.surfaceDib->GetAbsoluteHeight();
+  if (surfaceContext->blitSurface.surfaceDib != nullptr) {
+    int h = surfaceContext->blitSurface.surfaceDib->GetAbsoluteHeight();
     OffsetRect(&dstRect, 0, (h - dstRect.top) - dstRect.bottom);
   }
   BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[5]->GetBlitSurface(),
-                                   surfaceContext90->GetBlitSurface(), &srcRect, &dstRect, 0,
+                                   surfaceContext->GetBlitSurface(), &srcRect, &dstRect, 0,
                                    nullptr);
 
-  srcRect.right = frameWidth34;
+  srcRect.right = frameWidth;
   srcRect.left = 0;
   dstRect.top = word8c;
   srcRect.top = 0x12c;
@@ -176,19 +176,19 @@ void TScrollBarView::Draw(RECT* rectBuffer) {
     int h = g_pMacViewMgr->atlas694[5]->blitSurface.surfaceDib->GetAbsoluteHeight();
     OffsetRect(&srcRect, 0, h - 0x26a);
   }
-  if (surfaceContext90->blitSurface.surfaceDib != nullptr) {
-    int h = surfaceContext90->blitSurface.surfaceDib->GetAbsoluteHeight();
+  if (surfaceContext->blitSurface.surfaceDib != nullptr) {
+    int h = surfaceContext->blitSurface.surfaceDib->GetAbsoluteHeight();
     OffsetRect(&dstRect, 0, (h - dstRect.top) - dstRect.bottom);
   }
   BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[5]->GetBlitSurface(),
-                                   surfaceContext90->GetBlitSurface(), &srcRect, &dstRect, 0,
+                                   surfaceContext->GetBlitSurface(), &srcRect, &dstRect, 0,
                                    nullptr);
 
   dstRect.top = word8c + 0x12;
-  srcRect.top = 299 - static_cast<short>(static_cast<short>(frameHeight38) - word8c - 0x12);
-  srcRect.right = frameWidth34;
+  srcRect.top = 299 - static_cast<short>(static_cast<short>(frameHeight) - word8c - 0x12);
+  srcRect.right = frameWidth;
   srcRect.bottom = 300;
-  dstRect.bottom = frameHeight38;
+  dstRect.bottom = frameHeight;
   srcRect.left = 0;
   dstRect.left = 0;
   dstRect.right = srcRect.right;
@@ -196,16 +196,16 @@ void TScrollBarView::Draw(RECT* rectBuffer) {
     int h = g_pMacViewMgr->atlas694[5]->blitSurface.surfaceDib->GetAbsoluteHeight();
     OffsetRect(&srcRect, 0, (h - srcRect.top) - 300);
   }
-  if (surfaceContext90->blitSurface.surfaceDib != nullptr) {
-    int h = surfaceContext90->blitSurface.surfaceDib->GetAbsoluteHeight();
+  if (surfaceContext->blitSurface.surfaceDib != nullptr) {
+    int h = surfaceContext->blitSurface.surfaceDib->GetAbsoluteHeight();
     OffsetRect(&dstRect, 0, (h - dstRect.top) - dstRect.bottom);
   }
   BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[5]->GetBlitSurface(),
-                                   surfaceContext90->GetBlitSurface(), &srcRect, &dstRect, 0,
+                                   surfaceContext->GetBlitSurface(), &srcRect, &dstRect, 0,
                                    nullptr);
 
   srcRect = *rectBuffer;
-  BlitRectWithOptionalTransparency(surfaceContext90->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(surfaceContext->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                    &srcRect, 0, nullptr);
 }
@@ -236,12 +236,12 @@ void TScrollBarView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pr
   }
 
   int ratio = (word8c - word88) * 1024 / (word8a - word88);
-  TView* content = ownerView84->contentView60;
+  TView* content = ownerView84->contentView;
   if (content == nullptr) {
     return;
   }
   short heightDiff =
-      static_cast<short>(content->frameHeight38) - static_cast<short>(ownerView84->frameHeight38);
+      static_cast<short>(content->frameHeight) - static_cast<short>(ownerView84->frameHeight);
   if (heightDiff <= 0) {
     return;
   }

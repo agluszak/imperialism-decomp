@@ -34,7 +34,7 @@ TShipyardCluster::~TShipyardCluster() {}
 void TShipyardCluster::DoPostCreate(int styleSeed) {
   TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetActiveNationId()];
   TCity* province = nationState == 0 ? 0 : nationState->GetCityState();
-  selectedMetricOrder = province->shipOrderSlots190[0];
+  selectedMetricOrder = province->shipOrderSlots[0];
   selectedMetricValue = 999;
   TAmtBarCluster::DoPostCreate(styleSeed);
   this->SetMoveAmount(0);
@@ -70,7 +70,7 @@ void TShipyardCluster::SetMoveAmount(short amount) {
 
   CPoint moveControlPosition;
   moveControlPosition.x = barControl->ownerLocalX - 2;
-  moveControlPosition.y = barControl->ownerLocalY + barControl->frameHeight38;
+  moveControlPosition.y = barControl->ownerLocalY + barControl->frameHeight;
   moveControl->Locate(moveControlPosition, 1);
   moveControl->QueryBounds(&moveRect);
   OffsetRect(&moveRect, this->ownerLocalX, this->ownerLocalY);

@@ -40,8 +40,8 @@ void TIncludeView::BuildTurnEventFactoryPacket(TView* resourceContext, TView* ma
   nextHandler = mainView;
   ownerLocalX = g_turnEventDialogAnchorPoint.x;
   ownerLocalY = g_turnEventDialogAnchorPoint.y;
-  frameWidth34 = mainView->frameWidth34;
-  frameHeight38 = mainView->frameHeight38;
+  frameWidth = mainView->frameWidth;
+  frameHeight = mainView->frameHeight;
   if (mainView != nullptr) {
     mainView->AttachChildControl(this, 0);
   }
@@ -60,7 +60,7 @@ void TIncludeView::DoPostCreate(int arg) {
     TurnEventId eventCode = DecodeTurnEventCode(turnEventCode60);
     if (ownerContext != nullptr) {
       Locate(g_turnEventDialogAnchorPoint, 0);
-      CPoint ownerSize(ownerContext->frameWidth34, ownerContext->frameHeight38);
+      CPoint ownerSize(ownerContext->frameWidth, ownerContext->frameHeight);
       Resize(ownerSize, 0);
     }
     TView* dialog = g_pTurnEventDialogFactoryRegistry->InvokeDialogFactoryFromPacket(

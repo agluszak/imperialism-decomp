@@ -21,7 +21,7 @@ IMPLEMENT_DYNCREATE(TTransportPicture, TPicture)
 // FUNCTION: IMPERIALISM 0x00591e70
 TTransportPicture::TTransportPicture()
     : TPicture(), gaugeMetricId90(0x3a), splitValue94(0), splitValue96(0),
-      splitLimit98((short)0xffff) {}
+      splitLimit((short)0xffff) {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 
@@ -33,7 +33,7 @@ void TTransportPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
   if (commandId >= 100 && commandId <= 0x65) {
     short nationId = g_pSimMgr->GetActiveNationId();
     TGreatPower* nation = g_apNationStates[nationId];
-    int metricSlot = static_cast<int>(resourceMetricSlot92);
+    int metricSlot = static_cast<int>(resourceMetricSlot);
     short targetAmount;
     short currentAmount;
     if (metricSlot == 0) {
@@ -60,7 +60,7 @@ void TTransportPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
     if (changed) {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
 
-      short selectedMetricSlot = resourceMetricSlot92;
+      short selectedMetricSlot = resourceMetricSlot;
       if (selectedMetricSlot == 0) {
         short firstWeight = g_pTradeMgr->GetPrice(0);
         short secondWeight = g_pTradeMgr->GetPrice(1);
@@ -166,13 +166,13 @@ void TTransportPicture::Refresh() {
   SetClip(savedClip.tempRgn);
   SetQuickDrawFillColor(0);
 
-  if (splitLimit98 >= 0) {
+  if (splitLimit >= 0) {
     RECT limitRect;
     limitRect.left = trackLeft - 1;
     limitRect.top = 0x12;
     limitRect.right = trackLeft + 0x72;
     limitRect.bottom = 0x14;
-    g_pViewMgr->SetForeColor(splitValue94 < splitLimit98 ? 0x33 : 0x34);
+    g_pViewMgr->SetForeColor(splitValue94 < splitLimit ? 0x33 : 0x34);
     ClipRect(&limitRect);
     FillRectWithQuickDrawBrushAndContextOffset(&limitRect);
     SetClip(savedClip.tempRgn);
@@ -189,14 +189,14 @@ void TTransportPicture::Refresh() {
   text->SetTextAndMaybeRefresh(&gaugeText, 1);
 
   // The two money rows caption their allocation in currency rather than units.
-  if (resourceMetricSlot92 == 0x16) {
+  if (resourceMetricSlot == 0x16) {
     TStaticText* value = static_cast<TStaticText*>(ResolveControlByTag(kControlTagValu));
     if (value == 0) {
       FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1a63);
     }
     g_pSimMgr->NumToCurrency(static_cast<int>(splitValue94) * 200, &gaugeText);
     value->SetTextAndMaybeRefresh(&gaugeText, 1);
-  } else if (resourceMetricSlot92 == 0x15) {
+  } else if (resourceMetricSlot == 0x15) {
     TStaticText* value = static_cast<TStaticText*>(ResolveControlByTag(kControlTagValu));
     if (value == 0) {
       FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1a6a);

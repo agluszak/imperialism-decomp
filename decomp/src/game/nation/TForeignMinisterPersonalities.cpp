@@ -34,19 +34,19 @@ static inline short MinShort(short a, short b) {
 static inline void PreparePersonalityTradeBids(TForeignMinister* minister) {
   minister->InitializeTradeStatus();
   TGreatPower* owner = minister->ownerContextAt04;
-  if (minister->diplomacyPhaseCounter18 >= minister->tradeBidRefreshInterval1a ||
+  if (minister->diplomacyPhaseCounter >= minister->tradeBidRefreshInterval ||
       minister->WeNeedMoney() != 0) {
     owner->interiorMinister->PleaseBuildShip(minister->interiorOrderKind1c);
-    minister->diplomacyPhaseCounter18 = 0;
+    minister->diplomacyPhaseCounter = 0;
   }
   minister->SetBuyPriorities();
   if (minister->interiorBidResource10 != -10) {
     short resourceCode = minister->interiorBidResource10;
     owner->SetItemPotentials(resourceCode, -1);
-    minister->purchasePriorityByResource1e[resourceCode] = minister->interiorBidAmount12;
+    minister->purchasePriorityByResource1e[resourceCode] = minister->interiorBidAmount;
   }
   for (int index = 0; index < 4; ++index) {
-    owner->SetItemPotentials(minister->preferredResourceSlots40[index], -1);
+    owner->SetItemPotentials(minister->preferredResourceSlots[index], -1);
   }
 }
 
@@ -86,8 +86,8 @@ IMPLEMENT_DYNCREATE(TTedForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x005311d0
 TTedForeignMinister::TTedForeignMinister() : TForeignMinister() {
-  tradeBidRefreshInterval1a = 4;
-  this->skillIndexC = 5;
+  tradeBidRefreshInterval = 4;
+  this->skillIndex = 5;
 }
 
 // FUNCTION: IMPERIALISM 0x00531290
@@ -95,17 +95,17 @@ void TTedForeignMinister::SetBuyPriorities() {
   if (!HasAdvancedTradeResource(this)) {
     if (ownerContextAt04->GetStockpile(kResourceIron) <
         ownerContextAt04->GetStockpile(kResourceCoal)) {
-      preferredResourceSlots40[0] = 4;
-      preferredResourceSlots40[2] = 3;
+      preferredResourceSlots[0] = 4;
+      preferredResourceSlots[2] = 3;
     } else {
-      preferredResourceSlots40[0] = 3;
-      preferredResourceSlots40[2] = 4;
+      preferredResourceSlots[0] = 3;
+      preferredResourceSlots[2] = 4;
     }
-    preferredResourceSlots40[1] = 2;
+    preferredResourceSlots[1] = 2;
     if (rand() < 0x3ffe) {
-      preferredResourceSlots40[3] = 0;
+      preferredResourceSlots[3] = 0;
     } else {
-      preferredResourceSlots40[3] = 1;
+      preferredResourceSlots[3] = 1;
     }
     TForeignMinister::SetBuyPriorities();
     return;
@@ -113,52 +113,52 @@ void TTedForeignMinister::SetBuyPriorities() {
 
   if (ownerContextAt04->GetStockpile(kResourceIron) <
       ownerContextAt04->GetStockpile(kResourceCoal)) {
-    preferredResourceSlots40[0] = kResourceIron;
+    preferredResourceSlots[0] = kResourceIron;
     if (ownerContextAt04->GetStockpile(kResourceOil) <
         ownerContextAt04->GetStockpile(kResourceCoal)) {
-      preferredResourceSlots40[1] = kResourceOil;
+      preferredResourceSlots[1] = kResourceOil;
       if (ownerContextAt04->GetStockpile(kResourceTimber) <
           ownerContextAt04->GetStockpile(kResourceCoal)) {
-        preferredResourceSlots40[2] = kResourceTimber;
+        preferredResourceSlots[2] = kResourceTimber;
       } else {
-        preferredResourceSlots40[2] = kResourceCoal;
+        preferredResourceSlots[2] = kResourceCoal;
       }
     } else {
-      preferredResourceSlots40[1] = kResourceCoal;
+      preferredResourceSlots[1] = kResourceCoal;
       if (ownerContextAt04->GetStockpile(kResourceOil) >
           ownerContextAt04->GetStockpile(kResourceTimber)) {
-        preferredResourceSlots40[2] = kResourceTimber;
+        preferredResourceSlots[2] = kResourceTimber;
       } else {
-        preferredResourceSlots40[2] = kResourceOil;
+        preferredResourceSlots[2] = kResourceOil;
       }
     }
   } else {
-    preferredResourceSlots40[0] = kResourceCoal;
+    preferredResourceSlots[0] = kResourceCoal;
     if (ownerContextAt04->GetStockpile(kResourceOil) <
         ownerContextAt04->GetStockpile(kResourceIron)) {
-      preferredResourceSlots40[1] = kResourceOil;
+      preferredResourceSlots[1] = kResourceOil;
       if (ownerContextAt04->GetStockpile(kResourceIron) >
           ownerContextAt04->GetStockpile(kResourceTimber)) {
-        preferredResourceSlots40[2] = kResourceTimber;
+        preferredResourceSlots[2] = kResourceTimber;
       } else {
-        preferredResourceSlots40[2] = kResourceIron;
+        preferredResourceSlots[2] = kResourceIron;
       }
     } else {
-      preferredResourceSlots40[1] = kResourceIron;
+      preferredResourceSlots[1] = kResourceIron;
       if (ownerContextAt04->GetStockpile(kResourceOil) >
           ownerContextAt04->GetStockpile(kResourceTimber)) {
-        preferredResourceSlots40[2] = kResourceTimber;
+        preferredResourceSlots[2] = kResourceTimber;
       } else {
-        preferredResourceSlots40[2] = kResourceOil;
+        preferredResourceSlots[2] = kResourceOil;
       }
     }
   }
   if (rand() < 0x3ffe) {
-    preferredResourceSlots40[3] = 0;
+    preferredResourceSlots[3] = 0;
     TForeignMinister::SetBuyPriorities();
     return;
   }
-  preferredResourceSlots40[3] = 1;
+  preferredResourceSlots[3] = 1;
   TForeignMinister::SetBuyPriorities();
 }
 
@@ -274,23 +274,23 @@ IMPLEMENT_DYNCREATE(TBillForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x00531be0
 TBillForeignMinister::TBillForeignMinister() : TForeignMinister() {
-  orderFlag80 = 0;
+  orderFlag = 0;
   field48 = 1;
   interiorOrderKind1c = 1;
-  tradeBidRefreshInterval1a = 4;
-  skillIndexC = 4;
+  tradeBidRefreshInterval = 4;
+  skillIndex = 4;
 }
 
 // FUNCTION: IMPERIALISM 0x00531ca0
 void TBillForeignMinister::ReadFrom(TStream* stream) {
   TForeignMinister::ReadFrom(stream);
-  stream->ReadBytes(&orderFlag80, 1);
+  stream->ReadBytes(&orderFlag, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x00531ce0
 void TBillForeignMinister::WriteTo(TStream* stream) {
   TForeignMinister::WriteTo(stream);
-  stream->WriteBytes(&orderFlag80, 1);
+  stream->WriteBytes(&orderFlag, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x00531d20
@@ -298,28 +298,28 @@ void TBillForeignMinister::SetBuyPriorities() {
   if (HasAdvancedTradeResource(this)) {
     if (ownerContextAt04->GetStockpile(kResourceIron) <
         ownerContextAt04->GetStockpile(kResourceCoal)) {
-      preferredResourceSlots40[0] = 4;
-      preferredResourceSlots40[3] = 3;
+      preferredResourceSlots[0] = 4;
+      preferredResourceSlots[3] = 3;
     } else {
-      preferredResourceSlots40[0] = 3;
-      preferredResourceSlots40[3] = 4;
+      preferredResourceSlots[0] = 3;
+      preferredResourceSlots[3] = 4;
     }
-    preferredResourceSlots40[1] = 2;
-    preferredResourceSlots40[2] = 6;
+    preferredResourceSlots[1] = 2;
+    preferredResourceSlots[2] = 6;
     TForeignMinister::SetBuyPriorities();
     return;
   }
 
   if (ownerContextAt04->GetStockpile(kResourceIron) <
       ownerContextAt04->GetStockpile(kResourceCoal)) {
-    preferredResourceSlots40[0] = 4;
-    preferredResourceSlots40[2] = 3;
+    preferredResourceSlots[0] = 4;
+    preferredResourceSlots[2] = 3;
   } else {
-    preferredResourceSlots40[0] = 3;
-    preferredResourceSlots40[2] = 4;
+    preferredResourceSlots[0] = 3;
+    preferredResourceSlots[2] = 4;
   }
-  preferredResourceSlots40[1] = 2;
-  preferredResourceSlots40[3] = static_cast<short>(0xfff6);
+  preferredResourceSlots[1] = 2;
+  preferredResourceSlots[3] = static_cast<short>(0xfff6);
   TForeignMinister::SetBuyPriorities();
 }
 
@@ -467,12 +467,12 @@ void TBillForeignMinister::DoSecondTurnDiplomacy() {
 void TBillForeignMinister::MakeNewCity(TCity* city) {
   city->orderCountByType5c[1] = 3;
   short nextLevel = static_cast<short>(city->GetBuildingType(2) + 2);
-  city->productionAccum1fc[2] = static_cast<short>(city->productionAccum1fc[2] + nextLevel -
-                                                   city->productionOrderTable1dc[2]);
+  city->productionAccum[2] =
+      static_cast<short>(city->productionAccum[2] + nextLevel - city->productionOrderTable1dc[2]);
   city->productionOrderTable1dc[2] = nextLevel;
   nextLevel = static_cast<short>(city->GetBuildingType(4) + 2);
-  city->productionAccum1fc[4] = static_cast<short>(city->productionAccum1fc[4] + nextLevel -
-                                                   city->productionOrderTable1dc[4]);
+  city->productionAccum[4] =
+      static_cast<short>(city->productionAccum[4] + nextLevel - city->productionOrderTable1dc[4]);
   city->productionOrderTable1dc[4] = nextLevel;
   city->SetOwnerNeedCapA6(static_cast<short>(city->GetOwnerNeedCapA6() + 2));
 }
@@ -484,7 +484,7 @@ IMPLEMENT_DYNCREATE(TDiplomatForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x00532780
 TDiplomatForeignMinister::TDiplomatForeignMinister() : TForeignMinister() {
-  skillIndexC = 3;
+  skillIndex = 3;
 }
 
 // FUNCTION: IMPERIALISM 0x00532840
@@ -510,30 +510,30 @@ void TDiplomatForeignMinister::DoSecondTurnDiplomacy() {}
 
 // FUNCTION: IMPERIALISM 0x005328f0
 void TDiplomatForeignMinister::SetBuyPriorities() {
-  preferredResourceSlots40[0] = 2;
+  preferredResourceSlots[0] = 2;
   if (HasAdvancedTradeResource(this)) {
-    preferredResourceSlots40[3] = rand() % 2 == 0 ? 1 : 0;
+    preferredResourceSlots[3] = rand() % 2 == 0 ? 1 : 0;
     if (ownerContextAt04->GetStockpile(kResourceIron) <
         ownerContextAt04->GetStockpile(kResourceCoal)) {
-      preferredResourceSlots40[1] = 4;
+      preferredResourceSlots[1] = 4;
       if (ownerContextAt04->GetStockpile(kResourceOil) <
           ownerContextAt04->GetStockpile(kResourceCoal)) {
-        preferredResourceSlots40[2] = 6;
+        preferredResourceSlots[2] = 6;
         TForeignMinister::SetBuyPriorities();
         return;
       }
-      preferredResourceSlots40[2] = 3;
+      preferredResourceSlots[2] = 3;
       TForeignMinister::SetBuyPriorities();
       return;
     } else {
-      preferredResourceSlots40[1] = 3;
+      preferredResourceSlots[1] = 3;
       if (ownerContextAt04->GetStockpile(kResourceOil) <
           ownerContextAt04->GetStockpile(kResourceIron)) {
-        preferredResourceSlots40[2] = 6;
+        preferredResourceSlots[2] = 6;
         TForeignMinister::SetBuyPriorities();
         return;
       }
-      preferredResourceSlots40[2] = 4;
+      preferredResourceSlots[2] = 4;
       TForeignMinister::SetBuyPriorities();
       return;
     }
@@ -548,49 +548,49 @@ void TDiplomatForeignMinister::SetBuyPriorities() {
     }
   }
   if (!hasTradeCandidate) {
-    preferredResourceSlots40[1] = 0;
-    preferredResourceSlots40[2] = 1;
+    preferredResourceSlots[1] = 0;
+    preferredResourceSlots[2] = 1;
     if (rand() < 0x3ffe) {
-      preferredResourceSlots40[3] = 3;
+      preferredResourceSlots[3] = 3;
       TForeignMinister::SetBuyPriorities();
       return;
     }
-    preferredResourceSlots40[3] = 4;
+    preferredResourceSlots[3] = 4;
     TForeignMinister::SetBuyPriorities();
     return;
   } else if (((g_pSimMgr->economicTurn / 4) & 1) != 0) {
     if (ownerContextAt04->GetStockpile(kResourceIron) <
         ownerContextAt04->GetStockpile(kResourceCoal)) {
-      preferredResourceSlots40[1] = 4;
-      preferredResourceSlots40[2] = 3;
+      preferredResourceSlots[1] = 4;
+      preferredResourceSlots[2] = 3;
     } else {
-      preferredResourceSlots40[1] = 3;
-      preferredResourceSlots40[2] = 4;
+      preferredResourceSlots[1] = 3;
+      preferredResourceSlots[2] = 4;
     }
     if (g_pTradeMgr->GetPrice(0) > g_pTradeMgr->GetPrice(1)) {
-      preferredResourceSlots40[3] = 0;
+      preferredResourceSlots[3] = 0;
       TForeignMinister::SetBuyPriorities();
       return;
     }
-    preferredResourceSlots40[3] = 1;
+    preferredResourceSlots[3] = 1;
     TForeignMinister::SetBuyPriorities();
     return;
   } else {
     if (ownerContextAt04->GetStockpile(kResourceCotton) <
         ownerContextAt04->GetStockpile(kResourceWool)) {
-      preferredResourceSlots40[1] = 0;
-      preferredResourceSlots40[2] = 1;
+      preferredResourceSlots[1] = 0;
+      preferredResourceSlots[2] = 1;
     } else {
-      preferredResourceSlots40[1] = 1;
-      preferredResourceSlots40[2] = 0;
+      preferredResourceSlots[1] = 1;
+      preferredResourceSlots[2] = 0;
     }
     if (ownerContextAt04->GetStockpile(kResourceIron) <
         ownerContextAt04->GetStockpile(kResourceCoal)) {
-      preferredResourceSlots40[3] = 4;
+      preferredResourceSlots[3] = 4;
       TForeignMinister::SetBuyPriorities();
       return;
     }
-    preferredResourceSlots40[3] = 3;
+    preferredResourceSlots[3] = 3;
     TForeignMinister::SetBuyPriorities();
     return;
   }
@@ -660,14 +660,14 @@ IMPLEMENT_DYNCREATE(TTextileForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x00533110
 TTextileForeignMinister::TTextileForeignMinister() : TForeignMinister() {
-  skillIndexC = 2;
+  skillIndex = 2;
   field48 = 1;
 }
 
 // FUNCTION: IMPERIALISM 0x005331d0
 void TTextileForeignMinister::SetBuyPriorities() {
-  preferredResourceSlots40[0] = 0;
-  preferredResourceSlots40[1] = 1;
+  preferredResourceSlots[0] = 0;
+  preferredResourceSlots[1] = 1;
   TSortByPriceList* priorities = new TSortByPriceList();
   priorities->recordSize14 = sizeof(ResourcePriorityEntry);
   ResourcePriorityEntry entry;
@@ -687,10 +687,10 @@ void TTextileForeignMinister::SetBuyPriorities() {
   }
   ResourcePriorityEntry* first =
       static_cast<ResourcePriorityEntry*>(priorities->GetPtrListEntryByOneBasedIndex(1));
-  preferredResourceSlots40[2] = first->resourceCode;
+  preferredResourceSlots[2] = first->resourceCode;
   ResourcePriorityEntry* second =
       static_cast<ResourcePriorityEntry*>(priorities->GetPtrListEntryByOneBasedIndex(2));
-  preferredResourceSlots40[3] = second->resourceCode;
+  preferredResourceSlots[3] = second->resourceCode;
   priorities->ReleasePtrList();
   TForeignMinister::SetBuyPriorities();
 }
@@ -757,12 +757,12 @@ void TTextileForeignMinister::MakeNewCity(TCity* city) {
   city->orderCountByType5c[2] += 2;
   city->orderCountByType5c[1] += 1;
   short nextLevel = static_cast<short>(city->GetBuildingType(2) + 2);
-  city->productionAccum1fc[2] = static_cast<short>(city->productionAccum1fc[2] + nextLevel -
-                                                   city->productionOrderTable1dc[2]);
+  city->productionAccum[2] =
+      static_cast<short>(city->productionAccum[2] + nextLevel - city->productionOrderTable1dc[2]);
   city->productionOrderTable1dc[2] = nextLevel;
   nextLevel = static_cast<short>(city->GetBuildingType(1) + 1);
-  city->productionAccum1fc[1] = static_cast<short>(city->productionAccum1fc[1] + nextLevel -
-                                                   city->productionOrderTable1dc[1]);
+  city->productionAccum[1] =
+      static_cast<short>(city->productionAccum[1] + nextLevel - city->productionOrderTable1dc[1]);
   city->productionOrderTable1dc[1] = nextLevel;
 }
 
@@ -773,7 +773,7 @@ IMPLEMENT_DYNCREATE(TTraderForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x005338a0
 TTraderForeignMinister::TTraderForeignMinister() : TForeignMinister() {
-  skillIndexC = 1;
+  skillIndex = 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00533960
@@ -799,7 +799,7 @@ void TTraderForeignMinister::SetBuyPriorities() {
   for (int i = 0; i < 4; ++i) {
     ResourcePriorityEntry* entry =
         static_cast<ResourcePriorityEntry*>(priorities->GetPtrListEntryByOneBasedIndex(i + 1));
-    preferredResourceSlots40[i] = entry->resourceCode;
+    preferredResourceSlots[i] = entry->resourceCode;
   }
   priorities->ReleasePtrList();
   TForeignMinister::SetBuyPriorities();
@@ -889,29 +889,29 @@ IMPLEMENT_DYNCREATE(TArmsForeignMinister, TMinister)
 // FUNCTION: IMPERIALISM 0x00534010
 TArmsForeignMinister::TArmsForeignMinister() : TForeignMinister() {
   field48 = 1;
-  tradeBidRefreshInterval1a = 4;
+  tradeBidRefreshInterval = 4;
   interiorOrderKind1c = 1;
-  skillIndexC = 0;
+  skillIndex = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005340d0
 void TArmsForeignMinister::SetBuyPriorities() {
   if (HasAdvancedTradeResource(this)) {
-    preferredResourceSlots40[0] = 6;
-    preferredResourceSlots40[1] = 2;
-    preferredResourceSlots40[2] = 3;
-    preferredResourceSlots40[3] = 4;
+    preferredResourceSlots[0] = 6;
+    preferredResourceSlots[1] = 2;
+    preferredResourceSlots[2] = 3;
+    preferredResourceSlots[3] = 4;
     TForeignMinister::SetBuyPriorities();
   } else {
-    preferredResourceSlots40[0] = 2;
-    preferredResourceSlots40[1] = 3;
-    preferredResourceSlots40[2] = 4;
+    preferredResourceSlots[0] = 2;
+    preferredResourceSlots[1] = 3;
+    preferredResourceSlots[2] = 4;
     if (rand() % 2 != 0) {
-      preferredResourceSlots40[3] = 0;
+      preferredResourceSlots[3] = 0;
       TForeignMinister::SetBuyPriorities();
       return;
     }
-    preferredResourceSlots40[3] = 1;
+    preferredResourceSlots[3] = 1;
     TForeignMinister::SetBuyPriorities();
   }
 }

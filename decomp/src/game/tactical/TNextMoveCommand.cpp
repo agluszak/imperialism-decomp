@@ -22,7 +22,7 @@ void TNextMoveCommand::INextMoveCommand(TTacticalBattle* battle) {
 // FUNCTION: IMPERIALISM 0x005a6620
 void TNextMoveCommand::DoIt() {
   TTacticalBattle* battle = battle18;
-  if (battle != g_pMapContextActionManager->activeBattleView3a4) {
+  if (battle != g_pMapContextActionManager->activeBattleView) {
     return;
   }
 
@@ -32,7 +32,7 @@ void TNextMoveCommand::DoIt() {
     battle->players[1]->ApplyChanges(static_cast<unsigned char>(!sideWonFlag));
     battle->EndBattle(static_cast<unsigned char>(sideWonFlag));
   } else {
-    battle->pendingEndOfActionFlag48 = 1;
+    battle->pendingEndOfActionFlag = 1;
     battle->AdvanceToNextTacticalUnitTurnStep();
   }
 }

@@ -46,7 +46,7 @@ IMPLEMENT_DYNCREATE(TAmbitApplication, TApplication)
 
 // FUNCTION: IMPERIALISM 0x0049ded0
 void TAmbitApplication::IAmbitApplication() {
-  edgeScrollTarget48 = 0;
+  edgeScrollTarget = 0;
   languagePackId50 = theApp.languagePackIdE4;
 
   if (g_pLanguageMgr == nullptr) {
@@ -159,7 +159,7 @@ void TAmbitApplication::WriteTo(TStream* stream) {
 // hook. The edge mask is 8=left, 4=right, 1=top, 2=bottom.
 // FUNCTION: IMPERIALISM 0x0049e320
 void TAmbitApplication::HandleCursor(int x, int y, void* cursorRegion) {
-  if (!InModalState() && edgeScrollTarget48 != nullptr) {
+  if (!InModalState() && edgeScrollTarget != nullptr) {
     short code = g_pViewMgr->currentTurnEventCode;
     if (code == kTurnEventStrategicMap || code == kTurnEventCitySiteSelector ||
         code == kTurnEventTacticalView || code == kTurnEventTacticalStatusRefresh ||
@@ -173,9 +173,9 @@ void TAmbitApplication::HandleCursor(int x, int y, void* cursorRegion) {
 
         if (pt.x > -200 && pt.y > -200) {
           TView* activeDialog = g_pDisplayMgr->activeDialog;
-          int width = activeDialog->frameWidth34;
+          int width = activeDialog->frameWidth;
           if (pt.x < width + 200) {
-            int height = activeDialog->frameHeight38;
+            int height = activeDialog->frameHeight;
             if (pt.y < height + 200) {
               char edgeMask = 0;
               if (pt.x <= 4) {
@@ -192,7 +192,7 @@ void TAmbitApplication::HandleCursor(int x, int y, void* cursorRegion) {
                 int ticks = GetTickCountDiv16();
                 if (g_lastEdgeAutoScrollTick16 > ticks || g_lastEdgeAutoScrollTick16 + 3 < ticks) {
                   g_lastEdgeAutoScrollTick16 = ticks;
-                  edgeScrollTarget48->Scroll(edgeMask);
+                  edgeScrollTarget->Scroll(edgeMask);
                   return;
                 }
               }

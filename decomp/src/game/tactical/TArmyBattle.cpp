@@ -38,23 +38,23 @@ IMPLEMENT_DYNCREATE(TArmyBattle, TTacticalBattle)
 // 0x5a4770 jump island from the TArmyMgr battle-setup site.
 // FUNCTION: IMPERIALISM 0x0059f7f0
 void TArmyBattle::AllocateRecordList() {
-  recordList20 = new TList();
+  recordList = new TList();
 }
 
 // Size the battlefield to the longest-ranged deployed unit: the playable column count is
-// the maximum GetUnitRange() across recordList20 plus a fixed 0xb margin (0 when the list
+// the maximum GetUnitRange() across recordList plus a fixed 0xb margin (0 when the list
 // is empty). The original re-reads the range on the update branch; kept as-is.
 // FUNCTION: IMPERIALISM 0x0059fc40
 void TArmyBattle::ComputeBattlefieldColumnCountFromUnitRanges() {
   int maxRange = 0;
-  CIterator rangeIter(recordList20);
+  CIterator rangeIter(recordList);
   for (TArmyTacUnit* record = static_cast<TArmyTacUnit*>(rangeIter.Reset()); rangeIter.More();
        record = static_cast<TArmyTacUnit*>(rangeIter.Advance())) {
     if (maxRange < record->GetUnitRange()) {
       maxRange = record->GetUnitRange();
     }
   }
-  battlefieldColumnCount34 = maxRange + 0xb;
+  battlefieldColumnCount = maxRange + 0xb;
 }
 
 // FUNCTION: IMPERIALISM 0x005a4790
@@ -64,7 +64,7 @@ void TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8(TArmyStack* 
                                                                     int fortLevel,
                                                                     int battleSiteIndex) {
   // Fixed tactical battle grid: 435 tiles (0x1b3), stride 29 (0x1d).
-  tacticalTileCount3c = 0x1b3;
+  tacticalTileCount = 0x1b3;
   tacticalTileStride40 = 0x1d;
   // AI/watch flags for each side (TGreatPower +0xa0), only when preference slot 0 is
   // set and no multiplayer session mode is active.
@@ -73,9 +73,9 @@ void TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8(TArmyStack* 
   if (g_pSimMgr->preferenceValues[0] != 0) {
     bool sessionModeActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
     if (!sessionModeActive) {
-      ourSideWatchFlag = g_apNationStates[ourStack->categoryFlag8]->diplomacyEligibilityA0;
-      if (enemyStack->categoryFlag8 < 7) {
-        enemySideWatchFlag = g_apNationStates[enemyStack->categoryFlag8]->diplomacyEligibilityA0;
+      ourSideWatchFlag = g_apNationStates[ourStack->categoryFlag]->diplomacyEligibility;
+      if (enemyStack->categoryFlag < 7) {
+        enemySideWatchFlag = g_apNationStates[enemyStack->categoryFlag]->diplomacyEligibility;
       } else {
         enemySideWatchFlag = 0; // explicit redundant store present in the original
       }
@@ -83,9 +83,9 @@ void TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8(TArmyStack* 
   }
 
   TArmyPlayer* ourPlayer = new TArmyPlayer();
-  ourPlayer->IArmyPlayer(ourStack, true, ourSideWatchFlag, ourStack->categoryFlag8);
+  ourPlayer->IArmyPlayer(ourStack, true, ourSideWatchFlag, ourStack->categoryFlag);
   TArmyPlayer* enemyPlayer = new TArmyPlayer();
-  enemyPlayer->IArmyPlayer(enemyStack, false, enemySideWatchFlag, enemyStack->categoryFlag8);
+  enemyPlayer->IArmyPlayer(enemyStack, false, enemySideWatchFlag, enemyStack->categoryFlag);
   InitTacticalBattle(ourPlayer, enemyPlayer);
 
   battleSiteIndex38 = battleSiteIndex;
@@ -112,7 +112,7 @@ void TArmyBattle::ReadFrom(TStream* stream) {
   stream->ReadBytes(&currentSideC, 4);
   stream->ReadBytes(&battleLive10, 4);
   // Per-side stack identity triplets (index into g_apNationStates, owner nation code,
-  // originating tile), written by WriteTo from each player's armyStack28.
+  // originating tile), written by WriteTo from each player's armyStack.
   int ourNationIndex;
   int ourNationCode;
   int ourTileIndex;
@@ -136,7 +136,7 @@ void TArmyBattle::ReadFrom(TStream* stream) {
     record->IArmyTacUnit(sourceUnit);
     stream->ReadBytes(&record->side20, 4);
     stream->ReadBytes(&record->field24, 2);
-    recordList20->AddTail(record);
+    recordList->AddTail(record);
   }
 
   // Re-link the selected/linked unit record by its source unit id.
@@ -144,7 +144,7 @@ void TArmyBattle::ReadFrom(TStream* stream) {
   stream->ReadBytes(&linkedUnitId, 4);
   TArmyTacUnit* linkedRecord = 0;
   if (linkedUnitId != 0) {
-    CIterator linkIter(recordList20);
+    CIterator linkIter(recordList);
     for (TArmyTacUnit* candidate = static_cast<TArmyTacUnit*>(linkIter.Reset()); linkIter.More();
          candidate = static_cast<TArmyTacUnit*>(linkIter.Advance())) {
       int candidateUnitId = candidate != 0 ? candidate->GetUID() : 0;
@@ -170,7 +170,7 @@ void TArmyBattle::ReadFrom(TStream* stream) {
   enemyBattleStack->IArmyStack(static_cast<char>(enemyNationIndex),
                                static_cast<short>(enemyNationCode),
                                static_cast<short>(enemyTileIndex));
-  CIterator recordIter(recordList20);
+  CIterator recordIter(recordList);
   for (TArmyTacUnit* deployRecord = static_cast<TArmyTacUnit*>(recordIter.Reset());
        recordIter.More(); deployRecord = static_cast<TArmyTacUnit*>(recordIter.Advance())) {
     TArmyStack* targetStack;
@@ -193,25 +193,25 @@ void TArmyBattle::WriteTo(TStream* stream) {
 
   TArmyPlayer* ourPlayer = static_cast<TArmyPlayer*>(players[0]);
   ourPlayer->AssertValid();
-  int ourNationIndex = ourPlayer->armyStack28->categoryFlag8;
+  int ourNationIndex = ourPlayer->armyStack->categoryFlag;
   stream->WriteBytes(&ourNationIndex, 4);
-  int ourNationCode = ourPlayer->armyStack28->ownerNationCodeE;
+  int ourNationCode = ourPlayer->armyStack->ownerNationCodeE;
   stream->WriteBytes(&ourNationCode, 4);
-  int ourTileIndex = ourPlayer->armyStack28->tileIndex10;
+  int ourTileIndex = ourPlayer->armyStack->tileIndex10;
   stream->WriteBytes(&ourTileIndex, 4);
 
   TArmyPlayer* enemyPlayer = static_cast<TArmyPlayer*>(players[1]);
   enemyPlayer->AssertValid();
-  int enemyNationIndex = enemyPlayer->armyStack28->categoryFlag8;
+  int enemyNationIndex = enemyPlayer->armyStack->categoryFlag;
   stream->WriteBytes(&enemyNationIndex, 4);
-  int enemyNationCode = enemyPlayer->armyStack28->ownerNationCodeE;
+  int enemyNationCode = enemyPlayer->armyStack->ownerNationCodeE;
   stream->WriteBytes(&enemyNationCode, 4);
-  int enemyTileIndex = enemyPlayer->armyStack28->tileIndex10;
+  int enemyTileIndex = enemyPlayer->armyStack->tileIndex10;
   stream->WriteBytes(&enemyTileIndex, 4);
 
-  unsigned short unitRecordCount = static_cast<unsigned short>(recordList20->GetCount());
+  unsigned short unitRecordCount = static_cast<unsigned short>(recordList->GetCount());
   stream->WriteBytes(&unitRecordCount, sizeof(unitRecordCount));
-  CIterator recordIter(recordList20);
+  CIterator recordIter(recordList);
   for (TArmyTacUnit* record = static_cast<TArmyTacUnit*>(recordIter.Reset()); recordIter.More();
        record = static_cast<TArmyTacUnit*>(recordIter.Advance())) {
     int recordUnitId = record != 0 ? record->GetUID() : 0;
@@ -237,7 +237,7 @@ void TArmyBattle::LoadBattleSetupTabDataByIndex(int compositionClass, int fortLe
   // Battle-setup terrain layout file, 1-based composition class ("data/%03d.tab").
   // Layout is 15 rows x 29 cols + one newline byte per row.
   char nameBuf[64];
-  int byteCount = tacticalTileCount3c + 0xf; // 0x1b3 tiles + 15 row-terminator bytes
+  int byteCount = tacticalTileCount + 0xf; // 0x1b3 tiles + 15 row-terminator bytes
   sprintf(nameBuf, g_szBattleSetupTabPathFormat, compositionClass + 1);
   tabFileName = CString(nameBuf);
 
@@ -247,14 +247,14 @@ void TArmyBattle::LoadBattleSetupTabDataByIndex(int compositionClass, int fortLe
   g_pAssetMgr->ReleaseResourceStreamIfNotNull(stream);
 
   // Parse the character grid into the tile records. Each source row is 0x1d chars +
-  // 1 terminator; the first (0x1d - battlefieldColumnCount34) chars of each row are margin (skipped
-  // without consuming a grid cell), so battlefieldColumnCount34 cells are filled per row and the record
-  // cursor then skips the remaining (0x1d - battlefieldColumnCount34) cells of that grid row.
+  // 1 terminator; the first (0x1d - battlefieldColumnCount) chars of each row are margin (skipped
+  // without consuming a grid cell), so battlefieldColumnCount cells are filled per row and the record
+  // cursor then skips the remaining (0x1d - battlefieldColumnCount) cells of that grid row.
   TacticalTileRecord* record = tileGrid4;
   char* src = tabData;
   for (int rowsLeft = 0xf; rowsLeft != 0; --rowsLeft) {
     for (int col = 0; col < 0x1d; ++col) {
-      if (col < 0x1d - battlefieldColumnCount34) {
+      if (col < 0x1d - battlefieldColumnCount) {
         ++src; // margin char: no grid cell consumed
         continue;
       }
@@ -265,27 +265,27 @@ void TArmyBattle::LoadBattleSetupTabDataByIndex(int compositionClass, int fortLe
       }
       ++src;
       record->occupant4 = 0;
-      record->deployMark8 = 0;
+      record->deployMark = 0;
       record->mineRunStateC = -1;
-      record->trenchMask10 = 0;
+      record->trenchMask = 0;
       ++record;
     }
-    ++src;                                     // skip the row terminator byte
-    record += 0x1d - battlefieldColumnCount34; // skip the grid cells this row didn't cover
+    ++src;                                   // skip the row terminator byte
+    record += 0x1d - battlefieldColumnCount; // skip the grid cells this row didn't cover
   }
 
   delete[] tabData;
 
   if (fortLevel != 0) {
-    // Mark the fort column (tile battlefieldColumnCount34 - 6, then every row below at stride 0x1d)
-    // with the fort level in deployMark8.
-    for (int tile = battlefieldColumnCount34 - 6; tile < 0x1b3; tile += 0x1d) {
-      tileGrid4[tile].deployMark8 = fortLevel;
+    // Mark the fort column (tile battlefieldColumnCount - 6, then every row below at stride 0x1d)
+    // with the fort level in deployMark.
+    for (int tile = battlefieldColumnCount - 6; tile < 0x1b3; tile += 0x1d) {
+      tileGrid4[tile].deployMark = fortLevel;
     }
     // Seed the 8 fort-strength slots from the per-level table (load kept inside the
     // loop, matching the original).
     for (int slot = 0; slot < 8; ++slot) {
-      fortStrengthPoints54[slot] = g_anFortStrengthPointsByFortLevel[fortLevel];
+      fortStrengthPoints[slot] = g_anFortStrengthPointsByFortLevel[fortLevel];
     }
   }
 }
@@ -317,21 +317,21 @@ void TArmyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTileInde
       return;
     }
   } else {
-    if (column > battlefieldColumnCount34 - 3) {
+    if (column > battlefieldColumnCount - 3) {
       return;
     }
-    if (column < battlefieldColumnCount34 - 5) {
+    if (column < battlefieldColumnCount - 5) {
       return;
     }
   }
   HandleTacticalCommandTag_depl(static_cast<TArmyTacUnit*>(unit), tileIndex, false);
   TTacticalPlayer* sidePlayer = (currentSideC == 0) ? players[0] : players[1];
   ApplyTacticalDoneSelectionAndRefreshUi(sidePlayer->SelectNextTacticalUnitForDoneCommand());
-  for (int planeIndex = 0; planeIndex < tacticalTileCount3c; ++planeIndex) {
-    tileMoveCostArray24[planeIndex] = -1;
+  for (int planeIndex = 0; planeIndex < tacticalTileCount; ++planeIndex) {
+    tileMoveCostArray[planeIndex] = -1;
   }
   TTacticalPlayer* readyPlayer = (currentSideC == 0) ? players[0] : players[1];
-  if (readyPlayer->sideReadyFlag10) {
+  if (readyPlayer->sideReadyFlag) {
     HandleTacticalCommandTag_retr(); // side fully deployed -> hand the round over
     return;
   }
@@ -359,6 +359,6 @@ void TArmyBattle::EndBattle(unsigned char sideWonFlag) {
   }
 
   g_pMapContextActionManager->ApplyPostBattleStackOutcomeAndGrowUnitMeters(
-      static_cast<TArmyPlayer*>(players[0])->armyStack28,
-      static_cast<TArmyPlayer*>(players[1])->armyStack28, sideWonFlag, battleSiteIndex38);
+      static_cast<TArmyPlayer*>(players[0])->armyStack,
+      static_cast<TArmyPlayer*>(players[1])->armyStack, sideWonFlag, battleSiteIndex38);
 }

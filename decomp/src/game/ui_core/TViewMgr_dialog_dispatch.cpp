@@ -409,7 +409,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotEC(int mapSelection) {
   node->Free();
 
   TMapUberPicture* mapView = mapUberPictureF0;
-  static_cast<TArmyToolbar*>(mapView->categoryPages[mapView->activeUnitCategoryIndex96])
+  static_cast<TArmyToolbar*>(mapView->categoryPages[mapView->activeUnitCategoryIndex])
       ->SetProvince(static_cast<short>(mapSelection));
 }
 
@@ -499,7 +499,7 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
   node->Locate(placement, 0);
   node->SetModality(1);
   node->PoseModally();
-  short selectedIndex = roster->selectedTileIndex84;
+  short selectedIndex = roster->selectedTileIndex;
   node->Close();
   node->Free();
 
@@ -569,7 +569,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
   if (firstChoice != 0) {
     choiceCluster->Show(1, 0);
     choiceCluster->frameThemeCode90 = 0x2b6b;
-    choiceCluster->itemInset92 = 2;
+    choiceCluster->itemInset = 2;
 
     TRadioText* first =
         static_cast<TRadioText*>(choiceCluster->ResolveControlByTag(kControlTagOne1));

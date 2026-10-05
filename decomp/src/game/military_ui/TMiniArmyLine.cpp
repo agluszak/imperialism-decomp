@@ -17,18 +17,18 @@ IMPLEMENT_DYNCREATE(TMiniArmyLine, TLineData)
 // FUNCTION: IMPERIALISM 0x004aa920
 void TMiniArmyLine::IMiniArmyLine(short rowArg, short colArg, int* bounds, TMilitaryUnit* item) {
   SetLineDataRowAndBounds(rowArg, colArg, bounds);
-  militaryUnit10 = item;
+  militaryUnit = item;
 }
 
 // FUNCTION: IMPERIALISM 0x004aa960
 void TMiniArmyLine::InstallViews(TView* panel, int* offsetLayout) {
   TMiniArmyView* armyView = new TMiniArmyView;
   armyView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &layoutWidth, 5, 5, 0);
-  armyView->militaryUnit84 = militaryUnit10;
+  armyView->militaryUnit = militaryUnit;
   armyView->eventNumber60 = 0x22;
   SetControlHoverHelpText(CString(g_pMiniCivSharedText_0064cb18), armyView);
 
-  if (militaryUnit10->CanUpgrade()) {
+  if (militaryUnit->CanUpgrade()) {
     int upgradeOffset[2] = {0x73, 0};
     int upgradeSize[2] = {0x13, 0x12};
     TGWorldButton* upgradeButton = new TGWorldButton;
@@ -45,7 +45,7 @@ void TMiniArmyLine::InstallViews(TView* panel, int* offsetLayout) {
     short armsCost;
     short cashCost;
     short fuelCost;
-    militaryUnit10->UpgradeRequirements(candidateSlot, armsCost, cashCost, fuelCost);
+    militaryUnit->UpgradeRequirements(candidateSlot, armsCost, cashCost, fuelCost);
     armsText.Format(g_szDecimalFormat, static_cast<int>(armsCost));
     g_pSimMgr->NumToCurrency(cashCost, &cashText);
     if (fuelCost == 0) {

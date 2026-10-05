@@ -11,7 +11,7 @@ IMPLEMENT_DYNCREATE(TOverlayRadioButton, TRadioPictureButton)
 
 // FUNCTION: IMPERIALISM 0x00453800
 TOverlayRadioButton::TOverlayRadioButton() : TRadioPictureButton() {
-  overlaySurfaceContext98 = 0;
+  overlaySurfaceContext = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00453860
@@ -22,11 +22,11 @@ TOverlayRadioButton::~TOverlayRadioButton() {}
 // FUNCTION: IMPERIALISM 0x004cab10
 void TOverlayRadioButton::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);
-  if (overlaySurfaceContext98 != 0) {
+  if (overlaySurfaceContext != 0) {
     UpdatePaletteIndexWithDefaultFallback(0x10);
-    BlitRectWithOptionalTransparency(overlaySurfaceContext98->GetBlitSurface(),
+    BlitRectWithOptionalTransparency(overlaySurfaceContext->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
-                                     &overlaySrcRect9c, &overlayDstRectAc, 0x24);
+                                     &overlaySrcRect, &overlayDstRect, 0x24);
     SetQuickDrawStrokeColor(0x13);
   }
 }

@@ -42,7 +42,7 @@ IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 // VTABLE: IMPERIALISM 0x0066f9c0
 class TDirectPlaySessionManagerBase {
 public:
-  TDirectPlaySessionManagerBase() : directPlayInterface04(0), directPlayLobby08(0) {}
+  TDirectPlaySessionManagerBase() : directPlayInterface04(0), directPlayLobby(0) {}
   ~TDirectPlaySessionManagerBase();
 
   virtual BOOL OnEnumerateServiceProvider(LPGUID providerGuid, LPSTR providerName,
@@ -69,7 +69,7 @@ public:
   void ResetRuntimeSelectionRecordBuffer(); // 0x00480400
 
   IDirectPlay2* directPlayInterface04;
-  IDirectPlayLobbyA* directPlayLobby08;
+  IDirectPlayLobbyA* directPlayLobby;
   int lastErrorCode0c;
   DPSESSIONDESC2 sessionDescription10;
   int localPlayerId60;
@@ -87,8 +87,8 @@ ASSERT_SIZE(TDirectPlaySessionManagerBase, 0xa8);
 class TWNetSessionManager : public TDirectPlaySessionManagerBase {
 public:
   CString joinGamePlayerNameA8;
-  int joinGamePlayerDataTagAC;
-  TRadioTextCluster* activeProtocolControlB0;
+  int joinGamePlayerDataTag;
+  TRadioTextCluster* activeProtocolControl;
 
   TWNetSessionManager();
   // Non-virtual on purpose: the original derived vtable at 0x66f9f0 has exactly the

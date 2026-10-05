@@ -87,7 +87,7 @@ IMPLEMENT_DYNCREATE(CIncludeView, CView)
 // FUNCTION: IMPERIALISM 0x00482950
 CIncludeView::CIncludeView()
     : CView(), m_activeDialogContext(0), m_pMainPaneDib(0), m_pOffscreenDib(0), m_tickTimerId(0),
-      m_unused70(0), m_capturedControl74(0), m_uiInteractiveFlag90(1) {}
+      m_unused70(0), m_capturedControl(0), m_uiInteractiveFlag(1) {}
 
 // Compiler-emitted bodies of the m_overlayRectQueue CList<IncludeViewOverlayRectRecord,
 // IncludeViewOverlayRectRecord&> instantiation. The original emitted the set twice (one
@@ -345,16 +345,16 @@ void CIncludeView::BeginTracking(CPoint* startPoint, TControl* tracker) {
   if (g_nIncludeViewCaptureAssertGate_006A17B8 == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath_00694D10, 0x16e);
   }
-  m_capturedControl74 = tracker;
+  m_capturedControl = tracker;
   CWnd::FromHandle(::SetCapture(m_hWnd));
 
   // All three points start at the press position; the update phase moves last/current.
-  m_captureStartPoint78 = *startPoint;
-  m_captureLastPoint80 = *startPoint;
-  m_captureCurrentPoint88 = *startPoint;
+  m_captureStartPoint = *startPoint;
+  m_captureLastPoint = *startPoint;
+  m_captureCurrentPoint = *startPoint;
 
-  tracker->TrackMouse(kTrackPhaseBegin, m_captureStartPoint78, m_captureLastPoint80,
-                      m_captureCurrentPoint88, 1);
+  tracker->TrackMouse(kTrackPhaseBegin, m_captureStartPoint, m_captureLastPoint,
+                      m_captureCurrentPoint, 1);
 }
 
 // Install this view as the native host window for the given TView (and its whole
@@ -517,20 +517,20 @@ void CIncludeView::OnInitialUpdate() {
 // set — run the dialog tree's hover selection hit-test.
 // FUNCTION: IMPERIALISM 0x004838b0
 void CIncludeView::OnMouseMove(UINT nFlags, CPoint point) {
-  if (m_uiInteractiveFlag90 == 0) {
+  if (m_uiInteractiveFlag == 0) {
     return;
   }
   g_McAppMouseCaptureState.NotifyCaptureOwnerState1AndMaybeUpdateCoords(nFlags, point.x, point.y);
-  if (m_capturedControl74 != 0) {
+  if (m_capturedControl != 0) {
     if (g_nIncludeViewPointerAssertGate_006A17C4 == 0) {
       TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath_00694D10, 0x2b7);
     }
     CPoint controlRelativePoint(point);
-    m_capturedControl74->WindowToLocal(&controlRelativePoint);
-    m_captureLastPoint80 = m_captureCurrentPoint88;
-    m_captureCurrentPoint88 = controlRelativePoint;
-    m_capturedControl74->TrackMouse(kTrackPhaseUpdate, m_captureStartPoint78, m_captureLastPoint80,
-                                    m_captureCurrentPoint88, 1);
+    m_capturedControl->WindowToLocal(&controlRelativePoint);
+    m_captureLastPoint = m_captureCurrentPoint;
+    m_captureCurrentPoint = controlRelativePoint;
+    m_capturedControl->TrackMouse(kTrackPhaseUpdate, m_captureStartPoint, m_captureLastPoint,
+                                  m_captureCurrentPoint, 1);
   }
   g_pAmbitApplication->HandleCursor(point.x, point.y, 0);
   if (m_activeDialogContext != 0 && GetMcAppUiActiveFlag() != 0) {
@@ -546,13 +546,13 @@ void CIncludeView::OnMouseMove(UINT nFlags, CPoint point) {
 // FUNCTION: IMPERIALISM 0x004839e0
 void CIncludeView::OnLButtonDown(UINT nFlags, CPoint point) {
   (void)nFlags;
-  if (m_uiInteractiveFlag90 != 0 && m_activeDialogContext != 0) {
+  if (m_uiInteractiveFlag != 0 && m_activeDialogContext != 0) {
     TToolboxEvent event;
     event.mouseX = point.x;
     event.mouseY = point.y;
     event.commandCode = 0;
     event.keyFlags = 0;
-    event.mouseButton24 = 0;
+    event.mouseButton = 0;
     m_activeDialogContext->HandleMouseDown(point, &event, CPoint(0, 0));
   }
 }
@@ -562,7 +562,7 @@ void CIncludeView::OnLButtonDown(UINT nFlags, CPoint point) {
 // point pair as the dispatch buffer.
 // FUNCTION: IMPERIALISM 0x00483b00
 void CIncludeView::OnLButtonUp(UINT nFlags, CPoint point) {
-  if (m_uiInteractiveFlag90 != 0) {
+  if (m_uiInteractiveFlag != 0) {
     if (m_activeDialogContext != 0) {
       CPoint pt(point);
       m_activeDialogContext->HandleMouseUp(pt, 0, CPoint(0, 0));
@@ -577,7 +577,7 @@ void CIncludeView::OnLButtonUp(UINT nFlags, CPoint point) {
 void CIncludeView::OnLButtonDblClk(UINT nFlags, CPoint point) {
   (void)nFlags;
   (void)point;
-  if (m_uiInteractiveFlag90 != 0) {
+  if (m_uiInteractiveFlag != 0) {
     Default();
   }
 }
@@ -688,20 +688,20 @@ BOOL CIncludeView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) {
 // FUNCTION: IMPERIALISM 0x00483f10
 void CIncludeView::OnRButtonDown(UINT nFlags, CPoint point) {
   (void)nFlags;
-  if (m_uiInteractiveFlag90 != 0 && m_activeDialogContext != 0) {
+  if (m_uiInteractiveFlag != 0 && m_activeDialogContext != 0) {
     TToolboxEvent event;
     event.mouseX = point.x;
     event.mouseY = point.y;
     event.commandCode = 0;
     event.keyFlags = 0;
-    event.mouseButton24 = 1;
+    event.mouseButton = 1;
     m_activeDialogContext->HandleMouseDown(point, &event, CPoint(0, 0));
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00483ff0
 void CIncludeView::OnRButtonUp(UINT nFlags, CPoint point) {
-  if (m_uiInteractiveFlag90 != 0) {
+  if (m_uiInteractiveFlag != 0) {
     if (m_activeDialogContext != 0) {
       CPoint pt(point);
       m_activeDialogContext->HandleMouseUp(pt, 0, CPoint(0, 0));
@@ -715,15 +715,15 @@ void CIncludeView::OnRButtonUp(UINT nFlags, CPoint point) {
 // global UI-active flag (deliberately 0 while a dialog factory body runs).
 // FUNCTION: IMPERIALISM 0x00484060
 int CIncludeView::GetUiInteractiveFlag90() {
-  return m_uiInteractiveFlag90;
+  return m_uiInteractiveFlag;
 }
 
 // Replace the main-view input gate and return its previous state. Dialog modal loops
 // temporarily clear this gate and restore it only when it had been set on entry.
 // FUNCTION: IMPERIALISM 0x00484080
 int CIncludeView::SetUiInteractiveFlag90(bool interactive) {
-  int previous = m_uiInteractiveFlag90;
-  m_uiInteractiveFlag90 = interactive;
+  int previous = m_uiInteractiveFlag;
+  m_uiInteractiveFlag = interactive;
   return previous;
 }
 
@@ -767,7 +767,7 @@ void CIncludeView::OnParentNotify(UINT message, LPARAM lParam) {
   CPoint point(static_cast<short>(LOWORD(lParam)), static_cast<short>(HIWORD(lParam)));
   if (static_cast<unsigned short>(message) == WM_LBUTTONDOWN) {
     OnLButtonDown(0, point);
-    if (m_uiInteractiveFlag90 != 0) {
+    if (m_uiInteractiveFlag != 0) {
       if (m_activeDialogContext != 0) {
         CPoint pt(point);
         m_activeDialogContext->HandleMouseUp(pt, 0, CPoint(0, 0));

@@ -35,8 +35,8 @@ public:
   // 25%-chance roll gated on either of the paired trigger slots [0]/[1], indices 2..6
   // forwarded directly when nonzero), then picks a (resultCode, magnitude) pair from
   // the city's population-vs-stock shortage state (TPopulationMgr's
-  // PretendToEat substitution/starvation pair, else cityStockSteelCC/cityStockLumberC8/
-  // cityStockCannedFoodC4 vs TPopulationMgr::populationCount08) and reports it via
+  // PretendToEat substitution/starvation pair, else cityStockSteel/cityStockLumber/
+  // cityStockCannedFoodC4 vs TPopulationMgr::populationCount) and reports it via
   // SetInteriorMinisterBid, unless no condition qualified.
   virtual void DetermineTradeBid(TCity* city); // slot 0x21 0x4bf8a0
   // Dispatches the city's training, capacity, ship, civilian, and land-unit task modes,
@@ -133,39 +133,39 @@ public:
   // shares this size; serialization establishes the exact short widths and array
   // extents below, while live readers establish the per-resource/per-production-slot
   // indexing domains.
-  TLongintList* list28;                   // +0x28  (new TLongintList, vtable 0x650a08)
-  TLongintList* list2c;                   // +0x2c  (new TLongintList)
-  short nextProductionBuildingOrdinal30;  // +0x30  1-based cursor into list2c
-  short pendingShipType32;                // +0x32  ship type queued at city slot 0x2b
-  short field34;                          // +0x34
-  short pendingRecruitmentCommandIndex36; // +0x36  maps to city order slot 0x22 + value
-  short pendingUnitCommandIndex38;        // +0x38  maps to city order slot 0x19 + value
-  short resource15ProductionPercent3a;    // +0x3a  init 50
-  short field3c;                          // +0x3c  init -1
-  short accumulatedUnmetNeed3e;           // +0x3e  queued via command 0x33
+  TLongintList* list28;                 // +0x28  (new TLongintList, vtable 0x650a08)
+  TLongintList* list2c;                 // +0x2c  (new TLongintList)
+  short nextProductionBuildingOrdinal;  // +0x30  1-based cursor into list2c
+  short pendingShipType32;              // +0x32  ship type queued at city slot 0x2b
+  short field34;                        // +0x34
+  short pendingRecruitmentCommandIndex; // +0x36  maps to city order slot 0x22 + value
+  short pendingUnitCommandIndex;        // +0x38  maps to city order slot 0x19 + value
+  short resource15ProductionPercent;    // +0x3a  init 50
+  short field3c;                        // +0x3c  init -1
+  short accumulatedUnmetNeed3e;         // +0x3e  queued via command 0x33
   // +0x40..0xba -- per-resource-index foreign-minister counter deltas, read/written
   // one short at a time (DetermineTradeBid reads
   // orderMetricTable40[0]/[1] as a paired "any nonzero" trigger and [2]..[6]
   // individually). Index 60 is the low-skill labor shortfall; serialization proves
   // this is one 61-entry table rather than a separate trailing field.
-  short orderMetricTable40[61];   // +0x40..0xba  (zeroed on init)
-  short orderShortTableBA[16];    // +0xba..0xda
-  short deferredLaborShortfallDA; // +0xda
-  short orderShortTableDC[16];    // +0xdc..0xfc
+  short orderMetricTable40[61]; // +0x40..0xba  (zeroed on init)
+  short orderShortTableBA[16];  // +0xba..0xda
+  short deferredLaborShortfall; // +0xda
+  short orderShortTableDC[16];  // +0xdc..0xfc
   // Three parallel short[23] order-type tables, all cleared together by
   // InitializeCityInteriorState. GetExteriorNeedFor reads +0x12a;
   // GetHistoricalNeedFor reads and ResetHistoricalNeedFor clears +0x158.
-  short orderTypeTableFC[23];           // +0xfc..0x12a
-  short orderTypeTable12A[23];          // +0x12a..0x158 (exterior need by order type)
-  short orderTypeTable158[23];          // +0x158..0x186 (historical need by order type)
-  short temporarilyReservedShipArms186; // +0x186
-  TFuzzySet* cityPolicyFuzzySet;        // +0x188 (new TFuzzySet, 4 policy curves)
-  TList* orderList18c;                  // +0x18c (new TList; ctor 0x4be840 nulls it)
-  TLongintList* list190;                // +0x190 (new TLongintList)
+  short orderTypeTableFC[23];        // +0xfc..0x12a
+  short orderTypeTable12A[23];       // +0x12a..0x158 (exterior need by order type)
+  short orderTypeTable158[23];       // +0x158..0x186 (historical need by order type)
+  short temporarilyReservedShipArms; // +0x186
+  TFuzzySet* cityPolicyFuzzySet;     // +0x188 (new TFuzzySet, 4 policy curves)
+  TList* orderList;                  // +0x18c (new TList; ctor 0x4be840 nulls it)
+  TLongintList* list190;             // +0x190 (new TLongintList)
   // Per-resource demand/capacity values consulted when deciding which missing
   // civilian order classes must be requested. One short per resource type.
   short civilianOrderDemandByResourceType194[23]; // +0x194
-  short temporaryFurnitureSubstituteLumber1c2;    // +0x1c2
+  short temporaryFurnitureSubstituteLumber;       // +0x1c2
 
   short& LowSkillLaborShortfall() {
     return orderMetricTable40[60];

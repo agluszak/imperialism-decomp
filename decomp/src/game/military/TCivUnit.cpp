@@ -20,8 +20,8 @@ TCivUnit::TCivUnit() {
 void TCivUnit::ICivUnit(CivilianUnitKind unitKind, int anchorIndex, int nOrderOwnerNationId) {
   this->RegisterUnitOrderWithOwnerManager(EncodeCivilianUnitKind(unitKind), anchorIndex,
                                           static_cast<short>(nOrderOwnerNationId), 0);
-  this->remainingTurns24 = 0;
-  this->completionMarker26 = static_cast<short>(-1);
+  this->remainingTurns = 0;
+  this->completionMarker = static_cast<short>(-1);
 }
 
 // FUNCTION: IMPERIALISM 0x005c2980
@@ -35,8 +35,8 @@ char TCivUnit::IsInIdleSelectionState() {
 
 // FUNCTION: IMPERIALISM 0x005c29b0
 void TCivUnit::TickCivWorkOrderCountdownAndComplete() {
-  --remainingTurns24;
-  if (remainingTurns24 < 1) {
+  --remainingTurns;
+  if (remainingTurns < 1) {
     g_pSelectedCivilianOrderState->ApplyCompletedCivWorkOrderToMapState(this);
     unitOrder = kUnitOrderIdle;
   }
@@ -46,8 +46,8 @@ void TCivUnit::TickCivWorkOrderCountdownAndComplete() {
 void TCivUnit::SetOrders(UnitOrder order, int payload) {
   const short kRemainingTurnsByMode[14] = {0, 0, 0, 0, 0, 1, 3, 3, 1, 0, 3, 3, 4, 1};
   unitOrder = order;
-  orderTargetIndex0C = static_cast<short>(payload);
-  remainingTurns24 = kRemainingTurnsByMode[order];
+  orderTargetIndex = static_cast<short>(payload);
+  remainingTurns = kRemainingTurnsByMode[order];
 }
 
 // FUNCTION: IMPERIALISM 0x005c2a90
@@ -63,8 +63,8 @@ void TCivUnit::ContinueOrders() {
   case 11:
   case 12:
   case 13:
-    --remainingTurns24;
-    if (remainingTurns24 >= 1) {
+    --remainingTurns;
+    if (remainingTurns >= 1) {
       return;
     }
     g_pSelectedCivilianOrderState->ApplyCompletedCivWorkOrderToMapState(this);
@@ -75,45 +75,45 @@ void TCivUnit::ContinueOrders() {
 // FUNCTION: IMPERIALISM 0x005c2b10
 void TCivUnit::ReadFrom(TStream* stream) {
   TUnit::ReadFrom(stream);
-  stream->ReadBytes(&remainingTurns24, 2);
+  stream->ReadBytes(&remainingTurns, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x005c2b40
 void TCivUnit::WriteTo(TStream* stream) {
   TUnit::WriteTo(stream);
-  stream->WriteBytes(&remainingTurns24, 2);
+  stream->WriteBytes(&remainingTurns, 2);
 }
 
 // Moves this unit between two tiles' civilian-order chains (terrainStateTable[tile-
-// Index06].firstCivilianOrder20, threaded via nextAtLocation14/previousAtLocation10): detaches from the
-// current tile (if any) unlinking via previousAtLocation10's prev-pointer role, then prepends to
+// Index06].firstCivilianOrder20, threaded via nextAtLocation/previousAtLocation): detaches from the
+// current tile (if any) unlinking via previousAtLocation's prev-pointer role, then prepends to
 // the new tile's chain (if anchorIndex isn't -1 = none).
 // FUNCTION: IMPERIALISM 0x005c2b70
 void TCivUnit::MoveTo(short newTileIndex) {
 
   if (tileIndex06 != -1) {
-    if (previousAtLocation10 == 0) {
+    if (previousAtLocation == 0) {
       g_pGlobalMapState->terrainStateTable[tileIndex06].firstCivilianOrder20 =
-          static_cast<TCivUnit*>(nextAtLocation14);
+          static_cast<TCivUnit*>(nextAtLocation);
     } else {
-      previousAtLocation10->nextAtLocation14 = nextAtLocation14;
+      previousAtLocation->nextAtLocation = nextAtLocation;
     }
-    if (nextAtLocation14 != 0) {
-      nextAtLocation14->previousAtLocation10 = previousAtLocation10;
+    if (nextAtLocation != 0) {
+      nextAtLocation->previousAtLocation = previousAtLocation;
     }
   }
 
   if (newTileIndex != -1) {
     TCivUnit* oldHead = g_pGlobalMapState->terrainStateTable[newTileIndex].firstCivilianOrder20;
-    previousAtLocation10 = 0;
-    nextAtLocation14 = oldHead;
+    previousAtLocation = 0;
+    nextAtLocation = oldHead;
     g_pGlobalMapState->terrainStateTable[newTileIndex].firstCivilianOrder20 = this;
-    if (nextAtLocation14 != 0) {
-      nextAtLocation14->previousAtLocation10 = this;
+    if (nextAtLocation != 0) {
+      nextAtLocation->previousAtLocation = this;
     }
   } else {
-    previousAtLocation10 = 0;
-    nextAtLocation14 = 0;
+    previousAtLocation = 0;
+    nextAtLocation = 0;
   }
 
   tileIndex06 = newTileIndex;
@@ -131,7 +131,7 @@ void TCivUnit::ResetCivWorkOrderAndRefreshCounters() {
     TGreatPower* nation = g_apNationStates[ownerNationSlot18];
     TCity* city = (nation != 0) ? nation->city : 0;
     // The original reads city unconditionally here (no null check), so keep the shape.
-    city->productionSummary1d8->AddExpert(1);
+    city->productionSummary->AddExpert(1);
   }
   Free();
 }

@@ -399,8 +399,8 @@ int* TDefenseMinister::CreateEnemyPowerMap(unsigned char excludeEnemyTiles) {
     if ((atWarWithNation[ownerTag] && excludeEnemyTiles == 0) || ownerTag == ownNationSlot) {
       TMilitaryUnit* unit;
       if (tile >= 0 && tile < 0x180) {
-        unit = static_cast<TMilitaryUnit*>(
-            g_pGlobalMapState->cityScoreTable[tile].stationedUnitChain98);
+        unit =
+            static_cast<TMilitaryUnit*>(g_pGlobalMapState->cityScoreTable[tile].stationedUnitChain);
       } else {
         unit = 0;
       }
@@ -409,7 +409,7 @@ int* TDefenseMinister::CreateEnemyPowerMap(unsigned char excludeEnemyTiles) {
         int categoryScores[4] = {0, 0, 0, 0};
         int categoryFlags[4] = {1, 1, 1, 1};
 
-        for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14)) {
+        for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
           short combatClass = g_awUnitCombatClassBySlot[unit->orderType];
           if (unit->orderType == EncodeMilitaryUnitKind(kMilitaryUnitLightArtillery) ||
               unit->orderType == EncodeMilitaryUnitKind(kMilitaryUnitArtillery)) {

@@ -99,9 +99,9 @@ public:
   ~TDETemplateDialog() override {}
   TDETemplateDialog(void* initParam); // 0x0047dba0
 
-  CSliderCtrl slider;                  // +0x74
-  unsigned int populationAdjustmentB0; // +0xb0 — DDX_Text control 0x422
-  unsigned int commodityAdjustmentB4;  // +0xb4 — DDX_Text control 0x421
+  CSliderCtrl slider;                // +0x74
+  unsigned int populationAdjustment; // +0xb0 — DDX_Text control 0x422
+  unsigned int commodityAdjustment;  // +0xb4 — DDX_Text control 0x421
 
 protected:
   void DoDataExchange(CDataExchange* pDX) override; // 0x0047dc70 (vtable index 35)

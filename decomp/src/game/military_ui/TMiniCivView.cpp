@@ -162,7 +162,7 @@ void TMiniCivView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
   if (sourceHandler == this) {
     TSuperCivRoster* roster = static_cast<TSuperCivRoster*>(ownerContext);
     roster->AssertValid();
-    roster->selectedTileIndex84 = civUnit84->tileIndex06;
+    roster->selectedTileIndex = civUnit84->tileIndex06;
   }
   TControl::DoEvent(commandId, sourceHandler, event);
 }

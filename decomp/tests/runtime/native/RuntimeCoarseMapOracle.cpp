@@ -231,14 +231,14 @@ void FillGrid(CoarseMapGridDto& grid, const TMapMaker* mapMaker) {
 
 void FillCityRegionIds(int* ids, const TMapMaker* mapMaker) {
   for (int index = 0; index < kClassCount; ++index) {
-    ids[index] = mapMaker->cityRegionIds200[index];
+    ids[index] = mapMaker->cityRegionIds[index];
   }
 }
 
 void FillGroupMembers(int members[7][3], const TMapMaker* mapMaker) {
   for (int group = 0; group < 7; ++group) {
     for (int member = 0; member < 3; ++member) {
-      members[group][member] = mapMaker->groupMemberLists1a8[group][member];
+      members[group][member] = mapMaker->groupMemberLists[group][member];
     }
   }
 }

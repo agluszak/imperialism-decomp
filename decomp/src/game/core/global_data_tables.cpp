@@ -951,15 +951,15 @@ int g_nOverlayClipCacheParamX = 0;
 int g_nOverlayClipCacheParamY = 0;
 
 // Trade summary selection map — 23 read-only packed-FourCC commodity tags, one
-// per TCity commodity slot (Cotton..Gold, i.e. orderSlotsE4[0..0x16]
-// / cityStockCottonB6..cityStockGoldE2). Verified via `just ghidra read-data
+// per TCity commodity slot (Cotton..Gold, i.e. orderSlots[0..0x16]
+// / cityStockCotton..cityStockGoldE2). Verified via `just ghidra read-data
 // 0x696108 dword 23`: the previous model (a zeroed BSS int[32] at 0x6960e0) had
 // the wrong address, wrong size, and wrong storage class — 0x6960e0 actually
 // lands inside the unrelated kTradeSellPropagationTags string data below, and
 // the real table at 0x696108 is const-initialized, not runtime-populated.
 // FourCC control tags in commodity-slot order (cotton..gold). Also read by
 // TWarehouseView::DoStartup (0x4c7360), which resolves each of the 23 tags into
-// commodityValueControlsA0.
+// commodityValueControls.
 // GLOBAL: IMPERIALISM 0x00696108
 const int g_pTradeSummarySelectionMap[23] = {
     kManifestTagCott, kManifestTagWool,  kManifestTagTimb, kManifestTagCoal, kManifestTagIron,
@@ -1802,8 +1802,8 @@ short g_anStrategicTerrainNeighborLinkPriority[kStrategicTerrainCount] = {10, 4,
 
 int g_nNextRegionMarkerId = 1;
 
-// Per-tile sprite-variant bitmap-strip offset tables, indexed [gateFlag][spriteVariantIndex01]
-// (or, for the 39-suffixed table, by spriteVariantIndex01 alone). Read by
+// Per-tile sprite-variant bitmap-strip offset tables, indexed [gateFlag][spriteVariantIndex]
+// (or, for the 39-suffixed table, by spriteVariantIndex alone). Read by
 // TMapMgr's rendering-variant lookup family (0x516150/0x5161a0/0x5161e0/0x516220).
 short g_awTileSpriteVariantOffsetTable38[16][2] = {
     {0x140, 0x140}, {0, 0},         {0x200, 0x200}, {0x240, 0x240}, {0x300, 0x300}, {0x1c0, 0x1c0},
@@ -1993,7 +1993,7 @@ double g_DAT_00653fc0_Value_00653FC0 = 0.00392156862745098;
 double g_DAT_00653fc8_Value_00653FC8 = 32767.0;
 
 // Case-16 advisory mission acceptance thresholds, indexed by the defense minister's
-// skillIndexC row and the mission tier column (0 attack, 1 amass, 2 invade,
+// skillIndex row and the mission tier column (0 attack, 1 amass, 2 invade,
 // 3 defend, 4 blockade, 5 unused). Read by 0x004e9a50.
 float g_afAdvisoryMissionTierThresholdByMinisterSkill_00653F18[5][6] = {
     {1.5f, 1.5f, 2.5f, 0.0f, 2.25f, 2.0f},  {1.75f, 1.75f, 2.5f, 0.0f, 2.25f, 2.25f},
@@ -2880,7 +2880,7 @@ float g_afTacticalDefenseTerrainModifierByCategory[50] = {
     0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f};
 
 // Cover damage modifier [defender category * 5 + cover state] where cover state is
-// TacticalTileRecord::deployMark8 (1 = trench, 2..4 = fort-wall levels) (.rdata).
+// TacticalTileRecord::deployMark (1 = trench, 2..4 = fort-wall levels) (.rdata).
 // GLOBAL: IMPERIALISM 0x00669c58
 float g_afTacticalCoverDamageModifierByCategory[50] = {
     1.0f, 0.8f, 0.7f, 0.6f, 0.5f, 1.0f, 0.8f, 0.7f, 0.6f, 0.5f, 1.0f, 0.8f, 0.7f,

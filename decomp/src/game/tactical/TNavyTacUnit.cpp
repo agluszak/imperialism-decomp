@@ -21,21 +21,21 @@ IMPLEMENT_DYNCREATE(TNavyTacUnit, TTacticalUnit)
 void TNavyTacUnit::InitializeFromSourceShip(TShip* sourceShip) {
   tileIndex8 = -2;
   unitTypeC = g_anTacticalNavyUnitTypeByShipType_00669D80[sourceShip->type];
-  selectedFlag18 = 0;
+  selectedFlag = 0;
   state1c = 0;
   actionPoints28 = GetBaseActionPoints();
   aiStateCode2c = 0;
-  attackTarget30 = 0;
+  attackTarget = 0;
   strength4 = sourceShip->strength;
-  secondaryCombatStrength38 = sourceShip->strength;
+  secondaryCombatStrength = sourceShip->strength;
   int speed = sourceShip->GetSpeed();
   sourceShip34 = sourceShip;
-  baseActionPoints3c = speed * 10;
+  baseActionPoints = speed * 10;
 }
 
 // FUNCTION: IMPERIALISM 0x005a6310
 int TNavyTacUnit::GetBaseActionPoints() {
-  return baseActionPoints3c;
+  return baseActionPoints;
 }
 
 // FUNCTION: IMPERIALISM 0x005a6330
@@ -90,11 +90,11 @@ void TNavyTacUnit::ApplyNavalDamage(float damageAmount, NavyTargeting targeting)
   }
 
   strength4 -= strengthDelta;
-  secondaryCombatStrength38 -= secondaryCombatStrengthDelta;
-  baseActionPoints3c -= actionPointDelta;
-  if (strength4 <= 0 || secondaryCombatStrength38 <= 0) {
+  secondaryCombatStrength -= secondaryCombatStrengthDelta;
+  baseActionPoints -= actionPointDelta;
+  if (strength4 <= 0 || secondaryCombatStrength <= 0) {
     strength4 = 0;
-    secondaryCombatStrength38 = 0;
+    secondaryCombatStrength = 0;
     state1c = 3;
   }
 }

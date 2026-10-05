@@ -284,7 +284,7 @@ void TDealBookPicture::CalculatePages() {
   TDealTabControl* tabs =
       static_cast<TDealTabControl*>(ResolveControlByTag(kControlTagTabs)); // 'tabs'
   tabs->AssertValid();
-  tabs->Setup(0x2266, g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId]);
+  tabs->Setup(0x2266, g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId]);
 }
 
 // FUNCTION: IMPERIALISM 0x005bbc30
@@ -292,7 +292,7 @@ void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
   if (commandId >= 0x2af8) {
     short tabIndex = static_cast<short>(commandId - 0x2af8);
     short categorySlot = g_tradeBookCategoryByTabAndTechState_0066DB58
-        [g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId]][tabIndex];
+        [g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId]][tabIndex];
     if (categorySlot != -1) {
       sellPageView->RebuildNationOfferRowsForCategory(categorySlot);
       buyPageView->RebuildNationBidRowsForCategory(categorySlot);

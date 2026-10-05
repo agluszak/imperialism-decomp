@@ -18,8 +18,8 @@ public:
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x5078a0
   // RTTI proves TNumberedItem is TMegaPicture (0xac) + these 4 bytes (0xb0 total) --
   // the base's own 0xac bytes must not be re-declared here as padding.
-  short iconRowIndexAc; // +0xac icon-strip row (badge background variant)
-  short badgeCountAe;   // +0xae the number drawn on the badge
+  short iconRowIndex; // +0xac icon-strip row (badge background variant)
+  short badgeCount;   // +0xae the number drawn on the badge
 
   TNumberedItem();
   void InitializeNumberedResourceItem(TView* panel, int* position, int* size,

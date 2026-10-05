@@ -57,7 +57,7 @@ public:
   // +0x04..+0x20: no access anywhere. A field-xref sweep at each of the seven dword
   // offsets returns zero reads and zero writes, so this is not an unrecovered layout --
   // nothing in the shipped binary touches it.
-  int unusedRegion04[7];
+  int unusedRegion[7];
   CString sharedTextSlots[0xd]; // +0x20 .. 0x54
   // +0x54: dead store — the ctor zeroes it and no reader exists anywhere in
   // the image (field-xref sweep). Kept for layout fidelity.

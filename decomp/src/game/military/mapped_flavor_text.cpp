@@ -274,7 +274,7 @@ bool ShouldRetryMappedFlavorTextGeneration(CString* dest) {
 
 // FUNCTION: IMPERIALISM 0x005d4410
 void SetSharedStringFromMappedFlavorTextWithLengthClamp(CString* dest, short tableSlot) {
-  if (g_pSimMgr->useLocalizedNameTables68 != '\0') {
+  if (g_pSimMgr->useLocalizedNameTables != '\0') {
     CString localizedName;
     g_pSimMgr->GetString(0x2715, tableSlot, &localizedName);
     *dest = CString(localizedName);
@@ -298,7 +298,7 @@ void __cdecl AssignNextProvinceNameForNationSlot(CString* dest, short nationSlot
     return;
   }
 
-  if (g_pSimMgr->useLocalizedNameTables68 != '\0') {
+  if (g_pSimMgr->useLocalizedNameTables != '\0') {
     CString provinceName;
     short ordinal = ++g_anProvinceNameOrdinalByNationSlot_006a5af0[nationSlot];
     g_pSimMgr->GetString(static_cast<short>(nationSlot + 8000), ordinal, &provinceName);

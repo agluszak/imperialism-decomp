@@ -75,21 +75,21 @@ public:
   unsigned char padding_62_to_63[0x02];
   // 0x64 — the currently-active linked window (init = this); switching targets
   // notifies the previous one via BecameWindowTarget.
-  TEventHandler* activeLinkedWindow64;
-  int activeViewTag68; // 0x68 — child controlTag installed by tactical views
+  TEventHandler* activeLinkedWindow;
+  int activeViewTag; // 0x68 — child controlTag installed by tactical views
   // 0x6c-0x71 — style/behavior booleans written by the UI resource builders. The names
   // remain offset-qualified where no Windows reader has established the exact behavior.
   bool resourceFlag6c; // 0x6c
   // 0x6d — for window-type codes 0x30/0x1f40, selects the captioned frame style
   // (0x00c80000) instead of the popup style (0x80c00000) in CMcWindow's CreateEx.
-  bool useCaptionedFrameFlag6d;
+  bool useCaptionedFrameFlag;
   bool resourceFlag6e; // 0x6e
   bool resourceFlag6f; // 0x6f
-  bool topmostFlag70;  // 0x70 — when set, CMcWindow adds WS_EX_TOPMOST
+  bool topmostFlag;    // 0x70 — when set, CMcWindow adds WS_EX_TOPMOST
   bool resourceFlag71; // 0x71
   unsigned char padding_72_to_73[0x02];
   TDialogBehavior dialogBehavior; // 0x74
-  int busyFlag98;                 // 0x98
+  int busyFlag;                   // 0x98
   unsigned short windowFlags;     // 0x9c — flag word set by the dialog factory builders
   unsigned char padding_9e_to_9f[0x02];
 
@@ -109,10 +109,10 @@ extern CList<TWindow*, TWindow*> g_ModalViewStack;
 // inline at every subclass construction site and CreateObject, and still
 // retains the standalone COMDAT at 0x48d500.
 // FUNCTION: IMPERIALISM 0x0048d500
-inline TWindow::TWindow() : TView(), dialogBehavior(), busyFlag98(0) {
+inline TWindow::TWindow() : TView(), dialogBehavior(), busyFlag(0) {
   g_LiveViewRegistry.AddHead(this);
   dialogBehavior.SetUiColorDescriptorGoldTriplet(true, kControlTagSpSpSpSp, kControlTagSpSpSpSp);
-  activeLinkedWindow64 = this;
+  activeLinkedWindow = this;
   dialogBehavior.SetOwner(this);
 }
 

@@ -44,7 +44,7 @@ public:
   RefreshCityProductionDetailPanelAndArrowWidgets(short resourceSlot, short nationIndex,
                                                   TView* hostView); // slot 0x11 0x50bea0
   virtual TView* MakeBookDialog(int dialogId);                      // slot 0x12 0x50be30
-  // RET 0x8 = 2 dwords; body waits on this->activeCityProductionView04, args vestigial.
+  // RET 0x8 = 2 dwords; body waits on this->activeCityProductionView, args vestigial.
   virtual void DispatchTurnEvent3B8AndWaitForCompletionFlag(int unusedArg1,
                                                             int unusedArg2); // slot 0x13 0x50d310
   virtual TBuildingView* RestoreBuildingWindowAtSavedPosition(short buildingSlot, TCity* city,
@@ -93,7 +93,7 @@ public:
                                                     short slotIndex); // slot 0x25 0x50d680
   virtual RgnHandle GetClipRegionSlotByIndex(short index);            // slot 0x26 0x509e10
 
-  TCityProductionView* activeCityProductionView04;
+  TCityProductionView* activeCityProductionView;
   RgnHandle regionSlots[0x17];
   RgnHandle tileStateSlots[0x180];
   int padding664;
@@ -114,7 +114,7 @@ public:
   // One contiguous mask table. DrawOneTile indexes the first 32 entries by normalized
   // river/coast sprite code; the final twelve entries are also the two six-direction
   // road/rail mask families. The former three-array model hid that shared indexing.
-  StrategicMapCallbackRecord strategicTileMasks6bc[0x24];
+  StrategicMapCallbackRecord strategicTileMasks[0x24];
   int fieldD7c;
   int fieldD80;
 

@@ -105,7 +105,7 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
   TTwoPicSlider* musicSlider = static_cast<TTwoPicSlider*>(ResolveControlByTag(kControlTagMusi));
   musicSlider->AssertValid();
   musicSlider->InitializePictureSurfaces(0x1036);
-  short musicSpan = static_cast<short>(musicSlider->frameHeight38 - 0xc);
+  short musicSpan = static_cast<short>(musicSlider->frameHeight - 0xc);
   short musicSplit = static_cast<short>(g_pSimMgr->preferenceValues[3] * musicSpan / 0xff);
   musicSlider->splitPosition = static_cast<short>((musicSplit == 0) ? 0 : musicSplit + 0xc);
   musicSlider->mode = 1;
@@ -114,7 +114,7 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
   TTwoPicSlider* soundSlider = static_cast<TTwoPicSlider*>(ResolveControlByTag(kControlTagSoun));
   soundSlider->AssertValid();
   soundSlider->InitializePictureSurfaces(0x1038);
-  short soundSpan = static_cast<short>(soundSlider->frameHeight38 - 0xc);
+  short soundSpan = static_cast<short>(soundSlider->frameHeight - 0xc);
   short soundSplit = static_cast<short>(g_pSimMgr->preferenceValues[2] * soundSpan / 100);
   soundSlider->splitPosition = static_cast<short>((soundSplit == 0) ? 0 : soundSplit + 0xc);
   soundSlider->mode = 2;
@@ -153,7 +153,7 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
   ApplyUiTextStyleAndThemeFlags(noOption, 0, 0xc, 0x2b6a, 0x2b6c);
 
   autoResCluster->frameThemeCode90 = 0x2b6c;
-  autoResCluster->itemInset92 = 2;
+  autoResCluster->itemInset = 2;
   autoResCluster->Show(1, 0);
   autoResCluster->ViewEnable(1, 0);
 
@@ -197,7 +197,7 @@ void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandle
         musicPosition -= 0xc;
       }
       g_pSimMgr->preferenceValues[3] = static_cast<short>(
-          (musicPosition * 0xff) / static_cast<short>(musicSlider->frameHeight38 - 0xc));
+          (musicPosition * 0xff) / static_cast<short>(musicSlider->frameHeight - 0xc));
 
       TTwoPicSlider* soundSlider =
           static_cast<TTwoPicSlider*>(ResolveControlByTag(kControlTagSoun));
@@ -209,7 +209,7 @@ void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandle
         soundPosition -= 0xc;
       }
       g_pSimMgr->preferenceValues[2] = static_cast<short>(
-          (soundPosition * 100) / static_cast<short>(soundSlider->frameHeight38 - 0xc));
+          (soundPosition * 100) / static_cast<short>(soundSlider->frameHeight - 0xc));
 
       g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(g_pSimMgr->preferenceValues[3]);
       if (g_pSimMgr->mode == kGamePhaseStartup || g_pSimMgr->mode == kGamePhaseSetUpMap) {

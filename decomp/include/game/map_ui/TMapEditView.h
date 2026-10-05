@@ -17,7 +17,7 @@ public:
                                                        int dispatchContext) override;
   virtual void HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags) override;
 
-  TMapEditView() : reservedFlag364(0), editorActionMode368(0), editorActionValue36c(0) {}
+  TMapEditView() : reservedFlag(0), editorActionMode368(0), editorActionValue36c(0) {}
 
   // Mac CodeWarrior identities. These are deliberately non-virtual helpers selected by
   // NormalClick/HandleMapClickByInteractionMode's editor-action switch.
@@ -33,7 +33,7 @@ public:
   void PlaceRail(short tileIndex);    // 0x0051db30
 
   // +0x364 is only constructor-zeroed; retain the byte without inventing semantics.
-  unsigned char reservedFlag364;
+  unsigned char reservedFlag;
   unsigned char padding365[3];
   // Selected editor action (0=default resources, 1=province, 2=resource, 3=rail,
   // 4=county seat, 5=river) and that action's selected palette/value.

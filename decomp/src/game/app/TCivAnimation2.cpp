@@ -12,7 +12,7 @@ TCivAnimation2::TCivAnimation2(TView* ownerView, RECT* rect, int kind, int tag) 
                                       14026, 14030, 14035, 14040};
   static const int kTicksPerFrame[9] = {5, 15, 10, 7, 15, 15, 7, 10, 10};
   IAnimation(ownerView, rect, 0, kStringIds[kind], kTicksPerFrame[kind], tag);
-  kindIndex2c = static_cast<short>(kind);
+  kindIndex = static_cast<short>(kind);
 }
 
 // FUNCTION: IMPERIALISM 0x0049f7c0
@@ -24,7 +24,7 @@ void TCivAnimation2::Tick() {
   ownerView->InvalidateCityDialogRectRegion(&screenRect, 1);
   ++frameIndex;
   ticksSinceFrameChange = 0;
-  switch (kindIndex2c) {
+  switch (kindIndex) {
   case 0:
   case 7:
     if (frameIndex == 9)
@@ -69,7 +69,7 @@ void TCivAnimation2::DrawNextFrame(POINT* offset) {
       {0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
   };
   short logicalFrame = frameIndex;
-  frameIndex = kFrameMap[kindIndex2c][logicalFrame];
+  frameIndex = kFrameMap[kindIndex][logicalFrame];
   TAnimation::DrawNextFrame(offset);
   frameIndex = logicalFrame;
 }

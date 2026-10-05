@@ -30,7 +30,7 @@ TPicture::TPicture()
 
 // The TControl copy constructor is compiler-generated and inlined here: the listing
 // calls the TView copy constructor (0x48bd30) through ILT 0x4017ad, copies
-// eventNumber60/controlState64/contentInsets68/textStyle78, and installs the TControl
+// eventNumber60/controlState64/contentInsets/textStyle78, and installs the TControl
 // vptr (0x64a098) before the TPicture members and vptr (0x64a930).
 // reserved86 is deliberately absent from the member-init list: the original copies
 // 0x84, 0x88 and 0x8c but never writes 0x86.
@@ -49,7 +49,7 @@ void TPicture::CopyPictureStateFromSource(TPicture* source) {
   CopyViewStateFromSource(source);
   eventNumber60 = source->eventNumber60;
   controlState64 = source->controlState64;
-  contentInsets68 = source->contentInsets68;
+  contentInsets = source->contentInsets;
   textStyle78 = source->textStyle78;
   glyphBase84 = source->glyphBase84;
   bitmapId = source->bitmapId;
@@ -89,8 +89,8 @@ void TPicture::IPicture(TView* panel, int* offsetLayout, int* sizeLayout, int la
   nextHandler = panel;
   ownerLocalX = offsetLayout[0];
   ownerLocalY = offsetLayout[1];
-  frameWidth34 = sizeLayout[0];
-  frameHeight38 = sizeLayout[1];
+  frameWidth = sizeLayout[0];
+  frameHeight = sizeLayout[1];
   if (panel != 0) {
     panel->AttachChildControl(this, 0);
   }
@@ -133,7 +133,7 @@ void TPicture::Draw(RECT* rectBuffer) {
     CPoint posForY;
     this->cachedBitmap->StretchDibitsRectToDc(
         GetActiveQuickDrawDc(), this->GetAbsolutePosition(&posForX)->x,
-        this->GetAbsolutePosition(&posForY)->y, this->frameWidth34, this->frameHeight38, 0, 0,
+        this->GetAbsolutePosition(&posForY)->y, this->frameWidth, this->frameHeight, 0, 0,
         this->cachedBitmap->m_pInfoHeader->bmiHeader.biWidth, srcHeight);
   }
 }
@@ -160,9 +160,9 @@ void TPicture::SetPictureResourceIdAndRefresh(short nPictureId, unsigned char fR
   }
   if (this->cachedBitmap == 0) {
     PictureFallbackSizeScratch sizeScratch;
-    sizeScratch.Set(this->frameWidth34, this->frameHeight38);
-    this->cachedBitmap = g_pResourceMgr->BuildIndexedBmpResourceById(nPictureId, this->frameWidth34,
-                                                                     this->frameHeight38, 0);
+    sizeScratch.Set(this->frameWidth, this->frameHeight);
+    this->cachedBitmap = g_pResourceMgr->BuildIndexedBmpResourceById(nPictureId, this->frameWidth,
+                                                                     this->frameHeight, 0);
   }
   if (fRefreshNow) {
     this->RefreshControl();
@@ -181,7 +181,7 @@ TObject* TPicture::ShallowClone() {
   clone->CopyViewStateFromSource(this);
   clone->eventNumber60 = eventNumber60;
   clone->controlState64 = controlState64;
-  clone->contentInsets68 = contentInsets68;
+  clone->contentInsets = contentInsets;
   clone->textStyle78 = textStyle78;
   clone->glyphBase84 = glyphBase84;
   clone->bitmapId = bitmapId;

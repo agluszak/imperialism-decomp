@@ -5,7 +5,7 @@
 
 // MacApp CSubViewIterator (Mac CodeWarrior oracle: constructors (TView*, unsigned char) and
 // (const TView*), FirstSubView(), NextSubView(), ~CSubViewIterator()). A stack cursor over a
-// TView's childList44 (MFC CList<TView*, TView*>): it walks forward from the head or in
+// TView's childList (MFC CList<TView*, TView*>): it walks forward from the head or in
 // reverse from the tail per the direction byte, using GetNext/GetPrev to read the current
 // child's payload while advancing the position. The single-arg constructor at 0x004919a0
 // defaults the direction to forward and sets the identifier filter to "    " (no filter).
@@ -23,8 +23,8 @@ public:
   int MoreSubViews();    // 0x00491ab0
 
   POSITION position00;      // +0x00 current CList position (node)
-  const TView* ownerView04; // +0x04 view whose childList44 is walked
+  const TView* ownerView04; // +0x04 view whose childList is walked
   int direction08;          // +0x08 1 = forward from head, 0 = reverse from tail
-  int identTag0c;           // +0x0c subview identifier filter, "    " ('    ') = no filter
+  int identTag;             // +0x0c subview identifier filter, "    " ('    ') = no filter
   TView* currentChild10;    // +0x10 payload of the current node (validity field)
 };

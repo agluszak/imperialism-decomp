@@ -26,12 +26,12 @@ void TSuperArmyRoster::PopulateArmyOrderPageEntries(TView* panel, int* offsetLay
     if (g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(tileIndex) != activeNation) {
       continue;
     }
-    for (TMilitaryUnit* unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain98;
-         unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14)) {
+    for (TMilitaryUnit* unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain;
+         unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
       TMiniArmyLine* line = new TMiniArmyLine;
       int lineBounds[2] = {0xec, 0x12};
       line->SetLineDataRowAndBounds(0, 0, lineBounds);
-      line->militaryUnit10 = unit;
+      line->militaryUnit = unit;
       AddOrderedEntry(line);
     }
   }

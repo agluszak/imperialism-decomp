@@ -21,8 +21,8 @@ void TNumberedIcon::INumberedIcon(TView* panel, int* offsetLayout, int* sizeLayo
   if (numberTextAc != 0) {
     // A 16x16 box hung off the icon's bottom-right corner.
     CRect numberBounds;
-    numberBounds.right = frameWidth34;
-    numberBounds.bottom = frameHeight38;
+    numberBounds.right = frameWidth;
+    numberBounds.bottom = frameHeight;
     numberBounds.left = numberBounds.right - 0x10;
     numberBounds.top = numberBounds.bottom - 0x10;
     numberTextAc->ApplyBounds(&numberBounds, 1);
@@ -36,10 +36,10 @@ void TNumberedIcon::DoPostCreate(int arg) {
   InstallNumberText();
   if (numberTextAc != 0) {
     // 0x00507511 loads +0x34 before +0x38. MSVC evaluates constructor arguments
-    // right-to-left, so passing the fields directly would load frameHeight38 first;
+    // right-to-left, so passing the fields directly would load frameHeight first;
     // sequencing them into locals pins the original order.
-    int iconWidth = frameWidth34;
-    int iconHeight = frameHeight38;
+    int iconWidth = frameWidth;
+    int iconHeight = frameHeight;
     CRect numberBounds(iconWidth - 0x10, iconHeight - 0x10, iconWidth, iconHeight);
     numberTextAc->ApplyBounds(&numberBounds, 1);
   }

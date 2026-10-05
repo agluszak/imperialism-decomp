@@ -12,7 +12,7 @@ IMPLEMENT_DYNCREATE(TFrameRadioView, TControl)
 void TFrameRadioView::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
   if (controlState64 != 0) {
-    RECT frame = {1, 1, frameWidth34, frameHeight38};
+    RECT frame = {1, 1, frameWidth, frameHeight};
     SetQuickDrawFillColor(0);
     QDFrameRect(&frame);
     OffsetRect(&frame, -1, -1);

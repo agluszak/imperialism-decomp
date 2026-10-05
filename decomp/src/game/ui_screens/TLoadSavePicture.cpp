@@ -41,7 +41,7 @@ IMPLEMENT_DYNCREATE(TLoadSavePicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x0056bcc0
 void TLoadSavePicture::DoPostCreate(int arg) {
-  loadModeFlag90 = static_cast<unsigned char>(g_nSaveFormatVersion == -2);
+  loadModeFlag = static_cast<unsigned char>(g_nSaveFormatVersion == -2);
   selectedSlot92 = -1;
   TPicture::DoPostCreate(arg);
   BuildUiTextStyleDescriptor(&styleAt94, 1, 0xc, 0x2b68);
@@ -69,7 +69,7 @@ void TLoadSavePicture::DoPostCreate(int arg) {
 
     if (TryGetFileMetadataForPath(&slotPath) == 0) {
       // Empty slot: the save picture offers it, the load picture greys it out.
-      if (loadModeFlag90) {
+      if (loadModeFlag) {
         slotControl->Show(0, 1);
         slotControl->ViewEnable(0, 0);
       } else {
@@ -86,7 +86,7 @@ void TLoadSavePicture::DoPostCreate(int arg) {
     slotControl->InstallTextStyle(styleAt9e, 0);
   }
 
-  if (loadModeFlag90) {
+  if (loadModeFlag) {
     TPicture* okayControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagOkay));
     okayControl->AssertValid();
     okayControl->SetPictureResourceIdAndRefresh(static_cast<short>(okayControl->glyphBase84 + 2),
@@ -106,7 +106,7 @@ void TLoadSavePicture::DoPostCreate(int arg) {
   RefreshActiveControlThenApplyThemeStyleAndCaption(kControlTagInfo, 0, 0xc, 0x2b6a, 0, 0);
 
   // Hover-help strings differ between the load and the save picture.
-  if (loadModeFlag90) {
+  if (loadModeFlag) {
     LoadUiStringByGroupAndIndexToControlObject(0x2737, 0xc, this);
     LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x11, ResolveControlByTag(kControlTagOtto));
     LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x14, ResolveControlByTag(kControlTagCncl));
@@ -204,7 +204,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
   if (commandId == 0xd) {
     short newSlot = static_cast<short>(sourceHandler->controlTag - kControlTagSlt0);
     if (newSlot != selectedSlot92) {
-      if (loadModeFlag90) {
+      if (loadModeFlag) {
         if (selectedSlot92 != -1 && selectedSlot92 != 0xa1) {
           TControl* oldSlotControl =
               static_cast<TControl*>(ResolveControlByTag(kControlTagSlt0 + selectedSlot92));
@@ -229,7 +229,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         TStaticText* slotControl = static_cast<TStaticText*>(sourceHandler);
         slotControl->AssertValid();
         TEditText* editControl = new TEditText();
-        editControl->IEditText(this, &slotControl->ownerLocalX, &slotControl->frameWidth34, 0x1f);
+        editControl->IEditText(this, &slotControl->ownerLocalX, &slotControl->frameWidth, 0x1f);
         selectedSlot92 = newSlot;
         slotControl->Show(0, 1);
         slotControl->CopyTextTo(&slotText);
@@ -256,7 +256,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     if (sourceHandler->controlTag == kControlTagCncl) { // 'clnc'
       HandleTurnFlowStateTickOrPostTurnEvent5DC();
     }
-    if (loadModeFlag90 && sourceHandler->controlTag == kControlTagOtto) {
+    if (loadModeFlag && sourceHandler->controlTag == kControlTagOtto) {
       if (selectedSlot92 != -1 && selectedSlot92 != 0xa1) {
         TControl* oldSlotControl =
             static_cast<TControl*>(ResolveControlByTag(kControlTagSlt0 + selectedSlot92));
@@ -328,13 +328,13 @@ static bool IsMultiplayerFlowActive() {
 // FUNCTION: IMPERIALISM 0x0056d2a0
 void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
   if (selectedSlot92 == -1) {
-    if (!loadModeFlag90) {
+    if (!loadModeFlag) {
       g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x2758, 0x17, 1, 0);
       return;
     }
     return;
   }
-  if (loadModeFlag90) {
+  if (loadModeFlag) {
     if (g_pSimMgr->mode == kGamePhaseStartup ||
         g_pViewMgr->DispatchGameStateEventIfLocalizedPromptAccepted(kControlTagLoad) != 0) {
       GetWindow()->ForceRedraw();

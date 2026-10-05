@@ -94,7 +94,7 @@ void TTradeSchoolView::UpdateFields() {
     return;
   }
 
-  TPopulationMgr* population = city94->productionSummary1d8;
+  TPopulationMgr* population = city94->productionSummary;
 #define UPDATE_TRADE_SCHOOL_CONTROL(controlTag, assertLine, enableCondition)                       \
   control = ResolveControlByTag(controlTag);                                                       \
   if (control == 0) {                                                                              \
@@ -111,22 +111,22 @@ void TTradeSchoolView::UpdateFields() {
   }
 
   TView* control;
-  UPDATE_TRADE_SCHOOL_CONTROL(kControlTagPap1, 0x9df, city94->cityStockPaperCA >= 1);
-  UPDATE_TRADE_SCHOOL_CONTROL(kControlTagPap2, 0x9ef, city94->cityStockPaperCA >= 2);
+  UPDATE_TRADE_SCHOOL_CONTROL(kControlTagPap1, 0x9df, city94->cityStockPaper >= 1);
+  UPDATE_TRADE_SCHOOL_CONTROL(kControlTagPap2, 0x9ef, city94->cityStockPaper >= 2);
   UPDATE_TRADE_SCHOOL_CONTROL(kControlTagMon1, 0xa00,
                               city94->ownerNationAc->ComputeAvailableDiplomacyBudget() >= 100);
   UPDATE_TRADE_SCHOOL_CONTROL(kControlTagMon2, 0xa11,
                               city94->ownerNationAc->ComputeAvailableDiplomacyBudget() >= 1000);
 
   short availableWorkers = population->strength;
-  short workerLimit = population->productionSlots14->lowSkillCount04;
+  short workerLimit = population->productionSlots->lowSkillCount04;
   if (availableWorkers >= workerLimit) {
     availableWorkers = workerLimit;
   }
   UPDATE_TRADE_SCHOOL_CONTROL(kControlTagUntV, 0xa23, availableWorkers != 0);
 
   availableWorkers = static_cast<short>(population->strength / 2);
-  workerLimit = population->productionSlots14->mediumSkillCount06;
+  workerLimit = population->productionSlots->mediumSkillCount06;
   if (availableWorkers >= workerLimit) {
     availableWorkers = workerLimit;
   }

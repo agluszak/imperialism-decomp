@@ -55,7 +55,7 @@ RuntimeActionResult ArmyBookScreen::ShowProvince(short province) {
 
 bool ArmyBookScreen::HasUnitSpritePage() const {
   TGarrisonView* garrison = GarrisonPage();
-  return garrison != 0 && garrison->primaryUnitAtlas84 != 0;
+  return garrison != 0 && garrison->primaryUnitAtlas != 0;
 }
 
 RuntimeActionResult ArmyBookScreen::Close() {

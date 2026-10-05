@@ -43,7 +43,7 @@ public:
   TMultiplayerSlotHandle nationStatusControlSlots[4]; // +0x20
   // +0x40 — the active lobby dialog view when one is open; the code-9 receive path
   // checks IsKindOf(RUNTIME_CLASS(TLoungeDialog)) before using it as the lounge.
-  TView* lobbyDialogView40; // +0x40
+  TView* lobbyDialogView; // +0x40
   // +0x44 — child handler for queue routing. TLoungeDialog::DoPostCreate passes `this`
   // (a TView, hence a TEventHandler) as the sole non-zero writer, and DoIdle (0x544e30)
   // dispatches through TEventHandler slot 0x13, so the field is that base, not void*.
@@ -122,7 +122,7 @@ public:
   // caller (TLoungeDialog) passes the same string for both.
   void DispatchTurnEventCode9WithTwoTextTokens(int reasonCode, int field1CValue,
                                                const char* senderText, const char* messageText);
-  // 0x5454b0. Records `panel` as lobbyDialogView40, resets nationSessionIds[]/nationStatusTags[]
+  // 0x5454b0. Records `panel` as lobbyDialogView, resets nationSessionIds[]/nationStatusTags[]
   // for all 7 slots, restamps each 'nam0'-'nam6' control from GetString(0x2759, 1) (index is a
   // literal 1 for every slot, not looped), resets the 'okay' control, and -- only when
   // g_pSimMgr->multiplayerSessionRole == kSessionRoleClient -- broadcasts a minimal event-0xd "time" packet. Always returns 1.

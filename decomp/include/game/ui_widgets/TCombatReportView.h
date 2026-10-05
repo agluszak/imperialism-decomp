@@ -12,9 +12,9 @@ struct CombatReportUnitRecord {
   signed char statusStringIndex14; // +0x14 GetString(0x2717, idx) index for the "(...)" suffix
   unsigned char flagAt15;          // +0x15 gates the fixed 5x5 marker-icon overlay blit
   unsigned char pad16;
-  signed char widthParamAt17; // +0x17 gates + sizes the second icon overlay blit
-  int fieldAt18;              // +0x18 feeds the first guide-line x position (fieldAt18*3/7 + 7)
-  int fieldAt1c;              // feeds the second guide-line x position (fieldAt1c*3/7)
+  signed char widthParam; // +0x17 gates + sizes the second icon overlay blit
+  int fieldAt18;          // +0x18 feeds the first guide-line x position (fieldAt18*3/7 + 7)
+  int fieldAt1c;          // feeds the second guide-line x position (fieldAt1c*3/7)
 };
 ASSERT_SIZE(CombatReportUnitRecord, 0x20);
 

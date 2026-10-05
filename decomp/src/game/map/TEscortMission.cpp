@@ -194,9 +194,9 @@ bool TEscortMission::Matches(eMissionType missionType, int key, TZone* zoneConte
 
 // FUNCTION: IMPERIALISM 0x0053a290
 void TEscortMission::GiveOrders() {
-  if (orderList24 != nullptr) {
-    orderList24->active = 0;
-    orderList24->next->SetChainActiveFlag(0);
+  if (orderList != nullptr) {
+    orderList->active = 0;
+    orderList->next->SetChainActiveFlag(0);
   }
   ConsolidateMissionOrderEntriesByTargetAndQueue(missionTargetZone);
 }

@@ -44,7 +44,7 @@ public:
   // Walks the registry for the animation whose registryTag matches `tag`;
   // null if the animator is null, the list is empty, or nothing matches. 0x4a0d30.
   TAnimation* FindRegisteredAnimationByTag(int tag);
-  // Releases every payload owned by registryList24 while retaining the list itself.
+  // Releases every payload owned by registryList while retaining the list itself.
   // Null-receiver-safe because retail callers dispatch through g_pUiAnimator directly.
   void FreeUiTransientRegistryPayloads(); // 0x4a0f80
   // Offsets every registered animation's screenRect by (dx, dy), then removes and
@@ -60,8 +60,8 @@ public:
   // selection is active and resets it to 0 on every 15th tick, when it toggles
   // g_bStrategicMapSelectionOverlayPhase. It is the selection-blink divider.
   TQuickDrawSurfaceContext* renderSurfaceContext; // +0x20
-  TList* registryList24;                          // +0x24 transient-animation registry
-  int overlayPhaseTickCount;                        // +0x28
+  TList* registryList;                            // +0x24 transient-animation registry
+  int overlayPhaseTickCount;                      // +0x28
   TMapUberPicture* mapUberPicture2c;              // +0x2c active strategic-map root
 
   TAnimator();

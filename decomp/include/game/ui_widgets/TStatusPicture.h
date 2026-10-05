@@ -18,7 +18,7 @@ public:
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x594540
   int comparisonMode90;    // +0x90 -- selects which per-nation metric fills values94
   int values94[7];         // +0x94 per-entry sort key (score)
-  short pictureIds_b0[7];  // +0xb0 per-entry picture id (-1 = empty slot)
+  short pictureIds[7];     // +0xb0 per-entry picture id (-1 = empty slot)
   char padBE[0xc0 - 0xbe]; // +0xbe
 
   TStatusPicture();
@@ -47,9 +47,9 @@ public:
           --metricCount;
         } while (metricCount != 0);
         values94[i] = static_cast<short>(sum) * 400 / 400;
-        pictureIds_b0[i] = static_cast<short>(i);
+        pictureIds[i] = static_cast<short>(i);
       } else {
-        pictureIds_b0[i] = -1;
+        pictureIds[i] = -1;
       }
     }
     SortSevenEntriesAndUpdatePictureWidgets();
@@ -60,7 +60,7 @@ public:
     if (maxValue > 400) {
       values94[0] = 400;
       for (int index = 1; index < 7; ++index) {
-        if (pictureIds_b0[index] != -1) {
+        if (pictureIds[index] != -1) {
           values94[index] = values94[index] * 400 / maxValue;
         }
       }

@@ -35,9 +35,9 @@ enum InterNationEventKind {
 // the first four. Preserve the five untouched dwords rather than inventing fields.
 struct NewsEvent {
   int marker0;
-  int subjectNationMask4;
+  int subjectNationMask;
   int marker8;
-  int targetNationMask0C;
+  int targetNationMask;
   int reserved10[5];
 };
 

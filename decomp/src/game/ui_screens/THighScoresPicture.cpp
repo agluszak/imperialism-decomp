@@ -32,13 +32,13 @@ void THighScoresPicture::DoPostCreate(int arg) {
   AssignScoresDatPathToSharedString(&path);
   FILE* file = fopen(path, "rb");
   if (file == 0) {
-    memset(scoreValues94, 0, sizeof(scoreValues94));
+    memset(scoreValues, 0, sizeof(scoreValues));
   } else {
     for (int i = 0; i < 10; ++i) {
-      if (fread(&scoreValues94[i], 4, 1, file) == 0) {
-        scoreValues94[i] = 0;
+      if (fread(&scoreValues[i], 4, 1, file) == 0) {
+        scoreValues[i] = 0;
       }
-      fread(scoreNamesBc[i], 0x20, 1, file);
+      fread(scoreNames[i], 0x20, 1, file);
     }
     fclose(file);
   }
@@ -60,8 +60,8 @@ void THighScoresPicture::Draw(RECT* rectBuffer) {
 
   int rank = 0;
   int y = 100;
-  const int* scoreValue = scoreValues94;
-  const char (*scoreName)[0x20] = scoreNamesBc;
+  const int* scoreValue = scoreValues;
+  const char (*scoreName)[0x20] = scoreNames;
   do {
     if (*scoreValue < 1) {
       break;

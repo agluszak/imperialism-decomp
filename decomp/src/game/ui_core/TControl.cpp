@@ -51,7 +51,7 @@ IMPLEMENT_DYNCREATE(TControl, TView)
 
 // FUNCTION: IMPERIALISM 0x0048e520
 TControl::TControl()
-    : TView(), eventNumber60(1), controlState64(0), contentInsets68(0, 0, 0, 0),
+    : TView(), eventNumber60(1), controlState64(0), contentInsets(0, 0, 0, 0),
       textStyle78(g_UiResourceEntryDefaultTextStyle) {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
@@ -167,7 +167,7 @@ char TControl::PointInBoundsAndActionable(CPoint* point) {
 // FUNCTION: IMPERIALISM 0x0048e980
 void TControl::BuildInsetContentRect(CRect* boundsBuffer) {
   QueryContentBounds(boundsBuffer);
-  boundsBuffer->DeflateRect(&contentInsets68);
+  boundsBuffer->DeflateRect(&contentInsets);
 }
 
 // FUNCTION: IMPERIALISM 0x0048e9c0

@@ -248,10 +248,10 @@ public:
   void RefreshTechnologyStorePageAndHudText(int nationSlot); // 0x005d8750
 
   TurnEventCodeStorage currentTurnEventCode; // +0x04 (turn-event dispatch code)
-  short currentTurnEventNationSlot06;        // +0x06
-  POINT dialogPlacement08; // +0x08 (seeded from g_ptCitySiteSelectionDialogPlacement)
-  bool field10;            // +0x10
-  unsigned char pad11[3];  // +0x11
+  short currentTurnEventNationSlot;          // +0x06
+  POINT dialogPlacement;  // +0x08 (seeded from g_ptCitySiteSelectionDialogPlacement)
+  bool field10;           // +0x10
+  unsigned char pad11[3]; // +0x11
   // +0x14 .. 0xeb (54 turn-event cursor handles). Indexed as
   // turnEventCursors[resourceCursorId - kCursorResourceIdBase] -- confirmed against
   // TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback's ground-truth

@@ -347,7 +347,7 @@ RuntimeActionResult RunOpeningCivilianGrant(NativeTransition& transition) {
 
   g_pSimMgr->difficultyLevel = kDifficultyIntroductory;
   g_pSimMgr->scenarioMapIndexPlusOne = 0;
-  nation->diplomacyEligibilityA0 = 1;
+  nation->diplomacyEligibility = 1;
 
   RuntimeActionResult started = transition.Begin(JsonNullValue());
   if (!started.Succeeded()) {
@@ -367,7 +367,7 @@ RuntimeActionResult RunOpeningCivilianGrant(NativeTransition& transition) {
 
   city->orderCountByType5c[1] += 2;
 
-  if (g_pSimMgr->difficultyLevel == kDifficultyIntroductory && nation->diplomacyEligibilityA0) {
+  if (g_pSimMgr->difficultyLevel == kDifficultyIntroductory && nation->diplomacyEligibility) {
     city->orderCountByType5c[1] += 6;
 
     short result3 =

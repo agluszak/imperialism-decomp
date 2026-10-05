@@ -49,7 +49,7 @@ CMcWindow::CMcWindow(TWindow* descriptor) : CWnd() {
   case 0x30:
   case 0x1f40:
     dwExStyle = 0x80;
-    if (!descriptor->useCaptionedFrameFlag6d) {
+    if (!descriptor->useCaptionedFrameFlag) {
       dwStyle |= 0x80c00000;
     } else {
       dwStyle |= 0x00c80000;
@@ -60,15 +60,15 @@ CMcWindow::CMcWindow(TWindow* descriptor) : CWnd() {
     // validates them with debug asserts.
     break;
   }
-  if (descriptor->topmostFlag70) {
+  if (descriptor->topmostFlag) {
     dwExStyle |= 0x8; // WS_EX_TOPMOST
   }
 
   CRect rect;
   rect.left = descriptor->ownerLocalX;
   rect.top = descriptor->ownerLocalY;
-  rect.right = rect.left + descriptor->frameWidth34;
-  rect.bottom = rect.top + descriptor->frameHeight38;
+  rect.right = rect.left + descriptor->frameWidth;
+  rect.bottom = rect.top + descriptor->frameHeight;
 
   CIncludeView* gameView = GetMainViewHostFromActiveThread();
   WINDOWPLACEMENT gameViewPlacement;

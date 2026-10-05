@@ -18,7 +18,7 @@
 IMPLEMENT_DYNCREATE(THelpPicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x00503c90
-THelpPicture::THelpPicture() : TPicture(), currentHelpSet90(0), topicListText94(0) {}
+THelpPicture::THelpPicture() : TPicture(), currentHelpSet(0), topicListText(0) {}
 
 // FUNCTION: IMPERIALISM 0x00503cf0
 THelpPicture::~THelpPicture() {}
@@ -37,12 +37,12 @@ void THelpPicture::DoPostCreate(int arg) {
 
   TDeluxeText* topicText = new TDeluxeText();
   int textOffset[2] = {0, 0};
-  int textSize[2] = {scrollView->frameWidth34 - 0x1c, scrollView->frameHeight38};
+  int textSize[2] = {scrollView->frameWidth - 0x1c, scrollView->frameHeight};
   RECT textInsets = {0, 0, 0, 0};
   topicText->IDeluxeText(scrollView, textOffset, textSize, &textInsets, &textStyle, -2);
 
-  topicListText94 = topicText;
-  scrollView->contentView60 = topicText;
+  topicListText = topicText;
+  scrollView->contentView = topicText;
   scrollView->SyncBoundedValueAndToggleControlStates();
 }
 
@@ -99,13 +99,13 @@ void THelpPicture::ShowNextHelpSet() {
   for (int index = 1; index <= list->GetSize(); ++index) {
     HelpSetRecord* record =
         static_cast<HelpSetRecord*>(list->GetPtrListEntryByOneBasedIndex(index));
-    if (record->helpResourceBaseId == currentHelpSet90->nextHelpResourceBaseId) {
+    if (record->helpResourceBaseId == currentHelpSet->nextHelpResourceBaseId) {
       next = record;
       break;
     }
   }
   if (next != 0) {
-    currentHelpSet90 = next;
+    currentHelpSet = next;
   }
   ShowTopicList();
 }
@@ -117,13 +117,13 @@ void THelpPicture::ShowPreviousHelpSet() {
   for (int index = 1; index <= list->GetSize(); ++index) {
     HelpSetRecord* record =
         static_cast<HelpSetRecord*>(list->GetPtrListEntryByOneBasedIndex(index));
-    if (record->helpResourceBaseId == currentHelpSet90->previousHelpResourceBaseId) {
+    if (record->helpResourceBaseId == currentHelpSet->previousHelpResourceBaseId) {
       previous = record;
       break;
     }
   }
   if (previous != 0) {
-    currentHelpSet90 = previous;
+    currentHelpSet = previous;
   }
   ShowTopicList();
 }
@@ -144,7 +144,7 @@ void THelpPicture::ShowTopic(short topic) {
   InitializeUiTextStyleDescriptor(&captionStyle, 0, 12, 0x2b67, 1);
 
   TStaticText* subject = static_cast<TStaticText*>(ResolveControlByTag(kControlTagSubj)); // 'subj'
-  subject->SetTextFromStringResource(currentHelpSet90->helpResourceBaseId,
+  subject->SetTextFromStringResource(currentHelpSet->helpResourceBaseId,
                                      static_cast<short>(topic + 1), 1);
   subject->Show(1, 1);
   subject->ViewEnable(0, 1);
@@ -179,7 +179,7 @@ void THelpPicture::ShowTopic(short topic) {
   next->SetTextAlignmentAndMaybeRefresh(-1, 0);
   next->InstallTextStyle(normalStyle, 0);
 
-  topicListText94->Show(1, 0);
+  topicListText->Show(1, 0);
 
   // Mac Strings.rsrc TEXT entries and the Windows GOB crosswalk both use
   // helpResourceBaseId + topic for the selected long-form help body.
@@ -187,10 +187,10 @@ void THelpPicture::ShowTopic(short topic) {
       static_cast<TScrollView*>(ResolveControlByTag(kControlTagSwin)); // 'swin'
   scrollView->AssertValid();
   scrollView->Show(1, 0);
-  topicListText94->SetTextFromUiStringResourceId(
-      static_cast<short>(currentHelpSet90->helpResourceBaseId + topic));
+  topicListText->SetTextFromUiStringResourceId(
+      static_cast<short>(currentHelpSet->helpResourceBaseId + topic));
 
-  int textHeight = topicListText94->MeasureCurrentTextHeightInLayoutRect() + 8;
+  int textHeight = topicListText->MeasureCurrentTextHeightInLayoutRect() + 8;
 
   CRect scrollBounds;
   scrollView->QueryBounds(&scrollBounds);
@@ -205,10 +205,10 @@ void THelpPicture::ShowTopic(short topic) {
     scrollView->ApplyBounds(&textBounds, 0);
   }
 
-  topicListText94->QueryBounds(&textBounds);
+  topicListText->QueryBounds(&textBounds);
   textBounds.top = 0;
   textBounds.bottom = textHeight;
-  topicListText94->ApplyBounds(&textBounds, 0);
+  topicListText->ApplyBounds(&textBounds, 0);
   scrollView->SyncBoundedValueAndToggleControlStates();
   RefreshControl();
   helpDialog->ForceRedraw();
@@ -230,7 +230,7 @@ void THelpPicture::ShowTopicList() {
   InitializeUiTextStyleDescriptor(&captionStyle, 0, 12, 0x2b67, 1);
 
   TStaticText* subject = static_cast<TStaticText*>(ResolveControlByTag(kControlTagSubj)); // 'subj'
-  subject->SetTextFromStringResource(currentHelpSet90->helpResourceBaseId, 1, 1);
+  subject->SetTextFromStringResource(currentHelpSet->helpResourceBaseId, 1, 1);
   subject->Show(1, 1);
   subject->ViewEnable(0, 1);
   subject->SetTextAlignmentAndMaybeRefresh(1, 0);
@@ -242,10 +242,10 @@ void THelpPicture::ShowTopicList() {
   toggle->SetTextFromStringResource(0x2749, 9, 1);
 
   int topicIndex;
-  for (topicIndex = 0; topicIndex < currentHelpSet90->topicCount; ++topicIndex) {
+  for (topicIndex = 0; topicIndex < currentHelpSet->topicCount; ++topicIndex) {
     TStaticText* topicName =
         static_cast<TStaticText*>(ResolveControlByTag(kControlTagNam1 + topicIndex)); // 'nam1'..
-    topicName->SetTextFromStringResource(currentHelpSet90->helpResourceBaseId,
+    topicName->SetTextFromStringResource(currentHelpSet->helpResourceBaseId,
                                          static_cast<short>(topicIndex + 2), 1);
     topicName->Show(1, 1);
     topicName->ViewEnable(1, 1);
@@ -253,14 +253,14 @@ void THelpPicture::ShowTopicList() {
     topicName->InstallTextStyle(normalStyle, 0);
   }
 
-  for (int unusedTopicTag = currentHelpSet90->topicCount + kControlTagNam1;
+  for (int unusedTopicTag = currentHelpSet->topicCount + kControlTagNam1;
        unusedTopicTag < kControlTagNam6; ++unusedTopicTag) { // 'nam1'..'nam5'
     TView* topicName = ResolveControlByTag(unusedTopicTag);
     topicName->Show(0, 1);
     topicName->ViewEnable(0, 1);
   }
 
-  bool navigationAvailable = currentHelpSet90->previousHelpResourceBaseId != 0;
+  bool navigationAvailable = currentHelpSet->previousHelpResourceBaseId != 0;
   TStaticText* previous = static_cast<TStaticText*>(ResolveControlByTag(kControlTagPrev)); // 'prev'
   g_pSimMgr->GetString(0x2749, 0xd, &navigationText);
   previous->SetTextAndMaybeRefresh(&navigationText, 1);
@@ -269,7 +269,7 @@ void THelpPicture::ShowTopicList() {
   previous->SetTextAlignmentAndMaybeRefresh(-1, 0);
   previous->InstallTextStyle(normalStyle, 0);
 
-  navigationAvailable = currentHelpSet90->nextHelpResourceBaseId != 0;
+  navigationAvailable = currentHelpSet->nextHelpResourceBaseId != 0;
   TStaticText* next = static_cast<TStaticText*>(ResolveControlByTag(kControlTagNext)); // 'next'
   g_pSimMgr->GetString(0x2749, 0xe, &navigationText);
   next->SetTextAndMaybeRefresh(&navigationText, 1);
@@ -278,7 +278,7 @@ void THelpPicture::ShowTopicList() {
   next->SetTextAlignmentAndMaybeRefresh(-1, 0);
   next->InstallTextStyle(normalStyle, 0);
 
-  topicListText94->Show(0, 1);
+  topicListText->Show(0, 1);
 
   TScrollView* scrollView =
       static_cast<TScrollView*>(ResolveControlByTag(kControlTagSwin)); // 'swin'

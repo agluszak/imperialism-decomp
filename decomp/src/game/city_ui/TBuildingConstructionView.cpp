@@ -53,11 +53,11 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   if (buildingSlotId == 0xb) {
     city->BuildPowerPlant(0);
   } else {
-    city->cityStockLumberC8 =
-        static_cast<short>(city->cityStockLumberC8 + city->GetBuildingType(buildingSlotId));
+    city->cityStockLumber =
+        static_cast<short>(city->cityStockLumber + city->GetBuildingType(buildingSlotId));
     city->VerifyStocks();
-    city->cityStockSteelCC =
-        static_cast<short>(city->cityStockSteelCC + city->GetBuildingType(buildingSlotId));
+    city->cityStockSteel =
+        static_cast<short>(city->cityStockSteel + city->GetBuildingType(buildingSlotId));
     city->VerifyStocks();
   }
 
@@ -212,7 +212,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     buckCtrl->SetTextAndMaybeRefresh(&buckCost, 1);
   } else {
     // Other slots: eligible if the pending order can be raised to the missing capacity.
-    TProductionOrder* order = city->trailingOrderSlots1b0[slot + 2];
+    TProductionOrder* order = city->trailingOrderSlots[slot + 2];
     if (order == nullptr) {
       MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x4e8);
@@ -246,7 +246,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
 // FUNCTION: IMPERIALISM 0x004ca8f0
 void TBuildingConstructionView::DoClosingAction(unsigned long dialogActionTag) {
   if (buildingSlotId94 != 0xb) {
-    TProductionOrder* order = city90->trailingOrderSlots1b0[buildingSlotId94 + 2];
+    TProductionOrder* order = city90->trailingOrderSlots[buildingSlotId94 + 2];
     if (order == 0) {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x519);

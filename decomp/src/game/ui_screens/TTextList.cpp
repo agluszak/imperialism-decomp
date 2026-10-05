@@ -44,7 +44,7 @@ void TTextList::Draw(RECT* rectBuffer) {
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b6c);
 
   short currentY = 0;
-  if (itemHeight + currentY < frameHeight38) {
+  if (itemHeight + currentY < frameHeight) {
     int startIdx = scrollOffset;
     TTextListItem* pItem = &items[startIdx];
     int idx = startIdx;
@@ -58,14 +58,14 @@ void TTextList::Draw(RECT* rectBuffer) {
         CRect rect;
         rect.left = 0;
         rect.top = currentY;
-        rect.right = frameWidth34;
+        rect.right = frameWidth;
         rect.bottom = currentY + itemHeight;
 
         FillRectWithQuickDrawBrushAndContextOffset(&rect);
       }
 
       short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&tempString);
-      short textX = static_cast<short>(frameWidth34 / 2) - static_cast<short>(textWidth / 2);
+      short textX = static_cast<short>(frameWidth / 2) - static_cast<short>(textWidth / 2);
 
       SetQuickDrawColorAndSyncGlobals(styleFlags2);
       SetQuickDrawTextOriginWithContextOffset(static_cast<short>(textX + 1),
@@ -80,7 +80,7 @@ void TTextList::Draw(RECT* rectBuffer) {
       idx++;
       pItem++;
 
-      if (itemHeight + currentY >= frameHeight38) {
+      if (itemHeight + currentY >= frameHeight) {
         break;
       }
     }

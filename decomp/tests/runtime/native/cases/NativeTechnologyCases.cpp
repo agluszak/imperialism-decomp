@@ -23,8 +23,8 @@ void ClearScheduledUnlocksExcept(int keepTechId, short economicTurn) {
     if (techId == keepTechId) {
       continue;
     }
-    if (g_pTechMgr->perTechUnlockFlag180[techId] == 0) {
-      g_pTechMgr->prioritySlots04[techId] = 0;
+    if (g_pTechMgr->perTechUnlockFlag[techId] == 0) {
+      g_pTechMgr->prioritySlots[techId] = 0;
     }
   }
 }
@@ -57,8 +57,8 @@ RuntimeActionResult RunCheckTechnologyAdvances(NativeTransition& transition) {
 
   const short economicTurn = 1234;
   ClearScheduledUnlocksExcept(4, economicTurn);
-  g_pTechMgr->perTechUnlockFlag180[4] = 0;
-  g_pTechMgr->prioritySlots04[4] = economicTurn;
+  g_pTechMgr->perTechUnlockFlag[4] = 0;
+  g_pTechMgr->prioritySlots[4] = economicTurn;
 
   RuntimeActionResult started = transition.Begin(JsonNullValue());
   if (!started.Succeeded()) {
@@ -82,13 +82,13 @@ RuntimeActionResult RunCheckTechnologyAdvancesAiPurchase(NativeTransition& trans
 
   g_pSimMgr->economicTurn = 1;
   for (int techId = 3; techId < 0x1d; ++techId) {
-    g_pTechMgr->perTechUnlockFlag180[techId] = 0;
-    g_pTechMgr->prioritySlots04[techId] = 0;
+    g_pTechMgr->perTechUnlockFlag[techId] = 0;
+    g_pTechMgr->prioritySlots[techId] = 0;
     g_pTechMgr->orderCapRows277[aiNationSlot].techStatusByTechId[techId] = 2;
   }
-  g_pTechMgr->perTechUnlockFlag180[3] = 1;
+  g_pTechMgr->perTechUnlockFlag[3] = 1;
   g_pTechMgr->orderCapRows277[aiNationSlot].techStatusByTechId[3] = 0;
-  aiNation->diplomacyEligibilityA0 = 0;
+  aiNation->diplomacyEligibility = 0;
   aiNation->treasuryValue10 = 50000;
 
   RuntimeActionResult started = transition.Begin(JsonNullValue());
@@ -113,7 +113,7 @@ RuntimeActionResult RunTechnologyNavalCapabilityUpgrade(NativeTransition& transi
   memset(&g_pTechMgr->capRowsB333[nationSlot].selectedByResourceType[5], 0, 9);
   const short initialShipTypes[8] = {1, 2, 0, 0, 3, 4, 0, 0};
   for (int slot = 0; slot < 8; ++slot) {
-    nation->city->shipOrderSlots190[slot]->resourceTypeIndex = initialShipTypes[slot];
+    nation->city->shipOrderSlots[slot]->resourceTypeIndex = initialShipTypes[slot];
   }
 
   TShip* survivorA = new TShip();
@@ -157,7 +157,7 @@ RuntimeActionResult RunTechnologyNavalCapabilitySequence(NativeTransition& trans
   memset(&g_pTechMgr->capRowsB333[nationSlot].selectedByResourceType[5], 0, 9);
   const short initialShipTypes[8] = {1, 2, 0, 0, 3, 4, 0, 0};
   for (int slot = 0; slot < 8; ++slot) {
-    nation->city->shipOrderSlots190[slot]->resourceTypeIndex = initialShipTypes[slot];
+    nation->city->shipOrderSlots[slot]->resourceTypeIndex = initialShipTypes[slot];
   }
 
   const int technologyIds[] = {4, 9, 15, 21, 24, 27};

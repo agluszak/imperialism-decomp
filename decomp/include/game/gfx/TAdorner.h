@@ -55,7 +55,7 @@ public:
   // stable lookup ID. Windows RTTI and CreateObject independently fix the total size at
   // 0xc, leaving three bytes of tail padding after the one-byte flags value.
   unsigned long adornerId04;
-  unsigned char adornerFlags08;
+  unsigned char adornerFlags;
   unsigned char pad09[3];
 };
 ASSERT_SIZE(TAdorner, 0xc);

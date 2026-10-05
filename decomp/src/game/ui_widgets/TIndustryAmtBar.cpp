@@ -41,7 +41,7 @@ void TIndustryAmtBar::DoPostCreate(int arg) {
     mappedTag = g_pTradeSummarySelectionMap[summaryTagIndex];
   }
 
-  selectedMetricRecord = province->orderSlotsE4[summaryTagIndex];
+  selectedMetricRecord = province->orderSlots[summaryTagIndex];
   // `productionSlot` only exists on TItemOrder-sized (0x54-byte) objects. This
   // downcast is safe here: the summary-tag scan above bounds summaryTagIndex
   // to the 23-entry g_pTradeSummarySelectionMap table (0x696108), so tagIndex
@@ -53,7 +53,7 @@ void TIndustryAmtBar::DoPostCreate(int arg) {
 
   short stepValue = selectedMetricRecord->MaxOrder();
   short productionCap = (short)productionValue;
-  int rangeRaw = this->frameWidth34;
+  int rangeRaw = this->frameWidth;
   stepOrCurrentValue = (short)((stepValue * rangeRaw) / productionCap);
 
   auxValueA = productionCap;
@@ -89,7 +89,7 @@ void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       }
 
       short overlayOffsetX = control->stepOrCurrentValue;
-      short overlayOffsetY = static_cast<short>(control->frameHeight38);
+      short overlayOffsetY = static_cast<short>(control->frameHeight);
       SetQuickDrawTextOriginWithContextOffset(overlayOffsetX, 0);
       SetQuickDrawFillColor(0);
       ResetQuickDrawStrokeState();
@@ -115,8 +115,8 @@ void TIndustryAmtBar::RenderQuickDrawOverlayWithHitRegion(short selectedValue) {
     if (IsActionable()) {
       CPoint translatedOrigin(g_nOverlayClipCacheParamX, g_nOverlayClipCacheParamY);
       TranslatePointToParentChain4E(&translatedOrigin);
-      RECT invalidRect = {translatedOrigin.x, translatedOrigin.y, translatedOrigin.x + frameWidth34,
-                          translatedOrigin.y + frameHeight38};
+      RECT invalidRect = {translatedOrigin.x, translatedOrigin.y, translatedOrigin.x + frameWidth,
+                          translatedOrigin.y + frameHeight};
       InvalidateCityDialogRectRegion(&invalidRect, 1);
     }
   }

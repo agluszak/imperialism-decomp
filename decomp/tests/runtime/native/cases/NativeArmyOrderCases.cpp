@@ -41,7 +41,7 @@ short AdjacentOwnedProvince(short province) {
   const Province& record = g_pGlobalMapState->cityScoreTable[province];
   short adj;
   for (adj = 0; adj < record.adjacentRegionCount08; ++adj) {
-    const short dest = record.adjacentRegionIds0A[adj];
+    const short dest = record.adjacentRegionIds[adj];
     if (dest >= 0 && dest < 0x180 &&
         g_pGlobalMapState->cityScoreTable[dest].ownerNationCode00 == record.ownerNationCode00) {
       return dest;
@@ -54,7 +54,7 @@ short AdjacentForeignProvince(short province) {
   const Province& record = g_pGlobalMapState->cityScoreTable[province];
   short adj;
   for (adj = 0; adj < record.adjacentRegionCount08; ++adj) {
-    const short dest = record.adjacentRegionIds0A[adj];
+    const short dest = record.adjacentRegionIds[adj];
     if (dest >= 0 && dest < 0x180 &&
         g_pGlobalMapState->cityScoreTable[dest].ownerNationCode00 != record.ownerNationCode00 &&
         g_pGlobalMapState->cityScoreTable[dest].ownerNationCode00 != -1) {
@@ -113,9 +113,9 @@ JSON_Value* ToolbarCountJson(short province) {
     totals[category] = 0;
   }
   if (province >= 0 && province < 0x180) {
-    unit = g_pGlobalMapState->cityScoreTable[province].stationedUnitChain98;
+    unit = g_pGlobalMapState->cityScoreTable[province].stationedUnitChain;
   }
-  for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14)) {
+  for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
     const short order = static_cast<short>(unit->unitOrder);
     const int toolbarCategory = g_awTacticalUnitCategoryCodeBySlot[unit->orderType];
     switch (order) {

@@ -58,15 +58,15 @@ public:
   // Own slice (TMapUberUberPicture ends at 0x94; this object is 0xc4). Layout/roles from
   // ConstructTMapUberPictureBaseState (0x5969e0) and DoPostCreate (0x596a80).
   // Set to 1 by the ctor; read by SetActiveMapOrderEntry to gate
-  // InvalidateMapRegionForOrderEntry calls around orderEntryContext98 updates (matches
+  // InvalidateMapRegionForOrderEntry calls around orderEntryContext updates (matches
   // TWorldView.cpp's independently-derived TMapOrderToolbarPendingState::invalidationFlag).
-  bool invalidationFlag94;
+  bool invalidationFlag;
   // 0=civilian, 1=army, 2=navy, 3=none (default) -- selects categoryPages[] below.
-  short activeUnitCategoryIndex96;
+  short activeUnitCategoryIndex;
   // The currently-selected map-order context node -- a TZone (map-action context), not a
   // TTaskForce: its CreateTaskForceFromNavyOrders... factory produces the task force
   // panel shown for it (SetActiveMapOrderEntry/RefreshMapOrderEntryPanel).
-  TZone* orderEntryContext98;
+  TZone* orderEntryContext;
   // +0x9c dead store — Windows field-xrefs find only the constructor's zero
   // write; no reader anywhere in the image. Kept for layout fidelity.
   int deadStore9C;
@@ -77,7 +77,7 @@ public:
   // Optional 'DOOG' child used by the 0x7dd dual-map factory. Its factory constructs a
   // TOceanDialog, and Scroll calls ApplyDirectionalNudgeAndRefreshDisplay
   // directly when that child is active.
-  TOceanDialog* goodGoldTagControlA4;
+  TOceanDialog* goodGoldTagControl;
   // The 'DLOG' child. Event 0x3b8 constructs a TCitySiteView (a TMapDialog subclass),
   // while event 0x7dd constructs TMapDialog directly. The slot-0xa4 dispatch in
   // Scroll resolves to
@@ -85,7 +85,7 @@ public:
   TMapDialog* subview2A8;
   // Active strategic-map dialog. Both TMapDialog and TOceanDialog derive from TWorldView;
   // this common-base type allows the original land/ocean switch without a cast.
-  TWorldView* subviewAc;
+  TWorldView* subview;
   // 0xb0..0xbf: per-category ('uciv'/'uarm'/'unav'/unused) sub-controls resolved by
   // DoPostCreate via ResolveControlByTag. NOT a homogeneous TMapUberPicture array
   // (that was the old theory): (a) TCivMgr's
@@ -111,7 +111,7 @@ public:
   // The mini-map tool-window created by DisplayMiniMap (0x599cf0), which
   // allocates a TMiniMapView (vtable 0x669170, size 0xa0), sets its owner backref, and
   // stores the result here.
-  TMiniMapView* miniMapViewC0;
+  TMiniMapView* miniMapView;
 
   TMapUberPicture();
 
@@ -120,7 +120,7 @@ public:
   // mode-caption text, and dispatching Locate on the old/new categoryPages[]
   // entries. 0x00596cb0, __thiscall, 1 arg. Curated in symbols.csv as
   // `TToolBarCluster::SetMapInteractionMode`, but this callsite's own disassembly reads
-  // activeUnitCategoryIndex96/categoryPages[] at their real TMapUberPicture offsets --
+  // activeUnitCategoryIndex/categoryPages[] at their real TMapUberPicture offsets --
   // moved here rather than left mis-attributed (see also TWorldView.cpp's own
   // independent caveat about the same object).
   void SetMapInteractionMode(short nMode);
@@ -130,14 +130,14 @@ public:
   // 0 args.
   void InvalidateMiniMap();
   // Refreshes the 4 order-quota slider controls ("0slc".."3slc") from
-  // orderEntryContext98, or clears them if it's null. 0x00597810, __thiscall, 1 arg.
+  // orderEntryContext, or clears them if it's null. 0x00597810, __thiscall, 1 arg.
   void RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry);
   // Leaves the alternate zoomed-out ("ZmOt") map mode: asserts/retags the zoom-out control
   // ('controlOverride' when non-null, else resolved by tag 'ZmOt') back to 'ZmIn', clears
-  // invalidationFlag94, and restores subviewAc to goodGoldTagControlA4. 0x00599b90,
+  // invalidationFlag, and restores subview to goodGoldTagControl. 0x00599b90,
   // __thiscall, 1 arg (a TView* override for the zoom control, or null to resolve it).
   void CommitPendingUiModeChangeAndRefreshViews(TView* controlOverride);
-  // Sets orderEntryContext98 (invalidating the old/new map regions around the write),
+  // Sets orderEntryContext (invalidating the old/new map regions around the write),
   // then calls RefreshMapOrderEntryPanel. 0x00597950, __thiscall, 1 arg.
   void SetActiveMapOrderEntry(TZone* pMapOrderContextZone);
   // Invalidate one navy-order zone only while the alternate ocean view is active.
@@ -170,7 +170,7 @@ public:
   // after a handled click (priority: civilian, then province, then map-order entry;
   // clears the active pointer if none remain). 0x00597a80, __thiscall, 0 args, 996 bytes.
   // Its body reads
-  // this+0x96 (activeUnitCategoryIndex96, MOV BL,byte[ESI+0x96]) and both real call sites
+  // this+0x96 (activeUnitCategoryIndex, MOV BL,byte[ESI+0x96]) and both real call sites
   // (TCivMgr::OrderAndCycle's thunk 0x408b93, and
   // TArmyToolbar.cpp's own call) load ECX from g_pViewMgr->mapUberPictureF0
   // directly -- ground-truth-confirmed via `just ghidra listing`, not a categoryPages[]

@@ -34,11 +34,11 @@ IMPLEMENT_DYNCREATE(TNewspaperView, TPicture)
 // FUNCTION: IMPERIALISM 0x0055d200
 void TNewspaperView::StuffValues(int pageNation) {
   CString tokens[4];
-  summaryPageIndex90 = pageNation;
+  summaryPageIndex = pageNation;
   CString formatText;
   CString panelText;
   CString dateText;
-  newsTexStream94 = g_pAssetMgr->LoadTableResourceStreamByName(g_pLanguageMgr->GetNewsTexPath());
+  newsTexStream = g_pAssetMgr->LoadTableResourceStreamByName(g_pLanguageMgr->GetNewsTexPath());
 
   TextStyle titleStyle;   // (face 0, 12pt)
   TextStyle featureStyle; // (face 1, 14pt)
@@ -129,7 +129,7 @@ void TNewspaperView::StuffValues(int pageNation) {
                                                   tokens);
     }
   }
-  g_pAssetMgr->ReleaseResourceStreamIfNotNull(newsTexStream94);
+  g_pAssetMgr->ReleaseResourceStreamIfNotNull(newsTexStream);
 }
 
 // FUNCTION: IMPERIALISM 0x0055d910
@@ -274,8 +274,8 @@ int TNewspaperView::AppendInterNationEventSummaryTextEntry(int column, int y, in
   }
 
   char* recordBuffer = new char[recordLength];
-  g_pAssetMgr->SeekResourceStreamFromBeginning(newsTexStream94, recordOffset);
-  g_pAssetMgr->ReadResourceStreamIntoBufferAndAdvance(newsTexStream94, recordBuffer, &recordLength);
+  g_pAssetMgr->SeekResourceStreamFromBeginning(newsTexStream, recordOffset);
+  g_pAssetMgr->ReadResourceStreamIntoBufferAndAdvance(newsTexStream, recordBuffer, &recordLength);
   char* formatted = AppendInterNationEventSummaryTextEntry_Impl(
       g_pSimMgr, recordBuffer, static_cast<LPCSTR>(tokens[0]), static_cast<LPCSTR>(tokens[1]),
       static_cast<LPCSTR>(tokens[2]), static_cast<LPCSTR>(tokens[3]));

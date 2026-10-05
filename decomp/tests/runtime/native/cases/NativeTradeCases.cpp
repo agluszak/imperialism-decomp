@@ -429,7 +429,7 @@ void DrainRankedDealsWithHumanAutoAccept() {
       TCountry* buyer = g_apTerrainTypeDescriptorTable[entry->sourceNationSlot];
       TGreatPower* buyerPower =
           entry->sourceNationSlot < 7 ? g_apNationStates[entry->sourceNationSlot] : 0;
-      if (buyerPower != 0 && buyerPower->diplomacyEligibilityA0 != 0 &&
+      if (buyerPower != 0 && buyerPower->diplomacyEligibility != 0 &&
           buyer->StillBuyingItem(dispatchIdx)) {
         tradeManager->SetDealResults(entry->sourceNationSlot, entry->targetNationSlot,
                                      static_cast<short>(transfer),
@@ -509,7 +509,7 @@ RuntimeActionResult RunTradePhaseCase(NativeTransition& transition, bool buyClot
 
   const short nationSlot = g_pSimMgr->GetActiveNationId();
   TGreatPower* nation = g_apNationStates[nationSlot];
-  if (nation == 0 || nation->city == 0 || nation->diplomacyEligibilityA0 == 0) {
+  if (nation == 0 || nation->city == 0 || nation->diplomacyEligibility == 0) {
     return RuntimeActionResult::Failure("the loaded active nation is not a human great power");
   }
 
@@ -556,7 +556,7 @@ RuntimeActionResult RunTradeTurnStop(NativeTransition& transition) {
     return RuntimeActionResult::Failure("trade turn state is unavailable");
   }
   TGreatPower* nation = ActiveNation();
-  if (nation == 0 || nation->city == 0 || nation->diplomacyEligibilityA0 == 0) {
+  if (nation == 0 || nation->city == 0 || nation->diplomacyEligibility == 0) {
     return RuntimeActionResult::Failure("the active nation cannot receive trade offers");
   }
   for (int slot = 0; slot < kMajorNationCount; ++slot) {
@@ -605,7 +605,7 @@ RuntimeActionResult RunTradeTurnStop(NativeTransition& transition) {
     row.Set("source", deal->sourceNationSlot);
     row.Set("target", deal->targetNationSlot);
     row.Set("delta", deal->relationDelta04);
-    row.Set("standing", deal->relationStanding06);
+    row.Set("standing", deal->relationStanding);
     row.Set("score", deal->dispatchScore08);
     dealRows.Add(row.Release());
   }

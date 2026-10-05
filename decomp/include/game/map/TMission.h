@@ -42,7 +42,7 @@ enum eMissionType {
 class TMission : public TObject {
 public:
   NationSlot nationId04; // 0x04 source-nation id (InitializeMission...)
-  short pathMarker06;    // 0x06 path/dispatch marker (set 0xffff)
+  short pathMarker;      // 0x06 path/dispatch marker (set 0xffff)
   unsigned char state08; // 0x08 lifecycle state byte (ctor = 2)
   unsigned char padding09[3];
   float importanceScore0c; // 0x0c cached score/value (ctor = 0.0f)

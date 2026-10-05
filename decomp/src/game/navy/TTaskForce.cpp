@@ -395,7 +395,7 @@ void TTaskForce::OrderSail(TZone* orderTarget) {
 
 // FUNCTION: IMPERIALISM 0x005533f0
 void TTaskForce::OrderSailTowards(TZone* pContextAnchor) {
-  // Reseed the zone-graph BFS distance levels (TZone::distanceLevel44) from
+  // Reseed the zone-graph BFS distance levels (TZone::distanceLevel) from
   // pContextAnchor before using them below to steer the candidate-promotion
   // walk. level == -1 means "start a fresh search" (see
   // TZone::PropagateMapActionContextDistanceLevelsRecursive).
@@ -428,7 +428,7 @@ void TTaskForce::OrderSailTowards(TZone* pContextAnchor) {
       do {
         TZone* candidate = current->primaryNeighbors[index];
         current = static_cast<TZone*>(target);
-        if (candidate->distanceLevel44 < current->distanceLevel44) {
+        if (candidate->distanceLevel < current->distanceLevel) {
           // Walk one hop closer to pContextAnchor: promote this neighbor to
           // be the new owner (re-fetches the slot, matching the original's
           // repeated ensure-slot call rather than reusing `candidate`).
@@ -1791,7 +1791,7 @@ void TTaskForce::CarryOutOrders() {
   }
   case 5: {
     Province* cityRecord = static_cast<Province*>(target);
-    cityRecord->exploredByNationMaskA1 |= static_cast<unsigned char>(1 << nation);
+    cityRecord->exploredByNationMask |= static_cast<unsigned char>(1 << nation);
     if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
       int cityIndex = cityRecord->GetIndex();
       g_pGameFlowState->DispatchCityRedrawInvalidateEvent(static_cast<short>(cityIndex));

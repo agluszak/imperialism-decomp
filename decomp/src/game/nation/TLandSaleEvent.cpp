@@ -42,8 +42,8 @@ void TLandSaleEvent::Execute() {
     sellerName = g_pSimMgr->LoadNormalizedCredentialName(seller->nationSlot);
   }
 
-  if (g_pAmbitApplication->edgeScrollTarget48 != 0) {
-    static_cast<TMapUberPicture*>(g_pAmbitApplication->edgeScrollTarget48)->CenterOn(tileIndex08);
+  if (g_pAmbitApplication->edgeScrollTarget != 0) {
+    static_cast<TMapUberPicture*>(g_pAmbitApplication->edgeScrollTarget)->CenterOn(tileIndex08);
   }
 
   g_pSimMgr->GetString(0x274d, 6, &messageTemplate);

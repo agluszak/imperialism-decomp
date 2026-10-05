@@ -110,7 +110,7 @@ void TCountry::InitializeNationStateIdentityAndOwnedRegionList(NationSlot nation
   for (int unitType = 0; unitType < 0x1e; ++unitType) {
     this->unitNameOrdinalByType[unitType] = 1;
   }
-  this->unitNameCounter84 = 1;
+  this->unitNameCounter = 1;
 
   TLongintList* ownedRegions = new TLongintList();
   for (int cityIndex = 0; cityIndex < 0x180; ++cityIndex) {
@@ -147,7 +147,7 @@ void TCountry::ReadFrom(TStream* stream) {
   stream->ReadBytes(this->unitNameOrdinalByType, 0x3c);
   SwapShortArrayBytes(this->unitNameOrdinalByType, 0x1e);
 
-  stream->ReadBytes(&this->unitNameCounter84, 2);
+  stream->ReadBytes(&this->unitNameCounter, 2);
   stream->ReadBytes(&this->treasuryValue10, 4);
   stream->ReadBytes(&this->homeTileIndex, 4);
   stream->ReadBytes(&this->overlayAnchorTileCache8c, 4);
@@ -202,7 +202,7 @@ void TCountry::WriteTo(TStream* stream) {
   stream->WriteBytes(&this->nationSlot, 2);
   stream->WriteBytes(&this->encodedNationSlot, 2);
   WriteShortArrayElems(stream, this->unitNameOrdinalByType, 0x1e);
-  stream->WriteBytes(&this->unitNameCounter84, 2);
+  stream->WriteBytes(&this->unitNameCounter, 2);
   stream->WriteBytes(&this->treasuryValue10, 4);
   stream->WriteBytes(&this->homeTileIndex, 4);
   stream->WriteBytes(&this->overlayAnchorTileCache8c, 4);
@@ -275,8 +275,7 @@ void TCountry::InitialMilitia(void) {
           order->SetOrders(static_cast<UnitOrder>(2), -1);
         }
         g_pGlobalMapState->SetProvinceCapitalTileFlagBit08(regionId);
-        if (this->nationSlot < 7 &&
-            g_apNationStates[this->nationSlot]->diplomacyEligibilityA0 == 0 &&
+        if (this->nationSlot < 7 && g_apNationStates[this->nationSlot]->diplomacyEligibility == 0 &&
             g_pSimMgr->difficultyLevel == kDifficultyNighOnImpossible) {
           order = new TMilitaryUnit();
           order->IMilitaryUnit(6, regionId, this->nationSlot);
@@ -295,7 +294,7 @@ void TCountry::InitialMilitia(void) {
         }
         if (this->nationSlot < 7) {
           TGreatPower* nation = g_apNationStates[this->nationSlot];
-          if (nation->diplomacyEligibilityA0 != 0 &&
+          if (nation->diplomacyEligibility != 0 &&
               g_pSimMgr->difficultyLevel == kDifficultyIntroductory) {
             TCity* cityForPort = (nation != 0) ? nation->city : 0;
             TZone* portZone = g_pActiveMapOrderContext->FindPortZoneBySelectedTile(cityForPort);
@@ -329,8 +328,7 @@ void TCountry::InitialMilitia(void) {
 void TCountry::AddMilitia(int nodeContext) {
   int capabilityBonus = 0;
   if (static_cast<unsigned short>(this->nationSlot) < 7) {
-    const TTechMgr::MilitaryCapRow& capabilityRow =
-        g_pTechMgr->abilityActiveRows395[this->nationSlot];
+    const TTechMgr::MilitaryCapRow& capabilityRow = g_pTechMgr->abilityActiveRows[this->nationSlot];
     if (capabilityRow.abilityActiveById[0x10] != 0) {
       capabilityBonus = 0x10;
     } else {
@@ -592,8 +590,8 @@ void TCountry::NameUnits(void) {
         CString fullName = withSeparator + typeName;
         composedName = fullName;
         unit->name24 = composedName;
-        unit->unitRosterId1A = this->unitNameCounter84;
-        ++this->unitNameCounter84;
+        unit->unitRosterId1A = this->unitNameCounter;
+        ++this->unitNameCounter;
         ++*nameOrdinalCounter;
       } else {
         CString flavorBase;
@@ -606,8 +604,8 @@ void TCountry::NameUnits(void) {
         CString fullName = withSeparator + flavorName;
         flavorName = fullName;
         unit->name24 = flavorName;
-        unit->unitRosterId1A = this->unitNameCounter84;
-        ++this->unitNameCounter84;
+        unit->unitRosterId1A = this->unitNameCounter;
+        ++this->unitNameCounter;
       }
     }
     ++ordinal;
@@ -673,9 +671,9 @@ void TCountry::GrowMilitia(void) {
     if ((regionId < 0) || (0x17f < regionId)) {
       unitChain = 0;
     } else {
-      unitChain = g_pGlobalMapState->cityScoreTable[regionId].stationedUnitChain98;
+      unitChain = g_pGlobalMapState->cityScoreTable[regionId].stationedUnitChain;
     }
-    for (; unitChain != 0; unitChain = static_cast<TMilitaryUnit*>(unitChain->nextAtLocation14)) {
+    for (; unitChain != 0; unitChain = static_cast<TMilitaryUnit*>(unitChain->nextAtLocation)) {
       if (unitChain->GetCategory() == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
         garrisonCount = static_cast<short>(garrisonCount + 1);
       }

@@ -85,17 +85,17 @@ extern unsigned char g_abStrategicTerrainSeedGateProfileA[kStrategicTerrainCount
 
 // TMapMgr.cpp — per-StrategicTerrainKind priority score, read by
 // TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority (0x50fca0) to rank same-city
-// hex neighbors when picking primaryNeighborTileIndex40/secondaryNeighborTileIndex3e. Indexed
+// hex neighbors when picking primaryNeighborTileIndex/secondaryNeighborTileIndex. Indexed
 // all eight strategic terrain kinds; read raw at 0x00696e10.
 extern short g_anStrategicTerrainNeighborLinkPriority[kStrategicTerrainCount];
 
-// TMapMgr.cpp — running region-marker id, assigned to a tile's regionSubtypeTag05 by
+// TMapMgr.cpp — running region-marker id, assigned to a tile's regionSubtypeTag by
 // TMapMgr::FloodFillTileRegionMarker (0x5143d0) and incremented (low 16 bits only) after each
 // call. Read raw at 0x00696d90 (initial value 1).
 extern int g_nNextRegionMarkerId;
 
 // TMapMgr.cpp — per-tile sprite-variant bitmap-strip offset tables, indexed
-// [gateFlag][spriteVariantIndex01] (table39 by spriteVariantIndex01 alone). Read by the
+// [gateFlag][spriteVariantIndex] (table39 by spriteVariantIndex alone). Read by the
 // rendering-variant lookup family (0x516150/0x5161a0/0x5161e0/0x516220).
 extern short g_awTileSpriteVariantOffsetTable38[16][2];
 

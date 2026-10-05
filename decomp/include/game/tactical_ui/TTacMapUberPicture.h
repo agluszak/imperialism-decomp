@@ -17,7 +17,7 @@ public:
   virtual void DoPostCreate(int arg) override;            // slot 0x37 0x5ad3a0
   virtual void Scroll(MapScrollEdgeMaskStorage edgeMask) override; // slot 0x74 0x45d3b0
 
-  TTacMapUberPicture() : tacticalBattleView94(nullptr) {}
+  TTacMapUberPicture() : tacticalBattleView(nullptr) {}
 
   // Dead helper: retargets the 'wind' child picture to `resourceBase + 0xf00` with an
   // immediate refresh. No live caller survives in the retail binary.
@@ -26,6 +26,6 @@ public:
   // Tactical 'DLOG' child resolved by DoPostCreate. Scroll forwards
   // the edge mask to its slot 0x6b
   // (TTacticalBattleView::Scroll).
-  TTacticalBattleView* tacticalBattleView94;
+  TTacticalBattleView* tacticalBattleView;
 };
 ASSERT_SIZE(TTacMapUberPicture, 0x98);

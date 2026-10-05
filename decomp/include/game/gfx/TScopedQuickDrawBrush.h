@@ -7,11 +7,11 @@
 class TScopedQuickDrawBrush {
 public:
   TScopedQuickDrawBrush(RECT* rect) {
-    ::CopyRect(&paintRect00, rect);
-    ::CopyRect(&sourceRect10, rect);
+    ::CopyRect(&paintRect, rect);
+    ::CopyRect(&sourceRect, rect);
   }
 
-  RECT paintRect00;
-  RECT sourceRect10;
+  RECT paintRect;
+  RECT sourceRect;
 };
 ASSERT_SIZE(TScopedQuickDrawBrush, 0x20);

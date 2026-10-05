@@ -23,7 +23,7 @@ short TItemOrder::MaxOrder() {
   short currentQuantity = quantity;
   short workforceLimit = static_cast<short>(productionSummary->strength / 2 + currentQuantity);
   short productionLimit =
-      static_cast<short>(ownerCity->productionAccum1fc[productionSlot] + currentQuantity);
+      static_cast<short>(ownerCity->productionAccum[productionSlot] + currentQuantity);
   short resourceLimit = static_cast<short>(trackingSlots[primaryInputResourceId] +
                                            ownerCity->CityStockByType(primaryInputResourceId));
 
@@ -84,8 +84,8 @@ bool TItemOrder::SetQuantity(short quantity) {
   short workforceChange = static_cast<short>(delta * 2);
   productionSummary->strength = static_cast<short>(productionSummary->strength - workforceChange);
   reservedWorkforce = static_cast<short>(reservedWorkforce + workforceChange);
-  ownerCity->productionAccum1fc[productionSlot] =
-      static_cast<short>(ownerCity->productionAccum1fc[productionSlot] - delta);
+  ownerCity->productionAccum[productionSlot] =
+      static_cast<short>(ownerCity->productionAccum[productionSlot] - delta);
   g_pViewMgr->RefreshCityProductionUi();
   return true;
 }
@@ -105,8 +105,8 @@ void TItemOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
 
 // FUNCTION: IMPERIALISM 0x004b5580
 void TItemOrder::Produce() {
-  ownerCity->productionAccum1fc[productionSlot] =
-      static_cast<short>(ownerCity->productionAccum1fc[productionSlot] + quantity);
+  ownerCity->productionAccum[productionSlot] =
+      static_cast<short>(ownerCity->productionAccum[productionSlot] + quantity);
   ownerCity->CityStockByType(resourceTypeIndex) =
       static_cast<short>(ownerCity->CityStockByType(resourceTypeIndex) + quantity);
   ownerCity->VerifyStocks();

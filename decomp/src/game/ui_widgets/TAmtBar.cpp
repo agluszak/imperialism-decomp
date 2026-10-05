@@ -77,8 +77,8 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   CPoint translatedOrigin(g_nOverlayClipCacheParamX, g_nOverlayClipCacheParamY);
   this->TranslatePointToParentChain4E(&translatedOrigin);
 
-  controlWidth = (short)this->frameWidth34;
-  controlHeight = (short)this->frameHeight38;
+  controlWidth = (short)this->frameWidth;
+  controlHeight = (short)this->frameHeight;
 
   panelRect.left = translatedOrigin.x;
   panelRect.top = translatedOrigin.y;
@@ -120,12 +120,12 @@ void TAmtBar::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin)
   (void)origin;
   int baseValue;
   if (auxValueA <= 0 ||
-      static_cast<int>(frameWidth34) / (static_cast<int>(auxValueA) << 1) <= point.x) {
+      static_cast<int>(frameWidth) / (static_cast<int>(auxValueA) << 1) <= point.x) {
     // Segment index of the click: point.x * segments / width + 1. The FILD/FMULP/FDIVP
-    // chain at 0x00588975-0x00588987 multiplies by auxValueA and divides by frameWidth34;
+    // chain at 0x00588975-0x00588987 multiplies by auxValueA and divides by frameWidth;
     // it does not divide by their product.
     double ratio = static_cast<double>(point.x) * static_cast<double>(auxValueA) /
-                       static_cast<double>(static_cast<int>(frameWidth34)) +
+                       static_cast<double>(static_cast<int>(frameWidth)) +
                    1.0;
     // The (double)->int truncation below is a real MSVC5 CRT call (_ftol, libcmt
     // ftol.obj, 0x005e73d0) whose argument is passed on the FPU stack, not as a normal

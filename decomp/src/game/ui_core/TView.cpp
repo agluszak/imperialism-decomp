@@ -44,14 +44,14 @@ void TView::HandleMouseCommandToSelf(CPoint& point, TToolboxEvent* event, CPoint
 void TView::QueryContentBounds(CRect* boundsOut) {
   boundsOut->left = 0;
   boundsOut->top = 0;
-  boundsOut->right = frameWidth34;
-  boundsOut->bottom = frameHeight38;
+  boundsOut->right = frameWidth;
+  boundsOut->bottom = frameHeight;
 }
 // FUNCTION: IMPERIALISM 0x00427290
 void TView::QueryBounds(CRect* boundsOut) {
-  int width = frameWidth34;
+  int width = frameWidth;
   int left = ownerLocalX;
-  int height = frameHeight38;
+  int height = frameHeight;
   int top = ownerLocalY;
   boundsOut->left = left;
   boundsOut->top = top;
@@ -94,7 +94,7 @@ void TView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
 }
 
 // TViewChildList's compiler-emitted CList<TView*,TView*>::Serialize body. The real source is
-// the childList44 template type in TView, not a TView method or TEventHandler record pool.
+// the childList template type in TView, not a TView method or TEventHandler record pool.
 
 // FUNCTION: IMPERIALISM 0x00489f60
 TView* TViewChildList::FindByTag(unsigned int tag) {
@@ -137,14 +137,13 @@ IMPLEMENT_DYNCREATE(TView, TEventHandler)
 
 // FUNCTION: IMPERIALISM 0x0048a8e0
 TView::TView()
-    : TEventHandler(), ownerContext(0), absoluteX(0), absoluteY(0), controlValue3c(0),
-      childList44(0), stylePayload48(0), inputGateFlag4c(1), childHitTestFlag4d(1),
-      cursorId4e(0xffff), nativeWindow50(0), helpState54(1), hoverHelpText58(),
-      hoverHelpEnabled5c(0) {}
+    : TEventHandler(), ownerContext(0), absoluteX(0), absoluteY(0), controlValue3c(0), childList(0),
+      stylePayload48(0), inputGateFlag(1), childHitTestFlag(1), cursorId4e(0xffff),
+      nativeWindow50(0), helpState54(1), hoverHelpText(), hoverHelpEnabled5c(0) {}
 
 // FUNCTION: IMPERIALISM 0x0048a9d0
 TView::~TView() {
-  delete childList44;
+  delete childList;
   delete stylePayload48;
 }
 
@@ -164,8 +163,8 @@ void TView::InitializeUiResourceEntryFrameAndParent(TView* resourceContext, TVie
   nextHandler = panel;
   ownerLocalX = offsetLayout[0];
   ownerLocalY = offsetLayout[1];
-  frameWidth34 = sizeLayout[0];
-  frameHeight38 = sizeLayout[1];
+  frameWidth = sizeLayout[0];
+  frameHeight = sizeLayout[1];
   if (panel != 0) {
     panel->AttachChildControl(this, attachFlag);
   }
@@ -173,10 +172,10 @@ void TView::InitializeUiResourceEntryFrameAndParent(TView* resourceContext, TVie
 }
 // FUNCTION: IMPERIALISM 0x0048aaf0
 void TView::DispatchControlEventToChildrenAndSelf(int eventArg) {
-  if (childList44 != 0) {
-    POSITION pos = childList44->GetHeadPosition();
+  if (childList != 0) {
+    POSITION pos = childList->GetHeadPosition();
     while (pos != NULL) {
-      TView* child = static_cast<TView*>(childList44->GetNext(pos));
+      TView* child = static_cast<TView*>(childList->GetNext(pos));
       child->DispatchControlEventToChildrenAndSelf(eventArg);
     }
   }
@@ -200,14 +199,14 @@ void TView::AttachChildControl(class TView* child, int flag) {
   child->ownerContext = this;
   child->nextHandler = this;
 
-  if (childList44 == nullptr) {
-    childList44 = new TViewChildList();
+  if (childList == nullptr) {
+    childList = new TViewChildList();
   }
 
   if (flag != 0) {
-    childList44->AddTail(child);
+    childList->AddTail(child);
   } else {
-    childList44->AddHead(child);
+    childList->AddHead(child);
   }
 
   child->UpdateCoordinates();
@@ -218,7 +217,7 @@ void TView::AttachChildControl(class TView* child, int flag) {
 // Inlines CList<TView*,TView*>::RemoveAt (frees the list's block chain once empty).
 // FUNCTION: IMPERIALISM 0x0048ae60
 void TView::DetachChildFromOwnerList(class TView* child) {
-  TViewChildList* list = childList44;
+  TViewChildList* list = childList;
   if (list == 0) {
     child->ownerContext = 0;
     return;
@@ -243,13 +242,13 @@ void TView::DetachChildFromOwnerList(class TView* child) {
 
   if (list->IsEmpty()) {
     delete list;
-    childList44 = 0;
+    childList = 0;
   }
   child->ownerContext = 0;
 }
 // FUNCTION: IMPERIALISM 0x0048af80
 void TView::SwitchActiveChildAndNotify(class TView* child) {
-  if (childList44 != 0 && childList44->GetTail() != child) {
+  if (childList != 0 && childList->GetTail() != child) {
     DetachChildFromOwnerList(child);
     AttachChildControl(child, 1);
     child->RefreshControl();
@@ -262,21 +261,21 @@ class TView* TView::ResolveControlByTag(unsigned int controlTag) {
   if (controlTag == static_cast<unsigned int>(this->controlTag)) {
     return this;
   }
-  if (childList44 == 0) {
+  if (childList == 0) {
     return 0;
   }
 
-  POSITION pos = childList44->GetHeadPosition();
+  POSITION pos = childList->GetHeadPosition();
   while (pos != NULL) {
-    TView* entry = static_cast<TView*>(childList44->GetNext(pos));
+    TView* entry = static_cast<TView*>(childList->GetNext(pos));
     if (controlTag == static_cast<unsigned int>(entry->controlTag)) {
       return entry;
     }
   }
 
-  pos = childList44->GetHeadPosition();
+  pos = childList->GetHeadPosition();
   while (pos != NULL) {
-    TView* child = static_cast<TView*>(childList44->GetNext(pos));
+    TView* child = static_cast<TView*>(childList->GetNext(pos));
     TView* match = child->ResolveControlByTag(controlTag);
     if (match != 0) {
       return match;
@@ -294,8 +293,8 @@ void TView::ViewEnable(int enabled, int refreshNow) {
 
 // FUNCTION: IMPERIALISM 0x0048b0b0
 void TView::Free() {
-  while (childList44 != 0) {
-    TEventHandler* child = static_cast<TEventHandler*>(childList44->GetHead());
+  while (childList != 0) {
+    TEventHandler* child = static_cast<TEventHandler*>(childList->GetHead());
     child->Free();
   }
   if (ownerContext != 0) {
@@ -377,7 +376,7 @@ void TView::UpdateCoordinates() {
   absoluteX = newX;
   absoluteY = newY;
   if (absoluteX != oldX || absoluteY != oldY) {
-    if (childList44 != 0) {
+    if (childList != 0) {
       CSubViewIterator iterator(this);
       TView* child = iterator.FirstSubView();
       while (iterator.MoreSubViews()) {
@@ -392,8 +391,8 @@ void TView::Resize(const CPoint& size, unsigned char refresh) {
   if (refresh != 0) {
     CRect oldRect;
     GetDrawableQDRect(&oldRect);
-    frameWidth34 = size.x;
-    frameHeight38 = size.y;
+    frameWidth = size.x;
+    frameHeight = size.y;
     CRect newRect;
     GetDrawableQDRect(&newRect);
     UnionRect(&newRect, &newRect, &oldRect);
@@ -401,8 +400,8 @@ void TView::Resize(const CPoint& size, unsigned char refresh) {
       InvalidateRect(nativeWindow50->m_hWnd, &newRect, 0);
     }
   } else {
-    frameWidth34 = size.x;
-    frameHeight38 = size.y;
+    frameWidth = size.x;
+    frameHeight = size.y;
   }
 }
 
@@ -543,7 +542,7 @@ void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintD
     ReleaseMapQuickDrawDc(paintDc);
   }
 
-  TViewChildList* list = childList44;
+  TViewChildList* list = childList;
   if (list != 0) {
     POSITION pos = list->GetHeadPosition();
     while (pos != NULL) {
@@ -639,8 +638,8 @@ void TView::OffsetRectByCachedPos(CRect* inRect, CRect* outRect) {
 
 // FUNCTION: IMPERIALISM 0x0048bce0
 CRect* TView::GetQDExtent(CRect* rectOut) {
-  int width = frameWidth34;
-  int height = frameHeight38;
+  int width = frameWidth;
+  int height = frameHeight;
   CPoint pos;
   GetAbsolutePosition(&pos);
   rectOut->left = pos.x;
@@ -657,15 +656,15 @@ CRect* TView::GetQDExtent(CRect* rectOut) {
 TView::TView(const TView& source)
     : TEventHandler(source), ownerContext(0), ownerLocalX(source.ownerLocalX),
       ownerLocalY(source.ownerLocalY), absoluteX(source.absoluteX), absoluteY(source.absoluteY),
-      frameWidth34(source.frameWidth34), frameHeight38(source.frameHeight38),
-      controlValue3c(source.controlValue3c), childList44(0), stylePayload48(0),
-      inputGateFlag4c(source.inputGateFlag4c), childHitTestFlag4d(source.childHitTestFlag4d),
-      nativeWindow50(source.nativeWindow50), helpState54(source.helpState54), hoverHelpText58(),
+      frameWidth(source.frameWidth), frameHeight(source.frameHeight),
+      controlValue3c(source.controlValue3c), childList(0), stylePayload48(0),
+      inputGateFlag(source.inputGateFlag), childHitTestFlag(source.childHitTestFlag),
+      nativeWindow50(source.nativeWindow50), helpState54(source.helpState54), hoverHelpText(),
       hoverHelpEnabled5c(0) {
-  if (source.childList44 != 0) {
-    POSITION position = source.childList44->GetHeadPosition();
+  if (source.childList != 0) {
+    POSITION position = source.childList->GetHeadPosition();
     while (position != 0) {
-      TView* child = source.childList44->GetNext(position);
+      TView* child = source.childList->GetNext(position);
       AttachChildControl(static_cast<TView*>(child->ShallowClone()), 0);
     }
   }
@@ -678,7 +677,7 @@ void TView::CopyViewStateFromSource(TView* source) {
   nextHandler = source->nextHandler;
   ownerContext = 0;
   nativeWindow50 = source->nativeWindow50;
-  childList44 = 0;
+  childList = 0;
   stylePayload48 = 0;
   controlValue3c = source->controlValue3c;
   helpState54 = source->helpState54;
@@ -686,14 +685,14 @@ void TView::CopyViewStateFromSource(TView* source) {
   ownerLocalY = source->ownerLocalY;
   absoluteX = source->absoluteX;
   absoluteY = source->absoluteY;
-  frameWidth34 = source->frameWidth34;
-  frameHeight38 = source->frameHeight38;
-  inputGateFlag4c = source->inputGateFlag4c;
-  childHitTestFlag4d = source->childHitTestFlag4d;
-  if (source->childList44 != 0) {
-    POSITION pos = source->childList44->GetHeadPosition();
+  frameWidth = source->frameWidth;
+  frameHeight = source->frameHeight;
+  inputGateFlag = source->inputGateFlag;
+  childHitTestFlag = source->childHitTestFlag;
+  if (source->childList != 0) {
+    POSITION pos = source->childList->GetHeadPosition();
     while (pos != NULL) {
-      TView* child = static_cast<TView*>(source->childList44->GetNext(pos));
+      TView* child = static_cast<TView*>(source->childList->GetNext(pos));
       TView* childClone = static_cast<TView*>(child->ShallowClone());
       AttachChildControl(childClone, 0);
     }
@@ -710,7 +709,7 @@ TObject* TView::ShallowClone() {
 // FUNCTION: IMPERIALISM 0x0048c000
 char TView::EvaluateControlInputGate() {
   if (hoverHelpEnabled5c == 0) {
-    if ((char)inputGateFlag4c != 0 && IsEnabled() != 0) {
+    if ((char)inputGateFlag != 0 && IsEnabled() != 0) {
       return 1;
     }
     if (HasRenderableParentAndContent() == 0) {
@@ -722,7 +721,7 @@ char TView::EvaluateControlInputGate() {
 
 // FUNCTION: IMPERIALISM 0x0048c050
 char TView::HasRenderableParentAndContent() {
-  if (childHitTestFlag4d && childList44 != 0 && !childList44->IsEmpty()) {
+  if (childHitTestFlag && childList != 0 && !childList->IsEmpty()) {
     return 1;
   }
   return 0;
@@ -731,10 +730,10 @@ char TView::HasRenderableParentAndContent() {
 // FUNCTION: IMPERIALISM 0x0048c080
 void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, RgnHandle hitArg) {
   if (HasRenderableParentAndContent() != 0) {
-    if (childList44 != 0) {
-      POSITION pos = childList44->GetHeadPosition();
+    if (childList != 0) {
+      POSITION pos = childList->GetHeadPosition();
       while (pos != NULL) {
-        TView* child = static_cast<TView*>(childList44->GetNext(pos));
+        TView* child = static_cast<TView*>(childList->GetNext(pos));
 
         CPoint childPoint = *point;
         child->SuperToLocal(&childPoint);
@@ -768,7 +767,7 @@ void TView::GetDrawableRegion(RgnHandle clipRegion) {
 // FUNCTION: IMPERIALISM 0x0048c220
 void TView::SetHoverHelpText(const CString& sharedString) {
   hoverHelpEnabled5c = 1;
-  hoverHelpText58 = sharedString;
+  hoverHelpText = sharedString;
 }
 
 // FUNCTION: IMPERIALISM 0x0048c250
@@ -779,7 +778,7 @@ void TView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
     RECT hoverHelpRect;
     CopyRect(&hoverHelpRect, &quickDrawExtent);
     if (g_pCursorControlPanel != nullptr) {
-      g_pCursorControlPanel->SetTextAndLayoutRect(hoverHelpText58, &hoverHelpRect);
+      g_pCursorControlPanel->SetTextAndLayoutRect(hoverHelpText, &hoverHelpRect);
     }
   }
   short cursorId = GetCursorID();
@@ -804,8 +803,8 @@ void TView::ApplyBounds(CRect* newBounds, unsigned char modeFlag) {
     }
     ownerLocalX = newBounds->left;
     ownerLocalY = newBounds->top;
-    frameWidth34 = newBounds->right - newBounds->left;
-    frameHeight38 = newBounds->bottom - newBounds->top;
+    frameWidth = newBounds->right - newBounds->left;
+    frameHeight = newBounds->bottom - newBounds->top;
     UpdateCoordinates();
     if (modeFlag != 0 && IsActionable()) {
       InvalidateCityDialogRectRegion(0, 0);
@@ -815,10 +814,10 @@ void TView::ApplyBounds(CRect* newBounds, unsigned char modeFlag) {
 
 // FUNCTION: IMPERIALISM 0x0048c450
 char TView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
-  if (childList44 != 0) {
-    POSITION pos = childList44->GetTailPosition();
+  if (childList != 0) {
+    POSITION pos = childList->GetTailPosition();
     while (pos != NULL) {
-      TView* child = static_cast<TView*>(childList44->GetPrev(pos));
+      TView* child = static_cast<TView*>(childList->GetPrev(pos));
 
       CPoint childPoint = point;
       child->SuperToLocal(&childPoint);
@@ -839,10 +838,10 @@ char TView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint or
 
 // FUNCTION: IMPERIALISM 0x0048c590
 char TView::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint origin) {
-  if (childList44 != 0) {
-    POSITION pos = childList44->GetTailPosition();
+  if (childList != 0) {
+    POSITION pos = childList->GetTailPosition();
     while (pos != NULL) {
-      TView* child = static_cast<TView*>(childList44->GetPrev(pos));
+      TView* child = static_cast<TView*>(childList->GetPrev(pos));
 
       CPoint childPoint = point;
       child->SuperToLocal(&childPoint);
@@ -904,10 +903,10 @@ void TView::AssertMcAppUiLine1922() {
 
 // FUNCTION: IMPERIALISM 0x0048c820
 CWnd* TView::Open() {
-  if (childList44 != 0) {
-    POSITION pos = childList44->GetHeadPosition();
+  if (childList != 0) {
+    POSITION pos = childList->GetHeadPosition();
     while (pos != NULL) {
-      TView* child = static_cast<TView*>(childList44->GetNext(pos));
+      TView* child = static_cast<TView*>(childList->GetNext(pos));
       child->Open();
     }
   }
@@ -915,10 +914,10 @@ CWnd* TView::Open() {
 }
 // FUNCTION: IMPERIALISM 0x0048c890
 void TView::Close() {
-  if (childList44 != 0) {
-    POSITION pos = childList44->GetHeadPosition();
+  if (childList != 0) {
+    POSITION pos = childList->GetHeadPosition();
     while (pos != NULL) {
-      TView* child = static_cast<TView*>(childList44->GetNext(pos));
+      TView* child = static_cast<TView*>(childList->GetNext(pos));
       child->Close();
     }
   }
@@ -927,10 +926,10 @@ void TView::Close() {
 // FUNCTION: IMPERIALISM 0x0048c900
 void TView::PropagateUiResourceContextRecursive(CWnd* nativeWindow) {
   nativeWindow50 = nativeWindow;
-  if (childList44 != 0) {
-    POSITION pos = childList44->GetHeadPosition();
+  if (childList != 0) {
+    POSITION pos = childList->GetHeadPosition();
     while (pos != NULL) {
-      TView* child = static_cast<TView*>(childList44->GetNext(pos));
+      TView* child = static_cast<TView*>(childList->GetNext(pos));
       child->PropagateUiResourceContextRecursive(nativeWindow);
     }
   }

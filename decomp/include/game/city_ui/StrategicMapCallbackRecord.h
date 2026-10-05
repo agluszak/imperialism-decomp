@@ -42,14 +42,14 @@ struct StrategicMapCallbackRecord {
   void ApplyBitmapMaskToPixelBuffer(unsigned char* destinationPixels);
   void SetDestinationHeightNoOp(int unusedHeight); // 0x004d4bd0
 
-  StrategicMapOpcodeByteStretch opcodeBytes00;
-  // AppendOpcodeByte's private write cursor is distinct from opcodeBytes00's count because
+  StrategicMapOpcodeByteStretch opcodeBytes;
+  // AppendOpcodeByte's private write cursor is distinct from opcodeBytes's count because
   // indexed writes can extend the container independently.
-  int opcodeAppendCursor10;
+  int opcodeAppendCursor;
   // Rolling modulo-four offset used while aligning the generated opcode stream.
-  int opcodeAlignmentOffset14;
-  int hadTrailingPadding18;
-  StrategicMapCursorStretch packedColorCursor1c;
+  int opcodeAlignmentOffset;
+  int hadTrailingPadding;
+  StrategicMapCursorStretch packedColorCursor;
   // Byte stride used when converting each resource pixel's (x,y) coordinate into its
   // destination-tile offset. No read site outside mask construction.
   int destinationRowStride2c;

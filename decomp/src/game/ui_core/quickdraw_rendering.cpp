@@ -813,14 +813,14 @@ void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect) {
     activeSurfaceDib = (*descriptor->GetPixMapHandle())->dib;
   }
   if (activeSurfaceDib == 0) {
-    OffsetRect(&brushBounds.paintRect00, g_nQuickDrawOriginX, g_nQuickDrawOriginY);
+    OffsetRect(&brushBounds.paintRect, g_nQuickDrawOriginX, g_nQuickDrawOriginY);
   }
 
   CDC* dc = g_pQuickDrawMemoryDc;
   if (dc == nullptr) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  FillRect(dc->m_hDC, &brushBounds.paintRect00, static_cast<HBRUSH>(brush));
+  FillRect(dc->m_hDC, &brushBounds.paintRect, static_cast<HBRUSH>(brush));
 }
 
 // FUNCTION: IMPERIALISM 0x00498b50

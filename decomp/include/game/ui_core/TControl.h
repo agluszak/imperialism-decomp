@@ -49,7 +49,7 @@ public:
                           CPoint& currentPoint,
                           unsigned char commandFlag); // slot 0x68 0x48e850
   // Build this control's content bounds (via QueryContentBounds) then deflate by
-  // contentInsets68 -- the shared "content rect with margins applied" primitive used by
+  // contentInsets -- the shared "content rect with margins applied" primitive used by
   // Draw-family paint code. Some subclasses (e.g. TCivDescription) repurpose
   // this vtable slot for an unrelated override rather than this semantic.
   virtual void BuildInsetContentRect(CRect* boundsBuffer); // slot 0x69 0x48e980
@@ -74,10 +74,10 @@ public:
   // 0x64 -- enabled/mode state byte: HiliteState's enabledState;
   // THQButton/TUpDownPictureButton also drive a multi-valued "mode" through it.
   unsigned char controlState64;
-  // 0x65-0x67 is natural alignment padding ahead of contentInsets68, not storage: an
+  // 0x65-0x67 is natural alignment padding ahead of contentInsets, not storage: an
   // explicit filler member here would make every TControl copy constructor copy it, which
   // the original copy constructors (e.g. TPicture 0x48f080) demonstrably do not.
-  CRect contentInsets68; // 0x68-0x77 -- left/top/right/bottom content insets
+  CRect contentInsets;   // 0x68-0x77 -- left/top/right/bottom content insets
                          // (BuildInsetContentRect, TStaticText/TTEView::Draw)
   TextStyle textStyle78; // 0x78-0x81
 
@@ -86,7 +86,7 @@ public:
   // retail bodies call TView's copy constructor and then copy only these live fields.
   TControl(const TControl& source)
       : TView(source), eventNumber60(source.eventNumber60), controlState64(source.controlState64),
-        contentInsets68(source.contentInsets68), textStyle78(source.textStyle78) {}
+        contentInsets(source.contentInsets), textStyle78(source.textStyle78) {}
   DECLARE_DYNCREATE(TControl)
   // Slot 0x08 override (0x00435760): controls cannot be cloned (no engineer-dialog
   // state); assert via the McAppUI invalidation thunk and return null.

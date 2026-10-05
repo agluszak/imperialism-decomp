@@ -24,7 +24,7 @@ IMPLEMENT_SERIAL(TDefendProvinceMission, TArmyMission, 1)
 
 // FUNCTION: IMPERIALISM 0x00535770
 void TDefendProvinceMission::GiveOrders() {
-  PropagateTargetTileToLinkedUnitsIfDifferent(presentLocation14);
+  PropagateTargetTileToLinkedUnitsIfDifferent(presentLocation);
 }
 
 // FUNCTION: IMPERIALISM 0x00535790
@@ -43,7 +43,7 @@ TDefendProvinceMission::~TDefendProvinceMission() {}
 
 // True if tileIndex is the home region of its own owner nation, or has an adjacent
 // region owned by a different valid nation, or is claimed (secondaryNeighbors array
-// entry) by some other map-action-context zone whose nationKeyMask10 mask has a bit set outside
+// entry) by some other map-action-context zone whose nationKeyMask mask has a bit set outside
 // the owner's own bit.
 // FUNCTION: IMPERIALISM 0x005359e0
 bool IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
@@ -54,7 +54,7 @@ bool IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
   }
 
   for (int i = record.adjacentRegionCount08 - 1; i >= 0; --i) {
-    short neighborTile = record.adjacentRegionIds0A[i];
+    short neighborTile = record.adjacentRegionIds[i];
     signed char neighborOwner = g_pGlobalMapState->cityScoreTable[neighborTile].ownerNationCode00;
     if (neighborOwner < 7 && neighborOwner != primaryOwner) {
       return true;
@@ -66,7 +66,7 @@ bool IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
     return false;
   }
   unsigned char excludeOwnerMask = static_cast<unsigned char>((1 << (primaryOwner & 0x1f)) ^ 0x7f);
-  while ((zone->nationKeyMask10 & excludeOwnerMask) == 0 ||
+  while ((zone->nationKeyMask & excludeOwnerMask) == 0 ||
          !zone->ContainsCityStatePointerInZoneArrayByCityIndex(static_cast<short>(tileIndex))) {
     zone = zone->prev18;
     if (zone == nullptr) {
@@ -76,11 +76,11 @@ bool IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
   return true;
 }
 
-// Walks orderListAt18 and re-issues TUnit::SetOrders(kUnitOrderRedeploy, newTile) on every linked
+// Walks orderList and re-issues TUnit::SetOrders(kUnitOrderRedeploy, newTile) on every linked
 // TMilitaryUnit whose tileIndex06 differs from newTile.
 // FUNCTION: IMPERIALISM 0x0053c950
 void TDefendProvinceMission::PropagateTargetTileToLinkedUnitsIfDifferent(short newTile) {
-  CIterator iter(orderListAt18);
+  CIterator iter(orderList);
   for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
     if (unit->tileIndex06 != newTile) {
@@ -142,9 +142,9 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
           short checkedRegion = static_cast<short>(regionIndex);
           TMilitaryUnit* unit = 0;
           if (checkedRegion >= 0 && checkedRegion < 0x180) {
-            unit = g_pGlobalMapState->cityScoreTable[checkedRegion].stationedUnitChain98;
+            unit = g_pGlobalMapState->cityScoreTable[checkedRegion].stationedUnitChain;
           }
-          for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14)) {
+          for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
             if (unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
               AccumulateUnitOrderPriorityVectorContribution(unit, vector, 1.0f, unitOrderWeight);
             }
@@ -154,9 +154,9 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
           short checkedRegion = static_cast<short>(regionIndex);
           TMilitaryUnit* unit = 0;
           if (checkedRegion >= 0 && checkedRegion < 0x180) {
-            unit = g_pGlobalMapState->cityScoreTable[checkedRegion].stationedUnitChain98;
+            unit = g_pGlobalMapState->cityScoreTable[checkedRegion].stationedUnitChain;
           }
-          for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14)) {
+          for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
             short costPoints = unit->GetArmsCarried();
             if (unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
               int remainingBudget = remainingBudgetByNation[candidateNationIndex];
@@ -192,9 +192,9 @@ float TDefendProvinceMission::ComputeLocalSupportVectorScore(int nodeContext) {
   short regionIndex = static_cast<short>(nodeContext);
   TMilitaryUnit* unit = 0;
   if (regionIndex >= 0 && regionIndex < 0x180) {
-    unit = g_pGlobalMapState->cityScoreTable[regionIndex].stationedUnitChain98;
+    unit = g_pGlobalMapState->cityScoreTable[regionIndex].stationedUnitChain;
   }
-  for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14)) {
+  for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
     AccumulateUnitOrderPriorityVectorContribution(unit, vector, 1.0f,
                                                   static_cast<float>(unitOrderWeight));
   }
@@ -218,20 +218,20 @@ void TDefendProvinceMission::Free() {
   TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
   nationState->AssertValid();
 
-  nationState->SetProvinceStatus(presentLocation14, 0);
+  nationState->SetProvinceStatus(presentLocation, 0);
 
-  CIterator iter(orderListAt18);
+  CIterator iter(orderList);
   void* current = iter.Reset();
   while (iter.More()) {
-    static_cast<TMilitaryUnit*>(current)->ownerMission40 = nullptr;
+    static_cast<TMilitaryUnit*>(current)->ownerMission = nullptr;
     current = iter.Advance();
   }
 
-  orderListAt18->RemoveAll();
-  if (orderListAt18 != nullptr) {
-    orderListAt18->FreePayloadsAndDestroy();
+  orderList->RemoveAll();
+  if (orderList != nullptr) {
+    orderList->FreePayloadsAndDestroy();
   }
-  orderListAt18 = nullptr;
+  orderList = nullptr;
 
   if (this != nullptr) {
     delete this;
@@ -240,14 +240,14 @@ void TDefendProvinceMission::Free() {
 
 // FUNCTION: IMPERIALISM 0x0053eca0
 float TDefendProvinceMission::ComputePresentLocationCrossNationSupportScore() {
-  return ComputeCrossNationSupportVectorScore(presentLocation14);
+  return ComputeCrossNationSupportVectorScore(presentLocation);
 }
 
 // FUNCTION: IMPERIALISM 0x0053ecc0
 void TDefendProvinceMission::SetStateByte8To2() {
   TGreatPower* nation = g_apNationStates[nationId04];
   short val = nation->GetCapitolProvince();
-  if (val == presentLocation14) {
+  if (val == presentLocation) {
     state08 = 0;
   } else {
     state08 = 2;
@@ -256,7 +256,7 @@ void TDefendProvinceMission::SetStateByte8To2() {
 
 // FUNCTION: IMPERIALISM 0x0053ed00
 void TDefendProvinceMission::CalculateImportance() {
-  int tileIndex = presentLocation14;
+  int tileIndex = presentLocation;
   const Province& cityRecord = g_pGlobalMapState->cityScoreTable[tileIndex];
 
   // Ground truth: 0x53ed00 uses FILD (int-to-float conversion), not a raw float
@@ -266,7 +266,7 @@ void TDefendProvinceMission::CalculateImportance() {
   int local_c = 0;
 
   if (adjacentCount > 0) {
-    const short* adjArray = cityRecord.adjacentRegionIds0A;
+    const short* adjArray = cityRecord.adjacentRegionIds;
     for (int i = 0; i < adjacentCount; ++i) {
       short adjTileIndex = adjArray[i];
       short tileOwnerNationCode =
@@ -290,18 +290,18 @@ void TDefendProvinceMission::CalculateNeeds() {
   TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
   nationState->AssertValid();
 
-  float fStack_c = nationState->averageUnitDivergencePerOwnedRegionB68;
+  float fStack_c = nationState->averageUnitDivergencePerOwnedRegion;
 
   if (fStack_c <= static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
     fStack_c = g_MissionPositiveFallback_0065A9B8;
   }
 
-  bool compat = IsMapTileCompatibleWithCurrentTerrainOrActionContext(presentLocation14);
+  bool compat = IsMapTileCompatibleWithCurrentTerrainOrActionContext(presentLocation);
 
   if (!compat) {
     unsigned char bVar8;
-    if (g_pTechMgr->abilityActiveRows395[nationId04].abilityActiveById[0x10] == 0) {
-      bVar8 = (g_pTechMgr->abilityActiveRows395[nationId04].abilityActiveById[8] != 0) ? 8 : 0;
+    if (g_pTechMgr->abilityActiveRows[nationId04].abilityActiveById[0x10] == 0) {
+      bVar8 = (g_pTechMgr->abilityActiveRows[nationId04].abilityActiveById[8] != 0) ? 8 : 0;
     } else {
       bVar8 = 0x10;
     }
@@ -321,17 +321,17 @@ void TDefendProvinceMission::CalculateNeeds() {
   }
 
   bool hasWar = g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(nationId04);
-  float unaff_EBX = nationState->expansionPressurePerCompatibleRegionB64 + fStack_c;
+  float unaff_EBX = nationState->expansionPressurePerCompatibleRegion + fStack_c;
 
   if (hasWar) {
-    float crossScore = ComputeCrossNationSupportVectorScore(presentLocation14);
+    float crossScore = ComputeCrossNationSupportVectorScore(presentLocation);
     float factor = g_DefendProvinceMissionCrossSupportFloorScale_0065A8F8;
     if (unaff_EBX < crossScore * factor) {
       unaff_EBX = crossScore * factor;
     }
   }
 
-  signed char fortLevel = g_pGlobalMapState->cityScoreTable[presentLocation14].fortLevel03;
+  signed char fortLevel = g_pGlobalMapState->cityScoreTable[presentLocation].fortLevel03;
   int offset = (fortLevel < 1) ? 0 : 15;
   short* psVar5 = g_awTacticalCompositionReferenceProfiles_00697870 + offset;
 
@@ -350,12 +350,12 @@ void TDefendProvinceMission::Initialize() {
 // FUNCTION: IMPERIALISM 0x0053f010
 bool TDefendProvinceMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   (void)zoneContext;
-  return missionType == kMissionTypeDefendProvince && key == static_cast<int>(presentLocation14);
+  return missionType == kMissionTypeDefendProvince && key == static_cast<int>(presentLocation);
 }
 
 // FUNCTION: IMPERIALISM 0x0053f040
 TMission* TDefendProvinceMission::GetReplacementSlot48() {
   short tileOwnerNationCode =
-      g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(presentLocation14);
+      g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(presentLocation);
   return (tileOwnerNationCode == nationId04) ? this : nullptr;
 }

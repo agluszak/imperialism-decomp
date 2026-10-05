@@ -9,7 +9,7 @@
 // FUNCTION: IMPERIALISM 0x00542520
 void TCancelGameOptionsCommand::DoIt() {
   TMultiplayerMgr* flowState = g_pGameFlowState;
-  flowState->lobbyDialogView40 = 0;
+  flowState->lobbyDialogView = 0;
   flowState->ResetNationStatusArraysAndTurnEventContext();
   g_pAmbitApplication->PostTurnEventCodeMessage2420(kTurnEventMultiplayerGameSetup);
   flowState->queueSyncDword = 0;

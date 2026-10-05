@@ -314,15 +314,15 @@ TMapDialog::TMapDialog() : TWorldView() {
   int row;
   int col;
   viewportOrigin.x = 0;
-  suppressMarkerOverlay34C = false;
-  overlayObject35C = 0;
+  suppressMarkerOverlay = false;
+  overlayObject = 0;
   viewportOrigin.y = 0;
   SplitTileIndexToRowAndColumn(g_pGlobalMapState->field6, reinterpret_cast<short*>(&row),
                                reinterpret_cast<short*>(&col));
   SetMapViewCellCoordinates(col, row);
   unresolvedWord354 = 0;
-  selectedTileIndex356 = -1;
-  unresolvedFlag358 = false;
+  selectedTileIndex = -1;
+  unresolvedFlag = false;
   projectionScale = 1;
   previewSquareRadius = 0x40;
   tileDebugOverlayEnabled360 = false;
@@ -342,10 +342,10 @@ void TMapDialog::Free() {
     g_pDisplayMgr->RemoveGWorld(g_pCitySiteCachedPrimaryRenderSurfaceContext);
     g_pCitySiteCachedPrimaryRenderSurfaceContext = 0;
   }
-  if (overlayObject35C != 0) {
-    overlayObject35C->Free();
+  if (overlayObject != 0) {
+    overlayObject->Free();
   }
-  overlayObject35C = 0;
+  overlayObject = 0;
   TView::Free();
   g_pUiAnimator->FreeUiTransientRegistryPayloads();
 }
@@ -372,7 +372,7 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
   short neighborTiles[6] = {-1, -1, -1, -1, -1, -1};
   bool updateNeighborHighlights = false;
   bool frameHoveredTile = cursorId4e != 0xffff && cursorId4e != 0x3f0;
-  short activeUnitCategory = static_cast<TMapUberPicture*>(ownerContext)->activeUnitCategoryIndex96;
+  short activeUnitCategory = static_cast<TMapUberPicture*>(ownerContext)->activeUnitCategoryIndex;
 
   if (activeUnitCategory != 0 && activeUnitCategory != 3 && activeUnitCategory != 5) {
     return;
@@ -384,7 +384,7 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
     CivilianUnitKindStorage unitKind =
         selectedOrder != 0 ? selectedOrder->orderType : kCivilianUnitKindCount;
     if (unitKind == EncodeCivilianUnitKind(kCivilianUnitEngineer) &&
-        g_pGlobalMapState->terrainStateTable[hoveredTile].regionSubtypeTag05 == -1) {
+        g_pGlobalMapState->terrainStateTable[hoveredTile].regionSubtypeTag == -1) {
       updateNeighborHighlights = true;
       TMapMgr::GetNeighborTileIDArray(hoveredTile, neighborTiles,
                                       g_pGlobalMapState->hexNeighborWrapHorizontally);
@@ -395,7 +395,7 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
           const TTerrainStateRecord& neighborState = g_pGlobalMapState->terrainStateTable[neighbor];
           if ((neighborState.ownerNationTag04 != activeNation &&
                neighborState.GetTerrainKind() != kStrategicTerrainWater) ||
-              neighborState.regionSubtypeTag05 != -1) {
+              neighborState.regionSubtypeTag != -1) {
             neighborTiles[i] = -1;
           }
         }
@@ -404,8 +404,8 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
   }
 
   short paintedTile = static_cast<short>(paintedHoverTileIndex);
-  signed char paintedMarker = g_pGlobalMapState->terrainStateTable[paintedTile].markerSlotIndex10;
-  if (paintedMarker != -1 && tileMarkers7c[paintedMarker].flag) {
+  signed char paintedMarker = g_pGlobalMapState->terrainStateTable[paintedTile].markerSlotIndex;
+  if (paintedMarker != -1 && tileMarkers[paintedMarker].flag) {
     short projectedY;
     short projectedX;
     ProjectTileIndexToWrappedScreenOffsetByScale(paintedTile, &viewportOrigin, &projectedY,
@@ -422,8 +422,8 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
     if (oldNeighbor == -1) {
       continue;
     }
-    signed char oldMarker = g_pGlobalMapState->terrainStateTable[oldNeighbor].markerSlotIndex10;
-    if (oldMarker == -1 || !tileMarkers7c[oldMarker].flag) {
+    signed char oldMarker = g_pGlobalMapState->terrainStateTable[oldNeighbor].markerSlotIndex;
+    if (oldMarker == -1 || !tileMarkers[oldMarker].flag) {
       continue;
     }
 
@@ -818,7 +818,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
       for (short resourceType = kResourceManufacturedFirst;
            resourceType <= kResourceManufacturedLast; resourceType++) {
         short count = g_pGlobalMapState->cityScoreTable[cityIndex]
-                          .resourceDevelopmentCounts82[resourceType - 7];
+                          .resourceDevelopmentCounts[resourceType - 7];
         if (count != 0) {
           numberText.Format(g_szDecimalFormat, count);
           g_pSimMgr->GetString(0x2711, resourceType, &nameText);
@@ -853,7 +853,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
     int currentOwner =
         static_cast<char>(g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04);
     int formerOwner =
-        static_cast<char>(g_pGlobalMapState->terrainStateTable[tileIndex].formerOwnerNationTag03);
+        static_cast<char>(g_pGlobalMapState->terrainStateTable[tileIndex].formerOwnerNationTag);
     if (currentOwner != formerOwner) {
       if (formerOwner >= 0 && formerOwner <= 0x17 &&
           g_apTerrainTypeDescriptorTable[formerOwner] != 0) {
@@ -902,10 +902,10 @@ void RecomputeMapInteractionPreviewVerticalOffsetFromScale() {
 void TMapDialog::ResetAllTileMarkersToSentinel() {
   g_pGlobalMapState->ResetAllTileMarkerSlotIndicesToSentinel();
   for (int i = 0; i < 90; i++) {
-    tileMarkers7c[i].flag = false;
-    tileMarkers7c[i].a = -1;
-    tileMarkers7c[i].b = -1;
-    tileMarkers7c[i].c = -1;
+    tileMarkers[i].flag = false;
+    tileMarkers[i].a = -1;
+    tileMarkers[i].b = -1;
+    tileMarkers[i].c = -1;
   }
 }
 
@@ -913,13 +913,13 @@ void TMapDialog::ResetAllTileMarkersToSentinel() {
 void TMapDialog::ReleaseTileMarkerForTile(short tileIndex) {
   // Architecturally complete; the residual vs the original is MSVC hoisting the shared -1
   // sentinel into a callee-saved register (bl/bx/ebx) rather than immediates.
-  short slot = g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex10;
+  short slot = g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex;
   if (slot != -1) {
-    g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex10 = -1;
-    tileMarkers7c[slot].flag = false;
-    tileMarkers7c[slot].a = -1;
-    tileMarkers7c[slot].b = -1;
-    tileMarkers7c[slot].c = -1;
+    g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex = -1;
+    tileMarkers[slot].flag = false;
+    tileMarkers[slot].a = -1;
+    tileMarkers[slot].b = -1;
+    tileMarkers[slot].c = -1;
   }
 }
 
@@ -940,7 +940,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
   GetClip(savedClip.tempRgn);
   GetGWorld(&savedSurface, &savedSurfaceFlags);
 
-  if (!suppressMarkerOverlay34C) {
+  if (!suppressMarkerOverlay) {
     ResetQuickDrawStrokeState();
     SetGWorld(quickDrawSurface350, savedSurfaceFlags);
     LockPixels(GetGWorldPixMap(g_pCitySiteCachedPrimaryRenderSurfaceContext));
@@ -952,7 +952,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
 
     int markerIndex;
     for (markerIndex = 0; markerIndex < 90; ++markerIndex) {
-      TMapDialogTileMarker& marker = tileMarkers7c[markerIndex];
+      TMapDialogTileMarker& marker = tileMarkers[markerIndex];
       marker.flag = marker.a >= markerFirstRow && marker.a <= markerFirstRow + 8 &&
                     marker.b >= markerFirstCol && marker.b <= markerLastCol;
     }
@@ -991,21 +991,21 @@ void TMapDialog::Draw(RECT* rectBuffer) {
         }
 
         signed char cachedMarkerIndex =
-            g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex10;
+            g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex;
         if (cachedMarkerIndex == -1) {
           ++g_MapTileCacheMissCount6A3454;
-          while (cacheSearchIndex < 90 && tileMarkers7c[cacheSearchIndex].flag) {
+          while (cacheSearchIndex < 90 && tileMarkers[cacheSearchIndex].flag) {
             ++cacheSearchIndex;
           }
-          TMapDialogTileMarker& marker = tileMarkers7c[cacheSearchIndex];
+          TMapDialogTileMarker& marker = tileMarkers[cacheSearchIndex];
           if (marker.c >= 0) {
-            g_pGlobalMapState->terrainStateTable[marker.c].markerSlotIndex10 = -1;
+            g_pGlobalMapState->terrainStateTable[marker.c].markerSlotIndex = -1;
           }
           marker.flag = true;
           marker.a = row;
           marker.b = unwrappedCol;
           marker.c = tileIndex;
-          g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex10 =
+          g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex =
               static_cast<signed char>(cacheSearchIndex);
           DrawOneTile(tileIndex, 0, cacheSearchIndex << 6);
           cachedMarkerIndex = static_cast<signed char>(cacheSearchIndex);
@@ -1163,7 +1163,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
 
     if (isOcean && terrain.adjacencyMaskB0b != 0) {
       const unsigned char adjacencyMask = terrain.adjacencyMaskB0b;
-      const unsigned char variantMask = terrain.spriteVariantIndex01;
+      const unsigned char variantMask = terrain.spriteVariantIndex;
       const short riverSpriteCode = terrain.riverSpriteCode;
       for (int corner = 0; corner < 6; ++corner) {
         int previousDirection = (corner + 5) % 6;
@@ -1242,16 +1242,16 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
         normalizedSpriteCode -= kRiverSpriteCodeFlowVariantBias;
       }
       StrategicMapCallbackRecord* terrainMask =
-          &g_pMacViewMgr->strategicTileMasks6bc[normalizedSpriteCode - kRiverSpriteCodeFlowFirst];
+          &g_pMacViewMgr->strategicTileMasks[normalizedSpriteCode - kRiverSpriteCodeFlowFirst];
       terrainMask->SetDestinationHeightNoOp(0x40);
       terrainMask->ApplyBitmapMaskToPixelBuffer(destinationPixels);
     }
 
-    if (terrain.ownerBorderMask07 != 0) {
+    if (terrain.ownerBorderMask != 0) {
       SetQuickDrawFillColor(0);
       if (!isOcean) {
         SetQuickDrawPenSizeAndMarkDirty(2, 2);
-        DrawNationBorderSegmentsByMask(terrain.ownerBorderMask07, screenX, screenY, tileIndex);
+        DrawNationBorderSegmentsByMask(terrain.ownerBorderMask, screenX, screenY, tileIndex);
       } else {
         SetQuickDrawPenSizeAndMarkDirty(1, 1);
         if (terrain.adjacencyMaskB0b != 0) {
@@ -1262,9 +1262,9 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
       SetQuickDrawPenSizeAndMarkDirty(1, 1);
       SetQuickDrawFillColor(0);
     }
-    if (!isOcean && terrain.cityBorderMask08 != 0) {
+    if (!isOcean && terrain.cityBorderMask != 0) {
       SetQuickDrawFillColor(0xffffff);
-      DrawCityBorderSegmentsByMask(terrain.cityBorderMask08, screenX, screenY, tileIndex);
+      DrawCityBorderSegmentsByMask(terrain.cityBorderMask, screenX, screenY, tileIndex);
       SetQuickDrawFillColor(0);
     }
   }
@@ -1277,14 +1277,14 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
 
   // LAYOUT: transport connectivity is stored at +0x06/+0x17; +0x0a/+0x0b above
   // belong to the terrain-transition and coast families.
-  if (terrain.adjacencyBits06 != 0 || terrain.railFlags17 != 0) {
+  if (terrain.adjacencyBits06 != 0 || terrain.railFlags != 0) {
     for (int direction = 0; direction < 6; ++direction) {
       unsigned char directionBit = static_cast<unsigned char>(1 << direction);
       StrategicMapCallbackRecord* routeMask = 0;
       if ((static_cast<unsigned char>(terrain.adjacencyBits06) & directionBit) != 0) {
-        routeMask = &g_pMacViewMgr->strategicTileMasks6bc[0x18 + direction];
-      } else if ((terrain.railFlags17 & directionBit) != 0) {
-        routeMask = &g_pMacViewMgr->strategicTileMasks6bc[0x1e + direction];
+        routeMask = &g_pMacViewMgr->strategicTileMasks[0x18 + direction];
+      } else if ((terrain.railFlags & directionBit) != 0) {
+        routeMask = &g_pMacViewMgr->strategicTileMasks[0x1e + direction];
       }
       if (routeMask != 0) {
         routeMask->SetDestinationHeightNoOp(tileRect.bottom - tileRect.top);
@@ -1295,11 +1295,11 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
 
   const unsigned short activeFlags = terrain.activeFlags1c;
   TMapUberPicture* mapOwner = static_cast<TMapUberPicture*>(ownerContext);
-  const bool cityOverlayVisible = mapOwner->activeUnitCategoryIndex96 != 4;
+  const bool cityOverlayVisible = mapOwner->activeUnitCategoryIndex != 4;
 
   if ((activeFlags & 3) != 0 && terrain.gateFlag != 0 && cityOverlayVisible) {
     int improvementOffset = g_pGlobalMapState->GetMapImprovementOffsetByActiveFlagsAndCityStage(
-        tileIndex, terrain.formerOwnerNationTag03);
+        tileIndex, terrain.formerOwnerNationTag);
     Blit64x64StrategicMapAtlasTile(g_pMacViewMgr->atlas66c, quickDrawSurface350, improvementOffset,
                                    tileRect);
   }
@@ -1342,7 +1342,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
             highImprovementClass, static_cast<short>(screenX + 2), static_cast<short>(screenY + 2));
       } else {
         const int activeNation = g_pSimMgr->GetActiveNationId();
-        bool tileVisible = (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0;
+        bool tileVisible = (terrain.pendingDevelopmentFlag & (1 << activeNation)) != 0;
         if (!tileVisible && g_pGlobalMapState->field24) {
           tileVisible = terrain.GetTerrainKind() == kStrategicTerrainHills ||
                         terrain.GetTerrainKind() == kStrategicTerrainMountain ||
@@ -1365,7 +1365,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
             static_cast<short>(screenY + 2));
       }
       const int activeNation = g_pSimMgr->GetActiveNationId();
-      bool tileVisible = (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0;
+      bool tileVisible = (terrain.pendingDevelopmentFlag & (1 << activeNation)) != 0;
       if (!tileVisible && g_pGlobalMapState->field24) {
         tileVisible = terrain.GetTerrainKind() == kStrategicTerrainHills ||
                       terrain.GetTerrainKind() == kStrategicTerrainMountain ||
@@ -1402,7 +1402,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
             static_cast<short>(screenY + 0x1c));
       } else {
         const int activeNation = g_pSimMgr->GetActiveNationId();
-        bool tileVisible = (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0;
+        bool tileVisible = (terrain.pendingDevelopmentFlag & (1 << activeNation)) != 0;
         if (!tileVisible && g_pGlobalMapState->field24) {
           tileVisible = terrain.GetTerrainKind() == kStrategicTerrainHills ||
                         terrain.GetTerrainKind() == kStrategicTerrainMountain ||
@@ -1426,9 +1426,9 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
     }
 
     if (g_pDiplomacyTurnStateManager->IsGreatPower(terrain.ownerNationTag04) == 0 &&
-        terrain.secondaryOwnerNationTag18 != -1) {
+        terrain.secondaryOwnerNationTag != -1) {
       g_pMacViewMgr->BlitStrategicMapUnitActivityOverlayFrame(
-          destinationSurfaceObject, terrain.secondaryOwnerNationTag18,
+          destinationSurfaceObject, terrain.secondaryOwnerNationTag,
           static_cast<short>(screenX + 0x1e), static_cast<short>(screenY + 0x14));
     }
   }
@@ -1495,8 +1495,8 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
     }
   }
 
-  if (terrain.perTileVisitedFlag0f > 0) {
-    int markerOffset = (terrain.perTileVisitedFlag0f - 1) << 6;
+  if (terrain.perTileVisitedFlag > 0) {
+    int markerOffset = (terrain.perTileVisitedFlag - 1) << 6;
     Blit64x64StrategicMapAtlasTile(g_pMacViewMgr->atlas694[6], quickDrawSurface350, markerOffset,
                                    tileRect);
   } else if (tileIndex == g_pGlobalMapState->pendingRiverMouthTile && isOcean) {
@@ -2393,12 +2393,12 @@ void TMapDialog::DrawTile(short tileIndex, short screenX, short screenY) {
   LockPixels(GetGWorldPixMap(quickDrawSurface350));
 
   int markerIndex = 0;
-  while (markerIndex < 90 && tileMarkers7c[markerIndex].c != tileIndex) {
+  while (markerIndex < 90 && tileMarkers[markerIndex].c != tileIndex) {
     ++markerIndex;
   }
   if (markerIndex == 90) {
     markerIndex = 0;
-    while (markerIndex < 90 && tileMarkers7c[markerIndex].flag) {
+    while (markerIndex < 90 && tileMarkers[markerIndex].flag) {
       ++markerIndex;
     }
   }
@@ -2407,14 +2407,14 @@ void TMapDialog::DrawTile(short tileIndex, short screenX, short screenY) {
     return;
   }
 
-  TMapDialogTileMarker& marker = tileMarkers7c[markerIndex];
+  TMapDialogTileMarker& marker = tileMarkers[markerIndex];
   if (marker.c >= 0 && marker.c != tileIndex) {
-    g_pGlobalMapState->terrainStateTable[marker.c].markerSlotIndex10 = -1;
+    g_pGlobalMapState->terrainStateTable[marker.c].markerSlotIndex = -1;
   }
   marker.flag = true;
   SplitTileIndexToRowAndColumn(tileIndex, &marker.a, &marker.b);
   marker.c = tileIndex;
-  g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex10 =
+  g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex =
       static_cast<signed char>(markerIndex);
   DrawOneTile(tileIndex, 0, markerIndex << 6);
 
@@ -2475,7 +2475,7 @@ void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projec
 
   if (flag != 0 && alternateOverlayEnabled == 0) {
     signed char markerIndex =
-        g_pGlobalMapState->terrainStateTable[orderEntry->tileIndex06].markerSlotIndex10;
+        g_pGlobalMapState->terrainStateTable[orderEntry->tileIndex06].markerSlotIndex;
     if (markerIndex != -1) {
       CRect sourceRect(markerIndex << 6, 0, (markerIndex + 1) << 6, 0x40);
       BlitRectWithOptionalTransparency(quickDrawSurface350->GetBlitSurface(),
@@ -2530,14 +2530,14 @@ void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, 
   short cityRecordIndex = tile.cityRecordIndex;
   TMilitaryUnit* unit = 0;
   if (cityRecordIndex >= 0 && cityRecordIndex < 0x180) {
-    unit = g_pGlobalMapState->cityScoreTable[cityRecordIndex].stationedUnitChain98;
+    unit = g_pGlobalMapState->cityScoreTable[cityRecordIndex].stationedUnitChain;
   }
   if (unit == 0) {
     return;
   }
 
   if (flag != 0 && alternateOverlayEnabled == 0) {
-    signed char markerIndex = tile.markerSlotIndex10;
+    signed char markerIndex = tile.markerSlotIndex;
     if (markerIndex == -1) {
       return;
     }
@@ -2550,7 +2550,7 @@ void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, 
 
   short displayedUnitCount = 0;
   for (TMilitaryUnit* current = unit; current != 0;
-       current = static_cast<TMilitaryUnit*>(current->nextAtLocation14)) {
+       current = static_cast<TMilitaryUnit*>(current->nextAtLocation)) {
     if (current->orderType != EncodeMilitaryUnitKind(kMilitaryUnitMinutemen) &&
         current->orderType != EncodeMilitaryUnitKind(kMilitaryUnitMilitia) &&
         current->orderType != EncodeMilitaryUnitKind(kMilitaryUnitConscripts)) {
@@ -2624,8 +2624,7 @@ void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
   }
 
   if (alternateOverlayEnabled == 0) {
-    signed char terrainFrameIndex =
-        g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex10;
+    signed char terrainFrameIndex = g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex;
     if (terrainFrameIndex == -1) {
       return;
     }

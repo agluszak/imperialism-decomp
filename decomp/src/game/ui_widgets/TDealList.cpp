@@ -30,22 +30,22 @@ short TDealList::Compare(void* a, void* b) {
     invertScore = true;
   }
   int valueA = recA->dispatchScore08;
-  int priorityA = recA->relationStanding06;
+  int priorityA = recA->relationStanding;
   int scoreA;
   int scoreB;
   if (invertScore) {
     scoreA = (0xff - priorityA) * valueA;
-    scoreB = (0xff - recB->relationStanding06) * recB->dispatchScore08;
+    scoreB = (0xff - recB->relationStanding) * recB->dispatchScore08;
   } else {
     scoreA = -(valueA * priorityA);
-    scoreB = -(recB->dispatchScore08 * recB->relationStanding06);
+    scoreB = -(recB->dispatchScore08 * recB->relationStanding);
   }
   if (scoreA == scoreB) {
     scoreA = (recA->relationDelta04 * recA->sourceNationSlot + valueA +
               recA->targetNationSlot * priorityA + kind) %
              7;
     scoreB = (recB->category0c + recB->relationDelta04 * recB->sourceNationSlot +
-              recB->dispatchScore08 + recB->targetNationSlot * recB->relationStanding06) %
+              recB->dispatchScore08 + recB->targetNationSlot * recB->relationStanding) %
              7;
   }
   return static_cast<short>(scoreA <= scoreB ? -1 : 1);

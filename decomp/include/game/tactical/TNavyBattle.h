@@ -37,8 +37,8 @@ public:
 
   // The navy battle initializer rotates the six base movement costs into this
   // direction-indexed table from a random starting direction.
-  int moveCostRotationStart78;
-  int neighborMoveCostByDirection7c[6];
+  int moveCostRotationStart;
+  int neighborMoveCostByDirection[6];
 };
 ASSERT_SIZE(TNavyBattle, 0x94);
 

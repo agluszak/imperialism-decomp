@@ -20,13 +20,13 @@ public:
   void IGWorldButton(TView* panel, int* offsetLayout, int* sizeLayout,
                      short bitmapResourceId); // Mac oracle: IGWorldButton(..., short)
 
-  // Source-strip column offset (in pixels): shifted by +/-frameWidth34 on each
+  // Source-strip column offset (in pixels): shifted by +/-frameWidth on each
   // HiliteState toggle to select the enabled/disabled frame
   // of a horizontal sprite strip. Zeroed by the ctor.
   short field84;
   short pad86;
   // Source surface holding the sprite strip; Draw blits the
-  // {field84, 0, field84+frameWidth34, frameHeight38} slice from it.
+  // {field84, 0, field84+frameWidth, frameHeight} slice from it.
   TQuickDrawSurfaceContext* field88;
 };
 ASSERT_SIZE(TGWorldButton, 0x8c);

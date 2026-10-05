@@ -40,7 +40,7 @@ void TShipLine::InstallViews(TView* panel, int* offsetLayout) {
   int atlasOffset = g_ShipRosterAtlasHorizontalOffsetByResourceType_006985E8[shipNode10->type];
   TArmyCheckBox* checkbox =
       new TArmyCheckBox(shipView, checkboxOffset, checkboxSize, 5, 5,
-                        static_cast<TMilitaryPageView*>(panel)->primaryUnitAtlas84, atlasOffset);
+                        static_cast<TMilitaryPageView*>(panel)->primaryUnitAtlas, atlasOffset);
   checkbox->controlTag = kControlTagChec; // 'chec'
   checkbox->eventNumber60 = 4;
   checkbox->SetState(childLink14->active, static_cast<unsigned char>(0));

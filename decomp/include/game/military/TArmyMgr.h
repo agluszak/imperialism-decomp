@@ -15,47 +15,47 @@ class TArmyStack;
 struct TextStyle;
 
 // 0x268-byte POD record copied into the TSortedPtrList pointed to by
-// TArmyMgr::mapContextActionRecordList04.
+// TArmyMgr::mapContextActionRecordList.
 // Field evidence from the battle-report layout hook (0x4acb60): the first bytes are a
-// small nation-id array indexed by reportParticipantIndex02. Land reports interpret
+// small nation-id array indexed by reportParticipantIndex. Land reports interpret
 // location08 as an index into g_pGlobalMapState's stride-0xa8 table; sea reports use a
 // map-object pointer whose short at +0xc is the map cell. The +0x258 tail is the
 // report-marker placement state stamped by that hook.
 struct MapContextActionRecord {
-  unsigned char nationIds[2];             // +0x00
-  unsigned char reportParticipantIndex02; // +0x02
+  unsigned char nationIds[2];           // +0x00
+  unsigned char reportParticipantIndex; // +0x02
   // +0x03 -- read/written by ReadFrom/WriteTo like every other field here, so it is a
   // real serialized byte rather than compiler padding, even though no reader has been
   // found for it yet.
-  unsigned char displayedParticipantIndex03;
+  unsigned char displayedParticipantIndex;
   MapContextReportKindStorage reportKind04; // +0x04
   void* location08;                         // +0x08
   // +0xc..+0x24f -- per-side (0/1) working state, laid out exactly like the tail of
   // MapOrderBattleSnapshot (map_order_battle_snapshot.h): a fixed name buffer, a fixed
   // overlay-label buffer, a child-record count, then (after a 2-byte alignment pad) the
   // child-record array pointer. Ground truth: MapContextActionRecord::ReadFrom (0x4a13c0).
-  CStr32 nameBuffer0c[2];    // +0x0c/+0x2c
-  CStr255 overlayLabel4c[2]; // +0x4c/+0x14b
-  short childCount24a[2];    // +0x24a/+0x24c
-  unsigned char pad24e[2];   // +0x24e (alignment pad before the pointer array)
+  CStr32 nameBuffer[2];    // +0x0c/+0x2c
+  CStr255 overlayLabel[2]; // +0x4c/+0x14b
+  short childCount24a[2];  // +0x24a/+0x24c
+  unsigned char pad24e[2]; // +0x24e (alignment pad before the pointer array)
   // Per-side heap arrays built while resolving an army/navy order conflict. The copied
   // report record owns both buffers until CleanUpStacks releases the arrays.
-  MapOrderBattleSideChildRecord* sideChildRecords250[2]; // +0x250/+0x254
-  int markerPixelX258;                                   // +0x258
-  int markerPixelY25c;                                   // +0x25c
-  unsigned char placedFlag260;                           // +0x260
-  unsigned char pad261;                                  // +0x261
-  short markerSpriteCode262;                             // +0x262
-  short listOrdinal264;                                  // +0x264
+  MapOrderBattleSideChildRecord* sideChildRecords[2]; // +0x250/+0x254
+  int markerPixelX;                                   // +0x258
+  int markerPixelY;                                   // +0x25c
+  unsigned char placedFlag;                           // +0x260
+  unsigned char pad261;                               // +0x261
+  short markerSpriteCode262;                          // +0x262
+  short listOrdinal;                                  // +0x264
   unsigned char pad266[0x268 - 0x266];
 
   // Frees the per-side child-record arrays; ground truth for this is the EH unwind frame
   // TArmyMgr::ReadFrom (0x4a1b80) wraps around its per-iteration stack-local record --
-  // the local always transfers array ownership into mapContextActionRecordList04 and
+  // the local always transfers array ownership into mapContextActionRecordList and
   // nulls its own copies before falling out of scope, so this normally deletes null.
   ~MapContextActionRecord() {
-    delete[] sideChildRecords250[0];
-    delete[] sideChildRecords250[1];
+    delete[] sideChildRecords[0];
+    delete[] sideChildRecords[1];
   }
 
   // 0x4a13c0 -- reads one record from `stream`: the fixed header fields, resolving
@@ -77,8 +77,8 @@ public:
   // Retail Mac identities, confirmed against the Windows call chain and bodies.
   virtual void DoCombatMoves(); // slot 0x0a 0x4a1e40
   virtual void FormStacks();    // slot 0x0b 0x4a1f80
-  // Walks pendingUnitPool0c's TArmyStack entries starting at nextStackOrdinal10: for
-  // each stack whose categoryFlag8 matches regionAffinityTable1c[ownerNationCodeE],
+  // Walks pendingUnitPool's TArmyStack entries starting at nextStackOrdinal: for
+  // each stack whose categoryFlag matches regionAffinityTable1c[ownerNationCodeE],
   // relocates every unit on its embedded chain (MoveTo + SetOrders);
   // otherwise tries TryCreateTacticalBattleViewForTileArmies. Stops early on the first
   // battle view created; always re-releases the 3 cached objects up front and, when the
@@ -89,7 +89,7 @@ public:
   virtual void ClearPendingStacksAndFinalizeMilitaryUnits(); // slot 0x0d 0x4a2500
   // Ground truth (RET 0x8, 2 stack args) proves the previous 0-arg declaration was a
   // poison-pill arity mismatch. Called from ResolveNextMove
-  // when a TArmyStack's categoryFlag8 doesn't match
+  // when a TArmyStack's categoryFlag doesn't match
   // TArmyMgr::perTileOwnerNationCodeCache1c[ownerNationCodeE]. Partitions stack's unit
   // chain into an "our stack" (units matching ownerNationCode) and, if any were found, an
   // "enemy stack" (units garrisoned at that same slot in cityScoreTable); depending on
@@ -109,7 +109,7 @@ public:
   // relocating every unit on its embedded chain to stack->tileIndex10 unless already there.
   virtual void RelocateStackUnitsToStackTile(TArmyStack* stack); // slot 0x10 0x4a37b0
   // Ground truth (RET 0x8, 2 stack args) proves the previous 0-arg declaration was a
-  // poison-pill arity mismatch. Snapshots each stack's units' strength34 into strengthSnapshot3C and
+  // poison-pill arity mismatch. Snapshots each stack's units' strength34 into strengthSnapshot and
   // resets their blink-mask bits, then repeatedly finds an eligible pair (one unit per
   // stack whose strength34 still exceeds half its snapshot) to accumulate/decay a shared
   // meter across, until one side runs out; the side that ran out gets a flat meter boost
@@ -169,7 +169,7 @@ public:
   // markers etc.). Its recordSize14 is set to sizeof(MapContextActionRecord) == 0x268 by
   // IArmyMgr. Walked ordinally by the battle-report layout hook
   // (0x4acb60).
-  class TSortedPtrList* mapContextActionRecordList04;
+  class TSortedPtrList* mapContextActionRecordList;
   // Set by every appended battle record; CleanUpStacks clears it.
   bool battlesToReport;
   unsigned char pad09[0x0c - 0x09];
@@ -178,10 +178,10 @@ public:
   // ClearPendingStacksAndFinalizeMilitaryUnits via FreePayloads.
   // The original ctor installs TArmyStackList's vtable here (0x4a193a), so this is the
   // sorted stack list, not a plain TSortedList; its payloads are TArmyStack*.
-  class TArmyStackList* pendingUnitPool0c;
+  class TArmyStackList* pendingUnitPool;
   // +0x10 -- one-based stack ordinal initialized by DoCombatMoves and advanced by
-  // ResolveNextMove as it walks pendingUnitPool0c.
-  int nextStackOrdinal10;
+  // ResolveNextMove as it walks pendingUnitPool.
+  int nextStackOrdinal;
   // +0x14/+0x18 -- static lookup-table pointers installed by
   // InitializeMapContextActionManager (0x695448 / 0x695428). Field-xrefs prove
   // write-only: no reader survives, so these are unused retained pointers.
@@ -205,18 +205,18 @@ public:
   // consumes it: the two stack nation/category bytes, the caller's battle context, and
   // one 30-entry unit-type count table per side.
   signed char tacticalCombatNationCode31e[2];
-  short tacticalCombatContext320;
+  short tacticalCombatContext;
   short tacticalCombatUnitCountByType322[2][30];
   // +0x39a -- set when a terrain-descriptor refresh is pending; consumed and cleared by
   // EndBattlePhase (0x4a1eb0).
-  bool needsTerrainRefreshFlag39a;
+  bool needsTerrainRefreshFlag;
   unsigned char pad39b;
   // +0x39c/+0x3a0/+0x3a4 -- the friendly stack, opposing stack, and active battle object
   // cached by CreateTacticalBattleViewAndInitializeBattleSetup and released by
   // EndBattlePhase.
   class TArmyStack* ourStackBattle39c;
   class TArmyStack* enemyStackBattle3a0;
-  class TArmyBattle* activeBattleView3a4;
+  class TArmyBattle* activeBattleView;
 
   // Map hotkey 'N': clear active order modes on the nation's stationed army units,
   // then advance the map interaction selection when no selection remains. 0x004a7590.
@@ -238,8 +238,8 @@ public:
   short ActivateFirstIdleTacticalUnitByCategoryAtTile(short categoryId, short tileIndex);
   short ActivateFirstActiveTacticalUnitByCategoryAtTile(short categoryId, short tileIndex);
 
-  // Walks the region's stationed-unit chain (Province::stationedUnitChain98,
-  // via TUnit::nextAtLocation14) for one whose unitOrder is idle and whose
+  // Walks the region's stationed-unit chain (Province::stationedUnitChain,
+  // via TUnit::nextAtLocation) for one whose unitOrder is idle and whose
   // TMilitaryUnit::GetCategory() is nonzero. 0x004a4550, __thiscall (this unused --
   // operates purely off g_pGlobalMapState), 1 arg.
   bool HasEligibleStationedUnitInRegion(short regionId);
@@ -308,11 +308,11 @@ public:
   // consumed later, in the widget-dispatch tail of the caller (ShowSpyReport).
   //
   // outDefenderSummary: "<leading unit/admiral name or city name>" -- Phase 1 scans
-  // cityScoreTable[cityRecordIndex]'s adjacent regions (adjacentRegionIds0A[0..
+  // cityScoreTable[cityRecordIndex]'s adjacent regions (adjacentRegionIds[0..
   // adjacentRegionCount08)) owned by the active nation (TMapMgr::
   // ResolveTileOwnerNationCodeNormalized == TSimMgr::GetActiveNationId), and over their
-  // stationedUnitChain98 picks the highest-scoring General TMilitaryUnit
-  // (score = experiencePercent38/100 + 1); ties keep the first found. If no adjacent region is
+  // stationedUnitChain picks the highest-scoring General TMilitaryUnit
+  // (score = experiencePercent/100 + 1); ties keep the first found. If no adjacent region is
   // owned (or none qualifies), falls back to the region's own city display name
   // (TMapMgr::AssignCityRecordDisplayName). Phase 2 separately scans
   // TShip::GetFirst() for a TShip owned by the active nation whose zone
@@ -325,7 +325,7 @@ public:
   //
   // outGarrisonSummary: a comma-separated "<count> <resource type name>" list (or a
   // "nothing garrisoned" fallback) built from cityScoreTable[cityRecordIndex]'s
-  // stationedUnitChain98: each unit rolls twice against a per-strength-tier probability
+  // stationedUnitChain: each unit rolls twice against a per-strength-tier probability
   // table (g_MapOrderResourceRollWeightTable, keyed by Phase 1/2's winning score) seeded
   // from cityRecordIndex+TSimMgr::GetEconomicTurn()+GetActiveNationId(): the first roll
   // picks a 0-2 "point cost". The second result is biased by 3: selector 4 uses the
@@ -355,7 +355,7 @@ public:
   //    g_apNationStates[nationId]'s order list (TCountry::militaryUnitList44, a
   //    TSortedList* of TMilitaryUnit*), and AddTail()s every entry whose tileIndex06
   //    isn't adjacent to cityIndex (TMapMgr::IsProvinceAdjacentTo) when its
-  //    orderTargetIndex0C == cityIndex, summing GetArmsCarried per entry into a budget.
+  //    orderTargetIndex == cityIndex, summing GetArmsCarried per entry into a budget.
   //  - Subtracts g_pNavyOrderManager->GetInvasionCapacity(
   //    nationId, &g_pGlobalMapState->cityScoreTable[cityIndex], 0) from that
   //    budget; if the remainder is positive, randomly evicts entries from the TList
@@ -374,7 +374,7 @@ public:
   //    head) appending one new MapOrderBattleSideChildRecord per marked-evicted
   //    TMilitaryUnit (resourceType = orderType, stockOrRequired = 0xffaa, nameBuffer =
   //    name24 clamped to 0x20 chars, detail category = 'army' ("army"), and
-  //    strengthBucket = experiencePercent38 / 100) before DetachUnitOrderFromOwnerAndReset()
+  //    strengthBucket = experiencePercent / 100) before DetachUnitOrderFromOwnerAndReset()
   //    + Free()ing the evicted unit. The old childRecords array is never freed here --
   //    reproduced as a faithful leak, matching this file's other acknowledged leaks.
   void TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, int cityIndex,
@@ -393,19 +393,19 @@ public:
   // while the losing stack is redistributed to a random adjacent region (sideWonFlag
   // != 0) or relocated back to its origin tile (sideWonFlag == 0, via
   // RelocateStackUnitsToStackTile); both stacks then grow unit quality
-  // (experiencePercent38, capped at 400) -- +35 for the winner, +20 for the loser -- before
+  // (experiencePercent, capped at 400) -- +35 for the winner, +20 for the loser -- before
   // re-running the pending-army-stack pass (slot 0x0c). 0x004a5ca0, __thiscall, ret 0x10.
   void ApplyPostBattleStackOutcomeAndGrowUnitMeters(TArmyStack* ourStack, TArmyStack* enemyStack,
                                                     unsigned char sideWonFlag, int battleSiteIndex);
 
-  // Appends the built map-context battle record to mapContextActionRecordList04 (via its
+  // Appends the built map-context battle record to mapContextActionRecordList (via its
   // sorted-insert virtual, slot 0x0f), clears the record's scratch working fields, and
   // marks battlesToReport. `unusedArg2` is present only for stack-cleanup fidelity (RET 8) -- the
   // body never reads it. 0x4a6e80, __thiscall.
   void AddBattleRecord(struct MapOrderBattleSnapshot* record, int unusedArg2);
   void IArmyMgr();
 
-  // Scans mapContextActionRecordList04 from its last entry down to the first for a
+  // Scans mapContextActionRecordList from its last entry down to the first for a
   // record whose nationIds[0] or nationIds[1] matches activeNationId; returns true on the
   // first match, or as soon as g_bRandomMapDeveloperCheatFlag is set (the developer-cheat
   // gate short-circuits the scan the same way it does elsewhere). Sole caller:

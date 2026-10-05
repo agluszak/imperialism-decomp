@@ -51,7 +51,7 @@ enum ResourceKind {
 //    band with a market price (TMapMgr::CalculateDeveloperTilePurchaseCost
 //    0x005155c0 prices `< 17` through the proposal-weight table) and the only
 //    band with per-province development counters (TMapMgr's
-//    resourceDevelopmentCounts82[10], indexed by kind - 7).
+//    resourceDevelopmentCounts[10], indexed by kind - 7).
 //  * Harvested food and precious metals 17..22 also come off the map, which is
 //    why tile-yield loops test the combined first and last bands
 //    (TCityInteriorMinister 0x004c2e50 walks `(0..6) || (17..22)`).

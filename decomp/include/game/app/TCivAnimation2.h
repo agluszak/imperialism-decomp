@@ -25,8 +25,8 @@ public:
   // TAnimation's own slice ends at 0x2c (ASSERT_SIZE); RTTI oracle confirms
   // sizeof(TCivAnimation2) == 0x30. Caches the ctor's `kind` selector (see the ctor
   // below) for later reference; real reader not yet identified.
-  short kindIndex2c; // +0x2c
-  short pad2e;       // +0x2e
+  short kindIndex; // +0x2c
+  short pad2e;     // +0x2e
 
   // NOOP: verified empty in original 0x0049f602 (no standalone TCivAnimation2::TCivAnimation2 body exists: construction is fully inlined into CreateObject 0x0049f600; that address is its operator-new call site)
   TCivAnimation2() {}

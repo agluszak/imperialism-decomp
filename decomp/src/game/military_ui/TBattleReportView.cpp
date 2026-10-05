@@ -92,13 +92,13 @@ void TBattleReportView::DoPostCreate(int arg) {
   control->InstallTextStyle(style.desc, 0);
 
   int selectedOrdinal = -1;
-  int remaining = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
+  int remaining = g_pMapContextActionManager->mapContextActionRecordList->GetSize();
   for (; remaining > 0; remaining--) {
     MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
-        g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
+        g_pMapContextActionManager->mapContextActionRecordList->GetPtrListEntryByOneBasedIndex(
             remaining));
-    record->listOrdinal264 = static_cast<short>(remaining);
-    record->placedFlag260 = 1;
+    record->listOrdinal = static_cast<short>(remaining);
+    record->placedFlag = 1;
     selectedOrdinal = remaining;
 
     short cell;
@@ -185,13 +185,13 @@ void TBattleReportView::DoPostCreate(int arg) {
     short markerColX2;
     unsigned short markerRow;
     SplitTileIndexToHexRasterColumnX2AndRow(foundCell, &markerColX2, &markerRow);
-    record->markerPixelX258 = mapViewportRect514.left + (markerColX2 * 5) / 2 - 9;
-    record->markerPixelY25c = mapViewportRect514.top + markerRow * 5 - 9;
+    record->markerPixelX = mapViewportRect.left + (markerColX2 * 5) / 2 - 9;
+    record->markerPixelY = mapViewportRect.top + markerRow * 5 - 9;
 
     short spriteBase;
-    if (record->nationIds[record->reportParticipantIndex02] == g_pSimMgr->GetActiveNationId()) {
+    if (record->nationIds[record->reportParticipantIndex] == g_pSimMgr->GetActiveNationId()) {
       spriteBase = 0;
-    } else if (record->nationIds[1 - record->reportParticipantIndex02] ==
+    } else if (record->nationIds[1 - record->reportParticipantIndex] ==
                g_pSimMgr->GetActiveNationId()) {
       spriteBase = 4;
     } else {
@@ -207,14 +207,14 @@ void TBattleReportView::DoPostCreate(int arg) {
     g_pSimMgr->StartNextPhase();
     selectedOrdinal = 1;
   }
-  selectedReportIndex24c8 = selectedOrdinal - 1;
+  selectedReportIndex = selectedOrdinal - 1;
   RefreshMapContextSelectionPanelAndInfoLabels(static_cast<MapContextActionRecord*>(
-      g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
+      g_pMapContextActionManager->mapContextActionRecordList->GetPtrListEntryByOneBasedIndex(
           selectedOrdinal)));
   SetIdleFreq(2);
 
   TIdleMeAnimation* animation = new TIdleMeAnimation();
-  transientRegistryObject24cc = animation;
+  transientRegistryObject = animation;
   RECT animationRect;
   animationRect.left = 0;
   animationRect.top = 0;
@@ -256,8 +256,8 @@ void TBattleReportView::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x004ad560
 void TBattleReportView::Free() {
-  if (transientRegistryObject24cc != 0) {
-    g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(transientRegistryObject24cc->registryTag);
+  if (transientRegistryObject != 0) {
+    g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(transientRegistryObject->registryTag);
   }
   TDiplomacyMapView::Free();
 }
@@ -275,14 +275,14 @@ char TBattleReportView::DoIdle(int action) {
       PrepareForDrawing();
 
       MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
-          g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
-              selectedReportIndex24c8));
+          g_pMapContextActionManager->mapContextActionRecordList->GetPtrListEntryByOneBasedIndex(
+              selectedReportIndex));
 
       RECT markerRect;
-      markerRect.left = record->markerPixelX258;
-      markerRect.top = record->markerPixelY25c;
-      markerRect.right = record->markerPixelX258 + 0x12;
-      markerRect.bottom = record->markerPixelY25c + 0x12;
+      markerRect.left = record->markerPixelX;
+      markerRect.top = record->markerPixelY;
+      markerRect.right = record->markerPixelX + 0x12;
+      markerRect.bottom = record->markerPixelY + 0x12;
 
       CDib* surfaceDib = g_pActiveQuickDrawSurfaceContext->blitSurface.surfaceDib;
       if (surfaceDib != 0) {
@@ -318,11 +318,11 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
   if (commandId == 10) {
     int tag = sourceHandler->controlTag;
     if (tag == IMPERIALISM_FOURCC('n', 'e', 'x', 't')) {
-      int count = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
-      if (selectedReportIndex24c8 < count) {
+      int count = g_pMapContextActionManager->mapContextActionRecordList->GetSize();
+      if (selectedReportIndex < count) {
         RefreshMapContextSelectionPanelAndInfoLabels(static_cast<MapContextActionRecord*>(
-            g_pMapContextActionManager->mapContextActionRecordList04
-                ->GetPtrListEntryByOneBasedIndex(selectedReportIndex24c8 + 1)));
+            g_pMapContextActionManager->mapContextActionRecordList->GetPtrListEntryByOneBasedIndex(
+                selectedReportIndex + 1)));
       }
       return;
     }
@@ -339,8 +339,8 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       TBook* book = static_cast<TBook*>(dialog->ResolveControlByTag(kControlTagDialog));
       book->AssertValid();
       BattleRecord* battleRecord = static_cast<BattleRecord*>(
-          g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
-              selectedReportIndex24c8));
+          g_pMapContextActionManager->mapContextActionRecordList->GetPtrListEntryByOneBasedIndex(
+              selectedReportIndex));
       // This command's open payload is a BattleRecord despite the shared DoEvent slot's
       // generic TEvent pointer type; retail reads the record fields directly from arg 3.
       BattleRecord* eventBattleRecord = reinterpret_cast<BattleRecord*>(event);
@@ -382,11 +382,11 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       leftNation->SetTextAlignmentAndMaybeRefresh(1, 0);
       rightNation->SetTextAlignmentAndMaybeRefresh(1, 0);
       {
-        CString leftName(eventBattleRecord->nameBuffer0c[0].data);
+        CString leftName(eventBattleRecord->nameBuffer[0].data);
         leftNation->SetTextAndMaybeRefresh(&leftName, 0);
       }
       {
-        CString rightName(eventBattleRecord->nameBuffer0c[1].data);
+        CString rightName(eventBattleRecord->nameBuffer[1].data);
         rightNation->SetTextAndMaybeRefresh(&rightName, 0);
       }
 
@@ -406,10 +406,10 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       return;
     }
     if (tag == IMPERIALISM_FOURCC('p', 'r', 'e', 'v')) {
-      if (selectedReportIndex24c8 > 1) {
+      if (selectedReportIndex > 1) {
         RefreshMapContextSelectionPanelAndInfoLabels(static_cast<MapContextActionRecord*>(
-            g_pMapContextActionManager->mapContextActionRecordList04
-                ->GetPtrListEntryByOneBasedIndex(selectedReportIndex24c8 - 1)));
+            g_pMapContextActionManager->mapContextActionRecordList->GetPtrListEntryByOneBasedIndex(
+                selectedReportIndex - 1)));
       }
       return;
     }
@@ -432,14 +432,14 @@ void TBattleReportView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
   (void)event;
   (void)origin;
   MapContextActionRecord* selectedRecord = 0;
-  int remaining = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
+  int remaining = g_pMapContextActionManager->mapContextActionRecordList->GetSize();
   for (; remaining > 0; --remaining) {
     MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
-        g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
+        g_pMapContextActionManager->mapContextActionRecordList->GetPtrListEntryByOneBasedIndex(
             remaining));
-    if (record->placedFlag260 != 0 && point.x >= record->markerPixelX258 &&
-        point.x < record->markerPixelX258 + 0x12 && point.y >= record->markerPixelY25c &&
-        point.y < record->markerPixelY25c + 0x12) {
+    if (record->placedFlag != 0 && point.x >= record->markerPixelX &&
+        point.x < record->markerPixelX + 0x12 && point.y >= record->markerPixelY &&
+        point.y < record->markerPixelY + 0x12) {
       selectedRecord = record;
     }
   }
@@ -456,14 +456,14 @@ char TBattleReportView::ShouldDisplay(MapContextActionRecord*) const {
 // FUNCTION: IMPERIALISM 0x004add70
 MapContextActionRecord* TBattleReportView::GetBattleAt(const CPoint& point) const {
   MapContextActionRecord* selectedRecord = 0;
-  int remaining = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
+  int remaining = g_pMapContextActionManager->mapContextActionRecordList->GetSize();
   for (; remaining > 0; --remaining) {
     MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
-        g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
+        g_pMapContextActionManager->mapContextActionRecordList->GetPtrListEntryByOneBasedIndex(
             remaining));
-    if (record->placedFlag260 != 0 && point.x >= record->markerPixelX258 &&
-        point.x < record->markerPixelX258 + 0x12 && point.y >= record->markerPixelY25c &&
-        point.y < record->markerPixelY25c + 0x12) {
+    if (record->placedFlag != 0 && point.x >= record->markerPixelX &&
+        point.x < record->markerPixelX + 0x12 && point.y >= record->markerPixelY &&
+        point.y < record->markerPixelY + 0x12) {
       selectedRecord = record;
     }
   }
@@ -480,20 +480,20 @@ void TBattleReportView::Draw(RECT* rectBuffer) {
 void TBattleReportView::RenderMapContextActionMarkers(RECT* rectBuffer) {
   (void)rectBuffer; // ignored stack arg threaded through by the caller
 
-  int count = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
-  int boundary = (selectedReportIndex24c8 == 0) ? 1 : 0;
+  int count = g_pMapContextActionManager->mapContextActionRecordList->GetSize();
+  int boundary = (selectedReportIndex == 0) ? 1 : 0;
   int ordinal = count;
   if (ordinal >= boundary) {
     do {
-      int index = (ordinal == 0) ? selectedReportIndex24c8 : ordinal;
+      int index = (ordinal == 0) ? selectedReportIndex : ordinal;
       MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
-          g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
+          g_pMapContextActionManager->mapContextActionRecordList->GetPtrListEntryByOneBasedIndex(
               index));
 
-      if (selectedReportIndex24c8 != ordinal && record->placedFlag260 != 0) {
+      if (selectedReportIndex != ordinal && record->placedFlag != 0) {
         RECT destRect;
-        destRect.left = record->markerPixelX258;
-        destRect.top = record->markerPixelY25c;
+        destRect.left = record->markerPixelX;
+        destRect.top = record->markerPixelY;
         destRect.right = destRect.left + 0x12;
         destRect.bottom = destRect.top + 0x12;
 
@@ -527,45 +527,44 @@ void TBattleReportView::RenderMapContextActionMarkers(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x004adfc0
 void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     MapContextActionRecord* record) {
-  if (selectedReportIndex24c8 == static_cast<short>(record->listOrdinal264)) {
+  if (selectedReportIndex == static_cast<short>(record->listOrdinal)) {
     return;
   }
 
-  if (selectedReportIndex24c8 != 0) {
+  if (selectedReportIndex != 0) {
     MapContextActionRecord* oldRecord = static_cast<MapContextActionRecord*>(
-        g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
-            selectedReportIndex24c8));
+        g_pMapContextActionManager->mapContextActionRecordList->GetPtrListEntryByOneBasedIndex(
+            selectedReportIndex));
     RECT oldRect;
-    oldRect.left = oldRecord->markerPixelX258;
-    oldRect.top = oldRecord->markerPixelY25c;
+    oldRect.left = oldRecord->markerPixelX;
+    oldRect.top = oldRecord->markerPixelY;
     oldRect.right = oldRect.left + 18;
     oldRect.bottom = oldRect.top + 18;
     InvalidateCityDialogRectRegion(&oldRect, 1);
   }
 
-  selectedReportIndex24c8 = static_cast<short>(record->listOrdinal264);
-  if (selectedReportIndex24c8 != 0) {
+  selectedReportIndex = static_cast<short>(record->listOrdinal);
+  if (selectedReportIndex != 0) {
     MapContextActionRecord* newRecord = static_cast<MapContextActionRecord*>(
-        g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
-            selectedReportIndex24c8));
+        g_pMapContextActionManager->mapContextActionRecordList->GetPtrListEntryByOneBasedIndex(
+            selectedReportIndex));
     RECT newRect;
-    newRect.left = newRecord->markerPixelX258;
-    newRect.top = newRecord->markerPixelY25c;
+    newRect.left = newRecord->markerPixelX;
+    newRect.top = newRecord->markerPixelY;
     newRect.right = newRect.left + 18;
     newRect.bottom = newRect.top + 18;
     InvalidateCityDialogRectRegion(&newRect, 1);
   }
 
-  short participantIndex = static_cast<signed char>(record->displayedParticipantIndex03);
+  short participantIndex = static_cast<signed char>(record->displayedParticipantIndex);
   short otherParticipantIndex = static_cast<short>(1 - participantIndex);
   int activeSideRelation;
   if (static_cast<signed char>(
-          record->nationIds[static_cast<signed char>(record->reportParticipantIndex02)]) ==
+          record->nationIds[static_cast<signed char>(record->reportParticipantIndex)]) ==
       g_pSimMgr->GetActiveNationId()) {
     activeSideRelation = 1;
   } else if (static_cast<signed char>(
-                 record
-                     ->nationIds[1 - static_cast<signed char>(record->reportParticipantIndex02)]) ==
+                 record->nationIds[1 - static_cast<signed char>(record->reportParticipantIndex)]) ==
              g_pSimMgr->GetActiveNationId()) {
     activeSideRelation = -1;
   } else {
@@ -642,11 +641,10 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     int activeHomeRegion =
         g_apTerrainTypeDescriptorTable[g_pSimMgr->GetActiveNationId()]->GetCapitolProvince();
     bool activeNationOwnsBattleSite = activeHomeRegion == reinterpret_cast<int>(record->location08);
-    bool reportSidesAreSame =
-        record->displayedParticipantIndex03 == record->reportParticipantIndex02;
+    bool reportSidesAreSame = record->displayedParticipantIndex == record->reportParticipantIndex;
     bool reportParticipantIsActive =
         static_cast<signed char>(
-            record->nationIds[static_cast<signed char>(record->reportParticipantIndex02)]) ==
+            record->nationIds[static_cast<signed char>(record->reportParticipantIndex)]) ==
         g_pSimMgr->GetActiveNationId();
     bool activeNationIsOtherReportSide = activeSideRelation != 0 && !reportParticipantIsActive;
     int otherNation = static_cast<signed char>(record->nationIds[0]);
@@ -688,34 +686,34 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
   {
     TStaticText* mdafText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagFadm));
     mdafText->AssertValid();
-    CString mdafStr(record->nameBuffer0c[participantIndex].data);
+    CString mdafStr(record->nameBuffer[participantIndex].data);
     mdafText->SetTextAndMaybeRefresh(&mdafStr, 1);
   }
 
   {
     TStaticText* phsfText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagFshp));
     phsfText->AssertValid();
-    CString phsfStr(record->overlayLabel4c[participantIndex].data);
+    CString phsfStr(record->overlayLabel[participantIndex].data);
     phsfText->SetTextAndMaybeRefresh(&phsfStr, 1);
   }
 
   {
     TStaticText* mdaeText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagEadm));
     mdaeText->AssertValid();
-    CString mdaeStr(record->nameBuffer0c[otherParticipantIndex].data);
+    CString mdaeStr(record->nameBuffer[otherParticipantIndex].data);
     mdaeText->SetTextAndMaybeRefresh(&mdaeStr, 1);
   }
 
   {
     TStaticText* phseText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagEshp));
     phseText->AssertValid();
-    CString phseStr(record->overlayLabel4c[otherParticipantIndex].data);
+    CString phseStr(record->overlayLabel[otherParticipantIndex].data);
     phseText->SetTextAndMaybeRefresh(&phseStr, 1);
   }
 
-  bool hasPrevious = selectedReportIndex24c8 > 1;
-  int count = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
-  bool hasNext = selectedReportIndex24c8 < count;
+  bool hasPrevious = selectedReportIndex > 1;
+  int count = g_pMapContextActionManager->mapContextActionRecordList->GetSize();
+  bool hasNext = selectedReportIndex < count;
 
   TControl* prevCtrl = static_cast<TControl*>(ResolveControlByTag(kControlTagPrev));
   prevCtrl->AssertValid();

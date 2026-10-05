@@ -47,7 +47,7 @@ void TIndustryCluster::DoPostCreate(int styleSeed) {
     mappedSummaryTag = g_pTradeSummarySelectionMap[tagIndex];
   }
 
-  TProductionOrder* selectedMetricRecord = province->orderSlotsE4[tagIndex];
+  TProductionOrder* selectedMetricRecord = province->orderSlots[tagIndex];
   this->selectedMetricOrder = selectedMetricRecord;
   // `productionSlot` only exists on TItemOrder-sized (0x54-byte) objects; safe
   // here because tagIndex is bounded to the 23-entry g_pTradeSummarySelectionMap
@@ -99,7 +99,7 @@ void TIndustryCluster::SetMoveAmount(short dragValue, unsigned char updateContro
   float barScale = 9999.0f;
   if (barControl->auxValueA != 0) {
     barScale =
-        static_cast<float>(barControl->frameWidth34) / static_cast<float>(barControl->auxValueA);
+        static_cast<float>(barControl->frameWidth) / static_cast<float>(barControl->auxValueA);
   }
 
   if (selectedOrder->quantity == this->selectedMetricValue) {
@@ -115,7 +115,7 @@ void TIndustryCluster::SetMoveAmount(short dragValue, unsigned char updateContro
 
   CPoint moveControlPosition;
   moveControlPosition.x = barControl->ownerLocalX + static_cast<short>(scaledMoveAmount) - 2;
-  moveControlPosition.y = barControl->ownerLocalY + barControl->frameHeight38;
+  moveControlPosition.y = barControl->ownerLocalY + barControl->frameHeight;
   moveControl->Locate(moveControlPosition, 1);
   moveControl->QueryBounds(&moveBoundsRect);
   OffsetRect(&moveBoundsRect, this->ownerLocalX, this->ownerLocalY);
@@ -134,7 +134,7 @@ void TIndustryCluster::UpdateMax() {
 
   if (barControl->auxValueA != 0) {
     barControl->RenderQuickDrawOverlayWithHitRegion(static_cast<short>(
-        (selectedMetricOrder->MaxOrder() * barControl->frameWidth34) / barControl->auxValueA));
+        (selectedMetricOrder->MaxOrder() * barControl->frameWidth) / barControl->auxValueA));
   }
 }
 

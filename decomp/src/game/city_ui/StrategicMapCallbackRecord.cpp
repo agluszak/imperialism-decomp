@@ -17,7 +17,7 @@ StrategicMapCallbackRecord::~StrategicMapCallbackRecord() {}
 
 // FUNCTION: IMPERIALISM 0x004d4b90
 StrategicMapCallbackRecord::StrategicMapCallbackRecord()
-    : opcodeAppendCursor10(0), opcodeAlignmentOffset14(0), hadTrailingPadding18(0),
+    : opcodeAppendCursor(0), opcodeAlignmentOffset(0), hadTrailingPadding(0),
       destinationRowStride2c(0) {}
 
 // FUNCTION: IMPERIALISM 0x004d4bd0
@@ -31,22 +31,22 @@ void StrategicMapCallbackRecord::AppendPackedColorDword(unsigned char* destinati
                                                         int packedColor) {
   const unsigned int packed = (packedColor & 0xff) * 0x01010101u;
 
-  const int cursor = packedColorCursor1c[0];
-  opcodeBytes00[cursor] = static_cast<unsigned char>(packed);
-  opcodeBytes00[cursor + 1] = static_cast<unsigned char>(packed >> 8);
-  opcodeBytes00[cursor + 2] = static_cast<unsigned char>(packed >> 16);
-  opcodeBytes00[cursor + 3] = static_cast<unsigned char>(packed >> 24);
+  const int cursor = packedColorCursor[0];
+  opcodeBytes[cursor] = static_cast<unsigned char>(packed);
+  opcodeBytes[cursor + 1] = static_cast<unsigned char>(packed >> 8);
+  opcodeBytes[cursor + 2] = static_cast<unsigned char>(packed >> 16);
+  opcodeBytes[cursor + 3] = static_cast<unsigned char>(packed >> 24);
 
   typedef void(__cdecl * PackedColorProgram)(unsigned char*);
   PackedColorProgram program =
-      reinterpret_cast<PackedColorProgram>(&opcodeBytes00[opcodeAlignmentOffset14]);
+      reinterpret_cast<PackedColorProgram>(&opcodeBytes[opcodeAlignmentOffset]);
   program(destinationPixels);
 }
 
 // FUNCTION: IMPERIALISM 0x004d4ff0
 void StrategicMapCallbackRecord::ApplyBitmapMaskToPixelBuffer(unsigned char* destinationPixels) {
-  unsigned char* instruction = opcodeBytes00.Data() + opcodeAlignmentOffset14;
-  unsigned char* end = opcodeBytes00.Data() + opcodeBytes00.Count();
+  unsigned char* instruction = opcodeBytes.Data() + opcodeAlignmentOffset;
+  unsigned char* end = opcodeBytes.Data() + opcodeBytes.Count();
   unsigned char* destinationBase = destinationPixels;
 
   while (instruction < end) {
@@ -113,9 +113,9 @@ void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(
           displacement = displacement - advance;
           generatedBaseOffset = generatedBaseOffset + advance;
 
-          unsigned int opcodeIndex = static_cast<unsigned int>(opcodeAppendCursor10);
-          opcodeAppendCursor10 = static_cast<int>(opcodeIndex) + 1;
-          opcodeBytes00[opcodeIndex] = 0x05;
+          unsigned int opcodeIndex = static_cast<unsigned int>(opcodeAppendCursor);
+          opcodeAppendCursor = static_cast<int>(opcodeIndex) + 1;
+          opcodeBytes[opcodeIndex] = 0x05;
 
           unsigned int byteSwappedAdvance =
               ((static_cast<unsigned int>(advance) & 0x000000ff) << 24) |
@@ -171,40 +171,40 @@ void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(
   }
 
   g_pResourceMgr->ReleaseRecordById(static_cast<short>(resourceId));
-  unsigned int opcodeIndex = static_cast<unsigned int>(opcodeAppendCursor10);
-  opcodeAppendCursor10 = static_cast<int>(opcodeIndex) + 1;
-  opcodeBytes00[opcodeIndex] = 0xc3;
-  opcodeBytes00.Compact();
+  unsigned int opcodeIndex = static_cast<unsigned int>(opcodeAppendCursor);
+  opcodeAppendCursor = static_cast<int>(opcodeIndex) + 1;
+  opcodeBytes[opcodeIndex] = 0xc3;
+  opcodeBytes.Compact();
   FinalizeOpcodeBufferAlignment();
 
-  unsigned char* alignmentProbe = &opcodeBytes00[opcodeAlignmentOffset14];
+  unsigned char* alignmentProbe = &opcodeBytes[opcodeAlignmentOffset];
   if ((reinterpret_cast<unsigned int>(alignmentProbe) & 3) != 0) {
-    opcodeAlignmentOffset14 = reinterpret_cast<unsigned int>(alignmentProbe) & 3;
-    if (opcodeAlignmentOffset14 != 0) {
-      opcodeBytes00.Add(0);
-      opcodeBytes00.Add(0);
-      opcodeBytes00.Add(0);
-      opcodeBytes00.Compact();
-      alignmentProbe = &opcodeBytes00[opcodeAlignmentOffset14];
-      opcodeAlignmentOffset14 = reinterpret_cast<unsigned int>(alignmentProbe) & 3;
+    opcodeAlignmentOffset = reinterpret_cast<unsigned int>(alignmentProbe) & 3;
+    if (opcodeAlignmentOffset != 0) {
+      opcodeBytes.Add(0);
+      opcodeBytes.Add(0);
+      opcodeBytes.Add(0);
+      opcodeBytes.Compact();
+      alignmentProbe = &opcodeBytes[opcodeAlignmentOffset];
+      opcodeAlignmentOffset = reinterpret_cast<unsigned int>(alignmentProbe) & 3;
     }
 
-    if (opcodeAlignmentOffset14 != 0) {
-      int payloadByteCount = opcodeBytes00.GetSize() - 3;
+    if (opcodeAlignmentOffset != 0) {
+      int payloadByteCount = opcodeBytes.GetSize() - 3;
       for (int sourceIndex = 0; sourceIndex < payloadByteCount; ++sourceIndex) {
-        unsigned char value = opcodeBytes00[sourceIndex];
-        opcodeBytes00[sourceIndex + opcodeAlignmentOffset14] = value;
+        unsigned char value = opcodeBytes[sourceIndex];
+        opcodeBytes[sourceIndex + opcodeAlignmentOffset] = value;
       }
-      hadTrailingPadding18 = 1;
+      hadTrailingPadding = 1;
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004d5580
 StrategicMapCallbackRecord* StrategicMapCallbackRecord::AppendOpcodeByte(int value) {
-  unsigned int index = static_cast<unsigned int>(opcodeAppendCursor10);
-  opcodeAppendCursor10 = static_cast<int>(index) + 1;
-  opcodeBytes00[index] = static_cast<unsigned char>(value);
+  unsigned int index = static_cast<unsigned int>(opcodeAppendCursor);
+  opcodeAppendCursor = static_cast<int>(index) + 1;
+  opcodeBytes[index] = static_cast<unsigned char>(value);
   return this;
 }
 
@@ -216,24 +216,24 @@ void StrategicMapCallbackRecord::AppendOpcodeBytePair(int value) {
 
 // FUNCTION: IMPERIALISM 0x004d5720
 void StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment() {
-  unsigned char* alignmentProbe = &opcodeBytes00[opcodeAlignmentOffset14];
-  opcodeAlignmentOffset14 = reinterpret_cast<unsigned int>(alignmentProbe) & 3;
-  if (opcodeAlignmentOffset14 != 0) {
-    opcodeBytes00.Add(0);
-    opcodeBytes00.Add(0);
-    opcodeBytes00.Add(0);
-    opcodeBytes00.Compact();
-    alignmentProbe = &opcodeBytes00[opcodeAlignmentOffset14];
-    opcodeAlignmentOffset14 = reinterpret_cast<unsigned int>(alignmentProbe) & 3;
+  unsigned char* alignmentProbe = &opcodeBytes[opcodeAlignmentOffset];
+  opcodeAlignmentOffset = reinterpret_cast<unsigned int>(alignmentProbe) & 3;
+  if (opcodeAlignmentOffset != 0) {
+    opcodeBytes.Add(0);
+    opcodeBytes.Add(0);
+    opcodeBytes.Add(0);
+    opcodeBytes.Compact();
+    alignmentProbe = &opcodeBytes[opcodeAlignmentOffset];
+    opcodeAlignmentOffset = reinterpret_cast<unsigned int>(alignmentProbe) & 3;
   }
 
-  if (opcodeAlignmentOffset14 != 0) {
-    int payloadByteCount = opcodeBytes00.GetSize() - 3;
+  if (opcodeAlignmentOffset != 0) {
+    int payloadByteCount = opcodeBytes.GetSize() - 3;
     for (int sourceIndex = 0; sourceIndex < payloadByteCount; ++sourceIndex) {
-      unsigned char value = opcodeBytes00[sourceIndex];
-      opcodeBytes00[sourceIndex + opcodeAlignmentOffset14] = value;
+      unsigned char value = opcodeBytes[sourceIndex];
+      opcodeBytes[sourceIndex + opcodeAlignmentOffset] = value;
     }
-    hadTrailingPadding18 = 1;
+    hadTrailingPadding = 1;
   }
 }
 
@@ -302,11 +302,11 @@ void StrategicMapCallbackRecord::StreamOverlayHitMaskToSurfaceDib(DiplomacyMaskB
 // FUNCTION: IMPERIALISM 0x004d5d30
 void StrategicMapCallbackRecord::BuildDiplomacyOverlayHitMaskOpcodeStream(
     DiplomacyMaskBufferRun* run, int destinationRowStride, int outlineOnly, int surfaceHeight) {
-  opcodeBytes00.SetCapacity(0x400);
+  opcodeBytes.SetCapacity(0x400);
   destinationRowStride2c = destinationRowStride;
 
   AppendOpcodeByte(0xb9);
-  packedColorCursor1c.Add(opcodeAppendCursor10);
+  packedColorCursor.Add(opcodeAppendCursor);
   AppendOpcodeByte(0xcd);
   AppendOpcodeByte(0xcd);
   AppendOpcodeByte(0xcd);
@@ -376,9 +376,9 @@ void StrategicMapCallbackRecord::BuildDiplomacyOverlayHitMaskOpcodeStream(
   }
 
   AppendOpcodeByte(0xc3);
-  opcodeBytes00.Compact();
+  opcodeBytes.Compact();
   FinalizeOpcodeBufferAlignment();
-  unsigned char* alignedEntry = &opcodeBytes00[opcodeAlignmentOffset14];
+  unsigned char* alignedEntry = &opcodeBytes[opcodeAlignmentOffset];
   if ((reinterpret_cast<unsigned int>(alignedEntry) & 3) != 0) {
     FinalizeOpcodeBufferAlignment();
   }

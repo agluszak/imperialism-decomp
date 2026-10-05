@@ -261,7 +261,7 @@ namespace {
 // field offsets from that point onward.
 struct LoadedVersionResourceBlock {
   unsigned char prefix00[0x30];
-  VS_FIXEDFILEINFO fixedInfo30;
+  VS_FIXEDFILEINFO fixedInfo;
 };
 } // namespace
 
@@ -274,8 +274,8 @@ CString TAssetMgr::FormatVersionStringFromVersionResource() {
     if (loadedResource != nullptr) {
       const LoadedVersionResourceBlock* versionInfo =
           static_cast<const LoadedVersionResourceBlock*>(static_cast<const void*>(loadedResource));
-      unsigned int fileVersionMS = versionInfo->fixedInfo30.dwFileVersionMS;
-      unsigned int fileVersionLS = versionInfo->fixedInfo30.dwFileVersionLS;
+      unsigned int fileVersionMS = versionInfo->fixedInfo.dwFileVersionMS;
+      unsigned int fileVersionLS = versionInfo->fixedInfo.dwFileVersionLS;
       short major = static_cast<short>(fileVersionMS >> 16);
       short minor = static_cast<short>(fileVersionMS);
       short build = static_cast<short>(fileVersionLS >> 16);

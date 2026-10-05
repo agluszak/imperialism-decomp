@@ -68,8 +68,8 @@ void TShipyardView::DoStartup() {
   style.tail[2] = 0;
   style.tail[3] = 0;
 
-  productionView98 = g_pMacViewMgr->activeCityProductionView04;
-  unresolvedZeroB4 = 0;
+  productionView98 = g_pMacViewMgr->activeCityProductionView;
+  unresolvedZero = 0;
   iconSurfaceB8 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f);
 
   for (int slotIndex = 0; slotIndex < 8; ++slotIndex) {
@@ -97,7 +97,7 @@ void TShipyardView::DoStartup() {
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
   for (short queueIndex = 0; queueIndex < 8; ++queueIndex) {
-    TShipOrder* order = city94->shipOrderSlots190[queueIndex];
+    TShipOrder* order = city94->shipOrderSlots[queueIndex];
     if (order->resourceTypeIndex != 0) {
       TOverlayRadioButton* slotButton = static_cast<TOverlayRadioButton*>(
           ResolveControlByTag(kControlTagBut0 + queueIndex)); // 'but0'-'but7'
@@ -106,18 +106,18 @@ void TShipyardView::DoStartup() {
 
       short shipType = order->resourceTypeIndex;
       buildQueueSlotValues[queueIndex] = shipType;
-      slotButton->overlaySurfaceContext98 = iconSurfaceB8;
+      slotButton->overlaySurfaceContext = iconSurfaceB8;
       short sourceLeft = shipType;
       sourceLeft *= 0x50;
       sourceLeft -= 0x50;
-      slotButton->overlaySrcRect9c.left = sourceLeft;
-      slotButton->overlaySrcRect9c.top = 0;
-      slotButton->overlaySrcRect9c.right = slotButton->overlaySrcRect9c.left + 0x50;
-      slotButton->overlaySrcRect9c.bottom = 0x2d;
-      slotButton->overlayDstRectAc.left = g_shipyardQueueIconLeftBySlot[queueIndex];
-      slotButton->overlayDstRectAc.top = 0xc;
-      slotButton->overlayDstRectAc.right = slotButton->overlayDstRectAc.left + 0x50;
-      slotButton->overlayDstRectAc.bottom = 0x39;
+      slotButton->overlaySrcRect.left = sourceLeft;
+      slotButton->overlaySrcRect.top = 0;
+      slotButton->overlaySrcRect.right = slotButton->overlaySrcRect.left + 0x50;
+      slotButton->overlaySrcRect.bottom = 0x2d;
+      slotButton->overlayDstRect.left = g_shipyardQueueIconLeftBySlot[queueIndex];
+      slotButton->overlayDstRect.top = 0xc;
+      slotButton->overlayDstRect.right = slotButton->overlayDstRect.left + 0x50;
+      slotButton->overlayDstRect.bottom = 0x39;
 
       TControl* queueSlot = static_cast<TControl*>(
           ResolveControlByTag(kControlTagClu0 + queueIndex)); // 'clu0'-'clu7'
@@ -166,7 +166,7 @@ void TShipyardView::DoStartup() {
   description->AssertValid();
   description->InstallTextStyle(style.desc, 1);
 
-  selectedStatsRowA2 = 0;
+  selectedStatsRow = 0;
   selectedRequirementRow = 0;
   SetShip(buildQueueSlotValues[0]);
 
@@ -211,7 +211,7 @@ void TShipyardView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       selection->AssertValid();
       selection->SetSelectedChildTagAndRefresh(kControlTagBut0 + index); // 'but0'+index
 
-      TShipOrder* order = city94->shipOrderSlots190[index];
+      TShipOrder* order = city94->shipOrderSlots[index];
       short quantity = order->quantity;
       if (sourceHandler->controlTag == kControlTagPlus) { // 'plus'
         ++quantity;
@@ -491,8 +491,8 @@ void TShipyardView::SetStats(short shipType) {
 // FUNCTION: IMPERIALISM 0x004c9d20
 void TShipyardView::SetStats(TView* sourceControl) {
   short row = static_cast<short>(sourceControl->controlTag & 0xf);
-  if (row != selectedStatsRowA2 && buildQueueSlotValues[row] != 0) {
-    selectedStatsRowA2 = row;
+  if (row != selectedStatsRow && buildQueueSlotValues[row] != 0) {
+    selectedStatsRow = row;
     SetStats(buildQueueSlotValues[row]);
   }
 }

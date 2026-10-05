@@ -39,14 +39,14 @@ void TCreditsPicture::DoPostCreate(int arg) {
   ResolveUiThemeColor(0x2b6b, &cursorTheme);
   line1->SetTextFromUiStringResourceId(0xfb0);
   line1->SetTextStyle(style, 1);
-  line1->shadowTextColor9C = cursorTheme;
+  line1->shadowTextColor = cursorTheme;
   line1->dropShadowEnabledA0 = false;
 
   TDeluxeText* line2 = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCre2));
   line2->AssertValid();
   line2->SetTextFromUiStringResourceId(0xfb1);
   line2->SetTextStyle(style, 1);
-  line2->shadowTextColor9C = cursorTheme;
+  line2->shadowTextColor = cursorTheme;
   line2->dropShadowEnabledA0 = false;
 }
 
@@ -72,14 +72,14 @@ void TCreditsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
       line1->AssertValid();
       line1->SetTextFromUiStringResourceId(0xfb2);
       line1->SetTextStyle(style, 1);
-      line1->shadowTextColor9C = cursorTheme;
+      line1->shadowTextColor = cursorTheme;
       line1->dropShadowEnabledA0 = true;
 
       TDeluxeText* line2 = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCre2));
       line2->AssertValid();
       line2->SetTextFromUiStringResourceId(0xfb3);
       line2->SetTextStyle(style, 1);
-      line2->shadowTextColor9C = cursorTheme;
+      line2->shadowTextColor = cursorTheme;
       line2->dropShadowEnabledA0 = true;
     }
   }

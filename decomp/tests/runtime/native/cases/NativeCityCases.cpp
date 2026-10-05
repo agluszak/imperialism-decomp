@@ -9,13 +9,13 @@
 namespace {
 
 TItemOrder* ClothingOrder(TGreatPower* nation) {
-  return static_cast<TItemOrder*>(nation->city->orderSlotsE4[kResourceClothing]);
+  return static_cast<TItemOrder*>(nation->city->orderSlots[kResourceClothing]);
 }
 
 void SeedClothingInputs(TCity* city) {
   city->CityStockByType(kResourceFabric) = 2;
   city->productionOrderTable1dc[1] = 1;
-  city->productionAccum1fc[1] = 1;
+  city->productionAccum[1] = 1;
 }
 
 } // namespace
@@ -70,7 +70,7 @@ RuntimeActionResult RunCityItemOrderDecrease(NativeTransition& transition) {
 RuntimeActionResult RunPowerPlantUpgrade(NativeTransition& transition) {
   TGreatPower* nation = ActiveNation();
   TCity* city = nation->city;
-  city->powerPlantUpgradeQueuedFlag04 = 0;
+  city->powerPlantUpgradeQueuedFlag = 0;
   nation->treasuryValue10 = 10000;
 
   JsonObject args;

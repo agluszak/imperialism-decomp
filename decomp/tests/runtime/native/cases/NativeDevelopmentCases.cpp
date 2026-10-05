@@ -22,7 +22,7 @@ bool FindUnoccupiedRailSection(StrategicTileIndex* sourceTile,
   for (StrategicTileIndex candidate = 0; candidate < 0x1950; ++candidate) {
     const TTerrainStateRecord& source = g_pGlobalMapState->terrainStateTable[candidate];
     if (source.firstCivilianOrder20 != 0 || source.adjacencyBits06 != 0 ||
-        source.railFlags17 != 0) {
+        source.railFlags != 0) {
       continue;
     }
 
@@ -34,7 +34,7 @@ bool FindUnoccupiedRailSection(StrategicTileIndex* sourceTile,
 
     const TTerrainStateRecord& destination = g_pGlobalMapState->terrainStateTable[neighbor];
     if (destination.firstCivilianOrder20 == 0 && destination.adjacencyBits06 == 0 &&
-        destination.railFlags17 == 0) {
+        destination.railFlags == 0) {
       *sourceTile = candidate;
       *destinationTile = neighbor;
       return true;
@@ -58,7 +58,7 @@ bool FindIssuableRailSection(NationSlot nationSlot, StrategicTileIndex* sourceTi
 
     const TTerrainStateRecord& source = g_pGlobalMapState->terrainStateTable[candidate];
     if (source.ownerNationTag04 != nationSlot || source.firstCivilianOrder20 != 0 ||
-        source.adjacencyBits06 != 0 || source.railFlags17 != 0 ||
+        source.adjacencyBits06 != 0 || source.railFlags != 0 ||
         !TerrainAllowsStartingRail(source.GetTerrainKind())) {
       continue;
     }
@@ -71,7 +71,7 @@ bool FindIssuableRailSection(NationSlot nationSlot, StrategicTileIndex* sourceTi
 
     const TTerrainStateRecord& destination = g_pGlobalMapState->terrainStateTable[neighbor];
     if (destination.ownerNationTag04 == nationSlot && destination.firstCivilianOrder20 == 0 &&
-        destination.adjacencyBits06 == 0 && destination.railFlags17 == 0 &&
+        destination.adjacencyBits06 == 0 && destination.railFlags == 0 &&
         TerrainAllowsStartingRail(destination.GetTerrainKind())) {
       *sourceTile = candidate;
       *destinationTile = neighbor;
@@ -165,9 +165,9 @@ JSON_Value* CaptureTouchedTiles(const StrategicTileIndex* tiles, int count) {
     object.Set("adjacency", static_cast<int>(tile.adjacencyBits06));
     object.Set("dev_nibbles",
                static_cast<int>(
-                   static_cast<unsigned char>(tile.developmentClassNibbles0c)));
-    object.Set("pending", static_cast<int>(tile.pendingDevelopmentFlag0d));
-    object.Set("rail_flags", static_cast<int>(tile.railFlags17));
+                   static_cast<unsigned char>(tile.developmentClassNibbles)));
+    object.Set("pending", static_cast<int>(tile.pendingDevelopmentFlag));
+    object.Set("rail_flags", static_cast<int>(tile.railFlags));
     object.Set("active_flags", static_cast<int>(tile.activeFlags1c));
     object.Set("province", static_cast<int>(tile.cityRecordIndex));
     array.Add(object.Release());
@@ -192,7 +192,7 @@ RuntimeActionResult RunCompletedRailSection(NativeTransition& transition) {
                                                             nationSlot);
   civilian->SetOrders(kUnitOrderLayRail, sourceTile);
   civilian->MoveTo(destinationTile);
-  civilian->remainingTurns24 = 1;
+  civilian->remainingTurns = 1;
 
   JsonObject args;
   args.Set("civilian", civilian->persistentUnitId20);
@@ -257,12 +257,12 @@ RuntimeActionResult RunCompletedResourceDevelopment(NativeTransition& transition
 
   g_pGlobalMapState->SetCivilianDevelopmentClassNibble(extractiveTile, 0, 2, 0);
   g_pGlobalMapState->SetCivilianDevelopmentClassNibble(extractiveTile, 1, 0, 0);
-  g_pGlobalMapState->terrainStateTable[extractiveTile].pendingDevelopmentFlag0d = 0;
+  g_pGlobalMapState->terrainStateTable[extractiveTile].pendingDevelopmentFlag = 0;
 
   TCivUnit* extractiveWorker = new TCivUnit();
   extractiveWorker->ICivUnit(kCivilianUnitMiner, extractiveTile, nationSlot);
   extractiveWorker->SetOrders(kUnitOrderDevelopResource, extractiveTile);
-  extractiveWorker->remainingTurns24 = 1;
+  extractiveWorker->remainingTurns = 1;
 
   StrategicTileIndex surfaceTile = -1;
   if (!FindUnoccupiedTile(&surfaceTile)) {
@@ -270,12 +270,12 @@ RuntimeActionResult RunCompletedResourceDevelopment(NativeTransition& transition
   }
   g_pGlobalMapState->SetCivilianDevelopmentClassNibble(surfaceTile, 0, 2, 0);
   g_pGlobalMapState->SetCivilianDevelopmentClassNibble(surfaceTile, 1, 0, 0);
-  g_pGlobalMapState->terrainStateTable[surfaceTile].pendingDevelopmentFlag0d = 1 << 3;
+  g_pGlobalMapState->terrainStateTable[surfaceTile].pendingDevelopmentFlag = 1 << 3;
 
   TCivUnit* surfaceWorker = new TCivUnit();
   surfaceWorker->ICivUnit(kCivilianUnitEngineer, surfaceTile, nationSlot);
   surfaceWorker->SetOrders(kUnitOrderDevelopResource, surfaceTile);
-  surfaceWorker->remainingTurns24 = 1;
+  surfaceWorker->remainingTurns = 1;
 
   JsonObject args;
   args.Set("extractive_worker", extractiveWorker->persistentUnitId20);
@@ -315,7 +315,7 @@ RuntimeActionResult RunCiviliansPhaseCase(NativeTransition& transition, bool sec
                                                             nationSlot);
   engineer->SetOrders(kUnitOrderLayRail, sourceTile);
   engineer->MoveTo(destinationTile);
-  engineer->remainingTurns24 = 1;
+  engineer->remainingTurns = 1;
 
   StrategicTileIndex prospectTile = -1;
   if (!FindUnoccupiedTile(&prospectTile)) {
@@ -324,7 +324,7 @@ RuntimeActionResult RunCiviliansPhaseCase(NativeTransition& transition, bool sec
   TCivUnit* prospector = new TCivUnit();
   prospector->ICivUnit(kCivilianUnitProspector, prospectTile, nationSlot);
   prospector->SetOrders(kUnitOrderProspect, prospectTile);
-  prospector->remainingTurns24 = 1;
+  prospector->remainingTurns = 1;
 
   StrategicTileIndex developTile = -1;
   if (!FindUnoccupiedTile(&developTile)) {
@@ -333,7 +333,7 @@ RuntimeActionResult RunCiviliansPhaseCase(NativeTransition& transition, bool sec
   TCivUnit* miner = new TCivUnit();
   miner->ICivUnit(kCivilianUnitMiner, developTile, nationSlot);
   miner->SetOrders(kUnitOrderDevelopResource, developTile);
-  miner->remainingTurns24 = 1;
+  miner->remainingTurns = 1;
 
   StrategicTileIndex fortTile = -1;
   if (!FindUnoccupiedProvinceTile(&fortTile)) {
@@ -342,7 +342,7 @@ RuntimeActionResult RunCiviliansPhaseCase(NativeTransition& transition, bool sec
   TCivUnit* fortEngineer = new TCivUnit();
   fortEngineer->ICivUnit(kCivilianUnitEngineer, fortTile, nationSlot);
   fortEngineer->SetOrders(kUnitOrderBuildFort, fortTile);
-  fortEngineer->remainingTurns24 = 1;
+  fortEngineer->remainingTurns = 1;
 
   StrategicTileIndex purchaseTile = -1;
   if (!FindUnoccupiedTile(&purchaseTile)) {
@@ -351,7 +351,7 @@ RuntimeActionResult RunCiviliansPhaseCase(NativeTransition& transition, bool sec
   TCivUnit* developer = new TCivUnit();
   developer->ICivUnit(kCivilianUnitDeveloper, purchaseTile, nationSlot);
   developer->SetOrders(kUnitOrderPurchaseLand, purchaseTile);
-  developer->remainingTurns24 = 1;
+  developer->remainingTurns = 1;
 
   StrategicTileIndex sleepTile = -1;
   if (!FindUnoccupiedTile(&sleepTile)) {
@@ -368,7 +368,7 @@ RuntimeActionResult RunCiviliansPhaseCase(NativeTransition& transition, bool sec
   TCivUnit* traveler = new TCivUnit();
   traveler->ICivUnit(kCivilianUnitRancher, redeployTile, nationSlot);
   traveler->SetOrders(kUnitOrderRedeploy, redeployTile);
-  traveler->remainingTurns24 = 1;
+  traveler->remainingTurns = 1;
 
   StrategicTileIndex depotTile = -1;
   if (!FindOwnedConstructionTile(nationSlot, 0, 0x24, &depotTile)) {
@@ -377,7 +377,7 @@ RuntimeActionResult RunCiviliansPhaseCase(NativeTransition& transition, bool sec
   TCivUnit* depotEngineer = new TCivUnit();
   depotEngineer->ICivUnit(kCivilianUnitEngineer, depotTile, nationSlot);
   depotEngineer->SetOrders(kUnitOrderBuildDepot, depotTile);
-  depotEngineer->remainingTurns24 = 1;
+  depotEngineer->remainingTurns = 1;
 
   StrategicTileIndex portTile = -1;
   if (!FindOwnedCoastalConstructionTile(nationSlot, 0x30, &portTile)) {
@@ -391,7 +391,7 @@ RuntimeActionResult RunCiviliansPhaseCase(NativeTransition& transition, bool sec
   TCivUnit* portEngineer = new TCivUnit();
   portEngineer->ICivUnit(kCivilianUnitEngineer, portTile, nationSlot);
   portEngineer->SetOrders(kUnitOrderBuildPort, portTile);
-  portEngineer->remainingTurns24 = 1;
+  portEngineer->remainingTurns = 1;
 
   int townCountsBefore[7];
   for (int slot = 0; slot < 7; ++slot) {

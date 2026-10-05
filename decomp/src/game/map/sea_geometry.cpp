@@ -106,10 +106,10 @@ void SeaSegment::RecomputeEndpointsAndAngle() {
     coord1 = x1 + y1 * 0xd8;
   }
   int adx = x0 - x1;
-  wrap16 = (adx < 0 ? -adx : adx) > 0x6c;
+  wrap = (adx < 0 ? -adx : adx) > 0x6c;
   int dx;
   int dy;
-  if (wrap16 && x0 < x1) {
+  if (wrap && x0 < x1) {
     dx = (x1 - x0) - 0xd8;
     dy = y1 - y0;
   } else {
@@ -336,10 +336,10 @@ void SeaSegment::InitFromPoints(const Seapoint* p0, const Seapoint* p1) {
     coord1 = x1 + y1 * 0xd8;
   }
   int adx = x0 - x1;
-  wrap16 = (adx < 0 ? -adx : adx) > 0x6c;
+  wrap = (adx < 0 ? -adx : adx) > 0x6c;
   int dx;
   int dy;
-  if (wrap16 && x0 < x1) {
+  if (wrap && x0 < x1) {
     dx = (x1 - x0) - 0xd8;
     dy = y1 - y0;
   } else {

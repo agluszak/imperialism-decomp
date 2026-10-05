@@ -149,14 +149,14 @@ RuntimeActionResult CityBuildingScreen::VerifyRetailFloatingFrame() const {
   const LONG style = GetWindowLongA(frame, GWL_STYLE);
   const LONG extendedStyle = GetWindowLongA(frame, GWL_EXSTYLE);
   if (window->windowStyleType != 0x1f40 || window->windowFlags != 0x80 ||
-      !window->useCaptionedFrameFlag6d || !window->topmostFlag70 ||
+      !window->useCaptionedFrameFlag || !window->topmostFlag ||
       (style & (WS_CAPTION | WS_SYSMENU)) != (WS_CAPTION | WS_SYSMENU) ||
       (extendedStyle & WS_EX_TOOLWINDOW) == 0) {
     CString detail;
     detail.Format("descriptor_style=0x%x descriptor_flags=0x%x caption=%d topmost=%d "
                   "style=0x%lx exstyle=0x%lx",
-                  window->windowStyleType, window->windowFlags, window->useCaptionedFrameFlag6d,
-                  window->topmostFlag70, style, extendedStyle);
+                  window->windowStyleType, window->windowFlags, window->useCaptionedFrameFlag,
+                  window->topmostFlag, style, extendedStyle);
     return PageFailure("verify the building window frame", detail);
   }
   CWnd* mainWindow = AfxGetMainWnd();
@@ -255,29 +255,29 @@ TUnitOrder* CityBuildingScreen::UnitOrder(short row) const {
     return 0;
   }
   if (kind == kCityBuildingUniversity) {
-    return city->buildOrderSlots148[row + kUniversityOrderBase];
+    return city->buildOrderSlots[row + kUniversityOrderBase];
   }
-  return kind == kCityBuildingArmory ? city->buildOrderSlots148[row] : 0;
+  return kind == kCityBuildingArmory ? city->buildOrderSlots[row] : 0;
 }
 
 TShipOrder* CityBuildingScreen::ShipOrder(short row) const {
   TCity* city = City();
   return city != 0 && kind == kCityBuildingShipyard && row >= 0 && row < kShipyardQueueLength
-             ? city->shipOrderSlots190[row]
+             ? city->shipOrderSlots[row]
              : 0;
 }
 
 TTrainingOrder* CityBuildingScreen::TrainingOrder() const {
   TCity* city = City();
   return city != 0 && kind == kCityBuildingTradeSchool
-             ? static_cast<TTrainingOrder*>(city->orderSlotsE4[kTrainingOrderSlot])
+             ? static_cast<TTrainingOrder*>(city->orderSlots[kTrainingOrderSlot])
              : 0;
 }
 
 TItemOrder* CityBuildingScreen::ItemOrder() const {
   TCity* city = City();
   const short unitType = IndustryUnitType();
-  return city != 0 && unitType >= 0 ? static_cast<TItemOrder*>(city->orderSlotsE4[unitType]) : 0;
+  return city != 0 && unitType >= 0 ? static_cast<TItemOrder*>(city->orderSlots[unitType]) : 0;
 }
 
 TTransFocusAnimation* CityBuildingScreen::ProductionAnimation() const {
@@ -299,7 +299,7 @@ bool CityBuildingScreen::CountIsPresentedCorrectly(TNumberText* count,
          count->textStyle78.textColor == textColor && count->ownerContext != 0 &&
          count->absoluteX == count->ownerContext->absoluteX + count->ownerLocalX &&
          count->absoluteY == count->ownerContext->absoluteY + count->ownerLocalY &&
-         count->frameWidth34 > 0 && count->frameHeight38 > 0;
+         count->frameWidth > 0 && count->frameHeight > 0;
 }
 
 RuntimeActionResult CityBuildingScreen::CountMatchesOrder(TNumberText* count, short quantity,
@@ -392,13 +392,13 @@ RuntimeActionResult CityBuildingScreen::VerifyArmoryState() const {
     // The row, the tech table and the ability table have to agree on which unit this row builds.
     if (g_awTacticalUnitCategoryCodeBySlot[unitType] != category + 1 ||
         g_pTechMgr->nationCapRows1e8[nationSlot].slots[category + 1] != unitType ||
-        g_pTechMgr->abilityActiveRows395[nationSlot].abilityActiveById[unitType] == 0) {
+        g_pTechMgr->abilityActiveRows[nationSlot].abilityActiveById[unitType] == 0) {
       CString detail;
       detail.Format("row %d profile mismatch: type=%d category=%d selected=%d active=%d",
                     static_cast<int>(category), static_cast<int>(unitType),
                     g_awTacticalUnitCategoryCodeBySlot[unitType],
                     g_pTechMgr->nationCapRows1e8[nationSlot].slots[category + 1],
-                    g_pTechMgr->abilityActiveRows395[nationSlot].abilityActiveById[unitType]);
+                    g_pTechMgr->abilityActiveRows[nationSlot].abilityActiveById[unitType]);
       return PageFailure("verify the armory's state", detail);
     }
 
@@ -452,13 +452,13 @@ RuntimeActionResult CityBuildingScreen::VerifyArmoryState() const {
                   City()->ownerNationAc->treasuryValue10);
     return PageFailure("verify the armory's state", detail);
   }
-  if (armory->selectedUnitOrderA8 == 0) {
+  if (armory->selectedUnitOrder == 0) {
     return PageFailure("verify the armory's state", CString("no unit order is selected"));
   }
 
   // The detail panel describes the selected unit: its name comes from the string table and its
   // firepower from the retail data table, not from a placeholder.
-  const short selectedUnitType = armory->selectedUnitOrderA8->resourceTypeIndex;
+  const short selectedUnitType = armory->selectedUnitOrder->resourceTypeIndex;
   TView* unitName = buildingView->ResolveControlByTag(kControlTagUnit);
   TView* firepower = buildingView->ResolveControlByTag(kControlTagSta0);
   CString expectedUnitName;
@@ -560,7 +560,7 @@ RuntimeActionResult CityBuildingScreen::VerifyTradeSchoolState() const {
   }
   // The bar is filled to the same fraction of its own width that the order is of the capacity.
   const short expectedBarValue =
-      static_cast<short>((static_cast<int>(order->quantity) * bar->frameWidth34) / bar->auxValueA);
+      static_cast<short>((static_cast<int>(order->quantity) * bar->frameWidth) / bar->auxValueA);
   if (bar->rangeOrMaxValue != expectedBarValue) {
     CString detail;
     detail.Format("bar=%d expected_bar=%d order=%d aux=%d", bar->rangeOrMaxValue, expectedBarValue,

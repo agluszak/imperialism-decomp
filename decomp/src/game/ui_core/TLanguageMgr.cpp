@@ -195,7 +195,7 @@ bool TLanguageMgr::SetLanguage(unsigned long languageTag) {
 
   CString preplutPath(kPreplutPath);
   if (g_pImperialismApp != nullptr) {
-    preplutPath += g_pImperialismApp->languageCodeStringE0;
+    preplutPath += g_pImperialismApp->languageCodeString;
   }
   return ReadPrepLUT(preplutPath, languageTag);
 }
@@ -262,7 +262,7 @@ char TLanguageMgr::PickGender(const char* name) const {
       static_cast<TRadioTextCluster*>(dialog->ResolveControlByTag(kControlTagForm));
   form->AssertValid();
   form->frameThemeCode90 = 0x2b6b;
-  form->itemInset92 = 2;
+  form->itemInset = 2;
 
   unsigned long firstTag = 0;
   int rowCount = primaryRowCount + extraRowCount;

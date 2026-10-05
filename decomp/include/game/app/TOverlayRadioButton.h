@@ -16,9 +16,9 @@ public:
 
   void Draw(RECT* rectBuffer) override; // slot 0x44 0x4cab10
 
-  TQuickDrawSurfaceContext* overlaySurfaceContext98; // +0x98 — 0 when no overlay attached
-  RECT overlaySrcRect9c;                             // +0x9c
-  RECT overlayDstRectAc;                             // +0xac
+  TQuickDrawSurfaceContext* overlaySurfaceContext; // +0x98 — 0 when no overlay attached
+  RECT overlaySrcRect;                             // +0x9c
+  RECT overlayDstRect;                             // +0xac
 };
 
 ASSERT_SIZE(TOverlayRadioButton, 0xbc);

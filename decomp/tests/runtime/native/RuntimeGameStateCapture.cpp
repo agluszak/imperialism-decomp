@@ -265,13 +265,13 @@ const char* CivilianWorkOrderName(UnitOrder order) {
 }
 
 JSON_Value* CaptureTileDevelopment(const TTerrainStateRecord& tile) {
-  const unsigned char packed = static_cast<unsigned char>(tile.developmentClassNibbles0c);
+  const unsigned char packed = static_cast<unsigned char>(tile.developmentClassNibbles);
   JsonObject object;
   JsonArray visibleToMajors;
   object.Set("surface", static_cast<unsigned int>(packed & 0x0f));
   object.Set("extractive", static_cast<unsigned int>(packed >> 4));
   for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
-    visibleToMajors.Add((tile.pendingDevelopmentFlag0d & (1 << nationSlot)) != 0);
+    visibleToMajors.Add((tile.pendingDevelopmentFlag & (1 << nationSlot)) != 0);
   }
   object.Set("resource_visible_to_majors", visibleToMajors.Release());
   return object.Release();
@@ -734,8 +734,8 @@ JSON_Value* CaptureTechnology() {
   JsonArray globalUnlocksByTechnology;
   for (int technologyId = 0; technologyId < 0x1d; ++technologyId) {
     scheduledUnlockTurnByTechnology.Add(
-        static_cast<int>(g_pTechMgr->prioritySlots04[technologyId]));
-    const unsigned char unlocked = g_pTechMgr->perTechUnlockFlag180[technologyId];
+        static_cast<int>(g_pTechMgr->prioritySlots[technologyId]));
+    const unsigned char unlocked = g_pTechMgr->perTechUnlockFlag[technologyId];
     if (unlocked > 1) {
       FailSemanticCapture("global technology unlock flag is not boolean");
     }
@@ -782,7 +782,7 @@ JSON_Value* CaptureTechnology() {
     JsonObject abilityActiveByUnitType;
     for (int unitType = 0; unitType < kMilitaryUnitKindCount; ++unitType) {
       const unsigned char active =
-          g_pTechMgr->abilityActiveRows395[nationSlot].abilityActiveById[unitType];
+          g_pTechMgr->abilityActiveRows[nationSlot].abilityActiveById[unitType];
       if (active > 1) {
         FailSemanticCapture("major-nation military-unit ability flag is not boolean");
       }
@@ -808,7 +808,7 @@ JSON_Value* CaptureTechnology() {
     JsonObject university;
     JsonObject available;
     const TTechMgr::UniversityRecruitmentAvailabilityRow& recruitmentAvailability =
-        g_pTechMgr->universityRecruitmentAvailabilityByNation467[nationSlot];
+        g_pTechMgr->universityRecruitmentAvailabilityByNation[nationSlot];
     for (int civilianKind = 0; civilianKind < kCivilianUnitKindCount; ++civilianKind) {
       const unsigned char value = recruitmentAvailability.availableByCategory[civilianKind];
       if (value > 1) {
@@ -854,7 +854,7 @@ JSON_Value* CaptureTechnology() {
   technology.Set("selected_ship_types_by_nation", selectedShipTypesByNation.Release());
   technology.Set("selected_capability_slots", selectedCapabilitySlotsByNation.Release());
   technology.Set("city_capabilities_by_nation", cityCapabilitiesByNation.Release());
-  technology.Set("navy_growth_ship_type", ShipTypeName(g_pTechMgr->activeZoneIndex1d4));
+  technology.Set("navy_growth_ship_type", ShipTypeName(g_pTechMgr->activeZoneIndex));
   return technology.Release();
 }
 
@@ -980,7 +980,7 @@ JSON_Value* CaptureZone(TZone* zone, int liveCount) {
     FailSemanticCapture("ocean seed owner is outside the tile-owner range");
   }
   object.SetOptional("seed_owner", seedOwner);
-  const int activeTile = static_cast<int>(zone->activeTileIndex20);
+  const int activeTile = static_cast<int>(zone->activeTileIndex);
   if (activeTile < -1 || activeTile >= 0x1950) {
     FailSemanticCapture("ocean active tile is outside the strategic map");
   }
@@ -1036,12 +1036,12 @@ JSON_Value* CaptureOcean() {
     JsonObject entry;
     if (zone->IsKindOf(RUNTIME_CLASS(TPortZone)) != 0) {
       TPortZone* port = static_cast<TPortZone*>(zone);
-      const int portTile = static_cast<int>(port->portTileIndex48);
+      const int portTile = static_cast<int>(port->portTileIndex);
       if (portTile < 0 || portTile >= 0x1950) {
         FailSemanticCapture("port-zone tile is outside the strategic map");
       }
       const int formerOwner =
-          static_cast<int>(g_pGlobalMapState->terrainStateTable[portTile].formerOwnerNationTag03);
+          static_cast<int>(g_pGlobalMapState->terrainStateTable[portTile].formerOwnerNationTag);
       if (formerOwner < 0 || formerOwner >= kNationSlotCount) {
         FailSemanticCapture("port-zone former owner is outside the nation range");
       }
@@ -1346,7 +1346,7 @@ JSON_Value* CaptureMap() {
     JsonObject tileObject;
     char tileFlags[192];
     tileObject.Set("terrain", TerrainName(static_cast<int>(tile.GetTerrainKind())));
-    if (tile.spriteVariantIndex01 < 0 || tile.spriteVariantIndex01 > 0x3f) {
+    if (tile.spriteVariantIndex < 0 || tile.spriteVariantIndex > 0x3f) {
       FailSemanticCapture("tile sprite variant is outside the resolved range");
     }
     if (tile.riverSpriteCode != 0 && (tile.riverSpriteCode < 0x0b || tile.riverSpriteCode > 0x3a)) {
@@ -1356,7 +1356,7 @@ JSON_Value* CaptureMap() {
       FailSemanticCapture("tile rendering mask is outside the six-direction range");
     }
     JsonObject rendering;
-    rendering.Set("sprite_variant", static_cast<unsigned int>(tile.spriteVariantIndex01));
+    rendering.Set("sprite_variant", static_cast<unsigned int>(tile.spriteVariantIndex));
     if (tile.riverSpriteCode == 0) {
       rendering.SetNull("river_sprite");
     } else {
@@ -1366,38 +1366,38 @@ JSON_Value* CaptureMap() {
     rendering.Set("coast_or_secondary_mask", static_cast<unsigned int>(tile.adjacencyMaskB0b));
     tileObject.Set("rendering", rendering.Release());
     ASSERT(tile.ownerNationTag04 >= -1);
-    ASSERT(tile.formerOwnerNationTag03 >= -1);
+    ASSERT(tile.formerOwnerNationTag >= -1);
     tileObject.SetOptional("owner_nation", static_cast<int>(tile.ownerNationTag04));
-    tileObject.SetOptional("former_owner_nation", static_cast<int>(tile.formerOwnerNationTag03));
-    tileObject.Set("owner_border_mask", static_cast<unsigned int>(tile.ownerBorderMask07));
-    tileObject.Set("city_border_mask", static_cast<unsigned int>(tile.cityBorderMask08));
-    tileObject.Set("water_adjacency_mask", static_cast<unsigned int>(tile.waterAdjacencyMask09));
+    tileObject.SetOptional("former_owner_nation", static_cast<int>(tile.formerOwnerNationTag));
+    tileObject.Set("owner_border_mask", static_cast<unsigned int>(tile.ownerBorderMask));
+    tileObject.Set("city_border_mask", static_cast<unsigned int>(tile.cityBorderMask));
+    tileObject.Set("water_adjacency_mask", static_cast<unsigned int>(tile.waterAdjacencyMask));
     tileObject.Set("recruit_search_visited",
                    static_cast<unsigned int>(tile.recruitSearchVisited0e));
-    tileObject.Set("per_tile_visited", static_cast<int>(tile.perTileVisitedFlag0f));
-    tileObject.Set("marker_slot_index", static_cast<int>(tile.markerSlotIndex10));
-    tileObject.Set("tile_action_ordinal", static_cast<int>(tile.tileActionOrdinal1a));
+    tileObject.Set("per_tile_visited", static_cast<int>(tile.perTileVisitedFlag));
+    tileObject.Set("marker_slot_index", static_cast<int>(tile.markerSlotIndex));
+    tileObject.Set("tile_action_ordinal", static_cast<int>(tile.tileActionOrdinal));
     tileObject.SetOptional("province", static_cast<int>(tile.cityRecordIndex));
     tileObject.Set("development", CaptureTileDevelopment(tile));
     tileObject.Set("edge_resources", CaptureOptionalResourceArray(tile.resourceTypeByEdge, 2));
     SetDirectionalLinks(tileObject, "transport_links",
                         static_cast<unsigned char>(tile.adjacencyBits06));
-    SetDirectionalLinks(tileObject, "pending_rail_links", tile.railFlags17);
+    SetDirectionalLinks(tileObject, "pending_rail_links", tile.railFlags);
     if (tile.tileActionState16 == -1) {
       tileObject.SetNull("action");
     } else {
       tileObject.Set("action", static_cast<int>(tile.tileActionState16));
     }
     tileObject.Set("flags", CaptureTileFlags(tile.activeFlags1c, tileFlags));
-    ASSERT(tile.regionSubtypeTag05 >= -1);
-    tileObject.SetOptional("region", static_cast<int>(tile.regionSubtypeTag05));
+    ASSERT(tile.regionSubtypeTag >= -1);
+    tileObject.SetOptional("region", static_cast<int>(tile.regionSubtypeTag));
     tileObject.Set("gate", static_cast<int>(tile.gateFlag));
-    if (tile.secondaryOwnerNationTag18 < -1 ||
-        tile.secondaryOwnerNationTag18 >= kMajorNationCount) {
+    if (tile.secondaryOwnerNationTag < -1 ||
+        tile.secondaryOwnerNationTag >= kMajorNationCount) {
       FailSemanticCapture("tile secondary owner is outside the major-nation range");
     }
     tileObject.SetOptional("secondary_owner_nation",
-                           static_cast<int>(tile.secondaryOwnerNationTag18));
+                           static_cast<int>(tile.secondaryOwnerNationTag));
     tiles.Add(tileObject.Release());
   }
   object.Set("tiles", tiles.Release());
@@ -1432,7 +1432,7 @@ JSON_Value* CaptureProvinces() {
     if (province.fortLevel03 < 0 || province.fortLevel03 > 3) {
       FailSemanticCapture("province fort level is outside the semantic range");
     }
-    if ((province.exploredByNationMaskA1 & 0x80) != 0) {
+    if ((province.exploredByNationMask & 0x80) != 0) {
       FailSemanticCapture("province exploration mask has an unsupported upper bit set");
     }
     if (province.cityTileIndex04 < -1 || province.cityTileIndex04 >= 0x1950) {
@@ -1442,9 +1442,9 @@ JSON_Value* CaptureProvinces() {
     if (linkedTileCount < 0 || linkedTileCount > 0x20) {
       FailSemanticCapture("province linked-tile count is outside the retail record range");
     }
-    if (province.secondaryNeighborTileIndex3e < -1 ||
-        province.secondaryNeighborTileIndex3e >= 0x1950 ||
-        province.primaryNeighborTileIndex40 < -1 || province.primaryNeighborTileIndex40 >= 0x1950) {
+    if (province.secondaryNeighborTileIndex < -1 ||
+        province.secondaryNeighborTileIndex >= 0x1950 ||
+        province.primaryNeighborTileIndex < -1 || province.primaryNeighborTileIndex >= 0x1950) {
       FailSemanticCapture("province neighbor tile is outside the strategic map");
     }
     if (province.navyOrderReachableA0 > 1) {
@@ -1459,12 +1459,12 @@ JSON_Value* CaptureProvinces() {
     object.SetOptional("former_owner", static_cast<int>(province.formerOwnerNationCode01));
     object.Set("development_stage", static_cast<int>(province.developmentStage));
     for (int neighborIndex = 0; neighborIndex < adjacencyCount; ++neighborIndex) {
-      const int adjacentProvince = static_cast<int>(province.adjacentRegionIds0A[neighborIndex]);
+      const int adjacentProvince = static_cast<int>(province.adjacentRegionIds[neighborIndex]);
       if (adjacentProvince < 0 || adjacentProvince >= 0x180) {
         FailSemanticCapture("active province adjacency ID is outside the province table");
       }
       adjacency.Add(adjacentProvince);
-      const int anchorTile = static_cast<int>(province.adjacentRegionAnchorTiles22[neighborIndex]);
+      const int anchorTile = static_cast<int>(province.adjacentRegionAnchorTiles[neighborIndex]);
       if (anchorTile < 0 || anchorTile >= 0x1950) {
         FailSemanticCapture("active province adjacency anchor is outside the strategic map");
       }
@@ -1477,9 +1477,9 @@ JSON_Value* CaptureProvinces() {
     object.SetOptional("city_tile", static_cast<int>(province.cityTileIndex04));
     object.Set("last_turn_tick", static_cast<int>(province.lastTurnTick));
     object.SetOptional("secondary_neighbor_tile",
-                       static_cast<int>(province.secondaryNeighborTileIndex3e));
+                       static_cast<int>(province.secondaryNeighborTileIndex));
     object.SetOptional("primary_neighbor_tile",
-                       static_cast<int>(province.primaryNeighborTileIndex40));
+                       static_cast<int>(province.primaryNeighborTileIndex));
     for (int linkedTileIndex = 0; linkedTileIndex < linkedTileCount; ++linkedTileIndex) {
       const int linkedTile = static_cast<int>(province.linkedTileIndices42[linkedTileIndex]);
       if (linkedTile < 0 || linkedTile >= 0x1950) {
@@ -1492,17 +1492,17 @@ JSON_Value* CaptureProvinces() {
     memset(resourceDevelopmentByType, 0, sizeof(resourceDevelopmentByType));
     for (int resource = kResourceFood; resource < kResourceManufacturedEnd; ++resource) {
       resourceDevelopmentByType[resource] =
-          province.resourceDevelopmentCounts82[resource - kResourceFood];
+          province.resourceDevelopmentCounts[resource - kResourceFood];
     }
     object.Set("resource_development_by_type", CaptureResourceTable(resourceDevelopmentByType));
     JsonArray exploredByMajors;
     for (int nation = 0; nation < kMajorNationCount; ++nation) {
-      exploredByMajors.Add((province.exploredByNationMaskA1 & (1 << nation)) != 0);
+      exploredByMajors.Add((province.exploredByNationMask & (1 << nation)) != 0);
     }
     object.Set("explored_by_majors", exploredByMajors.Release());
     object.Set("city_score", province.cityScoreValue);
     object.Set("navy_order_reachable", province.navyOrderReachableA0 != 0);
-    object.Set("resource_presence_mask", static_cast<int>(province.resourcePresenceMaskA2));
+    object.Set("resource_presence_mask", static_cast<int>(province.resourcePresenceMask));
     object.Set("name", static_cast<LPCSTR>(province.cityNameA4));
     provinces.Add(object.Release());
   }
@@ -1583,11 +1583,11 @@ JSON_Value* CaptureForeignTradeState(const TForeignMinister* minister) {
     }
     JsonObject bid;
     bid.Set("commodity", kResourceNames[minister->interiorBidResource10]);
-    bid.Set("amount", static_cast<int>(minister->interiorBidAmount12));
+    bid.Set("amount", static_cast<int>(minister->interiorBidAmount));
     state.Set("interior_bid", bid.Release());
   }
-  state.Set("phase_counter", static_cast<int>(minister->diplomacyPhaseCounter18));
-  state.Set("refresh_interval", static_cast<int>(minister->tradeBidRefreshInterval1a));
+  state.Set("phase_counter", static_cast<int>(minister->diplomacyPhaseCounter));
+  state.Set("refresh_interval", static_cast<int>(minister->tradeBidRefreshInterval));
   if (minister->interiorOrderKind1c < 1 || minister->interiorOrderKind1c > 2) {
     FailSemanticCapture("foreign-minister requested ship is outside the recovered range");
   }
@@ -1597,7 +1597,7 @@ JSON_Value* CaptureForeignTradeState(const TForeignMinister* minister) {
   JsonArray preferredResources;
   for (int index = 0; index < 4; ++index) {
     preferredResources.Add(
-        CaptureOptionalTradeCommodity(minister->preferredResourceSlots40[index]));
+        CaptureOptionalTradeCommodity(minister->preferredResourceSlots[index]));
   }
   state.Set("preferred_resources", preferredResources.Release());
   return state.Release();
@@ -1699,7 +1699,7 @@ JSON_Value* CaptureInteriorCivilianState(TGreatPower* nation) {
   }
   TCityInteriorMinister* minister = nation->interiorMinister;
   JsonObject state;
-  const short pendingRecruitment = minister->pendingRecruitmentCommandIndex36;
+  const short pendingRecruitment = minister->pendingRecruitmentCommandIndex;
   if (pendingRecruitment == -1) {
     state.SetNull("pending_recruitment");
   } else {
@@ -1714,10 +1714,10 @@ JSON_Value* CaptureInteriorCivilianState(TGreatPower* nation) {
   state.SetOptional("railhead_target", static_cast<int>(minister->field3c));
   state.Set("resource_order_metrics", CaptureResourceTable(minister->orderMetricTable40));
   state.Set("city_order_demand", CaptureAiCityOrderDemand(minister));
-  state.Set("deferred_labor_shortfall", static_cast<int>(minister->deferredLaborShortfallDA));
+  state.Set("deferred_labor_shortfall", static_cast<int>(minister->deferredLaborShortfall));
   state.Set("production_deficit_by_slot", CaptureShortArray(minister->orderShortTableDC, 0x10));
   state.Set("temporarily_reserved_ship_arms",
-            static_cast<int>(minister->temporarilyReservedShipArms186));
+            static_cast<int>(minister->temporarilyReservedShipArms));
   state.Set("railhead_priority_by_resource", CaptureResourceTable(minister->orderTypeTableFC));
   state.Set("exterior_need_by_resource", CaptureResourceTable(minister->orderTypeTable12A));
   state.Set("historical_need_by_resource", CaptureResourceTable(minister->orderTypeTable158));
@@ -1744,13 +1744,13 @@ JSON_Value* CaptureMajorNation(TGreatPower* nation) {
   JsonObject object;
   object.Set("controller",
              nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) != 0 ? "Computer" : "Human");
-  object.Set("diplomacy_eligible", nation->diplomacyEligibilityA0 != 0);
+  object.Set("diplomacy_eligible", nation->diplomacyEligibility != 0);
   object.Set("ai_zone_targets", CaptureAiZoneTargets(nation));
   object.Set("ai_province_targets", CaptureAiProvinceTargets(nation));
   object.Set("foreign_minister_personality",
              ForeignMinisterPersonalityName(nation->foreignMinister));
   object.Set("foreign_minister_skill_index",
-             static_cast<int>(nation->foreignMinister->skillIndexC));
+             static_cast<int>(nation->foreignMinister->skillIndex));
   object.Set("deal_book", CaptureDealBook(nation));
   object.Set("foreign_trade", CaptureForeignTradeState(nation->foreignMinister));
   object.Set("pending_ship", CapturePendingShip(nation));
@@ -1758,9 +1758,9 @@ JSON_Value* CaptureMajorNation(TGreatPower* nation) {
   object.Set("ai_trade", CaptureAiTradeState(nation));
   object.Set(
       "development_grant_by_nation",
-      CaptureShortArray(nation->foreignMinister->developmentGrantByNation50, kNationSlotCount));
+      CaptureShortArray(nation->foreignMinister->developmentGrantByNation, kNationSlotCount));
   object.Set("defense_minister_skill_index",
-             static_cast<int>(nation->defenseMinister->skillIndexC));
+             static_cast<int>(nation->defenseMinister->skillIndex));
   object.Set("capacities", CaptureNationCapacities(nation));
   object.Set("grant_total_cost", nation->grantTotalCost);
   object.Set("unfilled_trade_offer_count", static_cast<int>(nation->unfilledTradeOfferCount));
@@ -2003,14 +2003,14 @@ const char* StrikePhaseName(short phase) {
 
 JSON_Value* CapturePopulation(const TPopulationMgr* population) {
   JsonObject object;
-  object.Set("count", static_cast<int>(population->populationCount08));
-  object.Set("accumulator", static_cast<double>(population->populationCountFloat0c));
+  object.Set("count", static_cast<int>(population->populationCount));
+  object.Set("accumulator", static_cast<double>(population->populationCountFloat));
   object.Set("strength", static_cast<int>(population->strength));
   object.Set("extra", static_cast<int>(population->extraAt1e));
   object.Set("strike_phase", StrikePhaseName(population->fieldAt20));
-  object.Set("baseline_labor", CaptureLaborPool(population->baselineSlots10));
-  object.Set("production_labor", CaptureLaborPool(population->productionSlots14));
-  object.Set("pending_labor_delta", CaptureLaborPool(population->pendingDeltaSlots18));
+  object.Set("baseline_labor", CaptureLaborPool(population->baselineSlots));
+  object.Set("production_labor", CaptureLaborPool(population->productionSlots));
+  object.Set("pending_labor_delta", CaptureLaborPool(population->pendingDeltaSlots));
   object.Set("predicted_need_by_resource",
              CaptureResourceTable(population->predictedNeedByResource22));
   return object.Release();
@@ -2043,7 +2043,7 @@ void RequireExactOrder(TProductionOrder* order, TCity* city, CRuntimeClass* expe
   if (order->ownerCity != city) {
     FailSemanticCapture("city order points at the wrong owning city");
   }
-  if (city->productionSummary1d8 == 0 || order->productionSummary != city->productionSummary1d8) {
+  if (city->productionSummary == 0 || order->productionSummary != city->productionSummary) {
     FailSemanticCapture("city order points at the wrong production summary");
   }
   ProductionConstraintName(order->limitingConstraint);
@@ -2095,7 +2095,7 @@ JSON_Value* CaptureItemOrders(TCity* city) {
       continue;
     }
 
-    TProductionOrder* base = city->orderSlotsE4[resource];
+    TProductionOrder* base = city->orderSlots[resource];
     CRuntimeClass* expectedClass =
         resource == kResourceFabric ? RUNTIME_CLASS(TOrItemOrder) : RUNTIME_CLASS(TItemOrder);
     RequireExactOrder(base, city, expectedClass, "city item-order slot is unexpectedly empty",
@@ -2118,7 +2118,7 @@ JSON_Value* CaptureCivilianRecruitmentOrders(TCity* city) {
                                                           1000, 1000, 2000, 5000};
   JsonObject orders;
   for (int kind = 0; kind < kCivilianUnitKindCount; ++kind) {
-    TUnitOrder* order = city->buildOrderSlots148[9 + kind];
+    TUnitOrder* order = city->buildOrderSlots[9 + kind];
     RequireExactOrder(order, city, RUNTIME_CLASS(TUnitOrder),
                       "city civilian-recruitment slot is unexpectedly empty",
                       "city civilian-recruitment slot has the wrong runtime class");
@@ -2140,7 +2140,7 @@ JSON_Value* CaptureMilitaryRecruitmentOrders(TCity* city) {
       "heavy_cavalry",  "light_artillery",  "heavy_artillery", "demolitionist"};
   JsonObject orders;
   for (int category = 0; category < 8; ++category) {
-    TUnitOrder* order = city->buildOrderSlots148[category];
+    TUnitOrder* order = city->buildOrderSlots[category];
     RequireExactOrder(order, city, RUNTIME_CLASS(TUnitOrder),
                       "city military-recruitment slot is unexpectedly empty",
                       "city military-recruitment slot has the wrong runtime class");
@@ -2187,7 +2187,7 @@ JSON_Value* CaptureShipOrders(TCity* city) {
       "warship_advanced_primary",    "warship_advanced_secondary"};
   JsonObject orders;
   for (int slot = 0; slot < 8; ++slot) {
-    TShipOrder* order = city->shipOrderSlots190[slot];
+    TShipOrder* order = city->shipOrderSlots[slot];
     RequireExactOrder(order, city, RUNTIME_CLASS(TShipOrder),
                       "city ship-order slot is unexpectedly empty",
                       "city ship-order slot has the wrong runtime class");
@@ -2209,7 +2209,7 @@ JSON_Value* CaptureTrainingOrders(TCity* city) {
   static const char* const kLevelNames[2] = {"medium", "high"};
   JsonObject orders;
   for (int level = 0; level < 2; ++level) {
-    TProductionOrder* order = city->orderSlotsE4[0x17 + level];
+    TProductionOrder* order = city->orderSlots[0x17 + level];
     RequireExactOrder(order, city, RUNTIME_CLASS(TTrainingOrder),
                       "city training-order slot is unexpectedly empty",
                       "city training-order slot has the wrong runtime class");
@@ -2228,7 +2228,7 @@ JSON_Value* CaptureExpansionOrders(TCity* city) {
       orders.AddNull();
       continue;
     }
-    TProductionOrder* base = city->trailingOrderSlots1b0[2 + productionSlot];
+    TProductionOrder* base = city->trailingOrderSlots[2 + productionSlot];
     RequireExactOrder(base, city, RUNTIME_CLASS(TExpansionOrder),
                       "city expansion-order slot is unexpectedly empty",
                       "city expansion-order slot has the wrong runtime class");
@@ -2245,16 +2245,16 @@ JSON_Value* CaptureExpansionOrders(TCity* city) {
 
 JSON_Value* CaptureCityOrders(TCity* city) {
   for (int prefixSlot = 0; prefixSlot < 7; ++prefixSlot) {
-    if (city->orderSlotsE4[prefixSlot] != 0) {
+    if (city->orderSlots[prefixSlot] != 0) {
       FailSemanticCapture("city fixed null item-prefix slot contains an order");
     }
   }
   for (int gapSlot = 0x11; gapSlot <= 0x16; ++gapSlot) {
-    if (city->orderSlotsE4[gapSlot] != 0) {
+    if (city->orderSlots[gapSlot] != 0) {
       FailSemanticCapture("city fixed null item-gap slot contains an order");
     }
   }
-  if (city->buildOrderSlots148[8] != 0) {
+  if (city->buildOrderSlots[8] != 0) {
     FailSemanticCapture("city fixed null recruitment slot contains an order");
   }
 
@@ -2266,7 +2266,7 @@ JSON_Value* CaptureCityOrders(TCity* city) {
   orders.Set("training", CaptureTrainingOrders(city));
   orders.Set("expansions", CaptureExpansionOrders(city));
 
-  TProductionOrder* food = city->orderSlotsE4[kResourceFood];
+  TProductionOrder* food = city->orderSlots[kResourceFood];
   RequireExactOrder(food, city, RUNTIME_CLASS(TFoodProcessingOrder),
                     "city food-processing slot is unexpectedly empty",
                     "city food-processing slot has the wrong runtime class");
@@ -2275,7 +2275,7 @@ JSON_Value* CaptureCityOrders(TCity* city) {
   }
   orders.Set("food_processing", CaptureProductionProgress(food));
 
-  TProductionOrder* powerBase = city->trailingOrderSlots1b0[1];
+  TProductionOrder* powerBase = city->trailingOrderSlots[1];
   RequireExactOrder(powerBase, city, RUNTIME_CLASS(TPowerPlantOrder),
                     "city power-plant slot is unexpectedly empty",
                     "city power-plant slot has the wrong runtime class");
@@ -2288,7 +2288,7 @@ JSON_Value* CaptureCityOrders(TCity* city) {
   powerState.Set("desired_quantity", static_cast<int>(power->field4c));
   orders.Set("power_plant", powerState.Release());
 
-  TProductionOrder* capacityBase = city->trailingOrderSlots1b0[0];
+  TProductionOrder* capacityBase = city->trailingOrderSlots[0];
   RequireExactOrder(capacityBase, city, RUNTIME_CLASS(TCapacityOrder),
                     "city transport-capacity slot is unexpectedly empty",
                     "city transport-capacity slot has the wrong runtime class");
@@ -2300,7 +2300,7 @@ JSON_Value* CaptureCityOrders(TCity* city) {
   }
   orders.Set("transport_capacity", CaptureRequestedOrder(capacity));
 
-  TProductionOrder* population = city->trailingOrderSlots1b0[9];
+  TProductionOrder* population = city->trailingOrderSlots[9];
   RequireExactOrder(population, city, RUNTIME_CLASS(TPopGrowthOrder),
                     "city population-growth slot is unexpectedly empty",
                     "city population-growth slot has the wrong runtime class");
@@ -2314,7 +2314,7 @@ JSON_Value* CaptureCityOrders(TCity* city) {
 JSON_Value* CaptureCityBuildingWindows(TCity* city) {
   JsonArray windows;
   for (int slot = 0; slot < 0x10; ++slot) {
-    if (city->productionFlags21c[slot] == 0) {
+    if (city->productionFlags[slot] == 0) {
       windows.AddNull();
     } else {
       JsonObject position;
@@ -2332,31 +2332,31 @@ JSON_Value* CaptureCity(TCity* city) {
   }
   JsonObject object;
   object.Set("orders", CaptureCityOrders(city));
-  object.Set("power_plant_upgrade_queued", city->powerPlantUpgradeQueuedFlag04 != 0 ? true : false);
+  object.Set("power_plant_upgrade_queued", city->powerPlantUpgradeQueuedFlag != 0 ? true : false);
   object.Set("food_substitution_count", static_cast<int>(city->foodSubstitutionCount06));
   object.Set("starvation_population_loss", static_cast<int>(city->starvationPopulationLoss08));
   object.Set("serialized_state", static_cast<int>(city->serializedState0a));
-  object.Set("phase_counter", static_cast<int>(city->cityPhaseCounter0c));
+  object.Set("phase_counter", static_cast<int>(city->cityPhaseCounter));
   object.Set("military_recruit_count_by_kind",
              CaptureShortArray(city->militaryRecruitCountByKind, kMilitaryUnitKindCount));
   object.Set("civilian_recruit_count_by_kind",
              CaptureShortArray(city->civilianRecruitCountByKind, kCivilianUnitKindCount));
   object.Set("ship_order_count_by_type", CaptureShipTypeCounts(city->orderCountByType5c));
   object.Set("rolling_item_production_score", city->rollingItemProductionScore78);
-  object.Set("low_production", city->lowProductionFlag7c != 0 ? true : false);
-  object.Set("low_stock", city->lowStockFlag7d != 0 ? true : false);
+  object.Set("low_production", city->lowProductionFlag != 0 ? true : false);
+  object.Set("low_stock", city->lowStockFlag != 0 ? true : false);
   object.Set("reserved_by_type", CaptureResourceTable(city->reservedByType7e));
   object.Set("power_available", static_cast<int>(city->powerAvailableB4));
-  object.Set("stockpile", CaptureResourceTable(&city->cityStockCottonB6));
+  object.Set("stockpile", CaptureResourceTable(&city->cityStockCotton));
   object.Set("production_orders", CaptureShortArray(city->productionOrderTable1dc, 0x10));
-  object.Set("production_accum", CaptureShortArray(city->productionAccum1fc, 0x10));
+  object.Set("production_accum", CaptureShortArray(city->productionAccum, 0x10));
   object.Set("building_windows", CaptureCityBuildingWindows(city));
   object.Set("population_growth_penalty_ticks",
-             static_cast<int>(city->populationGrowthPenaltyTicks26c));
-  object.Set("unmet_resource_retries", CaptureResourceTable(city->unmetResourceRetryCount278));
+             static_cast<int>(city->populationGrowthPenaltyTicks));
+  object.Set("unmet_resource_retries", CaptureResourceTable(city->unmetResourceRetryCount));
   object.Set("consumed_production_input_by_type",
              CaptureResourceTable(city->consumedProductionInputByType2a6));
-  object.Set("population", CapturePopulation(city->productionSummary1d8));
+  object.Set("population", CapturePopulation(city->productionSummary));
   return object.Release();
 }
 
@@ -2436,16 +2436,16 @@ JSON_Value* CaptureSelectedShips(TMapOrderChildLinkNode* links) {
 
 JSON_Value* CaptureMilitaryOrder(const TMilitaryUnit* unit) {
   JsonObject order;
-  if (unit->unitOrder == kUnitOrderIdle && unit->orderTargetIndex0C < 0) {
+  if (unit->unitOrder == kUnitOrderIdle && unit->orderTargetIndex < 0) {
     order.Set("kind", "idle");
   } else {
     order.Set("kind", "retail");
     order.Set("code", static_cast<int>(unit->unitOrder));
-    ASSERT(unit->orderTargetIndex0C >= -1);
-    order.SetOptional("target", static_cast<int>(unit->orderTargetIndex0C));
+    ASSERT(unit->orderTargetIndex >= -1);
+    order.SetOptional("target", static_cast<int>(unit->orderTargetIndex));
   }
-  order.Set("targets", CaptureOptionalShortArray(unit->orderTargetTiles28, 3));
-  order.Set("target_mirrors", CaptureOptionalShortArray(unit->orderTargetTilesMirror2E, 3));
+  order.Set("targets", CaptureOptionalShortArray(unit->orderTargetTiles, 3));
+  order.Set("target_mirrors", CaptureOptionalShortArray(unit->orderTargetTilesMirror, 3));
   return order.Release();
 }
 
@@ -2469,12 +2469,12 @@ JSON_Value* CaptureMilitaryUnits() {
       ASSERT(unit->ownerNationSlot18 >= 0 && unit->ownerNationSlot18 < kNationSlotCount);
       object.Set("owner_nation", static_cast<int>(unit->ownerNationSlot18));
       object.Set("roster_id", static_cast<int>(unit->unitRosterId1A));
-      object.Set("registered", unit->militaryRegistrationFlag1C != 0 ? true : false);
+      object.Set("registered", unit->militaryRegistrationFlag != 0 ? true : false);
       object.Set("name", static_cast<LPCSTR>(unit->name24));
       object.Set("strength", static_cast<int>(unit->strength34));
-      object.Set("era", static_cast<int>(unit->eraIndex36));
-      object.Set("experience", static_cast<int>(unit->experiencePercent38));
-      object.Set("battle_flags", static_cast<int>(unit->battleStateFlags3A));
+      object.Set("era", static_cast<int>(unit->eraIndex));
+      object.Set("experience", static_cast<int>(unit->experiencePercent));
+      object.Set("battle_flags", static_cast<int>(unit->battleStateFlags));
       units.Add(object.Release());
       unit = static_cast<TMilitaryUnit*>(cursor.Advance());
     }
@@ -2508,16 +2508,16 @@ JSON_Value* CaptureCivilianWorkOrder(const TCivUnit* unit) {
     return RuntimeJsonString(CivilianWorkOrderName(unit->unitOrder));
   }
 
-  ASSERT(unit->remainingTurns24 > 0);
+  ASSERT(unit->remainingTurns > 0);
   JsonObject order;
   JsonObject data;
   if (unit->unitOrder == kUnitOrderRedeploy) {
-    ASSERT(unit->orderTargetIndex0C >= 0);
-    data.Set("destination", static_cast<int>(unit->orderTargetIndex0C));
+    ASSERT(unit->orderTargetIndex >= 0);
+    data.Set("destination", static_cast<int>(unit->orderTargetIndex));
   } else if (unit->unitOrder == kUnitOrderLayRail) {
     JsonObject segment;
-    const int direction = RailDirection(unit->orderTargetIndex0C, unit->tileIndex06);
-    segment.Set("origin", static_cast<int>(unit->orderTargetIndex0C));
+    const int direction = RailDirection(unit->orderTargetIndex, unit->tileIndex06);
+    segment.Set("origin", static_cast<int>(unit->orderTargetIndex));
     segment.Set("destination", static_cast<int>(unit->tileIndex06));
     segment.Set("direction", kSemanticHexDirectionNames[direction]);
     data.Set("segment", segment.Release());
@@ -2526,7 +2526,7 @@ JSON_Value* CaptureCivilianWorkOrder(const TCivUnit* unit) {
            unit->unitOrder == kUnitOrderProspect || unit->unitOrder == kUnitOrderDevelopResource ||
            unit->unitOrder == kUnitOrderBuildFort || unit->unitOrder == kUnitOrderPurchaseLand);
   }
-  data.Set("turns", static_cast<int>(unit->remainingTurns24));
+  data.Set("turns", static_cast<int>(unit->remainingTurns));
   order.Set(CivilianWorkOrderName(unit->unitOrder), data.Release());
   return order.Release();
 }
@@ -2556,7 +2556,7 @@ JSON_Value* CaptureCivilianUnits() {
       ASSERT(unit->ownerNationSlot18 >= 0 && unit->ownerNationSlot18 < kNationSlotCount);
       object.Set("owner_nation", static_cast<int>(unit->ownerNationSlot18));
       object.Set("roster_id", static_cast<int>(unit->unitRosterId1A));
-      object.Set("registered", unit->militaryRegistrationFlag1C != 0 ? true : false);
+      object.Set("registered", unit->militaryRegistrationFlag != 0 ? true : false);
       units.Add(object.Release());
     }
   }
@@ -2646,10 +2646,10 @@ JSON_Value* CaptureArmyMission(TArmyMission* mission) {
   for (int index = 0; index < 5; ++index) {
     equipage.Add(FloatBits(mission->requiredEquipageByClass[index]));
   }
-  const int unitCount = mission->orderListAt18 != 0 ? mission->orderListAt18->GetCount() : 0;
+  const int unitCount = mission->orderList != 0 ? mission->orderList->GetCount() : 0;
   for (int ordinal = 1; ordinal <= unitCount; ++ordinal) {
     TMilitaryUnit* unit =
-        static_cast<TMilitaryUnit*>(mission->orderListAt18->GetEntryByOrdinal(ordinal));
+        static_cast<TMilitaryUnit*>(mission->orderList->GetEntryByOrdinal(ordinal));
     units.Add(unit->persistentUnitId20);
   }
   object.Set("required_equipage_bits", equipage.Release());
@@ -2669,15 +2669,15 @@ JSON_Value* CaptureNavyMission(TNavyMission* mission) {
     equipage.Add(FloatBits(mission->requiredShipEquipageByCategory[index]));
   }
   object.Set("required_equipage_bits", equipage.Release());
-  object.Set("ships", CaptureSelectedShips(mission->orderList24));
+  object.Set("ships", CaptureSelectedShips(mission->orderList));
   return object.Release();
 }
 
 JSON_Value* CaptureAttackMission(TAttackProvinceMission* mission) {
   JsonObject object;
   object.Set("army", CaptureArmyMission(mission));
-  ASSERT(mission->presentLocation14 >= -1);
-  object.SetOptional("present_province", static_cast<int>(mission->presentLocation14));
+  ASSERT(mission->presentLocation >= -1);
+  object.SetOptional("present_province", static_cast<int>(mission->presentLocation));
   ASSERT(mission->targetProvince30 >= 0);
   object.Set("target_province", static_cast<int>(mission->targetProvince30));
   ASSERT(mission->amassingProvince32 >= -1);
@@ -2702,10 +2702,10 @@ JSON_Value* CaptureMissionData(TMission* mission) {
   }
   if (mission->IsKindOf(RUNTIME_CLASS(TDefendProvinceMission))) {
     TArmyMission* defend = static_cast<TArmyMission*>(mission);
-    ASSERT(defend->presentLocation14 >= 0);
+    ASSERT(defend->presentLocation >= 0);
     JsonObject object;
     object.Set("kind", "defend_province");
-    object.Set("province", static_cast<int>(defend->presentLocation14));
+    object.Set("province", static_cast<int>(defend->presentLocation));
     object.Set("army", CaptureArmyMission(defend));
     return object.Release();
   }
@@ -2762,8 +2762,8 @@ JSON_Value* CaptureMissions(bool freshRandomStart) {
       if (mission->nationId04 != nationSlot) {
         FailSemanticCapture("mission source nation does not match its owning queue");
       }
-      ASSERT(mission->pathMarker06 >= -1 && mission->pathMarker06 < kNationSlotCount);
-      object.SetOptional("path_nation", static_cast<int>(mission->pathMarker06));
+      ASSERT(mission->pathMarker >= -1 && mission->pathMarker < kNationSlotCount);
+      object.SetOptional("path_nation", static_cast<int>(mission->pathMarker));
       object.Set("state", static_cast<unsigned int>(mission->state08));
       object.Set("importance_bits", FloatBits(mission->importanceScore0c));
       // TMission construction leaves flag10 untouched. Hold and ReadFrom make it semantic;
@@ -2949,10 +2949,10 @@ JSON_Value* CapturePendingNewspaperEvents() {
 JSON_Value* CaptureBattleReports() {
   JsonArray reports;
   if (g_pMapContextActionManager == 0 ||
-      g_pMapContextActionManager->mapContextActionRecordList04 == 0) {
+      g_pMapContextActionManager->mapContextActionRecordList == 0) {
     FailSemanticCapture("combat-report state is unavailable");
   }
-  TSortedPtrList* list = g_pMapContextActionManager->mapContextActionRecordList04;
+  TSortedPtrList* list = g_pMapContextActionManager->mapContextActionRecordList;
   const int combatReportCount = list->GetSize();
   if (combatReportCount < 0 ||
       g_pMapContextActionManager->HasBattlesToReport() != (combatReportCount != 0)) {
@@ -2971,8 +2971,8 @@ JSON_Value* CaptureBattleReports() {
       FailSemanticCapture("combat-report kind is outside the recovered domain");
     }
     JsonObject object;
-    object.Set("participant_index", static_cast<int>(record->reportParticipantIndex02));
-    object.Set("displayed_participant", static_cast<int>(record->displayedParticipantIndex03));
+    object.Set("participant_index", static_cast<int>(record->reportParticipantIndex));
+    object.Set("displayed_participant", static_cast<int>(record->displayedParticipantIndex));
     object.Set("kind", kKindNames[kind]);
     JsonObject location;
     if (kind == kMapContextReportLandBattle || kind == kMapContextReportPreemptedLandBattle ||
@@ -2987,29 +2987,29 @@ JSON_Value* CaptureBattleReports() {
     for (int side = 0; side < 2; ++side) {
       JsonObject sideObject;
       sideObject.Set("nation", static_cast<int>(record->nationIds[side]));
-      sideObject.Set("name", record->nameBuffer0c[side].data);
-      sideObject.Set("overlay", record->overlayLabel4c[side].data);
+      sideObject.Set("name", record->nameBuffer[side].data);
+      sideObject.Set("overlay", record->overlayLabel[side].data);
       JsonArray children;
       const int childCount = record->childCount24a[side];
       for (int child = 0; child < childCount; ++child) {
-        MapOrderBattleSideChildRecord& row = record->sideChildRecords250[side][child];
+        MapOrderBattleSideChildRecord& row = record->sideChildRecords[side][child];
         JsonObject childObject;
         childObject.Set("resource_type", static_cast<int>(row.resourceType));
         childObject.Set("stock_or_required", static_cast<int>(row.stockOrRequired));
         childObject.Set("name", row.nameBuffer);
         childObject.Set("strength_bucket", static_cast<int>(row.strengthBucket));
-        childObject.Set("detail_identity", row.detailIdentity28);
+        childObject.Set("detail_identity", row.detailIdentity);
         children.Add(childObject.Release());
       }
       sideObject.Set("children", children.Release());
       sides.Add(sideObject.Release());
     }
     object.Set("sides", sides.Release());
-    object.Set("marker_pixel_x", record->markerPixelX258);
-    object.Set("marker_pixel_y", record->markerPixelY25c);
-    object.Set("placed", record->placedFlag260 != 0);
+    object.Set("marker_pixel_x", record->markerPixelX);
+    object.Set("marker_pixel_y", record->markerPixelY);
+    object.Set("placed", record->placedFlag != 0);
     object.Set("marker_sprite", static_cast<int>(record->markerSpriteCode262));
-    object.Set("list_ordinal", static_cast<int>(record->listOrdinal264));
+    object.Set("list_ordinal", static_cast<int>(record->listOrdinal));
     reports.Add(object.Release());
   }
   return reports.Release();
@@ -3230,7 +3230,7 @@ JSON_Value* CaptureTradeEphemeral() {
               CaptureShortArray(nation->unfilledTradeTurnCountsByResource,
                                 kResourceKindCount));
     entry.Set("diplomacy_eligibility",
-              static_cast<int>(nation->diplomacyEligibilityA0));
+              static_cast<int>(nation->diplomacyEligibility));
     entry.Set("grant_total", nation->grantTotalCost);
     entry.Set("need_current",
               CaptureShortArray(nation->needCurrentByType, kResourceKindCount));
@@ -3258,10 +3258,10 @@ JSON_Value* CaptureTradeEphemeral() {
     }
     if (nation->city != 0) {
       entry.Set("city_stocks",
-                CaptureShortArray(&nation->city->cityStockCottonB6,
+                CaptureShortArray(&nation->city->cityStockCotton,
                                   kResourceKindCount));
       entry.Set("city_power_flag",
-                static_cast<int>(nation->city->powerPlantUpgradeQueuedFlag04));
+                static_cast<int>(nation->city->powerPlantUpgradeQueuedFlag));
     } else {
       entry.SetNull("city_stocks");
       entry.SetNull("city_power_flag");
@@ -3307,14 +3307,14 @@ JSON_Value* CaptureCityTransportEphemeral() {
       entry.Set("production_orders",
                 CaptureShortArray(nation->city->productionOrderTable1dc, 0x10));
       entry.Set("production_accum",
-                CaptureShortArray(nation->city->productionAccum1fc, 0x10));
+                CaptureShortArray(nation->city->productionAccum, 0x10));
       JsonArray flags;
       for (int index = 0; index < 0x10; ++index) {
-        flags.Add(static_cast<int>(nation->city->productionFlags21c[index]));
+        flags.Add(static_cast<int>(nation->city->productionFlags[index]));
       }
       entry.Set("production_flags", flags.Release());
       entry.Set("city_stocks",
-                CaptureShortArray(&nation->city->cityStockCottonB6,
+                CaptureShortArray(&nation->city->cityStockCotton,
                                   kResourceKindCount));
     } else {
       entry.SetNull("production_orders");
@@ -3339,14 +3339,14 @@ JSON_Value* CaptureCityTransportEphemeral() {
       region.Set("last_turn_tick", static_cast<int>(province.lastTurnTick));
       region.Set("city_score", province.cityScoreValue);
       region.Set("dev_counts",
-                 CaptureShortArray(province.resourceDevelopmentCounts82, 10));
+                 CaptureShortArray(province.resourceDevelopmentCounts, 10));
       const short linked = static_cast<short>(province.linkedTileIndices42[0]);
       region.Set("linked_tile", static_cast<int>(linked));
       if (linked >= 0) {
         TTerrainStateRecord& tile =
             g_pGlobalMapState->terrainStateTable[linked];
         region.Set("linked_dev_class",
-                   static_cast<int>(tile.developmentClassNibbles0c));
+                   static_cast<int>(tile.developmentClassNibbles));
         region.Set("linked_edge0",
                    static_cast<int>(tile.resourceTypeByEdge[0]));
         region.Set("linked_edge1",
@@ -3379,16 +3379,16 @@ JSON_Value* CaptureCiviliansEphemeral() {
         entry.Set("tile", tileIndex);
         entry.Set("kind", static_cast<int>(unit->orderType));
         entry.Set("order", static_cast<int>(unit->unitOrder));
-        entry.Set("target", static_cast<int>(unit->orderTargetIndex0C));
+        entry.Set("target", static_cast<int>(unit->orderTargetIndex));
         entry.Set("owner", static_cast<int>(unit->ownerNationSlot18));
         entry.Set("remaining_turns",
                   static_cast<int>(
-                      static_cast<TCivUnit*>(unit)->remainingTurns24));
+                      static_cast<TCivUnit*>(unit)->remainingTurns));
         entry.Set("completion_marker",
                   static_cast<int>(
-                      static_cast<TCivUnit*>(unit)->completionMarker26));
+                      static_cast<TCivUnit*>(unit)->completionMarker));
         units.Add(entry.Release());
-        unit = unit->nextAtLocation14;
+        unit = unit->nextAtLocation;
       }
     }
   }
@@ -3428,7 +3428,7 @@ JSON_Value* CaptureCiviliansEphemeral() {
     entry.Set("home_tile", static_cast<int>(nation->homeTileIndex));
     if (nation->city != 0) {
       entry.Set("city_stocks",
-                CaptureShortArray(&nation->city->cityStockCottonB6,
+                CaptureShortArray(&nation->city->cityStockCotton,
                                   kResourceKindCount));
       entry.Set("order_counts",
                 CaptureShortArray(nation->city->orderCountByType5c,
@@ -3467,12 +3467,12 @@ JSON_Value* CaptureMilitaryEphemeral() {
         record.Set("kind", static_cast<int>(unit->orderType));
         record.Set("tile", static_cast<int>(unit->tileIndex06));
         record.Set("order", static_cast<int>(unit->unitOrder));
-        record.Set("target", static_cast<int>(unit->orderTargetIndex0C));
+        record.Set("target", static_cast<int>(unit->orderTargetIndex));
         record.Set("owner", static_cast<int>(unit->ownerNationSlot18));
         record.Set("strength", static_cast<int>(unit->strength34));
-        record.Set("experience", static_cast<int>(unit->experiencePercent38));
+        record.Set("experience", static_cast<int>(unit->experiencePercent));
         record.Set("battle_flags",
-                   static_cast<int>(unit->battleStateFlags3A));
+                   static_cast<int>(unit->battleStateFlags));
         units.Add(record.Release());
         unit = static_cast<TMilitaryUnit*>(cursor.Advance());
       }
@@ -3529,13 +3529,13 @@ JSON_Value* CaptureMilitaryEphemeral() {
   JsonObject landBattle;
   landBattle.Set("created",
                  g_pMapContextActionManager != 0 &&
-                     g_pMapContextActionManager->activeBattleView3a4 != 0);
+                     g_pMapContextActionManager->activeBattleView != 0);
   landBattle.Set(
       "outcome",
       g_pMapContextActionManager != 0 &&
-              g_pMapContextActionManager->activeBattleView3a4 != 0
+              g_pMapContextActionManager->activeBattleView != 0
           ? static_cast<int>(
-                g_pMapContextActionManager->activeBattleView3a4
+                g_pMapContextActionManager->activeBattleView
                     ->battleOutcome44)
           : -1);
   object.Set("land_battle", landBattle.Release());
@@ -3561,7 +3561,7 @@ JSON_Value* CaptureMissionsEphemeral() {
       object.Set("kind",
                  runtimeClass != 0 ? runtimeClass->m_lpszClassName : "unknown");
       object.Set("nation_id", static_cast<int>(mission->nationId04));
-      object.Set("path_marker", static_cast<int>(mission->pathMarker06));
+      object.Set("path_marker", static_cast<int>(mission->pathMarker));
       object.Set("state", static_cast<unsigned int>(mission->state08));
       object.Set("importance_bits", FloatBits(mission->importanceScore0c));
       object.Set("flag10", static_cast<unsigned int>(mission->flag10));
@@ -3572,7 +3572,7 @@ JSON_Value* CaptureMissionsEphemeral() {
         object.Set("resolved_port_zone",
                    RuntimeZoneIndex(navy->resolvedPortZone));
         object.Set("navy_state", navy->navyState28);
-        object.Set("has_orders", navy->orderList24 != 0);
+        object.Set("has_orders", navy->orderList != 0);
         JsonArray equipage;
         for (int index = 0; index < 4; ++index) {
           equipage.Add(FloatBits(navy->requiredShipEquipageByCategory[index]));
@@ -3618,8 +3618,8 @@ JSON_Value* CaptureMilitaryCleanupEphemeral() {
     TGreatPower* power = g_apNationStates[nation];
     if (power != 0 && power->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) != 0) {
       TAutoGreatPower* autoPower = static_cast<TAutoGreatPower*>(power);
-      expansionPressure.Add(FloatBits(autoPower->expansionPressurePerCompatibleRegionB64));
-      unitDivergence.Add(FloatBits(autoPower->averageUnitDivergencePerOwnedRegionB68));
+      expansionPressure.Add(FloatBits(autoPower->expansionPressurePerCompatibleRegion));
+      unitDivergence.Add(FloatBits(autoPower->averageUnitDivergencePerOwnedRegion));
       missionPressure.Add(FloatBits(autoPower->activeMissionPressureAverageB6c));
     } else {
       expansionPressure.Add(0U);
@@ -3682,15 +3682,15 @@ JSON_Value* CaptureTechnologyEphemeral() {
   object.Set("marker", static_cast<int>(g_pTechMgr->marker262));
   object.Set(
       "prereq_primary",
-      static_cast<int>(g_pTechMgr->activePrerequisitePair264.primaryTechId));
+      static_cast<int>(g_pTechMgr->activePrerequisitePair.primaryTechId));
   object.Set(
       "prereq_secondary",
-      static_cast<int>(g_pTechMgr->activePrerequisitePair264.secondaryTechId));
-  object.Set("selector", static_cast<int>(g_pTechMgr->techSelectorShort1d2));
-  object.Set("zone_index", static_cast<int>(g_pTechMgr->activeZoneIndex1d4));
+      static_cast<int>(g_pTechMgr->activePrerequisitePair.secondaryTechId));
+  object.Set("selector", static_cast<int>(g_pTechMgr->techSelectorShort));
+  object.Set("zone_index", static_cast<int>(g_pTechMgr->activeZoneIndex));
   JsonArray unlockFlags;
   for (int techId = 0; techId < 0x1d; ++techId) {
-    unlockFlags.Add(static_cast<int>(g_pTechMgr->perTechUnlockFlag180[techId]));
+    unlockFlags.Add(static_cast<int>(g_pTechMgr->perTechUnlockFlag[techId]));
   }
   object.Set("unlock_flags", unlockFlags.Release());
   JsonArray enabledTypes;
@@ -3720,13 +3720,13 @@ JSON_Value* CaptureTechnologyEphemeral() {
     JsonArray abilities;
     for (int abilityId = 0; abilityId < 0x1e; ++abilityId) {
       abilities.Add(static_cast<int>(
-          g_pTechMgr->abilityActiveRows395[nationSlot].abilityActiveById[abilityId]));
+          g_pTechMgr->abilityActiveRows[nationSlot].abilityActiveById[abilityId]));
     }
     record.Set("abilities", abilities.Release());
     JsonArray university;
     for (int category = 0; category < 9; ++category) {
       university.Add(static_cast<int>(
-          g_pTechMgr->universityRecruitmentAvailabilityByNation467[nationSlot]
+          g_pTechMgr->universityRecruitmentAvailabilityByNation[nationSlot]
               .availableByCategory[category]));
     }
     record.Set("university", university.Release());
@@ -3754,7 +3754,7 @@ JSON_Value* CaptureTechnologyEphemeral() {
     JsonArray types;
     for (int orderSlot = 0; orderSlot < 8; ++orderSlot) {
       types.Add(static_cast<int>(
-          orderOwner->city->shipOrderSlots190[orderSlot]->resourceTypeIndex));
+          orderOwner->city->shipOrderSlots[orderSlot]->resourceTypeIndex));
     }
     record.Set("types", types.Release());
     shipOrderTypes.Add(record.Release());

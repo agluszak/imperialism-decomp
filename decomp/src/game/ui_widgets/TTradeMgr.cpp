@@ -230,7 +230,7 @@ void TTradeMgr::CalculateDealOrder() {
               event.sourceNationSlot = static_cast<short>(source);
               event.targetNationSlot = static_cast<short>(target);
               event.relationDelta04 = cell;
-              event.relationStanding06 =
+              event.relationStanding =
                   RelationStanding(g_pDiplomacyTurnStateManager, source, target);
               // Fixed: scoreA/scoreB are the row's OWN price/basePrice, not
               // target-relative cells (confirmed via psVar6[-8]/*psVar6 anchored at the
@@ -264,7 +264,7 @@ void TTradeMgr::CalculateDealOrder() {
               event.sourceNationSlot = static_cast<short>(source);
               event.targetNationSlot = static_cast<short>(secTarget);
               event.relationDelta04 = cell;
-              event.relationStanding06 =
+              event.relationStanding =
                   RelationStanding(g_pDiplomacyTurnStateManager, source, secTarget);
               event.dispatchScore08 =
                   this->GetDealPrice(static_cast<short>(source), static_cast<short>(secTarget),
@@ -301,7 +301,7 @@ void TTradeMgr::CalculateDealOrder() {
               event.sourceNationSlot = static_cast<short>(source);
               event.targetNationSlot = static_cast<short>(target);
               event.relationDelta04 = cell;
-              event.relationStanding06 =
+              event.relationStanding =
                   RelationStanding(g_pDiplomacyTurnStateManager, source, target);
               event.dispatchScore08 =
                   this->GetDealPrice(static_cast<short>(source), static_cast<short>(target),
@@ -337,7 +337,7 @@ void TTradeMgr::CalculateDealOrder() {
                 event.sourceNationSlot = static_cast<short>(source);
                 event.targetNationSlot = static_cast<short>(secTarget);
                 event.relationDelta04 = cell;
-                event.relationStanding06 =
+                event.relationStanding =
                     RelationStanding(g_pDiplomacyTurnStateManager, source, secTarget);
                 event.dispatchScore08 =
                     this->GetDealPrice(static_cast<short>(source), static_cast<short>(secTarget),
@@ -376,7 +376,7 @@ void TTradeMgr::CalculateDealOrder() {
               event.sourceNationSlot = static_cast<short>(source);
               event.targetNationSlot = static_cast<short>(target);
               event.relationDelta04 = cell;
-              event.relationStanding06 =
+              event.relationStanding =
                   RelationStanding(g_pDiplomacyTurnStateManager, source, target);
               event.dispatchScore08 =
                   this->GetDealPrice(static_cast<short>(source), static_cast<short>(target),
@@ -398,7 +398,7 @@ void TTradeMgr::CalculateDealOrder() {
               event.sourceNationSlot = static_cast<short>(secondarySource);
               event.targetNationSlot = static_cast<short>(target);
               event.relationDelta04 = cell;
-              event.relationStanding06 =
+              event.relationStanding =
                   RelationStanding(g_pDiplomacyTurnStateManager, secondarySource, target);
               event.dispatchScore08 = this->GetDealPrice(
                   static_cast<short>(secondarySource), static_cast<short>(target),

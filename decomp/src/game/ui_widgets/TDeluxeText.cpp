@@ -9,7 +9,7 @@
 
 // FUNCTION: IMPERIALISM 0x00430950
 TDeluxeText::TDeluxeText()
-    : TTEView(), textColor98(0), shadowTextColor9C(0), dropShadowEnabledA0(false) {}
+    : TTEView(), textColor98(0), shadowTextColor(0), dropShadowEnabledA0(false) {}
 
 // FUNCTION: IMPERIALISM 0x00430a10
 TDeluxeText::~TDeluxeText() {}
@@ -50,7 +50,7 @@ void TDeluxeText::Draw(RECT* rectBuffer) {
   CString textBuffer;
   CopyTextTo(&textBuffer);
   if (dropShadowEnabledA0) {
-    SetQuickDrawColorAndPropagateIfChanged(shadowTextColor9C);
+    SetQuickDrawColorAndPropagateIfChanged(shadowTextColor);
     CRect shadowRect;
     BuildInsetContentRect(&shadowRect);
     OffsetRect(&shadowRect, 1, 1);
@@ -86,18 +86,18 @@ void TDeluxeText::SetTextEntryFromChars(const char* textChars, int textLength) {
 
 // FUNCTION: IMPERIALISM 0x005b63e0
 short TDeluxeText::CenterVertically(unsigned char refreshNow) {
-  contentInsets68.bottom = 0;
-  contentInsets68.top = 0;
+  contentInsets.bottom = 0;
+  contentInsets.top = 0;
   int measuredHeight = MeasureCurrentTextHeightInLayoutRect();
   short inset;
-  if (measuredHeight < frameHeight38) {
-    inset = static_cast<short>((frameHeight38 - measuredHeight) / 2);
+  if (measuredHeight < frameHeight) {
+    inset = static_cast<short>((frameHeight - measuredHeight) / 2);
   } else {
     inset = 0;
   }
-  contentInsets68.bottom = inset;
-  contentInsets68.top = inset;
-  CRect textRect(0, inset, frameWidth34, frameHeight38 - inset);
+  contentInsets.bottom = inset;
+  contentInsets.top = inset;
+  CRect textRect(0, inset, frameWidth, frameHeight - inset);
   StuffTERects(textRect);
   if (refreshNow != 0) {
     RefreshControl();

@@ -27,7 +27,7 @@ public:
   short field6;                                    // +0x06 -- composition class and random sort key
   // +0x08 -- region/owner category; signed (indexed/compared via movsx/jge in the
   // original) and compared against TArmyMgr::perTileOwnerNationCodeCache1c.
-  signed char categoryFlag8;
+  signed char categoryFlag;
   // +0x09 -- cached g_anFortLevelAttackerPenaltyPercentByLevel lookup for the
   // most-recently-processed unit in UpdateDualLinkedEntryMetersAndBlinkState's Phase 1/2
   // scan; that scan stops early once this hits 0.
@@ -41,7 +41,7 @@ public:
   TArmyStackUnitNode* head14;   // +0x14 -- head of the owned node chain
   TArmyStackUnitNode* cursor18; // +0x18 -- traversal cursor over the chain
 
-  // Walk the unit chain re-seating every unit: hand each one its own orderTargetIndex0C through
+  // Walk the unit chain re-seating every unit: hand each one its own orderTargetIndex through
   // MoveTo (slot 0x28) and then clear its orders via SetOrders(0, -1).
   // 0x004a7d20, __thiscall.
   void ReseatChainUnitsAndClearOrders();
@@ -69,7 +69,7 @@ public:
   void AddUnitByRosterId(short rosterID);
   // Walks the whole chain from head14 (via ResetCursorAndGetHeadUnit/
   // AdvanceCursorAndGetUnit) and, for every unit with a positive strength34 (strength),
-  // grows experiencePercent38 (percent-scaled quality) by 35 if boosted else 20, capped at 400.
+  // grows experiencePercent (percent-scaled quality) by 35 if boosted else 20, capped at 400.
   // 0x004a82b0, __thiscall, 1 arg.
   void ApplyMeterGrowthToEligibleUnits(bool boosted);
   bool UnitsFighting(); // 0x4a8330, Mac oracle

@@ -26,10 +26,10 @@ void TPageView::DoPostCreate(int arg) {
   this->orderedEntries = new TList();
   this->optionEntries = new TList();
   this->pageStartIndices = new TLongintList();
-  this->pageRect.bottom = this->frameHeight38 - 1;
+  this->pageRect.bottom = this->frameHeight - 1;
   this->pageRect.top = 0;
   this->pageRect.left = 0;
-  this->pageRect.right = this->frameWidth34 - 1;
+  this->pageRect.right = this->frameWidth - 1;
 }
 
 // FUNCTION: IMPERIALISM 0x0056fbb0
@@ -115,7 +115,7 @@ void TPageView::ShowPage(short pageNumber) {
     }
 
     short y = static_cast<short>(pageRect.top);
-    int perColumnWidth = frameWidth34 / visibleColumnCount;
+    int perColumnWidth = frameWidth / visibleColumnCount;
     short x = static_cast<short>(pageRect.left + perColumnWidth * (column - pageNumber));
     short currentIndex = static_cast<short>(pageStartIndices->At(column));
 

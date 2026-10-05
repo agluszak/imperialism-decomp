@@ -33,7 +33,7 @@ public:
   int styleWord;          // +4
 };
 
-// Typed MFC child list used by TView::childList44. The two non-virtual helpers are
+// Typed MFC child list used by TView::childList. The two non-virtual helpers are
 // carried by the retail binary immediately before TEventHandler's RTTI factory;
 // their receiver layout and element access prove they belong to this list, not to
 // TEventHandler itself.
@@ -55,28 +55,28 @@ public:
   int absoluteX;
   int absoluteY;
   // 0x34/0x38 — control frame size; CMcWindow builds the native window rect as
-  // (ownerLocalX, ownerLocalY) + frameWidth34 x frameHeight38.
-  int frameWidth34;
-  int frameHeight38;
+  // (ownerLocalX, ownerLocalY) + frameWidth x frameHeight.
+  int frameWidth;
+  int frameHeight;
   // 0x3c — general per-control value slot: toggle/current value (T2PictToggleButton),
   // window id (TDisplayMgr), dialog resource-template id (TControl).
   int controlValue3c;
   // Optional resource-construction context inherited by dynamically built child views.
   // Controls that do not inherit a context store null here.
   TView* resourceContext;        // 0x40
-  TViewChildList* childList44;   // 0x44 — child-control list (CList<TView*,TView*>)
+  TViewChildList* childList;     // 0x44 — child-control list (CList<TView*,TView*>)
   TUiStyleBytes* stylePayload48; // 8-byte style/color payload (see TUiStyleBytes above)
   // 0x4c — participates in the control input gate (EvaluateControlInputGate passes
   // when this is set and IsEnabled() reports true).
-  bool inputGateFlag4c;
+  bool inputGateFlag;
   // 0x4d — gates child traversal for renderability/hover hit-tests
-  // (HasRenderableParentAndContent requires it before childList44 counts).
-  bool childHitTestFlag4d;
+  // (HasRenderableParentAndContent requires it before childList counts).
+  bool childHitTestFlag;
   unsigned short cursorId4e;
   CWnd* nativeWindow50; // 0x50 — host window (MFC CWnd; HWND via m_hWnd)
   unsigned short helpState54;
   unsigned char padding_56_to_57[0x02];
-  CString hoverHelpText58;
+  CString hoverHelpText;
   int hoverHelpEnabled5c;
 
   TView();

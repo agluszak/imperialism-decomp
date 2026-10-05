@@ -14,7 +14,7 @@ public:
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4fa190
   virtual void Setup() override;                // slot 0x68 0x4facc0
   virtual void SetInfoCountry(short countryId); // slot 0x69 0x4fae00
-  short countryInfoCategoryIndices64[4];        // 0x64
+  short countryInfoCategoryIndices[4];          // 0x64
   int selectedOverlayMode6C;                    // 0x6c
 
   TInfoPanelView();

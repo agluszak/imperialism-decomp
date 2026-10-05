@@ -58,12 +58,12 @@ void TRailAmtBar::DoPostCreate(int arg) {
     recordIndex = 0x17;
   }
 
-  selectedMetricRecord = province->orderSlotsE4[recordIndex];
+  selectedMetricRecord = province->orderSlots[recordIndex];
 
   short productionOrCapValue = 0;
   if (recordIndex == 0x33 || recordIndex == 7) {
-    TPopulationMgr* scenario = province->productionSummary1d8;
-    TLaborPool* slots = scenario->productionSlots14;
+    TPopulationMgr* scenario = province->productionSummary;
+    TLaborPool* slots = scenario->productionSlots;
     productionOrCapValue = (short)(((slots->highSkillCount08 * 2 + slots->mediumSkillCount06) * 2 +
                                     scenario->extraAt1e + slots->lowSkillCount04) /
                                    2);
@@ -76,13 +76,13 @@ void TRailAmtBar::DoPostCreate(int arg) {
   } else {
     short selectedStep = selectedMetricRecord->MaxOrder();
     stepOrCurrentValue =
-        (short)(((int)selectedStep * this->frameWidth34) / (int)productionOrCapValue);
+        (short)(((int)selectedStep * this->frameWidth) / (int)productionOrCapValue);
   }
   auxValueA = productionOrCapValue;
   if (productionOrCapValue == 0) {
     rangeOrMaxValue = 9999;
   } else {
-    rangeOrMaxValue = (short)((this->frameWidth34 * (int)selectedMetricRecord->quantity) /
+    rangeOrMaxValue = (short)((this->frameWidth * (int)selectedMetricRecord->quantity) /
                               (int)productionOrCapValue);
   }
   auxValueB = 0x3a;
@@ -115,7 +115,7 @@ void TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       }
 
       short overlayOffsetX = control->stepOrCurrentValue;
-      short overlayOffsetY = static_cast<short>(control->frameHeight38);
+      short overlayOffsetY = static_cast<short>(control->frameHeight);
       SetQuickDrawTextOriginWithContextOffset(overlayOffsetX, 0);
       SetQuickDrawFillColor(0);
       ResetQuickDrawStrokeState();
@@ -145,8 +145,8 @@ void TRailAmtBar::RenderQuickDrawOverlayWithHitRegion(short selectedValue) {
       RECT invalidRect;
       invalidRect.left = translatedOrigin.x;
       invalidRect.top = translatedOrigin.y;
-      invalidRect.right = translatedOrigin.x + frameWidth34;
-      invalidRect.bottom = translatedOrigin.y + frameHeight38;
+      invalidRect.right = translatedOrigin.x + frameWidth;
+      invalidRect.bottom = translatedOrigin.y + frameHeight;
       InvalidateCityDialogRectRegion(&invalidRect, 1);
     }
   }

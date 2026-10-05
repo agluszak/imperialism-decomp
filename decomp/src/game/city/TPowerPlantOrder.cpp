@@ -16,7 +16,7 @@ void TPowerPlantOrder::IPowerPlantOrder(TCity* city) {
 
 // FUNCTION: IMPERIALISM 0x004b7b00
 short TPowerPlantOrder::MaxOrder() {
-  return static_cast<short>(quantity + ownerCity->cityStockFuelCE * 6);
+  return static_cast<short>(quantity + ownerCity->cityStockFuel * 6);
 }
 
 // FUNCTION: IMPERIALISM 0x004b7b30
@@ -27,20 +27,20 @@ bool TPowerPlantOrder::SetQuantity(short quantity) {
   }
   this->quantity = quantity;
 
-  if (ownerCity->productionSummary1d8->strength < -static_cast<int>(delta)) {
+  if (ownerCity->productionSummary->strength < -static_cast<int>(delta)) {
     this->quantity = static_cast<short>(this->quantity - delta);
     return false;
   }
 
   field4c = quantity;
-  ownerCity->cityStockFuelCE = static_cast<short>(ownerCity->cityStockFuelCE - delta / 6);
+  ownerCity->cityStockFuel = static_cast<short>(ownerCity->cityStockFuel - delta / 6);
   ownerCity->VerifyStocks();
 
-  short previousPower = ownerCity->productionSummary1d8->extraAt1e;
+  short previousPower = ownerCity->productionSummary->extraAt1e;
   ownerCity->powerAvailableB4 = quantity;
-  ownerCity->productionSummary1d8->extraAt1e = quantity;
-  ownerCity->productionSummary1d8->strength =
-      static_cast<short>(ownerCity->productionSummary1d8->strength + quantity - previousPower);
+  ownerCity->productionSummary->extraAt1e = quantity;
+  ownerCity->productionSummary->strength =
+      static_cast<short>(ownerCity->productionSummary->strength + quantity - previousPower);
   g_pViewMgr->RefreshCityProductionUi();
   return true;
 }

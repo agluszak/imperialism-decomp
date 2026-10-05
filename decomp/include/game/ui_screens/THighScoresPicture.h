@@ -24,7 +24,7 @@ public:
   // 32-byte name records. Draw (0x575460) walks them in lockstep, formatting the value
   // with "%d" and constructing a CString straight from the record pointer -- so each
   // record is just a NUL-terminated player name, not a struct.
-  int scoreValues94[10];       // +0x94
-  char scoreNamesBc[10][0x20]; // +0xbc
+  int scoreValues[10];       // +0x94
+  char scoreNames[10][0x20]; // +0xbc
 };
 ASSERT_SIZE(THighScoresPicture, 0x1fc);

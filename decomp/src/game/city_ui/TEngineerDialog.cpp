@@ -76,7 +76,7 @@ void TEngineerDialog::Draw(RECT* rectBuffer) {
                                    &headerRect, 0);
 
   bodyY = 0x38;
-  int bodyRowCount = (static_cast<short>(this->frameHeight38) - 0x46) / 0x0e;
+  int bodyRowCount = (static_cast<short>(this->frameHeight) - 0x46) / 0x0e;
   if (bodyRowCount > 0) {
     do {
       dstRect.top = bodyY;
@@ -190,8 +190,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
       Province* p = &mapState->cityScoreTable[t->cityRecordIndex];
       if (p->cityTileIndex04 == tile) {
         for (int j = 0; j < 10; j++) {
-          fortAccum[7 + j] =
-              static_cast<short>(fortAccum[7 + j] + p->resourceDevelopmentCounts82[j]);
+          fortAccum[7 + j] = static_cast<short>(fortAccum[7 + j] + p->resourceDevelopmentCounts[j]);
         }
       }
     }
@@ -266,7 +265,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
       }
       TIconBar* iconRow = new TIconBar();
       int iconPos[2] = {0x54, layoutY};
-      int iconSize[2] = {this->frameWidth34 - 0x60, 0x18};
+      int iconSize[2] = {this->frameWidth - 0x60, 0x18};
       iconRow->IIconBar(this, iconPos, iconSize, 5, 5, static_cast<short>(i + 0x2bc), fortAccum[i]);
       layoutY = static_cast<short>(layoutY + 0x1c);
     }
@@ -297,7 +296,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
       }
       TIconBar* iconRow = new TIconBar();
       int iconPos[2] = {0x54, layoutY};
-      int iconSize[2] = {this->frameWidth34 - 0x60, 0x18};
+      int iconSize[2] = {this->frameWidth - 0x60, 0x18};
       iconRow->IIconBar(this, iconPos, iconSize, 5, 5, static_cast<short>(i + 0x2bc), portAccum[i]);
       layoutY = static_cast<short>(layoutY + 0x1c);
     }

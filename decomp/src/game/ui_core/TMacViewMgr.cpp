@@ -77,8 +77,8 @@ static void CopyViewLayoutFieldsToStack(int* layout0, int* layout1, TControl* sr
   TView* srcView = srcControl;
   layout0[0] = srcView->ownerLocalX;
   layout0[1] = srcView->ownerLocalY;
-  layout1[0] = srcView->frameWidth34;
-  layout1[1] = srcView->frameHeight38;
+  layout1[0] = srcView->frameWidth;
+  layout1[1] = srcView->frameHeight;
 }
 
 static void ScanBracketExpressionsInto(CString* dest, const CString& templateText,
@@ -129,7 +129,7 @@ IMPLEMENT_DYNCREATE(TMacViewMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x00509ca0
 TMacViewMgr::TMacViewMgr() : TObject() {
-  activeCityProductionView04 = 0;
+  activeCityProductionView = 0;
   int index = 0;
   while (index < 0x17) {
     regionSlots[index] = 0;
@@ -224,7 +224,7 @@ void TMacViewMgr::Free() {
 
 // FUNCTION: IMPERIALISM 0x0050a140
 void TMacViewMgr::ReadFrom(TStream* stream) {
-  activeCityProductionView04 = 0;
+  activeCityProductionView = 0;
   TObject::ReadFrom(stream);
   RebuildMapTileNeighborHighlightPolygonsForAllTiles();
   RenderTurnEventPalettePreviewSurfaceAndProgress();
@@ -602,22 +602,22 @@ void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
 
   index = 0;
   while (index < 0x10) {
-    strategicTileMasks6bc[index].BuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2740, 0x40,
-                                                                             0x40, 0x1680, 0x10);
+    strategicTileMasks[index].BuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2740, 0x40,
+                                                                          0x40, 0x1680, 0x10);
     index = index + 1;
   }
   resourceId = 0x2760;
   while (resourceId < 0x2766) {
-    strategicTileMasks6bc[0x18 + resourceId - 0x2760].BuildBitmapMaskOpcodeBufferFromResourceRows(
+    strategicTileMasks[0x18 + resourceId - 0x2760].BuildBitmapMaskOpcodeBufferFromResourceRows(
         resourceId - 0x26, 0x40, 0x40, 0x1680, 0x10);
-    strategicTileMasks6bc[0x1e + resourceId - 0x2760].BuildBitmapMaskOpcodeBufferFromResourceRows(
+    strategicTileMasks[0x1e + resourceId - 0x2760].BuildBitmapMaskOpcodeBufferFromResourceRows(
         resourceId, 0x40, 0x40, 0x1680, 0x10);
     resourceId = resourceId + 1;
   }
   index = 0x10;
   while (index < 0x18) {
-    strategicTileMasks6bc[index].BuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2756, 0x40,
-                                                                             0x40, 0x1680, 0x10);
+    strategicTileMasks[index].BuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2756, 0x40,
+                                                                          0x40, 0x1680, 0x10);
     index = index + 1;
   }
 }
@@ -846,7 +846,7 @@ void TMacViewMgr::SyncSellTaggedChildControlWithNationState(TView* view, short o
   TTradeCluster* row = static_cast<TTradeCluster*>(view);
   view->DoPostCreate(0);
   row->tradeMetricSlot = orderSlot;
-  if (g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] == 0 &&
+  if (g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId] == 0 &&
       (orderSlot == 6 || orderSlot == 0xc)) {
     view->Show(0, 0);
   }
@@ -931,7 +931,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
     short needCap = nation != 0 ? nation->transportCapacity : 0;
     panel->splitValue94 = nation != 0 ? nation->reservedTransportCapacity : 0;
     panel->splitValue96 = needCap;
-    panel->splitLimit98 = static_cast<short>(-1);
+    panel->splitLimit = static_cast<short>(-1);
     return;
   }
 
@@ -970,9 +970,9 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
     {
       int production = city->GetBuildingType(0);
       deficitCount =
-          static_cast<short>(production * 2 - city->cityStockCottonB6 - city->cityStockWoolB8);
-      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->cityStockCottonB6) +
-                                                  static_cast<int>(city->cityStockWoolB8));
+          static_cast<short>(production * 2 - city->cityStockCotton - city->cityStockWool);
+      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->cityStockCotton) +
+                                                  static_cast<int>(city->cityStockWool));
       formatProduction.Format(g_szDecimalFormat, production * 2);
       g_pSimMgr->GetString(0x2719, 0, &displayText);
     }
@@ -983,11 +983,11 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
     g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(4);
-      deficitCount = static_cast<short>(production * 2 - city->cityStockTimberBA);
-      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->cityStockTimberBA));
+      deficitCount = static_cast<short>(production * 2 - city->cityStockTimber);
+      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->cityStockTimber));
       formatTarget.Format(g_szDecimalFormat, production * 2);
       g_pSimMgr->GetString(0x2719, 4, &displayText);
-      formatFieldValue = city->cityStockTimberBA;
+      formatFieldValue = city->cityStockTimber;
       showArrowWidgets = 1;
       useProductionTailPath = true;
     }
@@ -999,12 +999,12 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
     g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(2);
-      deficitCount = static_cast<short>(production - (&city->cityStockCottonB6)[resourceSlot]);
+      deficitCount = static_cast<short>(production - (&city->cityStockCotton)[resourceSlot]);
       formatCurrent.Format(g_szDecimalFormat,
-                           static_cast<int>((&city->cityStockCottonB6)[resourceSlot]));
+                           static_cast<int>((&city->cityStockCotton)[resourceSlot]));
       formatTarget.Format(g_szDecimalFormat, production);
       g_pSimMgr->GetString(0x2719, 2, &displayText);
-      formatFieldValue = (&city->cityStockCottonB6)[resourceSlot];
+      formatFieldValue = (&city->cityStockCotton)[resourceSlot];
       showArrowWidgets = 1;
       useProductionTailPath = true;
     }
@@ -1024,11 +1024,11 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
     g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(6);
-      deficitCount = static_cast<short>(production * 2 - city->cityStockOilC2);
-      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->cityStockOilC2));
+      deficitCount = static_cast<short>(production * 2 - city->cityStockOil);
+      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->cityStockOil));
       formatTarget.Format(g_szDecimalFormat, production * 2);
       g_pSimMgr->GetString(0x2719, 6, &displayText);
-      formatFieldValue = city->cityStockOilC2;
+      formatFieldValue = city->cityStockOil;
       showArrowWidgets = 1;
       useProductionTailPath = true;
     }
@@ -1054,11 +1054,11 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
     g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(5);
-      deficitCount = static_cast<short>(production * 2 - city->cityStockLumberC8);
-      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->cityStockLumberC8));
+      deficitCount = static_cast<short>(production * 2 - city->cityStockLumber);
+      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->cityStockLumber));
       formatTarget.Format(g_szDecimalFormat, production * 2);
       g_pSimMgr->GetString(0x2719, 5, &displayText);
-      formatFieldValue = city->cityStockLumberC8;
+      formatFieldValue = city->cityStockLumber;
       showArrowWidgets = 1;
       useProductionTailPath = true;
     }
@@ -1069,11 +1069,11 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
     g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(3);
-      deficitCount = static_cast<short>(production * 2 - city->cityStockSteelCC);
-      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->cityStockSteelCC));
+      deficitCount = static_cast<short>(production * 2 - city->cityStockSteel);
+      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->cityStockSteel));
       formatTarget.Format(g_szDecimalFormat, production * 2);
       g_pSimMgr->GetString(0x2719, 3, &displayText);
-      formatFieldValue = city->cityStockSteelCC;
+      formatFieldValue = city->cityStockSteel;
       showArrowWidgets = 1;
       useProductionTailPath = true;
     }
@@ -1084,11 +1084,11 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
     g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(0xb);
-      deficitCount = static_cast<short>(production * 2 - city->cityStockFuelCE);
-      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->cityStockFuelCE));
+      deficitCount = static_cast<short>(production * 2 - city->cityStockFuel);
+      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->cityStockFuel));
       formatTarget.Format(g_szDecimalFormat, production * 2);
       g_pSimMgr->GetString(0x2719, 0xb, &displayText);
-      formatFieldValue = city->cityStockFuelCE;
+      formatFieldValue = city->cityStockFuel;
       showArrowWidgets = 1;
       useProductionTailPath = true;
     }
@@ -1113,9 +1113,9 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
       short* summary = city->GetCitySummaryRecordSlot74();
       short summaryValue = summary[resourceSlot];
       formatTarget.Format(g_szDecimalFormat, static_cast<int>(summaryValue));
-      deficitCount = static_cast<short>(summaryValue - (&city->cityStockCottonB6)[resourceSlot]);
+      deficitCount = static_cast<short>(summaryValue - (&city->cityStockCotton)[resourceSlot]);
       formatCurrent.Format(g_szDecimalFormat,
-                           static_cast<int>((&city->cityStockCottonB6)[resourceSlot]));
+                           static_cast<int>((&city->cityStockCotton)[resourceSlot]));
       g_pSimMgr->GetString(0x2735, 7, &displayText);
       showArrowWidgets = 1;
     }
@@ -1131,8 +1131,8 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
       short summaryValue = summary[0x14];
       formatTarget.Format(g_szDecimalFormat, static_cast<int>(summaryValue));
       deficitCount =
-          static_cast<short>(summaryValue - city->cityStockFishDC - city->cityStockLivestockDE);
-      formatFieldValue = static_cast<short>(city->cityStockFishDC + city->cityStockLivestockDE);
+          static_cast<short>(summaryValue - city->cityStockFish - city->cityStockLivestock);
+      formatFieldValue = static_cast<short>(city->cityStockFish + city->cityStockLivestock);
       formatCurrent.Format(g_szDecimalFormat, static_cast<int>(formatFieldValue));
       showArrowWidgets = 1;
       useProductionTailPath = true;
@@ -1182,11 +1182,11 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   }
 
   if (showArrowWidgets == 0) {
-    panel->splitLimit98 = static_cast<short>(-1);
+    panel->splitLimit = static_cast<short>(-1);
   } else if (deficitCount < 1) {
-    panel->splitLimit98 = 0;
+    panel->splitLimit = 0;
   } else {
-    panel->splitLimit98 = deficitCount;
+    panel->splitLimit = deficitCount;
   }
 
   SetControlHoverHelpText(displayText, panel);
@@ -1253,14 +1253,14 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
     valueEntry->controlTag = kControlTagValu;
   }
 
-  panel->resourceMetricSlot92 = static_cast<short>(resourceSlot);
+  panel->resourceMetricSlot = static_cast<short>(resourceSlot);
   panel->splitValue94 = needTarget;
   panel->splitValue96 = needCurrent;
 }
 
 // FUNCTION: IMPERIALISM 0x0050d310
 void TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag(int unusedArg1, int unusedArg2) {
-  TView* dialog = activeCityProductionView04;
+  TView* dialog = activeCityProductionView;
   g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventCitySiteSelector), 0);
   short completionFlag = static_cast<short>(dialog->lastIdleTick);
   while (completionFlag == 0) {
@@ -1401,24 +1401,24 @@ void TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1) {
 
 // FUNCTION: IMPERIALISM 0x0050d8d0
 void TMacViewMgr::RefreshActiveCityBuildingActionAvailabilityIndicators() {
-  if (activeCityProductionView04 != 0) {
-    activeCityProductionView04->UpdateToolbar();
+  if (activeCityProductionView != 0) {
+    activeCityProductionView->UpdateToolbar();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0050d8f0
 void TMacViewMgr::ClearActiveCityBuildingViewSlot(short buildingSlot) {
-  if (activeCityProductionView04 != 0) {
-    activeCityProductionView04->buildingViewsAC[buildingSlot] = 0;
+  if (activeCityProductionView != 0) {
+    activeCityProductionView->buildingViews[buildingSlot] = 0;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0050d920
 void TMacViewMgr::ClearActiveCityProductionViewAndDiscardRegion() {
-  if (activeCityProductionView04 != 0) {
-    activeCityProductionView04->CloseAndSaveWindows();
+  if (activeCityProductionView != 0) {
+    activeCityProductionView->CloseAndSaveWindows();
   }
-  activeCityProductionView04 = 0;
+  activeCityProductionView = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0050d950

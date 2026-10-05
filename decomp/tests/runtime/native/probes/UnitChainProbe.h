@@ -10,9 +10,9 @@
 #include "screens/RuntimeActionResult.h"
 
 // The map's two unit chains: each province's stationed military units
-// (Province::stationedUnitChain98) and each tile's civilian orders
+// (Province::stationedUnitChain) and each tile's civilian orders
 // (TTerrainStateRecord::firstCivilianOrder20), both threaded through
-// TUnit::previousAtLocation10/nextAtLocation14.
+// TUnit::previousAtLocation/nextAtLocation.
 //
 // Walking a corrupt chain is a page fault, not a test failure -- the crash lands inside
 // TMilitaryUnit::MoveTo with no scenario context, and under the debugger it does not reproduce. So
@@ -33,7 +33,7 @@ public:
   // DetachUnitOrderFromOwnerAndReset. This is the state a load reached from the menu starts
   // from: no units are linked into the map. A replay that runs on top of a played game needs
   // it because TSimMgr::ReadFrom's rebuild frees each nation's units without unlinking them
-  // from Province::stationedUnitChain98 (TUnit::Free at 0x5c2680 does not unlink, nor does
+  // from Province::stationedUnitChain (TUnit::Free at 0x5c2680 does not unlink, nor does
   // TCountry::Free at 0x4d6ba0), and the freshly seeded units are then linked in front of the
   // freed ones -- walking that tail is what crashes.
   static void DetachLiveMilitaryUnitsFromMap();

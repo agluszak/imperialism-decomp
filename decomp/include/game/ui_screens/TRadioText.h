@@ -18,8 +18,8 @@ public:
 
   // 0x98 — not initialized by the ctor (0x43d990 writes only the vtable); a 0/1
   // "this option is selected" flag toggled by the owning
-  // TRadioTextCluster::SetSelectedTextOptionByTag (0x5797c0) as it walks childList44.
-  bool isSelectedOption98;
+  // TRadioTextCluster::SetSelectedTextOptionByTag (0x5797c0) as it walks childList.
+  bool isSelectedOption;
   unsigned char pad99[3]; // 0x99 — not read/written by SetSelectedTextOptionByTag
 };
 ASSERT_SIZE(TRadioText, 0x9c);

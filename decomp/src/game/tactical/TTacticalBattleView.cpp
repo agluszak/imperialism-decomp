@@ -886,15 +886,15 @@ IMPLEMENT_DYNCREATE(TTacticalBattleView, TView)
 TTacticalBattleView::TTacticalBattleView() : TView() {
   tacticalBattle60 = 0;
   battlefieldSurface64 = 0;
-  viewOriginX78 = 0;
+  viewOriginX = 0;
   toolbarD0 = 0;
   unitSpriteAtlasSurface68 = 0;
   fortLevelAtlasSurface6C = 0;
   tileScratchSurface70 = 0;
   effectAtlasSurface74 = 0;
   unitSpriteScratchSurfaceBC = 0;
-  modalAnimWaitDoneFlag98 = true;
-  moveAnimUnitOffsetXA4 = -1;
+  modalAnimWaitDoneFlag = true;
+  moveAnimUnitOffsetX = -1;
 }
 
 // FUNCTION: IMPERIALISM 0x005a83c0
@@ -928,7 +928,7 @@ void TTacticalBattleView::DoPostCreate(int arg) {
   g_pCursorControlPanel = cursorPanel;
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 
-  GetWindow()->activeViewTag68 = controlTag;
+  GetWindow()->activeViewTag = controlTag;
   BecomeTarget();
 }
 
@@ -958,11 +958,11 @@ void TTacticalBattleView::DoKeyEvent(TToolboxEvent* event) {
 void TTacticalBattleView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
   (void)event;
   (void)origin;
-  if (modalAnimWaitDoneFlag98) {
+  if (modalAnimWaitDoneFlag) {
     int row;
     int column;
     ConvertScreenPointToHexGridCoordClamped(&point, &row, &column);
-    tacticalBattle60->DispatchTacticalActionByHoverStateIndex(row * tileColumnsPerRow80 + column);
+    tacticalBattle60->DispatchTacticalActionByHoverStateIndex(row * tileColumnsPerRow + column);
   }
 }
 
@@ -972,26 +972,26 @@ void TTacticalBattleView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CP
 // FUNCTION: IMPERIALISM 0x005a86d0
 void TTacticalBattleView::ConvertScreenPointToHexGridCoordClamped(POINT* screenPoint, int* outRow,
                                                                   int* outCol) {
-  int row = screenPoint->y / tileRowHeightPx8C;
+  int row = screenPoint->y / tileRowHeightPx;
   *outRow = row;
   if (row < 0) {
     *outRow = 0;
   }
-  int maxRow = frameHeight38 / tileRowHeightPx8C + -1;
+  int maxRow = frameHeight / tileRowHeightPx + -1;
   if (*outRow >= maxRow) {
     *outRow = maxRow;
   }
-  int col = viewOriginX78 + screenPoint->x;
+  int col = viewOriginX + screenPoint->x;
   *outCol = col;
   if ((*outRow & 1) != 0) {
-    *outCol = col - tileWidthPx88 / 2;
+    *outCol = col - tileWidthPx / 2;
   }
-  col = *outCol / tileWidthPx88;
+  col = *outCol / tileWidthPx;
   *outCol = col;
   if (col < 0) {
     *outCol = 0;
   }
-  int maxCol = tacticalBattle60->battlefieldColumnCount34;
+  int maxCol = tacticalBattle60->battlefieldColumnCount;
   if (*outCol >= maxCol) {
     *outCol = maxCol + -1;
   }
@@ -999,38 +999,38 @@ void TTacticalBattleView::ConvertScreenPointToHexGridCoordClamped(POINT* screenP
 
 // FUNCTION: IMPERIALISM 0x005a8790
 void TTacticalBattleView::SyncStatusPanelBounds() {
-  RECT bounds = {0, 0, frameWidth34, frameHeight38};
+  RECT bounds = {0, 0, frameWidth, frameHeight};
   ValidateControlRectIfWindowActive(&bounds);
 }
 
 // FUNCTION: IMPERIALISM 0x005a87d0
 void TTacticalBattleView::ComputeTacticalHexTileScreenRect(RECT* rectOut,
                                                            TacticalTileIndex tileIndex) {
-  int row = tileIndex / tileColumnsPerRow80;
-  int x = (tileIndex % tileColumnsPerRow80) * tileWidthPx88 - viewOriginX78;
+  int row = tileIndex / tileColumnsPerRow;
+  int x = (tileIndex % tileColumnsPerRow) * tileWidthPx - viewOriginX;
   rectOut->left = x;
   if (row & 1) {
     // Odd hex rows are staggered right by half a tile.
-    rectOut->left = x + tileWidthPx88 / 2;
+    rectOut->left = x + tileWidthPx / 2;
   }
-  rectOut->top = row * tileRowHeightPx8C;
-  rectOut->right = rectOut->left + tileWidthPx88;
-  rectOut->bottom = rectOut->top + tileRowHeightPx8C;
+  rectOut->top = row * tileRowHeightPx;
+  rectOut->right = rectOut->left + tileWidthPx;
+  rectOut->bottom = rectOut->top + tileRowHeightPx;
 }
 
 // FUNCTION: IMPERIALISM 0x005a8860
 void TTacticalBattleView::InvalidateTile(TacticalTileIndex tileIndex) {
   RECT tileRect;
-  int row = tileIndex / tileColumnsPerRow80;
-  int tileWidth = tileWidthPx88;
-  int x = (tileIndex % tileColumnsPerRow80) * tileWidth - viewOriginX78;
+  int row = tileIndex / tileColumnsPerRow;
+  int tileWidth = tileWidthPx;
+  int x = (tileIndex % tileColumnsPerRow) * tileWidth - viewOriginX;
   tileRect.left = x;
   if (row & 1) {
     // Odd hex rows are staggered right by half a tile.
     x += tileWidth / 2;
     tileRect.left = x;
   }
-  int rowHeight = tileRowHeightPx8C;
+  int rowHeight = tileRowHeightPx;
   tileRect.top = row * rowHeight;
   tileRect.right = x + tileWidth;
   tileRect.bottom = tileRect.top + rowHeight;
@@ -1039,17 +1039,17 @@ void TTacticalBattleView::InvalidateTile(TacticalTileIndex tileIndex) {
 
 // FUNCTION: IMPERIALISM 0x005a8900
 void TTacticalBattleView::UpdateTile(TacticalTileIndex tileIndex) {
-  int row = tileIndex / tileColumnsPerRow80;
-  int x = (tileIndex % tileColumnsPerRow80) * tileWidthPx88 - viewOriginX78;
+  int row = tileIndex / tileColumnsPerRow;
+  int x = (tileIndex % tileColumnsPerRow) * tileWidthPx - viewOriginX;
   RECT tileRect;
   tileRect.left = x;
   if (row & 1) {
-    x += tileWidthPx88 / 2;
+    x += tileWidthPx / 2;
     tileRect.left = x;
   }
-  tileRect.top = row * tileRowHeightPx8C;
-  tileRect.right = x + tileWidthPx88;
-  tileRect.bottom = tileRect.top + tileRowHeightPx8C;
+  tileRect.top = row * tileRowHeightPx;
+  tileRect.right = x + tileWidthPx;
+  tileRect.bottom = tileRect.top + tileRowHeightPx;
   InvalidateCityDialogRectRegion(&tileRect, 1);
 }
 
@@ -1072,17 +1072,17 @@ void TTacticalBattleView::UnitRect(TTacticalUnit* unit, RECT* rectOut) {
     rectOut->bottom = 0;
     return;
   }
-  int row = tileIndex / tileColumnsPerRow80;
-  int x = (tileIndex % tileColumnsPerRow80) * tileWidthPx88 - viewOriginX78;
+  int row = tileIndex / tileColumnsPerRow;
+  int x = (tileIndex % tileColumnsPerRow) * tileWidthPx - viewOriginX;
   rectOut->left = x;
   if (row & 1) {
     // Odd hex rows are staggered right by half a tile.
-    rectOut->left = x + tileWidthPx88 / 2;
+    rectOut->left = x + tileWidthPx / 2;
   }
-  int top = row * tileRowHeightPx8C;
+  int top = row * tileRowHeightPx;
   rectOut->top = top;
-  rectOut->right = rectOut->left + tileWidthPx88;
-  int bottom = top + tileRowHeightPx8C;
+  rectOut->right = rectOut->left + tileWidthPx;
+  int bottom = top + tileRowHeightPx;
   // Grow the plain tile rect 0x18 px upward and pull the bottom in by 4 for the unit
   // sprite box; the original stores the plain values first, then the adjusted ones
   // (double writes kept per the original store order).
@@ -1093,8 +1093,8 @@ void TTacticalBattleView::UnitRect(TTacticalUnit* unit, RECT* rectOut) {
 
 // FUNCTION: IMPERIALISM 0x005a8ac0
 void TTacticalBattleView::MakeTileVisible(TacticalTileIndex tileIndex) {
-  int firstVisibleColumn = viewOriginX78 / tileWidthPx88;
-  int visibleColumnCount = frameWidth34 / tileWidthPx88;
+  int firstVisibleColumn = viewOriginX / tileWidthPx;
+  int visibleColumnCount = frameWidth / tileWidthPx;
   int lastVisibleColumn = firstVisibleColumn + visibleColumnCount;
   // Screen column in whole tiles; odd rows contribute a half-column stagger
   // (tile grid is 0x1d columns wide, matching TTacticalBattle::tacticalTileStride40).
@@ -1102,16 +1102,16 @@ void TTacticalBattleView::MakeTileVisible(TacticalTileIndex tileIndex) {
   if (screenColumn >= firstVisibleColumn + 2 && screenColumn <= lastVisibleColumn - 2) {
     return;
   }
-  short tileWidth = (short)tileWidthPx88; // original loads the low word once and reuses it
-  viewOriginX78 = (short)(screenColumn * tileWidth - frameWidth34 / 2);
-  if (viewOriginX78 < 0) {
-    viewOriginX78 = 0;
-  } else if (viewOriginX78 > scrollableContentWidth7A - frameWidth34) {
-    viewOriginX78 = (short)(scrollableContentWidth7A - frameWidth34);
+  short tileWidth = (short)tileWidthPx; // original loads the low word once and reuses it
+  viewOriginX = (short)(screenColumn * tileWidth - frameWidth / 2);
+  if (viewOriginX < 0) {
+    viewOriginX = 0;
+  } else if (viewOriginX > scrollableContentWidth - frameWidth) {
+    viewOriginX = (short)(scrollableContentWidth - frameWidth);
   }
   // Snap the origin back to a whole-tile boundary.
-  if (viewOriginX78 % tileWidthPx88 != 0) {
-    viewOriginX78 = (short)((viewOriginX78 / tileWidthPx88) * tileWidth);
+  if (viewOriginX % tileWidthPx != 0) {
+    viewOriginX = (short)((viewOriginX / tileWidthPx) * tileWidth);
   }
   RefreshControl();
 }
@@ -1121,18 +1121,18 @@ void TTacticalBattleView::MakeTileVisible(TacticalTileIndex tileIndex) {
 // repaints and refreshes the unit marker. Gated on the modal-wait-done flag.
 // FUNCTION: IMPERIALISM 0x005a8be0
 void TTacticalBattleView::Scroll(MapScrollEdgeMaskStorage scrollDirection) {
-  if (modalAnimWaitDoneFlag98) {
+  if (modalAnimWaitDoneFlag) {
     if (scrollDirection == kMapScrollEdgeLeft) {
-      if (viewOriginX78 > 0) {
-        viewOriginX78 = viewOriginX78 - static_cast<short>(tileWidthPx88);
+      if (viewOriginX > 0) {
+        viewOriginX = viewOriginX - static_cast<short>(tileWidthPx);
         RefreshControl();
         UpdateSelectionBlink();
         return;
       }
     } else if (scrollDirection == kMapScrollEdgeRight &&
-               static_cast<int>(viewOriginX78) <
-                   (static_cast<int>(scrollableContentWidth7A) - frameWidth34) - tileWidthPx88) {
-      viewOriginX78 = static_cast<short>(tileWidthPx88) + viewOriginX78;
+               static_cast<int>(viewOriginX) <
+                   (static_cast<int>(scrollableContentWidth) - frameWidth) - tileWidthPx) {
+      viewOriginX = static_cast<short>(tileWidthPx) + viewOriginX;
       RefreshControl();
     }
     UpdateSelectionBlink();
@@ -1162,7 +1162,7 @@ void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
   int gridRow = 0;
   int gridCol = 0;
   ConvertScreenPointToHexGridCoordClamped(point, &gridRow, &gridCol);
-  int tileIndex = static_cast<short>(gridRow * tileColumnsPerRow80 + gridCol);
+  int tileIndex = static_cast<short>(gridRow * tileColumnsPerRow + gridCol);
   unsigned short cursorToken = static_cast<unsigned short>(
       tacticalBattle60->ResolveTacticalHoverCursorResourceId(static_cast<short>(tileIndex)));
   if (cursorToken == 999 || cursorToken == 0) {
@@ -1188,17 +1188,17 @@ void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
   hoveredTileIndex = tileIndex;
   ResetQuickDrawStrokeState();
   if (previousTile != -1) {
-    int row = previousTile / tileColumnsPerRow80;
-    int x = (previousTile % tileColumnsPerRow80) * tileWidthPx88 - viewOriginX78;
+    int row = previousTile / tileColumnsPerRow;
+    int x = (previousTile % tileColumnsPerRow) * tileWidthPx - viewOriginX;
     RECT tileRect;
     tileRect.left = x;
     if (row & 1) {
-      x += tileWidthPx88 / 2;
+      x += tileWidthPx / 2;
       tileRect.left = x;
     }
-    tileRect.top = row * tileRowHeightPx8C;
-    tileRect.right = x + tileWidthPx88;
-    tileRect.bottom = tileRect.top + tileRowHeightPx8C;
+    tileRect.top = row * tileRowHeightPx;
+    tileRect.right = x + tileWidthPx;
+    tileRect.bottom = tileRect.top + tileRowHeightPx;
     SetQuickDrawStrokeColor(0xffffff);
     SetQuickDrawFillColor(0);
     BlitRectWithOptionalTransparency(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
@@ -1206,17 +1206,17 @@ void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
                                      &tileRect, 0, 0);
   }
   if (static_cast<short>(tileIndex) != -1) {
-    int row = tileIndex / tileColumnsPerRow80;
-    int x = (tileIndex % tileColumnsPerRow80) * tileWidthPx88 - viewOriginX78;
+    int row = tileIndex / tileColumnsPerRow;
+    int x = (tileIndex % tileColumnsPerRow) * tileWidthPx - viewOriginX;
     RECT tileRect;
     tileRect.left = x;
     if (row & 1) {
-      x += tileWidthPx88 / 2;
+      x += tileWidthPx / 2;
       tileRect.left = x;
     }
-    tileRect.top = row * tileRowHeightPx8C;
-    tileRect.right = x + tileWidthPx88;
-    tileRect.bottom = tileRect.top + tileRowHeightPx8C;
+    tileRect.top = row * tileRowHeightPx;
+    tileRect.right = x + tileWidthPx;
+    tileRect.bottom = tileRect.top + tileRowHeightPx;
     SetQuickDrawStrokeColor(0xffffff);
     SetQuickDrawFillColorFromPaletteIndex(0);
     DrawHexSelectionOutlineSegments(&tileRect);
@@ -1236,15 +1236,15 @@ void TTacticalBattleView::PlayAni(TacticalTileIndex tileIndex, int effectId, int
   if (occupant != 0) {
     UnitRect(occupant, &effectRect);
   } else {
-    int row = tileIndex / tileColumnsPerRow80;
-    int tileWidth = tileWidthPx88;
-    int x = (tileIndex % tileColumnsPerRow80) * tileWidth - viewOriginX78;
+    int row = tileIndex / tileColumnsPerRow;
+    int tileWidth = tileWidthPx;
+    int x = (tileIndex % tileColumnsPerRow) * tileWidth - viewOriginX;
     effectRect.left = x;
     if (row & 1) {
       x += tileWidth / 2;
       effectRect.left = x;
     }
-    int rowHeight = tileRowHeightPx8C;
+    int rowHeight = tileRowHeightPx;
     effectRect.top = row * rowHeight;
     effectRect.right = x + tileWidth;
     effectRect.bottom = effectRect.top + rowHeight;
@@ -1272,11 +1272,11 @@ void TTacticalBattleView::PlayAni(RECT* rect, int effectId, int frameCount,
   g_pUiAnimator->AddObjectToUiTransientRegistry(
       static_cast<TAnimation*>(static_cast<void*>(animation)));
   BeginModalAnimationWait();
-  modalAnimWaitDoneFlag98 = false;
+  modalAnimWaitDoneFlag = false;
   while (!animation->completeFlag) {
     PumpUiMessagesAndBackgroundTasks(1);
   }
-  modalAnimWaitDoneFlag98 = true;
+  modalAnimWaitDoneFlag = true;
   EndModalAnimationWait();
   InvalidateCityDialogRectRegion(rect, 1);
   g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(tileIndex);
@@ -1291,89 +1291,89 @@ void TTacticalBattleView::GlideUnit(TTacticalUnit* unit, TacticalTileIndex fromT
     return;
   }
 
-  int fromRow = fromTileIndex / tileColumnsPerRow80;
-  int fromX = (fromTileIndex % tileColumnsPerRow80) * tileWidthPx88 - viewOriginX78;
+  int fromRow = fromTileIndex / tileColumnsPerRow;
+  int fromX = (fromTileIndex % tileColumnsPerRow) * tileWidthPx - viewOriginX;
   if (fromRow & 1) {
-    fromX += tileWidthPx88 / 2;
+    fromX += tileWidthPx / 2;
   }
-  int fromY = fromRow * tileRowHeightPx8C;
-  int fromBottom = fromY + tileRowHeightPx8C;
+  int fromY = fromRow * tileRowHeightPx;
+  int fromBottom = fromY + tileRowHeightPx;
 
-  int toRow = toTileIndex / tileColumnsPerRow80;
-  int toX = (toTileIndex % tileColumnsPerRow80) * tileWidthPx88 - viewOriginX78;
+  int toRow = toTileIndex / tileColumnsPerRow;
+  int toX = (toTileIndex % tileColumnsPerRow) * tileWidthPx - viewOriginX;
   if (toRow & 1) {
-    toX += tileWidthPx88 / 2;
+    toX += tileWidthPx / 2;
   }
-  int toY = toRow * tileRowHeightPx8C;
-  int toBottom = toY + tileRowHeightPx8C;
+  int toY = toRow * tileRowHeightPx;
+  int toBottom = toY + tileRowHeightPx;
 
   RECT animRect;
   animRect.left = (fromX < toX) ? fromX : toX;
   int maxBottom = (fromBottom > toBottom) ? fromBottom : toBottom;
-  animRect.top = maxBottom - 3 * tileRowHeightPx8C;
-  animRect.right = animRect.left + 2 * tileWidthPx88;
+  animRect.top = maxBottom - 3 * tileRowHeightPx;
+  animRect.right = animRect.left + 2 * tileWidthPx;
   animRect.bottom = maxBottom;
 
-  moveAnimUnitOffsetYA8 = fromBottom - animRect.top - 4;
-  moveAnimScreenRectC0.left = animRect.left;
-  moveAnimScreenRectC0.top = animRect.top;
-  moveAnimScreenRectC0.right = animRect.right;
-  moveAnimScreenRectC0.bottom = animRect.bottom;
-  moveAnimStepX9C = (toX - fromX) / 3;
-  moveAnimStepYA0 = (toY - fromY) / 3;
-  moveAnimUnitOffsetXA4 = fromX - animRect.left;
+  moveAnimUnitOffsetY = fromBottom - animRect.top - 4;
+  moveAnimScreenRect.left = animRect.left;
+  moveAnimScreenRect.top = animRect.top;
+  moveAnimScreenRect.right = animRect.right;
+  moveAnimScreenRect.bottom = animRect.bottom;
+  moveAnimStepX = (toX - fromX) / 3;
+  moveAnimStepY = (toY - fromY) / 3;
+  moveAnimUnitOffsetX = fromX - animRect.left;
 
-  int spriteLeft = unit->unitTypeC * unitSpriteCellWidth90;
+  int spriteLeft = unit->unitTypeC * unitSpriteCellWidth;
   // Half-column positions decide the facing: moving toward a higher half-column uses
   // sprite-sheet row 0, otherwise the second row (offset by one cell height).
   int fromHalfColumn = (fromTileIndex % 0x1d) * 2 + ((fromTileIndex / 0x1d) & 1);
   int toHalfColumn = (toTileIndex % 0x1d) * 2 + ((toTileIndex / 0x1d) & 1);
-  int spriteTop = (fromHalfColumn < toHalfColumn) ? 0 : unitSpriteCellHeight94;
-  moveAnimSpriteSrcRectAC.left = spriteLeft;
-  moveAnimSpriteSrcRectAC.top = spriteTop;
-  moveAnimSpriteSrcRectAC.right = spriteLeft + unitSpriteCellWidth90;
-  moveAnimSpriteSrcRectAC.bottom = spriteTop + unitSpriteCellHeight94;
+  int spriteTop = (fromHalfColumn < toHalfColumn) ? 0 : unitSpriteCellHeight;
+  moveAnimSpriteSrcRect.left = spriteLeft;
+  moveAnimSpriteSrcRect.top = spriteTop;
+  moveAnimSpriteSrcRect.right = spriteLeft + unitSpriteCellWidth;
+  moveAnimSpriteSrcRect.bottom = spriteTop + unitSpriteCellHeight;
 
   InvalidateCityDialogRectRegion(&animRect, 1);
 
   RECT fromTileRect;
-  int row2 = fromTileIndex / tileColumnsPerRow80;
-  int tileWidth2 = tileWidthPx88;
-  int x2 = (fromTileIndex % tileColumnsPerRow80) * tileWidth2 - viewOriginX78;
+  int row2 = fromTileIndex / tileColumnsPerRow;
+  int tileWidth2 = tileWidthPx;
+  int x2 = (fromTileIndex % tileColumnsPerRow) * tileWidth2 - viewOriginX;
   fromTileRect.left = x2;
   if (row2 & 1) {
     x2 += tileWidth2 / 2;
     fromTileRect.left = x2;
   }
-  int rowHeight2 = tileRowHeightPx8C;
+  int rowHeight2 = tileRowHeightPx;
   fromTileRect.top = row2 * rowHeight2;
   fromTileRect.right = x2 + tileWidth2;
   fromTileRect.bottom = fromTileRect.top + rowHeight2;
   InvalidateCityDialogRectRegion(&fromTileRect, 1);
 
   ForceRedraw();
-  moveAnimUnitOffsetXA4 = -1;
+  moveAnimUnitOffsetX = -1;
 }
 
 // FUNCTION: IMPERIALISM 0x005a9550
 void TTacticalBattleView::DoGlideAni() {
-  if (moveAnimUnitOffsetXA4 == -1) {
+  if (moveAnimUnitOffsetX == -1) {
     return;
   }
   SetQuickDrawFillColor(0);
   int slotIndex = 0;
   do {
     unsigned int frameStartTick = GetTickCountDiv16();
-    int rowOffsetPx = slotIndex * moveAnimStepYA0;
-    int colOffsetPx = slotIndex * moveAnimStepX9C;
+    int rowOffsetPx = slotIndex * moveAnimStepY;
+    int colOffsetPx = slotIndex * moveAnimStepX;
 
     // Save the current on-screen animation-rect background into the scratch surface.
-    RECT screenRect = moveAnimScreenRectC0;
+    RECT screenRect = moveAnimScreenRect;
     RECT scratchRect;
     scratchRect.left = 0;
     scratchRect.top = 0;
-    scratchRect.right = tileWidthPx88 << 1;
-    scratchRect.bottom = tileRowHeightPx8C * 3;
+    scratchRect.right = tileWidthPx << 1;
+    scratchRect.bottom = tileRowHeightPx * 3;
     RECT primaryClipRect;
     CopyRect(&primaryClipRect, &g_pPrimaryRenderSurfaceContext->blitSurface.clipRect);
     if (ClipSrcRectToBoundsAndOffsetDstRect(&primaryClipRect, &scratchRect, &screenRect)) {
@@ -1401,15 +1401,15 @@ void TTacticalBattleView::DoGlideAni() {
     // Draw the unit sprite for this animation frame onto the scratch surface
     // (transparent-color blit) at its per-frame offset within the anim rect.
     RECT tileRect;
-    tileRect.left = colOffsetPx + moveAnimUnitOffsetXA4;
-    tileRect.top = (rowOffsetPx - unitSpriteCellHeight94) + moveAnimUnitOffsetYA8;
-    tileRect.bottom = moveAnimUnitOffsetYA8 + rowOffsetPx;
-    tileRect.right = colOffsetPx + unitSpriteCellWidth90 + moveAnimUnitOffsetXA4;
+    tileRect.left = colOffsetPx + moveAnimUnitOffsetX;
+    tileRect.top = (rowOffsetPx - unitSpriteCellHeight) + moveAnimUnitOffsetY;
+    tileRect.bottom = moveAnimUnitOffsetY + rowOffsetPx;
+    tileRect.right = colOffsetPx + unitSpriteCellWidth + moveAnimUnitOffsetX;
 
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0x10);
 
-    RECT spriteSrcRect = moveAnimSpriteSrcRectAC;
+    RECT spriteSrcRect = moveAnimSpriteSrcRect;
     RECT atlasClipRect;
     CopyRect(&atlasClipRect, &unitSpriteAtlasSurface68->blitSurface.clipRect);
     if (ClipSrcRectToBoundsAndOffsetDstRect(&atlasClipRect, &tileRect, &spriteSrcRect)) {
@@ -1437,10 +1437,9 @@ void TTacticalBattleView::DoGlideAni() {
     // Composite the finished scratch tile back onto the active surface, clipped to
     // the view's own frame bounds.
     SetQuickDrawStrokeColor(0xffffff);
-    RECT compositeSrcRect = moveAnimScreenRectC0;
-    RECT compositeDstRect = {0, 0, tileWidthPx88 << 1, tileRowHeightPx8C * 3};
-    RECT frameBoundsRect = {g_nUiFrameClipOriginX, g_nUiFrameClipOriginY, frameWidth34,
-                            frameHeight38};
+    RECT compositeSrcRect = moveAnimScreenRect;
+    RECT compositeDstRect = {0, 0, tileWidthPx << 1, tileRowHeightPx * 3};
+    RECT frameBoundsRect = {g_nUiFrameClipOriginX, g_nUiFrameClipOriginY, frameWidth, frameHeight};
     if (ClipSrcRectToBoundsAndOffsetDstRect(&frameBoundsRect, &compositeDstRect,
                                             &compositeSrcRect)) {
       if (g_pActiveQuickDrawSurfaceContext->blitSurface.surfaceDib != 0) {
@@ -1468,8 +1467,8 @@ void TTacticalBattleView::DoGlideAni() {
     ++slotIndex;
   } while (slotIndex < 4);
 
-  InvalidateCityDialogRectRegion(&moveAnimScreenRectC0, 1);
-  moveAnimUnitOffsetXA4 = -1;
+  InvalidateCityDialogRectRegion(&moveAnimScreenRect, 1);
+  moveAnimUnitOffsetX = -1;
 }
 
 // FUNCTION: IMPERIALISM 0x005a99e0
@@ -1522,15 +1521,15 @@ void TTacticalBattleView::UpdateSelectionBlink() {
     return;
   }
   RECT tileRect;
-  int row = tileIndex / tileColumnsPerRow80;
-  int tileWidth = tileWidthPx88;
-  int x = (tileIndex % tileColumnsPerRow80) * tileWidth - viewOriginX78;
+  int row = tileIndex / tileColumnsPerRow;
+  int tileWidth = tileWidthPx;
+  int x = (tileIndex % tileColumnsPerRow) * tileWidth - viewOriginX;
   tileRect.left = x;
   if (row & 1) {
     x += tileWidth / 2;
     tileRect.left = x;
   }
-  int rowHeight = tileRowHeightPx8C;
+  int rowHeight = tileRowHeightPx;
   tileRect.top = row * rowHeight;
   tileRect.right = x + tileWidth;
   tileRect.bottom = tileRect.top + rowHeight;
@@ -1550,7 +1549,7 @@ short TTacticalBattleView::ComputeTacticalUnitSpriteOrientationIndexByAdjacentTy
     TacticalTileIndex tileIndex) {
   // Orientation-code -> sprite-facing lookup (built on the stack as 8 dwords, returned
   // as a short). The code is derived from which of two parity-selected opposite hex
-  // neighbors are trench-deploy tiles (TacticalTileRecord::deployMark8 == 1): even rows
+  // neighbors are trench-deploy tiles (TacticalTileRecord::deployMark == 1): even rows
   // consult neighbors[0]/[2], odd rows consult neighbors[5]/[3].
   int orientationTable[8] = {6, 3, 5, 1, 6, 0, 2, 4};
   TacticalTileIndex neighbors[6];
@@ -1558,18 +1557,18 @@ short TTacticalBattleView::ComputeTacticalUnitSpriteOrientationIndexByAdjacentTy
   int code;
   if ((tileIndex / 29 & 1) != 0) {
     code = 0;
-    if (neighbors[5] != -1 && tacticalBattle60->tileGrid4[neighbors[5]].deployMark8 == 1) {
+    if (neighbors[5] != -1 && tacticalBattle60->tileGrid4[neighbors[5]].deployMark == 1) {
       code = 2;
     }
-    if (neighbors[3] != -1 && tacticalBattle60->tileGrid4[neighbors[3]].deployMark8 == 1) {
+    if (neighbors[3] != -1 && tacticalBattle60->tileGrid4[neighbors[3]].deployMark == 1) {
       code++;
     }
   } else {
     code = 4;
-    if (neighbors[0] != -1 && tacticalBattle60->tileGrid4[neighbors[0]].deployMark8 == 1) {
+    if (neighbors[0] != -1 && tacticalBattle60->tileGrid4[neighbors[0]].deployMark == 1) {
       code = 6;
     }
-    if (neighbors[2] != -1 && tacticalBattle60->tileGrid4[neighbors[2]].deployMark8 == 1) {
+    if (neighbors[2] != -1 && tacticalBattle60->tileGrid4[neighbors[2]].deployMark == 1) {
       code++;
     }
   }
@@ -1580,20 +1579,20 @@ short TTacticalBattleView::ComputeTacticalUnitSpriteOrientationIndexByAdjacentTy
 void TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(TTacticalUnit* unit,
                                                                                 RECT* rectOut) {
   TacticalTileIndex tileIndex = unit->tileIndex8;
-  int row = tileIndex / tileColumnsPerRow80;
-  int x = (tileIndex % tileColumnsPerRow80) * tileWidthPx88 - viewOriginX78;
+  int row = tileIndex / tileColumnsPerRow;
+  int x = (tileIndex % tileColumnsPerRow) * tileWidthPx - viewOriginX;
   rectOut->left = x;
   if (row & 1) {
-    rectOut->left = tileWidthPx88 / 2 + x;
+    rectOut->left = tileWidthPx / 2 + x;
   }
-  int y = row * tileRowHeightPx8C;
+  int y = row * tileRowHeightPx;
   rectOut->top = y;
-  rectOut->right = rectOut->left + tileWidthPx88;
-  rectOut->bottom = tileRowHeightPx8C + y;
+  rectOut->right = rectOut->left + tileWidthPx;
+  rectOut->bottom = tileRowHeightPx + y;
   rectOut->top = y - 0x14;
 
   TacticalTileRecord* tile = &tacticalBattle60->tileGrid4[tileIndex];
-  if (tile->deployMark8 == 1) {
+  if (tile->deployMark == 1) {
     // Shift the sprite rect by the unit's facing offset: table indexed by
     // [unit type][orientation][side] (see g_aTacticalUnitFacingOffsetTable). The unit
     // type is read before the orientation call (callee-saved register in the original).
@@ -1605,8 +1604,8 @@ void TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(
   }
   // Demolitionists (unit types 24-26, the only entries whose category code is 8) do not
   // get a sprite rect on a trenched tile.
-  if (tile->trenchMask10 != 0 && g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC] ==
-                                     EncodeArmyUnitCategory(kArmyUnitCategoryDemolitionist)) {
+  if (tile->trenchMask != 0 && g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC] ==
+                                   EncodeArmyUnitCategory(kArmyUnitCategoryDemolitionist)) {
     rectOut->right = -200;
   }
 }

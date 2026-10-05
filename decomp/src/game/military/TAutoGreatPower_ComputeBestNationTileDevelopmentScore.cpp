@@ -13,13 +13,13 @@
 // FUNCTION: IMPERIALISM 0x00540440
 int ComputeBestNationTileDevelopmentScore(NationSlot nationSlot) {
   TAutoGreatPower* nation = static_cast<TAutoGreatPower*>(g_apNationStates[nationSlot]);
-  if (nation == 0 || nation->diplomacyEligibilityA0 != 0) {
+  if (nation == 0 || nation->diplomacyEligibility != 0) {
     return -1;
   }
 
   nation->AssertValid();
 
-  float averageUnitDivergence = nation->averageUnitDivergencePerOwnedRegionB68;
+  float averageUnitDivergence = nation->averageUnitDivergencePerOwnedRegion;
   if (!(averageUnitDivergence > 0.0)) {
     averageUnitDivergence = g_MissionPositiveFallback_0065A9B8;
   }
@@ -36,8 +36,7 @@ int ComputeBestNationTileDevelopmentScore(NationSlot nationSlot) {
     if (region->fortLevel03 < g_pTechMgr->GetNationFortLevelCap(nationSlot)) {
       float developmentPressure = averageUnitDivergence;
       if (IsMapTileCompatibleWithCurrentTerrainOrActionContext(regionId)) {
-        developmentPressure =
-            nation->expansionPressurePerCompatibleRegionB64 + averageUnitDivergence;
+        developmentPressure = nation->expansionPressurePerCompatibleRegion + averageUnitDivergence;
         if (g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(nationSlot)) {
           developmentPressure +=
               TDefendProvinceMission::ComputeCrossNationSupportVectorScore(regionId) *
@@ -51,7 +50,7 @@ int ComputeBestNationTileDevelopmentScore(NationSlot nationSlot) {
         int adjacentOrdinal = 0;
         while (adjacentOrdinal < region->adjacentRegionCount08) {
           if (g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(
-                  region->adjacentRegionIds0A[adjacentOrdinal]) == nationSlot) {
+                  region->adjacentRegionIds[adjacentOrdinal]) == nationSlot) {
             ++sameOwnerAdjacentRegionCount;
           }
           ++adjacentOrdinal;

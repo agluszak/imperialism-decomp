@@ -13,7 +13,7 @@ public:
 
   // CString caption, populated from TSimMgr::GetString(styleGroupCode, styleIndex - 1, ...)
   // by SetTextLineRowBoundsAndStyle when a valid style group is supplied.
-  CString captionText10; // 0x10
+  CString captionText; // 0x10
   // Font/theme preset consumed by CreateFontFromPresetAndAttachRegionHandle et al.
   TextStyle styleDescriptor14; // 0x14
   // Passed directly to TStaticText::SetTextAlignmentAndMaybeRefresh.

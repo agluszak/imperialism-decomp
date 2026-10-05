@@ -20,15 +20,15 @@ TArmyCheckBox::TArmyCheckBox(TView* panel, int* offsetLayout, int* sizeLayout, i
   (void)unused1;
   (void)unused2;
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 4, 4, 0);
-  surfaceContext90 = surfaceContext90Value;
-  iconStripHorizontalOffset88 = iconStripHorizontalOffsetValue;
+  surfaceContext = surfaceContext90Value;
+  iconStripHorizontalOffset = iconStripHorizontalOffsetValue;
 }
 
 // FUNCTION: IMPERIALISM 0x004aa030
 void TArmyCheckBox::CheckTheLook(unsigned char drawImmediate) {
   if (isOn84 == 0 && controlState64 == 0) {
     if (checkedFrameOffsetApplied8c != 0) {
-      iconStripHorizontalOffset88 -= frameWidth34;
+      iconStripHorizontalOffset -= frameWidth;
       checkedFrameOffsetApplied8c = 0;
       RefreshControl();
       if (drawImmediate != 0) {
@@ -36,7 +36,7 @@ void TArmyCheckBox::CheckTheLook(unsigned char drawImmediate) {
       }
     }
   } else if (checkedFrameOffsetApplied8c == 0) {
-    iconStripHorizontalOffset88 += frameWidth34;
+    iconStripHorizontalOffset += frameWidth;
     checkedFrameOffsetApplied8c = 1;
     RefreshControl();
     if (drawImmediate != 0) {
@@ -53,12 +53,12 @@ void TArmyCheckBox::Draw(RECT* rectBuffer) {
   contentRect.right = rectBuffer->right;
   contentRect.bottom = rectBuffer->bottom;
 
-  if (surfaceContext90 != 0) {
+  if (surfaceContext != 0) {
     ResetQuickDrawStrokeState();
 
     RECT srcRect;
-    srcRect.left = rectBuffer->left + iconStripHorizontalOffset88;
-    srcRect.right = rectBuffer->right + iconStripHorizontalOffset88;
+    srcRect.left = rectBuffer->left + iconStripHorizontalOffset;
+    srcRect.right = rectBuffer->right + iconStripHorizontalOffset;
     srcRect.bottom = rectBuffer->bottom - 1;
     srcRect.top = rectBuffer->top;
 
@@ -67,9 +67,9 @@ void TArmyCheckBox::Draw(RECT* rectBuffer) {
 
     // Both source and destination rects get flipped for a negative-height
     // (bottom-up) backing DIB -- the same idiom, applied to two different
-    // surfaces (surfaceContext90's icon strip, then the active draw surface).
-    if (surfaceContext90->blitSurface.surfaceDib != 0) {
-      int height = surfaceContext90->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+    // surfaces (surfaceContext's icon strip, then the active draw surface).
+    if (surfaceContext->blitSurface.surfaceDib != 0) {
+      int height = surfaceContext->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
       if (height < 1) {
         height = -height;
       }
@@ -84,7 +84,7 @@ void TArmyCheckBox::Draw(RECT* rectBuffer) {
       OffsetRect(&contentRect, 0, height - contentRect.top - contentRect.bottom);
     }
 
-    BlitRectWithOptionalTransparency(surfaceContext90->GetBlitSurface(),
+    BlitRectWithOptionalTransparency(surfaceContext->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                      &contentRect, 0x24, 0);
     UpdatePaletteIndexWithDefaultFallback(0x13);

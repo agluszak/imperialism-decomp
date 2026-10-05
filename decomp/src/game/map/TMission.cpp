@@ -159,7 +159,7 @@ TMission::TMission() : state08(2), importanceScore0c(0.0f), marker11(0xff) {}
 // FUNCTION: IMPERIALISM 0x005350a0
 void TMission::InitializeMissionWithNationIdAndResetPathMarker(NationSlot nationSlot) {
   nationId04 = nationSlot;
-  pathMarker06 = -1;
+  pathMarker = -1;
   Initialize();
 }
 
@@ -210,7 +210,7 @@ TMission* TMission::CreateMission(NationSlot sourceNation, eMissionType missionK
     break;
   }
   mission->nationId04 = sourceNation;
-  mission->pathMarker06 = -1;
+  mission->pathMarker = -1;
   mission->Initialize();
   return mission;
 }
@@ -223,7 +223,7 @@ void TMission::WriteTo(TStream* stream) {
   stream->WriteBytes(&state08, 1);
   stream->WriteBytes(&importanceScore0c, 4);
   stream->WriteBytes(&flag10, 1);
-  stream->WriteBytes(&pathMarker06, 2);
+  stream->WriteBytes(&pathMarker, 2);
   stream->WriteBytes(&marker11, 1);
 }
 
@@ -235,9 +235,9 @@ void TMission::ReadFrom(TStream* stream) {
   stream->ReadBytes(&importanceScore0c, 4);
   stream->ReadBytes(&flag10, 1);
   if (g_nSaveFormatVersion < 0x10) {
-    pathMarker06 = static_cast<short>(0xffff);
+    pathMarker = static_cast<short>(0xffff);
   } else {
-    stream->ReadBytes(&pathMarker06, 2);
+    stream->ReadBytes(&pathMarker, 2);
   }
   if (g_nSaveFormatVersion < 9) {
     Initialize();

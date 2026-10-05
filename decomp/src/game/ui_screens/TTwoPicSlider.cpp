@@ -37,7 +37,7 @@ TTwoPicSlider::~TTwoPicSlider() {}
 void TTwoPicSlider::InitializePictureSurfaces(int baseBitmapId) {
   lowerSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(baseBitmapId + 1);
   upperSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(baseBitmapId);
-  RECT bounds = {0, 0, frameWidth34, frameHeight38};
+  RECT bounds = {0, 0, frameWidth, frameHeight};
   g_pDisplayMgr->MakeNewGWorld(compositeSurface, 8, bounds);
 }
 
@@ -80,7 +80,7 @@ static int SliderScaledValue(TTwoPicSlider* slider, int scale) {
   if (slider->splitPosition >= 0x0c) {
     adjustedSplit = static_cast<short>(slider->splitPosition - 0x0c);
   }
-  return (adjustedSplit * scale) / static_cast<short>(slider->frameHeight38 - 0x0c);
+  return (adjustedSplit * scale) / static_cast<short>(slider->frameHeight - 0x0c);
 }
 } // namespace
 
@@ -94,10 +94,10 @@ void TTwoPicSlider::Draw(RECT* rectBuffer) {
     short splitPosition = ClampSliderSplitForFill(slider->splitPosition);
 
     RECT blitRect;
-    blitRect.bottom = slider->frameHeight38;
+    blitRect.bottom = slider->frameHeight;
     blitRect.left = 0;
     blitRect.top = blitRect.bottom - splitPosition;
-    blitRect.right = slider->frameWidth34;
+    blitRect.right = slider->frameWidth;
 
     ResetQuickDrawStrokeState();
     BlitRectWithOptionalTransparency(slider->lowerSurface->GetBlitSurface(),
@@ -110,8 +110,8 @@ void TTwoPicSlider::Draw(RECT* rectBuffer) {
                                      slider->compositeSurface->GetBlitSurface(), &blitRect,
                                      &blitRect, 0);
 
-    blitRect.right = slider->frameWidth34;
-    blitRect.bottom = slider->frameHeight38;
+    blitRect.right = slider->frameWidth;
+    blitRect.bottom = slider->frameHeight;
     blitRect.left = 0;
     blitRect.top = 0;
     BlitRectWithOptionalTransparency(slider->compositeSurface->GetBlitSurface(),
@@ -128,9 +128,9 @@ void TTwoPicSlider::Draw(RECT* rectBuffer) {
       ResolveUiThemeColor(0x2b6c, &textShadowColor);
       ResolveUiThemeColor(0x2b67, &textMainColor);
 
-      short textCenterY = static_cast<short>(slider->frameHeight38 / 2);
+      short textCenterY = static_cast<short>(slider->frameHeight / 2);
       short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&statusText);
-      short textLeft = static_cast<short>((slider->frameWidth34 / 2) - (textWidth / 2));
+      short textLeft = static_cast<short>((slider->frameWidth / 2) - (textWidth / 2));
 
       SetQuickDrawColorAndSyncGlobals(textMainColor);
       SetQuickDrawTextOriginWithContextOffset(static_cast<short>(textLeft + 1),
@@ -157,7 +157,7 @@ void TTwoPicSlider::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pre
       return;
     }
 
-    short nextSplit = ClampSliderInputToHeight(slider->frameHeight38, currentPoint);
+    short nextSplit = ClampSliderInputToHeight(slider->frameHeight, currentPoint);
     if (slider->splitPosition != nextSplit) {
       slider->splitPosition = nextSplit;
 
@@ -167,8 +167,8 @@ void TTwoPicSlider::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pre
       RECT sliderRect;
       sliderRect.left = 0;
       sliderRect.top = 0;
-      sliderRect.right = slider->frameWidth34;
-      sliderRect.bottom = slider->frameHeight38;
+      sliderRect.right = slider->frameWidth;
+      sliderRect.bottom = slider->frameHeight;
       slider->Draw(&sliderRect);
 
       if (slider->mode == 1) {

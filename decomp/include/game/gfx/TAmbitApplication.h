@@ -21,8 +21,8 @@ unsigned int GetTickCountDiv16();
 class TAmbitApplication : public TApplication {
 public:
   TAmbitApplication() : TApplication() {
-    edgeScrollTarget48 = 0;
-    dispatchBusyFlag4c = false;
+    edgeScrollTarget = 0;
+    dispatchBusyFlag = false;
     languagePackId50 = 0;
   }
 
@@ -51,12 +51,12 @@ public:
   // (Scroll, slot 0x74). Cleared by IAmbitApplication and the
   // map pictures' Free; set to the active map picture by the slot-0x37 lifecycle hook
   // (TMapUberUberPicture::DoPostCreate 0x596810 and the TMapUberPicture override).
-  TMapUberUberPicture* edgeScrollTarget48;
+  TMapUberUberPicture* edgeScrollTarget;
   // 0x4c — a busy/dispatch-in-progress byte, set to 1 across many turn-event dispatch
   // branches in TViewMgr's state machine (0x5d7240) and cleared to 0 once handling
   // completes; ground truth confirms a byte-sized write (`MOV byte ptr [EAX+0x4c],1`),
   // not the full int this was previously modeled as.
-  bool dispatchBusyFlag4c;
+  bool dispatchBusyFlag;
   unsigned char pad4d[3];
   // 0x50 — language pack id (copied from theApp.languagePackIdE4; serialized in
   // saves, with a hardcoded legacy value for formats older than 0x2a).

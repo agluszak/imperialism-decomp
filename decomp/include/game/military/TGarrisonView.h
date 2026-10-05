@@ -18,7 +18,7 @@ public:
   // No Windows access lands in +0x88. StuffValues stores the selected map tile as a word
   // at +0x8c; Close uses it to find the corresponding army-stack list.
   unsigned char padding88[4];
-  short selectedTileIndex8C;
+  short selectedTileIndex;
   unsigned char padding8E[2];
 };
 ASSERT_SIZE(TGarrisonView, 0x90);

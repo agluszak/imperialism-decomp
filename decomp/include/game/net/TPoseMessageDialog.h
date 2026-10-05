@@ -15,7 +15,7 @@ public:
 
   // +0x18 — the kicking nation shown by the 'pose' message dialog (written by the
   // turn-event-0xC receive path before the command is queued).
-  int kickedByNationSlot18;
+  int kickedByNationSlot;
 
   // Fully inlined at every construction site (base TCommand ctor call + vtable
   // store); defined in-class so `new TPoseMessageDialog()` reproduces that shape.

@@ -28,22 +28,22 @@ public:
   // battle setup 0x59f890 (unitList4/battle14 on both players), army side init 0x59b1b0
   // (scatter-init of the whole slice), selection 0x59af20, coat control 0x5a9b40.
   TList* unitList4;                // +0x04 the side's tactical unit records (new TList())
-  TList* secondaryList8;           // +0x08 reserve list: never-deployed units (0x59b740)
-  char isOurSideFlagC;             // +0x0c
+  TList* secondaryList;            // +0x08 reserve list: never-deployed units (0x59b740)
+  char isOurSideFlag;              // +0x0c
   char watchFlagD;                 // +0x0d human-watch flag for this side
-  bool notWatchedFlagE;            // +0x0e = (watchFlagD == 0)
+  bool notWatchedFlag;             // +0x0e = (watchFlagD == 0)
   bool fieldF;                     // +0x0f
-  bool sideReadyFlag10;            // +0x10 side ready (no undeployed unit remains)
+  bool sideReadyFlag;              // +0x10 side ready (no undeployed unit remains)
   unsigned char pad11[3];          // +0x11
   class TTacticalBattle* battle14; // +0x14 back-pointer, set by battle setup (0x59f890)
-  int cursorIndex18;               // +0x18 round-robin cursor over unitList4
+  int cursorIndex;                 // +0x18 round-robin cursor over unitList4
   int nationIndex1C;               // +0x1c owner nation index (+ 0xea6 = 'coat' bitmap id)
   bool field20;                    // +0x20
   unsigned char pad21[3];          // +0x21
   int field24;                     // +0x24
 
   // Returns the next selectable unit (tileIndex8 != -2) from unitList4, advancing
-  // cursorIndex18. 0x0059af20, __thiscall.
+  // cursorIndex. 0x0059af20, __thiscall.
   void ITacticalPlayer(unsigned char isOurSide, unsigned char watch, int nationIndex);
 
   class TTacticalUnit* SelectNextTacticalUnitForDoneCommand();
@@ -53,7 +53,7 @@ public:
   void HandleTacticalCommandTag_skip();
 
   // Moves every never-deployed unit (tileIndex8 == -2) from unitList4 to the head of
-  // secondaryList8 and strips the retired units from the battle's turn-order record
+  // secondaryList and strips the retired units from the battle's turn-order record
   // list. Runs when the deployment phase finalizes. 0x0059b740, __thiscall.
   void RetireUndeployedUnitsToReserveList();
 

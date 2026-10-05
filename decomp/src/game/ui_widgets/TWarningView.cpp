@@ -83,7 +83,7 @@ void TWarningView::DoPostCreate(int arg) {
   endTurnPicture->ViewEnable(1, 0);
   endTurnPicture->Show(1, 0);
 
-  unsigned int pendingAlerts = g_pSimMgr->alertsPendingFlag38;
+  unsigned int pendingAlerts = g_pSimMgr->alertsPendingFlag;
   if ((pendingAlerts & 1) != 0) {
     TStaticText* diplomacy = static_cast<TStaticText*>(panel->ResolveControlByTag(kControlTagMsg1));
     diplomacy->AssertValid();

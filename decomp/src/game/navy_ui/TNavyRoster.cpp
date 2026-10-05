@@ -18,13 +18,13 @@ IMPLEMENT_DYNCREATE(TNavyRoster, TMilitaryPageView)
 
 // FUNCTION: IMPERIALISM 0x00564d20
 TNavyRoster::TNavyRoster() {
-  primaryUnitAtlas84 = 0;
+  primaryUnitAtlas = 0;
   taskForce88 = 0;
-  unresolvedZero8C = 0;
-  classControls90[0] = 0;
-  classControls90[1] = 0;
-  classControls90[2] = 0;
-  classControls90[3] = 0;
+  unresolvedZero = 0;
+  classControls[0] = 0;
+  classControls[1] = 0;
+  classControls[2] = 0;
+  classControls[3] = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00564da0
@@ -42,7 +42,7 @@ void TNavyRoster::StuffValues(TTaskForce* taskForce) {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUOceanViews_00698650, 0x114);
     }
-    classControls90[i] = classControl;
+    classControls[i] = classControl;
   }
 
   for (TMapOrderChildLinkNode* link = taskForce->shipList; link != 0; link = link->next) {
@@ -64,7 +64,7 @@ void TNavyRoster::Close() {
 
   TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPictureF0;
   TMapDialog* mapDialog = mapUberPicture->subview2A8;
-  mapDialog->suppressMarkerOverlay34C = false;
+  mapDialog->suppressMarkerOverlay = false;
   mapDialog->ResetAllTileMarkersToSentinel();
   mapUberPicture->navyRosterA0 = 0;
 }

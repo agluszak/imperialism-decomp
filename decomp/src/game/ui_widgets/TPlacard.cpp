@@ -40,10 +40,10 @@ bool TPlacard::SetValue(short value, bool refreshNow) {
     glyph90 = value;
     if (refreshNow) {
       RECT rect;
-      rect.top = frameHeight38 - 0xc;
-      rect.left = static_cast<short>((frameWidth34 / 2) - 10);
+      rect.top = frameHeight - 0xc;
+      rect.left = static_cast<short>((frameWidth / 2) - 10);
       rect.right = rect.left + 0x14;
-      rect.bottom = frameHeight38 - 1;
+      rect.bottom = frameHeight - 1;
       RECT invalidRect;
       CopyRect(&invalidRect, &rect);
       InvalidateCityDialogRectRegion(&invalidRect, 1);
@@ -64,17 +64,17 @@ void TPlacard::Draw(RECT* rectBuffer) {
 
   short textX;
   if (glyph90 < 10) {
-    textX = static_cast<short>(frameWidth34 / 2 - 2);
+    textX = static_cast<short>(frameWidth / 2 - 2);
   } else if (glyph90 < 100) {
-    textX = static_cast<short>(frameWidth34 / 2 - 6);
+    textX = static_cast<short>(frameWidth / 2 - 6);
   } else {
-    textX = static_cast<short>(frameWidth34 / 2 - 10);
+    textX = static_cast<short>(frameWidth / 2 - 10);
   }
 
   ResolveUiThemeColor(0x2b6c, &textColor);
   ResolveUiThemeColor(0x2b67, &shadowColor);
 
-  short textY = static_cast<short>(frameHeight38 - 2);
+  short textY = static_cast<short>(frameHeight - 2);
   SetQuickDrawColorAndSyncGlobals(shadowColor);
   SetQuickDrawTextOriginWithContextOffset(static_cast<short>(textX + 1),
                                           static_cast<short>(textY + 1));

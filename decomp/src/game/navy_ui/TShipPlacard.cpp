@@ -19,7 +19,7 @@ TShipPlacard::~TShipPlacard() {}
 // FUNCTION: IMPERIALISM 0x005692f0
 void TShipPlacard::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);
-  short quantity = static_cast<TShipFractionCluster*>(ownerContext)->availableShipCount88;
+  short quantity = static_cast<TShipFractionCluster*>(ownerContext)->availableShipCount;
   if (quantity > 0) {
     CString countText;
     countText.Format(g_szDecimalFormat, static_cast<int>(quantity));

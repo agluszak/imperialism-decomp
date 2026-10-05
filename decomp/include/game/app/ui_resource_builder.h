@@ -39,8 +39,8 @@ void __cdecl RegisterUiResourceEntry(unsigned int nameTag, unsigned int controlT
 void __cdecl SetUiResourceEventNumberAndInsets(int eventNumber, int rectLeft, int rectTop,
                                                int rectRight, int rectBottom);
 
-// Set the inputGateFlag4c/childHitTestFlag4d pair on the current g_pUiResourceContext widget.
-void __cdecl SetUiResourceStateFlags(bool inputGateFlag4c, bool childHitTestFlag4d);
+// Set the inputGateFlag/childHitTestFlag pair on the current g_pUiResourceContext widget.
+void __cdecl SetUiResourceStateFlags(bool inputGateFlag, bool childHitTestFlag);
 
 // Assign text + packed style descriptor + theme code onto the current
 // g_pUiResourceContext text control (a TStaticText-family widget).

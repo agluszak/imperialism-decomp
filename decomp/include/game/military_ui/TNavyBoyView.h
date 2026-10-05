@@ -16,6 +16,6 @@ public:
   // NOOP: verified empty in original 0x004af003 (no standalone TNavyBoyView::TNavyBoyView body exists: CreateObject 0x004aefd0 inlines this default ctor, calling the TView base ctor directly at that site)
   TNavyBoyView() {}
 
-  BattleReportDetailRecord* battleDetail60; // +0x60
+  BattleReportDetailRecord* battleDetail; // +0x60
 };
 ASSERT_SIZE(TNavyBoyView, 0x64);

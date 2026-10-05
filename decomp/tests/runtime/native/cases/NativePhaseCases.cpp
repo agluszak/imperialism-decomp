@@ -117,10 +117,10 @@ RuntimeActionResult RunProvinceOwnerOceanContext(NativeTransition& transition) {
   }
 
   TAutoGreatPower* ai = static_cast<TAutoGreatPower*>(g_apNationStates[aiSlot]);
-  const unsigned char savedEligibility = ai->diplomacyEligibilityA0;
-  ai->diplomacyEligibilityA0 = 0;
+  const unsigned char savedEligibility = ai->diplomacyEligibility;
+  ai->diplomacyEligibility = 0;
   g_pGlobalMapState->ChangeProvinceOwner(province, aiSlot);
-  ai->diplomacyEligibilityA0 = savedEligibility;
+  ai->diplomacyEligibility = savedEligibility;
 
   CIterator missionIter(ai->missionQueue);
   for (TMission* mission = static_cast<TMission*>(missionIter.Reset()); missionIter.More();

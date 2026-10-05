@@ -134,7 +134,7 @@ IMPLEMENT_DYNCREATE(TViewMgr, TObject)
 TViewMgr::TViewMgr() : TObject() {
   this->fieldEc = 0;
   this->currentTurnEventCode = 0;
-  this->dialogPlacement08 = g_ptCitySiteSelectionDialogPlacement;
+  this->dialogPlacement = g_ptCitySiteSelectionDialogPlacement;
   this->field10 = false;
   this->mapUberPictureF0 = 0;
   this->activeMovieViewF4 = 0;
@@ -168,7 +168,7 @@ void TViewMgr::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   this->fieldEc = 0;
   this->currentTurnEventCode = 0;
-  this->dialogPlacement08 = g_ptCitySiteSelectionDialogPlacement;
+  this->dialogPlacement = g_ptCitySiteSelectionDialogPlacement;
   this->field10 = false;
   this->mapUberPictureF0 = 0;
 }
@@ -563,22 +563,22 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   info->SetTextEntryFromChars(messageChars, messageLength);
   info->SetTextStyle(styleDescriptor, 0);
   int measuredHeight = static_cast<short>(info->MeasureCurrentTextHeightInLayoutRect());
-  if (measuredHeight > info->frameHeight38) {
+  if (measuredHeight > info->frameHeight) {
     info->QueryBounds(&bounds);
     bounds.right = bounds.top - 10;
     info->ApplyBounds(&bounds, 0);
-    if (measuredHeight > info->frameHeight38) {
+    if (measuredHeight > info->frameHeight) {
       TScrollView* scrollView = new TScrollView();
-      scrollView->IScrollView(gold, &info->ownerLocalX, &info->frameWidth34);
+      scrollView->IScrollView(gold, &info->ownerLocalX, &info->frameWidth);
       scrollView->DoPostCreate(0);
       gold->DetachChildFromOwnerList(info);
       scrollView->AttachChildControl(info, 0);
       bounds.top = 0;
       bounds.left = 0;
       bounds.bottom = measuredHeight;
-      bounds.right = info->frameWidth34 - 0x1c;
+      bounds.right = info->frameWidth - 0x1c;
       info->ApplyBounds(&bounds, 0);
-      scrollView->contentView60 = info;
+      scrollView->contentView = info;
       scrollView->SyncBoundedValueAndToggleControlStates();
     }
   }
@@ -821,10 +821,10 @@ void TViewMgr::RefreshStrategicMapStatusIconsForActiveNation() {
     if (control != nullptr) {
       control->AssertValid();
       g_pMacViewMgr->ApplySellOrderRowToNationState(static_cast<TTradeCluster*>(control), iconIndex,
-                                                    currentTurnEventNationSlot06);
+                                                    currentTurnEventNationSlot);
     }
   }
-  g_apNationStates[currentTurnEventNationSlot06]->RememberTradeBids();
+  g_apNationStates[currentTurnEventNationSlot]->RememberTradeBids();
 }
 
 // FUNCTION: IMPERIALISM 0x005d6cd0
@@ -1096,12 +1096,12 @@ void TViewMgr::ShowOfferSheet(short respondingNation, short offeringNation, shor
 
 // FUNCTION: IMPERIALISM 0x005d7240
 void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
-  // Ground truth copies both halves of dialogPlacement08 into a stack POINT in the
+  // Ground truth copies both halves of dialogPlacement into a stack POINT in the
   // prologue (0x5d7266..0x5d7273: reads [this+0xc] then [this+8], stores them to the
   // ESP0-32/ESP0-28 local pair) and later passes &that local as the factory packet's
   // anchor (LEA ECX,[ESP+0x18]; PUSH ECX at 0x5d75df) -- so the anchor is this
   // manager's dialog placement, not the (0,0) we were passing.
-  CPoint anchorPoint(dialogPlacement08);
+  CPoint anchorPoint(dialogPlacement);
   TView* mainView = g_pDisplayMgr->activeDialog;
   SetQuickDrawFillColor(0);
   SetQuickDrawStrokeColor(0xffffff);
@@ -1150,7 +1150,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
 
   // Code 0 = rebuild every registered UI window node.
   if (newCode == 0) {
-    g_pAmbitApplication->dispatchBusyFlag4c = false;
+    g_pAmbitApplication->dispatchBusyFlag = false;
     this->currentTurnEventCode = 0;
     g_pDisplayMgr->clipSnapshotEvent = 0;
     mainView->Close();
@@ -1170,7 +1170,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
   // Same-code refresh: refresh the main view, then run the per-code hook.
   if (newCode == this->currentTurnEventCode) {
     if (secondary != -1) {
-      this->currentTurnEventNationSlot06 = secondary;
+      this->currentTurnEventNationSlot = secondary;
     }
     if (newCode == kTurnEventNetworkGameOptions) {
       QueueDeferredUiEventPacket(mainView, 0x29a, mainView);
@@ -1222,7 +1222,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
     inclControl->Free();
   }
   if (newCode != kTurnEventTechnologyAdvance) {
-    this->currentTurnEventNationSlot06 = secondary;
+    this->currentTurnEventNationSlot = secondary;
   }
 
   TIncludeView* packet = ::new TIncludeView();
@@ -1246,7 +1246,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
         this->HandleTurnEventDialogFactorySlotF8();
       } else if (newCode == kTurnEventBattleReport) {
         turn_event_ui_refresh::BindCursorPanelAndStampDiplomacyMapTerrain(mainView, secondary);
-        g_pAmbitApplication->dispatchBusyFlag4c = true;
+        g_pAmbitApplication->dispatchBusyFlag = true;
         clearDispatchBusyFlag = false;
       }
     } else if (newCode < kTurnEventTradeOverview) {
@@ -1265,7 +1265,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
         break;
       case kTurnEventDiplomacyMap:
         this->ShowDiplomacyScreen(static_cast<short>(payload));
-        g_pAmbitApplication->dispatchBusyFlag4c = true;
+        g_pAmbitApplication->dispatchBusyFlag = true;
         clearDispatchBusyFlag = false;
         break;
       }
@@ -1274,7 +1274,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
         this->SyncTacticalStatusPanelRegion();
       } else if (newCode == kTurnEventTechnologyStore) {
         this->RefreshTechnologyStorePageAndHudText(payload);
-        g_pAmbitApplication->dispatchBusyFlag4c = true;
+        g_pAmbitApplication->dispatchBusyFlag = true;
         clearDispatchBusyFlag = false;
       } else if (newCode == kTurnEventOpeningCinematic) {
         this->HandleTurnEventDialogFactorySlotF4();
@@ -1295,22 +1295,22 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
       case kTurnEventTradeOverview:
       case kTurnEventIndustryOverview:
         this->RefreshTradeAndIndustryOverviewScreen(payload);
-        g_pAmbitApplication->dispatchBusyFlag4c = true;
+        g_pAmbitApplication->dispatchBusyFlag = true;
         clearDispatchBusyFlag = false;
         break;
       case kTurnEventCityProduction:
         this->ShowCityProductionView(static_cast<short>(payload));
-        g_pAmbitApplication->dispatchBusyFlag4c = true;
+        g_pAmbitApplication->dispatchBusyFlag = true;
         clearDispatchBusyFlag = false;
         break;
       case kTurnEventStrategicMap:
         this->ShowTerrainMap(static_cast<short>(payload));
-        g_pAmbitApplication->dispatchBusyFlag4c = true;
+        g_pAmbitApplication->dispatchBusyFlag = true;
         clearDispatchBusyFlag = false;
         break;
       case kTurnEventTransport:
         this->ShowTransportScreen(static_cast<short>(payload));
-        g_pAmbitApplication->dispatchBusyFlag4c = true;
+        g_pAmbitApplication->dispatchBusyFlag = true;
         clearDispatchBusyFlag = false;
         break;
       case kTurnEventCouncilOfGovernors:
@@ -1324,7 +1324,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
     this->InitializeCitySiteSelectionScreenForNation(payload);
   }
   if (clearDispatchBusyFlag) {
-    g_pAmbitApplication->dispatchBusyFlag4c = false;
+    g_pAmbitApplication->dispatchBusyFlag = false;
   }
 #ifdef IMPERIALISM_RUNTIME_TESTS
   RuntimeTestDriver::ObserveActivatedTurnEvent(newCode);
@@ -1388,7 +1388,7 @@ void TViewMgr::ShowCityProductionView(short nationSlot) {
   productionView =
       static_cast<TCityProductionView*>(mainView->ResolveControlByTag(kControlTagMain));
   productionView->AssertValid();
-  g_pMacViewMgr->activeCityProductionView04 = productionView;
+  g_pMacViewMgr->activeCityProductionView = productionView;
 
   TGreatPower* nation = g_apNationStates[static_cast<short>(nationSlot)];
   TCity* city = nation != nullptr ? nation->city : nullptr;
@@ -1828,8 +1828,8 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xa60);
   }
   const short foodOnHand = static_cast<short>(
-      city->cityStockCannedFoodC4 + city->cityStockLivestockDE + city->cityStockGrainD8 +
-      city->cityStockFruitDA + g_apNationStates[nationSlot]->needTargetByType[kResourceLivestock] +
+      city->cityStockCannedFoodC4 + city->cityStockLivestock + city->cityStockGrain +
+      city->cityStockFruit + g_apNationStates[nationSlot]->needTargetByType[kResourceLivestock] +
       g_apNationStates[nationSlot]->needTargetByType[kResourceFruit] +
       g_apNationStates[nationSlot]->needTargetByType[kResourceFish] +
       g_apNationStates[nationSlot]->needTargetByType[kResourceGrain]);
@@ -1849,7 +1849,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   short textileNeeds =
       static_cast<short>(g_apNationStates[nationSlot]->needTargetByType[kResourceCotton] +
                          g_apNationStates[nationSlot]->needTargetByType[kResourceWool]);
-  short textileStock = static_cast<short>(city->cityStockWoolB8 + city->cityStockCottonB6);
+  short textileStock = static_cast<short>(city->cityStockWool + city->cityStockCotton);
   if (static_cast<int>(textileStock) + static_cast<int>(textileNeeds) <
       static_cast<short>(city->GetBuildingType(0) << 1)) {
     cotton->Show(1, 0);
@@ -1865,7 +1865,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   SetControlHoverHelpText(sharedString, wool);
 
   TView* timber = mainView->ResolveControlByTag(kTagTimber);
-  if (static_cast<int>(city->cityStockTimberBA) +
+  if (static_cast<int>(city->cityStockTimber) +
           static_cast<int>(g_apNationStates[nationSlot]->needTargetByType[kResourceTimber]) <
       static_cast<short>(city->GetBuildingType(4) * 2)) {
     timber->Show(1, 0);
@@ -1877,7 +1877,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   SetControlHoverHelpText(sharedString, timber);
 
   TView* coal = mainView->ResolveControlByTag(kTagCoal);
-  if (static_cast<int>(city->cityStockCoalBC) +
+  if (static_cast<int>(city->cityStockCoal) +
           static_cast<int>(g_apNationStates[nationSlot]->needTargetByType[kResourceCoal]) <
       static_cast<int>(city->GetBuildingType(2))) {
     coal->Show(1, 0);
@@ -1889,7 +1889,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   SetControlHoverHelpText(sharedString, coal);
 
   TView* iron = mainView->ResolveControlByTag(kTagIron);
-  if (static_cast<int>(city->cityStockIronBE) +
+  if (static_cast<int>(city->cityStockIron) +
           static_cast<int>(g_apNationStates[nationSlot]->needTargetByType[kResourceIron]) <
       static_cast<int>(city->GetBuildingType(2))) {
     iron->Show(1, 0);
@@ -1901,7 +1901,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   SetControlHoverHelpText(sharedString, iron);
 
   TView* oil = mainView->ResolveControlByTag(kTagOil);
-  if (static_cast<int>(city->cityStockOilC2) +
+  if (static_cast<int>(city->cityStockOil) +
           static_cast<int>(g_apNationStates[nationSlot]->needTargetByType[kResourceOil]) <
       static_cast<short>(city->GetBuildingType(6) * 2)) {
     oil->Show(1, 0);
@@ -1925,7 +1925,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   SetControlHoverHelpText(sharedString, fabric);
 
   TView* lumber = mainView->ResolveControlByTag(kTagLumber);
-  if (static_cast<int>(city->cityStockLumberC8) +
+  if (static_cast<int>(city->cityStockLumber) +
           static_cast<int>(g_apNationStates[nationSlot]->needTargetByType[kResourceLumber]) <
       static_cast<short>(city->GetBuildingType(5) * 2)) {
     lumber->Show(1, 0);
@@ -1937,7 +1937,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   SetControlHoverHelpText(sharedString, lumber);
 
   TView* steel = mainView->ResolveControlByTag(kTagSteel);
-  if (static_cast<int>(city->cityStockSteelCC) +
+  if (static_cast<int>(city->cityStockSteel) +
           static_cast<int>(g_apNationStates[nationSlot]->needTargetByType[kResourceSteel]) <
       static_cast<short>(city->GetBuildingType(3) * 2)) {
     steel->Show(1, 0);
@@ -1964,7 +1964,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
     g_pMacViewMgr->SyncSellTaggedChildControlWithNationState(row, commodity,
                                                              static_cast<short>(nationIndex));
     if ((commodity == 6 || commodity == 0xc) &&
-        g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] == 0) {
+        g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId] == 0) {
       row->Free();
     } else {
       g_pSimMgr->GetStringPrelude(commodity, &sharedString);
@@ -2429,7 +2429,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF8() {
 
   COLORREF mappedStyleFlags = 0;
   ResolveUiThemeColor(0x2b6b, &mappedStyleFlags);
-  g_pCursorControlPanel->shadowTextColor9C = mappedStyleFlags;
+  g_pCursorControlPanel->shadowTextColor = mappedStyleFlags;
   g_pCursorControlPanel->dropShadowEnabledA0 = true;
 
   // 'main' (council ticker) is not null-checked in the original, unlike the buttons below.
@@ -2513,7 +2513,7 @@ void TViewMgr::InitializeCitySiteSelectionScreenForNation(int nationSlot) {
   g_pGlobalMapState->SeedValidCitySiteCandidateTilesForNation(static_cast<short>(nationSlot));
   TGreatPower* nation = g_apNationStates[static_cast<short>(nationSlot)];
   TCity* city = nation != nullptr ? nation->city : nullptr;
-  citySiteView->pendingTown = city->homeTownMarkerB0;
+  citySiteView->pendingTown = city->homeTownMarker;
   citySiteView->SetMapViewTileIndex(
       g_pGlobalMapState->ComputeRepresentativeTileIndexForNation(nationSlot));
 

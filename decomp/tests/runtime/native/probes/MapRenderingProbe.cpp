@@ -50,15 +50,15 @@ bool CapturedPixels::CaptureFrom(TView* view) {
   height = 0;
 
   if (view == 0 || view->nativeWindow50 == 0 || view->nativeWindow50->m_hWnd == 0 ||
-      view->frameWidth34 <= 0 || view->frameHeight38 <= 0) {
+      view->frameWidth <= 0 || view->frameHeight <= 0) {
     return false;
   }
 
   BITMAPINFO bitmapInfo;
   ZeroMemory(&bitmapInfo, sizeof(bitmapInfo));
   bitmapInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-  bitmapInfo.bmiHeader.biWidth = view->frameWidth34;
-  bitmapInfo.bmiHeader.biHeight = -view->frameHeight38;
+  bitmapInfo.bmiHeader.biWidth = view->frameWidth;
+  bitmapInfo.bmiHeader.biHeight = -view->frameHeight;
   bitmapInfo.bmiHeader.biPlanes = 1;
   bitmapInfo.bmiHeader.biBitCount = 32;
   bitmapInfo.bmiHeader.biCompression = BI_RGB;
@@ -68,16 +68,16 @@ bool CapturedPixels::CaptureFrom(TView* view) {
   HBITMAP bitmap = CreateDIBSection(windowDc, &bitmapInfo, DIB_RGB_COLORS, &capturedStorage, 0, 0);
   HDC memoryDc = CreateCompatibleDC(windowDc);
   HGDIOBJ previousBitmap = SelectObject(memoryDc, bitmap);
-  BOOL copied = BitBlt(memoryDc, 0, 0, view->frameWidth34, view->frameHeight38, windowDc,
+  BOOL copied = BitBlt(memoryDc, 0, 0, view->frameWidth, view->frameHeight, windowDc,
                        view->absoluteX, view->absoluteY, SRCCOPY);
   GdiFlush();
 
-  const int pixelCount = view->frameWidth34 * view->frameHeight38;
+  const int pixelCount = view->frameWidth * view->frameHeight;
   if (copied != 0 && capturedStorage != 0) {
     pixels = new unsigned long[pixelCount];
     memcpy(pixels, capturedStorage, pixelCount * sizeof(unsigned long));
-    width = view->frameWidth34;
-    height = view->frameHeight38;
+    width = view->frameWidth;
+    height = view->frameHeight;
   }
 
   SelectObject(memoryDc, previousBitmap);
@@ -181,20 +181,20 @@ bool MapRenderingProbe::DevelopmentClassChangesTilePixels(TMapDialog* mapDialog,
   unsigned char before[kTileExtent * kTileExtent];
   unsigned char after[kTileExtent * kTileExtent];
   TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tileIndex];
-  const unsigned char savedDevelopmentClasses = terrain.developmentClassNibbles0c;
+  const unsigned char savedDevelopmentClasses = terrain.developmentClassNibbles;
   TQuickDrawSurfaceContext* savedSurface;
   int savedSurfaceFlags;
   GetGWorld(&savedSurface, &savedSurfaceFlags);
   SetGWorld(mapDialog->quickDrawSurface350, savedSurfaceFlags);
 
-  terrain.developmentClassNibbles0c =
+  terrain.developmentClassNibbles =
       static_cast<unsigned char>((savedDevelopmentClasses & 0xf0) | initialClass);
   mapDialog->DrawOneTile(tileIndex, 0, 0);
   for (int row = 0; row < kTileExtent; ++row) {
     memcpy(before + row * kTileExtent, surface->pixelBits + row * stride, kTileExtent);
   }
 
-  terrain.developmentClassNibbles0c =
+  terrain.developmentClassNibbles =
       static_cast<unsigned char>((savedDevelopmentClasses & 0xf0) | completedClass);
   mapDialog->DrawOneTile(tileIndex, 0, 0);
   for (int afterRow = 0; afterRow < kTileExtent; ++afterRow) {
@@ -203,7 +203,7 @@ bool MapRenderingProbe::DevelopmentClassChangesTilePixels(TMapDialog* mapDialog,
 
   // Put the tile back the way it was found, drawn state included: this probe observes, it does
   // not leave the map showing a state the model does not hold.
-  terrain.developmentClassNibbles0c = savedDevelopmentClasses;
+  terrain.developmentClassNibbles = savedDevelopmentClasses;
   mapDialog->DrawOneTile(tileIndex, 0, 0);
   SetGWorld(savedSurface, savedSurfaceFlags);
   UnlockPixels(surfaceHandle);
@@ -240,14 +240,14 @@ bool MapRenderingProbe::TransportConnectivityChangesTilePixels(TMapDialog* mapDi
   unsigned char rail[kTileExtent * kTileExtent];
   TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tileIndex];
   const signed char savedRoadFlags = terrain.adjacencyBits06;
-  const unsigned char savedRailFlags = terrain.railFlags17;
+  const unsigned char savedRailFlags = terrain.railFlags;
   TQuickDrawSurfaceContext* savedSurface;
   int savedSurfaceFlags;
   GetGWorld(&savedSurface, &savedSurfaceFlags);
   SetGWorld(mapDialog->quickDrawSurface350, savedSurfaceFlags);
 
   terrain.adjacencyBits06 = 0;
-  terrain.railFlags17 = 0;
+  terrain.railFlags = 0;
   mapDialog->DrawOneTile(tileIndex, 0, 0);
   for (int row = 0; row < kTileExtent; ++row) {
     memcpy(baseline + row * kTileExtent, surface->pixelBits + row * stride, kTileExtent);
@@ -260,14 +260,14 @@ bool MapRenderingProbe::TransportConnectivityChangesTilePixels(TMapDialog* mapDi
   }
 
   terrain.adjacencyBits06 = 0;
-  terrain.railFlags17 = 1;
+  terrain.railFlags = 1;
   mapDialog->DrawOneTile(tileIndex, 0, 0);
   for (int railRow = 0; railRow < kTileExtent; ++railRow) {
     memcpy(rail + railRow * kTileExtent, surface->pixelBits + railRow * stride, kTileExtent);
   }
 
   terrain.adjacencyBits06 = savedRoadFlags;
-  terrain.railFlags17 = savedRailFlags;
+  terrain.railFlags = savedRailFlags;
   mapDialog->DrawOneTile(tileIndex, 0, 0);
   SetGWorld(savedSurface, savedSurfaceFlags);
   UnlockPixels(surfaceHandle);
@@ -294,9 +294,9 @@ bool MapRenderingProbe::HoverMovementRestoresPreviousTiles(TMapDialog* mapDialog
   CPoint secondPoint;
   short firstTile = -1;
   short secondTile = -1;
-  for (int y = kTileProbeStep; y < mapDialog->frameHeight38 && secondTile == -1;
+  for (int y = kTileProbeStep; y < mapDialog->frameHeight && secondTile == -1;
        y += kTileProbeStep) {
-    for (int x = kTileProbeStep; x < mapDialog->frameWidth34; x += kTileProbeStep) {
+    for (int x = kTileProbeStep; x < mapDialog->frameWidth; x += kTileProbeStep) {
       short column;
       short row;
       short band;

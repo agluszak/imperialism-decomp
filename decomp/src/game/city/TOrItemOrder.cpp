@@ -26,7 +26,7 @@ short TOrItemOrder::MaxOrder() {
   availableResources =
       static_cast<short>(availableResources + ownerCity->CityStockByType(primaryInputResourceId));
   short resourceLimit = static_cast<short>(availableResources / 2);
-  short productionLimit = ownerCity->productionAccum1fc[productionSlot];
+  short productionLimit = ownerCity->productionAccum[productionSlot];
   productionLimit = static_cast<short>(productionLimit + currentQuantity);
 
   limitingConstraint = kProductionOrderLimitCapacity;
@@ -94,8 +94,8 @@ bool TOrItemOrder::SetQuantity(short quantity) {
   short workforceChange = static_cast<short>(delta * 2);
   productionSummary->strength = static_cast<short>(productionSummary->strength - workforceChange);
   reservedWorkforce = static_cast<short>(reservedWorkforce + workforceChange);
-  ownerCity->productionAccum1fc[productionSlot] =
-      static_cast<short>(ownerCity->productionAccum1fc[productionSlot] - delta);
+  ownerCity->productionAccum[productionSlot] =
+      static_cast<short>(ownerCity->productionAccum[productionSlot] - delta);
   g_pViewMgr->RefreshCityProductionUi();
   return true;
 }

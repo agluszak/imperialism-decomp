@@ -399,7 +399,7 @@ void TSoundPlayer::StartDeferredAudioFadeTimerIfIdle() {
 void TSoundPlayer::ISoundPlayer(int idleFrequency) {
   this->IEventHandler(nullptr);
   char ok = static_cast<char>(g_soundResourceManager.InitializeDirectSoundDeviceAndChannels());
-  this->directSoundInitOkAt20 = static_cast<unsigned char>(ok);
+  this->directSoundInitOk = static_cast<unsigned char>(ok);
   if (ok == 0) {
     this->ClearDirectSoundInitPendingAndResetState();
   } else {
@@ -425,8 +425,8 @@ unsigned char TSoundPlayer::DefaultSoundCapabilityPredicate() {
 
 // FUNCTION: IMPERIALISM 0x005e4f80
 void TSoundPlayer::RequestDirectSoundInitIfAllowed() {
-  if (this->directSoundInitOkAt20 != 0) {
-    this->directSoundInitPendingAt21 = true;
+  if (this->directSoundInitOk != 0) {
+    this->directSoundInitPending = true;
     g_soundResourceManager.InitializeDirectSoundDeviceAndChannels();
   }
 }
@@ -442,7 +442,7 @@ unsigned char TSoundPlayer::DefaultSoundCompatibilityPredicate(int unusedArg1, i
 
 // FUNCTION: IMPERIALISM 0x005e4fd0
 void TSoundPlayer::ClearDirectSoundInitPendingAndResetState() {
-  this->directSoundInitPendingAt21 = false;
+  this->directSoundInitPending = false;
   g_soundResourceManager.ReleaseDirectSoundDeviceAndChannels();
 }
 
@@ -457,7 +457,7 @@ void TSoundPlayer::StopAllSoundChannels() {
 
 // FUNCTION: IMPERIALISM 0x005e5020
 void TSoundPlayer::SetMasterVolumeFromPercent(short percent) {
-  if (this->directSoundInitPendingAt21) {
+  if (this->directSoundInitPending) {
     double val = -pow(2.0, (100 - percent) * g_dMasterVolumeExponentScale);
     int volume = static_cast<int>(val);
     if (volume > 0) {

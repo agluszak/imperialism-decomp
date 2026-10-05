@@ -100,14 +100,14 @@ public:
   // Picks the primaryNeighbors entry most at war with nationSlot: a neighbor qualifies
   // if it isn't a port zone or `nationSlot` doesn't hold flag D there, then scores it by
   // how many of the (up to 7) g_apTerrainTypeDescriptorTable nations it lists in
-  // nationKeyMask10 (its key mask) are currently at war with nationSlot per
+  // nationKeyMask (its key mask) are currently at war with nationSlot per
   // TDiplomacyMgr::IsNationPairAtWar. Returns the highest-scoring neighbor, or null if
   // none qualify. 0x560e70.
   TZone* GetSafestNearbyZoneFor(short nationSlot) const;
   // BFS relaxation step over primaryNeighbors, writing shortest known distance
-  // (in "hops") into distanceLevel44. level == -1 means "start a fresh search": resets
-  // every zone's distanceLevel44 to the 0x29a sentinel first, then reseeds at level 0.
-  // Recurses onto each neighbor with level+1 while that improves its distanceLevel44.
+  // (in "hops") into distanceLevel. level == -1 means "start a fresh search": resets
+  // every zone's distanceLevel to the 0x29a sentinel first, then reseeds at level 0.
+  // Recurses onto each neighbor with level+1 while that improves its distanceLevel.
   void PropagateMapActionContextDistanceLevelsRecursive(short level); // 0x560f80
   // Zone-graph BFS distance from `this` to `other`, cached in a lazily-(re)built
   // g_pMapActionContextDistanceCache[thisOrd][otherOrd] byte matrix sized by
@@ -117,14 +117,14 @@ public:
   short GetCachedMapActionContextDistanceOrRecompute(TZone* other); // 0x5610b0
   // 0x0055f4d0 — true when any adjacent city record's ownerNationCode00 == nationTag.
   char HasSecondaryNeighborWithNationTag(short nationTag);
-  // 0x0055f540 — true when key's bit is set in nationKeyMask10's low byte, or any
+  // 0x0055f540 — true when key's bit is set in nationKeyMask's low byte, or any
   // secondaryNeighbors entry has ownerNationCode00 == key.
   int IsZoneMaskOrArrayEntryPresentForKey(short key);
   // 0x0055f440 — true when any secondaryNeighbors entry points at
   // &g_pGlobalMapState->cityScoreTable[cityIndex].
   char ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex);
   // 0x560b00: whether this map-order context has a displayable primary navy order for
-  // `nation` (-1 = active nation): nationKeyMask10 bit set and a g_pNavyPrimaryOrderListHead
+  // `nation` (-1 = active nation): nationKeyMask bit set and a g_pNavyPrimaryOrderListHead
   // ship with location == this, matching owner, field0c == 0 (and selection == 0 unless
   // skipField34Check). Ghidra's TCivToolbar attribution is junk.
   char CanDisplayMapOrderEntryInCurrentContext(int nation, bool skipField34Check);
@@ -152,19 +152,19 @@ public:
   char pad06[2];                                // +0x06
   CString displayName;                          // +0x08
   int tileOrTerrainId0c;                        // +0x0c tile / terrain id storage
-  unsigned short nationKeyMask10;               // +0x10 (key mask in nation context slices)
+  unsigned short nationKeyMask;                 // +0x10 (key mask in nation context slices)
   short seedNationId12;                         // +0x12 seed nation id arg
   short contextOrdinal14;                       // +0x14 context ordinal
   char pad16[2];                                // +0x16
   TZone* prev18;                                // +0x18 older in g_pMapActionContextListHead chain
   TZone* next1c;                                // +0x1c newer link
-  short activeTileIndex20;                      // +0x20 active tile index
+  short activeTileIndex;                        // +0x20 active tile index
   char pad22[2];                                // +0x22
   TZonePrimaryNeighborStretch primaryNeighbors; // +0x24
   TZoneSecondaryNeighborStretch secondaryNeighbors; // +0x34
-  // distanceLevel44: BFS "hops" distance written by
+  // distanceLevel: BFS "hops" distance written by
   // PropagateMapActionContextDistanceLevelsRecursive; 0x29a is the "unreached" sentinel.
-  short distanceLevel44; // +0x44
+  short distanceLevel; // +0x44
 
   TZone();
   void SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int tileIndex);
@@ -189,7 +189,7 @@ public:
   // itself) is diplomatically related to `nation` (per g_pDiplomacyTurnStateManager).
   unsigned int HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(int nation);
 
-  // Counts the nation slots present in nationKeyMask10 that still exist and are at war
+  // Counts the nation slots present in nationKeyMask that still exist and are at war
   // with `nation`. Seven slots, bounded by the descriptor table. No Mac oracle name fits,
   // so named after what it computes.
   // 0x00561380, __thiscall.
@@ -205,7 +205,7 @@ public:
   // each to the other's primaryNeighbors (Add).
   void ResolvePortZoneOwnerContextAndDispatch();
 
-  // 0x005609e0. If `nation` has this map-order context zone flagged (nationKeyMask10 bit) and a
+  // 0x005609e0. If `nation` has this map-order context zone flagged (nationKeyMask bit) and a
   // matching primary-order ship, builds and returns a new TTaskForce order entry for it
   // (via the TTaskForce(location, requiredCount) ctor); otherwise returns null.
   // `nation` == -1 resolves the active nation. Called by

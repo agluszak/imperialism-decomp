@@ -152,7 +152,7 @@ void TCivDescription::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
                     ((unsigned short)(unsigned char)tile->gateFlag == (unsigned short)slotIndex)) {
                   if ((int)(unsigned int)(*currentLegendSelectionCounter) <= candidateOrdinal) {
                     TMapUberPicture* activeMapPicture =
-                        static_cast<TMapUberPicture*>(g_pAmbitApplication->edgeScrollTarget48);
+                        static_cast<TMapUberPicture*>(g_pAmbitApplication->edgeScrollTarget);
                     if (activeMapPicture != 0) {
                       activeMapPicture->CenterOn(tileIndex);
                     }
@@ -317,7 +317,7 @@ void TCivDescription::Draw(RECT* rectBuffer) {
     g_pSimMgr->GetString(0x2718, selectedClass, &localizedTextRef);
 
     textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&localizedTextRef);
-    textOriginX = static_cast<short>((this->frameWidth34 / 2) - (textWidth / 2));
+    textOriginX = static_cast<short>((this->frameWidth / 2) - (textWidth / 2));
 
     SetQuickDrawColorAndSyncGlobals(styleSecondary);
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(textOriginX + 1), 0x47);
@@ -376,8 +376,8 @@ void TCivDescription::DrawEngineer(RECT* boundsBuffer) {
 
   g_pSimMgr->GetString(0x272d, 10, &labelText); // Cannot Build In
   short titleWidth = MeasureTextExtentWithCachedQuickDrawStyle(&labelText);
-  SetQuickDrawTextOriginWithContextOffset(
-      static_cast<short>(this->frameWidth34 / 2 - titleWidth / 2), 212);
+  SetQuickDrawTextOriginWithContextOffset(static_cast<short>(this->frameWidth / 2 - titleWidth / 2),
+                                          212);
   DrawTextWithCachedQuickDrawStyleState(&labelText);
 
   UpdatePaletteIndexWithDefaultFallback(0x10);
@@ -560,7 +560,7 @@ void TCivDescription::DrawDeveloper(RECT* bounds) {
     g_pSimMgr->GetString(0x272d, 1, &text);
     short titleWidth = MeasureTextExtentWithCachedQuickDrawStyle(&text);
     SetQuickDrawTextOriginWithContextOffset(
-        static_cast<short>(this->frameWidth34 / 2 - titleWidth / 2), 0x6a);
+        static_cast<short>(this->frameWidth / 2 - titleWidth / 2), 0x6a);
     DrawTextWithCachedQuickDrawStyleState(&text);
 
     // Current development level = max capability value over the class's developable
@@ -582,8 +582,8 @@ void TCivDescription::DrawDeveloper(RECT* bounds) {
     }
 
     RECT sourceRect = {stripBase + level * 38, 0, stripBase + level * 38 + 38, 0x1a};
-    RECT destinationRect = {this->frameWidth34 / 2 - 0xb, originY + 0x12c,
-                            this->frameWidth34 / 2 + 0x1b, originY + 0x146};
+    RECT destinationRect = {this->frameWidth / 2 - 0xb, originY + 0x12c,
+                            this->frameWidth / 2 + 0x1b, originY + 0x146};
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency(g_pMacViewMgr->unitOverlayAtlas->GetBlitSurface(),
@@ -596,7 +596,7 @@ void TCivDescription::DrawDeveloper(RECT* bounds) {
     g_pSimMgr->GetString(0x272d, 2, &text);
     titleWidth = MeasureTextExtentWithCachedQuickDrawStyle(&text);
     SetQuickDrawTextOriginWithContextOffset(
-        static_cast<short>(this->frameWidth34 / 2 - titleWidth / 2), 0xa2);
+        static_cast<short>(this->frameWidth / 2 - titleWidth / 2), 0xa2);
     DrawTextWithCachedQuickDrawStyleState(&text);
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b6c);
 

@@ -118,10 +118,10 @@ void TMinor::IMinor(NationSlot nationSlot) {
     diplomacyRandomThreshold126 = 0x69;
     diplomacyRandomThreshold128 = 0x8a;
     diplomacyRandomThreshold12a = 0x90;
-    diplomacySaveFields134[0] = 7;
-    diplomacySaveFields134[1] = 8;
-    diplomacySaveFields134[2] = 9;
-    diplomacySaveFields134[3] = 0xa;
+    diplomacySaveFields[0] = 7;
+    diplomacySaveFields[1] = 8;
+    diplomacySaveFields[2] = 9;
+    diplomacySaveFields[3] = 0xa;
     break;
   case 8:
     diplomacyRandomThreshold11e = 0x47e;
@@ -131,10 +131,10 @@ void TMinor::IMinor(NationSlot nationSlot) {
     diplomacyRandomThreshold126 = 0x75;
     diplomacyRandomThreshold128 = 0x72;
     diplomacyRandomThreshold12a = 0x84;
-    diplomacySaveFields134[0] = 7;
-    diplomacySaveFields134[1] = 8;
-    diplomacySaveFields134[2] = 9;
-    diplomacySaveFields134[3] = 0xa;
+    diplomacySaveFields[0] = 7;
+    diplomacySaveFields[1] = 8;
+    diplomacySaveFields[2] = 9;
+    diplomacySaveFields[3] = 0xa;
     break;
   case 9:
     diplomacyRandomThreshold11e = 0x4b0;
@@ -144,10 +144,10 @@ void TMinor::IMinor(NationSlot nationSlot) {
     diplomacyRandomThreshold126 = 0x81;
     diplomacyRandomThreshold128 = 0x7e;
     diplomacyRandomThreshold12a = 0x78;
-    diplomacySaveFields134[0] = 7;
-    diplomacySaveFields134[1] = 8;
-    diplomacySaveFields134[2] = 9;
-    diplomacySaveFields134[3] = 0xa;
+    diplomacySaveFields[0] = 7;
+    diplomacySaveFields[1] = 8;
+    diplomacySaveFields[2] = 9;
+    diplomacySaveFields[3] = 0xa;
     break;
   case 10:
     diplomacyRandomThreshold11e = 0x4e2;
@@ -157,10 +157,10 @@ void TMinor::IMinor(NationSlot nationSlot) {
     diplomacyRandomThreshold126 = 0x8d;
     diplomacyRandomThreshold128 = 0x90;
     diplomacyRandomThreshold12a = 0x6f;
-    diplomacySaveFields134[0] = 7;
-    diplomacySaveFields134[1] = 8;
-    diplomacySaveFields134[2] = 9;
-    diplomacySaveFields134[3] = 0xa;
+    diplomacySaveFields[0] = 7;
+    diplomacySaveFields[1] = 8;
+    diplomacySaveFields[2] = 9;
+    diplomacySaveFields[3] = 0xa;
     break;
   case 11:
     diplomacyRandomThreshold11e = 0x514;
@@ -170,10 +170,10 @@ void TMinor::IMinor(NationSlot nationSlot) {
     diplomacyRandomThreshold126 = 0x6c;
     diplomacyRandomThreshold128 = 0x8d;
     diplomacyRandomThreshold12a = 0x93;
-    diplomacySaveFields134[0] = 0xb;
-    diplomacySaveFields134[1] = 0xc;
-    diplomacySaveFields134[2] = 0xd;
-    diplomacySaveFields134[3] = 0xe;
+    diplomacySaveFields[0] = 0xb;
+    diplomacySaveFields[1] = 0xc;
+    diplomacySaveFields[2] = 0xd;
+    diplomacySaveFields[3] = 0xe;
     break;
   case 12:
     diplomacyRandomThreshold11e = 0x546;
@@ -183,10 +183,10 @@ void TMinor::IMinor(NationSlot nationSlot) {
     diplomacyRandomThreshold126 = 0x78;
     diplomacyRandomThreshold128 = 0x69;
     diplomacyRandomThreshold12a = 0x87;
-    diplomacySaveFields134[0] = 0xb;
-    diplomacySaveFields134[1] = 0xc;
-    diplomacySaveFields134[2] = 0xd;
-    diplomacySaveFields134[3] = 0xe;
+    diplomacySaveFields[0] = 0xb;
+    diplomacySaveFields[1] = 0xc;
+    diplomacySaveFields[2] = 0xd;
+    diplomacySaveFields[3] = 0xe;
     break;
   case 13:
     diplomacyRandomThreshold11e = 0x578;
@@ -196,10 +196,10 @@ void TMinor::IMinor(NationSlot nationSlot) {
     diplomacyRandomThreshold126 = 0x84;
     diplomacyRandomThreshold128 = 0x7b;
     diplomacyRandomThreshold12a = 0x75;
-    diplomacySaveFields134[0] = 0xb;
-    diplomacySaveFields134[1] = 0xc;
-    diplomacySaveFields134[2] = 0xd;
-    diplomacySaveFields134[3] = 0xe;
+    diplomacySaveFields[0] = 0xb;
+    diplomacySaveFields[1] = 0xc;
+    diplomacySaveFields[2] = 0xd;
+    diplomacySaveFields[3] = 0xe;
     break;
   case 14:
     diplomacyRandomThreshold11e = 0x5aa;
@@ -209,10 +209,10 @@ void TMinor::IMinor(NationSlot nationSlot) {
     diplomacyRandomThreshold126 = 0x90;
     diplomacyRandomThreshold128 = 0x81;
     diplomacyRandomThreshold12a = 0x72;
-    diplomacySaveFields134[0] = 0xb;
-    diplomacySaveFields134[1] = 0xc;
-    diplomacySaveFields134[2] = 0xd;
-    diplomacySaveFields134[3] = 0xe;
+    diplomacySaveFields[0] = 0xb;
+    diplomacySaveFields[1] = 0xc;
+    diplomacySaveFields[2] = 0xd;
+    diplomacySaveFields[3] = 0xe;
     break;
   case 15:
     diplomacyRandomThreshold11e = 0x5dc;
@@ -222,10 +222,10 @@ void TMinor::IMinor(NationSlot nationSlot) {
     diplomacyRandomThreshold126 = 0x6f;
     diplomacyRandomThreshold128 = 0x93;
     diplomacyRandomThreshold12a = 0x96;
-    diplomacySaveFields134[0] = 0xf;
-    diplomacySaveFields134[1] = 0x10;
-    diplomacySaveFields134[2] = 0x11;
-    diplomacySaveFields134[3] = 0x12;
+    diplomacySaveFields[0] = 0xf;
+    diplomacySaveFields[1] = 0x10;
+    diplomacySaveFields[2] = 0x11;
+    diplomacySaveFields[3] = 0x12;
     break;
   case 16:
     diplomacyRandomThreshold11e = 0x60e;
@@ -235,10 +235,10 @@ void TMinor::IMinor(NationSlot nationSlot) {
     diplomacyRandomThreshold126 = 0x7b;
     diplomacyRandomThreshold128 = 0x6c;
     diplomacyRandomThreshold12a = 0x8a;
-    diplomacySaveFields134[0] = 0xf;
-    diplomacySaveFields134[1] = 0x10;
-    diplomacySaveFields134[2] = 0x11;
-    diplomacySaveFields134[3] = 0x12;
+    diplomacySaveFields[0] = 0xf;
+    diplomacySaveFields[1] = 0x10;
+    diplomacySaveFields[2] = 0x11;
+    diplomacySaveFields[3] = 0x12;
     break;
   case 17:
     diplomacyRandomThreshold11e = 0x640;
@@ -248,10 +248,10 @@ void TMinor::IMinor(NationSlot nationSlot) {
     diplomacyRandomThreshold126 = 0x87;
     diplomacyRandomThreshold128 = 0x78;
     diplomacyRandomThreshold12a = 0x7e;
-    diplomacySaveFields134[0] = 0xf;
-    diplomacySaveFields134[1] = 0x10;
-    diplomacySaveFields134[2] = 0x11;
-    diplomacySaveFields134[3] = 0x12;
+    diplomacySaveFields[0] = 0xf;
+    diplomacySaveFields[1] = 0x10;
+    diplomacySaveFields[2] = 0x11;
+    diplomacySaveFields[3] = 0x12;
     break;
   case 18:
     diplomacyRandomThreshold11e = 0x672;
@@ -261,10 +261,10 @@ void TMinor::IMinor(NationSlot nationSlot) {
     diplomacyRandomThreshold126 = 0x93;
     diplomacyRandomThreshold128 = 0x84;
     diplomacyRandomThreshold12a = 0x69;
-    diplomacySaveFields134[0] = 0xf;
-    diplomacySaveFields134[1] = 0x10;
-    diplomacySaveFields134[2] = 0x11;
-    diplomacySaveFields134[3] = 0x12;
+    diplomacySaveFields[0] = 0xf;
+    diplomacySaveFields[1] = 0x10;
+    diplomacySaveFields[2] = 0x11;
+    diplomacySaveFields[3] = 0x12;
     break;
   case 19:
     diplomacyRandomThreshold11e = 0x6a4;
@@ -274,10 +274,10 @@ void TMinor::IMinor(NationSlot nationSlot) {
     diplomacyRandomThreshold126 = 0x72;
     diplomacyRandomThreshold128 = 0x96;
     diplomacyRandomThreshold12a = 0x8d;
-    diplomacySaveFields134[0] = 0x13;
-    diplomacySaveFields134[1] = 0x14;
-    diplomacySaveFields134[2] = 0x15;
-    diplomacySaveFields134[3] = 0x16;
+    diplomacySaveFields[0] = 0x13;
+    diplomacySaveFields[1] = 0x14;
+    diplomacySaveFields[2] = 0x15;
+    diplomacySaveFields[3] = 0x16;
     break;
   case 20:
     diplomacyRandomThreshold11e = 0x6d6;
@@ -287,10 +287,10 @@ void TMinor::IMinor(NationSlot nationSlot) {
     diplomacyRandomThreshold126 = 0x7e;
     diplomacyRandomThreshold128 = 0x6f;
     diplomacyRandomThreshold12a = 0x81;
-    diplomacySaveFields134[0] = 0x13;
-    diplomacySaveFields134[1] = 0x14;
-    diplomacySaveFields134[2] = 0x15;
-    diplomacySaveFields134[3] = 0x16;
+    diplomacySaveFields[0] = 0x13;
+    diplomacySaveFields[1] = 0x14;
+    diplomacySaveFields[2] = 0x15;
+    diplomacySaveFields[3] = 0x16;
     break;
   case 21:
     diplomacyRandomThreshold11e = 0x708;
@@ -300,10 +300,10 @@ void TMinor::IMinor(NationSlot nationSlot) {
     diplomacyRandomThreshold126 = 0x8a;
     diplomacyRandomThreshold128 = 0x7b;
     diplomacyRandomThreshold12a = 0x75;
-    diplomacySaveFields134[0] = 0x13;
-    diplomacySaveFields134[1] = 0x14;
-    diplomacySaveFields134[2] = 0x15;
-    diplomacySaveFields134[3] = 0x16;
+    diplomacySaveFields[0] = 0x13;
+    diplomacySaveFields[1] = 0x14;
+    diplomacySaveFields[2] = 0x15;
+    diplomacySaveFields[3] = 0x16;
     break;
   case 22:
     diplomacyRandomThreshold11e = 0x73a;
@@ -313,10 +313,10 @@ void TMinor::IMinor(NationSlot nationSlot) {
     diplomacyRandomThreshold126 = 0x96;
     diplomacyRandomThreshold128 = 0x87;
     diplomacyRandomThreshold12a = 0x6c;
-    diplomacySaveFields134[0] = 0x13;
-    diplomacySaveFields134[1] = 0x14;
-    diplomacySaveFields134[2] = 0x15;
-    diplomacySaveFields134[3] = 0x16;
+    diplomacySaveFields[0] = 0x13;
+    diplomacySaveFields[1] = 0x14;
+    diplomacySaveFields[2] = 0x15;
+    diplomacySaveFields[3] = 0x16;
     break;
   }
 }
@@ -341,8 +341,8 @@ void TMinor::ReadFrom(TStream* stream) {
   stream->ReadBytes(&this->diplomacyPolicyPredicateCode12e, 2);
   stream->ReadBytes(&this->diplomacyPolicyGate130, 2);
   stream->ReadBytes(&this->diplomacyPolicyGate132, 2);
-  stream->ReadBytes(diplomacySaveFields134, 8);
-  SwapShortArrayBytes(diplomacySaveFields134, 4);
+  stream->ReadBytes(diplomacySaveFields, 8);
+  SwapShortArrayBytes(diplomacySaveFields, 4);
   if (g_nSaveFormatVersion >= 0x3a) {
     stream->ReadBytes(independentResourceCountByType, 0x2e);
     SwapShortArrayBytes(independentResourceCountByType, 0x17);
@@ -366,7 +366,7 @@ void TMinor::WriteTo(TStream* stream) {
   stream->WriteBytes(&this->diplomacyPolicyPredicateCode12e, 2);
   stream->WriteBytes(&this->diplomacyPolicyGate130, 2);
   stream->WriteBytes(&this->diplomacyPolicyGate132, 2);
-  WriteShortArrayElems(stream, diplomacySaveFields134, 4);
+  WriteShortArrayElems(stream, diplomacySaveFields, 4);
   WriteShortArrayElems(stream, independentResourceCountByType, 0x17);
 }
 
@@ -374,8 +374,8 @@ void TMinor::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x004e45f0
 char TMinor::IsInConsortiumWith(short policyCode) {
   bool result = false;
-  if (policyCode == diplomacySaveFields134[0] || policyCode == diplomacySaveFields134[1] ||
-      policyCode == diplomacySaveFields134[2] || policyCode == diplomacySaveFields134[3]) {
+  if (policyCode == diplomacySaveFields[0] || policyCode == diplomacySaveFields[1] ||
+      policyCode == diplomacySaveFields[2] || policyCode == diplomacySaveFields[3]) {
     result = true;
   }
   return result;
@@ -419,13 +419,13 @@ void TMinor::InitializeTradeStatus(void) {
   needCurrentByType[7] = 2;
 
   // Recount from the map: every resource edge on a tile this nation owns feeds the
-  // need counters; when a great power also holds the tile (secondaryOwnerNationTag18),
+  // need counters; when a great power also holds the tile (secondaryOwnerNationTag),
   // the capability-requirement level accrues to that resource and controlling power.
   int tileIndex;
   for (tileIndex = 0; static_cast<short>(tileIndex) < 0x1950; ++tileIndex) {
     if (g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04 == this->nationSlot) {
       short tileGreatPower =
-          g_pGlobalMapState->terrainStateTable[tileIndex].secondaryOwnerNationTag18;
+          g_pGlobalMapState->terrainStateTable[tileIndex].secondaryOwnerNationTag;
       if (tileGreatPower == -1) {
         int edgeCount;
         int edge = 0;
@@ -809,7 +809,7 @@ void TMinor::BecomeProtectorateOf(int targetNationSlot) {
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(majorNationSlot)) !=
           0) {
         TGreatPower* majorNation = g_apNationStates[majorNationSlot];
-        if (majorNation->diplomacyEligibilityA0 == 0) {
+        if (majorNation->diplomacyEligibility == 0) {
           majorNation->AddNoticeFrom(this->nationSlot, kDiplomacyProposalDeclareWar);
         }
         g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCode(
@@ -995,7 +995,7 @@ void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
         int linkedIndex = 0;
         while (linkedIndex < regionRecord->linkedRegionCount) {
           short tileId = regionRecord->linkedTileIndices42[linkedIndex];
-          terrainTiles[tileId].secondaryOwnerNationTag18 = -1;
+          terrainTiles[tileId].secondaryOwnerNationTag = -1;
           linkedIndex++;
         }
       }
@@ -1010,7 +1010,7 @@ void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
     int linkedIndex = 0;
     while (linkedIndex < regionRecord->linkedRegionCount) {
       short tileId = regionRecord->linkedTileIndices42[linkedIndex];
-      terrainTiles[tileId].secondaryOwnerNationTag18 = -1;
+      terrainTiles[tileId].secondaryOwnerNationTag = -1;
       linkedIndex++;
     }
   }
@@ -1036,10 +1036,10 @@ void TMinor::KillBoycottedForeignCompanies(void) {
       int linkedIndex = 0;
       while (linkedIndex < regionRecord->linkedRegionCount) {
         short tileId = regionRecord->linkedTileIndices42[linkedIndex];
-        int tileNation = terrainTiles[tileId].secondaryOwnerNationTag18;
+        int tileNation = terrainTiles[tileId].secondaryOwnerNationTag;
         if (tileNation != -1 && needLevel300ByMajorSlot[tileNation] != 0) {
           notifyMajorSlots[tileNation] = 1;
-          terrainTiles[tileId].secondaryOwnerNationTag18 = -1;
+          terrainTiles[tileId].secondaryOwnerNationTag = -1;
         }
         linkedIndex++;
       }
@@ -1088,7 +1088,7 @@ void TMinor::KillEnemyCiviliansIn(int provinceId) {
         short tileId = regionRecord->linkedTileIndices42[linkedIndex];
         TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder20;
         while (orderNode != 0) {
-          TUnit* nextNode = orderNode->nextAtLocation14;
+          TUnit* nextNode = orderNode->nextAtLocation;
           int orderOwnerNationSlot = orderNode->ownerNationSlot18;
           if (relationMaskByNation[orderOwnerNationSlot] != 0) {
             if (orderNode->orderType == EncodeCivilianUnitKind(kCivilianUnitDeveloper)) {
@@ -1118,7 +1118,7 @@ void TMinor::KillEnemyCiviliansIn(int provinceId) {
         short tileId = regionRecord->linkedTileIndices42[linkedIndex];
         TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder20;
         while (orderNode != 0) {
-          TUnit* nextNode = orderNode->nextAtLocation14;
+          TUnit* nextNode = orderNode->nextAtLocation;
           int orderOwnerNationSlot = orderNode->ownerNationSlot18;
           if (relationMaskByNation[orderOwnerNationSlot] != 0) {
             orderNode->DetachUnitOrderFromOwnerAndReset();
@@ -1147,10 +1147,10 @@ void TMinor::AssimilateTroopsOf(int priorOwnerNationSlot) {
       oneBasedIndex++;
       continue;
     }
-    TMilitaryUnit* unitNode = g_pGlobalMapState->cityScoreTable[regionId].stationedUnitChain98;
+    TMilitaryUnit* unitNode = g_pGlobalMapState->cityScoreTable[regionId].stationedUnitChain;
     while (unitNode != 0) {
       TUnit* unit = unitNode;
-      TMilitaryUnit* nextNode = static_cast<TMilitaryUnit*>(unitNode->nextAtLocation14);
+      TMilitaryUnit* nextNode = static_cast<TMilitaryUnit*>(unitNode->nextAtLocation);
       if (unit->ownerNationSlot18 == priorOwnerNationSlot) {
         unit->ownerNationSlot18 = this->nationSlot;
         CPtrList* sourceList = &priorOwnerManager->listState;
@@ -1205,7 +1205,7 @@ void TMinor::DeportCiviliansIn(int provinceId, unsigned char includeAllPolicyTar
         short tileId = regionRecord->linkedTileIndices42[linkedIndex];
         TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder20;
         while (orderNode != 0) {
-          TUnit* nextNode = orderNode->nextAtLocation14;
+          TUnit* nextNode = orderNode->nextAtLocation;
           int orderOwnerNationSlot = orderNode->ownerNationSlot18;
           if (relationMaskByNation[orderOwnerNationSlot] != 0) {
             TGreatPower* ownerNation = g_apNationStates[orderOwnerNationSlot];
@@ -1238,7 +1238,7 @@ void TMinor::DeportCiviliansIn(int provinceId, unsigned char includeAllPolicyTar
         short tileId = regionRecord->linkedTileIndices42[linkedIndex];
         TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder20;
         while (orderNode != 0) {
-          TUnit* nextNode = orderNode->nextAtLocation14;
+          TUnit* nextNode = orderNode->nextAtLocation;
           int orderOwnerNationSlot = orderNode->ownerNationSlot18;
           if (relationMaskByNation[orderOwnerNationSlot] != 0) {
             TGreatPower* ownerNation = g_apNationStates[orderOwnerNationSlot];

@@ -48,14 +48,14 @@ void TOffersPanelView::DoPostCreate(int arg) {
   TDeluxeText* propControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagProp));
   propControl->AssertValid();
   propControl->SetTextStyle(sharedStyle, 0);
-  propControl->shadowTextColor9C = sharedStyle.textColor;
+  propControl->shadowTextColor = sharedStyle.textColor;
   propControl->dropShadowEnabledA0 = true;
   propControl->SetTextAlignmentAndMaybeRefresh(1, 0);
 
   TDeluxeText* textControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagText));
   textControl->AssertValid();
   textControl->SetTextStyle(sharedStyle, 0);
-  textControl->shadowTextColor9C = sharedStyle.textColor;
+  textControl->shadowTextColor = sharedStyle.textColor;
   textControl->dropShadowEnabledA0 = true;
   textControl->SetTextAlignmentAndMaybeRefresh(1, 0);
 
@@ -77,7 +77,7 @@ void TOffersPanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
   int tag = sourceHandler->controlTag;
   if (commandId != 5 && commandId == 0xa) {
     if (tag == kControlTagAcce || tag == kControlTagReje) {
-      lastNegotiationResponseTag64 = tag;
+      lastNegotiationResponseTag = tag;
     }
   }
   TEventHandler::DoEvent(commandId, sourceHandler, event);
@@ -119,7 +119,7 @@ char TOffersPanelView::PoseOffer(short sourceNation, short targetNation, short o
 
   g_apTerrainTypeDescriptorTable[targetNation]->FormatOverlayTerrainLabelText(&targetNationName);
   g_apTerrainTypeDescriptorTable[sourceNation]->FormatOverlayTerrainLabelText(&sourceNationName);
-  diplomacyMapView60->frameRegionSelectorAt98 = targetNation;
+  diplomacyMapView->frameRegionSelector = targetNation;
 
   bool hasEntanglements = false;
 
@@ -208,11 +208,11 @@ char TOffersPanelView::PoseOffer(short sourceNation, short targetNation, short o
   // The original blocks only for interactive offers. DoEvent writes the selected
   // FourCC into this field when the accept/reject hotspot is activated.
   if (!isNotice) {
-    lastNegotiationResponseTag64 = 0;
-    while (lastNegotiationResponseTag64 == 0) {
+    lastNegotiationResponseTag = 0;
+    while (lastNegotiationResponseTag == 0) {
       PumpUiMessagesAndBackgroundTasks(1);
     }
-    if (lastNegotiationResponseTag64 == static_cast<int>(kControlTagAcce)) {
+    if (lastNegotiationResponseTag == static_cast<int>(kControlTagAcce)) {
       return 1;
     }
   }
@@ -303,9 +303,9 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
   RefreshControl();
   ForceRedraw();
 
-  lastNegotiationResponseTag64 = 0;
-  while (lastNegotiationResponseTag64 == 0) {
+  lastNegotiationResponseTag = 0;
+  while (lastNegotiationResponseTag == 0) {
     PumpUiMessagesAndBackgroundTasks(1);
   }
-  return lastNegotiationResponseTag64 == static_cast<int>(kControlTagAcce);
+  return lastNegotiationResponseTag == static_cast<int>(kControlTagAcce);
 }

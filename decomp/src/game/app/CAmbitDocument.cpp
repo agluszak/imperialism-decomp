@@ -20,7 +20,7 @@ IMPLEMENT_DYNCREATE(CAmbitDocument, CDocument)
 
 // FUNCTION: IMPERIALISM 0x00479480
 CAmbitDocument::CAmbitDocument() : CDocument() {
-  fileBasedDocument50 = new TAmbitFileBasedDocument();
+  fileBasedDocument = new TAmbitFileBasedDocument();
   g_pTurnEventDialogFactoryRegistry = new TTurnEventDialogFactoryRegistry();
   RegisterStartupDialogFactoryCallbacks(g_pTurnEventDialogFactoryRegistry);
 }
@@ -43,7 +43,7 @@ CAmbitDocument::~CAmbitDocument() {
     delete g_pTurnEventDialogFactoryRegistry;
   }
   g_pTurnEventDialogFactoryRegistry = 0;
-  fileBasedDocument50->Free();
+  fileBasedDocument->Free();
 }
 
 // FUNCTION: IMPERIALISM 0x004797a0
@@ -52,7 +52,7 @@ BOOL CAmbitDocument::OnNewDocument() {
   return CDocument::OnNewDocument() != 0;
 }
 
-// Drives the T-tree document adapter (fileBasedDocument50) through an ArchiveStreamAdapter:
+// Drives the T-tree document adapter (fileBasedDocument) through an ArchiveStreamAdapter:
 // loading calls DoRead (slot 0x28), storing calls DoWrite (slot 0x2c);
 // the adapter is then freed and the doc's modified flag re-armed, under a wait cursor.
 // FUNCTION: IMPERIALISM 0x004797d0
@@ -60,9 +60,9 @@ void CAmbitDocument::Serialize(CArchive& ar) {
   CWaitCursor wait;
   ArchiveStreamAdapter* adapter = new ArchiveStreamAdapter(&ar);
   if (ar.IsStoring()) {
-    fileBasedDocument50->DoWrite(adapter, 0);
+    fileBasedDocument->DoWrite(adapter, 0);
   } else {
-    fileBasedDocument50->DoRead(adapter, 0);
+    fileBasedDocument->DoRead(adapter, 0);
   }
   adapter->Free();
   SetModifiedFlag(TRUE);

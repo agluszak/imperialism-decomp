@@ -22,10 +22,10 @@ void TItemBoyView::Draw(RECT* rectBuffer) {
   CString kindText;
   CString countText;
 
-  short kindIdx = battleDetail60->resourceType;
+  short kindIdx = battleDetail->resourceType;
   g_pSimMgr->GetStringPrelude(kindIdx, &kindText);
 
-  short count = battleDetail60->stockOrRequired;
+  short count = battleDetail->stockOrRequired;
   countText.Format(g_szDecimalFormat, count);
 
   CString templateText;
@@ -45,16 +45,16 @@ void TItemBoyView::DrawItemHeaderAndIconRows(CString* header) {
   SetQuickDrawTextOriginWithContextOffset(0x1a, 0x14);
   DrawTextWithCachedQuickDrawStyleState(header);
 
-  int perRow = (frameWidth34 - 0x3a) / battleDetail60->stockOrRequired;
+  int perRow = (frameWidth - 0x3a) / battleDetail->stockOrRequired;
   if (perRow > 0x20) {
     perRow = 0x20;
   }
 
   int i = 0;
   int y = 0x3a;
-  if (battleDetail60->stockOrRequired > 0) {
+  if (battleDetail->stockOrRequired > 0) {
     do {
-      short kindIdx = battleDetail60->resourceType;
+      short kindIdx = battleDetail->resourceType;
       RECT srcRect = {kindIdx * 0x20, 0, (kindIdx + 1) * 0x20, 0x17};
       RECT dstRect = {y - 0x20, 0x19, y, 0x30};
       UpdatePaletteIndexWithDefaultFallback(0x10);
@@ -66,7 +66,7 @@ void TItemBoyView::DrawItemHeaderAndIconRows(CString* header) {
                                        &dstRect, 0x24, 0);
       ++i;
       y += perRow;
-    } while (i < battleDetail60->stockOrRequired);
+    } while (i < battleDetail->stockOrRequired);
   }
 
   SetQuickDrawStrokeColor(0x13);

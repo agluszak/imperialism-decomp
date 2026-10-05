@@ -150,8 +150,8 @@ void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
   }
 
   short previousTile = static_cast<short>(paintedHoverTileIndex);
-  signed char previousMarker = g_pGlobalMapState->terrainStateTable[previousTile].markerSlotIndex10;
-  if (previousMarker != -1 && tileMarkers7c[previousMarker].flag) {
+  signed char previousMarker = g_pGlobalMapState->terrainStateTable[previousTile].markerSlotIndex;
+  if (previousMarker != -1 && tileMarkers[previousMarker].flag) {
     short projectedY;
     short projectedX;
     ProjectTileIndexToWrappedScreenOffsetByScale(previousTile, &viewportOrigin, &projectedY,
@@ -168,8 +168,8 @@ void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
     if (oldNeighbor == -1) {
       continue;
     }
-    signed char oldMarker = g_pGlobalMapState->terrainStateTable[oldNeighbor].markerSlotIndex10;
-    if (oldMarker == -1 || !tileMarkers7c[oldMarker].flag) {
+    signed char oldMarker = g_pGlobalMapState->terrainStateTable[oldNeighbor].markerSlotIndex;
+    if (oldMarker == -1 || !tileMarkers[oldMarker].flag) {
       continue;
     }
 

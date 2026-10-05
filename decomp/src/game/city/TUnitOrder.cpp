@@ -35,18 +35,18 @@ void TUnitOrder::IUnitOrder(TCity* city, short nEntryId, short nPrimaryInputReso
 short TUnitOrder::MaxOrder() {
   short workforceLimit;
   if (workforceMode == kLowSkillWorkforceMode) {
-    workforceLimit = productionSummary->productionSlots14->lowSkillCount04;
+    workforceLimit = productionSummary->productionSlots->lowSkillCount04;
     if (productionSummary->strength < workforceLimit) {
       workforceLimit = productionSummary->strength;
     }
   } else if (workforceMode == kMediumSkillWorkforceMode) {
-    workforceLimit = productionSummary->productionSlots14->mediumSkillCount06;
+    workforceLimit = productionSummary->productionSlots->mediumSkillCount06;
     short strengthLimit = static_cast<short>(productionSummary->strength / 2);
     if (strengthLimit < workforceLimit) {
       workforceLimit = strengthLimit;
     }
   } else if (workforceMode == kHighSkillWorkforceMode) {
-    workforceLimit = productionSummary->productionSlots14->highSkillCount08;
+    workforceLimit = productionSummary->productionSlots->highSkillCount08;
     short strengthLimit = static_cast<short>(productionSummary->strength / 4);
     if (strengthLimit < workforceLimit) {
       workforceLimit = strengthLimit;
@@ -65,7 +65,7 @@ short TUnitOrder::MaxOrder() {
 
   TGreatPower* owner = ownerCity->ownerNationAc;
   short cashLimit = primaryLimit;
-  if (cashCostPerUnit != 0 && owner->diplomacyEligibilityA0 != 0) {
+  if (cashCostPerUnit != 0 && owner->diplomacyEligibility != 0) {
     int availableCash = owner->treasuryValue10 + owner->diplomacyBudgetBase / 100;
     if (availableCash <= 0) {
       availableCash = 0;
@@ -193,7 +193,7 @@ void TUnitOrder::Produce() {
       orderObject->IMilitaryUnit(static_cast<MilitaryUnitKindStorage>(entryId), homeProvince,
                                  ownerNationSlot, 0);
       if (ownerNation->pendingActionStatus.byAction[6] >= 0x33) {
-        orderObject->experiencePercent38 = 100;
+        orderObject->experiencePercent = 100;
       }
 
       ownerNation->ComputeSelectedMilitaryPowerScore();

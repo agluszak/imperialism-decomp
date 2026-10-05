@@ -28,6 +28,6 @@ public:
   TQuickDrawSurfaceContext* previewSurface60;
   int selectedRegion64; // 0x64 — city/region marker; ctor seeds -1 (none)
   int selectedNation68; // 0x68 — nation whose boundary is highlighted (-1 = none)
-  int pendingNation6C;  // 0x6c — nation hit by the most recent mouse command
+  int pendingNation;    // 0x6c — nation hit by the most recent mouse command
 };
 ASSERT_SIZE(TMapPreviewView, 0x70);

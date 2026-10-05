@@ -19,10 +19,10 @@ void TInterruptusView::Draw(RECT* rectBuffer) {
   CString countText;
   CString nationLabel;
 
-  short kindIdx = battleDetail60->resourceType;
+  short kindIdx = battleDetail->resourceType;
   g_pSimMgr->GetStringPrelude(kindIdx, &kindText);
 
-  short count = battleDetail60->stockOrRequired;
+  short count = battleDetail->stockOrRequired;
   countText.Format(g_szDecimalFormat, count);
 
   CString templateText;
@@ -31,7 +31,7 @@ void TInterruptusView::Draw(RECT* rectBuffer) {
   // extra scanBracketExpressions token this override passes.
   g_pSimMgr->GetString(0x273c, 0x1e, &templateText);
 
-  short minorIndex = battleDetail60->strengthBucket;
+  short minorIndex = battleDetail->strengthBucket;
   g_apTerrainTypeDescriptorTable[minorIndex]->FormatOverlayTerrainLabelText(&nationLabel);
 
   scanBracketExpressions(g_pSimMgr, &label, static_cast<const char*>(templateText),

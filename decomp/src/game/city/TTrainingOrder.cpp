@@ -21,14 +21,14 @@ short TTrainingOrder::MaxOrder() {
   if (resourceTypeIndex == 1) {
     paperPerUnit = 1;
     cashPerUnit = 100;
-    workforceLimit = productionSummary->productionSlots14->lowSkillCount04;
+    workforceLimit = productionSummary->productionSlots->lowSkillCount04;
     if (productionSummary->strength < workforceLimit) {
       workforceLimit = productionSummary->strength;
     }
   } else {
     paperPerUnit = 2;
     cashPerUnit = 1000;
-    workforceLimit = productionSummary->productionSlots14->mediumSkillCount06;
+    workforceLimit = productionSummary->productionSlots->mediumSkillCount06;
     short strengthLimit = static_cast<short>(productionSummary->strength / 2);
     if (strengthLimit < workforceLimit) {
       workforceLimit = strengthLimit;
@@ -37,7 +37,7 @@ short TTrainingOrder::MaxOrder() {
 
   TGreatPower* owner = ownerCity->ownerNationAc;
   short cashLimit;
-  if (owner->diplomacyEligibilityA0 == 0) {
+  if (owner->diplomacyEligibility == 0) {
     cashLimit = workforceLimit;
   } else {
     int availableCash = owner->treasuryValue10 + owner->diplomacyBudgetBase / 100;
@@ -50,7 +50,7 @@ short TTrainingOrder::MaxOrder() {
     }
   }
 
-  short paperLimit = static_cast<short>(ownerCity->cityStockPaperCA / paperPerUnit);
+  short paperLimit = static_cast<short>(ownerCity->cityStockPaper / paperPerUnit);
   limitingConstraint = kProductionOrderLimitWorkforce;
   short limit = workforceLimit;
   if (cashLimit < limit) {
@@ -77,11 +77,11 @@ bool TTrainingOrder::SetQuantity(short quantity) {
 
   TGreatPower* owner = ownerCity->ownerNationAc;
   if (resourceTypeIndex == 1) {
-    ownerCity->cityStockPaperCA = static_cast<short>(ownerCity->cityStockPaperCA - delta);
+    ownerCity->cityStockPaper = static_cast<short>(ownerCity->cityStockPaper - delta);
     ownerCity->VerifyStocks();
     owner->treasuryValue10 -= static_cast<int>(delta) * 100;
   } else {
-    ownerCity->cityStockPaperCA = static_cast<short>(ownerCity->cityStockPaperCA - delta * 2);
+    ownerCity->cityStockPaper = static_cast<short>(ownerCity->cityStockPaper - delta * 2);
     ownerCity->VerifyStocks();
     owner->treasuryValue10 -= static_cast<int>(delta) * 1000;
   }
@@ -108,7 +108,7 @@ void TTrainingOrder::Produce() {
     return;
   }
 
-  TLaborPool* population = productionSummary->baselineSlots10;
+  TLaborPool* population = productionSummary->baselineSlots;
   if (resourceTypeIndex == 1) {
     population->lowSkillCount04 -= quantity;
     population->mediumSkillCount06 += quantity;

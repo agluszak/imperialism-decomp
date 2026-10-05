@@ -95,14 +95,14 @@ BOOL TDirectPlaySessionManagerBase::OnEnumerateJoinableSession(
 
 // FUNCTION: IMPERIALISM 0x0047fb80
 BOOL TDirectPlaySessionManagerBase::CreateDirectPlayLobbyAndStoreResult() {
-  lastErrorCode0c = DirectPlayLobbyCreateA(0, &directPlayLobby08, 0, 0, 0);
+  lastErrorCode0c = DirectPlayLobbyCreateA(0, &directPlayLobby, 0, 0, 0);
   return lastErrorCode0c >= 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0047fbc0
 BOOL TDirectPlaySessionManagerBase::ConnectDirectPlayFromLobbySettingsAndStoreResult() {
   DWORD settingsSize = 0;
-  lastErrorCode0c = directPlayLobby08->GetConnectionSettings(0, 0, &settingsSize);
+  lastErrorCode0c = directPlayLobby->GetConnectionSettings(0, 0, &settingsSize);
   if (lastErrorCode0c != DPERR_BUFFERTOOSMALL) {
     return FALSE;
   }
@@ -113,17 +113,17 @@ BOOL TDirectPlaySessionManagerBase::ConnectDirectPlayFromLobbySettingsAndStoreRe
     return FALSE;
   }
 
-  lastErrorCode0c = directPlayLobby08->GetConnectionSettings(0, settings, &settingsSize);
+  lastErrorCode0c = directPlayLobby->GetConnectionSettings(0, settings, &settingsSize);
   if (lastErrorCode0c < 0 || lastErrorCode0c == DPERR_NOCONNECTION) {
     return FALSE;
   }
   if (GetRuntimeSelectionAuxStatus(settings) != FALSE) {
-    lastErrorCode0c = directPlayLobby08->SetConnectionSettings(0, 0, settings);
+    lastErrorCode0c = directPlayLobby->SetConnectionSettings(0, 0, settings);
   }
   if (lastErrorCode0c < 0) {
     return FALSE;
   }
-  lastErrorCode0c = directPlayLobby08->Connect(0, &directPlayInterface04, 0);
+  lastErrorCode0c = directPlayLobby->Connect(0, &directPlayInterface04, 0);
   return lastErrorCode0c >= 0;
 }
 
@@ -227,9 +227,9 @@ BOOL TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext() {
       directPlayInterface04->Release();
       directPlayInterface04 = 0;
     }
-    if (directPlayLobby08 != 0) {
-      directPlayLobby08->Release();
-      directPlayLobby08 = 0;
+    if (directPlayLobby != 0) {
+      directPlayLobby->Release();
+      directPlayLobby = 0;
     }
   }
   return lastErrorCode0c >= 0;
@@ -275,9 +275,9 @@ BOOL TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice() {
     directPlayInterface04->Release();
     directPlayInterface04 = 0;
   }
-  if (directPlayLobby08 != 0) {
-    directPlayLobby08->Release();
-    directPlayLobby08 = 0;
+  if (directPlayLobby != 0) {
+    directPlayLobby->Release();
+    directPlayLobby = 0;
   }
   return 0;
 }
@@ -301,9 +301,9 @@ void TDirectPlaySessionManagerBase::ResetRuntimeSelectionRecordBuffer() {
     directPlayInterface04->Release();
     directPlayInterface04 = 0;
   }
-  if (directPlayLobby08 != 0) {
-    directPlayLobby08->Release();
-    directPlayLobby08 = 0;
+  if (directPlayLobby != 0) {
+    directPlayLobby->Release();
+    directPlayLobby = 0;
   }
 }
 
@@ -453,7 +453,7 @@ TDirectPlaySessionManagerBase::~TDirectPlaySessionManagerBase() {
 
 // FUNCTION: IMPERIALISM 0x005e2bb0
 void TWNetSessionManager::ResetSessionDescription() {
-  joinGamePlayerDataTagAC = 0;
+  joinGamePlayerDataTag = 0;
   sessionDescription10.guidApplication = g_ImperialismDirectPlayApplicationGuid0066f968;
   sessionDescription10.lpszPasswordA = joinGameSeed68;
   for (int index = 0; index < g_WNetSerializedPtrArrayB006a5f28.GetSize(); ++index) {
@@ -464,7 +464,7 @@ void TWNetSessionManager::ResetSessionDescription() {
 
 // FUNCTION: IMPERIALISM 0x005e2c80
 void TWNetSessionManager::InitializeSessionDescription() {
-  joinGamePlayerDataTagAC = 1;
+  joinGamePlayerDataTag = 1;
   sessionDescription10.guidApplication = g_ImperialismDirectPlayApplicationGuid0066f968;
   sessionDescription10.dwMaxPlayers = 7;
   sessionDescription10.lpszSessionNameA = runtimeSelectionSeed88;
@@ -501,7 +501,7 @@ BOOL TWNetSessionManager::OnEnumerateServiceProvider(LPGUID providerGuid, LPSTR 
     g_WNetSerializedPtrArrayA006a5f10[index] = record;
 
     TRadioText* item =
-        activeProtocolControlB0->AddItem(kControlTagPro0 + index, index, record->label, 0xf, -1);
+        activeProtocolControl->AddItem(kControlTagPro0 + index, index, record->label, 0xf, -1);
     ApplyUiTextStyleAndThemeFlags(item, 0, 0xc, 0x2b6b, 0x2b6c);
   }
   return TRUE;

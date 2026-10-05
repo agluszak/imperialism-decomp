@@ -112,21 +112,21 @@ void TShipView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
     }
 
     TMapUberPicture* mapUber = g_pViewMgr->mapUberPictureF0;
-    TView* categoryControl = mapUber->categoryPages[mapUber->activeUnitCategoryIndex96];
+    TView* categoryControl = mapUber->categoryPages[mapUber->activeUnitCategoryIndex];
     if (categoryControl != nullptr) {
       short resourceType = shipNode60->GetToolbarSlot();
       TShipFractionCluster* shipFraction = static_cast<TShipFractionCluster*>(
           categoryControl->ResolveControlByTag(kControlTagCls0 + resourceType));
       if (delta > 0) {
-        if (shipFraction->selectedShipCount94 < shipFraction->availableShipCount88) {
-          short newValue = static_cast<short>(shipFraction->selectedShipCount94 + 1);
-          shipFraction->selectedShipCount94 = newValue;
-          shipFraction->shipCountButton90->SetValue(newValue, 1);
+        if (shipFraction->selectedShipCount < shipFraction->availableShipCount) {
+          short newValue = static_cast<short>(shipFraction->selectedShipCount + 1);
+          shipFraction->selectedShipCount = newValue;
+          shipFraction->shipCountButton->SetValue(newValue, 1);
         }
-      } else if (shipFraction->selectedShipCount94 > 0) {
-        short newValue = static_cast<short>(shipFraction->selectedShipCount94 - 1);
-        shipFraction->selectedShipCount94 = newValue;
-        shipFraction->shipCountButton90->SetValue(newValue, 1);
+      } else if (shipFraction->selectedShipCount > 0) {
+        short newValue = static_cast<short>(shipFraction->selectedShipCount - 1);
+        shipFraction->selectedShipCount = newValue;
+        shipFraction->shipCountButton->SetValue(newValue, 1);
       }
     }
   } else if (sourceHandler->controlTag == kControlTagName) {

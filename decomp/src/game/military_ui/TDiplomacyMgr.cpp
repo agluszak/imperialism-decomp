@@ -169,7 +169,7 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
               0 &&
           g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(targetNation)) !=
               0) {
-        if (sourceNation < 7 && g_apNationStates[sourceNation]->diplomacyEligibilityA0 == 0 &&
+        if (sourceNation < 7 && g_apNationStates[sourceNation]->diplomacyEligibility == 0 &&
             g_pSimMgr->difficultyLevel > kDifficultyNormal) {
           standingScore = static_cast<short>(
               g_pSimMgr->difficultyLevel == kDifficultyNighOnImpossible ? 0x69 : 0x64);
@@ -222,7 +222,7 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
   if (g_pSimMgr->difficultyLevel == kDifficultyIntroductory) {
     for (sourceNation = 0; sourceNation < 7; ++sourceNation) {
       TGreatPower* sourcePower = g_apNationStates[sourceNation];
-      if (sourcePower != 0 && sourcePower->diplomacyEligibilityA0 != 0) {
+      if (sourcePower != 0 && sourcePower->diplomacyEligibility != 0) {
         int firstMinorNation = (abs(rand()) % 4) * 4 + 7;
         int lastMinorNation = firstMinorNation + 4;
         for (targetNation = firstMinorNation; targetNation < lastMinorNation; ++targetNation) {
@@ -241,7 +241,7 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
 
   if (g_pSimMgr->difficultyLevel > kDifficultyNormal) {
     for (sourceNation = 0; sourceNation < 7; ++sourceNation) {
-      if (g_apNationStates[sourceNation]->diplomacyEligibilityA0 == 0) {
+      if (g_apNationStates[sourceNation]->diplomacyEligibility == 0) {
         targetNation = abs(rand()) % 0x10 + 7;
         int forwardIndex = sourceNation * kNationSlotCount + targetNation;
         int reverseIndex = targetNation * kNationSlotCount + sourceNation;
@@ -257,9 +257,9 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
 
   if (g_pSimMgr->difficultyLevel == kDifficultyNighOnImpossible) {
     for (sourceNation = 0; sourceNation < 7; ++sourceNation) {
-      if (g_apNationStates[sourceNation]->diplomacyEligibilityA0 == 0) {
+      if (g_apNationStates[sourceNation]->diplomacyEligibility == 0) {
         for (targetNation = 0; targetNation < 7; ++targetNation) {
-          if (g_apNationStates[targetNation]->diplomacyEligibilityA0 == 0) {
+          if (g_apNationStates[targetNation]->diplomacyEligibility == 0) {
             relationStandingScores[sourceNation * kNationSlotCount + targetNation] = 0x6e;
             relationStandingScores[targetNation * kNationSlotCount + sourceNation] = 0x6e;
           }
@@ -805,7 +805,7 @@ void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn() {
     int remaining = 7;
     do {
       TGreatPower* nation = *nationCursor;
-      if (nation != 0 && nation->diplomacyEligibilityA0 == 0) {
+      if (nation != 0 && nation->diplomacyEligibility == 0) {
         nation->SetDiplomacyPolicies();
       }
       --nationCursor;
@@ -1190,7 +1190,7 @@ void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMod
         for (int i = 0; i < cityRecord->linkedRegionCount; ++i) {
           short linkedTile = cityRecord->linkedTileIndices42[i];
           int secondaryOwner =
-              g_pGlobalMapState->terrainStateTable[linkedTile].secondaryOwnerNationTag18;
+              g_pGlobalMapState->terrainStateTable[linkedTile].secondaryOwnerNationTag;
           if (secondaryOwner == topNationSlot) {
             topScore += 2;
           } else if (secondaryOwner == secondNationSlot) {
@@ -1392,7 +1392,7 @@ void TDiplomacyMgr::RecomputeNationComparativePowerMetrics() {
       maxTerritory = territory;
     }
     TGreatPower* nation = g_apNationStates[i];
-    int tech = (nation != 0 ? nation->city : 0)->productionSummary1d8->populationCount08;
+    int tech = (nation != 0 ? nation->city : 0)->productionSummary->populationCount;
     techScore[i] = tech;
     if (tech > maxTech) {
       maxTech = tech;

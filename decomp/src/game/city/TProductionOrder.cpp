@@ -8,7 +8,7 @@ IMPLEMENT_DYNCREATE(TProductionOrder, TObject)
 // FUNCTION: IMPERIALISM 0x004b4f70
 void TProductionOrder::IProductionOrder(TCity* city, short resourceType) {
   ownerCity = city;
-  productionSummary = city->productionSummary1d8;
+  productionSummary = city->productionSummary;
   resourceTypeIndex = resourceType;
   quantity = 0;
   for (int resource = 0; resource < kResourceKindCount; ++resource) {

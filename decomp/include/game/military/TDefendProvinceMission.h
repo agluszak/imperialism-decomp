@@ -18,7 +18,7 @@ public:
 
   virtual void Initialize() override; // slot 0x0c (TMission) 0x53eff0
   virtual void
-  Free() override; // slot 0x1c (TObject) 0x53ebe0 -- releases orderListAt18 and deletes self
+  Free() override; // slot 0x1c (TObject) 0x53ebe0 -- releases orderList and deletes self
 
   virtual bool IsANoBrainer() const override;      // slot 0x28 0x5357b0
   virtual bool IsHospitalMission() const override; // slot 0x64 0x535790
@@ -40,10 +40,10 @@ public:
   static float ComputeLocalSupportVectorScore(int nodeContext);
   static float ComputeCrossNationSupportVectorScore(int nodeContext);
   // 0x53eca0 -- dead member (no live callers): the instance form, forwarding
-  // presentLocation14 to the static scorer.
+  // presentLocation to the static scorer.
   float ComputePresentLocationCrossNationSupportScore();
 
-  // Walks orderListAt18 and re-issues TUnit::SetOrders(kUnitOrderRedeploy, newTile) on every
+  // Walks orderList and re-issues TUnit::SetOrders(kUnitOrderRedeploy, newTile) on every
   // linked TMilitaryUnit whose tileIndex06 differs from newTile (propagating this
   // mission's new target tile to units still ordered against the old one). 0x53c950.
   void PropagateTargetTileToLinkedUnitsIfDifferent(short newTile);

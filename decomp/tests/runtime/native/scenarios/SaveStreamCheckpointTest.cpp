@@ -122,7 +122,7 @@ private:
     // Enter the replay from the state a real load is entered from. A load reached from the menu has
     // no units linked into the map; this replay runs on top of a played game, and
     // TSimMgr::ReadFrom's rebuild frees every nation's units without unlinking them from
-    // cityScoreTable[P].stationedUnitChain98 (TUnit::Free, verified faithful at 0x5c2680, does not
+    // cityScoreTable[P].stationedUnitChain (TUnit::Free, verified faithful at 0x5c2680, does not
     // unlink; nor does TCountry::Free at 0x4d6ba0). The freshly seeded units are then linked in
     // front of those freed ones, and walking that tail dereferences freed units. Detaching first,
     // through each unit's own DetachUnitOrderFromOwnerAndReset, removes the difference between this

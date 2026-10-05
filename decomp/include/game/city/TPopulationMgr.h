@@ -55,17 +55,17 @@ public:
   void AddExpert(short count);
 
   TCity* city04;
-  short populationCount08; // +0x08 — total workers across the three skill bands
+  short populationCount; // +0x08 — total workers across the three skill bands
   unsigned char pad0a[2];
   // +0x0c — snapshotted by the turn-event-0x2c packet. Genuinely float: written via FSTP in
   // SetPopulation (0x4b5dc0), not an int.
-  float populationCountFloat0c;
-  TLaborPool* baselineSlots10;     // +0x10
-  TLaborPool* productionSlots14;   // +0x14
-  TLaborPool* pendingDeltaSlots18; // +0x18
-  short strength;                  // +0x1c — low-stock flag / trade production cap
-  short extraAt1e;                 // +0x1e
-  short fieldAt20;                 // +0x20 — snapshotted by the turn-event-0x2c packet
+  float populationCountFloat;
+  TLaborPool* baselineSlots;     // +0x10
+  TLaborPool* productionSlots;   // +0x14
+  TLaborPool* pendingDeltaSlots; // +0x18
+  short strength;                // +0x1c — low-stock flag / trade production cap
+  short extraAt1e;               // +0x1e
+  short fieldAt20;               // +0x20 — snapshotted by the turn-event-0x2c packet
 
   // +0x22..+0x4f — one predicted requirement per resource type. ReadFrom/WriteTo
   // serialize all 23 shorts as a single persistent block.

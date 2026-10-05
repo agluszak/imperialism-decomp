@@ -13,7 +13,7 @@ class TCity;
 
 #include "game/app/TObject.h"
 
-// Minister base — fork-class construction (ConstructTMinister writes skillIndexC + vptr only).
+// Minister base — fork-class construction (ConstructTMinister writes skillIndex + vptr only).
 // VTABLE: IMPERIALISM 0x00659c00
 class TMinister : public TObject {
 public:
@@ -43,7 +43,7 @@ public:
 
   TGreatPower* ownerContextAt04; // +0x4 — great-power back-pointer from IMinister
   TIndexAndRankList* field_8;    // +0x8 — minister order array (vtable 0x659c58)
-  short skillIndexC;             // +0xC
+  short skillIndex;              // +0xC
   unsigned char pad0e[0x10 - 0x0E];
   // Object ends here at 0x10 (== CRuntimeClass::m_nObjectSize for TMinister). Every
   // field previously declared here (field10/field12/capabilityFlag14../counters1e/...)

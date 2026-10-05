@@ -45,9 +45,9 @@ public:
   // commoditySpriteIds[4]/commodityRequiredAmounts[4] at +0xbc/+0xc4 (loop bound proven:
   // 4 slots, -1 = empty).
   short selectedRequirementRow; // +0xa0
-  short selectedStatsRowA2;
+  short selectedStatsRow;
   short buildQueueSlotValues[8]; // +0xa4..+0xb3 -- AKA requirementResourceTypeByRow
-  int unresolvedZeroB4;          // +0xb4, only DoStartup's zero write is confirmed
+  int unresolvedZero;            // +0xb4, only DoStartup's zero write is confirmed
   TQuickDrawSurfaceContext*
       iconSurfaceB8; // +0xb8 -- LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f)
   short commoditySpriteIds[4];       // +0xbc

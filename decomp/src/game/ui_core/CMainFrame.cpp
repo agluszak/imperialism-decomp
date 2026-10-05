@@ -192,7 +192,7 @@ void CMainFrame::OnCommand800C() {
   HWND hSlider = dialog.slider.m_hWnd;
   HWND hList = dialog.listbox.m_hWnd;
 
-  ::SendMessageA(hSlider, TBM_SETPOS, 1, g_pViewMgr->currentTurnEventNationSlot06);
+  ::SendMessageA(hSlider, TBM_SETPOS, 1, g_pViewMgr->currentTurnEventNationSlot);
 
   ::SendMessageA(hList, LB_ADDSTRING, 0, 0x694e18);
   ::SendMessageA(hList, LB_ADDSTRING, 0, 0x694e08);

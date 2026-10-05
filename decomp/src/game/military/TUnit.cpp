@@ -27,11 +27,11 @@ void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,
   this->unitOrder = kUnitOrderIdle;
   this->MoveTo(anchorIndex);
 
-  // The order-owner "manager" is a real TSortedList: military units (militaryRegistrationFlag1C != 0)
+  // The order-owner "manager" is a real TSortedList: military units (militaryRegistrationFlag != 0)
   // register into the owning country's militaryUnitList44; other orders into the
   // nation's trackedObjectList. Both dispatch AddTail(item) at vtable byte 0x30.
   TSortedList* ownerManager;
-  if (this->militaryRegistrationFlag1C != 0) {
+  if (this->militaryRegistrationFlag != 0) {
     ownerManager = g_apTerrainTypeDescriptorTable[nOrderOwnerNationId]->militaryUnitList44;
   } else {
     ownerManager = g_apNationStates[nOrderOwnerNationId]->trackedObjectList;
@@ -46,7 +46,7 @@ void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,
 
   this->ownerNationSlot18 = nOrderOwnerNationId;
   this->unitRosterId1A = arg3;
-  this->orderTargetIndex0C = static_cast<short>(-1);
+  this->orderTargetIndex = static_cast<short>(-1);
 
   TSimMgr* simMgr = g_pSimMgr;
   simMgr->field_64 = simMgr->field_64 + 1;
@@ -61,7 +61,7 @@ void TUnit::MoveTo(short anchorIndex) {
 // FUNCTION: IMPERIALISM 0x005c2630
 void TUnit::SetOrders(UnitOrder order, int payload) {
   this->unitOrder = order;
-  this->orderTargetIndex0C = static_cast<short>(payload);
+  this->orderTargetIndex = static_cast<short>(payload);
 }
 
 // FUNCTION: IMPERIALISM 0x005c2660
@@ -77,7 +77,7 @@ void TUnit::Free() {
   // nation's list at +0x89c); +4 reaches its embedded CPtrList listState, so walk that
   // member's real API rather than casting the raw offset.
   TSortedList* manager = nullptr;
-  if (this->militaryRegistrationFlag1C == 0) {
+  if (this->militaryRegistrationFlag == 0) {
     manager = g_apNationStates[this->ownerNationSlot18]->trackedObjectList; // +0x89c
   } else {
     TCountry* terrain = g_apTerrainTypeDescriptorTable[this->ownerNationSlot18];
@@ -97,17 +97,17 @@ void TUnit::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   stream->ReadBytes(&orderType, 2);
   stream->ReadBytes(&tileIndex06, 2);
-  stream->ReadBytes(&orderTargetIndex0C, 2);
+  stream->ReadBytes(&orderTargetIndex, 2);
   stream->ReadBytes(&ownerNationSlot18, 2);
   stream->ReadBytes(&unitRosterId1A, 2);
-  stream->ReadBytes(&militaryRegistrationFlag1C, 1);
+  stream->ReadBytes(&militaryRegistrationFlag, 1);
   stream->ReadBytes(&unitOrder, 4);
   short savedTileIndex = tileIndex06;
   if (savedTileIndex != -1) {
-    short savedOrderTargetIndex = orderTargetIndex0C;
+    short savedOrderTargetIndex = orderTargetIndex;
     tileIndex06 = -1;
     this->MoveTo(savedTileIndex);
-    orderTargetIndex0C = savedOrderTargetIndex;
+    orderTargetIndex = savedOrderTargetIndex;
   }
   if (g_nSaveFormatVersion > 0x2d) {
     stream->ReadBytes(&persistentUnitId20, 4);
@@ -119,10 +119,10 @@ void TUnit::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
   stream->WriteBytes(&orderType, 2);
   stream->WriteBytes(&tileIndex06, 2);
-  stream->WriteBytes(&orderTargetIndex0C, 2);
+  stream->WriteBytes(&orderTargetIndex, 2);
   stream->WriteBytes(&ownerNationSlot18, 2);
   stream->WriteBytes(&unitRosterId1A, 2);
-  stream->WriteBytes(&militaryRegistrationFlag1C, 1);
+  stream->WriteBytes(&militaryRegistrationFlag, 1);
   stream->WriteBytes(&unitOrder, 4);
   stream->WriteBytes(&persistentUnitId20, 4);
 }

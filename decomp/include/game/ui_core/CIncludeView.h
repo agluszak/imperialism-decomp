@@ -133,11 +133,11 @@ protected:
   // WM_SETCURSOR is deliberately left to the MFC default dispatcher.
   afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message); // 0x00483ef0
   // WM_RBUTTONDOWN/UP use the same hosted-tree dispatch as the left button. The down
-  // event carries mouseButton24=1; the up event closes the shared capture state.
+  // event carries mouseButton=1; the up event closes the shared capture state.
   afx_msg void OnRButtonDown(UINT nFlags, CPoint point); // 0x00483f10
   afx_msg void OnRButtonUp(UINT nFlags, CPoint point);   // 0x00483ff0
   // WM_MOUSEMOVE: update the global capture drag state, drive this view's own captured
-  // control (m_capturedControl74 + the +0x78 point triple), feed the cursor to the UI
+  // control (m_capturedControl + the +0x78 point triple), feed the cursor to the UI
   // root controller, and (while the app is active) run the dialog tree's hover
   // hit-test. 0x004838b0
   afx_msg void OnMouseMove(UINT nFlags, CPoint point); // 0x004838b0
@@ -186,7 +186,7 @@ public:
   // TMouseCaptureState shape: control + start/last/current points). OnMouseMove sends
   // it the state-1 drag command through TControl slots 0x67/0x68; armed by
   // BeginTracking (0x483280) below.
-  TControl* m_capturedControl74;
+  TControl* m_capturedControl;
 
   // Dead one-shot gate assert (gate 0x6a17b4, IncludeView.cpp:0x166). The gate is never
   // written, so a call would always assert; no callers exist in the original.
@@ -197,12 +197,12 @@ public:
   // capture points to the press position, and hands the control its begin phase.
   // 0x00483280, __thiscall.
   void BeginTracking(CPoint* startPoint, TControl* tracker);
-  CPoint m_captureStartPoint78;   // 0x78
-  CPoint m_captureLastPoint80;    // 0x80
-  CPoint m_captureCurrentPoint88; // 0x88
+  CPoint m_captureStartPoint;   // 0x78
+  CPoint m_captureLastPoint;    // 0x80
+  CPoint m_captureCurrentPoint; // 0x88
   // 0x90 — nonzero while the UI is interactive; TApplication::InModalState (0x486960)
   // reports TRUE while it is 0. Written by SetUiInteractiveFlag90 (0x484080) below.
-  int m_uiInteractiveFlag90;
+  int m_uiInteractiveFlag;
 
   int GetUiInteractiveFlag90();                 // 0x00484060
   int SetUiInteractiveFlag90(bool interactive); // 0x00484080

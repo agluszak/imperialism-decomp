@@ -90,7 +90,7 @@ void TNewsMgr::StartNewsPhase() {
   memset(stories, 0, sizeof(stories));
   for (short slot = 0; slot < 7; ++slot) {
     TGreatPower* nation = g_apNationStates[slot];
-    if ((nation != 0 && nation->diplomacyEligibilityA0 != 0) ||
+    if ((nation != 0 && nation->diplomacyEligibility != 0) ||
         g_pSimMgr->GetActiveNationId() == slot) {
       CreateNewspaper(slot);
     }
@@ -419,7 +419,7 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
   }
   short pass = 0;
   {
-    TSortedPtrList* list = g_pMapContextActionManager->mapContextActionRecordList04;
+    TSortedPtrList* list = g_pMapContextActionManager->mapContextActionRecordList;
     int recordCount = list->GetSize();
     if (recordCount > 0) {
       MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
@@ -431,7 +431,7 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
           record->reportKind04 == kMapContextReportUncontestedTakeover) {
         story->parmKind[0] = 3;
         story->parmValue[0] = reinterpret_cast<int>(record->location08);
-        wantId = (record->reportParticipantIndex02 != 0) - 0x1a;
+        wantId = (record->reportParticipantIndex != 0) - 0x1a;
       } else {
         short ordinalValue = static_cast<TZone*>(record->location08)->GetContextOrdinalOrInvalid();
         story->parmValue[0] = ordinalValue;

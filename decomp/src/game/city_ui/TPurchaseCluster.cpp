@@ -61,8 +61,8 @@ void TPurchaseCluster::SetCityViewValueControlAmount(short nValue, char redrawFl
   RECT bounds;
   bounds.left = valueControl->ownerLocalX + ownerLocalX;
   bounds.top = valueControl->ownerLocalY + ownerLocalY;
-  bounds.right = bounds.left + valueControl->frameWidth34;
-  bounds.bottom = bounds.top + valueControl->frameHeight38;
+  bounds.right = bounds.left + valueControl->frameWidth;
+  bounds.bottom = bounds.top + valueControl->frameHeight;
   RECT copiedBounds;
   CopyRect(&copiedBounds, &bounds);
   ownerContext->InvalidateCityDialogRectRegion(&copiedBounds, 1);

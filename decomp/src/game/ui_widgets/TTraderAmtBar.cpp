@@ -61,9 +61,8 @@ void TTraderAmtBar::DoPostCreate(int arg) {
     stepOrCurrentValue = 0;
   } else {
     short currentValue = nationState->GetStockpile(recordIndex);
-    stepOrCurrentValue =
-        (short)((((int)merchantCapacity - (int)currentValue) * this->frameWidth34) /
-                (int)merchantCapacity);
+    stepOrCurrentValue = (short)((((int)merchantCapacity - (int)currentValue) * this->frameWidth) /
+                                 (int)merchantCapacity);
   }
 
   short gaugeValue = 0;
@@ -73,7 +72,7 @@ void TTraderAmtBar::DoPostCreate(int arg) {
   if (merchantCapacity == 0) {
     rangeOrMaxValue = 0;
   } else {
-    rangeOrMaxValue = (short)((this->frameHeight38 * (int)gaugeValue) / (int)merchantCapacity);
+    rangeOrMaxValue = (short)((this->frameHeight * (int)gaugeValue) / (int)merchantCapacity);
   }
 
   auxValueA = merchantCapacity;
@@ -86,11 +85,11 @@ short TTraderAmtBar::ApplyMoveClamp(int baseValue, short requestedValue) {
   short result = static_cast<short>(baseValue);
   if (requestedValue > 0) {
     // 0x0058b083-0x0058b091 inlines the active-nation lookup; 0x0058b09f divides
-    // frameWidth34 (+0x34), not frameHeight38, and the original guards the IDIV with
+    // frameWidth (+0x34), not frameHeight, and the original guards the IDIV with
     // nothing -- there is no merchantCapacity != 0 test in the binary.
     TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetActiveNationId()];
     short merchantCapacity = nationState->merchantCapacity;
-    if ((int)requestedValue < (static_cast<int>(this->frameWidth34) / (int)merchantCapacity)) {
+    if ((int)requestedValue < (static_cast<int>(this->frameWidth) / (int)merchantCapacity)) {
       if (this->ownerContext->ResolveControlByTag(kControlTagSell) != 0) {
         result = 1;
       }

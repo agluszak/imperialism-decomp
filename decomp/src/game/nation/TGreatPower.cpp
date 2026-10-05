@@ -147,9 +147,9 @@ TG_LAYOUT_ASSERT(TGreatPower_Offset_aidAllocationMatrix_0x280,
                  offsetof(TGreatPower, aidAllocationMatrix) == 0x280);
 TG_LAYOUT_ASSERT(TGreatPower_Offset_city_0x894, offsetof(TGreatPower, city) == 0x894);
 TG_LAYOUT_ASSERT(TGreatPower_Offset_gameScoreRows930_0x930,
-                 offsetof(TGreatPower, gameScoreRows930) == 0x930);
+                 offsetof(TGreatPower, gameScoreRows) == 0x930);
 TG_LAYOUT_ASSERT(TGreatPower_Offset_gameScoreTotal_0x95c,
-                 offsetof(TGreatPower, gameScoreRows930) +
+                 offsetof(TGreatPower, gameScoreRows) +
                          TGreatPower::kGameScoreTotal * sizeof(int) ==
                      0x95c);
 TG_LAYOUT_ASSERT(TGreatPower_Size_Exactly_0x964, sizeof(TGreatPower) == 0x964);
@@ -321,7 +321,7 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
         if (cityRecord->cityTileIndex04 == static_cast<short>(regionIndex)) {
           for (int devIdx = 0; devIdx < 10; ++devIdx) {
             developmentByType[devIdx] = static_cast<short>(
-                developmentByType[devIdx] + cityRecord->resourceDevelopmentCounts82[devIdx]);
+                developmentByType[devIdx] + cityRecord->resourceDevelopmentCounts[devIdx]);
           }
         }
       }
@@ -386,13 +386,13 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
           ++linkedIndex;
         }
 
-        short* stage1CounterA = &cityRecord->resourceDevelopmentCounts82[1];
-        short* stage1CounterB = &cityRecord->resourceDevelopmentCounts82[2];
-        short* stage1CounterC = &cityRecord->resourceDevelopmentCounts82[4];
-        short* stage1CounterD = &cityRecord->resourceDevelopmentCounts82[5];
-        short* stage2CounterA = &cityRecord->resourceDevelopmentCounts82[6];
-        short* stage2CounterB = &cityRecord->resourceDevelopmentCounts82[7];
-        short* stage2CounterC = &cityRecord->resourceDevelopmentCounts82[8];
+        short* stage1CounterA = &cityRecord->resourceDevelopmentCounts[1];
+        short* stage1CounterB = &cityRecord->resourceDevelopmentCounts[2];
+        short* stage1CounterC = &cityRecord->resourceDevelopmentCounts[4];
+        short* stage1CounterD = &cityRecord->resourceDevelopmentCounts[5];
+        short* stage2CounterA = &cityRecord->resourceDevelopmentCounts[6];
+        short* stage2CounterB = &cityRecord->resourceDevelopmentCounts[7];
+        short* stage2CounterC = &cityRecord->resourceDevelopmentCounts[8];
 
         if ((turnDelta & 1U) == 0) {
           int sum01 = resourceSums[0] + resourceSums[1];
@@ -432,7 +432,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
           TTechMgr* orderCapabilityState = g_pTechMgr;
           int capabilityScore = resourceSums[6];
           if (capabilityScore != 0 &&
-              orderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] != 0) {
+              orderCapabilityState->perTechUnlockFlag[TTechMgr::kProductionOrderTechId] != 0) {
             if (static_cast<int>(*stage1CounterD) < capabilityScore / 2) {
               pendingStage = 1;
               *stage1CounterD = static_cast<short>(*stage1CounterD + 1);
@@ -505,11 +505,11 @@ char TGreatPower::AnyNeedCurrentExceedsTargetWhenCapMismatch(void) {
 // FUNCTION: IMPERIALISM 0x004dc440
 char TGreatPower::HasAnyCommodityRecordBelowStepValue(void) {
   TCity* tradeCity = this->city;
-  if (tradeCity->productionSummary1d8->strength <= 1) {
+  if (tradeCity->productionSummary->strength <= 1) {
     return 0;
   }
   for (int recordIndex = 8; recordIndex < 0xd; ++recordIndex) {
-    TProductionOrder* record = this->city->orderSlotsE4[static_cast<short>(recordIndex)];
+    TProductionOrder* record = this->city->orderSlots[static_cast<short>(recordIndex)];
     short controlValue = record->quantity;
     if (record->MaxOrder() > controlValue) {
       return 1;
@@ -590,9 +590,9 @@ char TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages(CString*
           if (candidate != this->nationSlot &&
               g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, candidate) != 0) {
             unsigned char candidateMask = static_cast<unsigned char>(1 << candidate);
-            if ((contextEntry->nationKeyMask10 & candidateMask) != 0) {
+            if ((contextEntry->nationKeyMask & candidateMask) != 0) {
               unsigned char selfMask = static_cast<unsigned char>(1 << this->nationSlot);
-              if ((contextEntry->nationKeyMask10 & selfMask) == 0) {
+              if ((contextEntry->nationKeyMask & selfMask) == 0) {
                 CString zoneName;
                 contextEntry->AssignZoneDisplayNameToOutputRef(&zoneName);
                 *outMessageText += "\n     " + zoneName;
@@ -755,7 +755,7 @@ void TGreatPower::AddCreatedItems(void) {
   this->AddToTreasury(static_cast<int>(this->needTargetByType[0x15]) * 500);
 
   TCity* cityPtr = this->city;
-  cityPtr->cityStockGemsE0 = 0;
+  cityPtr->cityStockGems = 0;
   cityPtr->VerifyStocks();
 
   this->AddToTreasury(static_cast<int>(this->needTargetByType[0x16]) * 200);
@@ -849,7 +849,7 @@ void TGreatPower::SetTradePolicyTo(NationSlot targetNationSlot, short tradePolic
   if (nation != this->nationSlot && tradePolicy != this->needLevelByNation[nation]) {
     this->needLevelByNation[nation] = tradePolicy;
   }
-  if (this->diplomacyEligibilityA0 != 0) {
+  if (this->diplomacyEligibility != 0) {
     g_pHelpMgr->NoOpDiplomacyPolicyStateChangedHook(-1, targetNationSlot, 1);
   }
   if (tradePolicy == 300) {
@@ -1007,7 +1007,7 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
   const int kNeedSlotEndExclusive = 12;
   const int kNeedSlotFallback = 5;
 
-  if (this->diplomacyEligibilityA0 == 0) {
+  if (this->diplomacyEligibility == 0) {
     this->foreignMinister->ArrangeMaterialsOffers();
     return;
   }
@@ -1036,7 +1036,7 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
             selectedNation = *rankedNation;
             --listIndex;
             TGreatPower* candidateState = g_apNationStates[selectedNation];
-            if (candidateState->diplomacyEligibilityA0 != 0) {
+            if (candidateState->diplomacyEligibility != 0) {
               selectedNation = static_cast<short>(-1);
             }
             if (selectedNation >= 0) {
@@ -1081,21 +1081,21 @@ short TGreatPower::GetStockpile(short resourceKind) {
   if (cityPtr == 0) {
     return 0;
   }
-  return (&cityPtr->cityStockCottonB6)[resourceKind];
+  return (&cityPtr->cityStockCotton)[resourceKind];
 }
 
 // FUNCTION: IMPERIALISM 0x004dd770
 void TGreatPower::SetCityStockCounterAndRefresh(short targetSlot, short value) {
   TCity* cityPtr = this->city;
-  (&cityPtr->cityStockCottonB6)[targetSlot] = value;
+  (&cityPtr->cityStockCotton)[targetSlot] = value;
   cityPtr->VerifyStocks();
 }
 
 // FUNCTION: IMPERIALISM 0x004dd7b0
 void TGreatPower::AddToCityStockCounterAndRefresh(short targetSlot, short value) {
   TCity* cityPtr = this->city;
-  (&cityPtr->cityStockCottonB6)[targetSlot] =
-      static_cast<short>((&cityPtr->cityStockCottonB6)[targetSlot] + value);
+  (&cityPtr->cityStockCotton)[targetSlot] =
+      static_cast<short>((&cityPtr->cityStockCotton)[targetSlot] + value);
   cityPtr->VerifyStocks();
 }
 
@@ -1140,9 +1140,9 @@ unsigned int TGreatPower::ComputeProductionMetricForOrderKind(short orderKind) {
     TCity* city = this->city;
     short available = static_cast<short>(
         ((((summary[0x14] + summary[0x12] + summary[0x11]) - city->cityStockCannedFoodC4) -
-          city->cityStockLivestockDE) -
-         city->cityStockGrainD8) -
-        city->cityStockFruitDA);
+          city->cityStockLivestock) -
+         city->cityStockGrain) -
+        city->cityStockFruit);
     if (available >= 0) {
       return static_cast<unsigned short>(available);
     }
@@ -1439,7 +1439,7 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetC
       }
     }
 
-    if (this->diplomacyEligibilityA0 != 0) {
+    if (this->diplomacyEligibility != 0) {
       this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetClass, -1);
     }
     break;
@@ -1469,7 +1469,7 @@ APPLY_POLICY_IF_ALLOWED:
   if (shouldApply) {
     this->diplomacyPolicyByNation[targetClass] = policyCode;
   }
-  if (this->diplomacyEligibilityA0 != 0) {
+  if (this->diplomacyEligibility != 0) {
     g_pHelpMgr->NoOpDiplomacyPolicyStateChangedHook(static_cast<int>(policyCode),
                                                     static_cast<int>(targetClass), shouldApply);
   }
@@ -1533,7 +1533,7 @@ bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
     }
   }
 
-  if (this->diplomacyEligibilityA0 != 0) {
+  if (this->diplomacyEligibility != 0) {
     g_pHelpMgr->NoOpDiplomacyPolicyStateChangedHook(
         static_cast<short>(newGrantRaw), static_cast<int>(targetNation), accepted ? 1 : 0);
 
@@ -1758,7 +1758,7 @@ void TGreatPower::BecomeProtectorateOf(int arg1) {
                                                                        kResetRelationship, 0);
       g_pDiplomacyTurnStateManager->SetRelationship(this->nationSlot, nationSlot, kDipFlagPolicy);
       TGreatPower* nationState = g_apNationStates[nationSlot];
-      if (nationState->diplomacyEligibilityA0 == 0) {
+      if (nationState->diplomacyEligibility == 0) {
         nationState->AddNoticeFrom(this->nationSlot, kDiplomacyProposalDeclareWar);
       }
       this->SetTradePolicyTo(static_cast<NationSlot>(nationSlot), kResetDiplomacyLevel);
@@ -1829,16 +1829,16 @@ void TGreatPower::DecrementNeedLevelByNationStep(NationSlot nationSlot) {
 void TGreatPower::AddNoticeFrom(short arg1, short arg2) {
   DiplomacyProposalCodeStorage proposalCode = static_cast<DiplomacyProposalCodeStorage>(arg2);
 
-  if (this->diplomacyEligibilityA0 != 0) {
+  if (this->diplomacyEligibility != 0) {
     int packedCode = (static_cast<int>(static_cast<unsigned short>(arg1)) << 16) |
                      static_cast<unsigned short>(arg2);
     this->turnEventQueue->InsertCopiedRecordSortedByComparator(&packedCode);
 
     NewsEvent payload;
     payload.marker0 = 1;
-    payload.subjectNationMask4 = 1 << (static_cast<unsigned char>(this->nationSlot) & 0x1F);
+    payload.subjectNationMask = 1 << (static_cast<unsigned char>(this->nationSlot) & 0x1F);
     payload.marker8 = 1;
-    payload.targetNationMask0C = 1 << (static_cast<unsigned char>(arg1) & 0x1F);
+    payload.targetNationMask = 1 << (static_cast<unsigned char>(arg1) & 0x1F);
 
     bool immediateDispatch = this->IsRemote();
     if (!immediateDispatch) {
@@ -2159,29 +2159,29 @@ void TGreatPower::ReplyToDiplomacyOffers(void) {
 
 // FUNCTION: IMPERIALISM 0x004df810
 void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
-  TPopulationMgr* notifySink = mgr->productionSummary1d8;
+  TPopulationMgr* notifySink = mgr->productionSummary;
   int presetLevel;
-  if (this->diplomacyEligibilityA0 == 0) {
+  if (this->diplomacyEligibility == 0) {
     presetLevel = 2;
   } else {
     presetLevel = g_pSimMgr->difficultyLevel;
   }
   const short* presetRow = g_Rebuild_Primary_Nation_Value_00653570[presetLevel];
   for (int needIndex = 0; needIndex < 0x17; ++needIndex) {
-    (&mgr->cityStockCottonB6)[static_cast<short>(needIndex)] = presetRow[needIndex];
+    (&mgr->cityStockCotton)[static_cast<short>(needIndex)] = presetRow[needIndex];
     mgr->VerifyStocks();
   }
-  mgr->productionAccum1fc[8] += 999 - mgr->productionOrderTable1dc[8];
+  mgr->productionAccum[8] += 999 - mgr->productionOrderTable1dc[8];
   mgr->productionOrderTable1dc[8] = 999;
-  mgr->productionAccum1fc[10] += 999 - mgr->productionOrderTable1dc[10];
+  mgr->productionAccum[10] += 999 - mgr->productionOrderTable1dc[10];
   mgr->productionOrderTable1dc[10] = 999;
-  mgr->productionAccum1fc[9] += 999 - mgr->productionOrderTable1dc[9];
+  mgr->productionAccum[9] += 999 - mgr->productionOrderTable1dc[9];
   mgr->productionOrderTable1dc[9] = 999;
-  mgr->productionAccum1fc[7] += 999 - mgr->productionOrderTable1dc[7];
+  mgr->productionAccum[7] += 999 - mgr->productionOrderTable1dc[7];
   mgr->productionOrderTable1dc[7] = 999;
-  mgr->productionAccum1fc[14] += 999 - mgr->productionOrderTable1dc[14];
+  mgr->productionAccum[14] += 999 - mgr->productionOrderTable1dc[14];
   mgr->productionOrderTable1dc[14] = 999;
-  mgr->productionAccum1fc[13] += 999 - mgr->productionOrderTable1dc[13];
+  mgr->productionAccum[13] += 999 - mgr->productionOrderTable1dc[13];
   mgr->productionOrderTable1dc[13] = 999;
   if (presetLevel == 0) {
     notifySink->SetPopulation(2, 3, 2);
@@ -2189,7 +2189,7 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
     notifySink->SetPopulation(4, 2, 1);
   }
   TSimMgr* simMgr = g_pSimMgr;
-  if (this->diplomacyEligibilityA0 == 0 || simMgr->difficultyLevel < kDifficultyNormal ||
+  if (this->diplomacyEligibility == 0 || simMgr->difficultyLevel < kDifficultyNormal ||
       simMgr->scenarioMapIndexPlusOne != 0) {
     if (!this->IsRemote() || simMgr->scenarioMapIndexPlusOne != 0) {
       this->CreateFrogCityAtHomeRegionAndAttach(mgr);
@@ -2241,7 +2241,7 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
   marker->activeFlag = true;
   this->townMarkerList->AddTail(marker);
   g_pGlobalMapState->PlaceCity(marker->tileIndex, this->nationSlot);
-  if (this->diplomacyEligibilityA0 == 0 && this->interiorMinister != 0) {
+  if (this->diplomacyEligibility == 0 && this->interiorMinister != 0) {
     this->interiorMinister->MakeNewCity(static_cast<TCity*>(receiver));
   }
 }
@@ -2251,15 +2251,15 @@ IMPERIALISM_BEGIN_RETAIL_NULL_THIS_CHECK
 // FUNCTION: IMPERIALISM 0x004dfd30
 void TGreatPower::SetHomeCityTileAndDisplayName(short homeTileIndex, char* cityName) {
   TCity* city = this ? this->city : 0;
-  TTown* homeTown = city->homeTownMarkerB0;
+  TTown* homeTown = city->homeTownMarker;
 
   if (homeTileIndex != -1) {
     homeTown->tileIndex = homeTileIndex;
   }
 
   short regionIndex;
-  if (city->homeTownMarkerB0) {
-    regionIndex = city->homeTownMarkerB0->tileIndex;
+  if (city->homeTownMarker) {
+    regionIndex = city->homeTownMarker->tileIndex;
   } else {
     regionIndex = 1;
   }
@@ -2291,7 +2291,7 @@ void TGreatPower::SetHomeCityTileAndDisplayName(short homeTileIndex, char* cityN
 
     city->orderCountByType5c[1] += 2;
 
-    if (g_pSimMgr->difficultyLevel == kDifficultyIntroductory && this->diplomacyEligibilityA0) {
+    if (g_pSimMgr->difficultyLevel == kDifficultyIntroductory && this->diplomacyEligibility) {
       city->orderCountByType5c[1] += 6;
 
       short result3 = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
@@ -2444,7 +2444,7 @@ int TGreatPower::CountMapActionContextNodesWithNationBit(void) {
     unsigned char nationBit = 1;
     nationBit <<= nationSlot;
     do {
-      if ((static_cast<unsigned char>(node->nationKeyMask10) & nationBit) != 0) {
+      if ((static_cast<unsigned char>(node->nationKeyMask) & nationBit) != 0) {
         ++count;
       }
       node = node->prev18;
@@ -2455,32 +2455,32 @@ int TGreatPower::CountMapActionContextNodesWithNationBit(void) {
 
 // FUNCTION: IMPERIALISM 0x004e0590
 double TGreatPower::GetWarNumber(void) {
-  return g_DAT_Value_00653308[this->foreignMinister->skillIndexC] +
-         g_DAT_Value_00653328[this->defenseMinister->skillIndexC];
+  return g_DAT_Value_00653308[this->foreignMinister->skillIndex] +
+         g_DAT_Value_00653328[this->defenseMinister->skillIndex];
 }
 
 // FUNCTION: IMPERIALISM 0x004e05d0
 double TGreatPower::GetSeekAllianceNumber(void) {
-  return g_DAT_Value_00653360[this->defenseMinister->skillIndexC] +
-         g_DAT_Value_00653340[this->foreignMinister->skillIndexC];
+  return g_DAT_Value_00653360[this->defenseMinister->skillIndex] +
+         g_DAT_Value_00653340[this->foreignMinister->skillIndex];
 }
 
 // FUNCTION: IMPERIALISM 0x004e0610
 double TGreatPower::GetAcceptAllianceNumber(void) {
-  return g_DAT_Value_00653398[this->defenseMinister->skillIndexC] +
-         g_DAT_Value_00653378[this->foreignMinister->skillIndexC];
+  return g_DAT_Value_00653398[this->defenseMinister->skillIndex] +
+         g_DAT_Value_00653378[this->foreignMinister->skillIndex];
 }
 
 // FUNCTION: IMPERIALISM 0x004e0650
 double TGreatPower::GetSeekPeaceNumber(void) {
-  return g_DAT_006533b0_Value_006533B0[this->foreignMinister->skillIndexC] +
-         g_DAT_006533d0_Value_006533D0[this->defenseMinister->skillIndexC];
+  return g_DAT_006533b0_Value_006533B0[this->foreignMinister->skillIndex] +
+         g_DAT_006533d0_Value_006533D0[this->defenseMinister->skillIndex];
 }
 
 // FUNCTION: IMPERIALISM 0x004e0690
 double TGreatPower::GetAcceptPeaceNumber(void) {
-  return g_DAT_006533e8_Value_006533E8[this->foreignMinister->skillIndexC] +
-         g_DAT_Value_00653408[this->defenseMinister->skillIndexC];
+  return g_DAT_006533e8_Value_006533E8[this->foreignMinister->skillIndex] +
+         g_DAT_Value_00653408[this->defenseMinister->skillIndex];
 }
 
 // FUNCTION: IMPERIALISM 0x004e06d0
@@ -2488,10 +2488,9 @@ int TGreatPower::SumCommodityRecordAccumulatedValues(void) {
   TCity* province = this->city;
   int total = 0;
   if (province != 0) {
-    total =
-        province->orderSlotsE4[12]->accumulatedValue +
-        province->orderSlotsE4[11]->accumulatedValue + province->orderSlotsE4[9]->accumulatedValue +
-        province->orderSlotsE4[10]->accumulatedValue + province->orderSlotsE4[8]->accumulatedValue;
+    total = province->orderSlots[12]->accumulatedValue +
+            province->orderSlots[11]->accumulatedValue + province->orderSlots[9]->accumulatedValue +
+            province->orderSlots[10]->accumulatedValue + province->orderSlots[8]->accumulatedValue;
   }
   return total;
 }
@@ -2508,8 +2507,8 @@ int TGreatPower::GetBuildingCapacity(short buildingSlot) {
 short TGreatPower::ComputeNationRuntimeAdvisoryMetricCase6() {
   TCity* nationCity = this->city;
   if (nationCity != 0) {
-    TPopulationMgr* summary = nationCity->productionSummary1d8;
-    TLaborPool* bucket = summary->productionSlots14;
+    TPopulationMgr* summary = nationCity->productionSummary;
+    TLaborPool* bucket = summary->productionSlots;
     short folded = static_cast<short>(bucket->highSkillCount08 * 2 + bucket->mediumSkillCount06);
     folded = static_cast<short>(folded * 2 + bucket->lowSkillCount04);
     return static_cast<short>(folded + summary->extraAt1e);
@@ -2522,9 +2521,9 @@ int TGreatPower::GetReinforcementPotential(void) {
   if (this->city == 0) {
     return 0;
   }
-  TPopulationMgr* scenario = this->city->productionSummary1d8;
+  TPopulationMgr* scenario = this->city->productionSummary;
   short scenarioCap = scenario->strength;
-  short productionCap = scenario->productionSlots14->lowSkillCount04;
+  short productionCap = scenario->productionSlots->lowSkillCount04;
   if (scenarioCap < productionCap) {
     productionCap = scenarioCap;
   }
@@ -3144,7 +3143,7 @@ void TGreatPower::DeclareWarOnTargetForAlignedMinors(int targetNationSlot) {
         if (targetNationSlot < kMajorNationCount &&
             g_pSimMgr->IsNationSlotEligibleForEventProcessing(targetNationSlot) != 0) {
           TGreatPower* targetState = g_apNationStates[targetNationSlot];
-          if (targetState->diplomacyEligibilityA0 == 0) {
+          if (targetState->diplomacyEligibility == 0) {
             targetState->AddNoticeFrom(minorNationSlot, kDiplomacyProposalDeclareWar);
           }
         }
@@ -3407,7 +3406,7 @@ int TGreatPower::ComputeNationNavyOrderWeightedMovementScore() {
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
     if (unit->GetCategory() > EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
       score += g_anWeightedNeighborUnitScoreByType_006955F0[unit->orderType] *
-               (static_cast<short>(unit->experiencePercent38 / 100) + 10) / 10;
+               (static_cast<short>(unit->experiencePercent / 100) + 10) / 10;
     }
   }
   for (TShip* node = TShip::GetFirst(); node != 0; node = node->next) {
@@ -3442,25 +3441,25 @@ int TGreatPower::RecomputeNationComparativePowerMetrics_Impl() {
 void TGreatPower::GenerateGameScore() {
   int seasonPercentTable[5] = {10, 15, 20, 25, 30};
 
-  TLaborPool* baseline = city->productionSummary1d8->baselineSlots10;
-  gameScoreRows930[kGameScoreLabor] =
+  TLaborPool* baseline = city->productionSummary->baselineSlots;
+  gameScoreRows[kGameScoreLabor] =
       baseline->lowSkillCount04 +
       (baseline->mediumSkillCount06 + baseline->highSkillCount08 * 2) * 2;
-  gameScoreRows930[kGameScoreTransport] = transportCapacity;
+  gameScoreRows[kGameScoreTransport] = transportCapacity;
 
-  gameScoreRows930[kGameScoreIndustry] = 0;
+  gameScoreRows[kGameScoreIndustry] = 0;
   for (int buildingSlot = 0; buildingSlot < 6; ++buildingSlot) {
-    gameScoreRows930[kGameScoreIndustry] += city->GetBuildingType(static_cast<short>(buildingSlot));
+    gameScoreRows[kGameScoreIndustry] += city->GetBuildingType(static_cast<short>(buildingSlot));
   }
 
-  gameScoreRows930[kGameScoreProvinces] = ownedRegionList->GetSize();
+  gameScoreRows[kGameScoreProvinces] = ownedRegionList->GetSize();
   for (int minorSlot = 0; minorSlot < 16; ++minorSlot) {
     TMinor* candidate = g_apNationAuxRuntimeStateSlots[minorSlot];
     if (candidate->IsColonyOf(nationSlot)) {
-      gameScoreRows930[kGameScoreProvinces] += candidate->ownedRegionList->GetSize();
+      gameScoreRows[kGameScoreProvinces] += candidate->ownedRegionList->GetSize();
     }
   }
-  gameScoreRows930[kGameScoreProvinces] *= 10;
+  gameScoreRows[kGameScoreProvinces] *= 10;
 
   int militaryOrderCostSum = 0;
   CIterator unitIter(militaryUnitList44);
@@ -3468,9 +3467,9 @@ void TGreatPower::GenerateGameScore() {
        unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
     militaryOrderCostSum += g_aUnitOrderCostProfileByAbilityId[unit->orderType][2];
   }
-  gameScoreRows930[kGameScoreMilitary] = militaryOrderCostSum;
+  gameScoreRows[kGameScoreMilitary] = militaryOrderCostSum;
 
-  gameScoreRows930[kGameScoreNavy] = GetArmsInNavy();
+  gameScoreRows[kGameScoreNavy] = GetArmsInNavy();
 
   TDiplomacyMgr* diplomacy = g_pDiplomacyTurnStateManager;
   int relationSum = 0;
@@ -3487,29 +3486,29 @@ void TGreatPower::GenerateGameScore() {
             ->relationStandingScores[nationSlot * kNationSlotCount + static_cast<short>(otherSlot)];
     relationCount++;
   }
-  gameScoreRows930[kGameScoreDiplomacy] = relationSum / relationCount;
+  gameScoreRows[kGameScoreDiplomacy] = relationSum / relationCount;
 
-  gameScoreRows930[kGameScoreMerchantMarine] = merchantCapacity;
+  gameScoreRows[kGameScoreMerchantMarine] = merchantCapacity;
   int currentQuarter = g_pSimMgr->economicTurn / 4;
-  gameScoreRows930[kGameScoreYear] = (100 - currentQuarter) * 10;
+  gameScoreRows[kGameScoreYear] = (100 - currentQuarter) * 10;
 
-  gameScoreRows930[kGameScoreSubtotal] = 0;
-  int* summaryFields = gameScoreRows930;
+  gameScoreRows[kGameScoreSubtotal] = 0;
+  int* summaryFields = gameScoreRows;
   for (int fieldIndex = 0; fieldIndex < 9; ++fieldIndex) {
-    gameScoreRows930[kGameScoreSubtotal] += summaryFields[fieldIndex];
+    gameScoreRows[kGameScoreSubtotal] += summaryFields[fieldIndex];
   }
 
-  gameScoreRows930[kGameScoreDifficultyPercent] = seasonPercentTable[g_pSimMgr->difficultyLevel];
-  gameScoreRows930[kGameScoreTotal] =
-      gameScoreRows930[kGameScoreSubtotal] * gameScoreRows930[kGameScoreDifficultyPercent] / 10;
+  gameScoreRows[kGameScoreDifficultyPercent] = seasonPercentTable[g_pSimMgr->difficultyLevel];
+  gameScoreRows[kGameScoreTotal] =
+      gameScoreRows[kGameScoreSubtotal] * gameScoreRows[kGameScoreDifficultyPercent] / 10;
 }
 
 // FUNCTION: IMPERIALISM 0x004e3560
 void TGreatPower::PayForMilitary() {
   int maintenanceMultiplier =
-      static_cast<unsigned short>(g_pTechMgr->activePrerequisitePair264.primaryTechId) |
+      static_cast<unsigned short>(g_pTechMgr->activePrerequisitePair.primaryTechId) |
       (static_cast<unsigned int>(
-           static_cast<unsigned short>(g_pTechMgr->activePrerequisitePair264.secondaryTechId))
+           static_cast<unsigned short>(g_pTechMgr->activePrerequisitePair.secondaryTechId))
        << 16);
   int militaryUnitCost = 0;
   CIterator unitIter(militaryUnitList44);

@@ -529,7 +529,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
   } break;
 
   case 8: {
-    if (g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] == 0) {
+    if (g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId] == 0) {
       break;
     }
     if (g_apNationStates[activeNation]->GetBuildingCapacity(6) == 0) {
@@ -773,7 +773,7 @@ bool ShowTurnAlertsForActiveNation() {
         anyAlertShown = true;
       }
     }
-    city->productionSummary1d8->PretendToEat(foodSubstitutionCount, starvationCount);
+    city->productionSummary->PretendToEat(foodSubstitutionCount, starvationCount);
     if (starvationCount != 0) {
       g_pSimMgr->GetString(0x2753, 0x20, &titleText);
       g_pSimMgr->GetString(0x2753, 0x21, &bodyText);
@@ -910,7 +910,7 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
 
   THelpPicture* helpPicture =
       static_cast<THelpPicture*>(pendingDialogView8->ResolveControlByTag(kControlTagDialog));
-  helpPicture->currentHelpSet90 = pendingEntry;
+  helpPicture->currentHelpSet = pendingEntry;
 
   CString emptyTitle(g_pszEmptyTextPointer_00656f60);
   pendingDialogView8->SetTitle(&emptyTitle);
@@ -1012,12 +1012,12 @@ void THelpMgr::CheckUnitAdvice(TCivUnit* civilianOrderEntry) {
   int messageStringIndex = -1;
 
   if (civilianOrderEntry->orderType == EncodeCivilianUnitKind(kCivilianUnitProspector)) {
-    if (civilianOrderEntry->completionMarker26 == 0x232f && ++civilianCompletionCounts[0] == 1) {
+    if (civilianOrderEntry->completionMarker == 0x232f && ++civilianCompletionCounts[0] == 1) {
       titleStringIndex = 0x2c;
       messageStringIndex = 0x2d;
     }
   } else if (civilianOrderEntry->orderType == EncodeCivilianUnitKind(kCivilianUnitEngineer)) {
-    switch (civilianOrderEntry->completionMarker26) {
+    switch (civilianOrderEntry->completionMarker) {
     case 0x2329:
       if (++civilianCompletionCounts[1] == 3) {
         titleStringIndex = 0x2e;

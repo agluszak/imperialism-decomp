@@ -283,8 +283,8 @@ void TCombatReportView::Draw(RECT* rectBuffer) {
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                        &iconSrcRect, &iconDstRect, 0x24, 0);
 
-      if (record->widthParamAt17 != 0) {
-        short overlayWidth = static_cast<short>(record->widthParamAt17 * 2 - 0x18);
+      if (record->widthParam != 0) {
+        short overlayWidth = static_cast<short>(record->widthParam * 2 - 0x18);
         int overlayRight = overlayWidth + 0x1f;
         RECT overlaySrcRect = {0, 0x12, overlayWidth, 0x17};
         RECT overlayDstRect = {0x1f, y + 0xb, overlayRight, y + 0x13};

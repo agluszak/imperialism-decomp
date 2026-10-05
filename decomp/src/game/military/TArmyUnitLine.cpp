@@ -22,25 +22,25 @@ TArmyUnitLine::TArmyUnitLine() : TLineData() {}
 // FUNCTION: IMPERIALISM 0x004a8db0
 void TArmyUnitLine::IArmyUnitLine(short rowArg, short colArg, int* bounds, TMilitaryUnit* item) {
   SetLineDataRowAndBounds(rowArg, colArg, bounds);
-  militaryUnit10 = item;
+  militaryUnit = item;
 }
 
 // FUNCTION: IMPERIALISM 0x004a8df0
 void TArmyUnitLine::InstallViews(TView* panel, int* offsetLayout) {
   TArmyUnitView* armyView = new TArmyUnitView;
   armyView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &layoutWidth, 5, 5, 0);
-  armyView->militaryUnit60 = militaryUnit10;
+  armyView->militaryUnit = militaryUnit;
 
   int checkboxOffset[2] = {0, 0};
   int checkboxSize[2] = {0x3f, 0x31};
   TArmyCheckBox* checkbox = new TArmyCheckBox(
       armyView, checkboxOffset, checkboxSize, 4, 4,
-      static_cast<TMilitaryPageView*>(panel)->primaryUnitAtlas84, militaryUnit10->orderType << 7);
+      static_cast<TMilitaryPageView*>(panel)->primaryUnitAtlas, militaryUnit->orderType << 7);
   checkbox->controlTag = kControlTagChec; // 'chec'
-  if (militaryUnit10->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
+  if (militaryUnit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
     static_cast<TView*>(checkbox)->ViewEnable(1, 0);
     checkbox->eventNumber60 = 4;
-    if (militaryUnit10->unitOrder == 0) {
+    if (militaryUnit->unitOrder == 0) {
       checkbox->SetState(1, 0);
     }
   } else {
@@ -49,11 +49,11 @@ void TArmyUnitLine::InstallViews(TView* panel, int* offsetLayout) {
   }
 
   CString movementHelp;
-  g_pSimMgr->GetString(0x2726, militaryUnit10->GetCategory(), &movementHelp);
+  g_pSimMgr->GetString(0x2726, militaryUnit->GetCategory(), &movementHelp);
   SetControlHoverHelpText(movementHelp, checkbox);
 
-  if (militaryUnit10->CanUpgrade()) {
-    int upgradeOffset[2] = {armyView->frameWidth34 - 0x28, 0};
+  if (militaryUnit->CanUpgrade()) {
+    int upgradeOffset[2] = {armyView->frameWidth - 0x28, 0};
     int upgradeSize[2] = {0x13, 0x12};
     TGWorldButton* upgradeButton = new TGWorldButton;
     upgradeButton->IGWorldButton(armyView, upgradeOffset, upgradeSize, 0xdae);
@@ -69,7 +69,7 @@ void TArmyUnitLine::InstallViews(TView* panel, int* offsetLayout) {
     short armsCost;
     short cashCost;
     short fuelCost;
-    militaryUnit10->UpgradeRequirements(candidateSlot, armsCost, cashCost, fuelCost);
+    militaryUnit->UpgradeRequirements(candidateSlot, armsCost, cashCost, fuelCost);
     armsText.Format(g_szDecimalFormat, static_cast<int>(armsCost));
     g_pSimMgr->NumToCurrency(cashCost, &cashText);
     if (fuelCost == 0) {

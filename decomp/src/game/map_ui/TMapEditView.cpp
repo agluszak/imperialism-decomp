@@ -141,7 +141,7 @@ void TMapEditView::DispatchOverlayEvent78FromStridedRecord(int tileIndex, int di
   for (index = 0; index < kMapTileCount; ++index) {
     TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[index];
     if (tile.cityRecordIndex == provinceId) {
-      tile.formerOwnerNationTag03 = static_cast<signed char>(nationTag);
+      tile.formerOwnerNationTag = static_cast<signed char>(nationTag);
       tile.ownerNationTag04 = static_cast<signed char>(nationTag);
     }
   }
@@ -152,13 +152,13 @@ void TMapEditView::DispatchOverlayEvent78FromStridedRecord(int tileIndex, int di
       continue;
     }
 
-    tile.ownerBorderMask07 = 0;
+    tile.ownerBorderMask = 0;
     g_pGlobalMapState->UpdateTileNeighborBorderInfluenceCounters(static_cast<short>(index), 2);
     InvalidateTile(static_cast<short>(index));
     for (int direction = 0; direction < 6; ++direction) {
       short neighbor =
           TMapMgr::GetNeighborTileID(static_cast<short>(index), static_cast<short>(direction));
-      g_pGlobalMapState->terrainStateTable[neighbor].ownerBorderMask07 = 0;
+      g_pGlobalMapState->terrainStateTable[neighbor].ownerBorderMask = 0;
       g_pGlobalMapState->UpdateTileNeighborBorderInfluenceCounters(neighbor, 2);
       InvalidateTile(neighbor);
     }
@@ -179,15 +179,15 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, i
   for (index = 0; index < kCityRecordCount; ++index) {
     Province& city = g_pGlobalMapState->cityScoreTable[index];
     city.adjacentRegionCount08 = 0;
-    city.stationedUnitChain98 = 0;
+    city.stationedUnitChain = 0;
     city.linkedRegionCount = 0;
     int entry;
     for (entry = 0; entry < 0x20; ++entry) {
       city.linkedTileIndices42[entry] = -1;
     }
     for (entry = 0; entry < 0x0c; ++entry) {
-      city.adjacentRegionIds0A[entry] = -1;
-      city.adjacentRegionAnchorTiles22[entry] = -1;
+      city.adjacentRegionIds[entry] = -1;
+      city.adjacentRegionAnchorTiles[entry] = -1;
     }
   }
 
@@ -217,7 +217,7 @@ void TMapEditView::PlaceTerrain(short tileIndex) {
   tile.adjacencyMaskA0a = 0;
   tile.adjacencyMaskB0b = 0;
   tile.riverSpriteCode |= kRiverSpriteCodeNeedsResolution;
-  tile.spriteVariantIndex01 = 0;
+  tile.spriteVariantIndex = 0;
   g_pGlobalMapState->AssignPictToTile(tileIndex);
   InvalidateTile(tileIndex);
 
@@ -229,7 +229,7 @@ void TMapEditView::PlaceTerrain(short tileIndex) {
       neighbor.adjacencyMaskB0b = 0;
       neighbor.riverSpriteCode |= kRiverSpriteCodeNeedsResolution;
       // The retail body clears the selected tile's byte here again, not the neighbor's.
-      tile.spriteVariantIndex01 = 0;
+      tile.spriteVariantIndex = 0;
       g_pGlobalMapState->AssignPictToTile(neighborIndex);
       InvalidateTile(neighborIndex);
     }
@@ -255,7 +255,7 @@ void TMapEditView::DefaultResources(short tileIndex) {
   tile.adjacencyMaskA0a = 0;
   tile.adjacencyMaskB0b = 0;
   tile.riverSpriteCode |= kRiverSpriteCodeNeedsResolution;
-  tile.spriteVariantIndex01 = 0;
+  tile.spriteVariantIndex = 0;
   tile.resourceTypeByEdge[0] = static_cast<signed char>(resourceByProfile[tile.gateFlag]);
   tile.resourceTypeByEdge[1] = -1;
   g_pGlobalMapState->AssignPictToTile(tileIndex);
@@ -268,7 +268,7 @@ void TMapEditView::DefaultResources(short tileIndex) {
       neighbor.adjacencyMaskA0a = 0;
       neighbor.adjacencyMaskB0b = 0;
       neighbor.riverSpriteCode |= kRiverSpriteCodeNeedsResolution;
-      neighbor.spriteVariantIndex01 = 0;
+      neighbor.spriteVariantIndex = 0;
       g_pGlobalMapState->AssignPictToTile(neighborIndex);
       InvalidateTile(neighborIndex);
     }
@@ -286,9 +286,9 @@ void TMapEditView::PlaceProvince(short tileIndex) {
       static_cast<TNumberText*>(ownerContext->ResolveControlByTag(kControlTagPrnu));
   provinceNumber->AssertValid();
   tile.cityRecordIndex = static_cast<short>(provinceNumber->UpdateControlCachedIntFromWindowText());
-  tile.ownerBorderMask07 = 0;
-  tile.cityBorderMask08 = 0;
-  tile.waterAdjacencyMask09 = 0;
+  tile.ownerBorderMask = 0;
+  tile.cityBorderMask = 0;
+  tile.waterAdjacencyMask = 0;
   g_pSfxPlaybackSystem->PlaySoundEffect(4000);
   g_pGlobalMapState->UpdateTileNeighborBorderInfluenceCounters(tileIndex, 0);
   InvalidateTile(tileIndex);
@@ -298,9 +298,9 @@ void TMapEditView::PlaceProvince(short tileIndex) {
     short neighborIndex = TMapMgr::GetNeighborTileID(tileIndex, direction);
     if (neighborIndex != -1) {
       TTerrainStateRecord& neighbor = g_pGlobalMapState->terrainStateTable[neighborIndex];
-      neighbor.ownerBorderMask07 = 0;
-      neighbor.cityBorderMask08 = 0;
-      neighbor.waterAdjacencyMask09 = 0;
+      neighbor.ownerBorderMask = 0;
+      neighbor.cityBorderMask = 0;
+      neighbor.waterAdjacencyMask = 0;
       g_pGlobalMapState->UpdateTileNeighborBorderInfluenceCounters(neighborIndex, 0);
       InvalidateTile(neighborIndex);
     }

@@ -46,8 +46,8 @@ IMPLEMENT_DYNCREATE(TMapUberPicture, TMapUberUberPicture)
 
 // FUNCTION: IMPERIALISM 0x005969e0
 TMapUberPicture::TMapUberPicture()
-    : invalidationFlag94(1), activeUnitCategoryIndex96(3), orderEntryContext98(nullptr),
-      deadStore9C(0), navyRosterA0(0), goodGoldTagControlA4(nullptr), miniMapViewC0(nullptr) {}
+    : invalidationFlag(1), activeUnitCategoryIndex(3), orderEntryContext(nullptr), deadStore9C(0),
+      navyRosterA0(0), goodGoldTagControl(nullptr), miniMapView(nullptr) {}
 
 // FUNCTION: IMPERIALISM 0x00596a60
 TMapUberPicture::~TMapUberPicture() {}
@@ -56,7 +56,7 @@ TMapUberPicture::~TMapUberPicture() {}
 void TMapUberPicture::DoPostCreate(int arg) {
   TOffLimitsPicture::DoPostCreate(arg);
 
-  g_pAmbitApplication->edgeScrollTarget48 = this;
+  g_pAmbitApplication->edgeScrollTarget = this;
 
   subview2A8 = static_cast<TMapDialog*>(ResolveControlByTag(kControlTagDialog));
   subview2A8->AssertValid();
@@ -64,11 +64,11 @@ void TMapUberPicture::DoPostCreate(int arg) {
   TOceanDialog* alternateMapDialog =
       static_cast<TOceanDialog*>(ResolveControlByTag(kControlTagDOOG)); // 'DOOG'
   if (alternateMapDialog != nullptr) {
-    goodGoldTagControlA4 = alternateMapDialog;
+    goodGoldTagControl = alternateMapDialog;
     alternateMapDialog->AssertValid();
   }
 
-  subviewAc = subview2A8;
+  subview = subview2A8;
   categoryPages[0] = ResolveControlByTag(kControlTagUciv); // 'uciv'
   categoryPages[1] = ResolveControlByTag(kControlTagUarm); // 'uarm'
   categoryPages[2] = ResolveControlByTag(kControlTagUnav); // 'unav'
@@ -109,7 +109,7 @@ void TMapUberPicture::Free() {
   if (g_pUiAnimator != 0) {
     g_pUiAnimator->mapUberPicture2c = 0;
   }
-  g_pAmbitApplication->edgeScrollTarget48 = 0;
+  g_pAmbitApplication->edgeScrollTarget = 0;
   g_pAmbitApplication->cursorRegionInvalid = FALSE;
   TOffLimitsPicture::Free();
 }
@@ -124,7 +124,7 @@ static CPoint g_MapUberModeLayoutScratch_006a45e8(-1000, -1000);
 
 // FUNCTION: IMPERIALISM 0x00596cb0
 void TMapUberPicture::SetMapInteractionMode(short nMode) {
-  short previousMode = this->activeUnitCategoryIndex96;
+  short previousMode = this->activeUnitCategoryIndex;
   if (previousMode != nMode) {
     if (previousMode == 0) {
       g_pSelectedCivilianOrderState->SetActiveCivilianSelection(nullptr, false);
@@ -168,7 +168,7 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
   if (previousMode < 3) {
     categoryPages[previousMode]->Locate(g_MapUberModeLayoutScratch_006a45e8, 1);
   }
-  this->activeUnitCategoryIndex96 = nMode;
+  this->activeUnitCategoryIndex = nMode;
   if (nMode < 3) {
     categoryPages[nMode]->Locate(g_MapUberModeLayoutTable_006a4590[nMode], 1);
   }
@@ -260,7 +260,7 @@ void TMapUberPicture::DoMenuCommand(int command) {
     return;
   }
 
-  switch (activeUnitCategoryIndex96) {
+  switch (activeUnitCategoryIndex) {
   case 0:
     if (g_pSelectedCivilianOrderState->selectedEntry != 0) {
       CenterOn(g_pSelectedCivilianOrderState->selectedEntry->tileIndex06);
@@ -275,8 +275,8 @@ void TMapUberPicture::DoMenuCommand(int command) {
     return;
 
   case 2:
-    if (orderEntryContext98 != 0) {
-      CenterOn(orderEntryContext98->tileOrTerrainId0c);
+    if (orderEntryContext != 0) {
+      CenterOn(orderEntryContext->tileOrTerrainId0c);
     }
     return;
 
@@ -289,21 +289,21 @@ void TMapUberPicture::DoMenuCommand(int command) {
 
 // FUNCTION: IMPERIALISM 0x00597770
 void TMapUberPicture::DoKeyEvent(TToolboxEvent* event) {
-  if (subviewAc != 0) {
-    subviewAc->DoKeyEvent(event);
+  if (subview != 0) {
+    subview->DoKeyEvent(event);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005977a0
 void TMapUberPicture::Scroll(MapScrollEdgeMaskStorage edgeMask) {
-  if (invalidationFlag94) {
+  if (invalidationFlag) {
     subview2A8->UpdateMapInteractionPreviewParityAndRenderTransientSprites(edgeMask);
   } else {
-    goodGoldTagControlA4->ApplyDirectionalNudgeAndRefreshDisplay(
+    goodGoldTagControl->ApplyDirectionalNudgeAndRefreshDisplay(
         static_cast<unsigned char>(edgeMask));
   }
-  if (miniMapViewC0 != nullptr) {
-    miniMapViewC0->RefreshControl();
+  if (miniMapView != nullptr) {
+    miniMapView->RefreshControl();
   }
 }
 
@@ -344,9 +344,9 @@ void TMapUberPicture::RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry) {
 // FUNCTION: IMPERIALISM 0x00597950
 void TMapUberPicture::SetActiveMapOrderEntry(TZone* pMapOrderContextZone) {
   this->SetMapInteractionMode(2);
-  goodGoldTagControlA4->InvalidateZone(orderEntryContext98);
-  this->orderEntryContext98 = pMapOrderContextZone;
-  goodGoldTagControlA4->InvalidateZone(pMapOrderContextZone);
+  goodGoldTagControl->InvalidateZone(orderEntryContext);
+  this->orderEntryContext = pMapOrderContextZone;
+  goodGoldTagControl->InvalidateZone(pMapOrderContextZone);
   if (pMapOrderContextZone == nullptr) {
     this->RefreshMapOrderEntryPanel(nullptr);
     return;
@@ -362,7 +362,7 @@ void TMapUberPicture::SetActiveMapOrderEntry(TZone* pMapOrderContextZone) {
 // gate map-click cursor state. 68 bytes, ground-truth-confirmed via decompile.
 // FUNCTION: IMPERIALISM 0x00597a10
 bool TMapUberPicture::HasActiveMapInteractionSelection() {
-  switch (this->activeUnitCategoryIndex96) {
+  switch (this->activeUnitCategoryIndex) {
   case 0:
     return g_pSelectedCivilianOrderState->selectedEntry != nullptr;
   case 1:
@@ -376,7 +376,7 @@ bool TMapUberPicture::HasActiveMapInteractionSelection() {
 
 // FUNCTION: IMPERIALISM 0x00597a80
 void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
-  unsigned char modeCursor = static_cast<unsigned char>(activeUnitCategoryIndex96);
+  unsigned char modeCursor = static_cast<unsigned char>(activeUnitCategoryIndex);
   unsigned char visitedModes = 0;
   bool selectionResolved = false;
   unsigned char previousMode = modeCursor;
@@ -399,7 +399,7 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
           g_pSimMgr->GetActiveNationId());
       if (civilian != nullptr) {
         selectionResolved = true;
-        if (activeUnitCategoryIndex96 != 0) {
+        if (activeUnitCategoryIndex != 0) {
           EnterMapInteractionOverlayMode(nullptr);
           SetMapInteractionMode(0);
         }
@@ -409,7 +409,7 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
       } else {
         modeCursor = 1;
         previousMode = 0;
-        if (activeUnitCategoryIndex96 != 0) {
+        if (activeUnitCategoryIndex != 0) {
           visitedModes |= 1;
         }
       }
@@ -426,7 +426,7 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
       short province = g_pMapContextActionManager->FindNextSelectableProvinceForNation(
           g_pSimMgr->GetActiveNationId());
       if (province != -1) {
-        if (activeUnitCategoryIndex96 != 1) {
+        if (activeUnitCategoryIndex != 1) {
           SetMapInteractionMode(1);
         }
         g_pMapContextActionManager->SetActiveProvinceSelection(province);
@@ -435,7 +435,7 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
       } else {
         modeCursor = 2;
         previousMode = 1;
-        if (activeUnitCategoryIndex96 != 1) {
+        if (activeUnitCategoryIndex != 1) {
           visitedModes |= 2;
         }
       }
@@ -447,7 +447,7 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
         selectionResolved = true;
       } else {
         modeCursor = 0;
-        orderEntryContext98 = nullptr;
+        orderEntryContext = nullptr;
         previousMode = 2;
         visitedModes |= 4;
       }
@@ -469,7 +469,7 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
     return;
   }
 
-  switch (activeUnitCategoryIndex96) {
+  switch (activeUnitCategoryIndex) {
   case 0:
     g_pSelectedCivilianOrderState->selectedEntry = nullptr;
     break;
@@ -479,8 +479,8 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
     return;
   case 2:
     SetMapInteractionMode(2);
-    InvalidateMapRegionForEntryIfUiPassive(orderEntryContext98);
-    orderEntryContext98 = nullptr;
+    InvalidateMapRegionForEntryIfUiPassive(orderEntryContext);
+    orderEntryContext = nullptr;
     InvalidateMapRegionForEntryIfUiPassive(nullptr);
     RefreshMapOrderEntryPanel(nullptr);
     SetMapInteractionMode(3);
@@ -607,9 +607,9 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
     TZone* previousContext = taskForce->location;
     taskForce->CancelOrders(0);
     SetMapInteractionMode(2);
-    goodGoldTagControlA4->InvalidateZone(orderEntryContext98);
-    orderEntryContext98 = previousContext;
-    goodGoldTagControlA4->InvalidateZone(previousContext);
+    goodGoldTagControl->InvalidateZone(orderEntryContext);
+    orderEntryContext = previousContext;
+    goodGoldTagControl->InvalidateZone(previousContext);
     TTaskForce* refreshed =
         previousContext != 0
             ? g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(
@@ -621,24 +621,24 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
 
 // FUNCTION: IMPERIALISM 0x00598840
 void TMapUberPicture::InvalidateMapRegionForEntryIfUiPassive(TZone* zone) {
-  if (!invalidationFlag94) {
-    goodGoldTagControlA4->InvalidateZone(zone);
+  if (!invalidationFlag) {
+    goodGoldTagControl->InvalidateZone(zone);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00598870
 void TMapUberPicture::InvalidateTile(short tileIndex) {
-  if (invalidationFlag94) {
+  if (invalidationFlag) {
     subview2A8->InvalidateTile(tileIndex);
   } else {
-    goodGoldTagControlA4->InvalidateTile(tileIndex);
+    goodGoldTagControl->InvalidateTile(tileIndex);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005988c0
 void TMapUberPicture::RedrawTile(short tileIndex) {
-  this->subviewAc->RefreshMapTile(tileIndex);
-  if (!this->invalidationFlag94) {
+  this->subview->RefreshMapTile(tileIndex);
+  if (!this->invalidationFlag) {
     this->subview2A8->ReleaseTileMarkerForTile(tileIndex);
   }
 }
@@ -646,37 +646,37 @@ void TMapUberPicture::RedrawTile(short tileIndex) {
 // FUNCTION: IMPERIALISM 0x00598910
 void TMapUberPicture::PrepareAndRenderMapOverlayMode(unsigned char overlayMode) {
   this->PrepareForDrawing();
-  subviewAc->SetMapOverlayModeAndRenderPreview(overlayMode);
+  subview->SetMapOverlayModeAndRenderPreview(overlayMode);
 }
 
 // FUNCTION: IMPERIALISM 0x00598950
 void TMapUberPicture::InvalidateMap() {
-  if (invalidationFlag94) {
+  if (invalidationFlag) {
     subview2A8->RefreshControl();
   } else {
-    goodGoldTagControlA4->RefreshControl();
+    goodGoldTagControl->RefreshControl();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00598990
 void TMapUberPicture::CenterOn(int tileIndex) {
-  this->subviewAc->CenterOn(tileIndex);
-  if (this->miniMapViewC0 != nullptr) {
-    this->miniMapViewC0->RefreshControl();
+  this->subview->CenterOn(tileIndex);
+  if (this->miniMapView != nullptr) {
+    this->miniMapView->RefreshControl();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005989d0
 void TMapUberPicture::SetUpperLeft(int tileX, int tileY) {
-  this->subviewAc->SetMapViewCellCoordinates(tileX, tileY);
-  if (this->miniMapViewC0 != nullptr) {
-    this->miniMapViewC0->RefreshControl();
+  this->subview->SetMapViewCellCoordinates(tileX, tileY);
+  if (this->miniMapView != nullptr) {
+    this->miniMapView->RefreshControl();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00598a20
 void TMapUberPicture::NoticeTile(int tileIndex) {
-  this->subviewAc->NoticeTile(tileIndex);
+  this->subview->NoticeTile(tileIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x00598a50
@@ -798,12 +798,12 @@ void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* po
   }
 
   SetMapInteractionMode(2);
-  if (!invalidationFlag94) {
-    goodGoldTagControlA4->InvalidateZone(orderEntryContext98);
+  if (!invalidationFlag) {
+    goodGoldTagControl->InvalidateZone(orderEntryContext);
   }
-  orderEntryContext98 = portZone;
-  if (!invalidationFlag94) {
-    goodGoldTagControlA4->InvalidateZone(portZone);
+  orderEntryContext = portZone;
+  if (!invalidationFlag) {
+    goodGoldTagControl->InvalidateZone(portZone);
   }
 
   if (portZone == 0) {
@@ -917,12 +917,12 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
 
 // FUNCTION: IMPERIALISM 0x00599770
 void TMapUberPicture::SelectNextValidMapOrderEntryFromCursor(char includeCurrent) {
-  if (activeUnitCategoryIndex96 != 2) {
+  if (activeUnitCategoryIndex != 2) {
     return;
   }
 
   g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(nullptr);
-  TZone* candidate = orderEntryContext98;
+  TZone* candidate = orderEntryContext;
   if (candidate != nullptr && includeCurrent == 0) {
     candidate = candidate->prev18;
   }
@@ -933,8 +933,8 @@ void TMapUberPicture::SelectNextValidMapOrderEntryFromCursor(char includeCurrent
   while (candidate != nullptr) {
     if (candidate->CanDisplayMapOrderEntryInCurrentContext(-1, false)) {
       SetMapInteractionMode(2);
-      InvalidateMapRegionForEntryIfUiPassive(orderEntryContext98);
-      orderEntryContext98 = candidate;
+      InvalidateMapRegionForEntryIfUiPassive(orderEntryContext);
+      orderEntryContext = candidate;
       InvalidateMapRegionForEntryIfUiPassive(candidate);
       if (candidate == nullptr) {
         RefreshMapOrderEntryPanel(nullptr);
@@ -947,14 +947,14 @@ void TMapUberPicture::SelectNextValidMapOrderEntryFromCursor(char includeCurrent
     }
     candidate = candidate->prev18;
   }
-  orderEntryContext98 = nullptr;
+  orderEntryContext = nullptr;
 }
 
 // FUNCTION: IMPERIALISM 0x005998a0
 bool TMapUberPicture::TrySelectNextValidMapOrderEntry(bool includeCurrent) {
   g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(nullptr);
 
-  TZone* candidate = orderEntryContext98;
+  TZone* candidate = orderEntryContext;
   if (candidate != nullptr && !includeCurrent) {
     candidate = candidate->prev18;
   }
@@ -965,8 +965,8 @@ bool TMapUberPicture::TrySelectNextValidMapOrderEntry(bool includeCurrent) {
   while (candidate != nullptr) {
     if (candidate->CanDisplayMapOrderEntryInCurrentContext(-1, false)) {
       SetMapInteractionMode(2);
-      InvalidateMapRegionForEntryIfUiPassive(orderEntryContext98);
-      orderEntryContext98 = candidate;
+      InvalidateMapRegionForEntryIfUiPassive(orderEntryContext);
+      orderEntryContext = candidate;
       InvalidateMapRegionForEntryIfUiPassive(candidate);
       if (candidate == nullptr) {
         RefreshMapOrderEntryPanel(nullptr);
@@ -980,13 +980,13 @@ bool TMapUberPicture::TrySelectNextValidMapOrderEntry(bool includeCurrent) {
     candidate = candidate->prev18;
   }
 
-  orderEntryContext98 = nullptr;
+  orderEntryContext = nullptr;
   return false;
 }
 
 // FUNCTION: IMPERIALISM 0x005999c0
 void TMapUberPicture::GrandCycle() {
-  if (invalidationFlag94) {
+  if (invalidationFlag) {
     SetMapInteractionMode(1);
     return;
   }
@@ -1008,7 +1008,7 @@ void TMapUberPicture::UpdateRoster() {
 
 // FUNCTION: IMPERIALISM 0x00599a50
 void TMapUberPicture::EnterMapInteractionOverlayMode(TView* controlOverride) {
-  if (this->invalidationFlag94) {
+  if (this->invalidationFlag) {
     return;
   }
   TView* zoomControl =
@@ -1017,28 +1017,28 @@ void TMapUberPicture::EnterMapInteractionOverlayMode(TView* controlOverride) {
   if (zoomControl != nullptr) {
     zoomControl->controlTag = kControlTagZmOt; // "ZmOt" ("Zoom Out")
   }
-  this->invalidationFlag94 = true;
+  this->invalidationFlag = true;
 
-  subview2A8->CenterOn(goodGoldTagControlA4->ComputeWrappedTileIndexFromObjectOffset7C7E());
+  subview2A8->CenterOn(goodGoldTagControl->ComputeWrappedTileIndexFromObjectOffset7C7E());
 
-  this->goodGoldTagControlA4->Locate(g_MapUberModeLayoutScratch_006a45e8, 0);
+  this->goodGoldTagControl->Locate(g_MapUberModeLayoutScratch_006a45e8, 0);
   this->subview2A8->Locate(g_MapUberModeSecondaryLayoutScratch_006a45b8, 1);
-  this->subviewAc = this->subview2A8;
+  this->subview = this->subview2A8;
 
-  if (this->miniMapViewC0 != nullptr) {
-    this->miniMapViewC0->markerBoxWidth98 = g_defaultMarkerBoxWidth_006a460c;
-    this->miniMapViewC0->markerBoxHeight9c = 8;
-    this->miniMapViewC0->markerBoxX90 =
-        this->miniMapViewC0->frameWidth34 / 2 - this->miniMapViewC0->markerBoxWidth98 - 2;
-    this->miniMapViewC0->markerBoxY94 =
-        this->miniMapViewC0->frameHeight38 / 2 - this->miniMapViewC0->markerBoxHeight9c - 2;
-    this->miniMapViewC0->RefreshControl();
+  if (this->miniMapView != nullptr) {
+    this->miniMapView->markerBoxWidth = g_defaultMarkerBoxWidth_006a460c;
+    this->miniMapView->markerBoxHeight = 8;
+    this->miniMapView->markerBoxX =
+        this->miniMapView->frameWidth / 2 - this->miniMapView->markerBoxWidth - 2;
+    this->miniMapView->markerBoxY =
+        this->miniMapView->frameHeight / 2 - this->miniMapView->markerBoxHeight - 2;
+    this->miniMapView->RefreshControl();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00599b90
 void TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews(TView* controlOverride) {
-  if (invalidationFlag94) {
+  if (invalidationFlag) {
     g_pUiAnimator->FreeUiTransientRegistryPayloads();
     TView* zoomControl =
         (controlOverride != nullptr) ? controlOverride : ResolveControlByTag(kControlTagZmOt);
@@ -1046,18 +1046,18 @@ void TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews(TView* controlOve
     if (zoomControl != nullptr) {
       zoomControl->controlTag = kControlTagZmIn;
     }
-    invalidationFlag94 = false;
-    goodGoldTagControlA4->CenterOn(subview2A8->GetCenterTile());
+    invalidationFlag = false;
+    goodGoldTagControl->CenterOn(subview2A8->GetCenterTile());
     subview2A8->Locate(g_MapUberModeLayoutScratch_006a45e8, 0);
-    goodGoldTagControlA4->Locate(g_MapUberModeSecondaryLayoutScratch_006a45b8, 1);
-    TMiniMapView* miniMap = miniMapViewC0;
-    subviewAc = goodGoldTagControlA4;
+    goodGoldTagControl->Locate(g_MapUberModeSecondaryLayoutScratch_006a45b8, 1);
+    TMiniMapView* miniMap = miniMapView;
+    subview = goodGoldTagControl;
 
     if (miniMap != nullptr) {
-      miniMap->markerBoxWidth98 = 0x20;
-      miniMap->markerBoxHeight9c = 0x1c;
-      miniMap->markerBoxX90 = miniMap->frameWidth34 / 2 - miniMap->markerBoxWidth98 - 2;
-      miniMap->markerBoxY94 = miniMap->frameHeight38 / 2 - miniMap->markerBoxHeight9c - 2;
+      miniMap->markerBoxWidth = 0x20;
+      miniMap->markerBoxHeight = 0x1c;
+      miniMap->markerBoxX = miniMap->frameWidth / 2 - miniMap->markerBoxWidth - 2;
+      miniMap->markerBoxY = miniMap->frameHeight / 2 - miniMap->markerBoxHeight - 2;
       miniMap->RefreshControl();
     }
   }
@@ -1077,12 +1077,12 @@ void TMapUberPicture::DisplayMiniMap() {
   int sizeLayout[2] = {0x71, 0x41};
   miniMap->InitializeUiResourceEntryFrameAndParent(nullptr, toolControl, offsetLayout, sizeLayout,
                                                    kToolWindowMargin, kToolWindowMargin, 0);
-  miniMap->markerBoxX90 = miniMap->frameWidth34 / 2 - miniMap->markerBoxWidth98;
+  miniMap->markerBoxX = miniMap->frameWidth / 2 - miniMap->markerBoxWidth;
   miniMap->ownerPicture84 = this;
-  miniMap->markerBoxY94 = miniMap->frameHeight38 / 2 - miniMap->markerBoxHeight9c;
+  miniMap->markerBoxY = miniMap->frameHeight / 2 - miniMap->markerBoxHeight;
   miniMap->RefreshControl();
   miniMap->ViewEnable(1, 0);
-  this->miniMapViewC0 = miniMap;
+  this->miniMapView = miniMap;
 
   RECT toolRect;
   toolRect.left = toolControl->ownerLocalX + offsetLayout[0];
@@ -1091,17 +1091,17 @@ void TMapUberPicture::DisplayMiniMap() {
   toolRect.bottom = toolRect.top + 0x41;
   RgnHandle region = NewRgn();
   RectRgn(region, &toolRect);
-  UnionRgn(this->ownClipRegion90, region, this->ownClipRegion90);
+  UnionRgn(this->ownClipRegion, region, this->ownClipRegion);
   DisposeRgn(region);
 
-  if (!this->invalidationFlag94) {
-    this->miniMapViewC0->markerBoxWidth98 = 0x20;
-    this->miniMapViewC0->markerBoxHeight9c = 0x1c;
-    this->miniMapViewC0->markerBoxX90 =
-        this->miniMapViewC0->frameWidth34 / 2 - this->miniMapViewC0->markerBoxWidth98 - 2;
-    this->miniMapViewC0->markerBoxY94 =
-        this->miniMapViewC0->frameHeight38 / 2 - this->miniMapViewC0->markerBoxHeight9c - 2;
-    this->miniMapViewC0->RefreshControl();
+  if (!this->invalidationFlag) {
+    this->miniMapView->markerBoxWidth = 0x20;
+    this->miniMapView->markerBoxHeight = 0x1c;
+    this->miniMapView->markerBoxX =
+        this->miniMapView->frameWidth / 2 - this->miniMapView->markerBoxWidth - 2;
+    this->miniMapView->markerBoxY =
+        this->miniMapView->frameHeight / 2 - this->miniMapView->markerBoxHeight - 2;
+    this->miniMapView->RefreshControl();
   }
 
   this->SetTradeToolSubcontrolEnabledStateByFlag(false);
@@ -1111,8 +1111,8 @@ void TMapUberPicture::DisplayMiniMap() {
 void TMapUberPicture::InvalidateMiniMap() {
   // The original null-checks the receiver: call sites invoke this on a possibly-null
   // ownerContext without guarding it.
-  if (this != 0 && miniMapViewC0 != 0) {
-    miniMapViewC0->RefreshControl();
+  if (this != 0 && miniMapView != 0) {
+    miniMapView->RefreshControl();
   }
 }
 
@@ -1125,7 +1125,7 @@ void TMapUberPicture::RemoveMiniMap() {
   }
 
   CRect mapBounds;
-  subviewAc->QueryBounds(&mapBounds);
+  subview->QueryBounds(&mapBounds);
   RgnHandle mapRegion = NewRgn();
   RectRgn(mapRegion, &mapBounds);
   ForwardCopyRgn(mapRegion);
@@ -1138,10 +1138,10 @@ void TMapUberPicture::RemoveMiniMap() {
   toolRect.bottom = toolControl->ownerLocalY + 0x78;
   InvalidateCityDialogRectRegion(&toolRect, 1);
 
-  if (miniMapViewC0 != nullptr) {
-    miniMapViewC0->Free();
+  if (miniMapView != nullptr) {
+    miniMapView->Free();
   }
-  miniMapViewC0 = nullptr;
+  miniMapView = nullptr;
 
   TPicture* miniMapButton =
       static_cast<TPicture*>(toolControl->ResolveControlByTag(kControlTagInfo)); // 'info'

@@ -22,16 +22,16 @@ void TScrollView::IScrollView(TView* panel, int* offsetLayout, int* sizeLayout) 
 // FUNCTION: IMPERIALISM 0x00573ce0
 void TScrollView::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
-  contentView60 = ResolveControlByTag(kControlTagScro); // 'scro'
+  contentView = ResolveControlByTag(kControlTagScro); // 'scro'
   TScrollBarView* bar = new TScrollBarView();
   int barOffset[2];
   int barSize[2];
-  barSize[1] = frameHeight38;
-  barOffset[0] = frameWidth34 - 0x19;
+  barSize[1] = frameHeight;
+  barOffset[0] = frameWidth - 0x19;
   barSize[0] = 0x19;
   barOffset[1] = 0;
   bar->InitializeScrollBar(this, barOffset, barSize);
-  scrollBar64 = bar;
+  scrollBar = bar;
 }
 
 // FUNCTION: IMPERIALISM 0x00573e40
@@ -55,10 +55,10 @@ void TScrollView::ScrollOnce(int direction) {
 void TScrollView::ScrollPage(int direction) {
   switch (direction) {
   case 0:
-    ScrollRelative(0, -static_cast<short>(frameHeight38));
+    ScrollRelative(0, -static_cast<short>(frameHeight));
     return;
   case 1:
-    ScrollRelative(0, static_cast<short>(frameHeight38));
+    ScrollRelative(0, static_cast<short>(frameHeight));
     return;
   case 2:
     ScrollRelative(0xc, 0);
@@ -70,22 +70,21 @@ void TScrollView::ScrollPage(int direction) {
 
 // FUNCTION: IMPERIALISM 0x00573f60
 void TScrollView::ScrollRelative(short horizontalDelta, short verticalDelta) {
-  if (contentView60 == nullptr) {
+  if (contentView == nullptr) {
     return;
   }
-  short heightDiff =
-      static_cast<short>(contentView60->frameHeight38) - static_cast<short>(frameHeight38);
+  short heightDiff = static_cast<short>(contentView->frameHeight) - static_cast<short>(frameHeight);
   if (heightDiff <= 0) {
     return;
   }
 
   CPoint origin;
-  int baseX = contentView60->ownerLocalX;
-  int baseY = contentView60->ownerLocalY;
+  int baseX = contentView->ownerLocalX;
+  int baseY = contentView->ownerLocalY;
   origin.x = baseX + horizontalDelta;
   origin.y = baseY + verticalDelta;
-  if (contentView60->frameWidth34 < origin.x) {
-    origin.x = contentView60->frameWidth34;
+  if (contentView->frameWidth < origin.x) {
+    origin.x = contentView->frameWidth;
   }
   if (origin.x < 0) {
     origin.x = 0;
@@ -96,33 +95,33 @@ void TScrollView::ScrollRelative(short horizontalDelta, short verticalDelta) {
     origin.y = 0;
   }
 
-  contentView60->Locate(origin, 1);
+  contentView->Locate(origin, 1);
 
-  short trackRange = scrollBar64->word8a - scrollBar64->word88;
+  short trackRange = scrollBar->word8a - scrollBar->word88;
   short newValue =
-      static_cast<short>(scrollBar64->word88 - origin.y * 1024 / heightDiff * trackRange / 1024);
-  if (newValue < scrollBar64->word88) {
-    scrollBar64->word8c = scrollBar64->word88;
-    scrollBar64->RefreshCityDialogScrollableViewportWithQuickDrawContext();
+      static_cast<short>(scrollBar->word88 - origin.y * 1024 / heightDiff * trackRange / 1024);
+  if (newValue < scrollBar->word88) {
+    scrollBar->word8c = scrollBar->word88;
+    scrollBar->RefreshCityDialogScrollableViewportWithQuickDrawContext();
     return;
   }
-  if (newValue > scrollBar64->word8a) {
-    newValue = scrollBar64->word8a;
+  if (newValue > scrollBar->word8a) {
+    newValue = scrollBar->word8a;
   }
-  scrollBar64->word8c = newValue;
-  scrollBar64->RefreshCityDialogScrollableViewportWithQuickDrawContext();
+  scrollBar->word8c = newValue;
+  scrollBar->RefreshCityDialogScrollableViewportWithQuickDrawContext();
 }
 
 // FUNCTION: IMPERIALISM 0x00574160
 void TScrollView::ScrollToPercent(int percent) {
-  if (contentView60 != 0) {
+  if (contentView != 0) {
     short heightDiff =
-        static_cast<short>(contentView60->frameHeight38) - static_cast<short>(frameHeight38);
+        static_cast<short>(contentView->frameHeight) - static_cast<short>(frameHeight);
     if (heightDiff > 0) {
       CPoint origin(
-          contentView60->ownerLocalX,
+          contentView->ownerLocalX,
           -static_cast<short>((percent * heightDiff + (percent * heightDiff >> 31 & 0x3ff)) >> 10));
-      contentView60->Locate(origin, 1);
+      contentView->Locate(origin, 1);
     }
   }
 }
@@ -130,22 +129,22 @@ void TScrollView::ScrollToPercent(int percent) {
 // FUNCTION: IMPERIALISM 0x005741e0
 void TScrollView::SyncBoundedValueAndToggleControlStates() {
   CPoint contentOrigin;
-  contentOrigin.x = contentView60->ownerLocalX;
+  contentOrigin.x = contentView->ownerLocalX;
   contentOrigin.y = 0;
-  contentView60->Locate(contentOrigin, 1);
+  contentView->Locate(contentOrigin, 1);
 
-  TScrollBarView* bar = scrollBar64;
+  TScrollBarView* bar = scrollBar;
   bar->word8c = bar->word88;
   if (bar->word88 > bar->word8a) {
     bar->word8c = bar->word8a;
   }
 
-  if (contentView60->frameHeight38 - frameHeight38 > 0) {
-    scrollBar64->Show(1, 1);
-    scrollBar64->ViewEnable(1, 1);
+  if (contentView->frameHeight - frameHeight > 0) {
+    scrollBar->Show(1, 1);
+    scrollBar->ViewEnable(1, 1);
   } else {
-    scrollBar64->Show(0, 1);
-    scrollBar64->ViewEnable(0, 1);
+    scrollBar->Show(0, 1);
+    scrollBar->ViewEnable(0, 1);
   }
 }
 

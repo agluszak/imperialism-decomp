@@ -21,6 +21,6 @@ public:
 
   // TBattleUnitsView::StuffValues loads an image surface here and Close releases it through
   // TDisplayMgr::RemoveGWorld. Other derived constructors clear it.
-  TQuickDrawSurfaceContext* primaryUnitAtlas84;
+  TQuickDrawSurfaceContext* primaryUnitAtlas;
 };
 ASSERT_SIZE(TMilitaryPageView, 0x88);

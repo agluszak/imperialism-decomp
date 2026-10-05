@@ -17,10 +17,10 @@ public:
   void ReadFrom(TStream* stream) override; // slot 0x18 (0x005af460)
   // Capability-priority selection slots (absolute this+0x4..0x3e). The first declared data
   // member sits 4 bytes into the object -- after the inherited TObject/CObject vtable pointer
-  // -- so prioritySlots04[0] is at this+0x4 (verified empirically: the field below must land
+  // -- so prioritySlots[0] is at this+0x4 (verified empirically: the field below must land
   // at this+0x3e). GenerateRandomCapabilityPrioritySlots zeroes slots [0..2] then fills
   // [3..28] with unique random priority ids.
-  short prioritySlots04[0x1d];
+  short prioritySlots[0x1d];
   // Per-nation/per-resourceType capability value table, index = nationTag*23 + resourceType
   // (row stride 23 shorts). Evidenced independently by three TMapMgr functions that all
   // read this exact formula off g_pTechMgr+0x3e: 0x513720, 0x5155c0,
@@ -29,7 +29,7 @@ public:
   short capabilityValueByNationAndResource[7][23];
   // Per-tech unlock flags, indexed by the full 0..0x1c technology-id domain. The production
   // order gate is technology 0x13, not a separate field following a shorter array.
-  unsigned char perTechUnlockFlag180[0x1d];
+  unsigned char perTechUnlockFlag[0x1d];
   // Per-resource-type capability-enabled bytes (index = navy-order resource type,
   // 0..0xd -- the same 0xe domain as CapRowB below). RecomputeGlobalCapabilityAverages
   // (0x54fd50) indexes this dynamically ([0x19d + type]) to gate each type's
@@ -47,8 +47,8 @@ public:
   unsigned char pad1c4[0x1c9 - 0x1c4];
   unsigned char initFlags1c9[9]; // defaults initializer sets bytes {0,1,2,4,7} = 1, rest 0
   // Paired capability selector shorts updated at specific unlock milestones.
-  short techSelectorShort1d2;
-  short activeZoneIndex1d4;
+  short techSelectorShort;
+  short activeZoneIndex;
   // Per-nation capability-slot table (true record base 0x1d6, stride 0x14 = 10 shorts). The
   // defaults initializer fills slots[0..7] = 0..7, slots[8] = 0x18, slots[9] = 0x1b. Gameplay
   // readers historically indexed this table from +0x12 (naming it "nationCapRows1e8" and
@@ -64,7 +64,7 @@ public:
   // {25,0} = 0x19), advancing as milestone techs 0x0b/0x16 land; the copy is kept as a
   // single four-byte record copy to match the original's one-mov write.
   short marker262;
-  TechPrerequisitePair activePrerequisitePair264;
+  TechPrerequisitePair activePrerequisitePair;
   // Per-nation, per-tech research-status row (byte[techId]: 2 = researched, 1 = in
   // progress, 0 = not started). True base 0x268, stride 0x1d. The defaults initializer
   // sets techs 0..2 to 2 and zeroes the rest; readers index it dynamically by tech id
@@ -89,7 +89,7 @@ public:
   };
   CapRowB capRowsB333[7];
   // Per-nation ability-activation row (byte[abilityId], ids 0..0x1d; true base 0x395,
-  // tiling exactly between capRowsB333 and universityRecruitmentAvailabilityByNation467).
+  // tiling exactly between capRowsB333 and universityRecruitmentAvailabilityByNation).
   // ActivateSlotAndUpdateUI
   // (0x5b0340) sets [abilityId] on activation and clears the replaced slot's ability;
   // UpgradeType (0x5c35c0) probes candidate upgrades dynamically.
@@ -98,14 +98,14 @@ public:
   struct MilitaryCapRow {
     unsigned char abilityActiveById[0x1e];
   };
-  MilitaryCapRow abilityActiveRows395[7];
+  MilitaryCapRow abilityActiveRows[7];
   // Per-nation recruitment-category availability (true base 0x467, stride 9).
   // The university and civilian-order AI read these category flags directly; tech
   // unlocks enable categories 3, 5, and 8 after the default 0/1/2/4/7 set.
   struct UniversityRecruitmentAvailabilityRow {
     unsigned char availableByCategory[9];
   };
-  UniversityRecruitmentAvailabilityRow universityRecruitmentAvailabilityByNation467[7];
+  UniversityRecruitmentAvailabilityRow universityRecruitmentAvailabilityByNation[7];
   // Per-nation table E (true base 0x4a6, stride 0x3a = 0x1d shorts); init zeroes it. Ends
   // at the real 0x63c allocation size. Per-tech completion-year offset, added to the 0x717
   // base year by the tech-item completion-date line (0x5b12e0).
@@ -128,7 +128,7 @@ public:
   // clears the orderCapRows277 state byte + capRowsE4a6 tick word). 0x5b0b30 / 0x5b0bb0.
   void ApplyTechItemPurchaseCostAndState(int slot, int nationIndex);
   void RefundTechItemPurchaseCostAndClearState(int slot, int nationIndex);
-  // Stores value*4 into prioritySlots04[index] (the "Tyer" turn-instruction handler). 0x5b0c70
+  // Stores value*4 into prioritySlots[index] (the "Tyer" turn-instruction handler). 0x5b0c70
   void SetCityOrderCapabilityTierScaledValueByIndex(int index, int value);
   int GetNationFortLevelCap(int nNationId);
   // True when both prerequisite techs of `techId` (from g_aTechItemPrerequisitePairs;

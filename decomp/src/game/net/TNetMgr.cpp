@@ -191,16 +191,16 @@ void TNetMgr::HandleError(int errorCode) {
 // No other reader found yet.
 // FUNCTION: IMPERIALISM 0x005e39a0
 unsigned char TNetMgr::ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TView* provider) {
-  g_NetworkSessionManager006a5f60.activeProtocolControlB0 =
+  g_NetworkSessionManager006a5f60.activeProtocolControl =
       static_cast<TRadioTextCluster*>(provider->ResolveControlByTag(kControlTagProt)); // 'prot'
-  g_NetworkSessionManager006a5f60.activeProtocolControlB0->AssertValid();
+  g_NetworkSessionManager006a5f60.activeProtocolControl->AssertValid();
 
   for (int index = 0; index < g_WNetSerializedPtrArrayA006a5f10.GetSize(); ++index) {
     delete g_WNetSerializedPtrArrayA006a5f10[index];
   }
   g_WNetSerializedPtrArrayA006a5f10.RemoveAll();
   unsigned char result = g_NetworkSessionManager006a5f60.RebuildRuntimeSelectionSource();
-  g_NetworkSessionManager006a5f60.activeProtocolControlB0 = 0;
+  g_NetworkSessionManager006a5f60.activeProtocolControl = 0;
   return result;
 }
 
@@ -237,7 +237,7 @@ unsigned char TNetMgr::OpenRuntimeSelectionSourceAndApplyActiveNationState(
       g_NetworkSessionManager006a5f60.localPlayerId60 = nationId;
       g_NetworkSessionManager006a5f60.broadcastPlayerId64 = nationId;
       result = g_NetworkSessionManager006a5f60.SetLocalPlayerDataAndStoreResult(
-          &g_NetworkSessionManager006a5f60.joinGamePlayerDataTagAC, 4);
+          &g_NetworkSessionManager006a5f60.joinGamePlayerDataTag, 4);
     }
   }
   if (!result) {
@@ -269,8 +269,8 @@ unsigned char TNetMgr::OpenJoinGameRuntimeSelectionAndStartSession(int selection
     if (result) {
       g_NetworkSessionManager006a5f60.localPlayerId60 = localPlayerId;
       result = g_NetworkSessionManager006a5f60.SetLocalPlayerDataAndStoreResult(
-          &g_NetworkSessionManager006a5f60.joinGamePlayerDataTagAC,
-          sizeof(g_NetworkSessionManager006a5f60.joinGamePlayerDataTagAC));
+          &g_NetworkSessionManager006a5f60.joinGamePlayerDataTag,
+          sizeof(g_NetworkSessionManager006a5f60.joinGamePlayerDataTag));
       if (result) {
         result = g_NetworkSessionManager006a5f60.FindHostPlayerIdByEnumeration();
       }
@@ -414,11 +414,11 @@ int TNetMgr::ProbeNationReachabilityAndMarkAwolBitmask() {
   probe.toNetworkId = 0;
   probe.messageLength = 0;
   probe.messageLength = 0x1c;
-  probe.replyRequestFlag18 = 0;
-  probe.nationMask19 = static_cast<signed char>(g_pSimMgr->GetActiveNationId());
+  probe.replyRequestFlag = 0;
+  probe.nationMask = static_cast<signed char>(g_pSimMgr->GetActiveNationId());
   for (int slot = 0; slot < 7; ++slot) {
     TGreatPower* nation = g_apNationStates[slot];
-    if (nation != 0 && nation->diplomacyEligibilityA0 != 0 && nation->IsRemote()) {
+    if (nation != 0 && nation->diplomacyEligibility != 0 && nation->IsRemote()) {
       if (g_pGameFlowState->nationSessionIds[slot] == -2) {
         awolBitmask += 1 << slot;
       } else {

@@ -26,7 +26,7 @@ public:
 
   // The list-navigation methods read HelpSetRecord word fields through +0x90. DoPostCreate
   // allocates a TDeluxeText, stores it at +0x94, and attaches it to the 'swin' control.
-  HelpSetRecord* currentHelpSet90;
-  TDeluxeText* topicListText94;
+  HelpSetRecord* currentHelpSet;
+  TDeluxeText* topicListText;
 };
 ASSERT_SIZE(THelpPicture, 0x98);

@@ -14,7 +14,7 @@
 
 // FUNCTION: IMPERIALISM 0x004303a0
 TGrantsView::TGrantsView() {
-  diplomacyMapView60 = 0;
+  diplomacyMapView = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00430400
@@ -26,7 +26,7 @@ IMPLEMENT_DYNCREATE(TGrantsView, TPanelView)
 void TGrantsView::DoPostCreate(int arg) {
   CString hoverText;
   TView::DoPostCreate(arg);
-  diplomacyMapView60 = static_cast<TDiplomacyMapView*>(ownerContext);
+  diplomacyMapView = static_cast<TDiplomacyMapView*>(ownerContext);
 
   for (int grantSlot = 0; grantSlot < 8; ++grantSlot) {
     TView* grantControl = ResolveControlByTag(kControlTagDoc0 + grantSlot); // 'doc0'..
@@ -112,22 +112,22 @@ void TGrantsView::Setup() {
       static_cast<TCluster*>(ResolveControlByTag(kControlTagDocs)); // 'docs'
   SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText_00654ec8), documentCluster);
   documentCluster->SetSelectedChildTagAndRefresh(kControlTagDoc0); // 'doc0'
-  diplomacyMapView60->selectedGrantRowC0 = 0;
-  diplomacyMapView60->actionCodeBC = kDipActionOneTimeGrant;
+  diplomacyMapView->selectedGrantRow = 0;
+  diplomacyMapView->actionCodeBC = kDipActionOneTimeGrant;
 }
 
 // FUNCTION: IMPERIALISM 0x004f8650
 void TGrantsView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
     short tagOffset = static_cast<short>(sourceHandler->controlTag - 0x6330);
-    TDiplomacyMapView* mapView = diplomacyMapView60;
+    TDiplomacyMapView* mapView = diplomacyMapView;
     if (tagOffset & 1) {
       mapView->actionCodeBC = kDipActionRecurringGrant;
     } else {
       mapView->actionCodeBC = kDipActionOneTimeGrant;
     }
-    mapView = diplomacyMapView60;
-    mapView->selectedGrantRowC0 = static_cast<short>(tagOffset / 2);
+    mapView = diplomacyMapView;
+    mapView->selectedGrantRow = static_cast<short>(tagOffset / 2);
   }
   TEventHandler::DoEvent(commandId, sourceHandler, event);
 }

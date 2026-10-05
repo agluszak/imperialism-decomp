@@ -32,7 +32,7 @@ public:
   class TTacticalUnit* currentUnit8C; // +0x8c current-unit control source
   // Draw (0x5ac950) reads a second current-unit pointer here, alongside
   // currentUnit8C, to draw each side's xp progress bar -- same slot shape, other side.
-  class TArmyTacUnit* otherSideCurrentUnit90;                // +0x90
+  class TArmyTacUnit* otherSideCurrentUnit;                  // +0x90
   struct TQuickDrawSurfaceContext* unitSpriteAtlasSurface94; // +0x94 the 0xee2 atlas
 
   // Arms/disarms the 'targ'/'done'/'retr'/'auto' control cluster for the live-battle

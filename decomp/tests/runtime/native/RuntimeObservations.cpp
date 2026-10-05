@@ -65,13 +65,13 @@ void FourCcText(unsigned int tag, char text[5]) {
 }
 
 int TagOccurrenceBefore(TView* parent, TView* target) {
-  if (parent == 0 || parent->childList44 == 0) {
+  if (parent == 0 || parent->childList == 0) {
     return 1;
   }
   int occurrence = 1;
-  POSITION position = parent->childList44->GetHeadPosition();
+  POSITION position = parent->childList->GetHeadPosition();
   while (position != 0) {
-    TView* sibling = parent->childList44->GetNext(position);
+    TView* sibling = parent->childList->GetNext(position);
     if (sibling == target) {
       break;
     }
@@ -120,8 +120,8 @@ void AppendViewTreeNodes(JSON_Array* nodes, TView* view, const CString& parentPa
   if (bounds == 0 || absolute == 0 ||
       json_array_append_number(bounds, view->ownerLocalX) != JSONSuccess ||
       json_array_append_number(bounds, view->ownerLocalY) != JSONSuccess ||
-      json_array_append_number(bounds, view->frameWidth34) != JSONSuccess ||
-      json_array_append_number(bounds, view->frameHeight38) != JSONSuccess ||
+      json_array_append_number(bounds, view->frameWidth) != JSONSuccess ||
+      json_array_append_number(bounds, view->frameHeight) != JSONSuccess ||
       json_array_append_number(absolute, view->absoluteX) != JSONSuccess ||
       json_array_append_number(absolute, view->absoluteY) != JSONSuccess) {
     json_value_free(boundsValue);
@@ -165,12 +165,12 @@ void AppendViewTreeNodes(JSON_Array* nodes, TView* view, const CString& parentPa
     return;
   }
 
-  if (view->childList44 == 0) {
+  if (view->childList == 0) {
     return;
   }
-  POSITION position = view->childList44->GetHeadPosition();
+  POSITION position = view->childList->GetHeadPosition();
   while (position != 0) {
-    TView* child = view->childList44->GetNext(position);
+    TView* child = view->childList->GetNext(position);
     AppendViewTreeNodes(nodes, child, path);
   }
 }
@@ -210,7 +210,7 @@ bool AppendCityProduction(JSON_Array* entries, TCity* city, bool flags) {
   for (int slot = 0; slot < 0x10; ++slot) {
     int entry = -1;
     if (city != 0) {
-      entry = flags ? city->productionFlags21c[slot] : city->productionOrderTable1dc[slot];
+      entry = flags ? city->productionFlags[slot] : city->productionOrderTable1dc[slot];
     }
     if (json_array_append_number(entries, entry) != JSONSuccess) {
       return false;
@@ -239,7 +239,7 @@ bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
       if ((terrain.adjacencyMaskB0b & cornerBits) != 0 &&
           g_pGlobalMapState->MapImprovementOffsetFromAdjacencyVariant(
               static_cast<char>(terrain.adjacencyMaskB0b), static_cast<char>(corner + 1),
-              static_cast<char>(terrain.spriteVariantIndex01 & (1 << corner))) != 0) {
+              static_cast<char>(terrain.spriteVariantIndex & (1 << corner))) != 0) {
         coastTile = tile;
         break;
       }
@@ -278,7 +278,7 @@ bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
     }
     int coastOffset = g_pGlobalMapState->MapImprovementOffsetFromAdjacencyVariant(
         static_cast<char>(terrain.adjacencyMaskB0b), static_cast<char>(corner + 1),
-        static_cast<char>(terrain.spriteVariantIndex01 & (1 << corner)));
+        static_cast<char>(terrain.spriteVariantIndex & (1 << corner)));
     if (coastOffset == 0) {
       continue;
     }
@@ -312,20 +312,20 @@ bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
   }
 
   terrain.riverSpriteCode = kRiverSpriteCodeNone;
-  terrain.ownerBorderMask07 = 0;
-  terrain.cityBorderMask08 = 0;
+  terrain.ownerBorderMask = 0;
+  terrain.cityBorderMask = 0;
   terrain.adjacencyBits06 = 0;
-  terrain.railFlags17 = 0;
+  terrain.railFlags = 0;
   terrain.activeFlags1c = 0;
   terrain.resourceTypeByEdge[0] = -1;
   terrain.resourceTypeByEdge[1] = -1;
-  terrain.secondaryOwnerNationTag18 = -1;
-  terrain.perTileVisitedFlag0f = 0;
+  terrain.secondaryOwnerNationTag = -1;
+  terrain.perTileVisitedFlag = 0;
   terrain.tileActionState16 = static_cast<MapTileActionStateStorage>(-1);
   TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
-  short savedCategory = mapView->activeUnitCategoryIndex96;
+  short savedCategory = mapView->activeUnitCategoryIndex;
   short savedRiverMouth = g_pGlobalMapState->pendingRiverMouthTile;
-  mapView->activeUnitCategoryIndex96 = 4;
+  mapView->activeUnitCategoryIndex = 4;
   g_pGlobalMapState->pendingRiverMouthTile = -1;
   TQuickDrawSurfaceContext* savedSurface;
   int savedSurfaceFlags;
@@ -334,7 +334,7 @@ bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
   mapDialog->DrawOneTile(coastTile, 0, 0);
   CopySurfaceTile(actual, destinationSurface->pixelBits, destinationStride);
   terrain = savedTerrain;
-  mapView->activeUnitCategoryIndex96 = savedCategory;
+  mapView->activeUnitCategoryIndex = savedCategory;
   g_pGlobalMapState->pendingRiverMouthTile = savedRiverMouth;
   mapDialog->DrawOneTile(coastTile, 0, 0);
   SetGWorld(savedSurface, savedSurfaceFlags);
@@ -344,7 +344,7 @@ bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
 }
 
 bool VerifyRuntimeMiniMapViewportFrame(TMiniMapView* miniMap) {
-  if (miniMap == 0 || miniMap->markerBoxWidth98 != 9 || miniMap->markerBoxHeight9c != 8 ||
+  if (miniMap == 0 || miniMap->markerBoxWidth != 9 || miniMap->markerBoxHeight != 8 ||
       g_pPrimaryRenderSurfaceContext == 0) {
     return false;
   }
@@ -365,16 +365,16 @@ bool VerifyRuntimeMiniMapViewportFrame(TMiniMapView* miniMap) {
   miniMap->Draw(0);
   GdiFlush();
   memcpy(framed, surface->pixelBits, surfaceBytes);
-  int savedMarkerX = miniMap->markerBoxX90;
-  int savedMarkerY = miniMap->markerBoxY94;
-  miniMap->markerBoxX90 = savedMarkerX + 2;
-  miniMap->markerBoxY94 = savedMarkerY + 2;
+  int savedMarkerX = miniMap->markerBoxX;
+  int savedMarkerY = miniMap->markerBoxY;
+  miniMap->markerBoxX = savedMarkerX + 2;
+  miniMap->markerBoxY = savedMarkerY + 2;
   miniMap->PrepareForDrawing();
   miniMap->Draw(0);
   GdiFlush();
   memcpy(shiftedFrame, surface->pixelBits, surfaceBytes);
-  miniMap->markerBoxX90 = savedMarkerX;
-  miniMap->markerBoxY94 = savedMarkerY;
+  miniMap->markerBoxX = savedMarkerX;
+  miniMap->markerBoxY = savedMarkerY;
   miniMap->PrepareForDrawing();
   miniMap->Draw(0);
   GdiFlush();

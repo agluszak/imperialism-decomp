@@ -106,9 +106,9 @@ char TBeachheadMission::SmokeEmIfYouGotEm() {
   if (flag10 == 0 && navyState28 != 0) {
     return 0;
   }
-  while (orderList24 != 0) {
-    orderList24->payload->mission = 0;
-    orderList24 = orderList24->DeleteMapOrderChildLinkAndReturnNext();
+  while (orderList != 0) {
+    orderList->payload->mission = 0;
+    orderList = orderList->DeleteMapOrderChildLinkAndReturnNext();
   }
   return 1;
 }

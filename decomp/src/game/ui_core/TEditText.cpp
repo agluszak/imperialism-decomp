@@ -17,7 +17,7 @@ TEditText::TEditText() : TStaticText() {
   this->editWindow = nullptr;
   this->editFont = nullptr;
   this->maxCharacterCount = 0xff;
-  this->childHitTestFlag4d = false;
+  this->childHitTestFlag = false;
 }
 
 // FUNCTION: IMPERIALISM 0x004904d0

@@ -239,7 +239,7 @@ RuntimeActionResult RunDiplomacyPhase(NativeTransition& transition) {
   // Skip the AI policy planner so this case isolates posted-order resolution.
   for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     if (g_apNationStates[nationSlot] != 0) {
-      g_apNationStates[nationSlot]->diplomacyEligibilityA0 = 1;
+      g_apNationStates[nationSlot]->diplomacyEligibility = 1;
     }
   }
 

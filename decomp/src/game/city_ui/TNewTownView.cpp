@@ -66,7 +66,7 @@ void TNewTownView::StuffValues(TTown* town) {
     if (amount != 0) {
       TIconBar* iconBar = new TIconBar();
       int position[2] = {0x18, y};
-      int size[2] = {frameWidth34 - 0x20, 0x10};
+      int size[2] = {frameWidth - 0x20, 0x10};
       iconBar->IIconBar(this, position, size, 5, 5, static_cast<short>(iconResourceType + 700),
                         amount);
       iconBar->RefreshControl();

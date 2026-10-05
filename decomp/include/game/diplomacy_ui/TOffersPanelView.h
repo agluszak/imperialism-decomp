@@ -26,7 +26,7 @@ public:
   // TPanelView's slice ends at 0x64; RTTI oracle confirms sizeof(TOffersPanelView) == 0x70.
   // The ctor (0x4f8f70) zeroes acceptButton and rejectButton. field64 is written by DoEvent
   // (0x4f9300) with the accept/reject-hotspot's controlTag (four-char 'acce'/'reje').
-  int lastNegotiationResponseTag64; // +0x64
+  int lastNegotiationResponseTag; // +0x64
   // The 'acce'/'reje' hotspot controls, resolved by DoPostCreate.
   class TPictureButton* acceptButton; // +0x68, tag 'acce'
   class TPictureButton* rejectButton; // +0x6c, tag 'reje'

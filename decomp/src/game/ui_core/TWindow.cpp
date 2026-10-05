@@ -90,7 +90,7 @@ void TWindow::Show(unsigned char show, unsigned char refresh) {
 
 // FUNCTION: IMPERIALISM 0x0048d980
 bool TWindow::IsActionable() {
-  return busyFlag98 != 0 && g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0 &&
+  return busyFlag != 0 && g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0 &&
          viewEnabled != 0;
 }
 
@@ -218,9 +218,9 @@ void TWindow::SetWindowTarget(TEventHandler* target) {
   if (target == 0) {
     target = this;
   }
-  if (target != activeLinkedWindow64) {
-    activeLinkedWindow64->BecameWindowTarget();
-    activeLinkedWindow64 = target;
+  if (target != activeLinkedWindow) {
+    activeLinkedWindow->BecameWindowTarget();
+    activeLinkedWindow = target;
     target->TargetValidationSucceeded();
   }
 }
@@ -233,26 +233,26 @@ void TWindow::SetWindowTarget(TEventHandler* target) {
 CWnd* TWindow::Open() {
   if (nativeWindow50 == 0) {
     nativeWindow50 = new CMcWindow(this);
-    if (childList44 != 0) {
-      POSITION pos = childList44->GetHeadPosition();
+    if (childList != 0) {
+      POSITION pos = childList->GetHeadPosition();
       while (pos != NULL) {
-        TView* child = static_cast<TView*>(childList44->GetNext(pos));
+        TView* child = static_cast<TView*>(childList->GetNext(pos));
         child->PropagateUiResourceContextRecursive(nativeWindow50);
       }
     }
   }
   ::SendMessageA(nativeWindow50->m_hWnd, 0x468, 0, controlTag);
   if (!IsActionable()) {
-    busyFlag98 = 1;
-    if (activeLinkedWindow64 != 0) {
-      activeLinkedWindow64->SelectOwner(0);
+    busyFlag = 1;
+    if (activeLinkedWindow != 0) {
+      activeLinkedWindow->SelectOwner(0);
     }
     Show(1, 1);
   }
-  if (childList44 != 0) {
-    POSITION pos = childList44->GetHeadPosition();
+  if (childList != 0) {
+    POSITION pos = childList->GetHeadPosition();
     while (pos != NULL) {
-      TView* child = static_cast<TView*>(childList44->GetNext(pos));
+      TView* child = static_cast<TView*>(childList->GetNext(pos));
       child->Open();
     }
   }
@@ -263,14 +263,14 @@ CWnd* TWindow::Open() {
 // control, then run the slot-0x73 state-notify chain.
 // FUNCTION: IMPERIALISM 0x0048e060
 void TWindow::Close() {
-  busyFlag98 = 0;
+  busyFlag = 0;
   if (nativeWindow50 != 0 && nativeWindow50->m_hWnd != 0) {
     SendMessageA(nativeWindow50->m_hWnd, 0x468, 1, controlTag);
   }
-  if (childList44 != 0) {
-    POSITION pos = childList44->GetHeadPosition();
+  if (childList != 0) {
+    POSITION pos = childList->GetHeadPosition();
     while (pos != NULL) {
-      TView* child = static_cast<TView*>(childList44->GetNext(pos));
+      TView* child = static_cast<TView*>(childList->GetNext(pos));
       child->Close();
     }
   }
@@ -291,10 +291,10 @@ void TWindow::Center(unsigned char centerX, unsigned char centerY, unsigned char
     return;
   }
   if (centerX != 0) {
-    ownerLocalX = (0x280 - frameWidth34) / 2;
+    ownerLocalX = (0x280 - frameWidth) / 2;
   }
   if (centerY != 0) {
-    ownerLocalY = (0x1e0 - frameHeight38) / 2;
+    ownerLocalY = (0x1e0 - frameHeight) / 2;
   }
 }
 
@@ -359,8 +359,8 @@ void TWindow::Free() {
       nativeWindow50 = 0;
     }
   }
-  while (childList44 != 0) {
-    static_cast<TView*>(childList44->GetHead())->Free();
+  while (childList != 0) {
+    static_cast<TView*>(childList->GetHead())->Free();
   }
   if (ownerContext != 0) {
     ownerContext->DetachChildFromOwnerList(this);

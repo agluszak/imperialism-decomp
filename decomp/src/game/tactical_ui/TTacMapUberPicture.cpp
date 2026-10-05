@@ -6,8 +6,8 @@
 
 // FUNCTION: IMPERIALISM 0x0045d3b0
 void TTacMapUberPicture::Scroll(MapScrollEdgeMaskStorage edgeMask) {
-  if (tacticalBattleView94 != nullptr) {
-    tacticalBattleView94->Scroll(edgeMask);
+  if (tacticalBattleView != nullptr) {
+    tacticalBattleView->Scroll(edgeMask);
   }
 }
 
@@ -25,8 +25,8 @@ IMPLEMENT_DYNCREATE(TTacMapUberPicture, TMapUberUberPicture)
 // FUNCTION: IMPERIALISM 0x005ad3a0
 void TTacMapUberPicture::DoPostCreate(int arg) {
   TMapUberUberPicture::DoPostCreate(arg);
-  tacticalBattleView94 = static_cast<TTacticalBattleView*>(ResolveControlByTag(kControlTagDialog));
-  tacticalBattleView94->AssertValid();
+  tacticalBattleView = static_cast<TTacticalBattleView*>(ResolveControlByTag(kControlTagDialog));
+  tacticalBattleView->AssertValid();
 }
 
 // FUNCTION: IMPERIALISM 0x005ad3f0

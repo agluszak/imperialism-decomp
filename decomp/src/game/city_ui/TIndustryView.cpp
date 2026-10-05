@@ -33,8 +33,7 @@ IMPLEMENT_DYNCREATE(TIndustryView, TBuildingView)
 
 // FUNCTION: IMPERIALISM 0x004cc790
 TIndustryView::TIndustryView()
-    : TBuildingView(), unresolvedZeroA0(0), selectedIndustryUnitTypeA4(static_cast<short>(0xffff)) {
-}
+    : TBuildingView(), unresolvedZero(0), selectedIndustryUnitTypeA4(static_cast<short>(0xffff)) {}
 
 // FUNCTION: IMPERIALISM 0x004cc800
 TIndustryView::~TIndustryView() {}
@@ -133,7 +132,7 @@ void TIndustryView::DoStartup() {
   CSubViewIterator iterator(this);
   TView* child = iterator.FirstSubView();
   while (iterator.MoreSubViews()) {
-    if (child->childList44 == 0) {
+    if (child->childList == 0) {
       for (short resource = 0; resource < kResourceKindCount; ++resource) {
         if (child->controlTag == g_pTradeSummarySelectionMap[resource]) {
           TStaticText* resourceText = static_cast<TStaticText*>(child);
@@ -180,7 +179,7 @@ void TIndustryView::UpdateFields() {
   bool secondaryMissing = false;
 
   if (selectedIndustryUnitTypeA4 > 0) {
-    TItemOrder* order = static_cast<TItemOrder*>(city94->orderSlotsE4[selectedIndustryUnitTypeA4]);
+    TItemOrder* order = static_cast<TItemOrder*>(city94->orderSlots[selectedIndustryUnitTypeA4]);
     if (order != 0) {
       primaryResource = order->primaryInputResourceId;
       secondaryResource = order->secondaryInputResourceId;
@@ -194,8 +193,8 @@ void TIndustryView::UpdateFields() {
   } else if (embeddedPageIndex9E == 0xe) {
     primaryResource = 9;    // lumber
     secondaryResource = 11; // steel
-    primaryMissing = city94->cityStockLumberC8 < 1;
-    secondaryMissing = city94->cityStockSteelCC < 1;
+    primaryMissing = city94->cityStockLumber < 1;
+    secondaryMissing = city94->cityStockSteel < 1;
   }
 
   CSubViewIterator iterator(this);
@@ -203,7 +202,7 @@ void TIndustryView::UpdateFields() {
   while (iterator.MoreSubViews()) {
     for (short resource = 0; resource < kResourceKindCount; ++resource) {
       if (child->controlTag == g_pTradeSummarySelectionMap[resource]) {
-        if (child->childList44 == 0) {
+        if (child->childList == 0) {
           bool shouldEnable = (primaryMissing && primaryResource == resource) ||
                               (secondaryMissing && secondaryResource == resource);
           SetIndustryControlEnabledIfChanged(child, shouldEnable);
@@ -215,12 +214,12 @@ void TIndustryView::UpdateFields() {
 
     if (child->controlTag == kControlTagFlag) { // 'flag'
       TProductionOrder* flagOrder = static_cast<TProductionOrder*>(
-          city94->trailingOrderSlots1b0[static_cast<short>(embeddedPageIndex9E + 2)]);
+          city94->trailingOrderSlots[static_cast<short>(embeddedPageIndex9E + 2)]);
       SetIndustryControlEnabledIfChanged(child, flagOrder->quantity != 0);
     }
 
     if (child->controlTag == kControlTagLabV) { // 'Vbal'
-      SetIndustryControlEnabledIfChanged(child, city94->productionSummary1d8->strength >= 2);
+      SetIndustryControlEnabledIfChanged(child, city94->productionSummary->strength >= 2);
     }
 
     child = iterator.NextSubView();
@@ -229,16 +228,16 @@ void TIndustryView::UpdateFields() {
   if (embeddedPageIndex9E == 0xc) {
     TView* grainControl = ResolveControlByTag(kControlTagGrai); // 'grai'
     grainControl->AssertValid();
-    SetIndustryControlEnabledIfChanged(grainControl, city94->cityStockGrainD8 >= 2);
+    SetIndustryControlEnabledIfChanged(grainControl, city94->cityStockGrain >= 2);
 
     TView* fruitControl = ResolveControlByTag(kControlTagProd); // 'prod'
     fruitControl->AssertValid();
-    SetIndustryControlEnabledIfChanged(fruitControl, city94->cityStockFruitDA >= 1);
+    SetIndustryControlEnabledIfChanged(fruitControl, city94->cityStockFruit >= 1);
 
     TView* fishControl = ResolveControlByTag(kControlTagFish); // 'fish'
     fishControl->AssertValid();
     SetIndustryControlEnabledIfChanged(
-        fishControl, static_cast<int>(city94->cityStockFishDC) + city94->cityStockLivestockDE >= 1);
+        fishControl, static_cast<int>(city94->cityStockFish) + city94->cityStockLivestock >= 1);
   } else if (embeddedPageIndex9E == 0xf) {
     const unsigned int controlTags[3] = {kSummaryTagFood, kControlTagFurn,
                                          kControlTagClot}; // 'food', 'furn', 'clot'

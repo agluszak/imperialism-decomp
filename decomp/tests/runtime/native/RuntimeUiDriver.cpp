@@ -45,13 +45,13 @@ void FourCcText(unsigned int tag, char text[5]) {
 }
 
 TView* FindDirectChild(TView* parent, int tag) {
-  if (parent == 0 || parent->childList44 == 0) {
+  if (parent == 0 || parent->childList == 0) {
     return 0;
   }
   TView* match = 0;
-  POSITION position = parent->childList44->GetHeadPosition();
+  POSITION position = parent->childList->GetHeadPosition();
   while (position != 0) {
-    TView* child = parent->childList44->GetNext(position);
+    TView* child = parent->childList->GetNext(position);
     if (child->controlTag == tag) {
       if (match != 0) {
         return 0;
@@ -142,12 +142,12 @@ void FindPathMatches(TView* view, const RuntimeControlSelector& selector, TView*
     match = candidate;
     ++matchCount;
   }
-  if (view->childList44 == 0) {
+  if (view->childList == 0) {
     return;
   }
-  POSITION position = view->childList44->GetHeadPosition();
+  POSITION position = view->childList->GetHeadPosition();
   while (position != 0) {
-    FindPathMatches(view->childList44->GetNext(position), selector, match, matchCount);
+    FindPathMatches(view->childList->GetNext(position), selector, match, matchCount);
   }
 }
 

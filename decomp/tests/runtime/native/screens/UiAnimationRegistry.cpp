@@ -9,11 +9,11 @@
 #include "game/globals/ui_core_globals.h"
 
 bool UiAnimationRegistry::IsReady() {
-  return g_pUiAnimator != 0 && g_pUiAnimator->registryList24 != 0;
+  return g_pUiAnimator != 0 && g_pUiAnimator->registryList != 0;
 }
 
 int UiAnimationRegistry::Count() {
-  return IsReady() ? g_pUiAnimator->registryList24->GetCount() : -1;
+  return IsReady() ? g_pUiAnimator->registryList->GetCount() : -1;
 }
 
 bool UiAnimationRegistry::Contains(int tag) {

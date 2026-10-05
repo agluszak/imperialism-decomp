@@ -21,7 +21,7 @@
 
 // FUNCTION: IMPERIALISM 0x004304a0
 TInfoPanelView::TInfoPanelView() {
-  diplomacyMapView60 = 0;
+  diplomacyMapView = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00430500
@@ -32,7 +32,7 @@ IMPLEMENT_DYNCREATE(TInfoPanelView, TPanelView)
 // FUNCTION: IMPERIALISM 0x004fa010
 void TInfoPanelView::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
-  diplomacyMapView60 = static_cast<TDiplomacyMapView*>(ownerContext);
+  diplomacyMapView = static_cast<TDiplomacyMapView*>(ownerContext);
 
   // Resource tag array for the four "ovr*" nation labels (ovr0/ovr4/ovr1/ovr2)
   // as laid out by the original instruction sequence.
@@ -62,7 +62,7 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
   short ownerX = static_cast<short>(ownerLocalX);
   COLORREF shadowColor = 0;
   COLORREF foregroundColor = 0;
-  selectedNation = diplomacyMapView60->frameRegionSelectorAt98;
+  selectedNation = diplomacyMapView->frameRegionSelector;
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b68);
   ResolveUiThemeColor(0x2b6b, &shadowColor);
@@ -228,7 +228,7 @@ void TInfoPanelView::Setup() {
   SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText_00654ec8), overlayCluster);
   overlayCluster->SetSelectedChildTagAndRefresh(kControlTagOvr0); // 'ovr0'
 
-  diplomacyMapView60->actionCodeBC = kDipActionInspectNation;
+  diplomacyMapView->actionCodeBC = kDipActionInspectNation;
   selectedOverlayMode6C = 0;
 
   TControl* mapKey = static_cast<TControl*>(ResolveControlByTag(kControlTagMkey)); // 'mkey'
@@ -240,8 +240,8 @@ void TInfoPanelView::Setup() {
 void TInfoPanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
     short selectedOverlayMode = (short)sourceHandler->controlTag - 0x7230;
-    diplomacyMapView60->interactionModeAt94 = selectedOverlayMode;
-    diplomacyMapView60->InvalidateCityDialogRectRegion(&diplomacyMapView60->mapViewportRect514, 1);
+    diplomacyMapView->interactionModeAt94 = selectedOverlayMode;
+    diplomacyMapView->InvalidateCityDialogRectRegion(&diplomacyMapView->mapViewportRect, 1);
     selectedOverlayMode6C = selectedOverlayMode;
     TControl* mkey = static_cast<TControl*>(ResolveControlByTag(kControlTagMkey));
     mkey->AssertValid();
@@ -252,14 +252,14 @@ void TInfoPanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
 
 // FUNCTION: IMPERIALISM 0x004fae00
 void TInfoPanelView::SetInfoCountry(short countryId) {
-  memset(countryInfoCategoryIndices64, 0xff, sizeof(countryInfoCategoryIndices64));
+  memset(countryInfoCategoryIndices, 0xff, sizeof(countryInfoCategoryIndices));
 
   if (countryId < 7) {
     short categoryIndex = 13;
     short categoryCount = 0;
     do {
       if (g_pTradeMgr->categoryRows[categoryIndex].tradeOfferCells[46 + countryId] != 0) {
-        countryInfoCategoryIndices64[categoryCount++] = categoryIndex;
+        countryInfoCategoryIndices[categoryCount++] = categoryIndex;
       }
       ++categoryIndex;
     } while (categoryIndex <= 16);
@@ -272,8 +272,7 @@ void TInfoPanelView::SetInfoCountry(short countryId) {
   short valueIndex = 0;
   do {
     values[valueIndex] = secondary->independentResourceCountByType[valueIndex];
-    if (valueIndex == 6 &&
-        g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] == 0) {
+    if (valueIndex == 6 && g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId] == 0) {
       values[6] = 0;
     }
     indices[valueIndex] = valueIndex;
@@ -300,7 +299,7 @@ void TInfoPanelView::SetInfoCountry(short countryId) {
   short copyIndex = 0;
   do {
     if (values[copyIndex] > 0) {
-      countryInfoCategoryIndices64[copyIndex] = indices[copyIndex];
+      countryInfoCategoryIndices[copyIndex] = indices[copyIndex];
     }
     ++copyIndex;
   } while (copyIndex < 4);

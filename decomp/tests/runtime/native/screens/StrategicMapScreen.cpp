@@ -19,7 +19,7 @@
 #include "game/ui_widgets/TArmyToolbar.h"
 #include "game/ui_widgets/TNumberedArrowButton.h"
 #include "game/map_ui/TMapDialog.h"
-// The zoom predicates compare subviewAc against goodGoldTagControlA4, so TOceanDialog's
+// The zoom predicates compare subview against goodGoldTagControl, so TOceanDialog's
 // derivation from TWorldView has to be visible here, not just declared.
 #include "game/navy_ui/TOceanDialog.h"
 #include "game/turn_event_codes.h"
@@ -155,21 +155,21 @@ RuntimeActionResult StrategicMapScreen::SetViewportCell(short cellX, short cellY
 
 RuntimeActionResult StrategicMapScreen::SetOceanViewportCellForTopology(short cellX, short cellY,
                                                                         bool wraps) {
-  if (mapView == 0 || mapView->goodGoldTagControlA4 == 0 || g_pGlobalMapState == 0) {
+  if (mapView == 0 || mapView->goodGoldTagControl == 0 || g_pGlobalMapState == 0) {
     return InvalidScreen("set the overview viewport cell");
   }
   const char previous = g_pGlobalMapState->hexNeighborWrapHorizontally;
   g_pGlobalMapState->hexNeighborWrapHorizontally = wraps ? 0 : 1;
-  mapView->goodGoldTagControlA4->SetMapViewCellCoordinates(cellX, cellY);
+  mapView->goodGoldTagControl->SetMapViewCellCoordinates(cellX, cellY);
   g_pGlobalMapState->hexNeighborWrapHorizontally = previous;
   return RuntimeActionResult::Success();
 }
 
 RuntimeActionResult StrategicMapScreen::CenterOceanOn(int tile) {
-  if (mapView == 0 || mapView->goodGoldTagControlA4 == 0) {
+  if (mapView == 0 || mapView->goodGoldTagControl == 0) {
     return InvalidScreen("center the overview");
   }
-  mapView->goodGoldTagControlA4->CenterOn(tile);
+  mapView->goodGoldTagControl->CenterOn(tile);
   return RuntimeActionResult::Success();
 }
 
@@ -285,7 +285,7 @@ RuntimeActionResult StrategicMapScreen::SelectArmyProvince(short province) {
 }
 
 bool StrategicMapScreen::ArmyMenuIsActiveForProvince(short province) const {
-  return mapView != 0 && mapView->activeUnitCategoryIndex96 == kArmyInteractionMode &&
+  return mapView != 0 && mapView->activeUnitCategoryIndex == kArmyInteractionMode &&
          g_pMapContextActionManager != 0 &&
          g_pMapContextActionManager->pendingMapActionIndex == province;
 }
@@ -328,7 +328,7 @@ RuntimeActionResult ClickArrowZone(TNumberedArrowButton* arrow, bool lowerHalf, 
   }
   CRect bounds;
   arrow->QueryContentBounds(&bounds);
-  const int offsetY = lowerHalf ? arrow->frameHeight38 * 3 / 4 : arrow->frameHeight38 / 4;
+  const int offsetY = lowerHalf ? arrow->frameHeight * 3 / 4 : arrow->frameHeight / 4;
   CPoint zone(bounds.left + 1, bounds.top + offsetY); // RUNTIME_COORDINATE_EXPLAINED
   CPoint windowPoint(zone);
   arrow->TranslatePointToParentChain4D(&windowPoint);
@@ -342,7 +342,7 @@ RuntimeActionResult ClickArrowZone(TNumberedArrowButton* arrow, bool lowerHalf, 
   event.mouseY = windowPoint.y;
   event.commandCode = 0;
   event.keyFlags = 0;
-  event.mouseButton24 = 0;
+  event.mouseButton = 0;
   CPoint windowOrigin(0, 0); // RUNTIME_COORDINATE_EXPLAINED: origin of the owning window
   if (window->HandleMouseDown(windowPoint, &event, windowOrigin) == 0 ||
       g_McAppMouseCaptureState.capturedControl != arrow) {
@@ -426,7 +426,7 @@ TNumberedArrowButton* StrategicMapScreen::NavyClassArrow(short navyClass) const 
   if (cluster == 0) {
     return 0;
   }
-  TNumberedArrowButton* arrow = cluster->shipCountButton90;
+  TNumberedArrowButton* arrow = cluster->shipCountButton;
   return arrow != 0 && arrow->IsKindOf(RUNTIME_CLASS(TNumberedArrowButton)) != 0 ? arrow : 0;
 }
 
@@ -444,25 +444,25 @@ RuntimeActionResult StrategicMapScreen::SelectNavyZone(TZone* zone) {
 }
 
 bool StrategicMapScreen::NavyMenuIsActiveForZone(TZone* zone) const {
-  return mapView != 0 && mapView->activeUnitCategoryIndex96 == kNavyInteractionMode &&
-         mapView->orderEntryContext98 == zone && g_pActiveMapOrderContext != 0 &&
+  return mapView != 0 && mapView->activeUnitCategoryIndex == kNavyInteractionMode &&
+         mapView->orderEntryContext == zone && g_pActiveMapOrderContext != 0 &&
          g_pActiveMapOrderContext->selectedTaskForce14 != 0 &&
          g_pActiveMapOrderContext->selectedTaskForce14->location == zone;
 }
 
 bool StrategicMapScreen::NavyMenuIsActiveForForce(TTaskForce* force) const {
-  return mapView != 0 && mapView->activeUnitCategoryIndex96 == kNavyInteractionMode &&
+  return mapView != 0 && mapView->activeUnitCategoryIndex == kNavyInteractionMode &&
          g_pActiveMapOrderContext != 0 && g_pActiveMapOrderContext->selectedTaskForce14 == force;
 }
 
 short StrategicMapScreen::NavyClassAvailableCount(short navyClass) const {
   const TShipFractionCluster* cluster = NavyClassCluster(navyClass);
-  return cluster != 0 ? cluster->availableShipCount88 : -1;
+  return cluster != 0 ? cluster->availableShipCount : -1;
 }
 
 short StrategicMapScreen::NavyClassSelectedCount(short navyClass) const {
   const TShipFractionCluster* cluster = NavyClassCluster(navyClass);
-  return cluster != 0 ? cluster->selectedShipCount94 : -1;
+  return cluster != 0 ? cluster->selectedShipCount : -1;
 }
 
 short StrategicMapScreen::NavySelectedAggression() const {
@@ -523,19 +523,19 @@ bool StrategicMapScreen::HasEndTurnControl() const {
 }
 
 bool StrategicMapScreen::HasMiniMap() const {
-  return mapView != 0 && mapView->miniMapViewC0 != 0;
+  return mapView != 0 && mapView->miniMapView != 0;
 }
 
 bool StrategicMapScreen::IsZoomedOut() const {
   // Zoomed out swaps the active subview to the ocean dialog and clears the invalidation flag;
   // the opposite zoom control being present is the third half of the same observation.
-  return mapView != 0 && mapView->invalidationFlag94 == 0 &&
-         mapView->subviewAc == mapView->goodGoldTagControlA4 && Find(kControlTagZmIn) != 0;
+  return mapView != 0 && mapView->invalidationFlag == 0 &&
+         mapView->subview == mapView->goodGoldTagControl && Find(kControlTagZmIn) != 0;
 }
 
 bool StrategicMapScreen::IsZoomedIn() const {
-  return mapView != 0 && mapView->invalidationFlag94 != 0 &&
-         mapView->subviewAc == mapView->subview2A8 && Find(kControlTagZmOt) != 0;
+  return mapView != 0 && mapView->invalidationFlag != 0 &&
+         mapView->subview == mapView->subview2A8 && Find(kControlTagZmOt) != 0;
 }
 
 int StrategicMapScreen::ViewportOriginX() const {
@@ -554,29 +554,29 @@ int StrategicMapScreen::DetailedCenterTile() const {
 }
 
 int StrategicMapScreen::OceanOriginColumn() const {
-  return mapView != 0 && mapView->goodGoldTagControlA4 != 0
-             ? mapView->goodGoldTagControlA4->scrollColOffset7e
+  return mapView != 0 && mapView->goodGoldTagControl != 0
+             ? mapView->goodGoldTagControl->scrollColOffset
              : -1;
 }
 
 int StrategicMapScreen::OceanOriginRow() const {
-  return mapView != 0 && mapView->goodGoldTagControlA4 != 0
-             ? mapView->goodGoldTagControlA4->scrollRowOffset7c
+  return mapView != 0 && mapView->goodGoldTagControl != 0
+             ? mapView->goodGoldTagControl->scrollRowOffset
              : -1;
 }
 
 int StrategicMapScreen::OceanCenterTile() const {
-  return mapView != 0 && mapView->goodGoldTagControlA4 != 0
-             ? mapView->goodGoldTagControlA4->ComputeWrappedTileIndexFromObjectOffset7C7E()
+  return mapView != 0 && mapView->goodGoldTagControl != 0
+             ? mapView->goodGoldTagControl->ComputeWrappedTileIndexFromObjectOffset7C7E()
              : -1;
 }
 
 int StrategicMapScreen::MiniMapMarkerWidth() const {
-  return mapView != 0 && mapView->miniMapViewC0 != 0 ? mapView->miniMapViewC0->markerBoxWidth98
+  return mapView != 0 && mapView->miniMapView != 0 ? mapView->miniMapView->markerBoxWidth
                                                      : -1;
 }
 
 int StrategicMapScreen::MiniMapMarkerHeight() const {
-  return mapView != 0 && mapView->miniMapViewC0 != 0 ? mapView->miniMapViewC0->markerBoxHeight9c
+  return mapView != 0 && mapView->miniMapView != 0 ? mapView->miniMapView->markerBoxHeight
                                                      : -1;
 }

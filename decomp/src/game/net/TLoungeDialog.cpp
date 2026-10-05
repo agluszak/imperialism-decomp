@@ -237,7 +237,7 @@ void TLoungeDialog::TryReplaceRemoteNationSlot(int nationSlot) {
   }
 
   TGreatPower* nation = g_apNationStates[nationSlot];
-  if (nation == 0 || nation->diplomacyEligibilityA0 == 0 || !nation->IsRemote()) {
+  if (nation == 0 || nation->diplomacyEligibility == 0 || !nation->IsRemote()) {
     return;
   }
 
@@ -273,7 +273,7 @@ void TLoungeDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 
   if (commandId == kControlTagPick) { // 'pick'
     sourceHandler->AssertValid();
-    TryReplaceRemoteNationSlot(static_cast<TMapPreviewView*>(sourceHandler)->pendingNation6C);
+    TryReplaceRemoteNationSlot(static_cast<TMapPreviewView*>(sourceHandler)->pendingNation);
   }
 
   if (commandId == 0x14 || commandId == 0x0a || commandId == 0x22 || commandId == 0x0d) {

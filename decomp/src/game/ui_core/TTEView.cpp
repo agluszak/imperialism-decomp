@@ -17,10 +17,10 @@ void TTEView::ITEView(TDocument* document, TView* panel, int* offsetLayout, int*
   (void)unusedB;
   (void)unusedC;
   IStaticText(panel, offsetLayout, sizeLayout, layoutParam5, layoutParam6, -1, 0);
-  contentInsets68.left = insetRect->left;
-  contentInsets68.top = insetRect->top;
-  contentInsets68.right = insetRect->right;
-  contentInsets68.bottom = insetRect->bottom;
+  contentInsets.left = insetRect->left;
+  contentInsets.top = insetRect->top;
+  contentInsets.right = insetRect->right;
+  contentInsets.bottom = insetRect->bottom;
   textStyle78 = *style;
   textAlignmentCode = styleWord90;
 }
@@ -33,7 +33,7 @@ int TTEView::MeasureCurrentTextHeightInLayoutRect() {
   CFont* oldFont = dc.SelectObject(font);
   CRect bounds;
   GetQDExtent(&bounds);
-  bounds.DeflateRect(&contentInsets68);
+  bounds.DeflateRect(&contentInsets);
   CDC* measureDc = &dc;
   measureDc->DrawText((LPCSTR)*text, text->GetLength(), &bounds, 0xd10);
   dc.SelectObject(oldFont);

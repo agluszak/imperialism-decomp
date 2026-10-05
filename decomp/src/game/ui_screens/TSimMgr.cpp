@@ -1038,7 +1038,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case kGamePhaseEndTurn: {
     const bool alertsPending = ShowTurnAlertsForActiveNation();
-    alertsPendingFlag38 = alertsPending;
+    alertsPendingFlag = alertsPending;
     if (alertsPending) {
       break;
     }
@@ -1074,7 +1074,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     if (multiplayerSessionRole == kSessionRoleStandalone) {
       for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
         TGreatPower* nation = g_apNationStates[nationSlot];
-        if (nation != nullptr && nation->diplomacyEligibilityA0 != 0 &&
+        if (nation != nullptr && nation->diplomacyEligibility != 0 &&
             nation->proposalQueue->GetSize() > 0) {
           g_pSfxPlaybackSystem->SetActiveAudioCueAndResetQueue(4, true);
           g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDiplomacyMap),
@@ -1256,7 +1256,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case kGamePhaseAdvanceSeason: {
     turnStateCode = kGamePhaseTechnology;
-    alertsPendingFlag38 = 0;
+    alertsPendingFlag = 0;
     turnFlowStatusFlags = 0;
     AdvanceSeason();
     StartNextPhase();
@@ -1484,11 +1484,11 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case kGamePhaseOptionalTradeOverview:
     turnStateCode = kGamePhaseShowMap;
-    g_pViewMgr->DispatchTurnEvent(
-        g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] != 0
-            ? kTurnEventIndustryOverview
-            : kTurnEventTradeOverview,
-        activeNationSlot);
+    g_pViewMgr->DispatchTurnEvent(g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId] !=
+                                          0
+                                      ? kTurnEventIndustryOverview
+                                      : kTurnEventTradeOverview,
+                                  activeNationSlot);
     break;
 
   case kGamePhaseOptionalDiplomacyMap:
@@ -1683,7 +1683,7 @@ char TSimMgr::AllHumansFinished() {
 void TSimMgr::ResetTurnFlags() {
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
     TGreatPower* nation = g_apNationStates[nationSlot];
-    if (nation->diplomacyEligibilityA0 != 0) {
+    if (nation->diplomacyEligibility != 0) {
       nation->field904 = 0;
     }
   }
@@ -2015,7 +2015,7 @@ void TSimMgr::UpdatePersistentTopTenNationScores() {
   }
 
   g_apNationStates[activeNationSlot]->GenerateGameScore();
-  int score = g_apNationStates[activeNationSlot]->gameScoreRows930[TGreatPower::kGameScoreTotal];
+  int score = g_apNationStates[activeNationSlot]->gameScoreRows[TGreatPower::kGameScoreTotal];
 
   int insertIndex = 0;
   while (insertIndex < 10 && score <= scoreValues[insertIndex]) {
@@ -2211,8 +2211,8 @@ void TSimMgr::HandleTurnInstruction_Labo_SetNationLaborTierCounts(void* pInstruc
 
   TGreatPower* nation = g_apNationStates[ownerToken];
   TCity* city = (nation != nullptr) ? nation->city : nullptr;
-  city->productionSummary1d8->SetPopulation(
-      static_cast<int>(tierAToken), static_cast<int>(tierBToken), static_cast<int>(tierCToken));
+  city->productionSummary->SetPopulation(static_cast<int>(tierAToken), static_cast<int>(tierBToken),
+                                         static_cast<int>(tierCToken));
 
   g_apNationStates[ownerToken]->RebuildNationResourceYieldCountersAndDevelopmentTargets();
 
@@ -2255,7 +2255,7 @@ void TSimMgr::HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta(void* pIn
   }
   int index = static_cast<short>(indexToken);
   short value = static_cast<short>(valueToken);
-  short* accum = &city->productionAccum1fc[index];
+  short* accum = &city->productionAccum[index];
   *accum = static_cast<short>(*accum + (value - city->productionOrderTable1dc[index]));
   city->productionOrderTable1dc[index] = value;
 }
@@ -2292,7 +2292,7 @@ void TSimMgr::HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh(void*
   } else {
     city = g_apNationStates[static_cast<int>(nationToken)]->city;
   }
-  (&city->cityStockCottonB6)[static_cast<short>(indexToken)] = static_cast<short>(valueToken);
+  (&city->cityStockCotton)[static_cast<short>(indexToken)] = static_cast<short>(valueToken);
   city->VerifyStocks();
 }
 
@@ -2464,7 +2464,7 @@ void TSimMgr::HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus(void* pI
   short tileIndex = static_cast<short>(token);
   int nationTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
   g_pGlobalMapState->QueueDepotConstructionOrder(tileIndex, static_cast<short>(nationTag));
-  if (g_apNationStates[nationTag]->diplomacyEligibilityA0 == 0) {
+  if (g_apNationStates[nationTag]->diplomacyEligibility == 0) {
     g_apNationStates[nationTag]->treasuryValue10 += 2000;
   }
 }
@@ -2483,7 +2483,7 @@ void TSimMgr::HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus(void* pI
   short tileIndex = static_cast<short>(token);
   int nationTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
   g_pGlobalMapState->QueuePortConstructionOrder(tileIndex, static_cast<short>(nationTag));
-  if (g_apNationStates[nationTag]->diplomacyEligibilityA0 == 0) {
+  if (g_apNationStates[nationTag]->diplomacyEligibility == 0) {
     g_apNationStates[nationTag]->treasuryValue10 += 3000;
   }
 }

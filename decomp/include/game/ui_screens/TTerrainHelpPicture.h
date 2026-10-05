@@ -16,7 +16,7 @@ public:
                        TEvent* event) override; // slot 0x0f 0x005059d0
   // Applies the highlight style to the selected 'i00a'..'i00l' item pane (normal style
   // to the rest) and fills the 'item' caption + 'info' description panes from
-  // menuItemIds94[selectedIndex]. Slot 0x73, 0x5057a0.
+  // menuItemIds[selectedIndex]. Slot 0x73, 0x5057a0.
   virtual void HighlightSelectedMenuItemAndRefreshDetailText(int selectedIndex);
 
   // 'info' pane resolved and styled by BuildMapTileActionContextMenu; also read by the
@@ -24,7 +24,7 @@ public:
   TDeluxeText* infoTextPane90; // +0x90
   // Menu item ids (string group 0x2755) built from the selected tile's record; 0 = empty
   // slot. Read back by the slot-0x73 rebuild.
-  short menuItemIds94[12]; // +0x94..0xab
+  short menuItemIds[12]; // +0x94..0xab
 
   TTerrainHelpPicture();
 

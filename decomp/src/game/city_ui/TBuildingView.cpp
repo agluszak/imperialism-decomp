@@ -56,7 +56,7 @@ void TBuildingView::SetUniversityDialogLocalizedTextAndRefresh(TStaticText* labe
 // FUNCTION: IMPERIALISM 0x004c7180
 void TBuildingView::Close() {
   if (isEmbeddedPage9C) {
-    productionView98->buildingViewsAC[embeddedPageIndex9E] = 0;
+    productionView98->buildingViews[embeddedPageIndex9E] = 0;
   } else {
     g_pViewMgr->ClearActiveCityBuildingViewSlot(embeddedPageIndex9E);
   }

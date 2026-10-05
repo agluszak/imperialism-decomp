@@ -18,7 +18,7 @@
 // (TBattleUnitsView 0x00430b53, TGarrisonView 0x004a8813) CALL this rather than
 // inlining it, which is only possible if the definition is not visible to them.
 // FUNCTION: IMPERIALISM 0x00564920
-TMilitaryPageView::TMilitaryPageView() : TPageView(), primaryUnitAtlas84(0) {}
+TMilitaryPageView::TMilitaryPageView() : TPageView(), primaryUnitAtlas(0) {}
 
 IMPLEMENT_DYNCREATE(TMilitaryPageView, TPageView)
 
@@ -51,8 +51,8 @@ IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 void TMilitaryPageView::PrepareUnitCache(int bitmapResourceId, int width, int height) {
   (void)width;
   TMapDialog* mapDialog = g_pViewMgr->mapUberPictureF0->subview2A8;
-  primaryUnitAtlas84 = mapDialog->quickDrawSurface350;
-  mapDialog->suppressMarkerOverlay34C = true;
+  primaryUnitAtlas = mapDialog->quickDrawSurface350;
+  mapDialog->suppressMarkerOverlay = true;
   mapDialog->ResetAllTileMarkersToSentinel();
 
   TBitmapResourceLoader** loaderHandle =
@@ -62,8 +62,8 @@ void TMilitaryPageView::PrepareUnitCache(int bitmapResourceId, int width, int he
   TQuickDrawSurfaceContext* savedContext;
   int savedFlags;
   GetGWorld(&savedContext, &savedFlags);
-  SetGWorld(primaryUnitAtlas84, savedFlags);
-  LockPixels(GetGWorldPixMap(primaryUnitAtlas84));
+  SetGWorld(primaryUnitAtlas, savedFlags);
+  LockPixels(GetGWorldPixMap(primaryUnitAtlas));
   QDLoadResource(loaderHandle);
 
   TBitmapResourceLoader* loader = *loaderHandle;
@@ -95,6 +95,6 @@ IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 void TMilitaryPageView::Close() {
   TView::Close();
   TMapDialog* mapDialog = g_pViewMgr->mapUberPictureF0->subview2A8;
-  mapDialog->suppressMarkerOverlay34C = false;
+  mapDialog->suppressMarkerOverlay = false;
   mapDialog->ResetAllTileMarkersToSentinel();
 }

@@ -160,7 +160,7 @@ void TWorldView::DoKeyEvent(TToolboxEvent* event) {
   case 'Z':
   case 'z': {
     TMapUberPicture* mapView = static_cast<TMapUberPicture*>(ownerContext);
-    if (mapView->invalidationFlag94) {
+    if (mapView->invalidationFlag) {
       mapView->CommitPendingUiModeChangeAndRefreshViews(0);
     } else {
       mapView->EnterMapInteractionOverlayMode(0);
@@ -226,7 +226,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
   short tileIndex = static_cast<short>(hoveredTileIndex);
   hoveredTileCityRecordIndex =
       static_cast<unsigned short>(g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex);
-  short interactionMode = static_cast<TMapUberPicture*>(ownerContext)->activeUnitCategoryIndex96;
+  short interactionMode = static_cast<TMapUberPicture*>(ownerContext)->activeUnitCategoryIndex;
 
   switch (interactionMode) {
   case 0:
@@ -337,7 +337,7 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
   CTemporaryRegion reusableSurfaceB;
 
   TMapUberPicture* mapUberPicture = static_cast<TMapUberPicture*>(ownerContext);
-  short interactionMode = mapUberPicture->activeUnitCategoryIndex96;
+  short interactionMode = mapUberPicture->activeUnitCategoryIndex;
   TCivUnit* selectedOrder = 0;
   short previewTile = -1;
 
@@ -353,11 +353,11 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
     }
   } else if (interactionMode == 2) {
     TZone* attachedEntity = 0;
-    if (mapUberPicture->activeUnitCategoryIndex96 == 2) {
-      attachedEntity = mapUberPicture->orderEntryContext98;
+    if (mapUberPicture->activeUnitCategoryIndex == 2) {
+      attachedEntity = mapUberPicture->orderEntryContext;
     }
     if (attachedEntity != 0) {
-      previewTile = attachedEntity->activeTileIndex20;
+      previewTile = attachedEntity->activeTileIndex;
     }
   }
 
@@ -477,7 +477,7 @@ char TWorldView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoi
   NormalizeWrappedMapCoord108x60(&tileRow, &tileCol);
 
   int stridedRecord = ComputeStridedRecordAddress6C((int)tileRow, (int)tileCol);
-  if (event->mouseButton24 == 1) {
+  if (event->mouseButton == 1) {
     DispatchOverlayEvent78FromStridedRecord(stridedRecord, regionBand);
     return 1;
   }
@@ -519,12 +519,12 @@ void TWorldView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int
         g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(static_cast<short>(tileIndex));
     TMapUberPicture* mapPicture = static_cast<TMapUberPicture*>(ownerContext);
     mapPicture->SetMapInteractionMode(2);
-    if (!mapPicture->invalidationFlag94) {
-      mapPicture->goodGoldTagControlA4->InvalidateZone(mapPicture->orderEntryContext98);
+    if (!mapPicture->invalidationFlag) {
+      mapPicture->goodGoldTagControl->InvalidateZone(mapPicture->orderEntryContext);
     }
-    mapPicture->orderEntryContext98 = orderContext;
-    if (!mapPicture->invalidationFlag94) {
-      mapPicture->goodGoldTagControlA4->InvalidateZone(orderContext);
+    mapPicture->orderEntryContext = orderContext;
+    if (!mapPicture->invalidationFlag) {
+      mapPicture->goodGoldTagControl->InvalidateZone(orderContext);
     }
     TTaskForce* refreshedTaskForce = 0;
     if (orderContext != 0) {
@@ -579,7 +579,7 @@ void TWorldView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFla
   // or advances the owner's selection cycle; every call advances the active region-band
   // index (+0x72) 1..4, which also invalidates the hover handler's cursor-render dedup.
   char handled;
-  switch (static_cast<TMapUberPicture*>(ownerContext)->activeUnitCategoryIndex96) {
+  switch (static_cast<TMapUberPicture*>(ownerContext)->activeUnitCategoryIndex) {
   case 0:
     if (g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) !=
             0 ||

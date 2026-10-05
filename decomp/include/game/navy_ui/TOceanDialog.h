@@ -11,11 +11,11 @@ class TZone;
 class TOceanDialog : public TWorldView {
 public:
   // TWorldView's own fields end exactly at 0x7c; these are TOceanDialog's own slice.
-  // ComputeWrappedTileIndexFromObjectOffset7C7E treats scrollRowOffset7c as the row
-  // component (multiplied by the 0x6c map width) and scrollColOffset7e as the column
+  // ComputeWrappedTileIndexFromObjectOffset7C7E treats scrollRowOffset as the row
+  // component (multiplied by the 0x6c map width) and scrollColOffset as the column
   // component; ApplyDirectionalNudgeAndRefreshDisplay nudges each by +-4 per direction bit.
-  short scrollRowOffset7c; // +0x7c
-  short scrollColOffset7e; // +0x7e
+  short scrollRowOffset; // +0x7c
+  short scrollColOffset; // +0x7e
 
   DECLARE_DYNCREATE(TOceanDialog)
   virtual ~TOceanDialog() override;
@@ -43,7 +43,7 @@ public:
   virtual unsigned char IsTileVisible(short tileIndex) override;
   void BuildTileViewportRect(short tileIndex, CRect* outRect);       // 0x5686d0
   int ComputeWrappedTileIndexFromViewportPoint(const CPoint* point); // 0x568840
-  // Wraps (scrollRowOffset7c+0xe, scrollColOffset7e+0x10) onto the 108x60 hex map via
+  // Wraps (scrollRowOffset+0xe, scrollColOffset+0x10) onto the 108x60 hex map via
   // NormalizeWrappedMapCoord108x60 and returns the resulting linear tile index
   // (row*0x6c + col). 0x00568ab0.
   virtual int ComputeWrappedTileIndexFromObjectOffset7C7E();
@@ -55,7 +55,7 @@ public:
   void InvalidateZone(TZone* zone); // 0x565f80
   CRect BoundingRect(TZone* zone);  // 0x566060
 
-  // Nudges scrollRowOffset7c/scrollColOffset7e by +-4 per set bit in directionFlags
+  // Nudges scrollRowOffset/scrollColOffset by +-4 per set bit in directionFlags
   // (bit0/1 adjust the row offset, bit2/3 the column offset), forwards the new (col, row)
   // pair to SetMapViewCellCoordinates, then refreshes the active dialog surface via
   // g_pDisplayMgr->activeDialog->ForceRedraw(). 0x00568a40.

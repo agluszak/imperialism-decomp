@@ -28,7 +28,7 @@ public:
   short requestedQuantity4c;      // desired quantity retained across availability clamps
   short primaryInputResourceId;   // first cityStockByType / trackingSlots resource index
   short secondaryInputResourceId; // second resource index, or -1 for two units of primary
-  short productionSlot;           // city productionAccum1fc index
+  short productionSlot;           // city productionAccum index
 
   // The retained constructor copy and inlined CreateObject path both clear the inherited
   // quantity word after installing the derived vptr.

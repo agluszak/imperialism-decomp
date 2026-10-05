@@ -38,7 +38,7 @@ void TTechHistoryView::PopulateTechHistory(short techId) {
 
   TDeluxeText* descText = new TDeluxeText();
   int offset[2] = {0, 0};
-  int size[2] = {scrollView->frameWidth34 - 0x19, frameHeight38};
+  int size[2] = {scrollView->frameWidth - 0x19, frameHeight};
   CRect zeroRect(0, 0, 0, 0);
   descText->IDeluxeText(scrollView, offset, size, &zeroRect, &style, -2);
   descText->textColor98 = mainStyle;
@@ -50,9 +50,9 @@ void TTechHistoryView::PopulateTechHistory(short techId) {
   descBounds.bottom = descBounds.top + static_cast<short>(measuredHeight);
   descText->ApplyBounds(&descBounds, 1);
 
-  scrollView->contentView60 = descText;
+  scrollView->contentView = descText;
   scrollView->SyncBoundedValueAndToggleControlStates();
 
-  CPoint titleLayout(0x8c, 0xf0 - titleControl->frameHeight38 / 2);
+  CPoint titleLayout(0x8c, 0xf0 - titleControl->frameHeight / 2);
   titleControl->Locate(titleLayout, 1);
 }

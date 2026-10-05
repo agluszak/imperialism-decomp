@@ -41,7 +41,7 @@ bool ChainIsWalkable(TUnit* head, CString* detail) {
       detail->Format("chain did not terminate within %d nodes", static_cast<int>(kMaxChainLength));
       return false;
     }
-    TUnit* next = node->nextAtLocation14;
+    TUnit* next = node->nextAtLocation;
     if (next != 0 && !IsPointerShaped(next)) {
       detail->Format("node %d's next link is not a pointer (0x%08lx)", length - 1,
                      PointerAddressLong32(next));
@@ -60,7 +60,7 @@ RuntimeActionResult UnitChainProbe::VerifyChainsAreWalkable(const char* stage) {
   }
   CString detail;
   for (int province = 0; province < kProvinceRecordCount; ++province) {
-    if (!ChainIsWalkable(g_pGlobalMapState->cityScoreTable[province].stationedUnitChain98,
+    if (!ChainIsWalkable(g_pGlobalMapState->cityScoreTable[province].stationedUnitChain,
                          &detail)) {
       CString message;
       message.Format("%s left province %d's stationed-unit chain unwalkable: %s", stage, province,

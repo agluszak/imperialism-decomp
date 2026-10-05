@@ -50,7 +50,7 @@ public:
   void SetTradeBids() override;
   void ReplyToTradeOffer(short arg1, short arg2, short arg3, short resourceCode) override;
 
-  unsigned char orderFlag80;
+  unsigned char orderFlag;
   unsigned char pad81[3];
 };
 

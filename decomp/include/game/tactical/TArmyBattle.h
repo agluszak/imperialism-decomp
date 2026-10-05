@@ -23,7 +23,7 @@ public:
   // Marks the battle decided, asserts both sides, silences the
   // blink cue, resets the 'tool' toolbar's current-unit display, then delegates to
   // g_pMapContextActionManager->ApplyPostBattleStackOutcomeAndGrowUnitMeters with each
-  // side's armyStack28 to relocate/reset the losing side and grow unit quality.
+  // side's armyStack to relocate/reset the losing side and grow unit quality.
   virtual void EndBattle(unsigned char sideWonFlag) override; // slot 0x12 0x5a5320, Mac oracle
 
   // Both original construction sites (TArmyMgr::CreateTacticalBattleViewAndInitialize-
@@ -32,7 +32,7 @@ public:
   // Defined in-class so the recompile inlines it the same way.
   TArmyBattle() : TTacticalBattle() {}
 
-  // Allocates recordList20 (the deserialized/deployed unit list). Called out-of-line
+  // Allocates recordList (the deserialized/deployed unit list). Called out-of-line
   // right after construction at the TArmyMgr setup site; the network receive path
   // relies on ReadFrom populating the list instead. 0x0059f7f0.
   void AllocateRecordList();
@@ -51,8 +51,8 @@ public:
   // class + fort level. 0x005a4fc0, __thiscall, ret 8.
   void LoadBattleSetupTabDataByIndex(int compositionClass, int fortLevel);
 
-  // Size the battlefield to the longest-ranged deployed unit: sweep recordList20 for the
-  // maximum GetUnitRange() and store that plus 0xb in battlefieldColumnCount34.
+  // Size the battlefield to the longest-ranged deployed unit: sweep recordList for the
+  // maximum GetUnitRange() and store that plus 0xb in battlefieldColumnCount.
   // 0x0059fc40, __thiscall.
   void ComputeBattlefieldColumnCountFromUnitRanges();
 };

@@ -19,6 +19,6 @@ public:
 
   // Original object size is 0x18 (CRuntimeClass m_nObjectSize); the fields below complete the extent so sizeof matches the original.
   BattleRecord* battleRecord10;
-  BattleReportDetailRecord* battleDetail14;
+  BattleReportDetailRecord* battleDetail;
 };
 ASSERT_SIZE(TBatRepDetLine, 0x18);

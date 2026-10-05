@@ -28,7 +28,7 @@ IMPLEMENT_DYNCREATE(TMiniArmyView, TControl)
 void TMiniArmyView::InitializeForMilitaryUnit(TView* panel, int* offsetLayout, int* sizeLayout,
                                               TMilitaryUnit* unit) {
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 5, 5, 0);
-  militaryUnit84 = unit;
+  militaryUnit = unit;
   eventNumber60 = 0x22;
   SetControlHoverHelpText(g_pMiniCivSharedText_0064cb18, this);
 }
@@ -36,7 +36,7 @@ void TMiniArmyView::InitializeForMilitaryUnit(TView* panel, int* offsetLayout, i
 // FUNCTION: IMPERIALISM 0x004aaeb0
 void TMiniArmyView::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws
-  CString name = militaryUnit84->name24;
+  CString name = militaryUnit->name24;
   CString displayName = name;
 
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xc, 0x2b6a, 3);
@@ -55,7 +55,7 @@ void TMiniArmyView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(0xa, 0xc);
   DrawTextWithCachedQuickDrawStyleState(&displayName);
 
-  short level = militaryUnit84->strength34;
+  short level = militaryUnit->strength34;
   short sVar1 = level / 0x19 + 1;
   if (sVar1 > 0x14) {
     sVar1 = 0x14;
@@ -81,7 +81,7 @@ void TMiniArmyView::Draw(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x004ab1d0
 void TMiniArmyView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (sourceHandler->controlTag == kControlTagUpgr) {
-    if (militaryUnit84->Upgrade()) {
+    if (militaryUnit->Upgrade()) {
       TView* sourceView = static_cast<TView*>(sourceHandler);
       sourceView->Show(0, 1);
       SetControlHoverHelpTextAltEntry(CString(g_pMiniCivSharedText_0064cb18), sourceView);
@@ -97,7 +97,7 @@ void TMiniArmyView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
   } else if (sourceHandler == this) {
     TSuperArmyRoster* roster = static_cast<TSuperArmyRoster*>(ownerContext);
     roster->AssertValid();
-    roster->selectedCityRecordIndex = militaryUnit84->tileIndex06;
+    roster->selectedCityRecordIndex = militaryUnit->tileIndex06;
   }
   TControl::DoEvent(commandId, sourceHandler, event);
 }

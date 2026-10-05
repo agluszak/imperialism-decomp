@@ -39,8 +39,8 @@ public:
   TShip* sourceShip34; // +0x34 source strategic ship (range delegate, 0x5a6330)
   // Second combat-resource pool alongside strength4 (TTacticalUnit); its domain is not
   // yet cross-checked against a UI reader.
-  int secondaryCombatStrength38; // +0x38
-  int baseActionPoints3c;        // +0x3c
+  int secondaryCombatStrength; // +0x38
+  int baseActionPoints;        // +0x3c
 
   // NOOP: verified empty in original 0x005a6242 (no standalone TNavyTacUnit::TNavyTacUnit body exists: construction is fully inlined into CreateObject 0x005a6240; that address is its operator-new call site)
   TNavyTacUnit() {}

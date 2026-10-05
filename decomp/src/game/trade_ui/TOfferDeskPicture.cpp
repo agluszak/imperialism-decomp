@@ -67,7 +67,7 @@ void TOfferDeskPicture::DoPostCreate(int arg) {
 
   TDealTabControl* tabs = static_cast<TDealTabControl*>(ResolveControlByTag(kControlTagTabs));
   tabs->AssertValid();
-  tabs->Setup(0x2264, g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId]);
+  tabs->Setup(0x2264, g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId]);
   tabs->RefreshControl();
 
   TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(ResolveControlByTag(kControlTagTool));
@@ -341,7 +341,7 @@ void TOfferDeskPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
   if (commandId >= 0x2af8) {
     short tabIndex = static_cast<short>(commandId - 0x2af8);
     short selectionIndex = g_tradeBookCategoryByTabAndTechState_0066DB58
-        [g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId]][tabIndex];
+        [g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId]][tabIndex];
     if (!selectionActive) {
       UpdateTradeSelectionStateAndRefreshUiIfChanged(1);
     } else {
@@ -442,13 +442,13 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
       avail = static_cast<short>(gp->ComputeProductionMetricForOrderKind(commodityType));
       relDelta = gp->purchasedItemsByResource[commodityType];
       // TCity models the 23 per-commodity stock shorts as named fields; index off the first.
-      stock = (&city->cityStockCottonB6)[commodityType];
+      stock = (&city->cityStockCotton)[commodityType];
       needTgt = gp->needTargetByType[commodityType];
     } else {
       avail = static_cast<short>(gp->ComputeProductionMetricForOrderKind(0));
       relDelta =
           static_cast<short>(gp->purchasedItemsByResource[1] + gp->purchasedItemsByResource[0]);
-      stock = static_cast<short>(city->cityStockCottonB6 + city->cityStockWoolB8);
+      stock = static_cast<short>(city->cityStockCotton + city->cityStockWool);
       needTgt = static_cast<short>(gp->needTargetByType[1] + gp->needTargetByType[0]);
     }
     if (avail > stock + relDelta + needTgt) {
@@ -484,13 +484,13 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
     if (commodityType != kResourceCotton && commodityType != kResourceWool) {
       avail = static_cast<short>(gp->ComputeProductionMetricForOrderKind(commodityType));
       relDelta = gp->purchasedItemsByResource[commodityType];
-      stock = (&city->cityStockCottonB6)[commodityType];
+      stock = (&city->cityStockCotton)[commodityType];
       needTgt = gp->needTargetByType[commodityType];
     } else {
       avail = static_cast<short>(gp->ComputeProductionMetricForOrderKind(0));
       relDelta =
           static_cast<short>(gp->purchasedItemsByResource[1] + gp->purchasedItemsByResource[0]);
-      stock = static_cast<short>(city->cityStockCottonB6 + city->cityStockWoolB8);
+      stock = static_cast<short>(city->cityStockCotton + city->cityStockWool);
       needTgt = static_cast<short>(gp->needTargetByType[1] + gp->needTargetByType[0]);
     }
     strCityStock.Format(g_szDecimalFormat, static_cast<int>(stock));
@@ -663,7 +663,7 @@ void TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged(unsigned 
     TDealTabControl* tabsControl =
         static_cast<TDealTabControl*>(ResolveControlByTag(kControlTagTabs));
     tabsControl->AssertValid();
-    tabsControl->Setup(0x2266, g_pTechMgr->perTechUnlockFlag180[0x13]);
+    tabsControl->Setup(0x2266, g_pTechMgr->perTechUnlockFlag[0x13]);
     tabsControl->RefreshControl();
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 4, tabsControl);
     TView* listControl = ResolveControlByTag(kControlTagList);
@@ -678,7 +678,7 @@ void TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged(unsigned 
     TDealTabControl* tabsControl =
         static_cast<TDealTabControl*>(ResolveControlByTag(kControlTagTabs));
     tabsControl->AssertValid();
-    tabsControl->Setup(0x2264, g_pTechMgr->perTechUnlockFlag180[0x13]);
+    tabsControl->Setup(0x2264, g_pTechMgr->perTechUnlockFlag[0x13]);
     tabsControl->selectedRow = -1;
     tabsControl->RefreshControl();
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 2, tabsControl);

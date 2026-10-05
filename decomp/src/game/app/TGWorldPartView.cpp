@@ -43,15 +43,15 @@ void TGWorldPartView::Draw(RECT* rectBuffer) {
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency(sourceSurface60->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
-                                     &sourceRect64, &destRect, 0x24, 0);
+                                     &sourceRect, &destRect, 0x24, 0);
     UpdatePaletteIndexWithDefaultFallback(0x13);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00577df0
 void TGWorldPartView::SetSourceRectFromGridCell(int column, int row) {
-  sourceRect64.left = column * frameWidth34;
-  sourceRect64.top = row * frameHeight38;
-  sourceRect64.right = (column + 1) * frameWidth34;
-  sourceRect64.bottom = (row + 1) * frameHeight38;
+  sourceRect.left = column * frameWidth;
+  sourceRect.top = row * frameHeight;
+  sourceRect.right = (column + 1) * frameWidth;
+  sourceRect.bottom = (row + 1) * frameHeight;
 }

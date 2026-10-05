@@ -35,7 +35,7 @@ TUniversityView::~TUniversityView() {}
 
 // FUNCTION: IMPERIALISM 0x004cace0
 void TUniversityView::DoStartup() {
-  productionView98 = g_pMacViewMgr->activeCityProductionView04;
+  productionView98 = g_pMacViewMgr->activeCityProductionView;
 
   struct {
     TextStyle desc;
@@ -53,7 +53,7 @@ void TUniversityView::DoStartup() {
       continue;
     }
 
-    int available = g_pTechMgr->universityRecruitmentAvailabilityByNation467[activeNation]
+    int available = g_pTechMgr->universityRecruitmentAvailabilityByNation[activeNation]
                         .availableByCategory[category];
     TControl* selection =
         static_cast<TControl*>(ResolveControlByTag(kControlTagCiv0 + category)); // 'civ0'+category
@@ -73,7 +73,7 @@ void TUniversityView::DoStartup() {
       minus->AssertValid();
       minus->ViewEnable(0, 0);
     } else {
-      TUnitOrder* order = city94->buildOrderSlots148[9 + category];
+      TUnitOrder* order = city94->buildOrderSlots[9 + category];
       TNumberText* quantity =
           static_cast<TNumberText*>(row->ResolveControlByTag(kControlTagNumb)); // 'numb'
       quantity->AssertValid();
@@ -127,12 +127,12 @@ void TUniversityView::DoStartup() {
     value->InstallTextStyle(style.desc, 1);
   }
 
-  selectedRecruitmentCategoryA4 = -1;
-  selectedRecruitmentOrderA8 = 0;
+  selectedRecruitmentCategory = -1;
+  selectedRecruitmentOrder = 0;
   TCluster* selection = static_cast<TCluster*>(ResolveControlByTag(kControlTagSele)); // 'sele'
   selection->AssertValid();
   selection->SetSelectedChildTagAndRefresh(kControlTagCiv0); // 'civ0'
-  selectedRecruitmentCategoryA4 = 0;
+  selectedRecruitmentCategory = 0;
   SetUnit(0);
 }
 
@@ -140,11 +140,11 @@ void TUniversityView::DoStartup() {
 void TUniversityView::SetUnit(short recruitmentCategory) {
   CString currencyText;
   CString unusedText;
-  TUnitOrder* order = city94->buildOrderSlots148[9 + recruitmentCategory];
-  if (order == selectedRecruitmentOrderA8) {
+  TUnitOrder* order = city94->buildOrderSlots[9 + recruitmentCategory];
+  if (order == selectedRecruitmentOrder) {
     return;
   }
-  selectedRecruitmentOrderA8 = order;
+  selectedRecruitmentOrder = order;
 
   CRect invalidRect;
   TStaticText* unit = static_cast<TStaticText*>(ResolveControlByTag(kControlTagUnit)); // 'unit'
@@ -180,12 +180,12 @@ void TUniversityView::SetUnit(short recruitmentCategory) {
   RECT requirementGridRect = {0, 0x104, 0xc8, 0x186};
   InvalidateCityDialogRectRegion(&requirementGridRect, 1);
 
-  if (selectedRecruitmentCategoryA4 > -1) {
+  if (selectedRecruitmentCategory > -1) {
     short highestRequirementLevel = 0;
     short activeNation = g_pSimMgr->GetActiveNationId();
     for (short row = 0; row < 4; ++row) {
       short resourceType = static_cast<short>(
-          g_anUniversityRequirementIdByRecruitRow[selectedRecruitmentCategoryA4][row]);
+          g_anUniversityRequirementIdByRecruitRow[selectedRecruitmentCategory][row]);
       if (resourceType != -1) {
         short level = g_pTechMgr->capabilityValueByNationAndResource[activeNation][resourceType];
         if (highestRequirementLevel < level) {
@@ -214,14 +214,14 @@ void TUniversityView::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
     short index =
         static_cast<short>(sourceHandler->controlTag) - 0x7630; // 'rec0'-'rec8' low 16 bits
     if (index >= 0 && index < 9) {
-      selectedRecruitmentCategoryA4 = index;
+      selectedRecruitmentCategory = index;
       SetUnit(index);
     }
   } else if (commandId == 0xa) {
     TView* ownerView = static_cast<TView*>(sourceHandler)->ownerContext;
     short index = static_cast<short>(ownerView->controlTag) - 0x7530; // low 16 bits
     if (index >= 0 && index < 9) {
-      selectedRecruitmentCategoryA4 = index;
+      selectedRecruitmentCategory = index;
       SetUnit(index);
 
       // 'sele' is a TCluster (see TShipyardView::DoStartup's identical tail).
@@ -229,7 +229,7 @@ void TUniversityView::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
       sele->AssertValid();
       sele->SetSelectedChildTagAndRefresh(kControlTagCiv0 + index); // 'civ0'+index
 
-      TUnitOrder* order = city94->buildOrderSlots148[9 + index];
+      TUnitOrder* order = city94->buildOrderSlots[9 + index];
       short quantity = order->quantity;
       if (sourceHandler->controlTag == kControlTagPlus) { // 'plus'
         ++quantity;
@@ -261,26 +261,26 @@ void TUniversityView::UpdateFields() {
   ResolveUiThemeColor(0x2b6b, &normalTextColor);
   ResolveUiThemeColor(0x2b69, &warningTextColor);
 
-  if (selectedRecruitmentOrderA8 == 0) {
+  if (selectedRecruitmentOrder == 0) {
     return;
   }
 
   TNumberText* paperAvailable =
       static_cast<TNumberText*>(ResolveControlByTag(kControlTagApap)); // 'apap'
   paperAvailable->AssertValid();
-  paperAvailable->SetControlValue(city94->cityStockPaperCA, 0);
+  paperAvailable->SetControlValue(city94->cityStockPaper, 0);
   paperAvailable->SetTextColorAndMaybeRefresh(
-      city94->cityStockPaperCA < selectedRecruitmentOrderA8->primaryInputPerUnit ? &warningTextColor
-                                                                                 : &normalTextColor,
+      city94->cityStockPaper < selectedRecruitmentOrder->primaryInputPerUnit ? &warningTextColor
+                                                                             : &normalTextColor,
       true);
   CRect invalidRect;
   paperAvailable->QueryBounds(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
-  TPopulationMgr* population = city94->productionSummary1d8;
+  TPopulationMgr* population = city94->productionSummary;
   short recruitmentCapacity = static_cast<short>(population->strength / 4);
-  if (population->productionSlots14->highSkillCount08 < recruitmentCapacity) {
-    recruitmentCapacity = population->productionSlots14->highSkillCount08;
+  if (population->productionSlots->highSkillCount08 < recruitmentCapacity) {
+    recruitmentCapacity = population->productionSlots->highSkillCount08;
   }
 
   TNumberText* capacityAvailable =
@@ -301,7 +301,7 @@ void TUniversityView::UpdateFields() {
   treasuryAvailable->AssertValid();
   treasuryAvailable->SetTextAndMaybeRefresh(&treasuryText, 0);
   treasuryAvailable->SetTextColorAndMaybeRefresh(
-      treasury < selectedRecruitmentOrderA8->cashCostPerUnit ? &warningTextColor : &normalTextColor,
+      treasury < selectedRecruitmentOrder->cashCostPerUnit ? &warningTextColor : &normalTextColor,
       true);
   treasuryAvailable->QueryBounds(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
@@ -319,7 +319,7 @@ void TUniversityView::Free() {
 
 // Two dialog sections, each SectRect-gated against the passed-in paint rect: (1) a
 // fixed 0x40x0x40 preview-panel blit whose source frame is selected by
-// GetMapImprovementSpriteBaseOffset(selectedRecruitmentCategoryA4); (2) the selected
+// GetMapImprovementSpriteBaseOffset(selectedRecruitmentCategory); (2) the selected
 // recruitment category's four-row resource requirement grid. Each occupied row blits
 // the resource icon and draws the requirement values through the active nation's highest
 // capability level.
@@ -329,7 +329,7 @@ void TUniversityView::Draw(RECT* rectBuffer) {
 
   int nHighestRequirementLevel = 0;
   short baseOffset =
-      g_pGlobalMapState->GetMapImprovementSpriteBaseOffset(selectedRecruitmentCategoryA4, 0, 1);
+      g_pGlobalMapState->GetMapImprovementSpriteBaseOffset(selectedRecruitmentCategory, 0, 1);
   UpdatePaletteIndexWithDefaultFallback(0x10);
 
   RECT panelRect = {0x7c, 0x5c, 0xbc, 0x9c};
@@ -348,7 +348,7 @@ void TUniversityView::Draw(RECT* rectBuffer) {
     for (int rowBottomY = 0x12e; rowBottomY < 0x192; rowBottomY += 0x19, ++row) {
       CString text;
       short nCommoditySpriteId = static_cast<short>(
-          g_anUniversityRequirementIdByRecruitRow[selectedRecruitmentCategoryA4][row]);
+          g_anUniversityRequirementIdByRecruitRow[selectedRecruitmentCategory][row]);
       if (nCommoditySpriteId != -1) {
         RECT reqSrcRect = {nCommoditySpriteId * 0x14, 0, (nCommoditySpriteId + 1) * 0x14, 0x18};
         RECT reqDstRect = {0x19, rowBottomY - 0x1c, 0x2d, rowBottomY};

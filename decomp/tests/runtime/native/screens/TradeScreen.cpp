@@ -280,7 +280,7 @@ bool TradeScreen::SellLabelHasOwnLayout(short resource) const {
   // The label sits inside the row and left of both arrows, and the arrows are in order. The
   // two-pixel slack at the top is the label's own ascent overhang in the retail layout.
   return labelBounds.left >= 0 && labelBounds.top >= -2 &&
-         labelBounds.bottom <= row->frameHeight38 && labelBounds.right <= decreaseBounds.left &&
+         labelBounds.bottom <= row->frameHeight && labelBounds.right <= decreaseBounds.left &&
          decreaseBounds.right <= increaseBounds.left;
 }
 

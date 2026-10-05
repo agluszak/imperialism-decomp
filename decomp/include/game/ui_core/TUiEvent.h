@@ -31,7 +31,7 @@ struct TToolboxEvent {
   short keyFlags;             // 0x1e nFlags & 0xf
   short handledMarker;        // 0x20 repeat count / "already handled" marker
   unsigned short reserved22;  // 0x22
-  int mouseButton24;          // 0x24 mouse button selector read by TWorldView
+  int mouseButton;            // 0x24 mouse button selector read by TWorldView
   unsigned int modifierFlags; // 0x28 bit0 Ctrl, bit1 Shift, bit2 Alt, bit3 RWin
 };
 

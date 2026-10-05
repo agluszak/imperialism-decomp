@@ -101,7 +101,7 @@ static void AddAdjacentCityDevelopment(TTown* town, short tileIndex) {
   for (int resource = 0; resource < kResourceManufacturedCount; ++resource) {
     town->resourceYieldByType[resource + kResourceManufacturedFirst] = static_cast<short>(
         town->resourceYieldByType[resource + kResourceManufacturedFirst] +
-        g_pGlobalMapState->cityScoreTable[cityRecordIndex].resourceDevelopmentCounts82[resource]);
+        g_pGlobalMapState->cityScoreTable[cityRecordIndex].resourceDevelopmentCounts[resource]);
   }
 }
 
@@ -110,7 +110,7 @@ void TTown::CalculateRawResources() {
   hasAdjacentCity = false;
   memset(resourceYieldByType, 0, sizeof(resourceYieldByType));
 
-  signed char townRegionClass = g_pGlobalMapState->terrainStateTable[tileIndex].regionSubtypeTag05;
+  signed char townRegionClass = g_pGlobalMapState->terrainStateTable[tileIndex].regionSubtypeTag;
   for (int direction = 0; direction < kTownHarvestTileCount; ++direction) {
     short tileIndex = TownNeighborTile(this, direction);
     if (tileIndex == -1) {
@@ -118,7 +118,7 @@ void TTown::CalculateRawResources() {
     }
 
     TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
-    if (!((tile->ownerNationTag04 == ownerNation && tile->regionSubtypeTag05 == townRegionClass) ||
+    if (!((tile->ownerNationTag04 == ownerNation && tile->regionSubtypeTag == townRegionClass) ||
           tile->GetTerrainKind() == kStrategicTerrainWater)) {
       continue;
     }
@@ -143,7 +143,7 @@ void TTown::CalculateResources() {
   hasAdjacentCity = false;
   memset(resourceYieldByType, 0, sizeof(resourceYieldByType));
 
-  signed char townRegionClass = g_pGlobalMapState->terrainStateTable[tileIndex].regionSubtypeTag05;
+  signed char townRegionClass = g_pGlobalMapState->terrainStateTable[tileIndex].regionSubtypeTag;
   for (int direction = 0; direction < kTownHarvestTileCount; ++direction) {
     short tileIndex = TownNeighborTile(this, direction);
     if (tileIndex == -1) {
@@ -152,7 +152,7 @@ void TTown::CalculateResources() {
 
     TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
     if (tile->ownerNationTag04 != ownerNation ||
-        (tile->regionSubtypeTag05 != townRegionClass && tile->regionSubtypeTag05 != -1)) {
+        (tile->regionSubtypeTag != townRegionClass && tile->regionSubtypeTag != -1)) {
       continue;
     }
 

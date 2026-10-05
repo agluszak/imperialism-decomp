@@ -14,7 +14,7 @@
 
 // FUNCTION: IMPERIALISM 0x00430420
 TTradePanelView::TTradePanelView() {
-  diplomacyMapView60 = 0;
+  diplomacyMapView = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00430480
@@ -26,7 +26,7 @@ IMPLEMENT_DYNCREATE(TTradePanelView, TPanelView)
 void TTradePanelView::DoPostCreate(int arg) {
   CString text;
   TView::DoPostCreate(arg);
-  diplomacyMapView60 = static_cast<TDiplomacyMapView*>(ownerContext);
+  diplomacyMapView = static_cast<TDiplomacyMapView*>(ownerContext);
   TView* cluster = ResolveControlByTag(kControlTagClus);
   for (int row = 0; row < 7; ++row) {
     TView* rowControl = cluster->ResolveControlByTag(kControlTagTraa + row);
@@ -109,26 +109,26 @@ void TTradePanelView::Setup() {
   TCluster* tradeCluster = static_cast<TCluster*>(ResolveControlByTag(kControlTagClus)); // 'clus'
   SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText_00654ec8), tradeCluster);
   tradeCluster->SetSelectedChildTagAndRefresh(kControlTagTraa); // 'traa'
-  diplomacyMapView60->selectedGrantRowC0 = 0;
-  diplomacyMapView60->actionCodeBC = kDipActionTradeSubsidy;
+  diplomacyMapView->selectedGrantRow = 0;
+  diplomacyMapView->actionCodeBC = kDipActionTradeSubsidy;
 }
 
 // FUNCTION: IMPERIALISM 0x004f8dd0
 void TTradePanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
-    if (sourceHandler->controlTag != kControlTagLink) { // 'link'
+    if (sourceHandler->controlTag != kControlTagLink) {           // 'link'
       int tradeRow = sourceHandler->controlTag - kControlTagTraa; // 'traa'
-      diplomacyMapView60->selectedGrantRowC0 = static_cast<short>(tradeRow);
+      diplomacyMapView->selectedGrantRow = static_cast<short>(tradeRow);
       short threshold = g_awDiplomacyTradePolicyIconValueTable[tradeRow];
       if (threshold == 300) {
-        diplomacyMapView60->actionCodeBC = kDipActionBoycott;
+        diplomacyMapView->actionCodeBC = kDipActionBoycott;
       } else if (threshold <= 0x5f) {
-        diplomacyMapView60->actionCodeBC = kDipActionTradeSubsidy;
+        diplomacyMapView->actionCodeBC = kDipActionTradeSubsidy;
       } else {
-        diplomacyMapView60->actionCodeBC = kDipActionTradePolicy;
+        diplomacyMapView->actionCodeBC = kDipActionTradePolicy;
       }
     } else {
-      diplomacyMapView60->actionCodeBC = kDipActionLinkTradePolicy;
+      diplomacyMapView->actionCodeBC = kDipActionLinkTradePolicy;
     }
   }
   TEventHandler::DoEvent(commandId, sourceHandler, event);

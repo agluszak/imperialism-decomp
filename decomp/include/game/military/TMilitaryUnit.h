@@ -23,7 +23,7 @@ class TMission;
 //  - once resolved, a list entry of TGreatPower::militaryUnitList44
 //    (CIterator walk), and
 //  - a node of the per-region stationed-unit chain (cityScoreTable +0x98,
-//    intrusively linked through the inherited TUnit::nextAtLocation14 field) --
+//    intrusively linked through the inherited TUnit::nextAtLocation field) --
 //    the retired TStationedUnitNode model.
 // Real C++ base is TUnit: the ctor disassembly writes TUnit's vtable
 // (0x0066ee18) first, then overwrites it with this class's own 0x0066eea8 --
@@ -39,19 +39,19 @@ public:
 
   // Two path arrays, each serialized as three tile words. ClearPath fills matching
   // elements with tileIndex06; the second array's distinct path role is unresolved.
-  short orderTargetTiles28[3];       // 0x28, 0x2a, 0x2c
-  short orderTargetTilesMirror2E[3]; // 0x2e, 0x30, 0x32
+  short orderTargetTiles[3];       // 0x28, 0x2a, 0x2c
+  short orderTargetTilesMirror[3]; // 0x2e, 0x30, 0x32
 
-  // strength34/eraIndex36/experiencePercent38/battleStateFlags3A round-trip through
+  // strength34/eraIndex/experiencePercent/battleStateFlags round-trip through
   // ReadFrom/WriteTo (0x5c2fd0/0x5c30a0);
-  // strengthSnapshot3C/pad3E/ownerMission40 do not -- transient/derived, not persisted.
-  short strength34;          // 0x34 init 0x1f4; scaled by 0.002 in 0x53cc10
-  short eraIndex36;          // 0x36 derived from unit kind / 8
-  short experiencePercent38; // 0x38 init 0; divided by 100 in 0x53cc10
-  short battleStateFlags3A;  // 0x3a init 0
-  short strengthSnapshot3C;  // 0x3c init 0
-  short pad3E;               // 0x3e
-  TMission* ownerMission40;  // 0x40 owning mission back-pointer
+  // strengthSnapshot/pad3E/ownerMission do not -- transient/derived, not persisted.
+  short strength34;        // 0x34 init 0x1f4; scaled by 0.002 in 0x53cc10
+  short eraIndex;          // 0x36 derived from unit kind / 8
+  short experiencePercent; // 0x38 init 0; divided by 100 in 0x53cc10
+  short battleStateFlags;  // 0x3a init 0
+  short strengthSnapshot;  // 0x3c init 0
+  short pad3E;             // 0x3e
+  TMission* ownerMission;  // 0x40 owning mission back-pointer
 
   TMilitaryUnit();
   virtual ~TMilitaryUnit() override;
@@ -83,7 +83,7 @@ public:
   static ArmyUnitCategoryStorage GetTypeCategory(MilitaryUnitKindStorage unitTypeSlot); // 0x5c34b0
   static short GetTypeAttribute(MilitaryUnitKindStorage unitTypeSlot,
                                 short statIndex); // 0x5c3580
-  // Sets or clears `mask` in battleStateFlags3A. 0x004a3b30, __thiscall, 2 args.
+  // Sets or clears `mask` in battleStateFlags. 0x004a3b30, __thiscall, 2 args.
   void SetOrClearBattleStateFlags(short mask, bool setFlag);
   // Era-upgrade candidate for this unit's type (types 0..0xf upgrade to type+8;
   // Sapper/Combat Engineer and Era-1/Era-2 General upgrade to type+1), gated on

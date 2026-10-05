@@ -1,5 +1,5 @@
 #include "game/gfx/TQuickDrawOwnedObjectRecord.h"
 
 TQuickDrawOwnedObjectRecord::~TQuickDrawOwnedObjectRecord() {
-  delete m_ownedObject1c;
+  delete m_ownedObject;
 }

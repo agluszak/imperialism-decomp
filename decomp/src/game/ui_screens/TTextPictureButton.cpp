@@ -47,8 +47,8 @@ void TTextPictureButton::Draw(RECT* rectBuffer) {
   int quarterHeight = extent.cy / 4;
 
   SetQuickDrawTextOriginWithContextOffset(
-      static_cast<short>(frameWidth34 / 2 - halfTextWidth + 1 + pressedOffset),
-      static_cast<short>(frameHeight38 / 2 + quarterHeight + 1 + pressedOffset));
+      static_cast<short>(frameWidth / 2 - halfTextWidth + 1 + pressedOffset),
+      static_cast<short>(frameHeight / 2 + quarterHeight + 1 + pressedOffset));
   DrawTextWithCachedQuickDrawStyleState(&buttonText);
 
   COLORREF textColor;
@@ -56,7 +56,7 @@ void TTextPictureButton::Draw(RECT* rectBuffer) {
   SetQuickDrawColorAndSyncGlobals(textColor);
 
   SetQuickDrawTextOriginWithContextOffset(
-      static_cast<short>(frameWidth34 / 2 - halfTextWidth + pressedOffset),
-      static_cast<short>(frameHeight38 / 2 + quarterHeight + pressedOffset));
+      static_cast<short>(frameWidth / 2 - halfTextWidth + pressedOffset),
+      static_cast<short>(frameHeight / 2 + quarterHeight + pressedOffset));
   DrawTextWithCachedQuickDrawStyleState(&buttonText);
 }

@@ -137,7 +137,7 @@ TShip* SelectNearestInactiveShipToZone(TZone** targetZone, TMapOrderChildLinkNod
 // at least one exists at all (walking g_pMapActionContextListHead via prev18), then re-walks
 // from the head, stepped forward g_pSimMgr->GetEconomicTurn() % 50 times (wrapping to the
 // head on a null prev18), as the starting point for an unbounded sweep: for every eligible
-// zone visited (wrapping forever via prev18), picks the first still-inactive orderList24
+// zone visited (wrapping forever via prev18), picks the first still-inactive orderList
 // node, then scans the remaining inactive nodes for the one whose (TZone*) reading of
 // TTaskForce::shipOrders is nearest that zone (TZone::GetCachedMapActionContextDistanceOrRecompute),
 // marks it active, and -- unless it's already anchored on that same zone -- promotes/queues
@@ -145,9 +145,9 @@ TShip* SelectNearestInactiveShipToZone(TZone** targetZone, TMapOrderChildLinkNod
 // sweep is bounded even though the zone ring never explicitly stops).
 // FUNCTION: IMPERIALISM 0x0053bdd0
 void TScatteredShipsMission::GiveOrders() {
-  if (orderList24 != nullptr) {
-    orderList24->active = 0;
-    orderList24->next->SetChainActiveFlag(0);
+  if (orderList != nullptr) {
+    orderList->active = 0;
+    orderList->next->SetChainActiveFlag(0);
   }
 
   int stepCount = static_cast<int>(g_pSimMgr->GetEconomicTurn()) % 50;
@@ -172,7 +172,7 @@ void TScatteredShipsMission::GiveOrders() {
   while (true) {
     if (!current->QueryPortZoneCapability() &&
         current->HasSecondaryNeighborWithNationTag(nationId04)) {
-      TMapOrderChildLinkNode* best = orderList24;
+      TMapOrderChildLinkNode* best = orderList;
       while (best != nullptr && best->active != 0) {
         best = best->next;
       }

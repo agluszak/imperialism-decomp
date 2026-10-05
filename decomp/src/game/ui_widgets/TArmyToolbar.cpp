@@ -40,12 +40,12 @@ void TArmyToolbar::SetProvince(short provinceIndex) {
   if (provinceIndex != -1) {
     TMilitaryUnit* unit;
     if (provinceIndex >= 0 && provinceIndex < 0x180) {
-      unit = g_pGlobalMapState->cityScoreTable[provinceIndex].stationedUnitChain98;
+      unit = g_pGlobalMapState->cityScoreTable[provinceIndex].stationedUnitChain;
     } else {
       unit = 0;
     }
 
-    for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation14)) {
+    for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
       short orderState = unit->unitOrder;
       switch (orderState) {
       case 0:

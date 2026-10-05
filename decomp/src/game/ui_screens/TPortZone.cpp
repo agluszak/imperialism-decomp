@@ -47,7 +47,7 @@ IMPLEMENT_DYNCREATE(TPortZone, TZone)
 // FUNCTION: IMPERIALISM 0x005617f0
 void TPortZone::ReadFrom(TStream* stream) {
   TZone::ReadFrom(stream);
-  stream->ReadBytes(&portTileIndex48, 2);
+  stream->ReadBytes(&portTileIndex, 2);
 }
 
 // slot 0x05 — TZone::WriteTo override.
@@ -58,9 +58,9 @@ void TPortZone::WriteTo(TStream* stream) {
   stream->WriteBytes(&statusCode04, 2);
   stream->WriteBytes(&tileOrTerrainId0c, 4);
   stream->WriteBytes(&seedNationId12, 2);
-  stream->WriteBytes(&activeTileIndex20, 2);
+  stream->WriteBytes(&activeTileIndex, 2);
   stream->WriteBytes(&contextOrdinal14, 2);
-  stream->WriteBytes(&portTileIndex48, 2);
+  stream->WriteBytes(&portTileIndex, 2);
 }
 
 // slot 0x0a — TZone::GenerateMapActionContextDisplayNameAndHeadline override.
@@ -69,7 +69,7 @@ void TPortZone::GenerateMapActionContextDisplayNameAndHeadline(unsigned char* us
                                                                const char* overrideName) {
   (void)usedCityFlags;
   (void)overrideName;
-  short cityIndex = g_pGlobalMapState->terrainStateTable[portTileIndex48].cityRecordIndex;
+  short cityIndex = g_pGlobalMapState->terrainStateTable[portTileIndex].cityRecordIndex;
   Province* city = cityIndex == -1 ? 0 : &g_pGlobalMapState->cityScoreTable[cityIndex];
   CString headlineTemplate;
   CString expandedHeadline;
@@ -83,8 +83,8 @@ void TPortZone::GenerateMapActionContextDisplayNameAndHeadline(unsigned char* us
 // FUNCTION: IMPERIALISM 0x00561a70
 void TPortZone::Free() {
   if (g_pGlobalMapState != 0) {
-    if (activeTileIndex20 != -1) {
-      g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(activeTileIndex20, -1);
+    if (activeTileIndex != -1) {
+      g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(activeTileIndex, -1);
     }
     if (tileOrTerrainId0c != -1) {
       g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(static_cast<short>(tileOrTerrainId0c),
@@ -110,14 +110,14 @@ void TPortZone::Free() {
 // so the compare is 16-bit (`CMP AX, word ptr [ESP+4]`), not int.
 // FUNCTION: IMPERIALISM 0x00561b10
 bool TPortZone::QueryZoneCapabilityFlagD(NationSlot nationSlot) {
-  return g_pGlobalMapState->terrainStateTable[portTileIndex48].ownerNationTag04 == nationSlot;
+  return g_pGlobalMapState->terrainStateTable[portTileIndex].ownerNationTag04 == nationSlot;
 }
 
 // slot 0x11 — TZone::QueryZoneCapabilityFlagE override. Same owner tag as slot 0x10, but
 // asks the diplomacy manager about the (owner, caller) pair instead of demanding identity.
 // FUNCTION: IMPERIALISM 0x00561b50
 bool TPortZone::QueryZoneCapabilityFlagE(NationSlot nationSlot) {
-  short ownerNation = g_pGlobalMapState->terrainStateTable[portTileIndex48].ownerNationTag04;
+  short ownerNation = g_pGlobalMapState->terrainStateTable[portTileIndex].ownerNationTag04;
   return g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(ownerNation,
                                                                               nationSlot);
 }
@@ -126,7 +126,7 @@ bool TPortZone::QueryZoneCapabilityFlagE(NationSlot nationSlot) {
 // FUNCTION: IMPERIALISM 0x00561bc0
 short TPortZone::GetPortTileFormerOwnerNationSlot() {
   return static_cast<short>(
-      g_pGlobalMapState->terrainStateTable[portTileIndex48].formerOwnerNationTag03);
+      g_pGlobalMapState->terrainStateTable[portTileIndex].formerOwnerNationTag);
 }
 
 // Returns the final port-zone node in the global map-action-context chain.
@@ -156,9 +156,9 @@ TPortZone* TPortZone::FindPreviousPortZone() {
 // nation owns it or the diplomacy manager relates the pair.
 // FUNCTION: IMPERIALISM 0x00561dc0
 bool TPortZone::HasZoneActiveChildCount(TTaskForce* force) {
-  bool zoneActive = distanceLevel44 > 0;
+  bool zoneActive = distanceLevel > 0;
   if (zoneActive && force->location != this) {
-    short ownerNation = g_pGlobalMapState->terrainStateTable[portTileIndex48].ownerNationTag04;
+    short ownerNation = g_pGlobalMapState->terrainStateTable[portTileIndex].ownerNationTag04;
     if (force->nation == ownerNation ||
         g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(ownerNation,
                                                                              force->nation)) {
@@ -193,8 +193,8 @@ short TPortZone::FindNearestActiveSeaContextTileFromOffset216() {
         candidateContext = TZone::GetFirstPortZone();
         while (candidateContext != 0 &&
                static_cast<short>(candidateContext->tileOrTerrainId0c) != candidateTile &&
-               candidateContext->activeTileIndex20 != candidateTile &&
-               static_cast<TPortZone*>(candidateContext)->portTileIndex48 != candidateTile) {
+               candidateContext->activeTileIndex != candidateTile &&
+               static_cast<TPortZone*>(candidateContext)->portTileIndex != candidateTile) {
           candidateContext = candidateContext->GetNextPortZone();
         }
       } else {

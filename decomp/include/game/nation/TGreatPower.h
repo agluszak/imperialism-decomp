@@ -408,7 +408,7 @@ public:
   TForeignMinister* foreignMinister;       // +0x94
   TCityInteriorMinister* interiorMinister; // +0x98
   TDefenseMinister* defenseMinister;       // +0x9c
-  unsigned char diplomacyEligibilityA0;
+  unsigned char diplomacyEligibility;
   unsigned char pad_a1;
   short availableMerchantCapacity;
   short merchantCapacity;
@@ -479,7 +479,7 @@ public:
     kGameScoreTotal = 11,
     kGameScoreRowCount = 12
   };
-  int gameScoreRows930[kGameScoreRowCount];
+  int gameScoreRows[kGameScoreRowCount];
   // Mac PayForMilitary writes this turn's army+navy maintenance charge here before
   // deducting it from treasury. The trade totals / remaining-budget views present the
   // same charge as an expense; the old pendingAidTotal name was misleading.
@@ -498,7 +498,7 @@ public:
   // Semantic C++ wrappers:
   // - constructor behavior maps to 0x004D8CC0 IGreatPower
   // - TObject::Free override at 0x004D9160 releases owned members then deletes self
-  // 0x4e0770 — city population summary metric: productionSlots14 bucket words folded
+  // 0x4e0770 — city population summary metric: productionSlots bucket words folded
   // ((w8*2+w6)*2+w4) plus extraAt1e; 0 when the nation has no city. Curated name kept
   // from symbols.csv (advisory case-6 metric); exact game meaning still tentative.
   short ComputeNationRuntimeAdvisoryMetricCase6();
@@ -549,7 +549,7 @@ public:
   // CMP word ptr [esp+0x24],1, confirming the 16-bit width.
   void IGreatPower(short nationSlotIndex, short humanControlledFlag);
 
-  // Mac oracle: GenerateGameScore. Rebuilds the gameScoreRows930 snapshot wholesale:
+  // Mac oracle: GenerateGameScore. Rebuilds the gameScoreRows snapshot wholesale:
   // population
   // baseline, summed city building types, owned-region score (this nation plus any
   // minor nation whose encoded slot matches), militaryUnitList44 order-cost sum, navy

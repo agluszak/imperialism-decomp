@@ -41,11 +41,11 @@ IMPLEMENT_DYNCREATE(TTacticalPlayer, TObject)
 // FUNCTION: IMPERIALISM 0x0059aea0
 void TTacticalPlayer::ITacticalPlayer(unsigned char isOurSide, unsigned char watch,
                                       int nationIndex) {
-  isOurSideFlagC = isOurSide;
+  isOurSideFlag = isOurSide;
   watchFlagD = watch;
   fieldF = false;
-  sideReadyFlag10 = false;
-  cursorIndex18 = 0;
+  sideReadyFlag = false;
+  cursorIndex = 0;
   nationIndex1C = nationIndex;
   field20 = false;
 }
@@ -55,32 +55,32 @@ void TTacticalPlayer::Free() {
   if (unitList4 != 0) {
     unitList4->FreePayloadsAndDestroy();
   }
-  if (secondaryList8 != 0) {
-    secondaryList8->FreePayloadsAndDestroy();
+  if (secondaryList != 0) {
+    secondaryList->FreePayloadsAndDestroy();
   }
   delete this;
 }
 
 // FUNCTION: IMPERIALISM 0x0059af20
 TTacticalUnit* TTacticalPlayer::SelectNextTacticalUnitForDoneCommand() {
-  int startCursor = cursorIndex18;
+  int startCursor = cursorIndex;
   TTacticalUnit* unit;
   do {
-    cursorIndex18 = cursorIndex18 + 1;
-    if (cursorIndex18 > unitList4->GetCount()) {
-      cursorIndex18 = 1; // 1-based ordinal wrap
+    cursorIndex = cursorIndex + 1;
+    if (cursorIndex > unitList4->GetCount()) {
+      cursorIndex = 1; // 1-based ordinal wrap
     }
-    unit = static_cast<TTacticalUnit*>(unitList4->GetEntryByOrdinal(cursorIndex18));
-    if (cursorIndex18 == startCursor) {
+    unit = static_cast<TTacticalUnit*>(unitList4->GetEntryByOrdinal(cursorIndex));
+    if (cursorIndex == startCursor) {
       break; // wrapped all the way around
     }
   } while (unit->tileIndex8 != -2);
   // The loop STOPS at tileIndex8 == -2: it seeks the next NOT-YET-PLACED unit.
   if (unit->tileIndex8 != -2) {
-    sideReadyFlag10 = true; // no undeployed unit left -> side ready
+    sideReadyFlag = true; // no undeployed unit left -> side ready
   }
   // The original re-fetches the entry; keep the second virtual call.
-  return static_cast<TTacticalUnit*>(unitList4->GetEntryByOrdinal(cursorIndex18));
+  return static_cast<TTacticalUnit*>(unitList4->GetEntryByOrdinal(cursorIndex));
 }
 
 // FUNCTION: IMPERIALISM 0x0059afa0
@@ -126,13 +126,13 @@ void TTacticalPlayer::RetireUndeployedUnitsToReserveList() {
       if (pos != 0) {
         entries->RemoveAt(pos);
       }
-      secondaryList8->listState.AddHead(unit);
+      secondaryList->listState.AddHead(unit);
     }
   }
-  CIterator reserveIter(secondaryList8);
+  CIterator reserveIter(secondaryList);
   for (TTacticalUnit* retired = static_cast<TTacticalUnit*>(reserveIter.Reset());
        reserveIter.More(); retired = static_cast<TTacticalUnit*>(reserveIter.Advance())) {
-    CPtrList* recordEntries = &battle14->recordList20->listState;
+    CPtrList* recordEntries = &battle14->recordList->listState;
     POSITION recordPos = recordEntries->Find(retired, 0);
     if (recordPos != 0) {
       recordEntries->RemoveAt(recordPos);

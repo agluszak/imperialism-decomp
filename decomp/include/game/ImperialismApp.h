@@ -79,8 +79,8 @@ public:
   CString field_D4;               // 0xD4 — string 0x840
   CString primaryDataLibNameD8;   // 0xD8 — string 0x297, primary data library path
   CString field_DC;               // 0xDC — string 0x80
-  CString languageCodeStringE0;   // 0xE0 — string 0x323, three-letter language code
-  int languagePackIdE4;           // 0xE4 — languageCodeStringE0 packed little-endian
+  CString languageCodeString;     // 0xE0 — string 0x323, three-letter language code
+  int languagePackIdE4;           // 0xE4 — languageCodeString packed little-endian
 
   DECLARE_MESSAGE_MAP()
 };

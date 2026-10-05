@@ -56,7 +56,7 @@ void TTacticalToolbar::Draw(RECT* rectBuffer) {
 
   TArmyTacUnit* sideAUnit = static_cast<TArmyTacUnit*>(currentUnit8C);
   if (sideAUnit != nullptr) {
-    int qualityPercent = sideAUnit->sourceUnit38->experiencePercent38;
+    int qualityPercent = sideAUnit->sourceUnit38->experiencePercent;
     short barWidth = static_cast<short>(sideAUnit->qualityLevel10) * 0xb;
     if (qualityPercent % 100 > 0x31) {
       barWidth += 5;
@@ -72,10 +72,10 @@ void TTacticalToolbar::Draw(RECT* rectBuffer) {
     }
   }
 
-  TArmyTacUnit* sideBUnit = otherSideCurrentUnit90;
+  TArmyTacUnit* sideBUnit = otherSideCurrentUnit;
   if (sideBUnit != nullptr) {
     short barWidth = static_cast<short>(sideBUnit->qualityLevel10) * 0xb;
-    int qualityPercent = sideBUnit->sourceUnit38->experiencePercent38;
+    int qualityPercent = sideBUnit->sourceUnit38->experiencePercent;
     if (qualityPercent % 100 > 0x31) {
       barWidth += 5;
     }
@@ -124,7 +124,7 @@ void TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalU
 
 // FUNCTION: IMPERIALISM 0x005acc90
 void TTacticalToolbar::UpdateTacticalOtherSideUnitControl(TArmyTacUnit* unit) {
-  otherSideCurrentUnit90 = unit;
+  otherSideCurrentUnit = unit;
   TPicture* tpicControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagTpic));
   tpicControl->AssertValid();
   if (unit != 0) {

@@ -11,7 +11,7 @@
 
 // FUNCTION: IMPERIALISM 0x00430520
 TCouncilPanelView::TCouncilPanelView() {
-  diplomacyMapView60 = 0;
+  diplomacyMapView = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004305a0
@@ -33,7 +33,7 @@ void TCouncilPanelView::Draw(RECT* rectBuffer) {
   CString scratchText;
   CString rowText;
 
-  short centerX = static_cast<short>(this->frameWidth34 / 2);
+  short centerX = static_cast<short>(this->frameWidth / 2);
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0x12, 0x2b68);
 

@@ -113,7 +113,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
         (selectedTileEntry == selectedCivilianState->selectedEntry)) {
       selectedStackButton = stackButton;
     }
-    selectedTileEntry = static_cast<TCivUnit*>(selectedTileEntry->nextAtLocation14);
+    selectedTileEntry = static_cast<TCivUnit*>(selectedTileEntry->nextAtLocation);
   }
   while (slotIndex < 6) {
     stackButton =
@@ -158,7 +158,7 @@ void TCivToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
     unsigned int controlTag = static_cast<unsigned int>(sourceHandler->controlTag);
     if ((kControlTagStackSlotFirst <= controlTag) && (controlTag <= kControlTagStackSlotLast)) {
       TCivilianButton* stackButton = static_cast<TCivilianButton*>(sourceHandler);
-      TCivUnit* boundStackEntry = stackButton->selectedCivilianOrder9c;
+      TCivUnit* boundStackEntry = stackButton->selectedCivilianOrder;
       selectedCivilianOrderState->SetActiveCivilianSelection(boundStackEntry, false);
       this->TCluster::DoEvent(0xc, sourceHandler, event);
       return;

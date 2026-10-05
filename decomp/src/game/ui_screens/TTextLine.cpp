@@ -27,7 +27,7 @@ void TTextLine::SetTextLineRowBoundsAndStyle(short rowArg, short colArg, int* bo
   layoutHeight = bounds[1];
   row = rowArg;
   if (styleGroupCode != -1) {
-    g_pSimMgr->GetString(styleGroupCode, static_cast<short>(styleIndex - 1), &captionText10);
+    g_pSimMgr->GetString(styleGroupCode, static_cast<short>(styleIndex - 1), &captionText);
   }
   BuildUiTextStyleDescriptor(&styleDescriptor14, 0, 0xc, 0x2b67);
   textAlignmentCode = -2;
@@ -35,7 +35,7 @@ void TTextLine::SetTextLineRowBoundsAndStyle(short rowArg, short colArg, int* bo
 
 // FUNCTION: IMPERIALISM 0x00570420
 void TTextLine::SetCaptionText(CString* caption) {
-  captionText10 = *caption;
+  captionText = *caption;
 }
 
 // FUNCTION: IMPERIALISM 0x00570440
@@ -62,7 +62,7 @@ void TTextLine::SetTextAlignmentCode(short value) {
 void TTextLine::InstallViews(TView* panel, int* offsetLayout) {
   TStaticText* text = new TStaticText();
   text->IStaticText(panel, offsetLayout, &layoutWidth, 5, 5, -1, 0);
-  text->SetTextAndMaybeRefresh(&captionText10, 0);
+  text->SetTextAndMaybeRefresh(&captionText, 0);
   text->InstallTextStyle(styleDescriptor14, 0);
   text->SetTextAlignmentAndMaybeRefresh(textAlignmentCode, 0);
   text->RefreshControl();

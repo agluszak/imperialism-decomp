@@ -36,7 +36,7 @@ void TUpDownView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previ
     return;
   }
 
-  if (point->y <= this->frameHeight38 / 2) {
+  if (point->y <= this->frameHeight / 2) {
     this->HandleEvent(100, this, nullptr);
   } else {
     this->HandleEvent(101, this, nullptr);

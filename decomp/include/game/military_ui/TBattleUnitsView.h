@@ -17,6 +17,6 @@ public:
   TBattleUnitsView();
   void StuffValues(BattleRecord& battleRecord, int participantIndex);
 
-  TQuickDrawSurfaceContext* secondaryUnitAtlas88;
+  TQuickDrawSurfaceContext* secondaryUnitAtlas;
 };
 ASSERT_SIZE(TBattleUnitsView, 0x8c);

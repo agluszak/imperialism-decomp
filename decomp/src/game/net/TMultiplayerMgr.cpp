@@ -60,7 +60,7 @@ struct TurnEvent2CPacket : NetMessage {
   int orderAccumulatedValues[0x17]; // +0x110
   short popFieldAt8;                // +0x16c
   unsigned char pad16e[2];
-  float popFieldAtC;       // +0x170 — mirrors TPopulationMgr::populationCountFloat0c
+  float popFieldAtC;       // +0x170 — mirrors TPopulationMgr::populationCountFloat
   short popStockLevel;     // +0x174
   short popExtraAt1e;      // +0x176
   short popFieldAt20;      // +0x178
@@ -185,20 +185,20 @@ struct TurnEvent12Packet : NetMessage {
 // Event-0xC kick/notice text: message text plus the addressed-nations mask and the
 // kicking nation id (or -1) in the two tail bytes.
 struct TurnEventCKickMessagePacket : TimelyMessageHeader {
-  char messageText18[0x100];            // +0x18
-  unsigned char targetNationBitmask118; // +0x118 - 1 << slot per addressed nation
-  signed char kickerNationId119;        // +0x119 - -1 = no specific kicker
-  unsigned char pad11a[2];              // total 0x11c
+  char messageText18[0x100];         // +0x18
+  unsigned char targetNationBitmask; // +0x118 - 1 << slot per addressed nation
+  signed char kickerNationId119;     // +0x119 - -1 = no specific kicker
+  unsigned char pad11a[2];           // total 0x11c
 };
 
 // Event-0x11 masked byte/word/dword poke into one of the two global map tables.
 struct TurnEvent11MapPokePacket : TimelyMessageHeader {
   signed char pokeWidthCode18; // +0x18 - 1 byte / 2 word / 4 dword
   unsigned char pad19[3];
-  int bufferSelector1C; // +0x1c - 0 terrainStateTable, 1 cityScoreTable, else null base
-  int byteOffset20;     // +0x20 - raw byte offset into the selected table
-  short valueWord24;    // +0x24
-  short maskWord26;     // +0x26, total 0x28
+  int bufferSelector; // +0x1c - 0 terrainStateTable, 1 cityScoreTable, else null base
+  int byteOffset20;   // +0x20 - raw byte offset into the selected table
+  short valueWord24;  // +0x24
+  short maskWord26;   // +0x26, total 0x28
 };
 
 // Events 0x20/0x21/0x22 receive views (the emit-side structs later in this TU pack
@@ -232,24 +232,24 @@ struct TurnEvent1ANationActionPacket : TimelyNetMessagePrefix {
 
 // Event-0x1B one tracked-slot entry.
 struct TurnEvent1BTrackedEntryPacket : TimelyNetMessagePrefix {
-  short nationSlot1C;       // +0x1c
-  short trackedKind1E;      // +0x1e
-  short targetNation20;     // +0x20
-  short trackedValue22;     // +0x22
-  short trackedSlotIndex24; // +0x24
+  short nationSlot1C;     // +0x1c
+  short trackedKind1E;    // +0x1e
+  short targetNation20;   // +0x20
+  short trackedValue22;   // +0x22
+  short trackedSlotIndex; // +0x24
   unsigned char pad26[2];
   int trackedPayload28; // +0x28, total 0x2c
 };
 
 // Event-0x1C proposal amount dispatch.
 struct TurnEvent1CProposalAmountPacket : TimelyNetMessagePrefix {
-  short ownerNation1C;           // +0x1c
-  short sourceContext1E;         // +0x1e
-  short maxAmount20;             // +0x20
-  short targetNation22;          // +0x22
-  short amount24;                // +0x24
-  unsigned char emitEventFlag26; // +0x26
-  unsigned char pad27;           // total 0x28
+  short ownerNation1C;         // +0x1c
+  short sourceContext;         // +0x1e
+  short maxAmount20;           // +0x20
+  short targetNation22;        // +0x22
+  short amount24;              // +0x24
+  unsigned char emitEventFlag; // +0x26
+  unsigned char pad27;         // total 0x28
 };
 
 // TurnEvent1DWarTransitionPacket now lives in game/military/NetMessage.h: the proxy
@@ -804,7 +804,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         kick.fromNetworkId = 0;
         kick.eventCode = 0xc;
         kick.toNetworkId = 0;
-        kick.targetNationBitmask118 = 0xff;
+        kick.targetNationBitmask = 0xff;
         kick.messageLength = 0;
         kick.messageLength = 0x11c;
         // Dead second query kept for fidelity: the original re-reads the active nation
@@ -903,9 +903,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       nationDisplayNameSlots[slot9] = statusText;
       defaultNationTextSlots[slot9] = nationDisplayNameSlots[slot9];
       TLoungeDialog* lounge;
-      if (lobbyDialogView40 != 0 &&
-          lobbyDialogView40->IsKindOf(RUNTIME_CLASS(TLoungeDialog)) != 0) {
-        lounge = (TLoungeDialog*)lobbyDialogView40;
+      if (lobbyDialogView != 0 && lobbyDialogView->IsKindOf(RUNTIME_CLASS(TLoungeDialog)) != 0) {
+        lounge = (TLoungeDialog*)lobbyDialogView;
       } else {
         lounge = 0;
       }
@@ -1019,7 +1018,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       }
       localSlot = probe < 7 ? probe : -1;
     }
-    if (localSlot != -1 && (kickView->targetNationBitmask118 & (1 << localSlot)) == 0) {
+    if (localSlot != -1 && (kickView->targetNationBitmask & (1 << localSlot)) == 0) {
       return 1;
     }
     int kickerNation = kickView->kickerNationId119;
@@ -1091,7 +1090,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     dialog->Free();
     if (responseTag == kSessionTagRsvp) { // 'rsvp'
       TPoseMessageDialog* poseCommand = new TPoseMessageDialog();
-      poseCommand->kickedByNationSlot18 = kickerNation;
+      poseCommand->kickedByNationSlot = kickerNation;
       poseCommand->ICommand(kSessionTagPose, g_pAmbitApplication, 0, 0, 0);
       g_pAmbitApplication->DispatchUiSelectionToHandler(poseCommand);
     }
@@ -1121,7 +1120,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // world per the scenario tag ('load'/'rand'/'scnX') and refresh the lounge.
     TurnEventESessionInitPacket* sessionInit = static_cast<TurnEventESessionInitPacket*>(packet);
     g_pSimMgr->SetDifficultyLevel(static_cast<eDifficulty>(sessionInit->difficultyLevel64));
-    g_pSimMgr->useLocalizedNameTables68 = sessionInit->nameTableFlag65;
+    g_pSimMgr->useLocalizedNameTables = sessionInit->nameTableFlag;
     {
       CString hostGameName(sessionInit->hostGameName3A);
       gameNameString = hostGameName;
@@ -1141,13 +1140,13 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         g_pAmbitApplication->DispatchUiSelectionToHandler(cancelCommand);
         return 1;
       }
-      g_pGameFlowState->lobbyDialogView40 = 0;
+      g_pGameFlowState->lobbyDialogView = 0;
       g_pGameFlowState->sessionPhaseTag = kSessionTagGoin; // 'goin'
       g_pGameFlowState->RefreshNationStatusLabelsAndCodesForSlotOrAll(-1);
       return 1;
     } else if (scenarioSelectionTag == kControlTagRand) {
       g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(true);
-      g_pSimMgr->RebuildMapContextAndGlobalMapState(1, sessionInit->mapSeedText18,
+      g_pSimMgr->RebuildMapContextAndGlobalMapState(1, sessionInit->mapSeedText,
                                                     sessionInit->mapParamByte39);
     } else if (scenarioSelectionTag >= kControlTagScn0 && scenarioSelectionTag <= kSessionTagScz9) {
       g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(true);
@@ -1168,8 +1167,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // Shared tail: refresh the lounge dialog's map/message controls (the original
     // tolerates a null lounge receiver).
     TLoungeDialog* loungeE;
-    if (lobbyDialogView40 != 0 && lobbyDialogView40->IsKindOf(RUNTIME_CLASS(TLoungeDialog)) != 0) {
-      loungeE = (TLoungeDialog*)lobbyDialogView40;
+    if (lobbyDialogView != 0 && lobbyDialogView->IsKindOf(RUNTIME_CLASS(TLoungeDialog)) != 0) {
+      loungeE = (TLoungeDialog*)lobbyDialogView;
     } else {
       loungeE = 0;
     }
@@ -1232,9 +1231,9 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     switch (poke->pokeWidthCode18) {
     case 1: {
       unsigned char* bufferBase1 = 0;
-      if (poke->bufferSelector1C == 0) {
+      if (poke->bufferSelector == 0) {
         bufferBase1 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->terrainStateTable);
-      } else if (poke->bufferSelector1C == 1) {
+      } else if (poke->bufferSelector == 1) {
         bufferBase1 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->cityScoreTable);
       }
       unsigned char maskByte = static_cast<unsigned char>(poke->maskWord26);
@@ -1246,9 +1245,9 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     }
     case 2: {
       unsigned char* bufferBase2 = 0;
-      if (poke->bufferSelector1C == 0) {
+      if (poke->bufferSelector == 0) {
         bufferBase2 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->terrainStateTable);
-      } else if (poke->bufferSelector1C == 1) {
+      } else if (poke->bufferSelector == 1) {
         bufferBase2 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->cityScoreTable);
       }
       short* target2 = reinterpret_cast<short*>(bufferBase2 + poke->byteOffset20);
@@ -1258,9 +1257,9 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     }
     case 4: {
       unsigned char* bufferBase4 = 0;
-      if (poke->bufferSelector1C == 0) {
+      if (poke->bufferSelector == 0) {
         bufferBase4 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->terrainStateTable);
-      } else if (poke->bufferSelector1C == 1) {
+      } else if (poke->bufferSelector == 1) {
         bufferBase4 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->cityScoreTable);
       }
       int maskBits = poke->maskWord26;
@@ -1295,7 +1294,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   case 0x13: {
     // Queue the nine-dword payload into the nation's event bucket.
     TurnEvent13NewsPacket* nationPayload = static_cast<TurnEvent13NewsPacket*>(packet);
-    g_pNewsMgr->AddEvent(nationPayload->nationSlot18, &nationPayload->newsEvent1C, true);
+    g_pNewsMgr->AddEvent(nationPayload->nationSlot18, &nationPayload->newsEvent, true);
     break;
   }
   case 0x20: {
@@ -1406,7 +1405,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         static_cast<TurnEvent1BTrackedEntryPacket*>(packet);
     g_apNationStates[trackedEntry->nationSlot1C]->AddToDealBook(
         trackedEntry->trackedKind1E, trackedEntry->targetNation20, trackedEntry->trackedValue22,
-        trackedEntry->trackedSlotIndex24, trackedEntry->trackedPayload28);
+        trackedEntry->trackedSlotIndex, trackedEntry->trackedPayload28);
     break;
   }
   case 0x1c: {
@@ -1414,9 +1413,9 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // posts the 'NeXT' trade command.
     TurnEvent1CProposalAmountPacket* proposalAmount =
         static_cast<TurnEvent1CProposalAmountPacket*>(packet);
-    g_pTradeMgr->SetDealResults(proposalAmount->ownerNation1C, proposalAmount->sourceContext1E,
+    g_pTradeMgr->SetDealResults(proposalAmount->ownerNation1C, proposalAmount->sourceContext,
                                 proposalAmount->amount24, proposalAmount->maxAmount20,
-                                proposalAmount->targetNation22, proposalAmount->emitEventFlag26, 1);
+                                proposalAmount->targetNation22, proposalAmount->emitEventFlag, 1);
     bool hosting1C = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
     if (!hosting1C) {
       return 1;
@@ -1522,7 +1521,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     g_apNationStates[nationSlot2C]->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
     city2C->rollingItemProductionScore78 = composite->cityRollingItemProductionScore;
     city2C->powerAvailableB4 = composite->cityFieldB4;
-    short* stock2C = &city2C->cityStockCottonB6;
+    short* stock2C = &city2C->cityStockCotton;
     for (int stockType = 0; stockType < kResourceKindCount; ++stockType) {
       stock2C[stockType] = composite->cityStock[stockType];
     }
@@ -1530,34 +1529,34 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       city2C->productionOrderTable1dc[orderSlot2C] = composite->productionOrderTable[orderSlot2C];
     }
     for (int accumSlot = 0; accumSlot < 0x10; ++accumSlot) {
-      city2C->productionAccum1fc[accumSlot] = composite->productionAccum[accumSlot];
+      city2C->productionAccum[accumSlot] = composite->productionAccum[accumSlot];
     }
-    city2C->populationGrowthPenaltyTicks26c = composite->populationGrowthPenaltyTicks;
+    city2C->populationGrowthPenaltyTicks = composite->populationGrowthPenaltyTicks;
     // Second, duplicate copy of the city stock block - original behavior, kept as-is.
     for (int stockType2 = 0; stockType2 < kResourceKindCount; ++stockType2) {
       stock2C[stockType2] = composite->cityStock[stockType2];
     }
     for (int record2C = 0; record2C < 0x17; ++record2C) {
-      TProductionOrder* order2C = city2C->orderSlotsE4[record2C];
+      TProductionOrder* order2C = city2C->orderSlots[record2C];
       if (order2C != 0) {
         order2C->accumulatedValue = composite->orderAccumulatedValues[record2C];
       }
     }
-    TPopulationMgr* summary2C = city2C->productionSummary1d8;
-    summary2C->populationCount08 = composite->popFieldAt8;
-    summary2C->populationCountFloat0c = composite->popFieldAtC;
+    TPopulationMgr* summary2C = city2C->productionSummary;
+    summary2C->populationCount = composite->popFieldAt8;
+    summary2C->populationCountFloat = composite->popFieldAtC;
     summary2C->strength = composite->popStockLevel;
     summary2C->extraAt1e = composite->popExtraAt1e;
     summary2C->fieldAt20 = composite->popFieldAt20;
-    summary2C->baselineSlots10->lowSkillCount04 = composite->popBucketWords[0];
-    summary2C->baselineSlots10->mediumSkillCount06 = composite->popBucketWords[1];
-    summary2C->baselineSlots10->highSkillCount08 = composite->popBucketWords[2];
-    summary2C->productionSlots14->lowSkillCount04 = composite->popBucketWords[3];
-    summary2C->productionSlots14->mediumSkillCount06 = composite->popBucketWords[4];
-    summary2C->productionSlots14->highSkillCount08 = composite->popBucketWords[5];
-    summary2C->pendingDeltaSlots18->lowSkillCount04 = composite->popBucketWords[6];
-    summary2C->pendingDeltaSlots18->mediumSkillCount06 = composite->popBucketWords[7];
-    summary2C->pendingDeltaSlots18->highSkillCount08 = composite->popBucketWords[8];
+    summary2C->baselineSlots->lowSkillCount04 = composite->popBucketWords[0];
+    summary2C->baselineSlots->mediumSkillCount06 = composite->popBucketWords[1];
+    summary2C->baselineSlots->highSkillCount08 = composite->popBucketWords[2];
+    summary2C->productionSlots->lowSkillCount04 = composite->popBucketWords[3];
+    summary2C->productionSlots->mediumSkillCount06 = composite->popBucketWords[4];
+    summary2C->productionSlots->highSkillCount08 = composite->popBucketWords[5];
+    summary2C->pendingDeltaSlots->lowSkillCount04 = composite->popBucketWords[6];
+    summary2C->pendingDeltaSlots->mediumSkillCount06 = composite->popBucketWords[7];
+    summary2C->pendingDeltaSlots->highSkillCount08 = composite->popBucketWords[8];
     break;
   }
   case 0x2d: {
@@ -1788,13 +1787,13 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         joinBroadcast.eventCode = 0xc;
         joinBroadcast.messageLength = 0;
         joinBroadcast.messageLength = 0x11c;
-        joinBroadcast.targetNationBitmask118 = 0xff;
+        joinBroadcast.targetNationBitmask = 0xff;
         joinBroadcast.kickerNationId119 = static_cast<signed char>(g_pSimMgr->GetActiveNationId());
         strcpy(joinBroadcast.messageText18, formattedRepo);
         joinBroadcast.eventCode = 0xc;
         joinBroadcast.kickerNationId119 = -1; // double-write over the active id - original
         joinBroadcast.toNetworkId = 0;
-        joinBroadcast.targetNationBitmask118 = static_cast<unsigned char>(0xff - (1 << repoSlot));
+        joinBroadcast.targetNationBitmask = static_cast<unsigned char>(0xff - (1 << repoSlot));
         g_pNetMgr006a6014->Send(&joinBroadcast, true);
       } else {
         TurnEvent1FStatusPacket refuse;
@@ -1835,12 +1834,12 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TurnEvent23TileStatePacket* tileState = static_cast<TurnEvent23TileStatePacket*>(packet);
     TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileState->tileIndex];
     tile->ownerNationTag04 = tileState->record.ownerNationTag04;
-    tile->regionSubtypeTag05 = tileState->record.regionSubtypeTag05;
+    tile->regionSubtypeTag = tileState->record.regionSubtypeTag;
     tile->adjacencyBits06 = tileState->record.adjacencyBits06;
-    tile->developmentClassNibbles0c = tileState->record.developmentClassNibbles0c;
-    tile->pendingDevelopmentFlag0d = (unsigned char)(tile->pendingDevelopmentFlag0d |
-                                                     tileState->record.pendingDevelopmentFlag0d);
-    tile->secondaryOwnerNationTag18 = tileState->record.secondaryOwnerNationTag18;
+    tile->developmentClassNibbles = tileState->record.developmentClassNibbles;
+    tile->pendingDevelopmentFlag =
+        (unsigned char)(tile->pendingDevelopmentFlag | tileState->record.pendingDevelopmentFlag);
+    tile->secondaryOwnerNationTag = tileState->record.secondaryOwnerNationTag;
     tile->activeFlags1c = tileState->record.activeFlags1c;
     break;
   }
@@ -1853,8 +1852,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     city24->lastTurnTick = cityRecord->record.lastTurnTick;
     {
       // 10-short copy 0x82..0x95 (explicit word loop in the original, not rep movs).
-      short* cityWordCursor = &city24->resourceDevelopmentCounts82[0];
-      short* recordWordCursor = cityRecord->record.resourceDevelopmentCounts82;
+      short* cityWordCursor = &city24->resourceDevelopmentCounts[0];
+      short* recordWordCursor = cityRecord->record.resourceDevelopmentCounts;
       int wordCountdown = 10;
       do {
         *cityWordCursor = *recordWordCursor;
@@ -1863,8 +1862,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         --wordCountdown;
       } while (wordCountdown != 0);
     }
-    city24->exploredByNationMaskA1 = cityRecord->record.exploredByNationMaskA1;
-    city24->resourcePresenceMaskA2 = cityRecord->record.resourcePresenceMaskA2;
+    city24->exploredByNationMask = cityRecord->record.exploredByNationMask;
+    city24->resourcePresenceMask = cityRecord->record.resourcePresenceMask;
     break;
   }
   case 0x25: { // merge nation status tags; ding when exactly one nation stays busy
@@ -1982,8 +1981,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   case 0x2b: { // accumulate the presence mask; optionally echo a 0x2b ack
     TurnEvent2BPresenceMaskPacket* presence = static_cast<TurnEvent2BPresenceMaskPacket*>(packet);
     g_nTurnEvent2BNationMaskAccumulator =
-        g_nTurnEvent2BNationMaskAccumulator | presence->nationMask19;
-    if (presence->replyRequestFlag18 != 0) {
+        g_nTurnEvent2BNationMaskAccumulator | presence->nationMask;
+    if (presence->replyRequestFlag != 0) {
       TurnEvent2BPresenceMaskPacket reply;
       reply.messageTag = kControlTagTime; // 'time'
       reply.activeNationId = (unsigned char)g_pSimMgr->GetActiveNationId();
@@ -1992,9 +1991,9 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       reply.fromNetworkId = 0;
       reply.toNetworkId = 0;
       reply.messageLength = 0;
-      reply.replyRequestFlag18 = 0;
+      reply.replyRequestFlag = 0;
       reply.messageLength = 0x1c;
-      reply.nationMask19 = (signed char)g_pSimMgr->GetActiveNationId();
+      reply.nationMask = (signed char)g_pSimMgr->GetActiveNationId();
       reply.toNetworkId = presence->fromNetworkId;
       g_pNetMgr006a6014->Send(&reply, false);
     }
@@ -2127,7 +2126,7 @@ void TMultiplayerMgr::SendNewsEvent(int nationSlot, NewsEvent* event) {
   packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.nationSlot18 = static_cast<short>(nationSlot);
-  packet.newsEvent1C = *event;
+  packet.newsEvent = *event;
   g_pNetMgr006a6014->Send(&packet, false);
 }
 
@@ -2530,7 +2529,7 @@ void TMultiplayerMgr::DispatchLobbyTextPairEvent8(unsigned char sourceNationSlot
   packet.toNetworkId = -1;
   packet.sourceNationSlot18 = sourceNationSlot;
   strcpy(packet.playerName19, static_cast<LPCSTR>(playerNameString));
-  strcpy(packet.playerNameMirror3A, static_cast<LPCSTR>(playerNameMirror));
+  strcpy(packet.playerNameMirror, static_cast<LPCSTR>(playerNameMirror));
   g_pNetMgr006a6014->Send(&packet, false);
 }
 
@@ -2545,14 +2544,14 @@ struct CityRedrawInvalidateTurnEventPacket : NetMessage {
   short cityWord04;
   short cityWord06;
   unsigned char cityByte08;
-  short adjacentRegionIds0A[12];
+  short adjacentRegionIds[12];
   short adjacentRegionIds22[12];
   unsigned char cityBytes3A[3];
   short cityWord3E;
   short cityWord40;
   short linkedRegionIds42[32];
   short linkedRegionIds82[10];
-  TMilitaryUnit* stationedUnitChain98;
+  TMilitaryUnit* stationedUnitChain;
   int cityScoreValue9C;
   unsigned char cityBytesA0[4];
   CString cityNameA4;
@@ -2763,35 +2762,35 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
   packet.cityByte08 = src->adjacentRegionCount08;
 
   for (int wordIndex = 0; wordIndex < 12; ++wordIndex) {
-    packet.adjacentRegionIds0A[wordIndex] = src->adjacentRegionIds0A[wordIndex];
-    packet.adjacentRegionIds22[wordIndex] = src->adjacentRegionAnchorTiles22[wordIndex];
+    packet.adjacentRegionIds[wordIndex] = src->adjacentRegionIds[wordIndex];
+    packet.adjacentRegionIds22[wordIndex] = src->adjacentRegionAnchorTiles[wordIndex];
   }
 
   packet.cityBytes3A[0] = src->linkedRegionCount;
   packet.cityBytes3A[1] = src->byte3B;
   packet.cityBytes3A[2] = src->byte3C;
-  packet.cityWord3E = src->secondaryNeighborTileIndex3e;
-  packet.cityWord40 = src->primaryNeighborTileIndex40;
+  packet.cityWord3E = src->secondaryNeighborTileIndex;
+  packet.cityWord40 = src->primaryNeighborTileIndex;
 
   for (int linkedIndex = 0; linkedIndex < 32; ++linkedIndex) {
     packet.linkedRegionIds42[linkedIndex] = src->linkedTileIndices42[linkedIndex];
   }
-  packet.linkedRegionIds82[0] = src->resourceDevelopmentCounts82[0];
-  packet.linkedRegionIds82[1] = src->resourceDevelopmentCounts82[1];
-  packet.linkedRegionIds82[2] = src->resourceDevelopmentCounts82[2];
-  packet.linkedRegionIds82[3] = src->resourceDevelopmentCounts82[3];
-  packet.linkedRegionIds82[4] = src->resourceDevelopmentCounts82[4];
-  packet.linkedRegionIds82[5] = src->resourceDevelopmentCounts82[5];
-  packet.linkedRegionIds82[6] = src->resourceDevelopmentCounts82[6];
-  packet.linkedRegionIds82[7] = src->resourceDevelopmentCounts82[7];
-  packet.linkedRegionIds82[8] = src->resourceDevelopmentCounts82[8];
-  packet.linkedRegionIds82[9] = src->resourceDevelopmentCounts82[9];
+  packet.linkedRegionIds82[0] = src->resourceDevelopmentCounts[0];
+  packet.linkedRegionIds82[1] = src->resourceDevelopmentCounts[1];
+  packet.linkedRegionIds82[2] = src->resourceDevelopmentCounts[2];
+  packet.linkedRegionIds82[3] = src->resourceDevelopmentCounts[3];
+  packet.linkedRegionIds82[4] = src->resourceDevelopmentCounts[4];
+  packet.linkedRegionIds82[5] = src->resourceDevelopmentCounts[5];
+  packet.linkedRegionIds82[6] = src->resourceDevelopmentCounts[6];
+  packet.linkedRegionIds82[7] = src->resourceDevelopmentCounts[7];
+  packet.linkedRegionIds82[8] = src->resourceDevelopmentCounts[8];
+  packet.linkedRegionIds82[9] = src->resourceDevelopmentCounts[9];
 
-  packet.stationedUnitChain98 = src->stationedUnitChain98;
+  packet.stationedUnitChain = src->stationedUnitChain;
   packet.cityScoreValue9C = src->cityScoreValue;
   packet.cityBytesA0[0] = src->navyOrderReachableA0;
-  packet.cityBytesA0[1] = src->exploredByNationMaskA1;
-  packet.cityBytesA0[2] = src->resourcePresenceMaskA2;
+  packet.cityBytesA0[1] = src->exploredByNationMask;
+  packet.cityBytesA0[2] = src->resourcePresenceMask;
   packet.cityBytesA0[3] = src->regionClassA3;
   packet.cityNameA4 = src->cityNameA4;
 
@@ -3058,7 +3057,7 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
       g_pNetMgr006a6014->Send(&packet, false);
     }
     TGreatPower* oldNation = g_apNationStates[nationSlot];
-    if (oldNation != 0 && oldNation->diplomacyEligibilityA0 != 0 && !isLocalNation) {
+    if (oldNation != 0 && oldNation->diplomacyEligibility != 0 && !isLocalNation) {
       int policyDice5 = rand() % 5;
       int policyDice6 = rand() % 6;
       int policyDice4 = rand() % 4;
@@ -3078,7 +3077,7 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
       oldNation->militaryUnitList44 = militaryUnits;
       memcpy(newNation->unitNameOrdinalByType, oldNation->unitNameOrdinalByType,
              sizeof(newNation->unitNameOrdinalByType));
-      newNation->unitNameCounter84 = oldNation->unitNameCounter84;
+      newNation->unitNameCounter = oldNation->unitNameCounter;
       newNation->homeTileIndex = oldNation->homeTileIndex;
       newNation->overlayAnchorTileCache8c = oldNation->overlayAnchorTileCache8c;
       TLongintList* ownedRegions = newNation->ownedRegionList;
@@ -3169,7 +3168,7 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
   if (tornDownNow) {
     TGreatPower* nation = g_apNationStates[nationSlot];
     if (nation != 0) {
-      nation->diplomacyEligibilityA0 = 0;
+      nation->diplomacyEligibility = 0;
     }
   }
   nationSessionIds[nationSlot] = 0;
@@ -3363,13 +3362,13 @@ void TMultiplayerMgr::EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet
       sessionInit.scenarioTag60 = kControlTagLoad; // 'load'
     }
     strcpy(sessionInit.hostGameName3A, gameNameString);
-    strcpy(sessionInit.mapSeedText18, g_pGlobalMapState->scenarioTagText);
+    strcpy(sessionInit.mapSeedText, g_pGlobalMapState->scenarioTagText);
     sessionInit.mapParamByte39 = g_pGlobalMapState->hexNeighborWrapHorizontally;
     sessionInit.saveSlotDword5C = queueSyncDword;
     // Round-trips through the receive side's SetDifficultyLevel,
     // which stores back into this same +0x40 field.
     sessionInit.difficultyLevel64 = static_cast<signed char>(g_pSimMgr->difficultyLevel);
-    sessionInit.nameTableFlag65 = g_pSimMgr->useLocalizedNameTables68;
+    sessionInit.nameTableFlag = g_pSimMgr->useLocalizedNameTables;
     g_pNetMgr006a6014->Send(&sessionInit, false);
   }
   {
@@ -3427,7 +3426,7 @@ void TMultiplayerMgr::RefreshNationStatusLabelsAndCodesForSlotOrAll(int nationSl
     nationStatusTags[nationSlot] = kSessionTagDead; // 'dead'
   } else {
     bool wrapInParens;
-    if (g_apNationStates[nationSlot]->diplomacyEligibilityA0 == 0 ||
+    if (g_apNationStates[nationSlot]->diplomacyEligibility == 0 ||
         g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot)) == 0) {
       wrapInParens = true;
     } else {
@@ -3501,7 +3500,7 @@ void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
     }
     packet.cityRollingItemProductionScore = city->rollingItemProductionScore78;
     packet.cityFieldB4 = city->powerAvailableB4;
-    short* stock = &city->cityStockCottonB6;
+    short* stock = &city->cityStockCotton;
     for (int stockType = 0; stockType < kResourceKindCount; ++stockType) {
       packet.cityStock[stockType] = stock[stockType];
     }
@@ -3509,32 +3508,32 @@ void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
       packet.productionOrderTable[slot] = city->productionOrderTable1dc[slot];
     }
     for (int slot2 = 0; slot2 < 0x10; ++slot2) {
-      packet.productionAccum[slot2] = city->productionAccum1fc[slot2];
+      packet.productionAccum[slot2] = city->productionAccum[slot2];
     }
-    packet.populationGrowthPenaltyTicks = city->populationGrowthPenaltyTicks26c;
+    packet.populationGrowthPenaltyTicks = city->populationGrowthPenaltyTicks;
     for (int record = 0; record < 0x17; ++record) {
-      TProductionOrder* order = city->orderSlotsE4[record];
+      TProductionOrder* order = city->orderSlots[record];
       if (order == 0) {
         packet.orderAccumulatedValues[record] = 0;
       } else {
         packet.orderAccumulatedValues[record] = order->accumulatedValue;
       }
     }
-    TPopulationMgr* summary = city->productionSummary1d8;
-    packet.popFieldAt8 = summary->populationCount08;
-    packet.popFieldAtC = summary->populationCountFloat0c;
+    TPopulationMgr* summary = city->productionSummary;
+    packet.popFieldAt8 = summary->populationCount;
+    packet.popFieldAtC = summary->populationCountFloat;
     packet.popStockLevel = summary->strength;
     packet.popExtraAt1e = summary->extraAt1e;
     packet.popFieldAt20 = summary->fieldAt20;
-    packet.popBucketWords[0] = summary->baselineSlots10->lowSkillCount04;
-    packet.popBucketWords[1] = summary->baselineSlots10->mediumSkillCount06;
-    packet.popBucketWords[2] = summary->baselineSlots10->highSkillCount08;
-    packet.popBucketWords[3] = summary->productionSlots14->lowSkillCount04;
-    packet.popBucketWords[4] = summary->productionSlots14->mediumSkillCount06;
-    packet.popBucketWords[5] = summary->productionSlots14->highSkillCount08;
-    packet.popBucketWords[6] = summary->pendingDeltaSlots18->lowSkillCount04;
-    packet.popBucketWords[7] = summary->pendingDeltaSlots18->mediumSkillCount06;
-    packet.popBucketWords[8] = summary->pendingDeltaSlots18->highSkillCount08;
+    packet.popBucketWords[0] = summary->baselineSlots->lowSkillCount04;
+    packet.popBucketWords[1] = summary->baselineSlots->mediumSkillCount06;
+    packet.popBucketWords[2] = summary->baselineSlots->highSkillCount08;
+    packet.popBucketWords[3] = summary->productionSlots->lowSkillCount04;
+    packet.popBucketWords[4] = summary->productionSlots->mediumSkillCount06;
+    packet.popBucketWords[5] = summary->productionSlots->highSkillCount08;
+    packet.popBucketWords[6] = summary->pendingDeltaSlots->lowSkillCount04;
+    packet.popBucketWords[7] = summary->pendingDeltaSlots->mediumSkillCount06;
+    packet.popBucketWords[8] = summary->pendingDeltaSlots->highSkillCount08;
     g_pNetMgr006a6014->Send(&packet, destinationSlot == -3);
   }
 }

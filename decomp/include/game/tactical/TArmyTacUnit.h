@@ -26,8 +26,8 @@ public:
   TMilitaryUnit* sourceUnit38; // +0x38 back-pointer (persisted as its persistentUnitId20 id)
   unsigned char flag3c;        // +0x3c = (source unitOrder == 2 && category[type] == 0)
   unsigned char pad3d[3];      // +0x3d
-  int sapTargetTileIndex40;    // +0x40 pending sap/mine target tile; -1 = none
-  float projectionScores44[5]; // +0x44 strength/quality-weighted military attributes 0..4
+  int sapTargetTileIndex;      // +0x40 pending sap/mine target tile; -1 = none
+  float projectionScores[5];   // +0x44 strength/quality-weighted military attributes 0..4
 
   // Both original construction sites inline the ctor as a bare vptr store.
   // NOOP: verified empty in original 0x005a5ed2 (no standalone TArmyTacUnit::TArmyTacUnit body exists: construction is fully inlined into CreateObject 0x005a5ed0; that address is its operator-new call site)
@@ -44,4 +44,4 @@ public:
 };
 
 ASSERT_SIZE(TArmyTacUnit, 0x58);
-ASSERT_OFFSET(TArmyTacUnit, projectionScores44, 0x44);
+ASSERT_OFFSET(TArmyTacUnit, projectionScores, 0x44);

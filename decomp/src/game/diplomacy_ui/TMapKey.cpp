@@ -59,7 +59,7 @@ void TMapKey::DoPostCreate(int arg) {
     legendText->Show(0, 0);
     legendText->controlTag = kControlTagNam0 + i; // 'nam0'-'nam6'
     legendText->CenterVertically(0);
-    legendText->shadowTextColor9C = shadowStyleFlags;
+    legendText->shadowTextColor = shadowStyleFlags;
     legendText->dropShadowEnabledA0 = true;
     legendText->SetTextStyle(style, 1);
   }

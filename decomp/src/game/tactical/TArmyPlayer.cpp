@@ -77,18 +77,18 @@ void TArmyPlayer::IArmyPlayer(TArmyStack* stack, bool isOurSide, unsigned char w
                               int nationIndex) {
   // Scatter-init of the side state, in the original store order.
   // The original only reads the low byte of `isOurSide` (a char/BOOL param).
-  isOurSideFlagC = static_cast<char>(isOurSide);
-  sideReadyFlag10 = false;
+  isOurSideFlag = static_cast<char>(isOurSide);
+  sideReadyFlag = false;
   watchFlagD = watchFlag;
   nationIndex1C = nationIndex;
-  cursorIndex18 = 0;
+  cursorIndex = 0;
   fieldF = false;
   field20 = false;
   field24 = 0;
 
   unitList4 = new TList();
-  sideReadyFlag10 = false; // duplicate store present in the original
-  secondaryList8 = new TList();
+  sideReadyFlag = false; // duplicate store present in the original
+  secondaryList = new TList();
 
   for (TMilitaryUnit* unit = stack->ResetCursorAndGetHeadUnit(); unit != 0;
        unit = stack->AdvanceCursorAndGetUnit()) {
@@ -96,19 +96,19 @@ void TArmyPlayer::IArmyPlayer(TArmyStack* stack, bool isOurSide, unsigned char w
     record->IArmyTacUnit(unit);
     unitList4->AddTail(record);
     if (static_cast<char>(isOurSide) == 0) {
-      record->selectedFlag18 = 1; // set only for the enemy side (isOurSide == 0)
+      record->selectedFlag = 1; // set only for the enemy side (isOurSide == 0)
     }
   }
 
-  armyStack28 = stack;
-  cursorIndex18 = 0;      // duplicate store present in the original
+  armyStack = stack;
+  cursorIndex = 0;        // duplicate store present in the original
   watchFlagD = watchFlag; // duplicate store present in the original
-  notWatchedFlagE = (watchFlag == 0);
+  notWatchedFlag = (watchFlag == 0);
   lastAppliedCursorMode44 = -1;
   unsigned char coinFlip = static_cast<unsigned char>(rand() & 1);
   cachedFortBombardmentTargetTile4c = -1;
   randomParityByte50 = coinFlip;
-  hasArtilleryOrSappers51 = false;
+  hasArtilleryOrSappers = false;
 }
 
 // Writes each record's surviving strength back to its source army unit's strength
@@ -127,8 +127,8 @@ void TArmyPlayer::ApplyChanges(unsigned char sideWonFlag) {
       }
     }
   }
-  if (secondaryList8->GetCount() > 0) {
-    CIterator secondaryIter(secondaryList8);
+  if (secondaryList->GetCount() > 0) {
+    CIterator secondaryIter(secondaryList);
     for (TArmyTacUnit* secondaryRecord = static_cast<TArmyTacUnit*>(secondaryIter.Reset());
          secondaryIter.More();
          secondaryRecord = static_cast<TArmyTacUnit*>(secondaryIter.Advance())) {
@@ -146,7 +146,7 @@ void TArmyPlayer::RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) {
   if (pos != nullptr) {
     unitList4->listState.RemoveAt(pos);
   }
-  armyStack28->RemoveUnitFromChain(static_cast<TArmyTacUnit*>(unit)->sourceUnit38);
+  armyStack->RemoveUnitFromChain(static_cast<TArmyTacUnit*>(unit)->sourceUnit38);
 }
 
 // FUNCTION: IMPERIALISM 0x0059b540
@@ -156,7 +156,7 @@ void TArmyPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
   TMilitaryUnit* sourceUnit = static_cast<TArmyTacUnit*>(unit)->sourceUnit38;
   sourceUnit->ownerNationSlot18 = static_cast<short>(nationIndex1C);
   sourceUnit->MoveTo(battle14->battleSiteIndex38);
-  armyStack28->AddUnitToChainHead(sourceUnit);
+  armyStack->AddUnitToChainHead(sourceUnit);
   static_cast<TArmyTacUnit*>(unit)->morale34 = unit->strength4;
 }
 
@@ -167,9 +167,9 @@ void TArmyPlayer::AccumulateTacticalProjectionMetricsAndUnitRanges() {
   maxNonArtilleryUnitRange42 = 0;
   maxUnitRange40 = 0;
   for (int component = 0; component < 5; ++component) {
-    projectionMetrics2C[component] = 0.0f;
+    projectionMetrics[component] = 0.0f;
   }
-  hasArtilleryOrSappers51 = false;
+  hasArtilleryOrSappers = false;
 
   CIterator unitIter(unitList4);
   for (TArmyTacUnit* record = static_cast<TArmyTacUnit*>(unitIter.Reset()); unitIter.More();
@@ -178,7 +178,7 @@ void TArmyPlayer::AccumulateTacticalProjectionMetricsAndUnitRanges() {
       record->ComputeTacticalProjectionScoreVector();
 
       for (int component = 0; component < 5; ++component) {
-        projectionMetrics2C[component] += record->projectionScores44[component];
+        projectionMetrics[component] += record->projectionScores[component];
       }
 
       // max()-macro form: the losing branch re-evaluates GetUnitRange().
@@ -191,7 +191,7 @@ void TArmyPlayer::AccumulateTacticalProjectionMetricsAndUnitRanges() {
       }
       if (g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC] == 2 ||
           g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 8) {
-        hasArtilleryOrSappers51 = true;
+        hasArtilleryOrSappers = true;
       }
     }
   }
@@ -202,12 +202,12 @@ void TArmyPlayer::AccumulateTacticalProjectionMetricsAndUnitRanges() {
   // RecomputeTacticalCursorProjectionScoresAndPruneList (fort -> 2, open -> 1); both are
   // faithful to their originals.
   float baselineProfileScore = ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
-      projectionMetrics2C, g_awTacticalCompositionReferenceProfiles_00697870, 5);
-  projectionMetrics2C[1] = ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
-      projectionMetrics2C,
+      projectionMetrics, g_awTacticalCompositionReferenceProfiles_00697870, 5);
+  projectionMetrics[1] = ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
+      projectionMetrics,
       g_awTacticalCompositionReferenceProfiles_00697870 + 5 * (battle14->fortLevel49 != 0 ? 1 : 2),
       5);
-  projectionMetrics2C[0] = baselineProfileScore;
+  projectionMetrics[0] = baselineProfileScore;
 }
 
 // Kicks the side at battle start: unwatched (AI/remote) sides skip the intro dialog
@@ -215,7 +215,7 @@ void TArmyPlayer::AccumulateTacticalProjectionMetricsAndUnitRanges() {
 // proceed on 'okay'.
 // FUNCTION: IMPERIALISM 0x0059b830
 void TArmyPlayer::StartBattle() {
-  if (notWatchedFlagE) {
+  if (notWatchedFlag) {
     SelectAndApplyTacticalCursorModeProfile(1);
     AutoDeploySideUnitsAndMarkReady();
     return;
@@ -223,7 +223,7 @@ void TArmyPlayer::StartBattle() {
   bool alreadyStarted = field24 == 2;
   if (!alreadyStarted) {
     TTacticalPlayer* opponent;
-    if (isOurSideFlagC != 0) {
+    if (isOurSideFlag != 0) {
       opponent = battle14->players[1];
     } else {
       opponent = battle14->players[0];
@@ -239,9 +239,9 @@ void TArmyPlayer::StartBattle() {
     TTacticalHolaPicture* holaPicture =
         static_cast<TTacticalHolaPicture*>(dialog->ResolveControlByTag(kControlTagDialog));
     holaPicture->AssertValid();
-    if (isOurSideFlagC != 0) {
+    if (isOurSideFlag != 0) {
       holaPicture->ConfigureBattleIntroCoatsAndSiteLabels(
-          nationIndex1C, static_cast<short>(opposingNationIndex), isOurSideFlagC,
+          nationIndex1C, static_cast<short>(opposingNationIndex), isOurSideFlag,
           battle14->battleSiteIndex38);
     } else {
       holaPicture->ConfigureBattleIntroCoatsAndSiteLabels(
@@ -257,38 +257,38 @@ void TArmyPlayer::StartBattle() {
 }
 
 // Prunes the side's unit list down to `maxUnitCount`: moves every record onto
-// secondaryList8 (refreshing its projection-score vector), keeps the first category-9
+// secondaryList (refreshing its projection-score vector), keeps the first category-9
 // record plus the greedy best-scoring set by the distribution-similarity profile
 // (row: enemy=0, attacker=1, attacker-vs-fort=2), and drops every pruned record from
-// the battle's recordList20.
+// the battle's recordList.
 // FUNCTION: IMPERIALISM 0x0059b990
 void TArmyPlayer::RecomputeTacticalCursorProjectionScoresAndPruneList(int maxUnitCount) {
   int profileRowIndex;
-  if (isOurSideFlagC != 0) {
+  if (isOurSideFlag != 0) {
     profileRowIndex = (battle14->fortLevel49 != 0) + 1;
   } else {
     profileRowIndex = 0;
   }
 
-  // Move every record onto secondaryList8, back to front (ordinals are 1-based).
+  // Move every record onto secondaryList, back to front (ordinals are 1-based).
   for (int ordinal = unitList4->GetCount(); ordinal > 0; --ordinal) {
     TArmyTacUnit* record = static_cast<TArmyTacUnit*>(unitList4->GetEntryByOrdinal(ordinal));
     record->AssertValid();
     unitList4->RemoveAtOrdinal(ordinal);
-    secondaryList8->AddTail(record);
+    secondaryList->AddTail(record);
     record->ComputeTacticalProjectionScoreVector();
   }
 
   int remainingCapacity = maxUnitCount;
   bool movedCategory9Record = false;
   if (remainingCapacity != 0) {
-    CIterator category9Iter(secondaryList8);
+    CIterator category9Iter(secondaryList);
     TArmyTacUnit* category9Record = static_cast<TArmyTacUnit*>(category9Iter.Reset());
     while (category9Iter.More() != 0) {
       if (g_awTacticalUnitCategoryCodeBySlot[category9Record->unitTypeC] == 9) {
-        POSITION category9Pos = secondaryList8->listState.Find(category9Record, 0);
+        POSITION category9Pos = secondaryList->listState.Find(category9Record, 0);
         if (category9Pos != 0) {
-          secondaryList8->listState.RemoveAt(category9Pos);
+          secondaryList->listState.RemoveAt(category9Pos);
         }
         unitList4->AddTail(category9Record);
         movedCategory9Record = true;
@@ -309,13 +309,13 @@ void TArmyPlayer::RecomputeTacticalCursorProjectionScoresAndPruneList(int maxUni
       // Faithful off-by-one: the scan starts at ordinal 1 and stops before GetCount(),
       // so the last entry is never scored; with bestOrdinal left 0, GetEntryByOrdinal(0)
       // returns 0.
-      for (int candidateOrdinal = 1; candidateOrdinal < secondaryList8->GetCount();
+      for (int candidateOrdinal = 1; candidateOrdinal < secondaryList->GetCount();
            ++candidateOrdinal) {
         TArmyTacUnit* candidate =
-            static_cast<TArmyTacUnit*>(secondaryList8->GetEntryByOrdinal(candidateOrdinal));
+            static_cast<TArmyTacUnit*>(secondaryList->GetEntryByOrdinal(candidateOrdinal));
         int component;
         for (component = 0; component < 5; ++component) {
-          keptScoreVectorSum[component] += candidate->projectionScores44[component];
+          keptScoreVectorSum[component] += candidate->projectionScores[component];
         }
         float score = ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
             keptScoreVectorSum,
@@ -325,26 +325,26 @@ void TArmyPlayer::RecomputeTacticalCursorProjectionScoresAndPruneList(int maxUni
           bestOrdinal = candidateOrdinal;
         }
         for (component = 0; component < 5; ++component) {
-          keptScoreVectorSum[component] -= candidate->projectionScores44[component];
+          keptScoreVectorSum[component] -= candidate->projectionScores[component];
         }
       }
       TArmyTacUnit* keptRecord =
-          static_cast<TArmyTacUnit*>(secondaryList8->GetEntryByOrdinal(bestOrdinal));
-      secondaryList8->RemoveAtOrdinal(bestOrdinal);
+          static_cast<TArmyTacUnit*>(secondaryList->GetEntryByOrdinal(bestOrdinal));
+      secondaryList->RemoveAtOrdinal(bestOrdinal);
       unitList4->AddTail(keptRecord);
       for (int component = 0; component < 5; ++component) {
-        keptScoreVectorSum[component] += keptRecord->projectionScores44[component];
+        keptScoreVectorSum[component] += keptRecord->projectionScores[component];
       }
     }
   }
 
-  // Every record still on secondaryList8 was pruned from the battle roster.
-  CIterator prunedIter(secondaryList8);
+  // Every record still on secondaryList was pruned from the battle roster.
+  CIterator prunedIter(secondaryList);
   for (TArmyTacUnit* prunedRecord = static_cast<TArmyTacUnit*>(prunedIter.Reset());
        prunedIter.More(); prunedRecord = static_cast<TArmyTacUnit*>(prunedIter.Advance())) {
-    POSITION prunedPos = battle14->recordList20->listState.Find(prunedRecord, 0);
+    POSITION prunedPos = battle14->recordList->listState.Find(prunedRecord, 0);
     if (prunedPos != 0) {
-      battle14->recordList20->listState.RemoveAt(prunedPos);
+      battle14->recordList->listState.RemoveAt(prunedPos);
     }
   }
 }
@@ -358,13 +358,13 @@ void TArmyPlayer::AutoDeploySideUnitsAndMarkReady() {
   if (unitList4->GetCount() > freeDeployTileCount) {
     RecomputeTacticalCursorProjectionScoresAndPruneList(freeDeployTileCount);
   }
-  if (isOurSideFlagC != 0) {
+  if (isOurSideFlag != 0) {
     BuildTacticalActionPriorityBucketsWithGridGuard();
-    sideReadyFlag10 = true;
+    sideReadyFlag = true;
     return;
   }
   DispatchTacticalActionClassSelectionAcrossCursorList();
-  sideReadyFlag10 = true;
+  sideReadyFlag = true;
 }
 
 // Deploy strategy for our side: sorts the unit list by action-class priority, then
@@ -389,7 +389,7 @@ void TArmyPlayer::BuildTacticalActionPriorityBucketsWithGridGuard() {
        unit = static_cast<TTacticalUnit*>(unitIter.Advance())) {
     int bestScore = 0;
     TacticalTileIndex bestTileIndex = -1;
-    for (TacticalTileIndex tileIndex = 0; tileIndex < battle14->tacticalTileCount3c; ++tileIndex) {
+    for (TacticalTileIndex tileIndex = 0; tileIndex < battle14->tacticalTileCount; ++tileIndex) {
       if (battle14->ApplyGridColumnSelectionGuard(tileIndex) != 0) {
         int row = tileIndex / 29;
         int column = tileIndex % 29;
@@ -442,11 +442,11 @@ void TArmyPlayer::DispatchTacticalActionClassSelectionAcrossCursorList() {
 int TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantA() {
   int bestScore = 0;
   TacticalTileIndex bestTileIndex = -1;
-  for (TacticalTileIndex tileIndex = 0; tileIndex < battle14->tacticalTileCount3c; ++tileIndex) {
+  for (TacticalTileIndex tileIndex = 0; tileIndex < battle14->tacticalTileCount; ++tileIndex) {
     if (battle14->ApplyGridColumnSelectionGuard(tileIndex) != 0) {
       int row = tileIndex / 29;
       int column = tileIndex % 29;
-      int zoneCell = (row & 1) + 2 * (column - battle14->battlefieldColumnCount34) + 10;
+      int zoneCell = (row & 1) + 2 * (column - battle14->battlefieldColumnCount) + 10;
       int score;
       if (zoneCell == 0) {
         score = 10;
@@ -489,11 +489,11 @@ int TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantA() {
 int TArmyPlayer::SelectTacticalTileByActionClassAdjacencyPriority() {
   int bestScore = 0;
   TacticalTileIndex bestTileIndex = -1;
-  for (TacticalTileIndex tileIndex = 0; tileIndex < battle14->tacticalTileCount3c; ++tileIndex) {
+  for (TacticalTileIndex tileIndex = 0; tileIndex < battle14->tacticalTileCount; ++tileIndex) {
     if (battle14->ApplyGridColumnSelectionGuard(tileIndex) != 0) {
       int row = tileIndex / 29;
       int column = tileIndex % 29;
-      int score = (2 * (battle14->battlefieldColumnCount34 - column) - (row & 1) - 3) * 10;
+      int score = (2 * (battle14->battlefieldColumnCount - column) - (row & 1) - 3) * 10;
       int rowDistance = row;
       if (rowDistance > 7) {
         rowDistance = 15 - rowDistance;
@@ -532,10 +532,10 @@ int TArmyPlayer::SelectTacticalTileByActionClassAdjacencyPriority() {
 int TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantB() {
   int bestScore = 0;
   TacticalTileIndex bestTileIndex = -1;
-  for (TacticalTileIndex tileIndex = 0; tileIndex < battle14->tacticalTileCount3c; ++tileIndex) {
+  for (TacticalTileIndex tileIndex = 0; tileIndex < battle14->tacticalTileCount; ++tileIndex) {
     if (battle14->ApplyGridColumnSelectionGuard(tileIndex) != 0) {
       int row = tileIndex / 29;
-      int score = (battle14->battlefieldColumnCount34 - 5) * 20;
+      int score = (battle14->battlefieldColumnCount - 5) * 20;
       if (row > 7) {
         row = 15 - row;
       }
@@ -576,7 +576,7 @@ void TArmyPlayer::DeploymentClick(TacticalTileIndex tileIndex) {
   }
 
   if (ordinal > unitList4->GetCount()) {
-    sideReadyFlag10 = true;
+    sideReadyFlag = true;
   } else {
     battle14->DeployTacticalUnitToTile(unit, tileIndex);
   }
@@ -599,7 +599,7 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
   // Army battles always pair two TArmyPlayers; the +0x2c metric slice lives on the
   // derived class.
   TArmyPlayer* opponent;
-  if (isOurSideFlagC != 0) {
+  if (isOurSideFlag != 0) {
     opponent = static_cast<TArmyPlayer*>(battle14->players[1]);
   } else {
     opponent = static_cast<TArmyPlayer*>(battle14->players[0]);
@@ -610,7 +610,7 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
 
   float opponentMetrics[5];
   for (int component = 0; component < 5; ++component) {
-    opponentMetrics[component] = opponent->projectionMetrics2C[component];
+    opponentMetrics[component] = opponent->projectionMetrics[component];
   }
 
   bool enemyHasActiveUnit = false;
@@ -628,24 +628,24 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
   }
 
   int cursorMode;
-  if (isOurSideFlagC == 0) {
+  if (isOurSideFlag == 0) {
     // Defending side.
     if (!enemyHasActiveUnit) {
       cursorMode = 6;
-    } else if (!opponent->hasArtilleryOrSappers51 &&
+    } else if (!opponent->hasArtilleryOrSappers &&
                battle14->IsTacticalSideCategoryCoverageIncompleteOrFlagOff() == 0) {
       cursorMode = 7;
-    } else if (projectionMetrics2C[1] / opponentMetrics[1] >
+    } else if (projectionMetrics[1] / opponentMetrics[1] >
                g_dTacticalCursorStrongRatioThreshold_00669508) {
       if (battle14->IsTacticalSideCategoryCoverageIncompleteOrFlagOff() != 0) {
         cursorMode = 2;
-      } else if (projectionMetrics2C[1] / opponentMetrics[1] >
+      } else if (projectionMetrics[1] / opponentMetrics[1] >
                  g_dTacticalCursorOverwhelmRatioThreshold_00669510) {
         cursorMode = 2;
       } else {
         cursorMode = 0;
       }
-    } else if (projectionMetrics2C[0] / opponentMetrics[1] <
+    } else if (projectionMetrics[0] / opponentMetrics[1] <
                    g_dTacticalCursorWeakRatioThreshold_00669518 &&
                !siteIsHomeCapital) {
       cursorMode = 1;
@@ -655,7 +655,7 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
     }
   } else {
     // Attacking side.
-    float strengthRatio = projectionMetrics2C[1] / opponentMetrics[0];
+    float strengthRatio = projectionMetrics[1] / opponentMetrics[0];
     bool haveActiveSapper = false;
     bool haveActiveArtillery = false;
     CIterator unitIter(unitList4);
@@ -675,7 +675,7 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
         cursorMode = 3;
       } else if (!haveActiveArtillery) {
         cursorMode = 1;
-      } else if (projectionMetrics2C[3] / opponentMetrics[3] <
+      } else if (projectionMetrics[3] / opponentMetrics[3] <
                  g_dTacticalCursorArtilleryParityThreshold_00669520) {
         cursorMode = 1;
       } else {
@@ -687,7 +687,7 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
         cursorMode = 6;
       } else if (strengthRatio > g_dTacticalCursorStrongRatioThreshold_00669508) {
         cursorMode = 4;
-      } else if (!(projectionMetrics2C[3] / opponentMetrics[3] <
+      } else if (!(projectionMetrics[3] / opponentMetrics[3] <
                    g_dTacticalCursorArtillerySuperiorityThreshold_00669528) &&
                  haveActiveArtillery) {
         cursorMode = 3;
@@ -932,7 +932,7 @@ void TArmyPlayer::ApplyDefenderBombardStanceByActionClass() {
 // FUNCTION: IMPERIALISM 0x0059ce90
 void TArmyPlayer::ApplyAttackerSiegeStanceByActionClass() {
   TArmyPlayer* opponent;
-  if (isOurSideFlagC != 0) {
+  if (isOurSideFlag != 0) {
     opponent = static_cast<TArmyPlayer*>(battle14->players[1]);
   } else {
     opponent = static_cast<TArmyPlayer*>(battle14->players[0]);
@@ -944,9 +944,9 @@ void TArmyPlayer::ApplyAttackerSiegeStanceByActionClass() {
   for (TTacticalUnit* record = static_cast<TTacticalUnit*>(applyIter.Reset()); applyIter.More();
        record = static_cast<TTacticalUnit*>(applyIter.Advance())) {
     if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 8) {
-      // Fort-wall reference tile (grid index 174 = row 6, column 0); deployMark8 > 1
+      // Fort-wall reference tile (grid index 174 = row 6, column 0); deployMark > 1
       // is the standing wall level.
-      if (battle14->tileGrid4[174].deployMark8 > 1) {
+      if (battle14->tileGrid4[174].deployMark > 1) {
         record->aiStateCode2c = 0xd;
       } else {
         record->aiStateCode2c = 0xc;
@@ -987,7 +987,7 @@ void TArmyPlayer::ApplyAttackerSiegeStanceByActionClass() {
 // FUNCTION: IMPERIALISM 0x0059d020
 void TArmyPlayer::ApplyAttackerAssaultStanceByActionClass() {
   TArmyPlayer* opponent;
-  if (isOurSideFlagC != 0) {
+  if (isOurSideFlag != 0) {
     opponent = static_cast<TArmyPlayer*>(battle14->players[1]);
   } else {
     opponent = static_cast<TArmyPlayer*>(battle14->players[0]);
@@ -1035,7 +1035,7 @@ void TArmyPlayer::ApplyAttackerAssaultStanceByActionClass() {
 // FUNCTION: IMPERIALISM 0x0059d1a0
 void TArmyPlayer::ApplyAttackerStandoffStanceByActionClass() {
   TArmyPlayer* opponent;
-  if (isOurSideFlagC != 0) {
+  if (isOurSideFlag != 0) {
     opponent = static_cast<TArmyPlayer*>(battle14->players[1]);
   } else {
     opponent = static_cast<TArmyPlayer*>(battle14->players[0]);
@@ -1124,7 +1124,7 @@ void TArmyPlayer::SetAllUnitAiStateCodesTo13() {
 // FUNCTION: IMPERIALISM 0x0059d470
 unsigned char TArmyPlayer::OpponentHasDeployedActiveArtilleryUnit() {
   TList* opponentUnitList;
-  if (isOurSideFlagC != 0) {
+  if (isOurSideFlag != 0) {
     opponentUnitList = battle14->players[1]->unitList4;
   } else {
     opponentUnitList = battle14->players[0]->unitList4;
@@ -1152,18 +1152,18 @@ int TArmyPlayer::SelectBestTacticalTileByWeightedHeuristics(TTacticalUnit* unit,
   int bestScore = -99999;
   bool distanceFieldBuilt = false;
   if (heuristicWeights15[8] > 0) {
-    battle14->BuildTacticalDistanceFieldForSide(isOurSideFlagC);
+    battle14->BuildTacticalDistanceFieldForSide(isOurSideFlag);
     distanceFieldBuilt = true;
   }
-  for (TacticalTileIndex tileIndex = 0; tileIndex < battle14->tacticalTileCount3c; ++tileIndex) {
+  for (TacticalTileIndex tileIndex = 0; tileIndex < battle14->tacticalTileCount; ++tileIndex) {
     int column = tileIndex % 29;
-    if (battle14->tileMoveCostArray24[tileIndex] == -1) {
+    if (battle14->tileMoveCostArray[tileIndex] == -1) {
       battle14->tileCandidateScorePlane2c[tileIndex] = 0;
       continue;
     }
     if (!distanceFieldBuilt) {
       // Without the distance field, never pick the outer edge columns.
-      if (column == 0 || column == battle14->battlefieldColumnCount34 - 1) {
+      if (column == 0 || column == battle14->battlefieldColumnCount - 1) {
         battle14->tileCandidateScorePlane2c[tileIndex] = 0;
         continue;
       }
@@ -1178,9 +1178,9 @@ int TArmyPlayer::SelectBestTacticalTileByWeightedHeuristics(TTacticalUnit* unit,
     }
     if (score > bestScore ||
         (score == bestScore &&
-         battle14->tileMoveCostArray24[tileIndex] < battle14->tileMoveCostArray24[bestTileIndex])) {
+         battle14->tileMoveCostArray[tileIndex] < battle14->tileMoveCostArray[bestTileIndex])) {
       // Faithful: on the first tie bestTileIndex is still -1, so the original reads the
-      // move-cost word one slot before the array too (tileMoveCostArray24[-1]).
+      // move-cost word one slot before the array too (tileMoveCostArray[-1]).
       bestTileIndex = tileIndex;
       bestScore = score;
     }
@@ -1207,7 +1207,7 @@ int TArmyPlayer::ScoreTacticalTileFireOpportunityAndTargetApproach(TTacticalUnit
   unit->GetUnitRange();
   int score = 0;
   for (TacticalTileIndex scanTileIndex = 0;
-       score == 0 && scanTileIndex < battle14->tacticalTileCount3c; ++scanTileIndex) {
+       score == 0 && scanTileIndex < battle14->tacticalTileCount; ++scanTileIndex) {
     TTacticalUnit* occupant = battle14->tileGrid4[scanTileIndex].occupant4;
     if (occupant != 0 && occupant->side20 != unit->side20 &&
         (occupant->state1c == 0 || field48 == 1)) {
@@ -1240,7 +1240,7 @@ int TArmyPlayer::ScoreTacticalTileSapperWallApproachColumn(TTacticalUnit* unit,
     return 0;
   }
   TacticalTileRecord* tile = &battle14->tileGrid4[tileIndex];
-  int score = ((tile->deployMark8 != 0) ? 0x14 : 0) + 0x50;
+  int score = ((tile->deployMark != 0) ? 0x14 : 0) + 0x50;
   TTacticalUnit* rightOccupant = tile[1].occupant4;
   if (rightOccupant != 0 && rightOccupant->side20 == unit->side20) {
     score -= 0x14;
@@ -1279,7 +1279,7 @@ int TArmyPlayer::ScoreTacticalTileEnemyEngagementExposureCount(TTacticalUnit* un
   (void)unit;
   int exposureCount = 0;
   TList* enemyList;
-  if (isOurSideFlagC != 0) {
+  if (isOurSideFlag != 0) {
     enemyList = battle14->players[1]->unitList4;
   } else {
     enemyList = battle14->players[0]->unitList4;
@@ -1360,7 +1360,7 @@ int TArmyPlayer::ScoreTacticalTileAdjacentRallyTargetBonus(TTacticalUnit* unit,
 int TArmyPlayer::ScoreTacticalTileDistanceFieldAdvance(TTacticalUnit* unit,
                                                        TacticalTileIndex tileIndex) {
   (void)unit;
-  int fieldValue = battle14->tileIntArray30[tileIndex];
+  int fieldValue = battle14->tileIntArray[tileIndex];
   if (fieldValue != -1) {
     return 0x64 - fieldValue;
   }
@@ -1400,7 +1400,7 @@ int TArmyPlayer::ScoreTacticalTileArtilleryFiringLaneColumn(TTacticalUnit* unit,
                                                             TacticalTileIndex tileIndex) {
   (void)unit;
   int column = tileIndex % 29;
-  int wallColumn = battle14->battlefieldColumnCount34 - 6;
+  int wallColumn = battle14->battlefieldColumnCount - 6;
   if (column < wallColumn) {
     TacticalTileRecord* scanTile = &battle14->tileGrid4[tileIndex];
     for (int scanColumn = column; scanColumn < wallColumn; ++scanColumn, ++scanTile) {
@@ -1409,7 +1409,7 @@ int TArmyPlayer::ScoreTacticalTileArtilleryFiringLaneColumn(TTacticalUnit* unit,
       }
     }
   }
-  if (battle14->tileThreatLevelArray28[tileIndex] != 0) {
+  if (battle14->tileThreatLevelArray[tileIndex] != 0) {
     return 0;
   }
   if (column > wallColumn) {
@@ -1425,7 +1425,7 @@ int TArmyPlayer::ScoreTacticalTileEnemyArtilleryExposureCount(TTacticalUnit* uni
   (void)unit;
   int exposureCount = 0;
   TList* enemyList;
-  if (isOurSideFlagC != 0) {
+  if (isOurSideFlag != 0) {
     enemyList = battle14->players[1]->unitList4;
   } else {
     enemyList = battle14->players[0]->unitList4;
@@ -1457,7 +1457,7 @@ int TArmyPlayer::ScoreTacticalTileEngageableEnemyStandoff(TTacticalUnit* unit,
   int range = unit->GetUnitRange();
   int score = 0;
   TacticalTileIndex targetTileIndex = SelectBestTacticalTargetTileByActionHeuristics(unit, 0);
-  for (TacticalTileIndex scanTileIndex = 0; scanTileIndex < battle14->tacticalTileCount3c;
+  for (TacticalTileIndex scanTileIndex = 0; scanTileIndex < battle14->tacticalTileCount;
        ++scanTileIndex) {
     TTacticalUnit* occupant = battle14->tileGrid4[scanTileIndex].occupant4;
     if (occupant != 0 && occupant->side20 != unit->side20 && occupant->state1c == 0) {
@@ -1499,7 +1499,7 @@ int TArmyPlayer::ScoreTacticalTileEngageableEnemyStandoff(TTacticalUnit* unit,
 int TArmyPlayer::ScoreTacticalTileEnemyArtilleryHuntBonus(TTacticalUnit* unit,
                                                           TacticalTileIndex tileIndex) {
   int range = unit->GetUnitRange();
-  for (TacticalTileIndex scanTileIndex = 0; scanTileIndex < battle14->tacticalTileCount3c;
+  for (TacticalTileIndex scanTileIndex = 0; scanTileIndex < battle14->tacticalTileCount;
        ++scanTileIndex) {
     TTacticalUnit* occupant = battle14->tileGrid4[scanTileIndex].occupant4;
     if (occupant != 0 && occupant->side20 != unit->side20 && occupant->state1c == 0 &&
@@ -1518,12 +1518,12 @@ int TArmyPlayer::ScoreTacticalTileEnemyArtilleryHuntBonus(TTacticalUnit* unit,
 }
 
 // Heuristic [14]: 100 inside the enemy-edge column zone (column beyond
-// battlefieldColumnCount34 - 5).
+// battlefieldColumnCount - 5).
 // FUNCTION: IMPERIALISM 0x0059e0d0
 int TArmyPlayer::ScoreTacticalTileEnemyEdgeColumnZoneBonus(TTacticalUnit* unit,
                                                            TacticalTileIndex tileIndex) {
   (void)unit;
-  return (tileIndex % 29 > battle14->battlefieldColumnCount34 - 5) ? 0x64 : 0;
+  return (tileIndex % 29 > battle14->battlefieldColumnCount - 5) ? 0x64 : 0;
 }
 
 // Picks the tile of the most valuable enemy target: base value by unit category, plus
@@ -1537,7 +1537,7 @@ int TArmyPlayer::SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* u
   TacticalTileIndex bestTargetTileIndex = -1;
   int bestTargetScore = 0;
   TList* enemyList;
-  if (isOurSideFlagC != 0) {
+  if (isOurSideFlag != 0) {
     enemyList = battle14->players[1]->unitList4;
   } else {
     enemyList = battle14->players[0]->unitList4;
@@ -1578,7 +1578,7 @@ int TArmyPlayer::SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* u
       }
     }
     if (adjacent) {
-      if (battle14->tileGrid4[recordTileIndex].deployMark8 == 1) {
+      if (battle14->tileGrid4[recordTileIndex].deployMark == 1) {
         score += score; // entrenched adjacent target: double
       }
       if (g_awTacticalUnitAiClassByUnitType_006693B8[unit->unitTypeC] == 1) {
@@ -1601,7 +1601,7 @@ int TArmyPlayer::SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* u
       TacticalTileIndex rolledTileIndex;
       do {
         rolledTileIndex =
-            (static_cast<int>(rand()) % 0xd) * 29 + battle14->battlefieldColumnCount34 + 0x17;
+            (static_cast<int>(rand()) % 0xd) * 29 + battle14->battlefieldColumnCount + 0x17;
         cachedFortBombardmentTargetTile4c = rolledTileIndex;
       } while (battle14->IsTacticalTileAtFortWallSectionSlot(rolledTileIndex) != 0);
     }
@@ -1634,10 +1634,10 @@ void TArmyPlayer::AdvanceTacticalTurnPulse() {
     field20 = false;
     return;
   }
-  if (notWatchedFlagE) {
+  if (notWatchedFlag) {
     if (watchFlagD != 0) {
       if (GetAsyncKeyState(0x5c /* VK_RWIN */) & 0x8000) {
-        notWatchedFlagE = false;
+        notWatchedFlag = false;
         return;
       }
     }
@@ -1669,18 +1669,18 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
     if (battle14->IsTacticalSideCategoryCoverageIncompleteOrFlagOff() != 0) {
       targetTileIndex = SelectBestTacticalTileByWeightedHeuristics(
           unit, g_anTacticalTileHeuristicWeightsByAiState_00699500[12]);
-    } else if (battle14->tileGrid4[homeTileIndex].trenchMask10 != 0) {
+    } else if (battle14->tileGrid4[homeTileIndex].trenchMask != 0) {
       targetTileIndex = homeTileIndex;
-    } else if (battle14->tileThreatLevelArray28[homeTileIndex] != 0) {
+    } else if (battle14->tileThreatLevelArray[homeTileIndex] != 0) {
       targetTileIndex = homeTileIndex;
     } else {
       targetTileIndex = SelectBestTacticalTileByWeightedHeuristics(
           unit, g_anTacticalTileHeuristicWeightsByAiState_00699500[13]);
     }
   } else if ((unit->aiStateCode2c == 5 || unit->aiStateCode2c == 2 || categoryCode == 4) &&
-             battle14->roundCounter74 < 2) {
+             battle14->roundCounter < 2) {
     targetTileIndex = homeTileIndex;
-  } else if (categoryCode == 6 && battle14->roundCounter74 < 2) {
+  } else if (categoryCode == 6 && battle14->roundCounter < 2) {
     targetTileIndex = SelectBestTacticalTileByWeightedHeuristics(
         unit, g_anTacticalTileHeuristicWeightsByAiState_00699500[18]);
   } else {
@@ -1694,7 +1694,7 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
   // Phase 2: march toward it, one echoed step at a time (guarded at 200 steps).
   if (targetTileIndex != unit->tileIndex8) {
     int moveGuard = 200;
-    while (battle14->pendingEndOfActionFlag48 != 0 && unit->state1c == 0 &&
+    while (battle14->pendingEndOfActionFlag != 0 && unit->state1c == 0 &&
            unit->tileIndex8 != targetTileIndex) {
       if (moveGuard-- == 0) {
         break;
@@ -1704,7 +1704,7 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
   }
 
   // Phase 3: act from the reached tile.
-  if (battle14->pendingEndOfActionFlag48 != 0 && unit->state1c == 0) {
+  if (battle14->pendingEndOfActionFlag != 0 && unit->state1c == 0) {
     if (unit->unitTypeC >= 0x1b) {
       // Officer types: rally the first adjacent friendly whose morale dropped below
       // its strength.
@@ -1733,19 +1733,19 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
                g_awTacticalUnitActionPointCostByType_006693F8[unit->unitTypeC] / 2) {
           TacticalTileIndex wallTileIndex = unit->tileIndex8 + 1;
           TacticalTileRecord* wallTile = &battle14->tileGrid4[wallTileIndex];
-          if (wallTile->deployMark8 > 1) {
+          if (wallTile->deployMark > 1) {
             battle14->ExecuteTacticalMineActionAndQueuePacket(unit, wallTileIndex);
             return; // original returns here without queueing the 0x232a event
           }
           // If the wall tile is occupied or already trenched, neither branch runs and the
           // action points are unchanged, so the original re-tests the same loop condition
           // (a potential infinite loop in the original game code) -- faithful transcription.
-          if (wallTile->occupant4 == 0 && wallTile->trenchMask10 == 0) {
+          if (wallTile->occupant4 == 0 && wallTile->trenchMask == 0) {
             battle14->ExecuteTacticalDigActionAndConsumeUnitActionPoints(unit, wallTileIndex);
           }
         }
       }
-    } else if (unit->selectedFlag18 != 0) {
+    } else if (unit->selectedFlag != 0) {
       // Combat unit: fire on the best target; artillery-class units with an advance
       // stance then push toward the next weighted tile.
       TacticalTileIndex fireTileIndex = SelectBestTacticalTargetTileByActionHeuristics(unit, 1);
@@ -1756,7 +1756,7 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
       if (fireTarget != 0) {
         battle14->ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(unit,
                                                                             fireTarget->tileIndex8);
-        if (battle14->pendingEndOfActionFlag48 != 0 &&
+        if (battle14->pendingEndOfActionFlag != 0 &&
             g_awTacticalUnitAiClassByUnitType_006693B8[unit->unitTypeC] == 1 &&
             unit->actionPoints28 != 0) {
           int aiState = unit->aiStateCode2c;
@@ -1781,7 +1781,7 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
   }
 
   // Hand the turn back.
-  if (battle14->pendingEndOfActionFlag48 != 0) {
+  if (battle14->pendingEndOfActionFlag != 0) {
     battle14->FinishTacticalActionAndPostNextMoveCommand();
   }
 }
@@ -1814,7 +1814,7 @@ TArmyPlayer::BuildTacticalActionClassAndPositionFlags(TacticalTileIndex referenc
     flags |= 0x10;
   }
   if (g_awTacticalUnitAiClassByUnitType_006693B8[unit->unitTypeC] == 0 &&
-      battle14->tileGrid4[tileIndex].deployMark8 != 0) {
+      battle14->tileGrid4[tileIndex].deployMark != 0) {
     flags |= 0x20;
   } else {
     flags |= 0x40;
@@ -1849,7 +1849,7 @@ int TArmyPlayer::GetMinimumActiveUnitRangeForStates2Or4() {
 // selects the localized prompt path; otherwise switching is accepted immediately.
 // FUNCTION: IMPERIALISM 0x0059ea60
 unsigned char TArmyPlayer::SwitchToAutoPlay() {
-  if (notWatchedFlagE) {
+  if (notWatchedFlag) {
     CString message;
     g_pSimMgr->GetString(0x273d, 0, &message);
     return g_pViewMgr->ModalMessage(message, g_ptTacticalAutoPlayModalMessage, 1, 1);
@@ -1862,12 +1862,12 @@ unsigned char TArmyPlayer::SwitchToAutoPlay() {
 // longer watched-idle, apply cursor profile 0, and start the turn pump.
 // FUNCTION: IMPERIALISM 0x0059eb40
 void TArmyPlayer::ProceedAfterBattleIntroAccepted() {
-  if (!sideReadyFlag10) {
+  if (!sideReadyFlag) {
     AutoDeploySideUnitsAndMarkReady();
     return;
   }
-  if (!notWatchedFlagE) {
-    notWatchedFlagE = true;
+  if (!notWatchedFlag) {
+    notWatchedFlag = true;
     SelectAndApplyTacticalCursorModeProfile(0);
     AdvanceTacticalTurnPulse();
   }

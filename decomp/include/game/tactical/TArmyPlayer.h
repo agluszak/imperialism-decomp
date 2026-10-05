@@ -25,10 +25,10 @@ public:
   // Mac oracle: SwitchToAutoPlay. Applies the side's confirmation gate before AI control.
   virtual unsigned char SwitchToAutoPlay(); // slot 0x15 0x59ea60
 
-  TArmyStack* armyStack28; // +0x28
+  TArmyStack* armyStack; // +0x28
   // Initially the active units' attribute sums; accumulation then replaces
   // [0] and [1] with baseline and terrain-profile fitness scores.
-  float projectionMetrics2C[5];     // +0x2c
+  float projectionMetrics[5];       // +0x2c
   short maxUnitRange40;             // +0x40 max GetUnitRange over active units
   short maxNonArtilleryUnitRange42; // +0x42 same, skipping aiClass-2 units
   int lastAppliedCursorMode44;      // +0x44 init -1; SelectAndApply... early-outs on equality
@@ -36,8 +36,8 @@ public:
   int field48;                           // +0x48
   int cachedFortBombardmentTargetTile4c; // +0x4c init -1; cached fort-bombardment target tile for indirect fire
   char randomParityByte50;               // +0x50 coin flip at side init (move-first side?)
-  bool hasArtilleryOrSappers51; // +0x51 active units only
-  unsigned char pad52[2];       // +0x52
+  bool hasArtilleryOrSappers; // +0x51 active units only
+  unsigned char pad52[2];     // +0x52
 
   // Both original construction sites (0x5a4790, 0x5a4990) inline the ctor as a bare
   // vptr store.
@@ -54,7 +54,7 @@ public:
   // aiStateCode2c inline. 0x0059c970, __thiscall.
   void ApplyTacticalStanceProfileForCurrentCursorMode();
 
-  // Rebuilds projectionMetrics2C/maxUnitRange40/42 and hasArtilleryOrSappers51
+  // Rebuilds projectionMetrics/maxUnitRange40/42 and hasArtilleryOrSappers
   // from the active records, then folds sums[0]/sums[1] into
   // distribution-similarity scores vs the 0x697870 reference profiles. 0x59b5b0.
   void AccumulateTacticalProjectionMetricsAndUnitRanges();
@@ -132,15 +132,15 @@ public:
                                                 TacticalTileIndex tileIndex); // 0x59e0d0
 
   // Builds the side's tactical unit records from the stack's army unit chain and
-  // stores the stack into armyStack28. 0x0059b1b0, __thiscall, ret 0x10.
+  // stores the stack into armyStack. 0x0059b1b0, __thiscall, ret 0x10.
   // Mac oracle: IArmyPlayer(TArmyStack*, unsigned char, unsigned char, long) -- the
   // original only reads the low byte of isOurSide, as the body comment notes.
   void IArmyPlayer(TArmyStack* stack, bool isOurSide, unsigned char watchFlag, int nationIndex);
 };
 
 ASSERT_SIZE(TArmyPlayer, 0x54);
-ASSERT_OFFSET(TArmyPlayer, projectionMetrics2C, 0x2c);
-ASSERT_OFFSET(TArmyPlayer, hasArtilleryOrSappers51, 0x51);
+ASSERT_OFFSET(TArmyPlayer, projectionMetrics, 0x2c);
+ASSERT_OFFSET(TArmyPlayer, hasArtilleryOrSappers, 0x51);
 
 // The per-tile heuristic scorer table type (0x6994c0, declared in
 // global_data_tables.h): entry i pairs with weight column i of

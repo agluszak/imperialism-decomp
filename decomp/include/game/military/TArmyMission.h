@@ -10,9 +10,9 @@ class TMilitaryUnit;
 class TArmyMission : public TMission {
   DECLARE_SERIAL(TArmyMission)
 public:
-  short presentLocation14;
+  short presentLocation;
   short padding_16;
-  TSortedList* orderListAt18;
+  TSortedList* orderList;
   float requiredEquipageByClass[5]; // offset 0x1c
 
   // One constructor, not two. CreateObject (0x0053bfb0) allocates 0x30 bytes then
@@ -27,7 +27,7 @@ public:
   virtual void WriteTo(TStream* stream) override;  // slot 0x05
   virtual void ReadFrom(TStream* stream) override; // slot 0x06
   virtual void
-  Free() override; // slot 0x1c (TObject) 0x53c220 -- releases orderListAt18 and deletes self
+  Free() override; // slot 0x1c (TObject) 0x53c220 -- releases orderList and deletes self
 
   virtual bool
   IsANoBrainer() const override; // slot 0x28 0x53c1b0 -- army attack/invade capability flag

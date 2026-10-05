@@ -39,7 +39,7 @@ void TDealTabControl::Draw(RECT* rectBuffer) {
   SetQuickDrawFillColor(0);
 
   if (selectedRow < 0) {
-    RECT rect = {0, 0, frameWidth34, frameHeight38};
+    RECT rect = {0, 0, frameWidth, frameHeight};
     BlitRectWithOptionalTransparency(emptyRowStrip->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &rect,
                                      &rect, 0, 0);
@@ -48,20 +48,20 @@ void TDealTabControl::Draw(RECT* rectBuffer) {
 
   int bandTop = selectedRow * rowHeightPixels;
   if (bandTop != 0) {
-    RECT rect = {0, 0, frameWidth34, bandTop};
+    RECT rect = {0, 0, frameWidth, bandTop};
     BlitRectWithOptionalTransparency(emptyRowStrip->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &rect,
                                      &rect, 0, 0);
   }
 
   int bandBottom = bandTop + rowHeightPixels;
-  RECT bandRect = {0, bandTop, frameWidth34, bandBottom};
+  RECT bandRect = {0, bandTop, frameWidth, bandBottom};
   BlitRectWithOptionalTransparency(filledRowStrip->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &bandRect,
                                    &bandRect, 0, 0);
 
-  if (bandBottom < frameHeight38) {
-    RECT rect = {0, bandBottom, frameWidth34, frameHeight38};
+  if (bandBottom < frameHeight) {
+    RECT rect = {0, bandBottom, frameWidth, frameHeight};
     BlitRectWithOptionalTransparency(emptyRowStrip->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &rect,
                                      &rect, 0, 0);

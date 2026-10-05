@@ -227,7 +227,7 @@ public:
   // +0x38 — sign-extended char result of ShowTurnAlertsForActiveNation stored by
   // AdvanceGlobalTurnStateMachine (0x57dcd5). The save stream deliberately skips
   // this transient alert result.
-  unsigned int alertsPendingFlag38;
+  unsigned int alertsPendingFlag;
   // +0x3c — session/turn-flow flag word: zeroed by the ctor, OR'd with 0x40 by
   // AdvanceGlobalTurnStateMachine, masked by Merge/TestTurnFlowStatusFlagMask
   // (0x57f4b0/0x57f4d0 both use [ecx+0x3c]), and serialized as a full dword.
@@ -251,7 +251,7 @@ public:
   // +0x68 — nonzero: city/nation names come from the localized string table
   // (GetString group 0x2715) instead of the generated flavor-text variants
   // (SetSharedStringFromMappedFlavorTextWithLengthClamp @ 0x5d4410).
-  char useLocalizedNameTables68;
+  char useLocalizedNameTables;
   unsigned char pad69;
   short field6a;
   short field6c;

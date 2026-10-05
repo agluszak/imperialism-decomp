@@ -207,7 +207,7 @@ END_MESSAGE_MAP()
 ImperialismApp::ImperialismApp()
     : CWinApp(), waitCursorAnchorC0(0), field_C4(), appliedAutoResModeC8(0), languageLabelCC(),
       localizedPictGobNameD0(), field_D4(), primaryDataLibNameD8(), field_DC(),
-      languageCodeStringE0(), languagePackIdE4(0) {}
+      languageCodeString(), languagePackIdE4(0) {}
 
 // FUNCTION: IMPERIALISM 0x00412c60
 ImperialismApp::~ImperialismApp() {}
@@ -235,7 +235,7 @@ BOOL ImperialismApp::InitInstance() {
   ImperialismCommandLineInfo cmdInfo(&languageOverride);
   ParseCommandLine(cmdInfo);
 
-  if (!cmdInfo.m_bClearRegistrySettings34 &&
+  if (!cmdInfo.m_bClearRegistrySettings &&
       cmdInfo.m_nShellCommand != CCommandLineInfo::AppUnregister) {
     g_pResourceMgr = new TResourceMgr();
 
@@ -468,14 +468,14 @@ void ImperialismApp::OnAdjustNationResourcesAndPopulation() {
     TCity* city = g_apNationStates[nationSlot] != 0 ? g_apNationStates[nationSlot]->city : 0;
     for (short commodity = 0; commodity < 0x17; ++commodity) {
       city->CityStockByType(commodity) = static_cast<short>(
-          city->CityStockByType(commodity) + static_cast<short>(dialog.commodityAdjustmentB4));
+          city->CityStockByType(commodity) + static_cast<short>(dialog.commodityAdjustment));
       city->VerifyStocks();
     }
 
-    short populationDelta = static_cast<short>(-static_cast<int>(dialog.populationAdjustmentB0));
-    city->productionSummary1d8->RemovePopulation(1, populationDelta);
-    city->productionSummary1d8->RemovePopulation(2, populationDelta);
-    city->productionSummary1d8->RemovePopulation(4, populationDelta);
+    short populationDelta = static_cast<short>(-static_cast<int>(dialog.populationAdjustment));
+    city->productionSummary->RemovePopulation(1, populationDelta);
+    city->productionSummary->RemovePopulation(2, populationDelta);
+    city->productionSummary->RemovePopulation(4, populationDelta);
   }
 }
 
@@ -674,12 +674,12 @@ BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
       primaryDataLibNameD8.ReleaseBuffer(-1);
       LoadStringA(irgModule, 0x80, field_DC.GetBufferSetLength(0x21), 0x20);
       field_DC.ReleaseBuffer(-1);
-      LoadStringA(irgModule, 0x323, languageCodeStringE0.GetBufferSetLength(0x21), 0x20);
-      languageCodeStringE0.ReleaseBuffer(-1);
+      LoadStringA(irgModule, 0x323, languageCodeString.GetBufferSetLength(0x21), 0x20);
+      languageCodeString.ReleaseBuffer(-1);
 
-      unsigned char languageCodeByte0 = languageCodeStringE0[0];
-      unsigned char languageCodeByte1 = languageCodeStringE0[1];
-      unsigned char languageCodeByte2 = languageCodeStringE0[2];
+      unsigned char languageCodeByte0 = languageCodeString[0];
+      unsigned char languageCodeByte1 = languageCodeString[1];
+      unsigned char languageCodeByte2 = languageCodeString[2];
       languagePackIdE4 = (static_cast<unsigned int>(languageCodeByte2) * 0x100U +
                           static_cast<unsigned int>(languageCodeByte1)) *
                              0x100U +
@@ -693,7 +693,7 @@ BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
   }
 
   // "L!" on the command line: scan/report languages, then abort startup.
-  BOOL keepStarting = cmdInfo.m_bQuitAfterLanguageScan2c == 0;
+  BOOL keepStarting = cmdInfo.m_bQuitAfterLanguageScan == 0;
   CloseCrtFindHandleIfOpen(findHandle);
   return keepStarting;
 }
@@ -710,11 +710,11 @@ int ImperialismApp::ShowAutoResolutionDialogIfNeeded() {
   if (cmdInfo.m_bForceAutoResOff40) {
     autoResMode = 0;
   }
-  if (cmdInfo.m_bForceAutoResOn3c) {
+  if (cmdInfo.m_bForceAutoResOn) {
     autoResMode = 1;
   }
 
-  if (cmdInfo.m_bShowSetupDialog30 || autoResMode == kAutoResPromptSentinel) {
+  if (cmdInfo.m_bShowSetupDialog || autoResMode == kAutoResPromptSentinel) {
     TAutoResolutionDialog dialog(nullptr);
     dialog.PrepareAndCreateModalFromTemplate();
     dialog.autoResolutionCheckState = autoResMode;

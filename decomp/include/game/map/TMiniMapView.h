@@ -10,7 +10,7 @@ class TMapUberPicture;
 // A small world-map thumbnail with a highlighted viewport-marker box (see
 // Draw/TrackMouse). Constructed by
 // TMapUberPicture::DisplayMiniMap (0x599cf0), which stores the new instance
-// into the owner's miniMapViewC0.
+// into the owner's miniMapView.
 // VTABLE: IMPERIALISM 0x00669170
 class TMiniMapView : public TControl {
 public:
@@ -26,16 +26,16 @@ public:
   TMapUberPicture* ownerPicture84;
   // Tile-column/row scroll offset on the strategic map (Draw/
   // TrackMouse evidence; those bodies aren't ported yet).
-  int scrollTileColumn88;
-  int scrollTileRow8c;
-  // Centered viewport-marker-box draw position, recomputed whenever frameWidth34/frameHeight38 or
+  int scrollTileColumn;
+  int scrollTileRow;
+  // Centered viewport-marker-box draw position, recomputed whenever frameWidth/frameHeight or
   // the box size (below) change.
-  int markerBoxX90;
-  int markerBoxY94;
+  int markerBoxX;
+  int markerBoxY;
   // Viewport-marker-box size; ctor default is (*0x6a460c, 8), later resized to (0x20,
   // 0x1c) by DisplayMiniMap's refresh path.
-  int markerBoxWidth98;
-  int markerBoxHeight9c;
+  int markerBoxWidth;
+  int markerBoxHeight;
 
   TMiniMapView();
 
@@ -49,10 +49,10 @@ public:
   // 0x0059a4c0; the live sites in TMapUberPicture carry the same field sequence
   // inline (VC5 declines to inline this body in the recomp TUs).
   void SetScreenSize(const POINT& size) {
-    markerBoxWidth98 = size.x;
-    markerBoxHeight9c = size.y;
-    markerBoxX90 = frameWidth34 / 2 - markerBoxWidth98 - 2;
-    markerBoxY94 = frameHeight38 / 2 - markerBoxHeight9c - 2;
+    markerBoxWidth = size.x;
+    markerBoxHeight = size.y;
+    markerBoxX = frameWidth / 2 - markerBoxWidth - 2;
+    markerBoxY = frameHeight / 2 - markerBoxHeight - 2;
     RefreshControl();
   }
 };

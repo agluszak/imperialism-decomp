@@ -40,20 +40,20 @@ public:
   // city-record index (0..0x180 rows of TMapMgr::cityScoreTable) — established at
   // TMapMgr 0x518d90 and by the TSuperArmyRoster selection flow.
   short tileIndex06;
-  UnitOrder unitOrder;      // 0x08
-  short orderTargetIndex0C; // 0x0c
-  short pad0E;              // 0x0e
+  UnitOrder unitOrder;    // 0x08
+  short orderTargetIndex; // 0x0c
+  short pad0E;            // 0x0e
   // Doubly-linked-list back-pointer for the tile's civilian-order chain (terrainState-
-  // Table[tileIndex06].firstCivilianOrder20, threaded via nextAtLocation14); null when this is
+  // Table[tileIndex06].firstCivilianOrder20, threaded via nextAtLocation); null when this is
   // the chain head. Recovered from TCivUnit::MoveTo (0x5c2b70), which dereferences
-  // it at +0x14 (TUnit::nextAtLocation14's own offset).
-  TUnit* previousAtLocation10;              // 0x10
-  TUnit* nextAtLocation14;                  // 0x14
-  short ownerNationSlot18;                  // 0x18
-  short unitRosterId1A;                     // 0x1a
-  unsigned char militaryRegistrationFlag1C; // 0x1c
-  unsigned char pad1d[3];                   // 0x1d
-  int persistentUnitId20;                   // 0x20
+  // it at +0x14 (TUnit::nextAtLocation's own offset).
+  TUnit* previousAtLocation;              // 0x10
+  TUnit* nextAtLocation;                  // 0x14
+  short ownerNationSlot18;                // 0x18
+  short unitRosterId1A;                   // 0x1a
+  unsigned char militaryRegistrationFlag; // 0x1c
+  unsigned char pad1d[3];                 // 0x1d
+  int persistentUnitId20;                 // 0x20
 
   // Inlined base initializer (the 0x5c28c0 / 0x5c2df0 ctors open-code this). Kept
   // header-inline so MSVC folds it into each subclass ctor and dead-store-
@@ -62,10 +62,10 @@ public:
   // In-class inline: the original has no out-of-line TUnit::TUnit -- every
   // caller absorbs it, so an out-of-line definition pessimizes them into a call.
   TUnit() {
-    previousAtLocation10 = 0;
-    nextAtLocation14 = 0;
+    previousAtLocation = 0;
+    nextAtLocation = 0;
     tileIndex06 = static_cast<short>(0xffff);
-    militaryRegistrationFlag1C = 0;
+    militaryRegistrationFlag = 0;
   }
 
   void RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,

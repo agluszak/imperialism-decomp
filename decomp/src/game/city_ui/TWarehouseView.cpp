@@ -54,7 +54,7 @@ void TWarehouseView::DoStartup() {
 
   // Resolve and style the 23 commodity value controls by their FourCC tags.
   const int* commodityTag = g_pTradeSummarySelectionMap;
-  TPictureNumberText** commodityControl = commodityValueControlsA0;
+  TPictureNumberText** commodityControl = commodityValueControls;
   int commodityCount = 23;
   do {
     TStaticText* control = static_cast<TStaticText*>(ResolveControlByTag(*commodityTag));
@@ -69,29 +69,29 @@ void TWarehouseView::DoStartup() {
   } while (commodityCount != 0);
 
   // 'labo' -- labor value control.
-  laborValueControlFC =
+  laborValueControl =
       static_cast<TPictureNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('l', 'a', 'b', 'o')));
-  if (laborValueControlFC != nullptr) {
-    laborValueControlFC->InstallTextStyle(style.desc, 0);
-    laborValueControlFC->SetTextAlignmentAndMaybeRefresh(1, 0);
+  if (laborValueControl != nullptr) {
+    laborValueControl->InstallTextStyle(style.desc, 0);
+    laborValueControl->SetTextAlignmentAndMaybeRefresh(1, 0);
   }
 
   // 'powe' -- power value control.
-  powerValueControl100 =
+  powerValueControl =
       static_cast<TPictureNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'o', 'w', 'e')));
-  if (powerValueControl100 != nullptr) {
-    powerValueControl100->InstallTextStyle(style.desc, 0);
-    powerValueControl100->SetTextAlignmentAndMaybeRefresh(1, 0);
+  if (powerValueControl != nullptr) {
+    powerValueControl->InstallTextStyle(style.desc, 0);
+    powerValueControl->SetTextAlignmentAndMaybeRefresh(1, 0);
   }
 
-  if (g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] != 0) {
+  if (g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId] != 0) {
     TWindow* window = GetWindow();
     CRect windowBounds;
     window->QueryBounds(&windowBounds);
 
-    commodityValueControlsA0[6]->Show(1, 1);
-    commodityValueControlsA0[12]->Show(1, 1);
-    powerValueControl100->Show(1, 1);
+    commodityValueControls[6]->Show(1, 1);
+    commodityValueControls[12]->Show(1, 1);
+    powerValueControl->Show(1, 1);
     SetPictureResourceIdAndRefresh(0x23ff, 1);
 
     CPoint bitmapSize;
@@ -131,7 +131,7 @@ void TWarehouseView::DoStartup() {
   g_pSimMgr->GetString(0x2734, 0x20, &hoverTemplate);
 
   short commodity = 0;
-  TPictureNumberText** valueControlPtr = commodityValueControlsA0;
+  TPictureNumberText** valueControlPtr = commodityValueControls;
   do {
     TPictureNumberText* valueControl = *valueControlPtr;
     if (valueControl != 0 && valueControl->viewEnabled != 0) {
@@ -182,18 +182,18 @@ void TWarehouseView::DoStartup() {
     ++valueControlPtr;
   } while (commodity < 23);
 
-  if (laborValueControlFC != 0) {
-    int hoverOrigin[2] = {laborValueControlFC->ownerLocalX - 0xf,
-                          laborValueControlFC->ownerLocalY - 0x14};
+  if (laborValueControl != 0) {
+    int hoverOrigin[2] = {laborValueControl->ownerLocalX - 0xf,
+                          laborValueControl->ownerLocalY - 0x14};
     TView* hoverControl = new TView();
     hoverControl->InitializeUiResourceEntryFrameAndParent(0, this, hoverOrigin, hoverSize, 5, 5, 0);
     g_pSimMgr->GetString(0x2734, 0x22, &hoverText);
     SetControlHoverHelpText(hoverText, hoverControl);
   }
 
-  if (powerValueControl100 != 0 && powerValueControl100->viewEnabled != 0) {
-    int hoverOrigin[2] = {powerValueControl100->ownerLocalX - 0xf,
-                          powerValueControl100->ownerLocalY - 0x14};
+  if (powerValueControl != 0 && powerValueControl->viewEnabled != 0) {
+    int hoverOrigin[2] = {powerValueControl->ownerLocalX - 0xf,
+                          powerValueControl->ownerLocalY - 0x14};
     TView* hoverControl = new TView();
     hoverControl->InitializeUiResourceEntryFrameAndParent(0, this, hoverOrigin, hoverSize, 5, 5, 0);
     g_pSimMgr->GetString(0x2734, 0x21, &hoverText);
@@ -204,30 +204,30 @@ void TWarehouseView::DoStartup() {
 // FUNCTION: IMPERIALISM 0x004c7d90
 void TWarehouseView::UpdateFields() {
   for (short commodity = 0; commodity < 23; ++commodity) {
-    TPictureNumberText* valueControl = commodityValueControlsA0[commodity];
+    TPictureNumberText* valueControl = commodityValueControls[commodity];
     if (valueControl != 0) {
       short amount = city94->CityStockByType(commodity);
       if (valueControl->UpdateControlCachedIntFromWindowText() != amount) {
         if (commodity == 20) {
-          amount = static_cast<short>(city94->cityStockFishDC + city94->cityStockLivestockDE);
-          valueControl = commodityValueControlsA0[commodity];
+          amount = static_cast<short>(city94->cityStockFish + city94->cityStockLivestock);
+          valueControl = commodityValueControls[commodity];
         }
         valueControl->SetControlValue(amount, 1);
       }
     }
   }
 
-  if (laborValueControlFC != 0) {
-    short labor = city94->productionSummary1d8->strength;
-    if (laborValueControlFC->UpdateControlCachedIntFromWindowText() != labor) {
-      laborValueControlFC->SetControlValue(labor, 1);
+  if (laborValueControl != 0) {
+    short labor = city94->productionSummary->strength;
+    if (laborValueControl->UpdateControlCachedIntFromWindowText() != labor) {
+      laborValueControl->SetControlValue(labor, 1);
     }
   }
 
-  if (powerValueControl100 != 0) {
+  if (powerValueControl != 0) {
     short power = city94->powerAvailableB4;
-    if (powerValueControl100->UpdateControlCachedIntFromWindowText() != power) {
-      powerValueControl100->SetControlValue(power, 1);
+    if (powerValueControl->UpdateControlCachedIntFromWindowText() != power) {
+      powerValueControl->SetControlValue(power, 1);
     }
   }
 }

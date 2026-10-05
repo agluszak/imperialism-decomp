@@ -78,9 +78,9 @@ void TNumberedArrowButton::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoi
     CRect bounds;
     BuildInsetContentRect(&bounds);
     short localY = static_cast<short>(currentPoint.y - bounds.top);
-    if (localY > 0 && localY < frameHeight38 / 2) {
+    if (localY > 0 && localY < frameHeight / 2) {
       visualState = 2;
-    } else if (localY > frameHeight38 / 2 && localY < frameHeight38) {
+    } else if (localY > frameHeight / 2 && localY < frameHeight) {
       visualState = 1;
     }
   }
@@ -121,7 +121,7 @@ void TNumberedArrowButton::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoi
 void TNumberedArrowButton::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* cursorPoint,
                                                                                RgnHandle hitArg) {
   if (IsActionable() != '\0') {
-    if (cursorPoint->y < frameHeight38 / 2) {
+    if (cursorPoint->y < frameHeight / 2) {
       cursorId4e = 0x100;
       TControl::HandleCursorHoverSelectionByChildHitTestAndFallback(cursorPoint, hitArg);
       return;

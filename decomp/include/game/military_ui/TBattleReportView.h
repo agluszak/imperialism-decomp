@@ -29,17 +29,16 @@ public:
 
   // 0x4ade30 (311 bytes) -- draws a small marker glyph from the strategic-map icon strip
   // for every g_pMapContextActionManager action record NOT currently selected (and with
-  // placedFlag260 set), then one extra highlighted-variant pass (spriteCode262 + 1) for
-  // the currently selected record (selectedReportIndex24c8). rectBuffer is an ignored
+  // placedFlag set), then one extra highlighted-variant pass (spriteCode262 + 1) for
+  // the currently selected record (selectedReportIndex). rectBuffer is an ignored
   // stack arg threaded through by the caller (Draw).
   void RenderMapContextActionMarkers(RECT* rectBuffer);
 
-  TBattleReportView()
-      : TDiplomacyMapView(), selectedReportIndex24c8(1), transientRegistryObject24cc(0) {}
+  TBattleReportView() : TDiplomacyMapView(), selectedReportIndex(1), transientRegistryObject(0) {}
 
 private:
-  int selectedReportIndex24c8;
-  TIdleMeAnimation* transientRegistryObject24cc;
+  int selectedReportIndex;
+  TIdleMeAnimation* transientRegistryObject;
 };
 
 ASSERT_SIZE(TBattleReportView, 0x24d0);

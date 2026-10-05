@@ -222,8 +222,8 @@ private:
                 unitBefore.secondaryStock - order->secondaryInputPerUnit) &&
            order->ownerCity->ownerNationAc->treasuryValue10 ==
                unitBefore.treasury - order->cashCostPerUnit &&
-           population->populationCount08 == unitBefore.populationCount - 1 &&
-           population->populationCountFloat0c == unitBefore.populationFloat - 1.0f &&
+           population->populationCount == unitBefore.populationCount - 1 &&
+           population->populationCountFloat == unitBefore.populationFloat - 1.0f &&
            population->strength < unitBefore.strength;
   }
 
@@ -238,14 +238,14 @@ private:
                 unitBefore.secondaryStock) &&
            order->ownerCity->ownerNationAc->treasuryValue10 == unitBefore.treasury &&
            population->strength == unitBefore.strength &&
-           population->populationCount08 == unitBefore.populationCount &&
-           population->populationCountFloat0c == unitBefore.populationFloat &&
-           population->baselineSlots10->lowSkillCount04 == unitBefore.baselineLow &&
-           population->baselineSlots10->mediumSkillCount06 == unitBefore.baselineMedium &&
-           population->baselineSlots10->highSkillCount08 == unitBefore.baselineHigh &&
-           population->productionSlots14->lowSkillCount04 == unitBefore.productionLow &&
-           population->productionSlots14->mediumSkillCount06 == unitBefore.productionMedium &&
-           population->productionSlots14->highSkillCount08 == unitBefore.productionHigh;
+           population->populationCount == unitBefore.populationCount &&
+           population->populationCountFloat == unitBefore.populationFloat &&
+           population->baselineSlots->lowSkillCount04 == unitBefore.baselineLow &&
+           population->baselineSlots->mediumSkillCount06 == unitBefore.baselineMedium &&
+           population->baselineSlots->highSkillCount08 == unitBefore.baselineHigh &&
+           population->productionSlots->lowSkillCount04 == unitBefore.productionLow &&
+           population->productionSlots->mediumSkillCount06 == unitBefore.productionMedium &&
+           population->productionSlots->highSkillCount08 == unitBefore.productionHigh;
   }
 
   void CaptureShipOrder(TShipOrder* order) {
@@ -281,7 +281,7 @@ private:
 
   bool TrainingOrderWasReserved() const {
     return trainingOrder->quantity == trainingBefore.quantity + 1 &&
-           trainingOrder->ownerCity->cityStockPaperCA == trainingBefore.paperStock - 1 &&
+           trainingOrder->ownerCity->cityStockPaper == trainingBefore.paperStock - 1 &&
            trainingOrder->ownerCity->ownerNationAc->treasuryValue10 ==
                trainingBefore.treasury - kTrainingCashCost;
   }
@@ -294,9 +294,9 @@ private:
       return false;
     }
     return trainingOrder->quantity == 0 &&
-           trainingOrder->productionSummary->baselineSlots10->lowSkillCount04 ==
+           trainingOrder->productionSummary->baselineSlots->lowSkillCount04 ==
                trainingBefore.baselineLow - 1 &&
-           trainingOrder->productionSummary->baselineSlots10->mediumSkillCount06 ==
+           trainingOrder->productionSummary->baselineSlots->mediumSkillCount06 ==
                trainingBefore.baselineMedium + 1;
   }
 
@@ -333,7 +333,7 @@ private:
                  itemBefore.secondaryTracking + 1)) &&
            order->productionSummary->strength == itemBefore.strength - 2 &&
            order->reservedWorkforce == itemBefore.reservedWorkforce + 2 &&
-           order->ownerCity->productionAccum1fc[order->productionSlot] ==
+           order->ownerCity->productionAccum[order->productionSlot] ==
                itemBefore.productionAccum - 1;
   }
 
@@ -351,7 +351,7 @@ private:
                  itemBefore.secondaryTracking)) &&
            order->productionSummary->strength == itemBefore.strength &&
            order->reservedWorkforce == itemBefore.reservedWorkforce &&
-           order->ownerCity->productionAccum1fc[order->productionSlot] ==
+           order->ownerCity->productionAccum[order->productionSlot] ==
                itemBefore.productionAccum;
   }
 
@@ -362,7 +362,7 @@ private:
 
   void SeedArmoryInputs() {
     TCity* city = PlayerCity();
-    TUnitOrder* firstOrder = city != 0 ? city->buildOrderSlots148[0] : 0;
+    TUnitOrder* firstOrder = city != 0 ? city->buildOrderSlots[0] : 0;
     if (firstOrder != 0) {
       city->CityStockByType(firstOrder->primaryInputResourceId) =
           static_cast<short>(firstOrder->primaryInputPerUnit * 2);
@@ -374,8 +374,8 @@ private:
     if (city == 0) {
       return;
     }
-    if (city->cityStockPaperCA < 1) {
-      city->cityStockPaperCA = 1;
+    if (city->cityStockPaper < 1) {
+      city->cityStockPaper = 1;
     }
     if (city->ownerNationAc->ComputeAvailableDiplomacyBudget() < kTrainingCashCost) {
       city->ownerNationAc->treasuryValue10 += kTrainingCashCost;
@@ -392,7 +392,7 @@ private:
     }
     for (short slot = 1; slot < kIndustryPageLimit; ++slot) {
       const short unitType = CityBuildingScreen::IndustryUnitTypeForSlot(slot);
-      TProductionOrder* order = unitType >= 0 ? city->orderSlotsE4[unitType] : 0;
+      TProductionOrder* order = unitType >= 0 ? city->orderSlots[unitType] : 0;
       if (city->GetBuildingType(slot) > 0 && order != 0 && order->MaxOrder() > order->quantity &&
           City().HasBuildingAnimation(slot)) {
         return slot;
@@ -408,7 +408,7 @@ private:
         int expected = 0;
         for (int slot = 0; slot < 7; ++slot) {
           if (g_apTerrainTypeDescriptorTable[slot] != 0 &&
-              (zone->nationKeyMask10 & (1 << slot)) != 0) {
+              (zone->nationKeyMask & (1 << slot)) != 0) {
             ++examinedRelations;
             if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nation, slot)) {
               ++expected;

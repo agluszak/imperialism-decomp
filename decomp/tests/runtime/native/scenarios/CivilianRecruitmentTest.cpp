@@ -239,8 +239,8 @@ private:
 
   bool FindVisiblePointForTile(TMapDialog* mapDialog, short targetTile, CPoint* outPoint,
                                short* outBand) {
-    for (int y = 1; y < mapDialog->frameHeight38; y += 2) {
-      for (int x = 1; x < mapDialog->frameWidth34; x += 2) {
+    for (int y = 1; y < mapDialog->frameHeight; y += 2) {
+      for (int x = 1; x < mapDialog->frameWidth; x += 2) {
         short column;
         short row;
         short band;
@@ -261,7 +261,7 @@ private:
                                           short expectedToken, CPoint* outPoint) {
     MapView()->CenterOn(targetTile);
 
-    CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
+    CRect mapBounds(0, 0, mapDialog->frameWidth, mapDialog->frameHeight);
     mapDialog->Draw(&mapBounds);
 
     short band = 0;
@@ -324,7 +324,7 @@ private:
     MapView()->CenterOn(targetHillTile);
     {
       PrimarySurfaceGuard primarySurface;
-      CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
+      CRect mapBounds(0, 0, mapDialog->frameWidth, mapDialog->frameHeight);
       mapDialog->Draw(&mapBounds);
     }
     return g_pUiAnimator->FindRegisteredAnimationByTag(PointerAddressLong32(spawnedCivilian));
@@ -369,7 +369,7 @@ private:
     }
 
     PrimarySurfaceGuard primarySurface;
-    CRect descriptionBounds(0, 0, description->frameWidth34, description->frameHeight38);
+    CRect descriptionBounds(0, 0, description->frameWidth, description->frameHeight);
     description->Draw(&descriptionBounds);
 
     int selectedColumn = -1;
@@ -573,16 +573,16 @@ private:
 
     const int activeNation = ActiveNation();
     const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[targetHillTile];
-    if (spawnedCivilian->unitOrder != kUnitOrderIdle || spawnedCivilian->remainingTurns24 > 0 ||
-        (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) == 0 ||
-        spawnedCivilian->completionMarker26 != 0x232f ||
+    if (spawnedCivilian->unitOrder != kUnitOrderIdle || spawnedCivilian->remainingTurns > 0 ||
+        (terrain.pendingDevelopmentFlag & (1 << activeNation)) == 0 ||
+        spawnedCivilian->completionMarker != 0x232f ||
         g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(targetHillTile) == 0) {
       CString detail;
       detail.Format("prospector completion mismatch: order=%d remaining=%d survey=%d marker=%d "
                     "candidate=%d",
-                    spawnedCivilian->unitOrder, spawnedCivilian->remainingTurns24,
-                    (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0,
-                    spawnedCivilian->completionMarker26,
+                    spawnedCivilian->unitOrder, spawnedCivilian->remainingTurns,
+                    (terrain.pendingDevelopmentFlag & (1 << activeNation)) != 0,
+                    spawnedCivilian->completionMarker,
                     g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(targetHillTile));
       return RuntimeActionResult::Failure(detail);
     }
@@ -618,7 +618,7 @@ private:
     MapView()->CenterOn(tile);
     MapView()->RedrawTile(tile);
     PrimarySurfaceGuard primarySurface;
-    CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
+    CRect mapBounds(0, 0, mapDialog->frameWidth, mapDialog->frameHeight);
     mapDialog->Draw(&mapBounds);
   }
 
@@ -639,7 +639,7 @@ private:
       const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tile];
       if (tile == spawnedCivilian->tileIndex06 || tile % 0x6c == 0 || tile % 0x6c == 0x6b ||
           terrain.firstCivilianOrder20 != 0 || terrain.recruitSearchVisited0e != 0 ||
-          (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0) {
+          (terrain.pendingDevelopmentFlag & (1 << activeNation)) != 0) {
         continue;
       }
       ++eligibleCount;
@@ -673,7 +673,7 @@ private:
     }
     PrimarySurfaceGuard primarySurface;
     MapView()->CenterOn(targetSurveyMissTile);
-    CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
+    CRect mapBounds(0, 0, mapDialog->frameWidth, mapDialog->frameHeight);
     mapDialog->Draw(&mapBounds);
     CPoint targetPoint;
     short targetBand;
@@ -702,8 +702,8 @@ private:
     const int activeNation = ActiveNation();
     const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[targetSurveyMissTile];
     if (MapDialog() == 0 || spawnedCivilian->unitOrder != kUnitOrderIdle ||
-        spawnedCivilian->remainingTurns24 > 0 ||
-        (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) == 0 ||
+        spawnedCivilian->remainingTurns > 0 ||
+        (terrain.pendingDevelopmentFlag & (1 << activeNation)) == 0 ||
         IsProspectableResource(terrain.resourceTypeByEdge[0]) ||
         g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(targetSurveyMissTile) != 0) {
       return RuntimeActionResult::Failure(
@@ -723,7 +723,7 @@ private:
 
   bool IsRetailFarmerWorkableTile(const TTerrainStateRecord& terrain, short nationSlot,
                                   short orderType) {
-    if (terrain.ownerNationTag04 != nationSlot && terrain.secondaryOwnerNationTag18 != nationSlot) {
+    if (terrain.ownerNationTag04 != nationSlot && terrain.secondaryOwnerNationTag != nationSlot) {
       return false;
     }
     if (g_abGateFlagQualifies[terrain.gateFlag] == 0) {
@@ -744,7 +744,7 @@ private:
         maximumDevelopmentClass = capability;
       }
     }
-    return static_cast<signed char>(terrain.developmentClassNibbles0c & 0xf) <
+    return static_cast<signed char>(terrain.developmentClassNibbles & 0xf) <
            maximumDevelopmentClass;
   }
 
@@ -784,7 +784,7 @@ private:
           g_anResourceTypeRequiredOrderType[firstResourceType] == farmer->orderType &&
           (g_abResourceTypeAlwaysQualifies[firstResourceType] != 0 ||
            terrain.ownerNationTag04 == nationSlot) &&
-          static_cast<signed char>(terrain.developmentClassNibbles0c & 0xf) <
+          static_cast<signed char>(terrain.developmentClassNibbles & 0xf) <
               g_pTechMgr->capabilityValueByNationAndResource[nationSlot][firstResourceType];
       if (expectedWorkable && firstResourceCanBeImproved && clickedUnit == 0 && action == 9 &&
           workableTile == -1) {
@@ -825,7 +825,7 @@ private:
     }
     PrimarySurfaceGuard primarySurface;
     MapView()->CenterOn(targetFarmerTile);
-    CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
+    CRect mapBounds(0, 0, mapDialog->frameWidth, mapDialog->frameHeight);
     mapDialog->Draw(&mapBounds);
     CPoint targetPoint;
     short targetBand;
@@ -856,7 +856,7 @@ private:
     const short improvementClass = static_cast<short>(
         g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(targetFarmerTile, 0));
     const short resourceType = terrain.resourceTypeByEdge[0];
-    if (mapDialog == 0 || farmer->unitOrder != kUnitOrderIdle || farmer->remainingTurns24 > 0 ||
+    if (mapDialog == 0 || farmer->unitOrder != kUnitOrderIdle || farmer->remainingTurns > 0 ||
         improvementClass != initialFarmerImprovementClass + 1 || resourceType < 0 ||
         g_anResourceTypeRequiredOrderType[resourceType] != farmer->orderType) {
       return RuntimeActionResult::Failure(
@@ -938,7 +938,7 @@ private:
     const int expectedTownCount =
         oldTownCount + ((g_pGlobalMapState->terrainStateTable[depotTile].activeFlags1c & 4) == 0);
     engineer->SetOrders(kUnitOrderBuildDepot, depotTile);
-    while (engineer->remainingTurns24 > 0) {
+    while (engineer->remainingTurns > 0) {
       engineer->TickCivWorkOrderCountdownAndComplete();
     }
 
@@ -946,7 +946,7 @@ private:
     if (engineer->unitOrder != kUnitOrderIdle || depot == 0 || depot->activeFlag == 0 ||
         depot->transportLinked == 0 || nation->townMarkerList->GetCount() != expectedTownCount ||
         (g_pGlobalMapState->terrainStateTable[depotTile].activeFlags1c & 0x10) == 0 ||
-        engineer->completionMarker26 != 0x232a) {
+        engineer->completionMarker != 0x232a) {
       CString detail;
       detail.Format("connected depot mismatch: order=%d town=%d active=%d linked=%d count=%d/%d "
                     "flags=%d marker=%d",
@@ -954,7 +954,7 @@ private:
                     depot != 0 ? depot->transportLinked : -1, nation->townMarkerList->GetCount(),
                     expectedTownCount,
                     g_pGlobalMapState->terrainStateTable[depotTile].activeFlags1c,
-                    engineer->completionMarker26);
+                    engineer->completionMarker);
       return RuntimeActionResult::Failure(detail);
     }
 
@@ -962,7 +962,7 @@ private:
     // it must not leave the province pointing at freed memory.
     short province = -1;
     for (short candidate = 0; candidate < kProvinceRecordCount; ++candidate) {
-      if (g_pGlobalMapState->cityScoreTable[candidate].stationedUnitChain98 == 0) {
+      if (g_pGlobalMapState->cityScoreTable[candidate].stationedUnitChain == 0) {
         province = candidate;
         break;
       }
@@ -979,16 +979,16 @@ private:
     newerUnit->IMilitaryUnit(EncodeMilitaryUnitKind(kMilitaryUnitMinutemen), province, ownerNation,
                              0);
     Province& depotProvince = g_pGlobalMapState->cityScoreTable[province];
-    if (depotProvince.stationedUnitChain98 != newerUnit || newerUnit->previousAtLocation10 != 0 ||
-        newerUnit->nextAtLocation14 != olderUnit || olderUnit->previousAtLocation10 != newerUnit) {
+    if (depotProvince.stationedUnitChain != newerUnit || newerUnit->previousAtLocation != 0 ||
+        newerUnit->nextAtLocation != olderUnit || olderUnit->previousAtLocation != newerUnit) {
       return RuntimeActionResult::Failure(
           "an equal-priority military unit did not become the retail chain head");
     }
 
     olderUnit->DetachUnitOrderFromOwnerAndReset();
     olderUnit->Free();
-    if (depotProvince.stationedUnitChain98 != newerUnit || newerUnit->previousAtLocation10 != 0 ||
-        newerUnit->nextAtLocation14 != 0) {
+    if (depotProvince.stationedUnitChain != newerUnit || newerUnit->previousAtLocation != 0 ||
+        newerUnit->nextAtLocation != 0) {
       return RuntimeActionResult::Failure(
           "detaching the former military head left a dangling province chain");
     }

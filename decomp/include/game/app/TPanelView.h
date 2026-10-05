@@ -17,13 +17,13 @@ public:
   // own field is zeroed at construction. TPanelView's ctor has no standalone
   // out-of-line address -- the compiler always inlines it (e.g. into CreateObject at
   // 0x4f78e0 and into TOffersPanelView's ctor) -- so it carries no // FUNCTION marker.
-  TDiplomacyMapView* diplomacyMapView60; // +0x60
+  TDiplomacyMapView* diplomacyMapView; // +0x60
 
   // In-class inline: the original has no out-of-line TPanelView::TPanelView -- every
   // derived constructor absorbs it (e.g. 0x00430320 is CALL TView::TView, then
   // [esi+0x60] = 0, then the derived vptr store). An out-of-line definition in the .cpp
   // cannot be inlined across TUs and pessimizes every subclass ctor into a call.
-  TPanelView() : TView(), diplomacyMapView60(0) {}
+  TPanelView() : TView(), diplomacyMapView(0) {}
 };
 
 ASSERT_SIZE(TPanelView, 0x64);

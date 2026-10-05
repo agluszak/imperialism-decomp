@@ -59,17 +59,17 @@ IMPLEMENT_DYNCREATE(TCityProductionView, TNoHilitePicture)
 // FUNCTION: IMPERIALISM 0x004ba2e0
 TCityProductionView::TCityProductionView() {
   selectedBuildingSlotA4 = -1;
-  needsRefreshAtA6 = false;
+  needsRefresh = false;
   for (int i = 0; i < 16; i = i + 1) {
-    buildingClipRegionsEC[i] = 0;
+    buildingClipRegions[i] = 0;
   }
   for (int viewSlot = 0; viewSlot < 16; viewSlot = viewSlot + 1) {
-    buildingViewsAC[viewSlot] = 0;
+    buildingViews[viewSlot] = 0;
   }
-  currentMonthAtA8 = -1;
+  currentMonth = -1;
   for (int group = 0; group < 8; group = group + 1) {
     for (int slot = 0; slot < 3; slot = slot + 1) {
-      buildingActionAnimations12C[group][slot] = 0;
+      buildingActionAnimations[group][slot] = 0;
     }
   }
 }
@@ -87,22 +87,22 @@ void TCityProductionView::DoPostCreate(int arg) {
 
   // Per building slot: build a mouse clip region from the slot bitmap's outline polygon.
   for (int slot = 0; slot < 16; ++slot) {
-    buildingClipRegionsEC[slot] = NewRgn();
+    buildingClipRegions[slot] = NewRgn();
     TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
     TCity* city = (nation != 0) ? nation->city : 0;
     short level = city->GetNextBuildingType(slot);
     CDib* bitmap = g_pResourceMgr->LoadBmpResourceByIdCached(
         static_cast<unsigned short>(level * 0x10 + 0x1bbc + slot));
     POINT* outlinePolygon = bitmap->BuildNonTransparentOutlinePolygon(0xffffffff);
-    (*buildingClipRegionsEC[slot])->rgn.DeleteObject();
+    (*buildingClipRegions[slot])->rgn.DeleteObject();
     HRGN polygonRegion = ::CreatePolygonRgn(outlinePolygon + 1, outlinePolygon[0].x, WINDING);
-    (*buildingClipRegionsEC[slot])->rgn.Attach(polygonRegion);
+    (*buildingClipRegions[slot])->rgn.Attach(polygonRegion);
     delete[] outlinePolygon;
     g_pResourceMgr->ReleaseRecordByHandle(bitmap);
 
     short x = g_anCityBuildingSlotCoords[g_nCityBuildingSlotXOffsetIndex + slot * 2];
     short y = g_anCityBuildingSlotCoords[g_nCityBuildingSlotYOffsetIndex + slot * 2];
-    OffsetRgn(buildingClipRegionsEC[slot], x, y);
+    OffsetRgn(buildingClipRegions[slot], x, y);
   }
 
   TWindow* window = GetWindow();
@@ -124,7 +124,7 @@ void TCityProductionView::DoPostCreate(int arg) {
     for (int action = 0; action < 3; ++action) {
       RECT bounds = g_aCityBuildingLayoutRects[row * 3 + action];
       if (bounds.right < 1) {
-        buildingActionAnimations12C[buildingSlot][action] = 0;
+        buildingActionAnimations[buildingSlot][action] = 0;
         continue;
       }
       OffsetRect(&bounds, 0x32, 0x23);
@@ -134,9 +134,9 @@ void TCityProductionView::DoPostCreate(int arg) {
       animation->ITransFocusAnimation(this, &bounds, resourceId, static_cast<short>(animationId),
                                       (buildingSlot != 7 ? 2 : 0) + 5, 0);
       g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
-      buildingActionAnimations12C[buildingSlot][action] = animation;
+      buildingActionAnimations[buildingSlot][action] = animation;
       InvalidateCityDialogRectRegion(&bounds, 1);
-      needsRefreshAtA6 = true;
+      needsRefresh = true;
     }
   }
 }
@@ -145,7 +145,7 @@ void TCityProductionView::DoPostCreate(int arg) {
 void TCityProductionView::Free() {
   g_pUiAnimator->FreeUiTransientRegistryPayloads();
   for (int i = 0; i < 16; ++i) {
-    buildingClipRegionsEC[i] = DisposeRgn(buildingClipRegionsEC[i]);
+    buildingClipRegions[i] = DisposeRgn(buildingClipRegions[i]);
   }
   g_pAmbitApplication->cursorRegionInvalid = 0;
   TView::Free();
@@ -155,7 +155,7 @@ IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 // FUNCTION: IMPERIALISM 0x004ba7b0
 void TCityProductionView::Draw(RECT* rectBuffer) {
   // Turn-event snapshot mode: blit the cached surface straight through and finish.
-  if (g_pDisplayMgr->clipSnapshotEvent == 0x7db && !this->needsRefreshAtA6) {
+  if (g_pDisplayMgr->clipSnapshotEvent == 0x7db && !this->needsRefresh) {
     RECT snapshot = *rectBuffer;
     BlitRectWithOptionalTransparency(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &snapshot,
@@ -163,7 +163,7 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
     RenderNationHeaderDateLabelWithPeriodicRefresh();
     return;
   }
-  this->needsRefreshAtA6 = false;
+  this->needsRefresh = false;
   TPicture::Draw(rectBuffer);
 #ifdef IMPERIALISM_RUNTIME_TESTS
   RuntimeTestDriver::Pulse();
@@ -198,10 +198,10 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
     bool shouldDraw = level >= 1;
     if (!shouldDraw) {
       if (slot < 0 || slot > 6) {
-        if (slot == 0xb && city->powerPlantUpgradeQueuedFlag04 != 0) {
+        if (slot == 0xb && city->powerPlantUpgradeQueuedFlag != 0) {
           shouldDraw = true;
         }
-      } else if (city->trailingOrderSlots1b0[slot + 2]->quantity > 0) {
+      } else if (city->trailingOrderSlots[slot + 2]->quantity > 0) {
         shouldDraw = true;
       }
     }
@@ -211,9 +211,9 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
 
     short pictureId;
     if (slot == 0xb) {
-      pictureId = static_cast<short>((city->powerPlantUpgradeQueuedFlag04 != 0 ? 0x1b63 : 0x1b73));
+      pictureId = static_cast<short>((city->powerPlantUpgradeQueuedFlag != 0 ? 0x1b63 : 0x1b73));
     } else if (level == 0 || slot < 0 || slot > 5 ||
-               city->trailingOrderSlots1b0[slot + 2]->quantity < 1 ||
+               city->trailingOrderSlots[slot + 2]->quantity < 1 ||
                city->IsCapacityCenter(slot) == 0) {
       pictureId = static_cast<short>(slot + level * 0x10 + 0x1b58);
     } else {
@@ -244,7 +244,7 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
 
   for (int group = 0; group < 8; ++group) {
     for (int phase = 0; phase < 3; ++phase) {
-      TTransFocusAnimation* animation = buildingActionAnimations12C[group][phase];
+      TTransFocusAnimation* animation = buildingActionAnimations[group][phase];
       if (animation != 0) {
         animation->UpdateBackground();
       }
@@ -315,25 +315,25 @@ void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh() {
   short originX = (mask1 & 0xffe9) + 0x213;
   short sVar2 = (mask2 & 0x14) + 0x6b;
 
-  if (currentMonthAtA8 < 0) {
+  if (currentMonth < 0) {
     time_t epochSeconds;
     time(&epochSeconds);
     struct tm* tm = localtime(&epochSeconds);
 
     int iVar4 = tm->tm_min;
     short sVar6 = static_cast<short>(iVar4 / 5);
-    currentWeekAtAA = sVar6;
+    currentWeek = sVar6;
 
     short sVar1 = static_cast<short>(tm->tm_hour);
-    currentMonthAtA8 = sVar1;
+    currentMonth = sVar1;
     if (6 < sVar6) {
-      currentMonthAtA8 = sVar1 + 1;
+      currentMonth = sVar1 + 1;
     }
-    if (11 < currentMonthAtA8) {
-      currentMonthAtA8 -= 12;
+    if (11 < currentMonth) {
+      currentMonth -= 12;
     }
-    if (11 < currentMonthAtA8) {
-      currentMonthAtA8 -= 12;
+    if (11 < currentMonth) {
+      currentMonth -= 12;
     }
   }
 
@@ -341,16 +341,16 @@ void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh() {
   g_pViewMgr->ApplyLegendSplitSlot34(1);
   SetQuickDrawTextOriginWithContextOffset(originX, sVar2);
 
-  short offset_x1 = g_Render_Nation_Header_Value_006961E0[currentMonthAtA8];
-  short offset_y1 = g_Render_Nation_Header_Value_006961F8[currentMonthAtA8];
+  short offset_x1 = g_Render_Nation_Header_Value_006961E0[currentMonth];
+  short offset_y1 = g_Render_Nation_Header_Value_006961F8[currentMonth];
   DrawCenteredGuideLineOnMapDc(static_cast<short>(offset_x1 + originX),
                                static_cast<short>(offset_y1 + sVar2));
 
   SetQuickDrawFillColor(0);
   SetQuickDrawTextOriginWithContextOffset(originX, sVar2);
 
-  short offset_x2 = g_Render_Nation_Header_Value_00696210[currentWeekAtAA];
-  short offset_y2 = g_Render_Nation_Header_Value_00696228[currentWeekAtAA];
+  short offset_x2 = g_Render_Nation_Header_Value_00696210[currentWeek];
+  short offset_y2 = g_Render_Nation_Header_Value_00696228[currentWeek];
   DrawCenteredGuideLineOnMapDc(static_cast<short>(offset_x2 + originX),
                                static_cast<short>(offset_y2 + sVar2));
 }
@@ -376,7 +376,7 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
       break;
     }
     short slot = g_anCityBuildingSlotOrder[slotIndex];
-    if (PtInRgn(&hitPoint, buildingClipRegionsEC[slot]) == 0) {
+    if (PtInRgn(&hitPoint, buildingClipRegions[slot]) == 0) {
       continue;
     }
 
@@ -405,12 +405,12 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
       if (available) {
         if (slot == 0xb) {
           if (nextBuildingType == 0) {
-            g_pSimMgr->GetString(0x2734, city->powerPlantUpgradeQueuedFlag04 != 0 ? 0x19 : 0x1a,
+            g_pSimMgr->GetString(0x2734, city->powerPlantUpgradeQueuedFlag != 0 ? 0x19 : 0x1a,
                                  &templateText);
             scanBracketExpressions(g_pSimMgr, &assembledText, static_cast<LPCSTR>(templateText),
                                    static_cast<LPCSTR>(hoverText));
           } else {
-            firstQuantityText.Format(g_szDecimalFormat, city->trailingOrderSlots1b0[1]->quantity);
+            firstQuantityText.Format(g_szDecimalFormat, city->trailingOrderSlots[1]->quantity);
             g_pSimMgr->GetString(0x2734, 0x18, &qualifierText);
             g_pSimMgr->GetString(0x2734, 0x1d, &templateText);
             scanBracketExpressions(g_pSimMgr, &assembledText, static_cast<LPCSTR>(templateText),
@@ -418,15 +418,14 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
                                    static_cast<LPCSTR>(firstQuantityText));
           }
         } else if (nextBuildingType == 0) {
-          TProductionOrder* order = city->trailingOrderSlots1b0[slot + 2];
+          TProductionOrder* order = city->trailingOrderSlots[slot + 2];
           g_pSimMgr->GetString(0x2734, order->quantity > 0 ? 0x19 : 0x1a, &templateText);
           scanBracketExpressions(g_pSimMgr, &assembledText, static_cast<LPCSTR>(templateText),
                                  static_cast<LPCSTR>(hoverText));
         } else {
-          TProductionOrder* order = city->trailingOrderSlots1b0[slot + 2];
+          TProductionOrder* order = city->trailingOrderSlots[slot + 2];
           short buildingType = static_cast<short>(city->GetBuildingType(slot));
-          firstQuantityText.Format(g_szDecimalFormat,
-                                   buildingType - city->productionAccum1fc[slot]);
+          firstQuantityText.Format(g_szDecimalFormat, buildingType - city->productionAccum[slot]);
           secondQuantityText.Format(g_szDecimalFormat, buildingType);
           g_pSimMgr->GetString(0x2734, 0x18, &qualifierText);
           g_pSimMgr->GetString(0x2734, order->quantity > 0 ? 0x1c : 0x1b, &templateText);
@@ -448,15 +447,15 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
 
     if (available) {
       if (selectedBuildingSlotA4 != slot && selectedBuildingSlotA4 != -1) {
-        InvalidateOffsetRegionUsingChildClipRect(buildingClipRegionsEC[selectedBuildingSlotA4]);
+        InvalidateOffsetRegionUsingChildClipRect(buildingClipRegions[selectedBuildingSlotA4]);
       }
       if (city->GetNextBuildingType(slot) == 0) {
         ScopedMapQuickDrawContext drawContext(this);
         SetGlobalQuickDrawOrigin(static_cast<short>(absoluteX), static_cast<short>(absoluteY));
         GetClip(scopedRegion.tempRgn);
-        SetClip(buildingClipRegionsEC[slot]);
+        SetClip(buildingClipRegions[slot]);
         SetQuickDrawFillColor(0);
-        QDFrameRgn(buildingClipRegionsEC[slot]);
+        QDFrameRgn(buildingClipRegions[slot]);
         SetClip(scopedRegion.tempRgn);
       }
       selectedBuildingSlotA4 = slot;
@@ -468,7 +467,7 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
     g_pCursorControlPanel->SetTextAndLayoutRect(CString(g_pCityBuildingHoverEmptyText_0064faa8),
                                                 &g_cityBuildingHoverFallbackRect_006a2980);
     if (selectedBuildingSlotA4 != -1) {
-      InvalidateOffsetRegionUsingChildClipRect(buildingClipRegionsEC[selectedBuildingSlotA4]);
+      InvalidateOffsetRegionUsingChildClipRect(buildingClipRegions[selectedBuildingSlotA4]);
       selectedBuildingSlotA4 = -1;
     }
   }
@@ -495,7 +494,7 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
     short current;
     short accum;
     if (city->GetBuildingWindowState(slot, &current, &accum)) {
-      buildingViewsAC[slot] =
+      buildingViews[slot] =
           g_pMacViewMgr->RestoreBuildingWindowAtSavedPosition(slot, city, 0, 0, 0, current, accum);
     }
   }
@@ -611,28 +610,28 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
 // FUNCTION: IMPERIALISM 0x004bc0b0
 void TCityProductionView::UpdateUnits() {
   g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
-  TPopulationMgr* population = city94->productionSummary1d8;
+  TPopulationMgr* population = city94->productionSummary;
 
   TPlacard* placard = static_cast<TPlacard*>(ResolveControlByTag(kControlTagUntr)); // 'rtnu'
   if (placard == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x4b9);
   }
-  placard->SetValue(population->baselineSlots10->lowSkillCount04, true);
+  placard->SetValue(population->baselineSlots->lowSkillCount04, true);
 
   placard = static_cast<TPlacard*>(ResolveControlByTag(kSummaryTagTrai)); // 'iart'
   if (placard == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x4bc);
   }
-  placard->SetValue(population->baselineSlots10->mediumSkillCount06, true);
+  placard->SetValue(population->baselineSlots->mediumSkillCount06, true);
 
   placard = static_cast<TPlacard*>(ResolveControlByTag(kSummaryTagProf)); // 'forp'
   if (placard == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x4bf);
   }
-  placard->SetValue(population->baselineSlots10->highSkillCount08, true);
+  placard->SetValue(population->baselineSlots->highSkillCount08, true);
 
   placard = static_cast<TPlacard*>(ResolveControlByTag(kSummaryTagPowe)); // 'ewop'
   if (placard == 0) {
@@ -668,8 +667,8 @@ void TCityProductionView::UpdateUnits() {
 void TCityProductionView::UpdateToolbar() {
   UpdateUnits();
   for (int i = 0; i < 16; ++i) {
-    if (buildingViewsAC[i] != 0) {
-      buildingViewsAC[i]->UpdateFields();
+    if (buildingViews[i] != 0) {
+      buildingViews[i]->UpdateFields();
     }
   }
 
@@ -677,16 +676,16 @@ void TCityProductionView::UpdateToolbar() {
     short buildingSlot = static_cast<short>(group < 7 ? group : 11);
     bool enabled;
     if (buildingSlot == 11) {
-      enabled = city94->powerPlantUpgradeQueuedFlag04 == 0 &&
-                city94->trailingOrderSlots1b0[1]->quantity > 0;
-    } else if (city94->trailingOrderSlots1b0[buildingSlot + 2]->quantity > 0) {
+      enabled =
+          city94->powerPlantUpgradeQueuedFlag == 0 && city94->trailingOrderSlots[1]->quantity > 0;
+    } else if (city94->trailingOrderSlots[buildingSlot + 2]->quantity > 0) {
       enabled = false;
     } else {
-      enabled = city94->productionAccum1fc[buildingSlot] < city94->GetBuildingType(buildingSlot);
+      enabled = city94->productionAccum[buildingSlot] < city94->GetBuildingType(buildingSlot);
     }
     for (int animation = 0; animation < 3; ++animation) {
-      if (buildingActionAnimations12C[group][animation] != 0) {
-        buildingActionAnimations12C[group][animation]->enabledFlag = enabled;
+      if (buildingActionAnimations[group][animation] != 0) {
+        buildingActionAnimations[group][animation]->enabledFlag = enabled;
       }
     }
   }
@@ -703,14 +702,14 @@ void TCityProductionView::DoEvent(int commandId, TEventHandler* sourceHandler, T
 
 #if defined(IMPERIALISM_RUNTIME_TESTS)
 bool TCityProductionView::ActivateBuildingSlotForRuntimeTest(short buildingSlot) {
-  if (buildingSlot < 0 || buildingSlot >= 16 || buildingClipRegionsEC[buildingSlot] == 0) {
+  if (buildingSlot < 0 || buildingSlot >= 16 || buildingClipRegions[buildingSlot] == 0) {
     return false;
   }
 
   CPoint point;
   for (point.y = 0; point.y < 768; ++point.y) {
     for (point.x = 0; point.x < 1024; ++point.x) {
-      if (PtInRgn(&point, buildingClipRegionsEC[buildingSlot]) != 0) {
+      if (PtInRgn(&point, buildingClipRegions[buildingSlot]) != 0) {
         DoMouseCommand(point, 0, CPoint(0, 0));
         return true;
       }
@@ -723,7 +722,7 @@ TBuildingView* TCityProductionView::BuildingViewForRuntimeTest(short buildingSlo
   if (buildingSlot < 0 || buildingSlot >= 16) {
     return 0;
   }
-  return buildingViewsAC[buildingSlot];
+  return buildingViews[buildingSlot];
 }
 
 TTransFocusAnimation*
@@ -733,8 +732,8 @@ TCityProductionView::BuildingActionAnimationForRuntimeTest(short buildingSlot) {
     return 0;
   }
   for (short action = 0; action < 3; ++action) {
-    if (buildingActionAnimations12C[group][action] != 0) {
-      return buildingActionAnimations12C[group][action];
+    if (buildingActionAnimations[group][action] != 0) {
+      return buildingActionAnimations[group][action];
     }
   }
   return 0;
@@ -749,7 +748,7 @@ void TCityProductionView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CP
   CPoint localPoint(point);
   for (int priority = 15; priority >= 0; --priority) {
     short candidate = g_anCityBuildingSlotOrder[priority];
-    if (PtInRgn(&localPoint, buildingClipRegionsEC[candidate])) {
+    if (PtInRgn(&localPoint, buildingClipRegions[candidate])) {
       buildingSlot = candidate;
       break;
     }
@@ -758,14 +757,14 @@ void TCityProductionView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CP
     return;
   }
 
-  if (buildingSlot == 15 && buildingViewsAC[15] == 0) {
+  if (buildingSlot == 15 && buildingViews[15] == 0) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0xbdb, 0, 1);
-    buildingViewsAC[15] = g_pMacViewMgr->OpenBuildingWindow(15, city94, 0, 0, 0);
+    buildingViews[15] = g_pMacViewMgr->OpenBuildingWindow(15, city94, 0, 0, 0);
     UpdateToolbar();
     return;
   }
 
-  if (buildingViewsAC[buildingSlot] == 0) {
+  if (buildingViews[buildingSlot] == 0) {
     if (city94->GetBuildingType(buildingSlot) == 0 && city94->IsCapacityCenter(buildingSlot)) {
       bool available = true;
       if (buildingSlot == 6 || buildingSlot == 11) {
@@ -781,7 +780,7 @@ void TCityProductionView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CP
     } else {
       g_pSfxPlaybackSystem->PlaySoundEffect(
           static_cast<short>(g_cityBuildingSoundCueOffsets[buildingSlot] + 3000), 0, 1);
-      buildingViewsAC[buildingSlot] =
+      buildingViews[buildingSlot] =
           g_pMacViewMgr->OpenBuildingWindow(buildingSlot, city94, 0, 0, 0);
     }
   }
@@ -801,7 +800,7 @@ void TCityProductionView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoin
   CPoint point(currentPoint);
   for (int priority = 15; priority >= 0; --priority) {
     short buildingSlot = g_anCityBuildingSlotOrder[priority];
-    if (PtInRgn(&point, buildingClipRegionsEC[buildingSlot])) {
+    if (PtInRgn(&point, buildingClipRegions[buildingSlot])) {
       HandleEvent(buildingSlot + 10000, this, 0);
       return;
     }
@@ -811,14 +810,14 @@ void TCityProductionView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoin
 // FUNCTION: IMPERIALISM 0x004bc910
 void TCityProductionView::CloseAndSaveWindows() {
   for (short buildingSlot = 0; buildingSlot < 16; ++buildingSlot) {
-    TBuildingView* buildingView = buildingViewsAC[buildingSlot];
+    TBuildingView* buildingView = buildingViews[buildingSlot];
     if (buildingView != 0) {
       TWindow* window = buildingView->GetWindow();
       city94->SetBuildingWindowState(buildingSlot, 1, static_cast<short>(window->ownerLocalX),
                                      static_cast<short>(window->ownerLocalY));
       window->Close();
       window->Free();
-      buildingViewsAC[buildingSlot] = 0;
+      buildingViews[buildingSlot] = 0;
     } else {
       city94->SetBuildingWindowState(buildingSlot, 0, 0, 0);
     }
@@ -851,7 +850,7 @@ void TCityProductionView::SetBuildingPicture(short buildingSlot, short buildingT
   SetGWorld(g_pPrimaryRenderSurfaceContext, contextFlags);
   ClipRect(&clipRect);
 
-  needsRefreshAtA6 = true;
+  needsRefresh = true;
   this->Draw(&boundsRecord);
 
   SetGWorld(previousSurface, contextFlags);
@@ -880,7 +879,7 @@ void TCityProductionView::UpdateFields() {
 
   total = 0;
   for (i = 25; i < 29; ++i) {
-    TProductionOrder* order = static_cast<TProductionOrder*>(city94->orderSlotsE4[i]);
+    TProductionOrder* order = static_cast<TProductionOrder*>(city94->orderSlots[i]);
     if (order == 0) {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x5f2);
@@ -898,7 +897,7 @@ void TCityProductionView::UpdateFields() {
 
   total = 0;
   for (i = 34; i < 39; ++i) {
-    TProductionOrder* order = static_cast<TProductionOrder*>(city94->orderSlotsE4[i]);
+    TProductionOrder* order = static_cast<TProductionOrder*>(city94->orderSlots[i]);
     if (order == 0) {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x600);

@@ -15,16 +15,16 @@ void TNavyAutoPlayer::INavyAutoPlayer(TTaskForce* force, char isOurSide, int nat
 
 // FUNCTION: IMPERIALISM 0x0059f110
 void TNavyAutoPlayer::StartBattle() {
-  // Auto-deploys the whole side: our side deploys from row battlefieldColumnCount34*6
+  // Auto-deploys the whole side: our side deploys from row battlefieldColumnCount*6
   // - 25 downward, the enemy side from tile 41 downward, feeding the battle's current
   // selection into DeployTacticalUnitToTile until the side reports ready.
   int deployTileIndex;
-  if (isOurSideFlagC != 0) {
-    deployTileIndex = battle14->battlefieldColumnCount34 * 6 - 25;
+  if (isOurSideFlag != 0) {
+    deployTileIndex = battle14->battlefieldColumnCount * 6 - 25;
   } else {
     deployTileIndex = 0x29;
   }
-  while (!sideReadyFlag10) {
+  while (!sideReadyFlag) {
     battle14->DeployTacticalUnitToTile(battle14->selectedUnit1c, deployTileIndex);
     --deployTileIndex;
   }
@@ -34,12 +34,12 @@ void TNavyAutoPlayer::StartBattle() {
 void TNavyAutoPlayer::AdvanceTacticalTurnPulse() {
   // Navy AI turn pump (one pulse per selected ship): measures the hex distance from
   // the selected ship to every enemy ship, picks the closest as the target, then the
-  // reachable tile (tileMoveCostArray24 != -1) minimizing distance to it, sails there
+  // reachable tile (tileMoveCostArray != -1) minimizing distance to it, sails there
   // one echoed step at a time, fires if the target ended up within range, and hands
   // the turn back via the 0x232a event.
   TTacticalUnit* unit = battle14->selectedUnit1c;
   TList* enemyList;
-  if (isOurSideFlagC != 0) {
+  if (isOurSideFlag != 0) {
     enemyList = battle14->players[1]->unitList4;
   } else {
     enemyList = battle14->players[0]->unitList4;
@@ -77,8 +77,8 @@ void TNavyAutoPlayer::AdvanceTacticalTurnPulse() {
   // Reachable tile minimizing distance to the target (start: stay put).
   int destinationTileIndex = currentTileIndex;
   int tileIndex;
-  for (tileIndex = 0; tileIndex < battle14->tacticalTileCount3c; ++tileIndex) {
-    if (battle14->tileMoveCostArray24[tileIndex] != -1) {
+  for (tileIndex = 0; tileIndex < battle14->tacticalTileCount; ++tileIndex) {
+    if (battle14->tileMoveCostArray[tileIndex] != -1) {
       int approachDistance = ComputeHexTileDistanceFromIndices(tileIndex, targetTileIndex);
       if (approachDistance < bestApproachDistance) {
         destinationTileIndex = tileIndex;

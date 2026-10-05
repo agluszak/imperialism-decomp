@@ -46,14 +46,14 @@ void TRailCluster::DoPostCreate(int styleSeed) {
   TCity* city = activeNationState == 0 ? 0 : activeNationState->GetCityState();
 
   unsigned int summaryTag = (unsigned int)this->controlTag;
-  TPopulationMgr* population = city->productionSummary1d8;
+  TPopulationMgr* population = city->productionSummary;
   if (summaryTag < kControlTagPopv) {
     if (summaryTag == kSummaryTagPopu) {
       recordIndex = 0x3c;
       this->selectedMetricStep = 1;
       this->selectedMetricValue = static_cast<short>(city->GetBuildingType(0x0f));
     } else if (summaryTag == kSummaryTagFood) {
-      TLaborPool* labor = population->productionSlots14;
+      TLaborPool* labor = population->productionSlots;
       recordIndex = 7;
       this->selectedMetricStep = 2;
       this->selectedMetricValue =
@@ -65,14 +65,14 @@ void TRailCluster::DoPostCreate(int styleSeed) {
     if (summaryTag == kSummaryTagProf) {
       recordIndex = 0x18;
       this->selectedMetricStep = 1;
-      this->selectedMetricValue = population->baselineSlots10->mediumSkillCount06;
+      this->selectedMetricValue = population->baselineSlots->mediumSkillCount06;
     } else if (summaryTag == kSummaryTagPowe) {
       recordIndex = 0x34;
       this->selectedMetricStep = 6;
       this->selectedMetricValue = 999;
     }
   } else if (summaryTag == kSummaryTagRail) {
-    TLaborPool* labor = population->productionSlots14;
+    TLaborPool* labor = population->productionSlots;
     recordIndex = 0x33;
     this->selectedMetricStep = 1;
     this->selectedMetricValue =
@@ -82,10 +82,10 @@ void TRailCluster::DoPostCreate(int styleSeed) {
   } else if (summaryTag == kSummaryTagTrai) {
     recordIndex = 0x17;
     this->selectedMetricStep = 1;
-    this->selectedMetricValue = population->baselineSlots10->lowSkillCount04;
+    this->selectedMetricValue = population->baselineSlots->lowSkillCount04;
   }
 
-  this->selectedMetricOrder = city->orderSlotsE4[recordIndex];
+  this->selectedMetricOrder = city->orderSlots[recordIndex];
   TAmtBarCluster::DoPostCreate(styleSeed);
   this->SetMoveAmount(this->selectedMetricOrder->quantity, 1);
 }
@@ -131,7 +131,7 @@ void TRailCluster::SetMoveAmount(short dragValue, unsigned char updateFlag) {
   float barScale = 9999.0f;
   if (barControl->auxValueA != 0) {
     barScale =
-        static_cast<float>(barControl->frameWidth34) / static_cast<float>(barControl->auxValueA);
+        static_cast<float>(barControl->frameWidth) / static_cast<float>(barControl->auxValueA);
   }
 
   if (selectedOrder->quantity == selectedMetricValue) {
@@ -147,7 +147,7 @@ void TRailCluster::SetMoveAmount(short dragValue, unsigned char updateFlag) {
 
   CPoint moveControlPosition;
   moveControlPosition.x = barControl->ownerLocalX + static_cast<short>(scaledMoveAmount) - 2;
-  moveControlPosition.y = barControl->ownerLocalY + barControl->frameHeight38;
+  moveControlPosition.y = barControl->ownerLocalY + barControl->frameHeight;
   moveControl->Locate(moveControlPosition, 1);
   moveControl->QueryBounds(&moveBoundsRect);
   OffsetRect(&moveBoundsRect, this->ownerLocalX, this->ownerLocalY);
@@ -166,7 +166,7 @@ void TRailCluster::UpdateMax() {
 
   if (barControl->auxValueA != 0) {
     barControl->RenderQuickDrawOverlayWithHitRegion(static_cast<short>(
-        (selectedMetricOrder->MaxOrder() * barControl->frameWidth34) / barControl->auxValueA));
+        (selectedMetricOrder->MaxOrder() * barControl->frameWidth) / barControl->auxValueA));
   }
 }
 

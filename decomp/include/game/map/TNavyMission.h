@@ -12,11 +12,11 @@ class TShip;
 class TNavyMission : public TMission {
   DECLARE_SERIAL(TNavyMission)
 public:
-  TZone* missionTargetZone;            // +0x14
-  TZone* resolvedPortZone;             // +0x18
-  TShip* selectedOrder1c;              // +0x1c selected primary navy-order node
-  TTaskForce* taskForce20;             // +0x20 combined task-force/map-order entry
-  TMapOrderChildLinkNode* orderList24; // +0x24 -- head of child order-node chain
+  TZone* missionTargetZone;          // +0x14
+  TZone* resolvedPortZone;           // +0x18
+  TShip* selectedOrder1c;            // +0x1c selected primary navy-order node
+  TTaskForce* taskForce20;           // +0x20 combined task-force/map-order entry
+  TMapOrderChildLinkNode* orderList; // +0x24 -- head of child order-node chain
 
   // Returns the child ship with the highest TShip::ComputeValueForMission score for
   // `missionType`, or null when the order list is empty. Scores start from -1, so any
@@ -39,7 +39,7 @@ public:
     resolvedPortZone = nullptr;
     selectedOrder1c = nullptr;
     taskForce20 = nullptr;
-    orderList24 = nullptr;
+    orderList = nullptr;
     navyState28 = 0;
     for (int i = 0; i < 4; ++i) {
       requiredShipEquipageByCategory[i] = 0.0f;
@@ -54,7 +54,7 @@ public:
   virtual void WriteTo(TStream* stream) override;  // slot 0x05
   virtual void ReadFrom(TStream* stream) override; // slot 0x06
   virtual void
-  Free() override; // slot 0x1c (TObject) 0x5364c0 -- releases orderList24 and deletes self
+  Free() override; // slot 0x1c (TObject) 0x5364c0 -- releases orderList and deletes self
 
   virtual bool IsANoBrainer() const override; // slot 0x28 0x535500
   virtual int AccumulateLack(int* accumulatedLack, unsigned char includeExistingLack)
@@ -119,7 +119,7 @@ public:
   // Same shape as ComputeOrderDistributionSimilarityScoreForZone but scores against
   // g_Populate_Beachhead_Mission_LookupTable_00697958[0..3]. 0x538dd0.
   float ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfile(TZone* nodeContext);
-  // Builds a 4-category priority vector from every existing orderList24 ship plus
+  // Builds a 4-category priority vector from every existing orderList ship plus
   // `candidateOrder` (each contribution weighted by a per-ship distance-decay factor,
   // see g_MissionOrderDistanceDecayWeightTable_006978c8), then scores it against
   // requiredShipEquipageByCategory via a Bhattacharyya-coefficient-style similarity:
@@ -141,7 +141,7 @@ public:
   // ship's nation can equal an out-of-range code); modeled exactly as observed
   // rather than "corrected", per Hard Rule 6. 0x53b350.
   float ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies(TZone* portZone);
-  // Builds a per-category priority vector over every orderList24 ship: a ship counts if
+  // Builds a per-category priority vector over every orderList ship: a ship counts if
   // it's within `distanceThreshold` hops of `nearZone` (or unconditionally if `nearZone`
   // is null), OR (when farther than that) if it's within `distanceThreshold` hops of
   // `farZone` instead (when farZone is non-null and != nearZone).

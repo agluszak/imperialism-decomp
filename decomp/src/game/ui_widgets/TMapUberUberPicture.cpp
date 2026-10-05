@@ -24,14 +24,14 @@ IMPLEMENT_DYNCREATE(TMapUberUberPicture, TOffLimitsPicture)
 // FUNCTION: IMPERIALISM 0x00596810
 void TMapUberUberPicture::DoPostCreate(int arg) {
   TOffLimitsPicture::DoPostCreate(arg);
-  g_pAmbitApplication->edgeScrollTarget48 = this;
+  g_pAmbitApplication->edgeScrollTarget = this;
 }
 
 // Detach from the app root's edge-scroll/active-content backrefs before the shared
 // clip-region teardown in TOffLimitsPicture::Free (0x596840 tail-jumps to 0x573900).
 // FUNCTION: IMPERIALISM 0x00596840
 void TMapUberUberPicture::Free() {
-  g_pAmbitApplication->edgeScrollTarget48 = 0;
+  g_pAmbitApplication->edgeScrollTarget = 0;
   g_pAmbitApplication->cursorRegionInvalid = FALSE;
   TOffLimitsPicture::Free();
 }
