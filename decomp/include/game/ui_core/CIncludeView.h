@@ -128,8 +128,8 @@ protected:
   // WM_LBUTTONDBLCLK: let MFC default-route the message only while UI input is enabled.
   afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point); // 0x00483b70
   // Private frame commands used to refresh the wait cursor and force an immediate repaint.
-  afx_msg void OnRefreshWaitCursorCommand(); // 0x00483d60, command 0x8011
-  afx_msg void OnUpdateWindowCommand();      // 0x00483d90, command 0x8012
+  afx_msg void OnDumpViewHierarchy(); // 0x00483d60
+  afx_msg void OnRefresh();      // 0x00483d90
   // WM_SETCURSOR is deliberately left to the MFC default dispatcher.
   afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message); // 0x00483ef0
   // WM_RBUTTONDOWN/UP use the same hosted-tree dispatch as the left button. The down

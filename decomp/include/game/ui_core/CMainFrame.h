@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/menu_commands.h"
 #include "compat.h"
 
 #include "game/gfx/CDib.h"
@@ -39,24 +40,24 @@ public:
   afx_msg LRESULT OnMsg0464(WPARAM wParam, LPARAM lParam); // 0x00484fb0
   afx_msg void OnPaletteChanged(CWnd* pFocusWnd);
   // ON_WM_QUERYNEWPALETTE (0x30F): realize the cached palette into the active view DC
-  // (also called directly from OnCommand8009 and palette replacement).
+  // (also called directly from OnResetPalette and palette replacement).
   afx_msg BOOL OnQueryNewPalette();                    // 0x00484ff0
   CDibPal* ReplacePaletteAndRealize(CDibPal* palette); // 0x00485150
   // Message 0x2420 (posted by TApplication::PostTurnEventCodeMessage): dispatch the
   // carried turn-event code into the UI runtime with the active nation as payload.
   afx_msg LRESULT OnTurnEventCodeMessage(WPARAM wParam, LPARAM lParam);
-  afx_msg void OnCommand8009();
-  afx_msg void OnCommand800C();
-  afx_msg void OnCommand8013();                                           // 0x004855b0
+  afx_msg void OnResetPalette();
+  afx_msg void OnWarpToScreen();
+  afx_msg void OnConductDiplomacy();                                           // 0x004855b0
   afx_msg void OnPaint();                                                 // 0x00485bd0
   afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);             // 0x00485c00
   afx_msg void OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized); // 0x00485c60
   // ON_WM_ACTIVATEAPP: when the app loses activation and isn't already minimized, park
   // the (fullscreen) frame off-screen minimized. 0x00485c90.
   afx_msg void OnActivateApp(BOOL bActive, DWORD dwThreadID);
-  // ON_COMMAND(0x800D): forward through the UI runtime context's slot 0x19 (byte 0x64).
+  // ON_COMMAND(kCmdShowDealBook): forward through the UI runtime context's slot 0x19 (byte 0x64).
   // 0x00485590.
-  afx_msg void OnCommand800D();
+  afx_msg void OnShowDealBook();
   // ON_WM_ERASEBKGND: when m_backgroundColor is the tiled-backdrop sentinel, lazily load the
   // backdrop CDib and tile it 128x128 across the client area; otherwise realize the
   // default palette and solid-fill with m_backgroundColor. 0x004859d0.

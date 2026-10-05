@@ -1,3 +1,4 @@
+#include "game/menu_commands.h"
 #include "game/ImperialismApp.h"
 
 #ifdef IMPERIALISM_RUNTIME_TESTS
@@ -185,21 +186,21 @@ CIncludeView* GetMainViewHostFromActiveThread() {
 // macros below.
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(ImperialismApp, CWinApp)
-ON_COMMAND(0x8014, OnDeveloperCommand8014)
-ON_COMMAND(0x8015, OnSelectActiveNation)
-ON_COMMAND(0x8016, OnApplyTurnCooldownOverride)
-ON_COMMAND(0x8017, OnAdjustNationResourcesAndPopulation)
-ON_COMMAND(0x8018, OnPreviewDibResource)
-ON_COMMAND(0x8019, OnRunAmbitDeveloperAssert)
-ON_UPDATE_COMMAND_UI(0x8019, OnUpdateAmbitDeveloperAssert)
-ON_COMMAND(0x801d, OnDeveloperCommand801D)
-ON_COMMAND(0x801e, OnDeveloperCommand801E)
-ON_UPDATE_COMMAND_UI(0x801e, OnUpdateDeveloperCommand801E)
-ON_COMMAND(0x801f, OnDeveloperCommand801F)
-ON_UPDATE_COMMAND_UI(0x801f, OnUpdateDeveloperCommand801F)
-ON_COMMAND(0x8020, OnDeveloperCommand8020)
-ON_COMMAND(0xe100, CWinApp::OnFileNew)
-ON_COMMAND(0xe101, CWinApp::OnFileOpen)
+ON_COMMAND(kCmdTestSomething, OnTestSomething)
+ON_COMMAND(kCmdSwitchGreatPower, OnSwitchGreatPower)
+ON_COMMAND(kCmdRunOffTurns, OnRunOffTurns)
+ON_COMMAND(kCmdBequeathGoodies, OnBequeathGoodies)
+ON_COMMAND(kCmdPeekAtDib, OnPeekAtDib)
+ON_COMMAND(kCmdHuman, OnHuman)
+ON_UPDATE_COMMAND_UI(kCmdHuman, OnUpdateHuman)
+ON_COMMAND(kCmdMissionSnooper, OnMissionSnooper)
+ON_COMMAND(kCmdSlowMemoryChecking, OnSlowMemoryChecking)
+ON_UPDATE_COMMAND_UI(kCmdSlowMemoryChecking, OnUpdateSlowMemoryChecking)
+ON_COMMAND(kCmdTraceEnabled, OnTraceEnabled)
+ON_UPDATE_COMMAND_UI(kCmdTraceEnabled, OnUpdateTraceEnabled)
+ON_COMMAND(kCmdPeekAtGWorld, OnPeekAtGWorld)
+ON_COMMAND(ID_FILE_NEW, CWinApp::OnFileNew)
+ON_COMMAND(ID_FILE_OPEN, CWinApp::OnFileOpen)
 END_MESSAGE_MAP()
 #endif
 
@@ -413,7 +414,7 @@ BOOL ImperialismApp::PreTranslateMessage(MSG* pMsg) {
 // The retail handler tail-calls the resource manager's empty cache hook. The hook itself
 // deliberately does nothing, but retaining the call preserves the original command path.
 // FUNCTION: IMPERIALISM 0x00413d00
-void ImperialismApp::OnDeveloperCommand8014() {
+void ImperialismApp::OnTestSomething() {
   g_pResourceMgr->NoOpRetailCacheHook();
 }
 
@@ -421,7 +422,7 @@ void ImperialismApp::OnDeveloperCommand8014() {
 // state when the simulation is in setup mode, then redispatch the currently displayed turn
 // event for the newly selected nation.
 // FUNCTION: IMPERIALISM 0x00413d20
-void ImperialismApp::OnSelectActiveNation() {
+void ImperialismApp::OnSwitchGreatPower() {
   TDBTemplateDialog dialog(0);
   dialog.PrepareAndCreateModalFromTemplate();
   dialog.slider.SetRange(0, 6, FALSE);
@@ -441,7 +442,7 @@ void ImperialismApp::OnSelectActiveNation() {
 // Preserve the turn-flow cooldown across the modal edit, copy the current simulation mode
 // into the side flag, and ask the main frame to advance command 100 asynchronously.
 // FUNCTION: IMPERIALISM 0x00413f60
-void ImperialismApp::OnApplyTurnCooldownOverride() {
+void ImperialismApp::OnRunOffTurns() {
   TDCTemplateDialog dialog(0);
   dialog.PrepareAndCreateModalFromTemplate();
   short savedCooldown = g_nTurnCooldownDeferCounter006A43C4;
@@ -457,7 +458,7 @@ void ImperialismApp::OnApplyTurnCooldownOverride() {
 // added to every commodity stock and the other is passed as a negative population removal,
 // which is the original UI's way of adding population in each skill band.
 // FUNCTION: IMPERIALISM 0x004140f0
-void ImperialismApp::OnAdjustNationResourcesAndPopulation() {
+void ImperialismApp::OnBequeathGoodies() {
   TDETemplateDialog dialog(0);
   dialog.PrepareAndCreateModalFromTemplate();
   dialog.slider.SetRange(0, 6, FALSE);
@@ -483,7 +484,7 @@ void ImperialismApp::OnAdjustNationResourcesAndPopulation() {
 // in the DF developer dialog. The preview options map directly to the DD dialog's outline,
 // fill and rendering controls.
 // FUNCTION: IMPERIALISM 0x004143b0
-void ImperialismApp::OnPreviewDibResource() {
+void ImperialismApp::OnPeekAtDib() {
   TDFTemplateDialog inputDialog(0);
   if (inputDialog.DoModal() != IDOK) {
     return;
@@ -540,14 +541,14 @@ BOOL ImperialismApp::OnIdle(LONG lCount) {
 // writer in the image, and the paired update handler keeps the command disabled in normal
 // menus; preserving both behaviors makes the dormant command safe and structurally honest.
 // FUNCTION: IMPERIALISM 0x00414640
-void ImperialismApp::OnRunAmbitDeveloperAssert() {
+void ImperialismApp::OnHuman() {
   if (g_pAmbitDeveloperAssertProbe_006A1358 == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Ambit.cpp", 0x3b6);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00414670
-void ImperialismApp::OnUpdateAmbitDeveloperAssert(CCmdUI* commandUi) {
+void ImperialismApp::OnUpdateHuman(CCmdUI* commandUi) {
   commandUi->Enable(FALSE);
 }
 
@@ -557,23 +558,23 @@ bool QueryDriveTypeByDriveIndex(char driveIndex);
 // 0x801e/0x801f/0x8020 are empty in retail: the developer features behind them were
 // compiled out, leaving only the message-map wiring.
 // FUNCTION: IMPERIALISM 0x004147b0
-void ImperialismApp::OnDeveloperCommand801E() {}
+void ImperialismApp::OnSlowMemoryChecking() {}
 
 // FUNCTION: IMPERIALISM 0x004147d0
-void ImperialismApp::OnUpdateDeveloperCommand801E(CCmdUI* commandUi) {
+void ImperialismApp::OnUpdateSlowMemoryChecking(CCmdUI* commandUi) {
   (void)commandUi;
 }
 
 // FUNCTION: IMPERIALISM 0x004147f0
-void ImperialismApp::OnDeveloperCommand801F() {}
+void ImperialismApp::OnTraceEnabled() {}
 
 // FUNCTION: IMPERIALISM 0x00414810
-void ImperialismApp::OnUpdateDeveloperCommand801F(CCmdUI* commandUi) {
+void ImperialismApp::OnUpdateTraceEnabled(CCmdUI* commandUi) {
   (void)commandUi;
 }
 
 // FUNCTION: IMPERIALISM 0x00414830
-void ImperialismApp::OnDeveloperCommand8020() {}
+void ImperialismApp::OnPeekAtGWorld() {}
 
 // Returns the on-disk data directory prefix. Used by TLanguageMgr's table loaders (real
 // caller: TLanguageMgr::ReadPrepLUT, 0x00507e50).
@@ -858,7 +859,7 @@ BOOL WarnLowDiskSpaceAndConfirmContinue() {
 }
 
 // FUNCTION: IMPERIALISM 0x005de830
-void ImperialismApp::OnDeveloperCommand801D() {
+void ImperialismApp::OnMissionSnooper() {
   TWindow* window =
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(static_cast<TurnEventId>(0x3a99));
   if (window == nullptr) {

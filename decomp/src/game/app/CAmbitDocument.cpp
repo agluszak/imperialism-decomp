@@ -1,3 +1,4 @@
+#include "game/menu_commands.h"
 #include "game/app/CAmbitDocument.h"
 
 #include "game/ArchiveStreamAdapter.h"
@@ -12,7 +13,7 @@
 // macros below.
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(CAmbitDocument, CDocument)
-ON_COMMAND(0x8003, OnCommand8003)
+ON_COMMAND(kCmdStartNextPhase, OnStartNextPhase)
 END_MESSAGE_MAP()
 #endif
 
@@ -69,7 +70,7 @@ void CAmbitDocument::Serialize(CArchive& ar) {
 }
 
 // FUNCTION: IMPERIALISM 0x00479940
-void CAmbitDocument::OnCommand8003() {
+void CAmbitDocument::OnStartNextPhase() {
   g_pImperialismApp->HandleStartupCommand100();
 }
 

@@ -1,3 +1,4 @@
+#include "game/menu_commands.h"
 #include "game/ui_core/CMainFrame.h"
 
 #include "game/pointer_representation.h"
@@ -21,7 +22,7 @@
 
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 
-// Entry order follows the original map at 0x648648. ON_COMMAND(0x8013) dispatches to the
+// Entry order follows the original map at 0x648648. ON_COMMAND(kCmdConductDiplomacy) dispatches to the
 // recovered 0x4855b0 terrain-overlay dialog builder owned by TC2TemplateDialog.cpp.
 //
 // clang-cl's lint build rejects the MFC message-map macros' unqualified `&OnPaint`-style
@@ -36,10 +37,10 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 ON_WM_QUERYNEWPALETTE()
 ON_WM_PALETTECHANGED()
 ON_WM_CREATE()
-ON_COMMAND(0x8009, OnCommand8009)
-ON_COMMAND(0x800C, OnCommand800C)
-ON_COMMAND(0x800D, OnCommand800D)
-ON_COMMAND(0x8013, OnCommand8013)
+ON_COMMAND(kCmdResetPalette, OnResetPalette)
+ON_COMMAND(kCmdWarpToScreen, OnWarpToScreen)
+ON_COMMAND(kCmdShowDealBook, OnShowDealBook)
+ON_COMMAND(kCmdConductDiplomacy, OnConductDiplomacy)
 ON_WM_PAINT()
 ON_WM_CHAR()
 ON_WM_ACTIVATE()
@@ -178,13 +179,13 @@ CDibPal* CMainFrame::ReplacePaletteAndRealize(CDibPal* palette) {
 }
 
 // FUNCTION: IMPERIALISM 0x00485180
-void CMainFrame::OnCommand8009() {
+void CMainFrame::OnResetPalette() {
   field_BC = g_pResourceMgr->EnsureDefaultDibPalette();
   OnQueryNewPalette();
 }
 
 // FUNCTION: IMPERIALISM 0x004851b0
-void CMainFrame::OnCommand800C() {
+void CMainFrame::OnWarpToScreen() {
   TC2TemplateDialog dialog(0);
   dialog.PrepareAndCreateModalFromTemplate();
 
@@ -227,12 +228,12 @@ void CMainFrame::OnCommand800C() {
 }
 
 // FUNCTION: IMPERIALISM 0x00485590
-void CMainFrame::OnCommand800D() {
+void CMainFrame::OnShowDealBook() {
   g_pViewMgr->ShowDealBookScreen(0);
 }
 
 // FUNCTION: IMPERIALISM 0x004855b0
-void CMainFrame::OnCommand8013() {
+void CMainFrame::OnConductDiplomacy() {
   while (true) {
     TD2TemplateDialog dialog(0);
     dialog.PrepareAndCreateModalFromTemplate();

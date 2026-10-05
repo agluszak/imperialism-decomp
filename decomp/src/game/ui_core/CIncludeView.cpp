@@ -1,3 +1,4 @@
+#include "game/menu_commands.h"
 #include "game/ui_core/CIncludeView.h"
 #include "game/ui_tags_common.h"
 
@@ -128,8 +129,8 @@ ON_WM_LBUTTONDOWN()
 ON_WM_LBUTTONUP()
 ON_WM_MOUSEMOVE()
 ON_WM_LBUTTONDBLCLK()
-ON_COMMAND(0x8011, OnRefreshWaitCursorCommand)
-ON_COMMAND(0x8012, OnUpdateWindowCommand)
+ON_COMMAND(kCmdDumpViewHierarchy, OnDumpViewHierarchy)
+ON_COMMAND(kCmdRefresh, OnRefresh)
 ON_WM_SETCURSOR()
 ON_WM_RBUTTONDOWN()
 ON_WM_RBUTTONUP()
@@ -620,14 +621,13 @@ CIncludeViewOverlayRectQueue::UpdateNextRecordProcessedFlagFromCursor(int matchF
 // Command 0x8011 momentarily enters and leaves MFC's wait-cursor state. This forces the
 // application cursor to refresh without retaining a busy-cursor nesting level.
 // FUNCTION: IMPERIALISM 0x00483d60
-void CIncludeView::OnRefreshWaitCursorCommand() {
+void CIncludeView::OnDumpViewHierarchy() {
   AfxGetApp()->BeginWaitCursor();
   AfxGetApp()->EndWaitCursor();
 }
 
-// Command 0x8012 synchronously flushes this host view's pending paint.
 // FUNCTION: IMPERIALISM 0x00483d90
-void CIncludeView::OnUpdateWindowCommand() {
+void CIncludeView::OnRefresh() {
   UpdateWindow();
 }
 
