@@ -82,7 +82,6 @@ public:
   void QueueVerbalMessage(TurnEventQueuePacket* packet);
   bool IsTimelyMessage(NetMessage* packet);
   void AppendNodeToTurnEventLinkedListAt6C(TurnEventQueuePacket* node);
-  // 0x5430c0 — enable both diplomacy queue-processing flags and set the routing context.
   void InstallCohandler(TEventHandler* nContext, bool fEnable);
   void DispatchTurnEventCode9WithTwoTextTokens(int reasonCode, int field1CValue,
                                                const char* senderText, const char* messageText);
@@ -131,7 +130,7 @@ public:
   unsigned char
   InitializeRuntimeSelectionCredentialsFromProviderAndConnect(TView* provider); // 0x545110
   unsigned char ResetSessionAndShowMainMenu(); // 0x545290
-  unsigned char AssignStringAtB4FromB0AndResetState40(); // 0x545480
+  unsigned char Host(); // 0x545480
   unsigned char ApplyJoinGameSelectionAndShowNetworkGameOptions(int selectionTag); // 0x545320
   void ResetDiplomacyRuntimeSelectionAndSetModeNada(); // 0x544630
   unsigned char InitializeProtocolOptionControlFromProvider(TView* provider); // 0x544e70
@@ -155,7 +154,6 @@ public:
   void EnsureGameFlowStateAndShowMultiplayerSetup();
 
   bool IsEverybodyConnected() const; // 0x00543100
-  // Mac oracle. Stores both phases and marks every populated major-nation slot pending.
   void SetSyncPhases(eGamePhaseNewStyle completedPhase, eGamePhaseNewStyle nextPhase); // 0x543120
 
   void HandleDiplomacyTurnEventPacketByCode();

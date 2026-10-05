@@ -6,7 +6,6 @@
 #include "game/ui_tags_common.h"
 #include "game/mfc.h"
 
-// Forward declarations for types referenced by generated signatures.
 class TStream;
 class TTacticalUnit;
 

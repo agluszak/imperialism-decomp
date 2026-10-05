@@ -21,7 +21,6 @@ public:
   int layoutHeight; // 0x0c
 
   TLineData();
-  // 0x56f420 — set the row/col shorts and the two bound dwords from a caller pair array.
   void ILineData(short rowArg, short colArg, int* bounds);
 };
 

@@ -26,12 +26,10 @@
 UINT WaveOpenFile(char* pszFileName, HMMIO* phmmio, WAVEFORMATEX** ppwfx, MMCKINFO* pckInRIFF,
                   MMIOINFO* pmmioInfo);
 
-// 0x005e09a0 — seek to the RIFF payload and descend into its 'data' chunk.
 UINT WaveStartDataRead(HMMIO* phmmioIn, MMCKINFO* pckIn, MMCKINFO* pckInRIFF);
 
 UINT WaveReadFile(HMMIO hmmio, UINT cbRead, HPSTR pbDest, MMCKINFO* pckIn, UINT* pcbActualRead);
 
-// 0x005e0b00 — release the format block and close the input file.
 UINT WaveCloseReadFile(HMMIO* phmmio, WAVEFORMATEX** ppwfx);
 
 UINT WaveLoadFile(char* pszFileName, DWORD* pcbSize, DWORD* pcSamples, WAVEFORMATEX** ppwfx,
@@ -40,7 +38,6 @@ UINT WaveLoadFile(char* pszFileName, DWORD* pcbSize, DWORD* pcSamples, WAVEFORMA
 UINT WaveCreateFile(char* pszFileName, HMMIO* phmmioOut, WAVEFORMATEX* pwfxDest, MMCKINFO* pckOut,
                     MMCKINFO* pckOutRIFF);
 
-// 0x005e0cc0 — create an empty 'data' chunk and acquire its write-buffer state.
 UINT WaveStartDataWrite(HMMIO* phmmioOut, MMCKINFO* pckOut, MMIOINFO* pmmioinfoOut);
 
 UINT WaveWriteFile(HMMIO hmmioOut, UINT cbWrite, BYTE* pbSrc, MMCKINFO* pck, UINT* pcbWritten,

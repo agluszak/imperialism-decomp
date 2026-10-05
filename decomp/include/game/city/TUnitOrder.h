@@ -3,7 +3,6 @@
 #include "game/city/TProductionOrder.h"
 #include "game/mfc.h"
 
-// Forward declarations for types referenced by generated signatures.
 class TStream;
 class TCity;
 

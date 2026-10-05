@@ -32,7 +32,6 @@ public:
   bool activeFlag;      // 0x4f
 
   TTown();
-  // Mac oracle: ITown(const char*, short, unsigned char, short).
   void ITown(const char* markerName, short tileIndex, bool enabledFlag, short ownerNation);
   int IsUnblockedPort(void) const; // 0x5b7830: Mac name; full-EAX 0/1 return
 

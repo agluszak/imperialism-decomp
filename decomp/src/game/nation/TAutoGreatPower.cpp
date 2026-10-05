@@ -730,8 +730,7 @@ void TAutoGreatPower::CreateMission(eMissionType missionType, int mapNodeIndex, 
   TMission* missionObj = TMission::CreateMission(this->nationSlot, missionKind, mapNodeIndex,
                                                  zoneContext, relatedMapNodeIndex);
   if (missionObj == 0) {
-    GAME_FAIL_NIL_POINTER();
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCountryAuto.cpp", 0x5ed);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCountryAuto.cpp", 0x5ed);
   }
 
   TSortedList* missionQueue = this->missionQueue;

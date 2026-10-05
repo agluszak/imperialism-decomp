@@ -10,7 +10,6 @@ IMPLEMENT_DYNCREATE(TToggleButton, TPicture)
 // FUNCTION: IMPERIALISM 0x005710f0
 TToggleButton::TToggleButton() : TPicture() {}
 
-// Destructors are compiler-generated (implicit) from real inheritance.
 
 // FUNCTION: IMPERIALISM 0x00571150
 TToggleButton::~TToggleButton() {}

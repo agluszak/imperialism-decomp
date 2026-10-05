@@ -21,7 +21,6 @@ public:
 
   DECLARE_DYNCREATE(TFileStream)
   TFileStream();
-  // Destructors are compiler-generated (implicit virtual dtor from TStream).
 
   void SetBackingArchive(ArchiveStreamAdapter* backingArchive);
 

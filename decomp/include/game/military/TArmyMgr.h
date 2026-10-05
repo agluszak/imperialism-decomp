@@ -8,7 +8,6 @@
 #include "game/map_order_battle_snapshot.h"
 #include "game/mfc.h"
 
-// Forward declarations for types referenced by generated signatures.
 class TStream;
 class TSortedList;
 class TArmyStack;
@@ -133,7 +132,6 @@ public:
 
   // Selects a province (-1 clears), resetting its units' order modes. 0x004a45e0.
   void SetSelectedProvince(short cityRecordIndex);
-  // 0x004a46d0.
   void ClearProvinceSelectionHighlightsForNation(short nationId);
   short FindNextSelectableProvinceForNation(short nationId);
 
@@ -144,15 +142,11 @@ public:
 
   // Civilian counterpart of ComputeMapCursorStateIndex. 0x004a4c80.
   int ComputeCivilianMapCursorStateIndex(short tileIndex, short mode);
-  // 0x004a5080.
   bool ValidateOrderPlacementPrerequisitesForSelectedTile(short cityRecordIndex);
-  // Mac oracle. Builds the directional order overlay. 0x004a5760.
   void MarchSelectedArmies(short tileIndex);
-  // 0x004a5b10.
   void CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourStack,
                                                         TArmyStack* enemyStack,
                                                         int ownerNationCodeInt);
-  // Mac oracle: ShowSpyReport(long).
   void ShowSpyReport(int cityRecordIndex);
 
   bool GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummary,
@@ -163,20 +157,16 @@ public:
 
   bool HasBattlesToReport() const; // Mac oracle; 0x4a6dd0
 
-  // Mac oracle. Frees every battle record and clears battlesToReport. 0x004a6df0.
   void CleanUpStacks();
 
   void EndTacticalBattle(TArmyStack* ourStack, TArmyStack* enemyStack,
                                                     unsigned char sideWonFlag, int battleSiteIndex);
 
-  // Mac oracle. ABI: RET 8; the body ignores unusedArg2. 0x4a6e80.
   void AddBattleRecord(struct MapOrderBattleSnapshot* record, int unusedArg2);
   void IArmyMgr();
 
-  // Mac oracle; the developer cheat flag reports every battle. 0x4a6d40.
   bool HasBattlesInvolvingGP(short activeNationId) const;
 
-  // Mac oracle. ABI: thiscall on the singleton; the body ignores `this`. 0x004a7370.
   void ReassessLanding(int nationSlot, int zone);
 
   TArmyMgr();

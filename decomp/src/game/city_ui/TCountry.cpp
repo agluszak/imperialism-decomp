@@ -197,7 +197,6 @@ void TCountry::WriteTo(TStream* stream) {
   stream->WriteBytes(&this->treasuryValue10, 4);
   stream->WriteBytes(&this->homeTileIndex, 4);
   stream->WriteBytes(&this->overlayAnchorTileCache8c, 4);
-  // 0x4d6f24 reads the high byte before the low one -- the Rev swap shape.
   WriteShortArrayElemsRev(stream, this->needLevelByNation, 0x17);
 
   WriteTrackedListToStream(stream, this->militaryUnitList44);
@@ -348,7 +347,7 @@ void TCountry::AssignSharedStringFromDescriptorNameOrDefault(CString* out) {
     CString defaultName(g_pszDescriptorDefaultName_00653300);
     *out = defaultName;
   } else {
-    *out = g_pSimMgr->AssignSharedStringFromIndexedSlot7C(this->nationSlot);
+    *out = g_pSimMgr->GetSharedText(this->nationSlot);
   }
 }
 

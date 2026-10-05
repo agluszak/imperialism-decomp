@@ -343,8 +343,7 @@ void DispatchUiRuntimeMessage102CAndRefreshActiveView() {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFlagButton));
   if (node == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf6c);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xf6c);
   }
   CPoint placement;
   g_pViewMgr->GetTopLeftFor(node, &placement);
@@ -360,8 +359,7 @@ void PoseGamePreferencesDialogModally() {
       static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           kTurnEventGamePreferences, 0));
   if (node == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf90);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xf90);
   }
   node->SetModality(true);
   node->PoseModally();

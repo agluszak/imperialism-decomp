@@ -56,7 +56,6 @@ BOOL T64TemplateDialog::OnInitDialog() {
 TWarpToScreenDialog::TWarpToScreenDialog(void* initParam)
     : TModalDialogBase(0xc2, static_cast<CWnd*>(initParam)), slider(), listbox() {}
 
-// The scalar deleting destructor is compiler-generated from the virtual dtor.
 
 // FUNCTION: IMPERIALISM 0x0047d160
 void TWarpToScreenDialog::DoDataExchange(CDataExchange* pDX) {

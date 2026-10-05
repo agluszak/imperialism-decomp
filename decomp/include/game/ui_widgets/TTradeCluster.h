@@ -17,7 +17,6 @@ public:
 
   DECLARE_DYNCREATE(TTradeCluster)
   TTradeCluster();
-  // Destructor is compiler-generated (implicit virtual dtor from TAmtBarCluster).
 
   void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
 
@@ -26,7 +25,7 @@ public:
   void SetMoveAmount(short amount) override;
   virtual int GetTradeSellControlValue();
   virtual unsigned char IsSelectionAllowed();
-  virtual int GetBoolSlot1DC();
+  virtual int IsSellOffer();
   virtual void DoControlAction();
   virtual void SetTradeBidControlBitmap();
   virtual void SetTradeOfferControlBitmap();

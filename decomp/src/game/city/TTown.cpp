@@ -260,7 +260,7 @@ void TTown::Grow() {
   }
 
   if (age > 9 && (age & 1) != 0) {
-    short* citySummary = city->GetCitySummaryRecordSlot74();
+    short* citySummary = city->GetUnmetNeeds();
     short finishedGoods =
         static_cast<short>(citySummary[0xd] + citySummary[0xe] + citySummary[0xf]);
     const short sourceResources[3] = {kResourceFabric, kResourceLumber, kResourceSteel};

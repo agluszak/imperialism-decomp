@@ -836,7 +836,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
   }
 
   if (refreshPanel) {
-    g_pViewMgr->RefreshViewSlot48();
+    g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
   }
 
   return actionFinalized;

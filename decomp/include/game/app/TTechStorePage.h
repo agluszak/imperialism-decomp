@@ -5,7 +5,6 @@
 #include "game/ui_screens/TPageView.h"
 #include "game/mfc.h"
 
-// Forward declarations for types referenced by generated signatures.
 class CityDialogController;
 
 // VTABLE: IMPERIALISM 0x00645ca8

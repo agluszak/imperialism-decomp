@@ -44,8 +44,7 @@ void TOcean::AllocateRouteNodeStateBufferByCount(short count) {
     routeSegments = nullptr;
   }
   if (routeSegments == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UOcean.h", 0x1e7);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UOcean.h", 0x1e7);
   }
 }
 

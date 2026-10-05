@@ -648,7 +648,7 @@ void TCity::VerifyStocks() {
       bool dispatchGate = this->ownerNationAc->IsRemote();
       if ((!dispatchGate || g_pSimMgr->multiplayerSessionRole != kSessionRoleClient) &&
           !g_Sanitize_City_Counter_Value_006A24D4) {
-        TemporarilyClearAndRestoreUiInvalidationFlag();
+        TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCity.cpp", 0x47f);
       }
       *needCursor = 0;
     }
@@ -738,7 +738,7 @@ int TCity::AllocateRandomResourceCountsWithinWeightBudget(short maxWeight, short
 }
 
 // FUNCTION: IMPERIALISM 0x004b44d0
-short* TCity::GetCitySummaryRecordSlot74() {
+short* TCity::GetUnmetNeeds() {
   short* summary = this->productionSummary->PredictedNeeds();
   for (short resourceType = 0; resourceType < kResourceKindCount; ++resourceType) {
     short remaining = summary[resourceType];

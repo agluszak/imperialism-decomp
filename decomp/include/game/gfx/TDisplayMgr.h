@@ -54,7 +54,6 @@ ASSERT_SIZE(TDisplayMgr, 0x24);
 
 struct GlobalViewportRectDefaultsRecord;
 
-// 0x00497230 — lazily seeds default 640x480 viewport rect globals.
 GlobalViewportRectDefaultsRecord** InitializeGlobalRectDefaultsIfUninitialized();
 
 void PlayDefaultMessageBeep(...);

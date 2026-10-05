@@ -286,7 +286,6 @@ public:
   // LoadNationDisplayNameSharedRefFromField8 moved to TCountry (its field's owner).
 
   int ComputeNationNavyOrderWeightedMovementScore();
-  // 0x004e3220 — average bilateral relation-standing score vs every other live slot.
   int RecomputeNationComparativePowerMetrics_Impl();
 
   void AddPurchasedItemAmount(short index, short delta);
@@ -324,7 +323,6 @@ public:
   TPtrList* turnEventQueue;
   TPtrList* proposalQueue;
   TPtrList* diplomacyTrackedSlots[0x11];
-  // 0x894 — city production state; same object used as TCity in diplomacy paths.
   TCity* city;
   TSortedList* townMarkerList;
   TSortedList* trackedObjectList;
@@ -349,7 +347,6 @@ public:
   int aidAllocationTotal;
   unsigned char colonyBoycottFlags[kNationSlotCount];
   unsigned char pad_92f;
-  // 0x930..0x95c — the twelve rows displayed and indexed by TGameScorePicture.
   enum GameScoreRow {
     kGameScoreLabor = 0,
     kGameScoreTransport = 1,
@@ -391,7 +388,6 @@ public:
                                                       int selectedNationSlot);
   float ComputeAdvisoryMapNodeCompositeScoreByMode(int cityRecordIndex, int mode,
                                                    int linkCityRecordIndex);
-  // 0x004e8c20 — two-arg convenience wrapper (linkCityRecordIndex = -1).
   float ComputeAdvisoryMapNodeCompositeScore(int cityRecordIndex, int mode);
   int SumNavyOrderPriorityForNationAndNodeType(TZone* zone);
   int SumNavyOrderPriorityForNation();

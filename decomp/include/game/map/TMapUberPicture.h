@@ -7,7 +7,6 @@
 #include "game/ui_tags_map.h"
 #include "game/mfc.h"
 
-// Forward declarations for types referenced by generated signatures.
 class TTaskForce;
 class TZone;
 class TNavyRoster;

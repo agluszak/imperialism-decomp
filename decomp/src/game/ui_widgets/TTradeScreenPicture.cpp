@@ -67,8 +67,7 @@ void TTradeScreenPicture::Draw(RECT* rectBuffer) {
     CString cellText;
     TView* ctrl = this->ResolveControlByTag(*tagPtr);
     if (ctrl == nullptr) {
-      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0xbf);
+      FailNilPointerWithAssert(s_SourcePathUTradeViews_0069AA94, 0xbf);
     }
 
     if ((tagPtr != &g_tradeCommodityRowTagTable[6] && tagPtr != &g_tradeCommodityRowTagTable[12]) ||

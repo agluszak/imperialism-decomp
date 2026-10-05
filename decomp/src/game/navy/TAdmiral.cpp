@@ -392,8 +392,7 @@ CString GetLocalizedNavalReportShipType(short category, bool plural) {
 TAdmiral* TAdmiral::CreateForTerrainType(NationSlot terrainTypeIndex) {
   TAdmiral* admiral = new TAdmiral(terrainTypeIndex);
   if (admiral == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UNavy.cpp", 0xe21);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UNavy.cpp", 0xe21);
   }
   return admiral;
 }

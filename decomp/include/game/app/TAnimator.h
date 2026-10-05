@@ -4,7 +4,6 @@
 #include "game/ui_core/TEventHandler.h"
 #include "game/mfc.h"
 
-// Forward declarations for types referenced by generated signatures.
 class TAnimation;
 class TList;
 class TMapUberPicture;

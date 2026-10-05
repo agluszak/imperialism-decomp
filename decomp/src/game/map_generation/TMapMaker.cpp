@@ -1871,8 +1871,7 @@ void TMapMaker::RotateMapColumnsByPeakWaterTileDensity() {
   // Copy the whole grid, then write it back rotated so the chosen column band leads.
   int* scratch = new int[0xe3d0];
   if (scratch == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMapper.cpp", 0x904);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UMapper.cpp", 0x904);
   }
 
   int destByte = 0;
@@ -2800,13 +2799,11 @@ int TMapMaker::AssignSequentialValuesToRegionPlaceholders(short* tileValues, int
 void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
   int* tileCounts = new int[cityRegionCount];
   if (tileCounts == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMapper.cpp", 0x11c5);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UMapper.cpp", 0x11c5);
   }
   char* mergedFlags = new char[cityRegionCount];
   if (mergedFlags == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMapper.cpp", 0x11c8);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UMapper.cpp", 0x11c8);
   }
 
   for (int r = cityRegionCount - 1; r >= 0; --r) {

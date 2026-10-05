@@ -82,18 +82,15 @@ public:
   void FormatOverlayTerrainLabelText(CString* out);
   void LoadNationDisplayNameSharedRefFromField8(CString* destString);
   void LoadNationDisplayNameRawFromField8(CString* destString);
-  // 0x4d8430 — sums g_aUnitOrderCostProfileByAbilityId[type][2] over militaryUnitList44.
   int ComputeSelectedMilitaryPowerScore();
   void AssignSharedStringFromDescriptorNameOrDefault(CString* out);
 
   void SetNationDisplayNameAndLocalizationSlotRef(const CString& name);
 
-  // 0x004d7150, __thiscall, one stack arg (sign-extended short -> int store).
   void SetSerializedField8c(int value);
 
   bool IsNationProfileInMinorRange100To199();
 
-  // 0x4d7170: lazily computes and caches the nation's overlay-anchor tile index.
   short GetOrComputeOverlayAnchorTileIndex();
 
   CString identitySharedString0;

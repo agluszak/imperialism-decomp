@@ -5,7 +5,6 @@ IMPLEMENT_DYNCREATE(TUberCluster, TCluster)
 // FUNCTION: IMPERIALISM 0x00571460
 TUberCluster::TUberCluster() : TCluster() {}
 
-// The scalar deleting destructor is compiler-generated from the inherited virtual dtor.
 
 // FUNCTION: IMPERIALISM 0x005714c0
 TUberCluster::~TUberCluster() {}

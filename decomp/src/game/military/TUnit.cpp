@@ -35,8 +35,7 @@ void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,
   }
 
   if (ownerManager == 0) {
-    GAME_FAIL_NIL_POINTER();
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UUnit.cpp", 0x11f);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UUnit.cpp", 0x11f);
   }
 
   ownerManager->AddTail(this);

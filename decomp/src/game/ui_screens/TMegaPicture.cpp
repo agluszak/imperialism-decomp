@@ -14,7 +14,7 @@ IMPLEMENT_DYNCREATE(TMegaPicture, TNoHilitePicture)
 // FUNCTION: IMPERIALISM 0x00573190
 TMegaPicture::TMegaPicture() : TNoHilitePicture() {
   surfaceContext = 0;
-  flags98 = 0;
+  modeFlags = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00573200
@@ -24,7 +24,7 @@ TMegaPicture::~TMegaPicture() {}
 void TMegaPicture::IMegaPicture(TView* panel, int* offsetLayout, int* sizeLayout, int layoutParam4,
                                 int layoutParam5, short pictureId, unsigned short flags) {
   IPicture(panel, offsetLayout, sizeLayout, layoutParam4, layoutParam5, pictureId);
-  AssignFlags98AndMaybeRefresh(flags, false);
+  SetMode(flags, false);
 }
 
 // FUNCTION: IMPERIALISM 0x00573270
@@ -37,10 +37,10 @@ void TMegaPicture::Draw(RECT* rectBuffer) {
   ResetQuickDrawStrokeState();
 
   RECT srcRect;
-  if ((flags98 & 4) == 0) {
+  if ((modeFlags & 4) == 0) {
     srcRect = *rectBuffer;
   } else {
-    if ((flags98 & 1) == 0) {
+    if ((modeFlags & 1) == 0) {
       SetQuickDrawFillColor(0xffffff);
       FillRectWithQuickDrawBrushAndContextOffset(&screenRect);
     }
@@ -50,7 +50,7 @@ void TMegaPicture::Draw(RECT* rectBuffer) {
 
   unsigned char blitFlags = 0;
   QuickDrawPaletteIndex paletteIndex = 0x13;
-  if (flags98 & 1) {
+  if (modeFlags & 1) {
     blitFlags = 0x24;
     paletteIndex = 0x10;
   }
@@ -118,20 +118,20 @@ void TMegaPicture::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x00573690
-void TMegaPicture::AssignFlags98AndMaybeRefresh(unsigned short value, bool refreshNow) {
-  flags98 = value;
+void TMegaPicture::SetMode(unsigned short value, bool refreshNow) {
+  modeFlags = value;
   if (refreshNow) {
     RefreshControl();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005736c0
-void TMegaPicture::ClearOrSubtractFlags98AndMaybeRefresh(unsigned short mask, char useAndMask,
+void TMegaPicture::ClearModeBits(unsigned short mask, char useAndMask,
                                                          char refreshNow) {
   if (useAndMask) {
-    flags98 &= mask;
+    modeFlags &= mask;
   } else {
-    flags98 -= mask;
+    modeFlags -= mask;
   }
   if (refreshNow) {
     RefreshControl();

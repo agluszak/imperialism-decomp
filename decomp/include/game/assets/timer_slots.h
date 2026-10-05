@@ -12,6 +12,5 @@ typedef char(__cdecl* TimerSlotCallback)();
 // The registry globals (g_timerSlotCallbacks @0x006a5cf8, g_timerSlotIds @0x006a5c98,
 // g_timerDispatchSuppressAssert @0x006a5d24) are declared in game/global_data_tables.h.
 
-// 0x005e0460 — WM_TIMER dispatcher shared by all slots (passed as the TIMERPROC).
 void CALLBACK DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot(HWND hwnd, UINT msg,
                                                                         UINT idEvent, DWORD dwTime);

@@ -102,7 +102,6 @@ public:
   short pendingPolicyTierMatrix[kDiplomacyPairMatrixEntries];
   CongressLeadership congressLeadership; // +0x784
   struct TurnEvent2SyncPacket* BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy();
-  // 0x4f27f0 — apply a received turn-event-2 sync packet to the relation matrix.
   void HandleDiplomaticStandingsMsg(TurnEvent2SyncPacket* packet);
 
   CongressSupportTally congressSupport; // +0x788..+0x78d
@@ -115,7 +114,6 @@ public:
   DiplomacyRelationshipStorage relationPropagationMatrix[kNationPairMatrixEntries];
   short relationTurnStampMatrix[kNationPairMatrixEntries];
   DiplomaticMissionLevelStorage relationSideEffectMatrix[kNationPairMatrixEntries];
-  // 0x004f1760 — see comparativePowerRows below.
   void RecomputeNationComparativePowerMetrics();
 
   int comparativePowerRows[7][4];

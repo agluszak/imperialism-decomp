@@ -54,7 +54,6 @@ TControl::TControl()
     : TView(), eventNumber60(1), controlState64(0), contentInsets(0, 0, 0, 0),
       textStyle78(g_UiResourceEntryDefaultTextStyle) {}
 
-// Destructors are compiler-generated (implicit) from real inheritance.
 
 // FUNCTION: IMPERIALISM 0x0048e640
 void TControl::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {

@@ -358,8 +358,7 @@ void TArmyMgr::FormStacks() {
         previousOrderTargetIndex = unitOrderTargetIndex;
         previousOwnerNationSlot = unitOwnerNationSlot;
         if (stack == nullptr) {
-          MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-          TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyMgr_0069573C, 0x333);
+          FailNilPointerWithAssert(s_SourcePathUArmyMgr_0069573C, 0x333);
         }
       }
 
@@ -438,8 +437,7 @@ void TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits() {
     }
     TSortedList* unitList = nation->militaryUnitList44;
     if (unitList == nullptr) {
-      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyMgr_0069573C, 0x39b);
+      FailNilPointerWithAssert(s_SourcePathUArmyMgr_0069573C, 0x39b);
     }
 
     CIterator unitIter(unitList);
@@ -1759,8 +1757,7 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventEnemyFleetReport));
   if (node == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyMgr_0069573C, 0xa4d);
+    FailNilPointerWithAssert(s_SourcePathUArmyMgr_0069573C, 0xa4d);
   }
   node->SetModality(true);
 

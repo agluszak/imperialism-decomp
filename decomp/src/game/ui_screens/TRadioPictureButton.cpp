@@ -9,7 +9,6 @@ TRadioPictureButton::TRadioPictureButton() : TUpDownPictureButton() {
   this->reserved94 = 0;
 }
 
-// Destructors are compiler-generated (implicit) from real inheritance.
 
 // FUNCTION: IMPERIALISM 0x00571830
 TRadioPictureButton::~TRadioPictureButton() {}

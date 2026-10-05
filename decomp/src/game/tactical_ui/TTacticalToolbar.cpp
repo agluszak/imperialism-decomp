@@ -17,7 +17,6 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// 0x5c4910, ported in ui_text_label_helpers.cpp.
 void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
 
 // FUNCTION: IMPERIALISM 0x0045d390

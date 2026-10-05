@@ -7,7 +7,6 @@
 #include "game/quickdraw_types.h"
 #include "game/turn_event_codes.h"
 
-// Forward declarations for types referenced by generated signatures.
 class TStream;
 class TTown;
 struct TCombatReportContext;
@@ -103,16 +102,6 @@ public:
   virtual void ShowHighScoreScreen(); // 0x108; Mac oracle
   virtual void ConfigureMapEditorGoldValueGrid(); // 0x10c 0x5dc3f0
   virtual void ShowUnitHistory(short nationSlot);                   // 0x110 0x5dc690
-
-  void ApplyLegendSplitSlot34(int split) {
-    SetForeColor(static_cast<short>(split));
-  }
-  void QueueTurnStatusPromptSlot3C(int promptIndex, int payload) {
-    BuildAndShowTurnOverlayByMode(promptIndex, payload);
-  }
-  void RefreshViewSlot48() {
-    RefreshMainViewNationIndicatorForCurrentTurnEvent();
-  }
 
   QuickDrawPaletteIndex GetColor(short colorCode);
   void SetColor(short colorCode, bool foreground);

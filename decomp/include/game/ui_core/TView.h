@@ -106,7 +106,7 @@ public:
   virtual void PostRender();                                             // 0x3f
   virtual int BindMapQuickDrawDc(CDC* paintDc);     // 0x40 0x48b7b0
   virtual void ReleaseMapQuickDrawDc(CDC* paintDc); // 0x41 0x48b7e0
-  virtual void EnsureField48Buffer();               // 0x42 0x48b810
+  virtual void EnsureStylePayload();               // 0x42 0x48b810
   virtual void PaintVisibleChildrenIntersectingClipRect(RECT* clipRect,
                                                         CDC* paintDc); // 0x43 0x48b8d0
   virtual void Draw(RECT* clipRect);                                   // 0x44

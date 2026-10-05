@@ -7,7 +7,6 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// Binary descriptor base is TView (0x6495a0), not TMegaPicture — original macro arg.
 IMPLEMENT_DYNCREATE(TNumberedItem, TView)
 
 // FUNCTION: IMPERIALISM 0x005077c0

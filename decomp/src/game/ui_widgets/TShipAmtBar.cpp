@@ -22,7 +22,6 @@ TShipAmtBar::TShipAmtBar() : TAmtBar() {
   auxValueB = 0;
 }
 
-// Destructors are compiler-generated (implicit) from real inheritance.
 
 // FUNCTION: IMPERIALISM 0x0058abf0
 void TShipAmtBar::DoPostCreate(int arg) {
@@ -55,7 +54,7 @@ void TShipAmtBar::DrawAmt() {
 
       if (rangeOrMaxValue > 0) {
         SetQuickDrawTextOriginWithContextOffset(0, 1);
-        g_pViewMgr->ApplyLegendSplitSlot34(auxValueB);
+        g_pViewMgr->SetForeColor(static_cast<short>(auxValueB));
         SetQuickDrawPenSizeAndMarkDirty(1, 4);
         DrawCenteredGuideLineOnMapDc((short)(rangeOrMaxValue - 1), 1);
         ResetQuickDrawStrokeState();

@@ -24,7 +24,6 @@ short TAmtBar::ApplyMoveClamp(int baseValue, short requestedValue) {
 
 IMPLEMENT_DYNCREATE(TAmtBar, TView)
 
-// Destructors are compiler-generated (implicit) from real inheritance.
 
 // FUNCTION: IMPERIALISM 0x005885f0
 TAmtBar::~TAmtBar() {}
@@ -94,7 +93,7 @@ void TAmtBar::DrawAmt() {
 
   if (barRange > 0) {
     SetQuickDrawTextOriginWithContextOffset(0, 1);
-    g_pViewMgr->ApplyLegendSplitSlot34(auxValueB);
+    g_pViewMgr->SetForeColor(static_cast<short>(auxValueB));
     SetQuickDrawPenSizeAndMarkDirty(1, 7);
     guideValue = stepOrCurrentValue < barRange ? stepOrCurrentValue : barRange;
     DrawCenteredGuideLineOnMapDc((short)(guideValue - 1), 1);

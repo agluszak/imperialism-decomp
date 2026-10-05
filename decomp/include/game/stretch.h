@@ -2,7 +2,6 @@
 
 #include "decomp_types.h"
 
-// 0x005e7fc0 — realloc-family growth used by every stretch mutator.
 #include <stdlib.h>
 
 IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR

@@ -20,7 +20,6 @@ public:
 
   void IMiniShipLine(short rowArg, short colArg, int* bounds, TShip* item);
 
-  // Original object size is 0x14 (CRuntimeClass m_nObjectSize); the fields below complete the extent so sizeof matches the original.
   TShip* field10;
 };
 ASSERT_SIZE(TMiniShipLine, 0x14);

@@ -18,7 +18,6 @@ IMPLEMENT_DYNCREATE(TNumberedArrowButton, TControl)
 // FUNCTION: IMPERIALISM 0x0058c2a0
 TNumberedArrowButton::TNumberedArrowButton() : TControl(), value84(0), value86(0) {}
 
-// Destructors are compiler-generated (implicit) from real inheritance.
 
 // FUNCTION: IMPERIALISM 0x0058c330
 void TNumberedArrowButton::SetValue(short value84Arg, bool refreshFlag) {

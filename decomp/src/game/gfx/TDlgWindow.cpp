@@ -5,10 +5,6 @@
 #include "game/gfx/TDisplayMgr.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
-static void AssertUGameWindowInvalidation(const char* path, int line) {
-  TemporarilyClearAndRestoreUiInvalidationFlag();
-}
-
 IMPLEMENT_DYNCREATE(TDlgWindow, TWindow)
 
 // FUNCTION: IMPERIALISM 0x00500320
@@ -20,8 +16,8 @@ TDlgWindow::~TDlgWindow() {}
 // FUNCTION: IMPERIALISM 0x005003a0
 void TDlgWindow::Activate(unsigned char active) {
   TWindow::Activate(active);
-  AssertUGameWindowInvalidation(g_szUGameWindowSourcePath_00696bc0, 0x27a);
+  TemporarilyClearAndRestoreUiInvalidationFlag(g_szUGameWindowSourcePath_00696bc0, 0x27a);
   if (g_pDisplayMgr->dialogActiveFlag != 0) {
-    AssertUGameWindowInvalidation(g_szUGameWindowSourcePath_00696bc0, 0x27f);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szUGameWindowSourcePath_00696bc0, 0x27f);
   }
 }

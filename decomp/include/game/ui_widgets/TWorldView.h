@@ -50,19 +50,19 @@ public:
                                                                    short* outVerticalOffset,
                                                                    short* outHorizontalOffset,
                                                                    int projectionScale);
-  virtual short QueryMinusOneWordSlot1BC(int unusedArg);
+  virtual short PointToTileID(int unusedArg);
   virtual void ConvertPoint(const CPoint& point, short& outColumn, short& outRow,
                             short& outRegionBand);
-  virtual void CenterOnTileAndRefresh(int tileIndex, int dispatchContext);
+  virtual void ControlClick(int tileIndex, int dispatchContext);
   virtual void HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int arg2);
-  virtual void DispatchOverlayEvent78FromStridedRecord(int stridedRecord, int dispatchContext);
-  virtual void DispatchOverlayEvent78RootHighFromStridedRecord(int stridedRecord,
+  virtual void ShiftClick(int stridedRecord, int dispatchContext);
+  virtual void CommandOptionClick(int stridedRecord,
                                                                int dispatchContext);
-  virtual void HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags);
+  virtual void NormalClick(short nTileIndex, int nInputFlags);
   // ORACLE: Mac names this TWorldView::CenterOn(short). The Windows virtual
   // consumes the promoted stack dword and concrete bodies reuse its upper word.
   virtual void CenterOn(int tileIndex);
-  virtual short QueryMinusOneWordSlot77();
+  virtual short GetCentertile();
   virtual void SetMapViewTileIndex(int arg1);
   virtual void SetMapViewCellCoordinates(int column, int row);
   virtual void RefreshMapTile(short tileIndex);

@@ -77,8 +77,7 @@ void TAmbitFileBasedDocument::DoRead(ArchiveStreamAdapter* file, unsigned char f
   if (!invalidSaveFile) {
     unsigned char* discardedMapMetadata = new unsigned char[0x1950];
     if (discardedMapMetadata == 0) {
-      GAME_FAIL_NIL_POINTER();
-      TemporarilyClearAndRestoreUiInvalidationFlag(g_szUAmbitSourcePath, 0x482);
+      FailNilPointerWithAssert(g_szUAmbitSourcePath, 0x482);
     }
     stream->ReadBytes(discardedMapMetadata, 0x1950);
     stream->ReadBytes(discardedMapMetadata, 0x24);
@@ -132,8 +131,7 @@ void TAmbitFileBasedDocument::DoWrite(ArchiveStreamAdapter* file, unsigned char 
 
   char* tileOwnerTags = new char[0x1950];
   if (tileOwnerTags == 0) {
-    GAME_FAIL_NIL_POINTER();
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szUAmbitSourcePath, 0x4e7);
+    FailNilPointerWithAssert(g_szUAmbitSourcePath, 0x4e7);
   }
   char* nextTileOwnerTag = tileOwnerTags;
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {

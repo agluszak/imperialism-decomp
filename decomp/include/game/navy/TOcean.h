@@ -52,7 +52,6 @@ public:
   // Resolves port-zone or per-nation map-action context for a sea/coastal tile. 0x5633b0.
   TZone* GetLinkedZoneForSeaTile(short seaTileIndex);
 
-  // 0x005634a0 — walks g_pMapActionContextListHead for TPortZone tile-id match.
   TZone* FindPortZoneBySelectedTile(TCity* city);
 
   void FinalizeQueuedMapOrderEntry(TTaskForce* entry); // 0x5642e0

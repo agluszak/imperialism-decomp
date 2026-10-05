@@ -111,8 +111,7 @@ void TDisplayMgr::IDisplayMgr() {
   TView* dialogRoot =
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(DecodeTurnEventCode(eventCode0e));
   if (dialogRoot == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0xb0);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0xb0);
   }
   activeDialog = dialogRoot;
   field18 = InitializeTurnOrderNavigationDialogByViewportSize_Impl(0x80);
@@ -219,8 +218,7 @@ void TDisplayMgr::UpdateTheGWorld(short eventCode) {
 
   TView* mainControl = activeDialog->ResolveControlByTag(kControlTagMain);
   if (mainControl == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0x28a);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0x28a);
     return;
   }
 

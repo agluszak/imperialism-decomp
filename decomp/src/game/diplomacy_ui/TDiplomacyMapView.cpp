@@ -96,8 +96,7 @@ bool IsMaskPixelSetAndOnRegionEdge(int x, int y, DiplomacyMaskBufferRun* run, ch
 
 static inline void AssertActionButtonResolved(void* button) {
   if (button == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUDiplomacyViews_00696AE0, 0x3a7);
+    FailNilPointerWithAssert(s_SourcePathUDiplomacyViews_00696AE0, 0x3a7);
   }
 }
 // FUNCTION: IMPERIALISM 0x004f3a50
@@ -1071,7 +1070,7 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect
       terrainDescriptors = terrainDescriptors + 1;
     } while (terrainIndex < 7);
 
-    g_pViewMgr->ApplyLegendSplitSlot34(0x3f);
+    g_pViewMgr->SetForeColor(0x3f);
 
     terrainIndex = 7;
     terrainDescriptors = g_apTerrainTypeDescriptorTable + 7;
@@ -1577,7 +1576,7 @@ void TDiplomacyMapView::DrawVoteNuggets() {
       destRect.right = iconRect->right + 1;
       destRect.bottom = iconRect->bottom + 1;
       if (tierValue == selectedTier) {
-        g_pViewMgr->ApplyLegendSplitSlot34(6);
+        g_pViewMgr->SetForeColor(6);
       } else {
         SetQuickDrawFillColor(0xffffff);
       }

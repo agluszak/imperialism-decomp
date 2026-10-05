@@ -21,8 +21,7 @@ TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short resourceType, TZone*
   TShip* shipNode = new TShip();
 
   if (shipNode == 0) {
-    GAME_FAIL_NIL_POINTER();
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UNavy.cpp", 0x1fc);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UNavy.cpp", 0x1fc);
     return 0;
   }
 

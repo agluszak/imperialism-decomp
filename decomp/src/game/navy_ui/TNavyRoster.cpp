@@ -39,8 +39,7 @@ void TNavyRoster::StuffValues(TTaskForce* taskForce) {
   for (int i = 0; i < 4; ++i, ++classTag) {
     TView* classControl = g_pDisplayMgr->activeDialog->ResolveControlByTag(classTag);
     if (classControl == 0) {
-      MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUOceanViews_00698650, 0x114);
+      FailNilPointerWithAssert(s_SourcePathUOceanViews_00698650, 0x114);
     }
     classControls[i] = classControl;
   }

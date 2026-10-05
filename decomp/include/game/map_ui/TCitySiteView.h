@@ -19,7 +19,7 @@ public:
 
   virtual void DoPostCreate(int arg) override;
   virtual void FrameCursorArea() override;
-  virtual void HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags) override;
+  virtual void NormalClick(short nTileIndex, int nInputFlags) override;
   virtual void SetMapViewTileIndex(int tileIndex) override;
   virtual void SetMapViewCellCoordinates(int column, int row) override;
   // Clamps the requested cell into the bounds box, then runs the base implementation.

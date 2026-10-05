@@ -27,7 +27,6 @@ public:
   void WriteTo(TStream* stream) override;  // 5 (0x14)
   void ReadFrom(TStream* stream) override; // 6 (0x18)
   void Free() override;                    // 7 (0x1c)
-  // Mac oracle names for slots 10-16.
   virtual short GetRankingCriterionForGP(short nationSlot); // 10 (0x28)
   virtual void FigureOutRanking();                          // 11 (0x2c)
   virtual short GetRankOf(short nationSlot);                // 12 (0x30)

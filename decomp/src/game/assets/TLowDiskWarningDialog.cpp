@@ -10,7 +10,6 @@ TLowDiskWarningDialog::TLowDiskWarningDialog(void* initParam)
   promptText = g_szEmptyString;
 }
 
-// The scalar deleting destructor is compiler-generated from the virtual dtor.
 
 // FUNCTION: IMPERIALISM 0x005e1c90
 void TLowDiskWarningDialog::DoDataExchange(CDataExchange* pDX) {

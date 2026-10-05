@@ -140,8 +140,7 @@ void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
 
   orderList = new TList();
   if (orderList == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityMinister_006964B0, 0x288);
+    FailNilPointerWithAssert(s_SourcePathUCityMinister_006964B0, 0x288);
   }
 
   FillLists();
@@ -940,7 +939,7 @@ short TCityInteriorMinister::AttemptTransport(short resourceType,
 short TCityInteriorMinister::RebuildNeedTargetsAndQueueProductionShortfalls(
     TCity* city, TTaskList* commandQueue) {
   TGreatPower* owner = greatPower;
-  short* citySummary = city->GetCitySummaryRecordSlot74();
+  short* citySummary = city->GetUnmetNeeds();
   short remainingNeedCapacity = owner != 0 ? owner->transportCapacity : 0;
 
   for (short resourceType = 0; resourceType < kResourceKindCount; ++resourceType) {
@@ -1771,7 +1770,7 @@ short TCityInteriorMinister::EvaluateResources(short tileIndex) {
   TCity* city = greatPower == 0 ? 0 : greatPower->city;
   TTown* candidateTown = new TTown();
   candidateTown->ITown("Bleah", tileIndex, true, greatPower->nationSlot);
-  short* citySummary = city->GetCitySummaryRecordSlot74();
+  short* citySummary = city->GetUnmetNeeds();
   candidateTown->CalculateResources();
 
   short score = 0;
@@ -1941,7 +1940,7 @@ char* TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates(
 
 // FUNCTION: IMPERIALISM 0x004c3c00
 void TCityInteriorMinister::RebalanceCityOrderAllocationTargets(TCity* city) {
-  short* citySummary = city->GetCitySummaryRecordSlot74();
+  short* citySummary = city->GetUnmetNeeds();
   short unfilled = 0;
   short allocated = RequestResource(17, citySummary[17], 7);
   if (allocated < citySummary[17]) {

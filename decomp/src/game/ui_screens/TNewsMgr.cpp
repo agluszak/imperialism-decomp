@@ -103,8 +103,7 @@ void TNewsMgr::LoadNewsTable() {
   storyTemplateCount = static_cast<unsigned int>(byteCount) / sizeof(newsEntry);
   storyTemplateTable = new newsEntry[storyTemplateCount];
   if (storyTemplateTable == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUNewspaper_00698470, 0x106);
+    FailNilPointerWithAssert(s_SourcePathUNewspaper_00698470, 0x106);
   }
   g_pAssetMgr->ReadResourceStreamIntoBufferAndAdvance(stream, storyTemplateTable, &byteCount);
   g_pAssetMgr->ReleaseResourceStreamIfNotNull(stream);
@@ -791,4 +790,3 @@ unsigned char TNewsMgr::AlwaysTrueStory(const newsEntry* templateRow, newsStory*
   return 1;
 }
 
-// Mac oracle: EvaluateFeatureStory. Reads nothing from `this` beyond the AlwaysTrueStory

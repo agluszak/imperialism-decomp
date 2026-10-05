@@ -60,8 +60,7 @@ void TDealBookPicture::Startup(short startupValue) {
   // 'mark' toggle + label reload.
   TView* markControl = this->ResolveControlByTag(kControlTagMark); // 'mark'
   if (markControl == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x129);
+    FailNilPointerWithAssert(s_SourcePathUTradeViews_0069AA94, 0x129);
   }
   markControl->ViewEnable(1, 0);
   LoadUiStringByGroupAndIndexToControlObject(0x2741, 6, this->ResolveControlByTag(kControlTagMark));
@@ -132,13 +131,11 @@ void TDealBookPicture::ShowPage(int pageIndex, short nationId) {
 
   TView* leftCtrl = this->ResolveControlByTag(kControlTagLcor);
   if (leftCtrl == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x16e);
+    FailNilPointerWithAssert(s_SourcePathUTradeViews_0069AA94, 0x16e);
   }
   TView* rightCtrl = this->ResolveControlByTag(kControlTagRcor);
   if (rightCtrl == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x170);
+    FailNilPointerWithAssert(s_SourcePathUTradeViews_0069AA94, 0x170);
   }
 
   if (this->currentPageIndex != 0) {
@@ -389,8 +386,7 @@ void TDealBookPicture::SwitchPages() {
 
     TView* tabsControl = ResolveControlByTag(kControlTagTabs);
     if (tabsControl == nullptr) {
-      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x2a2);
+      FailNilPointerWithAssert(s_SourcePathUTradeViews_0069AA94, 0x2a2);
     }
 
     TStaticText* titLControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitL));

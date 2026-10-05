@@ -19,11 +19,8 @@ public:
   TNewspaperView();
 
   void StuffValues(int pageIndex);
-  // 0x55d910: fill tokens[0..3] from the story's {parmValue, parmKind} pairs.
   void CreateVariables(newsStory* story, CString* tokens);
-  // 0x55da80: comma/"and" list of commodity names for the set bits (bit 0..0x16).
   void BuildLocalizedTokenListFromBitmaskWithConjunction(CString* out, int bitmask);
-  // 0x55dcd0: same shape over nation names (string group 0x2711).
   void BuildLocalizedNationListFromBitmaskWithConjunction(CString* out, int bitmask);
   void ProvinceParmList(CString& out, int cityRecordIndex);
   int AppendInterNationEventSummaryTextEntry(int column, int y, int recordOffset, int recordLength,

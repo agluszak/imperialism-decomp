@@ -65,7 +65,6 @@ public:
   virtual void ResetTurnFlags();                                 // 0x68  0x0057f530
   void PrepareMultiplayerTurnResume();                           // 0x0057f570
   virtual int PlayerLost();                                      // 0x6c  0x0057f490, Mac oracle
-  // Mac oracle: SetFlags(short). Windows reads and merges the full pushed dword.
   virtual void SetFlags(unsigned int flags);                  // 0x70  0x0057f4b0
   virtual void NumToCurrency(int value, CString* destString); // 0x74  0x0057f5b0
   virtual void NumToOrdinal(int value, CString* destString);  // 0x78  0x0057f8f0
@@ -74,11 +73,10 @@ public:
   virtual void ReinitializeRandomSeed();                                      // 0x80  0x0057fec0
   virtual void GetString(short codeGroup, short offset, CString* destString); // 0x84 0x00580760
   CString LoadNormalizedCredentialName(short slot);
-  CString AssignSharedStringFromIndexedSlot7C(short slot);
+  CString GetSharedText(short slot);
   virtual CString
   DiplomacyNoticeString(const DiplomacyNotice* notice); // 0x88 0x00580790, Mac oracle
 
-  // 0x57f4d0, out of line in retail.
   unsigned char TestTurnFlowStatusFlagMask(unsigned int mask);
 
   // --- non-virtual helpers ---
@@ -95,7 +93,6 @@ public:
   void EliminateGP(NationSlot nationSlot); // Mac oracle; 0x581300
   // Forwards to the player's TGreatPower::SorryYouLose. 0x5813d0.
   void NotifyActiveNationLost();
-  // Mac oracle. Also sets preferenceValues[10] only for Introductory. 0x57d870.
   void SetDifficultyLevel(eDifficulty difficulty);
   void ISimMgr();
   void ResetTurnFlowStateAndRandomSeed();
@@ -109,7 +106,7 @@ public:
   void NameCapitals();          // 0x581c00
   void ProcessScenarioScript(); // 0x581e60
   // Sets field6a and reloads that picture language pack. 0x581ae0.
-  void SetSelectedIndex6AAndTriggerRefresh(short index);
+  void SelectMapArtSet(short index);
   void SetPlayerCountry(NationSlot nationSlot); // Mac oracle; 0x5837c0
 
   void ScSetYear(STurnInstructionCursor* instruction);           // 0x582ed0

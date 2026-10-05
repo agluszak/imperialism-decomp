@@ -81,7 +81,7 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       postEventCode = EncodeTurnEventCode(kTurnEventMapEditor);
     } else {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
-      g_pSimMgr->SetSelectedIndex6AAndTriggerRefresh(0);
+      g_pSimMgr->SelectMapArtSet(0);
       g_pAssetMgr->OpenFilesFor(1);
       postEventCode = EncodeTurnEventCode(kTurnEventRandomGameSetup);
     }

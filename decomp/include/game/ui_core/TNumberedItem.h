@@ -5,7 +5,6 @@
 #include "game/ui_screens/TMegaPicture.h"
 #include "game/mfc.h"
 
-// Forward declarations for types referenced by generated signatures.
 class TObject;
 class TTEView;
 

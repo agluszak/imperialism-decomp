@@ -66,7 +66,6 @@ public:
   TZone* GetSafestNearbyZoneFor(short nationSlot) const;
   void PropagateMapActionContextDistanceLevelsRecursive(short level); // 0x560f80
   short GetCachedMapActionContextDistanceOrRecompute(TZone* other); // 0x5610b0
-  // 0x0055f4d0 — true when any adjacent city record's ownerNationCode00 == nationTag.
   char HasSecondaryNeighborWithNationTag(short nationTag);
   int IsZoneMaskOrArrayEntryPresentForKey(short key);
   char ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex);
@@ -96,11 +95,9 @@ public:
   TZone();
   void SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int tileIndex);
 
-  // 0x0055ff70 — coastal-tile affinity heuristic (cdecl; used by FindBestCoastalTile).
   static int ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* contextZone,
                                                             Province* contextProvince);
 
-  // 0x0055fc40 — Ghidra labeled InputState::; dispatches through TZone vtable 0x50/0x58.
   void HandleKeyDown(int key_id);
 
   static TZone* GetFirstPortZone();

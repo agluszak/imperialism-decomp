@@ -502,7 +502,7 @@ void TView::ReleaseMapQuickDrawDc(CDC* paintDc) {
 }
 // stylePayload48 is freed in ~TView.
 // FUNCTION: IMPERIALISM 0x0048b810
-void TView::EnsureField48Buffer() {
+void TView::EnsureStylePayload() {
   if (stylePayload48 == 0) {
     stylePayload48 = new TUiStyleBytes();
   }

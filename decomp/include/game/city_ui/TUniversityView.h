@@ -22,7 +22,6 @@ public:
 
   TUniversityView();
 
-  // Original object size is 0xac. Windows has no accesses in the +0xa0 dword.
   unsigned char paddingA0[4];
   short selectedRecruitmentCategory;
   unsigned char paddingA6[2];

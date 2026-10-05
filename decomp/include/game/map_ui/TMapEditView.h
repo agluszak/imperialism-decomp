@@ -11,11 +11,11 @@ public:
 
   virtual void DoKeyEvent(TToolboxEvent* event) override;
   virtual void DoPostCreate(int arg) override;
-  virtual void CenterOnTileAndRefresh(int tileIndex, int dispatchContext) override;
+  virtual void ControlClick(int tileIndex, int dispatchContext) override;
   virtual void HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int arg2) override;
-  virtual void DispatchOverlayEvent78FromStridedRecord(int stridedRecord,
+  virtual void ShiftClick(int stridedRecord,
                                                        int dispatchContext) override;
-  virtual void HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags) override;
+  virtual void NormalClick(short nTileIndex, int nInputFlags) override;
 
   TMapEditView() : reservedFlag(0), editorActionMode368(0), editorActionValue36c(0) {}
 

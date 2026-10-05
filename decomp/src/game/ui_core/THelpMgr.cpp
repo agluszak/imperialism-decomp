@@ -888,8 +888,7 @@ void THelpMgr::ShowHelpSet(HelpSetRecord* pendingEntry) {
     pendingDialogView8 = static_cast<TWindow*>(
         g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventHelpMessage));
     if (pendingDialogView8 == 0) {
-      MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUHelpMgr_00696C58, 0x5cd);
+      FailNilPointerWithAssert(s_SourcePathUHelpMgr_00696C58, 0x5cd);
     }
 
     CPoint placement;
@@ -919,8 +918,7 @@ void THelpMgr::ShowHelpSet(HelpSetRecord* pendingEntry) {
       static_cast<TPicture*>(pendingDialogView8->ResolveControlByTag(kControlTagCoat));
   coatPicture->AssertValid();
   if (coatPicture == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUHelpMgr_00696C58, 0x5f0);
+    FailNilPointerWithAssert(s_SourcePathUHelpMgr_00696C58, 0x5f0);
   }
 
   if (g_pSimMgr->GetPlayerCountry() >= 0 && g_pSimMgr->GetPlayerCountry() < 7) {
@@ -1047,8 +1045,7 @@ void THelpMgr::EnsureMapActionContextViewAndBuildDefaultTileMenu(int mapContextI
     pendingDialogViewC = static_cast<TWindow*>(
         g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTerrainHelp));
     if (pendingDialogViewC == 0) {
-      MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUHelpMgr_00696C58, 0x6c1);
+      FailNilPointerWithAssert(s_SourcePathUHelpMgr_00696C58, 0x6c1);
     }
 
     CPoint placement;

@@ -19,7 +19,6 @@ public:
   void SetPictureLineRowBoundsAndResource(short rowArg, short colArg, int* bounds,
                                           short pictureResourceId); // 0x5700f0
 
-  // Original object size is 0x14 (CRuntimeClass m_nObjectSize); the fields below complete the extent so sizeof matches the original.
   short pictureResourceId10;
   short reserved12;
 };

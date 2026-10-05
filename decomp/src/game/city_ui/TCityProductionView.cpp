@@ -335,7 +335,7 @@ void TCityProductionView::DrawTopLevel() {
   }
 
   ResetQuickDrawStrokeState();
-  g_pViewMgr->ApplyLegendSplitSlot34(1);
+  g_pViewMgr->SetForeColor(1);
   SetQuickDrawTextOriginWithContextOffset(originX, sVar2);
 
   short offset_x1 = g_Render_Nation_Header_Value_006961E0[currentMonth];
@@ -496,13 +496,12 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
     }
   }
 
-  short* summary = city->GetCitySummaryRecordSlot74();
+  short* summary = city->GetUnmetNeeds();
 
   TStaticText* control = static_cast<TStaticText*>(
       dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('m', 'e', 'a', 't')));
   if (control == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x440);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x440);
   }
   g_pSimMgr->GetString(0x2734, 0x1e, &templateText);
   g_pSimMgr->GetString(0x2734, 0x1f, &value3);
@@ -518,8 +517,7 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
   control = static_cast<TStaticText*>(
       dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('p', 'r', 'o', 'd')));
   if (control == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x44e);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x44e);
   }
   value1.Format(g_szDecimalFormat, summary[0x12]);
   value2.Format(g_szDecimalFormat, nation->GetNeedTargetByType(0x12));
@@ -532,8 +530,7 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
   control = static_cast<TStaticText*>(
       dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('g', 'r', 'a', 'i')));
   if (control == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x459);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x459);
   }
   value1.Format(g_szDecimalFormat, summary[0x11]);
   value2.Format(g_szDecimalFormat, nation->GetNeedTargetByType(0x11));
@@ -545,32 +542,28 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
 
   TView* flagControl = dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('u', 'n', 't', 'r'));
   if (flagControl == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x465);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x465);
   }
   g_pSimMgr->GetString(0x2734, flagControl->IsActionable() ? 0xd : 0xe, &assembled);
   SetControlHoverHelpText(assembled, flagControl);
 
   flagControl = dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('t', 'r', 'a', 'i'));
   if (flagControl == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x46d);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x46d);
   }
   g_pSimMgr->GetString(0x2734, flagControl->IsActionable() ? 0xf : 0x10, &assembled);
   SetControlHoverHelpText(assembled, flagControl);
 
   flagControl = dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('p', 'r', 'o', 'f'));
   if (flagControl == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x475);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x475);
   }
   g_pSimMgr->GetString(0x2734, flagControl->IsActionable() ? 0x11 : 0x12, &assembled);
   SetControlHoverHelpText(assembled, flagControl);
 
   flagControl = dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('p', 'o', 'w', 'e'));
   if (flagControl == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x47d);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x47d);
   }
   g_pSimMgr->GetString(0x2734, flagControl->IsActionable() ? 0x13 : 0x14, &assembled);
   SetControlHoverHelpText(assembled, flagControl);
@@ -578,8 +571,7 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
   TPlacard* placard = static_cast<TPlacard*>(
       dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('s', 'i', 'c', 'k')));
   if (placard == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x489);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x489);
   }
   placard->SetValue(static_cast<short>(foodSubstitutionCount), true);
   g_pSimMgr->GetString(0x2734, foodSubstitutionCount != 0 ? 1 : 2, &assembled);
@@ -588,8 +580,7 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
   placard = static_cast<TPlacard*>(
       dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('d', 'e', 'a', 'd')));
   if (placard == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x492);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x492);
   }
   placard->SetValue(static_cast<short>(starvationPopulationLoss), true);
   g_pSimMgr->GetString(0x2734, starvationPopulationLoss != 0 ? 3 : 4, &assembled);
@@ -597,8 +588,7 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
 
   flagControl = dialogRoot->ResolveControlByTag(IMPERIALISM_FOURCC('l', 'a', 'b', 'P'));
   if (flagControl == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x49e);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x49e);
   }
   g_pSimMgr->GetString(0x2734, 0xb, &assembled);
   SetControlHoverHelpText(assembled, flagControl);
@@ -611,29 +601,25 @@ void TCityProductionView::UpdateUnits() {
 
   TPlacard* placard = static_cast<TPlacard*>(ResolveControlByTag(kControlTagUntr)); // 'rtnu'
   if (placard == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x4b9);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x4b9);
   }
   placard->SetValue(population->baselineSlots->lowSkillCount04, true);
 
   placard = static_cast<TPlacard*>(ResolveControlByTag(kSummaryTagTrai)); // 'iart'
   if (placard == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x4bc);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x4bc);
   }
   placard->SetValue(population->baselineSlots->mediumSkillCount06, true);
 
   placard = static_cast<TPlacard*>(ResolveControlByTag(kSummaryTagProf)); // 'forp'
   if (placard == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x4bf);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x4bf);
   }
   placard->SetValue(population->baselineSlots->highSkillCount08, true);
 
   placard = static_cast<TPlacard*>(ResolveControlByTag(kSummaryTagPowe)); // 'ewop'
   if (placard == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x4c2);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x4c2);
   }
   placard->SetValue(city94->powerAvailableB4, true);
 
@@ -654,8 +640,7 @@ void TCityProductionView::UpdateUnits() {
 
   placard = static_cast<TPlacard*>(ResolveControlByTag(kControlTagLabP)); // 'Pbal'
   if (placard == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x4e0);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x4e0);
   }
   placard->SetValue(population->strength, true);
 }
@@ -867,8 +852,7 @@ void TCityProductionView::UpdateFields() {
   TStaticText* summary =
       static_cast<TStaticText*>(ResolveControlByTag(kControlTagUshi)); // shipyard summary
   if (summary == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x5ea);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x5ea);
   }
   summary->SetTextAndMaybeRefresh(&summaryText, true);
 
@@ -876,8 +860,7 @@ void TCityProductionView::UpdateFields() {
   for (i = 25; i < 29; ++i) {
     TProductionOrder* order = static_cast<TProductionOrder*>(city94->orderSlots[i]);
     if (order == 0) {
-      MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x5f2);
+      FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x5f2);
     }
     total = static_cast<short>(total + order->quantity);
   }
@@ -885,8 +868,7 @@ void TCityProductionView::UpdateFields() {
   summaryText = g_szCityProductionArmoryPrefix + numberText;
   summary = static_cast<TStaticText*>(ResolveControlByTag(kControlTagUarm)); // armory summary
   if (summary == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x5f8);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x5f8);
   }
   summary->SetTextAndMaybeRefresh(&summaryText, true);
 
@@ -894,8 +876,7 @@ void TCityProductionView::UpdateFields() {
   for (i = 34; i < 39; ++i) {
     TProductionOrder* order = static_cast<TProductionOrder*>(city94->orderSlots[i]);
     if (order == 0) {
-      MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x600);
+      FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x600);
     }
     total = static_cast<short>(total + order->quantity);
   }
@@ -903,8 +884,7 @@ void TCityProductionView::UpdateFields() {
   summaryText = g_szCityProductionUniversityPrefix + numberText;
   summary = static_cast<TStaticText*>(ResolveControlByTag(kControlTagUuni)); // university summary
   if (summary == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x606);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x606);
   }
   summary->SetTextAndMaybeRefresh(&summaryText, true);
   UpdateToolbar();

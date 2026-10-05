@@ -45,8 +45,7 @@ void TPurchaseCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
 void TPurchaseCluster::SetValue(short nValue, bool redrawFlag) {
   TNumberText* valueControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagValu));
   if (valueControl == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x781);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x781);
   }
   valueControl->SetControlValue(nValue, 0);
   if (!redrawFlag) {

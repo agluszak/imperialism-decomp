@@ -26,7 +26,6 @@ IMPLEMENT_DYNCREATE(TIndustryAmtBar, TAmtBar)
 // FUNCTION: IMPERIALISM 0x005891d0
 TIndustryAmtBar::TIndustryAmtBar() : TAmtBar(), selectedMetricRecord(0) {}
 
-// Destructors are compiler-generated (implicit) from real inheritance.
 
 // FUNCTION: IMPERIALISM 0x00589260
 void TIndustryAmtBar::DoPostCreate(int arg) {
@@ -75,7 +74,7 @@ void TIndustryAmtBar::DrawAmt() {
 
       short styleValueAt60 = control->rangeOrMaxValue;
       if (styleValueAt60 > 0) {
-        g_pViewMgr->ApplyLegendSplitSlot34(0);
+        g_pViewMgr->SetForeColor(0);
         SetQuickDrawPenSizeAndMarkDirty(1, 4);
         SetQuickDrawTextOriginWithContextOffset(0, 1);
         DrawCenteredGuideLineOnMapDc((short)(styleValueAt60 - 1), 1);

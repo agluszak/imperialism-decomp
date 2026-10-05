@@ -221,8 +221,7 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
 
   TDeluxeText* proposalText = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagProp));
   if (proposalText == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUDiplomacyViews_00696AE0, 0xca0);
+    FailNilPointerWithAssert(s_SourcePathUDiplomacyViews_00696AE0, 0xca0);
   }
 
   g_apTerrainTypeDescriptorTable[minorNationSlot]->FormatOverlayTerrainLabelText(&minorNationName);

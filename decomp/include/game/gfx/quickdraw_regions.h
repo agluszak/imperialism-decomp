@@ -65,5 +65,4 @@ int SectRect(RECT* src1, RECT* src2, RECT* dst);                // 0x00498bb0
 int BitMapToRegion(RgnHandle rgn, TBitmapSurfaceNode* surface); // 0x00497ef0
 void DisposeTemporaryRegionCache(void);                         // 0x004974f0
 
-// 0x498b10: copies rect to a local and returns IsRectEmpty of the copy.
 int ProbeRectEmptyAfterCopyToLocal(RECT* rect);

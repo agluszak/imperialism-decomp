@@ -495,7 +495,7 @@ private:
       return RuntimeActionResult::Failure(
           "the strategic-map target has no semantic interaction band");
     }
-    mapDialog->HandleMapClickByInteractionMode(targetHillTile, hillBand);
+    mapDialog->NormalClick(targetHillTile, hillBand);
 
     if (spawnedCivilian->unitOrder != kUnitOrderProspect ||
         spawnedCivilian->tileIndex06 != targetHillTile) {
@@ -683,7 +683,7 @@ private:
       return RuntimeActionResult::Failure(
           "the unsuccessful prospecting tile lost its retail cursor route");
     }
-    mapDialog->HandleMapClickByInteractionMode(targetSurveyMissTile, targetBand);
+    mapDialog->NormalClick(targetSurveyMissTile, targetBand);
     if (spawnedCivilian->unitOrder != kUnitOrderProspect ||
         spawnedCivilian->tileIndex06 != targetSurveyMissTile) {
       return RuntimeActionResult::Failure(
@@ -834,7 +834,7 @@ private:
             targetFarmerTile, targetBand) != g_civilianTileOrderCursorTokenTable[9]) {
       return RuntimeActionResult::Failure("the improvement tile lost its retail cursor route");
     }
-    mapDialog->HandleMapClickByInteractionMode(targetFarmerTile, targetBand);
+    mapDialog->NormalClick(targetFarmerTile, targetBand);
     if (farmer->unitOrder != kUnitOrderDevelopResource || farmer->tileIndex06 != targetFarmerTile) {
       return RuntimeActionResult::Failure(
           "the farmer click did not queue the retail resource improvement order");
@@ -926,7 +926,7 @@ private:
     if (!armed.Succeeded()) {
       return armed;
     }
-    mapDialog->HandleMapClickByInteractionMode(engineerTile, 0);
+    mapDialog->NormalClick(engineerTile, 0);
     return RuntimeActionResult::Success();
   }
 

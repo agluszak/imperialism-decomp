@@ -20,12 +20,10 @@ public:
   TTextLine();
   void ITextLine(short rowArg, short colArg, int* bounds, short styleGroupCode,
                                     short styleIndex);
-  // 0x570440 -- copy-assign the 10-byte packed style descriptor.
   void SetTextLineStyleDescriptor(const TextStyle* descriptor);
   void SetTextLineStyleComponents(short fontCode, short styleCode, short sizeCode,
                                   unsigned char red, unsigned char green,
                                   unsigned char blue); // 0x570470
-  // 0x5704e0
   void SetTheJustification(short value);
   void SetCaptionText(CString* caption); // 0x00570420
 };

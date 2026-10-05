@@ -29,14 +29,12 @@ void TMinisterView::StuffValues(short nationSlot) {
 char TMinisterView::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint origin) {
   TView* backControl = ResolveControlByTag(kControlTagBack);
   if (backControl == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUDiplomacyViews_00696AE0, 0xb7);
+    FailNilPointerWithAssert(s_SourcePathUDiplomacyViews_00696AE0, 0xb7);
   }
 
   TView* okayControl = backControl->ResolveControlByTag(kControlTagOkay);
   if (okayControl == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUDiplomacyViews_00696AE0, 0xb9);
+    FailNilPointerWithAssert(s_SourcePathUDiplomacyViews_00696AE0, 0xb9);
   }
 
   if (okayControl->IsActionable()) {

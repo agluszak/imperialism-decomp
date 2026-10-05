@@ -184,7 +184,6 @@ const char* GetGamePhaseNameString(int gamePhase) {
   return "?";
 }
 
-// Binary descriptor base is TObject (0x694eb8), not TEventHandler — original macro arg.
 IMPLEMENT_DYNCREATE(TMultiplayerMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x00542670
@@ -641,7 +640,7 @@ unsigned char TMultiplayerMgr::ApplyJoinGameSelectionAndShowNetworkGameOptions(i
 }
 
 // FUNCTION: IMPERIALISM 0x00545480
-unsigned char TMultiplayerMgr::AssignStringAtB4FromB0AndResetState40() {
+unsigned char TMultiplayerMgr::Host() {
   playerNameMirror = playerNameString;
   lobbyDialogView = 0;
   return 1;

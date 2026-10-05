@@ -155,8 +155,7 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
   }
   char* influenceMap = new char[0x1950];
   if (influenceMap == 0) {
-    GAME_FAIL_NIL_POINTER();
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szUCountrySourcePath_00696728, 0xa0e);
+    FailNilPointerWithAssert(g_szUCountrySourcePath_00696728, 0xa0e);
   }
   memset(influenceMap, 0, 0x1950);
 
@@ -1121,7 +1120,7 @@ unsigned int TGreatPower::ComputeProductionMetricForOrderKind(short orderKind) {
     return production + production;
   }
   case 7: {
-    short* summary = this->city->GetCitySummaryRecordSlot74();
+    short* summary = this->city->GetUnmetNeeds();
     TCity* city = this->city;
     short available = static_cast<short>(
         ((((summary[0x14] + summary[0x12] + summary[0x11]) - city->cityStockCannedFoodC4) -

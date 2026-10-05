@@ -20,7 +20,6 @@ IMPLEMENT_DYNCREATE(TArmyInfoView, TPicture)
 // FUNCTION: IMPERIALISM 0x005915a0
 TArmyInfoView::TArmyInfoView() : TPicture() {}
 
-// Destructors are compiler-generated (implicit) from real inheritance.
 
 // FUNCTION: IMPERIALISM 0x00591600
 TArmyInfoView::~TArmyInfoView() {}
@@ -50,8 +49,7 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
 
   TStaticText* control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl));
   if (control == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x18fd);
+    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x18fd);
   }
   g_pSimMgr->GetString(0x2744, 0xb, &reportText);
   control->SetTextAndMaybeRefresh(&reportText, true);
@@ -59,8 +57,7 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
 
   control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagLab2));
   if (control == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x1902);
+    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1902);
   }
   g_pSimMgr->GetString(0x2744, 0xc, &reportText);
   control->SetTextAndMaybeRefresh(&reportText, true);
@@ -68,8 +65,7 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
 
   control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagLab3));
   if (control == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x1907);
+    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1907);
   }
   g_pSimMgr->GetString(0x2744, 0xd, &reportText);
   control->SetTextAndMaybeRefresh(&reportText, true);
@@ -97,16 +93,14 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
 
   control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagWhom));
   if (control == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x191b);
+    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x191b);
   }
   control->SetTextAndMaybeRefresh(&reportText, true);
   control->InstallTextStyle(smallStyle, 0);
 
   control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagGene));
   if (control == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x1920);
+    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1920);
   }
   {
     CString emptyGeneralText(g_pSmallViewsEmptyText_00662B90);
@@ -124,8 +118,7 @@ void TArmyInfoView::StuffValues(short cityRecordIndex, int* categoryCounts) {
 
   control = static_cast<TStaticText*>(ResolveControlByTag(kControlTagOrds));
   if (control == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x192c);
+    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x192c);
   }
   control->SetTextAndMaybeRefresh(&reportText, true);
   control->InstallTextStyle(smallStyle, 0);

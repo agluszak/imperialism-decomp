@@ -53,7 +53,7 @@ void TTextList::Draw(RECT* rectBuffer) {
       CString tempString(pItem->text);
 
       if (idx == selectedIndex) {
-        g_pViewMgr->ApplyLegendSplitSlot34(5);
+        g_pViewMgr->SetForeColor(5);
 
         CRect rect;
         rect.left = 0;

@@ -7,7 +7,6 @@
 #include "game/mfc.h"
 #include "game/resource_domain_types.h"
 
-// Forward declarations for types referenced by generated signatures.
 class TStream;
 
 class TCity;

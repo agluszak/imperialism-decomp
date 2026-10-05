@@ -20,7 +20,6 @@ TCivilianButton::TCivilianButton() : TRadioPictureButton() {
   this->eventNumber60 = 0xc;
 }
 
-// Destructors are compiler-generated (implicit) from real inheritance.
 
 // FUNCTION: IMPERIALISM 0x0058b440
 TCivilianButton::~TCivilianButton() {}

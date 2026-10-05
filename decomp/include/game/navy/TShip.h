@@ -49,7 +49,6 @@ public:
   static void FreeAll();
   static TShip* GetFirst();
   static TShip* GetLast();
-  // Mac oracle per-type stats from g_NavyOrderResourceDescriptorTable.
   static short GetTypeFirepower(short shipType);    // 0x550d80
   static short GetTypeBattleRange(short shipType);  // 0x550db0
   static short GetTypeArmor(short shipType);        // 0x550de0
@@ -81,13 +80,10 @@ public:
   int GetSpeed() const;
   short GetBattleSpeed() const;
   int GetFirepower() const;
-  // Mac oracle: GetBattleStrengthRating() const.
   int GetBattleStrengthRating() const;
-  // 0x00550f80 -- strength -= decrement (battle losses commit path).
   void Damage(short decrement);
   void Repair();
   int ComputeValueForMission(int missionType) const;
-  // Mac oracle: Victory(int). The Windows ABI passes the experience gain as a short.
   void Victory(short experienceGain); // 0x00550370
   TTaskForce* DemandExclusiveTaskForce();
   TShip* Finest(TShip* candidate, bool preferUnassigned);

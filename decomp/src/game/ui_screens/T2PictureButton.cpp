@@ -6,7 +6,6 @@ IMPLEMENT_DYNCREATE(T2PictureButton, TPictureButton)
 // FUNCTION: IMPERIALISM 0x00570bb0
 T2PictureButton::T2PictureButton() : TPictureButton() {}
 
-// Destructors are compiler-generated (implicit) from real inheritance.
 
 // FUNCTION: IMPERIALISM 0x00570c10
 T2PictureButton::~T2PictureButton() {}

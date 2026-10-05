@@ -12,7 +12,6 @@ public:
 
   TInvadeMission() : TAttackProvinceMission(), beachhead34(nullptr) {}
 
-  // Mac: TInvadeMission(TZone*, short).
   TInvadeMission(TZone* beachheadZone, short targetProvince);
   virtual ~TInvadeMission() override;
 

@@ -143,7 +143,6 @@ void TLoadSavePicture::RefreshSlotPreviewFromSaveFile(short slotMode) {
   FILE* file = fopen(path, g_szLiteralRb_00698720);
   char headerSkip[0xc];
   fread(headerSkip, 1, 0xc, file);
-  // 0x20-byte scratch record (likely per-slot metadata -- unconfirmed field layout).
   unsigned char slotMetadata[0x20];
   fread(slotMetadata, 1, 0x20, file);
   fread(tileOwnerTagTable, 1, 0x1950, file);

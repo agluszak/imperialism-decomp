@@ -47,7 +47,7 @@ void TTownNameDialog::Draw(RECT* rectBuffer) {
   if (nameControl != nullptr) {
     CRect bounds;
     nameControl->QueryBounds(&bounds);
-    g_pViewMgr->ApplyLegendSplitSlot34(0xf);
+    g_pViewMgr->SetForeColor(0xf);
     FillRectWithQuickDrawBrushAndContextOffset(&bounds);
   }
   UpdatePaletteIndexWithDefaultFallback(0x50);

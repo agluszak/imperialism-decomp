@@ -22,7 +22,6 @@ public:
   // Rebuild the selected-nation boundary mask in the offscreen preview surface.
   void EnhancePhoto(); // 0x579270
 
-  // 0x60 — offscreen preview surface; deleted+cleared in Free (0x5789b0).
   TQuickDrawSurfaceContext* previewSurface60;
   int selectedRegion64; // 0x64 — city/region marker; ctor seeds -1 (none)
   int selectedNation68; // 0x68 — nation whose boundary is highlighted (-1 = none)

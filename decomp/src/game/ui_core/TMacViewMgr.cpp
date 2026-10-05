@@ -55,20 +55,18 @@
 
 namespace {
 
-static TTransportPicture* ResolveTaggedPanelOrFail(TView* hostView, unsigned int tag) {
+static TTransportPicture* ResolveTaggedPanelOrFail(TView* hostView, unsigned int tag, int line) {
   TTransportPicture* panel = static_cast<TTransportPicture*>(hostView->ResolveControlByTag(tag));
   if (panel == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    FailNilPointerWithAssert(s_SourcePathUMacViewMgr_00696D68, line);
   }
   return panel;
 }
 
-static TControl* ResolveTaggedChildOrFail(TControl* panel, unsigned int tag) {
+static TControl* ResolveTaggedChildOrFail(TControl* panel, unsigned int tag, int line) {
   TControl* child = static_cast<TControl*>(panel->ResolveControlByTag(tag));
   if (child == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    FailNilPointerWithAssert(s_SourcePathUMacViewMgr_00696D68, line);
   }
   return child;
 }
@@ -618,7 +616,7 @@ void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
 }
 
 // FUNCTION: IMPERIALISM 0x0050b5b0
-void TMacViewMgr::ReloadBitmap244AndRefreshUiCaches() {
+void TMacViewMgr::ReloadMapArtAtlases() {
   g_pAssetMgr->OpenFilesFor(3);
   if (atlas6b8 != 0) {
     g_pDisplayMgr->RemoveGWorld(atlas6b8);
@@ -683,8 +681,7 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   unsigned char* smoothingBase = surfaceBase + strideBytes * 2;
   scratchBuffer = new unsigned char[0x6540];
   if (scratchBuffer == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    FailNilPointerWithAssert(s_SourcePathUMacViewMgr_00696D68, 0x7e3);
   }
   {
     int copyRow = 0;
@@ -843,8 +840,7 @@ void TMacViewMgr::SyncSellTaggedChildControlWithNationState(TView* view, short o
   }
   TNumberText* sellControl = static_cast<TNumberText*>(view->ResolveControlByTag(kControlTagSell));
   if (sellControl == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    FailNilPointerWithAssert(s_SourcePathUMacViewMgr_00696D68, 0x8e4);
   }
   if (sellCount < 0) {
     row->SetTradeBidControlBitmap();
@@ -885,7 +881,7 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot,
   CString scratch38;
 
   if (resourceSlot == -1) {
-    TTransportPicture* panel = ResolveTaggedPanelOrFail(hostView, kControlTagTota);
+    TTransportPicture* panel = ResolveTaggedPanelOrFail(hostView, kControlTagTota, 0x93a);
     g_pSimMgr->GetString(0x2735, 0, &scratch38);
     SetControlHoverHelpText(scratch38, panel);
 
@@ -928,7 +924,7 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot,
 
   int summaryTag = g_pTradeSummarySelectionMap[resourceSlot];
   TTransportPicture* panel =
-      ResolveTaggedPanelOrFail(hostView, static_cast<unsigned int>(summaryTag));
+      ResolveTaggedPanelOrFail(hostView, static_cast<unsigned int>(summaryTag), 0x95e);
 
   short needTarget = 0;
   short needCurrent = 0;
@@ -1086,7 +1082,7 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot,
     needCurrent = nation->needCurrentByType[resourceSlot];
     g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     {
-      short* summary = city->GetCitySummaryRecordSlot74();
+      short* summary = city->GetUnmetNeeds();
       short summaryValue = summary[resourceSlot];
       formatTarget.Format(g_szDecimalFormat, static_cast<int>(summaryValue));
       deficitCount = static_cast<short>(summaryValue - (&city->cityStockCotton)[resourceSlot]);
@@ -1103,7 +1099,7 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot,
         static_cast<short>(nation->needCurrentByType[0x13] + nation->needCurrentByType[0x14]);
     g_pSimMgr->GetString(0x2735, 3, &itemName);
     {
-      short* summary = city->GetCitySummaryRecordSlot74();
+      short* summary = city->GetUnmetNeeds();
       short summaryValue = summary[0x14];
       formatTarget.Format(g_szDecimalFormat, static_cast<int>(summaryValue));
       deficitCount =
@@ -1169,14 +1165,14 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot,
 
   if (needCurrent == 0) {
     panel->Show(0, 0);
-    TControl* leftArrow = ResolveTaggedChildOrFail(panel, kControlTagLeft);
+    TControl* leftArrow = ResolveTaggedChildOrFail(panel, kControlTagLeft, 0xae8);
     leftArrow->Free();
-    TControl* rightArrow = ResolveTaggedChildOrFail(panel, kControlTagRght);
+    TControl* rightArrow = ResolveTaggedChildOrFail(panel, kControlTagRght, 0xaec);
     rightArrow->Free();
     return;
   }
 
-  TControl* leftSource = ResolveTaggedChildOrFail(panel, kControlTagLeft);
+  TControl* leftSource = ResolveTaggedChildOrFail(panel, kControlTagLeft, 0xaf2);
   int leftLayout0[2];
   int leftLayout1[2];
   CopyViewLayoutFieldsToStack(leftLayout0, leftLayout1, leftSource);
@@ -1186,7 +1182,7 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot,
   leftView->InitializeUiResourceEntryFrameAndParent(0, panel, leftLayout1, leftLayout0, 5, 5, 0);
   leftView->controlTag = kControlTagLeft;
 
-  TControl* rightSource = ResolveTaggedChildOrFail(panel, kControlTagRght);
+  TControl* rightSource = ResolveTaggedChildOrFail(panel, kControlTagRght, 0xafc);
   int rightLayout0[2];
   int rightLayout1[2];
   CopyViewLayoutFieldsToStack(rightLayout0, rightLayout1, rightSource);
@@ -1247,8 +1243,7 @@ TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city, 
   TBuildingView* buildingView =
       static_cast<TBuildingView*>(dialog->ResolveControlByTag(kControlTagDialog));
   if (buildingView == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMacViewMgr_00696D68, 0xb4f);
+    FailNilPointerWithAssert(s_SourcePathUMacViewMgr_00696D68, 0xb4f);
   }
   buildingView->ApplyCityViewSelectionPayloadAndRefreshControls(city, isEmbeddedPage,
                                                                 productionView, buildingSlot);
@@ -1273,8 +1268,7 @@ TBuildingView* TMacViewMgr::RestoreBuildingWindowAtSavedPosition(
   TBuildingView* buildingView =
       static_cast<TBuildingView*>(dialog->ResolveControlByTag(kControlTagDialog));
   if (buildingView == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMacViewMgr_00696D68, 0xb62);
+    FailNilPointerWithAssert(s_SourcePathUMacViewMgr_00696D68, 0xb62);
   }
   buildingView->ApplyCityViewSelectionPayloadAndRefreshControls(city, isEmbeddedPage,
                                                                 productionView, buildingSlot);
@@ -1300,8 +1294,7 @@ void TMacViewMgr::OpenConstructionWindow(short buildingSlot, TCity* city,
   TBuildingConstructionView* constructionView =
       static_cast<TBuildingConstructionView*>(dialog->ResolveControlByTag(kControlTagDialog));
   if (constructionView == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMacViewMgr_00696D68, 0xb98);
+    FailNilPointerWithAssert(s_SourcePathUMacViewMgr_00696D68, 0xb98);
   }
   constructionView->StuffValues(buildingSlot, city, productionView);
   dialog->SetModality(true);
@@ -1389,8 +1382,7 @@ void TMacViewMgr::RefreshActiveGoldControlAndUiRuntimeState() {
   TView* hostView = g_pDisplayMgr->activeDialog;
   TPicture* goldControl = static_cast<TPicture*>(hostView->ResolveControlByTag(kControlTagDialog));
   if (goldControl == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    FailNilPointerWithAssert(s_SourcePathUMacViewMgr_00696D68, 0xc27);
   }
   goldControl->ResetPictureResourceEntry();
   goldControl->SetPictureRsrcID(0, 0);

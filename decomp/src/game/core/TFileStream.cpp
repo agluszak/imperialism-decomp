@@ -7,11 +7,6 @@
 
 typedef void* hwnd_t;
 
-static void FailNilPointer(int line) {
-  GAME_FAIL_NIL_POINTER();
-  TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\McAppStream.cpp", line);
-}
-
 static CArchive* BackingArchive(ArchiveStreamAdapter* backingArchiveOrStream) {
   return backingArchiveOrStream->archive;
 }
@@ -23,7 +18,6 @@ TFileStream::TFileStream() {
   backingArchiveOrStream = 0;
 }
 
-// Destructors are compiler-generated (implicit) from real TStream inheritance.
 
 TFileStream::~TFileStream() {}
 
@@ -55,7 +49,7 @@ void TFileStream::SetLength(int length) {
 // FUNCTION: IMPERIALISM 0x00489220
 void TFileStream::ReadBytes(void* destination, int requestedCount) {
   if (this->backingArchiveOrStream == 0) {
-    FailNilPointer(0x3cc);
+    FailNilPointerWithAssert("D:\\Ambit\\McAppStream.cpp", 0x3cc);
   }
   BackingArchive(this->backingArchiveOrStream)
       ->Read(destination, static_cast<unsigned int>(requestedCount));
@@ -64,7 +58,7 @@ void TFileStream::ReadBytes(void* destination, int requestedCount) {
 // FUNCTION: IMPERIALISM 0x00489290
 void TFileStream::WriteBytes(const void* source, int byteCount) {
   if (this->backingArchiveOrStream == 0) {
-    FailNilPointer(0x410);
+    FailNilPointerWithAssert("D:\\Ambit\\McAppStream.cpp", 0x410);
   }
   BackingArchive(this->backingArchiveOrStream)->Write(source, static_cast<unsigned int>(byteCount));
 }

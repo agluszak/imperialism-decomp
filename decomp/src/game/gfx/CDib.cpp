@@ -25,7 +25,6 @@ CDib::CDib() : CObject() {
   Release();
 }
 
-// The scalar deleting destructor is compiler-generated from the virtual dtor.
 
 // FUNCTION: IMPERIALISM 0x00479fe0
 CDib::CDib(int width, int height, int bitDepth) : CObject() {

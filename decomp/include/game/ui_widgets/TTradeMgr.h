@@ -51,7 +51,6 @@ public:
   virtual char DidOffer(int item, int nationSlot);                  // 0x1f 0x5b9fa0
   virtual TLongintList* GetBidderList(int item, int nationSlot);    // 0x20 0x5b9fd0
   virtual short WhoTradesFirst(short proposalCode, short category); // 0x21 0x5ba090
-  // Mac oracle: Power(double, short).
   virtual double Power(double base, short exponent); // 0x22 0x5b9f30
 
   TTradeMgr();

@@ -13,16 +13,16 @@ public:
   virtual void
   SetPictureRsrcID(short nPictureId,
                                  unsigned char fRefreshNow) override; // slot 0x72 0x573430
-  virtual void ClearOrSubtractFlags98AndMaybeRefresh(unsigned short mask, char useAndMask,
+  virtual void ClearModeBits(unsigned short mask, char useAndMask,
                                                      char refreshNow); // slot 0x74 0x5736c0
-  // Overwrites flags98 wholesale, then optionally refreshes.
-  virtual void AssignFlags98AndMaybeRefresh(unsigned short value,
+  // Overwrites modeFlags wholesale, then optionally refreshes.
+  virtual void SetMode(unsigned short value,
                                             bool refreshNow); // slot 0x75 0x573690
   struct TQuickDrawSurfaceContext* surfaceContext; // +0x94 the picture's own bitmap
-  unsigned short flags98; // +0x98 bit0 = transparent-blit + opaque-fill-first, bit2 =
+  unsigned short modeFlags; // +0x98 bit0 = transparent-blit + opaque-fill-first, bit2 =
                           // use contentSubRect instead of the full passed-in rect
   unsigned char pad9a[2];
-  CRect contentSubRect; // +0x9c cached content sub-rect (used when flags98 & 4)
+  CRect contentSubRect; // +0x9c cached content sub-rect (used when modeFlags & 4)
 
   TMegaPicture();
 

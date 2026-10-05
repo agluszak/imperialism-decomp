@@ -45,8 +45,7 @@ TArmyMission::TArmyMission(int nodeKey) : TMission() {
   TList* list = new TList;
   orderList = list;
   if (list == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMissionSubs.cpp", 0x842);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UMissionSubs.cpp", 0x842);
   }
 
   for (int i = 0; i < 5; ++i) {

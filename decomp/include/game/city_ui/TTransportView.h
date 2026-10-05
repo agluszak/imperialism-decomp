@@ -18,7 +18,6 @@ public:
   // NOOP: verified empty in original 0x004bd333 (no standalone TTransportView::TTransportView body exists: CreateObject 0x004bd300 inlines this default ctor, calling the TView base ctor directly at that site)
   TTransportView() {}
 
-  // Original object size is 0x64 (CRuntimeClass m_nObjectSize); the fields below complete the extent so sizeof matches the original.
   TGreatPower* nation60;
 };
 ASSERT_SIZE(TTransportView, 0x64);

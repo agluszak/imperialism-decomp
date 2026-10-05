@@ -165,7 +165,7 @@ RuntimeFlowStatus StrategicMapEntryFlow::Advance(RuntimeScenario& scenario) {
       scenario.FailScenario(static_cast<LPCSTR>(failure));
       return kRuntimeFlowRunning;
     }
-    static_cast<TCitySiteView*>(mapDialog)->HandleMapClickByInteractionMode(citySite, 0);
+    static_cast<TCitySiteView*>(mapDialog)->NormalClick(citySite, 0);
     Enter(scenario, kWaitingForCombinedMap, "waiting_for_combined_map",
           "accept_city_site_confirmation");
     scenario.ContinueAfterAction();

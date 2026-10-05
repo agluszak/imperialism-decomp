@@ -7,13 +7,11 @@
 #include "game/mfc.h"
 #include "game/turn_event_codes.h"
 
-// Forward declarations for types referenced by generated signatures.
 class TStream;
 class TPtrList;
 class TWindow;
 class TCivUnit;
 
-// Mac oracle: HelpSetRecord — 0xe bytes stored in TPtrList (recordSize14 0xe).
 struct HelpSetRecord {
   short helpResourceBaseId;
   short previousHelpResourceBaseId;

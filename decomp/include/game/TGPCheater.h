@@ -19,7 +19,6 @@ public:
 
   void IGPCheater(TView* panel);
 
-  // 0x4b1cb0 -- refresh the GP-cheater dialog's nation value fields from g_apNationStates.
   void DisplayGP(int nationSlot);
 };
 ASSERT_SIZE(TGPCheater, 0x64);

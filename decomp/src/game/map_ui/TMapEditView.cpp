@@ -69,7 +69,7 @@ void TMapEditView::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0051ce60
-void TMapEditView::HandleMapClickByInteractionMode(short tileIndex, int inputFlags) {
+void TMapEditView::NormalClick(short tileIndex, int inputFlags) {
   (void)inputFlags;
   ownerContext->ResolveControlByTag(kControlTagEcon)->AssertValid();
 
@@ -103,9 +103,9 @@ void TMapEditView::HandleMapClickByInteractionMode(short tileIndex, int inputFla
 }
 
 // FUNCTION: IMPERIALISM 0x0051cfa0
-void TMapEditView::CenterOnTileAndRefresh(int tileIndex, int dispatchContext) {
+void TMapEditView::ControlClick(int tileIndex, int dispatchContext) {
   if (editorActionMode368 != 1) {
-    TWorldView::CenterOnTileAndRefresh(tileIndex, dispatchContext);
+    TWorldView::ControlClick(tileIndex, dispatchContext);
     return;
   }
 
@@ -124,7 +124,7 @@ void TMapEditView::CenterOnTileAndRefresh(int tileIndex, int dispatchContext) {
 }
 
 // FUNCTION: IMPERIALISM 0x0051d060
-void TMapEditView::DispatchOverlayEvent78FromStridedRecord(int tileIndex, int dispatchContext) {
+void TMapEditView::ShiftClick(int tileIndex, int dispatchContext) {
   (void)dispatchContext;
   short provinceId =
       g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)].cityRecordIndex;

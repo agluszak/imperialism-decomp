@@ -342,7 +342,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
       static_cast<unsigned char*>(primaryDib->m_dibBits) - (bitmapHeight - 1) * rowStep;
   SetClip(savedClip.tempRgn);
 
-  g_pViewMgr->ApplyLegendSplitSlot34(0x32);
+  g_pViewMgr->SetForeColor(0x32);
   CRect clippedRect;
   clippedRect.left = rectBuffer->left;
   clippedRect.top = rectBuffer->top;
@@ -370,12 +370,12 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
       if (unwrappedColumn >= 0x6c) {
         tileIndex -= 0x6c;
         if (blankWrappedRightEdge) {
-          g_pViewMgr->ApplyLegendSplitSlot34(0);
+          g_pViewMgr->SetForeColor(0);
           FillRectWithQuickDrawBrushAndContextOffset(&tileRect);
           continue;
         }
       } else if (blankWrappedLeftEdge && unwrappedColumn > 0x3c) {
-        g_pViewMgr->ApplyLegendSplitSlot34(0);
+        g_pViewMgr->SetForeColor(0);
         FillRectWithQuickDrawBrushAndContextOffset(&tileRect);
         continue;
       }
@@ -778,7 +778,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
   }
 
   if (g_bDrawOceanRouteOverlay) {
-    g_pViewMgr->ApplyLegendSplitSlot34(0x3c);
+    g_pViewMgr->SetForeColor(0x3c);
     int routeIndex = 0;
     short viewportRow = scrollRowOffset;
     short viewportColumnX2 = static_cast<short>(scrollColOffset * 2 + 1);
@@ -979,7 +979,7 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
   short spriteX = static_cast<short>(tileActionClass * 0x10);
   if (!alternateOverlayEnabled) {
     ScopedOceanMapPaletteSelection paletteSelection;
-    g_pViewMgr->ApplyLegendSplitSlot34(0x32);
+    g_pViewMgr->SetForeColor(0x32);
     FillRectWithQuickDrawBrushAndContextOffset(dstRect);
   } else {
     spriteX = static_cast<short>(spriteX + 0x10);
@@ -1000,7 +1000,7 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
   ClipRect(&leftSatelliteRect);
   if (!alternateOverlayEnabled) {
     ScopedOceanMapPaletteSelection paletteSelection;
-    g_pViewMgr->ApplyLegendSplitSlot34(0x32);
+    g_pViewMgr->SetForeColor(0x32);
     FillRectWithQuickDrawBrushAndContextOffset(&leftSatelliteRect);
   }
   spriteX = static_cast<short>(spriteX + 0x20);
@@ -1016,7 +1016,7 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
   ClipRect(&rightSatelliteRect);
   if (!alternateOverlayEnabled) {
     ScopedOceanMapPaletteSelection paletteSelection;
-    g_pViewMgr->ApplyLegendSplitSlot34(0x32);
+    g_pViewMgr->SetForeColor(0x32);
     FillRectWithQuickDrawBrushAndContextOffset(&rightSatelliteRect);
   }
   spriteX = static_cast<short>(spriteX + 0x20);

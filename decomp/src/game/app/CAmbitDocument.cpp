@@ -34,7 +34,6 @@ void CAmbitDocument::SetModifiedFlag(BOOL bModified) {
   m_bModified = bModified;
 }
 
-// The scalar deleting destructor is compiler-generated from the virtual dtor.
 
 // FUNCTION: IMPERIALISM 0x00479710
 CAmbitDocument::~CAmbitDocument() {

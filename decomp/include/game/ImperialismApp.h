@@ -73,7 +73,6 @@ public:
 
 extern ImperialismApp theApp;
 
-// 0x00412d90 — out-of-memory box; installed via the CRT _set_new_handler in InitInstance.
 int __cdecl ShowOutOfMemoryErrorNewHandler(size_t allocationSize);
 
 HKEY OpenOrCreateCompanyProductRegistryKey(LPCSTR company, LPCSTR product);

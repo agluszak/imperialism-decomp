@@ -16,7 +16,6 @@ public:
 
   TColorKeyButton();
 
-  // Original object size is 0x9c (CRuntimeClass m_nObjectSize); the fields below complete the extent so sizeof matches the original.
   int field98;
 };
 ASSERT_SIZE(TColorKeyButton, 0x9c);

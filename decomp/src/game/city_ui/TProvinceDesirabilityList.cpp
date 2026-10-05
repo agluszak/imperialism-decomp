@@ -8,7 +8,6 @@ IMPLEMENT_DYNCREATE(TProvinceDesirabilityList, TSortedPtrList)
 // FUNCTION: IMPERIALISM 0x004d6590
 TProvinceDesirabilityList::TProvinceDesirabilityList() {}
 
-// Destructors are compiler-generated (implicit) from real inheritance.
 
 // FUNCTION: IMPERIALISM 0x004d6610
 void TProvinceDesirabilityList::IProvinceDesirabilityList() {

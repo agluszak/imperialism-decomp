@@ -6,7 +6,6 @@ IMPLEMENT_DYNCREATE(TSortByPriceList, TSortedPtrList)
 // FUNCTION: IMPERIALISM 0x00534710
 TSortByPriceList::TSortByPriceList() {}
 
-// Destructors are compiler-generated (implicit) from real inheritance.
 
 // FUNCTION: IMPERIALISM 0x00534790
 void TSortByPriceList::ISortByPriceList() {

@@ -62,13 +62,11 @@ public:
   void RegainVirginity(int nationArg, TZone* contextZone); // 0x552a70
   void ITaskForce();
   short CountSelectedShips() const;
-  // 0x005548e0 — averages each child's cached aggression and stores the rounded result.
   void DemocraticallyDetermineAggressionLevel();
   void MaxOut(unsigned char mode);
   char SinkOrSwimShips();
   void Victory(int experienceGain); // 0x553e70
 
-  // Mac oracle: SetAggression(eAgro).
   void SetAggression(int value); // 0x552f60
   void CommitToOrders();
 

@@ -113,7 +113,7 @@ public:
   void BuildStrategicMapGaugeAtlasFrom1422And1423();
   void RefreshCityCapabilityUiHandlesForActiveNation();
   void BuildStrategicMapTileOverlayStripSurfaces800To807();
-  void ReloadBitmap244AndRefreshUiCaches();
+  void ReloadMapArtAtlases();
 };
 ASSERT_SIZE(TMacViewMgr, 0xd84);
 

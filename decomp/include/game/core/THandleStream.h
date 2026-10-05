@@ -24,7 +24,6 @@ public:
 
   DECLARE_DYNCREATE(THandleStream)
   THandleStream();
-  // Destructors are compiler-generated (implicit virtual dtor from TStream).
 
   void AttachGlobalMemoryHandleAndResetPosition(HGLOBAL memoryHandle, int growthSize);
 

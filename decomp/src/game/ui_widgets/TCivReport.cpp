@@ -20,7 +20,6 @@ IMPLEMENT_DYNCREATE(TCivReport, TPicture)
 // FUNCTION: IMPERIALISM 0x00590c30
 TCivReport::TCivReport() : TPicture() {}
 
-// Destructors are compiler-generated (implicit) from real inheritance.
 
 // FUNCTION: IMPERIALISM 0x00590c90
 TCivReport::~TCivReport() {}

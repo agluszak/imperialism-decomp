@@ -12,7 +12,6 @@ IMPLEMENT_DYNCREATE(TStatusButton, TButton)
 // FUNCTION: IMPERIALISM 0x00586330
 TStatusButton::TStatusButton() : TButton() {}
 
-// Destructor is compiler-generated (implicit) from real TButton inheritance.
 
 // FUNCTION: IMPERIALISM 0x00586400
 void TStatusButton::DoEvent(int selectedIndex, TEventHandler* sourceHandler, TEvent* event) {

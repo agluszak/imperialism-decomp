@@ -152,8 +152,7 @@ void TMapMgr::AllocateAndResetTerrainAndCityScoreTables() {
   if (terrainStateTable == 0) {
     terrainStateTable = new TTerrainStateRecord[0x1950];
     if (terrainStateTable == 0) {
-      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMap.cpp", 0x198);
+      FailNilPointerWithAssert("D:\\Ambit\\Cross\\UMap.cpp", 0x198);
     }
   }
   int i;
@@ -189,8 +188,7 @@ void TMapMgr::AllocateAndResetTerrainAndCityScoreTables() {
   if (cityScoreTable == 0) {
     cityScoreTable = new Province[0x180];
     if (cityScoreTable == 0) {
-      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMap.cpp", 0x1c7);
+      FailNilPointerWithAssert("D:\\Ambit\\Cross\\UMap.cpp", 0x1c7);
     }
   }
   int j;
@@ -319,7 +317,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
           record->regionClassA3 = static_cast<char>(classCode);
           int i;
           for (i = 0; i < cityScoreTable[rec].adjacentRegionCount08; ++i) {
-            SetMapRecordFlagA3AndPropagateToChildren(cityScoreTable[rec].adjacentRegionIds[i],
+            FloodRegionClass(cityScoreTable[rec].adjacentRegionIds[i],
                                                      classCode);
           }
         }
@@ -368,8 +366,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
 void TMapMgr::ReadInRGBMap(const MapPixelSourceView* source) {
   const short* packed = source->packedTiles;
   if (packed == 0) {
-    GAME_FAIL_NIL_POINTER();
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMap.cpp", 0x2b0);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UMap.cpp", 0x2b0);
   }
 
   int tileIndex = 0;
@@ -447,8 +444,7 @@ void TMapMgr::VerifyMapDataAndWriteReport() {
 
   FILE* report = fopen("maperr.txt", s_mcflavor_00697238);
   if (report == NULL) {
-    MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMap.cpp", 0x327);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UMap.cpp", 0x327);
   }
 
   fprintf(report, "Map verfication check\n\n");
@@ -503,7 +499,7 @@ void TMapMgr::AssignSequentialClassesToPopulatedRegions() {
       if (record.regionClassA3 != assignedClass) {
         record.regionClassA3 = static_cast<char>(assignedClass);
         for (int child = 0; child < record.adjacentRegionCount08; ++child) {
-          SetMapRecordFlagA3AndPropagateToChildren(record.adjacentRegionIds[child], assignedClass);
+          FloodRegionClass(record.adjacentRegionIds[child], assignedClass);
         }
       }
     }
@@ -511,12 +507,12 @@ void TMapMgr::AssignSequentialClassesToPopulatedRegions() {
 }
 
 // FUNCTION: IMPERIALISM 0x0050f6b0
-void TMapMgr::SetMapRecordFlagA3AndPropagateToChildren(int recordIndex, int classCode) {
+void TMapMgr::FloodRegionClass(int recordIndex, int classCode) {
   if (cityScoreTable[recordIndex].regionClassA3 != classCode) {
     cityScoreTable[recordIndex].regionClassA3 = static_cast<char>(classCode);
     int i;
     for (i = 0; i < cityScoreTable[recordIndex].adjacentRegionCount08; ++i) {
-      SetMapRecordFlagA3AndPropagateToChildren(cityScoreTable[recordIndex].adjacentRegionIds[i],
+      FloodRegionClass(cityScoreTable[recordIndex].adjacentRegionIds[i],
                                                classCode);
     }
   }
@@ -1730,8 +1726,7 @@ extern "C" StrategicTileIndex* __cdecl BuildHexAreaTileIndexList(StrategicTileIn
                                                                  short radius) {
   short* buffer = new short[static_cast<short>(radius * 6)];
   if (buffer == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMap.cpp", 0xb85);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UMap.cpp", 0xb85);
   }
 
   int row = static_cast<int>(centerTileIndex) / 0x6c;

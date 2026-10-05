@@ -57,8 +57,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
   TStaticText* nameCtrl =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('n', 'a', 'm', 'e')));
   if (nameCtrl == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa78);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa78);
   }
   nameCtrl->InstallTextStyle(style.desc, 0);
   nameCtrl->SetJustification(1, false);
@@ -69,8 +68,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
   TStaticText* costCtrl =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'o', 's', 't')));
   if (costCtrl == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa7f);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa7f);
   }
   costCtrl->InstallTextStyle(style.desc, 0);
   costCtrl->SetJustification(1, false);
@@ -92,14 +90,12 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
   TStaticText* warnCtrl =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('w', 'a', 'r', 'n')));
   if (warnCtrl == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa95);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa95);
   }
 
   TProductionOrder* order = city94->trailingOrderSlots[buildingSlotId90 + 2];
   if (order == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa97);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa97);
   }
 
   // Probe whether the full upgrade quantity is achievable, then restore the order.
@@ -122,8 +118,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
     TControl* okayCtrl =
         static_cast<TControl*>(ResolveControlByTag(IMPERIALISM_FOURCC('o', 'k', 'a', 'y')));
     if (okayCtrl == nullptr) {
-      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xaac);
+      FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xaac);
     }
     okayCtrl->Show(0, 0);
     okayCtrl->ViewEnable(0, 0);
@@ -136,8 +131,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
   TControl* cnclCtrl =
       static_cast<TControl*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'n', 'c', 'l')));
   if (cnclCtrl == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xab7);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xab7);
   }
   cnclCtrl->eventNumber60 = 0x22;
 
@@ -152,8 +146,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
 void TBuildingExpansionView::DoClosingAction(unsigned long dialogActionTag) {
   TProductionOrder* order = city94->trailingOrderSlots[buildingSlotId90 + 2];
   if (order == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xac6);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xac6);
   }
   if (dialogActionTag == kControlTagOkay) { // 'okay'
     short previousBuildingType = static_cast<short>(city94->GetBuildingType(buildingSlotId90));

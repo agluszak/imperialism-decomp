@@ -248,8 +248,7 @@ void TShipyardView::SetShip(short shipType) {
   CRect invalidRect;
   TStaticText* shipName = static_cast<TStaticText*>(ResolveControlByTag(kControlTagSnam)); // 'snam'
   if (shipName == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x408);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x408);
   }
   shipName->SetTextWithStrListID(0x2716, static_cast<short>(shipType + 1), false);
   shipName->QueryBounds(&invalidRect);
@@ -450,8 +449,7 @@ void TShipyardView::SetStats(short shipType) {
 
   TStaticText* history = static_cast<TStaticText*>(ResolveControlByTag(kControlTagHist)); // 'hist'
   if (history == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x410);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x410);
   }
   history->SetTextWithStrListID(0x23f7, shipType, false);
   history->QueryBounds(&invalidRect);
@@ -461,8 +459,7 @@ void TShipyardView::SetStats(short shipType) {
     TNumberText* stat =
         static_cast<TNumberText*>(ResolveControlByTag(kControlTagSta0 + statIndex)); // 'sta0'+index
     if (stat == nullptr) {
-      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x418);
+      FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x418);
     }
     stat->SetControlValue(TShip::GetTypeStat(shipType, statIndex), 0);
     stat->QueryBounds(&invalidRect);

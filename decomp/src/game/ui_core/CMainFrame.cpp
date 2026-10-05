@@ -52,7 +52,6 @@ CMainFrame::CMainFrame() : CFrameWnd(), field_BC(0), field_C4(0), field_CC(1) {
   m_backgroundColor = kTiledBackdropSentinelColor;
 }
 
-// The scalar deleting destructor is compiler-generated from the virtual dtor.
 
 // FUNCTION: IMPERIALISM 0x00484c70
 CMainFrame::~CMainFrame() {

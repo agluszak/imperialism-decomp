@@ -173,8 +173,7 @@ void TArmyUnitView::RenameUnit() {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNameUnit));
   if (node == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyViews_00695858, 0x204);
+    FailNilPointerWithAssert(s_SourcePathUArmyViews_00695858, 0x204);
   }
 
   TextStyle style;

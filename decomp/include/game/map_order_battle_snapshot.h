@@ -68,8 +68,6 @@ ASSERT_SIZE(MapOrderBattleSnapshot, 0x258);
 
 class TTaskForce;
 
-// 0x0054f110
 void BuildMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int side, TTaskForce* entry);
-// 0x0054f340
 void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int side,
                                        TTaskForce* entry);

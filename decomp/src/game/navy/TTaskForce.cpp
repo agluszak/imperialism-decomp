@@ -656,8 +656,7 @@ void TTaskForce::Add(TShip* node) {
       newLink->prev->next = newLink;
     }
   } else {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUNavy_006983C8, 0x80f);
+    FailNilPointerWithAssert(s_SourcePathUNavy_006983C8, 0x80f);
   }
 
   if (nextLink == shipList) {

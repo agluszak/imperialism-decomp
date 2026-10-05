@@ -810,8 +810,7 @@ void ImperialismApp::OnMissionSnooper() {
   TWindow* window =
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(static_cast<TurnEventId>(0x3a99));
   if (window == nullptr) {
-    GAME_FAIL_NIL_POINTER();
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x327);
+    FailNilPointerWithAssert(s_SourcePathUViewMgrMore_0069B740, 0x327);
   }
 
   TextStyle style;

@@ -13,7 +13,6 @@ void TSortedByRelationshipList::ISortedByRelationshipList() {
   recordSize14 = 4;
 }
 
-// Destructors are compiler-generated (implicit) from real inheritance.
 
 // FUNCTION: IMPERIALISM 0x004ee5e0
 short TSortedByRelationshipList::Compare(void* a, void* b) {

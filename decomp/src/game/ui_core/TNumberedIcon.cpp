@@ -32,7 +32,7 @@ void TNumberedIcon::INumberedIcon(TView* panel, int* offsetLayout, int* sizeLayo
 // FUNCTION: IMPERIALISM 0x005074e0
 void TNumberedIcon::DoPostCreate(int arg) {
   TMegaPicture::DoPostCreate(arg);
-  AssignFlags98AndMaybeRefresh(5, true);
+  SetMode(5, true);
   InstallNumberText();
   if (numberTextAc != 0) {
     int iconWidth = frameWidth;

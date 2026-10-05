@@ -18,7 +18,6 @@ public:
 
   DECLARE_DYNCREATE(TCountingStream)
   TCountingStream();
-  // Destructors are compiler-generated (implicit virtual dtor from TStream).
 
   int GetPosition() override;
   void PrepareForUse();

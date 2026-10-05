@@ -148,8 +148,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   g_pCursorControlPanel = static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagCurs));
   g_pCursorControlPanel->AssertValid();
   if (g_pCursorControlPanel == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x613);
+    FailNilPointerWithAssert(s_SourcePathUTradeViews_0069AA94, 0x613);
   }
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 
@@ -546,22 +545,19 @@ void TOfferDeskPicture::ShowAdvice() {
 void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
   TView* clusterControl = ResolveControlByTag(kControlTagClus);
   if (clusterControl == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x83b);
+    FailNilPointerWithAssert(s_SourcePathUTradeViews_0069AA94, 0x83b);
   }
 
   TAmtBarCluster* noMoreControl =
       static_cast<TAmtBarCluster*>(clusterControl->ResolveControlByTag(kControlTagNomo));
   if (noMoreControl == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x83d);
+    FailNilPointerWithAssert(s_SourcePathUTradeViews_0069AA94, 0x83d);
   }
   suppressEventFlag = noMoreControl->IsTradeControlAtMinimum();
 
   TNumberText* purchaseControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagPurc));
   if (purchaseControl == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x842);
+    FailNilPointerWithAssert(s_SourcePathUTradeViews_0069AA94, 0x842);
   }
   proposedAmount = static_cast<short>(purchaseControl->UpdateControlCachedIntFromWindowText());
 

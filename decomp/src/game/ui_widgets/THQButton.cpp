@@ -12,7 +12,6 @@ IMPLEMENT_DYNCREATE(THQButton, TPicture)
 // FUNCTION: IMPERIALISM 0x0058b660
 THQButton::THQButton() : TPicture() {}
 
-// Destructors are compiler-generated (implicit) from real inheritance.
 
 // FUNCTION: IMPERIALISM 0x0058b6c0
 THQButton::~THQButton() {}

@@ -22,7 +22,6 @@ public:
   virtual void AutoDeploySideUnitsAndMarkReady();                            // slot 0x12 0x59bc80
   virtual void DeploymentClick(TacticalTileIndex tileIndex);                 // slot 0x13 0x59c3c0
   virtual void RunTacticalAutoTurnControllerForActiveUnit();                 // slot 0x14 0x59e4f0
-  // Mac oracle: SwitchToAutoPlay. Applies the side's confirmation gate before AI control.
   virtual unsigned char SwitchToAutoPlay(); // slot 0x15 0x59ea60
 
   TArmyStack* armyStack; // +0x28

@@ -488,8 +488,7 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
   TWindow* dialog = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFriendlyFleetReport));
   if (dialog == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0x728);
+    FailNilPointerWithAssert(s_SourcePathUSuperMap_0069943C, 0x728);
   }
   dialog->SetModality(true);
 
@@ -679,8 +678,7 @@ void TMapUberPicture::PromptAndQueueMilitaryProvincePurgeOrders(short provinceIn
   TWindow* dialog = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(static_cast<TurnEventId>(0x24f4)));
   if (dialog == 0) {
-    GAME_FAIL_NIL_POINTER();
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USuperMap.cpp", 0x846);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\USuperMap.cpp", 0x846);
   }
   dialog->SetModality(true);
 
@@ -723,8 +721,7 @@ void TMapUberPicture::CreateCivilianWorkOrderAndRegisterSelection(int orderConte
 // FUNCTION: IMPERIALISM 0x00598e10
 void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* portZone) {
   if (portZone == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0x8bf);
+    FailNilPointerWithAssert(s_SourcePathUSuperMap_0069943C, 0x8bf);
   }
 
   RGBQUAD highlightColor = {0xff, 0xff, 0xff, 0};
@@ -733,8 +730,7 @@ void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* po
   TWindow* dialog = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNavyMaker));
   if (dialog == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0x8cc);
+    FailNilPointerWithAssert(s_SourcePathUSuperMap_0069943C, 0x8cc);
   }
   dialog->SetModality(true);
 
@@ -812,8 +808,7 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
   TWindow* dialog = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventEnemyFleetReport));
   if (dialog == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0x923);
+    FailNilPointerWithAssert(s_SourcePathUSuperMap_0069943C, 0x923);
   }
   dialog->SetModality(true);
 
@@ -1028,7 +1023,7 @@ void TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews(TView* controlOve
       zoomControl->controlTag = kControlTagZmIn;
     }
     invalidationFlag = false;
-    goodGoldTagControl->CenterOn(subview2A8->GetCenterTile());
+    goodGoldTagControl->CenterOn(subview2A8->GetCentertile());
     subview2A8->Locate(g_MapUberModeLayoutScratch_006a45e8, false);
     goodGoldTagControl->Locate(g_MapUberModeSecondaryLayoutScratch_006a45b8, true);
     TMiniMapView* miniMap = miniMapView;
@@ -1048,8 +1043,7 @@ void TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews(TView* controlOve
 void TMapUberPicture::DisplayMiniMap() {
   TView* toolControl = this->ResolveControlByTag(kControlTagTool); // "tool"
   if (toolControl == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0xa56);
+    FailNilPointerWithAssert(s_SourcePathUSuperMap_0069943C, 0xa56);
   }
 
   const int kToolWindowMargin = 4;
@@ -1099,8 +1093,7 @@ void TMapUberPicture::InvalidateMiniMap() {
 void TMapUberPicture::RemoveMiniMap() {
   TView* toolControl = ResolveControlByTag(kControlTagTool); // 'tool'
   if (toolControl == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0xa97);
+    FailNilPointerWithAssert(s_SourcePathUSuperMap_0069943C, 0xa97);
   }
 
   CRect mapBounds;
@@ -1125,8 +1118,7 @@ void TMapUberPicture::RemoveMiniMap() {
   TPicture* miniMapButton =
       static_cast<TPicture*>(toolControl->ResolveControlByTag(kControlTagInfo)); // 'info'
   if (miniMapButton == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0xab4);
+    FailNilPointerWithAssert(s_SourcePathUSuperMap_0069943C, 0xab4);
   }
   miniMapButton->SetPictureRsrcID(0x41a, true);
   miniMapButton->controlTag = kControlTagMmap; // 'mmap'
@@ -1137,8 +1129,7 @@ void TMapUberPicture::RemoveMiniMap() {
 void TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState) {
   TView* toolControl = this->ResolveControlByTag(kControlTagTool); // "tool"
   if (toolControl == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0xac7);
+    FailNilPointerWithAssert(s_SourcePathUSuperMap_0069943C, 0xac7);
   }
 
   TView* seasControl = toolControl->ResolveControlByTag(kControlTagSeas); // "seas"

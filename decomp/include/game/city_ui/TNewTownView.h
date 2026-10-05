@@ -18,7 +18,6 @@ public:
   // NOOP: verified empty in original 0x004bd7d3 (no standalone TNewTownView::TNewTownView body exists: CreateObject 0x004bd7a0 inlines this default ctor, calling the TView base ctor directly at that site)
   TNewTownView() {}
 
-  // Original object size is 0x64 (CRuntimeClass m_nObjectSize); the fields below complete the extent so sizeof matches the original.
   TTown* town60;
 };
 ASSERT_SIZE(TNewTownView, 0x64);

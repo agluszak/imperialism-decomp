@@ -28,7 +28,6 @@ IMPLEMENT_DYNCREATE(TRailAmtBar, TAmtBar)
 // FUNCTION: IMPERIALISM 0x00589f90
 TRailAmtBar::TRailAmtBar() : TIndustryAmtBar() {}
 
-// Destructors are compiler-generated (implicit) from real inheritance.
 
 // FUNCTION: IMPERIALISM 0x0058a020
 void TRailAmtBar::DoPostCreate(int arg) {
@@ -105,7 +104,7 @@ void TRailAmtBar::DrawAmt() {
       short styleValueAt60 = control->rangeOrMaxValue;
       if (styleValueAt60 > 0) {
         SetQuickDrawTextOriginWithContextOffset(0, 1);
-        g_pViewMgr->ApplyLegendSplitSlot34(0);
+        g_pViewMgr->SetForeColor(0);
         SetQuickDrawPenSizeAndMarkDirty(1, 4);
         DrawCenteredGuideLineOnMapDc((short)(styleValueAt60 - 1), 1);
         ResetQuickDrawStrokeState();

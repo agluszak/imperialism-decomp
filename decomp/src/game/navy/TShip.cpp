@@ -465,8 +465,7 @@ TTaskForce* TShip::DemandExclusiveTaskForce() {
   // The new entry's zone context comes from this ship's port zone.
   TTaskForce* entry = new TTaskForce(location, nation);
   if (entry == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UNavy.cpp", 0x306);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UNavy.cpp", 0x306);
   }
   entry->Add(this);
   return entry;

@@ -9,7 +9,6 @@
 #include "game/mfc.h"
 #include "game/unit_domain_types.h"
 
-// Forward declarations for types referenced by generated signatures.
 class TStream;
 class TTown;
 class TLongintList;
@@ -25,9 +24,7 @@ int ComputeStrategicHexTileDistance(StrategicTileIndex tileA, StrategicTileIndex
 
 short __stdcall ResolveRiverSpriteVariantForConnectionMask(unsigned char connectionMask,
                                                            bool waterTerrain);
-// 0x5123e0: recordBase + recordIndex * 0x6c (strided record address). __cdecl free function.
 int ComputeStridedRecordAddress6C(int recordBase, int recordIndex);
-// 0x563990 — walks the terrain-flow chain from tileIndex to the nearest sea tile.
 StrategicTileIndex TraceTerrainFlowToNearestSeaTile(StrategicTileIndex tileIndex);
 
 extern "C" StrategicTileIndex* __cdecl BuildHexAreaTileIndexList(StrategicTileIndex centerTileIndex,
@@ -66,7 +63,6 @@ public:
   virtual void TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress(); // slot 0x12 0x511e80
   virtual void ShowStrategicMapForPlayer();     // slot 0x13 0x511ed0
   virtual void ResetAllTileMarkerSlotIndicesToSentinel(); // slot 0x14 0x5178c0
-  // Mac oracle; 0x0050f740.
   void GenerateProvinceNames();
   virtual bool DoNationTerritoriesShareRegionClass(short nationA,
                                                    short nationB); // slot 0x15 0x511f30
@@ -109,7 +105,7 @@ public:
   virtual void UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(
       ProvinceIndex cityRecordIndex); // slot 0x2a 0x50fca0
   virtual void ApplyUnitMovementClassForTileIfValid(int tileIndex); // slot 0x2b 0x515d60
-  void SetMapRecordFlagA3AndPropagateToChildren(int recordIndex, int classCode);
+  void FloodRegionClass(int recordIndex, int classCode);
   void AssignSequentialClassesToPopulatedRegions();
   void RebuildTileOwnerNeighborCachesAndFallbackAssignments();
   char LoadScenarioMapStateFromTableResource(int scenarioIndex);
@@ -161,11 +157,9 @@ public:
   virtual short GetTownOffset(StrategicTileIndex tileIndex, int unused); // slot 0x41 0x517600
   virtual int GetMapImprovementBitmapRowOffsetForIndex(int index); // slot 0x42 0x5176a0
   virtual int ComputeTerrainRecordByteOffsetForIndex(int index); // slot 0x43 0x5176c0
-  // Mac oracle. Flag-strip offset for a great power; other owners use the neutral flag.
   virtual short GetFortFlagOffset(short nation); // slot 0x44 0x5176e0
   virtual short GetUnitOffset(short orderType, bool military, char idle); // slot 0x45 0x517780
   virtual short GetUnitOffset(class TCivUnit* unit); // slot 0x46 0x517710, Mac oracle
-  // Mac oracle GetTinyIngotOffset(char, short); the body ignores the second argument.
   virtual int GetTinyIngotOffset(char ingotKind, int unused); // slot 0x47 0x5177d0
   virtual short
   GetMapImprovementTileSpriteOffset(StrategicTileIndex tileIndex); // slot 0x48 0x5177f0
@@ -248,7 +242,6 @@ public:
   void SetTileTransportFlags(StrategicTileIndex nTileIndex, unsigned short wTileTransportFlags);
   void ApplyRailSectionEndpointDirectionFlags(StrategicTileIndex sourceTile,
                                               StrategicTileIndex destTile, short ownerNation);
-  // 0x514080. Rescind counterpart -- see the .cpp body comment.
   void ApplyEngineerRailCostDeltaForConnectedTiles(StrategicTileIndex tileA,
                                                    StrategicTileIndex tileB, short ownerNation);
   StrategicTileIndex
@@ -257,7 +250,6 @@ public:
   StrategicTileIndex SearchOpenTile(StrategicTileIndex tileIndex,
                                                             short ownerNationTag,
                                                             bool allowActiveFlag2); // 0x00514cd0
-  // 0x515f40. Write a city display-name CString into cityScoreTable[cityRecordIndex]+0xa4.
   void GetProvinceName(int provinceIndex, CString* outName);
   void SetGlobalMapCellSharedLabel(ProvinceIndex cityRecordIndex, CString* name);
   int CalculateDeveloperTilePurchaseCost(StrategicTileIndex nTileIndex);
@@ -285,7 +277,6 @@ public:
     return terrainStateTable[tileIndex].firstCivilianOrder20;
   }
 
-  // 0x514250. Walks the tile's civilian-order chain for the first entry owned by nationId.
   TCivUnit* GetTileUnitEntryByOwner(StrategicTileIndex tileIndex, short nationId);
 
   bool IsValidSecondaryNationHomeTileCandidate(StrategicTileIndex tileIndex);
@@ -322,5 +313,4 @@ ASSERT_SIZE(TMapMgr, 0x28);
 
 Province* __stdcall GetProvinceByTileIndex(short nTileIndex);
 
-// 0x005187f0 -- endian fix-up over the scenario tile-record array read from disk.
 void ByteSwapScenarioTileRecordWords(ScenarioTileDiskRecord* tileRecords);

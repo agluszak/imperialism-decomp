@@ -123,7 +123,6 @@ public:
   short selectedGrantRow;
 
 protected:
-  // 0xc2 -- active-nation snapshot stamped alongside 0x90/0x98 by the overlay rebuild.
   short activeNationC2;
   CRect nationTextHitRects[23]; // 0x0c4..0x234
   CRect nationLabelRects[23];   // 0x234..0x3a4
@@ -133,9 +132,7 @@ protected:
   int legendSurfaceMode;
   short visibleVoteTier;
   short currentCursorResourceId52A;
-  // 0x52c -- per-tile flag: owner byte in g_pDiplomacyTurnStateManager's table != -1.
   bool tileHasOwnerFlags[0x180];
-  // 0x6ac -- per-tile 10x7 marker rect anchored at the tile's hex-raster position.
   CRect tileMarkerRects[0x180]; // 0x6ac..0x1eac
   DiplomacyMaskBufferRun maskRuns[0x17];
   StrategicMapCallbackRecord packedColorRuns[0x17];

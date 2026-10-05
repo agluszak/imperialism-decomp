@@ -4,7 +4,6 @@
 #include "game/ui_core/TControl.h"
 #include "game/mfc.h"
 
-// Forward declarations for types referenced by generated signatures.
 class TObject;
 class CDib;
 

@@ -90,7 +90,6 @@ public:
 
   int GetCityRegionIdAtTileIndex(int tileIndex);
 
-  // Mac oracle: assigns sequential group ids to every still-unassigned class.
   void TranslateZones(); // 0x005272c0
 
   // ORACLE: Mac TMapMaker::CheckProvs(). Composite map-generation rejection predicate:
@@ -151,7 +150,6 @@ public:
 
   char* mapTileGrid08; // +0x08 base of the 6480-tile (108x60) grid, stride 0x24
 
-  // Mac oracle: CountSeaTilesInColumn(int).
   int CountSeaTilesInColumn(int column); // 0x00529910
   // ORACLE: IsSeaTile. The tile's terrain kind byte is water. 0x0052a600.
   unsigned char IsSeaTile(int tileIndex);

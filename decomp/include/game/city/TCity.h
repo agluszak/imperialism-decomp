@@ -66,7 +66,7 @@ public:
   virtual int GetOwnerNeedCapA6();
   // slot 0x1c — body 0x004b4260: set owner transportCapacity.
   virtual void SetOwnerNeedCapA6(short value);
-  virtual short* GetCitySummaryRecordSlot74();
+  virtual short* GetUnmetNeeds();
   // slot 0x1e — body 0x004b4d00: true for the basic resource slots 0..6 and 0xb.
   virtual short IsCapacityCenter(short resourceSlot);
   // slot 0x1f — body 0x004b4210.
@@ -123,7 +123,6 @@ public:
   TProductionOrder* trailingOrderSlots[0x0a]; // +0x1b0..+0x1d7
   TPopulationMgr*
       productionSummary; // 0x1D8 — city population / summary (TPopulationMgr vtbl 0x64f9b0)
-  // 0x1DC — 16-entry per-city production order table (0x004b4dc0, ctor-cleared).
   short productionOrderTable1dc[0x10];
   short productionAccum[0x10];         // 0x1FC — ctor-cleared
   unsigned char productionFlags[0x10]; // 0x21C — ctor-cleared
@@ -152,7 +151,6 @@ public:
 
   int GetBuildingType(short buildingSlot);
 
-  // 0x004b2570: initialize production arrays and build the city entry-object tables.
   void ICity(TGreatPower* ownerNation);
 };
 

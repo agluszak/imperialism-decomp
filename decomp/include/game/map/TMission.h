@@ -41,7 +41,6 @@ public:
   // Inline so every mission subclass reproduces the original direct CObject teardown.
   // FUNCTION: IMPERIALISM 0x00535080
   virtual ~TMission() override {}
-  // 0x02 Serialize / 0x03 AssertValid / 0x04 Dump inherited from CObject.
 
   // --- TMission's own virtuals, exact vtable slot order ---
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x535820
@@ -56,7 +55,6 @@ public:
   virtual void Reassess();                                    // 0x10 0x534cc0
   virtual void GiveOrders();                                  // 0x11 0x534cf0
   virtual TMission* GetReplacement();                   // 0x12 0x534d10
-  // Mac: Matches(eMissionType, long, TZone*) const.
   virtual bool Matches(eMissionType missionType, int key,
                        TZone* zoneContext) const; // 0x13 0x534d30
   virtual bool IsArmyMission() const;             // 0x14 0x534d50
@@ -86,7 +84,6 @@ public:
 
   void InitializeMissionWithNationIdAndResetPathMarker(NationSlot nationSlot);
 
-  // Mac: TMission::CreateMission(short, eMissionType, long, TZone*, long).
   static TMission* CreateMission(NationSlot sourceNation, eMissionType missionKind, int nodeKey,
                                  TZone* zoneContext, int relatedNodeKey);
 

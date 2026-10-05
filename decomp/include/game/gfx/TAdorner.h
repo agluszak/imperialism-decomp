@@ -6,7 +6,6 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/mfc.h"
 
-// Forward declarations for types referenced by generated signatures.
 class TStream;
 class TView;
 

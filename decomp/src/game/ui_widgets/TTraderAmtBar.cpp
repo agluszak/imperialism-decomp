@@ -40,7 +40,6 @@ TTraderAmtBar::TTraderAmtBar() : TAmtBar() {}
 
 IMPLEMENT_DYNCREATE(TTraderAmtBar, TAmtBar)
 
-// Destructors are compiler-generated (implicit) from real inheritance.
 
 // FUNCTION: IMPERIALISM 0x0058af80
 void TTraderAmtBar::DoPostCreate(int arg) {
@@ -115,7 +114,7 @@ void TTraderAmtBar::DrawAmt() {
       if (styleValueAt60 > 0) {
         short styleValueAt66 = auxValueB;
         SetQuickDrawTextOriginWithContextOffset(0, 0);
-        g_pViewMgr->ApplyLegendSplitSlot34(styleValueAt66);
+        g_pViewMgr->SetForeColor(static_cast<short>(styleValueAt66));
         SetQuickDrawPenSizeAndMarkDirty(1, 5);
         DrawCenteredGuideLineOnMapDc((short)(styleValueAt60 - 1), 0);
         ResetQuickDrawStrokeState();

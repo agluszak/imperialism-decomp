@@ -17,8 +17,7 @@ CTemporaryRegion::CTemporaryRegion() {
   }
   tempRgn = NewRgn();
   if (tempRgn == 0) {
-    GAME_FAIL_NIL_POINTER();
-    TemporarilyClearAndRestoreUiInvalidationFlag(kQuickDrawCppPath, 0x7f6);
+    FailNilPointerWithAssert(kQuickDrawCppPath, 0x7f6);
   }
 }
 

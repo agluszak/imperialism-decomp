@@ -191,7 +191,7 @@ void TCitySiteView::FrameCursorArea() {
 }
 
 // FUNCTION: IMPERIALISM 0x0051c760
-void TCitySiteView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags) {
+void TCitySiteView::NormalClick(short nTileIndex, int nInputFlags) {
   (void)nInputFlags;
 
   TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[nTileIndex];

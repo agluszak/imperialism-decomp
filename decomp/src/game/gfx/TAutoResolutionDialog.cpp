@@ -33,7 +33,6 @@ TAutoResolutionDialog::TAutoResolutionDialog(void* initParam)
     : TModalDialogBase(0xfb, static_cast<CWnd*>(initParam)), primaryDialogControl(),
       secondaryDialogControl(), autoResolutionCheckState(0) {}
 
-// The scalar deleting destructor is compiler-generated from the virtual dtor.
 
 // FUNCTION: IMPERIALISM 0x0047e0c0
 void TAutoResolutionDialog::DoDataExchange(CDataExchange* pDX) {

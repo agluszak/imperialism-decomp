@@ -75,7 +75,6 @@ public:
   virtual char* CreateSeaDistanceMap(TShortintList* ownedTiles); // slot 0x3b 0x4c3640
   virtual char*
   BuildFrogCityDistanceMapFromReachableSeaCandidates(TShortintList* ownedTiles); // slot 0x3c
-                                                                                 // 0x4c3910
   virtual void RebalanceCityOrderAllocationTargets(TCity* city);        // slot 0x3d 0x4c3c00
   virtual void ProcessCityOrderStateTickAndApplyCapabilitySelection();  // slot 0x3e 0x4c3d60
   virtual void RebalanceCitySupportAndLaborAllocations();               // slot 0x3f 0x4c40c0

@@ -9,7 +9,6 @@ CDibPal::CDibPal() : CPalette() {
   m_pLogPalette = NULL;
 }
 
-// The scalar deleting destructor is compiler-generated from the virtual dtor.
 
 // FUNCTION: IMPERIALISM 0x0047e3c0
 CDibPal::~CDibPal() {

@@ -9,7 +9,6 @@ IMPLEMENT_DYNCREATE(TClosePicture, TPictureButton)
 // FUNCTION: IMPERIALISM 0x00586b70
 TClosePicture::TClosePicture() : TPictureButton() {}
 
-// Destructors are compiler-generated (implicit) from real inheritance.
 
 // FUNCTION: IMPERIALISM 0x00586bd0
 TClosePicture::~TClosePicture() {}

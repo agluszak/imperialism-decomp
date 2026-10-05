@@ -119,18 +119,15 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
   }
   this->headerSurface60 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x1c30);
   if (this->headerSurface60 == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xcef);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xcef);
   }
   this->footerSurface64 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x1c31);
   if (this->footerSurface64 == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xcf0);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xcf0);
   }
   this->bodyTileSurface68 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x1c32);
   if (this->bodyTileSurface68 == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xcf1);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xcf1);
   }
 
   // Panel title.
@@ -312,8 +309,7 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
 
   TWindow* window = GetWindow();
   if (window == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xd88);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xd88);
   }
 
   CRect bounds;

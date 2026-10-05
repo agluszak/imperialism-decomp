@@ -26,7 +26,6 @@ public:
   TTaskForce* orderQueueHead;
 
   TTaskForce* WhoseIngotIsAt(short tileIndex);
-  // Mac oracle: PrepareToCarryOutAllOrders(short). Stores the phase passed to that step.
   short executionPhase;
   char pad0a[2];
   TTaskForce* pendingOrderEntry;
@@ -81,7 +80,7 @@ public:
   // manager's active map-order state (dialogs for actions 2..8, set-active-entry for 9,
   // UI-runtime slot 0xf0 for 10, entry-order dialog for 11 which walks orderQueueHead).
   // ABI: callers store and test AL. Called directly (via an ILT thunk) from
-  // TWorldView::HandleMapClickByInteractionMode and from DoTileClick.
+  // TWorldView::NormalClick and from DoTileClick.
   bool SelectionClick(short nTileIndex, int nInputFlags);
   int DoTileClick(short nTileIndex, int nInputFlags);
 

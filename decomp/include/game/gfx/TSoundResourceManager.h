@@ -113,15 +113,11 @@ public:
     ReleaseDirectSoundDeviceAndChannels();
   }
 
-  // 0x0049c240 — rewind channel `slot` to position 0 and (re)start playback.
   int UpdateLocalizationAudioSlot(int slot);
-  // 0x0049c290 — load a wave file by path and copy it into channel `slot`'s buffer.
   int LoadWaveFileByPathAndBuildBuffer(char* filePath, int slot);
   int LoadWaveResourceByNumericIdAndBuildBuffer(unsigned int waveId, int slot);
   int ReadWaveDataAndFormatViaLoaderWithRetry(WaveLoadDescriptor* desc, int slot);
-  // 0x0049c850 — push `volume` to every channel until one accepts it.
   int SetChannelVolumesUntilAccepted(int volume);
-  // 0x0049c8a0 — set one channel's volume and retain the DirectSound result.
   int SetChannelVolume(int volume, int slot);
   int InitializeDirectSoundDeviceAndChannels();
   void ReleaseDirectSoundDeviceAndChannels();

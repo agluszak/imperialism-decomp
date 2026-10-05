@@ -20,7 +20,6 @@ TArmyPlacard::TArmyPlacard() : TPicture() {
   this->glyph90 = -1;
 }
 
-// Destructors are compiler-generated (implicit) from real inheritance.
 
 // FUNCTION: IMPERIALISM 0x0058bf30
 TArmyPlacard::~TArmyPlacard() {}

@@ -2738,8 +2738,7 @@ void TMultiplayerMgr::RefreshPoseMessageDialogNationSelectionControls(int unused
   TView* dialog =
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventJoinSelectorMessage);
   if (dialog == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMultiplayerMgr_00698040, 0x1061);
+    FailNilPointerWithAssert(s_SourcePathUMultiplayerMgr_00698040, 0x1061);
   }
 
   for (int i = 0; i < 7; ++i) {

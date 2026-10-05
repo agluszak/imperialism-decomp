@@ -431,7 +431,7 @@ void TMapDialog::FrameCursorArea() {
     ProjectTileIndexToWrappedScreenOffsetByScale(hoveredTile, &viewportOrigin, &projectedY,
                                                  &projectedX, 1);
     CRect hoveredRect(projectedX, projectedY, projectedX + 0x40, projectedY + 0x40);
-    g_pViewMgr->ApplyLegendSplitSlot34(0x3f);
+    g_pViewMgr->SetForeColor(0x3f);
     QDFrameRect(&hoveredRect);
     SetQuickDrawFillColor(0);
     if (updateNeighborHighlights) {
@@ -451,7 +451,7 @@ void TMapDialog::FrameNeighbors(short* neighborTiles) {
   short outY;
   short outX;
 
-  g_pViewMgr->ApplyLegendSplitSlot34(0x3f);
+  g_pViewMgr->SetForeColor(0x3f);
 
   if (neighborTiles[0] != -1) {
     ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[0], viewOrigin, &outY, &outX, 1);
@@ -761,8 +761,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
 
   TView* titleControl = ResolveControlByTag(kControlTagTitl); // 'titl'
   if (titleControl == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMapDlog_006973D0, 0x459);
+    FailNilPointerWithAssert(s_SourcePathUMapDlog_006973D0, 0x459);
   }
   g_pSimMgr->GetString(0x1cb7, g_pGlobalMapState->terrainStateTable[tileIndex].GetTerrainKind(),
                        &mainText);
@@ -772,8 +771,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
 
   TView* infoControl = ResolveControlByTag(kControlTagInfo); // 'info'
   if (infoControl == 0) {
-    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMapDlog_006973D0, 0x463);
+    FailNilPointerWithAssert(s_SourcePathUMapDlog_006973D0, 0x463);
   }
   mainText = CString(g_szEmptyString);
 
@@ -838,8 +836,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
     }
     locationControl = ResolveControlByTag(kControlTagLoca); // 'loca'
     if (locationControl == 0) {
-      MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMapDlog_006973D0, 0x4a3);
+      FailNilPointerWithAssert(s_SourcePathUMapDlog_006973D0, 0x4a3);
     }
   } else {
     TZone* zone = g_pActiveMapOrderContext->GetMapActionContextEntryByNationCodeOffset17(
@@ -847,8 +844,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
     zone->AssignZoneDisplayNameToOutputRef(&mainText);
     locationControl = ResolveControlByTag(kControlTagLoca); // 'loca'
     if (locationControl == 0) {
-      MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMapDlog_006973D0, 0x4ab);
+      FailNilPointerWithAssert(s_SourcePathUMapDlog_006973D0, 0x4ab);
     }
   }
   static_cast<TStaticText*>(locationControl)->SetTextAndMaybeRefresh(&mainText, true);

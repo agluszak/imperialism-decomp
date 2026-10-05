@@ -25,7 +25,7 @@ void TNetGameSelectPicture::DoEvent(int commandId, TEventHandler* sourceHandler,
     if (sourceHandler->controlTag == kControlTagCncl) {
       g_pGameFlowState->ResetSessionAndShowMainMenu();
     } else if (sourceHandler->controlTag == kControlTagHost) {
-      g_pGameFlowState->AssignStringAtB4FromB0AndResetState40();
+      g_pGameFlowState->Host();
     } else if (sourceHandler->controlTag == kControlTagJoin) {
       TCluster* gameControl = static_cast<TCluster*>(ResolveControlByTag(kControlTagGame));
       gameControl->AssertValid();

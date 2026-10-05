@@ -38,7 +38,6 @@ IMPLEMENT_DYNCREATE(TDefenseMinister, TMinister)
 // FUNCTION: IMPERIALISM 0x004ec0e0
 TDefenseMinister::TDefenseMinister() : TMinister() {}
 
-// Destructor is compiler-generated (implicit) from real TMinister inheritance.
 
 // FUNCTION: IMPERIALISM 0x004ec160
 void TDefenseMinister::InitializeBaseOrderArrayMetrics(TGreatPower* owner) {

@@ -66,21 +66,18 @@ void TArmoryView::DoStartup() {
     TCivilianButton* button =
         static_cast<TCivilianButton*>(ResolveControlByTag(kControlTagCiv0 + row)); // 'civ0'+row
     if (button == nullptr) {
-      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xb19);
+      FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xb19);
     }
     button->SetPictureRsrcID(static_cast<short>(0x1d60 + 2 * pictureVariant), 1);
 
     TView* numRow = ResolveControlByTag(kControlTagNum0 + row); // 'num0'+row
     if (numRow == nullptr) {
-      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xb1c);
+      FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xb1c);
     }
     TNumberText* numb =
         static_cast<TNumberText*>(numRow->ResolveControlByTag(kControlTagNumb)); // 'numb'
     if (numb == nullptr) {
-      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xb1d);
+      FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xb1d);
     }
     numb->ViewEnable(0, 0);
     numb->InstallTextStyle(style.desc, 1);
@@ -178,14 +175,12 @@ void TArmoryView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
       if (selectedUnitOrder->SetQuantity(newValue)) {
         TView* numXControl = ResolveControlByTag(kControlTagNum0 + selectedRowIndex); // 'num0'+idx
         if (numXControl == nullptr) {
-          MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-          TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xb87);
+          FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xb87);
         }
         TNumberText* numbControl =
             static_cast<TNumberText*>(numXControl->ResolveControlByTag(kControlTagNumb)); // 'numb'
         if (numbControl == nullptr) {
-          MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-          TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xb88);
+          FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xb88);
         }
         numbControl->SetControlValue(newValue, 0);
 
@@ -318,8 +313,7 @@ void TArmoryView::SetUnit(short nBuildingSlotId) {
   TStaticText* unit =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('u', 'n', 'i', 't')));
   if (unit == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xc1a);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xc1a);
   }
   unit->SetTextWithStrListID(0x2717, static_cast<short>(order->resourceTypeIndex + 1), false);
   CRect bounds;
@@ -404,8 +398,7 @@ void TArmoryView::SetUnit(short nBuildingSlotId) {
   TStaticText* description =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('d', 'e', 's', 'c')));
   if (description == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xc57);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xc57);
   }
   description->SetTextWithStrListID(0x2750, static_cast<short>(resourceType + 1), false);
   description->QueryBounds(&bounds);

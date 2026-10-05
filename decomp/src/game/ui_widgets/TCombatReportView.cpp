@@ -43,7 +43,6 @@ IMPLEMENT_DYNCREATE(TCombatReportView, TPicture)
 // FUNCTION: IMPERIALISM 0x0058c8d0
 TCombatReportView::TCombatReportView() : TPicture() {}
 
-// Destructors are compiler-generated (implicit) from real inheritance.
 
 // FUNCTION: IMPERIALISM 0x0058c930
 TCombatReportView::~TCombatReportView() {}
@@ -99,8 +98,7 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
   TStaticText* titleControl =
       static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl)); // 'titl'
   if (titleControl == NULL) {
-    MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x1349);
+    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1349);
   }
   titleControl->SetTextAndMaybeRefresh(&reportText, true);
 
@@ -146,8 +144,7 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
   TStaticText* reportControl =
       static_cast<TStaticText*>(ResolveControlByTag(kControlTagRepo)); // 'repo'
   if (reportControl == NULL) {
-    MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x137c);
+    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x137c);
   }
   reportControl->SetTextAndMaybeRefresh(&reportText, true);
 
@@ -172,8 +169,7 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
   TStaticText* lossControl =
       static_cast<TStaticText*>(ResolveControlByTag(kControlTagLoss)); // 'loss'
   if (lossControl == NULL) {
-    MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x1394);
+    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1394);
   }
   lossControl->SetTextAndMaybeRefresh(&reportText, true);
 
@@ -253,13 +249,13 @@ void TCombatReportView::Draw(RECT* rectBuffer) {
 
       SetQuickDrawTextOriginWithContextOffset(7, static_cast<short>(y + 3));
       SetQuickDrawPenSizeAndMarkDirty(1, 4);
-      g_pViewMgr->ApplyLegendSplitSlot34(0x34);
+      g_pViewMgr->SetForeColor(0x34);
       int guideX = (record->fieldAt18 * 3) / 7 + 7;
       DrawCenteredGuideLineOnMapDc(static_cast<short>(guideX), static_cast<short>(y + 3));
-      g_pViewMgr->ApplyLegendSplitSlot34(0x33);
+      g_pViewMgr->SetForeColor(0x33);
       DrawCenteredGuideLineOnMapDc(static_cast<short>(guideX - (record->fieldAt1c * 3) / 7),
                                    static_cast<short>(y + 3));
-      g_pViewMgr->ApplyLegendSplitSlot34(0);
+      g_pViewMgr->SetForeColor(0);
 
       // Unit icon strip.
       UpdatePaletteIndexWithDefaultFallback(0x10);
@@ -317,14 +313,12 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
         }
         TView* pgUp = ResolveControlByTag(kControlTagPgup);
         if (pgUp == NULL) {
-          MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-          TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x145d);
+          FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x145d);
         }
         pgUp->Show(0, 1);
         TView* pgDown = ResolveControlByTag(kControlTagPgdn);
         if (pgDown == NULL) {
-          MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-          TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x1460);
+          FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1460);
         }
         pgDown->Show(1, 1);
       } else {
@@ -332,8 +326,7 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       }
       TView* pgDown = ResolveControlByTag(kControlTagPgdn);
       if (pgDown == NULL) {
-        MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-        TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x1460);
+        FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1460);
       }
       pgDown->Show(1, 1);
       RECT rect = {4, 0x9f, 0xe1, 0x149};
@@ -351,14 +344,12 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
         }
         TView* pgUp = ResolveControlByTag(kControlTagPgup);
         if (pgUp == NULL) {
-          MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-          TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x1470);
+          FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1470);
         }
         pgUp->Show(1, 1);
         TView* pgDown = ResolveControlByTag(kControlTagPgdn);
         if (pgDown == NULL) {
-          MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-          TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x1477);
+          FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1477);
         }
         pgDown->Show(0, 1);
       } else if (reportValue < totalPages) {
@@ -367,8 +358,7 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       if (reportValue == totalPages) {
         TView* pgDown = ResolveControlByTag(kControlTagPgdn);
         if (pgDown == NULL) {
-          MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-          TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x1477);
+          FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1477);
         }
         pgDown->Show(0, 1);
       }

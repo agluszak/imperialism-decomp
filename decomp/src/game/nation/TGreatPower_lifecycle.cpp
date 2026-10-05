@@ -689,53 +689,53 @@ void TGreatPower::DispatchPendingStatusPrompts(void) {
   bool flag5Handled = (flags[5]) >= 0x33;
   if (!flag5Handled &&
       g_pTechMgr->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] == 2) {
-    g_pViewMgr->QueueTurnStatusPromptSlot3C(5, this->field8d6[5]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(5, this->field8d6[5]);
   }
   if (flags[6] == 0x32) {
-    g_pViewMgr->QueueTurnStatusPromptSlot3C(6, this->field8d6[6]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(6, this->field8d6[6]);
   }
   if (flags[7] == 0x32) {
     if (this->field8d6[7] == 2) {
       TCity* cityPtr = this->city;
       cityPtr->cityStockPaper = cityPtr->cityStockPaper + 10;
       cityPtr->VerifyStocks();
-      g_pViewMgr->QueueTurnStatusPromptSlot3C(7, this->field8d6[7]);
+      g_pViewMgr->BuildAndShowTurnOverlayByMode(7, this->field8d6[7]);
     } else if (this->field8d6[7] == 3) {
       TCity* cityPtr = this->city;
       cityPtr->cityStockPaper = cityPtr->cityStockPaper + 10;
       cityPtr->VerifyStocks();
-      g_pViewMgr->QueueTurnStatusPromptSlot3C(7, -1);
+      g_pViewMgr->BuildAndShowTurnOverlayByMode(7, -1);
     }
   }
   if (flags[8] == 0x32) {
-    g_pViewMgr->QueueTurnStatusPromptSlot3C(8, this->field8d6[8]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(8, this->field8d6[8]);
   }
   if (flags[9] == 0x32) {
-    g_pViewMgr->QueueTurnStatusPromptSlot3C(9, this->field8d6[9]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(9, this->field8d6[9]);
   }
   if (flags[10] == 0x32) {
-    g_pViewMgr->QueueTurnStatusPromptSlot3C(10, this->field8d6[10]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(10, this->field8d6[10]);
   }
   if (flags[11] == 0x32) {
-    g_pViewMgr->QueueTurnStatusPromptSlot3C(11, this->field8d6[11]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(11, this->field8d6[11]);
   }
   if (flags[12] == 0x32) {
-    g_pViewMgr->QueueTurnStatusPromptSlot3C(12, this->field8d6[12]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(12, this->field8d6[12]);
   }
   if (flags[0] == 0x32) {
-    g_pViewMgr->QueueTurnStatusPromptSlot3C(0, g_pTechMgr->activeZoneIndex);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(0, g_pTechMgr->activeZoneIndex);
   }
   if (flags[1] == 0x32) {
-    g_pViewMgr->QueueTurnStatusPromptSlot3C(1, this->field8d6[1]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(1, this->field8d6[1]);
   }
   if (flags[2] == 0x32) {
-    g_pViewMgr->QueueTurnStatusPromptSlot3C(2, this->field8d6[2]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(2, this->field8d6[2]);
   }
   if (flags[3] == 0x32) {
-    g_pViewMgr->QueueTurnStatusPromptSlot3C(3, this->field8d6[3]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(3, this->field8d6[3]);
   }
   if (flags[4] == 0x32) {
-    g_pViewMgr->QueueTurnStatusPromptSlot3C(4, this->field8d6[4]);
+    g_pViewMgr->BuildAndShowTurnOverlayByMode(4, this->field8d6[4]);
   }
 }
 
@@ -1056,7 +1056,6 @@ char TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
       if (pressureTier >= compileThreshold) {
         g_pSimMgr->GetString(0x274b, 1, &sharedMessageRef);
         g_pViewMgr->ModalMessage(sharedMessageRef, g_ptGreatPowerModalMessage, 2, 0);
-        // 0x004db5f6: the original re-runs the relationship-delta compile here.
         this->CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage();
       } else if (pressureTier == (compileThreshold - 1)) {
         g_pSimMgr->GetString(0x274b, 3, &sharedMessageRef);

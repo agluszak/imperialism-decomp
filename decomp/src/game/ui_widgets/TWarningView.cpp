@@ -15,7 +15,6 @@ IMPLEMENT_DYNCREATE(TWarningView, TPicture)
 // FUNCTION: IMPERIALISM 0x00592900
 TWarningView::TWarningView() : TPicture() {}
 
-// Destructors are compiler-generated (implicit) from real inheritance.
 
 // FUNCTION: IMPERIALISM 0x00592960
 TWarningView::~TWarningView() {}

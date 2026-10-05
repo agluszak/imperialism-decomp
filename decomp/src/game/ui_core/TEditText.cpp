@@ -95,8 +95,7 @@ CWnd* TEditText::Open() {
   if (editWindow == 0 && viewEnabled != 0 && enabled != 0 && nativeWindow50 != 0) {
     editWindow = new CMcEditWindow;
     if (editWindow == 0) {
-      MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0xdee);
+      FailNilPointerWithAssert(g_szMcAppUiSourcePath_006950B0, 0xdee);
     }
 
     // ES_LEFT / ES_CENTER / ES_RIGHT follow the static text's own alignment code.

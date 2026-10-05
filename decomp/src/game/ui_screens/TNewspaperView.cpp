@@ -182,7 +182,7 @@ void TNewspaperView::BuildLocalizedTokenListFromBitmaskWithConjunction(CString* 
       continue;
     }
     if (emitted == 0) {
-      itemText = g_pSimMgr->AssignSharedStringFromIndexedSlot7C(i);
+      itemText = g_pSimMgr->GetSharedText(i);
     } else {
       itemText = g_pSimMgr->LoadNormalizedCredentialName(i);
     }

@@ -354,7 +354,7 @@ void TSimMgr::ReadFrom(TStream* stream) {
     g_pAssetMgr->EnsurePictWvDataGobLoadedBySlot(field6a);
   }
 
-  g_pMacViewMgr->ReloadBitmap244AndRefreshUiCaches();
+  g_pMacViewMgr->ReloadMapArtAtlases();
 
   if (g_nSaveFormatVersion >= 0x36) {
     stream->ReadBytes(&finalCouncilYear, 2);
@@ -1281,7 +1281,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     turnStateCode = kGamePhaseEndTurn;
     g_pAssetMgr->OpenFilesFor(0x13);
     g_pGlobalMapState->ShowStrategicMapForPlayer();
-    g_pViewMgr->RefreshViewSlot48();
+    g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
     for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
       TGreatPower* nation = g_apNationStates[nationSlot];
       if (nation == nullptr || nationSlot == -1) {
@@ -2044,10 +2044,10 @@ void ReinitializeGameFlowAndPostTurnEventCode(TurnEventId eventCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x00581ae0
-void TSimMgr::SetSelectedIndex6AAndTriggerRefresh(short index) {
+void TSimMgr::SelectMapArtSet(short index) {
   field6a = index;
   g_pAssetMgr->EnsurePictWvDataGobLoadedBySlot(index);
-  g_pMacViewMgr->ReloadBitmap244AndRefreshUiCaches();
+  g_pMacViewMgr->ReloadMapArtAtlases();
 }
 
 // FUNCTION: IMPERIALISM 0x00581b20
@@ -2057,7 +2057,7 @@ CString TSimMgr::LoadNormalizedCredentialName(short slot) {
 }
 
 // FUNCTION: IMPERIALISM 0x00581bc0
-CString TSimMgr::AssignSharedStringFromIndexedSlot7C(short slot) {
+CString TSimMgr::GetSharedText(short slot) {
   return sharedTextSlots[slot];
 }
 
@@ -2675,7 +2675,7 @@ void TSimMgr::ScSetFlags(STurnInstructionCursor* instruction) {
   short index = static_cast<short>(token);
   field6a = index;
   g_pAssetMgr->EnsurePictWvDataGobLoadedBySlot(index);
-  g_pMacViewMgr->ReloadBitmap244AndRefreshUiCaches();
+  g_pMacViewMgr->ReloadMapArtAtlases();
 }
 
 // FUNCTION: IMPERIALISM 0x00583470

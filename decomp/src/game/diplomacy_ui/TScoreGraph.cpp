@@ -66,7 +66,7 @@ void TScoreGraph::Draw(RECT* rectBuffer) {
       segRect.right = static_cast<short>(segValue) + segRect.left;
       segRect.bottom = rowY + 0x24;
       segRect.top = rowY;
-      g_pViewMgr->ApplyLegendSplitSlot34(segComponent + 3);
+      g_pViewMgr->SetForeColor(static_cast<short>(segComponent + 3));
       FillRectWithQuickDrawBrushAndContextOffset(&segRect);
       segX += segValue;
     }

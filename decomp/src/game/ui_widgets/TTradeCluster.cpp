@@ -140,7 +140,7 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 
   switch (commandId) {
   case 100: {
-    if (this->GetBoolSlot1DC() != '\0') {
+    if (this->IsSellOffer() != '\0') {
       TNumberText* sellControl =
           static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagSell));
       if (sellControl == 0) {
@@ -294,7 +294,7 @@ unsigned char TTradeCluster::IsSelectionAllowed() {
 }
 
 // FUNCTION: IMPERIALISM 0x00587a10
-int TTradeCluster::GetBoolSlot1DC() {
+int TTradeCluster::IsSellOffer() {
   TPicture* offerControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagOffr));
   if (offerControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineOfferActionable);

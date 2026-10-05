@@ -133,8 +133,7 @@ void TShipView::RenameShip() {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNameUnit));
   if (node == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUOceanViews_00698650, 0x203);
+    FailNilPointerWithAssert(s_SourcePathUOceanViews_00698650, 0x203);
   }
 
   TextStyle style;

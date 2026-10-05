@@ -23,7 +23,6 @@ TTransportPicture::TTransportPicture()
     : TPicture(), gaugeMetricId90(0x3a), splitValue94(0), splitValue96(0),
       splitLimit((short)0xffff) {}
 
-// Destructors are compiler-generated (implicit) from real inheritance.
 
 // FUNCTION: IMPERIALISM 0x00591ef0
 TTransportPicture::~TTransportPicture() {}

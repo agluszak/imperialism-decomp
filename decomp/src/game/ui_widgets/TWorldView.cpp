@@ -36,7 +36,7 @@
 void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
 
 // FUNCTION: IMPERIALISM 0x00519af0
-short TWorldView::QueryMinusOneWordSlot77() {
+short TWorldView::GetCentertile() {
   return -1;
 }
 // FUNCTION: IMPERIALISM 0x00519b10
@@ -421,7 +421,7 @@ void TWorldView::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
 void TWorldView::FrameCursorArea() {}
 
 // FUNCTION: IMPERIALISM 0x005960a0
-short TWorldView::QueryMinusOneWordSlot1BC(int unusedArg) {
+short TWorldView::PointToTileID(int unusedArg) {
   (void)unusedArg;
   return -1;
 }
@@ -462,31 +462,31 @@ char TWorldView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoi
 
   int stridedRecord = ComputeStridedRecordAddress6C((int)tileRow, (int)tileCol);
   if (event->mouseButton == 1) {
-    DispatchOverlayEvent78FromStridedRecord(stridedRecord, regionBand);
+    ShiftClick(stridedRecord, regionBand);
     return 1;
   }
 
   if (((unsigned short)GetAsyncKeyState(0x11) & 0x8000) != 0) {
-    CenterOnTileAndRefresh(stridedRecord, regionBand);
+    ControlClick(stridedRecord, regionBand);
     return 1;
   }
 
   if (((unsigned short)GetAsyncKeyState(0x10) & 0x8000) != 0) {
-    DispatchOverlayEvent78FromStridedRecord(stridedRecord, regionBand);
+    ShiftClick(stridedRecord, regionBand);
     return 1;
   }
 
   if (g_pAmbitApplication->screenModeAt24 < 2) {
-    HandleMapClickByInteractionMode(static_cast<short>(stridedRecord), regionBand);
+    NormalClick(static_cast<short>(stridedRecord), regionBand);
     return 1;
   }
 
-  DispatchOverlayEvent78RootHighFromStridedRecord(stridedRecord, regionBand);
+  CommandOptionClick(stridedRecord, regionBand);
   return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00596270
-void TWorldView::CenterOnTileAndRefresh(int tileIndex, int dispatchContext) {
+void TWorldView::ControlClick(int tileIndex, int dispatchContext) {
   (void)dispatchContext;
   CenterOn(tileIndex);
   RefreshControl();
@@ -527,7 +527,7 @@ void TWorldView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int
 }
 
 // FUNCTION: IMPERIALISM 0x005963d0
-void TWorldView::DispatchOverlayEvent78FromStridedRecord(int stridedRecord, int dispatchContext) {
+void TWorldView::ShiftClick(int stridedRecord, int dispatchContext) {
   (void)dispatchContext;
   TEvent* event = new TEvent();
   event->dispatchMessage = 0x78;
@@ -539,7 +539,7 @@ void TWorldView::DispatchOverlayEvent78FromStridedRecord(int stridedRecord, int 
 }
 
 // FUNCTION: IMPERIALISM 0x00596440
-void TWorldView::DispatchOverlayEvent78RootHighFromStridedRecord(int stridedRecord,
+void TWorldView::CommandOptionClick(int stridedRecord,
                                                                  int dispatchContext) {
   (void)dispatchContext;
   TEvent* event = new TEvent();
@@ -552,7 +552,7 @@ void TWorldView::DispatchOverlayEvent78RootHighFromStridedRecord(int stridedReco
 }
 
 // FUNCTION: IMPERIALISM 0x005964b0
-void TWorldView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags) {
+void TWorldView::NormalClick(short nTileIndex, int nInputFlags) {
   char handled;
   switch (static_cast<TMapUberPicture*>(ownerContext)->activeUnitCategoryIndex) {
   case 0:

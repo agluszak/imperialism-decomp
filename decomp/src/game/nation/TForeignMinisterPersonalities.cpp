@@ -81,7 +81,6 @@ static inline void SetTedStyleAdvancedResourceBid(TForeignMinister* minister, sh
 
 // ===================== TTedForeignMinister (0x659d70) =====================
 
-// Binary descriptor base is TMinister (0x659a80), not TForeignMinister — original macro arg.
 IMPLEMENT_DYNCREATE(TTedForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x005311d0
@@ -261,7 +260,6 @@ void TTedForeignMinister::MakeNewCity(TCity* city) {
 
 // ===================== TBillForeignMinister (0x659e30) =====================
 
-// Binary descriptor base is TMinister (0x659a80), not TForeignMinister — original macro arg.
 IMPLEMENT_DYNCREATE(TBillForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x00531be0
@@ -469,7 +467,6 @@ void TBillForeignMinister::MakeNewCity(TCity* city) {
 
 // ===================== TDiplomatForeignMinister (0x659f48) =====================
 
-// Binary descriptor base is TMinister (0x659a80), not TForeignMinister — original macro arg.
 IMPLEMENT_DYNCREATE(TDiplomatForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x00532780
@@ -639,7 +636,6 @@ void TDiplomatForeignMinister::MakeNewCity(TCity* city) {
 
 // ===================== TTextileForeignMinister (0x65a008) =====================
 
-// Binary descriptor base is TMinister (0x659a80), not TForeignMinister — original macro arg.
 IMPLEMENT_DYNCREATE(TTextileForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x00533110
@@ -752,7 +748,6 @@ void TTextileForeignMinister::MakeNewCity(TCity* city) {
 
 // ===================== TTraderForeignMinister (0x65a0c8) =====================
 
-// Binary descriptor base is TMinister (0x659a80), not TForeignMinister — original macro arg.
 IMPLEMENT_DYNCREATE(TTraderForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x005338a0
@@ -867,7 +862,6 @@ void TTraderForeignMinister::MakeNewCity(TCity* city) {
 
 // ===================== TArmsForeignMinister (0x65a188) =====================
 
-// Binary descriptor base is TMinister (0x659a80), not TForeignMinister — original macro arg.
 IMPLEMENT_DYNCREATE(TArmsForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x00534010

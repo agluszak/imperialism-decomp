@@ -63,8 +63,7 @@ void TGPCheater::DisplayGP(int nationSlot) {
   TStaticText* name =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('n', 'a', 'm', 'e')));
   if (name == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCheaters.cpp", 0xec);
   }
   nation->FormatOverlayTerrainLabelText(&nameText);
   name->SetTextAndMaybeRefresh(&nameText, true);
@@ -72,40 +71,35 @@ void TGPCheater::DisplayGP(int nationSlot) {
   TNumberText* treasury =
       static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('t', 'r', 'e', 'a')));
   if (treasury == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCheaters.cpp", 0xf2);
   }
   treasury->SetControlValue(nation->treasuryValue10, 1);
 
   TNumberText* mercenaries =
       static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('m', 'e', 'r', 'c')));
   if (mercenaries == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCheaters.cpp", 0xf5);
   }
   mercenaries->SetControlValue(nation->merchantCapacity, 1);
 
   TNumberText* tradeCap =
       static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('t', 'c', 'a', 'p')));
   if (tradeCap == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCheaters.cpp", 0xf8);
   }
   tradeCap->SetControlValue(nation != nullptr ? nation->transportCapacity : 0, 1);
 
   TNumberText* sale =
       static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 'a', 'l', 'e')));
   if (sale == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCheaters.cpp", 0xfb);
   }
   sale->SetControlValue(nation->budgetPoolBase, 1);
 
   TNumberText* purchase =
       static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'u', 'r', 'c')));
   if (purchase == nullptr) {
-    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCheaters.cpp", 0xfe);
   }
   purchase->SetControlValue(nation->budgetPoolDelta, 1);
 }

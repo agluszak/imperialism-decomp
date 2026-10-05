@@ -25,7 +25,6 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/globals/ui_widgets_globals.h"
 
-// 0x004d3a60 (HandleEngineerConstructionAction) lives on TCivMgr — see TCivMgr.cpp.
 
 IMPLEMENT_DYNCREATE(TCivToolbar, TCluster)
 

@@ -5,7 +5,6 @@
 #include "game/mfc.h"
 #include "game/news_domain_types.h"
 
-// Forward declarations for types referenced by generated signatures.
 class TStream;
 
 struct newsEntry {
@@ -17,7 +16,6 @@ struct newsEntry {
   int reserved14;         // +0x14 — byteswapped with the rest; no observed reader
 };
 
-// 0x3C-byte story card, 9 per nation page (Mac oracle: newsStory).
 struct newsStory {
   int parmValue[4]; // +0x00..0x0F — substitution-token payloads
   int parmKind[4];
