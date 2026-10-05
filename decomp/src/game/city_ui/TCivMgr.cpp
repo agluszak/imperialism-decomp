@@ -76,7 +76,7 @@ TCivUnit* TCivMgr::SelectFirstAvailableCivilianForNation(short nationId) {
 
   if (candidate != nullptr && candidate->completionMarker26 != -1) {
     g_pSfxPlaybackSystem->PlaySoundEffect(candidate->completionMarker26, 0, 1);
-    if (g_pSimMgr->difficultyLevel == 0) {
+    if (g_pSimMgr->difficultyLevel == kDifficultyIntroductory) {
       g_pHelpMgr->CheckUnitAdvice(candidate);
     }
     candidate->completionMarker26 = -1;

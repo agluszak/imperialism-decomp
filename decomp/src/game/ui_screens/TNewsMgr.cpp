@@ -667,10 +667,10 @@ void TNewsMgr::AddShortageEvent(int subjectNation, int affectedNation, int relat
 
 // FUNCTION: IMPERIALISM 0x0055cd00
 void TNewsMgr::AddMiscEvent(int nationSlotOrAll, int storyCode, bool isReplayBypass) {
-  TSimMgr* simManager = g_pSimMgr;
-  if (!simManager->gateFlag7a) {
+  TSimMgr* simMgr = g_pSimMgr;
+  if (!simMgr->gateFlag7a) {
     if (!isReplayBypass) {
-      bool multiplayerActive = simManager->multiplayerSessionRole != 0;
+      bool multiplayerActive = simMgr->multiplayerSessionRole != 0;
       if (multiplayerActive) {
         g_pGameFlowState->CreateAndSendTurnEvent22_ByteAndShort(
             static_cast<unsigned char>(nationSlotOrAll), static_cast<short>(storyCode));

@@ -1120,7 +1120,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // Host session-init: adopt sim state/game name/scenario selection, then build the
     // world per the scenario tag ('load'/'rand'/'scnX') and refresh the lounge.
     TurnEventESessionInitPacket* sessionInit = static_cast<TurnEventESessionInitPacket*>(packet);
-    g_pSimMgr->SetDifficultyLevel(sessionInit->difficultyLevel64);
+    g_pSimMgr->SetDifficultyLevel(static_cast<eDifficulty>(sessionInit->difficultyLevel64));
     g_pSimMgr->useLocalizedNameTables68 = sessionInit->nameTableFlag65;
     {
       CString hostGameName(sessionInit->hostGameName3A);

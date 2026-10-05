@@ -6,6 +6,7 @@
 #include "game/nation_domain_types.h"
 #include "game/app/TObject.h"
 #include "game/turn_event_codes.h"
+#include "game/difficulty.h"
 #include "game/game_phase.h"
 
 class TStream;
@@ -136,7 +137,7 @@ public:
   // Mac symbol oracle: SetDifficultyLevel(eDifficulty). Store the selected difficulty
   // into +0x40 and set the +0x5c short flag only for the zero-valued level; values 1..4
   // and out-of-range values clear it. Windows 0x57d870.
-  void SetDifficultyLevel(int difficulty);
+  void SetDifficultyLevel(eDifficulty difficulty);
   void ISimMgr();
   // 0x57bc90. Resets the transient turn-flow state and PRNG seed without changing
   // difficulty, scenario selection, or persisted preference values.
@@ -233,7 +234,7 @@ public:
   // +0x40 — difficulty level (Mac eDifficulty; normally 0..4), consumed throughout
   // TCountry/TGreatPower/TDiplomacyMgr balancing logic. Save streams encode it through
   // the integer-byte slot.
-  int difficultyLevel;
+  eDifficulty difficultyLevel;
   // +0x44 — multiplayer role: 0 standalone, 1 host, 2 client. The setup UI writes
   // these values directly, and TMultiplayerMgr/TMapMgr/TArmyMgr branch on the host/client
   // distinction. ReinitializeGameFlowAndPostTurnEventCode recreates g_pGameFlowState

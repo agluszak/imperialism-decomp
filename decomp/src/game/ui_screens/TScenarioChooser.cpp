@@ -219,7 +219,8 @@ void TScenarioChooser::StartGame() {
   mapControl->AssertValid();
   g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(true);
   g_pSimMgr->RecreateActiveMapContextAndInitializeGlobalMapState(selectedScenarioIndex);
-  g_pSimMgr->SetDifficultyLevel(difficultyLevelByNation[mapControl->selectedNation68]);
+  g_pSimMgr->SetDifficultyLevel(
+      static_cast<eDifficulty>(difficultyLevelByNation[mapControl->selectedNation68]));
 
   if (g_pSimMgr->multiplayerSessionRole != 0) {
     // Ask for the session's save name until it differs from the one already published,

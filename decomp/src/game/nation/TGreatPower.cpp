@@ -353,15 +353,14 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
     bool needsRedraw = false;
 
     TMapMgr* globalMapState = g_pGlobalMapState;
-    TSimMgr* localizationRuntime = g_pSimMgr;
+    TSimMgr* simMgr = g_pSimMgr;
     Province* cityTable = globalMapState->cityScoreTable;
     TTerrainStateRecord* terrainTable = globalMapState->terrainStateTable;
     Province* cityRecord = cityTable + regionId;
     short homeTileIndex = static_cast<short>(this->homeTileIndex);
     if (cityRecord->cityTileIndex04 != homeTileIndex) {
-      unsigned int turnDelta =
-          static_cast<unsigned int>(static_cast<int>(localizationRuntime->GetEconomicTurn()) -
-                                    static_cast<int>(cityRecord->lastTurnTick));
+      unsigned int turnDelta = static_cast<unsigned int>(
+          static_cast<int>(simMgr->GetEconomicTurn()) - static_cast<int>(cityRecord->lastTurnTick));
 
       if (turnDelta > 4) {
         int resourceSums[kNationSlotCount];
@@ -478,7 +477,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
         }
       }
 
-      if (localizationRuntime->multiplayerSessionRole != 0 && needsRedraw) {
+      if (simMgr->multiplayerSessionRole != 0 && needsRedraw) {
         g_pGameFlowState->DispatchCityRedrawInvalidateEvent(regionId);
       }
     }
@@ -990,8 +989,8 @@ int TGreatPower::ComputeRemainingDiplomacyAidBudget(void) {
 
 // FUNCTION: IMPERIALISM 0x004dd470
 void TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void) {
-  TSimMgr* localizationTable = g_pSimMgr;
-  if (localizationTable->difficultyLevel != 0 || localizationTable->mode != 2) {
+  TSimMgr* simMgr = g_pSimMgr;
+  if (simMgr->difficultyLevel != kDifficultyIntroductory || simMgr->mode != kGamePhaseStartGame) {
     return;
   }
 
@@ -1397,8 +1396,8 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetC
     break;
 
   case 3: {
-    TSimMgr* localizationTable = g_pSimMgr;
-    if (localizationTable != 0 && localizationTable->mode == 6) {
+    TSimMgr* simMgr = g_pSimMgr;
+    if (simMgr != 0 && simMgr->mode == kGamePhaseDiplomacy) {
       this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(targetClass, 4, -1);
     }
 
@@ -2189,10 +2188,10 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
   } else {
     notifySink->SetPopulation(4, 2, 1);
   }
-  TSimMgr* localization = g_pSimMgr;
-  if (this->diplomacyEligibilityA0 == 0 || localization->difficultyLevel < 2 ||
-      localization->scenarioMapIndexPlusOne != 0) {
-    if (!this->IsRemote() || localization->scenarioMapIndexPlusOne != 0) {
+  TSimMgr* simMgr = g_pSimMgr;
+  if (this->diplomacyEligibilityA0 == 0 || simMgr->difficultyLevel < kDifficultyNormal ||
+      simMgr->scenarioMapIndexPlusOne != 0) {
+    if (!this->IsRemote() || simMgr->scenarioMapIndexPlusOne != 0) {
       this->CreateFrogCityAtHomeRegionAndAttach(mgr);
       return;
     }
@@ -2211,9 +2210,9 @@ void TGreatPower::CreateFrogCityTownMarkerAndAttach(void* receiver) {
 
 // FUNCTION: IMPERIALISM 0x004dfae0
 void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
-  TSimMgr* localization = g_pSimMgr;
+  TSimMgr* simMgr = g_pSimMgr;
   int homeTileIndex = -1;
-  if (localization->scenarioMapIndexPlusOne == 0) {
+  if (simMgr->scenarioMapIndexPlusOne == 0) {
     homeTileIndex = this->interiorMinister->SelectBestSecondaryHomeTileByFrogCityScore();
   } else {
     TTerrainStateRecord* terrainTable = g_pGlobalMapState->terrainStateTable;
@@ -2292,7 +2291,7 @@ void TGreatPower::SetHomeCityTileAndDisplayName(short homeTileIndex, char* cityN
 
     city->orderCountByType5c[1] += 2;
 
-    if (g_pSimMgr->difficultyLevel == 0 && this->diplomacyEligibilityA0) {
+    if (g_pSimMgr->difficultyLevel == kDifficultyIntroductory && this->diplomacyEligibilityA0) {
       city->orderCountByType5c[1] += 6;
 
       short result3 = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
@@ -3276,9 +3275,9 @@ int TGreatPower::ClassifyNationProductionTierVsPeers(void) {
 // FUNCTION: IMPERIALISM 0x004e2b00
 void TGreatPower::AnnounceLater(short orderKind, short payload, short flags) {
   short turnTick = 0;
-  TSimMgr* localizationRuntime = g_pSimMgr;
-  if (localizationRuntime != 0) {
-    turnTick = localizationRuntime->GetEconomicTurn();
+  TSimMgr* simMgr = g_pSimMgr;
+  if (simMgr != 0) {
+    turnTick = simMgr->GetEconomicTurn();
   }
 
   TurnOrderDispatchPacket packet;

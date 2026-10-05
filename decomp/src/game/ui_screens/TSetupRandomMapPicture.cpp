@@ -339,7 +339,7 @@ void TSetupRandomMapPicture::StartGame() {
   TControl* selectedDifficulty =
       static_cast<TControl*>(ResolveControlByTag(difficultyCluster->selectedTag88));
   selectedDifficulty->AssertValid();
-  int difficulty = selectedDifficulty->controlValue3c;
+  eDifficulty difficulty = static_cast<eDifficulty>(selectedDifficulty->controlValue3c);
   g_pSimMgr->SetDifficultyLevel(difficulty);
   g_pSimMgr->preferenceValues[11] = static_cast<short>(difficulty);
 

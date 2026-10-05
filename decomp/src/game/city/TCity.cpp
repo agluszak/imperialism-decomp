@@ -82,7 +82,7 @@ void TCity::ICity(TGreatPower* ownerNation) {
   short capacity = static_cast<short>(regionCount / regionsPerCapacity);
   productionAccum1fc[0x0f] = capacity > 1 ? capacity : 1;
 
-  if (g_pSimMgr->difficultyLevel < 2 && ownerNation->diplomacyEligibilityA0 != 0) {
+  if (g_pSimMgr->difficultyLevel < kDifficultyNormal && ownerNation->diplomacyEligibilityA0 != 0) {
     static const short kInitialProductionBySlot[6] = {2, 1, 2, 1, 2, 1};
     for (int productionSlot = 0; productionSlot < 6; ++productionSlot) {
       short initialProduction = kInitialProductionBySlot[productionSlot];

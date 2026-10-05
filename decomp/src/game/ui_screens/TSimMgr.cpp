@@ -193,7 +193,7 @@ void TSimMgr::ISimMgr() {
   CFile::GetStatus(g_szConanCheatFileName_00698BEC, conanFileStatus);
   g_bRandomMapDeveloperCheatFlag = false;
   ReinitializeRandomSeed();
-  difficultyLevel = 0;
+  difficultyLevel = kDifficultyIntroductory;
   InitializeOrLoadEntryArray14AndClampLimits(false);
   field6a = 0;
   field6c = 0x77a;
@@ -321,7 +321,7 @@ void TSimMgr::ReadFrom(TStream* stream) {
   stream->ReadBytes(&turnFlowStatusFlags, 4);
 
   if (g_nSaveFormatVersion >= 0x20) {
-    difficultyLevel = stream->ReadByte() & 0xff;
+    difficultyLevel = static_cast<eDifficulty>(stream->ReadByte() & 0xff);
   }
 
   if (g_nSaveFormatVersion < 0x2d) {
@@ -886,11 +886,11 @@ void TSimMgr::GetSeason(CString* destString) {
 }
 
 // FUNCTION: IMPERIALISM 0x0057d870
-void TSimMgr::SetDifficultyLevel(int difficulty) {
+void TSimMgr::SetDifficultyLevel(eDifficulty difficulty) {
   bool zeroFlag = false;
   difficultyLevel = difficulty;
-  if (difficulty != 0) {
-    if (difficulty > 0 && difficulty <= 4) {
+  if (difficulty != kDifficultyIntroductory) {
+    if (difficulty > kDifficultyIntroductory && difficulty <= kDifficultyNighOnImpossible) {
       this->preferenceValues[10] = zeroFlag;
       return;
     }
@@ -1014,7 +1014,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       break;
     }
     RebuildNationStateSlotsAndAvailability(1);
-    if (g_pSimMgr->difficultyLevel > 1 && scenarioMapIndexPlusOne == 0) {
+    if (g_pSimMgr->difficultyLevel > kDifficultyEasy && scenarioMapIndexPlusOne == 0) {
       g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventCitySiteSelector),
                                     activeNationSlot);
     } else {

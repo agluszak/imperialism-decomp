@@ -170,8 +170,9 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
           g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(targetNation)) !=
               0) {
         if (sourceNation < 7 && g_apNationStates[sourceNation]->diplomacyEligibilityA0 == 0 &&
-            g_pSimMgr->difficultyLevel > 2) {
-          standingScore = static_cast<short>(g_pSimMgr->difficultyLevel == 4 ? 0x69 : 0x64);
+            g_pSimMgr->difficultyLevel > kDifficultyNormal) {
+          standingScore = static_cast<short>(
+              g_pSimMgr->difficultyLevel == kDifficultyNighOnImpossible ? 0x69 : 0x64);
         }
       }
       relationStandingScores[forwardIndex] = standingScore;
@@ -218,7 +219,7 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
     specialRelationTargetSlots[sourceNation] = -1;
   }
 
-  if (g_pSimMgr->difficultyLevel == 0) {
+  if (g_pSimMgr->difficultyLevel == kDifficultyIntroductory) {
     for (sourceNation = 0; sourceNation < 7; ++sourceNation) {
       TGreatPower* sourcePower = g_apNationStates[sourceNation];
       if (sourcePower != 0 && sourcePower->diplomacyEligibilityA0 != 0) {
@@ -238,7 +239,7 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
     }
   }
 
-  if (g_pSimMgr->difficultyLevel > 2) {
+  if (g_pSimMgr->difficultyLevel > kDifficultyNormal) {
     for (sourceNation = 0; sourceNation < 7; ++sourceNation) {
       if (g_apNationStates[sourceNation]->diplomacyEligibilityA0 == 0) {
         targetNation = abs(rand()) % 0x10 + 7;
@@ -254,7 +255,7 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
     }
   }
 
-  if (g_pSimMgr->difficultyLevel == 4) {
+  if (g_pSimMgr->difficultyLevel == kDifficultyNighOnImpossible) {
     for (sourceNation = 0; sourceNation < 7; ++sourceNation) {
       if (g_apNationStates[sourceNation]->diplomacyEligibilityA0 == 0) {
         for (targetNation = 0; targetNation < 7; ++targetNation) {

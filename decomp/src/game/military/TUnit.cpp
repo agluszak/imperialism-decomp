@@ -48,9 +48,9 @@ void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,
   this->unitRosterId1A = arg3;
   this->orderTargetIndex0C = static_cast<short>(-1);
 
-  TSimMgr* locTable = g_pSimMgr;
-  locTable->field_64 = locTable->field_64 + 1;
-  this->persistentUnitId20 = locTable->field_64;
+  TSimMgr* simMgr = g_pSimMgr;
+  simMgr->field_64 = simMgr->field_64 + 1;
+  this->persistentUnitId20 = simMgr->field_64;
 }
 
 // FUNCTION: IMPERIALISM 0x005c2610

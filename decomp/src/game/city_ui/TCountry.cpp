@@ -246,8 +246,8 @@ short TCountry::GetOrComputeOverlayAnchorTileIndex() {
 
 // FUNCTION: IMPERIALISM 0x004d71b0
 void TCountry::InitialMilitia(void) {
-  TSimMgr* localization = g_pSimMgr;
-  if (localization->scenarioMapIndexPlusOne > 0) {
+  TSimMgr* simMgr = g_pSimMgr;
+  if (simMgr->scenarioMapIndexPlusOne > 0) {
     g_pGlobalMapState->SetProvinceCapitalTileFlagBit08(
         g_pGlobalMapState->terrainStateTable[static_cast<short>(this->homeTileIndex)]
             .cityRecordIndex);
@@ -261,31 +261,31 @@ void TCountry::InitialMilitia(void) {
       if ((g_pGlobalMapState->terrainStateTable[regionTerrainId].activeFlags1c & 1) != 0) {
         TMilitaryUnit* order = new TMilitaryUnit();
         order->IMilitaryUnit(2, regionId, this->nationSlot);
-        if (g_pSimMgr->difficultyLevel < 2) {
+        if (g_pSimMgr->difficultyLevel < kDifficultyNormal) {
           order->SetOrders(static_cast<UnitOrder>(2), -1);
         }
         order = new TMilitaryUnit();
         order->IMilitaryUnit(2, regionId, this->nationSlot);
-        if (g_pSimMgr->difficultyLevel < 2) {
+        if (g_pSimMgr->difficultyLevel < kDifficultyNormal) {
           order->SetOrders(static_cast<UnitOrder>(2), -1);
         }
         order = new TMilitaryUnit();
         order->IMilitaryUnit(7, regionId, this->nationSlot);
-        if (g_pSimMgr->difficultyLevel < 2) {
+        if (g_pSimMgr->difficultyLevel < kDifficultyNormal) {
           order->SetOrders(static_cast<UnitOrder>(2), -1);
         }
         g_pGlobalMapState->SetProvinceCapitalTileFlagBit08(regionId);
         if (this->nationSlot < 7 &&
             g_apNationStates[this->nationSlot]->diplomacyEligibilityA0 == 0 &&
-            g_pSimMgr->difficultyLevel == 4) {
+            g_pSimMgr->difficultyLevel == kDifficultyNighOnImpossible) {
           order = new TMilitaryUnit();
           order->IMilitaryUnit(6, regionId, this->nationSlot);
-          if (g_pSimMgr->difficultyLevel < 2) {
+          if (g_pSimMgr->difficultyLevel < kDifficultyNormal) {
             order->SetOrders(static_cast<UnitOrder>(2), -1);
           }
           order = new TMilitaryUnit();
           order->IMilitaryUnit(5, regionId, this->nationSlot);
-          if (g_pSimMgr->difficultyLevel < 2) {
+          if (g_pSimMgr->difficultyLevel < kDifficultyNormal) {
             order->SetOrders(static_cast<UnitOrder>(2), -1);
           }
           TGreatPower* nation = g_apNationStates[this->nationSlot];
@@ -295,7 +295,8 @@ void TCountry::InitialMilitia(void) {
         }
         if (this->nationSlot < 7) {
           TGreatPower* nation = g_apNationStates[this->nationSlot];
-          if (nation->diplomacyEligibilityA0 != 0 && g_pSimMgr->difficultyLevel == 0) {
+          if (nation->diplomacyEligibilityA0 != 0 &&
+              g_pSimMgr->difficultyLevel == kDifficultyIntroductory) {
             TCity* cityForPort = (nation != 0) ? nation->city : 0;
             TZone* portZone = g_pActiveMapOrderContext->FindPortZoneBySelectedTile(cityForPort);
             CreateNavyPrimaryOrderNodeAndAssignDisplayName(3, portZone->primaryNeighbors[0],
@@ -306,7 +307,7 @@ void TCountry::InitialMilitia(void) {
       this->AddMilitia(regionId);
       this->AddMilitia(regionId);
       this->AddMilitia(regionId);
-      if (g_pSimMgr->difficultyLevel > 2) {
+      if (g_pSimMgr->difficultyLevel > kDifficultyNormal) {
         this->AddMilitia(regionId);
         if (this->nationSlot >= 7) {
           TMilitaryUnit* lateOrder = new TMilitaryUnit();
@@ -583,10 +584,10 @@ void TCountry::NameUnits(void) {
         CString typeName;
         CString composedName;
         short unitType = unit->orderType;
-        TSimMgr* localization = g_pSimMgr;
+        TSimMgr* simMgr = g_pSimMgr;
         short* nameOrdinalCounter = &this->unitNameOrdinalByType[unitType];
-        localization->NumToOrdinal(*nameOrdinalCounter, &ordinalText);
-        localization->GetString(0x2717, unitType, &typeName);
+        simMgr->NumToOrdinal(*nameOrdinalCounter, &ordinalText);
+        simMgr->GetString(0x2717, unitType, &typeName);
         CString withSeparator = ordinalText + CString(" ");
         CString fullName = withSeparator + typeName;
         composedName = fullName;

@@ -159,11 +159,11 @@ void TUnitOrder::Produce() {
 
   short entryId = resourceTypeIndex;
   unsigned char specialist = specialistMode;
-  TSimMgr* localization = g_pSimMgr;
+  TSimMgr* simMgr = g_pSimMgr;
   if (specialist == 0) {
-    localization->GetString(0x2718, entryId, &sharedRefB);
+    simMgr->GetString(0x2718, entryId, &sharedRefB);
   } else {
-    localization->GetString(0x2717, entryId, &sharedRefB);
+    simMgr->GetString(0x2717, entryId, &sharedRefB);
   }
 
   TGreatPower* ownerNation = cityContext->ownerNationAc;

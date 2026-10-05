@@ -56,7 +56,7 @@ RuntimeActionResult RunGreatPowerPressureHumanDebt(NativeTransition& transition)
     return RuntimeActionResult::Failure("great-power pressure state is unavailable");
   }
 
-  g_pSimMgr->difficultyLevel = 1;
+  g_pSimMgr->difficultyLevel = kDifficultyEasy;
   nation->treasuryValue10 = -100;
   nation->diplomacyBudgetBase = 50000;
   nation->escalationCounter = 10;
@@ -345,7 +345,7 @@ RuntimeActionResult RunOpeningCivilianGrant(NativeTransition& transition) {
     return RuntimeActionResult::Failure("opening civilian grant state is unavailable");
   }
 
-  g_pSimMgr->difficultyLevel = 0;
+  g_pSimMgr->difficultyLevel = kDifficultyIntroductory;
   g_pSimMgr->scenarioMapIndexPlusOne = 0;
   nation->diplomacyEligibilityA0 = 1;
 
@@ -367,7 +367,7 @@ RuntimeActionResult RunOpeningCivilianGrant(NativeTransition& transition) {
 
   city->orderCountByType5c[1] += 2;
 
-  if (g_pSimMgr->difficultyLevel == 0 && nation->diplomacyEligibilityA0) {
+  if (g_pSimMgr->difficultyLevel == kDifficultyIntroductory && nation->diplomacyEligibilityA0) {
     city->orderCountByType5c[1] += 6;
 
     short result3 =

@@ -1017,10 +1017,10 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
 
 // FUNCTION: IMPERIALISM 0x004db380
 char TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
-  TSimMgr* localizationRuntime = g_pSimMgr;
+  TSimMgr* simMgr = g_pSimMgr;
   int localeIndex = 0;
-  if (localizationRuntime != 0) {
-    localeIndex = localizationRuntime->difficultyLevel;
+  if (simMgr != 0) {
+    localeIndex = simMgr->difficultyLevel;
   }
 
   int treasuryValue10 = this->treasuryValue10;
