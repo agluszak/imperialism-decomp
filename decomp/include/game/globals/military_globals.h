@@ -43,7 +43,7 @@ extern unsigned char g_abStackCompositionClassTable[4][4];
 
 // Per-fort-level attacker penalty percent (0x695568), indexed by
 // Province::fortLevel03. Used by
-// TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState to gate the per-unit meter snapshot.
+// TArmyMgr::StrategicCombat to gate the per-unit meter snapshot.
 extern int g_anFortLevelAttackerPenaltyPercentByLevel[4];
 
 // Per-military-unit-kind blink/boost eligibility flag (0x64c808).

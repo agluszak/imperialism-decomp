@@ -456,7 +456,7 @@ void TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection() {
 
   if (selectedIndex != -1) {
     mapUberPictureF0->SetMapInteractionMode(1);
-    g_pMapContextActionManager->SetActiveProvinceSelection(selectedIndex);
+    g_pMapContextActionManager->SetSelectedProvince(selectedIndex);
     mapUberPictureF0->NoticeTile(g_pGlobalMapState->cityScoreTable[selectedIndex].cityTileIndex04);
   }
 }

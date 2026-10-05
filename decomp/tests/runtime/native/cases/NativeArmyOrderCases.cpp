@@ -237,7 +237,7 @@ RuntimeActionResult RunArmySelectProvince(NativeTransition& transition) {
   if (!started.Succeeded()) {
     return started;
   }
-  g_pMapContextActionManager->SetActiveProvinceSelection(province);
+  g_pMapContextActionManager->SetSelectedProvince(province);
   JsonObject provinceResult;
   provinceResult.Set(
       "pending_index",

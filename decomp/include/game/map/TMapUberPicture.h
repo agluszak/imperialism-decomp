@@ -93,7 +93,7 @@ public:
   // categoryPages[0] to TCivToolbar::RefreshCivilianCommandPanelForSelection (0x58eb20,
   // ground-truth-confirmed, not a vtable dispatch), which only produces correct behavior
   // if categoryPages[0] really is a TCivToolbar object. (b) TArmyMgr's
-  // SetActiveProvinceSelection (0x4a45e0) dispatches categoryPages[1]'s own vtable slot at
+  // SetSelectedProvince (0x4a45e0) dispatches categoryPages[1]'s own vtable slot at
   // byte offset 0x1d0 -- but TArmyToolbar's real vtable (dumped at 0x667ad0) is far larger
   // than TMapUberPicture's (entries confirmed past index 0xb7), and slot 0x1d0 there
   // resolves to TArmyToolbar's own 0x58df60, not TMapUberPicture::Scroll.

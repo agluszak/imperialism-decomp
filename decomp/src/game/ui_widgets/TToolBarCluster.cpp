@@ -331,7 +331,7 @@ void TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(short nati
   }
   CString countText;
   if (g_pMapContextActionManager->pendingMapActionIndex != -1) {
-    int cost = g_pMapContextActionManager->ComputeSelectedTileCityActionGateSum();
+    int cost = g_pMapContextActionManager->GetSelectedForceSize();
     countText.Format("%d", cost);
   } else {
     countText = "0";

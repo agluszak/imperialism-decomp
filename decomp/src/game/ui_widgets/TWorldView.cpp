@@ -142,8 +142,7 @@ void TWorldView::DoKeyEvent(TToolboxEvent* event) {
 
   case 'N':
   case 'n':
-    g_pMapContextActionManager->ClearNationArmyActionModesAndCycleSelection(
-        g_pSimMgr->GetActiveNationId());
+    g_pMapContextActionManager->WakeAll(g_pSimMgr->GetActiveNationId());
     return;
 
   case 'A':

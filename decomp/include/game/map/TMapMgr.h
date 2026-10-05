@@ -272,7 +272,7 @@ public:
   virtual void UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(
       ProvinceIndex cityRecordIndex); // slot 0x2a 0x50fca0
   // Looks up whether tileIndex's region has an eligible stationed unit
-  // (TArmyMgr::HasEligibleStationedUnitInRegion) but discards the result -- the original's
+  // (TArmyMgr::AnySelectableUnits) but discards the result -- the original's
   // own call site never reads the return value either, so this is vestigial/dead code.
   virtual void ApplyUnitMovementClassForTileIfValid(int tileIndex); // slot 0x2b 0x515d60
   // Recursive region-class flood: stamps cityScoreTable[recordIndex].regionClassA3 =
@@ -315,7 +315,7 @@ public:
   // CityRedrawInvalidateTurnEventPacket, which already splits this same 24-entry array
   // into adjacentRegionIds[12]/adjacentRegionIds22[12] for wire serialization). Returns
   // -1 if not found. Kept as one raw 24-entry array (not split into two named 12-entry
-  // fields) because RedistributeUnitOrderQueueToRandomAdjacentRegion (0x4a35e0) scans all 24
+  // fields) because RetreatDefender (0x4a35e0) scans all 24
   // as one flat, -1-terminated list. The [0..11]/[12..23] split (region id / parallel
   // linked-region id) is a consumer-side interpretation of adjacent slots, not overlapping
   // storage -- each slot has one meaning.

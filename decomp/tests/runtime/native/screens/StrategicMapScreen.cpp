@@ -280,7 +280,7 @@ RuntimeActionResult StrategicMapScreen::SelectArmyProvince(short province) {
   // The province selection is a model call, not a control activation: the map's own click path
   // resolves a pixel to this province and then does exactly this.
   mapView->SetMapInteractionMode(kArmyInteractionMode);
-  g_pMapContextActionManager->SetActiveProvinceSelection(province);
+  g_pMapContextActionManager->SetSelectedProvince(province);
   return RuntimeActionResult::Success();
 }
 

@@ -29,7 +29,7 @@ public:
   // original) and compared against TArmyMgr::perTileOwnerNationCodeCache1c.
   signed char categoryFlag;
   // +0x09 -- cached g_anFortLevelAttackerPenaltyPercentByLevel lookup for the
-  // most-recently-processed unit in UpdateDualLinkedEntryMetersAndBlinkState's Phase 1/2
+  // most-recently-processed unit in StrategicCombat's Phase 1/2
   // scan; that scan stops early once this hits 0.
   unsigned char fortLevelAttackerPenaltyCache9;
   short unitCountA;     // +0x0a -- linked unit count, serialized as a signed word
@@ -75,7 +75,7 @@ public:
   bool UnitsFighting(); // 0x4a8330, Mac oracle
   // Walks the chain accumulating a weighted meter sum and eligible-entry count into the
   // two out-params, seeded by `counter`. 0x004a7e70, 355 bytes; signature verified via
-  // TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState's callsite disassembly.
+  // TArmyMgr::StrategicCombat's callsite disassembly.
   void AccumulateWeightedMeterAndCountFromEligibleLinkedEntries(int* outWeightedSum, int* outCount,
                                                                 int counter);
   // Applies a randomized decay to eligible entries using the accumulated weighted sum/

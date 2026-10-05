@@ -58,7 +58,7 @@ void TQueryFloater::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
   } else if (tag == kControlTagBatt) {
     short activeNationId = g_pSimMgr->GetActiveNationId();
-    if (!g_pMapContextActionManager->ScanMapContextActionEntriesForCodeMatch(activeNationId)) {
+    if (!g_pMapContextActionManager->HasBattlesInvolvingGP(activeNationId)) {
       if (g_pSimMgr->GetEconomicTurn() == 1) {
         g_pSimMgr->GetString(0x273d, 0x1e, &text);
       } else {

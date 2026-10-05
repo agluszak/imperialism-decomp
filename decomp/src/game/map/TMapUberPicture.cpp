@@ -129,7 +129,7 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
     if (previousMode == 0) {
       g_pSelectedCivilianOrderState->SetActiveCivilianSelection(nullptr, false);
     } else if (previousMode == 1) {
-      g_pMapContextActionManager->SetActiveProvinceSelection(-1);
+      g_pMapContextActionManager->SetSelectedProvince(-1);
     }
 
     // Mac MapView.rsrc:2013 identifies 'tbr1' as TToolBarCluster and its 'seas' child as
@@ -429,7 +429,7 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
         if (activeUnitCategoryIndex != 1) {
           SetMapInteractionMode(1);
         }
-        g_pMapContextActionManager->SetActiveProvinceSelection(province);
+        g_pMapContextActionManager->SetSelectedProvince(province);
         CenterOn(g_pGlobalMapState->cityScoreTable[province].cityTileIndex04);
         selectionResolved = true;
       } else {
@@ -474,7 +474,7 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
     g_pSelectedCivilianOrderState->selectedEntry = nullptr;
     break;
   case 1:
-    g_pMapContextActionManager->SetActiveProvinceSelection(-1);
+    g_pMapContextActionManager->SetSelectedProvince(-1);
     SetMapInteractionMode(3);
     return;
   case 2:

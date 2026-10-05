@@ -3238,7 +3238,7 @@ void TMapMgr::DimByEngineering(TCivUnit* pCivilianOrderEntry) {
 // FUNCTION: IMPERIALISM 0x00515d60
 void TMapMgr::ApplyUnitMovementClassForTileIfValid(int tileIndex) {
   if (tileIndex != -1) {
-    g_pMapContextActionManager->HasEligibleStationedUnitInRegion(static_cast<short>(tileIndex));
+    g_pMapContextActionManager->AnySelectableUnits(static_cast<short>(tileIndex));
   }
 }
 
