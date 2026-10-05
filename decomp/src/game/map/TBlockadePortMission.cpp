@@ -126,64 +126,7 @@ void TBlockadePortMission::SetStateByte8To2() {
 // own CalculateNeeds uses).
 // FUNCTION: IMPERIALISM 0x0053aeb0
 void TBlockadePortMission::CalculateNeeds() {
-  // Reproduces the base TControlSeaZoneMission::CalculateNeeds's missionTargetZone-tagged base score
-  // inline -- the two classes are separate translation units with no LTO, so a qualified
-  // `TControlSeaZoneMission::CalculateNeeds()` call would emit a real cross-TU CALL rather than
-  // reproducing the original's fully-duplicated inlined body, so the body is duplicated here
-  // instead (see TBeachheadMission::CalculateNeeds's identical duplication and its longer
-  // rationale comment).
-  float baseVector[4] = {
-      g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8,
-      g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8};
-  for (TShip* node = TShip::GetFirst(); node != nullptr; node = node->next) {
-    if (node->location != missionTargetZone) {
-      continue;
-    }
-    if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, node->nation)) {
-      continue;
-    }
-    short normalizationBase = node->GetMaxStrength();
-    float scale = static_cast<float>(node->strength / normalizationBase);
-    baseVector[0] +=
-        static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(0)) * scale;
-    baseVector[1] +=
-        static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(1)) * scale;
-    baseVector[2] +=
-        static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(2)) * scale;
-    baseVector[3] +=
-        static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(3));
-  }
-
-  {
-    const short* lookupTable = g_Populate_Beachhead_Mission_LookupTable_00697958;
-    float sum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
-    int i;
-    for (i = 0; i < 4; ++i) {
-      sum += baseVector[i];
-    }
-    float total = g_Recompute_Nation_Order_LookupTable_0065A9E8;
-    if (sum != g_Recompute_Nation_Order_LookupTable_0065A9F0) {
-      float delta = g_Recompute_Nation_Order_LookupTable_0065A9E8;
-      for (i = 0; i < 4; ++i) {
-        float diff =
-            baseVector[i] / sum - lookupTable[i] * g_Recompute_Nation_Order_LookupTable_0065A9F8;
-        if (diff <= g_Recompute_Nation_Order_LookupTable_0065A9F0) {
-          diff = -diff;
-        }
-        delta += diff;
-      }
-      total = static_cast<float>(sum * (g_Recompute_Nation_Order_LookupTable_0065AA08 -
-                                        delta * g_Recompute_Nation_Order_LookupTable_0065AA00));
-    }
-    total *= g_MissionResourceWeightScale_0065A8FC;
-    if (total == 0.0f) {
-      total = g_MissionEmptyResourceWeight_0065AA24;
-    }
-    for (i = 0; i < 4; ++i) {
-      requiredShipEquipageByCategory[i] = static_cast<float>(
-          lookupTable[i] * total * g_Recompute_Nation_Order_LookupTable_0065A9F8);
-    }
-  }
+  TControlSeaZoneMission::CalculateNeeds();
 
   const short* navyDistributionWeights = g_NavyOrderDistributionCategoryWeights_00697978;
 

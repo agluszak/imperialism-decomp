@@ -168,53 +168,6 @@ void TControlSeaZoneMission::CalculateImportance() {
   importanceScore0c = score / g_fMissionScoreNormalizationDivisor;
 }
 
-// FUNCTION: IMPERIALISM 0x005393a0
-void TControlSeaZoneMission::CalculateNeeds() {
-  float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-  for (TShip* node = TShip::GetFirst(); node != nullptr; node = node->next) {
-    if (node->location != missionTargetZone) {
-      continue;
-    }
-    if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, node->nation)) {
-      continue;
-    }
-    short normalizationBase = node->GetMaxStrength();
-    float scale = static_cast<float>(node->strength / normalizationBase);
-    vector[0] +=
-        static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(0)) * scale;
-    vector[1] +=
-        static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(1)) * scale;
-    vector[2] +=
-        static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(2)) * scale;
-    vector[3] += static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(3));
-  }
-
-  const short* lookupTable = g_Populate_Beachhead_Mission_LookupTable_00697958;
-  float sum = vector[0] + vector[1] + vector[2] + vector[3];
-  float total = 0.0f;
-  if (sum != 0.0f) {
-    float delta = 0.0f;
-    for (int i = 0; i < 4; ++i) {
-      float diff = vector[i] / sum - static_cast<float>(static_cast<short>(lookupTable[i])) *
-                                         g_Recompute_Nation_Order_LookupTable_0065A9F8;
-      if (diff <= 0.0f) {
-        diff = -diff;
-      }
-      delta += diff;
-    }
-    total = sum * (1.0f - delta * 0.5f);
-  }
-  total *= g_MissionResourceWeightScale_0065A8FC;
-  if (total == 0.0f) {
-    total = g_MissionEmptyResourceWeight_0065AA24;
-  }
-
-  for (int i = 0; i < 4; ++i) {
-    requiredShipEquipageByCategory[i] = static_cast<float>(static_cast<short>(lookupTable[i])) *
-                                        total * g_Recompute_Nation_Order_LookupTable_0065A9F8;
-  }
-}
-
 // FUNCTION: IMPERIALISM 0x00539600
 bool TControlSeaZoneMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   (void)key;
