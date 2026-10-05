@@ -40,7 +40,7 @@ public:
   unsigned char padding9c;
   // +0x9d gates the out-of-range quantity error message: concise (GetString group 0x2740
   // index 0x10) when set, else a detailed bracket-expanded "max is <N>" message.
-  unsigned char detailedErrorFlag;
+  bool detailedErrorFlag;
   bool selectionActive;
   unsigned char padding9f;
   class TPictureButton* acceptButton;

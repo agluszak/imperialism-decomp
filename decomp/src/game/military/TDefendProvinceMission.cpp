@@ -298,7 +298,7 @@ void TDefendProvinceMission::CalculateNeeds() {
 
   bool compat = IsMapTileCompatibleWithCurrentTerrainOrActionContext(presentLocation14);
 
-  if (compat == 0) {
+  if (!compat) {
     unsigned char bVar8;
     if (g_pTechMgr->abilityActiveRows395[nationId04].abilityActiveById[0x10] == 0) {
       bVar8 = (g_pTechMgr->abilityActiveRows395[nationId04].abilityActiveById[8] != 0) ? 8 : 0;
@@ -323,7 +323,7 @@ void TDefendProvinceMission::CalculateNeeds() {
   bool hasWar = g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(nationId04);
   float unaff_EBX = nationState->expansionPressurePerCompatibleRegionB64 + fStack_c;
 
-  if (hasWar != 0) {
+  if (hasWar) {
     float crossScore = ComputeCrossNationSupportVectorScore(presentLocation14);
     float factor = g_DefendProvinceMissionCrossSupportFloorScale_0065A8F8;
     if (unaff_EBX < crossScore * factor) {

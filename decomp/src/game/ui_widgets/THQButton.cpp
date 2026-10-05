@@ -81,7 +81,7 @@ void THQButton::SetState(unsigned char value, unsigned char refreshNow) {
 
 // FUNCTION: IMPERIALISM 0x0058b8d0
 void THQButton::SetSelectionStateAndRefreshBitmap(short selectionState) {
-  char enabledState = selectionState != 2;
+  bool enabledState = selectionState != 2;
   this->selectionState = selectionState;
   controlState64 = 0;
   if (selectionState == 0) {

@@ -130,7 +130,7 @@ void TShip::Free() {
       TMapOrderChildLinkNode* node = owner->shipList;
       owner->flagship = 0;
       while (node != 0) {
-        owner->flagship = node->payload->Finest(owner->flagship, 0);
+        owner->flagship = node->payload->Finest(owner->flagship, false);
         node = node->next;
       }
     }
@@ -223,10 +223,10 @@ void TShip::NameThyself() {
       if (existing == this) {
         continue;
       }
-      unsigned char duplicate =
+      bool duplicate =
           (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(existing->name)),
                    reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(name))) == 0);
-      if (duplicate != 0) {
+      if (duplicate) {
         goto retry;
       }
     }
@@ -556,8 +556,8 @@ TShip* TShip::GetNth(short index) {
 // and candidate -- the previous TTaskForce-receiver model misread the receiver side,
 // a genuine mis-port this migration fixes.
 // FUNCTION: IMPERIALISM 0x00550670
-TShip* TShip::Finest(TShip* candidate, unsigned char preferUnassigned) {
-  if (preferUnassigned != 0) {
+TShip* TShip::Finest(TShip* candidate, bool preferUnassigned) {
+  if (preferUnassigned) {
     if (admiral != nullptr) {
       return candidate;
     }
@@ -676,8 +676,8 @@ void TShip::Sink() {
     TMapOrderChildLinkNode* head = ownerEntry->shipList;
     if (head != 0) {
       TShip* headChild = head->payload;
-      unsigned char headDefeated = (headChild->strength <= 0);
-      if (headDefeated != 0) {
+      bool headDefeated = (headChild->strength <= 0);
+      if (headDefeated) {
         headChild->taskForce = 0;
         head->payload->Free();
 
@@ -692,7 +692,7 @@ void TShip::Sink() {
     ownerEntry->flagship = 0;
     TMapOrderChildLinkNode* node;
     for (node = head; node != 0; node = node->next) {
-      ownerEntry->flagship = node->payload->Finest(ownerEntry->flagship, 0);
+      ownerEntry->flagship = node->payload->Finest(ownerEntry->flagship, false);
     }
 
     if (ownerEntry->shipList == 0) {
@@ -799,7 +799,7 @@ void TShip::ReassignToForce(TTaskForce* newOwnerEntry) {
       list_head = owner_ctx->shipList;
       owner_ctx->flagship = 0;
       for (; list_head != 0; list_head = list_head->next) {
-        owner_ctx->flagship = list_head->payload->Finest(owner_ctx->flagship, 0);
+        owner_ctx->flagship = list_head->payload->Finest(owner_ctx->flagship, false);
       }
     }
 
@@ -839,7 +839,7 @@ void TShip::Capture(short nation) {
       parent->flagship = 0;
       TMapOrderChildLinkNode* node;
       for (node = parent->shipList; node != 0; node = node->next) {
-        parent->flagship = node->payload->Finest(parent->flagship, 0);
+        parent->flagship = node->payload->Finest(parent->flagship, false);
       }
     }
 

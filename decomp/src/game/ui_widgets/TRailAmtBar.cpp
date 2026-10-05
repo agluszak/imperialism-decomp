@@ -95,9 +95,9 @@ void TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   TAmtBar* control = this;
   GetClip(surface.tempRgn);
 
-  if (control != 0 && control->IsActionable() != 0) {
+  if (control != 0 && control->IsActionable()) {
     control->PrepareForDrawing();
-    if (control->IsActionable() != 0) {
+    if (control->IsActionable()) {
       CRect boundsRect(0, 0, 0, 0);
       control->QueryBounds(&boundsRect);
       ClipRect(&boundsRect);
@@ -136,9 +136,9 @@ void TRailAmtBar::RenderQuickDrawOverlayWithHitRegion(short selectedValue) {
   stepOrCurrentValue = selectedValue;
   GetClip(surface.tempRgn);
 
-  if (IsActionable() != 0) {
+  if (IsActionable()) {
     PrepareForDrawing();
-    if (IsActionable() != 0) {
+    if (IsActionable()) {
       CPoint translatedOrigin(g_nOverlayClipCacheParamX, g_nOverlayClipCacheParamY);
       TranslatePointToParentChain4E(&translatedOrigin);
 

@@ -185,7 +185,7 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
   }
   marker = static_cast<TTown*>(markerCursor.Reset());
   while (markerCursor.More() != 0) {
-    if (marker->IsUnblockedPort() != 0 && homeLinked != 0 && marker->activeFlag != 0 &&
+    if (marker->IsUnblockedPort() != 0 && homeLinked != 0 && marker->activeFlag &&
         influenceMap[marker->tileIndex] == 0) {
       this->MarkConnectedOwnedRegionsFrom(influenceMap, marker->tileIndex);
     }
@@ -193,11 +193,11 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
   }
   marker = static_cast<TTown*>(markerCursor.Reset());
   while (markerCursor.More() != 0) {
-    if ((influenceMap[marker->tileIndex] == 0 || marker->activeFlag == 0) &&
+    if ((influenceMap[marker->tileIndex] == 0 || !marker->activeFlag) &&
         (marker->IsUnblockedPort() == 0 || homeLinked == 0)) {
-      marker->transportLinked = 0;
+      marker->transportLinked = false;
     } else {
-      marker->transportLinked = 1;
+      marker->transportLinked = true;
     }
     marker = static_cast<TTown*>(markerCursor.Advance());
   }
@@ -252,7 +252,7 @@ char* TGreatPower::BuildCityInfluenceLevelMap() {
   CIterator townIter(townMarkerList);
   for (TTown* town = static_cast<TTown*>(townIter.Reset()); townIter.More();
        town = static_cast<TTown*>(townIter.Advance())) {
-    if (town != nullptr && town->transportLinked != 0) {
+    if (town != nullptr && town->transportLinked) {
       char influence = static_cast<char>((town->enabledFlag != 0) + 1);
       influenceByTile[town->tileIndex] = influence;
 
@@ -350,7 +350,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
   while (regionOrdinal <= totalRegions) {
     short regionId = static_cast<short>(regionList->At(regionOrdinal));
     unsigned char pendingStage = 0;
-    unsigned char needsRedraw = 0;
+    bool needsRedraw = false;
 
     TMapMgr* globalMapState = g_pGlobalMapState;
     TSimMgr* localizationRuntime = g_pSimMgr;
@@ -404,7 +404,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
                 static_cast<int>(*stage1CounterA) < sum01 / 2) {
               pendingStage = 1;
               *stage1CounterA = static_cast<short>(*stage1CounterA + 1);
-              needsRedraw = 1;
+              needsRedraw = true;
             }
           }
 
@@ -415,7 +415,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
                 static_cast<int>(*stage1CounterB) < resourceSums[2] / 2) {
               pendingStage = 1;
               *stage1CounterB = static_cast<short>(*stage1CounterB + 1);
-              needsRedraw = 1;
+              needsRedraw = true;
             }
           }
 
@@ -426,7 +426,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
                 static_cast<int>(*stage1CounterC) < resourceSums[3] / 2) {
               pendingStage = 1;
               *stage1CounterC = static_cast<short>(*stage1CounterC + 1);
-              needsRedraw = 1;
+              needsRedraw = true;
             }
           }
 
@@ -437,7 +437,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
             if (static_cast<int>(*stage1CounterD) < capabilityScore / 2) {
               pendingStage = 1;
               *stage1CounterD = static_cast<short>(*stage1CounterD + 1);
-              needsRedraw = 1;
+              needsRedraw = true;
             }
           }
         }
@@ -449,19 +449,19 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
               static_cast<int>(*stage2CounterA) < static_cast<int>(*stage1CounterA) / 2) {
             pendingStage = 2;
             *stage2CounterA = static_cast<short>(*stage2CounterA + 1);
-            needsRedraw = 1;
+            needsRedraw = true;
           }
           if (*stage1CounterB != 0 &&
               static_cast<int>(*stage2CounterB) < static_cast<int>(*stage1CounterB) / 2) {
             pendingStage = 2;
             *stage2CounterB = static_cast<short>(*stage2CounterB + 1);
-            needsRedraw = 1;
+            needsRedraw = true;
           }
           if (*stage1CounterC != 0 &&
               static_cast<int>(*stage2CounterC) < static_cast<int>(*stage1CounterC) / 2) {
             pendingStage = 2;
             *stage2CounterC = static_cast<short>(*stage2CounterC + 1);
-            needsRedraw = 1;
+            needsRedraw = true;
           }
         }
 
@@ -478,7 +478,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
         }
       }
 
-      if (localizationRuntime->multiplayerSessionRole != 0 && needsRedraw != 0) {
+      if (localizationRuntime->multiplayerSessionRole != 0 && needsRedraw) {
         g_pGameFlowState->DispatchCityRedrawInvalidateEvent(regionId);
       }
     }
@@ -489,7 +489,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
 
 // FUNCTION: IMPERIALISM 0x004dc3f0
 char TGreatPower::AnyNeedCurrentExceedsTargetWhenCapMismatch(void) {
-  char result = 0;
+  bool result = false;
   if (this->transportCapacity != this->reservedTransportCapacity) {
     short needIndex = 0;
     while (this->needCurrentByType[needIndex] <= this->needTargetByType[needIndex]) {
@@ -498,7 +498,7 @@ char TGreatPower::AnyNeedCurrentExceedsTargetWhenCapMismatch(void) {
         return result;
       }
     }
-    result = 1;
+    result = true;
   }
   return result;
 }
@@ -566,23 +566,23 @@ char TGreatPower::IsCapitolThreatened(int mode) {
 
 // FUNCTION: IMPERIALISM 0x004dc660
 char TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages(CString* outMessageText) {
-  char anyMessage = 0;
-  char found = 0;
+  bool anyMessage = false;
+  bool found = false;
   int nationSlot;
   for (nationSlot = 0; nationSlot < 7; ++nationSlot) {
     if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, this->nationSlot) != 0 &&
         g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) != 0) {
-      found = 1;
+      found = true;
     }
-    if (found != 0) {
+    if (found) {
       break;
     }
   }
-  if (found != 0) {
+  if (found) {
     TZone* contextEntry = g_pMapActionContextListHead;
     while (contextEntry != 0) {
       contextEntry->GetContextOrdinalOrInvalid();
-      found = 0;
+      found = false;
       // The original dispatches this on the context node (ecx = contextEntry at
       // 0x004dc6e2), not on the nation object.
       if (contextEntry->HasSecondaryNeighborWithNationTag(this->nationSlot) != 0) {
@@ -597,12 +597,12 @@ char TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages(CString*
                 CString zoneName;
                 contextEntry->AssignZoneDisplayNameToOutputRef(&zoneName);
                 *outMessageText += "\n     " + zoneName;
-                anyMessage = 1;
-                found = 1;
+                anyMessage = true;
+                found = true;
               }
             }
           }
-          if (found != 0) {
+          if (found) {
             break;
           }
         }
@@ -616,24 +616,24 @@ char TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages(CString*
 // FUNCTION: IMPERIALISM 0x004dc840
 char TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(
     CString* outMessageText) {
-  char found = 0;
-  char anyMessage = 0;
+  bool found = false;
+  bool anyMessage = false;
   int nationSlot;
   for (nationSlot = 0; nationSlot < 7; ++nationSlot) {
     if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, this->nationSlot) != 0 &&
         g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) != 0) {
-      found = 1;
+      found = true;
     }
-    if (found != 0) {
+    if (found) {
       break;
     }
   }
-  if (found != 0) {
+  if (found) {
     CIterator cursor(townMarkerList);
     TTown* town = static_cast<TTown*>(cursor.Reset());
     while (cursor.More()) {
-      if (town->enabledFlag != 0 && town->transportLinked == 0) {
-        anyMessage = 1;
+      if (town->enabledFlag != 0 && !town->transportLinked) {
+        anyMessage = true;
         CString townName;
         g_pGlobalMapState->AssignCityRecordDisplayName(
             g_pGlobalMapState->terrainStateTable[town->tileIndex].cityRecordIndex, &townName);
@@ -1179,12 +1179,12 @@ short TGreatPower::GetAmtUnsold(short resourceKind) {
 
 // FUNCTION: IMPERIALISM 0x004dda90
 void TGreatPower::SetTradeOffersFor(short resourceKind, short offerContext) {
-  g_pNewsMgr->AddShortageEvent(this->nationSlot, offerContext, resourceKind, 0);
+  g_pNewsMgr->AddShortageEvent(this->nationSlot, offerContext, resourceKind, false);
 }
 
 // FUNCTION: IMPERIALISM 0x004ddad0
 char TGreatPower::AreAdvancedManufacturedTradeOffersExhausted(void) {
-  char result = 1;
+  bool result = true;
   short nationSlot = 0xd;
   do {
     if (nationSlot > 0x10) {
@@ -1192,10 +1192,10 @@ char TGreatPower::AreAdvancedManufacturedTradeOffersExhausted(void) {
     }
     short state = this->itemPotentials[nationSlot];
     if (state > 0 && this->purchasedItemsByResource[nationSlot] + state > 0) {
-      result = 0;
+      result = false;
     }
     ++nationSlot;
-  } while (result != 0);
+  } while (result);
   return result;
 }
 
@@ -1300,8 +1300,8 @@ void TGreatPower::AddToDealBook(short kind, NationSlot targetNation, short value
 
 // FUNCTION: IMPERIALISM 0x004dde30
 char TGreatPower::AnyTrackedSlotEntryHasZeroField4(short targetSlot) {
-  char found = 0;
-  for (short entryIndex = 1; found == 0; ++entryIndex) {
+  bool found = false;
+  for (short entryIndex = 1; !found; ++entryIndex) {
     TPtrList* trackedSlot = this->diplomacyTrackedSlots[targetSlot];
     if (entryIndex > trackedSlot->GetSize()) {
       return found;
@@ -1309,7 +1309,7 @@ char TGreatPower::AnyTrackedSlotEntryHasZeroField4(short targetSlot) {
     TrackedSlotEntryPacket* entry = static_cast<TrackedSlotEntryPacket*>(
         trackedSlot->GetPtrListEntryByOneBasedIndex(entryIndex));
     if (entry->value == 0) {
-      found = 1;
+      found = true;
     }
   }
   return found;
@@ -1366,7 +1366,7 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetC
   const short kPolicyTreasurySmall = 0x133;
   const short kPolicyTreasuryLarge = 0x134;
 
-  char shouldApply = 1;
+  bool shouldApply = true;
 
   if (policyCode <= kPolicyRequiresCompatibilityStart) {
     if (policyCode != kPolicyRequiresCompatibilityStart) {
@@ -1382,7 +1382,7 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetC
     }
     if (g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(this->nationSlot,
                                                                           targetClass) != 2) {
-      shouldApply = 0;
+      shouldApply = false;
     }
     goto APPLY_POLICY_IF_ALLOWED;
   }
@@ -1392,7 +1392,7 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetC
   case 1:
     if (g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(this->nationSlot,
                                                                           targetClass) != 2) {
-      shouldApply = 0;
+      shouldApply = false;
     }
     break;
 
@@ -1412,8 +1412,8 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetC
     }
 
     TCountry* terrainDescriptor = g_apTerrainTypeDescriptorTable[targetClass];
-    signed char isClientNation = terrainDescriptor->encodedNationSlot >= 200;
-    if (isClientNation != 0) {
+    bool isClientNation = terrainDescriptor->encodedNationSlot >= 200;
+    if (isClientNation) {
       short encodedNationSlot = terrainDescriptor->encodedNationSlot;
       short resolvedNationSlot;
       if (encodedNationSlot >= 200) {
@@ -1450,7 +1450,7 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetC
     if (this->CanAffordAdditionalDiplomacyCostAfterCommitments(500) != 0) {
       this->AddToTreasury(0xFFFFFE0C);
     } else {
-      shouldApply = 0;
+      shouldApply = false;
     }
     break;
 
@@ -1458,7 +1458,7 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetC
     if (this->CanAffordAdditionalDiplomacyCostAfterCommitments(5000) != 0) {
       this->AddToTreasury(0xFFFFEC78);
     } else {
-      shouldApply = 0;
+      shouldApply = false;
     }
     break;
 
@@ -1474,7 +1474,7 @@ APPLY_POLICY_IF_ALLOWED:
     g_pHelpMgr->NoOpDiplomacyPolicyStateChangedHook(static_cast<int>(policyCode),
                                                     static_cast<int>(targetClass), shouldApply);
   }
-  return shouldApply != 0;
+  return shouldApply;
 }
 
 // FUNCTION: IMPERIALISM 0x004de2b0
@@ -1626,7 +1626,7 @@ char TGreatPower::CanAffordDiplomacyGrantEntryForTarget(NationSlot targetNationS
 
   int availableBudget = this->ComputeAvailableDiplomacyBudget();
   int remainingBudget = currentGrant - proposedGrantValue + availableBudget;
-  char canAfford = static_cast<char>(remainingBudget >= 0);
+  bool canAfford = static_cast<char>(remainingBudget >= 0);
   return canAfford;
 }
 
@@ -1634,7 +1634,7 @@ char TGreatPower::CanAffordDiplomacyGrantEntryForTarget(NationSlot targetNationS
 char TGreatPower::CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost) {
   int availableBudget = this->ComputeAvailableDiplomacyBudget();
   int remainingBudget = availableBudget - this->grantTotalCost - static_cast<int>(additionalCost);
-  char canAfford = static_cast<char>(remainingBudget >= 0);
+  bool canAfford = static_cast<char>(remainingBudget >= 0);
   return canAfford;
 }
 
@@ -1668,7 +1668,7 @@ void TGreatPower::BecomeProtectorateOf(int arg1) {
   const DiplomacyRelationship kResetRelationship = kDiplomacyRelationshipWar;
   const int kDipFlagPolicy = 0x31;
 
-  g_pNewsMgr->AddTreatyEvent(kInterNationEventNationTransferred, this->nationSlot, 7, 0);
+  g_pNewsMgr->AddTreatyEvent(kInterNationEventNationTransferred, this->nationSlot, 7, false);
   g_pDiplomacyTurnStateManager->RebuildMinorNationDispositionLookupTables(this->nationSlot);
 
   this->encodedNationSlot = static_cast<short>(arg1 + 100);
@@ -1842,8 +1842,8 @@ void TGreatPower::AddNoticeFrom(short arg1, short arg2) {
     payload.targetNationMask0C = 1 << (static_cast<unsigned char>(arg1) & 0x1F);
 
     bool immediateDispatch = this->IsRemote();
-    if (immediateDispatch == 0) {
-      g_pNewsMgr->AddEvent(static_cast<int>(this->nationSlot), &payload, 0);
+    if (!immediateDispatch) {
+      g_pNewsMgr->AddEvent(static_cast<int>(this->nationSlot), &payload, false);
     } else {
       g_pGameFlowState->SendNewsEvent(static_cast<int>(this->nationSlot), &payload);
     }
@@ -1928,14 +1928,14 @@ void TGreatPower::AcceptOffer(short proposalIndex) {
   case kDiplomacyProposalJoinEmpire:
     this->ChangeMaster(static_cast<int>(proposal->sourceNationSlot), 1);
     g_pNewsMgr->AddTreatyEvent(kInterNationEventJoinEmpireAccepted, this->nationSlot,
-                               static_cast<int>(proposal->sourceNationSlot), 0);
+                               static_cast<int>(proposal->sourceNationSlot), false);
     break;
 
   case kDiplomacyProposalAlliance: {
     g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
         this->nationSlot, proposal->sourceNationSlot, kDiplomacyRelationshipAlliance);
     g_pNewsMgr->AddTreatyEvent(kInterNationEventAllianceAccepted, this->nationSlot,
-                               static_cast<int>(proposal->sourceNationSlot), 0);
+                               static_cast<int>(proposal->sourceNationSlot), false);
     for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
       if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(
               nationSlot, static_cast<int>(proposal->sourceNationSlot)) != 0 &&
@@ -1952,14 +1952,14 @@ void TGreatPower::AcceptOffer(short proposalIndex) {
     g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
         this->nationSlot, proposal->sourceNationSlot, kDiplomacyRelationshipNonAggressionPact);
     g_pNewsMgr->AddTreatyEvent(kInterNationEventNonAggressionPactAccepted, this->nationSlot,
-                               static_cast<int>(proposal->sourceNationSlot), 0);
+                               static_cast<int>(proposal->sourceNationSlot), false);
     break;
 
   case kDiplomacyProposalPeaceTreaty: {
     g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
         this->nationSlot, proposal->sourceNationSlot, kDiplomacyRelationshipPeace);
     g_pNewsMgr->AddTreatyEvent(kInterNationEventPeaceTreatyAccepted, this->nationSlot,
-                               static_cast<int>(proposal->sourceNationSlot), 0);
+                               static_cast<int>(proposal->sourceNationSlot), false);
     if (g_pDiplomacyTurnStateManager->IsGreatPower(proposal->sourceNationSlot) != 0) {
       for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
         if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) != 0 &&
@@ -1979,7 +1979,8 @@ void TGreatPower::AcceptOffer(short proposalIndex) {
     g_apTerrainTypeDescriptorTable[static_cast<int>(proposal->sourceNationSlot)]->ChangeMaster(
         this->nationSlot, 1);
     g_pNewsMgr->AddTreatyEvent(kInterNationEventJoinEmpireAccepted,
-                               static_cast<int>(proposal->sourceNationSlot), this->nationSlot, 0);
+                               static_cast<int>(proposal->sourceNationSlot), this->nationSlot,
+                               false);
     break;
   }
 
@@ -2018,19 +2019,19 @@ void TGreatPower::RejectOffer(short proposalQueueIndex) {
   switch (proposalCode) {
   case kDiplomacyProposalJoinEmpire:
     g_pNewsMgr->AddTreatyEvent(kInterNationEventJoinEmpireRejected, targetNation, this->nationSlot,
-                               0);
+                               false);
     return;
   case kDiplomacyProposalAlliance:
     g_pNewsMgr->AddTreatyEvent(kInterNationEventAllianceRejected, targetNation, this->nationSlot,
-                               0);
+                               false);
     return;
   case kDiplomacyProposalNonAggressionPact:
     g_pNewsMgr->AddTreatyEvent(kInterNationEventNonAggressionPactRejected, targetNation,
-                               this->nationSlot, 0);
+                               this->nationSlot, false);
     return;
   case kDiplomacyProposalPeaceTreaty:
     g_pNewsMgr->AddTreatyEvent(kInterNationEventPeaceTreatyRejected, targetNation, this->nationSlot,
-                               0);
+                               false);
     return;
   default:
     return;
@@ -2040,7 +2041,7 @@ void TGreatPower::RejectOffer(short proposalQueueIndex) {
 // FUNCTION: IMPERIALISM 0x004df4b0
 char TGreatPower::IsDiplomacyProposalAllowedForRelationship(
     DiplomacyProposalCodeStorage proposalCode, int targetNation) {
-  char allowed = 0;
+  bool allowed = false;
   DiplomacyRelationshipStorage relationship =
       g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(this->nationSlot,
                                                                        targetNation);
@@ -2065,7 +2066,7 @@ char TGreatPower::IsDiplomacyProposalAllowedForRelationship(
     break;
   case kDiplomacyRelationshipWar:
     if (proposalCode == kDiplomacyProposalPeaceTreaty) {
-      allowed = 1;
+      allowed = true;
     }
     break;
   }
@@ -2113,7 +2114,7 @@ void TGreatPower::ReplyToDiplomacyOffers(void) {
       short targetNation = proposalEntry[1];
       char shouldApplyProposal;
 
-      if (IsTurnFlowCooldownActiveAndResetExpiredState() == 0) {
+      if (!IsTurnFlowCooldownActiveAndResetExpiredState()) {
         if (this->diplomacyPolicyByNation[targetNation] == proposalCode) {
           shouldApplyProposal = 1;
         } else if (proposalCode == kDiplomacyProposalAlliance) {
@@ -2191,7 +2192,7 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
   TSimMgr* localization = g_pSimMgr;
   if (this->diplomacyEligibilityA0 == 0 || localization->difficultyLevel < 2 ||
       localization->scenarioMapIndexPlusOne != 0) {
-    if (this->IsRemote() == 0 || localization->scenarioMapIndexPlusOne != 0) {
+    if (!this->IsRemote() || localization->scenarioMapIndexPlusOne != 0) {
       this->CreateFrogCityAtHomeRegionAndAttach(mgr);
       return;
     }
@@ -2202,9 +2203,9 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
 // FUNCTION: IMPERIALISM 0x004dfa20
 void TGreatPower::CreateFrogCityTownMarkerAndAttach(void* receiver) {
   TTown* marker = new TTown();
-  marker->ITown("Frog City", 0, 1, this->nationSlot);
+  marker->ITown("Frog City", 0, true, this->nationSlot);
   static_cast<TCity*>(receiver)->SetSelectedTownMarker(marker);
-  marker->activeFlag = 1;
+  marker->activeFlag = true;
   this->townMarkerList->AddTail(marker);
 }
 
@@ -2236,9 +2237,9 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
   }
   this->homeTileIndex = static_cast<short>(homeTileIndex);
   TTown* marker = new TTown();
-  marker->ITown("FrogCity", homeTileIndex, 1, this->nationSlot);
+  marker->ITown("FrogCity", homeTileIndex, true, this->nationSlot);
   static_cast<TCity*>(receiver)->SetSelectedTownMarker(marker);
-  marker->activeFlag = 1;
+  marker->activeFlag = true;
   this->townMarkerList->AddTail(marker);
   g_pGlobalMapState->PlaceCity(marker->tileIndex, this->nationSlot);
   if (this->diplomacyEligibilityA0 == 0 && this->interiorMinister != 0) {
@@ -2279,13 +2280,13 @@ void TGreatPower::SetHomeCityTileAndDisplayName(short homeTileIndex, char* cityN
   }
 
   if (g_pSimMgr->scenarioMapIndexPlusOne == 0) {
-    short result1 =
-        g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeTileIndex, 0);
+    short result1 = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
+        this->homeTileIndex, false);
     TCivUnit* civ1 = new TCivUnit();
     civ1->ICivUnit(kCivilianUnitProspector, result1, this->nationSlot);
 
     short result2 =
-        g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeTileIndex, 1);
+        g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeTileIndex, true);
     TCivUnit* civ2 = new TCivUnit();
     civ2->ICivUnit(kCivilianUnitEngineer, result2, this->nationSlot);
 
@@ -2294,18 +2295,18 @@ void TGreatPower::SetHomeCityTileAndDisplayName(short homeTileIndex, char* cityN
     if (g_pSimMgr->difficultyLevel == 0 && this->diplomacyEligibilityA0) {
       city->orderCountByType5c[1] += 6;
 
-      short result3 =
-          g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeTileIndex, 0);
+      short result3 = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
+          this->homeTileIndex, false);
       TCivUnit* civ3 = new TCivUnit();
       civ3->ICivUnit(kCivilianUnitProspector, result3, this->nationSlot);
 
-      short result4 =
-          g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeTileIndex, 0);
+      short result4 = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
+          this->homeTileIndex, false);
       TCivUnit* civ4 = new TCivUnit();
       civ4->ICivUnit(kCivilianUnitMiner, result4, this->nationSlot);
 
-      short result5 =
-          g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeTileIndex, 0);
+      short result5 = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
+          this->homeTileIndex, false);
       TCivUnit* civ5 = new TCivUnit();
       civ5->ICivUnit(kCivilianUnitFarmer, result5, this->nationSlot);
     }
@@ -2853,12 +2854,12 @@ char TGreatPower::PassesDiplomacyStrengthThresholdForTarget(int targetNation) {
 char TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation) {
   // Result intentionally ignored in the original; keep the call for its side effects.
   g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, targetNation);
-  char joinsWar = 0;
+  bool joinsWar = false;
   TGreatPower* targetState = g_apNationStates[targetNation];
   if (targetState->IsCapitolThreatened(0) == 0 && targetState->IsCapitolThreatened(1) == 0) {
     float warThreshold = this->GetPeaceThreat(targetNation);
     if (this->GetAcceptPeaceNumber() < warThreshold) {
-      joinsWar = 1;
+      joinsWar = true;
       for (int otherNation = 0; otherNation < 7; ++otherNation) {
         if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(otherNation) != 0 &&
             g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
@@ -2870,8 +2871,9 @@ char TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation) {
       }
     }
   }
-  if (joinsWar != 0) {
-    g_pNewsMgr->AddTreatyEvent(kInterNationEventNationJoinedWar, targetNation, this->nationSlot, 0);
+  if (joinsWar) {
+    g_pNewsMgr->AddTreatyEvent(kInterNationEventNationJoinedWar, targetNation, this->nationSlot,
+                               false);
   }
   return joinsWar;
 }
@@ -3300,7 +3302,7 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
   CString messageText;
   CString entryText;
   short totalGrantValue = 0;
-  char anyPreviousTurnEntry = 0;
+  bool anyPreviousTurnEntry = false;
   short previousTurn = g_pSimMgr->GetEconomicTurn() - 1;
 
   if (this->turnSummaryQueue->GetSize() > 0) {
@@ -3311,7 +3313,7 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
       if (entry->turnTick != previousTurn) {
         continue;
       }
-      anyPreviousTurnEntry = 1;
+      anyPreviousTurnEntry = true;
       messageText += '\r';
       messageText += s_szTurnSummaryIndent_00696790;
       countText.Format(g_szDecimalFormat, entry->flags);
@@ -3373,7 +3375,7 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
       messageText += aidText;
     }
 
-    if (anyPreviousTurnEntry != 0) {
+    if (anyPreviousTurnEntry) {
       g_pSfxPlaybackSystem->PlaySoundEffect(0xbcb, 0, 1);
       g_pViewMgr->ModalMessage(messageText, g_ptGreatPowerModalMessage, 2, 0);
     }

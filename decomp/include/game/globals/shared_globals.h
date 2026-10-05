@@ -100,7 +100,7 @@ extern int g_adwEngineerRailBuildCostByTerrainType[kStrategicTerrainCount];
 // TControlSeaZoneMission.cpp / TDefendProvinceMission.cpp / TNavyMission.cpp —
 extern const float g_UnreferencedConstant_006545d4;
 
-extern "C" char g_bMultiplayerScenarioSetupActive;
+extern "C" bool g_bMultiplayerScenarioSetupActive;
 
 extern "C" const char s_PictWvGobPathFormat_00698BF4[];
 
@@ -108,7 +108,7 @@ extern "C" const char s_PictWvGobPathFormat_00698BF4[];
 // while clicking only takes the instant-random-map shortcut when this flag is set
 // (never toggled anywhere in the reachable game code -- likely a build-time/debug-only
 // switch in the retail binary). 0x6a42dc.
-extern unsigned char g_bRandomMapDeveloperCheatFlag;
+extern bool g_bRandomMapDeveloperCheatFlag;
 
 extern "C" MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30[23];
 

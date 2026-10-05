@@ -34,9 +34,9 @@ void TClientGreatPower::AcceptOffer(short proposalIndex) {
   packet.toNetworkId = -1;
   packet.messageLength = 0x20;
   packet.nationSlot18 = this->nationSlot;
-  packet.acceptedFlag1A = 1;
+  packet.acceptedFlag1A = true;
   packet.proposalIndex1C = proposalIndex;
-  g_pNetMgr006a6014->Send(&packet, 0);
+  g_pNetMgr006a6014->Send(&packet, false);
 }
 
 // FUNCTION: IMPERIALISM 0x00541450
@@ -49,9 +49,9 @@ void TClientGreatPower::RejectOffer(short proposalQueueIndex) {
   packet.toNetworkId = -1;
   packet.messageLength = 0x20;
   packet.nationSlot18 = this->nationSlot;
-  packet.acceptedFlag1A = 0;
+  packet.acceptedFlag1A = false;
   packet.proposalIndex1C = proposalQueueIndex;
-  g_pNetMgr006a6014->Send(&packet, 0);
+  g_pNetMgr006a6014->Send(&packet, false);
 }
 
 // FUNCTION: IMPERIALISM 0x005414f0
@@ -70,7 +70,7 @@ void TClientGreatPower::ReplyToDiplomacyOffers(void) {
   packet.messageLength = 0x20;
   packet.SetTimeEmitPacketGameFlowTurnId();
   packet.nationSlot1C = static_cast<short>(g_pSimMgr->GetActiveNationId());
-  g_pNetMgr006a6014->Send(&packet, 0);
+  g_pNetMgr006a6014->Send(&packet, false);
 
   g_pViewMgr->MakeDiplomacyOfferDialog(nationSlot, nationSlot, 0x29a);
 }
@@ -84,7 +84,7 @@ int TClientGreatPower::HandleWarTransitionRequestWithRoleSwap(int targetNation, 
     unsigned char sourceNation;
     unsigned char commandCode;
     unsigned char swapRoles;
-    unsigned char acceptedFlag;
+    bool acceptedFlag;
   };
 
   int accepted =
@@ -103,7 +103,7 @@ int TClientGreatPower::HandleWarTransitionRequestWithRoleSwap(int targetNation, 
   packetPayload.commandCode = 0x61;
   packetPayload.swapRoles = static_cast<unsigned char>(swapRoles);
   packetPayload.acceptedFlag = accepted == 1 ? 1 : 0;
-  g_pNetMgr006a6014->Send(&packetPayload, 0);
+  g_pNetMgr006a6014->Send(&packetPayload, false);
   return accepted;
 }
 
@@ -111,7 +111,7 @@ int TClientGreatPower::HandleWarTransitionRequestWithRoleSwap(int targetNation, 
 int TClientGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNation) {
   struct TurnEvent1EPacketPayload : TimelyNetMessagePrefix {
     unsigned char activeNationIdBeforePayload;
-    unsigned char acceptedFlag;
+    bool acceptedFlag;
     unsigned char commandCode;
     unsigned char commandArgA;
     unsigned char commandArgB;
@@ -131,7 +131,7 @@ int TClientGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNa
   packetPayload.commandCode = 0x69;
   packetPayload.commandArgA = static_cast<unsigned char>(targetNation);
   packetPayload.commandArgB = static_cast<unsigned char>(sourceNation);
-  g_pNetMgr006a6014->Send(&packetPayload, 0);
+  g_pNetMgr006a6014->Send(&packetPayload, false);
   return accepted;
 }
 

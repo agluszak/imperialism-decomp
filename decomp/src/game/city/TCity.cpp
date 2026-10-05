@@ -648,8 +648,8 @@ void TCity::VerifyStocks() {
   do {
     if (*needCursor < 0) {
       bool dispatchGate = this->ownerNationAc->IsRemote();
-      if ((dispatchGate == 0 || g_pSimMgr->multiplayerSessionRole != 2) &&
-          g_Sanitize_City_Counter_Value_006A24D4 == 0) {
+      if ((!dispatchGate || g_pSimMgr->multiplayerSessionRole != 2) &&
+          !g_Sanitize_City_Counter_Value_006A24D4) {
         TemporarilyClearAndRestoreUiInvalidationFlag();
       }
       *needCursor = 0;
@@ -775,7 +775,7 @@ void TCity::MakeTown(short selectedResourceType) {
   if (town == 0) {
     FailNilPointerWithAssert(kUCityCppPath, 0x53c);
   }
-  town->ITown("Altown", 0, 0, ownerNationAc->nationSlot);
+  town->ITown("Altown", 0, false, ownerNationAc->nationSlot);
   town->Free();
   ownerNationAc->RebuildNationResourceYieldCountersAndDevelopmentTargets();
   ownerNationAc->treasuryValue10 = ownerNationAc->treasuryValue10;
@@ -860,8 +860,8 @@ short TCity::GetNextBuildingType(short buildingSlot) {
   short result = 0;
   short buildingType;
   if (buildingSlot == 0x0f) {
-    unsigned char usesThreeRegionsPerLevel = ownerNationAc->pendingActionStatus.byAction[9] >= '3';
-    if (usesThreeRegionsPerLevel != 0) {
+    bool usesThreeRegionsPerLevel = ownerNationAc->pendingActionStatus.byAction[9] >= '3';
+    if (usesThreeRegionsPerLevel) {
       int regionCapacity = ownerNationAc->ownedRegionList->GetSize() / 3;
       if (regionCapacity > 1) {
         buildingType = static_cast<short>(ownerNationAc->ownedRegionList->GetSize() / 3);
@@ -938,14 +938,14 @@ short TCity::GetNextBuildingType(short buildingSlot) {
   }
 
   case 0x0e: {
-    unsigned char thresholdReached = ownerNationAc->pendingActionStatus.byAction[8] >= '3';
-    result = static_cast<short>((thresholdReached != 0) + 1);
+    bool thresholdReached = ownerNationAc->pendingActionStatus.byAction[8] >= '3';
+    result = static_cast<short>(thresholdReached + 1);
     return result;
   }
 
   case 0x0f: {
-    unsigned char thresholdReached = ownerNationAc->pendingActionStatus.byAction[9] >= '3';
-    result = static_cast<short>((thresholdReached != 0) + 1);
+    bool thresholdReached = ownerNationAc->pendingActionStatus.byAction[9] >= '3';
+    result = static_cast<short>(thresholdReached + 1);
     return result;
   }
 

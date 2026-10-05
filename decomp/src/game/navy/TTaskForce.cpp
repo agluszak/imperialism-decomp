@@ -299,8 +299,8 @@ void TTaskForce::OrderEvade() {
 
 // Sibling of OrderEvade for map-order kind 3/4 (see the header comment).
 // FUNCTION: IMPERIALISM 0x005530f0
-void TTaskForce::OrderPatrol(unsigned char useType4) {
-  shipOrders = (useType4 != 0) ? 4 : 3;
+void TTaskForce::OrderPatrol(bool useType4) {
+  shipOrders = (useType4) ? 4 : 3;
   FreeAvailables();
 
   AssertValid();
@@ -572,7 +572,7 @@ void TTaskForce::OrderSendInTheMarines(Province* orderTarget) {
 }
 
 // FUNCTION: IMPERIALISM 0x005539c0
-void TTaskForce::MaxOut(unsigned char mode) {
+void TTaskForce::MaxOut(bool mode) {
   for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != nullptr; ship = ship->next) {
     if (ship->location == location && ship->nation == nation && ship->taskForce == 0) {
       Add(ship);
@@ -581,16 +581,16 @@ void TTaskForce::MaxOut(unsigned char mode) {
 
   for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
     // Same node+0x34 overrun documented on Add.
-    node->active = !(mode == 0 && node->payload->selection != 0);
+    node->active = !(!mode && node->payload->selection != 0);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00553a50
-void TTaskForce::DropShips(unsigned char reserveExtraSlot) {
+void TTaskForce::DropShips(bool reserveExtraSlot) {
   for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
     if (node->active != 0) {
       // Same node+0x34 overrun documented on Add.
-      node->payload->selection = (reserveExtraSlot != 0) ? 1u : 2u;
+      node->payload->selection = (reserveExtraSlot) ? 1u : 2u;
     }
   }
 
@@ -686,7 +686,7 @@ void TTaskForce::Add(TShip* node) {
     shipList = newLink;
   }
 
-  flagship = node->Finest(flagship, 0);
+  flagship = node->Finest(flagship, false);
 
   short bucketIndex =
       static_cast<short>(g_NavyOrderResourceDescriptorTable[node->type].ToolbarBucketIndex());
@@ -746,7 +746,7 @@ void TTaskForce::Remove(TShip* ship) {
 void TTaskForce::ElectFlagship() {
   flagship = nullptr;
   for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
-    flagship = node->payload->Finest(flagship, 0);
+    flagship = node->payload->Finest(flagship, false);
   }
 }
 
@@ -800,7 +800,7 @@ void TTaskForce::FreeAvailables() {
 
   flagship = nullptr;
   for (node = shipList; node != nullptr; node = node->next) {
-    flagship = node->payload->Finest(flagship, 0);
+    flagship = node->payload->Finest(flagship, false);
   }
 }
 
@@ -809,8 +809,8 @@ char TTaskForce::SinkOrSwimShips() {
   TMapOrderChildLinkNode* head = shipList;
   if (head != 0) {
     TShip* headChild = head->payload;
-    unsigned char headDefeated = (headChild->strength <= 0);
-    if (headDefeated != 0) {
+    bool headDefeated = (headChild->strength <= 0);
+    if (headDefeated) {
       headChild->taskForce = 0;
       head->payload->Free();
 
@@ -825,7 +825,7 @@ char TTaskForce::SinkOrSwimShips() {
   flagship = 0;
   TMapOrderChildLinkNode* node;
   for (node = head; node != 0; node = node->next) {
-    flagship = node->payload->Finest(flagship, 0);
+    flagship = node->payload->Finest(flagship, false);
   }
 
   if (shipList == 0) {
@@ -1096,7 +1096,7 @@ void TTaskForce::CommitToOrders() {
 
 // Mac oracle: TTaskForce::CancelOrders(unsigned char).
 // FUNCTION: IMPERIALISM 0x005547d0
-void TTaskForce::CancelOrders(unsigned char cancellationMode) {
+void TTaskForce::CancelOrders(bool cancellationMode) {
   (void)cancellationMode;
   bool cancelsBeachhead = shipOrders == 5;
   short cityIndex = cancelsBeachhead
@@ -1169,7 +1169,7 @@ void TTaskForce::Select(short toolbarSlot, unsigned char activeFlag) {
 }
 
 // FUNCTION: IMPERIALISM 0x005549a0
-void TTaskForce::Select(TShip* ship, unsigned char activeFlag) {
+void TTaskForce::Select(TShip* ship, bool activeFlag) {
   TMapOrderChildLinkNode* node;
   if (shipList == nullptr) {
     node = nullptr;
@@ -1180,7 +1180,7 @@ void TTaskForce::Select(TShip* ship, unsigned char activeFlag) {
   }
   if (node != nullptr) {
     node->active = activeFlag;
-    if (activeFlag != 0) {
+    if (activeFlag) {
       ship->selection = 0;
     }
   }
@@ -1435,10 +1435,10 @@ void TTaskForce::GetAuthority(CString* out) const {
 bool TTaskForce::Encounter(TTaskForce* other) {
   const int priorityWeight[3] = {200, 100, 50};
   if (CountShips() == 0) {
-    return 0;
+    return false;
   }
   if (other == nullptr || other->CountShips() == 0) {
-    return 0;
+    return false;
   }
 
   bool shouldAttempt;
@@ -1465,7 +1465,7 @@ bool TTaskForce::Encounter(TTaskForce* other) {
   }
 
   if (!shouldAttempt) {
-    return 0;
+    return false;
   }
 
   int thisScore = GetBattleStrengthRating();
@@ -1489,20 +1489,20 @@ bool TTaskForce::Encounter(TTaskForce* other) {
   }
 
   if (!resolved) {
-    return 0;
+    return false;
   }
   if (CountShips() == 0 || other->CountShips() == 0) {
-    return 0;
+    return false;
   }
 
   if (g_pSimMgr->preferenceValues[1] != 0) {
     if (g_pSimMgr->GetActiveNationId() == nation ||
         g_pSimMgr->GetActiveNationId() == other->nation) {
-      return 1;
+      return true;
     }
   }
   g_pNavyOrderManager->ResolveStrategicBattle(this, other);
-  return 0;
+  return false;
 }
 
 // Standalone sibling of the identical inline "shouldAttempt" computation in
@@ -1517,10 +1517,10 @@ bool TTaskForce::TryToSpot(const TTaskForce* other) const {
     ++thisShipCount;
   }
   if (thisShipCount == 0) {
-    return 0;
+    return false;
   }
   if (other == nullptr) {
-    return 0;
+    return false;
   }
   short otherShipCount = 0;
   for (TMapOrderChildLinkNode* otherCountNode = other->shipList; otherCountNode != nullptr;
@@ -1528,10 +1528,10 @@ bool TTaskForce::TryToSpot(const TTaskForce* other) const {
     ++otherShipCount;
   }
   if (otherShipCount == 0) {
-    return 0;
+    return false;
   }
   if (shipOrders == 6 || other->shipOrders == 6 || other->shipOrders == 5) {
-    return 1;
+    return true;
   }
 
   int sum = 0;
@@ -1597,7 +1597,7 @@ bool TTaskForce::ResolveEncounterWith(TTaskForce* other) {
             priorityWeight[other->aggression] *
                 static_cast<int>(static_cast<short>(thisAggregateScore)) ||
         other->defeated != 0) {
-      return 0;
+      return false;
     }
 
     unsigned int minWeight = 10000;
@@ -1615,9 +1615,9 @@ bool TTaskForce::ResolveEncounterWith(TTaskForce* other) {
     int threshold = static_cast<int>(minWeight + 5) * 10 - other->GetDeciSpeed();
     if (rand() % 100 < threshold) {
       defeated = 1;
-      return 0;
+      return false;
     }
-    return 1;
+    return true;
   }
 
   int refreshedOtherTotal = 0;
@@ -1637,11 +1637,11 @@ bool TTaskForce::ResolveEncounterWith(TTaskForce* other) {
     int threshold = static_cast<int>(minWeight + 5) * 10 - GetDeciSpeed();
     if (rand() % 100 < threshold) {
       other->defeated = 1;
-      return 0;
+      return false;
     }
-    return 1;
+    return true;
   }
-  return 1;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00555c20
@@ -1672,10 +1672,10 @@ bool TTaskForce::AttemptToEvade(const TTaskForce* other) {
   short threshold = static_cast<short>(
       ((minDescriptorWeight != 10000 ? minDescriptorWeight : 0) + 5) * 10 - otherAverage);
   if (threshold <= roll % 100) {
-    return 0;
+    return false;
   }
   defeated = 1;
-  return 1;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00555d10
@@ -1685,7 +1685,7 @@ bool TTaskForce::BattleWith(TTaskForce* other, TTaskForce*& unresolvedForce) {
     ++thisShipCount;
   }
   if (thisShipCount == 0) {
-    return 0;
+    return false;
   }
   short otherShipCount = 0;
   if (other != nullptr) {
@@ -1695,17 +1695,17 @@ bool TTaskForce::BattleWith(TTaskForce* other, TTaskForce*& unresolvedForce) {
     }
   }
   if (otherShipCount == 0) {
-    return 0;
+    return false;
   }
   if (g_pSimMgr->preferenceValues[1] != 0) {
     if (g_pSimMgr->GetActiveNationId() == nation ||
         g_pSimMgr->GetActiveNationId() == other->nation) {
-      return 1;
+      return true;
     }
   }
   g_pNavyOrderManager->ResolveStrategicBattle(this, other);
   unresolvedForce = 0;
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x00555de0

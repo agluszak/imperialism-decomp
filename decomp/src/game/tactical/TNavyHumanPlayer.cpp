@@ -8,7 +8,7 @@ IMPLEMENT_DYNCREATE(TNavyHumanPlayer, TNavyPlayer)
 
 // FUNCTION: IMPERIALISM 0x0059ef90
 void TNavyHumanPlayer::INavyHumanPlayer(TTaskForce* force, char isOurSide, int nationIndex) {
-  INavyPlayer(force, isOurSide, 1, nationIndex);
+  INavyPlayer(force, isOurSide, true, nationIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x0059efc0
@@ -27,7 +27,7 @@ void TNavyHumanPlayer::DeploymentClick(TacticalTileIndex tileIndex) {
   }
 
   if (ordinal > unitList4->GetCount()) {
-    sideReadyFlag10 = 1;
+    sideReadyFlag10 = true;
   } else {
     battle14->DeployTacticalUnitToTile(unit, tileIndex);
   }

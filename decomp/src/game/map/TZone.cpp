@@ -351,7 +351,7 @@ void TZone::GenerateZoneStatusCodeIfUnset() {
     return; // status code already assigned
   }
   short category;
-  if (QueryPortZoneCapability() != 0) {
+  if (QueryPortZoneCapability()) {
     category = 5; // port zones are always the highest status band
   } else {
     category = static_cast<short>(primaryNeighbors.Count());
@@ -460,11 +460,11 @@ void TZone::SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int
   if (resolvedTile == 0xffff) {
     resolvedTile = static_cast<unsigned short>(
         g_pGlobalMapState->ComputeRepresentativeTileIndexForNationWithWrapBias(
-            static_cast<short>(nationSeedId), 0));
+            static_cast<short>(nationSeedId), false));
   }
   tileOrTerrainId0c = static_cast<short>(resolvedTile);
   activeTileIndex20 = static_cast<short>(tileOrTerrainId0c);
-  if (QueryPortZoneCapability() != 0) {
+  if (QueryPortZoneCapability()) {
     g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
         activeTileIndex20, -kMapTileActionStatePortZoneMarkerFrame);
     return;
@@ -802,7 +802,7 @@ void TZone::ShowFocusIngot(unsigned char flag) {
        (g_pViewMgr != 0)) &&
       (g_pViewMgr->mapUberPictureF0 != 0)) {
     char sign = static_cast<char>((-(static_cast<int>(flag)) & 2) - 1);
-    if (QueryPortZoneCapability() != 0) {
+    if (QueryPortZoneCapability()) {
       g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
           activeTileIndex20, static_cast<int>(sign) * kMapTileActionStatePortZoneMarkerFrame);
       g_pViewMgr->mapUberPictureF0->InvalidateTile(activeTileIndex20);
@@ -834,7 +834,7 @@ void TZone::BuildNavalIntelligenceSourceDescription(CString* out, short nation) 
   TShip* selected = 0;
   for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
     if (ship->location == this && ship->nation == nation) {
-      selected = selected->Finest(ship, 0);
+      selected = selected->Finest(ship, false);
     }
   }
 
@@ -867,7 +867,7 @@ TAdmiral* TZone::FindReportingAdmiralForNation(int nation) {
   TShip* selected = 0;
   for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
     if (ship->location == this && ship->nation == nation) {
-      selected = selected->Finest(ship, 0);
+      selected = selected->Finest(ship, false);
     }
   }
   return selected != 0 ? selected->admiral : 0;
@@ -887,7 +887,7 @@ TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation
         // distinct from the active-nation-resolved slot used above.
         TTaskForce* taskForce = new TTaskForce(this, nation);
         taskForce->ITaskForce();
-        taskForce->MaxOut(0);
+        taskForce->MaxOut(false);
         taskForce->DemocraticallyDetermineAggressionLevel();
         return taskForce;
       }
@@ -897,7 +897,7 @@ TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation
 }
 
 // FUNCTION: IMPERIALISM 0x00560b00
-char TZone::CanDisplayMapOrderEntryInCurrentContext(int nation, char skipField34Check) {
+char TZone::CanDisplayMapOrderEntryInCurrentContext(int nation, bool skipField34Check) {
   if (nation == -1) {
     nation = g_pSimMgr->GetActiveNationId();
   }
@@ -907,9 +907,9 @@ char TZone::CanDisplayMapOrderEntryInCurrentContext(int nation, char skipField34
   }
   for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
     if (ship->location == this && ship->nation == nation) {
-      if (skipField34Check == 0) {
-        unsigned char hasField34 = (ship->selection != 0);
-        if (hasField34 != 0) {
+      if (!skipField34Check) {
+        bool hasField34 = (ship->selection != 0);
+        if (hasField34) {
           continue;
         }
       }
@@ -923,7 +923,7 @@ char TZone::CanDisplayMapOrderEntryInCurrentContext(int nation, char skipField34
 
 // FUNCTION: IMPERIALISM 0x00560ba0
 void TZone::ExpandTaskForceTraversalDepthAndMarkDeferredNodes(int remainingDepth,
-                                                              char markAdjacentCities) {
+                                                              bool markAdjacentCities) {
   short depth = static_cast<short>(remainingDepth);
   if (distanceLevel44 > depth) {
     return;
@@ -936,12 +936,12 @@ void TZone::ExpandTaskForceTraversalDepthAndMarkDeferredNodes(int remainingDepth
   if (depth > 0) {
     for (int i = primaryNeighbors.Count() - 1; i >= 0; --i) {
       TZone* neighbor = primaryNeighbors.GetAt(i);
-      if (markAdjacentCities != 0 || neighbor->QueryZoneCapabilityFlagA()) {
-        neighbor->ExpandTaskForceTraversalDepthAndMarkDeferredNodes(depth - 1, 0);
+      if (markAdjacentCities || neighbor->QueryZoneCapabilityFlagA()) {
+        neighbor->ExpandTaskForceTraversalDepthAndMarkDeferredNodes(depth - 1, false);
       }
     }
 
-    if (markAdjacentCities != 0) {
+    if (markAdjacentCities) {
       for (int i = secondaryNeighbors.Count() - 1; i >= 0; --i) {
         Province* city = secondaryNeighbors.Data()[i];
         city->navyOrderReachableA0 = 1;

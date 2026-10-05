@@ -26,7 +26,7 @@ extern const short g_railDirectionSubtractMasks_00696ec8[6];
 extern int g_bOverlayScanlineFillAssertSuppressed;
 
 extern int g_bOverlayRouteRebuildAssertSuppressed;
-extern unsigned char g_applyMiniMapVerticalClipOffset_006993e8;
+extern bool g_applyMiniMapVerticalClipOffset_006993e8;
 
 extern char g_szScriptFileName_006972f8[];
 

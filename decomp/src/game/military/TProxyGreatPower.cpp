@@ -48,7 +48,7 @@ void TProxyGreatPower::AddToTreasury(int amount) {
   packet.DestinateToGP(this->nationSlot);
   packet.nationSlot18 = this->nationSlot;
   packet.amount1C = amount;
-  g_pNetMgr006a6014->Send(&packet, 0);
+  g_pNetMgr006a6014->Send(&packet, false);
 }
 
 // FUNCTION: IMPERIALISM 0x00540aa0
@@ -69,7 +69,7 @@ void TProxyGreatPower::AddOfferFrom(NationSlot sourceNationSlot,
   packetPayload.proposalCode1C = proposalCode;
 
   packetPayload.DestinateToGP(static_cast<int>(this->nationSlot));
-  g_pNetMgr006a6014->Send(&packetPayload, 0);
+  g_pNetMgr006a6014->Send(&packetPayload, false);
 }
 
 // FUNCTION: IMPERIALISM 0x00540b80
@@ -127,7 +127,7 @@ int TProxyGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNat
   packet.actionCode1C = 'i';
   packet.nationA1D = static_cast<signed char>(targetNation);
   packet.nationB1E = static_cast<signed char>(sourceNation);
-  g_pNetMgr006a6014->Send(&packet, 0);
+  g_pNetMgr006a6014->Send(&packet, false);
   return 2;
 }
 
@@ -150,6 +150,6 @@ int TProxyGreatPower::HandleWarTransitionRequestWithRoleSwap(int targetNation, i
   packet.nationA1D = static_cast<signed char>(targetNation);
   packet.nationB1E = static_cast<signed char>(sourceNation);
   packet.mode1F = static_cast<unsigned char>(swapRoles);
-  g_pNetMgr006a6014->Send(&packet, 0);
+  g_pNetMgr006a6014->Send(&packet, false);
   return 2;
 }

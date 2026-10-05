@@ -43,9 +43,9 @@ bool TShipOrder::AutoCanMakeProduct() {
           city->cityStockCoalBC &&
       ReadWeight(g_industryActionCostWeightResCode0C, this->resourceTypeIndex) <=
           city->cityStockFuelCE) {
-    return 1;
+    return true;
   }
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004b8630
@@ -70,9 +70,9 @@ bool TShipOrder::CanMakeProduct() {
           static_cast<int>(this->trackingSlots[kResourceWeightIndex03] + weight03) &&
       static_cast<int>(weight0C) <=
           static_cast<int>(this->trackingSlots[kResourceWeightIndex0C] + weight0C)) {
-    return 1;
+    return true;
   }
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004b86d0
@@ -132,7 +132,7 @@ bool TShipOrder::SetQuantity(short quantity) {
   const short delta = static_cast<short>(quantity - this->quantity);
 
   if (!TProductionOrder::SetQuantity(quantity)) {
-    return 0;
+    return false;
   }
 
   ownerCity->cityStockLumberC8 = static_cast<short>(
@@ -160,7 +160,7 @@ bool TShipOrder::SetQuantity(short quantity) {
       ReadWeight(g_industryActionCostWeightResCode0C, resourceTypeIndex) * delta);
   ownerCity->VerifyStocks();
   g_pViewMgr->RefreshCityProductionUi();
-  return 1;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x004b8970

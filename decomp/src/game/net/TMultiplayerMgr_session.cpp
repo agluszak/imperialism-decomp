@@ -99,88 +99,88 @@ int FindActiveNationSlotIndexInGameFlowList() {
 // FUNCTION: IMPERIALISM 0x005421e0
 const char* GetGamePhaseNameString(int gamePhase) {
   switch (gamePhase) {
-    case -1:
-      return "kPhNoPhase";
-    case 1:
-      return "kPhInitializeGame";
-    case 2:
-      return "kPhKickOff";
-    case 3:
-      return "kPhCitySiteSelection";
-    case 4:
-      return "kPhMap";
-    case 5:
-      return "kPhWaitingToEndTurn";
-    case 6:
-      return "kPhEverybodyDoDiplomacy";
-    case 7:
-      return "kPhEverybodyDoTrade";
-    case 8:
-      return "kPhEverybodyDoCity";
-    case 9:
-      return "kPhEverybodyDoCivilians";
-    case 10:
-      return "kPhEverybodyDoMilitary";
-    case 11:
-      return "kPhMoneyLenders";
-    case 12:
-      return "kPhDealBook";
-    case 13:
-      return "kPhStratBatReport";
-    case 14:
-      return "kPhCouncilVoting";
-    case 15:
-      return "kPhNewspaper";
-    case 16:
-      return "kPhStartTurn";
-    case 17:
-      return "kPhTechnology";
-    case 18:
-      return "kPhStartMap";
-    case 19:
-      return "kPhMultiSync";
-    case 20:
-      return "kPhCombat";
-    case 21:
-      return "kPhFinishMilitary";
-    case 22:
-      return "kPhCouncilVictory";
-    case 23:
-      return "kPhCouncilDefeat";
-    case 24:
-      return "kPhMapEdit";
-    case 25:
-      return "kPhCheckForLosses";
-    case 100:
-      return "kOptPhDealBook";
-    case 101:
-      return "kOptPhStratBatReport";
-    case 102:
-      return "kOptPhNewspaper";
-    case 103:
-      return "kOptPhTrade";
-    case 104:
-      return "kOptPhDiplomacy";
-    case 105:
-      return "kOptPhTransport";
-    case 106:
-      return "kOptPhCity";
-    case 107:
-      return "kOptPhGameOptions";
-    case 108:
-      return "kOptPhShowUnitHistory";
-    case 109:
-      return "kOptPhTechStore";
-    case 110:
-      return "kOptPhGameStatus";
-    case 111:
-      return "kOptPhSaveGame";
-    case 112:
-      return "kOptPhLoadGame";
-    case 113:
-      return "kOptPhCredits";
-    case 114:
-      return "kOptPhMultiplayerLounge";
+  case -1:
+    return "kPhNoPhase";
+  case 1:
+    return "kPhInitializeGame";
+  case 2:
+    return "kPhKickOff";
+  case 3:
+    return "kPhCitySiteSelection";
+  case 4:
+    return "kPhMap";
+  case 5:
+    return "kPhWaitingToEndTurn";
+  case 6:
+    return "kPhEverybodyDoDiplomacy";
+  case 7:
+    return "kPhEverybodyDoTrade";
+  case 8:
+    return "kPhEverybodyDoCity";
+  case 9:
+    return "kPhEverybodyDoCivilians";
+  case 10:
+    return "kPhEverybodyDoMilitary";
+  case 11:
+    return "kPhMoneyLenders";
+  case 12:
+    return "kPhDealBook";
+  case 13:
+    return "kPhStratBatReport";
+  case 14:
+    return "kPhCouncilVoting";
+  case 15:
+    return "kPhNewspaper";
+  case 16:
+    return "kPhStartTurn";
+  case 17:
+    return "kPhTechnology";
+  case 18:
+    return "kPhStartMap";
+  case 19:
+    return "kPhMultiSync";
+  case 20:
+    return "kPhCombat";
+  case 21:
+    return "kPhFinishMilitary";
+  case 22:
+    return "kPhCouncilVictory";
+  case 23:
+    return "kPhCouncilDefeat";
+  case 24:
+    return "kPhMapEdit";
+  case 25:
+    return "kPhCheckForLosses";
+  case 100:
+    return "kOptPhDealBook";
+  case 101:
+    return "kOptPhStratBatReport";
+  case 102:
+    return "kOptPhNewspaper";
+  case 103:
+    return "kOptPhTrade";
+  case 104:
+    return "kOptPhDiplomacy";
+  case 105:
+    return "kOptPhTransport";
+  case 106:
+    return "kOptPhCity";
+  case 107:
+    return "kOptPhGameOptions";
+  case 108:
+    return "kOptPhShowUnitHistory";
+  case 109:
+    return "kOptPhTechStore";
+  case 110:
+    return "kOptPhGameStatus";
+  case 111:
+    return "kOptPhSaveGame";
+  case 112:
+    return "kOptPhLoadGame";
+  case 113:
+    return "kOptPhCredits";
+  case 114:
+    return "kOptPhMultiplayerLounge";
   }
   return "?";
 }
@@ -209,7 +209,7 @@ void TMultiplayerMgr::IMultiplayerMgr(int idleFrequency) {
   diplomacyQueueContext = 0;
   sessionReadyFlag = 0;
   processPrimaryEventQueue = 1;
-  processSecondaryEventQueue = 1;
+  processSecondaryEventQueue = true;
 
   TNetMgr* queueStorage = new TNetMgr();
   g_pNetMgr006a6014 = queueStorage;
@@ -305,7 +305,7 @@ void TMultiplayerMgr::ReadFrom(TStream* stream) {
   reportPacket.DestinateTo(-1);
   reportPacket.statusTag18 = kControlTagRepo;
   reportPacket.value1C = reportingNationSlot;
-  g_pNetMgr006a6014->Send(&reportPacket, 0);
+  g_pNetMgr006a6014->Send(&reportPacket, false);
 
   if (g_pSimMgr->multiplayerSessionRole == 1) {
     sessionPhaseTag = IMPERIALISM_FOURCC('i', 'n', 'i', 't');
@@ -331,7 +331,7 @@ void TMultiplayerMgr::ReadFrom(TStream* stream) {
     statusPacket.statusTags[k] = kSessionTagUnkn;
   }
   statusPacket.statusTags[currentIdx] = kSessionTagBusy;
-  g_pNetMgr006a6014->Send(&statusPacket, 0);
+  g_pNetMgr006a6014->Send(&statusPacket, false);
 
   sessionPhaseTag = IMPERIALISM_FOURCC('g', 'o', 'i', 'n');
 
@@ -373,9 +373,9 @@ void TMultiplayerMgr::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x005430c0
 void TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44(TEventHandler* nContext,
-                                                                      char fEnable) {
+                                                                      bool fEnable) {
   processPrimaryEventQueue = 1;
-  processSecondaryEventQueue = 1;
+  processSecondaryEventQueue = true;
   if (fEnable != '\0') {
     diplomacyQueueContext = nContext;
     return;
@@ -413,8 +413,8 @@ struct TurnEvent3Mode18Packet : NetMessage {
 // FUNCTION: IMPERIALISM 0x005431a0
 void TMultiplayerMgr::ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(int nationSlot) {
   pendingNationBitmask &= ~(1 << nationSlot);
-  unsigned char hosting = g_pSimMgr->multiplayerSessionRole == 1;
-  if (hosting != 0) {
+  bool hosting = g_pSimMgr->multiplayerSessionRole == 1;
+  if (hosting) {
     TurnEvent1PendingMaskPacket packet;
     packet.messageTag = kControlTagTime;
     packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
@@ -426,7 +426,7 @@ void TMultiplayerMgr::ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(int 
     packet.messageLength = 0x1c;
     packet.toNetworkId = 0;
     packet.pendingMask = pendingNationBitmask;
-    g_pNetMgr006a6014->Send(&packet, 0);
+    g_pNetMgr006a6014->Send(&packet, false);
   }
   if (pendingNationBitmask == 0 && pendingNationSlotIndex != -1) {
     HandleDiplomacyTurnEventPacketByCode();
@@ -477,7 +477,7 @@ void TMultiplayerMgr::EmitTurnEvent3Mode18WithActiveNation() {
   packet.messageLength = 0;
   packet.eventCode = 3;
   packet.messageLength = 0x18;
-  g_pNetMgr006a6014->Send(&packet, 1);
+  g_pNetMgr006a6014->Send(&packet, true);
 }
 
 // Broadcasts an event-0x10 "time" packet (same minimal payload as event 3) to every nation
@@ -495,7 +495,7 @@ void TMultiplayerMgr::EmitTurnEvent10ForFlaggedNationSlots() {
       packet.eventCode = 0x10;
       packet.messageLength = 0x18;
       packet.toNetworkId = g_pGameFlowState->nationSessionIds[slot];
-      g_pNetMgr006a6014->Send(&packet, 0);
+      g_pNetMgr006a6014->Send(&packet, false);
     }
   }
 }
@@ -504,7 +504,7 @@ void TMultiplayerMgr::EmitTurnEvent10ForFlaggedNationSlots() {
 // open) before draining the diplomacy turn-state queue. Always reports "not handled".
 // FUNCTION: IMPERIALISM 0x005447e0
 void TMultiplayerMgr::DoGameDataHunk(TurnEvent2SyncPacket* packet) {
-  if (packet->flag20 == 0) {
+  if (!packet->flag20) {
     g_pDiplomacyTurnStateManager->ApplyTurnEvent2SyncPacketToRelationMatrix(packet);
   }
 }
@@ -684,7 +684,7 @@ unsigned char TMultiplayerMgr::ResetNationStatusSlotsAndInitializeNameControls(T
     packet.toNetworkId = -1;
     packet.messageLength = 0;
     packet.messageLength = 0x18;
-    g_pNetMgr006a6014->Send(&packet, 0);
+    g_pNetMgr006a6014->Send(&packet, false);
   }
   return 1;
 }
@@ -712,7 +712,7 @@ unsigned char TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3() {
   packet.messageLength = 0;
   packet.messageLength = 0x18;
   packet.eventCode = 3;
-  g_pNetMgr006a6014->Send(&packet, 1);
+  g_pNetMgr006a6014->Send(&packet, true);
   g_pNetMgr006a6014->NoOpDialogModeTagChangedHook(0);
   return 1;
 }
@@ -734,7 +734,7 @@ void TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue() {
     }
   }
 
-  if (processSecondaryEventQueue != 0) {
+  if (processSecondaryEventQueue) {
     while (secondaryTurnEventQueueHead != 0) {
       TurnEventQueuePacket* packet = secondaryTurnEventQueueHead;
       secondaryTurnEventQueueHead = packet->nextQueuePacket;
@@ -748,7 +748,7 @@ void TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue() {
   TurnEventQueuePacket* packet =
       g_pNetMgr006a6014->PopNextTurnEventPacketOrProcessSpecialQueueRecords();
   while (packet != 0) {
-    unsigned char deferUntilTurnEvent = 0;
+    bool deferUntilTurnEvent = false;
     if (pendingNationSlotIndex == -1) {
       switch (packet->eventCode) {
       case 1:
@@ -763,19 +763,19 @@ void TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue() {
       case 0x2e:
       case 0x2f:
       case 0x30:
-        deferUntilTurnEvent = 1;
+        deferUntilTurnEvent = true;
         break;
       }
     }
 
-    if (deferUntilTurnEvent != 0) {
+    if (deferUntilTurnEvent) {
       packet->nextQueuePacket = 0;
       TurnEventQueuePacket** tail = &primaryTurnEventQueueHead;
       while (*tail != 0) {
         tail = &(*tail)->nextQueuePacket;
       }
       *tail = packet;
-    } else if (processSecondaryEventQueue == 0 && packet->eventCode == 0xc) {
+    } else if (!processSecondaryEventQueue && packet->eventCode == 0xc) {
       packet->nextQueuePacket = 0;
       TurnEventQueuePacket** tail = &secondaryTurnEventQueueHead;
       while (*tail != 0) {

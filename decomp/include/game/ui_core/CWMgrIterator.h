@@ -15,7 +15,7 @@
 // is MacApp-derived: TView/TWindow/CWMgrIterator).
 class CWMgrIterator {
 public:
-  CWMgrIterator* Reset(char fForward); // 0x004923f0 (returns this; arg sign-extended)
+  CWMgrIterator* Reset(bool fForward); // 0x004923f0 (returns this; arg sign-extended)
   void* FirstWindow();                 // 0x00492440
   void* NextWindow();                  // 0x00492470
   int More();                          // 0x004924a0

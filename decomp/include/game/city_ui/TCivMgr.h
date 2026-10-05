@@ -31,7 +31,7 @@ public:
   // duplicate class "TSelectedCivilianOrderState"; the global at 0x6a43dc is this
   // TCivMgr instance (same 0xc-byte object, same selectedEntry slot, and its vtable
   // dispatches match the slots declared above).
-  void SetActiveCivilianSelection(class TCivUnit* entryContext, char refreshCommandPanel);
+  void SetActiveCivilianSelection(class TCivUnit* entryContext, bool refreshCommandPanel);
 
   // Issues a prospecting order on the selected civilian, relinks its map tile, plays the
   // confirmation sound, and spins a short UI-pumped feedback delay. 0x004d39d0.

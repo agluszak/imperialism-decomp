@@ -653,7 +653,7 @@ char TForeignMinister::DeservesToBeEnemy(int nationCode) {
   int difficulty = g_pSimMgr->difficultyLevel; // [g_pSimMgr + 0x40] scenario/difficulty index
   int thresholdA = thresholds[difficulty];
   int thresholdB = thresholds[difficulty + 5];
-  char result = 0;
+  bool result = false;
 
   TGreatPower* ownerGP = this->ownerContextAt04;
   char linked = g_pGlobalMapState->AreNationsBorderLinked(ownerGP->nationSlot, nationCode);
@@ -663,7 +663,7 @@ char TForeignMinister::DeservesToBeEnemy(int nationCode) {
       int scoreB = static_cast<int>(ownerGP->ComputeNavyScoreStandingRatioVsNation(nationCode));
       float average = static_cast<float>((scoreA + scoreB) / 2);
       if (ownerGP->GetWarNumber() <= average) {
-        result = 1;
+        result = true;
       }
     }
   } else {
@@ -818,7 +818,8 @@ void TForeignMinister::ReplyToDiplomacyOffers(short queueIndex) {
       if (valid == 0) {
         break;
       }
-      g_pNewsMgr->AddTreatyEvent(kInterNationEventNationJoinedWar, gp->nationSlot, targetNation, 0);
+      g_pNewsMgr->AddTreatyEvent(kInterNationEventNationJoinedWar, gp->nationSlot, targetNation,
+                                 false);
       break;
     case kDiplomacyProposalJoinEmpireWithWarEntanglements:
       valid = (g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(targetNation,

@@ -82,7 +82,7 @@ struct TurnEvent16DiplomacyProposalPacket : TimelyMessageHeader {
 // Event-0x17 proposal resolution (accept/decline).
 struct TurnEvent17ProposalResolutionPacket : TimelyMessageHeader {
   NationSlot nationSlot18;
-  unsigned char acceptedFlag1A;
+  bool acceptedFlag1A;
   unsigned char pad1b;
   short proposalIndex1C;
   unsigned char pad1e[2];
@@ -133,7 +133,7 @@ struct TurnEvent2SyncPacket : NetMessage {
   int pad14;                    // +0x14
   NationSlot pendingNationSlot; // +0x18
   unsigned char pad1a[6];       // +0x1a
-  unsigned char flag20;         // +0x20 - cleared by the caller after the baseline refresh
+  bool flag20;                  // +0x20 - cleared by the caller after the baseline refresh
   unsigned char deltaKind21;    // +0x21 - 2 = delta pairs, 0 = full block
   unsigned char pad22[2];
   TurnEvent2DeltaPayload payload; // +0x24 - variable-length wire records

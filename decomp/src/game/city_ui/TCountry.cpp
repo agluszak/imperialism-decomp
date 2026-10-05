@@ -39,7 +39,7 @@ static bool IsRecruitQuarterTickGate(short tickRaw) {
   int tick = static_cast<int>(tickRaw);
   int quarterIndex = (tick + ((tick >> 0x1f) & 3)) >> 2;
   if ((quarterIndex & 1) == 0) {
-    return 0;
+    return false;
   }
   int sign = tick >> 0x1f;
   int mod4 = tick;
@@ -90,11 +90,11 @@ void TCountry::InitializeNationStateIdentityAndOwnedRegionList(NationSlot nation
   }
 
   this->identitySharedString0 = CString(g_pszDescriptorDefaultName_00653300);
-  char nameIsDefault =
+  bool nameIsDefault =
       _mbscmp(reinterpret_cast<const unsigned char*>(g_pszDescriptorDefaultName_00653300),
               reinterpret_cast<const unsigned char*>(
                   static_cast<LPCSTR>(this->identitySharedString0))) == 0;
-  if (nameIsDefault != 0) {
+  if (nameIsDefault) {
     CString flavorName;
     SetSharedStringFromMappedFlavorTextWithLengthClamp(&flavorName, this->nationSlot);
     this->identitySharedString0 = CString(flavorName);
@@ -239,7 +239,7 @@ void TCountry::SetSerializedField8c(int value) {
 short TCountry::GetOrComputeOverlayAnchorTileIndex() {
   if (overlayAnchorTileCache8c == -1) {
     overlayAnchorTileCache8c = static_cast<short>(
-        g_pGlobalMapState->ComputeRepresentativeTileIndexForNationWithWrapBias(nationSlot, 1));
+        g_pGlobalMapState->ComputeRepresentativeTileIndexForNationWithWrapBias(nationSlot, true));
   }
   return static_cast<short>(overlayAnchorTileCache8c);
 }

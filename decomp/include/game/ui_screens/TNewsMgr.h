@@ -32,8 +32,8 @@ struct newsStory {
   // (1 << slot), 2 = nation bitmask (code-0xF variant), 3 = raw integer,
   // 4 = zone ordinal (short).
   int parmKind[4];
-  newsEntry entry;         // +0x20..0x37 — copy of the matched template row
-  unsigned char feature38; // +0x38 — 1 for ranking/random filler stories, 0 for events
+  newsEntry entry; // +0x20..0x37 — copy of the matched template row
+  bool feature38;  // +0x38 — 1 for ranking/random filler stories, 0 for events
   unsigned char pad39[3];
 };
 
@@ -101,13 +101,13 @@ public:
 
   // Mac-oracle event-queue API (gameplay side).
   void AddTreatyEvent(InterNationEventKind eventKind, int nationA, int nationB,
-                      unsigned char isReplayBypass);
-  void AddEvent(int nationSlot, NewsEvent* event, unsigned char isReplayBypass);
+                      bool isReplayBypass);
+  void AddEvent(int nationSlot, NewsEvent* event, bool isReplayBypass);
   void AddShortageEvent(int subjectNation, int affectedNation, int relatedNation,
-                        unsigned char isReplayBypass);
+                        bool isReplayBypass);
   // 0x55cd00 — miscellaneous event: with the bypass flag clear in a live multiplayer
   // session it re-emits over the network as turn-event 0x22 instead of queueing.
-  void AddMiscEvent(int nationSlotOrAll, int storyCode, unsigned char isReplayBypass);
+  void AddMiscEvent(int nationSlotOrAll, int storyCode, bool isReplayBypass);
   void ConcatenateTreaty(InterNationEventKind eventKind, int nationA, int nationB);
 
   // News phase (turn case 0xf; Mac: StartNewsPhase): loads the template table, builds

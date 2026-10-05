@@ -18,7 +18,7 @@ struct DiplomacyMaskBufferRun {
 
   void BlitMonochromeMaskBytePatternToSurface(TQuickDrawBlitSurface* surface,
                                               TUiStyleRef paletteColor, const CPoint* origin,
-                                              unsigned char flipVertical);
+                                              bool flipVertical);
   // Defined here rather than in the .cpp: retail's 472-byte edge test
   // (IsMaskPixelSetAndOnRegionEdge) expands this five times, which /Ob1 only does for an
   // inline-marked function. The out-of-line copy at 0x004d6310 is still emitted for

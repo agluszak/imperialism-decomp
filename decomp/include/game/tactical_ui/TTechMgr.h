@@ -43,7 +43,7 @@ public:
   unsigned char initFlags1ab[4]; // defaults initializer sets all four to 1
   unsigned char initFlags1af[4]; // set to 1
   unsigned char pad1b3[0x1c3 - 0x1b3];
-  unsigned char flag1c3; // set to 1
+  bool flag1c3; // set to 1
   unsigned char pad1c4[0x1c9 - 0x1c4];
   unsigned char initFlags1c9[9]; // defaults initializer sets bytes {0,1,2,4,7} = 1, rest 0
   // Paired capability selector shorts updated at specific unlock milestones.

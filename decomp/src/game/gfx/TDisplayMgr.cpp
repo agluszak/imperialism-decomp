@@ -265,11 +265,11 @@ void TDisplayMgr::SetHiliteColor(const RGBQUAD* color) {
 // FUNCTION: IMPERIALISM 0x004ff000
 void TDisplayMgr::CloseFloaters() {
   CWMgrIterator cursor;
-  cursor.Reset(1);
+  cursor.Reset(true);
   TWindow* window = static_cast<TWindow*>(cursor.FirstWindow());
   while (cursor.More() != 0) {
     if (window != 0) {
-      if (window->IsActionable() != 0 && window->controlValue3c == kClass99WindowId) {
+      if (window->IsActionable() && window->controlValue3c == kClass99WindowId) {
         if (window->IsModal() != 0) {
           window->Dismiss(kControlTagOkok, 1);
         } else {

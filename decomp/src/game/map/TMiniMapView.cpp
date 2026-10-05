@@ -100,7 +100,7 @@ void TMiniMapView::Draw(RECT* rectBuffer) {
 
   short markerX = static_cast<short>(markerBoxX90);
   short markerY = static_cast<short>(markerBoxY94);
-  if (g_applyMiniMapVerticalClipOffset_006993e8 != 0) {
+  if (g_applyMiniMapVerticalClipOffset_006993e8) {
     markerY = static_cast<short>(markerY + verticalClipOffset);
   }
   SetQuickDrawFillColor(0xffffff);
@@ -125,16 +125,16 @@ void TMiniMapView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& prev
     if (PointInBoundsAndActionable(&currentPoint) != 0) {
       markerBoxX90 = currentPoint.x - markerBoxWidth98;
       markerBoxY94 = currentPoint.y - markerBoxHeight9c;
-      g_applyMiniMapVerticalClipOffset_006993e8 = 0;
+      g_applyMiniMapVerticalClipOffset_006993e8 = false;
       RefreshControl();
       ForceRedraw();
-      g_applyMiniMapVerticalClipOffset_006993e8 = 1;
+      g_applyMiniMapVerticalClipOffset_006993e8 = true;
     }
     return;
   }
 
   if (phase == kTrackPhaseEnd) {
-    g_applyMiniMapVerticalClipOffset_006993e8 = 1;
+    g_applyMiniMapVerticalClipOffset_006993e8 = true;
     int tileColumn = currentPoint.x / 2;
     int tileRow = currentPoint.y / 2;
     tileColumn = static_cast<short>(tileColumn) + static_cast<short>(scrollTileColumn88) -

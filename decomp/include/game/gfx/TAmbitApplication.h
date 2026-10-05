@@ -22,7 +22,7 @@ class TAmbitApplication : public TApplication {
 public:
   TAmbitApplication() : TApplication() {
     edgeScrollTarget48 = 0;
-    dispatchBusyFlag4c = 0;
+    dispatchBusyFlag4c = false;
     languagePackId50 = 0;
   }
 
@@ -56,7 +56,7 @@ public:
   // branches in TViewMgr's state machine (0x5d7240) and cleared to 0 once handling
   // completes; ground truth confirms a byte-sized write (`MOV byte ptr [EAX+0x4c],1`),
   // not the full int this was previously modeled as.
-  unsigned char dispatchBusyFlag4c;
+  bool dispatchBusyFlag4c;
   unsigned char pad4d[3];
   // 0x50 — language pack id (copied from theApp.languagePackIdE4; serialized in
   // saves, with a hardcoded legacy value for formats older than 0x2a).

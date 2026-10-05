@@ -36,7 +36,7 @@ IMPLEMENT_DYNCREATE(TLoungeDialog, TNoHilitePicture)
 // FUNCTION: IMPERIALISM 0x0054d6f0
 void TLoungeDialog::Free() {
   if (g_nSaveFormatVersion != kControlTagMoil) { // 'Moil'
-    g_pGameFlowState->EnableDiplomacyQueueRoutingAndSetContextField44(this, 0);
+    g_pGameFlowState->EnableDiplomacyQueueRoutingAndSetContextField44(this, false);
   }
   TView::Free();
 }
@@ -45,7 +45,7 @@ void TLoungeDialog::Free() {
 void TLoungeDialog::DoPostCreate(int arg) {
   TNoHilitePicture::DoPostCreate(arg);
 
-  g_pGameFlowState->EnableDiplomacyQueueRoutingAndSetContextField44(this, 1);
+  g_pGameFlowState->EnableDiplomacyQueueRoutingAndSetContextField44(this, true);
 
   // 'labl' is a TInfoBarText control (vtable slot 0x204 matches
   // TInfoBarText::InitializeMapHintTextStyleAndThemeFlags exactly). The original also
@@ -287,14 +287,14 @@ void TLoungeDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
           g_pAmbitApplication->CreateAndQueueTurnEventPacketTagGWEN();
         }
       } else {
-        unsigned char hasOtherSession = 0;
+        bool hasOtherSession = false;
         for (int slot = 0; slot < TMultiplayerMgr::kMajorNationSessionSlotCount; ++slot) {
           int sessionId = g_pGameFlowState->nationSessionIds[slot];
           if (sessionId != 0 && sessionId != TouchSessionActiveNationId()) {
-            hasOtherSession = 1;
+            hasOtherSession = true;
           }
         }
-        if (g_pSimMgr->multiplayerSessionRole != 1 || hasOtherSession == 0 ||
+        if (g_pSimMgr->multiplayerSessionRole != 1 || !hasOtherSession ||
             g_pViewMgr->DispatchGameStateEventIfLocalizedPromptAccepted(
                 kControlTagCgam)) { // 'magc'
           if (g_pSimMgr->multiplayerSessionRole == 1) {

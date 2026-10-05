@@ -721,7 +721,7 @@ int CIncludeView::GetUiInteractiveFlag90() {
 // Replace the main-view input gate and return its previous state. Dialog modal loops
 // temporarily clear this gate and restore it only when it had been set on entry.
 // FUNCTION: IMPERIALISM 0x00484080
-int CIncludeView::SetUiInteractiveFlag90(unsigned char interactive) {
+int CIncludeView::SetUiInteractiveFlag90(bool interactive) {
   int previous = m_uiInteractiveFlag90;
   m_uiInteractiveFlag90 = interactive;
   return previous;

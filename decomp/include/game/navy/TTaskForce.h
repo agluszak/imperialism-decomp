@@ -99,7 +99,7 @@ public:
   void DemocraticallyDetermineAggressionLevel();
   // 0x005539c0 — recomputes this task force's per-order selection flags for the active
   // nation's current orders (`mode` selects the pass; the caller passes 0).
-  void MaxOut(unsigned char mode);
+  void MaxOut(bool mode);
   // 0x00553fe0 — frees the head child order node when defeated (nation <= 0),
   // prunes remaining defeated children, rebinds shipList/flagship;
   // returns 1 (marking this entry eliminated) when no child survives.
@@ -178,9 +178,9 @@ public:
   // Mac oracle: GetAuthority / CancelOrders. GetAuthority names the admiral or
   // captain commanding flagship; CancelOrders removes this queue entry.
   // Mac oracle: null-safe preferred-ship officer lookup.
-  TAdmiral* GetSeniorOfficer() const;                // 0x5551a0
-  void GetAuthority(CString* out) const;             // 0x5551d0
-  void CancelOrders(unsigned char cancellationMode); // 0x5547d0
+  TAdmiral* GetSeniorOfficer() const;       // 0x5551a0
+  void GetAuthority(CString* out) const;    // 0x5551d0
+  void CancelOrders(bool cancellationMode); // 0x5547d0
 
   // Null-safe tail-recursive nextForce walk used by TNavyMgr::CarryOutOrders
   // to rebuild the order queue head: prunes (Free()s) any entry with no active children,
@@ -201,7 +201,7 @@ public:
   // Finds the shipList entry whose payload == ship (head fast-path,
   // else FindNodeMatching from the second node) and, if found, sets its active; when
   // the flag is nonzero also clears the ship's task-force selection state.
-  void Select(TShip* ship, unsigned char activeFlag); // 0x5549a0
+  void Select(TShip* ship, bool activeFlag); // 0x5549a0
 
   // Counts active shipList entries whose descriptor toolbar-bucket index equals
   // nationClass.
@@ -283,7 +283,7 @@ public:
   // location/nation and re-attaches each one via Add,
   // and finally recomputes each shipList entry's active from whether its
   // node+0x34 slot was left at 0.
-  void DropShips(unsigned char reserveExtraSlot); // 0x553a50
+  void DropShips(bool reserveExtraSlot); // 0x553a50
 
   // Finds the first shipList entry whose order node's resource-type bucket
   // descriptor toolbar-bucket index equals `nationClass` and whose active differs from
@@ -343,7 +343,7 @@ public:
 
   // OrderEvade sibling for map-order kind 3 (useType4 == 0) or 4 (useType4 != 0); does
   // not touch target.
-  void OrderPatrol(unsigned char useType4); // 0x5530f0
+  void OrderPatrol(bool useType4); // 0x5530f0
 
   // Called from ReassignToForce's tail (0x550ff0) with
   // ReassignToForce's `self` argument re-attached as `node`'s new owner, and from

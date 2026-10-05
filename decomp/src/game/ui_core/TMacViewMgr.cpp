@@ -355,7 +355,7 @@ IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
   short nationId;
   unsigned int variant;
-  if (IsTurnFlowCooldownActiveAndResetExpiredState() != 0) {
+  if (IsTurnFlowCooldownActiveAndResetExpiredState()) {
     return;
   }
   if (this == 0 || g_pTechMgr == 0) {
@@ -767,7 +767,7 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
     g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
   }
   (*GetGWorldPixMap(atlas670))->dib->FlipScanlineOrder();
-  g_pGlobalMapState->strategicMapPalettePreviewReady = 1;
+  g_pGlobalMapState->strategicMapPalettePreviewReady = true;
 }
 
 // FUNCTION: IMPERIALISM 0x0050b9e0

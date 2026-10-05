@@ -115,7 +115,7 @@ void TNewspaperView::StuffValues(int pageNation) {
         continue;
       }
       FormatInterNationEventRowTokensToSharedStrings(story, tokens);
-      if (story->feature38 != 0) {
+      if (story->feature38) {
         y += AppendInterNationEventSummaryTextEntry(col, y, story->entry.headlineTextOffset,
                                                     story->entry.headlineTextLength, &plainStyle, 1,
                                                     tokens);

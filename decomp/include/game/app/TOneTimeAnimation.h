@@ -23,7 +23,7 @@ public:
   // completeFlag once the last frame has played.
   virtual void Tick() override; // slot 0x0a 0x49fde0
 
-  char completeFlag; // 0x2c — set once all frames have played (stops the modal pump)
+  bool completeFlag; // 0x2c — set once all frames have played (stops the modal pump)
   char pad2d[3];
 
   // Field initializer invoked right after `new` (0x49fd60, __thiscall, ret 0x18); fills the

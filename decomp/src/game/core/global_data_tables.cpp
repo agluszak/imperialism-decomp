@@ -58,7 +58,7 @@ CPoint g_ptUiAnimatorSurfaceBounds(0x80, 0x80);
 // Alternating phase passed to the strategic-map overlay renderer every 15 active-selection
 // idle ticks by TAnimator::DoIdle.
 // GLOBAL: IMPERIALISM 0x006a224c
-unsigned char g_bStrategicMapSelectionOverlayPhase = 0;
+bool g_bStrategicMapSelectionOverlayPhase = false;
 // Monotonic registry-tag counter for TIdleMeAnimation instances, seeded with the
 // byte pattern "0TUA" (multichar 'AUT0'); the class-name string "TIdleMeAnimation"
 // follows at 0x695938, which Ghidra folds into one s_0TUATIdleMeAnimation label.
@@ -226,7 +226,7 @@ void (TSimMgr::* g_apfnScenarioScriptInstructionHandlers[27])(void*) = {
     &TSimMgr::HandleTurnInstruction_Coun_SetCountrySlotState,
 };
 // GLOBAL: IMPERIALISM 0x006a4398
-unsigned char g_bScenarioScriptTerminationRequested = 0;
+bool g_bScenarioScriptTerminationRequested = false;
 // GLOBAL: IMPERIALISM 0x006a43b8
 int g_nScenarioScriptInstructionCount = 0;
 // GLOBAL: IMPERIALISM 0x006a3ee0
@@ -857,7 +857,7 @@ CFont* g_pQuickDrawCachedUiFont = 0;
 // GLOBAL: IMPERIALISM 0x006a1cec
 TextStyle g_QuickDrawCachedFontPreset = {0, 0, 0, 0};
 // GLOBAL: IMPERIALISM 0x006a1cf6
-unsigned char g_bQuickDrawCachedFontDirty = 0;
+bool g_bQuickDrawCachedFontDirty = false;
 
 // Measure-text cached font cluster. The preset's styleRef6 field (0x6a1d52) IS the
 // current text color — written by SetQuickDrawFillColor, read as COLORREF by the paint
@@ -870,7 +870,7 @@ CFont* g_pQuickDrawCachedMeasureFont = 0;
 // GLOBAL: IMPERIALISM 0x006a1d4c
 TextStyle g_QuickDrawMeasureFontPreset = {0, 0, 0, 0};
 // GLOBAL: IMPERIALISM 0x006a1d56
-unsigned char g_bQuickDrawMeasureFontDirty = 0;
+bool g_bQuickDrawMeasureFontDirty = false;
 // GLOBAL: IMPERIALISM 0x006a1d80
 int g_nQuickDrawOriginX = 0;
 // GLOBAL: IMPERIALISM 0x006a1d84
@@ -1234,7 +1234,7 @@ CRect g_aCityBuildingLayoutRects[72] = {CRect(0x110, 0xfc, 0x11f, 0x10a),
 HRGN g_hOpenRgnAccumulator = nullptr;
 
 // GLOBAL: IMPERIALISM 0x006a24d4
-char g_Sanitize_City_Counter_Value_006A24D4 = 0;
+bool g_Sanitize_City_Counter_Value_006A24D4 = false;
 // GLOBAL: IMPERIALISM 0x6a134c
 TResourceMgr* g_pResourceMgr = nullptr;
 // GLOBAL: IMPERIALISM 0x00694150
@@ -1893,7 +1893,7 @@ short g_aNavalIntelligenceAccuracyProfiles[6][6] = {
 };
 
 // GLOBAL: IMPERIALISM 0x006a43f4
-unsigned char g_bPerfectNavalIntelligenceCheat = 0;
+bool g_bPerfectNavalIntelligenceCheat = false;
 
 // Nation-slot-to-generator mapping used for country, province, player, and random-map
 // names. The 23 records end at 0x0066ef8c; the following qword constant is unrelated.
@@ -2159,7 +2159,7 @@ void* g_pMapActionContextDistanceCache = 0;
 int g_nMapActionContextDistanceCacheSizedFor = -1;
 
 // GLOBAL: IMPERIALISM 0x006a42dc
-unsigned char g_bRandomMapDeveloperCheatFlag = 0;
+bool g_bRandomMapDeveloperCheatFlag = false;
 // GLOBAL: IMPERIALISM 0x006a42f0
 POINT g_ptTurnTransitionModalMessage = {0, 0};
 // Developer-cheat probe filename: TSimMgr::ISimMgr (0x57bc2d)
@@ -2411,9 +2411,9 @@ char g_szCountryNameProfileKey00698AE0[] = "CountryName";
 // GLOBAL: IMPERIALISM 0x006a43c4
 short g_nTurnCooldownDeferCounter006A43C4 = 0;
 // GLOBAL: IMPERIALISM 0x006a43c0 — set once scenario/turn-flow bootstrap completes.
-char g_bTurnFlowBootstrapComplete = 0;
+bool g_bTurnFlowBootstrapComplete = false;
 // GLOBAL: IMPERIALISM 0x006a43f0 — nonzero during multiplayer scenario setup.
-char g_bMultiplayerScenarioSetupActive = 0;
+bool g_bMultiplayerScenarioSetupActive = false;
 // GLOBAL: IMPERIALISM 0x00698b10
 short g_nTurnCooldownSideFlag00698B10 = 1;
 
@@ -2533,13 +2533,13 @@ unsigned char g_aOceanMapOwnerPaletteIndexByNationTag[24] = {
 // The four one-reader feature bytes bracket the ocean overview's optional route,
 // labeling, and final surface-transfer passes. All are enabled in the retail image.
 // GLOBAL: IMPERIALISM 0x0069859c
-const unsigned char g_bDrawOceanRouteOverlay = 1;
+const bool g_bDrawOceanRouteOverlay = true;
 // GLOBAL: IMPERIALISM 0x006985ac
-const unsigned char g_bTransferOceanViewportToActiveSurface = 1;
+const bool g_bTransferOceanViewportToActiveSurface = true;
 // GLOBAL: IMPERIALISM 0x006985b0
-const unsigned char g_bDrawOceanZoneLabels = 1;
+const bool g_bDrawOceanZoneLabels = true;
 // GLOBAL: IMPERIALISM 0x006985b4
-const unsigned char g_bDrawOceanNationLabels = 1;
+const bool g_bDrawOceanNationLabels = true;
 
 // Border/transition colors paired with the owner-fill table immediately above.
 // GLOBAL: IMPERIALISM 0x006985d0
@@ -2627,7 +2627,7 @@ extern "C" const int g_anNationStartingTreasuryByLocale[6] = {50000, 10000, 1000
 // idle tick counter fires the blink every 15th action-1 tick, and the phase byte selects
 // which of the two marker sprite columns is blitted (and is toggled after each blit).
 // GLOBAL: IMPERIALISM 0x006a23b4
-unsigned char g_bBattleReportMarkerBlinkPhase = 0;
+bool g_bBattleReportMarkerBlinkPhase = false;
 // GLOBAL: IMPERIALISM 0x006a23b8
 int g_nBattleReportMarkerBlinkTicks = 0;
 // GLOBAL: IMPERIALISM 0x006a2318
@@ -2929,7 +2929,7 @@ short g_awTacticalFireSfxTokenByUnitType[32] = {
 // Force-show flag for the tactical battle view (semantics unverified; OR'd with the
 // two per-side watch flags at battle setup).
 // GLOBAL: IMPERIALISM 0x006a4758
-char g_nForceTacticalBattleViewFlag_006A4758;
+bool g_nForceTacticalBattleViewFlag_006A4758;
 
 // Save-game path construction strings.
 // GLOBAL: IMPERIALISM 0x00698708
@@ -3125,7 +3125,7 @@ char s_szTurnHistorySeparator_00699320[8] = {':', ' ', 0, 0, 'L', 'o', 's', 's'}
 // GLOBAL: IMPERIALISM 0x00699324
 char s_szCombatLossesHeading_00699324[] = "Losses\n";
 // GLOBAL: IMPERIALISM 0x006993e8
-unsigned char g_applyMiniMapVerticalClipOffset_006993e8 = 1;
+bool g_applyMiniMapVerticalClipOffset_006993e8 = true;
 // GLOBAL: IMPERIALISM 0x0069b71c
 char s_szTurnHistoryPrefix_0069b71c[] = "Turn ";
 // "Adm. " prefix for the assigned-admiral name line (TShipView::Draw,

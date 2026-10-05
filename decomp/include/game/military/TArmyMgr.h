@@ -173,7 +173,7 @@ public:
   // +0x08 -- read by GetByteFlagAtOffset8 (0x4a6dd0, a bare `this+8` thiscall getter);
   // sole call site is TSimMgr::AdvanceGlobalTurnStateMachine case 0xd, gating whether the
   // terrain-eligibility branch runs. No confirmed writer site yet.
-  unsigned char flag8;
+  bool flag8;
   unsigned char pad09[0x0c - 0x09];
   // +0x0c -- a TSortedList (GetCount/GetEntryByOrdinal evidence from
   // FormStacks's ground truth); freed at the top of
@@ -211,7 +211,7 @@ public:
   short tacticalCombatUnitCountByType322[2][30];
   // +0x39a -- set when a terrain-descriptor refresh is pending; consumed and cleared by
   // EndBattlePhase (0x4a1eb0).
-  unsigned char needsTerrainRefreshFlag39a;
+  bool needsTerrainRefreshFlag39a;
   unsigned char pad39b;
   // +0x39c/+0x3a0/+0x3a4 -- the friendly stack, opposing stack, and active battle object
   // cached by CreateTacticalBattleViewAndInitializeBattleSetup and released by

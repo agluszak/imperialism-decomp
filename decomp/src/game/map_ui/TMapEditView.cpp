@@ -48,7 +48,7 @@ void TMapEditView::DoPostCreate(int arg) {
 
   TMapUberPicture* mapOwner = static_cast<TMapUberPicture*>(ownerContext);
   mapOwner->SetMapInteractionMode(5);
-  g_pGlobalMapState->field24 = 1;
+  g_pGlobalMapState->field24 = true;
   g_pViewMgr->RenderTurnEventPalettePreviewSurfaceAndProgress();
   mapOwner->DisplayMiniMap();
 

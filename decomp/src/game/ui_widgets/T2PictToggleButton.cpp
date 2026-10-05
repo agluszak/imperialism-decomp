@@ -25,8 +25,7 @@ void T2PictToggleButton::Select(bool isPressed, bool notifyParent) {
   short sVar1 = glyphBase84;
   int oldField3c = controlValue3c;
 
-  if (((isPressed == false) && (oldField3c < (int)sVar1)) ||
-      ((isPressed == true && ((int)sVar1 < oldField3c)))) {
+  if ((!isPressed && oldField3c < (int)sVar1) || (isPressed && (int)sVar1 < oldField3c)) {
     SetPictureResourceIdAndRefresh(static_cast<short>(oldField3c), false);
     controlValue3c = (int)sVar1;
   }

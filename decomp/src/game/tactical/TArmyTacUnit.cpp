@@ -22,11 +22,11 @@ void TArmyTacUnit::IArmyTacUnit(TMilitaryUnit* source) {
   ownerNationIndex14 = source->ownerNationSlot18;
   sapTargetTileIndex40 = -1;
   sourceUnit38 = source;
-  unsigned char deployedCategory0Flag;
+  bool deployedCategory0Flag;
   if (source->unitOrder == 2 && g_anUnitTypeCombatCategoryByType00669858[unitTypeC] == 0) {
-    deployedCategory0Flag = 1;
+    deployedCategory0Flag = true;
   } else {
-    deployedCategory0Flag = 0;
+    deployedCategory0Flag = false;
   }
   flag3c = deployedCategory0Flag;
 }

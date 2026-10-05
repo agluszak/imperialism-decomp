@@ -15,7 +15,7 @@ TBitmapSurfaceNode** GetGWorldPixMap(TQuickDrawSurfaceContext* context);
 unsigned char* GetPixBaseAddr(TBitmapSurfaceNode** pixMap);
 short NewGWorld(TQuickDrawSurfaceContext** outContext, short bitDepth, const RECT* bounds,
                 int unusedHint, int unusedArg4, int unusedArg5);
-unsigned char LockPixels(TBitmapSurfaceNode** pixMap);
+bool LockPixels(TBitmapSurfaceNode** pixMap);
 void UnlockPixels(TBitmapSurfaceNode** pixMap);
 void BlitBitmapResourceLoaderToActiveDc(TBitmapResourceLoader** handle, RECT* bounds);
 // Mac Resource Manager LoadResource emulation: a no-op returning noErr(0) — the

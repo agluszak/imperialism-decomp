@@ -384,7 +384,7 @@ void GenerateMappedFlavorTextUntilValidationPasses(CString* dest, short variantI
       break;
     }
     retry = ShouldRetryMappedFlavorTextGeneration(dest);
-  } while (retry != 0);
+  } while (retry);
 }
 
 // FUNCTION: IMPERIALISM 0x005d4890

@@ -69,7 +69,7 @@ void TLoadSavePicture::DoPostCreate(int arg) {
 
     if (TryGetFileMetadataForPath(&slotPath) == 0) {
       // Empty slot: the save picture offers it, the load picture greys it out.
-      if (loadModeFlag90 != 0) {
+      if (loadModeFlag90) {
         slotControl->Show(0, 1);
         slotControl->ViewEnable(0, 0);
       } else {
@@ -86,7 +86,7 @@ void TLoadSavePicture::DoPostCreate(int arg) {
     slotControl->InstallTextStyle(styleAt9e, 0);
   }
 
-  if (loadModeFlag90 != 0) {
+  if (loadModeFlag90) {
     TPicture* okayControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagOkay));
     okayControl->AssertValid();
     okayControl->SetPictureResourceIdAndRefresh(static_cast<short>(okayControl->glyphBase84 + 2),
@@ -106,7 +106,7 @@ void TLoadSavePicture::DoPostCreate(int arg) {
   RefreshActiveControlThenApplyThemeStyleAndCaption(kControlTagInfo, 0, 0xc, 0x2b6a, 0, 0);
 
   // Hover-help strings differ between the load and the save picture.
-  if (loadModeFlag90 != 0) {
+  if (loadModeFlag90) {
     LoadUiStringByGroupAndIndexToControlObject(0x2737, 0xc, this);
     LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x11, ResolveControlByTag(kControlTagOtto));
     LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x14, ResolveControlByTag(kControlTagCncl));
@@ -204,7 +204,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
   if (commandId == 0xd) {
     short newSlot = static_cast<short>(sourceHandler->controlTag - kControlTagSlt0);
     if (newSlot != selectedSlot92) {
-      if (loadModeFlag90 != 0) {
+      if (loadModeFlag90) {
         if (selectedSlot92 != -1 && selectedSlot92 != 0xa1) {
           TControl* oldSlotControl =
               static_cast<TControl*>(ResolveControlByTag(kControlTagSlt0 + selectedSlot92));
@@ -256,7 +256,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     if (sourceHandler->controlTag == kControlTagCncl) { // 'clnc'
       HandleTurnFlowStateTickOrPostTurnEvent5DC();
     }
-    if (loadModeFlag90 != 0 && sourceHandler->controlTag == kControlTagOtto) {
+    if (loadModeFlag90 && sourceHandler->controlTag == kControlTagOtto) {
       if (selectedSlot92 != -1 && selectedSlot92 != 0xa1) {
         TControl* oldSlotControl =
             static_cast<TControl*>(ResolveControlByTag(kControlTagSlt0 + selectedSlot92));
@@ -307,11 +307,11 @@ namespace {
 // helpers: every original site materializes the comparison into a byte register
 // (sete/setne + test al,al) before branching, the Mac-style unsigned-char Boolean shape
 // under /Ob1.
-static unsigned char IsMultiplayerFlowHosting() {
+static bool IsMultiplayerFlowHosting() {
   return g_pSimMgr->multiplayerSessionRole == 1;
 }
 
-static unsigned char IsMultiplayerFlowActive() {
+static bool IsMultiplayerFlowActive() {
   return g_pSimMgr->multiplayerSessionRole != 0;
 }
 
@@ -328,13 +328,13 @@ static unsigned char IsMultiplayerFlowActive() {
 // FUNCTION: IMPERIALISM 0x0056d2a0
 void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
   if (selectedSlot92 == -1) {
-    if (loadModeFlag90 == 0) {
+    if (!loadModeFlag90) {
       g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x2758, 0x17, 1, 0);
       return;
     }
     return;
   }
-  if (loadModeFlag90 != 0) {
+  if (loadModeFlag90) {
     if (g_pSimMgr->mode == 1 ||
         g_pViewMgr->DispatchGameStateEventIfLocalizedPromptAccepted(kControlTagLoad) != 0) {
       GetWindow()->ForceRedraw();
@@ -363,7 +363,7 @@ void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
     strcpy(g_ScenarioSaveNameBuffer_006A2178, enteredName);
     if (IsMultiplayerFlowActive()) {
       g_pGameFlowState->TrySaveGameAndMaybeShowFailureDialog(
-          selectedSlot92, (char*)g_pszMultiplayerSavePrefix_0065DDD4, 1);
+          selectedSlot92, (char*)g_pszMultiplayerSavePrefix_0065DDD4, true);
     } else {
       SaveGameWithModeAndOptionalLabel(selectedSlot92, (char*)g_pszSingleSlotSavePrefix_0065DDD0);
     }
@@ -450,9 +450,9 @@ void LoadAndFormatMappedFlavorTextRecordsFromStream(int* outSlot, int targetGame
 // autosave of the same scenario.
 // FUNCTION: IMPERIALISM 0x0056da50
 void __cdecl SaveGameWithModeAndOptionalLabel(int mode, char* label) {
-  char markSaved = 1;
+  bool markSaved = true;
   if (mode == 0xa2) {
-    markSaved = 0;
+    markSaved = false;
     mode = 0xa1;
   }
 

@@ -58,8 +58,7 @@ void TRadioTextCluster::SetSelectedTextOptionByTag(int tag, bool refreshOnChange
       child->AssertValid();
       // Original compares the raw isSelectedOption98 byte directly (cmp al,cl) -- it never
       // holds anything but 0/1, so no `!= 0` normalization is emitted.
-      unsigned char shouldBeSelected =
-          static_cast<unsigned char>(child->controlTag == selectedTag88);
+      bool shouldBeSelected = static_cast<unsigned char>(child->controlTag == selectedTag88);
       if (shouldBeSelected != child->isSelectedOption98) {
         child->isSelectedOption98 = shouldBeSelected;
         if (refreshOnChange) {

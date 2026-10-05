@@ -74,8 +74,8 @@ void TMinor::IMinor(NationSlot nationSlot) {
     ++tileIndex;
   }
 
-  if (g_bMultiplayerScenarioSetupActive == 0) {
-    bool noImmediateDispatch = IsRemote() == 0;
+  if (!g_bMultiplayerScenarioSetupActive) {
+    bool noImmediateDispatch = !IsRemote();
     if (noImmediateDispatch || g_pSimMgr->scenarioMapIndexPlusOne != 0) {
       TLongintList* candidateTiles = new TLongintList();
       short selectedTile = -1;
@@ -373,10 +373,10 @@ void TMinor::WriteTo(TStream* stream) {
 // True when `policyCode` matches one of the four saved diplomacy nation slots.
 // FUNCTION: IMPERIALISM 0x004e45f0
 char TMinor::IsInConsortiumWith(short policyCode) {
-  char result = 0;
+  bool result = false;
   if (policyCode == diplomacySaveFields134[0] || policyCode == diplomacySaveFields134[1] ||
       policyCode == diplomacySaveFields134[2] || policyCode == diplomacySaveFields134[3]) {
-    result = 1;
+    result = true;
   }
   return result;
 }
@@ -702,14 +702,14 @@ char TMinor::WouldAcceptOffer(NationSlot targetNationSlot,
     return 0;
   }
 
-  char canPropose = 1;
+  bool canPropose = true;
   short* peerStandingRow =
       &g_pDiplomacyTurnStateManager->relationStandingScores[source * kNationSlotCount];
   for (int peerSlot = 0; peerSlot < 7; ++peerSlot) {
     if (g_apTerrainTypeDescriptorTable[peerSlot] != 0 && peerSlot != targetNationSlot) {
       int delta = abs(static_cast<int>(peerStandingRow[peerSlot]) - static_cast<int>(standing));
       if (delta < 10) {
-        canPropose = 0;
+        canPropose = false;
       }
     }
   }
@@ -729,13 +729,13 @@ void TMinor::AddOfferFrom(NationSlot sourceNationSlot, DiplomacyProposalCodeStor
                                                                       targetNation) == 0) {
         this->ChangeMaster(targetNation, 1);
         g_pNewsMgr->AddTreatyEvent(kInterNationEventJoinEmpireAccepted, this->nationSlot,
-                                   targetNation, 0);
+                                   targetNation, false);
         return;
       }
       g_apNationStates[targetNation]->AddOfferFrom(
           this->nationSlot, kDiplomacyProposalJoinEmpireWithWarEntanglements);
       g_pNewsMgr->AddTreatyEvent(kInterNationEventJoinEmpireAccepted, this->nationSlot,
-                                 targetNation, 0);
+                                 targetNation, false);
       return;
     }
     if (g_apNationStates[targetNation] != 0) {
@@ -743,7 +743,7 @@ void TMinor::AddOfferFrom(NationSlot sourceNationSlot, DiplomacyProposalCodeStor
                                                     -static_cast<int>(proposalCode));
     }
     g_pNewsMgr->AddTreatyEvent(kInterNationEventJoinEmpireRejected, targetNation, this->nationSlot,
-                               0);
+                               false);
     return;
   }
 
@@ -755,7 +755,7 @@ void TMinor::AddOfferFrom(NationSlot sourceNationSlot, DiplomacyProposalCodeStor
         g_apNationStates[targetNation]->AddNoticeFrom(this->nationSlot, proposalCode);
       }
       g_pNewsMgr->AddTreatyEvent(kInterNationEventNonAggressionPactAccepted, this->nationSlot,
-                                 targetNation, 0);
+                                 targetNation, false);
     }
     return;
   }
@@ -767,7 +767,7 @@ void TMinor::AddOfferFrom(NationSlot sourceNationSlot, DiplomacyProposalCodeStor
       g_apNationStates[targetNation]->AddNoticeFrom(this->nationSlot, proposalCode);
     }
     g_pNewsMgr->AddTreatyEvent(kInterNationEventPeaceTreatyAccepted, this->nationSlot, targetNation,
-                               0);
+                               false);
   }
 }
 
@@ -825,7 +825,7 @@ void TMinor::BecomeProtectorateOf(int targetNationSlot) {
     TGreatPower* targetMajor = g_apNationStates[decodedNationSlot];
     targetMajor->AddNoticeFrom(this->nationSlot, 0x13c);
     g_pNewsMgr->AddTreatyEvent(kInterNationEventMinorEmpireAffiliationChanged, decodedNationSlot,
-                               this->nationSlot, 0);
+                               this->nationSlot, false);
 
     for (int resetNationSlot = 0; resetNationSlot < kNationSlotCount; ++resetNationSlot) {
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(resetNationSlot)) !=
@@ -905,8 +905,8 @@ void TMinor::HandleNetworkPortConstructionOrder(int nationId) {
   }
 
   TTown* marker = new TTown();
-  marker->ITown("", this->homeTileIndex, 1, static_cast<short>(nationId));
-  marker->activeFlag = 1;
+  marker->ITown("", this->homeTileIndex, true, static_cast<short>(nationId));
+  marker->activeFlag = true;
   g_pGlobalMapState->SetTileTransportFlags(static_cast<short>(this->homeTileIndex), 0x15);
   TGreatPower* targetNation = g_apNationStates[nationId];
   targetNation->townMarkerList->AddTail(marker);
@@ -941,7 +941,7 @@ void TMinor::BecomeColonyOf(int targetNationSlot) {
   }
 
   g_pNewsMgr->AddTreatyEvent(kInterNationEventNationJoinedEmpire, targetNationSlot,
-                             this->nationSlot, 0);
+                             this->nationSlot, false);
 }
 
 // FUNCTION: IMPERIALISM 0x004e59d0
@@ -1052,7 +1052,7 @@ void TMinor::KillBoycottedForeignCompanies(void) {
     if (g_apNationStates[majorSlot] != 0 && notifyMajorSlots[majorSlot] != 0) {
       g_apNationStates[majorSlot]->AddNoticeFrom(this->nationSlot, 0x137);
       g_pNewsMgr->AddTreatyEvent(kInterNationEventMinorTerritoryRelationshipAffected, majorSlot,
-                                 this->nationSlot, 0);
+                                 this->nationSlot, false);
     }
   }
 }
@@ -1210,7 +1210,7 @@ void TMinor::DeportCiviliansIn(int provinceId, unsigned char includeAllPolicyTar
           if (relationMaskByNation[orderOwnerNationSlot] != 0) {
             TGreatPower* ownerNation = g_apNationStates[orderOwnerNationSlot];
             short spawnTile = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
-                static_cast<short>(ownerNation->homeTileIndex), 0);
+                static_cast<short>(ownerNation->homeTileIndex), false);
             if (spawnTile == -1) {
               orderNode->DetachUnitOrderFromOwnerAndReset();
               orderNode->Free();
@@ -1243,7 +1243,7 @@ void TMinor::DeportCiviliansIn(int provinceId, unsigned char includeAllPolicyTar
           if (relationMaskByNation[orderOwnerNationSlot] != 0) {
             TGreatPower* ownerNation = g_apNationStates[orderOwnerNationSlot];
             short spawnTile = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
-                static_cast<short>(ownerNation->homeTileIndex), 0);
+                static_cast<short>(ownerNation->homeTileIndex), false);
             if (spawnTile == -1) {
               orderNode->DetachUnitOrderFromOwnerAndReset();
               orderNode->Free();

@@ -42,7 +42,7 @@ TGameWindow::~TGameWindow() {}
 
 // FUNCTION: IMPERIALISM 0x004ffcb0
 CWnd* TGameWindow::Open() {
-  if (IsActionable() == 0) {
+  if (!IsActionable()) {
     UpdateTurnOrderNavigationWindowLayout();
   }
   return TWindow::Open();

@@ -28,11 +28,10 @@ TShipView::~TShipView() {}
 IMPLEMENT_DYNCREATE(TShipView, TView)
 
 // FUNCTION: IMPERIALISM 0x00565490
-void TShipView::IShipView(TView* panel, int* offsetLayout, int* sizeLayout,
-                          int sizeDeterminerX, int sizeDeterminerY, TShip* ship,
-                          TTaskForce* taskForce) {
-  InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout,
-                                          sizeDeterminerX, sizeDeterminerY, 0);
+void TShipView::IShipView(TView* panel, int* offsetLayout, int* sizeLayout, int sizeDeterminerX,
+                          int sizeDeterminerY, TShip* ship, TTaskForce* taskForce) {
+  InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, sizeDeterminerX,
+                                          sizeDeterminerY, 0);
   shipNode60 = ship;
   field64 = taskForce;
 }
@@ -105,10 +104,10 @@ void TShipView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
     TMapOrderChildLinkNode* node = field64->shipList->FindNodeMatching(shipNode60);
     int delta;
     if (node->active == 0) {
-      field64->Select(shipNode60, 1);
+      field64->Select(shipNode60, true);
       delta = 1;
     } else {
-      field64->Select(shipNode60, 0);
+      field64->Select(shipNode60, false);
       delta = -1;
     }
 

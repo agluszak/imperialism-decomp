@@ -55,8 +55,7 @@ public:
   // Resumes the list walk at `cursor`: returns the first record whose processedFlag10
   // equals matchFlag after storing newFlag into it, null when the cursor runs out.
   // Dead in the original. 0x00483d10, __thiscall.
-  IncludeViewOverlayRectRecord* UpdateNextRecordProcessedFlagFromCursor(int matchFlag,
-                                                                      int newFlag);
+  IncludeViewOverlayRectRecord* UpdateNextRecordProcessedFlagFromCursor(int matchFlag, int newFlag);
 };
 ASSERT_SIZE(CIncludeViewOverlayRectQueue, 0x20);
 
@@ -181,8 +180,8 @@ public:
   // instantiation twice (ctor TU vtable 0x648560, dtor/Serialize TU vtable 0x648578) —
   // the twin-copy template pattern; both are the same class.
   CIncludeViewOverlayRectQueue m_overlayRectQueue;
-  UINT m_tickTimerId;             // 0x6c — 17ms UI tick timer (id 0xd00d) driving cursor dispatch
-  int m_unused70;                 // 0x70 — ctor-write only; field-xrefs show no reader
+  UINT m_tickTimerId; // 0x6c — 17ms UI tick timer (id 0xd00d) driving cursor dispatch
+  int m_unused70;     // 0x70 — ctor-write only; field-xrefs show no reader
   // 0x74 — this view's own captured-control track (a second copy of the
   // TMouseCaptureState shape: control + start/last/current points). OnMouseMove sends
   // it the state-1 drag command through TControl slots 0x67/0x68; armed by
@@ -205,8 +204,8 @@ public:
   // reports TRUE while it is 0. Written by SetUiInteractiveFlag90 (0x484080) below.
   int m_uiInteractiveFlag90;
 
-  int GetUiInteractiveFlag90();                          // 0x00484060
-  int SetUiInteractiveFlag90(unsigned char interactive); // 0x00484080
+  int GetUiInteractiveFlag90();                 // 0x00484060
+  int SetUiInteractiveFlag90(bool interactive); // 0x00484080
 };
 
 ASSERT_SIZE(CIncludeView, 0x94);

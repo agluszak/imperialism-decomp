@@ -164,7 +164,7 @@ TSimMgr::TSimMgr() : sharedTextSlots() {
   }
 
   multiplayerGameActive = 0;
-  reloadPoliticalMapState = 0;
+  reloadPoliticalMapState = false;
   scenarioMapIndexPlusOne = 0;
   multiplayerSessionRole = 0;
 }
@@ -184,20 +184,20 @@ void TSimMgr::ISimMgr() {
   // Ten bytes 0x6f..0x78 (phaseStateByDecade[1..9] + field78) are filled with 1 in one
   // pass (dword/dword/word stores in the original); field78 is then overwritten with 2.
   memset(&phaseStateByDecade[1], 0x01, sizeof(phaseStateByDecade));
-  field79 = 1;
+  field79 = true;
   field78 = 2;
   // Developer-cheat probe: stat a file literally named "Conan" in the working directory;
   // the original discards the result and clears the cheat flag unconditionally (the flag
   // is armed elsewhere).
   CFileStatus conanFileStatus;
   CFile::GetStatus(g_szConanCheatFileName_00698BEC, conanFileStatus);
-  g_bRandomMapDeveloperCheatFlag = 0;
+  g_bRandomMapDeveloperCheatFlag = false;
   ReinitializeRandomSeed();
   difficultyLevel = 0;
   InitializeOrLoadEntryArray14AndClampLimits(false);
   field6a = 0;
   field6c = 0x77a;
-  gateFlag7a = 0;
+  gateFlag7a = false;
 }
 
 // FUNCTION: IMPERIALISM 0x0057bc90
@@ -218,12 +218,12 @@ void TSimMgr::ResetTurnFlowStateAndRandomSeed() {
   phaseStateByDecade[7] = 1;
   phaseStateByDecade[8] = 1;
   phaseStateByDecade[9] = 1;
-  field79 = 1;
+  field79 = true;
   field78 = 2;
 
   CFileStatus conanFileStatus;
   CFile::GetStatus(g_szConanCheatFileName_00698BEC, conanFileStatus);
-  g_bRandomMapDeveloperCheatFlag = 0;
+  g_bRandomMapDeveloperCheatFlag = false;
   ReinitializeRandomSeed();
 }
 
@@ -345,7 +345,7 @@ void TSimMgr::ReadFrom(TStream* stream) {
   int savedSessionRole;
   stream->ReadBytes(&savedSessionRole, 4);
 
-  unsigned char hasGameFlowState = multiplayerSessionRole != 0;
+  bool hasGameFlowState = multiplayerSessionRole != 0;
   if (hasGameFlowState) {
     g_pGameFlowState->ReadFrom(stream);
   }
@@ -372,7 +372,7 @@ void TSimMgr::ReadFrom(TStream* stream) {
 
   if (g_nSaveFormatVersion < 0x3b) {
     memset(phaseStateByDecade, 0x01, sizeof(phaseStateByDecade));
-    field79 = 1;
+    field79 = true;
     phaseStateByDecade[0] = 0;
     phaseStateByDecade[(field6c - 0x717) / 10] = 2;
   } else {
@@ -391,7 +391,7 @@ void TSimMgr::ReadFrom(TStream* stream) {
   }
 
   g_pAssetMgr->OpenFilesFor(1);
-  RebuildGlobalOrderManagersAndCapabilityState(0);
+  RebuildGlobalOrderManagersAndCapabilityState(false);
   RebuildMapContextAndGlobalMapState(0, nullptr, 0);
   RebuildNationStateSlotsAndAvailability(0);
 
@@ -420,7 +420,7 @@ void TSimMgr::WriteTo(TStream* stream) {
   stream->WriteBytes(&field15, 0x17);
   stream->WriteBytes(&multiplayerSessionRole, 4);
 
-  unsigned char hasGameFlowState = multiplayerSessionRole != 0;
+  bool hasGameFlowState = multiplayerSessionRole != 0;
   if (hasGameFlowState) {
     g_pGameFlowState->WriteTo(stream);
   }
@@ -439,11 +439,11 @@ void TSimMgr::WriteTo(TStream* stream) {
 void TSimMgr::RebuildNationStateSlotsNoOp() {}
 
 // FUNCTION: IMPERIALISM 0x0057c3b0
-void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
+void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(bool flag) {
   int i;
-  if (((flag != 0) && (g_bMultiplayerScenarioSetupActive == 0)) ||
-      ((flag == 0) && (g_bMultiplayerScenarioSetupActive != 0))) {
-    if (flag != 0) {
+  if ((flag && !g_bMultiplayerScenarioSetupActive) ||
+      (!flag && g_bMultiplayerScenarioSetupActive)) {
+    if (flag) {
       for (i = 0; i < 7; ++i) {
         nationControlModes[i] = g_aDefaultNationSetupPolicyProfiles[i][0];
         cityMinisterPolicyIds[i] = g_aDefaultNationSetupPolicyProfiles[i][1];
@@ -451,7 +451,7 @@ void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
         defenseMinisterPolicyIds[i] = g_aDefaultNationSetupPolicyProfiles[i][3];
       }
       multiplayerGameActive = 0;
-      reloadPoliticalMapState = 0;
+      reloadPoliticalMapState = false;
     }
 
     numGreatPowers = 0;
@@ -535,7 +535,7 @@ void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
 // FUNCTION: IMPERIALISM 0x0057c7c0
 void TSimMgr::RebuildMapContextAndGlobalMapState(int arg1, const char* arg2, int arg3) {
   int i;
-  if (g_bMultiplayerScenarioSetupActive == 0) {
+  if (!g_bMultiplayerScenarioSetupActive) {
     CString local_10;
     for (i = 0; i < 0x17; ++i) {
       SetSharedStringFromMappedFlavorTextWithLengthClamp(&local_10, i);
@@ -544,8 +544,8 @@ void TSimMgr::RebuildMapContextAndGlobalMapState(int arg1, const char* arg2, int
   }
 
   char rebuildFlag = static_cast<char>(arg1);
-  if (((rebuildFlag != 0) && (g_bMultiplayerScenarioSetupActive == 0)) ||
-      ((rebuildFlag == 0) && (g_bMultiplayerScenarioSetupActive != 0))) {
+  if (((rebuildFlag != 0) && (!g_bMultiplayerScenarioSetupActive)) ||
+      ((rebuildFlag == 0) && (g_bMultiplayerScenarioSetupActive))) {
     if (g_pActiveMapOrderContext != nullptr) {
       g_pActiveMapOrderContext->Free();
       g_pActiveMapOrderContext = nullptr;
@@ -563,7 +563,7 @@ void TSimMgr::RebuildMapContextAndGlobalMapState(int arg1, const char* arg2, int
     g_pGlobalMapState = new TMapMgr();
     g_pGlobalMapState->IMapMgr();
 
-    if (g_bMultiplayerScenarioSetupActive == 0) {
+    if (!g_bMultiplayerScenarioSetupActive) {
       g_pGlobalMapState->hexNeighborWrapHorizontally = static_cast<char>(arg3);
       g_pGlobalMapState->BuildOrLoadGlobalMapStateForSession(nullptr, const_cast<char*>(arg2));
     } else {
@@ -597,7 +597,7 @@ unsigned char TSimMgr::RecreateActiveMapContextAndInitializeGlobalMapState(int s
 // FUNCTION: IMPERIALISM 0x0057cad0
 void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
   int i;
-  if (g_bMultiplayerScenarioSetupActive == 0) {
+  if (!g_bMultiplayerScenarioSetupActive) {
     short profileBySlot[8];
     g_pGlobalMapState->ChooseNationSetupProfilesForOpenSlots(profileBySlot);
 
@@ -641,14 +641,14 @@ void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
     }
   }
 
-  if (g_bMultiplayerScenarioSetupActive == 0) {
+  if (!g_bMultiplayerScenarioSetupActive) {
     g_pDiplomacyTurnStateManager->RebuildCivilianOrderCompatibilityMatrices();
     g_pViewMgr->RebuildMapTileNeighborHighlightPolygonsForAllTiles();
     g_pTechMgr->GenerateRandomCapabilityPrioritySlots();
     g_pGlobalMapState->GenerateProvinceNames();
     RegenerateAllMapActionContextStatusCodes();
-    g_pNewsMgr->AddMiscEvent(999, 1, 1);
-    g_pNewsMgr->AddMiscEvent(999, 2, 1);
+    g_pNewsMgr->AddMiscEvent(999, 1, true);
+    g_pNewsMgr->AddMiscEvent(999, 2, true);
 
     const char* tagText = g_pGlobalMapState->scenarioTagText;
     if (tagText[0] == '.') {
@@ -674,13 +674,13 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
 
   short setupMode = nationControlModes[nationIndex];
   if (setupMode == 1) {
-    unsigned char useClientNation = multiplayerSessionRole == 2;
-    if (useClientNation != 0) {
+    bool useClientNation = multiplayerSessionRole == 2;
+    if (useClientNation) {
       TGreatPower* pTVar5 = (TGreatPower*)new TClientGreatPower();
       g_apNationStates[nationIndex] = pTVar5;
     } else {
-      unsigned char useHostNation = multiplayerSessionRole == 1;
-      if (useHostNation != 0) {
+      bool useHostNation = multiplayerSessionRole == 1;
+      if (useHostNation) {
         TGreatPower* pTVar5 = (TGreatPower*)new THostGreatPower();
         g_apNationStates[nationIndex] = pTVar5;
       } else {
@@ -690,13 +690,13 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
     }
     g_apNationStates[nationIndex]->IGreatPower(slotIndex, 1);
     g_apTerrainTypeDescriptorTable[nationIndex] = g_apNationStates[nationIndex];
-    if (g_bMultiplayerScenarioSetupActive == 0) {
+    if (!g_bMultiplayerScenarioSetupActive) {
       activeNationSlot = nationSlot;
       g_pMacViewMgr->RefreshCityCapabilityUiHandlesForActiveNation();
     }
-    if (g_bMultiplayerScenarioSetupActive == 0) {
-      unsigned char suspendPrimaryEventQueue = multiplayerSessionRole != 0;
-      if (suspendPrimaryEventQueue != 0) {
+    if (!g_bMultiplayerScenarioSetupActive) {
+      bool suspendPrimaryEventQueue = multiplayerSessionRole != 0;
+      if (suspendPrimaryEventQueue) {
         g_pGameFlowState->processPrimaryEventQueue = 0;
       }
       if (activate != 0) {
@@ -704,8 +704,8 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
         TCity* city = nationState != nullptr ? nationState->city : nullptr;
         nationState->ApplyScenarioRelationPresetAndSpawnFrogCity(city);
       }
-      unsigned char resumePrimaryEventQueue = multiplayerSessionRole != 0;
-      if (resumePrimaryEventQueue != 0) {
+      bool resumePrimaryEventQueue = multiplayerSessionRole != 0;
+      if (resumePrimaryEventQueue) {
         g_pGameFlowState->processPrimaryEventQueue = 1;
       }
     }
@@ -735,7 +735,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
     g_apNationStates[nationIndex] = pTVar5;
     g_apTerrainTypeDescriptorTable[nationIndex] = pTVar5;
 
-    if (g_bMultiplayerScenarioSetupActive == 0) {
+    if (!g_bMultiplayerScenarioSetupActive) {
       if (activate != 0) {
         TCity* city = pTVar5 != nullptr ? pTVar5->city : nullptr;
         pTVar5->ApplyScenarioRelationPresetAndSpawnFrogCity(city);
@@ -762,7 +762,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
     g_apNationStates[nationIndex] = pTVar5;
     g_apTerrainTypeDescriptorTable[nationIndex] = pTVar5;
 
-    if (g_bMultiplayerScenarioSetupActive == 0) {
+    if (!g_bMultiplayerScenarioSetupActive) {
       if (activate != 0) {
         TCity* city = pTVar5 != nullptr ? pTVar5->city : nullptr;
         pTVar5->ApplyScenarioRelationPresetAndSpawnFrogCity(city);
@@ -776,8 +776,8 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
   }
 
   if (nationSlot == activeNationSlot) {
-    unsigned char useSessionDisplayName = multiplayerSessionRole != 0;
-    if (useSessionDisplayName != 0) {
+    bool useSessionDisplayName = multiplayerSessionRole != 0;
+    if (useSessionDisplayName) {
       {
         CString nationName(g_pGameFlowState->nationDisplayNameSlots[nationIndex]);
         g_apTerrainTypeDescriptorTable[nationIndex]->SetNationDisplayNameAndLocalizationSlotRef(
@@ -832,7 +832,7 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
     g_apSecondaryNationStateSlots[nationIndex] = minor;
     g_apTerrainTypeDescriptorTable[nationIndex] = minor;
 
-    if (g_bMultiplayerScenarioSetupActive == 0) {
+    if (!g_bMultiplayerScenarioSetupActive) {
       minor->InitialMilitia();
 
       short cityRecordIndex =
@@ -887,7 +887,7 @@ void TSimMgr::GetSeason(CString* destString) {
 
 // FUNCTION: IMPERIALISM 0x0057d870
 void TSimMgr::SetDifficultyLevel(int difficulty) {
-  char zeroFlag = 0;
+  bool zeroFlag = false;
   difficultyLevel = difficulty;
   if (difficulty != 0) {
     if (difficulty > 0 && difficulty <= 4) {
@@ -895,7 +895,7 @@ void TSimMgr::SetDifficultyLevel(int difficulty) {
       return;
     }
   } else {
-    zeroFlag = 1;
+    zeroFlag = true;
   }
   this->preferenceValues[10] = zeroFlag;
 }
@@ -916,7 +916,7 @@ void TSimMgr::SetGameSetupValues(GameSetup* setup) {
 
   multiplayerGameActive = setup->multiplayerGameActive;
   if (setup->reloadPoliticalMapState != 0) {
-    reloadPoliticalMapState = 1;
+    reloadPoliticalMapState = true;
   }
 }
 
@@ -933,7 +933,7 @@ void TSimMgr::StartNextPhase() {
 // FUNCTION: IMPERIALISM 0x0057d990
 void TSimMgr::EnterOptionalPhase(int gamePhase) {
   bool mayEnterPhase = IsNationEligibleForOptionalPhase(activeNationSlot);
-  if (mayEnterPhase == false) {
+  if (!mayEnterPhase) {
     switch (gamePhase) {
     case 100:
     case 0x67:
@@ -965,7 +965,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   switch (turnStateCode) {
   case 1:
     turnStateCode = 3;
-    if (g_bTurnFlowBootstrapComplete == 0) {
+    if (!g_bTurnFlowBootstrapComplete) {
       g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOpeningCinematic), 0);
       break;
     }
@@ -977,11 +977,11 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
       TGreatPower* nation = g_apNationStates[nationSlot];
       nation->AssertValid();
-      if (nation->IsRemote() == 0 && g_bMultiplayerScenarioSetupActive == 0) {
+      if (!nation->IsRemote() && !g_bMultiplayerScenarioSetupActive) {
         nation->SetHomeCityTileAndDisplayName(-1, 0);
       }
     }
-    if (g_bMultiplayerScenarioSetupActive == 0) {
+    if (!g_bMultiplayerScenarioSetupActive) {
       if (scenarioMapIndexPlusOne == 0) {
         if (multiplayerSessionRole == 0) {
           NameCapitals();
@@ -1006,11 +1006,11 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case 3:
     turnStateCode = 2;
-    if (reloadPoliticalMapState != 0) {
-      g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(1);
+    if (reloadPoliticalMapState) {
+      g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(true);
       g_pSimMgr->RebuildMapContextAndGlobalMapState(1, s_Chunk_00698C0C, 1);
     }
-    if (g_bMultiplayerScenarioSetupActive != 0) {
+    if (g_bMultiplayerScenarioSetupActive) {
       break;
     }
     RebuildNationStateSlotsAndAvailability(1);
@@ -1037,9 +1037,9 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     break;
 
   case 5: {
-    const char alertsPending = ShowTurnAlertsForActiveNation();
+    const bool alertsPending = ShowTurnAlertsForActiveNation();
     alertsPendingFlag38 = alertsPending;
-    if (alertsPending != 0) {
+    if (alertsPending) {
       break;
     }
     bool continueTurn = true;
@@ -1149,7 +1149,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case 0xb: {
     turnStateCode = 0xc;
-    char actionNeeded = 0;
+    bool actionNeeded = false;
     // For each live nation slot 6..0, slot 0xaf (the pressure-state update, byte 0x2bc)
     // returns a char: when set, fire the active nation's no-payload turn-event dispatch
     // (slot 0xab, byte 0x2ac). The original derefs the active nation's vtable with no
@@ -1164,9 +1164,9 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       }
       TGreatPower* activeNation = g_apNationStates[activeNationSlot];
       activeNation->SorryYouLose();
-      actionNeeded = 1;
+      actionNeeded = true;
     }
-    if (actionNeeded == 0) {
+    if (!actionNeeded) {
       StartNextPhase();
     }
     break;
@@ -1242,7 +1242,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       if (multiplayerSessionRole == 0) {
         SaveGameWithModeAndOptionalLabel(0xa1, 0);
       } else if (multiplayerSessionRole == 1) {
-        g_pGameFlowState->TrySaveGameAndMaybeShowFailureDialog(0xa1, 0, 1);
+        g_pGameFlowState->TrySaveGameAndMaybeShowFailureDialog(0xa1, 0, true);
       }
     }
     if (multiplayerSessionRole != 0) {
@@ -1264,7 +1264,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case 0x11: {
     turnStateCode = 0xf;
-    char actionNeeded = 1;
+    bool actionNeeded = true;
     const short capabilityBefore = g_pTechMgr != nullptr ? g_pTechMgr->marker262 : 0;
     g_pTechMgr->CheckForAdvances();
     if (capabilityBefore == (g_pTechMgr != nullptr ? g_pTechMgr->marker262 : 0)) {
@@ -1280,7 +1280,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
           if (unlockSlot != -1) {
             g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventTechnologyAdvance),
                                           unlockSlot);
-            actionNeeded = 0;
+            actionNeeded = false;
           }
           continue;
         }
@@ -1291,7 +1291,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         unlockSlot = g_pTechMgr->ConsumeFirstPendingAbilityUnlock(static_cast<short>(nationSlot));
       }
     }
-    if (actionNeeded != 0) {
+    if (actionNeeded) {
       StartNextPhase();
     }
     break;
@@ -1390,7 +1390,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case 0x19: {
     turnStateCode = 8;
-    char actionNeeded = 0;
+    bool actionNeeded = false;
     // Verified against 0x0057e1be: the original reads g_pSimMgr->activeNationSlot with no
     // null guard, and when the localization nation's encoded slot is in [100,200) it fires
     // the active nation's no-payload turn-event dispatch (slot 0xab, byte 0x2ac) with no
@@ -1403,7 +1403,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         if (encoded > 99 && encoded < 200) {
           TGreatPower* activeNation = g_apNationStates[activeNationSlot];
           activeNation->SorryYouLose();
-          actionNeeded = 1;
+          actionNeeded = true;
         }
       }
     }
@@ -1427,7 +1427,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         }
       }
     }
-    if (actionNeeded != 0) {
+    if (actionNeeded) {
       break;
     }
     int eligibleMinorCount = 0;
@@ -1437,11 +1437,11 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       }
     }
     if (eligibleMinorCount == 1 && IsNationEligibleForOptionalPhase(activeNationSlot)) {
-      actionNeeded = 1;
+      actionNeeded = true;
       UpdatePersistentTopTenNationScores();
       g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOpeningCinematic), 0);
     }
-    if (actionNeeded == 0) {
+    if (!actionNeeded) {
       StartNextPhase();
     }
     break;
@@ -1550,7 +1550,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 // FUNCTION: IMPERIALISM 0x0057f110
 char TSimMgr::InLinearPhase() {
   int phase = turnStateCode;
-  char linear = (phase < 4) || (phase > 5);
+  bool linear = (phase < 4) || (phase > 5);
   return linear;
 }
 
@@ -1668,10 +1668,10 @@ unsigned char TSimMgr::TestTurnFlowStatusFlagMask(unsigned int mask) {
 // pointer-compare (jl) on the array-end bound, same as DoPerTurnMissionAIStuff.
 // FUNCTION: IMPERIALISM 0x0057f4f0
 char TSimMgr::AllHumansFinished() {
-  char finished = 1;
+  bool finished = true;
   for (TGreatPower** nation = g_apNationStates; nation < g_apNationStates + 7; ++nation) {
     if ((*nation)->field904 == 0) {
-      finished = 0;
+      finished = false;
       break;
     }
   }
@@ -1690,7 +1690,7 @@ void TSimMgr::ResetTurnFlags() {
 
 // FUNCTION: IMPERIALISM 0x0057f570
 void TSimMgr::PrepareMultiplayerTurnResume() {
-  unsigned char hasMultiplayerSession = multiplayerSessionRole != 0;
+  bool hasMultiplayerSession = multiplayerSessionRole != 0;
   if (hasMultiplayerSession) {
     g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
     turnStateCode = 0x13;
@@ -1779,11 +1779,11 @@ CString TSimMgr::DiplomacyNoticeString(const DiplomacyNotice* notice) {
   // Ground truth (0x5807fa..0x580821) zeroes `rejected` first, then loads BOTH
   // notice fields into registers before the sign test, and only sign-flips `code`
   // afterwards -- so nationSlot is read ahead of the branch, not at its use site.
-  char rejected = 0;
+  bool rejected = false;
   short code = notice->policyOrGrantCode;
   short nationSlot = notice->nationSlot;
   if (code < 0) {
-    rejected = 1;
+    rejected = true;
     code = static_cast<short>(-code);
   }
 
@@ -1907,7 +1907,7 @@ char TSimMgr::IsNationSlotEligibleForEventProcessing(NationSlot nationSlot) {
   if (nationSlot < 7) {
     if (terrainDescriptor != 0) {
       short profileType = terrainDescriptor->encodedNationSlot;
-      char inReservedProfileBand = profileType >= 100 && profileType < 200;
+      bool inReservedProfileBand = profileType >= 100 && profileType < 200;
       if (inReservedProfileBand) {
         return 0;
       }
@@ -2062,11 +2062,11 @@ void ReinitializeGameFlowAndPostTurnEventCode(TurnEventId eventCode) {
     simMgr->field_64 = 0;
     simMgr->phaseStateByDecade[0] = 0;
     memset(&simMgr->phaseStateByDecade[1], 0x01, sizeof(simMgr->phaseStateByDecade));
-    simMgr->field79 = 1;
+    simMgr->field79 = true;
     simMgr->field78 = 2;
     CFileStatus conanFileStatus;
     CFile::GetStatus(g_szConanCheatFileName_00698BEC, conanFileStatus);
-    g_bRandomMapDeveloperCheatFlag = 0;
+    g_bRandomMapDeveloperCheatFlag = false;
     simMgr->ReinitializeRandomSeed();
     g_pSimMgr->turnStateCode = 3;
     g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(eventCode));
@@ -2079,7 +2079,7 @@ void ReinitializeGameFlowAndPostTurnEventCode(TurnEventId eventCode) {
       g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(eventCode));
     }
   }
-  g_bTurnFlowBootstrapComplete = 1;
+  g_bTurnFlowBootstrapComplete = true;
 }
 
 // FUNCTION: IMPERIALISM 0x00581ae0
@@ -2122,9 +2122,9 @@ void TSimMgr::NameCapitals() {
 // FUNCTION: IMPERIALISM 0x00581e60
 void TSimMgr::ProcessScenarioScript() {
   CString scenarioPath;
-  gateFlag7a = 1;
+  gateFlag7a = true;
   g_nSaveFormatVersion = -3;
-  g_bScenarioScriptTerminationRequested = 0;
+  g_bScenarioScriptTerminationRequested = false;
   g_nScenarioScriptInstructionCount = 0;
 
   g_pAssetMgr->BuildScenarioPathForModeAndIndex(static_cast<short>(scenarioMapIndexPlusOne) - 1, 2,
@@ -2147,7 +2147,7 @@ void TSimMgr::ProcessScenarioScript() {
   unsigned int instructionTag;
   instructionTag = 0;
   while (reinterpret_cast<unsigned char*>(instruction.tokenCursor) < buffer + resourceSize &&
-         instructionTag != kControlTagTERM && g_bScenarioScriptTerminationRequested == 0) {
+         instructionTag != kControlTagTERM && !g_bScenarioScriptTerminationRequested) {
     instructionTag = *instruction.tokenCursor;
     int instructionCount = g_nScenarioScriptInstructionCount;
     DECODE_SCENARIO_DWORD_TOKEN(instructionTag);
@@ -2166,7 +2166,7 @@ void TSimMgr::ProcessScenarioScript() {
   }
 
   delete[] buffer;
-  if (g_bScenarioScriptTerminationRequested != 0) {
+  if (g_bScenarioScriptTerminationRequested) {
     g_pAmbitApplication->PostWmCloseToMainThreadWindow();
   }
 
@@ -2176,7 +2176,7 @@ void TSimMgr::ProcessScenarioScript() {
     nation->MarkStatusFlag5HandledIfCapabilityActive();
   }
 
-  gateFlag7a = 0;
+  gateFlag7a = false;
   g_nSaveFormatVersion = -1;
 }
 
@@ -2438,11 +2438,11 @@ void TSimMgr::HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry(void* pInstruc
   instruction->tokenCursor = cursor;
 
   int tileResourceKind = g_pGlobalMapState->terrainStateTable[tileIndex].resourceTypeByEdge[0];
-  char selectHighNibble = 0;
+  bool selectHighNibble = false;
   if (tileResourceKind == kResourceGold || tileResourceKind == kResourceGems ||
       tileResourceKind == kResourceIron || tileResourceKind == kResourceCoal ||
       tileResourceKind == kResourceOil) {
-    selectHighNibble = 1;
+    selectHighNibble = true;
   }
   unsigned char* valueTokenBytes = static_cast<unsigned char*>(static_cast<void*>(&valueToken));
   unsigned char value = valueTokenBytes[3];

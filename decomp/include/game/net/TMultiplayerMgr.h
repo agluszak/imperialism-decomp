@@ -50,7 +50,7 @@ public:
   int nationSessionIds[kMajorNationSessionSlotCount]; // +0x48
   int queueSyncDword;                                 // +0x64
   char processPrimaryEventQueue;                      // +0x68
-  char processSecondaryEventQueue;                    // +0x69
+  bool processSecondaryEventQueue;                    // +0x69
   unsigned char pad6a[2];
   TurnEventQueuePacket* primaryTurnEventQueueHead;              // +0x6c
   TurnEventQueuePacket* secondaryTurnEventQueueHead;            // +0x70
@@ -110,7 +110,7 @@ public:
   bool IsTimelyMessage(NetMessage* packet);
   void AppendNodeToTurnEventLinkedListAt6C(TurnEventQueuePacket* node);
   // 0x5430c0 — enable both diplomacy queue-processing flags and set the routing context.
-  void EnableDiplomacyQueueRoutingAndSetContextField44(TEventHandler* nContext, char fEnable);
+  void EnableDiplomacyQueueRoutingAndSetContextField44(TEventHandler* nContext, bool fEnable);
   // 0x54b4c0, RET 0x10 (4 stack args). Builds and sends a LobbyChatEvent9Packet: reasonCode
   // becomes nationSlot18 (the field's original comment names it for the AWOL use case; this
   // caller uses it as a generic status/reason byte instead), field1CValue becomes field1C,
@@ -288,12 +288,12 @@ public:
   void ReplaceNationStateForSlotAndRefreshStatus(int nationSlot);
   // 0x54d4e0: probe reachability, save when everyone is reachable, else optionally pose
   // the "cannot save" advisory; returns the all-reachable byte Boolean.
-  unsigned char TrySaveGameAndMaybeShowFailureDialog(int mode, char* label, char showFailureDialog);
+  unsigned char TrySaveGameAndMaybeShowFailureDialog(int mode, char* label, bool showFailureDialog);
   void RefreshNationStatusLabelsAndCodesForSlotOrAll(int nationSlot);
 
   // Send the turn-event-0x15 diplomacy need-state snapshot for nationSlot (broadcast
   // when broadcastFlag != 0). 0x54b5d0.
-  void EmitNationDiplomacyNeedStateSnapshotEvent15(char broadcastFlag, int nationSlot);
+  void EmitNationDiplomacyNeedStateSnapshotEvent15(bool broadcastFlag, int nationSlot);
 
   // Update one nation-status tag (resolving -1 to the active/fallback slot) and send
   // the corresponding event-0x25 status-board delta. 0x54b7e0.

@@ -368,7 +368,7 @@ CivilianTileActionCodeStorage TCivMgr::ResolveCivilianTileOrderActionCode(short 
 // TCivMgr instance.
 
 // FUNCTION: IMPERIALISM 0x004d2c60
-void TCivMgr::SetActiveCivilianSelection(TCivUnit* entryContext, char refreshCommandPanel) {
+void TCivMgr::SetActiveCivilianSelection(TCivUnit* entryContext, bool refreshCommandPanel) {
   this->selectedEntry = entryContext;
   this->DispatchSelectedUnitToGlobalMapStateHandler(entryContext);
   if (entryContext == nullptr) {
@@ -382,7 +382,7 @@ void TCivMgr::SetActiveCivilianSelection(TCivUnit* entryContext, char refreshCom
     mapUberPicture->InvalidateTile(entryContext->tileIndex06);
   }
 
-  if (refreshCommandPanel != 0) {
+  if (refreshCommandPanel) {
     mapUberPicture = g_pViewMgr->mapUberPictureF0;
     if (mapUberPicture != nullptr) {
       // categoryPages[] is a heterogeneous array of toolbar subtypes typed generically as
@@ -433,7 +433,7 @@ void TCivMgr::ShowDisbandCivilianConfirmationDialog() {
 
   short tileIndex = entry->tileIndex06;
   if (entry->orderType == EncodeCivilianUnitKind(kCivilianUnitDeveloper)) {
-    g_pNewsMgr->AddMiscEvent(g_pSimMgr->GetActiveNationId(), 0, 0);
+    g_pNewsMgr->AddMiscEvent(g_pSimMgr->GetActiveNationId(), 0, false);
   }
   entry->ResetCivWorkOrderAndRefreshCounters();
 
@@ -475,15 +475,15 @@ bool TCivMgr::CanAssignCivilianOrderToTile(short nTileIndex) {
           entry->ownerNationSlot18, tileTerrainClass);
       if ((compatibility == 2) &&
           (entry->orderType != EncodeCivilianUnitKind(kCivilianUnitEngineer))) {
-        return 1;
+        return true;
       }
     } else if (g_apTerrainTypeDescriptorTable[tileTerrainClass]->IsColonyOf(
                    entry->ownerNationSlot18) &&
                (entry->orderType != EncodeCivilianUnitKind(kCivilianUnitEngineer))) {
-      return 1;
+      return true;
     }
   }
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004d3070
@@ -513,7 +513,7 @@ void TCivMgr::HandleCivilianReportDecision(TCivUnit* pCivilianOrderEntry) {
     refundAmount = 3000;
     break;
   case kUnitOrderDevelopResource: {
-    char useHighNibble = ((subtypeOrTargetProvince == 0) || (subtypeOrTargetProvince == 8)) ? 1 : 0;
+    bool useHighNibble = ((subtypeOrTargetProvince == 0) || (subtypeOrTargetProvince == 8)) ? 1 : 0;
     unsigned char costClass =
         g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(targetTileIndex, useHighNibble);
     refundAmount = g_adwCivilianWorkOrderCostByClass[costClass];
@@ -578,7 +578,7 @@ bool TCivMgr::QueueCivilianWorkOrderWithCostCheck(short nTileIndex) {
     budget = 0;
   }
 
-  char useHighNibble = (selectedEntry->orderType == EncodeCivilianUnitKind(kCivilianUnitMiner) ||
+  bool useHighNibble = (selectedEntry->orderType == EncodeCivilianUnitKind(kCivilianUnitMiner) ||
                         selectedEntry->orderType == EncodeCivilianUnitKind(kCivilianUnitDriller))
                            ? 1
                            : 0;

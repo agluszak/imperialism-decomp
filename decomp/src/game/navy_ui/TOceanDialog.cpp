@@ -789,7 +789,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
     viewportRowParity = 1 - viewportRowParity;
   }
 
-  if (g_bDrawOceanRouteOverlay != 0) {
+  if (g_bDrawOceanRouteOverlay) {
     g_pViewMgr->ApplyLegendSplitSlot34(0x3c);
     int routeIndex = 0;
     short viewportRow = scrollRowOffset7c;
@@ -816,7 +816,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
     }
   }
 
-  if (g_bDrawOceanZoneLabels != 0) {
+  if (g_bDrawOceanZoneLabels) {
     InitializeUiTextStyleDescriptorAndApplyQuickDraw(2, 0xc, 0x2b68, 3);
     for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
       int tileIndex = zone->tileOrTerrainId0c;
@@ -847,7 +847,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
     }
   }
 
-  if (g_bDrawOceanNationLabels != 0) {
+  if (g_bDrawOceanNationLabels) {
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0x41, 0xc, 0x2b68);
     SetQuickDrawTextFace(0x41);
     TCountry** descriptorSlot = g_apTerrainTypeDescriptorTable;
@@ -884,7 +884,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
     } while (descriptorSlot < g_apTerrainTypeDescriptorTable + kTerrainTypeDescriptorTableCount);
   }
 
-  if (g_bTransferOceanViewportToActiveSurface != 0) {
+  if (g_bTransferOceanViewportToActiveSurface) {
     SetGWorld(previousSurface, previousSurfaceFlags);
     BlitRectWithOptionalTransparency(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),

@@ -27,7 +27,7 @@ TDialogBehavior::TDialogBehavior()
       dismissPending(1) {}
 
 // FUNCTION: IMPERIALISM 0x00487400
-void TDialogBehavior::SetUiColorDescriptorGoldTriplet(unsigned char flag, int colorA, int colorB) {
+void TDialogBehavior::SetUiColorDescriptorGoldTriplet(bool flag, int colorA, int colorB) {
   behaviorTag = kControlTagDlog; // 'gold'
   armed = flag;
   defaultCommandCode = colorA;
@@ -38,7 +38,7 @@ void TDialogBehavior::SetUiColorDescriptorGoldTriplet(unsigned char flag, int co
 void TDialogBehavior::Dismiss(unsigned long commandCode, unsigned char accepted) {
   (void)accepted;
   if (owner != 0) {
-    dismissPending = 1;
+    dismissPending = true;
     armedCommandCode = commandCode;
     static_cast<TView*>(owner)->nativeWindow50->EndModalLoop(commandCode);
   }
@@ -102,13 +102,13 @@ void TDialogBehavior::DoCommandKeyEvent(TToolboxEvent* event) {
 // FUNCTION: IMPERIALISM 0x00487660
 void TDialogBehavior::PoseModally() {
   CIncludeView* mainView = GetMainViewHostFromActiveThread();
-  int wasInteractive = mainView->SetUiInteractiveFlag90(0);
+  int wasInteractive = mainView->SetUiInteractiveFlag90(false);
 
   TView* ownerPanel = owner->GetWindow();
   ownerPanel->Open();
   ownerPanel = owner->GetWindow();
   CWnd* nativeWindow = ownerPanel->nativeWindow50;
-  dismissPending = 0;
+  dismissPending = false;
   armedCommandCode = kControlTagSpSpSpSp;
   nativeWindow->EnableWindow(1);
 #ifdef IMPERIALISM_RUNTIME_TESTS
@@ -120,6 +120,6 @@ void TDialogBehavior::PoseModally() {
   nativeWindow->RunModalLoop(0);
 
   if (wasInteractive != 0) {
-    GetMainViewHostFromActiveThread()->SetUiInteractiveFlag90(1);
+    GetMainViewHostFromActiveThread()->SetUiInteractiveFlag90(true);
   }
 }

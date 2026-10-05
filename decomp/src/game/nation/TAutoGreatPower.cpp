@@ -445,7 +445,7 @@ void TAutoGreatPower::AddOfferFrom(NationSlot sourceNationSlot,
   case kDiplomacyProposalJoinEmpireWithWarEntanglements: {
     bool hasAllianceGuard = g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(
         sourceNationSlot, this->nationSlot);
-    if (hasAllianceGuard == 0) {
+    if (!hasAllianceGuard) {
       TGreatPower::AddOfferFrom(sourceNationSlot, proposalCode);
     }
     return;
@@ -552,17 +552,17 @@ int TAutoGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNati
 // FUNCTION: IMPERIALISM 0x004e7ec0
 int TAutoGreatPower::HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation,
                                                             char swapRoles) {
-  char hasPolicy = 0;
+  bool hasPolicy = false;
   if (swapRoles == 0) {
     if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, sourceNation) != 0) {
-      hasPolicy = 1;
+      hasPolicy = true;
     }
   } else {
     if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, targetNation) != 0) {
-      hasPolicy = 1;
+      hasPolicy = true;
     }
   }
-  if (hasPolicy == 0) {
+  if (!hasPolicy) {
     char borderLinked = g_pGlobalMapState->AreNationsBorderLinked(sourceNation, this->nationSlot);
     float ratioScore;
     float standingScore;
@@ -700,7 +700,7 @@ void TAutoGreatPower::QueueMapActionMissionsForPortZoneCandidates() {
     int regionId = regionList->At(i);
     bool unavailable = g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
         regionId, this->nationSlot);
-    this->mapNodeStateFlags[regionId] = (unavailable == false);
+    this->mapNodeStateFlags[regionId] = (!unavailable);
     CreateMission(kMissionTypeDefendProvince, regionId, 0, -1);
   }
 
@@ -832,10 +832,10 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
       for (j = 1; j <= g_apNationStates[slot]->ownedRegionList->GetSize(); ++j) {
         int region = g_apNationStates[slot]->ownedRegionList->At(j);
         if (mapNodeStateFlags[region] == 0) {
-          char markValue = 1;
+          bool markValue = true;
           if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
                   region, this->nationSlot) != 0) {
-            markValue = 0;
+            markValue = false;
           }
           mapNodeStateFlags[region] = markValue;
         }
@@ -849,10 +849,10 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
             for (m = 1; m <= minorDescriptor->ownedRegionList->GetSize(); ++m) {
               int minorRegion = minorDescriptor->ownedRegionList->At(m);
               if (mapNodeStateFlags[minorRegion] == 0) {
-                char markValue = 1;
+                bool markValue = true;
                 if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
                         minorRegion, this->nationSlot) != 0) {
-                  markValue = 0;
+                  markValue = false;
                 }
                 mapNodeStateFlags[minorRegion] = markValue;
               }
@@ -872,10 +872,10 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
            ++j) {
         int region = g_apSecondaryNationStateSlots[7 + minorSlot]->ownedRegionList->At(j);
         if (mapNodeStateFlags[region] == 0) {
-          char markValue = 1;
+          bool markValue = true;
           if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
                   region, this->nationSlot) != 0) {
-            markValue = 0;
+            markValue = false;
           }
           mapNodeStateFlags[region] = markValue;
         }
@@ -935,10 +935,11 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
                           ->relationStandingScores[this->nationSlot * kNationSlotCount + owner];
         int linkBonus;
         int nodeBuffer[12];
-        if (g_pGlobalMapState->HasDirectOrFallbackLinkedNodeType(rec, this->nationSlot, 1) != 0) {
+        if (g_pGlobalMapState->HasDirectOrFallbackLinkedNodeType(rec, this->nationSlot, true) !=
+            0) {
           linkBonus = 0;
         } else if (g_pGlobalMapState->CollectSecondDegreeLinksWithMinorNationFallback(
-                       rec, this->nationSlot, nodeBuffer, 1) != 0) {
+                       rec, this->nationSlot, nodeBuffer, true) != 0) {
           linkBonus = 0x14;
         } else if (g_pActiveMapOrderContext->FindMapActionContextContainingNodeByIndex(rec) != 0) {
           linkBonus = 0x28;
@@ -964,10 +965,10 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
         short* topRecord = static_cast<short*>(candidates->GetPtrListEntryByOneBasedIndex(1));
         int topRegion = topRecord[0];
         if (mapNodeStateFlags[topRegion] == 0) {
-          char markValue = 1;
+          bool markValue = true;
           if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
                   topRegion, this->nationSlot) != 0) {
-            markValue = 0;
+            markValue = false;
           }
           mapNodeStateFlags[topRegion] = markValue;
         }
@@ -975,10 +976,10 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
           short* secondRecord = static_cast<short*>(candidates->GetPtrListEntryByOneBasedIndex(2));
           int secondRegion = secondRecord[0];
           if (mapNodeStateFlags[secondRegion] == 0) {
-            char markValue = 1;
+            bool markValue = true;
             if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
                     secondRegion, this->nationSlot) != 0) {
-              markValue = 0;
+              markValue = false;
             }
             mapNodeStateFlags[secondRegion] = markValue;
           }
@@ -997,8 +998,8 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
 void TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
   // Declaration order fixes the frame slot layout (0x12..0x34); the split
   // assignment blocks mirror the original's two init waves around the city gate.
-  char hasActiveMission;
-  char queueSecondaryDefend;
+  bool hasActiveMission;
+  bool queueSecondaryDefend;
   float bestScore;
   int bestRegion;
   float bestDirectScore;
@@ -1012,10 +1013,10 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
   bestTier = -1;
   bestPortZone = 0;
   bestLinkRegion = -1;
-  hasActiveMission = 0;
+  hasActiveMission = false;
   bestDirectScore = 0.0f;
   directRegion = -1;
-  queueSecondaryDefend = 0;
+  queueSecondaryDefend = false;
   if (this->city == 0) {
     return;
   }
@@ -1038,13 +1039,13 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
     // beat bestScore, so the tier value is never consumed there.
     int tier;
     int nodeBuffer[12];
-    if (g_pGlobalMapState->HasDirectOrFallbackLinkedNodeType(region, nationSlot, 1) != 0) {
+    if (g_pGlobalMapState->HasDirectOrFallbackLinkedNodeType(region, nationSlot, true) != 0) {
       score = ComputeAdvisoryMapNodeCompositeScoreByMode(region, 0, -1);
       bestDirectScore = score;
       tier = 0;
       directRegion = region;
     } else if (g_pGlobalMapState->CollectSecondDegreeLinksWithMinorNationFallback(
-                   region, nationSlot, nodeBuffer, 1) != 0) {
+                   region, nationSlot, nodeBuffer, true) != 0) {
       linkRegion = nodeBuffer[0];
       score = ComputeAdvisoryMapNodeCompositeScoreByMode(region, 1, linkRegion);
       tier = 1;
@@ -1083,24 +1084,24 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
 
   int tier = bestTier;
   if (tier != -1) {
-    char acceptMission = 0;
+    bool acceptMission = false;
     if (g_afAdvisoryMissionTierThresholdByMinisterSkill_00653F18[defenseMinister->skillIndexC]
                                                                 [tier] < bestScore) {
-      acceptMission = 1;
+      acceptMission = true;
     } else if (g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(nationSlot) != 0) {
       CIterator missionIter(missionQueue);
       for (TMission* mission = static_cast<TMission*>(missionIter.Reset()); missionIter.More();
            mission = static_cast<TMission*>(missionIter.Advance())) {
         if ((mission->marker11 & 1) != 0) {
-          hasActiveMission = 1;
+          hasActiveMission = true;
           break;
         }
       }
-      if (hasActiveMission == 0) {
-        queueSecondaryDefend = 1;
+      if (!hasActiveMission) {
+        queueSecondaryDefend = true;
       }
     }
-    if (acceptMission != 0) {
+    if (acceptMission) {
       if (bestPortZone == 0) {
         if (tier == 2) {
           TZone* contextZone =
@@ -1119,22 +1120,22 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
         CreateMission(static_cast<eMissionType>(tier), -1, bestPortZone, -1);
       }
     }
-    if (queueSecondaryDefend != 0 && secondBestDirectRegion != -1) {
+    if (queueSecondaryDefend && secondBestDirectRegion != -1) {
       CreateMission(kMissionTypeAttackProvince, secondBestDirectRegion, 0, -1);
     }
   }
 
   // War fallback: when any eligible major is at war with us, queue defend missions on
   // non-queued contexts whose secondary neighbors include this nation.
-  char anyEligibleAtWar = 0;
+  bool anyEligibleAtWar = false;
   int n;
-  for (n = 0; n < 7 && anyEligibleAtWar == 0; ++n) {
+  for (n = 0; n < 7 && !anyEligibleAtWar; ++n) {
     if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(static_cast<short>(n), nationSlot) != 0 &&
         g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(n)) != 0) {
-      anyEligibleAtWar = 1;
+      anyEligibleAtWar = true;
     }
   }
-  if (anyEligibleAtWar != 0) {
+  if (anyEligibleAtWar) {
     for (zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
       short contextOrdinal = zone->GetContextOrdinalOrInvalid();
       if (portZoneStateFlags[contextOrdinal] != 2 &&
@@ -1164,13 +1165,13 @@ void TAutoGreatPower::QueueWarTransitionAndNotifyThirdPartyIfNeeded(int targetNa
 
 // FUNCTION: IMPERIALISM 0x004e9f10
 char TAutoGreatPower::HasActiveCandidateNationSlots(void) {
-  char anyActive = 0;
+  bool anyActive = false;
   int candidate;
   for (candidate = 0; candidate < 7; ++candidate) {
     if (g_apNationStates[candidate] == 0) {
       this->candidateNationFlags[candidate] = 0;
     } else if (this->candidateNationFlags[candidate] != 0) {
-      anyActive = 1;
+      anyActive = true;
     }
   }
   TMinor** minorCursor = g_apNationAuxRuntimeStateSlots;
@@ -1183,7 +1184,7 @@ char TAutoGreatPower::HasActiveCandidateNationSlots(void) {
               this->nationSlot, candidate, kDiplomacyRelationshipPeace);
         }
       } else {
-        anyActive = 1;
+        anyActive = true;
       }
     }
     ++minorCursor;
@@ -1338,7 +1339,7 @@ float TAutoGreatPower::ComputeAiIndustryActionCostFromSlot(short industrySlot) {
 
 // FUNCTION: IMPERIALISM 0x004ea700
 float TAutoGreatPower::ComputeAiCityActionCostFromSlotAndMode(short actionSlot,
-                                                              char skipContextBias) {
+                                                              bool skipContextBias) {
   AiCityActionCostProfile& profile = g_aiCityActionCostProfiles[actionSlot];
   short capabilityLevel = needCurrentByType[5];
   float cost = static_cast<float>(profile.baseCost);
@@ -1353,7 +1354,7 @@ float TAutoGreatPower::ComputeAiCityActionCostFromSlotAndMode(short actionSlot,
     cost += static_cast<float>(g_pTradeMgr->GetPrice(profile.secondaryMetricCode) *
                                profile.secondaryMetricMultiplier);
   }
-  if (skipContextBias == 0) {
+  if (!skipContextBias) {
     cost += GetCachedAiCityActionContextBias(profile.contextBiasSelector);
   }
   return cost;
@@ -1387,9 +1388,9 @@ float TAutoGreatPower::GetCachedAiCityActionContextBias(short selector) {
 
 // FUNCTION: IMPERIALISM 0x004ea990
 void TAutoGreatPower::KillMissions() {
-  char removedMission;
+  bool removedMission;
   do {
-    removedMission = 0;
+    removedMission = false;
     CIterator iter(missionQueue);
     TMission* mission = static_cast<TMission*>(iter.Reset());
     CPtrList* list;
@@ -1400,9 +1401,9 @@ void TAutoGreatPower::KillMissions() {
         list->RemoveAt(position);
       }
       mission->Free();
-      removedMission = 1;
+      removedMission = true;
     }
-  } while (removedMission != 0);
+  } while (removedMission);
 }
 
 // FUNCTION: IMPERIALISM 0x004eaa20
@@ -1547,7 +1548,7 @@ void TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
         unit->GetCategory() == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
       TMission* mission =
           TMission::Find(missionQueue, kMissionTypeDefendProvince, unit->tileIndex06, nullptr);
-      mission->AdoptUnitSlot80(unit, 1);
+      mission->AdoptUnitSlot80(unit, true);
     }
   }
 
@@ -1575,7 +1576,7 @@ void TAutoGreatPower::SeedTrackedEntryAssignmentsFromEligibleUnits() {
         unit->GetCategory() == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
       TMission* handler =
           TMission::Find(missionQueue, kMissionTypeDefendProvince, unit->tileIndex06, nullptr);
-      handler->AdoptUnitSlot80(unit, 1);
+      handler->AdoptUnitSlot80(unit, true);
     }
   }
 }
@@ -1704,7 +1705,7 @@ void TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools(int unused) {
         interiorMinister->PleaseBuildLandUnit(static_cast<short>(selectedSlot));
       }
       developmentBudget -=
-          ComputeAiCityActionCostFromSlotAndMode(static_cast<short>(selectedSlot), 0);
+          ComputeAiCityActionCostFromSlotAndMode(static_cast<short>(selectedSlot), false);
       for (int resourceIndex = 0; resourceIndex < 5; ++resourceIndex) {
         resourcePools[resourceIndex] -= TMilitaryUnit::GetTypeAttribute(
             static_cast<short>(selectedSlot), static_cast<short>(resourceIndex));
@@ -1777,10 +1778,10 @@ void TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unuse
       nextByClass[classMask] = nullptr;
     }
 
-    unsigned char eligible =
+    bool eligible =
         classMask == 0 || (classMask & availableClassMask) == classMask || mission->state08 == 0;
     if (eligible && (classMask & 1) != 0 && !mission->IsArmyMission()) {
-      eligible = 0;
+      eligible = false;
     }
     if (eligible && classMask != 0) {
       TMission* nextMission = nextByClass[classMask];
@@ -1789,7 +1790,7 @@ void TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unuse
             nextMission->importanceScore0c / nextMission->IndustrialCostOfNeeds();
         float missionRatio = mission->importanceScore0c / mission->IndustrialCostOfNeeds();
         if (missionRatio < nextMissionRatio * g_MissionEligibilityRatioMargin_006545f8) {
-          eligible = 0;
+          eligible = false;
         } else {
           availableClassMask &= ~classMask;
         }
@@ -1975,7 +1976,7 @@ void TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits(int unus
     if (bestUnit == nullptr) {
       return;
     }
-    bestArmy->AdoptUnitSlot80(bestUnit, 1);
+    bestArmy->AdoptUnitSlot80(bestUnit, true);
   }
 }
 
@@ -2015,7 +2016,7 @@ bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePoo
       }
     }
     float score = weightedCost / static_cast<TAutoGreatPower*>(g_apNationStates[nationSlot])
-                                     ->ComputeAiCityActionCostFromSlotAndMode(actionSlot, 0);
+                                     ->ComputeAiCityActionCostFromSlotAndMode(actionSlot, false);
     if (score > bestScore) {
       bestScore = score;
       *selectedSlot = actionSlot;
@@ -2048,7 +2049,7 @@ bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePoo
     int qualityMultiplier = (bestUnitByType[unitType]->experiencePercent38 / 100 + 10) / 10;
     weightedCost *= static_cast<float>(qualityMultiplier);
     float score = weightedCost / static_cast<TAutoGreatPower*>(g_apNationStates[nationSlot])
-                                     ->ComputeAiCityActionCostFromSlotAndMode(upgradeSlot, 1);
+                                     ->ComputeAiCityActionCostFromSlotAndMode(upgradeSlot, true);
     if (score > bestScore) {
       bestScore = score;
       *selectedSlot = upgradeSlot;

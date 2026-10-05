@@ -24,7 +24,7 @@ public:
   void IFocusAnimation(TView* ownerView, RECT* rect, short frameCount, short frameResourceBaseId,
                        int ticksPerFrame, int registryTag);
 
-  char enabledFlag; // 0x2c
+  bool enabledFlag; // 0x2c
 
   char padding2D[3];
 };

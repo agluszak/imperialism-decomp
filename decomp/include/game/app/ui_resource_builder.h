@@ -69,8 +69,7 @@ void __cdecl SetUiResourceContextFlagsAndMetrics(short nField9C, short nStyleTyp
 
 // Set the embedded dialog behavior's flag0C and gold color triplet on the current
 // context window.
-void __cdecl ApplyUiResourceColorTripletFromContext(unsigned char nFlag0C,
-                                                    unsigned char nTripletFlag, int colorA,
+void __cdecl ApplyUiResourceColorTripletFromContext(bool nFlag0C, bool nTripletFlag, int colorA,
                                                     int colorB);
 
 // Bind the value range (TNumberText::minimumValue/maximumValue) and the

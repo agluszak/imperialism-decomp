@@ -45,7 +45,8 @@ void TFlagOptionsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
         if (g_pSimMgr->multiplayerSessionRole == 1) {
           int saveResult = 0;
           if (g_pGameFlowState->fieldF4 != 0) {
-            saveResult = g_pGameFlowState->TrySaveGameAndMaybeShowFailureDialog(0xa1, nullptr, 0);
+            saveResult =
+                g_pGameFlowState->TrySaveGameAndMaybeShowFailureDialog(0xa1, nullptr, false);
           }
           g_pGameFlowState->DispatchTaggedGameStateEvent1F20(tag, saveResult, -3);
         } else if (tag == kControlTagQuit) {

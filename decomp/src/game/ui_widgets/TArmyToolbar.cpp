@@ -34,7 +34,7 @@ void TArmyToolbar::SetProvince(short provinceIndex) {
   int totalUnitCounts[10];
   bool hasUpgradeableUnit;
 
-  hasUpgradeableUnit = 0;
+  hasUpgradeableUnit = false;
   selectedProvinceIndex = provinceIndex;
   memset(totalUnitCounts, 0, sizeof(totalUnitCounts));
   if (provinceIndex != -1) {
@@ -57,7 +57,7 @@ void TArmyToolbar::SetProvince(short provinceIndex) {
         break;
       }
       if (unit->CanUpgrade()) {
-        hasUpgradeableUnit = 1;
+        hasUpgradeableUnit = true;
       }
     }
   }

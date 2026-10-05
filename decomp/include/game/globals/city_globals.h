@@ -7,6 +7,6 @@
 extern short g_aInitialCityRecruitmentOrderProfiles[9][7];
 
 extern "C" {
-extern char g_Sanitize_City_Counter_Value_006A24D4;
+extern bool g_Sanitize_City_Counter_Value_006A24D4;
 
 } // extern "C"

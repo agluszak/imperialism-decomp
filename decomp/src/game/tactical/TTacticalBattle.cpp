@@ -220,10 +220,10 @@ void TTacticalBattle::StartBattle() {
 
 // FUNCTION: IMPERIALISM 0x0059fcd0
 void TTacticalBattle::StartTacticalPlayersThatAreNotReady() {
-  if (players[0]->sideReadyFlag10 == 0) {
+  if (!players[0]->sideReadyFlag10) {
     players[0]->StartBattle();
   }
-  if (players[1]->sideReadyFlag10 == 0) {
+  if (!players[1]->sideReadyFlag10) {
     players[1]->StartBattle();
   }
 }
@@ -242,7 +242,7 @@ void TTacticalBattle::HandleTacticalCommandTag_retr() {
     toolbar->ForceRedraw();
   }
   TTacticalPlayer* incomingPlayer = players[currentSideC];
-  if (incomingPlayer->sideReadyFlag10 != 0) {
+  if (incomingPlayer->sideReadyFlag10) {
     FinalizeTacticalTurnStateAndQueueEvent232A();
     return;
   }
@@ -368,13 +368,13 @@ void TTacticalBattle::ComputeTacticalReachableTileCostsByUnitCategory(TTacticalU
           if (existingCost != -1 && existingCost <= newCost) {
             continue;
           }
-          unsigned char blockedByAdjacentEnemy = 0;
+          bool blockedByAdjacentEnemy = false;
           short prevDirection = static_cast<short>((direction > 0) ? direction - 1 : 5);
           int prevNeighbor = neighborTiles[prevDirection];
           if (prevNeighbor != -1) {
             TTacticalUnit* prevOccupant = tileGrid4[prevNeighbor].occupant4;
             if (prevOccupant != 0 && prevOccupant->side20 != unit->side20) {
-              blockedByAdjacentEnemy = 1;
+              blockedByAdjacentEnemy = true;
             }
           }
           // ORACLE: retail uses neighbor index 1 for directions 0..4 and 0 otherwise.
@@ -383,10 +383,10 @@ void TTacticalBattle::ComputeTacticalReachableTileCostsByUnitCategory(TTacticalU
           if (nextNeighbor != -1) {
             TTacticalUnit* nextOccupant = tileGrid4[nextNeighbor].occupant4;
             if (nextOccupant != 0 && nextOccupant->side20 != unit->side20) {
-              blockedByAdjacentEnemy = 1;
+              blockedByAdjacentEnemy = true;
             }
           }
-          if (blockedByAdjacentEnemy != 0) {
+          if (blockedByAdjacentEnemy) {
             continue;
           }
           if (neighborIndex % 0x1d == edgeColumn) {
@@ -655,7 +655,7 @@ short TTacticalBattle::ResolveTacticalHoverCursorResourceId(TacticalTileIndex ti
                                    0x3ff, 0x41d, 0x3fe, 0x3fd, 0x403, 0x41c};
   int hoverState = ComputeTacticalHoverCursorStateIndex(tileIndex);
   TTacticalPlayer* player = players[currentSideC];
-  if (player->notWatchedFlagE != 0) {
+  if (player->notWatchedFlagE) {
     return 0x402;
   }
 
@@ -705,7 +705,7 @@ void TTacticalBattle::HandleTacticalBattleCommandTag(int commandTag) {
     }
     if (g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x273d, 0x32, 1, 1)) {
       player = players[currentSideC];
-      player->fieldF = 1;
+      player->fieldF = true;
       player->ProceedAfterBattleIntroAccepted();
     }
     return;
@@ -732,9 +732,9 @@ void TTacticalBattle::FinishTacticalActionAndPostNextMoveCommand() {
 // FUNCTION: IMPERIALISM 0x005a0e20
 void TTacticalBattle::NextMove() {
   if (battleOutcome44 != kTacticalBattleInProgress) {
-    unsigned char sideWonFlag = battleOutcome44 == kTacticalBattleSide0Victory;
+    bool sideWonFlag = battleOutcome44 == kTacticalBattleSide0Victory;
     players[0]->ApplyChanges(sideWonFlag);
-    players[1]->ApplyChanges(sideWonFlag == 0);
+    players[1]->ApplyChanges(!sideWonFlag);
     EndBattle(sideWonFlag);
     return;
   }
@@ -782,7 +782,7 @@ void TTacticalBattle::AdvanceToNextTacticalUnitTurnStep() {
   }
 
   candidateUnit->AssertValid();
-  SetCurrentTacticalUnitSelection(candidateUnit, 0);
+  SetCurrentTacticalUnitSelection(candidateUnit, false);
   if (candidateUnit->state1c == 1) {
     ProcessTacticalUnitState1TurnStep(candidateUnit);
     return;
@@ -804,10 +804,10 @@ void TTacticalBattle::AdvanceToNextTacticalUnitTurnStep() {
 // side to match the unit, refreshes the action toolbar + old/new selection rects,
 // refills the unit's action points, and applies the selection state.
 // FUNCTION: IMPERIALISM 0x005a1010
-void TTacticalBattle::SetCurrentTacticalUnitSelection(TTacticalUnit* unit, char remoteFlag) {
-  if (remoteFlag == 0) {
-    unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
-    if (multiplayerActive != 0) {
+void TTacticalBattle::SetCurrentTacticalUnitSelection(TTacticalUnit* unit, bool remoteFlag) {
+  if (!remoteFlag) {
+    bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
+    if (multiplayerActive) {
       g_pGameFlowState->EmitTacticalCommandPacket(kControlTagSele, unit, 0, 0);
     }
   }
@@ -900,7 +900,7 @@ void TTacticalBattle::ProcessTacticalUnitState1TurnStep(TTacticalUnit* unit) {
 unsigned char TTacticalBattle::HasEnemyUnitOnTilesFlankingHexDirection(
     TacticalTileIndex tileIndex, TacticalHexDirection hexDirection, char side) {
   TacticalTileIndex neighborTiles[6];
-  unsigned char foundEnemy = 0;
+  bool foundEnemy = false;
   GetNeighborList(tileIndex, neighborTiles);
   int clockwiseDirection = (hexDirection == kTacticalHexDirectionNorthWest)
                                ? kTacticalHexDirectionNorthEast
@@ -912,15 +912,15 @@ unsigned char TTacticalBattle::HasEnemyUnitOnTilesFlankingHexDirection(
   if (clockwiseTile != -1) {
     TTacticalUnit* clockwiseOccupant = tileGrid4[clockwiseTile].occupant4;
     if (clockwiseOccupant != 0 && clockwiseOccupant->side20 != side) {
-      foundEnemy = 1;
+      foundEnemy = true;
     }
   }
-  if (foundEnemy == 0) {
+  if (!foundEnemy) {
     TacticalTileIndex counterTile = neighborTiles[counterDirection];
     if (counterTile != -1) {
       TTacticalUnit* counterOccupant = tileGrid4[counterTile].occupant4;
       if (counterOccupant != 0 && counterOccupant->side20 != side) {
-        foundEnemy = 1;
+        foundEnemy = true;
       }
     }
   }
@@ -959,7 +959,7 @@ void TTacticalBattle::MoveTacticalUnitTowardTile(TTacticalUnit* unit,
         break;
       }
       unit->AssertValid();
-      MoveTacticalUnitBetweenTiles(unit, pathCursor[0], pathCursor[-1], 0);
+      MoveTacticalUnitBetweenTiles(unit, pathCursor[0], pathCursor[-1], false);
       --pathCursor;
       --stepCount;
       stopped = ResolveTacticalReactionChecksForTile(*pathCursor);
@@ -1100,10 +1100,10 @@ int TTacticalBattle::BuildPathToTargetByDistanceField(TacticalTileIndex walkTile
 // FUNCTION: IMPERIALISM 0x005a1910
 void TTacticalBattle::MoveTacticalUnitBetweenTiles(TTacticalUnit* unit,
                                                    TacticalTileIndex fromTileIndex,
-                                                   TacticalTileIndex toTileIndex, char remoteFlag) {
-  if (remoteFlag == 0) {
-    unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
-    if (multiplayerActive != 0) {
+                                                   TacticalTileIndex toTileIndex, bool remoteFlag) {
+  if (!remoteFlag) {
+    bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
+    if (multiplayerActive) {
       g_pGameFlowState->EmitTacticalCommandPacket(kControlTagMove, unit, fromTileIndex,
                                                   toTileIndex);
     }
@@ -1139,7 +1139,7 @@ void TTacticalBattle::MoveTacticalUnitBetweenTiles(TTacticalUnit* unit,
 // early when the occupant's strength hits 0; returns whether any reaction fired.
 // FUNCTION: IMPERIALISM 0x005a1a20
 unsigned char TTacticalBattle::ResolveTacticalReactionChecksForTile(TacticalTileIndex tileIndex) {
-  unsigned char reactionFired = 0;
+  bool reactionFired = false;
   TTacticalUnit* occupant = tileGrid4[tileIndex].occupant4;
   TTacticalPlayer* reactingPlayer = (occupant->side20 == 0) ? players[1] : players[0];
   CIterator reactorIter(reactingPlayer->unitList4);
@@ -1159,7 +1159,7 @@ unsigned char TTacticalBattle::ResolveTacticalReactionChecksForTile(TacticalTile
         if (battleView8 != 0) {
           battleView8->InvalidateUnit(reactor);
         }
-        reactionFired = 1;
+        reactionFired = true;
       }
     }
     if (reactorIter.More()) {
@@ -1328,18 +1328,18 @@ void TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
 
   // Firing at an intact fort-wall tile (deployMark8 > 1 = wall state) with no occupant
   // attacks the wall itself.
-  unsigned char fortWallTargeted;
+  bool fortWallTargeted;
   if (tileGrid4[targetTileIndex].deployMark8 > 1 &&
       fortStrengthPoints54[targetTileIndex / 29 / 2] > 0 && defenderUnit == 0) {
-    fortWallTargeted = 1;
+    fortWallTargeted = true;
   } else {
-    fortWallTargeted = 0;
+    fortWallTargeted = false;
   }
 
   int fortWallTileOnLine =
       FindFortWallTileCrossedByFiringLine(targetTileIndex, attackerUnit->tileIndex8);
 
-  unsigned char meleeAdjacent = 0;
+  bool meleeAdjacent = false;
   {
     TacticalTileIndex neighborTiles[6];
     GetNeighborList(attackerUnit->tileIndex8, neighborTiles);
@@ -1347,14 +1347,14 @@ void TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
     TacticalTileIndex* neighborCursor = neighborTiles;
     for (; direction < 6; ++direction, ++neighborCursor) {
       if (*neighborCursor == targetTileIndex) {
-        meleeAdjacent = 1;
+        meleeAdjacent = true;
         break;
       }
     }
   }
   if (fortWallTileOnLine != 0 && tileGrid4[fortWallTileOnLine].deployMark8 > 1 &&
       fortStrengthPoints54[fortWallTileOnLine / 29 / 2] > 0) {
-    meleeAdjacent = 0; // an intact wall section between the tiles blocks melee contact
+    meleeAdjacent = false; // an intact wall section between the tiles blocks melee contact
   }
 
   // Attack power. Original FP order: (1.0 - quality * -0.1) * basePower[type]
@@ -1365,7 +1365,7 @@ void TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
     double strengthFactor = 1.0 - attackerUnit->qualityLevel10 * -0.1; // = 1 + 0.1*quality
     strengthFactor =
         strengthFactor * g_afTacticalBaseAttackPowerByUnitType[attackerUnit->unitTypeC];
-    if (meleeAdjacent != 0) {
+    if (meleeAdjacent) {
       strengthFactor = strengthFactor *
                        g_afTacticalMeleeMultiplierByCategory
                            [g_awTacticalUnitCategoryCodeBySlot[attackerUnit->unitTypeC]];
@@ -1377,7 +1377,7 @@ void TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
                     [attackerCategory * 5 + tileGrid4[attackerUnit->tileIndex8].terrainType0]);
   }
 
-  if (fortWallTargeted != 0) {
+  if (fortWallTargeted) {
     // Wall attack: erode the wall's strength pool and play the hit effect.
     ConsumeFortStrengthPointsAndInvalidateIfDepleted(fortWallTileOnLine,
                                                      (int)(0.001f * attackPower));
@@ -1455,22 +1455,22 @@ void TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
   // Melee overrun of artillery: adjacent attack, defender category 6/7, attacker
   // category < 4, and the morale damage breaks the defender's morale -> capture code.
   // (morale34 is on the army slice; this battle-side resolution path is the army branch.)
-  unsigned char captureEffectCode;
+  bool captureEffectCode;
   short overrunDefenderCategory = g_awTacticalUnitCategoryCodeBySlot[defenderUnit->unitTypeC];
-  if (meleeAdjacent != 0 && (overrunDefenderCategory == 6 || overrunDefenderCategory == 7) &&
+  if (meleeAdjacent && (overrunDefenderCategory == 6 || overrunDefenderCategory == 7) &&
       g_awTacticalUnitCategoryCodeBySlot[attackerUnit->unitTypeC] < 4 &&
       static_cast<TArmyTacUnit*>(defenderUnit)->morale34 < moraleDamage) {
-    captureEffectCode = 1;
+    captureEffectCode = true;
   } else {
-    captureEffectCode = 0;
+    captureEffectCode = false;
   }
 
   attackerUnit->AssertValid();
   ApplyTacticalActionEffectsAndMaybeRemoveUnit(attackerUnit, defenderUnit, targetTileIndex,
                                                (int)damage, (int)moraleDamage, captureEffectCode,
-                                               0);
+                                               false);
   TTacticalPlayer* postActionPlayer = (defenderUnit->side20 == 0) ? players[0] : players[1];
-  postActionPlayer->field20 = 0;
+  postActionPlayer->field20 = false;
 }
 
 // Resolves a 'fire' action: multiplayer echo, virtual damage application on the target,
@@ -1480,10 +1480,10 @@ void TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
 // FUNCTION: IMPERIALISM 0x005a24a0
 void TTacticalBattle::ApplyTacticalActionEffectsAndMaybeRemoveUnit(
     TTacticalUnit* attackerUnit, TTacticalUnit* targetUnit, TacticalTileIndex targetTileIndex,
-    int damageA, int damageB, char effectCode2C, char remoteFlag) {
-  if (remoteFlag == 0) {
-    unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
-    if (multiplayerActive != 0) {
+    int damageA, int damageB, char effectCode2C, bool remoteFlag) {
+  if (!remoteFlag) {
+    bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
+    if (multiplayerActive) {
       g_pGameFlowState->EmitTacticalFireCommandPacket(kControlTagFire, attackerUnit, targetUnit,
                                                       damageA, damageB, effectCode2C);
     }
@@ -1592,18 +1592,18 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
     return; // headless battle: outcome recorded, no summary dialog
   }
 
-  unsigned char localIsSide0Player = players[0]->IsTacticalControllerOwnedByActiveNation();
-  unsigned char localSideWon;
+  bool localIsSide0Player = players[0]->IsTacticalControllerOwnedByActiveNation();
+  bool localSideWon;
   if ((battleOutcome44 == kTacticalBattleSide0Victory &&
-       players[0]->IsTacticalControllerOwnedByActiveNation() != 0) ||
+       players[0]->IsTacticalControllerOwnedByActiveNation()) ||
       (battleOutcome44 == kTacticalBattleSide1Victory &&
-       players[1]->IsTacticalControllerOwnedByActiveNation() != 0)) {
-    localSideWon = 1;
+       players[1]->IsTacticalControllerOwnedByActiveNation())) {
+    localSideWon = true;
   } else {
-    localSideWon = 0;
+    localSideWon = false;
   }
 
-  g_pSfxPlaybackSystem->RequestAudioPresetChangeWithDeferredApply(localSideWon != 0 ? 9 : 10, 0);
+  g_pSfxPlaybackSystem->RequestAudioPresetChangeWithDeferredApply(localSideWon ? 9 : 10, false);
 
   TextStyle styleDescriptor;
   styleDescriptor.textColor = 0;
@@ -1613,17 +1613,17 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
   TPicture* headerPicture = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagDialog));
   headerPicture->AssertValid();
   headerPicture->SetPictureResourceIdAndRefresh(
-      g_pSimMgr->GetActiveNationId() + (localSideWon != 0 ? 0xeed : 0xefb), 0);
+      g_pSimMgr->GetActiveNationId() + (localSideWon ? 0xeed : 0xefb), 0);
 
   TStaticText* titleControl =
       static_cast<TStaticText*>(headerPicture->ResolveControlByTag(kControlTagTitl));
   titleControl->AssertValid();
   {
     int titleMessageIndex;
-    if (localIsSide0Player != 0) {
-      titleMessageIndex = (localSideWon != 0) ? 3 : 1;
+    if (localIsSide0Player) {
+      titleMessageIndex = (localSideWon) ? 3 : 1;
     } else {
-      titleMessageIndex = (localSideWon != 0) ? 6 : 4;
+      titleMessageIndex = (localSideWon) ? 6 : 4;
     }
     CString titleText;
     g_pSimMgr->GetString(0x273d, titleMessageIndex, &titleText);
@@ -1873,8 +1873,8 @@ void TTacticalBattle::ExecuteTacticalMineActionAndQueuePacket(TTacticalUnit* uni
                                                               TacticalTileIndex tileIndex) {
   int unitType = unit->unitTypeC;
   int amount = static_cast<int>(rand()) % 400 + unitType * 250 - 5600;
-  unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
-  if (multiplayerActive != 0) {
+  bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
+  if (multiplayerActive) {
     g_pGameFlowState->EmitTacticalCommandPacket(kControlTagMine, 0, tileIndex, amount);
   }
   ConsumeFortStrengthPointsAndInvalidateIfDepleted(tileIndex, amount);
@@ -1889,10 +1889,10 @@ void TTacticalBattle::ExecuteTacticalMineActionAndQueuePacket(TTacticalUnit* uni
 // the tile, then mining sfx + tile effect when a view is attached.
 // FUNCTION: IMPERIALISM 0x005a35a0
 void TTacticalBattle::HandleTacticalCommandTag_mine(TacticalTileIndex tileIndex, int amount,
-                                                    char remoteFlag) {
-  if (remoteFlag == 0) {
-    unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
-    if (multiplayerActive != 0) {
+                                                    bool remoteFlag) {
+  if (!remoteFlag) {
+    bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
+    if (multiplayerActive) {
       g_pGameFlowState->EmitTacticalCommandPacket(kControlTagMine, 0, tileIndex, amount);
     }
   }
@@ -1912,7 +1912,7 @@ void TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints(
   unit->AssertValid();
   // Captured as a word before the dig/move mutate the unit.
   short actionPointsBefore = static_cast<short>(unit->actionPoints28);
-  HandleTacticalCommandTag_digg(unit, tileIndex, 0);
+  HandleTacticalCommandTag_digg(unit, tileIndex, false);
   MoveTacticalUnitTowardTile(unit, tileIndex);
   unit->actionPoints28 = actionPointsBefore - g_awUnitTypeBaseActionPointTable[unit->unitTypeC] / 2;
   ComputeTacticalReachableTileCostsByUnitCategory(unit);
@@ -1928,11 +1928,11 @@ void TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints(
 // FUNCTION: IMPERIALISM 0x005a36d0
 void TTacticalBattle::HandleTacticalCommandTag_digg(TTacticalUnit* unit,
                                                     TacticalTileIndex targetTileIndex,
-                                                    char remoteFlag) {
+                                                    bool remoteFlag) {
   TacticalTileIndex neighborTiles[6];
-  if (remoteFlag == 0) {
-    unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
-    if (multiplayerActive != 0) {
+  if (!remoteFlag) {
+    bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
+    if (multiplayerActive) {
       g_pGameFlowState->EmitTacticalCommandPacket(kControlTagDigg, unit, targetTileIndex, 0);
     }
   }
@@ -1985,7 +1985,7 @@ void TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(TTactical
       newState = 0;
     }
   }
-  HandleTacticalCommandTag_raly(rallyTarget, newMorale, newState, 0);
+  HandleTacticalCommandTag_raly(rallyTarget, newMorale, newState, false);
   FinishTacticalActionAndPostNextMoveCommand();
 }
 
@@ -1994,10 +1994,10 @@ void TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(TTactical
 // the rally sfx.
 // FUNCTION: IMPERIALISM 0x005a38e0
 void TTacticalBattle::HandleTacticalCommandTag_raly(TArmyTacUnit* unit, int newMorale, int newState,
-                                                    char remoteFlag) {
-  if (remoteFlag == 0) {
-    unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
-    if (multiplayerActive != 0) {
+                                                    bool remoteFlag) {
+  if (!remoteFlag) {
+    bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
+    if (multiplayerActive) {
       g_pGameFlowState->EmitTacticalCommandPacket(kControlTagRaly, unit, newMorale, newState);
     }
   }
@@ -2298,21 +2298,21 @@ int TTacticalBattle::CountFreeDeploymentZoneTilesForCurrentSide() {
   if (tileCount > 0) {
     for (TacticalTileIndex tileIndex = 0; tileIndex < tileCount; ++tileIndex) {
       int column = tileIndex % 29;
-      unsigned char tileFree = 0;
+      bool tileFree = false;
       if (tileIndex >= 29) {
         TacticalTileRecord* record = &tileGrid4[tileIndex];
         if (record->terrainType0 != 4 && record->occupant4 == 0) {
           if (currentSideC == 0) {
             if (column >= 3 && column <= 5) {
-              tileFree = 1;
+              tileFree = true;
             }
           } else if (column <= battlefieldColumnCount34 - 3 &&
                      column >= battlefieldColumnCount34 - 5) {
-            tileFree = 1;
+            tileFree = true;
           }
         }
       }
-      if (tileFree != 0) {
+      if (tileFree) {
         ++freeTileCount;
       }
     }
@@ -2345,11 +2345,11 @@ unsigned char TTacticalBattle::IsTacticalSideCategoryCoverageIncompleteOrFlagOff
 // and invalidates the six neighbor tiles, then refreshes the unit rect.
 // FUNCTION: IMPERIALISM 0x005a4370
 void TTacticalBattle::HandleTacticalCommandTag_depl(TArmyTacUnit* unit, TacticalTileIndex tileIndex,
-                                                    char remoteFlag) {
+                                                    bool remoteFlag) {
   TacticalTileIndex neighborTiles[6];
-  if (remoteFlag == 0) {
-    unsigned char multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
-    if (multiplayerActive != 0) {
+  if (!remoteFlag) {
+    bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
+    if (multiplayerActive) {
       g_pGameFlowState->EmitTacticalCommandPacket(kControlTagDepl, unit, tileIndex, 0);
     }
   }
@@ -2407,9 +2407,9 @@ void TTacticalBattle::BuildTacticalDistanceFieldForSide(char ourSideFlag) {
     }
   }
   int distance = 0;
-  unsigned char anyTileExpanded;
+  bool anyTileExpanded;
   do {
-    anyTileExpanded = 0;
+    anyTileExpanded = false;
     int tile;
     for (tile = 0; tile < tacticalTileCount3c; ++tile) {
       if (tileIntArray30[tile] != distance) {
@@ -2451,13 +2451,13 @@ void TTacticalBattle::BuildTacticalDistanceFieldForSide(char ourSideFlag) {
           }
         }
         if (record->terrainType0 != 4) {
-          anyTileExpanded = 1;
+          anyTileExpanded = true;
           *distanceCell = distance + 1;
         }
       }
     }
     ++distance;
-  } while (anyTileExpanded != 0);
+  } while (anyTileExpanded);
 }
 
 // Whether the tile sits on a fort-wall gun-slot: grid rows 5/7/9 at the wall column

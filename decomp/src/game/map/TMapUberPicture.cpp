@@ -87,8 +87,8 @@ void TMapUberPicture::DoPostCreate(int arg) {
   g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(nullptr);
   g_pActiveMapOrderContext->RefreshMapActionContextNationOverlaysAndOrderRanks();
 
-  unsigned char multiplayerSessionActive = g_pSimMgr->multiplayerSessionRole != 0;
-  if (multiplayerSessionActive != 0) {
+  bool multiplayerSessionActive = g_pSimMgr->multiplayerSessionRole != 0;
+  if (multiplayerSessionActive) {
     TView* sendControl = ResolveControlByTag(kControlTagSend); // 'send'
     sendControl->AssertValid();
     sendControl->ViewEnable(1, 0);
@@ -127,7 +127,7 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
   short previousMode = this->activeUnitCategoryIndex96;
   if (previousMode != nMode) {
     if (previousMode == 0) {
-      g_pSelectedCivilianOrderState->SetActiveCivilianSelection(nullptr, 0);
+      g_pSelectedCivilianOrderState->SetActiveCivilianSelection(nullptr, false);
     } else if (previousMode == 1) {
       g_pMapContextActionManager->SetActiveProvinceSelection(-1);
     }
@@ -296,7 +296,7 @@ void TMapUberPicture::DoKeyEvent(TToolboxEvent* event) {
 
 // FUNCTION: IMPERIALISM 0x005977a0
 void TMapUberPicture::Scroll(MapScrollEdgeMaskStorage edgeMask) {
-  if (invalidationFlag94 != 0) {
+  if (invalidationFlag94) {
     subview2A8->UpdateMapInteractionPreviewParityAndRenderTransientSprites(edgeMask);
   } else {
     goodGoldTagControlA4->ApplyDirectionalNudgeAndRefreshDisplay(
@@ -323,7 +323,7 @@ void TMapUberPicture::RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry) {
   }
 
   TZone* context = pMapOrderEntry->location;
-  context->ExpandTaskForceTraversalDepthAndMarkDeferredNodes(pMapOrderEntry->GetWorstSpeed(), 1);
+  context->ExpandTaskForceTraversalDepthAndMarkDeferredNodes(pMapOrderEntry->GetWorstSpeed(), true);
   CenterOn(static_cast<short>(context->tileOrTerrainId0c));
 
   for (int i = 0; i < 4; ++i) {
@@ -378,7 +378,7 @@ bool TMapUberPicture::HasActiveMapInteractionSelection() {
 void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
   unsigned char modeCursor = static_cast<unsigned char>(activeUnitCategoryIndex96);
   unsigned char visitedModes = 0;
-  char selectionResolved = 0;
+  bool selectionResolved = false;
   unsigned char previousMode = modeCursor;
 
   short activeNation = g_pSimMgr->GetActiveNationId();
@@ -386,7 +386,7 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
     visitedModes = 7;
   }
 
-  while (visitedModes != 7 && selectionResolved == 0) {
+  while (visitedModes != 7 && !selectionResolved) {
     switch (modeCursor) {
     case 0: {
       if (previousMode != 0) {
@@ -398,12 +398,12 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
       TCivUnit* civilian = g_pSelectedCivilianOrderState->SelectFirstAvailableCivilianForNation(
           g_pSimMgr->GetActiveNationId());
       if (civilian != nullptr) {
-        selectionResolved = 1;
+        selectionResolved = true;
         if (activeUnitCategoryIndex96 != 0) {
           EnterMapInteractionOverlayMode(nullptr);
           SetMapInteractionMode(0);
         }
-        g_pSelectedCivilianOrderState->SetActiveCivilianSelection(civilian, 1);
+        g_pSelectedCivilianOrderState->SetActiveCivilianSelection(civilian, true);
         CenterOn(civilian->tileIndex06);
         ForceRedraw();
       } else {
@@ -431,7 +431,7 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
         }
         g_pMapContextActionManager->SetActiveProvinceSelection(province);
         CenterOn(g_pGlobalMapState->cityScoreTable[province].cityTileIndex04);
-        selectionResolved = 1;
+        selectionResolved = true;
       } else {
         modeCursor = 2;
         previousMode = 1;
@@ -443,8 +443,8 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
     }
 
     case 2:
-      if (TrySelectNextValidMapOrderEntry(0)) {
-        selectionResolved = 1;
+      if (TrySelectNextValidMapOrderEntry(false)) {
+        selectionResolved = true;
       } else {
         modeCursor = 0;
         orderEntryContext98 = nullptr;
@@ -461,11 +461,11 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
 
   // A completed traversal wraps the navy chain once: the failed navy scan cleared the
   // current cursor, so this second scan starts at g_pMapActionContextListHead.
-  if (visitedModes == 7 && selectionResolved == 0) {
-    selectionResolved = TrySelectNextValidMapOrderEntry(0) ? 1 : 0;
+  if (visitedModes == 7 && !selectionResolved) {
+    selectionResolved = TrySelectNextValidMapOrderEntry(false) ? 1 : 0;
   }
 
-  if (selectionResolved != 0) {
+  if (selectionResolved) {
     return;
   }
 
@@ -605,7 +605,7 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
 
   if (result == kControlTagCanc) { // 'canc'
     TZone* previousContext = taskForce->location;
-    taskForce->CancelOrders(0);
+    taskForce->CancelOrders(false);
     SetMapInteractionMode(2);
     goodGoldTagControlA4->InvalidateZone(orderEntryContext98);
     orderEntryContext98 = previousContext;
@@ -621,14 +621,14 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
 
 // FUNCTION: IMPERIALISM 0x00598840
 void TMapUberPicture::InvalidateMapRegionForEntryIfUiPassive(TZone* zone) {
-  if (invalidationFlag94 == 0) {
+  if (!invalidationFlag94) {
     goodGoldTagControlA4->InvalidateZone(zone);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00598870
 void TMapUberPicture::InvalidateTile(short tileIndex) {
-  if (invalidationFlag94 != 0) {
+  if (invalidationFlag94) {
     subview2A8->InvalidateTile(tileIndex);
   } else {
     goodGoldTagControlA4->InvalidateTile(tileIndex);
@@ -638,7 +638,7 @@ void TMapUberPicture::InvalidateTile(short tileIndex) {
 // FUNCTION: IMPERIALISM 0x005988c0
 void TMapUberPicture::RedrawTile(short tileIndex) {
   this->subviewAc->RefreshMapTile(tileIndex);
-  if (this->invalidationFlag94 == 0) {
+  if (!this->invalidationFlag94) {
     this->subview2A8->ReleaseTileMarkerForTile(tileIndex);
   }
 }
@@ -651,7 +651,7 @@ void TMapUberPicture::PrepareAndRenderMapOverlayMode(unsigned char overlayMode) 
 
 // FUNCTION: IMPERIALISM 0x00598950
 void TMapUberPicture::InvalidateMap() {
-  if (invalidationFlag94 != 0) {
+  if (invalidationFlag94) {
     subview2A8->RefreshControl();
   } else {
     goodGoldTagControlA4->RefreshControl();
@@ -773,7 +773,7 @@ void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* po
   ownerControl->AssertValid();
   int ownerNation = ownerControl->UpdateControlCachedIntFromWindowText();
 
-  unsigned char createdOrders = 0;
+  bool createdOrders = false;
   for (index = 0; index < 14; ++index) {
     TNumberText* countControl =
         static_cast<TNumberText*>(dialog->ResolveControlByTag(kControlTagNuma + index)); // 'numa'
@@ -785,7 +785,7 @@ void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* po
                                                          ownerNation, 0);
           --count;
         }
-        createdOrders = 1;
+        createdOrders = true;
       }
     }
   }
@@ -793,16 +793,16 @@ void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* po
   dialog->Close();
   dialog->Free();
 
-  if (createdOrders != 0) {
+  if (createdOrders) {
     g_pActiveMapOrderContext->RefreshMapActionContextNationOverlaysAndOrderRanks();
   }
 
   SetMapInteractionMode(2);
-  if (invalidationFlag94 == 0) {
+  if (!invalidationFlag94) {
     goodGoldTagControlA4->InvalidateZone(orderEntryContext98);
   }
   orderEntryContext98 = portZone;
-  if (invalidationFlag94 == 0) {
+  if (!invalidationFlag94) {
     goodGoldTagControlA4->InvalidateZone(portZone);
   }
 
@@ -931,7 +931,7 @@ void TMapUberPicture::SelectNextValidMapOrderEntryFromCursor(char includeCurrent
   }
 
   while (candidate != nullptr) {
-    if (candidate->CanDisplayMapOrderEntryInCurrentContext(-1, 0)) {
+    if (candidate->CanDisplayMapOrderEntryInCurrentContext(-1, false)) {
       SetMapInteractionMode(2);
       InvalidateMapRegionForEntryIfUiPassive(orderEntryContext98);
       orderEntryContext98 = candidate;
@@ -951,11 +951,11 @@ void TMapUberPicture::SelectNextValidMapOrderEntryFromCursor(char includeCurrent
 }
 
 // FUNCTION: IMPERIALISM 0x005998a0
-bool TMapUberPicture::TrySelectNextValidMapOrderEntry(char includeCurrent) {
+bool TMapUberPicture::TrySelectNextValidMapOrderEntry(bool includeCurrent) {
   g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(nullptr);
 
   TZone* candidate = orderEntryContext98;
-  if (candidate != nullptr && includeCurrent == 0) {
+  if (candidate != nullptr && !includeCurrent) {
     candidate = candidate->prev18;
   }
   if (candidate == nullptr) {
@@ -963,7 +963,7 @@ bool TMapUberPicture::TrySelectNextValidMapOrderEntry(char includeCurrent) {
   }
 
   while (candidate != nullptr) {
-    if (candidate->CanDisplayMapOrderEntryInCurrentContext(-1, 0)) {
+    if (candidate->CanDisplayMapOrderEntryInCurrentContext(-1, false)) {
       SetMapInteractionMode(2);
       InvalidateMapRegionForEntryIfUiPassive(orderEntryContext98);
       orderEntryContext98 = candidate;
@@ -986,7 +986,7 @@ bool TMapUberPicture::TrySelectNextValidMapOrderEntry(char includeCurrent) {
 
 // FUNCTION: IMPERIALISM 0x005999c0
 void TMapUberPicture::GrandCycle() {
-  if (invalidationFlag94 != 0) {
+  if (invalidationFlag94) {
     SetMapInteractionMode(1);
     return;
   }
@@ -1008,7 +1008,7 @@ void TMapUberPicture::UpdateRoster() {
 
 // FUNCTION: IMPERIALISM 0x00599a50
 void TMapUberPicture::EnterMapInteractionOverlayMode(TView* controlOverride) {
-  if (this->invalidationFlag94 != 0) {
+  if (this->invalidationFlag94) {
     return;
   }
   TView* zoomControl =
@@ -1017,7 +1017,7 @@ void TMapUberPicture::EnterMapInteractionOverlayMode(TView* controlOverride) {
   if (zoomControl != nullptr) {
     zoomControl->controlTag = kControlTagZmOt; // "ZmOt" ("Zoom Out")
   }
-  this->invalidationFlag94 = 1;
+  this->invalidationFlag94 = true;
 
   subview2A8->CenterOn(goodGoldTagControlA4->ComputeWrappedTileIndexFromObjectOffset7C7E());
 
@@ -1038,7 +1038,7 @@ void TMapUberPicture::EnterMapInteractionOverlayMode(TView* controlOverride) {
 
 // FUNCTION: IMPERIALISM 0x00599b90
 void TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews(TView* controlOverride) {
-  if (invalidationFlag94 != 0) {
+  if (invalidationFlag94) {
     g_pUiAnimator->FreeUiTransientRegistryPayloads();
     TView* zoomControl =
         (controlOverride != nullptr) ? controlOverride : ResolveControlByTag(kControlTagZmOt);
@@ -1046,7 +1046,7 @@ void TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews(TView* controlOve
     if (zoomControl != nullptr) {
       zoomControl->controlTag = kControlTagZmIn;
     }
-    invalidationFlag94 = 0;
+    invalidationFlag94 = false;
     goodGoldTagControlA4->CenterOn(subview2A8->GetCenterTile());
     subview2A8->Locate(g_MapUberModeLayoutScratch_006a45e8, 0);
     goodGoldTagControlA4->Locate(g_MapUberModeSecondaryLayoutScratch_006a45b8, 1);
@@ -1094,7 +1094,7 @@ void TMapUberPicture::DisplayMiniMap() {
   UnionRgn(this->ownClipRegion90, region, this->ownClipRegion90);
   DisposeRgn(region);
 
-  if (this->invalidationFlag94 == 0) {
+  if (!this->invalidationFlag94) {
     this->miniMapViewC0->markerBoxWidth98 = 0x20;
     this->miniMapViewC0->markerBoxHeight9c = 0x1c;
     this->miniMapViewC0->markerBoxX90 =
@@ -1104,7 +1104,7 @@ void TMapUberPicture::DisplayMiniMap() {
     this->miniMapViewC0->RefreshControl();
   }
 
-  this->SetTradeToolSubcontrolEnabledStateByFlag(0);
+  this->SetTradeToolSubcontrolEnabledStateByFlag(false);
 }
 
 // FUNCTION: IMPERIALISM 0x00599fa0

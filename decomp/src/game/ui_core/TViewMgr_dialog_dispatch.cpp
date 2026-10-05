@@ -517,7 +517,7 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
 // FUNCTION: IMPERIALISM 0x005de010
 int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
                                    const char* firstChoice, const char* secondChoice,
-                                   int initialChoice, unsigned char showCancel) const {
+                                   int initialChoice, bool showCancel) const {
   TWindow* dialog = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventPlanetSeedDialog));
   if (dialog == 0) {
@@ -591,7 +591,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
         initialChoice == 0 ? kControlTagOne1 : kControlTagTwo2, false);
   }
 
-  if (showCancel != 0) {
+  if (showCancel) {
     TControl* cancel = static_cast<TControl*>(dialog->ResolveControlByTag(kControlTagCanc));
     cancel->AssertValid();
     cancel->Show(1, 0);
@@ -692,12 +692,12 @@ void TViewMgr::CreateModalMessageCommandAndQueue(CString* message, int payload) 
 char TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag) {
   CString message;
   int sessionRole = g_pSimMgr->multiplayerSessionRole;
-  unsigned char isClientSession = sessionRole == 2;
-  if (isClientSession != 0) {
+  bool isClientSession = sessionRole == 2;
+  if (isClientSession) {
     g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x31);
   } else {
-    unsigned char hosting = sessionRole == 1;
-    if (hosting != 0) {
+    bool hosting = sessionRole == 1;
+    if (hosting) {
       if (actionTag == kControlTagCgam) { // 'cgam'
         g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x37);
       } else {
@@ -715,8 +715,8 @@ char TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag) {
   }
   char accepted = g_pViewMgr->ModalMessage(message, g_ptUiPromptModalMessage, 0, 1);
   if (accepted != 0) {
-    unsigned char isClientSession = g_pSimMgr->multiplayerSessionRole == 2;
-    if (isClientSession != 0) {
+    bool isClientSession = g_pSimMgr->multiplayerSessionRole == 2;
+    if (isClientSession) {
       g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagAbdi,
                                                          g_pSimMgr->GetActiveNationId(), -2);
     }

@@ -127,7 +127,7 @@ void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceH
         g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventLoadSave));
       }
     } else if (actionTag == kControlTagJoin) {
-      g_bMultiplayerScenarioSetupActive = 0;
+      g_bMultiplayerScenarioSetupActive = false;
       g_pSimMgr->multiplayerSessionRole = 2;
       g_pGameFlowState->ApplyJoinGameSelectionAndPostTurnEvent5E4(0);
     } else if (actionTag == kControlTagRand) {

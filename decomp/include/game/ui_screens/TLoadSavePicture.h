@@ -23,7 +23,7 @@ public:
 
   // 0 = save picture, nonzero = load picture (the builder writes it, the prompt flow
   // 0x56d2a0 branches on it).
-  unsigned char loadModeFlag90; // +0x90
+  bool loadModeFlag90; // +0x90
   unsigned char pad91;
   short selectedSlot92; // +0x92 — currently selected save slot (-1 = none)
   // +0x94..+0x9e: a second TextStyle (exactly 10 bytes, matching

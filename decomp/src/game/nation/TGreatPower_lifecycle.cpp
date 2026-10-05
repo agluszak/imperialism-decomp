@@ -398,8 +398,8 @@ void TGreatPower::ReadFrom(TStream* stream) {
 
   if (g_nSaveFormatVersion < 0x1D) {
     if (this->encodedNationSlot == -1) {
-      char remote = this->IsRemote();
-      if (remote == 0) {
+      bool remote = this->IsRemote();
+      if (!remote) {
         this->foreignMinister->ReadFrom(stream);
         this->interiorMinister->ReadFrom(stream);
         this->defenseMinister->ReadFrom(stream);
@@ -711,7 +711,7 @@ void TGreatPower::NoOpNationPendingActionHook(void) {}
 // FUNCTION: IMPERIALISM 0x004da5e0
 void TGreatPower::DispatchPendingStatusPrompts(void) {
   signed char* flags = this->pendingActionStatus.byAction;
-  char flag5Handled = (flags[5]) >= 0x33;
+  bool flag5Handled = (flags[5]) >= 0x33;
   if (!flag5Handled &&
       g_pTechMgr->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] == 2) {
     g_pViewMgr->QueueTurnStatusPromptSlot3C(5, this->field8d6[5]);
@@ -774,7 +774,7 @@ void TGreatPower::MarkStatusFlag5HandledIfCapabilityActive(void) {
 // FUNCTION: IMPERIALISM 0x004da8a0
 void TGreatPower::MarkAllPendingStatusFlagsHandled(void) {
   signed char* flags = this->pendingActionStatus.byAction;
-  char flag5Handled = (flags[5]) >= 0x33;
+  bool flag5Handled = (flags[5]) >= 0x33;
   if (!flag5Handled &&
       g_pTechMgr->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] == 2) {
     flags[5] = 0x33;
@@ -904,10 +904,10 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
 
     if (needsCivOrder) {
       TCivUnit* civOrder = new TCivUnit();
-      civOrder->ICivUnit(
-          kCivilianUnitDeveloper,
-          g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeTileIndex, 0),
-          nationSlot);
+      civOrder->ICivUnit(kCivilianUnitDeveloper,
+                         g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
+                             this->homeTileIndex, false),
+                         nationSlot);
       this->SetNationPendingActionStateAndPayload(2, -1);
     }
   }
@@ -922,7 +922,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
 
 // FUNCTION: IMPERIALISM 0x004dae70
 char TGreatPower::HasDeveloper(void) {
-  char found = 0;
+  bool found = false;
   CIterator orderIter(this->trackedObjectList);
   TUnit* order = static_cast<TUnit*>(orderIter.Reset());
   if (orderIter.More()) {
@@ -932,7 +932,7 @@ char TGreatPower::HasDeveloper(void) {
         return 0;
       }
     }
-    found = 1;
+    found = true;
   }
   return found;
 }
@@ -947,7 +947,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
   int nationPriorityOrder[] = {0x0F, 0x0E, 0x0D, 0x10, 0x0C, 0x08, 0x0A, 0x09, 0x0B,
                                0x06, 0x03, 0x04, 0x05, 0x00, 0x01, 0x02, 0x07, -1};
 
-  if (this->IsRemote() != 0) {
+  if (this->IsRemote()) {
     return;
   }
 

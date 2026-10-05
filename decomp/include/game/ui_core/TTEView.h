@@ -34,7 +34,7 @@ public:
   // flattened int*/RECT*/int forms across the view hierarchy.
   void ITEView(TDocument* document, TView* panel, int* offsetLayout, int* sizeLayout,
                int layoutParam5, int layoutParam6, RECT* insetRect, TextStyle* style,
-               short styleWord90, unsigned char unusedB, unsigned char unusedC);
+               short styleWord90, unsigned char unusedB, bool unusedC);
 
   // Original object size is 0x98 (CRuntimeClass m_nObjectSize). These three
   // members previously sat at the head of TDeluxeText, but the RTTI sizes prove

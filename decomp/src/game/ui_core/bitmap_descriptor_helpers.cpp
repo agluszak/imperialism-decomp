@@ -127,9 +127,9 @@ short NewGWorld(TQuickDrawSurfaceContext** outContext, short bitDepth, const REC
 }
 
 // FUNCTION: IMPERIALISM 0x004972c0
-unsigned char LockPixels(TBitmapSurfaceNode** pixMap) {
+bool LockPixels(TBitmapSurfaceNode** pixMap) {
   (void)pixMap;
-  return 1;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x004972e0

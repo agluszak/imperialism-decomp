@@ -31,14 +31,14 @@ public:
   TList* secondaryList8;           // +0x08 reserve list: never-deployed units (0x59b740)
   char isOurSideFlagC;             // +0x0c
   char watchFlagD;                 // +0x0d human-watch flag for this side
-  char notWatchedFlagE;            // +0x0e = (watchFlagD == 0)
-  char fieldF;                     // +0x0f
-  char sideReadyFlag10;            // +0x10 side ready (no undeployed unit remains)
+  bool notWatchedFlagE;            // +0x0e = (watchFlagD == 0)
+  bool fieldF;                     // +0x0f
+  bool sideReadyFlag10;            // +0x10 side ready (no undeployed unit remains)
   unsigned char pad11[3];          // +0x11
   class TTacticalBattle* battle14; // +0x14 back-pointer, set by battle setup (0x59f890)
   int cursorIndex18;               // +0x18 round-robin cursor over unitList4
   int nationIndex1C;               // +0x1c owner nation index (+ 0xea6 = 'coat' bitmap id)
-  char field20;                    // +0x20
+  bool field20;                    // +0x20
   unsigned char pad21[3];          // +0x21
   int field24;                     // +0x24
 

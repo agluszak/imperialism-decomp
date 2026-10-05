@@ -27,7 +27,7 @@ void TTradeOrderPicture::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPo
   (void)event;
   (void)origin;
 
-  if (IsActionable() == 0) {
+  if (!IsActionable()) {
     return;
   }
 

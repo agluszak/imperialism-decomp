@@ -24,7 +24,7 @@
 #include "game/ui_text_label_helpers_decls.h"
 
 static void SetIndustryControlEnabledIfChanged(TView* control, bool enabled) {
-  if ((control->IsActionable() != 0) != enabled) {
+  if (control->IsActionable() != enabled) {
     control->Show(enabled, 1);
   }
 }
@@ -105,7 +105,7 @@ void TIndustryView::DoStartup() {
 
   TView* flagControl = ResolveControlByTag(kControlTagFlag); // 'flag'
   if (flagControl != 0) {
-    if (flagControl->IsActionable() != 0) {
+    if (flagControl->IsActionable()) {
       g_pSimMgr->GetString(0x2738, 0x13, &displayText);
     } else {
       displayText = g_szEmptyString;
@@ -254,7 +254,7 @@ void TIndustryView::UpdateFields() {
   TView* flagControl = ResolveControlByTag(kControlTagFlag); // 'flag'
   CString hoverHelp;
   if (flagControl != 0) {
-    if (flagControl->IsActionable() != 0) {
+    if (flagControl->IsActionable()) {
       g_pSimMgr->GetString(0x2738, 0x13, &hoverHelp);
     } else {
       hoverHelp = g_szEmptyString;

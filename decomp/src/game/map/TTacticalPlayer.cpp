@@ -43,11 +43,11 @@ void TTacticalPlayer::ITacticalPlayer(unsigned char isOurSide, unsigned char wat
                                       int nationIndex) {
   isOurSideFlagC = isOurSide;
   watchFlagD = watch;
-  fieldF = 0;
-  sideReadyFlag10 = 0;
+  fieldF = false;
+  sideReadyFlag10 = false;
   cursorIndex18 = 0;
   nationIndex1C = nationIndex;
-  field20 = 0;
+  field20 = false;
 }
 
 // FUNCTION: IMPERIALISM 0x0059aee0
@@ -77,7 +77,7 @@ TTacticalUnit* TTacticalPlayer::SelectNextTacticalUnitForDoneCommand() {
   } while (unit->tileIndex8 != -2);
   // The loop STOPS at tileIndex8 == -2: it seeks the next NOT-YET-PLACED unit.
   if (unit->tileIndex8 != -2) {
-    sideReadyFlag10 = 1; // no undeployed unit left -> side ready
+    sideReadyFlag10 = true; // no undeployed unit left -> side ready
   }
   // The original re-fetches the entry; keep the second virtual call.
   return static_cast<TTacticalUnit*>(unitList4->GetEntryByOrdinal(cursorIndex18));
@@ -110,7 +110,7 @@ bool TTacticalPlayer::IsTacticalControllerOwnedByActiveNation() {
 // FUNCTION: IMPERIALISM 0x0059b040
 void TTacticalPlayer::HandleTacticalCommandTag_skip() {
   if (g_awTacticalUnitCategoryCodeBySlot[battle14->selectedUnit1c->unitTypeC] != 8) {
-    field20 = 1;
+    field20 = true;
     battle14->FinishTacticalActionAndPostNextMoveCommand();
   }
 }

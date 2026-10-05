@@ -189,7 +189,7 @@ void TNewsMgr::CreateNewspaper(int nation) {
       story->parmKind[3] = 0;
       story->entry = *tmpl;
       story->parmKind[0] = 1;
-      story->feature38 = 1;
+      story->feature38 = true;
       story->parmValue[0] = 1 << nation;
       short other;
       do {
@@ -206,7 +206,7 @@ void TNewsMgr::CreateNewspaper(int nation) {
       story->parmKind[3] = 0;
       story->entry = *tmpl;
       story->parmKind[0] = 1;
-      story->feature38 = 1;
+      story->feature38 = true;
       story->parmValue[0] = 1 << nation;
       short other;
       do {
@@ -257,7 +257,7 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
         code++;
       } else {
         newsStory* story = &stories[nation][*minorCursor][*majorCursor];
-        story->feature38 = 0;
+        story->feature38 = false;
         story->parmKind[0] = 1;
         story->parmValue[0] = 1 << rec->payload.subjectNationOrAll;
         story->parmValue[1] = rec->payload.nationMaskOrStoryCode;
@@ -324,7 +324,7 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
       code++;
     } else {
       newsStory* story = &stories[nation][*minorCursor][*majorCursor];
-      story->feature38 = 0;
+      story->feature38 = false;
       story->parmKind[0] = 1;
       story->parmValue[0] = 1 << rec->payload.subjectNationOrAll;
       story->parmValue[1] = rec->payload.nationMaskOrStoryCode;
@@ -373,7 +373,7 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
       break;
     }
     newsStory* story = &stories[nation][*minorCursor][*majorCursor];
-    story->feature38 = 0;
+    story->feature38 = false;
     story->parmValue[0] = 1 << rec->payload.relatedNation;
     story->parmKind[0] = 2;
     story->parmValue[1] = rec->payload.nationMaskOrStoryCode;
@@ -438,7 +438,7 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
         story->parmKind[0] = 4;
         wantId = -0x1b - (record->reportKind04 != kMapContextReportSeaBattle);
       }
-      story->feature38 = 1;
+      story->feature38 = true;
       story->parmKind[1] = 1;
       story->parmValue[1] = 1 << record->nationIds[0];
       story->parmKind[2] = 1;
@@ -488,7 +488,7 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
         break;
       }
       newsStory* story = &stories[nation][*minorCursor][*majorCursor];
-      story->feature38 = 0;
+      story->feature38 = false;
       if (rec->payload.subjectNationOrAll == -1) {
         story->parmValue[0] = 0;
         story->parmKind[0] = 0;
@@ -566,11 +566,11 @@ newsEntry* TNewsMgr::FindEntry(int storyId) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055c970
-void TNewsMgr::AddEvent(int nationSlot, NewsEvent* event, unsigned char isReplayBypass) {
-  if (g_pSimMgr->gateFlag7a != 0) {
+void TNewsMgr::AddEvent(int nationSlot, NewsEvent* event, bool isReplayBypass) {
+  if (g_pSimMgr->gateFlag7a) {
     return;
   }
-  if (isReplayBypass == 0 && g_pSimMgr->multiplayerSessionRole != 0) {
+  if (!isReplayBypass && g_pSimMgr->multiplayerSessionRole != 0) {
     g_pGameFlowState->SendNewsEvent(nationSlot, event);
     return;
   }
@@ -579,11 +579,11 @@ void TNewsMgr::AddEvent(int nationSlot, NewsEvent* event, unsigned char isReplay
 
 // FUNCTION: IMPERIALISM 0x0055c9f0
 void TNewsMgr::AddTreatyEvent(InterNationEventKind eventKind, int nationA, int nationB,
-                              unsigned char isReplayBypass) {
-  if (g_pSimMgr->gateFlag7a != 0) {
+                              bool isReplayBypass) {
+  if (g_pSimMgr->gateFlag7a) {
     return;
   }
-  if (isReplayBypass == 0 && g_pSimMgr->multiplayerSessionRole != 0) {
+  if (!isReplayBypass && g_pSimMgr->multiplayerSessionRole != 0) {
     if (g_pSimMgr->multiplayerSessionRole == 1) {
       g_pGameFlowState->CreateAndSendTurnEvent20_ShortAndTwoBytes(
           static_cast<short>(eventKind), static_cast<unsigned char>(nationA),
@@ -633,11 +633,11 @@ void TNewsMgr::AddTreatyEvent(InterNationEventKind eventKind, int nationA, int n
 
 // FUNCTION: IMPERIALISM 0x0055cbd0
 void TNewsMgr::AddShortageEvent(int subjectNation, int affectedNation, int relatedNation,
-                                unsigned char isReplayBypass) {
-  if (g_pSimMgr->gateFlag7a != 0) {
+                                bool isReplayBypass) {
+  if (g_pSimMgr->gateFlag7a) {
     return;
   }
-  if (isReplayBypass == 0 && g_pSimMgr->multiplayerSessionRole != 0) {
+  if (!isReplayBypass && g_pSimMgr->multiplayerSessionRole != 0) {
     g_pGameFlowState->CreateAndSendTurnEvent21_ThreeBytes(
         static_cast<unsigned char>(subjectNation), static_cast<unsigned char>(affectedNation),
         static_cast<unsigned char>(relatedNation));
@@ -666,12 +666,12 @@ void TNewsMgr::AddShortageEvent(int subjectNation, int affectedNation, int relat
 }
 
 // FUNCTION: IMPERIALISM 0x0055cd00
-void TNewsMgr::AddMiscEvent(int nationSlotOrAll, int storyCode, unsigned char isReplayBypass) {
+void TNewsMgr::AddMiscEvent(int nationSlotOrAll, int storyCode, bool isReplayBypass) {
   TSimMgr* simManager = g_pSimMgr;
-  if (simManager->gateFlag7a == 0) {
-    if (isReplayBypass == 0) {
-      unsigned char multiplayerActive = simManager->multiplayerSessionRole != 0;
-      if (multiplayerActive != 0) {
+  if (!simManager->gateFlag7a) {
+    if (!isReplayBypass) {
+      bool multiplayerActive = simManager->multiplayerSessionRole != 0;
+      if (multiplayerActive) {
         g_pGameFlowState->CreateAndSendTurnEvent22_ByteAndShort(
             static_cast<unsigned char>(nationSlotOrAll), static_cast<short>(storyCode));
         return;
@@ -748,7 +748,7 @@ unsigned char TNewsMgr::EvaluateFeatureStory(const newsEntry* templateRow, newsS
     story->parmKind[3] = 0;
     story->entry = *templateRow;
     story->parmKind[0] = 1;
-    story->feature38 = 1;
+    story->feature38 = true;
     story->parmValue[0] = 1 << nationSlot;
     do {
       otherNation = static_cast<short>(rand() % 7);
@@ -760,7 +760,7 @@ unsigned char TNewsMgr::EvaluateFeatureStory(const newsEntry* templateRow, newsS
     story->parmKind[3] = 0;
     story->entry = *templateRow;
     story->parmKind[0] = 1;
-    story->feature38 = 1;
+    story->feature38 = true;
     story->parmValue[0] = 1 << nationSlot;
     do {
       otherNation = static_cast<short>(rand() % 7);
@@ -794,7 +794,7 @@ unsigned char TNewsMgr::AlwaysTrueStory(const newsEntry* templateRow, newsStory*
   story->entry = *templateRow;
 
   story->parmKind[0] = 1;
-  story->feature38 = 1;
+  story->feature38 = true;
   story->parmValue[0] = 1 << nationSlot;
 
   short otherNation;

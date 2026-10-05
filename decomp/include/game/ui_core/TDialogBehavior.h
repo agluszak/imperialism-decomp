@@ -21,7 +21,7 @@ public:
   virtual void DoCommandKeyEvent(TToolboxEvent* event); // slot 0x11 0x4875d0
   virtual void PoseModally();                           // slot 0x12 0x487660
 
-  void SetUiColorDescriptorGoldTriplet(unsigned char flag, int colorA, int colorB);
+  void SetUiColorDescriptorGoldTriplet(bool flag, int colorA, int colorB);
 
   // --- TDialogBehavior data members (object size 0x24; the TBehavior base ends at 0x10).
   // field14/18 hold 4-char command codes (default '    ' == "    " == unbound); the
@@ -32,7 +32,7 @@ public:
   unsigned long defaultCommandCode; // 0x14 — command fired on Enter/Return
   unsigned long cancelCommandCode;  // 0x18 — command fired on Escape/Delete
   unsigned long armedCommandCode;   // 0x1c — command armed via slot 0x0e
-  unsigned char dismissPending;     // 0x20 — set by Dismiss, cleared before the modal loop
+  bool dismissPending;              // 0x20 — set by Dismiss, cleared before the modal loop
   unsigned char padding_21_23[0x03];
 
   TDialogBehavior();

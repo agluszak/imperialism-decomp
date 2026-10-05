@@ -28,7 +28,7 @@ void TLonelyTileView::Draw(RECT* rectBuffer) {
 
   TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPictureF0;
   RECT srcRect;
-  if (controlTag == kControlTagTile && mapUberPicture->invalidationFlag94 != 0) {
+  if (controlTag == kControlTagTile && mapUberPicture->invalidationFlag94) {
     TQuickDrawSurfaceContext* tileAtlasCtx = mapUberPicture->subview2A8->quickDrawSurface350;
     // The tile's transient marker-slot index selects a 64-pixel atlas column.
     int spriteX =
@@ -41,7 +41,7 @@ void TLonelyTileView::Draw(RECT* rectBuffer) {
     BlitRectWithOptionalTransparency(tileAtlasCtx->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                      &destRect, 0, 0);
-  } else if (controlTag == kControlTagTil2 && mapUberPicture->invalidationFlag94 != 0) {
+  } else if (controlTag == kControlTagTil2 && mapUberPicture->invalidationFlag94) {
     short variant = g_pGlobalMapState->LookupTileSpriteVariantOffsetByTerrainAndGate(tileIndex60);
     srcRect.left = variant;
     srcRect.top = 0;

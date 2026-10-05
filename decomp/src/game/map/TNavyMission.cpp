@@ -331,7 +331,7 @@ void TNavyMission::GiveOrders() {
     CombineForce(resolvedPortZone, taskForce20);
     if (taskForce20 != nullptr) {
       taskForce20->SetAggression(0);
-      taskForce20->OrderPatrol(0);
+      taskForce20->OrderPatrol(false);
     }
   }
 }
@@ -344,7 +344,7 @@ TZone* TNavyMission::RefreshMissionPortZoneContextForNation() {
 // FUNCTION: IMPERIALISM 0x00536fc0
 TMission* TNavyMission::GetReplacementSlot48() {
   if (resolvedPortZone != nullptr) {
-    if (resolvedPortZone->QueryPortZoneCapability() != 0) {
+    if (resolvedPortZone->QueryPortZoneCapability()) {
       if (resolvedPortZone->QueryZoneCapabilityFlagD(nationId04) == 0) {
         resolvedPortZone = RefreshMissionPortZoneContextForNation();
       }

@@ -24,7 +24,7 @@ void TRadioText::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x005794b0
 void TRadioText::Draw(RECT* rectBuffer) {
-  if (isSelectedOption98 != 0 || controlState64 != 0) {
+  if (isSelectedOption98 || controlState64 != 0) {
     // All eleven Mac TRadioText resource instances are direct children of a
     // TRadioTextCluster; the Windows body reads that owner's two color codes.
     TRadioTextCluster* cluster = static_cast<TRadioTextCluster*>(ownerContext);
@@ -32,7 +32,7 @@ void TRadioText::Draw(RECT* rectBuffer) {
 
     COLORREF savedColor = g_pActiveQuickDrawSurfaceContext->blitSurface.foregroundColor;
     short colorCode = controlState64 != 0 ? cluster->word8C : cluster->word8E;
-    g_pViewMgr->SetColor(colorCode, 1);
+    g_pViewMgr->SetColor(colorCode, true);
 
     RECT fillRect = {0, 0, frameWidth34, frameHeight38};
     FillRectWithQuickDrawBrushAndContextOffset(&fillRect);

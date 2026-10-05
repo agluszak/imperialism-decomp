@@ -77,7 +77,7 @@ void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
   initFlags1c9[7] = 1;
   memset(initFlags1ab, 1, sizeof(initFlags1ab));
   memset(initFlags1af, 1, sizeof(initFlags1af));
-  flag1c3 = 1;
+  flag1c3 = true;
   marker262 = 2;
 
   // Per-nation capability tables, in the original's two separate 7-nation passes.
@@ -276,7 +276,7 @@ void TTechMgr::CheckForAdvances() {
     if (perTechUnlockFlag180[techId] == 0) {
       if (prioritySlots04[techId] == economicTurn) {
         ApplyCityOrderCapabilityUnlockByTechId(techId);
-        g_pNewsMgr->AddMiscEvent(999, techId, 1);
+        g_pNewsMgr->AddMiscEvent(999, techId, true);
       }
       continue;
     }

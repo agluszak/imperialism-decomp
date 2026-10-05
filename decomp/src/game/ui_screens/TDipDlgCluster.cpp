@@ -32,7 +32,7 @@ char TDipDlgCluster::IsTradeControlAtMinimum() {
     return 1;
   }
   if (sanctionToggle != 0) {
-    return sanctionToggle->IsSelected() != 0;
+    return sanctionToggle->IsSelected();
   }
   return 0;
 }

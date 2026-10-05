@@ -127,12 +127,12 @@ public:
   // `nation` (-1 = active nation): nationKeyMask10 bit set and a g_pNavyPrimaryOrderListHead
   // ship with location == this, matching owner, field0c == 0 (and selection == 0 unless
   // skipField34Check). Ghidra's TCivToolbar attribution is junk.
-  char CanDisplayMapOrderEntryInCurrentContext(int nation, char skipField34Check);
+  char CanDisplayMapOrderEntryInCurrentContext(int nation, bool skipField34Check);
   // RefreshMapOrderEntryPanel's reachability expansion. A higher remaining depth wins;
   // eligible primary neighbors recurse with depth-1, while the initial call also marks
   // this context's adjacent city records as actionable for TNavyMgr.
   void ExpandTaskForceTraversalDepthAndMarkDeferredNodes(int remainingDepth,
-                                                         char markAdjacentCities); // 0x560ba0
+                                                         bool markAdjacentCities); // 0x560ba0
   // Naval-intelligence helpers used by TMapUberPicture::NavalIntelligenceDialog.
   // They fold the primary ship list for this zone/nation using the same preference
   // rule as the order UI, then expose its reporting admiral/source label.

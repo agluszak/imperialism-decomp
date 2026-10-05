@@ -285,9 +285,9 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
   // Ground truth clears these three byte locals in the prologue (0x5aa90a's
   // mov byte ptr [esp+0x13]/[esp+0x27]/[esp+0x53], al off a single xor eax,eax),
   // so they are function-scope zero-initialized rather than declared at first use.
-  unsigned char wallBreached = 0;
-  unsigned char gunSlotRow = 0;
-  unsigned char gunSlotOccupied = 0;
+  bool wallBreached = false;
+  bool gunSlotRow = false;
+  bool gunSlotOccupied = false;
   int row = tileIndex / tileColumnsPerRow80;
   int x = (tileIndex % tileColumnsPerRow80) * tileWidthPx88 - viewOriginX78;
   if (row & 1) {
@@ -347,7 +347,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
        !tacticalBattle60->HasFortWallGarrison(tileIndex)) ||
       (edgeKind == kFortWallEdgeEvenRowLeft &&
        !tacticalBattle60->HasFortWallGarrison(tileIndex - 1))) {
-    wallBreached = 1;
+    wallBreached = true;
   }
   if (edgeKind != kFortWallEdgeNone) {
     int wallNeighbor;
@@ -359,9 +359,9 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
       wallNeighbor = tileIndex;
     }
     if (tacticalBattle60->IsTacticalTileAtFortWallSectionSlot(wallNeighbor)) {
-      gunSlotRow = 1;
+      gunSlotRow = true;
       if (grid[wallNeighbor].occupant4 != 0) {
-        gunSlotOccupied = 1;
+        gunSlotOccupied = true;
       }
     }
   }
@@ -701,7 +701,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
       flagDst.bottom += 1;
       QDFrameRect(&flagDst);
     }
-    if (g_nForceTacticalBattleViewFlag_006A4758 != 0) {
+    if (g_nForceTacticalBattleViewFlag_006A4758) {
       SetQuickDrawFillColor(0);
       SetQuickDrawTextOriginWithContextOffset(
           static_cast<short>(tileScreenRect.left + tileWidthPx88 - 8),

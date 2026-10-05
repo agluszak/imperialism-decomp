@@ -396,7 +396,7 @@ void TNavyMgr::FreeShipsOf(short nation) {
     if (matching == 0) {
       break;
     }
-    matching->CancelOrders(1);
+    matching->CancelOrders(true);
   }
 
   for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->next) {
@@ -614,7 +614,7 @@ void TNavyMgr::MakeSureAllShipsHaveOrders() {
         }
         entry->flagship = 0;
         for (node = entry->shipList; node != 0; node = node->next) {
-          entry->flagship = node->payload->Finest(entry->flagship, 0);
+          entry->flagship = node->payload->Finest(entry->flagship, false);
         }
         entry->AssertValid();
         if (g_pNavyOrderManager->CommitForce(entry)) {
@@ -632,8 +632,8 @@ void TNavyMgr::PrepareToCarryOutAllOrders(short phaseId) {
     Province* record = &g_pGlobalMapState->cityScoreTable[provinceIndex];
     if (record->exploredByNationMaskA1 != 0) {
       record->exploredByNationMaskA1 = 0;
-      char shouldInvalidateCity = g_pSimMgr->multiplayerSessionRole == 1;
-      if (shouldInvalidateCity != 0) {
+      bool shouldInvalidateCity = g_pSimMgr->multiplayerSessionRole == 1;
+      if (shouldInvalidateCity) {
         g_pGameFlowState->DispatchCityRedrawInvalidateEvent(static_cast<short>(provinceIndex));
       }
     }
@@ -687,12 +687,12 @@ void TNavyMgr::CarryOutOrders() {
         }
         if (other->shipOrders != 6)
           continue;
-        char result = 0;
+        bool result = false;
         if (entry->TryToSpot(other) && entry->ResolveEncounterWith(other)) {
           TTaskForce* unresolvedForce;
           result = entry->BattleWith(other, unresolvedForce);
         }
-        if (result != 0)
+        if (result)
           return;
         if (entry->defeated != 0)
           break;
@@ -717,12 +717,12 @@ void TNavyMgr::CarryOutOrders() {
                                          other->target == entry->target);
         if (!ownerMatch)
           continue;
-        char result = 0;
+        bool result = false;
         if (entry->TryToSpot(other) && entry->ResolveEncounterWith(other)) {
           TTaskForce* unresolvedForce;
           result = entry->BattleWith(other, unresolvedForce);
         }
-        if (result != 0)
+        if (result)
           return;
         if (entry->defeated != 0)
           break;
@@ -757,12 +757,12 @@ void TNavyMgr::CarryOutOrders() {
           continue;
         if (other->shipOrders == 6)
           continue;
-        char result = 0;
+        bool result = false;
         if (entry->TryToSpot(other) && entry->ResolveEncounterWith(other)) {
           TTaskForce* unresolvedForce;
           result = entry->BattleWith(other, unresolvedForce);
         }
-        if (result != 0)
+        if (result)
           return;
         if (entry->defeated != 0)
           break;
@@ -790,13 +790,13 @@ void TNavyMgr::CarryOutOrders() {
         if (other->shipOrders != 5)
           continue;
 
-        char proceed;
+        bool proceed;
         if (entry->CountShips() == 0) {
-          proceed = 0;
+          proceed = false;
         } else if (other->CountShips() == 0) {
-          proceed = 0;
+          proceed = false;
         } else if (entry->shipOrders == 6 || other->shipOrders == 6 || other->shipOrders == 5) {
-          proceed = 1;
+          proceed = true;
         } else {
           short threshold =
               static_cast<short>(entry->GetDeciSpeed() + 0x32 - other->GetDeciSpeed());
@@ -806,12 +806,12 @@ void TNavyMgr::CarryOutOrders() {
           proceed = (rand() % 100) < threshold;
         }
 
-        char result = 0;
+        bool result = false;
         if (proceed && entry->ResolveEncounterWith(other)) {
           TTaskForce* unresolvedForce;
           result = entry->BattleWith(other, unresolvedForce);
         }
-        if (result != 0)
+        if (result)
           return;
         if (entry->defeated != 0)
           break;
@@ -846,8 +846,8 @@ TTaskForce* TNavyMgr::AssignEscorts(short requiredCount, short chancePercent) {
   TTaskForce* entry = orderQueueHead;
   while (entry != nullptr) {
     if (entry->nation == requiredCount) {
-      char isEscortOrder = entry->shipOrders == 7;
-      if (isEscortOrder != 0) {
+      bool isEscortOrder = entry->shipOrders == 7;
+      if (isEscortOrder) {
         break;
       }
     }
@@ -857,13 +857,13 @@ TTaskForce* TNavyMgr::AssignEscorts(short requiredCount, short chancePercent) {
   if (entry != nullptr) {
     for (TMapOrderChildLinkNode* node = entry->shipList; node != nullptr; node = node->next) {
       TShip* child = node->payload;
-      unsigned char active;
-      char isUnderStrength =
+      bool active;
+      bool isUnderStrength =
           child->strength < g_NavyOrderResourceDescriptorTable[child->type].StockCap();
-      if (isUnderStrength != 0 || chancePercent <= rand() % 100) {
-        active = 0;
+      if (isUnderStrength || chancePercent <= rand() % 100) {
+        active = false;
       } else {
-        active = 1;
+        active = true;
       }
       node->active = active;
     }
@@ -900,12 +900,12 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
   if (nationEntry != nullptr) {
     for (TMapOrderChildLinkNode* node = nationEntry->shipList; node != nullptr; node = node->next) {
       TShip* child = node->payload;
-      unsigned char active;
+      bool active;
       if (child->strength < g_NavyOrderResourceDescriptorTable[child->type].StockCap() ||
           selectionChance <= rand() % 100) {
-        active = 0;
+        active = false;
       } else {
-        active = 1;
+        active = true;
       }
       node->active = active;
     }
@@ -1145,11 +1145,11 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         CopyCStringIntoFixedBuffer(snapshot.overlayLabel[1].data, 0xff,
                                    static_cast<LPCSTR>(interactionText));
 
-        char modeIsOffer = (mode == 1);
-        char matchesOfferPass = modeIsOffer && entryKind == kTrackedSlotOfferEntry;
-        char matchesAcceptPass = mode == 2 && entryKind == kTrackedSlotAcceptEntry;
-        char passMismatch = !matchesOfferPass && !matchesAcceptPass;
-        char movedTrackedCounter = 0;
+        bool modeIsOffer = (mode == 1);
+        bool matchesOfferPass = modeIsOffer && entryKind == kTrackedSlotOfferEntry;
+        bool matchesAcceptPass = mode == 2 && entryKind == kTrackedSlotAcceptEntry;
+        bool passMismatch = !matchesOfferPass && !matchesAcceptPass;
+        bool movedTrackedCounter = false;
 
         unsigned int directionFlags = selection.directionFlags;
         if ((directionFlags & 3) == 0 && matchesAcceptPass) {
@@ -1170,7 +1170,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
                 g_apNationStates[offerNation]->AddPurchasedItemAmount(
                     slot, static_cast<short>(-transferredWeight));
               }
-              movedTrackedCounter = 1;
+              movedTrackedCounter = true;
             }
 
             short detailCount = static_cast<short>(transferredWeight + 1);
@@ -1284,8 +1284,8 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         }
 
         if (passMismatch && !movedTrackedCounter) {
-          modeIsOffer = 1;
-          matchesOfferPass = 1;
+          modeIsOffer = true;
+          matchesOfferPass = true;
         }
 
         snapshot.childCount[0] =
@@ -1369,7 +1369,7 @@ unsigned short TNavyMgr::SelectionCursor(short nTileIndex, int nInputFlags) {
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].GetTerrainKind() == kStrategicTerrainWater) {
     TZone* context = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
     bool canResolve = false;
-    if (context != nullptr && entry->IsEmpty() == 0) {
+    if (context != nullptr && !entry->IsEmpty()) {
       bool hasActiveChild = false;
       for (TMapOrderChildLinkNode* node = entry->shipList; node != nullptr; node = node->next) {
         if (node->active != 0) {
@@ -1414,7 +1414,7 @@ unsigned short TNavyMgr::SelectionCursor(short nTileIndex, int nInputFlags) {
     if (canResolve) {
       bool relationOutOfDate = g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
           entry->nation, province->ownerNationCode00);
-      return g_awMapContextActionLabelTokenByCommand[relationOutOfDate != 0 ? 16 : 1];
+      return g_awMapContextActionLabelTokenByCommand[relationOutOfDate ? 16 : 1];
     }
   }
 
@@ -1483,7 +1483,7 @@ int TNavyMgr::DoTileClick(short nTileIndex, int nInputFlags) {
     bool queueable;
     if (ctx == nullptr) {
       queueable = false;
-    } else if (entry->NoSelection() == 0) {
+    } else if (!entry->NoSelection()) {
       short dist = entry->location->GetCachedMapActionContextDistanceOrRecompute(ctx);
       queueable = dist <= static_cast<short>(entry->GetWorstSpeed());
     } else {

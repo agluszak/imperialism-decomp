@@ -9,18 +9,18 @@
 IMPLEMENT_DYNCREATE(TNavyPlayer, TTacticalPlayer)
 
 // FUNCTION: IMPERIALISM 0x0059ec20
-void TNavyPlayer::INavyPlayer(TTaskForce* force, char isOurSide, char watchFlag, int nationIndex) {
+void TNavyPlayer::INavyPlayer(TTaskForce* force, char isOurSide, bool watchFlag, int nationIndex) {
   isOurSideFlagC = isOurSide;
-  sideReadyFlag10 = 0;
+  sideReadyFlag10 = false;
   watchFlagD = watchFlag;
   nationIndex1C = nationIndex;
   cursorIndex18 = 0;
-  fieldF = 0;
-  field20 = 0;
+  fieldF = false;
+  field20 = false;
   targetingMode2c = kNavyTargetingHull;
 
   unitList4 = new TList();
-  sideReadyFlag10 = 0;
+  sideReadyFlag10 = false;
 
   for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr; node = node->next) {
     TShip* ship = node->payload;

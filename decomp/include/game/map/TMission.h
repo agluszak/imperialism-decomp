@@ -100,7 +100,7 @@ public:
   virtual void Hold(unsigned char value);               // 0x25 0x534f70
   virtual char SmokeEmIfYouGotEm();                     // 0x26 0x534f90
 
-  void AdoptUnitSlot80(TMilitaryUnit* unit, unsigned char flag) {
+  void AdoptUnitSlot80(TMilitaryUnit* unit, bool flag) {
     AcceptReenforcement(unit, flag);
   }
 

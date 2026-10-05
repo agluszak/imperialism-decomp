@@ -893,7 +893,7 @@ TTacticalBattleView::TTacticalBattleView() : TView() {
   tileScratchSurface70 = 0;
   effectAtlasSurface74 = 0;
   unitSpriteScratchSurfaceBC = 0;
-  modalAnimWaitDoneFlag98 = 1;
+  modalAnimWaitDoneFlag98 = true;
   moveAnimUnitOffsetXA4 = -1;
 }
 
@@ -958,7 +958,7 @@ void TTacticalBattleView::DoKeyEvent(TToolboxEvent* event) {
 void TTacticalBattleView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
   (void)event;
   (void)origin;
-  if (modalAnimWaitDoneFlag98 != 0) {
+  if (modalAnimWaitDoneFlag98) {
     int row;
     int column;
     ConvertScreenPointToHexGridCoordClamped(&point, &row, &column);
@@ -1121,7 +1121,7 @@ void TTacticalBattleView::MakeTileVisible(TacticalTileIndex tileIndex) {
 // repaints and refreshes the unit marker. Gated on the modal-wait-done flag.
 // FUNCTION: IMPERIALISM 0x005a8be0
 void TTacticalBattleView::Scroll(MapScrollEdgeMaskStorage scrollDirection) {
-  if (modalAnimWaitDoneFlag98 != 0) {
+  if (modalAnimWaitDoneFlag98) {
     if (scrollDirection == kMapScrollEdgeLeft) {
       if (viewOriginX78 > 0) {
         viewOriginX78 = viewOriginX78 - static_cast<short>(tileWidthPx88);
@@ -1272,11 +1272,11 @@ void TTacticalBattleView::PlayAni(RECT* rect, int effectId, int frameCount,
   g_pUiAnimator->AddObjectToUiTransientRegistry(
       static_cast<TAnimation*>(static_cast<void*>(animation)));
   BeginModalAnimationWait();
-  modalAnimWaitDoneFlag98 = 0;
-  while (animation->completeFlag == 0) {
+  modalAnimWaitDoneFlag98 = false;
+  while (!animation->completeFlag) {
     PumpUiMessagesAndBackgroundTasks(1);
   }
-  modalAnimWaitDoneFlag98 = 1;
+  modalAnimWaitDoneFlag98 = true;
   EndModalAnimationWait();
   InvalidateCityDialogRectRegion(rect, 1);
   g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(tileIndex);

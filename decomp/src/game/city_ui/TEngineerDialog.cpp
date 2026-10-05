@@ -103,9 +103,9 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
   TMapMgr* mapState = g_pGlobalMapState;
   unsigned char homeFlags =
       static_cast<unsigned char>(mapState->terrainStateTable[nBuildingSlotId].activeFlags1c);
-  unsigned char fortAllowed = static_cast<unsigned char>(((homeFlags >> 4) & 1) == 0);
-  unsigned char railAllowed = static_cast<unsigned char>(((homeFlags >> 2) & 1) == 0);
-  unsigned char productionAllowed = 1;
+  bool fortAllowed = static_cast<unsigned char>(((homeFlags >> 4) & 1) == 0);
+  bool railAllowed = static_cast<unsigned char>(((homeFlags >> 2) & 1) == 0);
+  bool productionAllowed = true;
 
   // Release + reload the three offscreen dialog strip surfaces.
   if (this->headerSurface60 != 0) {
@@ -148,11 +148,11 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
                                   mapState->hexNeighborWrapHorizontally);
 
   // A neighbour carrying transport flag 0x14 disables local production.
-  if (fortAllowed != 0 && railAllowed != 0) {
+  if (fortAllowed && railAllowed) {
     for (int n = 0; n < 6; n++) {
       short nbr = neighborTiles[n];
       if (nbr != -1 && (mapState->terrainStateTable[nbr].activeFlags1c & 0x14) != 0) {
-        productionAllowed = 0;
+        productionAllowed = false;
       }
     }
   }
@@ -163,7 +163,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
   // Fort aggregation: over the anchor tile and every valid, active-nation-owned neighbour
   // inside the influence map, sum per-edge capability requirement levels and fold in the
   // owning province's resource-development counts.
-  if (fortAllowed != 0 && productionAllowed != 0) {
+  if (fortAllowed && productionAllowed) {
     for (int i = 0; i < 7; i++) {
       short tile = (i == 6) ? nBuildingSlotId : neighborTiles[i];
       if (tile == -1) {
@@ -198,7 +198,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
   }
 
   // Rail census: count active-nation river/rail-capable tiles into portAccum[19].
-  if (railAllowed != 0 && productionAllowed != 0) {
+  if (railAllowed && productionAllowed) {
     for (int i = 0; i < 7; i++) {
       short tile = (i == 6) ? nBuildingSlotId : neighborTiles[i];
       if (tile == -1) {
@@ -243,7 +243,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
   }
 
   // Rail up/down button plus the accumulated fort-production TIconBar rows.
-  if (fortAllowed != 0 && productionAllowed != 0) {
+  if (fortAllowed && productionAllowed) {
     TUpDownPictureButton* railBtn = new TUpDownPictureButton();
     int railOff[2] = {0x11, layoutY + 1};
     railBtn->IPicture(this, railOff, optionButtonSize, 5, 5, 0x1c2c);
@@ -273,8 +273,8 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
   }
 
   // Port up/down button plus the accumulated port-availability TIconBar rows.
-  if (railAllowed != 0 && g_pGlobalMapState->CanBuildPortAtTile(nBuildingSlotId) != 0 &&
-      productionAllowed != 0) {
+  if (railAllowed && g_pGlobalMapState->CanBuildPortAtTile(nBuildingSlotId) != 0 &&
+      productionAllowed) {
     TUpDownPictureButton* portBtn = new TUpDownPictureButton();
     int portOff[2] = {0x11, layoutY + 1};
     portBtn->IPicture(this, portOff, optionButtonSize, 5, 5, 0x1c2e);

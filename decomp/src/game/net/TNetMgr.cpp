@@ -210,9 +210,9 @@ unsigned char TNetMgr::OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, i
   (void)flag;
   strncpy(g_NetworkSessionManager006a5f60.runtimeSelectionSeed88, seed, 0x20);
   const GUID* sessionGuid = &g_WNetSerializedPtrArrayA006a5f10[index]->providerGuid;
-  unsigned char result =
+  bool result =
       g_NetworkSessionManager006a5f60.InitializeDirectPlayForProviderGuidOrEnumerate(sessionGuid);
-  if (result == 0) {
+  if (!result) {
     HandleError(g_NetworkSessionManager006a5f60.lastErrorCode0c);
   }
   return result;
@@ -280,7 +280,7 @@ unsigned char TNetMgr::OpenJoinGameRuntimeSelectionAndStartSession(int selection
 }
 
 // FUNCTION: IMPERIALISM 0x005e3d40
-unsigned char TNetMgr::Send(NetMessage* message, unsigned char queueOnly) {
+unsigned char TNetMgr::Send(NetMessage* message, bool queueOnly) {
   unsigned int sizeBytes = static_cast<unsigned int>(message->messageLength);
   message->fromNetworkId = g_NetworkSessionManager006a5f60.localPlayerId60;
   int nationId = message->toNetworkId;
@@ -288,7 +288,7 @@ unsigned char TNetMgr::Send(NetMessage* message, unsigned char queueOnly) {
     nationId = g_NetworkSessionManager006a5f60.broadcastPlayerId64;
   }
 
-  if (queueOnly != 0 || nationId == g_NetworkSessionManager006a5f60.localPlayerId60) {
+  if (queueOnly || nationId == g_NetworkSessionManager006a5f60.localPlayerId60) {
     void* heapCopy = GlobalAlloc(0, static_cast<DWORD>(sizeBytes));
     memcpy(heapCopy, message, sizeBytes);
     g_WNetPendingPacketList006a5f40.AddTail(heapCopy);
@@ -418,7 +418,7 @@ int TNetMgr::ProbeNationReachabilityAndMarkAwolBitmask() {
   probe.nationMask19 = static_cast<signed char>(g_pSimMgr->GetActiveNationId());
   for (int slot = 0; slot < 7; ++slot) {
     TGreatPower* nation = g_apNationStates[slot];
-    if (nation != 0 && nation->diplomacyEligibilityA0 != 0 && nation->IsRemote() != 0) {
+    if (nation != 0 && nation->diplomacyEligibilityA0 != 0 && nation->IsRemote()) {
       if (g_pGameFlowState->nationSessionIds[slot] == -2) {
         awolBitmask += 1 << slot;
       } else {

@@ -34,8 +34,8 @@ static BOOL FAR PASCAL ForwardEnumSessionToCallbackTable(LPGUID sessionGuid, LPS
 // Dead callback trampoline (no live callers): forwards a 4-argument DirectPlay
 // notification to the manager's slot-1 virtual, OnDirectPlayAssertion111.
 // FUNCTION: IMPERIALISM 0x0047f840
-BOOL FAR PASCAL ForwardDirectPlayAssertionToManager(void* arg1, void* arg2, void* arg3,
-                                                           void* arg4, LPVOID context) {
+BOOL FAR PASCAL ForwardDirectPlayAssertionToManager(void* arg1, void* arg2, void* arg3, void* arg4,
+                                                    LPVOID context) {
   TDirectPlaySessionManagerBase* manager = static_cast<TDirectPlaySessionManagerBase*>(context);
   return manager->OnDirectPlayAssertion111(arg1, arg2, arg3, arg4);
 }
@@ -171,7 +171,7 @@ bool TWNetSessionManager::InitializeDirectPlayForProviderGuidOrEnumerate(const G
     }
   }
   if (directPlayInterface04 != 0) {
-    return 1;
+    return true;
   }
 
   IDirectPlay* createdInterface = 0;

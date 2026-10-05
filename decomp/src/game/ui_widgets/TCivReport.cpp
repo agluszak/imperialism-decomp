@@ -35,7 +35,7 @@ void TCivReport::PopulateCivilianReportContent(TCivUnit* civilianOrderEntry) {
   CString cityName;
 
   int resourceCount;
-  char appendTurnCount = 1;
+  bool appendTurnCount = true;
   g_pSimMgr->GetString(0x2724, 0, &templateText);
   g_pSimMgr->GetString(0x2718, civilianOrderEntry->orderType, &valueText);
   short tileIndex = civilianOrderEntry->tileIndex06;
@@ -116,7 +116,7 @@ void TCivReport::PopulateCivilianReportContent(TCivUnit* civilianOrderEntry) {
   case kUnitOrderRedeploy:
     g_pSimMgr->GetString(0x2724, 8, &valueText);
     reportText += valueText;
-    appendTurnCount = 0;
+    appendTurnCount = false;
     break;
   }
 

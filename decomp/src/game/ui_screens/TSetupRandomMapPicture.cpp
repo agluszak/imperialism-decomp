@@ -61,7 +61,7 @@ void TSetupRandomMapPicture::SetSelectedNationSlot(short nationSlot) {
   coatView->AssertValid();
   coatView->SetPictureResourceIdAndRefresh(static_cast<short>(selectedNationSlot9A + 0x11c6), true);
 
-  if (countryControlReadyA4 == 0) {
+  if (!countryControlReadyA4) {
     bool sessionInactive = g_pSimMgr->multiplayerSessionRole == 0;
     if (sessionInactive) {
       TEditText* countryControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagCoun));
@@ -72,7 +72,7 @@ void TSetupRandomMapPicture::SetSelectedNationSlot(short nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x00576fe0
 void TSetupRandomMapPicture::RecheckCountryName() {
-  if (countryControlReadyA4 == 0) {
+  if (!countryControlReadyA4) {
     bool sessionInactive = g_pSimMgr->multiplayerSessionRole == 0;
     if (sessionInactive) {
       TEditText* countryControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagCoun));
@@ -112,8 +112,8 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   countryControl->AssertValid();
   countryControl->maxCharacterCount = 0xc;
 
-  g_bMultiplayerScenarioSetupActive = 0;
-  g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(1);
+  g_bMultiplayerScenarioSetupActive = false;
+  g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(true);
 
   g_pCursorControlPanel = static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagHot));
   g_pCursorControlPanel->AssertValid();
@@ -147,7 +147,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   mapPreview->AssertValid();
   mapPreview->selectedNation68 = selectedNationSlot9A;
 
-  GroundControlToMajorTom(1);
+  GroundControlToMajorTom(true);
   g_pCursorControlPanel->SetTextAlignmentAndMaybeRefresh(1, 0);
 
   TGWorldPartView* flagView = static_cast<TGWorldPartView*>(ResolveControlByTag(kControlTagFlag));
@@ -282,7 +282,7 @@ void TSetupRandomMapPicture::DoEvent(int commandId, TEventHandler* sourceHandler
       g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&unusedOptionText, 0x2758, 10);
       g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&unusedCancelText, 0x2758, 11);
       int resultTag = g_pViewMgr->MakePlanetSeedDialog(static_cast<LPCSTR>(instruction), planetSeed,
-                                                       0, 0, 0, 0);
+                                                       0, 0, 0, false);
       wrapHorizontally98 = resultTag == kControlTagOne1;
 
       if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(planetSeed)),
@@ -311,8 +311,8 @@ void TSetupRandomMapPicture::StartGame() {
   countryControl->GetCurrentText(&countryText);
   if (g_pSimMgr->useLocalizedNameTables68 != 0) {
     CString localizedName;
-    unsigned char duplicateName = 0;
-    for (int nationSlot = 0; nationSlot < 0x17 && duplicateName == 0; ++nationSlot) {
+    bool duplicateName = false;
+    for (int nationSlot = 0; nationSlot < 0x17 && !duplicateName; ++nationSlot) {
       if (nationSlot != selectedNationSlot9A) {
         g_pSimMgr->GetString(0x2715, static_cast<short>(nationSlot), &localizedName);
         duplicateName =
@@ -320,7 +320,7 @@ void TSetupRandomMapPicture::StartGame() {
                     reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(countryText))) == 0;
       }
     }
-    if (duplicateName != 0) {
+    if (duplicateName) {
       g_pSimMgr->GetString(0x2715, selectedNationSlot9A, &countryText);
     }
   }
@@ -374,8 +374,8 @@ void TSetupRandomMapPicture::StartGame() {
 
 // FUNCTION: IMPERIALISM 0x005781f0
 void TSetupRandomMapPicture::ExitScreen() {
-  unsigned char multiplayerSessionActive = g_pSimMgr->multiplayerSessionRole != 0;
-  if (multiplayerSessionActive != 0) {
+  bool multiplayerSessionActive = g_pSimMgr->multiplayerSessionRole != 0;
+  if (multiplayerSessionActive) {
     g_pGameFlowState->ResetLocalUiStateAndPostTurnEvent5E5();
     return;
   }
@@ -383,7 +383,7 @@ void TSetupRandomMapPicture::ExitScreen() {
 }
 
 // FUNCTION: IMPERIALISM 0x00578230
-void TSetupRandomMapPicture::GroundControlToMajorTom(unsigned char mode) {
+void TSetupRandomMapPicture::GroundControlToMajorTom(bool mode) {
   TSpaceCommand* command = new TSpaceCommand();
   command->ICommand(kControlTagNASA, g_pAmbitApplication, 0, 0, 0);
   command->setupPicture18 = this;

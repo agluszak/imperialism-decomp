@@ -69,7 +69,7 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
     postEventCode = EncodeTurnEventCode(kTurnEventGamePreferences);
   } else if (controlTag == kControlTagRand) {
     short shiftState = static_cast<short>(GetAsyncKeyState(VK_SHIFT));
-    if ((shiftState & 0x8000) != 0 && g_bRandomMapDeveloperCheatFlag != 0) {
+    if ((shiftState & 0x8000) != 0 && g_bRandomMapDeveloperCheatFlag) {
       // Developer cheat path: bypass the setup screens and instantly bootstrap a
       // fresh random map.
       g_pSfxPlaybackSystem->PlaySoundEffect(0x232c, 0, 1);
@@ -91,7 +91,7 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
         g_pGlobalMapState = new TMapMgr();
         g_pGlobalMapState->IMapMgr();
       }
-      g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(1);
+      g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(true);
       g_pGlobalMapState->AllocateAndResetTerrainAndCityScoreTables();
       g_pGlobalMapState->LoadPoliticalMapRegionSubtypeTableFromResourceStream();
       for (short tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {

@@ -208,7 +208,7 @@ void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNat
   // labels. Comparing against the loop counter instead would leave exactly one caption
   // enabled, which is why the whole map key rendered nameless. The `movsx eax,al` that
   // follows the `sete` is the tell that the flag lives in a char temp, not an int.
-  char enabled = selectedNation == 0;
+  bool enabled = selectedNation == 0;
   for (int i = 0; i < 7; i++) {
     TView* child = mapKey.ResolveControlByTag(kControlTagNam0 + i);
     child->AssertValid();

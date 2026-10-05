@@ -69,10 +69,10 @@ IMPLEMENT_DYNCREATE(TMapMgr, TObject)
 // FUNCTION: IMPERIALISM 0x0050e3d0
 TMapMgr::TMapMgr() : TObject(), cityScoreTable(0), scenarioTagText() {
   field8 = 0;
-  strategicMapPalettePreviewReady = 0;
+  strategicMapPalettePreviewReady = false;
   terrainStateTable = 0;
   field9 = 1;
-  field24 = 0;
+  field24 = false;
   pendingRiverMouthTile = -1;
 }
 
@@ -116,7 +116,7 @@ void TMapMgr::ReadFrom(TStream* stream) {
   for (i = 0; i < 0x180; ++i) {
     cityScoreTable[i].stationedUnitChain98 = nullptr;
   }
-  strategicMapPalettePreviewReady = 0;
+  strategicMapPalettePreviewReady = false;
   if (g_nSaveFormatVersion < 0x32) {
     for (i = 0; i < 0x1950; ++i) {
       terrainStateTable[i].perTileVisitedFlag0f = 0;
@@ -250,16 +250,16 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
   }
   TMapMaker* mapMaker = new TMapMaker();
 
-  char sessionActive;
-  if (g_pSimMgr->reloadPoliticalMapState != 0 || g_pSimMgr->scenarioMapIndexPlusOne != 0) {
-    sessionActive = 1;
+  bool sessionActive;
+  if (g_pSimMgr->reloadPoliticalMapState || g_pSimMgr->scenarioMapIndexPlusOne != 0) {
+    sessionActive = true;
   } else {
-    sessionActive = 0;
+    sessionActive = false;
   }
   mapMaker->modeByte2a1 = hexNeighborWrapHorizontally;
 
-  if (sessionActive != 0) {
-    if (g_pSimMgr->reloadPoliticalMapState != 0) {
+  if (sessionActive) {
+    if (g_pSimMgr->reloadPoliticalMapState) {
       // Replay path: reload the political tables and refresh every tile in place.
       LoadPoliticalMapRegionSubtypeTableFromResourceStream();
       short tile;
@@ -302,7 +302,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
   if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
     g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
   }
-  if (sessionActive == 0) {
+  if (!sessionActive) {
     // Fresh map: stamp the icon variants and snapshot every tile's owner as the
     // former owner.
     short tile;
@@ -316,7 +316,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
     g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
   }
   RebuildTileOwnerNeighborCachesAndFallbackAssignments();
-  if (sessionActive != 0) {
+  if (sessionActive) {
     // Loaded map: assign contiguous region-class codes across the linked city records.
     int nextClassCode = 0;
     int rec;
@@ -339,7 +339,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
   if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
     g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
   }
-  if (sessionActive == 0) {
+  if (!sessionActive) {
     GuaranteeResources();
   }
   if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
@@ -352,7 +352,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
   if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
     g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
   }
-  if (sessionActive == 0) {
+  if (!sessionActive) {
     short tile;
     for (tile = 0; tile < 0x1950; ++tile) {
       AssignPictToTile(tile);
@@ -598,7 +598,7 @@ void TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments() {
         int i = 0;
         const StrategicTileIndex* linkedTile = record->linkedTileIndices42;
         for (i = 0; i < record->linkedRegionCount; ++i) {
-          char hasForeignNeighbor = 0;
+          bool hasForeignNeighbor = false;
           short neighbors[6];
           GetNeighborTileIDArray(*linkedTile, neighbors, hexNeighborWrapHorizontally);
 
@@ -609,17 +609,17 @@ void TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments() {
             if (neighborTile != -1) {
               short neighborRec = terrainStateTable[neighborTile].cityRecordIndex;
               if (neighborRec != recIndex && neighborRec != -1) {
-                char inserted = 0;
-                hasForeignNeighbor = 1;
+                bool inserted = false;
+                hasForeignNeighbor = true;
                 int k = 0;
                 short* slot = record->adjacentRegionIds0A;
-                while (inserted == 0) {
+                while (!inserted) {
                   if (*slot == -1) {
                     *slot = neighborRec;
-                    inserted = 1;
+                    inserted = true;
                     slot[0xc] = neighborTile;
                   } else if (*slot == neighborRec) {
-                    inserted = 1;
+                    inserted = true;
                   }
                   ++k;
                   ++slot;
@@ -632,7 +632,7 @@ void TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments() {
             ++neighborWalker;
           }
 
-          if (hasForeignNeighbor == 0) {
+          if (!hasForeignNeighbor) {
             interiorTiles[interiorCount] = *linkedTile;
             ++interiorCount;
           }
@@ -1310,7 +1310,7 @@ bool TMapMgr::CheckTileVariantCodeMembershipSetD(StrategicTileIndex tileIndex) {
 
 // FUNCTION: IMPERIALISM 0x005114b0
 short __stdcall ResolveRiverSpriteVariantForConnectionMask(unsigned char connectionMask,
-                                                           unsigned char waterTerrain) {
+                                                           bool waterTerrain) {
   const unsigned char singleDirectionVariants[8] = {7, 0, 1, 2, 3, 4, 6, 5};
   const unsigned char pairedDirectionMasks[16] = {0x12, 0x22, 0x82, 0x42, 0x24, 0x28, 0x84, 0x88,
                                                   0x44, 0x48, 0x05, 0x09, 0x90, 0x50, 0x11, 0x21};
@@ -1577,7 +1577,7 @@ void TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress() {
     hexNeighborWrapHorizontally = 1;
     BuildOrLoadGlobalMapStateForSession("mapdata", nullptr);
   }
-  if (strategicMapPalettePreviewReady == 0) {
+  if (!strategicMapPalettePreviewReady) {
     g_pViewMgr->RenderTurnEventPalettePreviewSurfaceAndProgress();
   }
 }
@@ -1591,7 +1591,7 @@ void TMapMgr::DispatchTurnEvent7DDForActiveNation() {
 
 // FUNCTION: IMPERIALISM 0x00511f10
 short TMapMgr::ComputeRepresentativeTileIndexForNation(int nationSlot) {
-  return ComputeRepresentativeTileIndexForNationWithWrapBias(static_cast<short>(nationSlot), 1);
+  return ComputeRepresentativeTileIndexForNationWithWrapBias(static_cast<short>(nationSlot), true);
 }
 
 inline void TMapMgr::MarkOwnedRegionClasses(TLongintList* regionList, bool* regionClassSeen) {
@@ -2166,7 +2166,7 @@ short TMapMgr::FindMaxResourceCapabilityValueForTile(StrategicTileIndex tileInde
 // FUNCTION: IMPERIALISM 0x005137b0
 char TMapMgr::CanBuildPortAtTile(StrategicTileIndex tileIndex) {
   TTerrainStateRecord* tile = &terrainStateTable[tileIndex];
-  char result = 0;
+  bool result = false;
   if (tile->GetTerrainKind() != kStrategicTerrainMountain &&
       tile->GetTerrainKind() != kStrategicTerrainHills) {
     int row = tileIndex / 0x6c;
@@ -2190,14 +2190,14 @@ char TMapMgr::CanBuildPortAtTile(StrategicTileIndex tileIndex) {
       }
       if (neighbor != -1 &&
           terrainStateTable[neighbor].GetTerrainKind() == kStrategicTerrainWater) {
-        result = 1;
+        result = true;
         break;
       }
     }
   }
-  if (result == 0 && tile->riverSpriteCode != kRiverSpriteCodeNone &&
+  if (!result && tile->riverSpriteCode != kRiverSpriteCodeNone &&
       EvaluateTerrainFlowCrossNationBoundaryToSea(tileIndex) == 0) {
-    result = 1;
+    result = true;
   }
   return result;
 }
@@ -2294,7 +2294,7 @@ bool TMapMgr::IsValidSecondaryNationHomeTileCandidate(StrategicTileIndex tileInd
 // FUNCTION: IMPERIALISM 0x00513ca0
 char TMapMgr::HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(StrategicTileIndex tileIndex) {
   int originNation = static_cast<signed char>(terrainStateTable[tileIndex].ownerNationTag04);
-  char result = 0;
+  bool result = false;
   short row = static_cast<short>(tileIndex / 0x6c);
   int colX2 = row % 2 + (tileIndex % 0x6c) * 2;
 
@@ -2334,20 +2334,20 @@ char TMapMgr::HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(StrategicTi
       short neighborNation = terrainStateTable[neighborTile].ownerNationTag04;
       if (g_pActiveMapOrderContext->GetMapActionContextEntryByNationCodeOffset17(neighborNation)
               ->HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(originNation) == 0) {
-        result = 1;
+        result = true;
       }
       break;
     }
   }
 
-  if (result == 0 &&
+  if (!result &&
       g_pGlobalMapState->terrainStateTable[tileIndex].riverSpriteCode != kRiverSpriteCodeNone &&
       EvaluateTerrainFlowCrossNationBoundaryToSea(tileIndex) == 0) {
     short seaTile = TraceTerrainFlowToNearestSeaTile(tileIndex);
     short seaNation = terrainStateTable[seaTile].ownerNationTag04;
     if (g_pActiveMapOrderContext->GetMapActionContextEntryByNationCodeOffset17(seaNation)
             ->HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(originNation) == 0) {
-      result = 1;
+      result = true;
     }
   }
   return result;
@@ -2575,7 +2575,7 @@ int TMapMgr::QueueDepotConstructionOrder(StrategicTileIndex nTileIndex, short nN
     town->activeFlag = true;
   } else {
     town = new TTown();
-    town->ITown(static_cast<LPCSTR>(emptyName), nTileIndex, 0, nNationId);
+    town->ITown(static_cast<LPCSTR>(emptyName), nTileIndex, false, nNationId);
 
     TSortedList* townMarkers = g_apNationStates[nNationId]->townMarkerList;
     if (townMarkers == 0) {
@@ -2609,7 +2609,7 @@ void TMapMgr::QueuePortConstructionOrder(StrategicTileIndex nTileIndex, short nN
     town->enabledFlag = true;
   } else {
     town = new TTown();
-    town->ITown(g_szEmptyString, nTileIndex, 1, nNationId);
+    town->ITown(g_szEmptyString, nTileIndex, true, nNationId);
 
     TSortedList* townMarkers = g_apNationStates[nNationId]->townMarkerList;
     if (townMarkers == 0) {
@@ -2704,7 +2704,7 @@ void TMapMgr::PlaceCity(StrategicTileIndex nTileIndex, short nOwnerNationId) {
 // FUNCTION: IMPERIALISM 0x00514c80
 StrategicTileIndex
 TMapMgr::FindReachableRecruitSpawnTileWithVisitedReset(StrategicTileIndex startTileIndex,
-                                                       char allowActiveFlag2) {
+                                                       bool allowActiveFlag2) {
   signed char ownerNationTag = terrainStateTable[startTileIndex].ownerNationTag04;
   for (int tileIndex = 0; tileIndex < kGlobalMapTileCount; ++tileIndex) {
     terrainStateTable[tileIndex].recruitSearchVisited0e = 0;
@@ -2715,7 +2715,7 @@ TMapMgr::FindReachableRecruitSpawnTileWithVisitedReset(StrategicTileIndex startT
 // FUNCTION: IMPERIALISM 0x00514cd0
 StrategicTileIndex TMapMgr::FindReachableRecruitSpawnTileRecursive(StrategicTileIndex tileIndex,
                                                                    short ownerNationTag,
-                                                                   char allowActiveFlag2) {
+                                                                   bool allowActiveFlag2) {
   TTerrainStateRecord* tile = &terrainStateTable[tileIndex];
   if (tile->recruitSearchVisited0e != 0) {
     return -1;
@@ -2740,7 +2740,7 @@ StrategicTileIndex TMapMgr::FindReachableRecruitSpawnTileRecursive(StrategicTile
     if ((tile->activeFlags1c & 2) == 0) {
       return tileIndex;
     }
-    if (allowActiveFlag2 != 0) {
+    if (allowActiveFlag2) {
       return tileIndex;
     }
   }
@@ -3479,7 +3479,7 @@ short TMapMgr::GetMapImprovementOffsetByTownTransportLink(StrategicTileIndex til
   (void)unusedParam2;
   unsigned short flags = terrainStateTable[tileIndex].activeFlags1c;
   TTown* town = FindTownMarkerForTileByOwnerNation(tileIndex);
-  unsigned char linked = (town != nullptr) ? town->transportLinked : 1;
+  bool linked = (town != nullptr) ? town->transportLinked : 1;
   if (flags & 4) {
     if (flags & 0x10) {
       return linked ? 0x840 : 0xa40;
@@ -3575,7 +3575,7 @@ void TMapMgr::ResetAllTileMarkerSlotIndicesToSentinel() {
 
 // FUNCTION: IMPERIALISM 0x005178f0
 short TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlot,
-                                                                   char wrapBias) {
+                                                                   bool wrapBias) {
   TTerrainStateRecord* tileTable = terrainStateTable;
   Province* cityTable = cityScoreTable;
   unsigned int colSum = 0;
@@ -3589,7 +3589,7 @@ short TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias(short nationS
     if (ownerNationTag != nationSlot) {
       continue;
     }
-    char includeTile = 1;
+    bool includeTile = true;
     if (nationSlot < 0x17 && g_apTerrainTypeDescriptorTable[nationSlot] != 0 &&
         g_apTerrainTypeDescriptorTable[nationSlot]->homeTileIndex != -1) {
       short nationHomeTile =
@@ -3599,10 +3599,10 @@ short TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias(short nationS
       ProvinceIndexStorage nationTileCityLink = tileTable[nationHomeTile].cityRecordIndex;
       signed char nationCityByte = cityTable[nationTileCityLink].regionClassA3;
       if (tileCityByte != nationCityByte) {
-        includeTile = 0;
+        includeTile = false;
       }
     }
-    if (includeTile == 0) {
+    if (!includeTile) {
       continue;
     }
     int tileCol = tileIndex % 0x6c;
@@ -3618,7 +3618,7 @@ short TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias(short nationS
   }
 
   if (westCount >= 1 && static_cast<int>(eastCount) >= 1) {
-    if (wrapBias == 0) {
+    if (!wrapBias) {
       tileCount = 0;
       rowSum = 0;
       colSum = 0;
@@ -3637,7 +3637,7 @@ short TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias(short nationS
         rowSum = rowSum + tileIndex / 0x6c;
         tileCount = tileCount + 1;
       }
-    } else if (wrapBias != 0) {
+    } else if (wrapBias) {
       colSum = colSum + static_cast<unsigned int>(westCount * 0x6c);
     }
   }
@@ -3673,18 +3673,18 @@ char TMapMgr::AreNationsBorderLinked(int nationA, int nationB) {
   do {
     int regionId = regionList->At(ordinal);
     Province* record = &cityScoreTable[regionId];
-    char found = 0;
+    bool found = false;
     int neighborCount = record->adjacentRegionCount08;
     if (neighborCount > 0) {
       for (int neighborIndex = 0; neighborIndex < neighborCount; ++neighborIndex) {
         short neighborRegionId = record->adjacentRegionIds0A[neighborIndex];
         if (cityScoreTable[neighborRegionId].ownerNationCode00 == nationB) {
-          found = 1;
+          found = true;
           break;
         }
       }
     }
-    if (found != 0) {
+    if (found) {
       return 1;
     }
     ++ordinal;
@@ -3719,11 +3719,11 @@ bool TMapMgr::HasAdjacentProvinceOwnedByNation(int provinceIndex, int ownerNatio
 
 // FUNCTION: IMPERIALISM 0x00517dd0
 bool TMapMgr::HasDirectOrFallbackLinkedNodeType(ProvinceIndex cityRecordIndex, int nationCode,
-                                                char allowFallback) {
+                                                bool allowFallback) {
   Province* record = &cityScoreTable[cityRecordIndex];
   int neighborCount = record->adjacentRegionCount08;
 
-  if (allowFallback == 0 || nationCode > 6) {
+  if (!allowFallback || nationCode > 6) {
     for (int neighborIndex = 0; neighborIndex < neighborCount; ++neighborIndex) {
       short neighborRegionId = record->adjacentRegionIds0A[neighborIndex];
       if (cityScoreTable[neighborRegionId].ownerNationCode00 == nationCode) {
@@ -3783,10 +3783,10 @@ int TMapMgr::CollectSecondDegreeLinksMatchingNodeType(ProvinceIndex cityRecordIn
 // FUNCTION: IMPERIALISM 0x00518090
 int TMapMgr::CollectSecondDegreeLinksWithMinorNationFallback(ProvinceIndex cityRecordIndex,
                                                              int nationTag, int* nodeBuffer,
-                                                             char allowFallback) {
+                                                             bool allowFallback) {
   int resultCount =
       CollectSecondDegreeLinksMatchingNodeType(cityRecordIndex, nationTag, nodeBuffer);
-  if (resultCount <= 0 && allowFallback != 0 && nationTag >= 7) {
+  if (resultCount <= 0 && allowFallback && nationTag >= 7) {
     int minorIndex;
     for (minorIndex = 0; minorIndex < 16; ++minorIndex) {
       if (g_apTerrainTypeDescriptorTable[7 + minorIndex] != 0 &&
@@ -4129,7 +4129,7 @@ int TMapMgr::CalculateDeveloperTilePurchaseCost(StrategicTileIndex nTileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x00518bd0
-void TMapMgr::MarkAdjacentHexOrderDirectionAndSelectTile(int tileIndex, int contextArg, char flag) {
+void TMapMgr::MarkAdjacentHexOrderDirectionAndSelectTile(int tileIndex, int contextArg, bool flag) {
   short anchorTile = cityScoreTable[contextArg].cityTileIndex04;
   short direction =
       GetDirectionFrom(anchorTile, g_pGlobalMapState->cityScoreTable[tileIndex].cityTileIndex04);
@@ -4168,7 +4168,7 @@ void TMapMgr::MarkAdjacentHexOrderDirectionAndSelectTile(int tileIndex, int cont
 
   if (finalTileIndex != -1) {
     signed char directionCode = static_cast<signed char>((direction + 3) % 6 + 1);
-    if (flag != 0) {
+    if (flag) {
       directionCode += 6;
     }
     g_pGlobalMapState->terrainStateTable[finalTileIndex].perTileVisitedFlag0f = directionCode;
@@ -4194,7 +4194,7 @@ void TMapMgr::MarkDirectionalMapOverlayFlagsForNationOrders() {
   TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset());
   while (cursor.More()) {
     if (unit->orderTargetIndex0C != -1) {
-      char atWar = g_pDiplomacyTurnStateManager->IsNationPairAtWar(
+      bool atWar = g_pDiplomacyTurnStateManager->IsNationPairAtWar(
           activeNationId, cityScoreTable[unit->orderTargetIndex0C].ownerNationCode00);
       MarkAdjacentHexOrderDirectionAndSelectTile(unit->tileIndex06, unit->orderTargetIndex0C,
                                                  atWar);
@@ -4692,7 +4692,7 @@ char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(StrategicTileIndex ti
 
   for (int attempt = 0; attempt < 2; ++attempt) {
     short flowType = static_cast<short>(terrainTable[tileIndex].riverSpriteCode);
-    char crossedBoundary = 0;
+    bool crossedBoundary = false;
     if (flowType == kRiverSpriteCodeNone) {
       return static_cast<char>(0xff);
     }
@@ -4739,7 +4739,7 @@ char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(StrategicTileIndex ti
         if (attempt > 0) {
           return 1;
         }
-        crossedBoundary = 1;
+        crossedBoundary = true;
       }
 
       short preferredDirection = static_cast<short>((static_cast<int>(stepDirection) + 3) % 6);

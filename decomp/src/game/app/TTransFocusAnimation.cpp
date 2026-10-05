@@ -137,7 +137,7 @@ void TTransFocusAnimation::DrawNextFrame(POINT* offset) {
                                    animatorTarget->GetBlitSurface(), &destinationRect, &clipRect,
                                    0);
 
-  if (enabledFlag != 0) {
+  if (enabledFlag) {
     RECT overlayRect;
     overlayRect.left = frameIndex * width;
     overlayRect.right = overlayRect.left + width;

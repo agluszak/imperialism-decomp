@@ -57,19 +57,19 @@ template <class T> static T* AllocateCityMinisterScratchArray(int count, int ass
   return result;
 }
 // FUNCTION: IMPERIALISM 0x004bdf90
-char IsResourceCodeInRange13To16(short resourceCode) {
+bool IsResourceCodeInRange13To16(short resourceCode) {
   if (resourceCode >= 0xd && resourceCode <= 0x10) {
-    return 1;
+    return true;
   }
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004bdfc0
-char IsResourceCodeInRanges0To6Or17To22(short resourceCode) {
+bool IsResourceCodeInRanges0To6Or17To22(short resourceCode) {
   if ((resourceCode >= 0 && resourceCode <= 6) || (resourceCode >= 0x11 && resourceCode <= 0x16)) {
-    return 1;
+    return true;
   }
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004be000
@@ -1039,7 +1039,7 @@ short TCityInteriorMinister::RebuildNeedTargetsAndQueueProductionShortfalls(
 int TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore() {
   short nationSlot = ownerContextAt04->nationSlot;
   TTown* candidateTown = new TTown();
-  candidateTown->ITown("Bleah", 0, 1, nationSlot);
+  candidateTown->ITown("Bleah", 0, true, nationSlot);
 
   int bestScore = -1;
   int bestTileIndex = -1;
@@ -1299,7 +1299,7 @@ void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
         order->unitOrder != kUnitOrderIdle) {
       continue;
     }
-    char useHighNibble = order->orderType == EncodeCivilianUnitKind(kCivilianUnitMiner) ||
+    bool useHighNibble = order->orderType == EncodeCivilianUnitKind(kCivilianUnitMiner) ||
                          order->orderType == EncodeCivilianUnitKind(kCivilianUnitDriller);
     bool assigned = false;
     for (int candidateOrdinal = 0; candidateOrdinal < candidateTiles.GetSize() && !assigned;
@@ -1486,12 +1486,12 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
           hasActiveProspecting = true;
         }
       }
-      bool developmentBlocked = (tile->pendingDevelopmentFlag0d & (1 << nationSlot)) != 0 ||
-                                (g_pGlobalMapState->field24 != 0 &&
-                                 (tile->GetTerrainKind() == kStrategicTerrainHills ||
-                                  tile->GetTerrainKind() == kStrategicTerrainMountain ||
-                                  tile->GetTerrainKind() == kStrategicTerrainSwamp ||
-                                  tile->GetTerrainKind() == kStrategicTerrainDesert));
+      bool developmentBlocked =
+          (tile->pendingDevelopmentFlag0d & (1 << nationSlot)) != 0 ||
+          (g_pGlobalMapState->field24 && (tile->GetTerrainKind() == kStrategicTerrainHills ||
+                                          tile->GetTerrainKind() == kStrategicTerrainMountain ||
+                                          tile->GetTerrainKind() == kStrategicTerrainSwamp ||
+                                          tile->GetTerrainKind() == kStrategicTerrainDesert));
       if (!hasActiveProspecting && !developmentBlocked && prospectingOrderCount != 0 &&
           relationScale[minorNation] != 0.0f) {
         InsertScoredTileCandidateWithRandomTieBreak(relationScale[minorNation], tileIndex,
@@ -1629,7 +1629,7 @@ void TCityInteriorMinister::SeekLostTowns(char* primaryDistanceMap, char* second
   CIterator townIterator(ownerContextAt04->townMarkerList);
   TTown* town = static_cast<TTown*>(townIterator.Reset());
   while (townIterator.More()) {
-    if (town->transportLinked == 0 &&
+    if (!town->transportLinked &&
         (primaryDistanceMap[town->tileIndex] < 12 || (secondaryDistanceMap[town->tileIndex] < 8 &&
                                                       secondaryDistanceMap[town->tileIndex] > 2))) {
       field3c = town->tileIndex;
@@ -1727,7 +1727,7 @@ void TCityInteriorMinister::StartRailheadProject(ResourceKindStorage resourceKin
                                                  char* primaryDistanceMap,
                                                  char* secondaryDistanceMap) {
   TTown* projectedTown = new TTown();
-  projectedTown->ITown("Bleah", 0, 1, ownerContextAt04->nationSlot);
+  projectedTown->ITown("Bleah", 0, true, ownerContextAt04->nationSlot);
   TLongintList* candidateTiles = new TLongintList();
 
   for (int ownedTileOrdinal = 0; ownedTileOrdinal < ownedTiles->GetSize(); ++ownedTileOrdinal) {
@@ -1781,7 +1781,7 @@ void TCityInteriorMinister::StartRailheadProject(ResourceKindStorage resourceKin
 short TCityInteriorMinister::EvaluateResources(short tileIndex) {
   TCity* city = ownerContextAt04 == 0 ? 0 : ownerContextAt04->city;
   TTown* candidateTown = new TTown();
-  candidateTown->ITown("Bleah", tileIndex, 1, ownerContextAt04->nationSlot);
+  candidateTown->ITown("Bleah", tileIndex, true, ownerContextAt04->nationSlot);
   short* citySummary = city->GetCitySummaryRecordSlot74();
   candidateTown->CalculateResources();
 
@@ -1811,7 +1811,7 @@ short TCityInteriorMinister::EvaluateResources(short tileIndex) {
                                         candidateTown->resourceYieldByType[kResourceGems]) *
                                            shortage);
   }
-  if (candidateTown->transportLinked != 0) {
+  if (candidateTown->transportLinked) {
     score = static_cast<short>((score * 3) / 2);
   }
   candidateTown->Free();

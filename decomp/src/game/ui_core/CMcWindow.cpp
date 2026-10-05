@@ -49,7 +49,7 @@ CMcWindow::CMcWindow(TWindow* descriptor) : CWnd() {
   case 0x30:
   case 0x1f40:
     dwExStyle = 0x80;
-    if (descriptor->useCaptionedFrameFlag6d == 0) {
+    if (!descriptor->useCaptionedFrameFlag6d) {
       dwStyle |= 0x80c00000;
     } else {
       dwStyle |= 0x00c80000;
@@ -60,7 +60,7 @@ CMcWindow::CMcWindow(TWindow* descriptor) : CWnd() {
     // validates them with debug asserts.
     break;
   }
-  if (descriptor->topmostFlag70 != 0) {
+  if (descriptor->topmostFlag70) {
     dwExStyle |= 0x8; // WS_EX_TOPMOST
   }
 

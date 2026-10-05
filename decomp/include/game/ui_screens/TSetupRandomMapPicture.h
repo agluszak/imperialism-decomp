@@ -19,17 +19,17 @@ public:
 
   void RecheckCountryName();                        // 0x576fe0
   void SetSelectedNationSlot(short nationSlot);     // 0x576ef0
-  void GroundControlToMajorTom(unsigned char mode); // 0x578230
+  void GroundControlToMajorTom(bool mode);          // 0x578230
   void MajorTomToGroundControl(unsigned char mode); // 0x578330
   void SpinYourGlobe();                             // 0x578680
 
-  CString planetSeed94;                // 0x94 — random-map seed text
-  unsigned char wrapHorizontally98;    // 0x98 — copied to TMapMgr+0x20
-  unsigned char pad99;                 // 0x99
-  short selectedNationSlot9A;          // 0x9a — selected great-power slot
-  unsigned int lastGlobeTick9C;        // 0x9c — spinner timestamp
-  int globeFrameA0;                    // 0xa0 — 0..23 spinner frame
-  unsigned char countryControlReadyA4; // 0xa4 — ctor zeroes it
-  unsigned char padA5[3];              // 0xa5
+  CString planetSeed94;             // 0x94 — random-map seed text
+  unsigned char wrapHorizontally98; // 0x98 — copied to TMapMgr+0x20
+  unsigned char pad99;              // 0x99
+  short selectedNationSlot9A;       // 0x9a — selected great-power slot
+  unsigned int lastGlobeTick9C;     // 0x9c — spinner timestamp
+  int globeFrameA0;                 // 0xa0 — 0..23 spinner frame
+  bool countryControlReadyA4;       // 0xa4 — ctor zeroes it
+  unsigned char padA5[3];           // 0xa5
 };
 ASSERT_SIZE(TSetupRandomMapPicture, 0xa8);

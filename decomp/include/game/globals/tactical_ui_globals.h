@@ -24,7 +24,7 @@ extern TechPrerequisitePair g_aTechItemPrerequisitePairs[34];
 extern const int g_anTechItemPurchaseCostBySlot_0066aae8[34];
 
 extern "C" {
-extern char g_nForceTacticalBattleViewFlag_006A4758;
+extern bool g_nForceTacticalBattleViewFlag_006A4758;
 
 // 26 (start, end) capability-priority range pairs followed by two padding shorts.
 // Retail anchors the loop cursor at element 1, pair 0's end.

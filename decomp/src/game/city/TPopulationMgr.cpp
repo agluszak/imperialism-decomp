@@ -350,7 +350,7 @@ short* TPopulationMgr::PredictedNeeds() {
 
 // FUNCTION: IMPERIALISM 0x004b65b0
 char TPopulationMgr::Strike() {
-  char shortage = 0;
+  bool shortage = false;
   int skilledPopulation = baselineSlots10->mediumSkillCount06 + baselineSlots10->highSkillCount08;
   short consumptionByResource[4];
   consumptionByResource[0] = 0;
@@ -371,7 +371,7 @@ char TPopulationMgr::Strike() {
     if (city04->CityStockByType(resourceType) < amount) {
       city04->CityStockByType(resourceType) = 0;
       city04->VerifyStocks();
-      shortage = 1;
+      shortage = true;
     } else {
       city04->CityStockByType(resourceType) =
           static_cast<short>(city04->CityStockByType(resourceType) - amount);

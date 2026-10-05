@@ -34,14 +34,14 @@ char UpdateDeferredCdAudioFade() {
   TSoundPlayer* soundPlayer = g_pSfxPlaybackSystem;
   if (soundPlayer != 0) {
     unsigned int fadeStartTick16 = soundPlayer->fadeStartTick16;
-    char keepTimer = 1;
+    bool keepTimer = true;
     if (fadeStartTick16 > 0) {
       unsigned int now = GetTickCountDiv16();
       int remaining = static_cast<int>(g_pSimMgr->preferenceValues[kCdAudioVolumePreference]) -
                       static_cast<int>(now) + static_cast<int>(soundPlayer->fadeStartTick16);
       if (!(remaining > 0 && soundPlayer->fadeStartTick16 <= now)) {
         remaining = 0;
-        keepTimer = 0;
+        keepTimer = false;
         soundPlayer->fadeStartTick16 = 0;
         if (static_cast<short>(soundPlayer->pendingAudioCueId) == static_cast<short>(remaining)) {
           g_cdAudioDevice.StopPlayback();
@@ -50,7 +50,7 @@ char UpdateDeferredCdAudioFade() {
       g_cdAudioDevice.ApplyAuxOutputVolumeFromScalar(static_cast<short>(remaining) << 8);
       return keepTimer;
     }
-    keepTimer = 0;
+    keepTimer = false;
     return keepTimer;
   }
   return 0;
@@ -69,32 +69,32 @@ TSoundPlayer::TSoundPlayer()
 char TSoundPlayer::DoIdle(int action) {
   (void)action;
   if (g_pSimMgr->preferenceValues[kCdAudioVolumePreference] == 0) {
-    if (this->cdAudioPlaybackActive != 0) {
+    if (this->cdAudioPlaybackActive) {
       if (g_cdAudioDevice.IsPlaybackActive()) {
         g_cdAudioDevice.StopPlayback();
       }
-      this->cdAudioPlaybackActive = 0;
+      this->cdAudioPlaybackActive = false;
     }
     return 0;
   }
 
-  if (this->clearCuePoolsAfterFade != 0 && this->fadeStartTick16 == 0) {
+  if (this->clearCuePoolsAfterFade && this->fadeStartTick16 == 0) {
     int n = this->audioCuePool->GetSize();
     if (n > 0) {
       this->audioCuePool->RemoveAll();
       this->remainingRandomAudioCues->RemoveAll();
     }
-    if (this->cdAudioPlaybackActive != 0) {
+    if (this->cdAudioPlaybackActive) {
       g_cdAudioDevice.StopPlayback();
-      this->cdAudioPlaybackActive = 0;
+      this->cdAudioPlaybackActive = false;
       this->activeAudioCueId = 0;
     }
-    this->clearCuePoolsAfterFade = 0;
+    this->clearCuePoolsAfterFade = false;
     return 0;
   }
 
   if (this->pendingAudioCueId != 0 && this->fadeStartTick16 == 0) {
-    this->RequestAudioPresetChangeWithDeferredApply(this->pendingAudioCueId, 0);
+    this->RequestAudioPresetChangeWithDeferredApply(this->pendingAudioCueId, false);
     this->pendingAudioCueId = 0;
     return 0;
   }
@@ -114,14 +114,14 @@ char TSoundPlayer::DoIdle(int action) {
 
 // FUNCTION: IMPERIALISM 0x00593530
 char TSoundPlayer::FadeCD() {
-  char keepTimer = 1;
+  bool keepTimer = true;
   if (fadeStartTick16 > 0) {
     unsigned int now = GetTickCountDiv16();
     int remaining = static_cast<int>(g_pSimMgr->preferenceValues[kCdAudioVolumePreference]) -
                     static_cast<int>(now) + static_cast<int>(fadeStartTick16);
     if (!(remaining > 0 && fadeStartTick16 <= now)) {
       remaining = 0;
-      keepTimer = 0;
+      keepTimer = false;
       fadeStartTick16 = 0;
       if (static_cast<short>(pendingAudioCueId) == static_cast<short>(remaining)) {
         g_cdAudioDevice.StopPlayback();
@@ -135,18 +135,18 @@ char TSoundPlayer::FadeCD() {
 
 // FUNCTION: IMPERIALISM 0x005935c0
 void TSoundPlayer::UpdateAudioPlaybackStateAndScheduleRandomCue() {
-  if (clearCuePoolsAfterFade != 0 && fadeStartTick16 == 0) {
+  if (clearCuePoolsAfterFade && fadeStartTick16 == 0) {
     int n = audioCuePool->GetSize();
     if (n > 0) {
       audioCuePool->RemoveAll();
       remainingRandomAudioCues->RemoveAll();
     }
-    if (cdAudioPlaybackActive != 0) {
+    if (cdAudioPlaybackActive) {
       g_cdAudioDevice.StopPlayback();
-      cdAudioPlaybackActive = 0;
+      cdAudioPlaybackActive = false;
       activeAudioCueId = 0;
     }
-    clearCuePoolsAfterFade = 0;
+    clearCuePoolsAfterFade = false;
     return;
   }
 
@@ -164,7 +164,7 @@ void TSoundPlayer::UpdateAudioPlaybackStateAndScheduleRandomCue() {
           g_cdAudioDevice.ApplyMciPlaybackRangeFromAudioManager(pending);
           g_cdAudioDevice.ApplyAuxOutputVolumeFromScalar(
               static_cast<short>(g_pSimMgr->preferenceValues[kCdAudioVolumePreference]) << 8);
-          cdAudioPlaybackActive = 1;
+          cdAudioPlaybackActive = true;
         }
       }
     }
@@ -199,7 +199,7 @@ void TSoundPlayer::PushCueToDualAudioCuePools(int cueId) {
 // FUNCTION: IMPERIALISM 0x00593790
 void TSoundPlayer::SelectAndScheduleRandomAudioCue() {
   if (g_pSimMgr->preferenceValues[kCdAudioVolumePreference] == 0 ||
-      IsTurnFlowCooldownActiveAndResetExpiredState() != 0) {
+      IsTurnFlowCooldownActiveAndResetExpiredState()) {
     return;
   }
 
@@ -220,7 +220,7 @@ void TSoundPlayer::SelectAndScheduleRandomAudioCue() {
   this->remainingRandomAudioCues->AtDelete(pick);
 
   if (g_pSimMgr->preferenceValues[kCdAudioVolumePreference] == 0 ||
-      IsTurnFlowCooldownActiveAndResetExpiredState() != 0) {
+      IsTurnFlowCooldownActiveAndResetExpiredState()) {
     return;
   }
   if (ReturnTrueStub() == 0) {
@@ -243,7 +243,7 @@ void TSoundPlayer::SelectAndScheduleRandomAudioCue() {
     g_cdAudioDevice.ApplyMciPlaybackRangeFromAudioManager(chosen);
     g_cdAudioDevice.ApplyAuxOutputVolumeFromScalar(
         static_cast<int>(g_pSimMgr->preferenceValues[kCdAudioVolumePreference]) << 8);
-    this->cdAudioPlaybackActive = 1;
+    this->cdAudioPlaybackActive = true;
   }
 }
 
@@ -252,7 +252,7 @@ void TSoundPlayer::RequestAudioPresetChangeWithDeferredApply(int presetId, bool 
   if (g_pSimMgr->preferenceValues[kCdAudioVolumePreference] == 0) {
     return;
   }
-  if (IsTurnFlowCooldownActiveAndResetExpiredState() != 0) {
+  if (IsTurnFlowCooldownActiveAndResetExpiredState()) {
     return;
   }
   if (ReturnTrueStub() == 0) {
@@ -263,7 +263,7 @@ void TSoundPlayer::RequestAudioPresetChangeWithDeferredApply(int presetId, bool 
     return;
   }
 
-  if (flag != 0 && static_cast<short>(this->activeAudioCueId) > 0) {
+  if (flag && static_cast<short>(this->activeAudioCueId) > 0) {
     // Deferred apply: stash the preset and arm the one-shot timer callback.
     this->pendingAudioCueId = static_cast<unsigned short>(presetId);
     if (this->fadeStartTick16 != 0) {
@@ -280,7 +280,7 @@ void TSoundPlayer::RequestAudioPresetChangeWithDeferredApply(int presetId, bool 
   g_cdAudioDevice.ApplyMciPlaybackRangeFromAudioManager(static_cast<short>(presetId));
   g_cdAudioDevice.ApplyAuxOutputVolumeFromScalar(
       static_cast<int>(g_pSimMgr->preferenceValues[kCdAudioVolumePreference]) << 8);
-  this->cdAudioPlaybackActive = 1;
+  this->cdAudioPlaybackActive = true;
 }
 
 // FUNCTION: IMPERIALISM 0x00593a10
@@ -289,17 +289,17 @@ void TSoundPlayer::SetActiveAudioCueAndResetQueue(int cueId, bool flag) {
     return;
   }
 
-  if (this->clearCuePoolsAfterFade != 0 && this->fadeStartTick16 == 0) {
+  if (this->clearCuePoolsAfterFade && this->fadeStartTick16 == 0) {
     int pending = this->audioCuePool->GetSize();
     if (pending > 0) {
       this->ResetDualAudioCuePools();
     }
-    if (this->cdAudioPlaybackActive != 0) {
+    if (this->cdAudioPlaybackActive) {
       g_cdAudioDevice.StopPlayback();
-      this->cdAudioPlaybackActive = 0;
+      this->cdAudioPlaybackActive = false;
       this->activeAudioCueId = 0;
     }
-    this->clearCuePoolsAfterFade = 0;
+    this->clearCuePoolsAfterFade = false;
   } else if (this->pendingAudioCueId != 0 && this->fadeStartTick16 == 0) {
     this->RequestAudioPresetChangeWithDeferredApply(this->pendingAudioCueId, false);
     this->pendingAudioCueId = 0;
@@ -324,7 +324,7 @@ void TSoundPlayer::SetActiveAudioCueAndResetQueue(int cueId, bool flag) {
   if (g_pSimMgr->preferenceValues[kCdAudioVolumePreference] == 0) {
     return;
   }
-  if (IsTurnFlowCooldownActiveAndResetExpiredState() != 0) {
+  if (IsTurnFlowCooldownActiveAndResetExpiredState()) {
     return;
   }
   if (ReturnTrueStub() == 0) {
@@ -350,32 +350,32 @@ void TSoundPlayer::SetActiveAudioCueAndResetQueue(int cueId, bool flag) {
   g_cdAudioDevice.ApplyMciPlaybackRangeFromAudioManager(static_cast<short>(cueId));
   g_cdAudioDevice.ApplyAuxOutputVolumeFromScalar(
       static_cast<int>(g_pSimMgr->preferenceValues[kCdAudioVolumePreference]) << 8);
-  this->cdAudioPlaybackActive = 1;
+  this->cdAudioPlaybackActive = true;
 }
 
 // FUNCTION: IMPERIALISM 0x00593c10
-void TSoundPlayer::StopCdAudioPlayback(char fadeOut) {
+void TSoundPlayer::StopCdAudioPlayback(bool fadeOut) {
   int pendingCount = audioCuePool->GetSize();
   if (pendingCount > 0) {
     audioCuePool->RemoveAll();
     remainingRandomAudioCues->RemoveAll();
   }
 
-  if (cdAudioPlaybackActive == 0) {
+  if (!cdAudioPlaybackActive) {
     return;
   }
-  if (fadeOut != 0) {
+  if (fadeOut) {
     if (fadeStartTick16 == 0) {
       fadeStartTick16 = GetTickCountDiv16();
       g_pAssetMgr->ScheduleTimerSlotCallbackWithInterval(&UpdateDeferredCdAudioFade,
                                                          kCdAudioFadeTimerInterval, 0);
     }
-    clearCuePoolsAfterFade = 1;
+    clearCuePoolsAfterFade = true;
     return;
   }
 
   g_cdAudioDevice.StopPlayback();
-  cdAudioPlaybackActive = 0;
+  cdAudioPlaybackActive = false;
   activeAudioCueId = 0;
 }
 
@@ -426,7 +426,7 @@ unsigned char TSoundPlayer::DefaultSoundCapabilityPredicate() {
 // FUNCTION: IMPERIALISM 0x005e4f80
 void TSoundPlayer::RequestDirectSoundInitIfAllowed() {
   if (this->directSoundInitOkAt20 != 0) {
-    this->directSoundInitPendingAt21 = 1;
+    this->directSoundInitPendingAt21 = true;
     g_soundResourceManager.InitializeDirectSoundDeviceAndChannels();
   }
 }
@@ -442,7 +442,7 @@ unsigned char TSoundPlayer::DefaultSoundCompatibilityPredicate(int unusedArg1, i
 
 // FUNCTION: IMPERIALISM 0x005e4fd0
 void TSoundPlayer::ClearDirectSoundInitPendingAndResetState() {
-  this->directSoundInitPendingAt21 = 0;
+  this->directSoundInitPendingAt21 = false;
   g_soundResourceManager.ReleaseDirectSoundDeviceAndChannels();
 }
 
@@ -457,7 +457,7 @@ void TSoundPlayer::StopAllSoundChannels() {
 
 // FUNCTION: IMPERIALISM 0x005e5020
 void TSoundPlayer::SetMasterVolumeFromPercent(short percent) {
-  if (this->directSoundInitPendingAt21 != 0) {
+  if (this->directSoundInitPendingAt21) {
     double val = -pow(2.0, (100 - percent) * g_dMasterVolumeExponentScale);
     int volume = static_cast<int>(val);
     if (volume > 0) {

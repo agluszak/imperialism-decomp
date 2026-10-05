@@ -132,7 +132,7 @@ ASSERT_OFFSET(THelpMgr, tradeAdviceDetailLevel, 0x2e);
 // shortfalls, need overruns, population storms) through
 // TViewMgr::ModalMessage; returns nonzero when any alert
 // was dispatched.
-char ShowTurnAlertsForActiveNation();
+bool ShowTurnAlertsForActiveNation();
 
 #ifdef IMPERIALISM_RUNTIME_TESTS
 void ResetCapitolDangerWarningObservationForRuntimeTest();

@@ -281,10 +281,10 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
 
   TNumberText* purchaseControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagPurc));
   purchaseControl->AssertValid();
-  detailedErrorFlag = 1;
+  detailedErrorFlag = true;
   if (proposedAmount > maxAmount) {
     proposedAmount = maxAmount;
-    detailedErrorFlag = 0;
+    detailedErrorFlag = false;
   }
   purchaseControl->maximumValue = proposedAmount;
   BuildUiTextStyleDescriptor(&style, 0, 0xe, 0x2b67);
@@ -398,8 +398,8 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
   } else {
     city = gp->city;
   }
-  unsigned char notAligned = 0;
-  unsigned char hasSurplus = 0;
+  bool notAligned = false;
+  bool hasSurplus = false;
   short avail;
   short relDelta;
   short stock;
@@ -436,7 +436,7 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
   } else if (g_pHelpMgr->tradeAdviceDetailLevel == 1) {
     if (compat >= 1 &&
         g_apTerrainTypeDescriptorTable[offeringNationSlot]->IsColonyOf(respondingNationSlot) == 0) {
-      notAligned = 1;
+      notAligned = true;
     }
     if (commodityType != kResourceCotton && commodityType != kResourceWool) {
       avail = static_cast<short>(gp->ComputeProductionMetricForOrderKind(commodityType));
@@ -452,10 +452,10 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
       needTgt = static_cast<short>(gp->needTargetByType[1] + gp->needTargetByType[0]);
     }
     if (avail > stock + relDelta + needTgt) {
-      hasSurplus = 1;
+      hasSurplus = true;
     }
 
-    if (notAligned == 0 && hasSurplus == 0) {
+    if (!notAligned && !hasSurplus) {
       if (g_apTerrainTypeDescriptorTable[offeringNationSlot]->IsColonyOf(respondingNationSlot) !=
           0) {
         g_pSimMgr->GetString(0x2764, 0x10, &strTemplate);
@@ -468,12 +468,12 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
       g_pSimMgr->GetString(0x2764, 7, &strTemplate);
     } else {
       g_pSimMgr->GetString(0x2764, 0, &strPrefix);
-      if (notAligned != 0) {
+      if (notAligned) {
         g_pSimMgr->GetString(0x2764, (compat == 2) ? 1 : 2, &strTemplate);
         scanBracketExpressions(g_pSimMgr, &strNationClause, static_cast<LPCSTR>(strTemplate),
                                static_cast<LPCSTR>(strTargetNation));
       }
-      g_pSimMgr->GetString(0x2764, hasSurplus != 0 ? 3 : 4, &strTemplate);
+      g_pSimMgr->GetString(0x2764, hasSurplus ? 3 : 4, &strTemplate);
     }
     scanBracketExpressions(g_pSimMgr, &strTypeClause, static_cast<LPCSTR>(strTemplate),
                            static_cast<LPCSTR>(strCommodity));
@@ -611,7 +611,7 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
   } else {
     CString errorMessage;
     CString localizedMessage;
-    if (detailedErrorFlag != 0) {
+    if (detailedErrorFlag) {
       g_pSimMgr->GetString(0x2740, 0x10, &localizedMessage);
     } else {
       CString maxValueTemplate;

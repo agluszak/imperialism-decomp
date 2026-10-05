@@ -5,7 +5,7 @@
 #include "game/globals/view_registries.h"
 
 // FUNCTION: IMPERIALISM 0x004923f0
-CWMgrIterator* CWMgrIterator::Reset(char fForwardArg) {
+CWMgrIterator* CWMgrIterator::Reset(bool fForwardArg) {
   // Returns this (original leaves this in eax at RET); the flag is a signed char stored
   // sign-extended into the int field (movsx), so the parameter is char, not unsigned char.
   nextPosition = NULL;

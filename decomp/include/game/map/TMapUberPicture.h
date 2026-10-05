@@ -60,7 +60,7 @@ public:
   // Set to 1 by the ctor; read by SetActiveMapOrderEntry to gate
   // InvalidateMapRegionForOrderEntry calls around orderEntryContext98 updates (matches
   // TWorldView.cpp's independently-derived TMapOrderToolbarPendingState::invalidationFlag).
-  unsigned char invalidationFlag94;
+  bool invalidationFlag94;
   // 0=civilian, 1=army, 2=navy, 3=none (default) -- selects categoryPages[] below.
   short activeUnitCategoryIndex96;
   // The currently-selected map-order context node -- a TZone (map-action context), not a
@@ -145,7 +145,7 @@ public:
   void InvalidateMapRegionForEntryIfUiPassive(TZone* zone);
   // Scan the navy-order context chain from either the current entry or its successor,
   // select the first displayable entry, and refresh the navy panel. 0x005998a0.
-  bool TrySelectNextValidMapOrderEntry(char includeCurrent);
+  bool TrySelectNextValidMapOrderEntry(bool includeCurrent);
   // Mode-guarded void sibling used by click/navigation paths. 0x00599770.
   void SelectNextValidMapOrderEntryFromCursor(char includeCurrent);
   // Enters/exits the mode-specific overlay UI state (called from SetMapInteractionMode

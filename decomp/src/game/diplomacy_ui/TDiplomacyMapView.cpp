@@ -642,8 +642,8 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
 
   CRect invalidRect;
   CRect recurringGrantRect;
-  unsigned char grantUpdated;
-  unsigned char policyUpdated;
+  bool grantUpdated;
+  bool policyUpdated;
   eDipAction action = ResolveDiplomacyActionFromClickAndUpdateTarget(&point);
 
   switch (action) {
@@ -752,7 +752,7 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
   reject_one_time_validation:
     ShowDiplomacyActionRejectedNotice();
     action = kDipActionNone;
-    grantUpdated = 0;
+    grantUpdated = false;
   finish_one_time_grant:
     if (!grantUpdated) {
       break;
@@ -790,7 +790,7 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
   reject_recurring_validation:
     ShowDiplomacyActionRejectedNotice();
     action = kDipActionNone;
-    grantUpdated = 0;
+    grantUpdated = false;
   finish_recurring_grant:
     if (!grantUpdated) {
       break;
@@ -881,7 +881,7 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
   reject_policy_action:
     ShowDiplomacyActionRejectedNotice();
     action = kDipActionNone;
-    policyUpdated = 0;
+    policyUpdated = false;
   finish_policy_update:
     if (policyUpdated) {
       goto refresh_toolbar;
@@ -1032,7 +1032,7 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
             selectedTerrainIndexAt90, activeNationC2, action);
 
     short cursorId;
-    if (valid == 0) {
+    if (!valid) {
       cursorId = 0x41b;
     } else {
       cursorId = cursorIdsByAction[action];
@@ -1186,7 +1186,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
       QuickDrawPaletteIndex paletteIndex = g_pViewMgr->GetColor(static_cast<short>(eventCode));
       maskRuns[nationIndex].BlitMonochromeMaskBytePatternToSurface(
           &g_pActiveQuickDrawSurfaceContext->blitSurface, static_cast<short>(paletteIndex),
-          &maskOrigin, 1);
+          &maskOrigin, true);
 
       int packedColor = g_pViewMgr->GetColor(0x3f);
       packedColorRuns[nationIndex].AppendPackedColorDword(
@@ -1210,7 +1210,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
 void DiplomacyMaskBufferRun::BlitMonochromeMaskBytePatternToSurface(TQuickDrawBlitSurface* surface,
                                                                     TUiStyleRef paletteColor,
                                                                     const CPoint* origin,
-                                                                    unsigned char flipVertical) {
+                                                                    bool flipVertical) {
   unsigned char* maskCursor = maskBytesAt00;
   if (maskCursor == 0) {
     return;
@@ -1220,7 +1220,7 @@ void DiplomacyMaskBufferRun::BlitMonochromeMaskBytePatternToSurface(TQuickDrawBl
   unsigned int row = boundsAt04.top;
   unsigned char* destCursor;
   int rowAdvance;
-  if (flipVertical == 0) {
+  if (!flipVertical) {
     destCursor = surface->pixelBits + (origin->y + row) * rowStride + origin->x + boundsAt04.left;
     rowAdvance = boundsAt04.left + (rowStride - boundsAt04.right);
   } else {
@@ -1317,7 +1317,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
             g_pViewMgr->GetColor(static_cast<short>(relationshipNotch + 200));
         maskRuns[terrainIndex].BlitMonochromeMaskBytePatternToSurface(
             &g_pActiveQuickDrawSurfaceContext->blitSurface, static_cast<short>(paletteIndex),
-            &maskOrigin, 1);
+            &maskOrigin, true);
 
         int packedColor = g_pViewMgr->GetColor(0x3f);
         packedColorRuns[terrainIndex].AppendPackedColorDword(
@@ -1347,7 +1347,8 @@ void TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers(int maskIndex, int e
   QuickDrawPaletteIndex paletteIndex = g_pViewMgr->GetColor(static_cast<short>(eventCode));
   DiplomacyMaskBufferRun* maskRun = &maskRuns[maskIndex];
   maskRun->BlitMonochromeMaskBytePatternToSurface(&g_pActiveQuickDrawSurfaceContext->blitSurface,
-                                                  static_cast<short>(paletteIndex), &maskOrigin, 1);
+                                                  static_cast<short>(paletteIndex), &maskOrigin,
+                                                  true);
 
   int packedColor = g_pViewMgr->GetColor(0x3f);
   StrategicMapCallbackRecord* packedRun = &packedColorRuns[maskIndex];

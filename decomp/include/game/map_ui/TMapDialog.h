@@ -24,7 +24,7 @@ void ProjectTileIndexToMapGridPoint(int tileIndex, int* outX, int* outY, int cel
 // One transient tile-marker slot (8 bytes): a flag byte plus three sentinel-initialized
 // coordinate/state shorts. The map dialog keeps an array of 90 (0x5a) of these.
 struct TMapDialogTileMarker {
-  char flag;  // +0x00
+  bool flag;  // +0x00
   char pad01; // +0x01
   short a;    // +0x02 (init 0xffff)
   short b;    // +0x04 (init 0xffff)

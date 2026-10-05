@@ -273,7 +273,7 @@ int* WrapExtendedMapXCoordinateInPlace(int* x) {
 }
 
 // FUNCTION: IMPERIALISM 0x0052c990
-int ConvertTileIndexToOverlayCoord216BySide(int tileIndex, char side) {
+int ConvertTileIndexToOverlayCoord216BySide(int tileIndex, bool side) {
   unsigned int row = tileIndex / 0x6c;
   int column = (row & 1) + (tileIndex % 0x6c) * 2;
   int result = column;

@@ -123,24 +123,24 @@ CFont* __cdecl CreateFontFromPresetAndAttachRegionHandle(TextStyle* preset) {
 // FUNCTION: IMPERIALISM 0x004944e0
 CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TextStyle* style) {
   if (g_QuickDrawCachedFontPreset.fontFamily != style->fontFamily) {
-    g_bQuickDrawCachedFontDirty = 1;
+    g_bQuickDrawCachedFontDirty = true;
     g_QuickDrawCachedFontPreset.fontFamily = style->fontFamily;
   }
   if (g_QuickDrawCachedFontPreset.fontStyleFlags != style->fontStyleFlags) {
-    g_bQuickDrawCachedFontDirty = 1;
+    g_bQuickDrawCachedFontDirty = true;
     g_QuickDrawCachedFontPreset.fontStyleFlags = style->fontStyleFlags;
   }
   if (g_QuickDrawCachedFontPreset.fontSize != style->fontSize) {
-    g_bQuickDrawCachedFontDirty = 1;
+    g_bQuickDrawCachedFontDirty = true;
     g_QuickDrawCachedFontPreset.fontSize = style->fontSize;
   }
-  if (g_bQuickDrawCachedFontDirty != 0 || g_pQuickDrawCachedUiFont == 0) {
+  if (g_bQuickDrawCachedFontDirty || g_pQuickDrawCachedUiFont == 0) {
     if (g_pQuickDrawCachedUiFont != 0) {
       delete g_pQuickDrawCachedUiFont;
     }
     g_pQuickDrawCachedUiFont =
         CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawCachedFontPreset);
-    g_bQuickDrawCachedFontDirty = 0;
+    g_bQuickDrawCachedFontDirty = false;
   }
   return g_pQuickDrawCachedUiFont;
 }
@@ -166,13 +166,13 @@ unsigned char* __cdecl WriteDwordBytesReversedToScratchBuffer(unsigned long valu
 
 // FUNCTION: IMPERIALISM 0x00494950
 void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl(char glyph) {
-  if (g_bQuickDrawMeasureFontDirty != 0 || g_pQuickDrawCachedMeasureFont == 0) {
+  if (g_bQuickDrawMeasureFontDirty || g_pQuickDrawCachedMeasureFont == 0) {
     if (g_pQuickDrawCachedMeasureFont != 0) {
       delete g_pQuickDrawCachedMeasureFont;
     }
     g_pQuickDrawCachedMeasureFont =
         CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
-    g_bQuickDrawMeasureFontDirty = 0;
+    g_bQuickDrawMeasureFontDirty = false;
   }
   CDC* dc = g_pQuickDrawMemoryDc;
   if (dc == nullptr) {
@@ -214,13 +214,13 @@ void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl(char glyph) {
 
 // FUNCTION: IMPERIALISM 0x00494a90
 void __cdecl DrawTextWithCachedQuickDrawStyleState(const CString* text) {
-  if (g_bQuickDrawMeasureFontDirty != 0 || g_pQuickDrawCachedMeasureFont == 0) {
+  if (g_bQuickDrawMeasureFontDirty || g_pQuickDrawCachedMeasureFont == 0) {
     if (g_pQuickDrawCachedMeasureFont != 0) {
       delete g_pQuickDrawCachedMeasureFont;
     }
     g_pQuickDrawCachedMeasureFont =
         CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
-    g_bQuickDrawMeasureFontDirty = 0;
+    g_bQuickDrawMeasureFontDirty = false;
   }
 
   CDC* dc = g_pQuickDrawMemoryDc;
@@ -284,13 +284,13 @@ void __cdecl RenderTradeScreenCommoditySummaryRows_Impl(CString* text, RECT* rec
     }
   }
 
-  if (g_bQuickDrawMeasureFontDirty != 0 || g_pQuickDrawCachedMeasureFont == 0) {
+  if (g_bQuickDrawMeasureFontDirty || g_pQuickDrawCachedMeasureFont == 0) {
     if (g_pQuickDrawCachedMeasureFont != 0) {
       delete g_pQuickDrawCachedMeasureFont;
     }
     g_pQuickDrawCachedMeasureFont =
         CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
-    g_bQuickDrawMeasureFontDirty = 0;
+    g_bQuickDrawMeasureFontDirty = false;
   }
 
   CDC* dc = g_pQuickDrawMemoryDc;
@@ -327,13 +327,13 @@ void __cdecl RenderTradeScreenCommoditySummaryRows_Impl(CString* text, RECT* rec
 // FUNCTION: IMPERIALISM 0x00494d20
 short __cdecl MeasureTextRangeWithCachedQuickDrawStyle(const char* text, short offset,
                                                        short length) {
-  if (g_bQuickDrawMeasureFontDirty != 0 || g_pQuickDrawCachedMeasureFont == 0) {
+  if (g_bQuickDrawMeasureFontDirty || g_pQuickDrawCachedMeasureFont == 0) {
     if (g_pQuickDrawCachedMeasureFont != 0) {
       delete g_pQuickDrawCachedMeasureFont;
     }
     g_pQuickDrawCachedMeasureFont =
         CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
-    g_bQuickDrawMeasureFontDirty = 0;
+    g_bQuickDrawMeasureFontDirty = false;
   }
   CDC* dc = g_pQuickDrawMemoryDc;
   if (dc == 0) {
@@ -362,13 +362,13 @@ short __cdecl MeasureTextExtentWithCachedQuickDrawStyle(const CString* text) {
   if (activeDc != nullptr) {
     // Inlined rebuild of the cached measure-font (same shape as the draw-font rebuild
     // in UpdateGlobalFontPresetAndRebuildCachedFontIfDirty, but for the measure cluster).
-    if (g_bQuickDrawMeasureFontDirty != 0 || g_pQuickDrawCachedMeasureFont == 0) {
+    if (g_bQuickDrawMeasureFontDirty || g_pQuickDrawCachedMeasureFont == 0) {
       if (g_pQuickDrawCachedMeasureFont != 0) {
         delete g_pQuickDrawCachedMeasureFont;
       }
       g_pQuickDrawCachedMeasureFont =
           CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
-      g_bQuickDrawMeasureFontDirty = 0;
+      g_bQuickDrawMeasureFontDirty = false;
     }
     CFont* oldFont = activeDc->SelectObject(g_pQuickDrawCachedMeasureFont);
     SIZE extent;
@@ -382,13 +382,13 @@ short __cdecl MeasureTextExtentWithCachedQuickDrawStyle(const CString* text) {
   // the same unwind via MSVC's EH machinery.
   CDC localDc;
   localDc.Attach(CreateCompatibleDC(static_cast<HDC>(0)));
-  if (g_bQuickDrawMeasureFontDirty != 0 || g_pQuickDrawCachedMeasureFont == 0) {
+  if (g_bQuickDrawMeasureFontDirty || g_pQuickDrawCachedMeasureFont == 0) {
     if (g_pQuickDrawCachedMeasureFont != 0) {
       delete g_pQuickDrawCachedMeasureFont;
     }
     g_pQuickDrawCachedMeasureFont =
         CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
-    g_bQuickDrawMeasureFontDirty = 0;
+    g_bQuickDrawMeasureFontDirty = false;
   }
   CFont* oldFont = localDc.SelectObject(g_pQuickDrawCachedMeasureFont);
   SIZE extent;
@@ -468,7 +468,7 @@ void UpdatePaletteIndexWithDefaultFallback(QuickDrawPaletteIndex paletteIndex) {
 void SetQuickDrawTextFont(short value) {
   if (g_QuickDrawMeasureFontPreset.fontFamily != value) {
     g_QuickDrawMeasureFontPreset.fontFamily = value;
-    g_bQuickDrawMeasureFontDirty = 1;
+    g_bQuickDrawMeasureFontDirty = true;
   }
 }
 
@@ -476,7 +476,7 @@ void SetQuickDrawTextFont(short value) {
 void SetQuickDrawTextSize(short value) {
   if (g_QuickDrawMeasureFontPreset.fontSize != value) {
     g_QuickDrawMeasureFontPreset.fontSize = value;
-    g_bQuickDrawMeasureFontDirty = 1;
+    g_bQuickDrawMeasureFontDirty = true;
   }
 }
 
@@ -484,7 +484,7 @@ void SetQuickDrawTextSize(short value) {
 void SetQuickDrawTextFace(short value) {
   if (g_QuickDrawMeasureFontPreset.fontStyleFlags != value) {
     g_QuickDrawMeasureFontPreset.fontStyleFlags = value;
-    g_bQuickDrawMeasureFontDirty = 1;
+    g_bQuickDrawMeasureFontDirty = true;
   }
 }
 

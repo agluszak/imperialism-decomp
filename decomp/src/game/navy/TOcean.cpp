@@ -397,14 +397,14 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
   for (short overlayTile = 0; overlayTile < 0x1950; ++overlayTile) {
     short overlayState = static_cast<signed char>(
         g_pGlobalMapState->terrainStateTable[overlayTile].tileActionState16);
-    unsigned char isNationOverlay = (overlayState >= kMapTileActionStateNationOrderFirst &&
-                                     overlayState <= kMapTileActionStateNationOrderLast);
-    if (isNationOverlay != 0) {
+    bool isNationOverlay = (overlayState >= kMapTileActionStateNationOrderFirst &&
+                            overlayState <= kMapTileActionStateNationOrderLast);
+    if (isNationOverlay) {
       g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(overlayTile, kMapTileActionStateNone);
     } else {
-      unsigned char isLinkedZoneOverlay = (overlayState >= kMapTileActionStateLinkedZoneFirst &&
-                                           overlayState <= kMapTileActionStateLinkedZoneLast);
-      if (isLinkedZoneOverlay != 0) {
+      bool isLinkedZoneOverlay = (overlayState >= kMapTileActionStateLinkedZoneFirst &&
+                                  overlayState <= kMapTileActionStateLinkedZoneLast);
+      if (isLinkedZoneOverlay) {
         g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(overlayTile, -overlayState);
       }
     }
@@ -417,11 +417,11 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
   if (g_pMapActionContextListHead != 0) {
     unsigned char activeNationBit = static_cast<unsigned char>(1 << activeNationId);
     for (TZone* ctxZone = g_pMapActionContextListHead; ctxZone != 0; ctxZone = ctxZone->prev18) {
-      unsigned char nationFlagged = (ctxZone->nationKeyMask10 & activeNationBit) != 0 ||
-                                    ctxZone->HasSecondaryNeighborWithNationTag(activeNationId) != 0;
-      if (nationFlagged != 0) {
+      bool nationFlagged = (ctxZone->nationKeyMask10 & activeNationBit) != 0 ||
+                           ctxZone->HasSecondaryNeighborWithNationTag(activeNationId) != 0;
+      if (nationFlagged) {
         ctxZone->ShowFocusIngot(
-            ctxZone->CanDisplayMapOrderEntryInCurrentContext(g_pSimMgr->GetActiveNationId(), 1));
+            ctxZone->CanDisplayMapOrderEntryInCurrentContext(g_pSimMgr->GetActiveNationId(), true));
         int slotCursor = activeNationId + 1;
         int slotsRemaining = 6;
         do {
@@ -447,8 +447,8 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
     if (rankEntry->nation == g_pSimMgr->GetActiveNationId()) {
       continue;
     }
-    unsigned char isTaskForceEntry = (rankEntry->shipOrders == 5);
-    if (isTaskForceEntry == 0) {
+    bool isTaskForceEntry = (rankEntry->shipOrders == 5);
+    if (!isTaskForceEntry) {
       continue;
     }
     int cityIndex = static_cast<Province*>(rankEntry->target)->GetIndex();
@@ -780,16 +780,16 @@ void TOcean::ForgetForce(TTaskForce* entry) {
     nation = g_pSimMgr->GetActiveNationId();
   }
 
-  char hasUnassignedShip = 0;
+  bool hasUnassignedShip = false;
   if ((zone->nationKeyMask10 & static_cast<unsigned char>(1 << nation)) != 0) {
     for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
       if (ship->location == zone && ship->nation == nation && ship->taskForce == 0) {
-        hasUnassignedShip = 1;
+        hasUnassignedShip = true;
         break;
       }
     }
   }
-  if (hasUnassignedShip != 0) {
+  if (hasUnassignedShip) {
     zone->ShowFocusIngot(1);
   } else {
     zone->ShowFocusIngot(0);
@@ -848,7 +848,7 @@ TTaskForce* TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* pMapOr
       return selectedTaskForce14;
     }
   } else if (pMapOrderContextZone != nullptr) {
-    selectedTaskForce14->MaxOut(0);
+    selectedTaskForce14->MaxOut(false);
   }
   return selectedTaskForce14;
 }

@@ -19,7 +19,7 @@ public:
   // direct TPicture::TPicture call.
   // FUNCTION: IMPERIALISM 0x00572b30
   TNoHilitePicture() : TPicture() {
-    hiliteState90 = 0;
+    hiliteState90 = false;
   }
 };
 ASSERT_SIZE(TNoHilitePicture, 0x94);

@@ -141,7 +141,7 @@ public:
   // Chooses and applies city/industry development actions while resource pools remain.
   void PlanAiDevelopmentActionsFromResourcePools(int unused);
   float ComputeAiIndustryActionCostFromSlot(short industrySlot);
-  float ComputeAiCityActionCostFromSlotAndMode(short actionSlot, char skipContextBias);
+  float ComputeAiCityActionCostFromSlotAndMode(short actionSlot, bool skipContextBias);
   float GetCachedAiCityActionContextBias(short selector);
 
   void CreateMission(eMissionType missionType, int mapNodeIndex, TZone* zoneContext,

@@ -152,7 +152,7 @@ public:
   // 0x57c3b0. Verified against AdvanceGlobalTurnStateMachine's case-3 callsite
   // (0x0057db25): a real __thiscall on TSimMgr (receiver g_pSimMgr), not a
   // free function -- writes into the GameSetup policy rows regions at +0xe8 on `this`.
-  void RebuildGlobalOrderManagersAndCapabilityState(char flag);
+  void RebuildGlobalOrderManagersAndCapabilityState(bool flag);
   // 0x57c7c0. Same callsite family (0x0057db32); real __thiscall, 3 stack args
   // (`RET 0xc` confirms the count); param2 is the string literal "Chunk", not a
   // raw address.
@@ -259,8 +259,8 @@ public:
   // +0x6e — ten decade-bucket phase-state bytes, indexed by economicTurn / 40.
   unsigned char phaseStateByDecade[10];
   unsigned char field78;
-  unsigned char field79;
-  unsigned char gateFlag7a;
+  bool field79;
+  bool gateFlag7a;
   unsigned char pad7b;
   CString sharedTextSlots[0x17];
   unsigned char multiplayerGameActive;
@@ -270,7 +270,7 @@ public:
   short cityMinisterPolicyIds[7];
   short foreignMinisterPolicyIds[7];
   short defenseMinisterPolicyIds[7];
-  unsigned char reloadPoliticalMapState;
+  bool reloadPoliticalMapState;
   unsigned char pad113;
   // 0x114 — nonzero switches TGreatPower seeding/home-region resolution to the
   // direct-map path (0x004d71b0 / 0x004dfae0 / 0x004df810).

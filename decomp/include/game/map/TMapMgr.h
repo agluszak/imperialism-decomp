@@ -34,7 +34,7 @@ int ComputeStrategicHexTileDistance(StrategicTileIndex tileA, StrategicTileIndex
 // TTerrainStateRecord::riverSpriteCode. Water tiles accept only a single direction bit; land
 // tiles additionally accept the 16 supported two-direction masks. Returns -1 when invalid.
 short __stdcall ResolveRiverSpriteVariantForConnectionMask(unsigned char connectionMask,
-                                                           unsigned char waterTerrain);
+                                                           bool waterTerrain);
 // 0x5123e0: recordBase + recordIndex * 0x6c (strided record address). __cdecl free function.
 int ComputeStridedRecordAddress6C(int recordBase, int recordIndex);
 // 0x563990 — walks the terrain-flow chain from tileIndex to the nearest sea tile.
@@ -482,13 +482,13 @@ public:
   // unaccounted for.
   // Set after the strategic-map palette preview surface has been rendered; cleared by
   // construction/stream load so the map-data readiness path rebuilds it once.
-  unsigned char strategicMapPalettePreviewReady; // +0x04
-  unsigned char pad5;                            // +0x05
-  short field6;                                  // +0x06 -- 2-byte stream read
-  unsigned char field8;                          // +0x08 -- 1-byte stream read
-  unsigned char field9;                          // +0x09 -- 1-byte stream read
-  unsigned char pad0a[2];                        // +0x0a -- alignment gap before the +0x0c pointer
-  TTerrainStateRecord* terrainStateTable;        // +0x0c
+  bool strategicMapPalettePreviewReady;   // +0x04
+  unsigned char pad5;                     // +0x05
+  short field6;                           // +0x06 -- 2-byte stream read
+  unsigned char field8;                   // +0x08 -- 1-byte stream read
+  unsigned char field9;                   // +0x09 -- 1-byte stream read
+  unsigned char pad0a[2];                 // +0x0a -- alignment gap before the +0x0c pointer
+  TTerrainStateRecord* terrainStateTable; // +0x0c
   // True when any province adjacent to `provinceIndex` (its adjacentRegionIds0A list,
   // bounded by adjacentRegionCount08) carries `ownerNationCode` in ownerNationCode00.
   // 0x00517d40, __thiscall.
@@ -505,7 +505,7 @@ public:
   char hexNeighborWrapHorizontally;         // +0x20
   char pad21;                               // +0x21
   StrategicTileIndex pendingRiverMouthTile; // +0x22 -- pending river-mouth tile
-  unsigned char field24;                    // +0x24 -- zeroed by the ctor; no observed reader yet
+  bool field24;                             // +0x24 -- zeroed by the ctor; no observed reader yet
 
   static void GetNeighborTileIDArray(StrategicTileIndex tileIndex,
                                      StrategicTileIndex* neighborTiles,
@@ -532,7 +532,7 @@ public:
   static bool StepHexRowColByDirectionWithWrapRules(int* row, int* col, int direction);
   static void AdvanceSpiralSearchStateAndStepHexCoordinates(struct HexSpiralSearchState* state);
 
-  short ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlot, char wrapBias);
+  short ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlot, bool wrapBias);
 
   char AreNationsBorderLinked(int nationA, int nationB);
   // 0x517dd0. True if any of cityRecordIndex's adjacent regions is owned by nationCode.
@@ -541,12 +541,12 @@ public:
   // IsColonyOf(nationCode) holds for it, checks whether the minor's own
   // slot number is among cityRecordIndex's adjacent owners too.
   bool HasDirectOrFallbackLinkedNodeType(ProvinceIndex cityRecordIndex, int nationCode,
-                                         char allowFallback);
+                                         bool allowFallback);
   // 0x518090. CollectSecondDegreeLinksMatchingNodeType for nationTag; when that finds
   // nothing and allowFallback is set (and nationTag >= 7), retries each minor slot 7..22
   // whose capability object exists and whose nation row decodes to nationTag.
   int CollectSecondDegreeLinksWithMinorNationFallback(ProvinceIndex cityRecordIndex, int nationTag,
-                                                      int* nodeBuffer, char allowFallback);
+                                                      int* nodeBuffer, bool allowFallback);
   // Returns whether candidateProvinceIndex occurs in sourceProvinceIndex's
   // adjacent-province list. 0x515e50.
   char IsProvinceAdjacentTo(int sourceProvinceIndex, int candidateProvinceIndex);
@@ -562,10 +562,10 @@ public:
                                                    StrategicTileIndex tileB, short ownerNation);
   StrategicTileIndex
   FindReachableRecruitSpawnTileWithVisitedReset(StrategicTileIndex startTileIndex,
-                                                char allowActiveFlag2);
+                                                bool allowActiveFlag2);
   StrategicTileIndex FindReachableRecruitSpawnTileRecursive(StrategicTileIndex tileIndex,
                                                             short ownerNationTag,
-                                                            char allowActiveFlag2); // 0x00514cd0
+                                                            bool allowActiveFlag2); // 0x00514cd0
   // 0x515f40. Write a city display-name CString into cityScoreTable[cityRecordIndex]+0xa4.
   void GetProvinceName(int provinceIndex, CString* outName);
   void SetGlobalMapCellSharedLabel(ProvinceIndex cityRecordIndex, CString* name);
@@ -659,7 +659,7 @@ public:
   // perTileVisitedFlag0f with a direction-overlay code ((direction+3)%6+1, or +7 when
   // `flag` is set) and forwards it through mapUberPictureF0's slot-0x76
   // InvalidateTile.
-  void MarkAdjacentHexOrderDirectionAndSelectTile(int tileIndex, int contextArg, char flag);
+  void MarkAdjacentHexOrderDirectionAndSelectTile(int tileIndex, int contextArg, bool flag);
 
   // Resolves cityScoreTable[tileIndex].ownerNationCode00 through the owning country's
   // encodedNationSlot 100/200-band redirect. 0x00514290,

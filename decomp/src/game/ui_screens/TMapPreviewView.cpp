@@ -203,9 +203,9 @@ void TMapPreviewView::EnhancePhoto() {
   maskColors[5] = 5;
   maskColors[6] = 0xca;
 
-  unsigned char hasSelection = selectedNation68 != -1;
+  bool hasSelection = selectedNation68 != -1;
   unsigned char selectedPalette = 0;
-  if (hasSelection != 0) {
+  if (hasSelection) {
     selectedPalette =
         static_cast<unsigned char>(g_pViewMgr->GetColor(static_cast<short>(selectedNation68)));
   }
@@ -219,14 +219,14 @@ void TMapPreviewView::EnhancePhoto() {
     unsigned char* pixel = rowStart;
     for (int column = 0; column < 0x142; ++column, ++pixel) {
       unsigned char value = *pixel;
-      unsigned char maskable = value == 0 || value == 0x13;
-      for (int i = 0; i < 7 && maskable == 0; ++i) {
+      bool maskable = value == 0 || value == 0x13;
+      for (int i = 0; i < 7 && !maskable; ++i) {
         if (value == maskColors[i]) {
-          maskable = 1;
+          maskable = true;
         }
       }
-      if (maskable != 0) {
-        if (hasSelection != 0 &&
+      if (maskable) {
+        if (hasSelection &&
             (pixel[-1] == selectedPalette || pixel[1] == selectedPalette ||
              pixel[-stride] == selectedPalette || pixel[stride] == selectedPalette)) {
           *pixel = 0x13;

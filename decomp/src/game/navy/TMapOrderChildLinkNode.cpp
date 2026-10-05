@@ -105,8 +105,8 @@ TMapOrderChildLinkNode* TMapOrderChildLinkNode::PruneDefeatedMapOrderChildrenAnd
   TMapOrderChildLinkNode* head = this;
   while (head != 0) {
     TShip* child_node = head->payload;
-    unsigned char headDefeated = (child_node->strength <= 0);
-    if (headDefeated != 0) {
+    bool headDefeated = (child_node->strength <= 0);
+    if (headDefeated) {
       child_node->taskForce = 0;
       head->payload->Free();
       head = head->DeleteMapOrderChildLinkAndReturnNext();

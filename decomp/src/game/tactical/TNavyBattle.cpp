@@ -41,26 +41,26 @@ void TNavyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTileInde
   // deployed flips the side, refreshes the 'tool' toolbar, and either finalizes
   // deployment or kicks the incoming side's StartBattle (the navy analogue of
   // HandleTacticalCommandTag_retr's tail).
-  unsigned char sideIsZero = (unit->side20 == 0);
-  unsigned char canDeploy = 1;
+  bool sideIsZero = (unit->side20 == 0);
+  bool canDeploy = true;
   int rowIndex = tileIndex / 29;
-  if (sideIsZero != 0) {
+  if (sideIsZero) {
     if (rowIndex < battlefieldColumnCount34 - 6) {
-      canDeploy = 0;
+      canDeploy = false;
     } else if (rowIndex > battlefieldColumnCount34 - 5) {
-      canDeploy = 0;
+      canDeploy = false;
     }
   } else {
     if (rowIndex > 6) {
-      canDeploy = 0;
+      canDeploy = false;
     } else if (rowIndex < 5) {
-      canDeploy = 0;
+      canDeploy = false;
     }
   }
   if (tileGrid4[tileIndex].occupant4 != 0) {
-    canDeploy = 0;
+    canDeploy = false;
   }
-  if (canDeploy == 0) {
+  if (!canDeploy) {
     return;
   }
 
@@ -71,7 +71,7 @@ void TNavyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTileInde
   }
 
   selectedUnit1c = players[currentSideC]->SelectNextTacticalUnitForDoneCommand();
-  if (players[currentSideC]->sideReadyFlag10 == 0) {
+  if (!players[currentSideC]->sideReadyFlag10) {
     return;
   }
 
@@ -86,7 +86,7 @@ void TNavyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTileInde
     toolbar->ForceRedraw();
   }
 
-  if (players[currentSideC]->sideReadyFlag10 != 0) {
+  if (players[currentSideC]->sideReadyFlag10) {
     FinalizeTacticalTurnStateAndQueueEvent232A();
     return;
   }

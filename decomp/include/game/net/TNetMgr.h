@@ -34,7 +34,7 @@ public:
   // (message->toNetworkId == -1 broadcasts). `this` carries no state — the queue and
   // session-manager state are file-scope globals of the original WNetMgr.cpp TU.
   // Mac oracle: TNetMgr::Send(NSpMessageHeader*, unsigned char).
-  unsigned char Send(NetMessage* message, unsigned char queueOnly);
+  unsigned char Send(NetMessage* message, bool queueOnly);
 
   unsigned char DefaultUnhandledTurnEventHookReturnsFalse(TurnEventQueuePacket* packet);
   void FreeTurnEventPacketBuffer(TurnEventQueuePacket* packet);

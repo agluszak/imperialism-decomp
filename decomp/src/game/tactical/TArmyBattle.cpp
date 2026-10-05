@@ -71,8 +71,8 @@ void TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8(TArmyStack* 
   unsigned char ourSideWatchFlag = 0;
   unsigned char enemySideWatchFlag = 0;
   if (g_pSimMgr->preferenceValues[0] != 0) {
-    unsigned char sessionModeActive = g_pSimMgr->multiplayerSessionRole != 0;
-    if (sessionModeActive == 0) {
+    bool sessionModeActive = g_pSimMgr->multiplayerSessionRole != 0;
+    if (!sessionModeActive) {
       ourSideWatchFlag = g_apNationStates[ourStack->categoryFlag8]->diplomacyEligibilityA0;
       if (enemyStack->categoryFlag8 < 7) {
         enemySideWatchFlag = g_apNationStates[enemyStack->categoryFlag8]->diplomacyEligibilityA0;
@@ -83,9 +83,9 @@ void TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8(TArmyStack* 
   }
 
   TArmyPlayer* ourPlayer = new TArmyPlayer();
-  ourPlayer->IArmyPlayer(ourStack, 1, ourSideWatchFlag, ourStack->categoryFlag8);
+  ourPlayer->IArmyPlayer(ourStack, true, ourSideWatchFlag, ourStack->categoryFlag8);
   TArmyPlayer* enemyPlayer = new TArmyPlayer();
-  enemyPlayer->IArmyPlayer(enemyStack, 0, enemySideWatchFlag, enemyStack->categoryFlag8);
+  enemyPlayer->IArmyPlayer(enemyStack, false, enemySideWatchFlag, enemyStack->categoryFlag8);
   InitTacticalBattle(ourPlayer, enemyPlayer);
 
   battleSiteIndex38 = battleSiteIndex;
@@ -94,11 +94,10 @@ void TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8(TArmyStack* 
   fortLevel49 = static_cast<char>(fortLevel);
 
   // Show the live tactical-battle view when forced globally or either side is watched.
-  if (g_nForceTacticalBattleViewFlag_006A4758 != 0 || enemySideWatchFlag != 0 ||
-      ourSideWatchFlag != 0) {
+  if (g_nForceTacticalBattleViewFlag_006A4758 || enemySideWatchFlag != 0 || ourSideWatchFlag != 0) {
     g_nTurnCooldownDeferCounter006A43C4 = 0;
     g_pSfxPlaybackSystem->RequestAudioPresetChangeWithDeferredApply(
-        static_cast<int>(rand()) % 3 + 6, 0); // battle cue 6..8
+        static_cast<int>(rand()) % 3 + 6, false); // battle cue 6..8
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventTacticalView), 0);
     TTacArmyView* battleView = static_cast<TTacArmyView*>(
         g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDialog));
@@ -325,14 +324,14 @@ void TArmyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTileInde
       return;
     }
   }
-  HandleTacticalCommandTag_depl(static_cast<TArmyTacUnit*>(unit), tileIndex, 0);
+  HandleTacticalCommandTag_depl(static_cast<TArmyTacUnit*>(unit), tileIndex, false);
   TTacticalPlayer* sidePlayer = (currentSideC == 0) ? players[0] : players[1];
   ApplyTacticalDoneSelectionAndRefreshUi(sidePlayer->SelectNextTacticalUnitForDoneCommand());
   for (int planeIndex = 0; planeIndex < tacticalTileCount3c; ++planeIndex) {
     tileMoveCostArray24[planeIndex] = -1;
   }
   TTacticalPlayer* readyPlayer = (currentSideC == 0) ? players[0] : players[1];
-  if (readyPlayer->sideReadyFlag10 != 0) {
+  if (readyPlayer->sideReadyFlag10) {
     HandleTacticalCommandTag_retr(); // side fully deployed -> hand the round over
     return;
   }
@@ -349,7 +348,7 @@ void TArmyBattle::EndBattle(unsigned char sideWonFlag) {
   battleOutcome44 = kTacticalBattleSide0Victory;
   players[0]->AssertValid();
   players[1]->AssertValid();
-  g_pSfxPlaybackSystem->StopCdAudioPlayback(0);
+  g_pSfxPlaybackSystem->StopCdAudioPlayback(false);
 
   if (battleView8 != 0) {
     TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(

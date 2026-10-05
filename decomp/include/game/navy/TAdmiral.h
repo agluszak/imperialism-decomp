@@ -77,4 +77,4 @@ public:
 };
 ASSERT_SIZE(TAdmiral, 0x1c);
 
-CString GetLocalizedNavalReportShipType(short category, char plural);
+CString GetLocalizedNavalReportShipType(short category, bool plural);

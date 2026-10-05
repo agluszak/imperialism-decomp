@@ -138,7 +138,7 @@ public:
   // then type, then experience/100 tiers, then strength; returns the
   // preferred node. With preferUnassignedFlag, an admiral-assigned receiver loses
   // to the candidate outright (and vice versa).
-  TShip* Finest(TShip* candidate, unsigned char preferUnassigned);
+  TShip* Finest(TShip* candidate, bool preferUnassigned);
   // 0x00550ff0 -- detaches this ship from its owner entry's shipList
   // (decrementing the owner's per-resource-type bucket counter and recomputing its
   // preferred active child), then re-attaches it under `newOwnerEntry` when given.

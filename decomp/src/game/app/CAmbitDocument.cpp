@@ -48,7 +48,7 @@ CAmbitDocument::~CAmbitDocument() {
 
 // FUNCTION: IMPERIALISM 0x004797a0
 BOOL CAmbitDocument::OnNewDocument() {
-  g_bMultiplayerScenarioSetupActive = 0;
+  g_bMultiplayerScenarioSetupActive = false;
   return CDocument::OnNewDocument() != 0;
 }
 
@@ -75,7 +75,7 @@ void CAmbitDocument::OnCommand8003() {
 
 // FUNCTION: IMPERIALISM 0x00479960
 BOOL CAmbitDocument::OnOpenDocument(LPCTSTR lpszPathName) {
-  g_bMultiplayerScenarioSetupActive = 1;
+  g_bMultiplayerScenarioSetupActive = true;
   return CDocument::OnOpenDocument(lpszPathName) != 0;
 }
 

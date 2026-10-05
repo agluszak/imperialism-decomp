@@ -36,7 +36,7 @@ public:
   int field48;                           // +0x48
   int cachedFortBombardmentTargetTile4c; // +0x4c init -1; cached fort-bombardment target tile for indirect fire
   char randomParityByte50;               // +0x50 coin flip at side init (move-first side?)
-  char hasArtilleryOrSappers51; // +0x51 active units only
+  bool hasArtilleryOrSappers51; // +0x51 active units only
   unsigned char pad52[2];       // +0x52
 
   // Both original construction sites (0x5a4790, 0x5a4990) inline the ctor as a bare
@@ -135,8 +135,7 @@ public:
   // stores the stack into armyStack28. 0x0059b1b0, __thiscall, ret 0x10.
   // Mac oracle: IArmyPlayer(TArmyStack*, unsigned char, unsigned char, long) -- the
   // original only reads the low byte of isOurSide, as the body comment notes.
-  void IArmyPlayer(TArmyStack* stack, unsigned char isOurSide, unsigned char watchFlag,
-                   int nationIndex);
+  void IArmyPlayer(TArmyStack* stack, bool isOurSide, unsigned char watchFlag, int nationIndex);
 };
 
 ASSERT_SIZE(TArmyPlayer, 0x54);

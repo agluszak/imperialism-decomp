@@ -40,7 +40,7 @@ extern int g_mapActionContextDisplayNameCacheStep_006984bc;
 extern "C" {
 extern const unsigned int g_anScenarioScriptInstructionTags[27];
 
-extern unsigned char g_bScenarioScriptTerminationRequested;
+extern bool g_bScenarioScriptTerminationRequested;
 
 extern int g_nScenarioScriptInstructionCount;
 
@@ -55,7 +55,7 @@ extern int g_SetupScreensAssertFlag_006A4264;
 // foreign minister policy, defense minister policy}. 0x698b18.
 extern short g_aDefaultNationSetupPolicyProfiles[7][4];
 
-extern "C" char g_bTurnFlowBootstrapComplete;
+extern "C" bool g_bTurnFlowBootstrapComplete;
 
 // "Conan" — developer-cheat probe filename statted by TSimMgr::ISimMgr.
 extern char g_szConanCheatFileName_00698BEC[];

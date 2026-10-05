@@ -113,7 +113,7 @@ void THelpMgr::IHelpMgr() {
   TPtrList* list = new TPtrList();
   list->recordSize14 = sizeof(HelpSetRecord);
   indexList = list;
-  if (g_bMultiplayerScenarioSetupActive == 0) {
+  if (!g_bMultiplayerScenarioSetupActive) {
     HelpSetRecord record;
 #define INSERT_HELP_SET(helpBase, previousBase, nextBase, eventContext, entryRank, topics)         \
   record.helpResourceBaseId = helpBase;                                                            \
@@ -387,7 +387,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
   CString templateText;
   CString nationName;
   CString message;
-  char advisoryShown = 0;
+  bool advisoryShown = false;
 
   switch (static_cast<short>(g_pSimMgr->GetEconomicTurn() % 10)) {
   case 0: {
@@ -415,7 +415,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(nationName));
     g_pViewMgr->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 2, 0);
-    advisoryShown = 1;
+    advisoryShown = true;
   } break;
 
   case 3: {
@@ -437,7 +437,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(nationName));
     g_pViewMgr->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 0, 0);
-    advisoryShown = 1;
+    advisoryShown = true;
   } break;
 
   case 6: {
@@ -459,7 +459,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(nationName));
     g_pViewMgr->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 2, 0);
-    advisoryShown = 1;
+    advisoryShown = true;
   } break;
 
   case 2: {
@@ -481,7 +481,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(nationName));
     g_pViewMgr->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 2, 0);
-    advisoryShown = 1;
+    advisoryShown = true;
   } break;
 
   case 5: {
@@ -503,7 +503,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(nationName));
     g_pViewMgr->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 2, 0);
-    advisoryShown = 1;
+    advisoryShown = true;
   } break;
 
   case 7: {
@@ -525,7 +525,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(nationName));
     g_pViewMgr->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 2, 0);
-    advisoryShown = 1;
+    advisoryShown = true;
   } break;
 
   case 8: {
@@ -552,7 +552,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
         scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
                                static_cast<LPCSTR>(nationName));
         g_pViewMgr->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 2, 0);
-        advisoryShown = 1;
+        advisoryShown = true;
       } else {
         g_apNationStates[bestNation]->FormatOverlayTerrainLabelText(&nationName);
         g_pSimMgr->GetString(0x2753, 0xe, &formatText);
@@ -560,7 +560,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
         scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
                                static_cast<LPCSTR>(nationName));
         g_pViewMgr->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 2, 0);
-        advisoryShown = 1;
+        advisoryShown = true;
       }
     } else {
       int best = g_apNationStates[activeNation]->GetBuildingCapacity(6);
@@ -581,7 +581,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
       scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
                              static_cast<LPCSTR>(nationName));
       g_pViewMgr->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 2, 0);
-      advisoryShown = 1;
+      advisoryShown = true;
     }
   } break;
 
@@ -605,7 +605,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(nationName));
     g_pViewMgr->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 1, 0);
-    advisoryShown = 1;
+    advisoryShown = true;
   } break;
 
   case 4: {
@@ -628,7 +628,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(nationName));
     g_pViewMgr->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 1, 0);
-    advisoryShown = 1;
+    advisoryShown = true;
   } break;
 
   default:
@@ -642,29 +642,29 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
 // message dispatcher. The first two (mission-score comparison) alerts suppress every
 // later block; the remaining blocks are individually gated on turn-flow flags.
 // FUNCTION: IMPERIALISM 0x00502b60
-char ShowTurnAlertsForActiveNation() {
+bool ShowTurnAlertsForActiveNation() {
   short nationId = g_pSimMgr->GetActiveNationId();
   CString titleText;
   CString bodyText;
   CString scratchC;
   CString scratchD;
-  char anyAlertShown = 0;
+  bool anyAlertShown = false;
   short starvationCount;
   TCity* city = (g_apNationStates[nationId] != 0) ? g_apNationStates[nationId]->city : 0;
   short foodSubstitutionCount;
   starvationCount = foodSubstitutionCount = 0;
   short currentTick = g_pSimMgr->GetEconomicTurn();
   if (g_pSimMgr->preferenceValues[8] == 0) {
-    return 0;
+    return false;
   }
-  if (IsTurnFlowCooldownActiveAndResetExpiredState() != 0) {
-    return 0;
+  if (IsTurnFlowCooldownActiveAndResetExpiredState()) {
+    return false;
   }
   if (g_lastTurnAlertTick_006a31c0 == currentTick) {
-    return 0;
+    return false;
   }
   if (currentTick == 1) {
-    return 0;
+    return false;
   }
 
 #ifdef IMPERIALISM_RUNTIME_TESTS
@@ -698,7 +698,7 @@ char ShowTurnAlertsForActiveNation() {
 #ifdef IMPERIALISM_RUNTIME_TESTS
     }
 #endif
-    anyAlertShown = 1;
+    anyAlertShown = true;
   }
 #ifdef IMPERIALISM_RUNTIME_TESTS
   const char navalCapitolThreat = g_apNationStates[nationId]->IsCapitolThreatened(1);
@@ -721,9 +721,9 @@ char ShowTurnAlertsForActiveNation() {
 #ifdef IMPERIALISM_RUNTIME_TESTS
     }
 #endif
-    anyAlertShown = 1;
+    anyAlertShown = true;
   }
-  if (anyAlertShown == 0) {
+  if (!anyAlertShown) {
     if (g_pSimMgr->TestTurnFlowStatusFlagMask(1) == 0) {
       short promptCode = g_apNationStates[nationId]->ComputeTreasuryStatusPromptCode();
       if (promptCode != 0) {
@@ -738,7 +738,7 @@ char ShowTurnAlertsForActiveNation() {
 #ifdef IMPERIALISM_RUNTIME_TESTS
         }
 #endif
-        anyAlertShown = 1;
+        anyAlertShown = true;
       }
     }
     if (g_pSimMgr->TestTurnFlowStatusFlagMask(0x10) == 0) {
@@ -754,7 +754,7 @@ char ShowTurnAlertsForActiveNation() {
 #ifdef IMPERIALISM_RUNTIME_TESTS
         }
 #endif
-        anyAlertShown = 1;
+        anyAlertShown = true;
       }
     }
     if (g_pSimMgr->TestTurnFlowStatusFlagMask(0x1000) == 0) {
@@ -770,7 +770,7 @@ char ShowTurnAlertsForActiveNation() {
 #ifdef IMPERIALISM_RUNTIME_TESTS
         }
 #endif
-        anyAlertShown = 1;
+        anyAlertShown = true;
       }
     }
     city->productionSummary1d8->PretendToEat(foodSubstitutionCount, starvationCount);
@@ -786,7 +786,7 @@ char ShowTurnAlertsForActiveNation() {
 #ifdef IMPERIALISM_RUNTIME_TESTS
       }
 #endif
-      anyAlertShown = 1;
+      anyAlertShown = true;
     }
   }
   g_lastTurnAlertTick_006a31c0 = currentTick;
@@ -795,7 +795,7 @@ char ShowTurnAlertsForActiveNation() {
 
 // FUNCTION: IMPERIALISM 0x005031c0
 char THelpMgr::HandlePendingEventActivationByCode(TurnEventCodeStorage eventCode) {
-  char activateCandidate = 0;
+  bool activateCandidate = false;
   bool nationAlreadyCurrent = false;
   HelpSetRecord* pendingEntry = 0;
 
@@ -812,9 +812,9 @@ char THelpMgr::HandlePendingEventActivationByCode(TurnEventCodeStorage eventCode
       pendingDialogView8 = 0;
     }
   } else {
-    if (eventCode != kTurnEventNewspaperStatus || g_bMultiplayerScenarioSetupActive == 0) {
+    if (eventCode != kTurnEventNewspaperStatus || !g_bMultiplayerScenarioSetupActive) {
       int index = 1;
-      while (!nationAlreadyCurrent && activateCandidate == 0) {
+      while (!nationAlreadyCurrent && !activateCandidate) {
         if (indexList == 0 || index > indexList->GetSize()) {
           break;
         }
@@ -828,14 +828,14 @@ char THelpMgr::HandlePendingEventActivationByCode(TurnEventCodeStorage eventCode
           if (entry->rank == currentTick) {
             nationAlreadyCurrent = true;
           } else if (entry->flagByte == 0) {
-            activateCandidate = 1;
+            activateCandidate = true;
             pendingEntry = entry;
           }
         }
         index++;
       }
     }
-    if (activateCandidate != 0 && !nationAlreadyCurrent) {
+    if (activateCandidate && !nationAlreadyCurrent) {
       ActivatePendingEventAndRefreshView(pendingEntry);
       return activateCandidate;
     }
@@ -954,15 +954,15 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
 // FUNCTION: IMPERIALISM 0x00503790
 char THelpMgr::GetHelpSetRecordFlagByResourceBase(short helpResourceBaseId) {
   HelpSetRecord* record;
-  char found = 0;
+  bool found = false;
   int index = 1;
   while (index <= indexList->GetSize()) {
     record = static_cast<HelpSetRecord*>(indexList->GetPtrListEntryByOneBasedIndex(index));
     if (record->helpResourceBaseId == helpResourceBaseId) {
-      found = 1;
+      found = true;
     }
     ++index;
-    if (found != 0) {
+    if (found) {
       break;
     }
   }
@@ -972,15 +972,15 @@ char THelpMgr::GetHelpSetRecordFlagByResourceBase(short helpResourceBaseId) {
 // FUNCTION: IMPERIALISM 0x005037e0
 HelpSetRecord* THelpMgr::FindHelpSetRecordByResourceBase(short helpResourceBaseId) {
   HelpSetRecord* record;
-  char found = 0;
+  bool found = false;
   int index = 1;
   while (index <= indexList->GetSize()) {
     record = static_cast<HelpSetRecord*>(indexList->GetPtrListEntryByOneBasedIndex(index));
     if (record->helpResourceBaseId == helpResourceBaseId) {
-      found = 1;
+      found = true;
     }
     ++index;
-    if (found != 0) {
+    if (found) {
       break;
     }
   }

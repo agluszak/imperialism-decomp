@@ -29,17 +29,16 @@ TTown::TTown() {}
 TTown::~TTown() {}
 
 // FUNCTION: IMPERIALISM 0x005b6cd0
-void TTown::ITown(const char* markerName, short tileIndex, unsigned char enabledFlag,
-                  short ownerNation) {
+void TTown::ITown(const char* markerName, short tileIndex, bool enabledFlag, short ownerNation) {
   strcpy(this->name, markerName);
   this->ownerNation = ownerNation;
   this->tileIndex = tileIndex;
   this->enabledFlag = enabledFlag;
-  this->activeFlag = enabledFlag == 0;
+  this->activeFlag = !enabledFlag;
   this->field16 = 0;
   this->field18 = 0;
   this->createdTurnTick = g_pSimMgr->GetEconomicTurn();
-  this->transportLinked = 0;
+  this->transportLinked = false;
   memset(this->resourceYieldByType, 0, sizeof(this->resourceYieldByType));
 }
 
@@ -60,7 +59,7 @@ void TTown::ReadFrom(TStream* stream) {
   // Saves older than 0xa predate the flag and default it on; newer ones carry it as a
   // plain 1-byte read (slot 0x44), not the polymorphic object read at slot 0xb0.
   if (g_nSaveFormatVersion < 0xa) {
-    activeFlag = 1;
+    activeFlag = true;
   } else {
     activeFlag = stream->ReadBoolean() != 0;
   }

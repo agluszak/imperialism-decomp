@@ -136,7 +136,7 @@ void TCityProductionView::DoPostCreate(int arg) {
       g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
       buildingActionAnimations12C[buildingSlot][action] = animation;
       InvalidateCityDialogRectRegion(&bounds, 1);
-      needsRefreshAtA6 = 1;
+      needsRefreshAtA6 = true;
     }
   }
 }
@@ -155,7 +155,7 @@ IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 // FUNCTION: IMPERIALISM 0x004ba7b0
 void TCityProductionView::Draw(RECT* rectBuffer) {
   // Turn-event snapshot mode: blit the cached surface straight through and finish.
-  if (g_pDisplayMgr->clipSnapshotEvent == 0x7db && this->needsRefreshAtA6 == 0) {
+  if (g_pDisplayMgr->clipSnapshotEvent == 0x7db && !this->needsRefreshAtA6) {
     RECT snapshot = *rectBuffer;
     BlitRectWithOptionalTransparency(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &snapshot,
@@ -163,7 +163,7 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
     RenderNationHeaderDateLabelWithPeriodicRefresh();
     return;
   }
-  this->needsRefreshAtA6 = 0;
+  this->needsRefreshAtA6 = false;
   TPicture::Draw(rectBuffer);
 #ifdef IMPERIALISM_RUNTIME_TESTS
   RuntimeTestDriver::Pulse();
@@ -851,7 +851,7 @@ void TCityProductionView::SetBuildingPicture(short buildingSlot, short buildingT
   SetGWorld(g_pPrimaryRenderSurfaceContext, contextFlags);
   ClipRect(&clipRect);
 
-  needsRefreshAtA6 = 1;
+  needsRefreshAtA6 = true;
   this->Draw(&boundsRecord);
 
   SetGWorld(previousSurface, contextFlags);

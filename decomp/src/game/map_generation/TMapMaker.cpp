@@ -44,10 +44,10 @@ TMapMaker::~TMapMaker() {}
 // loop at each site): true when `text` begins with `keyword` followed by NUL or ' '.
 // The retained standalone emission at 0x5259e0 drives the loop on arg1, so keyword is
 // the first parameter in the source-era signature.
-char TuningKeywordMatches(const char* keyword, const char* text) {
+bool TuningKeywordMatches(const char* keyword, const char* text) {
   while (*keyword != 0) {
     if (*keyword++ != *text++) {
-      return 0;
+      return false;
     }
   }
   return *text == 0 || *text == ' ';
@@ -71,10 +71,10 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
   // Parse the tuning string: option letters only count after the "@^>" marker.
   int budget = 1000;
   const char* p = static_cast<LPCSTR>(*tuningString);
-  char armed = 0;
+  bool armed = false;
   char c = *p;
   while (c != 0) {
-    if (armed == 0) {
+    if (!armed) {
       if (c == '@') {
         c = *++p;
         if (c == '^') {
@@ -83,7 +83,7 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
         }
       }
     }
-    if (armed != 0) {
+    if (armed) {
       switch (c) {
       case 'D':
         g_mapGenDesertQuota_006a38bc = 300;
@@ -1210,7 +1210,7 @@ char TMapMaker::GrowRiver(long tileIndex, long incomingDirection, long outgoingD
                           long depth, unsigned char startedOnHills) {
   char* tile = mapTileGrid08 + tileIndex * 0x24;
   StrategicTerrainKind terrainKind = static_cast<StrategicTerrainKind>(*tile);
-  char beganOnHills = terrainKind == kStrategicTerrainHills;
+  bool beganOnHills = terrainKind == kStrategicTerrainHills;
   if (tile[2] != 0 || (terrainKind == kStrategicTerrainMountain && depth != 0) ||
       (terrainKind == kStrategicTerrainHills && startedOnHills == 0)) {
     return 0;
@@ -2339,7 +2339,8 @@ const char kUMapperPath[] = "D:\\Ambit\\Cross\\UMapper.cpp";
 
 void AppendBorderQuad(int tileIndex, int regionA, int regionB, int sideCode) {
   Seapoint sp;
-  sp.InitSorted(ConvertTileIndexToOverlayCoord216BySide(tileIndex, 1), regionA, regionB, sideCode);
+  sp.InitSorted(ConvertTileIndexToOverlayCoord216BySide(tileIndex, true), regionA, regionB,
+                sideCode);
   stretch<Seapoint>* quad = &g_seapointQuadTable_006a3478;
   quad->Add(sp);
 }
@@ -2590,13 +2591,13 @@ void TMapMaker::BuildCityRegionBorderOverlaySegments() {
     }
     if (rThis != dir1region && rThis != otherDir2 && dir1region != otherDir2) {
       if (otherDir2 != -1) {
-        EmitOverlaySegmentFromTileEdgeSorted(t3, 0, rThis, dir1region, codeMid);
-        EmitOverlaySegmentFromTileEdgeSorted(t3, 0, rThis, otherDir2, codeB);
+        EmitOverlaySegmentFromTileEdgeSorted(t3, false, rThis, dir1region, codeMid);
+        EmitOverlaySegmentFromTileEdgeSorted(t3, false, rThis, otherDir2, codeB);
         rThis = dir1region;
         dir1region = otherDir2;
         codeMid = codeA;
       }
-      EmitOverlaySegmentFromTileEdgeSorted(t3, 0, rThis, dir1region, codeMid);
+      EmitOverlaySegmentFromTileEdgeSorted(t3, false, rThis, dir1region, codeMid);
     }
     t3 += 1;
     off3 += 0x24;
@@ -2605,7 +2606,7 @@ void TMapMaker::BuildCityRegionBorderOverlaySegments() {
         int r1 = GetCityRegionIdAtTileIndex(t3);
         int r2 = GetCityRegionIdAtTileIndex(GetNeighborTileIndexOnMap108x60(t3, 1));
         if (r1 != r2 && r1 != -1 && r2 != -1) {
-          EmitOverlaySegmentFromTileEdgeSorted(t3, 0, r1, r2, 5);
+          EmitOverlaySegmentFromTileEdgeSorted(t3, false, r1, r2, 5);
         }
       }
       return;
@@ -2646,7 +2647,7 @@ void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
     return;
   }
   do {
-    unsigned char isInvalid = quad[i].coord00 == -1;
+    bool isInvalid = quad[i].coord00 == -1;
     if (isInvalid) {
       i = i + 1;
       continue;
@@ -2660,10 +2661,10 @@ void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
       do {
         Seapoint* a = &quad[i];
         Seapoint* b = &quad[j];
-        unsigned char sameEdge = a->lo04 == b->lo04 && a->hi08 == b->hi08;
+        bool sameEdge = a->lo04 == b->lo04 && a->hi08 == b->hi08;
         if (sameEdge) {
           int dirDelta = ((b->f0c - a->f0c) + 6) % 6;
-          unsigned char isPrimaryDirection = dirDelta >= 2 && dirDelta <= 4;
+          bool isPrimaryDirection = dirDelta >= 2 && dirDelta <= 4;
           if (isPrimaryDirection) {
             if (bestPrimary == 0xffffffff) {
               bestPrimary = j;
@@ -3163,13 +3164,13 @@ void TMapMaker::RebuildUMapperRouteRecordsAndActiveMapRects() {
 // FUNCTION: IMPERIALISM 0x0052e840
 char TMapMaker::ErrorCheck() {
   EraseZones(0);
-  char failed = 0;
+  bool failed = false;
   signed char* cell = &regionClassGrid10[0][0];
   int remaining = 0x195;
   do {
     if (*cell == -1) {
       *cell = 100;
-      failed = 1;
+      failed = true;
     } else if (*cell == -9) {
       *cell = -1;
     }

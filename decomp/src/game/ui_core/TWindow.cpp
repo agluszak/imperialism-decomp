@@ -242,7 +242,7 @@ CWnd* TWindow::Open() {
     }
   }
   ::SendMessageA(nativeWindow50->m_hWnd, 0x468, 0, controlTag);
-  if (IsActionable() == 0) {
+  if (!IsActionable()) {
     busyFlag98 = 1;
     if (activeLinkedWindow64 != 0) {
       activeLinkedWindow64->SelectOwner(0);

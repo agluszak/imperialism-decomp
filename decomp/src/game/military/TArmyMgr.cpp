@@ -160,13 +160,13 @@ void TArmyMgr::IArmyMgr() {
   pendingUnitPool0c = new TArmyStackList();
   staticTable14 = g_MapContextStaticTable_00695448;
   staticTable18 = g_MapContextStaticTable_00695428;
-  needsTerrainRefreshFlag39a = 0;
+  needsTerrainRefreshFlag39a = false;
   ourStackBattle39c = 0;
   enemyStackBattle3a0 = 0;
   activeBattleView3a4 = 0;
   mapContextActionRecordList04 = new TSortedPtrList();
   mapContextActionRecordList04->recordSize14 = sizeof(MapContextActionRecord);
-  flag8 = 0;
+  flag8 = false;
 }
 
 // FUNCTION: IMPERIALISM 0x004a1a00
@@ -190,7 +190,7 @@ void TArmyMgr::Free() {
     }
     mapContextActionRecordList04->ClearAndFreeAllPtrListRecords();
   }
-  flag8 = 0;
+  flag8 = false;
 
   if (mapContextActionRecordList04 != 0) {
     int ordinal = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
@@ -242,7 +242,7 @@ void TArmyMgr::ReadFrom(TStream* stream) {
     }
     mapContextActionRecordList04->ClearAndFreeAllPtrListRecords();
   }
-  flag8 = 0;
+  flag8 = false;
   if (g_nSaveFormatVersion >= 0x25) {
     int count = stream->ReadInteger();
     while (count-- != 0) {
@@ -257,7 +257,7 @@ void TArmyMgr::ReadFrom(TStream* stream) {
 
       record.ReadFrom(stream);
       mapContextActionRecordList04->AppendCopiedRecordToPtrList(&record);
-      flag8 = 1;
+      flag8 = true;
 
       // The copied record in the list now owns these arrays; reset our local's copies
       // (ground truth re-zeroes them here too, matching the ctor-time defaults).
@@ -287,7 +287,7 @@ void TArmyMgr::DoCombatMoves() {
   // throughout TMultiplayerMgr.cpp); == 2 selects the alternate branch here. The test is
   // materialized into a byte Boolean before it is branched on -- 0x4a1e49's
   // xor/cmp/setz/test al pair is an unsigned char local, not a direct `if` on the compare.
-  unsigned char isNetworkClient = (g_pSimMgr->multiplayerSessionRole == 2);
+  bool isNetworkClient = (g_pSimMgr->multiplayerSessionRole == 2);
   if (isNetworkClient) {
     this->ClearPendingStacksAndFinalizeMilitaryUnits();
     g_pSimMgr->StartNextPhase();
@@ -316,7 +316,7 @@ void TArmyMgr::EndBattlePhase() {
   this->ClearPendingStacksAndFinalizeMilitaryUnits();
   this->DoOwnershipChanges();
 
-  if (this->needsTerrainRefreshFlag39a != 0) {
+  if (this->needsTerrainRefreshFlag39a) {
     g_pMacViewMgr->RebuildNationClipRegionsAndDispatchMapEvent();
     for (int i = 0; i < kTerrainTypeDescriptorTableCount; ++i) {
       if (g_apTerrainTypeDescriptorTable[i] != nullptr) {
@@ -324,7 +324,7 @@ void TArmyMgr::EndBattlePhase() {
       }
     }
   }
-  this->needsTerrainRefreshFlag39a = 0;
+  this->needsTerrainRefreshFlag39a = false;
   g_pSimMgr->StartNextPhase();
 }
 
@@ -689,9 +689,9 @@ static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
   record.sideChildRecords250[0] = 0;
   record.childCount24a[1] = 0;
   record.childCount24a[0] = 0;
-  g_pMapContextActionManager->flag8 = 1;
-  if (g_bRandomMapDeveloperCheatFlag != 0) {
-    g_pMapContextActionManager->flag8 = 1;
+  g_pMapContextActionManager->flag8 = true;
+  if (g_bRandomMapDeveloperCheatFlag) {
+    g_pMapContextActionManager->flag8 = true;
   }
 
   (void)ourBestUnit;
@@ -932,7 +932,7 @@ void TArmyMgr::DoOwnershipChanges() {
       g_apTerrainTypeDescriptorTable[secondaryOwner]->BecomeProtectorateOf(cachedOwner);
     }
     g_pGlobalMapState->ChangeProvinceOwner(static_cast<short>(tileIndex), cachedOwner);
-    this->needsTerrainRefreshFlag39a = 1;
+    this->needsTerrainRefreshFlag39a = true;
   }
 }
 
@@ -972,7 +972,7 @@ bool TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx(int contextArg) {
   if (foundMovableUnit) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x3aa7, 0, 1);
     g_pGlobalMapState->MarkAdjacentHexOrderDirectionAndSelectTile(this->pendingMapActionIndex,
-                                                                  contextArg, 0);
+                                                                  contextArg, false);
   }
   return foundMovableUnit;
 }
@@ -1237,7 +1237,7 @@ static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode) {
     return 6;
   }
   if (mode != 2) {
-    if (g_pViewMgr->mapUberPictureF0->HasActiveMapInteractionSelection() != 0) {
+    if (g_pViewMgr->mapUberPictureF0->HasActiveMapInteractionSelection()) {
       return 0;
     }
     if (mode != 2 && rec->firstCivilianOrder20 != nullptr) {
@@ -1492,7 +1492,7 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
     }
   }
   g_pGlobalMapState->MarkAdjacentHexOrderDirectionAndSelectTile(this->pendingMapActionIndex,
-                                                                cityRecordIndex, 1);
+                                                                cityRecordIndex, true);
 
   if (g_pViewMgr->mapUberPictureF0 != nullptr) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x3aa7, 0, 1);
@@ -1614,9 +1614,8 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
   this->enemyStackBattle3a0 = enemyStack;
   this->activeBattleView3a4 = newBattle;
 
-  unsigned char isMultiplayerHost =
-      static_cast<unsigned char>(g_pSimMgr->multiplayerSessionRole == 1);
-  if (isMultiplayerHost != 0) {
+  bool isMultiplayerHost = static_cast<unsigned char>(g_pSimMgr->multiplayerSessionRole == 1);
+  if (isMultiplayerHost) {
     g_pGameFlowState->NoOpCallbackRet4(newBattle);
   }
   newBattle->StartBattle();
@@ -1697,7 +1696,7 @@ bool TArmyMgr::GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummar
   for (TShip* ship = TShip::GetFirst(); ship != nullptr; ship = ship->next) {
     if (ship->nation == g_pSimMgr->GetActiveNationId() &&
         ship->location->ContainsCityStatePointerInZoneArrayByCityIndex(cityRecordIndex)) {
-      bestShip = ship->Finest(bestShip, 0);
+      bestShip = ship->Finest(bestShip, false);
     }
   }
   if (bestShip != nullptr) {
@@ -1956,7 +1955,7 @@ void TArmyMgr::CleanUpStacks() {
     }
     mapContextActionRecordList04->ClearAndFreeAllPtrListRecords();
   }
-  flag8 = 0;
+  flag8 = false;
 }
 
 // FUNCTION: IMPERIALISM 0x004a6e80
@@ -1968,7 +1967,7 @@ void TArmyMgr::AppendMapContextActionRecordAndResetWorkingFields(MapOrderBattleS
   record->childRecords[0] = nullptr; // +0x250
   record->childCount[1] = 0;         // +0x24c
   record->childCount[0] = 0;         // +0x24a
-  flag8 = 1;
+  flag8 = true;
 }
 
 // FUNCTION: IMPERIALISM 0x004a6ef0

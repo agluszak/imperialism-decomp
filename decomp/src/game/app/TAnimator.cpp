@@ -52,7 +52,7 @@ char TAnimator::DoIdle(int action) {
       ++overlayPhaseTickCount;
       if (overlayPhaseTickCount >= 15) {
         mapUberPicture2c->PrepareAndRenderMapOverlayMode(g_bStrategicMapSelectionOverlayPhase);
-        g_bStrategicMapSelectionOverlayPhase = g_bStrategicMapSelectionOverlayPhase == 0;
+        g_bStrategicMapSelectionOverlayPhase = !g_bStrategicMapSelectionOverlayPhase;
         overlayPhaseTickCount = 0;
       }
     }

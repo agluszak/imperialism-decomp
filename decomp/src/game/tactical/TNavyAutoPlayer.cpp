@@ -10,7 +10,7 @@ IMPLEMENT_DYNCREATE(TNavyAutoPlayer, TNavyPlayer)
 
 // FUNCTION: IMPERIALISM 0x0059f0e0
 void TNavyAutoPlayer::INavyAutoPlayer(TTaskForce* force, char isOurSide, int nationIndex) {
-  INavyPlayer(force, isOurSide, 1, nationIndex);
+  INavyPlayer(force, isOurSide, true, nationIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x0059f110
@@ -24,7 +24,7 @@ void TNavyAutoPlayer::StartBattle() {
   } else {
     deployTileIndex = 0x29;
   }
-  while (sideReadyFlag10 == 0) {
+  while (!sideReadyFlag10) {
     battle14->DeployTacticalUnitToTile(battle14->selectedUnit1c, deployTileIndex);
     --deployTileIndex;
   }

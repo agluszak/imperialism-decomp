@@ -160,7 +160,7 @@ public:
   // SetColor, SetForeColor, and SetBackColor. Windows listing supplies the
   // implementations and addresses.
   QuickDrawPaletteIndex GetColor(short colorCode);
-  void SetColor(short colorCode, unsigned char foreground);
+  void SetColor(short colorCode, bool foreground);
 
   // 0x5ddd20 — opens the civilian ledger (TSuperCivRoster) inside factory dialog
   // 0xdac, runs it modally via the show/refresh chain, then applies the selected
@@ -240,8 +240,7 @@ public:
   // const char*, int, unsigned char) const. Windows uses CString for the CStr32 value
   // and returns the selected four-character control tag. 0x5de010.
   int MakePlanetSeedDialog(const char* instruction, CString& planetSeed, const char* firstChoice,
-                           const char* secondChoice, int initialChoice,
-                           unsigned char showCancel) const;
+                           const char* secondChoice, int initialChoice, bool showCancel) const;
 
   // Object layout recovered from ctor 0x5d5060 / ReadFrom 0x5d5200 /
   // LoadTurnEventCursorTable 0x5d5100. Field names describe their observed readers and
@@ -251,7 +250,7 @@ public:
   TurnEventCodeStorage currentTurnEventCode; // +0x04 (turn-event dispatch code)
   short currentTurnEventNationSlot06;        // +0x06
   POINT dialogPlacement08; // +0x08 (seeded from g_ptCitySiteSelectionDialogPlacement)
-  unsigned char field10;   // +0x10
+  bool field10;            // +0x10
   unsigned char pad11[3];  // +0x11
   // +0x14 .. 0xeb (54 turn-event cursor handles). Indexed as
   // turnEventCursors[resourceCursorId - kCursorResourceIdBase] -- confirmed against

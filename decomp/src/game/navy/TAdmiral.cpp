@@ -154,7 +154,7 @@ void TAdmiral::ReassignThyself() {
   TShip* best = 0;
   for (TShip* node = g_pNavyPrimaryOrderListHead; node != 0; node = node->next) {
     if (node->nation == this->nationSlot) {
-      best = node->Finest(best, 1);
+      best = node->Finest(best, true);
     }
   }
 
@@ -219,7 +219,7 @@ short TAdmiral::EstimateEnemyForces(short* estimatedCounts, const TZone* zone,
           classRoll + -g_aNavalIntelligenceAccuracyProfiles[skill][classEstimate + 3]);
     } while (classRoll > 0);
 
-    if (g_bPerfectNavalIntelligenceCheat != 0 &&
+    if (g_bPerfectNavalIntelligenceCheat &&
         (static_cast<unsigned short>(GetAsyncKeyState(VK_MENU)) & 0x8000) != 0) {
       classEstimate = 3;
       estimatedCount = 1;
@@ -350,7 +350,7 @@ void TAdmiral::ReassignToZone(TZone* zone) {
   TShip* best = 0;
   for (TShip* node = g_pNavyPrimaryOrderListHead; node != 0; node = node->next) {
     if (node->location == zone && node->nation == this->nationSlot) {
-      best = node->Finest(best, 1);
+      best = node->Finest(best, true);
     }
   }
 
@@ -385,7 +385,7 @@ void TAdmiral::NameThyself() {
 // Genuine cdecl by-value helper (the caller cleans its hidden return pointer and two
 // arguments). It maps the four report categories back to an enabled ship resource.
 // FUNCTION: IMPERIALISM 0x00557320
-CString GetLocalizedNavalReportShipType(short category, char plural) {
+CString GetLocalizedNavalReportShipType(short category, bool plural) {
   short resourceType = 0;
   int i;
   for (i = 13; i > 0; --i) {
@@ -396,7 +396,7 @@ CString GetLocalizedNavalReportShipType(short category, char plural) {
     }
   }
   CString result;
-  g_pSimMgr->GetString(plural != 0 ? 0x271a : 0x2716, resourceType, &result);
+  g_pSimMgr->GetString(plural ? 0x271a : 0x2716, resourceType, &result);
   return result;
 }
 

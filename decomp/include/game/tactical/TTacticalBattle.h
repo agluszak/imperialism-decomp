@@ -160,7 +160,7 @@ public:
   // g_pActiveTacticalBattle). Signatures verified against the handler prologues and
   // the 0x545940 dispatcher's pushes.
   TArmyTacUnit* SeekLinkedListCursorByNestedId(int nestedId);                 // 0x5a53e0
-  void SetCurrentTacticalUnitSelection(TTacticalUnit* unit, char remoteFlag); // 0x5a1010
+  void SetCurrentTacticalUnitSelection(TTacticalUnit* unit, bool remoteFlag); // 0x5a1010
   void DispatchTacticalActionByHoverStateIndex(TacticalTileIndex tileIndex);  // 0x5a3370
   // Per-turn upkeep for a unit sitting in state 1 (morale broken): retreats it toward the
   // lowest-distance-field tile (BuildTacticalDistanceFieldForSide), then -- if still
@@ -171,21 +171,21 @@ public:
   void ProcessTacticalUnitState1TurnStep(TTacticalUnit* unit);
   void UndeployUnit(TacticalTileIndex tileIndex); // 0x5a14d0, Mac oracle
   void MoveTacticalUnitBetweenTiles(TTacticalUnit* unit, TacticalTileIndex fromTileIndex,
-                                    TacticalTileIndex toTileIndex, char remoteFlag); // 0x5a1910
+                                    TacticalTileIndex toTileIndex, bool remoteFlag); // 0x5a1910
   void ApplyTacticalActionEffectsAndMaybeRemoveUnit(TTacticalUnit* attackerUnit,
                                                     TTacticalUnit* targetUnit,
                                                     TacticalTileIndex targetTileIndex, int damageA,
                                                     int damageB, char effectCode2C,
-                                                    char remoteFlag); // 0x5a24a0
+                                                    bool remoteFlag); // 0x5a24a0
   float FindMoraleBonus(unsigned char side);                          // 0x5a2630, Mac oracle
   void HandleTacticalCommandTag_mine(TacticalTileIndex tileIndex, int amount,
-                                     char remoteFlag); // 0x5a35a0
+                                     bool remoteFlag); // 0x5a35a0
   void HandleTacticalCommandTag_digg(TTacticalUnit* unit, TacticalTileIndex targetTileIndex,
-                                     char remoteFlag); // 0x5a36d0
+                                     bool remoteFlag); // 0x5a36d0
   void HandleTacticalCommandTag_raly(TArmyTacUnit* unit, int newMorale, int newState,
-                                     char remoteFlag); // 0x5a38e0
+                                     bool remoteFlag); // 0x5a38e0
   void HandleTacticalCommandTag_depl(TArmyTacUnit* unit, TacticalTileIndex tileIndex,
-                                     char remoteFlag); // 0x5a4370
+                                     bool remoteFlag); // 0x5a4370
   // Hands the round over once the current side is done deploying: flips currentSideC,
   // selects the incoming side's next unit, refreshes the 'tool' toolbar, then either
   // finalizes the deployment phase or kicks the incoming side's StartBattle. 0x59fd10.

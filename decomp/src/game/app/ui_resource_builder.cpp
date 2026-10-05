@@ -156,8 +156,7 @@ void __cdecl SetUiResourceContextFlagsAndMetrics(short nField9C, short nStyleTyp
 }
 
 // FUNCTION: IMPERIALISM 0x00427010
-void __cdecl ApplyUiResourceColorTripletFromContext(unsigned char nFlag0C,
-                                                    unsigned char nTripletFlag, int colorA,
+void __cdecl ApplyUiResourceColorTripletFromContext(bool nFlag0C, bool nTripletFlag, int colorA,
                                                     int colorB) {
   TWindow* window = static_cast<TWindow*>(g_pUiResourceContext);
   window->GetDialogBehavior()->SetEnabled(nFlag0C);

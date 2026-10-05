@@ -37,7 +37,7 @@ IMPLEMENT_DYNCREATE(TScenarioChooser, TNoHilitePicture)
 // FUNCTION: IMPERIALISM 0x00579b80
 void TScenarioChooser::DoPostCreate(int arg) {
   TNoHilitePicture::DoPostCreate(arg);
-  g_bMultiplayerScenarioSetupActive = 0;
+  g_bMultiplayerScenarioSetupActive = false;
   scenarioListRowCount = 0;
 
   TTextList* scenarioList = static_cast<TTextList*>(ResolveControlByTag(kControlTagList));
@@ -217,7 +217,7 @@ void TScenarioChooser::StartGame() {
   TMapPreviewView* mapControl =
       static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagPreviewMap));
   mapControl->AssertValid();
-  g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(1);
+  g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(true);
   g_pSimMgr->RecreateActiveMapContextAndInitializeGlobalMapState(selectedScenarioIndex);
   g_pSimMgr->SetDifficultyLevel(difficultyLevelByNation[mapControl->selectedNation68]);
 
@@ -231,7 +231,7 @@ void TScenarioChooser::StartGame() {
       CString promptText;
       g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&promptText, 0x2742, 3);
       g_pViewMgr->MakePlanetSeedDialog(promptText, g_cstrCountryNameSettingValue006A4220, 0, 0, 0,
-                                       0);
+                                       false);
     } while (g_cstrCountryNameSettingValue006A4220.Compare(g_szEmptyString) == 0);
 
     CString qualifiedName = g_pLanguageMgr->PickGender(g_cstrCountryNameSettingValue006A4220);

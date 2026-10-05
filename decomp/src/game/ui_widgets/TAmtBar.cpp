@@ -65,7 +65,7 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 
   GetClip(surface.tempRgn);
 
-  if (this->IsActionable() == 0 || this->PrepareForDrawing() == 0) {
+  if (!this->IsActionable() || this->PrepareForDrawing() == 0) {
     return;
   }
 

@@ -159,7 +159,7 @@ void TCivToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
     if ((kControlTagStackSlotFirst <= controlTag) && (controlTag <= kControlTagStackSlotLast)) {
       TCivilianButton* stackButton = static_cast<TCivilianButton*>(sourceHandler);
       TCivUnit* boundStackEntry = stackButton->selectedCivilianOrder9c;
-      selectedCivilianOrderState->SetActiveCivilianSelection(boundStackEntry, 0);
+      selectedCivilianOrderState->SetActiveCivilianSelection(boundStackEntry, false);
       this->TCluster::DoEvent(0xc, sourceHandler, event);
       return;
     }

@@ -12,19 +12,19 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x668a60
 class TSoundPlayer : public TEventHandler {
 public:
-  unsigned char directSoundInitOkAt20;      // 0x20 — set by InitializeSoundSubsystem
-  unsigned char directSoundInitPendingAt21; // 0x21 — set by RequestDirectSoundInitIfAllowed
+  unsigned char directSoundInitOkAt20; // 0x20 — set by InitializeSoundSubsystem
+  bool directSoundInitPendingAt21;     // 0x21 — set by RequestDirectSoundInitIfAllowed
   char pad22[0x4a];
   TLongintList* audioCuePool;
   TLongintList* remainingRandomAudioCues;
   unsigned short activeAudioCueId;
   unsigned short pendingAudioCueId;
-  unsigned char cdAudioPlaybackActive;
+  bool cdAudioPlaybackActive;
   unsigned char unused79; // ctor-only write; field-xrefs show no reader
   unsigned char unused7A; // ctor-only write; field-xrefs show no reader
   unsigned char padding7B;
   unsigned int fadeStartTick16;
-  unsigned char clearCuePoolsAfterFade;
+  bool clearCuePoolsAfterFade;
   char pad81[0x03];
 
   TSoundPlayer();
@@ -67,7 +67,7 @@ public:
   // TSoundPlayer::FadeCD.
   char FadeCD();
 
-  void StopCdAudioPlayback(char fadeOut); // 0x593c10
+  void StopCdAudioPlayback(bool fadeOut); // 0x593c10
 
   // Arm the deferred CD-audio fade callback unless a fade is already active. This is
   // the out-of-line copy used by the original sound-player TU. 0x593ce0.

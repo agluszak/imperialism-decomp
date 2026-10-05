@@ -253,7 +253,7 @@ void TControlSeaZoneMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
     mapOrderEntry->OrderBlockade(firstMatchContext);
     return;
   }
-  mapOrderEntry->OrderPatrol(0);
+  mapOrderEntry->OrderPatrol(false);
 }
 
 // Inherited unchanged by TBeachheadMission and TBlockadePortMission (real base class relationship).

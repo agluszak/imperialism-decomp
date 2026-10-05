@@ -72,9 +72,9 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
       continue;
     }
 
-    char enabled = prefIndex != -1;
+    bool enabled = prefIndex != -1;
     if (g_pGameFlowState != 0 && g_pSimMgr->multiplayerSessionRole != 0 && prefIndex == 0) {
-      enabled = 0;
+      enabled = false;
     }
     TDeluxeText* label = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTxta + row));
     label->AssertValid();
@@ -86,7 +86,7 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
     // SetState overload at slot 0x75 hides it on the derived type).
     static_cast<TView*>(checkbox)->ViewEnable(enabled, 0);
     LoadUiStringByGroupAndIndexToControlObject(0x2743, static_cast<short>(row + 0x26), checkbox);
-    if (enabled != 0) {
+    if (enabled) {
       checkbox->SetState(static_cast<unsigned char>(g_pSimMgr->preferenceValues[prefIndex]),
                          static_cast<unsigned char>(0));
       unsigned char isOn = checkbox->IsOn();

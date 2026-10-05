@@ -39,7 +39,7 @@ char TMinisterView::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPo
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUDiplomacyViews_00696AE0, 0xb9);
   }
 
-  if (okayControl->IsActionable() != 0) {
+  if (okayControl->IsActionable()) {
     okayControl->Show(0, 1);
   }
   return TView::HandleMouseUp(point, event, origin);

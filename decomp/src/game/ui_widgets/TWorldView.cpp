@@ -87,7 +87,7 @@ void TWorldView::DoKeyEvent(TToolboxEvent* event) {
     CString searchText(g_szEmptyString);
     CString prompt;
     g_pSimMgr->GetString(0x2758, 0xb, &prompt);
-    g_pViewMgr->MakePlanetSeedDialog(static_cast<LPCSTR>(prompt), searchText, 0, 0, 0, 0);
+    g_pViewMgr->MakePlanetSeedDialog(static_cast<LPCSTR>(prompt), searchText, 0, 0, 0, false);
 
     for (int cityIndex = 0; cityIndex < 0x180; ++cityIndex) {
       CString cityName;
@@ -113,7 +113,7 @@ void TWorldView::DoKeyEvent(TToolboxEvent* event) {
     CString searchText(g_szEmptyString);
     CString prompt;
     g_pSimMgr->GetString(0x2758, 0xc, &prompt);
-    g_pViewMgr->MakePlanetSeedDialog(static_cast<LPCSTR>(prompt), searchText, 0, 0, 0, 0);
+    g_pViewMgr->MakePlanetSeedDialog(static_cast<LPCSTR>(prompt), searchText, 0, 0, 0, false);
 
     for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
       CString zoneName;
@@ -160,7 +160,7 @@ void TWorldView::DoKeyEvent(TToolboxEvent* event) {
   case 'Z':
   case 'z': {
     TMapUberPicture* mapView = static_cast<TMapUberPicture*>(ownerContext);
-    if (mapView->invalidationFlag94 != 0) {
+    if (mapView->invalidationFlag94) {
       mapView->CommitPendingUiModeChangeAndRefreshViews(0);
     } else {
       mapView->EnterMapInteractionOverlayMode(0);
@@ -519,11 +519,11 @@ void TWorldView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int
         g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(static_cast<short>(tileIndex));
     TMapUberPicture* mapPicture = static_cast<TMapUberPicture*>(ownerContext);
     mapPicture->SetMapInteractionMode(2);
-    if (mapPicture->invalidationFlag94 == 0) {
+    if (!mapPicture->invalidationFlag94) {
       mapPicture->goodGoldTagControlA4->InvalidateZone(mapPicture->orderEntryContext98);
     }
     mapPicture->orderEntryContext98 = orderContext;
-    if (mapPicture->invalidationFlag94 == 0) {
+    if (!mapPicture->invalidationFlag94) {
       mapPicture->goodGoldTagControlA4->InvalidateZone(orderContext);
     }
     TTaskForce* refreshedTaskForce = 0;

@@ -309,8 +309,8 @@ unsigned char TTradeCluster::IsSelectionAllowed() {
     return 0;
   }
 
-  char actionable = bidControl->IsActionable();
-  if (actionable == 0) {
+  bool actionable = bidControl->IsActionable();
+  if (!actionable) {
     return 0;
   }
   return 1;
@@ -330,8 +330,8 @@ int TTradeCluster::GetBoolSlot1DC() {
     return 0;
   }
 
-  char actionable = offerControl->IsActionable();
-  if (actionable == 0) {
+  bool actionable = offerControl->IsActionable();
+  if (!actionable) {
     return 0;
   }
   return 1;

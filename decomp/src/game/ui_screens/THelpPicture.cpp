@@ -260,7 +260,7 @@ void THelpPicture::ShowTopicList() {
     topicName->ViewEnable(0, 1);
   }
 
-  char navigationAvailable = currentHelpSet90->previousHelpResourceBaseId != 0;
+  bool navigationAvailable = currentHelpSet90->previousHelpResourceBaseId != 0;
   TStaticText* previous = static_cast<TStaticText*>(ResolveControlByTag(kControlTagPrev)); // 'prev'
   g_pSimMgr->GetString(0x2749, 0xd, &navigationText);
   previous->SetTextAndMaybeRefresh(&navigationText, 1);

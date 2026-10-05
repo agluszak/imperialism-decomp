@@ -31,7 +31,7 @@ extern CPoint g_turnEventDialogAnchorPoint;
 
 // UI runtime managers and resource-tree state.
 extern CPoint g_ptUiAnimatorSurfaceBounds;
-extern unsigned char g_bStrategicMapSelectionOverlayPhase;
+extern bool g_bStrategicMapSelectionOverlayPhase;
 extern TMacViewMgr* g_pMacViewMgr;
 extern TViewMgr* g_pViewMgr;
 extern TAnimator* g_pUiAnimator;
@@ -68,7 +68,7 @@ extern CFont* g_pQuickDrawCachedUiFont;
 
 extern TextStyle g_QuickDrawCachedFontPreset;
 
-extern unsigned char g_bQuickDrawCachedFontDirty;
+extern bool g_bQuickDrawCachedFontDirty;
 
 extern const char* const g_apszQuickDrawFontFaceNames[5];
 
@@ -80,7 +80,7 @@ extern CFont* g_pQuickDrawCachedMeasureFont; // 0x6a1d48
 
 extern TextStyle g_QuickDrawMeasureFontPreset; // 0x6a1d4c
 
-extern unsigned char g_bQuickDrawMeasureFontDirty; // 0x6a1d56
+extern bool g_bQuickDrawMeasureFontDirty; // 0x6a1d56
 
 extern COLORREF g_QuickDrawBackgroundColor;
 

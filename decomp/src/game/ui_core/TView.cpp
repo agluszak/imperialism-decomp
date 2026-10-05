@@ -348,17 +348,17 @@ void TView::Show(int show, int refreshNow) {
 // FUNCTION: IMPERIALISM 0x0048b200
 bool TView::IsActionable() {
   return g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0 && viewEnabled != 0 &&
-         ownerContext != 0 && ownerContext->IsActionable() != 0;
+         ownerContext != 0 && ownerContext->IsActionable();
 }
 // FUNCTION: IMPERIALISM 0x0048b250
 void TView::Locate(const CPoint& position, unsigned char refresh) {
-  if (refresh != 0 && IsActionable() != 0) {
+  if (refresh != 0 && IsActionable()) {
     InvalidateCityDialogRectRegion(0, 1);
   }
   ownerLocalX = position.x;
   ownerLocalY = position.y;
   UpdateCoordinates();
-  if (refresh != 0 && IsActionable() != 0) {
+  if (refresh != 0 && IsActionable()) {
     InvalidateCityDialogRectRegion(0, 0);
   }
 }
@@ -525,7 +525,7 @@ void TView::PaintOrInvalidateControl(CDC* paintDc) {
 
 // FUNCTION: IMPERIALISM 0x0048b8d0
 void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintDc) {
-  if (g_McAppUiActiveFlag_006950AC == 0 || IsActionable() == 0 || PrepareForDrawing() == 0) {
+  if (g_McAppUiActiveFlag_006950AC == 0 || !IsActionable() || PrepareForDrawing() == 0) {
     return;
   }
 
@@ -722,7 +722,7 @@ char TView::EvaluateControlInputGate() {
 
 // FUNCTION: IMPERIALISM 0x0048c050
 char TView::HasRenderableParentAndContent() {
-  if (childHitTestFlag4d != 0 && childList44 != 0 && !childList44->IsEmpty()) {
+  if (childHitTestFlag4d && childList44 != 0 && !childList44->IsEmpty()) {
     return 1;
   }
   return 0;
@@ -799,7 +799,7 @@ void TView::ApplyBounds(CRect* newBounds, unsigned char modeFlag) {
   CRect current;
   QueryBounds(&current);
   if (EqualRect(newBounds, &current) == 0) {
-    if (modeFlag != 0 && IsActionable() != 0) {
+    if (modeFlag != 0 && IsActionable()) {
       InvalidateCityDialogRectRegion(0, 1);
     }
     ownerLocalX = newBounds->left;
@@ -807,7 +807,7 @@ void TView::ApplyBounds(CRect* newBounds, unsigned char modeFlag) {
     frameWidth34 = newBounds->right - newBounds->left;
     frameHeight38 = newBounds->bottom - newBounds->top;
     UpdateCoordinates();
-    if (modeFlag != 0 && IsActionable() != 0) {
+    if (modeFlag != 0 && IsActionable()) {
       InvalidateCityDialogRectRegion(0, 0);
     }
   }
@@ -867,7 +867,7 @@ char TView::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint orig
 char TView::PointInBoundsAndActionable(CPoint* point) {
   CRect bounds;
   QueryContentBounds(&bounds);
-  if (IsActionable() != 0) {
+  if (IsActionable()) {
     POINT p;
     p.x = point->x;
     p.y = point->y;

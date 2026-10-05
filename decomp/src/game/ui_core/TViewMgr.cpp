@@ -135,7 +135,7 @@ TViewMgr::TViewMgr() : TObject() {
   this->fieldEc = 0;
   this->currentTurnEventCode = 0;
   this->dialogPlacement08 = g_ptCitySiteSelectionDialogPlacement;
-  this->field10 = 0;
+  this->field10 = false;
   this->mapUberPictureF0 = 0;
   this->activeMovieViewF4 = 0;
   this->fieldF8 = 0;
@@ -169,7 +169,7 @@ void TViewMgr::ReadFrom(TStream* stream) {
   this->fieldEc = 0;
   this->currentTurnEventCode = 0;
   this->dialogPlacement08 = g_ptCitySiteSelectionDialogPlacement;
-  this->field10 = 0;
+  this->field10 = false;
   this->mapUberPictureF0 = 0;
 }
 
@@ -338,9 +338,9 @@ QuickDrawPaletteIndex TViewMgr::GetColor(short eventCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d5710
-void TViewMgr::SetColor(short colorCode, unsigned char foreground) {
+void TViewMgr::SetColor(short colorCode, bool foreground) {
   QuickDrawPaletteIndex paletteIndex = GetColor(colorCode);
-  if (foreground != 0) {
+  if (foreground) {
     SetQuickDrawFillColorFromPaletteIndex(static_cast<unsigned short>(paletteIndex));
   } else {
     UpdatePaletteIndexWithDefaultFallback(paletteIndex);
@@ -361,7 +361,7 @@ void TViewMgr::SetBackColor(short colorCode) {
 
 // FUNCTION: IMPERIALISM 0x005d57b0
 void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
-  if (IsTurnFlowCooldownActiveAndResetExpiredState() != 0) {
+  if (IsTurnFlowCooldownActiveAndResetExpiredState()) {
     return;
   }
   TWindow* node = static_cast<TWindow*>(
@@ -1072,7 +1072,7 @@ inline void ApplyThemeToTaggedTextControl(unsigned int controlTag, int styleWidt
 } // namespace turn_event_ui_refresh
 
 static void DispatchPostTurnStateUpdatesTail(TurnEventCodeStorage eventCode) {
-  if (g_pHelpMgr != nullptr && IsTurnFlowCooldownActiveAndResetExpiredState() == 0) {
+  if (g_pHelpMgr != nullptr && !IsTurnFlowCooldownActiveAndResetExpiredState()) {
     g_pHelpMgr->HandlePostDispatchTurnStateEventUpdates();
     g_pHelpMgr->HandlePendingEventActivationByCode(eventCode);
     g_pHelpMgr->HandlePostPendingEventActivationNoOp(eventCode);
@@ -1150,12 +1150,12 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
 
   // Code 0 = rebuild every registered UI window node.
   if (newCode == 0) {
-    g_pAmbitApplication->dispatchBusyFlag4c = 0;
+    g_pAmbitApplication->dispatchBusyFlag4c = false;
     this->currentTurnEventCode = 0;
     g_pDisplayMgr->clipSnapshotEvent = 0;
     mainView->Close();
     CWMgrIterator iter;
-    iter.Reset(1);
+    iter.Reset(true);
     TWindow* window = static_cast<TWindow*>(iter.FirstWindow());
     while (iter.More() != 0) {
       const unsigned int tag = static_cast<unsigned int>(window->controlTag);
@@ -1210,9 +1210,9 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
   // Cross-code path: tear down the previous dialog, build the new turn-event UI packet.
   g_pAssetMgr->OpenFilesForView(newCode);
   mainView->Open();
-  if (this->field10 != 0) {
+  if (this->field10) {
     ShowBlockingWaitOverlayDialog();
-    this->field10 = 0;
+    this->field10 = false;
   }
   TControl* inclControl =
       static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagIncl)); // 'Incl'
@@ -1232,9 +1232,9 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
   packet->controlTag = kControlTagIncl; // 'Incl'
   packet->RefreshControl();
   g_pDisplayMgr->UpdateTheGWorld(newCode);
-  if (this->field10 != 0) {
+  if (this->field10) {
     ShowBlockingWaitOverlayDialog();
-    this->field10 = 0;
+    this->field10 = false;
   }
   this->currentTurnEventCode = newCode;
 
@@ -1246,7 +1246,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
         this->HandleTurnEventDialogFactorySlotF8();
       } else if (newCode == kTurnEventDiplomacyOffer) {
         turn_event_ui_refresh::BindCursorPanelAndStampDiplomacyMapTerrain(mainView, secondary);
-        g_pAmbitApplication->dispatchBusyFlag4c = 1;
+        g_pAmbitApplication->dispatchBusyFlag4c = true;
         clearDispatchBusyFlag = false;
       }
     } else if (newCode < kTurnEventTradeOverview) {
@@ -1265,7 +1265,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
         break;
       case kTurnEventDiplomacyMap:
         this->ShowDiplomacyScreen(static_cast<short>(payload));
-        g_pAmbitApplication->dispatchBusyFlag4c = 1;
+        g_pAmbitApplication->dispatchBusyFlag4c = true;
         clearDispatchBusyFlag = false;
         break;
       }
@@ -1274,7 +1274,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
         this->SyncTacticalStatusPanelRegion();
       } else if (newCode == kTurnEventTechnologyStore) {
         this->RefreshTechnologyStorePageAndHudText(payload);
-        g_pAmbitApplication->dispatchBusyFlag4c = 1;
+        g_pAmbitApplication->dispatchBusyFlag4c = true;
         clearDispatchBusyFlag = false;
       } else if (newCode == kTurnEventOpeningCinematic) {
         this->HandleTurnEventDialogFactorySlotF4();
@@ -1295,22 +1295,22 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
       case kTurnEventTradeOverview:
       case kTurnEventIndustryOverview:
         this->RefreshTradeAndIndustryOverviewScreen(payload);
-        g_pAmbitApplication->dispatchBusyFlag4c = 1;
+        g_pAmbitApplication->dispatchBusyFlag4c = true;
         clearDispatchBusyFlag = false;
         break;
       case kTurnEventCityProduction:
         this->ShowCityProductionView(static_cast<short>(payload));
-        g_pAmbitApplication->dispatchBusyFlag4c = 1;
+        g_pAmbitApplication->dispatchBusyFlag4c = true;
         clearDispatchBusyFlag = false;
         break;
       case kTurnEventStrategicMap:
         this->ShowTerrainMap(static_cast<short>(payload));
-        g_pAmbitApplication->dispatchBusyFlag4c = 1;
+        g_pAmbitApplication->dispatchBusyFlag4c = true;
         clearDispatchBusyFlag = false;
         break;
       case kTurnEventTransport:
         this->ShowTransportScreen(static_cast<short>(payload));
-        g_pAmbitApplication->dispatchBusyFlag4c = 1;
+        g_pAmbitApplication->dispatchBusyFlag4c = true;
         clearDispatchBusyFlag = false;
         break;
       case kTurnEventCouncilOfGovernors:
@@ -1324,7 +1324,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
     this->InitializeCitySiteSelectionScreenForNation(payload);
   }
   if (clearDispatchBusyFlag) {
-    g_pAmbitApplication->dispatchBusyFlag4c = 0;
+    g_pAmbitApplication->dispatchBusyFlag4c = false;
   }
 #ifdef IMPERIALISM_RUNTIME_TESTS
   RuntimeTestDriver::ObserveActivatedTurnEvent(newCode);

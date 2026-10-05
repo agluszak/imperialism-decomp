@@ -23,12 +23,12 @@ void TOneTimeAnimation::InitializeOneTimeAnimation(TView* view, RECT* rect, shor
   this->registryTag = registryTag;
   frameIndex = 0;
   ticksSinceFrameChange = 0;
-  completeFlag = 0;
+  completeFlag = false;
 }
 
 // FUNCTION: IMPERIALISM 0x0049fde0
 void TOneTimeAnimation::Tick() {
-  if (completeFlag == 0) {
+  if (!completeFlag) {
     int nextTick = ticksSinceFrameChange + 1;
     ticksSinceFrameChange = nextTick;
     if (nextTick == ticksPerFrame) {
@@ -45,7 +45,7 @@ void TOneTimeAnimation::Tick() {
       if (frameIndex < frameCount - 1) {
         frameIndex = frameIndex + 1;
       } else {
-        completeFlag = 1;
+        completeFlag = true;
       }
     }
   }

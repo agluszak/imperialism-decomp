@@ -95,10 +95,10 @@ extern "C" {
 extern TNavyMgr* g_pNavyOrderManager;
 extern unsigned char g_aOceanMapOwnerPaletteIndexByNationTag[24];
 extern unsigned char g_aOceanMapBorderPaletteIndexByNationTag[24];
-extern const unsigned char g_bDrawOceanRouteOverlay;
-extern const unsigned char g_bTransferOceanViewportToActiveSurface;
-extern const unsigned char g_bDrawOceanZoneLabels;
-extern const unsigned char g_bDrawOceanNationLabels;
+extern const bool g_bDrawOceanRouteOverlay;
+extern const bool g_bTransferOceanViewportToActiveSurface;
+extern const bool g_bDrawOceanZoneLabels;
+extern const bool g_bDrawOceanNationLabels;
 extern TShip* g_pNavyPrimaryOrderListHead;
 
 extern "C" TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[14];
@@ -112,7 +112,7 @@ extern "C" int g_aCategoryMetricBaselineAverage[4];
 // 3..5 select class accuracy; each triplet is a percentage distribution.
 extern "C" short g_aNavalIntelligenceAccuracyProfiles[6][6];
 
-extern "C" unsigned char g_bPerfectNavalIntelligenceCheat;
+extern "C" bool g_bPerfectNavalIntelligenceCheat;
 
 extern "C" TAdmiral* g_pNavySecondaryOrderListHead;
 

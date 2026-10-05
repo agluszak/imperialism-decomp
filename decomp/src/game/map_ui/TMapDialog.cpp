@@ -405,7 +405,7 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
 
   short paintedTile = static_cast<short>(paintedHoverTileIndex);
   signed char paintedMarker = g_pGlobalMapState->terrainStateTable[paintedTile].markerSlotIndex10;
-  if (paintedMarker != -1 && tileMarkers7c[paintedMarker].flag != 0) {
+  if (paintedMarker != -1 && tileMarkers7c[paintedMarker].flag) {
     short projectedY;
     short projectedX;
     ProjectTileIndexToWrappedScreenOffsetByScale(paintedTile, &viewportOrigin, &projectedY,
@@ -423,7 +423,7 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
       continue;
     }
     signed char oldMarker = g_pGlobalMapState->terrainStateTable[oldNeighbor].markerSlotIndex10;
-    if (oldMarker == -1 || tileMarkers7c[oldMarker].flag == 0) {
+    if (oldMarker == -1 || !tileMarkers7c[oldMarker].flag) {
       continue;
     }
 
@@ -439,7 +439,7 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
   }
 
   if (frameHoveredTile ||
-      ((GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0 && g_bRandomMapDeveloperCheatFlag != 0) ||
+      ((GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0 && g_bRandomMapDeveloperCheatFlag) ||
       activeUnitCategory == 5) {
     short projectedY;
     short projectedX;
@@ -902,7 +902,7 @@ void RecomputeMapInteractionPreviewVerticalOffsetFromScale() {
 void TMapDialog::ResetAllTileMarkersToSentinel() {
   g_pGlobalMapState->ResetAllTileMarkerSlotIndicesToSentinel();
   for (int i = 0; i < 90; i++) {
-    tileMarkers7c[i].flag = 0;
+    tileMarkers7c[i].flag = false;
     tileMarkers7c[i].a = -1;
     tileMarkers7c[i].b = -1;
     tileMarkers7c[i].c = -1;
@@ -916,7 +916,7 @@ void TMapDialog::ReleaseTileMarkerForTile(short tileIndex) {
   short slot = g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex10;
   if (slot != -1) {
     g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex10 = -1;
-    tileMarkers7c[slot].flag = 0;
+    tileMarkers7c[slot].flag = false;
     tileMarkers7c[slot].a = -1;
     tileMarkers7c[slot].b = -1;
     tileMarkers7c[slot].c = -1;
@@ -994,14 +994,14 @@ void TMapDialog::Draw(RECT* rectBuffer) {
             g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex10;
         if (cachedMarkerIndex == -1) {
           ++g_MapTileCacheMissCount6A3454;
-          while (cacheSearchIndex < 90 && tileMarkers7c[cacheSearchIndex].flag != 0) {
+          while (cacheSearchIndex < 90 && tileMarkers7c[cacheSearchIndex].flag) {
             ++cacheSearchIndex;
           }
           TMapDialogTileMarker& marker = tileMarkers7c[cacheSearchIndex];
           if (marker.c >= 0) {
             g_pGlobalMapState->terrainStateTable[marker.c].markerSlotIndex10 = -1;
           }
-          marker.flag = 1;
+          marker.flag = true;
           marker.a = row;
           marker.b = unwrappedCol;
           marker.c = tileIndex;
@@ -1343,7 +1343,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
       } else {
         const int activeNation = g_pSimMgr->GetActiveNationId();
         bool tileVisible = (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0;
-        if (!tileVisible && g_pGlobalMapState->field24 != 0) {
+        if (!tileVisible && g_pGlobalMapState->field24) {
           tileVisible = terrain.GetTerrainKind() == kStrategicTerrainHills ||
                         terrain.GetTerrainKind() == kStrategicTerrainMountain ||
                         terrain.GetTerrainKind() == kStrategicTerrainSwamp ||
@@ -1366,7 +1366,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
       }
       const int activeNation = g_pSimMgr->GetActiveNationId();
       bool tileVisible = (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0;
-      if (!tileVisible && g_pGlobalMapState->field24 != 0) {
+      if (!tileVisible && g_pGlobalMapState->field24) {
         tileVisible = terrain.GetTerrainKind() == kStrategicTerrainHills ||
                       terrain.GetTerrainKind() == kStrategicTerrainMountain ||
                       terrain.GetTerrainKind() == kStrategicTerrainSwamp ||
@@ -1403,7 +1403,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
       } else {
         const int activeNation = g_pSimMgr->GetActiveNationId();
         bool tileVisible = (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0;
-        if (!tileVisible && g_pGlobalMapState->field24 != 0) {
+        if (!tileVisible && g_pGlobalMapState->field24) {
           tileVisible = terrain.GetTerrainKind() == kStrategicTerrainHills ||
                         terrain.GetTerrainKind() == kStrategicTerrainMountain ||
                         terrain.GetTerrainKind() == kStrategicTerrainSwamp ||
@@ -2398,7 +2398,7 @@ void TMapDialog::DrawTile(short tileIndex, short screenX, short screenY) {
   }
   if (markerIndex == 90) {
     markerIndex = 0;
-    while (markerIndex < 90 && tileMarkers7c[markerIndex].flag != 0) {
+    while (markerIndex < 90 && tileMarkers7c[markerIndex].flag) {
       ++markerIndex;
     }
   }
@@ -2411,7 +2411,7 @@ void TMapDialog::DrawTile(short tileIndex, short screenX, short screenY) {
   if (marker.c >= 0 && marker.c != tileIndex) {
     g_pGlobalMapState->terrainStateTable[marker.c].markerSlotIndex10 = -1;
   }
-  marker.flag = 1;
+  marker.flag = true;
   SplitTileIndexToRowAndColumn(tileIndex, &marker.a, &marker.b);
   marker.c = tileIndex;
   g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex10 =
