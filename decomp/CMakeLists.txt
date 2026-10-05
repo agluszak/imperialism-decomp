@@ -194,7 +194,8 @@ endif()
 
 foreach(_imp_compile_target IN LISTS IMPERIALISM_COMPILE_TARGETS)
     target_include_directories(${_imp_compile_target} PRIVATE include src)
-    target_compile_definitions(${_imp_compile_target} PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+    # Retail links the MBCS static MFC (nafxcw.lib); CString comparisons are _mbscmp.
+    target_compile_definitions(${_imp_compile_target} PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN _MBCS)
 endforeach()
 
 if(IMPERIALISM_LINT_COMPILE_ONLY)
