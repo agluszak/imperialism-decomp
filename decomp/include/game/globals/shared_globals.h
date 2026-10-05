@@ -1,6 +1,4 @@
 #pragma once
-// Cross-subsystem and unresolved global declarations. Definitions and address markers
-// live in src/game/core/global_data_tables.cpp.
 #include "game/globals/global_types.h"
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/core_globals.h"
@@ -67,8 +65,6 @@ extern char g_szCmdSwitchLangQuit_00694254[];
 
 extern _PNH g_pfnPreviousNewHandler;
 
-// Read only by ImperialismApp's developer assert command; no writer exists in the retail
-// image, so the command deliberately exercises the nil-pointer assert path.
 extern void* g_pAmbitDeveloperAssertProbe_006A1358;
 
 extern char g_szListSeparator_00695760[];
@@ -91,8 +87,6 @@ extern "C" short g_infoPanelLabelYByRow_006969c0[4];
 
 extern "C" COLORREF g_defaultDropShadowTextColor;
 
-// Shared empty-string literal (ImperialismApp/TCountry/TIncludeView/
-// TLowDiskWarningDialog/TResourceMgr/TSimMgr).
 extern char g_szEmptyString[];
 
 extern int g_adwEngineerRailBuildCostByTerrainType[kStrategicTerrainCount];
@@ -104,10 +98,6 @@ extern "C" bool g_bMultiplayerScenarioSetupActive;
 
 extern "C" const char s_PictWvGobPathFormat_00698BF4[];
 
-// TGameSetupPicture.cpp — main-menu 'rand' button developer cheat gate: holding shift
-// while clicking only takes the instant-random-map shortcut when this flag is set
-// (never toggled anywhere in the reachable game code -- likely a build-time/debug-only
-// switch in the retail binary). 0x6a42dc.
 extern bool g_bRandomMapDeveloperCheatFlag;
 
 extern "C" MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30[23];

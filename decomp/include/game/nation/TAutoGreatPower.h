@@ -12,18 +12,11 @@ public:
 
   TAutoGreatPower();
   ~TAutoGreatPower() override;
-  // MacApp two-phase initializer. Mac oracle: TAutoGreatPower::IAutoGreatPower(short,
-  // short, short, short, short) -- name taken from there (Hard Rule 12), but NOT the
-  // parameter types: the retail body reads arg1 and arg2 as dwords (0x4e6c2e/0x4e6c3e)
-  // and only arg5 through MOVSX word (0x4e6c4b), so the leading pair is int-width here.
-  // The Windows listing outranks the Mac signature on types.
   void IAutoGreatPower(int nationSlot, int nationInitializationMode, short cityMinisterPolicyId,
                        short foreignMinisterPolicyId, short defenseMinisterPolicyId);
   // Destructor real body 0x004e6bb0; scalar deleting destructor 0x004e6b80
   // (both paired via symbols.csv names).
 
-  // Overrides of TGreatPower virtuals:
-  // slots 0x05/0x06 — 0x004e73f0/0x004e72c0: AI tail-state stream I/O.
   void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override;
   // slot 0x07 — 0x004e7230: drain missionQueue then run the base Free().
@@ -91,21 +84,13 @@ public:
   // slot 0xa0 — 0x004e7ec0: war-transition propagation for a nation pair.
   int ConsiderWarOfAlliance(int targetNation, int sourceNation,
                                              char swapRoles) override;
-  // slot 0xaf — 0x004e6b10: intentional AI override. TGreatPower owns the live
-  // pressure/escalation routine at 0x004db380; automated nations suppress it.
   char UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) override;
-  // slot 0x9d — 0x004e8040: alliance-aware strength evaluation against the strongest
-  // peer; true when minister skill (slot 0x8a) clears the combined score.
   char PassesDiplomacyStrengthThresholdForTarget(int targetNation) override;
-  // slot 0xa7 — 0x004ea300: base reset plus marking every owned region / the port
-  // zone of targetNation as action candidates.
   void AddColony(int targetNation) override;
   // slots 0xb0/0xb1 — 0x004ea430/0x004ea450: no-op overrides for AI nations.
   void AnnounceLater(short orderKind, short payload, short flags) override;
   void BuildGreatPowerTurnMessageSummaryAndDispatch(void) override;
 
-  // Quarterly / nation-state event stubs the AI nation leaves empty.
-  // slots 0x3c/0x3d/0x3e — 0x004e7910/0x004e7930/0x004e7950.
   void DispatchGreatPowerQuarterlyStatusMessageLevel2(CString* message) override;
   void DispatchGreatPowerQuarterlyStatusMessageLevel1(CString* message) override;
   void DispatchGreatPowerQuarterlyStatusMessageLevel0(CString* message) override;
@@ -113,29 +98,12 @@ public:
   void RememberTradeBids(void) override;
   // slot 0x80 — 0x004e7ca0.
   void ShowNewspaperForRecordNation() override;
-  // slots 0x2c8/0x2cc — base vtable NULL; TAutoGreatPower fills these entries.
-  // slot 0xb2 — 0x004e75c0: raise the three AI planning metrics for needSlot.
   virtual void RaiseNeedPlanningMetrics(int needSlot);
   // slot 0xb3 — 0x004ea990: free every queued mission.
   virtual void KillMissions();
 
-  // 0x4eb8b0 — repeatedly assigns the highest-priority tracked mission's action to a
-  // matching order/unit. Resets every missionQueue entry (SmokeEmIfYouGotEm), then loops:
-  // (1) pick the best-scoring TNavyMission (GetNavyMission identity filter — army
-  // entries return null there); if found, build its 9-category weight profile
-  // (AccumulateLack) and pair it with the best same-nation, unassigned
-  // (field2c == nullptr) TShip primary-order node (FitnessOf), dispatching
-  // via AcceptReenforcement and restarting. (2) Otherwise pick the best-scoring TArmyMission
-  // (GetArmyMission identity filter, with a state08/marker11 tie-break against a
-  // runner-up candidate), build its weight profile, and pair it with the best unassigned
-  // (ownerMission == nullptr) militaryUnitList44 unit (FitnessOf),
-  // dispatching via AcceptReenforcement and restarting. Stops when neither pass finds a
-  // candidate to act on.
   void AssignUnitsToMissions(int unused);
 
-  // Sorts the mission queue, then marks entries whose class requirements cannot be
-  // satisfied by the remaining class mask or whose value/cost ratio loses to the next
-  // entry of the same class. 0x4eb6b0.
   void UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unused);
 
   // Chooses and applies city/industry development actions while resource pools remain.
@@ -148,32 +116,14 @@ public:
                      int relatedMapNodeIndex);
   void RemoveMission(eMissionType missionType, int key, TZone* zoneContext);
   void MReassess();
-  // For every unassigned (ownerMission == nullptr) militia-category unit in
-  // militaryUnitList44, finds the queued mission (kind 3, keyed by the
-  // unit's own tileIndex06) in missionQueue and adopts the unit into it. 0x4eafa0.
   void AssignMilitiaToDefendMissions();
   void CreateInitialMissions();
-  // Case-16 advisory pass: resets transient candidate flags, re-marks candidate regions
-  // from flagged nations'/minors' owned-region lists, and (when not at war) scores and
-  // flags the top provinces per advisory order type {2,3,4,6}. 0x4e92b0, __thiscall.
   void MarkEnemyProvinceCandidates();
-  // Zone counterpart of SetProvinceStatus; `contextOrdinal` is a
-  // TZone::GetContextOrdinalOrInvalid() result.
   void SetZoneStatus(int contextOrdinal, eMissionDesirability value); // 0x4e8bf0
-  // Non-virtual helper that marks (or clears) the given nation's first port-zone
-  // context in zoneStatus. Only nations that hold regions are considered, and
-  // a minor nation (encoded slot 100..199) is never marked -- only cleared.
   void SetConquerLust(int nationSlot, char makeEnemy); // 0x004e8300
-  // Stores `status`, except that a candidate province whose map-action-context link is
-  // unavailable for this nation is stored unmarked unless `bypassGate` is set. 0x4e8b50.
   void SetProvinceStatus(int provinceIndex, eMissionDesirability status); // Mac oracle
   void SetProvinceStatus(int provinceIndex, eMissionDesirability status, unsigned char bypassGate);
 
-  // Tail AI-state block: moved here from TGreatPower (RTTI m_nObjectSize proves this
-  // data is TAutoGreatPower-only -- see the comment at the end of TGreatPower's field
-  // list). Object ends at 0x964 (base TGreatPower) + this block; original object size
-  // is 0xb70 (CRuntimeClass m_nObjectSize), so the trailing 4 bytes below are still not
-  // semantically recovered.
   short actionMetricByQuarter[6];
   // eMissionDesirability bytes.
   unsigned char provinceStatus[0x180];
@@ -191,6 +141,4 @@ bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePoo
                                                 int* selectedSlot, int unused,
                                                 float* selectedWeightedCost);
 
-// Scores the current AI nation's owned regions as city-development targets and returns the
-// best region id, or -1 when the nation is unavailable/ineligible. 0x00540440, __cdecl.
 int ComputeBestNationTileDevelopmentScore(NationSlot nationSlot);

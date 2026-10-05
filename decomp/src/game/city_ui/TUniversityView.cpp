@@ -317,12 +317,6 @@ void TUniversityView::Free() {
   }
 }
 
-// Two dialog sections, each SectRect-gated against the passed-in paint rect: (1) a
-// fixed 0x40x0x40 preview-panel blit whose source frame is selected by
-// GetUnitOffset(selectedRecruitmentCategory); (2) the selected
-// recruitment category's four-row resource requirement grid. Each occupied row blits
-// the resource icon and draws the requirement values through the active nation's highest
-// capability level.
 // FUNCTION: IMPERIALISM 0x004cbf70
 void TUniversityView::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);

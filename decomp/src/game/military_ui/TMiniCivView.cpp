@@ -113,8 +113,6 @@ void TMiniCivView::Draw(RECT* rectBuffer) {
 
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xc, 0x2b67, 3);
 
-  // lineText holds the order-type name for the first line, then gets overwritten with
-  // the "<city>, <nation>" location line for the second draw below.
   CString lineText;
   CString nationName;
   g_pSimMgr->GetString(0x2718, civUnit84->orderType, &lineText);
@@ -122,16 +120,12 @@ void TMiniCivView::Draw(RECT* rectBuffer) {
   DrawTextWithCachedQuickDrawStyleState(&lineText);
 
   CString cityName;
-  // Each field is re-read through terrainStateTable[tileIndex06] separately (not cached
-  // in a shared reference), matching the original's own re-computation at each site.
   g_apTerrainTypeDescriptorTable[g_pGlobalMapState->terrainStateTable[civUnit84->tileIndex06]
                                      .ownerNationTag04]
       ->FormatOverlayTerrainLabelText(&nationName);
   g_pGlobalMapState->AssignCityRecordDisplayName(
       g_pGlobalMapState->terrainStateTable[civUnit84->tileIndex06].cityRecordIndex, &cityName);
   {
-    // Scoped so the assembled-line temp is destroyed right after the assignment,
-    // matching the original (which destroys it immediately, not at function end).
     CString cityLine = cityName + g_szListSeparator_00695760 + nationName;
     lineText = cityLine;
   }
@@ -143,9 +137,6 @@ void TMiniCivView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(0x40, 0x34);
   DrawTextWithCachedQuickDrawStyleState(&unitText88);
 
-  // Civ-unit order-icon column, selected by the current improvement selection state
-  // (0-indexed sprite column, each 0x40px wide) from a third icon strip cached on
-  // TMacViewMgr at +0x66c (distinct from the +0x694/+0x68c strips used elsewhere).
   short iconColumn = g_pGlobalMapState->GetUnitOffset(civUnit84);
   TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas66c->GetBlitSurface();
   RECT srcRect = {iconColumn, 0, iconColumn + 0x40, 0x40};

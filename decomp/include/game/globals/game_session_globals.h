@@ -1,6 +1,4 @@
 #pragma once
-// Cross-subsystem game-session state. Definitions and address markers live in
-// src/game/core/global_data_tables.cpp.
 #include "game/globals/global_types.h"
 
 extern "C" {

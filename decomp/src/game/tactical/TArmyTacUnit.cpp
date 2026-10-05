@@ -33,14 +33,10 @@ void TArmyTacUnit::IArmyTacUnit(TMilitaryUnit* source) {
 
 // FUNCTION: IMPERIALISM 0x005a5fe0
 void TArmyTacUnit::ComputeTacticalProjectionScoreVector() {
-  // Quality is recomputed from the source unit's raw experience field (not the
-  // cached qualityLevel10): (short)(experiencePercent / 100), same derivation as the ctor.
   float qualityFactor =
       static_cast<float>(g_dTacticalQualityFactorBase_00669ED0 -
                          static_cast<short>(sourceUnit38->experiencePercent / 100) *
                              g_dTacticalQualityFactorStep_00669EC8);
-  // Retail still evaluates attribute 5, including its integer division, even
-  // though tactical projection does not use the returned terrain adjustment.
   sourceUnit38->GetAttribute(5);
   float strengthTerm = strength4 * g_fTacticalStrengthProjectionScale_00669F0C;
   float scale = strengthTerm * qualityFactor;

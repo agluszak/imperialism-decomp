@@ -7,29 +7,6 @@
 
 class TMission;
 
-// Military unit (RTTI CRuntimeClass descriptor 0x0066ed70, object size 0x44).
-// This single class was previously reconstructed twice under two different
-// names by independent sessions before it was recognized as one class
-// (evidence: TMilitaryUnitOrderState::GetRuntimeClass at 0x5c2dd0 returned the
-// literal 0x66ed70 CRuntimeClass address, and this class's four
-// "battlefield-unit" getters (0x5c3400/0x5c3490/0x5c34d0/0x5c3530) read
-// [ecx+0x4]/[ecx+0x6] -- exactly the inherited TUnit::orderType/tileIndex06
-// slots):
-//  - the per-nation military-recruit ORDER object queued by TGreatPower's
-//    slot-0x32 order family (ctor 0x5c2df0; the DYNCREATE CreateObject
-//    factory at 0x5c2cb0 is a twin that fully inlines the same ctor body
-//    rather than calling out to 0x5c2df0 -- claimed as SYNTHETIC alongside
-//    GetRuntimeClass in the .cpp per the IMPLEMENT_DYNCREATE macro), and
-//  - once resolved, a list entry of TGreatPower::militaryUnitList44
-//    (CIterator walk), and
-//  - a node of the per-region stationed-unit chain (cityScoreTable +0x98,
-//    intrusively linked through the inherited TUnit::nextAtLocation field) --
-//    the retired TStationedUnitNode model.
-// Real C++ base is TUnit: the ctor disassembly writes TUnit's vtable
-// (0x0066ee18) first, then overwrites it with this class's own 0x0066eea8 --
-// vptr-write evidence outranks the RTTI oracle's base_descriptor field (which
-// reports TObject directly), so IMPLEMENT_DYNCREATE in the .cpp still names
-// TUnit as the base per the recover-class evidence order.
 // VTABLE: IMPERIALISM 0x0066eea8
 class TMilitaryUnit : public TUnit {
 public:
@@ -37,14 +14,9 @@ public:
 
   CString name24; // 0x24 display name (naming pass in TCountry.cpp)
 
-  // Two path arrays, each serialized as three tile words. ClearPath fills matching
-  // elements with tileIndex06; the second array's distinct path role is unresolved.
   short orderTargetTiles[3];       // 0x28, 0x2a, 0x2c
   short orderTargetTilesMirror[3]; // 0x2e, 0x30, 0x32
 
-  // strength34/eraIndex/experiencePercent/battleStateFlags round-trip through
-  // ReadFrom/WriteTo (0x5c2fd0/0x5c30a0);
-  // strengthSnapshot/pad3E/ownerMission do not -- transient/derived, not persisted.
   short strength34;        // 0x34 init 0x1f4; scaled by 0.002 in 0x53cc10
   short eraIndex;          // 0x36 derived from unit kind / 8
   short experiencePercent; // 0x38 init 0; divided by 100 in 0x53cc10
@@ -56,8 +28,6 @@ public:
   TMilitaryUnit();
   virtual ~TMilitaryUnit() override;
 
-  // Mac name oracle: IMilitaryUnit. Four-stack-arg thiscall (ret 0x10); the trailing short forwards into
-  // RegisterUnitOrderWithOwnerManager.
   void IMilitaryUnit(MilitaryUnitKindStorage unitKind, int nodeContext, short nationSlot,
                      short registerArg3 = 0);
 
@@ -70,9 +40,6 @@ public:
   // --- TMilitaryUnit virtual functions ---
   virtual void ClearPath();
 
-  // --- non-virtual battlefield-unit accessors; operate on the inherited
-  // TUnit fields (orderType@0x04 read as a unit-type-id index into the
-  // per-unit-type tables, tileIndex06@0x06 read as the stationed province id) ---
   short GetArmsCarried() const;                                   // 0x5c3400
   ArmyUnitCategoryStorage GetCategory() const;                    // 0x5c3490
   short GetTurnDistanceTo(short provinceId) const;                // 0x5c34d0
@@ -85,18 +52,9 @@ public:
                                 short statIndex); // 0x5c3580
   // Sets or clears `mask` in battleStateFlags. 0x004a3b30, __thiscall, 2 args.
   void SetOrClearBattleStateFlags(short mask, bool setFlag);
-  // Era-upgrade candidate for this unit's type (types 0..0xf upgrade to type+8;
-  // Sapper/Combat Engineer and Era-1/Era-2 General upgrade to type+1), gated on
-  // the owner nation's ability rows;
-  // -1 when no upgrade applies. 0x5c35c0.
   MilitaryUnitKindStorage UpgradeType();
   bool CanUpgrade();
-  // Returns the candidate unit type and its arms, cash and optional fuel costs.
-  // The optional resource is zero unless the candidate profile uses resource id 0xc.
   void UpgradeRequirements(short& candidateSlot, short& armsCost, short& cashCost, short& fuelCost);
-  // Pays the upgrade's resource/cash costs from the owner nation's stock counters and
-  // treasury (fails without changing anything if any cost is unaffordable), then sets
-  // the unit's type to the upgraded id. 0x5c3670.
   bool Upgrade();
 
   MilitaryUnitKind GetMilitaryUnitKind() const {

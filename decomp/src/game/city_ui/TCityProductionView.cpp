@@ -225,9 +225,6 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
     BlitBitmapResourceRectWithScreenOffsetAndPalette(&scratchBounds, scratchContext, drawX, drawY,
                                                      pictureId, savedContext, savedFlags);
 #ifdef IMPERIALISM_RUNTIME_TESTS
-    // A full city rebuild performs many independent resource blits. Report only
-    // between completed blits; one blocked GDI/resource operation still trips the
-    // five-second stale-heartbeat watchdog.
     RuntimeTestDriver::Pulse();
 #endif
 
@@ -839,8 +836,6 @@ void TCityProductionView::SetBuildingPicture(short buildingSlot, short buildingT
   clipRect.right = boundsRecord.right;
   clipRect.bottom = boundsRecord.bottom;
 
-  // Original pushes the guard's wrapper here and again into the snapshot below,
-  // and hands Draw the same rect QueryBounds filled in.
   GetClip(surface.tempRgn);
 
   TQuickDrawSurfaceContext* previousSurface = 0;

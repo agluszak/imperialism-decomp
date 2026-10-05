@@ -1,6 +1,4 @@
 #pragma once
-// Subsystem-owned global declarations. Definitions and address markers live in
-// src/game/core/global_data_tables.cpp.
 #include "game/globals/global_types.h"
 
 extern POINT g_ptTacticalAutoPlayModalMessage; // @ 0x6a4650

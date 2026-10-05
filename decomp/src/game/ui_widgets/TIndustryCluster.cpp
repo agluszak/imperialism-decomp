@@ -49,10 +49,6 @@ void TIndustryCluster::DoPostCreate(int styleSeed) {
 
   TProductionOrder* selectedMetricRecord = province->orderSlots[tagIndex];
   this->selectedMetricOrder = selectedMetricRecord;
-  // `productionSlot` only exists on TItemOrder-sized (0x54-byte) objects; safe
-  // here because tagIndex is bounded to the 23-entry g_pTradeSummarySelectionMap
-  // table (0x696108), which never selects the TTrainingOrder slots
-  // (0x17/0x18) sharing this band.
   this->selectedMetricValue = static_cast<short>(activeNationState->GetCityState()->GetBuildingType(
       static_cast<TItemOrder*>(selectedMetricRecord)->productionSlot));
 

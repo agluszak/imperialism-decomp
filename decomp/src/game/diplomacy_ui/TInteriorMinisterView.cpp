@@ -10,8 +10,6 @@
 
 IMPLEMENT_DYNCREATE(TInteriorMinisterView, TMinisterView)
 
-// The original inlines TMinisterView(TView(), field60(0)) directly here (same
-// ctor-inlining divergence already established for TForeignMinisterView).
 // FUNCTION: IMPERIALISM 0x004f3690
 TInteriorMinisterView::TInteriorMinisterView() : TMinisterView() {}
 

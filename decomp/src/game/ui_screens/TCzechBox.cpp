@@ -2,8 +2,6 @@
 
 IMPLEMENT_DYNCREATE(TCzechBox, TUpDownPictureButton)
 
-// The original stores isOn94 before the vptr write (init-list placement); the
-// timingWord92 store visible at 0x571c28 is the inlined TUpDownPictureButton ctor.
 // FUNCTION: IMPERIALISM 0x00571c20
 TCzechBox::TCzechBox() : isOn94(0) {}
 

@@ -25,16 +25,12 @@ BEGIN_MESSAGE_MAP(T64TemplateDialog, CDialog)
 END_MESSAGE_MAP()
 #endif
 
-// Constructs the template-0x64 dialog on the stack and runs it modally. This is what emits
-// the T64TemplateDialog vtable (the dialog is never constructed elsewhere).
 // FUNCTION: IMPERIALISM 0x00413700
 void ShowDialogTemplate64Modal() {
   T64TemplateDialog dialog;
   dialog.DoModal();
 }
 
-// Runs the "DD" template modal dialog previewing a selected picture: constructs the dialog,
-// seeds its title/picture (silhouette overlay off), and shows it modally.
 // FUNCTION: IMPERIALISM 0x00413a50
 void ShowSelectedDibInTemplateDDDialog(CDib* picture, CString title) {
   TDibPreviewDialog dialog(0);
@@ -45,8 +41,6 @@ void ShowSelectedDibInTemplateDDDialog(CDib* picture, CString title) {
   dialog.DoModal();
 }
 
-// Frees the heap silhouette-outline buffer; the base finalize (owner re-enable +
-// modal-state cleanup) is inlined from ~TModalDialogBase.
 // FUNCTION: IMPERIALISM 0x00413c30
 TDibPreviewDialog::~TDibPreviewDialog() {
   delete[] outlinePolygon;
@@ -136,14 +130,6 @@ ON_WM_LBUTTONDBLCLK()
 END_MESSAGE_MAP()
 #endif
 
-// Draws the preview picture into the client area, then optionally overlays a red silhouette
-// outline (Polyline) and/or fill (FillRgn) built from the picture's non-transparent-pixel
-// polygon (outlinePolygon[0].x = POINT count, vertices from index 1). Three blit modes:
-//   renderMode != 0            -> palette-masked StretchDIBits (StretchDibitsWithCopiedPaletteTable)
-//   g_useCompatibleBitmapBlit  -> CreateCompatibleDC + BitBlt of a device bitmap, using the
-//                                 module palette cache's default palette
-//   otherwise                  -> plain StretchDIBits from the stored DIB bits
-// The temporary device bitmap (created here when the CDib has none cached) is released after.
 // FUNCTION: IMPERIALISM 0x0047d5f0
 void TDibPreviewDialog::OnPaint() {
   CPaintDC dc(this);
@@ -153,8 +139,6 @@ void TDibPreviewDialog::OnPaint() {
   }
   if (renderMode != 0) {
     picture->SelectAndRealizeDibPalette(&dc, FALSE);
-    // The original re-reads the header and re-computes abs(biHeight) per height argument (no
-    // CSE), so the two abs expressions are written inline rather than hoisted.
     picture->StretchDibitsWithCopiedPaletteTable(CDC::FromHandle(dc.GetSafeHdc()), 0x10, 0, 0,
                                                  picture->m_pInfoHeader->bmiHeader.biWidth,
                                                  picture->m_pInfoHeader->bmiHeader.biHeight > 0
@@ -202,8 +186,6 @@ void TDibPreviewDialog::OnPaint() {
 // FUNCTION: IMPERIALISM 0x0047dae0
 BOOL TDibPreviewDialog::OnInitDialog() {
   CDialog::OnInitDialog();
-  // CopyBitmapDimensionsToPoint returns its out-pointer; the original reads width/height back
-  // through it (the register wobble vs the local is MSVC500 MoveWindow-arg scheduling).
   CPoint size;
   CPoint* dims = picture->CopyBitmapDimensionsToPoint(&size);
   MoveWindow(0, 0, dims->x + 0x1e, dims->y + 0x32, TRUE);
@@ -216,8 +198,6 @@ BOOL TDibPreviewDialog::OnInitDialog() {
   return TRUE;
 }
 
-// Empty in the original (double-click on the preview does nothing); present only so the
-// message map's ON_WM_LBUTTONDBLCLK entry has a handler.
 // FUNCTION: IMPERIALISM 0x0047db80
 void TDibPreviewDialog::OnLButtonDblClk(UINT nFlags, CPoint point) {
   (void)nFlags;
@@ -330,8 +310,6 @@ END_MESSAGE_MAP()
 TADTemplateDialog::TADTemplateDialog(void* initParam)
     : TModalDialogBase(0xad, static_cast<CWnd*>(initParam)), listbox() {}
 
-// Dead member (no live callers): adds *text to the embedded listbox via
-// CListBox::AddString (LB_ADDSTRING on listbox.m_hWnd at +0x90).
 // FUNCTION: IMPERIALISM 0x0047f5a0
 int TADTemplateDialog::AddListboxText(const CString* text) {
   return listbox.AddString(*text);
@@ -648,15 +626,11 @@ void ShowBlockingWaitOverlayDialog(void) {
   g_pImperialismApp->RestoreWaitCursorIfStartupBusy();
 }
 
-// Releases the input capture the overlay grabbed; the vtable reset + base-dtor chain are
-// compiler-emitted.
 // FUNCTION: IMPERIALISM 0x00498d60
 TE0TemplateDialog::~TE0TemplateDialog() {
   ::ReleaseCapture();
 }
 
-// The leading context value is part of this retail entry point's ABI but is not used by
-// the formatter. Both trace functions target the process-wide debug dialog.
 // FUNCTION: IMPERIALISM 0x0049bb60
 void TracePrintfWithContext(int context, const char* format, ...) {
   (void)context;
@@ -678,17 +652,10 @@ void TracePrintf(const char* format, ...) {
   va_end(args);
 }
 
-// 0x0049bd19 zeroes +0x98 after the CListBox ctor and before the derived vptr store, i.e.
-// exactly where a member-initializer in declaration order lands.
 // FUNCTION: IMPERIALISM 0x0049bcd0
 TTraceDialog::TTraceDialog(void* initParam)
     : CDialog(0xd0, static_cast<CWnd*>(initParam)), listbox(), dialogCreated98(0) {}
 
-// Trace sink for the printf-style entry points at 0x0049bb60 / 0x0049bbb0, both of which
-// vsprintf into a stack buffer and call this on the global dialog at 0x006a1e78. Text
-// arrives in arbitrary chunks, so the tail that has no line break yet is held in a static
-// accumulator until a later call completes it. The function-local static is what emits the
-// 0x006a1fb0 init-guard byte and the atexit destructor registration at 0x0049bf40.
 // FUNCTION: IMPERIALISM 0x0049bd90
 void TTraceDialog::AppendTraceTextAndFlushCompleteLines(const char* text) {
   static CString s_pendingTraceText;
@@ -780,10 +747,6 @@ void TE0TemplateDialog::OnRButtonDown(UINT nFlags, CPoint point) {
   EndDialog(0);
 }
 
-// The original writes CREATESTRUCT +0x18 then +0x1c -- cs.y and cs.x, the window's ORIGIN,
-// not cs.cx/cs.cy. Creating the dialog at (-1000, -1000) parks it off-screen until it is
-// positioned for real, which is the same idiom CMainFrame::PreCreateWindow uses (cs.x =
-// 0xFFFFFC18). Sizing it -1000 x -1000 was never the intent.
 // FUNCTION: IMPERIALISM 0x005def40
 BOOL TE0TemplateDialog::PreCreateWindow(CREATESTRUCT& cs) {
   cs.y = -1000;

@@ -13,16 +13,11 @@ public:
   virtual void
   SetPictureRsrcID(short nPictureId,
                                  unsigned char fRefreshNow) override; // slot 0x72 0x573430
-  // Clears (useAndMask != 0: flags98 &= mask) or subtracts (flags98 -= mask) bits, then
-  // optionally refreshes.
   virtual void ClearOrSubtractFlags98AndMaybeRefresh(unsigned short mask, char useAndMask,
                                                      char refreshNow); // slot 0x74 0x5736c0
   // Overwrites flags98 wholesale, then optionally refreshes.
   virtual void AssignFlags98AndMaybeRefresh(unsigned short value,
                                             bool refreshNow); // slot 0x75 0x573690
-  // TNoHilitePicture adds a 1-byte field90 at +0x90 and tail-pads to a 4-byte boundary
-  // as a base subobject (MSVC does not reuse base tail padding for derived members), so
-  // these fields (read by Draw) start immediately at +0x94, with no gap.
   struct TQuickDrawSurfaceContext* surfaceContext; // +0x94 the picture's own bitmap
   unsigned short flags98; // +0x98 bit0 = transparent-blit + opaque-fill-first, bit2 =
                           // use contentSubRect instead of the full passed-in rect
@@ -31,9 +26,6 @@ public:
 
   TMegaPicture();
 
-  // Two-phase init: forwards the six frame/resource arguments to TPicture::IPicture
-  // (0x48f330), then stores the initial flags98 through the slot-0x75 virtual without
-  // refreshing. 0x00573220, __thiscall.
   void IMegaPicture(TView* panel, int* offsetLayout, int* sizeLayout, int layoutParam4,
                     int layoutParam5, short pictureId, unsigned short flags);
 };

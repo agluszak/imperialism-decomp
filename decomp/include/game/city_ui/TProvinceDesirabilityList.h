@@ -15,8 +15,6 @@ public:
   // Descending by the desirability short at record+2; ties broken pseudo-randomly.
   short Compare(void* a, void* b) override; // slot 0x44 0x4d6630
 
-  // Sets recordSize14 = 4 ({short regionIndex, short score} records). Out-of-line in
-  // the original; called right after construction by the case-16 advisory scan.
   void IProvinceDesirabilityList(); // 0x4d6610
 };
 

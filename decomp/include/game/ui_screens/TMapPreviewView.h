@@ -18,8 +18,6 @@ public:
 
   TMapPreviewView();
 
-  // Rasterize the owner-nation map into the offscreen preview surface. A non-null
-  // table supplies one signed owner tag per map tile; null uses the live map state.
   void TakeSatellitePhoto(char* tileOwnerTagTable); // 0x578c10
   // Rebuild the selected-nation boundary mask in the offscreen preview surface.
   void EnhancePhoto(); // 0x579270

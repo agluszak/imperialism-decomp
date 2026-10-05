@@ -22,9 +22,6 @@ void TMilitaryUnit::SetOrClearBattleStateFlags(short mask, bool setFlag) {
   }
 }
 
-// The original descriptor's m_pBaseClass (0x66ed80) points at TObject's CRuntimeClass —
-// the retail macro skipped the real C++ base TUnit (the ctor at 0x5c2df0 constructs the
-// TUnit prefix layout). Reproduce the retail macro argument.
 IMPLEMENT_DYNCREATE(TMilitaryUnit, TObject)
 
 // FUNCTION: IMPERIALISM 0x005c2df0
@@ -58,9 +55,6 @@ void TMilitaryUnit::IMilitaryUnit(MilitaryUnitKindStorage unitKind, int nodeCont
 // FUNCTION: IMPERIALISM 0x005c2fd0
 void TMilitaryUnit::ReadFrom(TStream* stream) {
   TUnit::ReadFrom(stream);
-  // name24 (CString) is read here in the original via TStream slot 0x70
-  // (ReadSharedString, "read shared string with capacity"): args (&name24, 0x20)
-  // verified against 0x5c2fd0.
   stream->ReadSharedString(&name24, 0x20);
   stream->ReadBytes(orderTargetTiles, 6);
   SwapShortArrayBytes(orderTargetTiles, 3);
@@ -101,13 +95,6 @@ void TMilitaryUnit::Vaporize() {
   ClearPath();
 }
 
-// Moves this unit between two regions' priority-ordered stationed-unit chains
-// (cityScoreTable[region].stationedUnitChain, threaded via nextAtLocation/previousAtLocation,
-// ordered by g_awTacticalUnitCategoryCodeBySlot[orderType] ascending): detaches from
-// the current region's chain (if any), then inserts into the new region's chain (if
-// anchorIndex isn't -1 = none) either as the new head or, when the head's priority
-// is lower than this unit's, at the first position whose successor's priority is not
-// lower.
 // FUNCTION: IMPERIALISM 0x005c3200
 void TMilitaryUnit::MoveTo(short anchorIndex) {
   if (tileIndex06 != -1) {

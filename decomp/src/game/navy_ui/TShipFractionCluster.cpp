@@ -71,11 +71,6 @@ void TShipFractionCluster::DoEvent(int commandId, TEventHandler* sourceHandler, 
   }
 }
 
-// The original names this via a stale/reused symbol ("TToolBarCluster::..."); confirmed as
-// a real TShipFractionCluster method by receiver evidence (ResolveControlByTag('ship'),
-// availableShipCount/shipCountButton matching this class's own layout). The Mac
-// symbol oracle calls this method Set(int, int); Windows callers pass the available and
-// selected ship counts respectively.
 // FUNCTION: IMPERIALISM 0x00568f90
 void TShipFractionCluster::Set(int availableCount,
                                                              int selectedCount) {

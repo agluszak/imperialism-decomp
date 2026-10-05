@@ -176,9 +176,6 @@ void TTaskForce::ReadFrom(TStream* stream) {
   stream->ReadBytes(&aggression, 4);
   stream->ReadBytes(&shipOrders, 4);
 
-  // One scratch short serves the two ordinals and the child count, and doubles as the
-  // loop counter: the original reads all three into the same slot (esp+0x10 at 0x552d40,
-  // 0x552d7a and 0x552dbe) and decrements that slot in place at 0x552dd4.
   short ordinal;
   stream->ReadBytes(&ordinal, 2);
   if (shipOrders == 5) {
@@ -344,8 +341,6 @@ void TTaskForce::OrderPatrol(bool useType4) {
   g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
 }
 
-// Mac oracle: OrderSail. Sibling of OrderBlockade/OrderSendInTheMarines for map-order
-// kind 1; identical shape, differing only in the order kind it submits.
 // FUNCTION: IMPERIALISM 0x00553270
 void TTaskForce::OrderSail(TZone* orderTarget) {
   target = orderTarget;
@@ -395,15 +390,8 @@ void TTaskForce::OrderSail(TZone* orderTarget) {
 
 // FUNCTION: IMPERIALISM 0x005533f0
 void TTaskForce::OrderSailTowards(TZone* pContextAnchor) {
-  // Reseed the zone-graph BFS distance levels (TZone::distanceLevel) from
-  // pContextAnchor before using them below to steer the candidate-promotion
-  // walk. level == -1 means "start a fresh search" (see
-  // TZone::PropagateMapActionContextDistanceLevelsRecursive).
   pContextAnchor->PropagateMapActionContextDistanceLevelsRecursive(-1);
 
-  // Minimum g_NavyOrderResourceDescriptorTable[ship->type].SailingSpeed()
-  // among *active* (active != 0) children, clamped to the 10000
-  // sentinel (no active children).
   int minPriority = 10000;
   for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
     if (node->active != 0) {
@@ -414,14 +402,10 @@ void TTaskForce::OrderSailTowards(TZone* pContextAnchor) {
     }
   }
 
-  // This order kind (shipOrders 1) uses the zone member: seed it from the context zone,
-  // then walk the zone neighbor graph one hop at a time toward pContextAnchor.
   target = location;
 
   int iterationBudget = (minPriority < 10000) ? minPriority : 0;
   for (int step = 0; step < iterationBudget; ++step) {
-    // Re-read target each time it is dereferenced, matching the original's member
-    // reload after each ensure-slot call.
     TZone* current = static_cast<TZone*>(target);
     unsigned int index = 0;
     if (current->primaryNeighbors.Count() > 0) {
@@ -429,9 +413,6 @@ void TTaskForce::OrderSailTowards(TZone* pContextAnchor) {
         TZone* candidate = current->primaryNeighbors[index];
         current = static_cast<TZone*>(target);
         if (candidate->distanceLevel < current->distanceLevel) {
-          // Walk one hop closer to pContextAnchor: promote this neighbor to
-          // be the new owner (re-fetches the slot, matching the original's
-          // repeated ensure-slot call rather than reusing `candidate`).
           TZone* better = (index < static_cast<unsigned int>(current->primaryNeighbors.Count()))
                               ? current->primaryNeighbors[index]
                               : nullptr;
@@ -646,9 +627,6 @@ void TTaskForce::Add(TShip* node) {
     return;
   }
 
-  // Find the priority-sorted insertion point: the first sibling whose own
-  // toolbar-bucket priority is >= node's (table at g_NavyOrder-
-  // ResourceDescriptorTable + 0x18, i.e. 0x698108 + 0x18 = 0x698120).
   TMapOrderChildLinkNode* nextLink = shipList;
   TMapOrderChildLinkNode* prevLink = 0;
   if (nextLink != 0) {
@@ -694,15 +672,9 @@ void TTaskForce::Add(TShip* node) {
 
   node->taskForce = this;
 
-  // Defensive null re-check on `this` (matches the original's own `test edi,edi`
-  // before this tail, mirroring the null-safe style already used elsewhere in this
-  // class -- e.g. IsEmpty).
   if (this != nullptr) {
     AssertValid();
 
-    // Copies this entry's aggression dword and applies the
-    // same ship-order-kind gate TShip::SetTaskForce applies, just
-    // with `this` playing the role of that method's `newEntry` argument.
     node->aggression = aggression;
 
     short kind = static_cast<short>(shipOrders);
@@ -750,8 +722,6 @@ void TTaskForce::ElectFlagship() {
   }
 }
 
-// Mac oracle: Victory. Retail checks the receiver for null before counting but
-// still divides by the resulting ship count.
 // FUNCTION: IMPERIALISM 0x00553e70
 void TTaskForce::Victory(int experienceGain) {
   short shipCount = 0;
@@ -835,8 +805,6 @@ char TTaskForce::SinkOrSwimShips() {
   return 0;
 }
 
-// Mac oracle: TTaskForce::SubmitOrders(eShipOrders, void*). The second argument is
-// stored in the shipOrders-keyed target slot for order kinds that carry a context.
 // FUNCTION: IMPERIALISM 0x005540b0
 void TTaskForce::SubmitOrders(int orderType, void* orderContext) {
   switch (orderType) {
@@ -938,10 +906,6 @@ void TTaskForce::SubmitOrders(int orderType, void* orderContext) {
   }
 }
 
-// Resolves the action-context map-order command id from the entry's active order context
-// (location, a TZone) and a candidate context zone. Returned ids map (in
-// DoTileClick) to entry order types: 0x0C->type3, 0x0D->type1,
-// 0x0E->type6, 0x0F->type1 (special queue path); 1 is the fallback.
 // FUNCTION: IMPERIALISM 0x00554300
 int TTaskForce::MouseCodeForTarget(TZone* candidate) const {
   TZone* activeContext = location;
@@ -962,10 +926,6 @@ int TTaskForce::MouseCodeForTarget(TZone* candidate) const {
   return 1;
 }
 
-// Resolves the province-context map-order command id: DoTileClick
-// maps 0x10 -> order type 5, and 1 is the "no command" fallback. Asks the diplomacy
-// manager whether this entry's nation and the province's owner nation
-// (byte 0) have a stale pair-relation turn stamp.
 // FUNCTION: IMPERIALISM 0x00554460
 char TTaskForce::MouseCodeForTarget(Province* province) const {
   bool stale = g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
@@ -1013,9 +973,6 @@ bool TTaskForce::IsValidTarget(TZone* candidate) {
   return distance <= movementLimit;
 }
 
-// True (returns the province's +0xa0 eligibility byte) only when this entry has a
-// queued-children region AND an active child link; otherwise 0. Guards a province-context
-// command before DoTileClick commits it.
 // FUNCTION: IMPERIALISM 0x00554590
 unsigned int TTaskForce::IsValidTarget(Province* province) {
   if (province == nullptr) {
@@ -1044,10 +1001,6 @@ int TTaskForce::IsPassingThroughPort(TZone* port) const {
   return false;
 }
 
-// Drop every inactive child (returning it to a free agent), recompute the
-// preferred active child, then re-insert this entry at the head of the global
-// TNavyMgr order queue (freeing it instead when no children survive), and
-// finalize it through the active map-order context.
 // FUNCTION: IMPERIALISM 0x00554660
 void TTaskForce::CommitToOrders() {
   FreeAvailables();
@@ -1133,13 +1086,9 @@ void TTaskForce::DemocraticallyDetermineAggressionLevel() {
   int sum = 0;
   int count = 0;
   for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
-    // The original averages the complete cached order-type/strength dword rather
-    // than treating the two packed shorts independently.
     sum += node->payload->aggression;
     ++count;
   }
-  // The rounded average is written back as one 32-bit store spanning this entry's
-  // aggression value (the original writes a dword at +0x04 in each branch).
   if (count != 0) {
     aggression = (count / 2 + sum) / count;
     return;
@@ -1283,18 +1232,12 @@ void TTaskForce::GetSnooperDescription(CString* out) const {
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&unitCountTemplate, 0x2762,
                                                       (childCount != 1) + 0x11);
 
-  // Nation/terrain name for nation (reused here as a nation slot index; same
-  // pattern as TNavyMgr.cpp and BuildMapOrderBattleSideSnapshot).
   g_apTerrainTypeDescriptorTable[nation]->FormatOverlayTerrainLabelText(&terrainOwnerLabel);
 
-  // location is a real TZone* (see TTaskForce.h); slot 0x2c is
-  // TZone::AssignZoneDisplayNameToOutputRef.
   location->AssignZoneDisplayNameToOutputRef(&contextLabel);
 
   childCountText.Format(g_szDecimalFormat, childCount);
 
-  // Order-kind label. The original reads only the low 16 bits of `shipOrders` here
-  // (a `movsx ax` load), so truncate through `short` to match exactly.
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&orderKindLabel, 0x2762,
                                                       static_cast<short>(shipOrders) + 0x13);
 
@@ -1345,14 +1288,6 @@ void TTaskForce::GetGeneralDescription(CString* out) const {
   *out += contextText;
 }
 
-// Tail-recursive nextForce walk (TNavyMgr::CarryOutOrders' rebuild-head
-// pass): null-safe on `this`. An entry with no active children is always pruned
-// (Free()'d) regardless of shipOrders. A live entry survives unless shipOrders is
-// 0/1/4/7/8, or (shipOrders == 5) its target city's owner nation's diplomacy relation
-// stamp with this entry's own nation is out of date -- in both prune cases the walk
-// still recurses into nextForce first, then Free()s `this` and returns the recursive
-// result (the new chain head with `this` spliced out); the survive case recurses but
-// discards that result and returns `this` unchanged.
 // FUNCTION: IMPERIALISM 0x00555090
 TTaskForce* TTaskForce::RemoveStragglers() {
   if (this == nullptr) {
@@ -1761,16 +1696,6 @@ int TTaskForce::GetBattleStrengthRating() const {
   return total;
 }
 
-// Immediate/deferred execution effects for a resolved queue entry (ResolveMapOrderChains-
-// ForTurnPhase's tail passes): no-op once already eliminated. Type 1 (target-assignment)
-// propagates target (the context TZone*) into every active child's own location. Type 5
-// (province-target) reads target as Province* and sets the target city's owner-flag bit for its nation
-// (nation) and, in single-player mode, invalidates that city's redraw. Type 8
-// (progression) advances every active child's strength by a quarter-step toward
-// its resource-type's stockCap, clamping at the cap. Any other type asserts (once) that
-// g_UnknownMapOrderExecutionGuard_006a3ee0 is set, then falls through like the others to
-// mark this entry processed -- except type 1, which returns before that (the original
-// never sets defeated on that path).
 // FUNCTION: IMPERIALISM 0x00556100
 void TTaskForce::CarryOutOrders() {
   if (defeated != 0) {
@@ -1921,11 +1846,6 @@ int TTaskForce::GetNationalIndex() const {
 void TTaskForce::CreateIngot() {
   int markerType = -1;
   DestroyIngot();
-  // `shipOrders` (+0x08) is the order kind; each kind marks a different tile with a
-  // different state byte. In these map-order contexts `target`/`location` are the
-  // order's zone -- the disassembly dispatches through TZone's tile-search virtuals
-  // (FindNearestActiveSeaContextTileFromOffset216 slot 0x4c,
-  // FindBestCoastalTileForContextAndCityStateByHeuristic slot 0x54).
   switch (shipOrders) {
   case 1:
     markerType = 4;

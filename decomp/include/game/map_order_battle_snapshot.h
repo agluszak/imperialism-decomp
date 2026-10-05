@@ -7,10 +7,6 @@
 struct CStr32 {
   char data[0x20];
 
-  // Defined in-class: the original inlines this into every stack declaration (the
-  // stride-0x20 store loop at 0x4a1c47 in TArmyMgr::ReadFrom is an array of two of
-  // these being constructed), while still emitting the standalone copy below because
-  // the vector-construction helper takes the constructor's address.
   // FUNCTION: IMPERIALISM 0x004a31c0
   CStr32() {
     data[0] = 0;
@@ -18,10 +14,6 @@ struct CStr32 {
 };
 ASSERT_SIZE(CStr32, 0x20);
 
-// Fixed-capacity long string used by the map-action report records. The Windows
-// constructor is the six-byte body at 0x4a31e0; an array of two instances is why
-// ResolveStrategicBattle invokes VC5's vector-construction helper with a
-// 0xff-byte stride. Mac symbols call the corresponding type CStr255.
 struct CStr255 {
   char data[0xff];
 
@@ -33,9 +25,6 @@ struct CStr255 {
 };
 ASSERT_SIZE(CStr255, 0xff);
 
-// Four-byte discriminator shared by the serialized map-context report and the
-// stack-local snapshot from which it is built. Each value selects both the location
-// payload type and one retail report-text family.
 enum MapContextReportKind {
   kMapContextReportLandBattle = 0,
   kMapContextReportSeaBattle = 1,
@@ -45,9 +34,6 @@ enum MapContextReportKind {
 };
 typedef int MapContextReportKindStorage;
 
-// One detail row in a map-order action report. Conflict resolution initially retains a
-// live unit pointer while refreshing ship state, then finalizes that four-byte slot to
-// the category tag consumed by the battle-report UI.
 struct MapOrderBattleSideChildRecord {
   short resourceType;    // +0x00 -- child TShip::type
   short stockOrRequired; // +0x02 -- child TShip::strength
@@ -62,9 +48,6 @@ struct MapOrderBattleSideChildRecord {
 };
 ASSERT_SIZE(MapOrderBattleSideChildRecord, 0x2c);
 
-// Stack-local working record shared by task-force conflict resolution and nation
-// map-order interaction processing. Its 0x0c..0x257 tail is also embedded unchanged in
-// MapContextActionRecord, which takes ownership of the finalized per-side detail rows.
 struct MapOrderBattleSnapshot {
   unsigned char nationIds[2];               // +0x00/+0x01, indexed by participant side
   unsigned char reportParticipantIndex;     // +0x02

@@ -44,12 +44,8 @@ TCouncilView::~TCouncilView() {}
 
 IMPLEMENT_DYNCREATE(TCouncilView, TDiplomacyMapView)
 
-// slot 0x37 — lifecycle-hook override: rebuilds the council nation-overlay geometry and
-// labels (the base impl is a no-op, hence the inherited slot name).
 // FUNCTION: IMPERIALISM 0x004fba70
 void TCouncilView::DoPostCreate(int arg) {
-  // Calls the (literally no-op) base-class slot 0x37 impl non-virtually, matching the
-  // ground truth's fixed-address (not vtable) call to 0x48ab70.
   this->TView::DoPostCreate(arg);
 
   interactionModeAt94 = 5;
@@ -73,8 +69,6 @@ void TCouncilView::DoPostCreate(int arg) {
   titleControl->SetJustification(-2, false);
 
   if (g_pSimMgr->mode == kGamePhaseCouncilDefeat || g_pSimMgr->mode == kGamePhaseCouncilVictory) {
-    // Map-interaction mode: title shows "<terrain/country name>" expanded through the
-    // localized "[0]" template, plus a self-vs-other SFX cue for the highlighted nation.
     CString terrainLabel;
     g_apTerrainTypeDescriptorTable[g_pDiplomacyTurnStateManager->lastProcessedNationSlot]
         ->FormatOverlayTerrainLabelText(&terrainLabel);
@@ -92,8 +86,6 @@ void TCouncilView::DoPostCreate(int arg) {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1f44, 0, 1);
     }
   } else {
-    // Normal council mode: static council-panel title, then clear/reload the "main"
-    // ticker panel and the "end"/"quer" council-action button captions.
     CString titleText;
     g_pSimMgr->GetString(0x2733, 0x5e, &titleText);
     titleControl->SetTextAndMaybeRefresh(&titleText, false);
@@ -108,16 +100,10 @@ void TCouncilView::DoPostCreate(int arg) {
   }
 }
 
-// slot 0x0f — DoEvent override: routes council-control events by the source
-// handler's 4-char control tag; everything else falls through to TControl::DoEvent.
 // FUNCTION: IMPERIALISM 0x004fbd60
 void TCouncilView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 10) {
     if (sourceHandler->controlTag == kControlTagStar) { // "star"
-      // Rebuild council controls + restart the vote ticker. 0x4fc2e0's receiver is a
-      // TCouncilView (verified: it writes councilNationCount/visibleVoteTier and resolves its
-      // own controls via the TView vtable), so it is owned by this class, not the small
-      // TCouncilTickerAnimation it was previously attributed to.
       this->StartVoting();
       return;
     }
@@ -147,9 +133,6 @@ void TCouncilView::DisplayStats() {
   TextStyle style;
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6a);
 
-  // Census every pending-policy map record for the selected nation pair into eight
-  // relationship-category buckets: major/minor-nation × (source/target owner, in-vote /
-  // out-of-vote). Buckets 0-3 are out-of-vote, 4-7 in-vote.
   NationSlot sourceNation = g_pDiplomacyTurnStateManager->congressLeadership.chairmanNationSlot;
   NationSlot targetNation = g_pDiplomacyTurnStateManager->congressLeadership.counterpartNationSlot;
   short categoryCounts[8];
@@ -182,8 +165,6 @@ void TCouncilView::DisplayStats() {
     ++categoryCounts[category];
   }
 
-  // Push the bucket totals onto the four overlay rows: a string-resource title label
-  // ('ttl0'-'ttl3') plus the two count fields ('num0'-'num3' major, 'num4'-'num7' minor).
   for (int row = 0; row < 4; ++row) {
     TStaticText* titleLabel = static_cast<TStaticText*>(
         this->ResolveControlByTag(IMPERIALISM_FOURCC('t', 't', 'l', '0') + row));
@@ -238,8 +219,6 @@ void TCouncilView::DisplayStats() {
   targetScore->Show(1, 1);
 }
 
-// Receiver confirmed to be TCouncilView (writes councilNationCount / visibleVoteTier and
-// resolves its own controls via the TView vtable).
 // FUNCTION: IMPERIALISM 0x004fc2e0
 void TCouncilView::StartVoting() {
   CString candidateName;
@@ -370,26 +349,17 @@ void TCouncilView::NextTick() {
         }
       }
       if (!allowAdvance) {
-        // The original jumps straight to the shared epilogue here, bypassing the
-        // hint-overlay rebuild below.
         g_pSimMgr->StartNextPhase();
-        // 0x4fc836 jumps straight to the shared epilogue, skipping the overlay rebuild
-        // below; with the function-scope CString forcing a single epilogue, that is a
-        // plain early return.
         return;
       }
       g_pDiplomacyTurnStateManager->lastProcessedNationSlot = -1;
       g_pSimMgr->turnStateCode = kGamePhaseAdvanceSeason;
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1f42, 0, 1);
     }
-    // Both surviving paths (slot78e == -1 at 0x4fc86b, and the allow-advance branch at
-    // 0x4fc869) fall through to the single call at 0x4fc882.
     DisplayStats();
   }
 }
 
-// slot 0x35 — cursor-hover override: base hit test, then force the pointer cursor while
-// hovering the council nation strip.
 // FUNCTION: IMPERIALISM 0x004fc950
 void TCouncilView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                                        RgnHandle hitArg) {

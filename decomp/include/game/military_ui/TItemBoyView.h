@@ -16,11 +16,6 @@ public:
   // NOOP: verified empty in original 0x004af943 (no standalone TItemBoyView::TItemBoyView body exists: CreateObject 0x004af910 inlines this default ctor, calling the TView base ctor directly at that site)
   TItemBoyView() {}
 
-  // Draws `header` at a fixed origin, then blits a horizontal row of item-kind icons
-  // (icon strip cached at *(g_pMacViewMgr + 0x674) + 4, distinct from the
-  // Army/Navy boy views' +0x694 strip) using this->frameWidth (inherited from
-  // TView) and the context's item count to lay out each icon's width. Non-virtual
-  // paint helper called only from Draw; the raw listing confirms it is not a destructor.
   void ActuallyDraw(CString* header);
 
   BattleReportDetailRecord* battleDetail; // +0x60

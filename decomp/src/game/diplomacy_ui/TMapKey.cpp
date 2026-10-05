@@ -84,8 +84,6 @@ void TMapKey::Draw(RECT* rectBuffer) {
   }
 }
 
-// Legend labels for view mode 0: a heading and a body line, each drawn twice
-// (offset drop shadow then main color) at coordinates relative to the anchor view.
 // FUNCTION: IMPERIALISM 0x004fd000
 void TMapKey::RenderMapHintOverlayMode0() {
   TView* anchor = this->ownerContext;
@@ -121,8 +119,6 @@ void TMapKey::RenderMapHintOverlayMode0() {
   DrawTextWithCachedQuickDrawStyleState(&label);
 }
 
-// Legend labels for view mode 4: seven numbered labels at table coordinates
-// plus a centered terrain-descriptor label, each drawn twice for a drop shadow.
 // FUNCTION: IMPERIALISM 0x004fd220
 void TMapKey::RenderMapHintOverlayMode4() {
   TView* anchor = this->ownerContext;
@@ -171,8 +167,6 @@ void TMapKey::RenderMapHintOverlayMode4() {
   DrawTextWithCachedQuickDrawStyleState(&expanded);
 }
 
-// Legend labels for view mode 1: three numbered labels at table coordinates plus
-// a centered terrain-descriptor label, each drawn twice for a drop shadow.
 // FUNCTION: IMPERIALISM 0x004fd5c0
 void TMapKey::RenderMapHintOverlayMode1() {
   TView* anchor = this->ownerContext;
@@ -221,9 +215,6 @@ void TMapKey::RenderMapHintOverlayMode1() {
   DrawTextWithCachedQuickDrawStyleState(&expanded);
 }
 
-// Legend labels for view mode 2: a heading label, a three-label loop at table
-// coordinates, a fixed-position label, and a centered terrain-descriptor label,
-// each drawn twice for a drop shadow.
 // FUNCTION: IMPERIALISM 0x004fd910
 void TMapKey::RenderMapHintOverlayMode2() {
   TView* anchor = this->ownerContext;

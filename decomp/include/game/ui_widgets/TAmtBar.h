@@ -22,10 +22,6 @@ public:
   void Draw(RECT* rectBuffer) override;
   void DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) override;
 
-  // TAmtBar-introduced virtuals (slots 0x1a0–0x1a8 only; tail slots are NULL in orig).
-  // ApplyMoveClamp's second argument is a short: the base (0x00586e50) reads it with
-  // MOV AX,word ptr [ESP+4] and the TTraderAmtBar override (0x0058b070) with
-  // MOV DI,word ptr [ESP+0x14].
   virtual short ApplyMoveClamp(int baseValue, short requestedValue);
   virtual void UpdateBarValuesAndRefresh(short valueAt60, short valueAt62);
   virtual void DrawAmt();

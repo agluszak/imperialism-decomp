@@ -18,22 +18,12 @@ public:
   TTaskForce* taskForce20;           // +0x20 combined task-force/map-order entry
   TMapOrderChildLinkNode* orderList; // +0x24 -- head of child order-node chain
 
-  // Returns the child ship with the highest TShip::ComputeValueForMission score for
-  // `missionType`, or null when the order list is empty. Scores start from -1, so any
-  // ship scoring 0 or better wins; ties keep the earlier node. No Mac oracle name
-  // matches this shape, so it is named descriptively. 0x00537010, __thiscall.
   TShip* PickBestShipForMissionType(int missionType) const;
 
-  // Mac oracle: ComputeSeaZoneImportance. Scores a sea zone for this mission: the
-  // zone's own node-value average, multiplied by 1.5 for each adjacent port zone this
-  // mission's nation owns and 1.25 for each it does not, then normalised by 5000.
-  // 0x00536a40, __thiscall.
   float ComputeSeaZoneImportance(TZone* zone);
   int navyState28; // +0x28 target-selection state (0 -> zone18 active, 1..2 -> zone14)
   float requiredShipEquipageByCategory[4]; // +0x2c
 
-  // In-class inline: the original has no out-of-line TNavyMission::TNavyMission -- every
-  // caller absorbs it, so an out-of-line definition pessimizes them into a call.
   TNavyMission() : TMission() {
     missionTargetZone = nullptr;
     resolvedPortZone = nullptr;
@@ -84,13 +74,7 @@ public:
   virtual char SmokeEmIfYouGotEm()
       override; // slot 0x98 0x536740 -- clears queued order links/owner pointers, returns true
 
-  // TNavyMission-introduced virtuals (TMission abstract slots 0x27+ / offset 0x9c+).
-  // Mac: GiveActionOrders(TTaskForce*). The base is a no-op; concrete missions use the
-  // task-force/map-order entry passed by GiveOrders (taskForce20).
   virtual void GiveActionOrders(TTaskForce* mapOrderEntry); // slot 0x27 0x5354c0
-  // Returns the best neighbor port zone for the current nation (delegates to
-  // missionTargetZone->GetSafestNearbyZoneFor); every override
-  // (TControlSeaZoneMission/TScatteredShipsMission) also returns a TZone*.
   virtual TZone* RefreshMissionPortZoneContextForNation(); // slot 0x28 0x536fa0
   virtual void
   ConsolidateMissionOrderEntriesByTargetAndQueue(TZone* location); // slot 0x29 0x5371d0
@@ -99,58 +83,22 @@ public:
   // Selects the active target zone from lifecycle state28 (0 -> zone18, 1..2 -> zone14).
   virtual TZone* GetActiveTargetZoneByState28() const; // slot 0x2b 0x537060
 
-  // Mac: CombineForce(TZone*, TTaskForce*&). Reuses or creates the task force for
-  // `location`, then moves every matching mission order into it.
   void CombineForce(TZone* location, TTaskForce*& taskForce); // 0x536d60
 
-  // Dead sibling of AccumulateNavyOrderCategoryVectorWithScale: per-ship accumulation
-  // with a distance-decayed, sign-selected weight. 0x537b20.
   void AccumulateWeightedShipEquipage(TShip* ship, float* vector, char positive);
 
   static float ComputeOrderDistributionSimilarityScoreForExactSourceNation(int sourceNation,
                                                                            TZone* nodeContext);
   static float ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(int sourceNation,
                                                                           TZone* nodeContext);
-  // Instance form of the diplomacy-filtered scorer above: sources the filter's source
-  // nation from this->nationId04 instead of taking it as an explicit argument, and
-  // scores against g_Populate_Beachhead_Mission_LookupTable_00697958[4..7] instead of
-  // [0..3]. 0x539a90.
   float ComputeOrderDistributionSimilarityScoreForZone(TZone* nodeContext);
-  // Same shape as ComputeOrderDistributionSimilarityScoreForZone but scores against
-  // g_Populate_Beachhead_Mission_LookupTable_00697958[0..3]. 0x538dd0.
   float ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfile(TZone* nodeContext);
-  // Builds a 4-category priority vector from every existing orderList ship plus
-  // `candidateOrder` (each contribution weighted by a per-ship distance-decay factor,
-  // see g_MissionOrderDistanceDecayWeightTable_006978c8), then scores it against
-  // requiredShipEquipageByCategory via a Bhattacharyya-coefficient-style similarity:
-  // sum(sqrt(requiredShipEquipageByCategory[i] * vector[i])) / sum(requiredShipEquipageByCategory[i]). Used to
-  // evaluate how well adding `candidateOrder` would fit this mission's target profile.
-  // 0x538120.
   float ComputeMissionOrderMatchScoreWithCandidateNavyOrder(TShip* candidateOrder);
-  // Same shape as ComputeMissionOrderMatchScoreWithCandidateNavyOrder, but negates the
-  // candidate ship's distance-weighted contribution (scale * -1.0) before accumulating
-  // it -- evaluating the profile with the candidate order REMOVED rather than added.
-  // 0x5383f0.
   float ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(TShip* candidateOrder);
-  // If `portZone` has a definite single owner nation (owner code 0..6), returns
-  // ComputeNavyOrderDistributionScoreForNation-equivalent score for that owner directly.
-  // Otherwise (owner code >= 7, no clear single owner) scans nations allied with this
-  // mission's own nationId04 and takes the best such score -- though each iteration
-  // re-reads portZone's (still out-of-range) owner code as the ship filter rather than
-  // the candidate ally's index, so in practice this branch only ever contributes 0 (no
-  // ship's nation can equal an out-of-range code); modeled exactly as observed
-  // rather than "corrected", per Hard Rule 6. 0x53b350.
   float ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies(TZone* portZone);
-  // Builds a per-category priority vector over every orderList ship: a ship counts if
-  // it's within `distanceThreshold` hops of `nearZone` (or unconditionally if `nearZone`
-  // is null), OR (when farther than that) if it's within `distanceThreshold` hops of
-  // `farZone` instead (when farZone is non-null and != nearZone).
-  // 0x537900.
   void ProjectEquipage(float* vector, TZone* nearZone,
                                                           short distanceThreshold, TZone* farZone);
   void BuildMissionQueuedOrderCategoryVector(float* vector);
-  // Builds the queued category vector for missionTargetZone/resolvedPortZone and returns
-  // its similarity to the required category vector. 0x537eb0.
   float ProjectSatisfaction(short distanceThreshold);
 };
 

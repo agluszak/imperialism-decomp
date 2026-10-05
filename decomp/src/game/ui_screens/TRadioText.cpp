@@ -25,8 +25,6 @@ void TRadioText::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x005794b0
 void TRadioText::Draw(RECT* rectBuffer) {
   if (isSelectedOption || controlState64 != 0) {
-    // All eleven Mac TRadioText resource instances are direct children of a
-    // TRadioTextCluster; the Windows body reads that owner's two color codes.
     TRadioTextCluster* cluster = static_cast<TRadioTextCluster*>(ownerContext);
     cluster->AssertValid();
 

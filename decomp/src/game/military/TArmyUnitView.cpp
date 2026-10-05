@@ -53,8 +53,6 @@ void TArmyUnitView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(0x40, 0x10);
   DrawTextWithCachedQuickDrawStyleState(&unitTypeName);
 
-  // Localized unit descriptor: string group 0x2746 substituting a literal 7 for the
-  // special-cased unit-type 0xe, otherwise group 0x272c substituting the unit-type code.
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(2, 9, 0);
   SetQuickDrawColorAndSyncGlobals(0x1c474b);
   int unitTypeCode = militaryUnit->unitOrder;
@@ -170,11 +168,6 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
   TView::DoEvent(commandId, sourceHandler, event);
 }
 
-// TArmyUnitView-only despite the generic Ghidra symbol name (0x4a9ca0) -- confirmed by the
-// caller: TShipView::DoEvent's 'name' branch actually calls a different function
-// (RenameShip, 0x565a40), not this one, so there is no
-// Runs the unit-rename dialog: seeds an edit box with militaryUnit's current name, runs
-// it modally, and (unless cancelled) commits the typed text back to the represented unit.
 // FUNCTION: IMPERIALISM 0x004a9ca0
 void TArmyUnitView::RenameUnit() {
   TWindow* node = static_cast<TWindow*>(

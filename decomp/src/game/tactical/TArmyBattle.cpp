@@ -32,18 +32,11 @@
 
 IMPLEMENT_DYNCREATE(TArmyBattle, TTacticalBattle)
 
-// Not the constructor: neither original construction site calls this (both inline the
-// ctor as base-ctor + vtable install), and this body neither installs a vtable nor calls
-// the base ctor. It is the separate post-construction list allocator, reached via the
-// 0x5a4770 jump island from the TArmyMgr battle-setup site.
 // FUNCTION: IMPERIALISM 0x0059f7f0
 void TArmyBattle::AllocateRecordList() {
   recordList = new TList();
 }
 
-// Size the battlefield to the longest-ranged deployed unit: the playable column count is
-// the maximum GetUnitRange() across recordList plus a fixed 0xb margin (0 when the list
-// is empty). The original re-reads the range on the update branch; kept as-is.
 // FUNCTION: IMPERIALISM 0x0059fc40
 void TArmyBattle::ComputeBattlefieldColumnCountFromUnitRanges() {
   int maxRange = 0;
@@ -66,8 +59,6 @@ void TArmyBattle::InitializeBattleSetupAndMaybeShowTacticalView(TArmyStack* ourS
   // Fixed tactical battle grid: 435 tiles (0x1b3), stride 29 (0x1d).
   tacticalTileCount = 0x1b3;
   tacticalTileStride40 = 0x1d;
-  // AI/watch flags for each side (TGreatPower +0xa0), only when preference slot 0 is
-  // set and no multiplayer session mode is active.
   unsigned char ourSideWatchFlag = 0;
   unsigned char enemySideWatchFlag = 0;
   if (g_pSimMgr->preferenceValues[0] != 0) {
@@ -111,8 +102,6 @@ void TArmyBattle::InitializeBattleSetupAndMaybeShowTacticalView(TArmyStack* ourS
 void TArmyBattle::ReadFrom(TStream* stream) {
   stream->ReadBytes(&currentSideC, 4);
   stream->ReadBytes(&battleLive10, 4);
-  // Per-side stack identity triplets (index into g_apNationStates, owner nation code,
-  // originating tile), written by WriteTo from each player's armyStack.
   int ourNationIndex;
   int ourNationCode;
   int ourTileIndex;
@@ -234,8 +223,6 @@ void TArmyBattle::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x005a4fc0
 void TArmyBattle::LoadMap(int compositionClass, int fortLevel) {
   CString tabFileName;
-  // Battle-setup terrain layout file, 1-based composition class ("data/%03d.tab").
-  // Layout is 15 rows x 29 cols + one newline byte per row.
   char nameBuf[64];
   int byteCount = tacticalTileCount + 0xf; // 0x1b3 tiles + 15 row-terminator bytes
   sprintf(nameBuf, g_szBattleSetupTabPathFormat, compositionClass + 1);
@@ -246,10 +233,6 @@ void TArmyBattle::LoadMap(int compositionClass, int fortLevel) {
   g_pAssetMgr->ReadResourceStreamIntoBufferAndAdvance(stream, tabData, &byteCount);
   g_pAssetMgr->ReleaseResourceStreamIfNotNull(stream);
 
-  // Parse the character grid into the tile records. Each source row is 0x1d chars +
-  // 1 terminator; the first (0x1d - battlefieldColumnCount) chars of each row are margin (skipped
-  // without consuming a grid cell), so battlefieldColumnCount cells are filled per row and the record
-  // cursor then skips the remaining (0x1d - battlefieldColumnCount) cells of that grid row.
   TacticalTileRecord* record = tileGrid4;
   char* src = tabData;
   for (int rowsLeft = 0xf; rowsLeft != 0; --rowsLeft) {
@@ -277,24 +260,15 @@ void TArmyBattle::LoadMap(int compositionClass, int fortLevel) {
   delete[] tabData;
 
   if (fortLevel != 0) {
-    // Mark the fort column (tile battlefieldColumnCount - 6, then every row below at stride 0x1d)
-    // with the fort level in deployMark.
     for (int tile = battlefieldColumnCount - 6; tile < 0x1b3; tile += 0x1d) {
       tileGrid4[tile].deployMark = fortLevel;
     }
-    // Seed the 8 fort-strength slots from the per-level table (load kept inside the
-    // loop, matching the original).
     for (int slot = 0; slot < 8; ++slot) {
       fortStrengthPoints[slot] = g_anFortStrengthPointsByFortLevel[fortLevel];
     }
   }
 }
 
-// Real deployment placement (slot 0x0c override): validates the tile against the
-// current side's deployment zone (same guard band as ApplyGridColumnSelectionGuard),
-// applies/echoes the 'depl' command, advances the done-selection to the side's next
-// undeployed unit, resets the move-cost plane, and either fires the ready handler when
-// the side has fully deployed or refreshes the 'tool' toolbar's current-unit control.
 // FUNCTION: IMPERIALISM 0x005a51e0
 void TArmyBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
   unit->AssertValid();

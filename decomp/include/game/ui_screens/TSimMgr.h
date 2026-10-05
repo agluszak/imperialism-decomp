@@ -13,10 +13,6 @@
 
 class TStream;
 
-// Mac CodeWarrior oracle: GameSetup. Windows allocates exactly 0x3e bytes for this
-// record before the setup dialog copies the four seven-country rows into it. The
-// first row selects local/AI/proxy/remote ownership; the other rows carry the three
-// minister policy identifiers consumed by TAutoGreatPower::IAutoGreatPower.
 struct GameSetup {
   unsigned char multiplayerGameActive; // +0x00
   unsigned char pad01;
@@ -30,8 +26,6 @@ struct GameSetup {
 
 ASSERT_SIZE(GameSetup, 0x3e);
 
-// Mac oracle: DiplomacyNotice. Windows consumes this exact two-short payload when
-// formatting the turn's diplomacy-notice text.
 struct DiplomacyNotice {
   short policyOrGrantCode;
   NationSlot nationSlot;
@@ -39,10 +33,6 @@ struct DiplomacyNotice {
 
 ASSERT_SIZE(DiplomacyNotice, 4);
 
-// The g_pSimMgr singleton: the turn-flow state machine, the countries it creates and
-// eliminates, and the game's string/number formatting helpers. Virtuals are declared in
-// vtable order; slots 0x08-0x10 and 0x20/0x24 inherit TObject.
-//
 // VTABLE: IMPERIALISM 0x00662a58
 class TSimMgr : public TObject {
 public:
@@ -59,14 +49,10 @@ public:
   virtual void RebuildNationStateSlotsNoOp();                                  // 0x28  0x0057c390
   virtual void RebuildPrimaryNationStateForSlot(int slotIndex, char activate); // 0x2c 0x0057cda0
   virtual void RebuildSecondaryNationStateForSlot(int slotIndex);              // 0x30  0x0057d520
-  // Mac oracle: GetSeason(CStr255&). Windows computes economicTurn % 4 and looks the
-  // localized name up through GetString(10000, seasonIndex, destString).
   virtual void GetSeason(CString* destString);       // 0x34  0x0057d830
   virtual void SetGameSetupValues(GameSetup* setup); // 0x38  0x0057d8d0
   virtual short GetEconomicTurn();                   // 0x3c  0x0057d8b0
   virtual void AdvanceSeason();                      // 0x40  0x0057d950
-  // Mac oracle: StartNextPhase(). Windows posts command 100 to the main window so the
-  // turn-flow state machine advances asynchronously.
   virtual void StartNextPhase();                                 // 0x44  0x0057d970
   virtual void EnterOptionalPhase(eGamePhaseNewStyle gamePhase); // 0x48  0x0057d990, Mac oracle
   virtual void AdvanceGlobalTurnStateMachine();                  // 0x4c  0x0057da70
@@ -87,13 +73,7 @@ public:
   virtual void GetCommodityName(short offset, CString* destString);           // 0x7c  0x0057fe90
   virtual void ReinitializeRandomSeed();                                      // 0x80  0x0057fec0
   virtual void GetString(short codeGroup, short offset, CString* destString); // 0x84 0x00580760
-  // Copy the per-slot shared credential/name text (sharedTextSlots[slot]) into out and
-  // return out. 0x00581b20.
-  // Byval return (0x581b20): normalizes sharedTextSlots[slot] through
-  // TLanguageMgr::StripCodeStr.
   CString LoadNormalizedCredentialName(short slot);
-  // Return a by-value copy of sharedTextSlots[slot] (the copy-constructed hidden-return
-  // sibling of LoadNormalizedCredentialName). 0x00581bc0.
   CString AssignSharedStringFromIndexedSlot7C(short slot);
   virtual CString
   DiplomacyNoticeString(const DiplomacyNotice* notice); // 0x88 0x00580790, Mac oracle
@@ -106,8 +86,6 @@ public:
   void ReduceNumGPs();              // Mac oracle; 0x581200
   int GetNumMinorCountries() const; // 0x581220
   int GetNumCountries();            // Mac oracle; great powers + minor countries, 0x581240
-  // Mac oracle: DoPerTurnMissionAIStuff(short). The Windows body forwards the complete
-  // pushed dword to TGreatPower slot 0xae, so retain the observed Windows argument width.
   void DoPerTurnMissionAIStuff(int replanMode); // 0x57d7a0
 
   NationSlot GetPlayerCountry(); // Mac oracle; 0x581260
@@ -120,8 +98,6 @@ public:
   // Mac oracle. Also sets preferenceValues[10] only for Introductory. 0x57d870.
   void SetDifficultyLevel(eDifficulty difficulty);
   void ISimMgr();
-  // 0x57bc90. Resets the transient turn-flow state and PRNG seed without changing
-  // difficulty, scenario selection, or persisted preference values.
   void ResetTurnFlowStateAndRandomSeed();
   void UpdatePreferences(bool writeBack); // Mac oracle
   void AddHighScore(); // Mac oracle; inserts the player into scores.dat's top ten. 0x581510
@@ -136,8 +112,6 @@ public:
   void SetSelectedIndex6AAndTriggerRefresh(short index);
   void SetPlayerCountry(NationSlot nationSlot); // Mac oracle; 0x5837c0
 
-  // --- scenario script handlers (Mac Sc*(char*&)), dispatched by FourCC through
-  //     g_apfnScenarioScriptInstructionHandlers from ProcessScenarioScript ---
   void ScSetYear(STurnInstructionCursor* instruction);           // 0x582ed0
   void ScSetFlags(STurnInstructionCursor* instruction);          // 0x583400
   void ScSetTechDate(STurnInstructionCursor* instruction);       // 0x583470
@@ -166,8 +140,6 @@ public:
   void ScSetSeazoneName(STurnInstructionCursor* instruction);    // 0x582fa0
   void ScSetCountryName(STurnInstructionCursor* instruction);    // 0x583070
 
-  // --- fields (offsets and declaration order are load-bearing) ---
-  // The save stream keeps only the low word of each phase.
   eGamePhaseNewStyle turnStateCode;
   eGamePhaseNewStyle mode;
   eGamePhaseNewStyle previousTurnStateCode;
@@ -185,8 +157,6 @@ public:
   eDifficulty difficultyLevel;
   // ReinitializeGameFlowAndPostTurnEventCode recreates g_pGameFlowState for any session.
   MultiplayerSessionRole multiplayerSessionRole;
-  // Profile "Pref%d" settings: [2] 0..100, [3] master volume, [8] turn-gate flag,
-  // [10] Introductory gate, [11] last chosen difficulty.
   short preferenceValues[14];
   int field_64;
   // Names come from string group 0x2715 instead of generated flavor text.
@@ -194,8 +164,6 @@ public:
   unsigned char pad69;
   short field6a;
   short finalCouncilYear; // calendar year; 1914 by default
-  // Council of Governors schedule per decade (economicTurn / 40): 0 none, 1 meeting,
-  // 2 final meeting (ScSetCouncilMeeting, finalCouncilYear).
   unsigned char councilByDecade[10];
   unsigned char field78;
   bool field79;
@@ -216,33 +184,13 @@ public:
 
 ASSERT_SIZE(TSimMgr, 0x118);
 
-// Free function, NOT a TSimMgr member -- it only looked like one while it sat between the
-// class's closing brace and its ASSERT_SIZE. The __cdecl is verified against the assembly,
-// not inherited from a Ghidra label: 0x00549240 takes no arguments, loads the g_pNetMgr
-// global into ECX and tail-jumps to TNetMgr::GetSessionActiveNationId (0x005e4280).
-// Reads the current DirectPlay session id while touching the session runtime state.
 int __cdecl TouchSessionActiveNationId(void);
 
-// Also a free function of the TSimMgr TU (0x005621b0): invalidates the zone-graph BFS
-// distance cache. Declared here so callers outside this TU stop hand-inlining its two
-// global writes -- the original really does CALL it (e.g. 0x00575be0 in
-// TGameSetupPicture::DoEvent, through the ILT thunk at 0x004043d1).
 void __cdecl ResetPortZoneGlobalContextCounters(void);
 
-// 0x5d4c10 / 0x5d4c40 — file-metadata probe (CFile::GetStatus) and delete-with-error-box
-// (CFile::Remove) helpers from the TSimMgr TU; the save flow in TLoadSavePicture.cpp
-// uses them too.
 unsigned char __cdecl TryGetFileMetadataForPath(CString* path);
 void __cdecl DeleteFileWithErrorReporting(CString* path);
 
-// 0x581870 — the "Done/advance" turn-flow bootstrap primitive (free __cdecl, TSimMgr TU).
-// Optionally activates the pending help event (0x5dc), recreates g_pGameFlowState when a
-// game flow was active (multiplayerSessionRole != kSessionRoleStandalone), then either soft-resets the existing
-// TSimMgr for the scenario-setup path (eventCode 0x5dd: shared reset prefix,
-// turnStateCode = 3) or
-// replaces g_pSimMgr with a fresh TSimMgr and reinitializes its turn-flow defaults.
-// Posts eventCode to the main frame (message 0x2420) unless it is 0, and latches the
-// bootstrap-complete flag DAT_006a43c0 the turn state machine's case 1 keys off.
 void ReinitializeGameFlowAndPostTurnEventCode(TurnEventId eventCode);
 
 void __stdcall LoadProfileStringAndAssignSharedRef(CString* outString, LPCTSTR key,

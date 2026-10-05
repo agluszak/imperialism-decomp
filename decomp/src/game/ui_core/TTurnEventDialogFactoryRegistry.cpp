@@ -11,8 +11,6 @@
 
 // FUNCTION: IMPERIALISM 0x00491960
 CSubViewIterator::CSubViewIterator(const TView* owner, char forward) {
-  // Same as the single-arg ctor below except the direction comes from the caller;
-  // position00 is likewise left uninitialised until FirstSubView().
   ownerView04 = owner;
   direction08 = forward;
   identTag = kControlTagSpSpSpSp;
@@ -21,8 +19,6 @@ CSubViewIterator::CSubViewIterator(const TView* owner, char forward) {
 
 // FUNCTION: IMPERIALISM 0x004919a0
 CSubViewIterator::CSubViewIterator(const TView* owner) {
-  // The single-arg (const TView*) ctor defaults the traversal forward; position00 is left
-  // uninitialised until FirstSubView(), matching the original (which never writes +0 here).
   ownerView04 = owner;
   direction08 = 1;
   identTag = kControlTagSpSpSpSp;
@@ -51,8 +47,6 @@ TView* CSubViewIterator::NextSubView() {
     currentChild10 = nullptr;
     return currentChild10;
   }
-  // GetNext/GetPrev only touch the node, not the list object; the owner's childList is
-  // named only to satisfy the member-call form and is optimised away.
   TViewChildList* list = ownerView04->childList;
   currentChild10 = (direction08 != 0) ? list->GetNext(position00) : list->GetPrev(position00);
   return currentChild10;
@@ -60,8 +54,6 @@ TView* CSubViewIterator::NextSubView() {
 
 // FUNCTION: IMPERIALISM 0x00491ab0
 int CSubViewIterator::MoreSubViews() {
-  // Returns int (not bool), matching the sibling CIterator::More(): call sites test the
-  // full eax register.
   return currentChild10 != nullptr;
 }
 
@@ -99,8 +91,6 @@ TTurnEventDialogFactoryRegistry::TTurnEventDialogFactoryRegistry() : TObject(), 
 // compiler-emitted serializer/destructor, called through the member's CList vtable and from
 // the complete-object destructor above.
 
-// Empty in source: the 116 bytes at 0x00491b40 are all compiler output (EH frame plus
-// the inlined destruction of the `factories` CList member).
 // FUNCTION: IMPERIALISM 0x00491b40
 TTurnEventDialogFactoryRegistry::~TTurnEventDialogFactoryRegistry() {}
 

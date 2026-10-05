@@ -142,8 +142,6 @@ TSimMgr::TSimMgr() : sharedTextSlots() {
   previousMode = kGamePhaseStartup;
   field14 = 0;
 
-  // Fused loop: fill field15[0..0x16] with 1 AND assign g_szEmptyString to each shared-text
-  // slot. Mirrors the original single do-while at 0x57ba44..0x57ba7b.
   for (int i = 0; i < 0x17; ++i) {
     field15[i] = 1;
     CString empty(g_szEmptyString); // temp -> 0x00605950, ~ -> 0x006058e2
@@ -181,14 +179,9 @@ void TSimMgr::ISimMgr() {
   turnFlowStatusFlags = 0;
   field_64 = 0;
   councilByDecade[0] = 0;
-  // Ten bytes 0x6f..0x78 (councilByDecade[1..9] + field78) are filled with 1 in one
-  // pass (dword/dword/word stores in the original); field78 is then overwritten with 2.
   memset(&councilByDecade[1], 0x01, sizeof(councilByDecade));
   field79 = true;
   field78 = 2;
-  // Developer-cheat probe: stat a file literally named "Conan" in the working directory;
-  // the original discards the result and clears the cheat flag unconditionally (the flag
-  // is armed elsewhere).
   CFileStatus conanFileStatus;
   CFile::GetStatus(g_szConanCheatFileName_00698BEC, conanFileStatus);
   g_bRandomMapDeveloperCheatFlag = false;
@@ -339,9 +332,6 @@ void TSimMgr::ReadFrom(TStream* stream) {
 
   stream->ReadBytes(&field15, 0x17);
 
-  // The persisted role is retained only for stream compatibility.  The load path
-  // continues to use the current session role when deciding whether game-flow data
-  // is present.
   int savedSessionRole;
   stream->ReadBytes(&savedSessionRole, 4);
 
@@ -752,9 +742,6 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
       g_apTerrainTypeDescriptorTable[nationIndex]->identitySharedString1 = nationName;
     }
   } else if (setupMode == 2) {
-    // Real allocation is operator_new(0xb70) followed by TAutoGreatPower::TAutoGreatPower()
-    // (ctor thunk 0x407a31 -> 0x4e6b50) -- this slot is genuinely a TAutoGreatPower, not a
-    // bare TGreatPower (whose object size is 0x964, too small for the tail AI state block).
     TAutoGreatPower* pTVar5 = new TAutoGreatPower();
     pTVar5->IAutoGreatPower(slotIndex, 2, cityMinisterPolicyIds[nationIndex],
                             foreignMinisterPolicyIds[nationIndex],
@@ -1094,8 +1081,6 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     if (multiplayerSessionRole == kSessionRoleStandalone ||
         (multiplayerSessionRole == kSessionRoleHost &&
          !IsNationEligibleForOptionalPhase(activeNationSlot))) {
-      // 0x57df05: new TNextDiplomationCommand() + immediate dispatch; the original
-      // calls the method even when operator new returned null (kept faithfully).
       TNextDiplomationCommand* nextCommand = new TNextDiplomationCommand();
       nextCommand->PostThyself();
     }
@@ -1151,10 +1136,6 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case kGamePhaseLossCheck: {
     turnStateCode = kGamePhaseDealBook;
     bool actionNeeded = false;
-    // For each live nation slot 6..0, slot 0xaf (the pressure-state update, byte 0x2bc)
-    // returns a char: when set, fire the active nation's no-payload turn-event dispatch
-    // (slot 0xab, byte 0x2ac). The original derefs the active nation's vtable with no
-    // null guard here, so this stays a direct virtual call.
     for (int nationSlot = 6; nationSlot >= 0; --nationSlot) {
       TGreatPower* nation = g_apNationStates[nationSlot];
       if (nation == nullptr) {
@@ -1188,8 +1169,6 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case kGamePhaseBattleReport: {
     turnStateCode = kGamePhaseEliminations;
-    // Verified against 0x0057e487: real receiver is g_pMapContextActionManager (no null
-    // guard on it, matching the missing-guard pattern used elsewhere in this switch).
     if (g_pMapContextActionManager->HasBattlesToReport() &&
         IsNationEligibleForOptionalPhase(activeNationSlot)) {
       g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventBattleReport), activeNationSlot);
@@ -1352,8 +1331,6 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         if (nationSlot == -1 || g_apTerrainTypeDescriptorTable[nationSlot] == nullptr) {
           continue;
         }
-        // Verified against 0x0057e0b7: real receiver is g_apTerrainTypeDescriptorTable[nationSlot]
-        // (a TCountry*), not a bare free-function predicate.
         if (nationSlot < 7 &&
             g_apTerrainTypeDescriptorTable[nationSlot]->IsNationProfileInMinorRange100To199()) {
           continue;
@@ -1392,10 +1369,6 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case kGamePhaseEliminations: {
     turnStateCode = kGamePhaseCityAndTransport;
     bool actionNeeded = false;
-    // Verified against 0x0057e1be: the original reads g_pSimMgr->activeNationSlot with no
-    // null guard, and when the localization nation's encoded slot is in [100,200) it fires
-    // the active nation's no-payload turn-event dispatch (slot 0xab, byte 0x2ac) with no
-    // arg and no null check on the active nation.
     {
       const short localizationNation = g_pSimMgr->activeNationSlot;
       TGreatPower* localizationNationState = g_apNationStates[localizationNation];
@@ -1458,9 +1431,6 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDealBook), activeNationSlot);
     break;
 
-  // Jump-table ground truth (0x57dad8, index-byte table 0x57ebec): case 0x71 -> 0x57eabf
-  // (posts 0x104f), case 0x72 -> 0x57ead8 (posts 0x5e4). The old merged port dropped both
-  // event codes.
   case kGamePhaseOptionalCredits:
     turnStateCode = kGamePhaseShowMap;
     g_pAmbitApplication->PostTurnEventCodeMessage(EncodeTurnEventCode(kTurnEventCredits));
@@ -1653,12 +1623,8 @@ void TSimMgr::SetFlags(unsigned int flags) {
   turnFlowStatusFlags |= flags;
 }
 
-// Out-of-line in the original: every callsite (ShowTurnAlertsForActiveNation x3,
-// ShowTerrainMap x8) calls this copy instead of inlining the mask test.
 // FUNCTION: IMPERIALISM 0x0057f4d0
 unsigned char TSimMgr::TestTurnFlowStatusFlagMask(unsigned int mask) {
-  // test+setne needs the branchy if/return-1/return-0 shape (VC5 folds it to a byte
-  // set); every value-form spelling (`!= 0`, bool, ternary) emits neg/sbb/neg instead.
   if (mask & turnFlowStatusFlags) {
     return 1;
   }
@@ -1777,9 +1743,6 @@ CString TSimMgr::DiplomacyNoticeString(const DiplomacyNotice* notice) {
   CString countryName;
   CString formattedValue;
 
-  // Ground truth (0x5807fa..0x580821) zeroes `rejected` first, then loads BOTH
-  // notice fields into registers before the sign test, and only sign-flips `code`
-  // afterwards -- so nationSlot is read ahead of the branch, not at its use site.
   bool rejected = false;
   short code = notice->policyOrGrantCode;
   short nationSlot = notice->nationSlot;
@@ -1920,9 +1883,6 @@ char TSimMgr::ReallyInTheGame(NationSlot nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x00581300
 void TSimMgr::EliminateGP(NationSlot nationSlot) {
-  // Neutralize the removed nation's diplomacy percent field on every other live slot. For
-  // the seven great-power slots a nation whose terrain profile is in the reserved band
-  // [100,200) is left alone; minor slots (i >= 7) and unreserved great powers are reset.
   for (short i = 0; i < 7; ++i) {
     if (i != nationSlot && i != -1) {
       TCountry* terrainDescriptor = g_apTerrainTypeDescriptorTable[i];
@@ -2181,10 +2141,6 @@ void TSimMgr::ProcessScenarioScript() {
   g_nSaveFormatVersion = -1;
 }
 
-// Reads a big-endian 32-bit nation index and three big-endian 16-bit tokens (three labor
-// tier counts). Applies them to the nation's city population summary (baseline/production
-// tier buckets, need totals), kicks off a resource-yield rebuild, and notifies the nation's
-// defense minister (if any) via its slot-0x14 hook.
 // FUNCTION: IMPERIALISM 0x00582120
 void TSimMgr::ScSetLabor(STurnInstructionCursor* instruction) {
 
@@ -2220,9 +2176,6 @@ void TSimMgr::ScSetLabor(STurnInstructionCursor* instruction) {
   }
 }
 
-// Reads a big-endian 32-bit nation slot, a big-endian short production-order index, and a
-// big-endian short value; sets that nation's capital-city production-order slot to the
-// value while accumulating the delta (value - old) into the parallel running-total slot.
 // FUNCTION: IMPERIALISM 0x005822c0
 void TSimMgr::ScSetCapacity(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
@@ -2258,9 +2211,6 @@ void TSimMgr::ScSetCapacity(STurnInstructionCursor* instruction) {
   city->productionOrderTable1dc[index] = value;
 }
 
-// Reads a big-endian 32-bit nation slot, a big-endian short commodity index, and a
-// big-endian short amount; writes the amount into that nation's capital-city commodity
-// stock counter and re-verifies the city's stock invariants.
 // FUNCTION: IMPERIALISM 0x005823e0
 void TSimMgr::ScSetWarehouse(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
@@ -2293,9 +2243,6 @@ void TSimMgr::ScSetWarehouse(STurnInstructionCursor* instruction) {
   city->VerifyStocks();
 }
 
-// Reads a region index, a recruit-order type, and a repeat count. The region owner is
-// taken from the map-state city-score row; each requested order is registered there and
-// put into order mode 2 with the original -1 payload.
 // FUNCTION: IMPERIALISM 0x005824c0
 void TSimMgr::ScAddArmy(STurnInstructionCursor* instruction) {
 
@@ -2345,8 +2292,6 @@ void TSimMgr::ScAddCivilian(STurnInstructionCursor* instruction) {
   order->ICivUnit(static_cast<CivilianUnitKind>(orderTypeToken), terrainToken, ownerNationTag);
 }
 
-// Reads nation, navy-order type, map-action-context id, and count. It updates the
-// nation's parallel city count then creates that many primary navy-order nodes.
 // FUNCTION: IMPERIALISM 0x00582720
 void TSimMgr::ScAddShip(STurnInstructionCursor* instruction) {
 
@@ -2389,8 +2334,6 @@ void TSimMgr::ScAddShip(STurnInstructionCursor* instruction) {
   }
 }
 
-// Reads a big-endian 32-bit nation slot then a big-endian short transport-capacity value,
-// stored into that nation's transportCapacity field.
 // FUNCTION: IMPERIALISM 0x00582860
 void TSimMgr::ScSetTransport(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
@@ -2411,9 +2354,6 @@ void TSimMgr::ScSetTransport(STurnInstructionCursor* instruction) {
       static_cast<short>(valueToken);
 }
 
-// Reads a big-endian short tile index and a development value byte, then sets that tile's
-// civilian development-class nibble -- selecting the high nibble only when the tile's
-// resource/edge byte is one of the qualifying terrain codes.
 // FUNCTION: IMPERIALISM 0x005828f0
 void TSimMgr::ScSetDevLevel(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
@@ -2442,9 +2382,6 @@ void TSimMgr::ScSetDevLevel(STurnInstructionCursor* instruction) {
   g_pGlobalMapState->SetDevelopmentLevel(tileIndex, selectHighNibble, value, true);
 }
 
-// Reads one big-endian short tile index, resolves that tile's owner nation, queues a depot
-// construction order there, and grants the owner a 2000 cash bonus when it is not
-// diplomacy-eligible.
 // FUNCTION: IMPERIALISM 0x005829b0
 void TSimMgr::ScAddRailhead(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
@@ -2460,9 +2397,6 @@ void TSimMgr::ScAddRailhead(STurnInstructionCursor* instruction) {
   }
 }
 
-// Reads one big-endian short tile index, resolves that tile's owner nation, queues a port
-// construction order there, and grants the owner a 3000 cash bonus when it is not
-// diplomacy-eligible.
 // FUNCTION: IMPERIALISM 0x00582a40
 void TSimMgr::ScAddPort(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
@@ -2478,8 +2412,6 @@ void TSimMgr::ScAddPort(STurnInstructionCursor* instruction) {
   }
 }
 
-// Reads two big-endian 32-bit tokens (forced nation slot, then tech id) and applies the
-// tech unlock via the city-order capability state singleton.
 // FUNCTION: IMPERIALISM 0x00582ad0
 void TSimMgr::ScAddTech(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
@@ -2500,8 +2432,6 @@ void TSimMgr::ScAddTech(STurnInstructionCursor* instruction) {
                                                           static_cast<int>(nationToken));
 }
 
-// Reads two big-endian 16-bit tokens (metric category, then value) and applies the value
-// via the trade manager's per-nation metric cell setter.
 // FUNCTION: IMPERIALISM 0x00582b70
 void TSimMgr::ScSetPrice(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
@@ -2521,9 +2451,6 @@ void TSimMgr::ScSetPrice(STurnInstructionCursor* instruction) {
   g_pTradeMgr->UpdatePrice(static_cast<short>(categoryToken), static_cast<short>(valueToken));
 }
 
-// Reads two big-endian 32-bit nation slots and a big-endian short relation value, then
-// writes the value symmetrically into both [A][B] and [B][A] of the diplomacy manager's
-// side-effect relation matrix.
 // FUNCTION: IMPERIALISM 0x00582bf0
 void TSimMgr::ScSetEmbassy(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
@@ -2554,8 +2481,6 @@ void TSimMgr::ScSetEmbassy(STurnInstructionCursor* instruction) {
   diplomacy->relationSideEffectMatrix[nationB * 0x17 + nationA] = value;
 }
 
-// Reads a big-endian 32-bit owner-nation index plus two big-endian 16-bit tokens (target
-// nation slot, then reset level) and applies them via the owner's diplomacy-level resetter.
 // FUNCTION: IMPERIALISM 0x00582ce0
 void TSimMgr::ScSetSubsidy(STurnInstructionCursor* instruction) {
 
@@ -2578,8 +2503,6 @@ void TSimMgr::ScSetSubsidy(STurnInstructionCursor* instruction) {
                                                  static_cast<int>(levelToken));
 }
 
-// Reads source nation, target nation, and relation code, applies the diplomacy entry,
-// and performs the symmetric relation-side-effect update used by code 5.
 // FUNCTION: IMPERIALISM 0x00582da0
 void TSimMgr::ScSetTreaty(STurnInstructionCursor* instruction) {
 
@@ -2614,8 +2537,6 @@ void TSimMgr::ScSetTreaty(STurnInstructionCursor* instruction) {
   }
 }
 
-// Reads one big-endian short token (the scenario year) and stores it, scaled to quarter
-// ticks (year * 4), into the turn-flow tick field at +0x2c.
 // FUNCTION: IMPERIALISM 0x00582ed0
 void TSimMgr::ScSetYear(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
@@ -2626,8 +2547,6 @@ void TSimMgr::ScSetYear(STurnInstructionCursor* instruction) {
   economicTurn = static_cast<short>(token) * 4;
 }
 
-// Reads a big-endian short city-record index and a big-endian nation tag, then dispatches
-// the province formation-entry action on the global map state.
 // FUNCTION: IMPERIALISM 0x00582f20
 void TSimMgr::ScSetProvince(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
@@ -2648,8 +2567,6 @@ void TSimMgr::ScSetProvince(STurnInstructionCursor* instruction) {
                                          static_cast<short>(nationToken));
 }
 
-// Reads a map-action-context id and a fixed 64-byte inline name, then updates the
-// matching context's display name.
 // FUNCTION: IMPERIALISM 0x00582fa0
 void TSimMgr::ScSetSeazoneName(STurnInstructionCursor* instruction) {
 
@@ -2692,8 +2609,6 @@ void TSimMgr::ScSetCountryName(STurnInstructionCursor* instruction) {
   g_apTerrainTypeDescriptorTable[countryIndex]->identitySharedString1 = countryName;
 }
 
-// Reads three big-endian 16-bit tokens (source nation, target nation, then relation
-// score) and applies them via the diplomacy manager's standing-score setter.
 // FUNCTION: IMPERIALISM 0x005831d0
 void TSimMgr::ScSetRelationship(STurnInstructionCursor* instruction) {
 
@@ -2715,8 +2630,6 @@ void TSimMgr::ScSetRelationship(STurnInstructionCursor* instruction) {
   g_pDiplomacyTurnStateManager->SetRelationship(sourceToken, targetToken, scoreToken);
 }
 
-// Reads a big-endian 32-bit tile-index token followed by a fixed 64-byte inline C-string
-// (the province name) and applies it via the global map state's shared-label setter.
 // FUNCTION: IMPERIALISM 0x00583270
 void TSimMgr::ScSetProvinceName(STurnInstructionCursor* instruction) {
 
@@ -2733,8 +2646,6 @@ void TSimMgr::ScSetProvinceName(STurnInstructionCursor* instruction) {
   g_pGlobalMapState->SetGlobalMapCellSharedLabel(static_cast<int>(tileToken), &name);
 }
 
-// Reads two big-endian 32-bit tokens (nation slot, then cash amount) and writes the amount
-// into that nation's treasury field.
 // FUNCTION: IMPERIALISM 0x00583360
 void TSimMgr::ScSetTreasury(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
@@ -2754,9 +2665,6 @@ void TSimMgr::ScSetTreasury(STurnInstructionCursor* instruction) {
   g_apNationStates[static_cast<int>(nationToken)]->treasuryValue10 = static_cast<int>(cashToken);
 }
 
-// Reads one big-endian short token (a nation flag/language index), stores it into the
-// selected-index field, and refreshes the picture-word-data language pack + strategic map
-// bitmap cache (the inlined body of SetSelectedIndex6AAndTriggerRefresh).
 // FUNCTION: IMPERIALISM 0x00583400
 void TSimMgr::ScSetFlags(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
@@ -2770,8 +2678,6 @@ void TSimMgr::ScSetFlags(STurnInstructionCursor* instruction) {
   g_pMacViewMgr->ReloadBitmap244AndRefreshUiCaches();
 }
 
-// Reads two big-endian 32-bit tokens (priority-slot index, then value) and applies the
-// value (offset by 1) via the city-order capability state's tier setter.
 // FUNCTION: IMPERIALISM 0x00583470
 void TSimMgr::ScSetTechDate(STurnInstructionCursor* instruction) {
 
@@ -2789,13 +2695,6 @@ void TSimMgr::ScSetTechDate(STurnInstructionCursor* instruction) {
                                                            static_cast<int>(valueToken + 1));
 }
 
-// Reads a big-endian 32-bit owner-nation index and two more big-endian 32-bit tokens (a
-// relation-bar type selector, then a value). If the nation's current need for that type is
-// below the value, kicks off a resource-yield rebuild; type 0/0x14 first remaps to a fixed
-// need slot (1 or 0x13) and tops that need up to its current value before the value used
-// below is replaced by the (now-capped) current reading; finally applies the value (needIndex
-// = the type selector, or the capped current reading for the 0/0x14 case) via the need
-// target/over-cap accumulator.
 // FUNCTION: IMPERIALISM 0x00583510
 void TSimMgr::ScSetTransportBar(STurnInstructionCursor* instruction) {
 
@@ -2835,8 +2734,6 @@ void TSimMgr::ScSetTransportBar(STurnInstructionCursor* instruction) {
                                                                      static_cast<short>(value));
 }
 
-// Reads a big-endian 32-bit nation slot, then rebuilds that nation's resource-yield /
-// development targets and clears all 0x17 need targets back to zero.
 // FUNCTION: IMPERIALISM 0x00583670
 void TSimMgr::ScClearTransport(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;
@@ -2855,9 +2752,6 @@ void TSimMgr::ScClearTransport(STurnInstructionCursor* instruction) {
   } while (needIndex < 0x17);
 }
 
-// Reads a big-endian 32-bit country slot and a big-endian 32-bit state code. Stores the
-// state's low byte into councilByDecade, and when the state is
-// exactly 2 latches finalCouncilYear to slot*10 + 0x717.
 // FUNCTION: IMPERIALISM 0x00583700
 void TSimMgr::ScSetCouncilMeeting(STurnInstructionCursor* instruction) {
   unsigned int* cursor = instruction->tokenCursor;

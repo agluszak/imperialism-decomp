@@ -126,15 +126,8 @@ void TEventHandler::DoKeyEvent(TToolboxEvent* event) {
   }
 }
 
-// Dispatch a queued command record: the command's stored handler (cmd+0x10) receives the
-// command's payload words (cmd+0x08, cmd+0x0c) plus the command itself, then the command
-// is released via slot 0x07.
 // FUNCTION: IMPERIALISM 0x0048a3b0
 void TEventHandler::DispatchQueuedUiCommandAndRelease(void* payload) {
-  // Polymorphic dispatch slot: this base interprets the opaque payload as a TCommand
-  // (other overrides interpret it differently, e.g. TView passes a RECT). The target
-  // handler dispatches the command's message + source handler, with the command object
-  // itself passed through its real TEvent base, then frees it.
   TCommand* command = static_cast<TCommand*>(payload);
   command->targetHandler->HandleEvent(command->dispatchMessage, command->sourceHandler, command);
   if (command != 0) {
@@ -147,11 +140,6 @@ void TEventHandler::DispatchUiSelectionToHandler(void* payload) {
   DispatchQueuedUiCommandAndRelease(payload);
 }
 
-// MacApp TEventHandler::HandleIdle(IdlePhase): throttled idle dispatch, driven for every
-// installed cohandler by TApplication::Idle (0x486b10). idleFrequencyTicks is measured in
-// tick16 units (0x7fffffff = never; MacApp fIdleFreq) and lastIdleTick is the MacApp fLastIdle
-// (MacApp fLastIdle). Slot 0x13 (DoIdle — MacApp's DoIdle) does
-// the work; a zero return on the continue phase (1) re-stamps the throttle clock.
 // FUNCTION: IMPERIALISM 0x0048a410
 void TEventHandler::HandleIdle(int idlePhase) {
   if (idleFrequencyTicks == 0x7fffffff) {
@@ -177,8 +165,6 @@ char TEventHandler::DoIdle(int action) {
   return 0;
 }
 
-// Slot 0x23: if the given object is our currently-linked resourceOwner target, detach it
-// both ways (inverse of SetUiResourceOwner at slot 0x24).
 // FUNCTION: IMPERIALISM 0x0048a4a0
 void TEventHandler::RemoveBehavior(TBehavior* behavior) {
   if (firstBehavior != 0 && firstBehavior == behavior) {
@@ -207,16 +193,11 @@ char TEventHandler::WantsToBeTarget() {
   return 0;
 }
 
-// Slot 0x18: veto gate consulted by ResignTarget before the target is torn
-// down. 0 == no objection (base default); a nonzero code blocks deactivation and is echoed
-// back through TargetValidationFailed.
 // FUNCTION: IMPERIALISM 0x0048a550
 char TEventHandler::WillingToResignTarget() {
   return 0;
 }
 
-// Make this view the target if allowed: already-active short-circuits to true;
-// otherwise the current target must agree (slot 0x20) before we take over.
 // FUNCTION: IMPERIALISM 0x0048a570
 char TEventHandler::BecomeTarget() {
   TEventHandler* active = g_pApplication->GetTarget();
@@ -230,11 +211,6 @@ char TEventHandler::BecomeTarget() {
   return 0;
 }
 
-// Slot 0x20: ask the root controller's current target to relinquish. It consults the
-// target's WillingToResignTarget: no veto -> notify it via ResignedTarget, hand the
-// active slot back to the root controller, and report success; otherwise notify the active
-// view via TargetValidationFailed(reason) and report failure. Called by
-// BecomeTarget on the incumbent before a new view takes over.
 // FUNCTION: IMPERIALISM 0x0048a5e0
 char TEventHandler::ResignTarget() {
   if (g_pApplication == 0) {
@@ -262,13 +238,9 @@ void TEventHandler::ResignedWindowTarget() {
   HandleEvent(0x1a, this, 0);
 }
 
-// Slot 0x19: notification hook fired on the target when ResignTarget is
-// letting it go (base is a no-op).
 // FUNCTION: IMPERIALISM 0x0048a690
 void TEventHandler::ResignedTarget() {}
 
-// Slot 0x1a: notification hook fired on the target when its own WillingToResignTarget
-// blocked deactivation, passed the veto reason (base is a no-op).
 // FUNCTION: IMPERIALISM 0x0048a6b0
 void TEventHandler::TargetValidationFailed(int gate) {
   (void)gate;
@@ -302,8 +274,6 @@ void TEventHandler::CopyHandlerFieldsFrom(const TEventHandler* source) {
   nextHandler = source->nextHandler;
 }
 
-// Slot 0x08 base body: allocates a 0x20-byte UI resource entry header (0x48a7c0). TView
-// overrides at 0x48bfd0 with CloneEngineerDialogStateToNewInstance.
 // FUNCTION: IMPERIALISM 0x0048a7c0
 TObject* TEventHandler::ShallowClone() {
   if (g_McAppUiFlag_006A1AE4 == 0) {

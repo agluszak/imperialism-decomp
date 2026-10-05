@@ -80,13 +80,6 @@ void TGameSetupMultiplayerPicture::DoPostCreate(int arg) {
   }
 }
 
-// Multiplayer setup dialog dispatcher. Only commandId 0x14/0x0a/0x22/0x0d (button-
-// activation codes) are handled; anything else forwards straight to the base class.
-//
-// Note on 'load'/'rand'/'scen' (retry confirm loop): the retail binary's own
-// confirmation-dialog retry loop here is dead code -- its guard (ReturnTrueStub,
-// 0x408594) unconditionally returns 1, so the loop body never runs. Omitted below,
-// matching TGameSetupPicture::DoEvent's identical precedent.
 // FUNCTION: IMPERIALISM 0x00576230
 void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceHandler,
                                            TEvent* event) {

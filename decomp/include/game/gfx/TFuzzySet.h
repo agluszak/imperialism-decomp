@@ -3,10 +3,6 @@
 #include "game/app/TObject.h"
 #include "game/mfc.h"
 
-// Fuzzy-logic set (collection of up to 10 TObject-derived members, each
-// released via its own virtual Free()) used by the AI minister decision code
-// alongside TFuzzyVar. Base edge (TObject) recovered from RTTI CRuntimeClass
-// chain: TFuzzySet -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006569c8
 class TFuzzySet : public TObject {
 public:
@@ -22,8 +18,6 @@ public:
   // Allocates a 4-value TFuzzyVar leaf, fills its values, and appends it to m_members. 0x4ff7d0
   void AddFuzzyVar(float value0, float value1, float value2, float value3);
 
-  // Evaluates each trapezoidal membership record at `input`, normalizes the weights,
-  // and randomly selects one member index from the resulting distribution.
   int GetCrispOutput(float input); // 0x004ff840
 
 private:

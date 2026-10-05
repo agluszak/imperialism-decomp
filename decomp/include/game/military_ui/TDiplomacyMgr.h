@@ -13,9 +13,6 @@ enum {
   kDiplomacyPairMatrixEntries = 0x180,
   kNationPairMatrixEntries = kNationSlotCount * kNationSlotCount
 };
-// MFC-style diplomacy backend. The global TDiplomacyTurnStateManager (vtable
-// 0x00654d90) holds the per-nation-pair relation / standing / propagation
-// matrices and the per-turn relationship-processing logic.
 // VTABLE: IMPERIALISM 0x00654d90
 class TDiplomacyMgr : public TObject {
 public:
@@ -33,23 +30,11 @@ public:
                                        NationSlot sourceNation);    // 11 (0x2c)
   virtual void ApplyDiplomacyInterNationStatesForTurn();            // 12 (0x30)
   virtual void SelectPriorityNationIndicesForMinorCapabilityRows(); // 13 (0x34)
-  // Verified RET 4 (one stack byte arg): forceOrMode==2 means "do a full clear" of
-  // relationCodeMatrix before rebuilding. Recomputes the two top-ranked nations' scoring
-  // arrays against every terrain-descriptor slot, then walks every nation-pair-matrix tile
-  // to assign it to the top or second nation's influence side (or neutral), and finally
-  // may prod the losing nation's AI via TGreatPower::SetNationPendingActionStateAndPayload.
   virtual void ConveneCouncil(char forceOrMode); // 14 (0x38)
   virtual void InitializeDiplomacyStandingBaselineRandom();                    // 15 (0x3c)
-  // Sums each major power's comparativePowerRows metrics into a power score,
-  // ranks the 7 major powers descending by that score (random coin-flip tiebreak),
-  // and writes the top two nation slots out. Verified RET 8 (2 stack args).
   virtual void ChooseCandidates(int* topNationSlot,
                                                         int* secondNationSlot);     // 16 (0x40)
   virtual bool IsNationPairAtWar(NationSlot sourceNation, NationSlot targetNation); // 17 (0x44)
-  // NationSlot, not int: the body reads both parameters through MOVSX from their low
-  // words (0x4ef5b3 / 0x4ef5be), and the 0x561b50 caller pushes a value whose high half is
-  // deliberately garbage (MOVSX AX from a byte, then PUSH EAX) -- only a 16-bit parameter
-  // makes that callsite correct.
   virtual bool IsNationPairRelationTurnStampOutOfDate(NationSlot sourceNation,
                                                       NationSlot targetNation);       // 18 (0x48)
   virtual bool HasAnyWarRelationForNation(NationSlot sourceNation);                   // 19 (0x4c)
@@ -68,8 +53,6 @@ public:
                                          NationSlot targetNation); // 25 (0x64)
   virtual DiplomacyRelationshipNotch GetRelationshipNotch(NationSlot sourceNation,
                                                           NationSlot targetNation); // 26 (0x68)
-  // Load the relation's display name from string group 0x2714 for alliance,
-  // non-aggression, peace, or war. Other relation codes leave treatyName unchanged.
   virtual void GetTreatyStatusText(NationSlot sourceNationSlot,
                                                         NationSlot targetNationSlot,
                                                         CString* treatyName); // 27 (0x6c)
@@ -112,16 +95,12 @@ public:
   // ORACLE: Mac names TDiplomacyMgr::GetFavoriteTradePartner(long).
   virtual int GetFavoriteTradePartner(int minorNationSlot); // 39 (0x9c)
 
-  // 0x004f2820 (Mac: BuildEmbassy) — stores the symmetric mission level and queues
-  // the corresponding trade-consulate or embassy news event.
   char BuildEmbassy(DiplomaticMissionLevelStorage missionLevel, int sourceNation, int targetNation);
 
   short relationCodeMatrix[kDiplomacyPairMatrixEntries];
   signed char pendingPolicyCodeMatrix[kDiplomacyPairMatrixEntries];
   short pendingPolicyTierMatrix[kDiplomacyPairMatrixEntries];
   CongressLeadership congressLeadership; // +0x784
-  // Build the turn-event-2 relation-matrix sync packet (delta against the baseline
-  // snapshot when one exists) and refresh the baseline copy. 0x4f2760.
   struct TurnEvent2SyncPacket* BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy();
   // 0x4f27f0 — apply a received turn-event-2 sync packet to the relation matrix.
   void HandleDiplomaticStandingsMsg(TurnEvent2SyncPacket* packet);
@@ -130,8 +109,6 @@ public:
   NationSlot lastProcessedNationSlot;
   short lastDiplomaticEffortTurn;
   unsigned char padding792[2];
-  // Baseline snapshot of the relation-matrix block (0x79c..0x18d4, 0x1138 bytes) used
-  // by the turn-event-2 delta sync; lazily heap-allocated, size cached alongside.
   short* relationMatrixBaselineCopy;
   int relationMatrixBaselineSize;
   short relationStandingScores[kNationPairMatrixEntries];
@@ -141,9 +118,6 @@ public:
   // 0x004f1760 — see comparativePowerRows below.
   void RecomputeNationComparativePowerMetrics();
 
-  // 0x1824 — per-nation comparative-power rows rebuilt each turn by
-  // RecomputeNationComparativePowerMetrics (0x4f1760): {army, avgRelation,
-  // territory+tech combined, commodity} normalized to 0..100 (0..50+50 for combined).
   int comparativePowerRows[7][4];
   NationSlot specialRelationSourceSlots[0x10];
   NationSlot specialRelationTargetSlots[0x10];
@@ -158,21 +132,10 @@ public:
   short GetEmbassyStatus(int sourceNationSlot, int targetNationSlot);
   void ProcessQueuedWarTransitions();
   void ResetTerrainAdjacencyMatrixRowAndSymmetricLink(NationSlot nationSlot);
-  // 0x4eee60 -- resets the removed nation's relation rows/columns (standing-score and
-  // propagation matrices). Great-power slots 0..6 clear the propagation entry unless it is
-  // already the "6" sentinel (or the nation lost its terrain descriptor); the standing
-  // score resets to 0x5a only when the descriptor is gone. Minor slots 7..22 always reset.
   void RemoveNationSlotAndNotifyPeers_Impl(NationSlot nationSlot);
   // ORACLE: Mac names TDiplomacyMgr::SetLastDiploEffort(). Mirrors the current turn.
   void SetLastDiploEffort(); // 0x4f0590
 
-  // 0x4f24a0. Finds the minor nation (among g_apNationAuxRuntimeStateSlots) whose
-  // encodedNationSlot decodes to nationCode via IsColonyOf, then
-  // rebuilds that minor's relation-matrix row/column against every major power (default
-  // standing/propagation) and every other eligible minor (looked up from the other
-  // minor's own decoded disposition band when it already has one, else from the
-  // requesting nation's IsInConsortiumWith capability check), and
-  // finally notifies every eligible major power via SetTradePolicyTo.
   void UpdateTables(int nationCode); // 0x4f2430, Mac oracle
   void RebuildMinorNationDispositionLookupTables(NationSlot nationCode);
 };

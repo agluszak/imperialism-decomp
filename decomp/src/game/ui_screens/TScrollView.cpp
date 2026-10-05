@@ -16,9 +16,6 @@ void TScrollView::IScrollView(TView* panel, int* offsetLayout, int* sizeLayout) 
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 5, 5, 0);
 }
 
-// Not a no-op despite the inherited slot name: resolve the 'scro'-tagged content
-// view, then build the companion scrollbar docked to the right edge (width 0x19,
-// full height).
 // FUNCTION: IMPERIALISM 0x00573ce0
 void TScrollView::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);

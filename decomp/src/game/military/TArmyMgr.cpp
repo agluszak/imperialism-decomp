@@ -48,14 +48,6 @@
 #include "game/ui_core/quickdraw_rendering.h" // BuildUiTextStyleDescriptor
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
-// displayedParticipantIndex/reportKind04/location08 read up front; nationIds[1] is read later,
-// interleaved into the per-side loop below alongside nationIds[0]), resolving
-// location08 either as a raw tile/record index (land-report kinds) or, via
-// FindMapActionContextByNodeId, a live TZone* -- mirrors the port-zone/context-array
-// two-way match idiom used throughout TZone.cpp. Then for each side (0/1), reads the
-// nation-id byte, the fixed name/overlay buffers (a version-gated legacy string read
-// pre-0x2c, plain fixed-size reads from 0x2c on), the child-record count, and
-// (re)allocates + reads that many MapOrderBattleSideChildRecord entries.
 // FUNCTION: IMPERIALISM 0x004a13c0
 void MapContextActionRecord::ReadFrom(TStream* stream) {
   stream->ReadBytes(&reportParticipantIndex, 1);
@@ -136,12 +128,6 @@ void MapContextActionRecord::WriteTo(TStream* stream) {
 
 IMPLEMENT_DYNCREATE(TArmyMgr, TObject)
 
-// Own-source function (not a TArmyMgr method -- ground truth doesn't touch `this`).
-// Classifies a map-click as: 6 (already visited this pass), 0 (blocked -- dialog/order
-// context active, or tile already has a pending civilian order), 8 (blocked -- active
-// nation not eligible, or a diplomacy-target mismatch with the tile's owner), or 2
-// (click accepted). Defined below (0x4a4960) in address order; forward-declared here
-// for HandleMapClickByComputedCursorState's use.
 static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode);
 
 // Reads one action-record from `stream`: the fixed header fields (nationIds[0] and
@@ -225,9 +211,6 @@ void TArmyMgr::Free() {
 // FUNCTION: IMPERIALISM 0x004a1b80
 void TArmyMgr::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
-  // The null test and the final clear go through `this`, but the purge walk reloads the
-  // manager singleton on every iteration (0x4a1bb7/0x4a1bc6 read [0x006a3338] rather than
-  // EBP) -- the same asymmetry TArmyMgr::Free shows, so it is written the same way here.
   if (mapContextActionRecordList != 0) {
     int ordinal = g_pMapContextActionManager->mapContextActionRecordList->GetSize();
     while (ordinal > 0) {
@@ -246,9 +229,6 @@ void TArmyMgr::ReadFrom(TStream* stream) {
   if (g_nSaveFormatVersion >= 0x25) {
     int count = stream->ReadInteger();
     while (count-- != 0) {
-      // The two stride-0x20 / stride-0xff store loops at 0x4a1c47 and 0x4a1c58 are the
-      // array default-construction of nameBuffer and overlayLabel, emitted by this
-      // declaration; only the POD tail needs clearing by hand.
       MapContextActionRecord record;
       record.childCount24a[1] = 0;
       record.childCount24a[0] = 0;
@@ -259,8 +239,6 @@ void TArmyMgr::ReadFrom(TStream* stream) {
       mapContextActionRecordList->AppendCopiedRecordToPtrList(&record);
       battlesToReport = true;
 
-      // The copied record in the list now owns these arrays; reset our local's copies
-      // (ground truth re-zeroes them here too, matching the ctor-time defaults).
       record.sideChildRecords[1] = 0;
       record.sideChildRecords[0] = 0;
       record.childCount24a[1] = 0;
@@ -283,10 +261,6 @@ void TArmyMgr::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x004a1e40
 void TArmyMgr::DoCombatMoves() {
-  // g_pSimMgr->multiplayerSessionRole is the multiplayer-mode dword (compared against 1/2
-  // throughout TMultiplayerMgr.cpp); == 2 selects the alternate branch here. The test is
-  // materialized into a byte Boolean before it is branched on -- 0x4a1e49's
-  // xor/cmp/setz/test al pair is an unsigned char local, not a direct `if` on the compare.
   bool isNetworkClient = (g_pSimMgr->multiplayerSessionRole == kSessionRoleClient);
   if (isNetworkClient) {
     this->ClearPendingStacksAndFinalizeMilitaryUnits();
@@ -550,8 +524,6 @@ static void BuildArmyActionLabelFromLocalizationAndCounts(CStr255* destination, 
   AppendTextIntoFixedBuffer(destination->data, 0xff, static_cast<LPCSTR>(formattedLabel));
 }
 
-// Own-source function (not a TArmyMgr method -- its callsites push all five arguments,
-// it never reads ECX as a receiver, and it returns with a bare RET).
 // FUNCTION: IMPERIALISM 0x004a2900
 static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
                                                           TArmyStack* enemyStack,
@@ -699,9 +671,6 @@ bool TArmyMgr::ResolveConflict(TArmyStack* stack, short ownerNationCode) {
   bool tacticalViewCreated = false;
   TMilitaryUnit* curUnit = stack->ResetCursorAndGetHeadUnit();
 
-  // Partition stack's own unit chain into a new "our stack" containing only the units
-  // whose orderTargetIndex (order-owner nation) matches ownerNationCode; stack->head14 itself is
-  // left untouched, only its cursor18 iteration state advances.
   TArmyStack* ourStack = new TArmyStack();
   ourStack->IArmyStack(static_cast<char>(curUnit->ownerNationSlot18), ownerNationCode,
                        curUnit->tileIndex06);
@@ -718,9 +687,6 @@ bool TArmyMgr::ResolveConflict(TArmyStack* stack, short ownerNationCode) {
     int ownerNationCodeInt = ownerNationCode;
     short cachedOwnerAtTile = this->perTileOwnerNationCodeCache1c[ownerNationCodeInt];
 
-    // The "enemy stack" is every unit currently garrisoned at the region/slot identified
-    // by ownerNationCode -- ground truth indexes cityScoreTable directly by this value
-    // rather than by a separately-resolved tile index.
     enemyStack = new TArmyStack();
     enemyStack->IArmyStack(static_cast<char>(cachedOwnerAtTile), ownerNationCode, ownerNationCode);
 
@@ -735,20 +701,13 @@ bool TArmyMgr::ResolveConflict(TArmyStack* stack, short ownerNationCode) {
 
     if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
             ourStack->categoryFlag, cachedOwnerAtTile)) {
-      // Relation is current: no battle -- dispatch the peaceful army-context path and
-      // relocate our own stack instead.
       BuildArmyContextActionRecordsAndDispatchLabel(ourStack, enemyStack, 0, ownerNationCodeInt, 0);
       this->RetreatAttacker(ourStack);
     } else if (enemyStack->unitCountA != 0) {
-      // Ground truth also loops over g_apNationStates here (advancing a pointer with no
-      // observable side effect -- the result is never read); not reproduced.
       tacticalViewCreated = true;
       this->CreateTacticalBattleViewAndInitializeBattleSetup(ourStack, enemyStack,
                                                              ownerNationCodeInt);
     } else {
-      // No enemy units present: dispatch the army-context path (mode 1), relocate/reset
-      // our own stack's units in place, then update the per-tile owner cache to reflect
-      // our stack taking over.
       BuildArmyContextActionRecordsAndDispatchLabel(ourStack, enemyStack, 1, ownerNationCodeInt, 0);
       ourStack->ReseatChainUnitsAndClearOrders();
       this->perTileOwnerNationCodeCache1c[ownerNationCodeInt] = ourStack->categoryFlag;
@@ -821,8 +780,6 @@ void TArmyMgr::RetreatAttacker(TArmyStack* stack) {
 
 // FUNCTION: IMPERIALISM 0x004a3830
 bool TArmyMgr::StrategicCombat(TArmyStack* stack1, TArmyStack* stack2) {
-  // Phase 1: snapshot stack1's units' strength34 into strengthSnapshot and clear blink-mask bits 1/2,
-  // stopping early the first time a unit's fort-level attacker-penalty lookup is 0.
   TMilitaryUnit* unit = stack1->ResetCursorAndGetHeadUnit();
   while (unit != nullptr) {
     stack1->fortLevelAttackerPenaltyCache9 = static_cast<unsigned char>(
@@ -837,8 +794,6 @@ bool TArmyMgr::StrategicCombat(TArmyStack* stack1, TArmyStack* stack2) {
     unit = stack1->AdvanceCursorAndGetUnit();
   }
 
-  // Phase 2: same for stack2, except blink-mask bit 1 is set from the unit's
-  // blink-eligibility flag rather than always cleared.
   unit = stack2->ResetCursorAndGetHeadUnit();
   while (unit != nullptr) {
     stack2->fortLevelAttackerPenaltyCache9 = static_cast<unsigned char>(
@@ -854,9 +809,6 @@ bool TArmyMgr::StrategicCombat(TArmyStack* stack1, TArmyStack* stack2) {
     unit = stack2->AdvanceCursorAndGetUnit();
   }
 
-  // Phase 3: repeatedly find one eligible unit per stack (strength34 still above half its
-  // Phase 1/2 snapshot, and blink-mask bit 2 clear) and accumulate/decay a shared meter
-  // across both stacks, until either side runs dry.
   int counter = 0;
   while (true) {
     if (!stack1->UnitsFighting()) {
@@ -877,9 +829,6 @@ bool TArmyMgr::StrategicCombat(TArmyStack* stack1, TArmyStack* stack2) {
     ++counter;
   }
 
-  // Neither side found an eligible pairing this round: re-check stack1 alone. If it still
-  // has an eligible unit, boost stack1's meters (and give stack2 a plain refresh);
-  // otherwise refresh stack1 plainly and boost stack2's instead.
   if (stack1->UnitsFighting()) {
     stack1->RaiseExperience(true);
     stack2->RaiseExperience(false);
@@ -998,9 +947,6 @@ bool TArmyMgr::CommitCityActionGateCostIfAffordable(int contextArg) {
     return true;
   }
 
-  // Insufficient funds: compose and dispatch a localized message with the current
-  // budget and the required cost (ground truth builds both via a direct
-  // CString::Format("%d", ...) rather than TSimMgr::NumToCurrency).
   CString currentAmountString;
   currentAmountString.Format("%d", nation->field900);
   CString costString;
@@ -1377,9 +1323,6 @@ int TArmyMgr::ComputeCivilianMapCursorStateIndex(short tileIndex, short mode) {
   return 1;
 }
 
-// Route a map action for the region named by contextArg's low short: walk the pending
-// province's adjacent-record list, and if that region is one of them select the movable
-// unit on the current tile, otherwise charge the city-action gate cost.
 // FUNCTION: IMPERIALISM 0x004a4fc0
 void TArmyMgr::DispatchMapActionForRegionByAdjacency(int contextArg) {
   bool isAdjacent = false;
@@ -1507,9 +1450,6 @@ void TArmyMgr::MarchSelectedArmies(short tileIndex) {
   TGreatPower* nationState = g_apNationStates[activeNationId];
   int categoryCounts[10] = {0};
 
-  // Per-unit "was this order anchored on cityRecordIndex" scratch flags -- one byte per
-  // list entry, walked in lockstep with the CIterator below. Original never frees this
-  // buffer (no operator_delete in the disassembly); reproduced as-is.
   unsigned char* unitOnTileFlags = new unsigned char[nationState->militaryUnitList44->GetCount()];
   memset(unitOnTileFlags, 0, nationState->militaryUnitList44->GetCount());
 
@@ -1645,9 +1585,6 @@ bool TArmyMgr::GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummar
   int bestScore = -1;
   CString candidateName;
 
-  // Phase 1: scan the city's adjacent regions owned by the active nation for the
-  // strongest stationed military unit; fall back to the region's own display name when
-  // an owned region has none.
   int adjacentRegionCount =
       g_pGlobalMapState->cityScoreTable[cityRecordIndex].adjacentRegionCount08;
   if (adjacentRegionCount > 0) {
@@ -1683,10 +1620,6 @@ bool TArmyMgr::GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummar
     } while (i < adjacentRegionCount);
   }
 
-  // Phase 2: separately look for a ship owned by the active nation whose zone covers
-  // cityRecordIndex, reducing to the preferred one; its admiral can outrank Phase 1's
-  // pick, or (only when Phase 1 found nothing at all) the ship's own name is the
-  // fallback.
   TShip* bestShip = nullptr;
   for (TShip* ship = TShip::GetFirst(); ship != nullptr; ship = ship->next) {
     if (ship->nation == g_pSimMgr->GetPlayerCountry() &&
@@ -1719,10 +1652,6 @@ bool TArmyMgr::GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummar
     return false;
   }
 
-  // Phase 3: tally the city's stationed units into 11 resource buckets via a
-  // per-strength-tier weighted roll, seeded from the city/turn/nation. The category
-  // result is biased by 3: 4 selects the misc bucket, 5 selects a random bucket, and
-  // every other result selects the unit's movement class.
   short activeNationId = g_pSimMgr->GetPlayerCountry();
   short turnTick = g_pSimMgr->GetEconomicTurn();
   int seed = cityRecordIndex + turnTick + activeNationId;
@@ -1772,9 +1701,6 @@ bool TArmyMgr::GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummar
     } while (unit != nullptr);
   }
 
-  // Phase 4: format the non-empty buckets into a comma-separated "<count> <resource>"
-  // list (singular/plural string group 0x2726, offset i vs i+11), or a fallback when
-  // nothing was garrisoned.
   {
     CString emptySummary(g_szEmptyString);
     outGarrisonSummary = emptySummary;
@@ -1967,12 +1893,6 @@ void TArmyMgr::AddBattleRecord(MapOrderBattleSnapshot* record, int unusedArg2) {
 // FUNCTION: IMPERIALISM 0x004a6ef0
 void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, int cityIndex,
                                                                MapOrderBattleSnapshot* snapshot) {
-  // nationId carries TTaskForce::nation, which every navy-order reader
-  // treats as the entry's owning nation slot (RemoveMatchingTaskForceOrders above) --
-  // used below as a g_apNationStates index. `side` is recovered implicitly by comparing
-  // this byte against snapshot->nationIds[0]: side 0's own call always matches
-  // trivially (side = 0); side 1's call only diverges -- and only then runs the trim --
-  // when the two sides' nation slots differ.
   int side = (nationId != snapshot->nationIds[0]) ? 1 : 0;
 
   TList* scratchList = new TList();
@@ -2014,8 +1934,6 @@ void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, in
     int newCount = oldCount + evictedCount;
     snapshot->childCount[side] = static_cast<short>(newCount);
 
-    // Original never frees oldRecords here -- reproduced as-is (see the analogous
-    // acknowledged leak elsewhere in this file).
     MapOrderBattleSideChildRecord* newRecords = nullptr;
     if (newCount > 0) {
       newRecords = new MapOrderBattleSideChildRecord[newCount];
@@ -2045,8 +1963,6 @@ void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, in
                 break;
               }
             }
-            // Final battle-report row category; the working unit pointer is no longer
-            // needed once the evicted unit has been copied into the record.
             rec.detailIdentity = kControlTagArmy; // 'army'
             rec.strengthBucket = static_cast<short>(unit->experiencePercent / 100);
             unit->Vaporize();

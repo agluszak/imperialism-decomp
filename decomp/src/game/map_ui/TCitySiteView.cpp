@@ -26,9 +26,6 @@ TCitySiteView::~TCitySiteView() {}
 
 // FUNCTION: IMPERIALISM 0x0051bff0
 void TCitySiteView::DoPostCreate(int arg) {
-  // Explicitly skips TMapDialog::DoPostCreate (an empty override, 0x519d30) and
-  // calls straight through to TWorldView's -- confirmed by the real call target (0x595090)
-  // in the disassembly.
   TWorldView::DoPostCreate(arg);
 
   projectionScale = 1;
@@ -43,11 +40,6 @@ void TCitySiteView::DoPostCreate(int arg) {
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagDialog);
 
-  // TCitySiteView is always hosted as TMapUberPicture's 'DLOG' child (see
-  // TMapUberPicture.h's "event 0x3b8 constructs a TCitySiteView" note and the real
-  // construction site in turn_event_dialog_factory.cpp), and this dispatch is a direct
-  // (non-virtual, fixed-address) call, not a vtable call -- consistent with the compiler
-  // knowing ownerContext's concrete type here.
   static_cast<TMapUberPicture*>(ownerContext)->SetMapInteractionMode(4);
 
   minColumn = 1000;
@@ -106,8 +98,6 @@ void TCitySiteView::SetMapViewCellCoordinates(int column, int row) {
   SetMapDialogCellCoordinatesAndRefresh(column, row, 0);
 }
 
-// The original keeps col/row as word registers throughout (the clamp writes replace only
-// the low word), hence the short locals seeded from the int slot params.
 // FUNCTION: IMPERIALISM 0x0051c320
 void TCitySiteView::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mode) {
   short c = static_cast<short>(col);

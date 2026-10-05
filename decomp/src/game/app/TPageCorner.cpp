@@ -11,9 +11,6 @@ IMPLEMENT_DYNCREATE(TPageCorner, TColorKeyPicture)
 // FUNCTION: IMPERIALISM 0x0044a6c0
 TPageCorner::TPageCorner() {}
 
-// A page corner is only "hit" on its own triangular half: the left corner takes clicks
-// above the diagonal (x < y), any other corner takes clicks below the mirrored diagonal.
-// Clicks on the other half fall through as unhandled so the page underneath gets them.
 // FUNCTION: IMPERIALISM 0x0056f850
 char TPageCorner::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
   if (controlTag == kControlTagLcor) {

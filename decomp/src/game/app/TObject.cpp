@@ -33,8 +33,6 @@ TObject* TObject::ShallowClone() {
   return ShallowFree();
 }
 
-// The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
-//   CArchive& AFXAPI operator>>(CArchive&, TObject*&)
 IMPLEMENT_SERIAL(TObject, CObject, 1)
 
 // FUNCTION: IMPERIALISM 0x00485e90
@@ -43,9 +41,6 @@ void TObject::Serialize(CArchive& archive) {
   TFileStream stream;
   stream.SetBackingArchive(&adapter);
 
-  // Storing is the fall-through and loading the jump target (0x485ef1 JZ -> 0x485f09),
-  // so the test has to be written the way the original asks it: IsStoring compiles to
-  // the NOT ECX / TEST CL,1 pair at 0x485ee5, which the IsLoading spelling inverts.
   if (archive.IsStoring()) {
     WriteTo(&stream);
   } else {

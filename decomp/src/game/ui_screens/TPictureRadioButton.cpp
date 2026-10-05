@@ -55,12 +55,6 @@ void TPictureRadioButton::Select(bool isPressed, bool notifyParent) {
   }
 }
 
-// A radio button ignores the press unless it is currently deselected and enabled; the
-// press position never matters. The original re-reads IsSelected() after the enable check
-// instead of reusing the first result (two separate virtual calls in the listing), and
-// keeps the toggle-on / toggle-off notifications as two distinct HandleEvent callsites.
-// The owner is the hosting TUberCluster, whose slot 0x73 reports whether any sibling in
-// the group is currently selected: with nothing selected anywhere the press is swallowed.
 // FUNCTION: IMPERIALISM 0x00570fb0
 char TPictureRadioButton::HandleMouseDown(const CPoint& point, TToolboxEvent* event,
                                           CPoint origin) {

@@ -18,9 +18,6 @@
 
 IMPLEMENT_DYNCREATE(TAnimator, TEventHandler)
 
-// The original inlines the TEventHandler base construction (keeping only the shared
-// field-defaults helper out-of-line) and does not touch overlayPhaseTickCount; the recompile emits
-// the real base-ctor call instead -- the usual accepted ctor-inlining divergence.
 // FUNCTION: IMPERIALISM 0x004a0aa0
 TAnimator::TAnimator()
     : TEventHandler(), renderSurfaceContext(0), registryList(0), mapUberPicture2c(0) {}
@@ -79,8 +76,6 @@ void TAnimator::AddAnimation(TAnimation* animationObject) {
 
 // FUNCTION: IMPERIALISM 0x004a0d30
 TAnimation* TAnimator::FindRegisteredAnimationByTag(int tag) {
-  // The original null-checks the receiver: call sites invoke this on g_pUiAnimator
-  // without guarding it.
   if (this != 0) {
     CIterator cursor(registryList);
     TAnimation* animation = static_cast<TAnimation*>(cursor.Reset());
@@ -120,8 +115,6 @@ void TAnimator::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x004a0e90
 void TAnimator::TranslateListRectsAndDropNonIntersectingEntries(int dx, int dy, RECT clipRect) {
-  // The original null-checks the receiver: the call site invokes this on g_pUiAnimator
-  // without guarding it.
   if (this != 0) {
     CIterator cursor(registryList);
     TAnimation* entry = static_cast<TAnimation*>(cursor.Reset());
@@ -154,8 +147,6 @@ void TAnimator::FreeAllAnis() {
   }
 }
 
-// The original inlines FindRegisteredAnimationByTag here (same loop, including the
-// receiver null-check); the recompile emits the real call instead.
 // FUNCTION: IMPERIALISM 0x004a0fa0
 void TAnimator::RemoveUiTransientRegistryObjectByTag(int tag) {
   TAnimation* animation = FindRegisteredAnimationByTag(tag);

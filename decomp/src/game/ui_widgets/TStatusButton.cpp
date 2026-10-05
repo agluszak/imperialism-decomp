@@ -16,8 +16,6 @@ TStatusButton::TStatusButton() : TButton() {}
 
 // FUNCTION: IMPERIALISM 0x00586400
 void TStatusButton::DoEvent(int selectedIndex, TEventHandler* sourceHandler, TEvent* event) {
-  // Two CString scratch locals the original constructs on entry and destroys on exit;
-  // unused in the body but required to reproduce the prologue/epilogue.
   CString scratchA;
   CString scratchB;
 

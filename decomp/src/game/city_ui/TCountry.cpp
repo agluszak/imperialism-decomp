@@ -159,19 +159,10 @@ void TCountry::ReadFrom(TStream* stream) {
   }
   this->militaryUnitList44->ReadFrom(stream);
 
-  // One count local serves both trailing loops: the original reads each count into the
-  // same stack slot (esp+0x28 at 0x4d6cf2 and again at 0x4d6d8d).
   int entryCount;
   stream->ReadBytes(&entryCount, 4);
-  // No null test on the new-expression: the only branch the original has here is the
-  // compiler's own skip-the-constructor-if-the-allocation-failed test at 0x4d6d24, and
-  // the IMilitaryUnit/ReadFrom pair that follows runs unconditionally.
   for (int recruitIndex = 1; recruitIndex <= entryCount; ++recruitIndex) {
     TMilitaryUnit* militaryOrder = new TMilitaryUnit();
-    // 0x4d6d33: the pushes are (0, -1, nationSlot, 0). nodeContext is -1, not 0 --
-    // 0 is a valid tile/anchor index, so passing it sends
-    // RegisterUnitOrderWithOwnerManager down the attach path against a nation table
-    // that is still being rebuilt, which is the load-time access violation.
     militaryOrder->IMilitaryUnit(0, -1, this->nationSlot, 0);
     militaryOrder->ReadFrom(stream);
   }

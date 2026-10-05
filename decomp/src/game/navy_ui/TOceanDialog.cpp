@@ -25,14 +25,9 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// Standalone binary helper also reached via TWorldView.cpp/TMapDialog.cpp's identical
-// bridge (0x51ace0); real signature void(short*, short*).
 void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
 
 namespace {
-// The original brackets the owner-color fill with an 8-byte compiler-generated
-// palette-selection guard. Model that lifetime directly so VC5 emits the matching
-// cleanup path while calls stay on the real MFC/API boundary.
 class ScopedOceanMapPaletteSelection {
 public:
   ScopedOceanMapPaletteSelection()
@@ -54,10 +49,6 @@ IMPLEMENT_DYNCREATE(TOceanDialog, TWorldView)
 
 // FUNCTION: IMPERIALISM 0x00565e90
 TOceanDialog::TOceanDialog() : scrollRowOffset(0), scrollColOffset(0) {
-  // Inherited TWorldView viewport fields seeded from the ocean-dialog seed globals
-  // (0x6a3ff0/0x6a3ff4); their only writer is the reset helper at 0x56a3b0 which zeroes
-  // both. projectionScale/previewSquareRadius are fixed layout constants for the
-  // ocean dialog.
   viewportOrigin.x = g_nOceanDialogSeedViewportOffsetX;
   viewportOrigin.y = g_nOceanDialogSeedViewportOffsetY;
   projectionScale = 4;
@@ -99,9 +90,6 @@ void TOceanDialog::InvalidateTile(short tileIndex) {
   InvalidateCityDialogRectRegion(&tileRect, 1);
 }
 
-// Computes the viewport-space bounding rectangle of every strategic tile whose owner tag
-// matches the order entry's field at +0x12, converted through the dialog's scroll offsets.
-// Emits a zero rect when nothing matches.
 // FUNCTION: IMPERIALISM 0x00566060
 CRect TOceanDialog::BoundingRect(TZone* zone) {
   tagRECT bounds;
@@ -1155,9 +1143,6 @@ void TOceanDialog::CenterOn(int tileIndex) {
 
 // FUNCTION: IMPERIALISM 0x00568a40
 void TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay(unsigned char directionFlags) {
-  // Nudged values are passed to the slot-0x1e4 virtual (SetMapViewCellCoordinates), which is
-  // a genuine 3-byte RET-8 no-op in every reachable override -- VERIFIED, so the nudge is
-  // effectively discarded and no persistence happens.
   int col = scrollColOffset;
   int row = scrollRowOffset;
   if ((directionFlags & 1) != 0) {

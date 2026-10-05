@@ -13,9 +13,6 @@ public:
                        TEvent* event) override; // slot 0x0f 0x004ccf30
   virtual void DoStartup() override;            // slot 0x75 0x4cc820
   virtual void UpdateFields() override;         // slot 0x76 0x4cd040
-  // TBuildingView's slice ends at 0xa0; RTTI oracle confirms sizeof(TIndustryView) == 0xa8.
-  // The +0xa0 dword has only the constructor's zero write. DoStartup maps the inherited
-  // building category to a concrete industry unit type at +0xa4.
   int unresolvedZero;
   short selectedIndustryUnitTypeA4;
   short padA6; // +0xa6

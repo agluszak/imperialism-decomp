@@ -26,12 +26,7 @@ public:
                                                           short stringIndex); // slot 0x77 0x4c70e0
   virtual void SetUniversityDialogTextAndRefresh(TStaticText* label,
                                                  CString text); // slot 0x78 0x4c6ff0
-  // The +0x94 receiver is a TCity: derived readers land exactly on city stock +0xb6,
-  // productionSummary, and the production-order table at +0x1dc.
   TCity* city94;
-  // The city-production host: Shipyard UpdateFields calls its slot 0x77 UpdateUnits,
-  // and Close clears its 16-entry
-  // buildingViews array at +0xac.
   TCityProductionView* productionView98;
   bool isEmbeddedPage9C;
   unsigned char padding9D;

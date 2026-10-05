@@ -17,11 +17,6 @@ enum ProductionOrderLimitKind {
   kProductionOrderLimitTreasury = 3
 };
 
-// TProductionOrder is the common base for the city order-slot family
-// (TShipOrder, TTrainingOrder, TItemOrder/TOrItemOrder, TUnitOrder,
-// TPowerPlantOrder, TFoodProcessingOrder, TPopGrowthOrder, TCapacityOrder,
-// TExpansionOrder). Base edge (TObject) recovered from RTTI CRuntimeClass
-// chain: TProductionOrder -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064fa18
 class TProductionOrder : public TObject {
 public:

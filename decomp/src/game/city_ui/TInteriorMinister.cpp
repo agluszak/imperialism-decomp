@@ -109,10 +109,6 @@ void TInteriorMinister::ClearPersistedReservedTable() {
   memset(persistedReservedTable, 0, sizeof(persistedReservedTable));
 }
 
-// Mac oracle name (on both TInteriorMinister and TCityInteriorMinister). Tops up up
-// to 10 of the nation's needs (in the fixed priority order
-// g_aInteriorMinisterNeedPriorityOrder_00696408) toward their current reading, stopping
-// as soon as the nation's need-cap headroom (transportCapacity - reservedTransportCapacity) hits zero.
 // FUNCTION: IMPERIALISM 0x004be520
 void TInteriorMinister::SetCityPolicies() {
   short i = 0;

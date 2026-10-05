@@ -118,10 +118,6 @@ void TTransFocusAnimation::DrawNextFrame(POINT* offset) {
   SetQuickDrawStrokeColor(0xffffff);
   SetQuickDrawFillColor(0);
 
-  // Original (0x4a0810): the blit target is the surface context held at
-  // g_pUiAnimator+0x20; the height check reads that context's backing dib. The
-  // previous port collapsed both dereferences into one and applied pointer
-  // arithmetic to the TAnimator*, reading a garbage "context".
   RECT clipRect = destinationRect;
   TQuickDrawSurfaceContext* animatorTarget = g_pUiAnimator->renderSurfaceContext;
   if (animatorTarget->blitSurface.surfaceDib != 0) {

@@ -17,8 +17,6 @@ IMPLEMENT_DYNCREATE(TInfoBarText, TDeluxeText)
 
 // FUNCTION: IMPERIALISM 0x005b66b0
 void TInfoBarText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {
-  // Original signature carries the text by value (the previous port dropped it and
-  // pushed a fresh empty CString instead).
   if (EqualRect(layoutRect, &layoutRectA4) == 0) {
     layoutRectA4.left = layoutRect->left;
     layoutRectA4.top = layoutRect->top;
@@ -64,8 +62,6 @@ void TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary, int
   dropShadowEnabledA0 = true;
 }
 
-// Detach from the shared cursor-info-panel global before the generic view teardown;
-// an empty body here left the node attached and looped the parent's Free-until-empty walk.
 // FUNCTION: IMPERIALISM 0x005b6930
 void TInfoBarText::Free() {
   if (g_pCursorControlPanel == this) {

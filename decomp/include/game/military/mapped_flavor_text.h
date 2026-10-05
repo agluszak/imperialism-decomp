@@ -6,23 +6,12 @@ class TSimMgr;
 #include "compat.h"
 #include "game/stretch.h"
 
-// 0x580280: flatten `templateText` into a fresh realloc'd buffer, substituting each
-// [N] bracket with tokenN ([Nx] with a lowercase letter routes through
-// TLanguageMgr::Localize). Caller owns (free()s) the returned buffer. `sim` is unused.
 char* __cdecl AppendInterNationEventSummaryTextEntry_Impl(TSimMgr* sim, const char* templateText,
                                                           const char* token1, const char* token2,
                                                           const char* token3, const char* token4);
 
-// Template expander: writes `input` into `out`, substituting each `[N]` bracket with the
-// N-th variadic string argument (or, for `[Nx]` with a trailing letter, the news-table
-// mapped form of that argument). `ctx` is always g_pSimMgr at every call site but unused
-// in the body. 0x0057fef0.
 void scanBracketExpressions(TSimMgr* ctx, CString* out, const char* input, ...);
 
-// 0x580060: load the (groupA, indexA) template and expand it into `out`; bracket
-// digit [0] re-expands pair A, [1] expands (groupB, indexB), and a trailing lowercase
-// letter routes the expansion through TLanguageMgr::BuildMappedSharedStringFromByte-
-// StateTable (turn-event 0xA/0xC receive paths). Genuine __cdecl free function.
 void __cdecl BuildUiMessageTextFromBracketTemplate(TSimMgr* sim, CString* out, int groupA,
                                                    int indexA, int groupB, int indexB);
 void GenerateMappedFlavorTextByCurrentContextNation(CString* dest);

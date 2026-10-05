@@ -133,8 +133,6 @@ void TAdmiral::ReadFrom(TStream* stream) {
   }
 }
 
-// Mac oracle: Victory. Clamped so experiencePoints / 100 stays within the four
-// skill tiers the readers expect.
 // FUNCTION: IMPERIALISM 0x00551820
 void TAdmiral::Victory(short experienceGain) {
   experiencePoints = static_cast<short>(experiencePoints + experienceGain);
@@ -172,8 +170,6 @@ void TAdmiral::ReassignThyself() {
   }
 }
 
-// Mac oracle: IsSeniorTo. The original tests the receiver itself for null, so a null
-// admiral compares junior to everything and any admiral outranks a null argument.
 // FUNCTION: IMPERIALISM 0x00551990
 unsigned char TAdmiral::IsSeniorTo(const TAdmiral* other) const {
   if (this == 0) {
@@ -337,8 +333,6 @@ void TAdmiral::AssignToShip(TShip* primaryOrderNode) {
   }
 }
 
-// The original function extends from 0x552310 through 0x552404. Earlier inventory
-// rows incorrectly treated its loop body as three independent orphan functions.
 // FUNCTION: IMPERIALISM 0x00552310
 void TAdmiral::ReassignToZone(TZone* zone) {
   if (this->assignedShip != 0) {
@@ -365,8 +359,6 @@ void TAdmiral::ReassignToZone(TZone* zone) {
   }
 }
 
-// Mac oracle: TAdmiral::NameThyself(). Rebuilds this admiral's generated name and
-// repeats when it collides with another live admiral.
 // FUNCTION: IMPERIALISM 0x00552450
 void TAdmiral::NameThyself() {
   g_apTerrainTypeDescriptorTable[this->nationSlot]->GenerateEthnicName(&this->displayName);
@@ -380,8 +372,6 @@ void TAdmiral::NameThyself() {
   }
 }
 
-// Genuine cdecl by-value helper (the caller cleans its hidden return pointer and two
-// arguments). It maps the four report categories back to an enabled ship resource.
 // FUNCTION: IMPERIALISM 0x00557320
 CString GetLocalizedNavalReportShipType(short category, bool plural) {
   short resourceType = 0;

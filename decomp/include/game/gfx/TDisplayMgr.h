@@ -32,9 +32,6 @@ public:
   virtual void SetHiliteColor(const RGBQUAD* color);                        // slot 0x15 0x4fefc0
   virtual void CloseFloaters();                                             // slot 0x16 0x4ff000
 
-  // Frees the TQuickDrawSurfaceContext record held in `slot` and clears the slot.
-  // Real __thiscall on the display manager (every callsite loads ecx = g_pDisplayMgr)
-  // even though the body never reads `this`. 0x4feb50, ret 4.
   void RemoveGWorld(TQuickDrawSurfaceContext*& surface);
 
   TView* activeDialog;      // +0x04
@@ -47,8 +44,6 @@ public:
   int field18;              // +0x18
   short clipSnapshotEvent;  // +0x1c
   unsigned short field1e;   // +0x1e
-  // Turn-order-navigation-dialog scratch list, constructed by IDisplayMgr and freed
-  // through the TPtrList API.
   TPtrList* turnOrderList; // +0x20
 
   TDisplayMgr();
@@ -62,7 +57,4 @@ struct GlobalViewportRectDefaultsRecord;
 // 0x00497230 — lazily seeds default 640x480 viewport rect globals.
 GlobalViewportRectDefaultsRecord** InitializeGlobalRectDefaultsIfUninitialized();
 
-// 0x004931e0. Emits the default Win32 warning beep.
-// The retail helper itself takes no arguments, but legacy call sites may leave a
-// source-level alert kind on the cdecl stack for it to ignore.
 void PlayDefaultMessageBeep(...);

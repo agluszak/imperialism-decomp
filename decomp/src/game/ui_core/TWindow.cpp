@@ -16,9 +16,6 @@
 #include "RuntimeTestDriver.h"
 #endif
 
-// One-shot McAppUI invalidation-flag assert. The original reaches the shared invalidation
-// helper through the incremental-link thunk; each call site is gated by its own
-// g_McAppUiFlag_* one-shot so the assert fires at most once.
 static void AssertMcAppUiInvalidation(const char* path, int line) {
   TemporarilyClearAndRestoreUiInvalidationFlag(path, line);
 }
@@ -29,11 +26,6 @@ static void AssertMcAppUiInvalidation(const char* path, int line) {
 
 IMPLEMENT_DYNCREATE(TWindow, TView)
 
-//
-// The real (non-deleting) destructor unlinks this window from the global live-view
-// registry and from the modal stack; when a window is left on top of the modal stack it
-// re-asserts it and re-enables its host window. The TView base destructor then releases
-// the child list, the +0x48 buffer and the shared-string member.
 // FUNCTION: IMPERIALISM 0x0048d670
 TWindow::~TWindow() {
   POSITION pos = g_LiveViewRegistry.Find(this);
@@ -54,8 +46,6 @@ TWindow::~TWindow() {
   }
 }
 
-// Dead helper whose whole body is the unconditional McAppUI.cpp:0x8c9 assert call; all
-// five arguments are unused and no callers survive. 0x0048d870, __stdcall.
 // FUNCTION: IMPERIALISM 0x0048d870
 void __stdcall AssertMcAppUiDialogStateAndReturn(int arg1, int arg2, int arg3, int arg4, int arg5) {
   AssertMcAppUiInvalidation(g_szMcAppUiSourcePath_006950B0, 0x8c9);
@@ -118,10 +108,6 @@ void TWindow::SetModality(bool modal) {
   dialogBehavior.armed = modal;
 }
 
-// Run this window as a modal: optionally arm the dialog-state flag, disable the window
-// currently on top of the global modal stack, push self, run the embedded dialog's modal
-// loop, then pop self and re-enable the window beneath. Returns the command the dialog
-// armed during the loop.
 // FUNCTION: IMPERIALISM 0x0048da60
 int TWindow::PoseModally() {
   TDialogBehavior* behavior = GetDialogBehavior();
@@ -177,8 +163,6 @@ void TWindow::Dismiss(unsigned long commandCode, bool accepted) {
   }
 }
 
-// The 0x74 region is constructed as a real TDialogBehavior (ConstructTDialogBehaviorBaseState
-// writes its vptr at +0x74); expose it through its real type so callers dispatch real virtuals.
 // FUNCTION: IMPERIALISM 0x0048dcc0
 TDialogBehavior* TWindow::GetDialogBehavior() {
   return &dialogBehavior;
@@ -193,8 +177,6 @@ void TWindow::AssertMcAppUILine2554() {
 
 // FUNCTION: IMPERIALISM 0x0048dd10
 void TWindow::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  // Direct access to the embedded TDialogBehavior (the original reads its vptr straight from
-  // +0x74), then bubble to DoEvent.
   dialogBehavior.DoEvent(commandId, sourceHandler, event);
   DoEvent(commandId, sourceHandler, event);
 }
@@ -225,10 +207,6 @@ void TWindow::SetWindowTarget(TEventHandler* target) {
   }
 }
 
-// Realize and show this window: on first call create the host CMcWindow and propagate the
-// UI resource context into every child control, then notify the window, run the
-// not-actionable fallback (mark busy, poke the linked window, fire the slot-0x73 chain),
-// and finally recurse the realize hook into each child.
 // FUNCTION: IMPERIALISM 0x0048de00
 CWnd* TWindow::Open() {
   if (nativeWindow50 == 0) {
@@ -259,8 +237,6 @@ CWnd* TWindow::Open() {
   return 0;
 }
 
-// IFuzzySet the busy flag, notify the host window, recurse the slot-0x28 hook into every child
-// control, then run the slot-0x73 state-notify chain.
 // FUNCTION: IMPERIALISM 0x0048e060
 void TWindow::Close() {
   busyFlag = 0;
@@ -337,9 +313,6 @@ void TWindow::ZoomByUser(const CPoint& point, short partCode) {
   }
 }
 
-// Object teardown: destroy/notify the host CMcWindow, free all child controls, detach from
-// the owner, hand off the target slot, release the linked resource-owner target, then delete
-// self. Uses the real MFC CWnd/CObject surface (IsKindOf/AssertValid/dtor) directly.
 // FUNCTION: IMPERIALISM 0x0048e2a0
 void TWindow::Free() {
   CWnd* window = nativeWindow50;

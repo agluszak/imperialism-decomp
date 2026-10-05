@@ -1,8 +1,6 @@
 #include "game/gfx/TResourceMgr.h"
 #include <new.h>
 #include <ctype.h>
-// The retail body emits `CALL _isdigit`; undo the <ctype.h> macro so the function-call
-// form is used (the macro would inline the __pctype test and drop the call).
 #undef isdigit
 
 #include "game/globals/global_types.h"
@@ -19,9 +17,6 @@ struct LockedPaletteResourceHeader {
   void* lockedEntries;
 };
 
-// Both embedded CMap members default-construct (hash size 17, block size 10); the leading
-// m_dibPalette is zeroed first (declaration order), matching the original's [obj]=0 then map A,
-// map B init sequence.
 // FUNCTION: IMPERIALISM 0x00498f60
 TResourceMgr::TResourceMgr() : m_dibPalette(0) {
   m_primaryModule = 0;
@@ -72,8 +67,6 @@ BOOL TResourceMgr::LoadModuleLibrarySlotWithErrorDialog(LPCSTR path, int slot) {
   }
   m_slots[slot] = LoadLibraryExA(path, NULL, LOAD_LIBRARY_AS_DATAFILE);
   if (m_slots[slot] == NULL) {
-    // The original inlines the error path here; the local CString is what gives this
-    // function its SEH frame.
     CString message;
     message.Format(s_MissingRequiredFileFormat_00695188, static_cast<LPCTSTR>(path));
     AfxMessageBox(static_cast<LPCTSTR>(message), MB_OK, 0);
@@ -106,8 +99,6 @@ int TResourceMgr::LoadUiStringResourceById(CString* out, unsigned int stringId) 
   return 1;
 }
 
-// (group * 100 + index) from the primary data module. On load failure falls back to the
-// shared empty string. Resource id = group*100 + index matches LoadStringA's id arithmetic.
 // FUNCTION: IMPERIALISM 0x004994c0
 int TResourceMgr::LoadUiStringResourceByGroupAndIndex(CString* out, int group, int index) {
   LPSTR buffer = out->GetBuffer(0x100);
@@ -263,13 +254,6 @@ void TResourceMgr::RetainOrRegisterObject(short id, CObject* object) {
   m_recordsByObject.SetAt(object, record);
 }
 
-// Retail receives a genuine short: all three callers write only the low half of the
-// argument register before pushing it. TPicture resource loading registers every
-// non-negative id in m_recordsByResourceId before a picture can be copied, so those callers cannot
-// reach the miss path. The lookup result is therefore intentionally ignored: on the
-// impossible miss path the local remains uninitialized, and VC5 reuses the argument
-// slot for it. That explains the retail full-slot load without inventing a pointer-or-id
-// source API.
 // FUNCTION: IMPERIALISM 0x0049a0b0
 void TResourceMgr::IncrementRecordRefCountById(short id) {
   CacheRecord* record;
@@ -337,8 +321,6 @@ CString TResourceMgr::LoadLocalizedStringByPackedGroupAndIndex(unsigned int pack
   return result;
 }
 
-// Ghidra attributed this to TToolBarCluster, but the +0x4c receiver field is the module
-// cache's m_primaryModule and matches the packed-argument sibling immediately above.
 // FUNCTION: IMPERIALISM 0x0049a6c0
 CString TResourceMgr::LoadLocalizedStringByGroupAndIndex(int group, int index) {
   CString result;
@@ -352,10 +334,6 @@ CString TResourceMgr::LoadLocalizedStringByGroupAndIndex(int group, int index) {
   return result;
 }
 
-// Loads a localized template string by packed group/index from `cache`, then expands each
-// `[N]` escape (N a single ASCII digit) by resolving the N-th trailing packed-id argument
-// (counting from `templateId`: [0] = templateId, [1] = first vararg) through the same cache
-// and appending the localized result. Non-digit bracket groups are skipped through ']'.
 // FUNCTION: IMPERIALISM 0x0049a910
 CString* renderTemplateOrExpandTokens(TResourceMgr* cache, CString* out, unsigned int templateId,
                                       ...) {
@@ -452,9 +430,6 @@ BOOL TResourceMgr::LoadPaletteResource(CPalette* palette, unsigned long resource
   return LoadPaletteResourceByName(palette, resourceName);
 }
 
-// Windows COLORREF values with the PALETTEINDEX marker (0x01 in the high byte) name an
-// entry in the shared DIB palette. Native edit controls need an RGB-bearing palette color,
-// so resolve that entry and return PALETTERGB; ordinary COLORREF values pass through.
 // FUNCTION: IMPERIALISM 0x0049ace0
 COLORREF TResourceMgr::ResolvePaletteIndexColor(unsigned int packedColor) {
   if (m_dibPalette != NULL && (packedColor & 0xff000000) == 0x01000000) {

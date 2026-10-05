@@ -16,8 +16,6 @@ public:
   short glyph90;
   short timingWord92;
 
-  // Inline so derived ctors reproduce the original's direct TPicture::TPicture call
-  // with the timingWord92 seed folded in (e.g. TOnOffRadioButton 0x5719f0).
   // FUNCTION: IMPERIALISM 0x005707f0
   TPictureButton() : TPicture(), timingWord92(7000) {}
 };

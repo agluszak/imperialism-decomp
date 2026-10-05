@@ -24,9 +24,6 @@ void TAnimation::IAnimation(TView* ownerViewArg, RECT* rect, short frameCountArg
   registryTag = tag;
 }
 
-// Per-tick frame flip: on every ticksPerFrame-th tick, invalidate the marker rect
-// and advance/wrap the frame index (the old WrapperFor_InvalidateCityDialogRectRegion
-// name was junk).
 // FUNCTION: IMPERIALISM 0x0049f140
 void TAnimation::Tick() {
   ticksSinceFrameChange = ticksSinceFrameChange + 1;
@@ -71,8 +68,6 @@ void TAnimation::DrawNextFrame(POINT* offset) {
   UpdatePaletteIndexWithDefaultFallback(0x13);
 }
 
-// The original three-slot loader vtable ends at a null dword and has no destructor
-// slot; listing 0x0049f2d0 inlines this exact-type non-virtual destructor.
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 // FUNCTION: IMPERIALISM 0x0049f2d0
 void TAnimation::LoadFrameIntoBuffer() {

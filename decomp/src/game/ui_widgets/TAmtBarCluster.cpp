@@ -27,8 +27,6 @@ TAmtBarCluster::~TAmtBarCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00586d60
 void TAmtBarCluster::DoPostCreate(int styleSeed) {
-  // 'move' is a TNumberText (UI factory: new TNumberText() for tag 'move'); slots
-  // 0x6d/0x71 are TNumberText-hierarchy virtuals past TAmtBar's extent.
   TNumberText* moveControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagMove));
   TextStyle styleDescriptor = {0, 0, 0, 0};
   if (moveControl != 0) {

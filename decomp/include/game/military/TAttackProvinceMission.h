@@ -2,8 +2,6 @@
 
 #include "game/military/TArmyMission.h"
 
-// Mac: TAttackProvinceMission — army mission that masses/attacks a target
-// province. Base of TInvadeMission (which adds a TBeachheadMission child).
 // VTABLE: IMPERIALISM 0x0065adf8
 class TAttackProvinceMission : public TArmyMission {
   DECLARE_SERIAL(TAttackProvinceMission)

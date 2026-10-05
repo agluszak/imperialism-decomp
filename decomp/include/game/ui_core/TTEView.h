@@ -19,27 +19,11 @@ public:
   void SetOneStyle(short start, short end, short styleMask, const TextStyle& style,
                    bool refreshNow);
   void StuffTERects(const CRect& textRect);
-  // Measures the wrapped text height produced by DrawText(DT_CALCRECT) inside the
-  // inset content rectangle. The original returns bounds.bottom - bounds.top.
   int MeasureCurrentTextHeightInLayoutRect();
-  // Mac-style second-phase init (not the ctor — no vtable store): runs the TStaticText
-  // base init, copies the 0x68-0x74 inset rect and the packed text-style descriptor,
-  // and seeds textAlignmentCode. Args 1, 10 and 11 are never read (TDeluxeText passes
-  // 0, 0, 1).
-  // 0x486050, __thiscall, RET 0x2c.
-  // Mac oracle signature: ITEView(TDocument*, TView*, const VPoint&, const VPoint&,
-  // SizeDeterminer, SizeDeterminer, const VRect&, const TextStyle&, short,
-  // unsigned char, unsigned char). The owning document and the two trailing byte flags
-  // are recovered here; the VPoint/VRect/SizeDeterminer parameters still carry their
-  // flattened int*/RECT*/int forms across the view hierarchy.
   void ITEView(TDocument* document, TView* panel, int* offsetLayout, int* sizeLayout,
                int layoutParam5, int layoutParam6, RECT* insetRect, TextStyle* style,
                short styleWord90, unsigned char unusedB, bool unusedC);
 
-  // Original object size is 0x98 (CRuntimeClass m_nObjectSize). These three
-  // members previously sat at the head of TDeluxeText, but the RTTI sizes prove
-  // they belong here: sizeof(TTEView)=0x98 and TDeluxeText's remaining fields
-  // then land exactly on their offset-suffixed names (cursorThemeCode98 @0x98).
   bool field94;               // +0x94
   unsigned char field95;      // +0x95
   unsigned char padding96[2]; // +0x96

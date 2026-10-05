@@ -1,6 +1,4 @@
 #pragma once
-// Subsystem-owned global declarations. Definitions and address markers live in
-// src/game/core/global_data_tables.cpp.
 #include "game/globals/global_types.h"
 
 extern POINT g_ptCityInteriorMinisterModalMessage; // @ 0x6a2c18
@@ -34,8 +32,6 @@ extern short g_awEngineerFortBuildCostByLevel[5];
 // Civilian work-order rescind refund by cost class.
 extern int g_adwCivilianWorkOrderCostByClass[16];
 
-// Four requirement-resource rows for each of the nine university recruitment
-// categories. A -1 entry leaves that row empty.
 extern int g_anUniversityRequirementIdByRecruitRow[9][4];
 
 // Armory display metrics indexed by the selected TUnitOrder resource type.

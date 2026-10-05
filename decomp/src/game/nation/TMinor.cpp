@@ -33,8 +33,6 @@ TMinor::TMinor() {}
 
 // FUNCTION: IMPERIALISM 0x004e3830
 void TMinor::IMinor(NationSlot nationSlot) {
-  // Constructed and destroyed unused in the original (EH state 0) -- kept for the
-  // matching EH frame.
   CString unusedText;
   InitializeNationStateIdentityAndOwnedRegionList(nationSlot);
 
@@ -53,8 +51,6 @@ void TMinor::IMinor(NationSlot nationSlot) {
            sizeof(TMinorForeignResourceYieldByMajorNation));
   }
 
-  // Recount the need tables from the map: every non-depleted resource edge on a tile
-  // this nation owns bumps the per-type counters.
   int tileCount;
   int tileIndex = 0;
   for (tileCount = 0x1950; tileCount != 0; --tileCount) {
@@ -418,9 +414,6 @@ void TMinor::InitializeTradeStatus(void) {
   }
   needCurrentByType[7] = 2;
 
-  // Recount from the map: every resource edge on a tile this nation owns feeds the
-  // need counters; when a great power also holds the tile (secondaryOwnerNationTag),
-  // the capability-requirement level accrues to that resource and controlling power.
   int tileIndex;
   for (tileIndex = 0; static_cast<short>(tileIndex) < 0x1950; ++tileIndex) {
     if (g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04 == this->nationSlot) {
@@ -460,8 +453,6 @@ void TMinor::InitializeTradeStatus(void) {
     }
   }
 
-  // Convert the gold and gems controlled by each great power into aid pressure, scaled
-  // by the standing-score matrix and normalized by 255.
   int powerCount;
   int power = 0;
   for (powerCount = 7; powerCount != 0; --powerCount) {
@@ -952,9 +943,6 @@ void TMinor::RegainIndependence(void) {
     decodedSlot = static_cast<short>(this->encodedNationSlot - 200);
   }
   this->encodedNationSlot = -1;
-  // Ground truth dispatches slot 0x33 here (CALL [ebx+0xcc] at 0x4e5a03 ->
-  // 0x4e6040), i.e. AssimilateTroopsOf -- not the
-  // slot-0x2e display-value helper this port had been calling.
   this->AssimilateTroopsOf(decodedSlot);
   int nationSlot = 0;
   do {
@@ -1258,8 +1246,6 @@ void TMinor::DeportCiviliansIn(int provinceId, bool includeAllPolicyTargets) {
 
 // FUNCTION: IMPERIALISM 0x004e64a0
 void TMinor::LoseProvince(int regionId) {
-  // The original dereferences the list unguarded here (mov ecx,[esi+0x90] straight
-  // into mov eax,[ecx]; call [eax+0x34] at 0x4e64a9) -- the null test was ours.
   this->ownedRegionList->Delete(regionId);
   this->ClearTileActivityOverlayByProvinceId(regionId);
   this->KillEnemyCiviliansIn(regionId);

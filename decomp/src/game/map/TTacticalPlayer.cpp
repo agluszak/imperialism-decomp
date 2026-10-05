@@ -11,8 +11,6 @@
 // FUNCTION: IMPERIALISM 0x0059ad70
 void TTacticalPlayer::StartBattle() {}
 
-// True no-op in the original (bare ret); TArmyPlayer's override is the per-tick
-// battle pump.
 // FUNCTION: IMPERIALISM 0x0059ad90
 void TTacticalPlayer::NextMove() {}
 
@@ -92,8 +90,6 @@ void TTacticalPlayer::RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) {
   }
 }
 
-// Takes over a unit from the other side: prepends it to this side's list and flips
-// its side marker.
 // FUNCTION: IMPERIALISM 0x0059afe0
 void TTacticalPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
   unitList4->listState.AddHead(unit);
@@ -105,8 +101,6 @@ bool TTacticalPlayer::IsTacticalControllerOwnedByActiveNation() {
   return nationIndex1C == g_pSimMgr->GetPlayerCountry();
 }
 
-// "skip" tactical command: unless the selected unit's type category is 8, mark this side and
-// queue the end-of-action turn event on the battle.
 // FUNCTION: IMPERIALISM 0x0059b040
 void TTacticalPlayer::HandleTacticalCommandTag_skip() {
   if (g_awTacticalUnitCategoryCodeBySlot[battle14->selectedUnit1c->unitTypeC] != 8) {

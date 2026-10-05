@@ -3,9 +3,6 @@
 #include "game/gfx/CDib.h"
 #include "game/mfc.h"
 
-// Temporary loading/backdrop CWnd subclass created during CMainFrame::OnCreate.
-// It is a CWnd-sized object plus one cached bitmap handle at +0x3c.
-//
 // VTABLE: IMPERIALISM 0x0064bca8
 class TBackdropWindow : public CWnd {
   DECLARE_MESSAGE_MAP()

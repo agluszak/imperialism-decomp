@@ -111,8 +111,6 @@ TMapOrderChildLinkNode* TMapOrderChildLinkNode::PruneDefeatedMapOrderChildrenAnd
       head->payload->Free();
       head = head->DeleteMapOrderChildLinkAndReturnNext();
     } else {
-      // Surviving head: recursively prune the tail (nodes unlink themselves, so
-      // the head stays valid) and return it.
       head->next->PruneDefeatedMapOrderChildrenAndReturnHead();
       return head;
     }

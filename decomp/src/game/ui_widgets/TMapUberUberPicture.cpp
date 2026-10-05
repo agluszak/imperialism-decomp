@@ -4,8 +4,6 @@
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
-// Out of line: the original's InitializeTacticalBattleViewToolbarAndDialogControls
-// (0x0045bec1) CALLs this rather than inlining it.
 // FUNCTION: IMPERIALISM 0x0045d270
 TMapUberUberPicture::TMapUberUberPicture() : TOffLimitsPicture() {}
 
@@ -19,16 +17,12 @@ TMapUberUberPicture::~TMapUberUberPicture() {}
 
 IMPLEMENT_DYNCREATE(TMapUberUberPicture, TOffLimitsPicture)
 
-// Slot 0x37 override: runs the base picture hook, then registers this picture as the app
-// root's viewport edge-scroll target (read by TAmbitApplication::HandleCursor).
 // FUNCTION: IMPERIALISM 0x00596810
 void TMapUberUberPicture::DoPostCreate(int arg) {
   TOffLimitsPicture::DoPostCreate(arg);
   g_pAmbitApplication->edgeScrollTarget = this;
 }
 
-// Detach from the app root's edge-scroll/active-content backrefs before the shared
-// clip-region teardown in TOffLimitsPicture::Free (0x596840 tail-jumps to 0x573900).
 // FUNCTION: IMPERIALISM 0x00596840
 void TMapUberUberPicture::Free() {
   g_pAmbitApplication->edgeScrollTarget = 0;

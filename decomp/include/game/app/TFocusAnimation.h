@@ -6,8 +6,6 @@
 
 class TView;
 
-// Focus-animation helper object
-// completion callback at slot 0x14 (index 5 of subclass, slot 13 in vtable).
 // VTABLE: IMPERIALISM 0x0064c450
 class TFocusAnimation : public TAnimation {
   DECLARE_DYNCREATE(TFocusAnimation)

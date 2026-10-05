@@ -27,9 +27,6 @@ void TNumberedItem::INumberedItem(TView* panel, int* position, int* size,
   badgeCount = count;
 }
 
-// Draws the numbered badge background (row iconRowIndex of a shared icon strip)
-// then the badge count as decimal text, positioned to clear more digits' worth of
-// space as the count grows past 1/2/3 digits.
 // FUNCTION: IMPERIALISM 0x005078a0
 void TNumberedItem::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws

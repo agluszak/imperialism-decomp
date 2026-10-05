@@ -51,15 +51,8 @@ void TShipyardView::Free() {
   }
 }
 
-// Rebuilds the 8-slot ship-build queue UI: caches the strategic-map view system's
-// active-view pointer and a bitmap surface for resource id 0x264f, then for each of
-// eight 'but0'-'but7' queue-slot buttons clears its cached value and resets the
-// button, its paired 'clu0'-'clu7' quantity cluster, and the cluster's embedded
-// 'plus'/'minu' stepper controls to the disabled/off state.
 // FUNCTION: IMPERIALISM 0x004c8390
 void TShipyardView::DoStartup() {
-  // 14-byte style buffer: the 10-byte descriptor plus 4 explicitly zeroed tail bytes.
-  // Retail clears the tail at function entry and reuses the same descriptor throughout.
   struct {
     TextStyle desc;
     unsigned char tail[4];
@@ -172,9 +165,6 @@ void TShipyardView::DoStartup() {
   SetShip(buildQueueSlotValues[0]);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
-  // 'sele' is a TCluster (confirmed by cross-referencing turn_event_dialog_factory.cpp,
-  // which builds a real TCluster with controlTag 'sele'); byte 0x1c8 matches
-  // TCluster::SetSelectedChildTagAndRefresh(int) exactly (1 arg, RET 4).
   TCluster* sele = static_cast<TCluster*>(ResolveControlByTag(kControlTagSele)); // 'sele'
   sele->AssertValid();
   sele->SetSelectedChildTagAndRefresh(kControlTagBut0); // 'but0'
@@ -294,15 +284,6 @@ void TShipyardView::SetShip(short shipType) {
   SetGlobalBlitTransparentColorRaw(savedBackgroundColor);
 }
 
-// Draws two dialog sections, each gated by whether it intersects the passed-in
-// paint rect (SectRect): (1) the "commodities in production" icon strip -- up to 4
-// commoditySpriteIds slots, each blitting the resource icon twice (rows at y=0x98 and
-// y=0xcc) plus the required amount and the current stock (colored red when short); and
-// (2) the selected resource's 6-column requirement metrics grid, each column a
-// GetString(0x2736) header over a resource-descriptor-derived value. The original only
-// initializes header-Y slots 2-5 and metric-3 values for the thirteen valid ship-type
-// ids below; this source preserves that literal stack shape instead of inventing values
-// for the three unused ids.
 // FUNCTION: IMPERIALISM 0x004c9150
 void TShipyardView::Draw(RECT* rectBuffer) {
   CString text;

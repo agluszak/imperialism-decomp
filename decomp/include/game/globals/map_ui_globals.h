@@ -1,21 +1,13 @@
 #pragma once
-// Subsystem-owned global declarations. Definitions and address markers live in
-// src/game/core/global_data_tables.cpp.
 #include "game/globals/global_types.h"
 
-// Map-dialog viewport width in tiles (0x51ac40 centers on a tile by column - span/2).
-// int, not short: 0x51adf0 reads the full dword; word readers use static_cast<short>.
 extern int g_wMapDialogViewportTileSpan; // 0x6a33b0
 
 // Most recently clicked strategic-map tile.
 extern int g_lastClickedMapTileIndex_006a4608;
 
-// Scratch remap from pre-existing city-region id to compact id. The load-map form of
-// TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders clears all 256 entries to -1 before populating it.
 extern int g_cityRegionIdRemapTable_006a3498[0x100];
 
-// Coarse 27x15 region-grid neighbour deltas. These are a second set of the same
-// offset-coordinate hex directions used by TMapMaker::GetAdjacentRegionGridCell.
 extern const int g_coarseHexColOffsetEvenRow_00697498[6];
 
 extern const int g_coarseHexRowOffset_006974b0[6];
@@ -42,13 +34,9 @@ extern TQuickDrawSurfaceContext* g_pCitySiteCachedPrimaryRenderSurfaceContext;
 // Counts strategic-map tile cache misses serviced by TMapDialog::Draw.
 extern short g_MapTileCacheMissCount6A3454;
 
-// The strategic map and city-site view keep separate six-neighbor highlight sets. Each
-// entry is a map tile index or -1; each paint pass restores its own previous cells.
 extern short g_aStrategicMapNeighborHighlightTiles_00697310[6];
 extern short g_aCitySiteNeighborHighlightTiles_00697320[6];
 
-// Strategic-map preview cursor and the two half-cell parity remainders maintained while
-// converting its point into a viewport cell.
 extern CPoint g_MapInteractionPreviewPoint_006a3370;
 
 extern int g_MapInteractionPreviewRowParity_006a33b4;
@@ -63,14 +51,10 @@ extern double g_MapPreviewScaleY6A33D0;
 
 extern short g_MapPreviewVerticalOffset6A3448;
 
-// Strategic-map screen-coordinate conversion scales (1/64). MSVC500 emits their
-// dynamic initializers at 0x519910/0x519940, matching the original BSS-backed globals.
 extern double g_mapCellRowScale_006a3360;
 
 extern double g_mapCellColumnScale_006a3388;
 
-// Map-projection origin scales and the seam column. The retail BSS values are dynamically
-// initialized to 1/64, 1/64, and 9 at 0x50e230/0x50e260/0x50e290.
 extern double g_mapProjectionColumnScale_006a32f8;
 extern double g_mapProjectionRowScale_006a3320;
 extern short g_mapProjectionSeamColumn_006a3348;

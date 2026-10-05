@@ -33,11 +33,7 @@ public:
   char HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
   void UpdateCoordinates() override;
   void SetJustification(short alignmentCode, bool refreshFlag) override;
-  // Third param is pushed by callers (e.g. SelectOwner) but unused by this
-  // body — kept to match the real 3-stack-arg thiscall (confirmed by `ret 0xc`).
   virtual void SetEditSelectionAndScrollCaret(short selStart, short selEnd, int unusedFlag);
-  // Returns the control's current text: the live edit window's text if the
-  // control is active, otherwise the cached `text` CString. (0x490c70)
   virtual void GetCurrentText(CString* out);
   virtual void InitDialogWindowAndSyncTitleIfChanged(CString* newText, int refreshFlag);
 
@@ -45,8 +41,6 @@ public:
   void IEditText(TView* panel, int* offsetLayout, int* sizeLayout,
                  short maximumCharacterCount); // 0x004905e0
 
-  // Dead COMDAT helper: CopyViewStateFromSource plus the three TEditText fields.
-  // TNumberText::ShallowClone carries the same sequence inline. 0x00491260.
   void CopyEditTextStateFromSource(TEditText* source);
 };
 ASSERT_SIZE(TEditText, 0xa0);

@@ -31,8 +31,6 @@ static BOOL FAR PASCAL ForwardEnumSessionToCallbackTable(LPGUID sessionGuid, LPS
   return mgr->OnEnumerateServiceProvider(sessionGuid, sessionName, majorVersion, minorVersion);
 }
 
-// Dead callback trampoline (no live callers): forwards a 4-argument DirectPlay
-// notification to the manager's slot-1 virtual, OnDirectPlayAssertion111.
 // FUNCTION: IMPERIALISM 0x0047f840
 BOOL FAR PASCAL ForwardDirectPlayAssertionToManager(void* arg1, void* arg2, void* arg3, void* arg4,
                                                     LPVOID context) {
@@ -40,16 +38,12 @@ BOOL FAR PASCAL ForwardDirectPlayAssertionToManager(void* arg1, void* arg2, void
   return manager->OnDirectPlayAssertion111(arg1, arg2, arg3, arg4);
 }
 
-// IDirectPlay2::EnumSessions callback: DPESC_TIMEDOUT asks the manager whether to keep
-// waiting, anything else is a real session offer.
 // FUNCTION: IMPERIALISM 0x0047f870
 static BOOL FAR PASCAL ForwardEnumSessionsToSessionManager(const DPSESSIONDESC2* sessionDescription,
                                                            DWORD* timeout, DWORD flags,
                                                            LPVOID context) {
   TDirectPlaySessionManagerBase* manager = static_cast<TDirectPlaySessionManagerBase*>(context);
   if ((flags & DPESC_TIMEDOUT) != 0) {
-    // 0x0047f883 dispatches slot 6 (byte 0x18), not slot 5 (byte 0x14): on timeout the
-    // callback extends the wait while Ctrl is held rather than returning FALSE outright.
     return manager->ExtendEnumSessionsTimeoutWhileCtrlHeld(timeout);
   }
   return manager->OnEnumerateJoinableSession(sessionDescription, timeout, flags);
@@ -352,9 +346,6 @@ int TWNetSessionManager::TrySendNetworkPacket(int nationId, void* packet, unsign
   return 0;
 }
 
-// Pulls the next pending DirectPlay message into *bufferHandle, growing the GlobalAlloc
-// buffer until IDirectPlay2::Receive stops reporting DPERR_BUFFERTOOSMALL.
-// DPERR_NOMESSAGES ends the loop without a message.
 // FUNCTION: IMPERIALISM 0x004808a0
 int TWNetSessionManager::TryReceiveNetworkPacketIntoResizableBuffer(DWORD* fromId, DWORD* toId,
                                                                     void** bufferHandle) {

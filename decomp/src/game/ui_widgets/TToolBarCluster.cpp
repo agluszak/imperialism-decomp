@@ -33,10 +33,6 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// Resolves the turn-event dialog node for message context 0x102c (the "capabilities" dialog),
-// computes its placement, and refreshes it. Standalone helper (no `this`) -- matches the
-// original's own free-function shape. Defined below at its real address (0x5dc560), after
-// this class's own methods.
 void DispatchUiRuntimeMessage102CAndRefreshActiveView();
 
 IMPLEMENT_DYNCREATE(TToolBarCluster, TCluster)
@@ -140,9 +136,6 @@ void TToolBarCluster::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint
       FailNilPointerInUSmallViews(0x409);
     }
 
-    // Hover bucket over the toolbar's 3x2 civilian-panel grid: rows at y in
-    // (0xbe,0x100)/(0x100,0x141)/(0x141,0x183), columns split at x == 0x3f. The
-    // bucket only gates the hover-help lookup; the string is the same for all six.
     int y = point->y;
     if (y > 0xbe && y < 0x183) {
       int x = point->x;
@@ -298,9 +291,6 @@ void TToolBarCluster::AddInfoBehaviors() {
 
 // FUNCTION: IMPERIALISM 0x00585ba0
 void TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(short nationId) {
-  // 'trea' tag: the active nation's treasury balance, only when the slot is eligible
-  // for event processing (matches TSimMgr::ReallyInTheGame's
-  // major-slot/profile-band gate).
   CString treaText;
   if (g_pSimMgr->ReallyInTheGame(nationId)) {
     g_pSimMgr->NumToCurrency(g_apNationStates[nationId]->treasuryValue10, &treaText);
@@ -323,8 +313,6 @@ void TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(short nati
     return;
   }
 
-  // 'forc' tag: pending city-action-gate unit cost (present on the tactical/army
-  // toolbar variant instead of 'seas'), expanded through the localized "[0]" template.
   TView* forcControl = this->ResolveControlByTag(kControlTagForc); // 'forc'
   if (forcControl == nullptr) {
     return;
@@ -346,22 +334,12 @@ void TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(short nati
 
 // FUNCTION: IMPERIALISM 0x00585ee0
 void TToolBarCluster::SehCleanup_ReleaseTwoTempSharedStringRefs(int unusedArg) {
-  // Ground truth (RET 0x4) has one stack arg, never read by the body, and no
-  // meaningful return value tracked (no AL write before return) -- the whole body
-  // is two default-constructed CString locals immediately going out of scope, i.e.
-  // an SEH cleanup shell with no real logic.
   (void)unusedArg;
   CString unused1;
   CString unused2;
 }
 // FUNCTION: IMPERIALISM 0x005dc560
 void DispatchUiRuntimeMessage102CAndRefreshActiveView() {
-  // Turn-event dialog roots resolved by message context are TWindow-derived popups (several
-  // other ResolveTurnEventDialogNodeByMessageContext callers already cast to TWindow*, e.g.
-  // TLanguageMgr.cpp/TViewMgr.cpp) -- confirmed here by arity: TWindow::
-  // ExecuteViewModalStateWithPushPopChain() takes zero args, matching this callsite's bare
-  // `call [edi+0x1ac]` exactly, whereas the byte-coincident TControl::NoOpUiViewSlotHandler
-  // takes two.
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFlagButton));
   if (node == nullptr) {
@@ -376,8 +354,6 @@ void DispatchUiRuntimeMessage102CAndRefreshActiveView() {
   node->Free();
 }
 
-// Dead turn-event dialog helper (no live callers): poses the game-preferences dialog
-// resolved through the factory registry, then closes and frees it.
 // FUNCTION: IMPERIALISM 0x005dc600
 void PoseGamePreferencesDialogModally() {
   TWindow* node =

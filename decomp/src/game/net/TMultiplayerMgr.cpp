@@ -34,8 +34,6 @@
 #include "game/nation/TTurnStartEvent.h"
 #include "game/ImperialismApp.h"
 
-// Turn-event-0x2c payload: composite snapshot of a nation's city production state
-// plus the population-summary scalars and metric buckets.
 struct TurnEvent2CPacket : NetMessage {
   int packetTag;                // +0x10 'time'
   unsigned char activeNationId; // +0x14
@@ -67,8 +65,6 @@ struct TurnEvent2CPacket : NetMessage {
   short popBucketWords[9]; // +0x17a - baseline/production/pendingDelta valueAt4/6/8
 }; // total 0x18c
 
-// Turn-event-0x19 payload: per-nation state arrays (city order counters, external
-// diplomacy state, slot-7C metrics, policy/grant/need-level tables).
 struct TurnEvent19Packet : NetMessage {
   int packetTag;                // +0x10 'time'
   unsigned char activeNationId; // +0x14
@@ -182,8 +178,6 @@ struct TurnEvent12Packet : NetMessage {
   short shortB;
 };
 
-// Event-0xC kick/notice text: message text plus the addressed-nations mask and the
-// kicking nation id (or -1) in the two tail bytes.
 struct TurnEventCKickMessagePacket : TimelyMessageHeader {
   char messageText18[0x100];         // +0x18
   unsigned char targetNationBitmask; // +0x118 - 1 << slot per addressed nation
@@ -201,8 +195,6 @@ struct TurnEvent11MapPokePacket : TimelyMessageHeader {
   short maskWord26;   // +0x26, total 0x28
 };
 
-// Events 0x20/0x21/0x22 receive views (the emit-side structs later in this TU pack
-// their payload at different offsets; the receive side reads +0x18..).
 struct TurnEvent20PacketM : TimelyMessageHeader {
   short eventParam18;    // +0x18
   signed char nationA1A; // +0x1a
@@ -438,14 +430,6 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
   g_pNetMgr006a6014->Send(&packet, false);
 }
 
-// Re-broadcast the game-state snapshot family for the synchronized phase. StartGame
-// pushes the full session bootstrap (relation-matrix sync, nation directory, per-capital
-// tile/city records, navy/terrain/nation descriptor dispatches, per-nation state arrays,
-// minor need levels); EndTurn probes reachability (autosaving when everyone is reachable)
-// then sends the diplomacy policy/grant/need arrays; Diplomacy posts the 'NeXT' command;
-// CityAndTransport re-sends the per-nation state arrays; Combat and Production re-sync
-// descriptors plus the 'army' payload and per-nation need snapshots. Every path except
-// Diplomacy ends with the event-3 tick acknowledge.
 // FUNCTION: IMPERIALISM 0x00543910
 void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
   switch (syncPhase) {
@@ -678,18 +662,12 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
   }
 }
 
-// Receive path for turn events 0x28 and 0x2E..0x32. The 0x1c-byte timely header is
-// pre-stamped ('time' + active nation) and then immediately overwritten by the stream
-// read -- original behavior, kept as-is; the switch keys on the streamed event code and
-// the acting nation comes from the streamed header (-1 during session teardown).
 IMPERIALISM_BEGIN_RETAIL_POLYMORPHIC_BYTE_COPY
 // FUNCTION: IMPERIALISM 0x00545940
 unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet) {
   TurnEvent1PendingMaskPacket pendingMaskPacket;
   switch (packet->eventCode) {
   case 0xf: {
-    // IFuzzySet the acknowledging nation's pending bit; when hosting, re-broadcast the mask
-    // and flush the latched event code once the mask drains.
     TurnEventFResumeAckPacket* ack = static_cast<TurnEventFResumeAckPacket*>(packet);
     pendingNationBitmask &= ~(1 << (char)ack->nationSlot1C);
     bool hosting = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
@@ -739,8 +717,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     }
     break;
   case 0xb: {
-    // Full nation directory: refresh each minor's home tile, city/nation names, and
-    // port-zone ordinal, then rebuild all status labels.
     TurnEventBNationDirectoryPacket* directory =
         static_cast<TurnEventBNationDirectoryPacket*>(packet);
     for (int dirSlot = 0; dirSlot < 0x17; ++dirSlot) {
@@ -769,9 +745,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     break;
   }
   case 8: {
-    // Name/session announce for one slot (or -1 probe): echo an event-9 back to the
-    // matching session, kick mismatched sessions with the localized 0x2759/2 text, and
-    // release any other slot bound to the same session ('suna' + empty-name event-9).
     TurnEvent8NameAnnouncePacket* announce8 = static_cast<TurnEvent8NameAnnouncePacket*>(packet);
     int announceSlot = announce8->nationSlot18;
     if (announceSlot == -1) {
@@ -807,8 +780,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         kick.targetNationBitmask = 0xff;
         kick.messageLength = 0;
         kick.messageLength = 0x11c;
-        // Dead second query kept for fidelity: the original re-reads the active nation
-        // here and discards the result.
         g_pSimMgr->GetPlayerCountry();
         kick.toNetworkId = announce8->fromNetworkId;
         kick.kickerNationId119 = -1;
@@ -860,10 +831,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     break;
   }
   case 9: {
-    // A session claims (or vacates) a nation slot: adopt the names/session id, restamp
-    // the status tag, refresh the lounge dialog's row, and - when hosting - retune the
-    // start button and lobby message. Slot 0xf3 asks the host to re-broadcast its own
-    // claim instead.
     LobbyChatEvent9Packet* chat = static_cast<LobbyChatEvent9Packet*>(packet);
     if (chat->nationSlot18 != 0xf3) {
       int slot9 = static_cast<char>(chat->nationSlot18);
@@ -1003,9 +970,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     break;
   }
   case 0xc: {
-    // Kick/leave notice: if the local nation is addressed, build the "[nation] kicked
-    // you" (or generic) text, run the 0x7e4 modal dialog, and on an 'rsvp' response
-    // queue a 'pose' command.
     TurnEventCKickMessagePacket* kickView = static_cast<TurnEventCKickMessagePacket*>(packet);
     int localSlot = g_pSimMgr->GetPlayerCountry();
     if (localSlot == -1) {
@@ -1116,8 +1080,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     EmitTurnEventEAnd9SessionContextPackets(packet);
     break;
   case 0xe: {
-    // Host session-init: adopt sim state/game name/scenario selection, then build the
-    // world per the scenario tag ('load'/'rand'/'scnX') and refresh the lounge.
     TurnEventESessionInitPacket* sessionInit = static_cast<TurnEventESessionInitPacket*>(packet);
     g_pSimMgr->SetDifficultyLevel(static_cast<eDifficulty>(sessionInit->difficultyLevel64));
     g_pSimMgr->useLocalizedNameTables = sessionInit->nameTableFlag;
@@ -1162,8 +1124,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     } else {
       return 1;
     }
-    // Shared tail: refresh the lounge dialog's map/message controls (the original
-    // tolerates a null lounge receiver).
     TLoungeDialog* loungeE;
     if (lobbyDialogView != 0 && lobbyDialogView->IsKindOf(RUNTIME_CLASS(TLoungeDialog)) != 0) {
       loungeE = (TLoungeDialog*)lobbyDialogView;
@@ -1174,8 +1134,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     break;
   }
   case 3: {
-    // Enter the 'goin' phase; a session with no nation slot posts the cancel command,
-    // otherwise the local nation goes 'busy' and the event-0x25 status board goes out.
     sessionPhaseTag = kSessionTagGoin; // 'goin'
     resumePhase = kGamePhaseNone;
     syncPhase = kGamePhaseNone;
@@ -1326,9 +1284,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     break;
   }
   case 0x1e: {
-    // Diplomacy relation action - 'a' applies relation code 2 (or routes through the
-    // relation-4/event-18 path), 'i' incites a third party or flips a minor's owner;
-    // always finishes by posting the 'NeXT' diplomacy command.
     TurnEvent1EDiplomacyActionPacket* action =
         static_cast<TurnEvent1EDiplomacyActionPacket*>(packet);
     if (action->actionCode1F == 'a') {
@@ -1370,8 +1325,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     break;
   }
   case 0x1a: {
-    // Clients adopt the streamed per-nation availableMerchantCapacity words before routing
-    // the decision through the UI runtime.
     TurnEvent1ANationActionPacket* nationAction =
         static_cast<TurnEvent1ANationActionPacket*>(packet);
     bool isClientSession = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
@@ -1406,8 +1359,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     break;
   }
   case 0x1c: {
-    // Dispatch the proposal amount through the trade manager; a hosting session then
-    // posts the 'NeXT' trade command.
     TurnEvent1CProposalAmountPacket* proposalAmount =
         static_cast<TurnEvent1CProposalAmountPacket*>(packet);
     g_pTradeMgr->SetDealResults(proposalAmount->ownerNation1C, proposalAmount->sourceContext,
@@ -1431,8 +1382,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     break;
   }
   case 0x15: {
-    // Receive side of EmitNationDiplomacyNeedStateSnapshotEvent15: copy the full
-    // diplomacy need-state block into the great power.
     TurnEvent15Packet* needState = static_cast<TurnEvent15Packet*>(packet);
     TGreatPower* nation15 = g_apNationStates[needState->nationSlot];
     nation15->treasuryValue10 = needState->treasuryValue;
@@ -1610,9 +1559,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   case 0x30:
   case 0x31:
   case 0x32: {
-    // Streamed-payload family: copy the raw packet into a global-memory block, wrap it
-    // in a THandleStream, and hand it to the code-switched stream reader. The
-    // save-format version global is stamped 'netX' for the deserialization.
     g_nSaveFormatVersion = kSessionTagNetX; // 'netX'
     int packetBytes = packet->messageLength;
     HGLOBAL packetMemory = GlobalAlloc(GMEM_MOVEABLE, packetBytes);
@@ -1919,9 +1865,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
            sizeof(g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix));
     memcpy(g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix, matrix->pendingPolicyTierMatrix,
            sizeof(g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix));
-    // Both records copy as whole units: the original moves the leadership pair with one
-    // 32-bit register move and the tally with a 32-bit move plus a trailing 16-bit move,
-    // which is exactly what a POD record assignment emits.
     g_pDiplomacyTurnStateManager->congressLeadership = matrix->congressLeadership;
     g_pDiplomacyTurnStateManager->congressSupport = matrix->congressSupport;
     memcpy(g_pDiplomacyTurnStateManager->comparativePowerRows, matrix->relationTailBlock,
@@ -2276,8 +2219,6 @@ struct TurnEvent1CPacket : NetMessage {
   GamePhaseStorage syncPhase;
   short shortA;
   short shortB;
-  // Ground truth stores shortD/shortE before shortC (declaration order matches the
-  // original's field offsets, not the parameter order).
   short shortD;
   short shortE;
   short shortC;
@@ -2612,8 +2553,6 @@ void TMultiplayerMgr::PublishNationDescriptorAndNotifyOrderListeners(TStream* st
 // FUNCTION: IMPERIALISM 0x0054a6d0
 void TMultiplayerMgr::CreateMilitaryRecruitOrdersForSelectedTerrain(TStream* stream,
                                                                     short nationSlot) {
-  // Stream leads with a nation letter ('a' + slot); everything below - including the
-  // count read - is skipped when it doesn't match the requested slot.
   int terrainSlot = stream->ReadByte() - 0x61; // - 'a'
   const bool terrainSelected = nationSlot == -1 || nationSlot == terrainSlot;
   if (terrainSelected) {
@@ -2638,10 +2577,6 @@ void TMultiplayerMgr::CreateMilitaryRecruitOrdersForSelectedTerrain(TStream* str
 // FUNCTION: IMPERIALISM 0x0054a840
 void TMultiplayerMgr::CreateCivilianWorkOrdersForSelectedNations(TStream* stream,
                                                                  short nationSlot) {
-  // For each of the 7 great powers: when selected, detach + free its queued civilian
-  // work orders, then (always) read this nation's order count and records from the
-  // stream, discarding freshly-read orders for non-selected nations to keep the
-  // stream cursor in sync.
   for (int nationIdx = 0; nationIdx < 7; ++nationIdx) {
     const bool nationSelected = nationSlot == -1 || nationSlot == nationIdx;
     if (g_apNationStates[nationIdx] != 0 && nationSelected) {
@@ -2666,13 +2601,6 @@ void TMultiplayerMgr::CreateCivilianWorkOrdersForSelectedNations(TStream* stream
   }
 }
 
-// Replace the nation in `nationSlot` with a freshly rolled AI (TAutoGreatPower):
-// broadcast the 'uhed' (event-0x1F) notice when hosting, deep-copy the vacating
-// nation's scalar/array state into the new object while swapping ownership of the
-// list/queue/city subobjects (the city's owner back-reference is repointed), install
-// the AI into both nation tables, re-derive war candidate flags, mark the scenario row
-// AI-controlled, and free the old object. All exits then drop the session id, tag the
-// slot 'suna', refresh status labels, and (hosting) re-broadcast the pending mask.
 // FUNCTION: IMPERIALISM 0x0054a9d0
 int TMultiplayerMgr::IsSpecialNationDialogModeActive() {
   if (sessionPhaseTag == kSessionTagGoin) {
@@ -2814,8 +2742,6 @@ void TMultiplayerMgr::RefreshPoseMessageDialogNationSelectionControls(int unused
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMultiplayerMgr_00698040, 0x1061);
   }
 
-  // MapView.rsrc view 1510's box0..box6 picts are TMadnessButtons (Mac resource oracle),
-  // so the per-box tail is TCzechBox::SetState + CheckTheLook, not an unresolved slot pair.
   for (int i = 0; i < 7; ++i) {
     TMadnessButton* boxControl =
         static_cast<TMadnessButton*>(dialog->ResolveControlByTag(kSessionTagBox0 + i));
@@ -2825,8 +2751,6 @@ void TMultiplayerMgr::RefreshPoseMessageDialogNationSelectionControls(int unused
     bool isMine =
         g_pNetMgr006a6014->GetSessionActiveNationId() == g_pGameFlowState->nationSessionIds[i];
     bool occupiedByOther = occupied && !isMine;
-    // First call dispatches TView::ViewEnable (slot 0x2a; the original calls
-    // [vtbl+0xa8]); second is TCzechBox::SetState at slot 0x75.
     static_cast<TView*>(boxControl)->ViewEnable(static_cast<int>(occupiedByOther), 0);
     if (mySlotIndex != -1) {
       boxControl->SetState(static_cast<unsigned char>(i == mySlotIndex),
@@ -3028,10 +2952,6 @@ void NationStatusEvent25Packet::InitializeNationStatusEvent25PayloadDefaults() {
   }
 }
 
-// Builds a turn-event-26 packet snapshotting g_pDiplomacyTurnStateManager's
-// relationCodeMatrix/pendingPolicyCodeMatrix/pendingPolicyTierMatrix/
-// congressLeadership/congressSupport/comparativePowerRows and sends it via
-// TNetMgr::Send.
 // FUNCTION: IMPERIALISM 0x0054bd20
 void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) {
   bool isLocalNation = nationSlot == g_pSimMgr->GetPlayerCountry();
@@ -3138,8 +3058,6 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
       oldNation->trackedObjectList = trackedObjects;
       memcpy(newNation->enemyFlags, oldNation->enemyFlags,
              sizeof(newNation->enemyFlags));
-      // Copy the complete 13-byte pending-action block; field8d5 is deliberately left at
-      // its freshly constructed value.
       memcpy(&newNation->pendingActionStatus, &oldNation->pendingActionStatus,
              sizeof(newNation->pendingActionStatus));
       memcpy(newNation->field8d6, oldNation->field8d6, sizeof(newNation->field8d6));
@@ -3256,8 +3174,6 @@ void TMultiplayerMgr::NoOpCallbackRet4(void* param) {
 // FUNCTION: IMPERIALISM 0x0054c680
 void TMultiplayerMgr::EmitTacticalCommandPacket(int commandTag, TTacticalUnit* unit, int arg3,
                                                 int arg4) {
-  // Genuinely empty in the shipped binary (bare `ret 0x10`): the multiplayer
-  // tactical-command echo was compiled out of the retail build.
   (void)commandTag;
   (void)unit;
   (void)arg3;
@@ -3268,8 +3184,6 @@ void TMultiplayerMgr::EmitTacticalCommandPacket(int commandTag, TTacticalUnit* u
 void TMultiplayerMgr::EmitTacticalFireCommandPacket(int commandTag, TTacticalUnit* attackerUnit,
                                                     TTacticalUnit* targetUnit, int damageA,
                                                     int damageB, int effectCode) {
-  // Genuinely empty in the shipped binary (bare `ret 0x18`); see
-  // EmitTacticalCommandPacket.
   (void)commandTag;
   (void)attackerUnit;
   (void)targetUnit;
@@ -3325,10 +3239,6 @@ unsigned char TMultiplayerMgr::HandleActiveNationAwolTransitionOrRecovery() {
   return 0;
 }
 
-// Emit the event-0xE session-init snapshot (scenario tag/seed, host game name, save
-// slot, sim state code) followed by seven event-9 seat-claim packets mirroring the
-// nation name/session tables; `packet`, when present, addresses both to its sender.
-// Skipped entirely before the map exists or while still in the 'prep' phase.
 // FUNCTION: IMPERIALISM 0x0054c8e0
 void TMultiplayerMgr::EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet) {
   if (g_pGlobalMapState == 0 || sessionPhaseTag == kSessionTagPrep) {
@@ -3363,8 +3273,6 @@ void TMultiplayerMgr::EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet
     strcpy(sessionInit.mapSeedText, g_pGlobalMapState->scenarioTagText);
     sessionInit.mapParamByte39 = g_pGlobalMapState->hexNeighborWrapHorizontally;
     sessionInit.saveSlotDword5C = queueSyncDword;
-    // Round-trips through the receive side's SetDifficultyLevel,
-    // which stores back into this same +0x40 field.
     sessionInit.difficultyLevel64 = static_cast<signed char>(g_pSimMgr->difficultyLevel);
     sessionInit.nameTableFlag = g_pSimMgr->useLocalizedNameTables;
     g_pNetMgr006a6014->Send(&sessionInit, false);
@@ -3608,11 +3516,6 @@ void TMultiplayerMgr::CreateAndSendTurnEvent2D_TableRowShortArray(short nationSl
   g_pNetMgr006a6014->Send(&packet, destinationSlot == -3);
 }
 
-// Probe reachability; when every nation is reachable, run the save-game driver with the
-// given mode/label. On failure (someone AWOL) optionally pose the localized "cannot
-// save" advisory (string 0x2742/0x28) as a modal message command. Returns the
-// all-reachable byte Boolean. `this` is unused; callers dispatch it on
-// g_pGameFlowState.
 // FUNCTION: IMPERIALISM 0x0054d4e0
 unsigned char TMultiplayerMgr::AttemptSave(int mode, char* label,
                                                                     bool showFailureDialog) {

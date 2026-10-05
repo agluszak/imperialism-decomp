@@ -42,9 +42,6 @@ void TOffersPanelView::DoPostCreate(int arg) {
   TextStyle sharedStyle;
   BuildUiTextStyleDescriptor(&sharedStyle, 0, 0, 0x2b68);
 
-  // 'prop'/'text' are TDeluxeText controls (see the TDeluxeText recover-class note in
-  // TSpecialQuitPicture.cpp): their vtable slots 0x1e4/0x1c4 match
-  // SetTextStyle/SetJustification exactly.
   TDeluxeText* propControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagProp));
   propControl->AssertValid();
   propControl->SetTextStyle(sharedStyle, false);
@@ -66,9 +63,6 @@ void TOffersPanelView::DoPostCreate(int arg) {
   g_pSimMgr->GetString(0x274a, 7, &rejeHint);
   SetControlHoverHelpText(rejeHint, rejectButton);
 
-  // Blanks the panel's own hover-help text (SetControlHoverHelpText's callee target
-  // decodes to the real ported SetControlHoverHelpText/TView::SetHoverHelpText, not the
-  // stale "ApplySharedStringToControlState" symbols.csv name).
   SetControlHoverHelpText(CString(), this);
 }
 
@@ -205,8 +199,6 @@ char TOffersPanelView::PoseOffer(short sourceNation, short targetNation, short o
   RefreshControl();
   ForceRedraw();
 
-  // The original blocks only for interactive offers. DoEvent writes the selected
-  // FourCC into this field when the accept/reject hotspot is activated.
   if (!isNotice) {
     lastNegotiationResponseTag = 0;
     while (lastNegotiationResponseTag == 0) {

@@ -35,10 +35,6 @@ void TTreatiesView::DoPostCreate(int arg) {
   SetControlHoverHelpText(text, this);
 }
 
-// Draws the treaties screen's header label plus 7 horizontally-centered nation
-// labels, each in a theme-0x2b68 color at +1,+1 then a theme-0x2b6b color at +0,+0
-// (the same drop-shadow idiom as TGrantsView::Draw and
-// TCouncilPanelView::Draw).
 // FUNCTION: IMPERIALISM 0x004f7c00
 void TTreatiesView::Draw(RECT* rectBuffer) {
   (void)rectBuffer;

@@ -12,16 +12,6 @@ class TStream;
 class TDealList;
 class TLongintList;
 
-// The nation-interaction / trade-metric manager. Its singleton instance is the global
-// g_pTradeMgr (0x6a43cc), allocated 0xaf0 bytes and constructed via
-// the ctor at 0x5b7a20, which installs vtable 0x66d990. Base edge (TObject) recovered from
-// the RTTI CRuntimeClass chain (TTradeMgr -> TObject -> CObject).
-//
-// This was previously conflated with TDealList: the manager's ctor/fields/metric methods
-// had been bolted onto `class TDealList : TSortedPtrList` (vtable 0x66da38, size 0x18).
-// They are two distinct classes related by COMPOSITION — TTradeMgr::categoryRankLists holds
-// TDealList instances (InitializeDefaults installs vtable 0x66da38 into each). The manager
-// half has now been detangled out into this class.
 // VTABLE: IMPERIALISM 0x0066d990
 class TTradeMgr : public TObject {
 public:
@@ -31,9 +21,6 @@ public:
   void ReadFrom(TStream* stream) override; // slot 0x06 0x5b7c10
   void Free() override;                    // slot 0x07 0x5b7bc0
 
-  // Introduced virtuals (slots 0x0a-0x22), declared in slot order so the compiler lays
-  // out vtable 0x66d990 correctly. All carry real, ported bodies (dispatches resolved to
-  // real virtuals on the recovered receiver classes).
   virtual void ResetNationMetricRowsAndClearCategoryRankLists(); // 0x0a 0x5b7fc0
   // ORACLE: Mac TTradeMgr names for the recovered Windows trade-price/deal operations.
   virtual void CalculateDealOrder();              // 0x0b 0x5b8080
@@ -85,14 +72,8 @@ public:
   // ORACLE: Mac TTradeMgr::GetMarketChange().
   int GetMarketChange(); // 0x5ba0e0
 
-  // One 0xa0-byte metric row per category, indexed from class offset 0x04. Field offsets
-  // recovered from the accessors' disassembly: `categoryRows[i].field` resolves to
-  // `this + i*0xa0 + (0x04 + struct_off)`. Row stride is 0xa0; the original VC5 layout
-  // uses 4-byte packing, placing the real double member at struct offset 0x0c.
 #pragma pack(push, 4)
   struct NationMetricCategoryRow {
-    // categoryRows[0] reuses this pair as the persistent category/entry cursor advanced by
-    // StartDeals and NextTradeDeal. The remaining category rows do not use the pair.
     short dealCategoryOrderIndex; // struct 0x00
     short dealEntryOrdinal;       // struct 0x02
     short previousPrice;          // struct 0x04
@@ -102,8 +83,6 @@ public:
     double adjustedNumOffers;     // struct 0x0c
     short amountOffered;          // struct 0x14
     short basePrice;              // struct 0x16
-    // Three contiguous nation-slot sub-rows: current offers, accumulated offers, and the
-    // running maximum used when trade offers end.
     short tradeOfferCells[(0xa0 - 0x18) / 2]; // struct 0x18..0x9f
   };
 #pragma pack(pop)

@@ -50,9 +50,6 @@ void TPowerPlantOrder::Produce() {}
 
 // FUNCTION: IMPERIALISM 0x004b7c40
 void TPowerPlantOrder::Restock() {
-  // Same quantity re-clamp as TItemOrder's slot 0x0e, minus the limitingConstraint guard: zero
-  // the pending quantity and re-drive SetQuantity with the smaller of the current
-  // derived value (field4c) and the recomputed MaxOrder() ceiling.
   short maxOrder = MaxOrder();
   short savedDerived = field4c;
   quantity = 0;

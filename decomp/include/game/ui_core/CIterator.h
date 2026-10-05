@@ -7,8 +7,6 @@
 
 class CIterator {
 public:
-  // The original ctor initializes ONLY ownerList (verified at 0x59f890, 0x5a53e0:
-  // construction is a single store; Reset() seeds nextPosition/current before use).
   CIterator(TSortedList* list) : ownerList(list) {}
 
   void* Reset();

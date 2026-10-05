@@ -31,11 +31,6 @@ bool TPortZone::QueryZoneCapabilityFlagC() {
   return false;
 }
 
-//
-// TPortZone has no members of its own to destruct, so this body is empty; the original
-// inlined TZone::~TZone's real cleanup body (0x5627a0) directly here instead of calling
-// it out-of-line, the same compiler-inlining divergence documented elsewhere this
-// session (e.g. TEscortMission::CreateObject).
 // FUNCTION: IMPERIALISM 0x005616f0
 TPortZone::~TPortZone() {}
 
@@ -105,16 +100,11 @@ void TPortZone::Free() {
   delete this;
 }
 
-// slot 0x10 — TZone::QueryZoneCapabilityFlagD override. The port belongs to nationSlot
-// when the owner tag of its tile matches; the tag is a signed byte widened to 16 bits,
-// so the compare is 16-bit (`CMP AX, word ptr [ESP+4]`), not int.
 // FUNCTION: IMPERIALISM 0x00561b10
 bool TPortZone::QueryZoneCapabilityFlagD(NationSlot nationSlot) {
   return g_pGlobalMapState->terrainStateTable[portTileIndex].ownerNationTag04 == nationSlot;
 }
 
-// slot 0x11 — TZone::QueryZoneCapabilityFlagE override. Same owner tag as slot 0x10, but
-// asks the diplomacy manager about the (owner, caller) pair instead of demanding identity.
 // FUNCTION: IMPERIALISM 0x00561b50
 bool TPortZone::QueryZoneCapabilityFlagE(NationSlot nationSlot) {
   short ownerNation = g_pGlobalMapState->terrainStateTable[portTileIndex].ownerNationTag04;
@@ -151,9 +141,6 @@ TPortZone* TPortZone::FindPreviousPortZone() {
   return static_cast<TPortZone*>(zone);
 }
 
-// slot 0x12 — TZone::CanBeTargetOf override. Keeps the base's distance-level
-// test, then rejects the force's own location and accepts the port only when the force's
-// nation owns it or the diplomacy manager relates the pair.
 // FUNCTION: IMPERIALISM 0x00561dc0
 bool TPortZone::CanBeTargetOf(TTaskForce* force) {
   bool zoneActive = distanceLevel > 0;

@@ -44,9 +44,6 @@ void TRelationshipDialog::Close() {
   TView::Close();
 }
 
-// Mac oracle: StuffValues(). Fills the 7x7 relation-standing matrix cells (value +
-// state for pairs below the diagonal, disabled otherwise) and pushes each nation's
-// label into the matching 'nam0'..'nam6' slots of the 'hori'/'vert' name strips.
 // FUNCTION: IMPERIALISM 0x005b2f10
 void TRelationshipDialog::StuffValues() {
   CString label;

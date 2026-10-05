@@ -67,10 +67,6 @@ int PtInRgn(CPoint* point, RgnHandle rgn) {
   return ::PtInRegion(static_cast<HRGN>((*rgn)->rgn.m_hObject), point->x, point->y);
 }
 
-// QuickDraw MapPt: rescale a point from `srcRect`'s coordinate space into `dstRect`'s,
-// independently on each axis. The original copies each rect into a local before reading
-// its extent (and swaps which local holds which rect between the two axes); that shape is
-// kept so the two CopyRect pairs line up with the original.
 // FUNCTION: IMPERIALISM 0x004956e0
 void MapPt(int* point, RECT* srcRect, RECT* dstRect) {
   RECT scratchA;
@@ -83,8 +79,6 @@ void MapPt(int* point, RECT* srcRect, RECT* dstRect) {
   point[1] = ((scratchB.bottom - scratchB.top) * point[1]) / (scratchA.bottom - scratchA.top);
 }
 
-// Byte-identical second copy of MapPt that the linker did not fold (the retail image keeps
-// both). Same contract as MapPt above.
 // FUNCTION: IMPERIALISM 0x00495780
 void MapPtSecondCopy(int* point, RECT* srcRect, RECT* dstRect) {
   RECT scratchA;
@@ -114,12 +108,8 @@ void RectRgn(RgnHandle rgn, RECT* rect) {
   region->attachRegistered = region->rgn.Attach(::CreateRectRgnIndirect(rect));
 }
 
-// GetClip: read the current clip into the handle — start from the cached global
-// clip region, then let the real DC clip (or a CPaintDC's paint rect) win.
 // FUNCTION: IMPERIALISM 0x00495920
 void GetClip(RgnHandle rgn) {
-  // Reads the static-initialized global (0x494040 CRT init sets it) directly; GetSafeHandle
-  // on the possibly-null pointer reproduces the original's inline `test/je/[+4]` null-guard.
   ::CombineRgn(static_cast<HRGN>((*rgn)->rgn.m_hObject),
                static_cast<HRGN>(g_pGlobalClipRegionHandleObject->GetSafeHandle()), 0, RGN_COPY);
   CDC* dc = g_pQuickDrawMemoryDc;
@@ -142,14 +132,8 @@ void GetClip(RgnHandle rgn) {
   }
 }
 
-// SetClip: copy the handle's region into the cached global clip region. The
-// source is read through CRgn::operator HRGN, whose this==NULL check absorbs the
-// "nil region" sentinel some callers store in a handle (a Region* placed so that
-// &(*rgn)->rgn == NULL).
 // FUNCTION: IMPERIALISM 0x00495a30
 void SetClip(RgnHandle rgn) {
-  // Direct read of the static-initialized global (no null-guard on it, matching the
-  // original -- the 0x494040 CRT init guarantees it is set before any SetClip call).
   CRgn* sourceRegion = &(*rgn)->rgn;
   if (sourceRegion == 0) {
     ::CombineRgn(static_cast<HRGN>(g_pGlobalClipRegionHandleObject->m_hObject), 0, 0, RGN_COPY);
@@ -159,8 +143,6 @@ void SetClip(RgnHandle rgn) {
                static_cast<HRGN>(*sourceRegion), 0, RGN_COPY);
 }
 
-// ClipRect: vestigial in the Windows port — builds a rect region and immediately
-// destroys it (only the UI-active gate survives from the Mac semantics).
 // FUNCTION: IMPERIALISM 0x00495a80
 void ClipRect(RECT* rect) {
   if (GetMcAppUiActiveFlag()) {
@@ -180,8 +162,6 @@ void DisposeTemporaryRegionCache(void) {
   g_pTemporaryRegionCache = 0;
 }
 
-// The retail combine body expands this predicate at each decision point. A public
-// out-of-line EmptyRgn remains below for callers in other translation units.
 inline unsigned char IsRgnEmptyForCombine(RgnHandle rgn) {
   unsigned char empty;
   if (rgn == NULL) {
@@ -211,8 +191,6 @@ inline void SetEmptyRgnForCombine(RgnHandle rgn) {
   ::GetRgnBox(static_cast<HRGN>(boundsOwner->rgn.m_hObject), &boundsOwner->rgnBBox);
 }
 
-// Combine two source clip regions into `dst`: both empty creates an empty destination,
-// exactly one empty copies the other, and two non-empty regions use RGN_DIFF.
 // FUNCTION: IMPERIALISM 0x00497540
 void CombineClipRegionsWithEmptyHandling(RgnHandle srcA, RgnHandle srcB, RgnHandle dst) {
   if (IsRgnEmptyForCombine(srcA) && IsRgnEmptyForCombine(srcB)) {
@@ -309,8 +287,6 @@ void CopyRgn(RgnHandle src, RgnHandle dst) {
   ::GetRgnBox(static_cast<HRGN>((*dst)->rgn.m_hObject), &(*dst)->rgnBBox);
 }
 
-// Convert the surface's non-transparent pixel area into the region (the Mac
-// BitMapToRegion role in this engine's sprite pipeline).
 // FUNCTION: IMPERIALISM 0x00497ef0
 int BitMapToRegion(RgnHandle rgn, TBitmapSurfaceNode* surface) {
   POINT* polygonPoints = surface->dib->BuildNonTransparentOutlinePolygon(0xffffffff);
@@ -321,8 +297,6 @@ int BitMapToRegion(RgnHandle rgn, TBitmapSurfaceNode* surface) {
   return attached;
 }
 
-// OpenRgn/CloseRgn: region recording. QDFrameRect XORs framed rects into the
-// accumulator while a recording is open; CloseRgn copies it into the handle.
 // FUNCTION: IMPERIALISM 0x00497f60
 void OpenRgn(void) {
   g_hOpenRgnAccumulator = ::CreateRectRgn(0, 0, 0, 0);
@@ -488,8 +462,6 @@ int ProbeRectEmptyAfterCopyToLocal(RECT* rect) {
   return IsRectEmpty(&localRect);
 }
 
-// Reorder-wrapper over the Win32 IntersectRect, matching the Mac SectRect
-// argument order (src1, src2, dst).
 // FUNCTION: IMPERIALISM 0x00498bb0
 int SectRect(RECT* src1, RECT* src2, RECT* dst) {
   return IntersectRect(dst, src1, src2);
@@ -500,8 +472,6 @@ void SetRectRgn(RgnHandle rgn, short left, short top, short right, short bottom)
   (*rgn)->rgn.Attach(::CreateRectRgn(left, top, right, bottom));
 }
 
-// The Windows compatibility layer did not implement QuickDraw EqualRgn: it reports the
-// source assertion and returns false without inspecting either region.
 // FUNCTION: IMPERIALISM 0x00498c30
 unsigned char EqualRgn(RgnHandle first, RgnHandle second) {
   (void)first;

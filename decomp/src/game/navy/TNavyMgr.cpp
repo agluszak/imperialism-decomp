@@ -34,15 +34,10 @@
 #include "game/military/mapped_flavor_text.h"
 #include "game/map_order_battle_snapshot.h"
 
-// 0x00563360 -- __stdcall free resolver (defined in TMapMgr.cpp); used by the
-// reattributed DoTileClick below.
 Province* __stdcall GetProvinceByTileIndex(short nTileIndex);
 
 namespace {
 
-// Shared by BuildMapOrderBattleSideSnapshot's two fixed-size name/label copies and its
-// per-child name copy: copies up to destSize-1 chars of `src` into `dest`, stopping at
-// the first NUL (matching the original's own byte-at-a-time copy loop).
 static inline void CopyCStringIntoFixedBuffer(char* dest, int destSize, const char* src) {
   int i = 0;
   for (; i < destSize; ++i) {
@@ -102,9 +97,6 @@ void BuildMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int side,
 
   int idx = 0;
   for (TMapOrderChildLinkNode* node = entry->shipList; node != nullptr; node = node->next) {
-    // These children are TShip primary-order nodes (not nested TTaskForce entries --
-    // confirmed via the CString read at +0x18, which only lines up with
-    // TShip::name; TTaskForce's own +0x18 is location, an int).
     TShip* child = node->payload;
     MapOrderBattleSideChildRecord& rec = records[idx];
     rec.resourceType = child->type;
@@ -130,8 +122,6 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
     } else {
       rec.stockOrRequired = 0;
     }
-    // Finalize the working pointer slot into the report-row category consumed by
-    // TBatRepDetLine::InstallViews.
     rec.detailIdentity = kControlTagNavy; // 'navy'
   }
 
@@ -142,10 +132,6 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
   }
 }
 
-// Formats "<count><sep><commodity name>" into `out`: fetches the commodity's
-// localized name (singular string group 0x2716 for count < 2, plural 0x271a
-// otherwise) into `out`, then, for a non-negative count, prefixes the decimal count
-// and the shared separator string using the real MFC CString::Format and operator+.
 // FUNCTION: IMPERIALISM 0x00550c20
 void FormatLocalizedCommodityCountLabelByIndex(CString* out, unsigned int commodityCode,
                                                short count) {
@@ -166,10 +152,6 @@ TNavyMgr::TNavyMgr() : orderQueueHead(0), executionPhase(-1), pendingOrderEntry(
 // FUNCTION: IMPERIALISM 0x005565f0
 TNavyMgr::~TNavyMgr() {}
 
-// Seeds the three navy order-type ranking tables with the identity permutation, then
-// selection-sorts each by descending descriptor weight (resolve / calculate-mission /
-// navy-priority). The weight columns are read as dwords from the descriptor table, matching
-// the original's g_..._LookupTable_006981xx int views.
 // FUNCTION: IMPERIALISM 0x00556610
 void TNavyMgr::INavyMgr() {
   int i;
@@ -263,8 +245,6 @@ void TNavyMgr::WriteToFilterously(TStream* stream, short nationFilter) {
     }
   }
   matchCount = 0;
-  // +0x1c is nation in TTaskForce.h but every navy-order reader (see
-  // RemoveMatchingTaskForceOrders) treats it as the entry's nation slot.
   for (TTaskForce* order = orderQueueHead; order != 0; order = order->nextForce) {
     if (nationFilter == -1 || nationFilter == order->nation) {
       ++matchCount;
@@ -287,8 +267,6 @@ void TNavyMgr::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x00556ad0
 void TNavyMgr::ReadFromFilterously(TStream* stream, short nationFilter) {
   if (nationFilter == -1) {
-    // Full resync: drop every existing entry from all three navy order lists first
-    // (each Free() unlinks the head, so the loops drain the chains).
     while (g_pNavyPrimaryOrderListHead != 0) {
       g_pNavyPrimaryOrderListHead->Free();
     }
@@ -303,10 +281,6 @@ void TNavyMgr::ReadFromFilterously(TStream* stream, short nationFilter) {
     RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(nationFilter);
   }
 
-  // Primary TShip chain (16-bit count, written tail-first by the serializer; TShip()
-  // itself prepends each node to g_pNavyPrimaryOrderListHead, restoring the order).
-  // Only the low word of pendingCount is ever written/tested, mirroring the original's
-  // 2-byte read into a 4-byte slot.
   int pendingCount;
   stream->ReadBytes(&pendingCount, 2);
   while (static_cast<short>(pendingCount--) != 0) {
@@ -320,8 +294,6 @@ void TNavyMgr::ReadFromFilterously(TStream* stream, short nationFilter) {
     }
   }
 
-  // TAdmiral secondary chain (the ctor links each node into
-  // g_pNavySecondaryOrderListHead).
   stream->ReadBytes(&pendingCount, 2);
   while (static_cast<short>(pendingCount--) != 0) {
     TAdmiral* admiralNode = new TAdmiral();
@@ -345,10 +317,6 @@ void TNavyMgr::ReadFromFilterously(TStream* stream, short nationFilter) {
     if (nationFilter != -1 && orderEntry->nation != nationFilter) {
       orderEntry->Free();
     }
-    // Open-coded CommitForce (0x557080) - the original emits
-    // this logic inline here (registers carry across it), not as a call: if the entry
-    // is not already queued, free it when it has no children, else unlink it and push
-    // it to the queue head.
     TTaskForce* queueHead = orderQueueHead;
     TTaskForce* queueCursor = queueHead;
     while (queueCursor != 0) {
@@ -541,10 +509,6 @@ void TNavyMgr::RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short n
   }
 }
 
-// Per-turn map-order revalidation sweep: for every map-action context zone and
-// great-power slot, rebuild the nation's candidate order entry from its navy
-// orders, gate each child on the shared per-order-type stock cap when the zone
-// still has port capability, and requeue/rebuild+finalize the surviving entry.
 // FUNCTION: IMPERIALISM 0x00557560
 void TNavyMgr::MakeSureAllShipsHaveOrders() {
   g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
@@ -584,8 +548,6 @@ void TNavyMgr::MakeSureAllShipsHaveOrders() {
           node = node->next;
         } while (node != 0);
       }
-      // location (+0x18) is the entry's owning map-action context TZone* (see
-      // TTaskForce.h); slot 0x54 is TZone::QueryPortZoneCapability.
       if (entry->location->QueryPortZoneCapability()) {
         entry->shipOrders = 7;
         entry->FreeAvailables();
@@ -651,19 +613,6 @@ void TNavyMgr::PrepareToCarryOutAllOrders(short phaseId) {
   }
 }
 
-// Per-turn-phase map-order conflict resolver. Six filter/inner-loop passes over
-// orderQueueHead, each pairing an outer "kind" filter against an inner-loop match,
-// then attempting a resolution chain (TryToSpot ->
-// ResolveEncounterWith -> BattleWith);
-// any pairwise resolution that reports a nonzero result ends the whole function
-// immediately. Passes A/B/D share that 3-method chain shape; Pass E's "should attempt"
-// gate is a separate inline computation (not a call to TryToSpot
-// -- both sides go through GetDeciSpeed here, unlike that
-// method's own manual self-side sum) feeding directly into the 2-method
-// TryMarkLosing/TryResolve chain. Passes C/F apply execution effects directly with no
-// pairing. Finishes with the two-pass nation-interaction sweep, a queue-head rebuild via
-// RemoveStragglers, a primary TShip list flag-clear pass, and an
-// overlay refresh.
 // FUNCTION: IMPERIALISM 0x005578a0
 void TNavyMgr::CarryOutOrders() {
   if (pendingOrderEntry != nullptr) {
@@ -739,9 +688,6 @@ void TNavyMgr::CarryOutOrders() {
     }
   }
 
-  // Pass D: 3/4-kind entries vs a matching-context NON-6-kind entry. Same outer filter
-  // as Pass A; the diplomacy/location check order is swapped and the inner
-  // ship-order check is inverted, matching the disassembly's distinct compiled shape.
   {
     for (TTaskForce* entry = orderQueueHead; entry != nullptr; entry = entry->nextForce) {
       if (!(entry->shipOrders == 3 || entry->shipOrders == 4))
@@ -770,10 +716,6 @@ void TNavyMgr::CarryOutOrders() {
     }
   }
 
-  // Pass E: 1-kind entries vs a matching-context 5-kind entry. The "should attempt" gate
-  // is an inline duplicate of TryToSpot's shape (not a call to
-  // it), feeding straight into ResolveEncounterWith (no
-  // ShouldAttempt call in this pass's chain).
   {
     for (TTaskForce* entry = orderQueueHead; entry != nullptr; entry = entry->nextForce) {
       if (entry->shipOrders != 1)
@@ -872,8 +814,6 @@ TTaskForce* TNavyMgr::AssignEscorts(short requiredCount, short chancePercent) {
   return entry;
 }
 
-// Listing 0x00558424 initializes the survivor slot only after battle resolution, then
-// 0x00558439 reads it on both paths. Preserve that retail stack-slot behavior locally.
 IMPERIALISM_BEGIN_RETAIL_UNINITIALIZED_READ
 // FUNCTION: IMPERIALISM 0x00557f10
 char TNavyMgr::TryMerchantInterception(
@@ -1020,8 +960,6 @@ char TNavyMgr::TryMerchantInterception(
           g_pNavyOrderManager->ResolveStrategicBattle(entry, nationEntry);
           survivingEntry = nullptr;
         }
-        // The retail body only initializes this temporary after resolving a battle;
-        // the untouched path compares the existing stack slot verbatim.
         eligible = survivingEntry == entry;
       }
     } else {
@@ -1462,10 +1400,6 @@ bool TNavyMgr::SelectionClick(short nTileIndex, int nInputFlags) {
   }
 }
 
-// Queues a map order for a clicked tile when immediate context handling does not consume
-// the click: resolves a command id (action-context path for sea tiles, province-context
-// path otherwise) off the active map-order entry, then dispatches by command id, setting
-// the entry's order kind + target context and running the rebuild/queue/finalize pipeline.
 // FUNCTION: IMPERIALISM 0x0055a160
 int TNavyMgr::DoTileClick(short nTileIndex, int nInputFlags) {
   // A context-only action consumes the click without any queue mutation.
@@ -1588,9 +1522,6 @@ TTaskForce* TNavyMgr::WhoseIngotIsAt(short tileIndex) {
 
 namespace {
 
-// Sum, over shipList entries whose resource-type priorityTier is >= minTier, of
-// (child experience/100 + resolveWeight*10 + 5)/10 -- the per-child "combat power"
-// term ResolveStrategicBattle's tier-scoring loop accumulates as a float.
 // FUNCTION: IMPERIALISM 0x0055a520
 static float SumTaskForceChildPowerAtOrAboveTier(TTaskForce* force, int minTier) {
   float total = 0.0f;
@@ -1653,8 +1584,6 @@ static inline int CalculateActiveChildAverageDescriptorWeightX10(TMapOrderChildL
   return (sum * 10) / count;
 }
 
-// The selector's non-hostile comparison branch expands this same integer score at both
-// child-list walks instead of calling TShip::GetBattleStrengthRating.
 static inline int CalculateMapOrderInteractionShipStrength(TShip* ship) {
   const TNavyOrderResourceDescriptor& descriptor = g_NavyOrderResourceDescriptorTable[ship->type];
   short strengthBucket = static_cast<short>(ship->experience / 100);
@@ -1667,12 +1596,6 @@ static inline int CalculateMapOrderInteractionShipStrength(TShip* ship) {
          descriptor.Armor();
 }
 
-// Randomly applies a resource-weighted attrition roll (0x55ae70/0x55af36) to up to
-// `target` of `head`'s children: for each candidate node, rolls
-// rand()%currentCount < target to select it, restarting at the head until exactly
-// `target` children have been selected, then reduces each selected ship's strength by
-// 0.5 - taskForceWeight[child->type] * ((rand()%100+rand()%100+100) * 0.005) *
-// favorRatio * -0.01.
 // FUNCTION: IMPERIALISM 0x0055a690
 static void ApplyTaskForceConflictAttrition(TTaskForce* force, float favorRatio, int target,
                                             int currentCount) {
@@ -1696,12 +1619,6 @@ static void ApplyTaskForceConflictAttrition(TTaskForce* force, float favorRatio,
   } while (selected < target);
 }
 
-// Removes a depleted (nation < 1) list head and prunes any other depleted entries
-// further down the chain; matches the real call sequence at 0x55afff/0x55b06e
-// (SetMapOrderActiveChildEntry(nullptr) + Free() + DeleteMapOrderChildLinkAndReturnNext on a
-// depleted head, else a side-effect-only PruneDefeatedMapOrderChildrenAndReturnHead(head->next)
-// call on a still-alive head) rather than TTaskForce::PruneDefeatedMapOrderChildrenAndReturnHead's
-// own equivalent-but-differently-sequenced internal logic.
 static inline TMapOrderChildLinkNode*
 PruneMapOrderConflictHeadAndTail(TMapOrderChildLinkNode* head) {
   if (head == nullptr) {
@@ -1751,17 +1668,11 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
     }
   }
 
-  // Per-order-type "convergence tolerance" the winning-tier ratio must clear for that side
-  // to be judged to have genuinely won the tier (the real {1.1,0.95,0.8} float table,
-  // indexed by the force's eAgro dword at +0x04.
   const float kTierConvergenceThreshold[3] = {1.1f, 0.95f, 0.8f};
   float leftThreshold = kTierConvergenceThreshold[leftEntry->aggression];
   float rightThreshold = kTierConvergenceThreshold[rightEntry->aggression];
 
   int candidateTier = maxTier;
-  // Per-side "failed to converge" flags, recomputed each round (retail carries them in
-  // EBP bits 0x1000000/0x100 between the threshold compares at 0x55ab07-0x55ab30 and the
-  // outcome decode at 0x55b13e-0x55b179).
   bool leftThresholdFailed = false;
   bool rightThresholdFailed = false;
 
@@ -1849,10 +1760,6 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
     int leftCurrentCount = CountTaskForceChildren(leftEntry);
     int rightCurrentCount = CountTaskForceChildren(rightEntry);
 
-    // Damage to each side's ships scales with the OPPOSING side's
-    // admiral-adjusted power at the current tier, spread over the number of
-    // ships actually engaged -- retail divides the opposing power by the
-    // attrition target (0x55ae2e-0x55ae60), it does not use the favor ratio.
     float leftPower =
         SumTaskForceChildPowerAtOrAboveTier(leftEntry, candidateTier) * (1.0f + leftBucket * 0.1f);
     float rightPower = SumTaskForceChildPowerAtOrAboveTier(rightEntry, candidateTier) *
@@ -1886,10 +1793,6 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
 
   bool leftEliminated = leftEntry->shipList == nullptr;
   bool rightEliminated = rightEntry->shipList == nullptr;
-  // -1 draw, 0 left wins, 1 right wins. A side eliminated outright loses; when the tier
-  // search exhausts (candidateTier > maxTier) with both forces still afloat, retail still
-  // resolves a winner: the side whose favor ratio never reached its convergence threshold
-  // loses (0x55b13e-0x55b179). Only both-failed or both-converged is a draw.
   signed char outcome;
   if (leftEliminated) {
     outcome = static_cast<signed char>(rightEliminated ? -1 : 1);

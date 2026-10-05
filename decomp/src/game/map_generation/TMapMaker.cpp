@@ -29,9 +29,6 @@
 #include "RuntimeCoarseMapOracle.h"
 #endif
 
-// The original descriptor's m_pBaseClass (0x6598b8) points at TControl's CRuntimeClass —
-// the retail macro named TControl even though the C++ base is TObject (the 44-slot vtable
-// at 0x6598f8 rules out a TControl-branch layout). Reproduce the retail macro argument.
 IMPLEMENT_DYNCREATE(TMapMaker, TControl)
 
 // FUNCTION: IMPERIALISM 0x00525970
@@ -40,10 +37,6 @@ TMapMaker::TMapMaker() : TObject() {}
 // FUNCTION: IMPERIALISM 0x005259c0
 TMapMaker::~TMapMaker() {}
 
-// Inline-expanded at every keyword test in 0x525a30 (the original emits the compare
-// loop at each site): true when `text` begins with `keyword` followed by NUL or ' '.
-// The retained standalone emission at 0x5259e0 drives the loop on arg1, so keyword is
-// the first parameter in the source-era signature.
 bool TuningKeywordMatches(const char* keyword, const char* text) {
   while (*keyword != 0) {
     if (*keyword++ != *text++) {
@@ -154,8 +147,6 @@ void TMapMaker::GenerateNewMap(char* tileGrid,
     g_mapGenSwampQuota_006a38e0 = budget * g_mapGenSwampQuota_006a38e0 / quotaSum;
   }
 
-  // Hash the tuning string into the map-gen PRNG seed (falling back to wall clock),
-  // and derive the zone status-code seed from one LCG advance.
   const char* h = static_cast<LPCSTR>(*tuningString);
   int seed = kControlTagNada;
   for (char hc = *h; hc != 0; hc = *++h) {
@@ -186,8 +177,6 @@ void TMapMaker::GenerateNewMap(char* tileGrid,
 #ifdef IMPERIALISM_RUNTIME_TESTS
     RuntimeCoarseMapOracleBeginGenerationAttempt(g_mapGenLcgState_006a38e8);
 #endif
-    // Attempt loop: regenerate until the attempt sticks and both region-class
-    // validations accept it. The setup-picture globe spins between every phase.
     char retryAttempt;
     do {
       if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
@@ -277,8 +266,6 @@ void TMapMaker::GenerateNewMap(char* tileGrid,
     }
     AssignOrCompactCityRegionIdsAndRebuildBorders(0);
 
-    // Easter-egg keyword overrides: each mutates matching land tiles (water
-    // is always skipped) with a per-tile LCG draw.
     const char* text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Dune", text)) {
       char* tile = mapTileGrid08;
@@ -545,12 +532,6 @@ char TMapMaker::ValidateAllColumnsHaveAssignedRegionClass() {
   return foundEmptyColumn;
 }
 
-// True when every terrain class (0..0x16) that appears on the map has at least one valid
-// "seed candidate" tile: a plains, forest, desert, or farmland tile one of whose six hex
-// neighbours is a water tile whose own neighbours all share the seed tile's class. For
-// each qualifying class the chosen candidate index is reservoir-sampled with the map-gen LCG.
-// Grid is 108 (0x6c) columns x 60 (0x3c) rows, tile stride 0x24, tile[4] = terrain class.
-// 0x005267f0.
 // FUNCTION: IMPERIALISM 0x00526760
 char TMapMaker::ValidateTerrainClassAdjacencyCoverageMask() {
   int classMask = 0;
@@ -713,10 +694,6 @@ void TMapMaker::PickRandomRegionGridCell(unsigned int* outColumn, unsigned int* 
   *outRow = (g_mapGenLcgState_006a38e8 >> 12 & 0x7fff) % 15;
 }
 
-// Resets the per-attempt scratch state (region-class grid, union-find group tables),
-// then seeds each of the 7 major nations with an 8-cell region at a random unclaimed
-// cell, followed by each of the 16 minor nations with a 4-cell region at a random cell
-// biased to sit adjacent to an already-claimed region (tried up to 4 times).
 // FUNCTION: IMPERIALISM 0x00526c20
 void TMapMaker::RunMapGenerationAttempt() {
   memset(regionClassGrid10, -1, sizeof(regionClassGrid10));
@@ -805,10 +782,6 @@ void TMapMaker::RunMapGenerationAttempt() {
   }
 }
 
-// Recursively claims `cellIndex` for `classIndex`, then spreads to its hex neighbors by
-// weighted-random selection (each neighbor's weight boosted +10 per further neighbor
-// already owned by `classIndex`), retrying until `retryBudget` assignments succeed or no
-// neighbor remains eligible. Returns the number of successful assignments.
 // FUNCTION: IMPERIALISM 0x00527040
 int TMapMaker::SelectGPZone(int cellIndex, int mode, int classIndex,
                                                    int retryBudget) {
@@ -888,13 +861,6 @@ int TMapMaker::SelectGPZone(int cellIndex, int mode, int classIndex,
   return mode - remaining;
 }
 
-// Union-find merge of classIndex's region group against each coarse-grid hex
-// neighbor's assigned class: if a neighbor has a different already-assigned class,
-// join the two classes into one group (allocating a new group id, adopting the
-// neighbor's group, or absorbing the neighbor into this class's group -- in any
-// direction, tracking up to 3 member classes per group in groupMemberLists).
-// Returns false the moment two neighbors' classes already belong to two DIFFERENT
-// established groups (a genuine conflict) or a group's member list is full.
 // FUNCTION: IMPERIALISM 0x005272c0
 void TMapMaker::TranslateZones() {
   int* zone = cityRegionIds;
@@ -954,11 +920,6 @@ char TMapMaker::TryMergeRegionGroupWithNeighborsRestrictedToMajors(int cellIndex
   return 1;
 }
 
-// Same union-find neighbor-merge as TryMergeRegionGroupWithNeighborsRestrictedToMajors
-// above, but without the groupMemberLists bookkeeping: a class with an existing
-// group can only merge by adopting a neighbor's group (or forming a new one when
-// neither has one yet) -- if this class already has a group and the neighbor doesn't,
-// that's treated as a conflict rather than expanding this class's group.
 // FUNCTION: IMPERIALISM 0x005274d0
 char TMapMaker::TryMergeRegionGroupWithNeighbors(int cellIndex, int classIndex) {
   for (int dir = 0; dir < 6; ++dir) {
@@ -1053,15 +1014,6 @@ void TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords() {
   }
 }
 
-// Lays mountain ranges up to g_mapGenMountainQuota_
-// 006a3470 tiles, then spreads hills around each laid tile with a 40%
-// per-neighbor chance (up to g_mapGenHillsQuota_006a38c0 tiles, falling back to
-// direct random placement once the spread pass can't find more room), places
-// city-marker features (PlantForestCluster) up to
-// g_mapGenForestQuota_006a38f8 times, and finally fills the remaining swamp quota
-// (g_mapGenSwampQuota_006a38e0) with random tiles or -- once that quota is
-// exhausted -- random-walks mountain-range extensions (via slot 0x58)
-// from tiles adjacent to exactly one already-placed marker tile.
 // FUNCTION: IMPERIALISM 0x00527730
 void TMapMaker::PlaceTerrainFeatureQuotas() {
   int forestQuota = g_mapGenForestQuota_006a38f8;
@@ -1256,10 +1208,6 @@ char TMapMaker::GrowRiver(long tileIndex, long incomingDirection, long outgoingD
   return 1;
 }
 
-// Recursively claims `tileIndex` as forest, plus a variant byte at +0x13 chosen by
-// `markerVariant`; refuses if any hex neighbor is desert, then
-// spreads to hex neighbors with a 46% chance each until `retryBudget` spreads succeed.
-// Returns the number of successful spreads.
 // FUNCTION: IMPERIALISM 0x00528140
 int TMapMaker::PlantForestCluster(int tileIndex, int retryBudget,
                                                  bool markerVariant) {
@@ -1288,12 +1236,6 @@ int TMapMaker::PlantForestCluster(int tileIndex, int retryBudget,
   return retryBudget - remaining;
 }
 
-// Recursively lays a linear terrain feature (river/road-shaped) across the
-// full-resolution generation grid: claims `tileIndex` as mountain, refuses if any
-// hex neighbor is water, then randomly perturbs `direction`
-// (0..5, the hex direction to continue in -- more volatile when direction is 1 or
-// 4) and recurses into that neighbor with `retryBudget` decremented. Returns the
-// number of tiles successfully placed.
 // FUNCTION: IMPERIALISM 0x005283c0
 int TMapMaker::SeedMountainRange(int tileIndex, int retryBudget, int direction) {
   if (tileIndex < 0 || tileIndex > 0x1950) {
@@ -1515,9 +1457,6 @@ int TMapMaker::GetAdjacentRegionGridCell(int cell, int direction) {
   return neighbor;
 }
 
-// Dead standalone helper: converts a full-resolution 108-wide grid tile index to a
-// staggered-hex pixel center scaled by cellSize (odd rows shifted a full cell, even
-// rows half a cell; Y centered on the cell). No surviving caller.
 // FUNCTION: IMPERIALISM 0x00528d80
 void ComputeHexTilePixelCenter(int tileIndex, int* outX, int* outY, int cellSize) {
   int xOffset;
@@ -1538,11 +1477,6 @@ void TMapMaker::WriteTileGridToFile(const char* path) {
   fclose(file);
 }
 
-// Two-pass ownership smoothing over the full-resolution generation grid (rows 1..58
-// only, skipping the border rows). Pass 1: for each tile with 0, 1 (50% chance), or 2
-// (75% chance) same-owner hex neighbors, if a differing-owner neighbor exists, copy
-// that neighbor's whole 0x24-byte record onto this tile. Pass 2: for each tile with NO
-// same-owner neighbor at all, copy a uniformly-random neighbor's record onto it.
 // FUNCTION: IMPERIALISM 0x00528e50
 void TMapMaker::SmoothCityRegionOwnershipByNeighborSampling() {
   short owner;
@@ -1832,8 +1766,6 @@ MapGeneratorTileRecord* TMapMaker::GetFineGridCellBasePointerFromCoarseIndex(int
   if ((coarseIndex / 0x1b & 1U) != 0) {
     cell -= 0x48;
   }
-  // Reviewed application-buffer boundary: mapTileGrid08 is still byte-addressed by the
-  // wider generator, while this virtual exposes its proven 0x24-byte record granularity.
   return static_cast<MapGeneratorTileRecord*>(static_cast<void*>(cell));
 }
 
@@ -1894,8 +1826,6 @@ void TMapMaker::RotateMapColumnsByPeakWaterTileDensity() {
     ++columnIndex;
   } while (scanCol < 0x6c);
 
-  // If the peak column itself holds no water tiles, recentre on the midpoint between the nearest
-  // non-empty columns to its left and right.
   if (CountSeaTilesInColumn(bestColumn) == 0) {
     int leftCol = bestColumn + -1;
     if (leftCol < 0) {
@@ -2019,10 +1949,6 @@ int TMapMaker::ZoneCorner(long nationCode) {
   return (columnSum / matchCount) % 0x6c + selectedRowTile;
 }
 
-// Centroid tile of the territory owned by `nationCode`, read from each grid record's
-// owner byte (record[4]). Territory touching both the left and right map edges wraps
-// horizontally; `useWrapOffset` biases the accumulated column sum instead of re-sweeping
-// with every column snapped to whichever edge dominates. Returns -1 for an empty match.
 // FUNCTION: IMPERIALISM 0x00529d90
 int TMapMaker::ComputeOwnedTerritoryCentroidTile(int nationCode, char useWrapOffset) {
   int columnSum = 0;
@@ -2093,10 +2019,6 @@ int TMapMaker::ComputeOwnedTerritoryCentroidTile(int nationCode, char useWrapOff
   return -1;
 }
 
-// Compact the city-region ids stored in each grid record's owner byte: every distinct
-// region class (record[4] - 0x17) is assigned the next free ordinal via the shared remap
-// table, the record is rewritten with the remapped id, and the number of distinct regions
-// is left in cityRegionCount.
 // FUNCTION: IMPERIALISM 0x00529f60
 void TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders(int mode) {
   if (static_cast<unsigned char>(mode) != 0) {
@@ -2172,10 +2094,6 @@ void TMapMaker::CompactCityRegionIds() {
   } while (byteOffset < 0x38f40);
 }
 
-// Repair pass over the whole 6480-tile grid: every entry whose value is below -1 is an
-// orphaned leaf, and adopts the value of the first hex neighbour that both holds a valid
-// (>= 0) value and shares its terrain class. The class key is -1 unless the tile record's
-// leading byte is 5, in which case it is record[4] - 0x17. Returns the repair count.
 // FUNCTION: IMPERIALISM 0x0052a160
 void TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation() {
   short* labels = new short[0x1950];
@@ -2192,8 +2110,6 @@ void TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation() {
   } while (i < 0x1950);
   cityRegionCount = 0;
 
-  // Phase 2: scatter region-centre seeds across the lattice, spiralling out to the nearest
-  // still-empty water tile.
   if (0 < g_regionSeedGridRows_006a38ec) {
     int rowBase = 0;
     int cols = g_regionSeedGridCols_006a38f0;
@@ -2254,9 +2170,6 @@ void TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation() {
     } while (rowIdx < rows);
   }
 
-  // Phase 3: flood region ids to adjacent same-region water tiles; the +0x400 bias marks tiles
-  // claimed this round so a single pass can't cascade. Repeat until nothing changes, then write
-  // the ids back to the tiles.
   do {
     int changed = 0;
     int j = 0;
@@ -2370,9 +2283,6 @@ void TMapMaker::AssignRegionIdsToUnclaimedBorderSegmentSides() {
     } while (index < count);
   }
 
-  // A second pass that only stretches each slot. It has no observable effect once the
-  // table is already this long -- whatever the original read here optimized away -- but the
-  // stretch sequence is still emitted, so the loop is kept.
   index = 0;
   if (index < count) {
     do {
@@ -2561,8 +2471,6 @@ void TMapMaker::BuildCityRegionBorderOverlaySegments() {
     } while (byteOffset < 0x38f40);
   }
 
-  // Phase 3: all tiles, directions 1 (inline) and 2 (via the neighbour helper), triple-junction
-  // emission via EmitOverlaySegmentFromTileEdgeSorted; tails into a direction-1-only sweep.
   int t3 = 0;
   int off3 = 0;
   do {
@@ -2789,8 +2697,6 @@ void TMapMaker::ReindexContiguousCityRegionIds() {
       return;
     }
 
-    // Flood each freshly-assigned id to same-original-region hex neighbours, repeating until a
-    // pass changes nothing.
     int changed;
     do {
       int j = 0;
@@ -2862,9 +2768,6 @@ int TMapMaker::RepairOrphanedTileValuesFromNeighbors(short* tileValues) {
   return repairedCount;
 }
 
-// Hand each active city region the next sequential value: for region ordinal i the entries
-// still carrying placeholder -(i + 2) are searched from the start of the grid, and the
-// first match takes *nextValue (which is then advanced). Returns the number assigned.
 // FUNCTION: IMPERIALISM 0x0052d6b0
 int TMapMaker::AssignSequentialValuesToRegionPlaceholders(short* tileValues, int* nextValue) {
   int regionOrdinal = 0;
@@ -2918,8 +2821,6 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
     }
   }
 
-  // Phase 2: from the last region down, merge each undersized region into its best neighbour and
-  // compact ids by swapping the emptied slot with the last active region.
   int region = cityRegionCount;
   while (true) {
     --region;
@@ -2936,8 +2837,6 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
       int bestScore = -1;
       unsigned int bestLink = 0xffffffff;
 
-      // 2a: score every border link touching this region; prefer the target with the largest
-      // shared-border area weighted by target size, plus size/merge biases.
       for (unsigned int li = 0;
            li < static_cast<unsigned int>(g_regionBorderLinkTable_006a3900.Count()); ++li) {
         SeaSegment* link = &g_regionBorderLinkTable_006a3900[li];
@@ -2964,8 +2863,6 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
         const int width = link->BorderX1() - link->BorderX0();
         const int height = link->BorderY1() - link->BorderY0();
         const int areaSq = width * width * height * height;
-        // MSVC emits the FILD/FSQRT/FIMUL/FIADD chain + a _ftol (0x5e73d0) call for this
-        // (double)->int cast, matching the original.
         const int score =
             static_cast<int>(sqrt(static_cast<double>(areaSq)) * tileCounts[other] + bias);
         if (bestScore < score) {
@@ -2975,8 +2872,6 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
         }
       }
 
-      // 2b: no link neighbour and a very small region -> hex-adjacency search for any adjacent
-      // tile belonging to a different region.
       bool unresolved = false;
       if (mergeTarget == -1) {
         if (tileCounts[region] < 7) {
@@ -3033,8 +2928,6 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
             mapTileGrid08[off + 4] = static_cast<char>(mergeTarget) + kRegionIdBias;
           }
         }
-        // Invalidate the consumed border-link record, then re-point every remaining link that
-        // referenced `region` at `mergeTarget`.
         if (static_cast<int>(bestLink) >= 0) {
           SeaSegmentStretch& t = g_regionBorderLinkTable_006a3900;
           SeaSegment* consumed = &t[bestLink];
@@ -3193,9 +3086,6 @@ void TMapMaker::EraseZones(long coarseIndex) {
 
 // FUNCTION: IMPERIALISM 0x0052e900
 void TMapMaker::TargetValidationSucceeded() {
-  // For every grid cell holding the sentinel class 0x64, walk direction-4 neighbours,
-  // pulling each neighbour's class into the current cell until an unassigned (-1)
-  // neighbour terminates the chain.
   signed char* grid = &regionClassGrid10[0][0];
   for (int cell = 0; cell < 0x195; ++cell) {
     if (grid[cell] == 0x64) {

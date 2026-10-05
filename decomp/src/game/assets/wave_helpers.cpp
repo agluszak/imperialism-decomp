@@ -248,9 +248,6 @@ UINT WaveCloseWriteFile(HMMIO* phmmio, MMCKINFO* pck, MMCKINFO* pckRIFF, MMIOINF
   return result;
 }
 
-// Copy the chunks worth preserving from the input RIFF into the output file: 'DISP' and
-// 'plst' are copied, 'PAD ' is skipped, everything else is ignored. The parent is rewound
-// both before the walk and after it, so the caller's read position is unchanged.
 // FUNCTION: IMPERIALISM 0x005e0ec0
 UINT WaveCopyUselessChunks(HMMIO* phmmioIn, MMCKINFO* pckIn, MMCKINFO* pckInRIFF,
                            HMMIO* phmmioOut) {
@@ -348,9 +345,6 @@ CloseAndReturn:
   return result;
 }
 
-// Write a whole PCM buffer out as a new wave file: create it, open a 'data' chunk, push the
-// samples through the mmio write buffer, then close and patch the 'fact' chunk. The write
-// loop is open-coded rather than going through WaveWriteFile.
 // FUNCTION: IMPERIALISM 0x005e1220
 UINT WaveSaveFile(char* pszFileName, DWORD cbSize, DWORD cSamples, WAVEFORMATEX* pwfxDest,
                   HPSTR pbSrc) {
@@ -389,8 +383,6 @@ UINT WaveSaveFile(char* pszFileName, DWORD cbSize, DWORD cSamples, WAVEFORMATEX*
   return wResult;
 }
 
-// Selects the aux output device whose product-id low 3 bits are 1 or 2 (the CD-audio line),
-// storing its index in g_nAuxOutputDeviceIndex (-1 on a device-caps query error).
 // FUNCTION: IMPERIALISM 0x005e1430
 int ProbeAuxOutputDeviceIndexByPidMask() {
   MMRESULT capsResult = 0;

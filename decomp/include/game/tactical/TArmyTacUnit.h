@@ -5,10 +5,6 @@
 
 class TMilitaryUnit;
 
-// One land unit in a tactical battle. The grid/state slice (+0x04..+0x30) lives on
-// TTacticalUnit; this class appends the army slice at +0x34. Base edge (TTacticalUnit)
-// recovered from RTTI CRuntimeClass chain: TArmyTacUnit -> TTacticalUnit -> TObject ->
-// CObject.
 // VTABLE: IMPERIALISM 0x00669660
 class TArmyTacUnit : public TTacticalUnit {
 public:
@@ -29,16 +25,10 @@ public:
   int sapTargetTileIndex;      // +0x40 pending sap/mine target tile; -1 = none
   float projectionScores[5];   // +0x44 strength/quality-weighted military attributes 0..4
 
-  // Both original construction sites inline the ctor as a bare vptr store.
-  // NOOP: verified empty in original 0x005a5ed2 (no standalone TArmyTacUnit::TArmyTacUnit body exists: construction is fully inlined into CreateObject 0x005a5ed0; that address is its operator-new call site)
   TArmyTacUnit() {}
 
-  // Initializes a newly allocated tactical record from its strategic army unit.
-  // 0x005a5f20, __thiscall.
   void IArmyTacUnit(TMilitaryUnit* source);
 
-  // Mac oracle: CalculateAttributes. Rebuilds the five projection scores from
-  // the source unit's attributes and experience, using current tactical strength.
   void ComputeTacticalProjectionScoreVector(); // 0x5a5fe0, __thiscall
   int GetUID() const;                          // 0x5a6210, Mac oracle
 };

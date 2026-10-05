@@ -20,40 +20,19 @@ public:
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5a4990
   virtual void DeployUnit(TTacticalUnit* unit,
                                         TacticalTileIndex tileIndex) override; // slot 0x0c 0x5a51e0
-  // Marks the battle decided, asserts both sides, silences the
-  // blink cue, resets the 'tool' toolbar's current-unit display, then delegates to
-  // g_pMapContextActionManager->EndTacticalBattle with each
-  // side's armyStack to relocate/reset the losing side and grow unit quality.
   virtual void EndBattle(unsigned char sideWonFlag) override; // slot 0x12 0x5a5320, Mac oracle
 
-  // Both original construction sites (TArmyMgr::CreateTacticalBattleViewAndInitialize-
-  // BattleSetup 0x4a5b60 and the network receive path 0x54a1df) inline this ctor as just
-  // the out-of-line base-ctor call plus the TArmyBattle vtable install -- no other body.
-  // Defined in-class so the recompile inlines it the same way.
   TArmyBattle() : TTacticalBattle() {}
 
-  // Allocates recordList (the deserialized/deployed unit list). Called out-of-line
-  // right after construction at the TArmyMgr setup site; the network receive path
-  // relies on ReadFrom populating the list instead. 0x0059f7f0.
   void AllocateRecordList();
 
-  // Called by TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup right after
-  // construction (and by ReadFrom on the network receive path) with the two combatant
-  // stacks, a composition class from TMapMgr::ClassifyCityGateTerrainComposition, the
-  // battle-site fort level, and the cityScoreTable row of the site. 0x005a4790,
-  // __thiscall, ret 0x14.
   void InitializeBattleSetupAndMaybeShowTacticalView(class TArmyStack* ourStack,
                                                          class TArmyStack* enemyStack,
                                                          int compositionClass, int fortLevel,
                                                          int battleSiteIndex);
 
-  // Loads the battle-setup tab data (terrain/backdrop selection) for the composition
-  // class + fort level. 0x005a4fc0, __thiscall, ret 8.
   void LoadMap(int compositionClass, int fortLevel);
 
-  // Size the battlefield to the longest-ranged deployed unit: sweep recordList for the
-  // maximum GetUnitRange() and store that plus 0xb in battlefieldColumnCount.
-  // 0x0059fc40, __thiscall.
   void ComputeBattlefieldColumnCountFromUnitRanges();
 };
 ASSERT_SIZE(TArmyBattle, 0x78);

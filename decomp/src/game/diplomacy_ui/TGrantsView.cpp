@@ -37,11 +37,6 @@ void TGrantsView::DoPostCreate(int arg) {
   SetControlHoverHelpText(hoverText, this);
 }
 
-// Draws the grants/aid table's 7 category headers (column index 3 is reserved for
-// the row-label column, drawn separately below) plus a "Total" row summing this
-// nation's active diplomacy grants. Every label/value is drawn twice (theme 0x2b68
-// color at +1,+1 then theme 0x2b6b color at +0,+0) -- a drop-shadow idiom shared with
-// TDiplomacyMapView's legend labels.
 // FUNCTION: IMPERIALISM 0x004f81c0
 void TGrantsView::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
@@ -68,9 +63,6 @@ void TGrantsView::Draw(RECT* rectBuffer) {
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b68);
 
-  // Y (row) and X (column) position tables for the 8 category slots; slot 3 (the
-  // row-label column, x=0x48/y=0x16f -- same as baseX/baseY above) is skipped in the
-  // loop below and reused for the "Total" row's y position instead.
   static const short kGrantColumnY[8] = {0x16f, 0x180, 0x180, 0x187, 0x1d5, 0x1d5, 0x1d5, 0x1d5};
   static const short kGrantColumnX[8] = {0xe7, 0x14d, 0x1f1, 0x48, 0x5e, 0xe8, 0x173, 0x1f7};
 

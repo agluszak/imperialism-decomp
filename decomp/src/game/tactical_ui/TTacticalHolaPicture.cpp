@@ -22,11 +22,6 @@ IMPLEMENT_DYNCREATE(TTacticalHolaPicture, TPicture)
 // Base ctor call + vptr store only; the original body is 18 bytes ending in
 // `mov eax,esi` return-this.
 
-// Battle-intro ('hola', dialog 0xf19) setup: sets the attacker/defender coat-of-arms
-// pictures ('acoa'/'dcoa', bitmap nation + 0xea6), builds the "battle at <city> of
-// <opponent nation>" label from string group 0x273d (index 0xc when nation A is the
-// local side, 0xd otherwise) into the 'info' deluxe text, and rasterizes the 'pmap'
-// owner-palette preview map with the battle site recorded on it.
 // FUNCTION: IMPERIALISM 0x005ad760
 void TTacticalHolaPicture::StuffValues(int nationA, int nationB,
                                                                   int nationAIsLocalSide,

@@ -103,8 +103,6 @@ void TMapPreviewView::Draw(RECT* rectBuffer) {
 
 namespace {
 
-// Resolve a map owner tag to the palette byte stored in the preview surface. Minor
-// nations share palette entry 0xb; -1 is off-map and -2 is a contested hex corner.
 static unsigned char ResolvePreviewMapOwnerTagPaletteByte(int ownerTag) {
   if (ownerTag >= 7 && ownerTag < 0x17) {
     ownerTag = 0xb;

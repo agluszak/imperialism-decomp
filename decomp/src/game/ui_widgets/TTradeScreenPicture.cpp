@@ -38,10 +38,6 @@ TTradeScreenPicture::TTradeScreenPicture() {}
 // FUNCTION: IMPERIALISM 0x005ba780
 TTradeScreenPicture::~TTradeScreenPicture() {}
 
-// Repaints the trade-screen commodity summary block. In map-blit mode (kTurnEventTradeOverview/kTurnEventIndustryOverview) it just
-// blits the passed rect; otherwise it draws, for each of the 17 commodity rows, the current
-// diplomacy value (right cell) and the proposal weight (middle cell) via the cached
-// QuickDraw text state.
 // FUNCTION: IMPERIALISM 0x005ba7a0
 void TTradeScreenPicture::Draw(RECT* rectBuffer) {
   RECT localRect;
@@ -75,8 +71,6 @@ void TTradeScreenPicture::Draw(RECT* rectBuffer) {
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0xbf);
     }
 
-    // Entries 6 (" 6sr") and 12 (" 5am") are group terminators, skipped unless a production
-    // order is active.
     if ((tagPtr != &g_tradeCommodityRowTagTable[6] && tagPtr != &g_tradeCommodityRowTagTable[12]) ||
         g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId] != 0) {
       RECT cellRect;

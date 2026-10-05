@@ -26,15 +26,6 @@ void TGameSetupPicture::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
 }
 
-// Main-menu button dispatcher. Only commandId 0x14/0x0a/0x22 (button-activation
-// codes) are handled; anything else forwards straight to the base class. The
-// source control's FourCC tag (TEventHandler::controlTag) selects the branch.
-//
-// Note on 'load'/'scen'/'rand' (normal path): the retail binary's own confirmation-
-// dialog retry loop here is dead code -- its guard (0x408594, unconditionally
-// `return 1;`) always reports "accepted", so the loop body (format + show a confirm
-// messagebox via TViewMgr::ModalMessage) never runs.
-// Omitted below since it can never execute; only the loop's post-condition is kept.
 // FUNCTION: IMPERIALISM 0x00575900
 void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId != 0x14 && commandId != 0xa && commandId != 0x22) {
@@ -56,11 +47,6 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
     postEventCode = EncodeTurnEventCode(kTurnEventLoadSave);
   } else if (controlTag == kControlTagMult) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
-    // TMultiplayerMgr::EnsureGameFlowStateAndShowMultiplayerSetup already posts turn
-    // event 0x5e5 itself -- falls straight to the base-class forward below (matches
-    // the original, no PostTurnEventCodeMessage call here). Safe to call through
-    // a null g_pGameFlowState: the method is non-virtual and checks `this` before
-    // touching any member.
     g_pGameFlowState->EnsureGameFlowStateAndShowMultiplayerSetup();
   } else if (controlTag == kControlTagQuit) {
     g_pAmbitApplication->PostWmCloseToMainThreadWindow();
@@ -70,8 +56,6 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
   } else if (controlTag == kControlTagRand) {
     short shiftState = static_cast<short>(GetAsyncKeyState(VK_SHIFT));
     if ((shiftState & 0x8000) != 0 && g_bRandomMapDeveloperCheatFlag) {
-      // Developer cheat path: bypass the setup screens and instantly bootstrap a
-      // fresh random map.
       g_pSfxPlaybackSystem->PlaySoundEffect(0x232c, 0, 1);
       if (g_pGameFlowState == 0) {
         if (g_pActiveMapOrderContext != 0) {
@@ -79,10 +63,6 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
           g_pActiveMapOrderContext = 0;
         }
         g_pActiveMapOrderContext = new TOcean();
-        // The zone-graph BFS distance cache is invalidated whenever the map order
-        // context is rebuilt. The original CALLs the shared helper here (0x00575be0);
-        // inlining its two global writes was a modelling error. Cited by its real
-        // address, 0x005621b0 -- 0x004043d1 is only the ILT thunk in front of it.
         ResetPortZoneGlobalContextCounters();
         if (g_pGameFlowState != 0) {
           g_pGameFlowState->Free();

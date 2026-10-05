@@ -20,12 +20,6 @@
 
 IMPLEMENT_DYNCREATE(TTwoPicSlider, TControl)
 
-// A standalone out-of-line ctor does exist at 0x0043d610 (45 bytes: base TControl ctor,
-// vptr 0x641bd0, then one `xor eax,eax` reused for the field stores, `mov eax,esi`
-// return-this); the CreateObject factory at 0x0056e120 inlines the same body.
-// compositeSurface (+0x8c) is deliberately NOT in the init list: the original stores only
-// +0x84, +0x88, +0x90 (word) and +0x94, leaving +0x8c untouched for
-// InitializePictureSurfaces to set.
 // FUNCTION: IMPERIALISM 0x0043d610
 TTwoPicSlider::TTwoPicSlider()
     : TControl(), lowerSurface(0), upperSurface(0), splitPosition(0), mode(0) {}
@@ -173,12 +167,7 @@ void TTwoPicSlider::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pre
 
       if (slider->mode == 1) {
         int volumeScalar = SliderScaledValue(slider, 0xff);
-        // 0x593cb0 is a real TSoundPlayer thiscall (this callsite loads
-        // ECX = [0x6a43ec] in the original, same as 0x5db66f).
         g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(static_cast<short>(volumeScalar));
-        // Original: mov eax,[0x6a20f8]; mov [eax+0x4e],di — the master-volume
-        // preference slot (index 3, clamped 0..0xff by
-        // UpdatePreferences) on the TSimMgr singleton.
         g_pSimMgr->preferenceValues[3] = static_cast<short>(volumeScalar);
       }
     }

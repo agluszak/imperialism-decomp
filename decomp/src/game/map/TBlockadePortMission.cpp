@@ -21,8 +21,6 @@
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 
-// The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
-//   CArchive& AFXAPI operator>>(CArchive&, TBlockadePortMission*&)
 IMPLEMENT_SERIAL(TBlockadePortMission, TControlSeaZoneMission, 1)
 
 // FUNCTION: IMPERIALISM 0x0053aa50
@@ -38,11 +36,6 @@ bool TBlockadePortMission::IsDefensiveSeaZoneMission() const {
 // FUNCTION: IMPERIALISM 0x0053aac0
 TBlockadePortMission::~TBlockadePortMission() {}
 
-// The mission factory (TMission::CreateMission, case 4) builds a
-// blockade mission from a map-order context node (a TZone). It lazily ensures the
-// context's primaryNeighbors array has slot 0 allocated -- that first entry is the
-// target port zone -- constructs the TControlSeaZoneMission base on it, back-links
-// the context node into portZoneContext3c (+0x3c), and validates the context.
 // FUNCTION: IMPERIALISM 0x0053ab50
 TBlockadePortMission::TBlockadePortMission(TZone* context)
     : TControlSeaZoneMission(context->primaryNeighbors[0]), portZoneContext3c(context) {
@@ -78,16 +71,8 @@ void TBlockadePortMission::Initialize() {
   importanceScore0c = score / g_fMissionScoreNormalizationDivisor;
 }
 
-// Same overall shape as TControlSeaZoneMission::GetReplacement, but the coverage
-// check here indexes this nation's enemyFlags (a genuine in-bounds TGreatPower
-// field at +0x8a0, unrelated to the AI-only tail block SetZoneStatus
-// writes at +0xaf0) by portZoneContext3c's owner-nation-code ordinal, instead of scanning
-// g_apTerrainTypeDescriptorTable.
 // FUNCTION: IMPERIALISM 0x0053adf0
 TMission* TBlockadePortMission::GetReplacement() {
-  // SetZoneStatus touches the AI-only tail state block, which lives only
-  // on TAutoGreatPower (see TAttackProvinceMission::Free); missions are AI-only, so
-  // g_apNationStates[nationId04] here is genuinely a TAutoGreatPower.
   TAutoGreatPower* nation = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
   nation->AssertValid();
   short ownerCode = portZoneContext3c->GetPortZoneOwnerNationCodeFromMissionField48();
@@ -112,18 +97,6 @@ void TBlockadePortMission::SetStateByte8To2() {
   state08 = 3;
 }
 
-// First reproduces the base TControlSeaZoneMission::CalculateNeeds's missionTargetZone-tagged base
-// score (duplicated inline -- see the in-body comment), then computes a second "threat"
-// score: either from a single target nation (this blockade's portZoneContext3c owner-
-// nation-code, if < 7) or maxed over every nation in g_apNationStates whose diplomacy
-// relation with this mission's nation is outdated (TDiplomacyMgr::IsNationPairAtWar).
-// Either way the threat score itself is portZoneContext3c's owner-nation-code's navy-order
-// distribution score -- the same per-ship walk/accumulate/normalize shape as
-// TShip::ComputeNavyOrderDistributionScoreForNation, inlined here rather than calling that
-// function (no CALL to 0x53b800 in the raw listing). Finally uses max(threat*0.5, 10.0) to
-// raise (never lower) each requiredShipEquipageByCategory[i] via the
-// g_Populate_Beachhead_Mission_LookupTable_00697958[4..7] profile (same slice TEscortMission's
-// own CalculateNeeds uses).
 // FUNCTION: IMPERIALISM 0x0053aeb0
 void TBlockadePortMission::CalculateNeeds() {
   TControlSeaZoneMission::CalculateNeeds();

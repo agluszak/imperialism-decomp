@@ -14,43 +14,20 @@ struct MapEdgePoint {
   unsigned int Equals(const MapEdgePoint* other) const;
 };
 
-// Neighbour tile index on the 108x60 hex map in the given direction (0..5), with horizontal
-// wrap; -1 if off-map. 0x00528c10.
 int GetNeighborTileIndexOnMap108x60(int tileIndex, int direction);
 
-// Wraps an extended overlay X coordinate back into [0, 0xd8) in place when the map wraps
-// horizontally, and returns the point it was handed so callers can read the wrapped pair
-// straight back (AssignRegionIdAlongBorderSegmentChain relies on that). 0x0052a6e0.
 int* WrapExtendedMapXCoordinateInPlace(int* x);
 
 // Converts a hex tile index to its overlay-grid coordinate for the given edge side.
 int ConvertTileIndexToOverlayCoord216BySide(int tileIndex, char side); // 0x0052c990
 
-// Maps a clicked tile to a map-context action code used by the map-order handlers. See the
-// .cpp for the per-class breakdown. 0x00559a70.
 int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags);
 
-// Dead sibling of GetMapContextActionCode for the active map-order entry (no retail
-// callers). 0x00559bd0.
 int __stdcall GetActiveMapOrderEntryActionCode(short nTileIndex, int dwInputFlags);
 
-// Converts a hex tile index (row*0x6c + col) to its isometric screen-space {x,y} offset in
-// outScreenXY, relative to a scrolled origin (originCol, originRow) and scaled by tileScale.
-// The column wraps horizontally: `tileIndex - originCol` is taken mod 0x6c directly (the
-// row*0x6c term vanishes under the modulo), and odd rows are offset by half a tile in x for
-// the hex stagger. 0x00565d20.
 void ComputeWrappedIsometricScreenOffsetFromTile(int tileIndex, int* outScreenXY, int tileScale,
                                                  short originCol, short originRow);
 
-// Draws the hex-cell border-highlight polygon for a tile (per-edge QDFrameRect segments
-// where the tile borders a different owner or an ocean neighbor). 0x00508f30.
 void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue);
 
-// Traces the border of the region identified by `compareValue` around one tile as a pen
-// path: the origin call moves to the start vertex and each guide-line call extends the
-// path. Interior edges are skipped -- a side is not drawn when the two tiles across it
-// belong to the same foreign region. `tileScale` selects the vertex pitch: 0x10 uses the
-// full-size 4px grid, anything else the compressed mini-map spacing off a scaled origin.
-// Sibling of BuildHexNeighborHighlightPolygonForTile, which draws the same border as
-// per-edge QDFrameRect segments instead. 0x005093e0.
 void DrawHexNeighborBorderGuidePathForTile(short tileId, int compareValue, short tileScale);

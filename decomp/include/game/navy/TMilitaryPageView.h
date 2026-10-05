@@ -19,8 +19,6 @@ public:
   void AfterStuffValues();
   void PrepareUnitCache(int bitmapResourceId, int maskResourceId, int depth);
 
-  // TBattleUnitsView::StuffValues loads an image surface here and Close releases it through
-  // TDisplayMgr::RemoveGWorld. Other derived constructors clear it.
   TQuickDrawSurfaceContext* primaryUnitAtlas;
 };
 ASSERT_SIZE(TMilitaryPageView, 0x88);

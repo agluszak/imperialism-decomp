@@ -880,8 +880,6 @@ void InitializeTacticalUnitFacingOffsetTable() {
 
 IMPLEMENT_DYNCREATE(TTacticalBattleView, TView)
 
-// The original zeroes the offscreen-surface slots and anim state with body assignments in
-// this exact order (all POD), so mirror that rather than a member-init list.
 // FUNCTION: IMPERIALISM 0x005a8350
 TTacticalBattleView::TTacticalBattleView() : TView() {
   tacticalBattle60 = 0;
@@ -966,9 +964,6 @@ void TTacticalBattleView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CP
   }
 }
 
-// Converts a screen point to a clamped hex grid (row, col) for this battle: row from the
-// point's Y over the tile row height, column from viewOriginX + point X (shifted half a
-// tile on odd rows) over the tile width, each clamped into the battle's playable range.
 // FUNCTION: IMPERIALISM 0x005a86d0
 void TTacticalBattleView::ConvertPoint(POINT* screenPoint, int* outRow,
                                                                   int* outCol) {
@@ -1083,9 +1078,6 @@ void TTacticalBattleView::UnitRect(TTacticalUnit* unit, RECT* rectOut) {
   rectOut->top = top;
   rectOut->right = rectOut->left + tileWidthPx;
   int bottom = top + tileRowHeightPx;
-  // Grow the plain tile rect 0x18 px upward and pull the bottom in by 4 for the unit
-  // sprite box; the original stores the plain values first, then the adjusted ones
-  // (double writes kept per the original store order).
   rectOut->top = top - 0x18;
   rectOut->bottom = bottom;
   rectOut->bottom = bottom - 4;
@@ -1096,8 +1088,6 @@ void TTacticalBattleView::MakeTileVisible(TacticalTileIndex tileIndex) {
   int firstVisibleColumn = viewOriginX / tileWidthPx;
   int visibleColumnCount = frameWidth / tileWidthPx;
   int lastVisibleColumn = firstVisibleColumn + visibleColumnCount;
-  // Screen column in whole tiles; odd rows contribute a half-column stagger
-  // (tile grid is 0x1d columns wide, matching TTacticalBattle::tacticalTileStride40).
   int screenColumn = ((tileIndex % 0x1d) * 2 + ((tileIndex / 0x1d) & 1)) / 2;
   if (screenColumn >= firstVisibleColumn + 2 && screenColumn <= lastVisibleColumn - 2) {
     return;
@@ -1116,9 +1106,6 @@ void TTacticalBattleView::MakeTileVisible(TacticalTileIndex tileIndex) {
   RefreshControl();
 }
 
-// Horizontal battlefield scroll: on direction 8 pans left by one tile while origin > 0,
-// on direction 4 pans right by one tile while within the scrollable content width, then
-// repaints and refreshes the unit marker. Gated on the modal-wait-done flag.
 // FUNCTION: IMPERIALISM 0x005a8be0
 void TTacticalBattleView::Scroll(MapScrollEdgeMaskStorage scrollDirection) {
   if (modalAnimWaitDoneFlag) {
@@ -1152,9 +1139,6 @@ void TTacticalBattleView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
   SetCursor(LoadCursorA(0, IDC_ARROW));
 }
 
-// Hover pass: map the cursor to a hex tile, swap in that tile's cursor, and when the
-// hovered tile changed, erase the previous tile's highlight (blit-back from the
-// primary surface) and outline the new one, updating the toolbar's other-side panel.
 // FUNCTION: IMPERIALISM 0x005a8d40
 void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                                               RgnHandle hitArg) {
@@ -1267,8 +1251,6 @@ void TTacticalBattleView::PlayAni(RECT* rect, int effectId, int frameCount,
   // The original calls the init body unconditionally on the new-result (no null guard).
   animation->InitializeOneTimeAnimation(this, rect, static_cast<short>(frameCount),
                                         static_cast<short>(effectId), mode, tileIndex);
-  // The registry stores heterogeneous animation objects; TOneTimeAnimation is
-  // CObject-rooted, not TAnimation-derived, so this is a genuine pun confined here.
   g_pUiAnimator->AddAnimation(
       static_cast<TAnimation*>(static_cast<void*>(animation)));
   BeginModalAnimationWait();
@@ -1285,8 +1267,6 @@ void TTacticalBattleView::PlayAni(RECT* rect, int effectId, int frameCount,
 // FUNCTION: IMPERIALISM 0x005a9240
 void TTacticalBattleView::GlideUnit(TTacticalUnit* unit, TacticalTileIndex fromTileIndex,
                                     TacticalTileIndex toTileIndex) {
-  // VERIFIED: 0x5a9248 reads word [g_pSimMgr + 0x52] = preferenceValues[5]
-  // (preferenceValues[0] is at +0x48), the animation-enable preference gate.
   if (g_pSimMgr->preferenceValues[5] == 0) {
     return;
   }
@@ -1324,8 +1304,6 @@ void TTacticalBattleView::GlideUnit(TTacticalUnit* unit, TacticalTileIndex fromT
   moveAnimUnitOffsetX = fromX - animRect.left;
 
   int spriteLeft = unit->unitTypeC * unitSpriteCellWidth;
-  // Half-column positions decide the facing: moving toward a higher half-column uses
-  // sprite-sheet row 0, otherwise the second row (offset by one cell height).
   int fromHalfColumn = (fromTileIndex % 0x1d) * 2 + ((fromTileIndex / 0x1d) & 1);
   int toHalfColumn = (toTileIndex % 0x1d) * 2 + ((toTileIndex / 0x1d) & 1);
   int spriteTop = (fromHalfColumn < toHalfColumn) ? 0 : unitSpriteCellHeight;
@@ -1398,8 +1376,6 @@ void TTacticalBattleView::DoGlideAni() {
                                        &scratchRect, 0);
     }
 
-    // Draw the unit sprite for this animation frame onto the scratch surface
-    // (transparent-color blit) at its per-frame offset within the anim rect.
     RECT tileRect;
     tileRect.left = colOffsetPx + moveAnimUnitOffsetX;
     tileRect.top = (rowOffsetPx - unitSpriteCellHeight) + moveAnimUnitOffsetY;
@@ -1434,8 +1410,6 @@ void TTacticalBattleView::DoGlideAni() {
                                        &tileRect, 0x24);
     }
 
-    // Composite the finished scratch tile back onto the active surface, clipped to
-    // the view's own frame bounds.
     SetQuickDrawStrokeColor(0xffffff);
     RECT compositeSrcRect = moveAnimScreenRect;
     RECT compositeDstRect = {0, 0, tileWidthPx << 1, tileRowHeightPx * 3};
@@ -1547,10 +1521,6 @@ void TTacticalBattleView::KillSelectionBlink() {
 // FUNCTION: IMPERIALISM 0x005aa670
 short TTacticalBattleView::ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(
     TacticalTileIndex tileIndex) {
-  // Orientation-code -> sprite-facing lookup (built on the stack as 8 dwords, returned
-  // as a short). The code is derived from which of two parity-selected opposite hex
-  // neighbors are trench-deploy tiles (TacticalTileRecord::deployMark == 1): even rows
-  // consult neighbors[0]/[2], odd rows consult neighbors[5]/[3].
   int orientationTable[8] = {6, 3, 5, 1, 6, 0, 2, 4};
   TacticalTileIndex neighbors[6];
   tacticalBattle60->GetNeighborList(tileIndex, neighbors);
@@ -1593,17 +1563,12 @@ void TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(
 
   TacticalTileRecord* tile = &tacticalBattle60->tileGrid4[tileIndex];
   if (tile->deployMark == 1) {
-    // Shift the sprite rect by the unit's facing offset: table indexed by
-    // [unit type][orientation][side] (see g_aTacticalUnitFacingOffsetTable). The unit
-    // type is read before the orientation call (callee-saved register in the original).
     int unitType = unit->unitTypeC;
     short orient = ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(tileIndex);
     POINT* delta = &g_aTacticalUnitFacingOffsetTable[unitType][orient][unit->side20];
     ::OffsetRect(rectOut, delta->x, delta->y);
     return;
   }
-  // Demolitionists (unit types 24-26, the only entries whose category code is 8) do not
-  // get a sprite rect on a trenched tile.
   if (tile->trenchMask != 0 && g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC] ==
                                    EncodeArmyUnitCategory(kArmyUnitCategoryDemolitionist)) {
     rectOut->right = -200;

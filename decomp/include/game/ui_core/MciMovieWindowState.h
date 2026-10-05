@@ -2,16 +2,9 @@
 
 #include "game/mfc.h"
 
-// Only need the MCIWnd control class; skip the AVIFile COM interfaces (avoids
-// pulling in ole2.h).
 #define NOAVIFILE
 #include <vfw.h>
 
-// Small non-polymorphic state block owned by TMovieView (this->movieWindowState). Every
-// member here is a genuine __thiscall method on this struct in the original (verified via
-// listing at 0x492f60/0x492fa0/0x492fc0/0x493090/0x4930d0 — each reads/writes through
-// `in_ECX`, not an explicit pointer argument), not a free function taking the state as a
-// parameter.
 struct MciMovieWindowState {
   MciMovieWindowState(HWND parentHwnd); // 0x492f60
 

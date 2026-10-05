@@ -31,8 +31,6 @@ public:
   int pageCount;                 // 0x70
   int currentPage;               // 0x74
 
-  // Mac name oracle: TTradeBookView::SetItem(short). Rebuilds the buy/sell pages for a
-  // commodity category and updates the book title and paging controls.
   void SetItem(short categorySlot); // 0x5be150
 
   // Mac name oracle: TTradeBookView::ShowPage(long).

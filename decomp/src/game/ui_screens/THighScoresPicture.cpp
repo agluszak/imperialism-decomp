@@ -44,9 +44,6 @@ void THighScoresPicture::DoPostCreate(int arg) {
   }
 }
 
-// Draws the high-scores table: for each positive score row, the rank number ("N. "),
-// the player name, and the score value, each drawn twice (shadow pass in black at
-// +1,+1, then the themed foreground color).
 // FUNCTION: IMPERIALISM 0x00575460
 void THighScoresPicture::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);

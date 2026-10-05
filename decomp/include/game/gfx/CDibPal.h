@@ -5,13 +5,6 @@
 
 #include <mmsystem.h>
 
-// CDibPal: the DIB palette companion to CDib (Prosise / MSDN DIBLOOK lineage), compiled into the
-// game from source. A subclass of MFC CPalette (CPalette : CGdiObject : CObject -- all real MFC,
-// inherited and linked, NEVER modeled here). Slot 0 is inherited from CPalette and returns
-// CPalette's CRuntimeClass at 0x672358; the game-owned vtable at 0x646a68 exists because this
-// subclass overrides the destructor. Adds one field: a transient LOGPALETTE build buffer at +0x08.
-// The asset cache holds a global CDibPal singleton in m_field0.
-//
 // VTABLE: IMPERIALISM 0x00646a68
 class CDibPal : public CPalette {
 public:
@@ -25,11 +18,7 @@ public:
   // Select this palette into the DC (MFC CDC::SelectPalette) and realize it. 0x0047e930
   UINT SelectIntoDcAndRealize(CDC* dc, BOOL background);
 
-  // Debug helper: fills a 16x16 grid of PALETTEINDEX-colored rectangles across `bounds`,
-  // one cell per palette entry (capped at the palette's actual entry count). 0x0047e590
   void DrawPalettePreviewGridRectangles(CDC* dc, RECT* bounds, BOOL bForceBackground);
-  // Reshape this logical palette to the current system-palette layout and mark the
-  // non-static entries PC_NOCOLLAPSE. 0x0047e7a0
   BOOL CreateIdentityPalette();
 
   // Load a RIFF PAL palette, prompting for a file when fileName is null or empty. 0x0047e960

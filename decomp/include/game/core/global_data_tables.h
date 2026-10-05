@@ -1,7 +1,4 @@
 #pragma once
-// Transitional umbrella over per-subsystem global declarations. New semantic globals
-// belong in exactly one owning subsystem header; cross-subsystem state requires a
-// narrowly named owner rather than defaulting to shared_globals.h.
 #include "game/globals/global_types.h"
 #include "game/globals/assets_globals.h"
 #include "game/globals/city_globals.h"

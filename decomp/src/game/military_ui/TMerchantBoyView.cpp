@@ -18,10 +18,6 @@ void TMerchantBoyView::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b6a);
-  // `label` is reused for both the commodity name AND (after being drawn) the
-  // status text below -- ground truth reuses the same stack slot for both, not
-  // two separate locals. `unusedLabel` is constructed and destroyed alongside it
-  // but never read anywhere in the disassembly (same as TNavyBoyView's).
   CString label;
   CString unusedLabel;
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xc, 0x2b6a, 3);

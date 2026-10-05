@@ -16,8 +16,6 @@ public:
 
   TClickZone();
 
-  // The constructor stores sound id 0x1b58 as a word; DoMouseCommand passes it to the
-  // sound player before delegating to the base mouse handler.
   short clickSoundId84;
   unsigned char padding86[2];
 };

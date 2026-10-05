@@ -15,15 +15,9 @@ public:
   // NOOP: verified empty in original 0x005bd223 (no standalone TTradeOfferNationView::TTradeOfferNationView body exists: CreateObject 0x005bd1f0 inlines this default ctor, calling the TView base ctor directly at that site)
   TTradeOfferNationView() {}
 
-  // Original object size is 0x64 (CRuntimeClass m_nObjectSize); the source class ended
-  // at 0x60. The trailing 4 bytes split into two shorts, both read by Draw:
-  // +0x60 indexes g_pTradeMgr->categoryRows[] and is the item arg to
-  // GetBidderList; +0x62 indexes tradeOfferCells[] and is this row's nation slot.
   short categorySlot;
   short nationSlot;
 
-  // Mac oracle: ITradeOfferNationView(TView*, VPoint&, VPoint&, short, short). Dead
-  // standalone emission; InstallViews inlines the same init. 0x005bd280.
   void ITradeOfferNationView(TView* panel, int* offsetLayout, int* sizeLayout,
                              short nation, short category);
 };

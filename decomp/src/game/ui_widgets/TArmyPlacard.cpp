@@ -50,8 +50,6 @@ void TArmyPlacard::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);
 
   if (this->glyph90 != 0) {
-    // Original (0x58bfe0): style (0, 10, 0x2b67) for the main pass and
-    // (0, 10, 0x2b6c) for the offset shadow pass.
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b67);
     countText.Format(g_szDecimalFormat, static_cast<int>(this->glyph90));
 

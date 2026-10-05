@@ -24,10 +24,6 @@ void TTextPictureButton::ITextPictureButton(TView* panel, int* offsetLayout, int
   themeCode9C = themeCodeC;
 }
 
-// Draws the button label twice, offset by one pixel down-right for a drop-shadow/
-// embossed look at themeCode9C, then again at the caret position (no offset) at
-// themeCode9A. Both passes center the text in the button's frame, nudged by 1px when
-// the button is pressed (controlState64 != 0, TControl's mode byte).
 // FUNCTION: IMPERIALISM 0x00572790
 void TTextPictureButton::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);

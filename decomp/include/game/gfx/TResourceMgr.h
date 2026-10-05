@@ -7,23 +7,6 @@
 #include "game/mfc.h"
 #include <afxtempl.h>
 
-// Asset-pack cache. Loads .gob data packs as Windows DLL datafiles
-// (LoadLibraryExA(..., LOAD_LIBRARY_AS_DATAFILE)) into per-slot HMODULE handles; resources
-// are then pulled via the Win32 resource API. The global instance is
-// g_pResourceMgr (0x006a134c). Constructed at 0x00498f60; destroyed (with
-// FreeLibrary on every slot) at 0x00498fe0.
-//
-// The two embedded tables at +0x04 / +0x20 are MFC CMap template specializations (NOT the
-// concrete CMapStringToPtr/CMapPtrToPtr classes): their vtable slot 0 is the *inherited*
-// CObject::GetRuntimeClass (0x00606fba), they default-construct with hash size 17 / block
-// size 10 (the CMap defaults), and their destructors free the hash buffer + CPlex chain with
-// no per-element key/value destruction. Retail operations and the compiler-emitted template
-// bodies establish the exact specializations: resource ids are short keys and object addresses
-// are void* keys; both maps store CacheRecord* values.
-//
-// Their destructors are compiler-emitted at 0x0049ae30 and 0x0049b270. The real
-// `CMap<K,ARG_K,V,ARG_V>` members below emit them naturally; TEMPLATE markers claim
-// those entities in TResourceMgr.cpp.
 struct CacheRecord {
   // NOOP: verified empty in original allocation sites, including 0x00499ed0.
   CacheRecord() {}
@@ -40,9 +23,6 @@ public:
   TResourceMgr();
   ~TResourceMgr(); // 0x00498fe0
 
-  // Load a required .gob pack as a DLL datafile into slot `slot` (0..3), freeing any
-  // previous handle first; shows the missing-file dialog on failure. Returns nonzero if
-  // the resulting slot handle is valid.
   BOOL LoadModuleLibrarySlotWithErrorDialog(LPCSTR path, int slot); // 0x004992a0
   // Load the primary data library into the dedicated +0x4c slot.      0x00499380
   BOOL LoadPrimaryDataLibraryWithErrorDialog(const CString& path);
@@ -54,15 +34,10 @@ public:
   // Bump the reference count for a registered dialog-resource identifier. 0x0049a0b0
   void IncrementRecordRefCountById(short id);
 
-  // Load a localized UI string by (group, index) into `out`. Reached via the global
-  // g_pResourceMgr from many call sites (e.g. TMultiplayerMgr init, low-disk
-  // warning). Real __thiscall method (ECX = this on entry at 0x4994c0).
   int LoadUiStringResourceByGroupAndIndex(CString* out, int group, int index);        // 0x004994c0
   CString LoadLocalizedStringByPackedGroupAndIndex(unsigned int packedGroupAndIndex); // 0x0049a590
   CString LoadLocalizedStringByGroupAndIndex(int group, int index);                   // 0x0049a6c0
 
-  // Load a localized UI string by raw resource id into `out` (falls back to the shared
-  // empty string). Reached via ILT 0x406933; sibling of the (group, index) loader.
   int LoadUiStringResourceById(CString* out, unsigned int stringId); // 0x00499440
 
   // Cached bitmap-surface lookup/load by resource id (primary + slot modules). 0x004997e0
@@ -71,25 +46,14 @@ public:
   // Lazily build and return the shared palette from backdrop bitmap 0x3b6. 0x004995c0
   CDibPal* EnsureDefaultDibPalette();
 
-  // Convert a PALETTEINDEX color through the shared DIB palette to PALETTERGB; leave
-  // literal COLORREF values unchanged. 0x0049ace0
   COLORREF ResolvePaletteIndexColor(unsigned int packedColor);
 
-  // Resolve the shared default LOGPALETTE build buffer:
-  // EnsureDefaultDibPalette()->m_pLogPalette. Real __thiscall at 0x004995a0 (Ghidra's
-  // "TMacViewMgr::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0"; the
-  // ECX receiver is really this cache, not a TMacViewMgr). Used when seeding a new CDib's
-  // color table.
   LOGPALETTE* ResolveDefaultLogPalette(); // 0x004995a0
 
   // Build an indexed 8-bit CDib fallback and cache it by resource id. 0x00499b40
   CDib* BuildIndexedBmpResourceById(short bmpId, int width, int height, int patternMode);
 
-  // Retain the record already indexed by id, or register object in both cache maps.
-  // This retail-only helper currently has no direct call xrefs. 0x00499e80
   void RetainOrRegisterObject(short id, CObject* object);
-  // ResourceMgr.cpp palette-resource overloads. The numeric form accepts either a
-  // 16-bit MAKEINTRESOURCE id or formats a larger id as "#<decimal>".
   BOOL LoadPaletteResourceByName(CPalette* palette, LPCSTR resourceName); // 0x0049aac0
   BOOL LoadPaletteResource(CPalette* palette, unsigned long resourceId);  // 0x0049abd0
 

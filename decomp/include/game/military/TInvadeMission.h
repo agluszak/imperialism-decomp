@@ -4,9 +4,6 @@
 
 class TBeachheadMission;
 
-// Mac: TInvadeMission — TAttackProvinceMission variant that also drives an
-// amphibious TBeachheadMission child (beachhead34) when the target province
-// is not directly reachable overland.
 // VTABLE: IMPERIALISM 0x0065aec0
 class TInvadeMission : public TAttackProvinceMission {
   DECLARE_SERIAL(TInvadeMission)
@@ -19,8 +16,6 @@ public:
   TInvadeMission(TZone* beachheadZone, short targetProvince);
   virtual ~TInvadeMission() override;
 
-  // Mac: CalculatePriority(). Sums the current army cost, derives remaining
-  // city-development resource demand, and returns the larger pressure score.
   float CalculatePriority(); // 0x53f800
 
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x53f640

@@ -11,13 +11,9 @@ public:
   virtual void PopulateArmyOrderPageEntries(TView* panel, int* offsetLayout,
                                             int* sizeLayout); // slot 0x6e 0x4aa540
 
-  // City-record index into TMapMgr::cityScoreTable (0..0x17f); -1 means no selection.
-  // TMilitaryUnit::tileIndex06 carries the same city-record domain at this call site.
   short selectedCityRecordIndex;
   short pad86;
 
-  // The original constructor exists only inline-expanded at its callers: base page ctor,
-  // own vptr, then selectedCityRecordIndex = -1.
   TSuperArmyRoster() : TPageView() {
     selectedCityRecordIndex = -1;
   }

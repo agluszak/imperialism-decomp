@@ -17,8 +17,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/tactical_globals.h"
 
-// The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
-//   CArchive& AFXAPI operator>>(CArchive&, TAttackProvinceMission*&)
 IMPLEMENT_SERIAL(TAttackProvinceMission, TArmyMission, 1)
 
 // FUNCTION: IMPERIALISM 0x0053d6f0
@@ -48,11 +46,6 @@ void TAttackProvinceMission::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x0053d890
 void TAttackProvinceMission::Free() {
-  // The AI-only tail state block (provinceStatus/zoneStatus/...) that
-  // SetProvinceStatus touches lives only on TAutoGreatPower (RTTI
-  // object size proves the other GreatPower subclasses have no room for it); missions
-  // are an AI-only game mechanic, so g_apNationStates[nationId04] here is genuinely a
-  // TAutoGreatPower.
   TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
   nationState->AssertValid();
 
@@ -298,8 +291,6 @@ void TAttackProvinceMission::SetStateByte8To2() {
   state08 = 2;
 }
 
-// Shared with TInvadeMission (COMDAT-folded body; TInvadeMission does not
-// redeclare a `// FUNCTION:` marker for this address, see TInvadeMission.cpp).
 // FUNCTION: IMPERIALISM 0x0053e1a0
 void TAttackProvinceMission::CalculateImportance() {
   short targetProvince = targetProvince30;

@@ -23,10 +23,6 @@ public:
 
   void SetUiColorDescriptorGoldTriplet(bool flag, int colorA, int colorB);
 
-  // --- TDialogBehavior data members (object size 0x24; the TBehavior base ends at 0x10).
-  // field14/18 hold 4-char command codes (default '    ' == "    " == unbound); the
-  // keyboard handlers (slots 0x10/0x11) fire the default command on Enter/Return and the
-  // cancel command on Escape/Delete. ---
   bool armed; // 0x10 — state/flag byte
   unsigned char padding_11_13[0x03];
   unsigned long defaultCommandCode; // 0x14 — command fired on Enter/Return

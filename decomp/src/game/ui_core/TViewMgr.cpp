@@ -125,9 +125,6 @@ const unsigned int kAddrClassDescTViewMgr = 0x0066f0b8;
 
 HCURSOR LoadTurnEventCursorByResourceIdOffset1000(short cursorResourceId);
 
-// `IMPLEMENT_DYNCREATE` emits this static MFC allocation factory. The original allocates
-// 0xfc bytes, installs TViewMgr's vptr, and performs the same initialization as the
-// adjacent real constructor; do not hand-write a factory body.
 IMPLEMENT_DYNCREATE(TViewMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x005d5060
@@ -471,8 +468,6 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   TextStyle styleDescriptor;
   CRect bounds;            // function-scope like the original (0x38): not overlapped with the
   short overlaySfxIds[13]; // sfx table (0x48), so the frame keeps both live regions
-  // The payload is a {-1000 sentinel, resource word} pair. Keep the local dword-sized:
-  // the dialog's picture setter consumes it through the original dword argument slot.
   int payloadResource;
   styleDescriptor.textColor = 0;
   payloadResource = 0;
@@ -641,9 +636,6 @@ static void InitializeGameSetupFromDefaultNationPolicies(GameSetup* setup) {
   }
 }
 
-// Per-mode overlay message/dialog builder: each case composes messageText (and picks
-// the modal's resource word + dialog context) before the tail hands everything to
-// RunNationInfoModalAndReturnNonCancel with the {-1000, resourceId} payload pair.
 // FUNCTION: IMPERIALISM 0x005d6480
 void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
   CString messageText;    // composed modal body (chars/length are passed to the modal)
@@ -762,9 +754,6 @@ void TViewMgr::GetTopLeftFor(TView* dialogView, POINT* outPlacement) {
   int dlgWidth = dialogBounds.right - dialogBounds.left;
   int dlgHeight = dialogBounds.bottom - dialogBounds.top;
 
-  // Center the dialog inside a per-event "design" rectangle, offset by the host
-  // client origin. Most turn-event codes use the default bucket; a handful pick
-  // the wider/taller special buckets.
   int designWidth = 0x276;
   int designHeight = 0x1d1;
   int margin = 0x1e;
@@ -994,15 +983,6 @@ inline void BindCursorPanelAndSetTurnEventCodeRange() {
   }
 }
 
-// The original (0x5d83b0) dispatches vtable slot 0x39 (RefreshControl) on the
-// 'main' panel — a generic refresh that is safe for any screen's main panel.
-// It must NOT be the direct TCouncilView ticker init (0x4fc2e0): on non-council
-// screens (e.g. the combined map, whose 'main' has no can0/can1 children) that
-// misdispatch dereferences a null control and crashes.
-// Binds the shared 'curs' cursor panel on the active dialog and, when 'main' is a
-// TDiplomacyMapView, stamps the terrain index for the pending diplomacy-offer turn
-// event. The original retains a dead out-of-line copy (0x5d8310) beside the two
-// inlined dispatch sites; the definition lives in retail address order below.
 inline void BindCursorPanelAndStampDiplomacyMapTerrain(TView* mainView, short terrainIndex);
 
 inline void RefreshMainPanelControl() {
@@ -1096,11 +1076,6 @@ void TViewMgr::ShowOfferSheet(short respondingNation, short offeringNation, shor
 
 // FUNCTION: IMPERIALISM 0x005d7240
 void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
-  // Ground truth copies both halves of dialogPlacement into a stack POINT in the
-  // prologue (0x5d7266..0x5d7273: reads [this+0xc] then [this+8], stores them to the
-  // ESP0-32/ESP0-28 local pair) and later passes &that local as the factory packet's
-  // anchor (LEA ECX,[ESP+0x18]; PUSH ECX at 0x5d75df) -- so the anchor is this
-  // manager's dialog placement, not the (0,0) we were passing.
   CPoint anchorPoint(dialogPlacement);
   TView* mainView = g_pDisplayMgr->activeDialog;
   SetQuickDrawFillColor(0);
@@ -1671,8 +1646,6 @@ void TViewMgr::SyncTacticalStatusPanelRegion() {
   goldControl->AssertValid();
   goldControl->SyncStatusPanelBounds();
 
-  // The tactical view's owner is the tactical map picture, a TOffLimitsPicture
-  // subclass, so byte 0x1cc is its ForwardCopyRgn.
   TOffLimitsPicture* owner = static_cast<TOffLimitsPicture*>(goldControl->ownerContext);
   owner->AssertValid();
 
@@ -2018,11 +1991,6 @@ void TViewMgr::ShowDealBookScreen(short nationSlot) {
   static_cast<TDealBookPicture*>(mainControl)->Startup(nationSlot);
 }
 
-// Strategic-map screen refresh (turn event 0x7dd). The original is one monolithic body:
-// every control lookup, AssertValid, and nil-check message box is inlined, so the port
-// keeps them inline too (out-of-line helpers would compile to a call sequence the original
-// never emits). Ordering, tag set, and the nil-check source-line arguments are transcribed
-// from the 0x005da360 listing.
 // FUNCTION: IMPERIALISM 0x005da360
 void TViewMgr::ShowTerrainMap(short nationSlot) {
   TView* mainView = g_pDisplayMgr->activeDialog;
@@ -2170,8 +2138,6 @@ void TViewMgr::ShowTerrainMap(short nationSlot) {
   }
   SetControlHoverHelpText(sharedString, orderControl);
 
-  // The three unit rosters ('uciv'/'uarm'/'unav') share a later/next + defend + done
-  // hint-text block; only the first hotspot tag and the 'dfnd' string index vary.
   for (int rosterIndex = 0; rosterIndex < 3; rosterIndex++) {
     unsigned int rosterTag;
     if (rosterIndex == 0) {
@@ -2359,10 +2325,6 @@ void TViewMgr::StartPhaseMovie() {
   }
 }
 
-// Screen-exit backbone: record the followup turn state; when leaving (state 0),
-// re-apply the audio volume preferences and post the followup turn-event code for the
-// current TSimMgr mode (1 -> 0x5dc main menu, 0xe/0x16/0x17 -> 0x7e0,
-// 0x19 -> 0x5eb when the active nation is eligible, else reinitialize).
 // FUNCTION: IMPERIALISM 0x005db620
 void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) {
   this->fieldF8 = followupState;
@@ -2404,9 +2366,6 @@ static void RefreshMainMenuButtonLabel(TView* mainView, unsigned int controlTag,
   control->SetHoverHelpText(*label);
 }
 
-// Main-menu screen setup: resets the background-music cue pools, then
-// configures the 'curs' cursor-info panel's style/theme and finally sets every menu button's
-// localized label (the 'main' council-ticker slot is cleared instead of labeled).
 // FUNCTION: IMPERIALISM 0x005db780
 void TViewMgr::SetUpMainMenuScreen() {
   TView* mainView = g_pDisplayMgr->activeDialog;
@@ -2451,8 +2410,6 @@ void TViewMgr::SetUpMainMenuScreen() {
 // FUNCTION: IMPERIALISM 0x005dbd10
 void TViewMgr::NoOpTurnEventStateVtableSlotFC() {}
 
-// Turn-event 0x5DE (vtable slot 0x100): like the 0x5DF handler, re-asserts and refreshes the
-// 'main' view panel; the original brackets the body with a scoped (empty) CString local.
 // FUNCTION: IMPERIALISM 0x005dbd30
 void TViewMgr::ShowLoadSaveScreen() {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
@@ -2469,8 +2426,6 @@ void TViewMgr::ShowScenarioScreen() {
   mainPanel->RefreshControl();
 }
 
-// Twin of ShowScenarioScreen: re-assert and refresh the active dialog's
-// 'main' council-ticker panel.
 // FUNCTION: IMPERIALISM 0x005dbe10
 void TViewMgr::ShowHighScoreScreen() {
   TView* mainPanel = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagMain);
@@ -2522,11 +2477,6 @@ void TViewMgr::InitializeCitySiteSelectionScreenForNation(int nationSlot) {
   mainPicture->AssertValid();
   mainPicture->DisplayMiniMap();
 
-  // The original loads (0x273f, 4) into the first-declared local and (0x273f, 3) into the
-  // second, then passes the *second* as the title suffix and the *first* as the message
-  // Body evidence at 0x5dc30e: the param-3 copy ctor reads [esp+0x24] (the index-4 local) and at
-  // 0x5dc31f the param-2 copy ctor reads [esp+0x24] (the index-3 local). Keep the
-  // declaration order — it fixes the frame slots — and pass them in that order.
   CString messageBody;
   CString titleSuffix;
   g_pSimMgr->GetString(0x273f, 4, &messageBody);
@@ -2552,8 +2502,6 @@ void TViewMgr::ShowBuildingExpansionDialog(short buildingSlotId, TCity* city,
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf50);
   }
   node->SetModality(true);
-  // MapView.rsrc view 9221's 'DLOG' pict is a TBuildingExpansionView (Mac resource
-  // oracle), whose slots 0x73/0x74 are StuffValues and DoClosingAction.
   TBuildingExpansionView* expansionView =
       static_cast<TBuildingExpansionView*>(node->ResolveControlByTag(kControlTagDialog)); // 'DLOG'
   expansionView->AssertValid();
@@ -2640,8 +2588,6 @@ void TViewMgr::ShowUnitHistory(short nationSlot) {
     lineText = s_szTurnHistoryPrefix_0069b71c + lineText + s_szTurnHistorySeparator_00699320;
     lineText += countText + s_szSpaceSeparator_00695794 + messageText;
 
-    // Mac Transport.rsrc:3901 identifies the twenty history labels as the
-    // consecutive FourCC tags `txtA`..`txtT`.
     TStaticText* textControl = static_cast<TStaticText*>(
         activeDialog->ResolveControlByTag(kControlTagTxtAt + entryOrdinal));
     if (textControl != 0) {

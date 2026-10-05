@@ -20,8 +20,6 @@ public:
 
   TColorKeyPicture();
 
-  // Released through TDisplayMgr::RemoveGWorld both before changing
-  // the picture resource and from Free(), proving the concrete pointer type.
   TQuickDrawSurfaceContext* colorKeySurface94;
 };
 ASSERT_SIZE(TColorKeyPicture, 0x98);

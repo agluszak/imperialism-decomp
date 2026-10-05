@@ -138,16 +138,8 @@ void TUnitOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
   orderSheet->slotByResourceCode[0x3c] = quantity;
 }
 
-// Slot 0x0d: commit the pending recruitment delta for this city order. Civilian recruits
-// are placed on a reachable tile belonging to the selected town's connected region. The
-// retail search is repeated for every recruit because each constructed TCivUnit immediately
-// occupies its chosen tile and changes the next search result.
 // FUNCTION: IMPERIALISM 0x004b73b0
 void TUnitOrder::Produce() {
-  // Ground truth tests the count for EQUALITY with zero and bails first
-  // (cmp word ptr [esi+4], bp / je at 0x4b73ca, with bp just zeroed), then loads
-  // and checks the city separately -- not a combined signed `<= 0 ||` test, which
-  // would also swallow a negative count that retail lets through.
   short pendingDelta = quantity;
   if (pendingDelta == 0) {
     return;
@@ -227,8 +219,6 @@ void TUnitOrder::Produce() {
   }
 }
 
-// The store order (0x48, 0x4c, 0x50, 0x4e, 0x52, 0x54, 0x56) follows the original's
-// interleaved word moves.
 // FUNCTION: IMPERIALISM 0x004b77e0
 void TUnitOrder::ReplaceOrder(short resourceTypeIndex, short nPrimaryInputResourceId,
                                      short nPrimaryInputPerUnit, short nSecondaryInputResourceId,

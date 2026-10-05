@@ -42,20 +42,7 @@ TTacArmyView::~TTacArmyView() {}
 
 IMPLEMENT_DYNCREATE(TTacArmyView, TTacticalBattleView)
 
-// Live battle-view initializer (not a real constructor despite the symbols.csv name):
-// caches the tactical tile / sprite metric globals, (re)allocates the offscreen
-// battlefield surface and renders the per-composition backdrop bitmap
-// (compositionClass + 0xf0a) into it (plus the 286x450 fort strip 0xf0e on the right
-// edge when the site is fortified), loads the unit/fort/effect sprite atlases, wires
-// the 'tool' toolbar and 'coat' picture to the battle, and refreshes the view.
-// Everything past the backdrop-loader null test is skipped when the backdrop bitmap
-// is missing (the loader handle then leaks, as in the original).
-// Listing 0x005a9d90 inlines the loader's exact-type non-virtual destructor.
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
-// Fort-wall edge kinds for the tactical grid: a closed file-local domain derived from
-// a tile's deploy-mark parity and that of its left neighbour. The wall-sprite column
-// is computed as (edgeKind + wallCol), and each non-zero kind selects a different
-// wall-neighbour tile offset, so the values are load-bearing, not flags.
 enum FortWallEdgeKind {
   kFortWallEdgeNone = 0,
   kFortWallEdgeEvenRowRight = 1,
@@ -93,8 +80,6 @@ void TTacArmyView::StuffValues(int compositionClass, TArmyBattle* battle) {
 
   TQuickDrawSurfaceContext* savedContext;
   GetGWorld(&savedContext, &savedFlags);
-  // Two rect buffers reused across every init/blit below (the original's frame holds
-  // exactly two RECT locals).
   RECT bounds;
   RECT overlayBounds;
   bounds.top = 0;
@@ -191,10 +176,6 @@ void TTacArmyView::StuffValues(int compositionClass, TArmyBattle* battle) {
 }
 IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 
-// Presents the battle view: blits the scrolled backdrop slice from
-// battlefieldSurface64 into the primary render surface, draws all 0x1b3 tiles inside
-// a saved/restored QuickDraw clip, presents to the restored active surface, then
-// draws the UI overlay.
 // FUNCTION: IMPERIALISM 0x005aa2e0
 void TTacArmyView::Draw(RECT* rectBuffer) {
   int savedFlags = 0;
@@ -207,8 +188,6 @@ void TTacArmyView::Draw(RECT* rectBuffer) {
   LockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
   LockPixels(GetGWorldPixMap(battlefieldSurface64));
 
-  // Backdrop source-x origin: the battlefield bitmap is right-aligned inside the
-  // 0x1d-column grid, shifted by the current horizontal scroll.
   battlefieldOriginOffsetX = static_cast<short>((0x1d - tacticalBattle60->battlefieldColumnCount) *
                                                 static_cast<short>(tileWidthPx));
   int sourceOffsetX = battlefieldOriginOffsetX + viewOriginX;
@@ -282,9 +261,6 @@ void TTacArmyView::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x005aa900
 void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
-  // Ground truth clears these three byte locals in the prologue (0x5aa90a's
-  // mov byte ptr [esp+0x13]/[esp+0x27]/[esp+0x53], al off a single xor eax,eax),
-  // so they are function-scope zero-initialized rather than declared at first use.
   bool wallBreached = false;
   bool gunSlotRow = false;
   bool gunSlotOccupied = false;
@@ -300,8 +276,6 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     return;
   }
 
-  // Painted tile corners: the right half is dropped when the tile pokes past the view
-  // content width.
   RECT halfRect;
   RECT* corners;
   if (frameWidth < tileScreenRect.right) {
@@ -322,9 +296,6 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
   int rowParity = hexRow & 1;
   int sideSlot = rowParity + (tileIndex % 0x1d) * 2;
 
-  // Fort-wall edge classification for this tile. The four values are a closed local
-  // domain: the wall-sprite column is computed as (edgeKind + wallCol), and each
-  // non-zero kind selects a different wall-neighbour tile offset.
   TacticalTileRecord* grid = tacticalBattle60->tileGrid4;
   short edgeKind = kFortWallEdgeNone;
   if (rowParity == 0) {
@@ -341,8 +312,6 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     edgeKind = kFortWallEdgeOddRow;
   }
 
-  // The even-row-left kind describes the wall owned by the PREVIOUS tile, so its garrison
-  // probe uses tileIndex - 1 (0x005aaabb in the original), not tileIndex.
   if (((edgeKind == kFortWallEdgeEvenRowRight || edgeKind == kFortWallEdgeOddRow) &&
        !tacticalBattle60->HasFortWallGarrison(tileIndex)) ||
       (edgeKind == kFortWallEdgeEvenRowLeft &&
@@ -366,10 +335,6 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     }
   }
 
-  // Deployment-phase crosshair on an empty selectable tile: a 5px horizontal tick plus
-  // three 3px strokes centred on the tile, in fore colours 0x35 then 0x34
-  // (0x005aab15..0x005aac1e). The centre is the tile rect's own midpoint -- not the
-  // clipped paint rect -- and the outer gate is the hex row index, not its parity.
   if (tacticalBattle60->battleLive10 == 0 && hexRow > 0) {
     g_pViewMgr->SetForeColor(0x35);
     if (tacticalBattle60->ApplyGridColumnSelectionGuard(tileIndex) &&
@@ -398,8 +363,6 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
   // Trench overlay: pick the segment sprite from the per-tile 6-bit direction mask.
   short trenchSpriteBase = 0;
   if (grid[tileIndex].trenchMask != 0) {
-    // Symmetric 6x6 lookup keyed by the two set direction bits; transcribed from the
-    // in-frame initializer at 0x005aac49..0x005aad97.
     int segmentPairSprite[36] = {0,    0x0e, 0x0a, 0x07, 0x14, 0x0d, 0x0e, 0,    0x13,
                                  0x11, 0x09, 0x15, 0x0a, 0x13, 0,    0x0c, 0x10, 0x08,
                                  0x07, 0x11, 0x0c, 0,    0x12, 0x0b, 0x14, 0x09, 0x10,
@@ -455,8 +418,6 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
 
   short fortCell = 0;
 
-  // Fort-wall bitmap for odd-row wall tiles. The retail pass also draws the unit
-  // that bleeds across this wall edge, then caps the wall with the next sprite cell.
   if (grid[tileIndex].deployMark == 1) {
     fortCell = ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(tileIndex);
     short fortSpriteCell = static_cast<short>(fortCell * 3);
@@ -537,10 +498,6 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     SetQuickDrawStrokeColor(0xffffff);
   }
 
-  // Trench-connection markers into the neighbouring tiles. The link tests walk the real
-  // adjacency list (0x005ab422..0x005ab4d4), not a fixed +/-0x1d,0x1c stride: even rows use
-  // neighbours 4/5/3, odd rows use neighbours 1/0/2, and a link is only considered once the
-  // "anchor" neighbour (4 resp. 1) is itself a wall tile.
   unsigned char trenchLink[4] = {0, 0, 0, 0};
   if (rowParity == 0) {
     const TacticalTileIndex anchor = tileNeighbors[4];
@@ -584,10 +541,6 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
   TTacticalUnit* occupant = grid[tileIndex].occupant4;
   if (occupant != 0) {
     if (occupant == tacticalBattle60->selectedUnit1c) {
-      // The blink animation registered under tag 0x2711 picks the outline colour from a
-      // two-entry palette table by its current frame index; with no animation registered
-      // the outline falls back to palette index 0x13 (0x005ab609..0x005ab695). The second,
-      // inset pass is always drawn in palette index 0.
       short selectionPalette[2] = {0x13, 0};
       TAnimation* blink = g_pUiAnimator->FindRegisteredAnimationByTag(0x2711);
       RECT selectionRect = tileScreenRect;
@@ -671,8 +624,6 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     barRect.right = barRect.left + (occupant->strength4 + 0x18) / 0x19;
     FillRectWithQuickDrawBrushAndContextOffset(&barRect);
     g_pViewMgr->SetForeColor(0x34);
-    // Second stat bar reads the derived unit's morale at +0x34 (army occupants are
-    // TArmyTacUnit); the base TTacticalUnit's +0x30 is the attack-target pointer, not a bar.
     barRect.right = barRect.left + (static_cast<TArmyTacUnit*>(occupant)->morale34 + 0x18) / 0x19;
     FillRectWithQuickDrawBrushAndContextOffset(&barRect);
 
@@ -709,8 +660,6 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     }
   }
 
-  // Per-tile animation redraw hook. Retail keys this lookup by the tactical tile and
-  // skips it entirely for an empty non-wall tile.
   if (occupant != 0 || edgeKind != kFortWallEdgeNone) {
     TAnimation* selectionAnim = g_pUiAnimator->FindRegisteredAnimationByTag(tileIndex);
     if (selectionAnim != 0) {

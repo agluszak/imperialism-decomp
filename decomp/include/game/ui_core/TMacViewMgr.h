@@ -37,9 +37,6 @@ public:
                                               short nationSlot); // slot 0x0f 0x50bbc0
   virtual void SyncSellTaggedChildControlWithNationState(TView* view, short orderSlot,
                                                          short nationIndex); // slot 0x10 0x50bc50
-  // (resourceSlot, nationIndex, hostView) -- RET 0xc proves three args. arg2 indexes
-  // g_apNationStates (0x0050bed6), arg1 is the ledger row compared against -1
-  // (0x0050bedd), arg3 is the host view the 'tota' panel is resolved on (0x0050befb).
   virtual void
   ShowTransportEntry(short resourceSlot, short nationIndex,
                                                   TView* hostView); // slot 0x11 0x50bea0
@@ -53,8 +50,6 @@ public:
                                                               TCityProductionView* productionView,
                                                               short savedX,
                                                               short savedY); // slot 0x14 0x50d470
-  // Mac CodeWarrior oracle signatures. `closeAfterOpen` selects the modal path,
-  // which consumes the dialog and therefore returns null.
   virtual TBuildingView*
   OpenBuildingWindow(short buildingSlot, TCity* city, bool closeAfterOpen, bool isEmbeddedPage,
                      TCityProductionView* productionView); // slot 0x15 0x50d360
@@ -106,9 +101,6 @@ public:
   TQuickDrawSurfaceContext* atlas694[8];
   TQuickDrawSurfaceContext* atlas6b4;
   TQuickDrawSurfaceContext* atlas6b8;
-  // One contiguous mask table. DrawOneTile indexes the first 32 entries by normalized
-  // river/coast sprite code; the final twelve entries are also the two six-direction
-  // road/rail mask families. The former three-array model hid that shared indexing.
   StrategicMapCallbackRecord strategicTileMasks[0x24];
   int fieldD7c;
   int fieldD80;

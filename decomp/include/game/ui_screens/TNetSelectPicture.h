@@ -14,8 +14,6 @@ public:
                        TEvent* event) override; // slot 0x0f 0x005769c0
   virtual void DoPostCreate(int arg) override;  // slot 0x37 0x5769a0
 
-  // NOOP: verified empty in original 0x004544c4 (trivial inline ctor: the builder
-  // expansion site emits only the base ctor call + vtbl install)
   TNetSelectPicture() {}
 };
 ASSERT_SIZE(TNetSelectPicture, 0x94);

@@ -26,8 +26,6 @@ void TCityTask::ICityTask(short citySlotType, TCity* owner, short amount) {
   serializedTaskKind = 1;
 }
 
-// Resource-slot tasks use direct transport. Production-slot tasks fill the selected
-// order and queue any prerequisite work needed to satisfy the request.
 // FUNCTION: IMPERIALISM 0x005adde0
 bool TCityTask::Execute(TTaskList* taskList) {
   bool fullySatisfied = true;

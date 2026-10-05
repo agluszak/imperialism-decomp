@@ -18,8 +18,6 @@ public:
 
   TNavyRoster();
 
-  // StuffValues stores its task-force argument, resolves 'cls0'..'cls3' as a real
-  // contiguous TView* array, and then builds one line per linked task-force entry.
   TTaskForce* taskForce88;
   int unresolvedZero; // constructor-only zero dword
   TView* classControls[4];

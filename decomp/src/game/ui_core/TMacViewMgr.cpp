@@ -84,8 +84,6 @@ static void CopyViewLayoutFieldsToStack(int* layout0, int* layout1, TControl* sr
 static void ScanBracketExpressionsInto(CString* dest, const CString& templateText,
                                        const CString& token1, const CString& token2,
                                        const CString& token3) {
-  // The scanner is variadic: omitting these three source CString values made [1]-[3]
-  // consume unrelated stack slots and corrupted the transport ledger hover text.
   scanBracketExpressions(g_pSimMgr, dest, static_cast<LPCSTR>(templateText),
                          static_cast<LPCSTR>(token1), static_cast<LPCSTR>(token2),
                          static_cast<LPCSTR>(token3));
@@ -444,9 +442,6 @@ void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
   SetGWorld(atlas668, savedFlags);
   LockPixels(GetGWorldPixMap(atlas668));
   ResetQuickDrawStrokeState();
-  // atlas668 is a single 51-cell horizontal strip. The returned tile offsets are byte
-  // offsets into this row, so wrapping the resources into multiple rows corrupts every
-  // lookup after the second cell.
   dstX = 0;
   index = 0;
   while (index < 0x2a) {
@@ -684,10 +679,6 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
     }
     tileIndex = tileIndex + 1;
   }
-  // The original keeps two distinct pointers here: a fresh surface base for both
-  // 216x120 copies, and base+two rows for the interior smoothing pass. Reusing the
-  // latter for the copies shifts the mini-map by two rows and reads/writes beyond the
-  // 120-row surface, which shows up as stray pixels around the atlas edge.
   unsigned char* surfaceBase = GetPixBaseAddr(surfaceObject);
   unsigned char* smoothingBase = surfaceBase + strideBytes * 2;
   scratchBuffer = new unsigned char[0x6540];
@@ -710,10 +701,6 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
     }
   }
   {
-    // rowStart tracks the row origin (advances by strideBytes once per outer
-    // iteration); compareRow is a fresh per-row cursor reset from it -- the original
-    // (pcVar9/pcVar10 at 0x0050b640) keeps these separate so the inner loop's 214
-    // single-byte steps never bleed into the row stride advance.
     unsigned char* rowStart = smoothingBase + 1;
     unsigned char* scratchRow = scratchBuffer + 0x1b1;
     int edgeRow = 0x70;
@@ -738,9 +725,6 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
         edgeCol = edgeCol - 1;
       }
       rowStart = rowStart + strideBytes;
-      // The inner loop already advances scratchRow by 214 bytes. The retail ADD
-      // ESI,2 at 0x50b866 completes the 216-byte row stride; adding three here
-      // shifts every following row and scatters isolated nation-color pixels.
       scratchRow = scratchRow + 2;
       edgeRow = edgeRow - 1;
     }
@@ -851,8 +835,6 @@ void TMacViewMgr::SyncSellTaggedChildControlWithNationState(TView* view, short o
     view->Show(0, 0);
   }
   short sellCount = g_apNationStates[nationIndex]->GetTradeOffersFor(orderSlot);
-  // The clamp branch resets the nation index used by the trailing capacity check below to
-  // 0 (matches the original: it reuses the same stack slot that held nationIndex).
   short effectiveNationIndex = nationIndex;
   if (sellCount > 0 && g_apNationStates[nationIndex]->merchantCapacity == 0) {
     g_apNationStates[nationIndex]->SetItemPotentials(orderSlot, 0);
@@ -895,12 +877,6 @@ TView* TMacViewMgr::MakeBookDialog(int dialogId) {
   return dialog;
 }
 
-// Refreshes one ledger row of the transport screen -- or the capacity total when
-// resourceSlot is -1. The caller walks every row, so this is where an unavailable good
-// gets greyed out. RET 0xc proves three arguments: the port previously declared one and
-// looked the nation up with `g_apNationStates[resourceSlot]`, indexing the nation table
-// with a resource index, which handed every row another nation's non-zero needs and left
-// the whole ledger enabled.
 // FUNCTION: IMPERIALISM 0x0050bea0
 void TMacViewMgr::ShowTransportEntry(short resourceSlot,
                                                                   short nationIndex,
@@ -1191,11 +1167,6 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot,
 
   SetControlHoverHelpText(displayText, panel);
 
-  // A row with nothing available is greyed out and loses its stepper arrows entirely:
-  // the original calls slot 7 (`CALL [edx+0x1c]` at 0x0050cae2 / 0x0050cb1c), which is
-  // TView::Free -- destroying the placeholder control -- not slot 0x1c
-  // BecameWindowTarget at vtable offset 0x70. Confusing the slot index with the byte
-  // offset left every placeholder arrow sprite alive on screen.
   if (needCurrent == 0) {
     panel->Show(0, 0);
     TControl* leftArrow = ResolveTaggedChildOrFail(panel, kControlTagLeft);
@@ -1205,8 +1176,6 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot,
     return;
   }
 
-  // Same slot-7 Free: the placeholder 'left'/'rght' controls are destroyed after their
-  // layout is copied, and a live TRightLeftView is built in each one's place.
   TControl* leftSource = ResolveTaggedChildOrFail(panel, kControlTagLeft);
   int leftLayout0[2];
   int leftLayout1[2];
@@ -1364,9 +1333,6 @@ void TMacViewMgr::MakeCountryRegion(int country) {
   TQuickDrawSurfaceContext* savedContext;
   int savedFlags;
   RECT resourceBounds;
-  // The original reuses the incoming argument's stack slot as the out-context of
-  // MakeNewGWorld; the previous port misread that slot as
-  // resourceBounds.right and passed the rect width around as a "context".
   TQuickDrawSurfaceContext* tileSurface = 0;
   countryRegions[country] = NewRgn();
   GetGWorld(&savedContext, &savedFlags);
@@ -1392,8 +1358,6 @@ void TMacViewMgr::MakeCountryRegion(int country) {
     BitMapToRegion(countryRegions[country], *surfaceHandle);
   }
   g_pDisplayMgr->RemoveGWorld(tileSurface);
-  // Faithful to the original: the slot is already zeroed here, so this reads
-  // *(0 + 0x24) — benign on the Win9x null page the game shipped against.
   UnlockPixels(GetGWorldPixMap(tileSurface));
   SetGWorld(savedContext, savedFlags);
 }

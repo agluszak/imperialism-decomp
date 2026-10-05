@@ -56,8 +56,6 @@ void TTown::ReadFrom(TStream* stream) {
   stream->ReadBytes(&transportLinked, 1);
   stream->ReadBytes(&enabledFlag, 1);
   stream->ReadBytes(&hasAdjacentCity, 1);
-  // Saves older than 0xa predate the flag and default it on; newer ones carry it as a
-  // plain 1-byte read (slot 0x44), not the polymorphic object read at slot 0xb0.
   if (g_nSaveFormatVersion < 0xa) {
     activeFlag = true;
   } else {
@@ -74,8 +72,6 @@ void TTown::WriteTo(TStream* stream) {
   stream->WriteBytes(&field18, 2);
   stream->WriteBytes(&createdTurnTick, 2);
   stream->WriteBytes(&ownerNation, 2);
-  // Element-wise with a byte swap, mirroring ReadFrom: a raw block write here emitted
-  // host-order shorts that the reader then swapped, corrupting every yield on reload.
   WriteShortArrayElems(stream, resourceYieldByType, kResourceKindCount);
   stream->WriteBytes(&transportLinked, 1);
   stream->WriteBytes(&enabledFlag, 1);

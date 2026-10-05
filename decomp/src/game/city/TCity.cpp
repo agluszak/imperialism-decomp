@@ -525,8 +525,6 @@ void TCity::ProduceUnits() {
   int remaining = 8;
   do {
     if (*shipCursor != 0) {
-      // The original constructs a scratch CString here that it never reads; it exists
-      // only to bracket the loop body in an EH frame (ctor + dtor each iteration).
       CString scratch;
       short pendingCount = (*shipCursor)->quantity;
       short tileId = (*shipCursor)->resourceTypeIndex;

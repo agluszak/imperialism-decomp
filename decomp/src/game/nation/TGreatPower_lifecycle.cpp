@@ -425,13 +425,6 @@ void TGreatPower::ReadFrom(TStream* stream) {
       this->city = 0;
     }
   } else {
-    // A byte, not an int: the mask lives in BL and every arm tests it with `TEST BL,imm`
-    // (0x4d966e / 0x4d96e6 / 0x4d97e0). Each arm is written present-first, because the
-    // original branches JZ to the absent case -- the fall-through is the present one.
-    // Two shapes repeat in all four arms and neither is what the port had:
-    //   * the minister is re-read from the member for ReadFrom (0x4d96bf), and the call
-    //     is unconditional -- there is no null test after the create
-    //   * the `= 0` in the absent arm sits AFTER the free-if, not inside it (0x4d96dc)
     char ministerMask = stream->ReadByte();
 
     if ((ministerMask & 1) != 0) {
@@ -486,11 +479,6 @@ void TGreatPower::ReadFrom(TStream* stream) {
     }
   }
 
-  // Both collections reload their list pointer from the object at every use
-  // ([esi+0x898] / [esi+0x89c] throughout 0x4d9800..0x4d98e5), and both counts land in
-  // the same stack slot (esp+0x10 at 0x4d9826 and 0x4d98dc) -- one scratch int, no
-  // cached list locals. The new-expressions carry no null test either: the only branch
-  // is the compiler's own skip-the-constructor test (0x4d9856 / 0x4d990c).
   if (this->townMarkerList->GetCount() != 0) {
     this->townMarkerList->FreePayloads();
   }
@@ -504,9 +492,6 @@ void TGreatPower::ReadFrom(TStream* stream) {
     this->townMarkerList->AddTail(townMarker);
   }
 
-  // 0x4d989d: the ordinal is 1, not GetEntryByOrdinal's default of 0 -- a 0 ordinal
-  // reaches CPtrList::FindIndex(-1) and faults. The original also guards on the city
-  // existing (0x4d9893) before selecting into it.
   if (entryCount > 0 && this->city != nullptr) {
     this->city->SetSelectedTownMarker(
         static_cast<TTown*>(this->townMarkerList->GetEntryByOrdinal(1)));
@@ -517,9 +502,6 @@ void TGreatPower::ReadFrom(TStream* stream) {
   }
   this->trackedObjectList->ReadFrom(stream);
 
-  // Count-driven, not a fixed four: the original runs EBX from 1 while EBX <= the count
-  // it just read (0x4d98f0 / 0x4d9941). A hardcoded bound reads the wrong number of
-  // TCivUnit records and desyncs everything after this nation.
   stream->ReadBytes(&entryCount, 4);
   for (int orderOrdinal = 1; orderOrdinal <= entryCount; ++orderOrdinal) {
     TCivUnit* civOrderObj = new TCivUnit();
@@ -527,10 +509,6 @@ void TGreatPower::ReadFrom(TStream* stream) {
     civOrderObj->ReadFrom(stream);
   }
 
-  // At 0x4d9954 the 0x17-byte candidate flag block is read straight after the civilian-order
-  // loop and before the budget fields. WriteTo has always emitted it (0x4d9e9c), so
-  // omitting it here left every nation record 23 bytes short and desynced the rest of
-  // the stream from this point on.
   stream->ReadBytes(this->enemyFlags, 0x17);
 
   stream->ReadBytes(&this->diplomacyBudgetBase, 4);
@@ -628,9 +606,6 @@ void TGreatPower::WriteTo(TStream* stream) {
     this->city->WriteTo(stream);
   }
 
-  // Written out per-list (not via WriteTrackedListToStream): the original re-reads the
-  // member field for every list operation instead of caching the pointer in a register,
-  // and its entry count lives in the dead `stream` argument stack slot.
   this->townMarkerList->WriteTo(stream);
   {
     int entryCount = this->townMarkerList->GetCount();

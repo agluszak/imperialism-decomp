@@ -36,8 +36,6 @@ short TArmyMission::GetPresentLocation() const {
   return presentLocation;
 }
 
-// The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
-//   CArchive& AFXAPI operator>>(CArchive&, TArmyMission*&)
 IMPLEMENT_SERIAL(TArmyMission, TMission, 1)
 
 // FUNCTION: IMPERIALISM 0x0053c0a0
@@ -123,14 +121,9 @@ void TArmyMission::ReadFrom(TStream* stream) {
     requiredEquipageByClass[4] = 0.0f;
   } else {
     stream->ReadBytes(&requiredEquipageByClass[0], 0x14);
-    // In-place four-byte reverse over the whole array (0x53c420), not a per-element
-    // load/swap/store through a temporary.
     ReverseDwordArrayBytes(requiredEquipageByClass, 5);
   }
 
-  // The nation and its unit list are re-read on every iteration, and the ordinal is read
-  // after them -- both follow from writing the lookup as one receiver expression, which
-  // is the order 0x53c46a..0x53c48e evaluates.
   int count = stream->ReadInteger();
   while (count-- != 0) {
     TSortedList* unitList = g_apNationStates[nationId04]->militaryUnitList44;
@@ -245,9 +238,6 @@ float TArmyMission::ComputeProvinceImportance(short provinceIndex) {
   return importance / 5000.0f;
 }
 
-// Nation-parameterized province score used by army mission selection. The Windows body is
-// a genuine two-argument free function; unlike TArmyMission::ComputeProvinceImportance it
-// does not read a mission receiver.
 // FUNCTION: IMPERIALISM 0x0053c880
 float ComputeProvinceImportanceForNation(short provinceIndex, short nation) {
   Province& province = g_pGlobalMapState->cityScoreTable[provinceIndex];

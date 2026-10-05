@@ -8,11 +8,6 @@
 class TCommandHandler;
 class TEventHandler;
 
-// TObject-derived turn-event command base. Its constructor (0x00487820) installs
-// the 0x648e28 vtable and zeroes its five payload fields (the trivial TObject
-// base ctor is inlined). The native vtable is the TObject 10-slot shape plus the
-// two new command virtuals at bytes 0x28/0x2c. Derived commands (e.g.
-// TNextTradeCommand) override slots 0/1 (GetRuntimeClass/dtor) and 0x0b.
 // VTABLE: IMPERIALISM 0x00648e28
 class TCommand : public TEvent {
 public:
@@ -23,24 +18,13 @@ public:
   virtual void Process(); // slot 0x0a byte 0x28 0x487900; Mac oracle TCommand::Process()
   virtual void DoIt();    // slot 0x0b byte 0x2c 0x487a00
 
-  // commandNumber/dispatchMessage/sourceHandler/targetHandler inherited from TEvent.
-  // ICommand writes commandNumber==dispatchMessage and targetHandler==targetContext;
-  // whether the duplicates ever diverge is unconfirmed.
   TCommandHandler* targetContext; // 0x14
 
   TCommand();
 
-  // 0x004878a0 — the MacApp two-phase initializer: every call site is a `new` followed
-  // immediately by this call. Seeds the command payload, resolving a default context
-  // when itsContext is null. RET 0x14 confirms the five-argument thiscall shape, and
-  // only the first two are read; the trailing three are carried for the MacApp
-  // signature. Mac oracle: TCommand::ICommand(long, TCommandHandler*, unsigned char,
-  // unsigned char, TObject*) — name and parameter types from there (Hard Rule 12).
   void ICommand(long itsCommandNumber, TCommandHandler* itsContext, unsigned char canUndo,
                 unsigned char causesChange, TObject* itsChangedObject);
 
-  // Inline for the same reason as TEvent::~TEvent: command subclasses in the retail
-  // build fold the trivial destructor chain directly to the CObject vtable reset.
   // FUNCTION: IMPERIALISM 0x00487880
   virtual ~TCommand() override {}
 };

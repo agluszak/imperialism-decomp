@@ -126,8 +126,6 @@ short TForeignMinister::GetRankingCriterionForGP(short nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x0052f4b0
 void TForeignMinister::InitializeTradeStatus() {
-  // Seven-byte fill of the partner flags (bytes 0x49-0x4f) with 0x01; MSVC inlines it as
-  // a 0x01010101 dword + word + byte store.
   memset(this->tradePartnerEnabled49, 1, 7);
   TGreatPower* ownerGP = this->greatPower;
   this->capabilityFlag16 = 0;
@@ -488,13 +486,6 @@ void TForeignMinister::DoDevelopmentGrants() {
   relationshipList->ReleasePtrList();
 }
 
-// Proposes minor-nation treaties, alliance responses to stronger rivals, and peace actions
-// driven by relation freshness, comparative strength, and former-province ownership.
-// Every branch and side effect in the 1,359-byte original is represented here. Residual
-// divergence is frame/register shape, not missing behaviour: the original walks the
-// minor-nation array through a live pointer (CMP dword ptr [EBP],0 / re-read per use)
-// where this reads it by index, and it carries one extra byte local at [ESP+0x13],
-// zeroed on entry, whose reader has not been located in the listing yet.
 // FUNCTION: IMPERIALISM 0x00530200
 void TForeignMinister::DoProposeTreaties() {
   for (short minorNation = 7; minorNation < 0x17; ++minorNation) {

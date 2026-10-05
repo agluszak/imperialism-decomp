@@ -30,9 +30,6 @@ TEditText::~TEditText() {
     delete this->editFont;
     this->editFont = nullptr;
   }
-  // `text` is freed by the inherited TStaticText::~TStaticText() base
-  // destructor (the original inlines that base cleanup into this same
-  // function; our real-inheritance model calls it via chaining instead).
 }
 
 // FUNCTION: IMPERIALISM 0x004905e0
@@ -58,10 +55,6 @@ void TEditText::Close() {
 
 // FUNCTION: IMPERIALISM 0x004906a0
 void TEditText::Draw(RECT* rectBuffer) {
-  // Open() lazily creates the live edit control the first time this paints; the static
-  // text draw is only the fallback for a control that cannot host one.
-  // Explicitly qualified: 0x004906a3 is a direct CALL to TEditText::Open, not a dispatch
-  // through slot 0x27 (byte 0x9c). An unqualified Open() here compiles to the virtual call.
   if (TEditText::Open() == nullptr) {
     TStaticText::Draw(rectBuffer);
   }
@@ -100,9 +93,6 @@ void TEditText::Show(int enabledState, int refreshFlag) {
 // FUNCTION: IMPERIALISM 0x004907a0
 CWnd* TEditText::Open() {
   if (editWindow == 0 && viewEnabled != 0 && enabled != 0 && nativeWindow50 != 0) {
-    // The original allocates 0x3c bytes and stores the 0x0064afd8 vtable — the
-    // dedicated edit-host class, not CMcWindow (0x0064b7c8) and not the plain
-    // CWnd the base ctor writes.
     editWindow = new CMcEditWindow;
     if (editWindow == 0) {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -125,8 +115,6 @@ CWnd* TEditText::Open() {
     }
 
     CRect editBounds;
-    // Qualified: CEdit's 4-argument Create hides the generic CWnd surface, and
-    // the original makes a direct (non-virtual) call here.
     editWindow->CWnd::Create("EDIT", 0, editStyle, *GetQDExtent(&editBounds), nativeWindow50,
                              static_cast<UINT>(controlTag));
 
@@ -161,9 +149,6 @@ char TEditText::BecomeTarget() {
   return 1;
 }
 
-// Shared tail with Close (editWindow/editFont release), then the
-// generic TView::Free() body (child list drain, owner detach, active-view
-// handoff, linkedResourceOwner release, delete this).
 // FUNCTION: IMPERIALISM 0x00490ad0
 void TEditText::Free() {
   if (editWindow != nullptr) {

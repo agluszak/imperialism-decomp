@@ -19,21 +19,9 @@ public:
   ~TCapacityOrder() override {}
 
   void Produce() override; // slot 0x0d 0x4b8dd0
-  // MacApp-style initializer: `new TCapacityOrder()` then ICapacityOrder(...), which is
-  // how TCity builds it. This is the ONLY construction path -- 0x004b8d50 does the field
-  // initialization, including the trackingSlots clear.
   virtual void ICapacityOrder(TCity* city, short resourceType, short primaryInputResource,
                               short secondaryInputResource,
                               short productionSlot); // slot 0x12 0x4b8d50
 
-  // No FillOrderSheet override here: TCapacityOrder's vtable slot 0x10 is byte-identical
-  // to TItemOrder's (confirmed via direct vtable read), so it inherits TItemOrder's
-  // FillOrderSheet unchanged. The real logic once misfiled here as this class's own
-  // FillOrderSheet was actually TShipOrder::FillOrderSheet (0x004b8b80) -- moved there.
-  // No own fields: RTTI proves TCapacityOrder is exactly TItemOrder's size (0x54).
-  // quantity/ownerCity/productionSummary/trackingSlots/reservedWorkforce/limitingConstraint are
-  // TProductionOrder's own fields (accumulatedValue is field44/resourceTypeIndex is
-  // shared too); requestedQuantity4c/primaryInputResourceId/secondaryInputResourceId/
-  // productionSlot are TItemOrder's own fields -- use the inherited names directly.
 };
 ASSERT_SIZE(TCapacityOrder, 0x54);

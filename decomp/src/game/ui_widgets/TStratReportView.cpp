@@ -20,8 +20,6 @@ TStratReportView::TStratReportView() : TView() {}
 // FUNCTION: IMPERIALISM 0x0058e420
 TStratReportView::~TStratReportView() {}
 
-// Draws the battle-outcome header: fills the background, then "Battle of <location>",
-// "Winner: <country>" with its per-unit-type counts, and "Loser: <country>" with its.
 // FUNCTION: IMPERIALISM 0x0058e460
 void TStratReportView::Draw(RECT* rectBuffer) {
   SetQuickDrawFillColor(0xffffff);

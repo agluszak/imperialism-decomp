@@ -103,12 +103,6 @@ void TTransportPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
   TControl::DoEvent(commandId, sourceHandler, event);
 }
 
-// Paints the ledger gauge, then updates its caption. The bar is drawn as two abutting
-// fills -- track start to marker in the row's own colour, marker to track end in the
-// empty-track colour 0x3b -- with an optional 2px limit marker underneath. Every fill is
-// bracketed by ClipRect/SetClip against a scoped GetClip so it cannot bleed outside the
-// gauge; the CTemporaryRegion holding that saved clip is the function's outermost object
-// and its destructor is what closes the EH frame.
 // FUNCTION: IMPERIALISM 0x005921c0
 void TTransportPicture::Refresh() {
   CTemporaryRegion savedClip;
@@ -116,18 +110,11 @@ void TTransportPicture::Refresh() {
   CString totalText;
   CString gaugeText;
 
-  // Rows in the right-hand ledger column start further right than the left column's.
-  // Written as an if/else, not a ternary: VC5 turns a ternary between two constants into a
-  // branchless setle/dec/and/add chain, where the original branches (0x00592220).
   short trackLeft = 0x61;
   if (ownerLocalX > 0xc8) {
     trackLeft = 0x5d;
   }
 
-  // The gauge is 113 pixels wide. The original gives the first remainder pixels one
-  // extra pixel so all integer divisions still fill the complete bar. The +1.0f is
-  // emitted as a subtraction of the -1.0 double at 0x006631a0. There is deliberately no
-  // guard on splitValue96 here -- the original divides by it unclamped (0x00592258).
   float pixelsPerUnit = 113.0f / static_cast<float>(splitValue96);
   float remainder = 113.0f - pixelsPerUnit * static_cast<float>(splitValue96);
   float markerOffset;

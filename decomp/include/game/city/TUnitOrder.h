@@ -7,8 +7,6 @@
 class TStream;
 class TCity;
 
-// Stored as a 16-bit value in TUnitOrder and its serialized cost profiles. The
-// numeric value is also the population-strength divisor used by the armory UI.
 enum eUnitOrderWorkforceMode {
   kLowSkillWorkforceMode = 1,
   kMediumSkillWorkforceMode = 2,
@@ -26,9 +24,6 @@ public:
   virtual bool SetQuantity(short quantity) override; // slot 0x0b 0x4b7210
   virtual short MaxOrder() override;                 // slot 0x0c 0x4b7080
 
-  // Loads one g_aUnitOrderCostProfileByAbilityId row into the order's cost fields
-  // (called by TTechMgr::ActivateSlotAndUpdateUI when an ability activates a slot).
-  // 0x4b77e0, __thiscall, RET 0x1c.
   void ReplaceOrder(short resourceTypeIndex, short primaryInputResourceId,
                            short primaryInputPerUnit, short secondaryInputResourceId,
                            short secondaryInputPerUnit, short cashCostPerUnit, short workforceMode);
@@ -39,11 +34,6 @@ public:
                           short nPrimaryInputPerUnit, short nSecondaryInputResourceId,
                           short nSecondaryInputPerUnit, short nCashCostPerUnit,
                           short nWorkforceMode, byte bSpecialistMode); // slot 0x11 0x4b6fe0
-  // TUnitOrder adds 0x10 bytes (0x4c..0x5c) over TProductionOrder's 0x4c base. All are
-  // written by the slot-0x11 init IUnitOrder (0x004b6fe0),
-  // so the roles are that init's own named parameters (recruit/training recipe: two
-  // input resources with per-unit rates, a cash cost, a workforce mode and a
-  // specialist flag).
   short primaryInputResourceId;   // 0x4c — nPrimaryInputResourceId
   short secondaryInputResourceId; // 0x4e — nSecondaryInputResourceId
   short primaryInputPerUnit;      // 0x50 — nPrimaryInputPerUnit

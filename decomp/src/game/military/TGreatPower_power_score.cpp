@@ -15,26 +15,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/tactical_globals.h"
 
-// Recomputes per-nation navy/army order-priority metrics from queued map-order
-// distributions. Runs in game-flow state 0x15, before the per-nation +0x2B8/+0x108
-// passes. For each eligible nation (g_pSimMgr->ReallyInTheGame):
-//  1. Blends the 4-category TShip navy-order contribution percentages for that
-//     nation's ships into a queue-demand divergence score, strength-scaling the
-//     first three categories, then normalizing against
-//     g_Populate_Beachhead_Mission_LookupTable_00697958), cached in both
-//     g_afNationOrderQueueDivergence_006a3a88 and its mirror at 006a3ac0.
-//  2. Accumulates a per-unit-type weighted vector over the nation's militaryUnitList44
-//     entries with a nonzero GetCategory ("mobile" units), normalized
-//     against two different slices of g_awTacticalCompositionReferenceProfiles_00697870
-//     -- one cached as the "mobile unit score" (006a3b88), the other as a divergence
-//     figure (006a3ae0).
-//  3. Continues accumulating the same vector over the remaining ("static",
-//     GetCategory == 0) units without resetting it, then re-normalizes
-//     the combined vector the same way into g_afNationCombinedUnitDivergence_006a3b50.
-//  4. Scales the mobile-unit score by the navy-order-cost-to-military-power ratio
-//     (navy/power when power exceeds navy, else 1.0) into
-//     g_afNationWeightedMilitaryOrderScore_006a3b20.
-// A second pass lets each eligible nation consume the completed cross-nation cache set.
 // FUNCTION: IMPERIALISM 0x0053fe30
 void RecomputeNationOrderPriorityMetrics() {
   for (short nationIdx = 0; nationIdx < 7; ++nationIdx) {

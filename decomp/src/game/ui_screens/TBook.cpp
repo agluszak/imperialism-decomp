@@ -32,10 +32,6 @@ void TBook::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) 
     return;
   }
   if (commandId == 10) {
-    // Tag family 'page'..'pagf': one control per page-list row. Each tag's control is
-    // handled independently -- the row-count refresh below runs once per tag (up to
-    // twice), seeded from THAT tag's own control, not a single re-resolved 'page'
-    // control after the loop.
     for (int tag = kControlTagPage; tag <= kControlTagPagf; ++tag) {
       TPageView* pageControl = static_cast<TPageView*>(ResolveControlByTag(tag));
       if (pageControl != nullptr) {

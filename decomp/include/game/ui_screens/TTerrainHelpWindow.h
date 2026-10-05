@@ -2,9 +2,6 @@
 
 #include "game/ui_core/TFloatWindow.h"
 
-// Floating terrain-help window: same 0xa0 layout as TFloatWindow (adds no fields).
-// Sibling of THelpWindow; clears g_pHelpMgr's pending terrain-help dialog-view slot on
-// Close. RTTI: classTTerrainHelpWindow @ 0x00656fb0, base TFloatWindow.
 // VTABLE: IMPERIALISM 0x00657500
 class TTerrainHelpWindow : public TFloatWindow {
 public:

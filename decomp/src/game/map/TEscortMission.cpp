@@ -14,8 +14,6 @@
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 
-// The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
-//   CArchive& AFXAPI operator>>(CArchive&, TEscortMission*&)
 IMPLEMENT_SERIAL(TEscortMission, TNavyMission, 1)
 
 // FUNCTION: IMPERIALISM 0x00539900
@@ -36,9 +34,6 @@ bool TEscortMission::IsDefensiveSeaZoneMission() const {
 // FUNCTION: IMPERIALISM 0x00539990
 TEscortMission::~TEscortMission() {}
 
-// The original inlines the whole TNavyMission(TZone*) body here (only the TMission()
-// base ctor stays an out-of-line call); the recompile emits a call to 0x535470 instead,
-// which is the accepted architectural shape until ctor-inlining is modeled.
 // FUNCTION: IMPERIALISM 0x00539a20
 TEscortMission::TEscortMission(TZone* targetZone) : TNavyMission(targetZone) {}
 
@@ -48,13 +43,6 @@ void TEscortMission::Initialize() {
   resolvedPortZone = missionTargetZone;
 }
 
-// Scales this mission's score by home-nation trade capacity and need pressure: starts from
-// the current home port zone's cached-owner (primaryNeighbors slot 0, punned to TGreatPower*
-// -- same convention Initialize/CalculateImportance use elsewhere in this file)
-// ComputeMapActionContextNodeValueAverage(), then for every OTHER port zone sharing that same
-// cached owner multiplies the running score by 1.5 (if that zone's own mission-field-48 owner
-// nation matches this mission's nation) or 1.25 (otherwise), and finally scales by
-// nation->merchantCapacity / max(nation->transportCapacity, 1) / 5000.
 // FUNCTION: IMPERIALISM 0x00539ca0
 void TEscortMission::CalculateImportance() {
   TGreatPower* nation = g_apNationStates[nationId04];
@@ -82,24 +70,6 @@ void TEscortMission::CalculateImportance() {
                       static_cast<float>(nation->merchantCapacity) / static_cast<float>(needCap);
 }
 
-// Walks the 16 minor-nation slots (g_apSecondaryNationStateSlots[7..22]), gating each by
-// (a) a scenario-year-derived relation-score threshold when its encodedNationSlot < 200
-// (relationStandingScores[i * kNationSlotCount + nationId04] vs. economicTurn/4 + 110), or
-// (b) a direct owner-slot match otherwise (the same test as
-// TCountry::IsColonyOf). For each eligible minor, resolves its home
-// port zone's cached-owner context (FindFirstPortZoneContextByNation +
-// primaryNeighbors[0], the same grow-on-access idiom
-// CalculateImportance above uses) and scores that context's tagged primary navy order-list
-// ships (gated by TDiplomacyMgr::IsNationPairAtWar) into a 4-category vector --
-// categories 0-2 scaled by strength/normalizationBase, category 3 unscaled -- via the
-// same per-ship math as AccumulateNavyOrderCategoryVectorWithScale, but inlined here rather
-// than calling out (no CALL to 0x537c60 in the raw listing; same inlining choice as
-// TNavyMission::BuildMissionQueuedOrderCategoryVector). Scores the vector's divergence from
-// a {40,30,30,0} weight profile (g_Populate_Beachhead_Mission_LookupTable_00697958[4..7])
-// the same way TShip::ComputeNavyOrderDistributionScoreForNation does, and accumulates that
-// per-nation score into a running total seeded at 1.0f across every eligible minor. Spreads
-// the final total across requiredShipEquipageByCategory[4] via a second, address-distinct {40,30,30,0}
-// profile (g_NavyOrderDistributionCategoryWeights_00697978).
 // FUNCTION: IMPERIALISM 0x00539e70
 void TEscortMission::CalculateNeeds() {
   float total = 1.0f;

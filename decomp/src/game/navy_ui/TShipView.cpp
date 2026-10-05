@@ -48,9 +48,6 @@ void TShipView::Draw(RECT* rectBuffer) {
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(2, 0xc, 0x2b6a, 3);
   label = shipNode60->name;
 
-  // 8-line order-status string pool (GetString group 0x2760), one entry per naval
-  // order state; selected by type via
-  // g_ShipOrderStatusStringIndexByResourceType_0065c7f8.
   CString orderStatusStrings[8];
   for (int i = 0; i < 8; ++i) {
     g_pSimMgr->GetString(0x2760, i, &orderStatusStrings[i]);
@@ -65,8 +62,6 @@ void TShipView::Draw(RECT* rectBuffer) {
   DrawTextWithCachedQuickDrawStyleState(&statusLine);
 
   if (shipNode60->admiral != 0) {
-    // An admiral is assigned to this ship: overwrite/replace the status line's
-    // position with "Adm. <admiral name>" drawn one row higher.
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 9, 0x2b6a);
     CString admiralLine = s_szAdmiralPrefix_0069578c + shipNode60->admiral->displayName;
     label = admiralLine;
@@ -82,8 +77,6 @@ void TShipView::Draw(RECT* rectBuffer) {
   // Level-bucket row within the icon strip: <5 -> row 0x1a, 5-14 -> row 18, >14 -> row 10.
   short rowBucket = (levelBucket < 5) ? 0x1a : ((levelBucket > 0xe) ? 10 : 18);
 
-  // The blit source surface is the per-level icon strip cached on TMacViewMgr
-  // (atlas694, shared with the sibling roster-row views).
   TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas694[0]->GetBlitSurface();
   RECT srcRect = {0, rowBucket, levelBucket * 4 - 1, rowBucket + 7};
   RECT dstRect = {0x52, 0x1e, levelBucket * 4 + 0x51, 0x25};
@@ -135,14 +128,6 @@ void TShipView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
   TEventHandler::DoEvent(commandId, sourceHandler, event);
 }
 
-// Same dialog (message context 0xdb4) and control shape as TArmyUnitView::
-// RenameUnit (0x4a9ca0), but a genuinely different function (own thunk
-// 0x4092ff, not 0x403986) with real differences: no forced default command (no
-// SetField84/GetEmbeddedDialogBehavior calls), the title uses string index 5 instead of 1,
-// the edited name is shipNode60->name (TShip's own name field, not TMilitaryUnit's
-// name24 -- confirms the earlier field60+offset concern was specific to each class, not a
-// shared conflict), and the commit condition is inverted: applies only when the modal result
-// is exactly 'okay' (rather than "commit unless 'cncl'").
 // FUNCTION: IMPERIALISM 0x00565a40
 void TShipView::RenameShip() {
   TWindow* node = static_cast<TWindow*>(

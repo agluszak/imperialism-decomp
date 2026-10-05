@@ -7,8 +7,6 @@
 struct DiplomacyMaskBufferRun;
 struct TQuickDrawSurfaceContext;
 
-// The original one-slot stretch vtables contain Add only; destruction is statically dispatched
-// as part of StrategicMapCallbackRecord's member teardown.
 IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 // VTABLE: IMPERIALISM 0x006404a4
 class StrategicMapOpcodeByteStretch : public stretch<unsigned char> {};
@@ -36,22 +34,15 @@ struct StrategicMapCallbackRecord {
   void BuildBitmapMaskOpcodeBufferFromResourceRows(int resourceId, short width, short height,
                                                    int destinationRowStride,
                                                    unsigned char transparentPixel);
-  // Apply generated sparse writes to a destination pixel buffer. The retail build executes the
-  // x86 stream directly; interpreting its small opcode vocabulary keeps the recovered source
-  // portable and avoids inline assembly while preserving the mask semantics.
   void ApplyBitmapMaskToPixelBuffer(unsigned char* destinationPixels);
   void SetDestinationHeightNoOp(int unusedHeight); // 0x004d4bd0
 
   StrategicMapOpcodeByteStretch opcodeBytes;
-  // AppendOpcodeByte's private write cursor is distinct from opcodeBytes's count because
-  // indexed writes can extend the container independently.
   int opcodeAppendCursor;
   // Rolling modulo-four offset used while aligning the generated opcode stream.
   int opcodeAlignmentOffset;
   int hadTrailingPadding;
   StrategicMapCursorStretch packedColorCursor;
-  // Byte stride used when converting each resource pixel's (x,y) coordinate into its
-  // destination-tile offset. No read site outside mask construction.
   int destinationRowStride2c;
 };
 

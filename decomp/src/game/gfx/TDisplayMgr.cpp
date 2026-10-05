@@ -137,8 +137,6 @@ void TDisplayMgr::MakeNewGWorld(TQuickDrawSurfaceContext*& outContext, short bit
   }
 }
 
-// Frees the TQuickDrawSurfaceContext record held in `slot` and clears the slot.
-// `this` is unused, but the callsites all dispatch through g_pDisplayMgr.
 // FUNCTION: IMPERIALISM 0x004feb50
 void TDisplayMgr::RemoveGWorld(TQuickDrawSurfaceContext*& surface) {
   DisposeGWorld(surface);
@@ -156,10 +154,6 @@ void TDisplayMgr::ExamineGWorld() {
 // FUNCTION: IMPERIALISM 0x004febd0
 void TDisplayMgr::AboutToLoseControl(unsigned char) {
   if (dialogActiveFlag != 0 && activeDialog != 0) {
-    // 0x004febe3 dispatches byte 0x1e4 = slot 0x79 with NO arguments. That is past
-    // TView's 104-slot extent; TCityProductionView is the only class carrying a
-    // no-argument virtual there (CloseAndSaveWindows 0x004bc910), and its sibling
-    // slot 0x78 (UpdateToolbar) is what RegainControl calls on the same field.
     static_cast<TCityProductionView*>(activeDialog)->CloseAndSaveWindows();
   }
   SetMenuHeight(1);
@@ -187,9 +181,6 @@ void TDisplayMgr::ModalMessage(CString message, const POINT& messagePosition) {
 
 // FUNCTION: IMPERIALISM 0x004fed00
 void TDisplayMgr::RegainControl(unsigned char) {
-  // 0x004fed0f dispatches byte 0x1e0 = slot 0x78 (UpdateToolbar) with no arguments and
-  // no null test, and the ForceRedraw at 0x004fed23 sits OUTSIDE the dialogActiveFlag
-  // guard (the JZ at 0x004fed08 targets 0x004fed15).
   if (dialogActiveFlag != 0) {
     static_cast<TCityProductionView*>(activeDialog)->UpdateToolbar();
   }

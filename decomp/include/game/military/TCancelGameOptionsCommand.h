@@ -12,8 +12,6 @@ public:
   virtual ~TCancelGameOptionsCommand() override; // slot 0x01 (scalar deleting destructor)
   virtual void DoIt() override;                  // slot 0x0b 0x542520
 
-  // Fully inlined at every construction site (base TCommand ctor call + vtable
-  // store); defined in-class so `new TCancelGameOptionsCommand()` reproduces that shape.
   TCancelGameOptionsCommand() : TCommand() {}
 };
 ASSERT_SIZE(TCancelGameOptionsCommand, 0x18);

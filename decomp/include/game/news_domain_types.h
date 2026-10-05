@@ -2,9 +2,6 @@
 
 #include "decomp_types.h"
 
-// Newspaper event kinds share an int-sized discriminator in TNewsMgr's 0x10-byte
-// heterogeneous record queue. Names below are limited to meanings proven by the
-// producing gameplay paths; gaps are valid but currently unnamed retail kinds.
 enum InterNationEventKind {
   kInterNationEventWarDeclaredBySubject = 0x00,
   kInterNationEventWarDeclaredAgainstSubject = 0x01,
@@ -30,9 +27,6 @@ enum InterNationEventKind {
   kInterNationEventNationTransferred = 0x1D
 };
 
-// Mac CodeWarrior names this 0x24-byte payload NewsEvent. Windows event 0x13
-// transports all nine dwords verbatim, while the known producer initializes only
-// the first four. Preserve the five untouched dwords rather than inventing fields.
 struct NewsEvent {
   int marker0;
   int subjectNationMask;
@@ -41,8 +35,6 @@ struct NewsEvent {
   int reserved10[5];
 };
 
-// The shared TNewsMgr queue stores one three-dword payload. eventKind determines whether
-// the second dword is a nation mask or story code and whether the third dword is used.
 struct InterNationNewsPayload {
   int subjectNationOrAll;
   int nationMaskOrStoryCode;

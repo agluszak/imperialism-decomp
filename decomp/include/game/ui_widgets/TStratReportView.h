@@ -5,8 +5,6 @@
 #include "game/ui_core/TView.h"
 #include "game/mfc.h"
 
-// Battle-outcome record the report view renders (pointed to by TStratReportView+0x60):
-// the two sides' descriptor-table ids, the location, and the per-unit-type counts.
 struct BattleOutcomeData {
   unsigned char winnerId; // 0x00 — index into g_apTerrainTypeDescriptorTable
   unsigned char loserId;  // 0x01
@@ -24,9 +22,6 @@ public:
   TStratReportView();
   virtual ~TStratReportView() override;
 
-  // slot 0x110 0x58e460 -- renders the battle-outcome header winner/loser
-  // score lines (verified against the retail body: 30-entry winner/loser count
-  // loops, resource group 0x2717 labels, face 1/0 switches, 0x10 row spacing).
   virtual void Draw(RECT* rectBuffer) override;
 };
 ASSERT_SIZE(TStratReportView, 0x64);

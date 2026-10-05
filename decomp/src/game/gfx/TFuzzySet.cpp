@@ -6,12 +6,8 @@
 
 IMPLEMENT_DYNCREATE(TFuzzySet, TObject)
 
-// Own-vtable-set ctor body, called out-of-line from InitializeCityInteriorMinister;
-// inlined directly within CreateObject. Ghidra had named this ConstructTFuzzySetBaseState.
 TFuzzySet::TFuzzySet() {}
 
-// Complete-object destructor tail, called from the scalar deleting destructor
-// at 0x4ff700. Ghidra had named this DestructTFuzzySetAndMaybeFree_Impl.
 TFuzzySet::~TFuzzySet() {}
 
 // FUNCTION: IMPERIALISM 0x004ff750

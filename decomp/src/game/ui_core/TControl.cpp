@@ -196,18 +196,9 @@ void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNat
 
   TMapKey& mapKey = *static_cast<TMapKey*>(this);
   mapKey.viewMode90 = selectedNation;
-  // Written as one conditional argument: VC5 pushes the refresh flag before the branch
-  // (0x004fcedc `push 1`) and lets each arm push its own resource id, which a
-  // `short pictureId` temp assigned in an if/else would not reproduce.
   mapKey.SetPictureRsrcID(
       selectedNation <= 0 ? 0x1393 : static_cast<short>(0x1394 + table[selectedNation]), 1);
 
-  // The nation-name captions belong to the unfiltered legend only: the original computes
-  // `selectedNation == 0` once, before the loop (0x004fcf03 `cmp bx,di` / `sete al` with
-  // edi still zero), parks it in a frame slot and passes that same value to all seven
-  // labels. Comparing against the loop counter instead would leave exactly one caption
-  // enabled, which is why the whole map key rendered nameless. The `movsx eax,al` that
-  // follows the `sete` is the tell that the flag lives in a char temp, not an int.
   bool enabled = selectedNation == 0;
   for (int i = 0; i < 7; i++) {
     TView* child = mapKey.ResolveControlByTag(kControlTagNam0 + i);

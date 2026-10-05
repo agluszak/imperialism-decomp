@@ -12,11 +12,6 @@ class TShip;
 class TTaskForce;
 class TSortedList;
 
-// Mac oracle: eMissionType -- the mission-kind selector passed to the mission factory
-// (TMission::CreateMission) and to TMission::Matches. The Windows
-// binary exposes the integer values 0..5; the enumerator names identify the mission
-// each kind primarily constructs (several kinds fall back to a
-// TControlSeaZoneMission when their context/beachhead argument is absent).
 enum eMissionType {
   kMissionTypeAttackProvince = 0, // TAttackProvinceMission (direct) / TControlSeaZoneMission
   kMissionTypeAmassProvince = 1,  // TAttackProvinceMission with an amassing province
@@ -27,17 +22,6 @@ enum eMissionType {
   kMissionTypeScatteredShips = 5, // TScatteredShipsMission
 };
 
-// Mac: TMission — base AI-mission class. Real polymorphic MFC object rooted at
-// CObject<-TObject. Single-inheritance base of TNavyMission / TArmyMission (and through
-// them every concrete mission); proven by vtable prefix-sharing and constructor/
-// destructor sequencing.
-//
-// 48-slot vtable: slots 0x00-0x04 are the MFC CObject prefix (0x00 RTTI + 0x01 dtor
-// overridden here; 0x02 Serialize / 0x03 AssertValid / 0x04 Dump inherited). Slots
-// 0x05-0x26 are TMission's own virtuals (mostly default stubs concrete missions
-// override). Slots 0x27-0x2f are pure virtuals (NULL in the base table). See memory
-// tmission-vtable-layout-ground-truth.
-//
 // VTABLE: IMPERIALISM 0x0065a4e8
 class TMission : public TObject {
 public:
@@ -106,21 +90,12 @@ public:
   static TMission* CreateMission(NationSlot sourceNation, eMissionType missionKind, int nodeKey,
                                  TZone* zoneContext, int relatedNodeKey);
 
-  // Mac: TMission::Find(TList*, eMissionType, short, TZone*). TSortedList is the
-  // corresponding Windows list implementation used by every caller.
   static TMission* Find(TSortedList* missions, eMissionType missionType, short key,
                         TZone* zoneContext);
 
-  // Slots 0x27-0x2f are NULL in the base table (abstract: filled only by derived
-  // classes). Not declared here — C++ pure virtuals would emit _purecall, not NULL,
-  // and the next derived class (TNavyMission/TArmyMission) appends its own virtuals
-  // starting at slot 0x27. (Same convention as TUberCluster's abstract-null region.)
 };
 
 ASSERT_SIZE(TMission, 0x14);
 
-// Three-way ordering used by TAutoGreatPower's mission-eligibility pass. The opaque
-// callback signature is the one required by TSortedList; both entries are TMission
-// objects and a non-null context reverses the ordering.
 short __cdecl CompareMissionOrderEntriesByMovementClassThenEfficiency(void* a, void* b,
                                                                       void* reverseOrder);

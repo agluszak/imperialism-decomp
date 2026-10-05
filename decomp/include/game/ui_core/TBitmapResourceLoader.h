@@ -17,9 +17,6 @@ struct TBitmapResourceLoaderState {
       : flags(0), bitmapResource(nullptr), bitmapResourceId(static_cast<short>(resourceId)) {}
 };
 
-// Lightweight bitmap loader allocated by CreateBitmapResourceLoaderHandle. Confirmed
-// exactly 3 slots (dword at +0xc, right after the 3 declared virtuals, reads as a
-// literal NULL); no destructor slot in the original.
 IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 // VTABLE: IMPERIALISM 0x0064c340
 class TBitmapResourceLoader : public TBitmapResourceLoaderState {

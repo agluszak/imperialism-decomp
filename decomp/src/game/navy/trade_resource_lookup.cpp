@@ -38,11 +38,6 @@ short TShip::GetTypeSailingSpeed(short shipType) {
   return g_NavyOrderResourceDescriptorTable[shipType].SailingSpeed();
 }
 
-// Generic accessor: reads the low short of the `statColumn`-th 4-byte column in the
-// resourceType row (column 0=resolve weight, 1=calculate weight, 2=task-force weight,
-// 3=stock cap, 4=navy-priority weight, 5=resource descriptor weight,
-// 6=toolbar bucket index, 7=descriptor weight, 8=priority tier) -- matches the original's
-// shipyard stat-panel indexing.
 // FUNCTION: IMPERIALISM 0x00550f30
 short TShip::GetTypeStat(short shipType, short statColumn) {
   return static_cast<short>(

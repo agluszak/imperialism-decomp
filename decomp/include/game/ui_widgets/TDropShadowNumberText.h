@@ -2,9 +2,6 @@
 
 #include "game/ui_widgets/TPictureNumberText.h"
 
-// Numeric text control that paints a drop shadow behind the value text. Adds the shadow
-// color at +0xac (seeded from the global default). RTTI: classTDropShadowNumberText @
-// 0x0066c420, base TPictureNumberText.
 // VTABLE: IMPERIALISM 0x0066d038
 class TDropShadowNumberText : public TPictureNumberText {
 public:

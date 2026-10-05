@@ -38,8 +38,6 @@ TDealBookPicture::~TDealBookPicture() {}
 
 // FUNCTION: IMPERIALISM 0x005bac50
 void TDealBookPicture::Startup(short startupValue) {
-  // Toolbar cluster ('tool'): refresh the turn-order status panel and re-derive its
-  // nation/treasury text for the active nation.
   TToolBarCluster* toolControl =
       static_cast<TToolBarCluster*>(this->ResolveControlByTag(kControlTagTool));
   toolControl->AssertValid();

@@ -377,9 +377,6 @@ void THelpMgr::ShowPeriodicCapabilityReminderIfNeeded() {
   }
 }
 
-// Periodic "another great power is beating you" advisory: every turn tick maps to one of
-// ten comparison metrics; when some eligible nation's metric exceeds twice the active
-// nation's, a localized advisory (string group 0x2753) is formatted and dispatched.
 // FUNCTION: IMPERIALISM 0x00501be0
 char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
   short activeNation = g_pSimMgr->GetPlayerCountry();
@@ -637,9 +634,6 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
   return advisoryShown;
 }
 
-// Once per turn tick, show the active nation's turn alerts through the localized
-// message dispatcher. The first two (mission-score comparison) alerts suppress every
-// later block; the remaining blocks are individually gated on turn-flow flags.
 // FUNCTION: IMPERIALISM 0x00502b60
 bool ShowTurnAlertsForActiveNation() {
   short nationId = g_pSimMgr->GetPlayerCountry();
@@ -820,9 +814,6 @@ char THelpMgr::HandlePendingEventActivationByCode(TurnEventCodeStorage eventCode
         HelpSetRecord* entry =
             static_cast<HelpSetRecord*>(indexList->GetPtrListEntryByOneBasedIndex(index));
         if (entry->contextId == eventCode) {
-          // NOT GetPlayerCountry — original loads ECX from g_pSimMgr and
-          // dispatches vtable slot 0x3c (GetEconomicTurn), same call as the currentTurn
-          // check above. entry->rank stores a turn tick here, not a nation id.
           const short currentTick = g_pSimMgr->GetEconomicTurn();
           if (entry->rank == currentTick) {
             nationAlreadyCurrent = true;

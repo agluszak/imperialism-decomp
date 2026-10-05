@@ -36,8 +36,6 @@ void TAmtBar::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x00588630
 void TAmtBar::UpdateBarValuesAndRefresh(short valueAt60, short valueAt62) {
-  // arg1 -> +0x60, arg2 -> +0x62 (0x00588640/0x00588646). VC5 batches both parameter
-  // loads before either store, so the source order only decides which load comes first.
   this->rangeOrMaxValue = valueAt60;
   this->stepOrCurrentValue = valueAt62;
   this->RefreshControl();
@@ -121,16 +119,9 @@ void TAmtBar::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin)
   int baseValue;
   if (auxValueA <= 0 ||
       static_cast<int>(frameWidth) / (static_cast<int>(auxValueA) << 1) <= point.x) {
-    // Segment index of the click: point.x * segments / width + 1. The FILD/FMULP/FDIVP
-    // chain at 0x00588975-0x00588987 multiplies by auxValueA and divides by frameWidth;
-    // it does not divide by their product.
     double ratio = static_cast<double>(point.x) * static_cast<double>(auxValueA) /
                        static_cast<double>(static_cast<int>(frameWidth)) +
                    1.0;
-    // The (double)->int truncation below is a real MSVC5 CRT call (_ftol, libcmt
-    // ftol.obj, 0x005e73d0) whose argument is passed on the FPU stack, not as a normal
-    // C parameter -- static_cast lets the compiler emit that call itself instead of
-    // faking its ABI with a hand-written extern "C" prototype.
     baseValue = static_cast<int>(ratio);
   } else {
     baseValue = 0;
@@ -139,9 +130,6 @@ void TAmtBar::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin)
   short appliedValue = ApplyMoveClamp(baseValue, static_cast<short>(point.x));
   TView* owner = this->ownerContext;
   if ((appliedValue == 0) && point.x != 0) {
-    // Slot 0x1e8 on the resolved control is TNumberText::UpdateControlCachedIntFromWindowText
-    // (slot 0x7a); TAmtBar's own vtable ends at byte 0x1a8, so these tags are number
-    // controls, not amount bars.
     TNumberText* fallbackControl =
         static_cast<TNumberText*>(owner->ResolveControlByTag(kControlTagMove));
     if (fallbackControl == 0) {

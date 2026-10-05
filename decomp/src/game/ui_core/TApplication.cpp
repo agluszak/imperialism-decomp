@@ -14,16 +14,11 @@
 #include "game/ui_core/TWindow.h"
 #include "game/mfc.h"
 
-// Dead helper (no live callers): tail-forwards to the window's CloseAndFree vcall
-// (slot 0x74, byte 0x1d0).
 // FUNCTION: IMPERIALISM 0x004146b0
 void __stdcall CloseWindowAndFree(TWindow* window) {
   window->CloseAndFree();
 }
 
-// Post WM_CLOSE to the main thread's window. Faithful to the original: when
-// AfxGetThread() returns null the main-window pointer stays null and the m_hWnd
-// read dereferences it unguarded (latent original bug, kept as-is).
 // FUNCTION: IMPERIALISM 0x004146d0
 void TApplication::PostWmCloseToMainThreadWindow() {
   CWnd* mainWindow = AfxGetThread() != 0 ? AfxGetThread()->GetMainWnd() : 0;
@@ -66,8 +61,6 @@ TEventHandler* TApplication::GetTarget() {
 BOOL TApplication::InModalState() {
   return GetMainViewHostFromActiveThread()->GetUiInteractiveFlag90() == 0;
 }
-// TApplication::GetDefaultCursorRegion(CPoint, Region**) — the Windows port keeps the
-// hook (TAmbitApplication::HandleCursor tail-calls it) but computes no region.
 // FUNCTION: IMPERIALISM 0x00486990
 void TApplication::GetDefaultCursorRegion(int x, int y, void* cursorRegion) {
   (void)x;
@@ -75,8 +68,6 @@ void TApplication::GetDefaultCursorRegion(int x, int y, void* cursorRegion) {
   (void)cursorRegion;
 }
 
-// vtable slot 0x29 (0x004869b0): MacApp TApplication::InstallCohandler — register or
-// remove a TEventHandler on the idle cohandler list at +0x2c.
 // FUNCTION: IMPERIALISM 0x004869b0
 void TApplication::InstallCohandler(TEventHandler* cohandler, bool install) {
   if (install) {
@@ -90,8 +81,6 @@ void TApplication::InstallCohandler(TEventHandler* cohandler, bool install) {
   }
 }
 
-// vtable slot 0x2a (0x00486b10 via ILT 0x00403f21): MacApp TApplication::Idle — give
-// every installed cohandler its throttled idle tick.
 // FUNCTION: IMPERIALISM 0x00486b10
 void TApplication::Idle(int idlePhase) {
   POSITION pos = cohandlers.GetHeadPosition();
@@ -115,8 +104,6 @@ void TApplication::DispatchQueuedUiCommandAndRelease(void* payload) {
 void TApplication::DoMenuCommand(int command) {
   CWnd* mainWindow;
 
-  // Case bodies follow their order in the retail jump table. VC5 preserves source
-  // order here, so keeping this order also preserves the original layout.
   switch (command) {
   case 0x24:
     mainWindow = AfxGetThread() != 0 ? AfxGetThread()->GetMainWnd() : 0;
@@ -182,8 +169,6 @@ void TApplication::DoMenuCommand(int command) {
 
 // FUNCTION: IMPERIALISM 0x0049e500
 void TApplication::CreateAndQueueTurnEventPacketTagGWEN() {
-  // Build a TNewGameCommand, tag it 'gwen' targeting the global UI root controller,
-  // and dispatch it.
   TNewGameCommand* newGameCommand = new TNewGameCommand();
   newGameCommand->ICommand(kControlTagNewg, g_pAmbitApplication, 0, 0, 0);
   g_pAmbitApplication->DispatchUiSelectionToHandler(newGameCommand);

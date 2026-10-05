@@ -33,8 +33,6 @@ public:
   virtual bool IsDefensiveSeaZoneMission() const override; // slot 0x18 0x535660 -- returns true
   virtual bool IsHospitalMission() const override;         // slot 0x19 0x535640 -- returns true
 
-  // Unconditionally returns nullptr (xor eax,eax; ret) -- see the TNavyMission base
-  // declaration comment for why this slot returns TZone*.
   virtual TZone*
   RefreshMissionPortZoneContextForNation() override; // slot 0x28 0x53bf90 -- returns null
 };

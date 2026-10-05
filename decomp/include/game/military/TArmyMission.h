@@ -15,10 +15,6 @@ public:
   TSortedList* orderList;
   float requiredEquipageByClass[5]; // offset 0x1c
 
-  // One constructor, not two. CreateObject (0x0053bfb0) allocates 0x30 bytes then
-  // CALL 0x0053c0a0 with -1 pushed, i.e. `new TArmyMission()` resolves to this ctor via
-  // a default argument. The separate no-arg ctor that used to sit beside this one had no
-  // address in the original and made CreateObject call a body that does not exist.
   TArmyMission(int nodeKey = -1);
   // Inline so concrete army-mission destructors collapse through the empty base chain.
   // FUNCTION: IMPERIALISM 0x0053c200
@@ -53,32 +49,17 @@ public:
   virtual char
   SmokeEmIfYouGotEm() override; // slot 0x98 0x53c4f0 -- queue eligible units by movement class
 
-  // First TArmyMission-introduced virtual (TMission abstract slot 0x27 / offset 0x9c).
-  // Mac: GetPresentLocation() const. Returns the mission's target province/context id.
   virtual short GetPresentLocation() const; // 0x535750
 
-  // Mac: ProjectEquipage(float*, short, short) const. Accumulates the five-slot
-  // unit equipage vector, optionally filtering by the target tile.
   void ProjectEquipage(float* vector, short targetTile, short bypassTileFilter) const; // 0x53c9d0
 
-  // Mac: ProjectSatisfaction(short) const. Scores projected equipage against the
-  // mission's requested resource weights.
   float ProjectSatisfaction(short bypassTileFilter) const; // 0x53cac0
 
-  // Adds one unit's contribution directly into `vector` (no accumulation loop): weight-
-  // table lookup by clamped GetTurnDistanceTo distance from GetPresentLocation,
-  // scaled by GetProvinceUnitOrderWeight, with an explicit sign
-  // (true adds, false subtracts) instead of the fixed +1.0 the loop-based accumulators use.
-  // 0x53cb50, __thiscall, RET 0xC.
   void AccumulateWeightedUnitEquipage(TMilitaryUnit* unit, float* vector,
                                                               bool scaleMode);
 
-  // Mac: GetWeightedEquipage(float*) const. Builds the distance-weighted five-slot
-  // vector for the mission's current unit list.
   void GetWeightedEquipage(float* vector) const; // 0x53cda0
 
-  // Order-vector score including one extra candidate unit contribution
-  // (0x53d200 negates the candidate's scale: the "without unit" variant).
   float ComputeArmyMissionScoreDeltaWithCandidateUnit(TMilitaryUnit* candidateUnit); // 0x53d020
   float
   ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(TMilitaryUnit* candidateUnit); // 0x53d200
@@ -87,17 +68,10 @@ protected:
   void AccumulateOrderPriorityVector(float* vector) const;
 
 private:
-  // Mac oracle: ComputeProvinceImportance. Scores a province for this mission: its
-  // cityScoreValue, scaled by one plus the fraction of adjacent regions whose owner
-  // matches this mission's nation, then normalised by 5000 -- the province analogue of
-  // TNavyMission::ComputeSeaZoneImportance. 0x0053c7a0, __thiscall.
   float ComputeProvinceImportance(short provinceIndex);
 };
 
 ASSERT_SIZE(TArmyMission, 0x30);
 
-// Adds unit's stat contributions (stat indices 0-4, scaled by strength/quality and
-// the province order weight) into the five-component priority vector. 0x53cc10,
-// __cdecl, shared by the whole mission-scoring family.
 void AccumulateUnitOrderPriorityVectorContribution(TMilitaryUnit* unit, float* vector, float scale,
                                                    float weight);

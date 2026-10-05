@@ -81,9 +81,6 @@ void TTradeMgr::Free() {
 
 // FUNCTION: IMPERIALISM 0x005b7c10
 void TTradeMgr::ReadFrom(TStream* stream) {
-  // The empty base call is real (0x5b7c20) and was missing from the port. The version
-  // test is written the way the original branches it: CMP 0x27 / JL sends the legacy
-  // whole-block read to the jump target, so the per-row arm is the fall-through.
   TObject::ReadFrom(stream);
   if (g_nSaveFormatVersion >= 0x27) {
     NationMetricCategoryRow* row = categoryRows;
@@ -141,8 +138,6 @@ void TTradeMgr::WriteTo(TStream* stream) {
   TDealList** p = this->categoryRankLists;
   int i = 0x11;
   do {
-    // The original WriteTo loop only serializes; the previous port wrongly copied the
-    // ReadFrom pair here and cleared every category rank list during a save.
     (*p)->WriteTo(stream);
     p = p + 1;
     i = i + -1;
@@ -202,17 +197,9 @@ inline short RelationStanding(TDiplomacyMgr* mgr, int source, int target) {
 
 // FUNCTION: IMPERIALISM 0x005b8080
 void TTradeMgr::CalculateDealOrder() {
-  // tradeOfferCells is laid out as three 23-entry (kTerrainTypeDescriptorTableCount) sub-rows per
-  // category row: [0..22] this-turn delta per nation slot, [23..45] running accumulated
-  // total per nation slot (index target+23), [46..67(+1 overflow)] running max -- the
-  // latter consumed by EndTradeOffers. Only the delta and
-  // accumulated sub-rows are touched here. The original walks both as flat short arrays
-  // with the 0x50-short category-row stride.
   short* cells = &categoryRows[0].tradeOfferCells[0];
   short* accum = &categoryRows[0].tradeOfferCells[23];
 
-  // Rows 0..6: primary-nation category rows get BOTH target ranges processed here --
-  // primary targets (0..6) and secondary/minor targets (7..0x16).
   int row = 0;
   do {
     int target = 0;
@@ -232,9 +219,6 @@ void TTradeMgr::CalculateDealOrder() {
               event.relationDelta04 = cell;
               event.relationStanding =
                   RelationStanding(g_pDiplomacyTurnStateManager, source, target);
-              // Fixed: scoreA/scoreB are the row's OWN price/basePrice, not
-              // target-relative cells (confirmed via psVar6[-8]/*psVar6 anchored at the
-              // row's field06/basePrice in the raw disassembly).
               event.dispatchScore08 =
                   this->GetDealPrice(static_cast<short>(source), static_cast<short>(target),
                                      categoryRows[row].price, categoryRows[row].basePrice);
@@ -316,10 +300,6 @@ void TTradeMgr::CalculateDealOrder() {
       target = target + 1;
     } while (target < 7);
 
-    // Quirk (reproduced verbatim, not "fixed"): only row 7 additionally gets its
-    // secondary/minor target range (7..0x16) processed here, hardcoded to row 7's own
-    // fields and its own categoryRankLists[7] -- rows 8..0xc never get that range
-    // processed at all in this function.
     if (midRow == 7) {
       int secTarget = 7;
       do {
@@ -606,9 +586,6 @@ void TTradeMgr::StartDeals() {
 
 // FUNCTION: IMPERIALISM 0x005b91e0
 void TTradeMgr::NextTradeDeal() {
-  // Reuses categoryRows[0]'s dealCategoryOrderIndex/dealEntryOrdinal pair as persistent (row, ordinal)
-  // cursor state across calls -- matches the wrapper's own this+4/this+6 use of the same
-  // pair (see StartDeals above).
   bool blocked = false;
   do {
     if (categoryRows[0].dealCategoryOrderIndex > 0x10) {
@@ -1071,11 +1048,6 @@ TLongintList* TTradeMgr::GetBidderList(int item, int nationSlot) {
   return node;
 }
 
-// Scan the 0x11-entry metric-slot dispatch table for whichever of the two codes appears
-// first, preferring proposalCode at each slot; fall through to proposalCode if neither is
-// present. Word-wide args; the slot value is read once at the loop head. (Residual diff is
-// loop-rotation only: MSVC peels the first iteration where the original keeps a single
-// bottom-tested body — logic, registers, global ref and read-once all match.)
 // FUNCTION: IMPERIALISM 0x005ba090
 short TTradeMgr::WhoTradesFirst(short proposalCode, short category) {
   short* lookupCursor = g_aTradeDealCategoryOrder_0066D810;

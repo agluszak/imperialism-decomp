@@ -15,9 +15,6 @@ public:
   virtual ~TCouncilTickerAnimation() override {} // slot 0x01 (scalar deleting destructor)
   virtual void Tick() override;                  // slot 0x0a 0x49ffe0
 
-  // Initializes the inherited TAnimation fields directly (inline duplicate of
-  // TAnimation::IAnimation's pattern, not a call to it): owner view,
-  // zeroed frame/tag state, the tick interval, and a zeroed screen rect.
   void InitializeCouncilTicker(TCouncilView* hostPanel, int tickInterval);
 
   // NOOP: verified empty in original 0x0049fef2 (no standalone TCouncilTickerAnimation::TCouncilTickerAnimation body exists: construction is fully inlined into CreateObject 0x0049fef0; that address is its operator-new call site)

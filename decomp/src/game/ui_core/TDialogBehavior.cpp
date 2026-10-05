@@ -112,9 +112,6 @@ void TDialogBehavior::PoseModally() {
   armedCommandCode = kControlTagSpSpSpSp;
   nativeWindow->EnableWindow(1);
 #ifdef IMPERIALISM_RUNTIME_TESTS
-  // The modal is actionable only after its dismissal state has been reset. Posting the
-  // observation here guarantees that a semantic activation runs inside RunModalLoop,
-  // never during dialog construction before the loop is armed.
   RuntimeTestDriver::ObserveDeferred(kObserveModalPushed);
 #endif
   nativeWindow->RunModalLoop(0);

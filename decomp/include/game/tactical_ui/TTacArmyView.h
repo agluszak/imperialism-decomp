@@ -14,21 +14,12 @@ public:
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x5aa2e0
   virtual void DrawTile(TacticalTileIndex tileIndex,
                         RECT* clipRect) override; // slot 0x6c 0x5aa900
-  // Base TTacticalBattleView actually ends at +0xd8 -- toolbarD0/battlefieldOriginOffsetX
-  // (written by the live-battle initializer 0x5a9d90; battlefieldOriginOffsetX is
-  // re-derived as the backdrop source-x origin in the rect applier 0x5aa2e0) are
-  // TTacticalBattleView's own fields (its sole subclass), inherited here, not
-  // TTacArmyView-own. This class's only genuinely own bytes:
   short battlefieldColumnCount; // +0xd8 copy of battle battlefieldColumnCount
   unsigned char padDA[2];       // +0xda
 
   // NOOP: verified empty in original 0x005a9d26 (no standalone TTacArmyView::TTacArmyView body exists: CreateObject 0x005a9cf0 inlines this default ctor, calling the TTacticalBattleView base ctor directly at that site)
   TTacArmyView() {}
 
-  // Initializes the live battle-view state from the freshly set-up TArmyBattle
-  // (called by InitializeBattleSetupAndMaybeShowTacticalView after resolving the
-  // 'DLOG' control). Not a real constructor despite the symbols.csv name.
-  // 0x5a9d90, __thiscall, ret 8.
   void StuffValues(int compositionClass, class TArmyBattle* battle);
 };
 ASSERT_SIZE(TTacArmyView, 0xdc);

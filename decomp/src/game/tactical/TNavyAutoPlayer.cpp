@@ -15,9 +15,6 @@ void TNavyAutoPlayer::INavyAutoPlayer(TTaskForce* force, char isOurSide, int nat
 
 // FUNCTION: IMPERIALISM 0x0059f110
 void TNavyAutoPlayer::StartBattle() {
-  // Auto-deploys the whole side: our side deploys from row battlefieldColumnCount*6
-  // - 25 downward, the enemy side from tile 41 downward, feeding the battle's current
-  // selection into DeployUnit until the side reports ready.
   int deployTileIndex;
   if (isOurSideFlag != 0) {
     deployTileIndex = battle14->battlefieldColumnCount * 6 - 25;
@@ -32,11 +29,6 @@ void TNavyAutoPlayer::StartBattle() {
 
 // FUNCTION: IMPERIALISM 0x0059f160
 void TNavyAutoPlayer::NextMove() {
-  // Navy AI turn pump (one pulse per selected ship): measures the hex distance from
-  // the selected ship to every enemy ship, picks the closest as the target, then the
-  // reachable tile (tileMoveCostArray != -1) minimizing distance to it, sails there
-  // one echoed step at a time, fires if the target ended up within range, and hands
-  // the turn back via the 0x232a event.
   TTacticalUnit* unit = battle14->selectedUnit1c;
   TList* enemyList;
   if (isOurSideFlag != 0) {

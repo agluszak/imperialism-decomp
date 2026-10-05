@@ -41,9 +41,6 @@ void TMiniArmyView::Draw(RECT* rectBuffer) {
 
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xc, 0x2b6a, 3);
   if (MeasureTextExtentWithCachedQuickDrawStyle(&displayName) > 100) {
-    // Shrink the working copy one character at a time, appending an ellipsis, until the
-    // "name..." form fits within 100px. displayName holds the last-dropped (pre-ellipsis)
-    // form during the loop and the final ellipsized form afterward.
     CString truncated;
     do {
       truncated = displayName.Mid(0, displayName.GetLength() - 1);

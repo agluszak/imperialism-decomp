@@ -14,9 +14,6 @@ public:
   short themeCode9A;                            // 0x9A
   short themeCode9C;                            // 0x9C
 
-  // Second-phase init: runs the TPicture base init (5, 5 layout filler), copies the
-  // button label, and stores the text point size / theme codes consumed by
-  // Draw. 0x572710, __thiscall, RET 0x20.
   void ITextPictureButton(TView* panel, int* offsetLayout, int* sizeLayout, short pictureId,
                           CString* text, short pointSize, short themeCodeA, short themeCodeC);
 

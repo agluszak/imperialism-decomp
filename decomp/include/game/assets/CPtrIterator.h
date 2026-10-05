@@ -4,8 +4,6 @@
 
 class TSortedPtrList;
 
-// Mac oracle: CPtrIterator. The iterator keeps the next one-based list index and
-// the pointer-list being traversed; FirstPtr returns entry 1 and seeds NextPtr at 2.
 class CPtrIterator {
 public:
   int nextIndex;

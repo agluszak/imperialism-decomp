@@ -17,13 +17,6 @@
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
 
-// Draws the hex-cell border-highlight polygon for a tile: computes the tile's isometric
-// screen position, then emits a QDFrameRect segment for each hex edge whose neighbor either
-// has a different city/region (cityRecordIndex != compareValue on both sides of the edge)
-// or forms a type-5 (ocean) pairing. Neighbor tile indices [0..5] come from
-// GetNeighborTileIDArray. Called from TMacViewMgr's map-highlight pass. Reads the
-// typed TTerrainStateRecord fields cityRecordIndex (+0x14) and GetTerrainKind() (+0x00,
-// == 5 for ocean) directly, instead of the former raw `terrain + n*0x24 + off` casts.
 // FUNCTION: IMPERIALISM 0x00508f30
 void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
   short neighborTiles[6];
@@ -97,10 +90,6 @@ void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
   }
 }
 
-// Sibling of BuildHexNeighborHighlightPolygonForTile above: same neighbour geometry and the
-// same cityRecordIndex comparison, but emitted as a pen path (one origin + guide-line
-// segments) rather than per-edge rectangles. The neighbour tests are written out at each
-// vertex rather than factored into a helper, matching the original, which has them inlined.
 // FUNCTION: IMPERIALISM 0x005093e0
 void DrawHexNeighborBorderGuidePathForTile(short tileId, int compareValue, short tileScale) {
   short neighborTiles[6];
@@ -295,14 +284,6 @@ unsigned int MapEdgePoint::Equals(const MapEdgePoint* other) const {
   return 0;
 }
 
-// Maps a clicked tile to a map-context action code used by the map-order handlers.
-// - Tile action class 2..6 (excluding 3): open the entry-order dialog (11).
-// - Class 7..13: walk g_pNavyOrderManager's TTaskForce queue for the ordinal-th entry whose
-//   nation matches (class-7), cache it in g_pCachedMapActionContext for a downstream
-//   dialog branch, return class-5.
-// - Class 14..21: compare the tile's resolved zone against the UI's currently-active order
-//   context zone; return 10 if the same, 9 if different.
-// - Otherwise (or class -1): no action (0).
 // FUNCTION: IMPERIALISM 0x00559a70
 int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags) {
   (void)dwInputFlags;
@@ -347,14 +328,6 @@ int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags) {
   return 0;
 }
 
-// Dead sibling of GetMapContextActionCode (no callers in the retail binary; kept for
-// byte coverage): maps a tile to a mouse/action code for the ACTIVE map-order entry.
-// Water tile: resolve the linked sea zone and, when the entry has ship counts and an
-// active child order whose cheapest resource weight covers the cached zone distance,
-// delegate to TTaskForce::MouseCodeForTarget(TZone*); otherwise 1. Land tile: when an
-// active child order exists and the province is navy-order reachable, this is the
-// inlined body of MouseCodeForTarget(Province*) (0x10 on a stale pair-relation stamp,
-// else 1). No active entry at all: 0.
 // FUNCTION: IMPERIALISM 0x00559bd0
 int __stdcall GetActiveMapOrderEntryActionCode(short nTileIndex, int dwInputFlags) {
   (void)dwInputFlags;

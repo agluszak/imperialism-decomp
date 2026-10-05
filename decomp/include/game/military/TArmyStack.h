@@ -25,12 +25,7 @@ public:
   virtual void Free() override;                    // slot 0x07 0x4a7c20
   short field4;                                    // +0x04 -- composition class
   short field6;                                    // +0x06 -- composition class and random sort key
-  // +0x08 -- region/owner category; signed (indexed/compared via movsx/jge in the
-  // original) and compared against TArmyMgr::perTileOwnerNationCodeCache1c.
   signed char categoryFlag;
-  // +0x09 -- cached g_anFortLevelAttackerPenaltyPercentByLevel lookup for the
-  // most-recently-processed unit in StrategicCombat's Phase 1/2
-  // scan; that scan stops early once this hits 0.
   unsigned char fortLevelAttackerPenaltyCache9;
   short unitCountA;     // +0x0a -- linked unit count, serialized as a signed word
   unsigned char fieldC; // +0x0c -- initialized by IArmyStack
@@ -41,55 +36,23 @@ public:
   TArmyStackUnitNode* head14;   // +0x14 -- head of the owned node chain
   TArmyStackUnitNode* cursor18; // +0x18 -- traversal cursor over the chain
 
-  // Walk the unit chain re-seating every unit: hand each one its own orderTargetIndex through
-  // MoveTo (slot 0x28) and then clear its orders via SetOrders(0, -1).
-  // 0x004a7d20, __thiscall.
   void ReseatChainUnitsAndClearOrders();
 
-  // Derive this stack's composition code from its unit chain: take the min and max
-  // per-unit combat class over the chain (seeded 3 / 1), look the pair up in
-  // g_abStackCompositionClassTable, store it in field4, and pack field6 as
-  // (field4 << 8) | (rand() & 0xff). 0x004a7c60, __thiscall.
   void ComputeStackCompositionClassCode();
 
-  // Mac oracle: TArmyStack::InitializeStrategicBattle(unsigned char).
-  // Snapshots unit strength, initializes battle-state bits, and caches the originating
-  // province's fort penalty for the strategic-combat pass.
   void InitializeStrategicBattle(unsigned char boosted);
 
-  // Resets cursor18 to head14 and returns its unit (nullptr if the chain is empty).
-  // 0x004a3b70, __thiscall, no args.
   TMilitaryUnit* ResetCursorAndGetHeadUnit();
-  // Advances cursor18 to its next node and returns that node's unit (nullptr if there is
-  // no next node, or the cursor was already null). 0x004a3b90, __thiscall, no args.
   TMilitaryUnit* AdvanceCursorAndGetUnit();
 
-  // Resolves a roster ID in the owning country's military list and prepends the unit.
-  // Mac oracle: AddUnit(short). 0x004a7a40.
   void AddUnitByRosterId(short rosterID);
-  // Walks the whole chain from head14 (via ResetCursorAndGetHeadUnit/
-  // AdvanceCursorAndGetUnit) and, for every unit with a positive strength34 (strength),
-  // grows experiencePercent (percent-scaled quality) by 35 if boosted else 20, capped at 400.
-  // 0x004a82b0, __thiscall, 1 arg.
   void RaiseExperience(bool boosted);
   bool UnitsFighting(); // 0x4a8330, Mac oracle
-  // Walks the chain accumulating a weighted meter sum and eligible-entry count into the
-  // two out-params, seeded by `counter`. 0x004a7e70, 355 bytes; signature verified via
-  // TArmyMgr::StrategicCombat's callsite disassembly.
   void StrategicFirepower(int* outWeightedSum, int* outCount,
                                                                 int counter);
-  // Applies a randomized decay to eligible entries using the accumulated weighted sum/
-  // count from the method above. 0x004a8040, 482 bytes.
   void ApplyStrategicDamage(int weightedSum, int count, int counter);
-  // Re-initializes the stack for one tactical-battle side: zeroes field4/field6/unitCountA/
-  // fieldC and stores the owner nation index, owner nation code, and originating tile.
-  // 0x004a7770, __thiscall, ret 0xc.
   void IArmyStack(char ownerNationIndex, short ownerNationCode, short tileIndex);
-  // Pushes a unit node at the head of the chain (alloc-failure assert via
-  // UArmyMgr.cpp line 0xbeb) and increments unitCountA. 0x004a7b20.
   void AddUnitToChainHead(TMilitaryUnit* unit);
-  // Unlinks and deletes the first node whose unit pointer matches (searches head14,
-  // then walks the chain), decrementing unitCountA. No-op if not found. 0x004a7ba0.
   void RemoveUnitFromChain(TMilitaryUnit* unit);
 
   TArmyStack();

@@ -71,10 +71,6 @@ void TNewsMgr::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
 }
 
-// News phase (turn machine case 0xf, Mac: StartNewsPhase): load the story-template
-// table, lazily allocate the per-nation last-used-tick arrays, build each eligible
-// nation's newspaper page, then free the transient table and drop the consumed
-// event records.
 // FUNCTION: IMPERIALISM 0x0055b8e0
 void TNewsMgr::StartNewsPhase() {
   LoadNewsTable();
@@ -124,9 +120,6 @@ void TNewsMgr::LoadNewsTable() {
   }
 }
 
-// Builds one nation's 3x3 newspaper page: event stories first (CreateEventStories),
-// then least-recently-used random filler/feature stories until the page is full or
-// four picks in a row failed.
 // FUNCTION: IMPERIALISM 0x0055bc10
 void TNewsMgr::CreateNewspaper(int nation) {
   int major = 0;
@@ -159,8 +152,6 @@ void TNewsMgr::CreateNewspaper(int nation) {
   int misses = 0;
   int curTick = g_pSimMgr->GetEconomicTurn();
   while (major < 3 && misses < 4) {
-    // Random pick biased toward least-recently-used templates (min of two uniforms
-    // over the sorted order), skipping event-story rows (negative ids).
     int pick;
     do {
       int r1 = rand() % storyTemplateCount;
@@ -226,8 +217,6 @@ void TNewsMgr::CreateNewspaper(int nation) {
   delete[] order;
 }
 
-// Fills event stories for one nation from the shared discriminated event-record queue,
-// advancing the (major, minor) page cursors.
 // FUNCTION: IMPERIALISM 0x0055c010
 void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor) {
   int ordinal = 0;
@@ -729,9 +718,6 @@ void TNewsMgr::ConcatenateTreaty(InterNationEventKind eventKind, int nationA, in
     sharedEventRecordQueue->InsertCopiedRecordSortedByComparator(&recordB);
   }
 }
-// call. The original emits the story-filling code twice, once per call site, because
-// AlwaysTrueStory is inlined into both branches -- which is exactly why there are two
-// identical blocks jumping to one shared epilogue.
 // FUNCTION: IMPERIALISM 0x0055cf20
 unsigned char TNewsMgr::EvaluateFeatureStory(const newsEntry* templateRow, newsStory* story,
                                              int nationSlot) {
@@ -782,8 +768,6 @@ void TNewsMgr::ClearStoryParms(newsStory* story) {
   story->parmKind[3] = 0;
 }
 
-// Mac oracle: AlwaysTrueStory. Reads nothing from `this`.
-//
 // FUNCTION: IMPERIALISM 0x0055d0c0
 unsigned char TNewsMgr::AlwaysTrueStory(const newsEntry* templateRow, newsStory* story,
                                         int nationSlot) {

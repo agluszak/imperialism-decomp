@@ -8,11 +8,6 @@
 class CDib;
 struct GameSetup;
 
-// Shared "C2" template modal dialog: a CDialog subclass (via TModalDialogBase, template
-// id 0xc2) with an embedded CSliderCtrl at +0x74 and CListBox at +0xb0 (both CWnd-sized,
-// 0x3c). Built by InitializeDialogTemplateC2WithTextState (0x0047cfd0) and driven modally
-// through the TModalDialogBase template helpers. Used by the ID_800C
-// city-view-selection and ID_8013 terrain-overlay command handlers.
 // VTABLE: IMPERIALISM 0x006461f0
 class TWarpToScreenDialog : public TModalDialogBase {
 public:
@@ -30,10 +25,6 @@ protected:
 
 ASSERT_SIZE(TWarpToScreenDialog, 0xec);
 
-// Sibling "D2" template dialog (template id 0xd2, own vtable 0x646300): same
-// TModalDialogBase base with a single embedded CListBox at +0x74. Built by
-// InitializeDialogTemplateD2WithTextState (0x0047d1c0); used by the ID_8013
-// terrain-overlay command handler.
 // VTABLE: IMPERIALISM 0x00646300
 class TConductDiplomacyDialog : public TModalDialogBase {
 public:
@@ -50,9 +41,6 @@ protected:
 
 ASSERT_SIZE(TConductDiplomacyDialog, 0xb0);
 
-// Sibling "DB" template dialog (template id 0xdb, own vtable 0x646410): same TModalDialogBase
-// base with a single embedded CSliderCtrl at +0x74 (ctor installs the CSliderCtrl vtable
-// 0x6714cc). Built by InitializeDialogTemplateDBWithTextState (0x0047d360).
 // VTABLE: IMPERIALISM 0x00646410
 class TSwitchGreatPowerDialog : public TModalDialogBase {
 public:
@@ -69,9 +57,6 @@ protected:
 
 ASSERT_SIZE(TSwitchGreatPowerDialog, 0xb0);
 
-// Sibling "DC" template dialog (template id 0xdc, own vtable 0x646520): a TModalDialogBase
-// with a single edit field exchanged as a 0..999 UINT (no embedded control object). Built by
-// InitializeDialogTemplateDCBaseState (0x0047d470).
 // VTABLE: IMPERIALISM 0x00646520
 class TRunOffTurnsDialog : public TModalDialogBase {
 public:
@@ -88,10 +73,6 @@ protected:
 
 ASSERT_SIZE(TRunOffTurnsDialog, 0x78);
 
-// Sibling "DE" template dialog (template id 0xde, own vtable 0x646630): a TModalDialogBase
-// with an embedded CSliderCtrl at +0x74 (ctor installs CSliderCtrl vtable 0x6714cc) plus two
-// DDX_Text UINT fields at +0xb0/+0xb4. Built by InitializeDialogTemplateDEWithTextState
-// (0x0047dba0).
 // VTABLE: IMPERIALISM 0x00646630
 class TBequeathGoodiesDialog : public TModalDialogBase {
 public:
@@ -110,12 +91,6 @@ protected:
 
 ASSERT_SIZE(TBequeathGoodiesDialog, 0xb8);
 
-// Sibling "DF" template dialog (template id 0xdf, own vtable 0x646740). Unlike its
-// TModalDialogBase siblings this is a PLAIN CDialog subclass: vtable slot 0xc0 is the library
-// CDialog::DoModal (0x6051b9) and the TModalDialogBase modal-loop slots at 0xd8/0xdc are
-// absent, and its ctor writes only its own vtable (no TModalDialogBase intermediate). Its data
-// — one edit value + five checkbox flags — occupies 0x5c-0x70, right after the CDialog base
-// (0x5c). Built by InitializeDialogTemplateDFBaseState (0x0047dce0).
 // VTABLE: IMPERIALISM 0x00646740
 class TPeekAtDibDialog : public CDialog {
 public:
@@ -138,10 +113,6 @@ protected:
 
 ASSERT_SIZE(TPeekAtDibDialog, 0x74);
 
-// Sibling "FA" template dialog (template id 0xfa, own vtable 0x646848): TModalDialogBase with an
-// embedded CListBox at +0x74 (vtable 0x671d1c). Its DoDataExchange override is an empty stub —
-// the listbox is wired up outside DDX. Built by InitializeDialogTemplateFAWithTextState
-// (0x0047de40).
 // VTABLE: IMPERIALISM 0x00646848
 class TFATemplateDialog : public TModalDialogBase {
 public:
@@ -158,9 +129,6 @@ protected:
 
 ASSERT_SIZE(TFATemplateDialog, 0xb0);
 
-// Sibling "AD" template dialog (template id 0xad, own vtable 0x646d68): TModalDialogBase with an
-// embedded CListBox at +0x74, an OnInitDialog override, and a DDX_Control-bound listbox. Built
-// by InitializeDialogTemplateADWithTextState (0x0047f450).
 // VTABLE: IMPERIALISM 0x00646d68
 class TADTemplateDialog : public TModalDialogBase {
 public:
@@ -168,8 +136,6 @@ public:
   ~TADTemplateDialog() override {}
   TADTemplateDialog(void* initParam); // 0x0047f450
 
-  // Dead member (no live callers): forwards *text to the embedded listbox's
-  // CListBox::AddString. 0x0047f5a0.
   int AddListboxText(const CString* text);
 
   CListBox listbox; // +0x74
@@ -182,9 +148,6 @@ protected:
 
 ASSERT_SIZE(TADTemplateDialog, 0xb0);
 
-// Sibling "104" template dialog (template id 0x104, own vtable 0x646ea0): TModalDialogBase with
-// an embedded CListBox at +0x74 (DDX_Control 0x435). Built by
-// InitializeDialogTemplate104WithRegionState (0x00480a10).
 // VTABLE: IMPERIALISM 0x00646ea0
 class TPickGameDialog : public TModalDialogBase {
 public:
@@ -201,9 +164,6 @@ protected:
 
 ASSERT_SIZE(TPickGameDialog, 0xb0);
 
-// Template-0x102 modal dialog (own vtable 0x647050). It adds no state beyond
-// TModalDialogBase and only supplies an empty DDX override plus a trivial
-// OnInitDialog override.
 // VTABLE: IMPERIALISM 0x00647050
 class T102TemplateDialog : public TModalDialogBase {
 public:
@@ -219,8 +179,6 @@ protected:
 
 ASSERT_SIZE(T102TemplateDialog, 0x74);
 
-// Resource-A3/A4 diplomacy dialog leaves. Both extend CDialog with one tail virtual at
-// slot 0xd8; A3's hook is empty, while A4 verifies the file-scope dialog context guard.
 // VTABLE: IMPERIALISM 0x00646b58
 class TA3TemplateDialog : public CDialog {
 public:
@@ -251,8 +209,6 @@ protected:
 
 ASSERT_SIZE(TA4TemplateDialog, 0x5c);
 
-// Member-less CDialog template leaves. Each class exists to bind a distinct dialog
-// resource and its own message map/vtable; their DoDataExchange overrides are empty.
 // VTABLE: IMPERIALISM 0x00647530
 class TA5TemplateDialog : public CDialog {
 public:
@@ -368,9 +324,6 @@ protected:
 
 ASSERT_SIZE(TF7TemplateDialog, 0x5c);
 
-// Sibling "A7" template dialog (template id 0xa7, own vtable 0x647740): a PLAIN CDialog subclass
-// (base 0x5c) with one CString edit field at +0x5c (DDX_Text 0x3fc). Built by
-// InitializeDialogTemplateA7WithSharedText (0x00481770).
 // VTABLE: IMPERIALISM 0x00647740
 class TA7TemplateDialog : public CDialog {
 public:
@@ -387,9 +340,6 @@ protected:
 
 ASSERT_SIZE(TA7TemplateDialog, 0x60);
 
-// Sibling "AB" template dialog (template id 0xab, own vtable 0x647b60): a PLAIN CDialog subclass
-// (base 0x5c) with two CString edit fields at +0x5c/+0x60 (DDX_Text 0x3fd/0x3fe). Built by
-// InitializeDialogTemplateABWithDualTextState (0x00481b30).
 // VTABLE: IMPERIALISM 0x00647b60
 class TABTemplateDialog : public CDialog {
 public:
@@ -407,9 +357,6 @@ protected:
 
 ASSERT_SIZE(TABTemplateDialog, 0x64);
 
-// Sibling "AE" template dialog (template id 0xae, own vtable 0x647d70): a PLAIN CDialog subclass
-// (base 0x5c) with two CString edit fields at +0x5c/+0x60 (DDX_Text 0x400/0x401). Built by
-// InitializeDialogTemplateAEWithDualTextState (0x00481dc0).
 // VTABLE: IMPERIALISM 0x00647d70
 class TAETemplateDialog : public CDialog {
 public:
@@ -427,9 +374,6 @@ protected:
 
 ASSERT_SIZE(TAETemplateDialog, 0x64);
 
-// Sibling "B1" template dialog (template id 0xb1, own vtable 0x647f80): a PLAIN CDialog subclass
-// (base 0x5c) with one CString edit field at +0x5c (DDX_Text 0x403). Built by
-// InitializeDialogTemplateB1WithSharedText (0x00482050).
 // VTABLE: IMPERIALISM 0x00647f80
 class TB1TemplateDialog : public CDialog {
 public:
@@ -446,11 +390,6 @@ protected:
 
 ASSERT_SIZE(TB1TemplateDialog, 0x60);
 
-// Sibling "DD" picture-preview template dialog (template id 0xdd, own vtable 0x63e6b0):
-// TModalDialogBase-derived, previews a CDib picture (sized to the window in OnInitDialog, drawn
-// in OnPaint) and optionally overlays a red silhouette outline/fill built from the picture's
-// non-transparent pixels (heap buffer at +0x8c, freed in the destructor). Built by
-// InitializeDialogTemplateDDPictureState (0x0047d540).
 // VTABLE: IMPERIALISM 0x0063e6b0
 class TDibPreviewDialog : public TModalDialogBase {
 public:
@@ -476,9 +415,6 @@ protected:
 
 ASSERT_SIZE(TDibPreviewDialog, 0x94);
 
-// Sibling "64" template dialog (template id 0x64, own vtable 0x63e498): a PLAIN CDialog subclass
-// with no data members and a trivial OnInitDialog override. Constructed inline by its only
-// driver ShowDialogTemplate64Modal (0x00413700), so it has no standalone constructor function.
 // VTABLE: IMPERIALISM 0x0063e498
 class T64TemplateDialog : public CDialog {
 public:
@@ -496,10 +432,6 @@ protected:
 
 ASSERT_SIZE(T64TemplateDialog, 0x74);
 
-// Sibling "D0" template dialog (template id 0xd0, own vtable 0x64bac0): a PLAIN CDialog subclass
-// with an embedded CListBox at +0x5c (DDX_Control 0x419). OnOK is a no-op (suppresses default
-// close) and OnCancel minimizes instead of closing. Built by
-// InitializeDialogTemplateD0WithTextState (0x0049bcd0).
 // VTABLE: IMPERIALISM 0x0064bac0
 class TTraceDialog : public CDialog {
 public:
@@ -509,12 +441,8 @@ public:
 
   CListBox listbox; // +0x5c
 
-  // +0x98 -- set once the modeless dialog has been created. 0x0049bd90 reads it, calls
-  // CDialog::Create(0xd0, nullptr) on the first trace line only, then latches it to 1.
   int dialogCreated98;
 
-  // 0x0049bd90 -- appends printf-formatted trace text to a shared static accumulator and
-  // flushes every complete line into the listbox, scrolling to the newest entry.
   void AppendTraceTextAndFlushCompleteLines(const char* text);
 
 protected:
@@ -526,11 +454,6 @@ protected:
 
 ASSERT_SIZE(TTraceDialog, 0x9c);
 
-// Sibling "E0" full-screen overlay template dialog (template id 0xe0, own vtable 0x64b960): a
-// PLAIN CDialog subclass with no DDX members. Overrides PreCreateWindow (forces a huge window)
-// and OnInitDialog (custom cursor + 2000x2000 MoveWindow); its message map carries the input
-// handlers (WM_CHAR/KEYDOWN/mouse/cursor/paint — follow-up). Built by InitializeDialogTemplateE0
-// (0x005dee50).
 // VTABLE: IMPERIALISM 0x0064b960
 class TE0TemplateDialog : public CDialog {
 public:
@@ -544,8 +467,6 @@ protected:
   BOOL OnInitDialog() override;                     // 0x005def70 (slot 0xc4)
   void DoDataExchange(CDataExchange* pDX) override; // 0x005dee80 (empty body)
 
-  // Full-screen overlay input handlers: any key or L/R click dismisses; WM_SETCURSOR reasserts
-  // the custom cursor; NCPAINT/PAINT suppress painting.
   afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);        // 0x005deec0
   afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);     // 0x005deee0
   afx_msg void OnLButtonDown(UINT nFlags, CPoint point);             // 0x005def00
@@ -561,8 +482,6 @@ ASSERT_SIZE(TE0TemplateDialog, 0x74);
 
 void ShowBlockingWaitOverlayDialog(void); // 0x00498cc0
 
-// Windows game-setup dialog (template id 0xa1, own vtable 0x647428): three policy sliders,
-// two DDX checkboxes, and the caller-owned GameSetup record at +0x118.
 // VTABLE: IMPERIALISM 0x00647428
 class TGameSetupDialog : public CDialog {
 public:

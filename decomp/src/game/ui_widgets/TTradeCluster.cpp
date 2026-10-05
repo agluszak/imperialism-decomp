@@ -83,13 +83,8 @@ IMPLEMENT_DYNCREATE(TTradeCluster, TAmtBarCluster)
 // FUNCTION: IMPERIALISM 0x005870b0
 TTradeCluster::TTradeCluster() : TAmtBarCluster() {}
 
-// Initializes Sell/Bar/Arrow control style and enabled state for the current
-// nation/resource context, then initializes the move/bar controls baseline.
 // FUNCTION: IMPERIALISM 0x00587130
 void TTradeCluster::DoPostCreate(int styleSeed) {
-  // The 'Sell' control is a TMyNumberText (UI factory: new TMyNumberText() for tag
-  // 'Sell'); the slots dispatched below (0x6d/0x71/0x79) exist only on the TNumberText
-  // hierarchy, past TAmtBar's last slot 0x6a -- so this was never a TAmtBar.
   TNumberText* sellControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagSell));
   if (sellControl != 0) {
     TextStyle style;
@@ -185,15 +180,9 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       this->SetMoveAmount(static_cast<short>(sellValue - 1));
       return;
     }
-    // At or below one the original RETURNS (0x0058763e `jle` targets the epilogue at
-    // 0x005877be, a bare `ret 0xc`) -- it does not fall through to the base handler.
-    // Breaking here delegated to TAmtBarCluster::DoEvent, which resolves 'move'; the trade
-    // row has no such child, so it dereferenced null and crashed on the 1 -> 0 click.
     return;
   }
   case 0x66:
-    // Retail's in-range jump-table hole targets the common epilogue directly. It must
-    // not share the out-of-range default, which delegates to TAmtBarCluster::DoEvent.
     return;
   case 0x67:
     g_pViewMgr->AddPendingTurnOverlayCode(-1);
@@ -265,19 +254,11 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     return;
   }
   default:
-    // Out-of-range commands DO reach the base: the switch's range check (`ja 0x005877ac`
-    // at 0x005873f7) lands on a push/push/push + `call 0x00407a90` with ecx = this, an ILT
-    // thunk to TAmtBarCluster::DoEvent. Only the in-range guard-failure paths skip it, by
-    // jumping to the epilogue at 0x005877be which sits *after* that call.
     TAmtBarCluster::DoEvent(commandId, sourceHandler, event);
     return;
   }
-  // Nothing after the switch: a `break` out of an in-range case returns without touching
-  // the base, matching the 0x005877be exits.
 }
 
-// Returns early if UI mode is outside trade range (>3); otherwise reports
-// whether the current Sell control quantity is at its minimum.
 // FUNCTION: IMPERIALISM 0x00587900
 char TTradeCluster::IsTradeControlAtMinimum() {
   if (g_pViewMgr->GetPendingTurnOverlayCode() > 3) {
@@ -287,16 +268,12 @@ char TTradeCluster::IsTradeControlAtMinimum() {
   return sellControl->UpdateControlCachedIntFromWindowText() <= 0 ? 1 : 0;
 }
 
-// Returns the current Sell control quantity. This is the zero-argument virtual at
-// byte 0x1d4; callers rely on its zero-byte stack cleanup.
 // FUNCTION: IMPERIALISM 0x00587950
 int TTradeCluster::GetTradeSellControlValue() {
   TNumberText* sellControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagSell));
   return sellControl->UpdateControlCachedIntFromWindowText();
 }
 
-// Bid control is actionable when its 'card' bitmap is in a Bid state and the
-// control reports actionable.
 // FUNCTION: IMPERIALISM 0x00587980
 unsigned char TTradeCluster::IsSelectionAllowed() {
   TPicture* bidControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagCard));
@@ -316,8 +293,6 @@ unsigned char TTradeCluster::IsSelectionAllowed() {
   return 1;
 }
 
-// Offer control is actionable when its 'offr' bitmap is in an Offer state and
-// the control reports actionable.
 // FUNCTION: IMPERIALISM 0x00587a10
 int TTradeCluster::GetBoolSlot1DC() {
   TPicture* offerControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagOffr));
@@ -337,8 +312,6 @@ int TTradeCluster::GetBoolSlot1DC() {
   return 1;
 }
 
-// Bid secondary-state updater: assigns the secondary 'card' bitmap (row-state
-// dependent) when the screen mode gate passes, else disables the control.
 // FUNCTION: IMPERIALISM 0x00587aa0
 void TTradeCluster::DoControlAction() {
   TPicture* bidControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagCard));
@@ -364,8 +337,6 @@ void TTradeCluster::DoControlAction() {
   bidControl->Show(0, 1);
 }
 
-// Bid-state updater: assigns the 'card' bitmap (row-state dependent) and clears
-// the gree/left/rght companion controls.
 // FUNCTION: IMPERIALISM 0x00587bb0
 void TTradeCluster::SetTradeBidControlBitmap() {
   TPicture* bidControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagCard));
@@ -407,8 +378,6 @@ void TTradeCluster::SetTradeBidControlBitmap() {
   bidControl->PaintOrInvalidateControl();
 }
 
-// Offer-state updater: assigns the 'offr' bitmap (row-state dependent) and
-// enables the gree/left/rght companion controls.
 // FUNCTION: IMPERIALISM 0x00587dd0
 void TTradeCluster::SetTradeOfferControlBitmap() {
   TPicture* offerControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagOffr));
@@ -452,8 +421,6 @@ void TTradeCluster::SetTradeOfferControlBitmap() {
   offerControl->PaintOrInvalidateControl();
 }
 
-// Offer secondary-state updater: assigns the secondary 'offr' bitmap when the
-// nation availability/capacity gates pass, else disables the control.
 // FUNCTION: IMPERIALISM 0x00588030
 void TTradeCluster::SetTradeOfferSecondaryBitmap() {
   TPicture* offerControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagOffr));
@@ -511,8 +478,6 @@ void TTradeCluster::SetTradeOfferSecondaryBitmap() {
   offerControl->PaintOrInvalidateControl();
 }
 
-// Updates the Sell control quantity and the Bar fill from the nation's current
-// trade metric, clamped to metricClampMax.
 // FUNCTION: IMPERIALISM 0x005882f0
 void TTradeCluster::SetMoveAmount(short metricClampMax) {
   short activeNationSlot = g_pSimMgr->GetPlayerCountry();

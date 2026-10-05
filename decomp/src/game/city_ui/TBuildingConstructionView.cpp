@@ -131,8 +131,6 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   g_pSimMgr->GetString(0x2738, 0x14, &textBuffer);
   costCtrl->SetTextAndMaybeRefresh(&textBuffer, false);
 
-  // 'capT' — capacity value expanded into the bracket template (0x2738/0x10). Slot 11
-  // uses the fixed University text (0x2738/0x15) rather than a formatted number.
   TStaticText* capTCtrl =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'a', 'p', 'T')));
   short slot = this->buildingSlotId94;

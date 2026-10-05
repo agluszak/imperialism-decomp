@@ -15,8 +15,6 @@
 #include "game/globals/military_globals.h"
 #include "game/globals/shared_globals.h"
 
-// The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
-//   CArchive& AFXAPI operator>>(CArchive&, TInvadeMission*&)
 IMPLEMENT_SERIAL(TInvadeMission, TAttackProvinceMission, 1)
 
 // FUNCTION: IMPERIALISM 0x0053f120
@@ -101,8 +99,6 @@ void TInvadeMission::Free() {
   }
 }
 
-// Matches the original exactly: unconditionally dereferences beachhead34 (no null check),
-// so this is only ever called on an instance with a live beachhead child.
 // FUNCTION: IMPERIALISM 0x0053f4e0
 char TInvadeMission::SmokeEmIfYouGotEm() {
   if (!beachhead34->SmokeEmIfYouGotEm()) {
@@ -148,9 +144,6 @@ void TInvadeMission::WriteTo(TStream* stream) {
   TArmyMission::WriteTo(stream);
   stream->WriteBytes(&targetProvince30, 2);
   stream->WriteBytes(&amassingProvince32, 2);
-  // The original dereferences beachhead34 unguarded (0x53f668); ReadFrom always
-  // installs one, so a null here is a broken invariant, not a case to skip -- and a
-  // guard would silently truncate the stream instead of failing.
   beachhead34->WriteTo(stream);
 }
 
@@ -245,10 +238,6 @@ bool TInvadeMission::IsArmyMission() const {
   return true;
 }
 
-// Same shape as TArmyMission::ValueOf, but the "not this mission's own unit"
-// branch is scaled down by 0.1 unless IsArmyMission() says otherwise (TInvadeMission's
-// own override always returns true, so the scale-down never actually triggers here -- kept
-// as a real virtual dispatch to match the original rather than hardcoding).
 // FUNCTION: IMPERIALISM 0x0053fac0
 float TInvadeMission::ValueOf(TMilitaryUnit* candidateUnit) {
   float delta;
@@ -291,12 +280,6 @@ bool TInvadeMission::Matches(eMissionType missionType, int key, TZone* zoneConte
          beachhead34->Matches(kMissionTypeInvadeProvince, key, zoneContext);
 }
 
-// Builds the order-list contribution vector, then subtracts it from this mission's desired
-// resource profile. When includePriorContributions is set, an existing output component is
-// carried into the difference unless the desired component is already at or below the new
-// contribution; that exhausted case uses the original's address-distinct zero carry scale.
-// Each resulting float is converted through VC5's _ftol path before the beachhead child's
-// own slot-0x2c contribution is added to the returned total.
 // FUNCTION: IMPERIALISM 0x0053fc10
 int TInvadeMission::AccumulateLack(int* accumulatedLack, bool includeExistingLack) const {
   float vector[5] = {0};

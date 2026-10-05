@@ -14,8 +14,6 @@ struct GlobalMapTileRecord {
   TCivUnit* firstCivilianOrder; // 0x20
 };
 
-// Raw 0x24-byte tile record as stored in a Mac-endian scenario file. It remains separate
-// from the runtime tile view because its word fields are swapped only at the load boundary.
 struct ScenarioTileDiskRecord {
   unsigned char bytes00[4];
   signed char ownerNationTag04;
@@ -36,8 +34,6 @@ struct MapPixelSourceView {
   const short* packedTiles; // +0x08
 };
 
-// Runtime state for one strategic-map tile. It is distinct from ScenarioTileDiskRecord:
-// the latter retains the Mac-endian bytes only at the scenario-load boundary.
 struct TTerrainStateRecord {
   // -1 is the unassigned terrain sentinel; use the typed accessors below.
   StrategicTerrainKindStorage terrainKindStorage00;
@@ -83,13 +79,9 @@ struct TTerrainStateRecord {
 };
 ASSERT_SIZE(TTerrainStateRecord, 0x24);
 
-// Runtime city/province record. The city-redraw packet snapshots its fields directly;
-// the short link fields at 0x3e, 0x40, and 0x94 and CString at 0xa4 are ABI-significant.
 struct Province {
   Province();
   Province& operator=(const Province& source);
-  // Mac oracle: Province::GetIndex() const. Returns this record's index in the
-  // active map's cityScoreTable. 0x0050e2c0.
   ProvinceIndex GetIndex() const;
 
   signed char ownerNationCode00;

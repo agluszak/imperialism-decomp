@@ -14,8 +14,6 @@ public:
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
                        TEvent* event) override; // slot 0x0f 0x004a9990
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4a95b0
-  // Offsets read by Draw (+8 int, +0x24 CString, +0x34/+0x38 short)
-  // match TMilitaryUnit::unitOrder/name24/strength34/experiencePercent exactly.
   class TMilitaryUnit* militaryUnit; // +0x60
 
   // Non-virtual: runs the rename dialog for militaryUnit in response to the 'name' command.
@@ -23,9 +21,6 @@ public:
 
   TArmyUnitView();
 
-  // Mac oracle: IArmyUnitView(TView*, const VPoint&, const VPoint&, SizeDeterminer,
-  // SizeDeterminer, TMilitaryUnit*). Dead standalone emission; live creation sites
-  // inline the same init. 0x004a9560.
   void IArmyUnitView(TView* panel, int* offsetLayout, int* sizeLayout, int sizeDeterminerX,
                      int sizeDeterminerY, TMilitaryUnit* unit);
 };

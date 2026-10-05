@@ -215,9 +215,6 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
   hoveredTileIndex = static_cast<unsigned short>(
       ComputeStridedRecordAddress6C(static_cast<int>(tileRow), static_cast<int>(tileColumn)));
 
-  // Skip the cursor recompute when neither the tile cell nor the region band changed
-  // since the cursor was last rendered (activeRegionBand holds that last band; a click
-  // cycles it out of range to force this dedup to miss and the cursor to refresh).
   if (hoveredTileIndex == paintedHoverTileIndex && *hoverBand == activeRegionBand) {
     return;
   }
@@ -323,13 +320,6 @@ void TWorldView::SetMapOverlayModeAndRenderPreview(unsigned char overlayMode) {
   RenderMapContextOverlayWithScopedClipAndSurface();
 }
 
-// The original's overlay dispatches all go through THIS view's own vtable
-// (`MOV EDI,[ESI]` then `MOV ECX,ESI; CALL [EDI+0x128/0x1a8/0x1ac/0x1b0]` in the
-// raw listing) -- plain self-virtual calls on the TWorldView, not calls through
-// `ownerContext`'s table as a previous port assumed (that version faked the
-// dispatches with __fastcall casts through the wrong object's vtable and dead-
-// gated the mode-0 branch on a variable that was always -1 there). ownerContext
-// is read only for its mode/context fields.
 // FUNCTION: IMPERIALISM 0x00595c70
 void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
   CTemporaryRegion reusableSurfaceA;
@@ -372,8 +362,6 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
   GetClip(reusableSurfaceA.tempRgn);
   SetGlobalQuickDrawOrigin(static_cast<short>(absoluteX), static_cast<short>(absoluteY));
 
-  // Preserve the original stack order: the projection routine's first output occupies
-  // RECT::left and its second output occupies RECT::top.
   CRect previewRect(outY, outX, outY + previewSquareRadius, outX + previewSquareRadius);
   CRect contentBounds;
   QueryContentBounds(&contentBounds);
@@ -388,9 +376,6 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
 
   char regionPresent = EmptyRgn(reusableSurfaceB.tempRgn);
   if (regionPresent == 0) {
-    // The mode-1/2 branches rebuild the projected square into one shared local
-    // (the original recomputes it from outX/outY rather than reusing previewRect,
-    // whose value SectRect clipped above).
     CRect badgeRect;
     if (interactionMode == 0) {
       RenderMapOrderEntryTilePreview(selectedOrder, outX, outY, 1, previewTile);
@@ -541,10 +526,6 @@ void TWorldView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int
   DispatchQueuedUiCommandAndRelease(event);
 }
 
-// Build a TEvent carrying command/dispatch code 0x78, source/target = this view,
-// stash the strided cell record in stridedCellRecordIndex, and hand it to the slot-0xd dispatcher.
-// The field writes intentionally run even when `new` returns null (the original
-// writes through the raw allocation pointer unconditionally).
 // FUNCTION: IMPERIALISM 0x005963d0
 void TWorldView::DispatchOverlayEvent78FromStridedRecord(int stridedRecord, int dispatchContext) {
   (void)dispatchContext;
@@ -572,11 +553,6 @@ void TWorldView::DispatchOverlayEvent78RootHighFromStridedRecord(int stridedReco
 
 // FUNCTION: IMPERIALISM 0x005964b0
 void TWorldView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags) {
-  // Per active-unit-category interaction mode, offer the tile click to the map-context
-  // (TArmyMgr), civilian-order (TCivMgr) and navy/map-order (g_pNavyOrderManager) handlers
-  // in a mode-specific order. A handler that consumes the click either refreshes this view
-  // or advances the owner's selection cycle; every call advances the active region-band
-  // index (+0x72) 1..4, which also invalidates the hover handler's cursor-render dedup.
   char handled;
   switch (static_cast<TMapUberPicture*>(ownerContext)->activeUnitCategoryIndex) {
   case 0:
@@ -651,13 +627,6 @@ unsigned char TWorldView::IsTileVisible(short tileIndex) {
   return 0;
 }
 
-// Shared slot-0xc6 (byte 0x1f0) body across the view classes: probe the map-dialog
-// tile marker (slot 0x7b); if it reports nothing pending, refresh this view's marker
-// (slot 0x76), then always refresh the owner view's marker through the same slot, run the
-// owner panel's input-capture reset (slots 0x16 -> 0x4f), and spin the shifted-tick busy
-// wait. ownerContext is typed TView*, but slot 0x76 lives in TView's vtable (null in the
-// base, filled by derived views); the static_cast down to TWorldView selects that slot
-// and compiles to the identical `call [vtable+0x1d8]`.
 // FUNCTION: IMPERIALISM 0x00596700
 void TWorldView::NoticeTile(int tileIndex) {
   if (IsTileVisible(static_cast<short>(tileIndex)) == 0) {

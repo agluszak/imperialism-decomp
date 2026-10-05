@@ -32,8 +32,6 @@ void THostGreatPower::WriteTo(TStream* stream) {
   stream->WriteBytes(&nationLostEventDispatched, 1);
 }
 
-// The host runs the base dispatch first (local UI runtime context); when that accepts the
-// action it also mirrors it to the remote nations over the wire.
 // FUNCTION: IMPERIALISM 0x00541080
 char THostGreatPower::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                                         ResourceKindStorage resourceKind) {

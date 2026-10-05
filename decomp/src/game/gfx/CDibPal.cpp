@@ -50,9 +50,6 @@ int CDibPal::BuildPaletteFromBitmapColorTable(CDib* dib) {
 
 // FUNCTION: IMPERIALISM 0x0047e590
 void CDibPal::DrawPalettePreviewGridRectangles(CDC* dc, RECT* bounds, BOOL bForceBackground) {
-  // The entry count only counts if GetObject succeeded: 0x0047e5d2's NEG/SBB turns the
-  // return into a 0 or -1 mask and ANDs it over the count, so a failed query draws
-  // nothing rather than looping on an uninitialized local.
   int entryCount = 0;
   int remaining = ::GetObject(m_hObject, 4, &entryCount) != 0 ? entryCount : 0;
 

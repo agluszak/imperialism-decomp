@@ -22,23 +22,6 @@ static CDC* ResolveActiveQuickDrawDc() {
   return dc;
 }
 
-// The QuickDraw clip/surface module state is seeded by a file-scope C++ object
-// (at 0x6a1d58) whose constructor runs from the CRT static-init table (thunk
-// 0x493fe0, entry 0x692648) before WinMain, and whose destructor is registered
-// via atexit. It (a) points the active surface context at the sentinel and
-// (b) allocates the global clip CRgn attached to an empty rect. SetClip/GetClip
-// (quickdraw_regions.cpp) read g_pGlobalClipRegionHandleObject directly with no
-// null-guard, exactly as the original does, so this initializer must run first.
-// Declaring a real file-scope instance reproduces that CRT-init entry; its +0x8
-// member is g_pActiveQuickDrawSurfaceContext (0x6a1d60) in the original layout.
-// 0x494010 is the atexit destructor thunk MSVC500 generates for that file-scope object,
-// with this trivial destructor inlined into it -- 29 bytes of
-//   MOV ECX,[0x6a1da8] / CALL CGdiObject::DeleteObject
-//   MOV ECX,[0x6a1da8] / TEST ECX,ECX / JZ .ret
-//   MOV EAX,[ECX] / PUSH 1 / CALL [EAX+4]      ; scalar deleting dtor, free = 1
-// which the destructor below reproduces byte for byte (VC5 emits the same 29-byte
-// thunk for this TU, named `$E130` off its per-TU ordinal counter). There is no
-// source-level name to claim it by, so it is claimed as SYNTHETIC.
 class TQuickDrawClipStateInitializer {
 public:
   TQuickDrawClipStateInitializer();
@@ -60,8 +43,6 @@ static TQuickDrawClipStateInitializer g_quickDrawClipStateInitializer;
 
 // FUNCTION: IMPERIALISM 0x00494130
 CFont* __cdecl CreateFontFromPresetAndAttachRegionHandle(TextStyle* preset) {
-  // Height table for the fixed-size families (indices are size codes 1-0x18); the
-  // original builds it on the stack every call.
   int heightBySizeIndex[25];
   heightBySizeIndex[0] = 0;
   heightBySizeIndex[1] = 1;
@@ -148,9 +129,6 @@ CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TextStyle* styl
 // GLOBAL: IMPERIALISM 0x00695120
 static unsigned char g_reversedDwordScratchBuffer[5] = {'\'', 'a', 'b', 'c', 'd'};
 
-// Dead byte-order helper: writes `value` big-endian into the static scratch buffer
-// after its leading byte and returns the buffer base (matching the original's
-// dword store plus byte fixes at 0x695121..0x695124).
 // FUNCTION: IMPERIALISM 0x004945a0
 unsigned char* __cdecl WriteDwordBytesReversedToScratchBuffer(unsigned long value) {
   unsigned char* p = g_reversedDwordScratchBuffer + 1;
@@ -267,10 +245,6 @@ void __cdecl DrawTextWithCachedQuickDrawStyleState(const CString* text) {
   dc->SelectObject(oldFont);
 }
 
-// Draws one text cell into a rect with the cached QuickDraw measure-font/color state, the
-// same font-rebuild + SelectObject/SetTextColor idiom as DrawTextWithCachedQuickDrawStyleState
-// (0x494a90) but using CDC::DrawText into a caller rect; styleSel selects the DrawText format
-// flags. Only called by TTradeScreenPicture::Draw.
 // FUNCTION: IMPERIALISM 0x00494bf0
 void __cdecl RenderTradeScreenCommoditySummaryRows_Impl(CString* text, RECT* rect, short styleSel,
                                                         int unused) {
@@ -352,16 +326,11 @@ short __cdecl MeasureTextRangeWithCachedQuickDrawStyle(const char* text, short o
 
 // FUNCTION: IMPERIALISM 0x00494e00
 short __cdecl MeasureTextExtentWithCachedQuickDrawStyle(const CString* text) {
-  // Active-DC path: reuse the global QuickDraw CDC, SelectObject the cached measure-font
-  // around a GetTextExtentPointA. Falls back to g_pScopedMapQuickDrawDcHandleObject
-  // when no memory DC is bound (same null-fallback chain as the other draw leaves).
   CDC* activeDc = g_pQuickDrawMemoryDc;
   if (activeDc == nullptr) {
     activeDc = g_pScopedMapQuickDrawDcHandleObject;
   }
   if (activeDc != nullptr) {
-    // Inlined rebuild of the cached measure-font (same shape as the draw-font rebuild
-    // in UpdateGlobalFontPresetAndRebuildCachedFontIfDirty, but for the measure cluster).
     if (g_bQuickDrawMeasureFontDirty || g_pQuickDrawCachedMeasureFont == 0) {
       if (g_pQuickDrawCachedMeasureFont != 0) {
         delete g_pQuickDrawCachedMeasureFont;
@@ -376,10 +345,6 @@ short __cdecl MeasureTextExtentWithCachedQuickDrawStyle(const CString* text) {
     activeDc->SelectObject(oldFont);
     return static_cast<short>(extent.cx);
   }
-  // Local-DC path: no active QuickDraw DC, so build a throwaway compatible DC, select
-  // the cached font into it, measure, restore, and destroy. The original wraps this in
-  // an SEH frame for the stack CDC's destructor; real C++ construction/destruction emits
-  // the same unwind via MSVC's EH machinery.
   CDC localDc;
   localDc.Attach(CreateCompatibleDC(static_cast<HDC>(0)));
   if (g_bQuickDrawMeasureFontDirty || g_pQuickDrawCachedMeasureFont == 0) {
@@ -406,8 +371,6 @@ void SetQuickDrawFillColor(COLORREF fillColor) {
   g_QuickDrawMeasureFontPreset.textColor = fillColor;
 }
 
-// Sets the current QuickDraw draw color, propagating it to the active surface context and the
-// cached measure-font style ref, but only when it actually changed.
 // FUNCTION: IMPERIALISM 0x00495030
 void SetQuickDrawColorAndPropagateIfChanged(COLORREF newColor) {
   if (g_QuickDrawForegroundColor != newColor) {
@@ -493,8 +456,6 @@ void MarkQuickDrawStrokePairDirty() {
   g_bQuickDrawStrokePairDirty = 1;
 }
 
-// Dead out-of-line copy of the resolved-origin/pen-state snapshot; no retail caller
-// remains (every reach site was inlined).
 // FUNCTION: IMPERIALISM 0x004952e0
 void CopyQuickDrawStrokeStateBlock(int* out) {
   memcpy(out, &g_nQuickDrawResolvedTextOriginX, 5 * sizeof(int));
@@ -514,8 +475,6 @@ short SetQuickDrawStrokeStateAndMarkDirty(short state) {
   return state;
 }
 
-// Dead out-of-line assert-guard body; reports QuickDraw.cpp:0x35a when the gate is
-// zero, matching the g_QuickDraw*AssertGate pattern used by the live cursor leaves.
 // FUNCTION: IMPERIALISM 0x00495370
 int QuickDrawStateAssertGuard() {
   int result = g_QuickDrawStateAssertGate_006A1DB8;
@@ -738,9 +697,6 @@ void SetQuickDrawTextOriginWithContextOffset(short x, short y) {
   }
   g_nQuickDrawResolvedTextOriginX = resolvedX;
   g_nQuickDrawResolvedTextOriginY = resolvedY;
-  // Verified against 0x0057cc4-0x497cdd: no null guard on either DC in the original.
-  // The nafxcw body at 0x6130a0 calls MoveToEx; its former OffsetWindowOrg identity was
-  // a false attribution among several same-shaped CDC methods.
   CDC* dc = g_pQuickDrawMemoryDc;
   if (dc == nullptr) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
@@ -765,10 +721,6 @@ void DrawCenteredGuideLineOnMapDc(short x, short y) {
   }
   CPen* oldPen = dc->SelectObject(&pen);
 
-  // Verified against 0x0057db6-0x497e1b: this offsets the window origin using the
-  // *stale* resolved-origin globals (left over from a previous
-  // SetQuickDrawTextOriginWithContextOffset call) before recomputing them below --
-  // faithful to the original's ordering, not a bug.
   dc = g_pQuickDrawMemoryDc;
   if (dc == nullptr) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
@@ -852,11 +804,6 @@ void __cdecl ConfigureWhiteQuickDrawPen(unsigned char widePen) {
 
 // FUNCTION: IMPERIALISM 0x005d4c60
 void TruncateTextToFitWidthWithEllipsis(CString* text, short maxWidth) {
-  // Shrinks *text one character at a time, appending "...", until it (plus the
-  // ellipsis) measures within maxWidth -- the reusable form of the loop
-  // TMiniArmyView::Draw (0x4aaeb0) inlines by hand for its own name
-  // label. Bails out to an empty string if truncation would leave fewer than 5
-  // characters.
   if (MeasureTextExtentWithCachedQuickDrawStyle(text) > maxWidth) {
     CString truncated;
     do {

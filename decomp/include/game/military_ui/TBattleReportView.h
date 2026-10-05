@@ -27,11 +27,6 @@ public:
   MapContextActionRecord* GetBattleAt(const CPoint& point) const;
   void RefreshMapContextSelectionPanelAndInfoLabels(MapContextActionRecord* mapContextRecord);
 
-  // 0x4ade30 (311 bytes) -- draws a small marker glyph from the strategic-map icon strip
-  // for every g_pMapContextActionManager action record NOT currently selected (and with
-  // placedFlag set), then one extra highlighted-variant pass (spriteCode262 + 1) for
-  // the currently selected record (selectedReportIndex). rectBuffer is an ignored
-  // stack arg threaded through by the caller (Draw).
   void RenderMapContextActionMarkers(RECT* rectBuffer);
 
   TBattleReportView() : TDiplomacyMapView(), selectedReportIndex(1), transientRegistryObject(0) {}

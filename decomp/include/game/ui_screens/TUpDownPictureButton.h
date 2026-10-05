@@ -16,8 +16,6 @@ public:
   short glyph90;
   short timingWord92;
 
-  // Inline so derived ctors (TCzechBox 0x571c20, TRadioPictureButton 0x5717c0)
-  // reproduce the original's direct TPicture::TPicture call.
   // FUNCTION: IMPERIALISM 0x005715a0
   TUpDownPictureButton() : TPicture(), timingWord92(7000) {}
 };

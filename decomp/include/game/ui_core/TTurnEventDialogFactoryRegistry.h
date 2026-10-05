@@ -3,18 +3,11 @@
 #include "compat.h"
 #include "game/app/TObject.h"
 #include "game/mfc.h"
-// Full TView definition required: MSVC500 instantiates DestructElements for the
-// factory-pointer CList and demands the pointee type be complete.
 #include "game/ui_core/TView.h"
 #include "game/turn_event_codes.h"
 
-// Each factory receives the host window to bind into the built control tree (the tail
-// PropagateUiResourceContextRecursive(pHostWindow) call in each builder); the registry
-// sweep passes null and lets the tree bind its host window later.
 typedef TView*(__cdecl* TurnEventDialogFactoryProc)(CWnd* pHostWindow, int nEventCode);
 
-// Turn-event UI dialog factory registry (global @ 0x006a1b24). Owns the freelist-backed
-// callback table used by TAssetMgr::ResolveTurnEventDialogNodeByMessageContext.
 // VTABLE: IMPERIALISM 0x0064b2e8
 class TTurnEventDialogFactoryRegistry : public TObject {
 public:
@@ -34,8 +27,6 @@ public:
   TTurnEventDialogFactoryRegistry();
   void RegisterDialogFactoryCallback(TurnEventDialogFactoryProc factory);
 
-  // +0x04 — embedded MFC template list of registered factory callbacks (this TU's twin
-  // copy of the CList vtable is 0x0064b328; ctor block size 10).
   CList<TurnEventDialogFactoryProc, TurnEventDialogFactoryProc> factories;
 };
 

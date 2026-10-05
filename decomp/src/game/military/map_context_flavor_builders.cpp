@@ -15,9 +15,6 @@
 
 namespace {
 
-// One weighted draw over `strings` using per-entry `weights` (weights[0]..weights[n-1] sum to the
-// draw range). `range` is the modulus (useMask=false) or mask (useMask=true) applied to the raw
-// 15-bit PRNG sample. Advances the shared flavor PRNG once per draw.
 inline const char* PickWeighted(const char* const* strings, const int* weights, int range,
                                 bool useMask) {
   g_zoneStatusCodePrngSeed_006a5aec = g_zoneStatusCodePrngSeed_006a5aec * 0x15a4e35 + 1;
@@ -31,9 +28,6 @@ inline const char* PickWeighted(const char* const* strings, const int* weights, 
   return strings[index];
 }
 
-// Advance the flavor PRNG twice: the first (intermediate) value drives a boolean
-// length-class gate, the second value is stored as the live seed for the following
-// no-step count draw. Returns 1 if the gated sample is below `threshold`, else 0.
 inline int FlavorGateFlag(int range, int threshold) {
   unsigned int intermediate = g_zoneStatusCodePrngSeed_006a5aec * 0x15a4e35 + 1;
   int flag = static_cast<int>((intermediate >> 0xc) & 0x7fff) % range < threshold;
@@ -41,9 +35,6 @@ inline int FlavorGateFlag(int range, int threshold) {
   return flag;
 }
 
-// Draw a token count from an interleaved weight array using the CURRENT seed WITHOUT
-// advancing it (the gate already advanced it). The returned index counts every entry
-// (including zero-weight padding) consumed before the running remainder goes negative.
 inline int DrawCountNoStep(const int* weights, int range) {
   int remaining =
       static_cast<int>((g_zoneStatusCodePrngSeed_006a5aec >> 0xc) & 0x7fff) % range - weights[0];
@@ -1645,9 +1636,6 @@ void GenerateMappedFlavorTextVariantD(CString* out) {
     *out += PickWeighted(strings, weights, 0xd0, false);
   }
 
-  // OUTLIER tail (no analogue in the VariantC exemplar): a 1-in-10 raw PRNG gate that,
-  // when the built string is short (< 10 chars) and ends in a specific vowel, prepends
-  // a prefix. 'o' -> s_mcflavor_0069b534, 'a' -> s_mcflavor_0069b52c.
   g_zoneStatusCodePrngSeed_006a5aec = g_zoneStatusCodePrngSeed_006a5aec * 0x15a4e35 + 1;
   if (static_cast<int>((g_zoneStatusCodePrngSeed_006a5aec >> 0xc) & 0x7fff) % 10 == 0) {
     int len = out->GetLength();

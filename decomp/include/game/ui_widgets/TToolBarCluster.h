@@ -5,8 +5,6 @@
 #include "game/ui_core/TCluster.h"
 #include "game/mfc.h"
 
-// Opens and refreshes the shared map UI dialog for message context 0x102c.
-// Free function in the original UViewMgr module. 0x005dc560.
 void DispatchUiRuntimeMessage102CAndRefreshActiveView();
 
 // VTABLE: IMPERIALISM 0x00664b00

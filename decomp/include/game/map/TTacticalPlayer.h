@@ -24,9 +24,6 @@ public:
   AlwaysTrueTacticalPredicate10(class TTacticalUnit* unit); // slot 0x10 0x59adf0
   virtual void ProceedAfterBattleIntroAccepted();           // slot 0x11 0x59ae10
 
-  // Base slice (+0x04..+0x27; TArmyPlayer appends at +0x28 up to 0x54). Evidence:
-  // battle setup 0x59f890 (unitList4/battle14 on both players), army side init 0x59b1b0
-  // (scatter-init of the whole slice), selection 0x59af20, coat control 0x5a9b40.
   TList* unitList4;                // +0x04 the side's tactical unit records (new TList())
   TList* secondaryList;            // +0x08 reserve list: never-deployed units (0x59b740)
   char isOurSideFlag;              // +0x0c
@@ -42,27 +39,17 @@ public:
   unsigned char pad21[3];          // +0x21
   int field24;                     // +0x24
 
-  // Returns the next selectable unit (tileIndex8 != -2) from unitList4, advancing
-  // cursorIndex. 0x0059af20, __thiscall.
   void ITacticalPlayer(unsigned char isOurSide, unsigned char watch, int nationIndex);
 
   class TTacticalUnit* SelectNextTacticalUnitForDoneCommand();
 
-  // Handles the "skip" tactical command: unless the selected unit's type category is 8,
-  // sets field20 and queues the battle's turn event (232A). 0x0059b040, __thiscall.
   void HandleTacticalCommandTag_skip();
 
-  // Moves every never-deployed unit (tileIndex8 == -2) from unitList4 to the head of
-  // secondaryList and strips the retired units from the battle's turn-order record
-  // list. Runs when the deployment phase finalizes. 0x0059b740, __thiscall.
   void RetireUndeployedUnitsToReserveList();
 
   // Whether this side belongs to the local active nation. 0x0059b010, __thiscall.
   bool IsTacticalControllerOwnedByActiveNation();
 
-  // Derived construction sites inline the whole ctor chain as a bare vptr store, so
-  // this must stay empty and in-class.
-  // NOOP: verified empty in original 0x0059ad42 (no standalone TTacticalPlayer::TTacticalPlayer body exists: construction is fully inlined into CreateObject 0x0059ad40; that address is its operator-new call site)
   TTacticalPlayer() {}
 };
 ASSERT_SIZE(TTacticalPlayer, 0x28);

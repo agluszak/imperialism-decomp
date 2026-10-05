@@ -137,8 +137,6 @@ void TScenarioChooser::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
     // g_pViewMgr->turnEventCursors[26]: (0x7c - 0x14) / sizeof(HCURSOR).
     SetCursor(g_pViewMgr->turnEventCursors[26]);
-    // sourceHandler is the 'list' TTextList itself (confirmed by size: TTextList's
-    // selectedIndex lands at exactly +0x1068).
     TTextList* scenarioList = static_cast<TTextList*>(sourceHandler);
     ShowInfo(scenarioIndexByListRow[scenarioList->selectedIndex]);
     SetCursor(LoadCursorA(nullptr, IDC_ARROW));
@@ -224,9 +222,6 @@ void TScenarioChooser::StartGame() {
       static_cast<eDifficulty>(difficultyLevelByNation[mapControl->selectedNation68]));
 
   if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
-    // Ask for the session's save name until it differs from the one already published,
-    // then normalise it and hand it to the game-flow state with the chosen nation and
-    // the scenario's 'scn0'+index tag before posting event 0x5e4.
     do {
       g_cstrCountryNameSettingValue006A4220 =
           g_pLanguageMgr->StripCodeStr(g_pGameFlowState->playerNameString);
@@ -336,8 +331,6 @@ void TScenarioChooser::ShowInfo(int scenarioIndex) {
   nationDescription->Show(1, 0);
   nationDescription->RefreshControl();
 
-  // The map file is the Mac-endian tile record array; byte 4 of each 0x24-byte record is
-  // the owner tag the preview draws.
   ScenarioTileDiskRecord* tileRecords = new ScenarioTileDiskRecord[0x1950];
   g_pAssetMgr->GetScenarioFileName(scenarioIndex, 1, &path);
   FILE* mapStream = fopen(path, "rb");

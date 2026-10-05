@@ -71,8 +71,6 @@ char TIconSlider::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPo
   return 1;
 }
 
-// Draws the inherited tick strip, then lets the slider resolve/refresh its thumb
-// bitmap resource (slot 0x78, DrawKnob).
 // FUNCTION: IMPERIALISM 0x00506690
 void TIconSlider::Draw(RECT* rectBuffer) {
   TIconBar::Draw(rectBuffer);

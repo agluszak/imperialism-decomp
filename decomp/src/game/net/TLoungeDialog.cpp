@@ -47,9 +47,6 @@ void TLoungeDialog::DoPostCreate(int arg) {
 
   g_pGameFlowState->InstallCohandler(this, true);
 
-  // 'labl' is a TInfoBarText control (vtable slot 0x204 matches
-  // TInfoBarText::InitializeMapHintTextStyleAndThemeFlags exactly). The original also
-  // installs it as the shared cursor-hint panel.
   TInfoBarText* lablControl = static_cast<TInfoBarText*>(ResolveControlByTag(kSessionTagLabl));
   g_pCursorControlPanel = lablControl;
   lablControl->AssertValid();
@@ -57,9 +54,6 @@ void TLoungeDialog::DoPostCreate(int arg) {
   lablControl->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
   lablControl->SetJustification(1, false);
 
-  // Per-nation-slot roster rows: a ready-state radio ('rad0'-'rad6'), a portrait/pick
-  // button ('pik0'-'pik6'), and a name label ('nam0'-'nam6'), each initialized with a
-  // blank caption via the same restyle idiom as YouHaveNewGameData.
   for (int i = 0; i < 7; ++i) {
     LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 6,
                                                           kSessionTagRad0 + i); // 'rad0'-'rad6'
@@ -67,9 +61,6 @@ void TLoungeDialog::DoPostCreate(int arg) {
                                                           kSessionTagPik0 + i); // 'pik0'-'pik6'
     LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 8,
                                                           kControlTagNam0 + i); // 'nam0'-'nam6'
-    // 0x6980c8 is an unlabeled data address Ghidra never recognized as a string (no
-    // string-oracle entry, single xref) -- treated as the empty placeholder caption it
-    // reads as.
     TStaticText* nameControl = RefreshActiveControlThenApplyThemeStyleAndCaption(
         kControlTagNam0 + i, 0, 0xe, 0x2b6b, -2, "");
     nameControl->AssertValid();
@@ -93,8 +84,6 @@ void TLoungeDialog::DoPostCreate(int arg) {
     }
   } else {
     g_pGameFlowState->RefreshNationStatusLabelsAndCodesForSlotOrAll(-1);
-    // The cancel button reads "leave" (0x12) while the local seat is still busy and
-    // "disconnect" (0x11) once it is not.
     LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(
         0x2742,
         g_pGameFlowState->GetNationStatusCodeForSlotOrActiveNation(-1) == kSessionTagBusy ? 0x12
@@ -133,8 +122,6 @@ void TLoungeDialog::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x0054db40
 char TLoungeDialog::DoIdle(int action) {
   (void)action;
-  // Per-nation status lamp ('rad0'..'rad6', TNoHilitePicture) and name label
-  // ('nam0'..'nam6', TDropShadowText) -- both from MapView.rsrc view 1508.
   bool anyLocalSeat = false;
   for (int nationSlot = 0; nationSlot < TMultiplayerMgr::kMajorNationSessionSlotCount;
        ++nationSlot) {
@@ -323,14 +310,8 @@ void TLoungeDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 
 namespace {
 
-// RAII wait-cursor guard, same reconstruction as TAssetMgr.cpp's 0x5e0030: EH state 0
-// opens with an inlined AfxGetApp()->BeginWaitCursor() and unwinds with the matching
-// EndWaitCursor().
 } // namespace
 
-// Under a wait cursor: restamp the 'tnam' caption from the host game name, re-rasterize
-// and palette-mask the 'map ' preview then invalidate its bounds, load the lounge
-// message string (0x2742/0x10) into 'mess', and refresh the dialog.
 // FUNCTION: IMPERIALISM 0x0054e4c0
 void TLoungeDialog::YouHaveNewGameData() {
   TScopedWaitCursor waitCursor;

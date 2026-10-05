@@ -43,11 +43,6 @@ void TPurchaseCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
 
 // FUNCTION: IMPERIALISM 0x004cc550
 void TPurchaseCluster::SetValue(short nValue, bool redrawFlag) {
-  // 'valu' is a TAmtBar (already the established typing at this exact tag in
-  // TProductionCluster.cpp); confirmed here by TAmtBar's own SetControlValueSlot1E4(int,
-  // int) matching this callsite's slot 0x1e4 dispatch and (nValue, 0) argument shape exactly
-  // -- unlike the byte-coincident TDeluxeText::SetTextStyle at the
-  // same offset, which takes a style-descriptor pointer, not a plain value.
   TNumberText* valueControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagValu));
   if (valueControl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -66,16 +61,9 @@ void TPurchaseCluster::SetValue(short nValue, bool redrawFlag) {
   RECT copiedBounds;
   CopyRect(&copiedBounds, &bounds);
   ownerContext->InvalidateCityDialogRectRegion(&copiedBounds, 1);
-  // ownerContext is a TBuildingView (TArmoryView/TUniversityView/TShipyardView, the city-view
-  // dialogs that host a TPurchaseCluster): confirmed by arity -- TBuildingView::
-  // UpdateFields() at slot 0x76 (byte 0x1d8) takes zero args, matching this
-  // callsite exactly, unlike the byte-coincident TWindow::GetTitle(CString*) which
-  // takes one.
   static_cast<TBuildingView*>(ownerContext)->UpdateFields();
 }
 
-// Re-reads the 'valu' amount control's window text into its cached int and returns it;
-// DoEvent applies the DEC/INC delta to this result before feeding it back.
 // FUNCTION: IMPERIALISM 0x004cc640
 int TPurchaseCluster::GetValue() {
   TNumberText* valueControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagValu));

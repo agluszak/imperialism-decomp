@@ -2,8 +2,6 @@
 
 #include "game/nation/TMinor.h"
 
-// Network multiplayer minor nation row: same layout as TMinor with a few divergent nation
-// virtuals (immediate dispatch, map-cell label hook).
 // VTABLE: IMPERIALISM 0x0065bde0
 class TRemoteMinor : public TMinor {
 public:

@@ -30,16 +30,11 @@ public:
 
   enum { kScenarioSlotCount = 64 };
 
-  // Scenario slots appended to the list can be sparse when files are absent or the
-  // multiplayer-only filter skips a slot, so selection maps through this compact row table.
   short scenarioIndexByListRow[kScenarioSlotCount]; // 0x94
   short scenarioListRowCount;                       // 0x114
   // +0x116..+0x117: natural alignment before the pointer table.
   char* nationDescriptionTextByNation[kMajorNationCount];   // 0x118
   short nationDescriptionLengthByNation[kMajorNationCount]; // 0x134
-  // Selected scenario index (-1 = none); read by StartGame and ExitScreen. -1 also
-  // short-circuits the whole
-  // apply flow.
   short selectedScenarioIndex;                    // 0x142
   int difficultyLevelByNation[kMajorNationCount]; // 0x144
 };

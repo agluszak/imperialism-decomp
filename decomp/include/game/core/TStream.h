@@ -7,58 +7,21 @@
 
 class CString;
 
-// MacApp VPoint: two 32-bit coordinates. The Windows stream slots read/write the
-// complete eight-byte value even though the native Windows POINT uses 16-bit fields
-// in this VC5-era codebase.
 struct VPoint {
   int vertical;
   int horizontal;
 };
 ASSERT_SIZE(VPoint, 0x8);
 
-// TStream -- the MacApp-derived serialization byte stream the save format is built on.
-// Names come from the Mac CodeWarrior oracle (name oracle only, per AGENTS.md Hard Rule
-// 12); every width below is proven by the corresponding body in TStream.cpp, all of
-// which are implemented below.
-//
-// WATCH THE WIDTHS. These are MacApp names, and MacApp's scalar sizes are not the C++
-// ones a reader expects:
-//
-//     ReadByte / WriteByte          1 byte    (slot 0x40 / 0x7c)
-//     ReadBoolean / WriteBoolean    1 byte    (slot 0x44 / 0x80)
-//     ReadCharacter / WriteCharacter 1 byte, widened to/narrowed from a short
-//     ReadInteger / WriteInteger    *** 2 bytes *** -- MacApp Integer is 16-bit
-//     ReadLong / WriteLong          4 bytes
-//
-// Picking the wrong one silently shifts every following field, and because the save
-// stream is unframed there is no way to recover. This has already cost one real bug:
-// TNavyMission::ReadFrom read its zone ids through the 1-byte slot where the original
-// used the 2-byte one, losing 2 bytes per navy mission. `just serde-audit` exists to
-// catch that class of defect -- run it after touching any serializer.
-//
-// The read slots (0x40..0x70) and write slots (0x7c..0xac) mirror each other exactly,
-// pair for pair, which is how the mapping above was recovered.
-//
-// TStream is a CONCRETE base: it provides default implementations for every typed
-// accessor, each delegating to the two primitives ReadBytes (slot 0x3c) and WriteBytes
-// (slot 0x78) that concrete subclasses (TFileStream, THandleStream, TCountingStream)
-// override. TStream's own primitive bodies are genuine no-ops -- the base class is never
-// streamed through directly.
-//
 // VTABLE: IMPERIALISM 0x00649140
 class TStream : public TObject {
 public:
   DECLARE_DYNCREATE(TStream)
-  // In-class inline: the original has no out-of-line TStream::TStream -- every
-  // caller absorbs it, so an out-of-line definition pessimizes them into a call.
-  // NOOP: verified empty in original 0x004889a1 (no standalone TStream::TStream body exists: construction is fully inlined into CreateObject 0x004889a0; that address is its operator-new call site)
   TStream() {}
 
 public:
   // FUNCTION: IMPERIALISM 0x00488a40
   virtual ~TStream() override {}
-  // Slots 0x14/0x18 (WriteTo/ReadFrom) and 0x20/0x24 (ShallowClone/ShallowFree)
-  // are inherited from TObject unchanged; 0x1c (Free) is overridden below.
   void Free() override;                                // 7 (0x1c)  0x00488ab0
   virtual int GetPosition();                           // 10 (0x28) 0x00488ad0
   virtual void SetPosition(int position);              // 11 (0x2c) 0x00488e30
@@ -74,8 +37,6 @@ public:
   virtual void ReadVPoint(VPoint* outPoint);           // 21 (0x54) 8 bytes, two longs
   virtual void ReadRect(void* out);                    // 22 (0x58) 8 bytes
   virtual void ReadVRect(void* out);                   // 23 (0x5c) 16 bytes
-  // 0x60 has no call site anywhere in the image and no Mac counterpart of this width,
-  // so it keeps a descriptive placeholder rather than a guessed identity.
   virtual void ReadUnclassified16ByteRecord(void* out);     // 24 (0x60) 16 bytes
   virtual void ReadPoint(void* out);                        // 25 (0x64) 4 bytes
   virtual int ReadIDType();                                 // 26 (0x68) 4 bytes

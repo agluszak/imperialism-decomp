@@ -2,15 +2,8 @@
 #include <new.h>
 #include <ctype.h>
 
-// The retail body emits `CALL _isdigit`, so undo the <ctype.h> macro to force the
-// function-call form (the macro would inline the __pctype table test and drop the call).
 #undef isdigit
 
-// Variadic `[N]`-template substitutor. Copies `fmt` into the caller-provided return
-// slot `out`, character by character; each `[N]` escape where N is a single ASCII
-// digit is replaced by the N-th trailing string argument, counting from `fmt` itself
-// ([0] = fmt, [1] = first vararg, ...). A bracket group whose first char is not a
-// digit is skipped through its closing ']'. 
 // FUNCTION: IMPERIALISM 0x0049a7f0
 CString* FilterStringByCharacterTypeFlag4AndAppend(int, CString* out, char* fmt, ...) {
   CString result;

@@ -1,6 +1,4 @@
 #pragma once
-// Subsystem-owned global declarations. Definitions and address markers live in
-// src/game/core/global_data_tables.cpp.
 #include "game/globals/global_types.h"
 
 extern "C" char* g_pSmallViewsEmptyText_00662B90;
@@ -26,10 +24,6 @@ extern const unsigned int g_minorTreatyPanelTags[16];
 
 extern const unsigned int g_majorTreatyCellTags[7];
 
-// 17 (x,y) anchor points used to build the 16 city-building hover/hit-test rects (each a
-// fixed 10x10 box at its anchor, except slots 10-11 which span between two consecutive
-// anchors), plus a trailing (1,0) pair with no known consumer that shares this data blob.
-// 0x696198.
 extern short g_anCityBuildingSlotOrder[16];
 extern short g_anCityBuildingSlotCoords[32];
 extern short g_nCityBuildingSlotYOffsetIndex;
@@ -40,15 +34,8 @@ extern short g_awCityBuildingActionResourceIds[72];
 extern char* g_pCityBuildingHoverEmptyText_0064faa8;
 extern CRect g_cityBuildingHoverFallbackRect_006a2980;
 
-// Per-building-slot hover/hit-test rects (indexed by slotId, see
-// TToolBarCluster::HandleCityBuildingHoverSelection), built by
-// InitializeCityBuildingHoverSelectionRects_004b95c0. 0x6a2998.
 extern CRect g_aCityBuildingHoverSelectionRects[16];
 
-// City-building screen control rects: one 72-rect table (3 rects per building/action
-// row) populated by InitializeCityBuildingLayoutData -- elements 0..40 by per-field
-// stores, elements 41..71 by inlined CRect constructor calls -- and read with a
-// row*3+action stride by TCityProductionView::DoPostCreate. 0x6a24e8.
 extern CRect g_aCityBuildingLayoutRects[72];
 
 extern "C" const unsigned int g_tradeCommodityRowTagTable[17];
@@ -76,8 +63,6 @@ extern short g_anDevelopmentIconStripBaseXByCivilianClass[9];       // @ 0x698fe
 
 extern unsigned short g_awCivilianLegendSelectionCountsBySlot[16];
 
-// TArmyToolbar.cpp — maps each of the 30 military-unit types to one of the ten
-// toolbar placard/arrow categories.
 extern int g_anArmyToolbarCategoryByUnitType[30];
 
 } // extern "C"

@@ -46,9 +46,6 @@ void TTacticalToolbar::DoPostCreate(int arg) {
   SetControlHoverHelpText(empty2, this);
 }
 
-// Draws each side's xp progress bar (bar width = qualityLevel * 11, +5 rounding bump
-// past .50) from the shared per-level icon strip, same idiom as
-// TArmyBoyView/TArmyUnitView::Draw.
 // FUNCTION: IMPERIALISM 0x005ac950
 void TTacticalToolbar::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws
@@ -91,8 +88,6 @@ void TTacticalToolbar::Draw(RECT* rectBuffer) {
   }
 }
 
-// Stores the selected unit, updates the 'curr' portrait control (bitmap
-// 0xf1e + unitType*2 + side), and writes the unit's name into the dialog label.
 // FUNCTION: IMPERIALISM 0x005acb50
 void TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalUnit* unit) {
   currentUnit8C = unit;
@@ -114,8 +109,6 @@ void TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalU
   CString unitName;
   if (unit != 0) {
     unit->AssertValid();
-    // Army tactical units carry the source TMilitaryUnit whose display name feeds the
-    // dialog label (the slot receives TArmyTacUnit in the army battle).
     unitName = static_cast<TArmyTacUnit*>(unit)->sourceUnit38->name24;
   }
   AssignSharedStringToTaggedControlAndProcessState(static_cast<const char*>(unitName),
@@ -145,8 +138,6 @@ void TTacticalToolbar::UpdateTacticalOtherSideUnitControl(TArmyTacUnit* unit) {
 // FUNCTION: IMPERIALISM 0x005acd60
 void TTacticalToolbar::SetActionMode(int mode) {
   if (mode == 0) {
-    // Deployment phase: 'targ'/'auto' disarmed, 'done'/'retr' show the setup bitmaps
-    // and the setup label strings (group 0x273d, indexes 0x2e/0x2f).
     TView* targControl = ResolveControlByTag(kControlTagTarg);
     targControl->AssertValid();
     targControl->Show(0, 1);
@@ -164,8 +155,6 @@ void TTacticalToolbar::SetActionMode(int mode) {
     LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x2e, ResolveControlByTag(kControlTagDone));
     LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x2f, ResolveControlByTag(kControlTagRetr));
   } else {
-    // Live battle: 'targ'/'auto' armed, 'done'/'retr' show the battle bitmaps and the
-    // battle label strings (indexes 0x22/0x23).
     TView* targControl = ResolveControlByTag(kControlTagTarg);
     targControl->AssertValid();
     targControl->Show(1, 1);

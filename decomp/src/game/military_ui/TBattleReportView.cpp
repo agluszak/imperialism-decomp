@@ -41,17 +41,11 @@ TBattleReportView::~TBattleReportView() {}
 
 IMPLEMENT_DYNCREATE(TBattleReportView, TDiplomacyMapView)
 
-// Battle-report layout pass: restyles the report controls, places one marker per
-// map-context action record on a 60x108 crowding grid (hex spiral search around each
-// record's map cell), registers the report's idle animation, loads the label strings,
-// and schedules the report audio cue.
 // FUNCTION: IMPERIALISM 0x004acb60
 void TBattleReportView::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
   BuildDiplomacyNationOverlayGeometryAndHitMasks();
 
-  // 14-byte style buffer: the 10-byte descriptor plus 4 explicitly zeroed tail bytes
-  // (the original zeroes them once before the first Build call).
   struct {
     TextStyle desc;
     unsigned char tail[4];
@@ -262,10 +256,6 @@ void TBattleReportView::Free() {
   TDiplomacyMapView::Free();
 }
 
-// Blinks the selected battle marker on the strategic map: every 15th action-1 idle tick it
-// blits one of the two marker sprite columns over the record's map pixel position and flips
-// the phase, so the marker alternates while the report is open. The destination rect is
-// mirrored into the DIB's bottom-up coordinate space before the blit.
 // FUNCTION: IMPERIALISM 0x004ad5a0
 char TBattleReportView::DoIdle(int action) {
   if (action == 1) {
@@ -341,8 +331,6 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       BattleRecord* battleRecord = static_cast<BattleRecord*>(
           g_pMapContextActionManager->mapContextActionRecordList->GetPtrListEntryByOneBasedIndex(
               selectedReportIndex));
-      // This command's open payload is a BattleRecord despite the shared DoEvent slot's
-      // generic TEvent pointer type; retail reads the record fields directly from arg 3.
       BattleRecord* eventBattleRecord = reinterpret_cast<BattleRecord*>(event);
 
       TBattleUnitsView* leftPage =

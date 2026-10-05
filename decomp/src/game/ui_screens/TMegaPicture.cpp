@@ -27,10 +27,6 @@ void TMegaPicture::IMegaPicture(TView* panel, int* offsetLayout, int* sizeLayout
   AssignFlags98AndMaybeRefresh(flags, false);
 }
 
-// Blits the picture's own bitmap to its transformed (screen-space) rect. Normally
-// samples the whole passed-in rect; when flags98&4 is set, samples/positions from
-// contentSubRect instead (optionally filling the transformed rect white first when
-// flags98&1 is clear), and applies transparent-color blitting (flags98&1).
 // FUNCTION: IMPERIALISM 0x00573270
 void TMegaPicture::Draw(RECT* rectBuffer) {
   CRect contentRect(*rectBuffer);
@@ -66,9 +62,6 @@ void TMegaPicture::Draw(RECT* rectBuffer) {
   UpdatePaletteIndexWithDefaultFallback(0x13);
 }
 
-// Rebuilds the picture's private offscreen surface from bitmap resource `nPictureId`:
-// dispose any previous surface, create a fresh 8-bit GWorld sized to the resource
-// bounds, blit the resource into it, then run the base TPicture refresh.
 // FUNCTION: IMPERIALISM 0x00573430
 void TMegaPicture::SetPictureRsrcID(short nPictureId, unsigned char fRefreshNow) {
   if (surfaceContext != 0) {
@@ -77,9 +70,6 @@ void TMegaPicture::SetPictureRsrcID(short nPictureId, unsigned char fRefreshNow)
   surfaceContext = 0;
   ResetPictureResourceEntry();
 
-  // The original parks the loader handle in the +0x88 slot (TPicture::bitmapId/
-  // resourceNamespaceId) until the trailing base call overwrites it with the real
-  // packed id; modeled as a local instead of punning the shorts.
   TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(nPictureId);
   QDLoadResource(loaderHandle);
   TBitmapResourceLoader* loader = *loaderHandle;

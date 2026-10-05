@@ -32,8 +32,6 @@ struct MapTileCostField {
 };
 ASSERT_SIZE(MapTileCostField, 0x32a0);
 
-// Retain TOcean::`vftable' in the link until save/load paths virtual-dispatch through
-// g_pActiveMapOrderContext (currently only non-virtual methods are referenced).
 TOcean g_anchorTOceanInstance;
 } // namespace
 
@@ -56,13 +54,6 @@ TOcean::~TOcean() {}
 
 IMPLEMENT_DYNCREATE(TOcean, TObject)
 
-// Slot 0x07 (Free): releases navy orders, map-action caches/zones, province-name state,
-// and reseeds the map status PRNG. The address was briefly mis-modeled as non-virtual
-// after a bad symbols.csv row
-// (65c7e4|TPortZone::vftable, a stale duplicate of TPortZone's real vtable at
-// 0x65c758) made TOcean's orig vtable boundary look 3 slots short; the row is
-// deleted and this is confirmed a real override slot (raw memory at 0x65c7e4
-// reads TOcean::Free, followed by inherited TObject::ShallowClone/ShallowFree).
 // FUNCTION: IMPERIALISM 0x005621e0
 void TOcean::Free() {
   if (g_pNavyOrderManager != 0) {
@@ -122,8 +113,6 @@ void TOcean::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
 
-  // A short counter: the bound test is a 16-bit `cmp word ptr [eax], bx` (0x5623a3), so
-  // an int loop variable would need a movsx of nationCount on every compare.
   short i;
   for (i = 0; i < nationCount; ++i) {
     TZone* zone = &contextArray[i];
@@ -256,11 +245,6 @@ void TOcean::WriteTo(TStream* stream) {
   }
 }
 
-// One relaxation sweep of the ground-cost wavefront: for every still-unset tile (cost 0),
-// mark it reached (-1) when any hex neighbor is off-map or has a different owner nation,
-// otherwise pull in the cheapest positive neighbor cost as -(1+cost). A
-// final pass flips the tentative negative costs positive. Returns the number of tiles
-// changed this sweep (0 => converged).
 // FUNCTION: IMPERIALISM 0x00562af0
 int RelaxMapTileCostFieldByNeighborTerrain(MapTileCostField* costField) {
   int changedCount = 0;
@@ -384,16 +368,12 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
     maskZone->nationKeyMask = 0;
   }
 
-  // 2) Re-seed the masks from the primary navy order list: each ship flags its zone
-  // with its owner nation's bit.
   for (TShip* shipNode = TShip::GetFirst(); shipNode != 0; shipNode = shipNode->next) {
     TZone* orderZone = shipNode->location;
     orderZone->nationKeyMask = static_cast<unsigned short>(
         orderZone->nationKeyMask | (1 << static_cast<unsigned char>(shipNode->nation)));
   }
 
-  // 3) Reset overlay tile states across the whole map: nation-overlay states (7..0xd)
-  // clear to -1, linked-zone overlay states (0xe..0x15) flip to their negated value.
   for (short overlayTile = 0; overlayTile < 0x1950; ++overlayTile) {
     short overlayState = static_cast<signed char>(
         g_pGlobalMapState->terrainStateTable[overlayTile].tileActionState16);
@@ -410,9 +390,6 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
     }
   }
 
-  // 4) For every context flagged for the active nation (mask bit or secondary-neighbor
-  // city match), refresh the order-UI flag and repaint the other six nations' slot
-  // markers.
   short activeNationId = g_pSimMgr->GetPlayerCountry();
   if (g_pMapActionContextListHead != 0) {
     unsigned char activeNationBit = static_cast<unsigned char>(1 << activeNationId);
@@ -439,9 +416,6 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
     }
   }
 
-  // 5) Order ranks: for every other nation's type-5 (task-force) order entry anchored on
-  // an active-nation-owned city, mark that nation's overlay on the anchor context's best
-  // coastal tile and store the entry's within-nation order rank in the tile's +0x1a word.
   for (TTaskForce* rankEntry = g_pNavyOrderManager->orderQueueHead; rankEntry != 0;
        rankEntry = rankEntry->nextForce) {
     if (rankEntry->nation == g_pSimMgr->GetPlayerCountry()) {
@@ -456,8 +430,6 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
         g_pSimMgr->GetPlayerCountry()) {
       continue;
     }
-    // location is the anchoring map-action context TZone*; target is the
-    // kind-5 city record used by the coastal-tile heuristic.
     short coastalTile = rankEntry->location->FindBestCoastalTileForContextAndCityStateByHeuristic(
         static_cast<Province*>(rankEntry->target));
     if (coastalTile == -1) {
@@ -511,8 +483,6 @@ TZone* TOcean::GetLinkedZoneForSeaTile(short seaTileIndex) {
   return &contextArray[static_cast<short>(nationCode) - 0x17];
 }
 
-// Walks the g_pMapActionContextListHead chain (via prev18) for the first TPortZone
-// whose selected/coastal tile id matches the city's currently-selected order tile.
 // FUNCTION: IMPERIALISM 0x005634a0
 TZone* TOcean::FindPortZoneBySelectedTile(TCity* city) {
   short selectedTileId = city->HomeTownTileId();
@@ -711,12 +681,6 @@ void TOcean::RemovePortZoneByTile(short nTileIndex) {
   }
 }
 
-// TTaskForce::OrderEvade / OrderSailTowards's
-// final notification step (0x5642e0). Only runs when the entry belongs to the active
-// nation. It re-marks the entry's map tile (TTaskForce::UpdateNavyOrderMapMarkerByOrder-
-// Type), lights the entry's TZone map-order UI flag iff the active nation still has a
-// pending navy-order node targeting that zone, notifies the map picture's subview of the
-// tile, and clears this manager's cached selected task force if it pointed at the entry.
 // FUNCTION: IMPERIALISM 0x005642e0
 void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
   short entryNation = entry->nation;
@@ -725,8 +689,6 @@ void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
   }
   entry->CreateIngot();
 
-  // location (+0x18) is the entry's owning map-order zone (see the TZone casts in
-  // TNavyMgr/TToolBarCluster); slot 0x58 is TZone::ShowFocusIngot.
   TZone* zone = entry->location;
   int nation = g_pSimMgr->GetPlayerCountry();
   if (nation == -1) {
@@ -743,9 +705,6 @@ void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
   }
   zone->ShowFocusIngot(hasPendingNode);
 
-  // ingotTileIndex (+0x30) doubles as the entry's active map-tile notify index; 0xffff
-  // means "no tile". Mac CodeWarrior identifies mapUberPictureF0 slot 0x1e8 as
-  // NoticeTile.
   short tileNotifyIndex = entry->ingotTileIndex;
   if (tileNotifyIndex != -1 && g_pViewMgr->mapUberPictureF0 != nullptr) {
     g_pViewMgr->mapUberPictureF0->NoticeTile(tileNotifyIndex);
@@ -796,8 +755,6 @@ void TOcean::ForgetForce(TTaskForce* entry) {
   }
 }
 
-// Dead helper (no live callers): resolves the 'DOOG' control in the active dialog and
-// validates it.
 // FUNCTION: IMPERIALISM 0x005644f0
 TView* __cdecl ResolveDoogControlInActiveDialog() {
   TView* control = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDOOG);
@@ -831,8 +788,6 @@ TZone* TOcean::FindMapActionContextContainingNodeByIndex(int cityRecordIndex) {
 
 // FUNCTION: IMPERIALISM 0x00564600
 TTaskForce* TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* pMapOrderContextZone) {
-  // If a different context zone is now selected, drop the cached task force's per-nation
-  // order nodes; and if the new context is null, free and forget the cached task force.
   if (selectedTaskForce14 != nullptr && selectedTaskForce14->location != pMapOrderContextZone) {
     selectedTaskForce14->RegainVirginity(g_pSimMgr->GetPlayerCountry(), pMapOrderContextZone);
     if (pMapOrderContextZone == nullptr) {

@@ -4,29 +4,14 @@
 
 class TZone;
 
-// Mac: TBlockadePortMission — navy mission that blockades an enemy port zone.
-//
-// Real base is TControlSeaZoneMission (confirmed via the RTTI CRuntimeClass
-// ancestry: TBlockadePortMission -> TControlSeaZoneMission -> TNavyMission ->
-// TMission -> TObject -> CObject), not TNavyMission directly. Slots 0x0e and
-// 0x28 below are NOT overridden here -- they're inherited unchanged from
-// TControlSeaZoneMission (previously mis-modeled as a same-address "COMDAT
-// fold" between sibling classes; it's plain inheritance). Slots 0x0c/0x0d/0x12
-// genuinely are own overrides with distinct bodies.
 // VTABLE: IMPERIALISM 0x0065ac60
 class TBlockadePortMission : public TControlSeaZoneMission {
   DECLARE_SERIAL(TBlockadePortMission)
 public:
-  // +0x3c: pointer to the port-zone order-context this mission was built
-  // from (TMission::ConstructBlockadePortMissionForContext); layout of the
-  // pointed-to object is not yet recovered, so it stays untyped.
   TZone* portZoneContext3c; // +0x3c blockade-target port zone (deserialized by node id)
 
   TBlockadePortMission() : TControlSeaZoneMission(), portZoneContext3c(nullptr) {}
 
-  // 0x0053ab50 -- built from a map-order context node (a TZone): derives the
-  // target port zone from context->primaryNeighbors[0] and stores the node in
-  // portZoneContext3c.
   TBlockadePortMission(TZone* context);
   virtual ~TBlockadePortMission() override;
 

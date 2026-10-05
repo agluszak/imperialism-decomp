@@ -254,8 +254,6 @@ void TView::SwitchActiveChildAndNotify(class TView* child) {
     child->RefreshControl();
   }
 }
-// Scans the direct child list first, then recurses via slot 0x25. The own-tag case
-// short-circuits — callers exclude self, this is purely a descendant search.
 // FUNCTION: IMPERIALISM 0x0048afd0
 class TView* TView::ResolveControlByTag(unsigned int controlTag) {
   if (controlTag == static_cast<unsigned int>(this->controlTag)) {
@@ -416,8 +414,6 @@ void TView::InvalidateOffsetRegionUsingChildClipRect(RgnHandle region) {
     return;
   }
 
-  // CRgn::operator HRGN's this==NULL check absorbs the "nil region" sentinel
-  // (a Region* placed so &(*region)->rgn == NULL) some callers store in the handle.
   HRGN sourceRegion = 0;
   if (region != 0) {
     sourceRegion = static_cast<HRGN>((*region)->rgn);
@@ -556,8 +552,6 @@ void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintD
   }
 }
 
-// Same offset-and-recurse shape as TranslatePointToParentChain4D below (0x4d/0x4e are
-// distinct vtable slots; both bottom out here at the root owner).
 // FUNCTION: IMPERIALISM 0x0048ba40
 void TView::TranslatePointToParentChain4E(CPoint* point) {
   point->y += ownerLocalY;
@@ -649,9 +643,6 @@ CRect* TView::GetQDExtent(CRect* rectOut) {
   return rectOut;
 }
 
-// Base copy constructor used by the derived view copy constructors at 0x48e5c0,
-// 0x48f080, 0x48f9d0, and 0x491540. The source child list is cloned structurally;
-// it is not the invented 0x649a50 modal-state class previously assigned here.
 // FUNCTION: IMPERIALISM 0x0048bd30
 TView::TView(const TView& source)
     : TEventHandler(source), ownerContext(0), ownerLocalX(source.ownerLocalX),

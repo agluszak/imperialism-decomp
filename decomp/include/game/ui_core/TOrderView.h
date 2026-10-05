@@ -19,8 +19,6 @@ public:
                        TEvent* event) override;                  // slot 0x0f 0x00507240
   virtual void StuffValues(TGreatPower* power, short orderSlot); // slot 0x68 0x506b00
   virtual void UpdateFields();                                   // slot 0x69 0x506f90
-  // TView's own fields end exactly at 0x60. StuffValues installs the active city and
-  // production order used by UpdateFields and DoEvent.
   TCity* city60; // +0x60
 
   TOrderView();

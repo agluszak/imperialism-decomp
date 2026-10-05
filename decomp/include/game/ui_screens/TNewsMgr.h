@@ -8,14 +8,6 @@
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 
-// 0x18-byte big-endian row of Data/news.tab (byteswapped at load, 0x55ba30).
-// Mac oracle type name: newsEntry. Keyed by storyId:
-//   >0  : ranking/feature stories (1 = generic feature; 10,20,30.. = decade features)
-//   -100-code / -101-code : bilateral event story (the -101 variant when the event's
-//                           nation mask has more than one bit and code in [5,0x15])
-//   -20 / -21 : code-0xF (multi-nation) story, -21 when the mask popcount > 1
-//   -25 / -26, -27 / -28 : random army/map-context stories
-//   -1000-n : code-0x11 stories (n = the record's payload value)
 struct newsEntry {
   int storyId;            // +0x00 — match key; 0 in a story slot means "slot empty"
   int headlineTextOffset; // +0x04 \ byte range in news.tex
@@ -28,21 +20,12 @@ struct newsEntry {
 // 0x3C-byte story card, 9 per nation page (Mac oracle: newsStory).
 struct newsStory {
   int parmValue[4]; // +0x00..0x0F — substitution-token payloads
-  // +0x10..0x1F — token kinds, decoded by 0x55d910: 0 = empty, 1 = nation bitmask
-  // (1 << slot), 2 = nation bitmask (code-0xF variant), 3 = raw integer,
-  // 4 = zone ordinal (short).
   int parmKind[4];
   newsEntry entry; // +0x20..0x37 — copy of the matched template row
   bool feature38;  // +0x38 — 1 for ranking/random filler stories, 0 for events
   unsigned char pad39[3];
 };
 
-// The newspaper / inter-nation event manager (Mac oracle: TNewsMgr; the singleton at
-// g_pNewsMgr 0x6a43e8 is `new TNewsMgr()` + INewsMgr — proven by
-// CreateSimObjects 0x57c3b0 storing exactly that). Gameplay
-// code queues inter-nation event records into the per-nation buckets / shared queue;
-// the turn machine's news phase (StartNewsPhase, turn case 0xf) turns them into the
-// per-nation 3x3 newspaper story pages.
 // VTABLE: IMPERIALISM 0x0065c598
 class TNewsMgr : public TObject {
 public:
@@ -52,50 +35,27 @@ public:
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x55b8a0
   virtual void Free() override;                    // slot 0x07 0x55b820
 
-  // Transient story-template table loaded from Data/news.tab by LoadNewsTable and
-  // freed at the end of StartNewsPhase — valid only during the news phase.
   newsEntry* storyTemplateTable; // +0x004
   int storyTemplateCount;        // +0x008
   // Per-nation newspaper page: 3x3 story slots (entry.storyId == 0 = empty).
   newsStory stories[7][3][3]; // +0x00c..0xecf
   // Transient "news.tex" resource stream held open across the CreateNewspaper calls.
   CFile* newsTexStream; // +0xed0
-  // Per-nation event buckets (recordSize14 = 0x24) and the shared event record queue
-  // (recordSize14 = 0x10; records are {int code, int nation, int mask, int extra}).
   TPtrList* perNationEventBuckets[7]; // +0xed4
   TPtrList* sharedEventRecordQueue;   // +0xef0
-  // Per-nation last-used turn tick per story template (lazily new short[count] in
-  // StartNewsPhase); drives the least-recently-used filler-story pick.
   short* perNationStoryLastUsedTick[7]; // +0xef4
 
-  // The Windows build inlines this trivial constructor at allocation sites.
-  // NOOP: verified empty at original inlined allocation site 0x0057c58f (vptr store only).
   TNewsMgr() {}
 
-  // Mac-style second-phase init (Mac: INewsMgr): creates the buckets/queue and nulls
-  // the tick arrays. 0x55b710.
-  // Mac oracle: EvaluateFeatureStory. Gates a feature-story template on the current
-  // economic period, then fills it through AlwaysTrueStory. storyId encodes the band:
-  // a multiple of ten N means "applies while economicTurn/4 is in [N-10, N)"; storyId 1
-  // is the ungated filler. Anything else does not apply.
   unsigned char EvaluateFeatureStory(const newsEntry* templateRow, newsStory* story,
                                      int nationSlot); // 0x0055cf20
 
-  // Mac oracle: AlwaysTrueStory. A filler/feature story that always applies: copies the
-  // template row into the card, tags parm 0 with this nation's bitmask, then picks a
-  // random OTHER nation that actually exists for parm 1. Always returns 1.
   unsigned char AlwaysTrueStory(const newsEntry* templateRow, newsStory* story,
                                 int nationSlot); // 0x0055d0c0
 
-  // Mac oracle: ClearStoryParms. Resets the four substitution-token kinds to 0
-  // ("empty"), leaving parmValue untouched. Reads nothing from `this`.
   void ClearStoryParms(newsStory* story); // 0x0055d090
   void INewsMgr();
   newsEntry* FindEntry(int storyId); // 0x55c930, Mac oracle
-  // Mac oracle: FindEventType(long, long, long&, unsigned char). Scans the shared event
-  // record queue from *ordinal+1 for the next record of eventKind; differentNation
-  // inverts the subject-nation test (set = nation must differ). Stores the 1-based hit
-  // in *ordinal, or 0 when the queue is exhausted.
   InterNationNewsRecord* FindEventType(int eventKind, int nation, int* ordinal,
                                        unsigned char differentNation); // 0x55c870
 
@@ -105,21 +65,13 @@ public:
   void AddEvent(int nationSlot, NewsEvent* event, bool isReplayBypass);
   void AddShortageEvent(int subjectNation, int affectedNation, int relatedNation,
                         bool isReplayBypass);
-  // 0x55cd00 — miscellaneous event: with the bypass flag clear in a live multiplayer
-  // session it re-emits over the network as turn-event 0x22 instead of queueing.
   void AddMiscEvent(int nationSlotOrAll, int storyCode, bool isReplayBypass);
   void ConcatenateTreaty(InterNationEventKind eventKind, int nationA, int nationB);
 
-  // News phase (turn case 0xf; Mac: StartNewsPhase): loads the template table, builds
-  // each eligible nation's newspaper, then drops the consumed event records. 0x55b8e0.
   void StartNewsPhase();
   // Loads and byteswaps Data/news.tab into storyTemplateTable. 0x55ba30.
   void LoadNewsTable();
-  // Builds one nation's 3x3 page: event stories first, then least-recently-used
-  // random filler/feature stories. 0x55bc10 (Mac: CreateNewspaper).
   void CreateNewspaper(int nation);
-  // Fills event stories for one nation, advancing the (major, minor) cursors through
-  // the 3x3 page. 0x55c010 (Mac: CreateEventStories(long, long&, long&)).
   void CreateEventStories(int nation, int* majorCursor, int* minorCursor);
 };
 

@@ -6,8 +6,6 @@
 #include "game/globals/ui_core_globals.h"
 #include "game/mfc.h"
 
-// QuickDraw.cpp's oval helpers keep the previous GDI pen in a CPen-derived local.
-// Its destructor restores that pen before CPen/CGdiObject perform normal MFC teardown.
 // VTABLE: IMPERIALISM 0x0064b948
 class TScopedQuickDrawPen : public CPen {
 public:

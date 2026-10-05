@@ -16,8 +16,6 @@
 #include "game/globals/tactical_globals.h"
 #include "game/tactical_ui/TTechMgr.h"
 
-// The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
-//   CArchive& AFXAPI operator>>(CArchive&, TDefendProvinceMission*&)
 IMPLEMENT_SERIAL(TDefendProvinceMission, TArmyMission, 1)
 
 #include "game/ui_core/CIterator.h"
@@ -41,10 +39,6 @@ bool TDefendProvinceMission::IsANoBrainer() const {
 // FUNCTION: IMPERIALISM 0x00535800
 TDefendProvinceMission::~TDefendProvinceMission() {}
 
-// True if tileIndex is the home region of its own owner nation, or has an adjacent
-// region owned by a different valid nation, or is claimed (secondaryNeighbors array
-// entry) by some other map-action-context zone whose nationKeyMask mask has a bit set outside
-// the owner's own bit.
 // FUNCTION: IMPERIALISM 0x005359e0
 bool IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
   Province& record = g_pGlobalMapState->cityScoreTable[tileIndex];
@@ -76,8 +70,6 @@ bool IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
   return true;
 }
 
-// Walks orderList and re-issues TUnit::SetOrders(kUnitOrderRedeploy, newTile) on every linked
-// TMilitaryUnit whose tileIndex06 differs from newTile.
 // FUNCTION: IMPERIALISM 0x0053c950
 void TDefendProvinceMission::PropagateTargetTileToLinkedUnitsIfDifferent(short newTile) {
   CIterator iter(orderList);
@@ -259,8 +251,6 @@ void TDefendProvinceMission::CalculateImportance() {
   int tileIndex = presentLocation;
   const Province& cityRecord = g_pGlobalMapState->cityScoreTable[tileIndex];
 
-  // Ground truth: 0x53ed00 uses FILD (int-to-float conversion), not a raw float
-  // bit-reinterpret -- cityScoreValue is a genuine int (see TMapMgr.h).
   float local_8 = static_cast<float>(cityRecord.cityScoreValue);
   int adjacentCount = static_cast<int>(cityRecord.adjacentRegionCount08);
   int local_c = 0;

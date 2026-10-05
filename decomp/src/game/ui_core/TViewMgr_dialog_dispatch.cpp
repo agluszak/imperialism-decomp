@@ -1,6 +1,3 @@
-// TViewMgr turn-event dialog dispatch and roster/prompt dialogs. Split from
-// TViewMgr.cpp along the original module seam (Cross/UViewMgr.more.cpp vs
-// Cross/UViewMgr.cpp).
 #include "game/ui_core/TViewMgr.h"
 #include "game/gfx/TTemplateDialogs.h"
 #include "game/ui_core/TEventHandler.h"
@@ -97,10 +94,6 @@
 #include "game/ui_core/CIncludeView.h"
 #include "game/GameAssert.h"
 
-// Rebuild the "peace conference" turn-state screen's styled text: apply a bracketed
-// text style + centred alignment to the 'labl' caption, then push localized strings
-// (group 0x2737) and the fixed "These books are for show" placeholder onto the
-// main/host/join/nada controls as their hover-help text.
 // FUNCTION: IMPERIALISM 0x005dbe50
 void BuildTurnStateStyledTextAndDispatchMainRoutine() {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
@@ -291,9 +284,6 @@ TNavyRoster* TViewMgr::MakeNavyRosterDialog(TTaskForce* activeMapOrderEntry) {
   return page;
 }
 
-// Build the Mac-evidenced Navy Roster screen around a TSuperNavyRoster page. Row clicks
-// return either a loose ship's zone or an existing task force; apply that choice to the
-// strategic map only after the modal dialog has released its view tree.
 // FUNCTION: IMPERIALISM 0x005dd450
 void TViewMgr::ShowNavyRosterDialogAndApplySelection() {
   TWindow* node = static_cast<TWindow*>(
@@ -396,8 +386,6 @@ void TViewMgr::MakeGarrisonWindow(int tileIndex) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1e3);
   }
-  // Mac identity plus the Windows +0x8c tile-index store recover the concrete page as
-  // TGarrisonView. StuffValues rebuilds its TArmyUnitLine roster for this map tile.
   static_cast<TGarrisonView*>(page)->StuffValues(static_cast<short>(tileIndex));
 
   CPoint placement;
@@ -413,9 +401,6 @@ void TViewMgr::MakeGarrisonWindow(int tileIndex) {
       ->SetProvince(static_cast<short>(tileIndex));
 }
 
-// Replace the factory dialog's generic 'page' child with the resource-backed army roster.
-// The selected roster row is a city/province record index; after the modal closes, make it
-// the army manager's active province and center the strategic map on that record's tile.
 // FUNCTION: IMPERIALISM 0x005dda30
 void TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection() {
   TWindow* node = static_cast<TWindow*>(
@@ -478,10 +463,6 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
   page->Free();
 
   TSuperCivRoster* roster = ::new TSuperCivRoster();
-  // 0x005dde05/0x005dde06 push ECX=&rosterSize then EDX=&rosterOffset, so right-to-left
-  // arg2 is the OFFSET {0xd,0x2e} and arg3 is the SIZE {0x1ca,0x136} -- both are pointers
-  // into one adjacent 4-int block (stores at [esp+0x24..0x30]). The previous model read
-  // arg3 as a TView** out-parameter and passed &runningDialog, which never existed.
   int rosterSize[2] = {0x1ca, 0x136};
   int rosterOffset[2] = {0xd, 0x2e};
   roster->InitializeLedgerRosterPages(pageOwner, rosterOffset, rosterSize);

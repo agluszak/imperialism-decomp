@@ -33,11 +33,6 @@ TCluster::~TCluster() {}
 TCluster::TCluster(const TCluster& source)
     : TControl(source), selectedChildTag(source.selectedChildTag) {}
 
-// Frame this cluster into `parent`. The host window is inherited from the parent when
-// one is supplied, the control tag is blanked to four spaces, the enable/visible pair is
-// set, and the offset/size point pairs are copied into the frame fields. Registration as
-// a child happens through AttachChildControl (slot 0x5c) only when a parent exists, and
-// the resource context is cleared last.
 // FUNCTION: IMPERIALISM 0x004915d0
 void TCluster::InitializeClusterFrameAndAttachToParent(TView* parent, POINT* offset, POINT* size,
                                                        int layoutParam4, int layoutParam5,

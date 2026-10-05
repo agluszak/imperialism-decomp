@@ -15,14 +15,9 @@ public:
   // NOOP: verified empty in original 0x005bdb73 (no standalone TTradeBidNationView::TTradeBidNationView body exists: CreateObject 0x005bdb40 inlines this default ctor, calling the TView base ctor directly at that site)
   TTradeBidNationView() {}
 
-  // Original object size is 0x64 (CRuntimeClass m_nObjectSize); the source class ended
-  // at 0x60. InstallViews writes the line's trade-category slot to +0x60 and the nation
-  // slot to +0x62; Draw currently consumes the latter.
   short categorySlot;
   short nationSlot;
 
-  // Mac oracle: ITradeBidNationView(TView*, VPoint&, VPoint&, short, short). Dead
-  // standalone emission; InstallViews inlines the same init. 0x005bdbd0.
   void ITradeBidNationView(TView* panel, int* offsetLayout, int* sizeLayout,
                            short nation, short category);
 };

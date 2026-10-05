@@ -191,18 +191,8 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
   }
 }
 
-// Draws the combat-report participant page: a header line naming the active
-// participant nation, then up to 4 unit rows (name + status suffix, a divider strip, a
-// unit icon, an XP/experience guide-line pair, and up to two conditional icon
-// overlays). Two participants (A/B) share one contiguous page range: pages
-// [1..participantBFirstPage9C) list participant A's units (m_reportContext->unitsA), pages
-// [participantBFirstPage9C..totalPages] list participant B's (unitsB); rowIndex =
-// (reportValue-1)*4
-// relative to whichever participant's range reportValue falls in.
 // FUNCTION: IMPERIALISM 0x0058d2b0
 void TCombatReportView::Draw(RECT* rectBuffer) {
-  // Function-scope scratch: reused first for the page-header nation name, then
-  // overwritten each loop iteration with the current row's "Name (Status)" label.
   CString scratch;
 
   TPicture::Draw(rectBuffer);
@@ -245,8 +235,6 @@ void TCombatReportView::Draw(RECT* rectBuffer) {
                                            : m_reportContext->unitsB + rowIndex;
 
       {
-        // The record's own name buffer copy-constructs the label; a separate GetString
-        // lookup below appends " (status)" onto it.
         CString recordName(record->name);
         scratch = recordName;
       }
@@ -263,8 +251,6 @@ void TCombatReportView::Draw(RECT* rectBuffer) {
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                        &dividerSrcRect, &dividerDstRect, 0, 0);
 
-      // Two guide-line ticks positioned from the record's fieldAt18/fieldAt1c ratios
-      // (magic-number /7 division reproduces the original's IMUL-based division).
       SetQuickDrawTextOriginWithContextOffset(7, static_cast<short>(y + 3));
       SetQuickDrawPenSizeAndMarkDirty(1, 4);
       g_pViewMgr->ApplyLegendSplitSlot34(0x34);

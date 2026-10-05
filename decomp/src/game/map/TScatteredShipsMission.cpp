@@ -12,8 +12,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/navy_order.h"
 
-// The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
-//   CArchive& AFXAPI operator>>(CArchive&, TScatteredShipsMission*&)
 IMPLEMENT_SERIAL(TScatteredShipsMission, TNavyMission, 1)
 
 // FUNCTION: IMPERIALISM 0x00535640
@@ -62,10 +60,6 @@ void TScatteredShipsMission::CalculateImportance() {
   importanceScore0c = g_fScatteredShipsMissionDefaultScore;
 }
 
-// Spreads the fixed g_Populate_Beachhead_Mission_LookupTable_00697958 percentages across
-// requiredShipEquipageByCategory[4], scaled by (1 + this mission's nation's active-mission pressure).
-// AssertValid()s the nation first (same CObject virtual slot 0xc dispatch used elsewhere in
-// this file family).
 // FUNCTION: IMPERIALISM 0x0053bc40
 void TScatteredShipsMission::CalculateNeeds() {
   TAutoGreatPower* nation = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
@@ -86,8 +80,6 @@ bool TScatteredShipsMission::Matches(eMissionType missionType, int key, TZone* z
   return missionType == kMissionTypeScatteredShips && zoneContext == nullptr && key == -1;
 }
 
-// Dead cursor helper (no live callers): advances *cursor to its prev18 neighbour,
-// wrapping back to the list head once it walks off the end; returns the pre-wrap value.
 // FUNCTION: IMPERIALISM 0x0053bd00
 TZone* AdvanceZoneCursorToPrevOrWrapToHead(TZone** cursor) {
   TZone* next = (*cursor)->prev18;
@@ -98,9 +90,6 @@ TZone* AdvanceZoneCursorToPrevOrWrapToHead(TZone** cursor) {
   return next;
 }
 
-// Selects the nearest inactive ship-list entry to *targetZone, marks the selected link
-// active, and returns its ship. The pointer-to-pointer contract makes each distance probe
-// observe the caller's current zone variable.
 // FUNCTION: IMPERIALISM 0x0053bd30
 TShip* SelectNearestInactiveShipToZone(TZone** targetZone, TMapOrderChildLinkNode* head) {
   TMapOrderChildLinkNode* best = head;
@@ -130,19 +119,6 @@ TShip* SelectNearestInactiveShipToZone(TZone** targetZone, TMapOrderChildLinkNod
   return best->payload;
 }
 
-// Deactivates the whole existing shipList chain, then hunts for a port-zone context
-// eligible for this mission's nation (!QueryPortZoneCapability() &&
-// HasSecondaryNeighborWithNationTag(nationId04), same eligibility pair the whole
-// TControlSeaZoneMission family's CalculateNeeds/GiveActionOrders use elsewhere) -- first to confirm
-// at least one exists at all (walking g_pMapActionContextListHead via prev18), then re-walks
-// from the head, stepped forward g_pSimMgr->GetEconomicTurn() % 50 times (wrapping to the
-// head on a null prev18), as the starting point for an unbounded sweep: for every eligible
-// zone visited (wrapping forever via prev18), picks the first still-inactive orderList
-// node, then scans the remaining inactive nodes for the one whose (TZone*) reading of
-// TTaskForce::shipOrders is nearest that zone (TZone::GetCachedMapActionContextDistanceOrRecompute),
-// marks it active, and -- unless it's already anchored on that same zone -- promotes/queues
-// it there. Returns as soon as no inactive node remains (shipList is finite, so the
-// sweep is bounded even though the zone ring never explicitly stops).
 // FUNCTION: IMPERIALISM 0x0053bdd0
 void TScatteredShipsMission::GiveOrders() {
   if (orderList != nullptr) {

@@ -51,17 +51,10 @@ static inline double DefaultGfxCoordinateScale() {
 TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount] = {0};
 // GLOBAL: IMPERIALISM 0x006a2158
 TDisplayMgr* g_pDisplayMgr = 0;
-// Bounds of the TAnimator offscreen surface. The original static initializer at
-// 0x0049f000 writes 0x80 to both coordinates before TAnimator::IAnimator reads them.
 // GLOBAL: IMPERIALISM 0x006a2228
 CPoint g_ptUiAnimatorSurfaceBounds(0x80, 0x80);
-// Alternating phase passed to the strategic-map overlay renderer every 15 active-selection
-// idle ticks by TAnimator::DoIdle.
 // GLOBAL: IMPERIALISM 0x006a224c
 bool g_bStrategicMapSelectionOverlayPhase = false;
-// Monotonic registry-tag counter for TIdleMeAnimation instances, seeded with the
-// byte pattern "0TUA" (multichar 'AUT0'); the class-name string "TIdleMeAnimation"
-// follows at 0x695938, which Ghidra folds into one s_0TUATIdleMeAnimation label.
 // GLOBAL: IMPERIALISM 0x00695934
 int g_nIdleMeAnimationNextRegistryTag = kManifestTagAUT0;
 // GLOBAL: IMPERIALISM 0x006a21a8
@@ -102,8 +95,6 @@ TTraceDialog g_debugTraceDialog(0);
 
 extern "C" {
 
-// Seventeen four-byte control tags followed by the zero-tag sentinel that the refresh loop
-// also visits.
 // GLOBAL: IMPERIALISM 0x0066efd0
 const unsigned int g_strategicMapStatusIconTagTable[18] = {
     kControlTagRs0Sp, kControlTagRs1Sp, kControlTagRs2Sp,
@@ -147,19 +138,13 @@ char* g_pBattleReportSharedText_0064dc30 = g_szEmptyString;
 
 // GLOBAL: IMPERIALISM 0x00662b90
 char* g_pSmallViewsEmptyText_00662B90 = g_szEmptyString;
-// Shared text pointer the mini-civ row view (0x4ab970) seeds its control text and
-// assembled-string accumulator from; only the empty-string default is observed so far.
 // GLOBAL: IMPERIALISM 0x0064cb18
 char* g_pMiniCivSharedText_0064cb18 = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x0065c830
 char* g_pShipFractionSharedText_0065c830 = g_szEmptyString;
 
-// Shared empty-text pointer used by the diplomacy panel Setup methods. Unlike the
-// empty string storage itself, the original reads this pointer through an absolute load.
 // GLOBAL: IMPERIALISM 0x00654ec8
 char* g_pDiplomacyPanelEmptyText_00654ec8 = g_szEmptyString;
-// Local player's display name, read by TLoungeDialog::DoPostCreate when posting the
-// lobby-chat "connected" announcement (LobbyChatEvent9Packet's sender/message text).
 // GLOBAL: IMPERIALISM 0x0065c160
 char* g_pLoungeLocalPlayerNameSharedText_0065c160 = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x00668b88
@@ -167,8 +152,6 @@ char* g_pStatusPictureMainSharedText_00668b88 = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x00695448
 extern const signed char g_MapContextStaticTable_00695448[0x20] = {
     1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0};
-// Last cursor edge-auto-scroll timestamp in GetTickCountDiv16 units
-// (TAmbitApplication::HandleCursor, 0x49e320).
 // GLOBAL: IMPERIALISM 0x006a21c0
 int g_lastEdgeAutoScrollTick16 = 0;
 // GLOBAL: IMPERIALISM 0x00695278
@@ -183,9 +166,6 @@ extern const char g_szUAmbitSourcePath[] = "D:\\Ambit\\Cross\\UAmbit.cpp";
 // Per-great-power quarter phase used to stagger the diplomacy planning pass.
 // GLOBAL: IMPERIALISM 0x00697818
 extern const short g_aDiplomacyPlanningQuarterPhaseByNation[7] = {0, 3, 1, 2, 1, 2, 0};
-// FourCC tags and their parallel TSimMgr member-handler table used by
-// ProcessScenarioScript. Single-inheritance MSVC5 member pointers are plain code
-// pointers, matching the original 27-entry dispatch table.
 // GLOBAL: IMPERIALISM 0x00662978
 extern const unsigned int g_anScenarioScriptInstructionTags[27] = {
     kManifestTagLabo, kManifestTagCapa, kManifestTagWare, kControlTagArmy,  kManifestTagCivi,
@@ -215,10 +195,6 @@ int g_nScenarioScriptInstructionCount = 0;
 int g_UnknownMapOrderExecutionGuard_006a3ee0 = 0;
 // GLOBAL: IMPERIALISM 0x006a30b4
 int g_colorFillAssertGuard_006a30b4 = 0;
-// Upper-cased command-line switch literal matched by
-// ImperialismCommandLineInfo::ParseParam (0x4133d0). Linker-pooled with the same "L"
-// literal used as a flavor-text syllable in map_context_flavor_builders.cpp -- named
-// after the literal value, not either consumer, since neither owns the address.
 // GLOBAL: IMPERIALISM 0x00694250
 char g_szLiteralL_00694250[] = "L";
 // GLOBAL: IMPERIALISM 0x00694254
@@ -234,8 +210,6 @@ _PNH g_pfnPreviousNewHandler = 0;
 // GLOBAL: IMPERIALISM 0x006a1358
 void* g_pAmbitDeveloperAssertProbe_006A1358 = 0;
 
-// McAppUI.cpp module globals referenced by TView/TControl widget code. See
-// include/game/global_data_tables.h.
 // GLOBAL: IMPERIALISM 0x006950ac
 int g_McAppUiActiveFlag_006950AC = 1;
 // GLOBAL: IMPERIALISM 0x006a1af8
@@ -264,20 +238,14 @@ unsigned int g_McAppUiMouseCaptureTimerId_006A1ADC = 0;
 char g_szMcAppUiSourcePath_006950B0[] = "D:\\Ambit\\McAppUI.cpp";
 // GLOBAL: IMPERIALISM 0x00695168
 char g_szQuickDrawSourcePath_00695168[] = "D:\\Ambit\\QuickDraw.cpp";
-// FindOneOf() set used by TTraceDialog to split accumulated trace text into
-// listbox lines. Newline precedes carriage return in the original pool.
 // GLOBAL: IMPERIALISM 0x00695200
 char g_szTraceLineBreakChars_00695200[] = "\n\r";
-// Placeholder strings baked into the turn-event dialog builders (season/treasury/info
-// text shown until real values are bound).
 // GLOBAL: IMPERIALISM 0x00694354
 char g_szUiPlaceholderStaticText_00694354[] = "Static Text";
 // GLOBAL: IMPERIALISM 0x00694378
 char g_szUiPlaceholderZero_00694378[] = "0";
 // GLOBAL: IMPERIALISM 0x006943b0
 char g_szUiPlaceholderTreasury_006943B0[] = "$55,555";
-// Font face names for the cached-UI-font LOGFONT factory (0x494130); families 2 and 3
-// share "Book Antiqua".
 // GLOBAL: IMPERIALISM 0x00695160
 char g_szQuickDrawFontFaceSystem[] = "System";
 // GLOBAL: IMPERIALISM 0x00695140
@@ -293,13 +261,8 @@ const char* const g_apszQuickDrawFontFaceNames[5] = {
 char g_szUiPlaceholderSeason_006943BC[] = "Winter, 1888";
 // GLOBAL: IMPERIALISM 0x00694a98
 char g_szUiPlaceholderSampleText_00694A98[] = "Sample Text 1\n2\n3\n4\n5\n6\n7\n8";
-// Selects the CDib picture-preview blit path in TDibPreviewDialog::OnPaint (0x0047d5f0):
-// nonzero (1 in the binary) uses CreateCompatibleDC + BitBlt with a device bitmap; zero
-// uses StretchDIBits with the stored DIB bits.
 // GLOBAL: IMPERIALISM 0x00694c50
 int g_useCompatibleBitmapBlit = 1;
-// New-game setup screen (turn event 0x5dd) placeholder label strings, bound by the
-// screen builder (group 0x514) until real localized strings replace them.
 // GLOBAL: IMPERIALISM 0x006949e0
 char g_szNewGameAllAutoGPs_006949E0[] = "All AutoGP's";
 // GLOBAL: IMPERIALISM 0x006949f0
@@ -345,8 +308,6 @@ char g_szUiBoardOfTradeLabel_00694AF8[] = "Board of Trade";
 char g_szUiDefaultPlanetName_00694528[] = "Skyron";
 // GLOBAL: IMPERIALISM 0x00694530
 char g_szUiPickAPlanet_00694530[] = "Pick a planet";
-// Placeholder strings baked into the army/navy report screen builders
-// (InitializeArmyNavyReportViewsAndCommandTags, events 0x546..0x2506).
 // GLOBAL: IMPERIALISM 0x00694540
 char g_szUiAsEstimatedBy_00694540[] = "as estimated by";
 // GLOBAL: IMPERIALISM 0x00694554
@@ -454,22 +415,14 @@ char g_szMcAppUiHeaderPath_006943CC[] = "D:\\Ambit\\McAppUI.h";
 char g_szUGameWindowSourcePath_00696bc0[] = "D:\\Ambit\\Cross\\UGameWindow.cpp";
 // GLOBAL: IMPERIALISM 0x00696728
 char g_szUCountrySourcePath_00696728[] = "D:\\Ambit\\Cross\\UCountry.cpp";
-// InitializeDiplomacyMinisterActionControlsAndLabels' (0x4f4620) 6 action-button tags,
-// in construction order: info/trty/gran/trad/coun/offr.
 // GLOBAL: IMPERIALISM 0x00696960
 int g_diplomacyActionButtonTagTable_00696960[6] = {kControlTagInfo, kControlTagTrty,
                                                    kControlTagGran, kControlTagTrad,
                                                    kControlTagCoun, kControlTagOffr};
-// Diplomacy action-topic tab tags ("tfni", "ttrt", "targ", "tart", "tuoc", "rffo" as
-// stored): scanned in order by TDiplomacyMapView::DoEvent's commandId == 0x14 branch to
-// turn a clicked tab into a topic index, and by TCouncilView::DoEvent's council-control
-// and hover-text lookups.
 // GLOBAL: IMPERIALISM 0x00696978
 extern "C" unsigned int g_aDiplomacyActionTopicTabTags[6] = {kControlTagInft, kControlTagTrtt,
                                                              kControlTagGrat, kControlTagTrat,
                                                              kControlTagCout, kControlTagOffr};
-// Relation-tier to QuickDraw palette color-code map used by the diplomacy legend.
-// The caller at 0x004f6568 uses a signed relation tier and a two-byte stride.
 // GLOBAL: IMPERIALISM 0x00696990
 short g_aDiplomacyRelationPaletteColorCodes[7] = {0x40, 0x40, 0x41, 0x42, 0x43, 0x40, 0x44};
 // TInfoPanelView::Draw label-column coordinates, in the panel's parent coordinate space.
@@ -489,8 +442,6 @@ short g_scaledShortConst_6A1528 = static_cast<short>(g_gfxScale6A14E0 * 512.0 - 
 double g_gfxScale6A1580 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a15c8
 short g_scaledShortConst_6A15C8 = static_cast<short>(g_gfxScale6A1580 * 512.0 - -1.0);
-// Each original translation unit emitted a 1/64 coordinate scale and its derived
-// 512-unit short. Keep the globals distinct so VC5 emits the corresponding initializers.
 // GLOBAL: IMPERIALISM 0x006a12f8
 double g_gfxCoordinateScale_6A12F8 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a1340
@@ -828,12 +779,6 @@ CRgn* g_pGlobalClipRegionHandleObject = nullptr;
 COLORREF g_QuickDrawForegroundColor = PALETTEINDEX(0xff);
 // GLOBAL: IMPERIALISM 0x00695100
 COLORREF g_QuickDrawBackgroundColor = PALETTEINDEX(0);
-// Cached UI CFont built from the last text-style preset (quickdraw_rendering.cpp,
-// 0x494130/0x4944e0). Left zero-initialized to match the original .data image: the
-// 0x494460 CRT static-init function seeds mode/flag2/pointSize/styleRef6 to 0xc and
-// dirty=1 at runtime; until that init is ported, UpdateGlobalFontPresetAndRebuild
-// CachedFontIfDirty still rebuilds on first use via the g_pQuickDrawCachedUiFont==0
-// fallback.
 // GLOBAL: IMPERIALISM 0x006a1ce8
 CFont* g_pQuickDrawCachedUiFont = 0;
 // GLOBAL: IMPERIALISM 0x006a1cec
@@ -841,12 +786,6 @@ TextStyle g_QuickDrawCachedFontPreset = {0, 0, 0, 0};
 // GLOBAL: IMPERIALISM 0x006a1cf6
 bool g_bQuickDrawCachedFontDirty = false;
 
-// Measure-text cached font cluster. The preset's styleRef6 field (0x6a1d52) IS the
-// current text color — written by SetQuickDrawFillColor, read as COLORREF by the paint
-// paths (the original PDB labels those 4 bytes g_uQuickDrawCurrentColor; it's the same
-// field, not a separate global). The CRT init at 0x4943e0 seeds the preset to 0xc and
-// dirty=1 at runtime; left zero-initialized here to match the original .data image, and
-// the measure engine rebuilds on first use via the null-cache fallback.
 // GLOBAL: IMPERIALISM 0x006a1d48
 CFont* g_pQuickDrawCachedMeasureFont = 0;
 // GLOBAL: IMPERIALISM 0x006a1d4c
@@ -857,8 +796,6 @@ bool g_bQuickDrawMeasureFontDirty = false;
 int g_nQuickDrawOriginX = 0;
 // GLOBAL: IMPERIALISM 0x006a1d84
 int g_nQuickDrawOriginY = 0;
-// Resolved (post-origin-adjustment) text-draw origin, cached by
-// SetQuickDrawTextOriginWithContextOffset for the cached-style leaves that consume it.
 // GLOBAL: IMPERIALISM 0x006a1d00
 int g_nQuickDrawResolvedTextOriginX = 0;
 // GLOBAL: IMPERIALISM 0x006a1d04
@@ -869,27 +806,16 @@ int g_nUiFrameClipOriginX = 0;
 int g_nUiFrameClipOriginY = 0;
 // GLOBAL: IMPERIALISM 0x006a1ca0
 TBitmapSurfaceContextDescriptor g_defaultQuickDrawSurfaceSentinel;
-// Statically initialized to the sentinel address (the dword at 0x006950f8 holds
-// 0x006a1ca0 in the original), not null — the restore path in
-// CreateCommodityIconsGWorld captures this before the first
-// SetGWorld and would otherwise restore a null context.
 // GLOBAL: IMPERIALISM 0x006950f8
 TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContextHead = &g_defaultQuickDrawSurfaceSentinel;
-// Zero in the raw .data image; the CRT static-init ctor 0x494040
-// (TQuickDrawClipStateInitializer in quickdraw_rendering.cpp) seeds it with
-// &g_defaultQuickDrawSurfaceSentinel before WinMain.
 // GLOBAL: IMPERIALISM 0x006a1d60
 TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContext = 0;
 // GLOBAL: IMPERIALISM 0x006a30a8
 TQuickDrawSurfaceContext* g_pPrimaryRenderSurfaceContext = 0;
-// Cached snapshot of g_pPrimaryRenderSurfaceContext, stamped by
-// TCitySiteView::DoPostCreate after allocating its own surface.
 // GLOBAL: IMPERIALISM 0x006a3450
 TQuickDrawSurfaceContext* g_pCitySiteCachedPrimaryRenderSurfaceContext = 0;
 // GLOBAL: IMPERIALISM 0x006a3454
 short g_MapTileCacheMissCount6A3454;
-// Scratch DIB used only while TColorKeyPicture composites its tagged background and
-// transparent foreground before presenting the result.
 // GLOBAL: IMPERIALISM 0x006a4194
 CDib* g_pColorKeyCompositeDib = 0;
 
@@ -913,8 +839,6 @@ int g_nActiveQuickDrawSurfaceFlags = 0;
 // RefreshRgnBoundingBox asserts when this compatibility gate is zero.
 // GLOBAL: IMPERIALISM 0x006a1dc4
 int g_QuickDrawRegionBoundsAssertGate = 0;
-// McAppUI's Windows compatibility cursor hooks assert when their corresponding
-// availability gate is zero. Neither gate has another retail-binary xref.
 // GLOBAL: IMPERIALISM 0x006a1dc8
 int g_QuickDrawSetCursorAssertGate = 0;
 // GLOBAL: IMPERIALISM 0x006a1dcc
@@ -932,16 +856,6 @@ int g_nOverlayClipCacheParamX = 0;
 // GLOBAL: IMPERIALISM 0x006a4454
 int g_nOverlayClipCacheParamY = 0;
 
-// Trade summary selection map — 23 read-only packed-FourCC commodity tags, one
-// per TCity commodity slot (Cotton..Gold, i.e. orderSlots[0..0x16]
-// / cityStockCotton..cityStockGoldE2). Verified via `just ghidra read-data
-// 0x696108 dword 23`: the previous model (a zeroed BSS int[32] at 0x6960e0) had
-// the wrong address, wrong size, and wrong storage class — 0x6960e0 actually
-// lands inside the unrelated kTradeSellPropagationTags string data below, and
-// the real table at 0x696108 is const-initialized, not runtime-populated.
-// FourCC control tags in commodity-slot order (cotton..gold). Also read by
-// TWarehouseView::DoStartup (0x4c7360), which resolves each of the 23 tags into
-// commodityValueControls.
 // GLOBAL: IMPERIALISM 0x00696108
 const int g_pTradeSummarySelectionMap[23] = {
     kManifestTagCott, kManifestTagWool,  kManifestTagTimb, kManifestTagCoal, kManifestTagIron,
@@ -959,9 +873,6 @@ const int kTradeSellPropagationTags[17] = {
     kControlTagGd2Sp, kControlTagGd3Sp,
 };
 
-// TMinorTradeBidsDialog's typed view of the control-tag run. The first 17 entries are
-// the commodity controls; the trailing values are the exact sentinel words adjacent to
-// the 23 slots read by the retail loop (the 24th word pins the original data extent).
 // GLOBAL: IMPERIALISM 0x0066b1a0
 const int g_tradeBidNationMetricControlTags[24] = {kControlTagRs0Sp,
                                                    kControlTagRs1Sp,
@@ -1068,8 +979,6 @@ short g_cachedAiCityActionTurnTick_006967d8 = -1;
 // GLOBAL: IMPERIALISM 0x006a2ea0
 float g_cachedAiCityActionContextBias[3] = {0.0f, 0.0f, 0.0f};
 
-// City-building slot walk order, shared by the production-view slot builders and the
-// hit-test priority scans in TCityProductionView.
 // GLOBAL: IMPERIALISM 0x00696178
 short g_anCityBuildingSlotOrder[16] = {12, 13, 7, 10, 14, 15, 9, 6, 11, 2, 3, 8, 0, 1, 4, 5};
 // GLOBAL: IMPERIALISM 0x00696198
@@ -1080,8 +989,6 @@ short g_anCityBuildingSlotCoords[32] = {200, 235, 340, 300, 281, 184, 340, 266, 
 short g_nCityBuildingSlotYOffsetIndex = 1;
 // GLOBAL: IMPERIALISM 0x006961dc
 short g_nCityBuildingDrawXOffsetIndex = 1;
-// Per-(building-slot,action) resource/picture ids, 3 shorts per table row (TCityProductionView
-// DoPostCreate action-control builder). Row index = (level-1) + slot loop counter.
 // GLOBAL: IMPERIALISM 0x0064faa8
 char* g_pCityBuildingHoverEmptyText_0064faa8 = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x0064fad0
@@ -1132,12 +1039,6 @@ CRect g_aCityBuildingHoverSelectionRects[16] = {
     CRect(g_anCityBuildingSlotCoords[32], g_anCityBuildingSlotCoords[33],
           g_anCityBuildingSlotCoords[32] + 10, g_anCityBuildingSlotCoords[33] + 10)};
 
-// City-building screen control rects, one 72-rect table populated by the dynamic
-// initializer at 0x4b98b0: elements 0..40 by per-field stores, elements 41..71
-// (starting at 0x6a2778) by inlined CRect constructor calls.
-// TCityProductionView::DoPostCreate (0x4ba3b0) reads
-// the whole table with a row*3+action stride from base 0x6a24e8, which is why this is
-// one array and not a 41/31 split -- the split point is mid-row (41 = 13*3 + 2).
 // GLOBAL: IMPERIALISM 0x006a24e8
 CRect g_aCityBuildingLayoutRects[72] = {CRect(0x110, 0xfc, 0x11f, 0x10a),
                                         CRect(0, 0, 0, 0),
@@ -1224,8 +1125,6 @@ LPCSTR g_apFontFiles[] = {"data\\WeBeBd__.ttf", "data\\Antqua.ttf", "data\\Antqu
                           "data\\AntquaB.ttf", nullptr};
 // GLOBAL: IMPERIALISM 0x006a1890
 int g_nDibOrientationFlag_006A1890 = 0;
-// Probed aux-output (CD-audio line) device index; -1 until
-// ProbeAuxOutputDeviceIndexByPidMask (0x5e1430, wave_helpers.cpp) finds one.
 // GLOBAL: IMPERIALISM 0x0069b89c
 int g_nAuxOutputDeviceIndex = -1;
 // GLOBAL: IMPERIALISM 0x6a1d9c
@@ -1236,9 +1135,6 @@ void* g_pScopedMapQuickDrawViewContext = 0;
 RgnHandle g_pTemporaryRegionCache = 0;
 
 // GLOBAL: IMPERIALISM 0x006a2018
-// Cached CCommandLineInfo::m_bShowSplash flag (cmdInfo+0x04 after the CObject vptr).
-// Writer: SetCachedShowSplashFlag @ 0x0049cc40 from InitInstance @ 0x00412f81.
-// Reader: CreateBackdropWindowIfSplashEnabled @ 0x0049cc60 when nonzero.
 BOOL g_cachedShowSplashFlag = FALSE;
 
 } // extern "C"
@@ -1272,8 +1168,6 @@ int ClearGlobalUiInvalidationFlagAndReturnPrevious() {
 // GLOBAL: IMPERIALISM 0x006950d8
 char g_szMcWindowSourcePath_006950D8[] = "D:\\Ambit\\McWindow.cpp";
 
-// Gate read by CMcWindow::OnWindowStateMsg468 before firing the unknown-wParam
-// one-shot assert (writer not yet identified).
 // GLOBAL: IMPERIALISM 0x006a1c74
 int g_nMcWindowStateMsgAssertGate_006A1C74 = 0;
 
@@ -1285,13 +1179,9 @@ extern "C" const char g_szDiplomacyDialogsSourcePath_00694CC0[] = "D:\\Ambit\\Di
 // GLOBAL: IMPERIALISM 0x00694d10
 char g_szIncludeViewSourcePath_00694D10[] = "D:\\Ambit\\IncludeView.cpp";
 
-// Gate read by CIncludeView::OnDialogTreeHostMsg4EF (msg 0x4ef, wParam 0) before firing
-// the detach-without-context one-shot assert (writer not yet identified).
 // GLOBAL: IMPERIALISM 0x006a17b0
 int g_nIncludeViewAssertGate_006A17B0 = 0;
 
-// One-shot assert gate for the dead overlay-queue cursor guard (0x483250). Never
-// written; the guard is the gate's only reader, so a call would always assert.
 // GLOBAL: IMPERIALISM 0x006a17b4
 int g_nIncludeViewQueueAssertGate_006A17B4 = 0;
 
@@ -1305,39 +1195,25 @@ int g_nIncludeViewReinitAssertGate_006A17BC = 0;
 // GLOBAL: IMPERIALISM 0x006a17c0
 int g_nIncludeViewReinitThreadOnceGate_006A17C0 = 0;
 
-// "AmbitCadreEgout" WNDCLASS name for CIncludeView's dead one-shot class
-// registration helper (0x484ea0).
 // GLOBAL: IMPERIALISM 0x00694d40
 char g_szAmbitCadreEgoutClassName_00694D40[] = "AmbitCadreEgout";
 
-// One-shot registration gate + result atom for the "AmbitCadreEgout" WNDCLASS
-// (written by the dead helper at 0x484ea0; no other readers).
 // GLOBAL: IMPERIALISM 0x006a1834
 int g_AmbitCadreEgoutWndClassAtom_006A1834 = 0;
 
 // GLOBAL: IMPERIALISM 0x006a2480
 int g_nMcAppUiAssertGate_006A2480 = 0;
 
-// Gate read by CIncludeView::OnMouseMove (0x4838e4) before firing the
-// drag-track-without-context one-shot assert (IncludeView.cpp line 0x2b7).
 // GLOBAL: IMPERIALISM 0x006a17c4
 int g_nIncludeViewPointerAssertGate_006A17C4 = 0;
 
 extern "C" {
-// Default mission score constant (0.0), loaded by the TMission slot 0x68-0x7C float
-// stubs (read pointer at 0x0065a468, immediately before the TMission vtable).
 // GLOBAL: IMPERIALISM 0x0065a468
 extern const float g_MissionDefaultScore_0065a468 = 0.0f;
 
-// 1.0 constant (double), used by CompareMissionOrderEntriesByPriorityScore (0x536090)
-// to compute each side's "remaining priority" as 1.0 - GetWeightedSatisfaction().
 // GLOBAL: IMPERIALISM 0x0065a470
 extern const double g_MissionScoreOneConstant_0065a470 = 1.0;
 
-// Same conceptual pair as above (0.0f mul/div selector, 1.0 "remaining priority" base),
-// read by AssignUnitsToMissions' (0x4eb8b0) inline scoring.
-// Per-personality defense-minister FP weights returned by the slot-0x60
-// weight getter (0x4ec0a0 family; flag selects between the pair).
 // GLOBAL: IMPERIALISM 0x006548e0
 extern const float g_DefenseMinisterWeightZero_006548E0 = 0.0f;
 // GLOBAL: IMPERIALISM 0x006548e8
@@ -1359,8 +1235,6 @@ extern const double g_BullyWeightHigh_00654918 = 0.8;
 extern const double g_AiPressureUnsetSentinel_006545c8 = -1.0;
 // GLOBAL: IMPERIALISM 0x006545d0
 extern const float g_MissionDefaultScore_006545d0 = 0.0f;
-// Orphaned neighbor constant (no known reader yet) sitting between the two named
-// constants above; declared to keep the surrounding data bytes byte-faithful.
 // GLOBAL: IMPERIALISM 0x006545d4
 extern const float g_UnreferencedConstant_006545d4 = -1.0f;
 // GLOBAL: IMPERIALISM 0x006545d8
@@ -1372,22 +1246,15 @@ extern const double g_AiPressureMidpointScale_006545e8 = 0.5;
 // 0.0 (double) threshold used by the same function's score-positivity checks.
 // GLOBAL: IMPERIALISM 0x006545f0
 extern const double g_MissionScoreZeroThreshold_006545f0 = 0.0;
-// Competing missions of the same class must beat the next entry's value/cost ratio by
-// ten percent before consuming that class from the available mask (0x4eb6b0).
 // GLOBAL: IMPERIALISM 0x006545f8
 extern const double g_MissionEligibilityRatioMargin_006545f8 = 1.1;
 
 // GLOBAL: IMPERIALISM 0x006543e8
 extern const float g_AiPressurePeerScale_006543e8 = 1.1f;
 
-// Weighting factor (0.2) applied to each adjacent region's score when diffusing the
-// strategic heatmap (RecomputeTileStrategicScoreHeatmap 0x518130).
 // GLOBAL: IMPERIALISM 0x00658780
 float g_TileHeatmapNeighborDiffusionFactor = 0.2f;
 
-// Map-interaction preview scale factors (default 1/64 = 0.015625), multiplied into the map
-// dialog's rect layout by TMapDialog::Draw (0x51e260). Runtime-set to the default
-// by InitializeMapInteractionPreviewScale{X,Y}Default (0x51e0b0 / 0x51e0e0), so zero on disk.
 // GLOBAL: IMPERIALISM 0x006a3410
 double g_MapPreviewScaleX6A3410;
 // GLOBAL: IMPERIALISM 0x006a33d0
@@ -1407,10 +1274,6 @@ extern short g_mapProjectionSeamColumn_006a3348;
 
 } // extern "C"
 
-// These file-scope defaults have no retail readers. Their initializer bodies nevertheless
-// prove their source types: two dword stores are CPoint(0,0), four are CRect(0,0,0,0),
-// and four byte stores are the default CRGBColor constructor. Keep them as real objects so
-// VC5 owns the compiler helpers rather than exposing reset functions as source APIs.
 // GLOBAL: IMPERIALISM 0x006a1cf8
 CPoint g_defaultPoint_006A1CF8(0, 0);
 // GLOBAL: IMPERIALISM 0x006a1d78
@@ -1470,8 +1333,6 @@ CRGBColor g_defaultRgbColor_006A1FC8;
 // GLOBAL: IMPERIALISM 0x006a2020
 CPoint g_defaultPoint_006A2020(0, 0);
 
-// Additional QuickDraw.cpp file-scope geometry defaults found by auditing raw code
-// islands that the Ghidra function inventory omitted.
 // GLOBAL: IMPERIALISM 0x006a2048
 CPoint g_defaultPoint_006A2048(0, 0);
 // GLOBAL: IMPERIALISM 0x006a2028
@@ -1503,8 +1364,6 @@ CRect g_defaultRect_006A20D0(0, 0, 0, 0);
 // GLOBAL: IMPERIALISM 0x006a20b0
 CRGBColor g_defaultRgbColor_006A20B0;
 
-// The two 1/64 coordinate scales and their derived 512-unit short mirror the earlier
-// 0x49c0c0-0x49c120 initializer trio.
 // GLOBAL: IMPERIALISM 0x006a2140
 double g_ScaleDefault6A2140 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a2108
@@ -1530,9 +1389,6 @@ CPoint g_defaultPoint_006A21B0(0x50, 0x2d);
 
 extern "C" {
 
-// Order-type index rankings (0..13) sorted by descending descriptor weight, rebuilt by
-// TNavyMgr::INavyMgr (0x556610): by resolveWeight, calculateWeight, and
-// navyPriorityWeight respectively. Runtime-filled, so zero in the on-disk image.
 // GLOBAL: IMPERIALISM 0x006a3e28
 short g_NavyResolveOrderRanking[14];
 // GLOBAL: IMPERIALISM 0x006a3e50
@@ -1540,8 +1396,6 @@ short g_NavyMissionOrderRanking[14];
 // GLOBAL: IMPERIALISM 0x006a3e90
 short g_NavyPriorityOrderRanking[14];
 
-// Minister-skill-indexed float coefficient tables (DAT_0065xxxx), indexed by a
-// minister's skill value at +0x0C. Used by TGreatPower vtable slots 0x88-0x8c.
 float g_DAT_Value_00653308[8] = {0.7f, 1.1f, 1.2f, 1.5f, 1.0f, 0.9f, 0.7f, 0.0f};
 float g_DAT_Value_00653328[6] = {1.0f, 1.0f, 1.3f, 1.3f, 1.3f, 0.0f};
 float g_DAT_Value_00653340[8] = {0.6f, 0.7f, 0.7f, 0.7f, 0.8f, 0.6f, 0.6f, 0.0f};
@@ -1553,12 +1407,7 @@ float g_DAT_006533d0_Value_006533D0[6] = {1.1f, 1.0f, 1.3f, 0.7f, 1.1f, 0.0f};
 float g_DAT_006533e8_Value_006533E8[8] = {0.4f, 0.5f, 0.5f, 0.5f, 0.6f, 0.4f, 0.4f, 0.0f};
 float g_DAT_Value_00653408[6] = {0.9f, 0.8f, 1.1f, 0.5f, 0.9f, 0.0f};
 
-// Float constants used by the TGreatPower relative-power-score family
-// (vtable slots 0x8e-0x9e, bodies 0x004e07b0..0x004e1c20). Values in the
-// original image: 0.0f, -0.25f, 0.25f, 0.5f, -90.0f, -0.5f.
 extern const float g_Compute_Advisory_Handler_LookupTable_00653700 = 0.0f;
-// 0x653704-0x653710 — production-tier classification constants (TGreatPower slot
-// 0x82, body 0x004e2880): -1.0, 2.0, 1.0, -2.0.
 float g_Classify_Nation_Military_Value_00653704 = -1.0f;
 float g_Classify_Nation_Military_Value_00653708 = 2.0f;
 float g_Classify_Nation_Military_Value_0065370C = 1.0f;
@@ -1575,8 +1424,6 @@ float g_ApplyIndexedResourceDeltaScale_00653728 = -1.0f / 255.0f;
 // reads the category flag at record offset +0 (0x695cd2; 0x10 = counted) and the
 // power/cost points at +2 (0x695cd4, the short the slot 0x8e-0x9c score family sums).
 
-// Per-unit-type stat table (7 shorts per type; rows for unit types 0x00-0x1d) and
-// per-stat divisor baseline used by TMilitaryUnit::GetAttribute (0x5c3530).
 // GLOBAL: IMPERIALISM 0x0066eb88
 short g_UnitTypeStatTable_0066EB88[30][7] = {
     {0x0026, 0x0014, 0x0001, 0x0001, 0x000a, 0x0000, 0x003c},
@@ -1613,13 +1460,8 @@ short g_UnitTypeStatTable_0066EB88[30][7] = {
 // GLOBAL: IMPERIALISM 0x0066ed30
 short g_UnitTypeStatDivisorTable_0066ED30[7] = {150, 150, 65, 75, 100, 250, 0};
 
-// Per-order-type sort priority (short table at 0x6966d0), used by the TGreatPower
-// slot 0x55 tracked-order selection sort (0x004e0290). The following string begins at
-// 0x6966e8, fixing the table's extent at twelve shorts.
 short g_DAT_006966d0_Value_006966D0[12] = {2, 0, 4, 3, 1, 5, 0, 0, 0, 0, 0, 0};
 
-// Cursor resource id by civilian-tile-order action code (short table at 0x696678, 12
-// entries), used by TCivMgr::LookupCivilianTileOrderCursorTokenByActionIndex (0x4d2930).
 // GLOBAL: IMPERIALISM 0x00696678
 short g_civilianTileOrderCursorTokenTable[12] = {0,    1008, 0,    1004, 1003, 1002,
                                                  1018, 1019, 1001, 1003, 1011, 1025};
@@ -1633,8 +1475,6 @@ short g_civilianMapCursorTokenByStateIndex_00695680[12] = {0,    1008, 1000, 100
 
 } // extern "C"
 
-// These are CSize dynamic initializers, not ordinary callable setters. Their inlined
-// constructors are the tiny bodies at 0x5a6830, 0x5a6860 and 0x5a6890.
 // GLOBAL: IMPERIALISM 0x006a5430
 CSize g_tacticalTileSize_006A5430(0x32, 0x1e);
 // GLOBAL: IMPERIALISM 0x006a5448
@@ -1645,27 +1485,15 @@ CSize g_tacticalUnitSpriteCellSize_006A5498(0x32, 0x32);
 
 extern "C" {
 
-// Per-unit-type tactical range (int table at 0x6699e8, 30 unit types); artillery on
-// the defending side (side20 == 1, combat category 2) gets +1 from the fort walls.
 // GLOBAL: IMPERIALISM 0x006699e8
 int g_anUnitTypeTacticalRangeByType_006699E8[30] = {5,  5,  5,  5,  3,  3,  9,  11, 8,  8,
                                                     8,  8,  5,  5,  12, 14, 10, 10, 10, 10,
                                                     10, 12, 15, 17, 5,  8,  10, 0,  0,  0};
 
-// Per-unit-type tactical category code (short table at 0x695528, 30 unit types + 2
-// pad); category 0 counts as garrison strength in TGreatPower slot 0x11 (0x004d87e0),
-// category 8 marks the sapper/engineer types (24-26), 9 the last tier (27-29).
-// Resource/order-slot -> unit-category code. Also read by TArmoryView::DoStartup
-// (0x4cee20) as g[order->resourceTypeIndex]: for the land-unit class (value 8) it
-// selects the button picture-variant (types 0x18/0x19/other -> 8/0x10/0x18); indices
-// 0x18-0x1d map to classes 8/9, and the leading 0..7 runs mirror the commodity-slot
-// groups.
 // GLOBAL: IMPERIALISM 0x00695528
 ArmyUnitCategoryStorage g_awTacticalUnitCategoryCodeBySlot[32] = {
     0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 9, 9, 9, 0, 0};
 
-// Per-unit-type combat/composition class (short table at 0x695380, 30 unit types + 2
-// pad).
 // GLOBAL: IMPERIALISM 0x00695380
 short g_awUnitCombatClassBySlot[32] = {1, 2, 1, 1, 3, 2, 2, 1, 1, 2, 1, 1, 3, 2, 2, 1,
                                        1, 2, 1, 1, 3, 3, 2, 1, 1, 2, 3, 2, 2, 2, 0, 0};
@@ -1673,9 +1501,6 @@ short g_awUnitCombatClassBySlot[32] = {1, 2, 1, 1, 3, 2, 2, 1, 1, 2, 1, 1, 3, 2,
 // GLOBAL: IMPERIALISM 0x006953c0
 unsigned char g_abStackCompositionClassTable[4][4] = {
     {0, 0, 0, 0}, {0, 1, 0, 0}, {0, 2, 3, 0}, {0, 3, 4, 5}};
-// Per-unit-type strength-weighting percent (short table at 0x6953e8, 30 unit types + 2
-// pad), read by TDefenseMinister::CreateEnemyPowerMap as
-// weightPercent * TMilitaryUnit::strength34 / 100.
 // GLOBAL: IMPERIALISM 0x006953e8
 short g_anUnitStrengthWeightPercentBySlot[32] = {
     50,  50,  100, 125, 75,  150, 0, 0, 75, 100, 150, 175, 100, 200, 0, 0,
@@ -1688,8 +1513,6 @@ short g_anMapImprovementSpriteClassByOrderType[kCivilianUnitKindCount] = {2, 3, 
 // Per-fort-level attacker penalty percent; indexed by Province::fortLevel03.
 // GLOBAL: IMPERIALISM 0x00695568
 int g_anFortLevelAttackerPenaltyPercentByLevel[4] = {100, 85, 75, 65};
-// Per-unit-type blink/boost eligibility flag (byte table at 0x64c808); indexed by
-// TUnit::orderType.
 // GLOBAL: IMPERIALISM 0x0064c808
 unsigned char g_abUnitTypeBlinkEligibilityFlag[kMilitaryUnitKindCount] = {
     1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0};
@@ -1717,8 +1540,6 @@ float g_afRandomizedMeterDecayByOrderType[kMilitaryUnitKindCount] = {
 int g_anCountWeightByOrderType[kMilitaryUnitKindCount] = {
     0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 0, 0, 0};
 
-// Per-resourceType requirement table (4 columns per resourceType, 0-23). Read by
-// TMapMgr::FindResourceCapabilityRequirementLevel (0x513610).
 unsigned char g_abUniversityRequirementLevelById[24][4] = {
     {1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}, {0, 2, 4, 6}, {0, 2, 4, 6}, {1, 1, 1, 1},
     {0, 2, 4, 6}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0},
@@ -1728,14 +1549,10 @@ unsigned char g_abUniversityRequirementLevelById[24][4] = {
 int g_anUniversityRequirementIdByRecruitRow[9][4] = {
     {3, 4, 21, 22},  {-1, -1, -1, -1}, {0, 17, 18, -1},  {2, -1, -1, -1}, {-1, -1, -1, -1},
     {1, 20, -1, -1}, {19, -1, -1, -1}, {-1, -1, -1, -1}, {6, -1, -1, -1}};
-// Armory display action points by unit type. Retail keeps a city-view copy separate
-// from the identical tactical action-point table.
 // GLOBAL: IMPERIALISM 0x00651100
 short g_awArmoryUnitActionPointsByType[30] = {40,  60, 40,  40, 110, 90, 50, 30, 40, 60,
                                               40,  40, 110, 90, 60,  30, 50, 70, 50, 40,
                                               110, 90, 80,  30, 40,  40, 50, 90, 90, 90};
-// Armory firepower display values by unit type. This is a distinct retail table even
-// though its values duplicate the tactical attack table.
 // GLOBAL: IMPERIALISM 0x00651140
 float g_afArmoryUnitFirepowerByType[30] = {
     50.0f,  50.0f,  100.0f, 125.0f, 75.0f,  150.0f, 100.0f, 160.0f, 75.0f,  100.0f,
@@ -1746,22 +1563,13 @@ int g_anArmoryUnitRangeByType[30] = {5,  5,  5,  5,  3,  3,  9,  11, 8,  8, 8, 8
                                      14, 10, 10, 10, 10, 10, 12, 15, 17, 5, 8, 10, 0, 0, 0};
 // GLOBAL: IMPERIALISM 0x00651398
 float g_fArmoryFirepowerDisplayScale = 0.1f;
-// Per-resourceType "requires tiered nibble" byte table. Read by the same function above;
-// only nonzero-ness is consumed, but retail stores resource type 6 as 6 rather than bool 1.
 unsigned char g_abResourceTypeUsesHighNibbleFlag[24] = {0, 0, 0, 1, 1, 0, 6, 0, 0, 0, 0, 0,
                                                         0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
-// Per-resourceType capability-category code. Read by GetMaxDevelopmentLevel
-// (0x513720).
 char g_abResourceTypeCapabilityCategory[24] = {0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0,
                                                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
-// Third binary copy of the same per-resourceType flag pattern (the linker kept three);
-// this one gates whether the mini-civ row (0x4ab970) and civ report name a tile edge's
-// resource type in their "improvable resources" text.
 // GLOBAL: IMPERIALISM 0x006963e8
 unsigned char g_abResourceTypeMiniCivMentionFlag[24] = {0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0,
                                                         0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
-// Per-resourceType required-order-type code. Read by
-// SeedRecruitSearchVisitedStateByCapabilityThresholdAlt (0x515890).
 short g_anResourceTypeRequiredOrderType[24] = {2,  5,  3,  -1, -1, -1, -1, -1, -1, -1, -1, -1,
                                                -1, -1, -1, -1, -1, 2,  2,  6,  5,  -1, -1, 0};
 // Per-resourceType "always-qualifies" flag; same caller as above.
@@ -1771,9 +1579,6 @@ unsigned char g_abResourceTypeAlwaysQualifies[24] = {1, 1, 1, 1, 1, 0, 1, 0, 0, 
 unsigned char g_abGateFlagQualifies[24] = {
     0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
-// Doubled-column and row hex-direction deltas (direction 0..5), read by
-// GetNeighborTileID and BuildHexAreaTileIndexList to step across the
-// 0x6c(108)-wide hex grid. Confirmed via raw read of the original .rdata bytes.
 short g_Build_Hex_Area_LookupTable_00696E70[6] = {1, 2, 1, -1, -2, -1};
 short g_Build_Hex_Area_LookupTable_00696E80[6] = {-1, 0, 1, 1, 0, -1};
 
@@ -1784,9 +1589,6 @@ short g_anStrategicTerrainNeighborLinkPriority[kStrategicTerrainCount] = {10, 4,
 
 int g_nNextRegionMarkerId = 1;
 
-// Per-tile sprite-variant bitmap-strip offset tables, indexed [gateFlag][spriteVariantIndex]
-// (or, for the 39-suffixed table, by spriteVariantIndex alone). Read by
-// TMapMgr's rendering-variant lookup family (0x516150/0x5161a0/0x5161e0/0x516220).
 short g_awTileSpriteVariantOffsetTable38[16][2] = {
     {0x140, 0x140}, {0, 0},         {0x200, 0x200}, {0x240, 0x240}, {0x300, 0x300}, {0x1c0, 0x1c0},
     {0x3c0, 0x3c0}, {0x700, 0x700}, {0x080, 0x080}, {0x0c0, 0x2c0}, {0x100, 0x100}, {0x180, 0x180},
@@ -1803,9 +1605,6 @@ short g_awTileSpriteVariantOffsetTable3b[16][2] = {
     {0, 0},         {0, 0},         {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0x800, 0x800},
     {0x480, 0x480}, {0x500, 0x7c0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}};
 
-// Navy/order composite score table (0x550b60 /
-// ComputeNavyOrderPriorityContributionPercentByCategory family); see TNavyOrderResourceDescriptor
-// in navy_globals.h.
 TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[14] = {
     {{0, 0, 0, 0, 0, 0, -1, 0, 0}},        {{0, 0, 100, 600, 0, 2, -1, 1, 0}},
     {{0, 0, 95, 1000, 0, 4, -1, 1, 0}},    {{300, 5, 90, 900, 4, 0, 1, 3, 1}},
@@ -1815,14 +1614,9 @@ TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[14] = {
     {{0, 0, 75, 1200, 0, 16, -1, 1, 0}},   {{600, 9, 50, 1000, 8, 0, 1, 6, 3}},
     {{2000, 13, 30, 2800, 7, 0, 3, 5, 4}}, {{1800, 13, 45, 2200, 9, 0, 2, 6, 4}}};
 
-// Per-category (0..3) capability metric baseline averages, recomputed at runtime by
-// RecomputeGlobalCapabilityAverages (0x54fd50) and read back as the normalization divisor
-// by the navy/map-order per-category scoring helpers (0x5501b0, 0x550090, 0x54ff00).
 // GLOBAL: IMPERIALISM 0x006a3ec8
 int g_aCategoryMetricBaselineAverage[4] = {0};
 
-// Mission score normalization divisor used by the control-sea-zone and blockade-port
-// mission scoring helpers.
 // GLOBAL: IMPERIALISM 0x0065a9c0
 float g_fMissionScoreNormalizationDivisor = 5000.0f;
 
@@ -1830,9 +1624,6 @@ float g_fMissionScoreNormalizationDivisor = 5000.0f;
 // GLOBAL: IMPERIALISM 0x0065a9c8
 float g_fScatteredShipsMissionDefaultScore = 0.001f;
 
-// Per-nation output caches for RecomputeNationOrderPriorityMetrics (0x53fe30).
-// Shared counters selecting the initial one-third offer and later one-half offers for
-// the arms personality's basic and advanced resource groups.
 // GLOBAL: IMPERIALISM 0x006a3a54
 short g_nArmsBasicResourceOfferSplitCount_006a3a54 = 0;
 // GLOBAL: IMPERIALISM 0x006a3a58
@@ -1877,8 +1668,6 @@ short g_aNavalIntelligenceAccuracyProfiles[6][6] = {
 // GLOBAL: IMPERIALISM 0x006a43f4
 bool g_bPerfectNavalIntelligenceCheat = false;
 
-// Nation-slot-to-generator mapping used for country, province, player, and random-map
-// names. The 23 records end at 0x0066ef8c; the following qword constant is unrelated.
 // GLOBAL: IMPERIALISM 0x0066ef30
 MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30[23] = {
     {0, 0},  {9, 0},  {16, 0}, {14, 0}, {17, 0}, {8, 0},  {2, 0},  {5, 0},
@@ -1942,14 +1731,9 @@ extern const float g_Recompute_Nation_Order_LookupTable_0065AA20 = 139069760.0f;
 extern const float g_MissionEmptyResourceWeight_0065AA24 = 100.0f;
 // GLOBAL: IMPERIALISM 0x0065aa48
 extern const double g_ArmyMissionEligibleUnitStrengthScale_0065AA48 = 0.002;
-// Composition reference profiles: four rows of five military attributes.
-// Tactical accumulation and deployment select rows 1 and 2 differently;
-// see docs/reference/army_tactical_projections.md.
 // GLOBAL: IMPERIALISM 0x00697870
 short g_awTacticalCompositionReferenceProfiles_00697870[20] = {
     40, 27, 0, 17, 16, 27, 36, 0, 17, 20, 26, 31, 20, 23, 0, 40, 22, 0, 38, 0};
-// Four back-to-back target-percentage profiles consumed by the navy-order distribution
-// scorers. TNavyMission::ComputeOrderDistributionSimilarityScoreForZone uses [4..7].
 short g_Populate_Beachhead_Mission_LookupTable_00697958[0x10] = {40, 40, 20, 0,  40, 30, 30, 0,
                                                                  35, 35, 0,  30, 0,  20, 80, 0};
 const short g_NavyOrderDistributionCategoryWeights_00697978[4] = {40, 30, 30, 0};
@@ -1957,8 +1741,6 @@ const short g_NavyOrderDistributionCategoryWeights_00697978[4] = {40, 30, 30, 0}
 extern const float g_MissionOrderDistanceDecayWeightTable_006978c8[6] = {1.0f,   0.8f,    0.64f,
                                                                          0.512f, 0.4096f, 0.32768f};
 
-// Army-mission order-priority weight/scoring tables (0x53c620 / 0x53ceb0 /
-// 0x53d4a0 family).
 // GLOBAL: IMPERIALISM 0x00697980
 float g_ArmyMissionDotProductWeights_00697980[5] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
 // GLOBAL: IMPERIALISM 0x006978f8
@@ -1969,14 +1751,9 @@ float g_ArmyMissionCandidateScoreTable_006978f8[24] = {
 // GLOBAL: IMPERIALISM 0x0065aa30
 extern const double g_BeachheadMissionPriorityNormalization_0065AA30 = 100.0;
 
-// Random-roll scaling constants for TAutoGreatPower::SetTradeOffersFor
-// (0x004e7680): 1/255 and 32767.
 double g_DAT_00653fc0_Value_00653FC0 = 0.00392156862745098;
 double g_DAT_00653fc8_Value_00653FC8 = 32767.0;
 
-// Case-16 advisory mission acceptance thresholds, indexed by the defense minister's
-// skillIndex row and the mission tier column (0 attack, 1 amass, 2 invade,
-// 3 defend, 4 blockade, 5 unused). Read by 0x004e9a50.
 float g_afAdvisoryMissionTierThresholdByMinisterSkill_00653F18[5][6] = {
     {1.5f, 1.5f, 2.5f, 0.0f, 2.25f, 2.0f},  {1.75f, 1.75f, 2.5f, 0.0f, 2.25f, 2.25f},
     {2.0f, 2.0f, 2.0f, 0.0f, 1.5f, 1.5f},   {2.0f, 2.0f, 3.0f, 0.0f, 2.0f, 2.0f},
@@ -1994,9 +1771,6 @@ float g_Compute_Advisory_MinusSixFloat_00653FF8 = -6.0f;
 double g_Compute_Advisory_Hundred_00654000 = 100.0;
 double g_Compute_Advisory_OnePointFive_00654008 = 1.5;
 
-// Scenario-level relation preset rows (0x17 shorts per row, stride 0x2e), loaded into
-// the relation manager's city stock block by TGreatPower slot 0x39 (0x004df810).
-// difficultyLevel is 0..4; the runtime-class object at 0x653658 follows row four.
 short g_Rebuild_Primary_Nation_Value_00653570[5][0x17] = {
     {20, 20, 40, 30, 30, 10, 0, 20, 20, 20, 20, 20, 0, 10, 10, 10, 10, 10, 5, 0, 5, 0, 0},
     {5, 5, 10, 5, 5, 2, 0, 20, 10, 15, 8, 10, 0, 5, 5, 0, 0, 10, 5, 0, 5, 0, 0},
@@ -2004,8 +1778,6 @@ short g_Rebuild_Primary_Nation_Value_00653570[5][0x17] = {
     {0, 0, 0, 0, 0, 0, 0, 15, 6, 16, 6, 12, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 15, 6, 16, 6, 12, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0}};
 
-// Shared empty-text pointer passed by value as the modal's byval CString message seed
-// (TViewMgr::BuildAndShowTurnOverlayByMode tail, 0x5d67fc).
 // GLOBAL: IMPERIALISM 0x0066f050
 char* g_pNationInfoEmptyText_0066f050 = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x0066f058
@@ -2013,8 +1785,6 @@ short g_anAbilityStatusPictureIndex_0066F058[29] = {0,  1,  3,  2,  7,  5,  6,  
                                                     8,  16, 12, 19, 22, 11, 17, 13, 14, 21,
                                                     15, 18, 26, 20, 23, 28, 24, 25, 27};
 
-// Season-dependent sfx offset word: the nation-info modal plays sfx 0xbb8 + this value
-// for overlay mode 5 (0x5d61f0).
 // GLOBAL: IMPERIALISM 0x0066f0a6
 short g_overlaySfxSeasonWord_0066f0a6 = 10;
 
@@ -2039,18 +1809,9 @@ double g_dMasterVolumeExponentScale = 0.092;
 #include "game/city_ui/TCivMgr.h"
 #include "game/ui_widgets/TSoundPlayer.h"
 
-// Named global pointers read with a direct absolute load in the original (vs the
-// ReadGlobalPointer(imm) shortcut, which emits an extra indirection that cannot pair).
-// Defined outside extern "C" so they keep C++ linkage and match typed header declarations.
-// Tactical unit sprite facing-offset table: [unit type 0..28][orientation 0..6][side 0..1]
-// pixel deltas OffsetRect-applied to the sprite rect for units on a fresh trench-deploy
-// tile (reader: TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset,
-// filler: InitializeTacticalUnitFacingOffsetTable, a CRT static initializer in the original).
 // GLOBAL: IMPERIALISM 0x006a4780
 POINT g_aTacticalUnitFacingOffsetTable[29][7][2];
 
-// Const pointer to the shared empty-string byte (seeds the advisory message
-// accumulators in THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount).
 // GLOBAL: IMPERIALISM 0x00656f60
 extern const char* const g_pszEmptyTextPointer_00656f60 = g_szEmptyString;
 
@@ -2059,35 +1820,21 @@ TZone* g_pMapActionContextListHead = 0;
 TOcean* g_pActiveMapOrderContext = 0;
 TMapMgr* g_pGlobalMapState = 0;
 TCivMgr* g_pSelectedCivilianOrderState = 0;
-// Seed viewport offsets copied into TWorldView::viewportOrigin.x/Y by the TOceanDialog
-// ctor (0x565e90). Only known writer is the reset helper at 0x56a3b0 (`xor eax,eax;
-// mov [6a3ff0],eax; mov [6a3ff4],eax; ret`), which zeroes both.
 // GLOBAL: IMPERIALISM 0x006a3ff0
 int g_nOceanDialogSeedViewportOffsetX = 0;
 // GLOBAL: IMPERIALISM 0x006a3ff4
 int g_nOceanDialogSeedViewportOffsetY = 0;
-// Map-dialog viewport width in staggered tile columns. The BSS-backed value is seeded by
-// InitializeMapDialogViewportTileSpan (0x519970) before WinMain.
 // GLOBAL: IMPERIALISM 0x006a33b0
 int g_wMapDialogViewportTileSpan;
 // GLOBAL: IMPERIALISM 0x0065c2f0
 short g_awMapContextActionLabelTokenByCommand[17] = {0,     0x3f0, 0x3f2, 0x3f2, 0x3f2, 0x3f2,
                                                      0x3f2, 0x3f2, 0x3f2, 0x3f1, 0x3f3, 0x3f3,
                                                      0x3f6, 0x3f8, 0x3f4, 0x3f5, 0x3f7};
-// Per-tech prerequisite pair (tech ids; 0 = none). Indexed by tech id in
-// TTechMgr::AreTechItemPrerequisitePairCompleted / GetPreReqs
-// (0x5b0a20/0x5b0a90). 34 entries; ends where the CRuntimeClass at 0x66ac98 begins.
-// Per-tech research cost in gold, indexed by tech id (readers: 0x5b12e0 buy-button label,
-// TTechItemView::DoEvent 0x5b1e20).
 // GLOBAL: IMPERIALISM 0x0066ad58
 int g_anTechItemResearchCostByTechId[29] = {
     0,     0,     1000,  1000,  1500,  1500,   1500,   1500,   3000,  3000,
     3000,  6000,  7000,  10000, 12000, 12000,  12000,  12000,  12000, 25000,
     20000, 40000, 40000, 40000, 40000, 100000, 120000, 150000, 150000};
-// Per-ability unit-order cost profile, one row per ability id, columns matching
-// TUnitOrder::ReplaceOrder's parameters: {resourceTypeIndex,
-// primaryInputResourceId, primaryInputPerUnit, secondaryInputResourceId,
-// secondaryInputPerUnit, cashCostPerUnit, workforceMode}.
 // GLOBAL: IMPERIALISM 0x00695c50
 short g_aInitialCityRecruitmentOrderProfiles[9][7] = {
     {0, 10, 2, -1, 0, 1500, 4}, {1, 10, 2, -1, 0, 500, 4},  {2, 10, 2, -1, 0, 1000, 4},
@@ -2129,29 +1876,20 @@ short g_awEngineerFortBuildCostByLevel[5] = {5000, 7500, 10000, 0, 0};
 // One cost per StrategicTerrainKind; TCivMgr::classTCivMgr starts at 0x6531f8.
 int g_adwEngineerRailBuildCostByTerrainType[kStrategicTerrainCount] = {100, 150, 200, 400,
                                                                        300, 0,   150, 100};
-// Civilian work-order rescind refund by cost class (nibble from
-// GetTileCivilianWorkOrderCostClassNibble); -1 entries are unused classes.
 int g_adwCivilianWorkOrderCostByClass[16] = {100, 1000, 5000, -1, -1, -1, 0, 1,
                                              -1,  -1,   2,    3,  4,  -1, 5, 6};
 
 int g_nMapActionContextCount = 0;
 void* g_pMapActionContextDistanceCache = 0;
-// Count g_pMapActionContextDistanceCache was last sized for (0x006984b4); cache is
-// rebuilt whenever g_nMapActionContextCount no longer matches this.
 int g_nMapActionContextDistanceCacheSizedFor = -1;
 
 // GLOBAL: IMPERIALISM 0x006a42dc
 bool g_bRandomMapDeveloperCheatFlag = false;
 // GLOBAL: IMPERIALISM 0x006a42f0
 POINT g_ptTurnTransitionModalMessage = {0, 0};
-// Developer-cheat probe filename: TSimMgr::ISimMgr (0x57bc2d)
-// stats a file literally named "Conan" via CFile::GetStatus.
 // GLOBAL: IMPERIALISM 0x00698bec
 char g_szConanCheatFileName_00698BEC[] = "Conan";
 
-// Trade-item dispatch order consumed by
-// TTradeMgr::StartDeals (0x5b9190). Values
-// are read directly from the original rdata table.
 // GLOBAL: IMPERIALISM 0x0066d810
 short g_aTradeDealCategoryOrder_0066D810[0x11] = {13, 14, 15, 16, 7, 8, 9, 10, 11,
                                                   12, 0,  1,  2,  3, 4, 5, 6};
@@ -2164,9 +1902,6 @@ extern const double g_TradePowerIdentity_0066D8E0 = 1.0;
 extern const short g_aTradeItemBasePriceByCategory_0069A910[0x11] = {
     100, 100, 100, 100, 100, 300, 100, 100, 300, 300, 300, 300, 300, 900, 900, 900, 900};
 
-// 17 four-char control tags (space + digit + 2-letter category: "sr" raw materials 0-6,
-// "am" manufactured 0-5, "dg" 0-3), walked by TTradeScreenPicture::Draw to
-// resolve each commodity summary-row control. Stored little-endian as the in-memory bytes.
 // GLOBAL: IMPERIALISM 0x0066dad0
 const unsigned int g_tradeCommodityRowTagTable[17] = {
     kControlTagRs0Sp, kControlTagRs1Sp, kControlTagRs2Sp, kControlTagRs3Sp, kControlTagRs4Sp,
@@ -2176,10 +1911,6 @@ const unsigned int g_tradeCommodityRowTagTable[17] = {
 
 // GLOBAL: IMPERIALISM 0x006a58c8
 COLORREF g_defaultDropShadowTextColor = 0;
-// 26 (start, end) capability-priority range pairs walked by
-// TTechMgr::GenerateRandomCapabilityPrioritySlots, followed by two padding shorts. Retail's
-// end-anchored range symbol is at element 1 (0x0066aba6); pair 0's start at element 0 is read
-// through cursor[-1].
 // GLOBAL: IMPERIALISM 0x0066aba4
 short g_anCapabilityPriorityRangeData_0066ABA4[54] = {
     1,  5,  6,  10, 6,  10, 6,  10, 6,  10, 11, 15, 11, 15, 16, 20, 21, 25,
@@ -2188,8 +1919,6 @@ short g_anCapabilityPriorityRangeData_0066ABA4[54] = {
 // GLOBAL: IMPERIALISM 0x006a601c
 int DAT_006a601c = 0;
 
-// InitInstance asset-path literals (LoadLanguageResourcesFromIrgFiles,
-// EnsurePictWvDataGobLoadedBySlot).
 // GLOBAL: IMPERIALISM 0x006942a8
 extern "C" const char s_DataDirectoryPath_006942A8[] = "Data/";
 // GLOBAL: IMPERIALISM 0x006942fc
@@ -2251,8 +1980,6 @@ extern "C" const char s_SourcePathUSmallViews_006992F0[] = "D:\\Ambit\\Cross\\US
 // GLOBAL: IMPERIALISM 0x00696310
 extern "C" const char g_szCityProductionUniversityPrefix[] = "University: ";
 // GLOBAL: IMPERIALISM 0x00696320
-// The original data symbol spans through the aligned start of the following string,
-// so preserve those four leading "Ship" bytes in its raw extent as well.
 extern "C" const char g_szCityProductionArmoryPrefix[16] = {
     'A', 'r', 'm', 'o', 'r', 'y', ':', ' ', '\0', '\0', '\0', '\0', 'S', 'h', 'i', 'p'};
 // GLOBAL: IMPERIALISM 0x0069632c
@@ -2276,9 +2003,6 @@ extern "C" const char s_SourcePathUSuperMap_0069943C[] = "D:\\Ambit\\Cross\\USup
 extern "C" const char s_SourcePathUTradeViews_0069AA94[] = "D:\\Ambit\\Cross\\UTradeViews.cpp";
 // GLOBAL: IMPERIALISM 0x006984cc
 extern "C" const char s_SourcePathUOcean_006984CC[] = "D:\\Ambit\\Cross\\UOcean.cpp";
-// UStatusViews.cpp keeps this reciprocal scale as a TU-local dynamic-initialization
-// temporary.  Retail's initializer at 0x00594ea0 writes 0.015625 here, and the
-// following initializer at 0x00594ed0 uses it to derive the mini-map viewport width.
 static inline double DefaultMiniMapViewportCoordinateScale() {
   return 0.015625;
 }
@@ -2319,16 +2043,10 @@ extern "C" const char* const g_pRegistrySettingsSectionAlt_0063E044 =
     s_ProfileSectionSettings_006941D0;
 // GLOBAL: IMPERIALISM 0x0063e048
 extern "C" const char* const g_pRegistryAutoResKey_0063E048 = s_ProfileKeyAutoRes_006941C4;
-// Game-preferences dialog data block (TGamePreferencesPicture::DoPostCreate 0x56a5b0).
-// Shared text seeded into the 'main' ticker control on entry.
 // GLOBAL: IMPERIALISM 0x0065ddc8
 char* g_pGamePreferencesSharedText_0065DDC8 = g_szEmptyString;
-// Second pointer to the "AutoRes" profile key (the 0x63e048 twin), used for the
-// auto-resolution radio preload.
 // GLOBAL: IMPERIALISM 0x0065ddcc
 extern "C" const char* const g_pGamePreferencesAutoResKey_0065DDCC = s_ProfileKeyAutoRes_006941C4;
-// Per-preference-row index into TSimMgr::preferenceValues (-1 = row has no backing
-// preference; rows are the 'opta'..'opte' checkboxes).
 // GLOBAL: IMPERIALISM 0x0065dde0
 extern const int g_anGamePreferenceIndexByRow[5] = {3, 2, 8, 10, 0};
 // GLOBAL: IMPERIALISM 0x0063e04c
@@ -2337,8 +2055,6 @@ extern "C" const char* const g_pRegistryLanguageKey_0063E04C = s_ProfileKeyLangu
 extern "C" const char* const g_pRegistryProfileAppName_0063E050 =
     s_ProfileLiteralIMPERIALISM_006941A8;
 
-// Shared empty-string literal at 0x006a13a0 (the "" passed to CString ctors / string
-// compares).
 #include "decomp_types.h"
 char g_szEmptyString[1] = {0};
 
@@ -2349,24 +2065,14 @@ extern "C" unsigned short g_awCivilianLegendSelectionCountsBySlot[16] = {0};
 extern "C" int g_anArmyToolbarCategoryByUnitType[30] = {
     0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 9, 9, 9};
 
-// Developable resource types per civilian class (4 slots, -1 = unused): Miner
-// coal/iron/gems/gold, Farmer cotton/grain/fruit, Forester timber, Rancher
-// wool/livestock, Fisherman fish, Driller oil. TCivDescription::DrawDeveloper
-// (0x5903c0) walks a class's row to pick the development level and the per-resource
-// yield icons; Prospector/Engineer/Developer rows are empty (they have their own
-// legends).
 // GLOBAL: IMPERIALISM 0x00662b98
 const int g_anDevelopableResourceTypesByCivilianClass[9][4] = {
     {3, 4, 0x15, 0x16}, {-1, -1, -1, -1},   {0, 0x11, 0x12, -1}, {2, -1, -1, -1}, {-1, -1, -1, -1},
     {1, 0x14, -1, -1},  {0x13, -1, -1, -1}, {-1, -1, -1, -1},    {6, -1, -1, -1}};
 
-// 2x2 (x, y) anchor grid for TCivDescription::DrawDeveloper's per-resource yield
-// icons, panel-local, offset by the view origin at draw time.
 // GLOBAL: IMPERIALISM 0x00698fc8
 short g_aDeveloperYieldIconAnchors[4][2] = {{540, 353}, {588, 353}, {540, 378}, {588, 378}};
 
-// Per-civilian-class base source-x into the development-level icon strip (38px per
-// level frame; -1 = the class has no development strip). TCivDescription::DrawDeveloper.
 // GLOBAL: IMPERIALISM 0x00698fe0
 short g_anDevelopmentIconStripBaseXByCivilianClass[9] = {228, -1, 0, 114, -1, 798, 912, 1064, 684};
 
@@ -2375,8 +2081,6 @@ extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[45] = {
     8,  9, -1, -1, -1, 8,  9,  10, 11, 12, 6,  5, 2,  -1, -1, 13, -1, -1, -1, -1, -1, -1, -1,
     -1, 0, 3,  7,  -1, -1, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, 0,  10, 11, 12, -1, -1};
 
-// Offer-desk Locate positions. The Mac Offer Sheet resource independently places
-// the `shee` view at (45,128); the retail startup table initializes both points.
 // GLOBAL: IMPERIALISM 0x006a5a00
 CPoint g_offerDeskSheetPosition_006a5a00(45, 128);
 // GLOBAL: IMPERIALISM 0x006a5a28
@@ -2399,23 +2103,14 @@ bool g_bMultiplayerScenarioSetupActive = false;
 // GLOBAL: IMPERIALISM 0x00698b10
 short g_nTurnCooldownSideFlag00698B10 = 1;
 
-// Per-nation setup defaults copied into TSimMgr by the ctor and reset path. The old
-// model incorrectly anchored a 27-short array one element into this table and filled
-// it with unrelated address-like values. The original is seven complete four-short
-// rows beginning at 0x698b18.
 // GLOBAL: IMPERIALISM 0x00698b18
 extern "C" short g_aDefaultNationSetupPolicyProfiles[7][4] = {
     {1, 2, 3, 3}, {2, 2, 5, 2}, {2, 1, 4, 1}, {2, 3, 3, 3},
     {2, 3, 2, 4}, {2, 2, 1, 3}, {2, 0, 4, 0}};
 
-// Debug/trace tag literal passed to TSimMgr::CreatePlanet
-// (0x0057c7c0) from case 3 of AdvanceGlobalTurnStateMachine.
 // GLOBAL: IMPERIALISM 0x00698c0c
 extern "C" const char s_Chunk_00698C0C[] = "Chunk";
 
-// UI default text-style/command-param block copied into every TControl (the 10-byte
-// dual-view region at offsets 0x78-0x81); same TextStyle shape the
-// widgets carry.
 TextStyle g_UiResourceEntryDefaultTextStyle = {0, 0, 0, 0};
 
 } // extern "C"
@@ -2425,16 +2120,9 @@ const char* g_cstrTradeTotalsBalanceSubstitution0066DB50 = g_szEmptyString;
 
 #include "game/net/TWNetSessionManager.h"
 
-// UGameWindow/dialog-factory widget build stack. The list element type is TView*: its
-// vtable family uses the CList<TView*,TView*> serializer/destructors, not the WNet
-// CList<void*,void*> copies below.
 // GLOBAL: IMPERIALISM 0x006a13e0
 CList<TView*, TView*> g_UiWidgetBuildStack006a13e0;
 
-// WNetMgr.cpp file-scope statics; g_ptNetworkModalMessage006a5ed8 is the POINT passed
-// to TViewMgr::ModalMessage, while g_WNetPendingPacketList006a5f40 is the
-// local-player pending-packet queue that TNetMgr::Send appends heap packet copies to
-// (block size 10, per the original static-init at 0x5e26d0).
 // GLOBAL: IMPERIALISM 0x006a5ed8
 POINT g_ptNetworkModalMessage006a5ed8 = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a5f10
@@ -2464,16 +2152,12 @@ TWNetSessionManager g_NetworkSessionManager006a5f60;
 const GUID g_ImperialismDirectPlayApplicationGuid0066f968 = {
     0xc55dc2ef, 0xfd3e, 0x11d0, {0xbc, 0x16, 0x44, 0x45, 0x53, 0x54, 0x00, 0x00}};
 
-// Heap-owned runtime selection records used by the DirectPlay session chooser.
-// This TU's CArray specialization has vtable 0x00646fb0 and ctor 0x00480b20.
 // GLOBAL: IMPERIALISM 0x006a15e0
 CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecords006a15e0;
 
 // Compiler-emitted methods for this TU's RuntimeSelectionRecord pointer-array
 // specialization. The source implementation is the retail MFC CArray template.
 
-// Global TNetMgr (built by new TNetMgr() during multiplayer init, stored here; every
-// turn-event emitter dispatches TNetMgr::Send through it).
 // GLOBAL: IMPERIALISM 0x006a6014
 TNetMgr* g_pNetMgr006a6014 = 0;
 
@@ -2487,11 +2171,6 @@ extern "C" void* g_pActiveCityDialogLegendSelectionOwner = 0;
 // 4-byte flag (written as a dword by TStatusButton::DoEvent); BOOL-style int.
 int g_bCityDialogLegendSelectionInitialized = 0;
 
-// Per-type index into TShipView::Draw's 8-entry order-status
-// string pool (GetString group 0x2760); -1 = no status line for that resource type
-// (verified via `just ghidra read-data 0x65c7f8 dword 14`; the table ends there --
-// the next dword looks like unrelated pointer data, matching
-// g_NavyOrderResourceDescriptorTable's 14-entry type domain).
 // GLOBAL: IMPERIALISM 0x0065c7f8
 const int g_ShipOrderStatusStringIndexByResourceType_0065c7f8[14] = {
     -1, -1, -1, 0, 1, -1, -1, 2, 3, 4, -1, 5, 6, 7,
@@ -2512,8 +2191,6 @@ unsigned char g_aOceanMapOwnerPaletteIndexByNationTag[24] = {
     0x48, 0xd0, 0xcd, 0xce, 0xcf, static_cast<unsigned char>(g_pViewMgr->GetColor(0x32)),
 };
 
-// The four one-reader feature bytes bracket the ocean overview's optional route,
-// labeling, and final surface-transfer passes. All are enabled in the retail image.
 // GLOBAL: IMPERIALISM 0x0069859c
 const bool g_bDrawOceanRouteOverlay = true;
 // GLOBAL: IMPERIALISM 0x006985ac
@@ -2535,23 +2212,15 @@ unsigned char g_aOceanMapBorderPaletteIndexByNationTag[24] = {
 // GLOBAL: IMPERIALISM 0x006a590c
 TInfoBarText* g_pCursorControlPanel = nullptr;
 
-// Modal-message placement point used by TDisplayMgr's forwarding slot. The original
-// static initializer zeroes both coordinates independently.
 // GLOBAL: IMPERIALISM 0x006a59e0
 POINT g_ptControlStringModalMessage = {0, 0};
 
 // GLOBAL: IMPERIALISM 0x006a1ab0
 CPoint g_turnEventDialogAnchorPoint(0, 0);
 
-// McAppUI-wide modal-window stack (base 0x006a1ac0). TWindow::
-// ExecuteViewModalStateWithPushPopChain pushes the active window on entry and pops it on
-// exit, disabling/re-enabling the window beneath it across the modal run. Shares the
-// CList<TWindow*, TWindow*> specialization (vtable 0x0064b580) with g_LiveViewRegistry.
 // GLOBAL: IMPERIALISM 0x006a1ac0
 CList<TWindow*, TWindow*> g_ModalViewStack;
 
-// McAppUI live-view registry: every TWindow links itself in on construction and unlinks on
-// teardown; the window-manager iterator (CWMgrIterator) sweeps it.
 // GLOBAL: IMPERIALISM 0x006a1a40
 CList<TWindow*, TWindow*> g_LiveViewRegistry;
 
@@ -2584,8 +2253,6 @@ extern "C" const char g_szUiFailureMessage[] = "Failure";
 // GLOBAL: IMPERIALISM 0x0069430c
 extern "C" const char g_szDecimalFormat[] = "%d";
 
-// Great-power pressure tuning tables (.rdata, indexed by the 6-level difficulty/
-// locale index; last entry is a 0 sentinel). Values dumped from the original.
 // GLOBAL: IMPERIALISM 0x00653498
 extern "C" const int g_anNationBasePressureByLocale[6] = {1000, 500, 200, 100, 10, 0};
 // GLOBAL: IMPERIALISM 0x006534b0
@@ -2605,9 +2272,6 @@ extern "C" const int g_anGreatPowerPressureHardAlertThresholdByLocale[6] = {6, 6
 // GLOBAL: IMPERIALISM 0x00653558
 extern "C" const int g_anNationStartingTreasuryByLocale[6] = {50000, 10000, 10000, 5000, 5000, 0};
 
-// Battle-report marker blink state, owned by TBattleReportView::DoIdle (0x4ad5a0): the
-// idle tick counter fires the blink every 15th action-1 tick, and the phase byte selects
-// which of the two marker sprite columns is blitted (and is toggled after each blit).
 // GLOBAL: IMPERIALISM 0x006a23b4
 bool g_bBattleReportMarkerBlinkPhase = false;
 // GLOBAL: IMPERIALISM 0x006a23b8
@@ -2650,33 +2314,21 @@ POINT g_ptDiplomacyNoticeModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a4218
 POINT g_ptGameSetupModalMessage = {0, 0};
 
-// Last turn tick for which ShowTurnAlertsForActiveNation (0x502b60) ran; the alert
-// pass is skipped until the tick advances.
 // GLOBAL: IMPERIALISM 0x006a31c0
 int g_lastTurnAlertTick_006a31c0 = 0;
 
-// Last map tile index the player clicked, stored by
-// TWorldView::HandleMapTileClickSetOrderContextAndHandleEvent79 (0x5962a0).
 // GLOBAL: IMPERIALISM 0x006a4608
 int g_lastClickedMapTileIndex_006a4608 = 0;
 
-// When set (and the modal's context tag is 2), overrides the computed 'GOLD' resource
-// id in the nation-info modal (0x5d5ea6). Never observed written yet; zero-initialized.
 // GLOBAL: IMPERIALISM 0x006a5bac
 int g_nationInfoGoldResourceOverride_006a5bac = 0;
 
-// One-shot assert gate for the dead ModalMessage-family stub at 0x5d5bc0
-// (UViewMgr.cpp:0x2ac). Never written; the stub is its only reader.
 // GLOBAL: IMPERIALISM 0x006a5bb0
 int g_nViewMgrModalAssertGate_006A5BB0 = 0;
 
-// Round-robin localization-audio slot cursor (0..5) advanced by
-// TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState (0x5e50c0).
 // GLOBAL: IMPERIALISM 0x006a60f8
 int g_localizationAudioSlotCursor_006a60f8 = 0;
 
-// The live tactical battle: assigned when a battle object is created/loaded, read by
-// the turn-event 0x29/0x2a receive dispatchers.
 // GLOBAL: IMPERIALISM 0x006a475c
 TTacticalBattle* g_pActiveTacticalBattle;
 
@@ -2684,29 +2336,21 @@ TTacticalBattle* g_pActiveTacticalBattle;
 // GLOBAL: IMPERIALISM 0x006a3d64
 int g_nTurnEvent2BNationMaskAccumulator;
 
-// Per-unit-type weight table summed by TArmyMgr::ComputeWeightedNeighborLinkScore-
-// ForNodeIndex (0x004a5aa0) over a tile's stationed military units.
 // GLOBAL: IMPERIALISM 0x006955f0
 int g_anWeightedNeighborUnitScoreByType_006955F0[32] = {
     70,  137, 135, 164, 165, 211,  193, 300, 95,  243, 230, 265, 230, 275, 323, 549,
     170, 450, 471, 495, 493, 1010, 715, 913, 193, 260, 360, 200, 200, 200, 0,   1000,
 };
 
-// Per-unit-type combat-category word table (.rdata): 0 infantry-like, 1/2/3 ranged
-// classes, 4 support; indexed by TUnit::orderType.
 // GLOBAL: IMPERIALISM 0x00669858
 short g_anUnitTypeCombatCategoryByType00669858[32] = {
     0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 3, 2, 2, 4, 4, 4, 4, 4, 4, 0, 0};
 
-// Per-unit-type base action-point word table (.rdata); TArmyTacUnit::
-// GetBaseActionPoints (0x5a6120) returns this value for the unit's type.
 // GLOBAL: IMPERIALISM 0x00669898
 short g_awUnitTypeBaseActionPointTable[32] = {40, 60,  40, 40, 110, 90, 50, 30, 40, 60,  40,
                                               40, 110, 90, 60, 30,  50, 70, 50, 40, 110, 90,
                                               80, 30,  40, 40, 50,  90, 90, 90, 0,  0};
 
-// The fifteen per-tile AI heuristic scorers as a member-function-pointer table
-// (single-inheritance MSVC5 member pointers are plain code pointers in .data).
 // GLOBAL: IMPERIALISM 0x006994c0
 TacticalTileHeuristicScorerFn g_apfnTacticalTileHeuristicScorers_006994C0[15] = {
     &TArmyPlayer::ScoreTacticalTileHoldPositionBonus,                // [0]  0x59d6b0
@@ -2741,10 +2385,6 @@ double g_dTacticalCursorArtillerySuperiorityThreshold_00669528 = 1.8;
 double g_dTacticalCursorAssaultRatioThreshold_00669530 = 2.5;
 // GLOBAL: IMPERIALISM 0x00669538
 double g_dTacticalCursorRetreatRatioThreshold_00669538 = 0.8;
-// Base-class default for TTacticalUnit::GetBaseAttackPower/GetDamageScale; derived unit
-// types (TArmyTacUnit/TNavyTacUnit) override with real per-unit-type table lookups.
-// Retail stores this 0.0f in initialized data while VC5 places it in BSS. The
-// runtime value is equal, though raw datacmp reports the section placement.
 // GLOBAL: IMPERIALISM 0x00669ec0
 float g_fTacticalRetreatQualityWeightDefault_00669EC0 = 0.0f;
 // GLOBAL: IMPERIALISM 0x00669ec8
@@ -2754,29 +2394,19 @@ double g_dTacticalQualityFactorBase_00669ED0 = 1.0;
 // GLOBAL: IMPERIALISM 0x00669f0c
 float g_fTacticalStrengthProjectionScale_00669F0C = 0.002f;
 
-// Direct-fire flag per unit CATEGORY CODE (.rdata floats; sibling of the 0x669830
-// per-category copy, this one indexed by g_awTacticalUnitCategoryCodeBySlot values).
 // GLOBAL: IMPERIALISM 0x00669390
 float g_afTacticalDirectFireFlagByCategoryCode_00669390[10] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
                                                                1.0f, 0.0f, 0.0f, 1.0f, 1.0f};
 
-// Per-unit-type tactical AI class (.rdata; duplicate values of the 0x669858 category
-// table at a separate address): 0 infantry, 1 artillery-advance, 2 cavalry-screen,
-// 3/4 support classes. Drives deployment strategy and the auto-turn controller.
 // GLOBAL: IMPERIALISM 0x006693b8
 short g_awTacticalUnitAiClassByUnitType_006693B8[32] = {
     0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 3, 2, 2, 4, 4, 4, 4, 4, 4, 0, 0};
 
-// Per-unit-type action-point cost word (.rdata; duplicate values of the 0x669898
-// base-action-point table): the sapper dig loop budgets against half of this.
 // GLOBAL: IMPERIALISM 0x006693f8
 short g_awTacticalUnitActionPointCostByType_006693F8[32] = {
     40, 60, 40, 40, 110, 90, 50, 30, 40, 60, 40, 40, 110, 90, 60, 30,
     50, 70, 50, 40, 110, 90, 80, 30, 40, 40, 50, 90, 90,  90, 0,  0};
 
-// Tactical tile-selection heuristic weights per AI stance (.rdata): 20 rows of 15
-// weights, one weight per tile-score heuristic; row index = TTacticalUnit AI stance
-// (aiStateCode2c) or a strategy-specific row (12/13 sapper, 18 artillery hold).
 // GLOBAL: IMPERIALISM 0x00699500
 int g_anTacticalTileHeuristicWeightsByAiState_00699500[20][15] = {
     {1, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -2800,8 +2430,6 @@ int g_anTacticalTileHeuristicWeightsByAiState_00699500[20][15] = {
     {0, 1, 0, 0, -100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}};
 
-// Direct-fire flag per unit category (.rdata floats): 0.0 marks the indirect-fire
-// categories 6/7 whose shots erode a fort wall they cross.
 // GLOBAL: IMPERIALISM 0x00669830
 float g_afTacticalDirectFireFlagByCategory[10] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
                                                   1.0f, 0.0f, 0.0f, 1.0f, 1.0f};
@@ -2834,13 +2462,9 @@ float g_afTacticalNavyDamageScaleByUnitType[8] = {0.045f, 0.04f,  0.04f,  0.022f
 float g_afTacticalNavyBaseAttackPowerByUnitType[8] = {3.0f, 3.5f, 4.0f,  4.0f,
                                                       8.0f, 8.0f, 15.0f, 15.0f};
 
-// Directional naval movement costs, rotated by TNavyBattle::InitTacticalBattle from a
-// random starting direction.
 // GLOBAL: IMPERIALISM 0x00669d68
 int g_anNavyTacticalMoveCostsByDirection[6] = {15, 10, 20, 40, 20, 10};
 
-// Strategic ship type -> tactical navy unit type; -1 means the strategic type has no
-// tactical representation.
 // GLOBAL: IMPERIALISM 0x00669d80
 int g_anTacticalNavyUnitTypeByShipType_00669D80[14] = {-1, -1, -1, 0,  1, -1, -1,
                                                        2,  3,  4,  -1, 5, 6,  7};
@@ -2861,8 +2485,6 @@ float g_afTacticalDefenseTerrainModifierByCategory[50] = {
     1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
     0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f};
 
-// Cover damage modifier [defender category * 5 + cover state] where cover state is
-// TacticalTileRecord::deployMark (1 = trench, 2..4 = fort-wall levels) (.rdata).
 // GLOBAL: IMPERIALISM 0x00669c58
 float g_afTacticalCoverDamageModifierByCategory[50] = {
     1.0f, 0.8f, 0.7f, 0.6f, 0.5f, 1.0f, 0.8f, 0.7f, 0.6f, 0.5f, 1.0f, 0.8f, 0.7f,
@@ -2870,16 +2492,12 @@ float g_afTacticalCoverDamageModifierByCategory[50] = {
     1.0f, 0.7f, 0.6f, 0.5f, 1.0f, 0.8f, 0.7f, 0.6f, 0.5f, 1.0f, 0.8f, 0.7f, 0.6f,
     0.5f, 1.0f, 0.8f, 0.7f, 0.6f, 0.5f, 1.0f, 0.8f, 0.7f, 0.6f, 0.5f};
 
-// Tactical move cost per unit category and tile terrain code (.rdata): 10 category
-// rows x 5 terrain codes, in tenths of an action point band (999 = impassable).
 // GLOBAL: IMPERIALISM 0x00669a60
 short g_awTacticalMoveCostByCategoryAndTerrain[50] = {
     10,  20, 30,  15, 999, 10,  10, 10,  10, 999, 10,  20, 30,  15, 999, 10, 20,
     30,  15, 999, 10, 10,  10,  10, 999, 10, 20,  30,  15, 999, 10, 20,  30, 15,
     999, 10, 20,  30, 15,  999, 10, 20,  30, 15,  999, 10, 20,  30, 15,  999};
 
-// Fort strength points per fort level (.rdata); seeds the 8 per-row-pair pools of a
-// tactical battle in TArmyBattle::LoadMap (0x5a4fc0).
 // GLOBAL: IMPERIALISM 0x00669818
 int g_anFortStrengthPointsByFortLevel[6] = {0, 0, 500, 750, 1000, 0};
 
@@ -2891,8 +2509,6 @@ extern "C" const char g_szBattleSetupTabPathFormat[] = "data/%03d.tab";
 // GLOBAL: IMPERIALISM 0x00699d84
 extern "C" const char s_SourcePathUTacPlayer_00699D84[] = "D:\\Ambit\\Cross\\UTacPlayer.cpp";
 
-// Empty-string pointer used by the battle-summary dialog builder (0x5a2750); points
-// at g_szEmptyString.
 // GLOBAL: IMPERIALISM 0x00669db8
 const char* g_pszEmptyTextRef_00669db8 = g_szEmptyString;
 
@@ -2900,16 +2516,12 @@ const char* g_pszEmptyTextRef_00669db8 = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x00699438
 extern "C" const char s_szDoubleNewline_00699438[] = "\n\n";
 
-// Per-unit-type tactical fire sound-effect token table (.rdata); indexed by
-// TTacticalUnit::unitTypeC when a unit fires in the tactical battle.
 // GLOBAL: IMPERIALISM 0x00669dc0
 short g_awTacticalFireSfxTokenByUnitType[32] = {
     0x3a98, 0x3a98, 0x3a98, 0x3a98, 0x3a99, 0x3a99, 0x3a9b, 0x3a9b, 0x3a98, 0x3a98, 0x3a98,
     0x3a98, 0x3a99, 0x3a99, 0x3a9b, 0x3a9b, 0x3aa6, 0x3aa6, 0x3aa6, 0x3a9c, 0x3aa6, 0x3a9a,
     0x3a9b, 0x3a9b, 0x3a9d, 0x3a9d, 0x3a9d, 0x3a98, 0x3a98, 0x3aa6, 0,      0};
 
-// Force-show flag for the tactical battle view (semantics unverified; OR'd with the
-// two per-side watch flags at battle setup).
 // GLOBAL: IMPERIALISM 0x006a4758
 bool g_nForceTacticalBattleViewFlag_006A4758;
 
@@ -2920,24 +2532,16 @@ char g_szImpSaveExtension_00698708[] = ".imp";
 char g_szMultiplayerSavePrefix_00698710[] = "mult";
 // GLOBAL: IMPERIALISM 0x00698718
 char g_szSingleSlotSavePrefix_00698718[] = "slot";
-// fopen mode string (TLoadSavePicture.cpp). Linker-pooled with the same "rb" literal used
-// as a flavor-text syllable in map_context_flavor_builders.cpp -- named after the literal
-// value, not either consumer, since neither owns the address.
 // GLOBAL: IMPERIALISM 0x00698720
 char g_szLiteralRb_00698720[] = "rb";
 // GLOBAL: IMPERIALISM 0x00698724
 char g_szSaveDirectoryPrefix_00698724[] = "Save/";
-// Autosave-slot display label (TLoadSavePicture.cpp). Linker-pooled with the same "A"
-// literal used as a flavor-text syllable in map_context_flavor_builders.cpp -- named after
-// the literal value, not either consumer, since neither owns the address.
 // GLOBAL: IMPERIALISM 0x0069872c
 char g_szLiteralA_0069872C[] = "A";
 // GLOBAL: IMPERIALISM 0x0069b848
 char g_szSavedDocumentMarker_0069B848[] = "__saved";
 // GLOBAL: IMPERIALISM 0x0069b854
 char g_szLoadedDocumentMarker_0069B854[] = "__loaded";
-// Save-path fragment pointers (.rdata): the TLoadSavePicture save flow reads these
-// through pointer loads instead of referencing the literals directly.
 // GLOBAL: IMPERIALISM 0x0065ddd0
 const char* const g_pszSingleSlotSavePrefix_0065DDD0 = g_szSingleSlotSavePrefix_00698718;
 // GLOBAL: IMPERIALISM 0x0065ddd4
@@ -2948,8 +2552,6 @@ const char* const g_pszImpSaveExtension_0065DDD8 = g_szImpSaveExtension_00698708
 char g_szClientSavePrefix_00697CBC[] = "cli_";
 // GLOBAL: IMPERIALISM 0x0065bf5c
 const char* const g_pszClientSavePrefix_0065BF5C = g_szClientSavePrefix_00697CBC;
-// Scenario display name copied out of string resource (0x2758, 9) when autosaving; the
-// save-slot picker (0x56d2a0) and lifecycle hooks read it back. 0x30 bytes.
 // GLOBAL: IMPERIALISM 0x006a2178
 char g_ScenarioSaveNameBuffer_006A2178[0x30];
 // Modal placement used for invalid/cross-session save-file warnings.
@@ -2982,8 +2584,6 @@ int g_nUiInvalidationAssertFlagLine471 = 0;
 // GLOBAL: IMPERIALISM 0x006a30b0
 int g_nUiInvalidationAssertFlagLine495 = 0;
 
-// --- UMapper coastline/region overlay tables. The per-tile-edge Seapoint quads are matched
-// into region-border SeaSegments that MergeSmallCityRegionsAndCompactIds consumes. ---
 // GLOBAL: IMPERIALISM 0x006a3478
 SeapointStretch g_seapointQuadTable_006a3478;
 // GLOBAL: IMPERIALISM 0x006a3498
@@ -2991,9 +2591,6 @@ int g_cityRegionIdRemapTable_006a3498[0x100];
 // GLOBAL: IMPERIALISM 0x006a3900
 SeaSegmentStretch g_regionBorderLinkTable_006a3900;
 
-// Per tech-item slot, the purchase cost applied/refunded against a nation's field-0x10
-// metric by TTechMgr::ApplyTechItemPurchaseCostAndState (0x5b0b30) /
-// RefundTechItemPurchaseCostAndClearState (0x5b0bb0). Locked/unused slots are -1.
 const int g_anTechItemPurchaseCostBySlot_0066aae8[34] = {
     0,     0,      1000,   1000,   1500,   1500,  1500,  1500,  3000,  3000,  3000,  6000,
     7000,  10000,  12000,  12000,  12000,  12000, 12000, 25000, 20000, 40000, 40000, 40000,
@@ -3033,14 +2630,6 @@ unsigned int g_mapGenLcgState_006a38e8 = 0;
 int g_regionSeedGridRows_006a38ec = 0;
 // GLOBAL: IMPERIALISM 0x006a38f0
 int g_regionSeedGridCols_006a38f0 = 0;
-// Per-mille terrain-class tile quotas seeded/scaled by the map-tuning-string parser
-// (TMapMaker 0x525a30): defaults {desert 200, mountain 150, hills 250, forest 250,
-// swamp 150} sum to the 1000 budget. Tuning letters map upper=more/lower=less:
-// 'D'/'d' desert 300/100, 'M'/'m' mountain 300/100, 'H'/'h' hills 500/100,
-// 'F'/'f' forest 500/100, 'S'/'s' swamp 300/100, 'P'/'p' total budget 750/1500,
-// 'R'/'r' rivers 20/5, 'C'/'c' region seed grid 10x6 / 18x10 (fewer/more regions);
-// the parser rescales the five quotas to the chosen budget. Class binding inferred
-// from the tuning letters; hedged until the 0x526c20 generation pass is ported.
 // GLOBAL: IMPERIALISM 0x006a38bc
 int g_mapGenDesertQuota_006a38bc = 0;
 // GLOBAL: IMPERIALISM 0x006a3470
@@ -3059,15 +2648,11 @@ int g_mapGenRiverCount_006a38e4 = 0;
 int g_bOverlayScanlineFillAssertSuppressed = 0;
 int g_bOverlayRouteRebuildAssertSuppressed = 0;
 
-// Private retail assert guards read by TStream's two diagnostic virtuals. No writer is
-// present in the executable; a zero value takes the McAppStream.cpp assert path.
 // GLOBAL: IMPERIALISM 0x006a1a10
 int g_streamLine304AssertGuard = 0;
 // GLOBAL: IMPERIALISM 0x006a1a14
 int g_streamLine596AssertGuard = 0;
 
-// Zone status-code PRNG seed (0x006a5aec) + display-name cache key (0x006984b8);
-// see global_data_tables.h. Runtime-initialized.
 // GLOBAL: IMPERIALISM 0x006a5aec
 unsigned int g_zoneStatusCodePrngSeed_006a5aec = GetTickCountDiv16();
 // GLOBAL: IMPERIALISM 0x006a5af0
@@ -3077,31 +2662,19 @@ int g_mapActionContextDisplayNameCacheId_006984b8 = -1;
 // GLOBAL: IMPERIALISM 0x006984bc (static init 7 in the original .data section)
 int g_mapActionContextDisplayNameCacheStep_006984bc = 7;
 
-// === Map-context flavor-text string pool (procedural syllable/grammar .rdata literals
-// referenced by the BuildMapContextStatusString / GenerateMappedFlavorText family).
 // GLOBAL: IMPERIALISM 0x00695794
 char s_szSpaceSeparator_00695794[] = " ";
-// Gauge caption separator: TTransportPicture::Refresh joins the current and total counts
-// as "<cur>  /  <total>", giving the transport ledger rows their "1  /  1" reading.
 // GLOBAL: IMPERIALISM 0x0069936c
 char s_szGaugeCountSeparator_0069936C[] = "  /  ";
 // Six-space indent prefixed to each great-power turn-summary line (0x4e2b70).
 // GLOBAL: IMPERIALISM 0x00696790
 char s_szTurnSummaryIndent_00696790[] = "      ";
-// Retail garrison-close easter-egg names. The three-byte gap after "Frog" is alignment
-// padding before the adjacent "Snidely" string.
 // GLOBAL: IMPERIALISM 0x00695844
 extern const char g_szGarrisonSecretNationNameFrog[] = "Frog";
 // GLOBAL: IMPERIALISM 0x0069584c
 extern const char g_szGarrisonSecretUnitNameSnidely[] = "Snidely";
-// Newline separator used by TNavyMgr's map-order interaction report builder. The
-// original symbol's eight-byte comparison extent includes two alignment NULs and the
-// first four bytes of the adjacent pooled "TBattleUnits" class-name literal.
 // GLOBAL: IMPERIALISM 0x00695880
 extern "C" const char s_szLineBreak_00695880[8] = {'\n', 0, 0, 0, 'T', 'B', 'a', 't'};
-// Separator used by TViewMgr::ShowUnitHistory to build "Turn N: count message".
-// The original symbol's eight-byte comparison extent includes the aligned NUL and
-// the first four bytes of the adjacent pooled "Losses\n" literal.
 // GLOBAL: IMPERIALISM 0x00699320
 char s_szTurnHistorySeparator_00699320[8] = {':', ' ', 0, 0, 'L', 'o', 's', 's'};
 // GLOBAL: IMPERIALISM 0x00699324
@@ -3110,12 +2683,8 @@ char s_szCombatLossesHeading_00699324[] = "Losses\n";
 bool g_applyMiniMapVerticalClipOffset_006993e8 = true;
 // GLOBAL: IMPERIALISM 0x0069b71c
 char s_szTurnHistoryPrefix_0069b71c[] = "Turn ";
-// "Adm. " prefix for the assigned-admiral name line (TShipView::Draw,
-// 0x5654e0).
 // GLOBAL: IMPERIALISM 0x0069578c
 char s_szAdmiralPrefix_0069578c[] = "Adm. ";
-// "<label>:" separator between the council-panel's nation-name/label column and its
-// value column (TCouncilPanelView::Draw, 0x4fb030).
 // GLOBAL: IMPERIALISM 0x00696b10
 char s_szColonSeparator_00696b10[] = ":";
 // GLOBAL: IMPERIALISM 0x00696674
@@ -4356,9 +3925,6 @@ char s_mcflavor_0069b640[] = "Fuck";
 // GLOBAL: IMPERIALISM 0x0069b7fc
 char s_Data_scores_dat_0069b7fc[] = "Data/scores.dat";
 
-// Screen-offset scale (-0.3125 = -5/16) applied to a tile's isometric screen offset when
-// positioning the hex-neighbor highlight polygon (BuildHexNeighborHighlightPolygonForTile
-// 0x508f30).
 // GLOBAL: IMPERIALISM 0x00658640
 extern const float g_HexHighlightScreenScale_00658640 = -0.3125f;
 
@@ -4369,13 +3935,6 @@ short g_creditsPlaybackActive_006a4084 = 0;
 extern const short g_tradeBookCategoryByTabAndTechState_0066DB58[2][17] = {
     {13, 14, 15, 16, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, -1, -1},
     {13, 14, 15, 16, 7, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 5, 6}};
-// The two fixed slots the diplomacy popup family swaps its children between via
-// TView::Locate: the in-panel position and an off-screen park position that stands in for
-// a hide flag. Both live in .bss and are filled by dynamic initializers in the retail
-// image -- 0x004f2b60 stores (8, 7) here and 0x004f2b90 stores (2000, 2000) below -- so
-// datacmp's static-image comparison cannot see a wrong value; only the initializer's
-// disassembly can. (A third CPoint at 0x006a2fe8, initialized to (128, 128) by
-// 0x004f2b40, has no reader anywhere in the image and is deliberately left unmodeled.)
 // GLOBAL: IMPERIALISM 0x006a2fe0
 CPoint g_diplomacyPopupVisiblePosition_006a2fe0(8, 7);
 // GLOBAL: IMPERIALISM 0x006a3020
@@ -4384,14 +3943,6 @@ CPoint g_diplomacyPopupOffscreenPosition_006a3020(2000, 2000);
 // GLOBAL: IMPERIALISM 0x006a2410
 int g_InfoBarDummyOrigin_006A2410[2] = {0};
 
-// Per-strength-tier probability-split table for TArmyMgr::GenerateSpyReport's
-// per-garrisoned-unit resource roll: each 3-short half sums to 100. The first half picks a
-// 0-2 "point cost" for the unit; the second result is biased by 3, with selector 4 choosing
-// a fixed "misc" bucket, selector 5 choosing a uniform random bucket, and every other
-// selector choosing the unit's own movement class. Indexed by
-// the function's winning strength tier (unclamped, matching the original -- tiers beyond
-// row 5 read past this table in the original too). table[tier]+3 is the second half (at
-// original address 0x0064c5de, 6 bytes/3 shorts into this same row-major table).
 // GLOBAL: IMPERIALISM 0x0064c5d8
 short g_MapOrderResourceRollWeightTable_0064c5d8[6][6] = {
     {50, 20, 30, 40, 30, 30}, {50, 20, 30, 50, 30, 20}, {40, 35, 25, 55, 30, 15},
@@ -4419,8 +3970,6 @@ short g_cityBuildingSoundCueOffsets[16] = {2, 3, 4, 5, 0, 1, 6, 10, 11, 12, 13, 
 // GLOBAL: IMPERIALISM 0x00696948
 short g_awDiplomacyGrantValueTable[4] = {1000, 3000, 5000, 10000};
 
-// Threshold/sentinel table used by diplomacy trade controls: 300 selects action 11,
-// values below 96 select action 9, and the remaining values select action 10.
 // GLOBAL: IMPERIALISM 0x00696950
 short g_awDiplomacyTradePolicyIconValueTable[7] = {95, 90, 75, 50, 25, 0, 300};
 
@@ -4436,13 +3985,9 @@ float g_fNavyHitChanceCubeOffset_00669f00 = -1.0f;
 // GLOBAL: IMPERIALISM 0x00669f04
 float g_fNavyHitChanceNumerator_00669f04 = 80.0f;
 
-// Lounge per-nation status lamp glyphs, indexed by the status code DoIdle derives
-// from the session id / four-cc status tag (busy, redy, unas, awol, dead).
 // GLOBAL: IMPERIALISM 0x0065c168
 extern "C" const int kLoungeStatusGlyphIds[5] = {0x11fe, 0x11ff, 0x1200, 0x1201, 0x1202};
 
-// Kept at the end of this TU so recovering these previously absolute-addressed tables
-// does not perturb the placement of later globals still reached by raw addresses.
 // GLOBAL: IMPERIALISM 0x0065c648
 extern "C" const short g_anTerrainFlowTypeByRiverSpriteCode[16] = {0, 1, 2, 2, 3, 3, 4, 4,
                                                                    4, 4, 5, 5, 6, 6, 7, 8};

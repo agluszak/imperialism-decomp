@@ -12,20 +12,12 @@ public:
   virtual ~TCheater() override; // slot 0x01 (scalar deleting destructor)
   virtual void ApplyCheats();   // slot 0x68 0x4b1410; Mac symbol oracle
 
-  // In-class inline: the original has no out-of-line TCheater::TCheater -- every
-  // caller absorbs it, so an out-of-line definition pessimizes them into a call.
-  // NOOP: verified empty in original 0x004b13d3 (no standalone TCheater::TCheater body exists: CreateObject 0x004b13a0 inlines this default ctor, calling the TView base ctor directly at that site)
   TCheater() {}
 
   void ResizeWindow(const CPoint* size); // 0x004b1670
 
-  // Two-phase init (MacApp IViewClass idiom): frame this cheater panel into `panel`, then
-  // build its "Done" TStaticText caption and TButton child. 0x004b14a0, __thiscall.
   void ConstructTCheaterBaseState(TView* panel, int unusedArg);
 
-  // Original object size is 0x64 (CRuntimeClass m_nObjectSize). Low short is the
-  // string-resource group id (0x80) handed to IStaticText for the Done caption;
-  // TGPCheater reuses it for its own caption row.
   int captionStringResourceGroup;
 };
 ASSERT_SIZE(TCheater, 0x64);

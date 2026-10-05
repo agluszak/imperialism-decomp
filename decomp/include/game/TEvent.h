@@ -6,8 +6,6 @@
 
 class TEventHandler;
 
-// McApp UI command/event base. Layout partially recovered; size 0x14.
-// Base recovered from CRuntimeClass descriptor: TEvent -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00649770
 class TEvent : public TObject {
 public:

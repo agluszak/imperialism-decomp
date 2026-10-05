@@ -234,11 +234,6 @@ void TMapMgr::AllocateAndResetTerrainAndCityScoreTables() {
   }
 }
 
-// Builds (or loads) the whole per-session map state. Three entry modes: replay
-// (TSimMgr reloadPoliticalMapState set) reloads the political tables and refreshes tiles in place;
-// scenario (scenarioMapIndexPlusOne set) loads the fixed map table (returning 0 on failure);
-// otherwise a fresh map is generated from the tuning string unless mapStreamName
-// names an already-populated stream. Every phase is bracketed by setup-globe spins.
 // FUNCTION: IMPERIALISM 0x0050ec90
 char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, char* tuningOverride) {
   if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
@@ -283,9 +278,6 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
     mapMaker->AssignOrCompactCityRegionIdsAndRebuildBorders(1);
   } else if (mapStreamName == 0) {
 #ifdef IMPERIALISM_RUNTIME_TESTS
-    // The tuning-string generator uses the shared flavor-text LCG, not CRT rand().
-    // Random-map setup normally supplies an override generated earlier, but keep the
-    // no-override path deterministic too.
     g_zoneStatusCodePrngSeed_006a5aec = ClockDerivedPrngSeed();
 #endif
     if (tuningOverride != 0) {
@@ -303,8 +295,6 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
     g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
   }
   if (!sessionActive) {
-    // Fresh map: stamp the icon variants and snapshot every tile's owner as the
-    // former owner.
     short tile;
     for (tile = 0; tile < 0x1950; ++tile) {
       UpdateStrategicMapTileIconVariantState(tile);
@@ -546,8 +536,6 @@ void TMapMgr::GenerateProvinceNames() {
     g_zoneStatusCodePrngSeed_006a5aec = ClockDerivedPrngSeed();
   }
 
-  // Reset the localized province-name ordinals, then assign a name to every
-  // province record that has at least one linked region.
   CString local_10;
   AssignNextProvinceNameForNationSlot(&local_10, -1);
 
@@ -558,16 +546,12 @@ void TMapMgr::GenerateProvinceNames() {
     }
   }
 
-  // Reseed the PRNG from the system clock so later status-code generation is
-  // non-deterministic.
   g_zoneStatusCodePrngSeed_006a5aec = 0;
   g_zoneStatusCodePrngSeed_006a5aec = ClockDerivedPrngSeed();
 }
 
 // FUNCTION: IMPERIALISM 0x0050f860
 void TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments() {
-  // Phase 1: append every land tile to its owning city record's linkedTileIndices list
-  // (AllocateAndResetTerrainAndCityScoreTables left the lists empty).
   short tile;
   for (tile = 0; tile < 0x1950; ++tile) {
     if (terrainStateTable[tile].GetTerrainKind() != kStrategicTerrainWater) {
@@ -579,9 +563,6 @@ void TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments() {
     }
   }
 
-  // Phase 2: per record, derive the owner nation from the first linked tile, rebuild the
-  // adjacent-record id/anchor-tile pairs and the resource-presence mask, pick a fallback
-  // city tile when none is anchored, and recount the adjacency list.
   int recIndex;
   for (recIndex = 0; recIndex < 0x180; ++recIndex) {
     Province* record = &cityScoreTable[recIndex];
@@ -756,17 +737,8 @@ void TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(ProvinceIndex
   cityScoreTable[cityRecordIndex].secondaryNeighborTileIndex = neighbors[secondDirection];
 }
 
-// Hex-direction bit flags (1 << dir). Ground truth reads this via
-// `(char*)g_Build_Hex_Area_LookupTable_00696E80 + N`, but that offset lands well past that
-// global's own declared 6-short extent (0x696e80..0x696e8b) -- it's really a distinct,
-// separately-emitted 6-entry const table that happens to sit shortly after it in the
-// original .rdata layout, not guaranteed to hold in a freshly linked recompile. Modeled here
-// as its own bounds-safe table instead of pointer-walking off an unrelated global.
 static const short kHexDirectionBitMask[6] = {1, 2, 4, 8, 16, 32};
 
-// The "next" hex direction (d+1 mod 6), read raw at 0x00696e30 as its own table rather than
-// computed by TMapMgr::UpdateTileNeighborBorderInfluenceCounters (0x50fe10) -- the original
-// does a table lookup here, not a division, so this is modeled the same way.
 static const short kNextHexDirection[6] = {1, 2, 3, 4, 5, 0};
 
 // FUNCTION: IMPERIALISM 0x0050fe10
@@ -853,13 +825,8 @@ void TMapMgr::UpdateTileNeighborBorderInfluenceCounters(StrategicTileIndex tileI
   }
 }
 
-// Opposite hex direction (d+3 mod 6), read raw at 0x00696e60 as its own table by
-// TMapMgr::InitializeTileNeighborConnectionMaskIfNeeded (0x5107e0) rather than computed --
-// modeled the same way per the kNextHexDirection precedent above (table lookup, not modulo).
 static const short kOppositeHexDirection[6] = {3, 4, 5, 0, 1, 2};
 
-// Byte-swap one big-endian short in place (the scenario table resources are Mac-order;
-// the original inlines this two-byte exchange at every fixup site).
 static void SwapShortBytes(void* value) {
   char* bytes = static_cast<char*>(value);
   char low = bytes[0];
@@ -1713,8 +1680,6 @@ int ComputeStridedRecordAddress6C(int recordBase, int recordIndex) {
   return recordBase + recordIndex * 0x6c;
 }
 
-// Dead coordinate helper: scales both shorts into 64-pixel tile units through the
-// out params (swapped order) and returns the second out pointer.
 // FUNCTION: IMPERIALISM 0x00512410
 short* ScaleOffsetsToTilePixelUnits(short a, short b, short* outB, short* outA) {
   *outB = static_cast<short>(b << 6);
@@ -1736,8 +1701,6 @@ void SplitTileIndexToHexRasterColumnX2AndRow(StrategicTileIndex tileIndex, short
   *outRow = row;
 }
 
-// Combines a doubled hex-raster column (columnX2, as produced by
-// SplitTileIndexToHexRasterColumnX2AndRow) and a row back into a linear tile index.
 // FUNCTION: IMPERIALISM 0x00512850
 int ComputeTileIndexFromHexColumnX2AndRow(short columnX2, int row) {
   return columnX2 / 2 + row * 0x6c;
@@ -1751,8 +1714,6 @@ int CopyOffsetAndHalve(short a, short b, short* outHalf, short* outCopy) {
   return a / 2;
 }
 
-// Row delta (in tiles) for one of the six hex-neighbour directions, wrapping the direction
-// index into [0,6). Column deltas live in the sibling table g_Build_Hex_Area_LookupTable_00696E70.
 // FUNCTION: IMPERIALISM 0x005128f0
 short LookupHexNeighborRowDeltaByDirection(short direction) {
   if (direction < 0) {
@@ -2200,12 +2161,6 @@ char TMapMgr::CanBuildPortAtTile(StrategicTileIndex tileIndex) {
   }
   return result;
 }
-// sea tile reachable without crossing into another nation's territory. Not (region class
-// 2 or 3): scans the 6 hex neighbors for an unclaimed (tileActionState16 == -1) sea tile
-// (water terrain) none of whose own 6 neighbors belong to a different, non-unclaimed
-// nation (ownerNationTag04 < 0x17 and != this tile's own owner). Falls back to
-// EvaluateTerrainFlowCrossNationBoundaryToSea when no such neighbor exists but this tile
-// has a road/feature flow code.
 // FUNCTION: IMPERIALISM 0x00513980
 bool TMapMgr::IsValidSecondaryNationHomeTileCandidate(StrategicTileIndex tileIndex) {
   TTerrainStateRecord* tile = &terrainStateTable[tileIndex];
@@ -2282,14 +2237,6 @@ bool TMapMgr::IsValidSecondaryNationHomeTileCandidate(StrategicTileIndex tileInd
   return isValid;
 }
 
-// Whether `tileIndex` can reach a sea tile — directly via one of its six hex
-// neighbours, or (when no sea neighbour exists) via its terrain-flow chain —
-// whose owning nation is NOT diplomatically related to the tile's own nation
-// through the active type-3/4 order mask. Every original callsite loads ECX
-// from g_pGlobalMapState (0x6a43d4): a real TMapMgr method, not the free
-// __cdecl(short) the old TTown typedef-cast pretended (it dropped `this`).
-// The hex wrap/clamp arithmetic is open-coded here because the original body
-// inlines it (no calls to the 0x5128f0/0x512850 helpers at this site).
 // FUNCTION: IMPERIALISM 0x00513ca0
 char TMapMgr::HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(StrategicTileIndex tileIndex) {
   int originNation = static_cast<signed char>(terrainStateTable[tileIndex].ownerNationTag04);
@@ -2403,9 +2350,6 @@ void TMapMgr::ApplyRailSectionEndpointDirectionFlags(StrategicTileIndex sourceTi
   terrainStateTable[destTile].railFlags += g_railDirectionAddMasks_00696eb8[(dir + 3) % 6];
 }
 
-// Rescind counterpart to ApplyRailSectionEndpointDirectionFlags above: same bit-flag table,
-// subtracts instead of adding -- matches HandleCivilianReportDecision's "rescind a rail
-// section" refund path.
 // FUNCTION: IMPERIALISM 0x00514080
 void TMapMgr::ApplyEngineerRailCostDeltaForConnectedTiles(StrategicTileIndex tileA,
                                                           StrategicTileIndex tileB,
@@ -2887,8 +2831,6 @@ void TMapMgr::DimByMarching(
   }
   terrainStateTable[unit->tileIndex06].recruitSearchVisited0e = 0;
 
-  // Minimum per-candidate combat class across all 6 slots (capped at 3) -- computed but
-  // never read by the original; kept for byte-fidelity rather than dropped as dead code.
   short minCombatClass = 3;
   for (i = 0; i < 6; ++i) {
     if (candidates[i] != nullptr) {
@@ -3159,8 +3101,6 @@ void TMapMgr::DimByTrackLaying(TCivUnit* pCivilianOrderEntry) {
   short nationTag = pCivilianOrderEntry->ownerNationSlot18;
   StrategicTileIndex tileIndex = pCivilianOrderEntry->tileIndex06;
 
-  // Each researched technology enables another terrain in the shared capability profile.
-  // The listing writes 0x00696f0c/0a/0b: indices 4/2/3 from the table base 0x00696f08.
   if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[0x06] == 2) {
     g_abStrategicTerrainSeedGateProfileA[kStrategicTerrainSwamp] = 1;
   }
@@ -3342,8 +3282,6 @@ void TMapMgr::SetCapitalCityDevelopmentStageIfValidNationSlot(int nation, int un
   }
 }
 
-// Mountain selects a per-spriteVariantIndex column; every other strategic terrain kind
-// always reads column 0 of the same gateFlag row.
 // FUNCTION: IMPERIALISM 0x00516150
 short TMapMgr::LookupTileSpriteVariantOffsetByTerrainAndGate(StrategicTileIndex nTileIndex) {
   TTerrainStateRecord* tile = &terrainStateTable[nTileIndex];
@@ -3353,8 +3291,6 @@ short TMapMgr::LookupTileSpriteVariantOffsetByTerrainAndGate(StrategicTileIndex 
   return g_awTileSpriteVariantOffsetTable38[tile->gateFlag][0];
 }
 
-// adjacencyMaskB0b != 0 forces column 0 (no per-tile variant); otherwise the table is
-// indexed directly by spriteVariantIndex (single row, no gateFlag dimension).
 // FUNCTION: IMPERIALISM 0x005161a0
 short TMapMgr::LookupTileSpriteVariantOffsetByAdjacencyMaskB(StrategicTileIndex nTileIndex) {
   TTerrainStateRecord* tile = &terrainStateTable[nTileIndex];
@@ -3689,9 +3625,6 @@ char TMapMgr::AreNationsBorderLinked(int nationA, int nationB) {
   return 0;
 }
 
-// True when any province adjacent to `provinceIndex` is owned by `ownerNationCode`.
-// Walks that province's adjacentRegionIds list, bounded by adjacentRegionCount08, and
-// compares each neighbour's ownerNationCode00. An empty adjacency list answers false.
 // FUNCTION: IMPERIALISM 0x00517d40
 bool TMapMgr::HasAdjacentProvinceOwnedByNation(int provinceIndex, int ownerNationCode) {
   Province* table = cityScoreTable;
@@ -3801,10 +3734,6 @@ int TMapMgr::CollectSecondDegreeLinksWithMinorNationFallback(ProvinceIndex cityR
 
 namespace {
 
-// RecomputeTileStrategicScoreHeatmap indexes the four-column requirement table with the
-// tile's whole packed development byte. Retail's valid 0x00..0x33 values can therefore
-// read up to 44 bytes past that table, into the globals that immediately follow it at
-// 0x696df8..0x696e23. Preserve those exact bytes without crossing C++ array objects.
 const unsigned char kHeatmapPackedDevelopmentOverflow[44] = {
     0, 0, 0,  1, 1, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     1, 0, 10, 0, 4, 0, 7, 0, 6, 0, 8, 0, 0, 0, 9, 0, 5, 0, 1, 0, 2, 0};
@@ -3825,10 +3754,6 @@ void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
   int r;
   int i;
   int edge;
-  // The original declares seventeen market-backed weights followed immediately by a
-  // six-int harvested-resource block. The tile loop deliberately indexes the two blocks
-  // as one 23-entry table: Grain..Livestock are zero, Gems is 500, and Gold is 200.
-  // Keep that effective table explicit instead of depending on cross-array stack reads.
   int resourceWeights[kResourceKindCount] = {0};
   for (int resType = 0; resType < kResourceManufacturedEnd; ++resType) {
     resourceWeights[resType] = g_pTradeMgr->GetBasePrice(static_cast<short>(resType));
@@ -3884,8 +3809,6 @@ void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
     }
   }
 
-  // Pass 4: store each region's score, then diffuse a weighted share of each adjacent
-  // region's score back into it.
   region = cityScoreTable;
   for (r = 0; r < 0x180; ++r) {
     region->cityScoreValue = regionScores[r];
@@ -3926,8 +3849,6 @@ void TMapMgr::ApplyJoinEmpireMode0GlobalDiplomacyReset(int nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x005184e0
 short TMapMgr::GetProvinceUnitOrderWeight(ProvinceIndexStorage provinceId) {
-  // Retail body ignores the province and returns the constant weight 0x21 (33);
-  // mission scoring converts it to float for the accumulate dampening factor.
   (void)provinceId;
   return 0x21;
 }
@@ -3947,8 +3868,6 @@ char TMapMgr::LoadScenarioMapStateFromTableResource(int scenarioIndex) {
   int nameCapacity = 0x20;
   g_pAssetMgr->ReadResourceStreamIntoBufferAndAdvance(stream, terrainStateTable, &byteCount);
 
-  // City records: the 0xa4-byte POD prefix, then a 2-byte length word and the 0x20-byte
-  // name text, assigned into the CString member.
   byteCount = 0xa4;
   int recordCount = 0x180;
   Province* record = cityScoreTable;
@@ -3982,8 +3901,6 @@ char TMapMgr::LoadScenarioMapStateFromTableResource(int scenarioIndex) {
 
   ByteSwapCityScoreTableShortFields(cityScoreTable);
 
-  // Reset the water-adjacency masks on the first tile of each of the 60 rows (the
-  // horizontal wrap column).
   int row;
   for (row = 0; row < 0x3c; ++row) {
     short rowTile = static_cast<short>(row * 0x6c);
@@ -3996,8 +3913,6 @@ char TMapMgr::LoadScenarioMapStateFromTableResource(int scenarioIndex) {
   return 1;
 }
 
-// Byte-swaps the three 16-bit fields inside each of the 0x1950 scenario tile records
-// (Mac-endian on disk) and clears the serialized pointer bits at +0x20.
 // FUNCTION: IMPERIALISM 0x005187f0
 void ByteSwapScenarioTileRecordWords(ScenarioTileDiskRecord* tileRecords) {
   ScenarioTileDiskRecord* record = tileRecords;
@@ -4020,10 +3935,6 @@ void ByteSwapScenarioTileRecordWords(ScenarioTileDiskRecord* tileRecords) {
   } while (remaining != 0);
 }
 
-// Byte-swaps the big-endian short fields of every city-score record after the raw table
-// load: cityTileIndex04/lastTurnTick, the paired adjacent-record id/anchor-tile arrays,
-// the secondary/primary neighbor links, all 0x20 linkedTileIndices, and the ten
-// resource-development counters.
 // FUNCTION: IMPERIALISM 0x00518840
 void ByteSwapCityScoreTableShortFields(Province* table) {
   Province* record = table;
@@ -4176,9 +4087,6 @@ void TMapMgr::ActivateMarchingArrow(int tileIndex, int contextArg, bool flag) {
 }
 
 namespace {
-// Indexed by (gateFlag - 1) for terrainStateTable gateFlag values in [1,15]; groups a
-// linked region's gate type into one of the buckets tallied by
-// ClassifyCityGateTerrainComposition below (bucket 7, gateFlag 14, scores nothing).
 const unsigned char kGateFlagScoreBucket[15] = {0, 0, 0, 0, 1, 1, 2, 2, 2, 3, 4, 2, 2, 7, 2};
 } // namespace
 
@@ -4241,12 +4149,6 @@ int TMapMgr::ClassifyCityGateTerrainComposition(int cityIndex) {
   return tallyA > tallyB ? 1 : 0;
 }
 
-// Debug/script-state dump-and-reset. No xrefs in the retail binary (reached via an
-// unrecovered debug hook). Writes a "script" text log of the current map state -- zones,
-// ships, per-owner army counts, civilians, port/rail markers, capabilities, labor,
-// embargoes, and the year -- then clears the per-tile/per-city runtime state. Confirmed
-// flag bits on terrainStateTable[tile].activeFlags1c: 0x04 => "port", 0x10 => "rail",
-// each logged (unless bit 0x01 is set) and then cleared.
 // FUNCTION: IMPERIALISM 0x00519140
 void TMapMgr::DumpAndResetMapScriptState() {
   FILE* logFile = fopen(g_szScriptFileName_006972f8, s_mcflavor_00697238);
@@ -4358,11 +4260,6 @@ void TMapMgr::DumpAndResetMapScriptState() {
     }
   }
 
-  // Four turns per year, so economicTurn / 4 is the year. 0x005194bf reads it as a SHORT
-  // (MOVSX EAX,word ptr [edx+0x2c]), which is exactly what economicTurn is: the layout
-  // oracle puts it at +0x2c, and GetEconomicTurn (0x0057d8b0, MOV AX,[ECX+0x2c]),
-  // AdvanceSeason (0x0057d950, INC word ptr [ECX+0x2c]) and GetSeason (0x0057d830, the
-  // same MOVSX then % 4) all agree.
   fprintf(logFile, g_szFmtYear_00697248, g_pSimMgr->economicTurn / 4);
   fclose(logFile);
   g_pAmbitApplication->PostWmCloseToMainThreadWindow();
@@ -4370,9 +4267,6 @@ void TMapMgr::DumpAndResetMapScriptState() {
 
 // FUNCTION: IMPERIALISM 0x00519610
 void TMapMgr::ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot) {
-  // The AI profile ids are handed out in this fixed priority order, and each profile
-  // prefers a particular slot-isolation class; the three passes below relax that
-  // preference in the profile's own order.
   short profileOrder[7] = {1, 5, 4, 6, 2, 3, 3};
   short preferredIsolationByProfile[7][3] = {{0, 1, 2}, {2, 1, 0}, {0, 1, 2}, {0, 1, 2},
                                              {1, 2, 0}, {1, 2, 0}, {0, 1, 2}};
@@ -4385,8 +4279,6 @@ void TMapMgr::ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot) {
   int pass;
   bool assigned;
 
-  // Region class of each nation's territory. Every region a nation owns carries the same
-  // class, so the last one seen wins.
   Province* record = cityScoreTable;
   for (recordsLeft = 0x180; recordsLeft != 0; --recordsLeft) {
     if (record->ownerNationCode00 != -1) {
@@ -4395,8 +4287,6 @@ void TMapMgr::ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot) {
     ++record;
   }
 
-  // Isolation class of each great-power slot: 2 when its region class is unique, 1 when it
-  // is shared only with a minor, 0 when another great power sits on the same class.
   short openSlotCount = 0;
   for (slot = 0; slot < 7; ++slot) {
     slotIsolation[slot] = 2;
@@ -4418,8 +4308,6 @@ void TMapMgr::ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot) {
     outProfileBySlot[slot] = -1;
   }
 
-  // Give each open slot a profile, walking the priority order and taking the first
-  // still-unassigned open slot whose isolation class the profile is currently asking for.
   short* profile = profileOrder;
   for (remaining = openSlotCount; remaining > 0; --remaining) {
     assigned = false;
@@ -4443,8 +4331,6 @@ void TMapMgr::ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot) {
   }
 }
 
-// Reset a tile's resource-icon edge cache: resolve resourceTypeByEdge[0] from a fixed 16-entry
-// lookup indexed by the tile's gateFlag, and force resourceTypeByEdge[1] to 0xff.
 // FUNCTION: IMPERIALISM 0x0051da60
 void __stdcall UnusedMapManagerLeaf(StrategicTileIndex nTileIndex) {
   unsigned short lookup[16];
@@ -4602,8 +4488,6 @@ void TMapMgr::AdvanceSpiralSearchStateAndStepHexCoordinates(HexSpiralSearchState
   TMapMgr::StepHexRowColByDirectionWithWrapRules(&state->row, &state->col, state->direction);
 }
 
-// Maps a tile index to its owning city/province record (cityScoreTable indexed by the tile's
-// cityRecordIndex), or null when the tile belongs to no province.
 // FUNCTION: IMPERIALISM 0x00563360
 Province* __stdcall GetProvinceByTileIndex(StrategicTileIndex nTileIndex) {
   short recordIndex = g_pGlobalMapState->terrainStateTable[nTileIndex].cityRecordIndex;
@@ -4674,13 +4558,6 @@ StrategicTileIndex TraceTerrainFlowToNearestSeaTile(StrategicTileIndex tileIndex
   return -1;
 }
 
-// Sibling of TraceTerrainFlowToNearestSeaTile: walks the same riverSpriteCode-driven flow chain
-// (same type-remap/direction tables, same water-terrain terminal), but from
-// `tileIndex`'s own starting owner nation, tracking whether the flow crosses into a
-// differently-owned tile before reaching the sea. Tries flow variant 0 first (setting
-// crossedBoundary and continuing to walk on a first crossing), then variant 1 (returning 1
-// immediately on any crossing); 0xff means no evaluable flow (no road/feature code, or an
-// excluded feature range) or 100 steps exhausted on both variants without reaching the sea.
 // FUNCTION: IMPERIALISM 0x00563b70
 char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(StrategicTileIndex tileIndex) {
   TTerrainStateRecord* terrainTable = g_pGlobalMapState->terrainStateTable;

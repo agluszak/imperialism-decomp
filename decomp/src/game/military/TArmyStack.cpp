@@ -206,8 +206,6 @@ void TArmyStack::InitializeStrategicBattle(unsigned char boosted) {
 void TArmyStack::StrategicFirepower(int* outWeightedSum,
                                                                           int* outCount,
                                                                           int counter) {
-  // Blend-ratio pair, indexed by counter (0-3): primary weight favors the "weight class"
-  // score early, secondary weight favors the "scaled factor" score in later rounds.
   const int kRoundBlendWeightPrimary[4] = {100, 75, 50, 25};
   const int kRoundBlendWeightSecondary[4] = {0, 25, 50, 75};
   if (counter > 3) {

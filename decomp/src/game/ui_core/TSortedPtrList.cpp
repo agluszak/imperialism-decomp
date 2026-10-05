@@ -59,9 +59,6 @@ void* TSortedPtrList::PeekFirstPtrListEntry() {
   return GetPtrListEntryByOneBasedIndex(1);
 }
 
-// Walks the records in order and inserts a copy of `record` before the first entry
-// the comparator does not place strictly after it; appends when the list is empty or
-// every entry compares as 1.
 // FUNCTION: IMPERIALISM 0x004881f0
 void TSortedPtrList::InsertCopiedRecordSortedByComparator(void* record) {
   int ordinal = 1;

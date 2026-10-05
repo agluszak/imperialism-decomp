@@ -22,8 +22,6 @@ public:
   virtual void DrawKnob();
   virtual void GetKnobRect(RECT& knobRect);
 
-  // TIconBar's slice ends at 0x9c. The fields below occupy the complete derived
-  // slice through 0xbc; the RTTI oracle confirms sizeof(TIconSlider) == 0xbc.
   short value;
   TBitmapResourceLoader** knobBitmap;
   RECT knobBaseRect;

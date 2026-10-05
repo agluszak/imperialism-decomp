@@ -28,11 +28,7 @@ public:
   // CWinApp lifecycle overrides resolved by DispatchMfcAppLifecycle.
   virtual BOOL InitInstance() override; // slot +0x58, 0x00412dc0
   virtual int ExitInstance() override;  // slot +0x70, 0x00413780
-  // CWinThread::PreTranslateMessage override (vtable slot +0x60): refresh the tiled
-  // backdrop on input messages, then chain to the base pump.
   virtual BOOL PreTranslateMessage(MSG* pMsg) override; // slot +0x60, 0x00413a20
-  // CWinThread::OnIdle override (vtable slot +0x68): drive the game UI root's per-phase
-  // Idle after the base idle work.
   virtual BOOL OnIdle(LONG lCount) override; // slot +0x68, 0x004145f0
 
   int ShowAutoResolutionDialogIfNeeded();                                 // 0x00415090
@@ -44,9 +40,6 @@ public:
   void HandleStartupCommand100();                                         // 0x00413950
   void PostStartupCommand100();                                           // 0x004138b0
   LPCTSTR DetectImperialismInstallDriveAndSetPathPrefix();                // 0x00414870
-  // Modal-pump helper (ExecuteViewModalStateWithPushPopChain 0x48da60,
-  // ShowBlockingWaitOverlayDialog 0x498cc0 — both call it on
-  // g_pImperialismApp): keep the wait cursor up while HandleStartupCommand100 runs.
   void RestoreWaitCursorIfStartupBusy(); // 0x004139f0
 
   // Developer UI commands recovered from the ImperialismApp message map.
@@ -58,22 +51,15 @@ public:
   afx_msg void OnHuman();                     // 0x00414640
   afx_msg void OnUpdateHuman(CCmdUI* commandUi); // 0x00414670
   afx_msg void OnMissionSnooper();                        // 0x005de830
-  // Retail compiles these out to empty bodies, so the message-map command ID is the
-  // only surviving evidence of what they did; named after it rather than invented.
   afx_msg void OnSlowMemoryChecking();                        // 0x004147b0
   afx_msg void OnUpdateSlowMemoryChecking(CCmdUI* commandUi); // 0x004147d0
   afx_msg void OnTraceEnabled();                        // 0x004147f0
   afx_msg void OnUpdateTraceEnabled(CCmdUI* commandUi); // 0x00414810
   afx_msg void OnPeekAtGWorld();                        // 0x00414830
 
-  // Subclass state laid out immediately after the CWinApp base (offset 0xC0).
-  // While HandleStartupCommand100 runs, points at a stack local so the modal pump
-  // (RestoreAppWaitCursorDuringModalLoop) knows to keep the wait cursor up.
   int* waitCursorAnchorC0;  // 0xC0
   CString field_C4;         // 0xC4
   int appliedAutoResModeC8; // 0xC8 — auto-resolution mode currently applied to the display
-  // 0xCC..0xE0: strings loaded from the matching language .irg module
-  // (LoadLanguageResourcesFromIrgFiles).
   CString languageLabelCC;        // 0xCC — string 0x1e36, the language display label
   CString localizedPictGobNameD0; // 0xD0 — string 0x2c6, localized Pict .gob path (lib slot 0)
   CString field_D4;               // 0xD4 — string 0x840
@@ -90,26 +76,13 @@ extern ImperialismApp theApp;
 // 0x00412d90 — out-of-memory box; installed via the CRT _set_new_handler in InitInstance.
 int __cdecl ShowOutOfMemoryErrorNewHandler(size_t allocationSize);
 
-// Opens (creating as needed) HKEY_CURRENT_USER\Software\<company>\<product> and returns the
-// final HKEY, or nullptr if any step fails. Caller owns the returned HKEY (RegCloseKey). No
-// live caller found (zero Ghidra xrefs). 0x00412640
 HKEY OpenOrCreateCompanyProductRegistryKey(LPCSTR company, LPCSTR product);
 
-// Reads HKEY_CURRENT_USER\Software\<company>\<product>\<section>, value <valueName>,
-// returning it as a CString; falls back to defaultValue if any registry step fails or the
-// value isn't present. No live caller found (zero Ghidra xrefs). 0x00412840
 CString ReadOrCreateRegistryStringValueWithFallback(LPCSTR company, LPCSTR product, LPCSTR section,
                                                     LPCSTR valueName, LPCSTR defaultValue);
 
-// 0x00412a70 — the main thread's CWinThread::m_pMainWnd (the SDI CMainFrame), via its real
-// CFrameWnd::GetActiveView(). Always a CIncludeView in this app (the only registered
-// document-template view class).
 CIncludeView* GetMainViewHostFromActiveThread();
 
-// 0x00414850 — the on-disk data directory prefix literal. Real caller: TLanguageMgr's table
-// loaders.
 const char* GetDataDirectoryPathLiteral();
 
-// 0x00415760 — the low-disk-space startup gate: warns and asks to continue if free space on
-// the Windows install volume drops below 25 MB.
 BOOL WarnLowDiskSpaceAndConfirmContinue();

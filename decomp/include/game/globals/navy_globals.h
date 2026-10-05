@@ -1,6 +1,4 @@
 #pragma once
-// Subsystem-owned global declarations. Definitions and address markers live in
-// src/game/core/global_data_tables.cpp.
 #include "game/globals/global_types.h"
 
 // LAYOUT: fourteen per-resource navy-order descriptors at 0x00698108 with stride 0x24.
@@ -70,9 +68,6 @@ void FormatLocalizedCommodityCountLabelByIndex(CString* out, unsigned int commod
                                                short count);
 int GetNavyOrderCategoryBaseline(int category);
 
-// Localized-label string-group indices, keyed by GetMapContextActionCode's return value
-// (0..0x10 hold real tokens 0x3f0..0x3f8; the table is read by
-// ActionCursor, 0x559dd0).
 extern short g_awMapContextActionLabelTokenByCommand[17];
 
 // Naval combat damage-split and gunnery hit-chance constants.
@@ -95,21 +90,14 @@ extern TShip* g_pNavyPrimaryOrderListHead;
 
 extern "C" TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[14];
 
-// Per-category (0..3) capability metric baseline averages (0x006a3ec8): recomputed at
-// runtime by RecomputeGlobalCapabilityAverages and read back as the normalization divisor
-// by the navy/map-order per-category scoring helpers.
 extern "C" int g_aCategoryMetricBaselineAverage[4];
 
-// Six admiral-skill rows. Columns 0..2 select an estimated ship count and columns
-// 3..5 select class accuracy; each triplet is a percentage distribution.
 extern "C" short g_aNavalIntelligenceAccuracyProfiles[6][6];
 
 extern "C" bool g_bPerfectNavalIntelligenceCheat;
 
 extern "C" TAdmiral* g_pNavySecondaryOrderListHead;
 
-// Gates the assert-messagebox in TTaskForce::CarryOutOrders' default
-// (unhandled ship-order kind) case; not yet recovered beyond that one read site.
 extern int g_UnknownMapOrderExecutionGuard_006a3ee0;
 
 extern "C" const char s_SourcePathUNewspaper_00698470[];
@@ -121,9 +109,6 @@ extern "C" const char s_SourcePathUOcean_006984CC[];
 extern short g_Populate_Beachhead_Mission_LookupTable_00697958[];
 extern const int g_NavyMissionIndustrialCostTrailingLookup_0065A920[14];
 
-// TShip.cpp — per-category target-percentage weights (40/30/30/0) used by
-// ComputeNavyOrderDistributionScoreForNation's divergence-score formula. Read via
-// sign-extend (movsx) in retail despite containing only small positive values.
 extern const short g_NavyOrderDistributionCategoryWeights_00697978[4];
 
 extern short g_NavyResolveOrderRanking[14];

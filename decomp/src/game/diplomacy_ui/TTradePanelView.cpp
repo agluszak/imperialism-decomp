@@ -40,12 +40,6 @@ void TTradePanelView::DoPostCreate(int arg) {
   SetControlHoverHelpText(text, this);
 }
 
-// Row-label geometry (6 commodity rows) and column-header geometry (3 headers), read
-// from raw stack literals in the original (0x4f8940). The exact per-slot stack layout
-// wasn't fully disentangled (Ghidra folds these into several overlapping scalar/array
-// locals); the values themselves are read directly from the instruction stream and the
-// draw order (foreground offset (+1,+1), then shadow at the base position) is verified
-// against every other call site.
 namespace {
 const short kTradePanelRowY[6] = {0x1b7, 0x184, 0x1b7, 0x184, 0x1b7, 0x184};
 const short kTradePanelRowX[6] = {0x52, 0x83, 0xb6, 0xea, 0x11d, 0x14c};

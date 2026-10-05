@@ -20,8 +20,6 @@ void TSuperCivRoster::InitializeLedgerRosterPages(TView* pOwnerContext, int* pOf
   InitializeUiResourceEntryFrameAndParent(nullptr, pOwnerContext, pOffsetLayout, pSizeLayout, 5, 5,
                                           0);
   controlTag = kControlTagPage; // 'page'
-  // Explicit qualification forces a non-virtual call, matching the original's
-  // devirtualized direct call (TSuperCivRoster doesn't override this slot).
   TPageView::DoPostCreate(0);
 
   short activeNationId = g_pSimMgr->GetPlayerCountry();

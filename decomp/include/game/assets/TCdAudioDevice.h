@@ -4,9 +4,6 @@
 
 #include <mmsystem.h>
 
-// The CD-audio device "singleton" is a bare 4-byte global at 0x006a60bc holding the open MCI
-// device id (opened elsewhere in the multimedia subsystem). The thiscall helper below takes
-// &g_cdAudioDevice in ECX and reads that id.
 struct TCdAudioDevice {
   MCIDEVICEID m_deviceId; // 0x00
 
@@ -39,17 +36,11 @@ struct TCdAudioDevice {
 };
 // g_cdAudioDevice (0x006a60bc) is declared in game/global_data_tables.h.
 
-// Aux-output (CD-audio line) volume: g_nAuxOutputDeviceIndex (global_data_tables.h) holds
-// the probed aux device index (-1 = none found; set by ProbeAuxOutputDeviceIndexByPidMask,
-// 0x005e1430, implemented in wave_helpers.cpp -- part of this module, not wave.c).
-// 0x005e1500 -- duplicates dwVolume into both channel words and calls winmm auxSetVolume.
 int __stdcall SetAuxOutputVolumeFromScalar(int scalar);
 // 0x005e14c0 -- combines independently supplied left and right channel words.
 int __stdcall SetAuxOutputVolumeByChannel(int leftVolume, int rightVolume);
 // 0x005e1540 -- returns the raw packed left/right channel volume.
 int __stdcall GetAuxOutputVolumeRaw(DWORD* outVolume);
-// 0x005e1590 -- sets volume on every aux device whose wPid&7 is 1 or 2; returns whether the
-// last auxGetDevCaps call succeeded.
 bool __stdcall SetAuxOutputVolumeAcrossCompatibleDevices(int level);
 // 0x005e1620 -- reads volume (>>9 & 0x7f) from the first aux device whose wPid&7==1.
 int __stdcall GetAuxOutputVolumeFromFirstCompatibleDevice(unsigned int* outVolume);
@@ -63,16 +54,10 @@ WORD OpenCdAudioAndProbeAuxOutputDevice(void);
 // 0x005e19e0 — send MCI command 0x804 to the given device; returns true on success.
 bool __stdcall CloseMciDevice(MCIDEVICEID device);
 
-// 0x005e1a10 — send MCI_STOP to the given device. The parameter block pointer is ignored
-// for this command, but the retail helper passes the address of its device argument.
 void __stdcall SendMciStopCommandToDevice(MCIDEVICEID device);
 
-// 0x005df8d0 — shared predicate stub, always returns 1 (the audio-changed feature is a no-op
-// in the retail build). Called with an unused receiver in ECX at every call site.
 int ReturnTrueStub(void);
 
-// 0x5e16f0 / 0x5e1760 / 0x5e17b0 / 0x5e1800 — MCI_STATUS (0x814) queries on a CD-audio device
-// for dwItem 4/5/8/3; the Query* variants mask dwReturn to 0 on MCI failure.
 BOOL __stdcall IsCdAudioPlaying(MCIDEVICEID device);
 unsigned int GetCdMediaPresent(MCIDEVICEID device);
 unsigned int GetCdCurrentTrack(MCIDEVICEID device);

@@ -23,17 +23,10 @@ public:
 
   TStatusPicture();
 
-  // Mac oracle: DrawBar(short, short, short). Draws a black shadow and then the
-  // nation-colored comparison bar at the fixed graph origin.
   void DrawBar(short rowY, short width, short nationSlot);
   void SwitchStatusMode(int comparisonMode); // 0x005941e0
-  // Sorts the seven entries by descending value (empty -1 ids sink to the end), then pushes
-  // each entry's picture id into its child picture widget. 0x594c00.
   void SortSevenEntriesAndUpdatePictureWidgets();
   void RecomputeNationComparisonValuesAndNormalizeScale();
-  // Mac oracle: CalcStandardGraph(). Retained VC5 copy of the mode-0 score fill
-  // inlined at all three live callsites (DoPostCreate, SwitchStatusMode,
-  // DoEvent).
   void CalcStandardGraph() {
     g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
     for (int i = 0; i < 7; ++i) {

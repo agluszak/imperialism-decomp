@@ -1,8 +1,5 @@
 #pragma once
 
-// TMilitaryUnit's specialization of TUnit::orderType. String group 0x2717
-// supplies values 0..26; tactical/minister picture names identify 27..29 as
-// the Era 1, Era 2, and Era 3 General variants.
 enum MilitaryUnitKind {
   kMilitaryUnitMinutemen = 0,
   kMilitaryUnitSkirmishers = 1,
@@ -47,8 +44,6 @@ inline MilitaryUnitKindStorage EncodeMilitaryUnitKind(MilitaryUnitKind kind) {
   return static_cast<MilitaryUnitKindStorage>(kind);
 }
 
-// String group 0x2726 names this lookup domain. The retail table is signed-word
-// storage, so keep the representation explicit at table and return boundaries.
 enum ArmyUnitCategory {
   kArmyUnitCategoryMilitia = 0,
   kArmyUnitCategoryLightInfantry = 1,

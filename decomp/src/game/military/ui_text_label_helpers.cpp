@@ -68,9 +68,6 @@ void ResolveUiThemeColor(short themeCode, COLORREF* outColor) {
 // FUNCTION: IMPERIALISM 0x005c3e80
 void BuildUiTextStyleDescriptor(TextStyle* styleDescriptor, int unused, int arg2, int themeCode) {
   (void)unused;
-  // Verified against 0x5c3e9b-0x5c3f01: constructed unconditionally, never read or
-  // written again -- a genuinely dead local kept faithfully (not our porting
-  // artifact; the original does the same).
   CString deadLocal;
   styleDescriptor->fontStyleFlags = 0;
   COLORREF textColor = 0;
@@ -83,8 +80,6 @@ void BuildUiTextStyleDescriptor(TextStyle* styleDescriptor, int unused, int arg2
 // FUNCTION: IMPERIALISM 0x005c3f50
 void InitializeUiTextStyleDescriptor(TextStyle* styleDescriptor, short face, short pointSize,
                                      int themeCode, short font) {
-  // Same dead CString shape as BuildUiTextStyleDescriptor; the original constructs and
-  // destroys it while only using the packed descriptor fields below.
   CString deadLocal;
   COLORREF textColor = 0;
   styleDescriptor->fontStyleFlags = face;
@@ -158,9 +153,6 @@ TView* __cdecl ResolveControlByTagInActiveDialog(unsigned int controlTag) {
   return g_pDisplayMgr->activeDialog->ResolveControlByTag(controlTag);
 }
 
-// Recursively applies a picture-rect/theme state to every TStaticText control in `view`'s
-// subtree: if `view` itself is a TStaticText it gets the state, then each subview is visited
-// via the shared CSubViewIterator (which recurses into their subviews in turn).
 // FUNCTION: IMPERIALISM 0x005c43b0
 void __cdecl DispatchToSelectableTextOptionEntries(TView* view, TextStyle* state, int flag) {
   if (view->IsKindOf(RUNTIME_CLASS(TStaticText))) {

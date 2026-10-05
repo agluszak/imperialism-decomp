@@ -308,9 +308,6 @@ void TCivDescription::Draw(RECT* rectBuffer) {
     stylePrimary = 0;
     styleSecondary = 0;
 
-    // Original calls 0x5c4470 (three-arg apply), then reads the class name via the
-    // TSimMgr GetString virtual, and passes each mapped color to 0x4950a0 — the
-    // previous port dropped both color arguments.
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b68);
     ResolveUiThemeColor(0x2b6c, &stylePrimary);
     ResolveUiThemeColor(0x2b67, &styleSecondary);
@@ -335,8 +332,6 @@ void TCivDescription::DrawEngineer(RECT* boundsBuffer) {
   CString labelText;
   CString costText;
 
-  // The Mac Civ-toolbar strings identify this block as the Engineer's "Can Build"
-  // legend: Depot, Port, Fort, then the terrain types that are still unavailable.
   unsigned char cannotBuildTerrain[4];
   cannotBuildTerrain[0] =
       g_pTechMgr->orderCapRows277[g_pSimMgr->GetPlayerCountry()].techStatusByTechId[6] != 2;
@@ -433,11 +428,6 @@ void TCivDescription::DrawEngineer(RECT* boundsBuffer) {
   } while (slot < 4);
 }
 
-// Renders the Prospector's "Can Find" legend: one column per prospectable terrain
-// (hills, mountains, then the three oil terrains once tech 4 is researched), each with
-// the terrain header icon, the per-column target-tile count, and the mineral icons that
-// terrain can yield. Registers each header icon rect into legendRects for hit testing
-// until targetTileCountsBySlot[4] is set by Draw().
 // FUNCTION: IMPERIALISM 0x0058fec0
 void TCivDescription::DrawProspector(RECT* bounds) {
   (void)bounds;
@@ -448,8 +438,6 @@ void TCivDescription::DrawProspector(RECT* bounds) {
   bool oilUnlocked =
       g_pTechMgr->orderCapRows277[g_pSimMgr->GetPlayerCountry()].techStatusByTechId[4] == 2;
 
-  // Per-column mineral-icon lists drawn under each terrain header
-  // (coal/iron; coal/iron/gems/gold; oil; oil; oil).
   short columnResourceIcons[5][4] = {
       {3, 4, -1, -1}, {3, 4, 0x16, 0x15}, {6, -1, -1, -1}, {6, -1, -1, -1}, {6, -1, -1, -1}};
 
@@ -528,16 +516,6 @@ void TCivDescription::DrawProspector(RECT* bounds) {
   }
 }
 
-// Renders the developer-classes legend (Miner/Farmer/Forester/Rancher/Fisherman/
-// Driller): the class's current development-level frame from the 38px strip in
-// unitOverlayAtlas under a centered "Development" title, a centered "Output" title
-// over one yield icon + number per developable resource
-// (g_anDevelopableResourceTypesByCivilianClass row, values from
-// g_abUniversityRequirementLevelById[resource][capabilityValue]), and finally the
-// class's target-terrain rows from g_anTargetTileProfileByCivilianClassAndSlot with
-// their targetTileCountsBySlot counts, registering legendRects like DrawProspector.
-// Prospector and Engineer bail out immediately (strip base -1) — they have their own
-// Draw* legends.
 // FUNCTION: IMPERIALISM 0x005903c0
 void TCivDescription::DrawDeveloper(RECT* bounds) {
   (void)bounds;
@@ -563,8 +541,6 @@ void TCivDescription::DrawDeveloper(RECT* bounds) {
         static_cast<short>(this->frameWidth / 2 - titleWidth / 2), 0x6a);
     DrawTextWithCachedQuickDrawStyleState(&text);
 
-    // Current development level = max capability value over the class's developable
-    // resources, minus one.
     short stripBase = g_anDevelopmentIconStripBaseXByCivilianClass[civilianClass];
     int level = 0;
     for (int slot = 0; slot < 4; ++slot) {
@@ -600,8 +576,6 @@ void TCivDescription::DrawDeveloper(RECT* bounds) {
     DrawTextWithCachedQuickDrawStyleState(&text);
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b6c);
 
-    // One yield icon + per-level output number per developable resource, on the 2x2
-    // anchor grid (Forester/Driller shift right by 0x1b).
     for (int yieldSlot = 0; yieldSlot < 4; ++yieldSlot) {
       short resourceType =
           static_cast<short>(g_anDevelopableResourceTypesByCivilianClass[civilianClass][yieldSlot]);
@@ -636,8 +610,6 @@ void TCivDescription::DrawDeveloper(RECT* bounds) {
       DrawTextWithCachedQuickDrawStyleState(&text);
     }
 
-    // Target-terrain rows with their tile counts. A Farmer without any cotton
-    // capability loses its last row.
     short rowLimit = maxRowsByClass[civilianClass];
     if (civilianClass == 2 &&
         g_pTechMgr->capabilityValueByNationAndResource[g_pSimMgr->GetPlayerCountry()][0] == 0) {

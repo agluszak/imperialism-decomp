@@ -13,14 +13,10 @@ public:
   virtual ~TMiniCivLine() override {} // slot 0x01 (scalar deleting destructor)
   virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x4ab740
 
-  // The civilian unit this line row is bound to; InstallViews hands it (with
-  // the inherited field08/field0c layout pair) to the TMiniCivView it creates.
   TCivUnit* civUnit10;
 
   // NOOP: verified empty in original 0x004ab6a3 (no standalone TMiniCivLine::TMiniCivLine body exists: CreateObject 0x004ab670 inlines this default ctor, calling the TLineData base ctor directly at that site)
   TMiniCivLine() {}
-  // Two-phase init (MacApp IViewClass idiom): sets the shared TLineData row/bounds
-  // then this line's civUnit10. 0x004ab700, __thiscall.
   void IMiniCivLine(short rowArg, short colArg, int* bounds, TCivUnit* item);
 };
 

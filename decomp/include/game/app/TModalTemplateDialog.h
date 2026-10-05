@@ -3,8 +3,6 @@
 #include "game/gfx/TModalDialogBase.h"
 #include "game/mfc.h"
 
-// Template-driven modal dialog controller. TModalDialogBase owns the modal-create
-// scratch state and teardown; this level adds behavior but no fields.
 class TModalTemplateDialog : public TModalDialogBase {
 public:
   TModalTemplateDialog(UINT templateId, CWnd* pParentWnd)
@@ -15,8 +13,6 @@ public:
   }
 };
 
-// Low-disk-space warning dialog (template id 0x98, own vtable 0x66f5d8): a
-// TModalTemplateDialog with a prompt string at +0x74.
 // VTABLE: IMPERIALISM 0x0066f5d8
 class TLowDiskWarningDialog : public TModalTemplateDialog {
 public:

@@ -139,11 +139,6 @@ void TStaticText::SetJustification(short alignmentCode, bool refreshFlag) {
   }
 }
 
-// Paint the static text through the active QuickDraw CDC: aspect-filtered font
-// mapping, cached CFont from the widget's packed text style, text color from the
-// optional stylePayload48 payload (else the style's styleRef), and CDC::DrawText with the
-// textAlignmentCode (-2 left / 1 center / -1 right on DT_NOPREFIX|0x100|
-// DT_WORDBREAK).
 // FUNCTION: IMPERIALISM 0x0048ffb0
 void TStaticText::Draw(RECT* rectBuffer) {
   (void)rectBuffer;

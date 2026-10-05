@@ -2,9 +2,6 @@
 
 #include "game/ui_core/TNumberText.h"
 
-// Numeric text control variant: same 0xac layout as TNumberText (adds no fields);
-// overrides the cached-int refresh to pull the value through the shared-string helper.
-// RTTI: classTMyNumberText @ 0x0066c3a8, base TNumberText.
 // VTABLE: IMPERIALISM 0x0066c4f0
 class TMyNumberText : public TNumberText {
 public:

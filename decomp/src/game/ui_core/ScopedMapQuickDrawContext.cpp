@@ -43,8 +43,6 @@ static void BindScopedMapQuickDrawClientDcInline(TView* view, CDC* clientDc) {
   }
 }
 
-// Bind the scoped map QuickDraw DC: record the active view, and select the DC-handle
-// object (either the caller-supplied one, or a fresh CDC wrapping the view window's DC).
 // FUNCTION: IMPERIALISM 0x004945f0
 int BindScopedMapQuickDrawDcHandle(TView* view, CDC* existingDc) {
   return BindScopedMapQuickDrawDcHandleInline(view, existingDc);
@@ -70,8 +68,6 @@ CDib* GetActiveQuickDrawSurfaceDib() {
   return (*nodeSlot)->dib;
 }
 
-// Release the scoped map QuickDraw DC: when no caller-supplied handle was bound, return
-// the borrowed window DC, then clear the active handle/view globals.
 // FUNCTION: IMPERIALISM 0x004946b0
 void ReleaseScopedMapQuickDrawDcHandle(TView* view, CDC* existingDc) {
   ReleaseScopedMapQuickDrawDcHandleInline(view, existingDc);

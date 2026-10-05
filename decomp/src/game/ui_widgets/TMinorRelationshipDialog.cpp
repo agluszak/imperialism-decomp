@@ -51,8 +51,6 @@ void TMinorRelationshipDialog::StuffValues() {
   int nameTags[8] = {kControlTagNam0, kControlTagNam1, kControlTagNam2, kControlTagNam3,
                      kControlTagNam4, kControlTagNam5, kControlTagNam6, kControlTagNam7};
 
-  // 16 minor-nation panels ('M7 '..'M22 '), each holding one relation-standing cell
-  // per major nation: value = matrix[major][minor], state from the shared byte gate.
   for (short minorIndex = 0; minorIndex < 16; ++minorIndex) {
     if (g_apTerrainTypeDescriptorTable[minorIndex + 7] == 0) {
       continue;

@@ -181,8 +181,6 @@ void THelpPicture::ShowTopic(short topic) {
 
   topicListText->Show(1, 0);
 
-  // Mac Strings.rsrc TEXT entries and the Windows GOB crosswalk both use
-  // helpResourceBaseId + topic for the selected long-form help body.
   TScrollView* scrollView =
       static_cast<TScrollView*>(ResolveControlByTag(kControlTagSwin)); // 'swin'
   scrollView->AssertValid();

@@ -18,9 +18,6 @@
 
 namespace {
 
-// Segment heading angle scale (original double at 0x006598d8): atan2(dy,dx) is scaled into
-// the 16-bit angle stored in SeaSegment::angle14. Referenced by both InitFromPoints and
-// RecomputeEndpointsAndAngle, matching the single shared constant in the original.
 const double kSeaAngleScale = 11733.857334728455;
 
 } // namespace
@@ -28,11 +25,6 @@ const double kSeaAngleScale = 11733.857334728455;
 // Functions are emitted in ascending original-address order (decomplint requirement), so
 // the Seapoint/SeaSegment record methods interleave with the two stretch arrays' methods.
 
-// Debug/authoring path: rebuild the region-border segment lattice from a "coords.txt"
-// file of "<col0> <row0> <col1> <row1>" lines instead of the generated lattice
-// (RebuildRegionBorderLinkLattice). Rows clamp to [0, 0x3c] and columns wrap at the
-// 0xd8-wide overlay grid, the same conventions the generated path uses. The original
-// checks neither the fopen result nor the fscanf field count.
 // FUNCTION: IMPERIALISM 0x0052a850
 void LoadRegionBorderLinkTableFromCoordsFile() {
   unsigned int index = 0;
@@ -120,15 +112,6 @@ void SeaSegment::RecomputeEndpointsAndAngle() {
       static_cast<int>(atan2(static_cast<double>(dy), static_cast<double>(dx)) * kSeaAngleScale));
 }
 
-// Rebuild the global region-border segment lattice (0x006a3900) from scratch. The old
-// backing store is detached and freed, then the lattice is walked column by column with a
-// row stagger that alternates every other lattice row: each cell appends three SeaSegments
-// -- one built field-by-field and normalized in place, two built from Seapoint pairs
-// through InitFromPoints -- and a final pass closes the lattice along the map's vertical
-// edges using the row-1000 sentinel (clamped to the last row by the coord helper).
-//
-// Rows are clamped to [0, 0x3c] and overlay columns wrap at the 0xd8-wide grid, the same
-// conventions OverlayCoordFromTileColumnRowAndSide applies.
 // FUNCTION: IMPERIALISM 0x0052ac40
 void RebuildRegionBorderLinkLattice() {
   unsigned int index = 0;
@@ -194,8 +177,6 @@ void RebuildRegionBorderLinkLattice() {
       g_regionBorderLinkTable_006a3900[index] = cellSegment;
       index = index + 1;
 
-      // The cell's second segment spans from the tile-edge point on the region column
-      // over to the staggered neighbour.
       int clampedEdgeRow = rowBehind;
       if (clampedEdgeRow < 0) {
         clampedEdgeRow = 0;
@@ -231,8 +212,6 @@ void RebuildRegionBorderLinkLattice() {
       g_regionBorderLinkTable_006a3900[index] = spanSegment;
       index = index + 1;
 
-      // The third segment runs down the staggered column between two tile edges eight
-      // rows apart.
       int laneColumn = columnStagger + column;
       Seapoint laneStart;
       laneStart.InitSorted(OverlayCoordFromTileColumnRowAndSide(laneColumn, row + 0xa, 1), -1, -1,
@@ -350,19 +329,10 @@ void SeaSegment::InitFromPoints(const Seapoint* p0, const Seapoint* p1) {
       static_cast<int>(atan2(static_cast<double>(dy), static_cast<double>(dx)) * kSeaAngleScale));
 }
 
-// Flood a region id along a chain of border segments. Starting from one segment/edge-side,
-// stamp the side's carried attribute with regionId, then find the segment whose matching
-// endpoint coincides (after horizontal map wrap) and whose heading turns least, and repeat
-// from there. Stops when the next side is already stamped.
-//
-// Both parameters are re-assigned per hop, which is why they are locals rather than a
-// recursion: the original mutates its own argument slots and jumps back to the top.
 // FUNCTION: IMPERIALISM 0x0052b520
 void AssignRegionIdAlongBorderSegmentChain(unsigned int index, char side, short regionId) {
   while (true) {
     int sideIndex = side == '\0';
-    // The record is taken before the slot is stretched, and the stretch's result is
-    // discarded -- the original reads through the pre-stretch pointer.
     SeaSegment* record = g_regionBorderLinkTable_006a3900.At(index);
     g_regionBorderLinkTable_006a3900[index];
     if (record->AttrBySideIndex(sideIndex) != -1) {
@@ -373,8 +343,6 @@ void AssignRegionIdAlongBorderSegmentChain(unsigned int index, char side, short 
     unsigned short bestTurn = 0xffff;
     unsigned int bestIndex = 0xffffffff;
 
-    // Heading to measure the other segments' turn against. Coming in on side 0 the chain
-    // arrives from the opposite direction, so the heading is rotated half a turn.
     short reversedAngle;
     const short* baseAnglePtr;
     if (side != '\0') {
@@ -386,8 +354,6 @@ void AssignRegionIdAlongBorderSegmentChain(unsigned int index, char side, short 
     }
     short baseAngle = *baseAnglePtr;
 
-    // The endpoint the chain continues from: endpoint 0 when arriving on side 1, endpoint 1
-    // when arriving on side 0.
     SeaSegment* current = g_regionBorderLinkTable_006a3900.At(index);
     int endpoint0[2];
     int endpoint1[2];
@@ -513,8 +479,6 @@ void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b
   pt.lo04 = lo;
   pt.hi08 = hi;
   pt.f0c = extra;
-  // Dispatch through the stretch<Seapoint> base so the append goes through the vtable slot
-  // (the original calls it indirectly), rather than being devirtualized to a direct call.
   stretch<Seapoint>* table = &g_seapointQuadTable_006a3478;
   table->Add(pt);
 }

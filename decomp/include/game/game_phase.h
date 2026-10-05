@@ -1,10 +1,5 @@
 #pragma once
 
-// Mac CodeWarrior names the turn-flow phase eGamePhaseNewStyle
-// (TSimMgr::EnterOptionalPhase, TMultiplayerMgr::SetSyncPhases). Windows stores it as an
-// int. TSimMgr::AdvanceGlobalTurnStateMachine executes the phase in turnStateCode, and each
-// linear phase selects its successor. Optional phases open one screen from the strategic map
-// and return to kGamePhaseShowMap.
 enum eGamePhaseNewStyle {
   kGamePhaseNone = -1,
   kGamePhaseStartup = 1,

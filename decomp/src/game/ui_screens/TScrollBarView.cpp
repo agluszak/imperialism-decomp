@@ -26,8 +26,6 @@ void TScrollBarView::RefreshCityDialogScrollableViewportWithQuickDrawContext() {
 
 IMPLEMENT_DYNCREATE(TScrollBarView, TControl)
 
-// This address was previously claimed by a fabricated empty `TScrollBarView()` body;
-// the real ctor is inline (see the header) and 0x5744b0 is the 3-arg builder below.
 // FUNCTION: IMPERIALISM 0x005744b0
 void TScrollBarView::IScrollBarView(TScrollView* panel, int* offsetLayout, int* sizeLayout) {
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 4, 4, 0);
@@ -83,8 +81,6 @@ void TScrollBarView::Free() {
   TView::Free();
 }
 
-// Not a no-op despite the inherited slot name: re-cache+assert the owner, re-seed the
-// bounded-value words, and re-allocate the 8-bit surface for the current frame rect.
 // FUNCTION: IMPERIALISM 0x00574720
 void TScrollBarView::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);

@@ -50,8 +50,6 @@ void TPageView::ResetSelectableOptionEntriesExceptColorAndOkay() {
   static const unsigned int kOkayTag = kControlTagOkay;   // "yako"
   static const unsigned int kSkipId = kControlTagDont;    // "tond"
 
-  // The original walks the option entries with the shared CSubViewIterator, not a raw
-  // GetHeadPosition/GetNext loop.
   CSubViewIterator iter(this);
   TView* child = iter.FirstSubView();
   if (iter.MoreSubViews()) {

@@ -16,8 +16,6 @@ public:
   // slot 0x00 GetRuntimeClass owned by DECLARE_DYNCREATE (0x5077a0)
   virtual ~TNumberedItem() override;            // slot 0x01 (scalar deleting destructor)
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x5078a0
-  // RTTI proves TNumberedItem is TMegaPicture (0xac) + these 4 bytes (0xb0 total) --
-  // the base's own 0xac bytes must not be re-declared here as padding.
   short iconRowIndex; // +0xac icon-strip row (badge background variant)
   short badgeCount;   // +0xae the number drawn on the badge
 

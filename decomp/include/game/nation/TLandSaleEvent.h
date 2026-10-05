@@ -16,8 +16,6 @@ public:
   short tileIndex08;  // +0x08 — first ILandSaleEvent argument
   short nationCode0a; // +0x0a — second ILandSaleEvent argument
 
-  // Second-phase initializer (Mac oracle: TLandSaleEvent::ILandSaleEvent(short, short)).
-  // Stores the payload pair and restamps the event tag from 'erra' to 'land'. 0x004e6710.
   void ILandSaleEvent(short tileIndex, short nationCode);
 };
 

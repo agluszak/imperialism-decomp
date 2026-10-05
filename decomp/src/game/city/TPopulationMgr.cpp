@@ -506,10 +506,6 @@ void TPopulationMgr::Free() {
   delete this;
 }
 
-// Mac CodeWarrior oracle: AddExpert(short). Adds `count` workers to the high-skill
-// band of both the baseline and working labor pools, to the aggregate population
-// count, and 4x to strength. Sole caller is TCivUnit::ResetCivWorkOrderAndRefreshCounters
-// (disbanding a civilian specialist returns an expert).
 // FUNCTION: IMPERIALISM 0x004b6a00
 void TPopulationMgr::AddUntrained(short count) {
   baselineSlots->lowSkillCount04 = baselineSlots->lowSkillCount04 + count;

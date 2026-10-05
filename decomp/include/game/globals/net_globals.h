@@ -1,6 +1,4 @@
 #pragma once
-// Subsystem-owned global declarations. Definitions and address markers live in
-// src/game/core/global_data_tables.cpp.
 #include "game/globals/global_types.h"
 
 extern "C" char* g_pLoungeLocalPlayerNameSharedText_0065c160;
@@ -36,9 +34,6 @@ extern TTacticalBattle* g_pActiveTacticalBattle;
 // OR-accumulator for the turn-event-0x2b presence-mask exchange.
 extern int g_nTurnEvent2BNationMaskAccumulator;
 
-// WNetMgr.cpp TU globals (0x6a5fxx band), consumed by TNetMgr::Send / TWNetSessionManager.
-// The pending-packet queue and its two serialization siblings are file-scope MFC template
-// statics (see the typed C++ section below).
 extern int DAT_006a601c;
 
 extern int g_suppressUnexpectedDirectPlaySystemMessageAssert006a6020;

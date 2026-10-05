@@ -23,54 +23,35 @@
 #define ER_CORRUPTWAVEFILE 0xe103
 #define ER_CANNOTWRITE 0xe104
 
-// 0x005e0780 — mmioOpen the file (or memory file via pmmioInfo), verify RIFF/WAVE, read the
-// 'fmt ' chunk into a GlobalAlloc'd WAVEFORMATEX.
 UINT WaveOpenFile(char* pszFileName, HMMIO* phmmio, WAVEFORMATEX** ppwfx, MMCKINFO* pckInRIFF,
                   MMIOINFO* pmmioInfo);
 
 // 0x005e09a0 — seek to the RIFF payload and descend into its 'data' chunk.
 UINT WaveStartDataRead(HMMIO* phmmioIn, MMCKINFO* pckIn, MMCKINFO* pckInRIFF);
 
-// 0x005e09f0 — stream up to cbRead bytes of the current chunk into pbDest through the mmio
-// buffer, decrementing pckIn->cksize.
 UINT WaveReadFile(HMMIO hmmio, UINT cbRead, HPSTR pbDest, MMCKINFO* pckIn, UINT* pcbActualRead);
 
 // 0x005e0b00 — release the format block and close the input file.
 UINT WaveCloseReadFile(HMMIO* phmmio, WAVEFORMATEX** ppwfx);
 
-// 0x005e10c0 — open, locate 'data', GlobalAlloc and read the wave bytes; outputs format
-// header, data pointer and byte size. pcSamples is never written.
 UINT WaveLoadFile(char* pszFileName, DWORD* pcbSize, DWORD* pcSamples, WAVEFORMATEX** ppwfx,
                   unsigned char** ppbData, MMIOINFO* pmmioInfo);
 
-// 0x005e0b50 — create the output file, write the RIFF/WAVE header, the 'fmt ' chunk (from
-// pwfxDest), and a placeholder 'fact' chunk (dwFactChunk = -1).
 UINT WaveCreateFile(char* pszFileName, HMMIO* phmmioOut, WAVEFORMATEX* pwfxDest, MMCKINFO* pckOut,
                     MMCKINFO* pckOutRIFF);
 
 // 0x005e0cc0 — create an empty 'data' chunk and acquire its write-buffer state.
 UINT WaveStartDataWrite(HMMIO* phmmioOut, MMCKINFO* pckOut, MMIOINFO* pmmioinfoOut);
 
-// 0x005e0d10 — copy cbWrite bytes through the mmio write buffer, advancing it whenever it
-// fills. pck is unused; pcbWritten reports how many bytes made it out.
 UINT WaveWriteFile(HMMIO hmmioOut, UINT cbWrite, BYTE* pbSrc, MMCKINFO* pck, UINT* pcbWritten,
                    MMIOINFO* pmmioinfo);
 
-// 0x005e0da0 — flush the write buffer, close both chunks, then reopen the 'fact' chunk to
-// patch in the real sample count WaveCreateFile could only write as a placeholder, and close
-// the file.
 UINT WaveCloseWriteFile(HMMIO* phmmio, MMCKINFO* pck, MMCKINFO* pckRIFF, MMIOINFO* pmmioinfo,
                         DWORD cSamples);
 
-// 0x005e0ec0 — walk the input RIFF's sub-chunks and copy the ones worth preserving ('DISP',
-// 'plst'; 'PAD ' is skipped) into the output file, leaving the read position where it was.
 UINT WaveCopyUselessChunks(HMMIO* phmmioIn, MMCKINFO* pckIn, MMCKINFO* pckInRIFF, HMMIO* phmmioOut);
 
-// 0x005e0fb0 — copy one chunk (pckIn->ckid/cksize) from hmmioIn to hmmioOut through a
-// GlobalAlloc'd bounce buffer. Returns 1 on success, 0 on failure.
 int WaveCopyUselessChunk(HMMIO hmmioIn, HMMIO hmmioOut, MMCKINFO* pckIn);
 
-// 0x005e1220 — write a whole PCM buffer out as a new wave file: create it, open a 'data'
-// chunk, push the samples through the mmio write buffer, then close and patch 'fact'.
 UINT WaveSaveFile(char* pszFileName, DWORD cbSize, DWORD cSamples, WAVEFORMATEX* pwfxDest,
                   HPSTR pbSrc);

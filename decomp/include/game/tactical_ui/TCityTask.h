@@ -10,10 +10,6 @@ class TStream;
 class TCity;
 class TTaskList;
 
-// A queued city production/order command: references the owning city and an amount
-// still to be sourced, dispatching to a type-specific queueing helper based on the
-// base TTask::citySlotIndex. Constructed via `new TCityTask()` +
-// ICityTask(city, type, amount) (0x5add90), then handed to a TTaskList.
 // VTABLE: IMPERIALISM 0x0066a9a8
 class TCityTask : public TTask {
 public:
@@ -22,13 +18,6 @@ public:
   virtual ~TCityTask() override {}                 // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x5ae570
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5ae5e0
-  // Tries to satisfy requestedAmount directly from the owning city's stock
-  // (TCity::DirectTransport) for slot indices 0..6, then always re-checks the order's
-  // MaxOrder()/quantity headroom, filling the order's OrderSheet and draining
-  // per-resource DirectTransport calls when short, bumping the order's SetQuantity
-  // either way. Finally dispatches to the type-specific queueing override selected by
-  // citySlotIndex, then falls back to the base countdown when the request wasn't fully
-  // satisfied.
   virtual bool Execute(TTaskList* taskList) override;   // slot 0x0a 0x5adde0
   virtual void IncompleteTraining(TTaskList* taskList); // slot 0x0b 0x5ae010
   virtual void IncompleteMaterials();                   // slot 0x0c 0x5ae420
@@ -38,8 +27,6 @@ public:
 
   TCityTask(); // 0x005add20
 
-  // Sets up a freshly-`new`'d TCityTask before it's handed to a command queue: default
-  // remainingAttempts is 4, except citySlotType 5 (steel) gets only 3.
   void ICityTask(short citySlotType, TCity* owner,
                  short amount); // 0x005add90
 

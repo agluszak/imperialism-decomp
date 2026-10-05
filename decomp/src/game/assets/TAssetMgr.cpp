@@ -46,8 +46,6 @@ void TAssetMgr::CloseFilesFor(short fileSet) {
   (void)fileSet;
 }
 
-// Per-callsite assert-suppress flag, adjacent to timer_slots.cpp's
-// g_timerDispatchSuppressAssert (0x6a5d24) in the original WAssetMgr.cpp.
 int g_resourceStreamOpenSuppressAssert; // 0x6a5d20
 
 // FUNCTION: IMPERIALISM 0x005df430
@@ -85,8 +83,6 @@ int TAssetMgr::ReadResourceStreamIntoBufferAndAdvance(CFile* stream, void* buffe
   *countInOut = stream->Read(buffer, *countInOut);
   return 0;
 }
-// `this` (g_pAssetMgr at every callsite) is unused; the method just reseeks the
-// stream.
 // FUNCTION: IMPERIALISM 0x005df730
 void TAssetMgr::SeekResourceStreamFromBeginning(CFile* stream, int offset) {
   stream->Seek(offset, CFile::begin);
@@ -161,8 +157,6 @@ void TAssetMgr::EnsurePictWvDataGobLoadedBySlot(int languageTag) {
     return;
   }
 
-  // Original builds the message with operator+ temporaries (prefix + path + suffix),
-  // not in-place +=; the leading const-char*+CString picks the global operator+.
   AfxMessageBox(
       static_cast<LPCTSTR>(s_MissingFilePrefix_0069B820 + path + s_MissingFileSuffix_0069B810),
       MB_OK, 0);
@@ -170,15 +164,8 @@ void TAssetMgr::EnsurePictWvDataGobLoadedBySlot(int languageTag) {
 
 namespace {
 
-// RAII wait-cursor guard reconstructed from 0x5e0030's EH layout: EH state 1 opens with
-// a fully inlined AfxGetApp()->BeginWaitCursor() and unwinds with the matching inlined
-// EndWaitCursor() — an inline-ctor/dtor guard object, unlike MFC's out-of-line
-// CWaitCursor.
 } // namespace
 
-// Saves the active MFC document to `savePath`, then restamps the document path with the
-// "__saved" marker so the next save re-prompts. Original doc-vtable slots: SetPathName
-// +0x5c, DoSave +0xa0 (both match retail nafxcw).
 // FUNCTION: IMPERIALISM 0x005e0030
 unsigned char TAssetMgr::SaveMainDocumentToPathAndMarkSaved(const CString& savePath) {
   CString path(savePath);
@@ -256,9 +243,6 @@ void TAssetMgr::ScheduleTimerSlotCallbackWithInterval(TimerSlotCallback callback
 }
 
 namespace {
-// The retail RT_VERSION block places its VS_FIXEDFILEINFO at +0x30. LoadResource returns
-// the raw block boundary used by the original; the embedded Windows SDK type owns all
-// field offsets from that point onward.
 struct LoadedVersionResourceBlock {
   unsigned char prefix00[0x30];
   VS_FIXEDFILEINFO fixedInfo;

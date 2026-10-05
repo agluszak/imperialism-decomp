@@ -25,14 +25,10 @@ public:
   virtual TView* OpenBook(int bookId); // slot 0x6a 0x4f2ec0
   // Forwards to TDisplayMgr::CloseFloaters before minister navigation. 0x4f2ea0.
   virtual void CloseBooks(); // slot 0x6b 0x4f2ea0
-  // TView's own fields end exactly at 0x60 (see TWorldView's identically-placed
-  // viewportOffsetX); zeroed by the ctor, no other reader/writer found yet.
   int field60; // +0x60
 
   TMinisterView();
 
-  // Original object size is 0x68 (CRuntimeClass m_nObjectSize); the source class ended
-  // at 0x64. Written by StuffValues from g_apTerrainTypeDescriptorTable.
   TCountry* selectedCountry;
 };
 ASSERT_SIZE(TMinisterView, 0x68);

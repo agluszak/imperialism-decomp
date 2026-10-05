@@ -26,8 +26,6 @@ public:
   virtual unsigned char SwitchToAutoPlay(); // slot 0x15 0x59ea60
 
   TArmyStack* armyStack; // +0x28
-  // Initially the active units' attribute sums; accumulation then replaces
-  // [0] and [1] with baseline and terrain-profile fitness scores.
   float projectionMetrics[5];       // +0x2c
   short maxUnitRange40;             // +0x40 max GetUnitRange over active units
   short maxNonArtilleryUnitRange42; // +0x42 same, skipping aiClass-2 units
@@ -39,27 +37,12 @@ public:
   bool hasArtilleryOrSappers; // +0x51 active units only
   unsigned char pad52[2];     // +0x52
 
-  // Both original construction sites (0x5a4790, 0x5a4990) inline the ctor as a bare
-  // vptr store.
-  // NOOP: verified empty in original 0x0059b112 (no standalone TArmyPlayer::TArmyPlayer body exists: construction is fully inlined into CreateObject 0x0059b110; that address is its operator-new call site)
   TArmyPlayer() {}
 
-  // Applies the tactical cursor/UI mode profile for this side.
-  // 0x0059c440, __thiscall, ret 4.
   void SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode);
-  // Applies the per-unit stance profile for the side's already-selected mode
-  // (this->lastAppliedCursorMode44, 0..7). The pure "apply" half of the switch that
-  // SelectAndApplyTacticalCursorModeProfile inlines after computing the mode: cases
-  // 0/2..6 delegate to the Apply*StanceByActionClass appliers, cases 1 and 7 set
-  // aiStateCode2c inline. 0x0059c970, __thiscall.
   void ApplyTacticalStanceProfileForCurrentCursorMode();
 
-  // Rebuilds projectionMetrics/maxUnitRange40/42 and hasArtilleryOrSappers
-  // from the active records, then folds sums[0]/sums[1] into
-  // distribution-similarity scores vs the 0x697870 reference profiles. 0x59b5b0.
   void AccumulateTacticalProjectionMetricsAndUnitRanges();
-  // Per-mode stance-profile appliers: set each record's aiStateCode2c by action class
-  // for the matching cursor mode (mode number noted per address).
   void ApplyDefenderHoldLineStanceByActionClass(); // mode 0, 0x59caf0
   // Assigns state 7 to category-0 units and state 12 to every other unit.
   void AssignJobsByZeroCategory();                 // 0x59cc70
@@ -68,15 +51,9 @@ public:
   void ApplyAttackerAssaultStanceByActionClass();  // mode 4, 0x59d020
   void ApplyAttackerStandoffStanceByActionClass(); // mode 5, 0x59d1a0
   void ApplyUnopposedAdvanceStanceByActionClass(); // mode 6, 0x59d320
-  // Blanket hold-fire stance: sets every unit's aiStateCode2c to 0x13 (the standalone
-  // sibling of mode 7's inline loop). 0x0059d400, __thiscall.
   void SetAllUnitAiStateCodesTo13();
-  // Whether the opposing side has a deployed, still-active artillery-class unit.
-  // 0x0059d470, __thiscall.
   unsigned char OpponentHasDeployedActiveArtilleryUnit();
 
-  // Auto-deploy helpers (0x59bc80 dispatcher). Curated names kept; behaviorally these
-  // are the zone-score-table and per-class-tile-selector deploy strategies.
   void BuildTacticalActionPriorityBucketsWithGridGuard();      // 0x59bcf0
   void DispatchTacticalActionClassSelectionAcrossCursorList(); // 0x59bf20
   // Prunes unitList4 down to the free-tile capacity. 0x59b990.
@@ -90,16 +67,11 @@ public:
                                                  int* heuristicWeights15); // 0x59d530
   int SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* unit,
                                                      int flag); // 0x59e110
-  // Encodes the unit's action class, adjacency, deploy-mark, and battlefield-position
-  // properties into the bit mask consumed by the tactical action selector.
   unsigned int BuildTacticalActionClassAndPositionFlags(TacticalTileIndex referenceTileIndex,
                                                         TTacticalUnit* unit); // 0x59e8a0
   // Minimum GetBaseActionPoints among active units in AI states 2 or 4; 1000 if none.
   int GetMinimumActiveUnitRangeForStates2Or4(); // 0x59e9c0
 
-  // The fifteen per-tile heuristic scorers driven (via the 0x6994c0 member-function-
-  // pointer table) by FindBestMove; entry i pairs with
-  // weight column i of g_anTacticalTileHeuristicWeightsByAiState_00699500.
   int ScoreTacticalTileHoldPositionBonus(TTacticalUnit* unit,
                                          TacticalTileIndex tileIndex); // 0x59d6b0
   int ScoreTacticalTileFireOpportunityAndTargetApproach(TTacticalUnit* unit,
@@ -131,10 +103,6 @@ public:
   int ScoreTacticalTileEnemyEdgeColumnZoneBonus(TTacticalUnit* unit,
                                                 TacticalTileIndex tileIndex); // 0x59e0d0
 
-  // Builds the side's tactical unit records from the stack's army unit chain and
-  // stores the stack into armyStack. 0x0059b1b0, __thiscall, ret 0x10.
-  // Mac oracle: IArmyPlayer(TArmyStack*, unsigned char, unsigned char, long) -- the
-  // original only reads the low byte of isOurSide, as the body comment notes.
   void IArmyPlayer(TArmyStack* stack, bool isOurSide, unsigned char watchFlag, int nationIndex);
 };
 
@@ -142,14 +110,8 @@ ASSERT_SIZE(TArmyPlayer, 0x54);
 ASSERT_OFFSET(TArmyPlayer, projectionMetrics, 0x2c);
 ASSERT_OFFSET(TArmyPlayer, hasArtilleryOrSappers, 0x51);
 
-// The per-tile heuristic scorer table type (0x6994c0, declared in
-// global_data_tables.h): entry i pairs with weight column i of
-// g_anTacticalTileHeuristicWeightsByAiState_00699500.
 typedef int (TArmyPlayer::*TacticalTileHeuristicScorerFn)(TTacticalUnit* unit,
                                                           TacticalTileIndex tileIndex);
 
-// Distribution-similarity score between a five-component vector and a reference
-// profile row (movsx short reads). Owned alongside its only tactical
-// caller. 0x005362c0, __cdecl.
 float __cdecl ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
     float* vector, const short* referenceProfile, int count);

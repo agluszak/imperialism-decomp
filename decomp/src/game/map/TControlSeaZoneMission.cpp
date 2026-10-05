@@ -26,8 +26,6 @@
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 
-// The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
-//   CArchive& AFXAPI operator>>(CArchive&, TControlSeaZoneMission*&)
 IMPLEMENT_SERIAL(TControlSeaZoneMission, TNavyMission, 1)
 
 // FUNCTION: IMPERIALISM 0x005355b0
@@ -57,14 +55,6 @@ void TControlSeaZoneMission::Initialize() {
   importanceScore0c = score / g_fMissionScoreNormalizationDivisor;
 }
 
-// Inherited unchanged by TBeachheadMission (real base class relationship).
-// Confirms this mission's nation has terrain coverage: scans g_apTerrainTypeDescriptorTable
-// for a nation that either IS this mission's nation or has an encoded-slot match with it, then
-// checks whether missionTargetZone lists that nation among its secondary neighbors. If no terrain
-// coverage is found, clears this nation's per-context flag and returns null (mission invalid).
-// Otherwise, if resolvedPortZone is a port zone that doesn't already flag this nation, refreshes
-// resolvedPortZone via RefreshMissionPortZoneContextForNation; returns `this` iff resolvedPortZone ends
-// up non-null.
 // FUNCTION: IMPERIALISM 0x00538900
 TMission* TControlSeaZoneMission::GetReplacement() {
   bool foundCoverage = false;
@@ -175,13 +165,6 @@ bool TControlSeaZoneMission::Matches(eMissionType missionType, int key, TZone* z
          zoneContext == missionTargetZone;
 }
 
-// Resolves a port-zone context command into a queued order type. `pMapOrderEntry` is the
-// TTaskForce map-order entry GiveOrders's dispatch passed (taskForce20). Builds a per-nation
-// bitmask of nations with an outdated war-relation timestamp against this mission's nation,
-// tracking the first such nation's port-zone context whose cached owner (primaryNeighbors slot
-// 0) matches the entry's location (a TZone*). If the entry's own target
-// context (also location) has none of those nations already flagged AND a matching context
-// was found, queues map-order type 6 with that context; otherwise queues type 3.
 // FUNCTION: IMPERIALISM 0x00539640
 void TControlSeaZoneMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
   mapOrderEntry->SetAggression(1);
@@ -209,12 +192,6 @@ void TControlSeaZoneMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
   mapOrderEntry->OrderPatrol(false);
 }
 
-// Inherited unchanged by TBeachheadMission and TBlockadePortMission (real base class relationship).
-// Caches this mission's target port zone into the first port zone's primaryNeighbors slot 0
-// (a per-nation "current port zone owner" cache slot, not a real neighbor list entry -- ground
-// truth forces the slot to exist through grow-on-access operator[] unconditionally).
-// If that cached slot still points at missionTargetZone, just re-touches the port zone lookup and
-// returns its result; otherwise returns the safest nearby zone for the mission nation.
 // FUNCTION: IMPERIALISM 0x00539780
 TZone* TControlSeaZoneMission::RefreshMissionPortZoneContextForNation() {
   TZone* firstPortZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationId04);

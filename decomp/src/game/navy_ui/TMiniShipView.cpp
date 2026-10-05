@@ -39,9 +39,6 @@ void TMiniShipView::Draw(RECT* rectBuffer) {
   CString label;
   label = shipNode84->name;
 
-  // Single-entry order-status string lookup (GetString group 0x2760): the index is
-  // precomputed via g_ShipOrderStatusStringIndexByResourceType_0065c7f8, unlike
-  // TShipView's sibling which builds the full 8-entry pool first.
   g_pSimMgr->GetString(
       0x2760, g_ShipOrderStatusStringIndexByResourceType_0065c7f8[shipNode84->type], &statusLine);
   statusLine += s_szSpaceSeparator_00695794 + label;
@@ -58,8 +55,6 @@ void TMiniShipView::Draw(RECT* rectBuffer) {
   // Level-bucket row within the icon strip: <5 -> row 0x1a, 5-14 -> row 18, >14 -> row 10.
   short rowBucket = (levelBucket < 5) ? 0x1a : ((levelBucket > 0xe) ? 10 : 18);
 
-  // The blit source surface is the per-level icon strip cached on TMacViewMgr
-  // (atlas694, shared with the sibling roster-row views).
   TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas694[0]->GetBlitSurface();
   RECT srcRect = {0, rowBucket, levelBucket * 4 - 1, rowBucket + 7};
   RECT dstRect = {0x8c, 4, levelBucket * 4 + 0x8b, 0xb};
@@ -80,8 +75,6 @@ void TMiniShipView::Draw(RECT* rectBuffer) {
   // re-reads it separately at each blit site instead of hoisting it).
 
   if (shipNode84->admiral != 0) {
-    // An admiral is assigned: draw the per-nation admiral-rank badge from the badge
-    // strip's (nationId + 7)-th 16px row.
     TQuickDrawBlitSurface* badgeStripSurface = g_pMacViewMgr->atlas68c->GetBlitSurface();
     short nationId = g_pSimMgr->GetPlayerCountry();
     short badgeRow = (nationId + 7) * 0x10;
@@ -95,8 +88,6 @@ void TMiniShipView::Draw(RECT* rectBuffer) {
   }
 
   if (shipNode84->taskForce != 0) {
-    // Order-type badge row, keyed by the owning task force's order-kind tag
-    // (TTaskForce::shipOrders). 0 = no badge for that order kind.
     short orderTypeBadgeRowTable[10] = {0, 4, 3, 5, 5, 6, 2, 3, 0, 0};
     short orderKind = static_cast<short>(shipNode84->taskForce->shipOrders);
     short badgeRow = orderTypeBadgeRowTable[orderKind];

@@ -14,10 +14,6 @@ class TSortedList;
 class TArmyStack;
 struct TextStyle;
 
-// Mac BattleRecord (TArmyMgr::AddBattleRecord(BattleRecord&)): one 0x268-byte battle
-// report in TArmyMgr::mapContextActionRecordList. location08 is a province index for land
-// reports and a TZone* for sea reports; the +0x258 tail is the report-marker placement the
-// battle-report layout hook (0x4acb60) stamps.
 struct MapContextActionRecord {
   unsigned char nationIds[2];               // +0x00
   unsigned char reportParticipantIndex;     // +0x02
@@ -39,8 +35,6 @@ struct MapContextActionRecord {
   short listOrdinal;                                  // +0x264
   unsigned char pad266[0x268 - 0x266];
 
-  // TArmyMgr::ReadFrom's EH frame destroys its stack record after ownership moved to the
-  // list, so this normally deletes null.
   ~MapContextActionRecord() {
     delete[] sideChildRecords[0];
     delete[] sideChildRecords[1];
@@ -71,8 +65,6 @@ public:
   virtual void RetreatDefender(TArmyStack* stack,
                                short tileIndex);   // slot 0x0f 0x4a35e0
   virtual void RetreatAttacker(TArmyStack* stack); // slot 0x10 0x4a37b0
-  // Resolves strategic combat between paired units until one side breaks; returns
-  // whether any pairing fought.
   virtual bool StrategicCombat(TArmyStack* stack1,
                                TArmyStack* stack2); // slot 0x11 0x4a3830
   virtual void DoOwnershipChanges();                // slot 0x12 0x4a3bc0
@@ -84,8 +76,6 @@ public:
   // Returns whether the tile's move cost was affordable and committed.
   virtual bool CommitCityActionGateCostIfAffordable(int contextArg); // slot 0x15 0x4a3f30
   virtual void SetOrdersForIdleUnitsOnPendingTile(int mode);         // slot 0x16 0x4a4260
-  // Dispatches on ComputeMapCursorStateIndex: 2 selects, 6 rebuilds the order overlay,
-  // 8 explains a blocked order.
   virtual bool HandleMapClickByComputedCursorState(short tileIndex,
                                                    short mode); // slot 0x17 0x4a4870
   // Civilian-cursor counterpart of HandleMapClickByComputedCursorState.
@@ -110,8 +100,6 @@ public:
   const void* staticTable18;
   // Province owner codes FormStacks caches before moving stacks.
   short perTileOwnerNationCodeCache1c[0x180];
-  // Selects a unit when contextArg names a neighbour of the pending province, otherwise
-  // commits the action cost. 0x004a4fc0.
   void DispatchMapActionForRegionByAdjacency(int contextArg);
 
   short pendingMapActionIndex; // selected province, -1 when none
@@ -127,16 +115,10 @@ public:
   class TArmyStack* enemyStackBattle3a0;
   class TArmyBattle* activeBattleView;
 
-  // Map hotkey 'N': clear active order modes on the nation's stationed army units,
-  // then advance the map interaction selection when no selection remains. 0x004a7590.
   void WakeAll(int nationId);
 
-  // Mac oracle: TArmyMgr::DoTacticalCombat(TArmyStack*, TArmyStack*, long).
-  // Captures both sides and rebuilds the per-unit-type counts used by tactical combat.
   void DoTacticalCombat(TArmyStack* ourStack, TArmyStack* enemyStack, int battleContext);
 
-  // Mac oracle. Releases the cached battle, cleans up units, applies ownership changes
-  // and advances the phase. 0x004a1eb0.
   void EndBattlePhase();
 
   // Select the first matching unit and return how many remain in the other state.
@@ -147,16 +129,12 @@ public:
   // Whether the province holds an idle military unit. 0x004a4550.
   bool AnySelectableUnits(short regionId);
 
-  // Displayed cost of the pending action; CommitCityActionGateCostIfAffordable's sum
-  // without committing it. 0x004a41d0.
   int GetSelectedForceSize();
 
   // Selects a province (-1 clears), resetting its units' order modes. 0x004a45e0.
   void SetSelectedProvince(short cityRecordIndex);
   // 0x004a46d0.
   void ClearProvinceSelectionHighlightsForNation(short nationId);
-  // Next owned or allied province after the selection with an idle unit, or -1.
-  // 0x004a4760.
   short FindNextSelectableProvinceForNation(short nationId);
 
   // ABI: thiscall on the singleton; the bodies ignore `this`.
@@ -177,15 +155,9 @@ public:
   // Mac oracle: ShowSpyReport(long).
   void ShowSpyReport(int cityRecordIndex);
 
-  // Mac oracle (CStr255 outputs become CString). Names the province's strongest
-  // defender (general, admiral or city) and a randomized garrison estimate; returns
-  // false when no adjacent owned region or owned ship covers it. 0x004a5ec0.
   bool GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummary,
                          CString& outGarrisonSummary);
 
-  // Disbands random landing units beyond the fleet's invasion capacity and appends them
-  // to the snapshot side whose nation differs from side 0. The replaced child array is
-  // never freed, as in retail. 0x004a6ef0.
   void TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, int cityIndex,
                                                        struct MapOrderBattleSnapshot* snapshot);
 
@@ -194,8 +166,6 @@ public:
   // Mac oracle. Frees every battle record and clears battlesToReport. 0x004a6df0.
   void CleanUpStacks();
 
-  // Applies a tactical battle's outcome: the winner holds the province, the loser
-  // retreats, and both gain experience (+35/+20, capped at 400). 0x004a5ca0.
   void EndTacticalBattle(TArmyStack* ourStack, TArmyStack* enemyStack,
                                                     unsigned char sideWonFlag, int battleSiteIndex);
 

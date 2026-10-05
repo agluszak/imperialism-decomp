@@ -9,17 +9,10 @@
 // VTABLE: IMPERIALISM 0x0064ab58
 class TStaticText : public TControl {
 public:
-  // Heap-allocated (`new CString()` in the ctor, freed in the dtor) — not an
-  // embedded CString. Confirmed by the ctor/dtor disassembly (operator_new(4)
-  // + CString::CString/~CString + operator_delete) and by
-  // CopyTextTo/SetTextAndMaybeRefresh,
-  // which both dereference it once more than an embedded value would need.
   CString* text;             // 0x84
   int stringResourceGroupId; // 0x88, -1 means no string resource
   int stringResourceIndex;   // 0x8c
   short textAlignmentCode;   // 0x90, -2 left, 1 center, -1 right while drawing
-  // Additional text option written by TJoinSelectorDialog for its native edit control.
-  // No reader has yet distinguished the individual flag bits.
   short textOptionFlags; // 0x92
 
   TStaticText();
@@ -36,15 +29,8 @@ public:
   TObject* ShallowClone() override;     // 0x20 0x48fc00
   void Draw(RECT* rectBuffer) override; // 0x110 0x48ffb0
 
-  // 0x486290 — non-virtual convenience: qualified forward to
-  // SetTextAndMaybeRefresh(text, 0).
   void SetText(CString* text);
 
-  // TStaticText's five new virtuals beyond TControl (which ends at byte 0x1c0).
-  // None of these five are ever called for their return value anywhere in the
-  // binary, and none of the bodies deliberately compute one (Ghidra's
-  // "undefined" reflects an untracked/incidental AL, not a real result) — so
-  // all five are modeled as void, matching observed behavior exactly.
   virtual void SetJustification(short alignmentCode,
                                                bool refreshFlag); // 0x1c4 0x48ff70
   virtual void SetTextAndMaybeRefresh(CString* sharedString,

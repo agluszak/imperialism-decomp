@@ -38,8 +38,6 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// 0x597020 -- composes and dispatches the turn-summary message (scenario tag line +
-// multiplayer game-name line + build version), defined below.
 void ComposeAndDispatchTurnSummaryLocalizedMessage();
 
 IMPLEMENT_DYNCREATE(TMapUberPicture, TMapUberUberPicture)
@@ -97,10 +95,6 @@ void TMapUberPicture::DoPostCreate(int arg) {
   }
 }
 
-// Clears every global backref to the map picture (view-manager slot, animator slot, app
-// root's edge-scroll/active-content) before the shared clip-region teardown; the original
-// tail-jumps straight to TOffLimitsPicture::Free (0x573900), skipping the intermediate
-// TMapUberUberPicture::Free.
 // FUNCTION: IMPERIALISM 0x00596c60
 void TMapUberPicture::Free() {
   if (g_pViewMgr != 0) {
@@ -114,9 +108,6 @@ void TMapUberPicture::Free() {
   TOffLimitsPicture::Free();
 }
 
-// Startup initializers at 0x596870/0x5968a0/0x5968e0 establish the visible positions
-// for the three unit-category pages and the hidden parking position used while swapping
-// pages. Each 8-byte entry is an owner-local CPoint consumed by TView::Locate.
 static CPoint g_MapUberModeSecondaryLayoutScratch_006a45b8(5, 0x1b);
 static CPoint g_MapUberModeLayoutTable_006a4590[4] = {CPoint(0, 0x8f), CPoint(0, 0x92),
                                                       CPoint(0, 0x90)};
@@ -132,8 +123,6 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
       g_pMapContextActionManager->SetSelectedProvince(-1);
     }
 
-    // Mac MapView.rsrc:2013 identifies 'tbr1' as TToolBarCluster and its 'seas' child as
-    // TDropShadowText. Windows reuses that child as 'forc' while army mode is active.
     TToolBarCluster* toolbar =
         static_cast<TToolBarCluster*>(GetWindow()->ResolveControlByTag(kControlTagTbr1)); // 'tbr1'
     if (toolbar != nullptr) {
@@ -357,9 +346,6 @@ void TMapUberPicture::SetActiveMapOrderEntry(TZone* pMapOrderContextZone) {
   this->RefreshMapOrderEntryPanel(refreshedTaskForce);
 }
 
-// Reports whether the active unit category (0=civilian, 1=army, 2=navy) currently has a
-// selection/pending order to act on -- used by TArmyMgr::ComputeMapCursorStateIndex to
-// gate map-click cursor state. 68 bytes, ground-truth-confirmed via decompile.
 // FUNCTION: IMPERIALISM 0x00597a10
 bool TMapUberPicture::HasActiveMapInteractionSelection() {
   switch (this->activeUnitCategoryIndex) {
@@ -459,8 +445,6 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
     }
   }
 
-  // A completed traversal wraps the navy chain once: the failed navy scan cleared the
-  // current cursor, so this second scan starts at g_pMapActionContextListHead.
   if (visitedModes == 7 && !selectionResolved) {
     selectionResolved = TrySelectNextValidMapOrderEntry(false);
   }
@@ -736,9 +720,6 @@ void TMapUberPicture::CreateCivilianWorkOrderAndRegisterSelection(int orderConte
   InvalidateTile(static_cast<short>(orderContext));
 }
 
-// Windows uses the Mac MapView.rsrc:9462 "Navy Maker II" tree for this dialog.
-// The resource exposes one 'num?' control per ship type that is available in the
-// current ruleset; absent controls are intentionally skipped by both versions.
 // FUNCTION: IMPERIALISM 0x00598e10
 void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* portZone) {
   if (portZone == 0) {
@@ -1109,8 +1090,6 @@ void TMapUberPicture::DisplayMiniMap() {
 
 // FUNCTION: IMPERIALISM 0x00599fa0
 void TMapUberPicture::InvalidateMiniMap() {
-  // The original null-checks the receiver: call sites invoke this on a possibly-null
-  // ownerContext without guarding it.
   if (this != 0 && miniMapView != 0) {
     miniMapView->RefreshControl();
   }

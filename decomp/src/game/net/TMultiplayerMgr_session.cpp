@@ -406,9 +406,6 @@ struct TurnEvent3Mode18Packet : NetMessage {
   unsigned char pad15[3];
 };
 
-// IFuzzySet the slot's turn-resume pending bit; when hosting, broadcast the remaining mask
-// as an event-1 packet, and once the mask drains (with a pending event code latched)
-// flush it through the diplomacy turn-event dispatcher.
 // FUNCTION: IMPERIALISM 0x005431a0
 void TMultiplayerMgr::ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(int nationSlot) {
   pendingNationBitmask &= ~(1 << nationSlot);
@@ -479,8 +476,6 @@ void TMultiplayerMgr::EmitTurnEvent3Mode18WithActiveNation() {
   g_pNetMgr006a6014->Send(&packet, true);
 }
 
-// Broadcasts an event-0x10 "time" packet (same minimal payload as event 3) to every nation
-// slot that has both a live network session id and its pending-nation bit set.
 // FUNCTION: IMPERIALISM 0x00544720
 void TMultiplayerMgr::EmitTurnEvent10ForFlaggedNationSlots() {
   for (int slot = 0; slot < kMajorNationSessionSlotCount; ++slot) {
@@ -499,8 +494,6 @@ void TMultiplayerMgr::EmitTurnEvent10ForFlaggedNationSlots() {
   }
 }
 
-// Forwards the idle tick to the routing child handler (the lounge dialog, when one is
-// open) before draining the diplomacy turn-state queue. Always reports "not handled".
 // FUNCTION: IMPERIALISM 0x005447e0
 void TMultiplayerMgr::DoGameDataHunk(TurnEvent2SyncPacket* packet) {
   if (!packet->flag20) {

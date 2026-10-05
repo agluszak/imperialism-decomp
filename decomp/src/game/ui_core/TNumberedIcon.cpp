@@ -35,9 +35,6 @@ void TNumberedIcon::DoPostCreate(int arg) {
   AssignFlags98AndMaybeRefresh(5, true);
   InstallNumberText();
   if (numberTextAc != 0) {
-    // 0x00507511 loads +0x34 before +0x38. MSVC evaluates constructor arguments
-    // right-to-left, so passing the fields directly would load frameHeight first;
-    // sequencing them into locals pins the original order.
     int iconWidth = frameWidth;
     int iconHeight = frameHeight;
     CRect numberBounds(iconWidth - 0x10, iconHeight - 0x10, iconWidth, iconHeight);

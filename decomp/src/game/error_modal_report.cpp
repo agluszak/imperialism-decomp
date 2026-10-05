@@ -3,11 +3,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/global_types.h"
 
-// Builds a formatted diagnostic string
-//   ERROR (<sourceTag>,<codeA>,<codeB>)\n\nPlease record this information:\n
-//   '<context>' (line <lineNumber>) compiled <compileDate> at <compileTime>
-// and presents it through the shared modal-message dialog. `codeA`/`codeB`/
-// `lineNumber` are rendered with the "%d" decimal template.
 // FUNCTION: IMPERIALISM 0x005d48c0
 void FormatAndAssignTurnStateSharedTextFromTemplate(int codeA, int codeB, char* sourceTag,
                                                     char* context, int lineNumber,

@@ -67,10 +67,6 @@ char TNavyToolbarCluster::IsTradeControlAtMinimum() {
   return 1;
 }
 
-// All three dispatches here go through byte 0x3c = slot 0x0f = DoEvent
-// (0x0056972f/0x0056973f/0x0056978a), not slot 0x10 = HandleEvent at byte 0x40.
-// The two are one hop apart: HandleEvent forwards to DoEvent on the same object,
-// while DoEvent forwards to HandleEvent on the next handler.
 // FUNCTION: IMPERIALISM 0x005696f0
 void TNavyToolbarCluster::SetSelectedChildTagAndRefresh(int childTag) {
   CSubViewIterator iterator(this);

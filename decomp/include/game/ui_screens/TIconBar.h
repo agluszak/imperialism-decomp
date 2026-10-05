@@ -18,18 +18,8 @@ public:
   void IIconBar(TView* panel, int* position, int* size, int layoutParam4, int layoutParam5,
                 short pictureId, int numIcons);
 
-  // TNoHilitePicture's own slice ends at 0x94 (see TMegaPicture.h). RTTI oracle
-  // confirms sizeof(TIconBar) == 0x9c.
-  //
-  // iconAtlasFrame94: atlas frame/row index into the icon strip bitmap (atlas674), set by
-  // SetPictureRsrcID as nPictureId - 700; Draw reads it as
-  // iconAtlasFrame94*0x20 to pick the source column.
   short iconAtlasFrame94;
-  // numIcons96: tick/segment count. Draw divides the bar's content width by
-  // (numIcons96+1) to get the spacing and draws numIcons96 copies of the atlas frame.
   short numIcons96;
-  // iconSpacing: per-tick spacing computed by Draw (content width /
-  // (numIcons96+1), clamped to 0x20); TIconSlider uses it for value/position conversion.
   short iconSpacing;
   unsigned char pad9a[2];
 

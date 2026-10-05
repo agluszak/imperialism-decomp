@@ -179,12 +179,6 @@ void TTechItemView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
         LoadUiStringAndDispatchSharedMessageCommand(0x274f, 9, purchaseButton);
       }
     } else if (sourceHandler->controlTag == kControlTagDesc) {
-      // Turn-event dialog root for the tech-history popup (a TWindow, per this session's
-      // established dialog-node pattern). Its 'DLOG' child is restyled via
-      // TTechHistoryView::StuffValues; the rest of the modal sequence
-      // matches the pattern already ported elsewhere this session
-      // (DispatchUiRuntimeMessage102CAndRefreshActiveView, TArmyUnitView::
-      // RenameUnit).
       TWindow* node = static_cast<TWindow*>(
           g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTechnologyHistory));
       TTechHistoryView* historyView =

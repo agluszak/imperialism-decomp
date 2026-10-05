@@ -29,9 +29,6 @@ public:
   // NOOP: verified empty in original 0x0049f022 (no standalone TAnimation::TAnimation body exists: construction is fully inlined into CreateObject 0x0049f020; that address is its operator-new call site)
   TAnimation() {}
 
-  // Post-construction init used by the tactical selection marker (0x5a9bb0): owner
-  // view, screen rect, frame count, mode word, tick interval, registry tag.
-  // 0x0049f0c0, __thiscall.
   void IAnimation(class TView* ownerViewArg, RECT* rect, short frameCountArg,
                   short frameResourceBaseIdArg, int ticksPerFrameArg, int tag);
 };

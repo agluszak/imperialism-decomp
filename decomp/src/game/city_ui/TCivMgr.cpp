@@ -385,10 +385,6 @@ void TCivMgr::SelectUnit(TCivUnit* entryContext, bool refreshCommandPanel) {
   if (refreshCommandPanel) {
     mapUberPicture = g_pViewMgr->mapUberPictureF0;
     if (mapUberPicture != nullptr) {
-      // categoryPages[] is a heterogeneous array of toolbar subtypes typed generically as
-      // TView* (see TMapUberPicture.h's categoryPages[] comment for the evidence); the
-      // civilian page is a real TCivToolbar, so this is a legitimate downcast, not a
-      // cross-hierarchy type pun.
       static_cast<TCivToolbar*>(
           mapUberPicture->categoryPages[mapUberPicture->activeUnitCategoryIndex])
           ->SetSelectedUnit(entryContext);
@@ -557,8 +553,6 @@ void TCivMgr::HandleCivilianReportDecision(TCivUnit* pCivilianOrderEntry) {
 
     TMapUberPicture* refreshTarget = g_pViewMgr->mapUberPictureF0;
     if (refreshTarget != nullptr) {
-      // Same downcast as TCivMgr::SelectUnit -- categoryPages[civilian] is
-      // a real TCivToolbar (see TMapUberPicture.h's categoryPages[] comment).
       static_cast<TCivToolbar*>(
           refreshTarget->categoryPages[refreshTarget->activeUnitCategoryIndex])
           ->SetSelectedUnit(pCivilianOrderEntry);
@@ -860,10 +854,6 @@ void TCivMgr::MoveAndRedrawUnit(short nNewTileIndex,
     g_pViewMgr->mapUberPictureF0->RedrawTile(nNewTileIndex);
   }
 }
-// specific completion kind: 5=rail section, 6=depot, 7=port, 8=discovery/prospecting,
-// 10=development-tier advance, 12=city/building completion, 13=tile activity byte), then
-// dispatches redraw invalidation for the affected tiles/cities when the localized map UI
-// is active (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone).
 // FUNCTION: IMPERIALISM 0x004d4390
 void TCivMgr::ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
   switch (order->unitOrder - kUnitOrderLayRail) {

@@ -22,9 +22,6 @@ CTemporaryRegion::CTemporaryRegion() {
   }
 }
 
-// If another temp region already sits in the cache, really dispose ours
-// (DisposeRgn spelled out, as in the original); otherwise park the handle for
-// the next CTemporaryRegion.
 // FUNCTION: IMPERIALISM 0x00497390
 CTemporaryRegion::~CTemporaryRegion() {
   if (g_pTemporaryRegionCache != 0) {

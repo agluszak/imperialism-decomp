@@ -15,12 +15,8 @@ TDipDlgCluster::TDipDlgCluster() {}
 // FUNCTION: IMPERIALISM 0x00584140
 TDipDlgCluster::~TDipDlgCluster() {}
 
-// True when either trade-policy toggle in the hosting dialog is selected. Only the
-// subsidy control is asserted non-null; a missing sanction control just reads as false.
 // FUNCTION: IMPERIALISM 0x00584160
 char TDipDlgCluster::IsTradeControlAtMinimum() {
-  // 'subs' is already owned by resource_manifest_tags.h (scenario-script subsidy
-  // instruction); one declaration per FourCC value, so the control lookup reuses it.
   TToggleButton* subsidyToggle =
       static_cast<TToggleButton*>(ownerContext->ResolveControlByTag(kManifestTagSubs));
   if (subsidyToggle == 0) {

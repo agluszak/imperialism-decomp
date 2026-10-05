@@ -35,14 +35,10 @@ public:
                           TTacticalPlayer* enemyPlayer); // 0x5a5540, Mac oracle
   void SetTargeting(NavyTargeting targeting);            // 0x5a5b90
 
-  // The navy battle initializer rotates the six base movement costs into this
-  // direction-indexed table from a random starting direction.
   int moveCostRotationStart;
   int neighborMoveCostByDirection[6];
 };
 ASSERT_SIZE(TNavyBattle, 0x94);
 
-// 0x5a59a0: tileIndex -> (row = tileIndex/0x1d, doubled column = (row&1) + (tileIndex%0x1d)*2)
-// for the 29-wide tactical hex grid. Genuine __stdcall free function (pure arithmetic).
 void __stdcall ConvertHexTileIndexToRowAndDoubleColumn(TacticalTileIndex tileIndex,
                                                        unsigned int* outRow, int* outCol2X);

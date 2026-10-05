@@ -24,12 +24,8 @@ public:
 
   // Original object size is 0xac. Windows has no accesses in the +0xa0 dword.
   unsigned char paddingA0[4];
-  // 0xa4 -- selected production-row index (0..8), set from the 'rec0'..'rec8'/'sele' tab
-  // controls in DoEvent; a 16-bit store in the original (0x4cf350), not a full int.
   short selectedRowIndex;
   char pad_a6[2];
-  // Selected city production order. SetUnit indexes
-  // city94->buildOrderSlots at selectedRowIndex.
   TUnitOrder* selectedUnitOrder;
 };
 ASSERT_SIZE(TArmoryView, 0xac);

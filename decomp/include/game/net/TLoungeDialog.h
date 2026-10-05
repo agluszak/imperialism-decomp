@@ -21,13 +21,8 @@ public:
   // NOOP: verified empty in original 0x0054d686 (no standalone TLoungeDialog::TLoungeDialog body exists: CreateObject 0x0054d650 inlines this default ctor, calling the TNoHilitePicture base ctor directly at that site)
   TLoungeDialog() {}
 
-  // 0x54e4c0: refresh the lounge's 'map '/'mess'/'okay' controls for the current
-  // scenario/session context (turn-event 0xE receive tail; the original tolerates a
-  // null `this`).
   void YouHaveNewGameData();
 
-  // Offer to replace a remote human nation with an AI. Without Ctrl this queues the
-  // normal pose message; Ctrl+host opens the immediate replacement confirmation.
   void NationalClick(int nationSlot); // 0x54dfc0
 
   int selectedNationSlot; // 0x94, initialized to -1 after the lounge controls are bound

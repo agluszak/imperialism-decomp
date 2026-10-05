@@ -84,10 +84,6 @@ void TCivUnit::WriteTo(TStream* stream) {
   stream->WriteBytes(&remainingTurns, 2);
 }
 
-// Moves this unit between two tiles' civilian-order chains (terrainStateTable[tile-
-// Index06].firstCivilianOrder20, threaded via nextAtLocation/previousAtLocation): detaches from the
-// current tile (if any) unlinking via previousAtLocation's prev-pointer role, then prepends to
-// the new tile's chain (if anchorIndex isn't -1 = none).
 // FUNCTION: IMPERIALISM 0x005c2b70
 void TCivUnit::MoveTo(short newTileIndex) {
 

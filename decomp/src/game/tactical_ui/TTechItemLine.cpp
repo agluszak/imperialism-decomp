@@ -12,8 +12,6 @@ void TTechItemLine::ITechItemLine(short rowArg, short colArg, int* bounds, int n
   techId14 = techId;
 }
 
-// Virtual line factory: builds this tech line's TTechItemView, sized by the inherited
-// layoutWidth/layoutHeight bound pair and parameterized by this line's nation slot and tech id.
 // FUNCTION: IMPERIALISM 0x005b1160
 void TTechItemLine::InstallViews(TView* panel, int* offsetLayout) {
   TTechItemView* view = new TTechItemView();

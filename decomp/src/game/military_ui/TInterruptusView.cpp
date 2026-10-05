@@ -26,9 +26,6 @@ void TInterruptusView::Draw(RECT* rectBuffer) {
   countText.Format(g_szDecimalFormat, count);
 
   CString templateText;
-  // Same group-0x273c template lookup as TItemBoyView but index 0x1e (one extra
-  // substitution slot for the interrupting nation's name below), matching the
-  // extra scanBracketExpressions token this override passes.
   g_pSimMgr->GetString(0x273c, 0x1e, &templateText);
 
   short minorIndex = battleDetail->strengthBucket;

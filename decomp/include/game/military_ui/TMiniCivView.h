@@ -6,8 +6,6 @@
 
 class TCivUnit;
 
-// Per-civilian-unit info line view (the "mini civ" row): shows the unit's current
-// order/state as assembled text (unitText88).
 // VTABLE: IMPERIALISM 0x0064d9d0
 class TMiniCivView : public TControl {
 public:
@@ -23,14 +21,8 @@ public:
   // Assembled multi-line status text ("<order line>\n...").
   CString unitText88;
 
-  // Trivial in-class ctor (heuristic 116): the factory's `new TMiniCivView()`
-  // (TMiniCivLine::InstallViews 0x4ab740) inline-expands the TControl base
-  // ctor call, the unitText88 CString ctor, and the vptr store.
-  // NOOP: verified empty in original 0x004ab8f6 (no standalone TMiniCivView::TMiniCivView body exists: CreateObject 0x004ab8c0 inlines this default ctor, calling the TControl base ctor directly at that site)
   TMiniCivView() {}
 
-  // MacApp second-phase init (0x4ab970): frames the control, binds the civ unit,
-  // and assembles unitText88 from the unit's UnitOrder state.
   void InitializeForCivilianUnit(TView* panel, int* offsetLayout, int* sizeLayout,
                                  TCivUnit* civUnit);
 };

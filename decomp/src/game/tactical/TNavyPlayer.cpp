@@ -36,9 +36,6 @@ void TNavyPlayer::INavyPlayer(TTaskForce* force, char isOurSide, bool watchFlag,
   cursorIndex = 0;
   taskForce28 = force;
 }
-// Writes each surviving ship's losses back to its source fleet (nation drops
-// to the unit's remaining strength), then marks this side's fleet order node
-// eliminated and prunes its order head.
 // FUNCTION: IMPERIALISM 0x0059edd0
 void TNavyPlayer::ApplyChanges(unsigned char sideWonFlag) {
   (void)sideWonFlag;
@@ -61,8 +58,6 @@ void TNavyPlayer::RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) {
   }
 }
 
-// Takes over a captured ship: prepends it to this side's list, flips its side marker,
-// and hands its source fleet's order node to this nation.
 // FUNCTION: IMPERIALISM 0x0059eea0
 void TNavyPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
   unitList4->listState.AddHead(unit);

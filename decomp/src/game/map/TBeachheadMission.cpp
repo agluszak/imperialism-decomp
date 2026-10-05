@@ -22,8 +22,6 @@
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 
-// The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
-//   CArchive& AFXAPI operator>>(CArchive&, TBeachheadMission*&)
 IMPLEMENT_SERIAL(TBeachheadMission, TControlSeaZoneMission, 1)
 
 // FUNCTION: IMPERIALISM 0x0053a390
@@ -61,14 +59,6 @@ bool TBeachheadMission::Matches(eMissionType missionType, int key, TZone* zoneCo
          key == parentMission3c->targetProvince30 && zoneContext == missionTargetZone;
 }
 
-// this->parentMission3c->targetProvince30 (city/region record index) reads
-// g_pGlobalMapState->cityScoreTable[cityId].ownerNationCode00. If that owner has an outdated
-// war-relation timestamp with this mission's nation (TDiplomacyMgr::IsNationPairAtWar's slot
-// 0x48 sibling), queues map-order type 5 on the passed-in TTaskForce* directly. Otherwise, if
-// the two nations aren't currently at war (IsNationPairAtWar/IsNationPairAtWar),
-// applies the diplomacy policy state via
-// TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks (real vtable slot 0x1d0/116),
-// unless the owner's diplomacyPolicyByNation entry already carries the declaration-of-war code.
 // FUNCTION: IMPERIALISM 0x0053a800
 void TBeachheadMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
   signed char ownerCode =
@@ -101,8 +91,6 @@ TMission* TBeachheadMission::GetArmyMission() {
 
 // FUNCTION: IMPERIALISM 0x0053a940
 char TBeachheadMission::SmokeEmIfYouGotEm() {
-  // ClearBlockadePortMissionChildOrderLinksIfReady: clears each queued
-  // order-child's owner-back-pointer, then frees the chain.
   if (flag10 == 0 && navyState28 != 0) {
     return 0;
   }

@@ -186,9 +186,6 @@ void TNetMgr::HandleError(int errorCode) {
   }
 }
 
-// Scratch slot holding the resolved 'prot' control for the duration of
-// ResetRuntimeProtocolOptionsAndRebuildSelectionSource; set on entry, cleared on exit.
-// No other reader found yet.
 // FUNCTION: IMPERIALISM 0x005e39a0
 unsigned char TNetMgr::ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TView* provider) {
   g_NetworkSessionManager006a5f60.activeProtocolControl =
@@ -314,8 +311,6 @@ void TNetMgr::FreeTurnEventPacketBuffer(TurnEventQueuePacket* packet) {
   GlobalFree(packet);
 }
 
-// Pull a locally queued packet first; otherwise receive from DirectPlay, consuming
-// system notifications internally until an application packet is available.
 // FUNCTION: IMPERIALISM 0x005e3f30
 TurnEventQueuePacket* TNetMgr::PopNextTurnEventPacketOrProcessSpecialQueueRecords() {
   if (g_NetworkSessionManager006a5f60.directPlayInterface04 == 0) {
@@ -376,8 +371,6 @@ int TNetMgr::GetSessionActiveNationId() {
   return g_NetworkSessionManager006a5f60.localPlayerId60;
 }
 
-// Empty session-phase-tag-changed hook (RET 4); invoked when TMultiplayerMgr sets the
-// 'init' phase tag.
 // FUNCTION: IMPERIALISM 0x005e42a0
 void TNetMgr::NoOpDialogModeTagChangedHook(int arg) {
   (void)arg;

@@ -20,8 +20,6 @@ IMPLEMENT_DYNCREATE(TShipLine, TLineData)
 void TShipLine::IShipLine(short rowArg, short colArg, int* bounds,
                           TMapOrderChildLinkNode* childLink, TTaskForce* force) {
   ILineData(rowArg, colArg, bounds);
-  // The payload is read between the two stores, as the original does -- it reuses the
-  // register holding `childLink` rather than re-loading it at the end.
   childLink14 = childLink;
   TShip* ship = childLink->payload;
   taskForce18 = force;

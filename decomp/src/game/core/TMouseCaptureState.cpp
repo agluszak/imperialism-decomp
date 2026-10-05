@@ -14,8 +14,6 @@ VOID CALLBACK NotifyGlobalCaptureOwnerState1WithCachedCoords(HWND hwnd, UINT mes
   (void)tickCount;
   TControl* captured = g_McAppMouseCaptureState.capturedControl;
   if (captured != 0) {
-    // Ground truth passes a zeroed stack point through the owner-relative conversion and
-    // discards it; only the dispatch side effects matter on the repeat tick.
     CPoint scratchPoint(0, 0);
     captured->WindowToLocal(&scratchPoint);
     g_McAppMouseCaptureState.lastPoint = g_McAppMouseCaptureState.currentPoint;
@@ -25,10 +23,6 @@ VOID CALLBACK NotifyGlobalCaptureOwnerState1WithCachedCoords(HWND hwnd, UINT mes
   }
 }
 
-// State-side twin of TControl::DoMouseCommand (no static callers in
-// the original binary; kept by the linker). Latches the capture on `control`, seeds all
-// three cached points from `point`, sends the state-0 (begin) picture-resource command,
-// and arms the shared 17ms repeat timer.
 // FUNCTION: IMPERIALISM 0x00489bf0
 void TMouseCaptureState::BeginMouseCaptureForControlAndStartRepeatTimer(CPoint* point,
                                                                         TControl* control) {
@@ -54,10 +48,6 @@ void TMouseCaptureState::NotifyCaptureOwnerState1AndMaybeUpdateCoords(unsigned i
   CPoint ownerRelativePoint(x, y);
   capturedControl->WindowToLocal(&ownerRelativePoint);
   lastPoint = currentPoint;
-  // Ground truth gates this on bit 0x20 of nFlags (MK_XBUTTON1 in the standard WM_MOUSEMOVE
-  // flag set); the exact intent of skipping the coordinate update on that bit isn't recovered.
-  // The stored point is the owner-relative one (0x489cf5 reloads the converted stack local,
-  // not the raw args).
   if ((nFlags & 0x20) == 0) {
     currentPoint = ownerRelativePoint;
   }

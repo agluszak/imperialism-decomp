@@ -5,8 +5,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 
-// Variadic so assert-style call sites (which push a source path + line) call this
-// directly and clean the stack, matching the original — the body ignores all args.
 // FUNCTION: IMPERIALISM 0x0049d620
 int TemporarilyClearAndRestoreUiInvalidationFlag(...) {
   int previous = SetGlobalUiInvalidationFlagAndReturnPrevious(0);

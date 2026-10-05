@@ -31,9 +31,6 @@ IMPLEMENT_DYNCREATE(TStatusPicture, TPicture)
 void TStatusPicture::DoPostCreate(int arg) {
   TPicture::DoPostCreate(arg);
 
-  // One TPicture child per eligible nation slot ('pic0'-'pic6'); the picture tag only
-  // advances on rows that actually get a child (ineligible rows are skipped without
-  // consuming a tag), matching the original's separate row/tag counters.
   unsigned int pictureTag = kControlTagArmyPlacardFirst; // 'pic0'
   int rowY = 0x50;
   for (unsigned int nationSlot = 0; nationSlot < 7; ++nationSlot) {
@@ -62,8 +59,6 @@ void TStatusPicture::DoPostCreate(int arg) {
   RefreshControl();
   CalcStandardGraph();
 
-  // 'curs' is also installed as the shared cursor-hint panel, same as 'labl' in
-  // TLoungeDialog::DoPostCreate.
   TInfoBarText* cursControl = static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagCurs));
   g_pCursorControlPanel = cursControl;
   cursControl->AssertValid();
@@ -144,8 +139,6 @@ void TStatusPicture::Draw(RECT* rectBuffer) {
     SetQuickDrawTextOriginWithContextOffset(0x9a, rowY - 8);
     DrawTextWithCachedQuickDrawStyleState(&label);
 
-    // Horizontal score bar for this row: filled once in fill color 0, then re-filled one
-    // pixel up/left in the nation's turn-event palette color for a 1px drop-shadow effect.
     RECT swatch = {0x98, rowY + 1, static_cast<short>(values94[i]) + 0x98, rowY + 13};
     SetQuickDrawFillColor(0);
     FillRectWithQuickDrawBrushAndContextOffset(&swatch);
@@ -165,9 +158,6 @@ void TStatusPicture::DrawBar(short rowY, short width, short nationSlot) {
   FillRectWithQuickDrawBrushAndContextOffset(&swatch);
 }
 
-// Fills values94[nation] with the per-nation metric selected by comparisonMode90 (and
-// pictureIds[nation] with the nation slot, or -1 when the slot is ineligible), sorts the
-// seven entries, then rescales them so the largest is at most 400.
 // FUNCTION: IMPERIALISM 0x00594900
 void TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale() {
   for (int i = 0; i < 7; ++i) {
@@ -226,8 +216,6 @@ void TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale() {
 
 // FUNCTION: IMPERIALISM 0x00594c00
 void TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets() {
-  // Selection sort: move the highest-value entry with a live id to the front on each pass;
-  // empty (-1) ids sink toward the end.
   int* valOuter = values94;
   short* idOuter = pictureIds;
   int outer = 1;

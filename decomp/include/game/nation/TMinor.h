@@ -9,8 +9,6 @@ struct TMinorForeignResourceYieldByMajorNation {
 
 ASSERT_SIZE(TMinorForeignResourceYieldByMajorNation, 0x0e);
 
-// Minor-power nation row (g_apTerrainTypeDescriptorTable[7..], g_apSecondaryNationStateSlots).
-// Inherits the TCountry prefix (0x94) and extends with minor-only tail state to 0x2dc.
 // VTABLE: IMPERIALISM 0x00653c90
 class TMinor : public TCountry {
 public:
@@ -38,12 +36,8 @@ public:
   char IsInConsortiumWith(short policyCode) override;
   void AddNoticeFrom(short sourceNation, short actionCode) override;
 
-  // slot 0x2a (+0xa8), TMinor's first new virtual — vtable 0x653c90+0xa8 -> 0x4e46a0,
-  // dispatched virtually by HandleTurnResumeStateTelemetry (0x5434 0e region).
   virtual void InitializeTradeStatus(void);
   virtual void SetTradeBids(void); // slot 0x2b 0x4e4bd0
-  // Slot 0x2c: TForeignMinister::DoProposeTreaties dispatches it through the vtable
-  // (CALL [vtbl+0xb0]) on the minor-nation array element, not as a direct call.
   virtual char WouldAcceptOffer(NationSlot targetNationSlot,
                                 DiplomacyProposalCodeStorage proposalCode); // 0x4e4ff0
   virtual void HandleNetworkPortConstructionOrder(int nationId);            // slot 0x2d 0x4e5730
@@ -113,12 +107,6 @@ public:
   virtual void AssimilateTroopsOf(int priorOwnerNationSlot);    // slot 0x33 0x4e6040
   virtual void ChangeArmyOwnership(int destinationNationSlot);  // slot 0x34 0x4e6520
 
-  // Full (re)initialization of a minor nation's per-session state: nation identity +
-  // owned-region list, diplomacy policy defaults, the five per-resource tables and
-  // all 23 resource-by-major-nation yield rows cleared, need counters recounted from owned
-  // map tiles, home tile selected (flagged tile, else a random valid candidate) with
-  // its port zone ensured, and the per-slot diplomacy random thresholds and save
-  // fields set from the 16-way nation-slot table. 0x4e3830, __thiscall, RET 4.
   void IMinor(NationSlot nationSlot);
 
 private:
@@ -139,14 +127,8 @@ private:
   // The four persisted consortium nation slots consumed by IsInConsortiumWith.
   short diplomacySaveFields[4]; // 0x134
 public:
-  // Resource-edge counts on this minor's independently controlled tiles. Serialized
-  // starting with save format 0x3a and ranked by TInfoPanelView::SetInfoCountry when
-  // displaying the minor's principal raw resources.
   short independentResourceCountByType[kResourceKindCount]; // 0x13c
 private:
-  // Resource output on this minor's territory whose secondary owner is a great power.
-  // The first table is the per-resource total; the second preserves the same output
-  // split by resource kind and controlling major nation.
   short foreignControlledResourceYieldByType[kResourceKindCount]; // 0x16a
   TMinorForeignResourceYieldByMajorNation
       foreignControlledResourceYieldByTypeAndMajorNation[kResourceKindCount]; // 0x198

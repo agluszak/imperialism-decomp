@@ -16,16 +16,8 @@ public:
 
   TRadioTextCluster();
 
-  // Mac CodeWarrior oracle: AddItem(unsigned long, int, const char*, int, int).
-  // Creates, attaches, captions, and enables one TRadioText child. 0x005798a0.
   class TRadioText* AddItem(unsigned long tag, int value, const char* text, int height, int bottom);
 
-  // Non-virtual: 0x5797c0. Shared "selectable text option" primitive used directly (not
-  // through the vtable) by several dialog builders (country/protocol/difficulty pickers)
-  // that construct a TRadioTextCluster of TRadioText children. Syncs selectedTag88 to
-  // `tag`, then walks childList marking the TRadioText child whose controlTag matches
-  // as selected (isSelectedOption) and clearing the others, refreshing each that
-  // changed (unless tag == 0).
   void SetSelectedTextOptionByTag(int tag, bool refreshOnChange);
 
   int selectedTag88;         // 0x88 — DoPostCreate seeds 'nada'

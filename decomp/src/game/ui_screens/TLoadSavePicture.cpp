@@ -147,9 +147,6 @@ void TLoadSavePicture::RefreshSlotPreviewFromSaveFile(short slotMode) {
   unsigned char slotMetadata[0x20];
   fread(slotMetadata, 1, 0x20, file);
   fread(tileOwnerTagTable, 1, 0x1950, file);
-  // Turn number (year = turnNumber + 0x717, used below) and three more header fields, whose
-  // exact semantics beyond turnNumber and the pendingNationByte assignment aren't confirmed
-  // yet: two single bytes and a trailing 0x20-byte record.
   short turnNumber;
   fread(&turnNumber, 1, 2, file);
   unsigned char oneByteFieldA;
@@ -186,9 +183,6 @@ void TLoadSavePicture::RefreshSlotPreviewFromSaveFile(short slotMode) {
 
 namespace {
 
-// Save-file header record: both header readers reserve the full 0x40 bytes on the stack
-// (sub esp,0x40 at 0x56d7d4 / the 0x48 local area at 0x56da65) but only fread the first
-// 0xc bytes to reach scenarioIndex.
 struct SaveFileHeader {
   unsigned char pad0[8];
   int scenarioIndex; // +0x08
@@ -199,8 +193,6 @@ struct SaveFileHeader {
 
 // FUNCTION: IMPERIALISM 0x0056cd10
 void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  // The original never calls a base-class DoEvent in any path, so none is modeled here
-  // either.
   if (commandId == 0xd) {
     short newSlot = static_cast<short>(sourceHandler->controlTag - kControlTagSlt0);
     if (newSlot != selectedSlot92) {
@@ -223,8 +215,6 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         selectedSlot92 = newSlot;
         RefreshSlotPreviewFromSaveFile(newSlot);
       } else if (selectedSlot92 == -1) {
-        // Enter "rename" mode: swap the clicked slot's static text label for a live edit
-        // box seeded with its current text.
         CString slotText;
         TStaticText* slotControl = static_cast<TStaticText*>(sourceHandler);
         slotControl->AssertValid();
@@ -303,10 +293,6 @@ void TLoadSavePicture::DoKeyEvent(TToolboxEvent* event) {
 
 namespace {
 
-// The whole save flow tests g_pSimMgr->multiplayerSessionRole through Boolean-returning inline
-// helpers: every original site materializes the comparison into a byte register
-// (sete/setne + test al,al) before branching, the Mac-style unsigned-char Boolean shape
-// under /Ob1.
 static bool IsMultiplayerFlowHosting() {
   return g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
 }
@@ -317,14 +303,6 @@ static bool IsMultiplayerFlowActive() {
 
 } // namespace
 
-// Save/load-slot confirm flow. No slot selected: pose the "pick a slot" prompt when
-// saving, else do nothing. Load picture: after the confirm prompt (skipped when the
-// setup mode is already 1), refresh the owner panel, rebuild the slot's save path with
-// the mult/slot prefix, and open the document when the file exists. Save picture:
-// fetch the name typed into the 'slot' edit control (defaulting empty text to the
-// mapped flavor string 0xd), publish it to the scenario-name buffer, then run the
-// multiplayer-aware or plain save driver and re-post turn-flow command 100. Both
-// completed paths reset the audio cue pools and schedule a random cue.
 // FUNCTION: IMPERIALISM 0x0056d2a0
 void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
   if (selectedSlot92 == -1) {
@@ -439,14 +417,6 @@ void LoadAndFormatMappedFlavorTextRecordsFromStream(int* outSlot, int targetGame
   }
 }
 
-// Top-level save-game driver. mode 0xa1 = autosave slot "A"; 0xa2 = autosave without
-// marking the document saved; 0..7 = numbered slot. When hosting
-// (multiplayerSessionRole == kSessionRoleHost) an
-// autosave first rebinds to the numbered slot whose save file carries the current
-// scenario id, and the scenario display name (resource 0x2758/9) is published to
-// g_ScenarioSaveNameBuffer_006A2178 for the slot picker. After a successful manual save
-// in multiplayer the flow dispatches the 'save' game-state event and deletes a stale
-// autosave of the same scenario.
 // FUNCTION: IMPERIALISM 0x0056da50
 void __cdecl SaveGameWithModeAndOptionalLabel(int mode, char* label) {
   bool markSaved = true;
@@ -541,8 +511,6 @@ void __cdecl SaveGameWithModeAndOptionalLabel(int mode, char* label) {
   }
 }
 
-// Build the slot's save path (same recipe as BuildSavePathStringForMode) and, when the
-// file exists, open it as the main document; returns whether the load was kicked off.
 // FUNCTION: IMPERIALISM 0x0056df40
 unsigned char __cdecl BuildSaveSlotPathAndProbeMetadata(int slot, const char* label) {
   CString path;

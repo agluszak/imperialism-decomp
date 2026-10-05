@@ -2,9 +2,6 @@
 
 #include "game/ui_core/TFloatWindow.h"
 
-// Floating in-game help window: same 0xa0 layout as TFloatWindow (adds no fields).
-// On Close (close/reset) it also clears g_pHelpMgr's pending general-help
-// dialog-view slot. RTTI: classTHelpWindow @ 0x00656f98, base TFloatWindow.
 // VTABLE: IMPERIALISM 0x006572c0
 class THelpWindow : public TFloatWindow {
 public:

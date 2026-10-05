@@ -1,7 +1,5 @@
 #pragma once
 
-// Command IDs of the retail main menu (MENU 128) and its accelerators. The developer
-// Cheat/Debug/Mapper menus are compiled into the retail build.
 enum MenuCommandId {
   kCmdStartNextPhase = 0x8003,
   kCmdResetPalette = 0x8009,

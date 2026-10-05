@@ -13,8 +13,6 @@ public:
   DECLARE_DYNCREATE(TDocument)
   // FUNCTION: IMPERIALISM 0x00486380
   virtual ~TDocument() override {} // slot 0x01 (scalar deleting destructor)
-  // Mac oracle: TFileBasedDocument::DoRead / DoWrite. The TDocument defaults are
-  // genuine no-ops; concrete file-based documents override both slots.
   virtual void DoRead(ArchiveStreamAdapter* file, unsigned char flags);  // slot 0x0a 0x486530
   virtual void DoWrite(ArchiveStreamAdapter* file, unsigned char flags); // slot 0x0b 0x486550
 

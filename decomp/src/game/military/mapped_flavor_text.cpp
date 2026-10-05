@@ -21,9 +21,6 @@ CString BuildSharedStringFromMappedFlavorTextIndex(short variantIndex) {
 void scanBracketExpressions(TSimMgr* ctx, CString* out, const char* input, ...) {
   (void)ctx;
   CString* result = out;
-  // Bracket tokens are one-based: [1] selects the first variadic string. The retail
-  // implementation indexes from the input parameter itself, so the digit is the direct
-  // stack-slot offset and [0] (though not used by game text) denotes the template.
   const char* const* args = &input;
   *result = CString(g_szEmptyString);
 
@@ -71,8 +68,6 @@ void scanBracketExpressions(TSimMgr* ctx, CString* out, const char* input, ...) 
 // FUNCTION: IMPERIALISM 0x00580060
 void __cdecl BuildUiMessageTextFromBracketTemplate(TSimMgr* sim, CString* out, int groupA,
                                                    int indexA, int groupB, int indexB) {
-  // groupB/indexB are read through the (&groupA)[] pair table below when the template
-  // contains "[1]"; they are never referenced by name.
   (void)groupB;
   (void)indexB;
   *out = CString(g_szEmptyString);
@@ -131,8 +126,6 @@ char* __cdecl AppendInterNationEventSummaryTextEntry_Impl(TSimMgr* sim, const ch
   (void)token4;
   stretch<char> sink;
   stretch<char>* out = &sink;
-  // Tokens are 1-indexed relative to the template parameter (bracket digit '1' selects
-  // token1), matching scanBracketExpressions' variadic idiom.
   const char* const* args = &templateText;
   int idx = 0;
   char ch;
@@ -187,12 +180,6 @@ char* __cdecl AppendInterNationEventSummaryTextEntry_Impl(TSimMgr* sim, const ch
   return sink.Detach();
 }
 
-// Expands a bracket-token template loaded from TSimMgr::GetString into a growable char
-// buffer. Literal characters are copied through; each "[N]" (N an ASCII digit) selects the
-// N-th trailing (codeGroup, offset) argument pair, resolves it through GetString, and — when
-// the digit is followed by a lowercase format letter — runs the result through
-// TLanguageMgr::Localize before appending. Returns the accumulated buffer (which the inlined
-// stretch<char> teardown then frees, matching the original's captured-then-freed pointer).
 // FUNCTION: IMPERIALISM 0x005804f0
 char* ExpandBracketMappedStringToSinkCallback(TSimMgr* sim, int /*unused*/, int templateOffset,
                                               int templateCodeGroup, ...) {

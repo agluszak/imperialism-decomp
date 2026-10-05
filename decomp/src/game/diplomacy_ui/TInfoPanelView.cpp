@@ -34,8 +34,6 @@ void TInfoPanelView::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
   diplomacyMapView = static_cast<TDiplomacyMapView*>(ownerContext);
 
-  // Resource tag array for the four "ovr*" nation labels (ovr0/ovr4/ovr1/ovr2)
-  // as laid out by the original instruction sequence.
   const short kOvrTagOffsets[4] = {0, 4, 1, 2};
   for (int i = 0; i < 4; i++) {
     TView* child = ResolveControlByTag(kControlTagOvr0 + kOvrTagOffsets[i]);

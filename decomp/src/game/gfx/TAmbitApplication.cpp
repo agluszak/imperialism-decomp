@@ -24,16 +24,11 @@
 // the base's. The implicit destructor the compiler gives this class is what the scalar
 // deleting destructor calls, which is the same shape.
 
-// Mac-oracle name TAmbitApplication::DoSetupMenus() — a no-op on Windows (there is no
-// menu bar to rebuild). Tentative attribution; the slot is a bare RET in the original.
 // FUNCTION: IMPERIALISM 0x00414770
 void TAmbitApplication::DoSetupMenus() {}
 
 // FUNCTION: IMPERIALISM 0x00493250
 unsigned int GetTickCountDiv16() {
-  // 0x00493250 calls through the WINMM timeGetTime import at 0x006ab5fc, not KERNEL32
-  // GetTickCount: timeGetTime resolves to 1ms under timeBeginPeriod, GetTickCount only to
-  // the scheduler tick, and the >> 4 turns this into the game's ~16ms tick counter.
   return timeGetTime() >> 4;
 }
 
@@ -153,10 +148,6 @@ void TAmbitApplication::WriteTo(TStream* stream) {
   stream->WriteBytes(&languagePackId50, 4);
 }
 
-// MacApp TAmbitApplication::HandleCursor(CPoint, Region**): on the map-style turn-event
-// screens, auto-scroll the map picture when the cursor sits within 4px of the viewport
-// edge (throttled to one scroll per 3 tick16 units); otherwise fall through to the base
-// hook. The edge mask is 8=left, 4=right, 1=top, 2=bottom.
 // FUNCTION: IMPERIALISM 0x0049e320
 void TAmbitApplication::HandleCursor(int x, int y, void* cursorRegion) {
   if (!InModalState() && edgeScrollTarget != nullptr) {
@@ -212,8 +203,6 @@ void TAmbitApplication::DoKeyEvent(TToolboxEvent* event) {
   }
 }
 
-// MacApp TAmbitApplication::CloseAndFreeWindow(TWindow*): dispatch the window's
-// CloseAndFree (slot 0x74). The original does not null-check the window.
 // FUNCTION: IMPERIALISM 0x0049e4e0
 void TAmbitApplication::CloseAndFreeWindow(TWindow* window) {
   window->CloseAndFree();

@@ -23,9 +23,6 @@
 #include "game/quickdraw_guards.h"
 #include <new>
 
-// The original descriptor's m_pBaseClass (0x662ff0) points at TAmtBar's CRuntimeClass —
-// the retail macro skipped the real C++ base TIndustryAmtBar (both classes are 0x6c with
-// the same inlined ctor chain down to TView). Reproduce the retail macro argument.
 IMPLEMENT_DYNCREATE(TRailAmtBar, TAmtBar)
 
 // FUNCTION: IMPERIALISM 0x00589f90

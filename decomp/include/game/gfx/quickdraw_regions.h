@@ -26,8 +26,6 @@ ASSERT_SIZE(Region, 0x1c);
 
 typedef Region** RgnHandle;
 
-// Mac QuickDraw API surface (names follow Inside Macintosh; QD prefix only where
-// a Win32 name collides).
 void OffsetRgn(RgnHandle region, int horizontalOffset, int verticalOffset); // 0x00497b30
 void RefreshRgnBoundingBox(RgnHandle region);                               // 0x00497b70
 RgnHandle NewRgn(void);                                                     // 0x00495820

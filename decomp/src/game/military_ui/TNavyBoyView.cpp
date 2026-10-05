@@ -22,18 +22,9 @@ void TNavyBoyView::Draw(RECT* rectBuffer) {
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b6a);
   CString finalLabel;
-  // Constructed and destroyed alongside finalLabel but never read anywhere in the
-  // disassembly between construction and destruction -- matches an unused local in
-  // the original source.
   CString unusedLabel;
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(2, 0xc, 0x2b6a, 3);
 
-  // Localized ship "kind" class-name table, indexed by context's kind id (below).
-  // Ground truth: slots 0-2 and slot 10 are explicitly blanked, slots 5/6 are left
-  // at their default-constructed "" (never assigned), and the remaining slots are
-  // filled from group 0x2760 by consecutive word index (with index 6 reused for two
-  // slots) -- the slot<->index mapping isn't fully understood, transcribed as
-  // observed.
   CString typeNames[14];
   CString* blankCursor = typeNames;
   int blankCount = 3;
@@ -53,10 +44,6 @@ void TNavyBoyView::Draw(RECT* rectBuffer) {
 
   short kindId = battleDetail->resourceType;
   finalLabel = typeNames[kindId];
-  // The ship-name temporary and the " "+name concat temporary both destruct right
-  // after this statement in the original (two back-to-back ~CString calls) --
-  // matched here by keeping the name construction an unnamed temporary inside the
-  // expression rather than a function-scoped local.
   finalLabel += s_szSpaceSeparator_00695794 + CString(battleDetail->nameBuffer);
 
   SetQuickDrawTextOriginWithContextOffset(0x50, 0x18);

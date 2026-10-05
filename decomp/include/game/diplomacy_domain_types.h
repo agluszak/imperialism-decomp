@@ -1,7 +1,5 @@
 #pragma once
 
-// Mac CodeWarrior names this UI/action discriminator eDipAction. The values are
-// int-sized at method boundaries and index the 16-entry diplomacy cursor table.
 enum eDipAction {
   kDipActionNone = 0,
   kDipActionSelectedNation = 1,
@@ -21,9 +19,6 @@ enum eDipAction {
   kDipActionBuildEmbassy = 15
 };
 
-// Proposal records and turn-event-0x16 packets store this discriminator in a
-// signed 16-bit field. Keep that storage/ABI type distinct from the semantic
-// constants so the original word loads and serialized layout remain explicit.
 typedef short DiplomacyProposalCodeStorage;
 
 enum DiplomacyProposalKind {
@@ -48,9 +43,6 @@ enum DiplomacyRelationship {
   kDiplomacyRelationshipWar = 6
 };
 
-// Mac names the monotonic 0..8 result of the standing-score classifier a
-// relationship notch. The Windows thresholds prove ordering, but not adjective
-// labels, so keep the enumerators ordinal and avoid inventing diplomatic prose.
 enum DiplomacyRelationshipNotch {
   kDiplomacyRelationshipNotchThrough20 = 0,
   kDiplomacyRelationshipNotchThrough49 = 1,
@@ -63,8 +55,6 @@ enum DiplomacyRelationshipNotch {
   kDiplomacyRelationshipNotchAbove240 = 8
 };
 
-// The symmetric diplomacy matrix stores this state as a signed word. Mac calls
-// the mutator BuildEmbassy; gameplay checks prove 1 = trade consulate, 2 = embassy.
 typedef short DiplomaticMissionLevelStorage;
 
 enum DiplomaticMissionLevel {
@@ -73,8 +63,6 @@ enum DiplomaticMissionLevel {
   kDiplomaticMissionEmbassy = 2
 };
 
-// Per-nation relationship ranking record shared by the diplomacy manager and the
-// foreign-minister AI (identical 4-byte layout was previously declared twice).
 struct RelationshipRankEntry {
   short nationSlot;
   short standingScore;

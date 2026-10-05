@@ -31,8 +31,6 @@ void TItemBoyView::Draw(RECT* rectBuffer) {
   CString templateText;
   g_pSimMgr->GetString(0x273c, 0x1d, &templateText);
 
-  // Template expander: substitutes [0]/[1] brackets in templateText with countText and
-  // kindText, writing the composed header into `label`.
   scanBracketExpressions(g_pSimMgr, &label, static_cast<const char*>(templateText),
                          static_cast<const char*>(countText), static_cast<const char*>(kindText));
 
@@ -58,8 +56,6 @@ void TItemBoyView::ActuallyDraw(CString* header) {
       RECT srcRect = {kindIdx * 0x20, 0, (kindIdx + 1) * 0x20, 0x17};
       RECT dstRect = {y - 0x20, 0x19, y, 0x30};
       UpdatePaletteIndexWithDefaultFallback(0x10);
-      // Item icon strip is cached at a different TMacViewMgr slot (+0x674) than the
-      // Army/Navy boy views' level-icon strip (+0x694).
       TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas674->GetBlitSurface();
       BlitRectWithOptionalTransparency(iconStripSurface,
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,

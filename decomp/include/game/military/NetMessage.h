@@ -5,51 +5,26 @@
 #include "game/ui_tags_common.h"
 #include "game/nation_domain_types.h"
 
-// Windows counterpart of the Mac build's network message header (Mac oracle names the
-// class NetMessage with methods DestinateTo(int)/DestinateToGP(int); on Mac the header
-// role is played by NetSprocket's NSpMessageHeader {what, from, to, messageLen}, and
-// TNetMgr::Send takes NSpMessageHeader* — our TNetMgr::Send @ 0x5e3d40 takes this).
-// 0x10-byte plain header prefixed to every turn-event packet; no vtable.
-// TNetMgr::Send stamps fromNetworkId and resolves toNetworkId (-1 = broadcast) before
-// queueing/sending. Name evidence is Mac-oracle only (Hard Rule: names/signatures, not
-// addresses/layout).
 struct NetMessage {
   int eventCode;     // +0x00 — turn-event code ('what')
   int fromNetworkId; // +0x04 — sender network id ('from'); overwritten by TNetMgr::Send
   int toNetworkId;   // +0x08 — destination network id ('to'); -1 = broadcast
   int messageLength; // +0x0c — total packet size in bytes ('messageLen')
 
-  // Set the destination id from a great-power slot index via
-  // TMultiplayerMgr::nationSessionIds (Mac oracle: NetMessage::DestinateToGP(int)).
   void DestinateToGP(int nationSlot);
 
-  // Sentinel-aware destination stamp (Mac oracle: NetMessage::DestinateTo(int)):
-  // -1 broadcasts, -2/-3 route to session id 0, otherwise the slot's session id.
   void DestinateTo(int nationSlot);
 };
 
-// Heap packet while it is parked in TMultiplayerMgr's two deferred-processing queues.
-// The queue link occupies +0x10; once a packet is dequeued, that slot is again available
-// to the concrete packet family (normally the timely-message tag).
 struct TurnEventQueuePacket : NetMessage {
   TurnEventQueuePacket* nextQueuePacket;
 };
 
-// 'time'-tagged ('time') timely-message variant whose turn-token word sits at +0x18
-// (three-byte pad after the active-nation byte). Used by the advisory/diplomacy emitters
-// (0x540cf0..0x5416b0 band); 0x542120 writes word [this+0x18] from
-// TMultiplayerMgr::syncPhase.
-// 'time'-tagged header shared by every timely packet family: the stamp helper writes
-// only the tag + active-nation byte, so payloads that reuse +0x18 for their own fields
-// (the event-0x25 status tags, the event-9 chat slot byte) derive from this base while
-// the turn-token variant below adds syncPhase.
 struct TimelyMessageHeader : NetMessage {
   int messageTag;               // +0x10 — 'time'
   unsigned char activeNationId; // +0x14
   unsigned char pad15[3];
 
-  // Stamp messageTag='time' + the active nation id and return this (0x5438e0; used by
-  // the diplomacy turn-event reply emitters).
   TimelyMessageHeader* InitializeEmitEventHeaderWithActiveNation();
 };
 
@@ -89,10 +64,6 @@ struct TurnEvent17ProposalResolutionPacket : TimelyMessageHeader {
   unsigned char pad1e[2];
 };
 
-// Event-0x1D war-transition check/propagate. Emitted by the proxy great power (0x540cf0 /
-// 0x540dc0), which stamps the turn token at +0x18 and broadcasts (toNetworkId = -1) before
-// DestinateTo; the 0x1d receive case dispatches on actionCode1C, and only the 'a' form
-// carries mode1F. Shared here because both the emitters and the receiver need it.
 struct TurnEvent1DWarTransitionPacket : TimelyNetMessagePrefix {
   char actionCode1C;     // +0x1c - 'i' selects the two-arg check
   signed char nationA1D; // +0x1d
@@ -100,9 +71,6 @@ struct TurnEvent1DWarTransitionPacket : TimelyNetMessagePrefix {
   unsigned char mode1F;  // +0x1f, total 0x20
 };
 
-// Packed network payload entries used by TurnEvent2SyncPacket. These are wire records,
-// not views of the destination arrays: x86 intentionally performs the unaligned word/dword
-// loads at +0 and +2 that the packet encoding requires.
 #pragma pack(push, 1)
 struct TurnEvent2ByteDeltaEntry {
   unsigned short index;
@@ -125,10 +93,6 @@ struct TurnEvent2DeltaPayload {
   unsigned char raw[1];
 };
 
-// 0x5449b0 (TMultiplayerMgr TU): heap-build the turn-event-2 sync packet, delta or full.
-// Turn-event-2 relation-matrix sync packet. Variable-length: full form carries the raw
-// 0x89c-short block, delta form (deltaKind21 == 2) carries (index, value) pairs for the
-// entries that differ from the baseline.
 struct TurnEvent2SyncPacket : NetMessage {
   int pad10;                  // +0x10 - zeroed, no 'time' tag on this packet
   int pad14;                  // +0x14
@@ -139,20 +103,12 @@ struct TurnEvent2SyncPacket : NetMessage {
   unsigned char pad22[2];
   TurnEvent2DeltaPayload payload; // +0x24 - variable-length wire records
 
-  // 0x544cd0 — apply the payload to `buffer` per deltaKind21: 0 = raw block copy,
-  // 1 = (short index, byte value) triples, 2 = (short index, short value) pairs,
-  // 3 = (short index, int value) records. The receiver decides the element width, so
-  // the buffer is opaque here (TDiplomacyMgr passes its short relation matrix).
   void ApplyEncodedDeltaPayloadToBufferByMode(void* buffer);
 
-  // Dead release helper: `delete this` emits as a bare operator-delete call (the packet
-  // family is non-polymorphic and trivially destructible). 0x00544cb0, __thiscall.
   void Free();
 };
 TurnEvent2SyncPacket* __cdecl
 BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned int shortCount, short* current, short* baseline);
-// 0x544840 / 0x544b30: the byte- and int-element twins of the builder above; their delta
-// payloads are tagged deltaKind21 == 1 and 3 respectively.
 TurnEvent2SyncPacket* __cdecl
 BuildTurnEvent2ByteArraySyncPacketDeltaOrFull(unsigned int byteCount, unsigned char* current,
                                               unsigned char* baseline);

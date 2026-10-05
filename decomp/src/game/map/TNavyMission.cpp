@@ -50,8 +50,6 @@ TMission* TNavyMission::GetNavyMission() {
   return this;
 }
 
-// The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
-//   CArchive& AFXAPI operator>>(CArchive&, TNavyMission*&)
 IMPLEMENT_SERIAL(TNavyMission, TMission, 1)
 
 // FUNCTION: IMPERIALISM 0x005364c0
@@ -98,8 +96,6 @@ void TNavyMission::WriteTo(TStream* stream) {
 void TNavyMission::ReadFrom(TStream* stream) {
   TMission::ReadFrom(stream);
 
-  // Both zone ids are 2-byte reads through slot 0x4c (ReadInteger), not the 1-byte
-  // slot 0x40: the original does CALL [vt+0x4c] at 0x536667 and 0x536677.
   short targetZoneId = stream->ReadInteger();
   missionTargetZone = FindMapActionContextByNodeId(targetZoneId);
 
@@ -207,8 +203,6 @@ float TNavyMission::ComputeSeaZoneImportance(TZone* zone) {
   float importance = static_cast<float>(zone->ComputeMapActionContextNodeValueAverage());
 
   for (TZone* port = TZone::GetFirstPortZone(); port != 0; port = port->GetNextPortZone()) {
-    // primaryNeighbors[0] is read through the stretch's growing operator[], which is why
-    // the original reallocs the backing store here before comparing.
     if (port->primaryNeighbors[0] == zone) {
       if (port->GetPortZoneOwnerNationCodeFromMissionField48() == nationId04) {
         importance = importance * 1.5f;
@@ -382,10 +376,6 @@ TZone* TNavyMission::GetActiveTargetZoneByState28() const {
 
 // FUNCTION: IMPERIALISM 0x00537090
 void TNavyMission::GiveReconOrders(TZone* location, TShip** selectedOrder) {
-  // Was bridged through a mis-targeted TMission::Find
-  // cdecl stub cast (a name collision with the unrelated real function at 0x535940); the
-  // actual callee here (verified via the 0x40635c ILT thunk row) is the already-ported
-  // TMapOrderChildLinkNode::FindNodeMatching (0x552510).
   if (*selectedOrder != nullptr && orderList->FindNodeMatching(*selectedOrder) == nullptr) {
     *selectedOrder = nullptr;
   }
@@ -393,10 +383,6 @@ void TNavyMission::GiveReconOrders(TZone* location, TShip** selectedOrder) {
   int maxScore = -1;
   TShip* topOrder = nullptr;
 
-  // Was bridged through a mis-targeted "CompareMissionOrderEntriesByPriorityScore" cdecl
-  // stub cast (a name collision with the unrelated real function at 0x536090); the actual
-  // callee here (verified via the 0x403e77 ILT thunk row) is the already-ported
-  // TTaskForce::ComputeValueForMission (0x5501b0).
   for (TMapOrderChildLinkNode* node = orderList; node != nullptr; node = node->next) {
     int score = node->payload->ComputeValueForMission(3);
     if (maxScore < score) {
@@ -410,10 +396,6 @@ void TNavyMission::GiveReconOrders(TZone* location, TShip** selectedOrder) {
       topOrder = nullptr;
     } else {
       if (*selectedOrder != nullptr) {
-        // Ground truth (0x537090): the original compares the *existing selection's*
-        // zone-distance against the *candidate's* zone-distance, both to missionTargetZone --
-        // the prior port dropped this argument and used missionTargetZone itself as a fake
-        // receiver for target1 instead of selectedOrder.
         short target1 = (*selectedOrder)->GetTurnDistanceTo(missionTargetZone);
         short target2 = topOrder->GetTurnDistanceTo(missionTargetZone);
         if (target1 < target2) {
@@ -460,9 +442,6 @@ void TNavyMission::ConsolidateMissionOrderEntriesByTargetAndQueue(TZone* locatio
 
 // Adds one order node's 4-category priority contribution into `vector`, categories
 
-// Scores how the mission's aggregate order profile matches its resource weights when
-// the candidate order is added (foreign candidate) or removed (own candidate),
-// relative to the current-profile score from slot 0x68.
 // FUNCTION: IMPERIALISM 0x00537270
 float TNavyMission::ValueOf(TShip* candidate) {
   if (flag10 != 0) {
@@ -566,10 +545,6 @@ float TNavyMission::ValueOf(TShip* candidate) {
   return sqrtSum / weightSum - GetWeightedSatisfaction();
 }
 
-// Scores how badly a candidate navy order node fits this mission's target profile:
-// squared distance between the node's normalized 4-category priority vector and the
-// profile floats at targetProfile+0x14, plus a distance-bucket weight from the score
-// table and an understock penalty.
 // FUNCTION: IMPERIALISM 0x00537610
 float TNavyMission::FitnessOf(TShip* candidate, float* targetProfile) {
   TShip* orderNode = candidate;
@@ -637,14 +612,6 @@ float TNavyMission::IndustrialCostOfNeeds() {
   }
   return total;
 }
-// Builds a per-category priority vector over every orderList ship: a ship counts if
-// it's within `distanceThreshold` hops of `nearZone` (or unconditionally when `nearZone`
-// is null), OR -- when farther than that -- if it's within `distanceThreshold` hops of
-// `farZone` instead (when farZone is both non-null and != nearZone). The per-ship
-// contribution accumulation (ratio = strength/normalizationBase, categories 0-2
-// scaled by ratio, category 3 unscaled) is reproduced inline at both convergent call
-// sites rather than via AccumulateNavyOrderCategoryVectorWithScale -- this specific
-// function inlines its own copy in the original rather than calling out to 0x537c60.
 // FUNCTION: IMPERIALISM 0x00537900
 void TNavyMission::ProjectEquipage(float* vector,
                                                                       TZone* nearZone,
@@ -667,12 +634,6 @@ void TNavyMission::ProjectEquipage(float* vector,
   }
 }
 
-// Out-of-line member sibling of AccumulateNavyOrderCategoryVectorWithScale below (no
-// retail callers survive; kept for byte coverage): the per-ship weight is derived here
-// from the ship's hop distance to the mission's active target zone (clamped to 5,
-// indexed into the decay table) and signed by `positive` (+1.0/-1.0 double constants),
-// then categories 0-2 accumulate scaled by (strength/normalization)*weight and
-// category 3 by the signed weight alone.
 // FUNCTION: IMPERIALISM 0x00537b20
 void TNavyMission::AccumulateWeightedShipEquipage(TShip* ship, float* vector,
                                                                  char positive) {
@@ -725,12 +686,6 @@ void __cdecl AccumulateNavyOrderCategoryVectorWithScale(TShip* orderNode, float*
       vector[3];
 }
 
-// Same per-ship math as AccumulateNavyOrderCategoryVectorWithScale (ratio =
-// (strength/normalizationBase)*weight, categories 0-2 scaled by ratio, category 3 by
-// the raw distance weight alone), but the weight itself is derived per-ship from the
-// active target zone's hop distance rather than passed in by the caller. Reproduced
-// inline (not via a call to 0x537c60) to match the original, which inlines its own copy
-// here rather than calling out.
 // FUNCTION: IMPERIALISM 0x00537d40
 void TNavyMission::BuildMissionQueuedOrderCategoryVector(float* vector) {
   vector[0] = 0.0f;
@@ -752,8 +707,6 @@ void TNavyMission::BuildMissionQueuedOrderCategoryVector(float* vector) {
   }
 }
 
-// Scores the queued order vector against the required category vector for the supplied
-// mission distance threshold.
 // FUNCTION: IMPERIALISM 0x00537eb0
 float TNavyMission::ProjectSatisfaction(short distanceThreshold) {
   float vector[4];
@@ -864,11 +817,6 @@ float TNavyMission::ComputeMissionOrderMatchScoreWithCandidateNavyOrder(TShip* c
   return coefficient / sumWeights;
 }
 
-// Same shape as ComputeMissionOrderMatchScoreWithCandidateNavyOrder above, but negates
-// the candidate ship's distance-weighted scale (* g_Recompute_Nation_Order_LookupTable_0065A9E0,
-// which holds -1.0) before accumulating its contribution -- evaluating the profile with
-// the candidate order removed rather than added. The existing orderList ships'
-// contributions are unaffected (still added with a positive scale).
 // FUNCTION: IMPERIALISM 0x005383f0
 float TNavyMission::ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(
     TShip* candidateOrder) {
@@ -1072,8 +1020,6 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfil
   return total * (static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08) -
                   diffSum * static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA00));
 }
-// Scores fixed-category contributions from hostile ships at nodeContext against target
-// profile [4..7], using this mission's nation as the diplomacy source.
 // FUNCTION: IMPERIALISM 0x00539a90
 float TNavyMission::ComputeOrderDistributionSimilarityScoreForZone(TZone* nodeContext) {
   float vector[4] = {
@@ -1115,13 +1061,6 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForZone(TZone* nodeCo
   return total * (static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08) -
                   diffSum * static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA00));
 }
-// If `portZone` has a definite single owner (owner code 0..6), scores directly for that
-// owner (same divergence-score shape as TShip.cpp's ComputeNavyOrderDistributionScoreForNation,
-// reproduced inline). Otherwise scans nations allied with this mission's own nationId04
-// and keeps the best such score -- each iteration re-reads portZone's (still
-// out-of-range) owner code as the ship filter rather than the candidate ally's index, so
-// in practice this branch only ever contributes 0; modeled exactly as observed (Hard
-// Rule 6) rather than "corrected" to use the loop index.
 // FUNCTION: IMPERIALISM 0x0053b350
 float TNavyMission::ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies(TZone* portZone) {
   float best = g_Recompute_Nation_Order_LookupTable_0065A9E8;

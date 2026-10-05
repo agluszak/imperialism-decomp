@@ -11,9 +11,6 @@ TDropShadowText::TDropShadowText() : TPictureText(), shadowColor94(0) {}
 // FUNCTION: IMPERIALISM 0x005b5630
 TDropShadowText::~TDropShadowText() {}
 
-// Widen the paint clip by 1px on the top-left (room for the shadow's -1,-1 offset),
-// paint the base text through it, then draw the shadow-colored copy offset by (-1,-1)
-// before restoring the DC's clip region.
 // FUNCTION: IMPERIALISM 0x005b5650
 void TDropShadowText::Draw(RECT* rectBuffer) {
   CRect clipRect;

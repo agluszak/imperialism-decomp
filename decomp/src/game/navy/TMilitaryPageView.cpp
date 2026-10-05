@@ -14,9 +14,6 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-// Out of line, not in the header: the original's derived constructors
-// (TBattleUnitsView 0x00430b53, TGarrisonView 0x004a8813) CALL this rather than
-// inlining it, which is only possible if the definition is not visible to them.
 // FUNCTION: IMPERIALISM 0x00564920
 TMilitaryPageView::TMilitaryPageView() : TPageView(), primaryUnitAtlas(0) {}
 

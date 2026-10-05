@@ -25,8 +25,6 @@
 // FUNCTION: IMPERIALISM 0x005362c0
 float __cdecl ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
     float* vector, const short* referenceProfile, int count) {
-  // Locals are double: the original keeps the whole computation on the FP stack with
-  // no intermediate float rounding stores.
   double vectorSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
   int i;
   double difference;
@@ -49,13 +47,9 @@ float __cdecl ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
                       absoluteDifferenceSum * g_Recompute_Nation_Order_LookupTable_0065AA00);
 }
 
-// Sort comparator for the auto-deploy strategies: melee (aiClass 0) first, artillery
-// (aiClass 2) last, everything else in between.
 // FUNCTION: IMPERIALISM 0x0059b070
 short __cdecl CompareTacticalCursorEntriesByActionClassPriority(void* a, void* b, void* context) {
   (void)context;
-  // The verdict is returned in AX only (short); the upper 16 bits are leftover garbage
-  // in the original, matching the TSortedListCompareFunc comparator shape.
   short priorityByAiClass[5] = {1, 0, 2, 0, 0};
   TTacticalUnit* unitA = static_cast<TTacticalUnit*>(a);
   TTacticalUnit* unitB = static_cast<TTacticalUnit*>(b);
@@ -75,8 +69,6 @@ IMPLEMENT_DYNCREATE(TArmyPlayer, TTacticalPlayer)
 // FUNCTION: IMPERIALISM 0x0059b1b0
 void TArmyPlayer::IArmyPlayer(TArmyStack* stack, bool isOurSide, unsigned char watchFlag,
                               int nationIndex) {
-  // Scatter-init of the side state, in the original store order.
-  // The original only reads the low byte of `isOurSide` (a char/BOOL param).
   isOurSideFlag = static_cast<char>(isOurSide);
   sideReadyFlag = false;
   watchFlagD = watchFlag;
@@ -111,9 +103,6 @@ void TArmyPlayer::IArmyPlayer(TArmyStack* stack, bool isOurSide, unsigned char w
   hasArtilleryOrSappers = false;
 }
 
-// Writes each record's surviving strength back to its source army unit's strength
-// word and detaches (kills) units that ended the battle at zero strength, on both
-// owned record lists.
 // FUNCTION: IMPERIALISM 0x0059b3e0
 void TArmyPlayer::ApplyChanges(unsigned char sideWonFlag) {
   (void)sideWonFlag;
@@ -160,8 +149,6 @@ void TArmyPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
   static_cast<TArmyTacUnit*>(unit)->morale34 = unit->strength4;
 }
 
-// Rebuilds the active army's projection metrics, range limits, and artillery/sapper
-// presence. The first two attribute sums become composition-profile fitness scores.
 // FUNCTION: IMPERIALISM 0x0059b5b0
 void TArmyPlayer::AccumulateTacticalProjectionMetricsAndUnitRanges() {
   maxNonArtilleryUnitRange42 = 0;
@@ -196,11 +183,6 @@ void TArmyPlayer::AccumulateTacticalProjectionMetricsAndUnitRanges() {
     }
   }
 
-  // The row-0 score must be sampled before sums[1] is overwritten (both calls read the
-  // live sums). Row select: fort present -> row 1, open field -> row 2.
-  // Row sense here (fort -> 1, open -> 2) is inverted vs
-  // RecomputeTacticalCursorProjectionScoresAndPruneList (fort -> 2, open -> 1); both are
-  // faithful to their originals.
   float baselineProfileScore = ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
       projectionMetrics, g_awTacticalCompositionReferenceProfiles_00697870, 5);
   projectionMetrics[1] = ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
@@ -210,9 +192,6 @@ void TArmyPlayer::AccumulateTacticalProjectionMetricsAndUnitRanges() {
   projectionMetrics[0] = baselineProfileScore;
 }
 
-// Kicks the side at battle start: unwatched (AI/remote) sides skip the intro dialog
-// and auto-deploy; watched sides run the battle-intro ('hola', 0xf19) dialog and only
-// proceed on 'okay'.
 // FUNCTION: IMPERIALISM 0x0059b830
 void TArmyPlayer::StartBattle() {
   if (notWatchedFlag) {
@@ -256,11 +235,6 @@ void TArmyPlayer::StartBattle() {
   }
 }
 
-// Prunes the side's unit list down to `maxUnitCount`: moves every record onto
-// secondaryList (refreshing its projection-score vector), keeps the first category-9
-// record plus the greedy best-scoring set by the distribution-similarity profile
-// (row: enemy=0, attacker=1, attacker-vs-fort=2), and drops every pruned record from
-// the battle's recordList.
 // FUNCTION: IMPERIALISM 0x0059b990
 void TArmyPlayer::RecomputeTacticalCursorProjectionScoresAndPruneList(int maxUnitCount) {
   int profileRowIndex;
@@ -306,9 +280,6 @@ void TArmyPlayer::RecomputeTacticalCursorProjectionScoresAndPruneList(int maxUni
     for (int passesLeft = remainingCapacity; passesLeft != 0; --passesLeft) {
       int bestOrdinal = 0;
       float bestScore = 0.0f;
-      // Faithful off-by-one: the scan starts at ordinal 1 and stops before GetCount(),
-      // so the last entry is never scored; with bestOrdinal left 0, GetEntryByOrdinal(0)
-      // returns 0.
       for (int candidateOrdinal = 1; candidateOrdinal < secondaryList->GetCount();
            ++candidateOrdinal) {
         TArmyTacUnit* candidate =
@@ -349,9 +320,6 @@ void TArmyPlayer::RecomputeTacticalCursorProjectionScoresAndPruneList(int maxUni
   }
 }
 
-// Auto-deploys every unit of this side into the deployment zone (pruning the unit
-// list first if it exceeds the free-tile capacity) and marks the side ready. Our side
-// deploys by the zone score table; the enemy side deploys by the per-class selectors.
 // FUNCTION: IMPERIALISM 0x0059bc80
 void TArmyPlayer::AutoDeploySideUnitsAndMarkReady() {
   int freeDeployTileCount = battle14->CountFreeDeploymentZoneTilesForCurrentSide();
@@ -367,15 +335,8 @@ void TArmyPlayer::AutoDeploySideUnitsAndMarkReady() {
   sideReadyFlag = true;
 }
 
-// Deploy strategy for our side: sorts the unit list by action-class priority, then
-// places each unit on the best-scoring free deployment-zone tile (per-AI-class
-// zone-cell score + distance-from-edge row bonus).
 // FUNCTION: IMPERIALISM 0x0059bcf0
 void TArmyPlayer::BuildTacticalActionPriorityBucketsWithGridGuard() {
-  // Flat local score table; the lookup below indexes from entry 11, so cells decode
-  // as [aiClass][col 5..3, odd/even row] for aiClass 0..4, column 3..5.
-  // The guard does not bound the column, so a tile passing it with a column outside 3..5
-  // indexes out of this table in the original too.
   int zoneScoreByClassAndCell[30] = {
       10, 30, 10, 20, 10, 10, // aiClass 0
       10, 20, 30, 40, 50, 60, // aiClass 1
@@ -409,8 +370,6 @@ void TArmyPlayer::BuildTacticalActionPriorityBucketsWithGridGuard() {
   }
 }
 
-// Deploy strategy for the enemy side: sorts by the same comparator, then asks the
-// per-action-class tile selector for each unit's deployment tile.
 // FUNCTION: IMPERIALISM 0x0059bf20
 void TArmyPlayer::DispatchTacticalActionClassSelectionAcrossCursorList() {
   unitList4->SortBy(&CompareTacticalCursorEntriesByActionClassPriority, 0);
@@ -433,11 +392,6 @@ void TArmyPlayer::DispatchTacticalActionClassSelectionAcrossCursorList() {
   }
 }
 
-// Deploy-tile selector for artillery-class (aiClass 2) enemy units: zone-cell score by
-// column distance from the playable-column edge (odd rows shifted half a cell), plus
-// distance from the near board edge, plus 100 when any hex neighbor already holds an
-// artillery-class unit (either side); writes each candidate's score into
-// battle14->tileCandidateScorePlane2c.
 // FUNCTION: IMPERIALISM 0x0059bfe0
 int TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantA() {
   int bestScore = 0;
@@ -482,9 +436,6 @@ int TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantA() {
   return bestTileIndex;
 }
 
-// Deploy-tile selector for melee-class (aiClass 0) enemy units: cell score grows
-// toward the playable-column edge, plus edge-row distance, plus an adjacency bonus
-// (100 next to an artillery-class unit, else 10 next to any occupant).
 // FUNCTION: IMPERIALISM 0x0059c140
 int TArmyPlayer::SelectTacticalTileByActionClassAdjacencyPriority() {
   int bestScore = 0;
@@ -525,9 +476,6 @@ int TArmyPlayer::SelectTacticalTileByActionClassAdjacencyPriority() {
   return bestTileIndex;
 }
 
-// Deploy-tile selector for the remaining enemy action classes: a per-battle constant
-// base (20 * (columnCount - 5)) plus edge-row distance, plus 10 when any hex neighbor
-// is occupied (first hit stops the neighbor scan).
 // FUNCTION: IMPERIALISM 0x0059c2a0
 int TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantB() {
   int bestScore = 0;
@@ -582,9 +530,6 @@ void TArmyPlayer::DeploymentClick(TacticalTileIndex tileIndex) {
   }
 }
 
-// Re-derives the side's AI cursor mode from both sides' aggregated projection metrics
-// and applies the matching per-unit stance profile. The `cursorProfileMode` parameter
-// is dead in the original (popped by ret 4, never read).
 // FUNCTION: IMPERIALISM 0x0059c440
 void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode) {
   (void)cursorProfileMode;
@@ -596,8 +541,6 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
                                    g_apTerrainTypeDescriptorTable[nationIndex1C]->homeTileIndex)]
                                .cityRecordIndex;
 
-  // Army battles always pair two TArmyPlayers; the +0x2c metric slice lives on the
-  // derived class.
   TArmyPlayer* opponent;
   if (isOurSideFlag != 0) {
     opponent = static_cast<TArmyPlayer*>(battle14->players[1]);
@@ -757,11 +700,6 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
   }
 }
 
-// Applies the per-unit stance profile for the side's already-selected cursor mode
-// (this->lastAppliedCursorMode44). This is the standalone copy of the apply-switch that
-// SelectAndApplyTacticalCursorModeProfile (0x59c440) inlines after deriving the mode:
-// modes 0/2..6 delegate to the per-action-class appliers, modes 1 and 7 set aiStateCode2c
-// inline (retreat: 0xc/7 by category; garrison: 0x13). Modes >7 are a no-op.
 // FUNCTION: IMPERIALISM 0x0059c970
 void TArmyPlayer::ApplyTacticalStanceProfileForCurrentCursorMode() {
   switch (lastAppliedCursorMode44) {
@@ -835,8 +773,6 @@ void TArmyPlayer::ApplyDefenderHoldLineStanceByActionClass() {
       break;
     case 1:
     case 3:
-      // Faithful dead conditions: counts and the assigned counter are never negative, so
-      // every class-1/3 unit gets 0xe (original-game dead code).
       if (actionClassCounts[0] < actionClassCounts[2] && actionClassCounts[0] < 0 &&
           engageAssignedCount < 0) {
         record->aiStateCode2c = 0;
@@ -856,8 +792,6 @@ void TArmyPlayer::ApplyDefenderHoldLineStanceByActionClass() {
   }
 }
 
-// Assigns the retreat/fallback job code used by cursor-profile mode 1: category-0
-// units receive state 7, while every other tactical category receives state 12.
 // FUNCTION: IMPERIALISM 0x0059cc70
 void TArmyPlayer::AssignJobsByZeroCategory() {
   CIterator iter(unitList4);
@@ -871,9 +805,6 @@ void TArmyPlayer::AssignJobsByZeroCategory() {
   }
 }
 
-// Mode 2 (defender bombard/outrange): artillery(class 2) gets 8, cavalry/flankers
-// (classes 1,3) get 5, infantry(class 0) holds (7; the escort branch is dead),
-// class 4 splits by unitType >= 27 (0xb vs 0xc). Skips broken/destroyed records.
 // FUNCTION: IMPERIALISM 0x0059cd00
 void TArmyPlayer::ApplyDefenderBombardStanceByActionClass() {
   int actionClassCounts[5] = {0, 0, 0, 0, 0};
@@ -893,8 +824,6 @@ void TArmyPlayer::ApplyDefenderBombardStanceByActionClass() {
     }
     switch (g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC]) {
     case 0:
-      // Faithful dead conditions: engageAssignedCount stays 0, so every infantry unit
-      // gets 7 (original-game dead code, kept literally).
       if (engageAssignedCount > 0 && escortAssignedCount < actionClassCounts[2]) {
         record->aiStateCode2c = 1;
         ++escortAssignedCount;
@@ -923,12 +852,6 @@ void TArmyPlayer::ApplyDefenderBombardStanceByActionClass() {
   }
 }
 
-// Mode 3 (attacker siege vs fort): sappers (category 8) target the wall (0xd while
-// the wall record at tile 174 is intact, 0xc once breached); infantry(class 0)
-// outranging the enemy's non-artillery reach snipes (0x11), cavalry-charge category 1
-// hunts artillery when the enemy has deployed active artillery (0x10, else 0xa),
-// otherwise engages (1); classes 1,3 screen (0xe); artillery(class 2) bombards
-// (category 6 -> 0x11, else 8); class 4 remainder gets 0xb. No state1c filter.
 // FUNCTION: IMPERIALISM 0x0059ce90
 void TArmyPlayer::ApplyAttackerSiegeStanceByActionClass() {
   TArmyPlayer* opponent;
@@ -944,8 +867,6 @@ void TArmyPlayer::ApplyAttackerSiegeStanceByActionClass() {
   for (TTacticalUnit* record = static_cast<TTacticalUnit*>(applyIter.Reset()); applyIter.More();
        record = static_cast<TTacticalUnit*>(applyIter.Advance())) {
     if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 8) {
-      // Fort-wall reference tile (grid index 174 = row 6, column 0); deployMark > 1
-      // is the standing wall level.
       if (battle14->tileGrid4[174].deployMark > 1) {
         record->aiStateCode2c = 0xd;
       } else {
@@ -981,9 +902,6 @@ void TArmyPlayer::ApplyAttackerSiegeStanceByActionClass() {
   }
 }
 
-// Mode 4 (attacker assault): same class-0/class-2 logic as the siege profile but
-// infantry defaults to hold (7), cavalry/flankers(classes 1,3) get 5, and class 4
-// splits sapper (category 8 -> 0xc) vs 0xb. No state1c filter.
 // FUNCTION: IMPERIALISM 0x0059d020
 void TArmyPlayer::ApplyAttackerAssaultStanceByActionClass() {
   TArmyPlayer* opponent;
@@ -1030,8 +948,6 @@ void TArmyPlayer::ApplyAttackerAssaultStanceByActionClass() {
   }
 }
 
-// Mode 5 (attacker cautious/standoff): byte-for-byte the mode-4 profile except
-// cavalry/flankers(classes 1,3) get 2 instead of 5.
 // FUNCTION: IMPERIALISM 0x0059d1a0
 void TArmyPlayer::ApplyAttackerStandoffStanceByActionClass() {
   TArmyPlayer* opponent;
@@ -1078,9 +994,6 @@ void TArmyPlayer::ApplyAttackerStandoffStanceByActionClass() {
   }
 }
 
-// Mode 6 (unopposed -- the enemy has no active unit left): fixed stance per class
-// with no range/opponent checks: infantry 7, cavalry/flankers 5, artillery 8, class 4
-// splits sapper (category 8 -> 0xc) vs 0xb. No state1c filter.
 // FUNCTION: IMPERIALISM 0x0059d320
 void TArmyPlayer::ApplyUnopposedAdvanceStanceByActionClass() {
   CIterator applyIter(unitList4);
@@ -1108,8 +1021,6 @@ void TArmyPlayer::ApplyUnopposedAdvanceStanceByActionClass() {
   }
 }
 
-// Blanket hold-fire stance: sets every unit's aiStateCode2c to 0x13. The standalone
-// sibling of ApplyTacticalStanceProfileForCurrentCursorMode's mode-7 inline loop.
 // FUNCTION: IMPERIALISM 0x0059d400
 void TArmyPlayer::SetAllUnitAiStateCodesTo13() {
   CIterator iter(unitList4);
@@ -1119,8 +1030,6 @@ void TArmyPlayer::SetAllUnitAiStateCodesTo13() {
   }
 }
 
-// Whether the opposing side has a deployed (tileIndex8 >= 0), still-active
-// (state1c == 0) artillery-class (aiClass 2) unit.
 // FUNCTION: IMPERIALISM 0x0059d470
 unsigned char TArmyPlayer::OpponentHasDeployedActiveArtilleryUnit() {
   TList* opponentUnitList;
@@ -1141,10 +1050,6 @@ unsigned char TArmyPlayer::OpponentHasDeployedActiveArtilleryUnit() {
   return 0;
 }
 
-// Weighted tile chooser for the auto-turn controller: builds the distance field when
-// the advance heuristic (column 8) is weighted, then scores every reachable tile as
-// sum(weight[i] * heuristic[i](unit, tile)), tie-breaking on lower move cost, and
-// writes the per-tile score into battle14->tileCandidateScorePlane2c.
 // FUNCTION: IMPERIALISM 0x0059d530
 int TArmyPlayer::FindBestMove(TTacticalUnit* unit,
                                                             int* heuristicWeights15) {
@@ -1179,8 +1084,6 @@ int TArmyPlayer::FindBestMove(TTacticalUnit* unit,
     if (score > bestScore ||
         (score == bestScore &&
          battle14->tileMoveCostArray[tileIndex] < battle14->tileMoveCostArray[bestTileIndex])) {
-      // Faithful: on the first tie bestTileIndex is still -1, so the original reads the
-      // move-cost word one slot before the array too (tileMoveCostArray[-1]).
       bestTileIndex = tileIndex;
       bestScore = score;
     }
@@ -1196,14 +1099,9 @@ int TArmyPlayer::ScoreTacticalTileHoldPositionBonus(TTacticalUnit* unit,
   return (unit->tileIndex8 == tileIndex) ? 0x64 : 0;
 }
 
-// Heuristic [1]: 50 when some (active, or morale-broken in field48==1 mode) enemy is
-// engageable from the tile, plus 50-minus-distance toward the current best target tile
-// (skipped for artillery that can already engage).
 // FUNCTION: IMPERIALISM 0x0059d6e0
 int TArmyPlayer::ScoreTacticalTileFireOpportunityAndTargetApproach(TTacticalUnit* unit,
                                                                    TacticalTileIndex tileIndex) {
-  // Dead call in the original: the result is discarded, but the compiler fetched the
-  // vtable slot into a stack temp and re-called it inside the loop.
   unit->GetUnitRange();
   int score = 0;
   for (TacticalTileIndex scanTileIndex = 0;
@@ -1230,9 +1128,6 @@ int TArmyPlayer::ScoreTacticalTileFireOpportunityAndTargetApproach(TTacticalUnit
   return score;
 }
 
-// Heuristic [2]: sapper wall-approach cell -- only column 6 scores: 80 (100 when the
-// tile carries a deploy/wall mark), minus 20 for each friendly on the row-neighbor
-// tiles left and right.
 // FUNCTION: IMPERIALISM 0x0059d810
 int TArmyPlayer::ScoreTacticalTileSapperWallApproachColumn(TTacticalUnit* unit,
                                                            TacticalTileIndex tileIndex) {
@@ -1252,8 +1147,6 @@ int TArmyPlayer::ScoreTacticalTileSapperWallApproachColumn(TTacticalUnit* unit,
   return score;
 }
 
-// Heuristic [3]: 100 when an enemy unit (active, or morale-broken in field48==1 mode)
-// occupies one of the six hex neighbors of the tile.
 // FUNCTION: IMPERIALISM 0x0059d8a0
 int TArmyPlayer::ScoreTacticalTileAdjacentEnemyContact(TTacticalUnit* unit,
                                                        TacticalTileIndex tileIndex) {
@@ -1301,9 +1194,6 @@ int TArmyPlayer::ScoreTacticalTileEnemyEngagementExposureCount(TTacticalUnit* un
   return exposureCount;
 }
 
-// Heuristic [5]: proximity to this side's home/retreat edge row -- which edge is home
-// was coin-flipped into randomParityByte50 at side init; 100 within two rows of it,
-// tapering by (50 * rows-from-far-edge / 15) elsewhere.
 // FUNCTION: IMPERIALISM 0x0059da20
 int TArmyPlayer::ScoreTacticalTileRetreatEdgeRowProximity(TTacticalUnit* unit,
                                                           TacticalTileIndex tileIndex) {
@@ -1333,8 +1223,6 @@ int TArmyPlayer::ScoreTacticalTileCoverTerrainBonus(TTacticalUnit* unit,
   return 0;
 }
 
-// Heuristic [7]: 100 when a friendly whose morale dropped below its strength occupies
-// one of the tile's hex neighbors (officer rally magnet).
 // FUNCTION: IMPERIALISM 0x0059db00
 int TArmyPlayer::ScoreTacticalTileAdjacentRallyTargetBonus(TTacticalUnit* unit,
                                                            TacticalTileIndex tileIndex) {
@@ -1354,8 +1242,6 @@ int TArmyPlayer::ScoreTacticalTileAdjacentRallyTargetBonus(TTacticalUnit* unit,
   return 0;
 }
 
-// Heuristic [8]: advance along the distance field built by
-// MakeRetreatMap (100 minus the tile's field value).
 // FUNCTION: IMPERIALISM 0x0059dba0
 int TArmyPlayer::ScoreTacticalTileDistanceFieldAdvance(TTacticalUnit* unit,
                                                        TacticalTileIndex tileIndex) {
@@ -1367,9 +1253,6 @@ int TArmyPlayer::ScoreTacticalTileDistanceFieldAdvance(TTacticalUnit* unit,
   return 0;
 }
 
-// Heuristic [9]: stay near (but not within 2 tiles of) our own artillery -- 0
-// immediately if any friendly artillery is within distance 2, else the best
-// 100-minus-10*distance over all friendly artillery.
 // FUNCTION: IMPERIALISM 0x0059dbe0
 int TArmyPlayer::ScoreTacticalTileFriendlyArtillerySpacing(TTacticalUnit* unit,
                                                            TacticalTileIndex tileIndex) {
@@ -1392,9 +1275,6 @@ int TArmyPlayer::ScoreTacticalTileFriendlyArtillerySpacing(TTacticalUnit* unit,
   return bestScore;
 }
 
-// Heuristic [10]: artillery firing-lane column -- score equals the column index when
-// the tile is unthreatened, at or left of the fort-wall column, and no blocking
-// terrain (code 4) sits between the tile and that column on its row.
 // FUNCTION: IMPERIALISM 0x0059dcd0
 int TArmyPlayer::ScoreTacticalTileArtilleryFiringLaneColumn(TTacticalUnit* unit,
                                                             TacticalTileIndex tileIndex) {
@@ -1448,9 +1328,6 @@ int TArmyPlayer::ScoreTacticalTileEnemyArtilleryExposureCount(TTacticalUnit* uni
   return exposureCount;
 }
 
-// Heuristic [12]: standoff scorer -- 50 plus the distance to the NEAREST active enemy
-// engageable from the tile (+5 when the current best target tile is also engageable);
-// when nothing is engageable, 50 minus the distance to the best target tile.
 // FUNCTION: IMPERIALISM 0x0059de30
 int TArmyPlayer::ScoreTacticalTileEngageableEnemyStandoff(TTacticalUnit* unit,
                                                           TacticalTileIndex tileIndex) {
@@ -1493,8 +1370,6 @@ int TArmyPlayer::ScoreTacticalTileEngageableEnemyStandoff(TTacticalUnit* unit,
   return 0;
 }
 
-// Heuristic [13]: 100 when some active enemy artillery unit is engageable from the
-// tile (artillery-hunt magnet).
 // FUNCTION: IMPERIALISM 0x0059dfe0
 int TArmyPlayer::ScoreTacticalTileEnemyArtilleryHuntBonus(TTacticalUnit* unit,
                                                           TacticalTileIndex tileIndex) {
@@ -1517,8 +1392,6 @@ int TArmyPlayer::ScoreTacticalTileEnemyArtilleryHuntBonus(TTacticalUnit* unit,
   return 0;
 }
 
-// Heuristic [14]: 100 inside the enemy-edge column zone (column beyond
-// battlefieldColumnCount - 5).
 // FUNCTION: IMPERIALISM 0x0059e0d0
 int TArmyPlayer::ScoreTacticalTileEnemyEdgeColumnZoneBonus(TTacticalUnit* unit,
                                                            TacticalTileIndex tileIndex) {
@@ -1526,12 +1399,6 @@ int TArmyPlayer::ScoreTacticalTileEnemyEdgeColumnZoneBonus(TTacticalUnit* unit,
   return (tileIndex % 29 > battle14->battlefieldColumnCount - 5) ? 0x64 : 0;
 }
 
-// Picks the tile of the most valuable enemy target: base value by unit category, plus
-// (strength, or 500-minus-morale in field48==1 mode), doubled for adjacent entrenched
-// targets and again for adjacent targets of aiClass-1 attackers. When no target exists
-// and this attacker-side unit is indirect-fire with the fort still intact, falls back
-// to a cached random fort-wall-column bombardment tile (cachedFortBombardmentTargetTile4c), rerolled off the
-// wall gun-slot rows.
 // FUNCTION: IMPERIALISM 0x0059e110
 int TArmyPlayer::SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* unit, int flag) {
   TacticalTileIndex bestTargetTileIndex = -1;
@@ -1596,8 +1463,6 @@ int TArmyPlayer::SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* u
               [g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC]] == 0.0f &&
       battle14->IsTacticalSideCategoryCoverageIncompleteOrFlagOff() == 0) {
     if (cachedFortBombardmentTargetTile4c == -1) {
-      // Roll a fort-wall-column tile (rows 1..13; column = columnCount-6 + one full
-      // row stride), rerolling while it lands on a wall gun-slot row (5/7/9).
       TacticalTileIndex rolledTileIndex;
       do {
         rolledTileIndex =
@@ -1610,11 +1475,6 @@ int TArmyPlayer::SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* u
   return bestTargetTileIndex;
 }
 
-// Per-tick battle pump. In the field20 phase it waits on an active sapper record:
-// once the battle's selection has moved off the sapper it queues the 0x232a hand-back
-// event, and when the sapper is selected (or none remains active) it clears the phase.
-// Otherwise an unwatched side runs one auto-turn step, with a right-Windows-key
-// cancel check for watched-then-released sides.
 // FUNCTION: IMPERIALISM 0x0059e3e0
 void TArmyPlayer::NextMove() {
   if (field20) {
@@ -1645,11 +1505,6 @@ void TArmyPlayer::NextMove() {
   }
 }
 
-// One full AI turn for the battle's currently selected unit: pick a destination by
-// weighted tile heuristics (or hold position), march there, then act -- officers rally
-// an adjacent damaged friendly, sappers mine the fort wall or dig in, everyone else
-// fires on the best target (artillery may then advance) -- and finally hand the turn
-// back via the 0x232a event.
 // FUNCTION: IMPERIALISM 0x0059e4f0
 void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
   TTacticalUnit* unit = battle14->selectedUnit1c;
@@ -1664,8 +1519,6 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
   // Phase 1: choose the destination tile.
   TacticalTileIndex targetTileIndex;
   if (categoryCode == 8 && unit->aiStateCode2c != 0xc) {
-    // Sapper: assault row when the fort is gone or a wall section is breached;
-    // otherwise hold if already entrenched or threatened, else seek a dig spot.
     if (battle14->IsTacticalSideCategoryCoverageIncompleteOrFlagOff() != 0) {
       targetTileIndex = FindBestMove(
           unit, g_anTacticalTileHeuristicWeightsByAiState_00699500[12]);
@@ -1706,8 +1559,6 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
   // Phase 3: act from the reached tile.
   if (battle14->pendingEndOfActionFlag != 0 && unit->state1c == 0) {
     if (unit->unitTypeC >= 0x1b) {
-      // Officer types: rally the first adjacent friendly whose morale dropped below
-      // its strength.
       TacticalTileIndex neighborTiles[6];
       battle14->GetNeighborList(unit->tileIndex8, neighborTiles);
       TArmyTacUnit* rallyTarget = 0;
@@ -1726,8 +1577,6 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
         battle14->RallyUnit(unit, rallyTarget);
       }
     } else if (g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC] == 8) {
-      // Sapper that held position: mine the fort wall on the tile to its right, or dig
-      // trenches there, while action points remain.
       if (unit->tileIndex8 == homeTileIndex) {
         while (unit->actionPoints28 >=
                g_awTacticalUnitActionPointCostByType_006693F8[unit->unitTypeC] / 2) {
@@ -1737,17 +1586,12 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
             battle14->ExecuteTacticalMineActionAndQueuePacket(unit, wallTileIndex);
             return; // original returns here without queueing the 0x232a event
           }
-          // If the wall tile is occupied or already trenched, neither branch runs and the
-          // action points are unchanged, so the original re-tests the same loop condition
-          // (a potential infinite loop in the original game code) -- faithful transcription.
           if (wallTile->occupant4 == 0 && wallTile->trenchMask == 0) {
             battle14->ExecuteTacticalDigActionAndConsumeUnitActionPoints(unit, wallTileIndex);
           }
         }
       }
     } else if (unit->selectedFlag != 0) {
-      // Combat unit: fire on the best target; artillery-class units with an advance
-      // stance then push toward the next weighted tile.
       TacticalTileIndex fireTileIndex = SelectBestTacticalTargetTileByActionHeuristics(unit, 1);
       TTacticalUnit* fireTarget = 0;
       if (fireTileIndex != -1) {
@@ -1786,10 +1630,6 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
   }
 }
 
-// Encodes the selected unit's AI class and tactical position into the action mask:
-// bits 0..2 identify the class family, 0x10 marks adjacency to the reference tile,
-// 0x20 marks deployed class-0 units (0x40 is its complement), 0x80 marks columns
-// beyond six, and 0x100 marks either of the last two battlefield rows.
 // FUNCTION: IMPERIALISM 0x0059e8a0
 unsigned int
 TArmyPlayer::BuildTacticalActionClassAndPositionFlags(TacticalTileIndex referenceTileIndex,
@@ -1845,8 +1685,6 @@ int TArmyPlayer::GetMinimumActiveUnitRangeForStates2Or4() {
   return minimumActionPoints;
 }
 
-// Mac oracle: TArmyPlayer::SwitchToAutoPlay(). The side's +0x0e confirmation flag
-// selects the localized prompt path; otherwise switching is accepted immediately.
 // FUNCTION: IMPERIALISM 0x0059ea60
 unsigned char TArmyPlayer::SwitchToAutoPlay() {
   if (notWatchedFlag) {
@@ -1857,9 +1695,6 @@ unsigned char TArmyPlayer::SwitchToAutoPlay() {
   return 1;
 }
 
-// After the battle-intro dialog is accepted: auto-deploy if this side has not
-// deployed yet; otherwise (first acceptance on a watched side) mark the side as no
-// longer watched-idle, apply cursor profile 0, and start the turn pump.
 // FUNCTION: IMPERIALISM 0x0059eb40
 void TArmyPlayer::ProceedAfterBattleIntroAccepted() {
   if (!sideReadyFlag) {

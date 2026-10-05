@@ -16,9 +16,6 @@ public:
                           CPoint& currentPoint,
                           bool commandFlag) override;                         // slot 0x68 0x5bc9f0
   virtual void Setup(short bitmapResourceId, unsigned char useAlternatePair); // slot 0x71 0x5bc780
-  // Vertical fill-bar slice read by Draw: negative selectedRow means "no
-  // selection" (draw the whole strip empty); otherwise the highlight band spans
-  // [selectedRow*rowHeightPixels, +rowHeightPixels) with the empty strip above and below.
   short selectedRow;     // +0x84 selected row index, -1 = none
   short rowHeightPixels; // +0x86 pixel height of one row
   short tabCount;        // +0x88 Setup default: 15

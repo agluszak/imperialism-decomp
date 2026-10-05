@@ -29,8 +29,6 @@ IMPLEMENT_DYNCREATE(TNewspaperView, TPicture)
 // Base ctor call + vptr store only; the original body is 18 bytes ending in
 // `mov eax,esi` return-this.
 
-// Populate the nation-status advisor page: date + special-metric headline children,
-// then the 3x3 inter-nation newspaper story grid from the queue manager's pages.
 // FUNCTION: IMPERIALISM 0x0055d200
 void TNewspaperView::StuffValues(int pageNation) {
   CString tokens[4];
@@ -239,8 +237,6 @@ void TNewspaperView::ProvinceParmList(CString& out, int cityRecordIndex) {
   out = cityName;
 }
 
-// Dead helper (no live callers): copies the display name of the map action context
-// identified by `nodeId` into `out`.
 // FUNCTION: IMPERIALISM 0x0055df20
 void __stdcall LookupZoneDisplayNameByNodeId(CString* out, short nodeId) {
   FindMapActionContextByNodeId(nodeId)->AssignZoneDisplayNameToOutputRef(out);

@@ -23,10 +23,6 @@ IMPLEMENT_DYNCREATE(TSpecialQuitPicture, TPicture)
 void TSpecialQuitPicture::DoPostCreate(int arg) {
   TPicture::DoPostCreate(arg);
 
-  // 'sale'/'shot'/'equi'/'titl' are TDeluxeText controls (verified via class-vtable-dump:
-  // TDeluxeText is the class that introduces real virtuals at byte offsets 0x1d8-0x1f8,
-  // beyond TStaticText's declared extent -- ApplyControlThemeStyleAndOptionalCaption's own
-  // TStaticText* parameter accepts them via the real inheritance chain).
   TDeluxeText* saleControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagSale));
   saleControl->AssertValid();
   saleControl->LoadTextResource(0x4e20);

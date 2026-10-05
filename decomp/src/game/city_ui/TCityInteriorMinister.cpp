@@ -45,8 +45,6 @@
 short __stdcall TraceDescendingTileScoreGradientToSource(short startTile, char* scoreMap,
                                                          short* previousTileOut);
 
-// TCity::trackedOrderList contains TCityTask/TShipBuildingTask objects. The
-// +0x04 value tested at 0x004c2c23 is TTask::citySlotIndex, not TUnit::orderType.
 static const short kPendingProspectorRecruitmentCitySlot = 0x22;
 
 template <class T> static T* AllocateCityMinisterScratchArray(int count, int assertLine) {
@@ -172,9 +170,6 @@ void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
 
   cityPolicyFuzzySet = new TFuzzySet();
   cityPolicyFuzzySet->IFuzzySet();
-  // Four trapezoidal fuzzy-membership bands. These were previously written as the raw
-  // IEEE-754 bit patterns of the float constants, because TFuzzyVar's values were
-  // modelled as int; every one decodes to a round number.
   cityPolicyFuzzySet->AddFuzzyVar(-100000000.0f, -100000.0f, -20000.0f, -10000.0f);
   cityPolicyFuzzySet->AddFuzzyVar(-15000.0f, -5000.0f, -5000.0f, 1000.0f);
   cityPolicyFuzzySet->AddFuzzyVar(0.0f, 5000.0f, 10000.0f, 15000.0f);
@@ -224,9 +219,6 @@ void TCityInteriorMinister::FillLists() {
   list2c->InsertLast(6);
 }
 
-// The city interior minister ranks a nation by its capital's seven building types plus
-// the nation's remaining need capacity. The nation slot is re-read after the loop, so a
-// nation that vanished mid-loop contributes only the building sum.
 // FUNCTION: IMPERIALISM 0x004bee20
 short TCityInteriorMinister::GetRankingCriterionForGP(short nationSlot) {
   short ranking = 0;
@@ -2587,8 +2579,6 @@ void TCityInteriorMinister::SeekResources(TShortintList* ownedTiles, char* prima
   developmentBudgetText.Format(g_szDecimalFormat,
                                static_cast<short>(g_pSimMgr->defenseMinisterPolicyIds[0] / 4));
 
-  // Per-resource tallies for this pass: how many workable-but-unclaimed tiles mention
-  // the resource, and how much better the city could do on the tiles it already works.
   short unclaimedTileMentions[23];
   short workOrderValueDelta[23];
   int resourceType;
@@ -2609,8 +2599,6 @@ void TCityInteriorMinister::SeekResources(TShortintList* ownedTiles, char* prima
         static_cast<StrategicTileIndex>(*ownedTiles->At(static_cast<unsigned int>(entry - 1)));
     TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
     if (tile.regionSubtypeTag != -1) {
-      // Already inside a region: score how much the two resource edges would gain from
-      // the high-nibble (developed) work order over the low-nibble (current) one.
       short nationSlot = greatPower->nationSlot;
       short developedCapability =
           g_pGlobalMapState->GetMaxDevelopmentLevel(tileIndex, 1, nationSlot);
@@ -2631,8 +2619,6 @@ void TCityInteriorMinister::SeekResources(TShortintList* ownedTiles, char* prima
         }
       }
     } else {
-      // Unclaimed tile: it only counts if it, or one of its six neighbours, is close
-      // enough to be worked (distance 1..8) or is a viable port site.
       bool reachable = true;
       char distance = primaryDistanceMap[tileIndex];
       if (distance == 0 || distance < 9 || !g_pGlobalMapState->CanBuildPortAtTile(tileIndex)) {

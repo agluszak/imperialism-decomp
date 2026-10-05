@@ -35,8 +35,6 @@ public:
   virtual short GetCountryAt(short index);                  // 14 (0x38)
   virtual short GetRankOfCountryAt(short index);            // 15 (0x3c)
   virtual short GetInfoOfCountryAt(short index);            // 16 (0x40)
-  // Mac oracle: TMinister::MakeNewCity(TCity*). Personality ministers specialize the
-  // initial per-city production priorities through this hook.
   virtual void MakeNewCity(TCity* city); // 17 (0x44)
   // Orig TMinister vtable (0x659c00) ends at slot 17 (0x44); slots 0x48-0x54 are NULL.
   // Slots 0x48+ are introduced per derived minister (e.g. TDefenseMinister, TInteriorMinister).
@@ -45,15 +43,5 @@ public:
   TIndexAndRankList* ranking; // +0x8 — great powers ranked by GetRankingCriterionForGP
   short skillIndex;           // +0xC
   unsigned char pad0e[0x10 - 0x0E];
-  // Object ends here at 0x10 (== CRuntimeClass::m_nObjectSize for TMinister). Every
-  // field previously declared here (field10/field12/capabilityFlag14../counters1e/...)
-  // was independently re-verified per derived class: TForeignMinister uses them via its
-  // own real virtual overrides (PleaseBuy 0x52f4f0, SetInteriorMinisterBid 0x52f540)
-  // and TInteriorMinister/
-  // TCityInteriorMinister-family write the *same relative offsets* (0x14/0x16, ctor
-  // evidence e.g. TSteelCityMinister::TSteelCityMinister 0x4c59e0) for their own
-  // unrelated capability-flag pair — two distinct derived-class field blocks that
-  // happen to share layout, not one shared base block. See TForeignMinister.h and
-  // TInteriorMinister.h for the per-class fields now declared there.
 };
 ASSERT_SIZE(TMinister, 0x10);

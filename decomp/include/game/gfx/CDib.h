@@ -13,11 +13,6 @@
 // depth)`.
 //
 
-// How CDib::Release must dispose of m_pInfoHeader. Three states, so this is a real
-// ownership enum rather than a flag: Release (0x0047bca0) branches on the field to
-// choose between `delete[]` on a byte array and GlobalUnlock + GlobalFree on
-// m_hGlobalInfo. The field keeps its 32-bit slot at +0x18; a VC5 classic enum is
-// int-sized.
 enum eDibInfoOwnershipMode {
   kDibInfoNotOwned = 0,
   kDibInfoOwnedByteArray = 1,
@@ -35,10 +30,6 @@ public:
   BITMAPINFO* m_pInfoHeader; // 0x10  packed BITMAPINFOHEADER + RGBQUAD palette
   HGLOBAL m_hGlobalInfo;     // 0x14  GlobalAlloc handle backing m_pInfoHeader (own mode 2)
   eDibInfoOwnershipMode m_infoOwnMode; // 0x18
-  // 0x1c -- two-state companion to m_infoOwnMode, NOT a third ownership mode: every
-  // writer stores 0 or 1 and Release tests it once to decide whether m_dibBits is a
-  // `delete[]`-able byte array. This is the CDib lineage's BOOL m_bMyBits, so it stays
-  // a 32-bit BOOL rather than becoming an enum or a one-byte C++ bool.
   BOOL m_dibBitsOwned;
   int m_pixelBytes;      // 0x20  size of the pixel buffer in bytes
   int m_paletteCount;    // 0x24  number of palette entries (biClrUsed)
@@ -58,24 +49,13 @@ public:
   // Free every owned GDI/heap/mapping resource and zero the state. 0x0047bca0
   void Release();
   void ReleaseMappedFileView(); // 0x0047bd90
-  // Release the current state and adopt an already-packed BITMAPINFOHEADER + color table
-  // + pixels block: derives m_paletteCount/m_pixelBytes from the header, points
-  // m_colorTablePixels/m_dibBits into the block, and rebuilds m_hPalette. ownsInfo picks
-  // the disposal mode, hGlobalInfo being the GlobalAlloc handle when there is one.
-  // Always returns 1. 0x0047a8a0
   BOOL AttachPackedInfoHeader(BITMAPINFO* info, BOOL ownsInfo, HGLOBAL hGlobalInfo);
-  // Lazily create the DIB section bitmap into m_hBitmap/m_dibBits. The original takes
-  // the CDC (it derefs m_hDC itself, null-tolerant), not a raw HDC. 0x0047ae20
   HBITMAP EnsureDibSectionCreated(CDC* dc);
   // Build m_hPalette (LOGPALETTE -> CreatePalette) from the RGBQUAD color table. 0x0047ae90
   int BuildPaletteFromRgbQuadBuffer();
   // Allocate a fresh CPalette from the color table (returns NULL if there is no palette). 0x0047af60
   CPalette* CreatePaletteObjectFromColorTable();
-  // Allocate a LOGPALETTE copy of the RGBQUAD color table. The caller owns the
-  // returned byte array. 0x0047b030
   LOGPALETTE* CreateLogPaletteFromColorTable();
-  // Build a logical palette from the display's system palette when this DIB has no
-  // color table. 0x0047b1b0
   BOOL SetSystemPalette(CDC* dc);
 
   // Load a .bmp via a read-only file mapping and point the DIB buffers into it. 0x0047a420
@@ -85,8 +65,6 @@ public:
   // Convert a LOGPALETTE's entries into the surface's RGBQUAD color table. 0x0047b0c0
   void CopyRgbQuadTableFrom(const LOGPALETTE* source);
 
-  // Adopt `palette`'s HPALETTE into m_hPalette and refill the DIB colour table from its
-  // LOGPALETTE entries. 0x0047b130, __thiscall.
   void AdoptPaletteAndCopyRgbQuadTable(CDibPal* palette);
   // Copy bitmap width/height into a point, or zero it if no header is attached. 0x0047a3e0
   CPoint* CopyBitmapDimensionsToPoint(CPoint* out);
@@ -99,63 +77,33 @@ public:
                                       int height);
   // Blit the whole stored DIB to a DC at the given top-left point (natural size). 0x0047ab60
   BOOL StretchDibitsFromStoredBitmapToHdc(CDC* dc, POINT* topLeft);
-  // Full-control StretchDIBits of this DIB's bits/header: explicit dest and src rects,
-  // DIB_RGB_COLORS + SRCCOPY, null-tolerant CDC. 0x0047abe0
   int StretchDibitsRectToDc(CDC* dc, int xDest, int yDest, int destWidth, int destHeight, int xSrc,
                             int ySrc, int srcWidth, int srcHeight);
-  // CreateDIBitmap from the stored header/bits (CBM_INIT), compatible with the given DC.
-  // Returns NULL if no pixel buffer. 0x0047b280
   HBITMAP CreateDibBitmapFromStoredInfo(CDC* dc);
-  // Rebuild the stored pixels through GDI, either as BI_RLE4/BI_RLE8 data or as an
-  // uncompressed BI_RGB DIB. Compression is supported only for 4- and 8-bpp surfaces.
-  // 0x0047b2d0
   BOOL Compress(CDC* dc, BOOL compress);
   void ComputePaletteSize(unsigned int bitCount); // 0x0047bb60
   void ComputeMetrics();                          // 0x0047bc30
-  // StretchDIBits with the color-table entry `paletteIndex` temporarily forced white (then
-  // restored): masks that palette slot to white for the blit. Two-pass (AND then paint ROP).
-  // 0x0047ac50
   BOOL StretchDibitsWithCopiedPaletteTable(CDC* dc, int paletteIndex, int xDest, int yDest,
                                            int destWidth, int destHeight, int xSrc, int ySrc,
                                            int srcWidth, int srcHeight);
   // Load an RT_BITMAP resource from a module into the DIB state. 0x0047c080
   int LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODULE module);
-  // For a 1-bpp DIB, replace every set pixel with the one-pixel ring immediately outside
-  // the original bitmap. Used by the diagnostic DIB preview dialog. 0x0047c1f0
   int BuildMonochromeOutlineMaskInPlace();
   // Reverse the DIB's scanline order in place. 0x0047c980
   void FlipScanlineOrder();
-  // Software-blit a `width`x`height` rect from this DIB's pixel buffer (top-left at
-  // srcX/srcY) into destDib's pixel buffer (top-left at destX/destY), skipping any
-  // source byte equal to transparentColor (a straight block copy when
-  // transparentColor == -1). Row orientation (top-down vs bottom-up) is resolved from
-  // each DIB's signed biHeight independently. 0x0047bde0
   void BlitSurfaceRectSkippingTransparentColor(CDib* destDib, int srcX, int srcY,
                                                unsigned int width, unsigned int height, int destX,
                                                int destY, int transparentColor);
 
-  // Return the address of an 8-bit pixel, translating top-origin coordinates into the
-  // DIB's bottom-up scanline storage. Returns NULL when x or y exceeds the bitmap bounds.
-  // 0x0047bf90
   void* GetPixelAddress(int x, int y);
   // Variant that preserves top-down (negative-height) row orientation. 0x0047c000
   void* GetPixelAddressRespectingTopDownOrientation(int x, int y);
-  // Remap every 8-bpp pixel to its nearest entry in `palette`, then replace the
-  // RGBQUAD table with that palette's 256 entries. 0x0047c850
   BOOL MapColorTableAndPixelsToPalette(CPalette* palette);
 
-  // Thin thiscall forwarder that unpacks POINT-pair arguments into the flat
-  // BlitSurfaceRectSkippingTransparentColor parameter list. 0x004849e0
   void ForwardBlitSurfaceRectSkippingTransparentColor(CDib* destDib, POINT* srcPoint,
                                                       POINT* sizePoint, POINT* destPoint,
                                                       int transparentColor);
 
-  // Scan the pixel buffer and return a heap POINT array describing the outline polygon of
-  // the non-transparent area: points[0].x is the vertex count, points[0].y is reserved,
-  // and points[1..] are the closed polygon (first vertex repeated last).
-  // transparentIndex == 0xffffffff means "use the first pixel's value";
-  // a 1-bpp surface treats zero bytes as transparent. Consumed by BitMapToRegion
-  // (CreatePolygonRgn) and the cursor/city-region builders. 0x0047c3d0
   POINT* BuildNonTransparentOutlinePolygon(unsigned int transparentIndex);
 
   // Serialize backends: write a .bmp (BITMAPFILEHEADER + BITMAPINFO + pixels) / read one back.

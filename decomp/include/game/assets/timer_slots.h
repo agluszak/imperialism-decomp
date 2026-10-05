@@ -7,9 +7,6 @@
 // mapping the timer id back to its slot (id = slot + 0xa000) and kills the timer when the
 // callback returns 0 ("done").
 
-// Slot callback: returns non-zero to keep the timer running, 0 to have the dispatcher stop
-// and clear the slot. The dispatcher tests AL, so this is an actual byte result rather than
-// the old undefined4 placeholder.
 typedef char(__cdecl* TimerSlotCallback)();
 
 // The registry globals (g_timerSlotCallbacks @0x006a5cf8, g_timerSlotIds @0x006a5c98,

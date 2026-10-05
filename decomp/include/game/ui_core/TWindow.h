@@ -47,17 +47,12 @@ public:
   virtual unsigned char IsModal();                              // slot 0x6a 0x48da10
   virtual int PoseModally();                                    // slot 0x6b 0x48da60
   virtual unsigned char IsDismissed();                          // slot 0x6c 0x48dc60
-  // Forwards to GetDialogBehavior()'s own command-arming slot 0x0e (a no-op if
-  // no behavior is attached), which stashes commandCode as armedCommandCode and
-  // dispatches it to the behavior's owner. 0x48dc90.
   virtual void Dismiss(unsigned long commandCode,
                        bool accepted);          // slot 0x6d 0x48dc90
   virtual TDialogBehavior* GetDialogBehavior(); // slot 0x6e 0x48dcc0
   virtual void AssertMcAppUILine2554();         // slot 0x6f 0x48dce0
   // Switching notifies the previous and new targets through TEventHandler slots.
   virtual void SetWindowTarget(TEventHandler* target); // slot 0x70 0x48ddc0
-  // Centers the real MFC CWnd (CenterWindow) when one is attached; otherwise computes
-  // ownerLocalX/Y directly against the fixed 0x280x0x1e0 work area, per flag.
   virtual void Center(bool centerX, bool centerY,
                       bool unused);                    // slot 0x71 0x48e150
   virtual void Activate(unsigned char active);         // slot 0x72 0x48d8d0
@@ -67,21 +62,11 @@ public:
   virtual void SetTitle(const CString* title); // slot 0x75 0x48d9c0
   virtual void GetTitle(CString* title);       // slot 0x76 0x48d9f0
 
-  // --- TWindow data members (object size 0xa0; the TView subobject ends at 0x60). ---
-  // The 0x74 region is an embedded TDialogBehavior subobject (ConstructTDialogBehaviorBaseState
-  // at +0x74). Remaining named fields are accessed directly by TWindow's own methods.
-  // Offsets that are not yet attributed stay as padding.
   short windowStyleType; // 0x60 — window-type code; selects the CreateEx style bits
   unsigned char padding_62_to_63[0x02];
-  // 0x64 — the currently-active linked window (init = this); switching targets
-  // notifies the previous one via BecameWindowTarget.
   TEventHandler* activeLinkedWindow;
   int activeViewTag; // 0x68 — child controlTag installed by tactical views
-  // 0x6c-0x71 — style/behavior booleans written by the UI resource builders. The names
-  // remain offset-qualified where no Windows reader has established the exact behavior.
   bool resourceFlag6c; // 0x6c
-  // 0x6d — for window-type codes 0x30/0x1f40, selects the captioned frame style
-  // (0x00c80000) instead of the popup style (0x80c00000) in CMcWindow's CreateEx.
   bool useCaptionedFrameFlag;
   bool resourceFlag6e; // 0x6e
   bool resourceFlag6f; // 0x6f
@@ -97,17 +82,10 @@ public:
 };
 ASSERT_SIZE(TWindow, 0xa0);
 
-// The two McAppUI window registries (canonical declarations; consumers may also
-// reach them through game/globals/view_registries.h).
-// Live-view registry (base 0x006a1a40): every TWindow links itself in on
-// construction and unlinks on teardown; CWMgrIterator sweeps it.
 extern CList<TWindow*, TWindow*> g_LiveViewRegistry;
 // Modal-window stack (base 0x006a1ac0): pushed on modal entry, popped on exit.
 extern CList<TWindow*, TWindow*> g_ModalViewStack;
 
-// The out-of-line definition is material: retail expands this constructor
-// inline at every subclass construction site and CreateObject, and still
-// retains the standalone COMDAT at 0x48d500.
 // FUNCTION: IMPERIALISM 0x0048d500
 inline TWindow::TWindow() : TView(), dialogBehavior(), busyFlag(0) {
   g_LiveViewRegistry.AddHead(this);

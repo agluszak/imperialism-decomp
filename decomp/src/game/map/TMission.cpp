@@ -16,8 +16,6 @@
 #include "game/core/TStream.h"
 #include "game/map/TZone.h"
 
-// The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
-//   CArchive& AFXAPI operator>>(CArchive&, TMission*&)
 IMPLEMENT_SERIAL(TMission, TObject, 1)
 
 // --- TMission default-mission virtual stubs (concrete missions override) ---
@@ -153,9 +151,6 @@ char TMission::SmokeEmIfYouGotEm() {
 // FUNCTION: IMPERIALISM 0x00535020
 TMission::TMission() : state08(2), importanceScore0c(0.0f), marker11(0xff) {}
 
-// Sets the common mission owner and path sentinel, then dispatches the concrete
-// mission's initialization hook. TInvadeMission uses this to initialize its
-// owned beachhead mission with the same nation.
 // FUNCTION: IMPERIALISM 0x005350a0
 void TMission::InitializeMissionWithNationIdAndResetPathMarker(NationSlot nationSlot) {
   nationId04 = nationSlot;
@@ -163,12 +158,6 @@ void TMission::InitializeMissionWithNationIdAndResetPathMarker(NationSlot nation
   Initialize();
 }
 
-// Mission factory: allocates and constructs the concrete mission subtype selected by
-// missionKind, then stamps the common owner/marker fields and runs the mission's
-// Initialize initializer. Each arm is real construction (new T(...)); the compiler emits
-// the operator-new + construction-unwind frame. contextArg is the map-order context /
-// target port zone (a TZone) for the navy missions; nodeKey/keyArg carry the province
-// or amassing keys for the army missions.
 // FUNCTION: IMPERIALISM 0x005350d0
 TMission* TMission::CreateMission(NationSlot sourceNation, eMissionType missionKind, int nodeKey,
                                   TZone* zoneContext, int relatedNodeKey) {
@@ -246,9 +235,6 @@ void TMission::ReadFrom(TStream* stream) {
   stream->ReadBytes(&marker11, 1);
 }
 
-// Mac: TMission::Find(TList*, eMissionType, short, TZone*). Walks the Windows
-// TSortedList equivalent, returning the first mission whose virtual Matches accepts
-// the requested mission identity.
 // FUNCTION: IMPERIALISM 0x00535940
 TMission* TMission::Find(TSortedList* missions, eMissionType missionType, short key,
                          TZone* zoneContext) {
@@ -263,8 +249,6 @@ TMission* TMission::Find(TSortedList* missions, eMissionType missionType, short 
   return nullptr;
 }
 
-// Orders missions first by their signed state byte, then by cached value per unit-cost
-// score. A non-null callback context reverses both comparisons.
 // FUNCTION: IMPERIALISM 0x00535f80
 short __cdecl CompareMissionOrderEntriesByMovementClassThenEfficiency(void* a, void* b,
                                                                       void* reverseOrder) {
@@ -293,11 +277,6 @@ short __cdecl CompareMissionOrderEntriesByMovementClassThenEfficiency(void* a, v
   return 0;
 }
 
-// qsort-style comparator: descending order by a "remaining priority" score --
-// (1.0 - GetWeightedSatisfaction()) scaled by importanceScore0c (multiplied when that difference is
-// >= 0, divided when negative). AssertValid() is invoked on both sides first (the
-// inherited CObject/MFC debug-assert virtual, a no-op in release builds), matching the
-// ground truth's double-dispatch shape before the scores are read.
 // FUNCTION: IMPERIALISM 0x00536090
 short __cdecl CompareMissionOrderEntriesByPriorityScore(TMission* a, TMission* b) {
   a->AssertValid();

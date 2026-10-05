@@ -17,8 +17,6 @@ TOverlayRadioButton::TOverlayRadioButton() : TRadioPictureButton() {
 // FUNCTION: IMPERIALISM 0x00453860
 TOverlayRadioButton::~TOverlayRadioButton() {}
 
-// slot 0x44 — Draw override: base picture render, then blit the attached
-// overlay surface into the active quickdraw surface.
 // FUNCTION: IMPERIALISM 0x004cab10
 void TOverlayRadioButton::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);

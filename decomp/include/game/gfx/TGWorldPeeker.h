@@ -16,8 +16,6 @@ public:
 
   TGWorldPeeker() : field60(nullptr) {}
 
-  // Source surface; Draw blits the whole passed-in rect from it 1:1
-  // (source and destination rect are the same RECT).
   TQuickDrawSurfaceContext* field60;
 };
 ASSERT_SIZE(TGWorldPeeker, 0x64);

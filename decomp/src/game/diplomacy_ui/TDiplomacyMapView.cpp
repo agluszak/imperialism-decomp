@@ -47,9 +47,6 @@ short g_runtimePolicyIconOffsetByNation[kNationSlotCount];
 short g_runtimeSemanticDiplomacyNation = -1;
 #endif
 
-// The Windows port brackets minor-nation label drawing with the palette built from
-// bitmap 0x3b6. The original uses an 8-byte compiler-generated guard around
-// CDC::SelectPalette; keep that lifetime explicit and exception-safe here.
 class ScopedDefaultDibPaletteSelection {
 public:
   explicit ScopedDefaultDibPaletteSelection(CDC* dc) : m_dc(dc), m_previousPalette(NULL) {
@@ -79,10 +76,6 @@ DiplomacyMaskBufferRun::~DiplomacyMaskBufferRun() {
 
 // Clamps `rect` inside `bounds`, preserving the rect's width/height.
 
-// Is the mask pixel set, and is it on the region's edge? With `edgeOnly` clear this is
-// just the pixel test; with it set, a pixel whose four orthogonal neighbours are all set is
-// interior and reports false, leaving only the outline. Retail expands IsMaskPixelSet at
-// all five sites, which is why it lives in the header.
 // FUNCTION: IMPERIALISM 0x004d5a90
 bool IsMaskPixelSetAndOnRegionEdge(int x, int y, DiplomacyMaskBufferRun* run, char edgeOnly) {
   bool isSet = run->IsMaskPixelSet(x, y);
@@ -101,8 +94,6 @@ bool IsMaskPixelSetAndOnRegionEdge(int x, int y, DiplomacyMaskBufferRun* run, ch
   return isSet;
 }
 
-// Shared nil-pointer assert used by InitializeDiplomacyMinisterActionControlsAndLabels'
-// 6 action-button resolves (0x4f4620, D:\Ambit\Cross\UDiplomacyViews.cpp:0x3a7).
 static inline void AssertActionButtonResolved(void* button) {
   if (button == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -192,9 +183,6 @@ void TDiplomacyMapView::Free() {
   TView::Free();
 }
 
-// Rebuilds the diplomacy-map nation overlay: merges every nation's clip region into
-// regionAt9c, rasterizes each nation's region into a packed 1-bit hit mask, places the
-// nation name labels with collision avoidance, and refreshes the per-tile marker rects.
 // FUNCTION: IMPERIALISM 0x004f3ea0
 void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
   short labelWidths[23];
@@ -260,8 +248,6 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
         labelWidths[nationIndex] = textWidth;
         short labelX = static_cast<short>(labelCenterX) - textWidth / 2;
 
-        // Slide the label down (or up) until it no longer overlaps an already placed
-        // label; give up after 0x14 nudges.
         short attempts = 0;
         short placedIndex = 0;
         while (placedIndex <= 0x16) {
@@ -429,8 +415,6 @@ void TDiplomacyMapView::DrawNames(const RECT* presentRect) {
   ResolveUiThemeColor(0x2b68, &styleForeground);
   ResolveUiThemeColor(0x2b6b, &styleShadow);
 
-  // Great powers (slots 0..6): text-only legend labels, drawn as a 1px drop shadow
-  // (shadow color at +1,+1) plus the foreground color at the label origin.
   for (int gp = 0; gp < 7; ++gp) {
     TCountry* terrain = g_apTerrainTypeDescriptorTable[gp];
     if (terrain == nullptr) {
@@ -1075,9 +1059,6 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect
       LockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
     }
 
-    // The fixed call at 0x4f6216 resolves through the ILT to TPicture::Draw
-    // (0x48f3c0). A virtual/self call recursively re-enters this renderer until
-    // the thread stack overflows.
     TPicture::Draw(presentRect);
 
     TCountry** terrainDescriptors = g_apTerrainTypeDescriptorTable;
@@ -1423,11 +1404,6 @@ void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskInde
   packedRun->AppendPackedColorDword(surface->GetBlitSurface()->pixelBits, packedColor);
 }
 
-// Selects a minister action topic: repositions the old/new topic buttons via
-// Locate, toggles the 'ltab'/'rtab' bracket TPicture controls around the new
-// selection (and their picture-resource id, 5001/5002 at the ends, 5003-5007 or the
-// mode-6 override 8410 in between), refreshes the picture-dependent interaction mode via
-// a fixed topic->mode table, and invalidates the map region.
 // FUNCTION: IMPERIALISM 0x004f6d90
 void TDiplomacyMapView::ChangeSelectedActionTopic(int topicIndex) {
   int newTopic = topicIndex;
@@ -1496,11 +1472,6 @@ void TDiplomacyMapView::ChangeSelectedActionTopic(int topicIndex) {
     break;
   }
 
-  // All 6 action-topic buttons are TPanelView-family siblings (TInfoPanelView,
-  // TTreatiesView, TGrantsView, TTradePanelView, TCouncilPanelView, TOffersPanelView),
-  // not TControl -- verified by the zero pushed args at this call in the raw
-  // disassembly, matching TPanelView's slot 0x68 stub rather than TControl's 5-arg
-  // TrackMouse at the same vtable byte offset.
   static_cast<TPanelView*>(actionButtons[newTopic])->Setup();
 
   if (selectedTerrainIndex != frameRegionSelector) {
@@ -1553,8 +1524,6 @@ void TDiplomacyMapView::DoKeyEvent(TToolboxEvent* event) {
     actionButtons[5]->DoKeyEvent(event);
     return;
   }
-  // Non-virtual call to TEventHandler::DoKeyEvent's body (orig routes through the
-  // ILT thunk at 0x401d61 -> 0x48a380); the qualified call forces static dispatch.
   TEventHandler::DoKeyEvent(event);
 }
 
@@ -1627,8 +1596,6 @@ void TDiplomacyMapView::DrawVoteNuggets() {
   UpdatePaletteIndexWithDefaultFallback(0x13);
 }
 
-// Presents the "diplomacy action rejected" modal: resolves the rejection-reason string for the
-// current proposal mode (GetString group 0x2754, index proposalArrayMode - 1) and shows it.
 // FUNCTION: IMPERIALISM 0x004f7400
 void ShowDiplomacyActionRejectedNotice() {
   CString message;

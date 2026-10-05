@@ -10,12 +10,6 @@
 TBitmapSurfaceNode::TBitmapSurfaceNode()
     : pixelBits(0), stride(0), bounds(0, 0, 0, 0), bitDepth18(0), dib(0) {}
 
-// Constructor of the QuickDraw bitmap-surface node: `new`s a backing CDib(width, height,
-// bitDepth), seeds its color table from the module cache's shared default LOGPALETTE, builds
-// the palette + DIB section, and caches the pixel bits / dword-aligned stride / dimensions.
-// Real __thiscall ctor (returns `this`); reached as `new TBitmapSurfaceNode(...)` from
-// TBitmapSurfaceContextDescriptor::InitializeSurfaceNode (0x495eb0). The +0x18 field stores
-// the low 16 bits of `bitDepth` (a 16-bit write), not a height.
 // FUNCTION: IMPERIALISM 0x00495d00
 TBitmapSurfaceNode::TBitmapSurfaceNode(int width, int height, int bitDepth) {
   dib = new CDib(width, height, bitDepth);

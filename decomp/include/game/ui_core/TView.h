@@ -19,12 +19,6 @@ struct TToolboxEvent;
 // 0x16 GetWindow) and introduces its own virtuals at slot 0x25+ (declared below in exact vtable
 // slot order). See game/ui_core/TEventHandler.h.
 
-// 8-byte style/color payload hung off TView::stylePayload48 (see TView::EnsureField48Buffer
-// 0x48b810 and ReplaceUiResourceContextPairBuffer 0x427060). Its default ctor zeroes
-// the bytes and is inlined at the new-expressions (both bodies show the 8 byte-stores
-// inline); factory builders call the equivalent out-of-line Reset entry at 0x41b420.
-// packedColor/styleWord names are hedged from the observed writes ({0xffffff, 0} at
-// the 0x427060 call sites).
 class TUiStyleBytes {
 public:
   TUiStyleBytes() : packedColor(0), styleWord(0) {}
@@ -33,10 +27,6 @@ public:
   int styleWord;          // +4
 };
 
-// Typed MFC child list used by TView::childList. The two non-virtual helpers are
-// carried by the retail binary immediately before TEventHandler's RTTI factory;
-// their receiver layout and element access prove they belong to this list, not to
-// TEventHandler itself.
 class TViewChildList : public CList<TView*, TView*> {
 public:
   TView* FindByTag(unsigned int tag);
@@ -54,23 +44,13 @@ public:
   int ownerLocalY;           // 0x28
   int absoluteX;
   int absoluteY;
-  // 0x34/0x38 — control frame size; CMcWindow builds the native window rect as
-  // (ownerLocalX, ownerLocalY) + frameWidth x frameHeight.
   int frameWidth;
   int frameHeight;
-  // 0x3c — general per-control value slot: toggle/current value (T2PictToggleButton),
-  // window id (TDisplayMgr), dialog resource-template id (TControl).
   int controlValue3c;
-  // Optional resource-construction context inherited by dynamically built child views.
-  // Controls that do not inherit a context store null here.
   TView* resourceContext;        // 0x40
   TViewChildList* childList;     // 0x44 — child-control list (CList<TView*,TView*>)
   TUiStyleBytes* stylePayload48; // 8-byte style/color payload (see TUiStyleBytes above)
-  // 0x4c — participates in the control input gate (EvaluateControlInputGate passes
-  // when this is set and IsEnabled() reports true).
   bool inputGateFlag;
-  // 0x4d — gates child traversal for renderability/hover hit-tests
-  // (HasRenderableParentAndContent requires it before childList counts).
   bool childHitTestFlag;
   unsigned short cursorId4e;
   CWnd* nativeWindow50; // 0x50 — host window (MFC CWnd; HWND via m_hWnd)
@@ -95,9 +75,6 @@ public:
   TObject* ShallowClone() override;      // 0x08 0x48bfd0
   virtual TWindow* GetWindow() override; // 0x16 0x48b180
 
-  // TView-introduced virtuals (slots 0x25-0x67), in exact vtable slot order. Slot
-  // assignments are pinned by FUNCTION-marker addresses, original-binary call offsets,
-  // and the corresponding Mac-oracle method signatures where available.
   virtual class TView* ResolveControlByTag(unsigned int controlTag); // 0x25 0x48afd0
   virtual void SwitchActiveChildAndNotify(class TView* child);       // 0x26 0x48af80
   virtual CWnd* Open();                                              // 0x27 0x48c820
@@ -127,9 +104,6 @@ public:
   virtual void Resize(const CPoint& size, bool refresh);                 // 0x3d 0x48b3f0
   virtual char PrepareForDrawing();                                      // 0x3e 0x48b770
   virtual void PostRender();                                             // 0x3f
-  // The "DC handle" flowing through slots 0x40/0x41/0x43/0x45 is a caller-supplied MFC
-  // CDC* (or null = bind a fresh window DC): CMcWindow::OnPaint (0x4938c0) passes its
-  // CPaintDC here, and BindScopedMapQuickDrawDcHandle stores it as the active DC object.
   virtual int BindMapQuickDrawDc(CDC* paintDc);     // 0x40 0x48b7b0
   virtual void ReleaseMapQuickDrawDc(CDC* paintDc); // 0x41 0x48b7e0
   virtual void EnsureField48Buffer();               // 0x42 0x48b810
@@ -172,14 +146,9 @@ public:
   virtual void ResizeByUser(const CPoint& point);
   virtual void ZoomByUser(const CPoint& point, short partCode);
   virtual void DrawRectangleInCurrentUiContext(const RECT* rect);
-  // One ignored stack arg (body ends `RET 0x4`; sibling Line1922 is a bare RET)
-  // -- present only for stack-cleanup fidelity.
   virtual void AssertMcAppUiLine1914(int unusedArg);
   virtual void AssertMcAppUiLine1922();
   virtual void WindowToLocal(CPoint* point);
-  // TView's real vtable is 104 slots (0x00-0x19c). Slots 0x1A0+ belong to the sibling
-  // branches (TControl, TCivDescription, TAmtBar, ...). The destructor is slot 1
-  // (TEventHandler override), so its declaration position is irrelevant.
   virtual ~TView() override;
 };
 ASSERT_SIZE(TView, 0x60);

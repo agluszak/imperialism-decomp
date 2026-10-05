@@ -1,6 +1,4 @@
 #pragma once
-// UI placeholder and new-game setup text. Definitions and address markers live in
-// src/game/core/global_data_tables.cpp.
 #include "game/globals/global_types.h"
 
 extern char g_szUiCloseParen_006973C8[];

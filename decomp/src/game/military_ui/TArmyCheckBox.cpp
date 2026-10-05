@@ -65,9 +65,6 @@ void TArmyCheckBox::Draw(RECT* rectBuffer) {
     UpdatePaletteIndexWithDefaultFallback(0x10);
     SetQuickDrawFillColor(0);
 
-    // Both source and destination rects get flipped for a negative-height
-    // (bottom-up) backing DIB -- the same idiom, applied to two different
-    // surfaces (surfaceContext's icon strip, then the active draw surface).
     if (surfaceContext->blitSurface.surfaceDib != 0) {
       int height = surfaceContext->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
       if (height < 1) {

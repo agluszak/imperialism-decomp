@@ -3,20 +3,9 @@
 #include "game/ui_core/TView.h"
 #include "game/ui_tags_common.h"
 
-// MacApp CSubViewIterator (Mac CodeWarrior oracle: constructors (TView*, unsigned char) and
-// (const TView*), FirstSubView(), NextSubView(), ~CSubViewIterator()). A stack cursor over a
-// TView's childList (MFC CList<TView*, TView*>): it walks forward from the head or in
-// reverse from the tail per the direction byte, using GetNext/GetPrev to read the current
-// child's payload while advancing the position. The single-arg constructor at 0x004919a0
-// defaults the direction to forward and sets the identifier filter to "    " (no filter).
-// The Windows port carries an explicit MoreSubViews() validity check; the Mac loop instead
-// tests FirstSubView()/NextSubView()'s returned TView* against nil.
 class CSubViewIterator {
 public:
   CSubViewIterator(const TView* owner); // 0x004919a0 (default forward)
-  // 0x00491960 -- same fields, but the caller chooses the traversal direction
-  // (non-zero = forward from head, 0 = reverse from tail). The direction arrives as a
-  // byte and is sign-extended into the int field.
   CSubViewIterator(const TView* owner, char forward);
   TView* FirstSubView(); // 0x00491a00
   TView* NextSubView();  // 0x00491a70

@@ -23,15 +23,11 @@ public:
   virtual void IItemOrder(TCity* city, short outputResourceType, short primaryInputResourceId,
                           short secondaryInputResourceId,
                           short productionSlot); // slot 0x11 0x4b5290
-  // TItemOrder is 0x54 bytes vs. TProductionOrder's 0x4c (RTTI). The slot-0x11
-  // initializer and resource-indexed city-stock accesses recover all four added shorts.
   short requestedQuantity4c;      // desired quantity retained across availability clamps
   short primaryInputResourceId;   // first cityStockByType / trackingSlots resource index
   short secondaryInputResourceId; // second resource index, or -1 for two units of primary
   short productionSlot;           // city productionAccum index
 
-  // The retained constructor copy and inlined CreateObject path both clear the inherited
-  // quantity word after installing the derived vptr.
   TItemOrder() {
     quantity = 0;
   }

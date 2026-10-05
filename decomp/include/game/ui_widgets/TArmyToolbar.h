@@ -15,8 +15,6 @@ public:
 
   DECLARE_DYNCREATE(TArmyToolbar)
   void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
-  // TArmyToolbar's sole slot beyond TUnitToolbarCluster. Recounts the selected
-  // province's stationed units into the placards and order-state arrow controls.
   virtual void SetProvince(short provinceIndex); // slot 0x74 0x0058df60
 };
 

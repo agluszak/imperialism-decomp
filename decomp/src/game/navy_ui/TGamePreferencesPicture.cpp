@@ -32,12 +32,6 @@ TGamePreferencesPicture::~TGamePreferencesPicture() {}
 
 IMPLEMENT_DYNCREATE(TGamePreferencesPicture, TPicture)
 
-// Builds the game-preferences screen state: seeds the shared 'main' ticker text and
-// the cursor hint panel, loads the okay/quer captions, wires the five 'opta'..'opte'
-// preference checkboxes (enabled per g_anGamePreferenceIndexByRow and multiplayer
-// role) with their 'txta'.. labels, initializes the music/sound TTwoPicSliders from
-// preferenceValues[3]/[2], lazily creates g_pHelpMgr, and preloads the
-// auto-resolution yes/no radio cluster from the "AutoRes" profile setting.
 // FUNCTION: IMPERIALISM 0x0056a5b0
 void TGamePreferencesPicture::DoPostCreate(int arg) {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
@@ -59,8 +53,6 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
     int prefIndex = g_anGamePreferenceIndexByRow[row];
     TCzechBox* checkbox = static_cast<TCzechBox*>(ResolveControlByTag(kControlTagOpta + row));
     if (checkbox == 0) {
-      // No checkbox on this screen variant: the label alone, always enabled, showing
-      // the "on" caption.
       TDeluxeText* label = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTxta + row));
       label->AssertValid();
       label->Show(1, 0);
@@ -83,8 +75,6 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
     checkbox = static_cast<TCzechBox*>(ResolveControlByTag(kControlTagOpta + row));
     checkbox->AssertValid();
     checkbox->Show(enabled, 0);
-    // The TView-level state, dispatched through slot 0x2a (TCzechBox's own two-byte
-    // SetState overload at slot 0x75 hides it on the derived type).
     static_cast<TView*>(checkbox)->ViewEnable(enabled, 0);
     LoadUiStringByGroupAndIndexToControlObject(0x2743, static_cast<short>(row + 0x26), checkbox);
     if (enabled) {

@@ -10,10 +10,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
 
-// Scratch (width, height) pair the SetPictureRsrcID fallback path builds
-// and immediately discards (the original never reads it back either -- confirmed via
-// the raw listing: no instruction between this call and the function's return
-// references the buffer again).
 struct PictureFallbackSizeScratch {
   int width;
   int height;
@@ -28,12 +24,6 @@ TPicture::TPicture()
     : TControl(), glyphBase84(-1), reserved86(0), bitmapId(0), resourceNamespaceId(0),
       cachedBitmap(0) {}
 
-// The TControl copy constructor is compiler-generated and inlined here: the listing
-// calls the TView copy constructor (0x48bd30) through ILT 0x4017ad, copies
-// eventNumber60/controlState64/contentInsets/textStyle78, and installs the TControl
-// vptr (0x64a098) before the TPicture members and vptr (0x64a930).
-// reserved86 is deliberately absent from the member-init list: the original copies
-// 0x84, 0x88 and 0x8c but never writes 0x86.
 // FUNCTION: IMPERIALISM 0x0048f080
 TPicture::TPicture(const TPicture& source)
     : TControl(source), glyphBase84(source.glyphBase84), bitmapId(source.bitmapId),
@@ -60,10 +50,6 @@ void TPicture::CopyPictureStateFromSource(TPicture* source) {
   }
 }
 
-// Real destructor body at 0x48f250, shared by the scalar deleting destructors of
-// TPicture-derived classes. Releases the glyph/animation slot cached in glyphBase84 and
-// resets the bitmap fields; cachedBitmap is only zeroed here, not deleted —
-// its lifetime is owned by the picture-resource cache, not per-instance.
 // FUNCTION: IMPERIALISM 0x0048f250
 TPicture::~TPicture() {
   if (glyphBase84 != -1) {

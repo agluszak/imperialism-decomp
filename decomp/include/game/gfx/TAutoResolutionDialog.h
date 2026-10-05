@@ -3,9 +3,6 @@
 #include "game/gfx/TModalDialogBase.h"
 #include "game/mfc.h"
 
-// Template FB dual-text modal dialog (own vtable 0x646958). A CDialog subclass (via
-// TModalDialogBase) with two embedded CWnd child controls at +0x74 / +0xb0 and a check
-// state at +0xec.
 // VTABLE: IMPERIALISM 0x00646958
 class TAutoResolutionDialog : public TModalDialogBase {
 public:

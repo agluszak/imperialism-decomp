@@ -34,12 +34,6 @@ void TScoreGraph::DoPostCreate(int arg) {
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 }
 
-// For each of the 7 great powers with a live terrain descriptor, draws a stacked
-// horizontal bar of its 4 comparativePowerRows components (army, avg relation,
-// territory+tech, commodity) in the great power's legend colors (slots 3-6), a black
-// border rect behind it, and the nation's name to the right. Row Y for the next nation
-// carries over as (this row's total bar width + 0x34) -- ported verbatim from the
-// original, including that apparent quirk.
 // FUNCTION: IMPERIALISM 0x004fe390
 void TScoreGraph::Draw(RECT* rectBuffer) {
   (void)rectBuffer;

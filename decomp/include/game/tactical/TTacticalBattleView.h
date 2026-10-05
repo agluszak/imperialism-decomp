@@ -28,12 +28,8 @@ public:
                               CPoint origin) override;  // slot 0x47 0x5a8660
   virtual void UpdateTile(TacticalTileIndex tileIndex); // slot 0x68 0x5a8900
   virtual void InvalidateUnit(TTacticalUnit* unit);     // slot 0x69 0x5a89a0
-  // Writes the on-screen RECT of a unit's tile (grown 0x18 px upward, bottom-4;
-  // zero RECT when tileIndex8 == -1).
   virtual void UnitRect(TTacticalUnit* unit, RECT* rectOut);     // slot 0x6a 0x5a89f0
   virtual void Scroll(MapScrollEdgeMaskStorage scrollDirection); // slot 0x6b 0x5a8be0
-  // Per-tile drawer for the rect applier's 0..0x1b2 pass (base = no-op; the army view
-  // override renders the tile). Old OrphanRetStub name was junk; ret 8 = 2 args.
   virtual void DrawTile(TacticalTileIndex tileIndex, RECT* clipRect); // slot 0x6c 0x5a83c0
   virtual void PlayAni(TacticalTileIndex tileIndex, int effectId,
                        int frameCount); // slot 0x6d 0x5a9090
@@ -43,11 +39,7 @@ public:
                          TacticalTileIndex toTileIndex); // slot 0x6f 0x5a9240
   // Takes no args (bare ret; a decompiler-synthesized pointer argument was spurious).
   virtual void DoGlideAni(); // slot 0x70 0x5a9550
-  // View-local slice (+0x60..; TView ends at +0x5c). Offsets verified in the tile-rect
-  // and move-animation bodies; gaps unobserved.
   TTacticalBattle* tacticalBattle60; // +0x60 the battle this view renders
-  // Offscreen surfaces allocated/loaded by the live-battle initializer (0x5a9d90);
-  // all released through RemoveGWorld.
   struct TQuickDrawSurfaceContext* battlefieldSurface64;     // +0x64 0x5dc x 0x1c2 backdrop
   struct TQuickDrawSurfaceContext* unitSpriteAtlasSurface68; // +0x68 bitmap 0xee2 atlas
   struct TQuickDrawSurfaceContext* fortLevelAtlasSurface6C;  // +0x6c fort bitmap 0xee6+lvl/0xee7
@@ -71,14 +63,10 @@ public:
   RECT moveAnimSpriteSrcRect;   // +0xac sprite-sheet source rect
   struct TQuickDrawSurfaceContext* unitSpriteScratchSurfaceBC; // +0xbc 2x3-cell scratch
   RECT moveAnimScreenRect;                                     // +0xc0 on-screen animation rect
-  // +0xd0 zeroed by ctor; the only subclass (TTacArmyView, 0x5a9d90) resolves the
-  // 'tool' control here and stores it as a TTacticalToolbar*.
   TTacticalToolbar* toolbarD0;
 
   TTacticalBattleView();
 
-  // Tactical-battle UI helpers dispatched from the TTacticalBattle command handlers
-  // (all __thiscall on the live view; verified at every call site).
   void SetCurrentPlayer(unsigned char side);         // 0x5a9b40
   void InvalidateTile(TacticalTileIndex tileIndex);  // 0x5a8860
   void MakeTileVisible(TacticalTileIndex tileIndex); // 0x5a8ac0
@@ -90,28 +78,14 @@ public:
   void KillSelectionBlink();    // 0x5a9cc0
   // Writes the on-screen RECT of a bare hex tile (no unit growth). 0x5a87d0.
   void ComputeTacticalHexTileScreenRect(RECT* rectOut, TacticalTileIndex tileIndex);
-  // Writes unit's on-screen sprite rect (tile rect grown 0x14px upward), then applies
-  // a trench-facing pixel offset when the unit's tile is a fresh
-  // trench-deploy mark, or clips the rect off-screen for a specific hidden-in-trench
-  // case. 0x5aa7d0.
   void ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(TTacticalUnit* unit, RECT* rectOut);
-  // Orientation-index lookup (0..6) for a unit sprite at tileIndex, based on which
-  // of the two "opposite" hex neighbors (by parity of tileIndex) are trench-deploy
-  // tiles; maps the resulting three-bit code through {6,3,5,1,6,0,2,4}. 0x5aa670.
   short
   ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(TacticalTileIndex tileIndex);
 
-  // Never touched by this class's own ctor; the only subclass (TTacArmyView, 0x5a9d90)
-  // writes the battlefield x-origin offset here. Natural tail alignment follows at +0xd6.
   short battlefieldOriginOffsetX; // +0xd4
 };
 ASSERT_SIZE(TTacticalBattleView, 0xd8);
 
-// Clips srcRect to bounds, shifting dstRect by the same per-edge delta so the two
-// stay in sync (the standard blit-clip prologue before a QuickDraw surface blit).
-// Returns non-zero iff the clipped srcRect is still non-empty. 0x005a6940
 BOOL __cdecl ClipSrcRectToBoundsAndOffsetDstRect(RECT* bounds, RECT* dstRect, RECT* srcRect);
 
-// Draws four short corner-tick brackets around rect's edges (a hex-selection
-// highlight idiom), shrinking rect->right/bottom by 1 first. 0x005a99e0
 void __stdcall DrawHexSelectionOutlineSegments(RECT* rect);

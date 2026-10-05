@@ -186,9 +186,6 @@ void TAutoGreatPower::Free(void) {
     int ordinal = this->missionQueue->GetCount();
     for (; ordinal > 0; --ordinal) {
       TMission* entry = static_cast<TMission*>(this->missionQueue->GetEntryByOrdinal(ordinal));
-      // Vtable index 3 (byte offset 0xc): the real, inherited CObject::AssertValid()
-      // (zero-arg MFC diagnostic check) -- TMission does not override it. Confirmed
-      // against the assembly at 0x004e725d: `mov ecx,edi / call [ebx+0xc]`, no pushed args.
       entry->AssertValid();
       this->missionQueue->RemoveAtOrdinal(ordinal);
       entry->Free();
@@ -210,8 +207,6 @@ void TAutoGreatPower::ReadFrom(TStream* stream) {
   stream->ReadBytes(this->provinceStatus, 0x180);
   stream->ReadBytes(this->zoneStatus, 0x70);
 
-  // The queue pointer is reloaded from the object at every use (0x4e7317, 0x4e7326,
-  // 0x4e7331, 0x4e7372), so it is not cached in a local here.
   if (this->missionQueue->GetCount() != 0) {
     this->missionQueue->FreePayloads();
   }
@@ -240,11 +235,6 @@ void TAutoGreatPower::WriteTo(TStream* stream) {
   stream->WriteBytes(this->provinceStatus, 0x180);
   stream->WriteBytes(this->zoneStatus, 0x70);
 
-  // 0x4e747a writes the queue COUNT, not a zero word: GetCount()'s result is stored into
-  // the local at esp+0x10 (0x4e7483) and that local's address is what WriteBytes receives.
-  // The port emitted a literal 0 here while still writing every element below, so a save
-  // claimed an empty mission queue and then appended N objects the reader never consumed
-  // -- a desync the static byte-count audit cannot see, because both sides move 4 bytes.
   this->missionQueue->WriteTo(stream);
   int missionQueueCount = this->missionQueue->GetCount();
   stream->WriteBytes(&missionQueueCount, 4);
@@ -668,8 +658,6 @@ void TAutoGreatPower::SetConquerLust(int nationSlot, char makeEnemy) {
   }
 
   if (makeEnemy != 0) {
-    // Minor nations (encoded slot 100..199) are never marked; the flag can only be
-    // cleared for them.
     bool isMinorNation = false;
     if (g_apTerrainTypeDescriptorTable[nationSlot] != 0) {
       short encoded = g_apTerrainTypeDescriptorTable[nationSlot]->encodedNationSlot;
@@ -777,9 +765,6 @@ void TAutoGreatPower::RemoveMission(eMissionType missionType, int key, TZone* zo
     }
   }
 }
-// province's map-action-context link is unavailable for this nation, in which case it's
-// forced to 0 -- the same gate/array CreateInitialMissions above
-// already uses directly.
 // FUNCTION: IMPERIALISM 0x004e8b50
 void TAutoGreatPower::SetProvinceStatus(int provinceIndex, eMissionDesirability value) {
   if (value == kMissionDesirabilityCandidate &&
@@ -822,8 +807,6 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
     }
   }
 
-  // Mark candidate regions from every flagged great power's owned regions, plus (for
-  // eligible slots) the minors whose capability rows decode to that slot.
   int slot;
   for (slot = 0; slot < 7; ++slot) {
     if (g_apNationStates[slot] != 0 && enemyFlags[slot] != 0) {
@@ -992,8 +975,6 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
 
 // FUNCTION: IMPERIALISM 0x004e9a50
 void TAutoGreatPower::SelectAndQueueAdvisoryMapMissions(void) {
-  // Declaration order fixes the frame slot layout (0x12..0x34); the split
-  // assignment blocks mirror the original's two init waves around the city gate.
   bool hasActiveMission;
   bool queueSecondaryDefend;
   float bestScore;
@@ -1031,8 +1012,6 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissions(void) {
       continue;
     }
     float score;
-    // Garbage on the no-link path exactly like the original: a zero score can never
-    // beat bestScore, so the tier value is never consumed there.
     int tier;
     int nodeBuffer[12];
     if (g_pGlobalMapState->HasDirectOrFallbackLinkedNodeType(region, nationSlot, true)) {
@@ -1121,8 +1100,6 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissions(void) {
     }
   }
 
-  // War fallback: when any eligible major is at war with us, queue defend missions on
-  // non-queued contexts whose secondary neighbors include this nation.
   bool anyEligibleAtWar = false;
   int n;
   for (n = 0; n < 7 && !anyEligibleAtWar; ++n) {
@@ -1559,9 +1536,6 @@ void TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
   PlanAiDevelopmentActionsFromResourcePools(0);
 }
 
-// For every unassigned (ownerMission == nullptr) militia-category unit in
-// militaryUnitList44, finds the queued mission (kind 3, keyed by the unit's own tileIndex06)
-// in missionQueue and adopts the unit into it (AcceptReenforcement).
 // FUNCTION: IMPERIALISM 0x004eafa0
 void TAutoGreatPower::AssignMilitiaToDefendMissions() {
   CIterator iter(militaryUnitList44);
@@ -1711,11 +1685,6 @@ void TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools(int unused) {
   (void)developmentBudget;
 }
 
-// Sort comparator ordering missions by unmet weighted demand, highest first. A mission
-// still in an earlier lifecycle state sorts first outright; otherwise each side's
-// shortfall (1 - GetWeightedSatisfaction()) is scaled by importanceScore0c -- multiplied
-// when the shortfall is non-negative, divided when the mission is already oversatisfied --
-// and the larger shortfall wins. Returns -1 / 0 / 1.
 // FUNCTION: IMPERIALISM 0x004eb5d0
 short CompareMissionsByWeightedShortfall(TMission* left, TMission* right) {
   left->AssertValid();
@@ -1799,9 +1768,6 @@ void TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unuse
 
 namespace {
 
-// Same shape as CompareMissionOrderEntriesByPriorityScore's per-side computation
-// (TMission.cpp:276), just against the 0x6545d0/d8 address instances of the same
-// conceptual constants.
 inline float ComputeMissionRemainingPriorityScore(TMission* mission) {
   float diff = g_MissionScoreOneConstant_006545d8 - mission->GetWeightedSatisfaction();
   return (diff >= g_MissionDefaultScore_006545d0) ? diff * mission->importanceScore0c

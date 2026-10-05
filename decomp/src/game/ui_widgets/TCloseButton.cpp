@@ -14,8 +14,6 @@ TCloseButton::TCloseButton() {}
 // FUNCTION: IMPERIALISM 0x00584b50
 TCloseButton::~TCloseButton() {}
 
-// Runs the plain TView press handling (TPictureButton adds none), then closes the screen by
-// asking the UI runtime context to rebuild its registered windows. Always reports "handled".
 // FUNCTION: IMPERIALISM 0x00584b70
 char TCloseButton::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
   TView::HandleMouseDown(point, event, origin);

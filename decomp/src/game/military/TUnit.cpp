@@ -27,9 +27,6 @@ void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,
   this->unitOrder = kUnitOrderIdle;
   this->MoveTo(anchorIndex);
 
-  // The order-owner "manager" is a real TSortedList: military units (militaryRegistrationFlag != 0)
-  // register into the owning country's militaryUnitList44; other orders into the
-  // nation's trackedObjectList. Both dispatch AddTail(item) at vtable byte 0x30.
   TSortedList* ownerManager;
   if (this->militaryRegistrationFlag != 0) {
     ownerManager = g_apTerrainTypeDescriptorTable[nOrderOwnerNationId]->militaryUnitList44;
@@ -73,9 +70,6 @@ void TUnit::ContinueOrders() {
 
 // FUNCTION: IMPERIALISM 0x005c2680
 void TUnit::Free() {
-  // The owning list is a TSortedList (TCountry::militaryUnitList44 at terrain+0x44, or the
-  // nation's list at +0x89c); +4 reaches its embedded CPtrList listState, so walk that
-  // member's real API rather than casting the raw offset.
   TSortedList* manager = nullptr;
   if (this->militaryRegistrationFlag == 0) {
     manager = g_apNationStates[this->ownerNationSlot18]->trackedObjectList; // +0x89c

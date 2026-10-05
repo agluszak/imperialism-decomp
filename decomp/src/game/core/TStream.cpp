@@ -10,9 +10,6 @@
 IMPLEMENT_DYNCREATE(TStream, TObject)
 // FUNCTION: IMPERIALISM 0x00488a80
 char TStream::IsAtEnd() {
-  // The original calls GetPosition (slot 0x28) before GetLength (slot 0x30) at
-  // 0x00488a87/0x00488a8e. Operand evaluation order is unspecified and VC5 will emit the
-  // calls the other way round unless the first result is sequenced into a local.
   int position = GetPosition();
   return position >= GetLength();
 }
@@ -43,8 +40,6 @@ int TStream::AssertMcAppStreamLine304(int) {
 // FUNCTION: IMPERIALISM 0x00488b40
 void TStream::ReadBytes(void*, int) {} // slot 0x3c primitive; subclasses keep this default
 
-// Read a single byte through the ReadBytes primitive (slot 0x3c) and return it; callers
-// sign-extend at the call site (identical body to ReadBoolean at a different slot).
 // FUNCTION: IMPERIALISM 0x00488b60
 char TStream::ReadByte() {
   char value;
@@ -81,9 +76,6 @@ int TStream::ReadLong() {
   return value;
 }
 
-// Read a length-prefixed shared string into dest: pull the length via ReadInteger
-// (slot 0x4c), size dest's buffer, read that many raw bytes, null-terminate, and
-// release. maxLen is a caller-supplied capacity hint the base impl does not use.
 // FUNCTION: IMPERIALISM 0x00488c50
 void TStream::ReadSharedString(CString* dest, int maxLen) {
   (void)maxLen;
@@ -94,8 +86,6 @@ void TStream::ReadSharedString(CString* dest, int maxLen) {
   dest->ReleaseBuffer(-1);
 }
 
-// Read a short length prefix (slot 0x4c), then that many raw bytes into buffer,
-// and null-terminate. maxLen is a caller capacity hint the base impl ignores.
 // FUNCTION: IMPERIALISM 0x00488ca0
 void TStream::ReadString(void* buffer, int maxLen) {
   (void)maxLen;
@@ -173,8 +163,6 @@ void TStream::WriteBoolean(unsigned char value) {
   WriteBytes(&value, 1);
 }
 
-// Write the high byte of `value` through the WriteBytes primitive (slot 0x78) —
-// the write-side counterpart of ReadCharacter's high-byte read.
 // FUNCTION: IMPERIALISM 0x00488ed0
 void TStream::WriteCharacter(short value) {
   const unsigned char* characterBytes =

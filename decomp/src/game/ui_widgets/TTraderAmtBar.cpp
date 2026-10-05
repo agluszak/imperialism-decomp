@@ -84,9 +84,6 @@ void TTraderAmtBar::DoPostCreate(int arg) {
 short TTraderAmtBar::ApplyMoveClamp(int baseValue, short requestedValue) {
   short result = static_cast<short>(baseValue);
   if (requestedValue > 0) {
-    // 0x0058b083-0x0058b091 inlines the active-nation lookup; 0x0058b09f divides
-    // frameWidth (+0x34), not frameHeight, and the original guards the IDIV with
-    // nothing -- there is no merchantCapacity != 0 test in the binary.
     TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
     short merchantCapacity = nationState->merchantCapacity;
     if ((int)requestedValue < (static_cast<int>(this->frameWidth) / (int)merchantCapacity)) {

@@ -3,8 +3,6 @@
 #include "compat.h"
 #include "game/ui_core/TSortedPtrList.h"
 
-// One six-byte ranking record: the ranked index, the criterion value it is sorted by
-// (descending) and its assigned rank.
 struct IndexAndRankRecord {
   short index;
   short value;
@@ -25,8 +23,6 @@ public:
   // ~TIndexAndRankList is compiler-generated (implicit virtual dtor); see
   // the SYNTHETIC scalar deleting destructor in the .cpp.
 
-  // The list-operation virtuals (slots 0x14-0x40) are inherited unchanged from
-  // TSortedPtrList. The one override orders records by descending value.
   short Compare(void* a, void* b) override; // slot 0x44 0x534910
 };
 

@@ -3,9 +3,6 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_screens/TRadioPictureButton.h"
 
-// Radio picture button that blits an extra overlay surface over the base picture when
-// one is attached. Adds the overlay surface context and its source/destination rects.
-// RTTI: classTOverlayRadioButton @ 0x006512a8, base TRadioPictureButton.
 // VTABLE: IMPERIALISM 0x00643a40
 class TOverlayRadioButton : public TRadioPictureButton {
 public:

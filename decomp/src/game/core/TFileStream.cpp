@@ -7,15 +7,11 @@
 
 typedef void* hwnd_t;
 
-// Nil-pointer assert: pop a message box, then forward to the game's assert
-// reporter with the source path and line.
 static void FailNilPointer(int line) {
   GAME_FAIL_NIL_POINTER();
   TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\McAppStream.cpp", line);
 }
 
-// The backing pointer is an ArchiveStreamAdapter whose archive field holds the
-// CArchive that actually moves bytes.
 static CArchive* BackingArchive(ArchiveStreamAdapter* backingArchiveOrStream) {
   return backingArchiveOrStream->archive;
 }
@@ -86,8 +82,6 @@ void TFileStream::WriteObject(void* objectRef, int flag) {
   BackingArchive(this->backingArchiveOrStream)->WriteObject(static_cast<const CObject*>(objectRef));
 }
 
-// Delegate the shared-string read straight to the backing CArchive via the MFC
-// operator>>(CArchive&, CString&). maxLen is unused (see TStream base override).
 // FUNCTION: IMPERIALISM 0x00489360
 void TFileStream::ReadSharedString(CString* dest, int maxLen) {
   (void)maxLen;

@@ -7,12 +7,6 @@
 // 0x0064b580), shared with the modal stack. Iterated through CWMgrIterator below.
 // g_LiveViewRegistry — see game/globals/view_registries.h.
 
-// MacApp's window-manager iterator (CIterator-derived): a 12-byte stack cursor that
-// sweeps every live UI window/view in g_LiveViewRegistry (e.g.
-// TDisplayMgr::CloseFloaters). Reset() arms it,
-// FirstWindow()/NextWindow() walk the registry, More() reports whether the current node
-// still holds an entry. Identified via the Mac CodeWarrior symbol oracle (the framework
-// is MacApp-derived: TView/TWindow/CWMgrIterator).
 class CWMgrIterator {
 public:
   CWMgrIterator* Reset(bool fForward); // 0x004923f0 (returns this; arg sign-extended)

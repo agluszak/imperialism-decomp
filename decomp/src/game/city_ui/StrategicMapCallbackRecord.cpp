@@ -237,11 +237,6 @@ void StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment() {
   }
 }
 
-// Edge test against a QuickDraw hit region: true when (x, y) is inside the region and,
-// with neighbour checking enabled, at least one of its four orthogonal neighbours falls
-// outside it -- i.e. the point sits on the region's boundary. With checkNeighbours off it
-// degenerates to a plain containment test. Each probe uses its own point slot, matching
-// the original's frame.
 // FUNCTION: IMPERIALISM 0x004d59a0
 int __cdecl IsPointOnHitRegionEdge(int x, int y, RgnHandle region, char checkNeighbours) {
   CPoint centre;
@@ -297,8 +292,6 @@ void StrategicMapCallbackRecord::StreamOverlayHitMaskToSurfaceDib(DiplomacyMaskB
       run, surface->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biWidth, outlineOnly, height);
 }
 
-// Builds the compact x86 write stream used by AppendPackedColorDword. Each selected mask
-// pixel becomes a byte/word/dword write; long gaps advance the destination base explicitly.
 // FUNCTION: IMPERIALISM 0x004d5d30
 void StrategicMapCallbackRecord::BuildDiplomacyOverlayHitMaskOpcodeStream(
     DiplomacyMaskBufferRun* run, int destinationRowStride, int outlineOnly, int surfaceHeight) {

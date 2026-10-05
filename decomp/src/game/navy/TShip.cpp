@@ -157,8 +157,6 @@ void TShip::IShip(short shipType, TZone* zone, short nationArg, const char* name
   nation = nationArg;
 
   if (nameOverride == 0) {
-    // The owning country names the ship; if that name collides with an existing
-    // ship's, the name is re-rolled until unique.
     g_apTerrainTypeDescriptorTable[nation]->GenerateEthnicName(&name);
     for (TShip* other = g_pNavyPrimaryOrderListHead; other != 0; other = other->next) {
       if (other != this && other->name.Compare(name) == 0) {
@@ -167,8 +165,6 @@ void TShip::IShip(short shipType, TZone* zone, short nationArg, const char* name
       }
     }
   } else {
-    // A real named CString local, not an unnamed temp: the original carries an EH
-    // frame (push -1 / __ehhandler) for exactly this object's unwind.
     CString suppliedName(nameOverride);
     name = suppliedName;
   }
@@ -199,10 +195,6 @@ void TShip::ReadFrom(TStream* stream) {
   stream->ReadBytes(&type, 2);
   stream->ReadBytes(&aggression, 4);
   stream->ReadBytes(&nation, 2);
-  // 0x54fb8b dispatches slot 0x70 (ReadSharedString), the mirror of WriteTo's
-  // WriteSharedString -- not a raw 0x20-byte block read. The port's ReadBytes both
-  // desynced the stream (a shared string is a 2-byte length plus its bytes) and wrote
-  // 0x20 bytes over the CString handle and the six fields that follow it.
   stream->ReadSharedString(&name, 0x20);
   stream->ReadBytes(&strength, 2);
   stream->ReadBytes(&selection, 4);
@@ -266,17 +258,9 @@ void RecomputeGlobalCapabilityAverages(void) {
   g_aCategoryMetricBaselineAverage[3] = 0;
 
   int enabledCount = 0;
-  // Dual induction, matching the original: an int index (strength-reduced by the
-  // compiler into a marching record pointer with a signed bound) carries the enabled
-  // gate, while the separate short counter indexes the flag array and the per-case
-  // table reads (its short-ness is what keeps those accesses movsx-indexed instead
-  // of strength-reduced pointers).
   short type = 1;
   int i;
   for (i = 1; i < 14; ++i) {
-    // The enabled gate tests the record's first column as a DWORD, while the case-0
-    // blend reads its low word. The descriptor accessors preserve both widths without
-    // overlapping storage declarations.
     if (0 < g_NavyOrderResourceDescriptorTable[i].FirepowerDword() &&
         g_pTechMgr->resourceTypeEnabled19d[type] != 0) {
       ++enabledCount;
@@ -505,9 +489,6 @@ short TShip::GetTurnDistanceTo(TZone* otherZone) const {
   return static_cast<short>((descriptorWeight - 1 + hopDistance) / descriptorWeight);
 }
 
-// Mac oracle: TShip::GetMaxStrength() const. The established descriptive name is kept
-// for now, but this is a real TShip method, not a free resource-type lookup: every
-// callsite loads the ship receiver into ECX and the body reads type at +0x04.
 // FUNCTION: IMPERIALISM 0x005505a0
 short TShip::GetMaxStrength() const {
   return g_NavyOrderResourceDescriptorTable[type].HullPoints();
@@ -546,10 +527,6 @@ TShip* TShip::GetNth(short index) {
   return node;
 }
 
-// Priority compare between two ship order nodes (see the header note); the original
-// reads +0x20 (admiral backlink, then its experiencePoints) SYMMETRICALLY on both receiver
-// and candidate -- the previous TTaskForce-receiver model misread the receiver side,
-// a genuine mis-port this migration fixes.
 // FUNCTION: IMPERIALISM 0x00550670
 TShip* TShip::Finest(TShip* candidate, bool preferUnassigned) {
   if (preferUnassigned) {
@@ -666,8 +643,6 @@ void TShip::Sink() {
   TTaskForce* ownerEntry = this->taskForce;
   this->strength = -666;
   if (ownerEntry != 0) {
-    // Same prune-head-then-recompute body TTaskForce::SinkOrSwimShips
-    // (0x553fe0) runs on itself, minus the return flag.
     TMapOrderChildLinkNode* head = ownerEntry->shipList;
     if (head != 0) {
       TShip* headChild = head->payload;
@@ -719,8 +694,6 @@ int TShip::GetStudliness() const {
   short quantityTerm = static_cast<short>(experience / 100);
   short navyTerm =
       static_cast<short>((quantityTerm + descriptor.BattleSpeedDword() * 10 + 5) / 10);
-  // The resolve-weight column is read as a full dword here; other callers use its low
-  // signed word. The descriptor accessors preserve both widths.
   return ((navyTerm + descriptor.BattleRange()) * 100 +
           static_cast<short>((quantityTerm + descriptor.FirepowerDword() * 10 + 5) / 10) +
           strength) /
@@ -779,12 +752,6 @@ void TShip::ReassignToForce(TTaskForce* newOwnerEntry) {
 
       owner_ctx->shipList = list_head;
 
-      // Low 16 bits of the shared per-order-type descriptor's enabled-flag
-      // dword (see TNavyOrderResourceDescriptor in global_data_tables.h),
-      // reused here as a bucket-count array index into the SAME +0x1e-based
-      // short[] region DropShips /
-      // SinkOrSwimShips use on the entry (0x551066 disassembly:
-      // `dec word ptr [edi + eax*2 + 0x1e]` -- confirmed +0x1e, not +0x18).
       short bucket_offset =
           static_cast<short>(g_NavyOrderResourceDescriptorTable[type].ToolbarSlot());
       --owner_ctx->shipCountsByToolbarSlot[bucket_offset];
@@ -866,8 +833,6 @@ void TShip::SetTaskForce(TTaskForce* newEntry) {
   }
 }
 
-// Dead predicate (no live callers): true when `count * unitSize` rounds up to an
-// exact multiple of `slotSize`, i.e. the load fills whole slots with no remainder.
 // FUNCTION: IMPERIALISM 0x00551290
 bool DoesLoadFillWholeSlots(int count, int unitSize, int slotSize) {
   return ((count * unitSize + slotSize - 1) / slotSize * slotSize) / unitSize == count;

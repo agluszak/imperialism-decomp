@@ -10,8 +10,6 @@ class TButton : public TCtlMgr {
 public:
   DECLARE_DYNCREATE(TButton)
   virtual ~TButton() override; // slot 0x01 (scalar deleting destructor)
-  // In-class inline: the original has no out-of-line TButton::TButton -- every
-  // caller absorbs it, so an out-of-line definition pessimizes them into a call.
   TButton() : TCtlMgr() {
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }

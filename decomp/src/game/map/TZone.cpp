@@ -40,8 +40,6 @@ static short TileIndexFromRowCol(int row, int col) {
 
 enum { kFirstMapRegionNationTag = 0x17 };
 
-// 0x005e7f50 resolves to CRT `_free` (per symbols.csv), not a game-specific tracking
-// helper -- call the real library function directly (LIBRARY: IMPERIALISM 0x005e7f50).
 } // namespace
 
 IMPLEMENT_DYNCREATE(TZone, TObject)
@@ -174,8 +172,6 @@ void TZone::ReadFrom(TStream* stream) {
     free(secondaryNeighbors.Detach());
   }
 
-  // Pre-0xd save format stored the neighbor arrays directly; current saves rebuild them
-  // (AppendUniquePrimaryNeighbor et al.) after load instead.
   if (g_nSaveFormatVersion < 0xd) {
     {
       short neighborCount;
@@ -356,8 +352,6 @@ void TZone::GenerateZoneStatusCodeIfUnset() {
   } else {
     category = static_cast<short>(primaryNeighbors.Count());
     if (category == 2) {
-      // Is the second primary neighbor also a primary neighbor of the first? If so the
-      // two share an edge and the context sits inside a cluster (category 1).
       TZone* neighbor0 = primaryNeighbors[0];
       unsigned int neighborCount = static_cast<unsigned int>(neighbor0->primaryNeighbors.Count());
       if (neighborCount != 0) {
@@ -398,8 +392,6 @@ void TZone::NameThyself(unsigned char* usedCityFlags,
     displayName = providedName;
   } else {
     int chosenCity = -1;
-    // With a used-city bitmap and secondary neighbours, try to feature a random adjacent
-    // city that has not been used yet.
     if (usedCityFlags != 0 && secondaryNeighbors.Count() != 0) {
       g_zoneStatusCodePrngSeed_006a5aec = g_zoneStatusCodePrngSeed_006a5aec * 0x15a4e35 + 1;
       unsigned int pick = (g_zoneStatusCodePrngSeed_006a5aec >> 0xc & 0x7fff) %
@@ -417,8 +409,6 @@ void TZone::NameThyself(unsigned char* usedCityFlags,
       g_pGlobalMapState->AssignCityRecordDisplayName(chosenCity, &displayName);
     } else {
       if (g_pSimMgr->useLocalizedNameTables != 0) {
-        // Walk the headline resource table with a random start + stride so successive
-        // contexts get distinct names.
         if (g_mapActionContextDisplayNameCacheId_006984b8 == -1) {
           unsigned int randomValue = g_zoneStatusCodePrngSeed_006a5aec * 0x15a4e35U + 1;
           int nameIndex = static_cast<int>((randomValue >> 0xc) & 0x7fff);
@@ -826,9 +816,6 @@ void TZone::ShowFocusIngot(unsigned char flag) {
   }
 }
 
-// Builds the human-readable source line for a naval-intelligence report. Mac's
-// resource strings identify the two cases as an admiral/ship attribution and an
-// anonymous phone call.
 // FUNCTION: IMPERIALISM 0x005606f0
 void TZone::GetNavalAuthority(CString* out, short nation) {
   TShip* selected = 0;
@@ -883,8 +870,6 @@ TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation
   if ((nationKeyMask & nationBit) != 0) {
     for (TShip* ship = TShip::GetFirst(); ship != nullptr; ship = ship->next) {
       if (ship->location == this && ship->nation == resolvedNation && ship->taskForce == 0) {
-        // requiredCount seeds from the raw incoming nation arg, which the original keeps
-        // distinct from the active-nation-resolved slot used above.
         TTaskForce* taskForce = new TTaskForce(this, nation);
         taskForce->ITaskForce();
         taskForce->MaxOut(0);
@@ -930,9 +915,6 @@ void TZone::ExpandTaskForceTraversalDepthAndMarkDeferredNodes(int remainingDepth
   }
 
   distanceLevel = static_cast<short>(depth + 1);
-  // Ground truth tests the depth once and skips both passes together (the single
-  // `jle` after `mov word ptr [esi+0x44], cx` at 0x560bbd), so the city-marking
-  // pass nests inside the depth check rather than re-testing it.
   if (depth > 0) {
     for (int i = primaryNeighbors.Count() - 1; i >= 0; --i) {
       TZone* neighbor = primaryNeighbors.GetAt(i);
@@ -1205,9 +1187,6 @@ TZone::~TZone() {
 
 // PortZone vtable bodies (0x005616c0..0x00561e40) live in TPortZone.cpp.
 
-// Reseeds the zone status-code PRNG from a hash of the scenario tag string (falling back
-// to the wall clock when the tag hashes to zero), then walks the whole map-action-context
-// list assigning each zone a status code and refreshing its display name/headline.
 // FUNCTION: IMPERIALISM 0x00563220
 void RegenerateAllMapActionContextStatusCodes(void) {
   const char* tag = g_pGlobalMapState->scenarioTagText;
@@ -1234,10 +1213,6 @@ void RegenerateAllMapActionContextStatusCodes(void) {
   g_zoneStatusCodePrngSeed_006a5aec = ClockDerivedPrngSeed();
 }
 
-// Walks every map tile; for each coastal/port tile (anchor or docked-fleet marker) or land tile
-// in a city region, resolves the owning map-action context (a port zone matched by tile id,
-// or the region-indexed context) and, for each of the tile's 6 hex neighbours that carries a
-// city record, adds that city context to the owning context's secondary-neighbour list.
 // FUNCTION: IMPERIALISM 0x00563da0
 void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
   int tileIndex = 0;
@@ -1308,18 +1283,6 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
   } while (static_cast<short>(tileIndex) < 0x1950);
 }
 
-// Walks every map tile, resolving each to its owning map-order context the same way
-// PopulatePortZoneAdjacencyToNearbyCityContexts does (port zone matched by tile id, or the
-// region-indexed nation context). If the context is itself a capable port zone with no
-// primaryNeighbors yet, links it bidirectionally with its owning nation's context (mirrors
-// ResolvePortZoneOwnerContextAndDispatch, reading tileOrTerrainId0c directly instead of
-// searching outward via FindNearestActiveSeaContextTileFromOffset216). Otherwise, for each
-// of the tile's 6 hex neighbours: a neighbour with a city record resolves to that city's
-// Province and is appended (if absent) to secondaryNeighbors; a neighbour
-// without one resolves to a port zone or region context (same two-way match as above) and,
-// unless it's this same context or itself a capable port zone, is appended (if absent) to
-// primaryNeighbors. This backfills the primary/secondary neighbour graph for contexts the
-// map-gen pass (PopulatePortZoneAdjacencyToNearbyCityContexts) didn't already reach.
 // FUNCTION: IMPERIALISM 0x00563f50
 void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
   for (int tileIndex = 0; static_cast<short>(tileIndex) < 0x1950; ++tileIndex) {

@@ -21,8 +21,6 @@ public:
   // Destructors are compiler-generated (implicit virtual dtor from TStream).
 
   int GetPosition() override;
-  // NOOP: verified empty in original 0x00489490 (single ret; the packet dispatcher
-  // calls it right after construction before measuring).
   void PrepareForUse();
   void SetPosition(int position) override;
   int GetLength() override;

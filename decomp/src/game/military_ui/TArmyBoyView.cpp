@@ -36,8 +36,6 @@ void TArmyBoyView::Draw(RECT* rectBuffer) {
   RECT dstRect = {0x43, 0x1f, sVar1 * 4 + 0x42, 0x26};
 
   if (level < 1) {
-    // Untrained unit: draw the localized "in training" string centered. String group
-    // 0x273c, index 0x20 for the sentinel level -86 (fresh recruit) else 0x1f.
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(1, 0xc, 0x2b67);
     CString trainingText;
     g_pSimMgr->GetString(0x273c, (level == -86) ? 0x20 : 0x1f, &trainingText);

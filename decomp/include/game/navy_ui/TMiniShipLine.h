@@ -18,8 +18,6 @@ public:
   // NOOP: verified empty in original 0x00569be3 (no standalone TMiniShipLine::TMiniShipLine body exists: CreateObject 0x00569bb0 inlines this default ctor, calling the TLineData base ctor directly at that site)
   TMiniShipLine() {}
 
-  // Two-phase init (MacApp IViewClass idiom): sets the shared TLineData row/bounds
-  // then this line's field10. 0x00569c40, __thiscall.
   void IMiniShipLine(short rowArg, short colArg, int* bounds, TShip* item);
 
   // Original object size is 0x14 (CRuntimeClass m_nObjectSize); the fields below complete the extent so sizeof matches the original.

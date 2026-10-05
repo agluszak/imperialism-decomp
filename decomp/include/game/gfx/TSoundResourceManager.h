@@ -11,12 +11,6 @@
 // DirectSound secondary-buffer channels (+0x04..+0x18), the channel buffer byte size
 // (+0x24), the wave-pack module handle (+0x30) and a scratch result slot (+0x34).
 
-// The six channel objects are real COM IDirectSoundBuffer instances. dsound.h is not part
-// of the MSVC500 toolchain, so the interface is declared here with the retail vtable
-// layout. ABI verified in the disassembly: every call pushes the interface pointer itself
-// (COM `__stdcall` this-on-stack, e.g. 0x49c240 `PUSH EAX / CALL [ECX+0x34]`), slot 0x2c
-// takes the 7 Lock arguments, and 0x49c720 retries a failed Lock after DSERR_BUFFERLOST
-// (0x88780096) with a slot-0x50 Restore — the IDirectSoundBuffer slot map exactly.
 IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 class IDirectSoundBuffer {
 public:
@@ -51,9 +45,6 @@ IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 
 #define DSERR_BUFFERLOST 0x88780096
 
-// The DirectSound device object (0x00). Hand-declared with the retail IDirectSound vtable
-// layout for the same reason as IDirectSoundBuffer above (dsound.h is kept out of these
-// TUs). Only CreateSoundBuffer (0x0c) and SetCooperativeLevel (0x18) are called here.
 IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 class IDirectSound {
 public:
@@ -75,10 +66,6 @@ IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 
 #define DSSCL_NORMAL 1
 
-// DSBUFFERDESC / DSBCAPS — hand-declared to match dsound.h layout (kept out of this TU).
-// The manager keeps a persistent DSBUFFERDESC scratch inside its own fields (0x1c..0x2f);
-// dwBufferBytes (+0x24) is the byte size every channel buffer is created (and later
-// Lock'd) with.
 struct DSBUFFERDESC {
   DWORD dwSize;              // 0x00
   DWORD dwFlags;             // 0x04
@@ -95,10 +82,6 @@ struct DSBCAPS {
   DWORD dwPlayCpuOverhead;
 };
 
-// Stack-local wave-load result block shared by the loaders (0x49c290/0x49c430) and
-// ReadWaveDataAndFormatViaLoaderWithRetry (0x49c720). A real local class in the original:
-// both loaders carry an EH state for it and run an inlined destructor (windowsx.h
-// GlobalFreePtr pairs — GlobalUnlock + GlobalFree via GlobalHandle) on every exit path.
 class WaveLoadDescriptor {
 public:
   DWORD cbWaveSize;          // 0x00 — byte size of the loaded 'data' chunk
@@ -107,9 +90,6 @@ public:
   unsigned char* pbWaveData; // 0x0c — GlobalAlloc'd wave data bytes
 
   WaveLoadDescriptor() : cbWaveSize(0), cSamples(0), pwfx(0), pbWaveData(0) {}
-  // Defined in-class so MSVC500 can inline it at the two loaders, which is what the
-  // original does (the comment above records that both carry an EH state for it and run
-  // an inlined destructor). The out-of-line copy at 0x49c3b0 is still emitted.
   ~WaveLoadDescriptor() {
     if (pwfx != 0) {
       GlobalFreePtr(pwfx);
@@ -137,26 +117,14 @@ public:
   int UpdateLocalizationAudioSlot(int slot);
   // 0x0049c290 — load a wave file by path and copy it into channel `slot`'s buffer.
   int LoadWaveFileByPathAndBuildBuffer(char* filePath, int slot);
-  // 0x0049c430 — load wave `waveId` from "<id>.wav" or the wave-pack module's "WAVE"
-  // resource (via the 'MEM ' mmio proc) and copy it into channel `slot`'s buffer.
   int LoadWaveResourceByNumericIdAndBuildBuffer(unsigned int waveId, int slot);
-  // 0x0049c720 — Lock channel `slot`'s DirectSound buffer (Restore+retry on
-  // DSERR_BUFFERLOST), copy the loaded wave data in, zero-fill the tail, Unlock.
   int ReadWaveDataAndFormatViaLoaderWithRetry(WaveLoadDescriptor* desc, int slot);
   // 0x0049c850 — push `volume` to every channel until one accepts it.
   int SetChannelVolumesUntilAccepted(int volume);
   // 0x0049c8a0 — set one channel's volume and retain the DirectSound result.
   int SetChannelVolume(int volume, int slot);
-  // 0x0049c970 — create the DirectSound device (once), set the app main-window cooperative
-  // level, then create all six channel buffers. Returns 1 on success, 0 on failure.
   int InitializeDirectSoundDeviceAndChannels();
-  // 0x0049c8e0 — Release() all six channel buffers, Release() the device, and free the
-  // wave-pack module. Reached via TSoundPlayer::ClearDirectSoundInitPendingAndResetState
-  // (0x5e4fd0 sets ECX = &g_soundResourceManager); the original releases the audio
-  // device this way right before MCIWnd movie playback starts.
   void ReleaseDirectSoundDeviceAndChannels();
-  // 0x0049c150 — build the shared DSBUFFERDESC and create one channel buffer into
-  // *ppChannel, then GetCaps to confirm it. Returns 1 on success, 0 on failure.
   int CreateChannelBuffer(IDirectSoundBuffer** ppChannel);
 
   IDirectSound* m_device;            // 0x00 — DirectSound device object

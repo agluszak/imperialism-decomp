@@ -13,8 +13,6 @@ const WORD kBitmapFileSignature = 0x4d42;
 
 } // namespace
 
-// The archive extraction operator below is emitted by IMPLEMENT_SERIAL:
-//   CArchive& AFXAPI operator>>(CArchive&, CDib*&)
 IMPLEMENT_SERIAL(CDib, CObject, 0)
 
 // FUNCTION: IMPERIALISM 0x00479f40
@@ -150,10 +148,6 @@ CPoint* CDib::CopyBitmapDimensionsToPoint(CPoint* out) {
   return out;
 }
 
-// Opens `fileName` as a read-only memory mapping, validates the "BM" signature, then points
-// this CDib's info-header/color-table/pixel buffers directly into the mapped file and rebuilds
-// the palette. Same offset-swapped m_hFileMapping(0x28)=file / m_hFile(0x2c)=mapping note as the
-// serialize path below.
 // FUNCTION: IMPERIALISM 0x0047a420
 int CDib::LoadFromMemoryMappedBmpFile(LPCSTR fileName, int shareForWrite) {
   DWORD shareMode = shareForWrite != 0 ? 1 : 0;
@@ -228,11 +222,6 @@ int CDib::LoadFromMemoryMappedBmpFile(LPCSTR fileName, int shareForWrite) {
   return 1;
 }
 
-// Writes the current DIB (BITMAPFILEHEADER + BITMAPINFOHEADER + color table + pixels) into a
-// newly created memory-mapped .bmp file, then re-points this CDib's buffers into the mapping
-// and rebuilds the palette from the mapped color table. NOTE: the m_hFileMapping (0x28) and
-// m_hFile (0x2c) field names are offset-swapped from the CreateFile*/API roles but kept
-// consistent with CDib::Release, so the stores below match the original's field offsets.
 // FUNCTION: IMPERIALISM 0x0047a630
 int CDib::RemapSurfaceToMemoryMappedBmpFile(LPCSTR fileName) {
   int offBits = m_paletteCount * 4 + 0x36;
@@ -327,13 +316,7 @@ BOOL CDib::AttachPackedInfoHeader(BITMAPINFO* info, BOOL ownsInfo, HGLOBAL hGlob
   }
 
   m_pInfoHeader = info;
-  // The switch selector is read ahead of the null test, exactly as the original does
-  // (the load at 0x47a8d4 precedes the `test eax,eax` at 0x47a8d8), and it dies inside
-  // the switch -- the pixel-size arithmetic below re-reads biBitCount rather than
-  // keeping this value alive in a second register.
   unsigned int bitCount = info->bmiHeader.biBitCount;
-  // Same palette-entry-count table as the (width, height, bitDepth) constructor; an
-  // unlisted depth leaves m_paletteCount at whatever Release() left behind.
   if (info == NULL || info->bmiHeader.biClrUsed == 0) {
     switch (bitCount) {
     case 1:
@@ -437,10 +420,6 @@ int CDib::StretchDibitsRectToDc(CDC* dc, int xDest, int yDest, int destWidth, in
                          srcWidth, srcHeight, m_dibBits, m_pInfoHeader, DIB_RGB_COLORS, SRCCOPY);
 }
 
-// Two-pass transparent stretch-blit: entry `paletteIndex` of the color table is forced white
-// over an otherwise-black table for the AND pass (ROP 0x8800c6), then cleared to black over
-// the restored table for the paint pass (ROP 0xee0086). The color table is saved to a scratch
-// buffer up front and fully restored before returning. Returns TRUE only if both passes blit.
 // FUNCTION: IMPERIALISM 0x0047ac50
 BOOL CDib::StretchDibitsWithCopiedPaletteTable(CDC* dc, int paletteIndex, int xDest, int yDest,
                                                int destWidth, int destHeight, int xSrc, int ySrc,
@@ -566,14 +545,6 @@ void CDib::CopyRgbQuadTableFrom(const LOGPALETTE* source) {
   }
 }
 
-// Build a device-dependent bitmap (CreateDIBitmap + CBM_INIT) from the stored header and
-// bits, compatible with the given DC. Returns NULL when there is no pixel buffer.
-// Adopt the palette object's HPALETTE and refill this DIB's colour table from its
-// LOGPALETTE entries, reordering each PALETTEENTRY into RGBQUAD form. A null palette
-// clears m_hPalette and leaves the table untouched when there are no entries.
-// Adopt the palette object's HPALETTE and refill this DIB's colour table from its
-// LOGPALETTE entries, reordering each PALETTEENTRY into RGBQUAD form. A null palette
-// clears m_hPalette; an empty table skips the copy entirely.
 // FUNCTION: IMPERIALISM 0x0047b130
 void CDib::AdoptPaletteAndCopyRgbQuadTable(CDibPal* palette) {
   m_hPalette =
@@ -627,9 +598,6 @@ HBITMAP CDib::CreateDibBitmapFromStoredInfo(CDC* dc) {
                           m_pInfoHeader, DIB_RGB_COLORS);
 }
 
-// Rebuild the DIB from a temporary device-dependent bitmap. With compression enabled,
-// the first GetDIBits call asks GDI for the RLE buffer size and the second materializes
-// it; the non-compression path computes the DWORD-aligned BI_RGB size directly.
 // FUNCTION: IMPERIALISM 0x0047b2d0
 BOOL CDib::Compress(CDC* dc, BOOL compress) {
   if (g_dibCompressAssertGate_006A1484 == 0) {
@@ -1115,9 +1083,6 @@ int CDib::LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODU
   return 1;
 }
 
-// Convert a 1-bpp bitmap into the one-pixel outline around its set pixels. The byte-level
-// scan is intentional: neighboring rows use the DWORD-aligned DIB stride, while horizontal
-// neighbors carry across adjacent bytes only when both bytes belong to the same row.
 // FUNCTION: IMPERIALISM 0x0047c1f0
 int CDib::BuildMonochromeOutlineMaskInPlace() {
   if (m_pInfoHeader->bmiHeader.biBitCount != 1) {
@@ -1477,10 +1442,6 @@ void CDib::ForwardBlitSurfaceRectSkippingTransparentColor(CDib* destDib, POINT* 
                                           transparentColor);
 }
 
-// Builds a temporary CDib matching the source bitmap's depth, blits `sourceDib`'s pixels
-// into it (a straight BitBlt of the destination DC region plus a transparent-color-skipping
-// surface copy from the source), then stretch-presents the composed surface back to the
-// destination DC at (srcX, srcY). The temp surface and its selected bitmap are released.
 // FUNCTION: IMPERIALISM 0x00496b80
 void BlitBitmapResourceToTemporaryCompatibleDcAndPresent(CDC* destDc, CDib* sourceDib, short srcX,
                                                          short srcY, short transparentColor,

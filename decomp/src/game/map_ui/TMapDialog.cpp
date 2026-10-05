@@ -167,10 +167,6 @@ double g_mapProjectionRowScale_006a3320 = DefaultMapCellScale();
 short g_mapProjectionSeamColumn_006a3348 =
     static_cast<short>(g_mapProjectionColumnScale_006a32f8 * 512.0 - -1.0);
 
-// Genuine __cdecl free function (bare RET; every caller cleans the 0x14 arg bytes) — not a
-// TMapDialog member, despite living among the map-dialog projection code. The vertical
-// (row-based) output is the THIRD parameter and the horizontal the fourth — the original
-// stores through [esp+0x18] for Y and [esp+0x1c] for X.
 // FUNCTION: IMPERIALISM 0x00512440
 void ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, const CPoint* viewportOrigin,
                                                   short* outY, short* outX, short scale) {
@@ -193,8 +189,6 @@ void ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, const CPoint*
   *outX = static_cast<short>(*outX / scale);
 }
 
-// Converts a map-space point to scaled screen coordinates, offsetting the horizontal
-// projection by half a cell on odd rows.
 // FUNCTION: IMPERIALISM 0x00512500
 void ProjectMapPointToScaledScreenOffset(const CPoint* sourcePoint, const CPoint* rowReference,
                                          short* outY, short* outX) {
@@ -290,10 +284,6 @@ void NormalizeProjectionColumnForRowParity(short* column, short* row) {
   }
 }
 
-// The retail CRT initializer computes the nine staggered columns covered by the
-// 512-pixel map viewport and writes only the low word of the BSS-backed dword. Keep the
-// same partial-store contract because TMapDialog's clamp reads the full dword while its
-// centering helpers read the signed low word.
 // FUNCTION: IMPERIALISM 0x00519970
 void InitializeMapDialogViewportTileSpan() {
   short viewportTileSpan = static_cast<short>(g_mapCellRowScale_006a3360 * 512.0 - -1.0);
@@ -304,11 +294,6 @@ static int g_mapDialogViewportTileSpanInitializer = (InitializeMapDialogViewport
 
 IMPLEMENT_DYNCREATE(TMapDialog, TWorldView)
 
-// Zero the marker/overlay state, center the view on the map's current tile (splitting
-// g_pGlobalMapState->field6 into row/col and dispatching the coordinate update virtually —
-// the vptr is already TMapDialog's), then seed the scroll/zoom words (previewSquareRadius = 0x40 tile
-// pixel size). The split writes only the low words of the two locals, so they are ints whose
-// addresses pass as short* (the high words are dead), matching the original stack reads.
 // FUNCTION: IMPERIALISM 0x00519b50
 TMapDialog::TMapDialog() : TWorldView() {
   int row;
@@ -460,11 +445,6 @@ void TMapDialog::FrameCursorArea() {
   }
 }
 
-// Draw the selection outline around a hex tile: for each of the six neighbor
-// tiles (neighborTiles[0..5], -1 = none), project it to screen and stroke the
-// shared hex-cell edges, skipping an interior edge when the adjacent neighbor is
-// also present so shared borders are drawn once. 0x3f is the cell size, 0x20 the
-// half-cell.
 // FUNCTION: IMPERIALISM 0x0051a2a0
 void TMapDialog::FrameNeighbors(short* neighborTiles) {
   const CPoint* viewOrigin = &viewportOrigin;
@@ -640,8 +620,6 @@ unsigned char TMapDialog::IsTileVisible(short tileIndex) {
   return ProbeRectEmptyAfterCopyToLocal(&tileRect) == 0;
 }
 
-// Centers the map view on the given tile (column offset by half the viewport tile span,
-// row offset by 3) and invalidates the whole 0x200x0x1c0 dialog surface.
 // FUNCTION: IMPERIALISM 0x0051ac40
 void TMapDialog::CenterOn(int tileIndex) {
   int col;
@@ -678,13 +656,6 @@ void TMapDialog::SetMapViewCellCoordinates(int column, int row) {
   SetMapDialogCellCoordinatesAndRefresh(column, row, 0);
 }
 
-// Clamps/wraps the requested viewport cell (108x54 tile map, viewport span from
-// g_wMapDialogViewportTileSpan when horizontal wrap is off), commits the new viewport
-// offsets (Y before X, matching the original store order), records the new center tile
-// in g_pGlobalMapState->field6, invalidates the dialog surface, refreshes the owning
-// uber-picture's mini-map, and translates/prunes the transient animation rects.
-// `mode` is dead in this implementation (the slot's convention keeps it; TCitySiteView's
-// override forwards it here unchanged, and all known call sites pass 0).
 // FUNCTION: IMPERIALISM 0x0051adf0
 void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mode) {
   (void)mode;
@@ -911,8 +882,6 @@ void TMapDialog::ResetAllTileMarkersToSentinel() {
 
 // FUNCTION: IMPERIALISM 0x0051e1f0
 void TMapDialog::ReleaseTileMarkerForTile(short tileIndex) {
-  // Architecturally complete; the residual vs the original is MSVC hoisting the shared -1
-  // sentinel into a callee-saved register (bl/bx/ebx) rather than immediates.
   short slot = g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex;
   if (slot != -1) {
     g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex = -1;
@@ -1535,10 +1504,6 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   }
 }
 
-// Two 10-way switches on the same pattern selector, each dispatching virtually into the
-// guide-pattern family (slots 0x85-0x8e) with variant 1 (nationA's tint) then variant 2
-// (nationB's). Ghidra's decompile of this function is broken (phantom register args from
-// the deferred __cdecl stack cleanup); ported from the raw listing.
 // FUNCTION: IMPERIALISM 0x00520670
 void TMapDialog::DrawBorder(short relationLevel, int originX, int originY, int nationA,
                             int nationB) {
@@ -1888,8 +1853,6 @@ void TMapDialog::DrawMapDialogGuidePatternSetI(int originX, int originY, short v
   DrawCenteredGuideLineOnMapDc(originX + 0x2c, y1);
 }
 
-// Draws the city-region boundary pieces selected by the six-direction border mask. The
-// compound 0x40/0x80 bits add the short joins between adjacent directional segments.
 // FUNCTION: IMPERIALISM 0x00521680
 void TMapDialog::DrawCityBorderSegmentsByMask(unsigned char borderMask, int screenX, int screenY,
                                               short tileIndex) {
@@ -1970,8 +1933,6 @@ void TMapDialog::DrawCityBorderSegmentsByMask(unsigned char borderMask, int scre
   }
 }
 
-// Draws the same directional border geometry with each segment split into the two nations'
-// colors. Neighbor directions and guide-pattern indices follow the retail 0x521a40 dispatch.
 // FUNCTION: IMPERIALISM 0x00521a40
 void TMapDialog::DrawNationBorderSegmentsByMask(unsigned char borderMask, int screenX, int screenY,
                                                 short tileIndex) {
@@ -2210,8 +2171,6 @@ void TMapDialog::DrawSeaZoneBorders(int screenX, int screenY, short tileIndex) {
   SetQuickDrawFillColor(0);
 }
 
-// Draws a guide line between two tiles' screen centers, wrapping the far tile across the
-// 108-column seam and culling the line when both endpoints fall off the same screen edge.
 // FUNCTION: IMPERIALISM 0x00522c10
 void TMapDialog::DrawWrappedMapRouteSegment(short col1, int row1, short col2, int row2) {
   if (abs(static_cast<int>(col1) - static_cast<int>(col2)) > 0x6c) {
@@ -2275,8 +2234,6 @@ void TMapDialog::DrawWrappedMapRouteSegment(short col1, int row1, short col2, in
   }
 }
 
-// Draws the coastline "connection" line pattern linking this ocean tile to its ocean
-// neighbors, per the 6-bit connectionMask (which adjacent hexes are ocean and joined).
 // FUNCTION: IMPERIALISM 0x00522cf0
 void TMapDialog::DrawHexNeighborConnectionMask(unsigned char connectionMask, int screenX,
                                                int screenY, short tileIndex) {
@@ -2369,8 +2326,6 @@ void TMapDialog::DrawGeneratedMapRouteSegmentsAndResetFillColor() {
   for (int i = 0; i < g_pActiveMapOrderContext->routeNodeCount; ++i) {
     const CRect& segment = g_pActiveMapOrderContext->routeSegments[i];
     short firstColumn = (segment.left - viewportHalfColumn + 0xd8) % 0xd8;
-    // CRect stores Win32 long coordinates; DrawWrappedMapRouteSegment intentionally consumes
-    // the low word of each vertical endpoint.
     short firstRow = static_cast<short>(segment.top);
     firstRow -= viewportRow;
     short secondColumn = (segment.right - viewportHalfColumn + 0xd8) % 0xd8;
@@ -2655,9 +2610,6 @@ static inline void CopyMapTilePixelSpan(unsigned char* src, unsigned char* dest,
   }
 }
 
-// The twelve masks below are the exact per-row byte spans written by the retail routines.
-// Their original dword-copy loops were decoded by executing the isolated routines against a
-// synthetic 64x64 destination and recording every destination byte write.
 // FUNCTION: IMPERIALISM 0x005241b0
 void TMapDialog::CopyTerrainTransitionMaskDirection2(unsigned char* src, unsigned char* dest,
                                                      short srcStride, short destStride) {
@@ -2783,8 +2735,6 @@ void TMapDialog::CopyCoastCornerMaskBetweenDirections3And4(unsigned char* src, u
   }
 }
 
-// Copies a 64-row tile block, 16 dwords (64 bytes) per row via two unrolled 8-dword
-// stores, advancing source and destination by their own dword strides between rows.
 // FUNCTION: IMPERIALISM 0x00525670
 void TMapDialog::NewCopy64(unsigned char* src, unsigned char* dest, short srcStride,
                            short destStride) {

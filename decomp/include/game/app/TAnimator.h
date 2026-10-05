@@ -11,14 +11,6 @@ class TMapUberPicture;
 class TStream;
 struct TQuickDrawSurfaceContext;
 
-// The UI animator: a MacApp-style idle cohandler (g_pUiAnimator, uninstalled from
-// g_pAmbitApplication via InstallCohandler(this, 0) in Free) that owns the
-// transient-animation registry -- a TList of TAnimation-shaped objects keyed by
-// their +0x18 registry tag -- plus the shared offscreen surface the animations
-// blit into. idleFrequencyTicks (inherited from TEventHandler) is set by
-// IAnimator and serialized in WriteTo/ReadFrom.
-// Base edge (TEventHandler) recovered from RTTI CRuntimeClass chain:
-// TAnimator -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064c4e8
 class TAnimator : public TEventHandler {
 public:
@@ -29,36 +21,14 @@ public:
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x4a0e10
   virtual void Free() override;                    // slot 0x07 0x4a0dc0
   virtual char DoIdle(int action) override;        // slot 0x13 0x4a0c30
-  // Mac CodeWarrior identity: TAnimator::Install(). Counterpart of Free's
-  // InstallCohandler(this, 0).
   virtual void Install(); // slot 0x25 0x4a0c00
   void RemoveUiTransientRegistryObjectByTag(int tag);
-  // Creates the shared offscreen surface (bounds from the global surface dims, bit
-  // depth 8) and the registry TList, and stores the idle frequency into the
-  // inherited idle-frequency slot. 0x4a0b20.
   void IAnimator(int idleFrequency);
-  // Appends an animation object to the registry list. The registry stores
-  // heterogeneous animation-shaped objects (tag at +0x18, Free at vtable slot 7);
-  // TAnimation* keeps the common call sites cast-free. 0x4a0d10.
   void AddAnimation(TAnimation* animationObject);
-  // Walks the registry for the animation whose registryTag matches `tag`;
-  // null if the animator is null, the list is empty, or nothing matches. 0x4a0d30.
   TAnimation* FindRegisteredAnimationByTag(int tag);
-  // Releases every payload owned by registryList while retaining the list itself.
-  // Null-receiver-safe because retail callers dispatch through g_pUiAnimator directly.
   void FreeAllAnis(); // 0x4a0f80
-  // Offsets every registered animation's screenRect by (dx, dy), then removes and
-  // frees any entry whose translated rect no longer intersects clipRect (RECT passed
-  // by value: 4 stack dwords). Null-receiver-safe like FindRegisteredAnimationByTag.
-  // Called on viewport scrolls (0x51adf0). 0x4a0e90.
   void TranslateListRectsAndDropNonIntersectingEntries(int dx, int dy, RECT clipRect);
 
-  // Object size 0x30 (base TEventHandler ends at 0x20). +0x20 is the offscreen
-  // surface the focus animations blit into (read as `*(g_pUiAnimator) + 0x20` at
-  // 0x4a0810 and 0x4a05c0). overlayPhaseTickCount is not touched by the ctor (only zeroed in
-  // IAnimator); DoIdle increments it once per idle tick while a map-interaction
-  // selection is active and resets it to 0 on every 15th tick, when it toggles
-  // g_bStrategicMapSelectionOverlayPhase. It is the selection-blink divider.
   TQuickDrawSurfaceContext* renderSurfaceContext; // +0x20
   TList* registryList;                            // +0x24 transient-animation registry
   int overlayPhaseTickCount;                      // +0x28

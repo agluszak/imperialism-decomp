@@ -14,14 +14,6 @@ class TEvent;
 class TBehavior;
 struct TToolboxEvent;
 
-//
-// Shared base of TView and TApplication. Both
-// inherit this 37-slot interface (slots 0x00-0x24) and the fields through +0x1c; they
-// diverge at +0x20 (TView::ownerContext vs TApplication::activeView) and
-// each introduces its own virtuals at slot 0x25+. Proven by vtable comparison: TView
-// (0x649858) and TApplication (0x648bd8) share the same body addresses for
-// most of slots 0x02-0x24, overriding only a handful. The recovered method names below
-// are shared by both branches and must remain signature-identical across overrides.
 // VTABLE: IMPERIALISM 0x006497a0
 class TEventHandler : public TObject {
 public:
@@ -33,36 +25,17 @@ public:
   TBehavior* firstBehavior;
   int controlTag; // 0x1c
 
-  // Copies the same four cloneable fields ShallowClone (0x48a7c0) copies into a fresh
-  // header, but into this handler from an existing one. The original writes them in
-  // the order 04, 08, 1c, 0c -- ShallowClone uses 04, 08, 0c, 1c -- so the two are
-  // separate bodies rather than one shared helper. 0x0048a790, __thiscall.
   void CopyHandlerFieldsFrom(const TEventHandler* source);
 
   TEventHandler();
-  // CObject is intentionally non-copyable in MFC, but this MacApp-derived hierarchy
-  // has a real field-copying base constructor inlined into TView's 0x48bd30 copy ctor.
-  // Copies exactly the four fields the original copies -- +0x04, +0x08, +0x0c and
-  // controlTag at +0x1c -- and no others. idleFrequencyTicks/lastIdleTick are the idle throttle
-  // and last-idle stamp and firstBehavior is a list head, none of which a fresh copy
-  // inherits.
-  // Source evidence: unreferenced retained COMDAT in retail.
   TEventHandler(const TEventHandler& source)
       : TObject(), enabled(source.enabled), viewEnabled(source.viewEnabled),
         nextHandler(source.nextHandler), controlTag(source.controlTag) {}
 
-  // 0x48a410 — MacApp TEventHandler::HandleIdle(IdlePhase); throttled idle dispatch
-  // using idleFrequencyTicks (0x7fffffff = never) and lastIdleTick.
   void HandleIdle(int idlePhase);
 
-  // Packet/event-header field initializer (0x48a180, __thiscall).
-  // Writes controlTag (0x1c) = '    ', enabled/viewEnabled = 1, nextHandler = the argument.
   void IEventHandler(TEventHandler* nextHandler);
 
-  // Slot 0x00 — MFC RTTI accessor (this is CObject::GetRuntimeClass; the whole "T"
-  // hierarchy is MFC DECLARE_DYNAMIC rooted at CObject). Every descendant overrides it
-  // to return its own CRuntimeClass descriptor. See CRuntimeClass chain
-  // CObject<-TObject<-TEventHandler<-TView<-TControl<-...
   DECLARE_DYNCREATE(TEventHandler)
   // FUNCTION: IMPERIALISM 0x0048a160
   virtual ~TEventHandler() override {}     // 0x01
@@ -81,8 +54,6 @@ public:
   virtual void DoKeyEvent(TToolboxEvent* event); // 0x12 0x48a380
   virtual char DoIdle(int action);               // 0x13 0x48a480 (MacApp DoIdle)
 
-  // MacApp Handle*/Do* pair, mirroring HandleEvent -> DoEvent at 0x48a2e0: the
-  // non-virtual entry point simply dispatches through this handler's own virtual.
   void HandleMenuCommand(int command);              // 0x0048a340 -> slot 0x11
   void HandleKeyEvent(TToolboxEvent* event);        // 0x0048a360 -> slot 0x12
   virtual int GetIdleFreq();                        // 0x14 0x415d50
@@ -105,7 +76,4 @@ public:
 };
 ASSERT_SIZE(TEventHandler, 0x20);
 
-// Builds a TEvent (commandNumber = dispatchMessage = commandId, sourceHandler = control,
-// targetHandler = owner) and forwards it to owner->DispatchQueuedUiCommandAndRelease.
-// 0x5d4b30.
 void QueueDeferredUiEventPacket(TView* owner, int commandId, TView* control);

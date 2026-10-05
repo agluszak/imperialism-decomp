@@ -6,8 +6,6 @@
 
 struct TQuickDrawSurfaceContext;
 
-// Transitional focus-animation helper (factory 0x004a0460). Shares the completion callback
-// slot layout with TFocusAnimation (vtable index 5 / byte offset 0x14).
 // VTABLE: IMPERIALISM 0x0064c498
 class TTransFocusAnimation : public TFocusAnimation {
   DECLARE_DYNCREATE(TTransFocusAnimation)

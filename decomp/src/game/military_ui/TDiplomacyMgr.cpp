@@ -30,8 +30,6 @@ namespace {
 const unsigned int kTurnEventTagNext = kControlTagNeXT;
 struct ScratchSharedString {
   CString str;
-  // NOOP: verified empty in original 0x004f0245 (the four construction sites
-  // emit only CString::CString for the member; the wrapper body adds nothing)
   ScratchSharedString() {}
 };
 } // namespace
@@ -268,9 +266,6 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
 // FUNCTION: IMPERIALISM 0x004eee60
 void TDiplomacyMgr::RemoveNationSlotAndNotifyPeers_Impl(NationSlot nationSlot) {
   const int row = nationSlot;
-  // Great-power slots 0..6: clear the propagation-matrix entry (both [row][i] and [i][row])
-  // unless it already holds the "6" sentinel and the nation still has a terrain descriptor.
-  // When the descriptor is gone, also reset the standing score to 0x5a in both directions.
   for (int i = 0; i < 7; ++i) {
     if (relationPropagationMatrix[row * kNationSlotCount + i] != kDiplomacyRelationshipWar ||
         g_apTerrainTypeDescriptorTable[row] == 0) {
@@ -329,17 +324,6 @@ void TDiplomacyMgr::Free() {
   delete this;
 }
 
-// Restores the diplomacy state from a save. The stream is big-endian, so every short
-// block read is followed by an in-place swap pass; the byte blocks
-// (pendingPolicyCodeMatrix) and the single short at lastDiplomaticEffortTurn are
-// read raw. Field groups added after the initial format are guarded by their
-// introducing save version -- an older save simply leaves them at their constructed
-// value, which is why the gates must be transcribed exactly even though the current
-// format (0x3e) takes every branch.
-//
-// pendingPolicyTierMatrix, relationMatrixBaselineCopy/798 and
-// comparativePowerRows are deliberately absent: they are runtime-derived and
-// rebuilt after the load, not persisted.
 // FUNCTION: IMPERIALISM 0x004ef080
 void TDiplomacyMgr::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
@@ -367,8 +351,6 @@ void TDiplomacyMgr::ReadFrom(TStream* stream) {
   }
 
   if (g_nSaveFormatVersion > 0xd) {
-    // One read per record: 4 bytes for the whole CongressLeadership pair, then 6 for
-    // the whole CongressSupportTally. Both are byte-swapped as short arrays.
     stream->ReadBytes(&congressLeadership, sizeof(congressLeadership));
     SwapShortArrayBytes(&congressLeadership, 2);
     stream->ReadBytes(&congressSupport, sizeof(congressSupport));
@@ -389,8 +371,6 @@ void TDiplomacyMgr::ReadFrom(TStream* stream) {
   }
 }
 
-// Mirror of ReadFrom in the current save format: the writer has no version gates, it
-// always emits every field group.
 // FUNCTION: IMPERIALISM 0x004ef2a0
 void TDiplomacyMgr::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
@@ -794,8 +774,6 @@ void TDiplomacyMgr::InflictWarPenalty(NationSlot sourceNationSlot, NationSlot ta
 
 // FUNCTION: IMPERIALISM 0x004f01e0
 void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn() {
-  // Pre-pass (unless localization phase 2): run the per-nation begin-turn slot 0x1c8
-  // over the seven majors descending, gated on the nation's eligibility byte at +0xa0.
   if (g_pSimMgr->multiplayerSessionRole != kSessionRoleClient) {
     TGreatPower** nationCursor = &g_apNationStates[6];
     int remaining = 7;
@@ -892,8 +870,6 @@ void TDiplomacyMgr::SetLastDiploEffort() {
 
 // FUNCTION: IMPERIALISM 0x004f05c0
 void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
-  // Ground truth walks the table by pointer with a separate count-down counter
-  // (`dec edi; jne` at 0x4f05f4), not an ascending index compare.
   TGreatPower** nationSlot = g_apNationStates;
   for (int remaining = 7; remaining != 0; --remaining, ++nationSlot) {
     if (*nationSlot != NULL) {
@@ -901,18 +877,12 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
     }
   }
 
-  // The original dereferences g_pSimMgr unguarded and materializes the mode test
-  // into a byte before branching (`cmp [edx+0x44],2; sete cl; test cl,cl; je`),
-  // so the null check here was ours, not the retail code's.
   bool isClientSession = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
   if (isClientSession) {
     pendingWarTransitionQueue->InvokePtrListResetHook();
     return;
   }
 
-  // Ground truth sets both tie flags to 1 once in the prologue (0x4f05d2/0x4f05d7,
-  // the [esp+0x13]/[esp+0x12] bytes) rather than re-initializing them per minor
-  // slot, so they live at function scope here.
   bool isOfferTie = true;
   bool isRelationTie = true;
 
@@ -980,8 +950,6 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
               rnd = randSeed2;
             randSeed2 = rnd * 0x15a4e35 + 1;
             if (static_cast<int>((randSeed2 >> 0xc) & 0x7fff) % 2 != 0) {
-              // Retail's 0x4f0815 store targets the first winner slot, not the
-              // relation-score winner. Preserve that cross-coupling.
               bestOfferNation = gpSlot;
               bestRelationScore = score;
             }
@@ -1106,10 +1074,6 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
 
 // FUNCTION: IMPERIALISM 0x004f0e20
 void TDiplomacyMgr::ConveneCouncil(char forceOrMode) {
-  // Ground truth zeroes a register once (xor ebp,ebp at 0x4f0e33) and spends it on
-  // both the matrix probe (cmp word ptr [edi], bp) and four dword locals it clears
-  // up front (mov [esp+0x28]/[esp+0x2c]/[esp+0x34]/[esp+0x3c], ebp at 0x4f0e40), so
-  // these are function-scope zero-initialized rather than declared at first use.
   int topNationSlot = 0;
   int secondNationSlot = 0;
   int topPower = 0;
@@ -1277,10 +1241,6 @@ void TDiplomacyMgr::ConveneCouncil(char forceOrMode) {
   }
 }
 
-// Seeds relationCodeMatrix with a per-city baseline value (indexed parallel to
-// g_pGlobalMapState->cityScoreTable, not by nation pair): unowned cities (-1) are
-// skipped; cities formerly held by a major power (formerOwnerNationCode01 < 7) get
-// 14 + 3d6; everyone else gets 8 + 3x(rand() mod 4).
 // FUNCTION: IMPERIALISM 0x004f1570
 void TDiplomacyMgr::InitializeDiplomacyStandingBaselineRandom() {
   for (int cityIndex = 0; cityIndex < kDiplomacyPairMatrixEntries; ++cityIndex) {
@@ -1347,9 +1307,6 @@ void TDiplomacyMgr::ChooseCandidates(int* topNationSlot,
   *secondNationSlot = nationSlotOrder[1];
 }
 
-// Rebuild the per-nation comparative-power rows (+0x1824): army, average bilateral
-// relation standing, territory+tech combined, and commodity value, each normalized
-// against the strongest eligible nation (0..100; territory/tech halves 0..50).
 // FUNCTION: IMPERIALISM 0x004f1760
 void TDiplomacyMgr::RecomputeNationComparativePowerMetrics() {
   int maxCommodity = 1;
@@ -1586,8 +1543,6 @@ bool TDiplomacyMgr::IsGreatPower(NationSlot nationSlot) {
 // FUNCTION: IMPERIALISM 0x004f1f70
 void TDiplomacyMgr::BuildRelationshipList(NationSlot sourceNationSlot, short primaryOnlyFlag,
                                           void* listHandle) {
-  // The slot signature is the native void* handle; recover the common list base once
-  // (InsertCopiedRecordSortedByComparator is a TIndexAndRankList virtual, shared by every sorted-list leaf).
   TIndexAndRankList* list = static_cast<TIndexAndRankList*>(listHandle);
   short candidateNationSlot;
   short lastNationSlot;
@@ -1608,8 +1563,6 @@ void TDiplomacyMgr::BuildRelationshipList(NationSlot sourceNationSlot, short pri
   do {
     TCountry* terrain = *terrainCursor;
     if (terrain != 0) {
-      // Materialized bool in the original (xor/sete/test), separate from the
-      // slot-inequality test.
       bool isUnclaimed = terrain->encodedNationSlot == -1;
       if (isUnclaimed && candidateNationSlot != sourceNationSlot) {
         RelationshipRankEntry entry;
@@ -1721,10 +1674,6 @@ void TDiplomacyMgr::UpdateTables(int nationCode) {
 
 // FUNCTION: IMPERIALISM 0x004f24a0
 void TDiplomacyMgr::RebuildMinorNationDispositionLookupTables(NationSlot nationCode) {
-  // Ground truth walks the aux-slot table by byte offset (esi stepping 4 into
-  // [esi + &g_apSecondaryNationStateSlots[7]]) rather than re-scaling an index,
-  // and carries the minor slot as its own counter seeded to 7 (mov [esp+0x14], 7
-  // at 0x4f24a9) instead of recomputing 7 + auxIndex in the body.
   TMinor** auxSlot = g_apNationAuxRuntimeStateSlots;
   short minorSlot = 7;
   for (int auxIndex = 0; auxIndex < 16; ++auxIndex, ++auxSlot, ++minorSlot) {
@@ -1817,9 +1766,6 @@ char TDiplomacyMgr::BuildEmbassy(DiplomaticMissionLevelStorage missionLevel, int
 // are shared stream byte-order helpers, not diplomacy code: they live in
 // src/game/core/stream_byteswap.cpp.
 
-// The byte-array twin of BuildTurnEvent2ArraySyncPacketDeltaOrFull below: same packet, same
-// full-versus-delta decision, but one byte per element, so a delta record costs 3 bytes and
-// the payload is tagged deltaKind21 == 1.
 // FUNCTION: IMPERIALISM 0x00544840
 TurnEvent2SyncPacket* __cdecl
 BuildTurnEvent2ByteArraySyncPacketDeltaOrFull(unsigned int byteCount, unsigned char* current,
@@ -1954,8 +1900,6 @@ TurnEvent2SyncPacket* __cdecl BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned
   return packet;
 }
 
-// The int-array twin: four bytes per element, so a delta record costs 6 bytes and the
-// payload is tagged deltaKind21 == 3.
 // FUNCTION: IMPERIALISM 0x00544b30
 TurnEvent2SyncPacket* __cdecl
 BuildTurnEvent2IntArraySyncPacketDeltaOrFull(int intCount, int* current, int* baseline) {

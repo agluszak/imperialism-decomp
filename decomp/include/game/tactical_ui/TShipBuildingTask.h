@@ -16,8 +16,6 @@ public:
   virtual ~TShipBuildingTask() override {}         // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x5ae9e0
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5aea70
-  // Resolves the requested ship type's six resource deficits against city stock, queues
-  // one TCityTask for each remaining deficit, then waits for city ship order slot 0 to advance.
   virtual bool Execute(TTaskList* taskList) override; // slot 0x0a 0x5ae780
 
   TShipBuildingTask();

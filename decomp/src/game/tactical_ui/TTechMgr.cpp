@@ -109,8 +109,6 @@ void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
     capabilityValueByNationAndResource[n][3] = 1;
     capabilityValueByNationAndResource[n][0x16] = 1;
 
-    // The recruitment availability row is re-cleared and re-filled in the original's
-    // second nation pass as well.
     memset(&universityRecruitmentAvailabilityByNation[n], 0,
            sizeof(UniversityRecruitmentAvailabilityRow));
     universityRecruitmentAvailabilityByNation[n].availableByCategory[0] = 1;
@@ -119,8 +117,6 @@ void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
     universityRecruitmentAvailabilityByNation[n].availableByCategory[2] = 1;
     universityRecruitmentAvailabilityByNation[n].availableByCategory[7] = 1;
 
-    // Ability rows: ids 0..7 active by default plus 0x18/0x1b; the recruit/elite gate
-    // ids (8/0x10) stay cleared.
     memset(abilityActiveRows[n].abilityActiveById, 1, 8);
     abilityActiveRows[n].abilityActiveById[0x18] = 1;
     abilityActiveRows[n].abilityActiveById[0x1b] = 1;
@@ -142,10 +138,6 @@ void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
   RecomputeGlobalCapabilityAverages();
 }
 
-// Fills the capability-priority selection slots with 26 unique random slot ids, one per
-// (start, end) range pair. The LCG is seeded from the game-flow queue sync dword when session
-// state is active, otherwise from the wall clock. Each candidate is retried until it is unique
-// among the already-selected slots.
 // FUNCTION: IMPERIALISM 0x005af330
 void TTechMgr::GenerateRandomCapabilityPrioritySlots() {
   prioritySlots[1] = 0;
@@ -155,15 +147,11 @@ void TTechMgr::GenerateRandomCapabilityPrioritySlots() {
   unsigned int seed;
   if (g_pSimMgr->multiplayerSessionRole == kSessionRoleStandalone ||
       (seed = static_cast<unsigned int>(g_pGameFlowState->queueSyncDword)) == 0) {
-    // Genuine __cdecl free function declared (void); the guardrail-sanctioned arg-adjust cast
-    // pushes the ignored 0 argument the original passes.
     seed = static_cast<unsigned int>(ClockDerivedPrngSeed());
   }
 
   short* pnOutputSlotCursor = &prioritySlots[3];
   int nSelectedSlotCount = 3;
-  // Pair i is (cursor[-1], cursor[0]); the retail cursor anchors pair 0's END at element 1,
-  // so pair 0's START is read one short before it.
   for (short* pnRangePairCursor = &g_anCapabilityPriorityRangeData_0066ABA4[1];
        pnRangePairCursor < &g_anCapabilityPriorityRangeData_0066ABA4[53]; pnRangePairCursor += 2) {
     short nRangeStartGroup = pnRangePairCursor[-1];
@@ -295,10 +283,6 @@ void TTechMgr::CheckForAdvances() {
   }
 }
 
-// Turn-instruction handler body ("Tech"): unlocks techId on the city-order capability state,
-// then for every nation that is either AI-ineligible (diplomacyEligibility == 0) or the
-// forced target nation, stamps this tech's completion year (current quarter tick / 4) and
-// applies its per-nation ability unlock.
 // FUNCTION: IMPERIALISM 0x005afb10
 void TTechMgr::ApplyTechUnlockAndQueueNationAbilityNotices(int techId, int forcedNationSlot) {
   this->ApplyCityOrderCapabilityUnlockByTechId(techId);
@@ -312,9 +296,6 @@ void TTechMgr::ApplyTechUnlockAndQueueNationAbilityNotices(int techId, int force
   }
 }
 
-// Applies a technology-unlock id to the city-order capability state: records the active tech
-// marker, sets the per-tech unlock flag, then toggles the dependent capability flags/selector
-// shorts for the milestone techs. Ids 0x0b/0x16 swap the rule-table pointer at +0x264.
 // FUNCTION: IMPERIALISM 0x005afba0
 void TTechMgr::ApplyCityOrderCapabilityUnlockByTechId(int nTechId) {
   marker262 = static_cast<short>(nTechId);
@@ -532,10 +513,6 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
   }
 }
 
-// Activates an ability in its slot group for a nation: marks the ability row, records
-// the ability in the group slot, and for unit-order groups (1..8) reloads the city's
-// TUnitOrder cost profile from g_aUnitOrderCostProfileByAbilityId (clearing the replaced
-// ability); other groups upgrade the nation's matching military units.
 // FUNCTION: IMPERIALISM 0x005b0340
 void TTechMgr::ActivateSlotAndUpdateUI(int abilityId, int nationSlot) {
   short group = g_awTacticalUnitCategoryCodeBySlot[abilityId];
@@ -709,10 +686,6 @@ void TTechMgr::GetPreReqs(int techId, int nationSlot,
   }
 }
 
-// Purchases a tech-item slot for a nation: spends the slot's cost from the nation's
-// field-0x10 metric (AddToTreasury with the negated cost), marks the slot
-// status byte 1 in the nation's orderCapRows277 row, and stamps the current quarter
-// tick / 4 into the parallel capRowsE4a6 word.
 // FUNCTION: IMPERIALISM 0x005b0b30
 void TTechMgr::ApplyTechItemPurchaseCostAndState(int slot, int nationIndex) {
   g_apNationStates[nationIndex]->AddToTreasury(-g_anTechItemPurchaseCostBySlot_0066aae8[slot]);
@@ -721,8 +694,6 @@ void TTechMgr::ApplyTechItemPurchaseCostAndState(int slot, int nationIndex) {
       static_cast<short>(g_pSimMgr->economicTurn / 4);
 }
 
-// Inverse of ApplyTechItemPurchaseCostAndState: refunds the slot's cost back to the
-// nation's field-0x10 metric and clears both the status byte and the capRowsE4a6 word.
 // FUNCTION: IMPERIALISM 0x005b0bb0
 void TTechMgr::RefundTechItemPurchaseCostAndClearState(int slot, int nationIndex) {
   g_apNationStates[nationIndex]->AddToTreasury(g_anTechItemPurchaseCostBySlot_0066aae8[slot]);
@@ -746,11 +717,6 @@ void TTechMgr::SetCityOrderCapabilityTierScaledValueByIndex(int index, int value
   prioritySlots[index] = static_cast<short>(value * 4);
 }
 
-// Returns a nation's maximum fortification level (1..3): level 3 if the advanced-fort flag is
-// set, level 2 if the intermediate flag is set, else level 1. The advanced flag lives in the
-// nation's own orderCapRows277 row; the intermediate flag lives 4 bytes before it, i.e. in the
-// previous nation's row (the same previous-row / orderCapRows277[-1] striding documented on
-// OrderCapRow for nation 0).
 // FUNCTION: IMPERIALISM 0x005b0ca0
 int TTechMgr::GetNationFortLevelCap(int nNationId) {
   if (orderCapRows277[nNationId].techStatusByTechId[0x16] != 0) {

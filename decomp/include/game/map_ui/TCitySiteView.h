@@ -8,13 +8,7 @@ class TTown;
 // VTABLE: IMPERIALISM 0x006591d0
 class TCitySiteView : public TMapDialog {
 public:
-  // HandleMapClickByInteractionMode writes the selected region id at TTown::tileIndex,
-  // names the marker, and submits it through TViewMgr.
   TTown* pendingTown;
-  // Viewport clamp box consumed by SetMapDialogCellCoordinatesAndRefresh (0x51c320).
-  // Not initialized by the ctor (0x51beb0); initialized to an inverted (empty) box
-  // (+-1000) and then derived from the active nation's owned tiles by DoPostCreate
-  // (0x51bff0). This restriction belongs only to the capital-site selector.
   int minColumn; // +0x368
   int maxColumn; // +0x36c
   int minRow;    // +0x370

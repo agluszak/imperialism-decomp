@@ -19,13 +19,6 @@ TCouncilPanelView::~TCouncilPanelView() {}
 
 IMPLEMENT_DYNCREATE(TCouncilPanelView, TPanelView)
 
-// Council panel header: when no summit is in session (a chairman slot of -1), draws a
-// single centered "no session" message (GetString 0x2733/0x34). Otherwise draws a
-// bracket-expanded "Congress of <decade>" title, then the three CongressSupportTally
-// rows in record order: the chairman nation + its support count, the counterpart nation
-// + its support count, and a generic label (GetString 0x2733/0x36) + the neutral count.
-// Every label/value is drawn twice (theme 0x2b68 color at +1,+1 then theme 0x2b6b
-// color at +0,+0), matching the drop-shadow idiom used across this UI family.
 // FUNCTION: IMPERIALISM 0x004fb030
 void TCouncilPanelView::Draw(RECT* rectBuffer) {
   (void)rectBuffer;

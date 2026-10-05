@@ -32,24 +32,10 @@ struct TaggedSerializablePayload {
   TObject* object;
 };
 
-// TMultiplayerMgr::SendStreamMessage / WriteMessageTo transport their tag-selected
-// payload in one 32-bit `long` (confirmed by the retail Mac signature and the Windows
-// RET 0x0c/0x10 call sites). Scalar tags use scalarValue; object tags use the matching
-// pointer arm. This keeps the original wire/ABI representation explicit without
-// scattering pointer/integer casts through the dispatcher.
-//
-//   event 0x28: object
-//   event 0x2e: scalarValue narrowed to signed short (nation filter)
-//   event 0x2f: scalarValue as signed int (terrain descriptor slot)
-//   event 0x30: scalarValue as signed int (nation filter)
-//   event 0x31: taggedObject
-//   event 0x32: no payload; scalarValue is ignored
 struct StreamMessagePayload32 {
   long scalarValue;
 };
 
-// Event-8 lobby name/status announce: the selected/source nation followed by two
-// player-name strings. Both the session UI and receive dispatcher use this wire shape.
 struct TurnEvent8NameAnnouncePacket : TimelyMessageHeader {
   char nationSlot18;        // +0x18
   char senderName19[0x21];  // +0x19
@@ -65,8 +51,6 @@ struct LobbyChatEvent9Packet : TimelyMessageHeader {
   char messageText[0x23]; // +0x41, total 0x64
 };
 
-// Event-8 lobby text pair emitted from the selected nation and the manager's two
-// cached 32-character player-name fields.
 struct LobbyTextPairEvent8Packet : TimelyMessageHeader {
   unsigned char sourceNationSlot18;
   char playerName19[0x21];
@@ -116,10 +100,6 @@ struct TurnEventACityAnnouncePacket : TimelyNetMessagePrefix {
   char cityName20[0x24]; // +0x20 (strncpy'd 0x21), total 0x44
 };
 
-// Turn-event-0xB payload: the full nation directory — home-region tile, city/nation
-// display names, and port-zone ordinals per terrain slot. The name rows are reserved
-// 0x21 bytes apiece in the struct (hence the pads) but the writer advances only 0x17
-// bytes per slot while still strncpy'ing 0x21 — original behavior, kept as-is.
 struct TurnEventBNationDirectoryPacket : NetMessage {
   int packetTag;                // +0x10 'time'
   unsigned char activeNationId; // +0x14
@@ -135,8 +115,6 @@ struct TurnEventBNationDirectoryPacket : NetMessage {
   unsigned char pad666[2];           // total 0x668
 };
 
-// Turn-event-0x18 payload: all seven great powers' diplomacy policy/grant/need arrays
-// (host broadcast; also read back by the dispatcher).
 struct TurnEvent18DiplomacyArraysPacket : NetMessage {
   int packetTag;                // +0x10 'time'
   unsigned char activeNationId; // +0x14
@@ -149,9 +127,6 @@ struct TurnEvent18DiplomacyArraysPacket : NetMessage {
   unsigned char pad3e2[2];                // total 0x3e4
 };
 
-// Turn-event-0x1F payload: game-state four-cc tag plus one dword whose meaning is
-// keyed by the tag (the vacated/affected nation slot for 'uhed'/'aced'/'abdi'/'lose',
-// a terrain-descriptor index for the overlay-label tags).
 struct TurnEvent1FStatusPacket : TimelyMessageHeader {
   int statusTag18; // +0x18 - 'aced'/'abdi'/'uhed'/'cgam'/'lose'/'foff'/...
   int value1C;     // +0x1c, total 0x20
@@ -169,19 +144,12 @@ struct TurnEvent23TileStatePacket : NetMessage {
   TTerrainStateRecord record; // +0x20, total 0x44
 };
 
-// Turn-event-0x25 nation-status payload: header + seven per-nation status tags,
-// defaulted to 'unkn'; the 'time' tag and active-nation byte are stamped separately
-// via InitializeEmitEventHeaderWithActiveNation before sending.
 struct NationStatusEvent25Packet : TimelyMessageHeader {
   int statusTags[7]; // +0x18 - four-cc per-nation status ('unkn' default)
 
-  // 0x54bce0: zero the NetMessage header, set eventCode 0x25 / length 0x34, default all
-  // seven status tags to 'unkn'.
   void InitializeNationStatusEvent25PayloadDefaults();
 };
 
-// Turn-event-0x2B presence/ack mask exchange; also emitted by TNetMgr's reachability
-// probe (which sends its own nation id with no reply requested).
 struct TurnEvent2BPresenceMaskPacket : TimelyMessageHeader {
   unsigned char replyRequestFlag; // +0x18 - nonzero requests the echo reply
   signed char nationMask;         // +0x19 - OR'd (signed) into the accumulator

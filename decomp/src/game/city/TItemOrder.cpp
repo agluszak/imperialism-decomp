@@ -121,10 +121,6 @@ void TItemOrder::Produce() {
 
 // FUNCTION: IMPERIALISM 0x004b5620
 void TItemOrder::Restock() {
-  // Clamp the pending quantity to MaxOrder(): recompute the ceiling, zero the
-  // pending-quantity field, then re-drive SetQuantity with whichever of the current
-  // requested quantity / the new ceiling is smaller. SetQuantity itself rewrites
-  // requestedQuantity4c, so the smaller-ceiling branch restores the desired value.
   short maxOrder = MaxOrder();
   short savedRequestedQuantity = requestedQuantity4c;
   quantity = 0;

@@ -16,14 +16,8 @@ public:
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x575460
   virtual void Hilite() override;               // slot 0x73 0x45ada0
 
-  // NOOP: verified empty in original 0x00455a91 (trivial inline ctor: the builder
-  // expansion site emits only the base ctor call + vtbl install)
   THighScoresPicture() {}
 
-  // Loaded from Data\scores.dat by DoPostCreate: ten score values interleaved with ten
-  // 32-byte name records. Draw (0x575460) walks them in lockstep, formatting the value
-  // with "%d" and constructing a CString straight from the record pointer -- so each
-  // record is just a NUL-terminated player name, not a struct.
   int scoreValues[10];       // +0x94
   char scoreNames[10][0x20]; // +0xbc
 };

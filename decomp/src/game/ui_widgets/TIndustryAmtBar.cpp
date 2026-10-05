@@ -42,12 +42,6 @@ void TIndustryAmtBar::DoPostCreate(int arg) {
   }
 
   selectedMetricRecord = province->orderSlots[summaryTagIndex];
-  // `productionSlot` only exists on TItemOrder-sized (0x54-byte) objects. This
-  // downcast is safe here: the summary-tag scan above bounds summaryTagIndex
-  // to the 23-entry g_pTradeSummarySelectionMap table (0x696108), so tagIndex
-  // never reaches the TTrainingOrder slots (0x17/0x18, object size 0x4c) that
-  // share this band — see g_pTradeSummarySelectionMap's doc comment in
-  // global_data_tables.cpp.
   int productionValue = nationState->GetCityState()->GetBuildingType(
       static_cast<TItemOrder*>(selectedMetricRecord)->productionSlot);
 

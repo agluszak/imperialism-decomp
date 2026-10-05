@@ -1,6 +1,4 @@
 #pragma once
-// Subsystem-owned global declarations. Definitions and address markers live in
-// src/game/core/global_data_tables.cpp.
 #include "game/globals/global_types.h"
 
 extern "C" short g_aTradeDealCategoryOrder_0066D810[0x11];
@@ -18,6 +16,4 @@ extern "C" CPoint g_offerDeskOffscreenPosition_006a5a28;
 
 extern "C" const int g_pTradeSummarySelectionMap[23];
 
-// Assert source-path literal shared by the trade views (TDealBookPicture,
-// TOfferDeskPicture, TTradeScreenPicture).
 extern "C" const char s_SourcePathUTradeViews_0069AA94[];

@@ -11,8 +11,6 @@ IMPLEMENT_DYNCREATE(TTextLine, TLineData)
 
 // FUNCTION: IMPERIALISM 0x00570290
 TTextLine::TTextLine() : TLineData() {
-  // Only styleRef6 is zero-initialized here; mode/flag2/pointSize stay garbage until
-  // ITextLine's BuildUiTextStyleDescriptor call fills them in.
   styleDescriptor14.textColor = 0;
 }
 

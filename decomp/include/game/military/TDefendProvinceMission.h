@@ -12,8 +12,6 @@ public:
   // Default constructor
   TDefendProvinceMission() : TArmyMission() {}
 
-  // Delegates to TArmyMission(nodeKey) and stamps this class's vtable; inlined into the
-  // mission factory (TMission::CreateMission case 3 without a zone), no standalone address.
   TDefendProvinceMission(int nodeKey) : TArmyMission(nodeKey) {}
 
   virtual void Initialize() override; // slot 0x0c (TMission) 0x53eff0
@@ -28,8 +26,6 @@ public:
   virtual bool Matches(eMissionType missionType, int key,
                        TZone* zoneContext) const override; // slot 0x4c 0x53f010
 
-  // These override TMission's own slots 0x0d/0x0e/0x0f (SetStateByte8To2 /
-  // CalculateImportance / CalculateNeeds) with DefendProvinceMission-specific bodies.
   virtual void
   SetStateByte8To2() override; // slot 0x34 0x53ecc0 -- updates state by nation target match
   virtual void
@@ -39,13 +35,8 @@ public:
 
   static float ComputeLocalSupportVectorScore(int nodeContext);
   static float ComputeCrossNationSupportVectorScore(int nodeContext);
-  // 0x53eca0 -- dead member (no live callers): the instance form, forwarding
-  // presentLocation to the static scorer.
   float ComputePresentLocationCrossNationSupportScore();
 
-  // Walks orderList and re-issues TUnit::SetOrders(kUnitOrderRedeploy, newTile) on every
-  // linked TMilitaryUnit whose tileIndex06 differs from newTile (propagating this
-  // mission's new target tile to units still ordered against the old one). 0x53c950.
   void PropagateTargetTileToLinkedUnitsIfDifferent(short newTile);
 };
 

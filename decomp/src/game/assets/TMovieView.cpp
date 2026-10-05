@@ -9,13 +9,6 @@
 
 IMPLEMENT_DYNCREATE(TMovieView, TPicture)
 
-// The original calls AfxGetThread() twice (once to null-check, once to fetch
-// GetMainWnd() through it) rather than caching the result across the branch — this is
-// the standard MSVC500 "call again to use" idiom for a value that isn't worth spilling
-// across a conditional. Reproduced verbatim (not factored into a helper) to match.
-// Note: movieWindowState is not explicitly zeroed here (listing at 0x5e2230 has no
-// write to this+0x90) — it stays whatever the allocator handed back until
-// DoPostCreate assigns it. Matches the original; not "fixed" to zero-init.
 // FUNCTION: IMPERIALISM 0x005e2230
 TMovieView::TMovieView() : TPicture() {
   g_pSfxPlaybackSystem->ClearDirectSoundInitPendingAndResetState();
@@ -80,10 +73,6 @@ bool TMovieView::OpenMoviePathAndDetachOnSuccess(LPCSTR moviePath) {
   return false;
 }
 
-// Return type is void, not bool: the listing at 0x005e24e0 (`test ecx,ecx; jz +5;
-// jmp Play(); ret`) never sets eax/al on the null path, and both callers
-// (PlayMovieClipAndDispatchTurnStateFollowup at 0x5dfc10, via thunk 0x401839) discard
-// the call's result entirely — there is no bool being consumed here.
 // FUNCTION: IMPERIALISM 0x005e24e0
 void TMovieView::PlayMovieIfActive() {
   if (movieWindowState != 0) {
@@ -91,10 +80,6 @@ void TMovieView::PlayMovieIfActive() {
   }
 }
 
-// Stop (skip) the movie: sends MCI_STOP, which makes the MCIWnd notify its parent with
-// MCIWNDM_NOTIFYMODE/MCI_MODE_STOP -> CIncludeView::OnMciNotifyMode advances the turn state.
-// Same void-return shape as PlayMovieIfActive above (0x005e2500 listing; caller
-// DoKeyEvent at 0x4ffd70 via thunk 0x40485e also discards the result).
 // FUNCTION: IMPERIALISM 0x005e2500
 void TMovieView::StopMovieIfActive() {
   if (movieWindowState != 0) {

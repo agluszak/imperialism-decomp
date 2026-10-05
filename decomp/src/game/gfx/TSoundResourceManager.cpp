@@ -1,9 +1,5 @@
 #include "game/gfx/TSoundResourceManager.h"
 
-// TSoundResourceManager.h pulls <windowsx.h> (for GlobalFreePtr in WaveLoadDescriptor),
-// which defines UnionRgn/CopyRgn as GDI helper macros. Those would mangle the identically
-// named QuickDraw declarations in quickdraw_regions.h, pulled in transitively below by
-// global_data_tables.h. We use neither windowsx macro here, so drop them.
 #undef UnionRgn
 #undef CopyRgn
 
@@ -157,9 +153,6 @@ int TSoundResourceManager::SetChannelVolume(int volume, int slot) {
   return m_field34 == 0;
 }
 
-// Release the six channel buffers, the DirectSound device, and the wave-pack module.
-// The original runs this (via TSoundPlayer slot 0x29) right before starting MCIWnd
-// movie playback so the AVI audio can open the wave device.
 // FUNCTION: IMPERIALISM 0x0049c8e0
 void TSoundResourceManager::ReleaseDirectSoundDeviceAndChannels() {
   for (int i = 0; i < 6; ++i) {

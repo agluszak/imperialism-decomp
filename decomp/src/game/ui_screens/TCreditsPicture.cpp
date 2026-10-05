@@ -91,9 +91,6 @@ void TCreditsPicture::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);
 }
 
-// Dead scoped-release helper: drops the shared top-down-DIB orientation count while the
-// caller's engaged flag is set, then clears it. Emitted here as a __fastcall free
-// function (ECX arg, bare RET); no callers survive in the original.
 // FUNCTION: IMPERIALISM 0x0056f1d0
 void __fastcall ReleaseDibOrientationGuard(int* engagedFlag) {
   if (*engagedFlag != 0) {

@@ -17,8 +17,6 @@ TMyNumberText::TMyNumberText() : TNumberText() {}
 // ~TEditText (0x004904d0), so this class inherits it. The scalar deleting destructor above is what
 // the vtable slot holds.
 
-// slot 0x7a — TNumberText::UpdateControlCachedIntFromWindowText override. Unlike the
-// base, an empty control reads as 0 rather than being parsed.
 // FUNCTION: IMPERIALISM 0x005b5050
 int TMyNumberText::UpdateControlCachedIntFromWindowText() {
   int value = 0;
@@ -30,10 +28,6 @@ int TMyNumberText::UpdateControlCachedIntFromWindowText() {
   return value;
 }
 
-// Takes its CString by value and destroys it on the way out (the original tail-jumps
-// into ~CString), which is why the caller only reserves four bytes for the argument and
-// lets the compiler's copy helper at 0x49eb00 build it. Ghidra's "TTown::
-// CreateTTownInstance" name is a placeholder: the body is a plain atoi.
 // FUNCTION: IMPERIALISM 0x005b6a80
 void ParseIntFromControlText(CString text, int* outValue) {
   *outValue = atoi(text);

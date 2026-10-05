@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include "game/pointer_representation.h"
 
-// Dead helper (no live callers): returns `low + rand() % |high - low|`, or `low`
-// itself when the range is empty.
 // FUNCTION: IMPERIALISM 0x00487a20
 int __cdecl RandomOffsetWithinRange(int low, int high) {
   if (low == high) {
@@ -14,9 +12,6 @@ int __cdecl RandomOffsetWithinRange(int low, int high) {
   return low + roll % abs(high - low);
 }
 
-// Default-compare trampoline whose address Sort() passes as the comparator: adapts the
-// three-arg __cdecl comparator shape onto the virtual Compare of the list supplied as
-// context. (Ghidra: OrphanCallChain_C1_I08_00487a60.)
 // FUNCTION: IMPERIALISM 0x00487a60
 static short __cdecl DispatchTSortedListDefaultCompare(void* a, void* b, void* context) {
   return static_cast<TSortedList*>(context)->Compare(a, b);
@@ -75,8 +70,6 @@ int TSortedList::QSPartition(int lo, int hi, TSortedListCompareFunc compare, voi
   if (lo != hi) {
     pivotOrdinal = static_cast<int>(rand()) % abs(hi - lo) + lo;
   }
-  // Swap the random pick into the pivot position through the public CPtrList API
-  // (FindIndex+SetAt compile to the same node-data stores the original emits).
   void* loEntry = GetEntryByOrdinal(lo);
   void* pivotEntry = GetEntryByOrdinal(pivotOrdinal);
   listState.SetAt(listState.FindIndex(lo - 1), pivotEntry);

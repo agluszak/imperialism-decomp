@@ -34,13 +34,6 @@ void TNavyBattle::InitTacticalBattle(TTacticalPlayer* ourPlayer, TTacticalPlayer
 
 // FUNCTION: IMPERIALISM 0x005a55c0
 void TNavyBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
-  // A ship may only deploy on its side's two deploy rows (side 0: rows
-  // battlefieldColumnCount-6..-5; side 1: rows 5..6 -- the field acts as a row
-  // bound here) onto an empty tile. On success it places the ship, invalidates its
-  // tile rect, advances the current side's selection, and once that side is fully
-  // deployed flips the side, refreshes the 'tool' toolbar, and either finalizes
-  // deployment or kicks the incoming side's StartBattle (the navy analogue of
-  // HandleTacticalCommandTag_retr's tail).
   bool sideIsZero = (unit->side20 == 0);
   bool canDeploy = true;
   int rowIndex = tileIndex / 29;
@@ -93,13 +86,6 @@ void TNavyBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
   players[currentSideC]->StartBattle();
 }
 
-// Resolves a naval gun action against the target tile's occupant: computes the hex
-// distance to the attacker, derives a hit-chance threshold from the attacker's quality,
-// range, and that distance, plays the muzzle-flash effect at the attacker's tile, then
-// rolls against the threshold. On a hit, applies scaled damage via
-// TNavyTacUnit::ApplyNavalDamage (targeting = the attacker side's
-// ship-panel toggle), invalidates the defender's tile, and if destroyed clears it from
-// the grid and plays the sinking effect; on a miss, plays the splash effect instead.
 // FUNCTION: IMPERIALISM 0x005a5730
 void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
     TTacticalUnit* attackerUnit, TacticalTileIndex targetTileIndex) {

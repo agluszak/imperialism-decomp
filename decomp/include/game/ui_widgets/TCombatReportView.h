@@ -4,9 +4,6 @@
 
 struct CRuntimeClass;
 
-// One row of a combat report's participant unit list (Draw, 0x0058d2b0):
-// a fixed-size NUL-terminated name buffer followed by the per-row status/marker fields
-// it reads. Stride confirmed by the `rowIndex * 0x20` array indexing in the original.
 struct CombatReportUnitRecord {
   char name[0x14];                 // +0x00 unit/rank display name
   signed char statusStringIndex14; // +0x14 GetString(0x2717, idx) index for the "(...)" suffix
@@ -18,9 +15,6 @@ struct CombatReportUnitRecord {
 };
 ASSERT_SIZE(CombatReportUnitRecord, 0x20);
 
-// Combat report data context (m_reportContext): two participants, each with their own
-// nation index and unit-record array. Only the fields Draw reads are
-// evidenced; the gap at +0x02..0x07 is unread by it.
 struct TCombatReportContext {
   signed char nationIdA; // +0x00 index into g_apTerrainTypeDescriptorTable
   signed char nationIdB; // +0x01 index into g_apTerrainTypeDescriptorTable

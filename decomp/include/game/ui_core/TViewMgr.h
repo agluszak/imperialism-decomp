@@ -33,10 +33,6 @@ public:
   virtual void Free() override;                    // slot 0x07 0x5d51e0
   virtual void LoadTurnEventCursorTable();         // slot 0x0a 0x5d5100
 
-  // Mac oracle: MakeCheaterDialog. Poses the developer cheat panel (dialog resource
-  // 15000) modally with either the tech or the great-power cheater built into it,
-  // applies whatever the user entered, then closes and frees the window.
-  // `which` selects the cheater: 0 tech, 1 great power. 0x005de6c0, __thiscall.
   void MakeCheaterDialog(int which);
   virtual void MakeGameSetupDialog();                                          // slot 0x0b 0x5dcaa0
   virtual void SetBackColor(short colorCode);                                  // slot 0x0c 0x5d5780
@@ -54,23 +50,13 @@ public:
   virtual short GetPendingTurnOverlayCode();                                   // 0x54
   virtual void RefreshStrategicMapStatusIconsForActiveNation();                // 0x58
   virtual void RefreshTradeAndIndustryOverviewScreen(int nationIndex);         // 0x5c
-  // Resolves the active dialog's 'main' and 'curs' panels, refreshes the cursor info
-  // panel's map-hint style, then clears the 'main' panel's title text (0x5da040).
   virtual void RefreshMainDialogAndCursorHelp(int eventCode); // 0x60
-  // Sibling of slot 0x60: refreshes the 'curs' cursor panel, then repopulates the
-  // 'quer' query label and 'titL' nation-title panel from the current scenario setup
-  // (0x5da180).
   virtual void ShowDealBookScreen(short nationSlot); // 0x64; Mac oracle
 
   // UI runtime helper functions
   virtual void AddPendingTurnOverlayCode(int modeValue); // 0x68
   virtual void ShowDiplomacyScreen(short nationSlot);    // 0x6c; Mac oracle
-  // Mac oracle: MakeRelationshipDialog(short). The Windows listing preserves a
-  // 32-bit factory context; this resolves its relationship-table DLOG child, fills
-  // it, and leaves the table window open (0x5d6cd0).
   virtual void MakeRelationshipDialog(int dialogContext); // 0x70 0x5d6cd0
-  // The remaining diplomacy-table dialogs are modal and release their factory nodes
-  // after StuffValues() returns.
   virtual void MakeMinorsTradeBidsDialog(int dialogContext);   // 0x74 0x5d6d70
   virtual void MakeMinorRelationshipDialog(int dialogContext); // 0x78 0x5d6e50
   virtual void MakeGPTreatyDialog(int dialogContext);          // 0x7c 0x5d6f10
@@ -89,20 +75,9 @@ public:
   virtual void ShowCitySiteSelectorAndWait(int payload,
                                                         TEventHandler* waitTarget); // 0xa4
   virtual void ShowCityProductionView(short nationSlot); // 0xa8; Mac oracle
-  // Forwards to g_pMacViewMgr's own vtable slot 0x5c/0x60/0x68/0x6c/
-  // 0x70/0x74 (TMacViewMgr) -- verified via disassembly (0057db14-style pattern:
-  // `mov ecx,[g_pMacViewMgr]; mov eax,[ecx]; jmp [eax+0xNN]`, no
-  // wrapping logic).
   virtual void RefreshCityProductionUi();                     // 0xac 0x5d7f70
   virtual void CloseBuilding(short buildingSlot); // 0xb0 0x5d7f90
-  // Opens the New City dialog (event 0x3b9) and stuffs the pending town into its
-  // TPlaceCityDialog 'DLOG' child.
   virtual char ShowNewCityDialog(TTown* town); // 0xb4 0x5dcdf0
-  // Opens factory dialog 0x2405, seeds its 'GOLD' trade-summary child with the three
-  // caller args, places/refreshes it, then forwards the refresh result to the child
-  // (0x5dc430).
-  // Opens the Generic-expander dialog (event 0x2405) and stuffs the building slot,
-  // city and production view into its TBuildingExpansionView 'DLOG' child.
   virtual void ShowBuildingExpansionDialog(short buildingSlotId, class TCity* city,
                                            class TCityProductionView* productionView); // 0xb8
   virtual void ShowTerrainMap(short nationSlot);                           // 0xbc; Mac oracle
@@ -112,11 +87,6 @@ public:
   virtual void RefreshActiveGoldControlAndUiRuntimeState();                // 0xcc 0x5dc160
   virtual void InitializeCitySiteSelectionScreenForNation(int nationSlot); // 0xd0
   virtual void NoOpTurnEventStateVtableSlotD4(int arg);                    // 0xd4
-  // Resolves the active dialog's 'GOLD' panel, notifies it of the current turn-event
-  // code, then resolves+shows+refreshes the 0x546 factory dialog's own 'GOLD' child
-  // (0x5dcf20).
-  // Opens the CombatReport 2 dialog (event 0x546) and stuffs the report context into
-  // its TCombatReportView 'DLOG' child; the argument is that context, not an event code.
   virtual void ShowCombatReportDialog(TCombatReportContext* reportContext); // 0xd8 0x5dcf20
   virtual int ShowConstructionOptionsDialog(int dialogValue = 0);           // 0xdc
   virtual void HandleGlobalMapNationContextSelection(int nationSlot, int unused = 0); // 0xe0
@@ -124,22 +94,13 @@ public:
   virtual void ShowTownNameDialog(int stringCode);  // 0xe4
   virtual void ShowUnreachableCityDialog(void* selection); // 0xe8
   virtual void MakeGarrisonWindow(int tileIndex); // 0xec; Mac oracle
-  // Mac oracle: TViewMgr::MakeNavyRosterDialog(TTaskForce*). Resolves the 0x2506
-  // Navy Roster's TNavyRoster page, populates it from the supplied task force, and
-  // returns the page after the modal dialog closes (0x5dd340).
   virtual TNavyRoster* MakeNavyRosterDialog(TTaskForce* activeMapOrderEntry); // 0xf0
   virtual void StartPhaseMovie();                          // 0xf4
   virtual void SetUpMainMenuScreen();                          // 0xf8
   virtual void NoOpTurnEventStateVtableSlotFC(); // 0xfc 0x5dbd10 -- real body is a bare `ret`
-  // Turn-event 0x5DE: re-assert + refresh the 'main' view panel (sibling of the 0x5DF
-  // handler; the original brackets the body with a scoped empty CString). 0x5dbd30.
   virtual void ShowLoadSaveScreen(); // 0x100 0x5dbd30; Mac oracle
-  // Turn-event 0x5DF path (see DispatchTurnEvent): re-asserts and refreshes
-  // the main view's 'main' panel (0x5dbdd0).
   virtual void ShowScenarioScreen();  // 0x104; Mac oracle
   virtual void ShowHighScoreScreen(); // 0x108; Mac oracle
-  // Resolves the active map dialog's 'DLOG' view and sets its cell coordinates to
-  // (0x14, 0x14) through TWorldView's slot-0x79 virtual (0x5dc3f0).
   virtual void ConfigureMapEditorGoldValueGrid(); // 0x10c 0x5dc3f0
   virtual void ShowUnitHistory(short nationSlot);                   // 0x110 0x5dc690
 
@@ -153,95 +114,38 @@ public:
     RefreshMainViewNationIndicatorForCurrentTurnEvent();
   }
 
-  // Mac CodeWarrior names/signatures identify this palette family as GetColor,
-  // SetColor, SetForeColor, and SetBackColor. Windows listing supplies the
-  // implementations and addresses.
   QuickDrawPaletteIndex GetColor(short colorCode);
   void SetColor(short colorCode, bool foreground);
 
-  // 0x5ddd20 — opens the civilian ledger (TSuperCivRoster) inside factory dialog
-  // 0xdac, runs it modally via the show/refresh chain, then applies the selected
-  // civilian as the active map selection.
   void ShowCivilianLedgerDialogAndSelectUnit();
-  // 0x5dda30 — army-roster sibling of the civilian ledger: replace the factory page with
-  // TSuperArmyRoster, then activate and center the selected province.
   void ShowArmyRosterDialogAndActivateProvinceSelection();
-  // 0x5dd450 — replace the Navy Roster factory page with TSuperNavyRoster and apply the
-  // selected loose-zone or existing-task-force map context.
   void ShowNavyRosterDialogAndApplySelection();
 
-  // 0x5dea60 — allocates a TModalMessageCommand carrying `message`/`payload`, seeds
-  // it with dispatch code 'Hey!' targeting the global UI root controller, and posts
-  // it there. `this` is unused by the original body.
   void PostModalMessage(CString* message, int payload);
-  // Mac oracle: TViewMgr::ModalMessage(CStr255, const VPoint&) and the four-argument
-  // overload. Windows substitutes CString/POINT but preserves the value/reference shape.
   void ModalMessage(CString message, const POINT& messagePosition);
-  // `overlayMode` is a short all the way down the chain, and every hop forwards it
-  // without a width conversion: TModalMessageCommand::DoIt (0x5dcd10) passes a short
-  // field with a bare `mov ax, word ptr [ecx+0x1c]` (an int parameter would force a
-  // `movsx`), 0x5d5b00 forwards it with a plain `mov ecx, dword ptr [esp+0x20]`, and
-  // 0x5d5c40 hands it on the same way -- which is why the receiving `contextTag` on
-  // RunNationInfoModalAndReturnNonCancel is a short too.
   char ModalMessage(CString message, const POINT& messagePosition, short overlayMode,
                     unsigned char showCancel);
-  // Dead gate-assert stub: asserts UViewMgr.cpp:0x2ac when the (never-written) gate is
-  // clear, then returns 0. The by-value CString produces the retail SEH frame; `this`
-  // is never read. 0x005d5bc0, __thiscall.
   char ModalMessageGateAssertStub(CString message, int arg2, int arg3, int arg4, int arg5,
                                   int arg6);
-  // 0x5de990 — load string (group, index) and pose it through the localized-message
-  // dispatch; returns the prompt result byte.
   char ShowLocalizedUiPromptByGroupAndIndex(int uiStringGroup, int uiStringIndex, int overlayMode,
                                             int arg4);
-  // 0x5de8f0 — resolve the turn-event dialog node for message context 0x101a, place it,
-  // capture its layout, refresh it, then run its void tail hook and free it.
   void DispatchUiRuntimeMessage101AAndRefreshActiveView();
-  // 0x5deb40 — pose the confirm prompt matching `actionTag` ('magc'/'gwen'/'quit'/
-  // 'load'; group 0x2737 index by game-flow mode) and, when accepted during session
-  // teardown, dispatch the 'abdi' game-state event. Returns the accepted byte.
   char DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag);
-  // Mac oracle: TViewMgr::ModalMessage(long, CStr255, CStr255, const VPoint&, short,
-  // unsigned char). This overload formats and presents the actual modal message window.
-  // Argument roles are fixed by 0x5d5c40: the second CString is copy-constructed and
-  // forwarded by value as RunNationInfoModalAndReturnNonCancel's `titleSuffix` (appended
-  // to the 'titl' control after two carriage returns), while the third supplies the
-  // chars/length pair that fills the 'info' body.
   char ModalMessage(long templateKind, CString titleSuffix, CString message,
                     const POINT& messagePosition, short overlayMode, unsigned char showCancel);
 
-  // 0x5de4f0. Shows the Civilian Report confirmation dialog (resource 0xbc4) for
-  // pCivilianOrderEntry, fills its 'DLOG' civilian-report control, runs the modal dialog,
-  // and returns true iff the player picked "confirm" ('okay').
   bool ShowCivilianReportDialogAndReturnConfirm(class TCivUnit* pCivilianOrderEntry);
 
-  // 0x5d5d30 (ret 0x1c). The shared nation-info/modal-message implementation driven by
-  // BuildAndShowTurnOverlayByMode: resolves the turn-event dialog (message context
-  // 0x7e4, or 0x2508 after the TAssetMgr slot-0xc notify when eventPayload carries a
-  // resource word after a -1000 sentinel), fills the 'GOLD'/'coat'/'awer'/'titl'/'info'
-  // children, wraps the info text in a fresh TScrollView when it overflows, plays the
-  // per-mode sfx, runs the modal loop, and returns false only for a 'cncl' close.
   bool RunNationInfoModalAndReturnNonCancel(int messageKind, CString titleSuffix,
                                             const char* messageChars, int messageLength,
                                             const POINT& messagePosition, short contextTag,
                                             char showCancel);
 
-  // 0x5de5d0 (ret 0x8). Resolves the turn-event dialog node for message context 0xc1c,
-  // marks it via TWindow::SetField84(1) (same idiom as MakePlanetSeedDialog),
-  // resolves its 'DLOG'-tagged child control, and forwards cityRecordIndex/
-  // categoryCounts into TArmyInfoView's slot-0x1cc dispatch, finally comparing the
-  // dialog's result tag to 'okay'.
   bool DispatchProvinceOrderOverlayConfirmDialog(short cityRecordIndex, int* categoryCounts);
 
-  // Mac oracle: TViewMgr::MakePlanetSeedDialog(const char*, CStr32&, const char*,
-  // const char*, int, unsigned char) const. Windows uses CString for the CStr32 value
-  // and returns the selected four-character control tag. 0x5de010.
   int MakePlanetSeedDialog(const char* instruction, CString& planetSeed, const char* firstChoice,
                            const char* secondChoice, int initialChoice, bool showCancel) const;
 
-  // Object layout recovered from ctor 0x5d5060 / ReadFrom 0x5d5200 /
-  // LoadTurnEventCursorTable 0x5d5100. Field names describe their observed readers and
-  // writers. Total size 0xfc, base TObject = 0x4.
   void RefreshTechnologyStorePageAndHudText(int nationSlot); // 0x005d8750
 
   TurnEventCodeStorage currentTurnEventCode; // +0x04 (turn-event dispatch code)
@@ -249,10 +153,6 @@ public:
   POINT dialogPlacement;  // +0x08 (seeded from g_ptCitySiteSelectionDialogPlacement)
   bool field10;           // +0x10
   unsigned char pad11[3]; // +0x11
-  // +0x14 .. 0xeb (54 turn-event cursor handles). Indexed as
-  // turnEventCursors[resourceCursorId - kCursorResourceIdBase] -- confirmed against
-  // TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback's ground-truth
-  // `[EAX + EDX*4 + 0xfffff074]` (0xfffff074 == -0xf8c == 0x14 - kCursorResourceIdBase*4).
   HCURSOR turnEventCursors[0x36];
   short fieldEc;                           // +0xec
   short padEe;                             // +0xee
@@ -263,9 +163,6 @@ public:
 
   TViewMgr();
 
-  // Screen-exit backbone: stash the followup turn state in fieldF8; on state 0,
-  // re-apply volume preferences and post the followup turn-event code (0x5dc menu /
-  // 0x7e0 / 0x5eb) via g_pAmbitApplication->PostTurnEventCodeMessage.
   void HandleTurnStateExitAndPostFollowupEventCode(short followupState); // 0x5db620
 };
 

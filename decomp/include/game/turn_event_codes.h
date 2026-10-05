@@ -1,8 +1,5 @@
 #pragma once
 
-// Canonical semantic vocabulary for the turn-event UI domain. VC5 stores this enum as
-// an int; retail dispatch/post boundaries use a signed 16-bit value, represented by
-// TurnEventCodeStorage and converted explicitly below.
 enum TurnEventId {
   kTurnEventRebuildRegisteredWindows = 0x0000,
   kTurnEventAboutBox = 0x03b6,
@@ -51,10 +48,6 @@ enum TurnEventId {
   kTurnEventNameUnit = 0x0db4,
   kTurnEventTacticalView = 0x0ed8,
   kTurnEventTacticalBattleResult = 0x0eed,
-  // Not a view code. 0x0f0a is the base id of the tactical-map PICT family
-  // (Mac: PICT 3850 "Tactical Map 001", TacMaps.rsrc); StuffValues
-  // forms picture ids from it (0x5a9eaa ADD EAX,0xf0a). Only the dead vtable slot
-  // TViewMgr::ShowUnreachableCityDialog hands it to the view resolver.
   kTurnEventTacticalMapPictureBase = 0x0f0a,
   kTurnEventTacticalDeployChoice = 0x0f19,
   kTurnEventTacticalStatusRefresh = 0x0f3c,
@@ -66,10 +59,6 @@ enum TurnEventId {
   kTurnEventGameStatus = 0x10cc,
   kTurnEventOpeningCinematic = 0x11f8,
   kTurnEventEngineerBuildMenu = 0x1c20,
-  // Not a view code. 0x1c52 is a string-list id (Mac: STR# 7250 "Town names",
-  // Linger.rsrc/Trade.rsrc); DoPostCreate 0x51bc1a picks a random entry from it
-  // via (listId, index). Only the dead vtable slot
-  // TViewMgr::ShowTownNameDialog hands it to the view resolver.
   kTurnEventTownNamesStringList = 0x1c52,
   kTurnEventNewspaperStatus = 0x2103,
   kTurnEventOfferSheet = 0x2134,

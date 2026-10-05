@@ -383,12 +383,6 @@ void TOfferDeskPicture::DoKeyEvent(TToolboxEvent* event) {
   }
 }
 
-// Rebuild the 'info' text control with the trade-compatibility explanation for the current
-// responding nation (+0x90), offering nation (+0x92) and commodity (+0x96), formatted at the
-// current help detail level (g_pHelpMgr->tradeAdviceDetailLevel: 0 minimal, 1 concise verdict,
-// >=2 detailed numbers). Text comes from string-resource groups 0x2711 (commodity names),
-// 0x2740 and 0x2764 (compatibility phrases, bracket-expanded via scanBracketExpressions).
-// Commodity types 0/1 (Cotton+Wool) are always evaluated as a combined pair.
 // FUNCTION: IMPERIALISM 0x005bf930
 void TOfferDeskPicture::ShowAdvice() {
   TGreatPower* gp = g_apNationStates[respondingNationSlot];
@@ -548,12 +542,6 @@ void TOfferDeskPicture::ShowAdvice() {
   info->SetTextAndMaybeRefresh(&strFinal, true);
 }
 
-// Reads the 'clus'->kControlTagNomo checkbox state and the 'purc' quantity field, validates the
-// quantity against the 'purc' control's own max, and on success dispatches the trade
-// proposal (TTradeMgr), resets the accept/reject buttons, notifies the toolbar, and queues
-// a new TNextTradeCommand. On an out-of-range quantity, shows an error and re-selects the
-// 'purc' field's text instead. `actionCode` is the triggering button's FourCC tag; 'reje'
-// forces the proposed quantity to 0 (skipping validation entirely).
 // FUNCTION: IMPERIALISM 0x005c04f0
 void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
   TView* clusterControl = ResolveControlByTag(kControlTagClus);
@@ -627,8 +615,6 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
   }
 }
 
-// Releasing anywhere on the desk un-arms whichever of the accept/reject buttons is still
-// actionable, then runs the plain TView release handling.
 // FUNCTION: IMPERIALISM 0x005c0930
 char TOfferDeskPicture::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint origin) {
   if (acceptButton != 0 && acceptButton->IsActionable()) {

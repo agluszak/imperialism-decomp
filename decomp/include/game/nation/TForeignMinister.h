@@ -18,8 +18,6 @@ public:
   void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override;
   short GetRankingCriterionForGP(short nationSlot) override;
-  // slot 0x12 (body 0x0052f4b0) — seed the foreign-minister state bytes (0x49-0x4f)
-  // and capability flags; sets flag 0x14 when the owner's treasury is negative.
   virtual void InitializeTradeStatus();
   // slot 0x13 (0x0052f4f0) — counters1e[index] += delta.
   virtual void PleaseBuy(short index, short delta);
@@ -33,15 +31,10 @@ public:
   virtual void DoDevelopmentGrants();
   virtual void DoFirstTurnDiplomacy();
   virtual void DoSecondTurnDiplomacy();
-  // slot 0x1a (0x0052fdc0) — set per-nation interaction enable flags from a terrain
-  // class-200 scan and relation-standing threshold. void (ret 0); SetTradeBids pushes an
-  // ignored short at its call site.
   virtual void GoodsMatchShipping();
   virtual void SetEmpirePolicies();
   // slot 0x1c (body 0x005308b0) — difficulty-indexed army/navy score-threshold predicate.
   virtual char DeservesToBeEnemy(int nationCode);
-  // slot 0x1d (body 0x00530b30) — mark the first eligible nation as an action
-  // candidate, but only while no candidate is active yet.
   virtual void DoSelectEnemy();
   // slot 0x1e (0x00530200) — proposes treaty/policy actions from ranked relationships.
   virtual void DoProposeTreaties();
@@ -49,8 +42,6 @@ public:
   virtual void ReplyToDiplomacyOffers(short queueIndex);
   virtual void FinishDiplomacyPhase();
   virtual void SetBuyPriorities();
-  // slot 0x22 (0x0052f730) — true if any diplomacy option (0xd/0xe/0xf) meets the
-  // owner's trade-capacity threshold.
   virtual int WeNeedMoney();
   virtual void ArrangeMaterialsOffers();
   virtual void SetTradeBids();
@@ -58,8 +49,6 @@ public:
   virtual void ReplyToTradeOffer(short arg1, short arg2, short arg3, short resourceCode);
   virtual void EndTradePhase();
 
-  // Own fields at +0x10..+0x48 (moved from TMinister -- RTTI m_nObjectSize proves this
-  // block is TForeignMinister-only, not shared base state; see TMinister.h).
   short interiorBidResource10;              // +0x10 — SetInteriorMinisterBid resource code
   short interiorBidAmount;                  // +0x12 — SetInteriorMinisterBid amount
   short capabilityFlag14;                   // +0x14

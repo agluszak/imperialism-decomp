@@ -11,8 +11,6 @@ public:
   // NOOP: verified empty in original 0x00489640
   virtual ~THandleStream() override {} // slot 0x01 (scalar deleting destructor)
   virtual void Free() override; // slot 0x07 0x4896a0
-  // slots 0x0a..0x0d: position/length accessors below
-  // slot 0x1e WriteBytes owned by the hand declaration below (0x489810)
   virtual int GrowthSize(int requestedSize); // slot 0x31 0x489720
   // clang-format on
   // Field semantics evidenced by AttachGlobalMemoryHandleAndResetPosition (0x489660):
@@ -22,24 +20,12 @@ public:
   int streamPosition;           // +0x08
   int attachedSizeBytes;        // +0x0c
   int growthSize10;             // +0x10
-  // +0x14 -- one byte, zeroed by the constructor (0x004895e0 stores CL) and never read
-  // or written anywhere else in the retail image. The previous name asserted an
-  // ownership-or-dirty meaning that no writer, reader, or Mac signature supports, so
-  // the slot stays opaque and explicitly unclassified.
-  // Evidence final (bead r3f): the ctor 0x4895e0 zero-initializes this byte (the CL
-  // store follows XOR ECX,ECX, so it is a constant 0, not a caller flag), no reader or
-  // writer exists anywhere else in the retail image, and the Mac oracle's
-  // IHandleStream(char**, long) carries no flag parameter. The slot stays opaque;
-  // treat it as never-used padding-with-a-zero-init unless a non-retail build ever
-  // shows a reader.
   unsigned char unclassifiedByte14;
 
   DECLARE_DYNCREATE(THandleStream)
   THandleStream();
   // Destructors are compiler-generated (implicit virtual dtor from TStream).
 
-  // Attach a global-memory handle: mode from the caller, position reset to 0,
-  // size from GlobalSize. A null handle only resets position/mode. (0x489660)
   void AttachGlobalMemoryHandleAndResetPosition(HGLOBAL memoryHandle, int growthSize);
 
   int GetPosition() override;

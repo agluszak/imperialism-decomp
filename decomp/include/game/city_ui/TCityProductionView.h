@@ -26,11 +26,6 @@ public:
                       CPoint origin) override; // slot 0x47 0x4bc660
   void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint, CPoint& currentPoint,
                   bool commandFlag) override; // slot 0x68 0x4bc870
-  // slots 0x02..0x06, 0x08..0x0e, 0x10..0x34, 0x36, 0x38..0x43, and
-  // 0x45..0x67 and 0x69..0x73 inherited from TNoHilitePicture.
-  // RET 0x1c = 7 stack dwords. Types read off 0x4bac50: arg5 feeds
-  // CreateBitmapResourceLoaderHandle, and args 6/7 are the SetGWorld(context, flags)
-  // pair restored at the end. slot 0x74 0x4bac50
   virtual void BlitBitmapResourceRectWithScreenOffsetAndPalette(
       RECT* destRect, TQuickDrawSurfaceContext* destContext, short offsetY, short offsetX,
       short resourceId, TQuickDrawSurfaceContext* restoreContext, int restoreFlags);
@@ -40,8 +35,6 @@ public:
   virtual void UpdateUnits();         // slot 0x77 0x4bc0b0
   virtual void UpdateToolbar();       // slot 0x78 0x4bc500
   virtual void CloseAndSaveWindows(); // slot 0x79 0x4bc910
-  // Mac oracle: SetBuildingPicture(short, short). The Windows body redraws the top-level
-  // production view and does not read either argument. slot 0x7a 0x4bc9b0
   virtual void SetBuildingPicture(short buildingSlot, short buildingType);
   virtual void UpdateFields(); // slot 0x7b 0x4bcaf0
 
@@ -66,9 +59,6 @@ private:
   unsigned char paddingA7;
   short currentMonth;
   short currentWeek;
-  // InitializeCityProductionDialog loops over all 16 city production slots and stores
-  // each constructed building page from +0xac through +0xe8. TBuildingView::Close clears
-  // the indexed entry directly when the page is embedded.
   TBuildingView* buildingViews[16];
   // One region handle per building slot, disposed by Free().
   RgnHandle buildingClipRegions[16];

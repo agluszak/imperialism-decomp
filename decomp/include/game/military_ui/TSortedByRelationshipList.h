@@ -13,8 +13,6 @@ public:
   DECLARE_DYNCREATE(TSortedByRelationshipList)
   // Descending by the relationship short at record+2; ties broken pseudo-randomly.
   short Compare(void* a, void* b) override; // slot 0x44 0x4ee5e0
-  // 0x004ee5c0 — recordSize14 = 4 (same shape as TProvinceDesirabilityList's
-  // IProvinceDesirabilityList); callers invoke it right after construction.
   void ISortedByRelationshipList();
 };
 

@@ -160,9 +160,6 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
   short fortAccum[23] = {0};
   short portAccum[23] = {0};
 
-  // Fort aggregation: over the anchor tile and every valid, active-nation-owned neighbour
-  // inside the influence map, sum per-edge capability requirement levels and fold in the
-  // owning province's resource-development counts.
   if (fortAllowed && productionAllowed) {
     for (int i = 0; i < 7; i++) {
       short tile = (i == 6) ? nBuildingSlotId : neighborTiles[i];

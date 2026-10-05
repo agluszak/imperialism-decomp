@@ -6,11 +6,6 @@
 
 bool AreTileIndicesHexAdjacent(short tileFrom, short tileTo);
 
-// Are two tile indices hex-adjacent on the 108x60 map? Each index splits into a row and a
-// staggered raster column (column doubled, offset by the row's parity), which turns the six
-// hex neighbours into a fixed set of column offsets: +-2 on the same row, +-1 on the rows
-// above and below. The 0xd6/0xd7 alternatives are the same neighbours reached the other way
-// around the horizontal wrap.
 // FUNCTION: IMPERIALISM 0x00512f10
 bool AreTileIndicesHexAdjacent(short tileFrom, short tileTo) {
   short rowFrom = tileFrom / 0x6c;

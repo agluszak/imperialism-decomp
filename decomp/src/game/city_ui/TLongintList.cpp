@@ -34,8 +34,6 @@ void TLongintList::InsertLastEx(long value, int unused1, int unused2) {
 
 // FUNCTION: IMPERIALISM 0x004c6880
 long TLongintList::At(long oneBasedIndex) {
-  // Out of range FindIndex returns null and GetAt dereferences it, exactly like the
-  // original (assert stripped).
   return GetAt(FindIndex(oneBasedIndex - 1));
 }
 

@@ -4,20 +4,6 @@
 #include "decomp_types.h"
 #include "game/mfc.h"
 
-// Command-line parser for Imperialism (original TU Imperialism.cpp). Stack-constructed
-// with a fully inlined constructor in ImperialismApp::InitInstance (0x412dc0),
-// ImperialismApp::LoadLanguageResourcesFromIrgFiles (0x4149a0) and
-// ImperialismApp::ShowAutoResolutionDialogIfNeeded (0x415090).
-//
-// Switches are matched case-insensitively (ParseParam upper-cases a copy of the token):
-//   L<name> -> *m_pLanguageName24 = "<name>" (language override, original case kept)
-//   L       -> m_bShowSetupDialog (re-show the resolution/setup prompt)
-//   L!      -> m_bShowSetupDialog + m_bQuitAfterLanguageScan
-//              (LoadLanguageResourcesFromIrgFiles then returns FALSE and startup aborts)
-//   R / S   -> force auto-resolution mode on (m_bForceAutoResOn) / off (m_bForceAutoResOff40)
-//   T<text> -> m_strMainWindowTitle38 (upper-cased tail; SetWindowText on the main view host)
-//   C       -> m_bClearRegistrySettings (InitInstance deletes the Settings key and exits,
-//              same branch as the /Unregister shell command)
 // VTABLE: IMPERIALISM 0x0063e478
 class ImperialismCommandLineInfo : public CCommandLineInfo {
 public:

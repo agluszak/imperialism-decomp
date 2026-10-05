@@ -63,8 +63,6 @@
 #include "game/map/TZone.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
-// Real body ported at 0x005b7f50 (file end, ascending-address order). Genuine __stdcall
-// predicate: returns 1 when the resource index is in [13,16].
 char __stdcall IsSpecialNationInteractionResource(short resourceIndex);
 
 static const int kMapNodeCount = 0x180;
@@ -122,8 +120,6 @@ static int GetClampedQuarterYearTermForScore() {
   return yearTerm;
 }
 
-// Packed entry layout shared by the diplomacyTrackedSlots queues
-// (slots 0x6c/0x6d/0x6e/0x6f/0x70).
 struct TrackedSlotEntryPacket {
   short kind;
   short targetNation;
@@ -132,9 +128,6 @@ struct TrackedSlotEntryPacket {
   int payload;
 };
 
-// C++98-compatible compile-time layout guards for the known TGreatPower core block.
-// NOTE: class size/shape is still evolving. A failing guard is a useful drift signal,
-// not automatically a correctness bug, unless it breaks a proven-stable core contract.
 #define TG_LAYOUT_ASSERT(name, expr) typedef char name[(expr) ? 1 : -1]
 TG_LAYOUT_ASSERT(TGreatPower_Offset_nationSlot_0x0C, offsetof(TGreatPower, nationSlot) == 0x0C);
 TG_LAYOUT_ASSERT(TGreatPower_Offset_homeTileIndex_0x88,
@@ -582,8 +575,6 @@ char TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages(CString*
     while (contextEntry != 0) {
       contextEntry->GetContextOrdinalOrInvalid();
       found = false;
-      // The original dispatches this on the context node (ecx = contextEntry at
-      // 0x004dc6e2), not on the nation object.
       if (contextEntry->HasSecondaryNeighborWithNationTag(this->nationSlot) != 0) {
         short candidate;
         for (candidate = 0; candidate < 7; ++candidate) {
@@ -733,9 +724,6 @@ void TGreatPower::AddTransportedItems(void) {
 
 // FUNCTION: IMPERIALISM 0x004dcca0
 void TGreatPower::AddPurchasedItems(void) {
-  // The loop walks ESI = this + 0x1f4 + 2*i and reads [ESI - 0x5c], i.e. +0x198 =
-  // purchasedItemsByResource -- not relationDeltaCurrent at +0x16a (0x004dccb6/0x004dccc7/
-  // 0x004dccd8).
   for (short resourceKind = 0; resourceKind < kResourceKindCount; ++resourceKind) {
     this->AddToCityStockCounterAndRefresh(resourceKind,
                                           this->purchasedItemsByResource[resourceKind]);
@@ -934,8 +922,6 @@ void TGreatPower::RecallTradeBids(void) {
 
 // FUNCTION: IMPERIALISM 0x004dd310
 void TGreatPower::InitializeDealBook(void) {
-  // 0x004dd310 dispatches [vt+0x1c] (ClearAndFreeAllPtrListRecords on the list
-  // vtable) on every queue, with no null check.
   for (int listIndex = 0; listIndex < kDiplomacyTrackedSlotCount; ++listIndex) {
     this->diplomacyTrackedSlots[listIndex]->ClearAndFreeAllPtrListRecords();
   }
@@ -1351,8 +1337,6 @@ void TGreatPower::AssignPayloadToTrackedSlotEntryMatchingField2(int targetSlot, 
 
 // FUNCTION: IMPERIALISM 0x004ddf90
 void TGreatPower::ClearTradeOffers(void) {
-  // 0x2E-byte clear (11 dwords + 1 trailing word) — the same rep stosd/stosw
-  // pair the original emits.
   memset(this->itemPotentials, 0, sizeof(this->itemPotentials));
 }
 
@@ -1644,9 +1628,6 @@ void TGreatPower::FinishDiplomacyPhase(void) {
 
 // FUNCTION: IMPERIALISM 0x004de810
 void TGreatPower::ClearCivilianOrders(void) {
-  // 0x004de810: no null checks; the list is reloaded from `this` every iteration
-  // and [vt+0x30] / [vt+0x1c] are dispatched directly on each payload (a
-  // TUnit-family order object).
   int remaining = this->trackedObjectList->GetCount();
   if (remaining != 0) {
     do {
@@ -1909,10 +1890,6 @@ void TGreatPower::AcceptOffer(short proposalIndex) {
     NationSlot sourceNationSlot;
   };
 
-  // Three independent destructible shared-string locals, constructed in order
-  // and released in reverse. Modeling them as one aggregate scope object adds an
-  // EH-state nesting level and reshapes the function; the original has three
-  // separate locals (construct 0/1/2, advance ehstate after each).
   CString tmp0;
   CString tmp1;
   CString tmp2;
@@ -2068,9 +2045,6 @@ char TGreatPower::IsDiplomacyProposalAllowedForRelationship(
   return allowed;
 }
 
-// Both bodies are an unconditional tail-call through slot 0x1c of a queue member; they
-// differ only in which member. 0x004df580 loads +0x84c (proposalQueue), 0x004df5a0 loads
-// +0x848 (turnEventQueue) -- neither tests the pointer for null first.
 // FUNCTION: IMPERIALISM 0x004df580
 void TGreatPower::InitializeDiplomacyOffers(void) {
   this->proposalQueue->ClearAndFreeAllPtrListRecords();
@@ -3085,9 +3059,6 @@ void TGreatPower::NewStatusFor(int targetNationSlot, int policyCode) {
 
 // FUNCTION: IMPERIALISM 0x004e2500
 void TGreatPower::KillUnitsIn(int ownerClass) {
-  // 0x004e2500 reads the tile index from each payload (+0x06) and dispatches
-  // [vt+0x30]/[vt+0x1c] directly on the payload — the entries are TUnit-family
-  // order objects, and the original has no per-entry null checks.
   TMapMgr* globalMapState = g_pGlobalMapState;
   TSortedList* trackedList = this->trackedObjectList;
   for (int index = trackedList->GetCount(); index != 0; --index) {
@@ -3121,9 +3092,6 @@ void TGreatPower::AddColony(int targetNation) {
 
 // FUNCTION: IMPERIALISM 0x004e2630
 void TGreatPower::DeclareWarOnTargetForAlignedMinors(int targetNationSlot) {
-  // EBX runs 7, 8, 9, ... in lockstep with the table index (MOV EBX,0x7 at 0x4e263a,
-  // INC EBX at 0x4e26da), so each iteration acts as THAT minor's own nation slot --
-  // minors occupy slots 7..22. It is not a fixed nation 7.
   int minorNationSlot = kMajorNationCount; // minors occupy slots 7..22
   int tableIndex = 0;
   while (tableIndex < 16) {
@@ -3151,8 +3119,6 @@ void TGreatPower::DeclareWarOnTargetForAlignedMinors(int targetNationSlot) {
 
 // FUNCTION: IMPERIALISM 0x004e2720
 void TGreatPower::MakePeaceWithTargetForAlignedMinors(int targetNationSlot) {
-  // Same per-minor slot counter as the war path above (MOV EBX,0x7 at 0x4e272a,
-  // INC EBX at 0x4e277a), not a fixed nation 7.
   int minorNationSlot = kMajorNationCount; // minors occupy slots 7..22
   int tableIndex = 0;
   while (tableIndex < 16) {
@@ -3284,9 +3250,6 @@ void TGreatPower::AnnounceLater(short orderKind, short payload, short flags) {
   }
 }
 
-// Build the end-of-turn great-power summary: one line per turnSummaryQueue record from
-// the previous economic turn ("<count> <entry text>"), an aid-total tail when resource
-// grants accumulated a value, then the modal message with a chime.
 // FUNCTION: IMPERIALISM 0x004e2b70
 void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
   CString countText;
@@ -3373,9 +3336,6 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
   }
 }
 
-// Army-plus-navy power score: land units weighted by the per-type table scaled by
-// quality percent, plus the same shape over this nation's navy primary orders with a
-// local per-type weight table.
 // FUNCTION: IMPERIALISM 0x004e3060
 int TGreatPower::ComputeNationNavyOrderWeightedMovementScore() {
   int navyWeightByType[14];
@@ -3515,9 +3475,6 @@ void TGreatPower::PayForMilitary() {
   treasuryValue10 -= charge;
 }
 
-// Sums the encoded diplomacyGrantByNation entries (masking off the top 2 flag bits),
-// skipping the 0xffff "no grant" sentinel. Used by the grants/aid screen's "Total"
-// row (TGrantsView::Draw).
 // FUNCTION: IMPERIALISM 0x004e3620
 int TGreatPower::SumDiplomacyGrantEntriesMaskedToValueBits() {
   int total = 0;

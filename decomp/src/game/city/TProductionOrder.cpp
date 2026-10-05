@@ -63,8 +63,6 @@ void TProductionOrder::Restock() {}
 // FUNCTION: IMPERIALISM 0x004b5160
 void TProductionOrder::Produce() {}
 
-// Slot 0x3c (Mac: ResetOrderSheet) — clears the OrderSheet working buffers. This is the
-// single owner of 0x004b5180; every order class reaches it through this vtable slot.
 // FUNCTION: IMPERIALISM 0x004b5180
 void TProductionOrder::ResetOrderSheet(OrderSheet* orderSheet) {
   for (int resource = 0; resource < 0x3d; ++resource) {

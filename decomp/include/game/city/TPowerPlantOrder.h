@@ -24,9 +24,6 @@ public:
                               short quantity) override; // slot 0x10 0x4b7c90
   virtual void IPowerPlantOrder(TCity* city);           // slot 0x11 0x4b7ab0
 
-  // 0x4c — runtime-derived quantity cap (first field past TProductionOrder's 0x4c
-  // base). Zeroed/written by SetQuantity (0x4b7b30); read+restored by the slot-0x0e
-  // quantity re-clamp (0x4b7c40). Name hedged by offset. Parallels TItemOrder::field4c.
   short field4c; // 0x4c
 
   TPowerPlantOrder() {}
