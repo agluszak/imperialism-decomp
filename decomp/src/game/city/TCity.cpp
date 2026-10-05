@@ -648,7 +648,7 @@ void TCity::VerifyStocks() {
   do {
     if (*needCursor < 0) {
       bool dispatchGate = this->ownerNationAc->IsRemote();
-      if ((!dispatchGate || g_pSimMgr->multiplayerSessionRole != 2) &&
+      if ((!dispatchGate || g_pSimMgr->multiplayerSessionRole != kSessionRoleClient) &&
           !g_Sanitize_City_Counter_Value_006A24D4) {
         TemporarilyClearAndRestoreUiInvalidationFlag();
       }

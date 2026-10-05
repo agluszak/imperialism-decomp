@@ -684,7 +684,7 @@ void TTradeMgr::EndTradeOffers() {
     --rowCount;
   } while (rowCount != 0);
 
-  bool isHost = g_pSimMgr->multiplayerSessionRole == 1;
+  bool isHost = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
   if (isHost) {
     g_pGameFlowState->EmitTurnEvent3Mode18WithActiveNation();
   } else {
@@ -742,14 +742,14 @@ void TTradeMgr::SetDealResults(NationSlot sourceNation, NationSlot targetNation,
                                short maximumAmount, ResourceKindStorage commodityType,
                                unsigned char shortfallFlag, unsigned char remoteReplay) {
   if (remoteReplay == 0) {
-    bool isClient = g_pSimMgr->multiplayerSessionRole == 2;
+    bool isClient = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
     if (isClient) {
       g_pGameFlowState->CreateAndSendTurnEvent1C_BoolAndSixShorts(
           true, sourceNation, targetNation, amount, maximumAmount, commodityType, shortfallFlag);
       return;
     }
   }
-  bool isHost = g_pSimMgr->multiplayerSessionRole == 1;
+  bool isHost = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
   if (isHost) {
     g_pGameFlowState->CreateAndSendTurnEvent1C_BoolAndSixShorts(
         false, sourceNation, targetNation, amount, maximumAmount, commodityType, shortfallFlag);

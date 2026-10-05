@@ -863,7 +863,7 @@ void TCivMgr::RelinkCivilianOrderTileAndInvalidateMapTiles(short nNewTileIndex,
 // specific completion kind: 5=rail section, 6=depot, 7=port, 8=discovery/prospecting,
 // 10=development-tier advance, 12=city/building completion, 13=tile activity byte), then
 // dispatches redraw invalidation for the affected tiles/cities when the localized map UI
-// is active (g_pSimMgr->multiplayerSessionRole != 0).
+// is active (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone).
 // FUNCTION: IMPERIALISM 0x004d4390
 void TCivMgr::ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
   switch (order->unitOrder - kUnitOrderLayRail) {
@@ -912,7 +912,7 @@ void TCivMgr::ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
     break;
   }
 
-  if (g_pSimMgr->multiplayerSessionRole == 0) {
+  if (g_pSimMgr->multiplayerSessionRole == kSessionRoleStandalone) {
     return;
   }
 

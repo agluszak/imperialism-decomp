@@ -8,6 +8,7 @@
 #include "game/turn_event_codes.h"
 #include "game/difficulty.h"
 #include "game/game_phase.h"
+#include "game/session_role.h"
 
 class TStream;
 
@@ -235,11 +236,8 @@ public:
   // TCountry/TGreatPower/TDiplomacyMgr balancing logic. Save streams encode it through
   // the integer-byte slot.
   eDifficulty difficultyLevel;
-  // +0x44 — multiplayer role: 0 standalone, 1 host, 2 client. The setup UI writes
-  // these values directly, and TMultiplayerMgr/TMapMgr/TArmyMgr branch on the host/client
-  // distinction. ReinitializeGameFlowAndPostTurnEventCode recreates g_pGameFlowState
-  // whenever the role is nonzero.
-  int multiplayerSessionRole;
+  // ReinitializeGameFlowAndPostTurnEventCode recreates g_pGameFlowState for any session.
+  MultiplayerSessionRole multiplayerSessionRole;
   // +0x48 — settings-preference slots. Ground truth: InitializeOrLoadEntryArray14AndClampLimits
   // (0x581412 `[this + i*2 + 0x48]`) anchors the array at +0x48, not +0x44 (the earlier
   // +0x44 base folded multiplayerSessionRole into the array
@@ -301,7 +299,7 @@ void __cdecl DeleteFileWithErrorReporting(CString* path);
 
 // 0x581870 — the "Done/advance" turn-flow bootstrap primitive (free __cdecl, TSimMgr TU).
 // Optionally activates the pending help event (0x5dc), recreates g_pGameFlowState when a
-// game flow was active (multiplayerSessionRole != 0), then either soft-resets the existing
+// game flow was active (multiplayerSessionRole != kSessionRoleStandalone), then either soft-resets the existing
 // TSimMgr for the scenario-setup path (eventCode 0x5dd: shared reset prefix,
 // turnStateCode = 3) or
 // replaces g_pSimMgr with a fresh TSimMgr and reinitializes its turn-flow defaults.

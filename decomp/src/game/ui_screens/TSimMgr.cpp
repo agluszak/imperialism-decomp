@@ -166,7 +166,7 @@ TSimMgr::TSimMgr() : sharedTextSlots() {
   multiplayerGameActive = 0;
   reloadPoliticalMapState = false;
   scenarioMapIndexPlusOne = 0;
-  multiplayerSessionRole = 0;
+  multiplayerSessionRole = kSessionRoleStandalone;
 }
 
 // FUNCTION: IMPERIALISM 0x0057bb80
@@ -345,7 +345,7 @@ void TSimMgr::ReadFrom(TStream* stream) {
   int savedSessionRole;
   stream->ReadBytes(&savedSessionRole, 4);
 
-  bool hasGameFlowState = multiplayerSessionRole != 0;
+  bool hasGameFlowState = multiplayerSessionRole != kSessionRoleStandalone;
   if (hasGameFlowState) {
     g_pGameFlowState->ReadFrom(stream);
   }
@@ -420,7 +420,7 @@ void TSimMgr::WriteTo(TStream* stream) {
   stream->WriteBytes(&field15, 0x17);
   stream->WriteBytes(&multiplayerSessionRole, 4);
 
-  bool hasGameFlowState = multiplayerSessionRole != 0;
+  bool hasGameFlowState = multiplayerSessionRole != kSessionRoleStandalone;
   if (hasGameFlowState) {
     g_pGameFlowState->WriteTo(stream);
   }
@@ -455,7 +455,7 @@ void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(bool flag) {
     }
 
     numGreatPowers = 0;
-    multiplayerGameActive = (multiplayerSessionRole != 0) ? 1 : 0;
+    multiplayerGameActive = (multiplayerSessionRole != kSessionRoleStandalone) ? 1 : 0;
     for (i = 0; i < 7; ++i) {
       if (field15[i] != 0) {
         numGreatPowers++;
@@ -609,13 +609,13 @@ void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
     }
   }
 
-  if (multiplayerSessionRole != 0) {
+  if (multiplayerSessionRole != kSessionRoleStandalone) {
     for (i = 0; i < 7; ++i) {
       int activeSessionId = g_pGameFlowState->nationSessionIds[i];
       int activeNationId = TouchSessionActiveNationId();
       if (activeSessionId == activeNationId) {
         nationControlModes[i] = 1;
-      } else if (multiplayerSessionRole == 2) {
+      } else if (multiplayerSessionRole == kSessionRoleClient) {
         nationControlModes[i] = 4;
       } else {
         nationControlModes[i] = (activeSessionId != 0) ? 3 : 2;
@@ -674,12 +674,12 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
 
   short setupMode = nationControlModes[nationIndex];
   if (setupMode == 1) {
-    bool useClientNation = multiplayerSessionRole == 2;
+    bool useClientNation = multiplayerSessionRole == kSessionRoleClient;
     if (useClientNation) {
       TGreatPower* pTVar5 = (TGreatPower*)new TClientGreatPower();
       g_apNationStates[nationIndex] = pTVar5;
     } else {
-      bool useHostNation = multiplayerSessionRole == 1;
+      bool useHostNation = multiplayerSessionRole == kSessionRoleHost;
       if (useHostNation) {
         TGreatPower* pTVar5 = (TGreatPower*)new THostGreatPower();
         g_apNationStates[nationIndex] = pTVar5;
@@ -695,7 +695,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
       g_pMacViewMgr->RefreshCityCapabilityUiHandlesForActiveNation();
     }
     if (!g_bMultiplayerScenarioSetupActive) {
-      bool suspendPrimaryEventQueue = multiplayerSessionRole != 0;
+      bool suspendPrimaryEventQueue = multiplayerSessionRole != kSessionRoleStandalone;
       if (suspendPrimaryEventQueue) {
         g_pGameFlowState->processPrimaryEventQueue = 0;
       }
@@ -704,7 +704,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
         TCity* city = nationState != nullptr ? nationState->city : nullptr;
         nationState->ApplyScenarioRelationPresetAndSpawnFrogCity(city);
       }
-      bool resumePrimaryEventQueue = multiplayerSessionRole != 0;
+      bool resumePrimaryEventQueue = multiplayerSessionRole != kSessionRoleStandalone;
       if (resumePrimaryEventQueue) {
         g_pGameFlowState->processPrimaryEventQueue = 1;
       }
@@ -776,7 +776,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
   }
 
   if (nationSlot == activeNationSlot) {
-    bool useSessionDisplayName = multiplayerSessionRole != 0;
+    bool useSessionDisplayName = multiplayerSessionRole != kSessionRoleStandalone;
     if (useSessionDisplayName) {
       {
         CString nationName(g_pGameFlowState->nationDisplayNameSlots[nationIndex]);
@@ -811,7 +811,7 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
 
   int nationIndex = nationSlot;
   TMinor* minor = nullptr;
-  if (nationIndex < numMinorCountries + 7 && multiplayerSessionRole == 2) {
+  if (nationIndex < numMinorCountries + 7 && multiplayerSessionRole == kSessionRoleClient) {
     if (g_apSecondaryNationStateSlots[nationIndex] != nullptr) {
       g_apSecondaryNationStateSlots[nationIndex]->Free();
     }
@@ -983,7 +983,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     }
     if (!g_bMultiplayerScenarioSetupActive) {
       if (scenarioMapIndexPlusOne == 0) {
-        if (multiplayerSessionRole == 0) {
+        if (multiplayerSessionRole == kSessionRoleStandalone) {
           NameCapitals();
         }
       } else {
@@ -994,7 +994,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     activeNation->ResetDiplomacyNeedScoresAndClearAidAllocationMatrix();
     activeNation->ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches();
     g_pHelpMgr->ResetHelpSetRanksAndFlags();
-    if (multiplayerSessionRole != 0) {
+    if (multiplayerSessionRole != kSessionRoleStandalone) {
       g_pGameFlowState->SetSyncPhases(mode, turnStateCode);
       turnStateCode = kGamePhaseNetworkSync;
       StartNextPhase();
@@ -1026,7 +1026,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     turnStateCode = kGamePhaseEndTurn;
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventStrategicMap),
                                   g_pSimMgr->activeNationSlot);
-    if (multiplayerSessionRole != 0) {
+    if (multiplayerSessionRole != kSessionRoleStandalone) {
       if (activeNationSlot == -1 || g_apTerrainTypeDescriptorTable[activeNationSlot] == nullptr ||
           (activeNationSlot <= 6 &&
            g_apTerrainTypeDescriptorTable[activeNationSlot]->encodedNationSlot >= 100 &&
@@ -1043,7 +1043,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       break;
     }
     bool continueTurn = true;
-    while (multiplayerSessionRole != 2 && ReturnTrueStub() == 0) {
+    while (multiplayerSessionRole != kSessionRoleClient && ReturnTrueStub() == 0) {
       CString message;
       g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&message, 0x2745, 10);
       if (g_pViewMgr->ModalMessage(message, g_ptTurnTransitionModalMessage, 1, 1) == 0) {
@@ -1055,7 +1055,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       break;
     }
     turnStateCode = kGamePhaseDiplomacy;
-    if (multiplayerSessionRole != 0) {
+    if (multiplayerSessionRole != kSessionRoleStandalone) {
       g_pGameFlowState->SetSyncPhases(mode, kGamePhaseDiplomacy);
       turnStateCode = kGamePhaseNetworkSync;
     }
@@ -1065,13 +1065,13 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case kGamePhaseDiplomacy: {
     turnStateCode = kGamePhaseTrade;
-    if (multiplayerSessionRole != 0) {
+    if (multiplayerSessionRole != kSessionRoleStandalone) {
       g_pGameFlowState->SetSyncPhases(mode, turnStateCode);
     }
-    if (multiplayerSessionRole != 1) {
+    if (multiplayerSessionRole != kSessionRoleHost) {
       g_pDiplomacyTurnStateManager->ApplyDiplomacyInterNationStatesForTurn();
     }
-    if (multiplayerSessionRole == 0) {
+    if (multiplayerSessionRole == kSessionRoleStandalone) {
       for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
         TGreatPower* nation = g_apNationStates[nationSlot];
         if (nation != nullptr && nation->diplomacyEligibilityA0 != 0 &&
@@ -1091,8 +1091,9 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         nation->ReplyToDiplomacyOffers();
       }
     }
-    if (multiplayerSessionRole == 0 ||
-        (multiplayerSessionRole == 1 && !IsNationEligibleForOptionalPhase(activeNationSlot))) {
+    if (multiplayerSessionRole == kSessionRoleStandalone ||
+        (multiplayerSessionRole == kSessionRoleHost &&
+         !IsNationEligibleForOptionalPhase(activeNationSlot))) {
       // 0x57df05: new TNextDiplomationCommand() + immediate dispatch; the original
       // calls the method even when operator new returned null (kept faithfully).
       TNextDiplomationCommand* nextCommand = new TNextDiplomationCommand();
@@ -1104,13 +1105,13 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case kGamePhaseTrade: {
     turnStateCode = kGamePhaseCivilians;
     g_pDiplomacyTurnStateManager->SelectPriorityNationIndicesForMinorCapabilityRows();
-    if (multiplayerSessionRole != 0) {
+    if (multiplayerSessionRole != kSessionRoleStandalone) {
       g_pGameFlowState->SetSyncPhases(mode, turnStateCode);
       g_pSfxPlaybackSystem->SetActiveAudioCueAndResetQueue(4, true);
       g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOfferSheet), activeNationSlot);
       g_pViewMgr->ShowOfferSheet(-1, 0, 0, 0, 0x16);
     }
-    if (multiplayerSessionRole != 2) {
+    if (multiplayerSessionRole != kSessionRoleClient) {
       DoTrade();
     }
     break;
@@ -1119,7 +1120,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case kGamePhaseCityAndTransport: {
     turnStateCode = kGamePhaseLossCheck;
     DoCityAndTransport();
-    if (multiplayerSessionRole != 0) {
+    if (multiplayerSessionRole != kSessionRoleStandalone) {
       g_pGameFlowState->SetSyncPhases(mode, turnStateCode);
       turnStateCode = kGamePhaseNetworkSync;
       StartNextPhase();
@@ -1131,7 +1132,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case kGamePhaseCivilians: {
     turnStateCode = kGamePhaseMilitary;
-    if (multiplayerSessionRole != 2) {
+    if (multiplayerSessionRole != kSessionRoleClient) {
       DoCivilians();
       StartNextPhase();
       break;
@@ -1239,13 +1240,13 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       }
     }
     if (saveTurn) {
-      if (multiplayerSessionRole == 0) {
+      if (multiplayerSessionRole == kSessionRoleStandalone) {
         SaveGameWithModeAndOptionalLabel(0xa1, 0);
-      } else if (multiplayerSessionRole == 1) {
+      } else if (multiplayerSessionRole == kSessionRoleHost) {
         g_pGameFlowState->TrySaveGameAndMaybeShowFailureDialog(0xa1, 0, true);
       }
     }
-    if (multiplayerSessionRole != 0) {
+    if (multiplayerSessionRole != kSessionRoleStandalone) {
       if (!IsNationEligibleForOptionalPhase(activeNationSlot)) {
         StartNextPhase();
       }
@@ -1334,7 +1335,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case kGamePhaseCombat: {
     turnStateCode = kGamePhaseProduction;
     g_pMapContextActionManager->DoCombatMoves();
-    if (multiplayerSessionRole != 0) {
+    if (multiplayerSessionRole != kSessionRoleStandalone) {
       g_pGameFlowState->SetSyncPhases(mode, turnStateCode);
       turnStateCode = kGamePhaseNetworkSync;
     }
@@ -1344,7 +1345,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case kGamePhaseProduction: {
     turnStateCode = kGamePhaseBattleReport;
     g_pNavyOrderManager->ClearAllTransientOrders();
-    if (multiplayerSessionRole != 2) {
+    if (multiplayerSessionRole != kSessionRoleClient) {
       g_pGlobalMapState->RecomputeTileStrategicScoreHeatmap();
       RecomputeNationOrderPriorityMetrics();
       for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
@@ -1372,11 +1373,11 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     const short tickA = GetEconomicTurn();
     const short tickB = GetEconomicTurn();
     if (((tickB % 0x28) == 0) && (phaseStateByDecade[tickA / 0x28] != 0) &&
-        multiplayerSessionRole != 2) {
+        multiplayerSessionRole != kSessionRoleClient) {
       g_pDiplomacyTurnStateManager->RebuildDiplomacyStandingAndInfluenceMatrices(
           phaseStateByDecade[tickA / 0x28]);
     }
-    if (multiplayerSessionRole != 0) {
+    if (multiplayerSessionRole != kSessionRoleStandalone) {
       g_pGameFlowState->SetSyncPhases(mode, turnStateCode);
       turnStateCode = kGamePhaseNetworkSync;
     }
@@ -1589,7 +1590,7 @@ void TSimMgr::DoCivilians() {
 
 // FUNCTION: IMPERIALISM 0x0057f280
 void TSimMgr::DoMilitary() {
-  int isClient = multiplayerSessionRole == 2;
+  int isClient = multiplayerSessionRole == kSessionRoleClient;
   if (!isClient) {
     g_pGlobalMapState->RecomputeTileStrategicScoreHeatmap();
   }
@@ -1611,7 +1612,7 @@ void TSimMgr::DoMilitary() {
   }
 
   g_pMapContextActionManager->CleanUpStacks();
-  isClient = multiplayerSessionRole == 2;
+  isClient = multiplayerSessionRole == kSessionRoleClient;
   if (!isClient) {
     g_pNavyOrderManager->PrepareToCarryOutAllOrders(1);
     g_pNavyOrderManager->CarryOutOrders();
@@ -1635,7 +1636,7 @@ void TSimMgr::DoTrade() {
   g_pTradeMgr->CalculateNewWorldPrices();
   g_pTradeMgr->CalculateDealOrder();
 
-  int shouldSendTradeBook = multiplayerSessionRole != 0;
+  int shouldSendTradeBook = multiplayerSessionRole != kSessionRoleStandalone;
   if (shouldSendTradeBook) {
     g_pGameFlowState->SendTradeBook();
   }
@@ -1690,7 +1691,7 @@ void TSimMgr::ResetTurnFlags() {
 
 // FUNCTION: IMPERIALISM 0x0057f570
 void TSimMgr::PrepareMultiplayerTurnResume() {
-  bool hasMultiplayerSession = multiplayerSessionRole != 0;
+  bool hasMultiplayerSession = multiplayerSessionRole != kSessionRoleStandalone;
   if (hasMultiplayerSession) {
     g_pGameFlowState->SetSyncPhases(mode, turnStateCode);
     turnStateCode = kGamePhaseNetworkSync;
@@ -2047,7 +2048,7 @@ void ReinitializeGameFlowAndPostTurnEventCode(TurnEventId eventCode) {
   if (g_pHelpMgr != 0) {
     g_pHelpMgr->HandlePendingEventActivationByCode(kTurnEventMainMenu);
   }
-  if (g_pSimMgr->multiplayerSessionRole != 0) {
+  if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
     g_pGameFlowState->Free();
     g_pGameFlowState = new TMultiplayerMgr();
     g_pGameFlowState->IMultiplayerMgr(0);

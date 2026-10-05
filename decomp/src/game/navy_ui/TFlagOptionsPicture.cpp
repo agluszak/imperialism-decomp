@@ -42,7 +42,7 @@ void TFlagOptionsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
       if (g_pViewMgr->DispatchGameStateEventIfLocalizedPromptAccepted(tag)) {
         TWindow* owner = GetWindow();
         owner->Dismiss(tag, 0);
-        if (g_pSimMgr->multiplayerSessionRole == 1) {
+        if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
           int saveResult = 0;
           if (g_pGameFlowState->fieldF4 != 0) {
             saveResult =
@@ -56,7 +56,7 @@ void TFlagOptionsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
         }
       }
     } else if (tag == kControlTagLoad) {
-      if (g_pSimMgr->multiplayerSessionRole != 0) {
+      if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
         g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x2737, 0x34, 0, 0);
       } else {
         TWindow* owner = GetWindow();
@@ -70,7 +70,7 @@ void TFlagOptionsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
     } else if (tag == kControlTagSave) {
       TWindow* owner = GetWindow();
       owner->Dismiss(tag, 0);
-      if (g_pSimMgr->multiplayerSessionRole == 2) {
+      if (g_pSimMgr->multiplayerSessionRole == kSessionRoleClient) {
         g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&text, 0x2742, 0x13);
         g_pViewMgr->ModalMessage(text, g_ptQueryFloaterModalMessage, 0, 0);
       } else {

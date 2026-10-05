@@ -287,7 +287,7 @@ void TArmyMgr::DoCombatMoves() {
   // throughout TMultiplayerMgr.cpp); == 2 selects the alternate branch here. The test is
   // materialized into a byte Boolean before it is branched on -- 0x4a1e49's
   // xor/cmp/setz/test al pair is an unsigned char local, not a direct `if` on the compare.
-  bool isNetworkClient = (g_pSimMgr->multiplayerSessionRole == 2);
+  bool isNetworkClient = (g_pSimMgr->multiplayerSessionRole == kSessionRoleClient);
   if (isNetworkClient) {
     this->ClearPendingStacksAndFinalizeMilitaryUnits();
     g_pSimMgr->StartNextPhase();
@@ -1614,7 +1614,8 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
   this->enemyStackBattle3a0 = enemyStack;
   this->activeBattleView3a4 = newBattle;
 
-  bool isMultiplayerHost = static_cast<unsigned char>(g_pSimMgr->multiplayerSessionRole == 1);
+  bool isMultiplayerHost =
+      static_cast<unsigned char>(g_pSimMgr->multiplayerSessionRole == kSessionRoleHost);
   if (isMultiplayerHost) {
     g_pGameFlowState->NoOpCallbackRet4(newBattle);
   }

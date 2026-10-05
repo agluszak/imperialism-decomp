@@ -800,7 +800,7 @@ void TDiplomacyMgr::InflictWarPenalty(NationSlot sourceNationSlot, NationSlot ta
 void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn() {
   // Pre-pass (unless localization phase 2): run the per-nation begin-turn slot 0x1c8
   // over the seven majors descending, gated on the nation's eligibility byte at +0xa0.
-  if (g_pSimMgr->multiplayerSessionRole != 2) {
+  if (g_pSimMgr->multiplayerSessionRole != kSessionRoleClient) {
     TGreatPower** nationCursor = &g_apNationStates[6];
     int remaining = 7;
     do {
@@ -819,7 +819,7 @@ void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn() {
   ScratchSharedString scratch2;
   ScratchSharedString scratch3;
 
-  if (g_pSimMgr->multiplayerSessionRole == 2) {
+  if (g_pSimMgr->multiplayerSessionRole == kSessionRoleClient) {
     TGreatPower** nationCursor = &g_apNationStates[6];
     int remaining = 7;
     do {
@@ -908,7 +908,7 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
   // The original dereferences g_pSimMgr unguarded and materializes the mode test
   // into a byte before branching (`cmp [edx+0x44],2; sete cl; test cl,cl; je`),
   // so the null check here was ours, not the retail code's.
-  bool isClientSession = g_pSimMgr->multiplayerSessionRole == 2;
+  bool isClientSession = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
   if (isClientSession) {
     pendingWarTransitionQueue->InvokePtrListResetHook();
     return;
@@ -1100,7 +1100,7 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
       g_pAmbitApplication->DispatchUiSelectionToHandler(packet);
     }
   } else {
-    bool isMultiplayerHost = (g_pSimMgr->multiplayerSessionRole == 1);
+    bool isMultiplayerHost = (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost);
     if (isMultiplayerHost) {
       g_pGameFlowState->EmitTurnEvent3Mode18WithActiveNation();
     } else {
@@ -1279,7 +1279,7 @@ void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMod
   if (winnerNationSlot != -1) {
     lastProcessedNationSlot = static_cast<short>(winnerNationSlot);
   }
-  if (g_pSimMgr->multiplayerSessionRole == 1) {
+  if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
     g_pGameFlowState->EmitTurnEvent26DiplomacyMatrixSnapshot();
   }
 }

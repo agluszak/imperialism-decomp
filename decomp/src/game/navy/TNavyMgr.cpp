@@ -632,7 +632,7 @@ void TNavyMgr::PrepareToCarryOutAllOrders(short phaseId) {
     Province* record = &g_pGlobalMapState->cityScoreTable[provinceIndex];
     if (record->exploredByNationMaskA1 != 0) {
       record->exploredByNationMaskA1 = 0;
-      bool shouldInvalidateCity = g_pSimMgr->multiplayerSessionRole == 1;
+      bool shouldInvalidateCity = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
       if (shouldInvalidateCity) {
         g_pGameFlowState->DispatchCityRedrawInvalidateEvent(static_cast<short>(provinceIndex));
       }

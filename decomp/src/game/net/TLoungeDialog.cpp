@@ -83,7 +83,7 @@ void TLoungeDialog::DoPostCreate(int arg) {
   if (!g_pGameFlowState->IsSpecialNationDialogModeActive()) {
     LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 9, kControlTagCncl); // 'clnc'
     g_pGameFlowState->ResetNationStatusSlotsAndInitializeNameControls(this);
-    if (g_pSimMgr->multiplayerSessionRole == 1) {
+    if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
       g_pGameFlowState->SetDialogModeTagInitAndInvokeNoOpHook();
       RefreshMapAndMessageControlsForCurrentContext();
       g_pGameFlowState->DispatchTurnEventCode9WithTwoTextTokens(
@@ -245,7 +245,7 @@ void TLoungeDialog::TryReplaceRemoteNationSlot(int nationSlot) {
     QueuePoseMessageDialogForNationSlot(nationSlot);
     return;
   }
-  if (g_pSimMgr->multiplayerSessionRole != 1) {
+  if (g_pSimMgr->multiplayerSessionRole != kSessionRoleHost) {
     return;
   }
 
@@ -294,10 +294,10 @@ void TLoungeDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
             hasOtherSession = true;
           }
         }
-        if (g_pSimMgr->multiplayerSessionRole != 1 || !hasOtherSession ||
+        if (g_pSimMgr->multiplayerSessionRole != kSessionRoleHost || !hasOtherSession ||
             g_pViewMgr->DispatchGameStateEventIfLocalizedPromptAccepted(
                 kControlTagCgam)) { // 'magc'
-          if (g_pSimMgr->multiplayerSessionRole == 1) {
+          if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
             g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagCgam, -1, -2);
           }
           g_pGameFlowState->ResetLocalUiStateAndPostTurnEvent5E5();

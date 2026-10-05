@@ -220,7 +220,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   formatButton->AssertValid();
   formatButton->ViewEnable(1, 0);
 
-  if (g_pSimMgr->multiplayerSessionRole != 0) {
+  if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x13f2, 0, 1);
   }
 
@@ -603,7 +603,7 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
       }
     }
 
-    if (g_pSimMgr->multiplayerSessionRole != 2) {
+    if (g_pSimMgr->multiplayerSessionRole != kSessionRoleClient) {
       TNextTradeCommand* command = new TNextTradeCommand();
       command->INextTradeCommand();
       g_pAmbitApplication->DispatchUiSelectionToHandler(command);

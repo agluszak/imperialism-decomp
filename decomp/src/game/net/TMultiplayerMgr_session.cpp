@@ -306,7 +306,7 @@ void TMultiplayerMgr::ReadFrom(TStream* stream) {
   reportPacket.value1C = reportingNationSlot;
   g_pNetMgr006a6014->Send(&reportPacket, false);
 
-  if (g_pSimMgr->multiplayerSessionRole == 1) {
+  if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
     sessionPhaseTag = IMPERIALISM_FOURCC('i', 'n', 'i', 't');
     g_pNetMgr006a6014->NoOpDialogModeTagChangedHook(1);
   }
@@ -412,7 +412,7 @@ struct TurnEvent3Mode18Packet : NetMessage {
 // FUNCTION: IMPERIALISM 0x005431a0
 void TMultiplayerMgr::ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(int nationSlot) {
   pendingNationBitmask &= ~(1 << nationSlot);
-  bool hosting = g_pSimMgr->multiplayerSessionRole == 1;
+  bool hosting = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
   if (hosting) {
     TurnEvent1PendingMaskPacket packet;
     packet.messageTag = kControlTagTime;
@@ -457,7 +457,7 @@ void TMultiplayerMgr::EnsureGameFlowStateAndPostTurnEvent5E5() {
 // FUNCTION: IMPERIALISM 0x00544630
 void TMultiplayerMgr::ResetDiplomacyRuntimeSelectionAndSetModeNada() {
   g_pAmbitApplication->InstallCohandler(g_pGameFlowState, 0);
-  g_pSimMgr->multiplayerSessionRole = 0;
+  g_pSimMgr->multiplayerSessionRole = kSessionRoleStandalone;
   if (g_pNetMgr006a6014 != 0) {
     g_pNetMgr006a6014->ResetRuntimeSelectionRecordBufferAndReturnTrue();
   }
@@ -558,7 +558,7 @@ unsigned char TMultiplayerMgr::InitializeProtocolOptionControlFromProvider(TView
 unsigned char TMultiplayerMgr::ResetGameFlowStateAndPostTurnEvent5DC() {
   lobbyDialogView40 = 0;
   g_pAmbitApplication->InstallCohandler(g_pGameFlowState, 0);
-  g_pSimMgr->multiplayerSessionRole = 0;
+  g_pSimMgr->multiplayerSessionRole = kSessionRoleStandalone;
   if (g_pNetMgr006a6014 != 0) {
     g_pNetMgr006a6014->ResetRuntimeSelectionRecordBufferAndReturnTrue();
   }
@@ -591,7 +591,7 @@ unsigned char TMultiplayerMgr::ValidateAndPrepareGameFlowNameForDispatch() {
       static_cast<LPCSTR>(gameName), static_cast<LPCSTR>(playerNameString), g_szEmptyString);
   if (opened) {
     lobbyDialogView40 = nullptr;
-    g_pSimMgr->multiplayerSessionRole = 1;
+    g_pSimMgr->multiplayerSessionRole = kSessionRoleHost;
     return 1;
   }
   return 0;
@@ -620,7 +620,7 @@ TMultiplayerMgr::InitializeRuntimeSelectionCredentialsFromProviderAndConnect(TVi
 unsigned char TMultiplayerMgr::ResetGameFlowStateAndPostTurnEvent5DCAlt() {
   lobbyDialogView40 = 0;
   g_pAmbitApplication->InstallCohandler(g_pGameFlowState, 0);
-  g_pSimMgr->multiplayerSessionRole = 0;
+  g_pSimMgr->multiplayerSessionRole = kSessionRoleStandalone;
   if (g_pNetMgr006a6014 != 0) {
     g_pNetMgr006a6014->ResetRuntimeSelectionRecordBufferAndReturnTrue();
   }
@@ -638,7 +638,7 @@ unsigned char TMultiplayerMgr::ApplyJoinGameSelectionAndPostTurnEvent5E4(int sel
   if (joined) {
     playerNameMirror = playerNameString;
     lobbyDialogView40 = 0;
-    g_pSimMgr->multiplayerSessionRole = 2;
+    g_pSimMgr->multiplayerSessionRole = kSessionRoleClient;
     g_pAmbitApplication->PostTurnEventCodeMessage2420(
         EncodeTurnEventCode(kTurnEventNetworkGameOptions));
     return 1;
@@ -672,7 +672,7 @@ unsigned char TMultiplayerMgr::ResetNationStatusSlotsAndInitializeNameControls(T
   okayControl->AssertValid();
   okayControl->Show(0, 0);
 
-  if (g_pSimMgr->multiplayerSessionRole == 2) {
+  if (g_pSimMgr->multiplayerSessionRole == kSessionRoleClient) {
     TurnEvent3Mode18Packet packet;
     packet.packetTag = kControlTagTime; // 'time'
     packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());

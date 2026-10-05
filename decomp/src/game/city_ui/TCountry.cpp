@@ -398,7 +398,7 @@ char TCountry::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, shor
 
 // FUNCTION: IMPERIALISM 0x004d7b20
 void TCountry::ChangeMaster(int targetNationSlot, int mode) {
-  if (g_pSimMgr->multiplayerSessionRole == 1) {
+  if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
     g_pGameFlowState->DispatchJoinEmpireModeEventPacket24_27(this->nationSlot, targetNationSlot,
                                                              mode);
   }

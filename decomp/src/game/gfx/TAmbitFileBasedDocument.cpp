@@ -66,7 +66,7 @@ void TAmbitFileBasedDocument::DoRead(ArchiveStreamAdapter* file, unsigned char f
     invalidSaveFile = true;
   }
 
-  if (!invalidSaveFile && g_pSimMgr->multiplayerSessionRole == 2 &&
+  if (!invalidSaveFile && g_pSimMgr->multiplayerSessionRole == kSessionRoleClient &&
       savedSessionSlot != g_pGameFlowState->queueSyncDword) {
     CString message;
     g_pSimMgr->GetString(0x2737, 7, &message);

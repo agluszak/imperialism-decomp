@@ -153,7 +153,7 @@ void TTechMgr::GenerateRandomCapabilityPrioritySlots() {
   prioritySlots04[0] = 0;
 
   unsigned int seed;
-  if (g_pSimMgr->multiplayerSessionRole == 0 ||
+  if (g_pSimMgr->multiplayerSessionRole == kSessionRoleStandalone ||
       (seed = static_cast<unsigned int>(g_pGameFlowState->queueSyncDword)) == 0) {
     // Genuine __cdecl free function declared (void); the guardrail-sanctioned arg-adjust cast
     // pushes the ignored 0 argument the original passes.

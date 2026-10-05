@@ -73,7 +73,8 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
     }
 
     bool enabled = prefIndex != -1;
-    if (g_pGameFlowState != 0 && g_pSimMgr->multiplayerSessionRole != 0 && prefIndex == 0) {
+    if (g_pGameFlowState != 0 && g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone &&
+        prefIndex == 0) {
       enabled = false;
     }
     TDeluxeText* label = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTxta + row));

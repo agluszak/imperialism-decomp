@@ -59,7 +59,7 @@ void TLoadSavePicture::DoPostCreate(int arg) {
     TStaticText* slotControl =
         static_cast<TStaticText*>(ResolveControlByTag(kControlTagSlt0 + slot)); // 'slt0'
     slotControl->AssertValid();
-    const char* savePrefix = (g_pSimMgr->multiplayerSessionRole != 0)
+    const char* savePrefix = (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone)
                                  ? g_pszMultiplayerSavePrefix_0065DDD4
                                  : g_pszSingleSlotSavePrefix_0065DDD0;
     CString slotNumberText;
@@ -280,7 +280,7 @@ void TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC() {
     g_pSimMgr->StartNextPhase();
     return;
   }
-  if (g_pSimMgr->multiplayerSessionRole != 0) {
+  if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
     g_pGameFlowState->ResetLocalUiStateAndPostTurnEvent5E5();
     return;
   }
@@ -308,11 +308,11 @@ namespace {
 // (sete/setne + test al,al) before branching, the Mac-style unsigned-char Boolean shape
 // under /Ob1.
 static bool IsMultiplayerFlowHosting() {
-  return g_pSimMgr->multiplayerSessionRole == 1;
+  return g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
 }
 
 static bool IsMultiplayerFlowActive() {
-  return g_pSimMgr->multiplayerSessionRole != 0;
+  return g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
 }
 
 } // namespace
@@ -416,7 +416,7 @@ int __cdecl ReadScenarioIndexFromSaveHeader(const char* path) {
 void LoadAndFormatMappedFlavorTextRecordsFromStream(int* outSlot, int targetGameId) {
   CString scratch;
   for (int slot = 0; slot < 8; ++slot) {
-    const char* prefix = (g_pSimMgr->multiplayerSessionRole == 0)
+    const char* prefix = (g_pSimMgr->multiplayerSessionRole == kSessionRoleStandalone)
                              ? g_szSingleSlotSavePrefix_00698718
                              : g_szMultiplayerSavePrefix_00698710;
     CString slotStr;
@@ -442,7 +442,7 @@ void LoadAndFormatMappedFlavorTextRecordsFromStream(int* outSlot, int targetGame
 
 // Top-level save-game driver. mode 0xa1 = autosave slot "A"; 0xa2 = autosave without
 // marking the document saved; 0..7 = numbered slot. When hosting
-// (multiplayerSessionRole == 1) an
+// (multiplayerSessionRole == kSessionRoleHost) an
 // autosave first rebinds to the numbered slot whose save file carries the current
 // scenario id, and the scenario display name (resource 0x2758/9) is published to
 // g_ScenarioSaveNameBuffer_006A2178 for the slot picker. After a successful manual save

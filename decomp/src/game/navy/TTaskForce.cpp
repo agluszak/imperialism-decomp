@@ -1792,7 +1792,7 @@ void TTaskForce::CarryOutOrders() {
   case 5: {
     Province* cityRecord = static_cast<Province*>(target);
     cityRecord->exploredByNationMaskA1 |= static_cast<unsigned char>(1 << nation);
-    if (g_pSimMgr->multiplayerSessionRole == 1) {
+    if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
       int cityIndex = cityRecord->GetIndex();
       g_pGameFlowState->DispatchCityRedrawInvalidateEvent(static_cast<short>(cityIndex));
     }

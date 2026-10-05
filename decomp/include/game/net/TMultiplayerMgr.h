@@ -103,7 +103,7 @@ public:
   // 0x54c480 — builds a turn-event-26 packet snapshotting g_pDiplomacyTurnStateManager's
   // relation/pending-policy/selection/comparative-power matrices and hands it to
   // TNetMgr::Send. Called
-  // from RebuildDiplomacyStandingAndInfluenceMatrices only when g_pSimMgr->multiplayerSessionRole == 1.
+  // from RebuildDiplomacyStandingAndInfluenceMatrices only when g_pSimMgr->multiplayerSessionRole == kSessionRoleHost.
   void EmitTurnEvent26DiplomacyMatrixSnapshot();
   // Appends a queue node (next pointer at node+0x10) to the tail of
   // primaryTurnEventQueueHead. 0x549280.
@@ -125,7 +125,7 @@ public:
   // 0x5454b0. Records `panel` as lobbyDialogView40, resets nationSessionIds[]/nationStatusTags[]
   // for all 7 slots, restamps each 'nam0'-'nam6' control from GetString(0x2759, 1) (index is a
   // literal 1 for every slot, not looped), resets the 'okay' control, and -- only when
-  // g_pSimMgr->multiplayerSessionRole == 2 -- broadcasts a minimal event-0xd "time" packet. Always returns 1.
+  // g_pSimMgr->multiplayerSessionRole == kSessionRoleClient -- broadcasts a minimal event-0xd "time" packet. Always returns 1.
   unsigned char ResetNationStatusSlotsAndInitializeNameControls(TView* panel);
   enum TurnEvent11MapOffsetBase { kTurnEvent11TerrainStateBase = 0, kTurnEvent11CityScoreBase = 1 };
   void DoGameDataHunk(TurnEvent2SyncPacket* packet);      // 0x5447e0
@@ -198,7 +198,7 @@ public:
   // Joins the DirectPlay session named by selectionTag via TNetMgr, staging
   // playerNameString as both the seed and the round-tripped result buffer. On
   // success, mirrors the resolved name, clears the lobby dialog view, marks the sim
-  // client role (g_pSimMgr->multiplayerSessionRole = 2), and posts setup event 0x5e4. On failure,
+  // client role (kSessionRoleClient), and posts setup event 0x5e4. On failure,
   // restores playerNameString from playerNameMirror.
   unsigned char ApplyJoinGameSelectionAndPostTurnEvent5E4(int selectionTag); // 0x545320
   // Uninstalls this manager as the app's cohandler, clears the DirectPlay runtime

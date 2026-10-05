@@ -390,7 +390,7 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
 
   // Mask the game-flow flag while committing the refresh when localization mode is active.
   unsigned char savedFlag = 0;
-  bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
+  bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
   if (multiplayerActive) {
     savedFlag = g_pGameFlowState->processPrimaryEventQueue;
     g_pGameFlowState->processPrimaryEventQueue = 0;
@@ -398,7 +398,7 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
   node->PoseModally();
   node->Close();
   node->Free();
-  if (g_pSimMgr->multiplayerSessionRole != 0) {
+  if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
     g_pGameFlowState->processPrimaryEventQueue = savedFlag;
   }
 }
@@ -591,7 +591,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   }
 
   unsigned char savedProcessFlag;
-  bool simSuppressed = g_pSimMgr->multiplayerSessionRole != 0;
+  bool simSuppressed = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
   if (simSuppressed) {
     unsigned char currentFlag = g_pGameFlowState->processPrimaryEventQueue;
     g_pGameFlowState->processPrimaryEventQueue = 0;
@@ -620,7 +620,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   int modalResult = dialog->PoseModally();
   dialog->Close();
   dialog->Free();
-  simSuppressed = g_pSimMgr->multiplayerSessionRole != 0;
+  simSuppressed = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
   if (simSuppressed) {
     g_pGameFlowState->processPrimaryEventQueue = savedProcessFlag;
   }

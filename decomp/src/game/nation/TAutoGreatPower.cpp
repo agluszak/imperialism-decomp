@@ -255,7 +255,7 @@ void TAutoGreatPower::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x004e7510
 void TAutoGreatPower::SorryYouLose(void) {
-  if (g_pSimMgr->multiplayerSessionRole != 0) {
+  if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
     g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagLost, this->nationSlot, -3);
   }
 }

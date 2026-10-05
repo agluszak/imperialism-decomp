@@ -296,7 +296,7 @@ void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView
 
 // FUNCTION: IMPERIALISM 0x00543280
 void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
-  bool hosting = g_pSimMgr->multiplayerSessionRole == 1;
+  bool hosting = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
   if (hosting) {
     for (int slot = 0; slot < 7; ++slot) {
       TGreatPower* nation = g_apNationStates[slot];
@@ -305,7 +305,7 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
       }
     }
     pendingNationBitmask &= ~(1 << g_pSimMgr->GetActiveNationId());
-    bool stillHosting = g_pSimMgr->multiplayerSessionRole == 1;
+    bool stillHosting = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
     if (stillHosting) {
       TurnEvent1PendingMaskPacket packet;
       packet.InitializeEmitEventHeaderWithActiveNation();
@@ -692,7 +692,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // and flush the latched event code once the mask drains.
     TurnEventFResumeAckPacket* ack = static_cast<TurnEventFResumeAckPacket*>(packet);
     pendingNationBitmask &= ~(1 << (char)ack->nationSlot1C);
-    bool hosting = g_pSimMgr->multiplayerSessionRole == 1;
+    bool hosting = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
     if (!hosting) {
       return 1;
     }
@@ -717,7 +717,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
                                                                        announce->cityName20);
     }
     pendingNationBitmask &= ~(1 << (char)announce->nationId1C);
-    bool hostingA = g_pSimMgr->multiplayerSessionRole == 1;
+    bool hostingA = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
     if (!hostingA) {
       return 1;
     }
@@ -941,7 +941,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
           }
           coatControl->Show(mySlot >= 0, 1);
         }
-        if (g_pSimMgr->multiplayerSessionRole == 1) {
+        if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
           bool localPresent = false;
           int liveCount = 0;
           for (int liveSlot = 0; liveSlot < 7; ++liveSlot) {
@@ -982,7 +982,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       }
       return 1;
     }
-    if (g_pSimMgr->multiplayerSessionRole == 1) {
+    if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
       int sessionId2 = g_pNetMgr006a6014->GetSessionActiveNationId();
       short mySlot2 = (char)activeNationTagIndex;
       LobbyChatEvent9Packet claim2;
@@ -1271,7 +1271,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     default:
       break;
     }
-    bool hosting11 = g_pSimMgr->multiplayerSessionRole == 1;
+    bool hosting11 = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
     if (!hosting11) {
       return 1;
     }
@@ -1378,7 +1378,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // the decision through the UI runtime.
     TurnEvent1ANationActionPacket* nationAction =
         static_cast<TurnEvent1ANationActionPacket*>(packet);
-    bool isClientSession = g_pSimMgr->multiplayerSessionRole == 2;
+    bool isClientSession = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
     if (isClientSession) {
       for (int counterSlot = 0; counterSlot < 7; ++counterSlot) {
         TGreatPower* counterNation = g_apNationStates[counterSlot];
@@ -1392,7 +1392,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       g_pViewMgr->ShowOfferSheet(sourceNation, nationAction->param1E, 0, 0, 0);
       return 1;
     }
-    bool stillClientSession = g_pSimMgr->multiplayerSessionRole == 2;
+    bool stillClientSession = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
     if (!stillClientSession) {
       return 1;
     }
@@ -1417,7 +1417,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     g_pTradeMgr->SetDealResults(proposalAmount->ownerNation1C, proposalAmount->sourceContext1E,
                                 proposalAmount->amount24, proposalAmount->maxAmount20,
                                 proposalAmount->targetNation22, proposalAmount->emitEventFlag26, 1);
-    bool hosting1C = g_pSimMgr->multiplayerSessionRole == 1;
+    bool hosting1C = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
     if (!hosting1C) {
       return 1;
     }
@@ -1643,7 +1643,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       scanBracketExpressions(g_pSimMgr, &formattedAbdi, static_cast<const char*>(templateTextAbdi),
                              static_cast<const char*>(nationNameAbdi));
       g_pViewMgr->CreateModalMessageCommandAndQueue(&formattedAbdi, 0);
-      bool hostingAbdi = g_pSimMgr->multiplayerSessionRole == 1;
+      bool hostingAbdi = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
       if (hostingAbdi) {
         ReplaceNationStateForSlotAndRefreshStatus(gameState->value1C);
       }
@@ -1709,7 +1709,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
                              static_cast<const char*>(nationNameLost));
       g_pViewMgr->CreateModalMessageCommandAndQueue(&formattedLost, 0);
       if (isLocalNationLost) {
-        bool clientSessionLost = g_pSimMgr->multiplayerSessionRole == 2;
+        bool clientSessionLost = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
         if (clientSessionLost) {
           g_pAmbitApplication->CreateAndQueueTurnEventPacketTagGWEN();
         }
@@ -1719,7 +1719,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     case kControlTagQuit:   // 'quit'
     case kControlTagNewg: { // 'newg' - session ending: optional notice, then close or restart
       unsigned char restartFlag = static_cast<unsigned char>(gameState->value1C);
-      bool clientSessionQuit = g_pSimMgr->multiplayerSessionRole == 2;
+      bool clientSessionQuit = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
       if (clientSessionQuit) {
         CString messageQuit;
         if (restartFlag != 0) {
@@ -1729,7 +1729,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         }
         g_pViewMgr->CreateModalMessageCommandAndQueue(&messageQuit, 0);
       }
-      bool stillClientSessionQuit = g_pSimMgr->multiplayerSessionRole == 2;
+      bool stillClientSessionQuit = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
       if (!stillClientSessionQuit && gameState->statusTag18 != kControlTagNewg) {
         g_pAmbitApplication->PostWmCloseToMainThreadWindow();
         return 1;
@@ -1738,7 +1738,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       return 1;
     }
     case kControlTagRege: { // 'rege' - regenerate client map clip regions
-      bool clientSessionRege = g_pSimMgr->multiplayerSessionRole == 2;
+      bool clientSessionRege = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
       if (clientSessionRege) {
         g_pMacViewMgr->RebuildNationClipRegionsAndDispatchMapEvent();
       }
@@ -1749,7 +1749,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       bool hostCanSeatEmptySlot = false;
       if (g_apNationStates[repoSlot] == 0 &&
           packet->fromNetworkId == g_pNetMgr006a6014->GetSessionActiveNationId() &&
-          g_pSimMgr->multiplayerSessionRole == 1) {
+          g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
         hostCanSeatEmptySlot = true;
       }
       if (repoSlot >= 0 && repoSlot < 7 &&
@@ -2085,7 +2085,7 @@ void TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags(
   TurnEvent11Packet packet;
   packet.eventCode = 0x11;
   packet.fromNetworkId = 0;
-  packet.toNetworkId = (g_pSimMgr->multiplayerSessionRole == 1) ? 0 : -1;
+  packet.toNetworkId = (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) ? 0 : -1;
   packet.messageLength = 0x28;
   packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
@@ -2429,7 +2429,7 @@ void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
   header.messageTag = kControlTagTime;
   header.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   stream->ReadBytes(&header, 0x1c);
-  bool isClientSession = g_pSimMgr->multiplayerSessionRole == 2;
+  bool isClientSession = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
   short nation;
   if (isClientSession) {
     nation = -1;
@@ -2982,7 +2982,8 @@ void TMultiplayerMgr::SetNationStatusAwolByNationIdAndDispatchNotices(int networ
       g_pNetMgr006a6014->Send(&statusPacket, false);
       nationSessionIds[slot] = -2;
       pendingNationBitmask |= 1 << slot;
-      if (sessionPhaseTag == kSessionTagInit && g_pSimMgr->multiplayerSessionRole == 1) { // 'init'
+      if (sessionPhaseTag == kSessionTagInit &&
+          g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) { // 'init'
         LobbyChatEvent9Packet chat;
         chat.InitializeEmitEventHeaderWithActiveNation();
         chat.eventCode = 0;
@@ -3037,10 +3038,10 @@ void NationStatusEvent25Packet::InitializeNationStatusEvent25PayloadDefaults() {
 // FUNCTION: IMPERIALISM 0x0054bd20
 void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) {
   bool isLocalNation = nationSlot == g_pSimMgr->GetActiveNationId();
-  int sessionRole = g_pSimMgr->multiplayerSessionRole;
-  bool isClientSession = sessionRole == 2;
+  MultiplayerSessionRole sessionRole = g_pSimMgr->multiplayerSessionRole;
+  bool isClientSession = sessionRole == kSessionRoleClient;
   if (!isClientSession) {
-    bool hosting = sessionRole == 1;
+    bool hosting = sessionRole == kSessionRoleHost;
     if (hosting) {
       TurnEvent1FStatusPacket packet;
       packet.messageTag = kControlTagTime;
@@ -3159,12 +3160,12 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
       g_pSimMgr->nationControlModes[nationSlot] = 2;
       oldNation->Free();
     }
-    bool stillHosting = g_pSimMgr->multiplayerSessionRole == 1;
+    bool stillHosting = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
     if (stillHosting && !isLocalNation) {
       g_pNetMgr006a6014->NotifyIfNationMatchesSessionActiveNation(nationSessionIds[nationSlot]);
     }
   }
-  bool tornDownNow = g_pSimMgr->multiplayerSessionRole == 2;
+  bool tornDownNow = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
   if (tornDownNow) {
     TGreatPower* nation = g_apNationStates[nationSlot];
     if (nation != 0) {
@@ -3174,10 +3175,10 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
   nationSessionIds[nationSlot] = 0;
   nationStatusTags[nationSlot] = kSessionTagUnas; // 'suna'
   RefreshNationStatusLabelsAndCodesForSlotOrAll(nationSlot);
-  bool hostingMask = g_pSimMgr->multiplayerSessionRole == 1;
+  bool hostingMask = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
   if (hostingMask) {
     pendingNationBitmask &= ~(1 << nationSlot);
-    bool hostingBroadcast = g_pSimMgr->multiplayerSessionRole == 1;
+    bool hostingBroadcast = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
     if (hostingBroadcast) {
       TurnEvent1PendingMaskPacket packet;
       packet.messageTag = kControlTagTime;

@@ -89,7 +89,7 @@ RuntimeFlowStatus StrategicMapEntryFlow::Advance(RuntimeScenario& scenario) {
     }
     if (!g_ModalViewStack.IsEmpty() || g_pGlobalMapState == 0 ||
         g_pSimMgr->difficultyLevel != scenario.DifficultyLevel() ||
-        g_pSimMgr->multiplayerSessionRole != 0 || !NationModesMatchSelectedNation(run)) {
+        g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone || !NationModesMatchSelectedNation(run)) {
       scenario.FailScenario("direct strategic-map navigation prerequisites are invalid");
       return kRuntimeFlowRunning;
     }

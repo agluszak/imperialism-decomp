@@ -1827,7 +1827,7 @@ RuntimeActionResult RunSecondTurnMilitaryCleanup(NativeTransition& transition) {
   }
 
   g_pNavyOrderManager->ClearAllTransientOrders();
-  if (g_pSimMgr->multiplayerSessionRole != 2) {
+  if (g_pSimMgr->multiplayerSessionRole != kSessionRoleClient) {
     g_pGlobalMapState->RecomputeTileStrategicScoreHeatmap();
     RecomputeNationOrderPriorityMetrics();
     for (int slot = 0; slot < 7; ++slot) {

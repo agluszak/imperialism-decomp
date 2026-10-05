@@ -122,18 +122,18 @@ void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceH
     if (actionTag == kControlTagLoad) {
       g_pGameFlowState->scenarioSelectionTag = kControlTagLoad;
       if (g_pGameFlowState->ValidateAndPrepareGameFlowNameForDispatch()) {
-        g_pSimMgr->multiplayerSessionRole = 1;
+        g_pSimMgr->multiplayerSessionRole = kSessionRoleHost;
         g_nSaveFormatVersion = -2;
         g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventLoadSave));
       }
     } else if (actionTag == kControlTagJoin) {
       g_bMultiplayerScenarioSetupActive = false;
-      g_pSimMgr->multiplayerSessionRole = 2;
+      g_pSimMgr->multiplayerSessionRole = kSessionRoleClient;
       g_pGameFlowState->ApplyJoinGameSelectionAndPostTurnEvent5E4(0);
     } else if (actionTag == kControlTagRand) {
       g_pGameFlowState->scenarioSelectionTag = kControlTagRand;
       if (g_pGameFlowState->ValidateAndPrepareGameFlowNameForDispatch()) {
-        g_pSimMgr->multiplayerSessionRole = 1;
+        g_pSimMgr->multiplayerSessionRole = kSessionRoleHost;
         g_pAmbitApplication->PostTurnEventCodeMessage2420(
             EncodeTurnEventCode(kTurnEventRandomGameSetup));
       }
@@ -142,7 +142,7 @@ void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceH
     } else if (actionTag == kControlTagScen) {
       g_pGameFlowState->scenarioSelectionTag = kControlTagScn0; // 'scn0'
       if (g_pGameFlowState->ValidateAndPrepareGameFlowNameForDispatch()) {
-        g_pSimMgr->multiplayerSessionRole = 1;
+        g_pSimMgr->multiplayerSessionRole = kSessionRoleHost;
         g_pAmbitApplication->PostTurnEventCodeMessage2420(
             EncodeTurnEventCode(kTurnEventScenarioGameSetup));
       }

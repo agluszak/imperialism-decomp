@@ -157,7 +157,7 @@ void RuntimeScenario::ObserveBuiltUiTree(RuntimeContext&, int eventCode, TView* 
 }
 
 void RuntimeScenario::ObserveTurnEvent(RuntimeContext&, int eventCode) {
-  if (RecordsGameFlow() && g_pSimMgr != 0 && g_pSimMgr->multiplayerSessionRole == 0 &&
+  if (RecordsGameFlow() && g_pSimMgr != 0 && g_pSimMgr->multiplayerSessionRole == kSessionRoleStandalone &&
       eventCode == 0x5e4) {
     FailScenario("single-player game entered multiplayer synchronization event 0x5e4");
     return;

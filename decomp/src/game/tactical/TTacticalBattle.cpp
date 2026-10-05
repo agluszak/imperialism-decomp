@@ -806,7 +806,7 @@ void TTacticalBattle::AdvanceToNextTacticalUnitTurnStep() {
 // FUNCTION: IMPERIALISM 0x005a1010
 void TTacticalBattle::SetCurrentTacticalUnitSelection(TTacticalUnit* unit, bool remoteFlag) {
   if (!remoteFlag) {
-    bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
+    bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
     if (multiplayerActive) {
       g_pGameFlowState->EmitTacticalCommandPacket(kControlTagSele, unit, 0, 0);
     }
@@ -1102,7 +1102,7 @@ void TTacticalBattle::MoveTacticalUnitBetweenTiles(TTacticalUnit* unit,
                                                    TacticalTileIndex fromTileIndex,
                                                    TacticalTileIndex toTileIndex, bool remoteFlag) {
   if (!remoteFlag) {
-    bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
+    bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
     if (multiplayerActive) {
       g_pGameFlowState->EmitTacticalCommandPacket(kControlTagMove, unit, fromTileIndex,
                                                   toTileIndex);
@@ -1482,7 +1482,7 @@ void TTacticalBattle::ApplyTacticalActionEffectsAndMaybeRemoveUnit(
     TTacticalUnit* attackerUnit, TTacticalUnit* targetUnit, TacticalTileIndex targetTileIndex,
     int damageA, int damageB, char effectCode2C, bool remoteFlag) {
   if (!remoteFlag) {
-    bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
+    bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
     if (multiplayerActive) {
       g_pGameFlowState->EmitTacticalFireCommandPacket(kControlTagFire, attackerUnit, targetUnit,
                                                       damageA, damageB, effectCode2C);
@@ -1873,7 +1873,7 @@ void TTacticalBattle::ExecuteTacticalMineActionAndQueuePacket(TTacticalUnit* uni
                                                               TacticalTileIndex tileIndex) {
   int unitType = unit->unitTypeC;
   int amount = static_cast<int>(rand()) % 400 + unitType * 250 - 5600;
-  bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
+  bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
   if (multiplayerActive) {
     g_pGameFlowState->EmitTacticalCommandPacket(kControlTagMine, 0, tileIndex, amount);
   }
@@ -1891,7 +1891,7 @@ void TTacticalBattle::ExecuteTacticalMineActionAndQueuePacket(TTacticalUnit* uni
 void TTacticalBattle::HandleTacticalCommandTag_mine(TacticalTileIndex tileIndex, int amount,
                                                     bool remoteFlag) {
   if (!remoteFlag) {
-    bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
+    bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
     if (multiplayerActive) {
       g_pGameFlowState->EmitTacticalCommandPacket(kControlTagMine, 0, tileIndex, amount);
     }
@@ -1931,7 +1931,7 @@ void TTacticalBattle::HandleTacticalCommandTag_digg(TTacticalUnit* unit,
                                                     bool remoteFlag) {
   TacticalTileIndex neighborTiles[6];
   if (!remoteFlag) {
-    bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
+    bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
     if (multiplayerActive) {
       g_pGameFlowState->EmitTacticalCommandPacket(kControlTagDigg, unit, targetTileIndex, 0);
     }
@@ -1996,7 +1996,7 @@ void TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(TTactical
 void TTacticalBattle::HandleTacticalCommandTag_raly(TArmyTacUnit* unit, int newMorale, int newState,
                                                     bool remoteFlag) {
   if (!remoteFlag) {
-    bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
+    bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
     if (multiplayerActive) {
       g_pGameFlowState->EmitTacticalCommandPacket(kControlTagRaly, unit, newMorale, newState);
     }
@@ -2348,7 +2348,7 @@ void TTacticalBattle::HandleTacticalCommandTag_depl(TArmyTacUnit* unit, Tactical
                                                     bool remoteFlag) {
   TacticalTileIndex neighborTiles[6];
   if (!remoteFlag) {
-    bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != 0;
+    bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
     if (multiplayerActive) {
       g_pGameFlowState->EmitTacticalCommandPacket(kControlTagDepl, unit, tileIndex, 0);
     }

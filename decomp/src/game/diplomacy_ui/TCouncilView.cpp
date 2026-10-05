@@ -362,7 +362,7 @@ void TCouncilView::NextTick() {
       bool allowAdvance = false;
       short activeNation = g_pSimMgr->GetActiveNationId();
       if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot == activeNation &&
-          g_pSimMgr->multiplayerSessionRole == 0) {
+          g_pSimMgr->multiplayerSessionRole == kSessionRoleStandalone) {
         short tick = g_pSimMgr->GetEconomicTurn();
         unsigned char* phaseTable = g_pSimMgr->phaseStateByDecade;
         if (phaseTable[tick / 40] != 2) {

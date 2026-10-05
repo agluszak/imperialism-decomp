@@ -477,7 +477,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
         }
       }
 
-      if (simMgr->multiplayerSessionRole != 0 && needsRedraw) {
+      if (simMgr->multiplayerSessionRole != kSessionRoleStandalone && needsRedraw) {
         g_pGameFlowState->DispatchCityRedrawInvalidateEvent(regionId);
       }
     }
@@ -1798,7 +1798,7 @@ void TGreatPower::BecomeProtectorateOf(int arg1) {
   g_pNavyOrderManager->RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(this->nationSlot);
   g_pGlobalMapState->ApplyJoinEmpireMode0GlobalDiplomacyReset(this->nationSlot);
 
-  if (g_pSimMgr->multiplayerSessionRole != 0) {
+  if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
     g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagName, this->nationSlot,
                                                        0xfffffffd);
   }

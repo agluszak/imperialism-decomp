@@ -691,12 +691,12 @@ void TViewMgr::CreateModalMessageCommandAndQueue(CString* message, int payload) 
 // FUNCTION: IMPERIALISM 0x005deb40
 char TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag) {
   CString message;
-  int sessionRole = g_pSimMgr->multiplayerSessionRole;
-  bool isClientSession = sessionRole == 2;
+  MultiplayerSessionRole sessionRole = g_pSimMgr->multiplayerSessionRole;
+  bool isClientSession = sessionRole == kSessionRoleClient;
   if (isClientSession) {
     g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x31);
   } else {
-    bool hosting = sessionRole == 1;
+    bool hosting = sessionRole == kSessionRoleHost;
     if (hosting) {
       if (actionTag == kControlTagCgam) { // 'cgam'
         g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x37);
@@ -715,7 +715,7 @@ char TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag) {
   }
   char accepted = g_pViewMgr->ModalMessage(message, g_ptUiPromptModalMessage, 0, 1);
   if (accepted != 0) {
-    bool isClientSession = g_pSimMgr->multiplayerSessionRole == 2;
+    bool isClientSession = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
     if (isClientSession) {
       g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagAbdi,
                                                          g_pSimMgr->GetActiveNationId(), -2);

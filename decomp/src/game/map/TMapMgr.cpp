@@ -2042,10 +2042,10 @@ void TMapMgr::ChangeProvinceOwner(ProvinceIndexStorage cityRecordIndex, short ne
       static_cast<short>(newNationTag);
 
   bool isPrimary = g_pDiplomacyTurnStateManager->IsGreatPower(newNationTag) != 0;
-  if (isPrimary && g_pSimMgr->multiplayerSessionRole != 2) {
+  if (isPrimary && g_pSimMgr->multiplayerSessionRole != kSessionRoleClient) {
     g_apNationStates[newNationTag]->AddNoticeFrom(oldNationCode, 0x135);
   }
-  if (g_pSimMgr->multiplayerSessionRole == 1) {
+  if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
     g_pGameFlowState->SendChangeProvinceOwner(cityRecordIndex, newNationTag);
   }
 }
@@ -2552,11 +2552,12 @@ void TMapMgr::FloodFillTileRegionMarker(StrategicTileIndex nTileIndex, short nOw
         cityScoreTable[cityIdx].lastTurnTick = g_pSimMgr->GetEconomicTurn();
         if (g_nSaveFormatVersion == -3) {
           skipRedraw = true;
-        } else if (g_pSimMgr->multiplayerSessionRole == 1) {
+        } else if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
           g_pGameFlowState->DispatchCityRedrawInvalidateEvent(cityIdx);
         }
       }
-      if (!skipRedraw && g_nSaveFormatVersion != -3 && g_pSimMgr->multiplayerSessionRole == 1) {
+      if (!skipRedraw && g_nSaveFormatVersion != -3 &&
+          g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
         DispatchTileRedrawInvalidateEvent(neighborTile);
       }
     }
@@ -2591,7 +2592,7 @@ int TMapMgr::QueueDepotConstructionOrder(StrategicTileIndex nTileIndex, short nN
   }
   terrainStateTable[nTileIndex].activeFlags1c |= 0x10;
 
-  if (g_nSaveFormatVersion != -3 && g_pSimMgr->multiplayerSessionRole != 0) {
+  if (g_nSaveFormatVersion != -3 && g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
     g_pGameFlowState->SendStreamObject(kControlTagTown, town, -2);
     g_pGameFlowState->DispatchCityRedrawInvalidateEvent(
         terrainStateTable[nTileIndex].cityRecordIndex);
@@ -2626,7 +2627,7 @@ void TMapMgr::QueuePortConstructionOrder(StrategicTileIndex nTileIndex, short nN
   terrainStateTable[nTileIndex].activeFlags1c |= 4;
   g_pActiveMapOrderContext->EnsurePortZoneForTile(nTileIndex);
 
-  if (g_nSaveFormatVersion != -3 && g_pSimMgr->multiplayerSessionRole != 0) {
+  if (g_nSaveFormatVersion != -3 && g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
     g_pGameFlowState->SendStreamObject(kControlTagTown, town, -2);
     g_pGameFlowState->DispatchCityRedrawInvalidateEvent(
         terrainStateTable[nTileIndex].cityRecordIndex);

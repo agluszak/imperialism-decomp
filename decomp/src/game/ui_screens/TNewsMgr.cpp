@@ -570,7 +570,7 @@ void TNewsMgr::AddEvent(int nationSlot, NewsEvent* event, bool isReplayBypass) {
   if (g_pSimMgr->gateFlag7a) {
     return;
   }
-  if (!isReplayBypass && g_pSimMgr->multiplayerSessionRole != 0) {
+  if (!isReplayBypass && g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
     g_pGameFlowState->SendNewsEvent(nationSlot, event);
     return;
   }
@@ -583,8 +583,8 @@ void TNewsMgr::AddTreatyEvent(InterNationEventKind eventKind, int nationA, int n
   if (g_pSimMgr->gateFlag7a) {
     return;
   }
-  if (!isReplayBypass && g_pSimMgr->multiplayerSessionRole != 0) {
-    if (g_pSimMgr->multiplayerSessionRole == 1) {
+  if (!isReplayBypass && g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
+    if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
       g_pGameFlowState->CreateAndSendTurnEvent20_ShortAndTwoBytes(
           static_cast<short>(eventKind), static_cast<unsigned char>(nationA),
           static_cast<unsigned char>(nationB));
@@ -637,7 +637,7 @@ void TNewsMgr::AddShortageEvent(int subjectNation, int affectedNation, int relat
   if (g_pSimMgr->gateFlag7a) {
     return;
   }
-  if (!isReplayBypass && g_pSimMgr->multiplayerSessionRole != 0) {
+  if (!isReplayBypass && g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
     g_pGameFlowState->CreateAndSendTurnEvent21_ThreeBytes(
         static_cast<unsigned char>(subjectNation), static_cast<unsigned char>(affectedNation),
         static_cast<unsigned char>(relatedNation));
@@ -670,7 +670,7 @@ void TNewsMgr::AddMiscEvent(int nationSlotOrAll, int storyCode, bool isReplayByp
   TSimMgr* simMgr = g_pSimMgr;
   if (!simMgr->gateFlag7a) {
     if (!isReplayBypass) {
-      bool multiplayerActive = simMgr->multiplayerSessionRole != 0;
+      bool multiplayerActive = simMgr->multiplayerSessionRole != kSessionRoleStandalone;
       if (multiplayerActive) {
         g_pGameFlowState->CreateAndSendTurnEvent22_ByteAndShort(
             static_cast<unsigned char>(nationSlotOrAll), static_cast<short>(storyCode));

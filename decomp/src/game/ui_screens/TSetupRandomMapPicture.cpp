@@ -62,7 +62,7 @@ void TSetupRandomMapPicture::SetSelectedNationSlot(short nationSlot) {
   coatView->SetPictureResourceIdAndRefresh(static_cast<short>(selectedNationSlot9A + 0x11c6), true);
 
   if (!countryControlReadyA4) {
-    bool sessionInactive = g_pSimMgr->multiplayerSessionRole == 0;
+    bool sessionInactive = g_pSimMgr->multiplayerSessionRole == kSessionRoleStandalone;
     if (sessionInactive) {
       TEditText* countryControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagCoun));
       countryControl->AssertValid();
@@ -73,7 +73,7 @@ void TSetupRandomMapPicture::SetSelectedNationSlot(short nationSlot) {
 // FUNCTION: IMPERIALISM 0x00576fe0
 void TSetupRandomMapPicture::RecheckCountryName() {
   if (!countryControlReadyA4) {
-    bool sessionInactive = g_pSimMgr->multiplayerSessionRole == 0;
+    bool sessionInactive = g_pSimMgr->multiplayerSessionRole == kSessionRoleStandalone;
     if (sessionInactive) {
       TEditText* countryControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagCoun));
       countryControl->AssertValid();
@@ -127,7 +127,8 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
 
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2758, 0x1e, kControlTagName);
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x13, kControlTagGlob);
-  short cancelStringIndex = g_pSimMgr->multiplayerSessionRole != 0 ? 0x2e : 0x14;
+  short cancelStringIndex =
+      g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone ? 0x2e : 0x14;
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, cancelStringIndex, kControlTagCanc);
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, cancelStringIndex, kControlTagCncl);
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x15, kControlTagOkay);
@@ -158,7 +159,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   flagView->sourceRect64.right = (selectedNationSlot9A + 1) * flagView->frameWidth34;
   flagView->sourceRect64.bottom = flagView->frameHeight38;
 
-  if (g_pSimMgr->multiplayerSessionRole != 0) {
+  if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
     g_cstrCountryNameSettingValue006A4220 =
         g_pLanguageMgr->StripCodeStr(g_pGameFlowState->playerNameMirror);
   } else {
@@ -351,7 +352,7 @@ void TSetupRandomMapPicture::StartGame() {
   g_pSimMgr->InitializeOrLoadEntryArray14AndClampLimits(true);
 
   g_nRandomMapSelectedNationSlot00698AB0 = selectedNationSlot9A;
-  if (g_pSimMgr->multiplayerSessionRole != 0) {
+  if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
     g_pAmbitApplication->PostTurnEventCodeMessage2420(
         EncodeTurnEventCode(kTurnEventNetworkGameOptions));
     g_pGameFlowState->playerNameMirror = g_cstrCountryNameSettingValue006A4220;
@@ -374,7 +375,7 @@ void TSetupRandomMapPicture::StartGame() {
 
 // FUNCTION: IMPERIALISM 0x005781f0
 void TSetupRandomMapPicture::ExitScreen() {
-  bool multiplayerSessionActive = g_pSimMgr->multiplayerSessionRole != 0;
+  bool multiplayerSessionActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
   if (multiplayerSessionActive) {
     g_pGameFlowState->ResetLocalUiStateAndPostTurnEvent5E5();
     return;

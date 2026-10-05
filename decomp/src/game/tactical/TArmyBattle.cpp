@@ -71,7 +71,7 @@ void TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8(TArmyStack* 
   unsigned char ourSideWatchFlag = 0;
   unsigned char enemySideWatchFlag = 0;
   if (g_pSimMgr->preferenceValues[0] != 0) {
-    bool sessionModeActive = g_pSimMgr->multiplayerSessionRole != 0;
+    bool sessionModeActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
     if (!sessionModeActive) {
       ourSideWatchFlag = g_apNationStates[ourStack->categoryFlag8]->diplomacyEligibilityA0;
       if (enemyStack->categoryFlag8 < 7) {

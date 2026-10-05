@@ -47,7 +47,8 @@ void TScenarioChooser::DoPostCreate(int arg) {
   for (int scenarioIndex = 0; scenarioIndex < 0x40; ++scenarioIndex) {
     CString unusedScratch;
     CString scenarioPath;
-    if (scenarioIndex > 8 && scenarioIndex < 0x10 && g_pSimMgr->multiplayerSessionRole != 0) {
+    if (scenarioIndex > 8 && scenarioIndex < 0x10 &&
+        g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
       continue;
     }
     g_pAssetMgr->BuildScenarioPathForModeAndIndex(static_cast<short>(scenarioIndex), 0,
@@ -182,7 +183,7 @@ void TScenarioChooser::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
 
 // FUNCTION: IMPERIALISM 0x0057a2d0
 void TScenarioChooser::ExitScreen() {
-  if (g_pSimMgr->multiplayerSessionRole != 0) {
+  if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
     g_pGameFlowState->ResetLocalUiStateAndPostTurnEvent5E5();
   } else {
     g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventMainMenu));
@@ -222,7 +223,7 @@ void TScenarioChooser::StartGame() {
   g_pSimMgr->SetDifficultyLevel(
       static_cast<eDifficulty>(difficultyLevelByNation[mapControl->selectedNation68]));
 
-  if (g_pSimMgr->multiplayerSessionRole != 0) {
+  if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
     // Ask for the session's save name until it differs from the one already published,
     // then normalise it and hand it to the game-flow state with the chosen nation and
     // the scenario's 'scn0'+index tag before posting event 0x5e4.
