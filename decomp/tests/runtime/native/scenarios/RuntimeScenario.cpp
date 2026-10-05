@@ -101,7 +101,7 @@ void RuntimeScenario::AdvanceDriver(unsigned int observationKinds) {
   advancing = true;
   // The previous wait has been satisfied; whatever runs below re-arms, or terminates.
   awaitedObservations = kObserveNone;
-  run->AwaitState().Clear();
+  run->AwaitState().IFuzzySet();
   if (driverState == kWaitingForManagers) {
     AdvanceWaitingForManagers();
   } else if (driverState == kRunningScenario) {
@@ -371,7 +371,7 @@ const char* RuntimeScenario::FixturePath() const {
 }
 
 void RuntimeScenario::SetSelectedNation(short nationSlot) {
-  run->SetSelectedNationSlot(nationSlot);
+  run->PickCountry(nationSlot);
 }
 
 bool RuntimeScenario::AdvanceNewspaperIfNeeded() {

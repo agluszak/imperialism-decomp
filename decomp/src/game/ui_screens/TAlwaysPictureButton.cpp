@@ -21,7 +21,7 @@ void TAlwaysPictureButton::HiliteState(unsigned char enabledState, bool refreshN
     } else {
       pictureId = this->glyphBase84 - 100;
     }
-    this->SetPictureResourceIdAndRefresh(pictureId, true);
+    this->SetPictureRsrcID(pictureId, true);
     if (refreshNow) {
       this->DrawImmediate();
     }

@@ -21,7 +21,7 @@ public:
   // Army/Navy boy views' +0x694 strip) using this->frameWidth (inherited from
   // TView) and the context's item count to lay out each icon's width. Non-virtual
   // paint helper called only from Draw; the raw listing confirms it is not a destructor.
-  void DrawItemHeaderAndIconRows(CString* header);
+  void ActuallyDraw(CString* header);
 
   BattleReportDetailRecord* battleDetail; // +0x60
 };

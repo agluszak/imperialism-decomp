@@ -71,7 +71,7 @@ public:
   char ShowPeriodicNationComparisonAdvisoryIfNeeded();
   char HandlePendingEventActivationByCode(TurnEventCodeStorage eventCode);
   void HandlePostPendingEventActivationNoOp(TurnEventCodeStorage eventCode);
-  void ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry);
+  void ShowHelpSet(HelpSetRecord* pendingEntry);
   // Dead pair: scan indexList (1-based) for the first HelpSetRecord whose
   // helpResourceBaseId matches; one returns the record, the other its flagByte.
   // No surviving callers. 0x005037e0 / 0x00503790.

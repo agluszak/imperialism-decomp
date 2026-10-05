@@ -44,10 +44,10 @@ public:
   virtual ~TTacticalBattle() override {} // slot 0x01 (scalar deleting destructor)
   virtual void Free() override;          // slot 0x07 0x59fb50
   virtual void
-  ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit* unit);       // slot 0x0a 0x59ff20
+  CalculateMoveMap(TTacticalUnit* unit);       // slot 0x0a 0x59ff20
   virtual void PropagateTileAccessibilityStrengthLevels(TTacticalUnit* unit); // slot 0x0b 0x5a02e0
   // Places a unit on a battle-grid tile (deployment). Base is a no-op stub.
-  virtual void DeployTacticalUnitToTile(TTacticalUnit* unit,
+  virtual void DeployUnit(TTacticalUnit* unit,
                                         TacticalTileIndex tileIndex); // slot 0x0c 0x59f710
   virtual void MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
       TTacticalUnit* unit, TacticalTileIndex targetTileIndex); // slot 0x0d 0x5a1bd0
@@ -75,7 +75,7 @@ public:
       TArmyTacUnit* unit);                                                     // slot 0x14 0x5a3210
   virtual void ClearTacticalTileStateRunByStride(TacticalTileIndex tileIndex); // slot 0x15 0x5a3320
   virtual void
-  ComputeRallyStrengthAndQueueTacticalRallyCommand(TTacticalUnit* rallyingUnit,
+  RallyUnit(TTacticalUnit* rallyingUnit,
                                                    TArmyTacUnit* rallyTarget); // slot 0x16 0x5a3810
   virtual void
   ExecuteTacticalMineActionAndQueuePacket(TTacticalUnit* unit,
@@ -114,7 +114,7 @@ public:
   // and freed by Free (0x59fbaf) -- the only three accesses through a TTacticalBattle*
   // receiver. Its real writers reach it through TArmyPlayer::battle14:
   // SelectTacticalTileIndexByColumnPriorityVariantA (0x59bfe0) stores each artillery
-  // candidate's zone-cell score, and SelectBestTacticalTileByWeightedHeuristics
+  // candidate's zone-cell score, and FindBestMove
   // (0x59d530) stores the weighted-heuristic score for every reachable tile.
   int* tileCandidateScorePlane2c;
   int* tileIntArray;          // +0x30 advance-distance field (0x5a4460); -1 = unreached
@@ -136,7 +136,7 @@ public:
   int currentTacticalActionCode4c; // +0x4c serialized
   int compositionClass50;          // +0x50 stack-composition class of the battle
   // Per-row-pair fort strength pools (one slot per two grid rows, tile/58), seeded by
-  // LoadBattleSetupTabDataByIndex from g_anFortStrengthPointsByFortLevel; consumed by
+  // LoadMap from g_anFortStrengthPointsByFortLevel; consumed by
   // the mine action, gates passability in slot 0x0a.
   int fortStrengthPoints[8]; // +0x54
   // roundCounter: current battle round; battleOutcome44 is only decided once a side
@@ -160,10 +160,10 @@ public:
   // g_pActiveTacticalBattle). Signatures verified against the handler prologues and
   // the 0x545940 dispatcher's pushes.
   TArmyTacUnit* SeekLinkedListCursorByNestedId(int nestedId);                 // 0x5a53e0
-  void SetCurrentTacticalUnitSelection(TTacticalUnit* unit, bool remoteFlag); // 0x5a1010
+  void LaSelect(TTacticalUnit* unit, bool remoteFlag); // 0x5a1010
   void DispatchTacticalActionByHoverStateIndex(TacticalTileIndex tileIndex);  // 0x5a3370
   // Per-turn upkeep for a unit sitting in state 1 (morale broken): retreats it toward the
-  // lowest-distance-field tile (BuildTacticalDistanceFieldForSide), then -- if still
+  // lowest-distance-field tile (MakeRetreatMap), then -- if still
   // morale-broken -- scores its odds of being removed from the battle by comparing a
   // quality-weighted threshold from nearby same-side units against a random roll (always
   // fatal if the retreat couldn't move the unit at all), and always queues the end-of-
@@ -172,7 +172,7 @@ public:
   void UndeployUnit(TacticalTileIndex tileIndex); // 0x5a14d0, Mac oracle
   void MoveTacticalUnitBetweenTiles(TTacticalUnit* unit, TacticalTileIndex fromTileIndex,
                                     TacticalTileIndex toTileIndex, bool remoteFlag); // 0x5a1910
-  void ApplyTacticalActionEffectsAndMaybeRemoveUnit(TTacticalUnit* attackerUnit,
+  void LaFireOn(TTacticalUnit* attackerUnit,
                                                     TTacticalUnit* targetUnit,
                                                     TacticalTileIndex targetTileIndex, int damageA,
                                                     int damageB, char effectCode2C,
@@ -224,7 +224,7 @@ public:
   // ends the battle once it reaches 35 rounds (EvaluateTacticalSideStateAndShowBattle-
   // SummaryDialog + FinishTacticalActionAndPostNextMoveCommand). Selects the found unit and either
   // runs its morale-broken turn step, its sap/mine tile-state advance (category 8 with
-  // a pending sapTargetTileIndex), or the current side's AdvanceTacticalTurnPulse.
+  // a pending sapTargetTileIndex), or the current side's NextMove.
   // Called from TNextMoveCommand::DoIt (0x5a6620) when the battle isn't yet decided.
   // 0x5a0ea0, __thiscall, no args.
   void AdvanceToNextTacticalUnitTurnStep();
@@ -239,7 +239,7 @@ public:
                                                         TacticalTileIndex attackerTileIndex);
   // Recursive distance-field path builder into outPathTiles (caller pre-seeds
   // outPathTiles[0] = target); returns the path depth or -1. 0x5a16e0.
-  int BuildPathToTargetByDistanceField(TacticalTileIndex walkTileIndex, int pathDepth,
+  int SeekPath(TacticalTileIndex walkTileIndex, int pathDepth,
                                        TacticalTileIndex goalTileIndex,
                                        TacticalTileIndex* outPathTiles);
   // Reaction checks fired when a unit enters a tile; nonzero stops the walk. 0x5a1a20.
@@ -260,7 +260,7 @@ public:
   short ResolveTacticalHoverCursorResourceId(TacticalTileIndex tileIndex); // 0x005a0a90
   // Builds the per-tile distance field into tileIntArray for the given side
   // (consumed by the AI advance heuristic). 0x5a4460.
-  void BuildTacticalDistanceFieldForSide(char ourSideFlag);
+  void MakeRetreatMap(char ourSideFlag);
   // Whether the tile sits on a fort-wall gun-slot row (5/7/9) at the wall column.
   // 0x5a4690.
   unsigned char IsTacticalTileAtFortWallSectionSlot(TacticalTileIndex tileIndex);

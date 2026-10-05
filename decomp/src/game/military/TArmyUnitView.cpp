@@ -157,7 +157,7 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       TStaticText* tbr1 = static_cast<TStaticText*>(
           g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagTbr1));
       tbr1->AssertValid();
-      tbr1->SetTextAlignmentAndMaybeRefresh(static_cast<short>(g_pSimMgr->GetPlayerCountry()),
+      tbr1->SetJustification(static_cast<short>(g_pSimMgr->GetPlayerCountry()),
                                             false);
     } else {
       CString msg;
@@ -165,18 +165,18 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       g_pViewMgr->ModalMessage(msg, g_ptArmyOrderModalMessage, 2, 0);
     }
   } else if (sourceHandler->controlTag == kControlTagName) {
-    HandleCrossUArmyViewsNameCommand();
+    RenameUnit();
   }
   TView::DoEvent(commandId, sourceHandler, event);
 }
 
 // TArmyUnitView-only despite the generic Ghidra symbol name (0x4a9ca0) -- confirmed by the
 // caller: TShipView::DoEvent's 'name' branch actually calls a different function
-// (RunEngineerOrderNameEditDialogAndApply, 0x565a40), not this one, so there is no
+// (RenameShip, 0x565a40), not this one, so there is no
 // Runs the unit-rename dialog: seeds an edit box with militaryUnit's current name, runs
 // it modally, and (unless cancelled) commits the typed text back to the represented unit.
 // FUNCTION: IMPERIALISM 0x004a9ca0
-void TArmyUnitView::HandleCrossUArmyViewsNameCommand() {
+void TArmyUnitView::RenameUnit() {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNameUnit));
   if (node == nullptr) {
@@ -189,7 +189,7 @@ void TArmyUnitView::HandleCrossUArmyViewsNameCommand() {
 
   TStaticText* titleControl = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagTitl));
   titleControl->AssertValid();
-  titleControl->SetTextFromStringResource(0x2746, 1, true);
+  titleControl->SetTextWithStrListID(0x2746, 1, true);
   titleControl->textStyle78 = style;
 
   TEditText* nameControl = static_cast<TEditText*>(node->ResolveControlByTag(kControlTagName));

@@ -196,7 +196,7 @@ public:
 
   // Applies a tactical battle's outcome: the winner holds the province, the loser
   // retreats, and both gain experience (+35/+20, capped at 400). 0x004a5ca0.
-  void ApplyPostBattleStackOutcomeAndGrowUnitMeters(TArmyStack* ourStack, TArmyStack* enemyStack,
+  void EndTacticalBattle(TArmyStack* ourStack, TArmyStack* enemyStack,
                                                     unsigned char sideWonFlag, int battleSiteIndex);
 
   // Mac oracle. ABI: RET 8; the body ignores unusedArg2. 0x4a6e80.

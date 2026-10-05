@@ -69,7 +69,7 @@ void TArmoryView::DoStartup() {
       MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xb19);
     }
-    button->SetPictureResourceIdAndRefresh(static_cast<short>(0x1d60 + 2 * pictureVariant), 1);
+    button->SetPictureRsrcID(static_cast<short>(0x1d60 + 2 * pictureVariant), 1);
 
     TView* numRow = ResolveControlByTag(kControlTagNum0 + row); // 'num0'+row
     if (numRow == nullptr) {
@@ -91,7 +91,7 @@ void TArmoryView::DoStartup() {
   TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl)); // 'titl'
   title->AssertValid();
   title->InstallTextStyle(style.desc, 1);
-  title->SetTextFromStringResource(0x271c, 0x20, true);
+  title->SetTextWithStrListID(0x271c, 0x20, true);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b6b);
   TStaticText* unit = static_cast<TStaticText*>(ResolveControlByTag(kControlTagUnit)); // 'unit'
@@ -103,12 +103,12 @@ void TArmoryView::DoStartup() {
       static_cast<TStaticText*>(ResolveControlByTag(kControlTagCostLower)); // 'cost'
   cost->AssertValid();
   cost->InstallTextStyle(style.desc, 1);
-  cost->SetTextFromStringResource(0x271c, 0x1e, true);
+  cost->SetTextWithStrListID(0x271c, 0x1e, true);
 
   TStaticText* avai = static_cast<TStaticText*>(ResolveControlByTag(kControlTagAvai)); // 'avai'
   avai->AssertValid();
   avai->InstallTextStyle(style.desc, 1);
-  avai->SetTextFromStringResource(0x271c, 0x1f, true);
+  avai->SetTextWithStrListID(0x271c, 0x1f, true);
 
   for (short column = 0; column < 4; ++column) {
     TStaticText* current = static_cast<TStaticText*>(
@@ -130,7 +130,7 @@ void TArmoryView::DoStartup() {
         ResolveControlByTag(IMPERIALISM_FOURCC('l', 'a', 'b', '0') + column)); // 'lab0'+column
     label->AssertValid();
     label->InstallTextStyle(style.desc, 1);
-    label->SetTextFromStringResource(0x271c, static_cast<short>(column + 1), true);
+    label->SetTextWithStrListID(0x271c, static_cast<short>(column + 1), true);
   }
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
@@ -144,7 +144,7 @@ void TArmoryView::DoStartup() {
   TCluster* selection = static_cast<TCluster*>(ResolveControlByTag(kControlTagSele)); // 'sele'
   selection->AssertValid();
   selection->SetSelectedChildTagAndRefresh(kControlTagCiv0); // 'civ0'
-  RefreshCityViewProductionDetails(0);
+  SetUnit(0);
 }
 
 // FUNCTION: IMPERIALISM 0x004cf350
@@ -153,7 +153,7 @@ void TArmoryView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
     short index = static_cast<short>(sourceHandler->controlTag) - 0x7630; // 'rec0'..'rec8'
     if (index >= 0 && index < 9) {
       selectedRowIndex = index;
-      RefreshCityViewProductionDetails(index);
+      SetUnit(index);
     }
   } else if (commandId == 0xa) {
     TView* ownerView = static_cast<TView*>(sourceHandler)->ownerContext;
@@ -161,7 +161,7 @@ void TArmoryView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
     if (index >= 0 && index < 9) {
       if (selectedRowIndex != index) {
         selectedRowIndex = index;
-        RefreshCityViewProductionDetails(index);
+        SetUnit(index);
 
         // 'sele' is a TCluster (see TUniversityView::DoEvent's identical tail).
         TCluster* sele = static_cast<TCluster*>(ResolveControlByTag(kControlTagSele)); // 'sele'
@@ -289,7 +289,7 @@ void TArmoryView::UpdateFields() {
 }
 
 // FUNCTION: IMPERIALISM 0x004cfbd0
-void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
+void TArmoryView::SetUnit(short nBuildingSlotId) {
   CString unusedDescription;
   CString currencyText;
   CString resourceName;
@@ -312,7 +312,7 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
   TPicture* plaq =
       static_cast<TPicture*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'l', 'a', 'q')));
   plaq->AssertValid();
-  plaq->SetPictureResourceIdAndRefresh(static_cast<short>(order->resourceTypeIndex + 0x1d9c), 1);
+  plaq->SetPictureRsrcID(static_cast<short>(order->resourceTypeIndex + 0x1d9c), 1);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b6b);
   TStaticText* unit =
@@ -321,7 +321,7 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xc1a);
   }
-  unit->SetTextFromStringResource(0x2717, static_cast<short>(order->resourceTypeIndex + 1), false);
+  unit->SetTextWithStrListID(0x2717, static_cast<short>(order->resourceTypeIndex + 1), false);
   CRect bounds;
   unit->QueryBounds(&bounds);
   RECT copiedBounds;
@@ -329,7 +329,7 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
   InvalidateCityDialogRectRegion(&copiedBounds, 1);
 
   CString amountText;
-  g_pSimMgr->GetStringPrelude(order->primaryInputResourceId, &resourceName);
+  g_pSimMgr->GetCommodityName(order->primaryInputResourceId, &resourceName);
   amountText.Format(g_szDecimalFormat, static_cast<int>(order->primaryInputPerUnit));
   unusedDescription =
       amountText + s_szSpaceSeparator_00695794 + resourceName + s_szLineBreak_00695880;
@@ -395,7 +395,7 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
   TStaticText* stat3 =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 't', 'a', '3')));
   stat3->AssertValid();
-  stat3->SetTextFromStringResource(
+  stat3->SetTextWithStrListID(
       0x271c, static_cast<short>(g_MapContextStaticTable_00695448[resourceType] + 0x21), true);
   stat3->QueryBounds(&bounds);
   CopyRect(&copiedBounds, &bounds);
@@ -407,7 +407,7 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xc57);
   }
-  description->SetTextFromStringResource(0x2750, static_cast<short>(resourceType + 1), false);
+  description->SetTextWithStrListID(0x2750, static_cast<short>(resourceType + 1), false);
   description->QueryBounds(&bounds);
   CopyRect(&copiedBounds, &bounds);
   InvalidateCityDialogRectRegion(&copiedBounds, 1);

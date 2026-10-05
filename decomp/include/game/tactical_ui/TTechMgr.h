@@ -137,7 +137,7 @@ public:
   // Writes the not-yet-researched prerequisites of `techId` for the nation: if the first
   // is done, missing1 = the second (0 if none) and missing2 = 0; otherwise missing1 = the
   // first and missing2 = the second if it is also unresearched. 0x5b0a90.
-  void SelectMissingTechItemPrerequisitesFromPair(int techId, int nationSlot,
+  void GetPreReqs(int techId, int nationSlot,
                                                   int* missingPrimaryTechId,
                                                   int* missingSecondaryTechId);
   // Activates an ability in its slot group for a nation: marks it active, records it in
@@ -161,7 +161,7 @@ public:
   // 0x5b0c20 -- scans this nation's orderCapRows277 row for the first tech whose status
   // is 1 (in-progress/pending), applies its unlock (HandleAbilityUnlock) and returns the
   // tech index, or -1 when none pends. __thiscall (receiver g_pTechMgr).
-  short ConsumeFirstPendingAbilityUnlock(short nationSlot);
+  short GetNextNewAdvance(short nationSlot);
 
   ~TTechMgr() override;
 };

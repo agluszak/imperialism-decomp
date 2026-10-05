@@ -231,7 +231,7 @@ void TShip::NameThyself() {
 }
 
 // FUNCTION: IMPERIALISM 0x0054fc60
-void TShip::SetLocation(TZone* zone) {
+void TShip::MoveTo(TZone* zone) {
   location = zone;
 }
 

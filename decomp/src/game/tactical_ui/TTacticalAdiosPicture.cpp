@@ -24,23 +24,23 @@ void TTacticalAdiosPicture::DoPostCreate(int arg) {
   TextStyle titleStyle;
   InitializeUiTextStyleDescriptor(&titleStyle, 0, 0xe, 0x2b6b, 1);
   titleControl->InstallTextStyle(titleStyle, 0);
-  titleControl->SetTextAlignmentAndMaybeRefresh(1, false);
+  titleControl->SetJustification(1, false);
 
   TStaticText* locationControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagLoca));
   locationControl->AssertValid();
   TextStyle locationStyle;
   InitializeUiTextStyleDescriptor(&locationStyle, 2, 0xc, 0x2b6b, 1);
   locationControl->InstallTextStyle(locationStyle, 0);
-  locationControl->SetTextAlignmentAndMaybeRefresh(1, false);
+  locationControl->SetJustification(1, false);
 
   TDeluxeText* infoControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagInfo));
   infoControl->AssertValid();
   infoControl->SetTextStyle(0, 0xa, 0x2b6b);
-  infoControl->SetTextAlignmentAndMaybeRefresh(1, false);
+  infoControl->SetJustification(1, false);
 
   TView* owner = GetWindow();
   CPoint placement;
-  g_pViewMgr->ComputeTurnEventDialogPlacementByCode(owner, &placement);
+  g_pViewMgr->GetTopLeftFor(owner, &placement);
 
   TView* owner2 = GetWindow();
   owner2->Locate(placement, false);

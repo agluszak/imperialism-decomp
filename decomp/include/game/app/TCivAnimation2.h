@@ -11,7 +11,7 @@
 // upcast-constructed as a real object in TCouncilTickerAnimation.cpp
 // (g_pUiAnimator) and TMapDialog.cpp. It is a battle-report civ animation
 // state machine, not a misattribution.
-// (AddObjectToUiTransientRegistry 0x4a0d10 and the registry walker 0x4a0d30,
+// (AddAnimation 0x4a0d10 and the registry walker 0x4a0d30,
 // once bucketed here by Ghidra, are really TAnimator methods -- the receiver
 // is the g_pUiAnimator global, proven by the callers' `mov ecx,[0x6a43e0]`.)
 // VTABLE: IMPERIALISM 0x0064c390

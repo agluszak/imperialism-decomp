@@ -48,7 +48,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   this->productionView98 = productionView;
 
   city->GetMaxBuildingCapacity(buildingSlotId);
-  this->SetPictureResourceIdAndRefresh(static_cast<short>((buildingSlotId + 0x73a) * 5), 1);
+  this->SetPictureRsrcID(static_cast<short>((buildingSlotId + 0x73a) * 5), 1);
 
   if (buildingSlotId == 0xb) {
     city->BuildPowerPlant(false);
@@ -84,8 +84,8 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x47b);
   }
   tex1->InstallTextStyle(style.desc, 0);
-  tex1->SetTextAlignmentAndMaybeRefresh(-2, false);
-  tex1->SetTextFromStringResource(static_cast<short>(buildingSlotId + 0x2422), 1, true);
+  tex1->SetJustification(-2, false);
+  tex1->SetTextWithStrListID(static_cast<short>(buildingSlotId + 0x2422), 1, true);
 
   // 'tex2' — sub text. Retail passes the low word of the third argument as the group.
   TStaticText* tex2 =
@@ -95,8 +95,8 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x481);
   }
   tex2->InstallTextStyle(style.desc, 0);
-  tex2->SetTextAlignmentAndMaybeRefresh(-2, false);
-  tex2->SetTextFromStringResource(static_cast<short>(reinterpret_cast<int>(productionView98)), 2,
+  tex2->SetJustification(-2, false);
+  tex2->SetTextWithStrListID(static_cast<short>(reinterpret_cast<int>(productionView98)), 2,
                                   true);
   if (buildingSlotId == 0xb) {
     CRect tex2Bounds;
@@ -115,7 +115,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x493);
   }
   nameCtrl->InstallTextStyle(style.desc, 0);
-  nameCtrl->SetTextAlignmentAndMaybeRefresh(1, false);
+  nameCtrl->SetJustification(1, false);
   g_pSimMgr->GetString(0x2719, buildingSlotId, &textBuffer);
   nameCtrl->SetTextAndMaybeRefresh(&textBuffer, false);
 
@@ -127,7 +127,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x49a);
   }
   costCtrl->InstallTextStyle(style.desc, 0);
-  costCtrl->SetTextAlignmentAndMaybeRefresh(1, false);
+  costCtrl->SetJustification(1, false);
   g_pSimMgr->GetString(0x2738, 0x14, &textBuffer);
   costCtrl->SetTextAndMaybeRefresh(&textBuffer, false);
 
@@ -147,7 +147,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   scanBracketExpressions(g_pSimMgr, &textBuffer, static_cast<LPCSTR>(capTemplate),
                          static_cast<LPCSTR>(capValue));
   capTCtrl->InstallTextStyle(style.desc, 0);
-  capTCtrl->SetTextAlignmentAndMaybeRefresh(1, false);
+  capTCtrl->SetJustification(1, false);
   capTCtrl->SetTextAndMaybeRefresh(&textBuffer, false);
 
   // 'or  ' — connective label, hidden except for slots 0/3/4 where it is repositioned.
@@ -162,7 +162,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   } else {
     g_pSimMgr->GetString(0x2738, 0x11, &textBuffer);
     orCtrl->InstallTextStyle(style.desc, 0);
-    orCtrl->SetTextAlignmentAndMaybeRefresh(1, false);
+    orCtrl->SetJustification(1, false);
     orCtrl->SetTextAndMaybeRefresh(&textBuffer, false);
 
     CRect orBounds;
@@ -207,7 +207,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     buckCtrl->AssertValid();
     buckCtrl->Show(1, 0);
     buckCtrl->InstallTextStyle(style.desc, 0);
-    buckCtrl->SetTextAlignmentAndMaybeRefresh(1, false);
+    buckCtrl->SetJustification(1, false);
     g_pSimMgr->NumToCurrency(0x1388, &buckCost);
     buckCtrl->SetTextAndMaybeRefresh(&buckCost, true);
   } else {
@@ -231,7 +231,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   if (!eligible) {
     BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b69);
     warnCtrl->InstallTextStyle(style.desc, 0);
-    warnCtrl->SetTextAlignmentAndMaybeRefresh(1, false);
+    warnCtrl->SetJustification(1, false);
     g_pSimMgr->GetString(0x2738, (slot == 0xb) ? 0x16 : 0x17, &textBuffer);
     warnCtrl->SetTextAndMaybeRefresh(&textBuffer, false);
     warnCtrl->Show(1, 0);

@@ -18,7 +18,7 @@ void TTacMapUberPicture::SetWindPictureResourceIdAndRefresh(int resourceBase) {
   TPicture* windPicture =
       static_cast<TPicture*>(ResolveControlByTag(IMPERIALISM_FOURCC('w', 'i', 'n', 'd')));
   windPicture->AssertValid();
-  windPicture->SetPictureResourceIdAndRefresh(static_cast<short>(resourceBase + 0xf00), 1);
+  windPicture->SetPictureRsrcID(static_cast<short>(resourceBase + 0xf00), 1);
 }
 
 IMPLEMENT_DYNCREATE(TTacMapUberPicture, TMapUberUberPicture)

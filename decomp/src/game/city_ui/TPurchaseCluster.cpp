@@ -20,9 +20,9 @@ TPurchaseCluster::TPurchaseCluster() : TCluster(), field88(0) {}
 TPurchaseCluster::~TPurchaseCluster() {}
 
 // FUNCTION: IMPERIALISM 0x004cc440
-void TPurchaseCluster::SetValueControlAndSyncAmount(TEventHandler* control) {
+void TPurchaseCluster::StuffValues(TEventHandler* control) {
   field88 = control;
-  SetCityViewValueControlAmount(static_cast<short>(control->enabled), true);
+  SetValue(static_cast<short>(control->enabled), true);
 }
 
 // FUNCTION: IMPERIALISM 0x004cc470
@@ -32,17 +32,17 @@ void TPurchaseCluster::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoin
 void TPurchaseCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 10) {
     if (sourceHandler->controlTag == kControlTagLaro) {
-      field88->SetEnable(static_cast<char>(UpdateCityViewValueControl() - 1));
+      field88->SetEnable(static_cast<char>(GetValue() - 1));
     } else if (sourceHandler->controlTag == kControlTagRaro) {
-      field88->SetEnable(static_cast<char>(UpdateCityViewValueControl() + 1));
+      field88->SetEnable(static_cast<char>(GetValue() + 1));
     }
-    SetCityViewValueControlAmount(static_cast<short>(field88->enabled), true);
+    SetValue(static_cast<short>(field88->enabled), true);
   }
   TCluster::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x004cc550
-void TPurchaseCluster::SetCityViewValueControlAmount(short nValue, bool redrawFlag) {
+void TPurchaseCluster::SetValue(short nValue, bool redrawFlag) {
   // 'valu' is a TAmtBar (already the established typing at this exact tag in
   // TProductionCluster.cpp); confirmed here by TAmtBar's own SetControlValueSlot1E4(int,
   // int) matching this callsite's slot 0x1e4 dispatch and (nValue, 0) argument shape exactly
@@ -77,7 +77,7 @@ void TPurchaseCluster::SetCityViewValueControlAmount(short nValue, bool redrawFl
 // Re-reads the 'valu' amount control's window text into its cached int and returns it;
 // DoEvent applies the DEC/INC delta to this result before feeding it back.
 // FUNCTION: IMPERIALISM 0x004cc640
-int TPurchaseCluster::UpdateCityViewValueControl() {
+int TPurchaseCluster::GetValue() {
   TNumberText* valueControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagValu));
   if (valueControl == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x793);

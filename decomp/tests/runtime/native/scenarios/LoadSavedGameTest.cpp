@@ -71,7 +71,7 @@ private:
         short value = 0;
         short targetNation = 0;
         int payload = 0;
-        player->ReadTrackedSlotEntryFields(resource, ordinal, &kind, &value, &targetNation,
+        player->GetDealInfo(resource, ordinal, &kind, &value, &targetNation,
                                            &payload);
         sawPurchase = sawPurchase || kind == kTrackedSlotOfferEntry;
         sawSale = sawSale || kind == kTrackedSlotAcceptEntry;

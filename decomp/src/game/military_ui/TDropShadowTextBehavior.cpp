@@ -30,6 +30,6 @@ void TDropShadowTextBehavior::Draw(RECT* bounds) {
   shadowBounds.bottom--;
   shadowBounds.left--;
   shadowBounds.right--;
-  textOwner->DrawTextAligned(static_cast<LPCSTR>(text), text.GetLength(), &shadowBounds,
+  textOwner->ImageText(static_cast<LPCSTR>(text), text.GetLength(), &shadowBounds,
                              textOwner->textAlignmentCode);
 }

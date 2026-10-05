@@ -43,7 +43,7 @@ void TDealBookPicture::Startup(short startupValue) {
   TToolBarCluster* toolControl =
       static_cast<TToolBarCluster*>(this->ResolveControlByTag(kControlTagTool));
   toolControl->AssertValid();
-  toolControl->RefreshTurnOrderStatusPanelTextsAndControls();
+  toolControl->AddInfoBehaviors();
   toolControl->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetPlayerCountry());
   toolControl->RefreshControl();
 
@@ -78,7 +78,7 @@ void TDealBookPicture::Startup(short startupValue) {
   // 'titL' title label.
   TStaticText* titLControl = static_cast<TStaticText*>(this->ResolveControlByTag(kControlTagTitL));
   titLControl->AssertValid();
-  titLControl->SetTextFromStringResource(0x2740, 0x19, false);
+  titLControl->SetTextWithStrListID(0x2740, 0x19, false);
   CRect titLBounds;
   titLControl->QueryBounds(&titLBounds);
   RECT titLInval;
@@ -89,7 +89,7 @@ void TDealBookPicture::Startup(short startupValue) {
   TDropShadowText* rtilControl =
       static_cast<TDropShadowText*>(this->ResolveControlByTag(kControlTagRtil));
   rtilControl->AssertValid();
-  rtilControl->SetTextFromStringResource(0x2740, 0x1a, false);
+  rtilControl->SetTextWithStrListID(0x2740, 0x1a, false);
   CRect rtilBounds;
   rtilControl->QueryBounds(&rtilBounds);
   RECT rtilInval;
@@ -188,7 +188,7 @@ void TDealBookPicture::CalculatePages() {
     short value = 0;
     short targetNation = 0;
     int payload = 0;
-    nation->ReadTrackedSlotEntryFields(commoditySlot, 1, &kind, &value, &targetNation, &payload);
+    nation->GetDealInfo(commoditySlot, 1, &kind, &value, &targetNation, &payload);
 
     TPageView* page;
     int* row;
@@ -203,14 +203,14 @@ void TDealBookPicture::CalculatePages() {
 
     int headerBounds[2] = {200, 30};
     TCommodityLine* header = new TCommodityLine();
-    header->SetLineDataRowAndBounds(0, 30, headerBounds);
+    header->ILineData(0, 30, headerBounds);
     header->commoditySlot = commoditySlot;
     page->AddOptionEntry(header);
 
     for (short ordinal = 1; ordinal <= entryCount; ++ordinal) {
       int lineBounds[2] = {200, 30};
       TDealLine* line = new TDealLine();
-      line->SetLineDataRowAndBounds(static_cast<short>(*row), 0, lineBounds);
+      line->ILineData(static_cast<short>(*row), 0, lineBounds);
       line->commoditySlot = commoditySlot;
       line->ownerNationSlot = selectedNationSlot;
       line->entryOrdinal = ordinal;
@@ -224,14 +224,14 @@ void TDealBookPicture::CalculatePages() {
 
     int headingBounds[2] = {200, 30};
     TTextLine* heading = new TTextLine();
-    heading->SetTextLineRowBoundsAndStyle(0, 60, headingBounds, -1, 0);
+    heading->ITextLine(0, 60, headingBounds, -1, 0);
     g_pSimMgr->GetString(0x2741, 7, &aidHeading);
     heading->SetCaptionText(&aidHeading);
 
     TextStyle headingStyle;
     BuildUiTextStyleDescriptor(&headingStyle, 0, 14, 0x2b67);
     heading->SetTextLineStyleDescriptor(&headingStyle);
-    heading->SetTextAlignmentCode(1);
+    heading->SetTheJustification(1);
     soldTradesView->AddOrderedEntry(heading);
 
     for (short targetNation = 0; targetNation < 23; ++targetNation) {
@@ -245,7 +245,7 @@ void TDealBookPicture::CalculatePages() {
 
       int headerBounds[2] = {200, 30};
       TCommodityLine* header = new TCommodityLine();
-      header->SetLineDataRowAndBounds(0, 30, headerBounds);
+      header->ILineData(0, 30, headerBounds);
       header->commoditySlot = targetNation;
       soldTradesView->AddOptionEntry(header);
 
@@ -259,7 +259,7 @@ void TDealBookPicture::CalculatePages() {
         CString allocationText;
         int lineBounds[2] = {200, 30};
         TTextLine* line = new TTextLine();
-        line->SetTextLineRowBoundsAndStyle(static_cast<short>(sellRow), 0, lineBounds, -1, 0);
+        line->ITextLine(static_cast<short>(sellRow), 0, lineBounds, -1, 0);
         nationName = g_pSimMgr->LoadNormalizedCredentialName(minorNation);
         g_pSimMgr->NumToCurrency(allocation, &allocationText);
         nationName += s_szTurnHistorySeparator_00699320 + allocationText;
@@ -271,7 +271,7 @@ void TDealBookPicture::CalculatePages() {
 
   int totalsBounds[2] = {200, (nation->pressureCounter > 0 ? 5 : 4) * 30};
   TTradeTotalsLine* totals = new TTradeTotalsLine();
-  totals->SetLineDataRowAndBounds(0, 0, totalsBounds);
+  totals->ILineData(0, 0, totalsBounds);
   totals->nationSlot = selectedNationSlot;
   soldTradesView->AddOrderedEntry(totals);
 
@@ -294,8 +294,8 @@ void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     short categorySlot = g_tradeBookCategoryByTabAndTechState_0066DB58
         [g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId]][tabIndex];
     if (categorySlot != -1) {
-      sellPageView->RebuildNationOfferRowsForCategory(categorySlot);
-      buyPageView->RebuildNationBidRowsForCategory(categorySlot);
+      sellPageView->SetItem(categorySlot);
+      buyPageView->SetItem(categorySlot);
       if (!alternatePageMode) {
         SwitchPages();
       }
@@ -386,8 +386,8 @@ void TDealBookPicture::SwitchPages() {
     visibleBuyPage = buyPageView;
     pictureResourceId = 0x2263;
   } else {
-    buyPageView->RebuildNationBidRowsForCategory(-1);
-    sellPageView->RebuildNationOfferRowsForCategory(-1);
+    buyPageView->SetItem(-1);
+    sellPageView->SetItem(-1);
 
     TView* tabsControl = ResolveControlByTag(kControlTagTabs);
     if (tabsControl == nullptr) {
@@ -397,14 +397,14 @@ void TDealBookPicture::SwitchPages() {
 
     TStaticText* titLControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitL));
     titLControl->AssertValid();
-    titLControl->SetTextFromStringResource(0x2740, 0x19, false);
+    titLControl->SetTextWithStrListID(0x2740, 0x19, false);
     CRect titLBounds;
     titLControl->QueryBounds(&titLBounds);
     InvalidateCityDialogRectRegion(&titLBounds, 1);
 
     TStaticText* rtilControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagRtil));
     rtilControl->AssertValid();
-    rtilControl->SetTextFromStringResource(0x2740, 0x1a, false);
+    rtilControl->SetTextWithStrListID(0x2740, 0x1a, false);
     CRect rtilBounds;
     rtilControl->QueryBounds(&rtilBounds);
     InvalidateCityDialogRectRegion(&rtilBounds, 1);
@@ -440,7 +440,7 @@ void TDealBookPicture::SwitchPages() {
     lastPageIndex = cachedSellPageView->pageCount - 1;
   }
 
-  SetPictureResourceIdAndRefresh(pictureResourceId, 1);
+  SetPictureRsrcID(pictureResourceId, 1);
   alternatePageMode = !alternatePageMode;
   ShowPage(0, selectedNationSlot);
 }

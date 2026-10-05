@@ -37,7 +37,7 @@ public:
   TLanguageMgr();
   bool ReadPrepLUT(const char* basePath, unsigned long languageTag);
   void FreeTableRows();
-  void AllocateTable(unsigned char firstColumn, unsigned char lastColumn,
+  void Allocate(unsigned char firstColumn, unsigned char lastColumn,
                      unsigned char firstPrimaryRow, unsigned char lastPrimaryRow,
                      unsigned char firstExtraRow, unsigned char lastExtraRow);
   void ParseRow(const char* line);

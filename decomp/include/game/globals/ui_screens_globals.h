@@ -30,7 +30,7 @@ extern const char* const g_pszMultiplayerSavePrefix_0065DDD4; // "mult" @ 0x65dd
 extern const char* const g_pszImpSaveExtension_0065DDD8; // ".imp" @ 0x65ddd8
 
 // Map-action-context display-name cache key (0x6984b8): reset to -1 before each status
-// regen pass; read/written by GenerateMapActionContextDisplayNameAndHeadline.
+// regen pass; read/written by NameThyself.
 extern int g_mapActionContextDisplayNameCacheId_006984b8;
 
 // Companion stride (0x6984bc) for the display-name cache key: a random step (1/7/0xb/0x17)

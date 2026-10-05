@@ -524,7 +524,7 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
   }
 
   CPoint placement;
-  g_pViewMgr->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
+  g_pViewMgr->GetTopLeftFor(dialog, &placement);
   dialog->Resize(placement, false);
 
   TJoinSelectorDialog* selector =

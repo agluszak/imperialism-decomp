@@ -29,7 +29,7 @@ void TSpecialQuitPicture::DoPostCreate(int arg) {
   // TStaticText* parameter accepts them via the real inheritance chain).
   TDeluxeText* saleControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagSale));
   saleControl->AssertValid();
-  saleControl->SetTextFromUiStringResourceId(0x4e20);
+  saleControl->LoadTextResource(0x4e20);
   saleControl->SetTextStyle(0, 0x18, 0x2b6c);
   CRect saleBounds;
   saleControl->QueryBounds(&saleBounds);
@@ -54,7 +54,7 @@ void TSpecialQuitPicture::DoPostCreate(int arg) {
   TDeluxeText* titlControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTitl));
   titlControl->AssertValid();
   titlControl->SetTextStyle(0, 0xe, 0x2b6c);
-  titlControl->SetTextAlignmentAndMaybeRefresh(1, true);
+  titlControl->SetJustification(1, true);
 }
 
 // FUNCTION: IMPERIALISM 0x005b4a10
@@ -75,20 +75,20 @@ void TSpecialQuitPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
       titlControl->AssertValid();
       titlControl->Show(1, 1);
       quitAnimationFrame90 = 1;
-      SetPictureResourceIdAndRefresh(0x3e9, 1);
+      SetPictureRsrcID(0x3e9, 1);
       g_pSimMgr->GetString(0x1770, 0, &titlText);
       titlControl->UpdateTextEntrySharedString(&titlText);
     } else if (quitAnimationFrame90 > 0) {
       ++quitAnimationFrame90;
       if (quitAnimationFrame90 < 10) {
-        SetPictureResourceIdAndRefresh(static_cast<short>(quitAnimationFrame90 + 0x3e8), 1);
+        SetPictureRsrcID(static_cast<short>(quitAnimationFrame90 + 0x3e8), 1);
         TDeluxeText* titlControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTitl));
         titlControl->AssertValid();
         g_pSimMgr->GetString(0x1770, static_cast<short>(quitAnimationFrame90 - 1), &titlText);
         titlControl->UpdateTextEntrySharedString(&titlText);
       } else {
         quitAnimationFrame90 = 0;
-        SetPictureResourceIdAndRefresh(0x4e20, 1);
+        SetPictureRsrcID(0x4e20, 1);
         ResolveControlByTag(kControlTagQuit)->ViewEnable(1, 1);
         ResolveControlByTag(kControlTagShow)->ViewEnable(1, 1);
         ResolveControlByTag(kControlTagSale)->Show(1, 1);

@@ -6,7 +6,7 @@ TTechCheater::~TTechCheater() {}
 IMPLEMENT_DYNCREATE(TTechCheater, TCheater)
 
 // FUNCTION: IMPERIALISM 0x004b1960
-void TTechCheater::ConstructTTechCheaterBaseState(TView* panel) {
+void TTechCheater::ITechCheater(TView* panel) {
   ConstructTCheaterBaseState(panel, 0x2727);
 }
 

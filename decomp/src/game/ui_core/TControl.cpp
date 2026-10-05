@@ -199,7 +199,7 @@ void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNat
   // Written as one conditional argument: VC5 pushes the refresh flag before the branch
   // (0x004fcedc `push 1`) and lets each arm push its own resource id, which a
   // `short pictureId` temp assigned in an if/else would not reproduce.
-  mapKey.SetPictureResourceIdAndRefresh(
+  mapKey.SetPictureRsrcID(
       selectedNation <= 0 ? 0x1393 : static_cast<short>(0x1394 + table[selectedNation]), 1);
 
   // The nation-name captions belong to the unfiltered legend only: the original computes

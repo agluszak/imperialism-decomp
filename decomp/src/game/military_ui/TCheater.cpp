@@ -38,7 +38,7 @@ void TCheater::ConstructTCheaterBaseState(TView* panel, int unusedArg) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b1670
-void TCheater::CenterWindowUsingSize(const CPoint* size) {
+void TCheater::ResizeWindow(const CPoint* size) {
   TWindow* window = GetWindow();
   CRect bounds;
   window->QueryBounds(&bounds);

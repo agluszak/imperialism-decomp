@@ -52,7 +52,7 @@ void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, const char* 
 void __cdecl SetUiResourceContextMaxCharCount(short maxChars);
 
 // Set the picture resource id on the current g_pUiResourceContext picture widget
-// (virtual slot 0x72 SetPictureResourceIdAndRefresh, no immediate refresh).
+// (virtual slot 0x72 SetPictureRsrcID, no immediate refresh).
 void __cdecl SetUiResourceContextPictureId(int nPictureId);
 
 // Store a FourCC group/mode code as the current context cluster's selected child tag.
@@ -77,7 +77,7 @@ void __cdecl ApplyUiResourceColorTripletFromContext(bool nFlag0C, bool nTripletF
 // current context number-text widget.
 void __cdecl SetUiResourceContextNumberValueAndRange(int value, int minValue, int maxValue);
 
-// Clear the g_pUiResourceContext cursor.
+// IFuzzySet the g_pUiResourceContext cursor.
 void __cdecl ClearUiResourceContext();
 
 // Pop the top build-stack node; when the stack empties, release the node pool.

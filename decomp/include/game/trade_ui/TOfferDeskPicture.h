@@ -22,7 +22,7 @@ public:
   // TPicture's own slice ends at 0x90 (ASSERT_SIZE); RTTI oracle confirms
   // sizeof(TOfferDeskPicture) == 0xa8. The ctor initializes the selection flag and
   // resolves the accept/reject controls during DoPostCreate().
-  // 0x90/0x92/0x96 identified from RefreshSelectedNationOrderCompatibilityInfo (hedged
+  // 0x90/0x92/0x96 identified from ShowAdvice (hedged
   // names); 0x94/0x98/0x9a/0x9d identified from CreateNextTradeCommandAndFormatPrompt
   // (0x5c04f0): all four feed TTradeMgr::SetDealResults's arguments or the
   // quantity-validation / error-detail branches there.
@@ -51,7 +51,7 @@ public:
   // Rebuilds the 'info' static-text control's trade-compatibility text for the responding
   // nation / offering nation / commodity, at the current help detail level.
   // 0x005bf930, __thiscall (non-virtual helper called by slot 0x73 and DoEvent).
-  void RefreshSelectedNationOrderCompatibilityInfo();
+  void ShowAdvice();
 
   // Reads the 'clus'/'nomo'/'purc' child controls, validates the proposed quantity against
   // the 'purc' TNumberText's own maximumValue -- showing an out-of-range error and
@@ -64,7 +64,7 @@ public:
 
   // Updates the trade-desk selection state (activating/deactivating) and refreshes the UI
   // to match. 0x5c09d0, __thiscall.
-  void UpdateTradeSelectionStateAndRefreshUiIfChanged(unsigned char activate);
+  void SwitchToBook(unsigned char activate);
 };
 
 ASSERT_SIZE(TOfferDeskPicture, 0xa8);

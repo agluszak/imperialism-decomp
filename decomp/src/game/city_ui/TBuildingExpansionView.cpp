@@ -47,7 +47,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
   short currentCapacity = city->GetMaxBuildingCapacity(buildingSlotId);
 
   // Building picture = next-level tier + per-slot picture base, refreshed immediately.
-  this->SetPictureResourceIdAndRefresh(
+  this->SetPictureRsrcID(
       static_cast<short>(city94->GetNextBuildingLevel(buildingSlotId) +
                          (buildingSlotId + 0x73a) * 5),
       1);
@@ -61,7 +61,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa78);
   }
   nameCtrl->InstallTextStyle(style.desc, 0);
-  nameCtrl->SetTextAlignmentAndMaybeRefresh(1, false);
+  nameCtrl->SetJustification(1, false);
   g_pSimMgr->GetString(0x2719, buildingSlotId, &textBuffer);
   nameCtrl->SetTextAndMaybeRefresh(&textBuffer, false);
 
@@ -73,7 +73,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa7f);
   }
   costCtrl->InstallTextStyle(style.desc, 0);
-  costCtrl->SetTextAlignmentAndMaybeRefresh(1, false);
+  costCtrl->SetJustification(1, false);
   g_pSimMgr->GetString(0x2738, 0x14, &textBuffer);
   costCtrl->SetTextAndMaybeRefresh(&textBuffer, false);
 
@@ -85,7 +85,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
   scanBracketExpressions(g_pSimMgr, &textBuffer, static_cast<LPCSTR>(capacityTemplate),
                          static_cast<LPCSTR>(capacityValue));
   capTCtrl->InstallTextStyle(style.desc, 0);
-  capTCtrl->SetTextAlignmentAndMaybeRefresh(1, false);
+  capTCtrl->SetJustification(1, false);
   capTCtrl->SetTextAndMaybeRefresh(&textBuffer, false);
 
   // 'warn' label — configured (or hidden) below depending on the upgrade-queued check.
@@ -114,7 +114,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
     // Upgrade not queued: show the warning + expansion prompt and disable the OK button.
     BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b69);
     warnCtrl->InstallTextStyle(style.desc, 0);
-    warnCtrl->SetTextAlignmentAndMaybeRefresh(1, false);
+    warnCtrl->SetJustification(1, false);
     g_pSimMgr->GetString(0x2738, (buildingSlotId == 0xb) ? 0x16 : 0x17, &textBuffer);
     warnCtrl->SetTextAndMaybeRefresh(&textBuffer, false);
     warnCtrl->Show(1, 0);

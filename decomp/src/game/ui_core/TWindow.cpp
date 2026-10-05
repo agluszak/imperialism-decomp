@@ -259,7 +259,7 @@ CWnd* TWindow::Open() {
   return 0;
 }
 
-// Clear the busy flag, notify the host window, recurse the slot-0x28 hook into every child
+// IFuzzySet the busy flag, notify the host window, recurse the slot-0x28 hook into every child
 // control, then run the slot-0x73 state-notify chain.
 // FUNCTION: IMPERIALISM 0x0048e060
 void TWindow::Close() {

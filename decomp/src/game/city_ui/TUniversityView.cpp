@@ -87,7 +87,7 @@ void TUniversityView::DoStartup() {
   TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl)); // 'titl'
   title->AssertValid();
   title->InstallTextStyle(style.desc, 1);
-  title->SetTextFromStringResource(0x2723, 0xa, true);
+  title->SetTextWithStrListID(0x2723, 0xa, true);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b6b);
   TStaticText* unit = static_cast<TStaticText*>(ResolveControlByTag(kControlTagUnit)); // 'unit'
@@ -100,7 +100,7 @@ void TUniversityView::DoStartup() {
         ResolveControlByTag(kControlTagFix0 + fixedLabelIndex)); // 'fix0'/'fix1'
     label->AssertValid();
     label->InstallTextStyle(style.desc, 1);
-    label->SetTextFromStringResource(0x2723, static_cast<short>(0xb + fixedLabelIndex), true);
+    label->SetTextWithStrListID(0x2723, static_cast<short>(0xb + fixedLabelIndex), true);
   }
 
   TStaticText* description =
@@ -113,9 +113,9 @@ void TUniversityView::DoStartup() {
         ResolveControlByTag(kControlTagFix2 + requirementLabelIndex)); // 'fix2'..'fix4'
     label->AssertValid();
     label->InstallTextStyle(style.desc, 1);
-    label->SetTextFromStringResource(0x2723, static_cast<short>(0xe + requirementLabelIndex), true);
+    label->SetTextWithStrListID(0x2723, static_cast<short>(0xe + requirementLabelIndex), true);
     label->Show(0, 1);
-    label->SetTextAlignmentAndMaybeRefresh(1, false);
+    label->SetJustification(1, false);
   }
 
   static const unsigned int kStyledValueTags[6] = {kControlTagCash, kControlTagTrea,
@@ -149,7 +149,7 @@ void TUniversityView::SetUnit(short recruitmentCategory) {
   CRect invalidRect;
   TStaticText* unit = static_cast<TStaticText*>(ResolveControlByTag(kControlTagUnit)); // 'unit'
   unit->AssertValid();
-  unit->SetTextFromStringResource(0x2718, static_cast<short>(recruitmentCategory + 1), false);
+  unit->SetTextWithStrListID(0x2718, static_cast<short>(recruitmentCategory + 1), false);
   unit->QueryBounds(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
@@ -170,7 +170,7 @@ void TUniversityView::SetUnit(short recruitmentCategory) {
   TStaticText* description =
       static_cast<TStaticText*>(ResolveControlByTag(kControlTagDesc)); // 'desc'
   description->AssertValid();
-  description->SetTextFromStringResource(0x2751, recruitmentCategory, false);
+  description->SetTextWithStrListID(0x2751, recruitmentCategory, false);
   description->QueryBounds(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 

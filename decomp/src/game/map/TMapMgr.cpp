@@ -294,7 +294,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
     } else {
       GenerateMappedFlavorTextByCurrentContextNation(&scenarioTagText);
     }
-    mapMaker->GenerateMapFromTuningStringAndApplyScenarioOverrides(
+    mapMaker->GenerateNewMap(
         static_cast<char*>(static_cast<void*>(terrainStateTable)), cityScoreTable,
         &scenarioTagText);
   }
@@ -2126,7 +2126,7 @@ char TMapMgr::GetTileCivilianWorkOrderCostClassNibble(StrategicTileIndex nTileIn
 }
 
 // FUNCTION: IMPERIALISM 0x005136a0
-void TMapMgr::SetCivilianDevelopmentClassNibble(StrategicTileIndex tileIndex, bool selectHighNibble,
+void TMapMgr::SetDevelopmentLevel(StrategicTileIndex tileIndex, bool selectHighNibble,
                                                 byte value, bool param4) {
   unsigned char packed = terrainStateTable[tileIndex].developmentClassNibbles;
   if (selectHighNibble) {
@@ -2143,7 +2143,7 @@ void TMapMgr::SetCivilianDevelopmentClassNibble(StrategicTileIndex tileIndex, bo
 }
 
 // FUNCTION: IMPERIALISM 0x00513720
-short TMapMgr::FindMaxResourceCapabilityValueForTile(StrategicTileIndex tileIndex,
+short TMapMgr::GetMaxDevelopmentLevel(StrategicTileIndex tileIndex,
                                                      char categoryCode, int nationSlot) {
   signed char* resourceTypeSlot = terrainStateTable[tileIndex].resourceTypeByEdge;
   short maxValue = 0;
@@ -2692,7 +2692,7 @@ void TMapMgr::PlaceCity(StrategicTileIndex nTileIndex, short nOwnerNationId) {
       }
     }
     if (eligible) {
-      SetCivilianDevelopmentClassNibble(neighborTile, false, 1, true);
+      SetDevelopmentLevel(neighborTile, false, 1, true);
     }
   }
 
@@ -2709,11 +2709,11 @@ TMapMgr::FindReachableRecruitSpawnTileWithVisitedReset(StrategicTileIndex startT
   for (int tileIndex = 0; tileIndex < kGlobalMapTileCount; ++tileIndex) {
     terrainStateTable[tileIndex].recruitSearchVisited0e = 0;
   }
-  return FindReachableRecruitSpawnTileRecursive(startTileIndex, ownerNationTag, allowActiveFlag2);
+  return SearchOpenTile(startTileIndex, ownerNationTag, allowActiveFlag2);
 }
 
 // FUNCTION: IMPERIALISM 0x00514cd0
-StrategicTileIndex TMapMgr::FindReachableRecruitSpawnTileRecursive(StrategicTileIndex tileIndex,
+StrategicTileIndex TMapMgr::SearchOpenTile(StrategicTileIndex tileIndex,
                                                                    short ownerNationTag,
                                                                    bool allowActiveFlag2) {
   TTerrainStateRecord* tile = &terrainStateTable[tileIndex];
@@ -2751,7 +2751,7 @@ StrategicTileIndex TMapMgr::FindReachableRecruitSpawnTileRecursive(StrategicTile
     if (neighborTiles[neighborIndex] == -1) {
       continue;
     }
-    StrategicTileIndex foundTile = FindReachableRecruitSpawnTileRecursive(
+    StrategicTileIndex foundTile = SearchOpenTile(
         neighborTiles[neighborIndex], ownerNationTag, allowActiveFlag2);
     if (foundTile != -1) {
       return foundTile;
@@ -2866,7 +2866,7 @@ void TMapMgr::SeedRecruitSearchVisitedStateAndClearAlliedTerritory(TCivUnit* pCi
 }
 
 // FUNCTION: IMPERIALISM 0x005150e0
-void TMapMgr::SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates(
+void TMapMgr::DimByMarching(
     TMilitaryUnit* const candidates[6], short orderTargetSlot) {
   int i;
   TMilitaryUnit* unit = nullptr;
@@ -2963,7 +2963,7 @@ void TMapMgr::DimByProspecting(TCivUnit* pCivilianOrderEntry) {
         tile->recruitSearchVisited0e = 1;
         continue;
       }
-      if (g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
+      if (g_pDiplomacyTurnStateManager->GetEmbassyStatus(
               nationTag, tile->ownerNationTag04) != 2) {
         tile->recruitSearchVisited0e = 1;
         continue;
@@ -2993,7 +2993,7 @@ void TMapMgr::DimByDevelopment(TCivUnit* pCivilianOrderEntry) {
     if (tile->ownerNationTag04 < 7) {
       continue;
     }
-    if (g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
+    if (g_pDiplomacyTurnStateManager->GetEmbassyStatus(
             nationTag, tile->ownerNationTag04) != 2) {
       continue;
     }
@@ -3380,7 +3380,7 @@ short TMapMgr::LookupTileSpriteVariantOffsetByGateAndVariantAlt(StrategicTileInd
 }
 
 // FUNCTION: IMPERIALISM 0x00516260
-short TMapMgr::LookupAdjacencyBitmaskVariantByDirection(char bitmaskIndex, char direction) {
+short TMapMgr::GetCoastTileNumber(char bitmaskIndex, char direction) {
   short table[64][7] = {
       {0, 0, 0, 0, 0, 0, 0},  {1, 2, 2, 0, 0, 0, 0},  {2, 0, 3, 3, 0, 0, 0},
       {3, 2, 1, 3, 0, 0, 0},  {4, 0, 0, 2, 2, 0, 0},  {5, 2, 0, 2, 2, 0, 0},
@@ -3409,27 +3409,27 @@ short TMapMgr::LookupAdjacencyBitmaskVariantByDirection(char bitmaskIndex, char 
 }
 
 // FUNCTION: IMPERIALISM 0x00517410
-short TMapMgr::MapImprovementOffsetFromAdjacencyVariant(char bitmaskIndex, char direction,
+short TMapMgr::GetCoastTileOffset(char bitmaskIndex, char direction,
                                                         char useAltOffset) {
-  short variant = LookupAdjacencyBitmaskVariantByDirection(bitmaskIndex, direction);
+  short variant = GetCoastTileNumber(bitmaskIndex, direction);
   if (variant == 0) {
     return variant;
   }
   if (useAltOffset == 0) {
-    return (LookupAdjacencyBitmaskVariantByDirection(bitmaskIndex, direction) + 0x15) << 6;
+    return (GetCoastTileNumber(bitmaskIndex, direction) + 0x15) << 6;
   }
-  return (LookupAdjacencyBitmaskVariantByDirection(bitmaskIndex, direction) + 0x20) << 6;
+  return (GetCoastTileNumber(bitmaskIndex, direction) + 0x20) << 6;
 }
 
 // FUNCTION: IMPERIALISM 0x00517480
-short TMapMgr::MapImprovementOffsetFromAdjacencyVariantTriple(char bitmaskIndex, char direction,
+short TMapMgr::GetDeltaTileOffset(char bitmaskIndex, char direction,
                                                               short param3) {
-  if (LookupAdjacencyBitmaskVariantByDirection(bitmaskIndex, direction) == 0) {
+  if (GetCoastTileNumber(bitmaskIndex, direction) == 0) {
     return 0;
   }
-  short offset = LookupAdjacencyBitmaskVariantByDirection(bitmaskIndex, direction);
+  short offset = GetCoastTileNumber(bitmaskIndex, direction);
   offset = (offset + 0x29) << 6;
-  if (LookupAdjacencyBitmaskVariantByDirection(bitmaskIndex, direction) == 1) {
+  if (GetCoastTileNumber(bitmaskIndex, direction) == 1) {
     if (param3 == 0x33 || param3 == 0x36 || param3 == 0x3a || param3 == 0x39) {
       offset += 0xc0;
     }
@@ -3938,7 +3938,7 @@ short TMapMgr::GetProvinceUnitOrderWeight(ProvinceIndexStorage provinceId) {
 // FUNCTION: IMPERIALISM 0x00518540
 char TMapMgr::LoadScenarioMapStateFromTableResource(int scenarioIndex) {
   CString scenarioPath;
-  g_pAssetMgr->BuildScenarioPathForModeAndIndex(scenarioIndex, 1, &scenarioPath);
+  g_pAssetMgr->GetScenarioFileName(scenarioIndex, 1, &scenarioPath);
   if (TryGetFileMetadataForPath(&scenarioPath) == 0) {
     return 0;
   }
@@ -4129,7 +4129,7 @@ int TMapMgr::CalculateDeveloperTilePurchaseCost(StrategicTileIndex nTileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x00518bd0
-void TMapMgr::MarkAdjacentHexOrderDirectionAndSelectTile(int tileIndex, int contextArg, bool flag) {
+void TMapMgr::ActivateMarchingArrow(int tileIndex, int contextArg, bool flag) {
   short anchorTile = cityScoreTable[contextArg].cityTileIndex04;
   short direction =
       GetDirectionFrom(anchorTile, g_pGlobalMapState->cityScoreTable[tileIndex].cityTileIndex04);
@@ -4196,7 +4196,7 @@ void TMapMgr::MarkDirectionalMapOverlayFlagsForNationOrders() {
     if (unit->orderTargetIndex != -1) {
       bool atWar = g_pDiplomacyTurnStateManager->IsNationPairAtWar(
           activeNationId, cityScoreTable[unit->orderTargetIndex].ownerNationCode00);
-      MarkAdjacentHexOrderDirectionAndSelectTile(unit->tileIndex06, unit->orderTargetIndex, atWar);
+      ActivateMarchingArrow(unit->tileIndex06, unit->orderTargetIndex, atWar);
     }
     unit = static_cast<TMilitaryUnit*>(cursor.Advance());
   }
@@ -4352,10 +4352,10 @@ void TMapMgr::DumpAndResetMapScriptState() {
             laborCity3->productionSummary->baselineSlots->highSkillCount08);
     for (slot = 0; slot < 0x17; ++slot) {
       short embargo =
-          g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(nationIndex, slot);
+          g_pDiplomacyTurnStateManager->GetEmbassyStatus(nationIndex, slot);
       if (embargo > 0) {
         embargo =
-            g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(nationIndex, slot);
+            g_pDiplomacyTurnStateManager->GetEmbassyStatus(nationIndex, slot);
         fprintf(logFile, g_szFmtEmba_00697254, nationIndex, slot, embargo);
       }
     }

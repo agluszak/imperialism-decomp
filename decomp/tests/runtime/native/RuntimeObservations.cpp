@@ -237,7 +237,7 @@ bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
       int previousDirection = (corner + 5) % 6;
       int cornerBits = (1 << previousDirection) | (1 << corner);
       if ((terrain.adjacencyMaskB0b & cornerBits) != 0 &&
-          g_pGlobalMapState->MapImprovementOffsetFromAdjacencyVariant(
+          g_pGlobalMapState->GetCoastTileOffset(
               static_cast<char>(terrain.adjacencyMaskB0b), static_cast<char>(corner + 1),
               static_cast<char>(terrain.spriteVariantIndex & (1 << corner))) != 0) {
         coastTile = tile;
@@ -276,7 +276,7 @@ bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
     if ((terrain.adjacencyMaskB0b & cornerBits) == 0) {
       continue;
     }
-    int coastOffset = g_pGlobalMapState->MapImprovementOffsetFromAdjacencyVariant(
+    int coastOffset = g_pGlobalMapState->GetCoastTileOffset(
         static_cast<char>(terrain.adjacencyMaskB0b), static_cast<char>(corner + 1),
         static_cast<char>(terrain.spriteVariantIndex & (1 << corner)));
     if (coastOffset == 0) {

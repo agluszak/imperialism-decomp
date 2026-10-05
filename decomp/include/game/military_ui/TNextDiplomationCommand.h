@@ -23,7 +23,7 @@ public:
 
   // Seed the payload with the 'NeXT' four-cc and immediately dispatch this command
   // through the UI root controller (0x4f2930).
-  void DispatchUiPacketWithTagNEXT();
+  void PostThyself();
 
   virtual ~TNextDiplomationCommand() override; // slot 0x01 scalar deleting dtor 0x4f0dd0
 };

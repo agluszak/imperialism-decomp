@@ -20,7 +20,7 @@ struct CRuntimeClass;
 // holds the stock counters and production orders that those yields feed.
 //
 // The link between them is TCity::homeTownMarker, which points at the town occupying
-// the nation's capital tile -- TGreatPower::SetHomeCityTileAndDisplayName (0x4dfd30)
+// the nation's capital tile -- TGreatPower::PlaceCity (0x4dfd30)
 // takes the nation's homeTileIndex straight from that marker's tileIndex. That is why
 // a *town* method is named CalculateCityResources: the capital's own resource intake is
 // gathered by the town marker sitting on it, not by TCity itself.

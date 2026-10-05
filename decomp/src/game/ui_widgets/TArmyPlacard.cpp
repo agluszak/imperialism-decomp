@@ -35,7 +35,7 @@ void TArmyPlacard::SetValue(short value, bool refreshNow) {
     if (value <= 0) {
       pictureId += 0x1e;
     }
-    this->SetPictureResourceIdAndRefresh(pictureId, true);
+    this->SetPictureRsrcID(pictureId, true);
     if (refreshNow) {
       this->RefreshControl();
     }

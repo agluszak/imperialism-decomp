@@ -89,8 +89,8 @@ public:
   // 0xb0..0xbf: per-category ('uciv'/'uarm'/'unav'/unused) sub-controls resolved by
   // DoPostCreate via ResolveControlByTag. NOT a homogeneous TMapUberPicture array
   // (that was the old theory): (a) TCivMgr's
-  // SetActiveCivilianSelection (0x4d2c60) makes a direct non-virtual call from
-  // categoryPages[0] to TCivToolbar::RefreshCivilianCommandPanelForSelection (0x58eb20,
+  // SelectUnit (0x4d2c60) makes a direct non-virtual call from
+  // categoryPages[0] to TCivToolbar::SetSelectedUnit (0x58eb20,
   // ground-truth-confirmed, not a vtable dispatch), which only produces correct behavior
   // if categoryPages[0] really is a TCivToolbar object. (b) TArmyMgr's
   // SetSelectedProvince (0x4a45e0) dispatches categoryPages[1]'s own vtable slot at

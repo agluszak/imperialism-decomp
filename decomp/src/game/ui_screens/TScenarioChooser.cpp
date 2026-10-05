@@ -51,7 +51,7 @@ void TScenarioChooser::DoPostCreate(int arg) {
         g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
       continue;
     }
-    g_pAssetMgr->BuildScenarioPathForModeAndIndex(static_cast<short>(scenarioIndex), 0,
+    g_pAssetMgr->GetScenarioFileName(static_cast<short>(scenarioIndex), 0,
                                                   &scenarioPath);
     if (TryGetFileMetadataForPath(&scenarioPath) == 0) {
       continue;
@@ -120,7 +120,7 @@ void TScenarioChooser::DoPostCreate(int arg) {
   g_pCursorControlPanel = cursorPanel;
   cursorPanel->AssertValid();
   cursorPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
-  cursorPanel->SetTextAlignmentAndMaybeRefresh(1, true);
+  cursorPanel->SetJustification(1, true);
 
   LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x18, this);
   LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x14, ResolveControlByTag(kControlTagExit));
@@ -259,7 +259,7 @@ void TScenarioChooser::StartGame() {
 void TScenarioChooser::ShowInfo(int scenarioIndex) {
   CString path;
   selectedScenarioIndex = static_cast<short>(scenarioIndex);
-  g_pAssetMgr->BuildScenarioPathForModeAndIndex(scenarioIndex, 0, &path);
+  g_pAssetMgr->GetScenarioFileName(scenarioIndex, 0, &path);
 
   char* fieldBuffer = new char[0x1950];
   FILE* metadataStream = fopen(path, "rb");
@@ -339,7 +339,7 @@ void TScenarioChooser::ShowInfo(int scenarioIndex) {
   // The map file is the Mac-endian tile record array; byte 4 of each 0x24-byte record is
   // the owner tag the preview draws.
   ScenarioTileDiskRecord* tileRecords = new ScenarioTileDiskRecord[0x1950];
-  g_pAssetMgr->BuildScenarioPathForModeAndIndex(scenarioIndex, 1, &path);
+  g_pAssetMgr->GetScenarioFileName(scenarioIndex, 1, &path);
   FILE* mapStream = fopen(path, "rb");
   fread(tileRecords, sizeof(ScenarioTileDiskRecord), 0x1950, mapStream);
   ByteSwapScenarioTileRecordWords(tileRecords);
@@ -367,7 +367,7 @@ void TScenarioChooser::ShowInfo(int scenarioIndex) {
   delete[] tileRecords;
 
   if (glyphBase84 != 0x1198) {
-    SetPictureResourceIdAndRefresh(0x1198, 1);
+    SetPictureRsrcID(0x1198, 1);
   }
 }
 

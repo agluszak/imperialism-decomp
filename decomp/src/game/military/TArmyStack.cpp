@@ -203,7 +203,7 @@ void TArmyStack::InitializeStrategicBattle(unsigned char boosted) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a7e70
-void TArmyStack::AccumulateWeightedMeterAndCountFromEligibleLinkedEntries(int* outWeightedSum,
+void TArmyStack::StrategicFirepower(int* outWeightedSum,
                                                                           int* outCount,
                                                                           int counter) {
   // Blend-ratio pair, indexed by counter (0-3): primary weight favors the "weight class"
@@ -232,7 +232,7 @@ void TArmyStack::AccumulateWeightedMeterAndCountFromEligibleLinkedEntries(int* o
 }
 
 // FUNCTION: IMPERIALISM 0x004a8040
-void TArmyStack::ApplyRandomizedMeterDecayToEligibleLinkedEntries(int weightedSum, int count,
+void TArmyStack::ApplyStrategicDamage(int weightedSum, int count,
                                                                   int counter) {
   if (counter > 3) {
     counter = 3;
@@ -280,7 +280,7 @@ void TArmyStack::ApplyRandomizedMeterDecayToEligibleLinkedEntries(int weightedSu
 }
 
 // FUNCTION: IMPERIALISM 0x004a82b0
-void TArmyStack::ApplyMeterGrowthToEligibleUnits(bool boosted) {
+void TArmyStack::RaiseExperience(bool boosted) {
   short growthAmount = boosted ? 0x23 : 0x14;
   for (TMilitaryUnit* unit = ResetCursorAndGetHeadUnit(); unit != 0;
        unit = AdvanceCursorAndGetUnit()) {

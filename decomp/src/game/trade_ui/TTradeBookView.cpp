@@ -52,8 +52,8 @@ void TTradeBookView::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x005be150
 void TTradeBookView::SetItem(short categorySlot) {
-  buyPanel->RebuildNationBidRowsForCategory(categorySlot);
-  sellPanel->RebuildNationOfferRowsForCategory(categorySlot);
+  buyPanel->SetItem(categorySlot);
+  sellPanel->SetItem(categorySlot);
 
   if (categorySlot != -1) {
     pageCount =

@@ -29,6 +29,6 @@ void TNavyHumanPlayer::DeploymentClick(TacticalTileIndex tileIndex) {
   if (ordinal > unitList4->GetCount()) {
     sideReadyFlag = true;
   } else {
-    battle14->DeployTacticalUnitToTile(unit, tileIndex);
+    battle14->DeployUnit(unit, tileIndex);
   }
 }

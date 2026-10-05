@@ -11,15 +11,15 @@ public:
   DECLARE_DYNCREATE(TTradePageBuyView)
   virtual ~TTradePageBuyView() override; // slot 0x01 (scalar deleting destructor)
 
-  // Cache of the last-built category slot; RebuildNationBidRowsForCategory no-ops if
+  // Cache of the last-built category slot; SetItem no-ops if
   // asked to rebuild for the same category again.
   short lastBuiltCategorySlot; // 0x84
 
   TTradePageBuyView();
-  // 0x5bd690 -- mirrors TTradePageSellView::RebuildNationOfferRowsForCategory but with
+  // 0x5bd690 -- mirrors TTradePageSellView::SetItem but with
   // an ascending nation loop (0..0x16), a single header-row style variant, and no
   // fallback row: on categorySlot == -1 or no qualifying nation, the row list is simply
   // left cleared.
-  void RebuildNationBidRowsForCategory(short categorySlot);
+  void SetItem(short categorySlot);
 };
 ASSERT_SIZE(TTradePageBuyView, 0x88);

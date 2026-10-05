@@ -89,7 +89,7 @@ void TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8(TArmyStack* 
   InitTacticalBattle(ourPlayer, enemyPlayer);
 
   battleSiteIndex38 = battleSiteIndex;
-  LoadBattleSetupTabDataByIndex(compositionClass, fortLevel);
+  LoadMap(compositionClass, fortLevel);
   compositionClass50 = compositionClass;
   fortLevel49 = static_cast<char>(fortLevel);
 
@@ -103,7 +103,7 @@ void TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8(TArmyStack* 
         g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDialog));
     battleView->AssertValid();
     battleView8 = battleView;
-    battleView->InitializeBattlefieldView(compositionClass, this);
+    battleView->StuffValues(compositionClass, this);
   }
 }
 
@@ -232,7 +232,7 @@ void TArmyBattle::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x005a4fc0
-void TArmyBattle::LoadBattleSetupTabDataByIndex(int compositionClass, int fortLevel) {
+void TArmyBattle::LoadMap(int compositionClass, int fortLevel) {
   CString tabFileName;
   // Battle-setup terrain layout file, 1-based composition class ("data/%03d.tab").
   // Layout is 15 rows x 29 cols + one newline byte per row.
@@ -296,7 +296,7 @@ void TArmyBattle::LoadBattleSetupTabDataByIndex(int compositionClass, int fortLe
 // undeployed unit, resets the move-cost plane, and either fires the ready handler when
 // the side has fully deployed or refreshes the 'tool' toolbar's current-unit control.
 // FUNCTION: IMPERIALISM 0x005a51e0
-void TArmyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
+void TArmyBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
   unit->AssertValid();
   int column = tileIndex % 29;
   if (tileIndex < 29) {
@@ -348,7 +348,7 @@ void TArmyBattle::EndBattle(unsigned char sideWonFlag) {
   battleOutcome44 = kTacticalBattleSide0Victory;
   players[0]->AssertValid();
   players[1]->AssertValid();
-  g_pSfxPlaybackSystem->StopCdAudioPlayback(false);
+  g_pSfxPlaybackSystem->StopMusic(false);
 
   if (battleView8 != 0) {
     TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(
@@ -358,7 +358,7 @@ void TArmyBattle::EndBattle(unsigned char sideWonFlag) {
     toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(0);
   }
 
-  g_pMapContextActionManager->ApplyPostBattleStackOutcomeAndGrowUnitMeters(
+  g_pMapContextActionManager->EndTacticalBattle(
       static_cast<TArmyPlayer*>(players[0])->armyStack,
       static_cast<TArmyPlayer*>(players[1])->armyStack, sideWonFlag, battleSiteIndex38);
 }

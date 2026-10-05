@@ -18,7 +18,7 @@ public:
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5c2b10
   virtual void MoveTo(short nTileIndex) override;  // slot 0x0a 0x5c2b70
   virtual void ContinueOrders() override;          // slot 0x0b 0x5c2a90
-  virtual void DetachUnitOrderFromOwnerAndReset() override;      // slot 0x0c 0x5c2c40
+  virtual void Vaporize() override;      // slot 0x0c 0x5c2c40
   virtual void SetOrders(UnitOrder order, int payload) override; // slot 0x0d 0x5c29f0
   virtual void ResetCivWorkOrderAndRefreshCounters();            // slot 0x0e 0x5c2c60
   short remainingTurns;                                          // 0x24

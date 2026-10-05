@@ -211,7 +211,7 @@ void TEditText::GetCurrentText(CString* out) {
 }
 
 // FUNCTION: IMPERIALISM 0x00490cb0
-void TEditText::SetTextAlignmentAndMaybeRefresh(short alignmentCode, bool refreshFlag) {
+void TEditText::SetJustification(short alignmentCode, bool refreshFlag) {
   textAlignmentCode = alignmentCode;
   if (refreshFlag) {
     PaintOrInvalidateControl(0);

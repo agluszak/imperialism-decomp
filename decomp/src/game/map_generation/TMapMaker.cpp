@@ -54,7 +54,7 @@ bool TuningKeywordMatches(const char* keyword, const char* text) {
 }
 
 // FUNCTION: IMPERIALISM 0x00525a30
-void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileGrid,
+void TMapMaker::GenerateNewMap(char* tileGrid,
                                                                      Province* cityTable,
                                                                      CString* tuningString) {
   mapTileGrid08 = tileGrid;
@@ -755,7 +755,7 @@ void TMapMaker::RunMapGenerationAttempt() {
 #endif
         cellIndex = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 0x195);
       } while (regionClassGridFlat[cellIndex] != -1);
-      assigned = AssignRegionClassToCellAndNeighbors(cellIndex, 8, classIndex, 5);
+      assigned = SelectGPZone(cellIndex, 8, classIndex, 5);
     } while (assigned != 8);
   }
 
@@ -800,7 +800,7 @@ void TMapMaker::RunMapGenerationAttempt() {
           }
         }
       }
-      assigned = AssignRegionClassToCellAndNeighbors(cellIndex, 4, minorClassIndex, 5);
+      assigned = SelectGPZone(cellIndex, 4, minorClassIndex, 5);
     } while (assigned != 4);
   }
 }
@@ -810,7 +810,7 @@ void TMapMaker::RunMapGenerationAttempt() {
 // already owned by `classIndex`), retrying until `retryBudget` assignments succeed or no
 // neighbor remains eligible. Returns the number of successful assignments.
 // FUNCTION: IMPERIALISM 0x00527040
-int TMapMaker::AssignRegionClassToCellAndNeighbors(int cellIndex, int mode, int classIndex,
+int TMapMaker::SelectGPZone(int cellIndex, int mode, int classIndex,
                                                    int retryBudget) {
   if (mode == 0 || cellIndex / 27 <= 0 || cellIndex / 27 >= 14 ||
       regionClassGrid10[cellIndex / 27][cellIndex % 27] != -1) {
@@ -879,7 +879,7 @@ int TMapMaker::AssignRegionClassToCellAndNeighbors(int cellIndex, int mode, int 
 
     int neighborCell = GetAdjacentRegionGridCell(lastCell, selectedDir);
     int assigned =
-        AssignRegionClassToCellAndNeighbors(neighborCell, remaining, classIndex, selectedDir);
+        SelectGPZone(neighborCell, remaining, classIndex, selectedDir);
     remaining -= assigned;
     excluded[selectedDir] = true;
     --availableCount;
@@ -1057,7 +1057,7 @@ void TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords() {
 // 006a3470 tiles, then spreads hills around each laid tile with a 40%
 // per-neighbor chance (up to g_mapGenHillsQuota_006a38c0 tiles, falling back to
 // direct random placement once the spread pass can't find more room), places
-// city-marker features (PlaceCityMarkerAndSpreadNeighbors) up to
+// city-marker features (PlantForestCluster) up to
 // g_mapGenForestQuota_006a38f8 times, and finally fills the remaining swamp quota
 // (g_mapGenSwampQuota_006a38e0) with random tiles or -- once that quota is
 // exhausted -- random-walks mountain-range extensions (via slot 0x58)
@@ -1125,7 +1125,7 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
   while (forestQuota > 0) {
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
     int forestTile = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 0x1950);
-    forestQuota -= PlaceCityMarkerAndSpreadNeighbors(forestTile, 7, static_cast<char>(urgentFlag));
+    forestQuota -= PlantForestCluster(forestTile, 7, static_cast<char>(urgentFlag));
     if (forestQuota < g_mapGenForestQuota_006a38f8 * 2 / 3) {
       urgentFlag = true;
     }
@@ -1261,7 +1261,7 @@ char TMapMaker::GrowRiver(long tileIndex, long incomingDirection, long outgoingD
 // spreads to hex neighbors with a 46% chance each until `retryBudget` spreads succeed.
 // Returns the number of successful spreads.
 // FUNCTION: IMPERIALISM 0x00528140
-int TMapMaker::PlaceCityMarkerAndSpreadNeighbors(int tileIndex, int retryBudget,
+int TMapMaker::PlantForestCluster(int tileIndex, int retryBudget,
                                                  bool markerVariant) {
   if (mapTileGrid08[tileIndex * 0x24] != kStrategicTerrainPlains) {
     return 0;
@@ -1282,7 +1282,7 @@ int TMapMaker::PlaceCityMarkerAndSpreadNeighbors(int tileIndex, int retryBudget,
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
     if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 100) < 0x46 &&
         remaining != 0) {
-      remaining -= PlaceCityMarkerAndSpreadNeighbors(neighborTile, 1, markerVariant);
+      remaining -= PlantForestCluster(neighborTile, 1, markerVariant);
     }
   }
   return retryBudget - remaining;

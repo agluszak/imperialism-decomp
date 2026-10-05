@@ -44,7 +44,7 @@ public:
   virtual int ClassifyTurnStateForOverlayMode();                               // slot 0x0e 0x5d5960
   virtual void BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg); // slot 0x0f 0x5d6480
   virtual void HandleTurnEventVtableSlot40RefreshGoldDialog();                 // slot 0x10 0x5d57b0
-  virtual void ComputeTurnEventDialogPlacementByCode(TView* dialogView,
+  virtual void GetTopLeftFor(TView* dialogView,
                                                      POINT* outPlacement); // slot 0x11 0x5d69b0
   virtual void RefreshMainViewNationIndicatorForCurrentTurnEvent();        // slot 0x12 0x5d6b70
 
@@ -176,7 +176,7 @@ public:
   // 0x5dea60 — allocates a TModalMessageCommand carrying `message`/`payload`, seeds
   // it with dispatch code 'Hey!' targeting the global UI root controller, and posts
   // it there. `this` is unused by the original body.
-  void CreateModalMessageCommandAndQueue(CString* message, int payload);
+  void PostModalMessage(CString* message, int payload);
   // Mac oracle: TViewMgr::ModalMessage(CStr255, const VPoint&) and the four-argument
   // overload. Windows substitutes CString/POINT but preserves the value/reference shape.
   void ModalMessage(CString message, const POINT& messagePosition);

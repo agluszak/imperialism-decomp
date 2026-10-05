@@ -26,7 +26,7 @@ TCivilianButton::TCivilianButton() : TRadioPictureButton() {
 TCivilianButton::~TCivilianButton() {}
 
 // FUNCTION: IMPERIALISM 0x0058b460
-void TCivilianButton::SetSelectedCivilianOrderAndEnableButton(TCivUnit* selectedOrder) {
+void TCivilianButton::SetButton(TCivUnit* selectedOrder) {
   this->eventNumber60 = 0xc;
   this->selectedCivilianOrder = selectedOrder;
   if (selectedOrder != 0) {

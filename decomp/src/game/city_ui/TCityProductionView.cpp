@@ -133,7 +133,7 @@ void TCityProductionView::DoPostCreate(int arg) {
       TTransFocusAnimation* animation = new TTransFocusAnimation;
       animation->ITransFocusAnimation(this, &bounds, resourceId, static_cast<short>(animationId),
                                       (buildingSlot != 7 ? 2 : 0) + 5, 0);
-      g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
+      g_pUiAnimator->AddAnimation(animation);
       buildingActionAnimations[buildingSlot][action] = animation;
       InvalidateCityDialogRectRegion(&bounds, 1);
       needsRefresh = true;
@@ -143,7 +143,7 @@ void TCityProductionView::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x004ba740
 void TCityProductionView::Free() {
-  g_pUiAnimator->FreeUiTransientRegistryPayloads();
+  g_pUiAnimator->FreeAllAnis();
   for (int i = 0; i < 16; ++i) {
     buildingClipRegions[i] = DisposeRgn(buildingClipRegions[i]);
   }
@@ -160,7 +160,7 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
     BlitRectWithOptionalTransparency(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &snapshot,
                                      &snapshot, 0, 0);
-    RenderNationHeaderDateLabelWithPeriodicRefresh();
+    DrawTopLevel();
     return;
   }
   this->needsRefresh = false;
@@ -254,7 +254,7 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
   SetGWorld(savedContext, savedFlags);
   UnlockPixels(GetGWorldPixMap(scratchContext));
   g_pDisplayMgr->RemoveGWorld(scratchContext);
-  RenderNationHeaderDateLabelWithPeriodicRefresh();
+  DrawTopLevel();
 }
 IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 
@@ -302,7 +302,7 @@ void TCityProductionView::BlitBitmapResourceRectWithScreenOffsetAndPalette(
 IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 
 // FUNCTION: IMPERIALISM 0x004badd0
-void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh() {
+void TCityProductionView::DrawTopLevel() {
   TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
   TCity* subObject = 0;
   if (nationState != 0) {
@@ -526,7 +526,7 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
   }
   value1.Format(g_szDecimalFormat, summary[0x12]);
   value2.Format(g_szDecimalFormat, nation->GetNeedTargetByType(0x12));
-  g_pSimMgr->GetStringPrelude(0x12, &value3);
+  g_pSimMgr->GetCommodityName(0x12, &value3);
   scanBracketExpressions(g_pSimMgr, &assembled, static_cast<LPCSTR>(templateText),
                          static_cast<LPCSTR>(value1), static_cast<LPCSTR>(value2),
                          static_cast<LPCSTR>(value3));
@@ -540,7 +540,7 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
   }
   value1.Format(g_szDecimalFormat, summary[0x11]);
   value2.Format(g_szDecimalFormat, nation->GetNeedTargetByType(0x11));
-  g_pSimMgr->GetStringPrelude(0x11, &value3);
+  g_pSimMgr->GetCommodityName(0x11, &value3);
   scanBracketExpressions(g_pSimMgr, &assembled, static_cast<LPCSTR>(templateText),
                          static_cast<LPCSTR>(value1), static_cast<LPCSTR>(value2),
                          static_cast<LPCSTR>(value3));

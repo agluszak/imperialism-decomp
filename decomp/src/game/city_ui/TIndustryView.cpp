@@ -53,7 +53,7 @@ void TIndustryView::DoStartup() {
   if (nameText != 0) {
     g_pSimMgr->GetString(0x2719, embeddedPageIndex9E, &displayText);
     nameText->InstallTextStyle(headingStyle, 0);
-    nameText->SetTextAlignmentAndMaybeRefresh(-2, false);
+    nameText->SetJustification(-2, false);
     nameText->SetTextAndMaybeRefresh(&displayText, false);
   }
 
@@ -67,7 +67,7 @@ void TIndustryView::DoStartup() {
     scanBracketExpressions(g_pSimMgr, &displayText, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(numberText));
     capacityText->InstallTextStyle(headingStyle, 0);
-    capacityText->SetTextAlignmentAndMaybeRefresh(-2, false);
+    capacityText->SetJustification(-2, false);
     capacityText->SetTextAndMaybeRefresh(&displayText, false);
   }
 
@@ -81,7 +81,7 @@ void TIndustryView::DoStartup() {
     scanBracketExpressions(g_pSimMgr, &displayText, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(numberText));
     provinceText->InstallTextStyle(headingStyle, 0);
-    provinceText->SetTextAlignmentAndMaybeRefresh(-2, false);
+    provinceText->SetJustification(-2, false);
     provinceText->SetTextAndMaybeRefresh(&displayText, false);
   }
 
@@ -90,7 +90,7 @@ void TIndustryView::DoStartup() {
   if (conjunctionText != 0) {
     g_pSimMgr->GetString(0x2738, 0x11, &displayText);
     conjunctionText->InstallTextStyle(headingStyle, 0);
-    conjunctionText->SetTextAlignmentAndMaybeRefresh(1, false);
+    conjunctionText->SetJustification(1, false);
     conjunctionText->SetTextAndMaybeRefresh(&displayText, false);
   }
 

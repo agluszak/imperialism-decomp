@@ -15,7 +15,7 @@ public:
   // view 3012 "Civilian info" (Mac resource oracle) and TViewMgr::ShowCivilianReport-
   // DialogAndReturnConfirm is its only caller, which passes the civilian order entry.
   // The previous `IsSelected(void*)` name/signature was a guess.
-  virtual void PopulateCivilianReportContent(TCivUnit* civilianOrderEntry);
+  virtual void StuffValues(TCivUnit* civilianOrderEntry);
 };
 
 ASSERT_SIZE(TCivReport, 0x90);

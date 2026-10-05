@@ -445,7 +445,7 @@ void TBillForeignMinister::DoFirstTurnDiplomacy() {
 void TBillForeignMinister::DoSecondTurnDiplomacy() {
   short selectedCount = 0;
   for (short candidate = 7; candidate < 0x17 && selectedCount < 2; ++candidate) {
-    if (g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(greatPower->nationSlot,
+    if (g_pDiplomacyTurnStateManager->GetEmbassyStatus(greatPower->nationSlot,
                                                                           candidate) >= 1) {
       greatPower->SetTradePolicyTo(static_cast<NationSlot>(candidate), 0x5a);
       ++selectedCount;

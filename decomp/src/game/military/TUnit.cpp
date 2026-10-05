@@ -16,7 +16,7 @@
 // like every other ILT slot and paired automatically. No source calls it.
 
 // FUNCTION: IMPERIALISM 0x005c2470
-void TUnit::DetachUnitOrderFromOwnerAndReset() {}
+void TUnit::Vaporize() {}
 
 IMPLEMENT_DYNCREATE(TUnit, TObject)
 

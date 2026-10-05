@@ -18,11 +18,11 @@ public:
   virtual ~TArmyBattle() override {}               // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x5a4da0
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5a4990
-  virtual void DeployTacticalUnitToTile(TTacticalUnit* unit,
+  virtual void DeployUnit(TTacticalUnit* unit,
                                         TacticalTileIndex tileIndex) override; // slot 0x0c 0x5a51e0
   // Marks the battle decided, asserts both sides, silences the
   // blink cue, resets the 'tool' toolbar's current-unit display, then delegates to
-  // g_pMapContextActionManager->ApplyPostBattleStackOutcomeAndGrowUnitMeters with each
+  // g_pMapContextActionManager->EndTacticalBattle with each
   // side's armyStack to relocate/reset the losing side and grow unit quality.
   virtual void EndBattle(unsigned char sideWonFlag) override; // slot 0x12 0x5a5320, Mac oracle
 
@@ -49,7 +49,7 @@ public:
 
   // Loads the battle-setup tab data (terrain/backdrop selection) for the composition
   // class + fort level. 0x005a4fc0, __thiscall, ret 8.
-  void LoadBattleSetupTabDataByIndex(int compositionClass, int fortLevel);
+  void LoadMap(int compositionClass, int fortLevel);
 
   // Size the battlefield to the longest-ranged deployed unit: sweep recordList for the
   // maximum GetUnitRange() and store that plus 0xb in battlefieldColumnCount.

@@ -914,7 +914,7 @@ void TTacticalBattleView::Free() {
   g_pDisplayMgr->RemoveGWorld(fortLevelAtlasSurface6C);
   g_pDisplayMgr->RemoveGWorld(tileScratchSurface70);
   g_pDisplayMgr->RemoveGWorld(effectAtlasSurface74);
-  g_pUiAnimator->FreeUiTransientRegistryPayloads();
+  g_pUiAnimator->FreeAllAnis();
   TView::Free();
 }
 
@@ -961,7 +961,7 @@ void TTacticalBattleView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CP
   if (modalAnimWaitDoneFlag) {
     int row;
     int column;
-    ConvertScreenPointToHexGridCoordClamped(&point, &row, &column);
+    ConvertPoint(&point, &row, &column);
     tacticalBattle60->DispatchTacticalActionByHoverStateIndex(row * tileColumnsPerRow + column);
   }
 }
@@ -970,7 +970,7 @@ void TTacticalBattleView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CP
 // point's Y over the tile row height, column from viewOriginX + point X (shifted half a
 // tile on odd rows) over the tile width, each clamped into the battle's playable range.
 // FUNCTION: IMPERIALISM 0x005a86d0
-void TTacticalBattleView::ConvertScreenPointToHexGridCoordClamped(POINT* screenPoint, int* outRow,
+void TTacticalBattleView::ConvertPoint(POINT* screenPoint, int* outRow,
                                                                   int* outCol) {
   int row = screenPoint->y / tileRowHeightPx;
   *outRow = row;
@@ -1161,7 +1161,7 @@ void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
   (void)hitArg;
   int gridRow = 0;
   int gridCol = 0;
-  ConvertScreenPointToHexGridCoordClamped(point, &gridRow, &gridCol);
+  ConvertPoint(point, &gridRow, &gridCol);
   int tileIndex = static_cast<short>(gridRow * tileColumnsPerRow + gridCol);
   unsigned short cursorToken = static_cast<unsigned short>(
       tacticalBattle60->ResolveTacticalHoverCursorResourceId(static_cast<short>(tileIndex)));
@@ -1269,7 +1269,7 @@ void TTacticalBattleView::PlayAni(RECT* rect, int effectId, int frameCount,
                                         static_cast<short>(effectId), mode, tileIndex);
   // The registry stores heterogeneous animation objects; TOneTimeAnimation is
   // CObject-rooted, not TAnimation-derived, so this is a genuine pun confined here.
-  g_pUiAnimator->AddObjectToUiTransientRegistry(
+  g_pUiAnimator->AddAnimation(
       static_cast<TAnimation*>(static_cast<void*>(animation)));
   BeginModalAnimationWait();
   modalAnimWaitDoneFlag = false;
@@ -1505,7 +1505,7 @@ void TTacticalBattleView::SetCurrentPlayer(unsigned char side) {
   coatControl->AssertValid();
   TTacticalBattle* battle = tacticalBattle60;
   TTacticalPlayer* currentPlayer = battle->players[battle->currentSideC];
-  coatControl->SetPictureResourceIdAndRefresh(
+  coatControl->SetPictureRsrcID(
       static_cast<short>(currentPlayer->nationIndex1C + 0xea6), 1);
 }
 
@@ -1536,7 +1536,7 @@ void TTacticalBattleView::UpdateSelectionBlink() {
   TAnimation* marker = new TAnimation;
   // Original calls the init body unconditionally on the new-result (no null guard).
   marker->IAnimation(this, &tileRect, 2, 0, 0xa, 0x2711);
-  g_pUiAnimator->AddObjectToUiTransientRegistry(marker);
+  g_pUiAnimator->AddAnimation(marker);
 }
 
 // FUNCTION: IMPERIALISM 0x005a9cc0

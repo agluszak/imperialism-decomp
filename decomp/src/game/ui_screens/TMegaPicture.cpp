@@ -70,7 +70,7 @@ void TMegaPicture::Draw(RECT* rectBuffer) {
 // dispose any previous surface, create a fresh 8-bit GWorld sized to the resource
 // bounds, blit the resource into it, then run the base TPicture refresh.
 // FUNCTION: IMPERIALISM 0x00573430
-void TMegaPicture::SetPictureResourceIdAndRefresh(short nPictureId, unsigned char fRefreshNow) {
+void TMegaPicture::SetPictureRsrcID(short nPictureId, unsigned char fRefreshNow) {
   if (surfaceContext != 0) {
     g_pDisplayMgr->RemoveGWorld(surfaceContext);
   }
@@ -114,7 +114,7 @@ void TMegaPicture::SetPictureResourceIdAndRefresh(short nPictureId, unsigned cha
     delete loaderHandle;
     UnlockPixels(GetGWorldPixMap(surfaceContext));
     SetGWorld(savedContext, savedFlags);
-    TPicture::SetPictureResourceIdAndRefresh(nPictureId, fRefreshNow);
+    TPicture::SetPictureRsrcID(nPictureId, fRefreshNow);
   }
 }
 

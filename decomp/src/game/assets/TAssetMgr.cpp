@@ -126,7 +126,7 @@ void TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup(const CString& movieNa
 }
 
 // FUNCTION: IMPERIALISM 0x005dfd70
-void TAssetMgr::BuildScenarioPathForModeAndIndex(int scenarioIndex, int mode, CString* outPath) {
+void TAssetMgr::GetScenarioFileName(int scenarioIndex, int mode, CString* outPath) {
   CString numberText;
   numberText.Format(g_szDecimalFormat, scenarioIndex);
   CString fullPath = "Scenario/s" + numberText;
@@ -203,7 +203,7 @@ unsigned char TAssetMgr::OpenMainDocumentFromPathAndMarkLoaded(const CString& lo
 }
 
 // FUNCTION: IMPERIALISM 0x005e0260
-void TAssetMgr::SaveSettingValueFromPointerByKey(CString* value, const char* key) {
+void TAssetMgr::SetPreferenceString(CString* value, const char* key) {
   g_pImperialismApp->SetSettingValueInSettingsSection(key, *value);
 }
 

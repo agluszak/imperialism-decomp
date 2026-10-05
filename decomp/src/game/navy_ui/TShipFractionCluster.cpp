@@ -34,7 +34,7 @@ void TShipFractionCluster::DoPostCreate(int arg) {
 
   short slot = GetEnabledIndustryCapabilitySlotByClass(static_cast<short>(controlTag - 0x7330));
   if (slot != 0) {
-    shipControl->SetPictureResourceIdAndRefresh(static_cast<short>(slot + 0x5e6), 0);
+    shipControl->SetPictureRsrcID(static_cast<short>(slot + 0x5e6), 0);
     LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2716, static_cast<short>(slot + 1),
                                                           controlTag);
     Show(1, 1);
@@ -45,7 +45,7 @@ void TShipFractionCluster::DoPostCreate(int arg) {
 
   shipCountButton = static_cast<TNumberedArrowButton*>(ResolveControlByTag(kControlTagArro));
   availableShipCount = 1;
-  SetAvailableAndSelectedShipCounts(0, -1);
+  Set(0, -1);
 }
 
 // FUNCTION: IMPERIALISM 0x00568eb0
@@ -77,7 +77,7 @@ void TShipFractionCluster::DoEvent(int commandId, TEventHandler* sourceHandler, 
 // symbol oracle calls this method Set(int, int); Windows callers pass the available and
 // selected ship counts respectively.
 // FUNCTION: IMPERIALISM 0x00568f90
-void TShipFractionCluster::SetAvailableAndSelectedShipCounts(int availableCount,
+void TShipFractionCluster::Set(int availableCount,
                                                              int selectedCount) {
   TView* shipControl = ResolveControlByTag(kControlTagShip);
   if (availableCount != 0) {

@@ -30,15 +30,15 @@ public:
   // Real x87 float return (FLD/RET), not an int -- verify any override matches.
   virtual float GetBaseAttackPower();                         // slot 0x0c 0x5a5d80
   virtual float GetDamageScale();                             // slot 0x0d 0x5a5da0
-  virtual void ApplyTacticalDamage(int damageA, int damageB); // slot 0x0e 0x5a5e70
+  virtual void ApplyDamage(int damageA, int damageB); // slot 0x0e 0x5a5e70
   // Toggles side20 between 0 and 1; invoked when a unit is handed to the other
   // side's list (TTacticalPlayer::AddTacticalUnitToUnitListHead).
   virtual void FlipUnitSideAffiliation(); // slot 0x0f 0x5a5eb0
 
   // Layout (object is 0x34 per RTTI; derived classes append at +0x34). Recovered from
-  // the tactical receive/command handlers (0x5a1010..0x5a53e0), ApplyTacticalDamage
+  // the tactical receive/command handlers (0x5a1010..0x5a53e0), ApplyDamage
   // (0x5a5e70), and the duplicated unit init in TArmyBattle::ReadFrom (0x5a4990).
-  int strength4; // +0x04 current strength; ApplyTacticalDamage floors at 0 -> state1c = 3
+  int strength4; // +0x04 current strength; ApplyDamage floors at 0 -> state1c = 3
   TacticalTileIndex tileIndex8; // +0x08 tactical grid index (init -2 = not yet placed)
   int unitTypeC;                // +0x0c unit-type id; indexes the 0x669858/0x669898 per-type tables
   int qualityLevel10;           // +0x10 = source unit experiencePercent / 100 at army init

@@ -143,7 +143,7 @@ public:
   class TGreatPower* ownerNationAc; // 0xAC — owning nation state (0x004b4dc0)
   // +0xb0 — the city's home TTown marker, and only ever that one type
   //. The conflicting reading this slot used to carry --
-  // that TGreatPower::SetHomeCityTileAndDisplayName (0x4dfd30) called
+  // that TGreatPower::PlaceCity (0x4dfd30) called
   // TProductionOrder::Restock through it -- was a mis-modelled call. That call passes one
   // LPCSTR argument, which Restock() cannot take; vtable slot 0x0e on TTown is
   // SetName(const char*) at 0x5b77e0, reached through ILT thunk 0x408acb. The slot number

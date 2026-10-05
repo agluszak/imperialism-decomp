@@ -28,19 +28,19 @@ void TQueryFloater::DoPostCreate(int arg) {
 
   TStaticText* titleControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl));
   titleControl->AssertValid();
-  titleControl->SetTextFromStringResource(0x2757, 1, true);
+  titleControl->SetTextWithStrListID(0x2757, 1, true);
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6a);
   titleControl->InstallTextStyle(style, 0);
-  titleControl->SetTextAlignmentAndMaybeRefresh(1, false);
+  titleControl->SetJustification(1, false);
 
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6c);
   for (int i = 0; i < 7; ++i) {
     TStaticText* lineControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTex0 + i));
     lineControl->AssertValid();
-    lineControl->SetTextFromStringResource(0x2757, static_cast<short>(i + 2), true);
+    lineControl->SetTextWithStrListID(0x2757, static_cast<short>(i + 2), true);
     lineControl->InstallTextStyle(style, 0);
     if (i == 6) {
-      lineControl->SetTextAlignmentAndMaybeRefresh(1, false);
+      lineControl->SetJustification(1, false);
     }
   }
 }

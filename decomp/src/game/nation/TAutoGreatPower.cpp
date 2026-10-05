@@ -490,7 +490,7 @@ void TAutoGreatPower::AddNoticeFrom(short sourceNation, short actionCode) {
 void TAutoGreatPower::DispatchTurnEvent2103WithNationFromRecord() {}
 
 // FUNCTION: IMPERIALISM 0x004e7cc0
-int TAutoGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNation) {
+int TAutoGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNation) {
   bool allBeatable = true;
   bool beatableByNation[7] = {false, false, false, false, false, false, false};
   int nation = 0;
@@ -549,7 +549,7 @@ int TAutoGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNati
 }
 
 // FUNCTION: IMPERIALISM 0x004e7ec0
-int TAutoGreatPower::HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation,
+int TAutoGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation,
                                                             char swapRoles) {
   bool hasPolicy = false;
   if (swapRoles == 0) {
@@ -584,10 +584,10 @@ int TAutoGreatPower::HandleWarTransitionRequestWithRoleSwap(int targetNation, in
       return 1;
     }
     if (swapRoles == 0) {
-      g_pDiplomacyTurnStateManager->ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(
+      g_pDiplomacyTurnStateManager->TerminateAlliance(
           this->nationSlot, targetNation, 1);
     } else {
-      g_pDiplomacyTurnStateManager->ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(
+      g_pDiplomacyTurnStateManager->TerminateAlliance(
           this->nationSlot, sourceNation, 0);
     }
   }
@@ -661,7 +661,7 @@ char TAutoGreatPower::PassesDiplomacyStrengthThresholdForTarget(int targetNation
 }
 
 // FUNCTION: IMPERIALISM 0x004e8300
-void TAutoGreatPower::SetPortZoneStateForNation(int nationSlot, char makeEnemy) {
+void TAutoGreatPower::SetConquerLust(int nationSlot, char makeEnemy) {
   if (g_apTerrainTypeDescriptorTable[nationSlot] == 0 ||
       g_apTerrainTypeDescriptorTable[nationSlot]->ownedRegionList->GetSize() <= 0) {
     return;
@@ -899,7 +899,7 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
 
   int t;
   for (t = 0; t < 4; ++t) {
-    g_pSimMgr->GetStringPrelude(static_cast<short>(orderTypes[t]), &preludeText);
+    g_pSimMgr->GetCommodityName(static_cast<short>(orderTypes[t]), &preludeText);
     if (interiorMinister->GetHistoricalNeedFor(orderTypes[t]) >= 5) {
       TProvinceDesirabilityList* candidates = new TProvinceDesirabilityList();
       candidates->IProvinceDesirabilityList();

@@ -33,7 +33,7 @@ void TMadnessButton::CheckTheLook(unsigned char refreshNow) {
   }
 
   if (glyphBase84 != pictureId) {
-    SetPictureResourceIdAndRefresh(static_cast<short>(pictureId), false);
+    SetPictureRsrcID(static_cast<short>(pictureId), false);
     if (refreshNow) {
       CRect bounds;
       QueryContentBounds(&bounds);

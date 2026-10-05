@@ -1750,7 +1750,7 @@ float g_fArmoryFirepowerDisplayScale = 0.1f;
 // only nonzero-ness is consumed, but retail stores resource type 6 as 6 rather than bool 1.
 unsigned char g_abResourceTypeUsesHighNibbleFlag[24] = {0, 0, 0, 1, 1, 0, 6, 0, 0, 0, 0, 0,
                                                         0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
-// Per-resourceType capability-category code. Read by FindMaxResourceCapabilityValueForTile
+// Per-resourceType capability-category code. Read by GetMaxDevelopmentLevel
 // (0x513720).
 char g_abResourceTypeCapabilityCategory[24] = {0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0,
                                                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
@@ -2075,7 +2075,7 @@ short g_awMapContextActionLabelTokenByCommand[17] = {0,     0x3f0, 0x3f2, 0x3f2,
                                                      0x3f2, 0x3f2, 0x3f2, 0x3f1, 0x3f3, 0x3f3,
                                                      0x3f6, 0x3f8, 0x3f4, 0x3f5, 0x3f7};
 // Per-tech prerequisite pair (tech ids; 0 = none). Indexed by tech id in
-// TTechMgr::AreTechItemPrerequisitePairCompleted / SelectMissingTechItemPrerequisitesFromPair
+// TTechMgr::AreTechItemPrerequisitePairCompleted / GetPreReqs
 // (0x5b0a20/0x5b0a90). 34 entries; ends where the CRuntimeClass at 0x66ac98 begins.
 // Per-tech research cost in gold, indexed by tech id (readers: 0x5b12e0 buy-button label,
 // TTechItemView::DoEvent 0x5b1e20).
@@ -2085,7 +2085,7 @@ int g_anTechItemResearchCostByTechId[29] = {
     3000,  6000,  7000,  10000, 12000, 12000,  12000,  12000,  12000, 25000,
     20000, 40000, 40000, 40000, 40000, 100000, 120000, 150000, 150000};
 // Per-ability unit-order cost profile, one row per ability id, columns matching
-// TUnitOrder::SetOrderCostProfile's parameters: {resourceTypeIndex,
+// TUnitOrder::ReplaceOrder's parameters: {resourceTypeIndex,
 // primaryInputResourceId, primaryInputPerUnit, secondaryInputResourceId,
 // secondaryInputPerUnit, cashCostPerUnit, workforceMode}.
 // GLOBAL: IMPERIALISM 0x00695c50
@@ -2879,7 +2879,7 @@ short g_awTacticalMoveCostByCategoryAndTerrain[50] = {
     999, 10, 20,  30, 15,  999, 10, 20,  30, 15,  999, 10, 20,  30, 15,  999};
 
 // Fort strength points per fort level (.rdata); seeds the 8 per-row-pair pools of a
-// tactical battle in TArmyBattle::LoadBattleSetupTabDataByIndex (0x5a4fc0).
+// tactical battle in TArmyBattle::LoadMap (0x5a4fc0).
 // GLOBAL: IMPERIALISM 0x00669818
 int g_anFortStrengthPointsByFortLevel[6] = {0, 0, 500, 750, 1000, 0};
 

@@ -123,7 +123,7 @@ void TArmyPlayer::ApplyChanges(unsigned char sideWonFlag) {
          record = static_cast<TArmyTacUnit*>(unitIter.Advance())) {
       record->sourceUnit38->strength34 = static_cast<short>(record->strength4);
       if (record->strength4 == 0) {
-        record->sourceUnit38->DetachUnitOrderFromOwnerAndReset();
+        record->sourceUnit38->Vaporize();
       }
     }
   }
@@ -134,7 +134,7 @@ void TArmyPlayer::ApplyChanges(unsigned char sideWonFlag) {
          secondaryRecord = static_cast<TArmyTacUnit*>(secondaryIter.Advance())) {
       secondaryRecord->sourceUnit38->strength34 = static_cast<short>(secondaryRecord->strength4);
       if (secondaryRecord->strength4 == 0) {
-        secondaryRecord->sourceUnit38->DetachUnitOrderFromOwnerAndReset();
+        secondaryRecord->sourceUnit38->Vaporize();
       }
     }
   }
@@ -240,11 +240,11 @@ void TArmyPlayer::StartBattle() {
         static_cast<TTacticalHolaPicture*>(dialog->ResolveControlByTag(kControlTagDialog));
     holaPicture->AssertValid();
     if (isOurSideFlag != 0) {
-      holaPicture->ConfigureBattleIntroCoatsAndSiteLabels(
+      holaPicture->StuffValues(
           nationIndex1C, static_cast<short>(opposingNationIndex), isOurSideFlag,
           battle14->battleSiteIndex38);
     } else {
-      holaPicture->ConfigureBattleIntroCoatsAndSiteLabels(
+      holaPicture->StuffValues(
           static_cast<short>(opposingNationIndex), nationIndex1C, 0, battle14->battleSiteIndex38);
     }
     int resultTag = dialog->PoseModally();
@@ -405,7 +405,7 @@ void TArmyPlayer::BuildTacticalActionPriorityBucketsWithGridGuard() {
         }
       }
     }
-    battle14->DeployTacticalUnitToTile(unit, bestTileIndex);
+    battle14->DeployUnit(unit, bestTileIndex);
   }
 }
 
@@ -429,7 +429,7 @@ void TArmyPlayer::DispatchTacticalActionClassSelectionAcrossCursorList() {
       tileIndex = SelectTacticalTileIndexByColumnPriorityVariantB();
       break;
     }
-    battle14->DeployTacticalUnitToTile(unit, tileIndex);
+    battle14->DeployUnit(unit, tileIndex);
   }
 }
 
@@ -578,7 +578,7 @@ void TArmyPlayer::DeploymentClick(TacticalTileIndex tileIndex) {
   if (ordinal > unitList4->GetCount()) {
     sideReadyFlag = true;
   } else {
-    battle14->DeployTacticalUnitToTile(unit, tileIndex);
+    battle14->DeployUnit(unit, tileIndex);
   }
 }
 
@@ -1146,13 +1146,13 @@ unsigned char TArmyPlayer::OpponentHasDeployedActiveArtilleryUnit() {
 // sum(weight[i] * heuristic[i](unit, tile)), tie-breaking on lower move cost, and
 // writes the per-tile score into battle14->tileCandidateScorePlane2c.
 // FUNCTION: IMPERIALISM 0x0059d530
-int TArmyPlayer::SelectBestTacticalTileByWeightedHeuristics(TTacticalUnit* unit,
+int TArmyPlayer::FindBestMove(TTacticalUnit* unit,
                                                             int* heuristicWeights15) {
   TacticalTileIndex bestTileIndex = -1;
   int bestScore = -99999;
   bool distanceFieldBuilt = false;
   if (heuristicWeights15[8] > 0) {
-    battle14->BuildTacticalDistanceFieldForSide(isOurSideFlag);
+    battle14->MakeRetreatMap(isOurSideFlag);
     distanceFieldBuilt = true;
   }
   for (TacticalTileIndex tileIndex = 0; tileIndex < battle14->tacticalTileCount; ++tileIndex) {
@@ -1355,7 +1355,7 @@ int TArmyPlayer::ScoreTacticalTileAdjacentRallyTargetBonus(TTacticalUnit* unit,
 }
 
 // Heuristic [8]: advance along the distance field built by
-// BuildTacticalDistanceFieldForSide (100 minus the tile's field value).
+// MakeRetreatMap (100 minus the tile's field value).
 // FUNCTION: IMPERIALISM 0x0059dba0
 int TArmyPlayer::ScoreTacticalTileDistanceFieldAdvance(TTacticalUnit* unit,
                                                        TacticalTileIndex tileIndex) {
@@ -1616,7 +1616,7 @@ int TArmyPlayer::SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* u
 // Otherwise an unwatched side runs one auto-turn step, with a right-Windows-key
 // cancel check for watched-then-released sides.
 // FUNCTION: IMPERIALISM 0x0059e3e0
-void TArmyPlayer::AdvanceTacticalTurnPulse() {
+void TArmyPlayer::NextMove() {
   if (field20) {
     CIterator unitIter(unitList4);
     TTacticalUnit* record = static_cast<TTacticalUnit*>(unitIter.Reset());
@@ -1667,24 +1667,24 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
     // Sapper: assault row when the fort is gone or a wall section is breached;
     // otherwise hold if already entrenched or threatened, else seek a dig spot.
     if (battle14->IsTacticalSideCategoryCoverageIncompleteOrFlagOff() != 0) {
-      targetTileIndex = SelectBestTacticalTileByWeightedHeuristics(
+      targetTileIndex = FindBestMove(
           unit, g_anTacticalTileHeuristicWeightsByAiState_00699500[12]);
     } else if (battle14->tileGrid4[homeTileIndex].trenchMask != 0) {
       targetTileIndex = homeTileIndex;
     } else if (battle14->tileThreatLevelArray[homeTileIndex] != 0) {
       targetTileIndex = homeTileIndex;
     } else {
-      targetTileIndex = SelectBestTacticalTileByWeightedHeuristics(
+      targetTileIndex = FindBestMove(
           unit, g_anTacticalTileHeuristicWeightsByAiState_00699500[13]);
     }
   } else if ((unit->aiStateCode2c == 5 || unit->aiStateCode2c == 2 || categoryCode == 4) &&
              battle14->roundCounter < 2) {
     targetTileIndex = homeTileIndex;
   } else if (categoryCode == 6 && battle14->roundCounter < 2) {
-    targetTileIndex = SelectBestTacticalTileByWeightedHeuristics(
+    targetTileIndex = FindBestMove(
         unit, g_anTacticalTileHeuristicWeightsByAiState_00699500[18]);
   } else {
-    targetTileIndex = SelectBestTacticalTileByWeightedHeuristics(
+    targetTileIndex = FindBestMove(
         unit, g_anTacticalTileHeuristicWeightsByAiState_00699500[unit->aiStateCode2c]);
   }
   if (targetTileIndex == -1) {
@@ -1723,7 +1723,7 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
         }
       }
       if (rallyTarget != 0) {
-        battle14->ComputeRallyStrengthAndQueueTacticalRallyCommand(unit, rallyTarget);
+        battle14->RallyUnit(unit, rallyTarget);
       }
     } else if (g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC] == 8) {
       // Sapper that held position: mine the fort wall on the tile to its right, or dig
@@ -1761,7 +1761,7 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
             unit->actionPoints28 != 0) {
           int aiState = unit->aiStateCode2c;
           if (aiState == 2 || aiState == 5 || aiState == 0xe) {
-            TacticalTileIndex advanceTileIndex = SelectBestTacticalTileByWeightedHeuristics(
+            TacticalTileIndex advanceTileIndex = FindBestMove(
                 unit, g_anTacticalTileHeuristicWeightsByAiState_00699500[aiState + 1]);
             if (advanceTileIndex != unit->tileIndex8) {
               int advanceGuard = 200;
@@ -1869,6 +1869,6 @@ void TArmyPlayer::ProceedAfterBattleIntroAccepted() {
   if (!notWatchedFlag) {
     notWatchedFlag = true;
     SelectAndApplyTacticalCursorModeProfile(0);
-    AdvanceTacticalTurnPulse();
+    NextMove();
   }
 }

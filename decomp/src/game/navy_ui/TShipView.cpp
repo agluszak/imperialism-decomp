@@ -130,13 +130,13 @@ void TShipView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
       }
     }
   } else if (sourceHandler->controlTag == kControlTagName) {
-    RunEngineerOrderNameEditDialogAndApply();
+    RenameShip();
   }
   TEventHandler::DoEvent(commandId, sourceHandler, event);
 }
 
 // Same dialog (message context 0xdb4) and control shape as TArmyUnitView::
-// HandleCrossUArmyViewsNameCommand (0x4a9ca0), but a genuinely different function (own thunk
+// RenameUnit (0x4a9ca0), but a genuinely different function (own thunk
 // 0x4092ff, not 0x403986) with real differences: no forced default command (no
 // SetField84/GetEmbeddedDialogBehavior calls), the title uses string index 5 instead of 1,
 // the edited name is shipNode60->name (TShip's own name field, not TMilitaryUnit's
@@ -144,7 +144,7 @@ void TShipView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
 // shared conflict), and the commit condition is inverted: applies only when the modal result
 // is exactly 'okay' (rather than "commit unless 'cncl'").
 // FUNCTION: IMPERIALISM 0x00565a40
-void TShipView::RunEngineerOrderNameEditDialogAndApply() {
+void TShipView::RenameShip() {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNameUnit));
   if (node == nullptr) {
@@ -157,7 +157,7 @@ void TShipView::RunEngineerOrderNameEditDialogAndApply() {
 
   TStaticText* titleControl = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagTitl));
   titleControl->AssertValid();
-  titleControl->SetTextFromStringResource(0x2746, 5, true);
+  titleControl->SetTextWithStrListID(0x2746, 5, true);
   titleControl->textStyle78 = style;
 
   TEditText* nameControl = static_cast<TEditText*>(node->ResolveControlByTag(kControlTagName));

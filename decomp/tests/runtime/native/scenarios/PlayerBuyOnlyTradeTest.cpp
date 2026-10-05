@@ -136,7 +136,7 @@ private:
       short value = 0;
       short targetNation = 0;
       int payload = 0;
-      player->ReadTrackedSlotEntryFields(kResourceIron, ordinal, &kind, &value, &targetNation,
+      player->GetDealInfo(kResourceIron, ordinal, &kind, &value, &targetNation,
                                          &payload);
       if (kind != kTrackedSlotOfferEntry) {
         return false;

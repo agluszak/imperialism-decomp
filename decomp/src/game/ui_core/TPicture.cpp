@@ -10,7 +10,7 @@
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
 
-// Scratch (width, height) pair the SetPictureResourceIdAndRefresh fallback path builds
+// Scratch (width, height) pair the SetPictureRsrcID fallback path builds
 // and immediately discards (the original never reads it back either -- confirmed via
 // the raw listing: no instruction between this call and the function's return
 // references the buffer again).
@@ -95,7 +95,7 @@ void TPicture::IPicture(TView* panel, int* offsetLayout, int* sizeLayout, int la
     panel->AttachChildControl(this, 0);
   }
   resourceContext = 0;
-  SetPictureResourceIdAndRefresh(pictureId, 0);
+  SetPictureRsrcID(pictureId, 0);
 }
 
 // Slot 0x44 override: draw the cached bitmap. 8bpp uncompressed pictures software-blit
@@ -152,7 +152,7 @@ void TPicture::ResetPictureResourceEntry() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048f570
-void TPicture::SetPictureResourceIdAndRefresh(short nPictureId, unsigned char fRefreshNow) {
+void TPicture::SetPictureRsrcID(short nPictureId, unsigned char fRefreshNow) {
   this->ResetPictureResourceEntry();
   this->glyphBase84 = nPictureId;
   if (nPictureId != -1) {

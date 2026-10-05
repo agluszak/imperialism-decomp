@@ -24,7 +24,7 @@ public:
 
   TLineData();
   // 0x56f420 — set the row/col shorts and the two bound dwords from a caller pair array.
-  void SetLineDataRowAndBounds(short rowArg, short colArg, int* bounds);
+  void ILineData(short rowArg, short colArg, int* bounds);
 };
 
 ASSERT_SIZE(TLineData, 0x10);

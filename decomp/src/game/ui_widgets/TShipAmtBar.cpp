@@ -38,7 +38,7 @@ void TShipAmtBar::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058ac80
-void TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
+void TShipAmtBar::DrawAmt() {
   CTemporaryRegion surface;
   TAmtBar* control = this;
   GetClip(surface.tempRgn);

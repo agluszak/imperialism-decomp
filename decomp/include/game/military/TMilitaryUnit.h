@@ -65,7 +65,7 @@ public:
   void ReadFrom(TStream* stream) override;
   void WriteTo(TStream* stream) override;
   void MoveTo(short nTileIndex) override;
-  void DetachUnitOrderFromOwnerAndReset() override;
+  void Vaporize() override;
 
   // --- TMilitaryUnit virtual functions ---
   virtual void ClearPath();

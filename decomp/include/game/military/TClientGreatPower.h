@@ -22,9 +22,9 @@ public:
   // slot 0x81 — 0x005414f0
   void ReplyToDiplomacyOffers(void) override;
   // slot 0x9f — 0x005416b0: client command 0x69 wrapper around slot 0x27c logic.
-  int HandleWarTransitionRequest(int targetNation, int sourceNation) override;
+  int ConsiderWarOfIntervention(int targetNation, int sourceNation) override;
   // slot 0xa0 — 0x005415c0: client command 0x61 wrapper around slot 0x280 logic.
-  int HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation,
+  int ConsiderWarOfAlliance(int targetNation, int sourceNation,
                                              char swapRoles) override;
   // slot 0xab — 0x00541790
   void SorryYouLose(void) override;

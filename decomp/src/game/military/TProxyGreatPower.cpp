@@ -81,7 +81,7 @@ void TProxyGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary() 
 char TProxyGreatPower::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                                          ResourceKindStorage resourceKind) {
   if (this->StillBuyingItem(resourceKind)) {
-    g_pGameFlowState->DispatchTurnEvent1AWithNationActionPayload(this->nationSlot, targetNationSlot,
+    g_pGameFlowState->SendTradeOffer(this->nationSlot, targetNationSlot,
                                                                  amount, price, resourceKind);
     return 1;
   }
@@ -113,7 +113,7 @@ void TProxyGreatPower::SorryYouLose() {
 // Emits the event-0x1D war-transition request and reports 2 ("request pending"): a proxy
 // nation cannot resolve the transition locally, the host answers.
 // FUNCTION: IMPERIALISM 0x00540cf0
-int TProxyGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNation) {
+int TProxyGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNation) {
   TurnEvent1DWarTransitionPacket packet;
   packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
@@ -134,7 +134,7 @@ int TProxyGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNat
 // The role-swap sibling of 0x540cf0: same event-0x1D packet with the 'a' request kind and
 // the extra swapRoles byte at +0x1F.
 // FUNCTION: IMPERIALISM 0x00540dc0
-int TProxyGreatPower::HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation,
+int TProxyGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation,
                                                              char swapRoles) {
   TurnEvent1DWarTransitionPacket packet;
   packet.messageTag = kControlTagTime;

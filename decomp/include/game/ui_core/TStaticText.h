@@ -45,14 +45,14 @@ public:
   // binary, and none of the bodies deliberately compute one (Ghidra's
   // "undefined" reflects an untracked/incidental AL, not a real result) — so
   // all five are modeled as void, matching observed behavior exactly.
-  virtual void SetTextAlignmentAndMaybeRefresh(short alignmentCode,
+  virtual void SetJustification(short alignmentCode,
                                                bool refreshFlag); // 0x1c4 0x48ff70
   virtual void SetTextAndMaybeRefresh(CString* sharedString,
                                       bool refreshNow); // 0x1c8 0x48fe60
-  virtual void SetTextFromStringResource(short stringResourceGroup, short stringResourceIndex,
+  virtual void SetTextWithStrListID(short stringResourceGroup, short stringResourceIndex,
                                          bool refreshNow); // 0x1cc 0x48fed0
   virtual void CopyTextTo(CString* out);                   // 0x1d0 0x4294d0
-  virtual void DrawTextAligned(const char* textChars, int textLength, RECT* rect,
+  virtual void ImageText(const char* textChars, int textLength, RECT* rect,
                                short alignmentCode); // 0x1d4 0x4900a0
 };
 ASSERT_SIZE(TStaticText, 0x94);

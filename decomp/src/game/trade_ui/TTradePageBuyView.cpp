@@ -21,7 +21,7 @@ TTradePageBuyView::~TTradePageBuyView() {}
 IMPLEMENT_DYNCREATE(TTradePageBuyView, TPageView)
 
 // FUNCTION: IMPERIALISM 0x005bd690
-void TTradePageBuyView::RebuildNationBidRowsForCategory(short categorySlot) {
+void TTradePageBuyView::SetItem(short categorySlot) {
   if (categorySlot == lastBuiltCategorySlot) {
     return;
   }
@@ -34,8 +34,8 @@ void TTradePageBuyView::RebuildNationBidRowsForCategory(short categorySlot) {
       TTextLine* headerRow = new TTextLine();
       int headerBounds[2];
       headerBounds[0] = 0x24;
-      headerRow->SetTextLineRowBoundsAndStyle(0, 0, headerBounds, 0x2741, 3);
-      headerRow->SetTextAlignmentCode(1);
+      headerRow->ITextLine(0, 0, headerBounds, 0x2741, 3);
+      headerRow->SetTheJustification(1);
       TextStyle headerStyle;
       BuildUiTextStyleDescriptor(&headerStyle, 4, 0xc, 0x2b6a);
       headerRow->SetTextLineStyleDescriptor(&headerStyle);
@@ -45,7 +45,7 @@ void TTradePageBuyView::RebuildNationBidRowsForCategory(short categorySlot) {
         if (g_pTradeMgr->DidBidOn(nationSlot, categorySlot)) {
           TTradeBidNationLine* row = new TTradeBidNationLine();
           int rowBounds[2];
-          row->SetLineDataRowAndBounds(0, 0, rowBounds);
+          row->ILineData(0, 0, rowBounds);
           row->nationSlot = nationSlot;
           row->categorySlot = categorySlot;
           orderedEntries->AddTail(row);

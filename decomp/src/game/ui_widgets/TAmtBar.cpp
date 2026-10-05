@@ -47,11 +47,11 @@ void TAmtBar::UpdateBarValuesAndRefresh(short valueAt60, short valueAt62) {
 // FUNCTION: IMPERIALISM 0x00588670
 void TAmtBar::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
-  RenderPrimarySurfaceOverlayPanelWithClipCache();
+  DrawAmt();
 }
 
 // FUNCTION: IMPERIALISM 0x00588690
-void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
+void TAmtBar::DrawAmt() {
   CTemporaryRegion surface;
   short barRange = rangeOrMaxValue;
   CRect contentBounds;

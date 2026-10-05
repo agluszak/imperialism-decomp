@@ -31,7 +31,7 @@ TCityBarCluster::TCityBarCluster() : TUberCluster() {}
 TCityBarCluster::~TCityBarCluster() {}
 
 // FUNCTION: IMPERIALISM 0x005866b0
-void TCityBarCluster::ApplyMoveValue(TCity* city) {
+void TCityBarCluster::StuffValues(TCity* city) {
   TGreatPower* nation = city->ownerNationAc;
   TPopulationMgr* population = city->productionSummary;
 

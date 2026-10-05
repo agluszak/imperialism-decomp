@@ -74,7 +74,7 @@ void TCivAnimation2::DrawNextFrame(POINT* offset) {
   frameIndex = logicalFrame;
 }
 
-// 0x4a0d10 (AddObjectToUiTransientRegistry) and 0x4a0d30 (the registry walker) were
+// 0x4a0d10 (AddAnimation) and 0x4a0d30 (the registry walker) were
 // once claimed here from Ghidra's bucketing, but their receiver is g_pUiAnimator
 // (`mov ecx,[0x6a43e0]` at every call site) -- they are TAnimator methods and now
 // live in TAnimator.cpp.

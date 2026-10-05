@@ -52,7 +52,7 @@ enum TurnEventId {
   kTurnEventTacticalView = 0x0ed8,
   kTurnEventTacticalBattleResult = 0x0eed,
   // Not a view code. 0x0f0a is the base id of the tactical-map PICT family
-  // (Mac: PICT 3850 "Tactical Map 001", TacMaps.rsrc); InitializeBattlefieldView
+  // (Mac: PICT 3850 "Tactical Map 001", TacMaps.rsrc); StuffValues
   // forms picture ids from it (0x5a9eaa ADD EAX,0xf0a). Only the dead vtable slot
   // TViewMgr::HandleTurnEventDialogFactorySlotE8 hands it to the view resolver.
   kTurnEventTacticalMapPictureBase = 0x0f0a,

@@ -50,7 +50,7 @@ extern int g_anFortLevelAttackerPenaltyPercentByLevel[4];
 extern unsigned char g_abUnitTypeBlinkEligibilityFlag[kMilitaryUnitKindCount];
 
 // Per-military-unit-kind meter-scoring tables read by
-// TArmyStack::AccumulateWeightedMeterAndCountFromEligibleLinkedEntries.
+// TArmyStack::StrategicFirepower.
 extern int g_anWeightClassByOrderType[kMilitaryUnitKindCount]; // 0x64c790
 
 extern short g_anScaledFactorByOrderType[kMilitaryUnitKindCount]; // 0x64c660

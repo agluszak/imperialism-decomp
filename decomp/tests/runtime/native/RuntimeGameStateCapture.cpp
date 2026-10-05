@@ -1552,7 +1552,7 @@ JSON_Value* CaptureDealBook(TGreatPower* nation) {
       short amount;
       short targetNation;
       int unitPrice;
-      nation->ReadTrackedSlotEntryFields(commodity, ordinal, &kind, &amount, &targetNation,
+      nation->GetDealInfo(commodity, ordinal, &kind, &amount, &targetNation,
                                          &unitPrice);
       if (kind != kTrackedSlotOfferEntry && kind != kTrackedSlotAcceptEntry) {
         FailSemanticCapture("deal-book entry kind is invalid");

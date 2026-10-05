@@ -68,7 +68,7 @@ public:
   // slot 0x67 — 0x004e7680: need assignment with capability caps / escalation roll.
   void SetTradeOffersFor(short resourceKind, short offerContext) override;
   // slot 0x9f — 0x004e7cc0: war-transition propagation across eligible allied nations.
-  int HandleWarTransitionRequest(int targetNation, int sourceNation) override;
+  int ConsiderWarOfIntervention(int targetNation, int sourceNation) override;
   // slot 0xab — 0x004e7510: 'lost' game-state event when redraw is enabled.
   void SorryYouLose(void) override;
   // slot 0x18 — 0x004ea1c0: also drop the matching mission and map-node flag.
@@ -89,7 +89,7 @@ public:
   // slot 0x85 — 0x004ea0e0: clear a candidate nation (and its port zone).
   void StopBeingEnemiesWith(int targetNation) override;
   // slot 0xa0 — 0x004e7ec0: war-transition propagation for a nation pair.
-  int HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation,
+  int ConsiderWarOfAlliance(int targetNation, int sourceNation,
                                              char swapRoles) override;
   // slot 0xaf — 0x004e6b10: intentional AI override. TGreatPower owns the live
   // pressure/escalation routine at 0x004db380; automated nations suppress it.
@@ -163,7 +163,7 @@ public:
   // Non-virtual helper that marks (or clears) the given nation's first port-zone
   // context in zoneStatus. Only nations that hold regions are considered, and
   // a minor nation (encoded slot 100..199) is never marked -- only cleared.
-  void SetPortZoneStateForNation(int nationSlot, char makeEnemy); // 0x004e8300
+  void SetConquerLust(int nationSlot, char makeEnemy); // 0x004e8300
   // Stores `status`, except that a candidate province whose map-action-context link is
   // unavailable for this nation is stored unmarked unless `bypassGate` is set. 0x4e8b50.
   void SetProvinceStatus(int provinceIndex, eMissionDesirability status); // Mac oracle

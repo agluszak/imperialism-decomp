@@ -34,7 +34,7 @@ void TTradeSchoolView::DoStartup() {
   if (nameText != 0) {
     g_pSimMgr->GetString(0x2719, embeddedPageIndex9E, &text);
     nameText->InstallTextStyle(titleStyle, 0);
-    nameText->SetTextAlignmentAndMaybeRefresh(1, false);
+    nameText->SetJustification(1, false);
     nameText->SetTextAndMaybeRefresh(&text, false);
   }
 

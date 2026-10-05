@@ -120,13 +120,13 @@ void TCivUnit::MoveTo(short newTileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x005c2c40
-void TCivUnit::DetachUnitOrderFromOwnerAndReset() {
+void TCivUnit::Vaporize() {
   MoveTo(-1);
 }
 
 // FUNCTION: IMPERIALISM 0x005c2c60
 void TCivUnit::ResetCivWorkOrderAndRefreshCounters() {
-  DetachUnitOrderFromOwnerAndReset();
+  Vaporize();
   if (orderType != kCivilianUnitDeveloper) {
     TGreatPower* nation = g_apNationStates[ownerNationSlot18];
     TCity* city = (nation != 0) ? nation->city : 0;

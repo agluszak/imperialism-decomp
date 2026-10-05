@@ -12,17 +12,17 @@ public:
   virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x570500
 
   // CString caption, populated from TSimMgr::GetString(styleGroupCode, styleIndex - 1, ...)
-  // by SetTextLineRowBoundsAndStyle when a valid style group is supplied.
+  // by ITextLine when a valid style group is supplied.
   CString captionText; // 0x10
   // Font/theme preset consumed by CreateFontFromPresetAndAttachRegionHandle et al.
   TextStyle styleDescriptor14; // 0x14
-  // Passed directly to TStaticText::SetTextAlignmentAndMaybeRefresh.
+  // Passed directly to TStaticText::SetJustification.
   short textAlignmentCode; // 0x1e
 
   TTextLine();
-  // 0x570390 -- extends TLineData::SetLineDataRowAndBounds with an optional localized
+  // 0x570390 -- extends TLineData::ILineData with an optional localized
   // caption (styleGroupCode != -1) and an unconditional style-descriptor rebuild.
-  void SetTextLineRowBoundsAndStyle(short rowArg, short colArg, int* bounds, short styleGroupCode,
+  void ITextLine(short rowArg, short colArg, int* bounds, short styleGroupCode,
                                     short styleIndex);
   // 0x570440 -- copy-assign the 10-byte packed style descriptor.
   void SetTextLineStyleDescriptor(const TextStyle* descriptor);
@@ -30,7 +30,7 @@ public:
                                   unsigned char red, unsigned char green,
                                   unsigned char blue); // 0x570470
   // 0x5704e0
-  void SetTextAlignmentCode(short value);
+  void SetTheJustification(short value);
   void SetCaptionText(CString* caption); // 0x00570420
 };
 

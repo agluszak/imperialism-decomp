@@ -17,7 +17,7 @@ TUpDownPictureButton::~TUpDownPictureButton() {}
 void TUpDownPictureButton::HiliteState(unsigned char enabledState, bool refreshNow) {
   if (enabledState != controlState64) {
     controlState64 = enabledState;
-    SetPictureResourceIdAndRefresh(enabledState != 0 ? static_cast<short>(glyphBase84 + 1)
+    SetPictureRsrcID(enabledState != 0 ? static_cast<short>(glyphBase84 + 1)
                                                      : static_cast<short>(glyphBase84 - 1),
                                    1);
     if (refreshNow) {

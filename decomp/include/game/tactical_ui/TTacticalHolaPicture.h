@@ -16,7 +16,7 @@ public:
   // Configures the battle-intro ('hola', dialog 0xf19) coats-of-arms and site labels
   // for the two nations. 0x005ad760, __thiscall, ret 0x10 (renamed off the
   // junk TTask::CreateTTaskInstance attribution).
-  void ConfigureBattleIntroCoatsAndSiteLabels(int nationA, int nationB, int nationAIsLocalSide,
+  void StuffValues(int nationA, int nationB, int nationAIsLocalSide,
                                               int battleSiteIndex);
 };
 ASSERT_SIZE(TTacticalHolaPicture, 0x90);

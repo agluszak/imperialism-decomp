@@ -123,7 +123,7 @@ void TStaticText::SetTextAndMaybeRefresh(CString* sharedString, bool refreshNow)
 }
 
 // FUNCTION: IMPERIALISM 0x0048fed0
-void TStaticText::SetTextFromStringResource(short stringResourceGroup, short stringResourceIndex,
+void TStaticText::SetTextWithStrListID(short stringResourceGroup, short stringResourceIndex,
                                             bool refreshNow) {
   CString loadedString;
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&loadedString, stringResourceGroup,
@@ -132,7 +132,7 @@ void TStaticText::SetTextFromStringResource(short stringResourceGroup, short str
 }
 
 // FUNCTION: IMPERIALISM 0x0048ff70
-void TStaticText::SetTextAlignmentAndMaybeRefresh(short alignmentCode, bool refreshFlag) {
+void TStaticText::SetJustification(short alignmentCode, bool refreshFlag) {
   textAlignmentCode = alignmentCode;
   if (refreshFlag) {
     PaintOrInvalidateControl(0);
@@ -174,7 +174,7 @@ void TStaticText::Draw(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004900a0
-void TStaticText::DrawTextAligned(const char* textChars, int textLength, RECT* rect,
+void TStaticText::ImageText(const char* textChars, int textLength, RECT* rect,
                                   short alignmentCode) {
   (void)textLength;
   CDC* dc = GetActiveQuickDrawDc();

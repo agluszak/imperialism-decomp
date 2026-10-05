@@ -14,7 +14,7 @@ public:
   DECLARE_DYNCREATE(TRailAmtBar)
 
   void DoPostCreate(int arg) override;
-  void RenderPrimarySurfaceOverlayPanelWithClipCache() override;
-  void RenderQuickDrawOverlayWithHitRegion(short selectedValue) override; // slot 0x6b 0x0058a3b0
+  void DrawAmt() override;
+  void DrawMax(short selectedValue) override; // slot 0x6b 0x0058a3b0
 };
 ASSERT_SIZE(TRailAmtBar, 0x6c);

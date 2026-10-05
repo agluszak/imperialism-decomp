@@ -70,7 +70,7 @@ short __cdecl CompareTacticalUnitsForTurnOrder(void* a, void* b, void* context) 
 }
 
 // FUNCTION: IMPERIALISM 0x0059f710
-void TTacticalBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
+void TTacticalBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
   (void)unit;
   (void)tileIndex;
 }
@@ -259,7 +259,7 @@ void TTacticalBattle::FinalizeTacticalTurnStateAndQueueEvent232A() {
     TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(
         battleView8->ownerContext->ResolveControlByTag(kControlTagTool));
     toolbar->AssertValid();
-    toolbar->ConfigureTacticalTargetDoneRetreatAutoControls(1);
+    toolbar->SetActionMode(1);
   }
   // TSortedList ordinals are 1-based, so GetEntryByOrdinal(GetCount()) is the tail.
   selectedUnit1c =
@@ -275,7 +275,7 @@ void TTacticalBattle::FinalizeTacticalTurnStateAndQueueEvent232A() {
 // FUNCTION: IMPERIALISM 0x0059fe40
 void TTacticalBattle::ApplyTacticalDoneSelectionAndRefreshUi(TTacticalUnit* unit) {
   selectedUnit1c = unit;
-  ComputeTacticalReachableTileCostsByUnitCategory(unit);
+  CalculateMoveMap(unit);
   if (battleView8 != 0) {
     TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(
         battleView8->ownerContext->ResolveControlByTag(kControlTagTool));
@@ -302,7 +302,7 @@ void TTacticalBattle::ApplyTacticalDoneSelectionAndRefreshUi(TTacticalUnit* unit
 // on an adjacent ring neighbor, or in the opponent's entry column. Ends by rebuilding
 // the threat plane for the unit.
 // FUNCTION: IMPERIALISM 0x0059ff20
-void TTacticalBattle::ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit* unit) {
+void TTacticalBattle::CalculateMoveMap(TTacticalUnit* unit) {
   TacticalTileIndex neighborTiles[6];
   int categoryCode = g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC];
   short* moveCosts = tileMoveCostArray;
@@ -781,7 +781,7 @@ void TTacticalBattle::AdvanceToNextTacticalUnitTurnStep() {
   }
 
   candidateUnit->AssertValid();
-  SetCurrentTacticalUnitSelection(candidateUnit, false);
+  LaSelect(candidateUnit, false);
   if (candidateUnit->state1c == 1) {
     ProcessTacticalUnitState1TurnStep(candidateUnit);
     return;
@@ -792,7 +792,7 @@ void TTacticalBattle::AdvanceToNextTacticalUnitTurnStep() {
         static_cast<TArmyTacUnit*>(candidateUnit));
     return;
   }
-  players[currentSideC]->AdvanceTacticalTurnPulse();
+  players[currentSideC]->NextMove();
 }
 
 // Tactical command family: each handler echoes the command to multiplayer when it
@@ -803,7 +803,7 @@ void TTacticalBattle::AdvanceToNextTacticalUnitTurnStep() {
 // side to match the unit, refreshes the action toolbar + old/new selection rects,
 // refills the unit's action points, and applies the selection state.
 // FUNCTION: IMPERIALISM 0x005a1010
-void TTacticalBattle::SetCurrentTacticalUnitSelection(TTacticalUnit* unit, bool remoteFlag) {
+void TTacticalBattle::LaSelect(TTacticalUnit* unit, bool remoteFlag) {
   if (!remoteFlag) {
     bool multiplayerActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
     if (multiplayerActive) {
@@ -831,7 +831,7 @@ void TTacticalBattle::SetCurrentTacticalUnitSelection(TTacticalUnit* unit, bool 
 void TTacticalBattle::ProcessTacticalUnitState1TurnStep(TTacticalUnit* unit) {
   int bestDistance = 999;
   TacticalTileIndex originalTile = unit->tileIndex8;
-  BuildTacticalDistanceFieldForSide(unit->side20 == 0);
+  MakeRetreatMap(unit->side20 == 0);
 
   TacticalTileIndex bestTile = originalTile;
   for (int i = 0; i < tacticalTileCount; ++i) {
@@ -883,7 +883,7 @@ void TTacticalBattle::ProcessTacticalUnitState1TurnStep(TTacticalUnit* unit) {
       if (battleView8 != 0) {
         battleView8->PlayAni(unit->tileIndex8, 0xf8c, 10);
       }
-      unit->ApplyTacticalDamage(unit->strength4, 0);
+      unit->ApplyDamage(unit->strength4, 0);
       tileGrid4[unit->tileIndex8].occupant4 = 0;
       unit->tileIndex8 = -1;
       if (battleView8 != 0) {
@@ -944,7 +944,7 @@ void TTacticalBattle::MoveTacticalUnitTowardTile(TTacticalUnit* unit,
                                                  TacticalTileIndex targetTileIndex) {
   TacticalTileIndex pathTiles[12];
   pathTiles[0] = targetTileIndex;
-  int stepCount = BuildPathToTargetByDistanceField(targetTileIndex, 0, unit->tileIndex8, pathTiles);
+  int stepCount = SeekPath(targetTileIndex, 0, unit->tileIndex8, pathTiles);
   if (stepCount == -1) {
     return;
   }
@@ -997,7 +997,7 @@ void TTacticalBattle::MoveTacticalUnitTowardTile(TTacticalUnit* unit,
     }
   }
 
-  ComputeTacticalReachableTileCostsByUnitCategory(unit);
+  CalculateMoveMap(unit);
   if (battleView8 != 0) {
     battleView8->RefreshControl();
   }
@@ -1010,7 +1010,7 @@ IMPERIALISM_END_RETAIL_UNINITIALIZED_READ
 // tile wins, two equal-threat-class tiles coin-flip), and recurses into each candidate
 // until one reaches the goal. Returns the found path depth or -1.
 // FUNCTION: IMPERIALISM 0x005a16e0
-int TTacticalBattle::BuildPathToTargetByDistanceField(TacticalTileIndex walkTileIndex,
+int TTacticalBattle::SeekPath(TacticalTileIndex walkTileIndex,
                                                       int pathDepth,
                                                       TacticalTileIndex goalTileIndex,
                                                       TacticalTileIndex* outPathTiles) {
@@ -1081,7 +1081,7 @@ int TTacticalBattle::BuildPathToTargetByDistanceField(TacticalTileIndex walkTile
     int* walkCursor = candidateTiles;
     while (candidateSlot < candidateCount) {
       int foundDepth =
-          BuildPathToTargetByDistanceField(*walkCursor, pathDepth + 1, goalTileIndex, outPathTiles);
+          SeekPath(*walkCursor, pathDepth + 1, goalTileIndex, outPathTiles);
       if (foundDepth != -1) {
         outPathTiles[pathDepth] = walkTileIndex;
         return foundDepth;
@@ -1315,7 +1315,7 @@ unsigned char TTacticalBattle::HasValidTacticalFollowupTargetForCurrentAction() 
 // morale damage is additionally scaled by the defender side's best living leader
 // (2.0 down to 1.8 - 0.2*quality). Melee against artillery (defender category 6/7) by
 // category <4 attackers whose morale damage breaks the defender's morale sets the
-// capture effect code. Ends by dispatching ApplyTacticalActionEffectsAndMaybeRemoveUnit
+// capture effect code. Ends by dispatching LaFireOn
 // and clearing the defender-side player's field20.
 // FUNCTION: IMPERIALISM 0x005a1ee0
 void TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
@@ -1465,7 +1465,7 @@ void TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
   }
 
   attackerUnit->AssertValid();
-  ApplyTacticalActionEffectsAndMaybeRemoveUnit(attackerUnit, defenderUnit, targetTileIndex,
+  LaFireOn(attackerUnit, defenderUnit, targetTileIndex,
                                                (int)damage, (int)moraleDamage, captureEffectCode,
                                                false);
   TTacticalPlayer* postActionPlayer = (defenderUnit->side20 == 0) ? players[0] : players[1];
@@ -1477,7 +1477,7 @@ void TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
 // 6/7 or unit type 0x15, small 0xf78 otherwise), removal of a destroyed target from the
 // grid, and end-of-battle evaluation.
 // FUNCTION: IMPERIALISM 0x005a24a0
-void TTacticalBattle::ApplyTacticalActionEffectsAndMaybeRemoveUnit(
+void TTacticalBattle::LaFireOn(
     TTacticalUnit* attackerUnit, TTacticalUnit* targetUnit, TacticalTileIndex targetTileIndex,
     int damageA, int damageB, char effectCode2C, bool remoteFlag) {
   if (!remoteFlag) {
@@ -1487,7 +1487,7 @@ void TTacticalBattle::ApplyTacticalActionEffectsAndMaybeRemoveUnit(
                                                       damageA, damageB, effectCode2C);
     }
   }
-  targetUnit->ApplyTacticalDamage(damageA, damageB);
+  targetUnit->ApplyDamage(damageA, damageB);
   if (battleView8 != 0) {
     battleView8->MakeTileVisible(targetTileIndex);
     short sfxToken = g_awTacticalFireSfxTokenByUnitType[attackerUnit->unitTypeC];
@@ -1611,7 +1611,7 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
 
   TPicture* headerPicture = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagDialog));
   headerPicture->AssertValid();
-  headerPicture->SetPictureResourceIdAndRefresh(
+  headerPicture->SetPictureRsrcID(
       g_pSimMgr->GetPlayerCountry() + (localSideWon ? 0xeed : 0xefb), 0);
 
   TStaticText* titleControl =
@@ -1824,7 +1824,7 @@ void TTacticalBattle::DispatchTacticalActionByHoverStateIndex(TacticalTileIndex 
   currentTacticalActionCode4c = ComputeTacticalHoverCursorStateIndex(tileIndex);
   switch (currentTacticalActionCode4c) {
   case 3:
-    DeployTacticalUnitToTile(selectedUnit1c, tileIndex);
+    DeployUnit(selectedUnit1c, tileIndex);
     break;
   case 4:
     MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(selectedUnit1c, tileIndex);
@@ -1842,7 +1842,7 @@ void TTacticalBattle::DispatchTacticalActionByHoverStateIndex(TacticalTileIndex 
   case 8: {
     TTacticalUnit* occupant = tileGrid4[tileIndex].occupant4;
     occupant->AssertValid();
-    ComputeRallyStrengthAndQueueTacticalRallyCommand(selectedUnit1c,
+    RallyUnit(selectedUnit1c,
                                                      static_cast<TArmyTacUnit*>(occupant));
     break;
   }
@@ -1914,7 +1914,7 @@ void TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints(
   HandleTacticalCommandTag_digg(unit, tileIndex, false);
   MoveTacticalUnitTowardTile(unit, tileIndex);
   unit->actionPoints28 = actionPointsBefore - g_awUnitTypeBaseActionPointTable[unit->unitTypeC] / 2;
-  ComputeTacticalReachableTileCostsByUnitCategory(unit);
+  CalculateMoveMap(unit);
   if (unit->actionPoints28 == 0) {
     FinishTacticalActionAndPostNextMoveCommand();
   }
@@ -1971,7 +1971,7 @@ void TTacticalBattle::HandleTacticalCommandTag_digg(TTacticalUnit* unit,
 // state 0 with strength/10 + 20 morale on a rand()%100 < (quality+5)*10 roll. Then the
 // 'raly' command applies/echoes it and the 0x232a end-of-action event is queued.
 // FUNCTION: IMPERIALISM 0x005a3810
-void TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(TTacticalUnit* rallyingUnit,
+void TTacticalBattle::RallyUnit(TTacticalUnit* rallyingUnit,
                                                                        TArmyTacUnit* rallyTarget) {
   int newState = rallyTarget->state1c;
   int newMorale = rallyTarget->morale34;
@@ -2381,7 +2381,7 @@ void TTacticalBattle::HandleTacticalCommandTag_depl(TArmyTacUnit* unit, Tactical
 // intact fort wall -- except the wall gun-slot tiles (rows 5/7/9 at wall column
 // battlefieldColumnCount - 6), which stay passable for the attacking side only.
 // FUNCTION: IMPERIALISM 0x005a4460
-void TTacticalBattle::BuildTacticalDistanceFieldForSide(char ourSideFlag) {
+void TTacticalBattle::MakeRetreatMap(char ourSideFlag) {
   int fillIndex;
   for (fillIndex = 0; fillIndex < tacticalTileCount; ++fillIndex) {
     tileIntArray[fillIndex] = -1;

@@ -522,10 +522,10 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
     TTerrainStateRecord* record = &g_pGlobalMapState->terrainStateTable[tileIndex];
     if (record->ownerNationTag04 == nationSlot && (record->activeFlags1c & 1) != 0) {
       short maxCap = static_cast<char>(
-          g_pGlobalMapState->FindMaxResourceCapabilityValueForTile(tileIndex, 0, nationSlot));
+          g_pGlobalMapState->GetMaxDevelopmentLevel(tileIndex, 0, nationSlot));
       if (static_cast<char>(g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(
               tileIndex, false)) < maxCap) {
-        g_pGlobalMapState->SetCivilianDevelopmentClassNibble(
+        g_pGlobalMapState->SetDevelopmentLevel(
             tileIndex, false, static_cast<unsigned char>(maxCap), true);
       }
     }
@@ -547,7 +547,7 @@ void TTechMgr::ActivateSlotAndUpdateUI(int abilityId, int nationSlot) {
       TUnitOrder* order = nation->city->buildOrderSlots[static_cast<short>(group - 1)];
       order->AssertValid();
       abilityActiveRows[nationSlot].abilityActiveById[order->resourceTypeIndex] = 0;
-      order->SetOrderCostProfile(g_aUnitOrderCostProfileByAbilityId[abilityId][0],
+      order->ReplaceOrder(g_aUnitOrderCostProfileByAbilityId[abilityId][0],
                                  g_aUnitOrderCostProfileByAbilityId[abilityId][1],
                                  g_aUnitOrderCostProfileByAbilityId[abilityId][2],
                                  g_aUnitOrderCostProfileByAbilityId[abilityId][3],
@@ -692,7 +692,7 @@ bool TTechMgr::AreTechItemPrerequisitePairCompleted(int techId, int nationSlot) 
 }
 
 // FUNCTION: IMPERIALISM 0x005b0a90
-void TTechMgr::SelectMissingTechItemPrerequisitesFromPair(int techId, int nationSlot,
+void TTechMgr::GetPreReqs(int techId, int nationSlot,
                                                           int* missingPrimaryTechId,
                                                           int* missingSecondaryTechId) {
   short primaryPrerequisiteTechId = g_aTechItemPrerequisitePairs[techId].primaryTechId;
@@ -731,7 +731,7 @@ void TTechMgr::RefundTechItemPurchaseCostAndClearState(int slot, int nationIndex
 }
 
 // FUNCTION: IMPERIALISM 0x005b0c20
-short TTechMgr::ConsumeFirstPendingAbilityUnlock(short nationSlot) {
+short TTechMgr::GetNextNewAdvance(short nationSlot) {
   for (int techId = 0; techId < 0x1d; ++techId) {
     if (orderCapRows277[nationSlot].techStatusByTechId[techId] == 1) {
       HandleAbilityUnlock(techId, nationSlot);

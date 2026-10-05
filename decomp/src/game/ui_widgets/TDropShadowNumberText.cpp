@@ -33,5 +33,5 @@ void TDropShadowNumberText::Draw(RECT* rectBuffer) {
   shadowRect.bottom--;
   shadowRect.left--;
   shadowRect.right--;
-  DrawTextAligned((LPCSTR)shadowText, shadowText.GetLength(), &shadowRect, textAlignmentCode);
+  ImageText((LPCSTR)shadowText, shadowText.GetLength(), &shadowRect, textAlignmentCode);
 }

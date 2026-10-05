@@ -33,7 +33,7 @@ void TTownNameDialog::DoPostCreate(int arg) {
 
   // LIBRARY: rand (0x005e83f0)
   short suggestedNameIndex = static_cast<short>(rand() % 8 + 1);
-  nameControl->SetTextFromStringResource(0x1c52, suggestedNameIndex, true);
+  nameControl->SetTextWithStrListID(0x1c52, suggestedNameIndex, true);
   UpdatePaletteIndexWithDefaultFallback(0x50);
   nameControl->BecomeTarget();
   nameControl->GetCurrentText(&text);

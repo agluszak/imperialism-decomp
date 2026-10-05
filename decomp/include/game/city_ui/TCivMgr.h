@@ -16,7 +16,7 @@ public:
                                                         short nClickMode); // slot 0x0a 0x4d2380
   virtual bool HandleCivilianTileOrderAction(short nTileIndex,
                                              short nInputHint); // slot 0x0b 0x4d26d0
-  virtual void RelinkCivilianOrderTileAndInvalidateMapTiles(
+  virtual void MoveAndRedrawUnit(
       short nNewTileIndex, class TCivUnit* pCivOrderEntry); // slot 0x0c 0x4d4310
   virtual void DispatchSelectedUnitToGlobalMapStateHandler(
       class TCivUnit* pUnitOrderEntry); // slot 0x0d 0x4d2270
@@ -31,12 +31,12 @@ public:
   // duplicate class "TSelectedCivilianOrderState"; the global at 0x6a43dc is this
   // TCivMgr instance (same 0xc-byte object, same selectedEntry slot, and its vtable
   // dispatches match the slots declared above).
-  void SetActiveCivilianSelection(class TCivUnit* entryContext, bool refreshCommandPanel);
+  void SelectUnit(class TCivUnit* entryContext, bool refreshCommandPanel);
 
   // Issues a prospecting order on the selected civilian, relinks its map tile, plays the
   // confirmation sound, and spins a short UI-pumped feedback delay. 0x004d39d0.
   char QueueProspectingOrderAndPlayFeedback(short nTileIndex);
-  // Clear highlighted (mode 3) civilian entries in the nation's tracked-object list.
+  // IFuzzySet highlighted (mode 3) civilian entries in the nation's tracked-object list.
   // 0x004d20e0, __thiscall.
   void ClearCivilianSelectionHighlightsForNation(short nationId);
   // Select the first idle civilian entry in the nation's tracked-object list, dispatch it
@@ -45,9 +45,9 @@ public:
   class TCivUnit* SelectFirstAvailableCivilianForNation(short nationId);
   // Map hotkey 'W': clear every actionable civilian order mode for `nationId`, then
   // advance the map interaction selection when no selection remains. 0x004d49f0.
-  void ClearNationCivilianActionModesAndCycleSelection(int nationId);
+  void WakeAll(int nationId);
   void OrderAndCycle(UnitOrder order);
-  void ShowDisbandCivilianConfirmationDialog();
+  void DisbandSelected();
 
   // Data members (object size 0x0c, base TObject = vptr only).
   class TCivUnit* selectedEntry; // 0x4 — selected civilian order entry
@@ -109,7 +109,7 @@ public:
   // to Develop". Confirms the city/cost-formatted purchase, queues order type 13,
   // deducts the calculated tile cost, and refreshes the nation indicator. 0x004d3610.
   // The original TCivToolbar attribution was wrong: this+4 is selectedEntry and the
-  // receiver's virtual slot 0x0c is RelinkCivilianOrderTileAndInvalidateMapTiles.
+  // receiver's virtual slot 0x0c is MoveAndRedrawUnit.
   bool PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex);
 };
 ASSERT_SIZE(TCivMgr, 0xc);

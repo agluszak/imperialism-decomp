@@ -12,7 +12,7 @@ public:
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x5794b0
   // Refreshes self, then notifies the owner panel via its slot 0x13c
   // (TView::ForceRedraw, same "selection confirmed" hook TTextList uses).
-  virtual void RefreshAndNotifyOwnerSlot13C(); // slot 0x76 0x579580
+  virtual void Hilite(); // slot 0x76 0x579580
 
   TRadioText();
 

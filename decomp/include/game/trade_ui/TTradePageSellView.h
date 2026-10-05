@@ -11,7 +11,7 @@ public:
   DECLARE_DYNCREATE(TTradePageSellView)
   virtual ~TTradePageSellView() override; // slot 0x01 (scalar deleting destructor)
 
-  // Cache of the last-built category slot; RebuildNationOfferRowsForCategory no-ops if
+  // Cache of the last-built category slot; SetItem no-ops if
   // asked to rebuild for the same category again.
   short lastBuiltCategorySlot; // 0x84
 
@@ -20,6 +20,6 @@ public:
   // rows (slot 0x6d), then either one TTradeOfferNationLine row per nation whose
   // TTradeMgr cell is negative/positive for (nation, categorySlot), or a single
   // fallback row when categorySlot is -1 or no nation qualifies.
-  void RebuildNationOfferRowsForCategory(short categorySlot);
+  void SetItem(short categorySlot);
 };
 ASSERT_SIZE(TTradePageSellView, 0x88);

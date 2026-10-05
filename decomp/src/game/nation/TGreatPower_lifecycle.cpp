@@ -995,7 +995,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
       summaryMessageRef += amountText + s_szSpaceSeparator_00695794;
 
       CString commodityName;
-      g_pSimMgr->GetStringPrelude(nationSlot, &commodityName);
+      g_pSimMgr->GetCommodityName(nationSlot, &commodityName);
       summaryMessageRef += commodityName;
     }
 

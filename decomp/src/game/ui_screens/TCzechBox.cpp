@@ -36,12 +36,12 @@ void TCzechBox::HiliteState(unsigned char fEnabledState, bool fRefreshNow) {
 void TCzechBox::CheckTheLook(unsigned char refreshNow) {
   bool useOddPicture = isOn94 != 0 || controlState64 != 0;
   if (!useOddPicture && (glyphBase84 & 1) != 0) {
-    SetPictureResourceIdAndRefresh(static_cast<short>(glyphBase84 & ~1), refreshNow);
+    SetPictureRsrcID(static_cast<short>(glyphBase84 & ~1), refreshNow);
     if (refreshNow) {
       DrawImmediate();
     }
   } else if (useOddPicture && (glyphBase84 & 1) == 0) {
-    SetPictureResourceIdAndRefresh(static_cast<short>(glyphBase84 | 1), refreshNow);
+    SetPictureRsrcID(static_cast<short>(glyphBase84 | 1), refreshNow);
     if (refreshNow) {
       DrawImmediate();
     }

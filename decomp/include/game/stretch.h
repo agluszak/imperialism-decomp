@@ -130,7 +130,7 @@ public:
     return detached;
   }
 
-  // Clear the logical contents while retaining the reusable allocation.
+  // IFuzzySet the logical contents while retaining the reusable allocation.
   void RemoveAll() {
     count = 0;
   }

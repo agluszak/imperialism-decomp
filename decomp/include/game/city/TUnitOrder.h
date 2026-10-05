@@ -29,7 +29,7 @@ public:
   // Loads one g_aUnitOrderCostProfileByAbilityId row into the order's cost fields
   // (called by TTechMgr::ActivateSlotAndUpdateUI when an ability activates a slot).
   // 0x4b77e0, __thiscall, RET 0x1c.
-  void SetOrderCostProfile(short resourceTypeIndex, short primaryInputResourceId,
+  void ReplaceOrder(short resourceTypeIndex, short primaryInputResourceId,
                            short primaryInputPerUnit, short secondaryInputResourceId,
                            short secondaryInputPerUnit, short cashCostPerUnit, short workforceMode);
   virtual void Produce() override; // slot 0x0d 0x4b73b0

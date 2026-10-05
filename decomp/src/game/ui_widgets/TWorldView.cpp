@@ -136,7 +136,7 @@ void TWorldView::DoKeyEvent(TToolboxEvent* event) {
 
   case 'W':
   case 'w':
-    g_pSelectedCivilianOrderState->ClearNationCivilianActionModesAndCycleSelection(
+    g_pSelectedCivilianOrderState->WakeAll(
         g_pSimMgr->GetPlayerCountry());
     return;
 
@@ -308,7 +308,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
   {
     ScopedMapQuickDrawContext scopedContext(this);
     if (hoveredTileIndex != paintedHoverTileIndex) {
-      RenderStrategicTileSelectionAndNeighborHighlights();
+      FrameCursorArea();
     }
   }
 
@@ -433,7 +433,7 @@ void TWorldView::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
 }
 
 // FUNCTION: IMPERIALISM 0x00596080
-void TWorldView::RenderStrategicTileSelectionAndNeighborHighlights() {}
+void TWorldView::FrameCursorArea() {}
 
 // FUNCTION: IMPERIALISM 0x005960a0
 short TWorldView::QueryMinusOneWordSlot1BC(int unusedArg) {

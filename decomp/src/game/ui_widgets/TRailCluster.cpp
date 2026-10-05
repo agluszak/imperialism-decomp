@@ -165,7 +165,7 @@ void TRailCluster::UpdateMax() {
   }
 
   if (barControl->auxValueA != 0) {
-    barControl->RenderQuickDrawOverlayWithHitRegion(static_cast<short>(
+    barControl->DrawMax(static_cast<short>(
         (selectedMetricOrder->MaxOrder() * barControl->frameWidth) / barControl->auxValueA));
   }
 }

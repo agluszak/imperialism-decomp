@@ -12,7 +12,7 @@ IMPLEMENT_DYNCREATE(TTextLine, TLineData)
 // FUNCTION: IMPERIALISM 0x00570290
 TTextLine::TTextLine() : TLineData() {
   // Only styleRef6 is zero-initialized here; mode/flag2/pointSize stay garbage until
-  // SetTextLineRowBoundsAndStyle's BuildUiTextStyleDescriptor call fills them in.
+  // ITextLine's BuildUiTextStyleDescriptor call fills them in.
   styleDescriptor14.textColor = 0;
 }
 
@@ -20,7 +20,7 @@ TTextLine::TTextLine() : TLineData() {
 TTextLine::~TTextLine() {}
 
 // FUNCTION: IMPERIALISM 0x00570390
-void TTextLine::SetTextLineRowBoundsAndStyle(short rowArg, short colArg, int* bounds,
+void TTextLine::ITextLine(short rowArg, short colArg, int* bounds,
                                              short styleGroupCode, short styleIndex) {
   column = colArg;
   layoutWidth = bounds[0];
@@ -54,7 +54,7 @@ void TTextLine::SetTextLineStyleComponents(short fontCode, short styleCode, shor
 }
 
 // FUNCTION: IMPERIALISM 0x005704e0
-void TTextLine::SetTextAlignmentCode(short value) {
+void TTextLine::SetTheJustification(short value) {
   textAlignmentCode = value;
 }
 
@@ -64,6 +64,6 @@ void TTextLine::InstallViews(TView* panel, int* offsetLayout) {
   text->IStaticText(panel, offsetLayout, &layoutWidth, 5, 5, -1, 0);
   text->SetTextAndMaybeRefresh(&captionText, false);
   text->InstallTextStyle(styleDescriptor14, 0);
-  text->SetTextAlignmentAndMaybeRefresh(textAlignmentCode, false);
+  text->SetJustification(textAlignmentCode, false);
   text->RefreshControl();
 }

@@ -19,7 +19,7 @@ void TPictureRadioButton::ViewEnable(char isEnabled, char refreshNow) {
   char currentState = IsEnabled();
   if (((isEnabled != 0 && currentState == 0) || (isEnabled == 0 && currentState != 0)) &&
       alternatePictureId != 0) {
-    SetPictureResourceIdAndRefresh(alternatePictureId, false);
+    SetPictureRsrcID(alternatePictureId, false);
     controlValue3c = pictureId;
     DefaultSize(true);
     viewEnabled = isEnabled;

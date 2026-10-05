@@ -67,7 +67,7 @@ public:
                                                              int flag) override;
   virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
                                                              bool altOverlay) override;
-  virtual void RenderStrategicTileSelectionAndNeighborHighlights() override;
+  virtual void FrameCursorArea() override;
   virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
                                                                    const CPoint* viewportOrigin,
                                                                    short* outVerticalOffset,
@@ -90,7 +90,7 @@ public:
   unsigned char IsTileVisible(short tileIndex) override;
   void SetMapViewTileIndex(int arg1) override;
   void SetMapViewCellCoordinates(int column, int row) override;
-  virtual void DrawHexNeighborOutlineFromTileArray(short* neighborTiles);
+  virtual void FrameNeighbors(short* neighborTiles);
   // Resets the map-tile sprite variants and all 90 transient tile-marker slots to sentinels.
   virtual void ResetAllTileMarkersToSentinel(); // 0x0051e1a0
   // Releases the transient tile-marker slot the given tile occupies (marks the tile's

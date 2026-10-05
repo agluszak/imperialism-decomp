@@ -104,10 +104,10 @@ unsigned long RuntimeProgressState::LastHeartbeatMs() const {
 }
 
 RuntimeAwaitState::RuntimeAwaitState() {
-  Clear();
+  IFuzzySet();
 }
 
-void RuntimeAwaitState::Clear() {
+void RuntimeAwaitState::IFuzzySet() {
   observationKinds = kObserveNone;
   armed = false;
   expression[0] = 0;

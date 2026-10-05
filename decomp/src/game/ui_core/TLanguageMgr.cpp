@@ -105,7 +105,7 @@ bool TLanguageMgr::ReadPrepLUT(const char* basePath, unsigned long languageTag) 
           firstExtra = entry[10];
           lastExtra = entry[12];
         }
-        AllocateTable(entry[2], entry[4], entry[6], entry[8], firstExtra, lastExtra);
+        Allocate(entry[2], entry[4], entry[6], entry[8], firstExtra, lastExtra);
         break;
       }
       }
@@ -224,7 +224,7 @@ void TLanguageMgr::FreeTableRows() {
 }
 
 // FUNCTION: IMPERIALISM 0x00508800
-void TLanguageMgr::AllocateTable(unsigned char firstColumnArg, unsigned char lastColumn,
+void TLanguageMgr::Allocate(unsigned char firstColumnArg, unsigned char lastColumn,
                                  unsigned char firstPrimaryRowArg, unsigned char lastPrimaryRow,
                                  unsigned char firstExtraRowArg, unsigned char lastExtraRow) {
   FreeTableRows();
@@ -282,7 +282,7 @@ char TLanguageMgr::PickGender(const char* name) const {
       unsigned long itemTag = kControlTagFrm0 + rowIndex;
       TRadioText* item = form->AddItem(itemTag, rowIndex, localizedName, 0xf, -1);
       ApplyUiTextStyleAndThemeFlags(item, 0, 0xc, 0x2b6b, 0x2b6c);
-      item->SetTextAlignmentAndMaybeRefresh(1, false);
+      item->SetJustification(1, false);
       if (firstTag == 0) {
         firstTag = itemTag;
       }

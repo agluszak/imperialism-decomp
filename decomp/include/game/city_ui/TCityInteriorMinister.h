@@ -65,7 +65,7 @@ public:
   virtual void DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits(
       TCity* city);                                     // slot 0x2c 0x4c07d0
   virtual void PleaseBuildCivilian(short commandIndex); // slot 0x2d 0x4bef10
-  virtual short RaiseNeedTargetWithinAvailableSurplus(short resourceType, short requestedAmount,
+  virtual short AttemptTransport(short resourceType, short requestedAmount,
                                                       short allocationLimit); // slot 0x2e 0x4c0de0
   virtual short
   RebuildNeedTargetsAndQueueProductionShortfalls(TCity* city,

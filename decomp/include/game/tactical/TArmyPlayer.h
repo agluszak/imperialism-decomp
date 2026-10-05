@@ -14,7 +14,7 @@ public:
   // NOOP: verified empty in original 0x0059b170
   virtual ~TArmyPlayer() override {}                // slot 0x01 (scalar deleting destructor)
   virtual void StartBattle() override;              // slot 0x0a 0x59b830
-  virtual void AdvanceTacticalTurnPulse() override; // slot 0x0b 0x59e3e0
+  virtual void NextMove() override; // slot 0x0b 0x59e3e0
   virtual void ApplyChanges(unsigned char sideWonFlag) override;             // slot 0x0d 0x59b3e0
   virtual void RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) override; // slot 0x0e 0x59b4f0
   virtual void AddTacticalUnitToUnitListHead(TTacticalUnit* unit) override;  // slot 0x0f 0x59b540
@@ -86,7 +86,7 @@ public:
   int SelectTacticalTileIndexByColumnPriorityVariantA();  // 0x59bfe0
   int SelectTacticalTileIndexByColumnPriorityVariantB();  // 0x59c2a0
   // Weighted tile-heuristic selectors for the auto-turn controller.
-  int SelectBestTacticalTileByWeightedHeuristics(TTacticalUnit* unit,
+  int FindBestMove(TTacticalUnit* unit,
                                                  int* heuristicWeights15); // 0x59d530
   int SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* unit,
                                                      int flag); // 0x59e110
@@ -98,7 +98,7 @@ public:
   int GetMinimumActiveUnitRangeForStates2Or4(); // 0x59e9c0
 
   // The fifteen per-tile heuristic scorers driven (via the 0x6994c0 member-function-
-  // pointer table) by SelectBestTacticalTileByWeightedHeuristics; entry i pairs with
+  // pointer table) by FindBestMove; entry i pairs with
   // weight column i of g_anTacticalTileHeuristicWeightsByAiState_00699500.
   int ScoreTacticalTileHoldPositionBonus(TTacticalUnit* unit,
                                          TacticalTileIndex tileIndex); // 0x59d6b0

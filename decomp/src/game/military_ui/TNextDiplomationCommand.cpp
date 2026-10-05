@@ -19,7 +19,7 @@ void TNextDiplomationCommand::DoIt() {
 TNextDiplomationCommand::~TNextDiplomationCommand() {}
 
 // FUNCTION: IMPERIALISM 0x004f2930
-void TNextDiplomationCommand::DispatchUiPacketWithTagNEXT() {
+void TNextDiplomationCommand::PostThyself() {
   ICommand(kControlTagNeXT, g_pAmbitApplication, 0, 0, 0);
   g_pAmbitApplication->DispatchUiSelectionToHandler(this);
 }

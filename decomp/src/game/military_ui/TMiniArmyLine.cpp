@@ -16,7 +16,7 @@ IMPLEMENT_DYNCREATE(TMiniArmyLine, TLineData)
 
 // FUNCTION: IMPERIALISM 0x004aa920
 void TMiniArmyLine::IMiniArmyLine(short rowArg, short colArg, int* bounds, TMilitaryUnit* item) {
-  SetLineDataRowAndBounds(rowArg, colArg, bounds);
+  ILineData(rowArg, colArg, bounds);
   militaryUnit = item;
 }
 

@@ -45,7 +45,7 @@ TSetupRandomMapPicture::TSetupRandomMapPicture()
 TSetupRandomMapPicture::~TSetupRandomMapPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00576ef0
-void TSetupRandomMapPicture::SetSelectedNationSlot(short nationSlot) {
+void TSetupRandomMapPicture::PickCountry(short nationSlot) {
   selectedNationSlot9A = nationSlot;
 
   TGWorldPartView* flagView = static_cast<TGWorldPartView*>(ResolveControlByTag(kControlTagFlag));
@@ -59,7 +59,7 @@ void TSetupRandomMapPicture::SetSelectedNationSlot(short nationSlot) {
 
   TPicture* coatView = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoat));
   coatView->AssertValid();
-  coatView->SetPictureResourceIdAndRefresh(static_cast<short>(selectedNationSlot9A + 0x11c6), true);
+  coatView->SetPictureRsrcID(static_cast<short>(selectedNationSlot9A + 0x11c6), true);
 
   if (!countryControlReady) {
     bool sessionInactive = g_pSimMgr->multiplayerSessionRole == kSessionRoleStandalone;
@@ -119,7 +119,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   g_pCursorControlPanel->AssertValid();
   g_pCursorControlPanel->SetTextStyle(0, 0xe, 0x2b6b);
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
-  g_pCursorControlPanel->SetTextAlignmentAndMaybeRefresh(1, false);
+  g_pCursorControlPanel->SetJustification(1, false);
 
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagKeyP);
@@ -142,14 +142,14 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
       static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagTcou));
   countryTitle->AssertValid();
   ApplyUiTextStyleAndThemeFlags(countryTitle, 0, 0xe, 0x2b6a, 0x2b6c);
-  countryTitle->SetTextFromStringResource(0x2737, 0x1e, false);
+  countryTitle->SetTextWithStrListID(0x2737, 0x1e, false);
 
   TMapPreviewView* mapPreview = static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagMapP));
   mapPreview->AssertValid();
   mapPreview->selectedNation68 = selectedNationSlot9A;
 
   GroundControlToMajorTom(1);
-  g_pCursorControlPanel->SetTextAlignmentAndMaybeRefresh(1, false);
+  g_pCursorControlPanel->SetJustification(1, false);
 
   TGWorldPartView* flagView = static_cast<TGWorldPartView*>(ResolveControlByTag(kControlTagFlag));
   flagView->AssertValid();
@@ -206,7 +206,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
       static_cast<TRadioText*>(namesCluster->ResolveControlByTag(kControlTagHist));
   historicalNames->AssertValid();
   ApplyUiTextStyleAndThemeFlags(historicalNames, 0, 0xc, 0x2b6b, 0x2b6c);
-  historicalNames->SetTextAlignmentAndMaybeRefresh(1, false);
+  historicalNames->SetJustification(1, false);
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&labelText, 0x2758, 4);
   historicalNames->SetTextAndMaybeRefresh(&labelText, false);
   historicalNames->controlValue3c = kControlTagHist;
@@ -215,7 +215,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
       static_cast<TRadioText*>(namesCluster->ResolveControlByTag(kControlTagRand));
   randomNames->AssertValid();
   ApplyUiTextStyleAndThemeFlags(randomNames, 0, 0xc, 0x2b6b, 0x2b6c);
-  randomNames->SetTextAlignmentAndMaybeRefresh(1, false);
+  randomNames->SetJustification(1, false);
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&labelText, 0x2758, 5);
   randomNames->SetTextAndMaybeRefresh(&labelText, false);
   randomNames->controlValue3c = kControlTagRand;
@@ -225,7 +225,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
         difficultyCluster->ResolveControlByTag(kControlTagDif0 + difficulty));
     option->AssertValid();
     ApplyUiTextStyleAndThemeFlags(option, 0, 0xc, 0x2b6b, 0x2b6c);
-    option->SetTextAlignmentAndMaybeRefresh(1, false);
+    option->SetJustification(1, false);
     g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&labelText, 0x2737, difficulty + 0xe);
     option->SetTextAndMaybeRefresh(&labelText, false);
     option->controlValue3c = difficulty;
@@ -250,7 +250,7 @@ void TSetupRandomMapPicture::DoEvent(int commandId, TEventHandler* sourceHandler
 
     TPicture* coatView = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoat));
     coatView->AssertValid();
-    coatView->SetPictureResourceIdAndRefresh(static_cast<short>(selectedNationSlot9A + 0x11c6),
+    coatView->SetPictureRsrcID(static_cast<short>(selectedNationSlot9A + 0x11c6),
                                              true);
 
     RecheckCountryName();
@@ -359,7 +359,7 @@ void TSetupRandomMapPicture::StartGame() {
   g_pSimMgr->SetPlayerCountry(selectedNationSlot9A);
   {
     CString countryName(g_cstrCountryNameSettingValue006A4220);
-    g_pAssetMgr->SaveSettingValueFromPointerByKey(&countryName, g_szCountryNameProfileKey00698AE0);
+    g_pAssetMgr->SetPreferenceString(&countryName, g_szCountryNameProfileKey00698AE0);
   }
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
     g_pSimMgr->nationControlModes[nationSlot] = 2;
@@ -417,10 +417,10 @@ void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
   CPoint visibleSettingsPanelPosition(0x120, 4);
   settingsPanel->Locate(hiddenSettingsPanelPosition, false);
 
-  SetPictureResourceIdAndRefresh(0x1195, true);
+  SetPictureRsrcID(0x1195, true);
   TPicture* coatView = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoat));
   coatView->AssertValid();
-  coatView->SetPictureResourceIdAndRefresh(0x11cd, true);
+  coatView->SetPictureRsrcID(0x11cd, true);
 
   if (mode != 0) {
     GetWindow()->ForceRedraw();
@@ -442,8 +442,8 @@ void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
 
   countryControl->Show(1, 0);
   settingsPanel->Locate(visibleSettingsPanelPosition, false);
-  SetPictureResourceIdAndRefresh(0x11bc, true);
-  coatView->SetPictureResourceIdAndRefresh(static_cast<short>(selectedNationSlot9A + 0x11c6), true);
+  SetPictureRsrcID(0x11bc, true);
+  coatView->SetPictureRsrcID(static_cast<short>(selectedNationSlot9A + 0x11c6), true);
 
   CString emptyText(g_szEmptyString);
   infoBar->UpdateTextEntrySharedStringAndMaybeNotify(&emptyText, true);
@@ -466,7 +466,7 @@ void TSetupRandomMapPicture::SpinYourGlobe() {
 
   TNoHilitePicture* globe = static_cast<TNoHilitePicture*>(ResolveControlByTag(kControlTagGlob));
   globe->AssertValid();
-  globe->SetPictureResourceIdAndRefresh(static_cast<short>(globeFrameA0 + 0x11d0), false);
+  globe->SetPictureRsrcID(static_cast<short>(globeFrameA0 + 0x11d0), false);
 
   ScopedMapQuickDrawContext globeContext(globe);
   globe->PrepareForDrawing();

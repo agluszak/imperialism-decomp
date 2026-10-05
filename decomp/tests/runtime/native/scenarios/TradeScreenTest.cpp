@@ -47,7 +47,7 @@ TPageView* CreatePaginationPage() {
 TTextLine* CreatePaginationLine(const char* caption, short headerIndex, short followingSpace) {
   TTextLine* line = new TTextLine();
   int bounds[2] = {200, 30};
-  line->SetTextLineRowBoundsAndStyle(headerIndex, followingSpace, bounds, -1, 0);
+  line->ITextLine(headerIndex, followingSpace, bounds, -1, 0);
   CString text(caption);
   line->SetCaptionText(&text);
   return line;

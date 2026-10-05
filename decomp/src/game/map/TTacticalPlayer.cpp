@@ -14,10 +14,10 @@ void TTacticalPlayer::StartBattle() {}
 // True no-op in the original (bare ret); TArmyPlayer's override is the per-tick
 // battle pump.
 // FUNCTION: IMPERIALISM 0x0059ad90
-void TTacticalPlayer::AdvanceTacticalTurnPulse() {}
+void TTacticalPlayer::NextMove() {}
 
 // FUNCTION: IMPERIALISM 0x0059adb0
-void TTacticalPlayer::NoOpTacticalPlayerHook0C(int unused) {
+void TTacticalPlayer::DoClick(int unused) {
   (void)unused;
 }
 

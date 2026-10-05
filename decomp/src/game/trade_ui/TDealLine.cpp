@@ -19,7 +19,7 @@ TDealLine::TDealLine() : TLineData() {}
 // FUNCTION: IMPERIALISM 0x005c0e00
 void TDealLine::IDealLine(short rowArg, short colArg, int* bounds, short commoditySlot,
                           short ownerNationSlot, short entryOrdinal) {
-  SetLineDataRowAndBounds(rowArg, colArg, bounds);
+  ILineData(rowArg, colArg, bounds);
   this->commoditySlot = commoditySlot;
   this->ownerNationSlot = ownerNationSlot;
   this->entryOrdinal = entryOrdinal;
@@ -47,11 +47,11 @@ void TDealLine::InstallViews(TView* panel, int* offsetLayout) {
   short amount = 0;
   short counterpartyNationSlot = 0;
   int unitPriceOrStatus = 0;
-  g_apNationStates[ownerNationSlot]->ReadTrackedSlotEntryFields(
+  g_apNationStates[ownerNationSlot]->GetDealInfo(
       commoditySlot, entryOrdinal, &dealKind, &amount, &counterpartyNationSlot, &unitPriceOrStatus);
 
   counterpartyName = g_pSimMgr->LoadNormalizedCredentialName(counterpartyNationSlot);
-  g_pSimMgr->GetStringPrelude(commoditySlot, &commodityName);
+  g_pSimMgr->GetCommodityName(commoditySlot, &commodityName);
 
   if (amount != 0) {
     amountText.Format(g_szDecimalFormat, static_cast<int>(amount));

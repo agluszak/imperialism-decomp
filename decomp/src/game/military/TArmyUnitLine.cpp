@@ -21,7 +21,7 @@ TArmyUnitLine::TArmyUnitLine() : TLineData() {}
 
 // FUNCTION: IMPERIALISM 0x004a8db0
 void TArmyUnitLine::IArmyUnitLine(short rowArg, short colArg, int* bounds, TMilitaryUnit* item) {
-  SetLineDataRowAndBounds(rowArg, colArg, bounds);
+  ILineData(rowArg, colArg, bounds);
   militaryUnit = item;
 }
 

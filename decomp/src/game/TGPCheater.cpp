@@ -28,7 +28,7 @@ TGPCheater::~TGPCheater() {}
 IMPLEMENT_DYNCREATE(TGPCheater, TCheater)
 
 // FUNCTION: IMPERIALISM 0x004b1a90
-void TGPCheater::ConstructTGPCheaterBaseState(TView* panel) {
+void TGPCheater::IGPCheater(TView* panel) {
   ConstructTCheaterBaseState(panel, 0x2728);
 
   int nameOffset[2] = {0, 0};
@@ -56,7 +56,7 @@ void TGPCheater::ConstructTGPCheaterBaseState(TView* panel) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b1cb0
-void TGPCheater::RefreshGPCheaterNationValues(int nationSlot) {
+void TGPCheater::DisplayGP(int nationSlot) {
   TGreatPower* nation = g_apNationStates[nationSlot];
   CString nameText;
 

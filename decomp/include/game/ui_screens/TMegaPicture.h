@@ -11,7 +11,7 @@ public:
   virtual void Free() override;                 // slot 0x07 0x573650
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x573270
   virtual void
-  SetPictureResourceIdAndRefresh(short nPictureId,
+  SetPictureRsrcID(short nPictureId,
                                  unsigned char fRefreshNow) override; // slot 0x72 0x573430
   // Clears (useAndMask != 0: flags98 &= mask) or subtracts (flags98 -= mask) bits, then
   // optionally refreshes.

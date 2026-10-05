@@ -79,7 +79,7 @@ public:
   // the new player's DPID, and sets the small player-data payload. Poses the DirectPlay
   // error dialog and returns 0 on any failed step.
   unsigned char
-  OpenRuntimeSelectionSourceAndApplyActiveNationState(const char* seedPath,
+  Host(const char* seedPath,
                                                       const char* localPlayerName,
                                                       const char* emptyOrSeed); // 0x5e3ad0
 
@@ -89,7 +89,7 @@ public:
   // local player id as the default nation id, sets a small player-data payload, and
   // enumerates existing players to resolve the broadcast nation id. Copies the
   // chosen name back into *outGameName. Returns success.
-  unsigned char OpenJoinGameRuntimeSelectionAndStartSession(int selectionTag, CString* outGameName,
+  unsigned char SelectGame(int selectionTag, CString* outGameName,
                                                             const char* seed); // 0x5e3c20
 
   // Resolves provider's 'prot' control (asserting it valid), rebuilds the enumerated-

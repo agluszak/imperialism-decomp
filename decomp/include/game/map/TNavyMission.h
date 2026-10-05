@@ -94,7 +94,7 @@ public:
   virtual TZone* RefreshMissionPortZoneContextForNation(); // slot 0x28 0x536fa0
   virtual void
   ConsolidateMissionOrderEntriesByTargetAndQueue(TZone* location); // slot 0x29 0x5371d0
-  virtual void QueueMissionOrdersByPriorityForContext(TZone* location,
+  virtual void GiveReconOrders(TZone* location,
                                                       TShip** selectedOrder); // slot 0x2a 0x537090
   // Selects the active target zone from lifecycle state28 (0 -> zone18, 1..2 -> zone14).
   virtual TZone* GetActiveTargetZoneByState28() const; // slot 0x2b 0x537060
@@ -105,7 +105,7 @@ public:
 
   // Dead sibling of AccumulateNavyOrderCategoryVectorWithScale: per-ship accumulation
   // with a distance-decayed, sign-selected weight. 0x537b20.
-  void AccumulateShipCategoryVectorWithDistanceDecay(TShip* ship, float* vector, char positive);
+  void AccumulateWeightedShipEquipage(TShip* ship, float* vector, char positive);
 
   static float ComputeOrderDistributionSimilarityScoreForExactSourceNation(int sourceNation,
                                                                            TZone* nodeContext);
@@ -146,12 +146,12 @@ public:
   // is null), OR (when farther than that) if it's within `distanceThreshold` hops of
   // `farZone` instead (when farZone is non-null and != nearZone).
   // 0x537900.
-  void BuildNavyOrderCategoryVectorForNationWithExclusion(float* vector, TZone* nearZone,
+  void ProjectEquipage(float* vector, TZone* nearZone,
                                                           short distanceThreshold, TZone* farZone);
   void BuildMissionQueuedOrderCategoryVector(float* vector);
   // Builds the queued category vector for missionTargetZone/resolvedPortZone and returns
   // its similarity to the required category vector. 0x537eb0.
-  float ComputeMissionQueuedOrderSimilarityForTargetNation(short distanceThreshold);
+  float ProjectSatisfaction(short distanceThreshold);
 };
 
 ASSERT_SIZE(TNavyMission, 0x3c);

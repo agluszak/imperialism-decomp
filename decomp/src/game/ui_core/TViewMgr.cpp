@@ -381,12 +381,12 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
   }
 
   CPoint placement;
-  this->ComputeTurnEventDialogPlacementByCode(node, &placement);
+  this->GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
 
   TPicture* gold = static_cast<TPicture*>(node->ResolveControlByTag(kControlTagDialog)); // 'DLOG'
   gold->AssertValid();
-  gold->SetPictureResourceIdAndRefresh(static_cast<short>(0x24cd), 0);
+  gold->SetPictureRsrcID(static_cast<short>(0x24cd), 0);
 
   // Mask the game-flow flag while committing the refresh when localization mode is active.
   unsigned char savedFlag = 0;
@@ -501,7 +501,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   }
 
   CPoint placement;
-  this->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
+  this->GetTopLeftFor(dialog, &placement);
   dialog->Locate(placement, false);
 
   TPicture* gold = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagDialog)); // 'DLOG'
@@ -515,7 +515,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   if (static_cast<short>(contextTag) == 2 && g_nationInfoGoldResourceOverride_006a5bac != 0) {
     goldResource = g_nationInfoGoldResourceOverride_006a5bac;
   }
-  gold->SetPictureResourceIdAndRefresh(static_cast<short>(goldResource), 0);
+  gold->SetPictureRsrcID(static_cast<short>(goldResource), 0);
 
   TPicture* coat = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagCoat)); // 'coat'
   coat->AssertValid();
@@ -524,7 +524,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x301);
   }
   if (g_pSimMgr->GetPlayerCountry() >= 0 && g_pSimMgr->GetPlayerCountry() < 7) {
-    coat->SetPictureResourceIdAndRefresh(static_cast<short>(g_pSimMgr->GetPlayerCountry() + 0x251c),
+    coat->SetPictureRsrcID(static_cast<short>(g_pSimMgr->GetPlayerCountry() + 0x251c),
                                          0);
   } else {
     coat->Show(0, 0);
@@ -534,11 +534,11 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
     TPicture* goldValue =
         static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagDialog)); // 'DLOG'
     goldValue->AssertValid();
-    goldValue->SetPictureResourceIdAndRefresh(static_cast<short>(contextTag + 0x252a), 0);
+    goldValue->SetPictureRsrcID(static_cast<short>(contextTag + 0x252a), 0);
     TPicture* award =
         static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagRewa)); // 'awer'
     award->AssertValid();
-    award->SetPictureResourceIdAndRefresh(static_cast<short>(payloadResource), 0);
+    award->SetPictureRsrcID(static_cast<short>(payloadResource), 0);
   } else {
     TStaticText* title =
         static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagTitl)); // 'titl'
@@ -548,7 +548,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x31a);
     }
     title->InstallTextStyle(styleDescriptor, 0);
-    title->SetTextAlignmentAndMaybeRefresh(1, false);
+    title->SetJustification(1, false);
     BuildUiMessageTextFromBracketTemplate(g_pSimMgr, &titleText, 0x2749, messageKind, 0x2749,
                                           contextTagSx);
     titleText += '\r';
@@ -579,7 +579,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
       bounds.right = info->frameWidth - 0x1c;
       info->ApplyBounds(&bounds, false);
       scrollView->contentView = info;
-      scrollView->SyncBoundedValueAndToggleControlStates();
+      scrollView->Reset();
     }
   }
 
@@ -748,7 +748,7 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d69b0
-void TViewMgr::ComputeTurnEventDialogPlacementByCode(TView* dialogView, POINT* outPlacement) {
+void TViewMgr::GetTopLeftFor(TView* dialogView, POINT* outPlacement) {
   CRect mainBounds;
   g_pDisplayMgr->activeDialog->QueryBounds(&mainBounds);
   (void)mainBounds; // original makes the call but discards the result
@@ -1021,7 +1021,7 @@ inline void RefreshToolBarClusterByTag(unsigned int controlTag) {
   control->AssertValid();
   TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(control);
   toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetPlayerCountry());
-  toolbar->RefreshTurnOrderStatusPanelTextsAndControls();
+  toolbar->AddInfoBehaviors();
 }
 
 inline void RefreshTradClusterPictureAndHintText() {
@@ -1032,7 +1032,7 @@ inline void RefreshTradClusterPictureAndHintText() {
   tradControl->AssertValid();
   TPicture* tradPicture = static_cast<TPicture*>(tradControl);
   const short pictureId = static_cast<short>(tradPicture->glyphBase84 + 1);
-  tradPicture->SetPictureResourceIdAndRefresh(pictureId, false);
+  tradPicture->SetPictureRsrcID(pictureId, false);
   tradControl->ViewEnable(0, 0);
 
   CString hintText;
@@ -1356,7 +1356,7 @@ void TViewMgr::ShowCityProductionView(short nationSlot) {
   TControl* cityControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagCity));
   if (cityControl != nullptr) {
     TPicture* cityPicture = static_cast<TPicture*>(cityControl);
-    cityPicture->SetPictureResourceIdAndRefresh(cityPicture->glyphBase84 + 1, 0);
+    cityPicture->SetPictureRsrcID(cityPicture->glyphBase84 + 1, 0);
     cityControl->ViewEnable(0, 0);
     g_pSimMgr->GetString(0x2730, 0x1d, &hoverText);
     SetControlHoverHelpTextAltEntry(hoverText, cityControl);
@@ -1365,13 +1365,13 @@ void TViewMgr::ShowCityProductionView(short nationSlot) {
   TToolBarCluster* topBar =
       static_cast<TToolBarCluster*>(mainView->ResolveControlByTag(kControlTagTopB));
   topBar->AssertValid();
-  topBar->RefreshTurnOrderStatusPanelTextsAndControls();
+  topBar->AddInfoBehaviors();
 
   TToolBarCluster* toolbar =
       static_cast<TToolBarCluster*>(mainView->ResolveControlByTag(kControlTagTool));
   toolbar->AssertValid();
   toolbar->UpdateControlTagTreaTextFromNationAndMapContext(static_cast<short>(nationSlot));
-  toolbar->RefreshTurnOrderStatusPanelTextsAndControls();
+  toolbar->AddInfoBehaviors();
 
   TControl* querControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagQuer));
   if (querControl != nullptr) {
@@ -1435,7 +1435,7 @@ void TViewMgr::ShowDiplomacyScreen(short nationSlot) {
   if (diplControl != nullptr) {
     diplControl->AssertValid();
     TPicture* diplPicture = static_cast<TPicture*>(diplControl);
-    diplPicture->SetPictureResourceIdAndRefresh(static_cast<short>(diplPicture->glyphBase84 + 1),
+    diplPicture->SetPictureRsrcID(static_cast<short>(diplPicture->glyphBase84 + 1),
                                                 0);
     diplControl->ViewEnable(0, 0);
     g_pSimMgr->GetString(0x2730, 0x1c, &text);
@@ -1445,14 +1445,14 @@ void TViewMgr::ShowDiplomacyScreen(short nationSlot) {
   TToolBarCluster* topBar =
       static_cast<TToolBarCluster*>(activeDialog->ResolveControlByTag(kControlTagTopB));
   if (topBar != nullptr) {
-    topBar->RefreshTurnOrderStatusPanelTextsAndControls();
+    topBar->AddInfoBehaviors();
   }
 
   TToolBarCluster* toolBar =
       static_cast<TToolBarCluster*>(activeDialog->ResolveControlByTag(kControlTagTool));
   toolBar->AssertValid();
   toolBar->UpdateControlTagTreaTextFromNationAndMapContext(nationSlot);
-  toolBar->RefreshTurnOrderStatusPanelTextsAndControls();
+  toolBar->AddInfoBehaviors();
 
   TControl* querControl =
       static_cast<TControl*>(activeDialog->ResolveControlByTag(kControlTagQuer));
@@ -1511,7 +1511,7 @@ void TViewMgr::ShowTransportScreen(short nationSlot) {
   TUpDownPictureButton* transportButton =
       static_cast<TUpDownPictureButton*>(activeDialog->ResolveControlByTag(kControlTagTran));
   if (transportButton != nullptr) {
-    transportButton->SetPictureResourceIdAndRefresh(
+    transportButton->SetPictureRsrcID(
         static_cast<short>(transportButton->glyphBase84 + 1), 0);
     transportButton->ViewEnable(0, 0);
     g_pSimMgr->GetString(0x2730, 0x1e, &text);
@@ -1521,13 +1521,13 @@ void TViewMgr::ShowTransportScreen(short nationSlot) {
   TToolBarCluster* topBar =
       static_cast<TToolBarCluster*>(activeDialog->ResolveControlByTag(kControlTagTopB));
   topBar->AssertValid();
-  topBar->RefreshTurnOrderStatusPanelTextsAndControls();
+  topBar->AddInfoBehaviors();
 
   TToolBarCluster* toolBar =
       static_cast<TToolBarCluster*>(activeDialog->ResolveControlByTag(kControlTagTool));
   toolBar->AssertValid();
   toolBar->UpdateControlTagTreaTextFromNationAndMapContext(nationSlot);
-  toolBar->RefreshTurnOrderStatusPanelTextsAndControls();
+  toolBar->AddInfoBehaviors();
 
   TView* queryControl = activeDialog->ResolveControlByTag(kControlTagQuer);
   if (queryControl != nullptr) {
@@ -1555,9 +1555,9 @@ void TViewMgr::ShowTransportScreen(short nationSlot) {
   g_pSimMgr->GetString(0x2735, 6, &text);
   rightTitle->SetTextAndMaybeRefresh(&text, false);
 
-  g_pMacViewMgr->RefreshCityProductionDetailPanelAndArrowWidgets(-1, nationSlot, hostView);
+  g_pMacViewMgr->ShowTransportEntry(-1, nationSlot, hostView);
   for (short row = 0; row < 0x17; ++row) {
-    g_pMacViewMgr->RefreshCityProductionDetailPanelAndArrowWidgets(row, nationSlot, hostView);
+    g_pMacViewMgr->ShowTransportEntry(row, nationSlot, hostView);
   }
 }
 
@@ -1568,13 +1568,13 @@ void TViewMgr::RefreshTechnologyStorePageAndHudText(int nationSlot) {
   TTechStorePage* page =
       static_cast<TTechStorePage*>(mainView->ResolveControlByTag(kControlTagPage));
   page->AssertValid();
-  page->PopulateUnlockedTechnologyRows(nationSlot);
+  page->StuffValues(nationSlot);
 
   TToolBarCluster* toolbar =
       static_cast<TToolBarCluster*>(mainView->ResolveControlByTag(kControlTagTool));
   toolbar->AssertValid();
   toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetPlayerCountry());
-  toolbar->RefreshTurnOrderStatusPanelTextsAndControls();
+  toolbar->AddInfoBehaviors();
 
   g_pCursorControlPanel =
       static_cast<TInfoBarText*>(mainView->ResolveControlByTag(kControlTagCurs));
@@ -1583,7 +1583,7 @@ void TViewMgr::RefreshTechnologyStorePageAndHudText(int nationSlot) {
 
   toolbar = static_cast<TToolBarCluster*>(mainView->ResolveControlByTag(kControlTagTopB));
   toolbar->AssertValid();
-  toolbar->RefreshTurnOrderStatusPanelTextsAndControls();
+  toolbar->AddInfoBehaviors();
 
   for (int titleIndex = 0; titleIndex < 3; ++titleIndex) {
     CString title;
@@ -1624,7 +1624,7 @@ void TViewMgr::ShowAbilityStatusReport(short abilityIndex) {
   toolControl->AssertValid();
   TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(toolControl);
   toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetPlayerCountry());
-  toolbar->RefreshTurnOrderStatusPanelTextsAndControls();
+  toolbar->AddInfoBehaviors();
 
   g_pCursorControlPanel =
       static_cast<TInfoBarText*>(activeDialog->ResolveControlByTag(kControlTagCurs));
@@ -1633,7 +1633,7 @@ void TViewMgr::ShowAbilityStatusReport(short abilityIndex) {
 
   short pictureResourceId = static_cast<short>(
       g_anAbilityStatusPictureIndex_0066F058[static_cast<short>(abilityIndex)] + 0x897);
-  mainControl->SetPictureResourceIdAndRefresh(pictureResourceId, true);
+  mainControl->SetPictureRsrcID(pictureResourceId, true);
 
   TDeluxeText* textControl =
       static_cast<TDeluxeText*>(activeDialog->ResolveControlByTag(kControlTagText));
@@ -1647,7 +1647,7 @@ void TViewMgr::ShowAbilityStatusReport(short abilityIndex) {
 
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6b);
   textControl->InstallTextStyle(style, 0);
-  textControl->SetTextAlignmentAndMaybeRefresh(-2, false);
+  textControl->SetJustification(-2, false);
   activeDialog->ForceRedraw();
 }
 
@@ -1698,7 +1698,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   TUpDownPictureButton* tradeControl =
       static_cast<TUpDownPictureButton*>(mainView->ResolveControlByTag(kControlTagTrad));
   if (tradeControl != 0) {
-    tradeControl->SetPictureResourceIdAndRefresh(static_cast<short>(tradeControl->glyphBase84 + 1),
+    tradeControl->SetPictureRsrcID(static_cast<short>(tradeControl->glyphBase84 + 1),
                                                  false);
     tradeControl->ViewEnable(0, 0);
     g_pSimMgr->GetString(0x2730, 0x1b, &sharedString);
@@ -1708,13 +1708,13 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   TToolBarCluster* topToolbar =
       static_cast<TToolBarCluster*>(mainView->ResolveControlByTag(kControlTagTopB));
   topToolbar->AssertValid();
-  topToolbar->RefreshTurnOrderStatusPanelTextsAndControls();
+  topToolbar->AddInfoBehaviors();
 
   TToolBarCluster* toolbar =
       static_cast<TToolBarCluster*>(mainView->ResolveControlByTag(kControlTagTool));
   toolbar->AssertValid();
   toolbar->UpdateControlTagTreaTextFromNationAndMapContext(nationIndex);
-  toolbar->RefreshTurnOrderStatusPanelTextsAndControls();
+  toolbar->AddInfoBehaviors();
 
   TView* queryControl = mainView->ResolveControlByTag(kControlTagQuer);
   if (queryControl != 0) {
@@ -1801,7 +1801,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xa52);
   }
   ApplyUiNumberTextStyleAndThemeColor(capacity, 0, 0xa, 0x2b6c, 0x2b67);
-  capacity->SetTextAlignmentAndMaybeRefresh(1, false);
+  capacity->SetJustification(1, false);
   capacity->SetControlValue(g_apNationStates[nationSlot]->merchantCapacity, 0);
 
   TCity* city = g_apNationStates[nationSlot] == 0 ? 0 : g_apNationStates[nationSlot]->city;
@@ -1967,7 +1967,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
         g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId] == 0) {
       row->Free();
     } else {
-      g_pSimMgr->GetStringPrelude(commodity, &sharedString);
+      g_pSimMgr->GetCommodityName(commodity, &sharedString);
       SetControlHoverHelpText(sharedString, row);
     }
   }
@@ -2011,7 +2011,7 @@ void TViewMgr::ShowDealBookScreen(short nationSlot) {
       static_cast<TDropShadowText*>(mainControl->ResolveControlByTag(kControlTagTitL)); // 'titL'
   titleControl->AssertValid();
   ApplyUiTextStyleAndThemeFlags(titleControl, 0, 0x12, 0x2b6c, 0x2b6b);
-  titleControl->SetTextAlignmentAndMaybeRefresh(1, false);
+  titleControl->SetJustification(1, false);
   g_pSimMgr->GetString(0x2741, 0, &sharedString);
   titleControl->SetTextAndMaybeRefresh(&sharedString, false);
   // 0x5bac50 is invoked on the 'main' deal-book control (the binary's receiver), not 'titL'.
@@ -2042,50 +2042,50 @@ void TViewMgr::ShowTerrainMap(short nationSlot) {
       static_cast<TToolBarCluster*>(mainView->ResolveControlByTag(kControlTagTbr1));
   toolBar->AssertValid();
   toolBar->UpdateControlTagTreaTextFromNationAndMapContext(nationSlot);
-  toolBar->RefreshTurnOrderStatusPanelTextsAndControls();
+  toolBar->AddInfoBehaviors();
 
   toolBar = static_cast<TToolBarCluster*>(mainView->ResolveControlByTag(kControlTagTool));
   toolBar->AssertValid();
-  toolBar->RefreshTurnOrderStatusPanelTextsAndControls();
+  toolBar->AddInfoBehaviors();
 
   TPicture* statusPicture = static_cast<TPicture*>(mainView->ResolveControlByTag(kControlTagDipl));
   statusPicture->AssertValid();
   if (g_pSimMgr->TestTurnFlowStatusFlagMask(1)) {
-    statusPicture->SetPictureResourceIdAndRefresh(0x24d9, 0);
+    statusPicture->SetPictureRsrcID(0x24d9, 0);
   } else {
-    statusPicture->SetPictureResourceIdAndRefresh(0x24e1, 0);
+    statusPicture->SetPictureRsrcID(0x24e1, 0);
   }
 
   statusPicture = static_cast<TPicture*>(mainView->ResolveControlByTag(kControlTagTrad));
   statusPicture->AssertValid();
   if (g_pSimMgr->TestTurnFlowStatusFlagMask(0x100)) {
-    statusPicture->SetPictureResourceIdAndRefresh(0x24db, 0);
+    statusPicture->SetPictureRsrcID(0x24db, 0);
   } else {
-    statusPicture->SetPictureResourceIdAndRefresh(0x24e3, 0);
+    statusPicture->SetPictureRsrcID(0x24e3, 0);
   }
 
   statusPicture = static_cast<TPicture*>(mainView->ResolveControlByTag(kControlTagCity));
   statusPicture->AssertValid();
   if (g_pSimMgr->TestTurnFlowStatusFlagMask(0x10)) {
-    statusPicture->SetPictureResourceIdAndRefresh(0x24dd, 0);
+    statusPicture->SetPictureRsrcID(0x24dd, 0);
   } else {
-    statusPicture->SetPictureResourceIdAndRefresh(0x24e5, 0);
+    statusPicture->SetPictureRsrcID(0x24e5, 0);
   }
 
   statusPicture = static_cast<TPicture*>(mainView->ResolveControlByTag(kControlTagTran));
   statusPicture->AssertValid();
   if (g_pSimMgr->TestTurnFlowStatusFlagMask(0x1000)) {
-    statusPicture->SetPictureResourceIdAndRefresh(0x24df, 0);
+    statusPicture->SetPictureRsrcID(0x24df, 0);
   } else {
-    statusPicture->SetPictureResourceIdAndRefresh(0x24e7, 0);
+    statusPicture->SetPictureRsrcID(0x24e7, 0);
   }
 
   statusPicture = static_cast<TPicture*>(mainView->ResolveControlByTag(kControlTagMmap));
   statusPicture->AssertValid();
   if (g_pSimMgr->TestTurnFlowStatusFlagMask(0x40)) {
-    statusPicture->SetPictureResourceIdAndRefresh(0x419, 0);
+    statusPicture->SetPictureRsrcID(0x419, 0);
   } else {
-    statusPicture->SetPictureResourceIdAndRefresh(0x24d7, 0);
+    statusPicture->SetPictureRsrcID(0x24d7, 0);
   }
 
   TMapUberPicture* mapPicture =
@@ -2412,7 +2412,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF8() {
   TView* mainView = g_pDisplayMgr->activeDialog;
 
   g_pSfxPlaybackSystem->ResetDualAudioCuePools();
-  g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(6);
+  g_pSfxPlaybackSystem->AddToPlayList(6);
   g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
 
   g_pCursorControlPanel = nullptr;
@@ -2425,7 +2425,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF8() {
   TextStyle styleDescriptor = {0, 0, 0, 0};
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xe, 0x2b6c);
   g_pCursorControlPanel->SetTextStyle(styleDescriptor, true);
-  g_pCursorControlPanel->SetTextAlignmentAndMaybeRefresh(1, false);
+  g_pCursorControlPanel->SetJustification(1, false);
 
   COLORREF mappedStyleFlags = 0;
   ResolveUiThemeColor(0x2b6b, &mappedStyleFlags);
@@ -2563,7 +2563,7 @@ void TViewMgr::ShowBuildingExpansionDialog(short buildingSlotId, TCity* city,
   }
   expansionView->StuffValues(buildingSlotId, city, productionView);
   CPoint placement;
-  this->ComputeTurnEventDialogPlacementByCode(node, &placement);
+  this->GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   int dialogAction = node->PoseModally();
   expansionView->DoClosingAction(static_cast<unsigned long>(dialogAction));
@@ -2683,11 +2683,11 @@ void TViewMgr::MakeCheaterDialog(int which) {
   TCheater* cheater = 0;
   if (which == 0) {
     TTechCheater* techCheater = new TTechCheater();
-    techCheater->ConstructTTechCheaterBaseState(panel);
+    techCheater->ITechCheater(panel);
     cheater = techCheater;
   } else if (which == 1) {
     TGPCheater* gpCheater = new TGPCheater();
-    gpCheater->ConstructTGPCheaterBaseState(panel);
+    gpCheater->IGPCheater(panel);
     cheater = gpCheater;
   }
 

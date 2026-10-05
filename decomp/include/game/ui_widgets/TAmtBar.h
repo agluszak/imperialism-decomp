@@ -28,7 +28,7 @@ public:
   // MOV DI,word ptr [ESP+0x14].
   virtual short ApplyMoveClamp(int baseValue, short requestedValue);
   virtual void UpdateBarValuesAndRefresh(short valueAt60, short valueAt62);
-  virtual void RenderPrimarySurfaceOverlayPanelWithClipCache();
+  virtual void DrawAmt();
 };
 
 ASSERT_SIZE(TAmtBar, 0x68);

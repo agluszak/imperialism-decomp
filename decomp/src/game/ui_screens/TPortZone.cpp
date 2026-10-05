@@ -63,9 +63,9 @@ void TPortZone::WriteTo(TStream* stream) {
   stream->WriteBytes(&portTileIndex, 2);
 }
 
-// slot 0x0a — TZone::GenerateMapActionContextDisplayNameAndHeadline override.
+// slot 0x0a — TZone::NameThyself override.
 // FUNCTION: IMPERIALISM 0x005618b0
-void TPortZone::GenerateMapActionContextDisplayNameAndHeadline(unsigned char* usedCityFlags,
+void TPortZone::NameThyself(unsigned char* usedCityFlags,
                                                                const char* overrideName) {
   (void)usedCityFlags;
   (void)overrideName;
@@ -151,11 +151,11 @@ TPortZone* TPortZone::FindPreviousPortZone() {
   return static_cast<TPortZone*>(zone);
 }
 
-// slot 0x12 — TZone::HasZoneActiveChildCount override. Keeps the base's distance-level
+// slot 0x12 — TZone::CanBeTargetOf override. Keeps the base's distance-level
 // test, then rejects the force's own location and accepts the port only when the force's
 // nation owns it or the diplomacy manager relates the pair.
 // FUNCTION: IMPERIALISM 0x00561dc0
-bool TPortZone::HasZoneActiveChildCount(TTaskForce* force) {
+bool TPortZone::CanBeTargetOf(TTaskForce* force) {
   bool zoneActive = distanceLevel > 0;
   if (zoneActive && force->location != this) {
     short ownerNation = g_pGlobalMapState->terrainStateTable[portTileIndex].ownerNationTag04;

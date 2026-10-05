@@ -42,10 +42,10 @@ void TBuildingView::SetUniversityDialogTextAndRefresh(TStaticText* label, CStrin
 }
 
 // FUNCTION: IMPERIALISM 0x004c70e0
-void TBuildingView::SetUniversityDialogLocalizedTextAndRefresh(TStaticText* label,
+void TBuildingView::SetTextBox(TStaticText* label,
                                                                short stringGroup,
                                                                short stringIndex) {
-  label->SetTextFromStringResource(stringGroup, stringIndex, false);
+  label->SetTextWithStrListID(stringGroup, stringIndex, false);
   CRect labelBounds;
   label->QueryBounds(&labelBounds);
   RECT invalidateRect;

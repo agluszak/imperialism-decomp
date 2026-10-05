@@ -312,7 +312,7 @@ bool AutoArmyBattleToCommit(TArmyBattle* battle) {
   enemyPlayer->notWatchedFlag = 1;
   if (battle->pendingEndOfActionFlag != 0) {
     TArmyPlayer* current = battle->currentSideC == 0 ? ourPlayer : enemyPlayer;
-    current->AdvanceTacticalTurnPulse();
+    current->NextMove();
   }
   while (battle->battleOutcome44 == kTacticalBattleInProgress) {
     if (guard-- <= 0) {
@@ -571,7 +571,7 @@ void ProbeNavyDeployTiles(TNavyBattle* battle, TTacticalUnit* unit, JsonArray* t
   savedLive = battle->battleLive10;
   for (tile = 0; tile < battle->tacticalTileCount; ++tile) {
     occupant = battle->tileGrid4[tile].occupant4;
-    battle->DeployTacticalUnitToTile(unit, tile);
+    battle->DeployUnit(unit, tile);
     if (unit->tileIndex8 == tile) {
       tiles->Add(tile);
       unit->tileIndex8 = savedTile;
@@ -662,7 +662,7 @@ RuntimeActionResult RunMilitaryMaintenance(NativeTransition& transition) {
   while (nation->militaryUnitList44->GetCount() != 0) {
     TMilitaryUnit* unit =
         static_cast<TMilitaryUnit*>(nation->militaryUnitList44->GetEntryByOrdinal(1));
-    unit->DetachUnitOrderFromOwnerAndReset();
+    unit->Vaporize();
     unit->Free();
   }
 
@@ -1167,7 +1167,7 @@ RuntimeActionResult RunMilitaryPhaseLandRetreat(NativeTransition& transition) {
   player->fieldF = 1;
   player->notWatchedFlag = 1;
   player->SelectAndApplyTacticalCursorModeProfile(0);
-  player->AdvanceTacticalTurnPulse();
+  player->NextMove();
   if (!AutoArmyBattleToCommit(battle)) {
     return RuntimeActionResult::Failure("retreat did not terminate");
   }
@@ -1691,7 +1691,7 @@ RuntimeActionResult RunInteractiveArmyBattleRetreat(NativeTransition& transition
   player->fieldF = 1;
   player->notWatchedFlag = 1;
   player->SelectAndApplyTacticalCursorModeProfile(0);
-  player->AdvanceTacticalTurnPulse();
+  player->NextMove();
   if (!AutoArmyBattleToCommit(battle)) {
     JsonFreeValue(initial);
     return RuntimeActionResult::Failure("retreat did not terminate");

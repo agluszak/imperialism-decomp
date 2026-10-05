@@ -17,7 +17,7 @@ void TIdleMeAnimation::IIdleMeAnimation(TView* ownerView) {
   rect.right = 0;
   rect.bottom = 0;
   IAnimation(ownerView, &rect, 0, 0, 0, tag);
-  g_pUiAnimator->AddObjectToUiTransientRegistry(this);
+  g_pUiAnimator->AddAnimation(this);
 }
 
 // FUNCTION: IMPERIALISM 0x004aca30

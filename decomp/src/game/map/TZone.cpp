@@ -96,7 +96,7 @@ bool TZone::QueryZoneCapabilityFlagE(NationSlot nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055e8c0
-bool TZone::HasZoneActiveChildCount(TTaskForce* force) {
+bool TZone::CanBeTargetOf(TTaskForce* force) {
   (void)force;
   return distanceLevel > 0;
 }
@@ -391,7 +391,7 @@ void TZone::GenerateZoneStatusCodeIfUnset() {
 }
 
 // FUNCTION: IMPERIALISM 0x0055f780
-void TZone::GenerateMapActionContextDisplayNameAndHeadline(unsigned char* usedCityFlags,
+void TZone::NameThyself(unsigned char* usedCityFlags,
                                                            const char* overrideName) {
   if (overrideName != 0) {
     CString providedName(overrideName);
@@ -830,7 +830,7 @@ void TZone::ShowFocusIngot(unsigned char flag) {
 // resource strings identify the two cases as an admiral/ship attribution and an
 // anonymous phone call.
 // FUNCTION: IMPERIALISM 0x005606f0
-void TZone::BuildNavalIntelligenceSourceDescription(CString* out, short nation) {
+void TZone::GetNavalAuthority(CString* out, short nation) {
   TShip* selected = 0;
   for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
     if (ship->location == this && ship->nation == nation) {
@@ -1227,7 +1227,7 @@ void RegenerateAllMapActionContextStatusCodes(void) {
 
   for (TZone* node = g_pMapActionContextListHead; node != 0; node = node->prev18) {
     node->GenerateZoneStatusCodeIfUnset();
-    node->GenerateMapActionContextDisplayNameAndHeadline(statusScratch, 0);
+    node->NameThyself(statusScratch, 0);
   }
 
   g_zoneStatusCodePrngSeed_006a5aec = 0;

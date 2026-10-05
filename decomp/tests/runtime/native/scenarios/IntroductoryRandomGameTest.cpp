@@ -66,7 +66,7 @@ protected:
     RT_REQUIRE_NOT_NULL(FirstCivilian());
     // Selecting through the order state is what a map click resolves to; the toolbar is expected
     // to follow it with that civilian's own portrait.
-    g_pSelectedCivilianOrderState->SetActiveCivilianSelection(FirstCivilian(), 1);
+    g_pSelectedCivilianOrderState->SelectUnit(FirstCivilian(), 1);
     RT_REQUIRE_EQ(static_cast<short>(FirstCivilian()->orderType + kCivilianPortraitGlyphBase),
                   StrategicMap().CivilianPortraitGlyph());
     RT_REQUIRE(StrategicMap().CivilianPortraitIsLoaded());

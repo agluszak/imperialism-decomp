@@ -173,7 +173,7 @@ void TDiplomacyMapView::DoPostCreate(int arg) {
     if (topBControl != nullptr) {
       topBControl->Free();
     }
-    SetPictureResourceIdAndRefresh(0x20d0, 1);
+    SetPictureRsrcID(0x20d0, 1);
   }
 }
 
@@ -533,7 +533,7 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
     bool offsetOverlayX = false; // bVar4
     short iconOffset = -1;       // sVar9
 
-    short compatValue = g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
+    short compatValue = g_pDiplomacyTurnStateManager->GetEmbassyStatus(
         frameRegionSelector, terrainIndex);
     if (compatValue != 0) {
       short compatIconX = static_cast<short>((compatValue + 0x16) * 0x10);
@@ -1458,17 +1458,17 @@ void TDiplomacyMapView::ChangeSelectedActionTopic(int topicIndex) {
     ltabControl->Show(1, 1);
     rtabControl->Show(0, 1);
     if (newTopic == 0) {
-      ltabControl->SetPictureResourceIdAndRefresh(0x1389, 1);
+      ltabControl->SetPictureRsrcID(0x1389, 1);
     } else {
-      ltabControl->SetPictureResourceIdAndRefresh(0x138a, 1);
+      ltabControl->SetPictureRsrcID(0x138a, 1);
     }
   } else {
     ltabControl->Show(0, 1);
     rtabControl->Show(1, 1);
     if (g_pSimMgr->mode == kGamePhaseDiplomacy) {
-      rtabControl->SetPictureResourceIdAndRefresh(0x20da, 1);
+      rtabControl->SetPictureRsrcID(0x20da, 1);
     } else {
-      rtabControl->SetPictureResourceIdAndRefresh(static_cast<short>(newTopic + 0x138a), 1);
+      rtabControl->SetPictureRsrcID(static_cast<short>(newTopic + 0x138a), 1);
     }
   }
 

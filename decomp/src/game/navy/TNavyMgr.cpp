@@ -876,7 +876,7 @@ TTaskForce* TNavyMgr::AssignEscorts(short requiredCount, short chancePercent) {
 // 0x00558439 reads it on both paths. Preserve that retail stack-slot behavior locally.
 IMPERIALISM_BEGIN_RETAIL_UNINITIALIZED_READ
 // FUNCTION: IMPERIALISM 0x00557f10
-char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
+char TNavyMgr::TryMerchantInterception(
     TMapOrderInteractionSelection* outResult, TZone* portZoneContext, short nation,
     short offerAmount) {
   short portOwnerNation = portZoneContext->GetPortZoneOwnerNationCodeFromMissionField48();
@@ -1084,7 +1084,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         short entryValue = 0;
         short entryTargetNation = 0;
         int entryPayload = 0;
-        state->ReadTrackedSlotEntryFields(slot, ordinal, &entryKind, &entryValue,
+        state->GetDealInfo(slot, ordinal, &entryKind, &entryValue,
                                           &entryTargetNation, &entryPayload);
         if (entryValue == 0) {
           continue;
@@ -1097,7 +1097,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         TZone* portZoneContext =
             g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(contextNation);
         TMapOrderInteractionSelection selection;
-        char eligible = SelectEligibleMapOrderInteractionForNationAndContext(
+        char eligible = TryMerchantInterception(
             &selection, portZoneContext, nation, entryValue);
         if (eligible == 0) {
           continue;
@@ -1134,7 +1134,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         CString entryValueText;
         entryValueText.Format(g_szDecimalFormat, static_cast<int>(entryValue));
         CString commodityName;
-        g_pSimMgr->GetStringPrelude(slot, &commodityName);
+        g_pSimMgr->GetCommodityName(slot, &commodityName);
         CString interactionTemplate;
         g_pSimMgr->GetString(0x273c, 0, &interactionTemplate);
         CString interactionText;
@@ -1217,7 +1217,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
                 CString transferredText;
                 transferredText.Format(g_szDecimalFormat, static_cast<int>(transferredWeight));
                 CString transferredCommodityName;
-                g_pSimMgr->GetStringPrelude(slot, &transferredCommodityName);
+                g_pSimMgr->GetCommodityName(slot, &transferredCommodityName);
                 CString transferredActionText;
                 g_pSimMgr->GetString(0x273c, 3, &transferredActionText);
                 CString transferredSummary = s_szLineBreak_00695880 + transferredActionText +

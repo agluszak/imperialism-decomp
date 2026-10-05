@@ -12,12 +12,12 @@ public:
   virtual ~TDeluxeText() override;                    // slot 0x01 (scalar deleting destructor)
   virtual void DoPostCreate(int arg) override;        // slot 0x37 0x5b6060
   virtual void Draw(RECT* rectBuffer) override;       // slot 0x44 0x5b6170
-  virtual void SetSelectedFlagAndState(char param_1); // slot 0x76 0x5b60a0
+  virtual void EnableEditing(char param_1); // slot 0x76 0x5b60a0
   // Loads the localized UI string `stringId` from the module cache and assigns it
   // via UpdateTextEntrySharedStringAndMaybeNotify (verified 1-arg thiscall, RET 4;
   // the old InitializeTechHistoryViewTitleAndMapKeyControls name was junk and the
   // declaration had dropped the argument).
-  virtual void SetTextFromUiStringResourceId(short stringId); // slot 0x77 0x5b60d0
+  virtual void LoadTextResource(short stringId); // slot 0x77 0x5b60d0
   virtual void SetTextStyle(const TextStyle& style,
                             bool refreshNow); // slot 0x79 0x5b62a0
   // VC5 emits an overload set's virtual entries in reverse declaration order, so this

@@ -70,7 +70,7 @@ void TCouncilView::DoPostCreate(int arg) {
       static_cast<TDropShadowText*>(this->ResolveControlByTag(kControlTagTitl));
   titleControl->AssertValid();
   ApplyUiTextStyleAndThemeFlags(titleControl, 0, 0x10, 0x2b6c, 0x2b67);
-  titleControl->SetTextAlignmentAndMaybeRefresh(-2, false);
+  titleControl->SetJustification(-2, false);
 
   if (g_pSimMgr->mode == kGamePhaseCouncilDefeat || g_pSimMgr->mode == kGamePhaseCouncilVictory) {
     // Map-interaction mode: title shows "<terrain/country name>" expanded through the
@@ -188,9 +188,9 @@ void TCouncilView::DisplayStats() {
     TStaticText* titleLabel = static_cast<TStaticText*>(
         this->ResolveControlByTag(IMPERIALISM_FOURCC('t', 't', 'l', '0') + row));
     titleLabel->AssertValid();
-    titleLabel->SetTextFromStringResource(0x2733, static_cast<short>(0x5a + row), true);
+    titleLabel->SetTextWithStrListID(0x2733, static_cast<short>(0x5a + row), true);
     titleLabel->InstallTextStyle(style, 0);
-    titleLabel->SetTextAlignmentAndMaybeRefresh(1, false);
+    titleLabel->SetJustification(1, false);
     titleLabel->Show(1, 0);
 
     TStaticText* majorField = static_cast<TStaticText*>(
@@ -199,7 +199,7 @@ void TCouncilView::DisplayStats() {
     text.Format(g_szDecimalFormat, categoryCounts[row]);
     majorField->SetTextAndMaybeRefresh(&text, true);
     majorField->InstallTextStyle(style, 0);
-    majorField->SetTextAlignmentAndMaybeRefresh(-1, false);
+    majorField->SetJustification(-1, false);
     majorField->Show(1, 1);
 
     TStaticText* minorField = static_cast<TStaticText*>(
@@ -266,13 +266,13 @@ void TCouncilView::StartVoting() {
 
   TPicture* coat0 = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoa0));
   coat0->AssertValid();
-  coat0->SetPictureResourceIdAndRefresh(
+  coat0->SetPictureRsrcID(
       static_cast<short>(g_pDiplomacyTurnStateManager->congressLeadership.chairmanNationSlot +
                          kCouncilCoatOfArmsPictureBase),
       1);
   TPicture* coat1 = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoa1));
   coat1->AssertValid();
-  coat1->SetPictureResourceIdAndRefresh(
+  coat1->SetPictureRsrcID(
       static_cast<short>(g_pDiplomacyTurnStateManager->congressLeadership.counterpartNationSlot +
                          kCouncilCoatOfArmsPictureBase),
       1);
@@ -309,7 +309,7 @@ void TCouncilView::StartVoting() {
   if (tickerAnimation != nullptr) {
     tickerAnimation->InitializeCouncilTicker(this, 2);
     if (g_pUiAnimator != nullptr) {
-      g_pUiAnimator->AddObjectToUiTransientRegistry(tickerAnimation);
+      g_pUiAnimator->AddAnimation(tickerAnimation);
     }
   }
 

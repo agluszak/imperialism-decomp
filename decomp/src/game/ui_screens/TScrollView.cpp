@@ -30,7 +30,7 @@ void TScrollView::DoPostCreate(int arg) {
   barOffset[0] = frameWidth - 0x19;
   barSize[0] = 0x19;
   barOffset[1] = 0;
-  bar->InitializeScrollBar(this, barOffset, barSize);
+  bar->IScrollBarView(this, barOffset, barSize);
   scrollBar = bar;
 }
 
@@ -127,7 +127,7 @@ void TScrollView::ScrollToPercent(int percent) {
 }
 
 // FUNCTION: IMPERIALISM 0x005741e0
-void TScrollView::SyncBoundedValueAndToggleControlStates() {
+void TScrollView::Reset() {
   CPoint contentOrigin;
   contentOrigin.x = contentView->ownerLocalX;
   contentOrigin.y = 0;

@@ -17,7 +17,7 @@ public:
   virtual void HiliteState(unsigned char enabledState,
                            bool refreshNow) override;                   // slot 0x70 0x58b750
   virtual void SetState(bool value, bool refreshNow);                   // slot 0x73 0x58b890
-  virtual void SetSelectionStateAndRefreshBitmap(short selectionState); // slot 0x74 0x58b8d0
+  virtual void SetMode(short selectionState); // slot 0x74 0x58b8d0
   short normalBitmapId;
   short highlightedBitmapId;
   short selectedBitmapId;

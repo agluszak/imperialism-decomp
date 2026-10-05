@@ -70,7 +70,7 @@ public:
   // scaled by GetProvinceUnitOrderWeight, with an explicit sign
   // (true adds, false subtracts) instead of the fixed +1.0 the loop-based accumulators use.
   // 0x53cb50, __thiscall, RET 0xC.
-  void AccumulateMissionUnitPriorityContributionWithScaleMode(TMilitaryUnit* unit, float* vector,
+  void AccumulateWeightedUnitEquipage(TMilitaryUnit* unit, float* vector,
                                                               bool scaleMode);
 
   // Mac: GetWeightedEquipage(float*) const. Builds the distance-weighted five-slot

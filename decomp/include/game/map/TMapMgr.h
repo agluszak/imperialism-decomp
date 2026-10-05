@@ -206,14 +206,14 @@ public:
   // orderTargetTiles[orderTargetSlot-1] (when orderTargetSlot != 0) or its own tile,
   // provided the neighbor is owned by the same nation (TUnit::ownerNationSlot18) or is at war with it
   // (TDiplomacyMgr::IsNationPairAtWar). Bails immediately if no candidate is non-null.
-  virtual void SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates(
+  virtual void DimByMarching(
       class TMilitaryUnit* const candidates[6],
       short orderTargetSlot); // slot 0x22 0x5150e0
   // Mac oracle: TMapMgr::DimByProspecting(TUnit*). Dims every tile a Prospector cannot
   // search. Water is always ineligible; land must be owned by the unit's nation or
   // diplomatically compatible. Eligibility is further gated on
   // pCivilianOrderEntry->ownerNationSlot18 (nationTag) or diplomatically compatible
-  // (TDiplomacyMgr::LookupOrderCompatibilityMatrixValue == 2), further gated on
+  // (TDiplomacyMgr::GetEmbassyStatus == 2), further gated on
   // gateFlag being in {8,9} (or {10,11,12} when
   // g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[0x13]
   // == 2), and finally on this nation's bit not already being set in
@@ -223,7 +223,7 @@ public:
   // (Developer) here (0x004d2270 calls vtable byte offset 0x90 for case 7).
   // Seeds recruitSearchVisited0e (defaults to 1/ineligible, unlike the sibling slot above):
   // requires the tile be diplomatically compatible
-  // (TDiplomacyMgr::LookupOrderCompatibilityMatrixValue == 2, ownerNationTag04 >= 7),
+  // (TDiplomacyMgr::GetEmbassyStatus == 2, ownerNationTag04 >= 7),
   // secondaryOwnerNationTag == -1, g_abGateFlagQualifies[gateFlag] != 0, and at least one
   // of its two edge resourceTypes qualifying (0/1/2 always; 3/4/0x15/0x16, or 6 when
   // techStatusByTechId[0x13] == 2, only when this nation's bit is already set in
@@ -342,14 +342,14 @@ public:
   // Packs value into developmentClassNibbles's low or high nibble (selectHighNibble
   // picks which); when writing the high nibble with a positive value and param4 != 0,
   // also sets pendingDevelopmentFlag = 0x7f.
-  virtual void SetCivilianDevelopmentClassNibble(StrategicTileIndex tileIndex,
+  virtual void SetDevelopmentLevel(StrategicTileIndex tileIndex,
                                                  bool selectHighNibble, byte value,
                                                  bool param4); // slot 0x33 0x5136a0
   // For each of tileIndex's 2 resourceTypeByEdge entries (skipping the -1 sentinel) whose
   // g_abResourceTypeCapabilityCategory matches categoryCode, reads
   // g_pTechMgr->capabilityValueByNationAndResource[nationSlot][resourceType]
   // and returns the max across both edges (0 if neither qualifies).
-  virtual short FindMaxResourceCapabilityValueForTile(StrategicTileIndex tileIndex,
+  virtual short GetMaxDevelopmentLevel(StrategicTileIndex tileIndex,
                                                       char categoryCode,
                                                       int nationSlot); // slot 0x34 0x513720
   // Finds the edge (0 or 1) whose resourceTypeByEdge matches resourceType, then dispatches
@@ -390,16 +390,16 @@ public:
   // (0x516150 etc.) directly above this slot. No callers besides the vtable itself, so
   // the exact semantic role of each column beyond "some adjacency-keyed variant code"
   // isn't identified.
-  virtual short LookupAdjacencyBitmaskVariantByDirection(char bitmaskIndex,
+  virtual short GetCoastTileNumber(char bitmaskIndex,
                                                          char direction); // slot 0x3c 0x516260
   // Real signature has 3 stack args (RET 0xc), not 1 -- bitmaskIndex/direction forward
-  // unchanged into LookupAdjacencyBitmaskVariantByDirection (slot 0x3c); returns 0 if that
+  // unchanged into GetCoastTileNumber (slot 0x3c); returns 0 if that
   // lookup is 0, else (lookup+0x15)<<6 or (lookup+0x20)<<6 depending on useAltOffset.
-  virtual short MapImprovementOffsetFromAdjacencyVariant(char bitmaskIndex, char direction,
+  virtual short GetCoastTileOffset(char bitmaskIndex, char direction,
                                                          char useAltOffset); // slot 0x3d 0x517410
   // Real signature has 3 stack args (RET 0xc), not 0 -- see body for the exact combination
-  // of 3 calls into LookupAdjacencyBitmaskVariantByDirection (slot 0x3c).
-  virtual short MapImprovementOffsetFromAdjacencyVariantTriple(char bitmaskIndex, char direction,
+  // of 3 calls into GetCoastTileNumber (slot 0x3c).
+  virtual short GetDeltaTileOffset(char bitmaskIndex, char direction,
                                                                short param3); // slot 0x3e 0x517480
   // Real body is just `mov ax, 0xc80; ret` -- a bare constant, no callers besides the
   // vtable itself so its purpose isn't identified.
@@ -460,7 +460,7 @@ public:
   // of the 6 hex neighbors plus nTileIndex itself (direction 6 is a self special-case, not a
   // 7th real hex direction), if that tile shares nTileIndex's regionSubtypeTag and has a
   // port/depot-eligible resourceTypeByEdge entry (17 or 18) whose gateFlag qualifies
-  // (g_abGateFlagQualifies), calls SetCivilianDevelopmentClassNibble(neighborTile, 0, 1, 1) on
+  // (g_abGateFlagQualifies), calls SetDevelopmentLevel(neighborTile, 0, 1, 1) on
   // it. Finishes by calling EnsurePortZoneForTile(nTileIndex) and refreshing nTileIndex's
   // gateFlag via ResolveRegionTileSubtypeCodeForTileIndex.
   virtual void PlaceCity(StrategicTileIndex nTileIndex, short nOwnerNationId); // slot 0x4d 0x514a20
@@ -563,7 +563,7 @@ public:
   StrategicTileIndex
   FindReachableRecruitSpawnTileWithVisitedReset(StrategicTileIndex startTileIndex,
                                                 bool allowActiveFlag2);
-  StrategicTileIndex FindReachableRecruitSpawnTileRecursive(StrategicTileIndex tileIndex,
+  StrategicTileIndex SearchOpenTile(StrategicTileIndex tileIndex,
                                                             short ownerNationTag,
                                                             bool allowActiveFlag2); // 0x00514cd0
   // 0x515f40. Write a city display-name CString into cityScoreTable[cityRecordIndex]+0xa4.
@@ -586,7 +586,7 @@ public:
   // 0x518d90 (thiscall, no explicit args). Clears perTileVisitedFlag across the whole
   // terrainStateTable, then walks the active nation's militaryUnitList44 (CIterator) and,
   // for each order whose orderTargetIndex (city-record index) is set, computes the war/peace-coded
-  // direction overlay via MarkAdjacentHexOrderDirectionAndSelectTile (the same computation
+  // direction overlay via ActivateMarchingArrow (the same computation
   // that function already implements for its own caller) and stamps/notifies through it.
   void MarkDirectionalMapOverlayFlagsForNationOrders();
 
@@ -659,7 +659,7 @@ public:
   // perTileVisitedFlag with a direction-overlay code ((direction+3)%6+1, or +7 when
   // `flag` is set) and forwards it through mapUberPictureF0's slot-0x76
   // InvalidateTile.
-  void MarkAdjacentHexOrderDirectionAndSelectTile(int tileIndex, int contextArg, bool flag);
+  void ActivateMarchingArrow(int tileIndex, int contextArg, bool flag);
 
   // Resolves cityScoreTable[tileIndex].ownerNationCode00 through the owning country's
   // encodedNationSlot 100/200-band redirect. 0x00514290,

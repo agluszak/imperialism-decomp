@@ -19,7 +19,7 @@ public:
   virtual int GetUnitRange() override;         // slot 0x0b 0x5a6140
   virtual float GetBaseAttackPower() override; // slot 0x0c 0x5a6180
   virtual float GetDamageScale() override;     // slot 0x0d 0x5a61a0
-  virtual void ApplyTacticalDamage(int damageA, int damageB) override; // slot 0x0e 0x5a61c0
+  virtual void ApplyDamage(int damageA, int damageB) override; // slot 0x0e 0x5a61c0
 
   // Army state appended to TTacticalUnit at +0x34.
   int morale34;                // +0x34 init = sourceUnit38->strength34; floors at 0 -> state1c = 1

@@ -36,7 +36,7 @@ IMPLEMENT_DYNCREATE(TLoungeDialog, TNoHilitePicture)
 // FUNCTION: IMPERIALISM 0x0054d6f0
 void TLoungeDialog::Free() {
   if (g_nSaveFormatVersion != kControlTagMoil) { // 'Moil'
-    g_pGameFlowState->EnableDiplomacyQueueRoutingAndSetContextField44(this, false);
+    g_pGameFlowState->InstallCohandler(this, false);
   }
   TView::Free();
 }
@@ -45,7 +45,7 @@ void TLoungeDialog::Free() {
 void TLoungeDialog::DoPostCreate(int arg) {
   TNoHilitePicture::DoPostCreate(arg);
 
-  g_pGameFlowState->EnableDiplomacyQueueRoutingAndSetContextField44(this, true);
+  g_pGameFlowState->InstallCohandler(this, true);
 
   // 'labl' is a TInfoBarText control (vtable slot 0x204 matches
   // TInfoBarText::InitializeMapHintTextStyleAndThemeFlags exactly). The original also
@@ -55,11 +55,11 @@ void TLoungeDialog::DoPostCreate(int arg) {
   lablControl->AssertValid();
   lablControl->SetTextStyle(0, 0xe, 0x2b6b);
   lablControl->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
-  lablControl->SetTextAlignmentAndMaybeRefresh(1, false);
+  lablControl->SetJustification(1, false);
 
   // Per-nation-slot roster rows: a ready-state radio ('rad0'-'rad6'), a portrait/pick
   // button ('pik0'-'pik6'), and a name label ('nam0'-'nam6'), each initialized with a
-  // blank caption via the same restyle idiom as RefreshMapAndMessageControlsForCurrentContext.
+  // blank caption via the same restyle idiom as YouHaveNewGameData.
   for (int i = 0; i < 7; ++i) {
     LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 6,
                                                           kSessionTagRad0 + i); // 'rad0'-'rad6'
@@ -85,7 +85,7 @@ void TLoungeDialog::DoPostCreate(int arg) {
     g_pGameFlowState->ResetNationStatusSlotsAndInitializeNameControls(this);
     if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
       g_pGameFlowState->SetDialogModeTagInitAndInvokeNoOpHook();
-      RefreshMapAndMessageControlsForCurrentContext();
+      YouHaveNewGameData();
       g_pGameFlowState->DispatchTurnEventCode9WithTwoTextTokens(
           -0xd, 0, g_pLoungeLocalPlayerNameSharedText_0065c160,
           g_pLoungeLocalPlayerNameSharedText_0065c160);
@@ -104,13 +104,13 @@ void TLoungeDialog::DoPostCreate(int arg) {
 
     TPicture* coatControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoat)); // 'coat'
     coatControl->AssertValid();
-    coatControl->SetPictureResourceIdAndRefresh(
+    coatControl->SetPictureRsrcID(
         static_cast<short>(g_pSimMgr->GetPlayerCountry() + 0x120a), 0);
     coatControl->Show(1, 0);
     if (g_pGameFlowState->GetNationStatusCodeForSlotOrActiveNation(-1) != kSessionTagBusy) {
-      SetPictureResourceIdAndRefresh(0x11f9, 0);
+      SetPictureRsrcID(0x11f9, 0);
     }
-    RefreshMapAndMessageControlsForCurrentContext();
+    YouHaveNewGameData();
   }
 
   selectedNationSlot = -1;
@@ -171,7 +171,7 @@ char TLoungeDialog::DoIdle(int action) {
         static_cast<TPicture*>(ResolveControlByTag(kSessionTagRad0 + nationSlot));
     statusLamp->AssertValid();
     if (statusLamp->glyphBase84 != kLoungeStatusGlyphIds[statusIndex]) {
-      statusLamp->SetPictureResourceIdAndRefresh(kLoungeStatusGlyphIds[statusIndex], 1);
+      statusLamp->SetPictureRsrcID(kLoungeStatusGlyphIds[statusIndex], 1);
     }
 
     bool isLocalSeat =
@@ -207,12 +207,12 @@ char TLoungeDialog::DoIdle(int action) {
         g_pGameFlowState->fieldF4 != 0) {
       messageStringIndex = 0x24;
       if (glyphBase84 != 0x11f8) {
-        SetPictureResourceIdAndRefresh(0x11f8, 1);
+        SetPictureRsrcID(0x11f8, 1);
       }
     } else {
       messageStringIndex = 0x10;
       if (glyphBase84 != 0x11f9) {
-        SetPictureResourceIdAndRefresh(0x11f9, 1);
+        SetPictureRsrcID(0x11f9, 1);
       }
     }
   } else if (g_pSimMgr->mode == kGamePhaseStartup || anyLocalSeat) {
@@ -230,7 +230,7 @@ char TLoungeDialog::DoIdle(int action) {
 }
 
 // FUNCTION: IMPERIALISM 0x0054dfc0
-void TLoungeDialog::TryReplaceRemoteNationSlot(int nationSlot) {
+void TLoungeDialog::NationalClick(int nationSlot) {
   if (!g_pGameFlowState->IsSpecialNationDialogModeActive()) {
     g_pGameFlowState->DispatchLobbyTextPairEvent8(static_cast<unsigned char>(nationSlot));
     return;
@@ -273,7 +273,7 @@ void TLoungeDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 
   if (commandId == kControlTagPick) { // 'pick'
     sourceHandler->AssertValid();
-    TryReplaceRemoteNationSlot(static_cast<TMapPreviewView*>(sourceHandler)->pendingNation);
+    NationalClick(static_cast<TMapPreviewView*>(sourceHandler)->pendingNation);
   }
 
   if (commandId == 0x14 || commandId == 0x0a || commandId == 0x22 || commandId == 0x0d) {
@@ -304,11 +304,11 @@ void TLoungeDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
         }
       }
     } else if (controlTag >= kSessionTagRad0 && controlTag <= kSessionTagRad6) { // 'rad0'..'rad6'
-      TryReplaceRemoteNationSlot(static_cast<int>(controlTag - kSessionTagRad0));
+      NationalClick(static_cast<int>(controlTag - kSessionTagRad0));
     } else if (controlTag >= kControlTagNam0 && controlTag <= kControlTagNam6) { // 'nam0'..'nam6'
-      TryReplaceRemoteNationSlot(static_cast<int>(controlTag - kControlTagNam0));
+      NationalClick(static_cast<int>(controlTag - kControlTagNam0));
     } else if (controlTag >= kSessionTagPik0 && controlTag <= kSessionTagPik6) { // 'pik0'..'pik6'
-      TryReplaceRemoteNationSlot(static_cast<int>(controlTag - kSessionTagPik0));
+      NationalClick(static_cast<int>(controlTag - kSessionTagPik0));
     } else if (controlTag == kControlTagSend) { // 'send'
       QueuePoseMessageDialogForNationSlot(-1);
     } else if (controlTag == kControlTagOkay) { // 'okay'
@@ -332,7 +332,7 @@ namespace {
 // and palette-mask the 'map ' preview then invalidate its bounds, load the lounge
 // message string (0x2742/0x10) into 'mess', and refresh the dialog.
 // FUNCTION: IMPERIALISM 0x0054e4c0
-void TLoungeDialog::RefreshMapAndMessageControlsForCurrentContext() {
+void TLoungeDialog::YouHaveNewGameData() {
   TScopedWaitCursor waitCursor;
   TStaticText* nameControl = RefreshActiveControlThenApplyThemeStyleAndCaption(
       kControlTagTnam, 0, 0xe, 0x2b6b, 1,

@@ -40,7 +40,7 @@ void TGarrisonView::StuffValues(short tileIndex) {
   while (unit != 0) {
     if (unit->unitOrder != kUnitOrderRedeploy) {
       TArmyUnitLine* line = new TArmyUnitLine;
-      line->SetLineDataRowAndBounds(0, 0, lineBounds);
+      line->ILineData(0, 0, lineBounds);
       line->militaryUnit = unit;
       AddOrderedEntry(line);
     }
@@ -98,7 +98,7 @@ void TGarrisonView::Close() {
                 }
               }
             }
-            unit->DetachUnitOrderFromOwnerAndReset();
+            unit->Vaporize();
             unit->Free();
             unit = nextUnit;
           } else {

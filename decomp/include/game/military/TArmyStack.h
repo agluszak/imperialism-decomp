@@ -71,16 +71,16 @@ public:
   // AdvanceCursorAndGetUnit) and, for every unit with a positive strength34 (strength),
   // grows experiencePercent (percent-scaled quality) by 35 if boosted else 20, capped at 400.
   // 0x004a82b0, __thiscall, 1 arg.
-  void ApplyMeterGrowthToEligibleUnits(bool boosted);
+  void RaiseExperience(bool boosted);
   bool UnitsFighting(); // 0x4a8330, Mac oracle
   // Walks the chain accumulating a weighted meter sum and eligible-entry count into the
   // two out-params, seeded by `counter`. 0x004a7e70, 355 bytes; signature verified via
   // TArmyMgr::StrategicCombat's callsite disassembly.
-  void AccumulateWeightedMeterAndCountFromEligibleLinkedEntries(int* outWeightedSum, int* outCount,
+  void StrategicFirepower(int* outWeightedSum, int* outCount,
                                                                 int counter);
   // Applies a randomized decay to eligible entries using the accumulated weighted sum/
   // count from the method above. 0x004a8040, 482 bytes.
-  void ApplyRandomizedMeterDecayToEligibleLinkedEntries(int weightedSum, int count, int counter);
+  void ApplyStrategicDamage(int weightedSum, int count, int counter);
   // Re-initializes the stack for one tactical-battle side: zeroes field4/field6/unitCountA/
   // fieldC and stores the owner nation index, owner nation code, and originating tile.
   // 0x004a7770, __thiscall, ret 0xc.

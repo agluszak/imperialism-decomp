@@ -40,7 +40,7 @@ void TDropShadowText::Draw(RECT* rectBuffer) {
   shadowRect.top--;
   shadowRect.right--;
   shadowRect.bottom--;
-  DrawTextAligned((LPCSTR)textBuffer, textBuffer.GetLength(), &shadowRect, textAlignmentCode);
+  ImageText((LPCSTR)textBuffer, textBuffer.GetLength(), &shadowRect, textAlignmentCode);
 
   dc->SelectClipRgn(0);
 }

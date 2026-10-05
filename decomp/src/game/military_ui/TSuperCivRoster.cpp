@@ -30,7 +30,7 @@ void TSuperCivRoster::InitializeLedgerRosterPages(TView* pOwnerContext, int* pOf
   while (cursor.More()) {
     TMiniCivLine* line = new TMiniCivLine();
     int lineBounds[2] = {0xec, 0x40};
-    line->SetLineDataRowAndBounds(0, 0, lineBounds);
+    line->ILineData(0, 0, lineBounds);
     line->civUnit10 = static_cast<TCivUnit*>(current);
     AddOrderedEntry(line);
     current = cursor.Advance();

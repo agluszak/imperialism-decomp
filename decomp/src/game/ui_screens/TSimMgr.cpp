@@ -499,7 +499,7 @@ void TSimMgr::CreateSimObjects(bool flag) {
       g_pNewsMgr = nullptr;
     }
     TNewsMgr* newsManager = new TNewsMgr();
-    newsManager->InitializeNewsManager();
+    newsManager->INewsMgr();
     g_pNewsMgr = newsManager;
 
     if (g_pMapContextActionManager != nullptr) {
@@ -978,7 +978,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       TGreatPower* nation = g_apNationStates[nationSlot];
       nation->AssertValid();
       if (!nation->IsRemote() && !g_bMultiplayerScenarioSetupActive) {
-        nation->SetHomeCityTileAndDisplayName(-1, 0);
+        nation->PlaceCity(-1, 0);
       }
     }
     if (!g_bMultiplayerScenarioSetupActive) {
@@ -1097,7 +1097,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       // 0x57df05: new TNextDiplomationCommand() + immediate dispatch; the original
       // calls the method even when operator new returned null (kept faithfully).
       TNextDiplomationCommand* nextCommand = new TNextDiplomationCommand();
-      nextCommand->DispatchUiPacketWithTagNEXT();
+      nextCommand->PostThyself();
     }
     break;
   }
@@ -1243,7 +1243,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       if (multiplayerSessionRole == kSessionRoleStandalone) {
         SaveGameWithModeAndOptionalLabel(0xa1, 0);
       } else if (multiplayerSessionRole == kSessionRoleHost) {
-        g_pGameFlowState->TrySaveGameAndMaybeShowFailureDialog(0xa1, 0, true);
+        g_pGameFlowState->AttemptSave(0xa1, 0, true);
       }
     }
     if (multiplayerSessionRole != kSessionRoleStandalone) {
@@ -1277,7 +1277,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         g_nTurnCooldownSideFlag00698B10 = 1;
         if (IsNationEligibleForOptionalPhase(activeNationSlot)) {
           short unlockSlot =
-              g_pTechMgr->ConsumeFirstPendingAbilityUnlock(static_cast<short>(nationSlot));
+              g_pTechMgr->GetNextNewAdvance(static_cast<short>(nationSlot));
           if (unlockSlot != -1) {
             g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventTechnologyAdvance),
                                           unlockSlot);
@@ -1287,9 +1287,9 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         }
       }
       short unlockSlot =
-          g_pTechMgr->ConsumeFirstPendingAbilityUnlock(static_cast<short>(nationSlot));
+          g_pTechMgr->GetNextNewAdvance(static_cast<short>(nationSlot));
       while (unlockSlot != -1) {
-        unlockSlot = g_pTechMgr->ConsumeFirstPendingAbilityUnlock(static_cast<short>(nationSlot));
+        unlockSlot = g_pTechMgr->GetNextNewAdvance(static_cast<short>(nationSlot));
       }
     }
     if (actionNeeded) {
@@ -1315,8 +1315,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       nation->DisplayTurnStartEvents();
     }
     g_pSfxPlaybackSystem->ResetDualAudioCuePools();
-    g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(2);
-    g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(3);
+    g_pSfxPlaybackSystem->AddToPlayList(2);
+    g_pSfxPlaybackSystem->AddToPlayList(3);
     g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
     if (!IsNationEligibleForOptionalPhase(activeNationSlot)) {
       StartNextPhase();
@@ -1374,7 +1374,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     const short tickB = GetEconomicTurn();
     if (((tickB % 0x28) == 0) && (councilByDecade[tickA / 0x28] != 0) &&
         multiplayerSessionRole != kSessionRoleClient) {
-      g_pDiplomacyTurnStateManager->RebuildDiplomacyStandingAndInfluenceMatrices(
+      g_pDiplomacyTurnStateManager->ConveneCouncil(
           councilByDecade[tickA / 0x28]);
     }
     if (multiplayerSessionRole != kSessionRoleStandalone) {
@@ -1757,7 +1757,7 @@ void TSimMgr::NumToOrdinal(int value, CString* destString) {
 }
 
 // FUNCTION: IMPERIALISM 0x0057fe90
-void TSimMgr::GetStringPrelude(short offset, CString* destString) {
+void TSimMgr::GetCommodityName(short offset, CString* destString) {
   GetString(0x2711, offset, destString);
 }
 
@@ -1799,7 +1799,7 @@ CString TSimMgr::DiplomacyNoticeString(const DiplomacyNotice* notice) {
   case 11:
   case 12: {
     CString commodityName;
-    g_pSimMgr->GetStringPrelude(code, &commodityName);
+    g_pSimMgr->GetCommodityName(code, &commodityName);
     CString noticeText = "Shortage of " + commodityName + " in " + countryName + ".";
     result = noticeText;
     break;
@@ -2128,7 +2128,7 @@ void TSimMgr::ProcessScenarioScript() {
   g_bScenarioScriptTerminationRequested = false;
   g_nScenarioScriptInstructionCount = 0;
 
-  g_pAssetMgr->BuildScenarioPathForModeAndIndex(static_cast<short>(scenarioMapIndexPlusOne) - 1, 2,
+  g_pAssetMgr->GetScenarioFileName(static_cast<short>(scenarioMapIndexPlusOne) - 1, 2,
                                                 &scenarioPath);
 
   for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
@@ -2439,7 +2439,7 @@ void TSimMgr::ScSetDevLevel(STurnInstructionCursor* instruction) {
   }
   unsigned char* valueTokenBytes = static_cast<unsigned char*>(static_cast<void*>(&valueToken));
   unsigned char value = valueTokenBytes[3];
-  g_pGlobalMapState->SetCivilianDevelopmentClassNibble(tileIndex, selectHighNibble, value, true);
+  g_pGlobalMapState->SetDevelopmentLevel(tileIndex, selectHighNibble, value, true);
 }
 
 // Reads one big-endian short tile index, resolves that tile's owner nation, queues a depot

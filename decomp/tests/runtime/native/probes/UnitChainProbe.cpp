@@ -91,7 +91,7 @@ void UnitChainProbe::DetachLiveMilitaryUnitsFromMap() {
     for (int ordinal = 1; ordinal <= units->GetCount(); ++ordinal) {
       CObject* entry = static_cast<CObject*>(units->GetEntryByOrdinal(ordinal));
       if (entry != 0 && entry->IsKindOf(RUNTIME_CLASS(TMilitaryUnit)) != 0) {
-        static_cast<TMilitaryUnit*>(entry)->DetachUnitOrderFromOwnerAndReset();
+        static_cast<TMilitaryUnit*>(entry)->Vaporize();
       }
     }
   }

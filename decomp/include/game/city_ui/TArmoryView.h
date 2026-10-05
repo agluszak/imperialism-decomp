@@ -18,7 +18,7 @@ public:
                        TEvent* event) override;                         // slot 0x0f 0x004cf350
   virtual void DoStartup() override;                                    // slot 0x75 0x4cee20
   virtual void UpdateFields() override;                                 // slot 0x76 0x4cf5c0
-  virtual void RefreshCityViewProductionDetails(short nBuildingSlotId); // slot 0x79 0x4cfbd0
+  virtual void SetUnit(short nBuildingSlotId); // slot 0x79 0x4cfbd0
 
   TArmoryView();
 
@@ -28,7 +28,7 @@ public:
   // controls in DoEvent; a 16-bit store in the original (0x4cf350), not a full int.
   short selectedRowIndex;
   char pad_a6[2];
-  // Selected city production order. RefreshCityViewProductionDetails indexes
+  // Selected city production order. SetUnit indexes
   // city94->buildOrderSlots at selectedRowIndex.
   TUnitOrder* selectedUnitOrder;
 };

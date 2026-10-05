@@ -66,7 +66,7 @@ public:
   bool RequestsCapture(unsigned int flag) const;
 
   short SelectedNationSlot() const;
-  void SetSelectedNationSlot(short value);
+  void PickCountry(short value);
   HWND MainWindowHandle() const;
   void SetMainWindowHandle(HWND value);
   bool NewspaperAdvanced() const;

@@ -70,7 +70,7 @@ extern "C" short g_defaultMarkerBoxWidth_006a460c;
 extern unsigned char g_abResourceTypeUsesHighNibbleFlag[24];
 
 // TMapMgr.cpp — per-resourceType capability-category code, compared for equality against
-// a caller-supplied category code by FindMaxResourceCapabilityValueForTile (0x513720).
+// a caller-supplied category code by GetMaxDevelopmentLevel (0x513720).
 extern char g_abResourceTypeCapabilityCategory[24];
 
 // TMapMgr.cpp — hex-area neighbor lookup tables.

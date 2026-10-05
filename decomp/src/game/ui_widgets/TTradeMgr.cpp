@@ -743,14 +743,14 @@ void TTradeMgr::SetDealResults(NationSlot sourceNation, NationSlot targetNation,
   if (!remoteReplay) {
     bool isClient = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
     if (isClient) {
-      g_pGameFlowState->CreateAndSendTurnEvent1C_BoolAndSixShorts(
+      g_pGameFlowState->SendDealResults(
           true, sourceNation, targetNation, amount, maximumAmount, commodityType, shortfallFlag);
       return;
     }
   }
   bool isHost = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
   if (isHost) {
-    g_pGameFlowState->CreateAndSendTurnEvent1C_BoolAndSixShorts(
+    g_pGameFlowState->SendDealResults(
         false, sourceNation, targetNation, amount, maximumAmount, commodityType, shortfallFlag);
   }
 
@@ -767,7 +767,7 @@ void TTradeMgr::SetDealResults(NationSlot sourceNation, NationSlot targetNation,
         !g_pDiplomacyTurnStateManager->IsGreatPower(sourceNation)) {
       g_apTerrainTypeDescriptorTable[targetNation]->DeliverItem(amount);
     }
-    short relationBump = g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
+    short relationBump = g_pDiplomacyTurnStateManager->GetEmbassyStatus(
         sourceNation, targetNation);
     if (relationBump >= 1) {
       int matrixIndex = sourceNationIndex * kNationSlotCount + targetNation;

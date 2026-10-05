@@ -255,8 +255,8 @@ RuntimeActionResult RunCompletedResourceDevelopment(NativeTransition& transition
     return RuntimeActionResult::Failure("the loaded map has no unoccupied tile");
   }
 
-  g_pGlobalMapState->SetCivilianDevelopmentClassNibble(extractiveTile, 0, 2, 0);
-  g_pGlobalMapState->SetCivilianDevelopmentClassNibble(extractiveTile, 1, 0, 0);
+  g_pGlobalMapState->SetDevelopmentLevel(extractiveTile, 0, 2, 0);
+  g_pGlobalMapState->SetDevelopmentLevel(extractiveTile, 1, 0, 0);
   g_pGlobalMapState->terrainStateTable[extractiveTile].pendingDevelopmentFlag = 0;
 
   TCivUnit* extractiveWorker = new TCivUnit();
@@ -268,8 +268,8 @@ RuntimeActionResult RunCompletedResourceDevelopment(NativeTransition& transition
   if (!FindUnoccupiedTile(&surfaceTile)) {
     return RuntimeActionResult::Failure("the loaded map has only one unoccupied tile");
   }
-  g_pGlobalMapState->SetCivilianDevelopmentClassNibble(surfaceTile, 0, 2, 0);
-  g_pGlobalMapState->SetCivilianDevelopmentClassNibble(surfaceTile, 1, 0, 0);
+  g_pGlobalMapState->SetDevelopmentLevel(surfaceTile, 0, 2, 0);
+  g_pGlobalMapState->SetDevelopmentLevel(surfaceTile, 1, 0, 0);
   g_pGlobalMapState->terrainStateTable[surfaceTile].pendingDevelopmentFlag = 1 << 3;
 
   TCivUnit* surfaceWorker = new TCivUnit();

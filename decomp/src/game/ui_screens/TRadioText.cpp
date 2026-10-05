@@ -42,7 +42,7 @@ void TRadioText::Draw(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x00579580
-void TRadioText::RefreshAndNotifyOwnerSlot13C() {
+void TRadioText::Hilite() {
   RefreshControl();
   GetWindow()->ForceRedraw();
 }

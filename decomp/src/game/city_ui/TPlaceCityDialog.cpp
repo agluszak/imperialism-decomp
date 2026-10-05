@@ -88,7 +88,7 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
     TNumberedItem* item = new TNumberedItem();
     int position[2] = {x, y};
     int size[2] = {0x2c, 0x20};
-    item->InitializeNumberedResourceItem(this, position, size, resourceIndex, count);
+    item->INumberedItem(this, position, size, resourceIndex, count);
   }
 
   short primaryFood = town->resourceYieldByType[kResourceGrain];

@@ -20,7 +20,7 @@ void TInterruptusView::Draw(RECT* rectBuffer) {
   CString nationLabel;
 
   short kindIdx = battleDetail->resourceType;
-  g_pSimMgr->GetStringPrelude(kindIdx, &kindText);
+  g_pSimMgr->GetCommodityName(kindIdx, &kindText);
 
   short count = battleDetail->stockOrRequired;
   countText.Format(g_szDecimalFormat, count);
@@ -39,5 +39,5 @@ void TInterruptusView::Draw(RECT* rectBuffer) {
                          static_cast<const char*>(nationLabel));
 
   // Inherited from TItemBoyView: same header-draw + icon-row blit body.
-  DrawItemHeaderAndIconRows(&label);
+  ActuallyDraw(&label);
 }

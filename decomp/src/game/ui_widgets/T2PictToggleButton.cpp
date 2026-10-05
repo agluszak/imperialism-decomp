@@ -26,7 +26,7 @@ void T2PictToggleButton::Select(bool isPressed, bool notifyParent) {
   int oldField3c = controlValue3c;
 
   if ((!isPressed && oldField3c < (int)sVar1) || (isPressed && (int)sVar1 < oldField3c)) {
-    SetPictureResourceIdAndRefresh(static_cast<short>(oldField3c), false);
+    SetPictureRsrcID(static_cast<short>(oldField3c), false);
     controlValue3c = (int)sVar1;
   }
   PrepareForDrawing();

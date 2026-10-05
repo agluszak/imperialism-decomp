@@ -28,15 +28,15 @@ IMPLEMENT_DYNCREATE(TTacticalHolaPicture, TPicture)
 // local side, 0xd otherwise) into the 'info' deluxe text, and rasterizes the 'pmap'
 // owner-palette preview map with the battle site recorded on it.
 // FUNCTION: IMPERIALISM 0x005ad760
-void TTacticalHolaPicture::ConfigureBattleIntroCoatsAndSiteLabels(int nationA, int nationB,
+void TTacticalHolaPicture::StuffValues(int nationA, int nationB,
                                                                   int nationAIsLocalSide,
                                                                   int battleSiteIndex) {
   TPicture* attackerCoat = static_cast<TPicture*>(ResolveControlByTag(kControlTagAttackerCoat));
   attackerCoat->AssertValid();
-  attackerCoat->SetPictureResourceIdAndRefresh(static_cast<short>(nationA + 0xea6), 1);
+  attackerCoat->SetPictureRsrcID(static_cast<short>(nationA + 0xea6), 1);
   TPicture* defenderCoat = static_cast<TPicture*>(ResolveControlByTag(kControlTagDefenderCoat));
   defenderCoat->AssertValid();
-  defenderCoat->SetPictureResourceIdAndRefresh(static_cast<short>(nationB + 0xea6), 1);
+  defenderCoat->SetPictureRsrcID(static_cast<short>(nationB + 0xea6), 1);
 
   // Construction (EH-state) order: template, label out, nation label, city name.
   CString siteTemplate;

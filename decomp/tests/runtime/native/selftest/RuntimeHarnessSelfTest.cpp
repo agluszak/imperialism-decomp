@@ -79,7 +79,7 @@ void TestAwaitState() {
          await.ObservationKinds() == (kObservePaintCompleted | kObserveGameStateChanged),
          "await state lost its observation mask");
 
-  await.Clear();
+  await.IFuzzySet();
   Expect("await.cleared", !await.IsArmed() && await.Source()[0] == 0,
          "clearing left the await state armed");
 }

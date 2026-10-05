@@ -63,7 +63,7 @@ void TOfferDeskPicture::DoPostCreate(int arg) {
   maximum->AssertValid();
   ApplyUiNumberTextStyleAndThemeColor(maximum, 0, 0xc, 0x2b6c, 0x2b6b);
   LoadUiStringByGroupAndIndexToControlObject(0x2740, 1, maximum);
-  maximum->SetTextAlignmentAndMaybeRefresh(0, true);
+  maximum->SetJustification(0, true);
 
   TDealTabControl* tabs = static_cast<TDealTabControl*>(ResolveControlByTag(kControlTagTabs));
   tabs->AssertValid();
@@ -72,7 +72,7 @@ void TOfferDeskPicture::DoPostCreate(int arg) {
 
   TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(ResolveControlByTag(kControlTagTool));
   toolbar->AssertValid();
-  toolbar->RefreshTurnOrderStatusPanelTextsAndControls();
+  toolbar->AddInfoBehaviors();
   toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetPlayerCountry());
 
   TView* miniPicture = ResolveControlByTag(kControlTagMPic);
@@ -104,7 +104,7 @@ void TOfferDeskPicture::DoPostCreate(int arg) {
   waitStyle.textColor = 0;
   BuildUiTextStyleDescriptor(&waitStyle, 0, 0xe, 0x2b67);
   waitText->InstallTextStyle(waitStyle, 0);
-  waitText->SetTextAlignmentAndMaybeRefresh(1, false);
+  waitText->SetJustification(1, false);
 
   acceptButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagAcce));
   acceptButton->AssertValid();
@@ -160,7 +160,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   this->commodityType = commodityType;
   suppressEventFlag = 0;
 
-  g_pSimMgr->GetStringPrelude(commodityType, &commodityName);
+  g_pSimMgr->GetCommodityName(commodityType, &commodityName);
   offeringNationName = g_pSimMgr->LoadNormalizedCredentialName(offeringNation);
   respondingNationName = g_pSimMgr->LoadNormalizedCredentialName(respondingNation);
   g_pSimMgr->NumToCurrency(maxAmount, &maximumAmountText);
@@ -182,7 +182,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
                                       commodityIcon);
     } else {
       g_pSimMgr->GetString(0x2740, 0xa, &messageTemplate);
-      commodityIcon->SetPictureResourceIdAndRefresh(static_cast<short>(commodityType + 0x2bc), 1);
+      commodityIcon->SetPictureRsrcID(static_cast<short>(commodityType + 0x2bc), 1);
       commodityIcon->Show(1, 1);
     }
     scanBracketExpressions(g_pSimMgr, &waitingText, static_cast<LPCSTR>(messageTemplate),
@@ -205,7 +205,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
     return;
   }
 
-  UpdateTradeSelectionStateAndRefreshUiIfChanged(0);
+  SwitchToBook(0);
   sheet->Locate(g_offerDeskSheetPosition_006a5a00, false);
   wait->Locate(g_offerDeskOffscreenPosition_006a5a28, false);
 
@@ -238,21 +238,21 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   offerText->AssertValid();
   BuildUiTextStyleDescriptor(&style, 0, 0xc, 0x2b6b);
   offerText->InstallTextStyle(style, 0);
-  offerText->SetTextAlignmentAndMaybeRefresh(1, false);
+  offerText->SetJustification(1, false);
   offerText->SetTextAndMaybeRefresh(&displayText, false);
 
   TStaticText* purchaseTitle =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'u', 'r', 'T')));
   purchaseTitle->AssertValid();
   purchaseTitle->InstallTextStyle(style, 0);
-  purchaseTitle->SetTextAlignmentAndMaybeRefresh(-1, false);
-  purchaseTitle->SetTextFromStringResource(0x2740, 0xe, true);
+  purchaseTitle->SetJustification(-1, false);
+  purchaseTitle->SetTextWithStrListID(0x2740, 0xe, true);
 
   TStaticText* unitText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagUnit));
   unitText->AssertValid();
   unitText->InstallTextStyle(style, 0);
-  unitText->SetTextAlignmentAndMaybeRefresh(-2, false);
-  unitText->SetTextFromStringResource(0x2740, 0xf, true);
+  unitText->SetJustification(-2, false);
+  unitText->SetTextWithStrListID(0x2740, 0xf, true);
 
   g_pSimMgr->GetString(0x2740, 0xf, &offerTemplate);
   scanBracketExpressions(g_pSimMgr, &displayText, static_cast<LPCSTR>(offerTemplate),
@@ -261,7 +261,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('n', 'o', 'o', 'f')));
   numberOfText->AssertValid();
   numberOfText->InstallTextStyle(style, 0);
-  numberOfText->SetTextAlignmentAndMaybeRefresh(-2, false);
+  numberOfText->SetJustification(-2, false);
   numberOfText->SetTextAndMaybeRefresh(&displayText, false);
 
   short capacity =
@@ -271,7 +271,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   maximumText->AssertValid();
   BuildUiTextStyleDescriptor(&style, 0, 0xe, 0x2b67);
   maximumText->InstallTextStyle(style, 0);
-  maximumText->SetTextAlignmentAndMaybeRefresh(1, false);
+  maximumText->SetJustification(1, false);
   maximumText->SetTextAndMaybeRefresh(&capacityText, true);
   maximumText->RefreshControl();
 
@@ -289,7 +289,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   purchaseControl->maximumValue = proposedAmount;
   BuildUiTextStyleDescriptor(&style, 0, 0xe, 0x2b67);
   purchaseControl->InstallTextStyle(style, 0);
-  purchaseControl->SetTextAlignmentAndMaybeRefresh(1, false);
+  purchaseControl->SetJustification(1, false);
   purchaseControl->SetControlValue(proposedAmount, 0);
   purchaseControl->BecomeTarget();
   purchaseControl->GetCurrentText(&proposedAmountText);
@@ -301,7 +301,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
 
   TPicture* commodityIcon = static_cast<TPicture*>(ResolveControlByTag(kControlTagIcon));
   commodityIcon->AssertValid();
-  commodityIcon->SetPictureResourceIdAndRefresh(static_cast<short>(commodityType + 0x2bc), 0);
+  commodityIcon->SetPictureRsrcID(static_cast<short>(commodityType + 0x2bc), 0);
 
   acceptButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagAcce));
   acceptButton->AssertValid();
@@ -328,10 +328,10 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   TDropShadowText* info = static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagInfo));
   info->AssertValid();
   ApplyUiTextStyleAndThemeFlags(info, 0, 0xc, 0x2b6c, 0x2b6b);
-  info->SetTextAlignmentAndMaybeRefresh(-2, false);
+  info->SetJustification(-2, false);
 
   selectionActive = false;
-  RefreshSelectedNationOrderCompatibilityInfo();
+  ShowAdvice();
   g_pSfxPlaybackSystem->RequestAudioPresetChangeWithDeferredApply(4, true);
 }
 
@@ -343,7 +343,7 @@ void TOfferDeskPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
     short selectionIndex = g_tradeBookCategoryByTabAndTechState_0066DB58
         [g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId]][tabIndex];
     if (!selectionActive) {
-      UpdateTradeSelectionStateAndRefreshUiIfChanged(1);
+      SwitchToBook(1);
     } else {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x13f0, 0, 1);
     }
@@ -355,10 +355,10 @@ void TOfferDeskPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       CreateNextTradeCommandAndFormatPrompt(tag);
     } else if (tag == kControlTagForM) {
       g_pHelpMgr->ToggleTradeAdvice();
-      RefreshSelectedNationOrderCompatibilityInfo();
+      ShowAdvice();
     }
   } else if (commandId == 0x14 && tag == kControlTagDone) {
-    UpdateTradeSelectionStateAndRefreshUiIfChanged(0);
+    SwitchToBook(0);
   }
   TControl::DoEvent(commandId, sourceHandler, event);
 }
@@ -390,7 +390,7 @@ void TOfferDeskPicture::DoKeyEvent(TToolboxEvent* event) {
 // 0x2740 and 0x2764 (compatibility phrases, bracket-expanded via scanBracketExpressions).
 // Commodity types 0/1 (Cotton+Wool) are always evaluated as a combined pair.
 // FUNCTION: IMPERIALISM 0x005bf930
-void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
+void TOfferDeskPicture::ShowAdvice() {
   TGreatPower* gp = g_apNationStates[respondingNationSlot];
   TCity* city;
   if (gp == 0) {
@@ -420,19 +420,19 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
 
   TStaticText* info = static_cast<TStaticText*>(ResolveControlByTag(kControlTagInfo));
   info->AssertValid();
-  info->SetTextAlignmentAndMaybeRefresh(-2, false);
+  info->SetJustification(-2, false);
 
   {
     strTargetNation = g_pSimMgr->LoadNormalizedCredentialName(offeringNationSlot);
   }
-  g_pSimMgr->GetStringPrelude(commodityType, &strCommodity);
+  g_pSimMgr->GetCommodityName(commodityType, &strCommodity);
 
-  short compat = g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
+  short compat = g_pDiplomacyTurnStateManager->GetEmbassyStatus(
       respondingNationSlot, offeringNationSlot);
 
   if (g_pHelpMgr->tradeAdviceDetailLevel == 0) {
     g_pSimMgr->GetString(0x2740, 9, &strFinal);
-    info->SetTextAlignmentAndMaybeRefresh(1, false);
+    info->SetJustification(1, false);
   } else if (g_pHelpMgr->tradeAdviceDetailLevel == 1) {
     if (compat >= 1 &&
         g_apTerrainTypeDescriptorTable[offeringNationSlot]->IsColonyOf(respondingNationSlot) == 0) {
@@ -641,7 +641,7 @@ char TOfferDeskPicture::HandleMouseUp(const CPoint& point, TToolboxEvent* event,
 }
 
 // FUNCTION: IMPERIALISM 0x005c09d0
-void TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged(unsigned char activate) {
+void TOfferDeskPicture::SwitchToBook(unsigned char activate) {
   if (activate == selectionActive) {
     return;
   }
@@ -658,7 +658,7 @@ void TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged(unsigned 
     CPoint bookLayout(0x3a, 0x2d);
     bookControl->Locate(bookLayout, false);
     sheetControl->Locate(g_offerDeskOffscreenPosition_006a5a28, false);
-    SetPictureResourceIdAndRefresh(0x226f, 1);
+    SetPictureRsrcID(0x226f, 1);
     g_pSfxPlaybackSystem->PlaySoundEffect(0x13ee, 0, 1);
     TDealTabControl* tabsControl =
         static_cast<TDealTabControl*>(ResolveControlByTag(kControlTagTabs));
@@ -672,7 +672,7 @@ void TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged(unsigned 
   } else {
     bookControl->Locate(g_offerDeskOffscreenPosition_006a5a28, false);
     sheetControl->Locate(g_offerDeskSheetPosition_006a5a00, false);
-    SetPictureResourceIdAndRefresh(0x2152, 1);
+    SetPictureRsrcID(0x2152, 1);
     g_pSfxPlaybackSystem->PlaySoundEffect(0x13ef, 0, 1);
     static_cast<TTradeBookView*>(bookControl)->SetItem(-1);
     TDealTabControl* tabsControl =

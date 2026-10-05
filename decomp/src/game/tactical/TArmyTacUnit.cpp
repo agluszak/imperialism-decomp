@@ -76,7 +76,7 @@ float TArmyTacUnit::GetDamageScale() {
 }
 
 // FUNCTION: IMPERIALISM 0x005a61c0
-void TArmyTacUnit::ApplyTacticalDamage(int damageA, int damageB) {
+void TArmyTacUnit::ApplyDamage(int damageA, int damageB) {
   morale34 -= damageB;
   if (morale34 <= 0) {
     morale34 = 0;

@@ -32,7 +32,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
   COLORREF shadowColor = 0;
 
   g_pSfxPlaybackSystem->ResetDualAudioCuePools();
-  g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(11);
+  g_pSfxPlaybackSystem->AddToPlayList(11);
   g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
 
   BuildUiTextStyleDescriptor(&scoreStyle, 0, 14, 0x2b68);

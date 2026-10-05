@@ -10,7 +10,7 @@ class TCity;
 class TCityBarCluster : public TUberCluster {
 public:
   virtual ~TCityBarCluster() override;      // slot 0x01 (scalar deleting destructor)
-  virtual void ApplyMoveValue(TCity* city); // slot 0x74 0x5866b0
+  virtual void StuffValues(TCity* city); // slot 0x74 0x5866b0
   TCityBarCluster();
   DECLARE_DYNCREATE(TCityBarCluster)
 };

@@ -125,7 +125,7 @@ void RuntimeRun::InitializeFromEnvironment() {
 void RuntimeRun::StartScenario(RuntimeScenario* value) {
   scenario = value;
   progress.Reset(GetTickCount());
-  awaitState.Clear();
+  awaitState.IFuzzySet();
   resultAggregate.Reset();
   selectedNationSlot = -1;
   mainWindowHandle = 0;
@@ -279,7 +279,7 @@ short RuntimeRun::SelectedNationSlot() const {
   return selectedNationSlot;
 }
 
-void RuntimeRun::SetSelectedNationSlot(short value) {
+void RuntimeRun::PickCountry(short value) {
   selectedNationSlot = value;
 }
 

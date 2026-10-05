@@ -55,12 +55,12 @@ void TColorKeyPicture::Draw(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x00573040
-void TColorKeyPicture::SetPictureResourceIdAndRefresh(short nPictureId, unsigned char fRefreshNow) {
+void TColorKeyPicture::SetPictureRsrcID(short nPictureId, unsigned char fRefreshNow) {
   if (colorKeySurface94 != 0) {
     g_pDisplayMgr->RemoveGWorld(colorKeySurface94);
   }
   colorKeySurface94 = 0;
-  TPicture::SetPictureResourceIdAndRefresh(nPictureId, fRefreshNow);
+  TPicture::SetPictureRsrcID(nPictureId, fRefreshNow);
 }
 
 // FUNCTION: IMPERIALISM 0x00573090

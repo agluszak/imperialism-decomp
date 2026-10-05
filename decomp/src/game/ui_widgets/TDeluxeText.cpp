@@ -21,24 +21,24 @@ void TDeluxeText::IDeluxeText(TView* panel, int* offsetLayout, int* sizeLayout, 
                               TextStyle* style, short styleWord90) {
   ITEView(nullptr, panel, offsetLayout, sizeLayout, 5, 5, insetRect, style, styleWord90, 0, true);
   textColor98 = style->textColor;
-  SetSelectedFlagAndState(0);
+  EnableEditing(0);
 }
 
 // FUNCTION: IMPERIALISM 0x005b6060
 void TDeluxeText::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
   field95 = 0;
-  SetSelectedFlagAndState(0);
+  EnableEditing(0);
 }
 
 // FUNCTION: IMPERIALISM 0x005b60a0
-void TDeluxeText::SetSelectedFlagAndState(char param_1) {
+void TDeluxeText::EnableEditing(char param_1) {
   field94 = param_1;
   ViewEnable(param_1, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005b60d0
-void TDeluxeText::SetTextFromUiStringResourceId(short stringId) {
+void TDeluxeText::LoadTextResource(short stringId) {
   CString text;
   g_pResourceMgr->LoadUiStringResourceById(&text, stringId);
   this->UpdateTextEntrySharedStringAndMaybeNotify(&text, true);
@@ -54,12 +54,12 @@ void TDeluxeText::Draw(RECT* rectBuffer) {
     CRect shadowRect;
     BuildInsetContentRect(&shadowRect);
     OffsetRect(&shadowRect, 1, 1);
-    DrawTextAligned((LPCSTR)textBuffer, textBuffer.GetLength(), &shadowRect, textAlignmentCode);
+    ImageText((LPCSTR)textBuffer, textBuffer.GetLength(), &shadowRect, textAlignmentCode);
   }
   CRect mainRect;
   BuildInsetContentRect(&mainRect);
   SetQuickDrawColorAndPropagateIfChanged(textColor98);
-  DrawTextAligned((LPCSTR)textBuffer, textBuffer.GetLength(), &mainRect, textAlignmentCode);
+  ImageText((LPCSTR)textBuffer, textBuffer.GetLength(), &mainRect, textAlignmentCode);
 }
 
 // FUNCTION: IMPERIALISM 0x005b62a0

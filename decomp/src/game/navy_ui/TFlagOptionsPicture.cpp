@@ -46,7 +46,7 @@ void TFlagOptionsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
           int saveResult = 0;
           if (g_pGameFlowState->fieldF4 != 0) {
             saveResult =
-                g_pGameFlowState->TrySaveGameAndMaybeShowFailureDialog(0xa1, nullptr, false);
+                g_pGameFlowState->AttemptSave(0xa1, nullptr, false);
           }
           g_pGameFlowState->DispatchTaggedGameStateEvent1F20(tag, saveResult, -3);
         } else if (tag == kControlTagQuit) {
@@ -99,7 +99,7 @@ void TFlagOptionsPicture::DoPostCreate(int arg) {
     } else {
       ApplyUiTextStyleAndThemeFlags(control, 0, 0xe, 0x2b6b, 0x2b6c);
     }
-    control->SetTextAlignmentAndMaybeRefresh(i > 1 ? -2 : 1, false);
+    control->SetJustification(i > 1 ? -2 : 1, false);
     control->SetTextAndMaybeRefresh(&text, false);
   }
 }

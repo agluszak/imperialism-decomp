@@ -437,7 +437,7 @@ void TForeignMinister::DoDevelopmentGrants() {
         relationshipList->GetPtrListEntryByOneBasedIndex(entryIndex));
     short nationSlot = entry->nationSlot;
     if (entry->standingScore < 0xff &&
-        g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(owner->nationSlot,
+        g_pDiplomacyTurnStateManager->GetEmbassyStatus(owner->nationSlot,
                                                                           nationSlot) == 2) {
       int grantAmount = SelectDevelopmentGrantAmount(availableBudget);
       availableBudget -= static_cast<short>(grantAmount);
@@ -454,7 +454,7 @@ void TForeignMinister::DoDevelopmentGrants() {
       RelationshipRankEntry* entry = static_cast<RelationshipRankEntry*>(
           relationshipList->GetPtrListEntryByOneBasedIndex(entryIndex));
       short nationSlot = entry->nationSlot;
-      if (g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(owner->nationSlot,
+      if (g_pDiplomacyTurnStateManager->GetEmbassyStatus(owner->nationSlot,
                                                                             nationSlot) == 1) {
         int grantAmount = SelectDevelopmentGrantAmount(availableBudget);
         availableBudget -= static_cast<short>(grantAmount);
@@ -476,7 +476,7 @@ void TForeignMinister::DoDevelopmentGrants() {
       RelationshipRankEntry* entry = static_cast<RelationshipRankEntry*>(
           relationshipList->GetPtrListEntryByOneBasedIndex(entryIndex));
       if (entry->standingScore < 0xff &&
-          g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
+          g_pDiplomacyTurnStateManager->GetEmbassyStatus(
               owner->nationSlot, entry->nationSlot) == 0) {
         owner->ApplyDiplomacyPolicyStateForTargetWithCostChecks(entry->nationSlot, 0x133);
         availableBudget = 0;
@@ -499,7 +499,7 @@ void TForeignMinister::DoDevelopmentGrants() {
 void TForeignMinister::DoProposeTreaties() {
   for (short minorNation = 7; minorNation < 0x17; ++minorNation) {
     TMinor* minor = g_apSecondaryNationStateSlots[minorNation];
-    if (minor == 0 || g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
+    if (minor == 0 || g_pDiplomacyTurnStateManager->GetEmbassyStatus(
                           greatPower->nationSlot, minorNation) != 2) {
       continue;
     }
@@ -748,7 +748,7 @@ void TForeignMinister::SetEmpirePolicies() {
       relationshipList->ReleasePtrList();
 
       if (selectedMinor != -1) {
-        short compatibility = g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
+        short compatibility = g_pDiplomacyTurnStateManager->GetEmbassyStatus(
             owner->nationSlot, selectedMinor);
         if (compatibility < 1) {
           owner->ApplyDiplomacyPolicyStateForTargetWithCostChecks(static_cast<short>(selectedMinor),
@@ -761,7 +761,7 @@ void TForeignMinister::SetEmpirePolicies() {
   }
 
   for (short minorNation = 7; minorNation < 0x17; ++minorNation) {
-    if (g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(owner->nationSlot,
+    if (g_pDiplomacyTurnStateManager->GetEmbassyStatus(owner->nationSlot,
                                                                           minorNation) >= 1 &&
         owner->needLevelByNation[minorNation] > 0x5f &&
         owner->needLevelByNation[minorNation] < 300 &&

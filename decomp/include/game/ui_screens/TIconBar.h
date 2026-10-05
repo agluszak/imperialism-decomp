@@ -11,7 +11,7 @@ public:
   virtual ~TIconBar() override;
 
   virtual void Draw(RECT* rectBuffer) override;
-  virtual void SetPictureResourceIdAndRefresh(short nPictureId, unsigned char fRefreshNow) override;
+  virtual void SetPictureRsrcID(short nPictureId, unsigned char fRefreshNow) override;
   virtual void SetNumIcons(short numIcons);
   virtual void SetNumIcons(short numIcons, unsigned char refreshNow);
 
@@ -22,7 +22,7 @@ public:
   // confirms sizeof(TIconBar) == 0x9c.
   //
   // iconAtlasFrame94: atlas frame/row index into the icon strip bitmap (atlas674), set by
-  // SetPictureResourceIdAndRefresh as nPictureId - 700; Draw reads it as
+  // SetPictureRsrcID as nPictureId - 700; Draw reads it as
   // iconAtlasFrame94*0x20 to pick the source column.
   short iconAtlasFrame94;
   // numIcons96: tick/segment count. Draw divides the bar's content width by

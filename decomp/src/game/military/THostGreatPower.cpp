@@ -38,7 +38,7 @@ void THostGreatPower::WriteTo(TStream* stream) {
 char THostGreatPower::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                                         ResourceKindStorage resourceKind) {
   if (TGreatPower::ReplyToTradeOffer(targetNationSlot, amount, price, resourceKind) != 0) {
-    g_pGameFlowState->DispatchTurnEvent1AWithNationActionPayload(this->nationSlot, targetNationSlot,
+    g_pGameFlowState->SendTradeOffer(this->nationSlot, targetNationSlot,
                                                                  amount, price, resourceKind);
     return 1;
   }

@@ -12,7 +12,7 @@ public:
   virtual ~TTradeBidNationLine() override {} // slot 0x01 (scalar deleting destructor)
   virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x5bda20
 
-  // Set directly (not via a method) by TTradePageBuyView::RebuildNationBidRowsForCategory
+  // Set directly (not via a method) by TTradePageBuyView::SetItem
   // right after construction: categorySlot is the row-building category argument (constant
   // across every row built in one rebuild pass), nationSlot is the per-row nation index.
   short categorySlot; // 0x10

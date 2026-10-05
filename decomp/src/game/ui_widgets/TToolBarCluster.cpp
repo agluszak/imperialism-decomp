@@ -98,7 +98,7 @@ void TToolBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
     }
     {
       short nationId = g_pSimMgr->GetPlayerCountry();
-      short abilityIndex = g_pTechMgr->ConsumeFirstPendingAbilityUnlock(nationId);
+      short abilityIndex = g_pTechMgr->GetNextNewAdvance(nationId);
       if (abilityIndex != -1) {
         g_pViewMgr->ShowAbilityStatusReport(abilityIndex);
       } else {
@@ -171,7 +171,7 @@ void TToolBarCluster::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint
 }
 
 // FUNCTION: IMPERIALISM 0x005853f0
-void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls() {
+void TToolBarCluster::AddInfoBehaviors() {
   CString text;
 
   TView* mainControl = GetWindow()->ResolveControlByTag(kControlTagMain);
@@ -265,7 +265,7 @@ void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls() {
     text = seasonLabel + g_szListSeparator_00695760 + yearLabel;
     SetControlHoverHelpText(text, seasonControl);
     ApplyUiTextStyleAndThemeFlags(seasonControl, 0, 0xc, 0x2b6c, 0x2b67);
-    seasonControl->SetTextAlignmentAndMaybeRefresh(-2, false);
+    seasonControl->SetJustification(-2, false);
   } else {
     TDropShadowNumberText* yearControl =
         static_cast<TDropShadowNumberText*>(ResolveControlByTag(kControlTagYear));
@@ -273,7 +273,7 @@ void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls() {
       g_pSimMgr->GetString(0x2730, 8, &text);
       SetControlHoverHelpText(text, yearControl);
       ApplyUiNumberTextStyleAndThemeColor(yearControl, 0, 0xe, 0x2b6c, 0x2b67);
-      yearControl->SetTextAlignmentAndMaybeRefresh(1, false);
+      yearControl->SetJustification(1, false);
     }
   }
 
@@ -283,14 +283,14 @@ void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls() {
     g_pSimMgr->GetString(0x2730, 9, &text);
     SetControlHoverHelpText(text, treasuryControl);
     ApplyUiTextStyleAndThemeFlags(treasuryControl, 0, 0xc, 0x2b6c, 0x2b67);
-    treasuryControl->SetTextAlignmentAndMaybeRefresh(1, false);
+    treasuryControl->SetJustification(1, false);
   }
 
   TDropShadowText* wordControl =
       static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagWord));
   if (wordControl != 0) {
     ApplyUiTextStyleAndThemeFlags(wordControl, 0, 0xc, 0x2b6c, 0x2b67);
-    wordControl->SetTextAlignmentAndMaybeRefresh(1, false);
+    wordControl->SetJustification(1, false);
     g_pSimMgr->GetString(0x2730, 9, &text);
     wordControl->SetTextAndMaybeRefresh(&text, false);
   }
@@ -369,7 +369,7 @@ void DispatchUiRuntimeMessage102CAndRefreshActiveView() {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf6c);
   }
   CPoint placement;
-  g_pViewMgr->ComputeTurnEventDialogPlacementByCode(node, &placement);
+  g_pViewMgr->GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   node->PoseModally();
   node->Close();

@@ -145,7 +145,7 @@ void TShipyardView::DoStartup() {
   TStaticText* title = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl)); // 'titl'
   title->AssertValid();
   title->InstallTextStyle(style.desc, 1);
-  title->SetTextFromStringResource(0x2736, 0xe, true);
+  title->SetTextWithStrListID(0x2736, 0xe, true);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
   for (int i = 0; i < 2; ++i) {
@@ -153,7 +153,7 @@ void TShipyardView::DoStartup() {
         static_cast<TStaticText*>(ResolveControlByTag(kControlTagFix0 + i)); // 'fix0'/'fix1'
     fixedLabel->AssertValid();
     fixedLabel->InstallTextStyle(style.desc, 1);
-    fixedLabel->SetTextFromStringResource(0x2736, static_cast<short>(i + 0xf), true);
+    fixedLabel->SetTextWithStrListID(0x2736, static_cast<short>(i + 0xf), true);
   }
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b6b);
@@ -181,7 +181,7 @@ void TShipyardView::DoStartup() {
 }
 
 // FUNCTION: IMPERIALISM 0x004c8a20
-void TShipyardView::LoadShipyardIconSurface() {
+void TShipyardView::LoadShipGWorld() {
   iconSurfaceB8 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f);
 }
 
@@ -251,7 +251,7 @@ void TShipyardView::SetShip(short shipType) {
 
   TPicture* shipPicture = static_cast<TPicture*>(ResolveControlByTag(kControlTagSpic)); // 'spic'
   shipPicture->AssertValid();
-  shipPicture->SetPictureResourceIdAndRefresh(static_cast<short>(shipType + 0x266a), 1);
+  shipPicture->SetPictureRsrcID(static_cast<short>(shipType + 0x266a), 1);
   g_pViewMgr->SetBackColor(0x38);
 
   CRect invalidRect;
@@ -260,14 +260,14 @@ void TShipyardView::SetShip(short shipType) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x408);
   }
-  shipName->SetTextFromStringResource(0x2716, static_cast<short>(shipType + 1), false);
+  shipName->SetTextWithStrListID(0x2716, static_cast<short>(shipType + 1), false);
   shipName->QueryBounds(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
   TStaticText* description =
       static_cast<TStaticText*>(ResolveControlByTag(kControlTagDesc)); // 'desc'
   description->AssertValid();
-  description->SetTextFromStringResource(0x2752, shipType, false);
+  description->SetTextWithStrListID(0x2752, shipType, false);
   description->QueryBounds(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
@@ -445,7 +445,7 @@ void TShipyardView::GetCostString(CString* output, short actionIndex) {
     short amount = costTables[i][actionIndex];
     if (amount != 0) {
       formattedAmount.Format(g_szDecimalFormat, static_cast<int>(amount));
-      g_pSimMgr->GetStringPrelude(kResourceTypes[i], &resourceName);
+      g_pSimMgr->GetCommodityName(kResourceTypes[i], &resourceName);
       g_pSimMgr->GetString(0x2738, 0x1c, &formatTemplate);
       scanBracketExpressions(g_pSimMgr, output, static_cast<LPCSTR>(formatTemplate),
                              static_cast<LPCSTR>(formattedAmount),
@@ -471,7 +471,7 @@ void TShipyardView::SetStats(short shipType) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x410);
   }
-  history->SetTextFromStringResource(0x23f7, shipType, false);
+  history->SetTextWithStrListID(0x23f7, shipType, false);
   history->QueryBounds(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 

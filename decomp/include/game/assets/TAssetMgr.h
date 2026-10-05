@@ -33,7 +33,7 @@ public:
   // the callees ignore `this`). Used by the battle-setup .tab loader (0x5a4fc0).
   // Compose the on-disk path for a scenario table resource (mode 1 = map state) into
   // outPath. 0x5dfd70; `this` ignored (same singleton idiom as the siblings below).
-  void BuildScenarioPathForModeAndIndex(int scenarioIndex, int mode, CString* outPath);
+  void GetScenarioFileName(int scenarioIndex, int mode, CString* outPath);
   // Finds "name" as a TABLE resource in the app's own module; if present, loads it and
   // returns a CMemFile attached to the locked resource bytes. If absent, falls back to
   // opening "name" as a real disk file via a plain CFile (asserting on failure unless
@@ -83,7 +83,7 @@ public:
   unsigned char OpenMainDocumentFromPathAndMarkLoaded(const CString& loadPath);
   // Writes *value under key in the application's "Settings" profile section. `this`
   // is unused, but all retail callsites dispatch through g_pAssetMgr. 0x5e0260.
-  void SaveSettingValueFromPointerByKey(CString* value, const char* key);
+  void SetPreferenceString(CString* value, const char* key);
   // CWinApp::GetProfileInt(key, defaultValue) under the "Settings" section, stored
   // into *out. `this` is unused; callers dispatch through g_pAssetMgr. 0x5e0290.
   // Parameter order verified from the 0x5e0290 listing: the OUT pointer is the first

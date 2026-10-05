@@ -84,7 +84,7 @@ public:
   virtual void NumToCurrency(int value, CString* destString); // 0x74  0x0057f5b0
   virtual void NumToOrdinal(int value, CString* destString);  // 0x78  0x0057f8f0
   // Copy string-resource group 0x2711 (commodity names) entry `offset` into dest.
-  virtual void GetStringPrelude(short offset, CString* destString);           // 0x7c  0x0057fe90
+  virtual void GetCommodityName(short offset, CString* destString);           // 0x7c  0x0057fe90
   virtual void ReinitializeRandomSeed();                                      // 0x80  0x0057fec0
   virtual void GetString(short codeGroup, short offset, CString* destString); // 0x84 0x00580760
   // Copy the per-slot shared credential/name text (sharedTextSlots[slot]) into out and

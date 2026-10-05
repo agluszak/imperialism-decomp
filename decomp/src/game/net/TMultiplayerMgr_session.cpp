@@ -245,7 +245,7 @@ void TMultiplayerMgr::IMultiplayerMgr(int idleFrequency) {
 void TMultiplayerMgr::Free() {
   {
     CString playerName(playerNameString);
-    g_pAssetMgr->SaveSettingValueFromPointerByKey(&playerName, s_PlayerName_0069801c);
+    g_pAssetMgr->SetPreferenceString(&playerName, s_PlayerName_0069801c);
   }
   g_pAmbitApplication->InstallCohandler(this, false);
   g_pGameFlowState = 0;
@@ -371,7 +371,7 @@ void TMultiplayerMgr::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x005430c0
-void TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44(TEventHandler* nContext,
+void TMultiplayerMgr::InstallCohandler(TEventHandler* nContext,
                                                                       bool fEnable) {
   processPrimaryEventQueue = 1;
   processSecondaryEventQueue = true;
@@ -406,7 +406,7 @@ struct TurnEvent3Mode18Packet : NetMessage {
   unsigned char pad15[3];
 };
 
-// Clear the slot's turn-resume pending bit; when hosting, broadcast the remaining mask
+// IFuzzySet the slot's turn-resume pending bit; when hosting, broadcast the remaining mask
 // as an event-1 packet, and once the mask drains (with a pending event code latched)
 // flush it through the diplomacy turn-event dispatcher.
 // FUNCTION: IMPERIALISM 0x005431a0
@@ -504,7 +504,7 @@ void TMultiplayerMgr::EmitTurnEvent10ForFlaggedNationSlots() {
 // FUNCTION: IMPERIALISM 0x005447e0
 void TMultiplayerMgr::DoGameDataHunk(TurnEvent2SyncPacket* packet) {
   if (!packet->flag20) {
-    g_pDiplomacyTurnStateManager->ApplyTurnEvent2SyncPacketToRelationMatrix(packet);
+    g_pDiplomacyTurnStateManager->HandleDiplomaticStandingsMsg(packet);
   }
 }
 
@@ -579,7 +579,7 @@ unsigned char TMultiplayerMgr::ValidateGameFlowNameAndSelectionContext(int proto
 unsigned char TMultiplayerMgr::ValidateAndPrepareGameFlowNameForDispatch() {
   CString gameName;
   gameName = gameNameString;
-  g_pAssetMgr->SaveSettingValueFromPointerByKey(&gameName, s_GameName_00698010);
+  g_pAssetMgr->SetPreferenceString(&gameName, s_GameName_00698010);
 
   int now;
   do {
@@ -587,7 +587,7 @@ unsigned char TMultiplayerMgr::ValidateAndPrepareGameFlowNameForDispatch() {
     queueSyncDword = now;
   } while (now == 0);
 
-  unsigned char opened = g_pNetMgr006a6014->OpenRuntimeSelectionSourceAndApplyActiveNationState(
+  unsigned char opened = g_pNetMgr006a6014->Host(
       static_cast<LPCSTR>(gameName), static_cast<LPCSTR>(playerNameString), g_szEmptyString);
   if (opened) {
     lobbyDialogView = nullptr;
@@ -633,7 +633,7 @@ unsigned char TMultiplayerMgr::ResetGameFlowStateAndPostTurnEvent5DCAlt() {
 // FUNCTION: IMPERIALISM 0x00545320
 unsigned char TMultiplayerMgr::ApplyJoinGameSelectionAndPostTurnEvent5E4(int selectionTag) {
   CString defaultGameName("Frog");
-  unsigned char joined = g_pNetMgr006a6014->OpenJoinGameRuntimeSelectionAndStartSession(
+  unsigned char joined = g_pNetMgr006a6014->SelectGame(
       selectionTag, &playerNameString, defaultGameName);
   if (joined) {
     playerNameMirror = playerNameString;

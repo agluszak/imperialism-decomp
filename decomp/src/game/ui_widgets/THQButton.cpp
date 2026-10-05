@@ -45,7 +45,7 @@ void THQButton::HiliteState(unsigned char enabledState, bool refreshNow) {
     } else {
       bitmapId = highlightedBitmapId;
     }
-    SetPictureResourceIdAndRefresh(bitmapId, 1);
+    SetPictureRsrcID(bitmapId, 1);
     if (refreshNow) {
       GetWindow()->ForceRedraw();
     }
@@ -80,16 +80,16 @@ void THQButton::SetState(bool value, bool refreshNow) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058b8d0
-void THQButton::SetSelectionStateAndRefreshBitmap(short selectionState) {
+void THQButton::SetMode(short selectionState) {
   bool enabledState = selectionState != 2;
   this->selectionState = selectionState;
   controlState64 = 0;
   if (selectionState == 0) {
-    SetPictureResourceIdAndRefresh(normalBitmapId, true);
+    SetPictureRsrcID(normalBitmapId, true);
   } else if (selectionState == 1) {
-    SetPictureResourceIdAndRefresh(selectedBitmapId, true);
+    SetPictureRsrcID(selectedBitmapId, true);
   } else {
-    SetPictureResourceIdAndRefresh(unavailableBitmapId, true);
+    SetPictureRsrcID(unavailableBitmapId, true);
   }
   ViewEnable(enabledState, false);
 }

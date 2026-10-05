@@ -270,7 +270,7 @@ strokeLower:
 }
 
 // FUNCTION: IMPERIALISM 0x005665e0
-void TOceanDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
+void TOceanDialog::FrameCursorArea() {
   TMapUberPicture* mapPicture = static_cast<TMapUberPicture*>(ownerContext);
   if (mapPicture->activeUnitCategoryIndex != 0) {
     return;

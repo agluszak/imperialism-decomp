@@ -6,7 +6,7 @@ IMPLEMENT_DYNCREATE(TLineData, TObject)
 TLineData::TLineData() : TObject() {}
 
 // FUNCTION: IMPERIALISM 0x0056f420
-void TLineData::SetLineDataRowAndBounds(short rowArg, short colArg, int* bounds) {
+void TLineData::ILineData(short rowArg, short colArg, int* bounds) {
   column = colArg;
   layoutWidth = bounds[0];
   layoutHeight = bounds[1];

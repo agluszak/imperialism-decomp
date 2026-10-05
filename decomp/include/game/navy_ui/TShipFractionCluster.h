@@ -19,7 +19,7 @@ public:
 
   TShipFractionCluster();
 
-  void SetAvailableAndSelectedShipCounts(int availableCount, int selectedCount);
+  void Set(int availableCount, int selectedCount);
   void IncrementSelectedShipCount(unsigned char displayOnly); // 0x005690d0
   void DecrementSelectedShipCount(unsigned char displayOnly); // 0x00569150
 

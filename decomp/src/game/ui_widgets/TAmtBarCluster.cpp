@@ -34,7 +34,7 @@ void TAmtBarCluster::DoPostCreate(int styleSeed) {
   if (moveControl != 0) {
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
     moveControl->InstallTextStyle(styleDescriptor, 0);
-    moveControl->SetTextAlignmentAndMaybeRefresh(-2, false);
+    moveControl->SetJustification(-2, false);
   }
 
   TAmtBar* barControl = static_cast<TAmtBar*>(ResolveControlByTag(kControlTagBar));

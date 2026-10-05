@@ -24,7 +24,7 @@ public:
   virtual ~TCitySiteView() override;
 
   virtual void DoPostCreate(int arg) override;
-  virtual void RenderStrategicTileSelectionAndNeighborHighlights() override;
+  virtual void FrameCursorArea() override;
   virtual void HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags) override;
   virtual void SetMapViewTileIndex(int tileIndex) override;
   virtual void SetMapViewCellCoordinates(int column, int row) override;

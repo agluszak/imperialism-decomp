@@ -23,7 +23,7 @@ void TItemBoyView::Draw(RECT* rectBuffer) {
   CString countText;
 
   short kindIdx = battleDetail->resourceType;
-  g_pSimMgr->GetStringPrelude(kindIdx, &kindText);
+  g_pSimMgr->GetCommodityName(kindIdx, &kindText);
 
   short count = battleDetail->stockOrRequired;
   countText.Format(g_szDecimalFormat, count);
@@ -36,11 +36,11 @@ void TItemBoyView::Draw(RECT* rectBuffer) {
   scanBracketExpressions(g_pSimMgr, &label, static_cast<const char*>(templateText),
                          static_cast<const char*>(countText), static_cast<const char*>(kindText));
 
-  DrawItemHeaderAndIconRows(&label);
+  ActuallyDraw(&label);
 }
 
 // FUNCTION: IMPERIALISM 0x004afb60
-void TItemBoyView::DrawItemHeaderAndIconRows(CString* header) {
+void TItemBoyView::ActuallyDraw(CString* header) {
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b6a);
   SetQuickDrawTextOriginWithContextOffset(0x1a, 0x14);
   DrawTextWithCachedQuickDrawStyleState(header);

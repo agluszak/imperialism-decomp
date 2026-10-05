@@ -34,7 +34,7 @@ TNewsMgr::~TNewsMgr() {}
 IMPLEMENT_DYNCREATE(TNewsMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x0055b710
-void TNewsMgr::InitializeNewsManager() {
+void TNewsMgr::INewsMgr() {
   for (int i = 0; i < 7; i++) {
     perNationEventBuckets[i] = new TPtrList();
     perNationEventBuckets[i]->recordSize14 = 0x24;

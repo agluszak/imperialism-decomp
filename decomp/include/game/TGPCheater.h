@@ -21,9 +21,9 @@ public:
 
   // Two-phase init: chain to TCheater's base frame, add the 'name' caption, then build the
   // five treasury/mercenary/pact/sale/purchase numeric-entry rows. 0x004b1a90.
-  void ConstructTGPCheaterBaseState(TView* panel);
+  void IGPCheater(TView* panel);
 
   // 0x4b1cb0 -- refresh the GP-cheater dialog's nation value fields from g_apNationStates.
-  void RefreshGPCheaterNationValues(int nationSlot);
+  void DisplayGP(int nationSlot);
 };
 ASSERT_SIZE(TGPCheater, 0x64);

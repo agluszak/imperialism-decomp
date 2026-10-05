@@ -128,7 +128,7 @@ void TCitySiteView::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int 
 }
 
 // FUNCTION: IMPERIALISM 0x0051c3b0
-void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
+void TCitySiteView::FrameCursorArea() {
   short neighborTiles[6] = {-1, -1, -1, -1, -1, -1};
   bool updateNeighborHighlights = false;
   short currentTile = static_cast<short>(hoveredTileIndex);
@@ -191,7 +191,7 @@ void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
                                                  &projectedX, 1);
     RECT currentTileRect = {projectedX, projectedY, projectedX + 0x40, projectedY + 0x40};
     QDFrameRect(&currentTileRect);
-    DrawHexNeighborOutlineFromTileArray(neighborTiles);
+    FrameNeighbors(neighborTiles);
   }
 
   for (int newIndex = 0; newIndex < 6; ++newIndex) {

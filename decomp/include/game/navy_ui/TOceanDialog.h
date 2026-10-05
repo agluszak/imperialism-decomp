@@ -29,7 +29,7 @@ public:
                                                              int flag) override;
   virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
                                                              bool altOverlay) override;
-  virtual void RenderStrategicTileSelectionAndNeighborHighlights() override;
+  virtual void FrameCursorArea() override;
   virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
                                                                    const CPoint* viewportOrigin,
                                                                    short* outVerticalOffset,

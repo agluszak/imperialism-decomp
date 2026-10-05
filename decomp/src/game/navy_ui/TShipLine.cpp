@@ -19,7 +19,7 @@ IMPLEMENT_DYNCREATE(TShipLine, TLineData)
 // FUNCTION: IMPERIALISM 0x005650c0
 void TShipLine::IShipLine(short rowArg, short colArg, int* bounds,
                           TMapOrderChildLinkNode* childLink, TTaskForce* force) {
-  SetLineDataRowAndBounds(rowArg, colArg, bounds);
+  ILineData(rowArg, colArg, bounds);
   // The payload is read between the two stores, as the original does -- it reuses the
   // register holding `childLink` rather than re-loading it at the end.
   childLink14 = childLink;

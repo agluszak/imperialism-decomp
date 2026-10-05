@@ -44,20 +44,20 @@ void TOffersPanelView::DoPostCreate(int arg) {
 
   // 'prop'/'text' are TDeluxeText controls (see the TDeluxeText recover-class note in
   // TSpecialQuitPicture.cpp): their vtable slots 0x1e4/0x1c4 match
-  // SetTextStyle/SetTextAlignmentAndMaybeRefresh exactly.
+  // SetTextStyle/SetJustification exactly.
   TDeluxeText* propControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagProp));
   propControl->AssertValid();
   propControl->SetTextStyle(sharedStyle, false);
   propControl->shadowTextColor = sharedStyle.textColor;
   propControl->dropShadowEnabledA0 = true;
-  propControl->SetTextAlignmentAndMaybeRefresh(1, false);
+  propControl->SetJustification(1, false);
 
   TDeluxeText* textControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagText));
   textControl->AssertValid();
   textControl->SetTextStyle(sharedStyle, false);
   textControl->shadowTextColor = sharedStyle.textColor;
   textControl->dropShadowEnabledA0 = true;
-  textControl->SetTextAlignmentAndMaybeRefresh(1, false);
+  textControl->SetJustification(1, false);
 
   CString acceHint;
   g_pSimMgr->GetString(0x274a, 6, &acceHint);

@@ -15,7 +15,7 @@ TFuzzySet::TFuzzySet() {}
 TFuzzySet::~TFuzzySet() {}
 
 // FUNCTION: IMPERIALISM 0x004ff750
-void TFuzzySet::Clear() {
+void TFuzzySet::IFuzzySet() {
   m_memberCount = 0;
   for (int i = 0; i < 10; ++i) {
     m_members[i] = nullptr;
@@ -31,7 +31,7 @@ void TFuzzySet::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x004ff7d0
-void TFuzzySet::AllocateAndAppendRecord(float value0, float value1, float value2, float value3) {
+void TFuzzySet::AddFuzzyVar(float value0, float value1, float value2, float value3) {
   TFuzzyVar* record = new TFuzzyVar();
   record->values[0] = value0;
   record->values[1] = value1;
@@ -42,7 +42,7 @@ void TFuzzySet::AllocateAndAppendRecord(float value0, float value1, float value2
 }
 
 // FUNCTION: IMPERIALISM 0x004ff840
-int TFuzzySet::SelectWeightedMemberIndex(float input) {
+int TFuzzySet::GetCrispOutput(float input) {
   float weights[10];
   float totalWeight = 0.0f;
   int index;

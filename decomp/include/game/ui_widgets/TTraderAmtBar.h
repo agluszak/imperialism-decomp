@@ -15,6 +15,6 @@ public:
   DECLARE_DYNCREATE(TTraderAmtBar)
   void DoPostCreate(int arg) override;
   short ApplyMoveClamp(int baseValue, short requestedValue) override;
-  void RenderPrimarySurfaceOverlayPanelWithClipCache() override;
+  void DrawAmt() override;
 };
 ASSERT_SIZE(TTraderAmtBar, 0x68);

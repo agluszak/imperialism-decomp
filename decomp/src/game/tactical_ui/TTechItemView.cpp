@@ -123,7 +123,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
   } else {
     int missing1;
     int missing2;
-    techMgr->SelectMissingTechItemPrerequisitesFromPair(techId, nationSlot, &missing1, &missing2);
+    techMgr->GetPreReqs(techId, nationSlot, &missing1, &missing2);
     TDeluxeText* prereqControl = new TDeluxeText();
     int prereqOffset[2] = {0xbd, 0};
     int prereqSize[2] = {0x53, 0x3f};
@@ -181,19 +181,19 @@ void TTechItemView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     } else if (sourceHandler->controlTag == kControlTagDesc) {
       // Turn-event dialog root for the tech-history popup (a TWindow, per this session's
       // established dialog-node pattern). Its 'DLOG' child is restyled via
-      // TTechHistoryView::PopulateTechHistory; the rest of the modal sequence
+      // TTechHistoryView::StuffValues; the rest of the modal sequence
       // matches the pattern already ported elsewhere this session
       // (DispatchUiRuntimeMessage102CAndRefreshActiveView, TArmyUnitView::
-      // HandleCrossUArmyViewsNameCommand).
+      // RenameUnit).
       TWindow* node = static_cast<TWindow*>(
           g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTechnologyHistory));
       TTechHistoryView* historyView =
           static_cast<TTechHistoryView*>(node->ResolveControlByTag(kControlTagDialog));
       historyView->AssertValid();
-      historyView->PopulateTechHistory(static_cast<short>(techId64));
+      historyView->StuffValues(static_cast<short>(techId64));
 
       CPoint placement;
-      g_pViewMgr->ComputeTurnEventDialogPlacementByCode(node, &placement);
+      g_pViewMgr->GetTopLeftFor(node, &placement);
       node->Locate(placement, false);
       node->SetModality(true);
       TDialogBehavior* behavior = node->GetDialogBehavior();

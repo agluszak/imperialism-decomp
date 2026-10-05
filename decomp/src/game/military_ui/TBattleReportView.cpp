@@ -223,14 +223,14 @@ void TBattleReportView::DoPostCreate(int arg) {
   int registryTag = g_nIdleMeAnimationNextRegistryTag;
   g_nIdleMeAnimationNextRegistryTag++;
   animation->IAnimation(this, &animationRect, 0, 0, 0, registryTag);
-  g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
+  g_pUiAnimator->AddAnimation(animation);
 
   TInfoBarText* cursorPanel =
       static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagCurs)); // 'surc'
   g_pCursorControlPanel = cursorPanel;
   cursorPanel->AssertValid();
   g_pCursorControlPanel->SetTextStyle(0, 0xe, 0x2b6b);
-  g_pCursorControlPanel->SetTextAlignmentAndMaybeRefresh(1, true);
+  g_pCursorControlPanel->SetJustification(1, true);
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b67, 0x2b6c);
 
   SetControlHoverHelpText(g_pBattleReportSharedText_0064dc30,
@@ -250,7 +250,7 @@ void TBattleReportView::DoPostCreate(int arg) {
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1e, ResolveControlByTag(kControlTagQuer));
 
   g_pSfxPlaybackSystem->ResetDualAudioCuePools();
-  g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(5);
+  g_pSfxPlaybackSystem->AddToPlayList(5);
   g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
 }
 
@@ -364,10 +364,10 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       leftFlag->AssertValid();
       TPicture* rightFlag = static_cast<TPicture*>(book->ResolveControlByTag(kControlTagFlgR));
       rightFlag->AssertValid();
-      leftFlag->SetPictureResourceIdAndRefresh(
+      leftFlag->SetPictureRsrcID(
           static_cast<short>(0x1147 + static_cast<signed char>(eventBattleRecord->nationIds[0])),
           0);
-      rightFlag->SetPictureResourceIdAndRefresh(
+      rightFlag->SetPictureRsrcID(
           static_cast<short>(0x114e + static_cast<signed char>(eventBattleRecord->nationIds[1])),
           0);
 
@@ -379,8 +379,8 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       rightNation->AssertValid();
       ApplyUiTextStyleAndThemeFlags(leftNation, 0, 0xe, 0x2b6b, 0x2b6c);
       ApplyUiTextStyleAndThemeFlags(rightNation, 0, 0xe, 0x2b6b, 0x2b6c);
-      leftNation->SetTextAlignmentAndMaybeRefresh(1, false);
-      rightNation->SetTextAlignmentAndMaybeRefresh(1, false);
+      leftNation->SetJustification(1, false);
+      rightNation->SetJustification(1, false);
       {
         CString leftName(eventBattleRecord->nameBuffer[0].data);
         leftNation->SetTextAndMaybeRefresh(&leftName, false);
@@ -394,7 +394,7 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       LoadUiStringByGroupAndIndexToControlObject(0x2730, 0x22,
                                                  book->ResolveControlByTag(kControlTagOkay));
       CPoint placement;
-      g_pViewMgr->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
+      g_pViewMgr->GetTopLeftFor(dialog, &placement);
       dialog->Locate(placement, false);
       TDialogBehavior* behavior = dialog->GetDialogBehavior();
       if (behavior != 0) {
@@ -611,13 +611,13 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
 
   TPicture* friendlyFlag = static_cast<TPicture*>(ResolveControlByTag(kControlTagFflg));
   friendlyFlag->AssertValid();
-  friendlyFlag->SetPictureResourceIdAndRefresh(
+  friendlyFlag->SetPictureRsrcID(
       static_cast<short>(0x1130 + static_cast<signed char>(record->nationIds[participantIndex])),
       1);
 
   TPicture* enemyFlag = static_cast<TPicture*>(ResolveControlByTag(kControlTagEflg));
   enemyFlag->AssertValid();
-  enemyFlag->SetPictureResourceIdAndRefresh(
+  enemyFlag->SetPictureRsrcID(
       static_cast<short>(0x1130 +
                          static_cast<signed char>(record->nationIds[otherParticipantIndex])),
       1);

@@ -188,7 +188,7 @@ private:
       return RuntimeActionResult::Failure(
           "the produced civilian is not owned by the active nation");
     }
-    g_pSelectedCivilianOrderState->SetActiveCivilianSelection(spawnedCivilian, 1);
+    g_pSelectedCivilianOrderState->SelectUnit(spawnedCivilian, 1);
 
     targetHillTile = FindProspectorTarget(kStrategicTerrainHills, true);
     targetSeaTile = FindProspectorTarget(kStrategicTerrainWater, false);
@@ -629,7 +629,7 @@ private:
   }
 
   RuntimeActionResult IssueUnsuccessfulSurvey() {
-    g_pSelectedCivilianOrderState->SetActiveCivilianSelection(spawnedCivilian, 1);
+    g_pSelectedCivilianOrderState->SelectUnit(spawnedCivilian, 1);
     const int activeNation = ActiveNation();
     int eligibleCount = 0;
     int nonMineralCount = 0;
@@ -759,7 +759,7 @@ private:
       return RuntimeActionResult::Failure("farmer production did not yield an idle farmer");
     }
 
-    g_pSelectedCivilianOrderState->SetActiveCivilianSelection(farmer, 0);
+    g_pSelectedCivilianOrderState->SelectUnit(farmer, 0);
     const short nationSlot = farmer->ownerNationSlot18;
     short workableTile = -1;
     short moveTile = -1;
@@ -900,7 +900,7 @@ private:
         continue;
       }
       engineer->MoveTo(tile);
-      g_pSelectedCivilianOrderState->SetActiveCivilianSelection(engineer, 1);
+      g_pSelectedCivilianOrderState->SelectUnit(engineer, 1);
       engineerAction = g_pSelectedCivilianOrderState->ResolveCivilianTileOrderActionCode(tile, 0);
       if (engineerAction == 4) {
         engineerTile = tile;
@@ -985,14 +985,14 @@ private:
           "an equal-priority military unit did not become the retail chain head");
     }
 
-    olderUnit->DetachUnitOrderFromOwnerAndReset();
+    olderUnit->Vaporize();
     olderUnit->Free();
     if (depotProvince.stationedUnitChain != newerUnit || newerUnit->previousAtLocation != 0 ||
         newerUnit->nextAtLocation != 0) {
       return RuntimeActionResult::Failure(
           "detaching the former military head left a dangling province chain");
     }
-    newerUnit->DetachUnitOrderFromOwnerAndReset();
+    newerUnit->Vaporize();
     newerUnit->Free();
     return RuntimeActionResult::Success();
   }

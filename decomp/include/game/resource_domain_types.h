@@ -4,7 +4,7 @@
 // minister, and navy subsystems.
 //
 // Evidence: Mac STR# group 10001 (Windows string group 0x2711, consumed by
-// TSimMgr::GetStringPrelude 0x0057fe90) names exactly 23 entries in this order,
+// TSimMgr::GetCommodityName 0x0057fe90) names exactly 23 entries in this order,
 // and the same order appears in the TCity per-commodity stock block
 // (+0xb6..+0xe4), in the resource icon sheet (bitmap ids 700..722), and in every
 // short[23]/short[0x17] per-resource table in the source.

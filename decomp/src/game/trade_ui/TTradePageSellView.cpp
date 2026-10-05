@@ -21,7 +21,7 @@ TTradePageSellView::~TTradePageSellView() {}
 IMPLEMENT_DYNCREATE(TTradePageSellView, TPageView)
 
 // FUNCTION: IMPERIALISM 0x005bcc30
-void TTradePageSellView::RebuildNationOfferRowsForCategory(short categorySlot) {
+void TTradePageSellView::SetItem(short categorySlot) {
   if (categorySlot == lastBuiltCategorySlot) {
     return;
   }
@@ -36,8 +36,8 @@ void TTradePageSellView::RebuildNationOfferRowsForCategory(short categorySlot) {
     TTextLine* headerRow = new TTextLine();
     int headerBounds[2];
     headerBounds[0] = 0x30;
-    headerRow->SetTextLineRowBoundsAndStyle(0, 0, headerBounds, 0x2741, 2);
-    headerRow->SetTextAlignmentCode(1);
+    headerRow->ITextLine(0, 0, headerBounds, 0x2741, 2);
+    headerRow->SetTheJustification(1);
     TextStyle headerStyle;
     BuildUiTextStyleDescriptor(&headerStyle, 4, 0xc, 0x2b6a);
     headerRow->SetTextLineStyleDescriptor(&headerStyle);
@@ -47,7 +47,7 @@ void TTradePageSellView::RebuildNationOfferRowsForCategory(short categorySlot) {
       if (g_pTradeMgr->DidOffer(nationSlot, categorySlot)) {
         TTradeOfferNationLine* row = new TTradeOfferNationLine();
         int rowBounds[2];
-        row->SetLineDataRowAndBounds(0, 0, rowBounds);
+        row->ILineData(0, 0, rowBounds);
         row->nationSlot = nationSlot;
         row->categorySlot = categorySlot;
         orderedEntries->AddTail(row);
@@ -57,8 +57,8 @@ void TTradePageSellView::RebuildNationOfferRowsForCategory(short categorySlot) {
     TTextLine* fallbackHeaderRow = new TTextLine();
     int fallbackBounds[2];
     fallbackBounds[0] = 0x30;
-    fallbackHeaderRow->SetTextLineRowBoundsAndStyle(0, 0, fallbackBounds, 0x2741, 5);
-    fallbackHeaderRow->SetTextAlignmentCode(1);
+    fallbackHeaderRow->ITextLine(0, 0, fallbackBounds, 0x2741, 5);
+    fallbackHeaderRow->SetTheJustification(1);
     TextStyle fallbackStyle;
     BuildUiTextStyleDescriptor(&fallbackStyle, 0, 0xe, 0x2b6a);
     fallbackHeaderRow->SetTextLineStyleDescriptor(&fallbackStyle);

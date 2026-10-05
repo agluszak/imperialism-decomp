@@ -270,7 +270,7 @@ void TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722() {
       loader->EnsureBitmapResourceLoadedAndCopyRectSize();
       loader->flags |= 1;
       dstCursor += 0x20;
-      CopySpriteSurfaceToStrideBuffer(loaderHandle, dstCursor, static_cast<short>(stridePixels));
+      FastDrawPicture(loaderHandle, dstCursor, static_cast<short>(stridePixels));
       loader->ReleaseBitmapResource();
       loader->flags &= static_cast<unsigned char>(~1);
     }
@@ -902,7 +902,7 @@ TView* TMacViewMgr::MakeBookDialog(int dialogId) {
 // with a resource index, which handed every row another nation's non-zero needs and left
 // the whole ledger enabled.
 // FUNCTION: IMPERIALISM 0x0050bea0
-void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resourceSlot,
+void TMacViewMgr::ShowTransportEntry(short resourceSlot,
                                                                   short nationIndex,
                                                                   TView* hostView) {
   TGreatPower* nation = g_apNationStates[nationIndex];
@@ -922,7 +922,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
     TextStyle styleDescriptor;
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
     textEntry->InstallTextStyle(styleDescriptor, 0);
-    textEntry->SetTextAlignmentAndMaybeRefresh(0, false);
+    textEntry->SetJustification(0, false);
     textEntry->controlTag = kControlTagText;
 
     g_pSimMgr->GetString(0x2735, 1, &scratch38);
@@ -980,7 +980,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   case 2:
     needTarget = nation->needTargetByType[2];
     needCurrent = nation->needCurrentByType[2];
-    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
+    g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(4);
       deficitCount = static_cast<short>(production * 2 - city->cityStockTimber);
@@ -996,7 +996,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   case 4:
     needTarget = nation->needTargetByType[resourceSlot];
     needCurrent = nation->needCurrentByType[resourceSlot];
-    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
+    g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(2);
       deficitCount = static_cast<short>(production - (&city->cityStockCotton)[resourceSlot]);
@@ -1012,7 +1012,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   case 5:
     needTarget = nation->needTargetByType[5];
     needCurrent = nation->needCurrentByType[5];
-    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
+    g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     formatCurrent.Format(g_szDecimalFormat, static_cast<int>(needCurrent));
     formatTarget.Format(g_szDecimalFormat, static_cast<int>(needTarget));
     g_pSimMgr->GetString(0x2719, 1, &displayText);
@@ -1021,7 +1021,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   case 6:
     needTarget = nation->needTargetByType[6];
     needCurrent = nation->needCurrentByType[6];
-    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
+    g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(6);
       deficitCount = static_cast<short>(production * 2 - city->cityStockOil);
@@ -1036,7 +1036,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   case 8:
     needTarget = nation->needTargetByType[8];
     needCurrent = nation->needCurrentByType[8];
-    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
+    g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(1);
       deficitCount = static_cast<short>(production * 2 - city->cityStockFabricC6);
@@ -1051,7 +1051,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   case 9:
     needTarget = nation->needTargetByType[9];
     needCurrent = nation->needCurrentByType[9];
-    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
+    g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(5);
       deficitCount = static_cast<short>(production * 2 - city->cityStockLumber);
@@ -1066,7 +1066,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   case 0xb:
     needTarget = nation->needTargetByType[0xb];
     needCurrent = nation->needCurrentByType[0xb];
-    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
+    g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(3);
       deficitCount = static_cast<short>(production * 2 - city->cityStockSteel);
@@ -1081,7 +1081,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   case 0xc:
     needTarget = nation->needTargetByType[0xc];
     needCurrent = nation->needCurrentByType[0xc];
-    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
+    g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(0xb);
       deficitCount = static_cast<short>(production * 2 - city->cityStockFuel);
@@ -1098,7 +1098,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   case 0xf:
     needTarget = nation->needTargetByType[resourceSlot];
     needCurrent = nation->needCurrentByType[resourceSlot];
-    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
+    g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     formatCurrent.Format(g_szDecimalFormat, static_cast<int>(needCurrent));
     formatTarget.Format(g_szDecimalFormat, static_cast<int>(needTarget));
     g_pSimMgr->GetString(0x2719, 8, &displayText);
@@ -1108,7 +1108,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   case 0x12:
     needTarget = nation->needTargetByType[resourceSlot];
     needCurrent = nation->needCurrentByType[resourceSlot];
-    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
+    g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     {
       short* summary = city->GetCitySummaryRecordSlot74();
       short summaryValue = summary[resourceSlot];
@@ -1141,14 +1141,14 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   case 0x15:
     needTarget = nation->needTargetByType[0x15];
     needCurrent = nation->needCurrentByType[0x15];
-    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
+    g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     g_pSimMgr->NumToCurrency(500, &formatCurrent);
     useBracketOnlyPath = true;
     break;
   case 0x16:
     needTarget = nation->needTargetByType[0x16];
     needCurrent = nation->needCurrentByType[0x16];
-    g_pSimMgr->GetStringPrelude(resourceSlot, &itemName);
+    g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     g_pSimMgr->NumToCurrency(200, &formatCurrent);
     useBracketOnlyPath = true;
     break;
@@ -1236,7 +1236,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   TextStyle styleDescriptor;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
   textEntry->InstallTextStyle(styleDescriptor, 0);
-  textEntry->SetTextAlignmentAndMaybeRefresh(0, false);
+  textEntry->SetJustification(0, false);
   textEntry->controlTag = kControlTagText;
 
   g_pSimMgr->GetString(0x2735, 4, &scratch38);
@@ -1249,7 +1249,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
     int valueSize[2] = {0x3c, 0xb};
     valueEntry->IStaticText(panel, valueOffset, valueSize, 5, 5, -1, 0);
     valueEntry->InstallTextStyle(styleDescriptor, 0);
-    valueEntry->SetTextAlignmentAndMaybeRefresh(0, false);
+    valueEntry->SetJustification(0, false);
     valueEntry->controlTag = kControlTagValu;
   }
 
@@ -1429,12 +1429,12 @@ void TMacViewMgr::RefreshActiveGoldControlAndUiRuntimeState() {
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   goldControl->ResetPictureResourceEntry();
-  goldControl->SetPictureResourceIdAndRefresh(0, 0);
-  g_pUiAnimator->FreeUiTransientRegistryPayloads();
+  goldControl->SetPictureRsrcID(0, 0);
+  g_pUiAnimator->FreeAllAnis();
 }
 
 // FUNCTION: IMPERIALISM 0x0050d9e0
-void TMacViewMgr::CopySpriteSurfaceToStrideBuffer(TBitmapResourceLoader** loaderHandle,
+void TMacViewMgr::FastDrawPicture(TBitmapResourceLoader** loaderHandle,
                                                   unsigned char* destinationBits,
                                                   short destinationStride) {
   CDib* dib = (*loaderHandle)->bitmapResource;

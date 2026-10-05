@@ -51,7 +51,7 @@ void TLoadSavePicture::DoPostCreate(int arg) {
   g_pCursorControlPanel = cursorPanel;
   cursorPanel->AssertValid();
   cursorPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b6b);
-  cursorPanel->SetTextAlignmentAndMaybeRefresh(1, true);
+  cursorPanel->SetJustification(1, true);
 
   CString slotPath;
   CString slotCaption;
@@ -73,7 +73,7 @@ void TLoadSavePicture::DoPostCreate(int arg) {
         slotControl->Show(0, 1);
         slotControl->ViewEnable(0, 0);
       } else {
-        slotControl->SetTextFromStringResource(0x2737, 0xd, true);
+        slotControl->SetTextWithStrListID(0x2737, 0xd, true);
       }
     } else {
       char saveHeader[0x2c];
@@ -89,7 +89,7 @@ void TLoadSavePicture::DoPostCreate(int arg) {
   if (loadModeFlag) {
     TPicture* okayControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagOkay));
     okayControl->AssertValid();
-    okayControl->SetPictureResourceIdAndRefresh(static_cast<short>(okayControl->glyphBase84 + 2),
+    okayControl->SetPictureRsrcID(static_cast<short>(okayControl->glyphBase84 + 2),
                                                 0);
   } else {
     TView* plateControl = ResolveControlByTag(0x706c6174); // 'plat'
@@ -361,7 +361,7 @@ void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
     }
     strcpy(g_ScenarioSaveNameBuffer_006A2178, enteredName);
     if (IsMultiplayerFlowActive()) {
-      g_pGameFlowState->TrySaveGameAndMaybeShowFailureDialog(
+      g_pGameFlowState->AttemptSave(
           selectedSlot92, (char*)g_pszMultiplayerSavePrefix_0065DDD4, true);
     } else {
       SaveGameWithModeAndOptionalLabel(selectedSlot92, (char*)g_pszSingleSlotSavePrefix_0065DDD0);
@@ -369,8 +369,8 @@ void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
     g_pSimMgr->StartNextPhase();
   }
   g_pSfxPlaybackSystem->ResetDualAudioCuePools();
-  g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(2);
-  g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(3);
+  g_pSfxPlaybackSystem->AddToPlayList(2);
+  g_pSfxPlaybackSystem->AddToPlayList(3);
   g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
 }
 

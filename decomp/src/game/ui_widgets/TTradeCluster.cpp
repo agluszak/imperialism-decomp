@@ -95,7 +95,7 @@ void TTradeCluster::DoPostCreate(int styleSeed) {
     TextStyle style;
     InitializeUiTextStyleDescriptor(&style, 0, 0xe, 0x2b68, 2);
     sellControl->InstallTextStyle(style, 0);
-    sellControl->SetTextAlignmentAndMaybeRefresh(-1, false);
+    sellControl->SetJustification(-1, false);
     CRect boundsBuffer;
     boundsBuffer.left = 0;
     boundsBuffer.top = 0;
@@ -352,9 +352,9 @@ void TTradeCluster::DoControlAction() {
   if (g_pViewMgr->GetPendingTurnOverlayCode() < 4) {
     bidControl->Show(1, 1);
     if (controlTag == kTradeRowStateTag_67643020) {
-      bidControl->SetPictureResourceIdAndRefresh(kTradeBitmapBidSecondaryStateB, 0);
+      bidControl->SetPictureRsrcID(kTradeBitmapBidSecondaryStateB, 0);
     } else {
-      bidControl->SetPictureResourceIdAndRefresh(kTradeBitmapBidSecondaryStateA, 0);
+      bidControl->SetPictureRsrcID(kTradeBitmapBidSecondaryStateA, 0);
     }
     bidControl->PrepareForDrawing();
     bidControl->PaintOrInvalidateControl();
@@ -375,9 +375,9 @@ void TTradeCluster::SetTradeBidControlBitmap() {
 
   bidControl->Show(1, 0);
   if (controlTag == kTradeRowStateTag_67643020) {
-    bidControl->SetPictureResourceIdAndRefresh(kTradeBitmapBidStateB, 0);
+    bidControl->SetPictureRsrcID(kTradeBitmapBidStateB, 0);
   } else {
-    bidControl->SetPictureResourceIdAndRefresh(kTradeBitmapBidStateA, 0);
+    bidControl->SetPictureRsrcID(kTradeBitmapBidStateA, 0);
   }
 
   CPoint size(0x41, 0x14);
@@ -418,9 +418,9 @@ void TTradeCluster::SetTradeOfferControlBitmap() {
 
   offerControl->Show(1, 0);
   if (controlTag == kTradeRowStateTag_67643020) {
-    offerControl->SetPictureResourceIdAndRefresh(kTradeBitmapOfferStateB, 0);
+    offerControl->SetPictureRsrcID(kTradeBitmapOfferStateB, 0);
   } else {
-    offerControl->SetPictureResourceIdAndRefresh(kTradeBitmapOfferStateA, 0);
+    offerControl->SetPictureRsrcID(kTradeBitmapOfferStateA, 0);
   }
 
   CPoint size(0x41, 0x14);
@@ -474,9 +474,9 @@ void TTradeCluster::SetTradeOfferSecondaryBitmap() {
     if (QueryNationTradeCapacity(activeNationStateAgain) != 0) {
       offerControl->Show(1, 0);
       if (controlTag == kTradeRowStateTag_67643020) {
-        offerControl->SetPictureResourceIdAndRefresh(kTradeBitmapOfferSecondaryStateB, 0);
+        offerControl->SetPictureRsrcID(kTradeBitmapOfferSecondaryStateB, 0);
       } else {
-        offerControl->SetPictureResourceIdAndRefresh(kTradeBitmapOfferSecondaryStateA, 0);
+        offerControl->SetPictureRsrcID(kTradeBitmapOfferSecondaryStateA, 0);
       }
       CPoint layoutCaptureF0(0xa3, 0);
       offerControl->Locate(layoutCaptureF0, true);

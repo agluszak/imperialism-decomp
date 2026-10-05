@@ -118,7 +118,7 @@ void BuildTurnStateStyledTextAndDispatchMainRoutine() {
   TextStyle style;
   BuildUiTextStyleDescriptor(&style, 0, 0xe, 0x2b6b);
   labelControl->InstallTextStyle(style, 0);
-  labelControl->SetTextAlignmentAndMaybeRefresh(1, false);
+  labelControl->SetJustification(1, false);
   g_pSimMgr->GetString(0x2737, 2, &text);
   labelControl->SetTextAndMaybeRefresh(&text, false);
   g_pSimMgr->GetString(0x2737, 2, &text);
@@ -160,7 +160,7 @@ char TViewMgr::ShowNewCityDialog(TTown* town) {
   placeCity->StuffValues(town);
   node->Center(true, true, true);
   CPoint placement;
-  ComputeTurnEventDialogPlacementByCode(node, &placement);
+  GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   node->SetModality(true);
   int result = node->PoseModally();
@@ -195,7 +195,7 @@ void TViewMgr::ShowCombatReportDialog(TCombatReportContext* reportContext) {
   report->StuffValues(reportContext);
 
   CPoint placement;
-  ComputeTurnEventDialogPlacementByCode(node, &placement);
+  GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   node->SetModality(true);
   node->PoseModally();
@@ -213,9 +213,9 @@ int TViewMgr::ShowConstructionOptionsDialog(int dialogValue) {
   }
   TEngineerDialog* engineerDialog =
       static_cast<TEngineerDialog*>(node->ResolveControlByTag(kControlTagDialog));
-  engineerDialog->BuildCityViewProductionControls(static_cast<short>(dialogValue));
+  engineerDialog->StuffValues(static_cast<short>(dialogValue));
   CPoint placement;
-  ComputeTurnEventDialogPlacementByCode(node, &placement);
+  GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   node->SetModality(true);
   int result = node->PoseModally();
@@ -252,7 +252,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE4(int stringCode) {
   }
   TControl* gold = static_cast<TControl*>(node->ResolveControlByTag(kControlTagDialog)); // 'DLOG'
   CPoint placement;
-  this->ComputeTurnEventDialogPlacementByCode(node, &placement);
+  this->GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   node->PoseModally();
   TDeluxeText* nameText =
@@ -261,7 +261,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE4(int stringCode) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x156);
   }
-  nameText->SetTextFromUiStringResourceId(static_cast<short>(stringCode));
+  nameText->LoadTextResource(static_cast<short>(stringCode));
   node->Close();
   node->Free();
 }
@@ -283,7 +283,7 @@ TNavyRoster* TViewMgr::MakeNavyRosterDialog(TTaskForce* activeMapOrderEntry) {
   page->StuffValues(activeMapOrderEntry);
 
   CPoint placement;
-  ComputeTurnEventDialogPlacementByCode(node, &placement);
+  GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   node->PoseModally();
   node->Close();
@@ -324,7 +324,7 @@ void TViewMgr::ShowNavyRosterDialogAndApplySelection() {
   ApplyControlThemeStyleAndOptionalCaption(textEntry, 0, 0xe, 0x2b6a, -2, 0);
 
   CPoint placement;
-  ComputeTurnEventDialogPlacementByCode(node, &placement);
+  GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   node->SetModality(true);
   node->PoseModally();
@@ -375,7 +375,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE8(void* selection) {
   }
   gold->ApplySelection(mapSelection);
   CPoint placement;
-  ComputeTurnEventDialogPlacementByCode(node, &placement);
+  GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   node->SetModality(true);
   node->PoseModally();
@@ -401,7 +401,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotEC(int mapSelection) {
   static_cast<TGarrisonView*>(page)->StuffValues(static_cast<short>(mapSelection));
 
   CPoint placement;
-  this->ComputeTurnEventDialogPlacementByCode(node, &placement);
+  this->GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   node->SetModality(true);
   node->PoseModally();
@@ -446,7 +446,7 @@ void TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection() {
   ApplyControlThemeStyleAndOptionalCaption(textEntry, 0, 0xe, 0x2b6a, -2, 0);
 
   CPoint placement;
-  this->ComputeTurnEventDialogPlacementByCode(node, &placement);
+  this->GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   node->SetModality(true);
   node->PoseModally();
@@ -495,7 +495,7 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
   ApplyControlThemeStyleAndOptionalCaption(textEntry, 0, 0xe, 0x2b6a, -2, 0);
 
   CPoint placement;
-  this->ComputeTurnEventDialogPlacementByCode(node, &placement);
+  this->GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   node->SetModality(true);
   node->PoseModally();
@@ -577,7 +577,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
     CString firstText(firstChoice);
     first->SetTextAndMaybeRefresh(&firstText, false);
     ApplyUiTextStyleAndThemeFlags(first, 0, 0xc, 0x2b6b, 0x2b6c);
-    first->SetTextAlignmentAndMaybeRefresh(1, false);
+    first->SetJustification(1, false);
 
     TRadioText* second =
         static_cast<TRadioText*>(choiceCluster->ResolveControlByTag(kControlTagTwo2));
@@ -585,7 +585,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
     CString secondText(secondChoice);
     second->SetTextAndMaybeRefresh(&secondText, false);
     ApplyUiTextStyleAndThemeFlags(second, 0, 0xc, 0x2b6b, 0x2b6c);
-    second->SetTextAlignmentAndMaybeRefresh(1, false);
+    second->SetJustification(1, false);
 
     choiceCluster->SetSelectedTextOptionByTag(
         initialChoice == 0 ? kControlTagOne1 : kControlTagTwo2, false);
@@ -622,9 +622,9 @@ bool TViewMgr::ShowCivilianReportDialogAndReturnConfirm(TCivUnit* pCivilianOrder
   // MapView.rsrc view 3012's 'DLOG' pict is a TCivReport (Mac resource oracle).
   TCivReport* report =
       static_cast<TCivReport*>(static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog)));
-  report->PopulateCivilianReportContent(pCivilianOrderEntry);
+  report->StuffValues(pCivilianOrderEntry);
   CPoint placement;
-  this->ComputeTurnEventDialogPlacementByCode(node, &placement);
+  this->GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   unsigned int resultTag = node->PoseModally();
   node->Close();
@@ -647,7 +647,7 @@ bool TViewMgr::DispatchProvinceOrderOverlayConfirmDialog(short cityRecordIndex,
       static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog)));
   report->StuffValues(cityRecordIndex, categoryCounts);
   CPoint placement;
-  this->ComputeTurnEventDialogPlacementByCode(node, &placement);
+  this->GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   unsigned int resultTag = node->PoseModally();
   node->Close();
@@ -664,7 +664,7 @@ void TViewMgr::DispatchUiRuntimeMessage101AAndRefreshActiveView() {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x33f);
   }
   CPoint placement;
-  this->ComputeTurnEventDialogPlacementByCode(node, &placement);
+  this->GetTopLeftFor(node, &placement);
   node->Locate(placement, false);
   node->PoseModally();
   node->Close();
@@ -680,7 +680,7 @@ char TViewMgr::ShowLocalizedUiPromptByGroupAndIndex(int uiStringGroup, int uiStr
 }
 
 // FUNCTION: IMPERIALISM 0x005dea60
-void TViewMgr::CreateModalMessageCommandAndQueue(CString* message, int payload) {
+void TViewMgr::PostModalMessage(CString* message, int payload) {
   TModalMessageCommand* command = new TModalMessageCommand();
   command->message = *message;
   command->payload = payload;

@@ -40,7 +40,7 @@ void TBattleUnitsView::StuffValues(BattleRecord& battleRecord, int participantIn
   for (int detailIndex = 0; detailIndex < detailCount; ++detailIndex) {
     TBatRepDetLine* line = new TBatRepDetLine;
     int lineBounds[2] = {0xec, 0x31};
-    line->SetLineDataRowAndBounds(0, 0, lineBounds);
+    line->ILineData(0, 0, lineBounds);
     line->battleRecord10 = &battleRecord;
     line->battleDetail = &battleRecord.sideChildRecords[participantIndex][detailIndex];
     AddOrderedEntry(line);

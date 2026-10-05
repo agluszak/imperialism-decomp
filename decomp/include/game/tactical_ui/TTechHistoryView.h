@@ -15,6 +15,6 @@ public:
   TTechHistoryView() {}
 
   // Non-virtual (real address 0x5b22c0, called directly, not through the vtable).
-  void PopulateTechHistory(short techId);
+  void StuffValues(short techId);
 };
 ASSERT_SIZE(TTechHistoryView, 0x60);

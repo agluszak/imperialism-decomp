@@ -103,7 +103,7 @@ public:
   // 0x54c480 — builds a turn-event-26 packet snapshotting g_pDiplomacyTurnStateManager's
   // relation/pending-policy/selection/comparative-power matrices and hands it to
   // TNetMgr::Send. Called
-  // from RebuildDiplomacyStandingAndInfluenceMatrices only when g_pSimMgr->multiplayerSessionRole == kSessionRoleHost.
+  // from ConveneCouncil only when g_pSimMgr->multiplayerSessionRole == kSessionRoleHost.
   void EmitTurnEvent26DiplomacyMatrixSnapshot();
   // Appends a queue node (next pointer at node+0x10) to the tail of
   // primaryTurnEventQueueHead. 0x549280.
@@ -113,7 +113,7 @@ public:
   bool IsTimelyMessage(NetMessage* packet);
   void AppendNodeToTurnEventLinkedListAt6C(TurnEventQueuePacket* node);
   // 0x5430c0 — enable both diplomacy queue-processing flags and set the routing context.
-  void EnableDiplomacyQueueRoutingAndSetContextField44(TEventHandler* nContext, bool fEnable);
+  void InstallCohandler(TEventHandler* nContext, bool fEnable);
   // 0x54b4c0, RET 0x10 (4 stack args). Builds and sends a LobbyChatEvent9Packet: reasonCode
   // becomes nationSlot18 (the field's original comment names it for the AWOL use case; this
   // caller uses it as a generic status/reason byte instead), field1CValue becomes field1C,
@@ -143,7 +143,7 @@ public:
   void CreateAndSendTurnEvent1B_FiveShortsAndDword(short shortA, short shortB, short shortC,
                                                    short shortD, short shortE,
                                                    int trailingValue); // 0x5498d0
-  void CreateAndSendTurnEvent1C_BoolAndSixShorts(bool broadcastFlag, short shortA, short shortB,
+  void SendDealResults(bool broadcastFlag, short shortA, short shortB,
                                                  short shortC, short shortD, short shortE,
                                                  short shortF);                      // 0x5499b0
   void CreateAndSendTurnEvent22_ByteAndShort(unsigned char byteVal, short shortVal); // 0x549720
@@ -151,7 +151,7 @@ public:
                                                  unsigned char byteB); // 0x5495e0
   void CreateAndSendTurnEvent21_ThreeBytes(unsigned char byte0, unsigned char byte1,
                                            unsigned char byte2); // 0x549680
-  void DispatchTurnEvent1AWithNationActionPayload(short param0, short param1, short param2,
+  void SendTradeOffer(short param0, short param1, short param2,
                                                   short param3, short param4); // 0x5497b0
   // Mac oracle: SendStreamObject(unsigned long, TObject*, int). Wraps a {tag, object}
   // pair and sends it through event 0x31. Town/depot/port creation uses 'town' and -2.
@@ -167,7 +167,7 @@ public:
   void DispatchJoinEmpireModeEventPacket24_27(int sourceNation, int targetNation,
                                               int mode);                        // 0x54c5a0
   unsigned char ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet); // 0x545940
-  // Clear the active lobby context, rebuild the seven nation-status rows, post
+  // IFuzzySet the active lobby context, rebuild the seven nation-status rows, post
   // setup event 0x5e5, and clear the queue synchronization word.
   unsigned char ResetLocalUiStateAndPostTurnEvent5E5(); // 0x545660
   // Uninstall this manager as the app's cohandler, clear the DirectPlay runtime
@@ -287,7 +287,7 @@ public:
   void ReplaceNationStateForSlotAndRefreshStatus(int nationSlot);
   // 0x54d4e0: probe reachability, save when everyone is reachable, else optionally pose
   // the "cannot save" advisory; returns the all-reachable byte Boolean.
-  unsigned char TrySaveGameAndMaybeShowFailureDialog(int mode, char* label, bool showFailureDialog);
+  unsigned char AttemptSave(int mode, char* label, bool showFailureDialog);
   void RefreshNationStatusLabelsAndCodesForSlotOrAll(int nationSlot);
 
   // Send the turn-event-0x15 diplomacy need-state snapshot for nationSlot (broadcast

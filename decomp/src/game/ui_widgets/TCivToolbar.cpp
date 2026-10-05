@@ -36,7 +36,7 @@ TCivToolbar::TCivToolbar() {}
 TCivToolbar::~TCivToolbar() {}
 
 // FUNCTION: IMPERIALISM 0x0058eb20
-void TCivToolbar::RefreshCivilianCommandPanelForSelection(TCivUnit* selectedOrder) {
+void TCivToolbar::SetSelectedUnit(TCivUnit* selectedOrder) {
   this->civilianClassId = selectedOrder ? selectedOrder->orderType : -1;
 
   TControl* unitControl = static_cast<TControl*>(this->ResolveControlByTag(kControlTagUnit));
@@ -48,7 +48,7 @@ void TCivToolbar::RefreshCivilianCommandPanelForSelection(TCivUnit* selectedOrde
     unitControl->Show(0, 1);
   } else {
     static_cast<TPicture*>(unitControl)
-        ->SetPictureResourceIdAndRefresh(static_cast<short>(this->civilianClassId + 0x438), 1);
+        ->SetPictureRsrcID(static_cast<short>(this->civilianClassId + 0x438), 1);
     unitControl->Show(1, 1);
   }
 
@@ -107,7 +107,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
       FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x15d1);
     }
     static_cast<TCivilianButton*>(stackButton)
-        ->SetSelectedCivilianOrderAndEnableButton(selectedTileEntry);
+        ->SetButton(selectedTileEntry);
     stackButton->ViewEnable(selectedTileEntry->IsInIdleSelectionState(), 1);
     if ((selectedCivilianState != 0) &&
         (selectedTileEntry == selectedCivilianState->selectedEntry)) {
@@ -121,7 +121,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
     if (stackButton == 0) {
       FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x15df);
     }
-    static_cast<TCivilianButton*>(stackButton)->SetSelectedCivilianOrderAndEnableButton(0);
+    static_cast<TCivilianButton*>(stackButton)->SetButton(0);
     slotIndex = slotIndex + 1;
   }
 
@@ -159,7 +159,7 @@ void TCivToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
     if ((kControlTagStackSlotFirst <= controlTag) && (controlTag <= kControlTagStackSlotLast)) {
       TCivilianButton* stackButton = static_cast<TCivilianButton*>(sourceHandler);
       TCivUnit* boundStackEntry = stackButton->selectedCivilianOrder;
-      selectedCivilianOrderState->SetActiveCivilianSelection(boundStackEntry, false);
+      selectedCivilianOrderState->SelectUnit(boundStackEntry, false);
       this->TCluster::DoEvent(0xc, sourceHandler, event);
       return;
     }
@@ -184,7 +184,7 @@ void TCivToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
           this->TCluster::DoEvent(10, sourceHandler, event);
           return;
         }
-        selectedCivilianOrderState->ShowDisbandCivilianConfirmationDialog();
+        selectedCivilianOrderState->DisbandSelected();
       } else if (controlTag == kControlTagLatr) {
         selectedCivilianOrderState->OrderAndCycle(static_cast<UnitOrder>(3));
         this->TCluster::DoEvent(10, sourceHandler, event);

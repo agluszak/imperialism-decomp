@@ -84,7 +84,7 @@ public:
   void MakeTileVisible(TacticalTileIndex tileIndex); // 0x5a8ac0
   void UpdateSelectionBlink();                       // 0x5a9bb0
   // Maps a screen point to a clamped hex (row, col) on this battle's grid. 0x5a86d0.
-  void ConvertScreenPointToHexGridCoordClamped(POINT* screenPoint, int* outRow, int* outCol);
+  void ConvertPoint(POINT* screenPoint, int* outRow, int* outCol);
   // Validates the full local `{0,0,width,height}` bounds through TView's slot 0x32.
   void SyncStatusPanelBounds(); // 0x5a8790
   void KillSelectionBlink();    // 0x5a9cc0

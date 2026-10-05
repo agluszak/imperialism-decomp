@@ -19,15 +19,15 @@ void TRadioPictureButton::DoEvent(int commandId, TEventHandler* sourceHandler, T
   switch (commandId) {
   case 0xc:
     if (controlState64 == 0) {
-      SetRadioState(true, 0);
+      SetState(true, 0);
     }
     TControl::DoEvent(commandId, sourceHandler, event);
     return;
   case kControlCommandHiliteOn:
-    SetRadioState(true, 0);
+    SetState(true, 0);
     return;
   case kControlCommandHiliteOff:
-    SetRadioState(false, 0);
+    SetState(false, 0);
     return;
   default:
     TControl::DoEvent(commandId, sourceHandler, event);
@@ -36,7 +36,7 @@ void TRadioPictureButton::DoEvent(int commandId, TEventHandler* sourceHandler, T
 }
 
 // FUNCTION: IMPERIALISM 0x005718f0
-void TRadioPictureButton::SetRadioState(bool state, unsigned char refreshNow) {
+void TRadioPictureButton::SetState(bool state, unsigned char refreshNow) {
   if (IsEnabled()) {
     HiliteState(state, refreshNow);
   }

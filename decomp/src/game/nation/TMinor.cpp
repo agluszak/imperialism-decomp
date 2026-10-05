@@ -1090,7 +1090,7 @@ void TMinor::KillEnemyCiviliansIn(int provinceId) {
               TGreatPower* ownerNation = g_apNationStates[orderOwnerNationSlot];
               orderNode->MoveTo(static_cast<short>(ownerNation->homeTileIndex));
             } else {
-              orderNode->DetachUnitOrderFromOwnerAndReset();
+              orderNode->Vaporize();
               orderNode->Free();
             }
           }
@@ -1116,7 +1116,7 @@ void TMinor::KillEnemyCiviliansIn(int provinceId) {
           TUnit* nextNode = orderNode->nextAtLocation;
           int orderOwnerNationSlot = orderNode->ownerNationSlot18;
           if (relationMaskByNation[orderOwnerNationSlot] != 0) {
-            orderNode->DetachUnitOrderFromOwnerAndReset();
+            orderNode->Vaporize();
             orderNode->Free();
           }
           orderNode = nextNode;
@@ -1207,7 +1207,7 @@ void TMinor::DeportCiviliansIn(int provinceId, bool includeAllPolicyTargets) {
             short spawnTile = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
                 static_cast<short>(ownerNation->homeTileIndex), false);
             if (spawnTile == -1) {
-              orderNode->DetachUnitOrderFromOwnerAndReset();
+              orderNode->Vaporize();
               orderNode->Free();
             } else {
               orderNode->SetOrders(kUnitOrderIdle, -1);
@@ -1240,7 +1240,7 @@ void TMinor::DeportCiviliansIn(int provinceId, bool includeAllPolicyTargets) {
             short spawnTile = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
                 static_cast<short>(ownerNation->homeTileIndex), false);
             if (spawnTile == -1) {
-              orderNode->DetachUnitOrderFromOwnerAndReset();
+              orderNode->Vaporize();
               orderNode->Free();
             } else {
               orderNode->MoveTo(spawnTile);

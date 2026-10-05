@@ -15,7 +15,7 @@ TTechHistoryView::~TTechHistoryView() {}
 IMPLEMENT_DYNCREATE(TTechHistoryView, TView)
 
 // FUNCTION: IMPERIALISM 0x005b22c0
-void TTechHistoryView::PopulateTechHistory(short techId) {
+void TTechHistoryView::StuffValues(short techId) {
   COLORREF mainStyle = 0;
   COLORREF shadowStyle = 0;
   ResolveUiThemeColor(0x2b6a, &mainStyle);
@@ -26,12 +26,12 @@ void TTechHistoryView::PopulateTechHistory(short techId) {
   TDropShadowText* titleControl =
       static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagTitl));
   titleControl->AssertValid();
-  titleControl->SetTextFromStringResource(0x2712, static_cast<short>(techId + 1), true);
+  titleControl->SetTextWithStrListID(0x2712, static_cast<short>(techId + 1), true);
   ApplyUiTextStyleAndThemeFlags(titleControl, 0, 0x12, 0x2b6a, 0x2b68);
 
   TPicture* pictControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagPict));
   pictControl->AssertValid();
-  pictControl->SetPictureResourceIdAndRefresh(static_cast<short>(techId + 0x944), 1);
+  pictControl->SetPictureRsrcID(static_cast<short>(techId + 0x944), 1);
 
   TScrollView* scrollView = static_cast<TScrollView*>(ResolveControlByTag(kControlTagScvw));
   scrollView->AssertValid();
@@ -42,7 +42,7 @@ void TTechHistoryView::PopulateTechHistory(short techId) {
   CRect zeroRect(0, 0, 0, 0);
   descText->IDeluxeText(scrollView, offset, size, &zeroRect, &style, -2);
   descText->textColor98 = mainStyle;
-  descText->SetTextFromUiStringResourceId(static_cast<short>(techId + 0x8fc));
+  descText->LoadTextResource(static_cast<short>(techId + 0x8fc));
 
   int measuredHeight = descText->MeasureCurrentTextHeightInLayoutRect();
   CRect descBounds;
@@ -51,7 +51,7 @@ void TTechHistoryView::PopulateTechHistory(short techId) {
   descText->ApplyBounds(&descBounds, true);
 
   scrollView->contentView = descText;
-  scrollView->SyncBoundedValueAndToggleControlStates();
+  scrollView->Reset();
 
   CPoint titleLayout(0x8c, 0xf0 - titleControl->frameHeight / 2);
   titleControl->Locate(titleLayout, true);

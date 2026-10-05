@@ -32,7 +32,7 @@ public:
   // Recursively assigns a region class to a coarse grid cell and its best-scoring hex
   // neighbour, retrying up to retryBudget times. Returns the successful assignment count.
   // slot 12 / 0x30
-  virtual int AssignRegionClassToCellAndNeighbors(int cellIndex, int mode, int classIndex,
+  virtual int SelectGPZone(int cellIndex, int mode, int classIndex,
                                                   int retryBudget);
   // Merges major-nation region groups; false on an incompatible neighbor group. slot 13 / 0x34
   virtual char TryMergeRegionGroupWithNeighborsRestrictedToMajors(int cellIndex, int classIndex);
@@ -57,7 +57,7 @@ public:
   // neighbour of each converted tile. slot 21 / 0x54
   virtual int DesertBand(int row, int percentChance);
   // Places a city marker and probabilistically spreads it to neighbors. slot 22 / 0x58
-  virtual int PlaceCityMarkerAndSpreadNeighbors(int tileIndex, int retryBudget, bool markerVariant);
+  virtual int PlantForestCluster(int tileIndex, int retryBudget, bool markerVariant);
   virtual void CreateRivers(); // slot 23 / 0x5c
   // Recursively grows a river segment toward water. slot 24 / 0x60
   virtual char GrowRiver(long tileIndex, long incomingDirection, long outgoingDirection, long depth,
@@ -189,7 +189,7 @@ public:
   // the follow-on passes, applies the easter-egg keyword terrain overrides, and
   // retries the whole pipeline until ValidateSeedCandidateExistsForEachTerrainClass
   // accepts the map. 0x525a30, __thiscall, RET 0xc.
-  void GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileGrid, Province* cityTable,
+  void GenerateNewMap(char* tileGrid, Province* cityTable,
                                                             CString* tuningString);
 
   // --- data fields (raw pad except the ones the ported passes read) ---

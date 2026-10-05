@@ -14,9 +14,9 @@ public:
   DECLARE_DYNCREATE(TNavyBattle)
   // FUNCTION: IMPERIALISM 0x005a5500
   virtual ~TNavyBattle() override {} // slot 0x01 (scalar deleting destructor)
-  virtual void ComputeTacticalReachableTileCostsByUnitCategory(
+  virtual void CalculateMoveMap(
       TTacticalUnit* unit) override; // slot 0x0a 0x5a59f0
-  virtual void DeployTacticalUnitToTile(TTacticalUnit* unit,
+  virtual void DeployUnit(TTacticalUnit* unit,
                                         TacticalTileIndex tileIndex) override; // slot 0x0c 0x5a55c0
   virtual void MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
       TTacticalUnit* unit, TacticalTileIndex targetTileIndex) override; // slot 0x0d 0x5a5c50

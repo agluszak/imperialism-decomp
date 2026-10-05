@@ -23,12 +23,12 @@ TTechStorePage::~TTechStorePage() {}
 IMPLEMENT_DYNCREATE(TTechStorePage, TPageView)
 
 // FUNCTION: IMPERIALISM 0x005b0f10
-void TTechStorePage::PopulateUnlockedTechnologyRows(int nationSlot) {
+void TTechStorePage::StuffValues(int nationSlot) {
   for (int techId = 0x1c; techId > 0; --techId) {
     if (g_pTechMgr->perTechUnlockFlag[techId] != 0) {
       TTechItemLine* line = new TTechItemLine();
       int lineBounds[2] = {0x232, 0x3f};
-      line->SetLineDataRowAndBounds(0, 0, lineBounds);
+      line->ILineData(0, 0, lineBounds);
       line->nationSlot10 = nationSlot;
       line->techId14 = techId;
       AddOrderedEntry(line);

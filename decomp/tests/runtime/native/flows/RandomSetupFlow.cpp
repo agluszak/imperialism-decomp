@@ -91,7 +91,7 @@ RuntimeFlowStatus RandomSetupFlow::Advance(RuntimeScenario& scenario) {
       scenario.AwaitUiChange("random-map setup did not become active");
       return kRuntimeFlowRunning;
     }
-    scenario.RunState().SetSelectedNationSlot(RandomSetup().SelectedNationSlot());
+    scenario.RunState().PickCountry(RandomSetup().SelectedNationSlot());
     const char* planetSeed = scenario.RandomSetupPlanetSeed();
     if (planetSeed != 0) {
       RuntimeActionResult regenerated = RandomSetup().RegeneratePlanet(planetSeed);

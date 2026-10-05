@@ -154,7 +154,7 @@ bool TCivMgr::HandleCivilianTileSelectionOrReportClick(short nTileIndex, short n
       if (mapUberPicture != nullptr) {
         static_cast<TCivToolbar*>(
             mapUberPicture->categoryPages[mapUberPicture->activeUnitCategoryIndex])
-            ->RefreshCivilianCommandPanelForSelection(tileEntry);
+            ->SetSelectedUnit(tileEntry);
       }
     }
     g_pSfxPlaybackSystem->PlaySoundEffect(0x2338, 0, 1);
@@ -226,7 +226,7 @@ bool TCivMgr::HandleCivilianTileOrderAction(short nTileIndex, short nInputHint) 
       if (mapUberPicture != nullptr) {
         static_cast<TCivToolbar*>(
             mapUberPicture->categoryPages[mapUberPicture->activeUnitCategoryIndex])
-            ->RefreshCivilianCommandPanelForSelection(tileEntry);
+            ->SetSelectedUnit(tileEntry);
       }
     }
     g_pSfxPlaybackSystem->PlaySoundEffect(0x2338, 0, 1);
@@ -237,7 +237,7 @@ bool TCivMgr::HandleCivilianTileOrderAction(short nTileIndex, short nInputHint) 
     if (handled) {
       selectedEntry->SetOrders(kUnitOrderRedeploy, selectedEntry->tileIndex06);
       g_pSfxPlaybackSystem->PlaySoundEffect(0x2328, 0, 1);
-      RelinkCivilianOrderTileAndInvalidateMapTiles(nTileIndex, selectedEntry);
+      MoveAndRedrawUnit(nTileIndex, selectedEntry);
     }
     return handled;
   case kCivilianTileActionEngineerSameTile:
@@ -247,7 +247,7 @@ bool TCivMgr::HandleCivilianTileOrderAction(short nTileIndex, short nInputHint) 
     return HandleEngineerConstructionAction(nTileIndex);
   case kCivilianTileActionProspect:
     selectedEntry->SetOrders(kUnitOrderProspect, selectedEntry->tileIndex06);
-    RelinkCivilianOrderTileAndInvalidateMapTiles(nTileIndex, selectedEntry);
+    MoveAndRedrawUnit(nTileIndex, selectedEntry);
     g_pSfxPlaybackSystem->PlaySoundEffect(0x232e, 0, 1);
     {
       unsigned int startTick = GetTickCountDiv16();
@@ -368,7 +368,7 @@ CivilianTileActionCodeStorage TCivMgr::ResolveCivilianTileOrderActionCode(short 
 // TCivMgr instance.
 
 // FUNCTION: IMPERIALISM 0x004d2c60
-void TCivMgr::SetActiveCivilianSelection(TCivUnit* entryContext, bool refreshCommandPanel) {
+void TCivMgr::SelectUnit(TCivUnit* entryContext, bool refreshCommandPanel) {
   this->selectedEntry = entryContext;
   this->DispatchSelectedUnitToGlobalMapStateHandler(entryContext);
   if (entryContext == nullptr) {
@@ -391,7 +391,7 @@ void TCivMgr::SetActiveCivilianSelection(TCivUnit* entryContext, bool refreshCom
       // cross-hierarchy type pun.
       static_cast<TCivToolbar*>(
           mapUberPicture->categoryPages[mapUberPicture->activeUnitCategoryIndex])
-          ->RefreshCivilianCommandPanelForSelection(entryContext);
+          ->SetSelectedUnit(entryContext);
     }
   }
 }
@@ -410,7 +410,7 @@ void TCivMgr::OrderAndCycle(UnitOrder order) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d2d30
-void TCivMgr::ShowDisbandCivilianConfirmationDialog() {
+void TCivMgr::DisbandSelected() {
   TCivUnit* entry = this->selectedEntry;
   if (entry == nullptr) {
     return;
@@ -454,7 +454,7 @@ bool TCivMgr::TryQueueCivilianMoveOrderToTile(short nTileIndex) {
     TCivUnit* entry = this->selectedEntry;
     entry->SetOrders(kUnitOrderRedeploy, entry->tileIndex06);
     g_pSfxPlaybackSystem->PlaySoundEffect(9000, 0, 1);
-    this->RelinkCivilianOrderTileAndInvalidateMapTiles(nTileIndex, entry);
+    this->MoveAndRedrawUnit(nTileIndex, entry);
   }
   return canAssign;
 }
@@ -471,7 +471,7 @@ bool TCivMgr::CanAssignCivilianOrderToTile(short nTileIndex) {
       return tileTerrainClass == entry->ownerNationSlot18;
     }
     if (g_apTerrainTypeDescriptorTable[tileTerrainClass]->encodedNationSlot == -1) {
-      short compatibility = g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
+      short compatibility = g_pDiplomacyTurnStateManager->GetEmbassyStatus(
           entry->ownerNationSlot18, tileTerrainClass);
       if ((compatibility == 2) &&
           (entry->orderType != EncodeCivilianUnitKind(kCivilianUnitEngineer))) {
@@ -535,7 +535,7 @@ void TCivMgr::HandleCivilianReportDecision(TCivUnit* pCivilianOrderEntry) {
 
   pCivilianOrderEntry->SetOrders(kUnitOrderIdle, subtypeOrTargetProvince);
   if ((subtypeOrTargetProvince != 0) && (subtypeOrTargetProvince != -1)) {
-    this->RelinkCivilianOrderTileAndInvalidateMapTiles(subtypeOrTargetProvince,
+    this->MoveAndRedrawUnit(subtypeOrTargetProvince,
                                                        pCivilianOrderEntry);
   }
 
@@ -557,11 +557,11 @@ void TCivMgr::HandleCivilianReportDecision(TCivUnit* pCivilianOrderEntry) {
 
     TMapUberPicture* refreshTarget = g_pViewMgr->mapUberPictureF0;
     if (refreshTarget != nullptr) {
-      // Same downcast as TCivMgr::SetActiveCivilianSelection -- categoryPages[civilian] is
+      // Same downcast as TCivMgr::SelectUnit -- categoryPages[civilian] is
       // a real TCivToolbar (see TMapUberPicture.h's categoryPages[] comment).
       static_cast<TCivToolbar*>(
           refreshTarget->categoryPages[refreshTarget->activeUnitCategoryIndex])
-          ->RefreshCivilianCommandPanelForSelection(pCivilianOrderEntry);
+          ->SetSelectedUnit(pCivilianOrderEntry);
     }
   }
 
@@ -599,7 +599,7 @@ bool TCivMgr::QueueCivilianWorkOrderWithCostCheck(short nTileIndex) {
   }
 
   selectedEntry->SetOrders(kUnitOrderDevelopResource, selectedEntry->tileIndex06);
-  this->RelinkCivilianOrderTileAndInvalidateMapTiles(nTileIndex,
+  this->MoveAndRedrawUnit(nTileIndex,
                                                      g_pSelectedCivilianOrderState->selectedEntry);
 
   static const short kOrderQueuedSfxByOrderType[9] = {0x232d, 0, 0x2332, 0x2331, 0,
@@ -654,7 +654,7 @@ bool TCivMgr::PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex) {
     if (g_pViewMgr->ModalMessage(4, titleText, formattedText, g_ptCivilianOrderModalMessage, 0,
                                  1) != 0) {
       selectedEntry->SetOrders(kUnitOrderPurchaseLand, selectedEntry->tileIndex06);
-      this->RelinkCivilianOrderTileAndInvalidateMapTiles(
+      this->MoveAndRedrawUnit(
           nTileIndex, g_pSelectedCivilianOrderState->selectedEntry);
       g_pSfxPlaybackSystem->PlaySoundEffect(0x2335, 0, 1);
       g_apNationStates[g_pSimMgr->GetPlayerCountry()]->AddToTreasury(-purchaseCost);
@@ -683,7 +683,7 @@ bool TCivMgr::PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex) {
 // FUNCTION: IMPERIALISM 0x004d39d0
 char TCivMgr::QueueProspectingOrderAndPlayFeedback(short nTileIndex) {
   selectedEntry->SetOrders(static_cast<UnitOrder>(8), selectedEntry->tileIndex06);
-  RelinkCivilianOrderTileAndInvalidateMapTiles(nTileIndex, selectedEntry);
+  MoveAndRedrawUnit(nTileIndex, selectedEntry);
   g_pSfxPlaybackSystem->PlaySoundEffect(0x232e, 0, 1);
   unsigned int startTick = GetTickCountDiv16();
   unsigned int nowTick;
@@ -826,7 +826,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
   }
 
   if (actionFinalized) {
-    this->RelinkCivilianOrderTileAndInvalidateMapTiles(nTileIndex, pCiv);
+    this->MoveAndRedrawUnit(nTileIndex, pCiv);
 
     int startTick = GetTickCountDiv16();
     while (true) {
@@ -849,7 +849,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d4310
-void TCivMgr::RelinkCivilianOrderTileAndInvalidateMapTiles(short nNewTileIndex,
+void TCivMgr::MoveAndRedrawUnit(short nNewTileIndex,
                                                            TCivUnit* pCivOrderEntry) {
   short previousTile = pCivOrderEntry->tileIndex06;
   pCivOrderEntry->MoveTo(nNewTileIndex);
@@ -872,7 +872,7 @@ void TCivMgr::ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
                             order->orderType == EncodeCivilianUnitKind(kCivilianUnitDriller);
     byte result = g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(order->tileIndex06,
                                                                              selectHighNibble);
-    g_pGlobalMapState->SetCivilianDevelopmentClassNibble(order->tileIndex06, selectHighNibble,
+    g_pGlobalMapState->SetDevelopmentLevel(order->tileIndex06, selectHighNibble,
                                                          static_cast<byte>(result + 1), true);
     break;
   }
@@ -1017,7 +1017,7 @@ void TCivMgr::ResolveCivilianDisputes() {
 }
 
 // FUNCTION: IMPERIALISM 0x004d49f0
-void TCivMgr::ClearNationCivilianActionModesAndCycleSelection(int nationId) {
+void TCivMgr::WakeAll(int nationId) {
   CIterator cursor(g_apNationStates[nationId]->trackedObjectList);
   TCivUnit* civilian = static_cast<TCivUnit*>(cursor.Reset());
   while (cursor.More() != 0) {

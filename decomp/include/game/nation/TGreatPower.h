@@ -120,7 +120,7 @@ public:
   // 0x4dfd30 — update the capital-city record: homeTileIndex != -1 restamps the city's
   // tile ordinal, cityName != 0 reassigns its display name (renamed from the misleading
   // Ghidra 'RefreshNationCivilianWorkOrdersForTurn'; body walks this->city subobject).
-  void SetHomeCityTileAndDisplayName(short homeTileIndex, char* cityName);
+  void PlaceCity(short homeTileIndex, char* cityName);
   // slot 0x33 — body 0x004dae70: scans trackedObjectList for an order with
   // orderType == 7.
   virtual char HasDeveloper(void);
@@ -132,7 +132,7 @@ public:
   // slot 0x35 — body 0x004dbac0: marks regionMap[id]=1 for every region connected to
   // regionId through same-owner neighbors (self-recursive through this slot, with the
   // first eligible neighbor tail-iterated).
-  virtual void MarkConnectedOwnedRegionsFrom(char* regionMap, short regionId);
+  virtual void TraceRail(char* regionMap, short regionId);
 
   // Builds a per-tile strength map around transport-linked towns. The caller owns the
   // returned 0x1950-byte allocation. 0x4dbbb0.
@@ -250,7 +250,7 @@ public:
   virtual short GetTrackedSlotEntryCountLow(short targetSlot);     // slot 0x6d
   virtual char AnyTrackedSlotEntryHasZeroField4(short targetSlot); // slot 0x6e
   // slot 0x6f — body 0x004ddeb0: unpacks tracked-slot entry fields (+0/+2/+4/+8).
-  virtual void ReadTrackedSlotEntryFields(short slotIndex, short ordinal, short* outKind,
+  virtual void GetDealInfo(short slotIndex, short ordinal, short* outKind,
                                           short* outValue, short* outTargetNation, int* outPayload);
   virtual void AssignPayloadToTrackedSlotEntryMatchingField2(int targetSlot, int matchKey,
                                                              int payload); // slot 0x70
@@ -337,8 +337,8 @@ public:
   // slot 0x9e — joins a war against targetNation when minister skill beats the war
   // threshold; propagates relation code 4 to tier-2 partners and queues event 0x1c.
   virtual char EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation);
-  virtual int HandleWarTransitionRequest(int targetNation, int sourceNation); // slot 0x27c
-  virtual int HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation,
+  virtual int ConsiderWarOfIntervention(int targetNation, int sourceNation); // slot 0x27c
+  virtual int ConsiderWarOfAlliance(int targetNation, int sourceNation,
                                                      char swapRoles); // slot 0x280
   // index 0xa1 / vtable+0x284 — body 0x004e27f0 (vtable holds ILT thunk 0x00406fe1).
   // Queues a nation-pair war transition and notifies the third-party minor nation

@@ -19,7 +19,7 @@ public:
   virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(
       CPoint* point,
       RgnHandle hitArg) override;                             // slot 0x35 0x5851c0
-  virtual void RefreshTurnOrderStatusPanelTextsAndControls(); // slot 0x73 0x5853f0
+  virtual void AddInfoBehaviors(); // slot 0x73 0x5853f0
   virtual void
   UpdateControlTagTreaTextFromNationAndMapContext(short nationId);       // slot 0x74 0x585ba0
   virtual void SehCleanup_ReleaseTwoTempSharedStringRefs(int unusedArg); // slot 0x75 0x585ee0

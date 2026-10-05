@@ -308,7 +308,7 @@ float TArmyMission::ProjectSatisfaction(short bypassTileFilter) const {
 }
 
 // FUNCTION: IMPERIALISM 0x0053cb50
-void TArmyMission::AccumulateMissionUnitPriorityContributionWithScaleMode(TMilitaryUnit* unit,
+void TArmyMission::AccumulateWeightedUnitEquipage(TMilitaryUnit* unit,
                                                                           float* vector,
                                                                           bool scaleMode) {
   short weightIndex = unit->GetTurnDistanceTo(GetPresentLocation());

@@ -30,7 +30,7 @@ void TSuperArmyRoster::PopulateArmyOrderPageEntries(TView* panel, int* offsetLay
          unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
       TMiniArmyLine* line = new TMiniArmyLine;
       int lineBounds[2] = {0xec, 0x12};
-      line->SetLineDataRowAndBounds(0, 0, lineBounds);
+      line->ILineData(0, 0, lineBounds);
       line->militaryUnit = unit;
       AddOrderedEntry(line);
     }

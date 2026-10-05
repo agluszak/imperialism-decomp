@@ -16,7 +16,7 @@ TCommodityLine::TCommodityLine() : TLineData() {}
 
 // FUNCTION: IMPERIALISM 0x005c1540
 void TCommodityLine::ICommodityLine(short rowArg, short colArg, int* bounds, short value) {
-  SetLineDataRowAndBounds(rowArg, colArg, bounds);
+  ILineData(rowArg, colArg, bounds);
   commoditySlot = value;
 }
 
@@ -28,7 +28,7 @@ void TCommodityLine::InstallViews(TView* panel, int* offsetLayout) {
   TextStyle textStyle;
 
   BuildUiTextStyleDescriptor(&textStyle, 0, 0xe, 0x2b67);
-  g_pSimMgr->GetStringPrelude(commoditySlot, &commodityName);
+  g_pSimMgr->GetCommodityName(commoditySlot, &commodityName);
   short price = g_pTradeMgr->GetPrice(commoditySlot);
   g_pSimMgr->NumToCurrency(price, &priceText);
   displayText = commodityName + s_szSpaceSeparator_00695794 + priceText;

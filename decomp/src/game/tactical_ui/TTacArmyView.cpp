@@ -64,7 +64,7 @@ enum FortWallEdgeKind {
 };
 
 // FUNCTION: IMPERIALISM 0x005a9d90
-void TTacArmyView::InitializeBattlefieldView(int compositionClass, TArmyBattle* battle) {
+void TTacArmyView::StuffValues(int compositionClass, TArmyBattle* battle) {
   int savedFlags = 0;
   tileWidthPx = g_tacticalTileSize_006A5430.cx;
   tileRowHeightPx = g_tacticalTileSize_006A5430.cy;
@@ -169,13 +169,13 @@ void TTacArmyView::InitializeBattlefieldView(int compositionClass, TArmyBattle* 
     toolbar->battle88 = battle;
     toolbar->unitSpriteAtlasSurface94 = unitSpriteAtlasSurface68;
     toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(tacticalBattle60->selectedUnit1c);
-    toolbar->ConfigureTacticalTargetDoneRetreatAutoControls(0);
+    toolbar->SetActionMode(0);
     toolbarD0 = toolbar;
 
     TPicture* coatControl =
         static_cast<TPicture*>(ownerContext->ResolveControlByTag(kControlTagCoat));
     coatControl->AssertValid();
-    coatControl->SetPictureResourceIdAndRefresh(
+    coatControl->SetPictureRsrcID(
         static_cast<short>(
             tacticalBattle60->players[tacticalBattle60->currentSideC]->nationIndex1C + 0xea6),
         1);

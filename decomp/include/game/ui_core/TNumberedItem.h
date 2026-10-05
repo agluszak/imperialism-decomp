@@ -22,7 +22,7 @@ public:
   short badgeCount;   // +0xae the number drawn on the badge
 
   TNumberedItem();
-  void InitializeNumberedResourceItem(TView* panel, int* position, int* size,
+  void INumberedItem(TView* panel, int* position, int* size,
                                       short resourceIconIndex, short count);
 };
 ASSERT_SIZE(TNumberedItem, 0xb0);

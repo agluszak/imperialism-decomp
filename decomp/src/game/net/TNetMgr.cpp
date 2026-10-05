@@ -219,7 +219,7 @@ unsigned char TNetMgr::OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, i
 }
 
 // FUNCTION: IMPERIALISM 0x005e3ad0
-unsigned char TNetMgr::OpenRuntimeSelectionSourceAndApplyActiveNationState(
+unsigned char TNetMgr::Host(
     const char* seedPath, const char* localPlayerName, const char* emptyOrSeed) {
   strncpy(g_NetworkSessionManager006a5f60.joinGameSeed68, emptyOrSeed, 0x20);
   strncpy(g_NetworkSessionManager006a5f60.runtimeSelectionSeed88, seedPath, 0x20);
@@ -252,7 +252,7 @@ unsigned char TNetMgr::ReturnTrueRuntimeCredentialFinalizeStub() {
 }
 
 // FUNCTION: IMPERIALISM 0x005e3c20
-unsigned char TNetMgr::OpenJoinGameRuntimeSelectionAndStartSession(int selectionTag,
+unsigned char TNetMgr::SelectGame(int selectionTag,
                                                                    CString* outGameName,
                                                                    const char* seed) {
   strncpy(g_NetworkSessionManager006a5f60.joinGameSeed68, seed, 0x20);

@@ -127,7 +127,7 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
   short previousMode = this->activeUnitCategoryIndex;
   if (previousMode != nMode) {
     if (previousMode == 0) {
-      g_pSelectedCivilianOrderState->SetActiveCivilianSelection(nullptr, false);
+      g_pSelectedCivilianOrderState->SelectUnit(nullptr, false);
     } else if (previousMode == 1) {
       g_pMapContextActionManager->SetSelectedProvince(-1);
     }
@@ -317,7 +317,7 @@ void TMapUberPicture::RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry) {
       TShipFractionCluster* shipClass = static_cast<TShipFractionCluster*>(
           ResolveControlByTag(kControlTagCls0 + i)); // 'cls0'..'cls3'
       shipClass->AssertValid();
-      shipClass->SetAvailableAndSelectedShipCounts(0, -1);
+      shipClass->Set(0, -1);
     }
     return;
   }
@@ -330,7 +330,7 @@ void TMapUberPicture::RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry) {
     TShipFractionCluster* shipClass = static_cast<TShipFractionCluster*>(
         ResolveControlByTag(kControlTagCls0 + i)); // 'cls0'..'cls3'
     shipClass->AssertValid();
-    shipClass->SetAvailableAndSelectedShipCounts(
+    shipClass->Set(
         pMapOrderEntry->shipCountsByToolbarSlot[i],
         pMapOrderEntry->GetSelected(static_cast<short>(i)));
   }
@@ -403,7 +403,7 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
           EnterMapInteractionOverlayMode(nullptr);
           SetMapInteractionMode(0);
         }
-        g_pSelectedCivilianOrderState->SetActiveCivilianSelection(civilian, true);
+        g_pSelectedCivilianOrderState->SelectUnit(civilian, true);
         CenterOn(civilian->tileIndex06);
         ForceRedraw();
       } else {
@@ -707,7 +707,7 @@ void TMapUberPicture::PromptAndQueueMilitaryProvincePurgeOrders(short provinceIn
     TStaticText* nameLabel = static_cast<TStaticText*>(
         dialog->ResolveControlByTag(IMPERIALISM_FOURCC('n', 'a', 'm', 'a') + slot));
     nameLabel->AssertValid();
-    nameLabel->SetTextFromStringResource(0x2717, static_cast<short>(slot + 1), true);
+    nameLabel->SetTextWithStrListID(0x2717, static_cast<short>(slot + 1), true);
   }
   dialog->PoseModally();
 
@@ -762,7 +762,7 @@ void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* po
     TStaticText* nameControl =
         static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagNama + index)); // 'nama'
     if (nameControl != 0) {
-      nameControl->SetTextFromStringResource(0x2716, static_cast<short>(index + 1), true);
+      nameControl->SetTextWithStrListID(0x2716, static_cast<short>(index + 1), true);
     }
   }
 
@@ -859,7 +859,7 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
         g_pSimMgr, &text, static_cast<LPCSTR>(reportTemplate),
         static_cast<LPCSTR>(static_cast<Province*>(cachedTaskForce->target)->cityNameA4));
   } else {
-    zone->BuildNavalIntelligenceSourceDescription(&text, g_pSimMgr->GetPlayerCountry());
+    zone->GetNavalAuthority(&text, g_pSimMgr->GetPlayerCountry());
   }
   control->SetTextAndMaybeRefresh(&text, false);
   control->InstallTextStyle(attributionStyle, 0);
@@ -1039,7 +1039,7 @@ void TMapUberPicture::EnterMapInteractionOverlayMode(TView* controlOverride) {
 // FUNCTION: IMPERIALISM 0x00599b90
 void TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews(TView* controlOverride) {
   if (invalidationFlag) {
-    g_pUiAnimator->FreeUiTransientRegistryPayloads();
+    g_pUiAnimator->FreeAllAnis();
     TView* zoomControl =
         (controlOverride != nullptr) ? controlOverride : ResolveControlByTag(kControlTagZmOt);
     zoomControl->AssertValid();
@@ -1149,7 +1149,7 @@ void TMapUberPicture::RemoveMiniMap() {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0xab4);
   }
-  miniMapButton->SetPictureResourceIdAndRefresh(0x41a, true);
+  miniMapButton->SetPictureRsrcID(0x41a, true);
   miniMapButton->controlTag = kControlTagMmap; // 'mmap'
   SetTradeToolSubcontrolEnabledStateByFlag(true);
 }

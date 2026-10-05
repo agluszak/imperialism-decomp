@@ -41,7 +41,7 @@ public:
   // g_apNationStates (0x0050bed6), arg1 is the ledger row compared against -1
   // (0x0050bedd), arg3 is the host view the 'tota' panel is resolved on (0x0050befb).
   virtual void
-  RefreshCityProductionDetailPanelAndArrowWidgets(short resourceSlot, short nationIndex,
+  ShowTransportEntry(short resourceSlot, short nationIndex,
                                                   TView* hostView); // slot 0x11 0x50bea0
   virtual TView* MakeBookDialog(int dialogId);                      // slot 0x12 0x50be30
   // RET 0x8 = 2 dwords; body waits on this->activeCityProductionView, args vestigial.
@@ -78,7 +78,7 @@ public:
                                                ushort wOverlayIconId, short nVariantRow,
                                                short nDstX,
                                                short nYShift); // slot 0x21 0x50df40
-  virtual void CopySpriteSurfaceToStrideBuffer(TBitmapResourceLoader** loaderHandle,
+  virtual void FastDrawPicture(TBitmapResourceLoader** loaderHandle,
                                                unsigned char* destinationBits,
                                                short destinationStride);    // slot 0x22 0x50d9e0
   virtual void RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1); // slot 0x23 0x50d700

@@ -28,7 +28,7 @@ public:
   class TTaskForce* field64;
 
   // Non-virtual: runs the rename dialog for field60 in response to the 'name' command.
-  void RunEngineerOrderNameEditDialogAndApply();
+  void RenameShip();
 
   // Mac oracle: IShipView(TView*, const VPoint&, const VPoint&, SizeDeterminer,
   // SizeDeterminer, TShip*, TTaskForce*). Dead standalone emission; live creation

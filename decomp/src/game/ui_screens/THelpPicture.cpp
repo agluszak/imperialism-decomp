@@ -43,7 +43,7 @@ void THelpPicture::DoPostCreate(int arg) {
 
   topicListText = topicText;
   scrollView->contentView = topicText;
-  scrollView->SyncBoundedValueAndToggleControlStates();
+  scrollView->Reset();
 }
 
 // FUNCTION: IMPERIALISM 0x00503ed0
@@ -144,17 +144,17 @@ void THelpPicture::ShowTopic(short topic) {
   InitializeUiTextStyleDescriptor(&captionStyle, 0, 12, 0x2b67, 1);
 
   TStaticText* subject = static_cast<TStaticText*>(ResolveControlByTag(kControlTagSubj)); // 'subj'
-  subject->SetTextFromStringResource(currentHelpSet->helpResourceBaseId,
+  subject->SetTextWithStrListID(currentHelpSet->helpResourceBaseId,
                                      static_cast<short>(topic + 1), true);
   subject->Show(1, 1);
   subject->ViewEnable(0, 1);
-  subject->SetTextAlignmentAndMaybeRefresh(1, false);
+  subject->SetJustification(1, false);
   subject->InstallTextStyle(captionStyle, 0);
 
   TStaticText* toggle = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTogl)); // 'togl'
   toggle->Show(1, 1);
   toggle->ViewEnable(1, 1);
-  toggle->SetTextAlignmentAndMaybeRefresh(1, false);
+  toggle->SetJustification(1, false);
   toggle->InstallTextStyle(normalStyle, 0);
 
   for (int index = 0; index < 5; ++index) {
@@ -168,7 +168,7 @@ void THelpPicture::ShowTopic(short topic) {
   previous->SetTextAndMaybeRefresh(&navigationText, true);
   previous->Show(0, 1);
   previous->ViewEnable(0, 1);
-  previous->SetTextAlignmentAndMaybeRefresh(-1, false);
+  previous->SetJustification(-1, false);
   previous->InstallTextStyle(normalStyle, 0);
 
   TStaticText* next = static_cast<TStaticText*>(ResolveControlByTag(kControlTagNext)); // 'next'
@@ -176,7 +176,7 @@ void THelpPicture::ShowTopic(short topic) {
   next->SetTextAndMaybeRefresh(&navigationText, true);
   next->Show(0, 1);
   next->ViewEnable(0, 1);
-  next->SetTextAlignmentAndMaybeRefresh(-1, false);
+  next->SetJustification(-1, false);
   next->InstallTextStyle(normalStyle, 0);
 
   topicListText->Show(1, 0);
@@ -187,7 +187,7 @@ void THelpPicture::ShowTopic(short topic) {
       static_cast<TScrollView*>(ResolveControlByTag(kControlTagSwin)); // 'swin'
   scrollView->AssertValid();
   scrollView->Show(1, 0);
-  topicListText->SetTextFromUiStringResourceId(
+  topicListText->LoadTextResource(
       static_cast<short>(currentHelpSet->helpResourceBaseId + topic));
 
   int textHeight = topicListText->MeasureCurrentTextHeightInLayoutRect() + 8;
@@ -209,7 +209,7 @@ void THelpPicture::ShowTopic(short topic) {
   textBounds.top = 0;
   textBounds.bottom = textHeight;
   topicListText->ApplyBounds(&textBounds, false);
-  scrollView->SyncBoundedValueAndToggleControlStates();
+  scrollView->Reset();
   RefreshControl();
   helpDialog->ForceRedraw();
 }
@@ -230,26 +230,26 @@ void THelpPicture::ShowTopicList() {
   InitializeUiTextStyleDescriptor(&captionStyle, 0, 12, 0x2b67, 1);
 
   TStaticText* subject = static_cast<TStaticText*>(ResolveControlByTag(kControlTagSubj)); // 'subj'
-  subject->SetTextFromStringResource(currentHelpSet->helpResourceBaseId, 1, true);
+  subject->SetTextWithStrListID(currentHelpSet->helpResourceBaseId, 1, true);
   subject->Show(1, 1);
   subject->ViewEnable(0, 1);
-  subject->SetTextAlignmentAndMaybeRefresh(1, false);
+  subject->SetJustification(1, false);
   subject->InstallTextStyle(captionStyle, 0);
 
   TStaticText* toggle = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTogl)); // 'togl'
   toggle->Show(0, 1);
   toggle->ViewEnable(0, 1);
-  toggle->SetTextFromStringResource(0x2749, 9, true);
+  toggle->SetTextWithStrListID(0x2749, 9, true);
 
   int topicIndex;
   for (topicIndex = 0; topicIndex < currentHelpSet->topicCount; ++topicIndex) {
     TStaticText* topicName =
         static_cast<TStaticText*>(ResolveControlByTag(kControlTagNam1 + topicIndex)); // 'nam1'..
-    topicName->SetTextFromStringResource(currentHelpSet->helpResourceBaseId,
+    topicName->SetTextWithStrListID(currentHelpSet->helpResourceBaseId,
                                          static_cast<short>(topicIndex + 2), true);
     topicName->Show(1, 1);
     topicName->ViewEnable(1, 1);
-    topicName->SetTextAlignmentAndMaybeRefresh(-2, false);
+    topicName->SetJustification(-2, false);
     topicName->InstallTextStyle(normalStyle, 0);
   }
 
@@ -266,7 +266,7 @@ void THelpPicture::ShowTopicList() {
   previous->SetTextAndMaybeRefresh(&navigationText, true);
   previous->Show(navigationAvailable, 1);
   previous->ViewEnable(navigationAvailable, 1);
-  previous->SetTextAlignmentAndMaybeRefresh(-1, false);
+  previous->SetJustification(-1, false);
   previous->InstallTextStyle(normalStyle, 0);
 
   navigationAvailable = currentHelpSet->nextHelpResourceBaseId != 0;
@@ -275,7 +275,7 @@ void THelpPicture::ShowTopicList() {
   next->SetTextAndMaybeRefresh(&navigationText, true);
   next->Show(navigationAvailable, 1);
   next->ViewEnable(navigationAvailable, 1);
-  next->SetTextAlignmentAndMaybeRefresh(-1, false);
+  next->SetJustification(-1, false);
   next->InstallTextStyle(normalStyle, 0);
 
   topicListText->Show(0, 1);

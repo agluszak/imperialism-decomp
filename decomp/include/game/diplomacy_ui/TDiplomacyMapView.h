@@ -109,7 +109,7 @@ public:
   // 0x4f4ec0 -- Mac CodeWarrior names this TDiplomacyMapView::DrawIcons(const VRect&).
   // Called unconditionally from Draw for interactionModeAt94 in
   // {1,2,4}: for every terrain-descriptor slot whose hit rect intersects presentRect,
-  // draws a diplomacy-compatibility highlight (LookupOrderCompatibilityMatrixValue) into
+  // draws a diplomacy-compatibility highlight (GetEmbassyStatus) into
   // nationAnchorRects, a mode-specific status icon into nationTextHitRects (need/
   // grant level for mode 1, relation tier for mode 2, policy level for mode 4), and an
   // optional colony-boycott overlay. presentRect is only read, never threaded onward.

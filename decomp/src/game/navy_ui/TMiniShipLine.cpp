@@ -6,7 +6,7 @@ IMPLEMENT_DYNCREATE(TMiniShipLine, TLineData)
 
 // FUNCTION: IMPERIALISM 0x00569c40
 void TMiniShipLine::IMiniShipLine(short rowArg, short colArg, int* bounds, TShip* item) {
-  SetLineDataRowAndBounds(rowArg, colArg, bounds);
+  ILineData(rowArg, colArg, bounds);
   field10 = item;
 }
 

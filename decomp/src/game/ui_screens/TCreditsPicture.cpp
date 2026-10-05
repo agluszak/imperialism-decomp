@@ -28,7 +28,7 @@ void TCreditsPicture::DoPostCreate(int arg) {
   TPicture::DoPostCreate(arg);
 
   g_pSfxPlaybackSystem->ResetDualAudioCuePools();
-  g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(0xc);
+  g_pSfxPlaybackSystem->AddToPlayList(0xc);
   g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
 
   TDeluxeText* line1 = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCred));
@@ -37,14 +37,14 @@ void TCreditsPicture::DoPostCreate(int arg) {
   InitializeUiTextStyleDescriptor(&style, 0, 0xc, 0x2b68, 3);
   COLORREF cursorTheme;
   ResolveUiThemeColor(0x2b6b, &cursorTheme);
-  line1->SetTextFromUiStringResourceId(0xfb0);
+  line1->LoadTextResource(0xfb0);
   line1->SetTextStyle(style, true);
   line1->shadowTextColor = cursorTheme;
   line1->dropShadowEnabledA0 = false;
 
   TDeluxeText* line2 = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCre2));
   line2->AssertValid();
-  line2->SetTextFromUiStringResourceId(0xfb1);
+  line2->LoadTextResource(0xfb1);
   line2->SetTextStyle(style, true);
   line2->shadowTextColor = cursorTheme;
   line2->dropShadowEnabledA0 = false;
@@ -57,8 +57,8 @@ void TCreditsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
       g_pSimMgr->StartNextPhase();
       g_creditsPlaybackActive_006a4084 = 0;
       g_pSfxPlaybackSystem->ResetDualAudioCuePools();
-      g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(2);
-      g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(3);
+      g_pSfxPlaybackSystem->AddToPlayList(2);
+      g_pSfxPlaybackSystem->AddToPlayList(3);
       g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
     } else {
       g_creditsPlaybackActive_006a4084 = 1;
@@ -70,14 +70,14 @@ void TCreditsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
 
       TDeluxeText* line1 = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCred));
       line1->AssertValid();
-      line1->SetTextFromUiStringResourceId(0xfb2);
+      line1->LoadTextResource(0xfb2);
       line1->SetTextStyle(style, true);
       line1->shadowTextColor = cursorTheme;
       line1->dropShadowEnabledA0 = true;
 
       TDeluxeText* line2 = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCre2));
       line2->AssertValid();
-      line2->SetTextFromUiStringResourceId(0xfb3);
+      line2->LoadTextResource(0xfb3);
       line2->SetTextStyle(style, true);
       line2->shadowTextColor = cursorTheme;
       line2->dropShadowEnabledA0 = true;

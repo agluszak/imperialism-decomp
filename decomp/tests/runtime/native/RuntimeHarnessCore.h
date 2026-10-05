@@ -53,7 +53,7 @@ class RuntimeAwaitState {
 public:
   RuntimeAwaitState();
 
-  void Clear();
+  void IFuzzySet();
   void Arm(unsigned int observationKinds, const char* expression, const char* file, int line);
 
   bool IsArmed() const;

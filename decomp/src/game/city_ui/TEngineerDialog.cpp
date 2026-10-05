@@ -99,7 +99,7 @@ void TEngineerDialog::Draw(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d0810
-void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
+void TEngineerDialog::StuffValues(short nBuildingSlotId) {
   TMapMgr* mapState = g_pGlobalMapState;
   unsigned char homeFlags =
       static_cast<unsigned char>(mapState->terrainStateTable[nBuildingSlotId].activeFlags1c);

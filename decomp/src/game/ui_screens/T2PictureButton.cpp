@@ -17,7 +17,7 @@ void T2PictureButton::SetAvailability(char isAvailable, char refreshNow) {
   short alternatePictureId = static_cast<short>(controlValue3c);
   if ((isAvailable == 1 && pictureId > controlValue3c) ||
       (isAvailable == 0 && pictureId < controlValue3c)) {
-    SetPictureResourceIdAndRefresh(alternatePictureId, false);
+    SetPictureRsrcID(alternatePictureId, false);
     controlValue3c = pictureId;
     ViewEnable(isAvailable, false);
     Show(!isAvailable, refreshNow);

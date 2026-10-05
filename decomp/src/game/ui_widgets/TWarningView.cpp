@@ -66,7 +66,7 @@ void TWarningView::DoPostCreate(int arg) {
     CString titleText("Ministers request orders:");
     title->SetTextAndMaybeRefresh(&titleText, false);
   }
-  title->SetTextAlignmentAndMaybeRefresh(1, false);
+  title->SetJustification(1, false);
   title->Show(1, 0);
 
   TStaticText* endTurn = static_cast<TStaticText*>(panel->ResolveControlByTag(kControlTagMsg5));

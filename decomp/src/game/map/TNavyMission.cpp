@@ -240,7 +240,7 @@ void TNavyMission::Reassess() {
 
   int mode = navyState28;
   if (mode == 0) {
-    BuildNavyOrderCategoryVectorForNationWithExclusion(vector, missionTargetZone, 1,
+    ProjectEquipage(vector, missionTargetZone, 1,
                                                        resolvedPortZone);
     for (int index = 0; index < 4; ++index) {
       numerator += sqrtf(requiredShipEquipageByCategory[index] * vector[index]);
@@ -249,7 +249,7 @@ void TNavyMission::Reassess() {
     if (1.0f <= numerator / denominator) {
       numerator = 0.0f;
       denominator = 0.0f;
-      BuildNavyOrderCategoryVectorForNationWithExclusion(vector, missionTargetZone, 0,
+      ProjectEquipage(vector, missionTargetZone, 0,
                                                          resolvedPortZone);
       for (int index = 0; index < 4; ++index) {
         numerator += sqrtf(requiredShipEquipageByCategory[index] * vector[index]);
@@ -264,7 +264,7 @@ void TNavyMission::Reassess() {
   } else if (mode == 1) {
     navyState28 = 2;
   } else if (mode == 2) {
-    BuildNavyOrderCategoryVectorForNationWithExclusion(vector, missionTargetZone, 1,
+    ProjectEquipage(vector, missionTargetZone, 1,
                                                        resolvedPortZone);
     for (int index = 0; index < 4; ++index) {
       numerator += sqrtf(requiredShipEquipageByCategory[index] * vector[index]);
@@ -326,7 +326,7 @@ void TNavyMission::GiveOrders() {
     if (resolvedPortZone == nullptr) {
       resolvedPortZone = RefreshMissionPortZoneContextForNation();
     }
-    QueueMissionOrdersByPriorityForContext(missionTargetZone, &selectedOrder1c);
+    GiveReconOrders(missionTargetZone, &selectedOrder1c);
     ConsolidateMissionOrderEntriesByTargetAndQueue(resolvedPortZone);
     CombineForce(resolvedPortZone, taskForce20);
     if (taskForce20 != nullptr) {
@@ -381,7 +381,7 @@ TZone* TNavyMission::GetActiveTargetZoneByState28() const {
 }
 
 // FUNCTION: IMPERIALISM 0x00537090
-void TNavyMission::QueueMissionOrdersByPriorityForContext(TZone* location, TShip** selectedOrder) {
+void TNavyMission::GiveReconOrders(TZone* location, TShip** selectedOrder) {
   // Was bridged through a mis-targeted TMission::Find
   // cdecl stub cast (a name collision with the unrelated real function at 0x535940); the
   // actual callee here (verified via the 0x40635c ILT thunk row) is the already-ported
@@ -646,7 +646,7 @@ float TNavyMission::IndustrialCostOfNeeds() {
 // sites rather than via AccumulateNavyOrderCategoryVectorWithScale -- this specific
 // function inlines its own copy in the original rather than calling out to 0x537c60.
 // FUNCTION: IMPERIALISM 0x00537900
-void TNavyMission::BuildNavyOrderCategoryVectorForNationWithExclusion(float* vector,
+void TNavyMission::ProjectEquipage(float* vector,
                                                                       TZone* nearZone,
                                                                       short distanceThreshold,
                                                                       TZone* farZone) {
@@ -674,7 +674,7 @@ void TNavyMission::BuildNavyOrderCategoryVectorForNationWithExclusion(float* vec
 // then categories 0-2 accumulate scaled by (strength/normalization)*weight and
 // category 3 by the signed weight alone.
 // FUNCTION: IMPERIALISM 0x00537b20
-void TNavyMission::AccumulateShipCategoryVectorWithDistanceDecay(TShip* ship, float* vector,
+void TNavyMission::AccumulateWeightedShipEquipage(TShip* ship, float* vector,
                                                                  char positive) {
   short distanceIndex = 0;
   if (GetActiveTargetZoneByState28() != 0) {
@@ -755,9 +755,9 @@ void TNavyMission::BuildMissionQueuedOrderCategoryVector(float* vector) {
 // Scores the queued order vector against the required category vector for the supplied
 // mission distance threshold.
 // FUNCTION: IMPERIALISM 0x00537eb0
-float TNavyMission::ComputeMissionQueuedOrderSimilarityForTargetNation(short distanceThreshold) {
+float TNavyMission::ProjectSatisfaction(short distanceThreshold) {
   float vector[4];
-  BuildNavyOrderCategoryVectorForNationWithExclusion(vector, missionTargetZone, distanceThreshold,
+  ProjectEquipage(vector, missionTargetZone, distanceThreshold,
                                                      resolvedPortZone);
   float numerator = 0.0f;
   float denominator = 0.0f;

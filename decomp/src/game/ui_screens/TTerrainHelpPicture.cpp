@@ -143,14 +143,14 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
     itemPane->InstallTextStyle(itemStyle, 1);
     short itemId = menuItemIds[i];
     if (itemId != 0) {
-      itemPane->SetTextFromStringResource(0x2755, itemId, true);
+      itemPane->SetTextWithStrListID(0x2755, itemId, true);
       itemPane->Show(1, 0);
       itemPane->ViewEnable(1, 0);
     } else {
       itemPane->Show(0, 1);
       itemPane->ViewEnable(0, 0);
     }
-    itemPane->SetTextAlignmentAndMaybeRefresh(i > 6 ? -1 : -2, false);
+    itemPane->SetJustification(i > 6 ? -1 : -2, false);
   }
 
   // Refresh the two lonely-tile preview panes.
@@ -179,7 +179,7 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   TStaticText* titlePane = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl));
   titlePane->Show(1, 1);
   titlePane->ViewEnable(0, 1);
-  titlePane->SetTextAlignmentAndMaybeRefresh(1, false);
+  titlePane->SetJustification(1, false);
   titlePane->InstallTextStyle(titleStyle, 0);
 
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].GetTerrainKind() == kStrategicTerrainWater) {
@@ -223,10 +223,10 @@ void TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText(int sele
   InitializeUiTextStyleDescriptor(&captionStyle, 0, 0xc, 0x2b67, 1);
 
   TStaticText* captionPane = static_cast<TStaticText*>(ResolveControlByTag(kControlTagItem));
-  captionPane->SetTextFromStringResource(0x2755, menuItemIds[selectedIndex], true);
+  captionPane->SetTextWithStrListID(0x2755, menuItemIds[selectedIndex], true);
   captionPane->Show(1, 1);
   captionPane->ViewEnable(0, 1);
-  captionPane->SetTextAlignmentAndMaybeRefresh(1, false);
+  captionPane->SetJustification(1, false);
   captionPane->InstallTextStyle(captionStyle, 0);
 
   for (int i = 0; i < 12; i++) {

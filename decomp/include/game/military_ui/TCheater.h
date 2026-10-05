@@ -17,7 +17,7 @@ public:
   // NOOP: verified empty in original 0x004b13d3 (no standalone TCheater::TCheater body exists: CreateObject 0x004b13a0 inlines this default ctor, calling the TView base ctor directly at that site)
   TCheater() {}
 
-  void CenterWindowUsingSize(const CPoint* size); // 0x004b1670
+  void ResizeWindow(const CPoint* size); // 0x004b1670
 
   // Two-phase init (MacApp IViewClass idiom): frame this cheater panel into `panel`, then
   // build its "Done" TStaticText caption and TButton child. 0x004b14a0, __thiscall.

@@ -57,7 +57,7 @@ public:
   void Free() override;                    // slot 0x07 0x55ec60
   void Vanish();                           // 0x55ecd0, Mac oracle
   virtual void
-  GenerateMapActionContextDisplayNameAndHeadline(unsigned char* usedCityFlags,
+  NameThyself(unsigned char* usedCityFlags,
                                                  const char* overrideName); // slot 0x0a 0x55f780
   virtual void AssignZoneDisplayNameToOutputRef(CString* outputRef);        // slot 0x0b 0x55f070
   virtual void AssignZoneDisplayNameAliasToOutputRef(CString* outputRef);   // slot 0x0c 0x55f090
@@ -69,7 +69,7 @@ public:
   // nation slot, slot 0x12 dereferences a task force's +0x18 zone and +0x1c nation.
   virtual bool QueryZoneCapabilityFlagD(NationSlot nationSlot); // slot 0x10 0x55e880
   virtual bool QueryZoneCapabilityFlagE(NationSlot nationSlot); // slot 0x11 0x55e8a0
-  virtual bool HasZoneActiveChildCount(TTaskForce* force);      // slot 0x12 0x55e8c0
+  virtual bool CanBeTargetOf(TTaskForce* force);      // slot 0x12 0x55e8c0
   virtual short FindNearestActiveSeaContextTileFromOffset216(); // slot 0x13 0x55fe60
   virtual short GetActiveNationSlotTile();                      // slot 0x14 0x55fef0
   virtual short FindBestCoastalTileForContextAndCityStateByHeuristic(
@@ -137,7 +137,7 @@ public:
   // They fold the primary ship list for this zone/nation using the same preference
   // rule as the order UI, then expose its reporting admiral/source label.
   TAdmiral* FindReportingAdmiralForNation(int nation);
-  void BuildNavalIntelligenceSourceDescription(CString* out, short nation);
+  void GetNavalAuthority(CString* out, short nation);
   // 0x0055f140 — average node value of this context. Port zones (QueryPortZone-
   // Capability true) refresh via AssertValid, then return the home-region city score
   // of the terrain-table owner nation under the port tile (0 if that nation isn't
@@ -146,7 +146,7 @@ public:
   int ComputeMapActionContextNodeValueAverage();
 
   // statusCode04: -1 sentinel means unset; GenerateZoneStatusCodeIfUnset (0x55f5c0) rolls a
-  // PRNG-selected value on first read, then GenerateMapActionContextDisplayNameAndHeadline
+  // PRNG-selected value on first read, then NameThyself
   // (0x55f780) uses it as the GetString(0x275a, ...) headline-template index.
   short statusCode04;                           // +0x04
   char pad06[2];                                // +0x06

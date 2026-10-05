@@ -19,7 +19,7 @@ public:
   class TMilitaryUnit* militaryUnit; // +0x60
 
   // Non-virtual: runs the rename dialog for militaryUnit in response to the 'name' command.
-  void HandleCrossUArmyViewsNameCommand();
+  void RenameUnit();
 
   TArmyUnitView();
 

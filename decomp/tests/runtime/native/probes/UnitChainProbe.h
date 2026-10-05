@@ -30,7 +30,7 @@ public:
   static RuntimeActionResult VerifyChainsAreWalkable(const char* stage);
 
   // Unlink every nation's live military units from the map chains, through each unit's own
-  // DetachUnitOrderFromOwnerAndReset. This is the state a load reached from the menu starts
+  // Vaporize. This is the state a load reached from the menu starts
   // from: no units are linked into the map. A replay that runs on top of a played game needs
   // it because TSimMgr::ReadFrom's rebuild frees each nation's units without unlinking them
   // from Province::stationedUnitChain (TUnit::Free at 0x5c2680 does not unlink, nor does

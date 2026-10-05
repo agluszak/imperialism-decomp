@@ -107,7 +107,7 @@ TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int 
   styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, pointSize, themeCode);
   control->InstallTextStyle(styleDescriptor, 0);
-  control->SetTextAlignmentAndMaybeRefresh(static_cast<short>(themeCode2), false);
+  control->SetJustification(static_cast<short>(themeCode2), false);
   if (caption != 0) {
     CString captionString(caption);
     control->SetTextAndMaybeRefresh(&captionString, false);
@@ -133,7 +133,7 @@ TStaticText* ConfigureUiControlStyleValueAndCaptionFromStringResource(TStaticTex
   styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, pointSize, themeCode);
   control->InstallTextStyle(styleDescriptor, 0);
-  control->SetTextAlignmentAndMaybeRefresh(static_cast<short>(themeCode2), false);
+  control->SetJustification(static_cast<short>(themeCode2), false);
   if (static_cast<LPCSTR>(caption) != 0) {
     control->SetTextAndMaybeRefresh(&caption, false);
   }

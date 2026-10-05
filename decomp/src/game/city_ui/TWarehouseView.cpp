@@ -46,7 +46,7 @@ void TWarehouseView::DoStartup() {
   TStaticText* name =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('n', 'a', 'm', 'e')));
   name->InstallTextStyle(style.desc, 0);
-  name->SetTextAlignmentAndMaybeRefresh(1, false);
+  name->SetJustification(1, false);
   g_pSimMgr->GetString(0x2719, 0xd, &hoverText);
   name->SetTextAndMaybeRefresh(&hoverText, false);
 
@@ -61,7 +61,7 @@ void TWarehouseView::DoStartup() {
     *commodityControl = static_cast<TPictureNumberText*>(control);
     if (control != nullptr) {
       control->InstallTextStyle(style.desc, 0);
-      control->SetTextAlignmentAndMaybeRefresh(1, false);
+      control->SetJustification(1, false);
     }
     ++commodityTag;
     ++commodityControl;
@@ -73,7 +73,7 @@ void TWarehouseView::DoStartup() {
       static_cast<TPictureNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('l', 'a', 'b', 'o')));
   if (laborValueControl != nullptr) {
     laborValueControl->InstallTextStyle(style.desc, 0);
-    laborValueControl->SetTextAlignmentAndMaybeRefresh(1, false);
+    laborValueControl->SetJustification(1, false);
   }
 
   // 'powe' -- power value control.
@@ -81,7 +81,7 @@ void TWarehouseView::DoStartup() {
       static_cast<TPictureNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'o', 'w', 'e')));
   if (powerValueControl != nullptr) {
     powerValueControl->InstallTextStyle(style.desc, 0);
-    powerValueControl->SetTextAlignmentAndMaybeRefresh(1, false);
+    powerValueControl->SetJustification(1, false);
   }
 
   if (g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId] != 0) {
@@ -92,7 +92,7 @@ void TWarehouseView::DoStartup() {
     commodityValueControls[6]->Show(1, 1);
     commodityValueControls[12]->Show(1, 1);
     powerValueControl->Show(1, 1);
-    SetPictureResourceIdAndRefresh(0x23ff, 1);
+    SetPictureRsrcID(0x23ff, 1);
 
     CPoint bitmapSize;
     cachedBitmap->CopyBitmapDimensionsToPoint(&bitmapSize);
@@ -143,12 +143,12 @@ void TWarehouseView::DoStartup() {
       switch (commodity) {
       case 7:
       case 16:
-        g_pSimMgr->GetStringPrelude(commodity, &hoverText);
+        g_pSimMgr->GetCommodityName(commodity, &hoverText);
         break;
       case 17:
       case 18:
         valueText.Format(g_szDecimalFormat, nation->GetNeedTargetByType(commodity));
-        g_pSimMgr->GetStringPrelude(commodity, &commodityName);
+        g_pSimMgr->GetCommodityName(commodity, &commodityName);
         scanBracketExpressions(g_pSimMgr, &hoverText, static_cast<LPCSTR>(hoverTemplate),
                                static_cast<LPCSTR>(commodityName), static_cast<LPCSTR>(valueText));
         break;
@@ -170,7 +170,7 @@ void TWarehouseView::DoStartup() {
         break;
       }
       default:
-        g_pSimMgr->GetStringPrelude(commodity, &commodityName);
+        g_pSimMgr->GetCommodityName(commodity, &commodityName);
         valueText.Format(g_szDecimalFormat, nation->GetNeedTargetByType(commodity));
         scanBracketExpressions(g_pSimMgr, &hoverText, static_cast<LPCSTR>(hoverTemplate),
                                static_cast<LPCSTR>(commodityName), static_cast<LPCSTR>(valueText));

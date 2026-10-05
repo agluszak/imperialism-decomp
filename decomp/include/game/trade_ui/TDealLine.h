@@ -13,7 +13,7 @@ public:
 
   TDealLine();
   // MacApp two-phase init, same family as TCommodityLine::ICommodityLine: forwards the
-  // first three arguments to TLineData::SetLineDataRowAndBounds, then stores the three
+  // first three arguments to TLineData::ILineData, then stores the three
   // trailing shorts. 0x5c0e00 (RET 0x18 = six stack dwords).
   void IDealLine(short rowArg, short colArg, int* bounds, short commoditySlot,
                  short ownerNationSlot, short entryOrdinal);

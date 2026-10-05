@@ -38,12 +38,12 @@ public:
   // arrays against every terrain-descriptor slot, then walks every nation-pair-matrix tile
   // to assign it to the top or second nation's influence side (or neutral), and finally
   // may prod the losing nation's AI via TGreatPower::SetNationPendingActionStateAndPayload.
-  virtual void RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMode); // 14 (0x38)
+  virtual void ConveneCouncil(char forceOrMode); // 14 (0x38)
   virtual void InitializeDiplomacyStandingBaselineRandom();                    // 15 (0x3c)
   // Sums each major power's comparativePowerRows metrics into a power score,
   // ranks the 7 major powers descending by that score (random coin-flip tiebreak),
   // and writes the top two nation slots out. Verified RET 8 (2 stack args).
-  virtual void BuildMajorNationDiplomacyStandingRanking(int* topNationSlot,
+  virtual void ChooseCandidates(int* topNationSlot,
                                                         int* secondNationSlot);     // 16 (0x40)
   virtual bool IsNationPairAtWar(NationSlot sourceNation, NationSlot targetNation); // 17 (0x44)
   // NationSlot, not int: the body reads both parameters through MOVSX from their low
@@ -70,7 +70,7 @@ public:
                                                           NationSlot targetNation); // 26 (0x68)
   // Load the relation's display name from string group 0x2714 for alliance,
   // non-aggression, peace, or war. Other relation codes leave treatyName unchanged.
-  virtual void LoadTreatyNameForNationPairIfDisplayable(NationSlot sourceNationSlot,
+  virtual void GetTreatyStatusText(NationSlot sourceNationSlot,
                                                         NationSlot targetNationSlot,
                                                         CString* treatyName); // 27 (0x6c)
   virtual DiplomacyRelationshipStorage
@@ -84,7 +84,7 @@ public:
                                           DiplomacyRelationshipStorage relationship); // 30
   // (0x78)
   virtual void
-  ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(NationSlot sourceNation,
+  TerminateAlliance(NationSlot sourceNation,
                                                        NationSlot targetNation,
                                                        unsigned char updateMode); // 31 (0x7c)
   // ORACLE: Mac names TDiplomacyMgr::InflictWarPenalty(short, short, unsigned char).
@@ -124,7 +124,7 @@ public:
   // snapshot when one exists) and refresh the baseline copy. 0x4f2760.
   struct TurnEvent2SyncPacket* BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy();
   // 0x4f27f0 — apply a received turn-event-2 sync packet to the relation matrix.
-  void ApplyTurnEvent2SyncPacketToRelationMatrix(TurnEvent2SyncPacket* packet);
+  void HandleDiplomaticStandingsMsg(TurnEvent2SyncPacket* packet);
 
   CongressSupportTally congressSupport; // +0x788..+0x78d
   NationSlot lastProcessedNationSlot;
@@ -155,7 +155,7 @@ public:
   void InitializeTDiplomacyTurnStateManagerDefaults();
   void RebuildCivilianOrderCompatibilityMatrices();
   void QueueNationPairWarTransition(NationSlot sourceNationSlot, NationSlot targetNationSlot);
-  short LookupOrderCompatibilityMatrixValue(int sourceNationSlot, int targetNationSlot);
+  short GetEmbassyStatus(int sourceNationSlot, int targetNationSlot);
   void ProcessQueuedWarTransitions();
   void ResetTerrainAdjacencyMatrixRowAndSymmetricLink(NationSlot nationSlot);
   // 0x4eee60 -- resets the removed nation's relation rows/columns (standing-score and

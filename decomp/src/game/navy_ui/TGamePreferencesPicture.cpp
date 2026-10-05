@@ -66,7 +66,7 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
       label->Show(1, 0);
       g_pSimMgr->GetString(0x2743, static_cast<short>(row * 2 + 0x10), &text);
       label->SetTextStyle(0, 0xc, 0x38);
-      label->SetTextAlignmentAndMaybeRefresh(1, false);
+      label->SetJustification(1, false);
       label->UpdateTextEntrySharedString(&text);
       label->CenterVertically(false);
       continue;
@@ -95,7 +95,7 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
       TDeluxeText* caption = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTxta + row));
       caption->AssertValid();
       caption->SetTextStyle(0, 0xc, 0x38);
-      label->SetTextAlignmentAndMaybeRefresh(1, false);
+      label->SetJustification(1, false);
       caption->UpdateTextEntrySharedStringAndMaybeNotify(&text, false);
       caption->CenterVertically(false);
     }
@@ -136,7 +136,7 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&promptText, 0x2763, 0x18);
   TDeluxeText* promptLabel = static_cast<TDeluxeText*>(autoResPrompt);
   promptLabel->SetTextStyle(0, 0xc, 0x38);
-  promptLabel->SetTextAlignmentAndMaybeRefresh(1, false);
+  promptLabel->SetJustification(1, false);
   promptLabel->UpdateTextEntrySharedStringAndMaybeNotify(&promptText, false);
   promptLabel->CenterVertically(false);
 

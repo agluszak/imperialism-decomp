@@ -12,7 +12,7 @@ IMPLEMENT_DYNCREATE(TTradeOfferNationLine, TLineData)
 // FUNCTION: IMPERIALISM 0x005bd050
 void TTradeOfferNationLine::ITradeOfferNationLine(short categorySlot, short nationSlot,
                                                   short rowArg, short colArg, int* bounds) {
-  SetLineDataRowAndBounds(rowArg, colArg, bounds);
+  ILineData(rowArg, colArg, bounds);
   this->nationSlot = nationSlot;
   this->categorySlot = categorySlot;
 }

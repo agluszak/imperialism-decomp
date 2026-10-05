@@ -64,7 +64,7 @@ void TIndustryAmtBar::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x00589340
-void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
+void TIndustryAmtBar::DrawAmt() {
   CTemporaryRegion surface;
   TAmtBar* control = this;
   GetClip(surface.tempRgn);
@@ -105,7 +105,7 @@ void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 }
 
 // FUNCTION: IMPERIALISM 0x00589540
-void TIndustryAmtBar::RenderQuickDrawOverlayWithHitRegion(short selectedValue) {
+void TIndustryAmtBar::DrawMax(short selectedValue) {
   CTemporaryRegion surface;
   stepOrCurrentValue = selectedValue;
   GetClip(surface.tempRgn);

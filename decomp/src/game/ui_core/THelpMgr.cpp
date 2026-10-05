@@ -225,7 +225,7 @@ void THelpMgr::SelectAndActivatePendingEventForCurrentView() {
     }
   }
   if (best != nullptr) {
-    ActivatePendingEventAndRefreshView(best);
+    ShowHelpSet(best);
     return;
   }
   HelpSetRecord* fallback = flaggedCandidate;
@@ -233,7 +233,7 @@ void THelpMgr::SelectAndActivatePendingEventForCurrentView() {
     fallback = zeroIdCandidate;
   }
   if (fallback != nullptr) {
-    ActivatePendingEventAndRefreshView(fallback);
+    ShowHelpSet(fallback);
   }
 }
 
@@ -835,7 +835,7 @@ char THelpMgr::HandlePendingEventActivationByCode(TurnEventCodeStorage eventCode
       }
     }
     if (activateCandidate && !nationAlreadyCurrent) {
-      ActivatePendingEventAndRefreshView(pendingEntry);
+      ShowHelpSet(pendingEntry);
       return activateCandidate;
     }
     if (pendingDialogView8 != 0) {
@@ -852,7 +852,7 @@ void THelpMgr::SelectAndActivatePendingEventType1A0A() {
     HelpSetRecord* record =
         static_cast<HelpSetRecord*>(indexList->GetPtrListEntryByOneBasedIndex(index));
     if (record->contextId == 0x1a0a) {
-      ActivatePendingEventAndRefreshView(record);
+      ShowHelpSet(record);
       return;
     }
   }
@@ -865,7 +865,7 @@ void THelpMgr::SelectAndActivatePendingEventTypeOffsetFrom1A0B(int idx) {
     HelpSetRecord* record =
         static_cast<HelpSetRecord*>(indexList->GetPtrListEntryByOneBasedIndex(index));
     if (record->contextId == targetContextId) {
-      ActivatePendingEventAndRefreshView(record);
+      ShowHelpSet(record);
       return;
     }
   }
@@ -885,7 +885,7 @@ void THelpMgr::HandlePostPendingEventActivationNoOp(TurnEventCodeStorage eventCo
 }
 
 // FUNCTION: IMPERIALISM 0x00503420
-void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
+void THelpMgr::ShowHelpSet(HelpSetRecord* pendingEntry) {
   CString titleText;
   pendingEntry->flagByte = 1;
   pendingEntry->rank = g_pSimMgr->GetPlayerCountry();
@@ -902,7 +902,7 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
     }
 
     CPoint placement;
-    g_pViewMgr->ComputeTurnEventDialogPlacementByCode(pendingDialogView8, &placement);
+    g_pViewMgr->GetTopLeftFor(pendingDialogView8, &placement);
     pendingDialogView8->Locate(placement, false);
     pendingDialogView8->Open();
   }
@@ -922,7 +922,7 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
   } else if (pendingEntry->contextId == 0x1a0c) {
     helpBookIndex = 1;
   }
-  helpPicture->SetPictureResourceIdAndRefresh(static_cast<short>(helpBookIndex + 0xbb8), 0);
+  helpPicture->SetPictureRsrcID(static_cast<short>(helpBookIndex + 0xbb8), 0);
 
   TPicture* coatPicture =
       static_cast<TPicture*>(pendingDialogView8->ResolveControlByTag(kControlTagCoat));
@@ -933,7 +933,7 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
   }
 
   if (g_pSimMgr->GetPlayerCountry() >= 0 && g_pSimMgr->GetPlayerCountry() < 7) {
-    coatPicture->SetPictureResourceIdAndRefresh(
+    coatPicture->SetPictureRsrcID(
         static_cast<short>(g_pSimMgr->GetPlayerCountry() + 0x251c), 0);
   } else {
     coatPicture->Show(0, 0);
@@ -942,7 +942,7 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
   TStaticText* title = static_cast<TStaticText*>(helpPicture->ResolveControlByTag(kControlTagTitl));
   title->Show(1, 1);
   title->ViewEnable(0, 1);
-  title->SetTextAlignmentAndMaybeRefresh(1, false);
+  title->SetJustification(1, false);
   title->InstallTextStyle(titleStyle, 0);
   BuildUiMessageTextFromBracketTemplate(g_pSimMgr, &titleText, 0x2749, 6, 0x2749,
                                         pendingEntry->contextId);
@@ -1061,7 +1061,7 @@ void THelpMgr::EnsureMapActionContextViewAndBuildDefaultTileMenu(int mapContextI
     }
 
     CPoint placement;
-    g_pViewMgr->ComputeTurnEventDialogPlacementByCode(pendingDialogViewC, &placement);
+    g_pViewMgr->GetTopLeftFor(pendingDialogViewC, &placement);
     pendingDialogViewC->Locate(placement, false);
     pendingDialogViewC->Open();
   }

@@ -33,7 +33,7 @@ void TNavyBattle::InitTacticalBattle(TTacticalPlayer* ourPlayer, TTacticalPlayer
 }
 
 // FUNCTION: IMPERIALISM 0x005a55c0
-void TNavyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
+void TNavyBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
   // A ship may only deploy on its side's two deploy rows (side 0: rows
   // battlefieldColumnCount-6..-5; side 1: rows 5..6 -- the field acts as a row
   // bound here) onto an empty tile. On success it places the ship, invalidates its
@@ -170,7 +170,7 @@ void __stdcall ConvertHexTileIndexToRowAndDoubleColumn(TacticalTileIndex tileInd
 }
 
 // FUNCTION: IMPERIALISM 0x005a59f0
-void TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit* unit) {
+void TNavyBattle::CalculateMoveMap(TTacticalUnit* unit) {
   int actionPoints = unit->actionPoints28;
   short* moveCosts = tileMoveCostArray;
   TacticalTileIndex tileIndex;

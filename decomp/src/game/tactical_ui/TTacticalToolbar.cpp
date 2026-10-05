@@ -99,7 +99,7 @@ void TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalU
   TPicture* currControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagCurr));
   currControl->AssertValid();
   if (unit != 0) {
-    currControl->SetPictureResourceIdAndRefresh(
+    currControl->SetPictureRsrcID(
         static_cast<short>(unit->unitTypeC * 2 + 0xf1e + unit->side20), 1);
     currControl->Show(1, 1);
   } else {
@@ -128,7 +128,7 @@ void TTacticalToolbar::UpdateTacticalOtherSideUnitControl(TArmyTacUnit* unit) {
   TPicture* tpicControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagTpic));
   tpicControl->AssertValid();
   if (unit != 0) {
-    tpicControl->SetPictureResourceIdAndRefresh(
+    tpicControl->SetPictureRsrcID(
         static_cast<short>(unit->unitTypeC * 2 + 0xf1e + unit->side20), 1);
     tpicControl->Show(1, 1);
   } else {
@@ -143,7 +143,7 @@ void TTacticalToolbar::UpdateTacticalOtherSideUnitControl(TArmyTacUnit* unit) {
 }
 
 // FUNCTION: IMPERIALISM 0x005acd60
-void TTacticalToolbar::ConfigureTacticalTargetDoneRetreatAutoControls(int mode) {
+void TTacticalToolbar::SetActionMode(int mode) {
   if (mode == 0) {
     // Deployment phase: 'targ'/'auto' disarmed, 'done'/'retr' show the setup bitmaps
     // and the setup label strings (group 0x273d, indexes 0x2e/0x2f).
@@ -153,10 +153,10 @@ void TTacticalToolbar::ConfigureTacticalTargetDoneRetreatAutoControls(int mode) 
     targControl->ViewEnable(0, 1);
     TPicture* doneControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagDone));
     doneControl->AssertValid();
-    doneControl->SetPictureResourceIdAndRefresh(0xed4, 1);
+    doneControl->SetPictureRsrcID(0xed4, 1);
     TPicture* retrControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagRetr));
     retrControl->AssertValid();
-    retrControl->SetPictureResourceIdAndRefresh(0xed2, 1);
+    retrControl->SetPictureRsrcID(0xed2, 1);
     TView* autoControl = ResolveControlByTag(kControlTagAuto);
     autoControl->AssertValid();
     autoControl->Show(0, 1);
@@ -172,10 +172,10 @@ void TTacticalToolbar::ConfigureTacticalTargetDoneRetreatAutoControls(int mode) 
     targControl->ViewEnable(1, 1);
     TPicture* doneControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagDone));
     doneControl->AssertValid();
-    doneControl->SetPictureResourceIdAndRefresh(0xece, 1);
+    doneControl->SetPictureRsrcID(0xece, 1);
     TPicture* retrControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagRetr));
     retrControl->AssertValid();
-    retrControl->SetPictureResourceIdAndRefresh(0xed0, 1);
+    retrControl->SetPictureRsrcID(0xed0, 1);
     TView* autoControl = ResolveControlByTag(kControlTagAuto);
     autoControl->AssertValid();
     autoControl->Show(1, 1);

@@ -435,7 +435,7 @@ RuntimeActionResult RunOpeningHomeCitySetup(NativeTransition& transition) {
     if (nation == 0 || nation->IsRemote() != 0 || g_bMultiplayerScenarioSetupActive != 0) {
       continue;
     }
-    nation->SetHomeCityTileAndDisplayName(-1, 0);
+    nation->PlaceCity(-1, 0);
   }
 
   return transition.Finish();

@@ -15,7 +15,7 @@ void TColorKeyButton::HiliteState(unsigned char fEnabledState, bool fRefreshNow)
     controlState64 = fEnabledState;
     short pictureId =
         fEnabledState ? static_cast<short>(glyphBase84 + 1) : static_cast<short>(glyphBase84 - 1);
-    SetPictureResourceIdAndRefresh(pictureId, true);
+    SetPictureRsrcID(pictureId, true);
     if (fRefreshNow) {
       DrawImmediate();
     }

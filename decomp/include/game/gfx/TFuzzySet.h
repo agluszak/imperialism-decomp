@@ -17,14 +17,14 @@ public:
   TFuzzySet();
 
   // Resets the set to empty: zeroes the member count and nulls all 10 member slots. 0x4ff750
-  void Clear();
+  void IFuzzySet();
 
   // Allocates a 4-value TFuzzyVar leaf, fills its values, and appends it to m_members. 0x4ff7d0
-  void AllocateAndAppendRecord(float value0, float value1, float value2, float value3);
+  void AddFuzzyVar(float value0, float value1, float value2, float value3);
 
   // Evaluates each trapezoidal membership record at `input`, normalizes the weights,
   // and randomly selects one member index from the resulting distribution.
-  int SelectWeightedMemberIndex(float input); // 0x004ff840
+  int GetCrispOutput(float input); // 0x004ff840
 
 private:
   int m_memberCount;      // field_0x4 — not zeroed by the ctor; caller-managed

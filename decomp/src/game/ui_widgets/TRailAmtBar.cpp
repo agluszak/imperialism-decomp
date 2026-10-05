@@ -90,7 +90,7 @@ void TRailAmtBar::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058a1b0
-void TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
+void TRailAmtBar::DrawAmt() {
   CTemporaryRegion surface;
   TAmtBar* control = this;
   GetClip(surface.tempRgn);
@@ -131,7 +131,7 @@ void TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 }
 
 // FUNCTION: IMPERIALISM 0x0058a3b0
-void TRailAmtBar::RenderQuickDrawOverlayWithHitRegion(short selectedValue) {
+void TRailAmtBar::DrawMax(short selectedValue) {
   CTemporaryRegion surface;
   stepOrCurrentValue = selectedValue;
   GetClip(surface.tempRgn);

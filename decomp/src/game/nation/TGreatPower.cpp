@@ -174,7 +174,7 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
   }
   int homeLinked = marker->IsUnblockedPort();
   if (homeLinked == 0) {
-    this->MarkConnectedOwnedRegionsFrom(influenceMap, marker->tileIndex);
+    this->TraceRail(influenceMap, marker->tileIndex);
     marker = static_cast<TTown*>(markerCursor.Reset());
     while (markerCursor.More() != 0 && homeLinked == 0) {
       if (influenceMap[marker->tileIndex] != 0 && marker->IsUnblockedPort() != 0) {
@@ -187,7 +187,7 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
   while (markerCursor.More() != 0) {
     if (marker->IsUnblockedPort() != 0 && homeLinked != 0 && marker->activeFlag &&
         influenceMap[marker->tileIndex] == 0) {
-      this->MarkConnectedOwnedRegionsFrom(influenceMap, marker->tileIndex);
+      this->TraceRail(influenceMap, marker->tileIndex);
     }
     marker = static_cast<TTown*>(markerCursor.Advance());
   }
@@ -218,7 +218,7 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
 // --- Slots 0x35/0x37/0x50/0x51/0x55-0x57 ---
 
 // FUNCTION: IMPERIALISM 0x004dbac0
-void TGreatPower::MarkConnectedOwnedRegionsFrom(char* regionMap, short regionId) {
+void TGreatPower::TraceRail(char* regionMap, short regionId) {
   short nextRegion;
   do {
     regionMap[regionId] = 1;
@@ -231,7 +231,7 @@ void TGreatPower::MarkConnectedOwnedRegionsFrom(char* regionMap, short regionId)
                 this->nationSlot &&
             regionMap[neighbor] == 0) {
           if (nextRegion != 0) {
-            this->MarkConnectedOwnedRegionsFrom(regionMap, neighbor);
+            this->TraceRail(regionMap, neighbor);
           } else {
             nextRegion = neighbor;
           }
@@ -1319,7 +1319,7 @@ short TGreatPower::GetTrackedSlotEntryCountLow(short targetSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ddeb0
-void TGreatPower::ReadTrackedSlotEntryFields(short slotIndex, short ordinal, short* outKind,
+void TGreatPower::GetDealInfo(short slotIndex, short ordinal, short* outKind,
                                              short* outValue, short* outTargetNation,
                                              int* outPayload) {
   TrackedSlotEntryPacket* entry = static_cast<TrackedSlotEntryPacket*>(
@@ -1378,7 +1378,7 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetC
       }
       goto APPLY_POLICY_IF_ALLOWED;
     }
-    if (g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(this->nationSlot,
+    if (g_pDiplomacyTurnStateManager->GetEmbassyStatus(this->nationSlot,
                                                                           targetClass) != 2) {
       shouldApply = false;
     }
@@ -1388,7 +1388,7 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetC
   switch (policyCode - (kPolicyRequiresCompatibilityStart + 1)) {
   case 0:
   case 1:
-    if (g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(this->nationSlot,
+    if (g_pDiplomacyTurnStateManager->GetEmbassyStatus(this->nationSlot,
                                                                           targetClass) != 2) {
       shouldApply = false;
     }
@@ -1405,7 +1405,7 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetC
         g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(targetClass,
                                                                          this->nationSlot);
     if (relationship == kDiplomacyRelationshipAlliance) {
-      g_pDiplomacyTurnStateManager->ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(
+      g_pDiplomacyTurnStateManager->TerminateAlliance(
           this->nationSlot, targetClass, 1);
     }
 
@@ -1576,7 +1576,7 @@ void TGreatPower::GiveGrantTo(int arg1) {
 
   this->grantTotalCost -= grantValue;
 
-  if (g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(targetNation,
+  if (g_pDiplomacyTurnStateManager->GetEmbassyStatus(targetNation,
                                                                         this->nationSlot) != 2) {
     return;
   }
@@ -1651,7 +1651,7 @@ void TGreatPower::ClearCivilianOrders(void) {
   if (remaining != 0) {
     do {
       TUnit* order = static_cast<TUnit*>(this->trackedObjectList->GetEntryByOrdinal(remaining));
-      order->DetachUnitOrderFromOwnerAndReset();
+      order->Vaporize();
       order->Free();
       --remaining;
     } while (remaining != 0);
@@ -1862,7 +1862,7 @@ void TGreatPower::AddNoticeFrom(short arg1, short arg2) {
       }
 
       if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(slot, arg1)) {
-        g_pDiplomacyTurnStateManager->ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(
+        g_pDiplomacyTurnStateManager->TerminateAlliance(
             nationSlot, slot, 1);
       }
     }
@@ -1963,7 +1963,7 @@ void TGreatPower::AcceptOffer(short proposalIndex) {
                 this->nationSlot, nationSlot) == kDiplomacyRelationshipAlliance &&
             g_pDiplomacyTurnStateManager->IsNationPairAtWar(
                 nationSlot, static_cast<int>(proposal->sourceNationSlot))) {
-          g_pDiplomacyTurnStateManager->ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(
+          g_pDiplomacyTurnStateManager->TerminateAlliance(
               this->nationSlot, nationSlot, 1);
         }
       }
@@ -2244,7 +2244,7 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
 // Listing 0x004dfd30 begins with TEST ESI,ESI and preserves this retail null-this path.
 IMPERIALISM_BEGIN_RETAIL_NULL_THIS_CHECK
 // FUNCTION: IMPERIALISM 0x004dfd30
-void TGreatPower::SetHomeCityTileAndDisplayName(short homeTileIndex, char* cityName) {
+void TGreatPower::PlaceCity(short homeTileIndex, char* cityName) {
   TCity* city = this ? this->city : 0;
   TTown* homeTown = city->homeTownMarker;
 
@@ -2858,7 +2858,7 @@ char TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation) {
             g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
                 this->nationSlot, otherNation) == kDiplomacyRelationshipAlliance &&
             g_pDiplomacyTurnStateManager->IsNationPairAtWar(otherNation, targetNation)) {
-          g_pDiplomacyTurnStateManager->ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(
+          g_pDiplomacyTurnStateManager->TerminateAlliance(
               this->nationSlot, otherNation, 1);
         }
       }
@@ -2872,7 +2872,7 @@ char TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e1d50
-int TGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNation) {
+int TGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNation) {
   char result = 0;
   TViewMgr* uiRuntimeContext = g_pViewMgr;
 
@@ -2902,7 +2902,7 @@ int TGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNation) 
 }
 
 // FUNCTION: IMPERIALISM 0x004e1e40
-int TGreatPower::HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation,
+int TGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation,
                                                         char swapRoles) {
   char accepted = g_pViewMgr->PoseWarOfferIfTurnFlowReady(
       this->nationSlot, targetNation, sourceNation, static_cast<int>(swapRoles) + 0x14);
@@ -2910,7 +2910,7 @@ int TGreatPower::HandleWarTransitionRequestWithRoleSwap(int targetNation, int so
     if (swapRoles == 0) {
       sourceNation = targetNation;
     }
-    g_pDiplomacyTurnStateManager->ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(
+    g_pDiplomacyTurnStateManager->TerminateAlliance(
         this->nationSlot, sourceNation, swapRoles == 0);
   } else if (swapRoles != 0) {
     this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(targetNation, 2, sourceNation);
@@ -3094,7 +3094,7 @@ void TGreatPower::KillUnitsIn(int ownerClass) {
     TUnit* order = static_cast<TUnit*>(trackedList->GetEntryByOrdinal(index));
     short orderCityRecord = globalMapState->terrainStateTable[order->tileIndex06].cityRecordIndex;
     if (orderCityRecord == ownerClass) {
-      order->DetachUnitOrderFromOwnerAndReset();
+      order->Vaporize();
       order->Free();
     }
   }

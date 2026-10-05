@@ -74,7 +74,7 @@ public:
                                                              int flag);
   virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
                                                              bool altOverlay);
-  virtual void RenderStrategicTileSelectionAndNeighborHighlights();
+  virtual void FrameCursorArea();
   virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileIndex,
                                                                    const CPoint* viewportOrigin,
                                                                    short* outVerticalOffset,

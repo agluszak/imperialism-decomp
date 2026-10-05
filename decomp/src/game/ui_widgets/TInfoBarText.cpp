@@ -29,7 +29,7 @@ void TInfoBarText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {
   }
 }
 
-// Clear the text-entry layout rect and push an empty shared string, then recenter.
+// IFuzzySet the text-entry layout rect and push an empty shared string, then recenter.
 // FUNCTION: IMPERIALISM 0x005b6770
 void TInfoBarText::ClearTextAndLayoutRect(int) {
   CString text;
@@ -42,7 +42,7 @@ void TInfoBarText::ClearTextAndLayoutRect(int) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b6810
-void TInfoBarText::ApplyDefaultMapHintTextStyle() {
+void TInfoBarText::Reset() {
   InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 }
 
@@ -51,7 +51,7 @@ void TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary, int
   TextStyle styleDescriptor = {0, 0, 0, 0};
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, styleSecondary);
   SetTextStyle(styleDescriptor, false);
-  SetTextAlignmentAndMaybeRefresh(static_cast<short>(-1), false);
+  SetJustification(static_cast<short>(-1), false);
   layoutRectA4.left = 0;
   layoutRectA4.top = 0;
   layoutRectA4.right = 0;

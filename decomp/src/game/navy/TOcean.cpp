@@ -379,7 +379,7 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
 
 // FUNCTION: IMPERIALISM 0x00562f20
 void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
-  // 1) Clear every map-action context's per-nation key mask.
+  // 1) IFuzzySet every map-action context's per-nation key mask.
   for (TZone* maskZone = g_pMapActionContextListHead; maskZone != 0; maskZone = maskZone->prev18) {
     maskZone->nationKeyMask = 0;
   }
@@ -615,7 +615,7 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
   portZone->SetMapActionContextTargetTileAndRefreshMarkers(static_cast<int>(nationSeed), -1);
   portZone->tileOrTerrainId0c = tileIndex;
   portZone->GenerateZoneStatusCodeIfUnset();
-  portZone->GenerateMapActionContextDisplayNameAndHeadline(0, 0);
+  portZone->NameThyself(0, 0);
 
   short bestSeaTile = -1;
   for (int i = 0; i < 6; ++i) {

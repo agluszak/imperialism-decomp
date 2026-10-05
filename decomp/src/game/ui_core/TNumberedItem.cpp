@@ -20,7 +20,7 @@ TNumberedItem::TNumberedItem() : TMegaPicture() {
 TNumberedItem::~TNumberedItem() {}
 
 // FUNCTION: IMPERIALISM 0x00507850
-void TNumberedItem::InitializeNumberedResourceItem(TView* panel, int* position, int* size,
+void TNumberedItem::INumberedItem(TView* panel, int* position, int* size,
                                                    short resourceIconIndex, short count) {
   InitializeUiResourceEntryFrameAndParent(panel->resourceContext, panel, position, size, 5, 5, 0);
   iconRowIndex = resourceIconIndex;

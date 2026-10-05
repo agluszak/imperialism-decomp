@@ -191,7 +191,7 @@ void TSoundPlayer::ResetDualAudioCuePools() {
 }
 
 // FUNCTION: IMPERIALISM 0x00593760
-void TSoundPlayer::PushCueToDualAudioCuePools(int cueId) {
+void TSoundPlayer::AddToPlayList(int cueId) {
   audioCuePool->InsertLast(cueId);
   remainingRandomAudioCues->InsertLast(cueId);
 }
@@ -354,7 +354,7 @@ void TSoundPlayer::SetActiveAudioCueAndResetQueue(int cueId, bool flag) {
 }
 
 // FUNCTION: IMPERIALISM 0x00593c10
-void TSoundPlayer::StopCdAudioPlayback(bool fadeOut) {
+void TSoundPlayer::StopMusic(bool fadeOut) {
   int pendingCount = audioCuePool->GetSize();
   if (pendingCount > 0) {
     audioCuePool->RemoveAll();

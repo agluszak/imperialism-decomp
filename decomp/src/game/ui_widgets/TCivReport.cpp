@@ -26,7 +26,7 @@ TCivReport::TCivReport() : TPicture() {}
 TCivReport::~TCivReport() {}
 
 // FUNCTION: IMPERIALISM 0x00590cb0
-void TCivReport::PopulateCivilianReportContent(TCivUnit* civilianOrderEntry) {
+void TCivReport::StuffValues(TCivUnit* civilianOrderEntry) {
   CString reportText;
   CString templateText;
   CString expandedText;
@@ -132,7 +132,7 @@ void TCivReport::PopulateCivilianReportContent(TCivUnit* civilianOrderEntry) {
   infoControl->AssertValid();
   infoControl->UpdateTextEntrySharedStringAndMaybeNotify(&reportText, false);
   infoControl->SetTextStyle(0, 12, 0x2b6a);
-  infoControl->SetTextAlignmentAndMaybeRefresh(1, false);
+  infoControl->SetJustification(1, false);
   infoControl->CenterVertically(true);
 
   for (int titleIndex = 0; titleIndex < 3; ++titleIndex) {
@@ -146,8 +146,8 @@ void TCivReport::PopulateCivilianReportContent(TCivUnit* civilianOrderEntry) {
     TStaticText* titleControl = static_cast<TStaticText*>(
         ResolveControlByTag(IMPERIALISM_FOURCC('t', 't', 'l', '0') + titleIndex));
     titleControl->AssertValid();
-    titleControl->SetTextFromStringResource(0x2724, static_cast<short>(titleIndex + 12), true);
+    titleControl->SetTextWithStrListID(0x2724, static_cast<short>(titleIndex + 12), true);
     titleControl->InstallTextStyle(titleStyle, 0);
-    titleControl->SetTextAlignmentAndMaybeRefresh(1, false);
+    titleControl->SetJustification(1, false);
   }
 }

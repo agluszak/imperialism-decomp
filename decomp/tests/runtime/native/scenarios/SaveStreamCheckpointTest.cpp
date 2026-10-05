@@ -125,7 +125,7 @@ private:
     // cityScoreTable[P].stationedUnitChain (TUnit::Free, verified faithful at 0x5c2680, does not
     // unlink; nor does TCountry::Free at 0x4d6ba0). The freshly seeded units are then linked in
     // front of those freed ones, and walking that tail dereferences freed units. Detaching first,
-    // through each unit's own DetachUnitOrderFromOwnerAndReset, removes the difference between this
+    // through each unit's own Vaporize, removes the difference between this
     // replay and a menu load rather than papering over what the rebuild does. Reading into the
     // live managers is what the real load does; a replay that read into throwaway objects would
     // not exercise the same version gates or collection states, so the game state after this test

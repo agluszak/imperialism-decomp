@@ -347,7 +347,7 @@ void TMapDialog::Free() {
   }
   overlayObject = 0;
   TView::Free();
-  g_pUiAnimator->FreeUiTransientRegistryPayloads();
+  g_pUiAnimator->FreeAllAnis();
 }
 
 // FUNCTION: IMPERIALISM 0x00519d30
@@ -368,7 +368,7 @@ void TMapDialog::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x00519e00
-void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
+void TMapDialog::FrameCursorArea() {
   short neighborTiles[6] = {-1, -1, -1, -1, -1, -1};
   bool updateNeighborHighlights = false;
   bool frameHoveredTile = cursorId4e != 0xffff && cursorId4e != 0x3f0;
@@ -450,7 +450,7 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
     QDFrameRect(&hoveredRect);
     SetQuickDrawFillColor(0);
     if (updateNeighborHighlights) {
-      DrawHexNeighborOutlineFromTileArray(neighborTiles);
+      FrameNeighbors(neighborTiles);
     }
   }
 
@@ -466,7 +466,7 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
 // also present so shared borders are drawn once. 0x3f is the cell size, 0x20 the
 // half-cell.
 // FUNCTION: IMPERIALISM 0x0051a2a0
-void TMapDialog::DrawHexNeighborOutlineFromTileArray(short* neighborTiles) {
+void TMapDialog::FrameNeighbors(short* neighborTiles) {
   const CPoint* viewOrigin = &viewportOrigin;
   short outY;
   short outX;
@@ -1022,7 +1022,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
             RECT animationRect = {animationX, animationY, animationX + 0x40, animationY + 0x40};
             TCivAnimation2* animation =
                 new TCivAnimation2(this, &animationRect, unit->orderType, animationTag);
-            g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
+            g_pUiAnimator->AddAnimation(animation);
           }
         }
 
@@ -1197,10 +1197,10 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
         }
         short coastOffset;
         if (useTripleOffset) {
-          coastOffset = g_pGlobalMapState->MapImprovementOffsetFromAdjacencyVariantTriple(
+          coastOffset = g_pGlobalMapState->GetDeltaTileOffset(
               static_cast<char>(adjacencyMask), static_cast<char>(corner + 1), riverSpriteCode);
         } else {
-          coastOffset = g_pGlobalMapState->MapImprovementOffsetFromAdjacencyVariant(
+          coastOffset = g_pGlobalMapState->GetCoastTileOffset(
               static_cast<char>(adjacencyMask), static_cast<char>(corner + 1),
               static_cast<char>(variantMask & (1 << corner)));
         }
@@ -2464,7 +2464,7 @@ void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projec
       CRect animationRect(animationX, animationY, animationX + 0x40, animationY + 0x40);
       TCivAnimation2* animation =
           new TCivAnimation2(this, &animationRect, orderEntry->orderType, animationTag);
-      g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
+      g_pUiAnimator->AddAnimation(animation);
     }
     return;
   }

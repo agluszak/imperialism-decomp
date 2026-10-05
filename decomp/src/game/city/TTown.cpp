@@ -168,13 +168,13 @@ void TTown::CalculateResources() {
         temporarilyRaisedDevelopment =
             g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, true) == 0;
         if (temporarilyRaisedDevelopment) {
-          g_pGlobalMapState->SetCivilianDevelopmentClassNibble(tileIndex, true, 1, false);
+          g_pGlobalMapState->SetDevelopmentLevel(tileIndex, true, 1, false);
         }
         resourceYieldByType[resource] = static_cast<short>(
             resourceYieldByType[resource] +
             g_pGlobalMapState->FindResourceCapabilityRequirementLevel(tileIndex, edge));
         if (temporarilyRaisedDevelopment) {
-          g_pGlobalMapState->SetCivilianDevelopmentClassNibble(tileIndex, true, 0, false);
+          g_pGlobalMapState->SetDevelopmentLevel(tileIndex, true, 0, false);
         }
       } else {
         resourceYieldByType[resource] = static_cast<short>(

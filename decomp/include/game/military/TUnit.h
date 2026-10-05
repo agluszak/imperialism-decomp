@@ -29,7 +29,7 @@ public:
   // the per-tile / per-city-record order chains. Base body is a no-op.
   virtual void MoveTo(short nTileIndex);                // slot 0x28
   virtual void ContinueOrders();                        // slot 0x2c, Mac oracle
-  virtual void DetachUnitOrderFromOwnerAndReset();      // slot 0x30
+  virtual void Vaporize();      // slot 0x30
   virtual void SetOrders(UnitOrder order, int payload); // slot 0x34
 
   short orderType; // 0x04

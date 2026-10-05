@@ -8,7 +8,7 @@
 class TStream;
 class TTaskForce;
 
-// Result buffer filled by SelectEligibleMapOrderInteractionForNationAndContext for the
+// Result buffer filled by TryMerchantInterception for the
 // first eligible queued interaction: the offering nation code, the packed exchange-
 // direction flags (low 2 bits), and the chosen order entry.
 struct TMapOrderInteractionSelection {
@@ -127,16 +127,16 @@ public:
   // CALL` sequence at 0x557ca7/0x557cb1 and the callee's `RET 4`. Sweeps the 7
   // playable nations that have a live city, and for each its 17 tracked map-order
   // interaction slots, reading every queued entry via TGreatPower's tracked-slot
-  // virtuals (GetTrackedSlotEntryCountLow @ slot 0x6d, ReadTrackedSlotEntryFields @
+  // virtuals (GetTrackedSlotEntryCountLow @ slot 0x6d, GetDealInfo @
   // slot 0x6f). Each live entry builds a localized diplomacy/order-exchange event
   // message and, gated by `mode` (1 = offer pass, 2 = accept pass) and the selected
   // interaction's direction flags, applies the full exchange outcome: resource and
   // treasury transfers, capped-at-499 admiral/ship stat writes, per-nation counter
   // deltas, localized report rows, map-context action enqueueing, and tracked-slot
   // consumption. The tracked entry's payload is a treasury multiplier/value; the
-  // selected TTaskForce comes from SelectEligibleMapOrderInteractionForNationAndContext.
+  // selected TTaskForce comes from TryMerchantInterception.
   // The text receiver is g_pSimMgr (vtable 0x662a58; calls are
-  // TSimMgr::GetStringPrelude/GetString).
+  // TSimMgr::GetCommodityName/GetString).
   // 0x557f10 (1901 bytes). Scans orderQueueHead for the first queued order entry
   // whose interaction is eligible to fire this turn for `nation`: gates the nation's
   // own type-7 entry children by a priority-vs-descriptor roll, then for each
@@ -147,7 +147,7 @@ public:
   // eligible entry it fills `outResult` and returns 1; otherwise 0. `portZoneContext`
   // is the resolved TZone* (as int), `offerAmount` the transfer size.
   char
-  SelectEligibleMapOrderInteractionForNationAndContext(TMapOrderInteractionSelection* outResult,
+  TryMerchantInterception(TMapOrderInteractionSelection* outResult,
                                                        TZone* portZoneContext, short nation,
                                                        short offerAmount);
 

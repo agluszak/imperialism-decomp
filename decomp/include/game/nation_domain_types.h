@@ -22,8 +22,8 @@ typedef short NeedType;
 typedef short RelationDelta;
 
 // The two great powers a diplomatic congress is convened around. Written together by
-// TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices (0x4f0e20), which fills
-// them straight from BuildMajorNationDiplomacyStandingRanking's top/runner-up outputs,
+// TDiplomacyMgr::ConveneCouncil (0x4f0e20), which fills
+// them straight from ChooseCandidates's top/runner-up outputs,
 // and read back as a pair by TCouncilPanelView::Draw (0x4fb030) -- a chairman slot of
 // -1 there means "no summit in session". The turn-event-0x26 wire snapshot carries the
 // same record, which is why both sides copy it as one four-byte unit.
@@ -34,7 +34,7 @@ struct CongressLeadership {
 ASSERT_SIZE(CongressLeadership, 4);
 
 // How the owned provinces split across the congress. Recomputed in one place, at the
-// tail of TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices (0x4f0e20), from
+// tail of TDiplomacyMgr::ConveneCouncil (0x4f0e20), from
 // that function's topSideCount / secondSideCount / (totalOwnedCount - the other two)
 // running totals; TCouncilPanelView::Draw (0x4fb030) prints them as the three
 // "<nation>: <count>" rows of the council header, in this order.

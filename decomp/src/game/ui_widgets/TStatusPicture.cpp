@@ -71,7 +71,7 @@ void TStatusPicture::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005941e0
-void TStatusPicture::SetComparisonModeAndRefresh(int comparisonMode) {
+void TStatusPicture::SwitchStatusMode(int comparisonMode) {
   comparisonMode90 = comparisonMode;
   RefreshControl();
   if (comparisonMode == 0) {
@@ -265,7 +265,7 @@ void TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets() {
       TPicture* widget =
           static_cast<TPicture*>(ResolveControlByTag(index + kControlTagArmyPlacardFirst));
       widget->AssertValid();
-      widget->SetPictureResourceIdAndRefresh(static_cast<short>(*idPtr + 0x10d7), true);
+      widget->SetPictureRsrcID(static_cast<short>(*idPtr + 0x10d7), true);
     }
     index = index + 1;
     idPtr = idPtr + 1;

@@ -80,7 +80,7 @@ void TArmyToolbar::SetProvince(short provinceIndex) {
   short upgradePictureId = hasUpgradeableUnit ? 0x24d5 : 0x04b5;
   TPicture* upgradePicture = static_cast<TPicture*>(ResolveControlByTag(kControlTagGarr));
   upgradePicture->AssertValid();
-  upgradePicture->SetPictureResourceIdAndRefresh(upgradePictureId, true);
+  upgradePicture->SetPictureRsrcID(upgradePictureId, true);
   g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
 }
 

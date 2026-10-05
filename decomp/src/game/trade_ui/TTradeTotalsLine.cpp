@@ -9,7 +9,7 @@ TTradeTotalsLine::TTradeTotalsLine() : TLineData() {}
 
 // FUNCTION: IMPERIALISM 0x005c1980
 void TTradeTotalsLine::ITradeTotalsLine(short rowArg, short colArg, int* bounds, short value) {
-  SetLineDataRowAndBounds(rowArg, colArg, bounds);
+  ILineData(rowArg, colArg, bounds);
   nationSlot = value;
 }
 

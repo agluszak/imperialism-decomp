@@ -70,7 +70,7 @@ char TAnimator::DoIdle(int action) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a0d10
-void TAnimator::AddObjectToUiTransientRegistry(TAnimation* animationObject) {
+void TAnimator::AddAnimation(TAnimation* animationObject) {
   registryList->AddTail(animationObject);
 #ifdef IMPERIALISM_RUNTIME_TESTS
   RuntimeTestDriver::ObserveDeferred(kObserveAnimationAdded);
@@ -145,7 +145,7 @@ void TAnimator::TranslateListRectsAndDropNonIntersectingEntries(int dx, int dy, 
 }
 
 // FUNCTION: IMPERIALISM 0x004a0f80
-void TAnimator::FreeUiTransientRegistryPayloads() {
+void TAnimator::FreeAllAnis() {
   if (this != 0) {
     registryList->FreePayloads();
 #ifdef IMPERIALISM_RUNTIME_TESTS

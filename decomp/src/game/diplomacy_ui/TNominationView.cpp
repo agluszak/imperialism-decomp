@@ -28,13 +28,13 @@ void TNominationView::DoPostCreate(int arg) {
 
   TStaticText* countryControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCoun));
   countryControl->AssertValid();
-  countryControl->SetTextFromStringResource(0x2733, 0x5f, true);
+  countryControl->SetTextWithStrListID(0x2733, 0x5f, true);
   BuildUiTextStyleDescriptor(&style, 0, 0x12, 0x2b6c);
   countryControl->InstallTextStyle(style, 1);
 
   TStaticText* titleControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl));
   titleControl->AssertValid();
-  titleControl->SetTextFromStringResource(0x2733, 0x60, true);
+  titleControl->SetTextWithStrListID(0x2733, 0x60, true);
   BuildUiTextStyleDescriptor(&style, 0, 0xe, 0x2b6c);
   titleControl->InstallTextStyle(style, 1);
 

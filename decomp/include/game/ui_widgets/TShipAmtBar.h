@@ -17,7 +17,7 @@ public:
   DECLARE_DYNCREATE(TShipAmtBar)
 
   void DoPostCreate(int arg) override;
-  void RenderPrimarySurfaceOverlayPanelWithClipCache() override;
+  void DrawAmt() override;
 };
 
 ASSERT_SIZE(TShipAmtBar, 0x6c);

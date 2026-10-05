@@ -99,7 +99,7 @@ short TTraderAmtBar::ApplyMoveClamp(int baseValue, short requestedValue) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058b0f0
-void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
+void TTraderAmtBar::DrawAmt() {
   CTemporaryRegion surface;
   TAmtBar* control = this;
   GetClip(surface.tempRgn);

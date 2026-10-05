@@ -67,7 +67,7 @@ public:
   // TSoundPlayer::FadeCD.
   char FadeCD();
 
-  void StopCdAudioPlayback(bool fadeOut); // 0x593c10
+  void StopMusic(bool fadeOut); // 0x593c10
 
   // Arm the deferred CD-audio fade callback unless a fade is already active. This is
   // the out-of-line copy used by the original sound-player TU. 0x593ce0.
@@ -96,7 +96,7 @@ public:
   void ResetDualAudioCuePools(); // 0x593730
   // Non-virtual: push cueId onto both channel peers' queues (InsertLast on
   // each). Same callsite as above.
-  void PushCueToDualAudioCuePools(int cueId); // 0x593760
+  void AddToPlayList(int cueId); // 0x593760
 
   // Non-virtual: force-switch to cueId, clearing any pending random-cue rotation state or
   // deferred preset-change state in the process, then reset both channel peers' queues to

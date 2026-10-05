@@ -38,7 +38,7 @@ public:
   // Arms/disarms the 'targ'/'done'/'retr'/'auto' control cluster for the live-battle
   // vs deployment phase (mode 1 = battle live). Resolves the child controls on
   // itself via slot 0x25. 0x5acd60, __thiscall, ret 4.
-  void ConfigureTacticalTargetDoneRetreatAutoControls(int mode);
+  void SetActionMode(int mode);
 
   // NOOP: verified empty in original 0x005ac7b7 (no standalone TTacticalToolbar::TTacticalToolbar body exists: CreateObject 0x005ac780 inlines this default ctor, calling the TCluster base ctor directly at that site)
   TTacticalToolbar() {}

@@ -40,13 +40,13 @@ public:
   // Appends an animation object to the registry list. The registry stores
   // heterogeneous animation-shaped objects (tag at +0x18, Free at vtable slot 7);
   // TAnimation* keeps the common call sites cast-free. 0x4a0d10.
-  void AddObjectToUiTransientRegistry(TAnimation* animationObject);
+  void AddAnimation(TAnimation* animationObject);
   // Walks the registry for the animation whose registryTag matches `tag`;
   // null if the animator is null, the list is empty, or nothing matches. 0x4a0d30.
   TAnimation* FindRegisteredAnimationByTag(int tag);
   // Releases every payload owned by registryList while retaining the list itself.
   // Null-receiver-safe because retail callers dispatch through g_pUiAnimator directly.
-  void FreeUiTransientRegistryPayloads(); // 0x4a0f80
+  void FreeAllAnis(); // 0x4a0f80
   // Offsets every registered animation's screenRect by (dx, dy), then removes and
   // frees any entry whose translated rect no longer intersects clipRect (RECT passed
   // by value: 4 stack dwords). Null-receiver-safe like FindRegisteredAnimationByTag.

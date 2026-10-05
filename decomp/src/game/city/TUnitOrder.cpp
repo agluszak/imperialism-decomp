@@ -230,7 +230,7 @@ void TUnitOrder::Produce() {
 // The store order (0x48, 0x4c, 0x50, 0x4e, 0x52, 0x54, 0x56) follows the original's
 // interleaved word moves.
 // FUNCTION: IMPERIALISM 0x004b77e0
-void TUnitOrder::SetOrderCostProfile(short resourceTypeIndex, short nPrimaryInputResourceId,
+void TUnitOrder::ReplaceOrder(short resourceTypeIndex, short nPrimaryInputResourceId,
                                      short nPrimaryInputPerUnit, short nSecondaryInputResourceId,
                                      short nSecondaryInputPerUnit, short nCashCostPerUnit,
                                      short nWorkforceMode) {

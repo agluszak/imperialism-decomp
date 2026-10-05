@@ -474,7 +474,7 @@ void TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits() {
       if (unit->strength34 > 0 && unit->tileIndex06 != -1) {
         unit->ContinueOrders();
       } else {
-        unit->DetachUnitOrderFromOwnerAndReset();
+        unit->Vaporize();
         unit->Free();
       }
     }
@@ -789,7 +789,7 @@ void TArmyMgr::RetreatDefender(TArmyStack* stack, short tileIndex) {
     for (TMilitaryUnit* unit = stack->ResetCursorAndGetHeadUnit(); unit != 0;
          unit = stack->AdvanceCursorAndGetUnit()) {
       if (unit->strength34 != 0) {
-        unit->DetachUnitOrderFromOwnerAndReset();
+        unit->Vaporize();
       }
     }
     return;
@@ -799,7 +799,7 @@ void TArmyMgr::RetreatDefender(TArmyStack* stack, short tileIndex) {
   for (TMilitaryUnit* unit = stack->ResetCursorAndGetHeadUnit(); unit != 0;
        unit = stack->AdvanceCursorAndGetUnit()) {
     if (g_awTacticalUnitCategoryCodeBySlot[unit->orderType] == 0) {
-      unit->DetachUnitOrderFromOwnerAndReset();
+      unit->Vaporize();
     } else {
       unit->SetOrders(kUnitOrderRedeploy, chosenRegion);
     }
@@ -870,10 +870,10 @@ bool TArmyMgr::StrategicCombat(TArmyStack* stack1, TArmyStack* stack2) {
     int count1 = 0;
     int sum2 = 0;
     int count2 = 0;
-    stack1->AccumulateWeightedMeterAndCountFromEligibleLinkedEntries(&sum1, &count1, counter);
-    stack2->AccumulateWeightedMeterAndCountFromEligibleLinkedEntries(&sum2, &count2, counter);
-    stack1->ApplyRandomizedMeterDecayToEligibleLinkedEntries(sum1, count1, counter);
-    stack2->ApplyRandomizedMeterDecayToEligibleLinkedEntries(sum2, count2, counter);
+    stack1->StrategicFirepower(&sum1, &count1, counter);
+    stack2->StrategicFirepower(&sum2, &count2, counter);
+    stack1->ApplyStrategicDamage(sum1, count1, counter);
+    stack2->ApplyStrategicDamage(sum2, count2, counter);
     ++counter;
   }
 
@@ -881,12 +881,12 @@ bool TArmyMgr::StrategicCombat(TArmyStack* stack1, TArmyStack* stack2) {
   // has an eligible unit, boost stack1's meters (and give stack2 a plain refresh);
   // otherwise refresh stack1 plainly and boost stack2's instead.
   if (stack1->UnitsFighting()) {
-    stack1->ApplyMeterGrowthToEligibleUnits(true);
-    stack2->ApplyMeterGrowthToEligibleUnits(false);
+    stack1->RaiseExperience(true);
+    stack2->RaiseExperience(false);
     return true;
   }
-  stack1->ApplyMeterGrowthToEligibleUnits(false);
-  stack2->ApplyMeterGrowthToEligibleUnits(true);
+  stack1->RaiseExperience(false);
+  stack2->RaiseExperience(true);
   return false;
 }
 
@@ -966,7 +966,7 @@ bool TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx(int contextArg) {
   }
   if (foundMovableUnit) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x3aa7, 0, 1);
-    g_pGlobalMapState->MarkAdjacentHexOrderDirectionAndSelectTile(this->pendingMapActionIndex,
+    g_pGlobalMapState->ActivateMarchingArrow(this->pendingMapActionIndex,
                                                                   contextArg, false);
   }
   return foundMovableUnit;
@@ -1486,7 +1486,7 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
       unit->SetOrders(kUnitOrderRedeploy, cityRecordIndex);
     }
   }
-  g_pGlobalMapState->MarkAdjacentHexOrderDirectionAndSelectTile(this->pendingMapActionIndex,
+  g_pGlobalMapState->ActivateMarchingArrow(this->pendingMapActionIndex,
                                                                 cityRecordIndex, true);
 
   if (g_pViewMgr->mapUberPictureF0 != nullptr) {
@@ -1618,7 +1618,7 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
 }
 
 // FUNCTION: IMPERIALISM 0x004a5ca0
-void TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters(TArmyStack* ourStack,
+void TArmyMgr::EndTacticalBattle(TArmyStack* ourStack,
                                                             TArmyStack* enemyStack,
                                                             unsigned char sideWonFlag,
                                                             int battleSiteIndex) {
@@ -1629,12 +1629,12 @@ void TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters(TArmyStack* ourStack
     this->RetreatDefender(enemyStack, static_cast<short>(battleSiteIndex));
     ourStack->ReseatChainUnitsAndClearOrders();
     this->perTileOwnerNationCodeCache1c[battleSiteIndex] = ourStack->categoryFlag;
-    ourStack->ApplyMeterGrowthToEligibleUnits(true);
-    enemyStack->ApplyMeterGrowthToEligibleUnits(false);
+    ourStack->RaiseExperience(true);
+    enemyStack->RaiseExperience(false);
   } else {
     this->RetreatAttacker(ourStack);
-    ourStack->ApplyMeterGrowthToEligibleUnits(false);
-    enemyStack->ApplyMeterGrowthToEligibleUnits(true);
+    ourStack->RaiseExperience(false);
+    enemyStack->RaiseExperience(true);
   }
   this->ResolveNextMove();
 }
@@ -1875,17 +1875,17 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
   TStaticText* titleLabel =
       static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagTitl)); // 'titl'
   titleLabel->AssertValid();
-  titleLabel->SetTextFromStringResource(0x2744, 5, false);
+  titleLabel->SetTextWithStrListID(0x2744, 5, false);
   titleLabel->InstallTextStyle(styleA, 0);
 
   TStaticText* label1 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab1));
   label1->AssertValid();
-  label1->SetTextFromStringResource(0x2744, 6, false);
+  label1->SetTextWithStrListID(0x2744, 6, false);
   label1->InstallTextStyle(styleC, 0);
 
   TStaticText* label2 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab2));
   label2->AssertValid();
-  label2->SetTextFromStringResource(0x2744, 7, false);
+  label2->SetTextWithStrListID(0x2744, 7, false);
   label2->InstallTextStyle(styleC, 0);
 
   TStaticText* label3 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab3));
@@ -1895,7 +1895,7 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
 
   TStaticText* label4 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab4));
   label4->AssertValid();
-  label4->SetTextFromStringResource(0x2744, 8, false);
+  label4->SetTextWithStrListID(0x2744, 8, false);
   label4->InstallTextStyle(styleD, 0);
 
   TDialogBehavior* behavior = node->GetDialogBehavior();
@@ -2049,7 +2049,7 @@ void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, in
             // needed once the evicted unit has been copied into the record.
             rec.detailIdentity = kControlTagArmy; // 'army'
             rec.strengthBucket = static_cast<short>(unit->experiencePercent / 100);
-            unit->DetachUnitOrderFromOwnerAndReset();
+            unit->Vaporize();
             unit->Free();
           }
         }
