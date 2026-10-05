@@ -260,7 +260,7 @@ short TradeScreen::SellBarValue(short resource) const {
 
 bool TradeScreen::SellRowIsAdjustable(short resource) const {
   TTradeCluster* row = Row(resource);
-  return row != 0 && row->GetBoolSlot1DC() != 0 && SellQuantity(resource) > 1;
+  return row != 0 && row->IsSellOffer() != 0 && SellQuantity(resource) > 1;
 }
 
 bool TradeScreen::SellLabelHasOwnLayout(short resource) const {
