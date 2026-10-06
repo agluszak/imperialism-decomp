@@ -23,8 +23,8 @@ public:
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x4a7960
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x4a77b0
   virtual void Free() override;                    // slot 0x07 0x4a7c20
-  short field4;                                    // +0x04 -- composition class
-  short field6;                                    // +0x06 -- composition class and random sort key
+  short compositionClass;                          // +0x04 -- composition class
+  short sortKey;                                   // +0x06 -- composition class and random sort key
   signed char categoryFlag;
   unsigned char fortLevelAttackerPenaltyCache;
   short unitCount;      // +0x0a -- linked unit count, serialized as a signed word

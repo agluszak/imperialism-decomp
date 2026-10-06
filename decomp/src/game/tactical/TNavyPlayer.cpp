@@ -15,7 +15,7 @@ void TNavyPlayer::INavyPlayer(TTaskForce* force, char isOurSide, bool watchFlag,
   watchFlagD = watchFlag;
   nationIndex1C = nationIndex;
   cursorIndex = 0;
-  fieldF = false;
+  retreatOrdered = false;
   field20 = false;
   targetingMode = kNavyTargetingHull;
 

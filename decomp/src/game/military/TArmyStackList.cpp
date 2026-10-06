@@ -8,8 +8,8 @@ TArmyStackList::~TArmyStackList() {}
 
 // FUNCTION: IMPERIALISM 0x004a8560
 short TArmyStackList::Compare(void* a, void* b) {
-  short aKey = static_cast<TArmyStack*>(a)->field6;
-  short bKey = static_cast<TArmyStack*>(b)->field6;
+  short aKey = static_cast<TArmyStack*>(a)->sortKey;
+  short bKey = static_cast<TArmyStack*>(b)->sortKey;
   if (aKey < bKey) {
     return 1;
   }

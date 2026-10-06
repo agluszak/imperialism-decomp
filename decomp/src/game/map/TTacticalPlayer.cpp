@@ -41,7 +41,7 @@ void TTacticalPlayer::ITacticalPlayer(unsigned char isOurSide, unsigned char wat
                                       int nationIndex) {
   isOurSideFlag = isOurSide;
   watchFlagD = watch;
-  fieldF = false;
+  retreatOrdered = false;
   sideReadyFlag = false;
   cursorIndex = 0;
   nationIndex1C = nationIndex;

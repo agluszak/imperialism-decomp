@@ -74,7 +74,7 @@ void TArmyPlayer::IArmyPlayer(TArmyStack* stack, bool isOurSide, unsigned char w
   watchFlagD = watchFlag;
   nationIndex1C = nationIndex;
   cursorIndex = 0;
-  fieldF = false;
+  retreatOrdered = false;
   field20 = false;
   field24 = 0;
 
@@ -644,7 +644,7 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
     }
   }
 
-  if (fieldF) {
+  if (retreatOrdered) {
     cursorMode = 1;
   }
   if (cursorMode == 1) {

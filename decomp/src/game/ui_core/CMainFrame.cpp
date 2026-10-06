@@ -48,29 +48,28 @@ END_MESSAGE_MAP()
 #endif
 
 // FUNCTION: IMPERIALISM 0x00484bf0
-CMainFrame::CMainFrame() : CFrameWnd(), field_BC(0), field_C4(0), field_CC(1) {
+CMainFrame::CMainFrame() : CFrameWnd(), m_pDibPalette(0), m_pBackdropDib(0), field_CC(1) {
   m_backgroundColor = kTiledBackdropSentinelColor;
 }
 
-
 // FUNCTION: IMPERIALISM 0x00484c70
 CMainFrame::~CMainFrame() {
-  if (field_BC != 0) {
-    delete field_BC;
+  if (m_pDibPalette != 0) {
+    delete m_pDibPalette;
   }
-  if (field_C4 != 0) {
-    delete field_C4;
+  if (m_pBackdropDib != 0) {
+    delete m_pBackdropDib;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00484d00
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
-  field_BC = 0;
+  m_pDibPalette = 0;
   if (CFrameWnd::OnCreate(lpCreateStruct) == -1) {
     return -1;
   }
   CreateBackdropWindowIfSplashEnabled(this);
-  field_BC = g_pResourceMgr->EnsureDefaultDibPalette();
+  m_pDibPalette = g_pResourceMgr->EnsureDefaultDibPalette();
   OnQueryNewPalette();
   return 0;
 }
@@ -125,13 +124,13 @@ void CMainFrame::OnStartupCommand100() {
 
 // FUNCTION: IMPERIALISM 0x00484ff0
 BOOL CMainFrame::OnQueryNewPalette() {
-  if (field_BC == 0) {
+  if (m_pDibPalette == 0) {
     return 0;
   }
   const MSG* msg = GetCurrentMessage();
   const BOOL background = (msg != nullptr && msg->message == 0x311) ? TRUE : FALSE;
   CClientDC dc(this);
-  CPalette* priorPalette = dc.SelectPalette(field_BC, background);
+  CPalette* priorPalette = dc.SelectPalette(m_pDibPalette, background);
   const UINT realized = dc.RealizePalette();
   dc.SelectPalette(priorPalette, TRUE);
   if (realized == 0) {
@@ -156,15 +155,15 @@ void CMainFrame::OnPaletteChanged(CWnd* pFocusWnd) {
 
 // FUNCTION: IMPERIALISM 0x00485150
 CDibPal* CMainFrame::ReplacePaletteAndRealize(CDibPal* palette) {
-  CDibPal* previousPalette = field_BC;
-  field_BC = palette;
+  CDibPal* previousPalette = m_pDibPalette;
+  m_pDibPalette = palette;
   OnQueryNewPalette();
   return previousPalette;
 }
 
 // FUNCTION: IMPERIALISM 0x00485180
 void CMainFrame::OnResetPalette() {
-  field_BC = g_pResourceMgr->EnsureDefaultDibPalette();
+  m_pDibPalette = g_pResourceMgr->EnsureDefaultDibPalette();
   OnQueryNewPalette();
 }
 
@@ -291,22 +290,22 @@ BOOL CMainFrame::OnEraseBkgnd(CDC* pDC) {
     pDC->FillSolidRect(&solidRect, m_backgroundColor);
     return TRUE;
   }
-  if (field_C4 == 0) {
-    field_C4 = new CDib();
-    field_C4->LoadBitmapResourceAndInitializeSurfaceState(MAKEINTRESOURCE(0x119), 0);
+  if (m_pBackdropDib == 0) {
+    m_pBackdropDib = new CDib();
+    m_pBackdropDib->LoadBitmapResourceAndInitializeSurfaceState(MAKEINTRESOURCE(0x119), 0);
   }
   RECT clientRect;
   GetClientRect(&clientRect);
   int tileRows = (clientRect.bottom - clientRect.top) / 128;
   int tileCols = (clientRect.right - clientRect.left) / 128;
-  field_C4->SelectAndRealizeDibPalette(pDC, FALSE);
+  m_pBackdropDib->SelectAndRealizeDibPalette(pDC, FALSE);
   POINT tile;
   tile.x = 0;
   tile.y = 0;
   for (int row = 0; row <= tileRows; ++row) {
     tile.x = 0;
     for (int col = 0; col <= tileCols; ++col) {
-      field_C4->StretchDibitsFromStoredBitmapToHdc(pDC, &tile);
+      m_pBackdropDib->StretchDibitsFromStoredBitmapToHdc(pDC, &tile);
       tile.x += 128;
     }
     tile.y += 128;

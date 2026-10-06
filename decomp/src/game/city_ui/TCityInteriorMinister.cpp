@@ -145,7 +145,7 @@ void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
 
   FillLists();
 
-  field3c = -1;
+  railheadTargetTile = -1;
   accumulatedUnmetNeed = 0;
 
   for (short i = 0; i < 23; ++i) {
@@ -269,7 +269,7 @@ void TCityInteriorMinister::WriteTo(TStream* stream) {
   stream->WriteBytes(&pendingRecruitmentCommandIndex, 2);
   stream->WriteBytes(&pendingUnitCommandIndex, 2);
   stream->WriteBytes(&resource15ProductionPercent, 2);
-  stream->WriteBytes(&field3c, 2);
+  stream->WriteBytes(&railheadTargetTile, 2);
   stream->WriteBytes(&accumulatedUnmetNeed, 2);
   WriteShortArrayElems(stream, orderMetricTable40, 61);
   stream->WriteBytes(&deferredLaborShortfall, 2);
@@ -347,7 +347,7 @@ void TCityInteriorMinister::ReadFrom(TStream* stream) {
   stream->ReadBytes(&pendingRecruitmentCommandIndex, 2);
   stream->ReadBytes(&pendingUnitCommandIndex, 2);
   stream->ReadBytes(&resource15ProductionPercent, 2);
-  stream->ReadBytes(&field3c, 2);
+  stream->ReadBytes(&railheadTargetTile, 2);
   stream->ReadBytes(&accumulatedUnmetNeed, 2);
   stream->ReadBytes(orderMetricTable40, metricCount * 2);
   SwapShortArrayBytes(orderMetricTable40, metricCount);
@@ -1146,12 +1146,12 @@ void TCityInteriorMinister::ProcessUnitOrders() {
   char* primaryDistanceMap = CreateSeaDistanceMap(&ownedTiles);
   char* secondaryDistanceMap = BuildFrogCityDistanceMapFromReachableSeaCandidates(&ownedTiles);
   SeekResources(&ownedTiles, primaryDistanceMap);
-  if (field3c == -1) {
+  if (railheadTargetTile == -1) {
     SeekLostTowns(primaryDistanceMap, secondaryDistanceMap);
   }
 
   ResourceKindStorage selectedResourceKind = 0;
-  while (field3c == -1 && selectedResourceKind != kResourceKindNone) {
+  while (railheadTargetTile == -1 && selectedResourceKind != kResourceKindNone) {
     selectedResourceKind = kResourceKindNone;
     for (ResourceKindStorage resourceKind = 0; resourceKind < kResourceKindCount; ++resourceKind) {
       if (((resourceKind >= kResourceIndustrialRawFirst &&
@@ -1167,16 +1167,17 @@ void TCityInteriorMinister::ProcessUnitOrders() {
     if (selectedResourceKind != kResourceKindNone) {
       StartRailheadProject(selectedResourceKind, &ownedTiles, primaryDistanceMap,
                            secondaryDistanceMap);
-      if (field3c == -1) {
+      if (railheadTargetTile == -1) {
         orderTypeTableFC[selectedResourceKind] = 0;
       }
     }
   }
 
-  if (field3c == -1) {
+  if (railheadTargetTile == -1) {
     DispatchBuilders();
-  } else if (g_pGlobalMapState->terrainStateTable[field3c].ownerNationTag != nationSlot) {
-    field3c = -1;
+  } else if (g_pGlobalMapState->terrainStateTable[railheadTargetTile].ownerNationTag !=
+             nationSlot) {
+    railheadTargetTile = -1;
   } else {
     bool hasBuilderOrder = false;
     TUnit* availableBuilderOrder = 0;
@@ -1255,10 +1256,10 @@ void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
     }
   }
 
-  if (field3c != -1) {
-    candidateTiles.Add(field3c);
+  if (railheadTargetTile != -1) {
+    candidateTiles.Add(railheadTargetTile);
     for (short direction = 0; direction < 6; ++direction) {
-      short neighbor = TMapMgr::GetNeighborTileID(field3c, direction);
+      short neighbor = TMapMgr::GetNeighborTileID(railheadTargetTile, direction);
       if (neighbor != -1 &&
           static_cast<short>(g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag) ==
               greatPower->nationSlot) {
@@ -1613,7 +1614,7 @@ void TCityInteriorMinister::SeekLostTowns(char* primaryDistanceMap, char* second
     if (!town->transportLinked &&
         (primaryDistanceMap[town->tileIndex] < 12 || (secondaryDistanceMap[town->tileIndex] < 8 &&
                                                       secondaryDistanceMap[town->tileIndex] > 2))) {
-      field3c = town->tileIndex;
+      railheadTargetTile = town->tileIndex;
       return;
     }
     town = static_cast<TTown*>(townIterator.Advance());
@@ -1623,16 +1624,16 @@ void TCityInteriorMinister::SeekLostTowns(char* primaryDistanceMap, char* second
 // FUNCTION: IMPERIALISM 0x004c2e10
 void TCityInteriorMinister::ContinueRailheadProject(TUnit* builderOrder, char* primaryDistanceMap,
                                                     char* secondaryDistanceMap) {
-  char primaryDistance = primaryDistanceMap[field3c];
+  char primaryDistance = primaryDistanceMap[railheadTargetTile];
   if ((primaryDistance == 0 || primaryDistance > 9) &&
-      !g_pGlobalMapState->CanBuildPortAtTile(field3c)) {
-    if (secondaryDistanceMap[field3c] < 3) {
-      field3c = -1;
+      !g_pGlobalMapState->CanBuildPortAtTile(railheadTargetTile)) {
+    if (secondaryDistanceMap[railheadTargetTile] < 3) {
+      railheadTargetTile = -1;
       return;
     }
     short previousTile;
-    short sourceTile =
-        TraceDescendingTileScoreGradientToSource(field3c, secondaryDistanceMap, &previousTile);
+    short sourceTile = TraceDescendingTileScoreGradientToSource(
+        railheadTargetTile, secondaryDistanceMap, &previousTile);
     if (g_pGlobalMapState->GetTileUnitEntryByOwner(sourceTile, greatPower->nationSlot) == 0) {
       builderOrder->MoveTo(sourceTile);
       builderOrder->SetOrders(kUnitOrderBuildPort, sourceTile);
@@ -1640,11 +1641,11 @@ void TCityInteriorMinister::ContinueRailheadProject(TUnit* builderOrder, char* p
     return;
   }
 
-  if (primaryDistance != 1 && (!g_pGlobalMapState->CanBuildPortAtTile(field3c) ||
+  if (primaryDistance != 1 && (!g_pGlobalMapState->CanBuildPortAtTile(railheadTargetTile) ||
                                (primaryDistance != 0 && primaryDistance <= 6))) {
     short previousTile;
-    short sourceTile =
-        TraceDescendingTileScoreGradientToSource(field3c, primaryDistanceMap, &previousTile);
+    short sourceTile = TraceDescendingTileScoreGradientToSource(railheadTargetTile,
+                                                                primaryDistanceMap, &previousTile);
     unsigned short sourceFlags = g_pGlobalMapState->terrainStateTable[sourceTile].activeFlags;
     if ((sourceFlags & 4) != 0 && (sourceFlags & 0x10) == 0) {
       builderOrder->MoveTo(sourceTile);
@@ -1656,12 +1657,13 @@ void TCityInteriorMinister::ContinueRailheadProject(TUnit* builderOrder, char* p
     return;
   }
 
-  builderOrder->MoveTo(field3c);
+  builderOrder->MoveTo(railheadTargetTile);
   builderOrder->SetOrders(primaryDistance == 1 ? kUnitOrderBuildDepot : kUnitOrderBuildPort,
-                          field3c);
+                          railheadTargetTile);
 
   TTown* projectedTown = new TTown();
-  projectedTown->ITown(g_szEmptyString, field3c, primaryDistance != 1, greatPower->nationSlot);
+  projectedTown->ITown(g_szEmptyString, railheadTargetTile, primaryDistance != 1,
+                       greatPower->nationSlot);
   projectedTown->CalculateResources();
   for (short resourceType = 0; resourceType < kResourceKindCount; ++resourceType) {
     if (((resourceType >= kResourceCotton && resourceType <= kResourceOil) ||
@@ -1671,7 +1673,7 @@ void TCityInteriorMinister::ContinueRailheadProject(TUnit* builderOrder, char* p
     }
   }
   projectedTown->Free();
-  field3c = -1;
+  railheadTargetTile = -1;
 }
 
 // FUNCTION: IMPERIALISM 0x004c30b0
@@ -1751,7 +1753,7 @@ void TCityInteriorMinister::StartRailheadProject(ResourceKindStorage resourceKin
         bestTile = static_cast<short>(candidateTiles->At(candidateOrdinal));
       }
     }
-    field3c = bestTile;
+    railheadTargetTile = bestTile;
   }
   projectedTown->Free();
   candidateTiles->Free();

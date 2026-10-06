@@ -655,7 +655,7 @@ void TTacticalBattle::HandleTacticalBattleCommandTag(int commandTag) {
     }
     if (g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x273d, 0x32, 1, 1)) {
       player = players[currentSide];
-      player->fieldF = true;
+      player->retreatOrdered = true;
       player->ProceedAfterBattleIntroAccepted();
     }
     return;

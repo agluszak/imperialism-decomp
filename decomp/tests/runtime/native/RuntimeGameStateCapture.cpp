@@ -1708,10 +1708,10 @@ JSON_Value* CaptureInteriorCivilianState(TGreatPower* nation) {
   state.Set("pending_development_actions", CapturePendingDevelopmentActions(minister));
   state.Set("average_development_order_allocation",
             minister->GetAverageDevelopmentOrderAllocation());
-  if (minister->field3c < -1 || minister->field3c >= 0x1950) {
+  if (minister->railheadTargetTile < -1 || minister->railheadTargetTile >= 0x1950) {
     FailSemanticCapture("interior-minister railhead target is outside the strategic map");
   }
-  state.SetOptional("railhead_target", static_cast<int>(minister->field3c));
+  state.SetOptional("railhead_target", static_cast<int>(minister->railheadTargetTile));
   state.Set("resource_order_metrics", CaptureResourceTable(minister->orderMetricTable40));
   state.Set("city_order_demand", CaptureAiCityOrderDemand(minister));
   state.Set("deferred_labor_shortfall", static_cast<int>(minister->deferredLaborShortfall));

@@ -45,8 +45,8 @@ TArmyStack::~TArmyStack() {}
 // FUNCTION: IMPERIALISM 0x004a7770
 void TArmyStack::IArmyStack(char ownerNationIndex, short ownerNationCode, short tileIndex) {
   unitCount = 0;
-  field6 = 0;
-  field4 = 0;
+  sortKey = 0;
+  compositionClass = 0;
   fieldC = 0;
   ownerNationCodeE = ownerNationCode;
   categoryFlag = ownerNationIndex;
@@ -55,8 +55,8 @@ void TArmyStack::IArmyStack(char ownerNationIndex, short ownerNationCode, short 
 
 // FUNCTION: IMPERIALISM 0x004a77b0
 void TArmyStack::ReadFrom(TStream* stream) {
-  stream->ReadBytes(&field4, 2);
-  stream->ReadBytes(&field6, 2);
+  stream->ReadBytes(&compositionClass, 2);
+  stream->ReadBytes(&sortKey, 2);
   stream->ReadBytes(&categoryFlag, 1);
   stream->ReadBytes(&fortLevelAttackerPenaltyCache, 1);
   short unitCount;
@@ -75,8 +75,8 @@ void TArmyStack::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x004a7960
 void TArmyStack::WriteTo(TStream* stream) {
-  stream->WriteBytes(&field4, 2);
-  stream->WriteBytes(&field6, 2);
+  stream->WriteBytes(&compositionClass, 2);
+  stream->WriteBytes(&sortKey, 2);
   stream->WriteBytes(&categoryFlag, 1);
   stream->WriteBytes(&fortLevelAttackerPenaltyCache, 1);
   stream->WriteBytes(&unitCount, 2);
@@ -165,9 +165,9 @@ void TArmyStack::ComputeStackCompositionClassCode() {
       maxClass = unitClass;
     }
   }
-  field4 = g_abStackCompositionClassTable[maxClass][minClass];
+  compositionClass = g_abStackCompositionClassTable[maxClass][minClass];
   int roll = rand();
-  field6 = static_cast<short>((field4 << 8) + (roll & 0xff));
+  sortKey = static_cast<short>((compositionClass << 8) + (roll & 0xff));
 }
 
 // FUNCTION: IMPERIALISM 0x004a7d20

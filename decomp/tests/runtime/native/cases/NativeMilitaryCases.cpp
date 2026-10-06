@@ -1132,7 +1132,7 @@ RuntimeActionResult RunMilitaryPhaseLandInteractive(NativeTransition& transition
 RuntimeActionResult RunMilitaryPhaseLandRetreat(NativeTransition& transition) {
   // Mirror of RunInteractiveArmyBattleRetreat through the production
   // TArmyMgr::DoCombatMoves entry: pump to the active nation's input, then
-  // order the retreat (fieldF=1 + stance profile 0 + turn pulse) and
+  // order the retreat (retreatOrdered=1 + stance profile 0 + turn pulse) and
   // auto-resolve to a decision.
   srand(0x1234);
   ClearAllMilitaryOrders();
@@ -1164,7 +1164,7 @@ RuntimeActionResult RunMilitaryPhaseLandRetreat(NativeTransition& transition) {
   }
   TArmyPlayer* player = static_cast<TArmyPlayer*>(battle->currentSide == 0 ? battle->players[0]
                                                                             : battle->players[1]);
-  player->fieldF = 1;
+  player->retreatOrdered = 1;
   player->notWatchedFlag = 1;
   player->SelectAndApplyTacticalCursorModeProfile(0);
   player->NextMove();
@@ -1688,7 +1688,7 @@ RuntimeActionResult RunInteractiveArmyBattleRetreat(NativeTransition& transition
   JSON_Value* initial = CaptureArmyBattleSnapshot(battle);
   TArmyPlayer* player = static_cast<TArmyPlayer*>(battle->currentSide == 0 ? battle->players[0]
                                                                             : battle->players[1]);
-  player->fieldF = 1;
+  player->retreatOrdered = 1;
   player->notWatchedFlag = 1;
   player->SelectAndApplyTacticalCursorModeProfile(0);
   player->NextMove();

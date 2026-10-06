@@ -39,7 +39,7 @@ public:
   afx_msg LRESULT OnTurnEventCodeMessage(WPARAM wParam, LPARAM lParam);
   afx_msg void OnResetPalette();
   afx_msg void OnWarpToScreen();
-  afx_msg void OnConductDiplomacy();                                           // 0x004855b0
+  afx_msg void OnConductDiplomacy();                                      // 0x004855b0
   afx_msg void OnPaint();                                                 // 0x00485bd0
   afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);             // 0x00485c00
   afx_msg void OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized); // 0x00485c60
@@ -52,9 +52,9 @@ public:
   // Returns the previous colour; repaints only on an actual change. 0x00485990.
   COLORREF SetBackgroundColorAndInvalidate(COLORREF color);
 
-  CDibPal* field_BC;
+  CDibPal* m_pDibPalette;
   COLORREF m_backgroundColor;
-  CDib* field_C4; // 0xc4 — backdrop DIB (tiled-background path of OnEraseBkgnd)
+  CDib* m_pBackdropDib; // tiled OnEraseBkgnd background
   int field_C8;
   int field_CC;
 };

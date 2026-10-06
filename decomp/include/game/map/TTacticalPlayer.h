@@ -29,7 +29,7 @@ public:
   char isOurSideFlag;              // +0x0c
   char watchFlagD;                 // +0x0d human-watch flag for this side
   bool notWatchedFlag;             // +0x0e = (watchFlagD == 0)
-  bool fieldF;                     // +0x0f
+  bool retreatOrdered;             // +0x0f
   bool sideReadyFlag;              // +0x10 side ready (no undeployed unit remains)
   unsigned char pad11[3];          // +0x11
   class TTacticalBattle* battle14; // +0x14 back-pointer, set by battle setup (0x59f890)

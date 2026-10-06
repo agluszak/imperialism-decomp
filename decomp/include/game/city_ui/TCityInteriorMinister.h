@@ -109,7 +109,7 @@ public:
   short pendingRecruitmentCommandIndex;           // +0x36  maps to city order slot 0x22 + value
   short pendingUnitCommandIndex;                  // +0x38  maps to city order slot 0x19 + value
   short resource15ProductionPercent;              // +0x3a  init 50
-  short field3c;                                  // +0x3c  init -1
+  short railheadTargetTile;                       // +0x3c  init -1
   short accumulatedUnmetNeed;                     // +0x3e  queued via command 0x33
   short orderMetricTable40[61];                   // +0x40..0xba  (zeroed on init)
   short orderShortTableBA[16];                    // +0xba..0xda
