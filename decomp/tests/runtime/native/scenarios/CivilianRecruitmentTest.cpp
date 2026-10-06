@@ -146,7 +146,7 @@ private:
       return RuntimeActionResult::Failure("the active nation has no city to recruit from");
     }
     const int previousCount = CivilianProbe::CivilianCount(ActiveNation());
-    const int previousUnitId = g_pSimMgr->field_64;
+    const int previousUnitId = g_pSimMgr->lastPersistentUnitId;
     TUnitOrder recruitOrder;
     recruitOrder.IUnitOrder(nation->city, civilianKind, 0, 0, -1, 0, 0, kLowSkillWorkforceMode, 0);
     recruitOrder.quantity = 1;
@@ -156,11 +156,11 @@ private:
       return RuntimeActionResult::Failure(
           "civilian production did not register exactly one recruit");
     }
-    if (g_pSimMgr->field_64 != previousUnitId + 1) {
+    if (g_pSimMgr->lastPersistentUnitId != previousUnitId + 1) {
       return RuntimeActionResult::Failure(
           "civilian production did not allocate exactly one persistent unit id");
     }
-    *outCivilian = CivilianProbe::CivilianWithPersistentId(ActiveNation(), g_pSimMgr->field_64);
+    *outCivilian = CivilianProbe::CivilianWithPersistentId(ActiveNation(), g_pSimMgr->lastPersistentUnitId);
     if (*outCivilian == 0) {
       return RuntimeActionResult::Failure("the produced civilian is not in the nation's roster");
     }

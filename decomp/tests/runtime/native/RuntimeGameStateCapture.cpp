@@ -3076,7 +3076,7 @@ static bool BuildRuntimeGameStateWithFreshObjectDefaults(const RuntimeRun& run, 
 
   JsonObject object;
   object.Set("turn", CaptureTurn(run));
-  object.Set("unit_ids", g_pSimMgr->field_64);
+  object.Set("unit_ids", g_pSimMgr->lastPersistentUnitId);
   object.Set("map", CaptureMap());
   if (g_pGlobalMapState->field6 < 0 || g_pGlobalMapState->field6 >= 0x1950) {
     FailSemanticCapture("strategic map view origin is outside the map");
@@ -3790,7 +3790,7 @@ bool BuildRuntimeEphemeralState(const RuntimeRun& run, JSON_Value** state) {
 
   JsonObject object;
   object.Set("turn", CaptureTurn(run));
-  object.Set("unit_ids", g_pSimMgr->field_64);
+  object.Set("unit_ids", g_pSimMgr->lastPersistentUnitId);
   object.Set("rng", CaptureRng());
   object.Set("news", CaptureNews());
   object.Set("pending", CapturePending());

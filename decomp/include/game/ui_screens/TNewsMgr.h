@@ -38,9 +38,9 @@ public:
   // Per-nation newspaper page: 3x3 story slots (entry.storyId == 0 = empty).
   newsStory stories[7][3][3]; // +0x00c..0xecf
   // Transient "news.tex" resource stream held open across the CreateNewspaper calls.
-  CFile* newsTexStream; // +0xed0
-  TPtrList* perNationEventBuckets[7]; // +0xed4
-  TPtrList* sharedEventRecordQueue;   // +0xef0
+  CFile* newsTexStream;                 // +0xed0
+  TPtrList* perNationEventBuckets[7];   // +0xed4
+  TPtrList* sharedEventRecordQueue;     // +0xef0
   short* perNationStoryLastUsedTick[7]; // +0xef4
 
   TNewsMgr() {}

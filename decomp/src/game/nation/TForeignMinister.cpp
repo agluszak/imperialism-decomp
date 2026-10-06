@@ -235,7 +235,7 @@ void TForeignMinister::ArrangeMaterialsOffers() {
         break;
       }
       fallbackNationSlot = rand() % 7;
-      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(fallbackNationSlot)) != 0) {
+      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(fallbackNationSlot))) {
         if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(fallbackNationSlot,
                                                              owner->nationSlot) &&
             fallbackNationSlot != owner->nationSlot) {
@@ -402,7 +402,7 @@ void TForeignMinister::GoodsMatchShipping() {
   int nation = 0;
   do {
     if (static_cast<short>(nation) != owner->nationSlot) {
-      if (g_pSimMgr->ReallyInTheGame(nation) != 0) {
+      if (g_pSimMgr->ReallyInTheGame(nation)) {
         if (matched &&
             g_pDiplomacyTurnStateManager
                     ->relationStandingScores[owner->nationSlot * kNationSlotCount + nation] <
@@ -435,8 +435,7 @@ void TForeignMinister::DoDevelopmentGrants() {
         relationshipList->GetPtrListEntryByOneBasedIndex(entryIndex));
     short nationSlot = entry->nationSlot;
     if (entry->standingScore < 0xff &&
-        g_pDiplomacyTurnStateManager->GetEmbassyStatus(owner->nationSlot,
-                                                                          nationSlot) == 2) {
+        g_pDiplomacyTurnStateManager->GetEmbassyStatus(owner->nationSlot, nationSlot) == 2) {
       int grantAmount = SelectDevelopmentGrantAmount(availableBudget);
       availableBudget -= static_cast<short>(grantAmount);
       owner->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(nationSlot, grantAmount);
@@ -452,8 +451,7 @@ void TForeignMinister::DoDevelopmentGrants() {
       RelationshipRankEntry* entry = static_cast<RelationshipRankEntry*>(
           relationshipList->GetPtrListEntryByOneBasedIndex(entryIndex));
       short nationSlot = entry->nationSlot;
-      if (g_pDiplomacyTurnStateManager->GetEmbassyStatus(owner->nationSlot,
-                                                                            nationSlot) == 1) {
+      if (g_pDiplomacyTurnStateManager->GetEmbassyStatus(owner->nationSlot, nationSlot) == 1) {
         int grantAmount = SelectDevelopmentGrantAmount(availableBudget);
         availableBudget -= static_cast<short>(grantAmount);
         owner->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(nationSlot, grantAmount);
@@ -473,9 +471,8 @@ void TForeignMinister::DoDevelopmentGrants() {
     while (entryIndex >= 1 && availableBudget > 1000) {
       RelationshipRankEntry* entry = static_cast<RelationshipRankEntry*>(
           relationshipList->GetPtrListEntryByOneBasedIndex(entryIndex));
-      if (entry->standingScore < 0xff &&
-          g_pDiplomacyTurnStateManager->GetEmbassyStatus(
-              owner->nationSlot, entry->nationSlot) == 0) {
+      if (entry->standingScore < 0xff && g_pDiplomacyTurnStateManager->GetEmbassyStatus(
+                                             owner->nationSlot, entry->nationSlot) == 0) {
         owner->ApplyDiplomacyPolicyStateForTargetWithCostChecks(entry->nationSlot, 0x133);
         availableBudget = 0;
       }
@@ -490,8 +487,8 @@ void TForeignMinister::DoDevelopmentGrants() {
 void TForeignMinister::DoProposeTreaties() {
   for (short minorNation = 7; minorNation < 0x17; ++minorNation) {
     TMinor* minor = g_apSecondaryNationStateSlots[minorNation];
-    if (minor == 0 || g_pDiplomacyTurnStateManager->GetEmbassyStatus(
-                          greatPower->nationSlot, minorNation) != 2) {
+    if (minor == 0 ||
+        g_pDiplomacyTurnStateManager->GetEmbassyStatus(greatPower->nationSlot, minorNation) != 2) {
       continue;
     }
     if (minor->WouldAcceptOffer(greatPower->nationSlot, kDiplomacyProposalJoinEmpire) != 0) {
@@ -543,7 +540,7 @@ void TForeignMinister::DoProposeTreaties() {
   for (int targetNation = 0; targetNation < 7; ++targetNation) {
     targetStrengthRatio[targetNation] = 0.0f;
     if (targetNation == greatPower->nationSlot ||
-        g_pSimMgr->ReallyInTheGame(static_cast<short>(targetNation)) == 0) {
+        !g_pSimMgr->ReallyInTheGame(static_cast<short>(targetNation))) {
       continue;
     }
 
@@ -587,7 +584,7 @@ void TForeignMinister::DoProposeTreaties() {
 
   for (int policyTargetNation = 0; policyTargetNation < 7; ++policyTargetNation) {
     if (policyTargetNation == greatPower->nationSlot ||
-        g_pSimMgr->ReallyInTheGame(static_cast<short>(policyTargetNation)) == 0 ||
+        !g_pSimMgr->ReallyInTheGame(static_cast<short>(policyTargetNation)) ||
         !g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
             greatPower->nationSlot, policyTargetNation)) {
       continue;
@@ -679,7 +676,7 @@ void TForeignMinister::DoSelectEnemy() {
     if (this->greatPower->HasEnemy() != 0) {
       return;
     }
-    if (nationSlot != this->greatPower->nationSlot && g_pSimMgr->ReallyInTheGame(nationSlot) != 0 &&
+    if (nationSlot != this->greatPower->nationSlot && g_pSimMgr->ReallyInTheGame(nationSlot) &&
         this->DeservesToBeEnemy(nationSlot) != 0) {
       this->greatPower->SetEnemy(nationSlot);
     }
@@ -739,8 +736,8 @@ void TForeignMinister::SetEmpirePolicies() {
       relationshipList->ReleasePtrList();
 
       if (selectedMinor != -1) {
-        short compatibility = g_pDiplomacyTurnStateManager->GetEmbassyStatus(
-            owner->nationSlot, selectedMinor);
+        short compatibility =
+            g_pDiplomacyTurnStateManager->GetEmbassyStatus(owner->nationSlot, selectedMinor);
         if (compatibility < 1) {
           owner->ApplyDiplomacyPolicyStateForTargetWithCostChecks(static_cast<short>(selectedMinor),
                                                                   0x133);
@@ -752,8 +749,7 @@ void TForeignMinister::SetEmpirePolicies() {
   }
 
   for (short minorNation = 7; minorNation < 0x17; ++minorNation) {
-    if (g_pDiplomacyTurnStateManager->GetEmbassyStatus(owner->nationSlot,
-                                                                          minorNation) >= 1 &&
+    if (g_pDiplomacyTurnStateManager->GetEmbassyStatus(owner->nationSlot, minorNation) >= 1 &&
         owner->needLevelByNation[minorNation] > 0x5f &&
         owner->needLevelByNation[minorNation] < 300 &&
         g_apTerrainTypeDescriptorTable[minorNation]->encodedNationSlot == -1) {

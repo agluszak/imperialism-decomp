@@ -417,7 +417,7 @@ void TCountry::ChangeMaster(int targetNationSlot, int mode) {
 void TCountry::BecomeProtectorateOf(int targetNationSlot) {
   this->encodedNationSlot = static_cast<short>(targetNationSlot + 100);
   for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
-    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot)) != 0 &&
+    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot)) &&
         nationSlot != this->nationSlot && nationSlot != targetNationSlot) {
       TCountry* terrain = g_apTerrainTypeDescriptorTable[nationSlot];
       terrain->NewStatusFor(this->nationSlot, 100);
@@ -433,7 +433,7 @@ void TCountry::BecomeColonyOf(int targetNationSlot) {
 
   int nationSlot = 0;
   do {
-    if (g_pSimMgr->ReallyInTheGame(nationSlot) != 0 && nationSlot != this->nationSlot &&
+    if (g_pSimMgr->ReallyInTheGame(nationSlot) && nationSlot != this->nationSlot &&
         nationSlot != targetNationSlot) {
       TCountry* terrainDescriptor = g_apTerrainTypeDescriptorTable[nationSlot];
       terrainDescriptor->NewStatusFor(this->nationSlot, 200);

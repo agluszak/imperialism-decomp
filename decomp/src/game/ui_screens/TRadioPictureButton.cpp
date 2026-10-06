@@ -9,7 +9,6 @@ TRadioPictureButton::TRadioPictureButton() : TUpDownPictureButton() {
   this->reserved94 = 0;
 }
 
-
 // FUNCTION: IMPERIALISM 0x00571830
 TRadioPictureButton::~TRadioPictureButton() {}
 
@@ -35,7 +34,7 @@ void TRadioPictureButton::DoEvent(int commandId, TEventHandler* sourceHandler, T
 }
 
 // FUNCTION: IMPERIALISM 0x005718f0
-void TRadioPictureButton::SetState(bool state, unsigned char refreshNow) {
+void TRadioPictureButton::SetState(bool state, bool refreshNow) {
   if (IsEnabled()) {
     HiliteState(state, refreshNow);
   }

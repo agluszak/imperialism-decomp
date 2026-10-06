@@ -181,7 +181,7 @@ RuntimeActionResult RunDiplomacyOfferGate(NativeTransition& transition) {
   }
 
   const bool showOffer = g_pMapContextActionManager->HasBattlesToReport() &&
-                         g_pSimMgr->ReallyInTheGame(ActiveNationSlot()) != 0;
+                         g_pSimMgr->ReallyInTheGame(ActiveNationSlot());
   return transition.Finish(showOffer);
 }
 
@@ -230,7 +230,7 @@ RuntimeActionResult RunReturnToMapClearsNoticeQueues(NativeTransition& transitio
     if (nation == 0) {
       continue;
     }
-    if (g_pSimMgr->ReallyInTheGame(nationSlot) == 0) {
+    if (!g_pSimMgr->ReallyInTheGame(nationSlot)) {
       continue;
     }
     if (nationSlot == ActiveNationSlot()) {
@@ -309,7 +309,7 @@ RuntimeActionResult RunNewspaperNavyGrowthRewardLevels(NativeTransition& transit
   }
 
   for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    if (g_pSimMgr->ReallyInTheGame(nationSlot) == 0) {
+    if (!g_pSimMgr->ReallyInTheGame(nationSlot)) {
       continue;
     }
     TGreatPower* slotNation = g_apNationStates[nationSlot];
@@ -447,7 +447,7 @@ RuntimeActionResult RunNewspaperPendingStatus(NativeTransition& transition) {
   }
 
   for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    if (g_pSimMgr->ReallyInTheGame(nationSlot) == 0) {
+    if (!g_pSimMgr->ReallyInTheGame(nationSlot)) {
       continue;
     }
     TGreatPower* nation = g_apNationStates[nationSlot];
@@ -468,7 +468,7 @@ RuntimeActionResult RunNewspaperPendingStatus(NativeTransition& transition) {
   }
 
   for (short eligibleSlot = 0; eligibleSlot < 7; ++eligibleSlot) {
-    if (g_pSimMgr->ReallyInTheGame(eligibleSlot) == 0) {
+    if (!g_pSimMgr->ReallyInTheGame(eligibleSlot)) {
       continue;
     }
     TGreatPower* nation = g_apNationStates[eligibleSlot];

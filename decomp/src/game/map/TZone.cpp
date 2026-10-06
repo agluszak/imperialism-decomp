@@ -255,7 +255,7 @@ int TZone::ComputeMapActionContextNodeValueAverage() {
     int ownerTag =
         g_pGlobalMapState->terrainStateTable[static_cast<TPortZone*>(this)->portTileIndex]
             .ownerNationTag04;
-    if (g_pSimMgr->ReallyInTheGame(ownerTag) != 0) {
+    if (g_pSimMgr->ReallyInTheGame(ownerTag)) {
       return g_pGlobalMapState
           ->cityScoreTable[g_apTerrainTypeDescriptorTable[ownerTag]->GetCapitolProvince()]
           .cityScoreValue;
@@ -385,8 +385,7 @@ void TZone::GenerateZoneStatusCodeIfUnset() {
 }
 
 // FUNCTION: IMPERIALISM 0x0055f780
-void TZone::NameThyself(unsigned char* usedCityFlags,
-                                                           const char* overrideName) {
+void TZone::NameThyself(unsigned char* usedCityFlags, const char* overrideName) {
   if (overrideName != 0) {
     CString providedName(overrideName);
     displayName = providedName;

@@ -45,8 +45,8 @@ void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,
   this->orderTargetIndex = static_cast<short>(-1);
 
   TSimMgr* simMgr = g_pSimMgr;
-  simMgr->field_64 = simMgr->field_64 + 1;
-  this->persistentUnitId20 = simMgr->field_64;
+  simMgr->lastPersistentUnitId = simMgr->lastPersistentUnitId + 1;
+  this->persistentUnitId20 = simMgr->lastPersistentUnitId;
 }
 
 // FUNCTION: IMPERIALISM 0x005c2610

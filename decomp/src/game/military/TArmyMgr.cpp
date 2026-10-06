@@ -852,7 +852,7 @@ void TArmyMgr::DoOwnershipChanges() {
     bool proceed = true;
     if (cachedOwner < 7 && currentOwner > 6 &&
         g_apTerrainTypeDescriptorTable[currentOwner]->encodedNationSlot == -1) {
-      bool eligible = g_pSimMgr->ReallyInTheGame(cachedOwner) != 0;
+      bool eligible = g_pSimMgr->ReallyInTheGame(cachedOwner);
       bool blockedByPeerBand = g_apNationStates[cachedOwner] != nullptr &&
                                g_apNationStates[cachedOwner]->encodedNationSlot > 99 &&
                                g_apNationStates[cachedOwner]->encodedNationSlot < 200;
@@ -913,8 +913,7 @@ bool TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx(int contextArg) {
   }
   if (foundMovableUnit) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x3aa7, 0, 1);
-    g_pGlobalMapState->ActivateMarchingArrow(this->pendingMapActionIndex,
-                                                                  contextArg, false);
+    g_pGlobalMapState->ActivateMarchingArrow(this->pendingMapActionIndex, contextArg, false);
   }
   return foundMovableUnit;
 }
@@ -1188,7 +1187,7 @@ static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode) {
   }
   short ownerTag = rec->ownerNationTag04;
   short activeNationId = g_pSimMgr->GetPlayerCountry();
-  if (g_pSimMgr->ReallyInTheGame(activeNationId) == 0) {
+  if (!g_pSimMgr->ReallyInTheGame(activeNationId)) {
     return 8;
   }
   activeNationId = g_pSimMgr->GetPlayerCountry();
@@ -1427,8 +1426,7 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
       unit->SetOrders(kUnitOrderRedeploy, cityRecordIndex);
     }
   }
-  g_pGlobalMapState->ActivateMarchingArrow(this->pendingMapActionIndex,
-                                                                cityRecordIndex, true);
+  g_pGlobalMapState->ActivateMarchingArrow(this->pendingMapActionIndex, cityRecordIndex, true);
 
   if (g_pViewMgr->mapUberPictureF0 != nullptr) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x3aa7, 0, 1);
@@ -1540,8 +1538,8 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
 
   TArmyBattle* newBattle = new TArmyBattle();
   newBattle->AllocateRecordList();
-  newBattle->InitializeBattleSetupAndMaybeShowTacticalView(
-      ourStack, enemyStack, compositionClass, fortLevel, ownerNationCodeInt);
+  newBattle->InitializeBattleSetupAndMaybeShowTacticalView(ourStack, enemyStack, compositionClass,
+                                                           fortLevel, ownerNationCodeInt);
 
   this->ourStackBattle39c = ourStack;
   this->enemyStackBattle3a0 = enemyStack;
@@ -1556,10 +1554,8 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
 }
 
 // FUNCTION: IMPERIALISM 0x004a5ca0
-void TArmyMgr::EndTacticalBattle(TArmyStack* ourStack,
-                                                            TArmyStack* enemyStack,
-                                                            unsigned char sideWonFlag,
-                                                            int battleSiteIndex) {
+void TArmyMgr::EndTacticalBattle(TArmyStack* ourStack, TArmyStack* enemyStack,
+                                 unsigned char sideWonFlag, int battleSiteIndex) {
   BuildArmyContextActionRecordsAndDispatchLabel(ourStack, enemyStack, sideWonFlag, battleSiteIndex,
                                                 1);
 

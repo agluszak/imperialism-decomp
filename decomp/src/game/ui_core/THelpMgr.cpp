@@ -392,7 +392,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     short best = (active != 0) ? active->transportCapacity : 0;
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (g_pSimMgr->ReallyInTheGame(i) != 0) {
+      if (g_pSimMgr->ReallyInTheGame(i)) {
         TGreatPower* nation = g_apNationStates[i];
         short value = (nation != 0) ? nation->transportCapacity : 0;
         if (value > best) {
@@ -419,7 +419,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     short best = g_apNationStates[activeNation]->merchantCapacity;
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (g_pSimMgr->ReallyInTheGame(i) != 0 && g_apNationStates[i]->merchantCapacity > best) {
+      if (g_pSimMgr->ReallyInTheGame(i) && g_apNationStates[i]->merchantCapacity > best) {
         best = g_apNationStates[i]->merchantCapacity;
         bestNation = i;
       }
@@ -440,7 +440,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     short best = g_apNationStates[activeNation]->ComputeNationRuntimeAdvisoryMetricCase6();
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (g_pSimMgr->ReallyInTheGame(i) != 0 &&
+      if (g_pSimMgr->ReallyInTheGame(i) &&
           g_apNationStates[i]->ComputeNationRuntimeAdvisoryMetricCase6() > best) {
         best = g_apNationStates[i]->ComputeNationRuntimeAdvisoryMetricCase6();
         bestNation = i;
@@ -462,8 +462,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     int best = g_apNationStates[activeNation]->GetBuildingCapacity(0);
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (g_pSimMgr->ReallyInTheGame(i) != 0 &&
-          g_apNationStates[i]->GetBuildingCapacity(0) > best) {
+      if (g_pSimMgr->ReallyInTheGame(i) && g_apNationStates[i]->GetBuildingCapacity(0) > best) {
         best = g_apNationStates[i]->GetBuildingCapacity(0);
         bestNation = i;
       }
@@ -484,8 +483,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     int best = g_apNationStates[activeNation]->GetBuildingCapacity(2);
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (g_pSimMgr->ReallyInTheGame(i) != 0 &&
-          g_apNationStates[i]->GetBuildingCapacity(2) > best) {
+      if (g_pSimMgr->ReallyInTheGame(i) && g_apNationStates[i]->GetBuildingCapacity(2) > best) {
         best = g_apNationStates[i]->GetBuildingCapacity(2);
         bestNation = i;
       }
@@ -506,8 +504,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     int best = g_apNationStates[activeNation]->GetBuildingCapacity(4);
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (g_pSimMgr->ReallyInTheGame(i) != 0 &&
-          g_apNationStates[i]->GetBuildingCapacity(4) > best) {
+      if (g_pSimMgr->ReallyInTheGame(i) && g_apNationStates[i]->GetBuildingCapacity(4) > best) {
         best = g_apNationStates[i]->GetBuildingCapacity(4);
         bestNation = i;
       }
@@ -532,8 +529,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
       int best = 0;
       short bestNation = activeNation;
       for (short i = 0; i < 7; ++i) {
-        if (g_pSimMgr->ReallyInTheGame(i) != 0 &&
-            g_apNationStates[i]->GetBuildingCapacity(6) > best) {
+        if (g_pSimMgr->ReallyInTheGame(i) && g_apNationStates[i]->GetBuildingCapacity(6) > best) {
           best = g_apNationStates[i]->GetBuildingCapacity(6);
           bestNation = i;
         }
@@ -562,8 +558,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
       int best = g_apNationStates[activeNation]->GetBuildingCapacity(6);
       short bestNation = activeNation;
       for (short i = 0; i < 7; ++i) {
-        if (g_pSimMgr->ReallyInTheGame(i) != 0 &&
-            g_apNationStates[i]->GetBuildingCapacity(6) > best) {
+        if (g_pSimMgr->ReallyInTheGame(i) && g_apNationStates[i]->GetBuildingCapacity(6) > best) {
           best = g_apNationStates[i]->GetBuildingCapacity(6);
           bestNation = i;
         }
@@ -586,7 +581,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     int best = firstValue;
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (i != activeNation && g_pSimMgr->ReallyInTheGame(i) != 0 &&
+      if (i != activeNation && g_pSimMgr->ReallyInTheGame(i) &&
           g_apNationStates[i]->ComputeSelectedMilitaryPowerScore() > best) {
         best = g_apNationStates[i]->ComputeSelectedMilitaryPowerScore();
         bestNation = i;
@@ -609,7 +604,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     int best = firstValue;
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (i != activeNation && g_pSimMgr->ReallyInTheGame(i) != 0 &&
+      if (i != activeNation && g_pSimMgr->ReallyInTheGame(i) &&
           g_apNationStates[i]->GetArmsInNavy() > best) {
         best = g_apNationStates[i]->GetArmsInNavy();
         bestNation = i;
@@ -717,7 +712,7 @@ bool ShowTurnAlertsForActiveNation() {
     anyAlertShown = true;
   }
   if (!anyAlertShown) {
-    if (g_pSimMgr->TestTurnFlowStatusFlagMask(1) == 0) {
+    if (!g_pSimMgr->TestTurnFlowStatusFlagMask(1)) {
       short promptCode = g_apNationStates[nationId]->ComputeTreasuryStatusPromptCode();
       if (promptCode != 0) {
         g_pSimMgr->GetString(0x2753, promptCode - 1, &titleText);
@@ -734,7 +729,7 @@ bool ShowTurnAlertsForActiveNation() {
         anyAlertShown = true;
       }
     }
-    if (g_pSimMgr->TestTurnFlowStatusFlagMask(0x10) == 0) {
+    if (!g_pSimMgr->TestTurnFlowStatusFlagMask(0x10)) {
       if (g_apNationStates[nationId]->HasAnyCommodityRecordBelowStepValue() != 0) {
         g_pSimMgr->GetString(0x2753, 0x46, &titleText);
         g_pSimMgr->GetString(0x2753, 0x47, &bodyText);
@@ -750,7 +745,7 @@ bool ShowTurnAlertsForActiveNation() {
         anyAlertShown = true;
       }
     }
-    if (g_pSimMgr->TestTurnFlowStatusFlagMask(0x1000) == 0) {
+    if (!g_pSimMgr->TestTurnFlowStatusFlagMask(0x1000)) {
       if (g_apNationStates[nationId]->AnyNeedCurrentExceedsTargetWhenCapMismatch() != 0) {
         g_pSimMgr->GetString(0x2753, 0x22, &titleText);
         g_pSimMgr->GetString(0x2753, 0x23, &bodyText);
@@ -922,8 +917,7 @@ void THelpMgr::ShowHelpSet(HelpSetRecord* pendingEntry) {
   }
 
   if (g_pSimMgr->GetPlayerCountry() >= 0 && g_pSimMgr->GetPlayerCountry() < 7) {
-    coatPicture->SetPictureRsrcID(
-        static_cast<short>(g_pSimMgr->GetPlayerCountry() + 0x251c), 0);
+    coatPicture->SetPictureRsrcID(static_cast<short>(g_pSimMgr->GetPlayerCountry() + 0x251c), 0);
   } else {
     coatPicture->Show(0, 0);
   }

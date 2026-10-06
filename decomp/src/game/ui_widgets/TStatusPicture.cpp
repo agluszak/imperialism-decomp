@@ -34,7 +34,7 @@ void TStatusPicture::DoPostCreate(int arg) {
   unsigned int pictureTag = kControlTagArmyPlacardFirst; // 'pic0'
   int rowY = 0x50;
   for (unsigned int nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot)) != 0) {
+    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot))) {
       TPicture* picture = new TPicture();
       int offsetLayout[2] = {0x71, rowY};
       int sizeLayout[2] = {0x23, 0x34};
@@ -161,7 +161,7 @@ void TStatusPicture::DrawBar(short rowY, short width, short nationSlot) {
 // FUNCTION: IMPERIALISM 0x00594900
 void TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale() {
   for (int i = 0; i < 7; ++i) {
-    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(i)) != '\0') {
+    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(i))) {
       TGreatPower* nation = g_apNationStates[i];
       switch (comparisonMode90) {
       case 1:

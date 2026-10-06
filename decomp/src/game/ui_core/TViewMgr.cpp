@@ -514,8 +514,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
     FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0x301);
   }
   if (g_pSimMgr->GetPlayerCountry() >= 0 && g_pSimMgr->GetPlayerCountry() < 7) {
-    coat->SetPictureRsrcID(static_cast<short>(g_pSimMgr->GetPlayerCountry() + 0x251c),
-                                         0);
+    coat->SetPictureRsrcID(static_cast<short>(g_pSimMgr->GetPlayerCountry() + 0x251c), 0);
   } else {
     coat->Show(0, 0);
   }
@@ -1398,8 +1397,7 @@ void TViewMgr::ShowDiplomacyScreen(short nationSlot) {
   if (diplControl != nullptr) {
     diplControl->AssertValid();
     TPicture* diplPicture = static_cast<TPicture*>(diplControl);
-    diplPicture->SetPictureRsrcID(static_cast<short>(diplPicture->glyphBase84 + 1),
-                                                0);
+    diplPicture->SetPictureRsrcID(static_cast<short>(diplPicture->glyphBase84 + 1), 0);
     diplControl->ViewEnable(0, 0);
     g_pSimMgr->GetString(0x2730, 0x1c, &text);
     SetControlHoverHelpTextAltEntry(text, diplControl);
@@ -1474,8 +1472,7 @@ void TViewMgr::ShowTransportScreen(short nationSlot) {
   TUpDownPictureButton* transportButton =
       static_cast<TUpDownPictureButton*>(activeDialog->ResolveControlByTag(kControlTagTran));
   if (transportButton != nullptr) {
-    transportButton->SetPictureRsrcID(
-        static_cast<short>(transportButton->glyphBase84 + 1), 0);
+    transportButton->SetPictureRsrcID(static_cast<short>(transportButton->glyphBase84 + 1), 0);
     transportButton->ViewEnable(0, 0);
     g_pSimMgr->GetString(0x2730, 0x1e, &text);
     SetControlHoverHelpTextAltEntry(text, transportButton);
@@ -1659,8 +1656,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   TUpDownPictureButton* tradeControl =
       static_cast<TUpDownPictureButton*>(mainView->ResolveControlByTag(kControlTagTrad));
   if (tradeControl != 0) {
-    tradeControl->SetPictureRsrcID(static_cast<short>(tradeControl->glyphBase84 + 1),
-                                                 false);
+    tradeControl->SetPictureRsrcID(static_cast<short>(tradeControl->glyphBase84 + 1), false);
     tradeControl->ViewEnable(0, 0);
     g_pSimMgr->GetString(0x2730, 0x1b, &sharedString);
     SetControlHoverHelpTextAltEntry(sharedString, tradeControl);
@@ -1980,7 +1976,7 @@ void TViewMgr::ShowTerrainMap(short nationSlot) {
   TView* mainView = g_pDisplayMgr->activeDialog;
   CString sharedString;
 
-  if (g_pSimMgr->ReallyInTheGame(g_pSimMgr->GetPlayerCountry()) == 0) {
+  if (!g_pSimMgr->ReallyInTheGame(g_pSimMgr->GetPlayerCountry())) {
     g_pSimMgr->SetFlags(static_cast<unsigned int>(-1));
   }
 

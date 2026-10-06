@@ -787,7 +787,7 @@ void TMinor::BecomeProtectorateOf(int targetNationSlot) {
     this->encodedNationSlot = static_cast<short>(targetNationSlot + 100);
 
     for (int eligibleNationSlot = 0; eligibleNationSlot < kNationSlotCount; ++eligibleNationSlot) {
-      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(eligibleNationSlot)) != 0 &&
+      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(eligibleNationSlot)) &&
           eligibleNationSlot != this->nationSlot && eligibleNationSlot != targetNationSlot) {
         TCountry* terrain = g_apTerrainTypeDescriptorTable[eligibleNationSlot];
         terrain->NewStatusFor(this->nationSlot, 100);
@@ -796,7 +796,7 @@ void TMinor::BecomeProtectorateOf(int targetNationSlot) {
     g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(this->nationSlot);
 
     for (int majorNationSlot = 0; majorNationSlot < 7; ++majorNationSlot) {
-      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(majorNationSlot)) != 0) {
+      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(majorNationSlot))) {
         TGreatPower* majorNation = g_apNationStates[majorNationSlot];
         if (majorNation->diplomacyEligibility == 0) {
           majorNation->AddNoticeFrom(this->nationSlot, kDiplomacyProposalDeclareWar);
@@ -817,7 +817,7 @@ void TMinor::BecomeProtectorateOf(int targetNationSlot) {
                                this->nationSlot, false);
 
     for (int resetNationSlot = 0; resetNationSlot < kNationSlotCount; ++resetNationSlot) {
-      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(resetNationSlot)) != 0) {
+      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(resetNationSlot))) {
         g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
             this->nationSlot, resetNationSlot, kDiplomacyRelationshipPeace);
         g_pDiplomacyTurnStateManager->SetRelationship(this->nationSlot, resetNationSlot, 0x5a);
@@ -852,7 +852,7 @@ void TMinor::BecomeProtectorateOf(int targetNationSlot) {
 
     this->encodedNationSlot = static_cast<short>(targetNationSlot + 100);
     for (int linkNationSlot = 0; linkNationSlot < kNationSlotCount; ++linkNationSlot) {
-      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(linkNationSlot)) != 0 &&
+      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(linkNationSlot)) &&
           linkNationSlot != this->nationSlot && linkNationSlot != targetNationSlot) {
         TCountry* terrain = g_apTerrainTypeDescriptorTable[linkNationSlot];
         terrain->NewStatusFor(this->nationSlot, 100);
@@ -862,7 +862,7 @@ void TMinor::BecomeProtectorateOf(int targetNationSlot) {
   }
 
   for (int standingNationSlot = 0; standingNationSlot < 7; ++standingNationSlot) {
-    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(standingNationSlot)) != 0) {
+    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(standingNationSlot))) {
       if (standingNationSlot == targetNationSlot) {
         this->SetTradePolicyTo(static_cast<NationSlot>(standingNationSlot), 100);
         g_apNationStates[standingNationSlot]->SetTradePolicyTo(this->nationSlot, 100);
@@ -906,7 +906,7 @@ void TMinor::BecomeColonyOf(int targetNationSlot) {
   this->SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot), 100);
 
   for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
-    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot)) != 0 &&
+    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot)) &&
         nationSlot != this->nationSlot && nationSlot != targetNationSlot) {
       g_apTerrainTypeDescriptorTable[nationSlot]->NewStatusFor(this->nationSlot, 200);
     }

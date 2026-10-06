@@ -57,7 +57,7 @@ int TDiplomacyMgr::GetFavoriteTradePartner(int minorNationSlot) {
   int bestScore = 0;
   int selectedNation = -1;
   for (int majorNation = 0; majorNation < 7; ++majorNation) {
-    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(majorNation)) == 0) {
+    if (!g_pSimMgr->ReallyInTheGame(static_cast<short>(majorNation))) {
       continue;
     }
 
@@ -163,8 +163,8 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
       relationSideEffectMatrix[reverseIndex] = 0;
 
       short standingScore = 0x5a;
-      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(sourceNation)) != 0 &&
-          g_pSimMgr->ReallyInTheGame(static_cast<short>(targetNation)) != 0) {
+      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(sourceNation)) &&
+          g_pSimMgr->ReallyInTheGame(static_cast<short>(targetNation))) {
         if (sourceNation < 7 && g_apNationStates[sourceNation]->diplomacyEligibility == 0 &&
             g_pSimMgr->difficultyLevel > kDifficultyNormal) {
           standingScore = static_cast<short>(
@@ -181,8 +181,8 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
     for (targetNation = 7; targetNation < kNationSlotCount; ++targetNation) {
       int pairIndex = sourceNation * kNationSlotCount + targetNation;
       short standingScore = 0x5a;
-      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(sourceNation)) != 0 &&
-          g_pSimMgr->ReallyInTheGame(static_cast<short>(targetNation)) != 0) {
+      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(sourceNation)) &&
+          g_pSimMgr->ReallyInTheGame(static_cast<short>(targetNation))) {
         standingScore =
             sourceMinor->IsInConsortiumWith(static_cast<short>(targetNation)) != 0 ? 0x96 : 0x6e;
       }
@@ -691,8 +691,8 @@ void TDiplomacyMgr::SetRelationshipsToMatch(NationSlot destinationNationSlot,
 }
 
 // FUNCTION: IMPERIALISM 0x004efeb0
-void TDiplomacyMgr::TerminateAlliance(
-    NationSlot sourceNationSlot, NationSlot targetNationSlot, unsigned char updateMode) {
+void TDiplomacyMgr::TerminateAlliance(NationSlot sourceNationSlot, NationSlot targetNationSlot,
+                                      unsigned char updateMode) {
   SetNationPairDiplomacyRelationCodeFinal(sourceNationSlot, targetNationSlot,
                                           kDiplomacyRelationshipPeace);
   if (updateMode == 1) {
@@ -731,7 +731,7 @@ void TDiplomacyMgr::InflictWarPenalty(NationSlot sourceNationSlot, NationSlot ta
   TCountry** terrainCursor = g_apTerrainTypeDescriptorTable;
   do {
     TMinor* candidateTerrain = static_cast<TMinor*>(*terrainCursor);
-    if (g_pSimMgr->ReallyInTheGame(candidateNationSlot) != 0 &&
+    if (g_pSimMgr->ReallyInTheGame(candidateNationSlot) &&
         candidateNationSlot != sourceNationSlot && candidateNationSlot != targetNationSlot &&
         candidateTerrain->encodedNationSlot == -1) {
       int divisorTier;
@@ -962,7 +962,7 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
       int priorOfferNation = specialRelationSourceSlots[minorSlot - 7];
       if (!isOfferTie && priorOfferNation != bestOfferNation && priorOfferNation != -1 &&
           relationSideEffectMatrix[priorOfferNation * kNationSlotCount + minorSlot] >= 1 &&
-          g_pSimMgr->ReallyInTheGame(priorOfferNation) != 0) {
+          g_pSimMgr->ReallyInTheGame(priorOfferNation)) {
         g_apTerrainTypeDescriptorTable[priorOfferNation]->AddNoticeFrom(minorSlot, 0x13a);
       }
       specialRelationSourceSlots[minorSlot - 7] = static_cast<NationSlot>(bestOfferNation);
@@ -970,7 +970,7 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
     if (bestRelationNation != -1) {
       int priorRelationNation = specialRelationTargetSlots[minorSlot - 7];
       if (!isRelationTie && priorRelationNation != bestRelationNation &&
-          priorRelationNation != -1 && g_pSimMgr->ReallyInTheGame(priorRelationNation) != 0 &&
+          priorRelationNation != -1 && g_pSimMgr->ReallyInTheGame(priorRelationNation) &&
           relationSideEffectMatrix[priorRelationNation * kNationSlotCount + minorSlot] >= 1 &&
           g_apTerrainTypeDescriptorTable[priorRelationNation] != 0) {
         g_apTerrainTypeDescriptorTable[priorRelationNation]->AddNoticeFrom(minorSlot, 0x13b);
@@ -1037,9 +1037,8 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
         if (relationPropagationMatrix[targetNationSlot * kNationSlotCount + otherNationSlot] ==
                 kDiplomacyRelationshipAlliance &&
             !IsNationPairAtWar(otherNationSlot, sourceNationSlot)) {
-          int transitionResult =
-              g_apNationStates[otherNationSlot]->ConsiderWarOfAlliance(
-                  targetNationSlot, sourceNationSlot, 0);
+          int transitionResult = g_apNationStates[otherNationSlot]->ConsiderWarOfAlliance(
+              targetNationSlot, sourceNationSlot, 0);
           propagatedTransition = (transitionResult == 2);
         }
       }
@@ -1049,9 +1048,8 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
                 kDiplomacyRelationshipAlliance &&
             ReadGlobalTDiplomacyTurnStateManager()->IsNationPairAtWar(otherNationSlot,
                                                                       targetNationSlot) == 0) {
-          int transitionResult =
-              g_apNationStates[otherNationSlot]->ConsiderWarOfAlliance(
-                  targetNationSlot, sourceNationSlot, 1);
+          int transitionResult = g_apNationStates[otherNationSlot]->ConsiderWarOfAlliance(
+              targetNationSlot, sourceNationSlot, 1);
           propagatedTransition = (transitionResult == 2);
         }
       }
@@ -1265,8 +1263,7 @@ void TDiplomacyMgr::InitializeDiplomacyStandingBaselineRandom() {
 }
 
 // FUNCTION: IMPERIALISM 0x004f1630
-void TDiplomacyMgr::ChooseCandidates(int* topNationSlot,
-                                                             int* secondNationSlot) {
+void TDiplomacyMgr::ChooseCandidates(int* topNationSlot, int* secondNationSlot) {
   RecomputeNationComparativePowerMetrics();
 
   int nationSlotOrder[7];
@@ -1318,7 +1315,7 @@ void TDiplomacyMgr::RecomputeNationComparativePowerMetrics() {
   int techScore[7];
   int i;
   for (i = 0; i < 7; i++) {
-    if (g_pSimMgr->ReallyInTheGame(i) == 0) {
+    if (!g_pSimMgr->ReallyInTheGame(i)) {
       continue;
     }
     int army = g_apNationStates[i]->ComputeNationNavyOrderWeightedMovementScore() + 0x1f4;
@@ -1349,7 +1346,7 @@ void TDiplomacyMgr::RecomputeNationComparativePowerMetrics() {
     }
   }
   for (i = 0; i < 7; i++) {
-    if (g_pSimMgr->ReallyInTheGame(i) != 0) {
+    if (g_pSimMgr->ReallyInTheGame(i)) {
       comparativePowerRows[i][0] = comparativePowerRows[i][0] * 100 / maxArmy;
       comparativePowerRows[i][1] = comparativePowerRows[i][1] * 100 / maxRelation;
       comparativePowerRows[i][3] = comparativePowerRows[i][3] * 100 / maxCommodity;
@@ -1413,9 +1410,8 @@ DiplomacyRelationshipNotch TDiplomacyMgr::GetRelationshipNotch(NationSlot source
 }
 
 // FUNCTION: IMPERIALISM 0x004f1a80
-void TDiplomacyMgr::GetTreatyStatusText(NationSlot sourceNationSlot,
-                                                             NationSlot targetNationSlot,
-                                                             CString* treatyName) {
+void TDiplomacyMgr::GetTreatyStatusText(NationSlot sourceNationSlot, NationSlot targetNationSlot,
+                                        CString* treatyName) {
   DiplomacyRelationship relationship = static_cast<DiplomacyRelationship>(
       relationPropagationMatrix[sourceNationSlot * kNationSlotCount + targetNationSlot]);
   switch (relationship) {
@@ -1529,8 +1525,7 @@ void TDiplomacyMgr::SetNationPairDiplomacyRelationCode(NationSlot sourceNationSl
 }
 
 // FUNCTION: IMPERIALISM 0x004f1f20
-short TDiplomacyMgr::GetEmbassyStatus(int sourceNationSlot,
-                                                         int targetNationSlot) {
+short TDiplomacyMgr::GetEmbassyStatus(int sourceNationSlot, int targetNationSlot) {
   short* row = &relationSideEffectMatrix[sourceNationSlot * kNationSlotCount];
   return row[targetNationSlot];
 }

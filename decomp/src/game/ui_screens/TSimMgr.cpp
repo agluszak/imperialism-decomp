@@ -143,7 +143,7 @@ TSimMgr::TSimMgr() : sharedTextSlots() {
   field14 = 0;
 
   for (int i = 0; i < 0x17; ++i) {
-    field15[i] = 1;
+    countryAvailable[i] = true;
     CString empty(g_szEmptyString); // temp -> 0x00605950, ~ -> 0x006058e2
     sharedTextSlots[i] = empty;     // -> 0x00605a29 CString::operator=
   }
@@ -177,20 +177,19 @@ void TSimMgr::ISimMgr() {
   field14 = 0;
   turnStateCode = kGamePhaseStartup;
   turnFlowStatusFlags = 0;
-  field_64 = 0;
+  lastPersistentUnitId = 0;
   councilByDecade[0] = 0;
-  memset(&councilByDecade[1], 0x01, sizeof(councilByDecade));
-  field79 = true;
-  field78 = 2;
+  memset(&councilByDecade[1], 0x01, sizeof(councilByDecade) - 1);
+  councilByDecade[10] = 2;
   CFileStatus conanFileStatus;
   CFile::GetStatus(g_szConanCheatFileName_00698BEC, conanFileStatus);
   g_bRandomMapDeveloperCheatFlag = false;
   ReinitializeRandomSeed();
   difficultyLevel = kDifficultyIntroductory;
   UpdatePreferences(false);
-  field6a = 0;
+  mapArtSet = 0;
   finalCouncilYear = 0x77a;
-  gateFlag7a = false;
+  newsEventsSuppressed = false;
 }
 
 // FUNCTION: IMPERIALISM 0x0057bc90
@@ -200,19 +199,10 @@ void TSimMgr::ResetTurnFlowStateAndRandomSeed() {
   field14 = 0;
   turnStateCode = kGamePhaseStartup;
   turnFlowStatusFlags = 0;
-  field_64 = 0;
+  lastPersistentUnitId = 0;
   councilByDecade[0] = 0;
-  councilByDecade[1] = 1;
-  councilByDecade[2] = 1;
-  councilByDecade[3] = 1;
-  councilByDecade[4] = 1;
-  councilByDecade[5] = 1;
-  councilByDecade[6] = 1;
-  councilByDecade[7] = 1;
-  councilByDecade[8] = 1;
-  councilByDecade[9] = 1;
-  field79 = true;
-  field78 = 2;
+  memset(&councilByDecade[1], 0x01, sizeof(councilByDecade) - 1);
+  councilByDecade[10] = 2;
 
   CFileStatus conanFileStatus;
   CFile::GetStatus(g_szConanCheatFileName_00698BEC, conanFileStatus);
@@ -325,12 +315,12 @@ void TSimMgr::ReadFrom(TStream* stream) {
   }
 
   if (g_nSaveFormatVersion < 0x2e) {
-    field_64 = 0x2711;
+    lastPersistentUnitId = 0x2711;
   } else {
-    stream->ReadBytes(&field_64, 4);
+    stream->ReadBytes(&lastPersistentUnitId, 4);
   }
 
-  stream->ReadBytes(&field15, 0x17);
+  stream->ReadBytes(countryAvailable, sizeof(countryAvailable));
 
   int savedSessionRole;
   stream->ReadBytes(&savedSessionRole, 4);
@@ -347,11 +337,11 @@ void TSimMgr::ReadFrom(TStream* stream) {
   if (g_nSaveFormatVersion > 0x33) {
     short selectedIndex;
     stream->ReadBytes(&selectedIndex, 2);
-    field6a = selectedIndex;
+    mapArtSet = selectedIndex;
     g_pAssetMgr->EnsurePictWvDataGobLoadedBySlot(selectedIndex);
   } else {
-    field6a = (scenarioMapIndexPlusOne != 0) ? 1 : 0;
-    g_pAssetMgr->EnsurePictWvDataGobLoadedBySlot(field6a);
+    mapArtSet = (scenarioMapIndexPlusOne != 0) ? 1 : 0;
+    g_pAssetMgr->EnsurePictWvDataGobLoadedBySlot(mapArtSet);
   }
 
   g_pMacViewMgr->ReloadMapArtAtlases();
@@ -361,12 +351,11 @@ void TSimMgr::ReadFrom(TStream* stream) {
   }
 
   if (g_nSaveFormatVersion < 0x3b) {
-    memset(councilByDecade, 0x01, sizeof(councilByDecade));
-    field79 = true;
+    memset(&councilByDecade[1], 0x01, sizeof(councilByDecade) - 1);
     councilByDecade[0] = 0;
     councilByDecade[(finalCouncilYear - 0x717) / 10] = 2;
   } else {
-    stream->ReadBytes(councilByDecade, 0xc);
+    stream->ReadBytes(councilByDecade, sizeof(councilByDecade));
   }
 
   for (i = 0; i < 0x17; ++i) {
@@ -406,8 +395,8 @@ void TSimMgr::WriteTo(TStream* stream) {
   stream->WriteBytes(&turnFlowStatusFlags, 4);
   stream->WriteByte(static_cast<unsigned char>(difficultyLevel));
   stream->WriteBytes(&multiplayerGameActive, 0x3e);
-  stream->WriteBytes(&field_64, 4);
-  stream->WriteBytes(&field15, 0x17);
+  stream->WriteBytes(&lastPersistentUnitId, 4);
+  stream->WriteBytes(countryAvailable, sizeof(countryAvailable));
   stream->WriteBytes(&multiplayerSessionRole, 4);
 
   bool hasGameFlowState = multiplayerSessionRole != kSessionRoleStandalone;
@@ -416,9 +405,9 @@ void TSimMgr::WriteTo(TStream* stream) {
   }
 
   stream->WriteBytes(&preferenceValues[10], 2);
-  stream->WriteBytes(&field6a, 2);
+  stream->WriteBytes(&mapArtSet, 2);
   stream->WriteBytes(&finalCouncilYear, 2);
-  stream->WriteBytes(councilByDecade, 0xc);
+  stream->WriteBytes(councilByDecade, sizeof(councilByDecade));
 
   for (i = 0; i < 0x17; ++i) {
     stream->WriteSharedString(&sharedTextSlots[i]);
@@ -447,14 +436,14 @@ void TSimMgr::CreateSimObjects(bool flag) {
     numGreatPowers = 0;
     multiplayerGameActive = (multiplayerSessionRole != kSessionRoleStandalone) ? 1 : 0;
     for (i = 0; i < 7; ++i) {
-      if (field15[i] != 0) {
+      if (countryAvailable[i]) {
         numGreatPowers++;
       }
     }
 
     numMinorCountries = 0;
     for (i = 7; i < 0x17; ++i) {
-      if (field15[i] != 0) {
+      if (countryAvailable[i]) {
         numMinorCountries++;
       }
     }
@@ -614,7 +603,7 @@ void TSimMgr::CreateCountries(int activate) {
   }
 
   for (i = 6; i >= 0; --i) {
-    if (field15[i] == 0) {
+    if (!countryAvailable[i]) {
       g_apNationStates[i] = nullptr;
       g_apTerrainTypeDescriptorTable[i] = nullptr;
     } else {
@@ -623,7 +612,7 @@ void TSimMgr::CreateCountries(int activate) {
   }
 
   for (i = 0; i < 0x17; ++i) {
-    if (field15[i] == 0) {
+    if (!countryAvailable[i]) {
       g_apSecondaryNationStateSlots[i] = nullptr;
       g_apTerrainTypeDescriptorTable[i] = nullptr;
     } else {
@@ -1255,8 +1244,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         g_nTurnCooldownDeferCounter006A43C4 = 0;
         g_nTurnCooldownSideFlag00698B10 = 1;
         if (IsNationEligibleForOptionalPhase(activeNationSlot)) {
-          short unlockSlot =
-              g_pTechMgr->GetNextNewAdvance(static_cast<short>(nationSlot));
+          short unlockSlot = g_pTechMgr->GetNextNewAdvance(static_cast<short>(nationSlot));
           if (unlockSlot != -1) {
             g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventTechnologyAdvance),
                                           unlockSlot);
@@ -1265,8 +1253,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
           continue;
         }
       }
-      short unlockSlot =
-          g_pTechMgr->GetNextNewAdvance(static_cast<short>(nationSlot));
+      short unlockSlot = g_pTechMgr->GetNextNewAdvance(static_cast<short>(nationSlot));
       while (unlockSlot != -1) {
         unlockSlot = g_pTechMgr->GetNextNewAdvance(static_cast<short>(nationSlot));
       }
@@ -1351,8 +1338,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     const short tickB = GetEconomicTurn();
     if (((tickB % 0x28) == 0) && (councilByDecade[tickA / 0x28] != 0) &&
         multiplayerSessionRole != kSessionRoleClient) {
-      g_pDiplomacyTurnStateManager->ConveneCouncil(
-          councilByDecade[tickA / 0x28]);
+      g_pDiplomacyTurnStateManager->ConveneCouncil(councilByDecade[tickA / 0x28]);
     }
     if (multiplayerSessionRole != kSessionRoleStandalone) {
       g_pGameFlowState->SetSyncPhases(mode, turnStateCode);
@@ -1481,8 +1467,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case kGamePhaseOptionalGamePreferences:
     turnStateCode = kGamePhaseShowMap;
-    g_pAmbitApplication->PostTurnEventCodeMessage(
-        EncodeTurnEventCode(kTurnEventGamePreferences));
+    g_pAmbitApplication->PostTurnEventCodeMessage(EncodeTurnEventCode(kTurnEventGamePreferences));
     break;
 
   case kGamePhaseOptionalUnitHistory:
@@ -1519,10 +1504,9 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 }
 
 // FUNCTION: IMPERIALISM 0x0057f110
-char TSimMgr::InLinearPhase() {
+bool TSimMgr::InLinearPhase() {
   eGamePhaseNewStyle phase = turnStateCode;
-  bool linear = (phase < kGamePhaseShowMap) || (phase > kGamePhaseEndTurn);
-  return linear;
+  return phase < kGamePhaseShowMap || phase > kGamePhaseEndTurn;
 }
 
 // FUNCTION: IMPERIALISM 0x0057f140
@@ -1624,17 +1608,12 @@ void TSimMgr::SetFlags(unsigned int flags) {
 }
 
 // FUNCTION: IMPERIALISM 0x0057f4d0
-unsigned char TSimMgr::TestTurnFlowStatusFlagMask(unsigned int mask) {
-  if (mask & turnFlowStatusFlags) {
-    return 1;
-  }
-  return 0;
+bool TSimMgr::TestTurnFlowStatusFlagMask(unsigned int mask) {
+  return (mask & turnFlowStatusFlags) != 0;
 }
 
-// MATCH: retail leaves upper EAX dirty (char return); residual is VC5's signed
-// pointer-compare (jl) on the array-end bound, same as DoPerTurnMissionAIStuff.
 // FUNCTION: IMPERIALISM 0x0057f4f0
-char TSimMgr::AllHumansFinished() {
+bool TSimMgr::AllHumansFinished() {
   bool finished = true;
   for (TGreatPower** nation = g_apNationStates; nation < g_apNationStates + 7; ++nation) {
     if ((*nation)->field904 == 0) {
@@ -1858,14 +1837,14 @@ NationSlot TSimMgr::GetPlayerCountry() {
 }
 
 // FUNCTION: IMPERIALISM 0x00581280
-char TSimMgr::ReallyInTheGame(NationSlot nationSlot) {
+bool TSimMgr::ReallyInTheGame(NationSlot nationSlot) {
   if (nationSlot == -1) {
-    return 0;
+    return false;
   }
 
   TCountry* terrainDescriptor = g_apTerrainTypeDescriptorTable[nationSlot];
   if (terrainDescriptor == 0) {
-    return 0;
+    return false;
   }
 
   if (nationSlot < 7) {
@@ -1873,12 +1852,12 @@ char TSimMgr::ReallyInTheGame(NationSlot nationSlot) {
       short profileType = terrainDescriptor->encodedNationSlot;
       bool inReservedProfileBand = profileType >= 100 && profileType < 200;
       if (inReservedProfileBand) {
-        return 0;
+        return false;
       }
     }
   }
 
-  return 1;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00581300
@@ -1900,7 +1879,7 @@ void TSimMgr::EliminateGP(NationSlot nationSlot) {
   }
   g_apNationStates[nationSlot] = 0;
   g_apTerrainTypeDescriptorTable[nationSlot] = 0;
-  field15[nationSlot] = 0;
+  countryAvailable[nationSlot] = false;
   --numGreatPowers;
   g_pDiplomacyTurnStateManager->RemoveNationSlotAndNotifyPeers_Impl(nationSlot);
 }
@@ -2020,11 +1999,10 @@ void ReinitializeGameFlowAndPostTurnEventCode(TurnEventId eventCode) {
     simMgr->field14 = 0;
     simMgr->turnStateCode = kGamePhaseStartup;
     simMgr->turnFlowStatusFlags = 0;
-    simMgr->field_64 = 0;
+    simMgr->lastPersistentUnitId = 0;
     simMgr->councilByDecade[0] = 0;
-    memset(&simMgr->councilByDecade[1], 0x01, sizeof(simMgr->councilByDecade));
-    simMgr->field79 = true;
-    simMgr->field78 = 2;
+    memset(&simMgr->councilByDecade[1], 0x01, sizeof(simMgr->councilByDecade) - 1);
+    simMgr->councilByDecade[10] = 2;
     CFileStatus conanFileStatus;
     CFile::GetStatus(g_szConanCheatFileName_00698BEC, conanFileStatus);
     g_bRandomMapDeveloperCheatFlag = false;
@@ -2045,7 +2023,7 @@ void ReinitializeGameFlowAndPostTurnEventCode(TurnEventId eventCode) {
 
 // FUNCTION: IMPERIALISM 0x00581ae0
 void TSimMgr::SelectMapArtSet(short index) {
-  field6a = index;
+  mapArtSet = index;
   g_pAssetMgr->EnsurePictWvDataGobLoadedBySlot(index);
   g_pMacViewMgr->ReloadMapArtAtlases();
 }
@@ -2083,13 +2061,13 @@ void TSimMgr::NameCapitals() {
 // FUNCTION: IMPERIALISM 0x00581e60
 void TSimMgr::ProcessScenarioScript() {
   CString scenarioPath;
-  gateFlag7a = true;
+  newsEventsSuppressed = true;
   g_nSaveFormatVersion = -3;
   g_bScenarioScriptTerminationRequested = false;
   g_nScenarioScriptInstructionCount = 0;
 
   g_pAssetMgr->GetScenarioFileName(static_cast<short>(scenarioMapIndexPlusOne) - 1, 2,
-                                                &scenarioPath);
+                                   &scenarioPath);
 
   for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
     CString ordinalText;
@@ -2137,7 +2115,7 @@ void TSimMgr::ProcessScenarioScript() {
     nation->MarkStatusFlag5HandledIfCapabilityActive();
   }
 
-  gateFlag7a = false;
+  newsEventsSuppressed = false;
   g_nSaveFormatVersion = -1;
 }
 
@@ -2673,7 +2651,7 @@ void TSimMgr::ScSetFlags(STurnInstructionCursor* instruction) {
   instruction->tokenCursor = cursor + 1;
   DECODE_SCENARIO_SHORT_TOKEN(token);
   short index = static_cast<short>(token);
-  field6a = index;
+  mapArtSet = index;
   g_pAssetMgr->EnsurePictWvDataGobLoadedBySlot(index);
   g_pMacViewMgr->ReloadMapArtAtlases();
 }

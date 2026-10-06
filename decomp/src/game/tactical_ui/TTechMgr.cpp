@@ -271,7 +271,7 @@ void TTechMgr::CheckForAdvances() {
 
     for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
       TGreatPower* nation = g_apNationStates[nationSlot];
-      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot)) != 0 &&
+      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot)) &&
           nation->diplomacyEligibility == 0 &&
           orderCapRows277[nationSlot].techStatusByTechId[techId] != 2) {
         nation->AddToTreasury(-g_anTechItemPurchaseCostBySlot_0066aae8[techId]);
@@ -502,12 +502,12 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
   for (tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     TTerrainStateRecord* record = &g_pGlobalMapState->terrainStateTable[tileIndex];
     if (record->ownerNationTag04 == nationSlot && (record->activeFlags1c & 1) != 0) {
-      short maxCap = static_cast<char>(
-          g_pGlobalMapState->GetMaxDevelopmentLevel(tileIndex, 0, nationSlot));
+      short maxCap =
+          static_cast<char>(g_pGlobalMapState->GetMaxDevelopmentLevel(tileIndex, 0, nationSlot));
       if (static_cast<char>(g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(
               tileIndex, false)) < maxCap) {
-        g_pGlobalMapState->SetDevelopmentLevel(
-            tileIndex, false, static_cast<unsigned char>(maxCap), true);
+        g_pGlobalMapState->SetDevelopmentLevel(tileIndex, false, static_cast<unsigned char>(maxCap),
+                                               true);
       }
     }
   }
@@ -525,15 +525,15 @@ void TTechMgr::ActivateSlotAndUpdateUI(int abilityId, int nationSlot) {
       order->AssertValid();
       abilityActiveRows[nationSlot].abilityActiveById[order->resourceTypeIndex] = 0;
       order->ReplaceOrder(g_aUnitOrderCostProfileByAbilityId[abilityId][0],
-                                 g_aUnitOrderCostProfileByAbilityId[abilityId][1],
-                                 g_aUnitOrderCostProfileByAbilityId[abilityId][2],
-                                 g_aUnitOrderCostProfileByAbilityId[abilityId][3],
-                                 g_aUnitOrderCostProfileByAbilityId[abilityId][4],
-                                 g_aUnitOrderCostProfileByAbilityId[abilityId][5],
-                                 g_aUnitOrderCostProfileByAbilityId[abilityId][6]);
+                          g_aUnitOrderCostProfileByAbilityId[abilityId][1],
+                          g_aUnitOrderCostProfileByAbilityId[abilityId][2],
+                          g_aUnitOrderCostProfileByAbilityId[abilityId][3],
+                          g_aUnitOrderCostProfileByAbilityId[abilityId][4],
+                          g_aUnitOrderCostProfileByAbilityId[abilityId][5],
+                          g_aUnitOrderCostProfileByAbilityId[abilityId][6]);
     }
   } else {
-    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot)) != 0) {
+    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot))) {
       CIterator cursor(g_apTerrainTypeDescriptorTable[nationSlot]->militaryUnitList44);
       TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset());
       while (cursor.More()) {
@@ -568,8 +568,7 @@ void TTechMgr::UpdateSelectionAndRecalculateScores(int resourceType, int nationS
   int selectedGroup = TShip::GetTypeToolbarSlot(static_cast<short>(resourceType));
   int i;
   for (i = 0; i < 0xe; ++i) {
-    if (TShip::GetTypeToolbarSlot(static_cast<short>(i)) == selectedGroup &&
-        i != resourceType) {
+    if (TShip::GetTypeToolbarSlot(static_cast<short>(i)) == selectedGroup && i != resourceType) {
       capRowsB333[nationSlot].selectedByResourceType[i] = 0;
     }
   }
@@ -669,9 +668,8 @@ bool TTechMgr::AreTechItemPrerequisitePairCompleted(int techId, int nationSlot) 
 }
 
 // FUNCTION: IMPERIALISM 0x005b0a90
-void TTechMgr::GetPreReqs(int techId, int nationSlot,
-                                                          int* missingPrimaryTechId,
-                                                          int* missingSecondaryTechId) {
+void TTechMgr::GetPreReqs(int techId, int nationSlot, int* missingPrimaryTechId,
+                          int* missingSecondaryTechId) {
   short primaryPrerequisiteTechId = g_aTechItemPrerequisitePairs[techId].primaryTechId;
   if (orderCapRows277[nationSlot].techStatusByTechId[primaryPrerequisiteTechId] == 2) {
     *missingPrimaryTechId = g_aTechItemPrerequisitePairs[techId].secondaryTechId;

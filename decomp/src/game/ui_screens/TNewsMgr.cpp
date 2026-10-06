@@ -555,7 +555,7 @@ newsEntry* TNewsMgr::FindEntry(int storyId) {
 
 // FUNCTION: IMPERIALISM 0x0055c970
 void TNewsMgr::AddEvent(int nationSlot, NewsEvent* event, bool isReplayBypass) {
-  if (g_pSimMgr->gateFlag7a) {
+  if (g_pSimMgr->newsEventsSuppressed) {
     return;
   }
   if (!isReplayBypass && g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
@@ -568,7 +568,7 @@ void TNewsMgr::AddEvent(int nationSlot, NewsEvent* event, bool isReplayBypass) {
 // FUNCTION: IMPERIALISM 0x0055c9f0
 void TNewsMgr::AddTreatyEvent(InterNationEventKind eventKind, int nationA, int nationB,
                               bool isReplayBypass) {
-  if (g_pSimMgr->gateFlag7a) {
+  if (g_pSimMgr->newsEventsSuppressed) {
     return;
   }
   if (!isReplayBypass && g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
@@ -622,7 +622,7 @@ void TNewsMgr::AddTreatyEvent(InterNationEventKind eventKind, int nationA, int n
 // FUNCTION: IMPERIALISM 0x0055cbd0
 void TNewsMgr::AddShortageEvent(int subjectNation, int affectedNation, int relatedNation,
                                 bool isReplayBypass) {
-  if (g_pSimMgr->gateFlag7a) {
+  if (g_pSimMgr->newsEventsSuppressed) {
     return;
   }
   if (!isReplayBypass && g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
@@ -656,7 +656,7 @@ void TNewsMgr::AddShortageEvent(int subjectNation, int affectedNation, int relat
 // FUNCTION: IMPERIALISM 0x0055cd00
 void TNewsMgr::AddMiscEvent(int nationSlotOrAll, int storyCode, bool isReplayBypass) {
   TSimMgr* simMgr = g_pSimMgr;
-  if (!simMgr->gateFlag7a) {
+  if (!simMgr->newsEventsSuppressed) {
     if (!isReplayBypass) {
       bool multiplayerActive = simMgr->multiplayerSessionRole != kSessionRoleStandalone;
       if (multiplayerActive) {
@@ -789,4 +789,3 @@ unsigned char TNewsMgr::AlwaysTrueStory(const newsEntry* templateRow, newsStory*
   story->parmValue[1] = 1 << otherNation;
   return 1;
 }
-

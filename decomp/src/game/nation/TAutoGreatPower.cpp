@@ -326,8 +326,7 @@ void TAutoGreatPower::SetTradeOffersFor(short resourceKind, short offerContext) 
 void TAutoGreatPower::InitializeTradeStatus(void) {
   int total = 0;
   for (int resourceType = 0; static_cast<short>(resourceType) < 0x0E; ++resourceType) {
-    total += TShip::GetTypeCargoHold(resourceType) *
-             this->city->orderCountByType5c[resourceType];
+    total += TShip::GetTypeCargoHold(resourceType) * this->city->orderCountByType5c[resourceType];
   }
 
   this->merchantCapacity = static_cast<short>(total);
@@ -488,7 +487,7 @@ int TAutoGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNatio
     if (nation >= 7) {
       break;
     }
-    if (g_pSimMgr->ReallyInTheGame(nation) != 0 && nation != this->nationSlot) {
+    if (g_pSimMgr->ReallyInTheGame(nation) && nation != this->nationSlot) {
       if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, nation) &&
           g_pDiplomacyTurnStateManager->IsNationPairAtWar(targetNation, nation)) {
         char borderLinked =
@@ -539,8 +538,7 @@ int TAutoGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNatio
 }
 
 // FUNCTION: IMPERIALISM 0x004e7ec0
-int TAutoGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation,
-                                                            char swapRoles) {
+int TAutoGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation, char swapRoles) {
   bool hasPolicy = false;
   if (swapRoles == 0) {
     if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, sourceNation)) {
@@ -574,11 +572,9 @@ int TAutoGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation,
       return 1;
     }
     if (swapRoles == 0) {
-      g_pDiplomacyTurnStateManager->TerminateAlliance(
-          this->nationSlot, targetNation, 1);
+      g_pDiplomacyTurnStateManager->TerminateAlliance(this->nationSlot, targetNation, 1);
     } else {
-      g_pDiplomacyTurnStateManager->TerminateAlliance(
-          this->nationSlot, sourceNation, 0);
+      g_pDiplomacyTurnStateManager->TerminateAlliance(this->nationSlot, sourceNation, 0);
     }
   }
   return 1;
@@ -619,7 +615,7 @@ char TAutoGreatPower::PassesDiplomacyStrengthThresholdForTarget(int targetNation
   float strongestPeer = 0.0f;
   for (int peerSlot = 0; peerSlot < 7; ++peerSlot) {
     TGreatPower* peer = g_apNationStates[peerSlot];
-    if (g_pSimMgr->ReallyInTheGame(peerSlot) != 0) {
+    if (g_pSimMgr->ReallyInTheGame(peerSlot)) {
       float peerArmy = peer->GetMilitaryPower();
       if (strongestPeer < peerArmy) {
         strongestPeer = peerArmy;
@@ -821,7 +817,7 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
           provinceStatus[region] = markValue;
         }
       }
-      if (g_pSimMgr->ReallyInTheGame(slot) != 0) {
+      if (g_pSimMgr->ReallyInTheGame(slot)) {
         int minorIndex;
         for (minorIndex = 0; minorIndex < 9; ++minorIndex) {
           TCountry* minorDescriptor = g_apTerrainTypeDescriptorTable[7 + minorIndex];
@@ -934,7 +930,7 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
         } candidate;
         candidate.regionIndex = static_cast<short>(rec);
         candidate.score = score;
-        if (owner < 7 && g_pSimMgr->ReallyInTheGame(owner) != 0) {
+        if (owner < 7 && g_pSimMgr->ReallyInTheGame(owner)) {
           candidate.score = static_cast<short>(candidate.score + 0x14);
         }
         candidates->InsertCopiedRecordSortedByComparator(&candidate);
@@ -1103,7 +1099,7 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissions(void) {
   int n;
   for (n = 0; n < 7 && !anyEligibleAtWar; ++n) {
     if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(static_cast<short>(n), nationSlot) &&
-        g_pSimMgr->ReallyInTheGame(static_cast<short>(n)) != 0) {
+        g_pSimMgr->ReallyInTheGame(static_cast<short>(n))) {
       anyEligibleAtWar = true;
     }
   }

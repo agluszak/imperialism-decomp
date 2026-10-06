@@ -36,8 +36,8 @@ void THostGreatPower::WriteTo(TStream* stream) {
 char THostGreatPower::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                                         ResourceKindStorage resourceKind) {
   if (TGreatPower::ReplyToTradeOffer(targetNationSlot, amount, price, resourceKind) != 0) {
-    g_pGameFlowState->SendTradeOffer(this->nationSlot, targetNationSlot,
-                                                                 amount, price, resourceKind);
+    g_pGameFlowState->SendTradeOffer(this->nationSlot, targetNationSlot, amount, price,
+                                     resourceKind);
     return 1;
   }
   return 0;
@@ -69,8 +69,7 @@ void THostGreatPower::SorryYouLose(void) {
   short eligibleOtherNationCount = 0;
   for (int nationIndex = 0; nationIndex < 7; ++nationIndex) {
     TGreatPower* nation = g_apNationStates[nationIndex];
-    if (nationIndex != nationSlot &&
-        g_pSimMgr->ReallyInTheGame(static_cast<short>(nationIndex)) != 0 &&
+    if (nationIndex != nationSlot && g_pSimMgr->ReallyInTheGame(static_cast<short>(nationIndex)) &&
         nation->diplomacyEligibility != 0) {
       ++eligibleOtherNationCount;
     }

@@ -49,25 +49,25 @@ public:
   virtual void RebuildNationStateSlotsNoOp();                                  // 0x28  0x0057c390
   virtual void RebuildPrimaryNationStateForSlot(int slotIndex, char activate); // 0x2c 0x0057cda0
   virtual void RebuildSecondaryNationStateForSlot(int slotIndex);              // 0x30  0x0057d520
-  virtual void GetSeason(CString* destString);       // 0x34  0x0057d830
-  virtual void SetGameSetupValues(GameSetup* setup); // 0x38  0x0057d8d0
-  virtual short GetEconomicTurn();                   // 0x3c  0x0057d8b0
-  virtual void AdvanceSeason();                      // 0x40  0x0057d950
-  virtual void StartNextPhase();                                 // 0x44  0x0057d970
+  virtual void GetSeason(CString* destString);                                 // 0x34  0x0057d830
+  virtual void SetGameSetupValues(GameSetup* setup);                           // 0x38  0x0057d8d0
+  virtual short GetEconomicTurn();                                             // 0x3c  0x0057d8b0
+  virtual void AdvanceSeason();                                                // 0x40  0x0057d950
+  virtual void StartNextPhase();                                               // 0x44  0x0057d970
   virtual void EnterOptionalPhase(eGamePhaseNewStyle gamePhase); // 0x48  0x0057d990, Mac oracle
   virtual void AdvanceGlobalTurnStateMachine();                  // 0x4c  0x0057da70
-  virtual char InLinearPhase();                                  // 0x50  0x0057f110
+  virtual bool InLinearPhase();                                  // 0x50  0x0057f110
   virtual void DoCityAndTransport();                             // 0x54  0x0057f140, Mac oracle
   virtual void DoCivilians();                                    // 0x58  0x0057f200, Mac oracle
   virtual void DoMilitary();                                     // 0x5c  0x0057f280, Mac oracle
   virtual void DoTrade();                                        // 0x60  0x0057f3c0, Mac oracle
-  virtual char AllHumansFinished();                              // 0x64  0x0057f4f0
+  virtual bool AllHumansFinished();                              // 0x64  0x0057f4f0
   virtual void ResetTurnFlags();                                 // 0x68  0x0057f530
   void PrepareMultiplayerTurnResume();                           // 0x0057f570
   virtual int PlayerLost();                                      // 0x6c  0x0057f490, Mac oracle
-  virtual void SetFlags(unsigned int flags);                  // 0x70  0x0057f4b0
-  virtual void NumToCurrency(int value, CString* destString); // 0x74  0x0057f5b0
-  virtual void NumToOrdinal(int value, CString* destString);  // 0x78  0x0057f8f0
+  virtual void SetFlags(unsigned int flags);                     // 0x70  0x0057f4b0
+  virtual void NumToCurrency(int value, CString* destString);    // 0x74  0x0057f5b0
+  virtual void NumToOrdinal(int value, CString* destString);     // 0x78  0x0057f8f0
   // Copy string-resource group 0x2711 (commodity names) entry `offset` into dest.
   virtual void GetCommodityName(short offset, CString* destString);           // 0x7c  0x0057fe90
   virtual void ReinitializeRandomSeed();                                      // 0x80  0x0057fec0
@@ -77,7 +77,7 @@ public:
   virtual CString
   DiplomacyNoticeString(const DiplomacyNotice* notice); // 0x88 0x00580790, Mac oracle
 
-  unsigned char TestTurnFlowStatusFlagMask(unsigned int mask);
+  bool TestTurnFlowStatusFlagMask(unsigned int mask);
 
   // --- non-virtual helpers ---
   int GetNumGPs();                  // Mac oracle; 0x5811e0
@@ -89,7 +89,7 @@ public:
   NationSlot GetPlayerCountry(); // Mac oracle; 0x581260
   // Mac oracle: the country exists and has not been absorbed. ABI: thiscall; the body
   // ignores `this`. 0x581280.
-  char ReallyInTheGame(NationSlot nationSlot);
+  bool ReallyInTheGame(NationSlot nationSlot);
   void EliminateGP(NationSlot nationSlot); // Mac oracle; 0x581300
   // Forwards to the player's TGreatPower::SorryYouLose. 0x5813d0.
   void NotifyActiveNationLost();
@@ -98,14 +98,14 @@ public:
   void ResetTurnFlowStateAndRandomSeed();
   void UpdatePreferences(bool writeBack); // Mac oracle
   void AddHighScore(); // Mac oracle; inserts the player into scores.dat's top ten. 0x581510
-  void CreateSimObjects(bool flag);                              // Mac oracle; 0x57c3b0
+  void CreateSimObjects(bool flag);                                          // Mac oracle; 0x57c3b0
   void CreatePlanet(int rebuild, const char* mapName, int wrapHorizontally); // Mac oracle; 0x57c7c0
-  unsigned char LoadScenario(int scenarioIndex);                 // Mac oracle; 0x57c9a0
-  void CreateCountries(int flag);                                // Mac oracle; 0x57cad0
+  unsigned char LoadScenario(int scenarioIndex);                             // Mac oracle; 0x57c9a0
+  void CreateCountries(int flag);                                            // Mac oracle; 0x57cad0
   // Mac retail identities for the two state-2 setup branches.
   void NameCapitals();          // 0x581c00
   void ProcessScenarioScript(); // 0x581e60
-  // Sets field6a and reloads that picture language pack. 0x581ae0.
+  // Sets mapArtSet and reloads that picture language pack. 0x581ae0.
   void SelectMapArtSet(short index);
   void SetPlayerCountry(NationSlot nationSlot); // Mac oracle; 0x5837c0
 
@@ -142,7 +142,7 @@ public:
   eGamePhaseNewStyle previousTurnStateCode;
   eGamePhaseNewStyle previousMode;
   unsigned char field14;
-  unsigned char field15[0x17];
+  bool countryAvailable[0x17];
   short economicTurn;
   NationSlot activeNationSlot;
   int numGreatPowers;
@@ -155,16 +155,15 @@ public:
   // ReinitializeGameFlowAndPostTurnEventCode recreates g_pGameFlowState for any session.
   MultiplayerSessionRole multiplayerSessionRole;
   short preferenceValues[14];
-  int field_64;
+  int lastPersistentUnitId;
   // Names come from string group 0x2715 instead of generated flavor text.
   char useLocalizedNameTables;
   unsigned char pad69;
-  short field6a;
+  short mapArtSet;
   short finalCouncilYear; // calendar year; 1914 by default
-  unsigned char councilByDecade[10];
-  unsigned char field78;
-  bool field79;
-  bool gateFlag7a;
+  // Indexed by economicTurn / 40 from 1815; 0 none, 1 council, 2 final council.
+  unsigned char councilByDecade[12];
+  bool newsEventsSuppressed;
   unsigned char pad7b;
   CString sharedTextSlots[0x17];
   unsigned char multiplayerGameActive;

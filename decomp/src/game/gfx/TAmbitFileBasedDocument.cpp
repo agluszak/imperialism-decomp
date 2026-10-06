@@ -108,7 +108,7 @@ void TAmbitFileBasedDocument::DoRead(ArchiveStreamAdapter* file, unsigned char f
   stream->Free();
 
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot)) != 0 &&
+    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot)) &&
         !g_apNationStates[nationSlot]->IsRemote()) {
       g_apNationStates[nationSlot]->BuildTransportLinkedInfluenceMap(0);
     }

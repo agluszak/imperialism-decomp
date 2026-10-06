@@ -18,15 +18,15 @@ void TOnOffRadioButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
   switch (commandId) {
   case 0xc:
     if (controlState64 == 0) {
-      SetState(static_cast<unsigned char>(1), static_cast<unsigned char>(1));
+      SetState(true, true);
     }
     TControl::DoEvent(commandId, sourceHandler, event);
     return;
   case 0x1f:
-    SetState(static_cast<unsigned char>(1), static_cast<unsigned char>(1));
+    SetState(true, true);
     return;
   case 0x20:
-    SetState(static_cast<unsigned char>(0), static_cast<unsigned char>(1));
+    SetState(false, true);
     return;
   default:
     TControl::DoEvent(commandId, sourceHandler, event);

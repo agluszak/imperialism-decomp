@@ -720,15 +720,15 @@ void TTradeMgr::SetDealResults(NationSlot sourceNation, NationSlot targetNation,
   if (!remoteReplay) {
     bool isClient = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
     if (isClient) {
-      g_pGameFlowState->SendDealResults(
-          true, sourceNation, targetNation, amount, maximumAmount, commodityType, shortfallFlag);
+      g_pGameFlowState->SendDealResults(true, sourceNation, targetNation, amount, maximumAmount,
+                                        commodityType, shortfallFlag);
       return;
     }
   }
   bool isHost = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
   if (isHost) {
-    g_pGameFlowState->SendDealResults(
-        false, sourceNation, targetNation, amount, maximumAmount, commodityType, shortfallFlag);
+    g_pGameFlowState->SendDealResults(false, sourceNation, targetNation, amount, maximumAmount,
+                                      commodityType, shortfallFlag);
   }
 
   if (shortfallFlag != 0 && g_pDiplomacyTurnStateManager->IsGreatPower(sourceNation)) {
@@ -744,8 +744,7 @@ void TTradeMgr::SetDealResults(NationSlot sourceNation, NationSlot targetNation,
         !g_pDiplomacyTurnStateManager->IsGreatPower(sourceNation)) {
       g_apTerrainTypeDescriptorTable[targetNation]->DeliverItem(amount);
     }
-    short relationBump = g_pDiplomacyTurnStateManager->GetEmbassyStatus(
-        sourceNation, targetNation);
+    short relationBump = g_pDiplomacyTurnStateManager->GetEmbassyStatus(sourceNation, targetNation);
     if (relationBump >= 1) {
       int matrixIndex = sourceNationIndex * kNationSlotCount + targetNation;
       short standingScore = g_pDiplomacyTurnStateManager->relationStandingScores[matrixIndex];
@@ -775,7 +774,7 @@ void TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags() {
   int slot = 0;
   TGreatPower** np = g_apNationStates;
   do {
-    if ((g_pSimMgr->ReallyInTheGame(static_cast<short>(slot)) != 0) && (*np != 0)) {
+    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(slot)) && *np != 0) {
       (*np)->InitializeTradeStatus();
     }
     slot = slot + 1;
@@ -795,7 +794,7 @@ void TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags() {
   slot = 0;
   np = g_apNationStates;
   do {
-    if ((g_pSimMgr->ReallyInTheGame(static_cast<short>(slot)) != 0) && (*np != 0)) {
+    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(slot)) && *np != 0) {
       (*np)->SetTradeBids();
     }
     slot = slot + 1;
@@ -845,7 +844,7 @@ void TTradeMgr::TallyTradeBids() {
   int nation = 0;
   TGreatPower** np = g_apNationStates;
   do {
-    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nation)) != 0) {
+    if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nation))) {
       (*np)->AssignFallbackNationsToUnfilledDiplomacyNeedSlots();
     }
     nation = nation + 1;
@@ -860,7 +859,7 @@ void TTradeMgr::TallyTradeBids() {
     np = g_apNationStates;
     int slot = 0;
     do {
-      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(slot)) != 0) {
+      if (g_pSimMgr->ReallyInTheGame(static_cast<short>(slot))) {
         short metric = (*np)->GetTradeOffersFor(static_cast<short>(metricRow));
         cells[metricRow * 0x50 + col] = metric;
         if (metric < 0) {
