@@ -14,14 +14,14 @@
 IMPLEMENT_DYNCREATE(TPurchaseCluster, TCluster)
 
 // FUNCTION: IMPERIALISM 0x004cc3c0
-TPurchaseCluster::TPurchaseCluster() : TCluster(), field88(0) {}
+TPurchaseCluster::TPurchaseCluster() : TCluster(), linkedControl(0) {}
 
 // FUNCTION: IMPERIALISM 0x004cc420
 TPurchaseCluster::~TPurchaseCluster() {}
 
 // FUNCTION: IMPERIALISM 0x004cc440
 void TPurchaseCluster::StuffValues(TEventHandler* control) {
-  field88 = control;
+  linkedControl = control;
   SetValue(static_cast<short>(control->enabled), true);
 }
 
@@ -32,11 +32,11 @@ void TPurchaseCluster::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoin
 void TPurchaseCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 10) {
     if (sourceHandler->controlTag == kControlTagLaro) {
-      field88->SetEnable(static_cast<char>(GetValue() - 1));
+      linkedControl->SetEnable(static_cast<char>(GetValue() - 1));
     } else if (sourceHandler->controlTag == kControlTagRaro) {
-      field88->SetEnable(static_cast<char>(GetValue() + 1));
+      linkedControl->SetEnable(static_cast<char>(GetValue() + 1));
     }
-    SetValue(static_cast<short>(field88->enabled), true);
+    SetValue(static_cast<short>(linkedControl->enabled), true);
   }
   TCluster::DoEvent(commandId, sourceHandler, event);
 }

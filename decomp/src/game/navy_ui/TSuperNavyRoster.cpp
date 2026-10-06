@@ -31,7 +31,7 @@ void TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext(TView* panel, in
       TMiniShipLine* line = new TMiniShipLine;
       int lineBounds[2] = {0xec, 0x12};
       line->ILineData(0, 0, lineBounds);
-      line->field10 = ship;
+      line->ship = ship;
       AddOrderedEntry(line);
     }
   }

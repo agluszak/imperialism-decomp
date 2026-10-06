@@ -11,7 +11,7 @@ IMPLEMENT_DYNCREATE(TGWorldButton, TControl)
 
 // FUNCTION: IMPERIALISM 0x00572130
 TGWorldButton::TGWorldButton() {
-  field84 = 0;
+  frameOffsetX = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00572190
@@ -21,7 +21,7 @@ TGWorldButton::~TGWorldButton() {}
 void TGWorldButton::IGWorldButton(TView* panel, int* offsetLayout, int* sizeLayout,
                                   short bitmapResourceId) {
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 4, 4, 0);
-  field88 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(bitmapResourceId);
+  frameSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(bitmapResourceId);
 }
 
 // FUNCTION: IMPERIALISM 0x00572200
@@ -31,9 +31,9 @@ void TGWorldButton::HiliteState(unsigned char fEnabledState, bool fRefreshNow) {
   }
   controlState = static_cast<unsigned char>(fEnabledState);
   if (fEnabledState == 0) {
-    field84 = static_cast<short>(field84 - frameWidth);
+    frameOffsetX = static_cast<short>(frameOffsetX - frameWidth);
   } else {
-    field84 = static_cast<short>(field84 + frameWidth);
+    frameOffsetX = static_cast<short>(frameOffsetX + frameWidth);
   }
   RefreshControl();
   if (fRefreshNow) {
@@ -44,12 +44,12 @@ void TGWorldButton::HiliteState(unsigned char fEnabledState, bool fRefreshNow) {
 // FUNCTION: IMPERIALISM 0x00572270
 void TGWorldButton::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
-  if (field88 != 0) {
+  if (frameSurface != 0) {
     CRect destRect;
     QueryContentBounds(&destRect);
-    RECT srcRect = {field84, 0, static_cast<int>(field84 + frameWidth), frameHeight};
+    RECT srcRect = {frameOffsetX, 0, static_cast<int>(frameOffsetX + frameWidth), frameHeight};
     UpdatePaletteIndexWithDefaultFallback(0x10);
-    BlitRectWithOptionalTransparency(field88->GetBlitSurface(),
+    BlitRectWithOptionalTransparency(frameSurface->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                      &destRect, 0x24, 0);
     UpdatePaletteIndexWithDefaultFallback(0x13);

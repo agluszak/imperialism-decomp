@@ -20,6 +20,6 @@ public:
 
   void IMiniShipLine(short rowArg, short colArg, int* bounds, TShip* item);
 
-  TShip* field10;
+  TShip* ship;
 };
 ASSERT_SIZE(TMiniShipLine, 0x14);

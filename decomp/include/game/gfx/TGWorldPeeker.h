@@ -14,8 +14,8 @@ public:
   virtual ~TGWorldPeeker() override;            // slot 0x01 (scalar deleting destructor)
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4ff2f0
 
-  TGWorldPeeker() : field60(nullptr) {}
+  TGWorldPeeker() : peekSurface(nullptr) {}
 
-  TQuickDrawSurfaceContext* field60;
+  TQuickDrawSurfaceContext* peekSurface;
 };
 ASSERT_SIZE(TGWorldPeeker, 0x64);

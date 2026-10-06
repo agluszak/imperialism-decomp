@@ -7,7 +7,7 @@ IMPLEMENT_DYNCREATE(TMiniShipLine, TLineData)
 // FUNCTION: IMPERIALISM 0x00569c40
 void TMiniShipLine::IMiniShipLine(short rowArg, short colArg, int* bounds, TShip* item) {
   ILineData(rowArg, colArg, bounds);
-  field10 = item;
+  ship = item;
 }
 
 // FUNCTION: IMPERIALISM 0x00569c80
@@ -15,6 +15,6 @@ void TMiniShipLine::InstallViews(TView* panel, int* offsetLayout) {
   TMiniShipView* view = new TMiniShipView();
   view->InitializeUiResourceEntryFrameAndParent(nullptr, panel, offsetLayout, &layoutWidth, 5, 5,
                                                 0);
-  view->shipNode = field10;
+  view->shipNode = ship;
   view->eventNumber60 = 0x22;
 }

@@ -31,7 +31,7 @@ void TShipLine::InstallViews(TView* panel, int* offsetLayout) {
   TShipView* shipView = new TShipView();
   shipView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &layoutWidth, 5, 5, 0);
   shipView->shipNode = shipNode;
-  shipView->field64 = taskForce18;
+  shipView->taskForce = taskForce18;
 
   int checkboxOffset[2] = {0, 0};
   int checkboxSize[2] = {0x50, 0x2d};

@@ -33,7 +33,7 @@ void TShipView::IShipView(TView* panel, int* offsetLayout, int* sizeLayout, int 
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, sizeDeterminerX,
                                           sizeDeterminerY, 0);
   shipNode = ship;
-  field64 = taskForce;
+  this->taskForce = taskForce;
 }
 
 // FUNCTION: IMPERIALISM 0x005654e0
@@ -94,13 +94,13 @@ void TShipView::Draw(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x005658d0
 void TShipView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (sourceHandler->controlTag == kControlTagChec) {
-    TMapOrderChildLinkNode* node = field64->shipList->FindNodeMatching(shipNode);
+    TMapOrderChildLinkNode* node = taskForce->shipList->FindNodeMatching(shipNode);
     int delta;
     if (node->active == 0) {
-      field64->Select(shipNode, true);
+      taskForce->Select(shipNode, true);
       delta = 1;
     } else {
-      field64->Select(shipNode, false);
+      taskForce->Select(shipNode, false);
       delta = -1;
     }
 

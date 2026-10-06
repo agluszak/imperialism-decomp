@@ -20,8 +20,8 @@ public:
   void IGWorldButton(TView* panel, int* offsetLayout, int* sizeLayout,
                      short bitmapResourceId); // Mac oracle: IGWorldButton(..., short)
 
-  short field84;
+  short frameOffsetX;
   short pad86;
-  TQuickDrawSurfaceContext* field88;
+  TQuickDrawSurfaceContext* frameSurface;
 };
 ASSERT_SIZE(TGWorldButton, 0x8c);

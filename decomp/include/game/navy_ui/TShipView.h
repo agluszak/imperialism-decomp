@@ -21,7 +21,7 @@ public:
   TShipView() {}
 
   TShip* shipNode;
-  class TTaskForce* field64;
+  class TTaskForce* taskForce;
 
   // Non-virtual: runs the rename dialog for field60 in response to the 'name' command.
   void RenameShip();

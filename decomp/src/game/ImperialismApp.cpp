@@ -190,8 +190,8 @@ END_MESSAGE_MAP()
 
 // FUNCTION: IMPERIALISM 0x00412ac0
 ImperialismApp::ImperialismApp()
-    : CWinApp(), waitCursorAnchorC0(0), field_C4(), appliedAutoResMode(0), languageLabelCC(),
-      localizedPictGobNameD0(), field_D4(), primaryDataLibNameD8(), field_DC(),
+    : CWinApp(), waitCursorAnchorC0(0), installDrivePrefix(), appliedAutoResMode(0),
+      languageLabelCC(), localizedPictGobNameD0(), field_D4(), primaryDataLibNameD8(), field_DC(),
       languageCodeString(), languagePackId(0) {}
 
 // FUNCTION: IMPERIALISM 0x00412c60
@@ -536,7 +536,7 @@ const char* GetDataDirectoryPathLiteral() {
 
 // FUNCTION: IMPERIALISM 0x00414870
 LPCTSTR ImperialismApp::DetectImperialismInstallDriveAndSetPathPrefix() {
-  if (field_C4.IsEmpty()) {
+  if (installDrivePrefix.IsEmpty()) {
     char driveIndex = 2;
     while (driveIndex < 0x1a) {
       if (QueryDriveTypeByDriveIndex(driveIndex)) {
@@ -549,14 +549,14 @@ LPCTSTR ImperialismApp::DetectImperialismInstallDriveAndSetPathPrefix() {
           prefix[1] = ':';
           prefix[2] = '/';
           prefix[3] = '\0';
-          field_C4 = CString(prefix);
+          installDrivePrefix = CString(prefix);
           break;
         }
       }
       driveIndex = static_cast<char>(driveIndex + 1);
     }
   }
-  return static_cast<LPCTSTR>(field_C4);
+  return static_cast<LPCTSTR>(installDrivePrefix);
 }
 
 // FUNCTION: IMPERIALISM 0x004149a0
