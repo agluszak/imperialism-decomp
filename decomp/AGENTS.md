@@ -26,5 +26,4 @@ Follow `../AGENTS.md` plus these invariants.
 - Do not hide gaps with approximations, fake bridges, mismatch ignores, or allowlists. Fix the source,
   ABI, ownership, data, resources, or control flow that actually diverges.
 
-Use the existing skills for function recovery, class recovery, Ghidra work, runtime investigation, and
-verification. Procedures and case-specific evidence do not belong here.
+Use the `ghidra`, `runtime`, and `verify` skills when needed.
