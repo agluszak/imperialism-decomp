@@ -89,20 +89,17 @@ public:
   enum TurnEvent11MapOffsetBase { kTurnEvent11TerrainStateBase = 0, kTurnEvent11CityScoreBase = 1 };
   void DoGameDataHunk(TurnEvent2SyncPacket* packet);      // 0x5447e0
   char UpdatePendingNationMaskIfChanged(int* cachedMask); // 0x544810
-  void CreateAndSendTurnEvent11_MapOffsetAndFlags(unsigned char flagByte,
-                                                  TurnEvent11MapOffsetBase mapOffsetBase,
-                                                  const void* mapEntry, short shortA,
-                                                  short shortB);      // 0x5493c0
-  void SendChangeProvinceOwner(short provinceIndex, short nationTag); // 0x5494b0
+  void SendMapPoke(signed char pokeWidthCode, TurnEvent11MapOffsetBase mapOffsetBase,
+                   const void* mapEntry, short pokeValue, short pokeMask); // 0x5493c0
+  void SendChangeProvinceOwner(short provinceIndex, short nationTag);      // 0x5494b0
 
   char AreAllSessionSlotsOwnedByActiveNation();
   void SendNewsEvent(int nationSlot, NewsEvent* event); // 0x549540 (Mac oracle)
-  void CreateAndSendTurnEvent1B_FiveShortsAndDword(short shortA, short shortB, short shortC,
-                                                   short shortD, short shortE,
-                                                   int trailingValue); // 0x5498d0
-  void SendDealResults(bool broadcastFlag, short shortA, short shortB, short shortC, short shortD,
-                       short shortE,
-                       short shortF);                                                  // 0x5499b0
+  void SendDealBookEntry(short nationSlot, short trackedKind, short targetNation,
+                         short trackedValue, short trackedSlotIndex,
+                         int trackedPayload); // 0x5498d0
+  void SendDealResults(bool broadcast, short sourceNation, short targetNation, short amount,
+                       short maximumAmount, short commodityType, short shortfallFlag); // 0x5499b0
   void SendMiscEvent(unsigned char nationSlotOrAll, short storyCode);                  // 0x549720
   void SendTreatyEvent(short eventKind, unsigned char nationA, unsigned char nationB); // 0x5495e0
   void SendShortageEvent(unsigned char subjectNation, unsigned char affectedNation,

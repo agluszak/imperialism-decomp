@@ -398,11 +398,7 @@ void TMultiplayerMgr::SetSyncPhases(eGamePhaseNewStyle completedPhase,
   }
 }
 
-struct TurnEvent3Mode18Packet : NetMessage {
-  int packetTag;
-  unsigned char activeNationId;
-  unsigned char pad15[3];
-};
+struct TurnEvent3Mode18Packet : TimelyMessageHeader {};
 
 // FUNCTION: IMPERIALISM 0x005431a0
 void TMultiplayerMgr::ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(int nationSlot) {
@@ -463,7 +459,7 @@ void TMultiplayerMgr::ResetDiplomacyRuntimeSelectionAndSetModeNada() {
 // FUNCTION: IMPERIALISM 0x005446a0
 void TMultiplayerMgr::EmitTurnEvent3Mode18WithActiveNation() {
   TurnEvent3Mode18Packet packet;
-  packet.packetTag = kControlTagTime;
+  packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packet.eventCode = 0;
   packet.fromNetworkId = 0;
@@ -479,7 +475,7 @@ void TMultiplayerMgr::EmitTurnEvent10ForFlaggedNationSlots() {
   for (int slot = 0; slot < kMajorNationSessionSlotCount; ++slot) {
     if (nationSessionIds[slot] != 0 && (pendingNationBitmask & (1 << slot)) != 0) {
       TurnEvent3Mode18Packet packet;
-      packet.packetTag = kControlTagTime;
+      packet.messageTag = kControlTagTime;
       packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
       packet.eventCode = 0;
       packet.fromNetworkId = 0;
@@ -665,7 +661,7 @@ unsigned char TMultiplayerMgr::ResetNationStatusSlotsAndInitializeNameControls(T
 
   if (g_pSimMgr->multiplayerSessionRole == kSessionRoleClient) {
     TurnEvent3Mode18Packet packet;
-    packet.packetTag = kControlTagTime; // 'time'
+    packet.messageTag = kControlTagTime; // 'time'
     packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
     packet.eventCode = 0;
     packet.fromNetworkId = 0;
@@ -694,7 +690,7 @@ unsigned char TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3() {
   lobbyDialogView = 0;
 
   TurnEvent3Mode18Packet packet;
-  packet.packetTag = kControlTagTime; // 'time'
+  packet.messageTag = kControlTagTime; // 'time'
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packet.eventCode = 0;
   packet.fromNetworkId = 0;

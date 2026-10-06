@@ -34,12 +34,7 @@
 #include "game/nation/TTurnStartEvent.h"
 #include "game/ImperialismApp.h"
 
-struct TurnEvent2CPacket : NetMessage {
-  int packetTag;                // +0x10 'time'
-  unsigned char activeNationId; // +0x14
-  unsigned char pad15[3];
-  GamePhaseStorage syncPhase; // +0x18
-  unsigned char pad1a[2];
+struct TurnEvent2CPacket : TimelyNetMessagePrefix {
   short nationSlot; // +0x1c
   unsigned char pad1e[2];
   int field910;                                             // +0x20
@@ -65,12 +60,7 @@ struct TurnEvent2CPacket : NetMessage {
   short popBucketWords[9]; // +0x17a - baseline/production/pendingDelta valueAt4/6/8
 }; // total 0x18c
 
-struct TurnEvent19Packet : NetMessage {
-  int packetTag;                // +0x10 'time'
-  unsigned char activeNationId; // +0x14
-  unsigned char pad15[3];
-  GamePhaseStorage syncPhase; // +0x18
-  unsigned char pad1a[2];
+struct TurnEvent19Packet : TimelyNetMessagePrefix {
   short nationSlot;                                 // +0x1c
   short transportCapacity;                          // +0x1e
   short orderCountByType[kIndustryActionSlotCount]; // +0x20
@@ -83,10 +73,7 @@ struct TurnEvent19Packet : NetMessage {
 };
 
 // Turn-event-0x15 payload: the sender nation's full diplomacy need-state block.
-struct TurnEvent15Packet : NetMessage {
-  int packetTag;                // +0x10 'time'
-  unsigned char activeNationId; // +0x14
-  unsigned char pad15[3];
+struct TurnEvent15Packet : TimelyMessageHeader {
   short nationSlot; // +0x18
   unsigned char pad1a[2];
   int treasuryValue;                    // +0x1c
@@ -170,10 +157,7 @@ TMultiplayerSlotHandle::~TMultiplayerSlotHandle() {
   }
 }
 
-struct TurnEvent12Packet : NetMessage {
-  int packetTag;
-  unsigned char activeNationId;
-  unsigned char pad15[3];
+struct TurnEvent12Packet : TimelyMessageHeader {
   short shortA;
   short shortB;
 };
@@ -191,8 +175,8 @@ struct TurnEvent11MapPokePacket : TimelyMessageHeader {
   unsigned char pad19[3];
   int bufferSelector; // +0x1c - 0 terrainStateTable, 1 cityScoreTable, else null base
   int byteOffset;     // +0x20 - raw byte offset into the selected table
-  short valueWord24;  // +0x24
-  short maskWord26;   // +0x26, total 0x28
+  short pokeValue;    // +0x24
+  short pokeMask;     // +0x26, total 0x28
 };
 
 struct TurnEvent20TreatyNewsPacket : TimelyMessageHeader {
@@ -226,7 +210,7 @@ struct TurnEvent1ANationActionPacket : TimelyNetMessagePrefix {
 };
 
 // Event-0x1B one tracked-slot entry.
-struct TurnEvent1BTrackedEntryPacket : TimelyNetMessagePrefix {
+struct TurnEvent1BDealBookEntryPacket : TimelyNetMessagePrefix {
   short nationSlot;       // +0x1c
   short trackedKind;      // +0x1e
   short targetNation;     // +0x20
@@ -236,16 +220,16 @@ struct TurnEvent1BTrackedEntryPacket : TimelyNetMessagePrefix {
   int trackedPayload; // +0x28, total 0x2c
 };
 
-// Event-0x1C proposal amount dispatch.
-struct TurnEvent1CProposalAmountPacket : TimelyNetMessagePrefix {
-  short ownerNation1C;         // +0x1c
-  short sourceContext;         // +0x1e
-  short maxAmount;             // +0x20
-  short targetNation;          // +0x22
-  short amount;                // +0x24
-  unsigned char emitEventFlag; // +0x26
-  unsigned char pad27;         // total 0x28
+// Event-0x1C trade deal result.
+struct TurnEvent1CDealResultPacket : TimelyNetMessagePrefix {
+  short sourceNation;  // +0x1c
+  short targetNation;  // +0x1e
+  short maximumAmount; // +0x20
+  short commodityType; // +0x22
+  short amount;        // +0x24
+  short shortfallFlag; // +0x26
 };
+ASSERT_SIZE(TurnEvent1CDealResultPacket, 0x28);
 
 // TurnEvent1DWarTransitionPacket now lives in game/military/NetMessage.h: the proxy
 // great-power emitters (0x540cf0 / 0x540dc0) build the same packet this case decodes.
@@ -446,7 +430,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
 
     {
       TurnEventBNationDirectoryPacket packet;
-      packet.packetTag = kControlTagTime;
+      packet.messageTag = kControlTagTime;
       packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
       packet.eventCode = 0;
       packet.fromNetworkId = 0;
@@ -483,7 +467,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
         short tileIndex = neighborTiles[k];
         if (tileIndex != -1) {
           TurnEvent23TileStatePacket packet;
-          packet.packetTag = kControlTagTime;
+          packet.messageTag = kControlTagTime;
           packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
           packet.eventCode = 0;
           packet.fromNetworkId = 0;
@@ -562,7 +546,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
       SaveGameWithModeAndOptionalLabel(0xa2, 0);
     }
     TurnEvent18DiplomacyArraysPacket packet;
-    packet.packetTag = kControlTagTime;
+    packet.messageTag = kControlTagTime;
     packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
     packet.eventCode = 0;
     packet.eventCode = 0x18;
@@ -1193,11 +1177,11 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       } else if (poke->bufferSelector == 1) {
         bufferBase1 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->cityScoreTable);
       }
-      unsigned char maskByte = static_cast<unsigned char>(poke->maskWord26);
+      unsigned char maskByte = static_cast<unsigned char>(poke->pokeMask);
       unsigned char* target1 = bufferBase1 + poke->byteOffset;
       *target1 =
           static_cast<unsigned char>((*target1 & static_cast<unsigned char>(~maskByte)) |
-                                     (static_cast<unsigned char>(poke->valueWord24) & maskByte));
+                                     (static_cast<unsigned char>(poke->pokeValue) & maskByte));
       break;
     }
     case 2: {
@@ -1208,8 +1192,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         bufferBase2 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->cityScoreTable);
       }
       short* target2 = reinterpret_cast<short*>(bufferBase2 + poke->byteOffset);
-      *target2 = static_cast<short>((*target2 & ~poke->maskWord26) |
-                                    (poke->valueWord24 & poke->maskWord26));
+      *target2 =
+          static_cast<short>((*target2 & ~poke->pokeMask) | (poke->pokeValue & poke->pokeMask));
       break;
     }
     case 4: {
@@ -1219,9 +1203,9 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       } else if (poke->bufferSelector == 1) {
         bufferBase4 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->cityScoreTable);
       }
-      int maskBits = poke->maskWord26;
+      int maskBits = poke->pokeMask;
       int* target4 = reinterpret_cast<int*>(bufferBase4 + poke->byteOffset);
-      *target4 = (poke->valueWord24 & maskBits) | (*target4 & ~maskBits);
+      *target4 = (poke->pokeValue & maskBits) | (*target4 & ~maskBits);
       break;
     }
     default:
@@ -1353,19 +1337,19 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   }
   case 0x1b: {
     // Append one tracked-slot entry to the nation.
-    TurnEvent1BTrackedEntryPacket* trackedEntry =
-        static_cast<TurnEvent1BTrackedEntryPacket*>(packet);
+    TurnEvent1BDealBookEntryPacket* trackedEntry =
+        static_cast<TurnEvent1BDealBookEntryPacket*>(packet);
     g_apNationStates[trackedEntry->nationSlot]->AddToDealBook(
         trackedEntry->trackedKind, trackedEntry->targetNation, trackedEntry->trackedValue,
         trackedEntry->trackedSlotIndex, trackedEntry->trackedPayload);
     break;
   }
   case 0x1c: {
-    TurnEvent1CProposalAmountPacket* proposalAmount =
-        static_cast<TurnEvent1CProposalAmountPacket*>(packet);
-    g_pTradeMgr->SetDealResults(proposalAmount->ownerNation1C, proposalAmount->sourceContext,
-                                proposalAmount->amount, proposalAmount->maxAmount,
-                                proposalAmount->targetNation, proposalAmount->emitEventFlag, true);
+    TurnEvent1CDealResultPacket* dealResult = static_cast<TurnEvent1CDealResultPacket*>(packet);
+    g_pTradeMgr->SetDealResults(dealResult->sourceNation, dealResult->targetNation,
+                                dealResult->amount, dealResult->maximumAmount,
+                                dealResult->commodityType,
+                                static_cast<unsigned char>(dealResult->shortfallFlag), true);
     bool hosting1C = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
     if (!hosting1C) {
       return 1;
@@ -1946,18 +1930,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   return 1;
 }
 
-struct TurnEvent11Packet : NetMessage {
-  int packetTag;
-  unsigned char activeNationId;
-  unsigned char flagByte;
-  short pad16; // alignment gap before mapOffsetSelector
-  int mapOffsetSelector;
-  int mapOffset;
-  short shortA;
-  short shortB;
-  unsigned char pad24[4]; // original frame/messageLength is 0x28
-};
-
 // FUNCTION: IMPERIALISM 0x00549260
 TurnEventQueuePacket* TMultiplayerMgr::PopTimelyMessage() {
   TurnEventQueuePacket* packet = primaryTurnEventQueueHead;
@@ -2019,27 +1991,26 @@ bool TMultiplayerMgr::IsTimelyMessage(NetMessage* packet) {
 }
 
 // FUNCTION: IMPERIALISM 0x005493c0
-void TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags(
-    unsigned char flagByte, TurnEvent11MapOffsetBase mapOffsetBase, const void* mapEntry,
-    short shortA, short shortB) {
-  TurnEvent11Packet packet;
+void TMultiplayerMgr::SendMapPoke(signed char pokeWidthCode, TurnEvent11MapOffsetBase mapOffsetBase,
+                                  const void* mapEntry, short pokeValue, short pokeMask) {
+  TurnEvent11MapPokePacket packet;
   packet.eventCode = 0x11;
   packet.fromNetworkId = 0;
   packet.toNetworkId = (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) ? 0 : -1;
-  packet.messageLength = 0x28;
-  packet.packetTag = kControlTagTime;
+  packet.messageLength = sizeof(packet);
+  packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
-  packet.flagByte = flagByte;
-  packet.mapOffsetSelector = mapOffsetBase;
+  packet.pokeWidthCode = pokeWidthCode;
+  packet.bufferSelector = mapOffsetBase;
   const void* mapBase = 0;
   if (mapOffsetBase == kTurnEvent11TerrainStateBase) {
     mapBase = g_pGlobalMapState->terrainStateTable;
   } else if (mapOffsetBase == kTurnEvent11CityScoreBase) {
     mapBase = g_pGlobalMapState->cityScoreTable;
   }
-  packet.mapOffset = static_cast<const char*>(mapEntry) - static_cast<const char*>(mapBase);
-  packet.shortA = shortA;
-  packet.shortB = shortB;
+  packet.byteOffset = static_cast<const char*>(mapEntry) - static_cast<const char*>(mapBase);
+  packet.pokeValue = pokeValue;
+  packet.pokeMask = pokeMask;
   g_pNetMgr006a6014->Send(&packet, false);
 }
 
@@ -2050,7 +2021,7 @@ void TMultiplayerMgr::SendChangeProvinceOwner(short provinceIndex, short nationT
   packet.fromNetworkId = 0;
   packet.toNetworkId = 0;
   packet.messageLength = 0x1c;
-  packet.packetTag = kControlTagTime;
+  packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packet.shortA = provinceIndex;
   packet.shortB = nationTag;
@@ -2144,27 +2115,12 @@ void TMultiplayerMgr::SendTradeOffer(short respondingNation, short offeringNatio
   g_pNetMgr006a6014->Send(&packet, true);
 }
 
-struct TurnEvent1BPacket : NetMessage {
-  int packetTag;
-  unsigned char activeNationId;
-  unsigned char pad15[3];
-  GamePhaseStorage syncPhase;
-  unsigned char pad1a[2];
-  short shortA;
-  short shortB;
-  short shortC;
-  short shortD;
-  short shortE;
-  unsigned char pad26[2];
-  int trailingValue;
-};
-
 // FUNCTION: IMPERIALISM 0x005498d0
-void TMultiplayerMgr::CreateAndSendTurnEvent1B_FiveShortsAndDword(short shortA, short shortB,
-                                                                  short shortC, short shortD,
-                                                                  short shortE, int trailingValue) {
-  TurnEvent1BPacket packet;
-  packet.packetTag = kControlTagTime;
+void TMultiplayerMgr::SendDealBookEntry(short nationSlot, short trackedKind, short targetNation,
+                                        short trackedValue, short trackedSlotIndex,
+                                        int trackedPayload) {
+  TurnEvent1BDealBookEntryPacket packet;
+  packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packet.eventCode = 0;
   packet.fromNetworkId = 0;
@@ -2174,45 +2130,33 @@ void TMultiplayerMgr::CreateAndSendTurnEvent1B_FiveShortsAndDword(short shortA, 
   packet.messageLength = 0x2c;
   packet.toNetworkId = 0;
   packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
-  packet.shortA = shortA;
-  packet.shortB = shortB;
-  packet.shortC = shortC;
-  packet.shortD = shortD;
-  packet.shortE = shortE;
-  packet.trailingValue = trailingValue;
+  packet.nationSlot = nationSlot;
+  packet.trackedKind = trackedKind;
+  packet.targetNation = targetNation;
+  packet.trackedValue = trackedValue;
+  packet.trackedSlotIndex = trackedSlotIndex;
+  packet.trackedPayload = trackedPayload;
   g_pNetMgr006a6014->Send(&packet, false);
 }
 
-struct TurnEvent1CPacket : NetMessage {
-  int packetTag;
-  unsigned char activeNationId;
-  unsigned char pad15[3];
-  GamePhaseStorage syncPhase;
-  short shortA;
-  short shortB;
-  short shortD;
-  short shortE;
-  short shortC;
-  short shortF;
-};
-
 // FUNCTION: IMPERIALISM 0x005499b0
-void TMultiplayerMgr::SendDealResults(bool broadcastFlag, short shortA, short shortB, short shortC,
-                                      short shortD, short shortE, short shortF) {
-  TurnEvent1CPacket packet;
+void TMultiplayerMgr::SendDealResults(bool broadcast, short sourceNation, short targetNation,
+                                      short amount, short maximumAmount, short commodityType,
+                                      short shortfallFlag) {
+  TurnEvent1CDealResultPacket packet;
   packet.eventCode = 0x1c;
   packet.fromNetworkId = 0;
-  packet.toNetworkId = broadcastFlag ? -1 : 0;
-  packet.messageLength = 0x28;
-  packet.packetTag = kControlTagTime;
+  packet.toNetworkId = broadcast ? -1 : 0;
+  packet.messageLength = sizeof(packet);
+  packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
-  packet.shortA = shortA;
-  packet.shortB = shortB;
-  packet.shortD = shortD;
-  packet.shortE = shortE;
-  packet.shortC = shortC;
-  packet.shortF = shortF;
+  packet.sourceNation = sourceNation;
+  packet.targetNation = targetNation;
+  packet.maximumAmount = maximumAmount;
+  packet.commodityType = commodityType;
+  packet.amount = amount;
+  packet.shortfallFlag = shortfallFlag;
   g_pNetMgr006a6014->Send(&packet, false);
 }
 
@@ -2302,10 +2246,7 @@ void TMultiplayerMgr::WriteMessageTo(TStream* stream, short eventTag, short dest
   }
 }
 
-struct TaggedGameStateTurnEventPacket : NetMessage {
-  int packetTag;
-  unsigned char activeNationId;
-  unsigned char pad15[3];
+struct TaggedGameStateTurnEventPacket : TimelyMessageHeader {
   int resolvedNationId;
   int tagParam;
   int value;
@@ -2409,7 +2350,7 @@ void TMultiplayerMgr::DispatchTaggedGameStateEvent1F20(int packetTag, int value,
   packet.fromNetworkId = 0;
   packet.toNetworkId = 0;
   packet.messageLength = 0x20;
-  packet.packetTag = kControlTagTime;
+  packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packet.tagParam = packetTag;
   packet.value = value;
@@ -2440,42 +2381,6 @@ void TMultiplayerMgr::DispatchLobbyTextPairEvent8(unsigned char sourceNationSlot
   strcpy(packet.playerNameMirror, static_cast<LPCSTR>(playerNameMirror));
   g_pNetMgr006a6014->Send(&packet, false);
 }
-
-#pragma pack(push, 1)
-struct CityRedrawInvalidateTurnEventPacket : NetMessage {
-  int packetTag;
-  unsigned char activeNationId;
-  unsigned char pad15;
-  GamePhaseStorage syncPhase;
-  short cityId;
-  unsigned char cityHeader00[4];
-  short cityWord04;
-  short cityWord06;
-  unsigned char cityByte08;
-  short adjacentRegionIds[12];
-  short adjacentRegionIds22[12];
-  unsigned char cityBytes3A[3];
-  short cityWord3E;
-  short cityWord40;
-  short linkedRegionIds42[32];
-  short linkedRegionIds82[10];
-  TMilitaryUnit* stationedUnitChain;
-  int cityScoreValue9C;
-  unsigned char cityBytesA0[4];
-  CString cityNameA4;
-};
-#pragma pack(pop)
-
-#pragma pack(push, 1)
-struct TileRedrawInvalidateTurnEventPacket : NetMessage {
-  int packetTag;
-  unsigned char activeNationId;
-  unsigned char pad15;
-  GamePhaseStorage syncPhase;
-  short tileIndex;
-  TTerrainStateRecord tileSnapshot;
-};
-#pragma pack(pop)
 
 // FUNCTION: IMPERIALISM 0x0054a500
 void TMultiplayerMgr::PublishTerrainDescriptorAndNotifyOrderListeners(TStream* stream,
@@ -2612,24 +2517,20 @@ void TMultiplayerMgr::CreateAndSendTurnEvent0C_Text256AndTwoFlags(CString* text,
 
 // FUNCTION: IMPERIALISM 0x0054ab20
 extern "C" void __stdcall DispatchTileRedrawInvalidateEvent(short tileIndex) {
-  TileRedrawInvalidateTurnEventPacket packet;
+  TurnEvent23TileStatePacket packet;
+  packet.messageTag = kControlTagTime;
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packet.eventCode = 0x23;
   packet.fromNetworkId = 0;
   packet.toNetworkId = 0;
-  packet.messageLength = 0x44;
-  packet.packetTag = kControlTagTime;
-  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
+  packet.messageLength = sizeof(packet);
   packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
   packet.tileIndex = tileIndex;
-  packet.tileSnapshot = g_pGlobalMapState->terrainStateTable[tileIndex];
-
+  packet.record = g_pGlobalMapState->terrainStateTable[tileIndex];
   g_pNetMgr006a6014->Send(&packet, false);
 }
 
-struct TJoinEmpireTurnEventPacket : NetMessage {
-  int packetTag;
-  unsigned char activeNationId;
-  unsigned char pad15[3];
+struct TJoinEmpireTurnEventPacket : TimelyMessageHeader {
   int sourceNationSlot;
   int targetNationSlot;
   int modeValue;
@@ -2637,58 +2538,16 @@ struct TJoinEmpireTurnEventPacket : NetMessage {
 
 // FUNCTION: IMPERIALISM 0x0054abf0
 void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
-  CityRedrawInvalidateTurnEventPacket packet;
+  TurnEvent24CityRecordPacket packet;
+  packet.messageTag = kControlTagTime;
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packet.eventCode = 0x24;
   packet.fromNetworkId = 0;
   packet.toNetworkId = 0;
-  packet.messageLength = 200;
-  packet.packetTag = kControlTagTime;
-  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
+  packet.messageLength = sizeof(packet);
   packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
-  packet.cityId = cityId;
-
-  const Province* src = &g_pGlobalMapState->cityScoreTable[cityId];
-  packet.cityHeader00[0] = src->ownerNationCode00;
-  packet.cityHeader00[1] = src->formerOwnerNationCode;
-  packet.cityHeader00[2] = src->developmentStage;
-  packet.cityHeader00[3] = src->fortLevel03;
-  packet.cityWord04 = src->cityTileIndex;
-  packet.cityWord06 = src->lastTurnTick;
-  packet.cityByte08 = src->adjacentRegionCount;
-
-  for (int wordIndex = 0; wordIndex < 12; ++wordIndex) {
-    packet.adjacentRegionIds[wordIndex] = src->adjacentRegionIds[wordIndex];
-    packet.adjacentRegionIds22[wordIndex] = src->adjacentRegionAnchorTiles[wordIndex];
-  }
-
-  packet.cityBytes3A[0] = src->linkedRegionCount;
-  packet.cityBytes3A[1] = src->byte3B;
-  packet.cityBytes3A[2] = src->byte3C;
-  packet.cityWord3E = src->secondaryNeighborTileIndex;
-  packet.cityWord40 = src->primaryNeighborTileIndex;
-
-  for (int linkedIndex = 0; linkedIndex < 32; ++linkedIndex) {
-    packet.linkedRegionIds42[linkedIndex] = src->linkedTileIndices42[linkedIndex];
-  }
-  packet.linkedRegionIds82[0] = src->resourceDevelopmentCounts[0];
-  packet.linkedRegionIds82[1] = src->resourceDevelopmentCounts[1];
-  packet.linkedRegionIds82[2] = src->resourceDevelopmentCounts[2];
-  packet.linkedRegionIds82[3] = src->resourceDevelopmentCounts[3];
-  packet.linkedRegionIds82[4] = src->resourceDevelopmentCounts[4];
-  packet.linkedRegionIds82[5] = src->resourceDevelopmentCounts[5];
-  packet.linkedRegionIds82[6] = src->resourceDevelopmentCounts[6];
-  packet.linkedRegionIds82[7] = src->resourceDevelopmentCounts[7];
-  packet.linkedRegionIds82[8] = src->resourceDevelopmentCounts[8];
-  packet.linkedRegionIds82[9] = src->resourceDevelopmentCounts[9];
-
-  packet.stationedUnitChain = src->stationedUnitChain;
-  packet.cityScoreValue9C = src->cityScoreValue;
-  packet.cityBytesA0[0] = src->navyOrderReachable;
-  packet.cityBytesA0[1] = src->exploredByNationMask;
-  packet.cityBytesA0[2] = src->resourcePresenceMask;
-  packet.cityBytesA0[3] = src->regionClassA3;
-  packet.cityNameA4 = src->cityNameA4;
-
+  packet.cityRecordIndex = cityId;
+  packet.record = g_pGlobalMapState->cityScoreTable[cityId];
   g_pNetMgr006a6014->Send(&packet, false);
 }
 
@@ -2766,7 +2625,7 @@ void TMultiplayerMgr::SendTradeBook() {
 void TMultiplayerMgr::EmitNationDiplomacyNeedStateSnapshotEvent15(bool broadcastFlag,
                                                                   int nationSlot) {
   TurnEvent15Packet packet;
-  packet.packetTag = kControlTagTime;
+  packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packet.eventCode = 0;
   packet.eventCode = 0x15;
@@ -3113,7 +2972,7 @@ void TMultiplayerMgr::EmitTurnEvent26DiplomacyMatrixSnapshot() {
 void TMultiplayerMgr::DispatchJoinEmpireModeEventPacket24_27(int sourceNation, int targetNation,
                                                              int mode) {
   TJoinEmpireTurnEventPacket packet;
-  packet.packetTag = kControlTagTime;
+  packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packet.eventCode = 0;
   packet.fromNetworkId = 0;
@@ -3337,7 +3196,7 @@ void TMultiplayerMgr::CreateAndQueueTurnEventPacketTagPOGC() {
 void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
                                                                  int destinationSlot) {
   TurnEvent2CPacket packet;
-  packet.packetTag = kControlTagTime;
+  packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packet.fromNetworkId = 0;
   packet.messageLength = 0x18c;
@@ -3415,7 +3274,7 @@ void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
 void TMultiplayerMgr::EmitTurnEvent19NationStateArraysForSlot(short nationSlot,
                                                               int destinationSlot) {
   TurnEvent19Packet packet;
-  packet.packetTag = kControlTagTime;
+  packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packet.eventCode = 0;
   packet.eventCode = 0x19;

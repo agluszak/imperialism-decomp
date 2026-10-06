@@ -100,12 +100,7 @@ struct TurnEventACityAnnouncePacket : TimelyNetMessagePrefix {
   char cityName20[0x24]; // +0x20 (strncpy'd 0x21), total 0x44
 };
 
-struct TurnEventBNationDirectoryPacket : NetMessage {
-  int packetTag;                // +0x10 'time'
-  unsigned char activeNationId; // +0x14
-  unsigned char pad15[3];
-  GamePhaseStorage syncPhase; // +0x18
-  unsigned char pad1a[2];
+struct TurnEventBNationDirectoryPacket : TimelyNetMessagePrefix {
   short homeTileBySlot[0x17];        // +0x1c
   char cityNameBySlot[0x17][0x17];   // +0x4a
   unsigned char pad25b[0xe6];        // reserve to 0x17 * 0x21
@@ -115,12 +110,7 @@ struct TurnEventBNationDirectoryPacket : NetMessage {
   unsigned char pad666[2];           // total 0x668
 };
 
-struct TurnEvent18DiplomacyArraysPacket : NetMessage {
-  int packetTag;                // +0x10 'time'
-  unsigned char activeNationId; // +0x14
-  unsigned char pad15[3];
-  GamePhaseStorage syncPhase; // +0x18
-  unsigned char pad1a[2];
+struct TurnEvent18DiplomacyArraysPacket : TimelyNetMessagePrefix {
   short diplomacyPolicyByNation[7][0x17]; // +0x1c
   short diplomacyGrantByNation[7][0x17];  // +0x15e
   short needLevelByNation[7][0x17];       // +0x2a0
@@ -133,12 +123,7 @@ struct TurnEvent1FStatusPacket : TimelyMessageHeader {
 };
 
 // Turn-event-0x23 payload: one map tile's 0x24-byte terrain state record.
-struct TurnEvent23TileStatePacket : NetMessage {
-  int packetTag;                // +0x10 'time'
-  unsigned char activeNationId; // +0x14
-  unsigned char pad15[3];
-  GamePhaseStorage syncPhase; // +0x18
-  unsigned char pad1a[2];
+struct TurnEvent23TileStatePacket : TimelyNetMessagePrefix {
   short tileIndex; // +0x1c
   unsigned char pad1e[2];
   TTerrainStateRecord record; // +0x20, total 0x44
