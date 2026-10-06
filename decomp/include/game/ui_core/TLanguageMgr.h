@@ -30,14 +30,14 @@ public:
 
   CString& GetNewsTexPath();
   CString& GetNewsTabPath();
-  int field30;
+  int flavorTextNationIndex;
 
   TLanguageMgr();
   bool ReadPrepLUT(const char* basePath, unsigned long languageTag);
   void FreeTableRows();
-  void Allocate(unsigned char firstColumn, unsigned char lastColumn,
-                     unsigned char firstPrimaryRow, unsigned char lastPrimaryRow,
-                     unsigned char firstExtraRow, unsigned char lastExtraRow);
+  void Allocate(unsigned char firstColumn, unsigned char lastColumn, unsigned char firstPrimaryRow,
+                unsigned char lastPrimaryRow, unsigned char firstExtraRow,
+                unsigned char lastExtraRow);
   void ParseRow(const char* line);
   CString Localize(const char* data, unsigned char formatChar) const;
   char PickGender(const char* name) const; // 0x00508910

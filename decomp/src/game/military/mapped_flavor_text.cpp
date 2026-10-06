@@ -305,7 +305,7 @@ void GenerateMappedFlavorTextByTableSlot(CString* dest, short tableSlot) {
 
 // FUNCTION: IMPERIALISM 0x005d46e0
 void GenerateMappedFlavorTextByCurrentContextNation(CString* dest) {
-  short nationIndex = (g_pLanguageMgr == 0) ? 2 : static_cast<short>(g_pLanguageMgr->field30);
+  short nationIndex = (g_pLanguageMgr == 0) ? 2 : static_cast<short>(g_pLanguageMgr->flavorTextNationIndex);
   GenerateMappedFlavorTextUntilValidationPasses(
       dest, g_MappedFlavorTextNationVariantTable_0066EF30[nationIndex].variantIndex);
 }

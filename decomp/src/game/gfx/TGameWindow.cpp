@@ -104,7 +104,7 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
       g_pSimMgr->StartNextPhase();
       return;
     }
-    if (g_pViewMgr->fieldF8 != 0) {
+    if (g_pViewMgr->pendingFollowupState != 0) {
       TMovieView* activeMovieView = g_pViewMgr->activeMovieView;
       if (activeMovieView == 0) {
         return;

@@ -129,13 +129,13 @@ IMPLEMENT_DYNCREATE(TViewMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x005d5060
 TViewMgr::TViewMgr() : TObject() {
-  this->fieldEc = 0;
+  this->pendingTurnOverlayCode = 0;
   this->currentTurnEventCode = 0;
   this->dialogPlacement = g_ptCitySiteSelectionDialogPlacement;
   this->field10 = false;
   this->mapUberPictureF0 = 0;
   this->activeMovieView = 0;
-  this->fieldF8 = 0;
+  this->pendingFollowupState = 0;
 }
 
 TViewMgr::~TViewMgr() {}
@@ -163,7 +163,7 @@ void TViewMgr::Free() {
 // FUNCTION: IMPERIALISM 0x005d5200
 void TViewMgr::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
-  this->fieldEc = 0;
+  this->pendingTurnOverlayCode = 0;
   this->currentTurnEventCode = 0;
   this->dialogPlacement = g_ptCitySiteSelectionDialogPlacement;
   this->field10 = false;
@@ -787,12 +787,13 @@ void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent() {
 
 // FUNCTION: IMPERIALISM 0x005d6bf0
 void TViewMgr::AddPendingTurnOverlayCode(int modeValue) {
-  fieldEc = static_cast<short>(fieldEc + static_cast<short>(modeValue));
+  pendingTurnOverlayCode =
+      static_cast<short>(pendingTurnOverlayCode + static_cast<short>(modeValue));
 }
 
 // FUNCTION: IMPERIALISM 0x005d6c10
 short TViewMgr::GetPendingTurnOverlayCode() {
-  return fieldEc;
+  return pendingTurnOverlayCode;
 }
 
 // FUNCTION: IMPERIALISM 0x005d6c30
@@ -1686,10 +1687,10 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
 
   short nationSlot = static_cast<short>(nationIndex);
   g_apNationStates[nationSlot]->RecallTradeBids();
-  this->fieldEc = 0;
+  this->pendingTurnOverlayCode = 0;
   for (short metricSlot = 0; metricSlot < 0x11; ++metricSlot) {
     if (g_apNationStates[nationSlot]->GetTradeOffersFor(metricSlot) == -1) {
-      this->fieldEc = static_cast<short>(this->fieldEc + 1);
+      this->pendingTurnOverlayCode = static_cast<short>(this->pendingTurnOverlayCode + 1);
     }
   }
 
@@ -1907,7 +1908,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   if (g_apNationStates[nationSlot]->merchantCapacity == 0) {
     g_pSimMgr->GetString(0x2731, 0x12, &sharedString);
     g_pViewMgr->ModalMessage(sharedString, g_ptCitySiteSelectionDialogPlacement);
-    this->fieldEc = 5;
+    this->pendingTurnOverlayCode = 5;
   }
 
   for (short commodity = 0; commodity < 0x11; ++commodity) {
@@ -2282,7 +2283,7 @@ void TViewMgr::StartPhaseMovie() {
 
 // FUNCTION: IMPERIALISM 0x005db620
 void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) {
-  this->fieldF8 = followupState;
+  this->pendingFollowupState = followupState;
   if (followupState != 0) {
     return;
   }

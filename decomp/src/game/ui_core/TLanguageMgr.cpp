@@ -36,7 +36,7 @@ TLanguageMgr::TLanguageMgr() : TObject() {
   newsTexPath = kNewsTexPath;
   newsTabPath = kNewsTabPath;
   delimiter = 0x20;
-  field30 = 6;
+  flavorTextNationIndex = 6;
 }
 
 // FUNCTION: IMPERIALISM 0x00507db0
@@ -96,7 +96,7 @@ bool TLanguageMgr::ReadPrepLUT(const char* basePath, unsigned long languageTag) 
         break;
       }
       case 'R':
-        field30 = atoi(entry + 2);
+        flavorTextNationIndex = atoi(entry + 2);
         break;
       case '[': {
         char firstExtra = 1;
