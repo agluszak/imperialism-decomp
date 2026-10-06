@@ -150,14 +150,15 @@ public:
   virtual short GetFixedConstant0xc80();               // slot 0x3f 0x517520
   virtual int
   GetMapImprovementOffsetByActiveFlagsAndCityStage(StrategicTileIndex tileIndex,
-                                                   short categoryCode);   // slot 0x40 0x517540
-  virtual short GetTownOffset(StrategicTileIndex tileIndex, int unused);  // slot 0x41 0x517600
-  virtual int GetMapImprovementBitmapRowOffsetForIndex(int index);        // slot 0x42 0x5176a0
-  virtual int ComputeTerrainRecordByteOffsetForIndex(int index);          // slot 0x43 0x5176c0
-  virtual short GetFortFlagOffset(short nation);                          // slot 0x44 0x5176e0
+                                                   short categoryCode);  // slot 0x40 0x517540
+  virtual short GetTownOffset(StrategicTileIndex tileIndex, int unused); // slot 0x41 0x517600
+  virtual int GetMapImprovementBitmapRowOffsetForIndex(int index);       // slot 0x42 0x5176a0
+  virtual int ComputeTerrainRecordByteOffsetForIndex(int index);         // slot 0x43 0x5176c0
+  virtual short GetFortFlagOffset(short nation);                         // slot 0x44 0x5176e0
+  // ABI: MSVC emits overloaded virtuals in reverse declaration order.
+  virtual short GetUnitOffset(class TCivUnit* unit); // slot 0x46 0x517710, Mac oracle
   virtual short GetUnitOffset(short orderType, bool military, char idle); // slot 0x45 0x517780
-  virtual short GetUnitOffset(class TCivUnit* unit);          // slot 0x46 0x517710, Mac oracle
-  virtual int GetTinyIngotOffset(char ingotKind, int unused); // slot 0x47 0x5177d0
+  virtual int GetTinyIngotOffset(char ingotKind, int unused);             // slot 0x47 0x5177d0
   virtual short
   GetMapImprovementTileSpriteOffset(StrategicTileIndex tileIndex); // slot 0x48 0x5177f0
   // ABI: RET 8; every call site passes (tile index, owner nation tag).
