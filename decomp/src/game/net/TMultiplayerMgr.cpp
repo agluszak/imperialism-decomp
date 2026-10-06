@@ -195,22 +195,25 @@ struct TurnEvent11MapPokePacket : TimelyMessageHeader {
   short maskWord26;   // +0x26, total 0x28
 };
 
-struct TurnEvent20PacketM : TimelyMessageHeader {
-  short eventParam;      // +0x18
-  signed char nationA1A; // +0x1a
-  signed char nationB1B; // +0x1b, total 0x1c
+struct TurnEvent20TreatyNewsPacket : TimelyMessageHeader {
+  short eventKind;     // +0x18 InterNationEventKind
+  signed char nationA; // +0x1a
+  signed char nationB; // +0x1b
 };
-struct TurnEvent21PacketM : TimelyMessageHeader {
-  signed char byte18;  // +0x18
-  signed char byte19;  // +0x19
-  signed char byte1A;  // +0x1a
-  unsigned char pad1b; // total 0x1c
+ASSERT_SIZE(TurnEvent20TreatyNewsPacket, 0x1c);
+struct TurnEvent21ShortageNewsPacket : TimelyMessageHeader {
+  signed char subjectNation;  // +0x18
+  signed char affectedNation; // +0x19
+  signed char relatedNation;  // +0x1a
+  unsigned char pad1b;
 };
-struct TurnEvent22PacketM : TimelyMessageHeader {
-  signed char byte18; // +0x18
+ASSERT_SIZE(TurnEvent21ShortageNewsPacket, 0x1c);
+struct TurnEvent22MiscNewsPacket : TimelyMessageHeader {
+  signed char nationSlotOrAll; // +0x18
   unsigned char pad19;
-  short word1A; // +0x1a, total 0x1c
+  short storyCode; // +0x1a
 };
+ASSERT_SIZE(TurnEvent22MiscNewsPacket, 0x1c);
 
 // Event-0x1A nation action + per-nation counterA2 words.
 struct TurnEvent1ANationActionPacket : TimelyNetMessagePrefix {
@@ -1252,20 +1255,21 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     break;
   }
   case 0x20: {
-    TurnEvent20PacketM* dedupedEvent = static_cast<TurnEvent20PacketM*>(packet);
-    g_pNewsMgr->AddTreatyEvent(static_cast<InterNationEventKind>(dedupedEvent->eventParam),
-                               dedupedEvent->nationA1A, dedupedEvent->nationB1B, true);
+    TurnEvent20TreatyNewsPacket* treatyNews = static_cast<TurnEvent20TreatyNewsPacket*>(packet);
+    g_pNewsMgr->AddTreatyEvent(static_cast<InterNationEventKind>(treatyNews->eventKind),
+                               treatyNews->nationA, treatyNews->nationB, true);
     break;
   }
   case 0x21: {
-    TurnEvent21PacketM* mergedEvent = static_cast<TurnEvent21PacketM*>(packet);
-    g_pNewsMgr->AddShortageEvent(mergedEvent->byte18, mergedEvent->byte19, mergedEvent->byte1A,
-                                 true);
+    TurnEvent21ShortageNewsPacket* shortageNews =
+        static_cast<TurnEvent21ShortageNewsPacket*>(packet);
+    g_pNewsMgr->AddShortageEvent(shortageNews->subjectNation, shortageNews->affectedNation,
+                                 shortageNews->relatedNation, true);
     break;
   }
   case 0x22: {
-    TurnEvent22PacketM* type11Event = static_cast<TurnEvent22PacketM*>(packet);
-    g_pNewsMgr->AddMiscEvent(type11Event->byte18, type11Event->word1A, true);
+    TurnEvent22MiscNewsPacket* miscNews = static_cast<TurnEvent22MiscNewsPacket*>(packet);
+    g_pNewsMgr->AddMiscEvent(miscNews->nationSlotOrAll, miscNews->storyCode, true);
     break;
   }
   case 0x1d: {
@@ -2067,77 +2071,49 @@ void TMultiplayerMgr::SendNewsEvent(int nationSlot, NewsEvent* event) {
   g_pNetMgr006a6014->Send(&packet, false);
 }
 
-struct TurnEvent20Packet : NetMessage {
-  int packetTag;
-  unsigned char activeNationId;
-  unsigned char pad15[3];
-  short eventParam;
-  unsigned char byteA;
-  unsigned char byteB;
-};
-
 // FUNCTION: IMPERIALISM 0x005495e0
-void TMultiplayerMgr::CreateAndSendTurnEvent20_ShortAndTwoBytes(short eventParam,
-                                                                unsigned char byteA,
-                                                                unsigned char byteB) {
-  TurnEvent20Packet packet;
+void TMultiplayerMgr::SendTreatyEvent(short eventKind, unsigned char nationA,
+                                      unsigned char nationB) {
+  TurnEvent20TreatyNewsPacket packet;
   packet.eventCode = 0x20;
   packet.fromNetworkId = 0;
   packet.toNetworkId = 0;
-  packet.messageLength = 0x1c;
-  packet.packetTag = kControlTagTime;
+  packet.messageLength = sizeof(packet);
+  packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
-  packet.eventParam = eventParam;
-  packet.byteA = byteA;
-  packet.byteB = byteB;
+  packet.eventKind = eventKind;
+  packet.nationA = nationA;
+  packet.nationB = nationB;
   g_pNetMgr006a6014->Send(&packet, true);
 }
 
-struct TurnEvent21Packet : NetMessage {
-  int packetTag;
-  unsigned char activeNationId;
-  unsigned char byte0;
-  unsigned char byte1;
-  unsigned char byte2;
-  unsigned char pad18[4]; // original frame/messageLength is 0x1c
-};
-
 // FUNCTION: IMPERIALISM 0x00549680
-void TMultiplayerMgr::CreateAndSendTurnEvent21_ThreeBytes(unsigned char byte0, unsigned char byte1,
-                                                          unsigned char byte2) {
-  TurnEvent21Packet packet;
+void TMultiplayerMgr::SendShortageEvent(unsigned char subjectNation, unsigned char affectedNation,
+                                        unsigned char relatedNation) {
+  TurnEvent21ShortageNewsPacket packet;
   packet.eventCode = 0x21;
   packet.fromNetworkId = 0;
   packet.toNetworkId = 0;
-  packet.messageLength = 0x1c;
-  packet.packetTag = kControlTagTime;
+  packet.messageLength = sizeof(packet);
+  packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
-  packet.byte0 = byte0;
-  packet.byte1 = byte1;
-  packet.byte2 = byte2;
+  packet.subjectNation = subjectNation;
+  packet.affectedNation = affectedNation;
+  packet.relatedNation = relatedNation;
   g_pNetMgr006a6014->Send(&packet, true);
 }
 
-struct TurnEvent22Packet : NetMessage {
-  int packetTag;
-  unsigned char activeNationId;
-  unsigned char pad15[3];
-  unsigned char byteVal;
-  unsigned char pad19;
-  short shortVal;
-};
-
 // FUNCTION: IMPERIALISM 0x00549720
-void TMultiplayerMgr::CreateAndSendTurnEvent22_ByteAndShort(unsigned char byteVal, short shortVal) {
-  TurnEvent22Packet packet;
+void TMultiplayerMgr::SendMiscEvent(unsigned char nationSlotOrAll, short storyCode) {
+  TurnEvent22MiscNewsPacket packet;
   packet.eventCode = 0x22;
   packet.fromNetworkId = 0;
   packet.toNetworkId = 0;
-  packet.messageLength = 0x1c;
-  packet.packetTag = kControlTagTime;
+  packet.messageLength = sizeof(packet);
+  packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
-  packet.byteVal = byteVal;
-  packet.shortVal = shortVal;
+  packet.nationSlotOrAll = nationSlotOrAll;
+  packet.storyCode = storyCode;
   g_pNetMgr006a6014->Send(&packet, true);
 }
 

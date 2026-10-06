@@ -33,7 +33,7 @@ public:
   enum { kMajorNationSessionSlotCount = 7 };
 
   TMultiplayerSlotHandle nationStatusControlSlots[4]; // +0x20
-  TView* lobbyDialogView; // +0x40
+  TView* lobbyDialogView;                             // +0x40
   TEventHandler* diplomacyQueueContext;
   int nationSessionIds[kMajorNationSessionSlotCount]; // +0x48
   int queueSyncDword;                                 // +0x64
@@ -100,14 +100,13 @@ public:
   void CreateAndSendTurnEvent1B_FiveShortsAndDword(short shortA, short shortB, short shortC,
                                                    short shortD, short shortE,
                                                    int trailingValue); // 0x5498d0
-  void SendDealResults(bool broadcastFlag, short shortA, short shortB,
-                                                 short shortC, short shortD, short shortE,
-                                                 short shortF);                      // 0x5499b0
-  void CreateAndSendTurnEvent22_ByteAndShort(unsigned char byteVal, short shortVal); // 0x549720
-  void CreateAndSendTurnEvent20_ShortAndTwoBytes(short eventParam, unsigned char byteA,
-                                                 unsigned char byteB); // 0x5495e0
-  void CreateAndSendTurnEvent21_ThreeBytes(unsigned char byte0, unsigned char byte1,
-                                           unsigned char byte2); // 0x549680
+  void SendDealResults(bool broadcastFlag, short shortA, short shortB, short shortC, short shortD,
+                       short shortE,
+                       short shortF);                                                  // 0x5499b0
+  void SendMiscEvent(unsigned char nationSlotOrAll, short storyCode);                  // 0x549720
+  void SendTreatyEvent(short eventKind, unsigned char nationA, unsigned char nationB); // 0x5495e0
+  void SendShortageEvent(unsigned char subjectNation, unsigned char affectedNation,
+                         unsigned char relatedNation); // 0x549680
   void SendTradeOffer(short respondingNation, short offeringNation, short proposedAmount,
                       short maxAmount, short commodityType); // 0x5497b0
   void SendStreamObject(unsigned long payloadTag, TObject* payloadObject,
@@ -122,19 +121,19 @@ public:
   void DispatchJoinEmpireModeEventPacket24_27(int sourceNation, int targetNation,
                                               int mode);                        // 0x54c5a0
   unsigned char ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet); // 0x545940
-  unsigned char ResetLocalUiStateAndShowMultiplayerSetup(); // 0x545660
-  unsigned char ResetGameFlowStateAndShowMainMenu(); // 0x544f30
+  unsigned char ResetLocalUiStateAndShowMultiplayerSetup();                     // 0x545660
+  unsigned char ResetGameFlowStateAndShowMainMenu();                            // 0x544f30
   unsigned char ValidateGameFlowNameAndSelectionContext(int protocolValue,
                                                         int flag); // 0x544fc0
-  unsigned char ValidateAndPrepareGameFlowNameForDispatch(); // 0x544ff0
+  unsigned char ValidateAndPrepareGameFlowNameForDispatch();       // 0x544ff0
   unsigned char
-  InitializeRuntimeSelectionCredentialsFromProviderAndConnect(TView* provider); // 0x545110
-  unsigned char ResetSessionAndShowMainMenu(); // 0x545290
-  unsigned char Host(); // 0x545480
+  InitializeRuntimeSelectionCredentialsFromProviderAndConnect(TView* provider);    // 0x545110
+  unsigned char ResetSessionAndShowMainMenu();                                     // 0x545290
+  unsigned char Host();                                                            // 0x545480
   unsigned char ApplyJoinGameSelectionAndShowNetworkGameOptions(int selectionTag); // 0x545320
-  void ResetDiplomacyRuntimeSelectionAndSetModeNada(); // 0x544630
-  unsigned char InitializeProtocolOptionControlFromProvider(TView* provider); // 0x544e70
-  void SetDialogModeTagInitAndInvokeNoOpHook(); // 0x54c630
+  void ResetDiplomacyRuntimeSelectionAndSetModeNada();                             // 0x544630
+  unsigned char InitializeProtocolOptionControlFromProvider(TView* provider);      // 0x544e70
+  void SetDialogModeTagInitAndInvokeNoOpHook();                                    // 0x54c630
   void NoOpCallbackRet4(void* param);
   void EmitTacticalCommandPacket(int commandTag, TTacticalUnit* unit, int arg3,
                                  int arg4);         // 0x54c680
@@ -153,7 +152,7 @@ public:
 
   void EnsureGameFlowStateAndShowMultiplayerSetup();
 
-  bool IsEverybodyConnected() const; // 0x00543100
+  bool IsEverybodyConnected() const;                                                   // 0x00543100
   void SetSyncPhases(eGamePhaseNewStyle completedPhase, eGamePhaseNewStyle nextPhase); // 0x543120
 
   void HandleDiplomacyTurnEventPacketByCode();
