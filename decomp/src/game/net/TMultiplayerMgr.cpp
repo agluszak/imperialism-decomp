@@ -163,7 +163,7 @@ struct TurnEvent12Packet : TimelyMessageHeader {
 };
 
 struct TurnEventCKickMessagePacket : TimelyMessageHeader {
-  char messageText18[0x100];         // +0x18
+  char messageText[0x100];           // +0x18
   unsigned char targetNationBitmask; // +0x118 - 1 << slot per addressed nation
   signed char kickerNationId;        // +0x119 - -1 = no specific kicker
   unsigned char pad11a[2];           // total 0x11c
@@ -258,7 +258,7 @@ ASSERT_OFFSET(TurnEvent24CityRecordPacket, record, 0x20);
 struct TurnEvent27JoinEmpirePacket : TimelyMessageHeader {
   int terrainSlot;      // +0x18 - index into g_apTerrainTypeDescriptorTable
   int targetNationSlot; // +0x1c
-  int mode20;           // +0x20, total 0x24
+  int mode;             // +0x20, total 0x24
 };
 
 // Events 0x29/0x2A tactical battle commands by fourcc tag.
@@ -770,7 +770,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         kick.kickerNationId = -1;
         CString kickText;
         g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&kickText, 0x2759, 2);
-        strcpy(kick.messageText18, kickText);
+        strcpy(kick.messageText, kickText);
         g_pNetMgr006a6014->Send(&kick, false);
         return 1;
       }
@@ -971,7 +971,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       return 1;
     }
     int kickerNation = kickView->kickerNationId;
-    CString messageTextC(kickView->messageText18);
+    CString messageTextC(kickView->messageText);
     CString templateTextC;
     CString titleText;
     if (kickerNation != -1 && kickerNation != localSlot) {
@@ -1718,7 +1718,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         joinBroadcast.messageLength = 0x11c;
         joinBroadcast.targetNationBitmask = 0xff;
         joinBroadcast.kickerNationId = static_cast<signed char>(g_pSimMgr->GetPlayerCountry());
-        strcpy(joinBroadcast.messageText18, formattedRepo);
+        strcpy(joinBroadcast.messageText, formattedRepo);
         joinBroadcast.eventCode = 0xc;
         joinBroadcast.kickerNationId = -1; // double-write over the active id - original
         joinBroadcast.toNetworkId = 0;
@@ -1859,7 +1859,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   case 0x27: { // dispatch join-empire mode on one terrain-slot nation
     TurnEvent27JoinEmpirePacket* joinEmpire = static_cast<TurnEvent27JoinEmpirePacket*>(packet);
     g_apTerrainTypeDescriptorTable[joinEmpire->terrainSlot]->ChangeMaster(
-        joinEmpire->targetNationSlot, joinEmpire->mode20);
+        joinEmpire->targetNationSlot, joinEmpire->mode);
     break;
   }
   case 0x29: { // route a tagged tactical command to the live battle
@@ -2479,32 +2479,25 @@ int TMultiplayerMgr::IsSpecialNationDialogModeActive() {
   return 0;
 }
 
-struct TurnEvent0CTextPacket : TimelyMessageHeader {
-  char text[0x100];
-  unsigned char firstFlag;
-  unsigned char secondFlag;
-  unsigned char pad11a[2];
-};
-
 // FUNCTION: IMPERIALISM 0x0054aa10
 void TMultiplayerMgr::CreateAndSendTurnEvent0C_Text256AndTwoFlags(CString* text,
                                                                   unsigned char firstFlag,
                                                                   unsigned char secondFlag) {
-  TurnEvent0CTextPacket packet;
+  TurnEventCKickMessagePacket packet;
   packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packet.eventCode = 0;
   packet.fromNetworkId = 0;
   packet.eventCode = 0xc;
   packet.toNetworkId = 0;
-  packet.firstFlag = 0xff;
+  packet.targetNationBitmask = 0xff;
   packet.messageLength = 0;
   packet.messageLength = 0x11c;
-  packet.secondFlag = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
-  strcpy(packet.text, static_cast<LPCSTR>(*text));
+  packet.kickerNationId = static_cast<signed char>(g_pSimMgr->GetPlayerCountry());
+  strcpy(packet.messageText, static_cast<LPCSTR>(*text));
   packet.eventCode = 0xc;
-  packet.firstFlag = firstFlag;
-  packet.secondFlag = secondFlag;
+  packet.targetNationBitmask = firstFlag;
+  packet.kickerNationId = secondFlag;
   packet.toNetworkId = 0;
   g_pNetMgr006a6014->Send(&packet, true);
 }
@@ -2523,12 +2516,6 @@ extern "C" void __stdcall DispatchTileRedrawInvalidateEvent(short tileIndex) {
   packet.record = g_pGlobalMapState->terrainStateTable[tileIndex];
   g_pNetMgr006a6014->Send(&packet, false);
 }
-
-struct TJoinEmpireTurnEventPacket : TimelyMessageHeader {
-  int sourceNationSlot;
-  int targetNationSlot;
-  int modeValue;
-};
 
 // FUNCTION: IMPERIALISM 0x0054abf0
 void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
@@ -2965,16 +2952,16 @@ void TMultiplayerMgr::EmitTurnEvent26DiplomacyMatrixSnapshot() {
 // FUNCTION: IMPERIALISM 0x0054c5a0
 void TMultiplayerMgr::DispatchJoinEmpireModeEventPacket24_27(int sourceNation, int targetNation,
                                                              int mode) {
-  TJoinEmpireTurnEventPacket packet;
+  TurnEvent27JoinEmpirePacket packet;
   packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   packet.eventCode = 0;
   packet.fromNetworkId = 0;
   packet.toNetworkId = 0;
   packet.messageLength = 0;
-  packet.sourceNationSlot = sourceNation;
+  packet.terrainSlot = sourceNation;
   packet.targetNationSlot = targetNation;
-  packet.modeValue = mode;
+  packet.mode = mode;
   packet.messageLength = 0x24;
   packet.eventCode = 0x27;
   g_pNetMgr006a6014->Send(&packet, false);
