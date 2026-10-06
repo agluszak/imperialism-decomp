@@ -24,6 +24,7 @@ public:
 
   void INavyPlayer(TTaskForce* force, char isOurSide, bool watchFlag, int nationIndex);
 
+  // NOOP: verified empty in original 0x0059eb82
   TNavyPlayer() {}
 };
 ASSERT_SIZE(TNavyPlayer, 0x30);

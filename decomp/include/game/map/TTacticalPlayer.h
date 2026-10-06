@@ -15,8 +15,8 @@ public:
   virtual ~TTacticalPlayer() override {}                // slot 0x01 (scalar deleting destructor)
   virtual void Free() override;                         // slot 0x07 0x59aee0
   virtual void StartBattle();                           // slot 0x0a 0x59ad70
-  virtual void NextMove();              // slot 0x0b 0x59ad90
-  virtual void DoClick(int unused);    // slot 0x0c 0x59adb0
+  virtual void NextMove();                              // slot 0x0b 0x59ad90
+  virtual void DoClick(int unused);                     // slot 0x0c 0x59adb0
   virtual void ApplyChanges(unsigned char sideWonFlag); // slot 0x0d 0x59add0
   virtual void RemoveTacticalUnitFromUnitList(class TTacticalUnit* unit); // slot 0x0e 0x59afa0
   virtual void AddTacticalUnitToUnitListHead(class TTacticalUnit* unit);  // slot 0x0f 0x59afe0
@@ -50,6 +50,7 @@ public:
   // Whether this side belongs to the local active nation. 0x0059b010, __thiscall.
   bool IsTacticalControllerOwnedByActiveNation();
 
+  // NOOP: verified empty in original 0x0059ad42
   TTacticalPlayer() {}
 };
 ASSERT_SIZE(TTacticalPlayer, 0x28);

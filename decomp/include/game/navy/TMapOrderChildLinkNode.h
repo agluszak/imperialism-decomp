@@ -12,6 +12,7 @@ public:
   unsigned char active;         // +0x0c
   unsigned char padding0D[3];
 
+  // NOOP: verified empty in original 0x00553c25
   TMapOrderChildLinkNode() {}
 
   void InitAndLinkBetween(TShip* child, TMapOrderChildLinkNode* prevNode,

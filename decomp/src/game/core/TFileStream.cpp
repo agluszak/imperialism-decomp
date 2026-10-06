@@ -18,7 +18,7 @@ TFileStream::TFileStream() {
   backingArchiveOrStream = 0;
 }
 
-
+// NOOP: verified empty in original 0x00489133
 TFileStream::~TFileStream() {}
 
 // FUNCTION: IMPERIALISM 0x00489160

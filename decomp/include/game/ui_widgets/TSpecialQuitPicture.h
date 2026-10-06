@@ -15,6 +15,7 @@ public:
   virtual void DoPostCreate(int arg) override;  // slot 0x37 0x5b4810
   virtual void Hilite();                        // slot 0x73 0x45acb0
 
+  // NOOP: verified empty in original 0x00458dcb
   TSpecialQuitPicture() {}
 
   short quitAnimationFrame90;

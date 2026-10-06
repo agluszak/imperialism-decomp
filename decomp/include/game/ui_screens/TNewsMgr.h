@@ -43,6 +43,7 @@ public:
   TPtrList* sharedEventRecordQueue;     // +0xef0
   short* perNationStoryLastUsedTick[7]; // +0xef4
 
+  // NOOP: verified empty at original inlined allocation site 0x0057c58f
   TNewsMgr() {}
 
   unsigned char EvaluateFeatureStory(const newsEntry* templateRow, newsStory* story,

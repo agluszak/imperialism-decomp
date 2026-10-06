@@ -16,6 +16,7 @@ public:
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x575460
   virtual void Hilite() override;               // slot 0x73 0x45ada0
 
+  // NOOP: verified empty in original 0x00455a91
   THighScoresPicture() {}
 
   int scoreValues[10];       // +0x94

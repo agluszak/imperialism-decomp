@@ -25,6 +25,7 @@ public:
   int sapTargetTileIndex;      // +0x40 pending sap/mine target tile; -1 = none
   float projectionScores[5];   // +0x44 strength/quality-weighted military attributes 0..4
 
+  // NOOP: verified empty in original 0x005a5ed2
   TArmyTacUnit() {}
 
   void IArmyTacUnit(TMilitaryUnit* source);

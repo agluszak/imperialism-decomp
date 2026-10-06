@@ -6,6 +6,7 @@
 // VTABLE: IMPERIALISM 0x0064a2b8
 class TCtlMgr : public TControl {
 public:
+  // NOOP: verified empty in original 0x0048ea37
   DECLARE_DYNCREATE(TCtlMgr)
 
   TCtlMgr() {}

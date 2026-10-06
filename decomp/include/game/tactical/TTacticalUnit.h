@@ -9,15 +9,15 @@ class TTacticalUnit : public TObject {
 public:
   DECLARE_DYNCREATE(TTacticalUnit)
   // FUNCTION: IMPERIALISM 0x005a5df0
-  virtual ~TTacticalUnit() override {} // slot 0x01 (scalar deleting destructor)
-  virtual int GetBaseActionPoints();   // slot 0x0a 0x5a5d40
-  virtual int GetUnitRange(); // slot 0x0b 0x5a5d60
-  virtual float GetBaseAttackPower();                         // slot 0x0c 0x5a5d80
-  virtual float GetDamageScale();                             // slot 0x0d 0x5a5da0
+  virtual ~TTacticalUnit() override {}                // slot 0x01 (scalar deleting destructor)
+  virtual int GetBaseActionPoints();                  // slot 0x0a 0x5a5d40
+  virtual int GetUnitRange();                         // slot 0x0b 0x5a5d60
+  virtual float GetBaseAttackPower();                 // slot 0x0c 0x5a5d80
+  virtual float GetDamageScale();                     // slot 0x0d 0x5a5da0
   virtual void ApplyDamage(int damageA, int damageB); // slot 0x0e 0x5a5e70
-  virtual void FlipUnitSideAffiliation(); // slot 0x0f 0x5a5eb0
+  virtual void FlipUnitSideAffiliation();             // slot 0x0f 0x5a5eb0
 
-  int strength4; // +0x04 current strength; ApplyDamage floors at 0 -> state1c = 3
+  int strength4;                // +0x04 current strength; ApplyDamage floors at 0 -> state1c = 3
   TacticalTileIndex tileIndex8; // +0x08 tactical grid index (init -2 = not yet placed)
   int unitTypeC;                // +0x0c unit-type id; indexes the 0x669858/0x669898 per-type tables
   int qualityLevel10;           // +0x10 = source unit experiencePercent / 100 at army init
@@ -32,6 +32,7 @@ public:
   int aiStateCode2c;            // +0x2c AI stance code (indexes the 0x699500 weight rows)
   TTacticalUnit* attackTarget;
 
+  // NOOP: verified empty in original 0x005a5d12
   TTacticalUnit() {}
 
   void ITacticalUnit();

@@ -12,9 +12,9 @@ class TArmyPlayer : public TTacticalPlayer {
 public:
   DECLARE_DYNCREATE(TArmyPlayer)
   // NOOP: verified empty in original 0x0059b170
-  virtual ~TArmyPlayer() override {}                // slot 0x01 (scalar deleting destructor)
-  virtual void StartBattle() override;              // slot 0x0a 0x59b830
-  virtual void NextMove() override; // slot 0x0b 0x59e3e0
+  virtual ~TArmyPlayer() override {}   // slot 0x01 (scalar deleting destructor)
+  virtual void StartBattle() override; // slot 0x0a 0x59b830
+  virtual void NextMove() override;    // slot 0x0b 0x59e3e0
   virtual void ApplyChanges(unsigned char sideWonFlag) override;             // slot 0x0d 0x59b3e0
   virtual void RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) override; // slot 0x0e 0x59b4f0
   virtual void AddTacticalUnitToUnitListHead(TTacticalUnit* unit) override;  // slot 0x0f 0x59b540
@@ -22,9 +22,9 @@ public:
   virtual void AutoDeploySideUnitsAndMarkReady();                            // slot 0x12 0x59bc80
   virtual void DeploymentClick(TacticalTileIndex tileIndex);                 // slot 0x13 0x59c3c0
   virtual void RunTacticalAutoTurnControllerForActiveUnit();                 // slot 0x14 0x59e4f0
-  virtual unsigned char SwitchToAutoPlay(); // slot 0x15 0x59ea60
+  virtual unsigned char SwitchToAutoPlay();                                  // slot 0x15 0x59ea60
 
-  TArmyStack* armyStack; // +0x28
+  TArmyStack* armyStack;            // +0x28
   float projectionMetrics[5];       // +0x2c
   short maxUnitRange40;             // +0x40 max GetUnitRange over active units
   short maxNonArtilleryUnitRange42; // +0x42 same, skipping aiClass-2 units
@@ -36,6 +36,7 @@ public:
   bool hasArtilleryOrSappers; // +0x51 active units only
   unsigned char pad52[2];     // +0x52
 
+  // NOOP: verified empty in original 0x0059b112
   TArmyPlayer() {}
 
   void SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode);
@@ -63,7 +64,7 @@ public:
   int SelectTacticalTileIndexByColumnPriorityVariantB();  // 0x59c2a0
   // Weighted tile-heuristic selectors for the auto-turn controller.
   int FindBestMove(TTacticalUnit* unit,
-                                                 int* heuristicWeights15); // 0x59d530
+                   int* heuristicWeights15); // 0x59d530
   int SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* unit,
                                                      int flag); // 0x59e110
   unsigned int BuildTacticalActionClassAndPositionFlags(TacticalTileIndex referenceTileIndex,

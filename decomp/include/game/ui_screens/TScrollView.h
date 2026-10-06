@@ -21,6 +21,7 @@ public:
   TView* contentView;        // 0x60 — the scrolled content view
   TScrollBarView* scrollBar; // 0x64 — companion scrollbar control
 
+  // NOOP: verified empty in original 0x005d60ee
   TScrollView() {}
 
   void IScrollView(TView* panel, int* offsetLayout, int* sizeLayout);

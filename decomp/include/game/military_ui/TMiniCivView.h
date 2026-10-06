@@ -21,6 +21,7 @@ public:
   // Assembled multi-line status text ("<order line>\n...").
   CString unitText88;
 
+  // NOOP: verified empty in original 0x004ab8f6
   TMiniCivView() {}
 
   void InitializeForCivilianUnit(TView* panel, int* offsetLayout, int* sizeLayout,
