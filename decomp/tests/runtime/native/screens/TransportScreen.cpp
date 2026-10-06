@@ -84,7 +84,7 @@ bool TransportScreen::ToolbarIconIsSelected() const {
     return false;
   }
   TPicture* icon = static_cast<TPicture*>(button);
-  return icon->glyphBase84 == kTransportToolbarSelectedPicture && icon->controlState64 == 0;
+  return icon->glyphBase == kTransportToolbarSelectedPicture && icon->controlState == 0;
 }
 
 bool TransportScreen::CommodityHelpIsSubstituted(short commodityIndex) const {

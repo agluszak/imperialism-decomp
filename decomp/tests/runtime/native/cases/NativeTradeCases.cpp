@@ -433,10 +433,10 @@ void DrainRankedDealsWithHumanAutoAccept() {
           buyer->StillBuyingItem(dispatchIdx)) {
         tradeManager->SetDealResults(entry->sourceNationSlot, entry->targetNationSlot,
                                      static_cast<short>(transfer),
-                                     static_cast<short>(entry->dispatchScore08), dispatchIdx, 0, 0);
+                                     static_cast<short>(entry->dispatchScore), dispatchIdx, 0, 0);
       } else {
         buyer->ReplyToTradeOffer(entry->targetNationSlot, static_cast<short>(transfer),
-                                 static_cast<short>(entry->dispatchScore08), dispatchIdx);
+                                 static_cast<short>(entry->dispatchScore), dispatchIdx);
       }
     }
 
@@ -606,7 +606,7 @@ RuntimeActionResult RunTradeTurnStop(NativeTransition& transition) {
     row.Set("target", deal->targetNationSlot);
     row.Set("delta", deal->relationDelta04);
     row.Set("standing", deal->relationStanding);
-    row.Set("score", deal->dispatchScore08);
+    row.Set("score", deal->dispatchScore);
     dealRows.Add(row.Release());
   }
   result.Set("deals", dealRows.Release());

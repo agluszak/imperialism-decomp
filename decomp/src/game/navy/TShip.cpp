@@ -236,8 +236,7 @@ int TShip::GetTypeAttribute(int attribute, short shipType) {
     return descriptor.Firepower() * value * value;
   }
   case 1:
-    return (descriptor.BattleRange() * descriptor.HullPoints() * 100) /
-           descriptor.Armor();
+    return (descriptor.BattleRange() * descriptor.HullPoints() * 100) / descriptor.Armor();
   case 2:
     return descriptor.BattleSpeed();
   case 3:
@@ -262,7 +261,7 @@ void RecomputeGlobalCapabilityAverages(void) {
   int i;
   for (i = 1; i < 14; ++i) {
     if (0 < g_NavyOrderResourceDescriptorTable[i].FirepowerDword() &&
-        g_pTechMgr->resourceTypeEnabled19d[type] != 0) {
+        g_pTechMgr->resourceTypeEnabled[type] != 0) {
       ++enabledCount;
       int category;
       for (category = 0; category < 4; ++category) {
@@ -386,9 +385,9 @@ int TShip::ComputeValueForMission(int missionType) const {
     case 1: {
       int requiredCountValue = strength;
       int weight = g_NavyOrderResourceDescriptorTable[type].BattleRange();
-      contribution = static_cast<short>(
-          (weight * requiredCountValue * 10000) /
-          (g_NavyOrderResourceDescriptorTable[type].Armor() * divisor));
+      contribution =
+          static_cast<short>((weight * requiredCountValue * 10000) /
+                             (g_NavyOrderResourceDescriptorTable[type].Armor() * divisor));
       break;
     }
     case 2:
@@ -691,8 +690,7 @@ int TShip::GetBattleStrengthRating() const {
 int TShip::GetStudliness() const {
   const TNavyOrderResourceDescriptor& descriptor = g_NavyOrderResourceDescriptorTable[type];
   short quantityTerm = static_cast<short>(experience / 100);
-  short navyTerm =
-      static_cast<short>((quantityTerm + descriptor.BattleSpeedDword() * 10 + 5) / 10);
+  short navyTerm = static_cast<short>((quantityTerm + descriptor.BattleSpeedDword() * 10 + 5) / 10);
   return ((navyTerm + descriptor.BattleRange()) * 100 +
           static_cast<short>((quantityTerm + descriptor.FirepowerDword() * 10 + 5) / 10) +
           strength) /
@@ -701,8 +699,7 @@ int TShip::GetStudliness() const {
 
 // FUNCTION: IMPERIALISM 0x00550e70
 short TShip::GetTypeCargoHold(short shipType) {
-  return g_NavyOrderResourceDescriptorTable[shipType]
-      .CargoHold();
+  return g_NavyOrderResourceDescriptorTable[shipType].CargoHold();
 }
 
 // FUNCTION: IMPERIALISM 0x00550f00
@@ -808,7 +805,7 @@ void TShip::Capture(short nation) {
   }
 
   TMission* missionBackref = mission;
-  if (missionBackref != 0 && missionBackref->nationId04 != nation) {
+  if (missionBackref != 0 && missionBackref->nationId != nation) {
     missionBackref->RejectConstituent(this, true);
   }
 

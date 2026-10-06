@@ -16,7 +16,7 @@
 
 // FUNCTION: IMPERIALISM 0x0043d590
 TMapPreviewView::TMapPreviewView() : TView() {
-  selectedRegion64 = -1;
+  selectedRegion = -1;
 }
 
 // FUNCTION: IMPERIALISM 0x0043d5f0
@@ -27,7 +27,7 @@ IMPLEMENT_DYNCREATE(TMapPreviewView, TView)
 // FUNCTION: IMPERIALISM 0x00578850
 void TMapPreviewView::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
-  selectedNation68 = -1;
+  selectedNation = -1;
   enabled = 1;
 
   CRect contentBounds;
@@ -35,11 +35,11 @@ void TMapPreviewView::DoPostCreate(int arg) {
   RECT surfaceBounds = contentBounds;
 
   ++g_nDibOrientationFlag_006A1890;
-  g_pDisplayMgr->MakeNewGWorld(previewSurface60, 8, surfaceBounds);
+  g_pDisplayMgr->MakeNewGWorld(previewSurface, 8, surfaceBounds);
 
-  TBitmapSurfaceNode** surfaceObject = GetGWorldPixMap(previewSurface60);
+  TBitmapSurfaceNode** surfaceObject = GetGWorldPixMap(previewSurface);
   unsigned char* pixels = GetPixBaseAddr(surfaceObject);
-  int stride = static_cast<unsigned short>((*GetGWorldPixMap(previewSurface60))->stride) & 0x3fff;
+  int stride = static_cast<unsigned short>((*GetGWorldPixMap(previewSurface))->stride) & 0x3fff;
   int height = surfaceBounds.bottom - surfaceBounds.top;
   memset(pixels, 0x10, height * stride);
   --g_nDibOrientationFlag_006A1890;
@@ -47,7 +47,7 @@ void TMapPreviewView::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x005789b0
 void TMapPreviewView::Free() {
-  g_pDisplayMgr->RemoveGWorld(previewSurface60);
+  g_pDisplayMgr->RemoveGWorld(previewSurface);
   TView::Free();
 }
 
@@ -56,9 +56,9 @@ void TMapPreviewView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
   (void)event;
   (void)origin;
 
-  TBitmapSurfaceNode** surfaceObject = GetGWorldPixMap(previewSurface60);
+  TBitmapSurfaceNode** surfaceObject = GetGWorldPixMap(previewSurface);
   unsigned char* pixels = GetPixBaseAddr(surfaceObject);
-  int stride = static_cast<unsigned short>((*GetGWorldPixMap(previewSurface60))->stride) & 0x3fff;
+  int stride = static_cast<unsigned short>((*GetGWorldPixMap(previewSurface))->stride) & 0x3fff;
   unsigned short clickedPalette = pixels[point.y * stride + point.x];
 
   for (int nation = 0; nation < 7; ++nation) {
@@ -77,14 +77,14 @@ void TMapPreviewView::Draw(RECT* rectBuffer) {
 
   RECT previewRect = {0, 0, frameWidth, frameHeight};
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  BlitRectWithOptionalTransparency(previewSurface60->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(previewSurface->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &previewRect,
                                    &previewRect, 0x24);
 
-  if (selectedRegion64 != -1) {
+  if (selectedRegion != -1) {
     short columnX2;
     unsigned short row;
-    short tileIndex = g_pGlobalMapState->cityScoreTable[selectedRegion64].cityTileIndex04;
+    short tileIndex = g_pGlobalMapState->cityScoreTable[selectedRegion].cityTileIndex04;
     SplitTileIndexToHexRasterColumnX2AndRow(tileIndex, &columnX2, &row);
 
     RECT markerSource = {0x48, 0, 0x5a, 0x12};
@@ -120,8 +120,8 @@ static unsigned char ResolvePreviewMapOwnerTagPaletteByte(int ownerTag) {
 
 // FUNCTION: IMPERIALISM 0x00578c10
 void TMapPreviewView::TakeSatellitePhoto(char* tileOwnerTagTable) {
-  unsigned char* tileBuffer = GetPixBaseAddr(GetGWorldPixMap(previewSurface60));
-  TBitmapSurfaceNode** surfaceObject = GetGWorldPixMap(previewSurface60);
+  unsigned char* tileBuffer = GetPixBaseAddr(GetGWorldPixMap(previewSurface));
+  TBitmapSurfaceNode** surfaceObject = GetGWorldPixMap(previewSurface);
   int strideBytes = static_cast<unsigned short>((*surfaceObject)->stride) & 0x3fff;
 
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
@@ -201,16 +201,16 @@ void TMapPreviewView::EnhancePhoto() {
   maskColors[5] = 5;
   maskColors[6] = 0xca;
 
-  bool hasSelection = selectedNation68 != -1;
+  bool hasSelection = selectedNation != -1;
   unsigned char selectedPalette = 0;
   if (hasSelection) {
     selectedPalette =
-        static_cast<unsigned char>(g_pViewMgr->GetColor(static_cast<short>(selectedNation68)));
+        static_cast<unsigned char>(g_pViewMgr->GetColor(static_cast<short>(selectedNation)));
   }
 
-  TBitmapSurfaceNode** surfaceObject = GetGWorldPixMap(previewSurface60);
+  TBitmapSurfaceNode** surfaceObject = GetGWorldPixMap(previewSurface);
   unsigned char* pixels = GetPixBaseAddr(surfaceObject);
-  int stride = static_cast<unsigned short>((*GetGWorldPixMap(previewSurface60))->stride) & 0x3fff;
+  int stride = static_cast<unsigned short>((*GetGWorldPixMap(previewSurface))->stride) & 0x3fff;
 
   unsigned char* rowStart = pixels + stride + 1;
   for (int row = 0; row < 0xb2; ++row) {

@@ -45,7 +45,7 @@ IMPLEMENT_DYNCREATE(TMapUberPicture, TMapUberUberPicture)
 // FUNCTION: IMPERIALISM 0x005969e0
 TMapUberPicture::TMapUberPicture()
     : invalidationFlag(1), activeUnitCategoryIndex(3), orderEntryContext(nullptr), deadStore9C(0),
-      navyRosterA0(0), goodGoldTagControl(nullptr), miniMapView(nullptr) {}
+      navyRoster(0), goodGoldTagControl(nullptr), miniMapView(nullptr) {}
 
 // FUNCTION: IMPERIALISM 0x00596a60
 TMapUberPicture::~TMapUberPicture() {}
@@ -81,7 +81,7 @@ void TMapUberPicture::DoPostCreate(int arg) {
   DisposeRgn(mapRegion);
 
   g_pViewMgr->mapUberPictureF0 = this;
-  g_pUiAnimator->mapUberPicture2c = this;
+  g_pUiAnimator->mapUberPicture = this;
   g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(nullptr);
   g_pActiveMapOrderContext->RefreshMapActionContextNationOverlaysAndOrderRanks();
 
@@ -101,7 +101,7 @@ void TMapUberPicture::Free() {
     g_pViewMgr->mapUberPictureF0 = 0;
   }
   if (g_pUiAnimator != 0) {
-    g_pUiAnimator->mapUberPicture2c = 0;
+    g_pUiAnimator->mapUberPicture = 0;
   }
   g_pAmbitApplication->edgeScrollTarget = 0;
   g_pAmbitApplication->cursorRegionInvalid = FALSE;
@@ -234,7 +234,7 @@ void TMapUberPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
   } else if (commandId == 0xc) {
     unsigned int tag = sourceHandler->controlTag;
     if (tag >= kControlTagAgr0 && tag <= kControlTagAgr2) {
-      TTaskForce* taskForce = g_pActiveMapOrderContext->selectedTaskForce14;
+      TTaskForce* taskForce = g_pActiveMapOrderContext->selectedTaskForce;
       if (taskForce != nullptr) {
         taskForce->SetAggression(static_cast<int>(tag - kControlTagAgr0));
       }
@@ -265,7 +265,7 @@ void TMapUberPicture::DoMenuCommand(int command) {
 
   case 2:
     if (orderEntryContext != 0) {
-      CenterOn(orderEntryContext->tileOrTerrainId0c);
+      CenterOn(orderEntryContext->tileOrTerrainId);
     }
     return;
 
@@ -313,15 +313,14 @@ void TMapUberPicture::RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry) {
 
   TZone* context = pMapOrderEntry->location;
   context->ExpandTaskForceTraversalDepthAndMarkDeferredNodes(pMapOrderEntry->GetWorstSpeed(), true);
-  CenterOn(static_cast<short>(context->tileOrTerrainId0c));
+  CenterOn(static_cast<short>(context->tileOrTerrainId));
 
   for (int i = 0; i < 4; ++i) {
     TShipFractionCluster* shipClass = static_cast<TShipFractionCluster*>(
         ResolveControlByTag(kControlTagCls0 + i)); // 'cls0'..'cls3'
     shipClass->AssertValid();
-    shipClass->Set(
-        pMapOrderEntry->shipCountsByToolbarSlot[i],
-        pMapOrderEntry->GetSelected(static_cast<short>(i)));
+    shipClass->Set(pMapOrderEntry->shipCountsByToolbarSlot[i],
+                   pMapOrderEntry->GetSelected(static_cast<short>(i)));
   }
 
   TNavyToolbarCluster* navyToolbar =
@@ -354,7 +353,7 @@ bool TMapUberPicture::HasActiveMapInteractionSelection() {
   case 1:
     return g_pMapContextActionManager->pendingMapActionIndex != -1;
   case 2:
-    return g_pActiveMapOrderContext->selectedTaskForce14 != nullptr;
+    return g_pActiveMapOrderContext->selectedTaskForce != nullptr;
   default:
     return false;
   }
@@ -977,8 +976,8 @@ void TMapUberPicture::ResetMapInteractionToCivilianMode() {
 
 // FUNCTION: IMPERIALISM 0x00599a20
 void TMapUberPicture::UpdateRoster() {
-  if (navyRosterA0 != 0) {
-    navyRosterA0->ShowPage(navyRosterA0->currentPage);
+  if (navyRoster != 0) {
+    navyRoster->ShowPage(navyRoster->currentPage);
   }
 }
 
@@ -1053,7 +1052,7 @@ void TMapUberPicture::DisplayMiniMap() {
   miniMap->InitializeUiResourceEntryFrameAndParent(nullptr, toolControl, offsetLayout, sizeLayout,
                                                    kToolWindowMargin, kToolWindowMargin, 0);
   miniMap->markerBoxX = miniMap->frameWidth / 2 - miniMap->markerBoxWidth;
-  miniMap->ownerPicture84 = this;
+  miniMap->ownerPicture = this;
   miniMap->markerBoxY = miniMap->frameHeight / 2 - miniMap->markerBoxHeight;
   miniMap->RefreshControl();
   miniMap->ViewEnable(1, 0);

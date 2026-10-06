@@ -143,7 +143,7 @@ void AppendViewTreeNodes(JSON_Array* nodes, TView* view, const CString& parentPa
   }
   json_object_set_number(node, "state", view->enabled);
   json_object_set_boolean(node, "enabled", view->viewEnabled != 0);
-  json_object_set_number(node, "control_value", view->controlValue3c);
+  json_object_set_number(node, "control_value", view->controlValue);
   // The two facts a test author needs and cannot get from bounds or class alone: whether
   // the node will accept a semantic activation, and which event it raises when it does.
   // RuntimeUiDriver::RequireControl checks both, so a selector that omits them is guessing.
@@ -154,7 +154,7 @@ void AppendViewTreeNodes(JSON_Array* nodes, TView* view, const CString& parentPa
   }
   if (view->IsKindOf(RUNTIME_CLASS(TPicture)) != 0) {
     TPicture* picture = static_cast<TPicture*>(view);
-    json_object_set_number(node, "picture_id", static_cast<int>(picture->glyphBase84));
+    json_object_set_number(node, "picture_id", static_cast<int>(picture->glyphBase));
   }
   if (view->IsKindOf(RUNTIME_CLASS(TStaticText)) != 0) {
     TStaticText* text = static_cast<TStaticText*>(view);
@@ -222,7 +222,7 @@ bool AppendCityProduction(JSON_Array* entries, TCity* city, bool flags) {
 } // namespace
 
 bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
-  if (mapDialog == 0 || mapDialog->quickDrawSurface350 == 0 || g_pMacViewMgr == 0 ||
+  if (mapDialog == 0 || mapDialog->quickDrawSurface == 0 || g_pMacViewMgr == 0 ||
       g_pMacViewMgr->atlas668 == 0) {
     return false;
   }
@@ -249,7 +249,7 @@ bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
     return false;
   }
 
-  TBitmapSurfaceNode** destinationHandle = GetGWorldPixMap(mapDialog->quickDrawSurface350);
+  TBitmapSurfaceNode** destinationHandle = GetGWorldPixMap(mapDialog->quickDrawSurface);
   TBitmapSurfaceNode** sourceHandle = GetGWorldPixMap(g_pMacViewMgr->atlas668);
   if (destinationHandle == 0 || *destinationHandle == 0 || sourceHandle == 0 ||
       *sourceHandle == 0 || !LockPixels(destinationHandle)) {
@@ -330,7 +330,7 @@ bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
   TQuickDrawSurfaceContext* savedSurface;
   int savedSurfaceFlags;
   GetGWorld(&savedSurface, &savedSurfaceFlags);
-  SetGWorld(mapDialog->quickDrawSurface350, savedSurfaceFlags);
+  SetGWorld(mapDialog->quickDrawSurface, savedSurfaceFlags);
   mapDialog->DrawOneTile(coastTile, 0, 0);
   CopySurfaceTile(actual, destinationSurface->pixelBits, destinationStride);
   terrain = savedTerrain;

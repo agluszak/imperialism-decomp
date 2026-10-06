@@ -44,7 +44,7 @@ void TTradeMgr::ITradeMgr() {
     row->basePrice = row->previousPrice;
 
     TDealList* list = new TDealList();
-    list->recordSize14 = 0x10;
+    list->recordSize = 0x10;
     *rankListCursor = list;
 
     short* cellCursor = &row->tradeOfferCells[46];
@@ -219,7 +219,7 @@ void TTradeMgr::CalculateDealOrder() {
               event.relationDelta04 = cell;
               event.relationStanding =
                   RelationStanding(g_pDiplomacyTurnStateManager, source, target);
-              event.dispatchScore08 =
+              event.dispatchScore =
                   this->GetDealPrice(static_cast<short>(source), static_cast<short>(target),
                                      categoryRows[row].price, categoryRows[row].basePrice);
               event.category0c = static_cast<short>(row);
@@ -250,7 +250,7 @@ void TTradeMgr::CalculateDealOrder() {
               event.relationDelta04 = cell;
               event.relationStanding =
                   RelationStanding(g_pDiplomacyTurnStateManager, source, secTarget);
-              event.dispatchScore08 =
+              event.dispatchScore =
                   this->GetDealPrice(static_cast<short>(source), static_cast<short>(secTarget),
                                      categoryRows[row].price, categoryRows[row].basePrice);
               event.category0c = static_cast<short>(row);
@@ -287,7 +287,7 @@ void TTradeMgr::CalculateDealOrder() {
               event.relationDelta04 = cell;
               event.relationStanding =
                   RelationStanding(g_pDiplomacyTurnStateManager, source, target);
-              event.dispatchScore08 =
+              event.dispatchScore =
                   this->GetDealPrice(static_cast<short>(source), static_cast<short>(target),
                                      categoryRows[midRow].price, categoryRows[midRow].basePrice);
               event.category0c = static_cast<short>(midRow);
@@ -318,7 +318,7 @@ void TTradeMgr::CalculateDealOrder() {
                 event.relationDelta04 = cell;
                 event.relationStanding =
                     RelationStanding(g_pDiplomacyTurnStateManager, source, secTarget);
-                event.dispatchScore08 =
+                event.dispatchScore =
                     this->GetDealPrice(static_cast<short>(source), static_cast<short>(secTarget),
                                        categoryRows[7].price, categoryRows[7].basePrice);
                 event.category0c = 7;
@@ -357,7 +357,7 @@ void TTradeMgr::CalculateDealOrder() {
               event.relationDelta04 = cell;
               event.relationStanding =
                   RelationStanding(g_pDiplomacyTurnStateManager, source, target);
-              event.dispatchScore08 =
+              event.dispatchScore =
                   this->GetDealPrice(static_cast<short>(source), static_cast<short>(target),
                                      categoryRows[lastRow].price, categoryRows[lastRow].basePrice);
               event.category0c = static_cast<short>(lastRow);
@@ -379,7 +379,7 @@ void TTradeMgr::CalculateDealOrder() {
               event.relationDelta04 = cell;
               event.relationStanding =
                   RelationStanding(g_pDiplomacyTurnStateManager, secondarySource, target);
-              event.dispatchScore08 = this->GetDealPrice(
+              event.dispatchScore = this->GetDealPrice(
                   static_cast<short>(secondarySource), static_cast<short>(target),
                   categoryRows[lastRow].price, categoryRows[lastRow].basePrice);
               event.category0c = static_cast<short>(lastRow);
@@ -560,7 +560,7 @@ void TTradeMgr::OfferItemDeals(short item) {
     }
     if (transfer >= 1) {
       g_apTerrainTypeDescriptorTable[entry->sourceNationSlot]->ReplyToTradeOffer(
-          entry->targetNationSlot, transfer, static_cast<short>(entry->dispatchScore08), item);
+          entry->targetNationSlot, transfer, static_cast<short>(entry->dispatchScore), item);
     }
     ++entryOrdinal;
   }
@@ -610,7 +610,7 @@ void TTradeMgr::NextTradeDeal() {
     if (relationDelta > 0) {
       blocked = g_apTerrainTypeDescriptorTable[entry->sourceNationSlot]->ReplyToTradeOffer(
                     entry->targetNationSlot, relationDelta,
-                    static_cast<short>(entry->dispatchScore08), dispatchIdx) != 0;
+                    static_cast<short>(entry->dispatchScore), dispatchIdx) != 0;
     } else {
       blocked = false;
     }

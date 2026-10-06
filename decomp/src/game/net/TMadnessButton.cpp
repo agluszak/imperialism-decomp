@@ -14,7 +14,7 @@ IMPLEMENT_DYNCREATE(TMadnessButton, TCzechBox)
 // FUNCTION: IMPERIALISM 0x0054eaf0
 void TMadnessButton::DoPostCreate(int arg) {
   TCzechBox::DoPostCreate(arg);
-  initialPictureId = glyphBase84;
+  initialPictureId = glyphBase;
   SetState(1, 0);
 }
 
@@ -27,12 +27,12 @@ void TMadnessButton::CheckTheLook(unsigned char refreshNow) {
     if (!IsOn()) {
       pictureId += 2;
     }
-    if (controlState64 != 0) {
+    if (controlState != 0) {
       pictureId++;
     }
   }
 
-  if (glyphBase84 != pictureId) {
+  if (glyphBase != pictureId) {
     SetPictureRsrcID(static_cast<short>(pictureId), false);
     if (refreshNow) {
       CRect bounds;

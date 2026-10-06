@@ -24,8 +24,7 @@ public:
   // ABI: two pointer arguments, void return. slot 10 / 0x28
   virtual void PickRandomRegionGridCell(unsigned int* outColumn, unsigned int* outRow);
   virtual void RunMapGenerationAttempt();
-  virtual int SelectGPZone(int cellIndex, int mode, int classIndex,
-                                                  int retryBudget);
+  virtual int SelectGPZone(int cellIndex, int mode, int classIndex, int retryBudget);
   // Merges major-nation region groups; false on an incompatible neighbor group. slot 13 / 0x34
   virtual char TryMergeRegionGroupWithNeighborsRestrictedToMajors(int cellIndex, int classIndex);
   // Expands assigned city-region ids into the tile grid. slot 14 / 0x38
@@ -130,8 +129,7 @@ public:
 
   void WriteTileGridToFile(const char* path);
 
-  void GenerateNewMap(char* tileGrid, Province* cityTable,
-                                                            CString* tuningString);
+  void GenerateNewMap(char* tileGrid, Province* cityTable, CString* tuningString);
 
   // --- data fields (raw pad except the ones the ported passes read) ---
   char pad_04[0x08 - 0x04]; // +0x04
@@ -148,7 +146,7 @@ public:
 
   int RepairOrphanedTileValuesFromNeighbors(short* tileValues);
 
-  char* mapTileGrid08; // +0x08 base of the 6480-tile (108x60) grid, stride 0x24
+  char* mapTileGrid; // +0x08 base of the 6480-tile (108x60) grid, stride 0x24
 
   int CountSeaTilesInColumn(int column); // 0x00529910
   // ORACLE: IsSeaTile. The tile's terrain kind byte is water. 0x0052a600.
@@ -159,15 +157,15 @@ public:
   // tag byte (+0x04), biased by 0x17 -- the same bias the map-order context applies
   // when it turns an owner tag back into a context-array index. 0x0052a6b0.
   void SetSeaZoneIndex(int tileIndex, char zoneIndex);
-  Province* cityScoreTable0c;
+  Province* cityScoreTable;
   // +0x10 region-class grid: 15 rows x 27 columns of region-class bytes (-1 = unassigned).
   signed char regionClassGrid10[15][27];
   char pad_1a5[0x1a8 - 0x1a5]; // +0x1a5
   int groupMemberLists[7][3];
-  int cityRegionNextId1fc;
+  int cityRegionNextId;
   int cityRegionIds[0x17];
   char unusedHole25c[0x29c - 0x25c];
-  int lastMinorSeedCandidate29c;
+  int lastMinorSeedCandidate;
   char pad_2a0[0x2a1 - 0x2a0]; // +0x2a0
   // +0x2a1 mode byte copied in by the BuildOrLoadGlobalMapStateForSession caller.
   unsigned char modeByte2a1;

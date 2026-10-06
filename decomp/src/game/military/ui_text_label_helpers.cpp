@@ -210,7 +210,7 @@ void __cdecl ApplyUiNumberTextStyleAndThemeColor(TDropShadowNumberText* control,
   styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, unused, pointSize, textThemeCode);
   control->InstallTextStyle(styleDescriptor, 0);
-  ResolveUiThemeColor(static_cast<short>(shadowThemeCode), &control->shadowColorAc);
+  ResolveUiThemeColor(static_cast<short>(shadowThemeCode), &control->shadowColor);
 }
 
 // FUNCTION: IMPERIALISM 0x005c46b0

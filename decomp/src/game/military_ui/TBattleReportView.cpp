@@ -102,7 +102,7 @@ void TBattleReportView::DoPostCreate(int arg) {
       cell = g_pGlobalMapState->cityScoreTable[reinterpret_cast<int>(record->location08)]
                  .cityTileIndex04;
     } else {
-      cell = static_cast<short>(static_cast<TZone*>(record->location08)->tileOrTerrainId0c);
+      cell = static_cast<short>(static_cast<TZone*>(record->location08)->tileOrTerrainId);
     }
 
     // Spiral outward from the record's cell until a free crowding-grid cell is found.
@@ -191,9 +191,9 @@ void TBattleReportView::DoPostCreate(int arg) {
     } else {
       spriteBase = 8;
     }
-    record->markerSpriteCode262 = spriteBase;
+    record->markerSpriteCode = spriteBase;
     if (record->reportKind04 == kMapContextReportMerchantInterception) {
-      record->markerSpriteCode262 = spriteBase + 2;
+      record->markerSpriteCode = spriteBase + 2;
     }
   }
 
@@ -284,7 +284,7 @@ char TBattleReportView::DoIdle(int action) {
       }
 
       RECT spriteRect;
-      spriteRect.left = (record->markerSpriteCode262 + (!g_bBattleReportMarkerBlinkPhase)) * 0x12;
+      spriteRect.left = (record->markerSpriteCode + (!g_bBattleReportMarkerBlinkPhase)) * 0x12;
       spriteRect.top = 0;
       spriteRect.right = spriteRect.left + 0x12;
       spriteRect.bottom = 0x12;
@@ -494,7 +494,7 @@ void TBattleReportView::RenderMapContextActionMarkers(RECT* rectBuffer) {
           OffsetRect(&destRect, 0, (surfaceHeight - destRect.top) - destRect.bottom);
         }
 
-        int spriteX = (record->markerSpriteCode262 + (ordinal == 0 ? 1 : 0)) * 0x12;
+        int spriteX = (record->markerSpriteCode + (ordinal == 0 ? 1 : 0)) * 0x12;
         RECT srcRect;
         srcRect.left = spriteX;
         srcRect.top = 0;

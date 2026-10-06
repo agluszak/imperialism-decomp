@@ -18,7 +18,7 @@ public:
   short prioritySlots[0x1d];
   short capabilityValueByNationAndResource[7][23];
   unsigned char perTechUnlockFlag[0x1d];
-  unsigned char resourceTypeEnabled19d[0xe];
+  unsigned char resourceTypeEnabled[0xe];
   unsigned char initFlags1ab[4]; // defaults initializer sets all four to 1
   unsigned char initFlags1af[4]; // set to 1
   unsigned char pad1b3[0x1c3 - 0x1b3];
@@ -66,9 +66,8 @@ public:
   void SetCityOrderCapabilityTierScaledValueByIndex(int index, int value);
   int GetNationFortLevelCap(int nNationId);
   bool AreTechItemPrerequisitePairCompleted(int techId, int nationSlot);
-  void GetPreReqs(int techId, int nationSlot,
-                                                  int* missingPrimaryTechId,
-                                                  int* missingSecondaryTechId);
+  void GetPreReqs(int techId, int nationSlot, int* missingPrimaryTechId,
+                  int* missingSecondaryTechId);
   void ActivateSlotAndUpdateUI(int abilityId, int nationSlot);
   void UpdateSelectionAndRecalculateScores(int resourceType, int nationSlot);
   void HandleAbilityUnlock(int techId, int nationSlot);

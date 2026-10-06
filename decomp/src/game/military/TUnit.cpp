@@ -41,7 +41,7 @@ void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,
   ownerManager->AddTail(this);
 
   this->ownerNationSlot18 = nOrderOwnerNationId;
-  this->unitRosterId1A = arg3;
+  this->unitRosterId = arg3;
   this->orderTargetIndex = static_cast<short>(-1);
 
   TSimMgr* simMgr = g_pSimMgr;
@@ -92,7 +92,7 @@ void TUnit::ReadFrom(TStream* stream) {
   stream->ReadBytes(&tileIndex06, 2);
   stream->ReadBytes(&orderTargetIndex, 2);
   stream->ReadBytes(&ownerNationSlot18, 2);
-  stream->ReadBytes(&unitRosterId1A, 2);
+  stream->ReadBytes(&unitRosterId, 2);
   stream->ReadBytes(&militaryRegistrationFlag, 1);
   stream->ReadBytes(&unitOrder, 4);
   short savedTileIndex = tileIndex06;
@@ -114,7 +114,7 @@ void TUnit::WriteTo(TStream* stream) {
   stream->WriteBytes(&tileIndex06, 2);
   stream->WriteBytes(&orderTargetIndex, 2);
   stream->WriteBytes(&ownerNationSlot18, 2);
-  stream->WriteBytes(&unitRosterId1A, 2);
+  stream->WriteBytes(&unitRosterId, 2);
   stream->WriteBytes(&militaryRegistrationFlag, 1);
   stream->WriteBytes(&unitOrder, 4);
   stream->WriteBytes(&persistentUnitId20, 4);

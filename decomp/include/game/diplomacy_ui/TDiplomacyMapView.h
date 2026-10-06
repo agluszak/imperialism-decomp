@@ -119,7 +119,7 @@ protected:
   int stateFlag;
 
 public:
-  eDipAction actionCodeBC;
+  eDipAction actionCode;
   short selectedGrantRow;
 
 protected:
@@ -131,7 +131,7 @@ protected:
   CRect mapViewportRect;
   int legendSurfaceMode;
   short visibleVoteTier;
-  short currentCursorResourceId52A;
+  short currentCursorResourceId;
   bool tileHasOwnerFlags[0x180];
   CRect tileMarkerRects[0x180]; // 0x6ac..0x1eac
   DiplomacyMaskBufferRun maskRuns[0x17];

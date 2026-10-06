@@ -63,7 +63,7 @@ struct TurnEventESessionInitPacket : TimelyMessageHeader {
   unsigned char mapParamByte39;  // +0x39 - third Rebuild arg
   char hostGameName3A[0x22];     // +0x3a
   int saveSlotDword5C;           // +0x5c -> queueSyncDword
-  int scenarioTag60;             // +0x60 -> scenarioSelectionTag
+  int scenarioTag;               // +0x60 -> scenarioSelectionTag
   signed char difficultyLevel64; // +0x64
   unsigned char nameTableFlag;   // +0x65 -> useLocalizedNameTables
   unsigned char pad66[2];        // total 0x68

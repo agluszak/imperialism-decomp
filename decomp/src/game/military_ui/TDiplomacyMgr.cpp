@@ -104,7 +104,7 @@ TDiplomacyMgr::~TDiplomacyMgr() {}
 // FUNCTION: IMPERIALISM 0x004ee7a0
 void TDiplomacyMgr::InitializeTDiplomacyTurnStateManagerDefaults() {
   TSortedPtrList* queue = new TSortedPtrList();
-  queue->recordSize14 = 4;
+  queue->recordSize = 4;
   pendingWarTransitionQueue = queue;
 
   register int zero = 0;
@@ -1135,7 +1135,7 @@ void TDiplomacyMgr::ConveneCouncil(char forceOrMode) {
 
     int topScore;
     int secondScore;
-    if (cityRecord->formerOwnerNationCode01 < 7) {
+    if (cityRecord->formerOwnerNationCode < 7) {
       topScore =
           (comparativePowerRows[topNationSlot][0] + comparativePowerRows[topNationSlot][3]) / 2;
       secondScore =
@@ -1243,7 +1243,7 @@ void TDiplomacyMgr::ConveneCouncil(char forceOrMode) {
 // FUNCTION: IMPERIALISM 0x004f1570
 void TDiplomacyMgr::InitializeDiplomacyStandingBaselineRandom() {
   for (int cityIndex = 0; cityIndex < kDiplomacyPairMatrixEntries; ++cityIndex) {
-    signed char formerOwner = g_pGlobalMapState->cityScoreTable[cityIndex].formerOwnerNationCode01;
+    signed char formerOwner = g_pGlobalMapState->cityScoreTable[cityIndex].formerOwnerNationCode;
     if (formerOwner == -1) {
       continue;
     }
@@ -1610,7 +1610,7 @@ int TDiplomacyMgr::GetAllyNumber(int nthAllianceIndex, int sourceNationSlot) {
 // FUNCTION: IMPERIALISM 0x004f2100
 int TDiplomacyMgr::GetFavorite(int sourceNationSlot, int primaryOnlyFlag) {
   TSortedByRelationshipList* list = new TSortedByRelationshipList();
-  list->recordSize14 = 4;
+  list->recordSize = 4;
   BuildRelationshipList(sourceNationSlot, static_cast<char>(primaryOnlyFlag), list);
   if (list->GetSize() < 1) {
     return -1;
@@ -1632,7 +1632,7 @@ int TDiplomacyMgr::GetFavorite(int sourceNationSlot, int primaryOnlyFlag, int si
   }
 
   TSortedByRelationshipList* list = new TSortedByRelationshipList();
-  list->recordSize14 = 4;
+  list->recordSize = 4;
   BuildRelationshipList(sourceNationSlot, static_cast<char>(primaryOnlyFlag), list);
   int entryIndex = list->GetSize();
   if (entryIndex < 1) {
@@ -1799,7 +1799,7 @@ BuildTurnEvent2ByteArraySyncPacketDeltaOrFull(unsigned int byteCount, unsigned c
     packet->eventCode = 2;
     packet->toNetworkId = 0;
     memcpy(packet->payload.raw, current, byteCount);
-    packet->deltaKind21 = 0;
+    packet->deltaKind = 0;
     return packet;
   }
   int packetSize = (differing + 0xc) * 3;
@@ -1815,7 +1815,7 @@ BuildTurnEvent2ByteArraySyncPacketDeltaOrFull(unsigned int byteCount, unsigned c
   packet->syncPhase = syncPhase;
   packet->eventCode = 2;
   packet->toNetworkId = 0;
-  packet->deltaKind21 = 1;
+  packet->deltaKind = 1;
   TurnEvent2ByteDeltaEntry* out = reinterpret_cast<TurnEvent2ByteDeltaEntry*>(packet->payload.raw);
   unsigned char* cur = current;
   for (int i = 0; i < static_cast<int>(byteCount); ++i) {
@@ -1865,7 +1865,7 @@ TurnEvent2SyncPacket* __cdecl BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned
     packet->eventCode = 2;
     packet->toNetworkId = 0;
     memcpy(packet->payload.raw, current, shortCount * 2);
-    packet->deltaKind21 = 0;
+    packet->deltaKind = 0;
     return packet;
   }
   int packetSize = differing * 4 + 0x24;
@@ -1881,7 +1881,7 @@ TurnEvent2SyncPacket* __cdecl BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned
   packet->syncPhase = syncPhase;
   packet->eventCode = 2;
   packet->toNetworkId = 0;
-  packet->deltaKind21 = 2;
+  packet->deltaKind = 2;
   TurnEvent2ShortDeltaEntry* out =
       reinterpret_cast<TurnEvent2ShortDeltaEntry*>(packet->payload.raw);
   short* cur = current;
@@ -1932,7 +1932,7 @@ BuildTurnEvent2IntArraySyncPacketDeltaOrFull(int intCount, int* current, int* ba
     packet->eventCode = 2;
     packet->toNetworkId = 0;
     memcpy(packet->payload.raw, current, intCount * 4);
-    packet->deltaKind21 = 0;
+    packet->deltaKind = 0;
     return packet;
   }
   int packetSize = (differing + 6) * 6;
@@ -1948,7 +1948,7 @@ BuildTurnEvent2IntArraySyncPacketDeltaOrFull(int intCount, int* current, int* ba
   packet->syncPhase = syncPhase;
   packet->eventCode = 2;
   packet->toNetworkId = 0;
-  packet->deltaKind21 = 3;
+  packet->deltaKind = 3;
   TurnEvent2IntDeltaEntry* out = reinterpret_cast<TurnEvent2IntDeltaEntry*>(packet->payload.raw);
   int* cur = current;
   for (int i = 0; i < intCount; ++i) {

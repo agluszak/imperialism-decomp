@@ -294,7 +294,7 @@ bool CityBuildingScreen::CountIsPresentedCorrectly(TNumberText* count,
   // size. A count that fails any of these was rebuilt wrongly by the refresh, whatever its
   // digits say.
   return count != 0 && count->enabled == 0 && count->viewEnabled != 0 &&
-         count->stylePayload48 == 0 && count->textStyle78.fontFamily == 3 &&
+         count->stylePayload == 0 && count->textStyle78.fontFamily == 3 &&
          count->textStyle78.fontStyleFlags == 0 && count->textStyle78.fontSize == kCountFontSize &&
          count->textStyle78.textColor == textColor && count->ownerContext != 0 &&
          count->absoluteX == count->ownerContext->absoluteX + count->ownerLocalX &&
@@ -410,7 +410,7 @@ RuntimeActionResult CityBuildingScreen::VerifyArmoryState() const {
     }
     const short expectedPicture = static_cast<short>(kArmoryPictureBase + pictureVariant * 2);
     const short actualPicture =
-        static_cast<short>(static_cast<TRadioPictureButton*>(button)->glyphBase84 & ~1);
+        static_cast<short>(static_cast<TRadioPictureButton*>(button)->glyphBase & ~1);
     if (actualPicture != expectedPicture) {
       CString detail;
       detail.Format("row %d picture mismatch: type=%d actual=%d expected=%d",

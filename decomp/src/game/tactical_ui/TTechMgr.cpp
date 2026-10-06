@@ -37,7 +37,7 @@ TTechMgr* g_pTechMgr = 0;
 short GetEnabledIndustryCapabilitySlotByClass(short classId) {
   short slot = 13;
   const IndustryCapabilityClassSlotEntry* entry = &g_aIndustryCapabilityClassSlotTable[13];
-  while (entry->classId != classId || g_pTechMgr->resourceTypeEnabled19d[slot] == 0) {
+  while (entry->classId != classId || g_pTechMgr->resourceTypeEnabled[slot] == 0) {
     entry--;
     slot--;
     if (entry == g_aIndustryCapabilityClassSlotTable) {
@@ -63,10 +63,10 @@ void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
   perTechUnlockFlag[2] = 1;
   // One flat 0x1a-byte clear covering perTechUnlockFlag[3..0x1c].
   memset(&perTechUnlockFlag[3], 0, 0x1a);
-  memset(resourceTypeEnabled19d, 1, 4);
-  resourceTypeEnabled19d[4] = 1;
-  memset(&resourceTypeEnabled19d[5], 0, 8);
-  resourceTypeEnabled19d[0xd] = 0;
+  memset(resourceTypeEnabled, 1, 4);
+  resourceTypeEnabled[4] = 1;
+  memset(&resourceTypeEnabled[5], 0, 8);
+  resourceTypeEnabled[0xd] = 0;
   techSelectorShort = 3;
   activeZoneIndex = 4;
   memset(initFlags1c9, 0, sizeof(initFlags1c9));
@@ -193,7 +193,7 @@ void TTechMgr::ReadFrom(TStream* stream) {
     stream->ReadBytes(&techSelectorShort, 2);
     stream->ReadBytes(&activeZoneIndex, 2);
     stream->ReadBytes(perTechUnlockFlag, 0x1d);
-    stream->ReadBytes(resourceTypeEnabled19d, sizeof(resourceTypeEnabled19d));
+    stream->ReadBytes(resourceTypeEnabled, sizeof(resourceTypeEnabled));
     stream->ReadBytes(initFlags1ab, 0x1e);
     stream->ReadBytes(initFlags1c9, sizeof(initFlags1c9));
     if (g_nSaveFormatVersion > 0x34) {
@@ -205,7 +205,7 @@ void TTechMgr::ReadFrom(TStream* stream) {
     stream->ReadBytes(&techSelectorShort, 2);
     stream->ReadBytes(&activeZoneIndex, 2);
     stream->ReadBytes(perTechUnlockFlag, 0x1d);
-    stream->ReadBytes(resourceTypeEnabled19d, sizeof(resourceTypeEnabled19d));
+    stream->ReadBytes(resourceTypeEnabled, sizeof(resourceTypeEnabled));
     stream->ReadBytes(initFlags1ab, 0x1e);
     stream->ReadBytes(initFlags1c9, sizeof(initFlags1c9));
   }
@@ -242,7 +242,7 @@ void TTechMgr::WriteTo(TStream* stream) {
   stream->WriteBytes(&techSelectorShort, 2);
   stream->WriteBytes(&activeZoneIndex, 2);
   stream->WriteBytes(perTechUnlockFlag, 0x1d);
-  stream->WriteBytes(resourceTypeEnabled19d, sizeof(resourceTypeEnabled19d));
+  stream->WriteBytes(resourceTypeEnabled, sizeof(resourceTypeEnabled));
   stream->WriteBytes(initFlags1ab, 0x1e);
   stream->WriteBytes(initFlags1c9, sizeof(initFlags1c9));
   stream->WriteBytes(&activePrerequisitePair, sizeof(activePrerequisitePair));
@@ -302,33 +302,33 @@ void TTechMgr::ApplyCityOrderCapabilityUnlockByTechId(int nTechId) {
   perTechUnlockFlag[nTechId] = 1;
   switch (nTechId) {
   case 9:
-    resourceTypeEnabled19d[7] = 1;
+    resourceTypeEnabled[7] = 1;
     techSelectorShort = 7;
-    resourceTypeEnabled19d[5] = 1;
+    resourceTypeEnabled[5] = 1;
     return;
   case 4:
-    resourceTypeEnabled19d[6] = 1;
+    resourceTypeEnabled[6] = 1;
     return;
   case 0xf:
-    resourceTypeEnabled19d[8] = 1;
+    resourceTypeEnabled[8] = 1;
     activeZoneIndex = 8;
     return;
   case 0xb:
     activePrerequisitePair = g_aTechItemPrerequisitePairs[31];
     return;
   case 0x15:
-    resourceTypeEnabled19d[9] = 1;
+    resourceTypeEnabled[9] = 1;
     activeZoneIndex = 9;
     return;
   case 0x18:
-    resourceTypeEnabled19d[0xb] = 1;
+    resourceTypeEnabled[0xb] = 1;
     techSelectorShort = 0xb;
-    resourceTypeEnabled19d[0xa] = 1;
+    resourceTypeEnabled[0xa] = 1;
     return;
   case 0x1b:
-    resourceTypeEnabled19d[0xc] = 1;
+    resourceTypeEnabled[0xc] = 1;
     activeZoneIndex = 0xc;
-    resourceTypeEnabled19d[0xd] = 1;
+    resourceTypeEnabled[0xd] = 1;
     techSelectorShort = 0xd;
     return;
   case 0x16:

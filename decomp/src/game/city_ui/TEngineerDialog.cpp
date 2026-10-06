@@ -27,9 +27,9 @@ IMPLEMENT_DYNCREATE(TEngineerDialog, TView)
 
 // FUNCTION: IMPERIALISM 0x004d0560
 TEngineerDialog::TEngineerDialog() {
-  this->headerSurface60 = 0;
-  this->footerSurface64 = 0;
-  this->bodyTileSurface68 = 0;
+  this->headerSurface = 0;
+  this->footerSurface = 0;
+  this->bodyTileSurface = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004d05c0
@@ -37,21 +37,21 @@ TEngineerDialog::~TEngineerDialog() {}
 
 // FUNCTION: IMPERIALISM 0x004d05e0
 void TEngineerDialog::Free() {
-  if (this->headerSurface60 != 0) {
-    g_pDisplayMgr->RemoveGWorld(headerSurface60);
+  if (this->headerSurface != 0) {
+    g_pDisplayMgr->RemoveGWorld(headerSurface);
   }
-  if (this->footerSurface64 != 0) {
-    g_pDisplayMgr->RemoveGWorld(footerSurface64);
+  if (this->footerSurface != 0) {
+    g_pDisplayMgr->RemoveGWorld(footerSurface);
   }
-  if (this->bodyTileSurface68 != 0) {
-    g_pDisplayMgr->RemoveGWorld(bodyTileSurface68);
+  if (this->bodyTileSurface != 0) {
+    g_pDisplayMgr->RemoveGWorld(bodyTileSurface);
   }
   TView::Free();
 }
 
 // FUNCTION: IMPERIALISM 0x004d0650
 void TEngineerDialog::Draw(RECT* rectBuffer) {
-  if (this->headerSurface60 == 0) {
+  if (this->headerSurface == 0) {
     return;
   }
 
@@ -71,7 +71,7 @@ void TEngineerDialog::Draw(RECT* rectBuffer) {
   dstRect.left = 0;
   dstRect.right = 0x148;
 
-  BlitRectWithOptionalTransparency(this->headerSurface60->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(this->headerSurface->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &headerRect,
                                    &headerRect, 0);
 
@@ -81,7 +81,7 @@ void TEngineerDialog::Draw(RECT* rectBuffer) {
     do {
       dstRect.top = bodyY;
       dstRect.bottom = bodyY + 0x0e;
-      BlitRectWithOptionalTransparency(this->bodyTileSurface68->GetBlitSurface(),
+      BlitRectWithOptionalTransparency(this->bodyTileSurface->GetBlitSurface(),
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                        &bodyTileRect, &dstRect, 0);
       bodyY = static_cast<short>(bodyY + 0x0e);
@@ -91,7 +91,7 @@ void TEngineerDialog::Draw(RECT* rectBuffer) {
 
   dstRect.top = bodyY;
   dstRect.bottom = bodyY + 0x0e;
-  BlitRectWithOptionalTransparency(this->footerSurface64->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(this->footerSurface->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                    &bodyTileRect, &dstRect, 0);
 
@@ -108,25 +108,25 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
   bool productionAllowed = true;
 
   // Release + reload the three offscreen dialog strip surfaces.
-  if (this->headerSurface60 != 0) {
-    g_pDisplayMgr->RemoveGWorld(this->headerSurface60);
+  if (this->headerSurface != 0) {
+    g_pDisplayMgr->RemoveGWorld(this->headerSurface);
   }
-  if (this->footerSurface64 != 0) {
-    g_pDisplayMgr->RemoveGWorld(this->footerSurface64);
+  if (this->footerSurface != 0) {
+    g_pDisplayMgr->RemoveGWorld(this->footerSurface);
   }
-  if (this->bodyTileSurface68 != 0) {
-    g_pDisplayMgr->RemoveGWorld(this->bodyTileSurface68);
+  if (this->bodyTileSurface != 0) {
+    g_pDisplayMgr->RemoveGWorld(this->bodyTileSurface);
   }
-  this->headerSurface60 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x1c30);
-  if (this->headerSurface60 == 0) {
+  this->headerSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x1c30);
+  if (this->headerSurface == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xcef);
   }
-  this->footerSurface64 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x1c31);
-  if (this->footerSurface64 == 0) {
+  this->footerSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x1c31);
+  if (this->footerSurface == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xcf0);
   }
-  this->bodyTileSurface68 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x1c32);
-  if (this->bodyTileSurface68 == 0) {
+  this->bodyTileSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x1c32);
+  if (this->bodyTileSurface == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xcf1);
   }
 

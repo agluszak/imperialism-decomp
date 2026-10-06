@@ -313,9 +313,9 @@ int TAdmiral::EstimateStrengthRating(const TTaskForce* force, int unusedArg) con
     short navyPriorityBucket = static_cast<short>(navyPriorityScore / 10);
     int resolveScore = strengthBucket + 5 + descriptor.FirepowerDword() * 10;
     short resolveBucket = static_cast<short>(resolveScore / 10);
-    total += ((navyPriorityBucket + descriptor.BattleRange()) * 100 + resolveBucket +
-              ship->strength) /
-             descriptor.Armor();
+    total +=
+        ((navyPriorityBucket + descriptor.BattleRange()) * 100 + resolveBucket + ship->strength) /
+        descriptor.Armor();
   }
   return total;
 }
@@ -378,7 +378,7 @@ CString GetLocalizedNavalReportShipType(short category, bool plural) {
   int i;
   for (i = 13; i > 0; --i) {
     if (g_aIndustryCapabilityClassSlotTable[i].classId == category &&
-        g_pTechMgr->resourceTypeEnabled19d[i] != 0) {
+        g_pTechMgr->resourceTypeEnabled[i] != 0) {
       resourceType = static_cast<short>(i);
       break;
     }

@@ -816,9 +816,8 @@ TTaskForce* TNavyMgr::AssignEscorts(short requiredCount, short chancePercent) {
 
 IMPERIALISM_BEGIN_RETAIL_UNINITIALIZED_READ
 // FUNCTION: IMPERIALISM 0x00557f10
-char TNavyMgr::TryMerchantInterception(
-    TMapOrderInteractionSelection* outResult, TZone* portZoneContext, short nation,
-    short offerAmount) {
+char TNavyMgr::TryMerchantInterception(TMapOrderInteractionSelection* outResult,
+                                       TZone* portZoneContext, short nation, short offerAmount) {
   short portOwnerNation = portZoneContext->GetPortZoneOwnerNationCodeFromMissionField48();
   TGreatPower* nationState = g_apNationStates[nation];
   short remainingTradeCapacity =
@@ -1022,8 +1021,8 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         short entryValue = 0;
         short entryTargetNation = 0;
         int entryPayload = 0;
-        state->GetDealInfo(slot, ordinal, &entryKind, &entryValue,
-                                          &entryTargetNation, &entryPayload);
+        state->GetDealInfo(slot, ordinal, &entryKind, &entryValue, &entryTargetNation,
+                           &entryPayload);
         if (entryValue == 0) {
           continue;
         }
@@ -1035,8 +1034,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         TZone* portZoneContext =
             g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(contextNation);
         TMapOrderInteractionSelection selection;
-        char eligible = TryMerchantInterception(
-            &selection, portZoneContext, nation, entryValue);
+        char eligible = TryMerchantInterception(&selection, portZoneContext, nation, entryValue);
         if (eligible == 0) {
           continue;
         }
@@ -1342,7 +1340,7 @@ unsigned short TNavyMgr::SelectionCursor(short nTileIndex, int nInputFlags) {
       if (queuedCounts[0] + queuedCounts[1] + queuedCounts[2] + queuedCounts[3] != 0) {
         for (TMapOrderChildLinkNode* node = entry->shipList; node != nullptr; node = node->next) {
           if (node->active != 0) {
-            canResolve = province->navyOrderReachableA0 != 0;
+            canResolve = province->navyOrderReachable != 0;
             break;
           }
         }
@@ -1591,8 +1589,7 @@ static inline int CalculateMapOrderInteractionShipStrength(TShip* ship) {
       static_cast<short>((strengthBucket + descriptor.BattleSpeedDword() * 10 + 5) / 10);
   short resolveBucket =
       static_cast<short>((strengthBucket + descriptor.FirepowerDword() * 10 + 5) / 10);
-  return ((navyPriorityBucket + descriptor.BattleRange()) * 100 + resolveBucket +
-          ship->strength) /
+  return ((navyPriorityBucket + descriptor.BattleRange()) * 100 + resolveBucket + ship->strength) /
          descriptor.Armor();
 }
 
@@ -1610,9 +1607,9 @@ static void ApplyTaskForceConflictAttrition(TTaskForce* force, float favorRatio,
         ++selected;
         int roll = static_cast<int>(rand()) % 100 + static_cast<int>(rand()) % 100 + 100;
         TShip* child = node->payload;
-        short damage = static_cast<short>(
-            0.5 - g_NavyOrderResourceDescriptorTable[child->type].Armor() *
-                      (roll * 0.005) * favorRatio * -0.01);
+        short damage =
+            static_cast<short>(0.5 - g_NavyOrderResourceDescriptorTable[child->type].Armor() *
+                                         (roll * 0.005) * favorRatio * -0.01);
         child->strength = static_cast<short>(child->strength - damage);
       }
     }

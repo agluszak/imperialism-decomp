@@ -36,12 +36,12 @@ struct MapPixelSourceView {
 
 struct TTerrainStateRecord {
   // -1 is the unassigned terrain sentinel; use the typed accessors below.
-  StrategicTerrainKindStorage terrainKindStorage00;
+  StrategicTerrainKindStorage terrainKindStorage;
   StrategicTerrainKind GetTerrainKind() const {
-    return static_cast<StrategicTerrainKind>(terrainKindStorage00);
+    return static_cast<StrategicTerrainKind>(terrainKindStorage);
   }
   void SetTerrainKind(StrategicTerrainKind terrainKind) {
-    terrainKindStorage00 = static_cast<StrategicTerrainKindStorage>(terrainKind);
+    terrainKindStorage = static_cast<StrategicTerrainKindStorage>(terrainKind);
   }
   signed char spriteVariantIndex;
   // High bit marks a staged editor value; finalized variants are 0x0b..0x3a.
@@ -60,7 +60,7 @@ struct TTerrainStateRecord {
   signed char developmentClassNibbles;
   // 0 or 0x7f; gates recruit-search eligibility.
   unsigned char pendingDevelopmentFlag;
-  unsigned char recruitSearchVisited0e;
+  unsigned char recruitSearchVisited;
   signed char perTileVisitedFlag;
   signed char markerSlotIndex;
   signed char resourceTypeByEdge[2];
@@ -86,7 +86,7 @@ struct Province {
 
   signed char ownerNationCode00;
   // Founding owner for the context panel's "formerly of" label.
-  signed char formerOwnerNationCode01;
+  signed char formerOwnerNationCode;
   signed char developmentStage;
   signed char fortLevel03;
   StrategicTileIndex cityTileIndex04; // -1 when unanchored
@@ -107,7 +107,7 @@ struct Province {
   unsigned char pad96[2];
   TMilitaryUnit* stationedUnitChain;
   int cityScoreValue;
-  unsigned char navyOrderReachableA0; // transient navy-order eligibility
+  unsigned char navyOrderReachable; // transient navy-order eligibility
   unsigned char exploredByNationMask;
   signed char resourcePresenceMask;
   signed char regionClassA3;

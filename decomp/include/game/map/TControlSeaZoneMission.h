@@ -53,7 +53,7 @@ inline void TControlSeaZoneMission::CalculateNeeds() {
     if (node->location != missionTargetZone) {
       continue;
     }
-    if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, node->nation)) {
+    if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, node->nation)) {
       continue;
     }
     short normalizationBase = node->GetMaxStrength();

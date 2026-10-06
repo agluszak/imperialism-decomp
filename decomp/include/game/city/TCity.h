@@ -82,18 +82,18 @@ public:
   unsigned char pad05;
   short foodSubstitutionCount06;    // +0x06 — workers reassigned after food substitution
   short starvationPopulationLoss08; // +0x08 — population lost during the last Eat pass
-  short serializedState0a;
+  short serializedState;
   short cityPhaseCounter;
   short militaryRecruitCountByKind[kMilitaryUnitKindCount];
   short civilianRecruitCountByKind[kCivilianUnitKindCount];
   short orderCountByType5c[kIndustryActionSlotCount];
-  int rollingItemProductionScore78;
+  int rollingItemProductionScore;
   unsigned char lowProductionFlag; // +0x7c — PredictedNeeds
   unsigned char lowStockFlag;      // +0x7d — PredictedNeeds
   short reservedByType7e[kResourceKindCount];
   class TGreatPower* ownerNationAc; // 0xAC — owning nation state (0x004b4dc0)
-  TTown* homeTownMarker; // +0xb0
-  short powerAvailableB4;
+  TTown* homeTownMarker;            // +0xb0
+  short powerAvailable;
   short cityStockCotton;
   short cityStockWool;
   short cityStockTimber;
@@ -101,22 +101,22 @@ public:
   short cityStockIron;
   short cityStockHorses;
   short cityStockOil;
-  short cityStockCannedFoodC4;
-  short cityStockFabricC6;
+  short cityStockCannedFood;
+  short cityStockFabric;
   short cityStockLumber;
   short cityStockPaper;
   short cityStockSteel;
   short cityStockFuel;
   short cityStockClothing;
-  short cityStockFurnitureD2;
-  short cityStockHardwareD4;
+  short cityStockFurniture;
+  short cityStockHardware;
   short cityStockArms;
   short cityStockGrain;
   short cityStockFruit;
   short cityStockFish;
   short cityStockLivestock;
   short cityStockGems;
-  short cityStockGoldE2;
+  short cityStockGold;
   TProductionOrder* orderSlots[0x19];         // +0xe4..+0x147
   TUnitOrder* buildOrderSlots[0x12];          // +0x148..+0x18f
   TShipOrder* shipOrderSlots[8];              // +0x190..+0x1af
@@ -131,7 +131,7 @@ public:
   short populationGrowthPenaltyTicks;  // 0x26C — GrowthRate penalty counter
   short pad26e;
   TTaskList* trackedOrderList; // 0x270 — released via FreePayloadsAndDestroy
-  class TPtrList* eventQueue274;
+  class TPtrList* eventQueue;
   short unmetResourceRetryCount[kResourceKindCount];
   short consumedProductionInputByType2a6[kResourceKindCount];
 

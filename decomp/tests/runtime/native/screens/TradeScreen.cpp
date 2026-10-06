@@ -100,7 +100,7 @@ bool TradeScreen::HasBuyCard(short resource) const {
 
 short TradeScreen::BuyCardBitmap(short resource) const {
   TTradeOrderPicture* card = BuyCard(resource);
-  return card != 0 ? card->glyphBase84 : -1;
+  return card != 0 ? card->glyphBase : -1;
 }
 
 bool TradeScreen::BuyCardIsActionable(short resource) const {
@@ -132,7 +132,7 @@ bool TradeScreen::BidSelected(short resource) const {
 
 bool TradeScreen::OfferCardIsInactive(short resource) const {
   TTradeOrderPicture* card = OfferCard(resource);
-  short bitmap = card != 0 ? card->glyphBase84 : -1;
+  short bitmap = card != 0 ? card->glyphBase : -1;
   return bitmap == kOfferCardInactiveA || bitmap == kOfferCardInactiveB;
 }
 
@@ -154,7 +154,7 @@ RuntimeActionResult TradeScreen::SelectBid(short resource) {
   if (card->IsActionable() == 0) {
     CString detail;
     detail.Format("commodity %d's buy card is not actionable (bitmap 0x%03x)",
-                  static_cast<int>(resource), static_cast<unsigned int>(card->glyphBase84));
+                  static_cast<int>(resource), static_cast<unsigned int>(card->glyphBase));
     return ScreenFailure("select a trade bid", detail);
   }
   // A trade card is activated through its own semantic entry point rather than a generic
@@ -176,7 +176,7 @@ RuntimeActionResult TradeScreen::SelectOffer(short resource) {
   if (card->IsActionable() == 0) {
     CString detail;
     detail.Format("commodity %d's offer card is not actionable (bitmap 0x%03x)",
-                  static_cast<int>(resource), static_cast<unsigned int>(card->glyphBase84));
+                  static_cast<int>(resource), static_cast<unsigned int>(card->glyphBase));
     return ScreenFailure("select a trade offer", detail);
   }
   card->ActivateOrderSemantically();

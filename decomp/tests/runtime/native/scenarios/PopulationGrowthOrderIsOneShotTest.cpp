@@ -38,9 +38,9 @@ private:
     }
 
     order->SetQuantity(0);
-    city->cityStockFurnitureD2 = static_cast<short>(city->cityStockFurnitureD2 + 1);
+    city->cityStockFurniture = static_cast<short>(city->cityStockFurniture + 1);
     city->cityStockClothing = static_cast<short>(city->cityStockClothing + 1);
-    city->cityStockCannedFoodC4 = static_cast<short>(city->cityStockCannedFoodC4 + 1);
+    city->cityStockCannedFood = static_cast<short>(city->cityStockCannedFood + 1);
     city->productionAccum[0x0f] = static_cast<short>(city->productionAccum[0x0f] + 1);
     if (!order->SetQuantity(1)) {
       return false;

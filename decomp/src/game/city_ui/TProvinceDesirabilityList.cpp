@@ -8,10 +8,9 @@ IMPLEMENT_DYNCREATE(TProvinceDesirabilityList, TSortedPtrList)
 // FUNCTION: IMPERIALISM 0x004d6590
 TProvinceDesirabilityList::TProvinceDesirabilityList() {}
 
-
 // FUNCTION: IMPERIALISM 0x004d6610
 void TProvinceDesirabilityList::IProvinceDesirabilityList() {
-  recordSize14 = 4;
+  recordSize = 4;
 }
 
 // FUNCTION: IMPERIALISM 0x004d6630

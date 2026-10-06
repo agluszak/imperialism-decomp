@@ -8,7 +8,7 @@
 
 // FUNCTION: IMPERIALISM 0x0045b000
 TGWorldPartView::TGWorldPartView() : TView() {
-  sourceSurface60 = 0;
+  sourceSurface = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0045b060
@@ -24,11 +24,11 @@ CString AssignSharedStringFromMidSubstring(CString source, int startPos, int cou
 // FUNCTION: IMPERIALISM 0x004ac880
 void TGWorldPartView::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
-  if (sourceSurface60 != 0) {
+  if (sourceSurface != 0) {
     CRect destRect;
     QueryContentBounds(&destRect);
     UpdatePaletteIndexWithDefaultFallback(0x10);
-    BlitRectWithOptionalTransparency(sourceSurface60->GetBlitSurface(),
+    BlitRectWithOptionalTransparency(sourceSurface->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                      &sourceRect, &destRect, 0x24, 0);
     UpdatePaletteIndexWithDefaultFallback(0x13);

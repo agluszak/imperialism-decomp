@@ -225,7 +225,7 @@ void TWarehouseView::UpdateFields() {
   }
 
   if (powerValueControl != 0) {
-    short power = city94->powerAvailableB4;
+    short power = city94->powerAvailable;
     if (powerValueControl->UpdateControlCachedIntFromWindowText() != power) {
       powerValueControl->SetControlValue(power, 1);
     }

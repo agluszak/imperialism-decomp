@@ -999,7 +999,7 @@ inline void RefreshTradClusterPictureAndHintText() {
   }
   tradControl->AssertValid();
   TPicture* tradPicture = static_cast<TPicture*>(tradControl);
-  const short pictureId = static_cast<short>(tradPicture->glyphBase84 + 1);
+  const short pictureId = static_cast<short>(tradPicture->glyphBase + 1);
   tradPicture->SetPictureRsrcID(pictureId, false);
   tradControl->ViewEnable(0, 0);
 
@@ -1318,7 +1318,7 @@ void TViewMgr::ShowCityProductionView(short nationSlot) {
   TControl* cityControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagCity));
   if (cityControl != nullptr) {
     TPicture* cityPicture = static_cast<TPicture*>(cityControl);
-    cityPicture->SetPictureRsrcID(cityPicture->glyphBase84 + 1, 0);
+    cityPicture->SetPictureRsrcID(cityPicture->glyphBase + 1, 0);
     cityControl->ViewEnable(0, 0);
     g_pSimMgr->GetString(0x2730, 0x1d, &hoverText);
     SetControlHoverHelpTextAltEntry(hoverText, cityControl);
@@ -1397,7 +1397,7 @@ void TViewMgr::ShowDiplomacyScreen(short nationSlot) {
   if (diplControl != nullptr) {
     diplControl->AssertValid();
     TPicture* diplPicture = static_cast<TPicture*>(diplControl);
-    diplPicture->SetPictureRsrcID(static_cast<short>(diplPicture->glyphBase84 + 1), 0);
+    diplPicture->SetPictureRsrcID(static_cast<short>(diplPicture->glyphBase + 1), 0);
     diplControl->ViewEnable(0, 0);
     g_pSimMgr->GetString(0x2730, 0x1c, &text);
     SetControlHoverHelpTextAltEntry(text, diplControl);
@@ -1472,7 +1472,7 @@ void TViewMgr::ShowTransportScreen(short nationSlot) {
   TUpDownPictureButton* transportButton =
       static_cast<TUpDownPictureButton*>(activeDialog->ResolveControlByTag(kControlTagTran));
   if (transportButton != nullptr) {
-    transportButton->SetPictureRsrcID(static_cast<short>(transportButton->glyphBase84 + 1), 0);
+    transportButton->SetPictureRsrcID(static_cast<short>(transportButton->glyphBase + 1), 0);
     transportButton->ViewEnable(0, 0);
     g_pSimMgr->GetString(0x2730, 0x1e, &text);
     SetControlHoverHelpTextAltEntry(text, transportButton);
@@ -1656,7 +1656,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   TUpDownPictureButton* tradeControl =
       static_cast<TUpDownPictureButton*>(mainView->ResolveControlByTag(kControlTagTrad));
   if (tradeControl != 0) {
-    tradeControl->SetPictureRsrcID(static_cast<short>(tradeControl->glyphBase84 + 1), false);
+    tradeControl->SetPictureRsrcID(static_cast<short>(tradeControl->glyphBase + 1), false);
     tradeControl->ViewEnable(0, 0);
     g_pSimMgr->GetString(0x2730, 0x1b, &sharedString);
     SetControlHoverHelpTextAltEntry(sharedString, tradeControl);
@@ -1782,7 +1782,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xa60);
   }
   const short foodOnHand = static_cast<short>(
-      city->cityStockCannedFoodC4 + city->cityStockLivestock + city->cityStockGrain +
+      city->cityStockCannedFood + city->cityStockLivestock + city->cityStockGrain +
       city->cityStockFruit + g_apNationStates[nationSlot]->needTargetByType[kResourceLivestock] +
       g_apNationStates[nationSlot]->needTargetByType[kResourceFruit] +
       g_apNationStates[nationSlot]->needTargetByType[kResourceFish] +
@@ -1867,7 +1867,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   SetControlHoverHelpText(sharedString, oil);
 
   TView* fabric = mainView->ResolveControlByTag(kTagFabric);
-  if (static_cast<int>(city->cityStockFabricC6) +
+  if (static_cast<int>(city->cityStockFabric) +
           static_cast<int>(g_apNationStates[nationSlot]->needTargetByType[kResourceFabric]) <
       static_cast<short>(city->GetBuildingType(1) * 2)) {
     fabric->Show(1, 0);
@@ -2343,7 +2343,7 @@ void TViewMgr::SetUpMainMenuScreen() {
   COLORREF mappedStyleFlags = 0;
   ResolveUiThemeColor(0x2b6b, &mappedStyleFlags);
   g_pCursorControlPanel->shadowTextColor = mappedStyleFlags;
-  g_pCursorControlPanel->dropShadowEnabledA0 = true;
+  g_pCursorControlPanel->dropShadowEnabled = true;
 
   // 'main' (council ticker) is not null-checked in the original, unlike the buttons below.
   TControl* mainControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagMain));

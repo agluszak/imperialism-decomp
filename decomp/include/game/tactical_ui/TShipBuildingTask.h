@@ -12,9 +12,9 @@ class TShipBuildingTask : public TCityTask {
 public:
   DECLARE_DYNCREATE(TShipBuildingTask)
   // FUNCTION: IMPERIALISM 0x005ae6f0
-  virtual ~TShipBuildingTask() override {}         // slot 0x01 (scalar deleting destructor)
-  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x5ae9e0
-  virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5aea70
+  virtual ~TShipBuildingTask() override {}            // slot 0x01 (scalar deleting destructor)
+  virtual void WriteTo(TStream* stream) override;     // slot 0x05 0x5ae9e0
+  virtual void ReadFrom(TStream* stream) override;    // slot 0x06 0x5aea70
   virtual bool Execute(TTaskList* taskList) override; // slot 0x0a 0x5ae780
 
   TShipBuildingTask();
@@ -23,6 +23,6 @@ public:
                          short requestedShipType); // 0x005ae710
 
   short requestedShipType14;
-  short waitingForShipOrderAdvance16;
+  short waitingForShipOrderAdvance;
 };
 ASSERT_SIZE(TShipBuildingTask, 0x18);

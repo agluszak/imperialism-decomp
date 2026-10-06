@@ -207,7 +207,7 @@ float TDefendProvinceMission::ComputeLocalSupportVectorScore(int nodeContext) {
 // FUNCTION: IMPERIALISM 0x0053ebe0
 void TDefendProvinceMission::Free() {
   // See TAttackProvinceMission::Free: the tail AI state block is TAutoGreatPower-only.
-  TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
+  TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId]);
   nationState->AssertValid();
 
   nationState->SetProvinceStatus(presentLocation, kMissionDesirabilityUnmarked);
@@ -237,7 +237,7 @@ float TDefendProvinceMission::ComputePresentLocationCrossNationSupportScore() {
 
 // FUNCTION: IMPERIALISM 0x0053ecc0
 void TDefendProvinceMission::SetStateByte8To2() {
-  TGreatPower* nation = g_apNationStates[nationId04];
+  TGreatPower* nation = g_apNationStates[nationId];
   short val = nation->GetCapitolProvince();
   if (val == presentLocation) {
     state08 = 0;
@@ -261,7 +261,7 @@ void TDefendProvinceMission::CalculateImportance() {
       short adjTileIndex = adjArray[i];
       short tileOwnerNationCode =
           g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(adjTileIndex);
-      if (nationId04 == tileOwnerNationCode) {
+      if (nationId == tileOwnerNationCode) {
         local_c++;
       }
     }
@@ -271,13 +271,13 @@ void TDefendProvinceMission::CalculateImportance() {
               local_8;
   }
 
-  importanceScore0c = local_8 / g_fMissionScoreNormalizationDivisor;
+  importanceScore = local_8 / g_fMissionScoreNormalizationDivisor;
 }
 
 // FUNCTION: IMPERIALISM 0x0053edf0
 void TDefendProvinceMission::CalculateNeeds() {
   // These AI pressure scores live in TAutoGreatPower's derived-only tail.
-  TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
+  TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId]);
   nationState->AssertValid();
 
   float fStack_c = nationState->averageUnitDivergencePerOwnedRegion;
@@ -290,8 +290,8 @@ void TDefendProvinceMission::CalculateNeeds() {
 
   if (!compat) {
     unsigned char bVar8;
-    if (g_pTechMgr->abilityActiveRows[nationId04].abilityActiveById[0x10] == 0) {
-      bVar8 = (g_pTechMgr->abilityActiveRows[nationId04].abilityActiveById[8] != 0) ? 8 : 0;
+    if (g_pTechMgr->abilityActiveRows[nationId].abilityActiveById[0x10] == 0) {
+      bVar8 = (g_pTechMgr->abilityActiveRows[nationId].abilityActiveById[8] != 0) ? 8 : 0;
     } else {
       bVar8 = 0x10;
     }
@@ -310,7 +310,7 @@ void TDefendProvinceMission::CalculateNeeds() {
     return;
   }
 
-  bool hasWar = g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(nationId04);
+  bool hasWar = g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(nationId);
   float unaff_EBX = nationState->expansionPressurePerCompatibleRegion + fStack_c;
 
   if (hasWar) {
@@ -347,5 +347,5 @@ bool TDefendProvinceMission::Matches(eMissionType missionType, int key, TZone* z
 TMission* TDefendProvinceMission::GetReplacement() {
   short tileOwnerNationCode =
       g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(presentLocation);
-  return (tileOwnerNationCode == nationId04) ? this : nullptr;
+  return (tileOwnerNationCode == nationId) ? this : nullptr;
 }

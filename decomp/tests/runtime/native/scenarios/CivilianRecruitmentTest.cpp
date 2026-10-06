@@ -212,7 +212,7 @@ private:
           tile == spawnedCivilian->tileIndex06 || tile % 0x6c == 0 || tile % 0x6c == 0x6b) {
         continue;
       }
-      if ((terrain.recruitSearchVisited0e == 0) != mustBeEligible) {
+      if ((terrain.recruitSearchVisited == 0) != mustBeEligible) {
         continue;
       }
       if (mustBeEligible && g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(tile) == 0) {
@@ -338,7 +338,7 @@ private:
       for (int tileOrdinal = 0; tileOrdinal < province->linkedRegionCount; ++tileOrdinal) {
         short tileIndex = province->linkedTileIndices42[tileOrdinal];
         TTerrainStateRecord* terrain = &g_pGlobalMapState->terrainStateTable[tileIndex];
-        if (terrain->recruitSearchVisited0e != 0 ||
+        if (terrain->recruitSearchVisited != 0 ||
             static_cast<unsigned char>(terrain->gateFlag) != profile) {
           continue;
         }
@@ -638,7 +638,7 @@ private:
     for (short tile = 0; tile < kGlobalMapTileCount; ++tile) {
       const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tile];
       if (tile == spawnedCivilian->tileIndex06 || tile % 0x6c == 0 || tile % 0x6c == 0x6b ||
-          terrain.firstCivilianOrder20 != 0 || terrain.recruitSearchVisited0e != 0 ||
+          terrain.firstCivilianOrder20 != 0 || terrain.recruitSearchVisited != 0 ||
           (terrain.pendingDevelopmentFlag & (1 << activeNation)) != 0) {
         continue;
       }
@@ -771,7 +771,7 @@ private:
       const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tileIndex];
       const bool expectedWorkable =
           IsRetailFarmerWorkableTile(terrain, nationSlot, farmer->orderType);
-      if ((terrain.recruitSearchVisited0e == 0) != expectedWorkable) {
+      if ((terrain.recruitSearchVisited == 0) != expectedWorkable) {
         ++predicateMismatches;
       }
 

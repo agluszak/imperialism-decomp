@@ -16,8 +16,8 @@ public:
                        TEvent* event) override; // slot 0x0f 0x005059d0
   virtual void HighlightSelectedMenuItemAndRefreshDetailText(int selectedIndex);
 
-  TDeluxeText* infoTextPane90; // +0x90
-  short menuItemIds[12]; // +0x94..0xab
+  TDeluxeText* infoTextPane; // +0x90
+  short menuItemIds[12];     // +0x94..0xab
 
   TTerrainHelpPicture();
 

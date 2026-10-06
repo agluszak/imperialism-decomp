@@ -32,7 +32,7 @@ void TShipView::IShipView(TView* panel, int* offsetLayout, int* sizeLayout, int 
                           int sizeDeterminerY, TShip* ship, TTaskForce* taskForce) {
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, sizeDeterminerX,
                                           sizeDeterminerY, 0);
-  shipNode60 = ship;
+  shipNode = ship;
   field64 = taskForce;
 }
 
@@ -46,14 +46,14 @@ void TShipView::Draw(RECT* rectBuffer) {
   CString label;
 
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(2, 0xc, 0x2b6a, 3);
-  label = shipNode60->name;
+  label = shipNode->name;
 
   CString orderStatusStrings[8];
   for (int i = 0; i < 8; ++i) {
     g_pSimMgr->GetString(0x2760, i, &orderStatusStrings[i]);
   }
   statusLine =
-      orderStatusStrings[g_ShipOrderStatusStringIndexByResourceType_0065c7f8[shipNode60->type]];
+      orderStatusStrings[g_ShipOrderStatusStringIndexByResourceType_0065c7f8[shipNode->type]];
   statusLine += s_szSpaceSeparator_00695794 + label;
 
   SetQuickDrawTextOriginWithContextOffset(0x50, 0x18);
@@ -61,16 +61,16 @@ void TShipView::Draw(RECT* rectBuffer) {
   SetQuickDrawStrokeColor(0xffffff);
   DrawTextWithCachedQuickDrawStyleState(&statusLine);
 
-  if (shipNode60->admiral != 0) {
+  if (shipNode->admiral != 0) {
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 9, 0x2b6a);
-    CString admiralLine = s_szAdmiralPrefix_0069578c + shipNode60->admiral->displayName;
+    CString admiralLine = s_szAdmiralPrefix_0069578c + shipNode->admiral->displayName;
     label = admiralLine;
     SetQuickDrawTextOriginWithContextOffset(0x50, 0xc);
     DrawTextWithCachedQuickDrawStyleState(&label);
   }
 
-  short normBase = shipNode60->GetMaxStrength();
-  short levelBucket = static_cast<short>(shipNode60->strength * 20 / normBase) + 1;
+  short normBase = shipNode->GetMaxStrength();
+  short levelBucket = static_cast<short>(shipNode->strength * 20 / normBase) + 1;
   if (levelBucket > 0x14) {
     levelBucket = 0x14;
   }
@@ -94,20 +94,20 @@ void TShipView::Draw(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x005658d0
 void TShipView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (sourceHandler->controlTag == kControlTagChec) {
-    TMapOrderChildLinkNode* node = field64->shipList->FindNodeMatching(shipNode60);
+    TMapOrderChildLinkNode* node = field64->shipList->FindNodeMatching(shipNode);
     int delta;
     if (node->active == 0) {
-      field64->Select(shipNode60, true);
+      field64->Select(shipNode, true);
       delta = 1;
     } else {
-      field64->Select(shipNode60, false);
+      field64->Select(shipNode, false);
       delta = -1;
     }
 
     TMapUberPicture* mapUber = g_pViewMgr->mapUberPictureF0;
     TView* categoryControl = mapUber->categoryPages[mapUber->activeUnitCategoryIndex];
     if (categoryControl != nullptr) {
-      short resourceType = shipNode60->GetToolbarSlot();
+      short resourceType = shipNode->GetToolbarSlot();
       TShipFractionCluster* shipFraction = static_cast<TShipFractionCluster*>(
           categoryControl->ResolveControlByTag(kControlTagCls0 + resourceType));
       if (delta > 0) {
@@ -147,7 +147,7 @@ void TShipView::RenameShip() {
   TEditText* nameControl = static_cast<TEditText*>(node->ResolveControlByTag(kControlTagName));
   nameControl->AssertValid();
   CString editedName;
-  editedName = shipNode60->name;
+  editedName = shipNode->name;
   nameControl->InitDialogWindowAndSyncTitleIfChanged(&editedName, 1);
   nameControl->textStyle78 = style;
 
@@ -156,7 +156,7 @@ void TShipView::RenameShip() {
   node->Close();
   node->Free();
   if (modalResult == kControlTagOkay) {
-    shipNode60->name = editedName;
+    shipNode->name = editedName;
   }
   RefreshControl();
 }

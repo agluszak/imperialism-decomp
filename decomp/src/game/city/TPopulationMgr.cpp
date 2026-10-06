@@ -122,14 +122,13 @@ void TPopulationMgr::Eat() {
   }
 
   if (unmetFoodNeed != 0) {
-    if (unmetFoodNeed < city04->cityStockCannedFoodC4) {
-      city04->cityStockCannedFoodC4 =
-          static_cast<short>(city04->cityStockCannedFoodC4 - unmetFoodNeed);
+    if (unmetFoodNeed < city04->cityStockCannedFood) {
+      city04->cityStockCannedFood = static_cast<short>(city04->cityStockCannedFood - unmetFoodNeed);
       city04->VerifyStocks();
       unmetFoodNeed = 0;
     } else {
-      unmetFoodNeed = static_cast<short>(unmetFoodNeed - city04->cityStockCannedFoodC4);
-      city04->cityStockCannedFoodC4 = 0;
+      unmetFoodNeed = static_cast<short>(unmetFoodNeed - city04->cityStockCannedFood);
+      city04->cityStockCannedFood = 0;
       city04->VerifyStocks();
     }
 
@@ -255,10 +254,10 @@ void TPopulationMgr::PretendToEat(short& substitutionCount, short& starvationCou
   }
 
   if (unmetFoodNeed != 0) {
-    if (unmetFoodNeed < city04->cityStockCannedFoodC4) {
+    if (unmetFoodNeed < city04->cityStockCannedFood) {
       unmetFoodNeed = 0;
     } else {
-      unmetFoodNeed = static_cast<short>(unmetFoodNeed - city04->cityStockCannedFoodC4);
+      unmetFoodNeed = static_cast<short>(unmetFoodNeed - city04->cityStockCannedFood);
     }
 
     if (unmetFoodNeed != 0) {

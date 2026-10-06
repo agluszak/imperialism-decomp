@@ -89,36 +89,36 @@ BOOL TDirectPlaySessionManagerBase::OnEnumerateJoinableSession(
 
 // FUNCTION: IMPERIALISM 0x0047fb80
 BOOL TDirectPlaySessionManagerBase::CreateDirectPlayLobbyAndStoreResult() {
-  lastErrorCode0c = DirectPlayLobbyCreateA(0, &directPlayLobby, 0, 0, 0);
-  return lastErrorCode0c >= 0;
+  lastErrorCode = DirectPlayLobbyCreateA(0, &directPlayLobby, 0, 0, 0);
+  return lastErrorCode >= 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0047fbc0
 BOOL TDirectPlaySessionManagerBase::ConnectDirectPlayFromLobbySettingsAndStoreResult() {
   DWORD settingsSize = 0;
-  lastErrorCode0c = directPlayLobby->GetConnectionSettings(0, 0, &settingsSize);
-  if (lastErrorCode0c != DPERR_BUFFERTOOSMALL) {
+  lastErrorCode = directPlayLobby->GetConnectionSettings(0, 0, &settingsSize);
+  if (lastErrorCode != DPERR_BUFFERTOOSMALL) {
     return FALSE;
   }
 
   DPLCONNECTION* settings = new DPLCONNECTION;
   if (settings == 0) {
-    lastErrorCode0c = E_OUTOFMEMORY;
+    lastErrorCode = E_OUTOFMEMORY;
     return FALSE;
   }
 
-  lastErrorCode0c = directPlayLobby->GetConnectionSettings(0, settings, &settingsSize);
-  if (lastErrorCode0c < 0 || lastErrorCode0c == DPERR_NOCONNECTION) {
+  lastErrorCode = directPlayLobby->GetConnectionSettings(0, settings, &settingsSize);
+  if (lastErrorCode < 0 || lastErrorCode == DPERR_NOCONNECTION) {
     return FALSE;
   }
   if (GetRuntimeSelectionAuxStatus(settings) != FALSE) {
-    lastErrorCode0c = directPlayLobby->SetConnectionSettings(0, 0, settings);
+    lastErrorCode = directPlayLobby->SetConnectionSettings(0, 0, settings);
   }
-  if (lastErrorCode0c < 0) {
+  if (lastErrorCode < 0) {
     return FALSE;
   }
-  lastErrorCode0c = directPlayLobby->Connect(0, &directPlayInterface04, 0);
-  return lastErrorCode0c >= 0;
+  lastErrorCode = directPlayLobby->Connect(0, &directPlayInterface, 0);
+  return lastErrorCode >= 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0047fcb0
@@ -127,15 +127,15 @@ char TWNetSessionManager::CreatePlayerAndStoreResult(LPDPID idOut, LPSTR shortNa
   memset(&name, 0, sizeof(name));
   name.lpszShortNameA = shortName;
   name.dwSize = sizeof(name);
-  long createResult = directPlayInterface04->CreatePlayer(idOut, &name, 0, 0, 0, 0);
-  lastErrorCode0c = createResult;
+  long createResult = directPlayInterface->CreatePlayer(idOut, &name, 0, 0, 0, 0);
+  lastErrorCode = createResult;
   return createResult >= 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0047fd30
 unsigned char TWNetSessionManager::DestroyPlayerAndStoreResult(DWORD idPlayer) {
-  long destroyResult = this->directPlayInterface04->DestroyPlayer(idPlayer);
-  this->lastErrorCode0c = destroyResult;
+  long destroyResult = this->directPlayInterface->DestroyPlayer(idPlayer);
+  this->lastErrorCode = destroyResult;
   return destroyResult >= 0;
 }
 
@@ -151,20 +151,20 @@ BOOL TWNetSessionManager::RebuildRuntimeSelectionSource() {
     delete g_RuntimeSelectionRecords006a15e0[index];
   }
   g_RuntimeSelectionRecords006a15e0.RemoveAll();
-  lastErrorCode0c = DirectPlayEnumerate(ForwardEnumSessionToCallbackTable, this);
-  return lastErrorCode0c == 0;
+  lastErrorCode = DirectPlayEnumerate(ForwardEnumSessionToCallbackTable, this);
+  return lastErrorCode == 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0047fe50
 bool TWNetSessionManager::InitializeDirectPlayForProviderGuidOrEnumerate(const GUID* providerGuid) {
   if (providerGuid != 0) {
-    if (directPlayInterface04 != 0) {
-      directPlayInterface04->Close();
-      directPlayInterface04->Release();
-      directPlayInterface04 = 0;
+    if (directPlayInterface != 0) {
+      directPlayInterface->Close();
+      directPlayInterface->Release();
+      directPlayInterface = 0;
     }
   }
-  if (directPlayInterface04 != 0) {
+  if (directPlayInterface != 0) {
     return true;
   }
 
@@ -172,24 +172,24 @@ bool TWNetSessionManager::InitializeDirectPlayForProviderGuidOrEnumerate(const G
   GUID selectedProviderGuid;
   if (providerGuid != 0) {
     selectedProviderGuid = *providerGuid;
-    lastErrorCode0c = DirectPlayCreate(&selectedProviderGuid, &createdInterface, 0);
+    lastErrorCode = DirectPlayCreate(&selectedProviderGuid, &createdInterface, 0);
   } else {
     for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
       delete g_RuntimeSelectionRecords006a15e0[index];
     }
     g_RuntimeSelectionRecords006a15e0.RemoveAll();
     g_RuntimeSelectionRecords006a15e0.SetSize(0, -1);
-    lastErrorCode0c = DirectPlayEnumerate(ForwardEnumSessionToCallbackTable, this);
-    if (lastErrorCode0c >= 0 && SelectRuntimeProvider(&selectedProviderGuid)) {
-      lastErrorCode0c = DirectPlayCreate(&selectedProviderGuid, &createdInterface, 0);
+    lastErrorCode = DirectPlayEnumerate(ForwardEnumSessionToCallbackTable, this);
+    if (lastErrorCode >= 0 && SelectRuntimeProvider(&selectedProviderGuid)) {
+      lastErrorCode = DirectPlayCreate(&selectedProviderGuid, &createdInterface, 0);
     } else {
-      return lastErrorCode0c >= 0;
+      return lastErrorCode >= 0;
     }
   }
 
-  if (lastErrorCode0c >= 0 && createdInterface != 0) {
-    lastErrorCode0c = createdInterface->QueryInterface(
-        IID_IDirectPlay2, reinterpret_cast<void**>(&directPlayInterface04));
+  if (lastErrorCode >= 0 && createdInterface != 0) {
+    lastErrorCode = createdInterface->QueryInterface(
+        IID_IDirectPlay2, reinterpret_cast<void**>(&directPlayInterface));
   }
   if (createdInterface != 0) {
     createdInterface->Release();
@@ -199,7 +199,7 @@ bool TWNetSessionManager::InitializeDirectPlayForProviderGuidOrEnumerate(const G
     delete g_RuntimeSelectionRecords006a15e0[index];
   }
   g_RuntimeSelectionRecords006a15e0.RemoveAll();
-  return lastErrorCode0c >= 0;
+  return lastErrorCode >= 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00480030
@@ -209,24 +209,24 @@ BOOL TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext() {
   sessionDescription10.dwSize = sizeof(sessionDescription10);
   sessionDescription10.dwFlags = 0x40;
   InitializeSessionDescription();
-  lastErrorCode0c = directPlayInterface04->Open(&sessionDescription10, DPOPEN_CREATE);
-  if (lastErrorCode0c < 0) {
+  lastErrorCode = directPlayInterface->Open(&sessionDescription10, DPOPEN_CREATE);
+  if (lastErrorCode < 0) {
     for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
       delete g_RuntimeSelectionRecords006a15e0[index];
     }
     g_RuntimeSelectionRecords006a15e0.RemoveAll();
 
-    if (directPlayInterface04 != 0) {
-      directPlayInterface04->Close();
-      directPlayInterface04->Release();
-      directPlayInterface04 = 0;
+    if (directPlayInterface != 0) {
+      directPlayInterface->Close();
+      directPlayInterface->Release();
+      directPlayInterface = 0;
     }
     if (directPlayLobby != 0) {
       directPlayLobby->Release();
       directPlayLobby = 0;
     }
   }
-  return lastErrorCode0c >= 0;
+  return lastErrorCode >= 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00480150
@@ -241,19 +241,19 @@ BOOL TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice() {
     TScopedWaitCursor waitCursor;
     // Holding Ctrl during discovery stretches the enumeration window from 1s to 5s.
     DWORD enumerationTimeout = (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0 ? 5000 : 1000;
-    lastErrorCode0c = directPlayInterface04->EnumSessions(&sessionDescription10, enumerationTimeout,
-                                                          ForwardEnumSessionsToSessionManager, this,
-                                                          DPENUMSESSIONS_AVAILABLE);
+    lastErrorCode = directPlayInterface->EnumSessions(&sessionDescription10, enumerationTimeout,
+                                                      ForwardEnumSessionsToSessionManager, this,
+                                                      DPENUMSESSIONS_AVAILABLE);
   }
 
-  if (lastErrorCode0c >= 0) {
+  if (lastErrorCode >= 0) {
     GUID selectedSessionGuid;
     if (ShowJoinGameSelectionDialogAndCaptureChoice(&selectedSessionGuid) != 0) {
       memset(&sessionDescription10, 0, sizeof(sessionDescription10));
       sessionDescription10.dwSize = sizeof(DPSESSIONDESC2);
       sessionDescription10.guidInstance = selectedSessionGuid;
-      lastErrorCode0c = directPlayInterface04->Open(&sessionDescription10, DPOPEN_JOIN);
-      if (lastErrorCode0c >= 0) {
+      lastErrorCode = directPlayInterface->Open(&sessionDescription10, DPOPEN_JOIN);
+      if (lastErrorCode >= 0) {
         return 1;
       }
     }
@@ -264,10 +264,10 @@ BOOL TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice() {
   }
   g_RuntimeSelectionRecords006a15e0.SetSize(0, -1);
 
-  if (directPlayInterface04 != 0) {
-    directPlayInterface04->Close();
-    directPlayInterface04->Release();
-    directPlayInterface04 = 0;
+  if (directPlayInterface != 0) {
+    directPlayInterface->Close();
+    directPlayInterface->Release();
+    directPlayInterface = 0;
   }
   if (directPlayLobby != 0) {
     directPlayLobby->Release();
@@ -278,8 +278,8 @@ BOOL TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice() {
 
 // FUNCTION: IMPERIALISM 0x004803d0
 unsigned char TWNetSessionManager::OpenCurrentSessionDescriptionForJoin() {
-  long result = directPlayInterface04->Open(&sessionDescription10, DPOPEN_JOIN);
-  lastErrorCode0c = result;
+  long result = directPlayInterface->Open(&sessionDescription10, DPOPEN_JOIN);
+  lastErrorCode = result;
   return result >= 0;
 }
 
@@ -290,10 +290,10 @@ void TDirectPlaySessionManagerBase::ResetRuntimeSelectionRecordBuffer() {
   }
   g_RuntimeSelectionRecords006a15e0.RemoveAll();
 
-  if (directPlayInterface04 != 0) {
-    directPlayInterface04->Close();
-    directPlayInterface04->Release();
-    directPlayInterface04 = 0;
+  if (directPlayInterface != 0) {
+    directPlayInterface->Close();
+    directPlayInterface->Release();
+    directPlayInterface = 0;
   }
   if (directPlayLobby != 0) {
     directPlayLobby->Release();
@@ -337,10 +337,10 @@ BOOL TDirectPlaySessionManagerBase::ShowJoinGameSelectionDialogAndCaptureChoice(
 
 // FUNCTION: IMPERIALISM 0x00480850
 int TWNetSessionManager::TrySendNetworkPacket(int nationId, void* packet, unsigned int byteCount) {
-  IDirectPlay2* directPlay = this->directPlayInterface04;
+  IDirectPlay2* directPlay = this->directPlayInterface;
   if (directPlay != 0) {
     long sendResult = directPlay->Send(this->localPlayerId60, nationId, 1, packet, byteCount);
-    this->lastErrorCode0c = sendResult;
+    this->lastErrorCode = sendResult;
     return sendResult >= 0;
   }
   return 0;
@@ -349,7 +349,7 @@ int TWNetSessionManager::TrySendNetworkPacket(int nationId, void* packet, unsign
 // FUNCTION: IMPERIALISM 0x004808a0
 int TWNetSessionManager::TryReceiveNetworkPacketIntoResizableBuffer(DWORD* fromId, DWORD* toId,
                                                                     void** bufferHandle) {
-  if (directPlayInterface04 == 0) {
+  if (directPlayInterface == 0) {
     return 1;
   }
   *bufferHandle = 0;
@@ -365,8 +365,8 @@ int TWNetSessionManager::TryReceiveNetworkPacketIntoResizableBuffer(DWORD* fromI
       }
       *bufferHandle = grownBuffer;
     }
-    receiveResult = directPlayInterface04->Receive(fromId, toId, 1, *bufferHandle, &neededSize);
-    this->lastErrorCode0c = receiveResult;
+    receiveResult = directPlayInterface->Receive(fromId, toId, 1, *bufferHandle, &neededSize);
+    this->lastErrorCode = receiveResult;
   } while (receiveResult != DPERR_NOMESSAGES &&
            (*bufferHandle == 0 || receiveResult == DPERR_BUFFERTOOSMALL));
   if (receiveResult < 0 && receiveResult != DPERR_NOMESSAGES) {
@@ -379,15 +379,15 @@ int TWNetSessionManager::TryReceiveNetworkPacketIntoResizableBuffer(DWORD* fromI
 
 // FUNCTION: IMPERIALISM 0x00480990
 BOOL TWNetSessionManager::SetLocalPlayerDataAndStoreResult(LPVOID data, DWORD size) {
-  long setResult = directPlayInterface04->SetPlayerData(localPlayerId60, data, size, 2);
-  lastErrorCode0c = setResult;
+  long setResult = directPlayInterface->SetPlayerData(localPlayerId60, data, size, 2);
+  lastErrorCode = setResult;
   return setResult >= 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004809d0
 BOOL TDirectPlaySessionManagerBase::GetPlayerData(DPID playerId, void* buffer, DWORD* sizeInOut) {
-  lastErrorCode0c = directPlayInterface04->GetPlayerData(playerId, buffer, sizeInOut, 0);
-  return lastErrorCode0c >= 0;
+  lastErrorCode = directPlayInterface->GetPlayerData(playerId, buffer, sizeInOut, 0);
+  return lastErrorCode >= 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005e2900
@@ -401,11 +401,11 @@ static BOOL FAR PASCAL RecordHostPlayerIdDuringEnumeration(DPID dpId, DWORD dwPl
   DWORD playerRole = 0;
   DWORD playerRoleSize = sizeof(playerRole);
   if (session->GetPlayerData(dpId, &playerRole, &playerRoleSize) == 0) {
-    g_pNetMgr006a6014->HandleError(session->lastErrorCode0c);
+    g_pNetMgr006a6014->HandleError(session->lastErrorCode);
     return FALSE;
   }
   if (playerRole == 1) {
-    session->broadcastPlayerId64 = dpId;
+    session->broadcastPlayerId = dpId;
     return FALSE;
   }
   return TRUE;
@@ -413,10 +413,10 @@ static BOOL FAR PASCAL RecordHostPlayerIdDuringEnumeration(DPID dpId, DWORD dwPl
 
 // FUNCTION: IMPERIALISM 0x005e2980
 BOOL TDirectPlaySessionManagerBase::FindHostPlayerIdByEnumeration() {
-  broadcastPlayerId64 = 0;
-  lastErrorCode0c = directPlayInterface04->EnumPlayers(0, RecordHostPlayerIdDuringEnumeration, this,
-                                                       DPENUMPLAYERS_REMOTE);
-  return lastErrorCode0c >= 0 && broadcastPlayerId64 != 0;
+  broadcastPlayerId = 0;
+  lastErrorCode = directPlayInterface->EnumPlayers(0, RecordHostPlayerIdDuringEnumeration, this,
+                                                   DPENUMPLAYERS_REMOTE);
+  return lastErrorCode >= 0 && broadcastPlayerId != 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005e2a20

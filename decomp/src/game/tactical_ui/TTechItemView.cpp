@@ -65,7 +65,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
     titleControl->IDeluxeText(this, titleOffset, titleSize, &zeroRect, &textStyle, -2);
     titleControl->textColor98 = titleStyleFlags;
     titleControl->shadowTextColor = shadowStyleFlags;
-    titleControl->dropShadowEnabledA0 = true;
+    titleControl->dropShadowEnabled = true;
     g_pSimMgr->GetString(0x2712, static_cast<short>(techId), &techName);
     yearText.Format(g_szDecimalFormat, 0x717 + g_pTechMgr->prioritySlots[techId] / 4);
     labelText = techName + "\n" + yearText;
@@ -81,7 +81,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
     descText->IDeluxeText(this, descOffset, descSize, &zeroRect, &textStyle, -2);
     descText->textColor98 = titleStyleFlags;
     descText->shadowTextColor = shadowStyleFlags;
-    descText->dropShadowEnabledA0 = true;
+    descText->dropShadowEnabled = true;
     g_pSimMgr->GetString(0x274e, static_cast<short>(techId - 1), &labelText);
     descText->UpdateTextEntrySharedString(&labelText);
     descText->CenterVertically(false);
@@ -96,7 +96,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
     dateControl->IDeluxeText(this, dateOffset, dateSize, &zeroRect, &textStyle, 1);
     dateControl->textColor98 = titleStyleFlags;
     dateControl->shadowTextColor = shadowStyleFlags;
-    dateControl->dropShadowEnabledA0 = true;
+    dateControl->dropShadowEnabled = true;
     g_pSimMgr->GetString(0x274f, 0, &templateText);
     yearText.Format(g_szDecimalFormat,
                     0x717 + techMgr->capRowsE4a6[nationSlot].completionYearOffsetByTechId[techId]);
@@ -130,7 +130,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
     prereqControl->IDeluxeText(this, prereqOffset, prereqSize, &zeroRect, &textStyle, 1);
     prereqControl->textColor98 = titleStyleFlags;
     prereqControl->shadowTextColor = shadowStyleFlags;
-    prereqControl->dropShadowEnabledA0 = true;
+    prereqControl->dropShadowEnabled = true;
     if (missing2 == 0) {
       g_pSimMgr->GetString(0x274f, 2, &templateText);
       g_pSimMgr->GetString(0x2712, static_cast<short>(missing1), &labelText);

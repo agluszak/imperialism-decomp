@@ -56,7 +56,6 @@ BOOL T64TemplateDialog::OnInitDialog() {
 TWarpToScreenDialog::TWarpToScreenDialog(void* initParam)
     : TModalDialogBase(0xc2, static_cast<CWnd*>(initParam)), slider(), listbox() {}
 
-
 // FUNCTION: IMPERIALISM 0x0047d160
 void TWarpToScreenDialog::DoDataExchange(CDataExchange* pDX) {
   DDX_Control(pDX, 0x3fc, slider);
@@ -222,12 +221,12 @@ END_MESSAGE_MAP()
 
 // FUNCTION: IMPERIALISM 0x0047dce0
 TPeekAtDibDialog::TPeekAtDibDialog(void* initParam)
-    : CDialog(0xdf, static_cast<CWnd*>(initParam)), editValue5c(0), checkFlag60(0), checkFlag64(0),
+    : CDialog(0xdf, static_cast<CWnd*>(initParam)), editValue(0), checkFlag60(0), checkFlag64(0),
       checkFlag68(0), checkFlag6c(0), checkFlag70(0) {}
 
 // FUNCTION: IMPERIALISM 0x0047dd60
 void TPeekAtDibDialog::DoDataExchange(CDataExchange* pDX) {
-  DDX_Text(pDX, 0x421, editValue5c);
+  DDX_Text(pDX, 0x421, editValue);
   DDX_Check(pDX, 0x3f5, checkFlag60);
   DDX_Check(pDX, 0x422, checkFlag64);
   DDX_Check(pDX, 0x423, checkFlag68);
@@ -653,16 +652,16 @@ void TracePrintf(const char* format, ...) {
 
 // FUNCTION: IMPERIALISM 0x0049bcd0
 TTraceDialog::TTraceDialog(void* initParam)
-    : CDialog(0xd0, static_cast<CWnd*>(initParam)), listbox(), dialogCreated98(0) {}
+    : CDialog(0xd0, static_cast<CWnd*>(initParam)), listbox(), dialogCreated(0) {}
 
 // FUNCTION: IMPERIALISM 0x0049bd90
 void TTraceDialog::AppendTraceTextAndFlushCompleteLines(const char* text) {
   static CString s_pendingTraceText;
 
   // The dialog is created lazily on the first trace line rather than at construction.
-  if (dialogCreated98 == 0) {
+  if (dialogCreated == 0) {
     Create(0xd0, nullptr);
-    dialogCreated98 = 1;
+    dialogCreated = 1;
   }
 
   s_pendingTraceText += text;

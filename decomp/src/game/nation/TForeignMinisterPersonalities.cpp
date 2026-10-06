@@ -36,12 +36,12 @@ static inline void PreparePersonalityTradeBids(TForeignMinister* minister) {
   TGreatPower* owner = minister->greatPower;
   if (minister->diplomacyPhaseCounter >= minister->tradeBidRefreshInterval ||
       minister->WeNeedMoney() != 0) {
-    owner->interiorMinister->PleaseBuildShip(minister->interiorOrderKind1c);
+    owner->interiorMinister->PleaseBuildShip(minister->interiorOrderKind);
     minister->diplomacyPhaseCounter = 0;
   }
   minister->SetBuyPriorities();
-  if (minister->interiorBidResource10 != -10) {
-    short resourceCode = minister->interiorBidResource10;
+  if (minister->interiorBidResource != -10) {
+    short resourceCode = minister->interiorBidResource;
     owner->SetItemPotentials(resourceCode, -1);
     minister->purchasePriorityByResource1e[resourceCode] = minister->interiorBidAmount;
   }
@@ -182,9 +182,9 @@ void TTedForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
   }
   TGreatPower* owner = greatPower;
   if (resourceCode == kResourceCoal) {
-    if (tradePartnerEnabled49[3] != 0) {
+    if (tradePartnerEnabled[3] != 0) {
       capabilityFlag16 = static_cast<short>(owner->GetMerchantCapacityForProposal(3) / 2);
-      tradePartnerEnabled49[3] = 0;
+      tradePartnerEnabled[3] = 0;
     }
     if (capabilityFlag16 >= arg2) {
       g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, arg2, arg3, 3, 0, false);
@@ -266,7 +266,7 @@ IMPLEMENT_DYNCREATE(TBillForeignMinister, TMinister)
 TBillForeignMinister::TBillForeignMinister() : TForeignMinister() {
   orderFlag = 0;
   field48 = 1;
-  interiorOrderKind1c = 1;
+  interiorOrderKind = 1;
   tradeBidRefreshInterval = 4;
   skillIndex = 4;
 }
@@ -318,7 +318,7 @@ void TBillForeignMinister::SetTradeBids() {
   short targetAmount = owner->treasuryValue10 < 0 ? owner->merchantCapacity
                                                   : static_cast<short>(owner->merchantCapacity / 2);
   TSortByPriceList* prices = new TSortByPriceList();
-  prices->recordSize14 = sizeof(ResourcePriorityEntry);
+  prices->recordSize = sizeof(ResourcePriorityEntry);
   AddSortedResourcePrice(prices, 0x0d);
   AddSortedResourcePrice(prices, 0x0e);
   AddSortedResourcePrice(prices, 0x0f);
@@ -356,12 +356,12 @@ void TBillForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
   short amount;
   if (resourceCode == kResourceTimber) {
     if (g_pTradeMgr->GetPrice(3) >= 105 && g_pTradeMgr->GetPrice(4) >= 105) {
-      if (tradePartnerEnabled49[2] != 0) {
+      if (tradePartnerEnabled[2] != 0) {
         capabilityFlag16 = static_cast<short>(owner->GetMerchantCapacity() / 3);
         if (capabilityFlag16 < 2) {
           capabilityFlag16 = 2;
         }
-        tradePartnerEnabled49[2] = 0;
+        tradePartnerEnabled[2] = 0;
       }
       available = owner->GetMerchantCapacity();
       amount = MinShort(capabilityFlag16, available);
@@ -383,9 +383,9 @@ void TBillForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
     return;
   }
   if (resourceCode == kResourceCoal) {
-    if (tradePartnerEnabled49[3] != 0) {
+    if (tradePartnerEnabled[3] != 0) {
       capabilityFlag16 = static_cast<short>(owner->GetMerchantCapacity() / 2);
-      tradePartnerEnabled49[3] = 0;
+      tradePartnerEnabled[3] = 0;
     }
     amount = g_pTradeMgr->GetPrice(4) < 105 ? arg2 : capabilityFlag16;
     amount = MinShort(amount, arg2);
@@ -443,8 +443,7 @@ void TBillForeignMinister::DoFirstTurnDiplomacy() {
 void TBillForeignMinister::DoSecondTurnDiplomacy() {
   short selectedCount = 0;
   for (short candidate = 7; candidate < 0x17 && selectedCount < 2; ++candidate) {
-    if (g_pDiplomacyTurnStateManager->GetEmbassyStatus(greatPower->nationSlot,
-                                                                          candidate) >= 1) {
+    if (g_pDiplomacyTurnStateManager->GetEmbassyStatus(greatPower->nationSlot, candidate) >= 1) {
       greatPower->SetTradePolicyTo(static_cast<NationSlot>(candidate), 0x5a);
       ++selectedCount;
     }
@@ -584,7 +583,7 @@ void TDiplomatForeignMinister::SetTradeBids() {
   short targetAmount = owner->treasuryValue10 < 0 ? owner->merchantCapacity
                                                   : static_cast<short>(owner->merchantCapacity / 2);
   TSortByPriceList* prices = new TSortByPriceList();
-  prices->recordSize14 = sizeof(ResourcePriorityEntry);
+  prices->recordSize = sizeof(ResourcePriorityEntry);
   AddSortedResourcePrice(prices, 0x0d);
   AddSortedResourcePrice(prices, 0x0e);
   AddSortedResourcePrice(prices, 0x0f);
@@ -649,7 +648,7 @@ void TTextileForeignMinister::SetBuyPriorities() {
   preferredResourceSlots[0] = 0;
   preferredResourceSlots[1] = 1;
   TSortByPriceList* priorities = new TSortByPriceList();
-  priorities->recordSize14 = sizeof(ResourcePriorityEntry);
+  priorities->recordSize = sizeof(ResourcePriorityEntry);
   ResourcePriorityEntry entry;
   entry.resourceCode = 3;
   entry.priority = greatPower->GetStockpile(3);
@@ -758,7 +757,7 @@ TTraderForeignMinister::TTraderForeignMinister() : TForeignMinister() {
 // FUNCTION: IMPERIALISM 0x00533960
 void TTraderForeignMinister::SetBuyPriorities() {
   TSortByPriceList* priorities = new TSortByPriceList();
-  priorities->recordSize14 = sizeof(ResourcePriorityEntry);
+  priorities->recordSize = sizeof(ResourcePriorityEntry);
   for (short resourceCode = 0; resourceCode <= kResourceIron; ++resourceCode) {
     ResourcePriorityEntry entry;
     entry.resourceCode = resourceCode;
@@ -789,7 +788,7 @@ void TTraderForeignMinister::SetTradeBids() {
   PreparePersonalityTradeBids(this);
   TGreatPower* owner = greatPower;
   TSortByPriceList* prices = new TSortByPriceList();
-  prices->recordSize14 = sizeof(ResourcePriorityEntry);
+  prices->recordSize = sizeof(ResourcePriorityEntry);
   AddSortedResourcePrice(prices, 0x0d);
   AddSortedResourcePrice(prices, 0x0e);
   AddSortedResourcePrice(prices, 0x0f);
@@ -868,7 +867,7 @@ IMPLEMENT_DYNCREATE(TArmsForeignMinister, TMinister)
 TArmsForeignMinister::TArmsForeignMinister() : TForeignMinister() {
   field48 = 1;
   tradeBidRefreshInterval = 4;
-  interiorOrderKind1c = 1;
+  interiorOrderKind = 1;
   skillIndex = 0;
 }
 
@@ -899,7 +898,7 @@ void TArmsForeignMinister::SetTradeBids() {
   PreparePersonalityTradeBids(this);
   TGreatPower* owner = greatPower;
   TSortByPriceList* prices = new TSortByPriceList();
-  prices->recordSize14 = sizeof(ResourcePriorityEntry);
+  prices->recordSize = sizeof(ResourcePriorityEntry);
   AddSortedResourcePrice(prices, 0x0d);
   AddSortedResourcePrice(prices, 0x0e);
   AddSortedResourcePrice(prices, 0x0f);
@@ -942,7 +941,7 @@ void TArmsForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
     if (resourceCode != kResourceTimber && resourceCode != kResourceCoal &&
         resourceCode != kResourceIron) {
       capabilityFlag16 = owner->GetMerchantCapacity();
-    } else if (tradePartnerEnabled49[resourceCode] != 0) {
+    } else if (tradePartnerEnabled[resourceCode] != 0) {
       if (g_nArmsAdvancedResourceOfferSplitCount_006a3a58 == 0) {
         capabilityFlag16 = static_cast<short>(owner->GetMerchantCapacity() / 3);
       } else {
@@ -954,7 +953,7 @@ void TArmsForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
     if (resourceCode != kResourceCotton && resourceCode != kResourceWool &&
         resourceCode != kResourceTimber && resourceCode != kResourceCoal) {
       capabilityFlag16 = owner->GetMerchantCapacity();
-    } else if (tradePartnerEnabled49[resourceCode] != 0) {
+    } else if (tradePartnerEnabled[resourceCode] != 0) {
       if (g_nArmsBasicResourceOfferSplitCount_006a3a54 == 0) {
         capabilityFlag16 = static_cast<short>(owner->GetMerchantCapacity() / 3);
         ++g_nArmsBasicResourceOfferSplitCount_006a3a54;
@@ -964,7 +963,7 @@ void TArmsForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
       }
     }
   }
-  tradePartnerEnabled49[resourceCode] = 0;
+  tradePartnerEnabled[resourceCode] = 0;
   if (capabilityFlag16 >= arg2) {
     g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, arg2, arg3, resourceCode, 0, false);
     capabilityFlag16 = static_cast<short>(capabilityFlag16 - arg2);

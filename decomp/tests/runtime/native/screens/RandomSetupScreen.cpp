@@ -37,7 +37,7 @@ TSetupRandomMapPicture* RandomSetupScreen::View() const {
 }
 
 short RandomSetupScreen::SelectedNationSlot() const {
-  return setupView != 0 ? setupView->selectedNationSlot9A : -1;
+  return setupView != 0 ? setupView->selectedNationSlot : -1;
 }
 
 RuntimeActionResult RandomSetupScreen::SetCountryName(const char* name) {
@@ -113,7 +113,7 @@ RuntimeActionResult RandomSetupScreen::SelectLocalizedNames(bool localized) {
   }
   TView* cluster = Find(kControlTagName);
   if (cluster == 0 || cluster->IsKindOf(RUNTIME_CLASS(TRadioTextCluster)) == 0 ||
-      static_cast<TRadioTextCluster*>(cluster)->selectedTag88 != tag) {
+      static_cast<TRadioTextCluster*>(cluster)->selectedTag != tag) {
     return ScreenFailure("select a world-name mode",
                          CString("the requested world-name mode did not become selected"));
   }
@@ -125,7 +125,7 @@ bool RandomSetupScreen::DifficultyIsSelected(int level) const {
   if (cluster == 0 || cluster->IsKindOf(RUNTIME_CLASS(TRadioTextCluster)) == 0) {
     return false;
   }
-  return static_cast<TRadioTextCluster*>(cluster)->selectedTag88 == DifficultyTag(level);
+  return static_cast<TRadioTextCluster*>(cluster)->selectedTag == DifficultyTag(level);
 }
 
 RuntimeActionResult RandomSetupScreen::Accept() {

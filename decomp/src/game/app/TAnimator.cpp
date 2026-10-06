@@ -20,7 +20,7 @@ IMPLEMENT_DYNCREATE(TAnimator, TEventHandler)
 
 // FUNCTION: IMPERIALISM 0x004a0aa0
 TAnimator::TAnimator()
-    : TEventHandler(), renderSurfaceContext(0), registryList(0), mapUberPicture2c(0) {}
+    : TEventHandler(), renderSurfaceContext(0), registryList(0), mapUberPicture(0) {}
 
 // FUNCTION: IMPERIALISM 0x004a0b20
 void TAnimator::IAnimator(int idleFrequency) {
@@ -45,10 +45,10 @@ void TAnimator::Install() {
 // FUNCTION: IMPERIALISM 0x004a0c30
 char TAnimator::DoIdle(int action) {
   if (action == 1) {
-    if (mapUberPicture2c != 0 && mapUberPicture2c->HasActiveMapInteractionSelection()) {
+    if (mapUberPicture != 0 && mapUberPicture->HasActiveMapInteractionSelection()) {
       ++overlayPhaseTickCount;
       if (overlayPhaseTickCount >= 15) {
-        mapUberPicture2c->PrepareAndRenderMapOverlayMode(g_bStrategicMapSelectionOverlayPhase);
+        mapUberPicture->PrepareAndRenderMapOverlayMode(g_bStrategicMapSelectionOverlayPhase);
         g_bStrategicMapSelectionOverlayPhase = !g_bStrategicMapSelectionOverlayPhase;
         overlayPhaseTickCount = 0;
       }
@@ -101,7 +101,7 @@ void TAnimator::Free() {
 
 // FUNCTION: IMPERIALISM 0x004a0e10
 void TAnimator::ReadFrom(TStream* stream) {
-  mapUberPicture2c = 0;
+  mapUberPicture = 0;
   idleFrequencyTicks = 0x7fffffff;
   idleFrequencyTicks = stream->ReadLong();
   TObject::ReadFrom(stream);

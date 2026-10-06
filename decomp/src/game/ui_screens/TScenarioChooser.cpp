@@ -51,8 +51,7 @@ void TScenarioChooser::DoPostCreate(int arg) {
         g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
       continue;
     }
-    g_pAssetMgr->GetScenarioFileName(static_cast<short>(scenarioIndex), 0,
-                                                  &scenarioPath);
+    g_pAssetMgr->GetScenarioFileName(static_cast<short>(scenarioIndex), 0, &scenarioPath);
     if (TryGetFileMetadataForPath(&scenarioPath) == 0) {
       continue;
     }
@@ -145,9 +144,9 @@ void TScenarioChooser::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagPreviewMap)); // 'pmap'
     mapPreview->AssertValid();
     if (difficultyLevelByNation[mapPreview->pendingNation] != -1 &&
-        mapPreview->pendingNation != mapPreview->selectedNation68) {
+        mapPreview->pendingNation != mapPreview->selectedNation) {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
-      mapPreview->selectedNation68 = mapPreview->pendingNation;
+      mapPreview->selectedNation = mapPreview->pendingNation;
       mapPreview->EnhancePhoto();
       mapPreview->RefreshControl();
       TDeluxeText* descControl =
@@ -219,7 +218,7 @@ void TScenarioChooser::StartGame() {
   g_pSimMgr->CreateSimObjects(true);
   g_pSimMgr->LoadScenario(selectedScenarioIndex);
   g_pSimMgr->SetDifficultyLevel(
-      static_cast<eDifficulty>(difficultyLevelByNation[mapControl->selectedNation68]));
+      static_cast<eDifficulty>(difficultyLevelByNation[mapControl->selectedNation]));
 
   if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
     do {
@@ -236,16 +235,15 @@ void TScenarioChooser::StartGame() {
     g_cstrCountryNameSettingValue006A4220 = qualifiedName;
     g_pGameFlowState->playerNameMirror = g_cstrCountryNameSettingValue006A4220;
     g_pGameFlowState->playerNameString = g_cstrCountryNameSettingValue006A4220;
-    g_pGameFlowState->activeNationTagIndex =
-        static_cast<unsigned char>(mapControl->selectedNation68);
+    g_pGameFlowState->activeNationTagIndex = static_cast<unsigned char>(mapControl->selectedNation);
     g_pGameFlowState->scenarioSelectionTag = kControlTagScn0 + selectedScenarioIndex;
     g_pAmbitApplication->PostTurnEventCodeMessage(kTurnEventNetworkGameOptions);
   } else {
-    g_pSimMgr->SetPlayerCountry(mapControl->selectedNation68);
+    g_pSimMgr->SetPlayerCountry(mapControl->selectedNation);
     for (int i = 0; i < kMajorNationCount; ++i) {
       g_pSimMgr->nationControlModes[i] = 2;
     }
-    g_pSimMgr->nationControlModes[mapControl->selectedNation68] = 1;
+    g_pSimMgr->nationControlModes[mapControl->selectedNation] = 1;
     g_pSimMgr->StartNextPhase();
   }
 }
@@ -345,7 +343,7 @@ void TScenarioChooser::ShowInfo(int scenarioIndex) {
       static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagPreviewMap));
   mapPreview->AssertValid();
   mapPreview->TakeSatellitePhoto(fieldBuffer);
-  mapPreview->selectedNation68 = previewNationSlot;
+  mapPreview->selectedNation = previewNationSlot;
   mapPreview->EnhancePhoto();
   mapPreview->Show(1, 0);
   mapPreview->ViewEnable(1, 0);
@@ -359,7 +357,7 @@ void TScenarioChooser::ShowInfo(int scenarioIndex) {
   delete[] fieldBuffer;
   delete[] tileRecords;
 
-  if (glyphBase84 != 0x1198) {
+  if (glyphBase != 0x1198) {
     SetPictureRsrcID(0x1198, 1);
   }
 }

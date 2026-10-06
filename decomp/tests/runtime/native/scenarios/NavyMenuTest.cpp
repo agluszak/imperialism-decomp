@@ -78,10 +78,10 @@ private:
   }
 
   short SelectedForceAggression() const {
-    if (g_pActiveMapOrderContext == 0 || g_pActiveMapOrderContext->selectedTaskForce14 == 0) {
+    if (g_pActiveMapOrderContext == 0 || g_pActiveMapOrderContext->selectedTaskForce == 0) {
       return -1;
     }
-    return static_cast<short>(g_pActiveMapOrderContext->selectedTaskForce14->aggression);
+    return static_cast<short>(g_pActiveMapOrderContext->selectedTaskForce->aggression);
   }
 
   TZone* portZone;

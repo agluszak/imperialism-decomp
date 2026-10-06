@@ -66,12 +66,12 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   case 2:
   case 4:
   case 6:
-    this->formatMode96 = 2;
+    this->formatMode = 2;
     break;
   case 1:
   case 3:
   case 5:
-    this->formatMode96 = 1;
+    this->formatMode = 1;
     break;
   }
 
@@ -94,8 +94,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   }
   tex2->InstallTextStyle(style.desc, 0);
   tex2->SetJustification(-2, false);
-  tex2->SetTextWithStrListID(static_cast<short>(reinterpret_cast<int>(productionView98)), 2,
-                                  true);
+  tex2->SetTextWithStrListID(static_cast<short>(reinterpret_cast<int>(productionView98)), 2, true);
   if (buildingSlotId == 0xb) {
     CRect tex2Bounds;
     tex2->QueryBounds(&tex2Bounds);

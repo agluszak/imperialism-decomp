@@ -20,7 +20,7 @@ public:
 
   void IShipLine(short rowArg, short colArg, int* bounds, TMapOrderChildLinkNode* childLink,
                  TTaskForce* force);
-  TShip* shipNode10;
+  TShip* shipNode;
   TMapOrderChildLinkNode* childLink14;
   TTaskForce* taskForce18;
 };

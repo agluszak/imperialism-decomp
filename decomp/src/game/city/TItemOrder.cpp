@@ -110,7 +110,7 @@ void TItemOrder::Produce() {
   ownerCity->CityStockByType(resourceTypeIndex) =
       static_cast<short>(ownerCity->CityStockByType(resourceTypeIndex) + quantity);
   ownerCity->VerifyStocks();
-  ownerCity->rollingItemProductionScore78 += quantity;
+  ownerCity->rollingItemProductionScore += quantity;
   trackingSlots[primaryInputResourceId] = 0;
   if (secondaryInputResourceId >= 0) {
     trackingSlots[secondaryInputResourceId] = 0;

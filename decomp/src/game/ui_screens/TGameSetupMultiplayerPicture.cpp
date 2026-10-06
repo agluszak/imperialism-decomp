@@ -91,11 +91,11 @@ void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceH
       TRadioTextCluster* protControl =
           static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagProt));
       protControl->AssertValid();
-      TView* selectedProtocolControl = protControl->ResolveControlByTag(protControl->selectedTag88);
+      TView* selectedProtocolControl = protControl->ResolveControlByTag(protControl->selectedTag);
       selectedProtocolControl->AssertValid();
 
       bool isNotJoin = (tag != kControlTagJoin);
-      int protocolValue = selectedProtocolControl->controlValue3c;
+      int protocolValue = selectedProtocolControl->controlValue;
       unsigned char accepted =
           g_pGameFlowState->ValidateGameFlowNameAndSelectionContext(protocolValue, isNotJoin);
       if (!accepted) {

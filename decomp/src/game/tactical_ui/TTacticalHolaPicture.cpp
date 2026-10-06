@@ -23,9 +23,8 @@ IMPLEMENT_DYNCREATE(TTacticalHolaPicture, TPicture)
 // `mov eax,esi` return-this.
 
 // FUNCTION: IMPERIALISM 0x005ad760
-void TTacticalHolaPicture::StuffValues(int nationA, int nationB,
-                                                                  int nationAIsLocalSide,
-                                                                  int battleSiteIndex) {
+void TTacticalHolaPicture::StuffValues(int nationA, int nationB, int nationAIsLocalSide,
+                                       int battleSiteIndex) {
   TPicture* attackerCoat = static_cast<TPicture*>(ResolveControlByTag(kControlTagAttackerCoat));
   attackerCoat->AssertValid();
   attackerCoat->SetPictureRsrcID(static_cast<short>(nationA + 0xea6), 1);
@@ -60,6 +59,6 @@ void TTacticalHolaPicture::StuffValues(int nationA, int nationB,
       static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagPreviewMap));
   previewMap->AssertValid();
   previewMap->TakeSatellitePhoto(0);
-  previewMap->selectedRegion64 = battleSiteIndex;
+  previewMap->selectedRegion = battleSiteIndex;
   previewMap->RefreshControl();
 }

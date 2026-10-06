@@ -48,7 +48,7 @@ void TNavyRoster::StuffValues(TTaskForce* taskForce) {
     TShipLine* line = new TShipLine();
     int lineBounds[2] = {0xec, 0x31};
     line->ILineData(0, 0, lineBounds);
-    line->shipNode10 = link->payload;
+    line->shipNode = link->payload;
     line->childLink14 = link;
     line->taskForce18 = taskForce;
     AddOrderedEntry(line);
@@ -65,5 +65,5 @@ void TNavyRoster::Close() {
   TMapDialog* mapDialog = mapUberPicture->subview2A8;
   mapDialog->suppressMarkerOverlay = false;
   mapDialog->ResetAllTileMarkersToSentinel();
-  mapUberPicture->navyRosterA0 = 0;
+  mapUberPicture->navyRoster = 0;
 }

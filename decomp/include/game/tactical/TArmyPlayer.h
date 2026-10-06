@@ -24,15 +24,15 @@ public:
   virtual void RunTacticalAutoTurnControllerForActiveUnit();                 // slot 0x14 0x59e4f0
   virtual unsigned char SwitchToAutoPlay();                                  // slot 0x15 0x59ea60
 
-  TArmyStack* armyStack;            // +0x28
-  float projectionMetrics[5];       // +0x2c
-  short maxUnitRange40;             // +0x40 max GetUnitRange over active units
-  short maxNonArtilleryUnitRange42; // +0x42 same, skipping aiClass-2 units
-  int lastAppliedCursorMode44;      // +0x44 init -1; SelectAndApply... early-outs on equality
+  TArmyStack* armyStack;          // +0x28
+  float projectionMetrics[5];     // +0x2c
+  short maxUnitRange;             // +0x40 max GetUnitRange over active units
+  short maxNonArtilleryUnitRange; // +0x42 same, skipping aiClass-2 units
+  int lastAppliedCursorMode;      // +0x44 init -1; SelectAndApply... early-outs on equality
   // Target-selection mode: == 1 also engages morale-broken (state1c == 1) units.
-  int field48;                           // +0x48
-  int cachedFortBombardmentTargetTile4c; // +0x4c init -1; cached fort-bombardment target tile for indirect fire
-  char randomParityByte50;               // +0x50 coin flip at side init (move-first side?)
+  int field48;                         // +0x48
+  int cachedFortBombardmentTargetTile; // +0x4c init -1; cached fort-bombardment target tile for indirect fire
+  char randomParityByte50;             // +0x50 coin flip at side init (move-first side?)
   bool hasArtilleryOrSappers; // +0x51 active units only
   unsigned char pad52[2];     // +0x52
 
@@ -56,7 +56,7 @@ public:
 
   void BuildTacticalActionPriorityBucketsWithGridGuard();      // 0x59bcf0
   void DispatchTacticalActionClassSelectionAcrossCursorList(); // 0x59bf20
-  // Prunes unitList4 down to the free-tile capacity. 0x59b990.
+  // Prunes unitList down to the free-tile capacity. 0x59b990.
   void RecomputeTacticalCursorProjectionScoresAndPruneList(int maxUnitCount);
   // Per-class deployment tile selectors.
   int SelectTacticalTileByActionClassAdjacencyPriority(); // 0x59c140

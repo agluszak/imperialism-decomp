@@ -59,7 +59,7 @@ void TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary, int
   textColor98 = mappedFlags;
   ResolveUiThemeColor(static_cast<short>(styleSecondary), &mappedFlags);
   shadowTextColor = mappedFlags;
-  dropShadowEnabledA0 = true;
+  dropShadowEnabled = true;
 }
 
 // FUNCTION: IMPERIALISM 0x005b6930

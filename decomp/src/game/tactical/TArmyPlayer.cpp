@@ -78,7 +78,7 @@ void TArmyPlayer::IArmyPlayer(TArmyStack* stack, bool isOurSide, unsigned char w
   field20 = false;
   field24 = 0;
 
-  unitList4 = new TList();
+  unitList = new TList();
   sideReadyFlag = false; // duplicate store present in the original
   secondaryList = new TList();
 
@@ -86,7 +86,7 @@ void TArmyPlayer::IArmyPlayer(TArmyStack* stack, bool isOurSide, unsigned char w
        unit = stack->AdvanceCursorAndGetUnit()) {
     TArmyTacUnit* record = new TArmyTacUnit();
     record->IArmyTacUnit(unit);
-    unitList4->AddTail(record);
+    unitList->AddTail(record);
     if (static_cast<char>(isOurSide) == 0) {
       record->selectedFlag = 1; // set only for the enemy side (isOurSide == 0)
     }
@@ -96,9 +96,9 @@ void TArmyPlayer::IArmyPlayer(TArmyStack* stack, bool isOurSide, unsigned char w
   cursorIndex = 0;        // duplicate store present in the original
   watchFlagD = watchFlag; // duplicate store present in the original
   notWatchedFlag = (watchFlag == 0);
-  lastAppliedCursorMode44 = -1;
+  lastAppliedCursorMode = -1;
   unsigned char coinFlip = static_cast<unsigned char>(rand() & 1);
-  cachedFortBombardmentTargetTile4c = -1;
+  cachedFortBombardmentTargetTile = -1;
   randomParityByte50 = coinFlip;
   hasArtilleryOrSappers = false;
 }
@@ -106,8 +106,8 @@ void TArmyPlayer::IArmyPlayer(TArmyStack* stack, bool isOurSide, unsigned char w
 // FUNCTION: IMPERIALISM 0x0059b3e0
 void TArmyPlayer::ApplyChanges(unsigned char sideWonFlag) {
   (void)sideWonFlag;
-  if (unitList4->GetCount() > 0) {
-    CIterator unitIter(unitList4);
+  if (unitList->GetCount() > 0) {
+    CIterator unitIter(unitList);
     for (TArmyTacUnit* record = static_cast<TArmyTacUnit*>(unitIter.Reset()); unitIter.More();
          record = static_cast<TArmyTacUnit*>(unitIter.Advance())) {
       record->sourceUnit38->strength34 = static_cast<short>(record->strength4);
@@ -131,16 +131,16 @@ void TArmyPlayer::ApplyChanges(unsigned char sideWonFlag) {
 
 // FUNCTION: IMPERIALISM 0x0059b4f0
 void TArmyPlayer::RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) {
-  POSITION pos = unitList4->listState.Find(unit);
+  POSITION pos = unitList->listState.Find(unit);
   if (pos != nullptr) {
-    unitList4->listState.RemoveAt(pos);
+    unitList->listState.RemoveAt(pos);
   }
   armyStack->RemoveUnitFromChain(static_cast<TArmyTacUnit*>(unit)->sourceUnit38);
 }
 
 // FUNCTION: IMPERIALISM 0x0059b540
 void TArmyPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
-  unitList4->listState.AddHead(unit);
+  unitList->listState.AddHead(unit);
   unit->FlipUnitSideAffiliation();
   TMilitaryUnit* sourceUnit = static_cast<TArmyTacUnit*>(unit)->sourceUnit38;
   sourceUnit->ownerNationSlot18 = static_cast<short>(nationIndex1C);
@@ -151,14 +151,14 @@ void TArmyPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
 
 // FUNCTION: IMPERIALISM 0x0059b5b0
 void TArmyPlayer::AccumulateTacticalProjectionMetricsAndUnitRanges() {
-  maxNonArtilleryUnitRange42 = 0;
-  maxUnitRange40 = 0;
+  maxNonArtilleryUnitRange = 0;
+  maxUnitRange = 0;
   for (int component = 0; component < 5; ++component) {
     projectionMetrics[component] = 0.0f;
   }
   hasArtilleryOrSappers = false;
 
-  CIterator unitIter(unitList4);
+  CIterator unitIter(unitList);
   for (TArmyTacUnit* record = static_cast<TArmyTacUnit*>(unitIter.Reset()); unitIter.More();
        record = static_cast<TArmyTacUnit*>(unitIter.Advance())) {
     if (record->state1c == 0) {
@@ -169,12 +169,12 @@ void TArmyPlayer::AccumulateTacticalProjectionMetricsAndUnitRanges() {
       }
 
       // max()-macro form: the losing branch re-evaluates GetUnitRange().
-      maxUnitRange40 = static_cast<short>(
-          maxUnitRange40 > record->GetUnitRange() ? maxUnitRange40 : record->GetUnitRange());
+      maxUnitRange = static_cast<short>(
+          maxUnitRange > record->GetUnitRange() ? maxUnitRange : record->GetUnitRange());
       if (g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC] != 2) {
-        maxNonArtilleryUnitRange42 = static_cast<short>(
-            maxNonArtilleryUnitRange42 > record->GetUnitRange() ? maxNonArtilleryUnitRange42
-                                                                : record->GetUnitRange());
+        maxNonArtilleryUnitRange = static_cast<short>(
+            maxNonArtilleryUnitRange > record->GetUnitRange() ? maxNonArtilleryUnitRange
+                                                              : record->GetUnitRange());
       }
       if (g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC] == 2 ||
           g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 8) {
@@ -219,12 +219,11 @@ void TArmyPlayer::StartBattle() {
         static_cast<TTacticalHolaPicture*>(dialog->ResolveControlByTag(kControlTagDialog));
     holaPicture->AssertValid();
     if (isOurSideFlag != 0) {
-      holaPicture->StuffValues(
-          nationIndex1C, static_cast<short>(opposingNationIndex), isOurSideFlag,
-          battle14->battleSiteIndex38);
+      holaPicture->StuffValues(nationIndex1C, static_cast<short>(opposingNationIndex),
+                               isOurSideFlag, battle14->battleSiteIndex38);
     } else {
-      holaPicture->StuffValues(
-          static_cast<short>(opposingNationIndex), nationIndex1C, 0, battle14->battleSiteIndex38);
+      holaPicture->StuffValues(static_cast<short>(opposingNationIndex), nationIndex1C, 0,
+                               battle14->battleSiteIndex38);
     }
     int resultTag = dialog->PoseModally();
     dialog->Close();
@@ -245,10 +244,10 @@ void TArmyPlayer::RecomputeTacticalCursorProjectionScoresAndPruneList(int maxUni
   }
 
   // Move every record onto secondaryList, back to front (ordinals are 1-based).
-  for (int ordinal = unitList4->GetCount(); ordinal > 0; --ordinal) {
-    TArmyTacUnit* record = static_cast<TArmyTacUnit*>(unitList4->GetEntryByOrdinal(ordinal));
+  for (int ordinal = unitList->GetCount(); ordinal > 0; --ordinal) {
+    TArmyTacUnit* record = static_cast<TArmyTacUnit*>(unitList->GetEntryByOrdinal(ordinal));
     record->AssertValid();
-    unitList4->RemoveAtOrdinal(ordinal);
+    unitList->RemoveAtOrdinal(ordinal);
     secondaryList->AddTail(record);
     record->ComputeTacticalProjectionScoreVector();
   }
@@ -264,7 +263,7 @@ void TArmyPlayer::RecomputeTacticalCursorProjectionScoresAndPruneList(int maxUni
         if (category9Pos != 0) {
           secondaryList->listState.RemoveAt(category9Pos);
         }
-        unitList4->AddTail(category9Record);
+        unitList->AddTail(category9Record);
         movedCategory9Record = true;
         --remainingCapacity;
       }
@@ -302,7 +301,7 @@ void TArmyPlayer::RecomputeTacticalCursorProjectionScoresAndPruneList(int maxUni
       TArmyTacUnit* keptRecord =
           static_cast<TArmyTacUnit*>(secondaryList->GetEntryByOrdinal(bestOrdinal));
       secondaryList->RemoveAtOrdinal(bestOrdinal);
-      unitList4->AddTail(keptRecord);
+      unitList->AddTail(keptRecord);
       for (int component = 0; component < 5; ++component) {
         keptScoreVectorSum[component] += keptRecord->projectionScores[component];
       }
@@ -323,7 +322,7 @@ void TArmyPlayer::RecomputeTacticalCursorProjectionScoresAndPruneList(int maxUni
 // FUNCTION: IMPERIALISM 0x0059bc80
 void TArmyPlayer::AutoDeploySideUnitsAndMarkReady() {
   int freeDeployTileCount = battle14->CountFreeDeploymentZoneTilesForCurrentSide();
-  if (unitList4->GetCount() > freeDeployTileCount) {
+  if (unitList->GetCount() > freeDeployTileCount) {
     RecomputeTacticalCursorProjectionScoresAndPruneList(freeDeployTileCount);
   }
   if (isOurSideFlag != 0) {
@@ -344,8 +343,8 @@ void TArmyPlayer::BuildTacticalActionPriorityBucketsWithGridGuard() {
       10, 20, 30, 40, 50, 60, // aiClass 3
       10, 20, 30, 40, 50, 60, // aiClass 4
   };
-  unitList4->SortBy(&CompareTacticalCursorEntriesByActionClassPriority, 0);
-  CIterator unitIter(unitList4);
+  unitList->SortBy(&CompareTacticalCursorEntriesByActionClassPriority, 0);
+  CIterator unitIter(unitList);
   for (TTacticalUnit* unit = static_cast<TTacticalUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TTacticalUnit*>(unitIter.Advance())) {
     int bestScore = 0;
@@ -372,8 +371,8 @@ void TArmyPlayer::BuildTacticalActionPriorityBucketsWithGridGuard() {
 
 // FUNCTION: IMPERIALISM 0x0059bf20
 void TArmyPlayer::DispatchTacticalActionClassSelectionAcrossCursorList() {
-  unitList4->SortBy(&CompareTacticalCursorEntriesByActionClassPriority, 0);
-  CIterator unitIter(unitList4);
+  unitList->SortBy(&CompareTacticalCursorEntriesByActionClassPriority, 0);
+  CIterator unitIter(unitList);
   for (TTacticalUnit* unit = static_cast<TTacticalUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TTacticalUnit*>(unitIter.Advance())) {
     TacticalTileIndex tileIndex;
@@ -418,7 +417,7 @@ int TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantA() {
       for (int neighborIndex = 0; neighborIndex < 6; ++neighborIndex) {
         TacticalTileIndex neighborTileIndex = neighborTiles[neighborIndex];
         if (neighborTileIndex != -1) {
-          TTacticalUnit* occupant = battle14->tileGrid4[neighborTileIndex].occupant4;
+          TTacticalUnit* occupant = battle14->tileGrid[neighborTileIndex].occupant4;
           if (occupant != 0 &&
               g_awTacticalUnitAiClassByUnitType_006693B8[occupant->unitTypeC] == 2) {
             adjacentArtilleryBonus = 0x64;
@@ -426,7 +425,7 @@ int TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantA() {
         }
       }
       score += adjacentArtilleryBonus;
-      battle14->tileCandidateScorePlane2c[tileIndex] = score;
+      battle14->tileCandidateScorePlane[tileIndex] = score;
       if (score > bestScore) {
         bestScore = score;
         bestTileIndex = tileIndex;
@@ -456,7 +455,7 @@ int TArmyPlayer::SelectTacticalTileByActionClassAdjacencyPriority() {
       for (int neighborIndex = 0; neighborIndex < 6; ++neighborIndex) {
         TacticalTileIndex neighborTileIndex = neighborTiles[neighborIndex];
         if (neighborTileIndex != -1) {
-          TTacticalUnit* occupant = battle14->tileGrid4[neighborTileIndex].occupant4;
+          TTacticalUnit* occupant = battle14->tileGrid[neighborTileIndex].occupant4;
           if (occupant != 0) {
             if (g_awTacticalUnitAiClassByUnitType_006693B8[occupant->unitTypeC] == 2) {
               adjacencyBonus = 0x64;
@@ -494,7 +493,7 @@ int TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantB() {
       for (int neighborIndex = 0; occupiedNeighborBonus == 0 && neighborIndex < 6;
            ++neighborIndex) {
         TacticalTileIndex neighborTileIndex = neighborTiles[neighborIndex];
-        if (neighborTileIndex != -1 && battle14->tileGrid4[neighborTileIndex].occupant4 != 0) {
+        if (neighborTileIndex != -1 && battle14->tileGrid[neighborTileIndex].occupant4 != 0) {
           occupiedNeighborBonus = 0xa;
         }
       }
@@ -513,17 +512,17 @@ void TArmyPlayer::DeploymentClick(TacticalTileIndex tileIndex) {
   int ordinal = 1;
   TTacticalUnit* unit;
   while (true) {
-    unit = static_cast<TTacticalUnit*>(unitList4->GetEntryByOrdinal(ordinal));
+    unit = static_cast<TTacticalUnit*>(unitList->GetEntryByOrdinal(ordinal));
     ++ordinal;
     if (unit->tileIndex8 == -2) {
       break;
     }
-    if (ordinal > unitList4->GetCount()) {
+    if (ordinal > unitList->GetCount()) {
       break;
     }
   }
 
-  if (ordinal > unitList4->GetCount()) {
+  if (ordinal > unitList->GetCount()) {
     sideReadyFlag = true;
   } else {
     battle14->DeployUnit(unit, tileIndex);
@@ -557,7 +556,7 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
   }
 
   bool enemyHasActiveUnit = false;
-  CIterator scanIter(opponent->unitList4);
+  CIterator scanIter(opponent->unitList);
   for (TTacticalUnit* enemyRecord = static_cast<TTacticalUnit*>(scanIter.Reset()); scanIter.More();
        enemyRecord = static_cast<TTacticalUnit*>(scanIter.Advance())) {
     if (enemyRecord->state1c == 0) {
@@ -594,14 +593,14 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
       cursorMode = 1;
     } else {
       // Branchless in the original (setl form): outranged defenders bombard.
-      cursorMode = (maxUnitRange40 < opponent->maxUnitRange40) ? 2 : 0;
+      cursorMode = (maxUnitRange < opponent->maxUnitRange) ? 2 : 0;
     }
   } else {
     // Attacking side.
     float strengthRatio = projectionMetrics[1] / opponentMetrics[0];
     bool haveActiveSapper = false;
     bool haveActiveArtillery = false;
-    CIterator unitIter(unitList4);
+    CIterator unitIter(unitList);
     for (TTacticalUnit* record = static_cast<TTacticalUnit*>(unitIter.Reset()); unitIter.More();
          record = static_cast<TTacticalUnit*>(unitIter.Advance())) {
       if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 8 && record->state1c == 0) {
@@ -651,23 +650,23 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
   if (cursorMode == 1) {
     field48 = cursorMode;
   }
-  if (cursorMode == lastAppliedCursorMode44) {
+  if (cursorMode == lastAppliedCursorMode) {
     return; // mode unchanged since the last application
   }
-  lastAppliedCursorMode44 = cursorMode;
+  lastAppliedCursorMode = cursorMode;
   switch (cursorMode) {
   case 0:
     ApplyDefenderHoldLineStanceByActionClass();
     return;
   case 1: {
     // Retreat/fallback stance: non-category-0 units get state 0xc, category-0 get 7.
-    CIterator retreatIter(unitList4);
+    CIterator retreatIter(unitList);
     for (TTacticalUnit* retreatRecord = static_cast<TTacticalUnit*>(retreatIter.Reset());
          retreatIter.More(); retreatRecord = static_cast<TTacticalUnit*>(retreatIter.Advance())) {
       if (g_awTacticalUnitCategoryCodeBySlot[retreatRecord->unitTypeC] != 0) {
-        retreatRecord->aiStateCode2c = 0xc;
+        retreatRecord->aiStateCode = 0xc;
       } else {
-        retreatRecord->aiStateCode2c = 7;
+        retreatRecord->aiStateCode = 7;
       }
     }
     return;
@@ -689,11 +688,11 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
     return;
   case 7: {
     // Hold-fire garrison stance: every unit gets state 0x13.
-    CIterator garrisonIter(unitList4);
+    CIterator garrisonIter(unitList);
     for (TTacticalUnit* garrisonRecord = static_cast<TTacticalUnit*>(garrisonIter.Reset());
          garrisonIter.More();
          garrisonRecord = static_cast<TTacticalUnit*>(garrisonIter.Advance())) {
-      garrisonRecord->aiStateCode2c = 0x13;
+      garrisonRecord->aiStateCode = 0x13;
     }
     return;
   }
@@ -702,19 +701,19 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
 
 // FUNCTION: IMPERIALISM 0x0059c970
 void TArmyPlayer::ApplyTacticalStanceProfileForCurrentCursorMode() {
-  switch (lastAppliedCursorMode44) {
+  switch (lastAppliedCursorMode) {
   case 0:
     ApplyDefenderHoldLineStanceByActionClass();
     return;
   case 1: {
     // Retreat/fallback stance: non-category-0 units get state 0xc, category-0 get 7.
-    CIterator retreatIter(unitList4);
+    CIterator retreatIter(unitList);
     for (TTacticalUnit* retreatRecord = static_cast<TTacticalUnit*>(retreatIter.Reset());
          retreatIter.More(); retreatRecord = static_cast<TTacticalUnit*>(retreatIter.Advance())) {
       if (g_awTacticalUnitCategoryCodeBySlot[retreatRecord->unitTypeC] != 0) {
-        retreatRecord->aiStateCode2c = 0xc;
+        retreatRecord->aiStateCode = 0xc;
       } else {
-        retreatRecord->aiStateCode2c = 7;
+        retreatRecord->aiStateCode = 7;
       }
     }
     return;
@@ -736,11 +735,11 @@ void TArmyPlayer::ApplyTacticalStanceProfileForCurrentCursorMode() {
     return;
   case 7: {
     // Hold-fire garrison stance: every unit gets state 0x13.
-    CIterator garrisonIter(unitList4);
+    CIterator garrisonIter(unitList);
     for (TTacticalUnit* garrisonRecord = static_cast<TTacticalUnit*>(garrisonIter.Reset());
          garrisonIter.More();
          garrisonRecord = static_cast<TTacticalUnit*>(garrisonIter.Advance())) {
-      garrisonRecord->aiStateCode2c = 0x13;
+      garrisonRecord->aiStateCode = 0x13;
     }
     return;
   }
@@ -752,13 +751,13 @@ void TArmyPlayer::ApplyTacticalStanceProfileForCurrentCursorMode() {
 void TArmyPlayer::ApplyDefenderHoldLineStanceByActionClass() {
   int actionClassCounts[5] = {0, 0, 0, 0, 0};
   int engageAssignedCount = 0;
-  CIterator countIter(unitList4);
+  CIterator countIter(unitList);
   for (TTacticalUnit* countRecord = static_cast<TTacticalUnit*>(countIter.Reset());
        countIter.More(); countRecord = static_cast<TTacticalUnit*>(countIter.Advance())) {
     ++actionClassCounts[g_awTacticalUnitAiClassByUnitType_006693B8[countRecord->unitTypeC]];
   }
 
-  CIterator applyIter(unitList4);
+  CIterator applyIter(unitList);
   for (TTacticalUnit* record = static_cast<TTacticalUnit*>(applyIter.Reset()); applyIter.More();
        record = static_cast<TTacticalUnit*>(applyIter.Advance())) {
     if (record->state1c != 0) {
@@ -766,26 +765,26 @@ void TArmyPlayer::ApplyDefenderHoldLineStanceByActionClass() {
     }
     switch (g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC]) {
     case 0:
-      record->aiStateCode2c = 0;
+      record->aiStateCode = 0;
       break;
     case 2:
-      record->aiStateCode2c = 9;
+      record->aiStateCode = 9;
       break;
     case 1:
     case 3:
       if (actionClassCounts[0] < actionClassCounts[2] && actionClassCounts[0] < 0 &&
           engageAssignedCount < 0) {
-        record->aiStateCode2c = 0;
+        record->aiStateCode = 0;
         ++engageAssignedCount;
       } else {
-        record->aiStateCode2c = 0xe;
+        record->aiStateCode = 0xe;
       }
       break;
     case 4:
       if (record->unitTypeC >= 0x1b) {
-        record->aiStateCode2c = 0xb;
+        record->aiStateCode = 0xb;
       } else {
-        record->aiStateCode2c = 0xc;
+        record->aiStateCode = 0xc;
       }
       break;
     }
@@ -794,13 +793,13 @@ void TArmyPlayer::ApplyDefenderHoldLineStanceByActionClass() {
 
 // FUNCTION: IMPERIALISM 0x0059cc70
 void TArmyPlayer::AssignJobsByZeroCategory() {
-  CIterator iter(unitList4);
+  CIterator iter(unitList);
   for (TTacticalUnit* unit = static_cast<TTacticalUnit*>(iter.Reset()); iter.More();
        unit = static_cast<TTacticalUnit*>(iter.Advance())) {
     if (g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC] != 0) {
-      unit->aiStateCode2c = 0xc;
+      unit->aiStateCode = 0xc;
     } else {
-      unit->aiStateCode2c = 7;
+      unit->aiStateCode = 7;
     }
   }
 }
@@ -810,13 +809,13 @@ void TArmyPlayer::ApplyDefenderBombardStanceByActionClass() {
   int actionClassCounts[5] = {0, 0, 0, 0, 0};
   int engageAssignedCount = 0;
   int escortAssignedCount = 0;
-  CIterator countIter(unitList4);
+  CIterator countIter(unitList);
   for (TTacticalUnit* countRecord = static_cast<TTacticalUnit*>(countIter.Reset());
        countIter.More(); countRecord = static_cast<TTacticalUnit*>(countIter.Advance())) {
     ++actionClassCounts[g_awTacticalUnitAiClassByUnitType_006693B8[countRecord->unitTypeC]];
   }
 
-  CIterator applyIter(unitList4);
+  CIterator applyIter(unitList);
   for (TTacticalUnit* record = static_cast<TTacticalUnit*>(applyIter.Reset()); applyIter.More();
        record = static_cast<TTacticalUnit*>(applyIter.Advance())) {
     if (record->state1c != 0) {
@@ -825,27 +824,27 @@ void TArmyPlayer::ApplyDefenderBombardStanceByActionClass() {
     switch (g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC]) {
     case 0:
       if (engageAssignedCount > 0 && escortAssignedCount < actionClassCounts[2]) {
-        record->aiStateCode2c = 1;
+        record->aiStateCode = 1;
         ++escortAssignedCount;
       } else if (engageAssignedCount < 0) {
-        record->aiStateCode2c = 0;
+        record->aiStateCode = 0;
         ++engageAssignedCount;
       } else {
-        record->aiStateCode2c = 7;
+        record->aiStateCode = 7;
       }
       break;
     case 2:
-      record->aiStateCode2c = 8;
+      record->aiStateCode = 8;
       break;
     case 1:
     case 3:
-      record->aiStateCode2c = 5;
+      record->aiStateCode = 5;
       break;
     case 4:
       if (record->unitTypeC >= 0x1b) {
-        record->aiStateCode2c = 0xb;
+        record->aiStateCode = 0xb;
       } else {
-        record->aiStateCode2c = 0xc;
+        record->aiStateCode = 0xc;
       }
       break;
     }
@@ -860,43 +859,43 @@ void TArmyPlayer::ApplyAttackerSiegeStanceByActionClass() {
   } else {
     opponent = static_cast<TArmyPlayer*>(battle14->players[0]);
   }
-  short opponentMaxNonArtilleryRange = opponent->maxNonArtilleryUnitRange42;
+  short opponentMaxNonArtilleryRange = opponent->maxNonArtilleryUnitRange;
   unsigned char enemyHasDeployedArtillery = OpponentHasDeployedActiveArtilleryUnit();
 
-  CIterator applyIter(unitList4);
+  CIterator applyIter(unitList);
   for (TTacticalUnit* record = static_cast<TTacticalUnit*>(applyIter.Reset()); applyIter.More();
        record = static_cast<TTacticalUnit*>(applyIter.Advance())) {
     if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 8) {
-      if (battle14->tileGrid4[174].deployMark > 1) {
-        record->aiStateCode2c = 0xd;
+      if (battle14->tileGrid[174].deployMark > 1) {
+        record->aiStateCode = 0xd;
       } else {
-        record->aiStateCode2c = 0xc;
+        record->aiStateCode = 0xc;
       }
       continue;
     }
     switch (g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC]) {
     case 0:
       if (record->GetUnitRange() > opponentMaxNonArtilleryRange) {
-        record->aiStateCode2c = 0x11;
+        record->aiStateCode = 0x11;
       } else if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 1) {
-        record->aiStateCode2c = enemyHasDeployedArtillery != 0 ? 0x10 : 0xa;
+        record->aiStateCode = enemyHasDeployedArtillery != 0 ? 0x10 : 0xa;
       } else {
-        record->aiStateCode2c = 1;
+        record->aiStateCode = 1;
       }
       break;
     case 1:
     case 3:
-      record->aiStateCode2c = 0xe;
+      record->aiStateCode = 0xe;
       break;
     case 2:
       if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 6) {
-        record->aiStateCode2c = 0x11;
+        record->aiStateCode = 0x11;
       } else {
-        record->aiStateCode2c = 8;
+        record->aiStateCode = 8;
       }
       break;
     case 4:
-      record->aiStateCode2c = 0xb;
+      record->aiStateCode = 0xb;
       break;
     }
   }
@@ -910,38 +909,38 @@ void TArmyPlayer::ApplyAttackerAssaultStanceByActionClass() {
   } else {
     opponent = static_cast<TArmyPlayer*>(battle14->players[0]);
   }
-  short opponentMaxNonArtilleryRange = opponent->maxNonArtilleryUnitRange42;
+  short opponentMaxNonArtilleryRange = opponent->maxNonArtilleryUnitRange;
   unsigned char enemyHasDeployedArtillery = OpponentHasDeployedActiveArtilleryUnit();
 
-  CIterator applyIter(unitList4);
+  CIterator applyIter(unitList);
   for (TTacticalUnit* record = static_cast<TTacticalUnit*>(applyIter.Reset()); applyIter.More();
        record = static_cast<TTacticalUnit*>(applyIter.Advance())) {
     switch (g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC]) {
     case 0:
       if (record->GetUnitRange() > opponentMaxNonArtilleryRange) {
-        record->aiStateCode2c = 0x11;
+        record->aiStateCode = 0x11;
       } else if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 1) {
-        record->aiStateCode2c = enemyHasDeployedArtillery != 0 ? 0x10 : 0xa;
+        record->aiStateCode = enemyHasDeployedArtillery != 0 ? 0x10 : 0xa;
       } else {
-        record->aiStateCode2c = 7;
+        record->aiStateCode = 7;
       }
       break;
     case 1:
     case 3:
-      record->aiStateCode2c = 5;
+      record->aiStateCode = 5;
       break;
     case 2:
       if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 6) {
-        record->aiStateCode2c = 0x11;
+        record->aiStateCode = 0x11;
       } else {
-        record->aiStateCode2c = 8;
+        record->aiStateCode = 8;
       }
       break;
     case 4:
       if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 8) {
-        record->aiStateCode2c = 0xc;
+        record->aiStateCode = 0xc;
       } else {
-        record->aiStateCode2c = 0xb;
+        record->aiStateCode = 0xb;
       }
       break;
     }
@@ -956,38 +955,38 @@ void TArmyPlayer::ApplyAttackerStandoffStanceByActionClass() {
   } else {
     opponent = static_cast<TArmyPlayer*>(battle14->players[0]);
   }
-  short opponentMaxNonArtilleryRange = opponent->maxNonArtilleryUnitRange42;
+  short opponentMaxNonArtilleryRange = opponent->maxNonArtilleryUnitRange;
   unsigned char enemyHasDeployedArtillery = OpponentHasDeployedActiveArtilleryUnit();
 
-  CIterator applyIter(unitList4);
+  CIterator applyIter(unitList);
   for (TTacticalUnit* record = static_cast<TTacticalUnit*>(applyIter.Reset()); applyIter.More();
        record = static_cast<TTacticalUnit*>(applyIter.Advance())) {
     switch (g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC]) {
     case 0:
       if (record->GetUnitRange() > opponentMaxNonArtilleryRange) {
-        record->aiStateCode2c = 0x11;
+        record->aiStateCode = 0x11;
       } else if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 1) {
-        record->aiStateCode2c = enemyHasDeployedArtillery != 0 ? 0x10 : 0xa;
+        record->aiStateCode = enemyHasDeployedArtillery != 0 ? 0x10 : 0xa;
       } else {
-        record->aiStateCode2c = 7;
+        record->aiStateCode = 7;
       }
       break;
     case 1:
     case 3:
-      record->aiStateCode2c = 2;
+      record->aiStateCode = 2;
       break;
     case 2:
       if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 6) {
-        record->aiStateCode2c = 0x11;
+        record->aiStateCode = 0x11;
       } else {
-        record->aiStateCode2c = 8;
+        record->aiStateCode = 8;
       }
       break;
     case 4:
       if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 8) {
-        record->aiStateCode2c = 0xc;
+        record->aiStateCode = 0xc;
       } else {
-        record->aiStateCode2c = 0xb;
+        record->aiStateCode = 0xb;
       }
       break;
     }
@@ -996,25 +995,25 @@ void TArmyPlayer::ApplyAttackerStandoffStanceByActionClass() {
 
 // FUNCTION: IMPERIALISM 0x0059d320
 void TArmyPlayer::ApplyUnopposedAdvanceStanceByActionClass() {
-  CIterator applyIter(unitList4);
+  CIterator applyIter(unitList);
   for (TTacticalUnit* record = static_cast<TTacticalUnit*>(applyIter.Reset()); applyIter.More();
        record = static_cast<TTacticalUnit*>(applyIter.Advance())) {
     switch (g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC]) {
     case 0:
-      record->aiStateCode2c = 7;
+      record->aiStateCode = 7;
       break;
     case 1:
     case 3:
-      record->aiStateCode2c = 5;
+      record->aiStateCode = 5;
       break;
     case 2:
-      record->aiStateCode2c = 8;
+      record->aiStateCode = 8;
       break;
     case 4:
       if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 8) {
-        record->aiStateCode2c = 0xc;
+        record->aiStateCode = 0xc;
       } else {
-        record->aiStateCode2c = 0xb;
+        record->aiStateCode = 0xb;
       }
       break;
     }
@@ -1023,10 +1022,10 @@ void TArmyPlayer::ApplyUnopposedAdvanceStanceByActionClass() {
 
 // FUNCTION: IMPERIALISM 0x0059d400
 void TArmyPlayer::SetAllUnitAiStateCodesTo13() {
-  CIterator iter(unitList4);
+  CIterator iter(unitList);
   for (TTacticalUnit* record = static_cast<TTacticalUnit*>(iter.Reset()); iter.More();
        record = static_cast<TTacticalUnit*>(iter.Advance())) {
-    record->aiStateCode2c = 0x13;
+    record->aiStateCode = 0x13;
   }
 }
 
@@ -1034,9 +1033,9 @@ void TArmyPlayer::SetAllUnitAiStateCodesTo13() {
 unsigned char TArmyPlayer::OpponentHasDeployedActiveArtilleryUnit() {
   TList* opponentUnitList;
   if (isOurSideFlag != 0) {
-    opponentUnitList = battle14->players[1]->unitList4;
+    opponentUnitList = battle14->players[1]->unitList;
   } else {
-    opponentUnitList = battle14->players[0]->unitList4;
+    opponentUnitList = battle14->players[0]->unitList;
   }
   CIterator enemyIter(opponentUnitList);
   for (TTacticalUnit* record = static_cast<TTacticalUnit*>(enemyIter.Reset()); enemyIter.More();
@@ -1051,8 +1050,7 @@ unsigned char TArmyPlayer::OpponentHasDeployedActiveArtilleryUnit() {
 }
 
 // FUNCTION: IMPERIALISM 0x0059d530
-int TArmyPlayer::FindBestMove(TTacticalUnit* unit,
-                                                            int* heuristicWeights15) {
+int TArmyPlayer::FindBestMove(TTacticalUnit* unit, int* heuristicWeights15) {
   TacticalTileIndex bestTileIndex = -1;
   int bestScore = -99999;
   bool distanceFieldBuilt = false;
@@ -1063,13 +1061,13 @@ int TArmyPlayer::FindBestMove(TTacticalUnit* unit,
   for (TacticalTileIndex tileIndex = 0; tileIndex < battle14->tacticalTileCount; ++tileIndex) {
     int column = tileIndex % 29;
     if (battle14->tileMoveCostArray[tileIndex] == -1) {
-      battle14->tileCandidateScorePlane2c[tileIndex] = 0;
+      battle14->tileCandidateScorePlane[tileIndex] = 0;
       continue;
     }
     if (!distanceFieldBuilt) {
       // Without the distance field, never pick the outer edge columns.
       if (column == 0 || column == battle14->battlefieldColumnCount - 1) {
-        battle14->tileCandidateScorePlane2c[tileIndex] = 0;
+        battle14->tileCandidateScorePlane[tileIndex] = 0;
         continue;
       }
     }
@@ -1087,7 +1085,7 @@ int TArmyPlayer::FindBestMove(TTacticalUnit* unit,
       bestTileIndex = tileIndex;
       bestScore = score;
     }
-    battle14->tileCandidateScorePlane2c[tileIndex] = score;
+    battle14->tileCandidateScorePlane[tileIndex] = score;
   }
   return bestTileIndex;
 }
@@ -1106,7 +1104,7 @@ int TArmyPlayer::ScoreTacticalTileFireOpportunityAndTargetApproach(TTacticalUnit
   int score = 0;
   for (TacticalTileIndex scanTileIndex = 0;
        score == 0 && scanTileIndex < battle14->tacticalTileCount; ++scanTileIndex) {
-    TTacticalUnit* occupant = battle14->tileGrid4[scanTileIndex].occupant4;
+    TTacticalUnit* occupant = battle14->tileGrid[scanTileIndex].occupant4;
     if (occupant != 0 && occupant->side20 != unit->side20 &&
         (occupant->state1c == 0 || field48 == 1)) {
       short categoryCode = g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC];
@@ -1134,7 +1132,7 @@ int TArmyPlayer::ScoreTacticalTileSapperWallApproachColumn(TTacticalUnit* unit,
   if (tileIndex % 29 != 6) {
     return 0;
   }
-  TacticalTileRecord* tile = &battle14->tileGrid4[tileIndex];
+  TacticalTileRecord* tile = &battle14->tileGrid[tileIndex];
   int score = ((tile->deployMark != 0) ? 0x14 : 0) + 0x50;
   TTacticalUnit* rightOccupant = tile[1].occupant4;
   if (rightOccupant != 0 && rightOccupant->side20 == unit->side20) {
@@ -1155,7 +1153,7 @@ int TArmyPlayer::ScoreTacticalTileAdjacentEnemyContact(TTacticalUnit* unit,
   for (int neighborIndex = 0; neighborIndex < 6; ++neighborIndex) {
     TacticalTileIndex neighborTileIndex = neighborTiles[neighborIndex];
     if (neighborTileIndex != -1) {
-      TTacticalUnit* occupant = battle14->tileGrid4[neighborTileIndex].occupant4;
+      TTacticalUnit* occupant = battle14->tileGrid[neighborTileIndex].occupant4;
       if (occupant != 0 && occupant->side20 != unit->side20 &&
           (occupant->state1c == 0 || field48 == 1)) {
         return 0x64;
@@ -1173,9 +1171,9 @@ int TArmyPlayer::ScoreTacticalTileEnemyEngagementExposureCount(TTacticalUnit* un
   int exposureCount = 0;
   TList* enemyList;
   if (isOurSideFlag != 0) {
-    enemyList = battle14->players[1]->unitList4;
+    enemyList = battle14->players[1]->unitList;
   } else {
-    enemyList = battle14->players[0]->unitList4;
+    enemyList = battle14->players[0]->unitList;
   }
   CIterator enemyIter(enemyList);
   for (TTacticalUnit* record = static_cast<TTacticalUnit*>(enemyIter.Reset()); enemyIter.More();
@@ -1216,7 +1214,7 @@ int TArmyPlayer::ScoreTacticalTileRetreatEdgeRowProximity(TTacticalUnit* unit,
 int TArmyPlayer::ScoreTacticalTileCoverTerrainBonus(TTacticalUnit* unit,
                                                     TacticalTileIndex tileIndex) {
   (void)unit;
-  int terrainType = battle14->tileGrid4[tileIndex].terrainType0;
+  int terrainType = battle14->tileGrid[tileIndex].terrainType0;
   if (terrainType == 1 || terrainType == 2) {
     return 0x64;
   }
@@ -1232,7 +1230,7 @@ int TArmyPlayer::ScoreTacticalTileAdjacentRallyTargetBonus(TTacticalUnit* unit,
     TacticalTileIndex neighborTileIndex = neighborTiles[neighborIndex];
     if (neighborTileIndex != -1) {
       TArmyTacUnit* occupant =
-          static_cast<TArmyTacUnit*>(battle14->tileGrid4[neighborTileIndex].occupant4);
+          static_cast<TArmyTacUnit*>(battle14->tileGrid[neighborTileIndex].occupant4);
       if (occupant != 0 && occupant->side20 == unit->side20 &&
           occupant->morale34 < occupant->strength4) {
         return 0x64;
@@ -1258,7 +1256,7 @@ int TArmyPlayer::ScoreTacticalTileFriendlyArtillerySpacing(TTacticalUnit* unit,
                                                            TacticalTileIndex tileIndex) {
   (void)unit;
   int bestScore = 0;
-  CIterator friendIter(unitList4);
+  CIterator friendIter(unitList);
   for (TTacticalUnit* record = static_cast<TTacticalUnit*>(friendIter.Reset()); friendIter.More();
        record = static_cast<TTacticalUnit*>(friendIter.Advance())) {
     if (g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC] == 2) {
@@ -1282,7 +1280,7 @@ int TArmyPlayer::ScoreTacticalTileArtilleryFiringLaneColumn(TTacticalUnit* unit,
   int column = tileIndex % 29;
   int wallColumn = battle14->battlefieldColumnCount - 6;
   if (column < wallColumn) {
-    TacticalTileRecord* scanTile = &battle14->tileGrid4[tileIndex];
+    TacticalTileRecord* scanTile = &battle14->tileGrid[tileIndex];
     for (int scanColumn = column; scanColumn < wallColumn; ++scanColumn, ++scanTile) {
       if (scanTile->terrainType0 == 4) {
         return 0;
@@ -1306,9 +1304,9 @@ int TArmyPlayer::ScoreTacticalTileEnemyArtilleryExposureCount(TTacticalUnit* uni
   int exposureCount = 0;
   TList* enemyList;
   if (isOurSideFlag != 0) {
-    enemyList = battle14->players[1]->unitList4;
+    enemyList = battle14->players[1]->unitList;
   } else {
-    enemyList = battle14->players[0]->unitList4;
+    enemyList = battle14->players[0]->unitList;
   }
   CIterator enemyIter(enemyList);
   for (TTacticalUnit* record = static_cast<TTacticalUnit*>(enemyIter.Reset()); enemyIter.More();
@@ -1336,7 +1334,7 @@ int TArmyPlayer::ScoreTacticalTileEngageableEnemyStandoff(TTacticalUnit* unit,
   TacticalTileIndex targetTileIndex = SelectBestTacticalTargetTileByActionHeuristics(unit, 0);
   for (TacticalTileIndex scanTileIndex = 0; scanTileIndex < battle14->tacticalTileCount;
        ++scanTileIndex) {
-    TTacticalUnit* occupant = battle14->tileGrid4[scanTileIndex].occupant4;
+    TTacticalUnit* occupant = battle14->tileGrid[scanTileIndex].occupant4;
     if (occupant != 0 && occupant->side20 != unit->side20 && occupant->state1c == 0) {
       short categoryCode = g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC];
       if (battle14->IsTacticalTargetTileReachableForAction(
@@ -1376,7 +1374,7 @@ int TArmyPlayer::ScoreTacticalTileEnemyArtilleryHuntBonus(TTacticalUnit* unit,
   int range = unit->GetUnitRange();
   for (TacticalTileIndex scanTileIndex = 0; scanTileIndex < battle14->tacticalTileCount;
        ++scanTileIndex) {
-    TTacticalUnit* occupant = battle14->tileGrid4[scanTileIndex].occupant4;
+    TTacticalUnit* occupant = battle14->tileGrid[scanTileIndex].occupant4;
     if (occupant != 0 && occupant->side20 != unit->side20 && occupant->state1c == 0 &&
         g_awTacticalUnitAiClassByUnitType_006693B8[occupant->unitTypeC] == 2) {
       short categoryCode = g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC];
@@ -1405,9 +1403,9 @@ int TArmyPlayer::SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* u
   int bestTargetScore = 0;
   TList* enemyList;
   if (isOurSideFlag != 0) {
-    enemyList = battle14->players[1]->unitList4;
+    enemyList = battle14->players[1]->unitList;
   } else {
-    enemyList = battle14->players[0]->unitList4;
+    enemyList = battle14->players[0]->unitList;
   }
   TacticalTileIndex neighborTiles[6];
   battle14->GetNeighborList(unit->tileIndex8, neighborTiles);
@@ -1445,7 +1443,7 @@ int TArmyPlayer::SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* u
       }
     }
     if (adjacent) {
-      if (battle14->tileGrid4[recordTileIndex].deployMark == 1) {
+      if (battle14->tileGrid[recordTileIndex].deployMark == 1) {
         score += score; // entrenched adjacent target: double
       }
       if (g_awTacticalUnitAiClassByUnitType_006693B8[unit->unitTypeC] == 1) {
@@ -1462,15 +1460,15 @@ int TArmyPlayer::SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* u
       g_afTacticalDirectFireFlagByCategoryCode_00669390
               [g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC]] == 0.0f &&
       battle14->IsTacticalSideCategoryCoverageIncompleteOrFlagOff() == 0) {
-    if (cachedFortBombardmentTargetTile4c == -1) {
+    if (cachedFortBombardmentTargetTile == -1) {
       TacticalTileIndex rolledTileIndex;
       do {
         rolledTileIndex =
             (static_cast<int>(rand()) % 0xd) * 29 + battle14->battlefieldColumnCount + 0x17;
-        cachedFortBombardmentTargetTile4c = rolledTileIndex;
+        cachedFortBombardmentTargetTile = rolledTileIndex;
       } while (battle14->IsTacticalTileAtFortWallSectionSlot(rolledTileIndex) != 0);
     }
-    bestTargetTileIndex = cachedFortBombardmentTargetTile4c;
+    bestTargetTileIndex = cachedFortBombardmentTargetTile;
   }
   return bestTargetTileIndex;
 }
@@ -1478,7 +1476,7 @@ int TArmyPlayer::SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* u
 // FUNCTION: IMPERIALISM 0x0059e3e0
 void TArmyPlayer::NextMove() {
   if (field20) {
-    CIterator unitIter(unitList4);
+    CIterator unitIter(unitList);
     TTacticalUnit* record = static_cast<TTacticalUnit*>(unitIter.Reset());
     while (unitIter.More() != 0) {
       if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 8 && record->state1c == 0) {
@@ -1518,27 +1516,24 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
 
   // Phase 1: choose the destination tile.
   TacticalTileIndex targetTileIndex;
-  if (categoryCode == 8 && unit->aiStateCode2c != 0xc) {
+  if (categoryCode == 8 && unit->aiStateCode != 0xc) {
     if (battle14->IsTacticalSideCategoryCoverageIncompleteOrFlagOff() != 0) {
-      targetTileIndex = FindBestMove(
-          unit, g_anTacticalTileHeuristicWeightsByAiState_00699500[12]);
-    } else if (battle14->tileGrid4[homeTileIndex].trenchMask != 0) {
+      targetTileIndex = FindBestMove(unit, g_anTacticalTileHeuristicWeightsByAiState_00699500[12]);
+    } else if (battle14->tileGrid[homeTileIndex].trenchMask != 0) {
       targetTileIndex = homeTileIndex;
     } else if (battle14->tileThreatLevelArray[homeTileIndex] != 0) {
       targetTileIndex = homeTileIndex;
     } else {
-      targetTileIndex = FindBestMove(
-          unit, g_anTacticalTileHeuristicWeightsByAiState_00699500[13]);
+      targetTileIndex = FindBestMove(unit, g_anTacticalTileHeuristicWeightsByAiState_00699500[13]);
     }
-  } else if ((unit->aiStateCode2c == 5 || unit->aiStateCode2c == 2 || categoryCode == 4) &&
+  } else if ((unit->aiStateCode == 5 || unit->aiStateCode == 2 || categoryCode == 4) &&
              battle14->roundCounter < 2) {
     targetTileIndex = homeTileIndex;
   } else if (categoryCode == 6 && battle14->roundCounter < 2) {
-    targetTileIndex = FindBestMove(
-        unit, g_anTacticalTileHeuristicWeightsByAiState_00699500[18]);
+    targetTileIndex = FindBestMove(unit, g_anTacticalTileHeuristicWeightsByAiState_00699500[18]);
   } else {
-    targetTileIndex = FindBestMove(
-        unit, g_anTacticalTileHeuristicWeightsByAiState_00699500[unit->aiStateCode2c]);
+    targetTileIndex =
+        FindBestMove(unit, g_anTacticalTileHeuristicWeightsByAiState_00699500[unit->aiStateCode]);
   }
   if (targetTileIndex == -1) {
     targetTileIndex = unit->tileIndex8;
@@ -1566,7 +1561,7 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
         TacticalTileIndex neighborTileIndex = neighborTiles[neighborIndex];
         if (neighborTileIndex != -1) {
           TArmyTacUnit* occupant =
-              static_cast<TArmyTacUnit*>(battle14->tileGrid4[neighborTileIndex].occupant4);
+              static_cast<TArmyTacUnit*>(battle14->tileGrid[neighborTileIndex].occupant4);
           if (occupant != 0 && occupant->side20 == unit->side20 &&
               occupant->morale34 < occupant->strength4) {
             rallyTarget = occupant;
@@ -1581,7 +1576,7 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
         while (unit->actionPoints28 >=
                g_awTacticalUnitActionPointCostByType_006693F8[unit->unitTypeC] / 2) {
           TacticalTileIndex wallTileIndex = unit->tileIndex8 + 1;
-          TacticalTileRecord* wallTile = &battle14->tileGrid4[wallTileIndex];
+          TacticalTileRecord* wallTile = &battle14->tileGrid[wallTileIndex];
           if (wallTile->deployMark > 1) {
             battle14->ExecuteTacticalMineActionAndQueuePacket(unit, wallTileIndex);
             return; // original returns here without queueing the 0x232a event
@@ -1595,7 +1590,7 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
       TacticalTileIndex fireTileIndex = SelectBestTacticalTargetTileByActionHeuristics(unit, 1);
       TTacticalUnit* fireTarget = 0;
       if (fireTileIndex != -1) {
-        fireTarget = battle14->tileGrid4[fireTileIndex].occupant4;
+        fireTarget = battle14->tileGrid[fireTileIndex].occupant4;
       }
       if (fireTarget != 0) {
         battle14->ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(unit,
@@ -1603,10 +1598,10 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
         if (battle14->pendingEndOfActionFlag != 0 &&
             g_awTacticalUnitAiClassByUnitType_006693B8[unit->unitTypeC] == 1 &&
             unit->actionPoints28 != 0) {
-          int aiState = unit->aiStateCode2c;
+          int aiState = unit->aiStateCode;
           if (aiState == 2 || aiState == 5 || aiState == 0xe) {
-            TacticalTileIndex advanceTileIndex = FindBestMove(
-                unit, g_anTacticalTileHeuristicWeightsByAiState_00699500[aiState + 1]);
+            TacticalTileIndex advanceTileIndex =
+                FindBestMove(unit, g_anTacticalTileHeuristicWeightsByAiState_00699500[aiState + 1]);
             if (advanceTileIndex != unit->tileIndex8) {
               int advanceGuard = 200;
               while (battle14->selectedUnit1c == unit && unit->state1c == 0 &&
@@ -1654,7 +1649,7 @@ TArmyPlayer::BuildTacticalActionClassAndPositionFlags(TacticalTileIndex referenc
     flags |= 0x10;
   }
   if (g_awTacticalUnitAiClassByUnitType_006693B8[unit->unitTypeC] == 0 &&
-      battle14->tileGrid4[tileIndex].deployMark != 0) {
+      battle14->tileGrid[tileIndex].deployMark != 0) {
     flags |= 0x20;
   } else {
     flags |= 0x40;
@@ -1674,10 +1669,10 @@ TArmyPlayer::BuildTacticalActionClassAndPositionFlags(TacticalTileIndex referenc
 // FUNCTION: IMPERIALISM 0x0059e9c0
 int TArmyPlayer::GetMinimumActiveUnitRangeForStates2Or4() {
   int minimumActionPoints = 1000;
-  CIterator iter(unitList4);
+  CIterator iter(unitList);
   for (TTacticalUnit* unit = static_cast<TTacticalUnit*>(iter.Reset()); iter.More();
        unit = static_cast<TTacticalUnit*>(iter.Advance())) {
-    if (unit->state1c == 0 && (unit->aiStateCode2c == 4 || unit->aiStateCode2c == 2) &&
+    if (unit->state1c == 0 && (unit->aiStateCode == 4 || unit->aiStateCode == 2) &&
         unit->GetBaseActionPoints() < minimumActionPoints) {
       minimumActionPoints = unit->GetBaseActionPoints();
     }

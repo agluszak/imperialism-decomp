@@ -111,7 +111,7 @@ THelpMgr::~THelpMgr() {}
 void THelpMgr::IHelpMgr() {
   tradeAdviceDetailLevel = 1;
   TPtrList* list = new TPtrList();
-  list->recordSize14 = sizeof(HelpSetRecord);
+  list->recordSize = sizeof(HelpSetRecord);
   indexList = list;
   if (!g_bMultiplayerScenarioSetupActive) {
     HelpSetRecord record;

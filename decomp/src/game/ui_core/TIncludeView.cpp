@@ -16,7 +16,7 @@ IMPLEMENT_DYNCREATE(TIncludeView, TView)
 
 // FUNCTION: IMPERIALISM 0x0048cd70
 TIncludeView::TIncludeView()
-    : TView(), turnEventCode60(-1), padding62(0), labelText6c(), completionFlag70(1), padding72(0) {
+    : TView(), turnEventCode(-1), padding62(0), labelText6c(), completionFlag(1), padding72(0) {
   anchorPoint64.x = 0;
   anchorPoint64.y = 0;
   CString empty(g_szEmptyString);
@@ -46,18 +46,18 @@ void TIncludeView::BuildTurnEventFactoryPacket(TView* resourceContext, TView* ma
     mainView->AttachChildControl(this, 0);
   }
   this->resourceContext = resourceContext;
-  turnEventCode60 = eventCode;
+  turnEventCode = eventCode;
   anchorPoint64.x = anchorPoint.x;
   anchorPoint64.y = anchorPoint.y;
   labelText6c = *labelText;
-  completionFlag70 = static_cast<short>(flag);
+  completionFlag = static_cast<short>(flag);
 }
 
 // FUNCTION: IMPERIALISM 0x0048cfd0
 void TIncludeView::DoPostCreate(int arg) {
   (void)arg;
-  if (turnEventCode60 != -1 && g_pTurnEventDialogFactoryRegistry != nullptr) {
-    TurnEventId eventCode = DecodeTurnEventCode(turnEventCode60);
+  if (turnEventCode != -1 && g_pTurnEventDialogFactoryRegistry != nullptr) {
+    TurnEventId eventCode = DecodeTurnEventCode(turnEventCode);
     if (ownerContext != nullptr) {
       Locate(g_turnEventDialogAnchorPoint, false);
       CPoint ownerSize(ownerContext->frameWidth, ownerContext->frameHeight);

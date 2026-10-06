@@ -23,10 +23,10 @@ public:
   virtual void ToggleIf(unsigned char expectedState,
                         unsigned char drawImmediate); // slot 0x75 0x4aa3e0
   virtual void DrawImmediate();                       // slot 0x76 0x4aa430
-  unsigned char isOn84;
+  unsigned char isOn;
   unsigned char pad85[3];
   int iconStripHorizontalOffset;
-  int checkedFrameOffsetApplied8c;
+  int checkedFrameOffsetApplied;
   TQuickDrawSurfaceContext* surfaceContext;
 
   // NOOP: verified empty in original 0x004a9f57 (no standalone TArmyCheckBox::TArmyCheckBox body exists: CreateObject 0x004a9f20 inlines this default ctor, calling the TControl base ctor directly at that site)

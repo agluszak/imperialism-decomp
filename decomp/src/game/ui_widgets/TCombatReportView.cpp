@@ -43,7 +43,6 @@ IMPLEMENT_DYNCREATE(TCombatReportView, TPicture)
 // FUNCTION: IMPERIALISM 0x0058c8d0
 TCombatReportView::TCombatReportView() : TPicture() {}
 
-
 // FUNCTION: IMPERIALISM 0x0058c930
 TCombatReportView::~TCombatReportView() {}
 
@@ -57,13 +56,13 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
   short participantAUnitCount = 0;
   int participantAField18Total = 0;
   int participantAField1cTotal = 0;
-  while (reportContext->unitsA[participantAUnitCount].statusStringIndex14 != -1) {
+  while (reportContext->unitsA[participantAUnitCount].statusStringIndex != -1) {
     participantAField18Total += reportContext->unitsA[participantAUnitCount].fieldAt18;
     participantAField1cTotal += reportContext->unitsA[participantAUnitCount].fieldAt1c;
     participantAUnitCount++;
   }
   participantAUnitCount98 = participantAUnitCount;
-  participantBFirstPage9C = static_cast<short>((participantAUnitCount + 3) / 4 + 1);
+  participantBFirstPage = static_cast<short>((participantAUnitCount + 3) / 4 + 1);
   int participantAMinimumTotal = participantAField1cTotal;
   if (participantAField18Total < participantAMinimumTotal) {
     participantAMinimumTotal = participantAField18Total;
@@ -72,13 +71,13 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
   short participantBUnitCount = 0;
   int participantBField18Total = 0;
   int participantBField1cTotal = 0;
-  while (reportContext->unitsB[participantBUnitCount].statusStringIndex14 != -1) {
+  while (reportContext->unitsB[participantBUnitCount].statusStringIndex != -1) {
     participantBField18Total += reportContext->unitsB[participantBUnitCount].fieldAt18;
     participantBField1cTotal += reportContext->unitsB[participantBUnitCount].fieldAt1c;
     participantBUnitCount++;
   }
   participantBUnitCount9A = participantBUnitCount;
-  totalPages = static_cast<short>((participantBUnitCount + 2) / 4 + participantBFirstPage9C);
+  totalPages = static_cast<short>((participantBUnitCount + 2) / 4 + participantBFirstPage);
   int participantBMinimumTotal = participantBField1cTotal;
   if (participantBField18Total < participantBMinimumTotal) {
     participantBMinimumTotal = participantBField18Total;
@@ -201,7 +200,7 @@ void TCombatReportView::Draw(RECT* rectBuffer) {
 
     short upperBound;
     short rowIndex;
-    if (reportValue < participantBFirstPage9C) {
+    if (reportValue < participantBFirstPage) {
       g_apTerrainTypeDescriptorTable[m_reportContext->nationIdA]->FormatOverlayTerrainLabelText(
           &scratch);
       upperBound = participantAUnitCount98;
@@ -210,7 +209,7 @@ void TCombatReportView::Draw(RECT* rectBuffer) {
       g_apTerrainTypeDescriptorTable[m_reportContext->nationIdB]->FormatOverlayTerrainLabelText(
           &scratch);
       upperBound = participantBUnitCount9A;
-      rowIndex = (reportValue - participantBFirstPage9C) * 4;
+      rowIndex = (reportValue - participantBFirstPage) * 4;
     }
 
     SetQuickDrawTextOriginWithContextOffset(6, 0xb0);
@@ -226,7 +225,7 @@ void TCombatReportView::Draw(RECT* rectBuffer) {
       }
       SetQuickDrawTextOriginWithContextOffset(6, static_cast<short>(y));
 
-      CombatReportUnitRecord* record = (reportValue < participantBFirstPage9C)
+      CombatReportUnitRecord* record = (reportValue < participantBFirstPage)
                                            ? m_reportContext->unitsA + rowIndex
                                            : m_reportContext->unitsB + rowIndex;
 
@@ -235,7 +234,7 @@ void TCombatReportView::Draw(RECT* rectBuffer) {
         scratch = recordName;
       }
       CString retrieved;
-      g_pSimMgr->GetString(0x2717, record->statusStringIndex14, &retrieved);
+      g_pSimMgr->GetString(0x2717, record->statusStringIndex, &retrieved);
       scratch += CString(" (") + retrieved + ")";
       DrawTextWithCachedQuickDrawStyleState(&scratch);
 

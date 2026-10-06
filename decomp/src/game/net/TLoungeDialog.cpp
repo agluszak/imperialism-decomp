@@ -93,8 +93,7 @@ void TLoungeDialog::DoPostCreate(int arg) {
 
     TPicture* coatControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoat)); // 'coat'
     coatControl->AssertValid();
-    coatControl->SetPictureRsrcID(
-        static_cast<short>(g_pSimMgr->GetPlayerCountry() + 0x120a), 0);
+    coatControl->SetPictureRsrcID(static_cast<short>(g_pSimMgr->GetPlayerCountry() + 0x120a), 0);
     coatControl->Show(1, 0);
     if (g_pGameFlowState->GetNationStatusCodeForSlotOrActiveNation(-1) != kSessionTagBusy) {
       SetPictureRsrcID(0x11f9, 0);
@@ -157,7 +156,7 @@ char TLoungeDialog::DoIdle(int action) {
     TPicture* statusLamp =
         static_cast<TPicture*>(ResolveControlByTag(kSessionTagRad0 + nationSlot));
     statusLamp->AssertValid();
-    if (statusLamp->glyphBase84 != kLoungeStatusGlyphIds[statusIndex]) {
+    if (statusLamp->glyphBase != kLoungeStatusGlyphIds[statusIndex]) {
       statusLamp->SetPictureRsrcID(kLoungeStatusGlyphIds[statusIndex], 1);
     }
 
@@ -193,12 +192,12 @@ char TLoungeDialog::DoIdle(int action) {
     if (g_pGameFlowState->GetNationStatusCodeForSlotOrActiveNation(-1) == kSessionTagBusy &&
         g_pGameFlowState->fieldF4 != 0) {
       messageStringIndex = 0x24;
-      if (glyphBase84 != 0x11f8) {
+      if (glyphBase != 0x11f8) {
         SetPictureRsrcID(0x11f8, 1);
       }
     } else {
       messageStringIndex = 0x10;
-      if (glyphBase84 != 0x11f9) {
+      if (glyphBase != 0x11f9) {
         SetPictureRsrcID(0x11f9, 1);
       }
     }
@@ -308,9 +307,7 @@ void TLoungeDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
   TControl::DoEvent(commandId, sourceHandler, event);
 }
 
-namespace {
-
-} // namespace
+namespace {} // namespace
 
 // FUNCTION: IMPERIALISM 0x0054e4c0
 void TLoungeDialog::YouHaveNewGameData() {

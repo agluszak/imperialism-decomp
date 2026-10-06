@@ -9,7 +9,7 @@ IMPLEMENT_DYNCREATE(TSwapperDaddyView, TView)
 
 // FUNCTION: IMPERIALISM 0x004ac6c0
 TView* TSwapperDaddyView::SelectSwapperItemByTag(int tag) {
-  if (tag != selectedTag60) {
+  if (tag != selectedTag) {
     TView* matched = nullptr;
     CSubViewIterator iter(this);
     TView* child = iter.FirstSubView();
@@ -24,7 +24,7 @@ TView* TSwapperDaddyView::SelectSwapperItemByTag(int tag) {
       }
       child = iter.NextSubView();
     }
-    selectedTag60 = tag;
+    selectedTag = tag;
     return matched;
   }
   return ResolveControlByTag(tag);

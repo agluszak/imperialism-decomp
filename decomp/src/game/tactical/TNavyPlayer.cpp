@@ -17,16 +17,16 @@ void TNavyPlayer::INavyPlayer(TTaskForce* force, char isOurSide, bool watchFlag,
   cursorIndex = 0;
   fieldF = false;
   field20 = false;
-  targetingMode2c = kNavyTargetingHull;
+  targetingMode = kNavyTargetingHull;
 
-  unitList4 = new TList();
+  unitList = new TList();
   sideReadyFlag = false;
 
   for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr; node = node->next) {
     TShip* ship = node->payload;
     TNavyTacUnit* unit = new TNavyTacUnit();
     unit->InitializeFromSourceShip(ship);
-    unitList4->AddTail(unit);
+    unitList->AddTail(unit);
     // The enemy side starts with every unit flagged; our own side does not.
     if (isOurSide == 0) {
       unit->selectedFlag = 1;
@@ -34,24 +34,24 @@ void TNavyPlayer::INavyPlayer(TTaskForce* force, char isOurSide, bool watchFlag,
   }
 
   cursorIndex = 0;
-  taskForce28 = force;
+  taskForce = force;
 }
 // FUNCTION: IMPERIALISM 0x0059edd0
 void TNavyPlayer::ApplyChanges(unsigned char sideWonFlag) {
   (void)sideWonFlag;
-  CIterator unitIter(unitList4);
+  CIterator unitIter(unitList);
   for (TNavyTacUnit* unit = static_cast<TNavyTacUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TNavyTacUnit*>(unitIter.Advance())) {
     TShip* sourceShip = unit->GetSourceShip();
     sourceShip->Damage(static_cast<short>(sourceShip->strength - unit->strength4));
   }
-  taskForce28->defeated = 1;
-  taskForce28->SinkOrSwimShips();
+  taskForce->defeated = 1;
+  taskForce->SinkOrSwimShips();
 }
 
 // FUNCTION: IMPERIALISM 0x0059ee60
 void TNavyPlayer::RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) {
-  CPtrList* entries = &unitList4->listState;
+  CPtrList* entries = &unitList->listState;
   POSITION pos = entries->Find(unit, 0);
   if (pos != 0) {
     entries->RemoveAt(pos);
@@ -60,7 +60,7 @@ void TNavyPlayer::RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) {
 
 // FUNCTION: IMPERIALISM 0x0059eea0
 void TNavyPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
-  unitList4->listState.AddHead(unit);
+  unitList->listState.AddHead(unit);
   unit->FlipUnitSideAffiliation();
   static_cast<TNavyTacUnit*>(unit)->GetSourceShip()->Capture(static_cast<short>(nationIndex1C));
 }

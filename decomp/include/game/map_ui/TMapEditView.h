@@ -13,11 +13,10 @@ public:
   virtual void DoPostCreate(int arg) override;
   virtual void ControlClick(int tileIndex, int dispatchContext) override;
   virtual void HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int arg2) override;
-  virtual void ShiftClick(int stridedRecord,
-                                                       int dispatchContext) override;
+  virtual void ShiftClick(int stridedRecord, int dispatchContext) override;
   virtual void NormalClick(short nTileIndex, int nInputFlags) override;
 
-  TMapEditView() : reservedFlag(0), editorActionMode368(0), editorActionValue36c(0) {}
+  TMapEditView() : reservedFlag(0), editorActionMode(0), editorActionValue(0) {}
 
   void DefaultResources(short tileIndex); // 0x0051d4f0
   void PlaceProvince(short tileIndex);    // 0x0051d7e0
@@ -31,8 +30,8 @@ public:
   // +0x364 is only constructor-zeroed; retain the byte without inventing semantics.
   unsigned char reservedFlag;
   unsigned char padding365[3];
-  int editorActionMode368;
-  int editorActionValue36c;
+  int editorActionMode;
+  int editorActionValue;
 };
 
 ASSERT_SIZE(TMapEditView, 0x370);

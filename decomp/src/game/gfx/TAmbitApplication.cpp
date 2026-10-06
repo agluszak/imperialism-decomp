@@ -42,13 +42,13 @@ IMPLEMENT_DYNCREATE(TAmbitApplication, TApplication)
 // FUNCTION: IMPERIALISM 0x0049ded0
 void TAmbitApplication::IAmbitApplication() {
   edgeScrollTarget = 0;
-  languagePackId50 = theApp.languagePackIdE4;
+  languagePackId = theApp.languagePackId;
 
   if (g_pLanguageMgr == nullptr) {
     g_pLanguageMgr = new TLanguageMgr();
   }
 
-  g_pLanguageMgr->SetLanguage(languagePackId50);
+  g_pLanguageMgr->SetLanguage(languagePackId);
 
   TSimMgr* simMgr = new TSimMgr();
   if (simMgr != nullptr) {
@@ -57,7 +57,7 @@ void TAmbitApplication::IAmbitApplication() {
   g_pSimMgr = simMgr;
 
   TAssetMgr* assetMgr = new TAssetMgr();
-  assetMgr->ForwardEnsurePictWvDataGobLoadedBySlot(languagePackId50);
+  assetMgr->ForwardEnsurePictWvDataGobLoadedBySlot(languagePackId);
   g_pAssetMgr = assetMgr;
 
   TViewMgr* viewMgr = new TViewMgr();
@@ -135,17 +135,17 @@ void TAmbitApplication::Free() {
 void TAmbitApplication::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   if (g_nSaveFormatVersion < 0x2a) {
-    stream->ReadBytes(&languagePackId50, 2);
-    languagePackId50 = 0x00657573;
+    stream->ReadBytes(&languagePackId, 2);
+    languagePackId = 0x00657573;
   } else {
-    stream->ReadBytes(&languagePackId50, 4);
+    stream->ReadBytes(&languagePackId, 4);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0049e2f0
 void TAmbitApplication::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytes(&languagePackId50, 4);
+  stream->WriteBytes(&languagePackId, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x0049e320

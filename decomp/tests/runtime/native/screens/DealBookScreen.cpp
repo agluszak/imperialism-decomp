@@ -81,12 +81,12 @@ bool DealBookScreen::IsShowingHistoryPages() const {
          dealBook->cachedSellPageView->ownerLocalX == kHistorySellPageX &&
          dealBook->cachedBuyPageView != 0 &&
          dealBook->cachedBuyPageView->ownerLocalX == kHistoryBuyPageX &&
-         dealBook->glyphBase84 == kHistoryModeBitmap;
+         dealBook->glyphBase == kHistoryModeBitmap;
 }
 
 bool DealBookScreen::IsShowingCategoryPages() const {
   return dealBook != 0 && dealBook->alternatePageMode &&
          dealBook->cachedSellPageView == dealBook->sellPageView &&
          dealBook->cachedBuyPageView == dealBook->buyPageView &&
-         dealBook->glyphBase84 == kCategoryModeBitmap;
+         dealBook->glyphBase == kCategoryModeBitmap;
 }

@@ -33,7 +33,7 @@ IMPLEMENT_DYNCREATE(TIndustryView, TBuildingView)
 
 // FUNCTION: IMPERIALISM 0x004cc790
 TIndustryView::TIndustryView()
-    : TBuildingView(), unresolvedZero(0), selectedIndustryUnitTypeA4(static_cast<short>(0xffff)) {}
+    : TBuildingView(), unresolvedZero(0), selectedIndustryUnitType(static_cast<short>(0xffff)) {}
 
 // FUNCTION: IMPERIALISM 0x004cc800
 TIndustryView::~TIndustryView() {}
@@ -42,7 +42,7 @@ TIndustryView::~TIndustryView() {}
 void TIndustryView::DoStartup() {
   static const short industryUnitTypesByPage[7] = {8, 13, 11, 15, 9, 14, 12};
   if (embeddedPageIndex9E >= 0 && embeddedPageIndex9E < 7) {
-    selectedIndustryUnitTypeA4 = industryUnitTypesByPage[embeddedPageIndex9E];
+    selectedIndustryUnitType = industryUnitTypesByPage[embeddedPageIndex9E];
   }
 
   TextStyle headingStyle;
@@ -178,8 +178,8 @@ void TIndustryView::UpdateFields() {
   bool primaryMissing = false;
   bool secondaryMissing = false;
 
-  if (selectedIndustryUnitTypeA4 > 0) {
-    TItemOrder* order = static_cast<TItemOrder*>(city94->orderSlots[selectedIndustryUnitTypeA4]);
+  if (selectedIndustryUnitType > 0) {
+    TItemOrder* order = static_cast<TItemOrder*>(city94->orderSlots[selectedIndustryUnitType]);
     if (order != 0) {
       primaryResource = order->primaryInputResourceId;
       secondaryResource = order->secondaryInputResourceId;

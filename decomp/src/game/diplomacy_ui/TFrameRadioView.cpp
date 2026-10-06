@@ -11,7 +11,7 @@ IMPLEMENT_DYNCREATE(TFrameRadioView, TControl)
 // FUNCTION: IMPERIALISM 0x004fdfc0
 void TFrameRadioView::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
-  if (controlState64 != 0) {
+  if (controlState != 0) {
     RECT frame = {1, 1, frameWidth, frameHeight};
     SetQuickDrawFillColor(0);
     QDFrameRect(&frame);
@@ -28,7 +28,7 @@ void TFrameRadioView::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
     HandleEvent(kControlCommandHiliteOn, this, nullptr);
     return;
   case 0xc:
-    if (controlState64 == 0) {
+    if (controlState == 0) {
       if (IsEnabled() != 0) {
         HiliteState(1, false);
       }
@@ -55,8 +55,8 @@ void TFrameRadioView::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
 
 // FUNCTION: IMPERIALISM 0x004fe190
 void TFrameRadioView::HiliteState(unsigned char fEnabledState, bool fRefreshNow) {
-  if (static_cast<unsigned char>(fEnabledState) != controlState64) {
-    controlState64 = static_cast<unsigned char>(fEnabledState);
+  if (static_cast<unsigned char>(fEnabledState) != controlState) {
+    controlState = static_cast<unsigned char>(fEnabledState);
     if (fRefreshNow) {
       RefreshControl();
       ForceRedraw();

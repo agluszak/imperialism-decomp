@@ -14,12 +14,12 @@ void TArmyTacUnit::IArmyTacUnit(TMilitaryUnit* source) {
   selectedFlag = 0;
   state1c = 0;
   actionPoints28 = GetBaseActionPoints();
-  aiStateCode2c = 0;
+  aiStateCode = 0;
   attackTarget = NULL;
   strength4 = source->strength34;
   morale34 = source->strength34;
   qualityLevel10 = static_cast<short>(source->experiencePercent / 100);
-  ownerNationIndex14 = source->ownerNationSlot18;
+  ownerNationIndex = source->ownerNationSlot18;
   sapTargetTileIndex = -1;
   sourceUnit38 = source;
   bool deployedCategory0Flag;

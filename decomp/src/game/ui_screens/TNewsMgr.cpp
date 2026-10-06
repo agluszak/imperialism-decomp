@@ -37,12 +37,12 @@ IMPLEMENT_DYNCREATE(TNewsMgr, TObject)
 void TNewsMgr::INewsMgr() {
   for (int i = 0; i < 7; i++) {
     perNationEventBuckets[i] = new TPtrList();
-    perNationEventBuckets[i]->recordSize14 = 0x24;
+    perNationEventBuckets[i]->recordSize = 0x24;
     perNationStoryLastUsedTick[i] = 0;
   }
   storyTemplateCount = 0;
   sharedEventRecordQueue = new TPtrList();
-  sharedEventRecordQueue->recordSize14 = 0x10;
+  sharedEventRecordQueue->recordSize = 0x10;
 }
 
 // FUNCTION: IMPERIALISM 0x0055b820

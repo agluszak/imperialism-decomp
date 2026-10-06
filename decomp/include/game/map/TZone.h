@@ -38,34 +38,33 @@ public:
   void ReadFrom(TStream* stream) override; // slot 0x06 0x55ed20
   void Free() override;                    // slot 0x07 0x55ec60
   void Vanish();                           // 0x55ecd0, Mac oracle
-  virtual void
-  NameThyself(unsigned char* usedCityFlags,
-                                                 const char* overrideName); // slot 0x0a 0x55f780
-  virtual void AssignZoneDisplayNameToOutputRef(CString* outputRef);        // slot 0x0b 0x55f070
-  virtual void AssignZoneDisplayNameAliasToOutputRef(CString* outputRef);   // slot 0x0c 0x55f090
-  virtual bool QueryZoneCapabilityFlagA();                                  // slot 0x0d 0x55e820
-  virtual bool QueryPortZoneCapability();                                   // slot 0x0e 0x55e840
-  virtual bool QueryZoneCapabilityFlagC();                                  // slot 0x0f 0x55e860
-  virtual bool QueryZoneCapabilityFlagD(NationSlot nationSlot); // slot 0x10 0x55e880
-  virtual bool QueryZoneCapabilityFlagE(NationSlot nationSlot); // slot 0x11 0x55e8a0
-  virtual bool CanBeTargetOf(TTaskForce* force);      // slot 0x12 0x55e8c0
-  virtual short FindNearestActiveSeaContextTileFromOffset216(); // slot 0x13 0x55fe60
-  virtual short GetActiveNationSlotTile();                      // slot 0x14 0x55fef0
+  virtual void NameThyself(unsigned char* usedCityFlags,
+                           const char* overrideName);                     // slot 0x0a 0x55f780
+  virtual void AssignZoneDisplayNameToOutputRef(CString* outputRef);      // slot 0x0b 0x55f070
+  virtual void AssignZoneDisplayNameAliasToOutputRef(CString* outputRef); // slot 0x0c 0x55f090
+  virtual bool QueryZoneCapabilityFlagA();                                // slot 0x0d 0x55e820
+  virtual bool QueryPortZoneCapability();                                 // slot 0x0e 0x55e840
+  virtual bool QueryZoneCapabilityFlagC();                                // slot 0x0f 0x55e860
+  virtual bool QueryZoneCapabilityFlagD(NationSlot nationSlot);           // slot 0x10 0x55e880
+  virtual bool QueryZoneCapabilityFlagE(NationSlot nationSlot);           // slot 0x11 0x55e8a0
+  virtual bool CanBeTargetOf(TTaskForce* force);                          // slot 0x12 0x55e8c0
+  virtual short FindNearestActiveSeaContextTileFromOffset216();           // slot 0x13 0x55fe60
+  virtual short GetActiveNationSlotTile();                                // slot 0x14 0x55fef0
   virtual short FindBestCoastalTileForContextAndCityStateByHeuristic(
-      Province* contextProvince); // slot 0x15 0x560150
+      Province* contextProvince);                  // slot 0x15 0x560150
   virtual void ShowFocusIngot(unsigned char show); // slot 0x16 0x560580
   // --- vtable ends at slot 0x16 (orig 0x17..0x1b are NULL; see note above) ---
 
   short GetContextOrdinalOrInvalid();
   void GenerateZoneStatusCodeIfUnset(); // 0x55f5c0
-  void ReconsiderFocusIngot(); // 0x5604e0
+  void ReconsiderFocusIngot();          // 0x5604e0
   void AppendUniquePrimaryNeighbor(TZone* zone);
   void AppendUniqueSecondaryNeighbor(Province* province);
   bool HasNeighbor(TZone* zone);        // 0x55f320, Mac oracle
   bool HasNeighbor(Province* province); // 0x55f3c0, Mac oracle
   TZone* GetSafestNearbyZoneFor(short nationSlot) const;
   void PropagateMapActionContextDistanceLevelsRecursive(short level); // 0x560f80
-  short GetCachedMapActionContextDistanceOrRecompute(TZone* other); // 0x5610b0
+  short GetCachedMapActionContextDistanceOrRecompute(TZone* other);   // 0x5610b0
   char HasSecondaryNeighborWithNationTag(short nationTag);
   int IsZoneMaskOrArrayEntryPresentForKey(short key);
   char ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex);
@@ -76,13 +75,13 @@ public:
   void GetNavalAuthority(CString* out, short nation);
   int ComputeMapActionContextNodeValueAverage();
 
-  short statusCode04;                           // +0x04
+  short statusCode;                             // +0x04
   char pad06[2];                                // +0x06
   CString displayName;                          // +0x08
-  int tileOrTerrainId0c;                        // +0x0c tile / terrain id storage
+  int tileOrTerrainId;                          // +0x0c tile / terrain id storage
   unsigned short nationKeyMask;                 // +0x10 (key mask in nation context slices)
-  short seedNationId12;                         // +0x12 seed nation id arg
-  short contextOrdinal14;                       // +0x14 context ordinal
+  short seedNationId;                           // +0x12 seed nation id arg
+  short contextOrdinal;                         // +0x14 context ordinal
   char pad16[2];                                // +0x16
   TZone* prev18;                                // +0x18 older in g_pMapActionContextListHead chain
   TZone* next1c;                                // +0x1c newer link
@@ -90,7 +89,7 @@ public:
   char pad22[2];                                // +0x22
   TZonePrimaryNeighborStretch primaryNeighbors; // +0x24
   TZoneSecondaryNeighborStretch secondaryNeighbors; // +0x34
-  short distanceLevel; // +0x44
+  short distanceLevel;                              // +0x44
 
   TZone();
   void SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int tileIndex);

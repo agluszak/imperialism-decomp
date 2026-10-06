@@ -54,7 +54,7 @@ private:
   TCity* city94;
   TView* dialogRoot98;
   unsigned char padding9C[8];
-  short selectedBuildingSlotA4;
+  short selectedBuildingSlot;
   bool needsRefresh;
   unsigned char paddingA7;
   short currentMonth;

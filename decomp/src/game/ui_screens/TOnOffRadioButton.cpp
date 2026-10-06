@@ -17,7 +17,7 @@ TOnOffRadioButton::~TOnOffRadioButton() {}
 void TOnOffRadioButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   switch (commandId) {
   case 0xc:
-    if (controlState64 == 0) {
+    if (controlState == 0) {
       SetState(true, true);
     }
     TControl::DoEvent(commandId, sourceHandler, event);

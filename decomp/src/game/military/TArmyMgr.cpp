@@ -147,11 +147,11 @@ void TArmyMgr::IArmyMgr() {
   staticTable14 = g_MapContextStaticTable_00695448;
   staticTable18 = g_MapContextStaticTable_00695428;
   needsTerrainRefreshFlag = false;
-  ourStackBattle39c = 0;
-  enemyStackBattle3a0 = 0;
+  ourStackBattle = 0;
+  enemyStackBattle = 0;
   activeBattleView = 0;
   mapContextActionRecordList = new TSortedPtrList();
-  mapContextActionRecordList->recordSize14 = sizeof(MapContextActionRecord);
+  mapContextActionRecordList->recordSize = sizeof(MapContextActionRecord);
   battlesToReport = false;
 }
 
@@ -193,14 +193,14 @@ void TArmyMgr::Free() {
     mapContextActionRecordList->ReleasePtrList();
   }
 
-  if (ourStackBattle39c != 0) {
-    ourStackBattle39c->Free();
+  if (ourStackBattle != 0) {
+    ourStackBattle->Free();
   }
-  ourStackBattle39c = 0;
-  if (enemyStackBattle3a0 != 0) {
-    enemyStackBattle3a0->Free();
+  ourStackBattle = 0;
+  if (enemyStackBattle != 0) {
+    enemyStackBattle->Free();
   }
-  enemyStackBattle3a0 = 0;
+  enemyStackBattle = 0;
   if (activeBattleView != 0) {
     activeBattleView->Free();
   }
@@ -274,14 +274,14 @@ void TArmyMgr::DoCombatMoves() {
 
 // FUNCTION: IMPERIALISM 0x004a1eb0
 void TArmyMgr::EndBattlePhase() {
-  if (this->ourStackBattle39c != nullptr) {
-    this->ourStackBattle39c->Free();
+  if (this->ourStackBattle != nullptr) {
+    this->ourStackBattle->Free();
   }
-  this->ourStackBattle39c = nullptr;
-  if (this->enemyStackBattle3a0 != nullptr) {
-    this->enemyStackBattle3a0->Free();
+  this->ourStackBattle = nullptr;
+  if (this->enemyStackBattle != nullptr) {
+    this->enemyStackBattle->Free();
   }
-  this->enemyStackBattle3a0 = nullptr;
+  this->enemyStackBattle = nullptr;
   if (this->activeBattleView != nullptr) {
     this->activeBattleView->Free();
   }
@@ -382,14 +382,14 @@ void TArmyMgr::FormStacks() {
 // FUNCTION: IMPERIALISM 0x004a2390
 void TArmyMgr::ResolveNextMove() {
   bool battleViewCreated = false;
-  if (this->ourStackBattle39c != nullptr) {
-    this->ourStackBattle39c->Free();
+  if (this->ourStackBattle != nullptr) {
+    this->ourStackBattle->Free();
   }
-  this->ourStackBattle39c = nullptr;
-  if (this->enemyStackBattle3a0 != nullptr) {
-    this->enemyStackBattle3a0->Free();
+  this->ourStackBattle = nullptr;
+  if (this->enemyStackBattle != nullptr) {
+    this->enemyStackBattle->Free();
   }
-  this->enemyStackBattle3a0 = nullptr;
+  this->enemyStackBattle = nullptr;
   if (this->activeBattleView != nullptr) {
     this->activeBattleView->Free();
   }
@@ -780,10 +780,10 @@ void TArmyMgr::RetreatAttacker(TArmyStack* stack) {
 bool TArmyMgr::StrategicCombat(TArmyStack* stack1, TArmyStack* stack2) {
   TMilitaryUnit* unit = stack1->ResetCursorAndGetHeadUnit();
   while (unit != nullptr) {
-    stack1->fortLevelAttackerPenaltyCache9 = static_cast<unsigned char>(
+    stack1->fortLevelAttackerPenaltyCache = static_cast<unsigned char>(
         g_anFortLevelAttackerPenaltyPercentByLevel
             [g_pGlobalMapState->cityScoreTable[unit->tileIndex06].fortLevel03]);
-    if (stack1->fortLevelAttackerPenaltyCache9 == 0) {
+    if (stack1->fortLevelAttackerPenaltyCache == 0) {
       break;
     }
     unit->strengthSnapshot = unit->strength34;
@@ -794,10 +794,10 @@ bool TArmyMgr::StrategicCombat(TArmyStack* stack1, TArmyStack* stack2) {
 
   unit = stack2->ResetCursorAndGetHeadUnit();
   while (unit != nullptr) {
-    stack2->fortLevelAttackerPenaltyCache9 = static_cast<unsigned char>(
+    stack2->fortLevelAttackerPenaltyCache = static_cast<unsigned char>(
         g_anFortLevelAttackerPenaltyPercentByLevel
             [g_pGlobalMapState->cityScoreTable[unit->tileIndex06].fortLevel03]);
-    if (stack2->fortLevelAttackerPenaltyCache9 == 0) {
+    if (stack2->fortLevelAttackerPenaltyCache == 0) {
       break;
     }
     unit->strengthSnapshot = unit->strength34;
@@ -865,8 +865,7 @@ void TArmyMgr::DoOwnershipChanges() {
     }
 
     signed char primaryOwner = g_pGlobalMapState->cityScoreTable[tileIndex].ownerNationCode00;
-    signed char secondaryOwner =
-        g_pGlobalMapState->cityScoreTable[tileIndex].formerOwnerNationCode01;
+    signed char secondaryOwner = g_pGlobalMapState->cityScoreTable[tileIndex].formerOwnerNationCode;
     if (g_apTerrainTypeDescriptorTable[primaryOwner]->GetCapitolProvince() == tileIndex) {
       g_apTerrainTypeDescriptorTable[primaryOwner]->ChangeMaster(cachedOwner, 0);
     } else if (g_apTerrainTypeDescriptorTable[secondaryOwner] != nullptr &&
@@ -1541,8 +1540,8 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
   newBattle->InitializeBattleSetupAndMaybeShowTacticalView(ourStack, enemyStack, compositionClass,
                                                            fortLevel, ownerNationCodeInt);
 
-  this->ourStackBattle39c = ourStack;
-  this->enemyStackBattle3a0 = enemyStack;
+  this->ourStackBattle = ourStack;
+  this->enemyStackBattle = enemyStack;
   this->activeBattleView = newBattle;
 
   bool isMultiplayerHost =

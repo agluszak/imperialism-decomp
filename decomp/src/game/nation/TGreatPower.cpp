@@ -747,7 +747,7 @@ void TGreatPower::AddCreatedItems(void) {
 
   this->AddToTreasury(static_cast<int>(this->needTargetByType[0x16]) * 200);
 
-  cityPtr->cityStockGoldE2 = 0;
+  cityPtr->cityStockGold = 0;
   cityPtr->VerifyStocks();
 
   for (int needIndex = 0; static_cast<short>(needIndex) < kNationSlotCount; ++needIndex) {
@@ -1122,7 +1122,7 @@ unsigned int TGreatPower::ComputeProductionMetricForOrderKind(short orderKind) {
     short* summary = this->city->GetUnmetNeeds();
     TCity* city = this->city;
     short available = static_cast<short>(
-        ((((summary[0x14] + summary[0x12] + summary[0x11]) - city->cityStockCannedFoodC4) -
+        ((((summary[0x14] + summary[0x12] + summary[0x11]) - city->cityStockCannedFood) -
           city->cityStockLivestock) -
          city->cityStockGrain) -
         city->cityStockFruit);
@@ -2517,9 +2517,9 @@ float TGreatPower::GetMilitaryPower(void) {
 float TGreatPower::GetTotalNavalForce(void) {
   TTechMgr* capabilityState = g_pTechMgr;
   int shipProduction;
-  if (capabilityState->resourceTypeEnabled19d[0xb] != 0) {
+  if (capabilityState->resourceTypeEnabled[0xb] != 0) {
     shipProduction = this->GetBuildingCapacity(2);
-  } else if (capabilityState->resourceTypeEnabled19d[8] != 0) {
+  } else if (capabilityState->resourceTypeEnabled[8] != 0) {
     shipProduction = (this->GetBuildingCapacity(4) + this->GetBuildingCapacity(2)) / 2;
   } else {
     shipProduction = this->GetBuildingCapacity(4);
@@ -3548,7 +3548,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
     const Province* record = &g_pGlobalMapState->cityScoreTable[cityIndex];
     result = static_cast<float>(record->cityScoreValue) / g_pGlobalMapState->cityScoreTotal;
     short claimantTag =
-        g_pGlobalMapState->cityScoreTable[static_cast<short>(cityIndex)].formerOwnerNationCode01;
+        g_pGlobalMapState->cityScoreTable[static_cast<short>(cityIndex)].formerOwnerNationCode;
     if (claimantTag == nationSlot) {
       short ownerTag = record->ownerNationCode00;
       if (ownerTag != nationSlot &&

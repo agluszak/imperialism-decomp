@@ -50,7 +50,7 @@ void TTacticalToolbar::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws
   TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas694[0]->GetBlitSurface();
 
-  TArmyTacUnit* sideAUnit = static_cast<TArmyTacUnit*>(currentUnit8C);
+  TArmyTacUnit* sideAUnit = static_cast<TArmyTacUnit*>(currentUnit);
   if (sideAUnit != nullptr) {
     int qualityPercent = sideAUnit->sourceUnit38->experiencePercent;
     short barWidth = static_cast<short>(sideAUnit->qualityLevel10) * 0xb;
@@ -89,12 +89,12 @@ void TTacticalToolbar::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x005acb50
 void TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalUnit* unit) {
-  currentUnit8C = unit;
+  currentUnit = unit;
   TPicture* currControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagCurr));
   currControl->AssertValid();
   if (unit != 0) {
-    currControl->SetPictureRsrcID(
-        static_cast<short>(unit->unitTypeC * 2 + 0xf1e + unit->side20), 1);
+    currControl->SetPictureRsrcID(static_cast<short>(unit->unitTypeC * 2 + 0xf1e + unit->side20),
+                                  1);
     currControl->Show(1, 1);
   } else {
     currControl->Show(0, 1);
@@ -120,8 +120,8 @@ void TTacticalToolbar::UpdateTacticalOtherSideUnitControl(TArmyTacUnit* unit) {
   TPicture* tpicControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagTpic));
   tpicControl->AssertValid();
   if (unit != 0) {
-    tpicControl->SetPictureRsrcID(
-        static_cast<short>(unit->unitTypeC * 2 + 0xf1e + unit->side20), 1);
+    tpicControl->SetPictureRsrcID(static_cast<short>(unit->unitTypeC * 2 + 0xf1e + unit->side20),
+                                  1);
     tpicControl->Show(1, 1);
   } else {
     tpicControl->Show(0, 1);

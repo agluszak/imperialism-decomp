@@ -27,17 +27,17 @@ public:
   virtual void DoKeyEvent(TToolboxEvent* event) override;          // slot 0x12 0x597770
   virtual void DoPostCreate(int arg) override;                     // slot 0x37 0x596a80
   virtual void Scroll(MapScrollEdgeMaskStorage edgeMask) override; // slot 0x74 0x5977a0
-  virtual void InvalidateMap(); // slot 0x75 0x598950
-  virtual void InvalidateTile(short tileIndex); // slot 0x76 0x598870
-  virtual void RedrawTile(short tileIndex); // slot 0x77 0x5988c0
+  virtual void InvalidateMap();                                    // slot 0x75 0x598950
+  virtual void InvalidateTile(short tileIndex);                    // slot 0x76 0x598870
+  virtual void RedrawTile(short tileIndex);                        // slot 0x77 0x5988c0
   // CenterOn/SetUpperLeft consume promoted stack dwords at these virtual boundaries.
-  virtual void CenterOn(int tileIndex);                                   // slot 0x78 0x598990
-  virtual void SetUpperLeft(int tileX, int tileY);                        // slot 0x79 0x5989d0
-  virtual void NoticeTile(int tileIndex);                                 // slot 0x7a 0x598a20
-  virtual bool HasActiveMapInteractionSelection();                        // slot 0x7b 0x597a10
-  virtual void PrepareAndRenderMapOverlayMode(unsigned char overlayMode); // slot 0x7c 0x598910
-  virtual void DisplayMiniMap(); // slot 0x7d 0x599cf0
-  virtual void RemoveMiniMap();  // slot 0x7e 0x599fd0
+  virtual void CenterOn(int tileIndex);                                     // slot 0x78 0x598990
+  virtual void SetUpperLeft(int tileX, int tileY);                          // slot 0x79 0x5989d0
+  virtual void NoticeTile(int tileIndex);                                   // slot 0x7a 0x598a20
+  virtual bool HasActiveMapInteractionSelection();                          // slot 0x7b 0x597a10
+  virtual void PrepareAndRenderMapOverlayMode(unsigned char overlayMode);   // slot 0x7c 0x598910
+  virtual void DisplayMiniMap();                                            // slot 0x7d 0x599cf0
+  virtual void RemoveMiniMap();                                             // slot 0x7e 0x599fd0
   virtual void SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState); // slot 0x7f 0x59a180
 
   bool invalidationFlag;
@@ -45,7 +45,7 @@ public:
   short activeUnitCategoryIndex;
   TZone* orderEntryContext;
   int deadStore9C;
-  TNavyRoster* navyRosterA0;
+  TNavyRoster* navyRoster;
   TOceanDialog* goodGoldTagControl;
   TMapDialog* subview2A8;
   TWorldView* subview;

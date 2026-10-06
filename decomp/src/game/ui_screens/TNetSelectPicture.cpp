@@ -32,7 +32,7 @@ void TNetSelectPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       protControl->AssertValid();
       int selectedProtocolTag = protControl->GetSelectedChildTag();
       TView* protocolOption = ResolveControlByTag(selectedProtocolTag);
-      g_pGameFlowState->ValidateGameFlowNameAndSelectionContext(protocolOption->controlValue3c, 1);
+      g_pGameFlowState->ValidateGameFlowNameAndSelectionContext(protocolOption->controlValue, 1);
     }
   }
   TControl::DoEvent(commandId, sourceHandler, event);

@@ -38,20 +38,20 @@ TBlockadePortMission::~TBlockadePortMission() {}
 
 // FUNCTION: IMPERIALISM 0x0053ab50
 TBlockadePortMission::TBlockadePortMission(TZone* context)
-    : TControlSeaZoneMission(context->primaryNeighbors[0]), portZoneContext3c(context) {
+    : TControlSeaZoneMission(context->primaryNeighbors[0]), portZoneContext(context) {
   context->AssertValid();
 }
 
 // FUNCTION: IMPERIALISM 0x0053ac60
 void TBlockadePortMission::WriteTo(TStream* stream) {
   TNavyMission::WriteTo(stream);
-  stream->WriteInteger(portZoneContext3c->GetContextOrdinalOrInvalid());
+  stream->WriteInteger(portZoneContext->GetContextOrdinalOrInvalid());
 }
 
 // FUNCTION: IMPERIALISM 0x0053aca0
 void TBlockadePortMission::ReadFrom(TStream* stream) {
   TNavyMission::ReadFrom(stream);
-  portZoneContext3c = FindMapActionContextByNodeId(stream->ReadInteger());
+  portZoneContext = FindMapActionContextByNodeId(stream->ReadInteger());
 }
 
 // FUNCTION: IMPERIALISM 0x0053ace0
@@ -61,31 +61,31 @@ void TBlockadePortMission::Initialize() {
   for (TZone* zone = TZone::GetFirstPortZone(); zone != nullptr; zone = zone->GetNextPortZone()) {
     TZone** ownerSlot = &zone->primaryNeighbors[0];
     if (*ownerSlot == missionTargetZone) {
-      score *= (zone->GetPortZoneOwnerNationCodeFromMissionField48() == nationId04)
+      score *= (zone->GetPortZoneOwnerNationCodeFromMissionField48() == nationId)
                    ? g_PortZoneFriendlyMissionScoreMultiplier_0065AA10
                    : g_PortZoneForeignMissionScoreMultiplier_0065AA18;
     }
   }
 
   marker11 = 0;
-  importanceScore0c = score / g_fMissionScoreNormalizationDivisor;
+  importanceScore = score / g_fMissionScoreNormalizationDivisor;
 }
 
 // FUNCTION: IMPERIALISM 0x0053adf0
 TMission* TBlockadePortMission::GetReplacement() {
-  TAutoGreatPower* nation = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
+  TAutoGreatPower* nation = static_cast<TAutoGreatPower*>(g_apNationStates[nationId]);
   nation->AssertValid();
-  short ownerCode = portZoneContext3c->GetPortZoneOwnerNationCodeFromMissionField48();
+  short ownerCode = portZoneContext->GetPortZoneOwnerNationCodeFromMissionField48();
   bool hasCoverage = nation->enemyFlags[ownerCode] != 0;
 
   if (!hasCoverage) {
-    short contextOrdinal = portZoneContext3c->GetContextOrdinalOrInvalid();
+    short contextOrdinal = portZoneContext->GetContextOrdinalOrInvalid();
     nation->SetZoneStatus(contextOrdinal, kMissionDesirabilityUnmarked);
     return nullptr;
   }
 
   if (resolvedPortZone != nullptr && resolvedPortZone->QueryPortZoneCapability() &&
-      !resolvedPortZone->QueryZoneCapabilityFlagD(nationId04)) {
+      !resolvedPortZone->QueryZoneCapabilityFlagD(nationId)) {
     resolvedPortZone = RefreshMissionPortZoneContextForNation();
   }
 
@@ -104,8 +104,8 @@ void TBlockadePortMission::CalculateNeeds() {
   const short* navyDistributionWeights = g_NavyOrderDistributionCategoryWeights_00697978;
 
   float threatScore = g_Recompute_Nation_Order_LookupTable_0065A9E8;
-  if (portZoneContext3c->GetPortZoneOwnerNationCodeFromMissionField48() < 7) {
-    short targetNationCode = portZoneContext3c->GetPortZoneOwnerNationCodeFromMissionField48();
+  if (portZoneContext->GetPortZoneOwnerNationCodeFromMissionField48() < 7) {
+    short targetNationCode = portZoneContext->GetPortZoneOwnerNationCodeFromMissionField48();
     float vector[4] = {g_Recompute_Nation_Order_LookupTable_0065A9E8,
                        g_Recompute_Nation_Order_LookupTable_0065A9E8,
                        g_Recompute_Nation_Order_LookupTable_0065A9E8,
@@ -123,10 +123,10 @@ void TBlockadePortMission::CalculateNeeds() {
       if (g_apNationStates[nation] == nullptr) {
         continue;
       }
-      if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, nation)) {
+      if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, nation)) {
         continue;
       }
-      short targetNationCode = portZoneContext3c->GetPortZoneOwnerNationCodeFromMissionField48();
+      short targetNationCode = portZoneContext->GetPortZoneOwnerNationCodeFromMissionField48();
       float vector[4] = {g_Recompute_Nation_Order_LookupTable_0065A9E8,
                          g_Recompute_Nation_Order_LookupTable_0065A9E8,
                          g_Recompute_Nation_Order_LookupTable_0065A9E8,
@@ -168,5 +168,5 @@ bool TBlockadePortMission::Matches(eMissionType missionType, int key, TZone* zon
 
 // FUNCTION: IMPERIALISM 0x0053ba40
 void TBlockadePortMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
-  mapOrderEntry->OrderBlockade(portZoneContext3c);
+  mapOrderEntry->OrderBlockade(portZoneContext);
 }

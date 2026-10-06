@@ -38,7 +38,7 @@ void TMission::SetStateByte8To2() {
 }
 // FUNCTION: IMPERIALISM 0x00534c80
 void TMission::CalculateImportance() {
-  importanceScore0c = 0.0f;
+  importanceScore = 0.0f;
 }
 // FUNCTION: IMPERIALISM 0x00534ca0
 void TMission::CalculateNeeds() {}
@@ -149,11 +149,11 @@ char TMission::SmokeEmIfYouGotEm() {
 }
 
 // FUNCTION: IMPERIALISM 0x00535020
-TMission::TMission() : state08(2), importanceScore0c(0.0f), marker11(0xff) {}
+TMission::TMission() : state08(2), importanceScore(0.0f), marker11(0xff) {}
 
 // FUNCTION: IMPERIALISM 0x005350a0
 void TMission::InitializeMissionWithNationIdAndResetPathMarker(NationSlot nationSlot) {
-  nationId04 = nationSlot;
+  nationId = nationSlot;
   pathMarker = -1;
   Initialize();
 }
@@ -198,7 +198,7 @@ TMission* TMission::CreateMission(NationSlot sourceNation, eMissionType missionK
     mission = new TScatteredShipsMission();
     break;
   }
-  mission->nationId04 = sourceNation;
+  mission->nationId = sourceNation;
   mission->pathMarker = -1;
   mission->Initialize();
   return mission;
@@ -208,9 +208,9 @@ TMission* TMission::CreateMission(NationSlot sourceNation, eMissionType missionK
 // FUNCTION: IMPERIALISM 0x00535820
 void TMission::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytes(&nationId04, 2);
+  stream->WriteBytes(&nationId, 2);
   stream->WriteBytes(&state08, 1);
-  stream->WriteBytes(&importanceScore0c, 4);
+  stream->WriteBytes(&importanceScore, 4);
   stream->WriteBytes(&flag10, 1);
   stream->WriteBytes(&pathMarker, 2);
   stream->WriteBytes(&marker11, 1);
@@ -219,9 +219,9 @@ void TMission::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x005358a0
 void TMission::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
-  stream->ReadBytes(&nationId04, 2);
+  stream->ReadBytes(&nationId, 2);
   stream->ReadBytes(&state08, 1);
-  stream->ReadBytes(&importanceScore0c, 4);
+  stream->ReadBytes(&importanceScore, 4);
   stream->ReadBytes(&flag10, 1);
   if (g_nSaveFormatVersion < 0x10) {
     pathMarker = static_cast<short>(0xffff);
@@ -266,8 +266,8 @@ short __cdecl CompareMissionOrderEntriesByMovementClassThenEfficiency(void* a, v
     return lesserResult;
   }
 
-  float ratioA = missionA->importanceScore0c / missionA->IndustrialCostOfNeeds();
-  float ratioB = missionB->importanceScore0c / missionB->IndustrialCostOfNeeds();
+  float ratioA = missionA->importanceScore / missionA->IndustrialCostOfNeeds();
+  float ratioB = missionB->importanceScore / missionB->IndustrialCostOfNeeds();
   if (ratioA < ratioB) {
     return greaterResult;
   }
@@ -284,13 +284,13 @@ short __cdecl CompareMissionOrderEntriesByPriorityScore(TMission* a, TMission* b
 
   float diffA =
       static_cast<float>(g_MissionScoreOneConstant_0065a470) - a->GetWeightedSatisfaction();
-  float weightedA = (diffA >= g_MissionDefaultScore_0065a468) ? diffA * a->importanceScore0c
-                                                              : diffA / a->importanceScore0c;
+  float weightedA = (diffA >= g_MissionDefaultScore_0065a468) ? diffA * a->importanceScore
+                                                              : diffA / a->importanceScore;
 
   float diffB =
       static_cast<float>(g_MissionScoreOneConstant_0065a470) - b->GetWeightedSatisfaction();
-  float weightedB = (diffB >= g_MissionDefaultScore_0065a468) ? diffB * b->importanceScore0c
-                                                              : diffB / b->importanceScore0c;
+  float weightedB = (diffB >= g_MissionDefaultScore_0065a468) ? diffB * b->importanceScore
+                                                              : diffB / b->importanceScore;
 
   if (weightedB < weightedA) {
     return -1;

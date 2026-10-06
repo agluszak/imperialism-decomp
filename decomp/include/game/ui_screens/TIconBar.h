@@ -18,7 +18,7 @@ public:
   void IIconBar(TView* panel, int* position, int* size, int layoutParam4, int layoutParam5,
                 short pictureId, int numIcons);
 
-  short iconAtlasFrame94;
+  short iconAtlasFrame;
   short numIcons96;
   short iconSpacing;
   unsigned char pad9a[2];

@@ -216,7 +216,7 @@ private:
     // state created by the game rather than a hand-built TShip or TTaskForce.
     const short type = order->resourceTypeIndex;
     city->cityStockLumber = g_industryActionCostWeightResCode09[type];
-    city->cityStockFabricC6 = g_industryActionCostWeightResCode08[type];
+    city->cityStockFabric = g_industryActionCostWeightResCode08[type];
     city->cityStockArms = g_industryActionCostWeightResCode10[type];
     city->cityStockSteel = g_industryActionCostWeightResCode0B[type];
     city->cityStockCoal = g_industryActionCostWeightResCode03[type];

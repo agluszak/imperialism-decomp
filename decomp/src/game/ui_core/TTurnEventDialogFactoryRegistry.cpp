@@ -11,50 +11,50 @@
 
 // FUNCTION: IMPERIALISM 0x00491960
 CSubViewIterator::CSubViewIterator(const TView* owner, char forward) {
-  ownerView04 = owner;
-  direction08 = forward;
+  ownerView = owner;
+  direction = forward;
   identTag = kControlTagSpSpSpSp;
-  currentChild10 = nullptr;
+  currentChild = nullptr;
 }
 
 // FUNCTION: IMPERIALISM 0x004919a0
 CSubViewIterator::CSubViewIterator(const TView* owner) {
-  ownerView04 = owner;
-  direction08 = 1;
+  ownerView = owner;
+  direction = 1;
   identTag = kControlTagSpSpSpSp;
-  currentChild10 = nullptr;
+  currentChild = nullptr;
 }
 
 // FUNCTION: IMPERIALISM 0x00491a00
 TView* CSubViewIterator::FirstSubView() {
-  TViewChildList* list = ownerView04->childList;
+  TViewChildList* list = ownerView->childList;
   if (list == nullptr) {
     position00 = nullptr;
   } else {
-    position00 = (direction08 != 0) ? list->GetHeadPosition() : list->GetTailPosition();
+    position00 = (direction != 0) ? list->GetHeadPosition() : list->GetTailPosition();
   }
   if (position00 == nullptr) {
-    currentChild10 = nullptr;
-    return currentChild10;
+    currentChild = nullptr;
+    return currentChild;
   }
-  currentChild10 = (direction08 != 0) ? list->GetNext(position00) : list->GetPrev(position00);
-  return currentChild10;
+  currentChild = (direction != 0) ? list->GetNext(position00) : list->GetPrev(position00);
+  return currentChild;
 }
 
 // FUNCTION: IMPERIALISM 0x00491a70
 TView* CSubViewIterator::NextSubView() {
   if (position00 == nullptr) {
-    currentChild10 = nullptr;
-    return currentChild10;
+    currentChild = nullptr;
+    return currentChild;
   }
-  TViewChildList* list = ownerView04->childList;
-  currentChild10 = (direction08 != 0) ? list->GetNext(position00) : list->GetPrev(position00);
-  return currentChild10;
+  TViewChildList* list = ownerView->childList;
+  currentChild = (direction != 0) ? list->GetNext(position00) : list->GetPrev(position00);
+  return currentChild;
 }
 
 // FUNCTION: IMPERIALISM 0x00491ab0
 int CSubViewIterator::MoreSubViews() {
-  return currentChild10 != nullptr;
+  return currentChild != nullptr;
 }
 
 void RegisterStartupDialogFactoryCallbacks(TTurnEventDialogFactoryRegistry* registry) {

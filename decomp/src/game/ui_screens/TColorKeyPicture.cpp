@@ -15,7 +15,7 @@
 IMPLEMENT_DYNCREATE(TColorKeyPicture, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x00572de0
-TColorKeyPicture::TColorKeyPicture() : TNoHilitePicture(), colorKeySurface94(0) {}
+TColorKeyPicture::TColorKeyPicture() : TNoHilitePicture(), colorKeySurface(0) {}
 
 // FUNCTION: IMPERIALISM 0x00572e40
 TColorKeyPicture::~TColorKeyPicture() {}
@@ -56,18 +56,18 @@ void TColorKeyPicture::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x00573040
 void TColorKeyPicture::SetPictureRsrcID(short nPictureId, unsigned char fRefreshNow) {
-  if (colorKeySurface94 != 0) {
-    g_pDisplayMgr->RemoveGWorld(colorKeySurface94);
+  if (colorKeySurface != 0) {
+    g_pDisplayMgr->RemoveGWorld(colorKeySurface);
   }
-  colorKeySurface94 = 0;
+  colorKeySurface = 0;
   TPicture::SetPictureRsrcID(nPictureId, fRefreshNow);
 }
 
 // FUNCTION: IMPERIALISM 0x00573090
 void TColorKeyPicture::Free() {
-  if (colorKeySurface94 != 0) {
-    g_pDisplayMgr->RemoveGWorld(colorKeySurface94);
+  if (colorKeySurface != 0) {
+    g_pDisplayMgr->RemoveGWorld(colorKeySurface);
   }
-  colorKeySurface94 = 0;
+  colorKeySurface = 0;
   TView::Free();
 }

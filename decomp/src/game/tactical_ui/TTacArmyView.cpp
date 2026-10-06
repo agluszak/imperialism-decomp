@@ -59,23 +59,23 @@ void TTacArmyView::StuffValues(int compositionClass, TArmyBattle* battle) {
   unitSpriteCellHeight = g_tacticalUnitSpriteCellSize_006A5498.cy;
   tileColumnsPerRow = 0x1d;
   // Release order in the original: +0x64, +0x68, +0xbc, +0x6c, +0x70, +0x74.
-  if (battlefieldSurface64 != 0) {
-    g_pDisplayMgr->RemoveGWorld(battlefieldSurface64);
+  if (battlefieldSurface != 0) {
+    g_pDisplayMgr->RemoveGWorld(battlefieldSurface);
   }
-  if (unitSpriteAtlasSurface68 != 0) {
-    g_pDisplayMgr->RemoveGWorld(unitSpriteAtlasSurface68);
+  if (unitSpriteAtlasSurface != 0) {
+    g_pDisplayMgr->RemoveGWorld(unitSpriteAtlasSurface);
   }
-  if (unitSpriteScratchSurfaceBC != 0) {
-    g_pDisplayMgr->RemoveGWorld(unitSpriteScratchSurfaceBC);
+  if (unitSpriteScratchSurface != 0) {
+    g_pDisplayMgr->RemoveGWorld(unitSpriteScratchSurface);
   }
-  if (fortLevelAtlasSurface6C != 0) {
-    g_pDisplayMgr->RemoveGWorld(fortLevelAtlasSurface6C);
+  if (fortLevelAtlasSurface != 0) {
+    g_pDisplayMgr->RemoveGWorld(fortLevelAtlasSurface);
   }
-  if (tileScratchSurface70 != 0) {
-    g_pDisplayMgr->RemoveGWorld(tileScratchSurface70);
+  if (tileScratchSurface != 0) {
+    g_pDisplayMgr->RemoveGWorld(tileScratchSurface);
   }
-  if (effectAtlasSurface74 != 0) {
-    g_pDisplayMgr->RemoveGWorld(effectAtlasSurface74);
+  if (effectAtlasSurface != 0) {
+    g_pDisplayMgr->RemoveGWorld(effectAtlasSurface);
   }
 
   TQuickDrawSurfaceContext* savedContext;
@@ -86,11 +86,11 @@ void TTacArmyView::StuffValues(int compositionClass, TArmyBattle* battle) {
   bounds.right = g_tacticalBattlefieldSurfaceSize_006A5448.cx;
   bounds.left = 0;
   bounds.bottom = g_tacticalBattlefieldSurfaceSize_006A5448.cy;
-  g_pDisplayMgr->MakeNewGWorld(battlefieldSurface64, 8, bounds);
+  g_pDisplayMgr->MakeNewGWorld(battlefieldSurface, 8, bounds);
   TBitmapResourceLoader** loaderHandle =
       CreateBitmapResourceLoaderHandle(static_cast<unsigned short>(compositionClass + 0xf0a));
-  SetGWorld(battlefieldSurface64, savedFlags);
-  LockPixels(GetGWorldPixMap(battlefieldSurface64));
+  SetGWorld(battlefieldSurface, savedFlags);
+  LockPixels(GetGWorldPixMap(battlefieldSurface));
   QDLoadResource(loaderHandle);
   TBitmapResourceLoader* loader = *loaderHandle;
   if (loader != 0) {
@@ -103,7 +103,7 @@ void TTacArmyView::StuffValues(int compositionClass, TArmyBattle* battle) {
     loader->flags &= 0xfe;
     delete loader;
     delete loaderHandle;
-    UnlockPixels(GetGWorldPixMap(battlefieldSurface64));
+    UnlockPixels(GetGWorldPixMap(battlefieldSurface));
     SetGWorld(savedContext, savedFlags);
 
     if (battle->fortLevel49 != 0) {
@@ -121,25 +121,25 @@ void TTacArmyView::StuffValues(int compositionClass, TArmyBattle* battle) {
       UpdatePaletteIndexWithDefaultFallback(0x13);
       SetQuickDrawFillColorFromPaletteIndex(0);
       BlitRectWithOptionalTransparency(fortStripSurface->GetBlitSurface(),
-                                       battlefieldSurface64->GetBlitSurface(), &bounds,
+                                       battlefieldSurface->GetBlitSurface(), &bounds,
                                        &overlayBounds, 0);
       g_pDisplayMgr->RemoveGWorld(fortStripSurface);
     }
 
-    unitSpriteAtlasSurface68 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xee2);
+    unitSpriteAtlasSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xee2);
     short fortLevel = battle->fortLevel49;
-    fortLevelAtlasSurface6C = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(
+    fortLevelAtlasSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(
         static_cast<unsigned short>(fortLevel != 0 ? fortLevel + 0xee6 : 0xee7));
-    effectAtlasSurface74 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xeeb);
+    effectAtlasSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xeeb);
 
     bounds.right = tileWidthPx;
     bounds.bottom = tileRowHeightPx;
     bounds.left = 0;
     bounds.top = 0;
-    g_pDisplayMgr->MakeNewGWorld(tileScratchSurface70, 8, bounds);
+    g_pDisplayMgr->MakeNewGWorld(tileScratchSurface, 8, bounds);
 
     hoveredTileIndex = -1;
-    tacticalBattle60 = battle;
+    tacticalBattle = battle;
     battlefieldColumnCount = static_cast<short>(battle->battlefieldColumnCount);
     scrollableContentWidth =
         static_cast<short>((battle->battlefieldColumnCount + 1) * static_cast<short>(tileWidthPx));
@@ -152,8 +152,8 @@ void TTacArmyView::StuffValues(int compositionClass, TArmyBattle* battle) {
       FailNilPointerWithAssert(s_SourcePathUTacViews_00699FF4, 0x497);
     }
     toolbar->battle88 = battle;
-    toolbar->unitSpriteAtlasSurface94 = unitSpriteAtlasSurface68;
-    toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(tacticalBattle60->selectedUnit1c);
+    toolbar->unitSpriteAtlasSurface = unitSpriteAtlasSurface;
+    toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(tacticalBattle->selectedUnit1c);
     toolbar->SetActionMode(0);
     toolbarD0 = toolbar;
 
@@ -161,15 +161,15 @@ void TTacArmyView::StuffValues(int compositionClass, TArmyBattle* battle) {
         static_cast<TPicture*>(ownerContext->ResolveControlByTag(kControlTagCoat));
     coatControl->AssertValid();
     coatControl->SetPictureRsrcID(
-        static_cast<short>(
-            tacticalBattle60->players[tacticalBattle60->currentSideC]->nationIndex1C + 0xea6),
+        static_cast<short>(tacticalBattle->players[tacticalBattle->currentSide]->nationIndex1C +
+                           0xea6),
         1);
 
     overlayBounds.left = 0;
     overlayBounds.right = unitSpriteCellWidth * 2;
     overlayBounds.top = 0;
     overlayBounds.bottom = unitSpriteCellHeight * 3;
-    g_pDisplayMgr->MakeNewGWorld(unitSpriteScratchSurfaceBC, 8, overlayBounds);
+    g_pDisplayMgr->MakeNewGWorld(unitSpriteScratchSurface, 8, overlayBounds);
     RefreshControl();
     GetWindow()->ForceRedraw();
   }
@@ -186,9 +186,9 @@ void TTacArmyView::Draw(RECT* rectBuffer) {
   GetGWorld(&savedContext, &savedFlags);
   SetGWorld(g_pPrimaryRenderSurfaceContext, savedFlags);
   LockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
-  LockPixels(GetGWorldPixMap(battlefieldSurface64));
+  LockPixels(GetGWorldPixMap(battlefieldSurface));
 
-  battlefieldOriginOffsetX = static_cast<short>((0x1d - tacticalBattle60->battlefieldColumnCount) *
+  battlefieldOriginOffsetX = static_cast<short>((0x1d - tacticalBattle->battlefieldColumnCount) *
                                                 static_cast<short>(tileWidthPx));
   int sourceOffsetX = battlefieldOriginOffsetX + viewOriginX;
 
@@ -214,9 +214,9 @@ void TTacArmyView::Draw(RECT* rectBuffer) {
   backdropDstRect.bottom = clipRect.bottom;
 
   // Bottom-up DIB flip, same idiom as TFocusAnimation.cpp.
-  if (battlefieldSurface64->blitSurface.surfaceDib != 0) {
+  if (battlefieldSurface->blitSurface.surfaceDib != 0) {
     int backdropHeight =
-        battlefieldSurface64->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+        battlefieldSurface->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
     if (backdropHeight < 1) {
       backdropHeight = -backdropHeight;
     }
@@ -232,11 +232,11 @@ void TTacArmyView::Draw(RECT* rectBuffer) {
     OffsetRect(&backdropDstRect, 0, (primaryHeight - backdropDstRect.top) - backdropDstRect.bottom);
   }
   // Backdrop: battlefield surface -> primary render surface.
-  BlitRectWithOptionalTransparency(battlefieldSurface64->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(battlefieldSurface->GetBlitSurface(),
                                    g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
                                    &backdropSrcRect, &backdropDstRect, 0);
 
-  if (tacticalBattle60 != 0) {
+  if (tacticalBattle != 0) {
     // Save/restore the QuickDraw clip around the per-tile pass.
     CTemporaryRegion savedClip;
     GetClip(savedClip.tempRgn);
@@ -256,7 +256,7 @@ void TTacArmyView::Draw(RECT* rectBuffer) {
                                    &presentDstRect, 0);
   DoGlideAni();
   UnlockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
-  UnlockPixels(GetGWorldPixMap(battlefieldSurface64));
+  UnlockPixels(GetGWorldPixMap(battlefieldSurface));
 }
 
 // FUNCTION: IMPERIALISM 0x005aa900
@@ -296,7 +296,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
   int rowParity = hexRow & 1;
   int sideSlot = rowParity + (tileIndex % 0x1d) * 2;
 
-  TacticalTileRecord* grid = tacticalBattle60->tileGrid4;
+  TacticalTileRecord* grid = tacticalBattle->tileGrid;
   short edgeKind = kFortWallEdgeNone;
   if (rowParity == 0) {
     if (tileIndex > 0) {
@@ -313,9 +313,9 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
   }
 
   if (((edgeKind == kFortWallEdgeEvenRowRight || edgeKind == kFortWallEdgeOddRow) &&
-       !tacticalBattle60->HasFortWallGarrison(tileIndex)) ||
+       !tacticalBattle->HasFortWallGarrison(tileIndex)) ||
       (edgeKind == kFortWallEdgeEvenRowLeft &&
-       !tacticalBattle60->HasFortWallGarrison(tileIndex - 1))) {
+       !tacticalBattle->HasFortWallGarrison(tileIndex - 1))) {
     wallBreached = true;
   }
   if (edgeKind != kFortWallEdgeNone) {
@@ -327,7 +327,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     } else {
       wallNeighbor = tileIndex;
     }
-    if (tacticalBattle60->IsTacticalTileAtFortWallSectionSlot(wallNeighbor)) {
+    if (tacticalBattle->IsTacticalTileAtFortWallSectionSlot(wallNeighbor)) {
       gunSlotRow = true;
       if (grid[wallNeighbor].occupant4 != 0) {
         gunSlotOccupied = true;
@@ -335,9 +335,9 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     }
   }
 
-  if (tacticalBattle60->battleLive10 == 0 && hexRow > 0) {
+  if (tacticalBattle->battleLive == 0 && hexRow > 0) {
     g_pViewMgr->SetForeColor(0x35);
-    if (tacticalBattle60->ApplyGridColumnSelectionGuard(tileIndex) &&
+    if (tacticalBattle->ApplyGridColumnSelectionGuard(tileIndex) &&
         grid[tileIndex].occupant4 == 0) {
       const int centerY = tileScreenRect.top + tileRowHeightPx / 2;
       const int centerX = tileScreenRect.left + tileWidthPx / 2;
@@ -396,17 +396,17 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     RECT dstRect = tileScreenRect;
     if ((mask & 0x80) != 0) {
       RECT fullSrc = {0, 0, tileWidthPx, tileRowHeightPx};
-      OffsetRectForSurfaceDibFlip(effectAtlasSurface74, &fullSrc);
+      OffsetRectForSurfaceDibFlip(effectAtlasSurface, &fullSrc);
       OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &dstRect);
-      BlitRectWithOptionalTransparency(&effectAtlasSurface74->blitSurface,
+      BlitRectWithOptionalTransparency(&effectAtlasSurface->blitSurface,
                                        &g_pActiveQuickDrawSurfaceContext->blitSurface, &fullSrc,
                                        &dstRect, 0x24, 0);
       dstRect = tileScreenRect;
     }
     RECT segSrc = {trenchSpriteBase, 0, trenchSpriteBase + tileWidthPx, tileRowHeightPx};
-    OffsetRectForSurfaceDibFlip(effectAtlasSurface74, &segSrc);
+    OffsetRectForSurfaceDibFlip(effectAtlasSurface, &segSrc);
     OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &dstRect);
-    BlitRectWithOptionalTransparency(&effectAtlasSurface74->blitSurface,
+    BlitRectWithOptionalTransparency(&effectAtlasSurface->blitSurface,
                                      &g_pActiveQuickDrawSurfaceContext->blitSurface, &segSrc,
                                      &dstRect, 0x24, 0);
     SetQuickDrawStrokeColor(0xffffff);
@@ -414,7 +414,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
 
   // Adjacency for the trench-link pass below (0x005aaf53).
   TacticalTileIndex tileNeighbors[6];
-  tacticalBattle60->GetNeighborList(tileIndex, tileNeighbors);
+  tacticalBattle->GetNeighborList(tileIndex, tileNeighbors);
 
   short fortCell = 0;
 
@@ -426,9 +426,9 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     RECT fortDst = tileScreenRect;
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0x10);
-    OffsetRectForSurfaceDibFlip(fortLevelAtlasSurface6C, &fortSrc);
+    OffsetRectForSurfaceDibFlip(fortLevelAtlasSurface, &fortSrc);
     OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &fortDst);
-    BlitRectWithOptionalTransparency(&fortLevelAtlasSurface6C->blitSurface,
+    BlitRectWithOptionalTransparency(&fortLevelAtlasSurface->blitSurface,
                                      &g_pActiveQuickDrawSurfaceContext->blitSurface, &fortSrc,
                                      &fortDst, 0x24, 0);
     SetQuickDrawStrokeColor(0xffffff);
@@ -455,9 +455,9 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
       ResetQuickDrawStrokeState();
       UpdatePaletteIndexWithDefaultFallback(0x10);
       if (ClipSrcRectToBoundsAndOffsetDstRect(corners, &edgeDst, &edgeSrc)) {
-        OffsetRectForSurfaceDibFlip(unitSpriteAtlasSurface68, &edgeSrc);
+        OffsetRectForSurfaceDibFlip(unitSpriteAtlasSurface, &edgeSrc);
         OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &edgeDst);
-        BlitRectWithOptionalTransparency(&unitSpriteAtlasSurface68->blitSurface,
+        BlitRectWithOptionalTransparency(&unitSpriteAtlasSurface->blitSurface,
                                          &g_pActiveQuickDrawSurfaceContext->blitSurface, &edgeSrc,
                                          &edgeDst, 0x24, 0);
       }
@@ -472,9 +472,9 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     fortDst = tileScreenRect;
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0x10);
-    OffsetRectForSurfaceDibFlip(fortLevelAtlasSurface6C, &fortSrc);
+    OffsetRectForSurfaceDibFlip(fortLevelAtlasSurface, &fortSrc);
     OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &fortDst);
-    BlitRectWithOptionalTransparency(&fortLevelAtlasSurface6C->blitSurface,
+    BlitRectWithOptionalTransparency(&fortLevelAtlasSurface->blitSurface,
                                      &g_pActiveQuickDrawSurfaceContext->blitSurface, &fortSrc,
                                      &fortDst, 0x24, 0);
     SetQuickDrawStrokeColor(0xffffff);
@@ -488,11 +488,11 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     }
     RECT wallSrc = {wallSpriteX, 0, wallSpriteX + tileWidthPx, tileRowHeightPx};
     RECT wallDst = tileScreenRect;
-    OffsetRectForSurfaceDibFlip(fortLevelAtlasSurface6C, &wallSrc);
+    OffsetRectForSurfaceDibFlip(fortLevelAtlasSurface, &wallSrc);
     OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &wallDst);
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0x10);
-    BlitRectWithOptionalTransparency(&fortLevelAtlasSurface6C->blitSurface,
+    BlitRectWithOptionalTransparency(&fortLevelAtlasSurface->blitSurface,
                                      &g_pActiveQuickDrawSurfaceContext->blitSurface, &wallSrc,
                                      &wallDst, 0x24, 0);
     SetQuickDrawStrokeColor(0xffffff);
@@ -528,9 +528,9 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
       UpdatePaletteIndexWithDefaultFallback(0x10);
       RECT linkSrc = {segment * tileWidthPx, 0, (segment + 1) * tileWidthPx, tileRowHeightPx};
       RECT linkDst = tileScreenRect;
-      OffsetRectForSurfaceDibFlip(fortLevelAtlasSurface6C, &linkSrc);
+      OffsetRectForSurfaceDibFlip(fortLevelAtlasSurface, &linkSrc);
       OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &linkDst);
-      BlitRectWithOptionalTransparency(&fortLevelAtlasSurface6C->blitSurface,
+      BlitRectWithOptionalTransparency(&fortLevelAtlasSurface->blitSurface,
                                        &g_pActiveQuickDrawSurfaceContext->blitSurface, &linkSrc,
                                        &linkDst, 0x24, 0);
       SetQuickDrawStrokeColor(0xffffff);
@@ -540,7 +540,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
   // Occupant unit sprite (with hex selection outline for the active unit).
   TTacticalUnit* occupant = grid[tileIndex].occupant4;
   if (occupant != 0) {
-    if (occupant == tacticalBattle60->selectedUnit1c) {
+    if (occupant == tacticalBattle->selectedUnit1c) {
       short selectionPalette[2] = {0x13, 0};
       TAnimation* blink = g_pUiAnimator->FindRegisteredAnimationByTag(0x2711);
       RECT selectionRect = tileScreenRect;
@@ -562,9 +562,9 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0x10);
     if (ClipSrcRectToBoundsAndOffsetDstRect(corners, &unitDst, &unitSrc)) {
-      OffsetRectForSurfaceDibFlip(unitSpriteAtlasSurface68, &unitSrc);
+      OffsetRectForSurfaceDibFlip(unitSpriteAtlasSurface, &unitSrc);
       OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &unitDst);
-      BlitRectWithOptionalTransparency(&unitSpriteAtlasSurface68->blitSurface,
+      BlitRectWithOptionalTransparency(&unitSpriteAtlasSurface->blitSurface,
                                        &g_pActiveQuickDrawSurfaceContext->blitSurface, &unitSrc,
                                        &unitDst, 0x24, 0);
     }
@@ -594,11 +594,11 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
       deckSrc.left = -paintLeft;
       deckDst.left = 0;
     }
-    OffsetRectForSurfaceDibFlip(fortLevelAtlasSurface6C, &deckSrc);
+    OffsetRectForSurfaceDibFlip(fortLevelAtlasSurface, &deckSrc);
     OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &deckDst);
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0x10);
-    BlitRectWithOptionalTransparency(&fortLevelAtlasSurface6C->blitSurface,
+    BlitRectWithOptionalTransparency(&fortLevelAtlasSurface->blitSurface,
                                      &g_pActiveQuickDrawSurfaceContext->blitSurface, &deckSrc,
                                      &deckDst, 0x24, 0);
     SetQuickDrawStrokeColor(0xffffff);
@@ -656,7 +656,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
           static_cast<short>(tileScreenRect.left + tileWidthPx - 8),
           static_cast<short>(tileScreenRect.bottom - 2));
       RenderTacticalBattleSelectionAndUnitOverlayPass_Impl(
-          static_cast<char>(static_cast<short>(occupant->aiStateCode2c) + 0x61));
+          static_cast<char>(static_cast<short>(occupant->aiStateCode) + 0x61));
     }
   }
 
@@ -688,9 +688,9 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0x10);
     if (ClipSrcRectToBoundsAndOffsetDstRect(corners, &nDst, &nSrc)) {
-      OffsetRectForSurfaceDibFlip(unitSpriteAtlasSurface68, &nSrc);
+      OffsetRectForSurfaceDibFlip(unitSpriteAtlasSurface, &nSrc);
       OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &nDst);
-      BlitRectWithOptionalTransparency(&unitSpriteAtlasSurface68->blitSurface,
+      BlitRectWithOptionalTransparency(&unitSpriteAtlasSurface->blitSurface,
                                        &g_pActiveQuickDrawSurfaceContext->blitSurface, &nSrc, &nDst,
                                        0x24, 0);
     }
@@ -707,17 +707,17 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
       slotSrc.left = -paintLeft;
       slotDst.left = 0;
     }
-    OffsetRectForSurfaceDibFlip(fortLevelAtlasSurface6C, &slotSrc);
+    OffsetRectForSurfaceDibFlip(fortLevelAtlasSurface, &slotSrc);
     OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &slotDst);
     UpdatePaletteIndexWithDefaultFallback(0x10);
-    BlitRectWithOptionalTransparency(&fortLevelAtlasSurface6C->blitSurface,
+    BlitRectWithOptionalTransparency(&fortLevelAtlasSurface->blitSurface,
                                      &g_pActiveQuickDrawSurfaceContext->blitSurface, &slotSrc,
                                      &slotDst, 0x24, 0);
     SetQuickDrawStrokeColor(0xffffff);
   }
 
   // Deployment-zone tick marks along the column midline.
-  if (tacticalBattle60->tileMoveCostArray[sideSlot] > 0) {
+  if (tacticalBattle->tileMoveCostArray[sideSlot] > 0) {
     int tickMidX = tileWidthPx / 2 + paintLeft;
     int tickMidY = tileRowHeightPx / 2 + paintTop;
     SetQuickDrawFillColor(0);
@@ -728,11 +728,11 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
                                             static_cast<short>(tickMidY + 1));
     DrawCenteredGuideLineOnMapDc(static_cast<short>(tickMidX + 1),
                                  static_cast<short>(tickMidY + 1));
-    if ((row < 2 && tacticalBattle60->currentSideC == 0) ||
-        (row / 2 == tacticalBattle60->battlefieldColumnCount - 1 &&
-         tacticalBattle60->currentSideC == 1)) {
+    if ((row < 2 && tacticalBattle->currentSide == 0) ||
+        (row / 2 == tacticalBattle->battlefieldColumnCount - 1 &&
+         tacticalBattle->currentSide == 1)) {
       SetQuickDrawFillColorFromPaletteIndex(0x13);
-    } else if (tacticalBattle60->tileThreatLevelArray[tileIndex] == 0) {
+    } else if (tacticalBattle->tileThreatLevelArray[tileIndex] == 0) {
       g_pViewMgr->SetForeColor(0x34);
     } else {
       g_pViewMgr->SetForeColor(0x33);

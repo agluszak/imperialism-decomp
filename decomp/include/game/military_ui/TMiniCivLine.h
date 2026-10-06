@@ -13,7 +13,7 @@ public:
   virtual ~TMiniCivLine() override {} // slot 0x01 (scalar deleting destructor)
   virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x4ab740
 
-  TCivUnit* civUnit10;
+  TCivUnit* civUnit;
 
   // NOOP: verified empty in original 0x004ab6a3 (no standalone TMiniCivLine::TMiniCivLine body exists: CreateObject 0x004ab670 inlines this default ctor, calling the TLineData base ctor directly at that site)
   TMiniCivLine() {}

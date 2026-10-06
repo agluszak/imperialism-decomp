@@ -6,13 +6,12 @@ IMPLEMENT_DYNCREATE(T2PictToggleButton, TToggleButton)
 // FUNCTION: IMPERIALISM 0x00584930
 T2PictToggleButton::T2PictToggleButton() : TToggleButton() {}
 
-
 // FUNCTION: IMPERIALISM 0x00584990
 T2PictToggleButton::~T2PictToggleButton() {}
 
 // FUNCTION: IMPERIALISM 0x005849b0
 bool T2PictToggleButton::IsSelected() {
-  if (this->glyphBase84 >= this->controlValue3c) {
+  if (this->glyphBase >= this->controlValue) {
     return true;
   }
   return false;
@@ -21,12 +20,12 @@ bool T2PictToggleButton::IsSelected() {
 // FUNCTION: IMPERIALISM 0x005849d0
 void T2PictToggleButton::Select(bool isPressed, bool notifyParent) {
   (void)notifyParent;
-  short sVar1 = glyphBase84;
-  int oldField3c = controlValue3c;
+  short sVar1 = glyphBase;
+  int oldField3c = controlValue;
 
   if ((!isPressed && oldField3c < (int)sVar1) || (isPressed && (int)sVar1 < oldField3c)) {
     SetPictureRsrcID(static_cast<short>(oldField3c), false);
-    controlValue3c = (int)sVar1;
+    controlValue = (int)sVar1;
   }
   PrepareForDrawing();
   PaintOrInvalidateControl(0);

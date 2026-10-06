@@ -104,7 +104,7 @@ void TTradePanelView::Setup() {
   SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText_00654ec8), tradeCluster);
   tradeCluster->SetSelectedChildTagAndRefresh(kControlTagTraa); // 'traa'
   diplomacyMapView->selectedGrantRow = 0;
-  diplomacyMapView->actionCodeBC = kDipActionTradeSubsidy;
+  diplomacyMapView->actionCode = kDipActionTradeSubsidy;
 }
 
 // FUNCTION: IMPERIALISM 0x004f8dd0
@@ -115,14 +115,14 @@ void TTradePanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
       diplomacyMapView->selectedGrantRow = static_cast<short>(tradeRow);
       short threshold = g_awDiplomacyTradePolicyIconValueTable[tradeRow];
       if (threshold == 300) {
-        diplomacyMapView->actionCodeBC = kDipActionBoycott;
+        diplomacyMapView->actionCode = kDipActionBoycott;
       } else if (threshold <= 0x5f) {
-        diplomacyMapView->actionCodeBC = kDipActionTradeSubsidy;
+        diplomacyMapView->actionCode = kDipActionTradeSubsidy;
       } else {
-        diplomacyMapView->actionCodeBC = kDipActionTradePolicy;
+        diplomacyMapView->actionCode = kDipActionTradePolicy;
       }
     } else {
-      diplomacyMapView->actionCodeBC = kDipActionLinkTradePolicy;
+      diplomacyMapView->actionCode = kDipActionLinkTradePolicy;
     }
   }
   TEventHandler::DoEvent(commandId, sourceHandler, event);

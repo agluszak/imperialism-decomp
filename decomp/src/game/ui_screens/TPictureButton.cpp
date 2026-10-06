@@ -9,14 +9,13 @@ IMPLEMENT_DYNCREATE(TPictureButton, TPicture)
 // TPictureButton's ctor is defined inline in the header (marker there): the original
 // inlines it into every derived ctor.
 
-
 // FUNCTION: IMPERIALISM 0x00570850
 TPictureButton::~TPictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00570870
 void TPictureButton::HiliteState(unsigned char enabledState, bool refreshNow) {
-  if (static_cast<unsigned char>(enabledState) != this->controlState64) {
-    this->controlState64 = enabledState;
+  if (static_cast<unsigned char>(enabledState) != this->controlState) {
+    this->controlState = enabledState;
     this->Show(enabledState, true);
     if (refreshNow) {
       this->DrawImmediate();

@@ -29,8 +29,8 @@ IMPLEMENT_DYNCREATE(TScrollBarView, TControl)
 // FUNCTION: IMPERIALISM 0x005744b0
 void TScrollBarView::IScrollBarView(TScrollView* panel, int* offsetLayout, int* sizeLayout) {
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 4, 4, 0);
-  ownerView84 = static_cast<TScrollView*>(ownerContext);
-  ownerView84->AssertValid();
+  ownerView = static_cast<TScrollView*>(ownerContext);
+  ownerView->AssertValid();
   word88 = 0x12;
   word8a = static_cast<short>(frameHeight) - 0x24;
   word8c = 0x12;
@@ -84,8 +84,8 @@ void TScrollBarView::Free() {
 // FUNCTION: IMPERIALISM 0x00574720
 void TScrollBarView::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
-  ownerView84 = static_cast<TScrollView*>(ownerContext);
-  ownerView84->AssertValid();
+  ownerView = static_cast<TScrollView*>(ownerContext);
+  ownerView->AssertValid();
   word88 = 0x12;
   word8c = 0x12;
 
@@ -102,9 +102,9 @@ void TScrollBarView::DoPostCreate(int arg) {
 void TScrollBarView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xa) {
     if (sourceHandler->controlTag == kControlTagScup) { // 'scup'
-      ownerView84->ScrollRelative(0, 0xc);
+      ownerView->ScrollRelative(0, 0xc);
     } else if (sourceHandler->controlTag == kControlTagScdn) { // 'scdn'
-      ownerView84->ScrollRelative(0, -0xc);
+      ownerView->ScrollRelative(0, -0xc);
     }
   }
   TControl::DoEvent(commandId, sourceHandler, event);
@@ -121,7 +121,7 @@ void TScrollBarView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint 
   int y = point.y;
   if (y >= word88 && y < word8c) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58);
-    ownerView84->ScrollRelative(0, static_cast<short>(ownerView84->frameHeight));
+    ownerView->ScrollRelative(0, static_cast<short>(ownerView->frameHeight));
     return;
   }
 
@@ -129,7 +129,7 @@ void TScrollBarView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint 
     return;
   }
   g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58);
-  ownerView84->ScrollRelative(0, -static_cast<short>(ownerView84->frameHeight));
+  ownerView->ScrollRelative(0, -static_cast<short>(ownerView->frameHeight));
 }
 
 // FUNCTION: IMPERIALISM 0x00574970
@@ -232,12 +232,12 @@ void TScrollBarView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pr
   }
 
   int ratio = (word8c - word88) * 1024 / (word8a - word88);
-  TView* content = ownerView84->contentView;
+  TView* content = ownerView->contentView;
   if (content == nullptr) {
     return;
   }
   short heightDiff =
-      static_cast<short>(content->frameHeight) - static_cast<short>(ownerView84->frameHeight);
+      static_cast<short>(content->frameHeight) - static_cast<short>(ownerView->frameHeight);
   if (heightDiff <= 0) {
     return;
   }

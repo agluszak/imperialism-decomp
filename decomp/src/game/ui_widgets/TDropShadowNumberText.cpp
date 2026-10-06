@@ -10,7 +10,7 @@ IMPLEMENT_DYNCREATE(TDropShadowNumberText, TPictureNumberText)
 
 // FUNCTION: IMPERIALISM 0x005b5910
 TDropShadowNumberText::TDropShadowNumberText() : TPictureNumberText() {
-  shadowColorAc = g_defaultDropShadowTextColor;
+  shadowColor = g_defaultDropShadowTextColor;
 }
 
 // FUNCTION: IMPERIALISM 0x005b5990
@@ -19,7 +19,7 @@ TDropShadowNumberText::~TDropShadowNumberText() {}
 // FUNCTION: IMPERIALISM 0x005b59b0
 void TDropShadowNumberText::Draw(RECT* rectBuffer) {
   TEditText::Draw(rectBuffer);
-  SetQuickDrawColorAndPropagateIfChanged(shadowColorAc);
+  SetQuickDrawColorAndPropagateIfChanged(shadowColor);
   CString shadowText;
   GetCurrentText(&shadowText);
   CRect shadowRect;

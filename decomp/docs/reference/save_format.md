@@ -32,7 +32,7 @@ The audit expands qualified base serializers and direct retail serializer calls.
 listing replay and source parser do not reconstruct every execution path:
 
 - `TSortedPtrList::WriteTo` (`0x5e1f10`) writes the two-byte record size and four-byte
-  count, then `recordSize14` bytes per record. At `0x5e1f55` the size argument is pushed
+  count, then `recordSize` bytes per record. At `0x5e1f55` the size argument is pushed
   before the nested virtual entry lookup. That lookup consumes only its index argument;
   the size remains for the `WriteBytes` call at `0x5e1f60`. The audit's unknown-call
   stack-cleanup estimate loses that final stream call.

@@ -33,7 +33,7 @@ void TTradeOrderPicture::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPo
 
   TTradeCluster* tradeRow = static_cast<TTradeCluster*>(ownerContext);
   if (controlTag == kControlTagCard) { // 'card'
-    if (glyphBase84 == 0x83f || glyphBase84 == 0x84d) {
+    if (glyphBase == 0x83f || glyphBase == 0x84d) {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);
       tradeRow->HandleEvent(0x67, this, 0);
       tradeRow->DoControlAction();
@@ -48,7 +48,7 @@ void TTradeOrderPicture::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPo
   }
 
   if (controlTag == kControlTagOffr) { // 'offr'
-    if (glyphBase84 == 0x841 || glyphBase84 == 0x84f) {
+    if (glyphBase == 0x841 || glyphBase == 0x84f) {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);
       tradeRow->HandleEvent(0x6a, this, 0);
       tradeRow->SetTradeOfferSecondaryBitmap();
@@ -68,7 +68,7 @@ void TTradeOrderPicture::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPo
 void TTradeOrderPicture::ActivateOrderSemantically() {
   TTradeCluster* tradeRow = static_cast<TTradeCluster*>(ownerContext);
   if (controlTag == kControlTagCard) {
-    if (glyphBase84 == 0x83f || glyphBase84 == 0x84d) {
+    if (glyphBase == 0x83f || glyphBase == 0x84d) {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);
       tradeRow->HandleEvent(0x67, this, 0);
       tradeRow->DoControlAction();
@@ -83,7 +83,7 @@ void TTradeOrderPicture::ActivateOrderSemantically() {
   }
 
   if (controlTag == kControlTagOffr) {
-    if (glyphBase84 == 0x841 || glyphBase84 == 0x84f) {
+    if (glyphBase == 0x841 || glyphBase == 0x84f) {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);
       tradeRow->HandleEvent(0x6a, this, 0);
       tradeRow->SetTradeOfferSecondaryBitmap();

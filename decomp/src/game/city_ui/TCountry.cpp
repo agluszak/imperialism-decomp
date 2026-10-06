@@ -82,7 +82,7 @@ TCountry::TCountry() {}
 void TCountry::InitializeNationStateIdentityAndOwnedRegionList(NationSlot nationSlot) {
   this->nationSlot = nationSlot;
   this->homeTileIndex = -1;
-  this->overlayAnchorTileCache8c = -1;
+  this->overlayAnchorTileCache = -1;
   this->encodedNationSlot = -1;
 
   for (int nationIndex = 0; nationIndex < kNationSlotCount; ++nationIndex) {
@@ -150,7 +150,7 @@ void TCountry::ReadFrom(TStream* stream) {
   stream->ReadBytes(&this->unitNameCounter, 2);
   stream->ReadBytes(&this->treasuryValue10, 4);
   stream->ReadBytes(&this->homeTileIndex, 4);
-  stream->ReadBytes(&this->overlayAnchorTileCache8c, 4);
+  stream->ReadBytes(&this->overlayAnchorTileCache, 4);
   stream->ReadBytes(this->needLevelByNation, 0x2e);
   SwapShortArrayBytes(this->needLevelByNation, 0x17);
 
@@ -196,7 +196,7 @@ void TCountry::WriteTo(TStream* stream) {
   stream->WriteBytes(&this->unitNameCounter, 2);
   stream->WriteBytes(&this->treasuryValue10, 4);
   stream->WriteBytes(&this->homeTileIndex, 4);
-  stream->WriteBytes(&this->overlayAnchorTileCache8c, 4);
+  stream->WriteBytes(&this->overlayAnchorTileCache, 4);
   WriteShortArrayElemsRev(stream, this->needLevelByNation, 0x17);
 
   WriteTrackedListToStream(stream, this->militaryUnitList44);
@@ -209,7 +209,7 @@ void TCountry::ReadCoreFieldsFromStream(TStream* stream, int unusedArg) {
   stream->ReadBytes(&this->encodedNationSlot, 2);
   stream->ReadBytes(&this->treasuryValue10, 4);
   stream->ReadBytes(&this->homeTileIndex, 4);
-  stream->ReadBytes(&this->overlayAnchorTileCache8c, 4);
+  stream->ReadBytes(&this->overlayAnchorTileCache, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x004d70e0
@@ -217,21 +217,21 @@ void TCountry::WriteCoreFieldsToStream(TStream* stream) {
   stream->WriteBytes(&this->encodedNationSlot, 2);
   stream->WriteBytes(&this->treasuryValue10, 4);
   stream->WriteBytes(&this->homeTileIndex, 4);
-  stream->WriteBytes(&this->overlayAnchorTileCache8c, 4);
+  stream->WriteBytes(&this->overlayAnchorTileCache, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x004d7150
 void TCountry::SetSerializedField8c(int value) {
-  this->overlayAnchorTileCache8c = static_cast<short>(value);
+  this->overlayAnchorTileCache = static_cast<short>(value);
 }
 
 // FUNCTION: IMPERIALISM 0x004d7170
 short TCountry::GetOrComputeOverlayAnchorTileIndex() {
-  if (overlayAnchorTileCache8c == -1) {
-    overlayAnchorTileCache8c = static_cast<short>(
+  if (overlayAnchorTileCache == -1) {
+    overlayAnchorTileCache = static_cast<short>(
         g_pGlobalMapState->ComputeRepresentativeTileIndexForNationWithWrapBias(nationSlot, true));
   }
-  return static_cast<short>(overlayAnchorTileCache8c);
+  return static_cast<short>(overlayAnchorTileCache);
 }
 
 // FUNCTION: IMPERIALISM 0x004d71b0
@@ -566,7 +566,7 @@ void TCountry::NameUnits(void) {
   do {
     TMilitaryUnit* unit =
         static_cast<TMilitaryUnit*>(this->militaryUnitList44->GetEntryByOrdinal(ordinal));
-    if (unit->unitRosterId1A == 0) {
+    if (unit->unitRosterId == 0) {
       if (unit->orderType < EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra1)) {
         CString ordinalText;
         CString typeName;
@@ -580,7 +580,7 @@ void TCountry::NameUnits(void) {
         CString fullName = withSeparator + typeName;
         composedName = fullName;
         unit->name24 = composedName;
-        unit->unitRosterId1A = this->unitNameCounter;
+        unit->unitRosterId = this->unitNameCounter;
         ++this->unitNameCounter;
         ++*nameOrdinalCounter;
       } else {
@@ -594,7 +594,7 @@ void TCountry::NameUnits(void) {
         CString fullName = withSeparator + flavorName;
         flavorName = fullName;
         unit->name24 = flavorName;
-        unit->unitRosterId1A = this->unitNameCounter;
+        unit->unitRosterId = this->unitNameCounter;
         ++this->unitNameCounter;
       }
     }

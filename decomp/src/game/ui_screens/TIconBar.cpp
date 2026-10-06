@@ -23,7 +23,7 @@ void TIconBar::IIconBar(TView* panel, int* position, int* size, int layoutParam4
 
 // FUNCTION: IMPERIALISM 0x005060c0
 void TIconBar::SetPictureRsrcID(short nPictureId, unsigned char fRefreshNow) {
-  iconAtlasFrame94 = nPictureId - 700;
+  iconAtlasFrame = nPictureId - 700;
   TPicture::SetPictureRsrcID(nPictureId, fRefreshNow);
 }
 
@@ -52,7 +52,7 @@ void TIconBar::Draw(RECT* rectBuffer) {
   }
   iconSpacing = slotWidth;
 
-  RECT srcRect = {iconAtlasFrame94 * 0x20, 0, iconAtlasFrame94 * 0x20 + 0x20, 0x18};
+  RECT srcRect = {iconAtlasFrame * 0x20, 0, iconAtlasFrame * 0x20 + 0x20, 0x18};
   RECT dstRect = {contentRect.left, contentRect.top, contentRect.left + 0x20,
                   contentRect.top + 0x18};
 

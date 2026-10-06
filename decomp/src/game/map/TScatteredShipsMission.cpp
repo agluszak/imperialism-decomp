@@ -35,7 +35,7 @@ TScatteredShipsMission::~TScatteredShipsMission() {}
 // FUNCTION: IMPERIALISM 0x0053bb90
 void TScatteredShipsMission::Initialize() {
   marker11 = 0;
-  importanceScore0c = g_fScatteredShipsMissionDefaultScore;
+  importanceScore = g_fScatteredShipsMissionDefaultScore;
 }
 
 // FUNCTION: IMPERIALISM 0x0053bbb0
@@ -57,14 +57,14 @@ void TScatteredShipsMission::SetStateByte8To2() {
 
 // FUNCTION: IMPERIALISM 0x0053bc20
 void TScatteredShipsMission::CalculateImportance() {
-  importanceScore0c = g_fScatteredShipsMissionDefaultScore;
+  importanceScore = g_fScatteredShipsMissionDefaultScore;
 }
 
 // FUNCTION: IMPERIALISM 0x0053bc40
 void TScatteredShipsMission::CalculateNeeds() {
-  TAutoGreatPower* nation = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
+  TAutoGreatPower* nation = static_cast<TAutoGreatPower*>(g_apNationStates[nationId]);
   nation->AssertValid();
-  float navyPressure = nation->activeMissionPressureAverageB6c;
+  float navyPressure = nation->activeMissionPressureAverage;
   float pressureScale = navyPressure + g_MissionPositiveFallback_0065A9B8;
 
   const short* lookupTable = g_Populate_Beachhead_Mission_LookupTable_00697958;
@@ -130,7 +130,7 @@ void TScatteredShipsMission::GiveOrders() {
 
   TZone* zone = g_pMapActionContextListHead;
   while (zone != nullptr) {
-    if (!zone->QueryPortZoneCapability() && zone->HasSecondaryNeighborWithNationTag(nationId04)) {
+    if (!zone->QueryPortZoneCapability() && zone->HasSecondaryNeighborWithNationTag(nationId)) {
       break;
     }
     zone = zone->prev18;
@@ -147,7 +147,7 @@ void TScatteredShipsMission::GiveOrders() {
 
   while (true) {
     if (!current->QueryPortZoneCapability() &&
-        current->HasSecondaryNeighborWithNationTag(nationId04)) {
+        current->HasSecondaryNeighborWithNationTag(nationId)) {
       TMapOrderChildLinkNode* best = orderList;
       while (best != nullptr && best->active != 0) {
         best = best->next;

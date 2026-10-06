@@ -19,7 +19,7 @@ IMPLEMENT_DYNCREATE(TNavyBattle, TTacticalBattle)
 // FUNCTION: IMPERIALISM 0x005a5540
 void TNavyBattle::InitTacticalBattle(TTacticalPlayer* ourPlayer, TTacticalPlayer* enemyPlayer) {
   tacticalTileCount = 0xb4;
-  tacticalTileStride40 = 6;
+  tacticalTileStride = 6;
   TTacticalBattle::InitTacticalBattle(ourPlayer, enemyPlayer);
 
   int direction = rand() % 6;
@@ -50,7 +50,7 @@ void TNavyBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
       canDeploy = false;
     }
   }
-  if (tileGrid4[tileIndex].occupant4 != 0) {
+  if (tileGrid[tileIndex].occupant4 != 0) {
     canDeploy = false;
   }
   if (!canDeploy) {
@@ -58,18 +58,18 @@ void TNavyBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
   }
 
   unit->tileIndex8 = tileIndex;
-  tileGrid4[tileIndex].occupant4 = unit;
+  tileGrid[tileIndex].occupant4 = unit;
   if (battleView8 != 0) {
     battleView8->InvalidateUnit(unit);
   }
 
-  selectedUnit1c = players[currentSideC]->SelectNextTacticalUnitForDoneCommand();
-  if (!players[currentSideC]->sideReadyFlag) {
+  selectedUnit1c = players[currentSide]->SelectNextTacticalUnitForDoneCommand();
+  if (!players[currentSide]->sideReadyFlag) {
     return;
   }
 
-  currentSideC = (currentSideC == 0);
-  selectedUnit1c = players[currentSideC]->SelectNextTacticalUnitForDoneCommand();
+  currentSide = (currentSide == 0);
+  selectedUnit1c = players[currentSide]->SelectNextTacticalUnitForDoneCommand();
 
   if (battleView8 != 0) {
     TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(
@@ -79,17 +79,17 @@ void TNavyBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
     toolbar->ForceRedraw();
   }
 
-  if (players[currentSideC]->sideReadyFlag) {
+  if (players[currentSide]->sideReadyFlag) {
     FinalizeTacticalTurnStateAndQueueEvent232A();
     return;
   }
-  players[currentSideC]->StartBattle();
+  players[currentSide]->StartBattle();
 }
 
 // FUNCTION: IMPERIALISM 0x005a5730
 void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
     TTacticalUnit* attackerUnit, TacticalTileIndex targetTileIndex) {
-  TNavyTacUnit* defenderUnit = static_cast<TNavyTacUnit*>(tileGrid4[targetTileIndex].occupant4);
+  TNavyTacUnit* defenderUnit = static_cast<TNavyTacUnit*>(tileGrid[targetTileIndex].occupant4);
   defenderUnit->AssertValid();
 
   int attackerRow = attackerUnit->tileIndex8 / 29;
@@ -120,9 +120,9 @@ void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
   }
 
   if (static_cast<float>(rand() % 100) < hitThreshold) {
-    TTacticalPlayer* attackerSidePlayer = players[currentSideC];
+    TTacticalPlayer* attackerSidePlayer = players[currentSide];
     attackerSidePlayer->AssertValid();
-    NavyTargeting targeting = static_cast<TNavyPlayer*>(attackerSidePlayer)->targetingMode2c;
+    NavyTargeting targeting = static_cast<TNavyPlayer*>(attackerSidePlayer)->targetingMode;
     float attackPower = attackerUnit->GetBaseAttackPower();
     float scaledStrength = attackerUnit->strength4 * attackPower;
     float damageScale = defenderUnit->GetDamageScale();
@@ -132,7 +132,7 @@ void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
       battleView8->InvalidateUnit(defenderUnit);
     }
     if (defenderUnit->state1c == 3) {
-      tileGrid4[defenderUnit->tileIndex8].occupant4 = 0;
+      tileGrid[defenderUnit->tileIndex8].occupant4 = 0;
       defenderUnit->tileIndex8 = -1;
       if (battleView8 != 0) {
         battleView8->PlayAni(targetTileIndex, 0xf42, 12);
@@ -178,7 +178,7 @@ void TNavyBattle::CalculateMoveMap(TTacticalUnit* unit) {
       int direction;
       for (direction = 0; direction < 6; ++direction) {
         TacticalTileIndex neighborTile = neighborTiles[direction];
-        if (neighborTile == -1 || tileGrid4[neighborTile].occupant4 != 0) {
+        if (neighborTile == -1 || tileGrid[neighborTile].occupant4 != 0) {
           continue;
         }
 
@@ -204,14 +204,14 @@ void TNavyBattle::EndBattle(unsigned char) {
 
 // FUNCTION: IMPERIALISM 0x005a5b90
 void TNavyBattle::SetTargeting(NavyTargeting targeting) {
-  static_cast<TNavyPlayer*>(players[currentSideC])->targetingMode2c = targeting;
+  static_cast<TNavyPlayer*>(players[currentSide])->targetingMode = targeting;
 }
 
 // FUNCTION: IMPERIALISM 0x005a5bc0
 void TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
     TTacticalUnit* unit, TacticalTileIndex targetTileIndex) {
   EvaluateAndResolveTacticalActionAgainstTileOccupant(unit, targetTileIndex);
-  if (battleOutcome44 == kTacticalBattleInProgress) {
+  if (battleOutcome == kTacticalBattleInProgress) {
     TacticalTileIndex neighborTiles[6];
     GetNeighborList(selectedUnit1c->tileIndex8, neighborTiles);
     int direction;
@@ -250,7 +250,7 @@ void TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
       return;
     }
   }
-  if (unit->state1c == 0 && battleOutcome44 == kTacticalBattleInProgress) {
+  if (unit->state1c == 0 && battleOutcome == kTacticalBattleInProgress) {
     return;
   }
   FinishTacticalActionAndPostNextMoveCommand();

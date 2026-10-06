@@ -801,8 +801,7 @@ void TMacViewMgr::RegenerateCountryRegions() {
         cityRecordIndex = cityRecordIndex + 1;
         tileSlot = tileSlot + 1;
       }
-      SetCountryRgn(regionWrapper,
-                                                        static_cast<short>(nationIndex));
+      SetCountryRgn(regionWrapper, static_cast<short>(nationIndex));
       nationIndex = nationIndex + 1;
     }
     DisposeRgn(regionWrapper);
@@ -874,9 +873,7 @@ TView* TMacViewMgr::MakeBookDialog(int dialogId) {
 }
 
 // FUNCTION: IMPERIALISM 0x0050bea0
-void TMacViewMgr::ShowTransportEntry(short resourceSlot,
-                                                                  short nationIndex,
-                                                                  TView* hostView) {
+void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TView* hostView) {
   TGreatPower* nation = g_apNationStates[nationIndex];
   CString scratch38;
 
@@ -1011,11 +1008,11 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot,
     g_pSimMgr->GetCommodityName(resourceSlot, &itemName);
     {
       int production = city->GetBuildingType(1);
-      deficitCount = static_cast<short>(production * 2 - city->cityStockFabricC6);
-      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->cityStockFabricC6));
+      deficitCount = static_cast<short>(production * 2 - city->cityStockFabric);
+      formatCurrent.Format(g_szDecimalFormat, static_cast<int>(city->cityStockFabric));
       formatTarget.Format(g_szDecimalFormat, production * 2);
       g_pSimMgr->GetString(0x2719, 1, &displayText);
-      formatFieldValue = city->cityStockFabricC6;
+      formatFieldValue = city->cityStockFabric;
       showArrowWidgets = 1;
       useProductionTailPath = true;
     }
@@ -1247,7 +1244,7 @@ TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city, 
   }
   buildingView->ApplyCityViewSelectionPayloadAndRefreshControls(city, isEmbeddedPage,
                                                                 productionView, buildingSlot);
-  dialog->controlValue3c = 0x65;
+  dialog->controlValue = 0x65;
   if (closeAfterOpen) {
     dialog->SetModality(true);
     dialog->PoseModally();
@@ -1272,7 +1269,7 @@ TBuildingView* TMacViewMgr::RestoreBuildingWindowAtSavedPosition(
   }
   buildingView->ApplyCityViewSelectionPayloadAndRefreshControls(city, isEmbeddedPage,
                                                                 productionView, buildingSlot);
-  dialog->controlValue3c = 0x65;
+  dialog->controlValue = 0x65;
   CPoint placement(savedX, savedY);
   dialog->Locate(placement, false);
   if (closeAfterOpen) {
@@ -1305,8 +1302,7 @@ void TMacViewMgr::OpenConstructionWindow(short buildingSlot, TCity* city,
 }
 
 // FUNCTION: IMPERIALISM 0x0050d680
-void TMacViewMgr::SetCountryRgn(RgnHandle sourceRegion,
-                                                                    short slotIndex) {
+void TMacViewMgr::SetCountryRgn(RgnHandle sourceRegion, short slotIndex) {
   if (countryRegions[slotIndex] == 0) {
     countryRegions[slotIndex] = NewRgn();
   }
@@ -1391,8 +1387,7 @@ void TMacViewMgr::RefreshActiveGoldControlAndUiRuntimeState() {
 
 // FUNCTION: IMPERIALISM 0x0050d9e0
 void TMacViewMgr::FastDrawPicture(TBitmapResourceLoader** loaderHandle,
-                                                  unsigned char* destinationBits,
-                                                  short destinationStride) {
+                                  unsigned char* destinationBits, short destinationStride) {
   CDib* dib = (*loaderHandle)->bitmapResource;
   unsigned char* sourceRow = static_cast<unsigned char*>(dib->m_dibBits);
   unsigned int rowWidth = dib->m_pInfoHeader->bmiHeader.biWidth;
@@ -1410,8 +1405,7 @@ void TMacViewMgr::FastDrawPicture(TBitmapResourceLoader** loaderHandle,
 }
 
 // FUNCTION: IMPERIALISM 0x0050da80
-void TMacViewMgr::CopyMapIcon(TBitmapSurfaceNode** dstSurface, short iconIndex, short x,
-                              short y) {
+void TMacViewMgr::CopyMapIcon(TBitmapSurfaceNode** dstSurface, short iconIndex, short x, short y) {
   TBitmapSurfaceNode** atlasSurface;
   short srcRowOffset;
   if (iconIndex < 100) {
@@ -1564,9 +1558,8 @@ void TMacViewMgr::DrawStrategicMapUnitIcon(TBitmapSurfaceNode** pDstSurface, sho
 }
 
 // FUNCTION: IMPERIALISM 0x0050df40
-void TMacViewMgr::CopyDevelopmentIcon(TBitmapSurfaceNode** pDstSurface,
-                                                  ushort wOverlayIconId, short nVariantRow,
-                                                  short nDstX, short nYShift) {
+void TMacViewMgr::CopyDevelopmentIcon(TBitmapSurfaceNode** pDstSurface, ushort wOverlayIconId,
+                                      short nVariantRow, short nDstX, short nYShift) {
   TBitmapSurfaceNode** atlasSurface = GetGWorldPixMap(unitOverlayAtlas);
   if (nVariantRow <= 0) {
     return;

@@ -45,13 +45,13 @@ void TEscortMission::Initialize() {
 
 // FUNCTION: IMPERIALISM 0x00539ca0
 void TEscortMission::CalculateImportance() {
-  TGreatPower* nation = g_apNationStates[nationId04];
+  TGreatPower* nation = g_apNationStates[nationId];
   short needCap = (nation != nullptr) ? nation->transportCapacity : 0;
   if (needCap == 0) {
     needCap = 1;
   }
 
-  TZone* homePortZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationId04);
+  TZone* homePortZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationId);
   TZone** cachedOwnerSlot = &homePortZone->primaryNeighbors[0];
   TZone* cachedOwner = *cachedOwnerSlot;
   float score = static_cast<float>(cachedOwner->ComputeMapActionContextNodeValueAverage());
@@ -60,14 +60,14 @@ void TEscortMission::CalculateImportance() {
     TZone** zoneOwnerSlot = &zone->primaryNeighbors[0];
     if (*zoneOwnerSlot == cachedOwner) {
       short ownerNationCode = zone->GetPortZoneOwnerNationCodeFromMissionField48();
-      score *= (ownerNationCode == nationId04)
+      score *= (ownerNationCode == nationId)
                    ? static_cast<float>(g_PortZoneFriendlyMissionScoreMultiplier_0065AA10)
                    : static_cast<float>(g_PortZoneForeignMissionScoreMultiplier_0065AA18);
     }
   }
 
-  importanceScore0c = (score / g_fMissionScoreNormalizationDivisor) *
-                      static_cast<float>(nation->merchantCapacity) / static_cast<float>(needCap);
+  importanceScore = (score / g_fMissionScoreNormalizationDivisor) *
+                    static_cast<float>(nation->merchantCapacity) / static_cast<float>(needCap);
 }
 
 // FUNCTION: IMPERIALISM 0x00539e70
@@ -84,18 +84,17 @@ void TEscortMission::CalculateNeeds() {
 
     bool eligible;
     if (nation->encodedNationSlot < 200) {
-      eligible =
-          static_cast<float>(g_pDiplomacyTurnStateManager
-                                 ->relationStandingScores[i * kNationSlotCount + nationId04]) >
-          yearThreshold;
+      eligible = static_cast<float>(g_pDiplomacyTurnStateManager
+                                        ->relationStandingScores[i * kNationSlotCount + nationId]) >
+                 yearThreshold;
     } else {
       short encodedNationSlot = nation->encodedNationSlot;
       if (encodedNationSlot >= 200) {
-        eligible = encodedNationSlot - 200 == nationId04;
+        eligible = encodedNationSlot - 200 == nationId;
       } else if (encodedNationSlot >= 100) {
-        eligible = encodedNationSlot - 100 == nationId04;
+        eligible = encodedNationSlot - 100 == nationId;
       } else {
-        eligible = nation->nationSlot == nationId04;
+        eligible = nation->nationSlot == nationId;
       }
     }
     if (!eligible) {
@@ -110,7 +109,7 @@ void TEscortMission::CalculateNeeds() {
       if (node->location != targetContext) {
         continue;
       }
-      if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, node->nation)) {
+      if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, node->nation)) {
         continue;
       }
       short normalizationBase = node->GetMaxStrength();

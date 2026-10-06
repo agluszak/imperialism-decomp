@@ -19,7 +19,7 @@ TMinister::TMinister() : greatPower(nullptr), ranking(0), skillIndex(0) {}
 void TMinister::IMinister(TGreatPower* ownerContext) {
   this->greatPower = ownerContext;
   this->ranking = new TIndexAndRankList();
-  this->ranking->recordSize14 = 6;
+  this->ranking->recordSize = 6;
 }
 
 // FUNCTION: IMPERIALISM 0x0052ec80

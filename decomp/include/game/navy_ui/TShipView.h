@@ -20,13 +20,13 @@ public:
   // NOOP: verified empty in original 0x00565433 (no standalone TShipView::TShipView body exists: CreateObject 0x00565400 inlines this default ctor, calling the TView base ctor directly at that site)
   TShipView() {}
 
-  TShip* shipNode60;
+  TShip* shipNode;
   class TTaskForce* field64;
 
   // Non-virtual: runs the rename dialog for field60 in response to the 'name' command.
   void RenameShip();
 
-  void IShipView(TView* panel, int* offsetLayout, int* sizeLayout,
-                 int sizeDeterminerX, int sizeDeterminerY, TShip* ship, class TTaskForce* taskForce);
+  void IShipView(TView* panel, int* offsetLayout, int* sizeLayout, int sizeDeterminerX,
+                 int sizeDeterminerY, TShip* ship, class TTaskForce* taskForce);
 };
 ASSERT_SIZE(TShipView, 0x68);

@@ -22,7 +22,7 @@ public:
                           CPoint& currentPoint,
                           bool commandFlag) override; // slot 0x68 0x574d10
 
-  class TScrollView* ownerView84;
+  class TScrollView* ownerView;
   short word88; // 0x88 — bounded-value component A (button span, seeded 0x12)
   short word8a; // 0x8a — bounded-value component B (frameHeight - 0x24)
   short word8c; // 0x8c — clamped current value (seeded 0x12)

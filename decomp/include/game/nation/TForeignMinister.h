@@ -49,19 +49,19 @@ public:
   virtual void ReplyToTradeOffer(short arg1, short arg2, short arg3, short resourceCode);
   virtual void EndTradePhase();
 
-  short interiorBidResource10;              // +0x10 — SetInteriorMinisterBid resource code
+  short interiorBidResource;                // +0x10 — SetInteriorMinisterBid resource code
   short interiorBidAmount;                  // +0x12 — SetInteriorMinisterBid amount
   short capabilityFlag14;                   // +0x14
   short capabilityFlag16;                   // +0x16
   short diplomacyPhaseCounter;              // +0x18 — reset after SetTradeBids
   short tradeBidRefreshInterval;            // +0x1a — turns before forced trade-bid refresh
-  short interiorOrderKind1c;                // +0x1c — passed to TInteriorMinister slot 0x1a
+  short interiorOrderKind;                  // +0x1c — passed to TInteriorMinister slot 0x1a
   short purchasePriorityByResource1e[0x11]; // +0x1e..0x3f — per-resource demand
   short preferredResourceSlots[4];          // +0x40..0x47 — top four resource codes
 
-  unsigned char field48;                  // +0x48 — cleared by the constructor
-  unsigned char tradePartnerEnabled49[7]; // +0x49..0x4f — per-major-nation trade status
-  short developmentGrantByNation[0x17];   // +0x50..0x7d — serialized grant accumulation
+  unsigned char field48;                // +0x48 — cleared by the constructor
+  unsigned char tradePartnerEnabled[7]; // +0x49..0x4f — per-major-nation trade status
+  short developmentGrantByNation[0x17]; // +0x50..0x7d — serialized grant accumulation
   unsigned char pad7e[2];
 };
 

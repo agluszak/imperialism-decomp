@@ -258,7 +258,7 @@ int ExpandedProvinceCount(const TMapMaker* mapMaker) {
 
 void FillExpandedTiles(ExpandedTileDto* tiles, const TMapMaker* mapMaker) {
   const TTerrainStateRecord* source =
-      static_cast<const TTerrainStateRecord*>(static_cast<const void*>(mapMaker->mapTileGrid08));
+      static_cast<const TTerrainStateRecord*>(static_cast<const void*>(mapMaker->mapTileGrid));
   for (int index = 0; index < kExpandedTileCount; ++index) {
     tiles[index].terrain_kind = static_cast<signed char>(source[index].GetTerrainKind());
     tiles[index].owner_nation = source[index].ownerNationTag04;
@@ -268,7 +268,7 @@ void FillExpandedTiles(ExpandedTileDto* tiles, const TMapMaker* mapMaker) {
 
 void FillExpandedProvinces(ExpandedProvinceDto* provinces, int count, const TMapMaker* mapMaker) {
   for (int index = 0; index < count; ++index) {
-    const Province& province = mapMaker->cityScoreTable0c[index];
+    const Province& province = mapMaker->cityScoreTable[index];
     provinces[index].owner_nation = province.ownerNationCode00;
     provinces[index].region_class = province.regionClassA3;
   }
@@ -276,7 +276,7 @@ void FillExpandedProvinces(ExpandedProvinceDto* provinces, int count, const TMap
 
 unsigned int HashTerrainTiles(const TMapMaker* mapMaker, bool ignoreWaterOwnership) {
   const TTerrainStateRecord* tiles =
-      static_cast<const TTerrainStateRecord*>(static_cast<const void*>(mapMaker->mapTileGrid08));
+      static_cast<const TTerrainStateRecord*>(static_cast<const void*>(mapMaker->mapTileGrid));
   unsigned int hash = 0x811c9dc5;
   for (int index = 0; index < kExpandedTileCount; ++index) {
     bool water = tiles[index].GetTerrainKind() == kStrategicTerrainWater;
@@ -299,7 +299,7 @@ void FillTerrainStage(TerrainStage& stage, const TMapMaker* mapMaker, unsigned i
                       bool ignoreWaterOwnership) {
   unsigned int counts[8] = {0, 0, 0, 0, 0, 0, 0, 0};
   const TTerrainStateRecord* tiles =
-      static_cast<const TTerrainStateRecord*>(static_cast<const void*>(mapMaker->mapTileGrid08));
+      static_cast<const TTerrainStateRecord*>(static_cast<const void*>(mapMaker->mapTileGrid));
   unsigned int riverTileCount = 0;
   for (int index = 0; index < kExpandedTileCount; ++index) {
     int terrain = static_cast<int>(tiles[index].GetTerrainKind());
@@ -524,7 +524,7 @@ void RuntimeCoarseMapOracleCaptureSeededAttempt(const TMapMaker* mapMaker, unsig
   attempt.draw_count = g_attemptDrawCount;
   attempt.map_lcg_after_seeding = mapLcg;
   FillGrid(attempt.pre_validation_grid, mapMaker);
-  attempt.city_region_next_id = mapMaker->cityRegionNextId1fc;
+  attempt.city_region_next_id = mapMaker->cityRegionNextId;
   FillCityRegionIds(attempt.city_region_ids, mapMaker);
   FillGroupMembers(attempt.group_members, mapMaker);
   attempt.has_continuous_ocean_column = -1;
@@ -556,7 +556,7 @@ void RuntimeCoarseMapOracleFinishAttempt(const TMapMaker* mapMaker, int errorChe
 void RuntimeCoarseMapOracleCaptureExpansion(const TMapMaker* mapMaker, unsigned int mapLcg) {
   g_currentCoarse.accepted_map_lcg = mapLcg;
   FillGrid(g_currentCoarse.accepted_grid, mapMaker);
-  g_currentCoarse.city_region_next_id = mapMaker->cityRegionNextId1fc;
+  g_currentCoarse.city_region_next_id = mapMaker->cityRegionNextId;
   FillCityRegionIds(g_currentCoarse.city_region_ids, mapMaker);
   FillGroupMembers(g_currentCoarse.group_members, mapMaker);
   FillExpandedTiles(g_currentCoarse.expanded_tiles, mapMaker);

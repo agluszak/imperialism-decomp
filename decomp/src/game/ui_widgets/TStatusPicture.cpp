@@ -181,7 +181,7 @@ void TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale() {
         break;
       case 6: {
         TCity* city = (nation == nullptr) ? nullptr : nation->city;
-        values94[i] = city->rollingItemProductionScore78;
+        values94[i] = city->rollingItemProductionScore;
         break;
       }
       case 7: {

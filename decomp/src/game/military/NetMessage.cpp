@@ -44,7 +44,7 @@ void TurnEvent2SyncPacket::Free() {
 
 // FUNCTION: IMPERIALISM 0x00544cd0
 void TurnEvent2SyncPacket::ApplyEncodedDeltaPayloadToBufferByMode(void* buffer) {
-  switch (deltaKind21) {
+  switch (deltaKind) {
   case 0:
     memcpy(buffer, payload.raw, messageLength - 0x24);
     break;

@@ -16,7 +16,7 @@ public:
 
   void SetSourceRectFromGridCell(int column, int row); // 0x577df0
 
-  TQuickDrawSurfaceContext* sourceSurface60; // 0x60 — ctor 0x45b000 zeroes it
-  RECT sourceRect;                           // 0x64
+  TQuickDrawSurfaceContext* sourceSurface; // 0x60 — ctor 0x45b000 zeroes it
+  RECT sourceRect;                         // 0x64
 };
 ASSERT_SIZE(TGWorldPartView, 0x74);

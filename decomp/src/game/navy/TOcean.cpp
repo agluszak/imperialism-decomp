@@ -464,7 +464,7 @@ TZone* TOcean::GetLinkedZoneForSeaTile(short seaTileIndex) {
       if (zone == 0) {
         return 0;
       }
-      if (static_cast<short>(zone->tileOrTerrainId0c) == seaTileIndex ||
+      if (static_cast<short>(zone->tileOrTerrainId) == seaTileIndex ||
           zone->activeTileIndex == seaTileIndex ||
           static_cast<TPortZone*>(zone)->portTileIndex == seaTileIndex) {
         return zone;
@@ -494,7 +494,7 @@ TZone* TOcean::FindPortZoneBySelectedTile(TCity* city) {
     if (portZone == 0) {
       return 0;
     }
-    if (static_cast<short>(portZone->tileOrTerrainId0c) == selectedTileId) {
+    if (static_cast<short>(portZone->tileOrTerrainId) == selectedTileId) {
       return portZone;
     }
     if (portZone->activeTileIndex == selectedTileId) {
@@ -564,7 +564,7 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
   signed char nationSeed = terrainTable[tileIndex].ownerNationTag04;
 
   TZone* existingZone = TZone::GetFirstPortZone();
-  while (existingZone != 0 && static_cast<short>(existingZone->tileOrTerrainId0c) != nTileIndex &&
+  while (existingZone != 0 && static_cast<short>(existingZone->tileOrTerrainId) != nTileIndex &&
          existingZone->activeTileIndex != nTileIndex &&
          static_cast<TPortZone*>(existingZone)->portTileIndex != nTileIndex) {
     existingZone = existingZone->GetNextPortZone();
@@ -582,7 +582,7 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
   }
 
   portZone->SetMapActionContextTargetTileAndRefreshMarkers(static_cast<int>(nationSeed), -1);
-  portZone->tileOrTerrainId0c = tileIndex;
+  portZone->tileOrTerrainId = tileIndex;
   portZone->GenerateZoneStatusCodeIfUnset();
   portZone->NameThyself(0, 0);
 
@@ -622,7 +622,7 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
   if (seaTileClass == kMapTileActionStateAnchor || seaTileClass == kMapTileActionStateDockedFleet) {
     linkedContext = TZone::GetFirstPortZone();
     while (linkedContext != 0 &&
-           static_cast<short>(linkedContext->tileOrTerrainId0c) != bestSeaTile &&
+           static_cast<short>(linkedContext->tileOrTerrainId) != bestSeaTile &&
            linkedContext->activeTileIndex != bestSeaTile &&
            static_cast<TPortZone*>(linkedContext)->portTileIndex != bestSeaTile) {
       linkedContext = linkedContext->GetNextPortZone();
@@ -656,7 +656,7 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
   }
 
   g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(bestSeaTile, kMapTileActionStateAnchor);
-  portZone->tileOrTerrainId0c = static_cast<int>(bestSeaTile);
+  portZone->tileOrTerrainId = static_cast<int>(bestSeaTile);
   portZone->activeTileIndex = portZone->FindNearestActiveSeaContextTileFromOffset216();
 }
 
@@ -667,7 +667,7 @@ void TOcean::RemovePortZoneByTile(short nTileIndex) {
     zone = zone->prev18;
   }
   while (zone != 0) {
-    if (static_cast<short>(zone->tileOrTerrainId0c) == nTileIndex ||
+    if (static_cast<short>(zone->tileOrTerrainId) == nTileIndex ||
         zone->activeTileIndex == nTileIndex ||
         static_cast<TPortZone*>(zone)->portTileIndex == nTileIndex) {
       zone->Free();
@@ -709,8 +709,8 @@ void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
     g_pViewMgr->mapUberPictureF0->NoticeTile(tileNotifyIndex);
   }
 
-  if (selectedTaskForce14 == entry) {
-    selectedTaskForce14 = nullptr;
+  if (selectedTaskForce == entry) {
+    selectedTaskForce = nullptr;
   }
 }
 
@@ -720,8 +720,8 @@ void TOcean::ForgetForce(TTaskForce* entry) {
   if (this == 0) {
     return;
   }
-  if (selectedTaskForce14 == entry) {
-    selectedTaskForce14 = 0;
+  if (selectedTaskForce == entry) {
+    selectedTaskForce = 0;
   }
   short nation = g_pSimMgr->GetPlayerCountry();
   if (entry->nation != nation) {
@@ -787,27 +787,27 @@ TZone* TOcean::FindMapActionContextContainingNodeByIndex(int cityRecordIndex) {
 
 // FUNCTION: IMPERIALISM 0x00564600
 TTaskForce* TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* pMapOrderContextZone) {
-  if (selectedTaskForce14 != nullptr && selectedTaskForce14->location != pMapOrderContextZone) {
-    selectedTaskForce14->RegainVirginity(g_pSimMgr->GetPlayerCountry(), pMapOrderContextZone);
+  if (selectedTaskForce != nullptr && selectedTaskForce->location != pMapOrderContextZone) {
+    selectedTaskForce->RegainVirginity(g_pSimMgr->GetPlayerCountry(), pMapOrderContextZone);
     if (pMapOrderContextZone == nullptr) {
-      TTaskForce* previous = selectedTaskForce14;
-      selectedTaskForce14 = nullptr;
+      TTaskForce* previous = selectedTaskForce;
+      selectedTaskForce = nullptr;
       previous->Free();
     }
   }
-  if (selectedTaskForce14 == nullptr) {
+  if (selectedTaskForce == nullptr) {
     if (pMapOrderContextZone != nullptr) {
-      selectedTaskForce14 = pMapOrderContextZone->CreateTaskForceFromNavyOrdersForNationIfEligible(
+      selectedTaskForce = pMapOrderContextZone->CreateTaskForceFromNavyOrdersForNationIfEligible(
           g_pSimMgr->GetPlayerCountry());
-      return selectedTaskForce14;
+      return selectedTaskForce;
     }
   } else if (pMapOrderContextZone != nullptr) {
-    selectedTaskForce14->MaxOut(0);
+    selectedTaskForce->MaxOut(0);
   }
-  return selectedTaskForce14;
+  return selectedTaskForce;
 }
 
 // FUNCTION: IMPERIALISM 0x005979f0
 TTaskForce* GetActiveMapOrderEntry() {
-  return g_pActiveMapOrderContext->selectedTaskForce14;
+  return g_pActiveMapOrderContext->selectedTaskForce;
 }

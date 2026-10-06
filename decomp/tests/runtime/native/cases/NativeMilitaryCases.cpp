@@ -268,9 +268,9 @@ JSON_Value* CaptureArmyBattleSnapshot(TArmyBattle* battle) {
       battle->selectedUnit1c != 0
           ? static_cast<TArmyTacUnit*>(battle->selectedUnit1c)->sourceUnit38->persistentUnitId20
           : -1);
-  snapshot.Set("current_side", battle->currentSideC);
+  snapshot.Set("current_side", battle->currentSide);
   snapshot.Set("round", battle->roundCounter);
-  snapshot.Set("outcome", battle->battleOutcome44);
+  snapshot.Set("outcome", battle->battleOutcome);
   snapshot.Set("units", unitArray.Release());
   for (index = 0; index < 8; ++index) {
     fortStrength.Add(battle->fortStrengthPoints[index]);
@@ -289,8 +289,8 @@ void StopActiveNationArmyPlayerForInput(TArmyBattle* battle) {
 
 bool PumpArmyBattleToActiveNationInput(TArmyBattle* battle) {
   int guard = 20000;
-  while (battle->battleOutcome44 == kTacticalBattleInProgress) {
-    TArmyPlayer* player = static_cast<TArmyPlayer*>(battle->currentSideC == 0 ? battle->players[0]
+  while (battle->battleOutcome == kTacticalBattleInProgress) {
+    TArmyPlayer* player = static_cast<TArmyPlayer*>(battle->currentSide == 0 ? battle->players[0]
                                                                               : battle->players[1]);
     if (battle->pendingEndOfActionFlag != 0 && player->nationIndex1C == ActiveNationSlot() &&
         player->notWatchedFlag == 0) {
@@ -311,10 +311,10 @@ bool AutoArmyBattleToCommit(TArmyBattle* battle) {
   ourPlayer->notWatchedFlag = 1;
   enemyPlayer->notWatchedFlag = 1;
   if (battle->pendingEndOfActionFlag != 0) {
-    TArmyPlayer* current = battle->currentSideC == 0 ? ourPlayer : enemyPlayer;
+    TArmyPlayer* current = battle->currentSide == 0 ? ourPlayer : enemyPlayer;
     current->NextMove();
   }
-  while (battle->battleOutcome44 == kTacticalBattleInProgress) {
+  while (battle->battleOutcome == kTacticalBattleInProgress) {
     if (guard-- <= 0) {
       return false;
     }
@@ -353,8 +353,8 @@ void CollectStackUnitIds(TArmyStack* stack, JsonArray* ids) {
 // a battle view. Returns 0 when no battle is active.
 JSON_Value* CaptureActiveBattleJson() {
   TArmyMgr* army = g_pMapContextActionManager;
-  TArmyStack* ours = army->ourStackBattle39c;
-  TArmyStack* enemy = army->enemyStackBattle3a0;
+  TArmyStack* ours = army->ourStackBattle;
+  TArmyStack* enemy = army->enemyStackBattle;
   JsonObject result;
   JsonArray attackerUnits;
   JsonArray defenderUnits;
@@ -567,20 +567,20 @@ void ProbeNavyDeployTiles(TNavyBattle* battle, TTacticalUnit* unit, JsonArray* t
   savedReady = player->sideReadyFlag;
   savedCursor = player->cursorIndex;
   savedSelected = battle->selectedUnit1c;
-  savedSide = battle->currentSideC;
-  savedLive = battle->battleLive10;
+  savedSide = battle->currentSide;
+  savedLive = battle->battleLive;
   for (tile = 0; tile < battle->tacticalTileCount; ++tile) {
-    occupant = battle->tileGrid4[tile].occupant4;
+    occupant = battle->tileGrid[tile].occupant4;
     battle->DeployUnit(unit, tile);
     if (unit->tileIndex8 == tile) {
       tiles->Add(tile);
       unit->tileIndex8 = savedTile;
-      battle->tileGrid4[tile].occupant4 = occupant;
+      battle->tileGrid[tile].occupant4 = occupant;
       player->sideReadyFlag = savedReady;
       player->cursorIndex = savedCursor;
       battle->selectedUnit1c = savedSelected;
-      battle->currentSideC = savedSide;
-      battle->battleLive10 = savedLive;
+      battle->currentSide = savedSide;
+      battle->battleLive = savedLive;
     }
   }
 }
@@ -605,13 +605,13 @@ JSON_Value* CaptureNavyTacticalInit(TTaskForce* ourForce, TTaskForce* enemyForce
   enemyPlayer->secondaryList = new TList();
   battle->InitTacticalBattle(ourPlayer, enemyPlayer);
 
-  side0Unit = static_cast<TTacticalUnit*>(ourPlayer->unitList4->GetEntryByOrdinal(1));
-  side1Unit = static_cast<TTacticalUnit*>(enemyPlayer->unitList4->GetEntryByOrdinal(1));
+  side0Unit = static_cast<TTacticalUnit*>(ourPlayer->unitList->GetEntryByOrdinal(1));
+  side1Unit = static_cast<TTacticalUnit*>(enemyPlayer->unitList->GetEntryByOrdinal(1));
   ProbeNavyDeployTiles(battle, side0Unit, &side0Tiles);
   ProbeNavyDeployTiles(battle, side1Unit, &side1Tiles);
 
   snapshot.Set("column_count", battle->battlefieldColumnCount);
-  snapshot.Set("current_side", battle->currentSideC);
+  snapshot.Set("current_side", battle->currentSide);
   snapshot.Set("side0_nation", ourPlayer->nationIndex1C);
   snapshot.Set("side1_nation", enemyPlayer->nationIndex1C);
   snapshot.Set("side0_selected", side0Unit != 0 ? static_cast<int>(side0Unit->selectedFlag) : 0);
@@ -1075,7 +1075,7 @@ RuntimeActionResult RunMilitaryPhaseLandCombat(NativeTransition& transition) {
   g_pMapContextActionManager->DoCombatMoves();
   TArmyBattle* battle = g_pMapContextActionManager->activeBattleView;
   int guard = 20000;
-  while (battle != 0 && battle->battleOutcome44 == kTacticalBattleInProgress) {
+  while (battle != 0 && battle->battleOutcome == kTacticalBattleInProgress) {
     if (guard-- <= 0) {
       return RuntimeActionResult::Failure("tactical auto did not terminate");
     }
@@ -1162,7 +1162,7 @@ RuntimeActionResult RunMilitaryPhaseLandRetreat(NativeTransition& transition) {
   if (!PumpArmyBattleToActiveNationInput(battle)) {
     return RuntimeActionResult::Failure("battle did not reach active-nation input");
   }
-  TArmyPlayer* player = static_cast<TArmyPlayer*>(battle->currentSideC == 0 ? battle->players[0]
+  TArmyPlayer* player = static_cast<TArmyPlayer*>(battle->currentSide == 0 ? battle->players[0]
                                                                             : battle->players[1]);
   player->fieldF = 1;
   player->notWatchedFlag = 1;
@@ -1378,7 +1378,7 @@ RuntimeActionResult RunAutoResolveLandBattle(NativeTransition& transition) {
   }
 
   guard = 20000;
-  while (battle->battleOutcome44 == kTacticalBattleInProgress) {
+  while (battle->battleOutcome == kTacticalBattleInProgress) {
     if (guard-- <= 0) {
       return RuntimeActionResult::Failure("tactical auto did not terminate");
     }
@@ -1481,7 +1481,7 @@ RuntimeActionResult RunInteractiveArmyBattleMove(NativeTransition& transition) {
     return RuntimeActionResult::Failure("tactical battle did not reach active-nation input");
   }
   snapshots.Add(CaptureArmyBattleSnapshot(battle));
-  while (!reactionStopped && battle->battleOutcome44 == kTacticalBattleInProgress &&
+  while (!reactionStopped && battle->battleOutcome == kTacticalBattleInProgress &&
          inputGuard-- > 0) {
     int target = -1;
     int bestDistance = 9999;
@@ -1489,12 +1489,12 @@ RuntimeActionResult RunInteractiveArmyBattleMove(NativeTransition& transition) {
     for (tile = 0; tile < battle->tacticalTileCount; ++tile) {
       int enemyTile;
       int distance;
-      if (battle->tileMoveCostArray[tile] <= 0 || battle->tileGrid4[tile].occupant4 != 0) {
+      if (battle->tileMoveCostArray[tile] <= 0 || battle->tileGrid[tile].occupant4 != 0) {
         continue;
       }
       distance = 9999;
       for (enemyTile = 0; enemyTile < battle->tacticalTileCount; ++enemyTile) {
-        TTacticalUnit* occupant = battle->tileGrid4[enemyTile].occupant4;
+        TTacticalUnit* occupant = battle->tileGrid[enemyTile].occupant4;
         if (occupant != 0 && occupant->side20 != moving->side20) {
           int candidate = ComputeHexTileDistanceFromIndices(tile, enemyTile);
           if (candidate < distance) {
@@ -1574,7 +1574,7 @@ RuntimeActionResult RunInteractiveArmyBattleAttack(NativeTransition& transition,
     return RuntimeActionResult::Failure("battle did not reach active-nation input");
   }
   snapshots.Add(CaptureArmyBattleSnapshot(battle));
-  while (!attacked && battle->battleOutcome44 == kTacticalBattleInProgress && guard-- > 0) {
+  while (!attacked && battle->battleOutcome == kTacticalBattleInProgress && guard-- > 0) {
     int target = -1;
     int tile;
     for (tile = 0; tile < battle->tacticalTileCount; ++tile) {
@@ -1600,11 +1600,11 @@ RuntimeActionResult RunInteractiveArmyBattleAttack(NativeTransition& transition,
       for (tile = 0; tile < battle->tacticalTileCount; ++tile) {
         int enemyTile;
         int distance = 9999;
-        if (battle->tileMoveCostArray[tile] <= 0 || battle->tileGrid4[tile].occupant4 != 0) {
+        if (battle->tileMoveCostArray[tile] <= 0 || battle->tileGrid[tile].occupant4 != 0) {
           continue;
         }
         for (enemyTile = 0; enemyTile < battle->tacticalTileCount; ++enemyTile) {
-          TTacticalUnit* occupant = battle->tileGrid4[enemyTile].occupant4;
+          TTacticalUnit* occupant = battle->tileGrid[enemyTile].occupant4;
           if (occupant != 0 && occupant->side20 != moving->side20) {
             int candidate = ComputeHexTileDistanceFromIndices(tile, enemyTile);
             if (candidate < distance)
@@ -1686,7 +1686,7 @@ RuntimeActionResult RunInteractiveArmyBattleRetreat(NativeTransition& transition
     return RuntimeActionResult::Failure("battle did not reach active-nation input");
   }
   JSON_Value* initial = CaptureArmyBattleSnapshot(battle);
-  TArmyPlayer* player = static_cast<TArmyPlayer*>(battle->currentSideC == 0 ? battle->players[0]
+  TArmyPlayer* player = static_cast<TArmyPlayer*>(battle->currentSide == 0 ? battle->players[0]
                                                                             : battle->players[1]);
   player->fieldF = 1;
   player->notWatchedFlag = 1;
@@ -1877,7 +1877,7 @@ static TAutoGreatPower* ConfigureAiNavalDevelopmentPressure(short* nationSlotOut
   }
   TControlSeaZoneMission* navyMission = new TControlSeaZoneMission(g_pMapActionContextListHead);
   navyMission->InitializeMissionWithNationIdAndResetPathMarker(nationSlot);
-  navyMission->navyState28 = 2;
+  navyMission->navyState = 2;
   navyMission->requiredShipEquipageByCategory[0] = 0.0f;
   navyMission->requiredShipEquipageByCategory[1] = 0.0f;
   navyMission->requiredShipEquipageByCategory[2] = 0.0f;
@@ -2117,7 +2117,7 @@ RuntimeActionResult RunRecomputeNationOrderPriorityMetrics(NativeTransition& tra
       TAutoGreatPower* autoPower = static_cast<TAutoGreatPower*>(power);
       expansionPressure.Add(FloatBits(autoPower->expansionPressurePerCompatibleRegion));
       unitDivergence.Add(FloatBits(autoPower->averageUnitDivergencePerOwnedRegion));
-      missionPressure.Add(FloatBits(autoPower->activeMissionPressureAverageB6c));
+      missionPressure.Add(FloatBits(autoPower->activeMissionPressureAverage));
     } else {
       expansionPressure.Add(0U);
       unitDivergence.Add(0U);

@@ -248,13 +248,13 @@ TPicture* CivilianPortrait(TCivToolbar* toolbar) {
 short StrategicMapScreen::ToolbarStatusGlyph(int tag) const {
   TView* button = mapView != 0 ? mapView->ResolveControlByTag(tag) : 0;
   return button != 0 && button->IsKindOf(RUNTIME_CLASS(TPicture)) != 0
-             ? static_cast<TPicture*>(button)->glyphBase84
+             ? static_cast<TPicture*>(button)->glyphBase
              : -1;
 }
 
 short StrategicMapScreen::CivilianPortraitGlyph() const {
   TPicture* portrait = CivilianPortrait(CivilianToolbar());
-  return portrait != 0 ? portrait->glyphBase84 : -1;
+  return portrait != 0 ? portrait->glyphBase : -1;
 }
 
 bool StrategicMapScreen::CivilianPortraitIsLoaded() const {
@@ -446,13 +446,13 @@ RuntimeActionResult StrategicMapScreen::SelectNavyZone(TZone* zone) {
 bool StrategicMapScreen::NavyMenuIsActiveForZone(TZone* zone) const {
   return mapView != 0 && mapView->activeUnitCategoryIndex == kNavyInteractionMode &&
          mapView->orderEntryContext == zone && g_pActiveMapOrderContext != 0 &&
-         g_pActiveMapOrderContext->selectedTaskForce14 != 0 &&
-         g_pActiveMapOrderContext->selectedTaskForce14->location == zone;
+         g_pActiveMapOrderContext->selectedTaskForce != 0 &&
+         g_pActiveMapOrderContext->selectedTaskForce->location == zone;
 }
 
 bool StrategicMapScreen::NavyMenuIsActiveForForce(TTaskForce* force) const {
   return mapView != 0 && mapView->activeUnitCategoryIndex == kNavyInteractionMode &&
-         g_pActiveMapOrderContext != 0 && g_pActiveMapOrderContext->selectedTaskForce14 == force;
+         g_pActiveMapOrderContext != 0 && g_pActiveMapOrderContext->selectedTaskForce == force;
 }
 
 short StrategicMapScreen::NavyClassAvailableCount(short navyClass) const {
@@ -496,7 +496,7 @@ RuntimeActionResult StrategicMapScreen::OpenNavyRoster() {
   if (mapView == 0) {
     return InvalidScreen("open the navy roster");
   }
-  if (g_pActiveMapOrderContext == 0 || g_pActiveMapOrderContext->selectedTaskForce14 == 0) {
+  if (g_pActiveMapOrderContext == 0 || g_pActiveMapOrderContext->selectedTaskForce == 0) {
     return ScreenFailure("open the navy roster", CString("no selected task force"));
   }
   RuntimeActionResult armed = ModalScreen::PreArmDismiss(RuntimeControlSelector(kControlTagOkay));

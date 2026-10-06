@@ -105,7 +105,7 @@ void TGrantsView::Setup() {
   SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText_00654ec8), documentCluster);
   documentCluster->SetSelectedChildTagAndRefresh(kControlTagDoc0); // 'doc0'
   diplomacyMapView->selectedGrantRow = 0;
-  diplomacyMapView->actionCodeBC = kDipActionOneTimeGrant;
+  diplomacyMapView->actionCode = kDipActionOneTimeGrant;
 }
 
 // FUNCTION: IMPERIALISM 0x004f8650
@@ -114,9 +114,9 @@ void TGrantsView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
     short tagOffset = static_cast<short>(sourceHandler->controlTag - 0x6330);
     TDiplomacyMapView* mapView = diplomacyMapView;
     if (tagOffset & 1) {
-      mapView->actionCodeBC = kDipActionRecurringGrant;
+      mapView->actionCode = kDipActionRecurringGrant;
     } else {
-      mapView->actionCodeBC = kDipActionOneTimeGrant;
+      mapView->actionCode = kDipActionOneTimeGrant;
     }
     mapView = diplomacyMapView;
     mapView->selectedGrantRow = static_cast<short>(tagOffset / 2);

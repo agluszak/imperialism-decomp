@@ -8,9 +8,9 @@ class TZone;
 class TBlockadePortMission : public TControlSeaZoneMission {
   DECLARE_SERIAL(TBlockadePortMission)
 public:
-  TZone* portZoneContext3c; // +0x3c blockade-target port zone (deserialized by node id)
+  TZone* portZoneContext; // +0x3c blockade-target port zone (deserialized by node id)
 
-  TBlockadePortMission() : TControlSeaZoneMission(), portZoneContext3c(nullptr) {}
+  TBlockadePortMission() : TControlSeaZoneMission(), portZoneContext(nullptr) {}
 
   TBlockadePortMission(TZone* context);
   virtual ~TBlockadePortMission() override;

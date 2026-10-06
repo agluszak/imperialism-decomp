@@ -16,7 +16,7 @@ TRadioPictureButton::~TRadioPictureButton() {}
 void TRadioPictureButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   switch (commandId) {
   case 0xc:
-    if (controlState64 == 0) {
+    if (controlState == 0) {
       SetState(true, 0);
     }
     TControl::DoEvent(commandId, sourceHandler, event);

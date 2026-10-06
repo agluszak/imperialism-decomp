@@ -26,18 +26,18 @@ TArmyCheckBox::TArmyCheckBox(TView* panel, int* offsetLayout, int* sizeLayout, i
 
 // FUNCTION: IMPERIALISM 0x004aa030
 void TArmyCheckBox::CheckTheLook(unsigned char drawImmediate) {
-  if (isOn84 == 0 && controlState64 == 0) {
-    if (checkedFrameOffsetApplied8c != 0) {
+  if (isOn == 0 && controlState == 0) {
+    if (checkedFrameOffsetApplied != 0) {
       iconStripHorizontalOffset -= frameWidth;
-      checkedFrameOffsetApplied8c = 0;
+      checkedFrameOffsetApplied = 0;
       RefreshControl();
       if (drawImmediate != 0) {
         DrawImmediate();
       }
     }
-  } else if (checkedFrameOffsetApplied8c == 0) {
+  } else if (checkedFrameOffsetApplied == 0) {
     iconStripHorizontalOffset += frameWidth;
-    checkedFrameOffsetApplied8c = 1;
+    checkedFrameOffsetApplied = 1;
     RefreshControl();
     if (drawImmediate != 0) {
       DrawImmediate();
@@ -91,7 +91,7 @@ void TArmyCheckBox::Draw(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x004aa280
 void TArmyCheckBox::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == kControlCommandHiliteToggle) {
-    if ((GetAsyncKeyState(0x11) & 0x8000) != 0 || isOn84 != 0) {
+    if ((GetAsyncKeyState(0x11) & 0x8000) != 0 || isOn != 0) {
       Toggle(true);
     }
   }
@@ -106,21 +106,21 @@ void TArmyCheckBox::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x004aa310
 void TArmyCheckBox::HiliteState(unsigned char hilited, bool drawImmediate) {
-  if (controlState64 != hilited) {
-    controlState64 = hilited;
+  if (controlState != hilited) {
+    controlState = hilited;
     CheckTheLook(drawImmediate);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004aa340
 unsigned char TArmyCheckBox::IsOn() {
-  return isOn84;
+  return isOn;
 }
 
 // FUNCTION: IMPERIALISM 0x004aa360
 void TArmyCheckBox::SetState(unsigned char on, unsigned char drawImmediate) {
-  if (isOn84 != on) {
-    isOn84 = on;
+  if (isOn != on) {
+    isOn = on;
     CheckTheLook(drawImmediate);
   }
 }

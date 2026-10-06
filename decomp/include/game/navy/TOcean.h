@@ -14,7 +14,7 @@ class TOcean : public TObject {
 public:
   TOcean()
       : TObject(), nationCount(0), contextArray(0), routeNodeCount(0), routeSegments(0),
-        selectedTaskForce14(0) {}
+        selectedTaskForce(0) {}
   DECLARE_DYNCREATE(TOcean)
   virtual ~TOcean() override;                      // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x5628f0
@@ -24,8 +24,8 @@ public:
   TZone* contextArray;                             // +0x08
   short routeNodeCount;                            // +0x0c number of route records in routeSegments
   char pad0e[2];                                   // +0x0e
-  CRect* routeSegments; // +0x10 heap buffer of routeNodeCount map-route line segments
-  TTaskForce* selectedTaskForce14; // +0x14
+  CRect* routeSegments;          // +0x10 heap buffer of routeNodeCount map-route line segments
+  TTaskForce* selectedTaskForce; // +0x14
 
   // Reallocate routeSegments to hold `count` 0x10-byte route records. 0x0052e7b0.
   void AllocateRouteNodeStateBufferByCount(short count);

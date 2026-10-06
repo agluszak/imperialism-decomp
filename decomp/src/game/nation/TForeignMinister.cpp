@@ -48,18 +48,18 @@ IMPLEMENT_DYNCREATE(TForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x0052f070
 TForeignMinister::TForeignMinister() : TMinister() {
-  memset(tradePartnerEnabled49, 1, sizeof(tradePartnerEnabled49));
+  memset(tradePartnerEnabled, 1, sizeof(tradePartnerEnabled));
   memset(developmentGrantByNation, 0, sizeof(developmentGrantByNation));
   capabilityFlag16 = 0;
   field48 = 0;
   tradeBidRefreshInterval = 5;
-  interiorOrderKind1c = 2;
+  interiorOrderKind = 2;
 }
 
 // FUNCTION: IMPERIALISM 0x0052f130
 void TForeignMinister::IForeignMinister(TGreatPower* owner) {
   this->IMinister(owner);
-  interiorBidResource10 = kNoInteriorBidResource;
+  interiorBidResource = kNoInteriorBidResource;
   interiorBidAmount = 0;
   capabilityFlag14 = 0;
   diplomacyPhaseCounter = 0;
@@ -73,19 +73,19 @@ void TForeignMinister::IForeignMinister(TGreatPower* owner) {
 void TForeignMinister::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   stream->ReadBytes(&skillIndex, 2);
-  stream->ReadBytes(&interiorBidResource10, 2);
+  stream->ReadBytes(&interiorBidResource, 2);
   stream->ReadBytes(&interiorBidAmount, 2);
   stream->ReadBytes(&capabilityFlag14, 2);
   stream->ReadBytes(&capabilityFlag16, 2);
   stream->ReadBytes(&diplomacyPhaseCounter, 2);
   stream->ReadBytes(&tradeBidRefreshInterval, 2);
-  stream->ReadBytes(&interiorOrderKind1c, 2);
+  stream->ReadBytes(&interiorOrderKind, 2);
   stream->ReadBytes(purchasePriorityByResource1e, sizeof(purchasePriorityByResource1e));
   SwapShortArrayBytes(purchasePriorityByResource1e, 0x11);
   stream->ReadBytes(preferredResourceSlots, sizeof(preferredResourceSlots));
   SwapShortArrayBytes(preferredResourceSlots, 4);
   stream->ReadBytes(&field48, 1);
-  stream->ReadBytes(tradePartnerEnabled49, sizeof(tradePartnerEnabled49));
+  stream->ReadBytes(tradePartnerEnabled, sizeof(tradePartnerEnabled));
   if (g_nSaveFormatVersion >= 0x15) {
     stream->ReadBytes(developmentGrantByNation, sizeof(developmentGrantByNation));
     SwapShortArrayBytes(developmentGrantByNation, 0x17);
@@ -96,17 +96,17 @@ void TForeignMinister::ReadFrom(TStream* stream) {
 void TForeignMinister::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
   stream->WriteBytes(&skillIndex, 2);
-  stream->WriteBytes(&interiorBidResource10, 2);
+  stream->WriteBytes(&interiorBidResource, 2);
   stream->WriteBytes(&interiorBidAmount, 2);
   stream->WriteBytes(&capabilityFlag14, 2);
   stream->WriteBytes(&capabilityFlag16, 2);
   stream->WriteBytes(&diplomacyPhaseCounter, 2);
   stream->WriteBytes(&tradeBidRefreshInterval, 2);
-  stream->WriteBytes(&interiorOrderKind1c, 2);
+  stream->WriteBytes(&interiorOrderKind, 2);
   WriteShortArrayElems(stream, purchasePriorityByResource1e, 0x11);
   WriteShortArrayElems(stream, preferredResourceSlots, 4);
   stream->WriteBytes(&field48, 1);
-  stream->WriteBytes(tradePartnerEnabled49, sizeof(tradePartnerEnabled49));
+  stream->WriteBytes(tradePartnerEnabled, sizeof(tradePartnerEnabled));
   WriteShortArrayElems(stream, developmentGrantByNation, 0x17);
 }
 
@@ -126,7 +126,7 @@ short TForeignMinister::GetRankingCriterionForGP(short nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x0052f4b0
 void TForeignMinister::InitializeTradeStatus() {
-  memset(this->tradePartnerEnabled49, 1, 7);
+  memset(this->tradePartnerEnabled, 1, 7);
   TGreatPower* ownerGP = this->greatPower;
   this->capabilityFlag16 = 0;
   if (ownerGP->treasuryValue10 < 0) {
@@ -147,14 +147,14 @@ void TForeignMinister::PriceCheck() {
 
 // FUNCTION: IMPERIALISM 0x0052f540
 void TForeignMinister::SetInteriorMinisterBid(short primary, short secondary) {
-  this->interiorBidResource10 = primary;
+  this->interiorBidResource = primary;
   this->interiorBidAmount = secondary;
 }
 
 // FUNCTION: IMPERIALISM 0x0052f570
 void TForeignMinister::SetBuyPriorities() {
   TIndexAndRankList* priorities = new TIndexAndRankList();
-  priorities->recordSize14 = sizeof(MinisterPriorityEntry);
+  priorities->recordSize = sizeof(MinisterPriorityEntry);
 
   for (short resourceCode = 0; resourceCode < kResourceManufacturedEnd; ++resourceCode) {
     if (purchasePriorityByResource1e[resourceCode] != 0) {
@@ -214,13 +214,13 @@ int TForeignMinister::WeNeedMoney() {
 void TForeignMinister::ArrangeMaterialsOffers() {
   TGreatPower* owner = this->greatPower;
 
-  if (interiorBidResource10 != kNoInteriorBidResource) {
+  if (interiorBidResource != kNoInteriorBidResource) {
     TSortedByRelationshipList* relationshipList = new TSortedByRelationshipList();
     relationshipList->ISortedByRelationshipList();
     g_pDiplomacyTurnStateManager->BuildRelationshipList(owner->nationSlot, 1, relationshipList);
     short* nationSlotPtr = static_cast<short*>(
         relationshipList->GetPtrListEntryByOneBasedIndex(relationshipList->GetSize()));
-    g_apNationStates[*nationSlotPtr]->SetTradeOffersFor(interiorBidResource10, owner->nationSlot);
+    g_apNationStates[*nationSlotPtr]->SetTradeOffersFor(interiorBidResource, owner->nationSlot);
     if (relationshipList != 0) {
       relationshipList->ReleasePtrList();
     }
@@ -260,12 +260,12 @@ void TForeignMinister::SetTradeBids() {
     }
   }
   if (skipMissionSlot1A == 0) {
-    owner->interiorMinister->PleaseBuildShip(interiorOrderKind1c);
+    owner->interiorMinister->PleaseBuildShip(interiorOrderKind);
     diplomacyPhaseCounter = 0;
   }
   this->SetBuyPriorities();
-  if (interiorBidResource10 != kNoInteriorBidResource) {
-    short idx = interiorBidResource10;
+  if (interiorBidResource != kNoInteriorBidResource) {
+    short idx = interiorBidResource;
     purchasePriorityByResource1e[idx] = interiorBidAmount;
     owner->SetItemPotentials(idx, static_cast<short>(-1));
   }
@@ -320,7 +320,7 @@ void TForeignMinister::DoUsualSubsidyRule() {
 void TForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3, short resourceCode) {
   TGreatPower* owner = this->greatPower;
   unsigned int dispatchAmount = static_cast<unsigned int>(arg2);
-  if (resourceCode == interiorBidResource10) {
+  if (resourceCode == interiorBidResource) {
     if (interiorBidAmount < static_cast<short>(dispatchAmount)) {
       dispatchAmount = static_cast<unsigned short>(interiorBidAmount);
     }
@@ -356,7 +356,7 @@ void TForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3, sho
 void TForeignMinister::EndTradePhase() {
   interiorBidAmount = 0;
   capabilityFlag14 = 0;
-  interiorBidResource10 = kNoInteriorBidResource;
+  interiorBidResource = kNoInteriorBidResource;
   TGreatPower* owner = this->greatPower;
   if (owner->GetMerchantCapacity() == 0) {
     diplomacyPhaseCounter = static_cast<short>(diplomacyPhaseCounter + 1);
@@ -605,7 +605,7 @@ void TForeignMinister::DoProposeTreaties() {
     for (int regionIndex = 1; regionIndex < targetRegions->GetSize() && !targetOwnsFormerProvince;
          ++regionIndex) {
       int regionId = targetRegions->At(regionIndex);
-      if (g_pGlobalMapState->cityScoreTable[regionId].formerOwnerNationCode01 ==
+      if (g_pGlobalMapState->cityScoreTable[regionId].formerOwnerNationCode ==
           greatPower->nationSlot) {
         targetOwnsFormerProvince = true;
       }
@@ -618,8 +618,7 @@ void TForeignMinister::DoProposeTreaties() {
     TLongintList* ownerRegions = greatPower->ownedRegionList;
     for (int ownerRegionIndex = 1; ownerRegionIndex < ownerRegions->GetSize(); ++ownerRegionIndex) {
       int regionId = ownerRegions->At(ownerRegionIndex);
-      if (g_pGlobalMapState->cityScoreTable[regionId].formerOwnerNationCode01 ==
-          policyTargetNation) {
+      if (g_pGlobalMapState->cityScoreTable[regionId].formerOwnerNationCode == policyTargetNation) {
         ++recoveredProvinceCount;
       }
     }

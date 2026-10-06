@@ -16,6 +16,6 @@ public:
 
   TView* SelectSwapperItemByTag(int tag); // 0x004ac6c0
 
-  int selectedTag60; // 0x60 — currently displayed child's controlTag
+  int selectedTag; // 0x60 — currently displayed child's controlTag
 };
 ASSERT_SIZE(TSwapperDaddyView, 0x64);

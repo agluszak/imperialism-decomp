@@ -66,8 +66,8 @@ void TSortedPtrList::InsertCopiedRecordSortedByComparator(void* record) {
   if (entry != 0) {
     do {
       if (Compare(record, entry) != 1) {
-        unsigned char* copy = new unsigned char[recordSize14];
-        memcpy(copy, record, recordSize14);
+        unsigned char* copy = new unsigned char[recordSize];
+        memcpy(copy, record, recordSize);
         InsertAt(ordinal - 1, copy, 1);
         return;
       }
@@ -80,15 +80,15 @@ void TSortedPtrList::InsertCopiedRecordSortedByComparator(void* record) {
 
 // FUNCTION: IMPERIALISM 0x004882c0
 void TSortedPtrList::AppendCopiedRecordToPtrList(void* record) {
-  unsigned char* copy = new unsigned char[recordSize14];
-  memcpy(copy, record, recordSize14);
+  unsigned char* copy = new unsigned char[recordSize];
+  memcpy(copy, record, recordSize);
   SetAtGrow(m_nSize, copy);
 }
 
 // FUNCTION: IMPERIALISM 0x00488310
 void TSortedPtrList::InsertCopiedRecordAtFrontOfPtrList(void* record) {
-  unsigned char* copy = new unsigned char[recordSize14];
-  memcpy(copy, record, recordSize14);
+  unsigned char* copy = new unsigned char[recordSize];
+  memcpy(copy, record, recordSize);
   InsertAt(0, copy, 1);
 }
 
@@ -108,11 +108,11 @@ TSortedPtrList::~TSortedPtrList() {}
 
 // FUNCTION: IMPERIALISM 0x005e1e50
 void TSortedPtrList::ReadFrom(TStream* stream) {
-  stream->ReadBytes(&recordSize14, 2);
+  stream->ReadBytes(&recordSize, 2);
   int count = stream->ReadLong();
-  unsigned char* buffer = new unsigned char[recordSize14];
+  unsigned char* buffer = new unsigned char[recordSize];
   for (short i = 1; i <= count; i++) {
-    stream->ReadBytes(buffer, recordSize14);
+    stream->ReadBytes(buffer, recordSize);
     InsertCopiedRecordSortedByComparator(buffer);
   }
   delete[] buffer;
@@ -120,9 +120,9 @@ void TSortedPtrList::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x005e1f10
 void TSortedPtrList::WriteTo(TStream* stream) {
-  stream->WriteBytes(&recordSize14, 2);
+  stream->WriteBytes(&recordSize, 2);
   stream->WriteLong(m_nSize);
   for (short i = 1; i <= m_nSize; i++) {
-    stream->WriteBytes(GetPtrListEntryByOneBasedIndex(i), recordSize14);
+    stream->WriteBytes(GetPtrListEntryByOneBasedIndex(i), recordSize);
   }
 }

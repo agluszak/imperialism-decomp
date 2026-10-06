@@ -47,7 +47,7 @@ RuntimeActionResult LoadSaveScreen::SelectSlot(short slot) {
 }
 
 short LoadSaveScreen::SelectedSlot() const {
-  return loadSaveView != 0 ? loadSaveView->selectedSlot92 : -1;
+  return loadSaveView != 0 ? loadSaveView->selectedSlot : -1;
 }
 
 bool LoadSaveScreen::SlotIsBeingNamed() const {

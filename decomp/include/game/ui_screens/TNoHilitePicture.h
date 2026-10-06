@@ -11,11 +11,11 @@ public:
   DECLARE_DYNCREATE(TNoHilitePicture)
   virtual ~TNoHilitePicture() override; // slot 0x01 (scalar deleting destructor)
   virtual void Hilite();                // slot 0x73 0x572bb0
-  bool hiliteState90; // +0x90
+  bool hiliteState;                     // +0x90
 
   // FUNCTION: IMPERIALISM 0x00572b30
   TNoHilitePicture() : TPicture() {
-    hiliteState90 = false;
+    hiliteState = false;
   }
 };
 ASSERT_SIZE(TNoHilitePicture, 0x94);

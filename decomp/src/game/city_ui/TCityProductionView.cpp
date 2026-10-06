@@ -58,7 +58,7 @@ IMPLEMENT_DYNCREATE(TCityProductionView, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x004ba2e0
 TCityProductionView::TCityProductionView() {
-  selectedBuildingSlotA4 = -1;
+  selectedBuildingSlot = -1;
   needsRefresh = false;
   for (int i = 0; i < 16; i = i + 1) {
     buildingClipRegions[i] = 0;
@@ -443,8 +443,8 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
     }
 
     if (available) {
-      if (selectedBuildingSlotA4 != slot && selectedBuildingSlotA4 != -1) {
-        InvalidateOffsetRegionUsingChildClipRect(buildingClipRegions[selectedBuildingSlotA4]);
+      if (selectedBuildingSlot != slot && selectedBuildingSlot != -1) {
+        InvalidateOffsetRegionUsingChildClipRect(buildingClipRegions[selectedBuildingSlot]);
       }
       if (city->GetNextBuildingType(slot) == 0) {
         ScopedMapQuickDrawContext drawContext(this);
@@ -455,7 +455,7 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
         QDFrameRgn(buildingClipRegions[slot]);
         SetClip(scopedRegion.tempRgn);
       }
-      selectedBuildingSlotA4 = slot;
+      selectedBuildingSlot = slot;
     }
     handled = true;
   }
@@ -463,9 +463,9 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
   if (!handled) {
     g_pCursorControlPanel->SetTextAndLayoutRect(CString(g_pCityBuildingHoverEmptyText_0064faa8),
                                                 &g_cityBuildingHoverFallbackRect_006a2980);
-    if (selectedBuildingSlotA4 != -1) {
-      InvalidateOffsetRegionUsingChildClipRect(buildingClipRegions[selectedBuildingSlotA4]);
-      selectedBuildingSlotA4 = -1;
+    if (selectedBuildingSlot != -1) {
+      InvalidateOffsetRegionUsingChildClipRect(buildingClipRegions[selectedBuildingSlot]);
+      selectedBuildingSlot = -1;
     }
   }
 }
@@ -621,7 +621,7 @@ void TCityProductionView::UpdateUnits() {
   if (placard == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x4c2);
   }
-  placard->SetValue(city94->powerAvailableB4, true);
+  placard->SetValue(city94->powerAvailable, true);
 
   short* predictedNeeds = population->PredictedNeeds();
   const unsigned int tags[6] = {kControlTagGrai, kControlTagProd, kControlTagMeat,

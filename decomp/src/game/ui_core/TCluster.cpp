@@ -83,7 +83,7 @@ void TCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* even
     return;
   }
   if (commandId == kControlCommandHiliteToggle) {
-    HiliteState(controlState64 == 0, true);
+    HiliteState(controlState == 0, true);
     return;
   }
   TView* child = static_cast<TView*>(GetNextHandler());

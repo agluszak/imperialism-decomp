@@ -32,7 +32,7 @@ void TTacticalUnit::ITacticalUnit() {
   selectedFlag = 0;
   state1c = 0;
   actionPoints28 = GetBaseActionPoints();
-  aiStateCode2c = 0;
+  aiStateCode = 0;
   attackTarget = NULL;
 }
 

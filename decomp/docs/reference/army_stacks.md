@@ -18,7 +18,7 @@ civilian units also use it; the cast stays at that separate list boundary.
 ## Roster serialization
 
 The short overload at `0x004a7a40`, named `AddUnitByRosterId` in this source,
-compares the short argument with `TUnit::unitRosterId1A`, not the unit kind at
+compares the short argument with `TUnit::unitRosterId`, not the unit kind at
 `+0x04`. It prepends the first matching country military unit and leaves the
 stack unchanged if none matches. Its allocation and failure reporting are the
 same as `AddUnitToChainHead`.

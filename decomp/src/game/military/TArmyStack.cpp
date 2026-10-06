@@ -58,7 +58,7 @@ void TArmyStack::ReadFrom(TStream* stream) {
   stream->ReadBytes(&field4, 2);
   stream->ReadBytes(&field6, 2);
   stream->ReadBytes(&categoryFlag, 1);
-  stream->ReadBytes(&fortLevelAttackerPenaltyCache9, 1);
+  stream->ReadBytes(&fortLevelAttackerPenaltyCache, 1);
   short unitCount;
   stream->ReadBytes(&unitCount, 2);
   stream->ReadBytes(&fieldC, 1);
@@ -78,7 +78,7 @@ void TArmyStack::WriteTo(TStream* stream) {
   stream->WriteBytes(&field4, 2);
   stream->WriteBytes(&field6, 2);
   stream->WriteBytes(&categoryFlag, 1);
-  stream->WriteBytes(&fortLevelAttackerPenaltyCache9, 1);
+  stream->WriteBytes(&fortLevelAttackerPenaltyCache, 1);
   stream->WriteBytes(&unitCountA, 2);
   stream->WriteBytes(&fieldC, 1);
   stream->WriteBytes(&ownerNationCodeE, 2);
@@ -86,7 +86,7 @@ void TArmyStack::WriteTo(TStream* stream) {
 
   for (TMilitaryUnit* unit = ResetCursorAndGetHeadUnit(); unit != 0;
        unit = AdvanceCursorAndGetUnit()) {
-    short rosterID = unit->unitRosterId1A;
+    short rosterID = unit->unitRosterId;
     stream->WriteBytes(&rosterID, 2);
   }
   cursor18 = 0;
@@ -98,7 +98,7 @@ void TArmyStack::AddUnitByRosterId(short rosterID) {
   CIterator cursor(unitList);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset()); cursor.More();
        unit = static_cast<TMilitaryUnit*>(cursor.Advance())) {
-    if (unit->unitRosterId1A == rosterID) {
+    if (unit->unitRosterId == rosterID) {
       AddUnitToChainHead(unit);
       break;
     }
@@ -186,7 +186,7 @@ void TArmyStack::InitializeStrategicBattle(unsigned char boosted) {
     return;
   }
 
-  fortLevelAttackerPenaltyCache9 = static_cast<unsigned char>(
+  fortLevelAttackerPenaltyCache = static_cast<unsigned char>(
       g_anFortLevelAttackerPenaltyPercentByLevel
           [g_pGlobalMapState->cityScoreTable[unit->tileIndex06].fortLevel03]);
 
@@ -202,9 +202,7 @@ void TArmyStack::InitializeStrategicBattle(unsigned char boosted) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a7e70
-void TArmyStack::StrategicFirepower(int* outWeightedSum,
-                                                                          int* outCount,
-                                                                          int counter) {
+void TArmyStack::StrategicFirepower(int* outWeightedSum, int* outCount, int counter) {
   const int kRoundBlendWeightPrimary[4] = {100, 75, 50, 25};
   const int kRoundBlendWeightSecondary[4] = {0, 25, 50, 75};
   if (counter > 3) {
@@ -229,8 +227,7 @@ void TArmyStack::StrategicFirepower(int* outWeightedSum,
 }
 
 // FUNCTION: IMPERIALISM 0x004a8040
-void TArmyStack::ApplyStrategicDamage(int weightedSum, int count,
-                                                                  int counter) {
+void TArmyStack::ApplyStrategicDamage(int weightedSum, int count, int counter) {
   if (counter > 3) {
     counter = 3;
   }
@@ -248,7 +245,7 @@ void TArmyStack::ApplyStrategicDamage(int weightedSum, int count,
 
   const int kDecayScalePercentByRound[4] = {70, 80, 90, 90};
   int averageStrength = weightedSum / activityScore;
-  int participationPercent = count + static_cast<signed char>(fortLevelAttackerPenaltyCache9);
+  int participationPercent = count + static_cast<signed char>(fortLevelAttackerPenaltyCache);
   if (participationPercent > 100) {
     participationPercent = 100;
   }

@@ -12,12 +12,11 @@ IMPLEMENT_DYNCREATE(THQButton, TPicture)
 // FUNCTION: IMPERIALISM 0x0058b660
 THQButton::THQButton() : TPicture() {}
 
-
 // FUNCTION: IMPERIALISM 0x0058b6c0
 THQButton::~THQButton() {}
 // FUNCTION: IMPERIALISM 0x0058b6e0
 void THQButton::DoPostCreate(int arg) {
-  short glyph = glyphBase84;
+  short glyph = glyphBase;
   TView::DoPostCreate(arg);
   selectionState = 0;
   normalBitmapId = glyph;
@@ -29,8 +28,8 @@ void THQButton::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x0058b750
 void THQButton::HiliteState(unsigned char enabledState, bool refreshNow) {
-  if (enabledState != controlState64) {
-    controlState64 = enabledState;
+  if (enabledState != controlState) {
+    controlState = enabledState;
     short bitmapId = 0;
     if (enabledState == 0) {
       short modeState = selectionState;
@@ -54,7 +53,7 @@ void THQButton::HiliteState(unsigned char enabledState, bool refreshNow) {
 // FUNCTION: IMPERIALISM 0x0058b7f0
 void THQButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
-    if (controlState64 == 0) {
+    if (controlState == 0) {
       SetState(true, true);
     }
     TControl::DoEvent(commandId, sourceHandler, event);
@@ -82,7 +81,7 @@ void THQButton::SetState(bool value, bool refreshNow) {
 void THQButton::SetMode(short selectionState) {
   bool enabledState = selectionState != 2;
   this->selectionState = selectionState;
-  controlState64 = 0;
+  controlState = 0;
   if (selectionState == 0) {
     SetPictureRsrcID(normalBitmapId, true);
   } else if (selectionState == 1) {

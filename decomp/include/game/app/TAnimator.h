@@ -20,7 +20,7 @@ public:
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x4a0e10
   virtual void Free() override;                    // slot 0x07 0x4a0dc0
   virtual char DoIdle(int action) override;        // slot 0x13 0x4a0c30
-  virtual void Install(); // slot 0x25 0x4a0c00
+  virtual void Install();                          // slot 0x25 0x4a0c00
   void RemoveUiTransientRegistryObjectByTag(int tag);
   void IAnimator(int idleFrequency);
   void AddAnimation(TAnimation* animationObject);
@@ -31,7 +31,7 @@ public:
   TQuickDrawSurfaceContext* renderSurfaceContext; // +0x20
   TList* registryList;                            // +0x24 transient-animation registry
   int overlayPhaseTickCount;                      // +0x28
-  TMapUberPicture* mapUberPicture2c;              // +0x2c active strategic-map root
+  TMapUberPicture* mapUberPicture;                // +0x2c active strategic-map root
 
   TAnimator();
 };

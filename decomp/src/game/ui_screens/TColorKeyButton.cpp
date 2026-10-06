@@ -11,10 +11,10 @@ TColorKeyButton::~TColorKeyButton() {}
 
 // FUNCTION: IMPERIALISM 0x00571ff0
 void TColorKeyButton::HiliteState(unsigned char fEnabledState, bool fRefreshNow) {
-  if (controlState64 != fEnabledState) {
-    controlState64 = fEnabledState;
+  if (controlState != fEnabledState) {
+    controlState = fEnabledState;
     short pictureId =
-        fEnabledState ? static_cast<short>(glyphBase84 + 1) : static_cast<short>(glyphBase84 - 1);
+        fEnabledState ? static_cast<short>(glyphBase + 1) : static_cast<short>(glyphBase - 1);
     SetPictureRsrcID(pictureId, true);
     if (fRefreshNow) {
       DrawImmediate();

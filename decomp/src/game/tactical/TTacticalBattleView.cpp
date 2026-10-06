@@ -882,15 +882,15 @@ IMPLEMENT_DYNCREATE(TTacticalBattleView, TView)
 
 // FUNCTION: IMPERIALISM 0x005a8350
 TTacticalBattleView::TTacticalBattleView() : TView() {
-  tacticalBattle60 = 0;
-  battlefieldSurface64 = 0;
+  tacticalBattle = 0;
+  battlefieldSurface = 0;
   viewOriginX = 0;
   toolbarD0 = 0;
-  unitSpriteAtlasSurface68 = 0;
-  fortLevelAtlasSurface6C = 0;
-  tileScratchSurface70 = 0;
-  effectAtlasSurface74 = 0;
-  unitSpriteScratchSurfaceBC = 0;
+  unitSpriteAtlasSurface = 0;
+  fortLevelAtlasSurface = 0;
+  tileScratchSurface = 0;
+  effectAtlasSurface = 0;
+  unitSpriteScratchSurface = 0;
   modalAnimWaitDoneFlag = true;
   moveAnimUnitOffsetX = -1;
 }
@@ -906,12 +906,12 @@ TTacticalBattleView::~TTacticalBattleView() {}
 
 // FUNCTION: IMPERIALISM 0x005a8430
 void TTacticalBattleView::Free() {
-  g_pDisplayMgr->RemoveGWorld(battlefieldSurface64);
-  g_pDisplayMgr->RemoveGWorld(unitSpriteAtlasSurface68);
-  g_pDisplayMgr->RemoveGWorld(unitSpriteScratchSurfaceBC);
-  g_pDisplayMgr->RemoveGWorld(fortLevelAtlasSurface6C);
-  g_pDisplayMgr->RemoveGWorld(tileScratchSurface70);
-  g_pDisplayMgr->RemoveGWorld(effectAtlasSurface74);
+  g_pDisplayMgr->RemoveGWorld(battlefieldSurface);
+  g_pDisplayMgr->RemoveGWorld(unitSpriteAtlasSurface);
+  g_pDisplayMgr->RemoveGWorld(unitSpriteScratchSurface);
+  g_pDisplayMgr->RemoveGWorld(fortLevelAtlasSurface);
+  g_pDisplayMgr->RemoveGWorld(tileScratchSurface);
+  g_pDisplayMgr->RemoveGWorld(effectAtlasSurface);
   g_pUiAnimator->FreeAllAnis();
   TView::Free();
 }
@@ -935,11 +935,11 @@ void TTacticalBattleView::DoKeyEvent(TToolboxEvent* event) {
   int commandCode = event->commandCode;
   switch (commandCode) {
   case 0x20:
-    tacticalBattle60->HandleTacticalCommandTag_targ();
+    tacticalBattle->HandleTacticalCommandTag_targ();
     break;
   case 0x44:
   case 0x64:
-    tacticalBattle60->HandleTacticalBattleCommandTag(kControlTagDone); // 'done'
+    tacticalBattle->HandleTacticalBattleCommandTag(kControlTagDone); // 'done'
     break;
   case 0x48:
   case 0x68:
@@ -947,7 +947,7 @@ void TTacticalBattleView::DoKeyEvent(TToolboxEvent* event) {
     break;
   case 0x53:
   case 0x73:
-    tacticalBattle60->HandleTacticalBattleCommandTag(kControlTagSkip); // 'skip'
+    tacticalBattle->HandleTacticalBattleCommandTag(kControlTagSkip); // 'skip'
     break;
   }
 }
@@ -960,13 +960,12 @@ void TTacticalBattleView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CP
     int row;
     int column;
     ConvertPoint(&point, &row, &column);
-    tacticalBattle60->DispatchTacticalActionByHoverStateIndex(row * tileColumnsPerRow + column);
+    tacticalBattle->DispatchTacticalActionByHoverStateIndex(row * tileColumnsPerRow + column);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005a86d0
-void TTacticalBattleView::ConvertPoint(POINT* screenPoint, int* outRow,
-                                                                  int* outCol) {
+void TTacticalBattleView::ConvertPoint(POINT* screenPoint, int* outRow, int* outCol) {
   int row = screenPoint->y / tileRowHeightPx;
   *outRow = row;
   if (row < 0) {
@@ -986,7 +985,7 @@ void TTacticalBattleView::ConvertPoint(POINT* screenPoint, int* outRow,
   if (col < 0) {
     *outCol = 0;
   }
-  int maxCol = tacticalBattle60->battlefieldColumnCount;
+  int maxCol = tacticalBattle->battlefieldColumnCount;
   if (*outCol >= maxCol) {
     *outCol = maxCol + -1;
   }
@@ -1148,7 +1147,7 @@ void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
   ConvertPoint(point, &gridRow, &gridCol);
   int tileIndex = static_cast<short>(gridRow * tileColumnsPerRow + gridCol);
   unsigned short cursorToken = static_cast<unsigned short>(
-      tacticalBattle60->ResolveTacticalHoverCursorResourceId(static_cast<short>(tileIndex)));
+      tacticalBattle->ResolveTacticalHoverCursorResourceId(static_cast<short>(tileIndex)));
   if (cursorToken == 999 || cursorToken == 0) {
     cursorToken = 0xffff;
   }
@@ -1207,16 +1206,16 @@ void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
     DrawTile(static_cast<short>(tileIndex), &tileRect);
   }
   SetClip(savedClip.tempRgn);
-  if (toolbarD0 != 0 && tacticalBattle60->battleOutcome44 == kTacticalBattleInProgress) {
+  if (toolbarD0 != 0 && tacticalBattle->battleOutcome == kTacticalBattleInProgress) {
     toolbarD0->UpdateTacticalOtherSideUnitControl(
-        static_cast<TArmyTacUnit*>(tacticalBattle60->tileGrid4[tileIndex].occupant4));
+        static_cast<TArmyTacUnit*>(tacticalBattle->tileGrid[tileIndex].occupant4));
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005a9090
 void TTacticalBattleView::PlayAni(TacticalTileIndex tileIndex, int effectId, int frameCount) {
   RECT effectRect;
-  TTacticalUnit* occupant = tacticalBattle60->tileGrid4[tileIndex].occupant4;
+  TTacticalUnit* occupant = tacticalBattle->tileGrid[tileIndex].occupant4;
   if (occupant != 0) {
     UnitRect(occupant, &effectRect);
   } else {
@@ -1251,8 +1250,7 @@ void TTacticalBattleView::PlayAni(RECT* rect, int effectId, int frameCount,
   // The original calls the init body unconditionally on the new-result (no null guard).
   animation->InitializeOneTimeAnimation(this, rect, static_cast<short>(frameCount),
                                         static_cast<short>(effectId), mode, tileIndex);
-  g_pUiAnimator->AddAnimation(
-      static_cast<TAnimation*>(static_cast<void*>(animation)));
+  g_pUiAnimator->AddAnimation(static_cast<TAnimation*>(static_cast<void*>(animation)));
   BeginModalAnimationWait();
   modalAnimWaitDoneFlag = false;
   while (!animation->completeFlag) {
@@ -1355,9 +1353,9 @@ void TTacticalBattleView::DoGlideAni() {
     RECT primaryClipRect;
     CopyRect(&primaryClipRect, &g_pPrimaryRenderSurfaceContext->blitSurface.clipRect);
     if (ClipSrcRectToBoundsAndOffsetDstRect(&primaryClipRect, &scratchRect, &screenRect)) {
-      if (unitSpriteScratchSurfaceBC->blitSurface.surfaceDib != 0) {
+      if (unitSpriteScratchSurface->blitSurface.surfaceDib != 0) {
         int scratchDibHeight =
-            unitSpriteScratchSurfaceBC->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+            unitSpriteScratchSurface->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
         if (scratchDibHeight < 1) {
           scratchDibHeight = -scratchDibHeight;
         }
@@ -1372,7 +1370,7 @@ void TTacticalBattleView::DoGlideAni() {
         OffsetRect(&screenRect, 0, (primaryDibHeight - screenRect.top) - screenRect.bottom);
       }
       BlitRectWithOptionalTransparency(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
-                                       unitSpriteScratchSurfaceBC->GetBlitSurface(), &screenRect,
+                                       unitSpriteScratchSurface->GetBlitSurface(), &screenRect,
                                        &scratchRect, 0);
     }
 
@@ -1387,26 +1385,26 @@ void TTacticalBattleView::DoGlideAni() {
 
     RECT spriteSrcRect = moveAnimSpriteSrcRect;
     RECT atlasClipRect;
-    CopyRect(&atlasClipRect, &unitSpriteAtlasSurface68->blitSurface.clipRect);
+    CopyRect(&atlasClipRect, &unitSpriteAtlasSurface->blitSurface.clipRect);
     if (ClipSrcRectToBoundsAndOffsetDstRect(&atlasClipRect, &tileRect, &spriteSrcRect)) {
-      if (unitSpriteAtlasSurface68->blitSurface.surfaceDib != 0) {
+      if (unitSpriteAtlasSurface->blitSurface.surfaceDib != 0) {
         int atlasDibHeight =
-            unitSpriteAtlasSurface68->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+            unitSpriteAtlasSurface->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
         if (atlasDibHeight < 1) {
           atlasDibHeight = -atlasDibHeight;
         }
         OffsetRect(&spriteSrcRect, 0, (atlasDibHeight - spriteSrcRect.top) - spriteSrcRect.bottom);
       }
-      if (unitSpriteScratchSurfaceBC->blitSurface.surfaceDib != 0) {
+      if (unitSpriteScratchSurface->blitSurface.surfaceDib != 0) {
         int scratchDibHeight2 =
-            unitSpriteScratchSurfaceBC->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+            unitSpriteScratchSurface->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
         if (scratchDibHeight2 < 1) {
           scratchDibHeight2 = -scratchDibHeight2;
         }
         OffsetRect(&tileRect, 0, (scratchDibHeight2 - tileRect.top) - tileRect.bottom);
       }
-      BlitRectWithOptionalTransparency(unitSpriteAtlasSurface68->GetBlitSurface(),
-                                       unitSpriteScratchSurfaceBC->GetBlitSurface(), &spriteSrcRect,
+      BlitRectWithOptionalTransparency(unitSpriteAtlasSurface->GetBlitSurface(),
+                                       unitSpriteScratchSurface->GetBlitSurface(), &spriteSrcRect,
                                        &tileRect, 0x24);
     }
 
@@ -1425,7 +1423,7 @@ void TTacticalBattleView::DoGlideAni() {
         OffsetRect(&compositeSrcRect, 0,
                    (activeDibHeight - compositeSrcRect.top) - compositeSrcRect.bottom);
       }
-      BlitRectWithOptionalTransparency(unitSpriteScratchSurfaceBC->GetBlitSurface(),
+      BlitRectWithOptionalTransparency(unitSpriteScratchSurface->GetBlitSurface(),
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                        &compositeDstRect, &compositeSrcRect, 0);
     }
@@ -1477,16 +1475,15 @@ void TTacticalBattleView::SetCurrentPlayer(unsigned char side) {
   TPicture* coatControl =
       static_cast<TPicture*>(ownerContext->ResolveControlByTag(kControlTagCoat));
   coatControl->AssertValid();
-  TTacticalBattle* battle = tacticalBattle60;
-  TTacticalPlayer* currentPlayer = battle->players[battle->currentSideC];
-  coatControl->SetPictureRsrcID(
-      static_cast<short>(currentPlayer->nationIndex1C + 0xea6), 1);
+  TTacticalBattle* battle = tacticalBattle;
+  TTacticalPlayer* currentPlayer = battle->players[battle->currentSide];
+  coatControl->SetPictureRsrcID(static_cast<short>(currentPlayer->nationIndex1C + 0xea6), 1);
 }
 
 // FUNCTION: IMPERIALISM 0x005a9bb0
 void TTacticalBattleView::UpdateSelectionBlink() {
   g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(0x2711);
-  TTacticalUnit* selectedUnit = tacticalBattle60->selectedUnit1c;
+  TTacticalUnit* selectedUnit = tacticalBattle->selectedUnit1c;
   if (selectedUnit == 0) {
     return;
   }
@@ -1523,22 +1520,22 @@ short TTacticalBattleView::ComputeTacticalUnitSpriteOrientationIndexByAdjacentTy
     TacticalTileIndex tileIndex) {
   int orientationTable[8] = {6, 3, 5, 1, 6, 0, 2, 4};
   TacticalTileIndex neighbors[6];
-  tacticalBattle60->GetNeighborList(tileIndex, neighbors);
+  tacticalBattle->GetNeighborList(tileIndex, neighbors);
   int code;
   if ((tileIndex / 29 & 1) != 0) {
     code = 0;
-    if (neighbors[5] != -1 && tacticalBattle60->tileGrid4[neighbors[5]].deployMark == 1) {
+    if (neighbors[5] != -1 && tacticalBattle->tileGrid[neighbors[5]].deployMark == 1) {
       code = 2;
     }
-    if (neighbors[3] != -1 && tacticalBattle60->tileGrid4[neighbors[3]].deployMark == 1) {
+    if (neighbors[3] != -1 && tacticalBattle->tileGrid[neighbors[3]].deployMark == 1) {
       code++;
     }
   } else {
     code = 4;
-    if (neighbors[0] != -1 && tacticalBattle60->tileGrid4[neighbors[0]].deployMark == 1) {
+    if (neighbors[0] != -1 && tacticalBattle->tileGrid[neighbors[0]].deployMark == 1) {
       code = 6;
     }
-    if (neighbors[2] != -1 && tacticalBattle60->tileGrid4[neighbors[2]].deployMark == 1) {
+    if (neighbors[2] != -1 && tacticalBattle->tileGrid[neighbors[2]].deployMark == 1) {
       code++;
     }
   }
@@ -1561,7 +1558,7 @@ void TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(
   rectOut->bottom = tileRowHeightPx + y;
   rectOut->top = y - 0x14;
 
-  TacticalTileRecord* tile = &tacticalBattle60->tileGrid4[tileIndex];
+  TacticalTileRecord* tile = &tacticalBattle->tileGrid[tileIndex];
   if (tile->deployMark == 1) {
     int unitType = unit->unitTypeC;
     short orient = ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(tileIndex);

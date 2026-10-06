@@ -171,7 +171,7 @@ bool MapRenderingProbe::DevelopmentClassChangesTilePixels(TMapDialog* mapDialog,
   if (mapDialog == 0) {
     return false;
   }
-  TBitmapSurfaceNode** surfaceHandle = GetGWorldPixMap(mapDialog->quickDrawSurface350);
+  TBitmapSurfaceNode** surfaceHandle = GetGWorldPixMap(mapDialog->quickDrawSurface);
   if (surfaceHandle == 0 || *surfaceHandle == 0 || !LockPixels(surfaceHandle)) {
     return false;
   }
@@ -185,7 +185,7 @@ bool MapRenderingProbe::DevelopmentClassChangesTilePixels(TMapDialog* mapDialog,
   TQuickDrawSurfaceContext* savedSurface;
   int savedSurfaceFlags;
   GetGWorld(&savedSurface, &savedSurfaceFlags);
-  SetGWorld(mapDialog->quickDrawSurface350, savedSurfaceFlags);
+  SetGWorld(mapDialog->quickDrawSurface, savedSurfaceFlags);
 
   terrain.developmentClassNibbles =
       static_cast<unsigned char>((savedDevelopmentClasses & 0xf0) | initialClass);
@@ -228,7 +228,7 @@ bool MapRenderingProbe::TransportConnectivityChangesTilePixels(TMapDialog* mapDi
     return false;
   }
 
-  TBitmapSurfaceNode** surfaceHandle = GetGWorldPixMap(mapDialog->quickDrawSurface350);
+  TBitmapSurfaceNode** surfaceHandle = GetGWorldPixMap(mapDialog->quickDrawSurface);
   if (surfaceHandle == 0 || *surfaceHandle == 0 || !LockPixels(surfaceHandle)) {
     return false;
   }
@@ -244,7 +244,7 @@ bool MapRenderingProbe::TransportConnectivityChangesTilePixels(TMapDialog* mapDi
   TQuickDrawSurfaceContext* savedSurface;
   int savedSurfaceFlags;
   GetGWorld(&savedSurface, &savedSurfaceFlags);
-  SetGWorld(mapDialog->quickDrawSurface350, savedSurfaceFlags);
+  SetGWorld(mapDialog->quickDrawSurface, savedSurfaceFlags);
 
   terrain.adjacencyBits06 = 0;
   terrain.railFlags = 0;

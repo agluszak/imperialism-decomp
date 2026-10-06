@@ -82,8 +82,7 @@ public:
   // slot 0x85 — 0x004ea0e0: clear a candidate nation (and its port zone).
   void StopBeingEnemiesWith(int targetNation) override;
   // slot 0xa0 — 0x004e7ec0: war-transition propagation for a nation pair.
-  int ConsiderWarOfAlliance(int targetNation, int sourceNation,
-                                             char swapRoles) override;
+  int ConsiderWarOfAlliance(int targetNation, int sourceNation, char swapRoles) override;
   char UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) override;
   char PassesDiplomacyStrengthThresholdForTarget(int targetNation) override;
   void AddColony(int targetNation) override;
@@ -119,8 +118,8 @@ public:
   void AssignMilitiaToDefendMissions();
   void CreateInitialMissions();
   void MarkEnemyProvinceCandidates();
-  void SetZoneStatus(int contextOrdinal, eMissionDesirability value); // 0x4e8bf0
-  void SetConquerLust(int nationSlot, char makeEnemy); // 0x004e8300
+  void SetZoneStatus(int contextOrdinal, eMissionDesirability value);     // 0x4e8bf0
+  void SetConquerLust(int nationSlot, char makeEnemy);                    // 0x004e8300
   void SetProvinceStatus(int provinceIndex, eMissionDesirability status); // Mac oracle
   void SetProvinceStatus(int provinceIndex, eMissionDesirability status, unsigned char bypassGate);
 
@@ -131,7 +130,7 @@ public:
   TSortedList* missionQueue;
   float expansionPressurePerCompatibleRegion;
   float averageUnitDivergencePerOwnedRegion;
-  float activeMissionPressureAverageB6c;
+  float activeMissionPressureAverage;
 };
 ASSERT_SIZE(TAutoGreatPower, 0xb70);
 

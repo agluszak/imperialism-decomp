@@ -165,8 +165,8 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
 
   // Style the 'info' pane.
   InitializeUiTextStyleDescriptor(&itemStyle, 0, 0xc, 0x2b67, 3);
-  infoTextPane90 = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagInfo));
-  infoTextPane90->SetTextStyle(itemStyle, false);
+  infoTextPane = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagInfo));
+  infoTextPane->SetTextStyle(itemStyle, false);
 
   // Title pane + location text.
   TextStyle titleStyle;
@@ -193,11 +193,11 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
     g_pSimMgr->GetString(0x2755, (ownerNation < 7) ? 0x1d : 0x1e, &strTemplate);
     scanBracketExpressions(g_pSimMgr, &strInfoText, static_cast<LPCSTR>(strTemplate),
                            static_cast<LPCSTR>(strCityName), static_cast<LPCSTR>(strOwnerLabel));
-    if (g_pGlobalMapState->cityScoreTable[cityIndex].formerOwnerNationCode01 != ownerNation) {
+    if (g_pGlobalMapState->cityScoreTable[cityIndex].formerOwnerNationCode != ownerNation) {
       CString strFormerLine;
       {
         strOwnerLabel = g_pSimMgr->LoadNormalizedCredentialName(
-            g_pGlobalMapState->cityScoreTable[cityIndex].formerOwnerNationCode01);
+            g_pGlobalMapState->cityScoreTable[cityIndex].formerOwnerNationCode);
       }
       g_pSimMgr->GetString(0x2755, 0x1f, &strTemplate);
       scanBracketExpressions(g_pSimMgr, &strFormerLine, static_cast<LPCSTR>(strTemplate),
@@ -236,8 +236,8 @@ void TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText(int sele
 
   CString detailText;
   g_pSimMgr->GetString(0x2756, static_cast<short>(menuItemIds[selectedIndex] - 1), &detailText);
-  infoTextPane90->UpdateTextEntrySharedStringAndMaybeNotify(&detailText, true);
-  infoTextPane90->Show(1, 1);
+  infoTextPane->UpdateTextEntrySharedStringAndMaybeNotify(&detailText, true);
+  infoTextPane->Show(1, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x005059d0

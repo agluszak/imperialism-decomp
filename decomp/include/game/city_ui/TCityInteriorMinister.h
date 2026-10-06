@@ -29,11 +29,11 @@ public:
   virtual short GetHistoricalNeedFor(int arg) override;      // slot 0x1e 0x4be7d0
   virtual void ResetHistoricalNeedFor(int arg) override;     // slot 0x1f 0x4be7f0
   virtual void FillLists();                                  // slot 0x20 0x4bed60
-  virtual void DetermineTradeBid(TCity* city); // slot 0x21 0x4bf8a0
+  virtual void DetermineTradeBid(TCity* city);               // slot 0x21 0x4bf8a0
   virtual void IssueBasicOrders(TCity* city,
                                 TTaskList* commandQueue); // slot 0x22 0x4bfa50
   virtual void OverstockCheck(TCity* city,
-                              TTaskList* commandQueue); // slot 0x23 0x4bfb20
+                              TTaskList* commandQueue);                     // slot 0x23 0x4bfb20
   virtual void NoOpProductionCommandHook24(int unusedArg1, int unusedArg2); // slot 0x24 0x4bff60
   virtual void TrainingMode(TCity* city, TTaskList* commandQueue);          // slot 0x25 0x4c02c0
   virtual void IncreaseCapacityMode(TCity* city,
@@ -52,16 +52,16 @@ public:
       TCity* city);                                     // slot 0x2c 0x4c07d0
   virtual void PleaseBuildCivilian(short commandIndex); // slot 0x2d 0x4bef10
   virtual short AttemptTransport(short resourceType, short requestedAmount,
-                                                      short allocationLimit); // slot 0x2e 0x4c0de0
+                                 short allocationLimit); // slot 0x2e 0x4c0de0
   virtual short
   RebuildNeedTargetsAndQueueProductionShortfalls(TCity* city,
                                                  TTaskList* commandQueue); // slot 0x2f 0x4c0e50
-  virtual int SelectBestSecondaryHomeTileByFrogCityScore();        // slot 0x30 0x4c11c0
-  virtual void RebuildMapTileNeighborBucketsForInteriorMinister(); // slot 0x31 0x4c1ac0
-  virtual void RequestMissingCivilianOrderTypes();                 // slot 0x32 0x4c2010
-  virtual void AutoAssignProspectingOrdersByTileHeuristics();      // slot 0x33 0x4c2120
-  virtual void AutoAssignProspectingOrdersFromSeedTileNeighbors(); // slot 0x34 0x4c2a30
-  virtual void ProcessUnitOrders();                                // slot 0x35 0x4c1510; Mac oracle
+  virtual int SelectBestSecondaryHomeTileByFrogCityScore();                // slot 0x30 0x4c11c0
+  virtual void RebuildMapTileNeighborBucketsForInteriorMinister();         // slot 0x31 0x4c1ac0
+  virtual void RequestMissingCivilianOrderTypes();                         // slot 0x32 0x4c2010
+  virtual void AutoAssignProspectingOrdersByTileHeuristics();              // slot 0x33 0x4c2120
+  virtual void AutoAssignProspectingOrdersFromSeedTileNeighbors();         // slot 0x34 0x4c2a30
+  virtual void ProcessUnitOrders(); // slot 0x35 0x4c1510; Mac oracle
   virtual void SeekLostTowns(char* primaryDistanceMap,
                              char* secondaryDistanceMap); // slot 0x36 0x4c2d50
   virtual void ContinueRailheadProject(TUnit* order, char* primaryDistanceMap,
@@ -101,27 +101,27 @@ public:
   void ReadFrom(TStream* stream) override; // slot 0x18
   void Free() override;                    // slot 0x1c
 
-  TLongintList* list28;                 // +0x28  (new TLongintList, vtable 0x650a08)
-  TLongintList* list2c;                 // +0x2c  (new TLongintList)
-  short nextProductionBuildingOrdinal;  // +0x30  1-based cursor into list2c
-  short pendingShipType32;              // +0x32  ship type queued at city slot 0x2b
-  short field34;                        // +0x34
-  short pendingRecruitmentCommandIndex; // +0x36  maps to city order slot 0x22 + value
-  short pendingUnitCommandIndex;        // +0x38  maps to city order slot 0x19 + value
-  short resource15ProductionPercent;    // +0x3a  init 50
-  short field3c;                        // +0x3c  init -1
-  short accumulatedUnmetNeed3e;         // +0x3e  queued via command 0x33
-  short orderMetricTable40[61]; // +0x40..0xba  (zeroed on init)
-  short orderShortTableBA[16];  // +0xba..0xda
-  short deferredLaborShortfall; // +0xda
-  short orderShortTableDC[16];  // +0xdc..0xfc
-  short orderTypeTableFC[23];        // +0xfc..0x12a
-  short orderTypeTable12A[23];       // +0x12a..0x158 (exterior need by order type)
-  short orderTypeTable158[23];       // +0x158..0x186 (historical need by order type)
-  short temporarilyReservedShipArms; // +0x186
-  TFuzzySet* cityPolicyFuzzySet;     // +0x188 (new TFuzzySet, 4 policy curves)
-  TList* orderList;                  // +0x18c (new TList; ctor 0x4be840 nulls it)
-  TLongintList* list190;             // +0x190 (new TLongintList)
+  TLongintList* list28;                           // +0x28  (new TLongintList, vtable 0x650a08)
+  TLongintList* list2c;                           // +0x2c  (new TLongintList)
+  short nextProductionBuildingOrdinal;            // +0x30  1-based cursor into list2c
+  short pendingShipType;                          // +0x32  ship type queued at city slot 0x2b
+  short field34;                                  // +0x34
+  short pendingRecruitmentCommandIndex;           // +0x36  maps to city order slot 0x22 + value
+  short pendingUnitCommandIndex;                  // +0x38  maps to city order slot 0x19 + value
+  short resource15ProductionPercent;              // +0x3a  init 50
+  short field3c;                                  // +0x3c  init -1
+  short accumulatedUnmetNeed;                     // +0x3e  queued via command 0x33
+  short orderMetricTable40[61];                   // +0x40..0xba  (zeroed on init)
+  short orderShortTableBA[16];                    // +0xba..0xda
+  short deferredLaborShortfall;                   // +0xda
+  short orderShortTableDC[16];                    // +0xdc..0xfc
+  short orderTypeTableFC[23];                     // +0xfc..0x12a
+  short orderTypeTable12A[23];                    // +0x12a..0x158 (exterior need by order type)
+  short orderTypeTable158[23];                    // +0x158..0x186 (historical need by order type)
+  short temporarilyReservedShipArms;              // +0x186
+  TFuzzySet* cityPolicyFuzzySet;                  // +0x188 (new TFuzzySet, 4 policy curves)
+  TList* orderList;                               // +0x18c (new TList; ctor 0x4be840 nulls it)
+  TLongintList* list190;                          // +0x190 (new TLongintList)
   short civilianOrderDemandByResourceType194[23]; // +0x194
   short temporaryFurnitureSubstituteLumber;       // +0x1c2
 

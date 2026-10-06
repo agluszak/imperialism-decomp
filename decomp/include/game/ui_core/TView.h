@@ -46,18 +46,18 @@ public:
   int absoluteY;
   int frameWidth;
   int frameHeight;
-  int controlValue3c;
-  TView* resourceContext;        // 0x40
-  TViewChildList* childList;     // 0x44 — child-control list (CList<TView*,TView*>)
-  TUiStyleBytes* stylePayload48; // 8-byte style/color payload (see TUiStyleBytes above)
+  int controlValue;
+  TView* resourceContext;      // 0x40
+  TViewChildList* childList;   // 0x44 — child-control list (CList<TView*,TView*>)
+  TUiStyleBytes* stylePayload; // 8-byte style/color payload (see TUiStyleBytes above)
   bool inputGateFlag;
   bool childHitTestFlag;
   unsigned short cursorId4e;
   CWnd* nativeWindow50; // 0x50 — host window (MFC CWnd; HWND via m_hWnd)
-  unsigned short helpState54;
+  unsigned short helpState;
   unsigned char padding_56_to_57[0x02];
   CString hoverHelpText;
-  int hoverHelpEnabled5c;
+  int hoverHelpEnabled;
 
   TView();
   TView(const TView& source); // 0x48bd30
@@ -104,9 +104,9 @@ public:
   virtual void Resize(const CPoint& size, bool refresh);                 // 0x3d 0x48b3f0
   virtual char PrepareForDrawing();                                      // 0x3e 0x48b770
   virtual void PostRender();                                             // 0x3f
-  virtual int BindMapQuickDrawDc(CDC* paintDc);     // 0x40 0x48b7b0
-  virtual void ReleaseMapQuickDrawDc(CDC* paintDc); // 0x41 0x48b7e0
-  virtual void EnsureStylePayload();               // 0x42 0x48b810
+  virtual int BindMapQuickDrawDc(CDC* paintDc);                          // 0x40 0x48b7b0
+  virtual void ReleaseMapQuickDrawDc(CDC* paintDc);                      // 0x41 0x48b7e0
+  virtual void EnsureStylePayload();                                     // 0x42 0x48b810
   virtual void PaintVisibleChildrenIntersectingClipRect(RECT* clipRect,
                                                         CDC* paintDc); // 0x43 0x48b8d0
   virtual void Draw(RECT* clipRect);                                   // 0x44

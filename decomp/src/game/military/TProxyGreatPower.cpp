@@ -79,8 +79,8 @@ void TProxyGreatPower::FinishCityPhase() {}
 char TProxyGreatPower::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                                          ResourceKindStorage resourceKind) {
   if (this->StillBuyingItem(resourceKind)) {
-    g_pGameFlowState->SendTradeOffer(this->nationSlot, targetNationSlot,
-                                                                 amount, price, resourceKind);
+    g_pGameFlowState->SendTradeOffer(this->nationSlot, targetNationSlot, amount, price,
+                                     resourceKind);
     return 1;
   }
 
@@ -120,7 +120,7 @@ int TProxyGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNati
   packet.SetTimeEmitPacketGameFlowTurnId();
   packet.toNetworkId = -1;
   packet.DestinateTo(this->nationSlot);
-  packet.actionCode1C = 'i';
+  packet.actionCode = 'i';
   packet.nationA1D = static_cast<signed char>(targetNation);
   packet.nationB1E = static_cast<signed char>(sourceNation);
   g_pNetMgr006a6014->Send(&packet, false);
@@ -128,8 +128,7 @@ int TProxyGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNati
 }
 
 // FUNCTION: IMPERIALISM 0x00540dc0
-int TProxyGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation,
-                                                             char swapRoles) {
+int TProxyGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation, char swapRoles) {
   TurnEvent1DWarTransitionPacket packet;
   packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
@@ -140,7 +139,7 @@ int TProxyGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation,
   packet.SetTimeEmitPacketGameFlowTurnId();
   packet.toNetworkId = -1;
   packet.DestinateTo(this->nationSlot);
-  packet.actionCode1C = 'a';
+  packet.actionCode = 'a';
   packet.nationA1D = static_cast<signed char>(targetNation);
   packet.nationB1E = static_cast<signed char>(sourceNation);
   packet.mode1F = static_cast<unsigned char>(swapRoles);

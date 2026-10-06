@@ -24,22 +24,22 @@ void TCzechBox::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x00571d10
 void TCzechBox::HiliteState(unsigned char fEnabledState, bool fRefreshNow) {
-  if (controlState64 != fEnabledState) {
-    controlState64 = fEnabledState;
+  if (controlState != fEnabledState) {
+    controlState = fEnabledState;
     CheckTheLook(fRefreshNow);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00571d40
 void TCzechBox::CheckTheLook(unsigned char refreshNow) {
-  bool useOddPicture = isOn94 != 0 || controlState64 != 0;
-  if (!useOddPicture && (glyphBase84 & 1) != 0) {
-    SetPictureRsrcID(static_cast<short>(glyphBase84 & ~1), refreshNow);
+  bool useOddPicture = isOn94 != 0 || controlState != 0;
+  if (!useOddPicture && (glyphBase & 1) != 0) {
+    SetPictureRsrcID(static_cast<short>(glyphBase & ~1), refreshNow);
     if (refreshNow) {
       DrawImmediate();
     }
-  } else if (useOddPicture && (glyphBase84 & 1) == 0) {
-    SetPictureRsrcID(static_cast<short>(glyphBase84 | 1), refreshNow);
+  } else if (useOddPicture && (glyphBase & 1) == 0) {
+    SetPictureRsrcID(static_cast<short>(glyphBase | 1), refreshNow);
     if (refreshNow) {
       DrawImmediate();
     }

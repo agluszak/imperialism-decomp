@@ -210,14 +210,14 @@ unsigned char TNetMgr::OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, i
   bool result =
       g_NetworkSessionManager006a5f60.InitializeDirectPlayForProviderGuidOrEnumerate(sessionGuid);
   if (!result) {
-    HandleError(g_NetworkSessionManager006a5f60.lastErrorCode0c);
+    HandleError(g_NetworkSessionManager006a5f60.lastErrorCode);
   }
   return result;
 }
 
 // FUNCTION: IMPERIALISM 0x005e3ad0
-unsigned char TNetMgr::Host(
-    const char* seedPath, const char* localPlayerName, const char* emptyOrSeed) {
+unsigned char TNetMgr::Host(const char* seedPath, const char* localPlayerName,
+                            const char* emptyOrSeed) {
   strncpy(g_NetworkSessionManager006a5f60.joinGameSeed68, emptyOrSeed, 0x20);
   strncpy(g_NetworkSessionManager006a5f60.runtimeSelectionSeed88, seedPath, 0x20);
 
@@ -232,13 +232,13 @@ unsigned char TNetMgr::Host(
     }
     if (result) {
       g_NetworkSessionManager006a5f60.localPlayerId60 = nationId;
-      g_NetworkSessionManager006a5f60.broadcastPlayerId64 = nationId;
+      g_NetworkSessionManager006a5f60.broadcastPlayerId = nationId;
       result = g_NetworkSessionManager006a5f60.SetLocalPlayerDataAndStoreResult(
           &g_NetworkSessionManager006a5f60.joinGamePlayerDataTag, 4);
     }
   }
   if (!result) {
-    HandleError(g_NetworkSessionManager006a5f60.lastErrorCode0c);
+    HandleError(g_NetworkSessionManager006a5f60.lastErrorCode);
   }
   return static_cast<unsigned char>(result);
 }
@@ -249,9 +249,7 @@ unsigned char TNetMgr::ReturnTrueRuntimeCredentialFinalizeStub() {
 }
 
 // FUNCTION: IMPERIALISM 0x005e3c20
-unsigned char TNetMgr::SelectGame(int selectionTag,
-                                                                   CString* outGameName,
-                                                                   const char* seed) {
+unsigned char TNetMgr::SelectGame(int selectionTag, CString* outGameName, const char* seed) {
   strncpy(g_NetworkSessionManager006a5f60.joinGameSeed68, seed, 0x20);
   g_NetworkSessionManager006a5f60.joinGamePlayerNameA8 = *outGameName;
 
@@ -282,7 +280,7 @@ unsigned char TNetMgr::Send(NetMessage* message, bool queueOnly) {
   message->fromNetworkId = g_NetworkSessionManager006a5f60.localPlayerId60;
   int nationId = message->toNetworkId;
   if (message->toNetworkId == -1) {
-    nationId = g_NetworkSessionManager006a5f60.broadcastPlayerId64;
+    nationId = g_NetworkSessionManager006a5f60.broadcastPlayerId;
   }
 
   if (queueOnly || nationId == g_NetworkSessionManager006a5f60.localPlayerId60) {
@@ -297,7 +295,7 @@ unsigned char TNetMgr::Send(NetMessage* message, bool queueOnly) {
   if (g_NetworkSessionManager006a5f60.TrySendNetworkPacket(nationId, message, sizeBytes)) {
     return 1;
   }
-  HandleError(g_NetworkSessionManager006a5f60.lastErrorCode0c);
+  HandleError(g_NetworkSessionManager006a5f60.lastErrorCode);
   return 0;
 }
 
@@ -313,7 +311,7 @@ void TNetMgr::FreeTurnEventPacketBuffer(TurnEventQueuePacket* packet) {
 
 // FUNCTION: IMPERIALISM 0x005e3f30
 TurnEventQueuePacket* TNetMgr::PopNextTurnEventPacketOrProcessSpecialQueueRecords() {
-  if (g_NetworkSessionManager006a5f60.directPlayInterface04 == 0) {
+  if (g_NetworkSessionManager006a5f60.directPlayInterface == 0) {
     return 0;
   }
   if (!g_WNetPendingPacketList006a5f40.IsEmpty()) {
@@ -327,8 +325,8 @@ TurnEventQueuePacket* TNetMgr::PopNextTurnEventPacketOrProcessSpecialQueueRecord
     int received = g_NetworkSessionManager006a5f60.TryReceiveNetworkPacketIntoResizableBuffer(
         &fromId, &toId, &packetBuffer);
     TurnEventQueuePacket* packet = static_cast<TurnEventQueuePacket*>(packetBuffer);
-    if (received == 0 && g_NetworkSessionManager006a5f60.lastErrorCode0c != DPERR_NOMESSAGES) {
-      HandleError(g_NetworkSessionManager006a5f60.lastErrorCode0c);
+    if (received == 0 && g_NetworkSessionManager006a5f60.lastErrorCode != DPERR_NOMESSAGES) {
+      HandleError(g_NetworkSessionManager006a5f60.lastErrorCode);
       return packet;
     }
     if (packet == 0 || fromId != 0) {
@@ -419,7 +417,7 @@ int TNetMgr::ProbeNationReachabilityAndMarkAwolBitmask() {
         probe.fromNetworkId = g_NetworkSessionManager006a5f60.localPlayerId60;
         int destination = probe.toNetworkId;
         if (destination == -1) {
-          destination = g_NetworkSessionManager006a5f60.broadcastPlayerId64;
+          destination = g_NetworkSessionManager006a5f60.broadcastPlayerId;
         }
         if (g_NetworkSessionManager006a5f60.TrySendNetworkPacket(destination, &probe,
                                                                  probe.messageLength) == 0) {

@@ -66,7 +66,7 @@ bool DiplomacyScreen::ToolbarButtonShowsSelectedArt() const {
   TView* toolbarDialog = g_pDisplayMgr != 0 ? g_pDisplayMgr->activeDialog : 0;
   TView* button = toolbarDialog != 0 ? toolbarDialog->ResolveControlByTag(kControlTagDipl) : 0;
   return button != 0 && button->IsKindOf(RUNTIME_CLASS(TPicture)) != 0 &&
-         static_cast<TPicture*>(button)->glyphBase84 == kDiplomacyToolbarSelectedPicture;
+         static_cast<TPicture*>(button)->glyphBase == kDiplomacyToolbarSelectedPicture;
 }
 
 RuntimeActionResult DiplomacyScreen::SelectNation(short nationSlot) {
@@ -124,11 +124,11 @@ bool DiplomacyScreen::TreatiesTopicIsSelected() const {
 }
 
 bool DiplomacyScreen::TreatiesTopicIsActive() const {
-  return TreatiesTopicIsSelected() && diplomacyView->actionCodeBC == kDipActionBuildConsulate;
+  return TreatiesTopicIsSelected() && diplomacyView->actionCode == kDipActionBuildConsulate;
 }
 
 int DiplomacyScreen::ActionCode() const {
-  return diplomacyView != 0 ? diplomacyView->actionCodeBC : -1;
+  return diplomacyView != 0 ? diplomacyView->actionCode : -1;
 }
 
 short DiplomacyScreen::PolicyIconForNation(short nationSlot) {

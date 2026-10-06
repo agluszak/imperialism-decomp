@@ -14,7 +14,7 @@
 
 // FUNCTION: IMPERIALISM 0x004308d0
 TMapKey::TMapKey() {
-  viewMode90 = 0;
+  viewMode = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00430930
@@ -60,7 +60,7 @@ void TMapKey::DoPostCreate(int arg) {
     legendText->controlTag = kControlTagNam0 + i; // 'nam0'-'nam6'
     legendText->CenterVertically(false);
     legendText->shadowTextColor = shadowStyleFlags;
-    legendText->dropShadowEnabledA0 = true;
+    legendText->dropShadowEnabled = true;
     legendText->SetTextStyle(style, true);
   }
 }
@@ -68,7 +68,7 @@ void TMapKey::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x004fcf80
 void TMapKey::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);
-  switch (this->viewMode90) {
+  switch (this->viewMode) {
   case 0:
     RenderMapHintOverlayMode0();
     break;

@@ -54,16 +54,16 @@ void TShipFractionCluster::DoEvent(int commandId, TEventHandler* sourceHandler, 
     if (selectedShipCount < availableShipCount) {
       selectedShipCount = static_cast<short>(selectedShipCount + 1);
       shipCountButton->SetValue(selectedShipCount, true);
-      g_pActiveMapOrderContext->selectedTaskForce14->Select(static_cast<short>(controlTag - 0x7330),
-                                                            1);
+      g_pActiveMapOrderContext->selectedTaskForce->Select(static_cast<short>(controlTag - 0x7330),
+                                                          1);
       mainSelectionView->UpdateRoster();
     }
   } else if (commandId == 0x65) {
     if (selectedShipCount > 0) {
       selectedShipCount = static_cast<short>(selectedShipCount - 1);
       shipCountButton->SetValue(selectedShipCount, true);
-      g_pActiveMapOrderContext->selectedTaskForce14->Select(static_cast<short>(controlTag - 0x7330),
-                                                            0);
+      g_pActiveMapOrderContext->selectedTaskForce->Select(static_cast<short>(controlTag - 0x7330),
+                                                          0);
       mainSelectionView->UpdateRoster();
     }
   } else {
@@ -72,8 +72,7 @@ void TShipFractionCluster::DoEvent(int commandId, TEventHandler* sourceHandler, 
 }
 
 // FUNCTION: IMPERIALISM 0x00568f90
-void TShipFractionCluster::Set(int availableCount,
-                                                             int selectedCount) {
+void TShipFractionCluster::Set(int availableCount, int selectedCount) {
   TView* shipControl = ResolveControlByTag(kControlTagShip);
   if (availableCount != 0) {
     if (availableShipCount == 0) {
@@ -106,8 +105,8 @@ void TShipFractionCluster::IncrementSelectedShipCount(unsigned char displayOnly)
     selectedShipCount = static_cast<short>(selectedShipCount + 1);
     shipCountButton->SetValue(selectedShipCount, true);
     if (displayOnly == 0) {
-      g_pActiveMapOrderContext->selectedTaskForce14->Select(static_cast<short>(controlTag - 0x7330),
-                                                            1);
+      g_pActiveMapOrderContext->selectedTaskForce->Select(static_cast<short>(controlTag - 0x7330),
+                                                          1);
       mainSelectionView->UpdateRoster();
     }
   }
@@ -119,8 +118,8 @@ void TShipFractionCluster::DecrementSelectedShipCount(unsigned char displayOnly)
     selectedShipCount = static_cast<short>(selectedShipCount - 1);
     shipCountButton->SetValue(selectedShipCount, true);
     if (displayOnly == 0) {
-      g_pActiveMapOrderContext->selectedTaskForce14->Select(static_cast<short>(controlTag - 0x7330),
-                                                            0);
+      g_pActiveMapOrderContext->selectedTaskForce->Select(static_cast<short>(controlTag - 0x7330),
+                                                          0);
       mainSelectionView->UpdateRoster();
     }
   }

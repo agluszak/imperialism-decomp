@@ -12,7 +12,7 @@ TIndexAndRankList::TIndexAndRankList() {}
 
 // FUNCTION: IMPERIALISM 0x005348f0
 void TIndexAndRankList::IIndexAndRankList() {
-  recordSize14 = 6;
+  recordSize = 6;
 }
 
 // FUNCTION: IMPERIALISM 0x00534910

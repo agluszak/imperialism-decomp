@@ -190,9 +190,9 @@ END_MESSAGE_MAP()
 
 // FUNCTION: IMPERIALISM 0x00412ac0
 ImperialismApp::ImperialismApp()
-    : CWinApp(), waitCursorAnchorC0(0), field_C4(), appliedAutoResModeC8(0), languageLabelCC(),
+    : CWinApp(), waitCursorAnchorC0(0), field_C4(), appliedAutoResMode(0), languageLabelCC(),
       localizedPictGobNameD0(), field_D4(), primaryDataLibNameD8(), field_DC(),
-      languageCodeString(), languagePackIdE4(0) {}
+      languageCodeString(), languagePackId(0) {}
 
 // FUNCTION: IMPERIALISM 0x00412c60
 ImperialismApp::~ImperialismApp() {}
@@ -308,7 +308,7 @@ BOOL ImperialismApp::InitInstance() {
 
 // FUNCTION: IMPERIALISM 0x00413780
 int ImperialismApp::ExitInstance() {
-  if (appliedAutoResModeC8) {
+  if (appliedAutoResMode) {
     ChangeDisplaySettingsA(nullptr, 0);
   }
 
@@ -451,7 +451,7 @@ void ImperialismApp::OnPeekAtDib() {
     return;
   }
 
-  int inputValue = inputDialog.editValue5c;
+  int inputValue = inputDialog.editValue;
   CDib* dib;
   if (inputValue < 20000) {
     dib = g_pResourceMgr->LoadBmpResourceByIdCached(static_cast<unsigned short>(inputValue));
@@ -630,10 +630,10 @@ BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
       unsigned char languageCodeByte0 = languageCodeString[0];
       unsigned char languageCodeByte1 = languageCodeString[1];
       unsigned char languageCodeByte2 = languageCodeString[2];
-      languagePackIdE4 = (static_cast<unsigned int>(languageCodeByte2) * 0x100U +
-                          static_cast<unsigned int>(languageCodeByte1)) *
-                             0x100U +
-                         static_cast<unsigned int>(languageCodeByte0);
+      languagePackId = (static_cast<unsigned int>(languageCodeByte2) * 0x100U +
+                        static_cast<unsigned int>(languageCodeByte1)) *
+                           0x100U +
+                       static_cast<unsigned int>(languageCodeByte0);
     }
     FreeLibrary(irgModule);
 
@@ -657,7 +657,7 @@ int ImperialismApp::ShowAutoResolutionDialogIfNeeded() {
   ImperialismCommandLineInfo cmdInfo(&languageOverride);
   ParseCommandLine(cmdInfo);
 
-  if (cmdInfo.m_bForceAutoResOff40) {
+  if (cmdInfo.m_bForceAutoResOff) {
     autoResMode = 0;
   }
   if (cmdInfo.m_bForceAutoResOn) {
@@ -694,8 +694,8 @@ BOOL ImperialismApp::SetSettingValueInSettingsSection(LPCTSTR key, LPCTSTR value
 
 // FUNCTION: IMPERIALISM 0x004155b0
 BOOL ImperialismApp::ApplyAutoResolutionModeAndPersist(int mode) {
-  if (appliedAutoResModeC8 != mode) {
-    appliedAutoResModeC8 = mode;
+  if (appliedAutoResMode != mode) {
+    appliedAutoResMode = mode;
     if (mode == 0) {
       ChangeDisplaySettingsA(nullptr, 0);
     } else {
@@ -721,13 +721,13 @@ BOOL ImperialismApp::ApplyAutoResolutionModeAndPersist(int mode) {
       }
 
       if (changeResult != 0) {
-        appliedAutoResModeC8 = 0;
+        appliedAutoResMode = 0;
       }
     }
 
-    if (appliedAutoResModeC8 == mode) {
+    if (appliedAutoResMode == mode) {
       WriteProfileInt(g_pRegistrySettingsSection_0063E040, g_pRegistryAutoResKey_0063E048,
-                      appliedAutoResModeC8);
+                      appliedAutoResMode);
       return TRUE;
     }
     return FALSE;

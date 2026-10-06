@@ -81,7 +81,7 @@ void TDisplayMgr::IDisplayMgr() {
     turnOrderList = 0;
   } else {
     turnOrderList = list;
-    list->recordSize14 = 4;
+    list->recordSize = 4;
   }
 
   dialogActiveFlag = 0;
@@ -258,7 +258,7 @@ void TDisplayMgr::CloseFloaters() {
   TWindow* window = static_cast<TWindow*>(cursor.FirstWindow());
   while (cursor.More() != 0) {
     if (window != 0) {
-      if (window->IsActionable() && window->controlValue3c == kClass99WindowId) {
+      if (window->IsActionable() && window->controlValue == kClass99WindowId) {
         if (window->IsModal() != 0) {
           window->Dismiss(kControlTagOkok, true);
         } else {

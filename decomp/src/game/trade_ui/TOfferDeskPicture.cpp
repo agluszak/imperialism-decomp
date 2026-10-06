@@ -295,7 +295,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   purchaseControl->SetEditSelectionAndScrollCaret(
       0, static_cast<short>(proposedAmountText.GetLength()), 1);
 
-  SetGlobalBlitTransparentColorRaw(purchaseControl->stylePayload48->packedColor);
+  SetGlobalBlitTransparentColorRaw(purchaseControl->stylePayload->packedColor);
   g_pDisplayMgr->SetHiliteColor(&hiliteColor);
 
   TPicture* commodityIcon = static_cast<TPicture*>(ResolveControlByTag(kControlTagIcon));
@@ -420,8 +420,8 @@ void TOfferDeskPicture::ShowAdvice() {
   }
   g_pSimMgr->GetCommodityName(commodityType, &strCommodity);
 
-  short compat = g_pDiplomacyTurnStateManager->GetEmbassyStatus(
-      respondingNationSlot, offeringNationSlot);
+  short compat =
+      g_pDiplomacyTurnStateManager->GetEmbassyStatus(respondingNationSlot, offeringNationSlot);
 
   if (g_pHelpMgr->tradeAdviceDetailLevel == 0) {
     g_pSimMgr->GetString(0x2740, 9, &strFinal);

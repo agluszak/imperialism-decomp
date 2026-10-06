@@ -50,25 +50,24 @@ void TPortZone::ReadFrom(TStream* stream) {
 void TPortZone::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
   stream->WriteSharedString(&displayName);
-  stream->WriteBytes(&statusCode04, 2);
-  stream->WriteBytes(&tileOrTerrainId0c, 4);
-  stream->WriteBytes(&seedNationId12, 2);
+  stream->WriteBytes(&statusCode, 2);
+  stream->WriteBytes(&tileOrTerrainId, 4);
+  stream->WriteBytes(&seedNationId, 2);
   stream->WriteBytes(&activeTileIndex, 2);
-  stream->WriteBytes(&contextOrdinal14, 2);
+  stream->WriteBytes(&contextOrdinal, 2);
   stream->WriteBytes(&portTileIndex, 2);
 }
 
 // slot 0x0a — TZone::NameThyself override.
 // FUNCTION: IMPERIALISM 0x005618b0
-void TPortZone::NameThyself(unsigned char* usedCityFlags,
-                                                               const char* overrideName) {
+void TPortZone::NameThyself(unsigned char* usedCityFlags, const char* overrideName) {
   (void)usedCityFlags;
   (void)overrideName;
   short cityIndex = g_pGlobalMapState->terrainStateTable[portTileIndex].cityRecordIndex;
   Province* city = cityIndex == -1 ? 0 : &g_pGlobalMapState->cityScoreTable[cityIndex];
   CString headlineTemplate;
   CString expandedHeadline;
-  g_pSimMgr->GetString(0x275a, statusCode04, &headlineTemplate);
+  g_pSimMgr->GetString(0x275a, statusCode, &headlineTemplate);
   scanBracketExpressions(g_pSimMgr, &expandedHeadline, static_cast<LPCSTR>(headlineTemplate),
                          static_cast<LPCSTR>(city->cityNameA4));
   displayName = expandedHeadline;
@@ -81,8 +80,8 @@ void TPortZone::Free() {
     if (activeTileIndex != -1) {
       g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(activeTileIndex, -1);
     }
-    if (tileOrTerrainId0c != -1) {
-      g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(static_cast<short>(tileOrTerrainId0c),
+    if (tileOrTerrainId != -1) {
+      g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(static_cast<short>(tileOrTerrainId),
                                                               -1);
     }
   }
@@ -158,7 +157,7 @@ bool TPortZone::CanBeTargetOf(TTaskForce* force) {
 // slot 0x13 — TZone::FindNearestActiveSeaContextTileFromOffset216 override.
 // FUNCTION: IMPERIALISM 0x00561e40
 short TPortZone::FindNearestActiveSeaContextTileFromOffset216() {
-  short originTile = static_cast<short>(tileOrTerrainId0c);
+  short originTile = static_cast<short>(tileOrTerrainId);
   HexSpiralSearchState spiral;
   spiral.row = originTile / 0x6c;
   spiral.col = originTile % 0x6c;
@@ -179,7 +178,7 @@ short TPortZone::FindNearestActiveSeaContextTileFromOffset216() {
           candidateRecord.tileActionState16 == kMapTileActionStateDockedFleet) {
         candidateContext = TZone::GetFirstPortZone();
         while (candidateContext != 0 &&
-               static_cast<short>(candidateContext->tileOrTerrainId0c) != candidateTile &&
+               static_cast<short>(candidateContext->tileOrTerrainId) != candidateTile &&
                candidateContext->activeTileIndex != candidateTile &&
                static_cast<TPortZone*>(candidateContext)->portTileIndex != candidateTile) {
           candidateContext = candidateContext->GetNextPortZone();

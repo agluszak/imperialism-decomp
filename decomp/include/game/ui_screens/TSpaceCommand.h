@@ -11,10 +11,10 @@ class TSetupRandomMapPicture;
 class TSpaceCommand : public TCommand {
 public:
   DECLARE_DYNCREATE(TSpaceCommand)
-  virtual ~TSpaceCommand() override;      // slot 0x01 (scalar deleting destructor)
-  virtual void DoIt() override;           // slot 0x0b 0x5751f0
-  TSetupRandomMapPicture* setupPicture18; // +0x18
-  unsigned char mode1c;                   // +0x1c
+  virtual ~TSpaceCommand() override;    // slot 0x01 (scalar deleting destructor)
+  virtual void DoIt() override;         // slot 0x0b 0x5751f0
+  TSetupRandomMapPicture* setupPicture; // +0x18
+  unsigned char mode1c;                 // +0x1c
   unsigned char pad1d[3];
 
   // NOOP: verified empty in original 0x005751b3 (no standalone TSpaceCommand::TSpaceCommand body exists: CreateObject 0x00575180 inlines this default ctor, calling the TCommand base ctor directly at that site)

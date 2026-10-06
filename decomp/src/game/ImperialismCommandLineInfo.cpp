@@ -17,11 +17,11 @@ void ImperialismCommandLineInfo::ParseParam(LPCSTR pszParam, BOOL bFlag, BOOL bL
   } else if (bFlag && token.Compare(g_szLiteralL_00694250) == 0) {
     m_bShowSetupDialog = 1;
   } else if (bFlag && upper[0] == 'L') {
-    *m_pLanguageName24 = pszParam + 1; // language name keeps its original case
+    *m_pLanguageName = pszParam + 1; // language name keeps its original case
   } else if (bFlag && upper[0] == 'R') {
     m_bForceAutoResOn = 1;
   } else if (bFlag && upper[0] == 'S') {
-    m_bForceAutoResOff40 = 1;
+    m_bForceAutoResOff = 1;
   } else if (bFlag && upper[0] == 'T') {
     m_strMainWindowTitle38 = upper + 1;
   } else if (bFlag && upper[0] == 'C') {

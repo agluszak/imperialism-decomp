@@ -209,8 +209,8 @@ HBRUSH CMcWindow::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) {
       g_pResourceMgr->EnsureDefaultDibPalette()->SelectIntoDcAndRealize(pDC, FALSE);
       pDC->SetBkColor(0x000000ff);
       unsigned int packedTextColor =
-          control->stylePayload48 != NULL
-              ? static_cast<unsigned int>(control->stylePayload48->styleWord)
+          control->stylePayload != NULL
+              ? static_cast<unsigned int>(control->stylePayload->styleWord)
               : static_cast<unsigned int>(control->textStyle78.textColor);
       pDC->SetTextColor(g_pResourceMgr->ResolvePaletteIndexColor(packedTextColor));
     }

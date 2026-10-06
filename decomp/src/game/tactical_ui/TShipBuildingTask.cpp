@@ -27,7 +27,7 @@ void TShipBuildingTask::IShipBuildingTask(short citySlotType, TCity* owner,
     remainingAttempts = 3;
   }
   requestedShipType14 = requestedShipType;
-  waitingForShipOrderAdvance16 = 0;
+  waitingForShipOrderAdvance = 0;
   remainingAttempts += 2;
   serializedTaskKind = 2;
 }
@@ -36,13 +36,13 @@ void TShipBuildingTask::IShipBuildingTask(short citySlotType, TCity* owner,
 bool TShipBuildingTask::Execute(TTaskList* taskList) {
   TShipOrder* shipOrder = ownerCity->shipOrderSlots[0];
 
-  if (waitingForShipOrderAdvance16 == 0) {
+  if (waitingForShipOrderAdvance == 0) {
     if (shipOrder->CanMakeProduct()) {
       if (remainingAttempts < 0) {
         remainingAttempts = 1;
       }
       ++remainingAttempts;
-      waitingForShipOrderAdvance16 = 1;
+      waitingForShipOrderAdvance = 1;
       return false;
     }
 
@@ -117,7 +117,7 @@ void TShipBuildingTask::WriteTo(TStream* stream) {
   stream->WriteBytes(&requestedAmount, 2);
   stream->WriteBytes(&alreadyQueuedFlag, 2);
   stream->WriteBytes(&requestedShipType14, 2);
-  stream->WriteBytes(&waitingForShipOrderAdvance16, 2);
+  stream->WriteBytes(&waitingForShipOrderAdvance, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x005aea70
@@ -128,5 +128,5 @@ void TShipBuildingTask::ReadFrom(TStream* stream) {
   stream->ReadBytes(&requestedAmount, 2);
   stream->ReadBytes(&alreadyQueuedFlag, 2);
   stream->ReadBytes(&requestedShipType14, 2);
-  stream->ReadBytes(&waitingForShipOrderAdvance16, 2);
+  stream->ReadBytes(&waitingForShipOrderAdvance, 2);
 }

@@ -23,19 +23,19 @@ void TShipLine::IShipLine(short rowArg, short colArg, int* bounds,
   childLink14 = childLink;
   TShip* ship = childLink->payload;
   taskForce18 = force;
-  shipNode10 = ship;
+  shipNode = ship;
 }
 
 // FUNCTION: IMPERIALISM 0x00565100
 void TShipLine::InstallViews(TView* panel, int* offsetLayout) {
   TShipView* shipView = new TShipView();
   shipView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &layoutWidth, 5, 5, 0);
-  shipView->shipNode60 = shipNode10;
+  shipView->shipNode = shipNode;
   shipView->field64 = taskForce18;
 
   int checkboxOffset[2] = {0, 0};
   int checkboxSize[2] = {0x50, 0x2d};
-  int atlasOffset = g_ShipRosterAtlasHorizontalOffsetByResourceType_006985E8[shipNode10->type];
+  int atlasOffset = g_ShipRosterAtlasHorizontalOffsetByResourceType_006985E8[shipNode->type];
   TArmyCheckBox* checkbox =
       new TArmyCheckBox(shipView, checkboxOffset, checkboxSize, 5, 5,
                         static_cast<TMilitaryPageView*>(panel)->primaryUnitAtlas, atlasOffset);

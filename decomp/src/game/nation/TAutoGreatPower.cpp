@@ -1494,9 +1494,9 @@ void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
   expansionPressurePerCompatibleRegion = expansionPressure;
 
   if (activeMissionCount == 0) {
-    activeMissionPressureAverageB6c = maximumAdjustedMissionScore;
+    activeMissionPressureAverage = maximumAdjustedMissionScore;
   } else {
-    activeMissionPressureAverageB6c =
+    activeMissionPressureAverage =
         maximumAdjustedMissionScore / static_cast<float>(activeMissionCount);
   }
 }
@@ -1690,16 +1690,16 @@ short CompareMissionsByWeightedShortfall(TMission* left, TMission* right) {
 
   float leftShortfall = 1.0f - left->GetWeightedSatisfaction();
   if (0.0f <= leftShortfall) {
-    leftShortfall = left->importanceScore0c * leftShortfall;
+    leftShortfall = left->importanceScore * leftShortfall;
   } else {
-    leftShortfall = leftShortfall / left->importanceScore0c;
+    leftShortfall = leftShortfall / left->importanceScore;
   }
 
   float rightShortfall = 1.0f - right->GetWeightedSatisfaction();
   if (0.0f <= rightShortfall) {
-    rightShortfall = rightShortfall * right->importanceScore0c;
+    rightShortfall = rightShortfall * right->importanceScore;
   } else {
-    rightShortfall = rightShortfall / right->importanceScore0c;
+    rightShortfall = rightShortfall / right->importanceScore;
   }
 
   if (rightShortfall < leftShortfall) {
@@ -1746,8 +1746,8 @@ void TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unuse
       TMission* nextMission = nextByClass[classMask];
       if (nextMission != nullptr) {
         float nextMissionRatio =
-            nextMission->importanceScore0c / nextMission->IndustrialCostOfNeeds();
-        float missionRatio = mission->importanceScore0c / mission->IndustrialCostOfNeeds();
+            nextMission->importanceScore / nextMission->IndustrialCostOfNeeds();
+        float missionRatio = mission->importanceScore / mission->IndustrialCostOfNeeds();
         if (missionRatio < nextMissionRatio * g_MissionEligibilityRatioMargin_006545f8) {
           eligible = false;
         } else {
@@ -1765,8 +1765,8 @@ namespace {
 
 inline float ComputeMissionRemainingPriorityScore(TMission* mission) {
   float diff = g_MissionScoreOneConstant_006545d8 - mission->GetWeightedSatisfaction();
-  return (diff >= g_MissionDefaultScore_006545d0) ? diff * mission->importanceScore0c
-                                                  : diff / mission->importanceScore0c;
+  return (diff >= g_MissionDefaultScore_006545d0) ? diff * mission->importanceScore
+                                                  : diff / mission->importanceScore;
 }
 
 } // namespace
@@ -1886,9 +1886,9 @@ void TAutoGreatPower::AssignUnitsToMissions(int unused) {
     if (eligibleRunnerUp != nullptr &&
         static_cast<char>(eligibleRunnerUp->state08) <= static_cast<char>(bestArmy->state08) &&
         (bestArmy->marker11 & 1) == 0) {
-      float bestArmyRatio = bestArmy->importanceScore0c / bestArmy->IndustrialCostOfNeeds();
+      float bestArmyRatio = bestArmy->importanceScore / bestArmy->IndustrialCostOfNeeds();
       float runnerUpRatio =
-          eligibleRunnerUp->importanceScore0c / eligibleRunnerUp->IndustrialCostOfNeeds();
+          eligibleRunnerUp->importanceScore / eligibleRunnerUp->IndustrialCostOfNeeds();
       if (bestArmyRatio < runnerUpRatio) {
         bestArmy = eligibleRunnerUp;
       }

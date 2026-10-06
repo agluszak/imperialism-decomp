@@ -24,9 +24,9 @@ void TPopGrowthOrder::IPopGrowthOrder(TCity* city) {
 // FUNCTION: IMPERIALISM 0x004b81b0
 short TPopGrowthOrder::MaxOrder() {
   short currentQuantity = quantity;
-  short furnitureLimit = static_cast<short>(ownerCity->cityStockFurnitureD2 + currentQuantity);
+  short furnitureLimit = static_cast<short>(ownerCity->cityStockFurniture + currentQuantity);
   short clothingLimit = static_cast<short>(ownerCity->cityStockClothing + currentQuantity);
-  short foodLimit = static_cast<short>(ownerCity->cityStockCannedFoodC4 + currentQuantity);
+  short foodLimit = static_cast<short>(ownerCity->cityStockCannedFood + currentQuantity);
   short capacityLimit = static_cast<short>(ownerCity->productionAccum[0x0f] + currentQuantity);
 
   limitingConstraint = kProductionOrderLimitResources;
@@ -52,11 +52,11 @@ bool TPopGrowthOrder::SetQuantity(short quantity) {
   }
   this->quantity = quantity;
 
-  ownerCity->cityStockFurnitureD2 = static_cast<short>(ownerCity->cityStockFurnitureD2 - delta);
+  ownerCity->cityStockFurniture = static_cast<short>(ownerCity->cityStockFurniture - delta);
   ownerCity->VerifyStocks();
   ownerCity->cityStockClothing = static_cast<short>(ownerCity->cityStockClothing - delta);
   ownerCity->VerifyStocks();
-  ownerCity->cityStockCannedFoodC4 = static_cast<short>(ownerCity->cityStockCannedFoodC4 - delta);
+  ownerCity->cityStockCannedFood = static_cast<short>(ownerCity->cityStockCannedFood - delta);
   ownerCity->VerifyStocks();
   ownerCity->productionAccum[0x0f] = static_cast<short>(ownerCity->productionAccum[0x0f] - delta);
   g_pViewMgr->RefreshCityProductionUi();

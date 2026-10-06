@@ -6,10 +6,9 @@ IMPLEMENT_DYNCREATE(TSortByPriceList, TSortedPtrList)
 // FUNCTION: IMPERIALISM 0x00534710
 TSortByPriceList::TSortByPriceList() {}
 
-
 // FUNCTION: IMPERIALISM 0x00534790
 void TSortByPriceList::ISortByPriceList() {
-  recordSize14 = 4;
+  recordSize = 4;
 }
 
 // FUNCTION: IMPERIALISM 0x005347b0

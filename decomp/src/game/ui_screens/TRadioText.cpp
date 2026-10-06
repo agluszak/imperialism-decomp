@@ -24,12 +24,12 @@ void TRadioText::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x005794b0
 void TRadioText::Draw(RECT* rectBuffer) {
-  if (isSelectedOption || controlState64 != 0) {
+  if (isSelectedOption || controlState != 0) {
     TRadioTextCluster* cluster = static_cast<TRadioTextCluster*>(ownerContext);
     cluster->AssertValid();
 
     COLORREF savedColor = g_pActiveQuickDrawSurfaceContext->blitSurface.foregroundColor;
-    short colorCode = controlState64 != 0 ? cluster->word8C : cluster->word8E;
+    short colorCode = controlState != 0 ? cluster->word8C : cluster->word8E;
     g_pViewMgr->SetColor(colorCode, true);
 
     RECT fillRect = {0, 0, frameWidth, frameHeight};

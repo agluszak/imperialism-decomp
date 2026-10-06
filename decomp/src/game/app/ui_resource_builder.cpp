@@ -40,7 +40,7 @@ void __cdecl RegisterUiResourceEntry(unsigned int nameTag, unsigned int controlT
   sizeLayout[1] = height;
   widget->InitializeUiResourceEntryFrameAndParent(0, parent, offsetLayout, sizeLayout, 0, 0, 1);
   widget->controlTag = static_cast<int>(controlTag);
-  widget->controlValue3c = field3cValue;
+  widget->controlValue = field3cValue;
   widget->Show(enabledState, 0);
   widget->ViewEnable(stateValue, 0);
 }
@@ -54,8 +54,7 @@ void __cdecl SetUiResourceStateFlags(bool inputGateFlag, bool childHitTestFlag) 
 
 // FUNCTION: IMPERIALISM 0x0041b3d0
 void __cdecl SetUiResourceContextPictureId(int nPictureId) {
-  static_cast<TPicture*>(g_pUiResourceContext)
-      ->SetPictureRsrcID(static_cast<short>(nPictureId), 0);
+  static_cast<TPicture*>(g_pUiResourceContext)->SetPictureRsrcID(static_cast<short>(nPictureId), 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0041b400
@@ -166,10 +165,10 @@ void __cdecl ApplyUiResourceColorTripletFromContext(bool nFlag0C, bool nTripletF
 // FUNCTION: IMPERIALISM 0x00427060
 void __cdecl ReplaceUiResourceContextPairBuffer(int styleWord, int packedColor) {
   TView* context = g_pUiResourceContext;
-  delete context->stylePayload48;
-  context->stylePayload48 = new TUiStyleBytes();
-  context->stylePayload48->styleWord = styleWord;
-  context->stylePayload48->packedColor = packedColor;
+  delete context->stylePayload;
+  context->stylePayload = new TUiStyleBytes();
+  context->stylePayload->styleWord = styleWord;
+  context->stylePayload->packedColor = packedColor;
 }
 
 // FUNCTION: IMPERIALISM 0x004270e0

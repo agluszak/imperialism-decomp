@@ -335,7 +335,7 @@ int __stdcall GetActiveMapOrderEntryActionCode(short nTileIndex, int dwInputFlag
   if (entry == 0) {
     return 0;
   }
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].terrainKindStorage00 ==
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].terrainKindStorage ==
       kStrategicTerrainWater) {
     TZone* zone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
     bool reachable = false;
@@ -376,7 +376,7 @@ int __stdcall GetActiveMapOrderEntryActionCode(short nTileIndex, int dwInputFlag
         scan = scan->next;
       }
       if (scan != 0) {
-        eligible = province->navyOrderReachableA0;
+        eligible = province->navyOrderReachable;
       }
     }
     if (eligible != 0) {

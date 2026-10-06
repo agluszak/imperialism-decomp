@@ -51,9 +51,8 @@ IMPLEMENT_DYNCREATE(TControl, TView)
 
 // FUNCTION: IMPERIALISM 0x0048e520
 TControl::TControl()
-    : TView(), eventNumber60(1), controlState64(0), contentInsets(0, 0, 0, 0),
+    : TView(), eventNumber60(1), controlState(0), contentInsets(0, 0, 0, 0),
       textStyle78(g_UiResourceEntryDefaultTextStyle) {}
-
 
 // FUNCTION: IMPERIALISM 0x0048e640
 void TControl::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
@@ -88,7 +87,7 @@ void TControl::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* even
     return;
   }
   if (commandId == kControlCommandHiliteToggle) {
-    HiliteState(controlState64 == 0, true);
+    HiliteState(controlState == 0, true);
     return;
   }
   TEventHandler* child = GetNextHandler();
@@ -115,8 +114,8 @@ void TControl::InstallTextStyle(const TextStyle& style, char refreshNow) {
 
 // FUNCTION: IMPERIALISM 0x0048e810
 void TControl::HiliteState(unsigned char enabledState, bool refreshNow) {
-  if (controlState64 != static_cast<unsigned char>(enabledState)) {
-    controlState64 = static_cast<unsigned char>(enabledState);
+  if (controlState != static_cast<unsigned char>(enabledState)) {
+    controlState = static_cast<unsigned char>(enabledState);
     if (refreshNow) {
       RefreshControl();
     }
@@ -194,7 +193,7 @@ void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNat
   short table[5] = {0, 2, 3, 0, 1};
 
   TMapKey& mapKey = *static_cast<TMapKey*>(this);
-  mapKey.viewMode90 = selectedNation;
+  mapKey.viewMode = selectedNation;
   mapKey.SetPictureRsrcID(
       selectedNation <= 0 ? 0x1393 : static_cast<short>(0x1394 + table[selectedNation]), 1);
 

@@ -26,7 +26,7 @@ public:
   short field4;                                    // +0x04 -- composition class
   short field6;                                    // +0x06 -- composition class and random sort key
   signed char categoryFlag;
-  unsigned char fortLevelAttackerPenaltyCache9;
+  unsigned char fortLevelAttackerPenaltyCache;
   short unitCountA;     // +0x0a -- linked unit count, serialized as a signed word
   unsigned char fieldC; // +0x0c -- initialized by IArmyStack
   unsigned char padD;
@@ -48,8 +48,7 @@ public:
   void AddUnitByRosterId(short rosterID);
   void RaiseExperience(bool boosted);
   bool UnitsFighting(); // 0x4a8330, Mac oracle
-  void StrategicFirepower(int* outWeightedSum, int* outCount,
-                                                                int counter);
+  void StrategicFirepower(int* outWeightedSum, int* outCount, int counter);
   void ApplyStrategicDamage(int weightedSum, int count, int counter);
   void IArmyStack(char ownerNationIndex, short ownerNationCode, short tileIndex);
   void AddUnitToChainHead(TMilitaryUnit* unit);

@@ -22,8 +22,8 @@ IMPLEMENT_DYNCREATE(TProductionCluster, TUberCluster)
 
 // FUNCTION: IMPERIALISM 0x00586920
 TProductionCluster::TProductionCluster()
-    : TUberCluster(), field88(0), laborRate8c(0), stockpileRate8e(0), currentStockpile90(0),
-      maximumStockpile94(0) {}
+    : TUberCluster(), field88(0), laborRate8c(0), stockpileRate8e(0), currentStockpile(0),
+      maximumStockpile(0) {}
 
 // FUNCTION: IMPERIALISM 0x005869a0
 TProductionCluster::~TProductionCluster() {}
@@ -34,7 +34,7 @@ void TProductionCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TE
   if (valueControl == 0) {
     GAME_FAIL_NIL_POINTER();
   }
-  if (currentStockpile90 != 0 && field88 != 0 && commandId > 99 && commandId < 0x66) {
+  if (currentStockpile != 0 && field88 != 0 && commandId > 99 && commandId < 0x66) {
     ownerContext->HandleEvent(commandId, this, 0);
   }
   this->TCluster::DoEvent(commandId, sourceHandler, event);
@@ -47,8 +47,8 @@ void TProductionCluster::SetLaborRate(short laborRate) {
 
 // FUNCTION: IMPERIALISM 0x00586a80
 void TProductionCluster::SetStockpiles(short* current, short* maximum) {
-  currentStockpile90 = current;
-  maximumStockpile94 = maximum;
+  currentStockpile = current;
+  maximumStockpile = maximum;
 }
 
 // FUNCTION: IMPERIALISM 0x00586ab0

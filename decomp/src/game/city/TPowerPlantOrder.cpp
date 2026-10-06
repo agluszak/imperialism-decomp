@@ -37,7 +37,7 @@ bool TPowerPlantOrder::SetQuantity(short quantity) {
   ownerCity->VerifyStocks();
 
   short previousPower = ownerCity->productionSummary->extraAt1e;
-  ownerCity->powerAvailableB4 = quantity;
+  ownerCity->powerAvailable = quantity;
   ownerCity->productionSummary->extraAt1e = quantity;
   ownerCity->productionSummary->strength =
       static_cast<short>(ownerCity->productionSummary->strength + quantity - previousPower);

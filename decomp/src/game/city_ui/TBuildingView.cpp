@@ -20,7 +20,7 @@ void TBuildingView::ApplyCityViewSelectionPayloadAndRefreshControls(
   isEmbeddedPage9C = isEmbeddedPage;
   productionView98 = productionView;
   embeddedPageIndex9E = embeddedPageIndex;
-  GetWindow()->controlValue3c = 0x65;
+  GetWindow()->controlValue = 0x65;
   DoStartup();
   UpdateFields();
 }
@@ -42,9 +42,7 @@ void TBuildingView::SetUniversityDialogTextAndRefresh(TStaticText* label, CStrin
 }
 
 // FUNCTION: IMPERIALISM 0x004c70e0
-void TBuildingView::SetTextBox(TStaticText* label,
-                                                               short stringGroup,
-                                                               short stringIndex) {
+void TBuildingView::SetTextBox(TStaticText* label, short stringGroup, short stringIndex) {
   label->SetTextWithStrListID(stringGroup, stringIndex, false);
   CRect labelBounds;
   label->QueryBounds(&labelBounds);

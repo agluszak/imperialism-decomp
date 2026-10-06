@@ -119,7 +119,7 @@ void TWorldView::DoKeyEvent(TToolboxEvent* event) {
       CString zoneName;
       zone->AssignZoneDisplayNameToOutputRef(&zoneName);
       if (searchText.Compare(zoneName) == 0) {
-        CenterOn(static_cast<short>(zone->tileOrTerrainId0c));
+        CenterOn(static_cast<short>(zone->tileOrTerrainId));
         return;
       }
     }
@@ -136,8 +136,7 @@ void TWorldView::DoKeyEvent(TToolboxEvent* event) {
 
   case 'W':
   case 'w':
-    g_pSelectedCivilianOrderState->WakeAll(
-        g_pSimMgr->GetPlayerCountry());
+    g_pSelectedCivilianOrderState->WakeAll(g_pSimMgr->GetPlayerCountry());
     return;
 
   case 'N':
@@ -270,7 +269,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
     break;
 
   case 4:
-    if (g_pGlobalMapState->terrainStateTable[tileIndex].recruitSearchVisited0e == 0) {
+    if (g_pGlobalMapState->terrainStateTable[tileIndex].recruitSearchVisited == 0) {
       cursorToken = 0x3eb;
     }
     break;
@@ -539,8 +538,7 @@ void TWorldView::ShiftClick(int stridedRecord, int dispatchContext) {
 }
 
 // FUNCTION: IMPERIALISM 0x00596440
-void TWorldView::CommandOptionClick(int stridedRecord,
-                                                                 int dispatchContext) {
+void TWorldView::CommandOptionClick(int stridedRecord, int dispatchContext) {
   (void)dispatchContext;
   TEvent* event = new TEvent();
   event->dispatchMessage = 0x78;

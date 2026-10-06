@@ -27,7 +27,7 @@ void TTextPictureButton::ITextPictureButton(TView* panel, int* offsetLayout, int
 // FUNCTION: IMPERIALISM 0x00572790
 void TTextPictureButton::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);
-  int pressedOffset = (controlState64 != 0) ? 1 : 0;
+  int pressedOffset = (controlState != 0) ? 1 : 0;
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, pointSize98, themeCode9C);
   COLORREF shadowColor;

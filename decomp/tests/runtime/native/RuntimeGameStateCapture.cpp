@@ -724,8 +724,8 @@ JSON_Value* CaptureMarket() {
 JSON_Value* CaptureTechnology() {
   const int kAdvancedIronWorkingTechId = 0x0f;
   const int kOilDrillingTechId = TTechMgr::kProductionOrderTechId;
-  const unsigned char advancedIronWorking = g_pTechMgr->resourceTypeEnabled19d[8];
-  const unsigned char marineEngineering = g_pTechMgr->resourceTypeEnabled19d[0xb];
+  const unsigned char advancedIronWorking = g_pTechMgr->resourceTypeEnabled[8];
+  const unsigned char marineEngineering = g_pTechMgr->resourceTypeEnabled[0xb];
   if (advancedIronWorking > 1 || marineEngineering > 1) {
     FailSemanticCapture("technology resource-type flag is not boolean");
   }
@@ -743,7 +743,7 @@ JSON_Value* CaptureTechnology() {
   }
   JsonArray industryEnabledBySlot;
   for (int slot = 0; slot < kIndustryActionSlotCount; ++slot) {
-    const unsigned char enabled = g_pTechMgr->resourceTypeEnabled19d[slot];
+    const unsigned char enabled = g_pTechMgr->resourceTypeEnabled[slot];
     if (enabled > 1) {
       FailSemanticCapture("technology industry-enabled flag is not boolean");
     }
@@ -876,7 +876,7 @@ int ValidateLiveZoneContextCount() {
     if (liveCount >= static_cast<int>(sizeof(seen))) {
       FailSemanticCapture("live map-action context count exceeds the AI state capacity");
     }
-    const int ordinal = static_cast<int>(zone->contextOrdinal14);
+    const int ordinal = static_cast<int>(zone->contextOrdinal);
     if (ordinal < 0 || ordinal >= static_cast<int>(sizeof(seen))) {
       FailSemanticCapture("live map-action context ordinal is outside the AI state capacity");
     }
@@ -956,7 +956,7 @@ int RequiredZoneOrdinal(TZone* zone, int liveCount) {
   if (zone == 0) {
     FailSemanticCapture("ocean neighbor contains a null zone");
   }
-  const int ordinal = static_cast<int>(zone->contextOrdinal14);
+  const int ordinal = static_cast<int>(zone->contextOrdinal);
   if (ordinal < 0 || ordinal >= liveCount || FindMapActionContextByNodeId((short)ordinal) != zone) {
     FailSemanticCapture("ocean neighbor is outside the live ordinal table");
   }
@@ -969,13 +969,13 @@ JSON_Value* CaptureZone(TZone* zone, int liveCount) {
   JsonArray secondaryNeighbors;
 
   object.Set("display_name", static_cast<LPCSTR>(zone->displayName));
-  object.SetOptional("status_code", static_cast<int>(zone->statusCode04));
-  const int targetTile = zone->tileOrTerrainId0c;
+  object.SetOptional("status_code", static_cast<int>(zone->statusCode));
+  const int targetTile = zone->tileOrTerrainId;
   if (targetTile < -1 || targetTile >= 0x1950) {
     FailSemanticCapture("ocean target tile is outside the strategic map");
   }
   object.SetOptional("target_tile", targetTile);
-  const int seedOwner = static_cast<int>(zone->seedNationId12);
+  const int seedOwner = static_cast<int>(zone->seedNationId);
   if (seedOwner < -1 || seedOwner > 0xff) {
     FailSemanticCapture("ocean seed owner is outside the tile-owner range");
   }
@@ -1373,7 +1373,7 @@ JSON_Value* CaptureMap() {
     tileObject.Set("city_border_mask", static_cast<unsigned int>(tile.cityBorderMask));
     tileObject.Set("water_adjacency_mask", static_cast<unsigned int>(tile.waterAdjacencyMask));
     tileObject.Set("recruit_search_visited",
-                   static_cast<unsigned int>(tile.recruitSearchVisited0e));
+                   static_cast<unsigned int>(tile.recruitSearchVisited));
     tileObject.Set("per_tile_visited", static_cast<int>(tile.perTileVisitedFlag));
     tileObject.Set("marker_slot_index", static_cast<int>(tile.markerSlotIndex));
     tileObject.Set("tile_action_ordinal", static_cast<int>(tile.tileActionOrdinal));
@@ -1418,8 +1418,8 @@ JSON_Value* CaptureProvinces() {
     if (province.ownerNationCode00 < -1 || province.ownerNationCode00 >= kNationSlotCount) {
       FailSemanticCapture("province owner is outside the semantic nation range");
     }
-    if (province.formerOwnerNationCode01 < -1 ||
-        province.formerOwnerNationCode01 >= kNationSlotCount) {
+    if (province.formerOwnerNationCode < -1 ||
+        province.formerOwnerNationCode >= kNationSlotCount) {
       FailSemanticCapture("province former owner is outside the semantic nation range");
     }
     const int adjacencyCount = static_cast<int>(province.adjacentRegionCount08);
@@ -1447,7 +1447,7 @@ JSON_Value* CaptureProvinces() {
         province.primaryNeighborTileIndex < -1 || province.primaryNeighborTileIndex >= 0x1950) {
       FailSemanticCapture("province neighbor tile is outside the strategic map");
     }
-    if (province.navyOrderReachableA0 > 1) {
+    if (province.navyOrderReachable > 1) {
       FailSemanticCapture("province navy-order reachability flag is not boolean");
     }
 
@@ -1456,7 +1456,7 @@ JSON_Value* CaptureProvinces() {
     JsonArray adjacencyAnchorTiles;
     JsonArray linkedTiles;
     object.SetOptional("owner", static_cast<int>(province.ownerNationCode00));
-    object.SetOptional("former_owner", static_cast<int>(province.formerOwnerNationCode01));
+    object.SetOptional("former_owner", static_cast<int>(province.formerOwnerNationCode));
     object.Set("development_stage", static_cast<int>(province.developmentStage));
     for (int neighborIndex = 0; neighborIndex < adjacencyCount; ++neighborIndex) {
       const int adjacentProvince = static_cast<int>(province.adjacentRegionIds[neighborIndex]);
@@ -1501,7 +1501,7 @@ JSON_Value* CaptureProvinces() {
     }
     object.Set("explored_by_majors", exploredByMajors.Release());
     object.Set("city_score", province.cityScoreValue);
-    object.Set("navy_order_reachable", province.navyOrderReachableA0 != 0);
+    object.Set("navy_order_reachable", province.navyOrderReachable != 0);
     object.Set("resource_presence_mask", static_cast<int>(province.resourcePresenceMask));
     object.Set("name", static_cast<LPCSTR>(province.cityNameA4));
     provinces.Add(object.Release());
@@ -1574,24 +1574,24 @@ JSON_Value* CaptureDealBook(TGreatPower* nation) {
 
 JSON_Value* CaptureForeignTradeState(const TForeignMinister* minister) {
   JsonObject state;
-  if (minister->interiorBidResource10 == -10) {
+  if (minister->interiorBidResource == -10) {
     state.SetNull("interior_bid");
   } else {
-    if (minister->interiorBidResource10 < kResourceCotton ||
-        minister->interiorBidResource10 >= kResourceManufacturedEnd) {
+    if (minister->interiorBidResource < kResourceCotton ||
+        minister->interiorBidResource >= kResourceManufacturedEnd) {
       FailSemanticCapture("foreign-minister interior bid commodity is invalid");
     }
     JsonObject bid;
-    bid.Set("commodity", kResourceNames[minister->interiorBidResource10]);
+    bid.Set("commodity", kResourceNames[minister->interiorBidResource]);
     bid.Set("amount", static_cast<int>(minister->interiorBidAmount));
     state.Set("interior_bid", bid.Release());
   }
   state.Set("phase_counter", static_cast<int>(minister->diplomacyPhaseCounter));
   state.Set("refresh_interval", static_cast<int>(minister->tradeBidRefreshInterval));
-  if (minister->interiorOrderKind1c < 1 || minister->interiorOrderKind1c > 2) {
+  if (minister->interiorOrderKind < 1 || minister->interiorOrderKind > 2) {
     FailSemanticCapture("foreign-minister requested ship is outside the recovered range");
   }
-  state.Set("requested_ship", ShipTypeName(minister->interiorOrderKind1c));
+  state.Set("requested_ship", ShipTypeName(minister->interiorOrderKind));
   state.Set("purchase_priority",
             CaptureTradeCommodityTable(minister->purchasePriorityByResource1e));
   JsonArray preferredResources;
@@ -1607,7 +1607,7 @@ JSON_Value* CapturePendingShip(TGreatPower* nation) {
   if (nation->interiorMinister == 0) {
     FailSemanticCapture("major nation has no interior minister");
   }
-  const short pendingShip = nation->interiorMinister->pendingShipType32;
+  const short pendingShip = nation->interiorMinister->pendingShipType;
   if (pendingShip == 0) {
     return JsonNullValue();
   }
@@ -2335,18 +2335,18 @@ JSON_Value* CaptureCity(TCity* city) {
   object.Set("power_plant_upgrade_queued", city->powerPlantUpgradeQueuedFlag != 0 ? true : false);
   object.Set("food_substitution_count", static_cast<int>(city->foodSubstitutionCount06));
   object.Set("starvation_population_loss", static_cast<int>(city->starvationPopulationLoss08));
-  object.Set("serialized_state", static_cast<int>(city->serializedState0a));
+  object.Set("serialized_state", static_cast<int>(city->serializedState));
   object.Set("phase_counter", static_cast<int>(city->cityPhaseCounter));
   object.Set("military_recruit_count_by_kind",
              CaptureShortArray(city->militaryRecruitCountByKind, kMilitaryUnitKindCount));
   object.Set("civilian_recruit_count_by_kind",
              CaptureShortArray(city->civilianRecruitCountByKind, kCivilianUnitKindCount));
   object.Set("ship_order_count_by_type", CaptureShipTypeCounts(city->orderCountByType5c));
-  object.Set("rolling_item_production_score", city->rollingItemProductionScore78);
+  object.Set("rolling_item_production_score", city->rollingItemProductionScore);
   object.Set("low_production", city->lowProductionFlag != 0 ? true : false);
   object.Set("low_stock", city->lowStockFlag != 0 ? true : false);
   object.Set("reserved_by_type", CaptureResourceTable(city->reservedByType7e));
-  object.Set("power_available", static_cast<int>(city->powerAvailableB4));
+  object.Set("power_available", static_cast<int>(city->powerAvailable));
   object.Set("stockpile", CaptureResourceTable(&city->cityStockCotton));
   object.Set("production_orders", CaptureShortArray(city->productionOrderTable1dc, 0x10));
   object.Set("production_accum", CaptureShortArray(city->productionAccum, 0x10));
@@ -2400,7 +2400,7 @@ int RuntimeZoneIndex(const TZone* zone) {
   }
   for (TZone* live = g_pMapActionContextListHead; live != 0; live = live->prev18) {
     if (live == zone) {
-      const int index = static_cast<int>(live->contextOrdinal14);
+      const int index = static_cast<int>(live->contextOrdinal);
       if (index < 0 || index >= g_nMapActionContextCount) {
         FailSemanticCapture("zone reference has an invalid runtime ordinal");
       }
@@ -2468,7 +2468,7 @@ JSON_Value* CaptureMilitaryUnits() {
       object.Set("order", CaptureMilitaryOrder(unit));
       ASSERT(unit->ownerNationSlot18 >= 0 && unit->ownerNationSlot18 < kNationSlotCount);
       object.Set("owner_nation", static_cast<int>(unit->ownerNationSlot18));
-      object.Set("roster_id", static_cast<int>(unit->unitRosterId1A));
+      object.Set("roster_id", static_cast<int>(unit->unitRosterId));
       object.Set("registered", unit->militaryRegistrationFlag != 0 ? true : false);
       object.Set("name", static_cast<LPCSTR>(unit->name24));
       object.Set("strength", static_cast<int>(unit->strength34));
@@ -2555,7 +2555,7 @@ JSON_Value* CaptureCivilianUnits() {
       object.Set("order", CaptureCivilianWorkOrder(unit));
       ASSERT(unit->ownerNationSlot18 >= 0 && unit->ownerNationSlot18 < kNationSlotCount);
       object.Set("owner_nation", static_cast<int>(unit->ownerNationSlot18));
-      object.Set("roster_id", static_cast<int>(unit->unitRosterId1A));
+      object.Set("roster_id", static_cast<int>(unit->unitRosterId));
       object.Set("registered", unit->militaryRegistrationFlag != 0 ? true : false);
       units.Add(object.Release());
     }
@@ -2664,7 +2664,7 @@ JSON_Value* CaptureNavyMission(TNavyMission* mission) {
   object.SetOptional("resolved_port_zone", RuntimeZoneIndex(mission->resolvedPortZone));
   object.SetOptional("selected_ship", RuntimeShipIndex(mission->selectedOrder1c));
   object.SetOptional("task_force", RuntimeTaskForceIndex(mission->taskForce20));
-  object.Set("state", mission->navyState28);
+  object.Set("state", mission->navyState);
   for (int index = 0; index < 4; ++index) {
     equipage.Add(FloatBits(mission->requiredShipEquipageByCategory[index]));
   }
@@ -2714,7 +2714,7 @@ JSON_Value* CaptureMissionData(TMission* mission) {
     JsonObject object;
     object.Set("kind", "blockade_port");
     object.Set("navy", CaptureNavyMission(blockade));
-    const int portZone = RuntimeRequiredZoneIndex(blockade->portZoneContext3c);
+    const int portZone = RuntimeRequiredZoneIndex(blockade->portZoneContext);
     object.Set("port_zone", portZone);
     return object.Release();
   }
@@ -2759,13 +2759,13 @@ JSON_Value* CaptureMissions(bool freshRandomStart) {
       JsonObject object;
       object.Set("nation", nationSlot);
       object.Set("data", CaptureMissionData(mission));
-      if (mission->nationId04 != nationSlot) {
+      if (mission->nationId != nationSlot) {
         FailSemanticCapture("mission source nation does not match its owning queue");
       }
       ASSERT(mission->pathMarker >= -1 && mission->pathMarker < kNationSlotCount);
       object.SetOptional("path_nation", static_cast<int>(mission->pathMarker));
       object.Set("state", static_cast<unsigned int>(mission->state08));
-      object.Set("importance_bits", FloatBits(mission->importanceScore0c));
+      object.Set("importance_bits", FloatBits(mission->importanceScore));
       // TMission construction leaves flag10 untouched. Hold and ReadFrom make it semantic;
       // before either operation, the byte is allocator residue rather than gameplay state.
       object.Set("held", !freshRandomStart && mission->flag10 != 0);
@@ -2778,7 +2778,7 @@ JSON_Value* CaptureMissions(bool freshRandomStart) {
 
 JSON_Value* CaptureDiplomacyNotices(TSortedPtrList* queue) {
   JsonArray notices;
-  if (queue != 0 && queue->recordSize14 != 4) {
+  if (queue != 0 && queue->recordSize != 4) {
     FailSemanticCapture("diplomacy notice queue record size is not four bytes");
   }
   const int count = queue != 0 ? queue->GetSize() : 0;
@@ -2800,7 +2800,7 @@ JSON_Value* CaptureDiplomacyNotices(TSortedPtrList* queue) {
 
 JSON_Value* CaptureDiplomacyProposals(TSortedPtrList* queue) {
   JsonArray proposals;
-  if (queue != 0 && queue->recordSize14 != 4) {
+  if (queue != 0 && queue->recordSize != 4) {
     FailSemanticCapture("diplomacy proposal queue record size is not four bytes");
   }
   const int count = queue != 0 ? queue->GetSize() : 0;
@@ -2822,7 +2822,7 @@ JSON_Value* CaptureDiplomacyProposals(TSortedPtrList* queue) {
 
 JSON_Value* CaptureTurnSummary(TSortedPtrList* queue) {
   JsonArray summaries;
-  if (queue != 0 && queue->recordSize14 != sizeof(TurnOrderDispatchPacket)) {
+  if (queue != 0 && queue->recordSize != sizeof(TurnOrderDispatchPacket)) {
     FailSemanticCapture("turn-summary queue record size is not eight bytes");
   }
   const int count = queue != 0 ? queue->GetSize() : 0;
@@ -2898,7 +2898,7 @@ JSON_Value* CapturePendingNewspaperEvents() {
     FailSemanticCapture("shared newspaper event queue is unavailable");
   }
   TPtrList* queue = g_pNewsMgr->sharedEventRecordQueue;
-  if (queue->recordSize14 != sizeof(InterNationNewsRecord)) {
+  if (queue->recordSize != sizeof(InterNationNewsRecord)) {
     FailSemanticCapture("shared newspaper event queue has the wrong record size");
   }
 
@@ -3008,7 +3008,7 @@ JSON_Value* CaptureBattleReports() {
     object.Set("marker_pixel_x", record->markerPixelX);
     object.Set("marker_pixel_y", record->markerPixelY);
     object.Set("placed", record->placedFlag != 0);
-    object.Set("marker_sprite", static_cast<int>(record->markerSpriteCode262));
+    object.Set("marker_sprite", static_cast<int>(record->markerSpriteCode));
     object.Set("list_ordinal", static_cast<int>(record->listOrdinal));
     reports.Add(object.Release());
   }
@@ -3025,7 +3025,7 @@ JSON_Value* CapturePending() {
   TSortedPtrList* queue = g_pDiplomacyTurnStateManager != 0
                               ? g_pDiplomacyTurnStateManager->pendingWarTransitionQueue
                               : 0;
-  if (queue != 0 && queue->recordSize14 != 4) {
+  if (queue != 0 && queue->recordSize != 4) {
     FailSemanticCapture("war-transition queue record size is not four bytes");
   }
   const int count = queue != 0 ? queue->GetSize() : 0;
@@ -3445,7 +3445,7 @@ JSON_Value* CaptureCiviliansEphemeral() {
 
 // Compact military-phase state for retail-vs-recomp transition differentials:
 // per-major-nation treasury/expenses plus every rostered military unit and
-// navy ship (zone identity via contextOrdinal14 so pointers never leak).
+// navy ship (zone identity via contextOrdinal so pointers never leak).
 JSON_Value* CaptureMilitaryEphemeral() {
   JsonObject object;
   JsonArray nations;
@@ -3490,7 +3490,7 @@ JSON_Value* CaptureMilitaryEphemeral() {
     record.Set("experience", static_cast<int>(ship->experience));
     record.Set("zone",
                ship->location != 0
-                   ? static_cast<int>(ship->location->contextOrdinal14)
+                   ? static_cast<int>(ship->location->contextOrdinal)
                    : -1);
     ships.Add(record.Release());
   }
@@ -3508,7 +3508,7 @@ JSON_Value* CaptureMilitaryEphemeral() {
       record.Set("defeated", force->defeated != 0);
       record.Set("zone",
                  force->location != 0
-                     ? static_cast<int>(force->location->contextOrdinal14)
+                     ? static_cast<int>(force->location->contextOrdinal)
                      : -1);
       int children = 0;
       for (TMapOrderChildLinkNode* child = force->shipList; child != 0;
@@ -3536,14 +3536,14 @@ JSON_Value* CaptureMilitaryEphemeral() {
               g_pMapContextActionManager->activeBattleView != 0
           ? static_cast<int>(
                 g_pMapContextActionManager->activeBattleView
-                    ->battleOutcome44)
+                    ->battleOutcome)
           : -1);
   object.Set("land_battle", landBattle.Release());
   return object.Release();
 }
 
 // Per-nation mission queues: TMission base fields plus the TNavyMission state
-// that Reassess rewrites (navyState28, resolved port zone, equipage needs).
+// that Reassess rewrites (navyState, resolved port zone, equipage needs).
 JSON_Value* CaptureMissionsEphemeral() {
   JsonArray missions;
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
@@ -3560,10 +3560,10 @@ JSON_Value* CaptureMissionsEphemeral() {
       CRuntimeClass* runtimeClass = mission->GetRuntimeClass();
       object.Set("kind",
                  runtimeClass != 0 ? runtimeClass->m_lpszClassName : "unknown");
-      object.Set("nation_id", static_cast<int>(mission->nationId04));
+      object.Set("nation_id", static_cast<int>(mission->nationId));
       object.Set("path_marker", static_cast<int>(mission->pathMarker));
       object.Set("state", static_cast<unsigned int>(mission->state08));
-      object.Set("importance_bits", FloatBits(mission->importanceScore0c));
+      object.Set("importance_bits", FloatBits(mission->importanceScore));
       object.Set("flag10", static_cast<unsigned int>(mission->flag10));
       object.Set("marker", static_cast<unsigned int>(mission->marker11));
       if (mission->IsNavyMission() != 0) {
@@ -3571,7 +3571,7 @@ JSON_Value* CaptureMissionsEphemeral() {
         object.Set("target_zone", RuntimeZoneIndex(navy->missionTargetZone));
         object.Set("resolved_port_zone",
                    RuntimeZoneIndex(navy->resolvedPortZone));
-        object.Set("navy_state", navy->navyState28);
+        object.Set("navy_state", navy->navyState);
         object.Set("has_orders", navy->orderList != 0);
         JsonArray equipage;
         for (int index = 0; index < 4; ++index) {
@@ -3620,7 +3620,7 @@ JSON_Value* CaptureMilitaryCleanupEphemeral() {
       TAutoGreatPower* autoPower = static_cast<TAutoGreatPower*>(power);
       expansionPressure.Add(FloatBits(autoPower->expansionPressurePerCompatibleRegion));
       unitDivergence.Add(FloatBits(autoPower->averageUnitDivergencePerOwnedRegion));
-      missionPressure.Add(FloatBits(autoPower->activeMissionPressureAverageB6c));
+      missionPressure.Add(FloatBits(autoPower->activeMissionPressureAverage));
     } else {
       expansionPressure.Add(0U);
       unitDivergence.Add(0U);
@@ -3695,7 +3695,7 @@ JSON_Value* CaptureTechnologyEphemeral() {
   object.Set("unlock_flags", unlockFlags.Release());
   JsonArray enabledTypes;
   for (int slot = 0; slot < 0xe; ++slot) {
-    enabledTypes.Add(static_cast<int>(g_pTechMgr->resourceTypeEnabled19d[slot]));
+    enabledTypes.Add(static_cast<int>(g_pTechMgr->resourceTypeEnabled[slot]));
   }
   object.Set("enabled_types", enabledTypes.Release());
   JsonArray nations;

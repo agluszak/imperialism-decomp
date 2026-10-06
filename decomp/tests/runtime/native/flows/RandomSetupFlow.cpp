@@ -48,7 +48,7 @@ void CaptureRandomGameSetup(RuntimeRun& run, TSetupRandomMapPicture* setup) {
     return;
   }
   TControl* selectedDifficulty =
-      static_cast<TControl*>(setup->ResolveControlByTag(difficulty->selectedTag88));
+      static_cast<TControl*>(setup->ResolveControlByTag(difficulty->selectedTag));
   if (selectedDifficulty == 0) {
     run.RecordAssertion("capture.random_game_setup",
                         "the selected random-game difficulty is unavailable", true);
@@ -66,11 +66,11 @@ void CaptureRandomGameSetup(RuntimeRun& run, TSetupRandomMapPicture* setup) {
     return;
   }
   json_object_set_string(object, "planet_seed", static_cast<LPCSTR>(setup->planetSeed94));
-  json_object_set_number(object, "topology", static_cast<unsigned int>(setup->wrapHorizontally98));
-  json_object_set_number(object, "nation", static_cast<int>(setup->selectedNationSlot9A));
+  json_object_set_number(object, "topology", static_cast<unsigned int>(setup->wrapHorizontally));
+  json_object_set_number(object, "nation", static_cast<int>(setup->selectedNationSlot));
   json_object_set_string(object, "country_name", static_cast<LPCSTR>(countryName));
-  json_object_set_string(object, "difficulty", DifficultyName(selectedDifficulty->controlValue3c));
-  json_object_set_boolean(object, "localized_names", names->selectedTag88 != kControlTagRand);
+  json_object_set_string(object, "difficulty", DifficultyName(selectedDifficulty->controlValue));
+  json_object_set_boolean(object, "localized_names", names->selectedTag != kControlTagRand);
   run.SetCapture("random_game_setup", value);
 }
 

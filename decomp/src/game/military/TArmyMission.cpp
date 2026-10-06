@@ -106,7 +106,7 @@ void TArmyMission::WriteTo(TStream* stream) {
   void* currentUnit = iter.Reset();
   while (iter.More()) {
     stream->WriteInteger(
-        g_apNationStates[nationId04]->militaryUnitList44->FindOneBasedOrdinalOf(currentUnit));
+        g_apNationStates[nationId]->militaryUnitList44->FindOneBasedOrdinalOf(currentUnit));
     currentUnit = iter.Advance();
   }
 }
@@ -125,7 +125,7 @@ void TArmyMission::ReadFrom(TStream* stream) {
 
   int count = stream->ReadInteger();
   while (count-- != 0) {
-    TSortedList* unitList = g_apNationStates[nationId04]->militaryUnitList44;
+    TSortedList* unitList = g_apNationStates[nationId]->militaryUnitList44;
     TMilitaryUnit* unit =
         static_cast<TMilitaryUnit*>(unitList->GetEntryByOrdinal(stream->ReadInteger()));
     AcceptReenforcement(unit, false);
@@ -212,7 +212,7 @@ int TArmyMission::AccumulateLack(int* accumulatedLack, bool includeExistingLack)
 // Mac oracle: ComputeProvinceImportance.
 // FUNCTION: IMPERIALISM 0x0053c7a0
 float TArmyMission::ComputeProvinceImportance(short provinceIndex) {
-  short missionNation = nationId04;
+  short missionNation = nationId;
   Province& province = g_pGlobalMapState->cityScoreTable[provinceIndex];
   float importance = static_cast<float>(province.cityScoreValue);
 
@@ -297,9 +297,8 @@ float TArmyMission::ProjectSatisfaction(short bypassTileFilter) const {
 }
 
 // FUNCTION: IMPERIALISM 0x0053cb50
-void TArmyMission::AccumulateWeightedUnitEquipage(TMilitaryUnit* unit,
-                                                                          float* vector,
-                                                                          bool scaleMode) {
+void TArmyMission::AccumulateWeightedUnitEquipage(TMilitaryUnit* unit, float* vector,
+                                                  bool scaleMode) {
   short weightIndex = unit->GetTurnDistanceTo(GetPresentLocation());
   if (weightIndex > 5) {
     weightIndex = 5;
@@ -487,5 +486,5 @@ float TArmyMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVect
 TMission* TArmyMission::GetReplacement() {
   short tileOwnerNationCode =
       g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(presentLocation);
-  return (tileOwnerNationCode == nationId04) ? this : nullptr;
+  return (tileOwnerNationCode == nationId) ? this : nullptr;
 }

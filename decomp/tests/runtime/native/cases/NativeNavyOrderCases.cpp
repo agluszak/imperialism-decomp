@@ -26,7 +26,7 @@ int ZoneIndex(TZone* zone) {
   if (zone == 0) {
     return -1;
   }
-  return static_cast<int>(zone->contextOrdinal14);
+  return static_cast<int>(zone->contextOrdinal);
 }
 
 TShip* SpawnShip(short type, TZone* zone, const char* name) {

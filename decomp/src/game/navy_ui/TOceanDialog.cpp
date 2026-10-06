@@ -103,7 +103,7 @@ CRect TOceanDialog::BoundingRect(TZone* zone) {
   do {
     if (static_cast<short>(
             g_pGlobalMapState->terrainStateTable[static_cast<short>(i)].ownerNationTag04) ==
-        zone->seedNationId12) {
+        zone->seedNationId) {
       int row = i / 0x6c;
       int col = (row & 1) + 1 + (i % 0x6c) * 2;
       if (col < minLeft) {
@@ -807,7 +807,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
   if (g_bDrawOceanZoneLabels) {
     InitializeUiTextStyleDescriptorAndApplyQuickDraw(2, 0xc, 0x2b68, 3);
     for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
-      int tileIndex = zone->tileOrTerrainId0c;
+      int tileIndex = zone->tileOrTerrainId;
       if (tileIndex == -1) {
         continue;
       }

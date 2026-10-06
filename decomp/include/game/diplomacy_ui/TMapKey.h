@@ -10,7 +10,7 @@ public:
   virtual ~TMapKey() override;                  // slot 0x01 (scalar deleting destructor)
   virtual void DoPostCreate(int arg) override;  // slot 0x37 0x4fcac0
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4fcf80
-  short viewMode90; // 0x90
+  short viewMode;                               // 0x90
   unsigned char padding92[2];
 
   TMapKey();

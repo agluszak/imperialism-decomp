@@ -6,18 +6,17 @@ IMPLEMENT_DYNCREATE(T2PictureButton, TPictureButton)
 // FUNCTION: IMPERIALISM 0x00570bb0
 T2PictureButton::T2PictureButton() : TPictureButton() {}
 
-
 // FUNCTION: IMPERIALISM 0x00570c10
 T2PictureButton::~T2PictureButton() {}
 
 // FUNCTION: IMPERIALISM 0x00570c30
 void T2PictureButton::SetAvailability(char isAvailable, char refreshNow) {
-  short pictureId = glyphBase84;
-  short alternatePictureId = static_cast<short>(controlValue3c);
-  if ((isAvailable == 1 && pictureId > controlValue3c) ||
-      (isAvailable == 0 && pictureId < controlValue3c)) {
+  short pictureId = glyphBase;
+  short alternatePictureId = static_cast<short>(controlValue);
+  if ((isAvailable == 1 && pictureId > controlValue) ||
+      (isAvailable == 0 && pictureId < controlValue)) {
     SetPictureRsrcID(alternatePictureId, false);
-    controlValue3c = pictureId;
+    controlValue = pictureId;
     ViewEnable(isAvailable, false);
     Show(!isAvailable, refreshNow);
   }

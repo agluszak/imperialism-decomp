@@ -225,8 +225,8 @@ void TLanguageMgr::FreeTableRows() {
 
 // FUNCTION: IMPERIALISM 0x00508800
 void TLanguageMgr::Allocate(unsigned char firstColumnArg, unsigned char lastColumn,
-                                 unsigned char firstPrimaryRowArg, unsigned char lastPrimaryRow,
-                                 unsigned char firstExtraRowArg, unsigned char lastExtraRow) {
+                            unsigned char firstPrimaryRowArg, unsigned char lastPrimaryRow,
+                            unsigned char firstExtraRowArg, unsigned char lastExtraRow) {
   FreeTableRows();
   firstColumn = firstColumnArg;
   firstPrimaryRow = firstPrimaryRowArg;
@@ -261,7 +261,7 @@ char TLanguageMgr::PickGender(const char* name) const {
   TRadioTextCluster* form =
       static_cast<TRadioTextCluster*>(dialog->ResolveControlByTag(kControlTagForm));
   form->AssertValid();
-  form->frameThemeCode90 = 0x2b6b;
+  form->frameThemeCode = 0x2b6b;
   form->itemInset = 2;
 
   unsigned long firstTag = 0;
@@ -297,7 +297,7 @@ char TLanguageMgr::PickGender(const char* name) const {
   }
   dialog->PoseModally();
 
-  unsigned char selectedIndex = static_cast<unsigned char>(form->selectedTag88) - '0';
+  unsigned char selectedIndex = static_cast<unsigned char>(form->selectedTag) - '0';
   char rowBase = selectedIndex < primaryRowCount ? firstPrimaryRow : firstExtraRow;
   dialog->Close();
   dialog->Free();

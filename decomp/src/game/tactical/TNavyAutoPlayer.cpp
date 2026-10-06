@@ -32,9 +32,9 @@ void TNavyAutoPlayer::NextMove() {
   TTacticalUnit* unit = battle14->selectedUnit1c;
   TList* enemyList;
   if (isOurSideFlag != 0) {
-    enemyList = battle14->players[1]->unitList4;
+    enemyList = battle14->players[1]->unitList;
   } else {
-    enemyList = battle14->players[0]->unitList4;
+    enemyList = battle14->players[0]->unitList;
   }
 
   int* distances = new int[enemyList->GetCount()];

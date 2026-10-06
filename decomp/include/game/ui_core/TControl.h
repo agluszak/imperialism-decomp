@@ -28,12 +28,12 @@ public:
   virtual char PointInBoundsAndActionable(CPoint* point) override; // slot 0x5b 0x48e940
   virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
                           CPoint& currentPoint,
-                          bool commandFlag); // slot 0x68 0x48e850
+                          bool commandFlag);               // slot 0x68 0x48e850
   virtual void BuildInsetContentRect(CRect* boundsBuffer); // slot 0x69 0x48e980
   virtual void AssertCityProductionGlobalStateInitialized(int arg1,
                                                           int arg2); // slot 0x6a 0x429470
   virtual void NoOpUiViewSlotHandler(int arg1, int arg2);            // slot 0x6b 0x48e9c0
-  virtual void NoOpControlAction(int unusedArg); // slot 0x6c 0x48e9e0
+  virtual void NoOpControlAction(int unusedArg);                     // slot 0x6c 0x48e9e0
   virtual void InstallTextStyle(const TextStyle& style,
                                 char refreshNow); // slot 0x6d 0x48e7d0
   virtual void SetTextColorAndMaybeRefresh(const COLORREF* textColor,
@@ -44,14 +44,14 @@ public:
   void SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNation);
 
   int eventNumber60;
-  unsigned char controlState64;
+  unsigned char controlState;
   CRect contentInsets;   // 0x68-0x77 -- left/top/right/bottom content insets
                          // (BuildInsetContentRect, TStaticText/TTEView::Draw)
   TextStyle textStyle78; // 0x78-0x81
 
   TControl();
   TControl(const TControl& source)
-      : TView(source), eventNumber60(source.eventNumber60), controlState64(source.controlState64),
+      : TView(source), eventNumber60(source.eventNumber60), controlState(source.controlState),
         contentInsets(source.contentInsets), textStyle78(source.textStyle78) {}
   DECLARE_DYNCREATE(TControl)
   TObject* ShallowClone() override;

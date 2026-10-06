@@ -67,10 +67,10 @@ void TestAwaitState() {
   Expect("await.initially_clear", !await.IsArmed() && await.Expression()[0] == 0,
          "await state started out armed");
 
-  await.Arm(kObservePaintCompleted | kObserveGameStateChanged, "bid->glyphBase84 != initialBitmap",
+  await.Arm(kObservePaintCompleted | kObserveGameStateChanged, "bid->glyphBase != initialBitmap",
             "Z:\\imperialism\\tests\\runtime\\native\\scenarios\\TradeScreenTest.cpp", 402);
   Expect("await.armed", await.IsArmed(), "arming did not take effect");
-  Expect("await.expression", strcmp(await.Expression(), "bid->glyphBase84 != initialBitmap") == 0,
+  Expect("await.expression", strcmp(await.Expression(), "bid->glyphBase != initialBitmap") == 0,
          "await state dropped the expression it was given");
   // __FILE__ is an absolute Wine path; only the basename belongs in a diagnostic.
   Expect("await.source", strcmp(await.Source(), "TradeScreenTest.cpp:402") == 0,

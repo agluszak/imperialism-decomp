@@ -19,18 +19,18 @@ public:
 
   virtual void MoveTo(short nTileIndex);                // slot 0x28
   virtual void ContinueOrders();                        // slot 0x2c, Mac oracle
-  virtual void Vaporize();      // slot 0x30
+  virtual void Vaporize();                              // slot 0x30
   virtual void SetOrders(UnitOrder order, int payload); // slot 0x34
 
   short orderType; // 0x04
   short tileIndex06;
-  UnitOrder unitOrder;    // 0x08
-  short orderTargetIndex; // 0x0c
-  short pad0E;            // 0x0e
+  UnitOrder unitOrder;                    // 0x08
+  short orderTargetIndex;                 // 0x0c
+  short pad0E;                            // 0x0e
   TUnit* previousAtLocation;              // 0x10
   TUnit* nextAtLocation;                  // 0x14
   short ownerNationSlot18;                // 0x18
-  short unitRosterId1A;                   // 0x1a
+  short unitRosterId;                     // 0x1a
   unsigned char militaryRegistrationFlag; // 0x1c
   unsigned char pad1d[3];                 // 0x1d
   int persistentUnitId20;                 // 0x20

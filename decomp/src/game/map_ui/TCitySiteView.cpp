@@ -32,7 +32,7 @@ void TCitySiteView::DoPostCreate(int arg) {
   previewSquareRadius = 0x40;
 
   RECT surfaceBounds = {0, 0, 0x1680, 0x40};
-  g_pDisplayMgr->MakeNewGWorld(quickDrawSurface350, 8, surfaceBounds);
+  g_pDisplayMgr->MakeNewGWorld(quickDrawSurface, 8, surfaceBounds);
 
   ResetAllTileMarkersToSentinel();
 
@@ -123,7 +123,7 @@ void TCitySiteView::FrameCursorArea() {
   bool updateNeighborHighlights = false;
   short currentTile = static_cast<short>(hoveredTileIndex);
 
-  if (g_pGlobalMapState->terrainStateTable[currentTile].recruitSearchVisited0e == 0) {
+  if (g_pGlobalMapState->terrainStateTable[currentTile].recruitSearchVisited == 0) {
     updateNeighborHighlights = true;
     TMapMgr::GetNeighborTileIDArray(currentTile, neighborTiles,
                                     g_pGlobalMapState->hexNeighborWrapHorizontally);

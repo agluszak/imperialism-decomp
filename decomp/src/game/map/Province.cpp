@@ -12,7 +12,7 @@ Province::Province() {}
 // FUNCTION: IMPERIALISM 0x0054ae90
 Province& Province::operator=(const Province& source) {
   ownerNationCode00 = source.ownerNationCode00;
-  formerOwnerNationCode01 = source.formerOwnerNationCode01;
+  formerOwnerNationCode = source.formerOwnerNationCode;
   developmentStage = source.developmentStage;
   fortLevel03 = source.fortLevel03;
   cityTileIndex04 = source.cityTileIndex04;
@@ -37,7 +37,7 @@ Province& Province::operator=(const Province& source) {
   }
   stationedUnitChain = source.stationedUnitChain;
   cityScoreValue = source.cityScoreValue;
-  navyOrderReachableA0 = source.navyOrderReachableA0;
+  navyOrderReachable = source.navyOrderReachable;
   exploredByNationMask = source.exploredByNationMask;
   resourcePresenceMask = source.resourcePresenceMask;
   regionClassA3 = source.regionClassA3;

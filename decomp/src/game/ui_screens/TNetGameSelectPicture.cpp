@@ -32,7 +32,7 @@ void TNetGameSelectPicture::DoEvent(int commandId, TEventHandler* sourceHandler,
       int selectedGameTag = gameControl->GetSelectedChildTag();
       TView* selectedGameOption = ResolveControlByTag(selectedGameTag);
       g_pGameFlowState->ApplyJoinGameSelectionAndShowNetworkGameOptions(
-          selectedGameOption->controlValue3c);
+          selectedGameOption->controlValue);
     }
   }
   TControl::DoEvent(commandId, sourceHandler, event);

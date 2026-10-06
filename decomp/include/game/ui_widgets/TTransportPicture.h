@@ -7,7 +7,7 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x668588
 class TTransportPicture : public TPicture {
 public:
-  short gaugeMetricId90;
+  short gaugeMetricId;
   short resourceMetricSlot;
   short splitValue94;
   short splitValue96;

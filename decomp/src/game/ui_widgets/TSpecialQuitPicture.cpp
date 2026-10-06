@@ -70,20 +70,20 @@ void TSpecialQuitPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
       TDeluxeText* titlControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTitl));
       titlControl->AssertValid();
       titlControl->Show(1, 1);
-      quitAnimationFrame90 = 1;
+      quitAnimationFrame = 1;
       SetPictureRsrcID(0x3e9, 1);
       g_pSimMgr->GetString(0x1770, 0, &titlText);
       titlControl->UpdateTextEntrySharedString(&titlText);
-    } else if (quitAnimationFrame90 > 0) {
-      ++quitAnimationFrame90;
-      if (quitAnimationFrame90 < 10) {
-        SetPictureRsrcID(static_cast<short>(quitAnimationFrame90 + 0x3e8), 1);
+    } else if (quitAnimationFrame > 0) {
+      ++quitAnimationFrame;
+      if (quitAnimationFrame < 10) {
+        SetPictureRsrcID(static_cast<short>(quitAnimationFrame + 0x3e8), 1);
         TDeluxeText* titlControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTitl));
         titlControl->AssertValid();
-        g_pSimMgr->GetString(0x1770, static_cast<short>(quitAnimationFrame90 - 1), &titlText);
+        g_pSimMgr->GetString(0x1770, static_cast<short>(quitAnimationFrame - 1), &titlText);
         titlControl->UpdateTextEntrySharedString(&titlText);
       } else {
-        quitAnimationFrame90 = 0;
+        quitAnimationFrame = 0;
         SetPictureRsrcID(0x4e20, 1);
         ResolveControlByTag(kControlTagQuit)->ViewEnable(1, 1);
         ResolveControlByTag(kControlTagShow)->ViewEnable(1, 1);

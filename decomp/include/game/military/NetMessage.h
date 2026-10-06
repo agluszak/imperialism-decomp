@@ -65,7 +65,7 @@ struct TurnEvent17ProposalResolutionPacket : TimelyMessageHeader {
 };
 
 struct TurnEvent1DWarTransitionPacket : TimelyNetMessagePrefix {
-  char actionCode1C;     // +0x1c - 'i' selects the two-arg check
+  char actionCode;       // +0x1c - 'i' selects the two-arg check
   signed char nationA1D; // +0x1d
   signed char nationB1E; // +0x1e
   unsigned char mode1F;  // +0x1f, total 0x20
@@ -99,7 +99,7 @@ struct TurnEvent2SyncPacket : NetMessage {
   GamePhaseStorage syncPhase; // +0x18
   unsigned char pad1a[6];     // +0x1a
   bool flag20;                // +0x20 - cleared by the caller after the baseline refresh
-  unsigned char deltaKind21;  // +0x21 - 2 = delta pairs, 0 = full block
+  unsigned char deltaKind;    // +0x21 - 2 = delta pairs, 0 = full block
   unsigned char pad22[2];
   TurnEvent2DeltaPayload payload; // +0x24 - variable-length wire records
 

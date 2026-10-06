@@ -40,14 +40,14 @@ void TCreditsPicture::DoPostCreate(int arg) {
   line1->LoadTextResource(0xfb0);
   line1->SetTextStyle(style, true);
   line1->shadowTextColor = cursorTheme;
-  line1->dropShadowEnabledA0 = false;
+  line1->dropShadowEnabled = false;
 
   TDeluxeText* line2 = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCre2));
   line2->AssertValid();
   line2->LoadTextResource(0xfb1);
   line2->SetTextStyle(style, true);
   line2->shadowTextColor = cursorTheme;
-  line2->dropShadowEnabledA0 = false;
+  line2->dropShadowEnabled = false;
 }
 
 // FUNCTION: IMPERIALISM 0x0056efc0
@@ -73,14 +73,14 @@ void TCreditsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
       line1->LoadTextResource(0xfb2);
       line1->SetTextStyle(style, true);
       line1->shadowTextColor = cursorTheme;
-      line1->dropShadowEnabledA0 = true;
+      line1->dropShadowEnabled = true;
 
       TDeluxeText* line2 = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCre2));
       line2->AssertValid();
       line2->LoadTextResource(0xfb3);
       line2->SetTextStyle(style, true);
       line2->shadowTextColor = cursorTheme;
-      line2->dropShadowEnabledA0 = true;
+      line2->dropShadowEnabled = true;
     }
   }
   TControl::DoEvent(commandId, sourceHandler, event);

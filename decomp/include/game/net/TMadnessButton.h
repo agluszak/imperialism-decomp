@@ -15,6 +15,6 @@ public:
 
   TMadnessButton();
 
-  int initialPictureId; // 0x98, snapshot of glyphBase84 captured during DoPostCreate
+  int initialPictureId; // 0x98, snapshot of glyphBase captured during DoPostCreate
 };
 ASSERT_SIZE(TMadnessButton, 0x9c);

@@ -21,15 +21,15 @@ IMPLEMENT_DYNCREATE(TPicture, TControl)
 
 // FUNCTION: IMPERIALISM 0x0048efc0
 TPicture::TPicture()
-    : TControl(), glyphBase84(-1), reserved86(0), bitmapId(0), resourceNamespaceId(0),
+    : TControl(), glyphBase(-1), reserved86(0), bitmapId(0), resourceNamespaceId(0),
       cachedBitmap(0) {}
 
 // FUNCTION: IMPERIALISM 0x0048f080
 TPicture::TPicture(const TPicture& source)
-    : TControl(source), glyphBase84(source.glyphBase84), bitmapId(source.bitmapId),
+    : TControl(source), glyphBase(source.glyphBase), bitmapId(source.bitmapId),
       resourceNamespaceId(source.resourceNamespaceId), cachedBitmap(source.cachedBitmap) {
-  if (glyphBase84 != -1) {
-    g_pResourceMgr->IncrementRecordRefCountById(glyphBase84);
+  if (glyphBase != -1) {
+    g_pResourceMgr->IncrementRecordRefCountById(glyphBase);
   }
 }
 
@@ -38,24 +38,24 @@ void TPicture::CopyPictureStateFromSource(TPicture* source) {
   // Takes a pointer, matching TView::CopyViewStateFromSource which it forwards to.
   CopyViewStateFromSource(source);
   eventNumber60 = source->eventNumber60;
-  controlState64 = source->controlState64;
+  controlState = source->controlState;
   contentInsets = source->contentInsets;
   textStyle78 = source->textStyle78;
-  glyphBase84 = source->glyphBase84;
+  glyphBase = source->glyphBase;
   bitmapId = source->bitmapId;
   resourceNamespaceId = source->resourceNamespaceId;
   cachedBitmap = source->cachedBitmap;
-  if (glyphBase84 != -1) {
-    g_pResourceMgr->IncrementRecordRefCountById(glyphBase84);
+  if (glyphBase != -1) {
+    g_pResourceMgr->IncrementRecordRefCountById(glyphBase);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0048f250
 TPicture::~TPicture() {
-  if (glyphBase84 != -1) {
-    g_pResourceMgr->ReleaseRecordById(glyphBase84);
+  if (glyphBase != -1) {
+    g_pResourceMgr->ReleaseRecordById(glyphBase);
   }
-  glyphBase84 = -1;
+  glyphBase = -1;
   bitmapId = 0;
   resourceNamespaceId = 0;
   cachedBitmap = 0;
@@ -128,10 +128,10 @@ void TPicture::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x0048f520
 void TPicture::ResetPictureResourceEntry() {
-  if (this->glyphBase84 != -1) {
-    g_pResourceMgr->ReleaseRecordById(this->glyphBase84);
+  if (this->glyphBase != -1) {
+    g_pResourceMgr->ReleaseRecordById(this->glyphBase);
   }
-  this->glyphBase84 = -1;
+  this->glyphBase = -1;
   this->bitmapId = 0;
   this->resourceNamespaceId = 0;
   this->cachedBitmap = 0;
@@ -140,7 +140,7 @@ void TPicture::ResetPictureResourceEntry() {
 // FUNCTION: IMPERIALISM 0x0048f570
 void TPicture::SetPictureRsrcID(short nPictureId, unsigned char fRefreshNow) {
   this->ResetPictureResourceEntry();
-  this->glyphBase84 = nPictureId;
+  this->glyphBase = nPictureId;
   if (nPictureId != -1) {
     this->cachedBitmap = g_pResourceMgr->LoadBmpResourceByIdCached(nPictureId);
   }
@@ -166,15 +166,15 @@ TObject* TPicture::ShallowClone() {
   TPicture* clone = static_cast<TPicture*>(ShallowFree());
   clone->CopyViewStateFromSource(this);
   clone->eventNumber60 = eventNumber60;
-  clone->controlState64 = controlState64;
+  clone->controlState = controlState;
   clone->contentInsets = contentInsets;
   clone->textStyle78 = textStyle78;
-  clone->glyphBase84 = glyphBase84;
+  clone->glyphBase = glyphBase;
   clone->bitmapId = bitmapId;
   clone->resourceNamespaceId = resourceNamespaceId;
   clone->cachedBitmap = cachedBitmap;
-  if (glyphBase84 != -1) {
-    g_pResourceMgr->IncrementRecordRefCountById(glyphBase84);
+  if (glyphBase != -1) {
+    g_pResourceMgr->IncrementRecordRefCountById(glyphBase);
   }
   return clone;
 }

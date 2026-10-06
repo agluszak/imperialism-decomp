@@ -16,8 +16,8 @@ public:
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x48f3c0
   virtual void ResetPictureResourceEntry();     // slot 0x71 0x48f520
   virtual void SetPictureRsrcID(short nPictureId,
-                                              unsigned char fRefreshNow); // slot 0x72 0x48f570
-  short glyphBase84;
+                                unsigned char fRefreshNow); // slot 0x72 0x48f570
+  short glyphBase;
   short reserved86; // 0x86, copied by ShallowClone; no other accesses observed
   short bitmapId;
   short resourceNamespaceId; // 0x8a, high word of the resource registry key

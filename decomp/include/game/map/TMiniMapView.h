@@ -16,7 +16,7 @@ public:
   virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
                           CPoint& currentPoint,
                           bool commandFlag) override; // slot 0x68 0x59a920
-  TMapUberPicture* ownerPicture84;
+  TMapUberPicture* ownerPicture;
   int scrollTileColumn;
   int scrollTileRow;
   int markerBoxX;

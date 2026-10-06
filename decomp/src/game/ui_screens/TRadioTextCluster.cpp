@@ -15,7 +15,7 @@ IMPLEMENT_DYNCREATE(TRadioTextCluster, TCluster)
 TRadioTextCluster::TRadioTextCluster() : TCluster() {
   word8C = 0x4b;
   word8E = 0x49;
-  frameThemeCode90 = -1;
+  frameThemeCode = -1;
   itemInset = 0;
   itemVerticalSpacing = 2;
 }
@@ -26,7 +26,7 @@ TRadioTextCluster::~TRadioTextCluster() {}
 // FUNCTION: IMPERIALISM 0x00579740
 void TRadioTextCluster::DoPostCreate(int arg) {
   TCluster::DoPostCreate(arg);
-  selectedTag88 = kControlTagNada;
+  selectedTag = kControlTagNada;
 }
 
 // FUNCTION: IMPERIALISM 0x00579770
@@ -39,19 +39,19 @@ void TRadioTextCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
 
 // FUNCTION: IMPERIALISM 0x005797c0
 void TRadioTextCluster::SetSelectedTextOptionByTag(int tag, bool refreshOnChange) {
-  if (selectedTag88 == tag) {
+  if (selectedTag == tag) {
     return;
   }
   if (tag != static_cast<int>(kControlTagNada) && ResolveControlByTag(tag) == 0) {
     return;
   }
-  selectedTag88 = tag;
+  selectedTag = tag;
   CSubViewIterator iter(this);
   TRadioText* child = static_cast<TRadioText*>(iter.FirstSubView());
   if (iter.MoreSubViews()) {
     do {
       child->AssertValid();
-      bool shouldBeSelected = static_cast<unsigned char>(child->controlTag == selectedTag88);
+      bool shouldBeSelected = static_cast<unsigned char>(child->controlTag == selectedTag);
       if (shouldBeSelected != child->isSelectedOption) {
         child->isSelectedOption = shouldBeSelected;
         if (refreshOnChange) {
@@ -91,7 +91,7 @@ TRadioText* TRadioTextCluster::AddItem(unsigned long tag, int value, const char*
   size[1] = height;
   item->IStaticText(this, offset, size, 5, 5, -1, 1);
   item->controlTag = static_cast<int>(tag);
-  item->controlValue3c = value;
+  item->controlValue = value;
   CString itemText(text);
   item->SetTextAndMaybeRefresh(&itemText, true);
   item->SetEnable(1);
@@ -101,9 +101,9 @@ TRadioText* TRadioTextCluster::AddItem(unsigned long tag, int value, const char*
 // FUNCTION: IMPERIALISM 0x00579a60
 void TRadioTextCluster::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
-  if (frameThemeCode90 > -1) {
+  if (frameThemeCode > -1) {
     RECT frame = {0, 0, frameWidth, frameHeight};
-    g_pViewMgr->SetForeColor(static_cast<short>(frameThemeCode90));
+    g_pViewMgr->SetForeColor(static_cast<short>(frameThemeCode));
     QDFrameRect(&frame);
     SetQuickDrawFillColor(0);
   }

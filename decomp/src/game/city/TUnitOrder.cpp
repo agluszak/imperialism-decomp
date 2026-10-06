@@ -215,15 +215,15 @@ void TUnitOrder::Produce() {
   ownerNation->AnnounceLater(specialist == 0 ? 2 : 3, entryId, pendingDelta);
   quantity = 0;
   if (entryId == 0) {
-    cityContext->serializedState0a = static_cast<short>(cityContext->serializedState0a + 1);
+    cityContext->serializedState = static_cast<short>(cityContext->serializedState + 1);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004b77e0
 void TUnitOrder::ReplaceOrder(short resourceTypeIndex, short nPrimaryInputResourceId,
-                                     short nPrimaryInputPerUnit, short nSecondaryInputResourceId,
-                                     short nSecondaryInputPerUnit, short nCashCostPerUnit,
-                                     short nWorkforceMode) {
+                              short nPrimaryInputPerUnit, short nSecondaryInputResourceId,
+                              short nSecondaryInputPerUnit, short nCashCostPerUnit,
+                              short nWorkforceMode) {
   this->resourceTypeIndex = resourceTypeIndex;
   this->primaryInputResourceId = nPrimaryInputResourceId;
   this->primaryInputPerUnit = nPrimaryInputPerUnit;

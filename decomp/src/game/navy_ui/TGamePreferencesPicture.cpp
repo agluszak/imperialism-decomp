@@ -142,7 +142,7 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
   noOption->SetTextAndMaybeRefresh(&promptText, false);
   ApplyUiTextStyleAndThemeFlags(noOption, 0, 0xc, 0x2b6a, 0x2b6c);
 
-  autoResCluster->frameThemeCode90 = 0x2b6c;
+  autoResCluster->frameThemeCode = 0x2b6c;
   autoResCluster->itemInset = 2;
   autoResCluster->Show(1, 0);
   autoResCluster->ViewEnable(1, 0);
@@ -211,7 +211,7 @@ void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandle
       TRadioTextCluster* autoResolutionCluster =
           static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagOpca));
       autoResolutionCluster->AssertValid();
-      bool autoResolve = autoResolutionCluster->selectedTag88 == kControlTagYess; // 'yess'
+      bool autoResolve = autoResolutionCluster->selectedTag == kControlTagYess; // 'yess'
       if (!g_pImperialismApp->ApplyAutoResolutionModeAndPersist(autoResolve)) {
         g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x2763, 7, 2, 0);
       }

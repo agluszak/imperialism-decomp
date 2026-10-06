@@ -63,7 +63,7 @@ bool TBeachheadMission::Matches(eMissionType missionType, int key, TZone* zoneCo
 void TBeachheadMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
   signed char ownerCode =
       g_pGlobalMapState->cityScoreTable[parentMission3c->targetProvince30].ownerNationCode00;
-  if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(nationId04, ownerCode)) {
+  if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(nationId, ownerCode)) {
     mapOrderEntry->OrderSendInTheMarines(
         &g_pGlobalMapState->cityScoreTable[parentMission3c->targetProvince30]);
     return;
@@ -71,15 +71,15 @@ void TBeachheadMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
 
   ownerCode =
       g_pGlobalMapState->cityScoreTable[parentMission3c->targetProvince30].ownerNationCode00;
-  if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, ownerCode)) {
+  if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, ownerCode)) {
     return;
   }
 
   ownerCode =
       g_pGlobalMapState->cityScoreTable[parentMission3c->targetProvince30].ownerNationCode00;
-  if (g_apNationStates[nationId04]->diplomacyPolicyByNation[ownerCode] !=
+  if (g_apNationStates[nationId]->diplomacyPolicyByNation[ownerCode] !=
       kDiplomacyProposalDeclareWar) {
-    g_apNationStates[nationId04]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
+    g_apNationStates[nationId]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
         ownerCode, kDiplomacyProposalDeclareWar);
   }
 }
@@ -91,7 +91,7 @@ TMission* TBeachheadMission::GetArmyMission() {
 
 // FUNCTION: IMPERIALISM 0x0053a940
 char TBeachheadMission::SmokeEmIfYouGotEm() {
-  if (flag10 == 0 && navyState28 != 0) {
+  if (flag10 == 0 && navyState != 0) {
     return 0;
   }
   while (orderList != 0) {

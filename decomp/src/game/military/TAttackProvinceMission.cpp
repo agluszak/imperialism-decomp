@@ -46,7 +46,7 @@ void TAttackProvinceMission::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x0053d890
 void TAttackProvinceMission::Free() {
-  TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
+  TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId]);
   nationState->AssertValid();
 
   nationState->SetProvinceStatus(targetProvince30, kMissionDesirabilityUnmarked);
@@ -127,7 +127,7 @@ char TAttackProvinceMission::TryResolveTargetTerrainClass() {
     short candidateTile = *candidateCursor;
     short tileOwnerNationCode =
         g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(candidateTile);
-    if (tileOwnerNationCode == nationId04) {
+    if (tileOwnerNationCode == nationId) {
       if (presentLocation != -1) {
         const Province& candidateRecord = g_pGlobalMapState->cityScoreTable[candidateTile];
         float candidateScore = static_cast<float>(candidateRecord.cityScoreValue);
@@ -137,7 +137,7 @@ char TAttackProvinceMission::TryResolveTargetTerrainClass() {
         while (adjacentIndex < candidateRecord.adjacentRegionCount08) {
           short adjOwnerNationCode =
               g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(*adjacentCursor);
-          if (adjOwnerNationCode == nationId04) {
+          if (adjOwnerNationCode == nationId) {
             matchCount++;
           }
           adjacentIndex++;
@@ -166,7 +166,7 @@ char TAttackProvinceMission::TryResolveTargetTerrainClass() {
       while (adjacentIndex < candidateRecord.adjacentRegionCount08) {
         short adjOwnerNationCode =
             g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(*adjacentCursor);
-        if (adjOwnerNationCode == nationId04) {
+        if (adjOwnerNationCode == nationId) {
           matchCount++;
         }
         adjacentIndex++;
@@ -211,7 +211,7 @@ void TAttackProvinceMission::GiveOrders() {
 
     if (weighted / total > g_AttackProvinceMissionReadinessThreshold_0065A8F0) {
       if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
-              nationId04, g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00)) {
+              nationId, g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00)) {
         for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(targetIter.Reset());
              targetIter.More(); unit = static_cast<TMilitaryUnit*>(targetIter.Advance())) {
           if (unit->tileIndex06 == presentLocation) {
@@ -219,13 +219,13 @@ void TAttackProvinceMission::GiveOrders() {
           }
         }
       } else if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(
-                     nationId04,
+                     nationId,
                      g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00)) {
         signed char targetOwnerNation =
             g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00;
-        if (g_apNationStates[nationId04]->diplomacyPolicyByNation[targetOwnerNation] !=
+        if (g_apNationStates[nationId]->diplomacyPolicyByNation[targetOwnerNation] !=
             kDiplomacyProposalDeclareWar) {
-          g_apNationStates[nationId04]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
+          g_apNationStates[nationId]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
               targetOwnerNation, kDiplomacyProposalDeclareWar);
         }
       }
@@ -258,14 +258,14 @@ TMission* TAttackProvinceMission::GetReplacement() {
     if (amassingProvince32 != -1) {
       short amassingOwnerNation =
           g_pGlobalMapState->cityScoreTable[amassingProvince32].ownerNationCode00;
-      if (nationId04 == amassingOwnerNation) {
+      if (nationId == amassingOwnerNation) {
         targetProvince30 = amassingProvince32;
         amassingProvince32 = -1;
         retarget = true;
         TryResolveTargetTerrainClass();
       }
     }
-  } else if (targetOwnerNation == nationId04) {
+  } else if (targetOwnerNation == nationId) {
     short tileOwnerNationCode =
         g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(presentLocation);
     if (tileOwnerNationCode == pathMarker) {
@@ -279,8 +279,8 @@ TMission* TAttackProvinceMission::GetReplacement() {
     return nullptr;
   }
 
-  if (g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(nationId04) &&
-      !g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, targetOwnerNation)) {
+  if (g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(nationId) &&
+      !g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, targetOwnerNation)) {
     return nullptr;
   }
   return this;
@@ -294,7 +294,7 @@ void TAttackProvinceMission::SetStateByte8To2() {
 // FUNCTION: IMPERIALISM 0x0053e1a0
 void TAttackProvinceMission::CalculateImportance() {
   short targetProvince = targetProvince30;
-  short missionNation = nationId04;
+  short missionNation = nationId;
   int matchCount = 0;
   int adjacentIndex = 0;
   const Province& targetRecord = g_pGlobalMapState->cityScoreTable[targetProvince];
@@ -319,7 +319,7 @@ void TAttackProvinceMission::CalculateImportance() {
          g_Recompute_Nation_Order_LookupTable_0065A9E0) *
         score;
   }
-  importanceScore0c = score / g_fMissionScoreNormalizationDivisor;
+  importanceScore = score / g_fMissionScoreNormalizationDivisor;
 }
 
 // Shared with TInvadeMission (COMDAT-folded body).

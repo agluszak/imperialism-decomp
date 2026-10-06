@@ -77,7 +77,7 @@ TInvadeMission::~TInvadeMission() {}
 void TInvadeMission::Free() {
   beachhead34->Free();
 
-  TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
+  TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId]);
   nationState->AssertValid();
   nationState->SetProvinceStatus(targetProvince30, kMissionDesirabilityUnmarked);
 
@@ -117,7 +117,7 @@ char TInvadeMission::SmokeEmIfYouGotEm() {
 
 // FUNCTION: IMPERIALISM 0x0053f580
 void TInvadeMission::Initialize() {
-  beachhead34->InitializeMissionWithNationIdAndResetPathMarker(nationId04);
+  beachhead34->InitializeMissionWithNationIdAndResetPathMarker(nationId);
   marker11 = 1;
   if (targetProvince30 != -1) {
     pathMarker =
@@ -167,7 +167,7 @@ void TInvadeMission::GiveOrders() {
   }
   // Per-region, per-nation dispatch-dirty bitmask gate.
   if (g_pGlobalMapState->cityScoreTable[targetProvince30].exploredByNationMask &
-      (1 << (nationId04 & 0x1f))) {
+      (1 << (nationId & 0x1f))) {
     TAttackProvinceMission::GiveOrders();
   }
 }
@@ -221,7 +221,7 @@ float TInvadeMission::CalculatePriority() {
   char selectedIsUpgrade;
   int selectedSlot;
   float cityActionCost = 0.0f;
-  while (SelectBestCityDevelopmentFromResourcePools(nationId04, resourcePools, bestUnitByType,
+  while (SelectBestCityDevelopmentFromResourcePools(nationId, resourcePools, bestUnitByType,
                                                     &selectedIsIndustry, &selectedIsUpgrade,
                                                     &selectedSlot, 0, 0)) {
     cityActionCost += static_cast<float>(TMilitaryUnit::GetTypeArmsCarried(selectedSlot));
@@ -311,7 +311,7 @@ char TInvadeMission::TryResolveTargetTerrainClass() {
     return 0;
   }
   presentLocation =
-      static_cast<short>(g_apTerrainTypeDescriptorTable[nationId04]->GetCapitolProvince());
+      static_cast<short>(g_apTerrainTypeDescriptorTable[nationId]->GetCapitolProvince());
   return 1;
 }
 

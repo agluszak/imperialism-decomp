@@ -63,7 +63,7 @@ void TStaticText::CopyViewStateFromSource(TView* source) {
   TView::CopyViewStateFromSource(source);
   TStaticText* src = static_cast<TStaticText*>(source);
   this->eventNumber60 = src->eventNumber60;
-  this->controlState64 = src->controlState64;
+  this->controlState = src->controlState;
   this->contentInsets = src->contentInsets;
   this->textStyle78 = src->textStyle78;
   this->text = new CString();
@@ -124,7 +124,7 @@ void TStaticText::SetTextAndMaybeRefresh(CString* sharedString, bool refreshNow)
 
 // FUNCTION: IMPERIALISM 0x0048fed0
 void TStaticText::SetTextWithStrListID(short stringResourceGroup, short stringResourceIndex,
-                                            bool refreshNow) {
+                                       bool refreshNow) {
   CString loadedString;
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&loadedString, stringResourceGroup,
                                                       stringResourceIndex);
@@ -150,10 +150,10 @@ void TStaticText::Draw(RECT* rectBuffer) {
   CFont* font = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&textStyle78);
   CFont* oldFont = dc->SelectObject(font);
   COLORREF textColor;
-  if (stylePayload48 == 0) {
+  if (stylePayload == 0) {
     textColor = textStyle78.textColor;
   } else {
-    textColor = stylePayload48->styleWord;
+    textColor = stylePayload->styleWord;
   }
   dc->SetTextColor(textColor);
   UINT format = 0x910;
@@ -170,7 +170,7 @@ void TStaticText::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x004900a0
 void TStaticText::ImageText(const char* textChars, int textLength, RECT* rect,
-                                  short alignmentCode) {
+                            short alignmentCode) {
   (void)textLength;
   CDC* dc = GetActiveQuickDrawDc();
   dc->SetBkMode(TRANSPARENT);

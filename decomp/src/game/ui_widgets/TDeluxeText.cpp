@@ -9,7 +9,7 @@
 
 // FUNCTION: IMPERIALISM 0x00430950
 TDeluxeText::TDeluxeText()
-    : TTEView(), textColor98(0), shadowTextColor(0), dropShadowEnabledA0(false) {}
+    : TTEView(), textColor98(0), shadowTextColor(0), dropShadowEnabled(false) {}
 
 // FUNCTION: IMPERIALISM 0x00430a10
 TDeluxeText::~TDeluxeText() {}
@@ -49,7 +49,7 @@ void TDeluxeText::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
   CString textBuffer;
   CopyTextTo(&textBuffer);
-  if (dropShadowEnabledA0) {
+  if (dropShadowEnabled) {
     SetQuickDrawColorAndPropagateIfChanged(shadowTextColor);
     CRect shadowRect;
     BuildInsetContentRect(&shadowRect);

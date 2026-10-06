@@ -18,7 +18,7 @@ public:
   // NOOP: verified empty in original 0x00458dcb
   TSpecialQuitPicture() {}
 
-  short quitAnimationFrame90;
+  short quitAnimationFrame;
   short padA2;
 };
 ASSERT_SIZE(TSpecialQuitPicture, 0x94);

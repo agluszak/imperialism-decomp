@@ -166,7 +166,7 @@ void TViewMgr::ShowCombatReportDialog(TCombatReportContext* reportContext) {
   if (activeMapDialog == nullptr) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore_0069B740, 0xe2);
   }
-  activeMapDialog->CenterOn(reportContext->mapTileIndex04);
+  activeMapDialog->CenterOn(reportContext->mapTileIndex);
 
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventCombatReport));
@@ -525,7 +525,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
   choiceCluster->AssertValid();
   if (firstChoice != 0) {
     choiceCluster->Show(1, 0);
-    choiceCluster->frameThemeCode90 = 0x2b6b;
+    choiceCluster->frameThemeCode = 0x2b6b;
     choiceCluster->itemInset = 2;
 
     TRadioText* first =
@@ -557,7 +557,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
 
   int resultTag = dialog->PoseModally();
   if (firstChoice != 0) {
-    resultTag = choiceCluster->selectedTag88;
+    resultTag = choiceCluster->selectedTag;
   }
 
   planetEdit->GetCurrentText(&editText);

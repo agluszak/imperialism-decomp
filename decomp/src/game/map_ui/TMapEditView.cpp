@@ -39,7 +39,7 @@ void TMapEditView::DoPostCreate(int arg) {
   projectionScale = 1;
 
   RECT surfaceBounds = {0, 0, 0x1680, 0x40};
-  g_pDisplayMgr->MakeNewGWorld(quickDrawSurface350, 8, surfaceBounds);
+  g_pDisplayMgr->MakeNewGWorld(quickDrawSurface, 8, surfaceBounds);
   ResetAllTileMarkersToSentinel();
 
   g_pCitySiteCachedPrimaryRenderSurfaceContext = g_pPrimaryRenderSurfaceContext;
@@ -74,11 +74,11 @@ void TMapEditView::NormalClick(short tileIndex, int inputFlags) {
   ownerContext->ResolveControlByTag(kControlTagEcon)->AssertValid();
 
   TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
-  if (tile.GetTerrainKind() == kStrategicTerrainWater && editorActionMode368 != 5) {
+  if (tile.GetTerrainKind() == kStrategicTerrainWater && editorActionMode != 5) {
     return;
   }
 
-  switch (editorActionMode368) {
+  switch (editorActionMode) {
   case 0:
     DefaultResources(tileIndex);
     break;
@@ -90,7 +90,7 @@ void TMapEditView::NormalClick(short tileIndex, int inputFlags) {
     break;
   case 3:
     g_pSfxPlaybackSystem->PlaySoundEffect(4000);
-    tile.adjacencyBits06 = static_cast<signed char>(editorActionValue36c);
+    tile.adjacencyBits06 = static_cast<signed char>(editorActionValue);
     InvalidateTile(tileIndex);
     break;
   case 4:
@@ -104,7 +104,7 @@ void TMapEditView::NormalClick(short tileIndex, int inputFlags) {
 
 // FUNCTION: IMPERIALISM 0x0051cfa0
 void TMapEditView::ControlClick(int tileIndex, int dispatchContext) {
-  if (editorActionMode368 != 1) {
+  if (editorActionMode != 1) {
     TWorldView::ControlClick(tileIndex, dispatchContext);
     return;
   }
@@ -120,7 +120,7 @@ void TMapEditView::ControlClick(int tileIndex, int dispatchContext) {
       static_cast<TNumberText*>(ownerContext->ResolveControlByTag(kControlTagPrnu));
   provinceNumber->AssertValid();
   provinceNumber->SetControlValue(provinceId, 1);
-  editorActionValue36c = provinceId;
+  editorActionValue = provinceId;
 }
 
 // FUNCTION: IMPERIALISM 0x0051d060
@@ -213,7 +213,7 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, i
 // FUNCTION: IMPERIALISM 0x0051d380
 void TMapEditView::PlaceTerrain(short tileIndex) {
   TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
-  tile.SetTerrainKind(static_cast<StrategicTerrainKind>(editorActionValue36c));
+  tile.SetTerrainKind(static_cast<StrategicTerrainKind>(editorActionValue));
   tile.adjacencyMaskA0a = 0;
   tile.adjacencyMaskB0b = 0;
   tile.riverSpriteCode |= kRiverSpriteCodeNeedsResolution;
@@ -240,7 +240,7 @@ void TMapEditView::PlaceTerrain(short tileIndex) {
 void TMapEditView::DefaultResources(short tileIndex) {
   const short terrainByProfile[15] = {5, 0, 0, 0, 0, 7, 7, 2, 2, 3, 4, 6, 6, 1, 0};
   const short resourceByProfile[15] = {-1, -1, 0, 20, 5, 17, 18, 1, -1, -1, -1, -1, -1, 2, -1};
-  if (editorActionValue36c == 0) {
+  if (editorActionValue == 0) {
     return;
   }
 
@@ -250,8 +250,8 @@ void TMapEditView::DefaultResources(short tileIndex) {
   }
 
   g_pSfxPlaybackSystem->PlaySoundEffect(4000);
-  tile.gateFlag = static_cast<signed char>(editorActionValue36c);
-  tile.SetTerrainKind(static_cast<StrategicTerrainKind>(terrainByProfile[editorActionValue36c]));
+  tile.gateFlag = static_cast<signed char>(editorActionValue);
+  tile.SetTerrainKind(static_cast<StrategicTerrainKind>(terrainByProfile[editorActionValue]));
   tile.adjacencyMaskA0a = 0;
   tile.adjacencyMaskB0b = 0;
   tile.riverSpriteCode |= kRiverSpriteCodeNeedsResolution;
@@ -321,8 +321,7 @@ void TMapEditView::PlaceResource(short tileIndex) {
   }
 
   g_pSfxPlaybackSystem->PlaySoundEffect(4000);
-  tile.resourceTypeByEdge[slot] =
-      static_cast<signed char>(resourceBySelection[editorActionValue36c]);
+  tile.resourceTypeByEdge[slot] = static_cast<signed char>(resourceBySelection[editorActionValue]);
   InvalidateTile(tileIndex);
 }
 
@@ -330,7 +329,7 @@ void TMapEditView::PlaceResource(short tileIndex) {
 void TMapEditView::PlaceRail(short tileIndex) {
   g_pSfxPlaybackSystem->PlaySoundEffect(4000);
   g_pGlobalMapState->terrainStateTable[tileIndex].adjacencyBits06 =
-      static_cast<signed char>(editorActionValue36c);
+      static_cast<signed char>(editorActionValue);
   InvalidateTile(tileIndex);
 }
 
@@ -338,7 +337,7 @@ void TMapEditView::PlaceRail(short tileIndex) {
 void TMapEditView::PlaceRiver(short tileIndex) {
   TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
   short variant =
-      ResolveRiverSpriteVariantForConnectionMask(static_cast<unsigned char>(editorActionValue36c),
+      ResolveRiverSpriteVariantForConnectionMask(static_cast<unsigned char>(editorActionValue),
                                                  tile.GetTerrainKind() == kStrategicTerrainWater);
   if (variant == -1) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5a);

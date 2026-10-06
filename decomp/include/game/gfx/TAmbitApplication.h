@@ -16,7 +16,7 @@ public:
   TAmbitApplication() : TApplication() {
     edgeScrollTarget = 0;
     dispatchBusyFlag = false;
-    languagePackId50 = 0;
+    languagePackId = 0;
   }
 
   DECLARE_DYNCREATE(TAmbitApplication)
@@ -37,6 +37,6 @@ public:
   TMapUberUberPicture* edgeScrollTarget;
   bool dispatchBusyFlag;
   unsigned char pad4d[3];
-  int languagePackId50;
+  int languagePackId;
 };
 ASSERT_SIZE(TAmbitApplication, 0x54);

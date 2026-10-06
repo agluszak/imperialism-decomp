@@ -281,8 +281,8 @@ unsigned char TTradeCluster::IsSelectionAllowed() {
     FailNilPointerInUSmallViews(kAssertLineBidActionable);
   }
 
-  if (bidControl->glyphBase84 != kTradeBitmapBidStateA &&
-      bidControl->glyphBase84 != kTradeBitmapBidStateB) {
+  if (bidControl->glyphBase != kTradeBitmapBidStateA &&
+      bidControl->glyphBase != kTradeBitmapBidStateB) {
     return 0;
   }
 
@@ -300,8 +300,8 @@ int TTradeCluster::IsSellOffer() {
     FailNilPointerInUSmallViews(kAssertLineOfferActionable);
   }
 
-  if (offerControl->glyphBase84 != kTradeBitmapOfferStateA &&
-      offerControl->glyphBase84 != kTradeBitmapOfferStateB) {
+  if (offerControl->glyphBase != kTradeBitmapOfferStateA &&
+      offerControl->glyphBase != kTradeBitmapOfferStateB) {
     return 0;
   }
 

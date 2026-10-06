@@ -10,9 +10,9 @@ struct TQuickDrawSurfaceContext;
 // VTABLE: IMPERIALISM 0x652d60
 class TEngineerDialog : public TView {
 public:
-  TQuickDrawSurfaceContext* headerSurface60;   // 0x60
-  TQuickDrawSurfaceContext* footerSurface64;   // 0x64
-  TQuickDrawSurfaceContext* bodyTileSurface68; // 0x68
+  TQuickDrawSurfaceContext* headerSurface;   // 0x60
+  TQuickDrawSurfaceContext* footerSurface;   // 0x64
+  TQuickDrawSurfaceContext* bodyTileSurface; // 0x68
 
   TEngineerDialog();
   virtual ~TEngineerDialog() override;

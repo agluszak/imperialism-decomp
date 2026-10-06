@@ -68,7 +68,7 @@ WNetSelectionRecord* TJoinSelectorDialog::GetSelectedJoinableGame() {
   TRadioTextCluster* gameControl =
       static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagGame));
   gameControl->AssertValid();
-  return (WNetSelectionRecord*)gameControl->selectedTag88;
+  return (WNetSelectionRecord*)gameControl->selectedTag;
 }
 
 // FUNCTION: IMPERIALISM 0x0054e9a0

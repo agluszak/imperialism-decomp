@@ -94,8 +94,8 @@ private:
     TZone* zone = g_pMapActionContextListHead;
     for (int count = 0; zone != 0 && count < 0x70; ++count, zone = zone->prev18) {
       JsonObject row;
-      row.Set("ordinal", static_cast<int>(zone->contextOrdinal14));
-      row.Set("status_code", static_cast<int>(zone->statusCode04));
+      row.Set("ordinal", static_cast<int>(zone->contextOrdinal));
+      row.Set("status_code", static_cast<int>(zone->statusCode));
       CString hex = HexRetailText(zone->displayName);
       row.Set("display_name_hex", static_cast<LPCSTR>(hex));
       zones.Add(row.Release());

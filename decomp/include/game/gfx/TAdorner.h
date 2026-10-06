@@ -14,9 +14,9 @@ class TAdorner : public TObject {
 public:
   DECLARE_DYNCREATE(TAdorner)
   // FUNCTION: IMPERIALISM 0x0049dae0
-  virtual ~TAdorner() override {}                  // slot 0x01 (scalar deleting destructor)
-  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x49d990
-  virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x49d960
+  virtual ~TAdorner() override {}                     // slot 0x01 (scalar deleting destructor)
+  virtual void WriteTo(TStream* stream) override;     // slot 0x05 0x49d990
+  virtual void ReadFrom(TStream* stream) override;    // slot 0x06 0x49d960
   virtual void AddedToView(TView* view);              // slot 0x0a 0x49d900
   virtual void RemovedFromView(TView* view);          // slot 0x0b 0x49d930
   virtual void Draw(TView* view, const RECT& bounds); // slot 0x0c 0x49d9c0
@@ -31,7 +31,7 @@ public:
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0x69);
   }
 
-  unsigned long adornerId04;
+  unsigned long adornerId;
   unsigned char adornerFlags;
   unsigned char pad09[3];
 };

@@ -129,7 +129,7 @@ void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
   persistedReservedTable[4] = 0;
   persistedReservedTable[5] = 0;
   persistedReservedTable[6] = 0;
-  pendingShipType32 = 0;
+  pendingShipType = 0;
   pendingRecruitmentCommandIndex = -1;
   pendingUnitCommandIndex = -1;
   resource15ProductionPercent = 50;
@@ -146,7 +146,7 @@ void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
   FillLists();
 
   field3c = -1;
-  accumulatedUnmetNeed3e = 0;
+  accumulatedUnmetNeed = 0;
 
   for (short i = 0; i < 23; ++i) {
     orderTypeTableFC[i] = 0;
@@ -235,8 +235,8 @@ short TCityInteriorMinister::GetRankingCriterionForGP(short nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x004beeb0
 void TCityInteriorMinister::PleaseBuildShip(short orderKind) {
-  if (pendingShipType32 == 0) {
-    pendingShipType32 = static_cast<short>((orderKind == 2) + 1);
+  if (pendingShipType == 0) {
+    pendingShipType = static_cast<short>((orderKind == 2) + 1);
   }
 }
 
@@ -264,13 +264,13 @@ void TCityInteriorMinister::WriteTo(TStream* stream) {
   stream->WriteBytes(&capabilityFlag16, 2);
   WriteShortArrayElems(stream, persistedReservedTable, 7);
   stream->WriteBytes(&nextProductionBuildingOrdinal, 2);
-  stream->WriteBytes(&pendingShipType32, 2);
+  stream->WriteBytes(&pendingShipType, 2);
   stream->WriteBytes(&field34, 2);
   stream->WriteBytes(&pendingRecruitmentCommandIndex, 2);
   stream->WriteBytes(&pendingUnitCommandIndex, 2);
   stream->WriteBytes(&resource15ProductionPercent, 2);
   stream->WriteBytes(&field3c, 2);
-  stream->WriteBytes(&accumulatedUnmetNeed3e, 2);
+  stream->WriteBytes(&accumulatedUnmetNeed, 2);
   WriteShortArrayElems(stream, orderMetricTable40, 61);
   stream->WriteBytes(&deferredLaborShortfall, 2);
   WriteShortArrayElems(stream, orderShortTableDC, 16);
@@ -342,13 +342,13 @@ void TCityInteriorMinister::ReadFrom(TStream* stream) {
   stream->ReadBytes(persistedReservedTable, sizeof(persistedReservedTable));
   SwapShortArrayBytes(persistedReservedTable, 7);
   stream->ReadBytes(&nextProductionBuildingOrdinal, 2);
-  stream->ReadBytes(&pendingShipType32, 2);
+  stream->ReadBytes(&pendingShipType, 2);
   stream->ReadBytes(&field34, 2);
   stream->ReadBytes(&pendingRecruitmentCommandIndex, 2);
   stream->ReadBytes(&pendingUnitCommandIndex, 2);
   stream->ReadBytes(&resource15ProductionPercent, 2);
   stream->ReadBytes(&field3c, 2);
-  stream->ReadBytes(&accumulatedUnmetNeed3e, 2);
+  stream->ReadBytes(&accumulatedUnmetNeed, 2);
   stream->ReadBytes(orderMetricTable40, metricCount * 2);
   SwapShortArrayBytes(orderMetricTable40, metricCount);
   stream->ReadBytes(&deferredLaborShortfall, 2);
@@ -488,9 +488,9 @@ void TCityInteriorMinister::DetermineTradeBid(TCity* city) {
     magnitude = 0;
 
     short popHalfNeed = city->productionSummary->populationCount / 2;
-    if (city->cityStockCannedFoodC4 < popHalfNeed) {
+    if (city->cityStockCannedFood < popHalfNeed) {
       resultCode = 7;
-      magnitude = city->productionSummary->populationCount - city->cityStockCannedFoodC4;
+      magnitude = city->productionSummary->populationCount - city->cityStockCannedFood;
       if (magnitude > 6) {
         magnitude = 6;
       }
@@ -510,10 +510,10 @@ void TCityInteriorMinister::IssueBasicOrders(TCity* city, TTaskList* commandQueu
     IncreaseCapacityMode(city, commandQueue);
   }
 
-  if (accumulatedUnmetNeed3e != 0) {
+  if (accumulatedUnmetNeed != 0) {
     IncreaseRailCapacityMode(city, commandQueue);
   }
-  if (pendingShipType32 != 0) {
+  if (pendingShipType != 0) {
     BuildMerchantShipMode(city, commandQueue);
   }
   if (pendingRecruitmentCommandIndex > -1) {
@@ -560,7 +560,7 @@ void TCityInteriorMinister::OverstockCheck(TCity* city, TTaskList* commandQueue)
     }
   }
 
-  if (city->cityStockFabricC6 > 14) {
+  if (city->cityStockFabric > 14) {
     amount = static_cast<short>(city->GetBuildingType(0) / 2 - city->GetBuildingType(1));
     if (amount > 0 && commandQueue->ContainsTask(0x36) == 0) {
       task = new TCityTask();
@@ -604,7 +604,7 @@ void TCityInteriorMinister::IncreaseRailCapacityMode(TCity* city, TTaskList* com
         static_cast<short>(totalCurrentNeed + greatPower->needCurrentByType[resource]);
   }
 
-  short amount = accumulatedUnmetNeed3e;
+  short amount = accumulatedUnmetNeed;
   if (needCap + amount > totalCurrentNeed) {
     amount = static_cast<short>(totalCurrentNeed - needCap);
   }
@@ -724,9 +724,9 @@ void TCityInteriorMinister::BuildMerchantShipMode(TCity* city, TTaskList* comman
   }
 
   TShipBuildingTask* task = new TShipBuildingTask();
-  task->IShipBuildingTask(0x2b, city, pendingShipType32);
+  task->IShipBuildingTask(0x2b, city, pendingShipType);
   commandQueue->AddTask(task);
-  pendingShipType32 = 0;
+  pendingShipType = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c0690
@@ -752,7 +752,7 @@ void TCityInteriorMinister::QueuePendingUnitProductionCommand(TCity* city,
 // FUNCTION: IMPERIALISM 0x004c07d0
 void TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits(
     TCity* city) {
-  accumulatedUnmetNeed3e = 0;
+  accumulatedUnmetNeed = 0;
 
   int orderOrdinal = 1;
   while (city->productionSummary->strength > 1 && orderOrdinal <= list28->GetSize()) {
@@ -803,8 +803,7 @@ void TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackf
                   countedDeficit = deficit;
                 }
                 if (countedDeficit > 0) {
-                  accumulatedUnmetNeed3e =
-                      static_cast<short>(accumulatedUnmetNeed3e + countedDeficit);
+                  accumulatedUnmetNeed = static_cast<short>(accumulatedUnmetNeed + countedDeficit);
                 }
                 if (countedDeficit < deficit) {
                   ++city->unmetResourceRetryCount[requestedResource];
@@ -840,7 +839,7 @@ void TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackf
                                  greatPower->needCurrentByType[secondaryResource] -
                                  greatPower->needTargetByType[secondaryResource]);
           if (availableNeed > 0) {
-            accumulatedUnmetNeed3e = static_cast<short>(accumulatedUnmetNeed3e + availableNeed);
+            accumulatedUnmetNeed = static_cast<short>(accumulatedUnmetNeed + availableNeed);
           }
           if (availableNeed < requested) {
             ++city->unmetResourceRetryCount[1];
@@ -917,9 +916,8 @@ void TCityInteriorMinister::MakeNewCity(TCity* city) {
 }
 
 // FUNCTION: IMPERIALISM 0x004c0de0
-short TCityInteriorMinister::AttemptTransport(short resourceType,
-                                                                   short requestedAmount,
-                                                                   short allocationLimit) {
+short TCityInteriorMinister::AttemptTransport(short resourceType, short requestedAmount,
+                                              short allocationLimit) {
   TGreatPower* owner = greatPower;
   short availableSurplus = static_cast<short>(owner->needCurrentByType[resourceType] -
                                               owner->needTargetByType[resourceType]);
@@ -946,8 +944,7 @@ short TCityInteriorMinister::RebuildNeedTargetsAndQueueProductionShortfalls(
     owner->UpdateNeedTargetAndAccumulateOverCap(resourceType, 0);
   }
 
-  short allocated =
-      AttemptTransport(17, citySummary[17], remainingNeedCapacity);
+  short allocated = AttemptTransport(17, citySummary[17], remainingNeedCapacity);
   remainingNeedCapacity = static_cast<short>(remainingNeedCapacity - allocated);
   if (allocated < citySummary[17]) {
     city->AddTransportRequest(17, static_cast<short>(citySummary[17] - allocated));
@@ -966,12 +963,10 @@ short TCityInteriorMinister::RebuildNeedTargetsAndQueueProductionShortfalls(
   }
 
   short remainingIndustrialNeed = citySummary[20];
-  allocated =
-      AttemptTransport(20, remainingIndustrialNeed, remainingNeedCapacity);
+  allocated = AttemptTransport(20, remainingIndustrialNeed, remainingNeedCapacity);
   remainingNeedCapacity = static_cast<short>(remainingNeedCapacity - allocated);
   remainingIndustrialNeed = static_cast<short>(remainingIndustrialNeed - allocated);
-  allocated =
-      AttemptTransport(19, remainingIndustrialNeed, remainingNeedCapacity);
+  allocated = AttemptTransport(19, remainingIndustrialNeed, remainingNeedCapacity);
   remainingNeedCapacity = static_cast<short>(remainingNeedCapacity - allocated);
   if (allocated < remainingIndustrialNeed) {
     remainingIndustrialNeed = static_cast<short>(remainingIndustrialNeed - allocated);
@@ -1001,22 +996,22 @@ short TCityInteriorMinister::RebuildNeedTargetsAndQueueProductionShortfalls(
   }
 
   int requestOrdinal = 1;
-  while (requestOrdinal <= city->eventQueue274->GetSize()) {
+  while (requestOrdinal <= city->eventQueue->GetSize()) {
     TCityTransportRequest* request = static_cast<TCityTransportRequest*>(
-        city->eventQueue274->GetPtrListEntryByOneBasedIndex(requestOrdinal));
-    allocated = AttemptTransport(
-        request->resourceType, request->requestedAmount, remainingNeedCapacity);
+        city->eventQueue->GetPtrListEntryByOneBasedIndex(requestOrdinal));
+    allocated =
+        AttemptTransport(request->resourceType, request->requestedAmount, remainingNeedCapacity);
     remainingNeedCapacity = static_cast<short>(remainingNeedCapacity - allocated);
     if (allocated < request->requestedAmount && remainingNeedCapacity > 0) {
       request->requestedAmount = static_cast<short>(request->requestedAmount - allocated);
       ++requestOrdinal;
     } else {
-      city->eventQueue274->RemovePtrListEntryByOneBasedIndexAndFree(requestOrdinal);
+      city->eventQueue->RemovePtrListEntryByOneBasedIndexAndFree(requestOrdinal);
     }
   }
 
-  allocated = AttemptTransport(
-      kResourceGold, owner->needCurrentByType[kResourceGold], remainingNeedCapacity);
+  allocated = AttemptTransport(kResourceGold, owner->needCurrentByType[kResourceGold],
+                               remainingNeedCapacity);
   remainingNeedCapacity = static_cast<short>(remainingNeedCapacity - allocated);
   owner->AddCreatedItems();
   owner->reservedTransportCapacity =
@@ -1309,8 +1304,8 @@ void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
             g_anResourceTypeRequiredOrderType[resourceType] == order->orderType &&
             (g_abResourceTypeAlwaysQualifies[resourceType] != 0 ||
              static_cast<short>(tile->ownerNationTag04) == greatPower->nationSlot)) {
-          short availableClass = g_pGlobalMapState->GetMaxDevelopmentLevel(
-              tileIndex, useHighNibble, greatPower->nationSlot);
+          short availableClass = g_pGlobalMapState->GetMaxDevelopmentLevel(tileIndex, useHighNibble,
+                                                                           greatPower->nationSlot);
           char currentClass =
               g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, useHighNibble);
           if (availableClass > currentClass) {
@@ -1462,8 +1457,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
       continue;
     }
     if (g_abGateFlagQualifies[tile->gateFlag] == 0 ||
-        g_pDiplomacyTurnStateManager->GetEmbassyStatus(nationSlot,
-                                                                          minorNation) != 2 ||
+        g_pDiplomacyTurnStateManager->GetEmbassyStatus(nationSlot, minorNation) != 2 ||
         tile->secondaryOwnerNationTag != -1) {
       continue;
     }
@@ -1564,8 +1558,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors() {
                                                    EncodeCivilianUnitKind(kCivilianUnitMiner))) {
           continue;
         }
-        short availableClass =
-            g_pGlobalMapState->GetMaxDevelopmentLevel(tileIndex, 1, nationSlot);
+        short availableClass = g_pGlobalMapState->GetMaxDevelopmentLevel(tileIndex, 1, nationSlot);
         if (currentClass >= availableClass) {
           continue;
         }
@@ -2010,20 +2003,20 @@ void TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection
   }
 
   if (g_pSimMgr->GetEconomicTurn() == 0) {
-    pendingShipType32 = 2;
+    pendingShipType = 2;
   }
-  if (pendingShipType32 != 0) {
+  if (pendingShipType != 0) {
     short shipOrderSlot = -1;
     for (short shipSlotIndex = 0x2b; shipSlotIndex <= 0x32 && shipOrderSlot == -1;
          ++shipSlotIndex) {
       TShipOrder* order = city->shipOrderSlots[shipSlotIndex - 0x2b];
-      if (order->resourceTypeIndex == pendingShipType32) {
+      if (order->resourceTypeIndex == pendingShipType) {
         shipOrderSlot = shipSlotIndex;
       }
     }
     if (shipOrderSlot != -1) {
       orderMetricTable40[shipOrderSlot] = 1;
-      pendingShipType32 = 0;
+      pendingShipType = 0;
     }
   }
 
@@ -2145,14 +2138,14 @@ void TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations() {
   if (clothingConsumed > 2) {
     clothingConsumed = 2;
   }
-  short furnitureConsumed = city->cityStockFurnitureD2;
+  short furnitureConsumed = city->cityStockFurniture;
   if (furnitureConsumed > 2) {
     furnitureConsumed = 2;
   }
   city->cityStockClothing = static_cast<short>(city->cityStockClothing - clothingConsumed);
   city->VerifyStocks();
   city->consumedProductionInputByType2a6[13] = clothingConsumed;
-  city->cityStockFurnitureD2 = static_cast<short>(city->cityStockFurnitureD2 - furnitureConsumed);
+  city->cityStockFurniture = static_cast<short>(city->cityStockFurniture - furnitureConsumed);
   city->VerifyStocks();
   city->consumedProductionInputByType2a6[14] = furnitureConsumed;
   if (furnitureConsumed == 0 && city->cityStockLumber > 1) {
@@ -2254,8 +2247,8 @@ void TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutput
   }
 
   if (g_pSimMgr->GetEconomicTurn() > 2) {
-    int policyBand = cityPolicyFuzzySet->GetCrispOutput(
-        static_cast<float>(greatPower->treasuryValue10));
+    int policyBand =
+        cityPolicyFuzzySet->GetCrispOutput(static_cast<float>(greatPower->treasuryValue10));
     short reserve = g_cityProductionReserveByPolicyBand_00696400[policyBand];
     short quantity = static_cast<short>((city->cityStockLumber - reserve) / 2);
     if (quantity > 0) {
@@ -2265,7 +2258,7 @@ void TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutput
       }
       orderMetricTable40[14] = quantity;
     }
-    quantity = static_cast<short>((city->cityStockFabricC6 - reserve) / 2);
+    quantity = static_cast<short>((city->cityStockFabric - reserve) / 2);
     if (quantity > 0) {
       short capacity = static_cast<short>(city->GetBuildingType(1) + 1);
       if (quantity > capacity) {
@@ -2484,8 +2477,8 @@ void TCityInteriorMinister::FillRemainingNeedCapacityAndReducePowerPlantOrder() 
   }
 
   short availablePower = city->productionSummary->strength;
-  if (availablePower > city->powerAvailableB4) {
-    availablePower = city->powerAvailableB4;
+  if (availablePower > city->powerAvailable) {
+    availablePower = city->powerAvailable;
   }
   short powerGroups = static_cast<short>(availablePower / 6);
   if (powerGroups > 0) {
@@ -2603,8 +2596,8 @@ void TCityInteriorMinister::SeekResources(TShortintList* ownedTiles, char* prima
           g_pGlobalMapState->GetMaxDevelopmentLevel(tileIndex, 1, nationSlot);
       short developedCost =
           g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, true);
-      short currentCapability = g_pGlobalMapState->GetMaxDevelopmentLevel(
-          tileIndex, 0, greatPower->nationSlot);
+      short currentCapability =
+          g_pGlobalMapState->GetMaxDevelopmentLevel(tileIndex, 0, greatPower->nationSlot);
       short currentCost =
           g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, false);
       for (int edge = 0; edge < 2; ++edge) {

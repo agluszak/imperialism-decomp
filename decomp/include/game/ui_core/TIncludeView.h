@@ -9,11 +9,11 @@ public:
   DECLARE_DYNCREATE(TIncludeView)
   virtual ~TIncludeView() override;            // slot 0x01 (scalar deleting destructor)
   virtual void DoPostCreate(int arg) override; // slot 0x37 0x48cfd0
-  short turnEventCode60;
+  short turnEventCode;
   short padding62;
   CPoint anchorPoint64;
   CString labelText6c;
-  short completionFlag70;
+  short completionFlag;
   short padding72;
 
   // Turn-event factory packet builder (thiscall on the freshly-constructed entry).

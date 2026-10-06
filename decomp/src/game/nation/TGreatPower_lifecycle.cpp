@@ -221,10 +221,10 @@ void TGreatPower::IGreatPower(short nationSlotIndex, short humanControlledFlag) 
   this->field900 = 0x0F;
 
   this->turnEventQueue = new TPtrList();
-  this->turnEventQueue->recordSize14 = 4;
+  this->turnEventQueue->recordSize = 4;
 
   this->proposalQueue = new TPtrList();
-  this->proposalQueue->recordSize14 = 4;
+  this->proposalQueue->recordSize = 4;
 
   if (this->diplomacyEligibility != 0) {
     TForeignMinister* foreignMinister = new TForeignMinister();
@@ -243,7 +243,7 @@ void TGreatPower::IGreatPower(short nationSlotIndex, short humanControlledFlag) 
   int listIndex = 0;
   while (listIndex < kDiplomacyTrackedSlotCount) {
     TPtrList* trackedSlotList = new TPtrList();
-    trackedSlotList->recordSize14 = 0x0C;
+    trackedSlotList->recordSize = 0x0C;
     this->diplomacyTrackedSlots[listIndex] = trackedSlotList;
     ++listIndex;
   }
@@ -269,7 +269,7 @@ void TGreatPower::IGreatPower(short nationSlotIndex, short humanControlledFlag) 
   this->field904 = 1;
 
   this->turnSummaryQueue = new TPtrList();
-  this->turnSummaryQueue->recordSize14 = 8;
+  this->turnSummaryQueue->recordSize = 8;
 
   this->turnStartEvents = new TList();
   this->militaryExpenses960 = 0;

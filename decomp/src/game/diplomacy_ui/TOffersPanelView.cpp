@@ -46,14 +46,14 @@ void TOffersPanelView::DoPostCreate(int arg) {
   propControl->AssertValid();
   propControl->SetTextStyle(sharedStyle, false);
   propControl->shadowTextColor = sharedStyle.textColor;
-  propControl->dropShadowEnabledA0 = true;
+  propControl->dropShadowEnabled = true;
   propControl->SetJustification(1, false);
 
   TDeluxeText* textControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagText));
   textControl->AssertValid();
   textControl->SetTextStyle(sharedStyle, false);
   textControl->shadowTextColor = sharedStyle.textColor;
-  textControl->dropShadowEnabledA0 = true;
+  textControl->dropShadowEnabled = true;
   textControl->SetJustification(1, false);
 
   CString acceHint;

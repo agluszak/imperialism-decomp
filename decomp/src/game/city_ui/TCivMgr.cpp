@@ -325,7 +325,7 @@ CivilianTileActionCodeStorage TCivMgr::ResolveCivilianTileOrderActionCode(short 
   }
 
   TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[nTileIndex];
-  if (tile->recruitSearchVisited0e == 0) {
+  if (tile->recruitSearchVisited == 0) {
     CivilianUnitKind unitKind = selectedEntry->GetCivilianUnitKind();
     if (unitKind == kCivilianUnitProspector) {
       return kCivilianTileActionProspect;
@@ -467,8 +467,8 @@ bool TCivMgr::CanAssignCivilianOrderToTile(short nTileIndex) {
       return tileTerrainClass == entry->ownerNationSlot18;
     }
     if (g_apTerrainTypeDescriptorTable[tileTerrainClass]->encodedNationSlot == -1) {
-      short compatibility = g_pDiplomacyTurnStateManager->GetEmbassyStatus(
-          entry->ownerNationSlot18, tileTerrainClass);
+      short compatibility = g_pDiplomacyTurnStateManager->GetEmbassyStatus(entry->ownerNationSlot18,
+                                                                           tileTerrainClass);
       if ((compatibility == 2) &&
           (entry->orderType != EncodeCivilianUnitKind(kCivilianUnitEngineer))) {
         return true;
@@ -531,8 +531,7 @@ void TCivMgr::HandleCivilianReportDecision(TCivUnit* pCivilianOrderEntry) {
 
   pCivilianOrderEntry->SetOrders(kUnitOrderIdle, subtypeOrTargetProvince);
   if ((subtypeOrTargetProvince != 0) && (subtypeOrTargetProvince != -1)) {
-    this->MoveAndRedrawUnit(subtypeOrTargetProvince,
-                                                       pCivilianOrderEntry);
+    this->MoveAndRedrawUnit(subtypeOrTargetProvince, pCivilianOrderEntry);
   }
 
   TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPictureF0;
@@ -593,8 +592,7 @@ bool TCivMgr::QueueCivilianWorkOrderWithCostCheck(short nTileIndex) {
   }
 
   selectedEntry->SetOrders(kUnitOrderDevelopResource, selectedEntry->tileIndex06);
-  this->MoveAndRedrawUnit(nTileIndex,
-                                                     g_pSelectedCivilianOrderState->selectedEntry);
+  this->MoveAndRedrawUnit(nTileIndex, g_pSelectedCivilianOrderState->selectedEntry);
 
   static const short kOrderQueuedSfxByOrderType[9] = {0x232d, 0, 0x2332, 0x2331, 0,
                                                       0x2333, 0, 0x2335, 0x2339};
@@ -648,8 +646,7 @@ bool TCivMgr::PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex) {
     if (g_pViewMgr->ModalMessage(4, titleText, formattedText, g_ptCivilianOrderModalMessage, 0,
                                  1) != 0) {
       selectedEntry->SetOrders(kUnitOrderPurchaseLand, selectedEntry->tileIndex06);
-      this->MoveAndRedrawUnit(
-          nTileIndex, g_pSelectedCivilianOrderState->selectedEntry);
+      this->MoveAndRedrawUnit(nTileIndex, g_pSelectedCivilianOrderState->selectedEntry);
       g_pSfxPlaybackSystem->PlaySoundEffect(0x2335, 0, 1);
       g_apNationStates[g_pSimMgr->GetPlayerCountry()]->AddToTreasury(-purchaseCost);
       g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
@@ -843,8 +840,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d4310
-void TCivMgr::MoveAndRedrawUnit(short nNewTileIndex,
-                                                           TCivUnit* pCivOrderEntry) {
+void TCivMgr::MoveAndRedrawUnit(short nNewTileIndex, TCivUnit* pCivOrderEntry) {
   short previousTile = pCivOrderEntry->tileIndex06;
   pCivOrderEntry->MoveTo(nNewTileIndex);
   if (previousTile != -1 && g_pViewMgr->mapUberPictureF0 != nullptr) {
@@ -863,7 +859,7 @@ void TCivMgr::ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
     byte result = g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(order->tileIndex06,
                                                                              selectHighNibble);
     g_pGlobalMapState->SetDevelopmentLevel(order->tileIndex06, selectHighNibble,
-                                                         static_cast<byte>(result + 1), true);
+                                           static_cast<byte>(result + 1), true);
     break;
   }
   case 8:

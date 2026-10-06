@@ -20,9 +20,8 @@ IMPLEMENT_DYNCREATE(TTransportPicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x00591e70
 TTransportPicture::TTransportPicture()
-    : TPicture(), gaugeMetricId90(0x3a), splitValue94(0), splitValue96(0),
-      splitLimit((short)0xffff) {}
-
+    : TPicture(), gaugeMetricId(0x3a), splitValue94(0), splitValue96(0), splitLimit((short)0xffff) {
+}
 
 // FUNCTION: IMPERIALISM 0x00591ef0
 TTransportPicture::~TTransportPicture() {}
@@ -145,7 +144,7 @@ void TTransportPicture::Refresh() {
     // The capacity total goes red once allocation reaches the cap.
     g_pViewMgr->SetForeColor(splitValue96 == splitValue94 ? 0x34 : 0x33);
   } else {
-    g_pViewMgr->SetForeColor(gaugeMetricId90);
+    g_pViewMgr->SetForeColor(gaugeMetricId);
   }
   ClipRect(&fillRect);
   FillRectWithQuickDrawBrushAndContextOffset(&fillRect);

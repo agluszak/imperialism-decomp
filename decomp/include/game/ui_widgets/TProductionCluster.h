@@ -20,8 +20,8 @@ public:
   int field88;
   short laborRate8c;
   short stockpileRate8e;
-  short* currentStockpile90;
-  short* maximumStockpile94;
+  short* currentStockpile;
+  short* maximumStockpile;
 
   TProductionCluster();
   DECLARE_DYNCREATE(TProductionCluster)

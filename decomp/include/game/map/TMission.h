@@ -25,13 +25,13 @@ enum eMissionType {
 // VTABLE: IMPERIALISM 0x0065a4e8
 class TMission : public TObject {
 public:
-  NationSlot nationId04; // 0x04 source-nation id (InitializeMission...)
+  NationSlot nationId;   // 0x04 source-nation id (InitializeMission...)
   short pathMarker;      // 0x06 path/dispatch marker (set 0xffff)
   unsigned char state08; // 0x08 lifecycle state byte (ctor = 2)
   unsigned char padding09[3];
-  float importanceScore0c; // 0x0c cached score/value (ctor = 0.0f)
-  unsigned char flag10;    // 0x10 dispatch flag (SetMissionField10FromArgSlot94)
-  unsigned char marker11;  // 0x11 status byte (ctor = 0xff)
+  float importanceScore;  // 0x0c cached score/value (ctor = 0.0f)
+  unsigned char flag10;   // 0x10 dispatch flag (SetMissionField10FromArgSlot94)
+  unsigned char marker11; // 0x11 status byte (ctor = 0xff)
   unsigned char padding12[2];
 
   TMission();
@@ -54,7 +54,7 @@ public:
   virtual void CalculateNeeds();                              // 0x0f 0x534ca0
   virtual void Reassess();                                    // 0x10 0x534cc0
   virtual void GiveOrders();                                  // 0x11 0x534cf0
-  virtual TMission* GetReplacement();                   // 0x12 0x534d10
+  virtual TMission* GetReplacement();                         // 0x12 0x534d10
   virtual bool Matches(eMissionType missionType, int key,
                        TZone* zoneContext) const; // 0x13 0x534d30
   virtual bool IsArmyMission() const;             // 0x14 0x534d50
@@ -89,7 +89,6 @@ public:
 
   static TMission* Find(TSortedList* missions, eMissionType missionType, short key,
                         TZone* zoneContext);
-
 };
 
 ASSERT_SIZE(TMission, 0x14);

@@ -55,7 +55,7 @@ void TPageView::ResetSelectableOptionEntriesExceptColorAndOkay() {
   if (iter.MoreSubViews()) {
     do {
       if (child->controlTag != kColorTagA && child->controlTag != kColorTagB &&
-          child->controlTag != kOkayTag && child->controlValue3c != kSkipId) {
+          child->controlTag != kOkayTag && child->controlValue != kSkipId) {
         child->Free();
       }
       child = iter.NextSubView();

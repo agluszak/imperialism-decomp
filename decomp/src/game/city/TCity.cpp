@@ -45,7 +45,7 @@ IMPLEMENT_DYNCREATE(TCity, TObject)
 TCity::TCity() {
   homeTownMarker = 0;
   trackedOrderList = 0;
-  eventQueue274 = 0;
+  eventQueue = 0;
   for (int productionSlot = 0; productionSlot < 0x10; ++productionSlot) {
     productionOrderTable1dc[productionSlot] = 0;
     productionAccum[productionSlot] = 0;
@@ -95,8 +95,8 @@ void TCity::ICity(TGreatPower* ownerNation) {
 
   lowProductionFlag = 0;
   lowStockFlag = 0;
-  serializedState0a = 0;
-  powerAvailableB4 = 0;
+  serializedState = 0;
+  powerAvailable = 0;
 
   productionSummary = new TPopulationMgr();
   productionSummary->IPopulationMgr(this);
@@ -201,14 +201,14 @@ void TCity::ICity(TGreatPower* ownerNation) {
 
   trackedOrderList = new TTaskList();
   trackedOrderList->ITaskList();
-  eventQueue274 = new TPtrList();
-  eventQueue274->recordSize14 = 4;
+  eventQueue = new TPtrList();
+  eventQueue->recordSize = 4;
 
   cityPhaseCounter = 0;
   memset(militaryRecruitCountByKind, 0, sizeof(militaryRecruitCountByKind));
   memset(civilianRecruitCountByKind, 0, sizeof(civilianRecruitCountByKind));
   memset(orderCountByType5c, 0, sizeof(orderCountByType5c));
-  rollingItemProductionScore78 = 0;
+  rollingItemProductionScore = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b30a0
@@ -227,9 +227,9 @@ void TCity::ReadFrom(TStream* stream) {
   stream->ReadBytes(productionFlags, productionSlotCount);
   stream->ReadBytes(&foodSubstitutionCount06, 2);
   stream->ReadBytes(&starvationPopulationLoss08, 2);
-  stream->ReadBytes(&serializedState0a, 2);
+  stream->ReadBytes(&serializedState, 2);
   stream->ReadBytes(&cityPhaseCounter, 2);
-  stream->ReadBytes(&powerAvailableB4, 2);
+  stream->ReadBytes(&powerAvailable, 2);
   stream->ReadBytes(militaryRecruitCountByKind, sizeof(militaryRecruitCountByKind));
   SwapShortArrayBytes(militaryRecruitCountByKind, kMilitaryUnitKindCount);
   stream->ReadBytes(civilianRecruitCountByKind, sizeof(civilianRecruitCountByKind));
@@ -254,9 +254,9 @@ void TCity::ReadFrom(TStream* stream) {
   SwapShortArrayBytes(consumedProductionInputByType2a6, 0x17);
 
   if (g_nSaveFormatVersion > 0x27) {
-    stream->ReadBytes(&rollingItemProductionScore78, 4);
+    stream->ReadBytes(&rollingItemProductionScore, 4);
   } else {
-    rollingItemProductionScore78 = 0;
+    rollingItemProductionScore = 0;
   }
 
   productionSummary->ReadFrom(stream);
@@ -296,7 +296,7 @@ void TCity::ReadFrom(TStream* stream) {
     }
     trackedOrderList->AddTask(task);
   }
-  eventQueue274->ReadFrom(stream);
+  eventQueue->ReadFrom(stream);
 }
 
 // FUNCTION: IMPERIALISM 0x004b35d0
@@ -308,9 +308,9 @@ void TCity::WriteTo(TStream* stream) {
   stream->WriteBytes(productionFlags, sizeof(productionFlags));
   stream->WriteBytes(&foodSubstitutionCount06, 2);
   stream->WriteBytes(&starvationPopulationLoss08, 2);
-  stream->WriteBytes(&serializedState0a, 2);
+  stream->WriteBytes(&serializedState, 2);
   stream->WriteBytes(&cityPhaseCounter, 2);
-  stream->WriteBytes(&powerAvailableB4, 2);
+  stream->WriteBytes(&powerAvailable, 2);
   WriteShortArrayElems(stream, militaryRecruitCountByKind, kMilitaryUnitKindCount);
   WriteShortArrayElems(stream, civilianRecruitCountByKind, kCivilianUnitKindCount);
   WriteShortArrayElems(stream, orderCountByType5c, 0x0e);
@@ -333,7 +333,7 @@ void TCity::WriteTo(TStream* stream) {
   }
   WriteByteSwappedShortArrayToStream(stream, consumedProductionInputByType2a6, 0x17);
 
-  stream->WriteBytes(&rollingItemProductionScore78, 4);
+  stream->WriteBytes(&rollingItemProductionScore, 4);
   productionSummary->WriteTo(stream);
   TProductionOrder** orderCursor = orderSlots;
   for (int orderSlot = 0; orderSlot < 0x3d; ++orderSlot) {
@@ -350,7 +350,7 @@ void TCity::WriteTo(TStream* stream) {
     TObject* task = static_cast<TObject*>(trackedOrderList->GetEntryByOrdinal(taskOrdinal));
     task->WriteTo(stream);
   }
-  eventQueue274->WriteTo(stream);
+  eventQueue->WriteTo(stream);
 }
 
 // FUNCTION: IMPERIALISM 0x004b3a60
@@ -373,10 +373,10 @@ void TCity::Free() {
     this->trackedOrderList->FreePayloadsAndDestroy();
   }
   this->trackedOrderList = 0;
-  if (this->eventQueue274 != 0) {
-    this->eventQueue274->ReleasePtrList();
+  if (this->eventQueue != 0) {
+    this->eventQueue->ReleasePtrList();
   }
-  this->eventQueue274 = 0;
+  this->eventQueue = 0;
   delete this;
 }
 
@@ -410,8 +410,8 @@ void TCity::EndCityPhase() {
     --remaining;
   } while (remaining != 0);
 
-  int previousProductionScore = rollingItemProductionScore78;
-  rollingItemProductionScore78 = 0;
+  int previousProductionScore = rollingItemProductionScore;
+  rollingItemProductionScore = 0;
   TProductionOrder** order = orderSlots;
   remaining = 0x19;
   do {
@@ -421,8 +421,7 @@ void TCity::EndCityPhase() {
     ++order;
     --remaining;
   } while (remaining != 0);
-  rollingItemProductionScore78 =
-      (previousProductionScore * 9) / 10 + rollingItemProductionScore78 * 10;
+  rollingItemProductionScore = (previousProductionScore * 9) / 10 + rollingItemProductionScore * 10;
 
   TUnitOrder** buildOrder = buildOrderSlots + 9;
   remaining = 9;
@@ -461,7 +460,7 @@ void TCity::EndCityPhase() {
     --remaining;
   } while (remaining != 0);
 
-  powerAvailableB4 = 0;
+  powerAvailable = 0;
   productionSummary->StartProductionPhase();
   trailingOrderSlots[1]->Restock();
 
@@ -573,7 +572,7 @@ void TCity::AddPurchasedItems(short* needVector) {
     --count;
   } while (count != 0);
   sourceCursor = needVector + 7;
-  needCursor = &this->cityStockCannedFoodC4;
+  needCursor = &this->cityStockCannedFood;
   count = 6;
   do {
     *needCursor = static_cast<short>(*needCursor + *sourceCursor);
@@ -603,7 +602,7 @@ void TCity::AddTransportedItems(short* amounts) {
     ++needCursor;
     --count;
   } while (count != 0);
-  this->cityStockGoldE2 = 0;
+  this->cityStockGold = 0;
   this->cityStockGems = 0;
 }
 
@@ -618,7 +617,7 @@ void TCity::AddTransportedItems() {
     ++needCursor;
     ++targetCursor;
   } while (count != 0);
-  this->cityStockGoldE2 = 0;
+  this->cityStockGold = 0;
   this->cityStockGems = 0;
 }
 
@@ -759,7 +758,7 @@ short* TCity::GetUnmetNeeds() {
 // FUNCTION: IMPERIALISM 0x004b4540
 void TCity::AddTransportRequest(short low, short high) {
   int packed = (static_cast<unsigned short>(high) << 16) | static_cast<unsigned short>(low);
-  this->eventQueue274->InsertCopiedRecordSortedByComparator(&packed);
+  this->eventQueue->InsertCopiedRecordSortedByComparator(&packed);
 }
 
 // FUNCTION: IMPERIALISM 0x004b4580
@@ -781,7 +780,7 @@ void TCity::MakeTown(short selectedResourceType) {
 
 // FUNCTION: IMPERIALISM 0x004b46c0
 void TCity::TransferTransportRequests() {
-  this->eventQueue274->InvokePtrListResetHook();
+  this->eventQueue->InvokePtrListResetHook();
 }
 
 // FUNCTION: IMPERIALISM 0x004b46e0

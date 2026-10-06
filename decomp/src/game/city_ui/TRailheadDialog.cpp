@@ -26,7 +26,7 @@ void TRailheadDialog::StuffValues(TCity* city) {
   }
   choice->SetSelectedChildTagAndRefresh(g_pTradeSummarySelectionMap[0]);
 
-  if (city->serializedState0a == 0) {
+  if (city->serializedState == 0) {
     TControl* coal = static_cast<TControl*>(ResolveControlByTag(g_pTradeSummarySelectionMap[3]));
     if (coal == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x73a);

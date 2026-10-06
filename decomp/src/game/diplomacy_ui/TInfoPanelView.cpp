@@ -226,7 +226,7 @@ void TInfoPanelView::Setup() {
   SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText_00654ec8), overlayCluster);
   overlayCluster->SetSelectedChildTagAndRefresh(kControlTagOvr0); // 'ovr0'
 
-  diplomacyMapView->actionCodeBC = kDipActionInspectNation;
+  diplomacyMapView->actionCode = kDipActionInspectNation;
   selectedOverlayMode6C = 0;
 
   TControl* mapKey = static_cast<TControl*>(ResolveControlByTag(kControlTagMkey)); // 'mkey'

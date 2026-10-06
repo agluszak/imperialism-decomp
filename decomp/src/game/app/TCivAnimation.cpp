@@ -18,8 +18,8 @@ void TCivAnimation::ICivAnimation(TView* ownerViewArg, RECT* rect, short frameCo
   ticksSinceFrameChange = 0;
   ticksPerFrame = ticksPerFrameArg;
   registryTag = tag;
-  randomResetFrame2c = randomResetFrameArg;
-  randomResetThreshold2e = randomResetThresholdArg;
+  randomResetFrame = randomResetFrameArg;
+  randomResetThreshold = randomResetThresholdArg;
 }
 
 // FUNCTION: IMPERIALISM 0x0049f580
@@ -30,7 +30,7 @@ void TCivAnimation::Tick() {
     ++frameIndex;
     ticksSinceFrameChange = 0;
     if (frameIndex == frameCount ||
-        (frameIndex == randomResetFrame2c && randomResetThreshold2e > (rand() & 0xf))) {
+        (frameIndex == randomResetFrame && randomResetThreshold > (rand() & 0xf))) {
       frameIndex = 0;
     }
   }

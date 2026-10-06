@@ -30,7 +30,7 @@ struct MapContextActionRecord {
   int markerPixelY;                                   // +0x25c
   unsigned char placedFlag;                           // +0x260
   unsigned char pad261;                               // +0x261
-  short markerSpriteCode262;                          // +0x262
+  short markerSpriteCode;                             // +0x262
   short listOrdinal;                                  // +0x264
   unsigned char pad266[0x268 - 0x266];
 
@@ -110,8 +110,8 @@ public:
   bool needsTerrainRefreshFlag;
   unsigned char pad39b;
   // Battle participants cached for EndBattlePhase.
-  class TArmyStack* ourStackBattle39c;
-  class TArmyStack* enemyStackBattle3a0;
+  class TArmyStack* ourStackBattle;
+  class TArmyStack* enemyStackBattle;
   class TArmyBattle* activeBattleView;
 
   void WakeAll(int nationId);
@@ -159,8 +159,8 @@ public:
 
   void CleanUpStacks();
 
-  void EndTacticalBattle(TArmyStack* ourStack, TArmyStack* enemyStack,
-                                                    unsigned char sideWonFlag, int battleSiteIndex);
+  void EndTacticalBattle(TArmyStack* ourStack, TArmyStack* enemyStack, unsigned char sideWonFlag,
+                         int battleSiteIndex);
 
   void AddBattleRecord(struct MapOrderBattleSnapshot* record, int unusedArg2);
   void IArmyMgr();

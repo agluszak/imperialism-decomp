@@ -16,17 +16,17 @@ void TNavyHumanPlayer::DeploymentClick(TacticalTileIndex tileIndex) {
   int ordinal = 1;
   TTacticalUnit* unit;
   while (true) {
-    unit = static_cast<TTacticalUnit*>(unitList4->GetEntryByOrdinal(ordinal));
+    unit = static_cast<TTacticalUnit*>(unitList->GetEntryByOrdinal(ordinal));
     ++ordinal;
     if (unit->tileIndex8 == -2) {
       break;
     }
-    if (ordinal > unitList4->GetCount()) {
+    if (ordinal > unitList->GetCount()) {
       break;
     }
   }
 
-  if (ordinal > unitList4->GetCount()) {
+  if (ordinal > unitList->GetCount()) {
     sideReadyFlag = true;
   } else {
     battle14->DeployUnit(unit, tileIndex);

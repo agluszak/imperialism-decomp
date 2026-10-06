@@ -15,7 +15,7 @@ IMPLEMENT_DYNCREATE(TMiniMapView, TControl)
 
 // FUNCTION: IMPERIALISM 0x0059a380
 TMiniMapView::TMiniMapView()
-    : TControl(), ownerPicture84(nullptr), scrollTileColumn(0), scrollTileRow(0), markerBoxX(0),
+    : TControl(), ownerPicture(nullptr), scrollTileColumn(0), scrollTileRow(0), markerBoxX(0),
       markerBoxY(0), markerBoxWidth(g_defaultMarkerBoxWidth_006a460c), markerBoxHeight(8) {}
 
 // FUNCTION: IMPERIALISM 0x0059a420
@@ -151,7 +151,7 @@ void TMiniMapView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& prev
       tileRow = 60;
     }
 
-    ownerPicture84->SetUpperLeft(tileColumn, tileRow);
+    ownerPicture->SetUpperLeft(tileColumn, tileRow);
     markerBoxX = frameWidth / 2 - markerBoxWidth;
     markerBoxY = frameHeight / 2 - markerBoxHeight;
     RefreshControl();

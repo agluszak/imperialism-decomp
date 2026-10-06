@@ -14,7 +14,7 @@ public:
   virtual void DoStartup() override;            // slot 0x75 0x4cc820
   virtual void UpdateFields() override;         // slot 0x76 0x4cd040
   int unresolvedZero;
-  short selectedIndustryUnitTypeA4;
+  short selectedIndustryUnitType;
   short padA6; // +0xa6
 
   TIndustryView();

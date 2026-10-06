@@ -20,7 +20,7 @@ public:
   // NOOP: verified empty in original 0x00569df6 (no standalone TMiniShipView::TMiniShipView body exists: CreateObject 0x00569dc0 inlines this default ctor, calling the TControl base ctor directly at that site)
   TMiniShipView() {}
 
-  TShip* shipNode84;
+  TShip* shipNode;
 
   void IMiniShipView(TView* panel, int* offsetLayout, int* sizeLayout, TShip* ship);
 };

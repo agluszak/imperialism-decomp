@@ -40,18 +40,18 @@ IMPLEMENT_DYNCREATE(TSetupRandomMapPicture, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x00576d80
 TSetupRandomMapPicture::TSetupRandomMapPicture()
-    : TNoHilitePicture(), planetSeed94(), wrapHorizontally98(0), countryControlReady(0) {}
+    : TNoHilitePicture(), planetSeed94(), wrapHorizontally(0), countryControlReady(0) {}
 
 TSetupRandomMapPicture::~TSetupRandomMapPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00576ef0
 void TSetupRandomMapPicture::PickCountry(short nationSlot) {
-  selectedNationSlot9A = nationSlot;
+  selectedNationSlot = nationSlot;
 
   TGWorldPartView* flagView = static_cast<TGWorldPartView*>(ResolveControlByTag(kControlTagFlag));
   flagView->AssertValid();
-  int flagStripRight = (selectedNationSlot9A + 1) * flagView->frameWidth;
-  flagView->sourceRect.left = selectedNationSlot9A * flagView->frameWidth;
+  int flagStripRight = (selectedNationSlot + 1) * flagView->frameWidth;
+  flagView->sourceRect.left = selectedNationSlot * flagView->frameWidth;
   flagView->sourceRect.top = 0;
   flagView->sourceRect.right = flagStripRight;
   flagView->sourceRect.bottom = flagView->frameHeight;
@@ -59,7 +59,7 @@ void TSetupRandomMapPicture::PickCountry(short nationSlot) {
 
   TPicture* coatView = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoat));
   coatView->AssertValid();
-  coatView->SetPictureRsrcID(static_cast<short>(selectedNationSlot9A + 0x11c6), true);
+  coatView->SetPictureRsrcID(static_cast<short>(selectedNationSlot + 0x11c6), true);
 
   if (!countryControlReady) {
     bool sessionInactive = g_pSimMgr->multiplayerSessionRole == kSessionRoleStandalone;
@@ -89,21 +89,21 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
 
   if (g_pGlobalMapState == 0) {
     // LIBRARY: rand (0x005e83f0)
-    selectedNationSlot9A = static_cast<short>(rand() % 7);
+    selectedNationSlot = static_cast<short>(rand() % 7);
     GenerateMappedFlavorTextByCurrentContextNation(&planetSeed94);
-    wrapHorizontally98 = 0;
+    wrapHorizontally = 0;
   } else {
     planetSeed94 = g_pGlobalMapState->scenarioTagText;
-    wrapHorizontally98 = g_pGlobalMapState->hexNeighborWrapHorizontally;
-    selectedNationSlot9A = static_cast<short>(g_nRandomMapSelectedNationSlot00698AB0);
-    if (selectedNationSlot9A == -1) {
+    wrapHorizontally = g_pGlobalMapState->hexNeighborWrapHorizontally;
+    selectedNationSlot = static_cast<short>(g_nRandomMapSelectedNationSlot00698AB0);
+    if (selectedNationSlot == -1) {
       // LIBRARY: rand (0x005e83f0)
-      selectedNationSlot9A = static_cast<short>(rand() % 7);
+      selectedNationSlot = static_cast<short>(rand() % 7);
     }
     TMapPreviewView* mapPreview =
         static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagMapP));
     mapPreview->AssertValid();
-    mapPreview->pendingNation = selectedNationSlot9A;
+    mapPreview->pendingNation = selectedNationSlot;
   }
 
   RefreshActiveControlThenApplyThemeStyleAndCaption(kControlTagCoun, 0, 0xc, 0x2b6b, 1,
@@ -146,17 +146,17 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
 
   TMapPreviewView* mapPreview = static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagMapP));
   mapPreview->AssertValid();
-  mapPreview->selectedNation68 = selectedNationSlot9A;
+  mapPreview->selectedNation = selectedNationSlot;
 
   GroundControlToMajorTom(1);
   g_pCursorControlPanel->SetJustification(1, false);
 
   TGWorldPartView* flagView = static_cast<TGWorldPartView*>(ResolveControlByTag(kControlTagFlag));
   flagView->AssertValid();
-  flagView->sourceSurface60 = g_pMacViewMgr->atlas680;
-  flagView->sourceRect.left = selectedNationSlot9A * flagView->frameWidth;
+  flagView->sourceSurface = g_pMacViewMgr->atlas680;
+  flagView->sourceRect.left = selectedNationSlot * flagView->frameWidth;
   flagView->sourceRect.top = 0;
-  flagView->sourceRect.right = (selectedNationSlot9A + 1) * flagView->frameWidth;
+  flagView->sourceRect.right = (selectedNationSlot + 1) * flagView->frameWidth;
   flagView->sourceRect.bottom = flagView->frameHeight;
 
   if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
@@ -179,7 +179,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   difficultyCluster->AssertValid();
   difficultyCluster->SetSelectedTextOptionByTag(kControlTagDif0 + g_pSimMgr->preferenceValues[11],
                                                 false);
-  difficultyCluster->frameThemeCode90 = 0x2b6b;
+  difficultyCluster->frameThemeCode = 0x2b6b;
 
   TDropShadowText* difficultyTitle =
       static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagDift));
@@ -200,7 +200,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   namesCluster->AssertValid();
   namesCluster->SetSelectedTextOptionByTag(
       g_pSimMgr->preferenceValues[13] != 0 ? kControlTagHist : kControlTagRand, false);
-  namesCluster->frameThemeCode90 = 0x2b6b;
+  namesCluster->frameThemeCode = 0x2b6b;
 
   TRadioText* historicalNames =
       static_cast<TRadioText*>(namesCluster->ResolveControlByTag(kControlTagHist));
@@ -209,7 +209,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   historicalNames->SetJustification(1, false);
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&labelText, 0x2758, 4);
   historicalNames->SetTextAndMaybeRefresh(&labelText, false);
-  historicalNames->controlValue3c = kControlTagHist;
+  historicalNames->controlValue = kControlTagHist;
 
   TRadioText* randomNames =
       static_cast<TRadioText*>(namesCluster->ResolveControlByTag(kControlTagRand));
@@ -218,7 +218,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   randomNames->SetJustification(1, false);
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&labelText, 0x2758, 5);
   randomNames->SetTextAndMaybeRefresh(&labelText, false);
-  randomNames->controlValue3c = kControlTagRand;
+  randomNames->controlValue = kControlTagRand;
 
   for (int difficulty = 0; difficulty < 5; ++difficulty) {
     TRadioText* option = static_cast<TRadioText*>(
@@ -228,7 +228,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
     option->SetJustification(1, false);
     g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&labelText, 0x2737, difficulty + 0xe);
     option->SetTextAndMaybeRefresh(&labelText, false);
-    option->controlValue3c = difficulty;
+    option->controlValue = difficulty;
   }
 
   RecheckCountryName();
@@ -239,19 +239,18 @@ void TSetupRandomMapPicture::DoEvent(int commandId, TEventHandler* sourceHandler
   if (commandId == kControlTagPick) {
     TMapPreviewView* mapPreview = static_cast<TMapPreviewView*>(sourceHandler);
     mapPreview->AssertValid();
-    mapPreview->selectedNation68 = mapPreview->pendingNation;
+    mapPreview->selectedNation = mapPreview->pendingNation;
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
-    selectedNationSlot9A = static_cast<short>(mapPreview->selectedNation68);
+    selectedNationSlot = static_cast<short>(mapPreview->selectedNation);
 
     TGWorldPartView* flagView = static_cast<TGWorldPartView*>(ResolveControlByTag(kControlTagFlag));
     flagView->AssertValid();
-    flagView->SetSourceRectFromGridCell(selectedNationSlot9A, 0);
+    flagView->SetSourceRectFromGridCell(selectedNationSlot, 0);
     flagView->RefreshControl();
 
     TPicture* coatView = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoat));
     coatView->AssertValid();
-    coatView->SetPictureRsrcID(static_cast<short>(selectedNationSlot9A + 0x11c6),
-                                             true);
+    coatView->SetPictureRsrcID(static_cast<short>(selectedNationSlot + 0x11c6), true);
 
     RecheckCountryName();
     mapPreview->EnhancePhoto();
@@ -284,13 +283,13 @@ void TSetupRandomMapPicture::DoEvent(int commandId, TEventHandler* sourceHandler
       g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&unusedCancelText, 0x2758, 11);
       int resultTag = g_pViewMgr->MakePlanetSeedDialog(static_cast<LPCSTR>(instruction), planetSeed,
                                                        0, 0, 0, false);
-      wrapHorizontally98 = resultTag == kControlTagOne1;
+      wrapHorizontally = resultTag == kControlTagOne1;
 
       if (planetSeed.Compare(g_szEmptyString) != 0 && planetSeed.Compare(planetSeed94) != 0) {
         planetSeed94 = planetSeed;
         MajorTomToGroundControl(1);
       } else {
-        g_pGlobalMapState->hexNeighborWrapHorizontally = wrapHorizontally98;
+        g_pGlobalMapState->hexNeighborWrapHorizontally = wrapHorizontally;
       }
     } else if (controlTag == kControlTagOkay) {
       StartGame();
@@ -311,13 +310,13 @@ void TSetupRandomMapPicture::StartGame() {
     CString localizedName;
     bool duplicateName = false;
     for (int nationSlot = 0; nationSlot < 0x17 && !duplicateName; ++nationSlot) {
-      if (nationSlot != selectedNationSlot9A) {
+      if (nationSlot != selectedNationSlot) {
         g_pSimMgr->GetString(0x2715, static_cast<short>(nationSlot), &localizedName);
         duplicateName = localizedName.Compare(countryText) == 0;
       }
     }
     if (duplicateName) {
-      g_pSimMgr->GetString(0x2715, selectedNationSlot9A, &countryText);
+      g_pSimMgr->GetString(0x2715, selectedNationSlot, &countryText);
     }
   }
 
@@ -333,30 +332,30 @@ void TSetupRandomMapPicture::StartGame() {
       static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagDiff));
   difficultyCluster->AssertValid();
   TControl* selectedDifficulty =
-      static_cast<TControl*>(ResolveControlByTag(difficultyCluster->selectedTag88));
+      static_cast<TControl*>(ResolveControlByTag(difficultyCluster->selectedTag));
   selectedDifficulty->AssertValid();
-  eDifficulty difficulty = static_cast<eDifficulty>(selectedDifficulty->controlValue3c);
+  eDifficulty difficulty = static_cast<eDifficulty>(selectedDifficulty->controlValue);
   g_pSimMgr->SetDifficultyLevel(difficulty);
   g_pSimMgr->preferenceValues[11] = static_cast<short>(difficulty);
 
   TRadioTextCluster* nameCluster =
       static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagName));
   nameCluster->AssertValid();
-  g_pSimMgr->useLocalizedNameTables = nameCluster->selectedTag88 != kControlTagRand;
+  g_pSimMgr->useLocalizedNameTables = nameCluster->selectedTag != kControlTagRand;
   g_pSimMgr->preferenceValues[13] = static_cast<short>(g_pSimMgr->useLocalizedNameTables);
   g_pSimMgr->UpdatePreferences(true);
 
-  g_nRandomMapSelectedNationSlot00698AB0 = selectedNationSlot9A;
+  g_nRandomMapSelectedNationSlot00698AB0 = selectedNationSlot;
   if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
     g_pAmbitApplication->PostTurnEventCodeMessage(
         EncodeTurnEventCode(kTurnEventNetworkGameOptions));
     g_pGameFlowState->playerNameMirror = g_cstrCountryNameSettingValue006A4220;
     g_pGameFlowState->playerNameString = g_cstrCountryNameSettingValue006A4220;
-    g_pGameFlowState->activeNationTagIndex = static_cast<unsigned char>(selectedNationSlot9A);
+    g_pGameFlowState->activeNationTagIndex = static_cast<unsigned char>(selectedNationSlot);
     return;
   }
 
-  g_pSimMgr->SetPlayerCountry(selectedNationSlot9A);
+  g_pSimMgr->SetPlayerCountry(selectedNationSlot);
   {
     CString countryName(g_cstrCountryNameSettingValue006A4220);
     g_pAssetMgr->SetPreferenceString(&countryName, g_szCountryNameProfileKey00698AE0);
@@ -364,7 +363,7 @@ void TSetupRandomMapPicture::StartGame() {
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
     g_pSimMgr->nationControlModes[nationSlot] = 2;
   }
-  g_pSimMgr->nationControlModes[selectedNationSlot9A] = 1;
+  g_pSimMgr->nationControlModes[selectedNationSlot] = 1;
   g_pSimMgr->StartNextPhase();
 }
 
@@ -382,7 +381,7 @@ void TSetupRandomMapPicture::ExitScreen() {
 void TSetupRandomMapPicture::GroundControlToMajorTom(unsigned char mode) {
   TSpaceCommand* command = new TSpaceCommand();
   command->ICommand(kControlTagNASA, g_pAmbitApplication, 0, 0, 0);
-  command->setupPicture18 = this;
+  command->setupPicture = this;
   command->mode1c = mode;
   g_pAmbitApplication->DispatchUiSelectionToHandler(command);
 }
@@ -428,10 +427,9 @@ void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
 
   g_pActiveRandomMapSetupPicture006A4268 = this;
   lastGlobeTick = GetTickCountDiv16();
-  globeFrameA0 = 0;
+  globeFrame = 0;
   SpinYourGlobe();
-  g_pSimMgr->CreatePlanet(1, static_cast<LPCSTR>(planetSeed94),
-                          static_cast<int>(wrapHorizontally98));
+  g_pSimMgr->CreatePlanet(1, static_cast<LPCSTR>(planetSeed94), static_cast<int>(wrapHorizontally));
   g_pActiveRandomMapSetupPicture006A4268 = 0;
   SpinYourGlobe();
 
@@ -443,7 +441,7 @@ void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
   countryControl->Show(1, 0);
   settingsPanel->Locate(visibleSettingsPanelPosition, false);
   SetPictureRsrcID(0x11bc, true);
-  coatView->SetPictureRsrcID(static_cast<short>(selectedNationSlot9A + 0x11c6), true);
+  coatView->SetPictureRsrcID(static_cast<short>(selectedNationSlot + 0x11c6), true);
 
   CString emptyText(g_szEmptyString);
   infoBar->UpdateTextEntrySharedStringAndMaybeNotify(&emptyText, true);
@@ -455,18 +453,18 @@ void TSetupRandomMapPicture::SpinYourGlobe() {
   unsigned int now = GetTickCountDiv16();
   if (now > lastGlobeTick) {
     lastGlobeTick = GetTickCountDiv16();
-    ++globeFrameA0;
-    if (globeFrameA0 >= 24) {
-      globeFrameA0 = 0;
+    ++globeFrame;
+    if (globeFrame >= 24) {
+      globeFrame = 0;
     }
   }
   if (g_pActiveRandomMapSetupPicture006A4268 == 0) {
-    globeFrameA0 = 0;
+    globeFrame = 0;
   }
 
   TNoHilitePicture* globe = static_cast<TNoHilitePicture*>(ResolveControlByTag(kControlTagGlob));
   globe->AssertValid();
-  globe->SetPictureRsrcID(static_cast<short>(globeFrameA0 + 0x11d0), false);
+  globe->SetPictureRsrcID(static_cast<short>(globeFrame + 0x11d0), false);
 
   ScopedMapQuickDrawContext globeContext(globe);
   globe->PrepareForDrawing();

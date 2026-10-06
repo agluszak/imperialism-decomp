@@ -137,14 +137,14 @@ IMPLEMENT_DYNCREATE(TView, TEventHandler)
 
 // FUNCTION: IMPERIALISM 0x0048a8e0
 TView::TView()
-    : TEventHandler(), ownerContext(0), absoluteX(0), absoluteY(0), controlValue3c(0), childList(0),
-      stylePayload48(0), inputGateFlag(1), childHitTestFlag(1), cursorId4e(0xffff),
-      nativeWindow50(0), helpState54(1), hoverHelpText(), hoverHelpEnabled5c(0) {}
+    : TEventHandler(), ownerContext(0), absoluteX(0), absoluteY(0), controlValue(0), childList(0),
+      stylePayload(0), inputGateFlag(1), childHitTestFlag(1), cursorId4e(0xffff), nativeWindow50(0),
+      helpState(1), hoverHelpText(), hoverHelpEnabled(0) {}
 
 // FUNCTION: IMPERIALISM 0x0048a9d0
 TView::~TView() {
   delete childList;
-  delete stylePayload48;
+  delete stylePayload;
 }
 
 // FUNCTION: IMPERIALISM 0x0048aa60
@@ -500,11 +500,11 @@ int TView::BindMapQuickDrawDc(CDC* paintDc) {
 void TView::ReleaseMapQuickDrawDc(CDC* paintDc) {
   ReleaseScopedMapQuickDrawDcHandle(this, paintDc);
 }
-// stylePayload48 is freed in ~TView.
+// stylePayload is freed in ~TView.
 // FUNCTION: IMPERIALISM 0x0048b810
 void TView::EnsureStylePayload() {
-  if (stylePayload48 == 0) {
-    stylePayload48 = new TUiStyleBytes();
+  if (stylePayload == 0) {
+    stylePayload = new TUiStyleBytes();
   }
 }
 // FUNCTION: IMPERIALISM 0x0048b860
@@ -648,10 +648,10 @@ TView::TView(const TView& source)
     : TEventHandler(source), ownerContext(0), ownerLocalX(source.ownerLocalX),
       ownerLocalY(source.ownerLocalY), absoluteX(source.absoluteX), absoluteY(source.absoluteY),
       frameWidth(source.frameWidth), frameHeight(source.frameHeight),
-      controlValue3c(source.controlValue3c), childList(0), stylePayload48(0),
+      controlValue(source.controlValue), childList(0), stylePayload(0),
       inputGateFlag(source.inputGateFlag), childHitTestFlag(source.childHitTestFlag),
-      nativeWindow50(source.nativeWindow50), helpState54(source.helpState54), hoverHelpText(),
-      hoverHelpEnabled5c(0) {
+      nativeWindow50(source.nativeWindow50), helpState(source.helpState), hoverHelpText(),
+      hoverHelpEnabled(0) {
   if (source.childList != 0) {
     POSITION position = source.childList->GetHeadPosition();
     while (position != 0) {
@@ -669,9 +669,9 @@ void TView::CopyViewStateFromSource(TView* source) {
   ownerContext = 0;
   nativeWindow50 = source->nativeWindow50;
   childList = 0;
-  stylePayload48 = 0;
-  controlValue3c = source->controlValue3c;
-  helpState54 = source->helpState54;
+  stylePayload = 0;
+  controlValue = source->controlValue;
+  helpState = source->helpState;
   ownerLocalX = source->ownerLocalX;
   ownerLocalY = source->ownerLocalY;
   absoluteX = source->absoluteX;
@@ -699,7 +699,7 @@ TObject* TView::ShallowClone() {
 
 // FUNCTION: IMPERIALISM 0x0048c000
 char TView::EvaluateControlInputGate() {
-  if (hoverHelpEnabled5c == 0) {
+  if (hoverHelpEnabled == 0) {
     if ((char)inputGateFlag != 0 && IsEnabled() != 0) {
       return 1;
     }
@@ -757,13 +757,13 @@ void TView::GetDrawableRegion(RgnHandle clipRegion) {
 
 // FUNCTION: IMPERIALISM 0x0048c220
 void TView::SetHoverHelpText(const CString& sharedString) {
-  hoverHelpEnabled5c = 1;
+  hoverHelpEnabled = 1;
   hoverHelpText = sharedString;
 }
 
 // FUNCTION: IMPERIALISM 0x0048c250
 void TView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
-  if (hoverHelpEnabled5c != 0) {
+  if (hoverHelpEnabled != 0) {
     CRect extentStorage;
     CRect quickDrawExtent(*GetQDExtent(&extentStorage));
     RECT hoverHelpRect;
@@ -928,7 +928,7 @@ void TView::PropagateUiResourceContextRecursive(CWnd* nativeWindow) {
 
 // FUNCTION: IMPERIALISM 0x0048c970
 unsigned short TView::GetHelpState() {
-  return helpState54;
+  return helpState;
 }
 // FUNCTION: IMPERIALISM 0x0048c990
 short TView::ContainsMouse(const CPoint& point) {

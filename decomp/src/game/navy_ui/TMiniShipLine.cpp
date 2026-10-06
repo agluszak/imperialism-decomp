@@ -15,6 +15,6 @@ void TMiniShipLine::InstallViews(TView* panel, int* offsetLayout) {
   TMiniShipView* view = new TMiniShipView();
   view->InitializeUiResourceEntryFrameAndParent(nullptr, panel, offsetLayout, &layoutWidth, 5, 5,
                                                 0);
-  view->shipNode84 = field10;
+  view->shipNode = field10;
   view->eventNumber60 = 0x22;
 }

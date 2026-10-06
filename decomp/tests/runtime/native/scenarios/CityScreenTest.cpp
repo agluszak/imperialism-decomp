@@ -26,6 +26,7 @@
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/nation/TGreatPower.h"
 #include "game/navy/TOcean.h"
+#include "game/navy/TShip.h"
 #include "game/navy_order.h"
 #include "game/turn_event_codes.h"
 #include "game/ui_screens/TSimMgr.h"

@@ -48,7 +48,7 @@ IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 void TMilitaryPageView::PrepareUnitCache(int bitmapResourceId, int width, int height) {
   (void)width;
   TMapDialog* mapDialog = g_pViewMgr->mapUberPictureF0->subview2A8;
-  primaryUnitAtlas = mapDialog->quickDrawSurface350;
+  primaryUnitAtlas = mapDialog->quickDrawSurface;
   mapDialog->suppressMarkerOverlay = true;
   mapDialog->ResetAllTileMarkersToSentinel();
 

@@ -105,7 +105,7 @@ public:
   short unitNameCounter; // 0x84 — monotonically increasing name tag (stored at +0x1a)
   short pad_86;
   int homeTileIndex;
-  int overlayAnchorTileCache8c;
+  int overlayAnchorTileCache;
   TLongintList* ownedRegionList;
 
   TCountry();

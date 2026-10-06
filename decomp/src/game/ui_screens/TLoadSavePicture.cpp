@@ -42,7 +42,7 @@ IMPLEMENT_DYNCREATE(TLoadSavePicture, TPicture)
 // FUNCTION: IMPERIALISM 0x0056bcc0
 void TLoadSavePicture::DoPostCreate(int arg) {
   loadModeFlag = static_cast<unsigned char>(g_nSaveFormatVersion == -2);
-  selectedSlot92 = -1;
+  selectedSlot = -1;
   TPicture::DoPostCreate(arg);
   BuildUiTextStyleDescriptor(&styleAt94, 1, 0xc, 0x2b68);
   BuildUiTextStyleDescriptor(&styleAt9e, 0, 0xc, 0x2b6c);
@@ -89,8 +89,7 @@ void TLoadSavePicture::DoPostCreate(int arg) {
   if (loadModeFlag) {
     TPicture* okayControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagOkay));
     okayControl->AssertValid();
-    okayControl->SetPictureRsrcID(static_cast<short>(okayControl->glyphBase84 + 2),
-                                                0);
+    okayControl->SetPictureRsrcID(static_cast<short>(okayControl->glyphBase + 2), 0);
   } else {
     TView* plateControl = ResolveControlByTag(0x706c6174); // 'plat'
     plateControl->AssertValid();
@@ -99,7 +98,7 @@ void TLoadSavePicture::DoPostCreate(int arg) {
         static_cast<TMapPreviewView*>(plateControl->ResolveControlByTag(kControlTagMapP));
     preview->AssertValid();
     preview->TakeSatellitePhoto(0);
-    preview->selectedNation68 = g_pSimMgr->GetPlayerCountry();
+    preview->selectedNation = g_pSimMgr->GetPlayerCountry();
     preview->EnhancePhoto();
   }
 
@@ -160,7 +159,7 @@ void TLoadSavePicture::RefreshSlotPreviewFromSaveFile(short slotMode) {
   mapControl->AssertValid();
   mapControl->Show(1, 1);
   mapControl->TakeSatellitePhoto(tileOwnerTagTable);
-  mapControl->selectedNation68 = pendingNationByte;
+  mapControl->selectedNation = pendingNationByte;
   mapControl->EnhancePhoto();
   mapControl->RefreshControl();
 
@@ -194,11 +193,11 @@ struct SaveFileHeader {
 void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xd) {
     short newSlot = static_cast<short>(sourceHandler->controlTag - kControlTagSlt0);
-    if (newSlot != selectedSlot92) {
+    if (newSlot != selectedSlot) {
       if (loadModeFlag) {
-        if (selectedSlot92 != -1 && selectedSlot92 != 0xa1) {
+        if (selectedSlot != -1 && selectedSlot != 0xa1) {
           TControl* oldSlotControl =
-              static_cast<TControl*>(ResolveControlByTag(kControlTagSlt0 + selectedSlot92));
+              static_cast<TControl*>(ResolveControlByTag(kControlTagSlt0 + selectedSlot));
           oldSlotControl->AssertValid();
           oldSlotControl->InstallTextStyle(styleAt9e, 0);
           CRect oldBounds;
@@ -211,15 +210,15 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         CRect newBounds;
         newSlotControl->QueryBounds(&newBounds);
         InvalidateCityDialogRectRegion(&newBounds, 1);
-        selectedSlot92 = newSlot;
+        selectedSlot = newSlot;
         RefreshSlotPreviewFromSaveFile(newSlot);
-      } else if (selectedSlot92 == -1) {
+      } else if (selectedSlot == -1) {
         CString slotText;
         TStaticText* slotControl = static_cast<TStaticText*>(sourceHandler);
         slotControl->AssertValid();
         TEditText* editControl = new TEditText();
         editControl->IEditText(this, &slotControl->ownerLocalX, &slotControl->frameWidth, 0x1f);
-        selectedSlot92 = newSlot;
+        selectedSlot = newSlot;
         slotControl->Show(0, 1);
         slotControl->CopyTextTo(&slotText);
 
@@ -246,16 +245,16 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
       HandleTurnFlowStateTickOrShowMainMenu();
     }
     if (loadModeFlag && sourceHandler->controlTag == kControlTagOtto) {
-      if (selectedSlot92 != -1 && selectedSlot92 != 0xa1) {
+      if (selectedSlot != -1 && selectedSlot != 0xa1) {
         TControl* oldSlotControl =
-            static_cast<TControl*>(ResolveControlByTag(kControlTagSlt0 + selectedSlot92));
+            static_cast<TControl*>(ResolveControlByTag(kControlTagSlt0 + selectedSlot));
         oldSlotControl->AssertValid();
         oldSlotControl->InstallTextStyle(styleAt9e, 0);
         CRect oldBounds;
         oldSlotControl->QueryBounds(&oldBounds);
         InvalidateCityDialogRectRegion(&oldBounds, 1);
       }
-      selectedSlot92 = 0xa1;
+      selectedSlot = 0xa1;
       RefreshSlotPreviewFromSaveFile(0xa1);
     }
   } else if (commandId == 0xa && sourceHandler->controlTag == kControlTagOkay) {
@@ -304,7 +303,7 @@ static bool IsMultiplayerFlowActive() {
 
 // FUNCTION: IMPERIALISM 0x0056d2a0
 void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
-  if (selectedSlot92 == -1) {
+  if (selectedSlot == -1) {
     if (!loadModeFlag) {
       g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x2758, 0x17, 1, 0);
       return;
@@ -319,7 +318,7 @@ void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
       if (!IsMultiplayerFlowActive()) {
         prefix = (char*)g_pszSingleSlotSavePrefix_0065DDD0;
       }
-      short slot = selectedSlot92;
+      short slot = selectedSlot;
       CString path;
       BuildSavePathStringForMode(&path, slot, prefix);
       if (TryGetFileMetadataForPath(&path) != 0) {
@@ -338,10 +337,9 @@ void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
     }
     strcpy(g_ScenarioSaveNameBuffer_006A2178, enteredName);
     if (IsMultiplayerFlowActive()) {
-      g_pGameFlowState->AttemptSave(
-          selectedSlot92, (char*)g_pszMultiplayerSavePrefix_0065DDD4, true);
+      g_pGameFlowState->AttemptSave(selectedSlot, (char*)g_pszMultiplayerSavePrefix_0065DDD4, true);
     } else {
-      SaveGameWithModeAndOptionalLabel(selectedSlot92, (char*)g_pszSingleSlotSavePrefix_0065DDD0);
+      SaveGameWithModeAndOptionalLabel(selectedSlot, (char*)g_pszSingleSlotSavePrefix_0065DDD0);
     }
     g_pSimMgr->StartNextPhase();
   }

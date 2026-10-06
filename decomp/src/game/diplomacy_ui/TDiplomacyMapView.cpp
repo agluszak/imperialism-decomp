@@ -339,7 +339,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
   selectedTerrainIndex = activeNation;
   frameRegionSelector = activeNation;
   activeNationC2 = activeNation;
-  actionCodeBC = kDipActionInspectNation;
+  actionCode = kDipActionInspectNation;
 }
 
 // FUNCTION: IMPERIALISM 0x004f4620
@@ -394,8 +394,7 @@ void TDiplomacyMapView::Draw(RECT* rectBuffer) {
   }
 
   SetQuickDrawFillColor(0xffffff);
-  RgnHandle frameRegion =
-      g_pMacViewMgr->GetCountryRegion(static_cast<short>(frameRegionSelector));
+  RgnHandle frameRegion = g_pMacViewMgr->GetCountryRegion(static_cast<short>(frameRegionSelector));
   QDFrameRgn(frameRegion);
   SetQuickDrawFillColor(0);
 
@@ -516,8 +515,8 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
     bool offsetOverlayX = false; // bVar4
     short iconOffset = -1;       // sVar9
 
-    short compatValue = g_pDiplomacyTurnStateManager->GetEmbassyStatus(
-        frameRegionSelector, terrainIndex);
+    short compatValue =
+        g_pDiplomacyTurnStateManager->GetEmbassyStatus(frameRegionSelector, terrainIndex);
     if (compatValue != 0) {
       short compatIconX = static_cast<short>((compatValue + 0x16) * 0x10);
       RECT compatSrcRect = {compatIconX, 0, static_cast<int>(compatIconX + 0x10), 0x10};
@@ -912,10 +911,10 @@ eDipAction TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPo
   if (g_runtimeSemanticDiplomacyNation >= 0) {
     int terrainIndex = g_runtimeSemanticDiplomacyNation;
     activeNationC2 = static_cast<short>(terrainIndex);
-    if (actionCodeBC != kDipActionInspectNation && terrainIndex == selectedTerrainIndex) {
+    if (actionCode != kDipActionInspectNation && terrainIndex == selectedTerrainIndex) {
       return kDipActionSelectedNation;
     }
-    return actionCodeBC;
+    return actionCode;
   }
 #endif
   static CRect diplomacyHitBounds;
@@ -938,8 +937,7 @@ eDipAction TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPo
   int terrainIndex = 0;
   do {
     if (g_apTerrainTypeDescriptorTable[terrainIndex] != 0) {
-      char hit =
-          g_pMacViewMgr->PtInCountry(&localPoint, static_cast<short>(terrainIndex));
+      char hit = g_pMacViewMgr->PtInCountry(&localPoint, static_cast<short>(terrainIndex));
       if (hit != 0) {
         break;
       }
@@ -949,7 +947,7 @@ eDipAction TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPo
 
   eDipAction action = kDipActionNone;
   if (terrainIndex < kNationSlotCount) {
-    action = actionCodeBC;
+    action = actionCode;
     activeNationC2 = static_cast<short>(terrainIndex);
     if (action != kDipActionInspectNation && terrainIndex == selectedTerrainIndex) {
       return kDipActionSelectedNation;
@@ -995,8 +993,7 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
   bool hit = false;
   do {
     if (g_apTerrainTypeDescriptorTable[static_cast<short>(hitIndex)] != 0) {
-      char regionHit =
-          g_pMacViewMgr->PtInCountry(&localPoint, static_cast<short>(hitIndex));
+      char regionHit = g_pMacViewMgr->PtInCountry(&localPoint, static_cast<short>(hitIndex));
       if (regionHit != 0) {
         hit = true;
         break;
@@ -1023,11 +1020,11 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
         cursorId = static_cast<short>(cursorId + selectedGrantRow);
       }
     }
-    currentCursorResourceId52A = cursorId;
+    currentCursorResourceId = cursorId;
     hCursor = g_pViewMgr->turnEventCursors[cursorId - TViewMgr::kCursorResourceIdBase];
     applyCursor = true;
-  } else if (currentCursorResourceId52A != 0x41b) {
-    currentCursorResourceId52A = 0x41b;
+  } else if (currentCursorResourceId != 0x41b) {
+    currentCursorResourceId = 0x41b;
     hCursor = g_pViewMgr->turnEventCursors[0x41b - TViewMgr::kCursorResourceIdBase];
     applyCursor = true;
   }
@@ -1105,8 +1102,7 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect
   }
 
   SetQuickDrawFillColor(0xffffff);
-  RgnHandle frameRegion =
-      g_pMacViewMgr->GetCountryRegion(static_cast<short>(frameRegionSelector));
+  RgnHandle frameRegion = g_pMacViewMgr->GetCountryRegion(static_cast<short>(frameRegionSelector));
   QDFrameRgn(frameRegion);
   SetQuickDrawFillColor(0);
 }
@@ -1119,8 +1115,7 @@ void TDiplomacyMapView::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
   TCountry** terrainDescriptors = g_apTerrainTypeDescriptorTable;
   do {
     if (*terrainDescriptors != 0) {
-      RgnHandle frameRegion =
-          g_pMacViewMgr->GetCountryRegion(static_cast<short>(terrainIndex));
+      RgnHandle frameRegion = g_pMacViewMgr->GetCountryRegion(static_cast<short>(terrainIndex));
       UnionRgn(region, frameRegion, region);
     }
     terrainIndex = static_cast<short>(terrainIndex + 1);

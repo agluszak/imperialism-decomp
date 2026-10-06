@@ -18,9 +18,9 @@ public:
   virtual void RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) override; // slot 0x0e 0x59ee60
   virtual void AddTacticalUnitToUnitListHead(TTacticalUnit* unit) override;  // slot 0x0f 0x59eea0
   // Navy slice (base TTacticalPlayer ends at +0x28).
-  class TTaskForce* taskForce28; // +0x28 the side's fleet order node (0x59edd0 marks it
-                                 // eliminated and prunes its order head after commit)
-  NavyTargeting targetingMode2c; // +0x2c targeting mode set by the navy toolbar
+  class TTaskForce* taskForce; // +0x28 the side's fleet order node (0x59edd0 marks it
+                               // eliminated and prunes its order head after commit)
+  NavyTargeting targetingMode; // +0x2c targeting mode set by the navy toolbar
 
   void INavyPlayer(TTaskForce* force, char isOurSide, bool watchFlag, int nationIndex);
 

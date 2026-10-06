@@ -44,7 +44,7 @@ TShipyardView::~TShipyardView() {}
 
 // FUNCTION: IMPERIALISM 0x004c8340
 void TShipyardView::Free() {
-  g_pDisplayMgr->RemoveGWorld(iconSurfaceB8);
+  g_pDisplayMgr->RemoveGWorld(iconSurface);
   TView::Free();
   if (g_nSaveFormatVersion != kControlTagMoil) { // 'Moil'
     g_pAssetMgr->CloseFilesFor(0x23f7);
@@ -64,7 +64,7 @@ void TShipyardView::DoStartup() {
 
   productionView98 = g_pMacViewMgr->activeCityProductionView;
   unresolvedZero = 0;
-  iconSurfaceB8 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f);
+  iconSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f);
 
   for (int slotIndex = 0; slotIndex < 8; ++slotIndex) {
     TControl* slotButton =
@@ -100,7 +100,7 @@ void TShipyardView::DoStartup() {
 
       short shipType = order->resourceTypeIndex;
       buildQueueSlotValues[queueIndex] = shipType;
-      slotButton->overlaySurfaceContext = iconSurfaceB8;
+      slotButton->overlaySurfaceContext = iconSurface;
       short sourceLeft = shipType;
       sourceLeft *= 0x50;
       sourceLeft -= 0x50;
@@ -173,7 +173,7 @@ void TShipyardView::DoStartup() {
 
 // FUNCTION: IMPERIALISM 0x004c8a20
 void TShipyardView::LoadShipGWorld() {
-  iconSurfaceB8 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f);
+  iconSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f);
 }
 
 // FUNCTION: IMPERIALISM 0x004c8a50

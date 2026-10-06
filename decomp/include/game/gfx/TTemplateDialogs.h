@@ -98,7 +98,7 @@ public:
   ~TPeekAtDibDialog() override {}
   TPeekAtDibDialog(void* initParam); // 0x0047dce0
 
-  int editValue5c; // 0x5c — DDX_Text control 0x421
+  int editValue;   // 0x5c — DDX_Text control 0x421
   int checkFlag60; // 0x60 — DDX_Check control 0x3f5
   int checkFlag64; // 0x64 — DDX_Check control 0x422
   int checkFlag68; // 0x68 — DDX_Check control 0x423
@@ -441,7 +441,7 @@ public:
 
   CListBox listbox; // +0x5c
 
-  int dialogCreated98;
+  int dialogCreated;
 
   void AppendTraceTextAndFlushCompleteLines(const char* text);
 
@@ -487,7 +487,7 @@ class TGameSetupOptionsDialog : public CDialog {
 public:
   // FUNCTION: IMPERIALISM 0x004814b0
   ~TGameSetupOptionsDialog() override {}
-  TGameSetupOptionsDialog(void* initParam);        // 0x004813a0
+  TGameSetupOptionsDialog(void* initParam);  // 0x004813a0
   void SetGameSetupValues(GameSetup* setup); // 0x004821d0
 
   CSliderCtrl slider5c; // +0x5c

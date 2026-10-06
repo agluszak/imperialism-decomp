@@ -149,14 +149,13 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
           static_cast<TArmyCheckBox*>(ResolveControlByTag(kControlTagChec));
       checkControl->AssertValid();
       checkControl->iconStripHorizontalOffset =
-          (checkControl->checkedFrameOffsetApplied8c + militaryUnit->orderType * 2) << 6;
+          (checkControl->checkedFrameOffsetApplied + militaryUnit->orderType * 2) << 6;
       checkControl->RefreshControl();
 
       TStaticText* tbr1 = static_cast<TStaticText*>(
           g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagTbr1));
       tbr1->AssertValid();
-      tbr1->SetJustification(static_cast<short>(g_pSimMgr->GetPlayerCountry()),
-                                            false);
+      tbr1->SetJustification(static_cast<short>(g_pSimMgr->GetPlayerCountry()), false);
     } else {
       CString msg;
       g_pSimMgr->GetString(0x2745, 3, &msg);

@@ -984,7 +984,7 @@ unsigned int TTaskForce::IsValidTarget(Province* province) {
   if (!noneQueued) {
     for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
       if (node->active != 0) {
-        return province->navyOrderReachableA0;
+        return province->navyOrderReachable;
       }
     }
   }
@@ -1101,10 +1101,10 @@ void TTaskForce::Select(short toolbarSlot, unsigned char activeFlag) {
   if (node == nullptr) {
     return;
   }
-  while (static_cast<short>(
-             g_NavyOrderResourceDescriptorTable[node->payload->type].ToolbarSlot()) !=
-             toolbarSlot ||
-         node->active == activeFlag) {
+  while (
+      static_cast<short>(g_NavyOrderResourceDescriptorTable[node->payload->type].ToolbarSlot()) !=
+          toolbarSlot ||
+      node->active == activeFlag) {
     node = node->next;
     if (node == nullptr) {
       return;
@@ -1148,8 +1148,7 @@ int TTaskForce::GetInvasionCapacity() const {
 int TTaskForce::GetSelected(short nationClass) const {
   int count = 0;
   for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
-    if (static_cast<short>(
-            g_NavyOrderResourceDescriptorTable[node->payload->type].ToolbarSlot()) ==
+    if (static_cast<short>(g_NavyOrderResourceDescriptorTable[node->payload->type].ToolbarSlot()) ==
             nationClass &&
         node->active != 0) {
       ++count;
@@ -1650,9 +1649,9 @@ bool TTaskForce::IsAfraidOf(TTaskForce* other) const {
     short navyPriorityBucket = static_cast<short>(navyPriorityScore / 10);
     int resolveScore = strengthBucket + descriptor.FirepowerDword() * 10 + 5;
     short resolveBucket = static_cast<short>(resolveScore / 10);
-    thisSum += ((navyPriorityBucket + descriptor.BattleRange()) * 100 + resolveBucket +
-                ship->strength) /
-               descriptor.Armor();
+    thisSum +=
+        ((navyPriorityBucket + descriptor.BattleRange()) * 100 + resolveBucket + ship->strength) /
+        descriptor.Armor();
   }
 
   int otherSum = 0;
@@ -1667,9 +1666,9 @@ bool TTaskForce::IsAfraidOf(TTaskForce* other) const {
     short navyPriorityBucket = static_cast<short>(navyPriorityScore / 10);
     int resolveScore = strengthBucket + descriptor.FirepowerDword() * 10 + 5;
     short resolveBucket = static_cast<short>(resolveScore / 10);
-    otherSum += ((navyPriorityBucket + descriptor.BattleRange()) * 100 + resolveBucket +
-                 ship->strength) /
-                descriptor.Armor();
+    otherSum +=
+        ((navyPriorityBucket + descriptor.BattleRange()) * 100 + resolveBucket + ship->strength) /
+        descriptor.Armor();
   }
   return static_cast<int>(static_cast<short>(thisSum)) * 100 <
          priorityWeight[aggression] * static_cast<int>(static_cast<short>(otherSum));
@@ -1688,9 +1687,9 @@ int TTaskForce::GetBattleStrengthRating() const {
     short navyPriorityBucket = static_cast<short>(navyPriorityScore / 10);
     int resolveScore = strengthBucket + descriptor.FirepowerDword() * 10 + 5;
     short resolveBucket = static_cast<short>(resolveScore / 10);
-    total += ((navyPriorityBucket + descriptor.BattleRange()) * 100 + resolveBucket +
-              ship->strength) /
-             descriptor.Armor();
+    total +=
+        ((navyPriorityBucket + descriptor.BattleRange()) * 100 + resolveBucket + ship->strength) /
+        descriptor.Armor();
   }
   return total;
 }

@@ -34,7 +34,7 @@ bool TShipOrder::AutoCanMakeProduct() {
   if (ReadWeight(g_industryActionCostWeightResCode09, this->resourceTypeIndex) <=
           city->cityStockLumber &&
       ReadWeight(g_industryActionCostWeightResCode08, this->resourceTypeIndex) <=
-          city->cityStockFabricC6 &&
+          city->cityStockFabric &&
       ReadWeight(g_industryActionCostWeightResCode10, this->resourceTypeIndex) <=
           city->cityStockArms &&
       ReadWeight(g_industryActionCostWeightResCode0B, this->resourceTypeIndex) <=
@@ -90,7 +90,7 @@ short TShipOrder::MaxOrder() {
     }
   }
   if (ReadWeight(g_industryActionCostWeightResCode08, weightIndex) != 0) {
-    candidate = static_cast<int>(city->cityStockFabricC6) /
+    candidate = static_cast<int>(city->cityStockFabric) /
                 static_cast<int>(ReadWeight(g_industryActionCostWeightResCode08, weightIndex));
     if (static_cast<short>(candidate) < static_cast<short>(limit)) {
       limit = candidate;
@@ -139,8 +139,8 @@ bool TShipOrder::SetQuantity(short quantity) {
       ownerCity->cityStockLumber -
       ReadWeight(g_industryActionCostWeightResCode09, resourceTypeIndex) * delta);
   ownerCity->VerifyStocks();
-  ownerCity->cityStockFabricC6 = static_cast<short>(
-      ownerCity->cityStockFabricC6 -
+  ownerCity->cityStockFabric = static_cast<short>(
+      ownerCity->cityStockFabric -
       ReadWeight(g_industryActionCostWeightResCode08, resourceTypeIndex) * delta);
   ownerCity->VerifyStocks();
   ownerCity->cityStockArms = static_cast<short>(

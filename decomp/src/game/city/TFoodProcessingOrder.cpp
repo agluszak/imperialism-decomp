@@ -65,7 +65,7 @@ bool TFoodProcessingOrder::SetQuantity(short quantity) {
 // FUNCTION: IMPERIALISM 0x004b8060
 void TFoodProcessingOrder::Produce() {
   TCity* city = ownerCity;
-  city->cityStockCannedFoodC4 += quantity;
+  city->cityStockCannedFood += quantity;
   city->VerifyStocks();
   quantity = 0;
   reservedWorkforce = 0;

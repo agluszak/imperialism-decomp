@@ -25,11 +25,11 @@ public:
       RgnHandle hitArg) override;              // slot 0x35 0x5a8d40
   virtual void DoPostCreate(int arg) override; // slot 0x37 0x5a84d0
   virtual void DoMouseCommand(CPoint& point, TToolboxEvent* event,
-                              CPoint origin) override;  // slot 0x47 0x5a8660
-  virtual void UpdateTile(TacticalTileIndex tileIndex); // slot 0x68 0x5a8900
-  virtual void InvalidateUnit(TTacticalUnit* unit);     // slot 0x69 0x5a89a0
-  virtual void UnitRect(TTacticalUnit* unit, RECT* rectOut);     // slot 0x6a 0x5a89f0
-  virtual void Scroll(MapScrollEdgeMaskStorage scrollDirection); // slot 0x6b 0x5a8be0
+                              CPoint origin) override;                // slot 0x47 0x5a8660
+  virtual void UpdateTile(TacticalTileIndex tileIndex);               // slot 0x68 0x5a8900
+  virtual void InvalidateUnit(TTacticalUnit* unit);                   // slot 0x69 0x5a89a0
+  virtual void UnitRect(TTacticalUnit* unit, RECT* rectOut);          // slot 0x6a 0x5a89f0
+  virtual void Scroll(MapScrollEdgeMaskStorage scrollDirection);      // slot 0x6b 0x5a8be0
   virtual void DrawTile(TacticalTileIndex tileIndex, RECT* clipRect); // slot 0x6c 0x5a83c0
   virtual void PlayAni(TacticalTileIndex tileIndex, int effectId,
                        int frameCount); // slot 0x6d 0x5a9090
@@ -38,13 +38,13 @@ public:
   virtual void GlideUnit(TTacticalUnit* unit, TacticalTileIndex fromTileIndex,
                          TacticalTileIndex toTileIndex); // slot 0x6f 0x5a9240
   // Takes no args (bare ret; a decompiler-synthesized pointer argument was spurious).
-  virtual void DoGlideAni(); // slot 0x70 0x5a9550
-  TTacticalBattle* tacticalBattle60; // +0x60 the battle this view renders
-  struct TQuickDrawSurfaceContext* battlefieldSurface64;     // +0x64 0x5dc x 0x1c2 backdrop
-  struct TQuickDrawSurfaceContext* unitSpriteAtlasSurface68; // +0x68 bitmap 0xee2 atlas
-  struct TQuickDrawSurfaceContext* fortLevelAtlasSurface6C;  // +0x6c fort bitmap 0xee6+lvl/0xee7
-  struct TQuickDrawSurfaceContext* tileScratchSurface70;     // +0x70 one-tile scratch
-  struct TQuickDrawSurfaceContext* effectAtlasSurface74;     // +0x74 bitmap 0xeeb effects
+  virtual void DoGlideAni();                               // slot 0x70 0x5a9550
+  TTacticalBattle* tacticalBattle;                         // +0x60 the battle this view renders
+  struct TQuickDrawSurfaceContext* battlefieldSurface;     // +0x64 0x5dc x 0x1c2 backdrop
+  struct TQuickDrawSurfaceContext* unitSpriteAtlasSurface; // +0x68 bitmap 0xee2 atlas
+  struct TQuickDrawSurfaceContext* fortLevelAtlasSurface;  // +0x6c fort bitmap 0xee6+lvl/0xee7
+  struct TQuickDrawSurfaceContext* tileScratchSurface;     // +0x70 one-tile scratch
+  struct TQuickDrawSurfaceContext* effectAtlasSurface;     // +0x74 bitmap 0xeeb effects
   short viewOriginX;            // +0x78 horizontal scroll origin (pixels)
   short scrollableContentWidth; // +0x7a total content width (scroll clamp max)
   unsigned char pad7c[4];       // +0x7c
@@ -61,8 +61,8 @@ public:
   int moveAnimUnitOffsetX;      // +0xa4 unit x offset in the anim rect; -1 = idle
   int moveAnimUnitOffsetY;      // +0xa8 unit y offset in the anim rect
   RECT moveAnimSpriteSrcRect;   // +0xac sprite-sheet source rect
-  struct TQuickDrawSurfaceContext* unitSpriteScratchSurfaceBC; // +0xbc 2x3-cell scratch
-  RECT moveAnimScreenRect;                                     // +0xc0 on-screen animation rect
+  struct TQuickDrawSurfaceContext* unitSpriteScratchSurface; // +0xbc 2x3-cell scratch
+  RECT moveAnimScreenRect;                                   // +0xc0 on-screen animation rect
   TTacticalToolbar* toolbarD0;
 
   TTacticalBattleView();
