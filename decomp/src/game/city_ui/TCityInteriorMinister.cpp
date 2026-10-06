@@ -120,7 +120,7 @@ TCityInteriorMinister::TCityInteriorMinister() : TInteriorMinister(), orderList(
 void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
   IMinister(owner);
 
-  field10 = 0;
+  needTargetCursor = 0;
   field12 = 0;
   persistedReservedTable[0] = 0;
   persistedReservedTable[1] = 0;
@@ -258,7 +258,7 @@ void TCityInteriorMinister::PleaseBuildLandUnit(short unitType) {
 // FUNCTION: IMPERIALISM 0x004bef60
 void TCityInteriorMinister::WriteTo(TStream* stream) {
   TMinister::WriteTo(stream);
-  stream->WriteBytes(&field10, 2);
+  stream->WriteBytes(&needTargetCursor, 2);
   stream->WriteBytes(&field12, 2);
   stream->WriteBytes(&capabilityFlag14, 2);
   stream->WriteBytes(&capabilityFlag16, 2);
@@ -335,7 +335,7 @@ void TCityInteriorMinister::ReadFrom(TStream* stream) {
   }
 
   TMinister::ReadFrom(stream);
-  stream->ReadBytes(&field10, 2);
+  stream->ReadBytes(&needTargetCursor, 2);
   stream->ReadBytes(&field12, 2);
   stream->ReadBytes(&capabilityFlag14, 2);
   stream->ReadBytes(&capabilityFlag16, 2);

@@ -27,7 +27,7 @@ IMPLEMENT_DYNCREATE(TInteriorMinister, TMinister)
 // FUNCTION: IMPERIALISM 0x004be250
 void TInteriorMinister::IInteriorMinister(TGreatPower* owner) {
   TMinister::IMinister(owner);
-  field10 = 0;
+  needTargetCursor = 0;
   field12 = 0;
   memset(persistedReservedTable, 0, sizeof(persistedReservedTable));
 }
@@ -35,7 +35,7 @@ void TInteriorMinister::IInteriorMinister(TGreatPower* owner) {
 // FUNCTION: IMPERIALISM 0x004be290
 void TInteriorMinister::ReadFrom(TStream* stream) {
   TMinister::ReadFrom(stream);
-  stream->ReadBytes(&field10, 2);
+  stream->ReadBytes(&needTargetCursor, 2);
   stream->ReadBytes(&field12, 2);
   stream->ReadBytes(&capabilityFlag14, 2);
   stream->ReadBytes(&capabilityFlag16, 2);
@@ -51,7 +51,7 @@ void TInteriorMinister::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x004be320
 void TInteriorMinister::WriteTo(TStream* stream) {
   TMinister::WriteTo(stream);
-  stream->WriteBytes(&field10, 2);
+  stream->WriteBytes(&needTargetCursor, 2);
   stream->WriteBytes(&field12, 2);
   stream->WriteBytes(&capabilityFlag14, 2);
   stream->WriteBytes(&capabilityFlag16, 2);
@@ -79,7 +79,7 @@ void TInteriorMinister::PleaseBuildLandUnit(short) {}
 // FUNCTION: IMPERIALISM 0x004be450
 void TInteriorMinister::SetParameters(short firstParameter, short secondParameter) {
   field12 = firstParameter;
-  field10 = secondParameter;
+  needTargetCursor = secondParameter;
 }
 
 // FUNCTION: IMPERIALISM 0x004be480
@@ -170,10 +170,10 @@ char TInteriorMinister::DoIncreasedTransport() {
 
 // FUNCTION: IMPERIALISM 0x004be690
 void TInteriorMinister::AdvanceNeedTargetRoundRobin() {
-  greatPower->TryIncrementNationResourceNeedTargetTowardCurrent(field10);
-  ++field10;
-  if (field10 > 4) {
-    field10 = 0;
+  greatPower->TryIncrementNationResourceNeedTargetTowardCurrent(needTargetCursor);
+  ++needTargetCursor;
+  if (needTargetCursor > 4) {
+    needTargetCursor = 0;
   }
 }
 
