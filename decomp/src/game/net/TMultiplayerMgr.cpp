@@ -2246,12 +2246,6 @@ void TMultiplayerMgr::WriteMessageTo(TStream* stream, short eventTag, short dest
   }
 }
 
-struct TaggedGameStateTurnEventPacket : TimelyMessageHeader {
-  int resolvedNationId;
-  int tagParam;
-  int value;
-};
-
 // Mac oracle: ReceiveStreamMessage.
 // FUNCTION: IMPERIALISM 0x00549f10
 void TMultiplayerMgr::ReceiveStreamMessage(NetMessage* packet) {
@@ -2343,25 +2337,25 @@ void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
 IMPERIALISM_END_RETAIL_POLYMORPHIC_BYTE_COPY
 
 // FUNCTION: IMPERIALISM 0x0054a340
-void TMultiplayerMgr::DispatchTaggedGameStateEvent1F20(int packetTag, int value,
+void TMultiplayerMgr::DispatchTaggedGameStateEvent1F20(int statusTag, int value,
                                                        int nationSlotOrMode) {
-  TaggedGameStateTurnEventPacket packet;
+  TurnEvent1FStatusPacket packet;
   packet.eventCode = 0x1f;
   packet.fromNetworkId = 0;
   packet.toNetworkId = 0;
-  packet.messageLength = 0x20;
+  packet.messageLength = sizeof(packet);
   packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
-  packet.tagParam = packetTag;
-  packet.value = value;
+  packet.statusTag = statusTag;
+  packet.value1C = value;
   if ((nationSlotOrMode == -2) || (nationSlotOrMode == -3)) {
-    packet.resolvedNationId = 0;
+    packet.toNetworkId = 0;
   } else if (nationSlotOrMode == -1) {
-    packet.resolvedNationId = -1;
+    packet.toNetworkId = -1;
   } else {
-    packet.resolvedNationId = g_pGameFlowState->nationSessionIds[nationSlotOrMode];
+    packet.toNetworkId = g_pGameFlowState->nationSessionIds[nationSlotOrMode];
   }
-  g_pNetMgr006a6014->Send(&packet, nationSlotOrMode == -3 ? 1 : 0);
+  g_pNetMgr006a6014->Send(&packet, nationSlotOrMode == -3);
 }
 
 // FUNCTION: IMPERIALISM 0x0054a410

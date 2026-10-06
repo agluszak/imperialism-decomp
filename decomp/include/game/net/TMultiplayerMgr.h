@@ -108,7 +108,7 @@ public:
                       short maxAmount, short commodityType); // 0x5497b0
   void SendStreamObject(unsigned long payloadTag, TObject* payloadObject,
                         int destinationSlot); // 0x549a90
-  void DispatchTaggedGameStateEvent1F20(int packetTag, int value,
+  void DispatchTaggedGameStateEvent1F20(int statusTag, int value,
                                         int nationSlotOrMode); // 0x54a340
   // Event-8 lobby text packet: source slot plus the manager's player-name pair.
   void DispatchLobbyTextPairEvent8(unsigned char sourceNationSlot); // 0x54a410
