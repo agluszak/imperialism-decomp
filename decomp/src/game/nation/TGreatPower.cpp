@@ -2348,8 +2348,8 @@ void TGreatPower::MoveArmy(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e0400
-char TGreatPower::HasEnemy() {
-  return 0;
+bool TGreatPower::HasEnemy() {
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004e0420
@@ -2803,9 +2803,9 @@ float TGreatPower::ComputeNavyScoreStandingRatioForNationPair(int nationA, int n
 }
 
 // FUNCTION: IMPERIALISM 0x004e1c00
-char TGreatPower::PassesDiplomacyStrengthThresholdForTarget(int targetNation) {
+bool TGreatPower::PassesDiplomacyStrengthThresholdForTarget(int targetNation) {
   (void)targetNation;
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004e1c20

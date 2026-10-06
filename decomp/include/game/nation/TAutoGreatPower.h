@@ -76,7 +76,7 @@ public:
   // slot 0x72 — 0x004e7af0: foreign-minister slot 0x58 when city exists.
   void SetDiplomacyPolicies() override;
   // slot 0x83 — 0x004e9f10: prune enemyFlags; true while any stays active.
-  char HasEnemy(void) override;
+  bool HasEnemy(void) override;
   // slot 0x84 — 0x004e9ff0: mark a candidate nation (and its port zone) active.
   void SetEnemy(int targetNation) override;
   // slot 0x85 — 0x004ea0e0: clear a candidate nation (and its port zone).
@@ -84,7 +84,7 @@ public:
   // slot 0xa0 — 0x004e7ec0: war-transition propagation for a nation pair.
   int ConsiderWarOfAlliance(int targetNation, int sourceNation, char swapRoles) override;
   char UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) override;
-  char PassesDiplomacyStrengthThresholdForTarget(int targetNation) override;
+  bool PassesDiplomacyStrengthThresholdForTarget(int targetNation) override;
   void AddColony(int targetNation) override;
   // slots 0xb0/0xb1 — 0x004ea430/0x004ea450: no-op overrides for AI nations.
   void AnnounceLater(short orderKind, short payload, short flags) override;

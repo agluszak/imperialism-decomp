@@ -207,7 +207,7 @@ public:
   virtual void ReplyToDiplomacyOffers(void);
   virtual int ClassifyNationProductionTierVsPeers(void);
 
-  virtual char HasEnemy(void);
+  virtual bool HasEnemy(void);
   // index 132 / vtable+0x210. Evidence: 0x004e9ed0 calls this on `this`
   // with one target-nation argument; return value ignored.
   // ORACLE: Mac names TGreatPower::SetEnemy(long) and StopBeingEnemiesWith(long).
@@ -253,7 +253,7 @@ public:
                                                    char swapRoles); // slot 0x9b
   virtual float ComputeNavyScoreStandingRatioForNationPair(int nationA, int nationB,
                                                            char swapRoles); // slot 0x9c
-  virtual char PassesDiplomacyStrengthThresholdForTarget(int targetNation); // body 0x004e1c00
+  virtual bool PassesDiplomacyStrengthThresholdForTarget(int targetNation); // body 0x004e1c00
   virtual char EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation);
   virtual int ConsiderWarOfIntervention(int targetNation, int sourceNation); // slot 0x27c
   virtual int ConsiderWarOfAlliance(int targetNation, int sourceNation,

@@ -583,9 +583,9 @@ int TAutoGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation, c
 // Port-zone refit fields live on TZone (+0x28..+0x30).
 
 // FUNCTION: IMPERIALISM 0x004e8040
-char TAutoGreatPower::PassesDiplomacyStrengthThresholdForTarget(int targetNation) {
+bool TAutoGreatPower::PassesDiplomacyStrengthThresholdForTarget(int targetNation) {
   if (g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(targetNation, this->nationSlot)) {
-    return 0;
+    return false;
   }
   float allyNavyAccum = 0.0f;
   float allyArmyAccum = 0.0f;
@@ -640,10 +640,7 @@ char TAutoGreatPower::PassesDiplomacyStrengthThresholdForTarget(int targetNation
                               ((static_cast<float>(tickQuarter) + combinedStrength) -
                                g_Compute_Advisory_Map_Value_00653FD4)) *
                          g_Evaluate_Advisory_Case11_Value_00653FD8);
-  if (this->GetAcceptAllianceNumber() <= combinedScore) {
-    return 1;
-  }
-  return 0;
+  return this->GetAcceptAllianceNumber() <= combinedScore;
 }
 
 // FUNCTION: IMPERIALISM 0x004e8300
@@ -1131,7 +1128,7 @@ void TAutoGreatPower::QueueWarTransitionAndNotifyThirdPartyIfNeeded(int targetNa
 }
 
 // FUNCTION: IMPERIALISM 0x004e9f10
-char TAutoGreatPower::HasEnemy(void) {
+bool TAutoGreatPower::HasEnemy(void) {
   bool anyActive = false;
   int candidate;
   for (candidate = 0; candidate < 7; ++candidate) {
@@ -1162,7 +1159,7 @@ char TAutoGreatPower::HasEnemy(void) {
 
 // FUNCTION: IMPERIALISM 0x004e9ff0
 void TAutoGreatPower::SetEnemy(int targetNation) {
-  if (this->HasEnemy() != 0) {
+  if (this->HasEnemy()) {
     int nation = 0;
     TCountry** descriptorCursor = g_apTerrainTypeDescriptorTable;
     do {
