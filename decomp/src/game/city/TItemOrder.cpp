@@ -12,7 +12,7 @@ IMPLEMENT_DYNCREATE(TItemOrder, TProductionOrder)
 void TItemOrder::IItemOrder(TCity* city, short outputResourceType, short primaryInputResource,
                             short secondaryInputResource, short productionSlotIndex) {
   TProductionOrder::IProductionOrder(city, outputResourceType);
-  requestedQuantity4c = 0;
+  requestedQuantity = 0;
   primaryInputResourceId = primaryInputResource;
   secondaryInputResourceId = secondaryInputResource;
   productionSlot = productionSlotIndex;
@@ -57,7 +57,7 @@ bool TItemOrder::SetQuantity(short quantity) {
     return false;
   }
   this->quantity = quantity;
-  requestedQuantity4c = quantity;
+  requestedQuantity = quantity;
 
   short primaryChange;
   if (secondaryInputResourceId < 0) {
@@ -122,11 +122,11 @@ void TItemOrder::Produce() {
 // FUNCTION: IMPERIALISM 0x004b5620
 void TItemOrder::Restock() {
   short maxOrder = MaxOrder();
-  short savedRequestedQuantity = requestedQuantity4c;
+  short savedRequestedQuantity = requestedQuantity;
   quantity = 0;
   if (maxOrder < savedRequestedQuantity && limitingConstraint == kProductionOrderLimitResources) {
     SetQuantity(maxOrder);
-    requestedQuantity4c = savedRequestedQuantity;
+    requestedQuantity = savedRequestedQuantity;
   } else {
     SetQuantity(savedRequestedQuantity);
   }
@@ -135,7 +135,7 @@ void TItemOrder::Restock() {
 // FUNCTION: IMPERIALISM 0x004b5670
 void TItemOrder::WriteTo(TStream* stream) {
   TProductionOrder::WriteTo(stream);
-  stream->WriteBytes(&requestedQuantity4c, 2);
+  stream->WriteBytes(&requestedQuantity, 2);
   stream->WriteBytes(&primaryInputResourceId, 2);
   stream->WriteBytes(&secondaryInputResourceId, 2);
   stream->WriteBytes(&productionSlot, 2);
@@ -144,7 +144,7 @@ void TItemOrder::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x004b5710
 void TItemOrder::ReadFrom(TStream* stream) {
   TProductionOrder::ReadFrom(stream);
-  stream->ReadBytes(&requestedQuantity4c, 2);
+  stream->ReadBytes(&requestedQuantity, 2);
   stream->ReadBytes(&primaryInputResourceId, 2);
   stream->ReadBytes(&secondaryInputResourceId, 2);
   stream->ReadBytes(&productionSlot, 2);

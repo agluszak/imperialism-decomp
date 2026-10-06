@@ -314,7 +314,7 @@ bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
   terrain.riverSpriteCode = kRiverSpriteCodeNone;
   terrain.ownerBorderMask = 0;
   terrain.cityBorderMask = 0;
-  terrain.adjacencyBits06 = 0;
+  terrain.adjacencyBits = 0;
   terrain.railFlags = 0;
   terrain.activeFlags1c = 0;
   terrain.resourceTypeByEdge[0] = -1;

@@ -35,7 +35,7 @@ short FindNonCapitalOwnedProvince(TGreatPower* nation) {
   for (int ordinal = 1; ordinal <= totalRegions; ++ordinal) {
     const short regionId = static_cast<short>(regions->At(ordinal));
     Province& record = g_pGlobalMapState->cityScoreTable[regionId];
-    if (record.cityTileIndex04 != homeTile && record.linkedRegionCount > 0) {
+    if (record.cityTileIndex != homeTile && record.linkedRegionCount > 0) {
       return regionId;
     }
   }
@@ -105,7 +105,7 @@ RuntimeActionResult RunProvinceOwnerOceanContext(NativeTransition& transition) {
   }
 
   Province& record = g_pGlobalMapState->cityScoreTable[province];
-  record.adjacentRegionCount08 = 0;
+  record.adjacentRegionCount = 0;
   zone->secondaryNeighbors.Add(&record);
 
   JsonObject args;

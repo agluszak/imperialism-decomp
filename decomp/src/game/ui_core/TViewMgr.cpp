@@ -134,7 +134,7 @@ TViewMgr::TViewMgr() : TObject() {
   this->dialogPlacement = g_ptCitySiteSelectionDialogPlacement;
   this->field10 = false;
   this->mapUberPictureF0 = 0;
-  this->activeMovieViewF4 = 0;
+  this->activeMovieView = 0;
   this->fieldF8 = 0;
 }
 
@@ -2289,7 +2289,7 @@ void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) 
   g_pSfxPlaybackSystem->RequestDirectSoundInitIfAllowed();
   g_pSfxPlaybackSystem->SetMasterVolumeFromPercent(g_pSimMgr->preferenceValues[2]);
   g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(g_pSimMgr->preferenceValues[3]);
-  this->activeMovieViewF4 = 0;
+  this->activeMovieView = 0;
   switch (g_pSimMgr->mode) {
   case kGamePhaseStartup:
     g_pAmbitApplication->PostTurnEventCodeMessage(EncodeTurnEventCode(kTurnEventMainMenu));

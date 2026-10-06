@@ -19,7 +19,7 @@ public:
   HGLOBAL attachedGlobalHandle; // +0x04
   int streamPosition;           // +0x08
   int attachedSizeBytes;        // +0x0c
-  int growthSize10;             // +0x10
+  int growthSize;               // +0x10
   unsigned char unclassifiedByte14;
 
   DECLARE_DYNCREATE(THandleStream)

@@ -54,7 +54,7 @@ public:
   IDirectPlayLobbyA* directPlayLobby;
   int lastErrorCode;
   DPSESSIONDESC2 sessionDescription10;
-  int localPlayerId60;
+  int localPlayerId;
   int broadcastPlayerId;
   char joinGameSeed68[0x20];
   char runtimeSelectionSeed88[0x20];

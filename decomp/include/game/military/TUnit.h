@@ -29,11 +29,11 @@ public:
   short pad0E;                            // 0x0e
   TUnit* previousAtLocation;              // 0x10
   TUnit* nextAtLocation;                  // 0x14
-  short ownerNationSlot18;                // 0x18
+  short ownerNationSlot;                  // 0x18
   short unitRosterId;                     // 0x1a
   unsigned char militaryRegistrationFlag; // 0x1c
   unsigned char pad1d[3];                 // 0x1d
-  int persistentUnitId20;                 // 0x20
+  int persistentUnitId;                   // 0x20
 
   TUnit() {
     previousAtLocation = 0;

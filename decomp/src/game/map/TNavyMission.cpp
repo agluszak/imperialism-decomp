@@ -18,8 +18,8 @@
 
 // FUNCTION: IMPERIALISM 0x00535470
 TNavyMission::TNavyMission(TZone* targetZone)
-    : TMission(), missionTargetZone(targetZone), resolvedPortZone(nullptr),
-      selectedOrder1c(nullptr), taskForce20(nullptr), orderList(nullptr), navyState(0) {
+    : TMission(), missionTargetZone(targetZone), resolvedPortZone(nullptr), selectedOrder(nullptr),
+      taskForce20(nullptr), orderList(nullptr), navyState(0) {
   for (int i = 0; i < 4; ++i) {
     requiredShipEquipageByCategory[i] = 0.0f;
   }
@@ -116,7 +116,7 @@ void TNavyMission::ReadFrom(TStream* stream) {
   }
 
   stream->ReadBytes(&navyState, 4);
-  selectedOrder1c = nullptr;
+  selectedOrder = nullptr;
   if (taskForce20 != nullptr) {
     taskForce20->Free();
   }
@@ -150,8 +150,8 @@ void TNavyMission::RejectConstituent(TShip* item, bool notify) {
   (void)notify;
   orderList = orderList->RemoveLinkedOrderNodeByValueRecursive(item);
   item->mission = nullptr;
-  if (selectedOrder1c == item) {
-    selectedOrder1c = nullptr;
+  if (selectedOrder == item) {
+    selectedOrder = nullptr;
   }
 }
 
@@ -317,7 +317,7 @@ void TNavyMission::GiveOrders() {
     if (resolvedPortZone == nullptr) {
       resolvedPortZone = RefreshMissionPortZoneContextForNation();
     }
-    GiveReconOrders(missionTargetZone, &selectedOrder1c);
+    GiveReconOrders(missionTargetZone, &selectedOrder);
     ConsolidateMissionOrderEntriesByTargetAndQueue(resolvedPortZone);
     CombineForce(resolvedPortZone, taskForce20);
     if (taskForce20 != nullptr) {

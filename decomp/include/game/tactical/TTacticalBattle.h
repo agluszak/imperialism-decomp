@@ -19,8 +19,8 @@ enum TacticalBattleOutcome {
 typedef int TacticalBattleOutcomeStorage;
 
 struct TacticalTileRecord {
-  int terrainType0;         // +0x00 terrain code 0..4 (indexes the move-cost table row)
-  TTacticalUnit* occupant4; // +0x04
+  int terrainType;          // +0x00 terrain code 0..4 (indexes the move-cost table row)
+  TTacticalUnit* occupant;  // +0x04
   int deployMark;           // +0x08 1 = trench-deploy mark; > 1 = fort-wall level
   int mineRunState;         // +0x0c sap/mine-run state: -1 clear, 2 queued, 0/1 advance
   unsigned char trenchMask; // +0x10
@@ -71,7 +71,7 @@ public:
   TTacticalBattleView* battleView8; // +0x08 live view; null when the battle runs headless
   int currentSide;                  // +0x0c side (0/1) of the current selection; serialized
   int battleLive;                   // +0x10 serialized battle-header dword
-  // Owned side players, indexed by currentSide and TTacticalUnit::side20.
+  // Owned side players, indexed by currentSide and TTacticalUnit::side.
   // ABI: SetTargeting (0x5a5b90) indexes pointers at +0x14 with a four-byte stride;
   // Free (0x59fb50) releases side 0 before side 1.
   TTacticalPlayer* players[2];   // +0x14 side 0, +0x18 side 1

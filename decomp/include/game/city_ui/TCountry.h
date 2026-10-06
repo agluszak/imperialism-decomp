@@ -100,7 +100,7 @@ public:
   int treasuryValue10;
   short needLevelByNation[0x17];
   short field42;
-  TSortedList* militaryUnitList44;
+  TSortedList* militaryUnitList;
   short unitNameOrdinalByType[0x1e];
   short unitNameCounter; // 0x84 — monotonically increasing name tag (stored at +0x1a)
   short pad_86;

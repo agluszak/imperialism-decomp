@@ -44,23 +44,23 @@ struct TurnEventFResumeAckPacket : TimelyNetMessagePrefix {
 struct TurnEvent14NationMetricPacket : TimelyMessageHeader {
   NationSlot nationSlot18;
   unsigned char pad1a[2];
-  int amount1C;
+  int amount;
 };
 
 // Event-0x16 diplomacy proposal for one nation.
 struct TurnEvent16DiplomacyProposalPacket : TimelyMessageHeader {
   NationSlot nationSlot18;
-  NationSlot sourceNationSlot1A;
-  DiplomacyProposalCodeStorage proposalCode1C;
+  NationSlot sourceNationSlot;
+  DiplomacyProposalCodeStorage proposalCode;
   unsigned char pad1e[2];
 };
 
 // Event-0x17 proposal resolution (accept/decline).
 struct TurnEvent17ProposalResolutionPacket : TimelyMessageHeader {
   NationSlot nationSlot18;
-  bool acceptedFlag1A;
+  bool acceptedFlag;
   unsigned char pad1b;
-  short proposalIndex1C;
+  short proposalIndex;
   unsigned char pad1e[2];
 };
 

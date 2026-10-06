@@ -52,21 +52,21 @@ struct LobbyChatEvent9Packet : TimelyMessageHeader {
 };
 
 struct LobbyTextPairEvent8Packet : TimelyMessageHeader {
-  unsigned char sourceNationSlot18;
+  unsigned char sourceNationSlot;
   char playerName19[0x21];
   char playerNameMirror[0x22];
 };
 
 // Event-0xE host session-init record.
 struct TurnEventESessionInitPacket : TimelyMessageHeader {
-  char mapSeedText[0x21];        // +0x18 - passed to CreatePlanet
-  unsigned char mapParamByte39;  // +0x39 - third Rebuild arg
-  char hostGameName3A[0x22];     // +0x3a
-  int saveSlotDword5C;           // +0x5c -> queueSyncDword
-  int scenarioTag;               // +0x60 -> scenarioSelectionTag
-  signed char difficultyLevel64; // +0x64
-  unsigned char nameTableFlag;   // +0x65 -> useLocalizedNameTables
-  unsigned char pad66[2];        // total 0x68
+  char mapSeedText[0x21];       // +0x18 - passed to CreatePlanet
+  unsigned char mapParamByte39; // +0x39 - third Rebuild arg
+  char hostGameName3A[0x22];    // +0x3a
+  int saveSlotDword5C;          // +0x5c -> queueSyncDword
+  int scenarioTag;              // +0x60 -> scenarioSelectionTag
+  signed char difficultyLevel;  // +0x64
+  unsigned char nameTableFlag;  // +0x65 -> useLocalizedNameTables
+  unsigned char pad66[2];       // total 0x68
 };
 
 // Event-0x13 nine-dword nation-news payload.
@@ -96,7 +96,7 @@ struct TurnEvent1PendingMaskPacket : TimelyMessageHeader {
 struct TurnEventACityAnnouncePacket : TimelyNetMessagePrefix {
   unsigned char nationId1C; // +0x1c
   unsigned char pad1d;
-  short homeTile1E;      // +0x1e
+  short homeTile;        // +0x1e
   char cityName20[0x24]; // +0x20 (strncpy'd 0x21), total 0x44
 };
 
@@ -128,8 +128,8 @@ struct TurnEvent18DiplomacyArraysPacket : NetMessage {
 };
 
 struct TurnEvent1FStatusPacket : TimelyMessageHeader {
-  int statusTag18; // +0x18 - 'aced'/'abdi'/'uhed'/'cgam'/'lose'/'foff'/...
-  int value1C;     // +0x1c, total 0x20
+  int statusTag; // +0x18 - 'aced'/'abdi'/'uhed'/'cgam'/'lose'/'foff'/...
+  int value1C;   // +0x1c, total 0x20
 };
 
 // Turn-event-0x23 payload: one map tile's 0x24-byte terrain state record.

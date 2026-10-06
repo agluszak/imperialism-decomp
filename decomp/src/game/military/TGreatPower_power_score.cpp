@@ -59,7 +59,7 @@ void RecomputeNationOrderPriorityMetrics() {
     g_afNationOrderQueueDivergenceMirror_006a3ac0[nationIdx] = queueDivergence;
 
     float unitVector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
-    CIterator mobileIter(nation->militaryUnitList44);
+    CIterator mobileIter(nation->militaryUnitList);
     for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(mobileIter.Reset()); mobileIter.More();
          unit = static_cast<TMilitaryUnit*>(mobileIter.Advance())) {
       if (unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
@@ -102,7 +102,7 @@ void RecomputeNationOrderPriorityMetrics() {
     }
     g_afNationMobileUnitDivergence_006a3ae0[nationIdx] = mobileUnitDivergence;
 
-    CIterator staticIter(nation->militaryUnitList44);
+    CIterator staticIter(nation->militaryUnitList);
     for (TMilitaryUnit* staticUnit = static_cast<TMilitaryUnit*>(staticIter.Reset());
          staticIter.More(); staticUnit = static_cast<TMilitaryUnit*>(staticIter.Advance())) {
       if (staticUnit->GetCategory() == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {

@@ -89,7 +89,7 @@ void TCivUnit::MoveTo(short newTileIndex) {
 
   if (tileIndex06 != -1) {
     if (previousAtLocation == 0) {
-      g_pGlobalMapState->terrainStateTable[tileIndex06].firstCivilianOrder20 =
+      g_pGlobalMapState->terrainStateTable[tileIndex06].firstCivilianOrder =
           static_cast<TCivUnit*>(nextAtLocation);
     } else {
       previousAtLocation->nextAtLocation = nextAtLocation;
@@ -100,10 +100,10 @@ void TCivUnit::MoveTo(short newTileIndex) {
   }
 
   if (newTileIndex != -1) {
-    TCivUnit* oldHead = g_pGlobalMapState->terrainStateTable[newTileIndex].firstCivilianOrder20;
+    TCivUnit* oldHead = g_pGlobalMapState->terrainStateTable[newTileIndex].firstCivilianOrder;
     previousAtLocation = 0;
     nextAtLocation = oldHead;
-    g_pGlobalMapState->terrainStateTable[newTileIndex].firstCivilianOrder20 = this;
+    g_pGlobalMapState->terrainStateTable[newTileIndex].firstCivilianOrder = this;
     if (nextAtLocation != 0) {
       nextAtLocation->previousAtLocation = this;
     }
@@ -124,7 +124,7 @@ void TCivUnit::Vaporize() {
 void TCivUnit::ResetCivWorkOrderAndRefreshCounters() {
   Vaporize();
   if (orderType != kCivilianUnitDeveloper) {
-    TGreatPower* nation = g_apNationStates[ownerNationSlot18];
+    TGreatPower* nation = g_apNationStates[ownerNationSlot];
     TCity* city = (nation != 0) ? nation->city : 0;
     // The original reads city unconditionally here (no null check), so keep the shape.
     city->productionSummary->AddExpert(1);

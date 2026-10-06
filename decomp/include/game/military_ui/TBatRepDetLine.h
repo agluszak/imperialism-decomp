@@ -17,7 +17,7 @@ public:
   // NOOP: verified empty in original 0x004aff93 (no standalone TBatRepDetLine::TBatRepDetLine body exists: CreateObject 0x004aff60 inlines this default ctor, calling the TLineData base ctor directly at that site)
   TBatRepDetLine() {}
 
-  BattleRecord* battleRecord10;
+  BattleRecord* battleRecord;
   BattleReportDetailRecord* battleDetail;
 };
 ASSERT_SIZE(TBatRepDetLine, 0x18);

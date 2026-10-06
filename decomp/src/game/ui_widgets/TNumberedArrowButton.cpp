@@ -18,7 +18,6 @@ IMPLEMENT_DYNCREATE(TNumberedArrowButton, TControl)
 // FUNCTION: IMPERIALISM 0x0058c2a0
 TNumberedArrowButton::TNumberedArrowButton() : TControl(), value84(0), value86(0) {}
 
-
 // FUNCTION: IMPERIALISM 0x0058c330
 void TNumberedArrowButton::SetValue(short value84Arg, bool refreshFlag) {
   value84 = value84Arg;
@@ -121,11 +120,11 @@ void TNumberedArrowButton::HandleCursorHoverSelectionByChildHitTestAndFallback(C
                                                                                RgnHandle hitArg) {
   if (IsActionable() != '\0') {
     if (cursorPoint->y < frameHeight / 2) {
-      cursorId4e = 0x100;
+      cursorId = 0x100;
       TControl::HandleCursorHoverSelectionByChildHitTestAndFallback(cursorPoint, hitArg);
       return;
     }
-    cursorId4e = (short)0xffff;
+    cursorId = (short)0xffff;
   }
   TControl::HandleCursorHoverSelectionByChildHitTestAndFallback(cursorPoint, hitArg);
 }

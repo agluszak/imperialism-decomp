@@ -112,11 +112,11 @@ void TMiniShipView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint o
 
   TTaskForce* taskForce = shipNode->taskForce;
   if (taskForce != 0) {
-    roster->selectedTaskForce88 = taskForce;
-    roster->selectedZone84 = 0;
+    roster->selectedTaskForce = taskForce;
+    roster->selectedZone = 0;
   } else {
-    roster->selectedTaskForce88 = 0;
-    roster->selectedZone84 = shipNode->location;
+    roster->selectedTaskForce = 0;
+    roster->selectedZone = shipNode->location;
   }
 
   TControl::DoMouseCommand(point, event, origin);

@@ -264,7 +264,7 @@ void TOceanDialog::FrameCursorArea() {
     return;
   }
 
-  bool frameHoveredTile = cursorId4e != 0xffff && cursorId4e != 0x3f0;
+  bool frameHoveredTile = cursorId != 0xffff && cursorId != 0x3f0;
   SetQuickDrawFillColor(0);
   SetQuickDrawStrokeColor(0xffffff);
 

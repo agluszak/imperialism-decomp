@@ -17,7 +17,7 @@ public:
   short orderTargetTiles[3];       // 0x28, 0x2a, 0x2c
   short orderTargetTilesMirror[3]; // 0x2e, 0x30, 0x32
 
-  short strength34;        // 0x34 init 0x1f4; scaled by 0.002 in 0x53cc10
+  short strength;          // 0x34 init 0x1f4; scaled by 0.002 in 0x53cc10
   short eraIndex;          // 0x36 derived from unit kind / 8
   short experiencePercent; // 0x38 init 0; divided by 100 in 0x53cc10
   short battleStateFlags;  // 0x3a init 0

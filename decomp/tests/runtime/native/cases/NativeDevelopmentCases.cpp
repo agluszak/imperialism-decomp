@@ -21,7 +21,7 @@ bool FindUnoccupiedRailSection(StrategicTileIndex* sourceTile,
                                StrategicTileIndex* destinationTile) {
   for (StrategicTileIndex candidate = 0; candidate < 0x1950; ++candidate) {
     const TTerrainStateRecord& source = g_pGlobalMapState->terrainStateTable[candidate];
-    if (source.firstCivilianOrder20 != 0 || source.adjacencyBits06 != 0 ||
+    if (source.firstCivilianOrder != 0 || source.adjacencyBits != 0 ||
         source.railFlags != 0) {
       continue;
     }
@@ -33,7 +33,7 @@ bool FindUnoccupiedRailSection(StrategicTileIndex* sourceTile,
     }
 
     const TTerrainStateRecord& destination = g_pGlobalMapState->terrainStateTable[neighbor];
-    if (destination.firstCivilianOrder20 == 0 && destination.adjacencyBits06 == 0 &&
+    if (destination.firstCivilianOrder == 0 && destination.adjacencyBits == 0 &&
         destination.railFlags == 0) {
       *sourceTile = candidate;
       *destinationTile = neighbor;
@@ -57,8 +57,8 @@ bool FindIssuableRailSection(NationSlot nationSlot, StrategicTileIndex* sourceTi
     }
 
     const TTerrainStateRecord& source = g_pGlobalMapState->terrainStateTable[candidate];
-    if (source.ownerNationTag04 != nationSlot || source.firstCivilianOrder20 != 0 ||
-        source.adjacencyBits06 != 0 || source.railFlags != 0 ||
+    if (source.ownerNationTag04 != nationSlot || source.firstCivilianOrder != 0 ||
+        source.adjacencyBits != 0 || source.railFlags != 0 ||
         !TerrainAllowsStartingRail(source.GetTerrainKind())) {
       continue;
     }
@@ -70,8 +70,8 @@ bool FindIssuableRailSection(NationSlot nationSlot, StrategicTileIndex* sourceTi
     }
 
     const TTerrainStateRecord& destination = g_pGlobalMapState->terrainStateTable[neighbor];
-    if (destination.ownerNationTag04 == nationSlot && destination.firstCivilianOrder20 == 0 &&
-        destination.adjacencyBits06 == 0 && destination.railFlags == 0 &&
+    if (destination.ownerNationTag04 == nationSlot && destination.firstCivilianOrder == 0 &&
+        destination.adjacencyBits == 0 && destination.railFlags == 0 &&
         TerrainAllowsStartingRail(destination.GetTerrainKind())) {
       *sourceTile = candidate;
       *destinationTile = neighbor;
@@ -83,7 +83,7 @@ bool FindIssuableRailSection(NationSlot nationSlot, StrategicTileIndex* sourceTi
 
 bool FindUnoccupiedTile(StrategicTileIndex* tileIndex) {
   for (StrategicTileIndex candidate = 0; candidate < 0x1950; ++candidate) {
-    if (g_pGlobalMapState->terrainStateTable[candidate].firstCivilianOrder20 == 0) {
+    if (g_pGlobalMapState->terrainStateTable[candidate].firstCivilianOrder == 0) {
       *tileIndex = candidate;
       return true;
     }
@@ -94,14 +94,14 @@ bool FindUnoccupiedTile(StrategicTileIndex* tileIndex) {
 bool FindUnoccupiedProvinceTile(StrategicTileIndex* tileIndex) {
   for (StrategicTileIndex candidate = 0; candidate < 0x1950; ++candidate) {
     const TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[candidate];
-    if (tile.firstCivilianOrder20 != 0) {
+    if (tile.firstCivilianOrder != 0) {
       continue;
     }
     short province = tile.cityRecordIndex;
     if (province < 0 || province >= 0x180) {
       continue;
     }
-    if (g_pGlobalMapState->cityScoreTable[province].cityTileIndex04 < 0) {
+    if (g_pGlobalMapState->cityScoreTable[province].cityTileIndex < 0) {
       continue;
     }
     *tileIndex = candidate;
@@ -114,7 +114,7 @@ bool FindOwnedConstructionTile(NationSlot nationSlot, unsigned short requiredFla
                                unsigned short forbiddenFlags, StrategicTileIndex* tileIndex) {
   for (StrategicTileIndex candidate = 0; candidate < 0x1950; ++candidate) {
     const TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[candidate];
-    if (tile.firstCivilianOrder20 != 0 || tile.ownerNationTag04 != nationSlot) {
+    if (tile.firstCivilianOrder != 0 || tile.ownerNationTag04 != nationSlot) {
       continue;
     }
     if ((tile.activeFlags1c & requiredFlags) != requiredFlags) {
@@ -133,7 +133,7 @@ bool FindOwnedCoastalConstructionTile(NationSlot nationSlot, unsigned short forb
                                       StrategicTileIndex* tileIndex) {
   for (StrategicTileIndex candidate = 0; candidate < 0x1950; ++candidate) {
     const TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[candidate];
-    if (tile.firstCivilianOrder20 != 0 || tile.ownerNationTag04 != nationSlot) {
+    if (tile.firstCivilianOrder != 0 || tile.ownerNationTag04 != nationSlot) {
       continue;
     }
     if ((tile.activeFlags1c & forbiddenFlags) != 0) {
@@ -162,7 +162,7 @@ JSON_Value* CaptureTouchedTiles(const StrategicTileIndex* tiles, int count) {
     JsonObject object;
     object.Set("tile", static_cast<int>(tiles[index]));
     object.Set("owner", static_cast<int>(tile.ownerNationTag04));
-    object.Set("adjacency", static_cast<int>(tile.adjacencyBits06));
+    object.Set("adjacency", static_cast<int>(tile.adjacencyBits));
     object.Set("dev_nibbles",
                static_cast<int>(
                    static_cast<unsigned char>(tile.developmentClassNibbles)));
@@ -195,7 +195,7 @@ RuntimeActionResult RunCompletedRailSection(NativeTransition& transition) {
   civilian->remainingTurns = 1;
 
   JsonObject args;
-  args.Set("civilian", civilian->persistentUnitId20);
+  args.Set("civilian", civilian->persistentUnitId);
   RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
@@ -225,7 +225,7 @@ RuntimeActionResult RunIssuedRailSection(NativeTransition& transition) {
   }
 
   JsonObject args;
-  args.Set("civilian", civilian->persistentUnitId20);
+  args.Set("civilian", civilian->persistentUnitId);
   args.Set("destination", static_cast<int>(destinationTile));
   RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
@@ -278,8 +278,8 @@ RuntimeActionResult RunCompletedResourceDevelopment(NativeTransition& transition
   surfaceWorker->remainingTurns = 1;
 
   JsonObject args;
-  args.Set("extractive_worker", extractiveWorker->persistentUnitId20);
-  args.Set("surface_worker", surfaceWorker->persistentUnitId20);
+  args.Set("extractive_worker", extractiveWorker->persistentUnitId);
+  args.Set("surface_worker", surfaceWorker->persistentUnitId);
   RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;

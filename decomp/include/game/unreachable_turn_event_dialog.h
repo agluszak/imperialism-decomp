@@ -6,7 +6,7 @@ namespace turn_event_dialog {
 
 struct TurnEventMapSelection {
   short unresolved0;
-  short cityRecordIndex2;
+  short cityRecordIndex;
 };
 
 struct UnreachableTacticalMapPictureControl : public TView {

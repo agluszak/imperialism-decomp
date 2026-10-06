@@ -90,7 +90,7 @@ void TMapEditView::NormalClick(short tileIndex, int inputFlags) {
     break;
   case 3:
     g_pSfxPlaybackSystem->PlaySoundEffect(4000);
-    tile.adjacencyBits06 = static_cast<signed char>(editorActionValue);
+    tile.adjacencyBits = static_cast<signed char>(editorActionValue);
     InvalidateTile(tileIndex);
     break;
   case 4:
@@ -178,7 +178,7 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, i
 
   for (index = 0; index < kCityRecordCount; ++index) {
     Province& city = g_pGlobalMapState->cityScoreTable[index];
-    city.adjacentRegionCount08 = 0;
+    city.adjacentRegionCount = 0;
     city.stationedUnitChain = 0;
     city.linkedRegionCount = 0;
     int entry;
@@ -328,7 +328,7 @@ void TMapEditView::PlaceResource(short tileIndex) {
 // FUNCTION: IMPERIALISM 0x0051db30
 void TMapEditView::PlaceRail(short tileIndex) {
   g_pSfxPlaybackSystem->PlaySoundEffect(4000);
-  g_pGlobalMapState->terrainStateTable[tileIndex].adjacencyBits06 =
+  g_pGlobalMapState->terrainStateTable[tileIndex].adjacencyBits =
       static_cast<signed char>(editorActionValue);
   InvalidateTile(tileIndex);
 }
@@ -358,7 +358,7 @@ void TMapEditView::PlaceCountySeat(short tileIndex) {
   CString cityName("Chumpto");
   TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
   short provinceId = tile.cityRecordIndex;
-  short previousCountySeat = g_pGlobalMapState->cityScoreTable[provinceId].cityTileIndex04;
+  short previousCountySeat = g_pGlobalMapState->cityScoreTable[provinceId].cityTileIndex;
   g_pGlobalMapState->SetRegionTileSubtypeAndRefreshNeighborFlags(provinceId, tileIndex);
 
   TWindow* dialog = static_cast<TWindow*>(

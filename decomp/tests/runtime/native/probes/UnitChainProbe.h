@@ -11,7 +11,7 @@
 
 // The map's two unit chains: each province's stationed military units
 // (Province::stationedUnitChain) and each tile's civilian orders
-// (TTerrainStateRecord::firstCivilianOrder20), both threaded through
+// (TTerrainStateRecord::firstCivilianOrder), both threaded through
 // TUnit::previousAtLocation/nextAtLocation.
 //
 // Walking a corrupt chain is a page fault, not a test failure -- the crash lands inside

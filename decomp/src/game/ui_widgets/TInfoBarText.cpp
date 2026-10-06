@@ -56,7 +56,7 @@ void TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary, int
   layoutRectA4.bottom = 0;
   COLORREF mappedFlags = 0;
   ResolveUiThemeColor(static_cast<short>(stylePrimary), &mappedFlags);
-  textColor98 = mappedFlags;
+  textColor = mappedFlags;
   ResolveUiThemeColor(static_cast<short>(styleSecondary), &mappedFlags);
   shadowTextColor = mappedFlags;
   dropShadowEnabled = true;

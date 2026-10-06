@@ -28,7 +28,7 @@ TCivUnit* CivilianProbe::CivilianWithPersistentId(short nationSlot, int persiste
       continue;
     }
     TCivUnit* civilian = static_cast<TCivUnit*>(entry);
-    if (civilian->persistentUnitId20 == persistentUnitId) {
+    if (civilian->persistentUnitId == persistentUnitId) {
       return civilian;
     }
   }

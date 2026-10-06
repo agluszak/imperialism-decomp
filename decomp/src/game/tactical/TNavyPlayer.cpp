@@ -43,7 +43,7 @@ void TNavyPlayer::ApplyChanges(unsigned char sideWonFlag) {
   for (TNavyTacUnit* unit = static_cast<TNavyTacUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TNavyTacUnit*>(unitIter.Advance())) {
     TShip* sourceShip = unit->GetSourceShip();
-    sourceShip->Damage(static_cast<short>(sourceShip->strength - unit->strength4));
+    sourceShip->Damage(static_cast<short>(sourceShip->strength - unit->strength));
   }
   taskForce->defeated = 1;
   taskForce->SinkOrSwimShips();

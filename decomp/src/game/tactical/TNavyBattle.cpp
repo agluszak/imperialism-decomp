@@ -34,7 +34,7 @@ void TNavyBattle::InitTacticalBattle(TTacticalPlayer* ourPlayer, TTacticalPlayer
 
 // FUNCTION: IMPERIALISM 0x005a55c0
 void TNavyBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
-  bool sideIsZero = (unit->side20 == 0);
+  bool sideIsZero = (unit->side == 0);
   bool canDeploy = true;
   int rowIndex = tileIndex / 29;
   if (sideIsZero) {
@@ -50,7 +50,7 @@ void TNavyBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
       canDeploy = false;
     }
   }
-  if (tileGrid[tileIndex].occupant4 != 0) {
+  if (tileGrid[tileIndex].occupant != 0) {
     canDeploy = false;
   }
   if (!canDeploy) {
@@ -58,7 +58,7 @@ void TNavyBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
   }
 
   unit->tileIndex8 = tileIndex;
-  tileGrid[tileIndex].occupant4 = unit;
+  tileGrid[tileIndex].occupant = unit;
   if (battleView8 != 0) {
     battleView8->InvalidateUnit(unit);
   }
@@ -89,7 +89,7 @@ void TNavyBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
 // FUNCTION: IMPERIALISM 0x005a5730
 void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
     TTacticalUnit* attackerUnit, TacticalTileIndex targetTileIndex) {
-  TNavyTacUnit* defenderUnit = static_cast<TNavyTacUnit*>(tileGrid[targetTileIndex].occupant4);
+  TNavyTacUnit* defenderUnit = static_cast<TNavyTacUnit*>(tileGrid[targetTileIndex].occupant);
   defenderUnit->AssertValid();
 
   int attackerRow = attackerUnit->tileIndex8 / 29;
@@ -112,7 +112,7 @@ void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
   double ratio = hexDistance / (range * g_dNavyHitChanceRangeScale_00669ef8);
   double ratioCubed = ratio * ratio * ratio;
   double denominator = ratioCubed - g_fNavyHitChanceCubeOffset_00669f00;
-  float hitThreshold = static_cast<float>(attackerUnit->qualityLevel10 * 5 +
+  float hitThreshold = static_cast<float>(attackerUnit->qualityLevel * 5 +
                                           g_fNavyHitChanceNumerator_00669f04 / denominator);
 
   if (battleView8 != 0) {
@@ -124,7 +124,7 @@ void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
     attackerSidePlayer->AssertValid();
     NavyTargeting targeting = static_cast<TNavyPlayer*>(attackerSidePlayer)->targetingMode;
     float attackPower = attackerUnit->GetBaseAttackPower();
-    float scaledStrength = attackerUnit->strength4 * attackPower;
+    float scaledStrength = attackerUnit->strength * attackPower;
     float damageScale = defenderUnit->GetDamageScale();
     float damageAmount = damageScale * scaledStrength;
     defenderUnit->ApplyNavalDamage(damageAmount, targeting);
@@ -132,7 +132,7 @@ void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
       battleView8->InvalidateUnit(defenderUnit);
     }
     if (defenderUnit->state1c == 3) {
-      tileGrid[defenderUnit->tileIndex8].occupant4 = 0;
+      tileGrid[defenderUnit->tileIndex8].occupant = 0;
       defenderUnit->tileIndex8 = -1;
       if (battleView8 != 0) {
         battleView8->PlayAni(targetTileIndex, 0xf42, 12);
@@ -157,7 +157,7 @@ void __stdcall ConvertHexTileIndexToRowAndDoubleColumn(TacticalTileIndex tileInd
 
 // FUNCTION: IMPERIALISM 0x005a59f0
 void TNavyBattle::CalculateMoveMap(TTacticalUnit* unit) {
-  int actionPoints = unit->actionPoints28;
+  int actionPoints = unit->actionPoints;
   short* moveCosts = tileMoveCostArray;
   TacticalTileIndex tileIndex;
   for (tileIndex = 0; tileIndex < tacticalTileCount; ++tileIndex) {
@@ -178,7 +178,7 @@ void TNavyBattle::CalculateMoveMap(TTacticalUnit* unit) {
       int direction;
       for (direction = 0; direction < 6; ++direction) {
         TacticalTileIndex neighborTile = neighborTiles[direction];
-        if (neighborTile == -1 || tileGrid[neighborTile].occupant4 != 0) {
+        if (neighborTile == -1 || tileGrid[neighborTile].occupant != 0) {
           continue;
         }
 
@@ -219,7 +219,7 @@ void TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
       TacticalTileIndex neighborTile = neighborTiles[direction];
       if (neighborTile != -1) {
         short moveCost = tileMoveCostArray[neighborTile];
-        if (moveCost != -1 && moveCost <= selectedUnit1c->actionPoints28) {
+        if (moveCost != -1 && moveCost <= selectedUnit1c->actionPoints) {
           return;
         }
       }
@@ -240,7 +240,7 @@ void TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
       TacticalTileIndex neighborTile = neighborTiles[direction];
       if (neighborTile != -1) {
         short moveCost = tileMoveCostArray[neighborTile];
-        if (moveCost != -1 && moveCost <= selectedUnit1c->actionPoints28) {
+        if (moveCost != -1 && moveCost <= selectedUnit1c->actionPoints) {
           break;
         }
       }

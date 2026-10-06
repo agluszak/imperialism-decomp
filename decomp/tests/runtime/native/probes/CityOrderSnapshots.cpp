@@ -26,12 +26,12 @@ void UnitOrderSnapshot::CaptureFrom(TUnitOrder* order) {
   strength = population->strength;
   populationCount = population->populationCount;
   populationFloat = population->populationCountFloat;
-  baselineLow = population->baselineSlots->lowSkillCount04;
-  baselineMedium = population->baselineSlots->mediumSkillCount06;
-  baselineHigh = population->baselineSlots->highSkillCount08;
-  productionLow = population->productionSlots->lowSkillCount04;
-  productionMedium = population->productionSlots->mediumSkillCount06;
-  productionHigh = population->productionSlots->highSkillCount08;
+  baselineLow = population->baselineSlots->lowSkillCount;
+  baselineMedium = population->baselineSlots->mediumSkillCount;
+  baselineHigh = population->baselineSlots->highSkillCount;
+  productionLow = population->productionSlots->lowSkillCount;
+  productionMedium = population->productionSlots->mediumSkillCount;
+  productionHigh = population->productionSlots->highSkillCount;
 }
 
 ShipOrderSnapshot::ShipOrderSnapshot()
@@ -53,8 +53,8 @@ void TrainingOrderSnapshot::CaptureFrom(TTrainingOrder* order) {
   quantity = order->quantity;
   paperStock = order->ownerCity->cityStockPaper;
   treasury = order->ownerCity->ownerNationAc->treasuryValue10;
-  baselineLow = order->productionSummary->baselineSlots->lowSkillCount04;
-  baselineMedium = order->productionSummary->baselineSlots->mediumSkillCount06;
+  baselineLow = order->productionSummary->baselineSlots->lowSkillCount;
+  baselineMedium = order->productionSummary->baselineSlots->mediumSkillCount;
 }
 
 ItemOrderSnapshot::ItemOrderSnapshot()
@@ -63,7 +63,7 @@ ItemOrderSnapshot::ItemOrderSnapshot()
 
 void ItemOrderSnapshot::CaptureFrom(TItemOrder* order) {
   quantity = order->quantity;
-  requestedQuantity = order->requestedQuantity4c;
+  requestedQuantity = order->requestedQuantity;
   primaryStock = order->ownerCity->CityStockByType(order->primaryInputResourceId);
   primaryTracking = order->trackingSlots[order->primaryInputResourceId];
   secondaryStock = order->secondaryInputResourceId < 0

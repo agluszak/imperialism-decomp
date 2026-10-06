@@ -65,7 +65,7 @@ void TArmyUnitView::Draw(RECT* rectBuffer) {
   DrawTextWithCachedQuickDrawStyleState(&descriptor);
   SetQuickDrawFillColor(0);
 
-  short level = militaryUnit->strength34;
+  short level = militaryUnit->strength;
   short sVar1 = level / 0x19 + 1;
   if (sVar1 > 0x14) {
     sVar1 = 0x14;

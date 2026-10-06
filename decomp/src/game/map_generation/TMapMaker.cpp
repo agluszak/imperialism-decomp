@@ -2347,8 +2347,8 @@ void TMapMaker::AssignWaterRegionIdsFromOverlayScanlineIntersections() {
             MapEdgePoint bestStart = {best->x0, best->y0};
             WrapExtendedMapXCoordinateInPlace(&bestStart.x);
             if (curStart.Equals(&bestStart)) {
-              if (static_cast<unsigned short>(cur->angle14) <
-                  static_cast<unsigned short>(best->angle14)) {
+              if (static_cast<unsigned short>(cur->angle) <
+                  static_cast<unsigned short>(best->angle)) {
                 best = segments.At(si);
               }
             } else {
@@ -2361,8 +2361,8 @@ void TMapMaker::AssignWaterRegionIdsFromOverlayScanlineIntersections() {
                 if (g_bOverlayScanlineFillAssertSuppressed == 0) {
                   TemporarilyClearAndRestoreUiInvalidationFlag(kUMapperPath, 0xda1);
                 }
-              } else if (static_cast<unsigned short>(best->angle14) <
-                         static_cast<unsigned short>(cur->angle14)) {
+              } else if (static_cast<unsigned short>(best->angle) <
+                         static_cast<unsigned short>(cur->angle)) {
                 best = segments.At(si);
               }
             }

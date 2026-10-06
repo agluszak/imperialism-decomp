@@ -58,9 +58,9 @@ void MapContextActionRecord::ReadFrom(TStream* stream) {
   if (reportKind04 == kMapContextReportLandBattle ||
       reportKind04 == kMapContextReportPreemptedLandBattle ||
       reportKind04 == kMapContextReportUncontestedTakeover) {
-    location08 = reinterpret_cast<void*>(static_cast<int>(nodeId));
+    location = reinterpret_cast<void*>(static_cast<int>(nodeId));
   } else {
-    location08 = FindMapActionContextByNodeId(nodeId);
+    location = FindMapActionContextByNodeId(nodeId);
   }
 
   for (int side = 0; side < 2; ++side) {
@@ -104,9 +104,9 @@ void MapContextActionRecord::WriteTo(TStream* stream) {
   if (reportKind04 == kMapContextReportLandBattle ||
       reportKind04 == kMapContextReportPreemptedLandBattle ||
       reportKind04 == kMapContextReportUncontestedTakeover) {
-    nodeId = static_cast<short>(reinterpret_cast<int>(location08));
+    nodeId = static_cast<short>(reinterpret_cast<int>(location));
   } else {
-    nodeId = static_cast<TZone*>(location08)->GetContextOrdinalOrInvalid();
+    nodeId = static_cast<TZone*>(location)->GetContextOrdinalOrInvalid();
   }
   stream->WriteBytes(&nodeId, 2);
 
@@ -311,12 +311,12 @@ void TArmyMgr::FormStacks() {
     short previousOwnerNationSlot = -1;
     for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
       short unitOrderTargetIndex = unit->orderTargetIndex;
-      short unitOwnerNationSlot = unit->ownerNationSlot18;
+      short unitOwnerNationSlot = unit->ownerNationSlot;
       if (unitOrderTargetIndex == -1) {
-        if (unit->strength34 < 0x191) {
-          unit->strength34 += 100;
+        if (unit->strength < 0x191) {
+          unit->strength += 100;
         } else {
-          unit->strength34 = 500;
+          unit->strength = 500;
         }
         if (unitOwnerNationSlot < 7 &&
             g_apNationStates[unitOwnerNationSlot]->diplomacyEligibility == 0) {
@@ -435,7 +435,7 @@ void TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits() {
     if (nation == nullptr) {
       continue;
     }
-    TSortedList* unitList = nation->militaryUnitList44;
+    TSortedList* unitList = nation->militaryUnitList;
     if (unitList == nullptr) {
       FailNilPointerWithAssert(s_SourcePathUArmyMgr_0069573C, 0x39b);
     }
@@ -443,7 +443,7 @@ void TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits() {
     CIterator unitIter(unitList);
     for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
          unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
-      if (unit->strength34 > 0 && unit->tileIndex06 != -1) {
+      if (unit->strength > 0 && unit->tileIndex06 != -1) {
         unit->ContinueOrders();
       } else {
         unit->Vaporize();
@@ -536,7 +536,7 @@ static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
   record.sideChildRecords[0] = 0;
   record.nationIds[1] = enemyStack->categoryFlag;
   record.nationIds[0] = ourStack->categoryFlag;
-  record.location08 = reinterpret_cast<void*>(ownerNationCodeInt);
+  record.location = reinterpret_cast<void*>(ownerNationCodeInt);
   record.reportKind04 = kMapContextReportLandBattle;
   record.displayedParticipantIndex = 0;
 
@@ -557,7 +557,7 @@ static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
        unit = ourStack->AdvanceCursorAndGetUnit()) {
     ++record.childCount24a[0];
     ++ourCount[unit->orderType];
-    if (unit->strength34 > 0) {
+    if (unit->strength > 0) {
       ++ourActiveCount[unit->orderType];
     }
     if (unit->orderType == EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra1) &&
@@ -572,7 +572,7 @@ static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
        enemyUnit = enemyStack->AdvanceCursorAndGetUnit()) {
     ++record.childCount24a[1];
     ++enemyCount[enemyUnit->orderType];
-    if (enemyUnit->strength34 > 0) {
+    if (enemyUnit->strength > 0) {
       ++enemyActiveCount[enemyUnit->orderType];
     }
     if (enemyUnit->orderType >= EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra1) &&
@@ -592,7 +592,7 @@ static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
        ourRecordUnit = ourStack->AdvanceCursorAndGetUnit()) {
     MapOrderBattleSideChildRecord& child = record.sideChildRecords[0][childIndex];
     child.resourceType = ourRecordUnit->orderType;
-    child.stockOrRequired = ourRecordUnit->strength34;
+    child.stockOrRequired = ourRecordUnit->strength;
     if (child.stockOrRequired == -86) {
       child.stockOrRequired = 0;
     }
@@ -609,7 +609,7 @@ static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
        enemyRecordUnit != 0; enemyRecordUnit = enemyStack->AdvanceCursorAndGetUnit()) {
     MapOrderBattleSideChildRecord& child = record.sideChildRecords[1][childIndex];
     child.resourceType = enemyRecordUnit->orderType;
-    child.stockOrRequired = enemyRecordUnit->strength34;
+    child.stockOrRequired = enemyRecordUnit->strength;
     if (child.stockOrRequired == -86) {
       child.stockOrRequired = 0;
     }
@@ -670,7 +670,7 @@ bool TArmyMgr::ResolveConflict(TArmyStack* stack, short ownerNationCode) {
   TMilitaryUnit* curUnit = stack->ResetCursorAndGetHeadUnit();
 
   TArmyStack* ourStack = new TArmyStack();
-  ourStack->IArmyStack(static_cast<char>(curUnit->ownerNationSlot18), ownerNationCode,
+  ourStack->IArmyStack(static_cast<char>(curUnit->ownerNationSlot), ownerNationCode,
                        curUnit->tileIndex06);
 
   while (curUnit != nullptr) {
@@ -681,7 +681,7 @@ bool TArmyMgr::ResolveConflict(TArmyStack* stack, short ownerNationCode) {
   }
 
   TArmyStack* enemyStack = nullptr;
-  if (ourStack->unitCountA != 0) {
+  if (ourStack->unitCount != 0) {
     int ownerNationCodeInt = ownerNationCode;
     short cachedOwnerAtTile = this->perTileOwnerNationCodeCache1c[ownerNationCodeInt];
 
@@ -701,7 +701,7 @@ bool TArmyMgr::ResolveConflict(TArmyStack* stack, short ownerNationCode) {
             ourStack->categoryFlag, cachedOwnerAtTile)) {
       BuildArmyContextActionRecordsAndDispatchLabel(ourStack, enemyStack, 0, ownerNationCodeInt, 0);
       this->RetreatAttacker(ourStack);
-    } else if (enemyStack->unitCountA != 0) {
+    } else if (enemyStack->unitCount != 0) {
       tacticalViewCreated = true;
       this->CreateTacticalBattleViewAndInitializeBattleSetup(ourStack, enemyStack,
                                                              ownerNationCodeInt);
@@ -726,7 +726,7 @@ bool TArmyMgr::ResolveConflict(TArmyStack* stack, short ownerNationCode) {
 // FUNCTION: IMPERIALISM 0x004a35e0
 void TArmyMgr::RetreatDefender(TArmyStack* stack, short tileIndex) {
   TMilitaryUnit* headUnit = stack->ResetCursorAndGetHeadUnit();
-  short headUnitTag = headUnit->ownerNationSlot18;
+  short headUnitTag = headUnit->ownerNationSlot;
 
   const Province& record = g_pGlobalMapState->cityScoreTable[tileIndex];
   short candidateRegions[12];
@@ -745,7 +745,7 @@ void TArmyMgr::RetreatDefender(TArmyStack* stack, short tileIndex) {
   if (candidateCount == 0) {
     for (TMilitaryUnit* unit = stack->ResetCursorAndGetHeadUnit(); unit != 0;
          unit = stack->AdvanceCursorAndGetUnit()) {
-      if (unit->strength34 != 0) {
+      if (unit->strength != 0) {
         unit->Vaporize();
       }
     }
@@ -786,7 +786,7 @@ bool TArmyMgr::StrategicCombat(TArmyStack* stack1, TArmyStack* stack2) {
     if (stack1->fortLevelAttackerPenaltyCache == 0) {
       break;
     }
-    unit->strengthSnapshot = unit->strength34;
+    unit->strengthSnapshot = unit->strength;
     unit->SetOrClearBattleStateFlags(1, false);
     unit->SetOrClearBattleStateFlags(2, false);
     unit = stack1->AdvanceCursorAndGetUnit();
@@ -800,7 +800,7 @@ bool TArmyMgr::StrategicCombat(TArmyStack* stack1, TArmyStack* stack2) {
     if (stack2->fortLevelAttackerPenaltyCache == 0) {
       break;
     }
-    unit->strengthSnapshot = unit->strength34;
+    unit->strengthSnapshot = unit->strength;
     bool blinkFlag = g_abUnitTypeBlinkEligibilityFlag[unit->orderType] != 0;
     unit->SetOrClearBattleStateFlags(1, blinkFlag);
     unit->SetOrClearBattleStateFlags(2, false);
@@ -1098,7 +1098,7 @@ void TArmyMgr::SetSelectedProvince(short cityRecordIndex) {
 
 // FUNCTION: IMPERIALISM 0x004a46d0
 void TArmyMgr::ClearProvinceSelectionHighlightsForNation(short nationId) {
-  TSortedList* unitList = g_apNationStates[nationId]->militaryUnitList44;
+  TSortedList* unitList = g_apNationStates[nationId]->militaryUnitList;
   for (short ordinal = 1; ordinal <= unitList->GetCount(); ++ordinal) {
     TUnit* unit = static_cast<TUnit*>(unitList->GetEntryByOrdinal(ordinal));
     if (unit->unitOrder == 3) {
@@ -1177,7 +1177,7 @@ static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode) {
     if (g_pViewMgr->mapUberPictureF0->HasActiveMapInteractionSelection()) {
       return 0;
     }
-    if (mode != 2 && rec->firstCivilianOrder20 != nullptr) {
+    if (mode != 2 && rec->firstCivilianOrder != nullptr) {
       return 0;
     }
   }
@@ -1234,7 +1234,7 @@ bool TArmyMgr::HandleMapClickByCivilianCursorState(short tileIndex, short mode) 
 
   const Province& selectedTile = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex];
   bool cityIsAdjacent = false;
-  for (short i = 0; i < selectedTile.adjacentRegionCount08; ++i) {
+  for (short i = 0; i < selectedTile.adjacentRegionCount; ++i) {
     if (selectedTile.adjacentRegionIds[i] == cityRecordIndex) {
       cityIsAdjacent = true;
       break;
@@ -1324,7 +1324,7 @@ void TArmyMgr::DispatchMapActionForRegionByAdjacency(int contextArg) {
   bool isAdjacent = false;
   short index = 0;
   Province* province = &g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex];
-  short adjacentCount = province->adjacentRegionCount08;
+  short adjacentCount = province->adjacentRegionCount;
   if (0 < adjacentCount) {
     do {
       if (isAdjacent) {
@@ -1379,7 +1379,7 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
     short activeNationId = g_pSimMgr->GetPlayerCountry();
     TCountry* activeCountry = g_apTerrainTypeDescriptorTable[activeNationId];
     int reinforcementCost = 0;
-    CIterator orderIter(activeCountry->militaryUnitList44);
+    CIterator orderIter(activeCountry->militaryUnitList);
     for (TUnit* order = static_cast<TUnit*>(orderIter.Reset()); orderIter.More();
          order = static_cast<TUnit*>(orderIter.Advance())) {
       if (order->unitOrder == 1 && order->orderTargetIndex == cityRecordIndex &&
@@ -1430,7 +1430,7 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
   if (g_pViewMgr->mapUberPictureF0 != nullptr) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x3aa7, 0, 1);
     g_pViewMgr->mapUberPictureF0->NoticeTile(
-        g_pGlobalMapState->cityScoreTable[cityRecordIndex].cityTileIndex04);
+        g_pGlobalMapState->cityScoreTable[cityRecordIndex].cityTileIndex);
   }
   return true;
 }
@@ -1445,10 +1445,10 @@ void TArmyMgr::MarchSelectedArmies(short tileIndex) {
   TGreatPower* nationState = g_apNationStates[activeNationId];
   int categoryCounts[10] = {0};
 
-  unsigned char* unitOnTileFlags = new unsigned char[nationState->militaryUnitList44->GetCount()];
-  memset(unitOnTileFlags, 0, nationState->militaryUnitList44->GetCount());
+  unsigned char* unitOnTileFlags = new unsigned char[nationState->militaryUnitList->GetCount()];
+  memset(unitOnTileFlags, 0, nationState->militaryUnitList->GetCount());
 
-  CIterator unitIter(nationState->militaryUnitList44);
+  CIterator unitIter(nationState->militaryUnitList);
   unsigned char* flagCursor = unitOnTileFlags;
   for (TUnit* unit = static_cast<TUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TUnit*>(unitIter.Advance())) {
@@ -1578,8 +1578,7 @@ bool TArmyMgr::GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummar
   int bestScore = -1;
   CString candidateName;
 
-  int adjacentRegionCount =
-      g_pGlobalMapState->cityScoreTable[cityRecordIndex].adjacentRegionCount08;
+  int adjacentRegionCount = g_pGlobalMapState->cityScoreTable[cityRecordIndex].adjacentRegionCount;
   if (adjacentRegionCount > 0) {
     int i = 0;
     do {
@@ -1891,7 +1890,7 @@ void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, in
 
   int budget = 0;
   TCountry* nation = g_apNationStates[static_cast<int>(nationId)];
-  CIterator unitIter(nation->militaryUnitList44);
+  CIterator unitIter(nation->militaryUnitList);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
     if (unit->orderTargetIndex == cityIndex &&
@@ -1918,7 +1917,7 @@ void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, in
       }
       budget -= evicted->GetArmsCarried();
       ++evictedCount;
-      evicted->strength34 = static_cast<short>(0xffaa);
+      evicted->strength = static_cast<short>(0xffaa);
     } while (budget > 0);
 
     int oldCount = snapshot->childCount[side];
@@ -1936,11 +1935,11 @@ void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, in
     if (evictedCount != 0) {
       int recordIndex = oldCount;
       for (int pass = 0; pass < evictedCount; ++pass) {
-        CIterator evictedIter(nation->militaryUnitList44);
+        CIterator evictedIter(nation->militaryUnitList);
         for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(evictedIter.Reset());
              evictedIter.More(); unit = static_cast<TMilitaryUnit*>(evictedIter.Advance())) {
-          if (unit->strength34 == static_cast<short>(0xffaa)) {
-            unit->strength34 = 0;
+          if (unit->strength == static_cast<short>(0xffaa)) {
+            unit->strength = 0;
             MapOrderBattleSideChildRecord& rec = newRecords[recordIndex];
             ++recordIndex;
             rec.resourceType = unit->orderType;
@@ -1973,7 +1972,7 @@ void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, in
 void TArmyMgr::ReassessLanding(int nationSlot, int zone) {
   TGreatPower* nation = g_apNationStates[nationSlot];
   int totalArms = 0;
-  CIterator cursor(nation->militaryUnitList44);
+  CIterator cursor(nation->militaryUnitList);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset()); cursor.More();
        unit = static_cast<TMilitaryUnit*>(cursor.Advance())) {
     if (unit->orderTargetIndex == zone) {
@@ -1989,7 +1988,7 @@ void TArmyMgr::ReassessLanding(int nationSlot, int zone) {
     g_pSimMgr->GetString(0x2745, 10, &message);
     g_pViewMgr->ModalMessage(message, g_ptArmyValidationModalMessage);
 
-    CIterator reassessCursor(nation->militaryUnitList44);
+    CIterator reassessCursor(nation->militaryUnitList);
     for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(reassessCursor.Reset());
          reassessCursor.More(); unit = static_cast<TMilitaryUnit*>(reassessCursor.Advance())) {
       if (unit->orderTargetIndex == zone &&

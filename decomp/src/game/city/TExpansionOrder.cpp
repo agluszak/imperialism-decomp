@@ -52,7 +52,7 @@ void TExpansionOrder::Produce() {
   city->productionAccum[resourceTypeIndex] =
       static_cast<short>(city->productionAccum[resourceTypeIndex] + delta);
   city->productionOrderTable1dc[resourceTypeIndex] = newValue;
-  requestedQuantity4c = zero;
+  requestedQuantity = zero;
   quantity = zero;
   trackingSlots[primaryInputResourceId] = zero;
   trackingSlots[secondaryInputResourceId] = zero;
@@ -81,7 +81,7 @@ bool TExpansionOrder::SetQuantity(short quantity) {
     return false;
   }
   this->quantity = quantity;
-  requestedQuantity4c = quantity;
+  requestedQuantity = quantity;
 
   ownerCity->CityStockByType(primaryInputResourceId) =
       static_cast<short>(ownerCity->CityStockByType(primaryInputResourceId) - delta);

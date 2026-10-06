@@ -243,8 +243,8 @@ JSON_Value* CaptureArmyBattleSnapshot(TArmyBattle* battle) {
   }
   for (index = 0; index < count; ++index) {
     for (scan = index + 1; scan < count; ++scan) {
-      if (units[scan]->sourceUnit38->persistentUnitId20 <
-          units[index]->sourceUnit38->persistentUnitId20) {
+      if (units[scan]->sourceUnit->persistentUnitId <
+          units[index]->sourceUnit->persistentUnitId) {
         TArmyTacUnit* swap = units[index];
         units[index] = units[scan];
         units[scan] = swap;
@@ -254,19 +254,19 @@ JSON_Value* CaptureArmyBattleSnapshot(TArmyBattle* battle) {
   for (index = 0; index < count; ++index) {
     TArmyTacUnit* unit = units[index];
     JsonObject record;
-    record.Set("source", unit->sourceUnit38->persistentUnitId20);
-    record.Set("side", unit->side20);
+    record.Set("source", unit->sourceUnit->persistentUnitId);
+    record.Set("side", unit->side);
     record.Set("tile", unit->tileIndex8);
-    record.Set("action_points", unit->actionPoints28);
-    record.Set("strength", unit->strength4);
-    record.Set("morale", unit->morale34);
+    record.Set("action_points", unit->actionPoints);
+    record.Set("strength", unit->strength);
+    record.Set("morale", unit->morale);
     record.Set("state", unit->state1c);
     unitArray.Add(record.Release());
   }
   snapshot.SetOptional(
       "selected",
       battle->selectedUnit1c != 0
-          ? static_cast<TArmyTacUnit*>(battle->selectedUnit1c)->sourceUnit38->persistentUnitId20
+          ? static_cast<TArmyTacUnit*>(battle->selectedUnit1c)->sourceUnit->persistentUnitId
           : -1);
   snapshot.Set("current_side", battle->currentSide);
   snapshot.Set("round", battle->roundCounter);
@@ -328,10 +328,10 @@ void ClearAllMilitaryOrders() {
   int slot;
   for (slot = 0; slot < kNationSlotCount; ++slot) {
     TCountry* country = g_apTerrainTypeDescriptorTable[slot];
-    if (country == 0 || country->militaryUnitList44 == 0) {
+    if (country == 0 || country->militaryUnitList == 0) {
       continue;
     }
-    CIterator cursor(country->militaryUnitList44);
+    CIterator cursor(country->militaryUnitList);
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset());
     while (cursor.More() != 0) {
       unit->SetOrders(kUnitOrderIdle, -1);
@@ -344,7 +344,7 @@ void CollectStackUnitIds(TArmyStack* stack, JsonArray* ids) {
   TArmyStackUnitNode* node;
   for (node = stack->head14; node != 0; node = node->next) {
     if (node->unit != 0) {
-      ids->Add(node->unit->persistentUnitId20);
+      ids->Add(node->unit->persistentUnitId);
     }
   }
 }
@@ -377,15 +377,15 @@ JSON_Value* CaptureMilitaryUnitPositions() {
   int slot;
   for (slot = 0; slot < kNationSlotCount; ++slot) {
     TCountry* country = g_apTerrainTypeDescriptorTable[slot];
-    CIterator cursor(country == 0 ? 0 : country->militaryUnitList44);
+    CIterator cursor(country == 0 ? 0 : country->militaryUnitList);
     TMilitaryUnit* unit;
-    if (country == 0 || country->militaryUnitList44 == 0) {
+    if (country == 0 || country->militaryUnitList == 0) {
       continue;
     }
     unit = static_cast<TMilitaryUnit*>(cursor.Reset());
     while (cursor.More() != 0) {
       JsonObject entry;
-      entry.Set("id", unit->persistentUnitId20);
+      entry.Set("id", unit->persistentUnitId);
       entry.Set("tile", static_cast<int>(unit->tileIndex06));
       units.Add(entry.Release());
       unit = static_cast<TMilitaryUnit*>(cursor.Advance());
@@ -399,9 +399,9 @@ bool IssueUncontestedRedeploys(TMilitaryUnit* skip, int* issued) {
   *issued = 0;
   for (slot = 0; slot < kNationSlotCount; ++slot) {
     TCountry* country = g_apTerrainTypeDescriptorTable[slot];
-    CIterator cursor(country == 0 ? 0 : country->militaryUnitList44);
+    CIterator cursor(country == 0 ? 0 : country->militaryUnitList);
     TMilitaryUnit* unit;
-    if (country == 0 || country->militaryUnitList44 == 0) {
+    if (country == 0 || country->militaryUnitList == 0) {
       continue;
     }
     unit = static_cast<TMilitaryUnit*>(cursor.Reset());
@@ -411,7 +411,7 @@ bool IssueUncontestedRedeploys(TMilitaryUnit* skip, int* issued) {
       int adj;
       if (unit != skip && source >= 0 && source < 0x180) {
         record = &g_pGlobalMapState->cityScoreTable[source];
-        for (adj = 0; adj < record->adjacentRegionCount08; ++adj) {
+        for (adj = 0; adj < record->adjacentRegionCount; ++adj) {
           const short dest = record->adjacentRegionIds[adj];
           if (dest >= 0 && dest < 0x180 &&
               g_pGlobalMapState->cityScoreTable[dest].ownerNationCode00 ==
@@ -432,9 +432,9 @@ bool FindUncontestedRedeploy(TMilitaryUnit** outUnit, short* outDest, TMilitaryU
   int slot;
   for (slot = 0; slot < kNationSlotCount; ++slot) {
     TCountry* country = g_apTerrainTypeDescriptorTable[slot];
-    CIterator cursor(country == 0 ? 0 : country->militaryUnitList44);
+    CIterator cursor(country == 0 ? 0 : country->militaryUnitList);
     TMilitaryUnit* unit;
-    if (country == 0 || country->militaryUnitList44 == 0) {
+    if (country == 0 || country->militaryUnitList == 0) {
       continue;
     }
     unit = static_cast<TMilitaryUnit*>(cursor.Reset());
@@ -444,7 +444,7 @@ bool FindUncontestedRedeploy(TMilitaryUnit** outUnit, short* outDest, TMilitaryU
       int adj;
       if (unit != skip && source >= 0 && source < 0x180) {
         record = &g_pGlobalMapState->cityScoreTable[source];
-        for (adj = 0; adj < record->adjacentRegionCount08; ++adj) {
+        for (adj = 0; adj < record->adjacentRegionCount; ++adj) {
           const short dest = record->adjacentRegionIds[adj];
           if (dest >= 0 && dest < 0x180 &&
               g_pGlobalMapState->cityScoreTable[dest].ownerNationCode00 ==
@@ -466,9 +466,9 @@ bool FindHostileRedeployExcluding(TMilitaryUnit* skipUnit, short skipDest, TMili
   int slot;
   for (slot = 0; slot < kNationSlotCount; ++slot) {
     TCountry* country = g_apTerrainTypeDescriptorTable[slot];
-    CIterator cursor(country == 0 ? 0 : country->militaryUnitList44);
+    CIterator cursor(country == 0 ? 0 : country->militaryUnitList);
     TMilitaryUnit* unit;
-    if (country == 0 || country->militaryUnitList44 == 0) {
+    if (country == 0 || country->militaryUnitList == 0) {
       continue;
     }
     unit = static_cast<TMilitaryUnit*>(cursor.Reset());
@@ -478,7 +478,7 @@ bool FindHostileRedeployExcluding(TMilitaryUnit* skipUnit, short skipDest, TMili
       int adj;
       if (unit != skipUnit && source >= 0 && source < 0x180) {
         record = &g_pGlobalMapState->cityScoreTable[source];
-        for (adj = 0; adj < record->adjacentRegionCount08; ++adj) {
+        for (adj = 0; adj < record->adjacentRegionCount; ++adj) {
           const short dest = record->adjacentRegionIds[adj];
           short defender;
           if (dest < 0 || dest >= 0x180 || dest == skipDest) {
@@ -562,7 +562,7 @@ void ProbeNavyDeployTiles(TNavyBattle* battle, TTacticalUnit* unit, JsonArray* t
   if (unit == 0) {
     return;
   }
-  player = battle->players[unit->side20];
+  player = battle->players[unit->side];
   savedTile = unit->tileIndex8;
   savedReady = player->sideReadyFlag;
   savedCursor = player->cursorIndex;
@@ -570,12 +570,12 @@ void ProbeNavyDeployTiles(TNavyBattle* battle, TTacticalUnit* unit, JsonArray* t
   savedSide = battle->currentSide;
   savedLive = battle->battleLive;
   for (tile = 0; tile < battle->tacticalTileCount; ++tile) {
-    occupant = battle->tileGrid[tile].occupant4;
+    occupant = battle->tileGrid[tile].occupant;
     battle->DeployUnit(unit, tile);
     if (unit->tileIndex8 == tile) {
       tiles->Add(tile);
       unit->tileIndex8 = savedTile;
-      battle->tileGrid[tile].occupant4 = occupant;
+      battle->tileGrid[tile].occupant = occupant;
       player->sideReadyFlag = savedReady;
       player->cursorIndex = savedCursor;
       battle->selectedUnit1c = savedSelected;
@@ -659,9 +659,9 @@ RuntimeActionResult RunMilitaryMaintenance(NativeTransition& transition) {
   TGreatPower* nation = ActiveNation();
   const NationSlot foreignNationSlot = nationSlot == 0 ? 1 : 0;
 
-  while (nation->militaryUnitList44->GetCount() != 0) {
+  while (nation->militaryUnitList->GetCount() != 0) {
     TMilitaryUnit* unit =
-        static_cast<TMilitaryUnit*>(nation->militaryUnitList44->GetEntryByOrdinal(1));
+        static_cast<TMilitaryUnit*>(nation->militaryUnitList->GetEntryByOrdinal(1));
     unit->Vaporize();
     unit->Free();
   }
@@ -687,7 +687,7 @@ RuntimeActionResult RunMilitaryMaintenance(NativeTransition& transition) {
                        "maintenance-foreign-slot12");
 
   nation->treasuryValue10 = 10000;
-  nation->militaryExpenses960 = 0;
+  nation->militaryExpenses = 0;
 
   JsonObject args;
   args.Set("nation", static_cast<int>(nationSlot));
@@ -1062,7 +1062,7 @@ RuntimeActionResult RunMilitaryPhaseLandCombat(NativeTransition& transition) {
     return RuntimeActionResult::Failure(
         "the loaded fixture has no adjacent enemy-garrisoned province");
   }
-  ForceWarBetween(unit->ownerNationSlot18, defender);
+  ForceWarBetween(unit->ownerNationSlot, defender);
   unit->SetOrders(kUnitOrderRedeploy, dest);
 
   JsonObject args;
@@ -1099,9 +1099,9 @@ RuntimeActionResult RunMilitaryPhaseLandInteractive(NativeTransition& transition
     return RuntimeActionResult::Failure(
         "the loaded fixture has no adjacent enemy-garrisoned province");
   }
-  ForceWarBetween(unit->ownerNationSlot18, defender);
+  ForceWarBetween(unit->ownerNationSlot, defender);
   unit->SetOrders(kUnitOrderRedeploy, dest);
-  g_pSimMgr->activeNationSlot = unit->ownerNationSlot18;
+  g_pSimMgr->activeNationSlot = unit->ownerNationSlot;
 
   JsonObject args;
   RuntimeActionResult started = transition.Begin(args.Release());
@@ -1142,9 +1142,9 @@ RuntimeActionResult RunMilitaryPhaseLandRetreat(NativeTransition& transition) {
   if (!FindHostileRedeploy(&unit, &dest, &defender)) {
     return RuntimeActionResult::Failure("fixture has no hostile army redeploy");
   }
-  ForceWarBetween(unit->ownerNationSlot18, defender);
+  ForceWarBetween(unit->ownerNationSlot, defender);
   unit->SetOrders(kUnitOrderRedeploy, dest);
-  g_pSimMgr->activeNationSlot = unit->ownerNationSlot18;
+  g_pSimMgr->activeNationSlot = unit->ownerNationSlot;
 
   JsonObject args;
   RuntimeActionResult started = transition.Begin(args.Release());
@@ -1321,7 +1321,7 @@ RuntimeActionResult RunCombatMovesCreatesBattle(NativeTransition& transition) {
     return RuntimeActionResult::Failure(
         "the loaded fixture has no adjacent enemy-garrisoned province");
   }
-  ForceWarBetween(unit->ownerNationSlot18, defender);
+  ForceWarBetween(unit->ownerNationSlot, defender);
   unit->SetOrders(kUnitOrderRedeploy, dest);
 
   JsonObject args;
@@ -1359,7 +1359,7 @@ RuntimeActionResult RunAutoResolveLandBattle(NativeTransition& transition) {
     return RuntimeActionResult::Failure(
         "the loaded fixture has no adjacent enemy-garrisoned province");
   }
-  ForceWarBetween(unit->ownerNationSlot18, defender);
+  ForceWarBetween(unit->ownerNationSlot, defender);
   unit->SetOrders(kUnitOrderRedeploy, dest);
 
   started = transition.Begin(args.Release());
@@ -1403,9 +1403,9 @@ RuntimeActionResult RunInteractiveArmyBattleDone(NativeTransition& transition) {
     return RuntimeActionResult::Failure(
         "the loaded fixture has no adjacent enemy-garrisoned province");
   }
-  ForceWarBetween(unit->ownerNationSlot18, defender);
+  ForceWarBetween(unit->ownerNationSlot, defender);
   unit->SetOrders(kUnitOrderRedeploy, dest);
-  g_pSimMgr->activeNationSlot = unit->ownerNationSlot18;
+  g_pSimMgr->activeNationSlot = unit->ownerNationSlot;
   RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
@@ -1459,9 +1459,9 @@ RuntimeActionResult RunInteractiveArmyBattleMove(NativeTransition& transition) {
     return RuntimeActionResult::Failure(
         "the loaded fixture has no adjacent enemy-garrisoned province");
   }
-  ForceWarBetween(unit->ownerNationSlot18, defender);
+  ForceWarBetween(unit->ownerNationSlot, defender);
   unit->SetOrders(kUnitOrderRedeploy, dest);
-  g_pSimMgr->activeNationSlot = unit->ownerNationSlot18;
+  g_pSimMgr->activeNationSlot = unit->ownerNationSlot;
   RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
@@ -1489,13 +1489,13 @@ RuntimeActionResult RunInteractiveArmyBattleMove(NativeTransition& transition) {
     for (tile = 0; tile < battle->tacticalTileCount; ++tile) {
       int enemyTile;
       int distance;
-      if (battle->tileMoveCostArray[tile] <= 0 || battle->tileGrid[tile].occupant4 != 0) {
+      if (battle->tileMoveCostArray[tile] <= 0 || battle->tileGrid[tile].occupant != 0) {
         continue;
       }
       distance = 9999;
       for (enemyTile = 0; enemyTile < battle->tacticalTileCount; ++enemyTile) {
-        TTacticalUnit* occupant = battle->tileGrid[enemyTile].occupant4;
-        if (occupant != 0 && occupant->side20 != moving->side20) {
+        TTacticalUnit* occupant = battle->tileGrid[enemyTile].occupant;
+        if (occupant != 0 && occupant->side != moving->side) {
           int candidate = ComputeHexTileDistanceFromIndices(tile, enemyTile);
           if (candidate < distance) {
             distance = candidate;
@@ -1553,9 +1553,9 @@ RuntimeActionResult RunInteractiveArmyBattleAttack(NativeTransition& transition,
   if (!FindHostileRedeploy(&unit, &dest, &defender)) {
     return RuntimeActionResult::Failure("fixture has no hostile army redeploy");
   }
-  ForceWarBetween(unit->ownerNationSlot18, defender);
+  ForceWarBetween(unit->ownerNationSlot, defender);
   unit->SetOrders(kUnitOrderRedeploy, dest);
-  g_pSimMgr->activeNationSlot = defenderActive ? defender : unit->ownerNationSlot18;
+  g_pSimMgr->activeNationSlot = defenderActive ? defender : unit->ownerNationSlot;
   RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded()) {
     return started;
@@ -1600,12 +1600,12 @@ RuntimeActionResult RunInteractiveArmyBattleAttack(NativeTransition& transition,
       for (tile = 0; tile < battle->tacticalTileCount; ++tile) {
         int enemyTile;
         int distance = 9999;
-        if (battle->tileMoveCostArray[tile] <= 0 || battle->tileGrid[tile].occupant4 != 0) {
+        if (battle->tileMoveCostArray[tile] <= 0 || battle->tileGrid[tile].occupant != 0) {
           continue;
         }
         for (enemyTile = 0; enemyTile < battle->tacticalTileCount; ++enemyTile) {
-          TTacticalUnit* occupant = battle->tileGrid[enemyTile].occupant4;
-          if (occupant != 0 && occupant->side20 != moving->side20) {
+          TTacticalUnit* occupant = battle->tileGrid[enemyTile].occupant;
+          if (occupant != 0 && occupant->side != moving->side) {
             int candidate = ComputeHexTileDistanceFromIndices(tile, enemyTile);
             if (candidate < distance)
               distance = candidate;
@@ -1667,9 +1667,9 @@ RuntimeActionResult RunInteractiveArmyBattleRetreat(NativeTransition& transition
   if (!FindHostileRedeploy(&unit, &dest, &defender)) {
     return RuntimeActionResult::Failure("fixture has no hostile army redeploy");
   }
-  ForceWarBetween(unit->ownerNationSlot18, defender);
+  ForceWarBetween(unit->ownerNationSlot, defender);
   unit->SetOrders(kUnitOrderRedeploy, dest);
-  g_pSimMgr->activeNationSlot = unit->ownerNationSlot18;
+  g_pSimMgr->activeNationSlot = unit->ownerNationSlot;
   RuntimeActionResult started = transition.Begin(args.Release());
   if (!started.Succeeded())
     return started;
@@ -1727,8 +1727,8 @@ RuntimeActionResult RunCombatMovesResumesAfterBattle(NativeTransition& transitio
                                     &secondDefender)) {
     return RuntimeActionResult::Failure("the loaded fixture has no second distinct hostile stack");
   }
-  ForceWarBetween(firstUnit->ownerNationSlot18, firstDefender);
-  ForceWarBetween(secondUnit->ownerNationSlot18, secondDefender);
+  ForceWarBetween(firstUnit->ownerNationSlot, firstDefender);
+  ForceWarBetween(secondUnit->ownerNationSlot, secondDefender);
   firstUnit->SetOrders(kUnitOrderRedeploy, firstDest);
   secondUnit->SetOrders(kUnitOrderRedeploy, secondDest);
 
@@ -1783,7 +1783,7 @@ RuntimeActionResult RunCombatMovesBattleThenLaterMovement(NativeTransition& tran
     return RuntimeActionResult::Failure(
         "the loaded fixture has no later same-owner redeploy besides the hostile stack");
   }
-  ForceWarBetween(hostile->ownerNationSlot18, defender);
+  ForceWarBetween(hostile->ownerNationSlot, defender);
   hostile->SetOrders(kUnitOrderRedeploy, hostileDest);
 
   started = transition.Begin(args.Release());

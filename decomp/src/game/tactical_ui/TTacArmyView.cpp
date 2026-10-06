@@ -329,7 +329,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     }
     if (tacticalBattle->IsTacticalTileAtFortWallSectionSlot(wallNeighbor)) {
       gunSlotRow = true;
-      if (grid[wallNeighbor].occupant4 != 0) {
+      if (grid[wallNeighbor].occupant != 0) {
         gunSlotOccupied = true;
       }
     }
@@ -337,8 +337,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
 
   if (tacticalBattle->battleLive == 0 && hexRow > 0) {
     g_pViewMgr->SetForeColor(0x35);
-    if (tacticalBattle->ApplyGridColumnSelectionGuard(tileIndex) &&
-        grid[tileIndex].occupant4 == 0) {
+    if (tacticalBattle->ApplyGridColumnSelectionGuard(tileIndex) && grid[tileIndex].occupant == 0) {
       const int centerY = tileScreenRect.top + tileRowHeightPx / 2;
       const int centerX = tileScreenRect.left + tileWidthPx / 2;
       SetQuickDrawFillColor(0);
@@ -436,10 +435,10 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     TTacticalUnit* edgeUnit = 0;
     if (rowParity != 0) {
       if (fortCell == 1 || fortCell == 5) {
-        edgeUnit = grid[tileNeighbors[5]].occupant4;
+        edgeUnit = grid[tileNeighbors[5]].occupant;
       }
     } else if (fortCell == 2 || fortCell == 4) {
-      edgeUnit = grid[tileNeighbors[0]].occupant4;
+      edgeUnit = grid[tileNeighbors[0]].occupant;
     }
     if (edgeUnit != 0) {
       short edgeSpriteX =
@@ -447,7 +446,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
       if (rowParity != 0) {
         edgeSpriteX += static_cast<short>(unitSpriteCellWidth / 2);
       }
-      short edgeSpriteY = edgeUnit->side20 == 0 ? 0 : static_cast<short>(unitSpriteCellHeight);
+      short edgeSpriteY = edgeUnit->side == 0 ? 0 : static_cast<short>(unitSpriteCellHeight);
       RECT edgeSrc = {edgeSpriteX, edgeSpriteY, edgeSpriteX + unitSpriteCellWidth,
                       edgeSpriteY + unitSpriteCellHeight};
       RECT edgeDst;
@@ -538,7 +537,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
   }
 
   // Occupant unit sprite (with hex selection outline for the active unit).
-  TTacticalUnit* occupant = grid[tileIndex].occupant4;
+  TTacticalUnit* occupant = grid[tileIndex].occupant;
   if (occupant != 0) {
     if (occupant == tacticalBattle->selectedUnit1c) {
       short selectionPalette[2] = {0x13, 0};
@@ -552,7 +551,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
       SetQuickDrawFillColorFromPaletteIndex(0);
       DrawHexSelectionOutlineSegments(&selectionRect);
     }
-    short spriteY = occupant->side20 == 0 ? 0 : static_cast<short>(unitSpriteCellHeight);
+    short spriteY = occupant->side == 0 ? 0 : static_cast<short>(unitSpriteCellHeight);
     short spriteX =
         static_cast<short>(occupant->unitTypeC) * static_cast<short>(unitSpriteCellWidth);
     RECT unitSrc = {spriteX, spriteY, spriteX + unitSpriteCellWidth,
@@ -621,10 +620,10 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     barRect.bottom -= 1;
     FillRectWithQuickDrawBrushAndContextOffset(&barRect);
     g_pViewMgr->SetForeColor(6);
-    barRect.right = barRect.left + (occupant->strength4 + 0x18) / 0x19;
+    barRect.right = barRect.left + (occupant->strength + 0x18) / 0x19;
     FillRectWithQuickDrawBrushAndContextOffset(&barRect);
     g_pViewMgr->SetForeColor(0x34);
-    barRect.right = barRect.left + (static_cast<TArmyTacUnit*>(occupant)->morale34 + 0x18) / 0x19;
+    barRect.right = barRect.left + (static_cast<TArmyTacUnit*>(occupant)->morale + 0x18) / 0x19;
     FillRectWithQuickDrawBrushAndContextOffset(&barRect);
 
     short tierOffset = g_pGlobalMapState->GetFortFlagOffset(0);
@@ -674,11 +673,11 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     if (neighborIdx == -1) {
       continue;
     }
-    TTacticalUnit* neighborUnit = grid[neighborIdx].occupant4;
+    TTacticalUnit* neighborUnit = grid[neighborIdx].occupant;
     if (neighborUnit == 0) {
       continue;
     }
-    short nSpriteY = neighborUnit->side20 == 0 ? 0 : static_cast<short>(unitSpriteCellHeight);
+    short nSpriteY = neighborUnit->side == 0 ? 0 : static_cast<short>(unitSpriteCellHeight);
     short nSpriteX =
         static_cast<short>(neighborUnit->unitTypeC) * static_cast<short>(unitSpriteCellWidth);
     RECT nSrc = {nSpriteX, nSpriteY, nSpriteX + unitSpriteCellWidth,

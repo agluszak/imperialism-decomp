@@ -9,7 +9,7 @@
 
 // FUNCTION: IMPERIALISM 0x00430950
 TDeluxeText::TDeluxeText()
-    : TTEView(), textColor98(0), shadowTextColor(0), dropShadowEnabled(false) {}
+    : TTEView(), textColor(0), shadowTextColor(0), dropShadowEnabled(false) {}
 
 // FUNCTION: IMPERIALISM 0x00430a10
 TDeluxeText::~TDeluxeText() {}
@@ -20,7 +20,7 @@ IMPLEMENT_DYNCREATE(TDeluxeText, TTEView)
 void TDeluxeText::IDeluxeText(TView* panel, int* offsetLayout, int* sizeLayout, RECT* insetRect,
                               TextStyle* style, short styleWord90) {
   ITEView(nullptr, panel, offsetLayout, sizeLayout, 5, 5, insetRect, style, styleWord90, 0, true);
-  textColor98 = style->textColor;
+  textColor = style->textColor;
   EnableEditing(0);
 }
 
@@ -58,13 +58,13 @@ void TDeluxeText::Draw(RECT* rectBuffer) {
   }
   CRect mainRect;
   BuildInsetContentRect(&mainRect);
-  SetQuickDrawColorAndPropagateIfChanged(textColor98);
+  SetQuickDrawColorAndPropagateIfChanged(textColor);
   ImageText((LPCSTR)textBuffer, textBuffer.GetLength(), &mainRect, textAlignmentCode);
 }
 
 // FUNCTION: IMPERIALISM 0x005b62a0
 void TDeluxeText::SetTextStyle(const TextStyle& style, bool refreshNow) {
-  textColor98 = style.textColor;
+  textColor = style.textColor;
   SetOneStyle(0, GetNumberOfChars(), 0xf, style, refreshNow);
 }
 
@@ -73,7 +73,7 @@ void TDeluxeText::SetTextStyle(int fontStyleFlags, int pointSize, int themeCode)
   TextStyle style;
   style.textColor = 0;
   BuildUiTextStyleDescriptor(&style, fontStyleFlags, pointSize, themeCode);
-  textColor98 = style.textColor;
+  textColor = style.textColor;
   SetOneStyle(0, GetNumberOfChars(), 0xf, style, true);
 }
 

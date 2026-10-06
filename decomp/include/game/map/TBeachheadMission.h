@@ -8,9 +8,9 @@ class TInvadeMission;
 class TBeachheadMission : public TControlSeaZoneMission {
   DECLARE_SERIAL(TBeachheadMission)
 public:
-  TInvadeMission* parentMission3c; // +0x3c owning composite invade mission
+  TInvadeMission* parentMission; // +0x3c owning composite invade mission
 
-  TBeachheadMission() : TControlSeaZoneMission(), parentMission3c(nullptr) {}
+  TBeachheadMission() : TControlSeaZoneMission(), parentMission(nullptr) {}
 
   TBeachheadMission(TZone* targetZone, TInvadeMission* parentMission);
   virtual ~TBeachheadMission() override;
@@ -19,7 +19,7 @@ public:
                        TZone* zoneContext) const override; // slot 0x13 0x53a7b0
 
   virtual TMission*
-  GetArmyMission() override; // slot 0x16 0x53a920 -- returns parentMission3c (not `this`)
+  GetArmyMission() override; // slot 0x16 0x53a920 -- returns parentMission (not `this`)
   virtual bool IsDefensiveSeaZoneMission() const override; // slot 0x18 0x53a3b0
   virtual bool IsHospitalMission() const override;         // slot 0x19 0x53a390
 

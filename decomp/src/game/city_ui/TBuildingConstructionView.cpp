@@ -44,7 +44,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   CString scratch;
 
   this->city90 = city;
-  this->buildingSlotId94 = buildingSlotId;
+  this->buildingSlotId = buildingSlotId;
   this->productionView98 = productionView;
 
   city->GetMaxBuildingCapacity(buildingSlotId);
@@ -61,7 +61,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     city->VerifyStocks();
   }
 
-  switch (this->buildingSlotId94) {
+  switch (this->buildingSlotId) {
   case 0:
   case 2:
   case 4:
@@ -128,7 +128,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
 
   TStaticText* capTCtrl =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'a', 'p', 'T')));
-  short slot = this->buildingSlotId94;
+  short slot = this->buildingSlotId;
   if (slot == 0 || slot == 2 || slot == 4 || slot == 6) {
     capValue.Format(g_szDecimalFormat, 2);
   } else if (slot == 0xb) {
@@ -235,14 +235,14 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
 
 // FUNCTION: IMPERIALISM 0x004ca8f0
 void TBuildingConstructionView::DoClosingAction(unsigned long dialogActionTag) {
-  if (buildingSlotId94 != 0xb) {
-    TProductionOrder* order = city90->trailingOrderSlots[buildingSlotId94 + 2];
+  if (buildingSlotId != 0xb) {
+    TProductionOrder* order = city90->trailingOrderSlots[buildingSlotId + 2];
     if (order == 0) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x519);
     }
     if (dialogActionTag == kControlTagOkay) { // 'okay'
-      short previousBuildingType = static_cast<short>(city90->GetBuildingType(buildingSlotId94));
-      order->SetQuantity(static_cast<short>(city90->GetMaxBuildingCapacity(buildingSlotId94) -
+      short previousBuildingType = static_cast<short>(city90->GetBuildingType(buildingSlotId));
+      order->SetQuantity(static_cast<short>(city90->GetMaxBuildingCapacity(buildingSlotId) -
                                             previousBuildingType));
     } else if (order->quantity > 0) {
       order->SetQuantity(0);
@@ -251,8 +251,8 @@ void TBuildingConstructionView::DoClosingAction(unsigned long dialogActionTag) {
     city90->BuildPowerPlant(true);
   }
 
-  productionView98->SetBuildingPicture(
-      buildingSlotId94, static_cast<short>(city90->GetBuildingType(buildingSlotId94)));
+  productionView98->SetBuildingPicture(buildingSlotId,
+                                       static_cast<short>(city90->GetBuildingType(buildingSlotId)));
   productionView98->UpdateToolbar();
   productionView98->RefreshControl();
 }

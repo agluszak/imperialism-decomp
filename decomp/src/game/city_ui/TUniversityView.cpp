@@ -279,8 +279,8 @@ void TUniversityView::UpdateFields() {
 
   TPopulationMgr* population = city94->productionSummary;
   short recruitmentCapacity = static_cast<short>(population->strength / 4);
-  if (population->productionSlots->highSkillCount08 < recruitmentCapacity) {
-    recruitmentCapacity = population->productionSlots->highSkillCount08;
+  if (population->productionSlots->highSkillCount < recruitmentCapacity) {
+    recruitmentCapacity = population->productionSlots->highSkillCount;
   }
 
   TNumberText* capacityAvailable =
@@ -322,8 +322,7 @@ void TUniversityView::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);
 
   int nHighestRequirementLevel = 0;
-  short baseOffset =
-      g_pGlobalMapState->GetUnitOffset(selectedRecruitmentCategory, false, 1);
+  short baseOffset = g_pGlobalMapState->GetUnitOffset(selectedRecruitmentCategory, false, 1);
   UpdatePaletteIndexWithDefaultFallback(0x10);
 
   RECT panelRect = {0x7c, 0x5c, 0xbc, 0x9c};

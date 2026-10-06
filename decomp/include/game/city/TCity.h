@@ -80,8 +80,8 @@ public:
 
   unsigned char powerPlantUpgradeQueuedFlag; // +0x04 — BuildPowerPlant queue flag
   unsigned char pad05;
-  short foodSubstitutionCount06;    // +0x06 — workers reassigned after food substitution
-  short starvationPopulationLoss08; // +0x08 — population lost during the last Eat pass
+  short foodSubstitutionCount;    // +0x06 — workers reassigned after food substitution
+  short starvationPopulationLoss; // +0x08 — population lost during the last Eat pass
   short serializedState;
   short cityPhaseCounter;
   short militaryRecruitCountByKind[kMilitaryUnitKindCount];

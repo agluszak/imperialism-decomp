@@ -479,11 +479,11 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
   CString value2;
   CString value1;
 
-  int starvationPopulationLoss = city->starvationPopulationLoss08;
-  int foodSubstitutionCount = city->foodSubstitutionCount06;
+  int starvationPopulationLoss = city->starvationPopulationLoss;
+  int foodSubstitutionCount = city->foodSubstitutionCount;
 
   this->city94 = city;
-  this->dialogRoot98 = dialogRoot;
+  this->dialogRoot = dialogRoot;
   UpdateToolbar();
 
   // Restore any building windows that were open when this city view was last active.
@@ -603,19 +603,19 @@ void TCityProductionView::UpdateUnits() {
   if (placard == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x4b9);
   }
-  placard->SetValue(population->baselineSlots->lowSkillCount04, true);
+  placard->SetValue(population->baselineSlots->lowSkillCount, true);
 
   placard = static_cast<TPlacard*>(ResolveControlByTag(kSummaryTagTrai)); // 'iart'
   if (placard == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x4bc);
   }
-  placard->SetValue(population->baselineSlots->mediumSkillCount06, true);
+  placard->SetValue(population->baselineSlots->mediumSkillCount, true);
 
   placard = static_cast<TPlacard*>(ResolveControlByTag(kSummaryTagProf)); // 'forp'
   if (placard == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x4bf);
   }
-  placard->SetValue(population->baselineSlots->highSkillCount08, true);
+  placard->SetValue(population->baselineSlots->highSkillCount, true);
 
   placard = static_cast<TPlacard*>(ResolveControlByTag(kSummaryTagPowe)); // 'ewop'
   if (placard == 0) {

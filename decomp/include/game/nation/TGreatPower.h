@@ -48,7 +48,7 @@ public:
   // slots 0x05–0x07 — TObject stream lifecycle (Mac: WriteTo / ReadFrom / Free).
   void WriteTo(TStream* stream) override;  // body 0x004d9c70
   void ReadFrom(TStream* stream) override; // body 0x004d92e0
-  void Free() override; // body 0x004d9160
+  void Free() override;                    // body 0x004d9160
   void WriteCoreFieldsToStream(TStream* stream) override;
   void ReadCoreFieldsFromStream(TStream* stream, int unusedArg) override;
 
@@ -177,8 +177,8 @@ public:
   virtual short GetTrackedSlotEntryCountLow(short targetSlot);     // slot 0x6d
   virtual char AnyTrackedSlotEntryHasZeroField4(short targetSlot); // slot 0x6e
   // slot 0x6f — body 0x004ddeb0: unpacks tracked-slot entry fields (+0/+2/+4/+8).
-  virtual void GetDealInfo(short slotIndex, short ordinal, short* outKind,
-                                          short* outValue, short* outTargetNation, int* outPayload);
+  virtual void GetDealInfo(short slotIndex, short ordinal, short* outKind, short* outValue,
+                           short* outTargetNation, int* outPayload);
   virtual void AssignPayloadToTrackedSlotEntryMatchingField2(int targetSlot, int matchKey,
                                                              int payload); // slot 0x70
   virtual void ClearTradeOffers(void);                                     // index 113
@@ -257,7 +257,7 @@ public:
   virtual char EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation);
   virtual int ConsiderWarOfIntervention(int targetNation, int sourceNation); // slot 0x27c
   virtual int ConsiderWarOfAlliance(int targetNation, int sourceNation,
-                                                     char swapRoles); // slot 0x280
+                                    char swapRoles); // slot 0x280
   virtual void QueueWarTransitionAndNotifyThirdPartyIfNeeded(int targetNationSlot,
                                                              int transitionMode,
                                                              int sourceNationSlot);
@@ -363,7 +363,7 @@ public:
     kGameScoreRowCount = 12
   };
   int gameScoreRows[kGameScoreRowCount];
-  int militaryExpenses960;
+  int militaryExpenses;
   // Object ends here at 0x964 (== CRuntimeClass::m_nObjectSize for TGreatPower and
   // for TProxyGreatPower/TClientGreatPower/TRemoteGreatPower; THostGreatPower adds one
   // more dword). The AI-only tail block (actionMetricByQuarter/provinceStatus/

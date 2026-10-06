@@ -665,9 +665,9 @@ void TCityInteriorMinister::IncreaseCapacityMode(TCity* city, TTaskList* command
 // FUNCTION: IMPERIALISM 0x004c02c0
 void TCityInteriorMinister::TrainingMode(TCity* city, TTaskList* commandQueue) {
   TLaborPool* labor = city->productionSummary->baselineSlots;
-  short mediumSkill = labor->mediumSkillCount06;
-  short lowSkill = labor->lowSkillCount04;
-  short highSkill = labor->highSkillCount08;
+  short mediumSkill = labor->mediumSkillCount;
+  short lowSkill = labor->lowSkillCount;
+  short highSkill = labor->highSkillCount;
 
   for (int ordinal = 1; ordinal <= commandQueue->GetCount(); ++ordinal) {
     TTask* task = static_cast<TTask*>(commandQueue->GetEntryByOrdinal(ordinal));
@@ -1221,9 +1221,8 @@ void TCityInteriorMinister::DispatchBuilders() {
     int cityRecordIndex = ComputeBestNationTileDevelopmentScore(greatPower->nationSlot);
     if (cityRecordIndex != -1) {
       Province* cityRecord = &g_pGlobalMapState->cityScoreTable[cityRecordIndex];
-      short cityTileIndex = cityRecord->cityTileIndex04;
-      TCivUnit* tileOrder =
-          g_pGlobalMapState->terrainStateTable[cityTileIndex].firstCivilianOrder20;
+      short cityTileIndex = cityRecord->cityTileIndex;
+      TCivUnit* tileOrder = g_pGlobalMapState->terrainStateTable[cityTileIndex].firstCivilianOrder;
       if ((tileOrder == 0 || tileOrder == builderOrder) &&
           g_awEngineerFortBuildCostByLevel[cityRecord->fortLevel03] <=
               greatPower->treasuryValue10) {
@@ -1464,7 +1463,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
 
     bool hasActiveProspecting = false;
     if (prospectableTerrain[tile->GetTerrainKind()] != 0) {
-      for (TCivUnit* order = tile->firstCivilianOrder20; order != 0;
+      for (TCivUnit* order = tile->firstCivilianOrder; order != 0;
            order = static_cast<TCivUnit*>(order->nextAtLocation)) {
         if (order->unitOrder == kUnitOrderPurchaseLand && order->remainingTurns == 8) {
           hasActiveProspecting = true;
@@ -2090,8 +2089,8 @@ void TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations() {
   TCity* city = greatPower->city;
   short savedMediumLaborOrder = orderMetricTable40[23];
   short savedHighLaborOrder = orderMetricTable40[24];
-  short lowSkillLabor = city->productionSummary->baselineSlots->lowSkillCount04;
-  short mediumSkillLabor = city->productionSummary->baselineSlots->mediumSkillCount06;
+  short lowSkillLabor = city->productionSummary->baselineSlots->lowSkillCount;
+  short mediumSkillLabor = city->productionSummary->baselineSlots->mediumSkillCount;
   orderMetricTable40[23] = 0;
   orderMetricTable40[24] = 0;
 
@@ -2385,17 +2384,17 @@ void TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex(shor
   }
 
   TLaborPool* laborPool = population->baselineSlots;
-  if (orderSheet.ForResourceCode(60) > laborPool->lowSkillCount04) {
+  if (orderSheet.ForResourceCode(60) > laborPool->lowSkillCount) {
     LowSkillLaborShortfall() =
-        static_cast<short>(orderSheet.ForResourceCode(60) - laborPool->lowSkillCount04);
+        static_cast<short>(orderSheet.ForResourceCode(60) - laborPool->lowSkillCount);
   }
-  if (orderSheet.ForResourceCode(23) > laborPool->mediumSkillCount06) {
+  if (orderSheet.ForResourceCode(23) > laborPool->mediumSkillCount) {
     orderMetricTable40[23] =
-        static_cast<short>(orderSheet.ForResourceCode(23) - laborPool->mediumSkillCount06);
+        static_cast<short>(orderSheet.ForResourceCode(23) - laborPool->mediumSkillCount);
   }
-  if (orderSheet.ForResourceCode(24) > laborPool->highSkillCount08) {
+  if (orderSheet.ForResourceCode(24) > laborPool->highSkillCount) {
     orderMetricTable40[24] =
-        static_cast<short>(orderSheet.ForResourceCode(24) - laborPool->highSkillCount08);
+        static_cast<short>(orderSheet.ForResourceCode(24) - laborPool->highSkillCount);
   }
 
   short maximumQuantity = order->MaxOrder();
@@ -2668,7 +2667,7 @@ void TCityInteriorMinister::SeekResources(TShortintList* ownedTiles, char* prima
 
 // FUNCTION: IMPERIALISM 0x004c56e0
 bool TCityInteriorMinister::TryApplyCityOrderCapabilitySelectionBySlot(short capabilitySlot) {
-  CIterator unitCursor(greatPower->militaryUnitList44);
+  CIterator unitCursor(greatPower->militaryUnitList);
   TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitCursor.Reset());
   while (unitCursor.More()) {
     if (unit->UpgradeType() == capabilitySlot) {

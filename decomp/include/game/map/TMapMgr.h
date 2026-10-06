@@ -270,7 +270,7 @@ public:
   short ResolveRegionTileSubtypeCodeForTileIndex(StrategicTileIndex tileIndex);
 
   TCivUnit* GetFirstCivilianOrderOnTile(StrategicTileIndex tileIndex) {
-    return terrainStateTable[tileIndex].firstCivilianOrder20;
+    return terrainStateTable[tileIndex].firstCivilianOrder;
   }
 
   TCivUnit* GetTileUnitEntryByOwner(StrategicTileIndex tileIndex, short nationId);

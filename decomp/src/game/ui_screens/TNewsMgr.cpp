@@ -418,10 +418,10 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
           record->reportKind04 == kMapContextReportPreemptedLandBattle ||
           record->reportKind04 == kMapContextReportUncontestedTakeover) {
         story->parmKind[0] = 3;
-        story->parmValue[0] = reinterpret_cast<int>(record->location08);
+        story->parmValue[0] = reinterpret_cast<int>(record->location);
         wantId = (record->reportParticipantIndex != 0) - 0x1a;
       } else {
-        short ordinalValue = static_cast<TZone*>(record->location08)->GetContextOrdinalOrInvalid();
+        short ordinalValue = static_cast<TZone*>(record->location)->GetContextOrdinalOrInvalid();
         story->parmValue[0] = ordinalValue;
         story->parmKind[0] = 4;
         wantId = -0x1b - (record->reportKind04 != kMapContextReportSeaBattle);

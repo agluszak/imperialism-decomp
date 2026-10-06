@@ -339,7 +339,7 @@ BOOL TDirectPlaySessionManagerBase::ShowJoinGameSelectionDialogAndCaptureChoice(
 int TWNetSessionManager::TrySendNetworkPacket(int nationId, void* packet, unsigned int byteCount) {
   IDirectPlay2* directPlay = this->directPlayInterface;
   if (directPlay != 0) {
-    long sendResult = directPlay->Send(this->localPlayerId60, nationId, 1, packet, byteCount);
+    long sendResult = directPlay->Send(this->localPlayerId, nationId, 1, packet, byteCount);
     this->lastErrorCode = sendResult;
     return sendResult >= 0;
   }
@@ -379,7 +379,7 @@ int TWNetSessionManager::TryReceiveNetworkPacketIntoResizableBuffer(DWORD* fromI
 
 // FUNCTION: IMPERIALISM 0x00480990
 BOOL TWNetSessionManager::SetLocalPlayerDataAndStoreResult(LPVOID data, DWORD size) {
-  long setResult = directPlayInterface->SetPlayerData(localPlayerId60, data, size, 2);
+  long setResult = directPlayInterface->SetPlayerData(localPlayerId, data, size, 2);
   lastErrorCode = setResult;
   return setResult >= 0;
 }

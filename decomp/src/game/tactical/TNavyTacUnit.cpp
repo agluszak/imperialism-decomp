@@ -23,10 +23,10 @@ void TNavyTacUnit::InitializeFromSourceShip(TShip* sourceShip) {
   unitTypeC = g_anTacticalNavyUnitTypeByShipType_00669D80[sourceShip->type];
   selectedFlag = 0;
   state1c = 0;
-  actionPoints28 = GetBaseActionPoints();
+  actionPoints = GetBaseActionPoints();
   aiStateCode = 0;
   attackTarget = 0;
-  strength4 = sourceShip->strength;
+  strength = sourceShip->strength;
   secondaryCombatStrength = sourceShip->strength;
   int speed = sourceShip->GetSpeed();
   sourceShip34 = sourceShip;
@@ -89,11 +89,11 @@ void TNavyTacUnit::ApplyNavalDamage(float damageAmount, NavyTargeting targeting)
     break;
   }
 
-  strength4 -= strengthDelta;
+  strength -= strengthDelta;
   secondaryCombatStrength -= secondaryCombatStrengthDelta;
   baseActionPoints -= actionPointDelta;
-  if (strength4 <= 0 || secondaryCombatStrength <= 0) {
-    strength4 = 0;
+  if (strength <= 0 || secondaryCombatStrength <= 0) {
+    strength = 0;
     secondaryCombatStrength = 0;
     state1c = 3;
   }

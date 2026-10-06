@@ -34,8 +34,8 @@ void TClientGreatPower::AcceptOffer(short proposalIndex) {
   packet.toNetworkId = -1;
   packet.messageLength = 0x20;
   packet.nationSlot18 = this->nationSlot;
-  packet.acceptedFlag1A = true;
-  packet.proposalIndex1C = proposalIndex;
+  packet.acceptedFlag = true;
+  packet.proposalIndex = proposalIndex;
   g_pNetMgr006a6014->Send(&packet, false);
 }
 
@@ -49,8 +49,8 @@ void TClientGreatPower::RejectOffer(short proposalQueueIndex) {
   packet.toNetworkId = -1;
   packet.messageLength = 0x20;
   packet.nationSlot18 = this->nationSlot;
-  packet.acceptedFlag1A = false;
-  packet.proposalIndex1C = proposalQueueIndex;
+  packet.acceptedFlag = false;
+  packet.proposalIndex = proposalQueueIndex;
   g_pNetMgr006a6014->Send(&packet, false);
 }
 
@@ -76,8 +76,7 @@ void TClientGreatPower::ReplyToDiplomacyOffers(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x005415c0
-int TClientGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation,
-                                                              char swapRoles) {
+int TClientGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation, char swapRoles) {
   struct TurnEvent1EPacketPayload : TimelyNetMessagePrefix {
     unsigned char activeNationIdBeforePayload;
     unsigned char targetNation;
@@ -87,8 +86,7 @@ int TClientGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation,
     bool acceptedFlag;
   };
 
-  int accepted =
-      TGreatPower::ConsiderWarOfAlliance(targetNation, sourceNation, swapRoles);
+  int accepted = TGreatPower::ConsiderWarOfAlliance(targetNation, sourceNation, swapRoles);
   TurnEvent1EPacketPayload packetPayload;
   packetPayload.messageTag = kControlTagTime;
   packetPayload.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());

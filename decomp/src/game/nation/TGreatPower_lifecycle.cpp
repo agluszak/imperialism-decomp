@@ -79,7 +79,7 @@ int TGreatPower::ClassifyNationMilitaryPowerBandAgainstGlobalMean() {
 
     TGreatPower* nation = g_apNationStates[nationSlot];
     int weightSum = 0;
-    CIterator unitIter(nation->militaryUnitList44);
+    CIterator unitIter(nation->militaryUnitList);
     for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
          unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
       weightSum += g_aUnitOrderCostProfileByAbilityId[unit->orderType][2];
@@ -100,7 +100,7 @@ int TGreatPower::ClassifyNationMilitaryPowerBandAgainstGlobalMean() {
       sqrtf((sumPowerSq - 2.0f * mean * sumPower + mean * mean * count) / (count - 1.0f));
 
   int myWeightSum = 0;
-  CIterator myUnitIter(this->militaryUnitList44);
+  CIterator myUnitIter(this->militaryUnitList);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(myUnitIter.Reset()); myUnitIter.More();
        unit = static_cast<TMilitaryUnit*>(myUnitIter.Advance())) {
     myWeightSum += g_aUnitOrderCostProfileByAbilityId[unit->orderType][2];
@@ -133,13 +133,13 @@ TGreatPower::TGreatPower()
       townMarkerList(0), trackedObjectList(0), scenarioInitFlag(0), diplomacyBudgetBase(0),
       escalationCounter(0), pendingCommitmentCost(0), pressureCounter(0), field900(0),
       turnSummaryQueue(0), turnStartEvents(0), field910(0), aidAllocationTotal(0),
-      militaryExpenses960(0) {
+      militaryExpenses(0) {
   // TCountry base scalars (identity strings constructed by the TCountry ctor).
   this->nationSlot = 0;
   this->encodedNationSlot = 0;
   this->treasuryValue10 = 0;
   this->field42 = 0;
-  this->militaryUnitList44 = 0;
+  this->militaryUnitList = 0;
   this->homeTileIndex = 0;
   this->ownedRegionList = 0;
 
@@ -272,7 +272,7 @@ void TGreatPower::IGreatPower(short nationSlotIndex, short humanControlledFlag) 
   this->turnSummaryQueue->recordSize = 8;
 
   this->turnStartEvents = new TList();
-  this->militaryExpenses960 = 0;
+  this->militaryExpenses = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004d9160
@@ -327,10 +327,10 @@ void TGreatPower::Free(void) {
     this->turnStartEvents->FreePayloadsAndDestroy();
   }
   this->turnStartEvents = 0;
-  if (this->militaryUnitList44 != 0) {
-    this->militaryUnitList44->FreePayloadsAndDestroy();
+  if (this->militaryUnitList != 0) {
+    this->militaryUnitList->FreePayloadsAndDestroy();
   }
-  this->militaryUnitList44 = 0;
+  this->militaryUnitList = 0;
   if (this->ownedRegionList != 0) {
     this->ownedRegionList->Free();
     this->ownedRegionList = 0;
@@ -539,7 +539,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
     stream->ReadBytes(this->colonyBoycottFlags, kNationSlotCount);
   }
   if (g_nSaveFormatVersion > 0x34) {
-    stream->ReadBytes(&this->militaryExpenses960, 4);
+    stream->ReadBytes(&this->militaryExpenses, 4);
   }
 }
 
@@ -645,7 +645,7 @@ void TGreatPower::WriteTo(TStream* stream) {
   stream->WriteBytes(&this->field910, 4);
   stream->WriteBytes(&this->aidAllocationTotal, 4);
   stream->WriteBytes(this->colonyBoycottFlags, 0x17);
-  stream->WriteBytes(&this->militaryExpenses960, 4);
+  stream->WriteBytes(&this->militaryExpenses, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x004da3e0

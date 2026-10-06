@@ -21,14 +21,14 @@ short TTrainingOrder::MaxOrder() {
   if (resourceTypeIndex == 1) {
     paperPerUnit = 1;
     cashPerUnit = 100;
-    workforceLimit = productionSummary->productionSlots->lowSkillCount04;
+    workforceLimit = productionSummary->productionSlots->lowSkillCount;
     if (productionSummary->strength < workforceLimit) {
       workforceLimit = productionSummary->strength;
     }
   } else {
     paperPerUnit = 2;
     cashPerUnit = 1000;
-    workforceLimit = productionSummary->productionSlots->mediumSkillCount06;
+    workforceLimit = productionSummary->productionSlots->mediumSkillCount;
     short strengthLimit = static_cast<short>(productionSummary->strength / 2);
     if (strengthLimit < workforceLimit) {
       workforceLimit = strengthLimit;
@@ -110,21 +110,21 @@ void TTrainingOrder::Produce() {
 
   TLaborPool* population = productionSummary->baselineSlots;
   if (resourceTypeIndex == 1) {
-    population->lowSkillCount04 -= quantity;
-    population->mediumSkillCount06 += quantity;
+    population->lowSkillCount -= quantity;
+    population->mediumSkillCount += quantity;
     this->quantity = 0;
     return;
   }
 
-  int newLevel = static_cast<int>(population->highSkillCount08) + quantity;
+  int newLevel = static_cast<int>(population->highSkillCount) + quantity;
   TGreatPower* owner = ownerCity->ownerNationAc;
   if (newLevel >= 10 && owner->pendingActionStatus.byAction[7] < '2') {
     owner->SetNationPendingActionStateAndPayload(7, 2);
   } else if (newLevel >= 30 && owner->pendingActionStatus.byAction[7] <= '3') {
     owner->SetNationPendingActionStateAndPayload(7, 3);
   }
-  population->mediumSkillCount06 -= quantity;
-  population->highSkillCount08 += quantity;
+  population->mediumSkillCount -= quantity;
+  population->highSkillCount += quantity;
   this->quantity = 0;
 }
 

@@ -119,14 +119,14 @@ void TTradeSchoolView::UpdateFields() {
                               city94->ownerNationAc->ComputeAvailableDiplomacyBudget() >= 1000);
 
   short availableWorkers = population->strength;
-  short workerLimit = population->productionSlots->lowSkillCount04;
+  short workerLimit = population->productionSlots->lowSkillCount;
   if (availableWorkers >= workerLimit) {
     availableWorkers = workerLimit;
   }
   UPDATE_TRADE_SCHOOL_CONTROL(kControlTagUntV, 0xa23, availableWorkers != 0);
 
   availableWorkers = static_cast<short>(population->strength / 2);
-  workerLimit = population->productionSlots->mediumSkillCount06;
+  workerLimit = population->productionSlots->mediumSkillCount;
   if (availableWorkers >= workerLimit) {
     availableWorkers = workerLimit;
   }

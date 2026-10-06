@@ -52,7 +52,7 @@ private:
   friend class TMacViewMgr;
 
   TCity* city94;
-  TView* dialogRoot98;
+  TView* dialogRoot;
   unsigned char padding9C[8];
   short selectedBuildingSlot;
   bool needsRefresh;

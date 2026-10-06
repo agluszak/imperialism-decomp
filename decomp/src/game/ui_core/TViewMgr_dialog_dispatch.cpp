@@ -304,8 +304,8 @@ void TViewMgr::ShowNavyRosterDialogAndApplySelection() {
   node->Locate(placement, false);
   node->SetModality(true);
   node->PoseModally();
-  TZone* selectedZone = roster->selectedZone84;
-  TTaskForce* selectedTaskForce = roster->selectedTaskForce88;
+  TZone* selectedZone = roster->selectedZone;
+  TTaskForce* selectedTaskForce = roster->selectedTaskForce;
   node->Close();
   node->Free();
 
@@ -332,8 +332,8 @@ void TViewMgr::ShowUnreachableCityDialog(void* selection) {
   if (activeMapDialog == 0) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore_0069B740, 0x1c5);
   }
-  short cityRecordIndex = mapSelection->cityRecordIndex2;
-  activeMapDialog->CenterOn(g_pGlobalMapState->cityScoreTable[cityRecordIndex].cityTileIndex04);
+  short cityRecordIndex = mapSelection->cityRecordIndex;
+  activeMapDialog->CenterOn(g_pGlobalMapState->cityScoreTable[cityRecordIndex].cityTileIndex);
 
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTacticalMapPictureBase));
@@ -421,7 +421,7 @@ void TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection() {
   if (selectedIndex != -1) {
     mapUberPictureF0->SetMapInteractionMode(1);
     g_pMapContextActionManager->SetSelectedProvince(selectedIndex);
-    mapUberPictureF0->NoticeTile(g_pGlobalMapState->cityScoreTable[selectedIndex].cityTileIndex04);
+    mapUberPictureF0->NoticeTile(g_pGlobalMapState->cityScoreTable[selectedIndex].cityTileIndex);
   }
 }
 
@@ -464,7 +464,7 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
   if (selectedIndex != -1) {
     this->mapUberPictureF0->NoticeTile(selectedIndex);
     UnitOrder orderState =
-        g_pGlobalMapState->terrainStateTable[selectedIndex].firstCivilianOrder20->unitOrder;
+        g_pGlobalMapState->terrainStateTable[selectedIndex].firstCivilianOrder->unitOrder;
     if (orderState == kUnitOrderIdle || orderState == static_cast<UnitOrder>(3) ||
         orderState == static_cast<UnitOrder>(2)) {
       g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(selectedIndex, 2);

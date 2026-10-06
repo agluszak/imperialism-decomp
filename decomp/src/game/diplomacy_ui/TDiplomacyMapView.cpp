@@ -326,7 +326,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
     tileHasOwnerFlags[tile] = g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix[tile] != -1;
     short colX2;
     unsigned short row;
-    SplitTileIndexToHexRasterColumnX2AndRow(g_pGlobalMapState->cityScoreTable[tile].cityTileIndex04,
+    SplitTileIndexToHexRasterColumnX2AndRow(g_pGlobalMapState->cityScoreTable[tile].cityTileIndex,
                                             &colX2, &row);
     RECT* tileRect = &tileMarkerRects[tile];
     tileRect->left = (colX2 * 5) / 2 - 4 + mapViewportRect.left;

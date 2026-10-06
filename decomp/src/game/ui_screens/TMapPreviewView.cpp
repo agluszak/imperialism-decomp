@@ -84,7 +84,7 @@ void TMapPreviewView::Draw(RECT* rectBuffer) {
   if (selectedRegion != -1) {
     short columnX2;
     unsigned short row;
-    short tileIndex = g_pGlobalMapState->cityScoreTable[selectedRegion].cityTileIndex04;
+    short tileIndex = g_pGlobalMapState->cityScoreTable[selectedRegion].cityTileIndex;
     SplitTileIndexToHexRasterColumnX2AndRow(tileIndex, &columnX2, &row);
 
     RECT markerSource = {0x48, 0, 0x5a, 0x12};

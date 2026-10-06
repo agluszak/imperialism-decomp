@@ -93,7 +93,7 @@ void TWorldView::DoKeyEvent(TToolboxEvent* event) {
       CString cityName;
       g_pGlobalMapState->AssignCityRecordDisplayName(cityIndex, &cityName);
       if (searchText.Compare(cityName) == 0) {
-        CenterOn(g_pGlobalMapState->cityScoreTable[cityIndex].cityTileIndex04);
+        CenterOn(g_pGlobalMapState->cityScoreTable[cityIndex].cityTileIndex);
         return;
       }
     }
@@ -291,7 +291,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
   if (cursorToken == 0x3e7 || cursorToken == 0) {
     cursorToken = -1;
   }
-  cursorId4e = static_cast<unsigned short>(cursorToken);
+  cursorId = static_cast<unsigned short>(cursorToken);
 
   HCURSOR cursor;
   if (cursorToken == -1) {
@@ -337,7 +337,7 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
   } else if (interactionMode == 1) {
     short actionIndex = g_pMapContextActionManager->pendingMapActionIndex;
     if (actionIndex != -1) {
-      previewTile = g_pGlobalMapState->cityScoreTable[actionIndex].cityTileIndex04;
+      previewTile = g_pGlobalMapState->cityScoreTable[actionIndex].cityTileIndex;
     }
   } else if (interactionMode == 2) {
     TZone* attachedEntity = 0;

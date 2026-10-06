@@ -99,10 +99,10 @@ void TBattleReportView::DoPostCreate(int arg) {
     if (record->reportKind04 == kMapContextReportLandBattle ||
         record->reportKind04 == kMapContextReportPreemptedLandBattle ||
         record->reportKind04 == kMapContextReportUncontestedTakeover) {
-      cell = g_pGlobalMapState->cityScoreTable[reinterpret_cast<int>(record->location08)]
-                 .cityTileIndex04;
+      cell =
+          g_pGlobalMapState->cityScoreTable[reinterpret_cast<int>(record->location)].cityTileIndex;
     } else {
-      cell = static_cast<short>(static_cast<TZone*>(record->location08)->tileOrTerrainId);
+      cell = static_cast<short>(static_cast<TZone*>(record->location)->tileOrTerrainId);
     }
 
     // Spiral outward from the record's cell until a free crowding-grid cell is found.
@@ -570,9 +570,9 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     locaText->AssertValid();
     CString strLocation;
     CString strTerrain;
-    g_pGlobalMapState->AssignCityRecordDisplayName(reinterpret_cast<int>(record->location08),
+    g_pGlobalMapState->AssignCityRecordDisplayName(reinterpret_cast<int>(record->location),
                                                    &strLocation);
-    int ownerNation = g_pGlobalMapState->cityScoreTable[reinterpret_cast<int>(record->location08)]
+    int ownerNation = g_pGlobalMapState->cityScoreTable[reinterpret_cast<int>(record->location)]
                           .ownerNationCode00;
     g_apTerrainTypeDescriptorTable[ownerNation]->FormatOverlayTerrainLabelText(&strTerrain);
     CString locationTemplate;
@@ -589,7 +589,7 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     TStaticText* locaText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagLoca));
     locaText->AssertValid();
     CString nameStr;
-    static_cast<TZone*>(record->location08)->AssignZoneDisplayNameToOutputRef(&nameStr);
+    static_cast<TZone*>(record->location)->AssignZoneDisplayNameToOutputRef(&nameStr);
     locaText->SetTextAndMaybeRefresh(&nameStr, true);
     break;
   }
@@ -628,7 +628,7 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     userStringGroup = 0x273d;
     int activeHomeRegion =
         g_apTerrainTypeDescriptorTable[g_pSimMgr->GetPlayerCountry()]->GetCapitolProvince();
-    bool activeNationOwnsBattleSite = activeHomeRegion == reinterpret_cast<int>(record->location08);
+    bool activeNationOwnsBattleSite = activeHomeRegion == reinterpret_cast<int>(record->location);
     bool reportSidesAreSame = record->displayedParticipantIndex == record->reportParticipantIndex;
     bool reportParticipantIsActive =
         static_cast<signed char>(
@@ -641,7 +641,7 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     }
     bool otherNationOwnsBattleSite =
         g_apTerrainTypeDescriptorTable[otherNation]->GetCapitolProvince() ==
-        reinterpret_cast<int>(record->location08);
+        reinterpret_cast<int>(record->location);
 
     if (activeNationOwnsBattleSite && displayedParticipantIsActive) {
       userStringIndex = 48;

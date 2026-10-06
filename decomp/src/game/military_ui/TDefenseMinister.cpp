@@ -38,7 +38,6 @@ IMPLEMENT_DYNCREATE(TDefenseMinister, TMinister)
 // FUNCTION: IMPERIALISM 0x004ec0e0
 TDefenseMinister::TDefenseMinister() : TMinister() {}
 
-
 // FUNCTION: IMPERIALISM 0x004ec160
 void TDefenseMinister::InitializeBaseOrderArrayMetrics(TGreatPower* owner) {
   this->IMinister(owner);
@@ -90,13 +89,13 @@ void TDefenseMinister::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x004ec3d0
 short TDefenseMinister::GetRankingCriterionForGP(short nationSlot) {
-  TSortedList* units = g_apNationStates[nationSlot]->militaryUnitList44;
+  TSortedList* units = g_apNationStates[nationSlot]->militaryUnitList;
   short unitCount = static_cast<short>(units->GetCount());
   int strengthTotal = 0;
   short ranking = 0;
   for (int ordinal = 1; ordinal <= unitCount; ++ordinal) {
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(units->GetEntryByOrdinal(ordinal));
-    strengthTotal += unit->strength34 / 100;
+    strengthTotal += unit->strength / 100;
     ranking = static_cast<short>(strengthTotal);
   }
   return ranking;
@@ -127,7 +126,7 @@ void TDefenseMinister::DoArmyMovement() {
 // FUNCTION: IMPERIALISM 0x004ec540
 void TDefenseMinister::DoPeacetimeDeployment() {
   TGreatPower* owner = greatPower;
-  int totalUnitCount = owner->militaryUnitList44->GetCount();
+  int totalUnitCount = owner->militaryUnitList->GetCount();
 
   TCity* city = owner ? owner->city : 0;
   short homeTileId = city->HomeTownTileId();
@@ -158,7 +157,7 @@ void TDefenseMinister::DoPeacetimeDeployment() {
     FailNilPointerWithAssert(s_SourcePathUDefenseMinister_00696860, 0x131);
   }
 
-  TSortedList* militaryUnitList = owner->militaryUnitList44;
+  TSortedList* militaryUnitList = owner->militaryUnitList;
   for (int unitOrdinal = 1; unitOrdinal <= totalUnitCount; ++unitOrdinal) {
     TUnit* unit = static_cast<TUnit*>(militaryUnitList->GetEntryByOrdinal(unitOrdinal));
     if (unit->orderType == EncodeMilitaryUnitKind(kMilitaryUnitRegulars)) {
@@ -350,7 +349,7 @@ int* TDefenseMinister::CreateHomeValueMap() {
         }
         delete[] ring2;
       }
-    } else if (record->adjacencyBits06 != 0) {
+    } else if (record->adjacencyBits != 0) {
       heatmap[tile] += 100;
     }
   }
@@ -395,7 +394,7 @@ int* TDefenseMinister::CreateEnemyPowerMap(unsigned char excludeEnemyTiles) {
         unit = 0;
       }
 
-      if (unit->ownerNationSlot18 != ownNationSlot) {
+      if (unit->ownerNationSlot != ownNationSlot) {
         int categoryScores[4] = {0, 0, 0, 0};
         int categoryFlags[4] = {1, 1, 1, 1};
 
@@ -410,7 +409,7 @@ int* TDefenseMinister::CreateEnemyPowerMap(unsigned char excludeEnemyTiles) {
             }
           } else {
             int weightedValue =
-                g_anUnitStrengthWeightPercentBySlot[unit->orderType] * unit->strength34 / 100;
+                g_anUnitStrengthWeightPercentBySlot[unit->orderType] * unit->strength / 100;
             if (combatClass >= 0) {
               for (int k = 0; k <= combatClass; ++k) {
                 categoryScores[k] += weightedValue;

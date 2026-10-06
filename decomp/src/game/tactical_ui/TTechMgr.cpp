@@ -534,7 +534,7 @@ void TTechMgr::ActivateSlotAndUpdateUI(int abilityId, int nationSlot) {
     }
   } else {
     if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot))) {
-      CIterator cursor(g_apTerrainTypeDescriptorTable[nationSlot]->militaryUnitList44);
+      CIterator cursor(g_apTerrainTypeDescriptorTable[nationSlot]->militaryUnitList);
       TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset());
       while (cursor.More()) {
         if (unit->GetCategory() == group) {

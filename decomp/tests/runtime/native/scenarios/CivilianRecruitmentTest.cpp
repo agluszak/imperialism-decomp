@@ -184,7 +184,7 @@ private:
       return RuntimeActionResult::Failure(
           "the recruited civilian's tile has no terrain-owner descriptor");
     }
-    if (spawnedCivilian->ownerNationSlot18 != ActiveNation()) {
+    if (spawnedCivilian->ownerNationSlot != ActiveNation()) {
       return RuntimeActionResult::Failure(
           "the produced civilian is not owned by the active nation");
     }
@@ -208,7 +208,7 @@ private:
   short FindProspectorTarget(StrategicTerrainKind terrainKind, bool mustBeEligible) {
     for (short tile = 0; tile < kGlobalMapTileCount; ++tile) {
       const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tile];
-      if (terrain.GetTerrainKind() != terrainKind || terrain.firstCivilianOrder20 != 0 ||
+      if (terrain.GetTerrainKind() != terrainKind || terrain.firstCivilianOrder != 0 ||
           tile == spawnedCivilian->tileIndex06 || tile % 0x6c == 0 || tile % 0x6c == 0x6b) {
         continue;
       }
@@ -281,11 +281,11 @@ private:
       return RuntimeActionResult::Failure(detail);
     }
 
-    mapDialog->cursorId4e = 0xffff;
+    mapDialog->cursorId = 0xffff;
     if (!MapInteractionProbe::HoverAtLocalPoint(mapDialog, *outPoint)) {
       return RuntimeActionResult::Failure("the map dialog has no host window to hover over");
     }
-    if (mapDialog->cursorId4e != expectedToken) {
+    if (mapDialog->cursorId != expectedToken) {
       return RuntimeActionResult::Failure("a native hover did not apply the classified cursor");
     }
 
@@ -638,7 +638,7 @@ private:
     for (short tile = 0; tile < kGlobalMapTileCount; ++tile) {
       const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tile];
       if (tile == spawnedCivilian->tileIndex06 || tile % 0x6c == 0 || tile % 0x6c == 0x6b ||
-          terrain.firstCivilianOrder20 != 0 || terrain.recruitSearchVisited != 0 ||
+          terrain.firstCivilianOrder != 0 || terrain.recruitSearchVisited != 0 ||
           (terrain.pendingDevelopmentFlag & (1 << activeNation)) != 0) {
         continue;
       }
@@ -760,7 +760,7 @@ private:
     }
 
     g_pSelectedCivilianOrderState->SelectUnit(farmer, 0);
-    const short nationSlot = farmer->ownerNationSlot18;
+    const short nationSlot = farmer->ownerNationSlot;
     short workableTile = -1;
     short moveTile = -1;
     short prohibitedTile = -1;
@@ -896,7 +896,7 @@ private:
     int engineerAction = 0;
     for (short tile = 0; tile < kGlobalMapTileCount; ++tile) {
       const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tile];
-      if (terrain.ownerNationTag04 != engineer->ownerNationSlot18 || connectedTiles[tile] == 0) {
+      if (terrain.ownerNationTag04 != engineer->ownerNationSlot || connectedTiles[tile] == 0) {
         continue;
       }
       engineer->MoveTo(tile);
@@ -932,7 +932,7 @@ private:
 
   RuntimeActionResult VerifyDepotAndMilitaryChain() {
     const short depotTile = engineer->tileIndex06;
-    const short ownerNation = engineer->ownerNationSlot18;
+    const short ownerNation = engineer->ownerNationSlot;
     TGreatPower* nation = g_apNationStates[ownerNation];
     const int oldTownCount = nation->townMarkerList->GetCount();
     const int expectedTownCount =

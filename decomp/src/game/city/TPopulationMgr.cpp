@@ -27,44 +27,44 @@ void TPopulationMgr::IPopulationMgr(TCity* city) {
 
 // FUNCTION: IMPERIALISM 0x004b5d10
 void TPopulationMgr::Copy(TLaborPool* source, TLaborPool* destination) {
-  destination->lowSkillCount04 = source->lowSkillCount04;
-  destination->mediumSkillCount06 = source->mediumSkillCount06;
-  destination->highSkillCount08 = source->highSkillCount08;
+  destination->lowSkillCount = source->lowSkillCount;
+  destination->mediumSkillCount = source->mediumSkillCount;
+  destination->highSkillCount = source->highSkillCount;
 }
 
 // FUNCTION: IMPERIALISM 0x004b5d50
 void TPopulationMgr::SetPopulation(short lowSkillCount) {
-  baselineSlots->lowSkillCount04 = lowSkillCount;
-  productionSlots->lowSkillCount04 = lowSkillCount;
+  baselineSlots->lowSkillCount = lowSkillCount;
+  productionSlots->lowSkillCount = lowSkillCount;
   strength = lowSkillCount;
   populationCount = lowSkillCount;
   populationCountFloat = static_cast<float>(lowSkillCount);
-  pendingDeltaSlots->highSkillCount08 = 0;
-  pendingDeltaSlots->mediumSkillCount06 = 0;
-  pendingDeltaSlots->lowSkillCount04 = 0;
+  pendingDeltaSlots->highSkillCount = 0;
+  pendingDeltaSlots->mediumSkillCount = 0;
+  pendingDeltaSlots->lowSkillCount = 0;
   fieldAt20 = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b5dc0
 void TPopulationMgr::SetPopulation(short lowSkillCount, short mediumSkillCount,
                                    short highSkillCount) {
-  baselineSlots->lowSkillCount04 = lowSkillCount;
-  productionSlots->lowSkillCount04 = lowSkillCount;
-  baselineSlots->mediumSkillCount06 = mediumSkillCount;
-  productionSlots->mediumSkillCount06 = mediumSkillCount;
-  baselineSlots->highSkillCount08 = highSkillCount;
-  productionSlots->highSkillCount08 = highSkillCount;
+  baselineSlots->lowSkillCount = lowSkillCount;
+  productionSlots->lowSkillCount = lowSkillCount;
+  baselineSlots->mediumSkillCount = mediumSkillCount;
+  productionSlots->mediumSkillCount = mediumSkillCount;
+  baselineSlots->highSkillCount = highSkillCount;
+  productionSlots->highSkillCount = highSkillCount;
 
   strength = static_cast<short>(
-      productionSlots->lowSkillCount04 +
-      (productionSlots->mediumSkillCount06 + productionSlots->highSkillCount08 * 2) * 2);
+      productionSlots->lowSkillCount +
+      (productionSlots->mediumSkillCount + productionSlots->highSkillCount * 2) * 2);
   short total = static_cast<short>(mediumSkillCount + highSkillCount + lowSkillCount);
   populationCount = total;
   populationCountFloat = static_cast<float>(total);
 
-  pendingDeltaSlots->highSkillCount08 = 0;
-  pendingDeltaSlots->mediumSkillCount06 = 0;
-  pendingDeltaSlots->lowSkillCount04 = 0;
+  pendingDeltaSlots->highSkillCount = 0;
+  pendingDeltaSlots->mediumSkillCount = 0;
+  pendingDeltaSlots->lowSkillCount = 0;
   fieldAt20 = 0;
 }
 
@@ -73,8 +73,8 @@ void TPopulationMgr::StartProductionPhase() {
   Copy(baselineSlots, productionSlots);
   Eat();
   strength = static_cast<short>(
-      productionSlots->lowSkillCount04 +
-      (productionSlots->mediumSkillCount06 + productionSlots->highSkillCount08 * 2) * 2);
+      productionSlots->lowSkillCount +
+      (productionSlots->mediumSkillCount + productionSlots->highSkillCount * 2) * 2);
   extraAt1e = 0;
 }
 
@@ -83,12 +83,12 @@ void TPopulationMgr::Eat() {
   int substitutedFoodCount = 0;
   int starvationLoss = 0;
 
-  productionSlots->lowSkillCount04 =
-      static_cast<short>(productionSlots->lowSkillCount04 + pendingDeltaSlots->lowSkillCount04);
-  productionSlots->mediumSkillCount06 = static_cast<short>(productionSlots->mediumSkillCount06 +
-                                                           pendingDeltaSlots->mediumSkillCount06);
-  productionSlots->highSkillCount08 =
-      static_cast<short>(productionSlots->highSkillCount08 + pendingDeltaSlots->highSkillCount08);
+  productionSlots->lowSkillCount =
+      static_cast<short>(productionSlots->lowSkillCount + pendingDeltaSlots->lowSkillCount);
+  productionSlots->mediumSkillCount =
+      static_cast<short>(productionSlots->mediumSkillCount + pendingDeltaSlots->mediumSkillCount);
+  productionSlots->highSkillCount =
+      static_cast<short>(productionSlots->highSkillCount + pendingDeltaSlots->highSkillCount);
 
   int population = populationCount;
   short grainRemaining = city04->cityStockGrain;
@@ -197,9 +197,9 @@ void TPopulationMgr::Eat() {
 
   if (unmetFoodNeed != 0) {
     TLaborPool* lostPopulation = new TLaborPool();
-    lostPopulation->mediumSkillCount06 = 0;
-    lostPopulation->lowSkillCount04 = 0;
-    lostPopulation->highSkillCount08 = 0;
+    lostPopulation->mediumSkillCount = 0;
+    lostPopulation->lowSkillCount = 0;
+    lostPopulation->highSkillCount = 0;
     baselineSlots->TransferToLowSkillFirst(lostPopulation, unmetFoodNeed);
     lostPopulation->Free();
     populationCount = static_cast<short>(populationCount - unmetFoodNeed);
@@ -212,8 +212,8 @@ void TPopulationMgr::Eat() {
     productionSlots->TransferToLowSkillFirst(pendingDeltaSlots,
                                              static_cast<short>(substitutedFoodCount));
   }
-  city04->foodSubstitutionCount06 = static_cast<short>(substitutedFoodCount);
-  city04->starvationPopulationLoss08 = static_cast<short>(starvationLoss);
+  city04->foodSubstitutionCount = static_cast<short>(substitutedFoodCount);
+  city04->starvationPopulationLoss = static_cast<short>(starvationLoss);
 }
 
 // FUNCTION: IMPERIALISM 0x004b6260
@@ -321,7 +321,7 @@ float TPopulationMgr::GrowthRate() {
 
 // FUNCTION: IMPERIALISM 0x004b64c0
 short* TPopulationMgr::PredictedNeeds() {
-  int skilledPopulation = baselineSlots->mediumSkillCount06 + baselineSlots->highSkillCount08;
+  int skilledPopulation = baselineSlots->mediumSkillCount + baselineSlots->highSkillCount;
   short rotationCounts[4];
   rotationCounts[0] = 0;
   rotationCounts[1] = 0;
@@ -350,7 +350,7 @@ short* TPopulationMgr::PredictedNeeds() {
 // FUNCTION: IMPERIALISM 0x004b65b0
 char TPopulationMgr::Strike() {
   bool shortage = false;
-  int skilledPopulation = baselineSlots->mediumSkillCount06 + baselineSlots->highSkillCount08;
+  int skilledPopulation = baselineSlots->mediumSkillCount + baselineSlots->highSkillCount;
   short consumptionByResource[4];
   consumptionByResource[0] = 0;
   consumptionByResource[1] = 0;
@@ -385,51 +385,51 @@ void TPopulationMgr::RemovePopulation(short startingSkillBand, short amount) {
   short remaining = amount;
 
   if (startingSkillBand == 1) {
-    short available = baselineSlots->lowSkillCount04;
+    short available = baselineSlots->lowSkillCount;
     if (remaining <= available) {
-      baselineSlots->lowSkillCount04 = static_cast<short>(available - remaining);
-      productionSlots->lowSkillCount04 =
-          static_cast<short>(productionSlots->lowSkillCount04 - remaining);
+      baselineSlots->lowSkillCount = static_cast<short>(available - remaining);
+      productionSlots->lowSkillCount =
+          static_cast<short>(productionSlots->lowSkillCount - remaining);
       strength = static_cast<short>(strength - remaining);
       remaining = 0;
     } else {
       remaining = static_cast<short>(remaining - available);
-      baselineSlots->lowSkillCount04 = 0;
-      productionSlots->lowSkillCount04 = 0;
+      baselineSlots->lowSkillCount = 0;
+      productionSlots->lowSkillCount = 0;
       startingSkillBand = 2;
       strength = static_cast<short>(strength - remaining);
     }
   }
 
   if (startingSkillBand == 2) {
-    short available = baselineSlots->mediumSkillCount06;
+    short available = baselineSlots->mediumSkillCount;
     if (remaining <= available) {
-      baselineSlots->mediumSkillCount06 = static_cast<short>(available - remaining);
-      productionSlots->mediumSkillCount06 =
-          static_cast<short>(productionSlots->mediumSkillCount06 - remaining);
+      baselineSlots->mediumSkillCount = static_cast<short>(available - remaining);
+      productionSlots->mediumSkillCount =
+          static_cast<short>(productionSlots->mediumSkillCount - remaining);
       strength = static_cast<short>(strength - remaining * 2);
       remaining = 0;
     } else {
       remaining = static_cast<short>(remaining - available);
-      baselineSlots->mediumSkillCount06 = 0;
-      productionSlots->mediumSkillCount06 = 0;
+      baselineSlots->mediumSkillCount = 0;
+      productionSlots->mediumSkillCount = 0;
       startingSkillBand = 4;
       strength = static_cast<short>(strength - remaining * 2);
     }
   }
 
   if (startingSkillBand == 4) {
-    short available = baselineSlots->highSkillCount08;
+    short available = baselineSlots->highSkillCount;
     if (remaining <= available) {
-      baselineSlots->highSkillCount08 = static_cast<short>(available - remaining);
-      productionSlots->highSkillCount08 =
-          static_cast<short>(productionSlots->highSkillCount08 - remaining);
+      baselineSlots->highSkillCount = static_cast<short>(available - remaining);
+      productionSlots->highSkillCount =
+          static_cast<short>(productionSlots->highSkillCount - remaining);
       strength = static_cast<short>(strength - remaining * 4);
       remaining = 0;
     } else {
       remaining = static_cast<short>(remaining - available);
-      baselineSlots->highSkillCount08 = 0;
-      productionSlots->highSkillCount08 = 0;
+      baselineSlots->highSkillCount = 0;
+      productionSlots->highSkillCount = 0;
       strength = static_cast<short>(strength - remaining * 4);
     }
   }
@@ -443,18 +443,16 @@ void TPopulationMgr::RemovePopulation(short startingSkillBand, short amount) {
 void TPopulationMgr::MakeUnavailable(short skillBand, short amount) {
   switch (skillBand) {
   case 1:
-    productionSlots->lowSkillCount04 =
-        static_cast<short>(productionSlots->lowSkillCount04 - amount);
+    productionSlots->lowSkillCount = static_cast<short>(productionSlots->lowSkillCount - amount);
     strength = static_cast<short>(strength - amount);
     break;
   case 2:
-    productionSlots->mediumSkillCount06 =
-        static_cast<short>(productionSlots->mediumSkillCount06 - amount);
+    productionSlots->mediumSkillCount =
+        static_cast<short>(productionSlots->mediumSkillCount - amount);
     strength = static_cast<short>(strength - amount * 2);
     break;
   case 4:
-    productionSlots->highSkillCount08 =
-        static_cast<short>(productionSlots->highSkillCount08 - amount);
+    productionSlots->highSkillCount = static_cast<short>(productionSlots->highSkillCount - amount);
     strength = static_cast<short>(strength - amount * 4);
     break;
   }
@@ -507,15 +505,15 @@ void TPopulationMgr::Free() {
 
 // FUNCTION: IMPERIALISM 0x004b6a00
 void TPopulationMgr::AddUntrained(short count) {
-  baselineSlots->lowSkillCount04 = baselineSlots->lowSkillCount04 + count;
-  productionSlots->lowSkillCount04 = productionSlots->lowSkillCount04 + count;
+  baselineSlots->lowSkillCount = baselineSlots->lowSkillCount + count;
+  productionSlots->lowSkillCount = productionSlots->lowSkillCount + count;
   populationCount = populationCount + count;
 }
 
 // FUNCTION: IMPERIALISM 0x004b6a30
 void TPopulationMgr::AddExpert(short count) {
-  baselineSlots->highSkillCount08 = baselineSlots->highSkillCount08 + count;
-  productionSlots->highSkillCount08 = productionSlots->highSkillCount08 + count;
+  baselineSlots->highSkillCount = baselineSlots->highSkillCount + count;
+  productionSlots->highSkillCount = productionSlots->highSkillCount + count;
   populationCount = populationCount + count;
   strength = static_cast<short>(strength + count * 4);
 }

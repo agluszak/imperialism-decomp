@@ -301,7 +301,7 @@ void TMultiplayerMgr::ReadFrom(TStream* stream) {
   reportPacket.messageLength = 0;
   reportPacket.messageLength = 0x20;
   reportPacket.DestinateTo(-1);
-  reportPacket.statusTag18 = kControlTagRepo;
+  reportPacket.statusTag = kControlTagRepo;
   reportPacket.value1C = reportingNationSlot;
   g_pNetMgr006a6014->Send(&reportPacket, false);
 
@@ -347,7 +347,7 @@ void TMultiplayerMgr::ReadFrom(TStream* stream) {
   } else if (destinationNationSlot != -2 && destinationNationSlot != -3) {
     namePacket.toNetworkId = g_pGameFlowState->nationSessionIds[destinationNationSlot];
   }
-  namePacket.statusTag18 = kControlTagName;
+  namePacket.statusTag = kControlTagName;
   namePacket.value1C = -1;
   g_pNetMgr006a6014->Send(&namePacket, destinationNationSlot == -3);
 }
@@ -370,8 +370,7 @@ void TMultiplayerMgr::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x005430c0
-void TMultiplayerMgr::InstallCohandler(TEventHandler* nContext,
-                                                                      bool fEnable) {
+void TMultiplayerMgr::InstallCohandler(TEventHandler* nContext, bool fEnable) {
   processPrimaryEventQueue = 1;
   processSecondaryEventQueue = true;
   if (fEnable != '\0') {
@@ -625,8 +624,8 @@ unsigned char TMultiplayerMgr::ResetSessionAndShowMainMenu() {
 // FUNCTION: IMPERIALISM 0x00545320
 unsigned char TMultiplayerMgr::ApplyJoinGameSelectionAndShowNetworkGameOptions(int selectionTag) {
   CString defaultGameName("Frog");
-  unsigned char joined = g_pNetMgr006a6014->SelectGame(
-      selectionTag, &playerNameString, defaultGameName);
+  unsigned char joined =
+      g_pNetMgr006a6014->SelectGame(selectionTag, &playerNameString, defaultGameName);
   if (joined) {
     playerNameMirror = playerNameString;
     lobbyDialogView = 0;

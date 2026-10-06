@@ -19,7 +19,7 @@ IMPLEMENT_SERIAL(TInvadeMission, TAttackProvinceMission, 1)
 
 // FUNCTION: IMPERIALISM 0x0053f120
 TMission* TInvadeMission::GetNavyMission() {
-  return beachhead34;
+  return beachhead;
 }
 
 // FUNCTION: IMPERIALISM 0x0053f140
@@ -29,22 +29,22 @@ bool TInvadeMission::IsNavyMission() const {
 
 // FUNCTION: IMPERIALISM 0x0053f160
 void TInvadeMission::ForgetTaskForce(TTaskForce* taskForce) {
-  if (beachhead34 != nullptr) {
-    beachhead34->ForgetTaskForce(taskForce);
+  if (beachhead != nullptr) {
+    beachhead->ForgetTaskForce(taskForce);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0053f190
 void TInvadeMission::AcceptReenforcement(TShip* ship, bool notify) {
-  if (beachhead34 != nullptr) {
-    beachhead34->AcceptReenforcement(ship, notify);
+  if (beachhead != nullptr) {
+    beachhead->AcceptReenforcement(ship, notify);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0053f1c0
 void TInvadeMission::RejectConstituent(TShip* ship, bool notify) {
-  if (beachhead34 != nullptr) {
-    beachhead34->RejectConstituent(ship, notify);
+  if (beachhead != nullptr) {
+    beachhead->RejectConstituent(ship, notify);
   }
 }
 
@@ -54,7 +54,7 @@ float TInvadeMission::IndustrialCostOfNeeds() {
   for (int i = 0; i < 5; ++i) {
     armyCost += requiredEquipageByClass[i] * g_ArmyMissionDotProductWeights_00697980[i];
   }
-  return armyCost + beachhead34->IndustrialCostOfNeeds();
+  return armyCost + beachhead->IndustrialCostOfNeeds();
 }
 
 // FUNCTION: IMPERIALISM 0x0053f240
@@ -64,9 +64,9 @@ bool TInvadeMission::IsHospitalMission() const {
 
 // FUNCTION: IMPERIALISM 0x0053f2d0
 TInvadeMission::TInvadeMission(TZone* beachheadZone, short targetProvince)
-    : TAttackProvinceMission(targetProvince, -1), beachhead34(nullptr) {
+    : TAttackProvinceMission(targetProvince, -1), beachhead(nullptr) {
   if (beachheadZone != nullptr) {
-    beachhead34 = new TBeachheadMission(beachheadZone, this);
+    beachhead = new TBeachheadMission(beachheadZone, this);
   }
 }
 
@@ -75,7 +75,7 @@ TInvadeMission::~TInvadeMission() {}
 
 // FUNCTION: IMPERIALISM 0x0053f410
 void TInvadeMission::Free() {
-  beachhead34->Free();
+  beachhead->Free();
 
   TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId]);
   nationState->AssertValid();
@@ -101,7 +101,7 @@ void TInvadeMission::Free() {
 
 // FUNCTION: IMPERIALISM 0x0053f4e0
 char TInvadeMission::SmokeEmIfYouGotEm() {
-  if (!beachhead34->SmokeEmIfYouGotEm()) {
+  if (!beachhead->SmokeEmIfYouGotEm()) {
     return 0;
   }
   CIterator iter(orderList);
@@ -117,7 +117,7 @@ char TInvadeMission::SmokeEmIfYouGotEm() {
 
 // FUNCTION: IMPERIALISM 0x0053f580
 void TInvadeMission::Initialize() {
-  beachhead34->InitializeMissionWithNationIdAndResetPathMarker(nationId);
+  beachhead->InitializeMissionWithNationIdAndResetPathMarker(nationId);
   marker11 = 1;
   if (targetProvince30 != -1) {
     pathMarker =
@@ -134,8 +134,8 @@ void TInvadeMission::SetStateByte8To2() {
 // FUNCTION: IMPERIALISM 0x0053f610
 void TInvadeMission::CalculateNeeds() {
   TAttackProvinceMission::CalculateNeeds();
-  if (beachhead34 != nullptr) {
-    beachhead34->CalculateNeeds();
+  if (beachhead != nullptr) {
+    beachhead->CalculateNeeds();
   }
 }
 
@@ -144,7 +144,7 @@ void TInvadeMission::WriteTo(TStream* stream) {
   TArmyMission::WriteTo(stream);
   stream->WriteBytes(&targetProvince30, 2);
   stream->WriteBytes(&amassingProvince32, 2);
-  beachhead34->WriteTo(stream);
+  beachhead->WriteTo(stream);
 }
 
 // FUNCTION: IMPERIALISM 0x0053f690
@@ -152,18 +152,18 @@ void TInvadeMission::ReadFrom(TStream* stream) {
   TArmyMission::ReadFrom(stream);
   stream->ReadBytes(&targetProvince30, 2);
   stream->ReadBytes(&amassingProvince32, 2);
-  if (beachhead34 != nullptr) {
-    beachhead34->Free();
+  if (beachhead != nullptr) {
+    beachhead->Free();
   }
-  beachhead34 = new TBeachheadMission();
-  beachhead34->parentMission3c = this;
-  beachhead34->ReadFrom(stream);
+  beachhead = new TBeachheadMission();
+  beachhead->parentMission = this;
+  beachhead->ReadFrom(stream);
 }
 
 // FUNCTION: IMPERIALISM 0x0053f780
 void TInvadeMission::GiveOrders() {
-  if (beachhead34 != nullptr) {
-    beachhead34->GiveOrders();
+  if (beachhead != nullptr) {
+    beachhead->GiveOrders();
   }
   // Per-region, per-nation dispatch-dirty bitmask gate.
   if (g_pGlobalMapState->cityScoreTable[targetProvince30].exploredByNationMask &
@@ -174,7 +174,7 @@ void TInvadeMission::GiveOrders() {
 
 // FUNCTION: IMPERIALISM 0x0053f7d0
 void TInvadeMission::Reassess() {
-  beachhead34->Reassess();
+  beachhead->Reassess();
   SetStateByte8To2();
   CalculateImportance();
   CalculateNeeds();
@@ -262,22 +262,21 @@ float TInvadeMission::ValueOf(TShip* candidate) {
   if (flag10 != 0) {
     return g_Recompute_Nation_Order_LookupTable_0065A9E8;
   }
-  return beachhead34->ValueOf(candidate);
+  return beachhead->ValueOf(candidate);
 }
 
 // FUNCTION: IMPERIALISM 0x0053fb90
 void TInvadeMission::Hold(bool value) {
   flag10 = value;
-  if (beachhead34 != nullptr) {
-    beachhead34->Hold(value);
+  if (beachhead != nullptr) {
+    beachhead->Hold(value);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0053fbc0
 bool TInvadeMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   return missionType == kMissionTypeInvadeProvince && key == targetProvince30 &&
-         beachhead34 != nullptr &&
-         beachhead34->Matches(kMissionTypeInvadeProvince, key, zoneContext);
+         beachhead != nullptr && beachhead->Matches(kMissionTypeInvadeProvince, key, zoneContext);
 }
 
 // FUNCTION: IMPERIALISM 0x0053fc10
@@ -300,7 +299,7 @@ int TInvadeMission::AccumulateLack(int* accumulatedLack, bool includeExistingLac
     total += rounded;
   }
 
-  return total + beachhead34->AccumulateLack(accumulatedLack, includeExistingLack);
+  return total + beachhead->AccumulateLack(accumulatedLack, includeExistingLack);
 }
 
 // FUNCTION: IMPERIALISM 0x0053fdc0

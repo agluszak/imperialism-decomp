@@ -67,8 +67,8 @@ bool TPopGrowthOrder::SetQuantity(short quantity) {
 void TPopGrowthOrder::Produce() {
   short quantity = this->quantity;
   TPopulationMgr* population = ownerCity->productionSummary;
-  population->baselineSlots->lowSkillCount04 += quantity;
-  population->productionSlots->lowSkillCount04 += quantity;
+  population->baselineSlots->lowSkillCount += quantity;
+  population->productionSlots->lowSkillCount += quantity;
   population->populationCount += quantity;
 
   TCity* city = ownerCity;

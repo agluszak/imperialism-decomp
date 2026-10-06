@@ -122,7 +122,7 @@ void TArmyBattle::ReadFrom(TStream* stream) {
     TMilitaryUnit* sourceUnit = TMilitaryUnit::FindUnitByUID(unitId);
     TArmyTacUnit* record = new TArmyTacUnit();
     record->IArmyTacUnit(sourceUnit);
-    stream->ReadBytes(&record->side20, 4);
+    stream->ReadBytes(&record->side, 4);
     stream->ReadBytes(&record->field24, 2);
     recordList->AddTail(record);
   }
@@ -167,7 +167,7 @@ void TArmyBattle::ReadFrom(TStream* stream) {
     } else {
       targetStack = enemyBattleStack;
     }
-    targetStack->AddUnitToChainHead(deployRecord->sourceUnit38);
+    targetStack->AddUnitToChainHead(deployRecord->sourceUnit);
   }
 
   InitializeBattleSetupAndMaybeShowTacticalView(ourBattleStack, enemyBattleStack,
@@ -204,7 +204,7 @@ void TArmyBattle::WriteTo(TStream* stream) {
        record = static_cast<TArmyTacUnit*>(recordIter.Advance())) {
     int recordUnitId = record != 0 ? record->GetUID() : 0;
     stream->WriteBytes(&recordUnitId, 4);
-    stream->WriteBytes(&record->side20, 4);
+    stream->WriteBytes(&record->side, 4);
     stream->WriteBytes(&record->field24, 2);
   }
 
@@ -241,12 +241,12 @@ void TArmyBattle::LoadMap(int compositionClass, int fortLevel) {
         continue;
       }
       if (fortLevel > 1 && col > 0x17) {
-        record->terrainType0 = 0; // fort present (level >= 2): blank the last 5 columns
+        record->terrainType = 0; // fort present (level >= 2): blank the last 5 columns
       } else {
-        record->terrainType0 = *src; // movsx: signed char -> int
+        record->terrainType = *src; // movsx: signed char -> int
       }
       ++src;
-      record->occupant4 = 0;
+      record->occupant = 0;
       record->deployMark = 0;
       record->mineRunState = -1;
       record->trenchMask = 0;
@@ -276,10 +276,10 @@ void TArmyBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
     return;
   }
   TacticalTileRecord* record = &tileGrid[tileIndex];
-  if (record->terrainType0 == 4) {
+  if (record->terrainType == 4) {
     return;
   }
-  if (record->occupant4 != 0) {
+  if (record->occupant != 0) {
     return;
   }
   if (currentSide == 0) {

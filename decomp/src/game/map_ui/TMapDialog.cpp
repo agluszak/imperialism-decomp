@@ -356,7 +356,7 @@ void TMapDialog::DoPostCreate(int arg) {
 void TMapDialog::FrameCursorArea() {
   short neighborTiles[6] = {-1, -1, -1, -1, -1, -1};
   bool updateNeighborHighlights = false;
-  bool frameHoveredTile = cursorId4e != 0xffff && cursorId4e != 0x3f0;
+  bool frameHoveredTile = cursorId != 0xffff && cursorId != 0x3f0;
   short activeUnitCategory = static_cast<TMapUberPicture*>(ownerContext)->activeUnitCategoryIndex;
 
   if (activeUnitCategory != 0 && activeUnitCategory != 3 && activeUnitCategory != 5) {
@@ -364,7 +364,7 @@ void TMapDialog::FrameCursorArea() {
   }
 
   short hoveredTile = static_cast<short>(hoveredTileIndex);
-  if (cursorId4e == 0x3eb) {
+  if (cursorId == 0x3eb) {
     TCivUnit* selectedOrder = g_pSelectedCivilianOrderState->selectedEntry;
     CivilianUnitKindStorage unitKind =
         selectedOrder != 0 ? selectedOrder->orderType : kCivilianUnitKindCount;
@@ -778,7 +778,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
   TView* locationControl;
   short cityIndex = g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex;
   if (cityIndex != -1) {
-    if (g_pGlobalMapState->cityScoreTable[cityIndex].cityTileIndex04 == tileIndex) {
+    if (g_pGlobalMapState->cityScoreTable[cityIndex].cityTileIndex == tileIndex) {
       if (g_pGlobalMapState->terrainStateTable[tileIndex].activeFlags1c & 1) {
         mainText += "National Capitol\n";
       } else {
@@ -1007,7 +1007,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
             sourceRect.bottom - sourceRect.top, destinationRect.left, destinationRect.top, -1);
 
         TCivUnit* firstCivilianOrder =
-            g_pGlobalMapState->terrainStateTable[tileIndex].firstCivilianOrder20;
+            g_pGlobalMapState->terrainStateTable[tileIndex].firstCivilianOrder;
         if (firstCivilianOrder != 0) {
           TAnimation* animation =
               g_pUiAnimator->FindRegisteredAnimationByTag(PointerAddressLong32(firstCivilianOrder));
@@ -1242,11 +1242,11 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
 
   // LAYOUT: transport connectivity is stored at +0x06/+0x17; +0x0a/+0x0b above
   // belong to the terrain-transition and coast families.
-  if (terrain.adjacencyBits06 != 0 || terrain.railFlags != 0) {
+  if (terrain.adjacencyBits != 0 || terrain.railFlags != 0) {
     for (int direction = 0; direction < 6; ++direction) {
       unsigned char directionBit = static_cast<unsigned char>(1 << direction);
       StrategicMapCallbackRecord* routeMask = 0;
-      if ((static_cast<unsigned char>(terrain.adjacencyBits06) & directionBit) != 0) {
+      if ((static_cast<unsigned char>(terrain.adjacencyBits) & directionBit) != 0) {
         routeMask = &g_pMacViewMgr->strategicTileMasks[0x18 + direction];
       } else if ((terrain.railFlags & directionBit) != 0) {
         routeMask = &g_pMacViewMgr->strategicTileMasks[0x1e + direction];
@@ -1483,7 +1483,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   TCivUnit* civilianOrder =
       g_pGlobalMapState->GetTileUnitEntryByOwner(tileIndex, static_cast<short>(activeNation));
   if (civilianOrder == 0) {
-    civilianOrder = terrain.firstCivilianOrder20;
+    civilianOrder = terrain.firstCivilianOrder;
   }
   if (civilianOrder != 0 &&
       (terrain.ownerNationTag04 == activeNation || terrain.ownerNationTag04 > 6)) {
@@ -2374,8 +2374,7 @@ void TMapDialog::DrawTile(short tileIndex, short screenX, short screenY) {
                                    g_pCitySiteCachedPrimaryRenderSurfaceContext->GetBlitSurface(),
                                    &sourceRect, &cacheRect, 0, 0);
 
-  TCivUnit* firstCivilianOrder =
-      g_pGlobalMapState->terrainStateTable[tileIndex].firstCivilianOrder20;
+  TCivUnit* firstCivilianOrder = g_pGlobalMapState->terrainStateTable[tileIndex].firstCivilianOrder;
   if (firstCivilianOrder != 0) {
     TAnimation* animation =
         g_pUiAnimator->FindRegisteredAnimationByTag(PointerAddressLong32(firstCivilianOrder));
@@ -2403,7 +2402,7 @@ void TMapDialog::DrawTile(short tileIndex, short screenX, short screenY) {
 // FUNCTION: IMPERIALISM 0x00523640
 void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projectedX,
                                                 int projectedY, int flag, short tileIndex) {
-  bool belongsToActiveNation = orderEntry->ownerNationSlot18 == g_pSimMgr->GetPlayerCountry();
+  bool belongsToActiveNation = orderEntry->ownerNationSlot == g_pSimMgr->GetPlayerCountry();
   if (orderEntry->unitOrder > static_cast<UnitOrder>(4) && belongsToActiveNation) {
     int animationTag = PointerAddressLong32(orderEntry);
     if (g_pUiAnimator->FindRegisteredAnimationByTag(animationTag) == 0) {
@@ -2432,7 +2431,7 @@ void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projec
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                        &sourceRect, &destinationRect, 0, 0);
     }
-    if (cursorId4e != 0xffff && cursorId4e != 0x3f0) {
+    if (cursorId != 0xffff && cursorId != 0x3f0) {
       CPoint currentMousePoint;
       CopyCurrentMouseCapturePoint(&currentMousePoint);
       if (destinationRect.PtInRect(currentMousePoint)) {
@@ -2453,7 +2452,7 @@ void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projec
                                    &destinationRect, 0x24, 0);
 
   if (flag == 0 && !belongsToActiveNation) {
-    short ownerBadgeX = g_pGlobalMapState->GetFortFlagOffset(orderEntry->ownerNationSlot18);
+    short ownerBadgeX = g_pGlobalMapState->GetFortFlagOffset(orderEntry->ownerNationSlot);
     CRect ownerSourceRect(ownerBadgeX, 0, ownerBadgeX + 9, 6);
     CRect ownerDestinationRect(destinationRect.left + 0x1c, destinationRect.bottom - 8,
                                destinationRect.left + 0x25, destinationRect.bottom - 2);

@@ -57,15 +57,15 @@ void TRailCluster::DoPostCreate(int styleSeed) {
       recordIndex = 7;
       this->selectedMetricStep = 2;
       this->selectedMetricValue =
-          static_cast<short>(((labor->highSkillCount08 * 2 + labor->mediumSkillCount06) * 2 +
-                              population->extraAt1e + labor->lowSkillCount04) /
+          static_cast<short>(((labor->highSkillCount * 2 + labor->mediumSkillCount) * 2 +
+                              population->extraAt1e + labor->lowSkillCount) /
                              2);
     }
   } else if (summaryTag < kControlTagProg) {
     if (summaryTag == kSummaryTagProf) {
       recordIndex = 0x18;
       this->selectedMetricStep = 1;
-      this->selectedMetricValue = population->baselineSlots->mediumSkillCount06;
+      this->selectedMetricValue = population->baselineSlots->mediumSkillCount;
     } else if (summaryTag == kSummaryTagPowe) {
       recordIndex = 0x34;
       this->selectedMetricStep = 6;
@@ -76,13 +76,13 @@ void TRailCluster::DoPostCreate(int styleSeed) {
     recordIndex = 0x33;
     this->selectedMetricStep = 1;
     this->selectedMetricValue =
-        static_cast<short>(((labor->highSkillCount08 * 2 + labor->mediumSkillCount06) * 2 +
-                            labor->lowSkillCount04 + population->extraAt1e) /
+        static_cast<short>(((labor->highSkillCount * 2 + labor->mediumSkillCount) * 2 +
+                            labor->lowSkillCount + population->extraAt1e) /
                            2);
   } else if (summaryTag == kSummaryTagTrai) {
     recordIndex = 0x17;
     this->selectedMetricStep = 1;
-    this->selectedMetricValue = population->baselineSlots->lowSkillCount04;
+    this->selectedMetricValue = population->baselineSlots->lowSkillCount;
   }
 
   this->selectedMetricOrder = city->orderSlots[recordIndex];

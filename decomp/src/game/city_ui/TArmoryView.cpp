@@ -256,18 +256,18 @@ void TArmoryView::UpdateFields() {
   short workforceAvailable;
   if (selectedUnitOrder->workforceMode == kLowSkillWorkforceMode) {
     workforceAvailable = population->strength;
-    if (population->productionSlots->lowSkillCount04 < workforceAvailable) {
-      workforceAvailable = population->productionSlots->lowSkillCount04;
+    if (population->productionSlots->lowSkillCount < workforceAvailable) {
+      workforceAvailable = population->productionSlots->lowSkillCount;
     }
   } else if (selectedUnitOrder->workforceMode == kMediumSkillWorkforceMode) {
     workforceAvailable = static_cast<short>(population->strength / 2);
-    if (population->productionSlots->mediumSkillCount06 < workforceAvailable) {
-      workforceAvailable = population->productionSlots->mediumSkillCount06;
+    if (population->productionSlots->mediumSkillCount < workforceAvailable) {
+      workforceAvailable = population->productionSlots->mediumSkillCount;
     }
   } else {
     workforceAvailable = static_cast<short>(population->strength / 4);
-    if (population->productionSlots->highSkillCount08 < workforceAvailable) {
-      workforceAvailable = population->productionSlots->highSkillCount08;
+    if (population->productionSlots->highSkillCount < workforceAvailable) {
+      workforceAvailable = population->productionSlots->highSkillCount;
     }
   }
 

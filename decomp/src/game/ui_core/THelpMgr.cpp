@@ -350,8 +350,8 @@ short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
     g_pViewMgr->ModalMessage(3, titleText, templateText, g_ptNationComparisonModalMessage, 1, 0);
   }
 
-  if (activeCity != 0 && activeCity->foodSubstitutionCount06 != 0 &&
-      activeCity->starvationPopulationLoss08 == 0) {
+  if (activeCity != 0 && activeCity->foodSubstitutionCount != 0 &&
+      activeCity->starvationPopulationLoss == 0) {
     g_pSimMgr->GetString(0x2753, 0x16, &titleText);
     g_pSimMgr->GetString(0x2753, 0x17, &templateText);
     g_pViewMgr->ModalMessage(5, titleText, templateText, g_ptNationComparisonModalMessage, 2, 0);

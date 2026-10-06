@@ -35,18 +35,18 @@ void TUnitOrder::IUnitOrder(TCity* city, short nEntryId, short nPrimaryInputReso
 short TUnitOrder::MaxOrder() {
   short workforceLimit;
   if (workforceMode == kLowSkillWorkforceMode) {
-    workforceLimit = productionSummary->productionSlots->lowSkillCount04;
+    workforceLimit = productionSummary->productionSlots->lowSkillCount;
     if (productionSummary->strength < workforceLimit) {
       workforceLimit = productionSummary->strength;
     }
   } else if (workforceMode == kMediumSkillWorkforceMode) {
-    workforceLimit = productionSummary->productionSlots->mediumSkillCount06;
+    workforceLimit = productionSummary->productionSlots->mediumSkillCount;
     short strengthLimit = static_cast<short>(productionSummary->strength / 2);
     if (strengthLimit < workforceLimit) {
       workforceLimit = strengthLimit;
     }
   } else if (workforceMode == kHighSkillWorkforceMode) {
-    workforceLimit = productionSummary->productionSlots->highSkillCount08;
+    workforceLimit = productionSummary->productionSlots->highSkillCount;
     short strengthLimit = static_cast<short>(productionSummary->strength / 4);
     if (strengthLimit < workforceLimit) {
       workforceLimit = strengthLimit;

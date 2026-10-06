@@ -28,7 +28,6 @@ IMPLEMENT_DYNCREATE(TRailAmtBar, TAmtBar)
 // FUNCTION: IMPERIALISM 0x00589f90
 TRailAmtBar::TRailAmtBar() : TIndustryAmtBar() {}
 
-
 // FUNCTION: IMPERIALISM 0x0058a020
 void TRailAmtBar::DoPostCreate(int arg) {
   TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
@@ -60,8 +59,8 @@ void TRailAmtBar::DoPostCreate(int arg) {
   if (recordIndex == 0x33 || recordIndex == 7) {
     TPopulationMgr* scenario = province->productionSummary;
     TLaborPool* slots = scenario->productionSlots;
-    productionOrCapValue = (short)(((slots->highSkillCount08 * 2 + slots->mediumSkillCount06) * 2 +
-                                    scenario->extraAt1e + slots->lowSkillCount04) /
+    productionOrCapValue = (short)(((slots->highSkillCount * 2 + slots->mediumSkillCount) * 2 +
+                                    scenario->extraAt1e + slots->lowSkillCount) /
                                    2);
   } else {
     productionOrCapValue = selectedMetricRecord->MaxOrder();

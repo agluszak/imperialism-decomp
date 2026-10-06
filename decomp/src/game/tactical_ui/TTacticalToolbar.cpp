@@ -52,8 +52,8 @@ void TTacticalToolbar::Draw(RECT* rectBuffer) {
 
   TArmyTacUnit* sideAUnit = static_cast<TArmyTacUnit*>(currentUnit);
   if (sideAUnit != nullptr) {
-    int qualityPercent = sideAUnit->sourceUnit38->experiencePercent;
-    short barWidth = static_cast<short>(sideAUnit->qualityLevel10) * 0xb;
+    int qualityPercent = sideAUnit->sourceUnit->experiencePercent;
+    short barWidth = static_cast<short>(sideAUnit->qualityLevel) * 0xb;
     if (qualityPercent % 100 > 0x31) {
       barWidth += 5;
     }
@@ -70,8 +70,8 @@ void TTacticalToolbar::Draw(RECT* rectBuffer) {
 
   TArmyTacUnit* sideBUnit = otherSideCurrentUnit;
   if (sideBUnit != nullptr) {
-    short barWidth = static_cast<short>(sideBUnit->qualityLevel10) * 0xb;
-    int qualityPercent = sideBUnit->sourceUnit38->experiencePercent;
+    short barWidth = static_cast<short>(sideBUnit->qualityLevel) * 0xb;
+    int qualityPercent = sideBUnit->sourceUnit->experiencePercent;
     if (qualityPercent % 100 > 0x31) {
       barWidth += 5;
     }
@@ -93,8 +93,7 @@ void TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalU
   TPicture* currControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagCurr));
   currControl->AssertValid();
   if (unit != 0) {
-    currControl->SetPictureRsrcID(static_cast<short>(unit->unitTypeC * 2 + 0xf1e + unit->side20),
-                                  1);
+    currControl->SetPictureRsrcID(static_cast<short>(unit->unitTypeC * 2 + 0xf1e + unit->side), 1);
     currControl->Show(1, 1);
   } else {
     currControl->Show(0, 1);
@@ -108,7 +107,7 @@ void TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalU
   CString unitName;
   if (unit != 0) {
     unit->AssertValid();
-    unitName = static_cast<TArmyTacUnit*>(unit)->sourceUnit38->name24;
+    unitName = static_cast<TArmyTacUnit*>(unit)->sourceUnit->name24;
   }
   AssignSharedStringToTaggedControlAndProcessState(static_cast<const char*>(unitName),
                                                    kControlTagDialog);
@@ -120,8 +119,7 @@ void TTacticalToolbar::UpdateTacticalOtherSideUnitControl(TArmyTacUnit* unit) {
   TPicture* tpicControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagTpic));
   tpicControl->AssertValid();
   if (unit != 0) {
-    tpicControl->SetPictureRsrcID(static_cast<short>(unit->unitTypeC * 2 + 0xf1e + unit->side20),
-                                  1);
+    tpicControl->SetPictureRsrcID(static_cast<short>(unit->unitTypeC * 2 + 0xf1e + unit->side), 1);
     tpicControl->Show(1, 1);
   } else {
     tpicControl->Show(0, 1);

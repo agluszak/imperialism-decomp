@@ -26,7 +26,7 @@ public:
   virtual void SetTextEntryFromChars(const char* textChars,
                                      int textLength); // slot 0x7d 0x5b6360
   virtual short CenterVertically(bool refreshNow);    // slot 0x7e 0x5b63e0
-  COLORREF textColor98;                               // +0x98
+  COLORREF textColor;                                 // +0x98
   COLORREF shadowTextColor;                           // +0x9c
   bool dropShadowEnabled;                             // +0xa0
   unsigned char paddingA1[3];                         // +0xa1

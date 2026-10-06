@@ -226,7 +226,7 @@ struct TurnEvent1ANationActionPacket : TimelyNetMessagePrefix {
 struct TurnEvent1BTrackedEntryPacket : TimelyNetMessagePrefix {
   short nationSlot1C;     // +0x1c
   short trackedKind;      // +0x1e
-  short targetNation20;   // +0x20
+  short targetNation;     // +0x20
   short trackedValue;     // +0x22
   short trackedSlotIndex; // +0x24
   unsigned char pad26[2];
@@ -237,9 +237,9 @@ struct TurnEvent1BTrackedEntryPacket : TimelyNetMessagePrefix {
 struct TurnEvent1CProposalAmountPacket : TimelyNetMessagePrefix {
   short ownerNation1C;         // +0x1c
   short sourceContext;         // +0x1e
-  short maxAmount20;           // +0x20
-  short targetNation22;        // +0x22
-  short amount24;              // +0x24
+  short maxAmount;             // +0x20
+  short targetNation;          // +0x22
+  short amount;                // +0x24
   unsigned char emitEventFlag; // +0x26
   unsigned char pad27;         // total 0x28
 };
@@ -269,19 +269,19 @@ ASSERT_OFFSET(TurnEvent24CityRecordPacket, record, 0x20);
 
 // Event-0x27 join-empire dispatch.
 struct TurnEvent27JoinEmpirePacket : TimelyMessageHeader {
-  int terrainSlot18;      // +0x18 - index into g_apTerrainTypeDescriptorTable
-  int targetNationSlot1C; // +0x1c
-  int mode20;             // +0x20, total 0x24
+  int terrainSlot;      // +0x18 - index into g_apTerrainTypeDescriptorTable
+  int targetNationSlot; // +0x1c
+  int mode20;           // +0x20, total 0x24
 };
 
 // Events 0x29/0x2A tactical battle commands by fourcc tag.
 struct TacticalCommandPacket : TimelyMessageHeader {
-  int commandTag18; // +0x18 'sele'/'move'/'mine'/'digg'/'depl'/'raly' (0x29), 'fire' (0x2a)
-  int unitId;       // +0x1c - resolved via SeekLinkedListCursorByNestedId
-  int arg20;        // +0x20
-  int arg24;        // +0x24
-  int arg28;        // +0x28 ('fire' only)
-  int arg2C;        // +0x2c ('fire' only), total 0x30
+  int commandTag; // +0x18 'sele'/'move'/'mine'/'digg'/'depl'/'raly' (0x29), 'fire' (0x2a)
+  int unitId;     // +0x1c - resolved via SeekLinkedListCursorByNestedId
+  int arg20;      // +0x20
+  int arg24;      // +0x24
+  int arg28;      // +0x28 ('fire' only)
+  int arg2C;      // +0x2c ('fire' only), total 0x30
 };
 
 void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
@@ -333,7 +333,7 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
       packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
       int nationId = static_cast<char>(g_pSimMgr->GetPlayerCountry());
       packet.nationId1C = nationId;
-      packet.homeTile1E = (short)g_apTerrainTypeDescriptorTable[nationId]->homeTileIndex;
+      packet.homeTile = (short)g_apTerrainTypeDescriptorTable[nationId]->homeTileIndex;
       int cityRecordIndex = g_apTerrainTypeDescriptorTable[nationId]->GetCapitolProvince();
       g_pGlobalMapState->AssignCityRecordDisplayName(cityRecordIndex, &cityName);
       strncpy(packet.cityName20, cityName, 0x21);
@@ -689,8 +689,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TurnEventACityAnnouncePacket* announce = static_cast<TurnEventACityAnnouncePacket*>(packet);
     if (g_pSimMgr->scenarioMapIndexPlusOne == 0) {
       int announcedNation = static_cast<char>(announce->nationId1C);
-      g_pGlobalMapState->PlaceCity(announce->homeTile1E, (char)announcedNation);
-      g_apNationStates[announcedNation]->PlaceCity(announce->homeTile1E, announce->cityName20);
+      g_pGlobalMapState->PlaceCity(announce->homeTile, (char)announcedNation);
+      g_apNationStates[announcedNation]->PlaceCity(announce->homeTile, announce->cityName20);
     }
     pendingNationBitmask &= ~(1 << (char)announce->nationId1C);
     bool hostingA = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
@@ -1079,7 +1079,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     break;
   case 0xe: {
     TurnEventESessionInitPacket* sessionInit = static_cast<TurnEventESessionInitPacket*>(packet);
-    g_pSimMgr->SetDifficultyLevel(static_cast<eDifficulty>(sessionInit->difficultyLevel64));
+    g_pSimMgr->SetDifficultyLevel(static_cast<eDifficulty>(sessionInit->difficultyLevel));
     g_pSimMgr->useLocalizedNameTables = sessionInit->nameTableFlag;
     {
       CString hostGameName(sessionInit->hostGameName3A);
@@ -1352,7 +1352,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TurnEvent1BTrackedEntryPacket* trackedEntry =
         static_cast<TurnEvent1BTrackedEntryPacket*>(packet);
     g_apNationStates[trackedEntry->nationSlot1C]->AddToDealBook(
-        trackedEntry->trackedKind, trackedEntry->targetNation20, trackedEntry->trackedValue,
+        trackedEntry->trackedKind, trackedEntry->targetNation, trackedEntry->trackedValue,
         trackedEntry->trackedSlotIndex, trackedEntry->trackedPayload);
     break;
   }
@@ -1360,9 +1360,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TurnEvent1CProposalAmountPacket* proposalAmount =
         static_cast<TurnEvent1CProposalAmountPacket*>(packet);
     g_pTradeMgr->SetDealResults(proposalAmount->ownerNation1C, proposalAmount->sourceContext,
-                                proposalAmount->amount24, proposalAmount->maxAmount20,
-                                proposalAmount->targetNation22, proposalAmount->emitEventFlag,
-                                true);
+                                proposalAmount->amount, proposalAmount->maxAmount,
+                                proposalAmount->targetNation, proposalAmount->emitEventFlag, true);
     bool hosting1C = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
     if (!hosting1C) {
       return 1;
@@ -1376,7 +1375,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // Add the amount to the terrain-slot nation's field-0x10 metric.
     TurnEvent14NationMetricPacket* metricDelta =
         static_cast<TurnEvent14NationMetricPacket*>(packet);
-    g_apTerrainTypeDescriptorTable[metricDelta->nationSlot18]->AddToTreasury(metricDelta->amount1C);
+    g_apTerrainTypeDescriptorTable[metricDelta->nationSlot18]->AddToTreasury(metricDelta->amount);
     break;
   }
   case 0x15: {
@@ -1493,15 +1492,15 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     summary2C->strength = composite->popStockLevel;
     summary2C->extraAt1e = composite->popExtraAt1e;
     summary2C->fieldAt20 = composite->popFieldAt20;
-    summary2C->baselineSlots->lowSkillCount04 = composite->popBucketWords[0];
-    summary2C->baselineSlots->mediumSkillCount06 = composite->popBucketWords[1];
-    summary2C->baselineSlots->highSkillCount08 = composite->popBucketWords[2];
-    summary2C->productionSlots->lowSkillCount04 = composite->popBucketWords[3];
-    summary2C->productionSlots->mediumSkillCount06 = composite->popBucketWords[4];
-    summary2C->productionSlots->highSkillCount08 = composite->popBucketWords[5];
-    summary2C->pendingDeltaSlots->lowSkillCount04 = composite->popBucketWords[6];
-    summary2C->pendingDeltaSlots->mediumSkillCount06 = composite->popBucketWords[7];
-    summary2C->pendingDeltaSlots->highSkillCount08 = composite->popBucketWords[8];
+    summary2C->baselineSlots->lowSkillCount = composite->popBucketWords[0];
+    summary2C->baselineSlots->mediumSkillCount = composite->popBucketWords[1];
+    summary2C->baselineSlots->highSkillCount = composite->popBucketWords[2];
+    summary2C->productionSlots->lowSkillCount = composite->popBucketWords[3];
+    summary2C->productionSlots->mediumSkillCount = composite->popBucketWords[4];
+    summary2C->productionSlots->highSkillCount = composite->popBucketWords[5];
+    summary2C->pendingDeltaSlots->lowSkillCount = composite->popBucketWords[6];
+    summary2C->pendingDeltaSlots->mediumSkillCount = composite->popBucketWords[7];
+    summary2C->pendingDeltaSlots->highSkillCount = composite->popBucketWords[8];
     break;
   }
   case 0x2d: {
@@ -1517,18 +1516,18 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // Queue a diplomacy proposal code on the addressed nation.
     TurnEvent16DiplomacyProposalPacket* proposal =
         static_cast<TurnEvent16DiplomacyProposalPacket*>(packet);
-    g_apNationStates[proposal->nationSlot18]->AddOfferFrom(proposal->sourceNationSlot1A,
-                                                           proposal->proposalCode1C);
+    g_apNationStates[proposal->nationSlot18]->AddOfferFrom(proposal->sourceNationSlot,
+                                                           proposal->proposalCode);
     break;
   }
   case 0x17: {
     // Resolve a pending diplomacy proposal.
     TurnEvent17ProposalResolutionPacket* resolution =
         static_cast<TurnEvent17ProposalResolutionPacket*>(packet);
-    if (resolution->acceptedFlag1A) {
-      g_apNationStates[resolution->nationSlot18]->AcceptOffer(resolution->proposalIndex1C);
+    if (resolution->acceptedFlag) {
+      g_apNationStates[resolution->nationSlot18]->AcceptOffer(resolution->proposalIndex);
     } else {
-      g_apNationStates[resolution->nationSlot18]->RejectOffer(resolution->proposalIndex1C);
+      g_apNationStates[resolution->nationSlot18]->RejectOffer(resolution->proposalIndex);
     }
     break;
   }
@@ -1573,7 +1572,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   case 0x1f: {
     // Session/game-flow four-cc status dispatcher.
     TurnEvent1FStatusPacket* gameState = static_cast<TurnEvent1FStatusPacket*>(packet);
-    switch (gameState->statusTag18) {
+    switch (gameState->statusTag) {
     case kControlTagAbdi: { // 'abdi' - nation abdicated: notice; host replaces the slot with an AI
       CString templateTextAbdi;
       CString formattedAbdi;
@@ -1671,7 +1670,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         g_pViewMgr->PostModalMessage(&messageQuit, 0);
       }
       bool stillClientSessionQuit = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
-      if (!stillClientSessionQuit && gameState->statusTag18 != kControlTagNewg) {
+      if (!stillClientSessionQuit && gameState->statusTag != kControlTagNewg) {
         g_pAmbitApplication->PostWmCloseToMainThreadWindow();
         return 1;
       }
@@ -1748,7 +1747,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         refuse.messageLength = 0;
         refuse.messageLength = 0x20;
         refuse.toNetworkId = packet->fromNetworkId;
-        refuse.statusTag18 = kSessionTagFoff; // 'foff'
+        refuse.statusTag = kSessionTagFoff; // 'foff'
         refuse.value1C = 0x29;
         g_pNetMgr006a6014->Send(&refuse, false);
       }
@@ -1777,7 +1776,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileState->tileIndex];
     tile->ownerNationTag04 = tileState->record.ownerNationTag04;
     tile->regionSubtypeTag = tileState->record.regionSubtypeTag;
-    tile->adjacencyBits06 = tileState->record.adjacencyBits06;
+    tile->adjacencyBits = tileState->record.adjacencyBits;
     tile->developmentClassNibbles = tileState->record.developmentClassNibbles;
     tile->pendingDevelopmentFlag =
         (unsigned char)(tile->pendingDevelopmentFlag | tileState->record.pendingDevelopmentFlag);
@@ -1871,8 +1870,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   }
   case 0x27: { // dispatch join-empire mode on one terrain-slot nation
     TurnEvent27JoinEmpirePacket* joinEmpire = static_cast<TurnEvent27JoinEmpirePacket*>(packet);
-    g_apTerrainTypeDescriptorTable[joinEmpire->terrainSlot18]->ChangeMaster(
-        joinEmpire->targetNationSlot1C, joinEmpire->mode20);
+    g_apTerrainTypeDescriptorTable[joinEmpire->terrainSlot]->ChangeMaster(
+        joinEmpire->targetNationSlot, joinEmpire->mode20);
     break;
   }
   case 0x29: { // route a tagged tactical command to the live battle
@@ -1880,7 +1879,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TTacticalBattle* battle = g_pActiveTacticalBattle;
     battle->AssertValid();
     TArmyTacUnit* unit = battle->SeekLinkedListCursorByNestedId(tactical->unitId);
-    switch (tactical->commandTag18) {
+    switch (tactical->commandTag) {
     case kControlTagDepl: // 'depl'
       battle->HandleTacticalCommandTag_depl(unit, tactical->arg20, true);
       return 1;
@@ -1909,7 +1908,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     fireBattle->AssertValid();
     TArmyTacUnit* attacker = fireBattle->SeekLinkedListCursorByNestedId(fireCommand->unitId);
     TArmyTacUnit* target = fireBattle->SeekLinkedListCursorByNestedId(fireCommand->arg20);
-    if (fireCommand->commandTag18 != kControlTagFire) {
+    if (fireCommand->commandTag != kControlTagFire) {
       return 1;
     }
     fireBattle->LaFireOn(attacker, target, target->tileIndex8, fireCommand->arg24,
@@ -2460,7 +2459,7 @@ void TMultiplayerMgr::DispatchLobbyTextPairEvent8(unsigned char sourceNationSlot
   packet.messageLength = 0;
   packet.messageLength = 0x5c;
   packet.toNetworkId = -1;
-  packet.sourceNationSlot18 = sourceNationSlot;
+  packet.sourceNationSlot = sourceNationSlot;
   strcpy(packet.playerName19, static_cast<LPCSTR>(playerNameString));
   strcpy(packet.playerNameMirror, static_cast<LPCSTR>(playerNameMirror));
   g_pNetMgr006a6014->Send(&packet, false);
@@ -2510,8 +2509,8 @@ void TMultiplayerMgr::PublishTerrainDescriptorAndNotifyOrderListeners(TStream* s
   if (descriptor == 0) {
     stream->WriteInteger(0);
   } else {
-    stream->WriteInteger(descriptor->militaryUnitList44->GetCount());
-    CIterator unitIter(descriptor->militaryUnitList44);
+    stream->WriteInteger(descriptor->militaryUnitList->GetCount());
+    CIterator unitIter(descriptor->militaryUnitList);
     for (TObject* unit = static_cast<TObject*>(unitIter.Reset()); unitIter.More();
          unit = static_cast<TObject*>(unitIter.Advance())) {
       unit->WriteTo(stream);
@@ -2551,12 +2550,12 @@ void TMultiplayerMgr::CreateMilitaryRecruitOrdersForSelectedTerrain(TStream* str
   const bool terrainSelected = nationSlot == -1 || nationSlot == terrainSlot;
   if (terrainSelected) {
     if (g_apTerrainTypeDescriptorTable[terrainSlot] != 0) {
-      CIterator recruitIter(g_apTerrainTypeDescriptorTable[terrainSlot]->militaryUnitList44);
+      CIterator recruitIter(g_apTerrainTypeDescriptorTable[terrainSlot]->militaryUnitList);
       for (TUnit* pendingRecruit = static_cast<TUnit*>(recruitIter.Reset()); recruitIter.More();
            pendingRecruit = static_cast<TUnit*>(recruitIter.Advance())) {
         pendingRecruit->Vaporize();
       }
-      g_apTerrainTypeDescriptorTable[terrainSlot]->militaryUnitList44->FreePayloads();
+      g_apTerrainTypeDescriptorTable[terrainSlot]->militaryUnitList->FreePayloads();
     }
     short recruitOrderCount = stream->ReadInteger();
     for (int recruitOrderIdx = recruitOrderCount; recruitOrderIdx != 0; --recruitOrderIdx) {
@@ -2677,9 +2676,9 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
   packet.cityHeader00[1] = src->formerOwnerNationCode;
   packet.cityHeader00[2] = src->developmentStage;
   packet.cityHeader00[3] = src->fortLevel03;
-  packet.cityWord04 = src->cityTileIndex04;
+  packet.cityWord04 = src->cityTileIndex;
   packet.cityWord06 = src->lastTurnTick;
-  packet.cityByte08 = src->adjacentRegionCount08;
+  packet.cityByte08 = src->adjacentRegionCount;
 
   for (int wordIndex = 0; wordIndex < 12; ++wordIndex) {
     packet.adjacentRegionIds[wordIndex] = src->adjacentRegionIds[wordIndex];
@@ -2963,7 +2962,7 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
       packet.messageLength = 0;
       packet.messageLength = 0x20;
       packet.DestinateTo(-2);
-      packet.statusTag18 = kSessionTagDehu; // 'uhed'
+      packet.statusTag = kSessionTagDehu; // 'uhed'
       packet.value1C = nationSlot;
       g_pNetMgr006a6014->Send(&packet, false);
     }
@@ -2983,9 +2982,9 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
       newNation->treasuryValue10 = oldNation->treasuryValue10;
       memcpy(newNation->needLevelByNation, oldNation->needLevelByNation,
              sizeof(newNation->needLevelByNation));
-      TSortedList* militaryUnits = newNation->militaryUnitList44;
-      newNation->militaryUnitList44 = oldNation->militaryUnitList44;
-      oldNation->militaryUnitList44 = militaryUnits;
+      TSortedList* militaryUnits = newNation->militaryUnitList;
+      newNation->militaryUnitList = oldNation->militaryUnitList;
+      oldNation->militaryUnitList = militaryUnits;
       memcpy(newNation->unitNameOrdinalByType, oldNation->unitNameOrdinalByType,
              sizeof(newNation->unitNameOrdinalByType));
       newNation->unitNameCounter = oldNation->unitNameCounter;
@@ -3265,7 +3264,7 @@ void TMultiplayerMgr::EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet
     strcpy(sessionInit.mapSeedText, g_pGlobalMapState->scenarioTagText);
     sessionInit.mapParamByte39 = g_pGlobalMapState->hexNeighborWrapHorizontally;
     sessionInit.saveSlotDword5C = queueSyncDword;
-    sessionInit.difficultyLevel64 = static_cast<signed char>(g_pSimMgr->difficultyLevel);
+    sessionInit.difficultyLevel = static_cast<signed char>(g_pSimMgr->difficultyLevel);
     sessionInit.nameTableFlag = g_pSimMgr->useLocalizedNameTables;
     g_pNetMgr006a6014->Send(&sessionInit, false);
   }
@@ -3423,15 +3422,15 @@ void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
     packet.popStockLevel = summary->strength;
     packet.popExtraAt1e = summary->extraAt1e;
     packet.popFieldAt20 = summary->fieldAt20;
-    packet.popBucketWords[0] = summary->baselineSlots->lowSkillCount04;
-    packet.popBucketWords[1] = summary->baselineSlots->mediumSkillCount06;
-    packet.popBucketWords[2] = summary->baselineSlots->highSkillCount08;
-    packet.popBucketWords[3] = summary->productionSlots->lowSkillCount04;
-    packet.popBucketWords[4] = summary->productionSlots->mediumSkillCount06;
-    packet.popBucketWords[5] = summary->productionSlots->highSkillCount08;
-    packet.popBucketWords[6] = summary->pendingDeltaSlots->lowSkillCount04;
-    packet.popBucketWords[7] = summary->pendingDeltaSlots->mediumSkillCount06;
-    packet.popBucketWords[8] = summary->pendingDeltaSlots->highSkillCount08;
+    packet.popBucketWords[0] = summary->baselineSlots->lowSkillCount;
+    packet.popBucketWords[1] = summary->baselineSlots->mediumSkillCount;
+    packet.popBucketWords[2] = summary->baselineSlots->highSkillCount;
+    packet.popBucketWords[3] = summary->productionSlots->lowSkillCount;
+    packet.popBucketWords[4] = summary->productionSlots->mediumSkillCount;
+    packet.popBucketWords[5] = summary->productionSlots->highSkillCount;
+    packet.popBucketWords[6] = summary->pendingDeltaSlots->lowSkillCount;
+    packet.popBucketWords[7] = summary->pendingDeltaSlots->mediumSkillCount;
+    packet.popBucketWords[8] = summary->pendingDeltaSlots->highSkillCount;
     g_pNetMgr006a6014->Send(&packet, destinationSlot == -3);
   }
 }

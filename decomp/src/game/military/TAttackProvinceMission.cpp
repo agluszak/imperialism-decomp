@@ -86,8 +86,7 @@ char TAttackProvinceMission::SmokeEmIfYouGotEm() {
       CIterator eligibilityIter(orderList);
       TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(eligibilityIter.Reset());
       while (eligibilityIter.More()) {
-        if (static_cast<double>(unit->strength34) *
-                g_ArmyMissionEligibleUnitStrengthScale_0065AA48 <
+        if (static_cast<double>(unit->strength) * g_ArmyMissionEligibleUnitStrengthScale_0065AA48 <
             g_Recompute_Nation_Order_LookupTable_0065AA20) {
           CIterator queueIter(orderList);
           for (unit = static_cast<TMilitaryUnit*>(queueIter.Reset()); queueIter.More();
@@ -123,7 +122,7 @@ char TAttackProvinceMission::TryResolveTargetTerrainClass() {
 
   int candidateIndex = 0;
   const short* candidateCursor = targetRecord.adjacentRegionIds;
-  for (; candidateIndex < targetRecord.adjacentRegionCount08; candidateIndex++, candidateCursor++) {
+  for (; candidateIndex < targetRecord.adjacentRegionCount; candidateIndex++, candidateCursor++) {
     short candidateTile = *candidateCursor;
     short tileOwnerNationCode =
         g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(candidateTile);
@@ -134,7 +133,7 @@ char TAttackProvinceMission::TryResolveTargetTerrainClass() {
         int matchCount = 0;
         int adjacentIndex = 0;
         const short* adjacentCursor = candidateRecord.adjacentRegionIds;
-        while (adjacentIndex < candidateRecord.adjacentRegionCount08) {
+        while (adjacentIndex < candidateRecord.adjacentRegionCount) {
           short adjOwnerNationCode =
               g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(*adjacentCursor);
           if (adjOwnerNationCode == nationId) {
@@ -143,9 +142,9 @@ char TAttackProvinceMission::TryResolveTargetTerrainClass() {
           adjacentIndex++;
           adjacentCursor++;
         }
-        if (candidateRecord.adjacentRegionCount08 > 0) {
+        if (candidateRecord.adjacentRegionCount > 0) {
           candidateScore = (static_cast<float>(matchCount) /
-                                static_cast<float>(candidateRecord.adjacentRegionCount08) -
+                                static_cast<float>(candidateRecord.adjacentRegionCount) -
                             g_Recompute_Nation_Order_LookupTable_0065A9E0) *
                            candidateScore;
         }
@@ -163,7 +162,7 @@ char TAttackProvinceMission::TryResolveTargetTerrainClass() {
       int matchCount = 0;
       int adjacentIndex = 0;
       const short* adjacentCursor = candidateRecord.adjacentRegionIds;
-      while (adjacentIndex < candidateRecord.adjacentRegionCount08) {
+      while (adjacentIndex < candidateRecord.adjacentRegionCount) {
         short adjOwnerNationCode =
             g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(*adjacentCursor);
         if (adjOwnerNationCode == nationId) {
@@ -172,9 +171,9 @@ char TAttackProvinceMission::TryResolveTargetTerrainClass() {
         adjacentIndex++;
         adjacentCursor++;
       }
-      if (candidateRecord.adjacentRegionCount08 > 0) {
+      if (candidateRecord.adjacentRegionCount > 0) {
         candidateScore = (static_cast<float>(matchCount) /
-                              static_cast<float>(candidateRecord.adjacentRegionCount08) -
+                              static_cast<float>(candidateRecord.adjacentRegionCount) -
                           g_Recompute_Nation_Order_LookupTable_0065A9E0) *
                          candidateScore;
       }
@@ -300,7 +299,7 @@ void TAttackProvinceMission::CalculateImportance() {
   const Province& targetRecord = g_pGlobalMapState->cityScoreTable[targetProvince];
   float score = static_cast<float>(targetRecord.cityScoreValue);
 
-  if (targetRecord.adjacentRegionCount08 > 0) {
+  if (targetRecord.adjacentRegionCount > 0) {
     const short* adjacentCursor = targetRecord.adjacentRegionIds;
     do {
       short tileOwnerNationCode =
@@ -310,14 +309,13 @@ void TAttackProvinceMission::CalculateImportance() {
       }
       adjacentIndex++;
       adjacentCursor++;
-    } while (adjacentIndex < targetRecord.adjacentRegionCount08);
+    } while (adjacentIndex < targetRecord.adjacentRegionCount);
   }
 
-  if (targetRecord.adjacentRegionCount08 > 0) {
-    score =
-        (static_cast<float>(matchCount) / static_cast<float>(targetRecord.adjacentRegionCount08) -
-         g_Recompute_Nation_Order_LookupTable_0065A9E0) *
-        score;
+  if (targetRecord.adjacentRegionCount > 0) {
+    score = (static_cast<float>(matchCount) / static_cast<float>(targetRecord.adjacentRegionCount) -
+             g_Recompute_Nation_Order_LookupTable_0065A9E0) *
+            score;
   }
   importanceScore = score / g_fMissionScoreNormalizationDivisor;
 }

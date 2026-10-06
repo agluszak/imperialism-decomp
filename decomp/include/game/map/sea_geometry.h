@@ -38,7 +38,7 @@ struct SeaSegment {
   int coord1;          // +0x0c linear overlay index of endpoint 1
   short attr10;        // +0x10 carried attribute (from endpoint 0's lo04)
   short attr12;        // +0x12 carried attribute (from endpoint 0's hi08)
-  short angle14;       // +0x14 heading angle (atan2 of the endpoint delta)
+  short angle;         // +0x14 heading angle (atan2 of the endpoint delta)
   unsigned char wrap;  // +0x16 set when the segment spans the horizontal wrap (|dx| > 0x6c)
   unsigned char pad17; // +0x17
 
@@ -111,7 +111,7 @@ ASSERT_OFFSET(Seapoint, coord00, 0x00);
 ASSERT_OFFSET(Seapoint, f0c, 0x0c);
 ASSERT_SIZE(SeaSegment, 0x18);
 ASSERT_OFFSET(SeaSegment, coord0, 0x08);
-ASSERT_OFFSET(SeaSegment, angle14, 0x14);
+ASSERT_OFFSET(SeaSegment, angle, 0x14);
 
 int OverlayCoordFromTileColumnRowAndSide(int column, int row, char side);
 

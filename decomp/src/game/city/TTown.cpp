@@ -89,7 +89,7 @@ static short TownNeighborTile(TTown* town, int direction) {
 static void AddAdjacentCityDevelopment(TTown* town, short tileIndex) {
   short cityRecordIndex = g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex;
   if (cityRecordIndex == -1 ||
-      g_pGlobalMapState->cityScoreTable[cityRecordIndex].cityTileIndex04 != tileIndex) {
+      g_pGlobalMapState->cityScoreTable[cityRecordIndex].cityTileIndex != tileIndex) {
     return;
   }
 

@@ -14,10 +14,10 @@ public:
   virtual void PopulateNavyOrderPageEntriesByMapContext(TView* panel, int* offsetLayout,
                                                         int* sizeLayout); // slot 0x6e 0x5698e0
 
-  TZone* selectedZone84;
-  TTaskForce* selectedTaskForce88;
+  TZone* selectedZone;
+  TTaskForce* selectedTaskForce;
 
-  TSuperNavyRoster() : TPageView(), selectedZone84(0), selectedTaskForce88(0) {}
+  TSuperNavyRoster() : TPageView(), selectedZone(0), selectedTaskForce(0) {}
 };
 
 ASSERT_SIZE(TSuperNavyRoster, 0x8c);

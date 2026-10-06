@@ -108,7 +108,7 @@ void TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup(const CString& movieNa
   CString prefixedPath =
       CString(g_pImperialismApp->DetectImperialismInstallDriveAndSetPathPrefix()) + moviePath;
 
-  g_pViewMgr->activeMovieViewF4 = movieView;
+  g_pViewMgr->activeMovieView = movieView;
   if (!movieView->OpenMoviePathAndDetachOnSuccess(static_cast<LPCTSTR>(prefixedPath))) {
     if (!movieView->OpenMoviePathAndDetachOnSuccess(static_cast<LPCTSTR>(moviePath))) {
       g_pViewMgr->HandleTurnStateExitAndPostFollowupEventCode(0);
@@ -162,9 +162,7 @@ void TAssetMgr::EnsurePictWvDataGobLoadedBySlot(int languageTag) {
       MB_OK, 0);
 }
 
-namespace {
-
-} // namespace
+namespace {} // namespace
 
 // FUNCTION: IMPERIALISM 0x005e0030
 unsigned char TAssetMgr::SaveMainDocumentToPathAndMarkSaved(const CString& savePath) {

@@ -38,13 +38,13 @@ public:
   short viewportMetric;     // +0x08 (default 8)
   short dialogActiveFlag;   // +0x0a
   short field0c;            // +0x0c
-  short eventCode0e;        // +0x0e (0x7d1 / 0x7d2)
+  short eventCode;          // +0x0e (0x7d1 / 0x7d2)
   RGBQUAD hiliteColor;      // +0x10
   RGBQUAD savedHiliteColor; // +0x14
   int field18;              // +0x18
   short clipSnapshotEvent;  // +0x1c
   unsigned short field1e;   // +0x1e
-  TPtrList* turnOrderList; // +0x20
+  TPtrList* turnOrderList;  // +0x20
 
   TDisplayMgr();
 };

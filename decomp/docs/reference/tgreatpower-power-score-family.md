@@ -127,7 +127,7 @@ Write the arithmetic against the named constants in the original FPU shape
 | 0x6a43e8 | `g_pNewsMgr` | event queue (event 0x1c from slot 0x9e) |
 
 `TMinor` and `TGreatPower` share the nation-state prefix layout: **military unit list
-at +0x44** (`militaryUnitList44`, entries carry the unit type id short at +4) and
+at +0x44** (`militaryUnitList`, entries carry the unit type id short at +4) and
 **owned region list at +0x90** (`ownedRegionList90` / `ownedRegionList`). Both fields
 are now real typed members on both classes.
 

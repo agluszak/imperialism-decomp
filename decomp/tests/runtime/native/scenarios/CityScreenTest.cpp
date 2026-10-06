@@ -241,12 +241,12 @@ private:
            population->strength == unitBefore.strength &&
            population->populationCount == unitBefore.populationCount &&
            population->populationCountFloat == unitBefore.populationFloat &&
-           population->baselineSlots->lowSkillCount04 == unitBefore.baselineLow &&
-           population->baselineSlots->mediumSkillCount06 == unitBefore.baselineMedium &&
-           population->baselineSlots->highSkillCount08 == unitBefore.baselineHigh &&
-           population->productionSlots->lowSkillCount04 == unitBefore.productionLow &&
-           population->productionSlots->mediumSkillCount06 == unitBefore.productionMedium &&
-           population->productionSlots->highSkillCount08 == unitBefore.productionHigh;
+           population->baselineSlots->lowSkillCount == unitBefore.baselineLow &&
+           population->baselineSlots->mediumSkillCount == unitBefore.baselineMedium &&
+           population->baselineSlots->highSkillCount == unitBefore.baselineHigh &&
+           population->productionSlots->lowSkillCount == unitBefore.productionLow &&
+           population->productionSlots->mediumSkillCount == unitBefore.productionMedium &&
+           population->productionSlots->highSkillCount == unitBefore.productionHigh;
   }
 
   void CaptureShipOrder(TShipOrder* order) {
@@ -295,9 +295,9 @@ private:
       return false;
     }
     return trainingOrder->quantity == 0 &&
-           trainingOrder->productionSummary->baselineSlots->lowSkillCount04 ==
+           trainingOrder->productionSummary->baselineSlots->lowSkillCount ==
                trainingBefore.baselineLow - 1 &&
-           trainingOrder->productionSummary->baselineSlots->mediumSkillCount06 ==
+           trainingOrder->productionSummary->baselineSlots->mediumSkillCount ==
                trainingBefore.baselineMedium + 1;
   }
 
@@ -322,7 +322,7 @@ private:
     // A single-input item consumes two of it; a two-input item takes one of each.
     const short primaryAmount = order->secondaryInputResourceId < 0 ? 2 : 1;
     return order->quantity == itemBefore.quantity + 1 &&
-           order->requestedQuantity4c == order->quantity &&
+           order->requestedQuantity == order->quantity &&
            order->ownerCity->CityStockByType(order->primaryInputResourceId) ==
                itemBefore.primaryStock - primaryAmount &&
            order->trackingSlots[order->primaryInputResourceId] ==
@@ -341,7 +341,7 @@ private:
   bool ItemOrderWasRestored() const {
     TItemOrder* order = itemOrder;
     return order->quantity == itemBefore.quantity &&
-           order->requestedQuantity4c == itemBefore.requestedQuantity &&
+           order->requestedQuantity == itemBefore.requestedQuantity &&
            order->ownerCity->CityStockByType(order->primaryInputResourceId) ==
                itemBefore.primaryStock &&
            order->trackingSlots[order->primaryInputResourceId] == itemBefore.primaryTracking &&

@@ -43,7 +43,7 @@ short SeedNonCapitalOwnedRegionDevelopment(TGreatPower* nation) {
     const short regionId = static_cast<short>(regions->At(ordinal));
     Province& record = g_pGlobalMapState->cityScoreTable[regionId];
     record.lastTurnTick = economicTurn;
-    if (chosenId == -1 && record.cityTileIndex04 != homeTile && record.linkedRegionCount > 0) {
+    if (chosenId == -1 && record.cityTileIndex != homeTile && record.linkedRegionCount > 0) {
       chosenId = regionId;
     }
   }

@@ -52,8 +52,8 @@ TCity::TCity() {
     productionFlags[productionSlot] = 0;
   }
   populationGrowthPenaltyTicks = 0;
-  foodSubstitutionCount06 = 0;
-  starvationPopulationLoss08 = 0;
+  foodSubstitutionCount = 0;
+  starvationPopulationLoss = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b2550
@@ -225,8 +225,8 @@ void TCity::ReadFrom(TStream* stream) {
   stream->ReadBytes(&lowProductionFlag, 1);
   stream->ReadBytes(&lowStockFlag, 1);
   stream->ReadBytes(productionFlags, productionSlotCount);
-  stream->ReadBytes(&foodSubstitutionCount06, 2);
-  stream->ReadBytes(&starvationPopulationLoss08, 2);
+  stream->ReadBytes(&foodSubstitutionCount, 2);
+  stream->ReadBytes(&starvationPopulationLoss, 2);
   stream->ReadBytes(&serializedState, 2);
   stream->ReadBytes(&cityPhaseCounter, 2);
   stream->ReadBytes(&powerAvailable, 2);
@@ -306,8 +306,8 @@ void TCity::WriteTo(TStream* stream) {
   stream->WriteBytes(&lowProductionFlag, 1);
   stream->WriteBytes(&lowStockFlag, 1);
   stream->WriteBytes(productionFlags, sizeof(productionFlags));
-  stream->WriteBytes(&foodSubstitutionCount06, 2);
-  stream->WriteBytes(&starvationPopulationLoss08, 2);
+  stream->WriteBytes(&foodSubstitutionCount, 2);
+  stream->WriteBytes(&starvationPopulationLoss, 2);
   stream->WriteBytes(&serializedState, 2);
   stream->WriteBytes(&cityPhaseCounter, 2);
   stream->WriteBytes(&powerAvailable, 2);

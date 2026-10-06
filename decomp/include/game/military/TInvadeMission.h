@@ -8,9 +8,9 @@ class TBeachheadMission;
 class TInvadeMission : public TAttackProvinceMission {
   DECLARE_SERIAL(TInvadeMission)
 public:
-  TBeachheadMission* beachhead34; // +0x34 owned amphibious-landing child mission
+  TBeachheadMission* beachhead; // +0x34 owned amphibious-landing child mission
 
-  TInvadeMission() : TAttackProvinceMission(), beachhead34(nullptr) {}
+  TInvadeMission() : TAttackProvinceMission(), beachhead(nullptr) {}
 
   TInvadeMission(TZone* beachheadZone, short targetProvince);
   virtual ~TInvadeMission() override;
@@ -39,7 +39,7 @@ public:
   virtual bool IsArmyMission() const override; // slot 0x14 0x53faa0
   virtual bool IsNavyMission() const override; // slot 0x15 0x53f140
 
-  virtual TMission* GetNavyMission() override; // slot 0x17 0x53f120 -- returns beachhead34
+  virtual TMission* GetNavyMission() override; // slot 0x17 0x53f120 -- returns beachhead
 
   virtual bool IsHospitalMission() const override; // slot 0x19 0x53f240
 

@@ -37,7 +37,7 @@ RuntimeActionResult RunCityItemOrderIncrease(NativeTransition& transition) {
   JsonObject result;
   result.Set("applied", applied ? 1 : 0);
   result.Set("quantity", static_cast<int>(order->quantity));
-  result.Set("requested", static_cast<int>(order->requestedQuantity4c));
+  result.Set("requested", static_cast<int>(order->requestedQuantity));
   result.Set("fabric_tracking",
              static_cast<int>(order->trackingSlots[kResourceFabric]));
   return transition.Finish(result.Release());
@@ -61,7 +61,7 @@ RuntimeActionResult RunCityItemOrderDecrease(NativeTransition& transition) {
   JsonObject result;
   result.Set("applied", applied ? 1 : 0);
   result.Set("quantity", static_cast<int>(order->quantity));
-  result.Set("requested", static_cast<int>(order->requestedQuantity4c));
+  result.Set("requested", static_cast<int>(order->requestedQuantity));
   result.Set("fabric_tracking",
              static_cast<int>(order->trackingSlots[kResourceFabric]));
   return transition.Finish(result.Release());

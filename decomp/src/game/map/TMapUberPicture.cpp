@@ -259,7 +259,7 @@ void TMapUberPicture::DoMenuCommand(int command) {
   case 1:
     if (g_pMapContextActionManager->pendingMapActionIndex != -1) {
       CenterOn(g_pGlobalMapState->cityScoreTable[g_pMapContextActionManager->pendingMapActionIndex]
-                   .cityTileIndex04);
+                   .cityTileIndex);
     }
     return;
 
@@ -415,7 +415,7 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
           SetMapInteractionMode(1);
         }
         g_pMapContextActionManager->SetSelectedProvince(province);
-        CenterOn(g_pGlobalMapState->cityScoreTable[province].cityTileIndex04);
+        CenterOn(g_pGlobalMapState->cityScoreTable[province].cityTileIndex);
         selectionResolved = true;
       } else {
         modeCursor = 2;

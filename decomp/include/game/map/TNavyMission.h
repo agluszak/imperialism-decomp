@@ -14,7 +14,7 @@ class TNavyMission : public TMission {
 public:
   TZone* missionTargetZone;          // +0x14
   TZone* resolvedPortZone;           // +0x18
-  TShip* selectedOrder1c;            // +0x1c selected primary navy-order node
+  TShip* selectedOrder;              // +0x1c selected primary navy-order node
   TTaskForce* taskForce20;           // +0x20 combined task-force/map-order entry
   TMapOrderChildLinkNode* orderList; // +0x24 -- head of child order-node chain
 
@@ -27,7 +27,7 @@ public:
   TNavyMission() : TMission() {
     missionTargetZone = nullptr;
     resolvedPortZone = nullptr;
-    selectedOrder1c = nullptr;
+    selectedOrder = nullptr;
     taskForce20 = nullptr;
     orderList = nullptr;
     navyState = 0;

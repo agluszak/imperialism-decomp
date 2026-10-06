@@ -41,7 +41,7 @@ void TTechHistoryView::StuffValues(short techId) {
   int size[2] = {scrollView->frameWidth - 0x19, frameHeight};
   CRect zeroRect(0, 0, 0, 0);
   descText->IDeluxeText(scrollView, offset, size, &zeroRect, &style, -2);
-  descText->textColor98 = mainStyle;
+  descText->textColor = mainStyle;
   descText->LoadTextResource(static_cast<short>(techId + 0x8fc));
 
   int measuredHeight = descText->MeasureCurrentTextHeightInLayoutRect();

@@ -29,7 +29,7 @@ TMilitaryUnit::TMilitaryUnit()
     : name24(), experiencePercent(0), battleStateFlags(0), strengthSnapshot(0),
       ownerMission(nullptr) {
   militaryRegistrationFlag = 1;
-  strength34 = 0x1f4;
+  strength = 0x1f4;
   eraIndex = 0;
   CString empty(g_szEmptyString); // temp -> 0x00605950, ~ -> 0x006058e2
   name24 = empty;                 // -> 0x00605a29 CString::operator=
@@ -60,7 +60,7 @@ void TMilitaryUnit::ReadFrom(TStream* stream) {
   SwapShortArrayBytes(orderTargetTiles, 3);
   stream->ReadBytes(orderTargetTilesMirror, 6);
   SwapShortArrayBytes(orderTargetTilesMirror, 3);
-  stream->ReadBytes(&strength34, 2);
+  stream->ReadBytes(&strength, 2);
   stream->ReadBytes(&eraIndex, 2);
   stream->ReadBytes(&experiencePercent, 2);
   stream->ReadBytes(&battleStateFlags, 2);
@@ -72,7 +72,7 @@ void TMilitaryUnit::WriteTo(TStream* stream) {
   stream->WriteSharedString(&name24);
   WriteShortArrayElems(stream, orderTargetTiles, 3);
   WriteShortArrayElemsRev(stream, orderTargetTilesMirror, 3);
-  stream->WriteBytes(&strength34, 2);
+  stream->WriteBytes(&strength, 2);
   stream->WriteBytes(&eraIndex, 2);
   stream->WriteBytes(&experiencePercent, 2);
   stream->WriteBytes(&battleStateFlags, 2);
@@ -247,8 +247,8 @@ MilitaryUnitKindStorage TMilitaryUnit::UpgradeType() {
   } else {
     return -1;
   }
-  if (g_pTechMgr->abilityActiveRows[ownerNationSlot18].abilityActiveById[candidate] == 0 &&
-      g_pTechMgr->abilityActiveRows[ownerNationSlot18].abilityActiveById[unitType] != 0) {
+  if (g_pTechMgr->abilityActiveRows[ownerNationSlot].abilityActiveById[candidate] == 0 &&
+      g_pTechMgr->abilityActiveRows[ownerNationSlot].abilityActiveById[unitType] != 0) {
     return -1;
   }
   return candidate;
@@ -273,23 +273,23 @@ bool TMilitaryUnit::Upgrade() {
   } else {
     secondaryCost = 0;
   }
-  if (primaryCost > g_apNationStates[ownerNationSlot18]->GetStockpile(kResourceArms)) {
+  if (primaryCost > g_apNationStates[ownerNationSlot]->GetStockpile(kResourceArms)) {
     return false;
   }
-  if (secondaryCost > g_apNationStates[ownerNationSlot18]->GetStockpile(kResourceFuel)) {
+  if (secondaryCost > g_apNationStates[ownerNationSlot]->GetStockpile(kResourceFuel)) {
     return false;
   }
-  TGreatPower* nation = g_apNationStates[ownerNationSlot18];
+  TGreatPower* nation = g_apNationStates[ownerNationSlot];
   if (nation->diplomacyEligibility != 0 &&
       static_cast<int>(cashCost) > nation->ComputeAvailableDiplomacyBudget()) {
     return false;
   }
   nation->SetCityStockCounterAndRefresh(
       0x10, static_cast<short>(nation->GetStockpile(kResourceArms) - primaryCost));
-  g_apNationStates[ownerNationSlot18]->SetCityStockCounterAndRefresh(
-      0xc, static_cast<short>(g_apNationStates[ownerNationSlot18]->GetStockpile(kResourceFuel) -
+  g_apNationStates[ownerNationSlot]->SetCityStockCounterAndRefresh(
+      0xc, static_cast<short>(g_apNationStates[ownerNationSlot]->GetStockpile(kResourceFuel) -
                               secondaryCost));
-  g_apNationStates[ownerNationSlot18]->treasuryValue10 -= cashCost;
+  g_apNationStates[ownerNationSlot]->treasuryValue10 -= cashCost;
   orderType = candidate;
   return true;
 }
@@ -316,12 +316,12 @@ TMilitaryUnit* TMilitaryUnit::FindUnitByUID(int unitId) {
        cell < g_apTerrainTypeDescriptorTable + kTerrainTypeDescriptorTableCount; ++cell) {
     TCountry* descriptor = *cell;
     if (descriptor != 0) {
-      CIterator unitIter(descriptor->militaryUnitList44);
+      CIterator unitIter(descriptor->militaryUnitList);
       for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
            unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
         int candidateId;
         if (unit != 0) {
-          candidateId = unit->persistentUnitId20;
+          candidateId = unit->persistentUnitId;
         } else {
           candidateId = 0;
         }

@@ -18,12 +18,12 @@ public:
   virtual void ApplyDamage(int damageA, int damageB) override; // slot 0x0e 0x5a61c0
 
   // Army state appended to TTacticalUnit at +0x34.
-  int morale34;                // +0x34 init = sourceUnit38->strength34; floors at 0 -> state1c = 1
-  TMilitaryUnit* sourceUnit38; // +0x38 back-pointer (persisted as its persistentUnitId20 id)
-  unsigned char flag3c;        // +0x3c = (source unitOrder == 2 && category[type] == 0)
-  unsigned char pad3d[3];      // +0x3d
-  int sapTargetTileIndex;      // +0x40 pending sap/mine target tile; -1 = none
-  float projectionScores[5];   // +0x44 strength/quality-weighted military attributes 0..4
+  int morale;                // +0x34 init = sourceUnit->strength; floors at 0 -> state1c = 1
+  TMilitaryUnit* sourceUnit; // +0x38 back-pointer (persisted as its persistentUnitId id)
+  unsigned char flag3c;      // +0x3c = (source unitOrder == 2 && category[type] == 0)
+  unsigned char pad3d[3];    // +0x3d
+  int sapTargetTileIndex;    // +0x40 pending sap/mine target tile; -1 = none
+  float projectionScores[5]; // +0x44 strength/quality-weighted military attributes 0..4
 
   // NOOP: verified empty in original 0x005a5ed2
   TArmyTacUnit() {}

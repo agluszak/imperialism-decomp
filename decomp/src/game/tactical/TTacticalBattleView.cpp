@@ -1151,7 +1151,7 @@ void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
   if (cursorToken == 999 || cursorToken == 0) {
     cursorToken = 0xffff;
   }
-  cursorId4e = cursorToken;
+  cursorId = cursorToken;
   HCURSOR cursor;
   if (cursorToken == 0xffff) {
     cursor = LoadCursorA(0, IDC_ARROW);
@@ -1208,14 +1208,14 @@ void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
   SetClip(savedClip.tempRgn);
   if (toolbarD0 != 0 && tacticalBattle->battleOutcome == kTacticalBattleInProgress) {
     toolbarD0->UpdateTacticalOtherSideUnitControl(
-        static_cast<TArmyTacUnit*>(tacticalBattle->tileGrid[tileIndex].occupant4));
+        static_cast<TArmyTacUnit*>(tacticalBattle->tileGrid[tileIndex].occupant));
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005a9090
 void TTacticalBattleView::PlayAni(TacticalTileIndex tileIndex, int effectId, int frameCount) {
   RECT effectRect;
-  TTacticalUnit* occupant = tacticalBattle->tileGrid[tileIndex].occupant4;
+  TTacticalUnit* occupant = tacticalBattle->tileGrid[tileIndex].occupant;
   if (occupant != 0) {
     UnitRect(occupant, &effectRect);
   } else {
@@ -1562,7 +1562,7 @@ void TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(
   if (tile->deployMark == 1) {
     int unitType = unit->unitTypeC;
     short orient = ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(tileIndex);
-    POINT* delta = &g_aTacticalUnitFacingOffsetTable[unitType][orient][unit->side20];
+    POINT* delta = &g_aTacticalUnitFacingOffsetTable[unitType][orient][unit->side];
     ::OffsetRect(rectOut, delta->x, delta->y);
     return;
   }

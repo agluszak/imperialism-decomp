@@ -16,16 +16,16 @@
 
 // FUNCTION: IMPERIALISM 0x004a3b70
 TMilitaryUnit* TArmyStack::ResetCursorAndGetHeadUnit() {
-  this->cursor18 = this->head14;
+  this->cursor = this->head14;
   return (this->head14 != nullptr) ? this->head14->unit : nullptr;
 }
 
 // FUNCTION: IMPERIALISM 0x004a3b90
 TMilitaryUnit* TArmyStack::AdvanceCursorAndGetUnit() {
-  if (this->cursor18 != nullptr) {
-    this->cursor18 = this->cursor18->next;
-    if (this->cursor18 != nullptr) {
-      return this->cursor18->unit;
+  if (this->cursor != nullptr) {
+    this->cursor = this->cursor->next;
+    if (this->cursor != nullptr) {
+      return this->cursor->unit;
     }
   }
   return nullptr;
@@ -36,7 +36,7 @@ IMPLEMENT_DYNCREATE(TArmyStack, TObject)
 // FUNCTION: IMPERIALISM 0x004a76f0
 TArmyStack::TArmyStack() {
   head14 = 0;
-  cursor18 = 0;
+  cursor = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a7750
@@ -44,7 +44,7 @@ TArmyStack::~TArmyStack() {}
 
 // FUNCTION: IMPERIALISM 0x004a7770
 void TArmyStack::IArmyStack(char ownerNationIndex, short ownerNationCode, short tileIndex) {
-  unitCountA = 0;
+  unitCount = 0;
   field6 = 0;
   field4 = 0;
   fieldC = 0;
@@ -70,7 +70,7 @@ void TArmyStack::ReadFrom(TStream* stream) {
     stream->ReadBytes(&rosterID, 2);
     AddUnitByRosterId(rosterID);
   }
-  cursor18 = 0;
+  cursor = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a7960
@@ -79,7 +79,7 @@ void TArmyStack::WriteTo(TStream* stream) {
   stream->WriteBytes(&field6, 2);
   stream->WriteBytes(&categoryFlag, 1);
   stream->WriteBytes(&fortLevelAttackerPenaltyCache, 1);
-  stream->WriteBytes(&unitCountA, 2);
+  stream->WriteBytes(&unitCount, 2);
   stream->WriteBytes(&fieldC, 1);
   stream->WriteBytes(&ownerNationCodeE, 2);
   stream->WriteBytes(&tileIndex10, 2);
@@ -89,12 +89,12 @@ void TArmyStack::WriteTo(TStream* stream) {
     short rosterID = unit->unitRosterId;
     stream->WriteBytes(&rosterID, 2);
   }
-  cursor18 = 0;
+  cursor = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a7a40
 void TArmyStack::AddUnitByRosterId(short rosterID) {
-  TSortedList* unitList = g_apTerrainTypeDescriptorTable[categoryFlag]->militaryUnitList44;
+  TSortedList* unitList = g_apTerrainTypeDescriptorTable[categoryFlag]->militaryUnitList;
   CIterator cursor(unitList);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset()); cursor.More();
        unit = static_cast<TMilitaryUnit*>(cursor.Advance())) {
@@ -113,7 +113,7 @@ void TArmyStack::AddUnitToChainHead(TMilitaryUnit* unit) {
   }
   node->unit = unit;
   node->next = head14;
-  ++unitCountA;
+  ++unitCount;
   head14 = node;
 }
 
@@ -125,7 +125,7 @@ void TArmyStack::RemoveUnitFromChain(TMilitaryUnit* unit) {
     if (prev->unit == unit) {
       head14 = node;
       delete prev;
-      --unitCountA;
+      --unitCount;
       return;
     }
     for (; node != nullptr && node->unit != unit; node = node->next) {
@@ -135,7 +135,7 @@ void TArmyStack::RemoveUnitFromChain(TMilitaryUnit* unit) {
     if (found != nullptr) {
       prev->next = found->next;
       delete found;
-      --unitCountA;
+      --unitCount;
     }
   }
 }
@@ -191,7 +191,7 @@ void TArmyStack::InitializeStrategicBattle(unsigned char boosted) {
           [g_pGlobalMapState->cityScoreTable[unit->tileIndex06].fortLevel03]);
 
   for (; unit != 0; unit = AdvanceCursorAndGetUnit()) {
-    unit->strengthSnapshot = unit->strength34;
+    unit->strengthSnapshot = unit->strength;
     if (boosted != 0 && g_abUnitTypeBlinkEligibilityFlag[unit->orderType] != 0) {
       unit->battleStateFlags |= 1;
     } else {
@@ -213,13 +213,13 @@ void TArmyStack::StrategicFirepower(int* outWeightedSum, int* outCount, int coun
 
   for (TMilitaryUnit* unit = ResetCursorAndGetHeadUnit(); unit != 0;
        unit = AdvanceCursorAndGetUnit()) {
-    if (unit->strength34 > unit->strengthSnapshot / 2 && (unit->battleStateFlags & 2) == 0) {
+    if (unit->strength > unit->strengthSnapshot / 2 && (unit->battleStateFlags & 2) == 0) {
       int weightClass = g_anWeightClassByOrderType[unit->orderType];
       short scaledFactor = g_anScaledFactorByOrderType[unit->orderType];
       int percentEfficiency = static_cast<int>(g_afPercentEfficiencyByOrderType[unit->orderType]);
       *outWeightedSum += (((scaledFactor * kRoundBlendWeightSecondary[counter]) / 1000 +
                            (kRoundBlendWeightPrimary[counter] * weightClass) / 100) *
-                          percentEfficiency * unit->strength34) /
+                          percentEfficiency * unit->strength) /
                          500;
       *outCount += g_anCountWeightByOrderType[unit->orderType];
     }
@@ -235,8 +235,8 @@ void TArmyStack::ApplyStrategicDamage(int weightedSum, int count, int counter) {
   int activityScore = 0;
   for (TMilitaryUnit* unit = ResetCursorAndGetHeadUnit(); unit != 0;
        unit = AdvanceCursorAndGetUnit()) {
-    if (unit->strength34 > 0 && (unit->battleStateFlags & 2) == 0) {
-      activityScore += (unit->strength34 > unit->strengthSnapshot / 2) ? 2 : 1;
+    if (unit->strength > 0 && (unit->battleStateFlags & 2) == 0) {
+      activityScore += (unit->strength > unit->strengthSnapshot / 2) ? 2 : 1;
     }
   }
   if (activityScore == 0) {
@@ -253,8 +253,8 @@ void TArmyStack::ApplyStrategicDamage(int weightedSum, int count, int counter) {
 
   for (TMilitaryUnit* decayUnit = ResetCursorAndGetHeadUnit(); decayUnit != 0;
        decayUnit = AdvanceCursorAndGetUnit()) {
-    if (decayUnit->strength34 > 0 && (decayUnit->battleStateFlags & 2) == 0) {
-      int eligibilityScale = decayUnit->strength34 > decayUnit->strengthSnapshot / 2 ? 2 : 1;
+    if (decayUnit->strength > 0 && (decayUnit->battleStateFlags & 2) == 0) {
+      int eligibilityScale = decayUnit->strength > decayUnit->strengthSnapshot / 2 ? 2 : 1;
       int randomScale = (((rand() % 7) + 7) * eligibilityScale * baseDecay) / 10;
       if (g_MapContextStaticTable_00695428[decayUnit->orderType] != 0) {
         randomScale /= 2;
@@ -264,10 +264,10 @@ void TArmyStack::ApplyStrategicDamage(int weightedSum, int count, int counter) {
       if ((decayUnit->battleStateFlags & 1) != 0) {
         decayAmount = (kDecayScalePercentByRound[counter] * decayAmount) / 100;
       }
-      if (decayAmount < decayUnit->strength34) {
-        decayUnit->strength34 -= static_cast<short>(decayAmount);
+      if (decayAmount < decayUnit->strength) {
+        decayUnit->strength -= static_cast<short>(decayAmount);
       } else {
-        decayUnit->strength34 = 0;
+        decayUnit->strength = 0;
       }
     }
   }
@@ -278,7 +278,7 @@ void TArmyStack::RaiseExperience(bool boosted) {
   short growthAmount = boosted ? 0x23 : 0x14;
   for (TMilitaryUnit* unit = ResetCursorAndGetHeadUnit(); unit != 0;
        unit = AdvanceCursorAndGetUnit()) {
-    if (unit->strength34 > 0) {
+    if (unit->strength > 0) {
       unit->experiencePercent = static_cast<short>(unit->experiencePercent + growthAmount);
       if (unit->experiencePercent > 0x190) {
         unit->experiencePercent = 0x190;
@@ -291,7 +291,7 @@ void TArmyStack::RaiseExperience(bool boosted) {
 bool TArmyStack::UnitsFighting() {
   for (TMilitaryUnit* unit = ResetCursorAndGetHeadUnit(); unit != 0;
        unit = AdvanceCursorAndGetUnit()) {
-    if (unit->strength34 > unit->strengthSnapshot / 2 && (unit->battleStateFlags & 2) == 0) {
+    if (unit->strength > unit->strengthSnapshot / 2 && (unit->battleStateFlags & 2) == 0) {
       return true;
     }
   }

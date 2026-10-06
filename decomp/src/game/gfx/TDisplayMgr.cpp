@@ -59,8 +59,8 @@ IMPLEMENT_DYNCREATE(TDisplayMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x004fe7a0
 TDisplayMgr::TDisplayMgr()
-    : TObject(), activeDialog(0), viewportMetric(8), dialogActiveFlag(0), field0c(0),
-      eventCode0e(0), field18(0), clipSnapshotEvent(0), field1e(0), turnOrderList(0) {
+    : TObject(), activeDialog(0), viewportMetric(8), dialogActiveFlag(0), field0c(0), eventCode(0),
+      field18(0), clipSnapshotEvent(0), field1e(0), turnOrderList(0) {
   hiliteColor.rgbBlue = 0;
   hiliteColor.rgbGreen = 0;
   hiliteColor.rgbRed = 0;
@@ -101,15 +101,15 @@ void TDisplayMgr::IDisplayMgr() {
   int width = rectRecord->viewportBounds.right - rectRecord->viewportBounds.left;
   int height = rectRecord->viewportBounds.bottom - rectRecord->viewportBounds.top;
   if (width < 0x281 && height < 0x1e1) {
-    eventCode0e = kTurnEventSphereWindow;
+    eventCode = kTurnEventSphereWindow;
   } else {
-    eventCode0e = kTurnEventMoveableMainWindow;
+    eventCode = kTurnEventMoveableMainWindow;
   }
 
   SetMenuHeight(0);
 
   TView* dialogRoot =
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(DecodeTurnEventCode(eventCode0e));
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(DecodeTurnEventCode(eventCode));
   if (dialogRoot == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0xb0);
   }

@@ -135,7 +135,7 @@ bool TCivMgr::HandleCivilianTileSelectionOrReportClick(short nTileIndex, short n
     }
   }
 
-  TCivUnit* tileEntry = g_pGlobalMapState->terrainStateTable[nTileIndex].firstCivilianOrder20;
+  TCivUnit* tileEntry = g_pGlobalMapState->terrainStateTable[nTileIndex].firstCivilianOrder;
   if (actionCode == 2) {
     TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPictureF0;
     if (mapUberPicture == nullptr) {
@@ -213,7 +213,7 @@ bool TCivMgr::HandleCivilianTileOrderAction(short nTileIndex, short nInputHint) 
       ResolveCivilianTileOrderActionCode(nTileIndex, nInputHint);
   switch (actionCode) {
   case kCivilianTileActionSelectUnit: {
-    TCivUnit* tileEntry = g_pGlobalMapState->terrainStateTable[nTileIndex].firstCivilianOrder20;
+    TCivUnit* tileEntry = g_pGlobalMapState->terrainStateTable[nTileIndex].firstCivilianOrder;
     selectedEntry = tileEntry;
     DispatchSelectedUnitToGlobalMapStateHandler(tileEntry);
     if (tileEntry != nullptr) {
@@ -265,7 +265,7 @@ bool TCivMgr::HandleCivilianTileOrderAction(short nTileIndex, short nInputHint) 
     return QueueCivilianWorkOrderWithCostCheck(nTileIndex);
   case kCivilianTileActionShowOrderReport:
     HandleCivilianReportDecision(
-        g_pGlobalMapState->terrainStateTable[nTileIndex].firstCivilianOrder20);
+        g_pGlobalMapState->terrainStateTable[nTileIndex].firstCivilianOrder);
     return false;
   case kCivilianTileActionPurchaseLand:
     handled = PromptAndQueueDeveloperTilePurchaseOrder(nTileIndex);
@@ -350,10 +350,10 @@ CivilianTileActionCodeStorage TCivMgr::ResolveCivilianTileOrderActionCode(short 
     return kCivilianTileActionDevelopResource;
   }
 
-  TCivUnit* orderAtTile = tile->firstCivilianOrder20;
+  TCivUnit* orderAtTile = tile->firstCivilianOrder;
   if (orderAtTile != nullptr) {
     nationId = g_pSimMgr->GetPlayerCountry();
-    if (orderAtTile->ownerNationSlot18 == nationId) {
+    if (orderAtTile->ownerNationSlot == nationId) {
       return orderAtTile->IsInIdleSelectionState() ? kCivilianTileActionSelectUnit
                                                    : kCivilianTileActionShowOrderReport;
     }
@@ -464,17 +464,17 @@ bool TCivMgr::CanAssignCivilianOrderToTile(short nTileIndex) {
       (((tile->activeFlags1c & 1) == 0) ||
        (entry->orderType == EncodeCivilianUnitKind(kCivilianUnitEngineer)))) {
     if (tileTerrainClass < 7) {
-      return tileTerrainClass == entry->ownerNationSlot18;
+      return tileTerrainClass == entry->ownerNationSlot;
     }
     if (g_apTerrainTypeDescriptorTable[tileTerrainClass]->encodedNationSlot == -1) {
-      short compatibility = g_pDiplomacyTurnStateManager->GetEmbassyStatus(entry->ownerNationSlot18,
-                                                                           tileTerrainClass);
+      short compatibility =
+          g_pDiplomacyTurnStateManager->GetEmbassyStatus(entry->ownerNationSlot, tileTerrainClass);
       if ((compatibility == 2) &&
           (entry->orderType != EncodeCivilianUnitKind(kCivilianUnitEngineer))) {
         return true;
       }
     } else if (g_apTerrainTypeDescriptorTable[tileTerrainClass]->IsColonyOf(
-                   entry->ownerNationSlot18) &&
+                   entry->ownerNationSlot) &&
                (entry->orderType != EncodeCivilianUnitKind(kCivilianUnitEngineer))) {
       return true;
     }
@@ -491,7 +491,7 @@ void TCivMgr::HandleCivilianReportDecision(TCivUnit* pCivilianOrderEntry) {
   short targetTileIndex = pCivilianOrderEntry->tileIndex06;
   short subtypeOrTargetProvince = pCivilianOrderEntry->orderTargetIndex;
   int refundAmount = 0;
-  TGreatPower* ownerNationState = g_apNationStates[pCivilianOrderEntry->ownerNationSlot18];
+  TGreatPower* ownerNationState = g_apNationStates[pCivilianOrderEntry->ownerNationSlot];
 
   switch (pCivilianOrderEntry->unitOrder) {
   case kUnitOrderLayRail: {
@@ -499,7 +499,7 @@ void TCivMgr::HandleCivilianReportDecision(TCivUnit* pCivilianOrderEntry) {
         g_pGlobalMapState->terrainStateTable[targetTileIndex].GetTerrainKind();
     refundAmount = g_adwEngineerRailBuildCostByTerrainType[terrainKind];
     g_pGlobalMapState->ApplyEngineerRailCostDeltaForConnectedTiles(
-        targetTileIndex, subtypeOrTargetProvince, pCivilianOrderEntry->ownerNationSlot18);
+        targetTileIndex, subtypeOrTargetProvince, pCivilianOrderEntry->ownerNationSlot);
     break;
   }
   case kUnitOrderBuildDepot:
@@ -808,7 +808,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
       short nationId = g_pSimMgr->GetPlayerCountry();
       g_apNationStates[nationId]->treasuryValue10 -= cost;
       g_pGlobalMapState->ApplyRailSectionEndpointDirectionFlags(pCiv->tileIndex06, nTileIndex,
-                                                                pCiv->ownerNationSlot18);
+                                                                pCiv->ownerNationSlot);
       pCiv->SetOrders(kUnitOrderLayRail, pCiv->tileIndex06);
       g_pSfxPlaybackSystem->PlaySoundEffect(0x2329, 0, 1);
       actionFinalized = true;
@@ -864,30 +864,30 @@ void TCivMgr::ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
   }
   case 8:
     g_pGlobalMapState->terrainStateTable[order->tileIndex06].secondaryOwnerNationTag =
-        static_cast<signed char>(order->ownerNationSlot18);
+        static_cast<signed char>(order->ownerNationSlot);
     break;
   case 3: {
     TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[order->tileIndex06];
-    tile.pendingDevelopmentFlag |= static_cast<unsigned char>(1 << order->ownerNationSlot18);
-    if (g_apNationStates[order->ownerNationSlot18]->diplomacyEligibility != 0 &&
+    tile.pendingDevelopmentFlag |= static_cast<unsigned char>(1 << order->ownerNationSlot);
+    if (g_apNationStates[order->ownerNationSlot]->diplomacyEligibility != 0 &&
         g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(order->tileIndex06) != 0) {
       order->completionMarker = 0x232f;
     }
     break;
   }
   case 1:
-    g_pGlobalMapState->QueueDepotConstructionOrder(order->tileIndex06, order->ownerNationSlot18);
-    g_apNationStates[order->ownerNationSlot18]->BuildTransportLinkedInfluenceMap(nullptr);
+    g_pGlobalMapState->QueueDepotConstructionOrder(order->tileIndex06, order->ownerNationSlot);
+    g_apNationStates[order->ownerNationSlot]->BuildTransportLinkedInfluenceMap(nullptr);
     order->completionMarker = 0x232a;
     break;
   case 2:
-    g_pGlobalMapState->QueuePortConstructionOrder(order->tileIndex06, order->ownerNationSlot18);
-    g_apNationStates[order->ownerNationSlot18]->BuildTransportLinkedInfluenceMap(nullptr);
+    g_pGlobalMapState->QueuePortConstructionOrder(order->tileIndex06, order->ownerNationSlot);
+    g_apNationStates[order->ownerNationSlot]->BuildTransportLinkedInfluenceMap(nullptr);
     order->completionMarker = 0x232b;
     break;
   case 0:
     g_pGlobalMapState->SetHexAdjacencyDirectionFlagsForTilePair(
-        order->orderTargetIndex, order->tileIndex06, order->ownerNationSlot18);
+        order->orderTargetIndex, order->tileIndex06, order->ownerNationSlot);
     order->completionMarker = 0x2329;
     break;
   case 7:
@@ -933,7 +933,7 @@ void TCivMgr::ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
   case 7: {
     short cityIdx = g_pGlobalMapState->terrainStateTable[order->tileIndex06].cityRecordIndex;
     g_pGameFlowState->DispatchCityRedrawInvalidateEvent(cityIdx);
-    DispatchTileRedrawInvalidateEvent(g_pGlobalMapState->cityScoreTable[cityIdx].cityTileIndex04);
+    DispatchTileRedrawInvalidateEvent(g_pGlobalMapState->cityScoreTable[cityIdx].cityTileIndex);
     return;
   }
   default:
@@ -945,7 +945,7 @@ void TCivMgr::ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
 void TCivMgr::ResolveCivilianDisputes() {
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
-    TCivUnit* order = tile.firstCivilianOrder20;
+    TCivUnit* order = tile.firstCivilianOrder;
     if (order == 0 || order->nextAtLocation == 0) {
       continue;
     }
@@ -967,13 +967,13 @@ void TCivMgr::ResolveCivilianDisputes() {
     TCivUnit* winningOrder = competingOrders[0];
     short winningStanding =
         g_pDiplomacyTurnStateManager
-            ->relationStandingScores[winningOrder->ownerNationSlot18 * kNationSlotCount +
+            ->relationStandingScores[winningOrder->ownerNationSlot * kNationSlotCount +
                                      ownerNationSlot];
     for (int candidateIndex = 1; candidateIndex < competingCount; ++candidateIndex) {
       TCivUnit* candidate = competingOrders[candidateIndex];
       short candidateStanding =
           g_pDiplomacyTurnStateManager
-              ->relationStandingScores[candidate->ownerNationSlot18 * kNationSlotCount +
+              ->relationStandingScores[candidate->ownerNationSlot * kNationSlotCount +
                                        ownerNationSlot];
       if (candidateStanding > winningStanding ||
           (candidateStanding == winningStanding && (rand() & 1) != 0)) {
@@ -988,14 +988,14 @@ void TCivMgr::ResolveCivilianDisputes() {
         continue;
       }
 
-      short losingNationSlot = losingOrder->ownerNationSlot18;
+      short losingNationSlot = losingOrder->ownerNationSlot;
       losingOrder->SetOrders(kUnitOrderIdle, -1);
       g_apNationStates[losingNationSlot]->treasuryValue10 +=
           g_pGlobalMapState->CalculateDeveloperTilePurchaseCost(static_cast<short>(tileIndex));
 
       if (g_apNationStates[losingNationSlot]->diplomacyEligibility != 0) {
         TLandSaleEvent* event = new TLandSaleEvent();
-        event->ILandSaleEvent(static_cast<short>(tileIndex), winningOrder->ownerNationSlot18);
+        event->ILandSaleEvent(static_cast<short>(tileIndex), winningOrder->ownerNationSlot);
         g_apNationStates[losingNationSlot]->AddTurnStartEvent(event);
       }
     }

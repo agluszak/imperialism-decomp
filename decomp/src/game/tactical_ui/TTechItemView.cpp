@@ -63,7 +63,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
     int titleOffset[2] = {0x4d, 0};
     int titleSize[2] = {0x69, 0x3f};
     titleControl->IDeluxeText(this, titleOffset, titleSize, &zeroRect, &textStyle, -2);
-    titleControl->textColor98 = titleStyleFlags;
+    titleControl->textColor = titleStyleFlags;
     titleControl->shadowTextColor = shadowStyleFlags;
     titleControl->dropShadowEnabled = true;
     g_pSimMgr->GetString(0x2712, static_cast<short>(techId), &techName);
@@ -79,7 +79,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
     int descOffset[2] = {0x127, 0};
     int descSize[2] = {0x10d, 0x3f};
     descText->IDeluxeText(this, descOffset, descSize, &zeroRect, &textStyle, -2);
-    descText->textColor98 = titleStyleFlags;
+    descText->textColor = titleStyleFlags;
     descText->shadowTextColor = shadowStyleFlags;
     descText->dropShadowEnabled = true;
     g_pSimMgr->GetString(0x274e, static_cast<short>(techId - 1), &labelText);
@@ -94,7 +94,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
     int dateOffset[2] = {0xba, 0};
     int dateSize[2] = {0x53, 0x3f};
     dateControl->IDeluxeText(this, dateOffset, dateSize, &zeroRect, &textStyle, 1);
-    dateControl->textColor98 = titleStyleFlags;
+    dateControl->textColor = titleStyleFlags;
     dateControl->shadowTextColor = shadowStyleFlags;
     dateControl->dropShadowEnabled = true;
     g_pSimMgr->GetString(0x274f, 0, &templateText);
@@ -128,7 +128,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
     int prereqOffset[2] = {0xbd, 0};
     int prereqSize[2] = {0x53, 0x3f};
     prereqControl->IDeluxeText(this, prereqOffset, prereqSize, &zeroRect, &textStyle, 1);
-    prereqControl->textColor98 = titleStyleFlags;
+    prereqControl->textColor = titleStyleFlags;
     prereqControl->shadowTextColor = shadowStyleFlags;
     prereqControl->dropShadowEnabled = true;
     if (missing2 == 0) {

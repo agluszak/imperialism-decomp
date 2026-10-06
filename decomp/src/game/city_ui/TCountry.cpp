@@ -105,7 +105,7 @@ void TCountry::InitializeNationStateIdentityAndOwnedRegionList(NationSlot nation
   this->identitySharedString1 = this->identitySharedString0;
   this->treasuryValue10 = 5000;
 
-  this->militaryUnitList44 = new TList();
+  this->militaryUnitList = new TList();
 
   for (int unitType = 0; unitType < 0x1e; ++unitType) {
     this->unitNameOrdinalByType[unitType] = 1;
@@ -124,10 +124,10 @@ void TCountry::InitializeNationStateIdentityAndOwnedRegionList(NationSlot nation
 
 // FUNCTION: IMPERIALISM 0x004d6ba0
 void TCountry::Free(void) {
-  if (this->militaryUnitList44 != 0) {
-    this->militaryUnitList44->FreePayloadsAndDestroy();
+  if (this->militaryUnitList != 0) {
+    this->militaryUnitList->FreePayloadsAndDestroy();
   }
-  this->militaryUnitList44 = 0;
+  this->militaryUnitList = 0;
   if (this->ownedRegionList != 0) {
     this->ownedRegionList->Free();
     this->ownedRegionList = 0;
@@ -154,10 +154,10 @@ void TCountry::ReadFrom(TStream* stream) {
   stream->ReadBytes(this->needLevelByNation, 0x2e);
   SwapShortArrayBytes(this->needLevelByNation, 0x17);
 
-  if (this->militaryUnitList44->GetCount() != 0) {
-    this->militaryUnitList44->FreePayloads();
+  if (this->militaryUnitList->GetCount() != 0) {
+    this->militaryUnitList->FreePayloads();
   }
-  this->militaryUnitList44->ReadFrom(stream);
+  this->militaryUnitList->ReadFrom(stream);
 
   int entryCount;
   stream->ReadBytes(&entryCount, 4);
@@ -199,7 +199,7 @@ void TCountry::WriteTo(TStream* stream) {
   stream->WriteBytes(&this->overlayAnchorTileCache, 4);
   WriteShortArrayElemsRev(stream, this->needLevelByNation, 0x17);
 
-  WriteTrackedListToStream(stream, this->militaryUnitList44);
+  WriteTrackedListToStream(stream, this->militaryUnitList);
   WriteIntListToStream(stream, this->ownedRegionList);
 }
 
@@ -247,7 +247,7 @@ void TCountry::InitialMilitia(void) {
   if (this->ownedRegionList->GetSize() >= 1) {
     do {
       int regionId = this->ownedRegionList->At(ordinal);
-      short regionTerrainId = g_pGlobalMapState->cityScoreTable[regionId].cityTileIndex04;
+      short regionTerrainId = g_pGlobalMapState->cityScoreTable[regionId].cityTileIndex;
       if ((g_pGlobalMapState->terrainStateTable[regionTerrainId].activeFlags1c & 1) != 0) {
         TMilitaryUnit* order = new TMilitaryUnit();
         order->IMilitaryUnit(2, regionId, this->nationSlot);
@@ -560,12 +560,12 @@ void TCountry::AddOfferFrom(NationSlot sourceNationSlot,
 // FUNCTION: IMPERIALISM 0x004d8000
 void TCountry::NameUnits(void) {
   int ordinal = 1;
-  if (this->militaryUnitList44->GetCount() < 1) {
+  if (this->militaryUnitList->GetCount() < 1) {
     return;
   }
   do {
     TMilitaryUnit* unit =
-        static_cast<TMilitaryUnit*>(this->militaryUnitList44->GetEntryByOrdinal(ordinal));
+        static_cast<TMilitaryUnit*>(this->militaryUnitList->GetEntryByOrdinal(ordinal));
     if (unit->unitRosterId == 0) {
       if (unit->orderType < EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra1)) {
         CString ordinalText;
@@ -600,7 +600,7 @@ void TCountry::NameUnits(void) {
     }
     ++ordinal;
     ordinal = static_cast<short>(ordinal);
-  } while (ordinal <= this->militaryUnitList44->GetCount());
+  } while (ordinal <= this->militaryUnitList->GetCount());
 }
 
 // FUNCTION: IMPERIALISM 0x004d8390
@@ -623,7 +623,7 @@ int TCountry::SumWeightedNeighborLinkScoreForLinkedNodes(void) {
 // FUNCTION: IMPERIALISM 0x004d8430
 int TCountry::ComputeSelectedMilitaryPowerScore() {
   int powerSum = 0;
-  CIterator unitIter(this->militaryUnitList44);
+  CIterator unitIter(this->militaryUnitList);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
     powerSum += g_aUnitOrderCostProfileByAbilityId[unit->orderType][2];

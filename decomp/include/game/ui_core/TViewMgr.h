@@ -38,10 +38,10 @@ public:
   virtual void SetForeColor(short colorCode);                                  // slot 0x0d 0x5d5750
   virtual int ClassifyTurnStateForOverlayMode();                               // slot 0x0e 0x5d5960
   virtual void BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg); // slot 0x0f 0x5d6480
-  virtual void VerifyEndTurn();                 // slot 0x10 0x5d57b0
+  virtual void VerifyEndTurn();                                                // slot 0x10 0x5d57b0
   virtual void GetTopLeftFor(TView* dialogView,
-                                                     POINT* outPlacement); // slot 0x11 0x5d69b0
-  virtual void RefreshMainViewNationIndicatorForCurrentTurnEvent();        // slot 0x12 0x5d6b70
+                             POINT* outPlacement);                  // slot 0x11 0x5d69b0
+  virtual void RefreshMainViewNationIndicatorForCurrentTurnEvent(); // slot 0x12 0x5d6b70
 
   // Extended UI-runtime virtuals (same object as g_pViewMgr @ 0x006A21BC).
   virtual void DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload); // 0x4c
@@ -49,13 +49,13 @@ public:
   virtual short GetPendingTurnOverlayCode();                                   // 0x54
   virtual void RefreshStrategicMapStatusIconsForActiveNation();                // 0x58
   virtual void RefreshTradeAndIndustryOverviewScreen(int nationIndex);         // 0x5c
-  virtual void RefreshMainDialogAndCursorHelp(int eventCode); // 0x60
-  virtual void ShowDealBookScreen(short nationSlot); // 0x64; Mac oracle
+  virtual void RefreshMainDialogAndCursorHelp(int eventCode);                  // 0x60
+  virtual void ShowDealBookScreen(short nationSlot);                           // 0x64; Mac oracle
 
   // UI runtime helper functions
-  virtual void AddPendingTurnOverlayCode(int modeValue); // 0x68
-  virtual void ShowDiplomacyScreen(short nationSlot);    // 0x6c; Mac oracle
-  virtual void MakeRelationshipDialog(int dialogContext); // 0x70 0x5d6cd0
+  virtual void AddPendingTurnOverlayCode(int modeValue);       // 0x68
+  virtual void ShowDiplomacyScreen(short nationSlot);          // 0x6c; Mac oracle
+  virtual void MakeRelationshipDialog(int dialogContext);      // 0x70 0x5d6cd0
   virtual void MakeMinorsTradeBidsDialog(int dialogContext);   // 0x74 0x5d6d70
   virtual void MakeMinorRelationshipDialog(int dialogContext); // 0x78 0x5d6e50
   virtual void MakeGPTreatyDialog(int dialogContext);          // 0x7c 0x5d6f10
@@ -72,36 +72,36 @@ public:
   virtual void ShowNewspaper(int pageIndex = 0);                     // 0x9c; Mac oracle uses long
   virtual void SyncTacticalStatusPanelRegion();                      // 0xa0
   virtual void ShowCitySiteSelectorAndWait(int payload,
-                                                        TEventHandler* waitTarget); // 0xa4
-  virtual void ShowCityProductionView(short nationSlot); // 0xa8; Mac oracle
-  virtual void RefreshCityProductionUi();                     // 0xac 0x5d7f70
-  virtual void CloseBuilding(short buildingSlot); // 0xb0 0x5d7f90
-  virtual char ShowNewCityDialog(TTown* town); // 0xb4 0x5dcdf0
+                                           TEventHandler* waitTarget); // 0xa4
+  virtual void ShowCityProductionView(short nationSlot);               // 0xa8; Mac oracle
+  virtual void RefreshCityProductionUi();                              // 0xac 0x5d7f70
+  virtual void CloseBuilding(short buildingSlot);                      // 0xb0 0x5d7f90
+  virtual char ShowNewCityDialog(TTown* town);                         // 0xb4 0x5dcdf0
   virtual void ShowBuildingExpansionDialog(short buildingSlotId, class TCity* city,
                                            class TCityProductionView* productionView); // 0xb8
-  virtual void ShowTerrainMap(short nationSlot);                           // 0xbc; Mac oracle
-  virtual void ForwardBuildStrategicMapRenderAtlasesAndTileMaskCaches();   // 0xc0 0x5dc180
-  virtual void RenderTurnEventPalettePreviewSurfaceAndProgress();          // 0xc4 0x5dc1c0
-  virtual void RebuildMapTileNeighborHighlightPolygonsForAllTiles();       // 0xc8 0x5dc1a0
-  virtual void RefreshActiveGoldControlAndUiRuntimeState();                // 0xcc 0x5dc160
-  virtual void InitializeCitySiteSelectionScreenForNation(int nationSlot); // 0xd0
-  virtual void NoOpTurnEventStateVtableSlotD4(int arg);                    // 0xd4
+  virtual void ShowTerrainMap(short nationSlot);                            // 0xbc; Mac oracle
+  virtual void ForwardBuildStrategicMapRenderAtlasesAndTileMaskCaches();    // 0xc0 0x5dc180
+  virtual void RenderTurnEventPalettePreviewSurfaceAndProgress();           // 0xc4 0x5dc1c0
+  virtual void RebuildMapTileNeighborHighlightPolygonsForAllTiles();        // 0xc8 0x5dc1a0
+  virtual void RefreshActiveGoldControlAndUiRuntimeState();                 // 0xcc 0x5dc160
+  virtual void InitializeCitySiteSelectionScreenForNation(int nationSlot);  // 0xd0
+  virtual void NoOpTurnEventStateVtableSlotD4(int arg);                     // 0xd4
   virtual void ShowCombatReportDialog(TCombatReportContext* reportContext); // 0xd8 0x5dcf20
   virtual int ShowConstructionOptionsDialog(int dialogValue = 0);           // 0xdc
   virtual void HandleGlobalMapNationContextSelection(int nationSlot, int unused = 0); // 0xe0
   // Modal town-name notice; stringCode indexes the town-names string list.
-  virtual void ShowTownNameDialog(int stringCode);  // 0xe4
-  virtual void ShowUnreachableCityDialog(void* selection); // 0xe8
-  virtual void MakeGarrisonWindow(int tileIndex); // 0xec; Mac oracle
+  virtual void ShowTownNameDialog(int stringCode);                            // 0xe4
+  virtual void ShowUnreachableCityDialog(void* selection);                    // 0xe8
+  virtual void MakeGarrisonWindow(int tileIndex);                             // 0xec; Mac oracle
   virtual TNavyRoster* MakeNavyRosterDialog(TTaskForce* activeMapOrderEntry); // 0xf0
-  virtual void StartPhaseMovie();                          // 0xf4
-  virtual void SetUpMainMenuScreen();                          // 0xf8
-  virtual void NoOpTurnEventStateVtableSlotFC(); // 0xfc 0x5dbd10 -- real body is a bare `ret`
-  virtual void ShowLoadSaveScreen(); // 0x100 0x5dbd30; Mac oracle
-  virtual void ShowScenarioScreen();  // 0x104; Mac oracle
-  virtual void ShowHighScoreScreen(); // 0x108; Mac oracle
+  virtual void StartPhaseMovie();                                             // 0xf4
+  virtual void SetUpMainMenuScreen();                                         // 0xf8
+  virtual void NoOpTurnEventStateVtableSlotFC();  // 0xfc 0x5dbd10 -- real body is a bare `ret`
+  virtual void ShowLoadSaveScreen();              // 0x100 0x5dbd30; Mac oracle
+  virtual void ShowScenarioScreen();              // 0x104; Mac oracle
+  virtual void ShowHighScoreScreen();             // 0x108; Mac oracle
   virtual void ConfigureMapEditorGoldValueGrid(); // 0x10c 0x5dc3f0
-  virtual void ShowUnitHistory(short nationSlot);                   // 0x110 0x5dc690
+  virtual void ShowUnitHistory(short nationSlot); // 0x110 0x5dc690
 
   QuickDrawPaletteIndex GetColor(short colorCode);
   void SetColor(short colorCode, bool foreground);
@@ -146,7 +146,7 @@ public:
   short fieldEc;                           // +0xec
   short padEe;                             // +0xee
   class TMapUberPicture* mapUberPictureF0; // +0xf0
-  TMovieView* activeMovieViewF4;           // +0xf4
+  TMovieView* activeMovieView;             // +0xf4
   short fieldF8;                           // +0xf8
   short padFa;                             // +0xfa
 

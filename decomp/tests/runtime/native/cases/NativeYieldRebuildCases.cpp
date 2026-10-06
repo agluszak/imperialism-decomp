@@ -20,7 +20,7 @@ void ClearTileYieldSources(StrategicTileIndex tileIndex) {
 
   const ProvinceIndex cityRecordIndex = tile.cityRecordIndex;
   if (cityRecordIndex >= 0 && cityRecordIndex < 0x180 &&
-      g_pGlobalMapState->cityScoreTable[cityRecordIndex].cityTileIndex04 == tileIndex) {
+      g_pGlobalMapState->cityScoreTable[cityRecordIndex].cityTileIndex == tileIndex) {
     memset(g_pGlobalMapState->cityScoreTable[cityRecordIndex].resourceDevelopmentCounts, 0,
            sizeof(g_pGlobalMapState->cityScoreTable[cityRecordIndex].resourceDevelopmentCounts));
   }

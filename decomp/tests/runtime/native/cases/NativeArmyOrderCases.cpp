@@ -40,7 +40,7 @@ short FirstOwnedProvince() {
 short AdjacentOwnedProvince(short province) {
   const Province& record = g_pGlobalMapState->cityScoreTable[province];
   short adj;
-  for (adj = 0; adj < record.adjacentRegionCount08; ++adj) {
+  for (adj = 0; adj < record.adjacentRegionCount; ++adj) {
     const short dest = record.adjacentRegionIds[adj];
     if (dest >= 0 && dest < 0x180 &&
         g_pGlobalMapState->cityScoreTable[dest].ownerNationCode00 == record.ownerNationCode00) {
@@ -53,7 +53,7 @@ short AdjacentOwnedProvince(short province) {
 short AdjacentForeignProvince(short province) {
   const Province& record = g_pGlobalMapState->cityScoreTable[province];
   short adj;
-  for (adj = 0; adj < record.adjacentRegionCount08; ++adj) {
+  for (adj = 0; adj < record.adjacentRegionCount; ++adj) {
     const short dest = record.adjacentRegionIds[adj];
     if (dest >= 0 && dest < 0x180 &&
         g_pGlobalMapState->cityScoreTable[dest].ownerNationCode00 != record.ownerNationCode00 &&

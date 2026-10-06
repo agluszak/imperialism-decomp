@@ -46,17 +46,17 @@ void TCityBarCluster::StuffValues(TCity* city) {
   if (returnControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryRtnu);
   }
-  returnControl->SetControlValue(population->baselineSlots->lowSkillCount04, 1);
+  returnControl->SetControlValue(population->baselineSlots->lowSkillCount, 1);
 
   TNumberText* airControl = static_cast<TNumberText*>(this->ResolveControlByTag(kSummaryTagTrai));
   if (airControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryIart);
   }
-  airControl->SetControlValue(population->baselineSlots->mediumSkillCount06, 1);
+  airControl->SetControlValue(population->baselineSlots->mediumSkillCount, 1);
 
   TNumberText* profControl = static_cast<TNumberText*>(this->ResolveControlByTag(kSummaryTagProf));
   if (profControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryProf);
   }
-  profControl->SetControlValue(population->baselineSlots->highSkillCount08, 1);
+  profControl->SetControlValue(population->baselineSlots->highSkillCount, 1);
 }

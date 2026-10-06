@@ -216,13 +216,13 @@ void TTradeMgr::CalculateDealOrder() {
               TradeDealEntry event;
               event.sourceNationSlot = static_cast<short>(source);
               event.targetNationSlot = static_cast<short>(target);
-              event.relationDelta04 = cell;
+              event.relationDelta = cell;
               event.relationStanding =
                   RelationStanding(g_pDiplomacyTurnStateManager, source, target);
               event.dispatchScore =
                   this->GetDealPrice(static_cast<short>(source), static_cast<short>(target),
                                      categoryRows[row].price, categoryRows[row].basePrice);
-              event.category0c = static_cast<short>(row);
+              event.category = static_cast<short>(row);
               this->categoryRankLists[row]->InsertCopiedRecordSortedByComparator(&event);
             }
             source = source + 1;
@@ -247,13 +247,13 @@ void TTradeMgr::CalculateDealOrder() {
               TradeDealEntry event;
               event.sourceNationSlot = static_cast<short>(source);
               event.targetNationSlot = static_cast<short>(secTarget);
-              event.relationDelta04 = cell;
+              event.relationDelta = cell;
               event.relationStanding =
                   RelationStanding(g_pDiplomacyTurnStateManager, source, secTarget);
               event.dispatchScore =
                   this->GetDealPrice(static_cast<short>(source), static_cast<short>(secTarget),
                                      categoryRows[row].price, categoryRows[row].basePrice);
-              event.category0c = static_cast<short>(row);
+              event.category = static_cast<short>(row);
               this->categoryRankLists[row]->InsertCopiedRecordSortedByComparator(&event);
             }
             source = source + 1;
@@ -284,13 +284,13 @@ void TTradeMgr::CalculateDealOrder() {
               TradeDealEntry event;
               event.sourceNationSlot = static_cast<short>(source);
               event.targetNationSlot = static_cast<short>(target);
-              event.relationDelta04 = cell;
+              event.relationDelta = cell;
               event.relationStanding =
                   RelationStanding(g_pDiplomacyTurnStateManager, source, target);
               event.dispatchScore =
                   this->GetDealPrice(static_cast<short>(source), static_cast<short>(target),
                                      categoryRows[midRow].price, categoryRows[midRow].basePrice);
-              event.category0c = static_cast<short>(midRow);
+              event.category = static_cast<short>(midRow);
               this->categoryRankLists[midRow]->InsertCopiedRecordSortedByComparator(&event);
             }
             source = source + 1;
@@ -315,13 +315,13 @@ void TTradeMgr::CalculateDealOrder() {
                 TradeDealEntry event;
                 event.sourceNationSlot = static_cast<short>(source);
                 event.targetNationSlot = static_cast<short>(secTarget);
-                event.relationDelta04 = cell;
+                event.relationDelta = cell;
                 event.relationStanding =
                     RelationStanding(g_pDiplomacyTurnStateManager, source, secTarget);
                 event.dispatchScore =
                     this->GetDealPrice(static_cast<short>(source), static_cast<short>(secTarget),
                                        categoryRows[7].price, categoryRows[7].basePrice);
-                event.category0c = 7;
+                event.category = 7;
                 this->categoryRankLists[7]->InsertCopiedRecordSortedByComparator(&event);
               }
               source = source + 1;
@@ -354,13 +354,13 @@ void TTradeMgr::CalculateDealOrder() {
               TradeDealEntry event;
               event.sourceNationSlot = static_cast<short>(source);
               event.targetNationSlot = static_cast<short>(target);
-              event.relationDelta04 = cell;
+              event.relationDelta = cell;
               event.relationStanding =
                   RelationStanding(g_pDiplomacyTurnStateManager, source, target);
               event.dispatchScore =
                   this->GetDealPrice(static_cast<short>(source), static_cast<short>(target),
                                      categoryRows[lastRow].price, categoryRows[lastRow].basePrice);
-              event.category0c = static_cast<short>(lastRow);
+              event.category = static_cast<short>(lastRow);
               this->categoryRankLists[lastRow]->InsertCopiedRecordSortedByComparator(&event);
             }
             source = source + 1;
@@ -376,13 +376,13 @@ void TTradeMgr::CalculateDealOrder() {
               TradeDealEntry event;
               event.sourceNationSlot = static_cast<short>(secondarySource);
               event.targetNationSlot = static_cast<short>(target);
-              event.relationDelta04 = cell;
+              event.relationDelta = cell;
               event.relationStanding =
                   RelationStanding(g_pDiplomacyTurnStateManager, secondarySource, target);
               event.dispatchScore = this->GetDealPrice(
                   static_cast<short>(secondarySource), static_cast<short>(target),
                   categoryRows[lastRow].price, categoryRows[lastRow].basePrice);
-              event.category0c = static_cast<short>(lastRow);
+              event.category = static_cast<short>(lastRow);
               this->categoryRankLists[lastRow]->InsertCopiedRecordSortedByComparator(&event);
             }
             secondarySource = secondarySource + 1;

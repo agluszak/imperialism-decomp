@@ -67,7 +67,7 @@ void LoadRegionBorderLinkTableFromCoordsFile() {
     coord0 = coord0 + clampedRow0 * 0xd8;
 
     SeaSegment segment;
-    segment.angle14 = 0;
+    segment.angle = 0;
     segment.coord1 = coord1;
     segment.coord0 = coord0;
     segment.x0 = static_cast<short>(coord0 % 0xd8);
@@ -108,7 +108,7 @@ void SeaSegment::RecomputeEndpointsAndAngle() {
     dx = x1 - x0;
     dy = y1 - y0;
   }
-  angle14 = static_cast<short>(
+  angle = static_cast<short>(
       static_cast<int>(atan2(static_cast<double>(dy), static_cast<double>(dx)) * kSeaAngleScale));
 }
 
@@ -164,7 +164,7 @@ void RebuildRegionBorderLinkLattice() {
       coordBehind = coordBehind + clampedBehind * 0xd8;
 
       SeaSegment cellSegment;
-      cellSegment.angle14 = 0;
+      cellSegment.angle = 0;
       cellSegment.coord1 = coordAhead;
       cellSegment.coord0 = coordBehind;
       cellSegment.x0 = static_cast<short>(coordBehind % 0xd8);
@@ -291,7 +291,7 @@ void Seapoint::InitSorted(int value, int a, int b, int extra) {
 
 // FUNCTION: IMPERIALISM 0x0052b220
 void SeaSegment::InitFromPoints(const Seapoint* p0, const Seapoint* p1) {
-  angle14 = 0;
+  angle = 0;
   int c0 = p0->coord00;
   coord0 = c0;
   coord1 = p1->coord00;
@@ -325,7 +325,7 @@ void SeaSegment::InitFromPoints(const Seapoint* p0, const Seapoint* p1) {
     dx = x1 - x0;
     dy = y1 - y0;
   }
-  angle14 = static_cast<short>(
+  angle = static_cast<short>(
       static_cast<int>(atan2(static_cast<double>(dy), static_cast<double>(dx)) * kSeaAngleScale));
 }
 
@@ -346,10 +346,10 @@ void AssignRegionIdAlongBorderSegmentChain(unsigned int index, char side, short 
     short reversedAngle;
     const short* baseAnglePtr;
     if (side != '\0') {
-      baseAnglePtr = &g_regionBorderLinkTable_006a3900.At(index)->angle14;
+      baseAnglePtr = &g_regionBorderLinkTable_006a3900.At(index)->angle;
     } else {
       reversedAngle =
-          static_cast<short>(g_regionBorderLinkTable_006a3900.At(index)->angle14 - 0x7001);
+          static_cast<short>(g_regionBorderLinkTable_006a3900.At(index)->angle - 0x7001);
       baseAnglePtr = &reversedAngle;
     }
     short baseAngle = *baseAnglePtr;
@@ -382,7 +382,7 @@ void AssignRegionIdAlongBorderSegmentChain(unsigned int index, char side, short 
           int* wrappedStart = WrapExtendedMapXCoordinateInPlace(otherStart);
           if (jointY == wrappedStart[1] && jointX == wrappedStart[0]) {
             unsigned short turn = static_cast<unsigned short>(
-                g_regionBorderLinkTable_006a3900.At(candidate)->angle14 - baseAngle);
+                g_regionBorderLinkTable_006a3900.At(candidate)->angle - baseAngle);
             if (turn <= bestTurn) {
               bestTurn = turn;
               bestIndex = candidate;
@@ -397,7 +397,7 @@ void AssignRegionIdAlongBorderSegmentChain(unsigned int index, char side, short 
           int* wrappedEnd = WrapExtendedMapXCoordinateInPlace(otherEnd);
           if (jointY == wrappedEnd[1] && jointX == wrappedEnd[0]) {
             unsigned short turn = static_cast<unsigned short>(
-                g_regionBorderLinkTable_006a3900.At(candidate)->angle14 - baseAngle - 0x7001);
+                g_regionBorderLinkTable_006a3900.At(candidate)->angle - baseAngle - 0x7001);
             if (turn <= bestTurn) {
               bestTurn = turn;
               bestIndex = candidate;
@@ -448,7 +448,7 @@ void SeaSegment::ExtractWrappedEndpoint(int* out, char side) const {
 
 // FUNCTION: IMPERIALISM 0x0052c000
 unsigned short SeaSegment::SelectAttrByAngle() const {
-  if (static_cast<unsigned short>(angle14) < 0x8fff) {
+  if (static_cast<unsigned short>(angle) < 0x8fff) {
     return static_cast<unsigned short>(attr12);
   }
   return static_cast<unsigned short>(attr10);

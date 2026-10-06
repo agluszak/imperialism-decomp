@@ -604,7 +604,7 @@ RuntimeActionResult RunTradeTurnStop(NativeTransition& transition) {
     JsonObject row;
     row.Set("source", deal->sourceNationSlot);
     row.Set("target", deal->targetNationSlot);
-    row.Set("delta", deal->relationDelta04);
+    row.Set("delta", deal->relationDelta);
     row.Set("standing", deal->relationStanding);
     row.Set("score", deal->dispatchScore);
     dealRows.Add(row.Release());

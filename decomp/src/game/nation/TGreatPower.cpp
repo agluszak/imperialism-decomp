@@ -215,7 +215,7 @@ void TGreatPower::TraceRail(char* regionMap, short regionId) {
   do {
     regionMap[regionId] = 1;
     nextRegion = 0;
-    char adjacencyBits = g_pGlobalMapState->terrainStateTable[regionId].adjacencyBits06;
+    char adjacencyBits = g_pGlobalMapState->terrainStateTable[regionId].adjacencyBits;
     for (short direction = 0; direction < 6; ++direction) {
       if ((adjacencyBits & (1 << direction)) != 0) {
         short neighbor = TMapMgr::GetNeighborTileID(regionId, direction);
@@ -310,7 +310,7 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
 
         int cityIndex = static_cast<int>(terrainRecord->cityRecordIndex);
         Province* cityRecord = &cityTable[cityIndex];
-        if (cityRecord->cityTileIndex04 == static_cast<short>(regionIndex)) {
+        if (cityRecord->cityTileIndex == static_cast<short>(regionIndex)) {
           for (int devIdx = 0; devIdx < 10; ++devIdx) {
             developmentByType[devIdx] = static_cast<short>(
                 developmentByType[devIdx] + cityRecord->resourceDevelopmentCounts[devIdx]);
@@ -350,7 +350,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
     TTerrainStateRecord* terrainTable = globalMapState->terrainStateTable;
     Province* cityRecord = cityTable + regionId;
     short homeTileIndex = static_cast<short>(this->homeTileIndex);
-    if (cityRecord->cityTileIndex04 != homeTileIndex) {
+    if (cityRecord->cityTileIndex != homeTileIndex) {
       unsigned int turnDelta = static_cast<unsigned int>(
           static_cast<int>(simMgr->GetEconomicTurn()) - static_cast<int>(cityRecord->lastTurnTick));
 
@@ -965,7 +965,7 @@ int TGreatPower::SumAidAllocationMatrixAllCells(void) {
 // FUNCTION: IMPERIALISM 0x004dd430
 int TGreatPower::ComputeRemainingDiplomacyAidBudget(void) {
   int outstandingCommitments = this->pendingCommitmentCost;
-  int militaryExpenses = this->militaryExpenses960;
+  int militaryExpenses = this->militaryExpenses;
   int baseBudget = this->SumAidAllocationMatrixAllCells();
   return baseBudget + this->budgetPoolBase + this->budgetPoolDelta - militaryExpenses -
          outstandingCommitments;
@@ -2469,8 +2469,8 @@ short TGreatPower::ComputeNationRuntimeAdvisoryMetricCase6() {
   if (nationCity != 0) {
     TPopulationMgr* summary = nationCity->productionSummary;
     TLaborPool* bucket = summary->productionSlots;
-    short folded = static_cast<short>(bucket->highSkillCount08 * 2 + bucket->mediumSkillCount06);
-    folded = static_cast<short>(folded * 2 + bucket->lowSkillCount04);
+    short folded = static_cast<short>(bucket->highSkillCount * 2 + bucket->mediumSkillCount);
+    folded = static_cast<short>(folded * 2 + bucket->lowSkillCount);
     return static_cast<short>(folded + summary->extraAt1e);
   }
   return 0;
@@ -2483,7 +2483,7 @@ int TGreatPower::GetReinforcementPotential(void) {
   }
   TPopulationMgr* scenario = this->city->productionSummary;
   short scenarioCap = scenario->strength;
-  short productionCap = scenario->productionSlots->lowSkillCount04;
+  short productionCap = scenario->productionSlots->lowSkillCount;
   if (scenarioCap < productionCap) {
     productionCap = scenarioCap;
   }
@@ -2492,7 +2492,7 @@ int TGreatPower::GetReinforcementPotential(void) {
   if (static_cast<int>(metricCap) <= budget) {
     budget = metricCap;
   }
-  int armyPower = SumMilitaryUnitPowerWeightsForScore(this->militaryUnitList44);
+  int armyPower = SumMilitaryUnitPowerWeightsForScore(this->militaryUnitList);
   if (armyPower / 2 <= budget) {
     budget = armyPower / 2;
   }
@@ -2501,7 +2501,7 @@ int TGreatPower::GetReinforcementPotential(void) {
 
 // FUNCTION: IMPERIALISM 0x004e0890
 float TGreatPower::GetMilitaryPower(void) {
-  int armyPower = SumMilitaryUnitPowerWeightsForScore(this->militaryUnitList44);
+  int armyPower = SumMilitaryUnitPowerWeightsForScore(this->militaryUnitList);
   float armyPowerF = static_cast<float>(armyPower);
   float commitBudgetF = static_cast<float>(this->GetReinforcementPotential());
   int production = this->GetBuildingCapacity(3);
@@ -2532,7 +2532,7 @@ float TGreatPower::GetTotalNavalForce(void) {
     productionTerm = navyPriorityInt;
   }
   float productionTermF = static_cast<float>(productionTerm);
-  int fleetPower = SumMilitaryUnitPowerWeightsForScore(this->militaryUnitList44);
+  int fleetPower = SumMilitaryUnitPowerWeightsForScore(this->militaryUnitList);
   int priorityCap = static_cast<int>(navyPriorityF * g_Compute_City_Order_Value_0065371C);
   if (priorityCap >= fleetPower) {
     priorityCap = fleetPower;
@@ -2604,7 +2604,7 @@ float TGreatPower::ComputeNavyScoreStandingRatioVsNation(int targetNation) {
 float TGreatPower::ComputeArmyScoreRatioVsNationWithSecondary(int targetNation, int secondarySlot) {
   float selfScore = this->GetMilitaryPower();
   int secondaryPower = SumMilitaryUnitPowerWeightsForScore(
-      g_apSecondaryNationStateSlots[secondarySlot]->militaryUnitList44);
+      g_apSecondaryNationStateSlots[secondarySlot]->militaryUnitList);
   float combinedScore = static_cast<float>(secondaryPower) + selfScore;
   char borderLinked = g_pGlobalMapState->AreNationsBorderLinked(targetNation, secondarySlot);
   float targetScore;
@@ -2647,7 +2647,7 @@ float TGreatPower::ComputeArmyScoreStandingRatioVsNationPair(int targetNation, i
 float TGreatPower::ComputeNavyScoreRatioVsNationWithSecondary(int targetNation, int secondarySlot) {
   float selfScore = this->GetTotalNavalForce();
   int secondaryPower = SumMilitaryUnitPowerWeightsForScore(
-      g_apSecondaryNationStateSlots[secondarySlot]->militaryUnitList44);
+      g_apSecondaryNationStateSlots[secondarySlot]->militaryUnitList);
   float combinedScore = static_cast<float>(secondaryPower) + selfScore;
   char borderLinked = g_pGlobalMapState->AreNationsBorderLinked(targetNation, secondarySlot);
   float targetScore;
@@ -3058,7 +3058,7 @@ void TGreatPower::KillUnitsIn(int ownerClass) {
     }
   }
 
-  TSortedList* unitList = this->militaryUnitList44;
+  TSortedList* unitList = this->militaryUnitList;
   for (int unitIndex = unitList->GetCount(); unitIndex != 0; --unitIndex) {
     TUnit* unit = static_cast<TUnit*>(unitList->GetEntryByOrdinal(unitIndex));
     if (unit->tileIndex06 == -1) {
@@ -3341,7 +3341,7 @@ int TGreatPower::ComputeNationNavyOrderWeightedMovementScore() {
   navyWeightByType[12] = 0x5dc;
   navyWeightByType[13] = 0x4b0;
   int score = 0;
-  CIterator iter(militaryUnitList44);
+  CIterator iter(militaryUnitList);
   for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
     if (unit->GetCategory() > EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
@@ -3383,8 +3383,7 @@ void TGreatPower::GenerateGameScore() {
 
   TLaborPool* baseline = city->productionSummary->baselineSlots;
   gameScoreRows[kGameScoreLabor] =
-      baseline->lowSkillCount04 +
-      (baseline->mediumSkillCount06 + baseline->highSkillCount08 * 2) * 2;
+      baseline->lowSkillCount + (baseline->mediumSkillCount + baseline->highSkillCount * 2) * 2;
   gameScoreRows[kGameScoreTransport] = transportCapacity;
 
   gameScoreRows[kGameScoreIndustry] = 0;
@@ -3402,7 +3401,7 @@ void TGreatPower::GenerateGameScore() {
   gameScoreRows[kGameScoreProvinces] *= 10;
 
   int militaryOrderCostSum = 0;
-  CIterator unitIter(militaryUnitList44);
+  CIterator unitIter(militaryUnitList);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
     militaryOrderCostSum += g_aUnitOrderCostProfileByAbilityId[unit->orderType][2];
@@ -3451,14 +3450,14 @@ void TGreatPower::PayForMilitary() {
            static_cast<unsigned short>(g_pTechMgr->activePrerequisitePair.secondaryTechId))
        << 16);
   int militaryUnitCost = 0;
-  CIterator unitIter(militaryUnitList44);
+  CIterator unitIter(militaryUnitList);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
     militaryUnitCost += g_aUnitOrderCostProfileByAbilityId[unit->orderType][2];
   }
 
   int charge = (militaryUnitCost + GetArmsInNavy()) * maintenanceMultiplier;
-  militaryExpenses960 = charge;
+  militaryExpenses = charge;
   treasuryValue10 -= charge;
 }
 

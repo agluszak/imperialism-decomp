@@ -52,7 +52,7 @@ public:
   TUiStyleBytes* stylePayload; // 8-byte style/color payload (see TUiStyleBytes above)
   bool inputGateFlag;
   bool childHitTestFlag;
-  unsigned short cursorId4e;
+  unsigned short cursorId;
   CWnd* nativeWindow50; // 0x50 — host window (MFC CWnd; HWND via m_hWnd)
   unsigned short helpState;
   unsigned char padding_56_to_57[0x02];

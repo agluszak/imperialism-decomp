@@ -39,7 +39,7 @@ TBeachheadMission::~TBeachheadMission() {}
 
 // FUNCTION: IMPERIALISM 0x0053a490
 TBeachheadMission::TBeachheadMission(TZone* targetZone, TInvadeMission* parentMission)
-    : TControlSeaZoneMission(targetZone), parentMission3c(parentMission) {}
+    : TControlSeaZoneMission(targetZone), parentMission(parentMission) {}
 
 // FUNCTION: IMPERIALISM 0x0053a500
 void TBeachheadMission::CalculateNeeds() {
@@ -47,7 +47,7 @@ void TBeachheadMission::CalculateNeeds() {
 
   float invadePriority = static_cast<float>(g_BeachheadMissionPriorityNormalization_0065AA30 /
                                             GetNavyOrderCategoryBaseline(3)) *
-                         parentMission3c->CalculatePriority();
+                         parentMission->CalculatePriority();
   if (requiredShipEquipageByCategory[3] < invadePriority) {
     requiredShipEquipageByCategory[3] = invadePriority;
   }
@@ -56,27 +56,25 @@ void TBeachheadMission::CalculateNeeds() {
 // FUNCTION: IMPERIALISM 0x0053a7b0
 bool TBeachheadMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   return missionType == kMissionTypeInvadeProvince && key != -1 &&
-         key == parentMission3c->targetProvince30 && zoneContext == missionTargetZone;
+         key == parentMission->targetProvince30 && zoneContext == missionTargetZone;
 }
 
 // FUNCTION: IMPERIALISM 0x0053a800
 void TBeachheadMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
   signed char ownerCode =
-      g_pGlobalMapState->cityScoreTable[parentMission3c->targetProvince30].ownerNationCode00;
+      g_pGlobalMapState->cityScoreTable[parentMission->targetProvince30].ownerNationCode00;
   if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(nationId, ownerCode)) {
     mapOrderEntry->OrderSendInTheMarines(
-        &g_pGlobalMapState->cityScoreTable[parentMission3c->targetProvince30]);
+        &g_pGlobalMapState->cityScoreTable[parentMission->targetProvince30]);
     return;
   }
 
-  ownerCode =
-      g_pGlobalMapState->cityScoreTable[parentMission3c->targetProvince30].ownerNationCode00;
+  ownerCode = g_pGlobalMapState->cityScoreTable[parentMission->targetProvince30].ownerNationCode00;
   if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, ownerCode)) {
     return;
   }
 
-  ownerCode =
-      g_pGlobalMapState->cityScoreTable[parentMission3c->targetProvince30].ownerNationCode00;
+  ownerCode = g_pGlobalMapState->cityScoreTable[parentMission->targetProvince30].ownerNationCode00;
   if (g_apNationStates[nationId]->diplomacyPolicyByNation[ownerCode] !=
       kDiplomacyProposalDeclareWar) {
     g_apNationStates[nationId]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
@@ -86,7 +84,7 @@ void TBeachheadMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
 
 // FUNCTION: IMPERIALISM 0x0053a920
 TMission* TBeachheadMission::GetArmyMission() {
-  return parentMission3c;
+  return parentMission;
 }
 
 // FUNCTION: IMPERIALISM 0x0053a940

@@ -65,8 +65,8 @@ void TTradeTotalsView::Draw(RECT* rectBuffer) {
   g_pSimMgr->GetString(0x2740, 0x1d, &strA);
   SetQuickDrawTextOriginWithContextOffset(8, 0x36);
   DrawTextWithCachedQuickDrawStyleState(&strA);
-  g_pSimMgr->NumToCurrency(-nation->militaryExpenses960, &strA);
-  SetQuickDrawTextOriginWithContextOffset(nation->militaryExpenses960 <= 0 ? 0x80 : 0x7c, 0x36);
+  g_pSimMgr->NumToCurrency(-nation->militaryExpenses, &strA);
+  SetQuickDrawTextOriginWithContextOffset(nation->militaryExpenses <= 0 ? 0x80 : 0x7c, 0x36);
   DrawTextWithCachedQuickDrawStyleState(&strA);
 
   g_pSimMgr->GetString(0x2740, 0x1a, &strA);

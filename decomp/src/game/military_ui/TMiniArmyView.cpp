@@ -52,7 +52,7 @@ void TMiniArmyView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(0xa, 0xc);
   DrawTextWithCachedQuickDrawStyleState(&displayName);
 
-  short level = militaryUnit->strength34;
+  short level = militaryUnit->strength;
   short sVar1 = level / 0x19 + 1;
   if (sVar1 > 0x14) {
     sVar1 = 0x14;
@@ -85,8 +85,7 @@ void TMiniArmyView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       TStaticText* tbr1 = static_cast<TStaticText*>(
           g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagTbr1));
       tbr1->AssertValid();
-      tbr1->SetJustification(static_cast<short>(g_pSimMgr->GetPlayerCountry()),
-                                            false);
+      tbr1->SetJustification(static_cast<short>(g_pSimMgr->GetPlayerCountry()), false);
     } else {
       CString msg;
       g_pSimMgr->GetString(0x2745, 3, &msg);

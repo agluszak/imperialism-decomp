@@ -239,34 +239,34 @@ bool MapRenderingProbe::TransportConnectivityChangesTilePixels(TMapDialog* mapDi
   unsigned char road[kTileExtent * kTileExtent];
   unsigned char rail[kTileExtent * kTileExtent];
   TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tileIndex];
-  const signed char savedRoadFlags = terrain.adjacencyBits06;
+  const signed char savedRoadFlags = terrain.adjacencyBits;
   const unsigned char savedRailFlags = terrain.railFlags;
   TQuickDrawSurfaceContext* savedSurface;
   int savedSurfaceFlags;
   GetGWorld(&savedSurface, &savedSurfaceFlags);
   SetGWorld(mapDialog->quickDrawSurface, savedSurfaceFlags);
 
-  terrain.adjacencyBits06 = 0;
+  terrain.adjacencyBits = 0;
   terrain.railFlags = 0;
   mapDialog->DrawOneTile(tileIndex, 0, 0);
   for (int row = 0; row < kTileExtent; ++row) {
     memcpy(baseline + row * kTileExtent, surface->pixelBits + row * stride, kTileExtent);
   }
 
-  terrain.adjacencyBits06 = 1;
+  terrain.adjacencyBits = 1;
   mapDialog->DrawOneTile(tileIndex, 0, 0);
   for (int roadRow = 0; roadRow < kTileExtent; ++roadRow) {
     memcpy(road + roadRow * kTileExtent, surface->pixelBits + roadRow * stride, kTileExtent);
   }
 
-  terrain.adjacencyBits06 = 0;
+  terrain.adjacencyBits = 0;
   terrain.railFlags = 1;
   mapDialog->DrawOneTile(tileIndex, 0, 0);
   for (int railRow = 0; railRow < kTileExtent; ++railRow) {
     memcpy(rail + railRow * kTileExtent, surface->pixelBits + railRow * stride, kTileExtent);
   }
 
-  terrain.adjacencyBits06 = savedRoadFlags;
+  terrain.adjacencyBits = savedRoadFlags;
   terrain.railFlags = savedRailFlags;
   mapDialog->DrawOneTile(tileIndex, 0, 0);
   SetGWorld(savedSurface, savedSurfaceFlags);

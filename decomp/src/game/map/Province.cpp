@@ -15,9 +15,9 @@ Province& Province::operator=(const Province& source) {
   formerOwnerNationCode = source.formerOwnerNationCode;
   developmentStage = source.developmentStage;
   fortLevel03 = source.fortLevel03;
-  cityTileIndex04 = source.cityTileIndex04;
+  cityTileIndex = source.cityTileIndex;
   lastTurnTick = source.lastTurnTick;
-  adjacentRegionCount08 = source.adjacentRegionCount08;
+  adjacentRegionCount = source.adjacentRegionCount;
   for (int a = 0; a < 12; ++a) {
     adjacentRegionIds[a] = source.adjacentRegionIds[a];
   }

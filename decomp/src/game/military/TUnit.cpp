@@ -29,7 +29,7 @@ void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,
 
   TSortedList* ownerManager;
   if (this->militaryRegistrationFlag != 0) {
-    ownerManager = g_apTerrainTypeDescriptorTable[nOrderOwnerNationId]->militaryUnitList44;
+    ownerManager = g_apTerrainTypeDescriptorTable[nOrderOwnerNationId]->militaryUnitList;
   } else {
     ownerManager = g_apNationStates[nOrderOwnerNationId]->trackedObjectList;
   }
@@ -40,13 +40,13 @@ void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,
 
   ownerManager->AddTail(this);
 
-  this->ownerNationSlot18 = nOrderOwnerNationId;
+  this->ownerNationSlot = nOrderOwnerNationId;
   this->unitRosterId = arg3;
   this->orderTargetIndex = static_cast<short>(-1);
 
   TSimMgr* simMgr = g_pSimMgr;
   simMgr->lastPersistentUnitId = simMgr->lastPersistentUnitId + 1;
-  this->persistentUnitId20 = simMgr->lastPersistentUnitId;
+  this->persistentUnitId = simMgr->lastPersistentUnitId;
 }
 
 // FUNCTION: IMPERIALISM 0x005c2610
@@ -71,10 +71,10 @@ void TUnit::ContinueOrders() {
 void TUnit::Free() {
   TSortedList* manager = nullptr;
   if (this->militaryRegistrationFlag == 0) {
-    manager = g_apNationStates[this->ownerNationSlot18]->trackedObjectList; // +0x89c
+    manager = g_apNationStates[this->ownerNationSlot]->trackedObjectList; // +0x89c
   } else {
-    TCountry* terrain = g_apTerrainTypeDescriptorTable[this->ownerNationSlot18];
-    manager = terrain->militaryUnitList44;
+    TCountry* terrain = g_apTerrainTypeDescriptorTable[this->ownerNationSlot];
+    manager = terrain->militaryUnitList;
   }
   if (manager != nullptr) {
     POSITION pos = manager->listState.Find(this);
@@ -91,7 +91,7 @@ void TUnit::ReadFrom(TStream* stream) {
   stream->ReadBytes(&orderType, 2);
   stream->ReadBytes(&tileIndex06, 2);
   stream->ReadBytes(&orderTargetIndex, 2);
-  stream->ReadBytes(&ownerNationSlot18, 2);
+  stream->ReadBytes(&ownerNationSlot, 2);
   stream->ReadBytes(&unitRosterId, 2);
   stream->ReadBytes(&militaryRegistrationFlag, 1);
   stream->ReadBytes(&unitOrder, 4);
@@ -103,7 +103,7 @@ void TUnit::ReadFrom(TStream* stream) {
     orderTargetIndex = savedOrderTargetIndex;
   }
   if (g_nSaveFormatVersion > 0x2d) {
-    stream->ReadBytes(&persistentUnitId20, 4);
+    stream->ReadBytes(&persistentUnitId, 4);
   }
 }
 
@@ -113,9 +113,9 @@ void TUnit::WriteTo(TStream* stream) {
   stream->WriteBytes(&orderType, 2);
   stream->WriteBytes(&tileIndex06, 2);
   stream->WriteBytes(&orderTargetIndex, 2);
-  stream->WriteBytes(&ownerNationSlot18, 2);
+  stream->WriteBytes(&ownerNationSlot, 2);
   stream->WriteBytes(&unitRosterId, 2);
   stream->WriteBytes(&militaryRegistrationFlag, 1);
   stream->WriteBytes(&unitOrder, 4);
-  stream->WriteBytes(&persistentUnitId20, 4);
+  stream->WriteBytes(&persistentUnitId, 4);
 }

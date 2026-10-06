@@ -47,7 +47,7 @@ bool IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
     return true;
   }
 
-  for (int i = record.adjacentRegionCount08 - 1; i >= 0; --i) {
+  for (int i = record.adjacentRegionCount - 1; i >= 0; --i) {
     short neighborTile = record.adjacentRegionIds[i];
     signed char neighborOwner = g_pGlobalMapState->cityScoreTable[neighborTile].ownerNationCode00;
     if (neighborOwner < 7 && neighborOwner != primaryOwner) {
@@ -252,7 +252,7 @@ void TDefendProvinceMission::CalculateImportance() {
   const Province& cityRecord = g_pGlobalMapState->cityScoreTable[tileIndex];
 
   float local_8 = static_cast<float>(cityRecord.cityScoreValue);
-  int adjacentCount = static_cast<int>(cityRecord.adjacentRegionCount08);
+  int adjacentCount = static_cast<int>(cityRecord.adjacentRegionCount);
   int local_c = 0;
 
   if (adjacentCount > 0) {

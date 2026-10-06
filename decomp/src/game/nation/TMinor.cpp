@@ -1069,10 +1069,10 @@ void TMinor::KillEnemyCiviliansIn(int provinceId) {
       int linkedIndex = 0;
       while (linkedIndex < regionRecord->linkedRegionCount) {
         short tileId = regionRecord->linkedTileIndices42[linkedIndex];
-        TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder20;
+        TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder;
         while (orderNode != 0) {
           TUnit* nextNode = orderNode->nextAtLocation;
-          int orderOwnerNationSlot = orderNode->ownerNationSlot18;
+          int orderOwnerNationSlot = orderNode->ownerNationSlot;
           if (relationMaskByNation[orderOwnerNationSlot] != 0) {
             if (orderNode->orderType == EncodeCivilianUnitKind(kCivilianUnitDeveloper)) {
               TGreatPower* ownerNation = g_apNationStates[orderOwnerNationSlot];
@@ -1099,10 +1099,10 @@ void TMinor::KillEnemyCiviliansIn(int provinceId) {
       int linkedIndex = 0;
       while (linkedIndex < regionRecord->linkedRegionCount) {
         short tileId = regionRecord->linkedTileIndices42[linkedIndex];
-        TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder20;
+        TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder;
         while (orderNode != 0) {
           TUnit* nextNode = orderNode->nextAtLocation;
-          int orderOwnerNationSlot = orderNode->ownerNationSlot18;
+          int orderOwnerNationSlot = orderNode->ownerNationSlot;
           if (relationMaskByNation[orderOwnerNationSlot] != 0) {
             orderNode->Vaporize();
             orderNode->Free();
@@ -1120,7 +1120,7 @@ void TMinor::KillEnemyCiviliansIn(int provinceId) {
 // FUNCTION: IMPERIALISM 0x004e6040
 void TMinor::AssimilateTroopsOf(int priorOwnerNationSlot) {
   TSortedList* priorOwnerManager =
-      g_apTerrainTypeDescriptorTable[priorOwnerNationSlot]->militaryUnitList44;
+      g_apTerrainTypeDescriptorTable[priorOwnerNationSlot]->militaryUnitList;
 
   int ownedCount = this->ownedRegionList->GetSize();
   int oneBasedIndex = 1;
@@ -1134,14 +1134,14 @@ void TMinor::AssimilateTroopsOf(int priorOwnerNationSlot) {
     while (unitNode != 0) {
       TUnit* unit = unitNode;
       TMilitaryUnit* nextNode = static_cast<TMilitaryUnit*>(unitNode->nextAtLocation);
-      if (unit->ownerNationSlot18 == priorOwnerNationSlot) {
-        unit->ownerNationSlot18 = this->nationSlot;
+      if (unit->ownerNationSlot == priorOwnerNationSlot) {
+        unit->ownerNationSlot = this->nationSlot;
         CPtrList* sourceList = &priorOwnerManager->listState;
         POSITION pos = sourceList->Find(unit, 0);
         if (pos != 0) {
           sourceList->RemoveAt(pos);
         }
-        this->militaryUnitList44->AddTail(unit);
+        this->militaryUnitList->AddTail(unit);
       }
       unitNode = nextNode;
     }
@@ -1186,10 +1186,10 @@ void TMinor::DeportCiviliansIn(int provinceId, bool includeAllPolicyTargets) {
       int linkedIndex = 0;
       while (linkedIndex < regionRecord->linkedRegionCount) {
         short tileId = regionRecord->linkedTileIndices42[linkedIndex];
-        TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder20;
+        TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder;
         while (orderNode != 0) {
           TUnit* nextNode = orderNode->nextAtLocation;
-          int orderOwnerNationSlot = orderNode->ownerNationSlot18;
+          int orderOwnerNationSlot = orderNode->ownerNationSlot;
           if (relationMaskByNation[orderOwnerNationSlot] != 0) {
             TGreatPower* ownerNation = g_apNationStates[orderOwnerNationSlot];
             short spawnTile = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
@@ -1219,10 +1219,10 @@ void TMinor::DeportCiviliansIn(int provinceId, bool includeAllPolicyTargets) {
       int linkedIndex = 0;
       while (linkedIndex < regionRecord->linkedRegionCount) {
         short tileId = regionRecord->linkedTileIndices42[linkedIndex];
-        TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder20;
+        TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder;
         while (orderNode != 0) {
           TUnit* nextNode = orderNode->nextAtLocation;
-          int orderOwnerNationSlot = orderNode->ownerNationSlot18;
+          int orderOwnerNationSlot = orderNode->ownerNationSlot;
           if (relationMaskByNation[orderOwnerNationSlot] != 0) {
             TGreatPower* ownerNation = g_apNationStates[orderOwnerNationSlot];
             short spawnTile = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
@@ -1260,13 +1260,13 @@ void TMinor::AddProvince(int regionId) {
 // FUNCTION: IMPERIALISM 0x004e6520
 void TMinor::ChangeArmyOwnership(int destinationNationSlot) {
   TSortedList* destinationManager =
-      g_apTerrainTypeDescriptorTable[destinationNationSlot]->militaryUnitList44;
+      g_apTerrainTypeDescriptorTable[destinationNationSlot]->militaryUnitList;
 
-  CIterator unitCursor(this->militaryUnitList44);
+  CIterator unitCursor(this->militaryUnitList);
   TUnit* unit = static_cast<TUnit*>(unitCursor.Reset());
   while (unitCursor.More() != 0) {
-    unit->ownerNationSlot18 = static_cast<short>(destinationNationSlot);
-    CPtrList* sourceList = &this->militaryUnitList44->listState;
+    unit->ownerNationSlot = static_cast<short>(destinationNationSlot);
+    CPtrList* sourceList = &this->militaryUnitList->listState;
     POSITION pos = sourceList->Find(unit, 0);
     if (pos != 0) {
       sourceList->RemoveAt(pos);

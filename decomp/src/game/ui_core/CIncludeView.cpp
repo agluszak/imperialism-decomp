@@ -243,8 +243,8 @@ void CIncludeView::UpdateAndRenderMapTileHintOverlayQueue(CDC* dc, RECT* clipRec
   while (m_overlayRectQueue.cursor != 0) {
     IncludeViewOverlayRectRecord& rec =
         m_overlayRectQueue.records.GetNext(m_overlayRectQueue.cursor);
-    if (rec.processedFlag10 == 0) {
-      rec.processedFlag10 = 1;
+    if (rec.processedFlag == 0) {
+      rec.processedFlag = 1;
       CPoint dimensions;
       m_pMainPaneDib->CopyBitmapDimensionsToPoint(&dimensions);
       IncludeViewOverlayRectRecord surfaceRect;
@@ -266,8 +266,8 @@ void CIncludeView::UpdateAndRenderMapTileHintOverlayQueue(CDC* dc, RECT* clipRec
   while (m_overlayRectQueue.cursor != 0) {
     IncludeViewOverlayRectRecord& rec =
         m_overlayRectQueue.records.GetNext(m_overlayRectQueue.cursor);
-    if (rec.processedFlag10 == 0) {
-      rec.processedFlag10 = 1;
+    if (rec.processedFlag == 0) {
+      rec.processedFlag = 1;
       RECT paintRect;
       CopyRect(&paintRect, &rec.rect);
       m_activeDialogContext->PaintVisibleChildrenIntersectingClipRect(&paintRect, 0);
@@ -284,7 +284,7 @@ void CIncludeView::UpdateAndRenderMapTileHintOverlayQueue(CDC* dc, RECT* clipRec
     POSITION current = m_overlayRectQueue.cursor;
     IncludeViewOverlayRectRecord& rec =
         m_overlayRectQueue.records.GetNext(m_overlayRectQueue.cursor);
-    if (rec.processedFlag10 == 2) {
+    if (rec.processedFlag == 2) {
       RECT flushRect = rec.rect;
       m_overlayRectQueue.records.RemoveAt(current);
       BlitMapDialogSurfaceToHdcWithClipBounds(targetDc, &flushRect);
@@ -527,10 +527,10 @@ void CIncludeViewOverlayRectQueue::AddHead(RECT* rect, int processedFlag, int fi
   if (headPosition != 0) {
     IncludeViewOverlayRectRecord& head = records.GetAt(headPosition);
     RECT intersection;
-    if (head.processedFlag10 != 2 && IntersectRect(&intersection, &head.rect, rect)) {
+    if (head.processedFlag != 2 && IntersectRect(&intersection, &head.rect, rect)) {
       UnionRect(&head.rect, &head.rect, rect);
-      if (processedFlag != 0 && head.processedFlag10 != 0) {
-        head.processedFlag10 = 0;
+      if (processedFlag != 0 && head.processedFlag != 0) {
+        head.processedFlag = 0;
       }
       return;
     }
@@ -538,7 +538,7 @@ void CIncludeViewOverlayRectQueue::AddHead(RECT* rect, int processedFlag, int fi
 
   IncludeViewOverlayRectRecord record;
   record.rect = *rect;
-  record.processedFlag10 = processedFlag != 0;
+  record.processedFlag = processedFlag != 0;
   record.field14 = field14;
   records.AddHead(record);
 }
@@ -548,8 +548,8 @@ IncludeViewOverlayRectRecord*
 CIncludeViewOverlayRectQueue::UpdateNextRecordProcessedFlagFromCursor(int matchFlag, int newFlag) {
   while (cursor != 0) {
     IncludeViewOverlayRectRecord& rec = records.GetNext(cursor);
-    if (rec.processedFlag10 == matchFlag) {
-      rec.processedFlag10 = newFlag;
+    if (rec.processedFlag == matchFlag) {
+      rec.processedFlag = newFlag;
       return &rec;
     }
   }

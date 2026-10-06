@@ -31,7 +31,7 @@ void TTacticalUnit::ITacticalUnit() {
   tileIndex8 = -2;
   selectedFlag = 0;
   state1c = 0;
-  actionPoints28 = GetBaseActionPoints();
+  actionPoints = GetBaseActionPoints();
   aiStateCode = 0;
   attackTarget = NULL;
 }
@@ -39,14 +39,14 @@ void TTacticalUnit::ITacticalUnit() {
 // FUNCTION: IMPERIALISM 0x005a5e70
 void TTacticalUnit::ApplyDamage(int damageA, int damageB) {
   (void)damageB;
-  strength4 -= damageA;
-  if (strength4 <= 0) {
-    strength4 = 0;
+  strength -= damageA;
+  if (strength <= 0) {
+    strength = 0;
     state1c = 3;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005a5eb0
 void TTacticalUnit::FlipUnitSideAffiliation() {
-  side20 = (side20 == 0);
+  side = (side == 0);
 }

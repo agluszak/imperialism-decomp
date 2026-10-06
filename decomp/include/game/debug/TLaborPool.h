@@ -17,12 +17,12 @@ public:
   virtual short TransferToHighSkillFirst(TLaborPool* destination,
                                          short amount); // slot 0x0b 0x4b2340
 
-  TLaborPool() : lowSkillCount04(0), mediumSkillCount06(0), highSkillCount08(0), pad0a(0) {}
+  TLaborPool() : lowSkillCount(0), mediumSkillCount(0), highSkillCount(0), pad0a(0) {}
   void ILaborPool();
 
-  short lowSkillCount04;
-  short mediumSkillCount06;
-  short highSkillCount08;
+  short lowSkillCount;
+  short mediumSkillCount;
+  short highSkillCount;
   short pad0a;
 };
 

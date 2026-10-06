@@ -13,15 +13,15 @@ void TArmyTacUnit::IArmyTacUnit(TMilitaryUnit* source) {
   tileIndex8 = -2;
   selectedFlag = 0;
   state1c = 0;
-  actionPoints28 = GetBaseActionPoints();
+  actionPoints = GetBaseActionPoints();
   aiStateCode = 0;
   attackTarget = NULL;
-  strength4 = source->strength34;
-  morale34 = source->strength34;
-  qualityLevel10 = static_cast<short>(source->experiencePercent / 100);
-  ownerNationIndex = source->ownerNationSlot18;
+  strength = source->strength;
+  morale = source->strength;
+  qualityLevel = static_cast<short>(source->experiencePercent / 100);
+  ownerNationIndex = source->ownerNationSlot;
   sapTargetTileIndex = -1;
-  sourceUnit38 = source;
+  sourceUnit = source;
   bool deployedCategory0Flag;
   if (source->unitOrder == 2 && g_anUnitTypeCombatCategoryByType00669858[unitTypeC] == 0) {
     deployedCategory0Flag = true;
@@ -33,18 +33,17 @@ void TArmyTacUnit::IArmyTacUnit(TMilitaryUnit* source) {
 
 // FUNCTION: IMPERIALISM 0x005a5fe0
 void TArmyTacUnit::ComputeTacticalProjectionScoreVector() {
-  float qualityFactor =
-      static_cast<float>(g_dTacticalQualityFactorBase_00669ED0 -
-                         static_cast<short>(sourceUnit38->experiencePercent / 100) *
-                             g_dTacticalQualityFactorStep_00669EC8);
-  sourceUnit38->GetAttribute(5);
-  float strengthTerm = strength4 * g_fTacticalStrengthProjectionScale_00669F0C;
+  float qualityFactor = static_cast<float>(g_dTacticalQualityFactorBase_00669ED0 -
+                                           static_cast<short>(sourceUnit->experiencePercent / 100) *
+                                               g_dTacticalQualityFactorStep_00669EC8);
+  sourceUnit->GetAttribute(5);
+  float strengthTerm = strength * g_fTacticalStrengthProjectionScale_00669F0C;
   float scale = strengthTerm * qualityFactor;
-  projectionScores[0] = sourceUnit38->GetAttribute(0) * scale * strengthTerm;
-  projectionScores[1] = sourceUnit38->GetAttribute(1) * scale;
-  projectionScores[2] = sourceUnit38->GetAttribute(2) * scale;
-  projectionScores[3] = sourceUnit38->GetAttribute(3) * scale;
-  projectionScores[4] = sourceUnit38->GetAttribute(4) * scale;
+  projectionScores[0] = sourceUnit->GetAttribute(0) * scale * strengthTerm;
+  projectionScores[1] = sourceUnit->GetAttribute(1) * scale;
+  projectionScores[2] = sourceUnit->GetAttribute(2) * scale;
+  projectionScores[3] = sourceUnit->GetAttribute(3) * scale;
+  projectionScores[4] = sourceUnit->GetAttribute(4) * scale;
 }
 
 // FUNCTION: IMPERIALISM 0x005a6120
@@ -55,7 +54,7 @@ int TArmyTacUnit::GetBaseActionPoints() {
 // FUNCTION: IMPERIALISM 0x005a6140
 int TArmyTacUnit::GetUnitRange() {
   int range = g_anUnitTypeTacticalRangeByType_006699E8[unitTypeC];
-  if (side20 == 1 && g_anUnitTypeCombatCategoryByType00669858[unitTypeC] == 2) {
+  if (side == 1 && g_anUnitTypeCombatCategoryByType00669858[unitTypeC] == 2) {
     ++range;
   }
   return range;
@@ -73,22 +72,22 @@ float TArmyTacUnit::GetDamageScale() {
 
 // FUNCTION: IMPERIALISM 0x005a61c0
 void TArmyTacUnit::ApplyDamage(int damageA, int damageB) {
-  morale34 -= damageB;
-  if (morale34 <= 0) {
-    morale34 = 0;
+  morale -= damageB;
+  if (morale <= 0) {
+    morale = 0;
     state1c = 1;
   }
-  strength4 -= damageA;
-  if (strength4 <= 0) {
-    strength4 = 0;
+  strength -= damageA;
+  if (strength <= 0) {
+    strength = 0;
     state1c = 3;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005a6210
 int TArmyTacUnit::GetUID() const {
-  if (this != 0 && sourceUnit38 != 0) {
-    return sourceUnit38->persistentUnitId20;
+  if (this != 0 && sourceUnit != 0) {
+    return sourceUnit->persistentUnitId;
   }
   return 0;
 }

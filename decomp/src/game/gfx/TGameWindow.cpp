@@ -105,7 +105,7 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
       return;
     }
     if (g_pViewMgr->fieldF8 != 0) {
-      TMovieView* activeMovieView = g_pViewMgr->activeMovieViewF4;
+      TMovieView* activeMovieView = g_pViewMgr->activeMovieView;
       if (activeMovieView == 0) {
         return;
       }
@@ -164,7 +164,7 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
 
 // FUNCTION: IMPERIALISM 0x00500160
 void TGameWindow::UpdateTurnOrderNavigationWindowLayout() {
-  if (g_pDisplayMgr->eventCode0e == kTurnEventSphereWindow) {
+  if (g_pDisplayMgr->eventCode == kTurnEventSphereWindow) {
     CRect boundsRect;
     QueryBounds(&boundsRect);
     GlobalViewportRectDefaultsRecord** rectDefaultsHandle =

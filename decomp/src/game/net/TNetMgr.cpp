@@ -231,7 +231,7 @@ unsigned char TNetMgr::Host(const char* seedPath, const char* localPlayerName,
       localName.ReleaseBuffer(-1);
     }
     if (result) {
-      g_NetworkSessionManager006a5f60.localPlayerId60 = nationId;
+      g_NetworkSessionManager006a5f60.localPlayerId = nationId;
       g_NetworkSessionManager006a5f60.broadcastPlayerId = nationId;
       result = g_NetworkSessionManager006a5f60.SetLocalPlayerDataAndStoreResult(
           &g_NetworkSessionManager006a5f60.joinGamePlayerDataTag, 4);
@@ -262,7 +262,7 @@ unsigned char TNetMgr::SelectGame(int selectionTag, CString* outGameName, const 
     result = g_NetworkSessionManager006a5f60.CreatePlayerAndStoreResult(&localPlayerId, shortName);
     g_NetworkSessionManager006a5f60.joinGamePlayerNameA8.ReleaseBuffer(-1);
     if (result) {
-      g_NetworkSessionManager006a5f60.localPlayerId60 = localPlayerId;
+      g_NetworkSessionManager006a5f60.localPlayerId = localPlayerId;
       result = g_NetworkSessionManager006a5f60.SetLocalPlayerDataAndStoreResult(
           &g_NetworkSessionManager006a5f60.joinGamePlayerDataTag,
           sizeof(g_NetworkSessionManager006a5f60.joinGamePlayerDataTag));
@@ -277,17 +277,17 @@ unsigned char TNetMgr::SelectGame(int selectionTag, CString* outGameName, const 
 // FUNCTION: IMPERIALISM 0x005e3d40
 unsigned char TNetMgr::Send(NetMessage* message, bool queueOnly) {
   unsigned int sizeBytes = static_cast<unsigned int>(message->messageLength);
-  message->fromNetworkId = g_NetworkSessionManager006a5f60.localPlayerId60;
+  message->fromNetworkId = g_NetworkSessionManager006a5f60.localPlayerId;
   int nationId = message->toNetworkId;
   if (message->toNetworkId == -1) {
     nationId = g_NetworkSessionManager006a5f60.broadcastPlayerId;
   }
 
-  if (queueOnly || nationId == g_NetworkSessionManager006a5f60.localPlayerId60) {
+  if (queueOnly || nationId == g_NetworkSessionManager006a5f60.localPlayerId) {
     void* heapCopy = GlobalAlloc(0, static_cast<DWORD>(sizeBytes));
     memcpy(heapCopy, message, sizeBytes);
     g_WNetPendingPacketList006a5f40.AddTail(heapCopy);
-    if (nationId == g_NetworkSessionManager006a5f60.localPlayerId60) {
+    if (nationId == g_NetworkSessionManager006a5f60.localPlayerId) {
       return 1;
     }
   }
@@ -366,7 +366,7 @@ TurnEventQueuePacket* TNetMgr::PopNextTurnEventPacketOrProcessSpecialQueueRecord
 
 // FUNCTION: IMPERIALISM 0x005e4280
 int TNetMgr::GetSessionActiveNationId() {
-  return g_NetworkSessionManager006a5f60.localPlayerId60;
+  return g_NetworkSessionManager006a5f60.localPlayerId;
 }
 
 // FUNCTION: IMPERIALISM 0x005e42a0
@@ -376,7 +376,7 @@ void TNetMgr::NoOpDialogModeTagChangedHook(int arg) {
 
 // FUNCTION: IMPERIALISM 0x005e42c0
 void TNetMgr::NotifyIfNationMatchesSessionActiveNation(int nationId) {
-  if (nationId == g_NetworkSessionManager006a5f60.localPlayerId60) {
+  if (nationId == g_NetworkSessionManager006a5f60.localPlayerId) {
     g_NetworkSessionManager006a5f60.DestroyPlayerAndStoreResult(nationId);
   }
 }
@@ -414,7 +414,7 @@ int TNetMgr::ProbeNationReachabilityAndMarkAwolBitmask() {
         awolBitmask += 1 << slot;
       } else {
         probe.DestinateToGP(slot);
-        probe.fromNetworkId = g_NetworkSessionManager006a5f60.localPlayerId60;
+        probe.fromNetworkId = g_NetworkSessionManager006a5f60.localPlayerId;
         int destination = probe.toNetworkId;
         if (destination == -1) {
           destination = g_NetworkSessionManager006a5f60.broadcastPlayerId;

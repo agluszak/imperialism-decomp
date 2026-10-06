@@ -106,7 +106,7 @@ void TArmyMission::WriteTo(TStream* stream) {
   void* currentUnit = iter.Reset();
   while (iter.More()) {
     stream->WriteInteger(
-        g_apNationStates[nationId]->militaryUnitList44->FindOneBasedOrdinalOf(currentUnit));
+        g_apNationStates[nationId]->militaryUnitList->FindOneBasedOrdinalOf(currentUnit));
     currentUnit = iter.Advance();
   }
 }
@@ -125,7 +125,7 @@ void TArmyMission::ReadFrom(TStream* stream) {
 
   int count = stream->ReadInteger();
   while (count-- != 0) {
-    TSortedList* unitList = g_apNationStates[nationId]->militaryUnitList44;
+    TSortedList* unitList = g_apNationStates[nationId]->militaryUnitList;
     TMilitaryUnit* unit =
         static_cast<TMilitaryUnit*>(unitList->GetEntryByOrdinal(stream->ReadInteger()));
     AcceptReenforcement(unit, false);
@@ -217,7 +217,7 @@ float TArmyMission::ComputeProvinceImportance(short provinceIndex) {
   float importance = static_cast<float>(province.cityScoreValue);
 
   int ownedNeighbors = 0;
-  if (province.adjacentRegionCount08 > 0) {
+  if (province.adjacentRegionCount > 0) {
     int index = 0;
     do {
       if (missionNation == g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(
@@ -225,12 +225,12 @@ float TArmyMission::ComputeProvinceImportance(short provinceIndex) {
         ++ownedNeighbors;
       }
       ++index;
-    } while (index < province.adjacentRegionCount08);
+    } while (index < province.adjacentRegionCount);
   }
 
-  if (province.adjacentRegionCount08 > 0) {
+  if (province.adjacentRegionCount > 0) {
     importance =
-        (static_cast<float>(ownedNeighbors) / static_cast<float>(province.adjacentRegionCount08) +
+        (static_cast<float>(ownedNeighbors) / static_cast<float>(province.adjacentRegionCount) +
          1.0f) *
         importance;
   }
@@ -244,7 +244,7 @@ float ComputeProvinceImportanceForNation(short provinceIndex, short nation) {
   int targetNation = nation;
 
   int ownedNeighbors = 0;
-  if (province.adjacentRegionCount08 > 0) {
+  if (province.adjacentRegionCount > 0) {
     int index = 0;
     do {
       int neighborOwner = g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(
@@ -253,12 +253,12 @@ float ComputeProvinceImportanceForNation(short provinceIndex, short nation) {
         ++ownedNeighbors;
       }
       ++index;
-    } while (index < province.adjacentRegionCount08);
+    } while (index < province.adjacentRegionCount);
   }
 
-  if (province.adjacentRegionCount08 > 0) {
+  if (province.adjacentRegionCount > 0) {
     importance =
-        (static_cast<float>(ownedNeighbors) / static_cast<float>(province.adjacentRegionCount08) -
+        (static_cast<float>(ownedNeighbors) / static_cast<float>(province.adjacentRegionCount) -
          -1.0) *
         importance;
   }
@@ -316,7 +316,7 @@ void AccumulateUnitOrderPriorityVectorContribution(TMilitaryUnit* unit, float* v
                                                    float weight) {
   short quality = unit->experiencePercent;
   short stat5 = unit->GetAttribute(5);
-  short strength = unit->strength34;
+  short strength = unit->strength;
   float dampen = 1.0f - static_cast<float>(stat5) * weight * -0.0001f;
   scale = static_cast<float>(strength) * 0.002f *
           (1.0f - static_cast<float>(static_cast<short>(quality / 100)) * -0.1f) * scale;
@@ -447,7 +447,7 @@ float TArmyMission::ValueOf(TMilitaryUnit* candidateUnit) {
 
 // FUNCTION: IMPERIALISM 0x0053d4a0
 float TArmyMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVector) {
-  float scaledStrength = static_cast<float>(static_cast<double>(candidateUnit->strength34) *
+  float scaledStrength = static_cast<float>(static_cast<double>(candidateUnit->strength) *
                                             g_ArmyMissionEligibleUnitStrengthScale_0065AA48);
   if (scaledStrength < g_Recompute_Nation_Order_LookupTable_0065AA20) {
     if (!IsANoBrainer()) {

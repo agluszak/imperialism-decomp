@@ -69,7 +69,7 @@ RuntimeActionResult UnitChainProbe::VerifyChainsAreWalkable(const char* stage) {
     }
   }
   for (int tile = 0; tile < kMapTileCount; ++tile) {
-    if (!ChainIsWalkable(g_pGlobalMapState->terrainStateTable[tile].firstCivilianOrder20,
+    if (!ChainIsWalkable(g_pGlobalMapState->terrainStateTable[tile].firstCivilianOrder,
                          &detail)) {
       CString message;
       message.Format("%s left tile %d's civilian-order chain unwalkable: %s", stage, tile,
@@ -83,7 +83,7 @@ RuntimeActionResult UnitChainProbe::VerifyChainsAreWalkable(const char* stage) {
 void UnitChainProbe::DetachLiveMilitaryUnitsFromMap() {
   for (short slot = 0; slot < kTerrainTypeDescriptorTableCount; ++slot) {
     TCountry* country = g_apTerrainTypeDescriptorTable[slot];
-    TSortedList* units = country != 0 ? country->militaryUnitList44 : 0;
+    TSortedList* units = country != 0 ? country->militaryUnitList : 0;
     if (units == 0) {
       continue;
     }

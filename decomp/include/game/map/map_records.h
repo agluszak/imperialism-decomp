@@ -18,7 +18,7 @@ struct ScenarioTileDiskRecord {
   unsigned char bytes00[4];
   signed char ownerNationTag04;
   unsigned char bytes05[0x14 - 0x05];
-  unsigned char cityRecordIndex14[2];
+  unsigned char cityRecordIndex[2];
   unsigned char bytes16[0x1a - 0x16];
   unsigned char tileActionOrdinal[2];
   unsigned char activeFlags1c[2];
@@ -50,7 +50,7 @@ struct TTerrainStateRecord {
   signed char formerOwnerNationTag;
   signed char ownerNationTag04;
   signed char regionSubtypeTag;
-  signed char adjacencyBits06;
+  signed char adjacencyBits;
   unsigned char ownerBorderMask;
   unsigned char cityBorderMask;
   unsigned char waterAdjacencyMask;
@@ -75,7 +75,7 @@ struct TTerrainStateRecord {
   short tileActionOrdinal;
   unsigned short activeFlags1c;
   unsigned char pad1e[0x20 - 0x1e];
-  TCivUnit* firstCivilianOrder20; // queue head for this tile
+  TCivUnit* firstCivilianOrder; // queue head for this tile
 };
 ASSERT_SIZE(TTerrainStateRecord, 0x24);
 
@@ -89,9 +89,9 @@ struct Province {
   signed char formerOwnerNationCode;
   signed char developmentStage;
   signed char fortLevel03;
-  StrategicTileIndex cityTileIndex04; // -1 when unanchored
+  StrategicTileIndex cityTileIndex; // -1 when unanchored
   short lastTurnTick;
-  signed char adjacentRegionCount08;
+  signed char adjacentRegionCount;
   unsigned char pad09;
   ProvinceIndexStorage adjacentRegionIds[0xc]; // -1-terminated, up to 12
   // Parallel representative tiles for each adjacent province.

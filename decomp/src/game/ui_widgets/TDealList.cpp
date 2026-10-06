@@ -22,7 +22,7 @@ void TDealList::IDealList() {
 short TDealList::Compare(void* a, void* b) {
   TradeDealEntry* recA = static_cast<TradeDealEntry*>(a);
   TradeDealEntry* recB = static_cast<TradeDealEntry*>(b);
-  short kind = recA->category0c;
+  short kind = recA->category;
   bool invertScore;
   if (kind < 0xd || 0x10 < kind) {
     invertScore = false;
@@ -41,11 +41,11 @@ short TDealList::Compare(void* a, void* b) {
     scoreB = -(recB->dispatchScore * recB->relationStanding);
   }
   if (scoreA == scoreB) {
-    scoreA = (recA->relationDelta04 * recA->sourceNationSlot + valueA +
+    scoreA = (recA->relationDelta * recA->sourceNationSlot + valueA +
               recA->targetNationSlot * priorityA + kind) %
              7;
-    scoreB = (recB->category0c + recB->relationDelta04 * recB->sourceNationSlot +
-              recB->dispatchScore + recB->targetNationSlot * recB->relationStanding) %
+    scoreB = (recB->category + recB->relationDelta * recB->sourceNationSlot + recB->dispatchScore +
+              recB->targetNationSlot * recB->relationStanding) %
              7;
   }
   return static_cast<short>(scoreA <= scoreB ? -1 : 1);

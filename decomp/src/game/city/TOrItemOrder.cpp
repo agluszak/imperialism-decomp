@@ -48,7 +48,7 @@ bool TOrItemOrder::SetQuantity(short quantity) {
   if (!TProductionOrder::SetQuantity(quantity)) {
     return false;
   }
-  requestedQuantity4c = quantity;
+  requestedQuantity = quantity;
 
   short primaryAvailable;
   short secondaryAvailable;

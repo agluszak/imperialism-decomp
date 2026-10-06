@@ -2469,7 +2469,7 @@ int g_anNavyTacticalMoveCostsByDirection[6] = {15, 10, 20, 40, 20, 10};
 int g_anTacticalNavyUnitTypeByShipType_00669D80[14] = {-1, -1, -1, 0,  1, -1, -1,
                                                        2,  3,  4,  -1, 5, 6,  7};
 
-// Attack-power terrain modifier [category * 5 + tile terrainType0] (.rdata floats).
+// Attack-power terrain modifier [category * 5 + tile terrainType] (.rdata floats).
 // GLOBAL: IMPERIALISM 0x00669ac8
 float g_afTacticalAttackTerrainModifierByCategory[50] = {
     1.0f,  0.75f, 0.75f, 1.0f,  0.0f,  1.0f,  1.0f,  1.0f,  1.0f,  0.0f, 1.0f,  0.75f, 0.75f,
@@ -2477,7 +2477,7 @@ float g_afTacticalAttackTerrainModifierByCategory[50] = {
     0.75f, 0.75f, 1.0f,  0.0f,  1.0f,  0.75f, 0.75f, 1.0f,  0.0f,  1.0f, 0.75f, 0.75f, 1.0f,
     0.0f,  1.0f,  0.75f, 0.75f, 1.0f,  0.0f,  1.0f,  0.75f, 0.75f, 1.0f, 0.0f};
 
-// Incoming-damage terrain modifier [defender category * 5 + terrainType0] (.rdata).
+// Incoming-damage terrain modifier [defender category * 5 + terrainType] (.rdata).
 // GLOBAL: IMPERIALISM 0x00669b90
 float g_afTacticalDefenseTerrainModifierByCategory[50] = {
     1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.8f, 0.8f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,

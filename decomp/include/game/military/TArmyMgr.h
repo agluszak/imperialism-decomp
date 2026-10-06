@@ -18,7 +18,7 @@ struct MapContextActionRecord {
   unsigned char reportParticipantIndex;     // +0x02
   unsigned char displayedParticipantIndex;  // +0x03, serialized
   MapContextReportKindStorage reportKind04; // +0x04
-  void* location08;                         // +0x08
+  void* location;                           // +0x08
   // LAYOUT: +0x0c..+0x257 match the per-side tail of MapOrderBattleSnapshot.
   CStr32 nameBuffer[2];    // +0x0c/+0x2c
   CStr255 overlayLabel[2]; // +0x4c/+0x14b

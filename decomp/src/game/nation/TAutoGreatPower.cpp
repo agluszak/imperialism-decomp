@@ -1508,7 +1508,7 @@ void TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
     return;
   }
 
-  CIterator unitIter(militaryUnitList44);
+  CIterator unitIter(militaryUnitList);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
     if (unit->ownerMission == nullptr &&
@@ -1533,7 +1533,7 @@ void TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
 
 // FUNCTION: IMPERIALISM 0x004eafa0
 void TAutoGreatPower::AssignMilitiaToDefendMissions() {
-  CIterator iter(militaryUnitList44);
+  CIterator iter(militaryUnitList);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(iter.Reset()); iter.More();
        unit = static_cast<TMilitaryUnit*>(iter.Advance())) {
     if (unit->ownerMission == nullptr &&
@@ -1595,7 +1595,7 @@ void TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools(int unused) {
   int resourcePools[9] = {0};
   TMilitaryUnit* bestUnitByType[30] = {0};
 
-  CIterator unitIter(militaryUnitList44);
+  CIterator unitIter(militaryUnitList);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
     if (unit->CanUpgrade()) {
@@ -1916,7 +1916,7 @@ void TAutoGreatPower::AssignUnitsToMissions(int unused) {
     TMilitaryUnit* bestUnit = nullptr;
     float bestUnitScore = 0.0f;
     {
-      CIterator unitIter(militaryUnitList44);
+      CIterator unitIter(militaryUnitList);
       for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
            unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
         if (unit->ownerMission == nullptr) {

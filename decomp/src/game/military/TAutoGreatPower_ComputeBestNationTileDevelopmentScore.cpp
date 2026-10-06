@@ -45,10 +45,10 @@ int ComputeBestNationTileDevelopmentScore(NationSlot nationSlot) {
       }
 
       float cityScore = static_cast<float>(region->cityScoreValue);
-      if (region->adjacentRegionCount08 > 0) {
+      if (region->adjacentRegionCount > 0) {
         int sameOwnerAdjacentRegionCount = 0;
         int adjacentOrdinal = 0;
-        while (adjacentOrdinal < region->adjacentRegionCount08) {
+        while (adjacentOrdinal < region->adjacentRegionCount) {
           if (g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(
                   region->adjacentRegionIds[adjacentOrdinal]) == nationSlot) {
             ++sameOwnerAdjacentRegionCount;
@@ -57,7 +57,7 @@ int ComputeBestNationTileDevelopmentScore(NationSlot nationSlot) {
         }
 
         cityScore *= static_cast<float>(sameOwnerAdjacentRegionCount) /
-                         static_cast<float>(region->adjacentRegionCount08) -
+                         static_cast<float>(region->adjacentRegionCount) -
                      static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9E0);
       }
 

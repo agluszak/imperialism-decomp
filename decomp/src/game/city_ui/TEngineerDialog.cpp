@@ -182,7 +182,7 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
             fortAccum[4 + rt] + mapState->FindResourceCapabilityRequirementLevel(tile, edge));
       }
       Province* p = &mapState->cityScoreTable[t->cityRecordIndex];
-      if (p->cityTileIndex04 == tile) {
+      if (p->cityTileIndex == tile) {
         for (int j = 0; j < 10; j++) {
           fortAccum[7 + j] = static_cast<short>(fortAccum[7 + j] + p->resourceDevelopmentCounts[j]);
         }
@@ -217,7 +217,7 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
   short homeProvIndex = mapState->terrainStateTable[nBuildingSlotId].cityRecordIndex;
   Province* homeProv = &mapState->cityScoreTable[homeProvIndex];
   short fortCap = g_pTechMgr->GetNationFortLevelCap(g_pSimMgr->GetPlayerCountry());
-  if (homeProv->fortLevel03 < fortCap && homeProv->cityTileIndex04 == nBuildingSlotId) {
+  if (homeProv->fortLevel03 < fortCap && homeProv->cityTileIndex == nBuildingSlotId) {
     TUpDownPictureButton* fortBtn = new TUpDownPictureButton();
     int fortOff[2] = {0x11, 0x29};
     fortBtn->IPicture(this, fortOff, optionButtonSize, 5, 5, 0x1c2a);

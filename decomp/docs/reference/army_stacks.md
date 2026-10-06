@@ -4,7 +4,7 @@
 separately allocated eight-byte node contains a non-owning `TMilitaryUnit*`
 and the next node pointer. Insertion (`0x004a7b20`) allocates eight bytes;
 removal (`0x004a7ba0`) and `Free` (`0x004a7c20`) delete nodes without deleting
-units. The signed word at `+0x0a` is `unitCountA`: insertion increments it,
+units. The signed word at `+0x0a` is `unitCount`: insertion increments it,
 removal decrements it, and `WriteTo` serializes it as two bytes.
 
 The Mac oracle has `TArmyStack::AddUnit(TMilitaryUnit*)`, `AddUnit(short)`, and
@@ -25,7 +25,7 @@ same as `AddUnitToChainHead`.
 
 `ReadFrom` (`0x004a77b0`) reads a signed word count, then that many roster IDs
 with an integer loop counter. It resolves each ID and prepends each match.
-It does not clear existing nodes or overwrite `unitCountA` with the stream
+It does not clear existing nodes or overwrite `unitCount` with the stream
 count; missing IDs and pre-existing nodes therefore retain the retail behavior.
 Construction (`0x004a76f0`) initializes only the head and cursor; `IArmyStack`
 (`0x004a7770`) initializes the count and stack identity fields.
@@ -39,7 +39,7 @@ Both stream methods finish by clearing the stack's shared cursor.
 ## Shared traversal and existing operations
 
 The cursor helpers at `0x004a3b70` and `0x004a3b90` reset and advance
-`cursor18`; advancement reads the current cursor after the preceding unit
+`cursor`; advancement reads the current cursor after the preceding unit
 operation. Callers use those helpers instead of caching a private next node.
 A null payload stops traversal just as in retail. `UnitsFighting`
 (`0x004a8330`) leaves the cursor on its first eligible unit, or exhausts it.

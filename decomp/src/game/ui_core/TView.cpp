@@ -28,7 +28,7 @@ extern "C" CRuntimeClass PTR_s_TView_006495a0;
 
 // FUNCTION: IMPERIALISM 0x00427200
 unsigned short TView::GetCursorID() {
-  return cursorId4e;
+  return cursorId;
 }
 // FUNCTION: IMPERIALISM 0x00427220
 void TView::PostRender() {}
@@ -138,7 +138,7 @@ IMPLEMENT_DYNCREATE(TView, TEventHandler)
 // FUNCTION: IMPERIALISM 0x0048a8e0
 TView::TView()
     : TEventHandler(), ownerContext(0), absoluteX(0), absoluteY(0), controlValue(0), childList(0),
-      stylePayload(0), inputGateFlag(1), childHitTestFlag(1), cursorId4e(0xffff), nativeWindow50(0),
+      stylePayload(0), inputGateFlag(1), childHitTestFlag(1), cursorId(0xffff), nativeWindow50(0),
       helpState(1), hoverHelpText(), hoverHelpEnabled(0) {}
 
 // FUNCTION: IMPERIALISM 0x0048a9d0

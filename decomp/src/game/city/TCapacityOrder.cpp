@@ -64,7 +64,7 @@ void TCapacityOrder::Produce() {
     city->productionOrderTable1dc[slotIndex] = newValue;
   }
 
-  this->requestedQuantity4c = 0;
+  this->requestedQuantity = 0;
   this->quantity = 0;
   this->trackingSlots[this->primaryInputResourceId] = 0;
   this->trackingSlots[this->secondaryInputResourceId] = 0;
