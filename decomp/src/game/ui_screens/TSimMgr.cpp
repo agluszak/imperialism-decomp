@@ -58,16 +58,11 @@
 #include "game/military/mapped_flavor_text.h"
 
 // LAYOUT: The turn and active-nation fields are words; the following counters are dwords.
-#define TSIMMGR_LAYOUT_ASSERT(name, expr) typedef char name[(expr) ? 1 : -1]
-TSIMMGR_LAYOUT_ASSERT(TSimMgr_Offset_economicTurn_0x2C, offsetof(TSimMgr, economicTurn) == 0x2C);
-TSIMMGR_LAYOUT_ASSERT(TSimMgr_Offset_activeNationSlot_0x2E,
-                      offsetof(TSimMgr, activeNationSlot) == 0x2E);
-TSIMMGR_LAYOUT_ASSERT(TSimMgr_Offset_numGreatPowers_0x30,
-                      offsetof(TSimMgr, numGreatPowers) == 0x30);
-TSIMMGR_LAYOUT_ASSERT(TSimMgr_Offset_numMinorCountries_0x34,
-                      offsetof(TSimMgr, numMinorCountries) == 0x34);
-TSIMMGR_LAYOUT_ASSERT(TSimMgr_Offset_turnFlowStatusFlags_0x3C,
-                      offsetof(TSimMgr, turnFlowStatusFlags) == 0x3C);
+ASSERT_OFFSET(TSimMgr, economicTurn, 0x2c);
+ASSERT_OFFSET(TSimMgr, activeNationSlot, 0x2e);
+ASSERT_OFFSET(TSimMgr, numGreatPowers, 0x30);
+ASSERT_OFFSET(TSimMgr, numMinorCountries, 0x34);
+ASSERT_OFFSET(TSimMgr, turnFlowStatusFlags, 0x3c);
 
 void RegenerateAllMapActionContextStatusCodes();
 

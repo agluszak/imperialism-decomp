@@ -8,20 +8,13 @@
 
 namespace {
 
-#define TG_LAYOUT_ASSERT(name, expr) typedef char name[(expr) ? 1 : -1]
-
-TG_LAYOUT_ASSERT(TModalDialogBase_Size_0x74, sizeof(TModalDialogBase) == 0x74);
-TG_LAYOUT_ASSERT(TAutoResolutionDialog_Offset_primaryDialogControl_0x74,
-                 offsetof(TAutoResolutionDialog, primaryDialogControl) == 0x74);
-TG_LAYOUT_ASSERT(TAutoResolutionDialog_Offset_secondaryDialogControl_0xb0,
-                 offsetof(TAutoResolutionDialog, secondaryDialogControl) == 0xb0);
-TG_LAYOUT_ASSERT(TAutoResolutionDialog_Offset_autoResolutionCheckState_0xec,
-                 offsetof(TAutoResolutionDialog, autoResolutionCheckState) == 0xec);
-TG_LAYOUT_ASSERT(TAutoResolutionDialog_Size_0xf0, sizeof(TAutoResolutionDialog) == 0xf0);
-TG_LAYOUT_ASSERT(CDialog_EmbedSize_0x5c, sizeof(CDialog) == 0x5c);
-TG_LAYOUT_ASSERT(CWnd_EmbedSize_0x3c, sizeof(CWnd) == 0x3c);
-
-#undef TG_LAYOUT_ASSERT
+ASSERT_SIZE(TModalDialogBase, 0x74);
+ASSERT_OFFSET(TAutoResolutionDialog, primaryDialogControl, 0x74);
+ASSERT_OFFSET(TAutoResolutionDialog, secondaryDialogControl, 0xb0);
+ASSERT_OFFSET(TAutoResolutionDialog, autoResolutionCheckState, 0xec);
+ASSERT_SIZE(TAutoResolutionDialog, 0xf0);
+ASSERT_SIZE(CDialog, 0x5c);
+ASSERT_SIZE(CWnd, 0x3c);
 
 } // namespace
 
@@ -32,7 +25,6 @@ TAutoResolutionDialog::~TAutoResolutionDialog() {}
 TAutoResolutionDialog::TAutoResolutionDialog(void* initParam)
     : TModalDialogBase(0xfb, static_cast<CWnd*>(initParam)), primaryDialogControl(),
       secondaryDialogControl(), autoResolutionCheckState(0) {}
-
 
 // FUNCTION: IMPERIALISM 0x0047e0c0
 void TAutoResolutionDialog::DoDataExchange(CDataExchange* pDX) {

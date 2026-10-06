@@ -128,25 +128,15 @@ struct TrackedSlotEntryPacket {
   int payload;
 };
 
-#define TG_LAYOUT_ASSERT(name, expr) typedef char name[(expr) ? 1 : -1]
-TG_LAYOUT_ASSERT(TGreatPower_Offset_nationSlot_0x0C, offsetof(TGreatPower, nationSlot) == 0x0C);
-TG_LAYOUT_ASSERT(TGreatPower_Offset_homeTileIndex_0x88,
-                 offsetof(TGreatPower, homeTileIndex) == 0x88);
-TG_LAYOUT_ASSERT(TGreatPower_Offset_ownedRegionList_0x90,
-                 offsetof(TGreatPower, ownedRegionList) == 0x90);
-TG_LAYOUT_ASSERT(TGreatPower_Offset_diplomacyPolicyByNation_0xB2,
-                 offsetof(TGreatPower, diplomacyPolicyByNation) == 0xB2);
-TG_LAYOUT_ASSERT(TGreatPower_Offset_aidAllocationMatrix_0x280,
-                 offsetof(TGreatPower, aidAllocationMatrix) == 0x280);
-TG_LAYOUT_ASSERT(TGreatPower_Offset_city_0x894, offsetof(TGreatPower, city) == 0x894);
-TG_LAYOUT_ASSERT(TGreatPower_Offset_gameScoreRows930_0x930,
-                 offsetof(TGreatPower, gameScoreRows) == 0x930);
-TG_LAYOUT_ASSERT(TGreatPower_Offset_gameScoreTotal_0x95c,
-                 offsetof(TGreatPower, gameScoreRows) +
-                         TGreatPower::kGameScoreTotal * sizeof(int) ==
-                     0x95c);
-TG_LAYOUT_ASSERT(TGreatPower_Size_Exactly_0x964, sizeof(TGreatPower) == 0x964);
-#undef TG_LAYOUT_ASSERT
+ASSERT_OFFSET(TGreatPower, nationSlot, 0x0c);
+ASSERT_OFFSET(TGreatPower, homeTileIndex, 0x88);
+ASSERT_OFFSET(TGreatPower, ownedRegionList, 0x90);
+ASSERT_OFFSET(TGreatPower, diplomacyPolicyByNation, 0xb2);
+ASSERT_OFFSET(TGreatPower, aidAllocationMatrix, 0x280);
+ASSERT_OFFSET(TGreatPower, city, 0x894);
+ASSERT_OFFSET(TGreatPower, gameScoreRows, 0x930);
+ASSERT_OFFSET(TGreatPower, gameScoreRows[TGreatPower::kGameScoreTotal], 0x95c);
+ASSERT_SIZE(TGreatPower, 0x964);
 
 // FUNCTION: IMPERIALISM 0x004db7d0
 void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
