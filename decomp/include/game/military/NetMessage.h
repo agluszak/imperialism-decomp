@@ -36,20 +36,20 @@ struct TimelyNetMessagePrefix : TimelyMessageHeader {
 
 // Event-0xF per-nation turn-resume acknowledgement.
 struct TurnEventFResumeAckPacket : TimelyNetMessagePrefix {
-  NationSlot nationSlot1C;
+  NationSlot nationSlot;
   unsigned char pad1e[2];
 };
 
 // Event-0x14 treasury delta for one nation.
 struct TurnEvent14NationMetricPacket : TimelyMessageHeader {
-  NationSlot nationSlot18;
+  NationSlot nationSlot;
   unsigned char pad1a[2];
   int amount;
 };
 
 // Event-0x16 diplomacy proposal for one nation.
 struct TurnEvent16DiplomacyProposalPacket : TimelyMessageHeader {
-  NationSlot nationSlot18;
+  NationSlot nationSlot;
   NationSlot sourceNationSlot;
   DiplomacyProposalCodeStorage proposalCode;
   unsigned char pad1e[2];
@@ -57,7 +57,7 @@ struct TurnEvent16DiplomacyProposalPacket : TimelyMessageHeader {
 
 // Event-0x17 proposal resolution (accept/decline).
 struct TurnEvent17ProposalResolutionPacket : TimelyMessageHeader {
-  NationSlot nationSlot18;
+  NationSlot nationSlot;
   bool acceptedFlag;
   unsigned char pad1b;
   short proposalIndex;

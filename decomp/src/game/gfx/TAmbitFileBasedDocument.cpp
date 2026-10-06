@@ -135,7 +135,7 @@ void TAmbitFileBasedDocument::DoWrite(ArchiveStreamAdapter* file, unsigned char 
   }
   char* nextTileOwnerTag = tileOwnerTags;
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
-    *nextTileOwnerTag++ = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
+    *nextTileOwnerTag++ = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag;
   }
   stream->WriteBytes(tileOwnerTags, 0x1950);
   delete[] tileOwnerTags;

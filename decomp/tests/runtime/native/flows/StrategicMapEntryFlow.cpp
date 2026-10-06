@@ -38,7 +38,7 @@ short FindCapitalSite(short nationSlot) {
     bool supportsCity =
         terrainKind == kStrategicTerrainPlains || terrainKind == kStrategicTerrainFarmland ||
         terrainKind == kStrategicTerrainForest || terrainKind == kStrategicTerrainDesert;
-    if (supportsCity && tile.ownerNationTag04 == nationSlot && tile.recruitSearchVisited == 0) {
+    if (supportsCity && tile.ownerNationTag == nationSlot && tile.recruitSearchVisited == 0) {
       return tileIndex;
     }
   }

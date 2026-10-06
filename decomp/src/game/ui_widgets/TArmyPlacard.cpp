@@ -17,9 +17,8 @@ IMPLEMENT_DYNCREATE(TArmyPlacard, TPicture)
 
 // FUNCTION: IMPERIALISM 0x0058bed0
 TArmyPlacard::TArmyPlacard() : TPicture() {
-  this->glyph90 = -1;
+  this->glyph = -1;
 }
-
 
 // FUNCTION: IMPERIALISM 0x0058bf30
 TArmyPlacard::~TArmyPlacard() {}
@@ -30,7 +29,7 @@ void TArmyPlacard::SetValue(short value, bool refreshNow) {
   short capValue = g_pTechMgr->nationCapRows1e8[activeNationId]
                        .slots[this->controlTag - kControlTagArmyPlacardFirst];
   short pictureId = capValue + 0x4c4;
-  if (value != this->glyph90) {
+  if (value != this->glyph) {
     if (value <= 0) {
       pictureId += 0x1e;
     }
@@ -39,7 +38,7 @@ void TArmyPlacard::SetValue(short value, bool refreshNow) {
       this->RefreshControl();
     }
   }
-  this->glyph90 = value;
+  this->glyph = value;
 }
 
 // FUNCTION: IMPERIALISM 0x0058bfe0
@@ -48,9 +47,9 @@ void TArmyPlacard::Draw(RECT* rectBuffer) {
 
   TPicture::Draw(rectBuffer);
 
-  if (this->glyph90 != 0) {
+  if (this->glyph != 0) {
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b67);
-    countText.Format(g_szDecimalFormat, static_cast<int>(this->glyph90));
+    countText.Format(g_szDecimalFormat, static_cast<int>(this->glyph));
 
     short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&countText);
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(frameWidth - textWidth),

@@ -39,7 +39,7 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   short count = 0;
 
   // Build the item-id list from the selected tile's record.
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags1c & 1) {
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags & 1) {
     menuItemIds[count++] = 0x11;
   }
   menuItemIds[count++] =
@@ -60,10 +60,10 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
           g_pGlobalMapState->terrainStateTable[nTileIndex].ownerBorderMask) {
     menuItemIds[count++] = 0x12;
   }
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags1c & 0x14) {
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags & 0x14) {
     menuItemIds[count++] = 0x14;
   }
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags1c & 0x20) {
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags & 0x20) {
     menuItemIds[count++] = 0x1d;
   }
 

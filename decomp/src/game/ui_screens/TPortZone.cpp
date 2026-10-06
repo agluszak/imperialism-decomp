@@ -101,12 +101,12 @@ void TPortZone::Free() {
 
 // FUNCTION: IMPERIALISM 0x00561b10
 bool TPortZone::QueryZoneCapabilityFlagD(NationSlot nationSlot) {
-  return g_pGlobalMapState->terrainStateTable[portTileIndex].ownerNationTag04 == nationSlot;
+  return g_pGlobalMapState->terrainStateTable[portTileIndex].ownerNationTag == nationSlot;
 }
 
 // FUNCTION: IMPERIALISM 0x00561b50
 bool TPortZone::QueryZoneCapabilityFlagE(NationSlot nationSlot) {
-  short ownerNation = g_pGlobalMapState->terrainStateTable[portTileIndex].ownerNationTag04;
+  short ownerNation = g_pGlobalMapState->terrainStateTable[portTileIndex].ownerNationTag;
   return g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(ownerNation,
                                                                               nationSlot);
 }
@@ -144,7 +144,7 @@ TPortZone* TPortZone::FindPreviousPortZone() {
 bool TPortZone::CanBeTargetOf(TTaskForce* force) {
   bool zoneActive = distanceLevel > 0;
   if (zoneActive && force->location != this) {
-    short ownerNation = g_pGlobalMapState->terrainStateTable[portTileIndex].ownerNationTag04;
+    short ownerNation = g_pGlobalMapState->terrainStateTable[portTileIndex].ownerNationTag;
     if (force->nation == ownerNation ||
         g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(ownerNation,
                                                                              force->nation)) {
@@ -184,7 +184,7 @@ short TPortZone::FindNearestActiveSeaContextTileFromOffset216() {
           candidateContext = candidateContext->GetNextPortZone();
         }
       } else {
-        short nationCode = static_cast<short>(candidateRecord.ownerNationTag04);
+        short nationCode = static_cast<short>(candidateRecord.ownerNationTag);
         if (nationCode >= 0x17) {
           candidateContext = &g_pActiveMapOrderContext->contextArray[nationCode - 0x17];
         }

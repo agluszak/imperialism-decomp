@@ -143,7 +143,7 @@ void TMapPreviewView::TakeSatellitePhoto(char* tileOwnerTagTable) {
       for (int j = 0; j < 7; ++j) {
         hexTags[j] = (hexTags[j] == -1)
                          ? -1
-                         : g_pGlobalMapState->terrainStateTable[hexTags[j]].ownerNationTag04;
+                         : g_pGlobalMapState->terrainStateTable[hexTags[j]].ownerNationTag;
       }
     }
     for (int k = 0; k < 7; ++k) {

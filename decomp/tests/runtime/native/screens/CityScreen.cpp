@@ -52,7 +52,7 @@ bool CityScreen::SicknessPlacardsAreCleared() const {
   TPlacard* dead = PlacardAt(Root(), kControlTagDead);
   // Both have to exist -- an absent placard is a different defect from a cleared one -- and both
   // have to be drawing nothing and taking no input.
-  return sick != 0 && dead != 0 && sick->glyph90 == 0 && sick->enabled == 0 && dead->glyph90 == 0 &&
+  return sick != 0 && dead != 0 && sick->glyph == 0 && sick->enabled == 0 && dead->glyph == 0 &&
          dead->enabled == 0;
 }
 

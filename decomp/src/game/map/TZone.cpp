@@ -254,7 +254,7 @@ int TZone::ComputeMapActionContextNodeValueAverage() {
     AssertValid();
     int ownerTag =
         g_pGlobalMapState->terrainStateTable[static_cast<TPortZone*>(this)->portTileIndex]
-            .ownerNationTag04;
+            .ownerNationTag;
     if (g_pSimMgr->ReallyInTheGame(ownerTag)) {
       return g_pGlobalMapState
           ->cityScoreTable[g_apTerrainTypeDescriptorTable[ownerTag]->GetCapitolProvince()]
@@ -561,7 +561,7 @@ short TZone::FindNearestActiveSeaContextTileFromOffset216() {
   for (;;) {
     TTerrainStateRecord& tileRecord = g_pGlobalMapState->terrainStateTable[tileIndex];
     if (tileRecord.tileActionState16 == kMapTileActionStateNone) {
-      short nationId = static_cast<short>(tileRecord.ownerNationTag04);
+      short nationId = static_cast<short>(tileRecord.ownerNationTag);
       TZone* contextZone = 0;
       if (nationId >= 0x17 && g_pActiveMapOrderContext != 0) {
         contextZone = &g_pActiveMapOrderContext->contextArray[nationId - 0x17];
@@ -584,7 +584,7 @@ short TZone::GetActiveNationSlotTile() {
   for (;;) {
     TTerrainStateRecord& tileRecord = g_pGlobalMapState->terrainStateTable[tileIndex];
     if (tileRecord.tileActionState16 == kMapTileActionStateNone) {
-      short nationId = static_cast<short>(tileRecord.ownerNationTag04);
+      short nationId = static_cast<short>(tileRecord.ownerNationTag);
       TZone* contextZone = 0;
       if (nationId >= 0x17 && g_pActiveMapOrderContext != 0) {
         contextZone = &g_pActiveMapOrderContext->contextArray[nationId - 0x17];
@@ -667,7 +667,7 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(Province* cont
           tileActionState == kMapTileActionStateDockedFleet) {
         zoneForTile = TZone::FindPortZoneByTile(tileCandidate);
       } else {
-        short nationCode = tileRecord.ownerNationTag04;
+        short nationCode = tileRecord.ownerNationTag;
         if (nationCode < kFirstMapRegionNationTag) {
           zoneForTile = 0;
         } else {
@@ -1108,7 +1108,7 @@ unsigned int TZone::HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(int 
 // FUNCTION: IMPERIALISM 0x005619e0
 void TZone::ResolvePortZoneOwnerContextAndDispatch() {
   short tileIndex = FindNearestActiveSeaContextTileFromOffset216();
-  short ownerNation = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
+  short ownerNation = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag;
   TZone* contextElement = &g_pActiveMapOrderContext->contextArray[ownerNation - 0x17];
   primaryNeighbors.Add(contextElement);
   contextElement->primaryNeighbors.Add(this);
@@ -1117,7 +1117,7 @@ void TZone::ResolvePortZoneOwnerContextAndDispatch() {
 // FUNCTION: IMPERIALISM 0x00561b90
 short TZone::GetPortZoneOwnerNationCodeFromMissionField48() {
   short tileIndex = static_cast<TPortZone*>(this)->portTileIndex;
-  return g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
+  return g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag;
 }
 
 // FUNCTION: IMPERIALISM 0x00561bf0
@@ -1230,7 +1230,7 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
         context = context->GetNextPortZone();
       }
     } else {
-      short region = tile.ownerNationTag04;
+      short region = tile.ownerNationTag;
       if (region >= 0x17) {
         context = &g_pActiveMapOrderContext->contextArray[region - 0x17];
       } else {
@@ -1288,8 +1288,8 @@ void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
     if (tileRecord.tileActionState16 == kMapTileActionStateAnchor ||
         tileRecord.tileActionState16 == kMapTileActionStateDockedFleet) {
       zone = TZone::FindPortZoneByTile(static_cast<short>(tileIndex));
-    } else if (tileRecord.ownerNationTag04 >= 0x17) {
-      zone = &g_pActiveMapOrderContext->contextArray[tileRecord.ownerNationTag04 - 0x17];
+    } else if (tileRecord.ownerNationTag >= 0x17) {
+      zone = &g_pActiveMapOrderContext->contextArray[tileRecord.ownerNationTag - 0x17];
     } else {
       zone = 0;
     }
@@ -1297,7 +1297,7 @@ void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
     if (zone != 0 && zone->QueryPortZoneCapability()) {
       if (zone->primaryNeighbors.Count() == 0) {
         short tileIdx = static_cast<short>(zone->tileOrTerrainId);
-        short ownerNation = g_pGlobalMapState->terrainStateTable[tileIdx].ownerNationTag04;
+        short ownerNation = g_pGlobalMapState->terrainStateTable[tileIdx].ownerNationTag;
         TZone* contextElement = &g_pActiveMapOrderContext->contextArray[ownerNation - 0x17];
         zone->primaryNeighbors.Add(contextElement);
         contextElement->primaryNeighbors.Add(zone);
@@ -1332,9 +1332,9 @@ void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
             }
             candidateContext = candidateContext->GetNextPortZone();
           }
-        } else if (neighborRecord.ownerNationTag04 >= 0x17) {
+        } else if (neighborRecord.ownerNationTag >= 0x17) {
           candidateContext =
-              &g_pActiveMapOrderContext->contextArray[neighborRecord.ownerNationTag04 - 0x17];
+              &g_pActiveMapOrderContext->contextArray[neighborRecord.ownerNationTag - 0x17];
         } else {
           candidateContext = 0;
         }

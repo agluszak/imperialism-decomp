@@ -18,7 +18,7 @@ IMPLEMENT_DYNCREATE(TBattleUnitsView, TMilitaryPageView)
 
 // FUNCTION: IMPERIALISM 0x004b06f0
 void TBattleUnitsView::StuffValues(BattleRecord& battleRecord, int participantIndex) {
-  switch (battleRecord.reportKind04) {
+  switch (battleRecord.reportKind) {
   case kMapContextReportLandBattle:
   case kMapContextReportPreemptedLandBattle:
   case kMapContextReportUncontestedTakeover:

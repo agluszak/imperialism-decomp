@@ -49,7 +49,7 @@ void TCitySiteView::DoPostCreate(int arg) {
 
   short activeNationId = g_pSimMgr->GetPlayerCountry();
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
-    if (activeNationId != g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04) {
+    if (activeNationId != g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag) {
       continue;
     }
     short tileRow;
@@ -131,7 +131,7 @@ void TCitySiteView::FrameCursorArea() {
     for (int i = 0; i < 6; ++i) {
       short neighbor = neighborTiles[i];
       if (neighbor != -1 &&
-          g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag04 != activeNation &&
+          g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag != activeNation &&
           g_pGlobalMapState->terrainStateTable[neighbor].GetTerrainKind() !=
               kStrategicTerrainWater) {
         neighborTiles[i] = -1;
@@ -196,7 +196,7 @@ void TCitySiteView::NormalClick(short nTileIndex, int nInputFlags) {
 
   TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[nTileIndex];
   StrategicTerrainKind terrainKind = tile.GetTerrainKind();
-  signed char ownerNation = tile.ownerNationTag04;
+  signed char ownerNation = tile.ownerNationTag;
   short activeNation = g_pSimMgr->GetPlayerCountry();
 
   if (ownerNation != activeNation) {

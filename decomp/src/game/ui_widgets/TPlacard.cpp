@@ -11,9 +11,8 @@ IMPLEMENT_DYNCREATE(TPlacard, TPicture)
 
 // FUNCTION: IMPERIALISM 0x0058ba10
 TPlacard::TPlacard() : TPicture() {
-  this->glyph90 = 0;
+  this->glyph = 0;
 }
-
 
 // FUNCTION: IMPERIALISM 0x0058ba90
 TPlacard::~TPlacard() {}
@@ -21,7 +20,7 @@ TPlacard::~TPlacard() {}
 // FUNCTION: IMPERIALISM 0x0058bab0
 void TPlacard::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
-  if (glyph90 == 0) {
+  if (glyph == 0) {
     Show(0, 1);
     return;
   }
@@ -30,13 +29,13 @@ void TPlacard::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x0058bb50
 bool TPlacard::SetValue(short value, bool refreshNow) {
-  if (value != glyph90) {
+  if (value != glyph) {
     if (value == 0) {
       Show(0, refreshNow);
-    } else if (glyph90 == 0) {
+    } else if (glyph == 0) {
       Show(1, refreshNow);
     }
-    glyph90 = value;
+    glyph = value;
     if (refreshNow) {
       RECT rect;
       rect.top = frameHeight - 0xc;
@@ -48,7 +47,7 @@ bool TPlacard::SetValue(short value, bool refreshNow) {
       InvalidateCityDialogRectRegion(&invalidRect, 1);
     }
   }
-  return glyph90 != 0;
+  return glyph != 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0058bc60
@@ -59,12 +58,12 @@ void TPlacard::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b6c);
 
-  valueText.Format(g_szDecimalFormat, glyph90);
+  valueText.Format(g_szDecimalFormat, glyph);
 
   short textX;
-  if (glyph90 < 10) {
+  if (glyph < 10) {
     textX = static_cast<short>(frameWidth / 2 - 2);
-  } else if (glyph90 < 100) {
+  } else if (glyph < 100) {
     textX = static_cast<short>(frameWidth / 2 - 6);
   } else {
     textX = static_cast<short>(frameWidth / 2 - 10);

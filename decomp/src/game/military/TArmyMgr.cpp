@@ -52,12 +52,12 @@
 void MapContextActionRecord::ReadFrom(TStream* stream) {
   stream->ReadBytes(&reportParticipantIndex, 1);
   stream->ReadBytes(&displayedParticipantIndex, 1);
-  stream->ReadBytes(&reportKind04, 4);
+  stream->ReadBytes(&reportKind, 4);
   short nodeId;
   stream->ReadBytes(&nodeId, 2);
-  if (reportKind04 == kMapContextReportLandBattle ||
-      reportKind04 == kMapContextReportPreemptedLandBattle ||
-      reportKind04 == kMapContextReportUncontestedTakeover) {
+  if (reportKind == kMapContextReportLandBattle ||
+      reportKind == kMapContextReportPreemptedLandBattle ||
+      reportKind == kMapContextReportUncontestedTakeover) {
     location = reinterpret_cast<void*>(static_cast<int>(nodeId));
   } else {
     location = FindMapActionContextByNodeId(nodeId);
@@ -98,12 +98,12 @@ void MapContextActionRecord::ReadFrom(TStream* stream) {
 void MapContextActionRecord::WriteTo(TStream* stream) {
   stream->WriteBytes(&reportParticipantIndex, 1);
   stream->WriteBytes(&displayedParticipantIndex, 1);
-  stream->WriteBytes(&reportKind04, 4);
+  stream->WriteBytes(&reportKind, 4);
 
   short nodeId;
-  if (reportKind04 == kMapContextReportLandBattle ||
-      reportKind04 == kMapContextReportPreemptedLandBattle ||
-      reportKind04 == kMapContextReportUncontestedTakeover) {
+  if (reportKind == kMapContextReportLandBattle ||
+      reportKind == kMapContextReportPreemptedLandBattle ||
+      reportKind == kMapContextReportUncontestedTakeover) {
     nodeId = static_cast<short>(reinterpret_cast<int>(location));
   } else {
     nodeId = static_cast<TZone*>(location)->GetContextOrdinalOrInvalid();
@@ -537,14 +537,14 @@ static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
   record.nationIds[1] = enemyStack->categoryFlag;
   record.nationIds[0] = ourStack->categoryFlag;
   record.location = reinterpret_cast<void*>(ownerNationCodeInt);
-  record.reportKind04 = kMapContextReportLandBattle;
+  record.reportKind = kMapContextReportLandBattle;
   record.displayedParticipantIndex = 0;
 
   if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
           ourStack->categoryFlag, enemyStack->categoryFlag)) {
-    record.reportKind04 = kMapContextReportPreemptedLandBattle;
+    record.reportKind = kMapContextReportPreemptedLandBattle;
   } else if (enemyStack->ResetCursorAndGetHeadUnit() == 0) {
-    record.reportKind04 = kMapContextReportUncontestedTakeover;
+    record.reportKind = kMapContextReportUncontestedTakeover;
   }
 
   const int kUnitTypeSlotCount = 30;
@@ -1181,10 +1181,10 @@ static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode) {
       return 0;
     }
   }
-  if (((rec->activeFlags1c >> 5) & 1) == 0) {
+  if (((rec->activeFlags >> 5) & 1) == 0) {
     return 0;
   }
-  short ownerTag = rec->ownerNationTag04;
+  short ownerTag = rec->ownerNationTag;
   short activeNationId = g_pSimMgr->GetPlayerCountry();
   if (!g_pSimMgr->ReallyInTheGame(activeNationId)) {
     return 8;
@@ -1279,7 +1279,7 @@ int TArmyMgr::ComputeCivilianMapCursorStateIndex(short tileIndex, short mode) {
   }
 
   if (cityRecordIndex == this->pendingMapActionIndex) {
-    return ((rec->activeFlags1c >> 5) & 1) != 0 ? 7 : 0;
+    return ((rec->activeFlags >> 5) & 1) != 0 ? 7 : 0;
   }
 
   bool sameOwner = pendingSlot == citySlot;
@@ -1289,7 +1289,7 @@ int TArmyMgr::ComputeCivilianMapCursorStateIndex(short tileIndex, short mode) {
   }
 
   if (sameOwner) {
-    if (((rec->activeFlags1c >> 5) & 1) != 0) {
+    if (((rec->activeFlags >> 5) & 1) != 0) {
       return 2;
     }
     if (!hasMovableUnit) {
@@ -1300,7 +1300,7 @@ int TArmyMgr::ComputeCivilianMapCursorStateIndex(short tileIndex, short mode) {
                : 4;
   }
 
-  if (((rec->activeFlags1c >> 5) & 1) != 0) {
+  if (((rec->activeFlags >> 5) & 1) != 0) {
     return 8;
   }
   if (!hasMovableUnit) {

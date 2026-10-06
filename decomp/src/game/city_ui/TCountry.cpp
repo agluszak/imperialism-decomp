@@ -248,7 +248,7 @@ void TCountry::InitialMilitia(void) {
     do {
       int regionId = this->ownedRegionList->At(ordinal);
       short regionTerrainId = g_pGlobalMapState->cityScoreTable[regionId].cityTileIndex;
-      if ((g_pGlobalMapState->terrainStateTable[regionTerrainId].activeFlags1c & 1) != 0) {
+      if ((g_pGlobalMapState->terrainStateTable[regionTerrainId].activeFlags & 1) != 0) {
         TMilitaryUnit* order = new TMilitaryUnit();
         order->IMilitaryUnit(2, regionId, this->nationSlot);
         if (g_pSimMgr->difficultyLevel < kDifficultyNormal) {

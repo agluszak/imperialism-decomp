@@ -980,14 +980,14 @@ void TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords() {
       for (block = 0; block < 4; ++block) {
         int column;
         for (column = 0; column < 2; ++column) {
-          tile->ownerNationTag04 = ownerNation;
+          tile->ownerNationTag = ownerNation;
           tile->SetTerrainKind(terrainKind);
           tile->cityRecordIndex = linkedCityRecord;
           ++tile;
         }
         tile += 104;
         for (column = 0; column < 2; ++column) {
-          tile->ownerNationTag04 = ownerNation;
+          tile->ownerNationTag = ownerNation;
           tile->SetTerrainKind(terrainKind);
           tile->cityRecordIndex = linkedCityRecord;
           ++tile;
@@ -998,7 +998,7 @@ void TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords() {
       for (row = 0; row < 4; ++row) {
         int column;
         for (column = 0; column < 4; ++column) {
-          tile->ownerNationTag04 = ownerNation;
+          tile->ownerNationTag = ownerNation;
           tile->SetTerrainKind(terrainKind);
           tile->cityRecordIndex = linkedCityRecord;
           ++tile;

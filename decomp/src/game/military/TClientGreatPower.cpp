@@ -33,7 +33,7 @@ void TClientGreatPower::AcceptOffer(short proposalIndex) {
   packet.fromNetworkId = 0;
   packet.toNetworkId = -1;
   packet.messageLength = 0x20;
-  packet.nationSlot18 = this->nationSlot;
+  packet.nationSlot = this->nationSlot;
   packet.acceptedFlag = true;
   packet.proposalIndex = proposalIndex;
   g_pNetMgr006a6014->Send(&packet, false);
@@ -48,7 +48,7 @@ void TClientGreatPower::RejectOffer(short proposalQueueIndex) {
   packet.fromNetworkId = 0;
   packet.toNetworkId = -1;
   packet.messageLength = 0x20;
-  packet.nationSlot18 = this->nationSlot;
+  packet.nationSlot = this->nationSlot;
   packet.acceptedFlag = false;
   packet.proposalIndex = proposalQueueIndex;
   g_pNetMgr006a6014->Send(&packet, false);
@@ -69,7 +69,7 @@ void TClientGreatPower::ReplyToDiplomacyOffers(void) {
   packet.messageLength = 0;
   packet.messageLength = 0x20;
   packet.SetTimeEmitPacketGameFlowTurnId();
-  packet.nationSlot1C = static_cast<short>(g_pSimMgr->GetPlayerCountry());
+  packet.nationSlot = static_cast<short>(g_pSimMgr->GetPlayerCountry());
   g_pNetMgr006a6014->Send(&packet, false);
 
   g_pViewMgr->MakeDiplomacyOfferDialog(nationSlot, nationSlot, 0x29a);

@@ -501,7 +501,7 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
   short tileIndex;
   for (tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     TTerrainStateRecord* record = &g_pGlobalMapState->terrainStateTable[tileIndex];
-    if (record->ownerNationTag04 == nationSlot && (record->activeFlags1c & 1) != 0) {
+    if (record->ownerNationTag == nationSlot && (record->activeFlags & 1) != 0) {
       short maxCap =
           static_cast<char>(g_pGlobalMapState->GetMaxDevelopmentLevel(tileIndex, 0, nationSlot));
       if (static_cast<char>(g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(

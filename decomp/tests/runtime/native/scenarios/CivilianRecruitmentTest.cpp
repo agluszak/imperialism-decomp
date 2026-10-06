@@ -178,7 +178,7 @@ private:
           "the newly allocated civilian has an invalid strategic-map tile");
     }
     const signed char ownerTag =
-        g_pGlobalMapState->terrainStateTable[spawnedCivilian->tileIndex06].ownerNationTag04;
+        g_pGlobalMapState->terrainStateTable[spawnedCivilian->tileIndex06].ownerNationTag;
     if (ownerTag < 0 || ownerTag >= kTerrainTypeDescriptorTableCount ||
         g_apTerrainTypeDescriptorTable[ownerTag] == 0) {
       return RuntimeActionResult::Failure(
@@ -723,7 +723,7 @@ private:
 
   bool IsRetailFarmerWorkableTile(const TTerrainStateRecord& terrain, short nationSlot,
                                   short orderType) {
-    if (terrain.ownerNationTag04 != nationSlot && terrain.secondaryOwnerNationTag != nationSlot) {
+    if (terrain.ownerNationTag != nationSlot && terrain.secondaryOwnerNationTag != nationSlot) {
       return false;
     }
     if (g_abGateFlagQualifies[terrain.gateFlag] == 0) {
@@ -735,7 +735,7 @@ private:
       const signed char resourceType = terrain.resourceTypeByEdge[edge];
       if (resourceType == -1 || g_anResourceTypeRequiredOrderType[resourceType] != orderType ||
           (g_abResourceTypeAlwaysQualifies[resourceType] == 0 &&
-           terrain.ownerNationTag04 != nationSlot)) {
+           terrain.ownerNationTag != nationSlot)) {
         continue;
       }
       const short capability =
@@ -783,7 +783,7 @@ private:
           firstResourceType >= 0 &&
           g_anResourceTypeRequiredOrderType[firstResourceType] == farmer->orderType &&
           (g_abResourceTypeAlwaysQualifies[firstResourceType] != 0 ||
-           terrain.ownerNationTag04 == nationSlot) &&
+           terrain.ownerNationTag == nationSlot) &&
           static_cast<signed char>(terrain.developmentClassNibbles & 0xf) <
               g_pTechMgr->capabilityValueByNationAndResource[nationSlot][firstResourceType];
       if (expectedWorkable && firstResourceCanBeImproved && clickedUnit == 0 && action == 9 &&
@@ -896,7 +896,7 @@ private:
     int engineerAction = 0;
     for (short tile = 0; tile < kGlobalMapTileCount; ++tile) {
       const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tile];
-      if (terrain.ownerNationTag04 != engineer->ownerNationSlot || connectedTiles[tile] == 0) {
+      if (terrain.ownerNationTag != engineer->ownerNationSlot || connectedTiles[tile] == 0) {
         continue;
       }
       engineer->MoveTo(tile);
@@ -936,7 +936,7 @@ private:
     TGreatPower* nation = g_apNationStates[ownerNation];
     const int oldTownCount = nation->townMarkerList->GetCount();
     const int expectedTownCount =
-        oldTownCount + ((g_pGlobalMapState->terrainStateTable[depotTile].activeFlags1c & 4) == 0);
+        oldTownCount + ((g_pGlobalMapState->terrainStateTable[depotTile].activeFlags & 4) == 0);
     engineer->SetOrders(kUnitOrderBuildDepot, depotTile);
     while (engineer->remainingTurns > 0) {
       engineer->TickCivWorkOrderCountdownAndComplete();
@@ -945,7 +945,7 @@ private:
     TTown* depot = g_pGlobalMapState->FindTownMarkerForTileByOwnerNation(depotTile);
     if (engineer->unitOrder != kUnitOrderIdle || depot == 0 || depot->activeFlag == 0 ||
         depot->transportLinked == 0 || nation->townMarkerList->GetCount() != expectedTownCount ||
-        (g_pGlobalMapState->terrainStateTable[depotTile].activeFlags1c & 0x10) == 0 ||
+        (g_pGlobalMapState->terrainStateTable[depotTile].activeFlags & 0x10) == 0 ||
         engineer->completionMarker != 0x232a) {
       CString detail;
       detail.Format("connected depot mismatch: order=%d town=%d active=%d linked=%d count=%d/%d "
@@ -953,7 +953,7 @@ private:
                     engineer->unitOrder, depot != 0, depot != 0 ? depot->activeFlag : -1,
                     depot != 0 ? depot->transportLinked : -1, nation->townMarkerList->GetCount(),
                     expectedTownCount,
-                    g_pGlobalMapState->terrainStateTable[depotTile].activeFlags1c,
+                    g_pGlobalMapState->terrainStateTable[depotTile].activeFlags,
                     engineer->completionMarker);
       return RuntimeActionResult::Failure(detail);
     }

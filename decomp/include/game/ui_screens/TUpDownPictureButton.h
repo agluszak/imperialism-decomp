@@ -13,7 +13,7 @@ public:
   virtual void HiliteState(unsigned char fEnabledState,
                            bool fRefreshNow) override; // slot 0x70 0x571620
   virtual void DrawImmediate();                        // slot 0x73 0x571690
-  short glyph90;
+  short glyph;
   short timingWord92;
 
   // FUNCTION: IMPERIALISM 0x005715a0

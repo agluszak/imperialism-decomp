@@ -11,7 +11,7 @@ class TArmyPlacard : public TPicture {
 public:
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
                        TEvent* event) override; // slot 0x0f 0x0058c140
-  short glyph90;
+  short glyph;
 
   TArmyPlacard();
   virtual ~TArmyPlacard() override;

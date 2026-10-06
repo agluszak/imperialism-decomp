@@ -233,7 +233,7 @@ public:
                                                       int* nodeBuffer, bool allowFallback);
   char IsProvinceAdjacentTo(int sourceProvinceIndex, int candidateProvinceIndex);
   // ORACLE: Mac TMapMgr::HasPortInProvince(int). Returns true on the first linked tile
-  // whose terrainStateTable activeFlags1c has the port bit (0x04) set.
+  // whose terrainStateTable activeFlags has the port bit (0x04) set.
   char HasPortInProvince(int provinceIndex);
   void SetRegionDevelopmentStageByte(short regionId, unsigned char stage);
   void SetTileTransportFlags(StrategicTileIndex nTileIndex, unsigned short wTileTransportFlags);

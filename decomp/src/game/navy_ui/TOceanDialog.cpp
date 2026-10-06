@@ -102,7 +102,7 @@ CRect TOceanDialog::BoundingRect(TZone* zone) {
   int i = 0;
   do {
     if (static_cast<short>(
-            g_pGlobalMapState->terrainStateTable[static_cast<short>(i)].ownerNationTag04) ==
+            g_pGlobalMapState->terrainStateTable[static_cast<short>(i)].ownerNationTag) ==
         zone->seedNationId) {
       int row = i / 0x6c;
       int col = (row & 1) + 1 + (i % 0x6c) * 2;
@@ -156,8 +156,8 @@ void TOceanDialog::ConvertPoint(const CPoint& point, short& outColumn, short& ou
   if (mapPicture->activeUnitCategoryIndex == 0) {
     int tileIndex = ComputeStridedRecordAddress6C(outColumn, outRow);
     TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
-    if ((tile.activeFlags1c & 1) != 0) {
-      short ownerNation = static_cast<short>(tile.ownerNationTag04);
+    if ((tile.activeFlags & 1) != 0) {
+      short ownerNation = static_cast<short>(tile.ownerNationTag);
       if (ownerNation == g_pSimMgr->GetPlayerCountry() || ownerNation >= 7) {
         outRegionBand = 1;
       }
@@ -381,7 +381,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
       }
 
       unsigned char* tilePixels = topRowPixels + screenY * rowStep + screenX;
-      int ownerTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
+      int ownerTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag;
       if (ownerTag > 0x17) {
         ownerTag = 0x17;
       }
@@ -408,8 +408,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
             neighborOwners[neighborIndex] = neighborTile;
             neighborCities[neighborIndex] = -1;
           } else {
-            short neighborOwner =
-                g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
+            short neighborOwner = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag;
             if (neighborOwner > 0x17) {
               neighborOwner = 0x17;
             }
@@ -733,9 +732,9 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
       bool hasImprovementSprite =
           g_pGlobalMapState->terrainStateTable[tileIndex].tileActionState16 > -1 ||
           g_pGlobalMapState->terrainStateTable[tileIndex].perTileVisitedFlag > 0 ||
-          (((g_pGlobalMapState->terrainStateTable[tileIndex].activeFlags1c & 3) != 0) &&
+          (((g_pGlobalMapState->terrainStateTable[tileIndex].activeFlags & 3) != 0) &&
            g_pGlobalMapState->terrainStateTable[tileIndex].gateFlag != 0) ||
-          (g_pGlobalMapState->terrainStateTable[tileIndex].activeFlags1c & 4) != 0;
+          (g_pGlobalMapState->terrainStateTable[tileIndex].activeFlags & 4) != 0;
       if (!hasImprovementSprite) {
         continue;
       }
@@ -913,7 +912,7 @@ void TOceanDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int proj
     spriteStripOffset = 0xf0;
   } else {
     int ownerNation = static_cast<int>(
-        g_pGlobalMapState->terrainStateTable[orderEntry->tileIndex06].ownerNationTag04);
+        g_pGlobalMapState->terrainStateTable[orderEntry->tileIndex06].ownerNationTag);
     if (ownerNation > 0x17) {
       ownerNation = 0x17;
     }
@@ -949,7 +948,7 @@ void TOceanDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex
     spriteStripOffset = static_cast<short>(spriteStripOffset + 0x10);
   } else {
     int ownerNation =
-        static_cast<int>(g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04);
+        static_cast<int>(g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag);
     if (ownerNation > 0x17) {
       ownerNation = 0x17;
     }

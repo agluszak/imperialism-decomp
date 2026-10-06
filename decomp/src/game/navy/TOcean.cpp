@@ -256,8 +256,8 @@ int RelaxMapTileCostFieldByNeighborTerrain(MapTileCostField* costField) {
             static_cast<short>(tileIndex), static_cast<short>(direction));
         short cur = *pCost;
         TTerrainStateRecord* tiles = g_pGlobalMapState->terrainStateTable;
-        if (cur == 0 && (neighbor == -1 ||
-                         tiles[neighbor].ownerNationTag04 != tiles[tileIndex].ownerNationTag04)) {
+        if (cur == 0 &&
+            (neighbor == -1 || tiles[neighbor].ownerNationTag != tiles[tileIndex].ownerNationTag)) {
           *pCost = -1;
           changedCount++;
         } else {
@@ -292,15 +292,15 @@ int SelectBestSeedTileForNationFromCostField(MapTileCostField* costField, short 
 
   for (int tileIndex = 0; static_cast<short>(tileIndex) < 0x1878; ++tileIndex) {
     TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
-    if (static_cast<short>(tile->ownerNationTag04) != nationTag) {
+    if (static_cast<short>(tile->ownerNationTag) != nationTag) {
       continue;
     }
 
     int score = costField->tileCosts[tileIndex] * 12;
     for (int direction = 0; direction < 6; ++direction) {
       short neighbor = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(tileIndex, direction);
-      if (neighbor != -1 && g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag04 ==
-                                tile->ownerNationTag04) {
+      if (neighbor != -1 &&
+          g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag == tile->ownerNationTag) {
         score += costField->tileCosts[neighbor] * 2;
         if (direction == 4 || direction == 1) {
           score += costField->tileCosts[neighbor];
@@ -475,7 +475,7 @@ TZone* TOcean::GetLinkedZoneForSeaTile(short seaTileIndex) {
       }
     }
   }
-  signed char nationCode = terrainRecord.ownerNationTag04;
+  signed char nationCode = terrainRecord.ownerNationTag;
   if (nationCode < 0x17) {
     return 0;
   }
@@ -558,10 +558,10 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
   }
   TTerrainStateRecord* terrainTable = g_pGlobalMapState->terrainStateTable;
   int tileIndex = static_cast<int>(nTileIndex);
-  if ((terrainTable[tileIndex].activeFlags1c & 1) == 0) {
+  if ((terrainTable[tileIndex].activeFlags & 1) == 0) {
     return;
   }
-  signed char nationSeed = terrainTable[tileIndex].ownerNationTag04;
+  signed char nationSeed = terrainTable[tileIndex].ownerNationTag;
 
   TZone* existingZone = TZone::GetFirstPortZone();
   while (existingZone != 0 && static_cast<short>(existingZone->tileOrTerrainId) != nTileIndex &&
@@ -602,7 +602,7 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
       if (neighborTile == -1) {
         continue;
       }
-      signed char neighborNation = terrainTable[neighborTile].ownerNationTag04;
+      signed char neighborNation = terrainTable[neighborTile].ownerNationTag;
       if (neighborNation < 0x17 && neighborNation != nationSeed) {
         allNeighborsQualify = false;
         break;
@@ -628,7 +628,7 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
       linkedContext = linkedContext->GetNextPortZone();
     }
   } else {
-    signed char seaTileOwner = terrainTable[bestSeaTile].ownerNationTag04;
+    signed char seaTileOwner = terrainTable[bestSeaTile].ownerNationTag;
     if (seaTileOwner < 0x17) {
       linkedContext = 0;
     } else {

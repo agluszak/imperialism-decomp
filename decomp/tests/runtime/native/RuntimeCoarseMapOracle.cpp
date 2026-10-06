@@ -261,7 +261,7 @@ void FillExpandedTiles(ExpandedTileDto* tiles, const TMapMaker* mapMaker) {
       static_cast<const TTerrainStateRecord*>(static_cast<const void*>(mapMaker->mapTileGrid));
   for (int index = 0; index < kExpandedTileCount; ++index) {
     tiles[index].terrain_kind = static_cast<signed char>(source[index].GetTerrainKind());
-    tiles[index].owner_nation = source[index].ownerNationTag04;
+    tiles[index].owner_nation = source[index].ownerNationTag;
     tiles[index].province_index = source[index].cityRecordIndex;
   }
 }
@@ -280,7 +280,7 @@ unsigned int HashTerrainTiles(const TMapMaker* mapMaker, bool ignoreWaterOwnersh
   unsigned int hash = 0x811c9dc5;
   for (int index = 0; index < kExpandedTileCount; ++index) {
     bool water = tiles[index].GetTerrainKind() == kStrategicTerrainWater;
-    signed char owner = ignoreWaterOwnership && water ? -1 : tiles[index].ownerNationTag04;
+    signed char owner = ignoreWaterOwnership && water ? -1 : tiles[index].ownerNationTag;
     short province = ignoreWaterOwnership && water ? -1 : tiles[index].cityRecordIndex;
     const unsigned char bytes[] = {static_cast<unsigned char>(tiles[index].GetTerrainKind()),
                                    static_cast<unsigned char>(tiles[index].riverSpriteCode),

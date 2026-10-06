@@ -196,7 +196,7 @@ struct TurnEvent11MapPokePacket : TimelyMessageHeader {
 };
 
 struct TurnEvent20PacketM : TimelyMessageHeader {
-  short eventParam18;    // +0x18
+  short eventParam;      // +0x18
   signed char nationA1A; // +0x1a
   signed char nationB1B; // +0x1b, total 0x1c
 };
@@ -224,7 +224,7 @@ struct TurnEvent1ANationActionPacket : TimelyNetMessagePrefix {
 
 // Event-0x1B one tracked-slot entry.
 struct TurnEvent1BTrackedEntryPacket : TimelyNetMessagePrefix {
-  short nationSlot1C;     // +0x1c
+  short nationSlot;       // +0x1c
   short trackedKind;      // +0x1e
   short targetNation;     // +0x20
   short trackedValue;     // +0x22
@@ -364,7 +364,7 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
       packet.messageLength = 0;
       packet.messageLength = 0x20;
       packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
-      packet.nationSlot1C = g_pSimMgr->GetPlayerCountry();
+      packet.nationSlot = g_pSimMgr->GetPlayerCountry();
       g_pNetMgr006a6014->Send(&packet, false);
       break;
     }
@@ -381,7 +381,7 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
       packet.messageLength = 0;
       packet.messageLength = 0x20;
       packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
-      packet.nationSlot1C = g_pSimMgr->GetPlayerCountry();
+      packet.nationSlot = g_pSimMgr->GetPlayerCountry();
       g_pNetMgr006a6014->Send(&packet, false);
       break;
     }
@@ -398,7 +398,7 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
       packet.messageLength = 0;
       packet.messageLength = 0x20;
       packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
-      packet.nationSlot1C = g_pSimMgr->GetPlayerCountry();
+      packet.nationSlot = g_pSimMgr->GetPlayerCountry();
       g_pNetMgr006a6014->Send(&packet, false);
       break;
     }
@@ -668,7 +668,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   switch (packet->eventCode) {
   case 0xf: {
     TurnEventFResumeAckPacket* ack = static_cast<TurnEventFResumeAckPacket*>(packet);
-    pendingNationBitmask &= ~(1 << (char)ack->nationSlot1C);
+    pendingNationBitmask &= ~(1 << (char)ack->nationSlot);
     bool hosting = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
     if (!hosting) {
       return 1;
@@ -744,7 +744,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   }
   case 8: {
     TurnEvent8NameAnnouncePacket* announce8 = static_cast<TurnEvent8NameAnnouncePacket*>(packet);
-    int announceSlot = announce8->nationSlot18;
+    int announceSlot = announce8->nationSlot;
     if (announceSlot == -1) {
       // Faithful out-of-bounds quirk: slot -1 reads the dword before nationSessionIds.
       g_pNetMgr006a6014->NotifyIfNationMatchesSessionActiveNation(nationSessionIds[announceSlot]);
@@ -761,7 +761,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         echo.toNetworkId = 0;
         echo.messageLength = 0x64;
         echo.eventCode = 9;
-        echo.nationSlot18 = (unsigned char)announceSlot;
+        echo.nationSlot = (unsigned char)announceSlot;
         strcpy(echo.senderName, announce8->senderName19);
         strcpy(echo.messageText, announce8->messageText3a);
         g_pNetMgr006a6014->Send(&echo, true);
@@ -797,7 +797,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         vacate.InitializeEmitEventHeaderWithActiveNation();
         vacate.eventCode = 0;
         vacate.fromNetworkId = 0;
-        vacate.nationSlot18 = (unsigned char)scanSlot;
+        vacate.nationSlot = (unsigned char)scanSlot;
         vacate.toNetworkId = 0;
         vacate.toNetworkId = 0;
         vacate.messageLength = 0;
@@ -820,7 +820,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       claim.messageLength = 0;
       claim.toNetworkId = 0;
       claim.messageLength = 0x64;
-      claim.nationSlot18 = (unsigned char)announceSlot;
+      claim.nationSlot = (unsigned char)announceSlot;
       strcpy(claim.senderName, announce8->senderName19);
       strcpy(claim.messageText, announce8->messageText3a);
       g_pNetMgr006a6014->Send(&claim, true);
@@ -830,8 +830,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   }
   case 9: {
     LobbyChatEvent9Packet* chat = static_cast<LobbyChatEvent9Packet*>(packet);
-    if (chat->nationSlot18 != 0xf3) {
-      int slot9 = static_cast<char>(chat->nationSlot18);
+    if (chat->nationSlot != 0xf3) {
+      int slot9 = static_cast<char>(chat->nationSlot);
       int sessionId = chat->field1C;
       {
         CString senderName(chat->senderName);
@@ -951,7 +951,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       short mySlot2 = (char)activeNationTagIndex;
       LobbyChatEvent9Packet claim2;
       claim2.InitializeEmitEventHeaderWithActiveNation();
-      claim2.nationSlot18 = (unsigned char)mySlot2;
+      claim2.nationSlot = (unsigned char)mySlot2;
       claim2.field1C = sessionId2;
       claim2.eventCode = 0;
       claim2.eventCode = 9;
@@ -1248,12 +1248,12 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   case 0x13: {
     // Queue the nine-dword payload into the nation's event bucket.
     TurnEvent13NewsPacket* nationPayload = static_cast<TurnEvent13NewsPacket*>(packet);
-    g_pNewsMgr->AddEvent(nationPayload->nationSlot18, &nationPayload->newsEvent, true);
+    g_pNewsMgr->AddEvent(nationPayload->nationSlot, &nationPayload->newsEvent, true);
     break;
   }
   case 0x20: {
     TurnEvent20PacketM* dedupedEvent = static_cast<TurnEvent20PacketM*>(packet);
-    g_pNewsMgr->AddTreatyEvent(static_cast<InterNationEventKind>(dedupedEvent->eventParam18),
+    g_pNewsMgr->AddTreatyEvent(static_cast<InterNationEventKind>(dedupedEvent->eventParam),
                                dedupedEvent->nationA1A, dedupedEvent->nationB1B, true);
     break;
   }
@@ -1351,7 +1351,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // Append one tracked-slot entry to the nation.
     TurnEvent1BTrackedEntryPacket* trackedEntry =
         static_cast<TurnEvent1BTrackedEntryPacket*>(packet);
-    g_apNationStates[trackedEntry->nationSlot1C]->AddToDealBook(
+    g_apNationStates[trackedEntry->nationSlot]->AddToDealBook(
         trackedEntry->trackedKind, trackedEntry->targetNation, trackedEntry->trackedValue,
         trackedEntry->trackedSlotIndex, trackedEntry->trackedPayload);
     break;
@@ -1375,7 +1375,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // Add the amount to the terrain-slot nation's field-0x10 metric.
     TurnEvent14NationMetricPacket* metricDelta =
         static_cast<TurnEvent14NationMetricPacket*>(packet);
-    g_apTerrainTypeDescriptorTable[metricDelta->nationSlot18]->AddToTreasury(metricDelta->amount);
+    g_apTerrainTypeDescriptorTable[metricDelta->nationSlot]->AddToTreasury(metricDelta->amount);
     break;
   }
   case 0x15: {
@@ -1516,8 +1516,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // Queue a diplomacy proposal code on the addressed nation.
     TurnEvent16DiplomacyProposalPacket* proposal =
         static_cast<TurnEvent16DiplomacyProposalPacket*>(packet);
-    g_apNationStates[proposal->nationSlot18]->AddOfferFrom(proposal->sourceNationSlot,
-                                                           proposal->proposalCode);
+    g_apNationStates[proposal->nationSlot]->AddOfferFrom(proposal->sourceNationSlot,
+                                                         proposal->proposalCode);
     break;
   }
   case 0x17: {
@@ -1525,9 +1525,9 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TurnEvent17ProposalResolutionPacket* resolution =
         static_cast<TurnEvent17ProposalResolutionPacket*>(packet);
     if (resolution->acceptedFlag) {
-      g_apNationStates[resolution->nationSlot18]->AcceptOffer(resolution->proposalIndex);
+      g_apNationStates[resolution->nationSlot]->AcceptOffer(resolution->proposalIndex);
     } else {
-      g_apNationStates[resolution->nationSlot18]->RejectOffer(resolution->proposalIndex);
+      g_apNationStates[resolution->nationSlot]->RejectOffer(resolution->proposalIndex);
     }
     break;
   }
@@ -1708,7 +1708,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         seatAnnounce.messageLength = 0;
         seatAnnounce.toNetworkId = 0;
         seatAnnounce.messageLength = 0x64;
-        seatAnnounce.nationSlot18 = static_cast<unsigned char>(repoSlot);
+        seatAnnounce.nationSlot = static_cast<unsigned char>(repoSlot);
         strcpy(seatAnnounce.senderName, defaultNationTextSlots[repoSlot]);
         strcpy(seatAnnounce.messageText, nationDisplayNameSlots[repoSlot]);
         g_pNetMgr006a6014->Send(&seatAnnounce, true);
@@ -1774,14 +1774,14 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   case 0x23: { // patch selected fields of one map tile's terrain-state record
     TurnEvent23TileStatePacket* tileState = static_cast<TurnEvent23TileStatePacket*>(packet);
     TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileState->tileIndex];
-    tile->ownerNationTag04 = tileState->record.ownerNationTag04;
+    tile->ownerNationTag = tileState->record.ownerNationTag;
     tile->regionSubtypeTag = tileState->record.regionSubtypeTag;
     tile->adjacencyBits = tileState->record.adjacencyBits;
     tile->developmentClassNibbles = tileState->record.developmentClassNibbles;
     tile->pendingDevelopmentFlag =
         (unsigned char)(tile->pendingDevelopmentFlag | tileState->record.pendingDevelopmentFlag);
     tile->secondaryOwnerNationTag = tileState->record.secondaryOwnerNationTag;
-    tile->activeFlags1c = tileState->record.activeFlags1c;
+    tile->activeFlags = tileState->record.activeFlags;
     break;
   }
   case 0x24: { // patch selected fields of one city-score record
@@ -2062,7 +2062,7 @@ void TMultiplayerMgr::SendNewsEvent(int nationSlot, NewsEvent* event) {
   packet.messageLength = 0x40;
   packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
-  packet.nationSlot18 = static_cast<short>(nationSlot);
+  packet.nationSlot = static_cast<short>(nationSlot);
   packet.newsEvent = *event;
   g_pNetMgr006a6014->Send(&packet, false);
 }
@@ -2071,7 +2071,7 @@ struct TurnEvent20Packet : NetMessage {
   int packetTag;
   unsigned char activeNationId;
   unsigned char pad15[3];
-  short eventParam18;
+  short eventParam;
   unsigned char byteA;
   unsigned char byteB;
 };
@@ -2087,7 +2087,7 @@ void TMultiplayerMgr::CreateAndSendTurnEvent20_ShortAndTwoBytes(short eventParam
   packet.messageLength = 0x1c;
   packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
-  packet.eventParam18 = eventParam;
+  packet.eventParam = eventParam;
   packet.byteA = byteA;
   packet.byteB = byteB;
   g_pNetMgr006a6014->Send(&packet, true);
@@ -2774,7 +2774,7 @@ void TMultiplayerMgr::DispatchTurnEventCode9WithTwoTextTokens(int reasonCode, in
   packet.toNetworkId = 0;
   packet.messageLength = sizeof(packet);
   packet.InitializeEmitEventHeaderWithActiveNation();
-  packet.nationSlot18 = static_cast<unsigned char>(reasonCode);
+  packet.nationSlot = static_cast<unsigned char>(reasonCode);
   packet.field1C = field1CValue;
   strcpy(packet.senderName, senderText);
   strcpy(packet.messageText, messageText);
@@ -2906,7 +2906,7 @@ void TMultiplayerMgr::SetNationStatusAwolByNationIdAndDispatchNotices(int networ
         chat.toNetworkId = 0;
         chat.messageLength = 0;
         chat.messageLength = 0x64;
-        chat.nationSlot18 = static_cast<unsigned char>(slot);
+        chat.nationSlot = static_cast<unsigned char>(slot);
         strcpy(chat.senderName, g_szEmptyString);
         strcpy(chat.messageText, g_szEmptyString);
         g_pNetMgr006a6014->Send(&chat, true);
@@ -3285,7 +3285,7 @@ void TMultiplayerMgr::EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet
     }
     for (int emitSlot = 0; emitSlot < 7; ++emitSlot) {
       seatClaim.field1C = nationSessionIds[emitSlot];
-      seatClaim.nationSlot18 = static_cast<unsigned char>(emitSlot);
+      seatClaim.nationSlot = static_cast<unsigned char>(emitSlot);
       strcpy(seatClaim.senderName, defaultNationTextSlots[emitSlot]);
       strcpy(seatClaim.messageText, nationDisplayNameSlots[emitSlot]);
       g_pNetMgr006a6014->Send(&seatClaim, false);

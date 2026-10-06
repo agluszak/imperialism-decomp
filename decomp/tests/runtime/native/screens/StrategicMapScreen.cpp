@@ -369,7 +369,7 @@ bool StrategicMapScreen::AllArmyPlacardsPopulated() const {
   }
   for (int category = 0; category < kArmyCategoryCount; ++category) {
     const TArmyPlacard* placard = ArmyPlacard(category);
-    if (placard == 0 || placard->glyph90 < 0) {
+    if (placard == 0 || placard->glyph < 0) {
       return false;
     }
   }

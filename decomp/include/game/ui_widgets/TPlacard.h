@@ -9,7 +9,7 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x667218
 class TPlacard : public TPicture {
 public:
-  short glyph90;
+  short glyph;
   short reserved92;
 
   TPlacard();

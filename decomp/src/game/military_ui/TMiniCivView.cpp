@@ -121,7 +121,7 @@ void TMiniCivView::Draw(RECT* rectBuffer) {
 
   CString cityName;
   g_apTerrainTypeDescriptorTable[g_pGlobalMapState->terrainStateTable[civUnit84->tileIndex06]
-                                     .ownerNationTag04]
+                                     .ownerNationTag]
       ->FormatOverlayTerrainLabelText(&nationName);
   g_pGlobalMapState->AssignCityRecordDisplayName(
       g_pGlobalMapState->terrainStateTable[civUnit84->tileIndex06].cityRecordIndex, &cityName);

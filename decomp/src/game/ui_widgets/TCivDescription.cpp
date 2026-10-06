@@ -223,7 +223,7 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit
 
   provinceOrdinal = 1;
   ownerNationId = static_cast<NationSlot>(
-      g_pGlobalMapState->terrainStateTable[orderState->tileIndex06].ownerNationTag04);
+      g_pGlobalMapState->terrainStateTable[orderState->tileIndex06].ownerNationTag);
   context->ownerNationId = ownerNationId;
   ownerNationProvinceCollection = g_apTerrainTypeDescriptorTable[ownerNationId]->ownedRegionList;
   context->targetTileCountsBySlot[4] = 0;

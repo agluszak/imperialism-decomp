@@ -102,7 +102,7 @@ void TEngineerDialog::Draw(RECT* rectBuffer) {
 void TEngineerDialog::StuffValues(short nBuildingSlotId) {
   TMapMgr* mapState = g_pGlobalMapState;
   unsigned char homeFlags =
-      static_cast<unsigned char>(mapState->terrainStateTable[nBuildingSlotId].activeFlags1c);
+      static_cast<unsigned char>(mapState->terrainStateTable[nBuildingSlotId].activeFlags);
   bool fortAllowed = static_cast<unsigned char>(((homeFlags >> 4) & 1) == 0);
   bool railAllowed = static_cast<unsigned char>(((homeFlags >> 2) & 1) == 0);
   bool productionAllowed = true;
@@ -148,7 +148,7 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
   if (fortAllowed && railAllowed) {
     for (int n = 0; n < 6; n++) {
       short nbr = neighborTiles[n];
-      if (nbr != -1 && (mapState->terrainStateTable[nbr].activeFlags1c & 0x14) != 0) {
+      if (nbr != -1 && (mapState->terrainStateTable[nbr].activeFlags & 0x14) != 0) {
         productionAllowed = false;
       }
     }
@@ -170,7 +170,7 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
       if (t->gateFlag == 0) {
         continue;
       }
-      if (t->ownerNationTag04 != g_pSimMgr->GetPlayerCountry()) {
+      if (t->ownerNationTag != g_pSimMgr->GetPlayerCountry()) {
         continue;
       }
       for (int edge = 0; edge < 2; edge++) {
@@ -201,7 +201,7 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
         continue;
       }
       TTerrainStateRecord* t = &mapState->terrainStateTable[tile];
-      if (t->ownerNationTag04 == g_pSimMgr->GetPlayerCountry() && t->riverSpriteCode != 0) {
+      if (t->ownerNationTag == g_pSimMgr->GetPlayerCountry() && t->riverSpriteCode != 0) {
         portAccum[19] = static_cast<short>(portAccum[19] + 1);
       } else if (t->gateFlag == 0) {
         portAccum[19] = static_cast<short>(portAccum[19] + 1);

@@ -658,7 +658,7 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   colOffset = 0;
   tileIndex = 0;
   while (tileIndex < 0x1950) {
-    terrainCode = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
+    terrainCode = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag;
     if (terrainCode < 0x17) {
       if (terrainCode == 0) {
         terrainCode = 0x3e;

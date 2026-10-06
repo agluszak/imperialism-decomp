@@ -142,7 +142,7 @@ void TMapEditView::ShiftClick(int tileIndex, int dispatchContext) {
     TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[index];
     if (tile.cityRecordIndex == provinceId) {
       tile.formerOwnerNationTag = static_cast<signed char>(nationTag);
-      tile.ownerNationTag04 = static_cast<signed char>(nationTag);
+      tile.ownerNationTag = static_cast<signed char>(nationTag);
     }
   }
 
@@ -193,7 +193,7 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, i
 
   for (index = 0; index < kMapTileCount; ++index) {
     TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[index];
-    if (tile.GetTerrainKind() != kStrategicTerrainWater || tile.ownerNationTag04 >= 0x17) {
+    if (tile.GetTerrainKind() != kStrategicTerrainWater || tile.ownerNationTag >= 0x17) {
       continue;
     }
 
@@ -202,9 +202,8 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, i
                                     g_pGlobalMapState->hexNeighborWrapHorizontally);
     for (int direction = 0; direction < 6; ++direction) {
       TTerrainStateRecord& neighbor = g_pGlobalMapState->terrainStateTable[neighbors[direction]];
-      if (neighbor.GetTerrainKind() == kStrategicTerrainWater &&
-          neighbor.ownerNationTag04 >= 0x17) {
-        tile.ownerNationTag04 = neighbor.ownerNationTag04;
+      if (neighbor.GetTerrainKind() == kStrategicTerrainWater && neighbor.ownerNationTag >= 0x17) {
+        tile.ownerNationTag = neighbor.ownerNationTag;
       }
     }
   }
@@ -373,7 +372,7 @@ void TMapEditView::PlaceCountySeat(short tileIndex) {
   TCluster* typeControl = static_cast<TCluster*>(dialog->ResolveControlByTag(kControlTagType));
   typeControl->AssertValid();
   if (typeControl->GetSelectedChildTag() == static_cast<int>(kControlTagCity)) {
-    tile.activeFlags1c |= 1;
+    tile.activeFlags |= 1;
   }
   dialog->Close();
   dialog->Free();

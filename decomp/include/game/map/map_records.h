@@ -16,12 +16,12 @@ struct GlobalMapTileRecord {
 
 struct ScenarioTileDiskRecord {
   unsigned char bytes00[4];
-  signed char ownerNationTag04;
+  signed char ownerNationTag;
   unsigned char bytes05[0x14 - 0x05];
   unsigned char cityRecordIndex[2];
   unsigned char bytes16[0x1a - 0x16];
   unsigned char tileActionOrdinal[2];
-  unsigned char activeFlags1c[2];
+  unsigned char activeFlags[2];
   unsigned char bytes1e[2];
   int transientPointerBits;
 };
@@ -48,7 +48,7 @@ struct TTerrainStateRecord {
   RiverSpriteCodeStorage riverSpriteCode;
   // Previous owner used by the map context's "formerly of" label.
   signed char formerOwnerNationTag;
-  signed char ownerNationTag04;
+  signed char ownerNationTag;
   signed char regionSubtypeTag;
   signed char adjacencyBits;
   unsigned char ownerBorderMask;
@@ -73,7 +73,7 @@ struct TTerrainStateRecord {
   unsigned char pad19;
   // Position within the tile action-state bucket.
   short tileActionOrdinal;
-  unsigned short activeFlags1c;
+  unsigned short activeFlags;
   unsigned char pad1e[0x20 - 0x1e];
   TCivUnit* firstCivilianOrder; // queue head for this tile
 };

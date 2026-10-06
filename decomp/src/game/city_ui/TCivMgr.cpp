@@ -127,7 +127,7 @@ bool TCivMgr::HandleCivilianTileSelectionOrReportClick(short nTileIndex, short n
         g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, g_pSimMgr->GetPlayerCountry());
     if (clickedEntry->IsInIdleSelectionState()) {
       if (nClickMode == 2 ||
-          (g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags1c & 0x20) == 0) {
+          (g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags & 0x20) == 0) {
         actionCode = 2;
       }
     } else {
@@ -178,7 +178,7 @@ unsigned short TCivMgr::ResolveCivilianTileSelectionOrReportActionCode(short nTi
     if (entry->IsInIdleSelectionState() == 0) {
       actionCode = kCivilianTileActionShowOrderReport;
     } else if (nClickMode == 2 ||
-               (g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags1c >> 5 & 1) == 0) {
+               (g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags >> 5 & 1) == 0) {
       actionCode = kCivilianTileActionSelectUnit;
     }
   }
@@ -199,7 +199,7 @@ CivilianTileActionCodeStorage TCivMgr::GetTileAction(short tileIndex, short mode
     if (unit->IsInIdleSelectionState() == 0) {
       actionCode = kCivilianTileActionShowOrderReport;
     } else if (mode == 2 ||
-               ((g_pGlobalMapState->terrainStateTable[tileIndex].activeFlags1c >> 5) & 1) == 0) {
+               ((g_pGlobalMapState->terrainStateTable[tileIndex].activeFlags >> 5) & 1) == 0) {
       return kCivilianTileActionSelectUnit;
     }
   }
@@ -306,7 +306,7 @@ CivilianTileActionCodeStorage TCivMgr::ResolveCivilianTileOrderActionCode(short 
       return kCivilianTileActionShowOrderReport;
     }
     if ((nInputHint != 2) &&
-        (((g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags1c >> 5) & 1) != 0)) {
+        (((g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags >> 5) & 1) != 0)) {
       return kCivilianTileActionNone;
     }
     return kCivilianTileActionSelectUnit;
@@ -458,10 +458,10 @@ bool TCivMgr::TryQueueCivilianMoveOrderToTile(short nTileIndex) {
 // FUNCTION: IMPERIALISM 0x004d2f60
 bool TCivMgr::CanAssignCivilianOrderToTile(short nTileIndex) {
   TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[nTileIndex];
-  short tileTerrainClass = tile->ownerNationTag04;
+  short tileTerrainClass = tile->ownerNationTag;
   TCivUnit* entry = this->selectedEntry;
   if ((entry->tileIndex06 != nTileIndex) && (tile->gateFlag != 0) &&
-      (((tile->activeFlags1c & 1) == 0) ||
+      (((tile->activeFlags & 1) == 0) ||
        (entry->orderType == EncodeCivilianUnitKind(kCivilianUnitEngineer)))) {
     if (tileTerrainClass < 7) {
       return tileTerrainClass == entry->ownerNationSlot;
@@ -924,7 +924,7 @@ void TCivMgr::ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
       }
       DispatchTileRedrawInvalidateEvent(t);
       short cityIdx = g_pGlobalMapState->terrainStateTable[t].cityRecordIndex;
-      if ((centerTile.activeFlags1c & 3) != 0 && centerTile.gateFlag != 0 && cityIdx != -1) {
+      if ((centerTile.activeFlags & 3) != 0 && centerTile.gateFlag != 0 && cityIdx != -1) {
         g_pGameFlowState->DispatchCityRedrawInvalidateEvent(cityIdx);
       }
     }
@@ -963,7 +963,7 @@ void TCivMgr::ResolveCivilianDisputes() {
       continue;
     }
 
-    int ownerNationSlot = static_cast<signed char>(tile.ownerNationTag04);
+    int ownerNationSlot = static_cast<signed char>(tile.ownerNationTag);
     TCivUnit* winningOrder = competingOrders[0];
     short winningStanding =
         g_pDiplomacyTurnStateManager

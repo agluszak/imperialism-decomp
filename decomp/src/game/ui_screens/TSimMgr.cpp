@@ -2265,7 +2265,7 @@ void TSimMgr::ScAddCivilian(STurnInstructionCursor* instruction) {
   DECODE_SCENARIO_SHORT_TOKEN(terrainToken);
 
   int ownerNationTag =
-      g_pGlobalMapState->terrainStateTable[static_cast<short>(terrainToken)].ownerNationTag04;
+      g_pGlobalMapState->terrainStateTable[static_cast<short>(terrainToken)].ownerNationTag;
   TCivUnit* order = new TCivUnit();
   order->ICivUnit(static_cast<CivilianUnitKind>(orderTypeToken), terrainToken, ownerNationTag);
 }
@@ -2368,7 +2368,7 @@ void TSimMgr::ScAddRailhead(STurnInstructionCursor* instruction) {
   instruction->tokenCursor = cursor + 1;
   DECODE_SCENARIO_SHORT_TOKEN(token);
   short tileIndex = static_cast<short>(token);
-  int nationTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
+  int nationTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag;
   g_pGlobalMapState->QueueDepotConstructionOrder(tileIndex, static_cast<short>(nationTag));
   if (g_apNationStates[nationTag]->diplomacyEligibility == 0) {
     g_apNationStates[nationTag]->treasuryValue10 += 2000;
@@ -2383,7 +2383,7 @@ void TSimMgr::ScAddPort(STurnInstructionCursor* instruction) {
   instruction->tokenCursor = cursor + 1;
   DECODE_SCENARIO_SHORT_TOKEN(token);
   short tileIndex = static_cast<short>(token);
-  int nationTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
+  int nationTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag;
   g_pGlobalMapState->QueuePortConstructionOrder(tileIndex, static_cast<short>(nationTag));
   if (g_apNationStates[nationTag]->diplomacyEligibility == 0) {
     g_apNationStates[nationTag]->treasuryValue10 += 3000;

@@ -219,7 +219,7 @@ void TGreatPower::TraceRail(char* regionMap, short regionId) {
     for (short direction = 0; direction < 6; ++direction) {
       if ((adjacencyBits & (1 << direction)) != 0) {
         short neighbor = TMapMgr::GetNeighborTileID(regionId, direction);
-        if (static_cast<short>(g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag04) ==
+        if (static_cast<short>(g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag) ==
                 this->nationSlot &&
             regionMap[neighbor] == 0) {
           if (nextRegion != 0) {
@@ -255,7 +255,7 @@ char* TGreatPower::BuildCityInfluenceLevelMap() {
         short neighbor = neighbors[direction];
         if (neighbor != -1) {
           TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[neighbor];
-          if ((static_cast<short>(tile.ownerNationTag04) == nationSlot || tile.gateFlag == 0) &&
+          if ((static_cast<short>(tile.ownerNationTag) == nationSlot || tile.gateFlag == 0) &&
               influenceByTile[neighbor] < influence) {
             influenceByTile[neighbor] = influence;
           }
@@ -2177,9 +2177,9 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
   } else {
     TTerrainStateRecord* terrainTable = g_pGlobalMapState->terrainStateTable;
     for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
-      if (static_cast<short>(terrainTable[static_cast<short>(tileIndex)].ownerNationTag04) ==
+      if (static_cast<short>(terrainTable[static_cast<short>(tileIndex)].ownerNationTag) ==
               this->nationSlot &&
-          (terrainTable[static_cast<short>(tileIndex)].activeFlags1c & 1) != 0) {
+          (terrainTable[static_cast<short>(tileIndex)].activeFlags & 1) != 0) {
         homeTileIndex = tileIndex;
       }
     }

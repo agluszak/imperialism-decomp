@@ -1365,9 +1365,9 @@ JSON_Value* CaptureMap() {
     rendering.Set("transition_mask", static_cast<unsigned int>(tile.adjacencyMaskA0a));
     rendering.Set("coast_or_secondary_mask", static_cast<unsigned int>(tile.adjacencyMaskB0b));
     tileObject.Set("rendering", rendering.Release());
-    ASSERT(tile.ownerNationTag04 >= -1);
+    ASSERT(tile.ownerNationTag >= -1);
     ASSERT(tile.formerOwnerNationTag >= -1);
-    tileObject.SetOptional("owner_nation", static_cast<int>(tile.ownerNationTag04));
+    tileObject.SetOptional("owner_nation", static_cast<int>(tile.ownerNationTag));
     tileObject.SetOptional("former_owner_nation", static_cast<int>(tile.formerOwnerNationTag));
     tileObject.Set("owner_border_mask", static_cast<unsigned int>(tile.ownerBorderMask));
     tileObject.Set("city_border_mask", static_cast<unsigned int>(tile.cityBorderMask));
@@ -1388,7 +1388,7 @@ JSON_Value* CaptureMap() {
     } else {
       tileObject.Set("action", static_cast<int>(tile.tileActionState16));
     }
-    tileObject.Set("flags", CaptureTileFlags(tile.activeFlags1c, tileFlags));
+    tileObject.Set("flags", CaptureTileFlags(tile.activeFlags, tileFlags));
     ASSERT(tile.regionSubtypeTag >= -1);
     tileObject.SetOptional("region", static_cast<int>(tile.regionSubtypeTag));
     tileObject.Set("gate", static_cast<int>(tile.gateFlag));
@@ -2966,7 +2966,7 @@ JSON_Value* CaptureBattleReports() {
     if (record == 0) {
       FailSemanticCapture("combat-report list contains a null record");
     }
-    const int kind = record->reportKind04;
+    const int kind = record->reportKind;
     if (kind < 0 || kind > 4) {
       FailSemanticCapture("combat-report kind is outside the recovered domain");
     }

@@ -941,7 +941,7 @@ char TNavyMgr::TryMerchantInterception(TMapOrderInteractionSelection* outResult,
         snapshot.childCount[1] = 0;
         snapshot.childRecords[0] = nullptr;
         snapshot.childRecords[1] = nullptr;
-        snapshot.reportKind04 = kMapContextReportSeaBattle;
+        snapshot.reportKind = kMapContextReportSeaBattle;
         snapshot.targetObject = entry->location;
         snapshot.displayedParticipantIndex = 0;
         snapshot.reportParticipantIndex = 1;
@@ -1048,7 +1048,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         snapshot.nationIds[1] = static_cast<unsigned char>(nation);
         snapshot.reportParticipantIndex = 0;
         snapshot.displayedParticipantIndex = 0;
-        snapshot.reportKind04 = kMapContextReportMerchantInterception;
+        snapshot.reportKind = kMapContextReportMerchantInterception;
         snapshot.targetObject = selection.selectedEntry->location;
 
         CString labelScratch;
@@ -1637,7 +1637,7 @@ PruneMapOrderConflictHeadAndTail(TMapOrderChildLinkNode* head) {
 // FUNCTION: IMPERIALISM 0x0055a780
 void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEntry) {
   MapOrderBattleSnapshot snapshot;
-  snapshot.reportKind04 = kMapContextReportSeaBattle;
+  snapshot.reportKind = kMapContextReportSeaBattle;
   snapshot.targetObject = leftEntry->location;
   snapshot.displayedParticipantIndex = 0;
   snapshot.childCount[0] = 0;

@@ -57,7 +57,7 @@ bool FindIssuableRailSection(NationSlot nationSlot, StrategicTileIndex* sourceTi
     }
 
     const TTerrainStateRecord& source = g_pGlobalMapState->terrainStateTable[candidate];
-    if (source.ownerNationTag04 != nationSlot || source.firstCivilianOrder != 0 ||
+    if (source.ownerNationTag != nationSlot || source.firstCivilianOrder != 0 ||
         source.adjacencyBits != 0 || source.railFlags != 0 ||
         !TerrainAllowsStartingRail(source.GetTerrainKind())) {
       continue;
@@ -70,7 +70,7 @@ bool FindIssuableRailSection(NationSlot nationSlot, StrategicTileIndex* sourceTi
     }
 
     const TTerrainStateRecord& destination = g_pGlobalMapState->terrainStateTable[neighbor];
-    if (destination.ownerNationTag04 == nationSlot && destination.firstCivilianOrder == 0 &&
+    if (destination.ownerNationTag == nationSlot && destination.firstCivilianOrder == 0 &&
         destination.adjacencyBits == 0 && destination.railFlags == 0 &&
         TerrainAllowsStartingRail(destination.GetTerrainKind())) {
       *sourceTile = candidate;
@@ -114,13 +114,13 @@ bool FindOwnedConstructionTile(NationSlot nationSlot, unsigned short requiredFla
                                unsigned short forbiddenFlags, StrategicTileIndex* tileIndex) {
   for (StrategicTileIndex candidate = 0; candidate < 0x1950; ++candidate) {
     const TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[candidate];
-    if (tile.firstCivilianOrder != 0 || tile.ownerNationTag04 != nationSlot) {
+    if (tile.firstCivilianOrder != 0 || tile.ownerNationTag != nationSlot) {
       continue;
     }
-    if ((tile.activeFlags1c & requiredFlags) != requiredFlags) {
+    if ((tile.activeFlags & requiredFlags) != requiredFlags) {
       continue;
     }
-    if ((tile.activeFlags1c & forbiddenFlags) != 0) {
+    if ((tile.activeFlags & forbiddenFlags) != 0) {
       continue;
     }
     *tileIndex = candidate;
@@ -133,10 +133,10 @@ bool FindOwnedCoastalConstructionTile(NationSlot nationSlot, unsigned short forb
                                       StrategicTileIndex* tileIndex) {
   for (StrategicTileIndex candidate = 0; candidate < 0x1950; ++candidate) {
     const TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[candidate];
-    if (tile.firstCivilianOrder != 0 || tile.ownerNationTag04 != nationSlot) {
+    if (tile.firstCivilianOrder != 0 || tile.ownerNationTag != nationSlot) {
       continue;
     }
-    if ((tile.activeFlags1c & forbiddenFlags) != 0) {
+    if ((tile.activeFlags & forbiddenFlags) != 0) {
       continue;
     }
     for (int direction = 0; direction < 6; ++direction) {
@@ -161,14 +161,14 @@ JSON_Value* CaptureTouchedTiles(const StrategicTileIndex* tiles, int count) {
     const TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tiles[index]];
     JsonObject object;
     object.Set("tile", static_cast<int>(tiles[index]));
-    object.Set("owner", static_cast<int>(tile.ownerNationTag04));
+    object.Set("owner", static_cast<int>(tile.ownerNationTag));
     object.Set("adjacency", static_cast<int>(tile.adjacencyBits));
     object.Set("dev_nibbles",
                static_cast<int>(
                    static_cast<unsigned char>(tile.developmentClassNibbles)));
     object.Set("pending", static_cast<int>(tile.pendingDevelopmentFlag));
     object.Set("rail_flags", static_cast<int>(tile.railFlags));
-    object.Set("active_flags", static_cast<int>(tile.activeFlags1c));
+    object.Set("active_flags", static_cast<int>(tile.activeFlags));
     object.Set("province", static_cast<int>(tile.cityRecordIndex));
     array.Add(object.Release());
   }
@@ -387,7 +387,7 @@ RuntimeActionResult RunCiviliansPhaseCase(NativeTransition& transition, bool sec
   // beginning_of_game.imp has no owned BASE_TRANSPORT tiles that are not cities.
   // Ordinary port orders run on a connected coastal tile; stamp that flag so
   // EnsurePortZoneForTile takes the live path instead of the early-out.
-  g_pGlobalMapState->terrainStateTable[portTile].activeFlags1c |= 1;
+  g_pGlobalMapState->terrainStateTable[portTile].activeFlags |= 1;
   TCivUnit* portEngineer = new TCivUnit();
   portEngineer->ICivUnit(kCivilianUnitEngineer, portTile, nationSlot);
   portEngineer->SetOrders(kUnitOrderBuildPort, portTile);

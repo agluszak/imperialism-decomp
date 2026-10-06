@@ -316,7 +316,7 @@ bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
   terrain.cityBorderMask = 0;
   terrain.adjacencyBits = 0;
   terrain.railFlags = 0;
-  terrain.activeFlags1c = 0;
+  terrain.activeFlags = 0;
   terrain.resourceTypeByEdge[0] = -1;
   terrain.resourceTypeByEdge[1] = -1;
   terrain.secondaryOwnerNationTag = -1;
@@ -539,7 +539,7 @@ void CaptureRuntimeMapState(RuntimeRun& run) {
       kind = kStrategicTerrainCount;
     }
     ++terrainCounts[kind];
-    short owner = terrain.ownerNationTag04;
+    short owner = terrain.ownerNationTag;
     if (owner >= 0 && owner < 7) {
       ++ownedTiles[owner];
     }

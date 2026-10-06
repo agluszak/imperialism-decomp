@@ -112,7 +112,7 @@ RuntimeActionResult RunNationResourceYieldRebuildMultipleTowns(NativeTransition&
   StrategicTileIndex outpostTile = -1;
   for (int tile = 0; tile < 0x1950; ++tile) {
     if (linkedTiles[tile] == 0 &&
-        static_cast<short>(g_pGlobalMapState->terrainStateTable[tile].ownerNationTag04) ==
+        static_cast<short>(g_pGlobalMapState->terrainStateTable[tile].ownerNationTag) ==
             nationSlot) {
       outpostTile = static_cast<StrategicTileIndex>(tile);
       break;

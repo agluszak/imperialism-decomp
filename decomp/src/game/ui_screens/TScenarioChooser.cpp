@@ -336,7 +336,7 @@ void TScenarioChooser::ShowInfo(int scenarioIndex) {
   ByteSwapScenarioTileRecordWords(tileRecords);
   fclose(mapStream);
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
-    fieldBuffer[tileIndex] = tileRecords[tileIndex].ownerNationTag04;
+    fieldBuffer[tileIndex] = tileRecords[tileIndex].ownerNationTag;
   }
 
   TMapPreviewView* mapPreview =

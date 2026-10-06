@@ -54,7 +54,7 @@ void TMinor::IMinor(NationSlot nationSlot) {
   int tileCount;
   int tileIndex = 0;
   for (tileCount = 0x1950; tileCount != 0; --tileCount) {
-    if (g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04 == this->nationSlot) {
+    if (g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag == this->nationSlot) {
       int edgeCount;
       int edge = 0;
       for (edgeCount = 2; edgeCount != 0; --edgeCount) {
@@ -77,9 +77,9 @@ void TMinor::IMinor(NationSlot nationSlot) {
       short selectedTile = -1;
       short tile;
       for (tile = 0; tile < 0x1950; ++tile) {
-        if (g_pGlobalMapState->terrainStateTable[tile].ownerNationTag04 == nationSlot) {
+        if (g_pGlobalMapState->terrainStateTable[tile].ownerNationTag == nationSlot) {
           TTerrainStateRecord* record = &g_pGlobalMapState->terrainStateTable[tile];
-          if (record->activeFlags1c & 1) {
+          if (record->activeFlags & 1) {
             selectedTile = tile;
           }
           if (g_pGlobalMapState->IsValidSecondaryNationHomeTileCandidate(tile)) {
@@ -416,7 +416,7 @@ void TMinor::InitializeTradeStatus(void) {
 
   int tileIndex;
   for (tileIndex = 0; static_cast<short>(tileIndex) < 0x1950; ++tileIndex) {
-    if (g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04 == this->nationSlot) {
+    if (g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag == this->nationSlot) {
       short tileGreatPower =
           g_pGlobalMapState->terrainStateTable[tileIndex].secondaryOwnerNationTag;
       if (tileGreatPower == -1) {
@@ -885,7 +885,7 @@ void TMinor::BecomeProtectorateOf(int targetNationSlot) {
 // FUNCTION: IMPERIALISM 0x004e5730
 void TMinor::HandleNetworkPortConstructionOrder(int nationId) {
   unsigned char nationTileFlags = static_cast<unsigned char>(
-      g_pGlobalMapState->terrainStateTable[static_cast<short>(this->homeTileIndex)].activeFlags1c);
+      g_pGlobalMapState->terrainStateTable[static_cast<short>(this->homeTileIndex)].activeFlags);
   if ((nationTileFlags >> 2 & 1) != 0) {
     return;
   }

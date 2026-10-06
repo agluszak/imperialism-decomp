@@ -96,9 +96,9 @@ void TBattleReportView::DoPostCreate(int arg) {
     selectedOrdinal = remaining;
 
     short cell;
-    if (record->reportKind04 == kMapContextReportLandBattle ||
-        record->reportKind04 == kMapContextReportPreemptedLandBattle ||
-        record->reportKind04 == kMapContextReportUncontestedTakeover) {
+    if (record->reportKind == kMapContextReportLandBattle ||
+        record->reportKind == kMapContextReportPreemptedLandBattle ||
+        record->reportKind == kMapContextReportUncontestedTakeover) {
       cell =
           g_pGlobalMapState->cityScoreTable[reinterpret_cast<int>(record->location)].cityTileIndex;
     } else {
@@ -192,7 +192,7 @@ void TBattleReportView::DoPostCreate(int arg) {
       spriteBase = 8;
     }
     record->markerSpriteCode = spriteBase;
-    if (record->reportKind04 == kMapContextReportMerchantInterception) {
+    if (record->reportKind == kMapContextReportMerchantInterception) {
       record->markerSpriteCode = spriteBase + 2;
     }
   }
@@ -562,7 +562,7 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
       static_cast<signed char>(record->nationIds[participantIndex]) ==
       g_pSimMgr->GetPlayerCountry();
 
-  switch (record->reportKind04) {
+  switch (record->reportKind) {
   case kMapContextReportLandBattle:
   case kMapContextReportPreemptedLandBattle:
   case kMapContextReportUncontestedTakeover: {
@@ -612,16 +612,16 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
 
   int userStringGroup;
   int userStringIndex;
-  if (record->reportKind04 == kMapContextReportMerchantInterception) {
+  if (record->reportKind == kMapContextReportMerchantInterception) {
     userStringGroup = 0x273c;
     userStringIndex = activeSideRelation + 5;
-  } else if (record->reportKind04 == kMapContextReportSeaBattle) {
+  } else if (record->reportKind == kMapContextReportSeaBattle) {
     userStringGroup = 0x273c;
     userStringIndex = activeSideRelation + 8;
-  } else if (record->reportKind04 == kMapContextReportPreemptedLandBattle) {
+  } else if (record->reportKind == kMapContextReportPreemptedLandBattle) {
     userStringGroup = 0x273d;
     userStringIndex = activeSideRelation + 40;
-  } else if (record->reportKind04 == kMapContextReportUncontestedTakeover) {
+  } else if (record->reportKind == kMapContextReportUncontestedTakeover) {
     userStringGroup = 0x273d;
     userStringIndex = activeSideRelation + 43;
   } else {

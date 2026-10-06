@@ -135,7 +135,7 @@ void TDefenseMinister::DoPeacetimeDeployment() {
 
   TLongintList* ownedRegionsList = new TLongintList();
   for (int tile = 0; tile < 0x1950; ++tile) {
-    if (g_pGlobalMapState->terrainStateTable[tile].ownerNationTag04 == ownNationSlot) {
+    if (g_pGlobalMapState->terrainStateTable[tile].ownerNationTag == ownNationSlot) {
       ownedRegionsList->InsertLast(tile);
     }
   }
@@ -260,7 +260,7 @@ unsigned char* TDefenseMinister::CreatePeaceDefenseMap(TLongintList* ownedRegion
     TMapMgr::GetNeighborTileIDArray(regionId, neighbors, wrapHorizontally);
     for (int dir = 0; dir < 6; ++dir) {
       short neighborTile = neighbors[dir];
-      int neighborOwner = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
+      int neighborOwner = g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag;
       if (neighborOwner > 0 && neighborOwner != ownNationSlot) {
         priorityMap[regionId] = 4;
       }
@@ -307,7 +307,7 @@ unsigned char* TDefenseMinister::CreatePeaceDefenseMap(TLongintList* ownedRegion
   for (int i5 = 1; i5 <= regionCount; ++i5) {
     short regionId = static_cast<short>(ownedRegions->At(i5));
     TTerrainStateRecord* record = &g_pGlobalMapState->terrainStateTable[regionId];
-    if ((record->activeFlags1c & 3) == 0 || record->resourceTypeByEdge[1] == 0) {
+    if ((record->activeFlags & 3) == 0 || record->resourceTypeByEdge[1] == 0) {
       continue;
     }
     priorityMap[regionId] += 3;
@@ -333,8 +333,8 @@ int* TDefenseMinister::CreateHomeValueMap() {
 
   for (int tile = 0; tile < 0x1950; ++tile) {
     TTerrainStateRecord* record = &g_pGlobalMapState->terrainStateTable[tile];
-    if (record->ownerNationTag04 == ownNationSlot) {
-      if ((record->activeFlags1c & 3) != 0 && record->gateFlag != 0) {
+    if (record->ownerNationTag == ownNationSlot) {
+      if ((record->activeFlags & 3) != 0 && record->gateFlag != 0) {
         heatmap[tile] += 300;
 
         short* ring1 = BuildHexAreaTileIndexList(static_cast<short>(tile), 1);
@@ -384,7 +384,7 @@ int* TDefenseMinister::CreateEnemyPowerMap(unsigned char excludeEnemyTiles) {
 
   for (int tile = 0; tile < 0x1950; ++tile) {
     TTerrainStateRecord* record = &g_pGlobalMapState->terrainStateTable[tile];
-    short ownerTag = record->ownerNationTag04;
+    short ownerTag = record->ownerNationTag;
     if ((atWarWithNation[ownerTag] && excludeEnemyTiles == 0) || ownerTag == ownNationSlot) {
       TMilitaryUnit* unit;
       if (tile >= 0 && tile < 0x180) {

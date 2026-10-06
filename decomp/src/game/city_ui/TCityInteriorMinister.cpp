@@ -1031,7 +1031,7 @@ int TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore() {
   int tileIndex = 0;
   do {
     TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
-    if (static_cast<short>(tile->ownerNationTag04) == nationSlot &&
+    if (static_cast<short>(tile->ownerNationTag) == nationSlot &&
         g_pGlobalMapState->IsValidSecondaryNationHomeTileCandidate(static_cast<short>(tileIndex))) {
       StrategicTerrainKind terrainKind = tile->GetTerrainKind();
       if (terrainKind == kStrategicTerrainPlains || terrainKind == kStrategicTerrainFarmland ||
@@ -1099,7 +1099,7 @@ int TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore() {
                     candidateTown->resourceYieldByType[kResourceIron] + rawMaterialBonus +
                     clampedGrainYield * 1000 + clampedFruitYield * 1000 + grainSurplus +
                     fruitSurplus + foodYieldBonus;
-        if ((tile->activeFlags1c & 1) != 0) {
+        if ((tile->activeFlags & 1) != 0) {
           score = 32000;
         }
         if (static_cast<short>(bestScore) < score) {
@@ -1129,7 +1129,7 @@ void TCityInteriorMinister::ProcessUnitOrders() {
   short nationSlot = greatPower->nationSlot;
   int tileIndex;
   for (tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
-    if (g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)].ownerNationTag04 ==
+    if (g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)].ownerNationTag ==
         nationSlot) {
       ++ownedTileCount;
     }
@@ -1137,7 +1137,7 @@ void TCityInteriorMinister::ProcessUnitOrders() {
 
   TShortintList ownedTiles(ownedTileCount);
   for (tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
-    if (g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)].ownerNationTag04 ==
+    if (g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)].ownerNationTag ==
         nationSlot) {
       ownedTiles.Add(static_cast<short>(tileIndex));
     }
@@ -1175,7 +1175,7 @@ void TCityInteriorMinister::ProcessUnitOrders() {
 
   if (field3c == -1) {
     DispatchBuilders();
-  } else if (g_pGlobalMapState->terrainStateTable[field3c].ownerNationTag04 != nationSlot) {
+  } else if (g_pGlobalMapState->terrainStateTable[field3c].ownerNationTag != nationSlot) {
     field3c = -1;
   } else {
     bool hasBuilderOrder = false;
@@ -1248,7 +1248,7 @@ void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
       short neighbor = TMapMgr::GetNeighborTileID(town->tileIndex, direction);
       if (neighbor != -1 &&
           g_pGlobalMapState->terrainStateTable[neighbor].regionSubtypeTag == regionSubtype &&
-          static_cast<short>(g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag04) ==
+          static_cast<short>(g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag) ==
               greatPower->nationSlot) {
         candidateTiles.Add(neighbor);
       }
@@ -1260,7 +1260,7 @@ void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
     for (short direction = 0; direction < 6; ++direction) {
       short neighbor = TMapMgr::GetNeighborTileID(field3c, direction);
       if (neighbor != -1 &&
-          static_cast<short>(g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag04) ==
+          static_cast<short>(g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag) ==
               greatPower->nationSlot) {
         candidateTiles.Add(neighbor);
       }
@@ -1302,7 +1302,7 @@ void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
         if (resourceType != -1 &&
             g_anResourceTypeRequiredOrderType[resourceType] == order->orderType &&
             (g_abResourceTypeAlwaysQualifies[resourceType] != 0 ||
-             static_cast<short>(tile->ownerNationTag04) == greatPower->nationSlot)) {
+             static_cast<short>(tile->ownerNationTag) == greatPower->nationSlot)) {
           short availableClass = g_pGlobalMapState->GetMaxDevelopmentLevel(tileIndex, useHighNibble,
                                                                            greatPower->nationSlot);
           char currentClass =
@@ -1447,7 +1447,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
 
   for (short tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
-    short minorNation = static_cast<short>(tile->ownerNationTag04);
+    short minorNation = static_cast<short>(tile->ownerNationTag);
     if (minorNation <= 6 || minorNation >= 23) {
       continue;
     }
@@ -1545,7 +1545,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors() {
           continue;
         }
         TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
-        if (static_cast<short>(tile->ownerNationTag04) != nationSlot ||
+        if (static_cast<short>(tile->ownerNationTag) != nationSlot ||
             tile->regionSubtypeTag != regionSubtype) {
           continue;
         }
@@ -1645,7 +1645,7 @@ void TCityInteriorMinister::ContinueRailheadProject(TUnit* builderOrder, char* p
     short previousTile;
     short sourceTile =
         TraceDescendingTileScoreGradientToSource(field3c, primaryDistanceMap, &previousTile);
-    unsigned short sourceFlags = g_pGlobalMapState->terrainStateTable[sourceTile].activeFlags1c;
+    unsigned short sourceFlags = g_pGlobalMapState->terrainStateTable[sourceTile].activeFlags;
     if ((sourceFlags & 4) != 0 && (sourceFlags & 0x10) == 0) {
       builderOrder->MoveTo(sourceTile);
       builderOrder->SetOrders(kUnitOrderBuildDepot, sourceTile);
@@ -1726,7 +1726,7 @@ void TCityInteriorMinister::StartRailheadProject(ResourceKindStorage resourceKin
                                     g_pGlobalMapState->hexNeighborWrapHorizontally);
     for (short direction = 0; direction < 6; ++direction) {
       if (neighbors[direction] != -1 &&
-          (g_pGlobalMapState->terrainStateTable[neighbors[direction]].activeFlags1c & 0x10) != 0) {
+          (g_pGlobalMapState->terrainStateTable[neighbors[direction]].activeFlags & 0x10) != 0) {
         hasConnectedNeighbor = true;
       }
     }

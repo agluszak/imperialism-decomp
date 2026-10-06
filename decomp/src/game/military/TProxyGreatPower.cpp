@@ -46,7 +46,7 @@ void TProxyGreatPower::AddToTreasury(int amount) {
   packet.toNetworkId = 0;
   packet.messageLength = 0x20;
   packet.DestinateToGP(this->nationSlot);
-  packet.nationSlot18 = this->nationSlot;
+  packet.nationSlot = this->nationSlot;
   packet.amount = amount;
   g_pNetMgr006a6014->Send(&packet, false);
 }
@@ -62,7 +62,7 @@ void TProxyGreatPower::AddOfferFrom(NationSlot sourceNationSlot,
   TurnEvent16DiplomacyProposalPacket packetPayload;
   packetPayload.messageTag = kControlTagTime;
   packetPayload.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
-  packetPayload.nationSlot18 = this->nationSlot;
+  packetPayload.nationSlot = this->nationSlot;
   packetPayload.eventCode = 0x16;
   packetPayload.messageLength = 0x20;
   packetPayload.sourceNationSlot = sourceNationSlot;

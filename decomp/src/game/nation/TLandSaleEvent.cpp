@@ -28,7 +28,7 @@ void TLandSaleEvent::Execute() {
   CString messageTemplate;
   CString message;
 
-  short sellerNationTag = g_pGlobalMapState->terrainStateTable[tileIndex08].ownerNationTag04;
+  short sellerNationTag = g_pGlobalMapState->terrainStateTable[tileIndex08].ownerNationTag;
   TCountry* buyer = g_apTerrainTypeDescriptorTable[nationCode0a];
   if (buyer == 0) {
     buyerName = g_szEmptyString;

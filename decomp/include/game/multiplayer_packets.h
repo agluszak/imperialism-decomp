@@ -37,14 +37,14 @@ struct StreamMessagePayload32 {
 };
 
 struct TurnEvent8NameAnnouncePacket : TimelyMessageHeader {
-  char nationSlot18;        // +0x18
+  char nationSlot;          // +0x18
   char senderName19[0x21];  // +0x19
   char messageText3a[0x2a]; // +0x3a, total 0x64
 };
 
 // Event-9 lobby chat/seat-state packet.
 struct LobbyChatEvent9Packet : TimelyMessageHeader {
-  unsigned char nationSlot18; // +0x18
+  unsigned char nationSlot; // +0x18
   unsigned char pad19[3];
   int field1C;            // +0x1c - zeroed by seat-state messages
   char senderName[0x21];  // +0x20
@@ -71,7 +71,7 @@ struct TurnEventESessionInitPacket : TimelyMessageHeader {
 
 // Event-0x13 nine-dword nation-news payload.
 struct TurnEvent13NewsPacket : TimelyMessageHeader {
-  short nationSlot18; // +0x18
+  short nationSlot; // +0x18
   unsigned char pad1a[2];
   NewsEvent newsEvent; // +0x1c, total 0x40
 };
@@ -179,7 +179,7 @@ ASSERT_SIZE(TurnEvent23TileStatePacket, 0x44);
 ASSERT_SIZE(NationStatusEvent25Packet, 0x34);
 ASSERT_SIZE(TurnEvent2BPresenceMaskPacket, 0x1c);
 ASSERT_SIZE(TurnEvent2DMinorNeedPacket, 0x4c);
-ASSERT_OFFSET(TurnEvent8NameAnnouncePacket, nationSlot18, 0x18);
+ASSERT_OFFSET(TurnEvent8NameAnnouncePacket, nationSlot, 0x18);
 ASSERT_OFFSET(TurnEvent8NameAnnouncePacket, messageText3a, 0x3a);
 ASSERT_OFFSET(TurnEvent26DiplomacyMatrixPacket, congressLeadership, 0x798);
 ASSERT_OFFSET(TurnEventBNationDirectoryPacket, homeTileBySlot, 0x1c);
