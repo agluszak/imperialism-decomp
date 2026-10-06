@@ -68,10 +68,10 @@ IMPLEMENT_DYNCREATE(TMapMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x0050e3d0
 TMapMgr::TMapMgr() : TObject(), cityScoreTable(0), scenarioTagText() {
-  field8 = 0;
+  mapDataReady = 0;
   strategicMapPalettePreviewReady = false;
   terrainStateTable = 0;
-  field9 = 1;
+  recruitSearchActive = 1;
   field24 = false;
   pendingRiverMouthTile = -1;
 }
@@ -81,7 +81,7 @@ TMapMgr::~TMapMgr() {}
 
 // FUNCTION: IMPERIALISM 0x0050e4e0
 void TMapMgr::IMapMgr() {
-  field6 = 1;
+  mapViewOriginTile = 1;
   if (g_pMacViewMgr->atlas668 == 0) {
     g_pMacViewMgr->BuildStrategicMapRenderAtlasesAndTileMaskCaches();
   }
@@ -97,9 +97,9 @@ void TMapMgr::Free() {
 // FUNCTION: IMPERIALISM 0x0050e620
 void TMapMgr::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
-  stream->ReadBytes(&field6, 2);
-  stream->ReadBytes(&field8, 1);
-  stream->ReadBytes(&field9, 1);
+  stream->ReadBytes(&mapViewOriginTile, 2);
+  stream->ReadBytes(&mapDataReady, 1);
+  stream->ReadBytes(&recruitSearchActive, 1);
   stream->ReadBytes(&cityScoreTotal, 4);
   stream->ReadSharedString(&scenarioTagText, 0x20);
   hexNeighborWrapHorizontally = stream->ReadBoolean();
@@ -132,9 +132,9 @@ void TMapMgr::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x0050e7a0
 void TMapMgr::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytes(&field6, 2);
-  stream->WriteBytes(&field8, 1);
-  stream->WriteBytes(&field9, 1);
+  stream->WriteBytes(&mapViewOriginTile, 2);
+  stream->WriteBytes(&mapDataReady, 1);
+  stream->WriteBytes(&recruitSearchActive, 1);
   stream->WriteBytes(&cityScoreTotal, 4);
   stream->WriteSharedString(&scenarioTagText);
   stream->WriteBoolean(hexNeighborWrapHorizontally);
@@ -352,7 +352,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
   if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
     g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
   }
-  field8 = 1;
+  mapDataReady = 1;
   if (mapMaker != 0) {
     mapMaker->Free();
   }
@@ -1532,7 +1532,7 @@ void TMapMgr::GuaranteeResources() {
 
 // FUNCTION: IMPERIALISM 0x00511e80
 void TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress() {
-  if (field8 == 0) {
+  if (mapDataReady == 0) {
     hexNeighborWrapHorizontally = 1;
     BuildOrLoadGlobalMapStateForSession("mapdata", nullptr);
   }
@@ -2697,7 +2697,7 @@ StrategicTileIndex TMapMgr::SearchOpenTile(StrategicTileIndex tileIndex, short o
 
 // FUNCTION: IMPERIALISM 0x00514dc0
 void TMapMgr::SeedValidCitySiteCandidateTilesForNation(short nationTag) {
-  field9 = 1;
+  recruitSearchActive = 1;
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     TTerrainStateRecord* tile = &terrainStateTable[tileIndex];
     if (tile->ownerNationTag == nationTag && tile->GetTerrainKind() != kStrategicTerrainHills &&
@@ -2712,7 +2712,7 @@ void TMapMgr::SeedValidCitySiteCandidateTilesForNation(short nationTag) {
 
 // FUNCTION: IMPERIALISM 0x00514e40
 void TMapMgr::SeedRecruitSearchVisitedStateExcludingNation(short ownerNationTag) {
-  this->field9 = 1;
+  this->recruitSearchActive = 1;
   TTerrainStateRecord* tile = terrainStateTable;
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex, ++tile) {
     tile->recruitSearchVisited = (tile->ownerNationTag != ownerNationTag) ? 1 : 0;
@@ -2723,7 +2723,7 @@ void TMapMgr::SeedRecruitSearchVisitedStateExcludingNation(short ownerNationTag)
 void TMapMgr::SeedRecruitSearchVisitedStateFromSelectedCivilianOrder(TCivUnit* unusedOrder) {
   (void)unusedOrder;
   TTerrainStateRecord* tile = terrainStateTable;
-  this->field9 = 1;
+  this->recruitSearchActive = 1;
   for (short tileIndex = 0; tileIndex < 0x1950; ++tileIndex, ++tile) {
     TCivUnit* selectedEntry = g_pSelectedCivilianOrderState->selectedEntry;
     if (selectedEntry == nullptr) {
@@ -2743,14 +2743,14 @@ void TMapMgr::ResetRecruitSearchVisitedState() {
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex, ++tile) {
     tile->recruitSearchVisited = 0;
   }
-  this->field9 = 0;
+  this->recruitSearchActive = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00514f20
 void TMapMgr::SeedRecruitSearchVisitedStateAndClearAlliedTerritory(TCivUnit* pCivilianOrderEntry) {
   short refTileIndex = pCivilianOrderEntry->tileIndex06;
   signed char refOwner = terrainStateTable[refTileIndex].ownerNationTag;
-  this->field9 = 1;
+  this->recruitSearchActive = 1;
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     terrainStateTable[tileIndex].recruitSearchVisited =
         (terrainStateTable[tileIndex].ownerNationTag != refOwner) ? 1 : 0;
@@ -2814,7 +2814,7 @@ void TMapMgr::DimByMarching(TMilitaryUnit* const candidates[6], short orderTarge
   }
 
   short nationSlot = unit->ownerNationSlot;
-  field9 = 1;
+  recruitSearchActive = 1;
   int tileScanIndex;
   for (tileScanIndex = 0; tileScanIndex < 0x1950; ++tileScanIndex) {
     terrainStateTable[tileScanIndex].recruitSearchVisited = 1;
@@ -2873,7 +2873,7 @@ void TMapMgr::DimByMarching(TMilitaryUnit* const candidates[6], short orderTarge
 
 // FUNCTION: IMPERIALISM 0x00515330
 void TMapMgr::DimByProspecting(TCivUnit* pCivilianOrderEntry) {
-  field9 = 1;
+  recruitSearchActive = 1;
   short nationTag = pCivilianOrderEntry->ownerNationSlot;
   unsigned char eligibleGateFlags[24] = {0};
   eligibleGateFlags[8] = 1;
@@ -2913,7 +2913,7 @@ void TMapMgr::DimByDevelopment(TCivUnit* pCivilianOrderEntry) {
   short nationTag = pCivilianOrderEntry->ownerNationSlot;
   bool recruitTierFlagIsTwo =
       (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[0x13] == 2);
-  field9 = 1;
+  recruitSearchActive = 1;
   unsigned char nationBit = 1 << nationTag;
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     TTerrainStateRecord* tile = &terrainStateTable[tileIndex];
@@ -2968,7 +2968,7 @@ void TMapMgr::DimByMining(TCivUnit* pCivilianOrderEntry) {
     qualifiesByResourceType[6] = 1;
   }
 
-  this->field9 = 1;
+  this->recruitSearchActive = 1;
   short nationTag = pCivilianOrderEntry->ownerNationSlot;
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     TTerrainStateRecord* tile = &terrainStateTable[tileIndex];
@@ -3042,7 +3042,7 @@ void TMapMgr::DimByFishing(TCivUnit* pCivilianOrderEntry) {
 
 // FUNCTION: IMPERIALISM 0x00515890
 void TMapMgr::DimByCompany(TCivUnit* pCivilianOrderEntry) {
-  this->field9 = 1;
+  this->recruitSearchActive = 1;
   short nationTag = pCivilianOrderEntry->ownerNationSlot;
   short orderType = pCivilianOrderEntry->orderType;
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
@@ -3080,7 +3080,7 @@ void TMapMgr::DimByCompany(TCivUnit* pCivilianOrderEntry) {
 
 // FUNCTION: IMPERIALISM 0x005159b0
 void TMapMgr::DimByTrackLaying(TCivUnit* pCivilianOrderEntry) {
-  this->field9 = 1;
+  this->recruitSearchActive = 1;
   for (int i = 0; i < 0x1950; ++i) {
     terrainStateTable[i].recruitSearchVisited = 1;
   }
@@ -3136,7 +3136,7 @@ void TMapMgr::DimByEngineering(TCivUnit* pCivilianOrderEntry) {
     terrainKindGate[kStrategicTerrainMountain] = 1;
   }
 
-  this->field9 = 1;
+  this->recruitSearchActive = 1;
   for (int i = 0; i < 0x1950; ++i) {
     terrainStateTable[i].recruitSearchVisited = 1;
   }

@@ -1331,14 +1331,14 @@ JSON_Value* CaptureMap() {
   JsonArray tiles;
   object.Set("topology",
              g_pGlobalMapState->hexNeighborWrapHorizontally == 0 ? "wrapping" : "bounded");
-  if (g_pGlobalMapState->field8 > 1) {
+  if (g_pGlobalMapState->mapDataReady > 1) {
     FailSemanticCapture("strategic map data-ready flag is not boolean");
   }
-  object.Set("map_data_ready", g_pGlobalMapState->field8 != 0);
-  if (g_pGlobalMapState->field9 > 1) {
+  object.Set("map_data_ready", g_pGlobalMapState->mapDataReady != 0);
+  if (g_pGlobalMapState->recruitSearchActive > 1) {
     FailSemanticCapture("strategic map recruit-search flag is not boolean");
   }
-  object.Set("recruit_search_active", g_pGlobalMapState->field9 != 0);
+  object.Set("recruit_search_active", g_pGlobalMapState->recruitSearchActive != 0);
   object.Set("city_score_total", g_pGlobalMapState->cityScoreTotal);
   object.Set("scenario_tag", static_cast<LPCSTR>(g_pGlobalMapState->scenarioTagText));
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
@@ -1783,16 +1783,16 @@ JSON_Value* CaptureMajorNation(TGreatPower* nation) {
              CaptureAidAllocationByMinorNation(nation->aidAllocationMatrix));
   object.Set("budget_pool_base", nation->budgetPoolBase);
   object.Set("budget_pool_delta", nation->budgetPoolDelta);
-  object.Set("special_resource_trade_balance", nation->field910);
+  object.Set("special_resource_trade_balance", nation->specialResourceTradeBalance);
   object.Set("scenario_initialized", nation->scenarioInitFlag != 0 ? true : false);
-  object.Set("turn_finished", nation->field904 != 0 ? true : false);
+  object.Set("turn_finished", nation->turnFinished != 0 ? true : false);
   object.Set("pending_actions",
              CapturePendingActions(nation->pendingActionStatus.byAction, nation->field8d6));
   object.Set("diplomacy_budget_base", nation->diplomacyBudgetBase);
   object.Set("escalation_counter", static_cast<int>(nation->escalationCounter));
   object.Set("pending_commitment_cost", nation->pendingCommitmentCost);
   object.Set("pressure_counter", static_cast<int>(nation->pressureCounter));
-  object.Set("army_movement_budget", nation->field900);
+  object.Set("army_movement_budget", nation->armyTransportRemaining);
   object.Set("aid_allocation_total", nation->aidAllocationTotal);
   object.Set("military_expenses", nation->militaryExpenses);
   return object.Release();
@@ -2285,7 +2285,7 @@ JSON_Value* CaptureCityOrders(TCity* city) {
   }
   JsonObject powerState;
   powerState.Set("progress", CaptureProductionProgress(power));
-  powerState.Set("desired_quantity", static_cast<int>(power->field4c));
+  powerState.Set("desired_quantity", static_cast<int>(power->desiredQuantity));
   orders.Set("power_plant", powerState.Release());
 
   TProductionOrder* capacityBase = city->trailingOrderSlots[0];
@@ -3078,10 +3078,10 @@ static bool BuildRuntimeGameStateWithFreshObjectDefaults(const RuntimeRun& run, 
   object.Set("turn", CaptureTurn(run));
   object.Set("unit_ids", g_pSimMgr->lastPersistentUnitId);
   object.Set("map", CaptureMap());
-  if (g_pGlobalMapState->field6 < 0 || g_pGlobalMapState->field6 >= 0x1950) {
+  if (g_pGlobalMapState->mapViewOriginTile < 0 || g_pGlobalMapState->mapViewOriginTile >= 0x1950) {
     FailSemanticCapture("strategic map view origin is outside the map");
   }
-  object.Set("map_view_origin", static_cast<int>(g_pGlobalMapState->field6));
+  object.Set("map_view_origin", static_cast<int>(g_pGlobalMapState->mapViewOriginTile));
   object.Set("ocean", CaptureOcean());
   object.Set("rng", CaptureRng());
   object.Set("market", CaptureMarket());

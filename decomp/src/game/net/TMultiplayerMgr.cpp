@@ -37,7 +37,7 @@
 struct TurnEvent2CPacket : TimelyNetMessagePrefix {
   short nationSlot; // +0x1c
   unsigned char pad1e[2];
-  int field910;                                             // +0x20
+  int specialResourceTradeBalance;                          // +0x20
   int aidAllocationTotal;                                   // +0x24
   unsigned char pad28[6];                                   // +0x28
   short militaryRecruitCountByKind[kMilitaryUnitKindCount]; // +0x2e
@@ -1429,7 +1429,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     if (nationSlot2C == g_pSimMgr->GetPlayerCountry()) {
       return 1;
     }
-    g_apNationStates[nationSlot2C]->field910 = composite->field910;
+    g_apNationStates[nationSlot2C]->specialResourceTradeBalance =
+        composite->specialResourceTradeBalance;
     g_apNationStates[nationSlot2C]->aidAllocationTotal = composite->aidAllocationTotal;
     TCity* city2C;
     if (g_apNationStates[nationSlot2C] == 0) {
@@ -2868,8 +2869,8 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
       memcpy(&newNation->pendingActionStatus, &oldNation->pendingActionStatus,
              sizeof(newNation->pendingActionStatus));
       memcpy(newNation->field8d6, oldNation->field8d6, sizeof(newNation->field8d6));
-      newNation->field900 = oldNation->field900;
-      newNation->field904 = oldNation->field904;
+      newNation->armyTransportRemaining = oldNation->armyTransportRemaining;
+      newNation->turnFinished = oldNation->turnFinished;
 
       g_apNationStates[nationSlot] = newNation;
       g_apTerrainTypeDescriptorTable[nationSlot] = newNation;
@@ -3192,7 +3193,7 @@ void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
   }
   packet.nationSlot = static_cast<short>(nationSlot);
   TGreatPower* nation = g_apNationStates[nationSlot];
-  packet.field910 = nation->field910;
+  packet.specialResourceTradeBalance = nation->specialResourceTradeBalance;
   packet.aidAllocationTotal = nation->aidAllocationTotal;
   TCity* city;
   if (nation == 0) {

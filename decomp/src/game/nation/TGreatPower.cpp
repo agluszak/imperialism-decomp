@@ -1238,7 +1238,7 @@ void TGreatPower::PurchaseItem(short resourceKind, short amount, short price) {
 
   this->budgetPoolBase -= scaledDelta;
   if (IsSpecialNationInteractionResource(index) != 0) {
-    this->field910 -= deltaInt;
+    this->specialResourceTradeBalance -= deltaInt;
   }
 }
 
@@ -2344,7 +2344,7 @@ void TGreatPower::MoveCivilians(void) {
 
 // FUNCTION: IMPERIALISM 0x004e03d0
 void TGreatPower::MoveArmy(void) {
-  this->field900 = this->transportCapacity / 5;
+  this->armyTransportRemaining = this->transportCapacity / 5;
 }
 
 // FUNCTION: IMPERIALISM 0x004e0400

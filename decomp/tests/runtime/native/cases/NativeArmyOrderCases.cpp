@@ -317,11 +317,11 @@ RuntimeActionResult RunArmyClickHostile(NativeTransition& transition) {
   if (!started.Succeeded()) {
     return started;
   }
-  short mapViewOrigin = g_pGlobalMapState->field6;
+  short mapViewOrigin = g_pGlobalMapState->mapViewOriginTile;
   g_pMapContextActionManager->ValidateOrderPlacementPrerequisitesForSelectedTile(dest);
   // NoticeTile recenters the retail view after a successful order. Camera position is
   // presentation state; keep the differential focused on the validated order transition.
-  g_pGlobalMapState->field6 = mapViewOrigin;
+  g_pGlobalMapState->mapViewOriginTile = mapViewOrigin;
   JsonObject hostileResult;
   hostileResult.Set(
       "pending_index",

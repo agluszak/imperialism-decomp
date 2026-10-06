@@ -39,7 +39,7 @@ void TMiniMapView::Draw(RECT* rectBuffer) {
     return;
   }
 
-  short centerTile = g_pGlobalMapState->field6;
+  short centerTile = g_pGlobalMapState->mapViewOriginTile;
   short sourceColumn = static_cast<short>(centerTile % 108);
   short sourceRow = static_cast<short>(centerTile / 108);
   sourceColumn = static_cast<short>(sourceColumn - ((frameWidth / 2 - markerBoxWidth) / 2) - 1);

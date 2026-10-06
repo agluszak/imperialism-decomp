@@ -1616,7 +1616,7 @@ bool TSimMgr::TestTurnFlowStatusFlagMask(unsigned int mask) {
 bool TSimMgr::AllHumansFinished() {
   bool finished = true;
   for (TGreatPower** nation = g_apNationStates; nation < g_apNationStates + 7; ++nation) {
-    if ((*nation)->field904 == 0) {
+    if ((*nation)->turnFinished == 0) {
       finished = false;
       break;
     }
@@ -1629,7 +1629,7 @@ void TSimMgr::ResetTurnFlags() {
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
     TGreatPower* nation = g_apNationStates[nationSlot];
     if (nation->diplomacyEligibility != 0) {
-      nation->field904 = 0;
+      nation->turnFinished = 0;
     }
   }
 }

@@ -23,7 +23,7 @@ public:
                               short quantity) override; // slot 0x10 0x4b7c90
   virtual void IPowerPlantOrder(TCity* city);           // slot 0x11 0x4b7ab0
 
-  short field4c; // 0x4c
+  short desiredQuantity;
 
   TPowerPlantOrder() {}
 };

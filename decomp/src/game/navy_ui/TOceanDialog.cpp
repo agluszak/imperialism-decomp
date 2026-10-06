@@ -1125,7 +1125,8 @@ void TOceanDialog::SetMapViewCellCoordinates(int column, int row) {
 
   viewportOrigin.y = scrollRowOffset << 4;
   viewportOrigin.x = scrollColOffset << 4;
-  g_pGlobalMapState->field6 = static_cast<short>(scrollColOffset + scrollRowOffset * 0x6c);
+  g_pGlobalMapState->mapViewOriginTile =
+      static_cast<short>(scrollColOffset + scrollRowOffset * 0x6c);
 
   CRect invalidateRect(0, 0, 0x1ff, 0x1bf);
   InvalidateCityDialogRectRegion(&invalidateRect, 1);

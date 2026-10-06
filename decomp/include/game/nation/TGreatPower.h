@@ -140,7 +140,7 @@ public:
   virtual void SortTrackedOrdersByTypePriority(void);
   // slot 0x56 — body 0x004e03a0: runs slot 0x4c then the slot 0x55 sort.
   virtual void MoveCivilians(void); // Mac oracle
-  // slot 0x57 — body 0x004e03d0: field900 = transportCapacity / 5.
+  // slot 0x57 — body 0x004e03d0: armyTransportRemaining = transportCapacity / 5.
   virtual void MoveArmy(void); // Mac oracle
   virtual void SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(int targetNationSlot,
                                                                             int isBoycottEnabled);
@@ -338,12 +338,12 @@ public:
   int pendingCommitmentCost;
   signed char pressureCounter;
   unsigned char pad_8fd[3];
-  int field900;
-  unsigned char field904;
+  int armyTransportRemaining;
+  unsigned char turnFinished;
   unsigned char pad_905[3];
   TPtrList* turnSummaryQueue;
   TSortedList* turnStartEvents; // +0x90c; owns TTurnStartEvent payloads
-  int field910;
+  int specialResourceTradeBalance;
   int aidAllocationTotal;
   unsigned char colonyBoycottFlags[kNationSlotCount];
   unsigned char pad_92f;

@@ -937,14 +937,14 @@ bool TArmyMgr::CommitCityActionGateCostIfAffordable(int contextArg) {
   }
 
   TGreatPower* nation = g_apNationStates[nationSlot];
-  if (totalCost <= nation->field900) {
+  if (totalCost <= nation->armyTransportRemaining) {
     this->SelectMovableUnitOnCurrentTileAndPlaySfx(contextArg);
-    nation->field900 -= totalCost;
+    nation->armyTransportRemaining -= totalCost;
     return true;
   }
 
   CString currentAmountString;
-  currentAmountString.Format("%d", nation->field900);
+  currentAmountString.Format("%d", nation->armyTransportRemaining);
   CString costString;
   costString.Format("%d", totalCost);
   CString templateText;
@@ -1472,7 +1472,7 @@ void TArmyMgr::MarchSelectedArmies(short tileIndex) {
             !g_pGlobalMapState->IsProvinceAdjacentTo(unit->tileIndex06, cityRecordIndex)) {
           short cost = static_cast<TMilitaryUnit*>(unit)->GetArmsCarried();
           short activeNationId3 = g_pSimMgr->GetPlayerCountry();
-          g_apNationStates[activeNationId3]->field900 += cost;
+          g_apNationStates[activeNationId3]->armyTransportRemaining += cost;
         }
         unit->SetOrders(kUnitOrderIdle, -1);
       }

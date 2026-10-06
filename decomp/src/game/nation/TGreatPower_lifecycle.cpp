@@ -131,9 +131,9 @@ TGreatPower::TGreatPower()
       reservedTransportCapacity(0), grantTotalCost(0), unfilledTradeOfferCount(0),
       budgetPoolBase(0), budgetPoolDelta(0), turnEventQueue(0), proposalQueue(0), city(0),
       townMarkerList(0), trackedObjectList(0), scenarioInitFlag(0), diplomacyBudgetBase(0),
-      escalationCounter(0), pendingCommitmentCost(0), pressureCounter(0), field900(0),
-      turnSummaryQueue(0), turnStartEvents(0), field910(0), aidAllocationTotal(0),
-      militaryExpenses(0) {
+      escalationCounter(0), pendingCommitmentCost(0), pressureCounter(0), armyTransportRemaining(0),
+      turnSummaryQueue(0), turnStartEvents(0), specialResourceTradeBalance(0),
+      aidAllocationTotal(0), militaryExpenses(0) {
   // TCountry base scalars (identity strings constructed by the TCountry ctor).
   this->nationSlot = 0;
   this->encodedNationSlot = 0;
@@ -218,7 +218,7 @@ void TGreatPower::IGreatPower(short nationSlotIndex, short humanControlledFlag) 
 
   this->grantTotalCost = 0;
   this->transportCapacity = 0x0F;
-  this->field900 = 0x0F;
+  this->armyTransportRemaining = 0x0F;
 
   this->turnEventQueue = new TPtrList();
   this->turnEventQueue->recordSize = 4;
@@ -266,7 +266,7 @@ void TGreatPower::IGreatPower(short nationSlotIndex, short humanControlledFlag) 
     this->enemyFlags[candidateIndex] = 0;
     ++candidateIndex;
   }
-  this->field904 = 1;
+  this->turnFinished = 1;
 
   this->turnSummaryQueue = new TPtrList();
   this->turnSummaryQueue->recordSize = 8;
@@ -515,8 +515,8 @@ void TGreatPower::ReadFrom(TStream* stream) {
   stream->ReadBytes(&this->escalationCounter, 1);
   stream->ReadBytes(&this->pendingCommitmentCost, 4);
   stream->ReadBytes(&this->pressureCounter, 1);
-  stream->ReadBytes(&this->field900, 4);
-  stream->ReadBytes(&this->field904, 1);
+  stream->ReadBytes(&this->armyTransportRemaining, 4);
+  stream->ReadBytes(&this->turnFinished, 1);
 
   if (g_nSaveFormatVersion > 0x0E) {
     this->turnStartEvents->ReadFrom(stream);
@@ -532,7 +532,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
   }
 
   if (g_nSaveFormatVersion >= 0x26) {
-    stream->ReadBytes(&this->field910, 4);
+    stream->ReadBytes(&this->specialResourceTradeBalance, 4);
     stream->ReadBytes(&this->aidAllocationTotal, 4);
   }
   if (g_nSaveFormatVersion > 0x2F) {
@@ -630,8 +630,8 @@ void TGreatPower::WriteTo(TStream* stream) {
   stream->WriteBytes(&this->escalationCounter, 1);
   stream->WriteBytes(&this->pendingCommitmentCost, 4);
   stream->WriteBytes(&this->pressureCounter, 1);
-  stream->WriteBytes(&this->field900, 4);
-  stream->WriteBytes(&this->field904, 1);
+  stream->WriteBytes(&this->armyTransportRemaining, 4);
+  stream->WriteBytes(&this->turnFinished, 1);
 
   this->turnStartEvents->WriteTo(stream);
   int eventCount = this->turnStartEvents->GetCount();
@@ -642,7 +642,7 @@ void TGreatPower::WriteTo(TStream* stream) {
     stream->WriteObject(event, 0);
   }
 
-  stream->WriteBytes(&this->field910, 4);
+  stream->WriteBytes(&this->specialResourceTradeBalance, 4);
   stream->WriteBytes(&this->aidAllocationTotal, 4);
   stream->WriteBytes(this->colonyBoycottFlags, 0x17);
   stream->WriteBytes(&this->militaryExpenses, 4);

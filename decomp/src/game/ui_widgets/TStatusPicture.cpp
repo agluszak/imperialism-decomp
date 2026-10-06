@@ -177,7 +177,7 @@ void TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale() {
         values94[i] = static_cast<int>(nation->merchantCapacity) << 2;
         break;
       case 5:
-        values94[i] = nation->field910 << 2;
+        values94[i] = nation->specialResourceTradeBalance << 2;
         break;
       case 6: {
         TCity* city = (nation == nullptr) ? nullptr : nation->city;

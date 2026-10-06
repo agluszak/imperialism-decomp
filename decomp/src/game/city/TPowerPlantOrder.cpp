@@ -11,7 +11,7 @@ IMPLEMENT_DYNCREATE(TPowerPlantOrder, TProductionOrder)
 // FUNCTION: IMPERIALISM 0x004b7ab0
 void TPowerPlantOrder::IPowerPlantOrder(TCity* city) {
   TProductionOrder::IProductionOrder(city, 0);
-  field4c = 0;
+  desiredQuantity = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b7b00
@@ -32,7 +32,7 @@ bool TPowerPlantOrder::SetQuantity(short quantity) {
     return false;
   }
 
-  field4c = quantity;
+  desiredQuantity = quantity;
   ownerCity->cityStockFuel = static_cast<short>(ownerCity->cityStockFuel - delta / 6);
   ownerCity->VerifyStocks();
 
@@ -51,11 +51,11 @@ void TPowerPlantOrder::Produce() {}
 // FUNCTION: IMPERIALISM 0x004b7c40
 void TPowerPlantOrder::Restock() {
   short maxOrder = MaxOrder();
-  short savedDerived = field4c;
+  short savedDerived = desiredQuantity;
   quantity = 0;
   if (maxOrder < savedDerived) {
     SetQuantity(maxOrder);
-    field4c = savedDerived;
+    desiredQuantity = savedDerived;
   } else {
     SetQuantity(savedDerived);
   }
@@ -70,11 +70,11 @@ void TPowerPlantOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
 // FUNCTION: IMPERIALISM 0x004b7cc0
 void TPowerPlantOrder::WriteTo(TStream* stream) {
   TProductionOrder::WriteTo(stream);
-  stream->WriteBytes(&field4c, 2);
+  stream->WriteBytes(&desiredQuantity, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x004b7d40
 void TPowerPlantOrder::ReadFrom(TStream* stream) {
   TProductionOrder::ReadFrom(stream);
-  stream->ReadBytes(&field4c, 2);
+  stream->ReadBytes(&desiredQuantity, 2);
 }

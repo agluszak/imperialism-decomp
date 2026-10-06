@@ -302,7 +302,7 @@ TMapDialog::TMapDialog() : TWorldView() {
   suppressMarkerOverlay = false;
   overlayObject = 0;
   viewportOrigin.y = 0;
-  SplitTileIndexToRowAndColumn(g_pGlobalMapState->field6, reinterpret_cast<short*>(&row),
+  SplitTileIndexToRowAndColumn(g_pGlobalMapState->mapViewOriginTile, reinterpret_cast<short*>(&row),
                                reinterpret_cast<short*>(&col));
   SetMapViewCellCoordinates(col, row);
   unresolvedWord354 = 0;
@@ -683,7 +683,8 @@ void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mod
   viewportOrigin.y = static_cast<short>(row) << 6;
   viewportOrigin.x = static_cast<short>(col) << 6;
 
-  g_pGlobalMapState->field6 = static_cast<short>(ComputeStridedRecordAddress6C(col, row));
+  g_pGlobalMapState->mapViewOriginTile =
+      static_cast<short>(ComputeStridedRecordAddress6C(col, row));
 
   if (ownerContext != 0) {
     RECT rect;

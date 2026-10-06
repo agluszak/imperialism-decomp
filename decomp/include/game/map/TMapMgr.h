@@ -185,9 +185,9 @@ public:
   // construction/stream load so the map-data readiness path rebuilds it once.
   bool strategicMapPalettePreviewReady;   // +0x04
   unsigned char pad5;                     // +0x05
-  short field6;                           // +0x06 -- 2-byte stream read
-  unsigned char field8;                   // +0x08 -- 1-byte stream read
-  unsigned char field9;                   // +0x09 -- 1-byte stream read
+  short mapViewOriginTile;                // +0x06
+  unsigned char mapDataReady;             // +0x08
+  unsigned char recruitSearchActive;      // +0x09
   unsigned char pad0a[2];                 // +0x0a -- alignment gap before the +0x0c pointer
   TTerrainStateRecord* terrainStateTable; // +0x0c
   bool HasAdjacentProvinceOwnedByNation(int provinceIndex, int ownerNationCode);
