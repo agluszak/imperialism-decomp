@@ -39,7 +39,7 @@ void TInfoPanelView::DoPostCreate(int arg) {
     TView* child = FindSubView(kControlTagOvr0 + kOvrTagOffsets[i]);
     child->AssertValid();
     CString text;
-    g_pSimMgr->GetString(0x2733, (short)(0x4e + i), &text);
+    g_pSimMgr->GetString(0x2733, static_cast<short>(0x4e + i), &text);
     SetControlHoverHelpText(text, child);
   }
 
@@ -236,7 +236,7 @@ void TInfoPanelView::Setup() {
 // FUNCTION: IMPERIALISM 0x004fad60
 void TInfoPanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
-    short selectedOverlayMode = (short)sourceHandler->controlTag - 0x7230;
+    short selectedOverlayMode = static_cast<short>(sourceHandler->controlTag) - 0x7230;
     diplomacyMapView->interactionMode = selectedOverlayMode;
     diplomacyMapView->InvalidateCityDialogRectRegion(&diplomacyMapView->mapViewportRect, 1);
     this->selectedOverlayMode = selectedOverlayMode;

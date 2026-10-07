@@ -156,7 +156,7 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
         FailNilPointerInUSmallViews(kAssertLineTradeSellIncCap);
       }
 
-      if (sellValue < (int)maxByNationMetric) {
+      if (sellValue < static_cast<int>(maxByNationMetric)) {
         int capacityValue = capacityControl->UpdateControlCachedIntFromWindowText();
         if (sellValue < capacityValue) {
           sellControl->Show(sellValue + 1 != 0, 1);
@@ -184,8 +184,8 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
   case 0x67:
     g_pViewMgr->AddPendingTurnOverlayCode(-1);
     if (g_pViewMgr->GetPendingTurnOverlayCode() == 3) {
-      for (int i = 0;
-           i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
+      for (int i = 0; i < static_cast<int>(sizeof(kTradeSellPropagationTags) /
+                                           sizeof(kTradeSellPropagationTags[0]));
            ++i) {
         TTradeCluster* rowControl =
             static_cast<TTradeCluster*>(ownerPanel->FindSubView(kTradeSellPropagationTags[i]));
@@ -199,8 +199,8 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
   case 0x68:
     g_pViewMgr->AddPendingTurnOverlayCode(1);
     if (g_pViewMgr->GetPendingTurnOverlayCode() == 4) {
-      for (int i = 0;
-           i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
+      for (int i = 0; i < static_cast<int>(sizeof(kTradeSellPropagationTags) /
+                                           sizeof(kTradeSellPropagationTags[0]));
            ++i) {
         TTradeCluster* rowControl =
             static_cast<TTradeCluster*>(ownerPanel->FindSubView(kTradeSellPropagationTags[i]));
@@ -221,10 +221,10 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     if (capacityControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineTradeSellMoveSell);
     }
-    short cappedValue = (short)capacityControl->UpdateControlCachedIntFromWindowText();
-    int applyValue = (int)maxByNationMetric;
-    if ((int)cappedValue <= (int)maxByNationMetric) {
-      applyValue = (int)cappedValue;
+    short cappedValue = static_cast<short>(capacityControl->UpdateControlCachedIntFromWindowText());
+    int applyValue = static_cast<int>(maxByNationMetric);
+    if (static_cast<int>(cappedValue) <= static_cast<int>(maxByNationMetric)) {
+      applyValue = static_cast<int>(cappedValue);
     }
 
     TControl* sellControl = static_cast<TControl*>(this->FindSubView(kControlTagSell));
@@ -476,7 +476,7 @@ void TTradeCluster::ShowOfferHandle() {
 void TTradeCluster::SetMoveAmount(short metricClampMax) {
   short activeNationSlot = g_pSimMgr->GetPlayerCountry();
   TGreatPower* activeNationState = g_apNationStates[activeNationSlot];
-  int tradeMetricValue = (int)activeNationState->GetStockpile(tradeMetricSlot);
+  int tradeMetricValue = static_cast<int>(activeNationState->GetStockpile(tradeMetricSlot));
   if (tradeMetricValue > metricClampMax) {
     tradeMetricValue = metricClampMax;
   }
@@ -501,9 +501,9 @@ void TTradeCluster::SetMoveAmount(short metricClampMax) {
     int barSteps = barControl->auxValueA;
     float barScale = 9999.0f;
     if (barSteps != 0) {
-      barScale = (float)barRange / (float)barSteps;
+      barScale = static_cast<float>(barRange) / static_cast<float>(barSteps);
     }
-    int scaledMetricValue = (int)((float)tradeMetricValue * barScale);
+    int scaledMetricValue = static_cast<int>(static_cast<float>(tradeMetricValue) * barScale);
     barControl->SetAmt(static_cast<short>(scaledMetricValue), static_cast<short>(barRange));
     return;
   }

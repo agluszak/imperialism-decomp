@@ -62,8 +62,8 @@ void TWindow::Show(unsigned char show, bool refresh) {
     WPARAM wParam = show == 0 ? 3 : 2;
     SendMessageA(nativeWindow->m_hWnd, 0x468, wParam, controlTag);
   }
-  if ((int)show != viewEnabled) {
-    viewEnabled = (int)show;
+  if (static_cast<int>(show) != viewEnabled) {
+    viewEnabled = static_cast<int>(show);
     if (refresh) {
       RefreshControl();
     }

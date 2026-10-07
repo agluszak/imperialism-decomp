@@ -1246,7 +1246,7 @@ void TTacticalBattle::FireOn(TTacticalUnit* attackerUnit, TacticalTileIndex targ
 
   if (fortWallTargeted) {
     // Wall attack: erode the wall's strength pool and play the hit effect.
-    DamageFort(fortWallTileOnLine, (int)(0.001f * attackPower));
+    DamageFort(fortWallTileOnLine, static_cast<int>(0.001f * attackPower));
     if (battleView != 0) {
       battleView->MakeTileVisible(targetTileIndex);
       g_pSfxPlaybackSystem->PlaySoundEffect(
@@ -1268,7 +1268,7 @@ void TTacticalBattle::FireOn(TTacticalUnit* attackerUnit, TacticalTileIndex targ
   if (fortWallTileOnLine != 0 && tileGrid[fortWallTileOnLine].deployMark > 1 &&
       fortStrengthPoints[fortWallTileOnLine / 29 / 2] > 0) {
     if (g_afTacticalDirectFireFlagByCategory[attackerCategory] == 0.0f) {
-      DamageFort(fortWallTileOnLine, (int)(0.001f * attackPower));
+      DamageFort(fortWallTileOnLine, static_cast<int>(0.001f * attackPower));
     }
     defenderCategory = g_awTacticalUnitCategoryCodeBySlot[defenderUnit->unitType];
     damage =
@@ -1304,7 +1304,7 @@ void TTacticalBattle::FireOn(TTacticalUnit* attackerUnit, TacticalTileIndex targ
       if (leaderUnit->unitType >= 0x1b && leaderUnit->state1c == 0) {
         double leaderValue = 2.0 - leaderUnit->qualityLevel * 0.2 - 0.2;
         if (leaderValue < leaderMoraleMultiplier) {
-          leaderMoraleMultiplier = (float)leaderValue;
+          leaderMoraleMultiplier = static_cast<float>(leaderValue);
         }
       }
     }
@@ -1322,8 +1322,8 @@ void TTacticalBattle::FireOn(TTacticalUnit* attackerUnit, TacticalTileIndex targ
   }
 
   attackerUnit->AssertValid();
-  LaFireOn(attackerUnit, defenderUnit, targetTileIndex, (int)damage, (int)moraleDamage,
-           captureEffectCode, false);
+  LaFireOn(attackerUnit, defenderUnit, targetTileIndex, static_cast<int>(damage),
+           static_cast<int>(moraleDamage), captureEffectCode, false);
   TTacticalPlayer* postActionPlayer = (defenderUnit->side == 0) ? players[0] : players[1];
   postActionPlayer->skipRequested = false;
 }
@@ -1807,7 +1807,7 @@ void TTacticalBattle::LaRally(TArmyTacUnit* unit, int newMorale, int newState, b
 TacticalTileIndex
 TTacticalBattle::FindFortWallTileCrossedByFiringLine(TacticalTileIndex targetTileIndex,
                                                      TacticalTileIndex attackerTileIndex) {
-  float wallX = (float)(2 * battlefieldColumnCount - 12);
+  float wallX = static_cast<float>(2 * battlefieldColumnCount - 12);
   int lineX1 = 2 * (targetTileIndex % 29) + ((targetTileIndex / 29) & 1);
   int lineY1 = 2 * (targetTileIndex / 29);
   int lineX2 = 2 * (attackerTileIndex % 29) + ((attackerTileIndex / 29) & 1);
@@ -1824,19 +1824,20 @@ TTacticalBattle::FindFortWallTileCrossedByFiringLine(TacticalTileIndex targetTil
     lineY2 = lineY1;
     lineY1 = swapTemp;
   }
-  float leftXF = (float)lineX2;
+  float leftXF = static_cast<float>(lineX2);
   if (leftXF > wallX) {
     return 0;
   }
-  if ((float)lineX1 < wallX) {
+  if (static_cast<float>(lineX1) < wallX) {
     return 0;
   }
   if (lineY1 == lineY2) {
     return tacticalTileStride * lineY1 / 2 + battlefieldColumnCount - 6;
   }
   return battlefieldColumnCount -
-         (int)(((float)lineY2 +
-                (wallX - leftXF) * ((float)(lineY1 - lineY2) / (float)(lineX1 - lineX2))) *
+         (int)((static_cast<float>(lineY2) +
+                (wallX - leftXF) *
+                    (static_cast<float>(lineY1 - lineY2) / static_cast<float>(lineX1 - lineX2))) *
                -0.5f) *
              tacticalTileStride -
          6;

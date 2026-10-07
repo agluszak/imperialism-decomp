@@ -758,7 +758,7 @@ BOOL WarnLowDiskSpaceAndConfirmContinue() {
   }
   if (getDiskFreeSpaceEx != 0 &&
       getDiskFreeSpaceEx(windowsDirectory, &freeBytesAvailable, &totalBytes, &totalFreeBytes)) {
-    freeMegabytes = (int)(freeBytesAvailable.QuadPart / (1024UL * 1024UL));
+    freeMegabytes = static_cast<int>(freeBytesAvailable.QuadPart / (1024UL * 1024UL));
   } else {
     DWORD sectorsPerCluster = 0;
     DWORD bytesPerSector = 0;
@@ -767,7 +767,7 @@ BOOL WarnLowDiskSpaceAndConfirmContinue() {
     if (GetDiskFreeSpaceA(windowsDirectory, &sectorsPerCluster, &bytesPerSector,
                           &numberOfFreeClusters, &totalClusters)) {
       const DWORD freeBytes = sectorsPerCluster * bytesPerSector * numberOfFreeClusters;
-      freeMegabytes = (int)(freeBytes / (1024UL * 1024UL));
+      freeMegabytes = static_cast<int>(freeBytes / (1024UL * 1024UL));
     }
   }
   if (kernel32 != 0) {

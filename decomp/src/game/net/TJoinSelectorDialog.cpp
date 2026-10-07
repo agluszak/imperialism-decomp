@@ -55,11 +55,12 @@ void TJoinSelectorDialog::AddJoinableGameOptionEntry(const char* label,
                                                      WNetSelectionRecord* record) {
   TRadioTextCluster* gameControl = static_cast<TRadioTextCluster*>(FindSubView(kControlTagGame));
   gameControl->AssertValid();
-  unsigned long recordTag = (unsigned long)record;
-  TRadioText* item = gameControl->AddItem(recordTag, (int)record, label, 0x12, -1);
+  unsigned long recordTag = reinterpret_cast<unsigned long>(record);
+  TRadioText* item =
+      gameControl->AddItem(recordTag, reinterpret_cast<int>(record), label, 0x12, -1);
   ApplyUiTextStyleAndThemeFlags(item, 0, 0xc, 0x2b6b, 0x2b6c);
   item->SetJustification(-2, false);
-  gameControl->SetSelectedTextOptionByTag((int)record, false);
+  gameControl->SetSelectedTextOptionByTag(reinterpret_cast<int>(record), false);
 }
 
 // FUNCTION: IMPERIALISM 0x0054e970

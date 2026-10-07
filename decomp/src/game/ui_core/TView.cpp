@@ -677,7 +677,7 @@ TObject* TView::ShallowClone() {
 // FUNCTION: IMPERIALISM 0x0048c000
 bool TView::EvaluateControlInputGate() {
   if (hoverHelpEnabled == 0) {
-    if ((char)inputGateFlag != 0 && IsEnabled() != 0) {
+    if (static_cast<char>(inputGateFlag) != 0 && IsEnabled() != 0) {
       return true;
     }
     if (!HasRenderableParentAndContent()) {

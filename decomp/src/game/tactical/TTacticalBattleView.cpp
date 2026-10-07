@@ -1084,16 +1084,17 @@ void TTacticalBattleView::MakeTileVisible(TacticalTileIndex tileIndex) {
   if (screenColumn >= firstVisibleColumn + 2 && screenColumn <= lastVisibleColumn - 2) {
     return;
   }
-  short tileWidth = (short)tileWidthPx; // original loads the low word once and reuses it
-  viewOriginX = (short)(screenColumn * tileWidth - frameWidth / 2);
+  short tileWidth =
+      static_cast<short>(tileWidthPx); // original loads the low word once and reuses it
+  viewOriginX = static_cast<short>(screenColumn * tileWidth - frameWidth / 2);
   if (viewOriginX < 0) {
     viewOriginX = 0;
   } else if (viewOriginX > scrollableContentWidth - frameWidth) {
-    viewOriginX = (short)(scrollableContentWidth - frameWidth);
+    viewOriginX = static_cast<short>(scrollableContentWidth - frameWidth);
   }
   // Snap the origin back to a whole-tile boundary.
   if (viewOriginX % tileWidthPx != 0) {
-    viewOriginX = (short)((viewOriginX / tileWidthPx) * tileWidth);
+    viewOriginX = static_cast<short>((viewOriginX / tileWidthPx) * tileWidth);
   }
   RefreshControl();
 }

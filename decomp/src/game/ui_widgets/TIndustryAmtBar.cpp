@@ -35,7 +35,7 @@ void TIndustryAmtBar::DoPostCreate(int arg) {
   int mappedTag = g_pTradeSummarySelectionMap[summaryTagIndex];
   int summaryTag = this->ownerContext->controlTag;
   while (mappedTag != summaryTag) {
-    summaryTagIndex = (short)(summaryTagIndex + 1);
+    summaryTagIndex = static_cast<short>(summaryTagIndex + 1);
     mappedTag = g_pTradeSummarySelectionMap[summaryTagIndex];
   }
 
@@ -44,13 +44,13 @@ void TIndustryAmtBar::DoPostCreate(int arg) {
       static_cast<TItemOrder*>(selectedMetricRecord)->productionSlot);
 
   short stepValue = selectedMetricRecord->MaxOrder();
-  short productionCap = (short)productionValue;
+  short productionCap = static_cast<short>(productionValue);
   int rangeRaw = this->frameWidth;
-  stepOrCurrentValue = (short)((stepValue * rangeRaw) / productionCap);
+  stepOrCurrentValue = static_cast<short>((stepValue * rangeRaw) / productionCap);
 
   auxValueA = productionCap;
   auxValueB = 0x3a;
-  rangeOrMaxValue = (short)((selectedMetricRecord->quantity * rangeRaw) / productionCap);
+  rangeOrMaxValue = static_cast<short>((selectedMetricRecord->quantity * rangeRaw) / productionCap);
 
   TView::DoPostCreate(arg);
 }
@@ -76,7 +76,7 @@ void TIndustryAmtBar::DrawAmt() {
         g_pViewMgr->SetForeColor(0);
         SetQuickDrawPenSizeAndMarkDirty(1, 4);
         SetQuickDrawTextOriginWithContextOffset(0, 1);
-        DrawCenteredGuideLineOnMapDc((short)(styleValueAt60 - 1), 1);
+        DrawCenteredGuideLineOnMapDc(static_cast<short>(styleValueAt60 - 1), 1);
         ResetQuickDrawStrokeState();
       }
 
@@ -85,7 +85,7 @@ void TIndustryAmtBar::DrawAmt() {
       SetQuickDrawTextOriginWithContextOffset(overlayOffsetX, 0);
       SetQuickDrawFillColor(0);
       ResetQuickDrawStrokeState();
-      DrawCenteredGuideLineOnMapDc(overlayOffsetX, (short)(overlayOffsetY - 2));
+      DrawCenteredGuideLineOnMapDc(overlayOffsetX, static_cast<short>(overlayOffsetY - 2));
 
       SetClip(surface.tempRgn);
       TWindow* owner = control->GetWindow();

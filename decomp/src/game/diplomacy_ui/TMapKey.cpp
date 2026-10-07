@@ -87,8 +87,8 @@ void TMapKey::Draw(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x004fd000
 void TMapKey::RenderMapHintOverlayMode0() {
   TView* anchor = this->ownerContext;
-  short baseX = (short)this->ownerLocalX + (short)anchor->ownerLocalX;
-  short baseY = (short)this->ownerLocalY + (short)anchor->ownerLocalY;
+  short baseX = static_cast<short>(this->ownerLocalX) + static_cast<short>(anchor->ownerLocalX);
+  short baseY = static_cast<short>(this->ownerLocalY) + static_cast<short>(anchor->ownerLocalY);
 
   CString label;
   COLORREF shadowStyle = 0;
@@ -122,8 +122,8 @@ void TMapKey::RenderMapHintOverlayMode0() {
 // FUNCTION: IMPERIALISM 0x004fd220
 void TMapKey::DrawTreatyPanel() {
   TView* anchor = this->ownerContext;
-  short baseX = (short)this->ownerLocalX + (short)anchor->ownerLocalX;
-  short baseY = (short)this->ownerLocalY + (short)anchor->ownerLocalY;
+  short baseX = static_cast<short>(this->ownerLocalX) + static_cast<short>(anchor->ownerLocalX);
+  short baseY = static_cast<short>(this->ownerLocalY) + static_cast<short>(anchor->ownerLocalY);
   short descriptorIndex = *(short*)((char*)anchor->ownerContext + 0x98);
 
   short xTable[7] = {0x169, 0x169, 0, 0x1e5, 0x1e5, 0x1e5, 0x1e5};
@@ -141,7 +141,7 @@ void TMapKey::DrawTreatyPanel() {
   ResolveUiThemeColor(0x2b68, &shadowStyle);
 
   for (int k = 0; k < 7; ++k) {
-    g_pSimMgr->GetString(0x2733, (short)(6 + k), &label);
+    g_pSimMgr->GetString(0x2733, static_cast<short>(6 + k), &label);
     short x = xTable[k] - baseX;
     short y = yTable[k] - baseY;
     SetQuickDrawColorAndSyncGlobals(shadowStyle);
@@ -170,8 +170,8 @@ void TMapKey::DrawTreatyPanel() {
 // FUNCTION: IMPERIALISM 0x004fd5c0
 void TMapKey::RenderMapHintOverlayMode1() {
   TView* anchor = this->ownerContext;
-  short baseX = (short)this->ownerLocalX + (short)anchor->ownerLocalX;
-  short baseY = (short)this->ownerLocalY + (short)anchor->ownerLocalY;
+  short baseX = static_cast<short>(this->ownerLocalX) + static_cast<short>(anchor->ownerLocalX);
+  short baseY = static_cast<short>(this->ownerLocalY) + static_cast<short>(anchor->ownerLocalY);
   short descriptorIndex = *(short*)((char*)anchor->ownerContext + 0x98);
 
   short xTable[3] = {0, 0x1f2, 0x16b};
@@ -189,7 +189,7 @@ void TMapKey::RenderMapHintOverlayMode1() {
   ResolveUiThemeColor(0x2b68, &shadowStyle);
 
   for (int k = 0; k < 3; ++k) {
-    g_pSimMgr->GetString(0x2733, (short)(0xe + k), &label);
+    g_pSimMgr->GetString(0x2733, static_cast<short>(0xe + k), &label);
     short x = xTable[k] - baseX;
     short y = yTable[k] - baseY;
     SetQuickDrawColorAndSyncGlobals(shadowStyle);
@@ -218,8 +218,8 @@ void TMapKey::RenderMapHintOverlayMode1() {
 // FUNCTION: IMPERIALISM 0x004fd910
 void TMapKey::RenderMapHintOverlayMode2() {
   TView* anchor = this->ownerContext;
-  short baseX = (short)this->ownerLocalX + (short)anchor->ownerLocalX;
-  short baseY = (short)this->ownerLocalY + (short)anchor->ownerLocalY;
+  short baseX = static_cast<short>(this->ownerLocalX) + static_cast<short>(anchor->ownerLocalX);
+  short baseY = static_cast<short>(this->ownerLocalY) + static_cast<short>(anchor->ownerLocalY);
   short descriptorIndex = *(short*)((char*)anchor->ownerContext + 0x98);
 
   short xTable[3] = {0x153, 0x90, 0x198};
@@ -246,7 +246,7 @@ void TMapKey::RenderMapHintOverlayMode2() {
   DrawTextWithCachedQuickDrawStyleState(&label);
 
   for (int k = 0; k < 3; ++k) {
-    g_pSimMgr->GetString(0x2733, (short)(0x13 + k), &label);
+    g_pSimMgr->GetString(0x2733, static_cast<short>(0x13 + k), &label);
     short x = xTable[k];
     short y = yTable[k];
     SetQuickDrawColorAndSyncGlobals(shadowStyle);

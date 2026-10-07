@@ -363,7 +363,7 @@ void TCouncilView::NextTick() {
 void TCouncilView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                                        RgnHandle hitArg) {
   TView::HandleCursorHoverSelectionByChildHitTestAndFallback(point, hitArg);
-  if ((int)visibleVoteTier < councilNationCount + 2) {
+  if (static_cast<int>(visibleVoteTier) < councilNationCount + 2) {
     SetCursor(g_pViewMgr->turnEventCursors[26]);
   }
 }

@@ -28,10 +28,10 @@ void TShipAmtBar::DoPostCreate(int arg) {
   TCity* province = nationState != 0 ? nationState->GetCityState() : 0;
   selectedMetricRecord = province->shipOrderSlots[0];
   short productionCap = province->productionSummary->strength;
-  stepOrCurrentValue = (short)this->frameWidth;
+  stepOrCurrentValue = static_cast<short>(this->frameWidth);
   auxValueA = productionCap;
   auxValueB = 0x3a;
-  rangeOrMaxValue = (short)(0 / (int)productionCap);
+  rangeOrMaxValue = static_cast<short>(0 / static_cast<int>(productionCap));
   TView::DoPostCreate(arg);
 }
 
@@ -55,14 +55,14 @@ void TShipAmtBar::DrawAmt() {
         SetQuickDrawTextOriginWithContextOffset(0, 1);
         g_pViewMgr->SetForeColor(static_cast<short>(auxValueB));
         SetQuickDrawPenSizeAndMarkDirty(1, 4);
-        DrawCenteredGuideLineOnMapDc((short)(rangeOrMaxValue - 1), 1);
+        DrawCenteredGuideLineOnMapDc(static_cast<short>(rangeOrMaxValue - 1), 1);
         ResetQuickDrawStrokeState();
       }
 
       SetQuickDrawTextOriginWithContextOffset(stepOrCurrentValue, 0);
       SetQuickDrawFillColor(0);
       ResetQuickDrawStrokeState();
-      DrawCenteredGuideLineOnMapDc(stepOrCurrentValue, (short)(frameHeight - 2));
+      DrawCenteredGuideLineOnMapDc(stepOrCurrentValue, static_cast<short>(frameHeight - 2));
 
       SetClip(surface.tempRgn);
       TView* owner = control->GetWindow();

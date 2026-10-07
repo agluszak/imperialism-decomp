@@ -45,7 +45,7 @@ void TRailCluster::DoPostCreate(int styleSeed) {
   TGreatPower* activeNationState = g_apNationStates[activeNationId];
   TCity* city = activeNationState == 0 ? 0 : activeNationState->GetCityState();
 
-  unsigned int summaryTag = (unsigned int)this->controlTag;
+  unsigned int summaryTag = static_cast<unsigned int>(this->controlTag);
   TPopulationMgr* population = city->productionSummary;
   if (summaryTag < kControlTagPopv) {
     if (summaryTag == kSummaryTagPopu) {
@@ -105,7 +105,7 @@ void TRailCluster::SetMoveAmount(short dragValue, bool updateFlag) {
     selectedOrder->SetQuantity(static_cast<short>(quantizedDragValue));
   }
 
-  if (((char)updateFlag == 0) && (selectedOrder->quantity == previousValue)) {
+  if ((static_cast<char>(updateFlag) == 0) && (selectedOrder->quantity == previousValue)) {
     return;
   }
 
@@ -114,7 +114,7 @@ void TRailCluster::SetMoveAmount(short dragValue, bool updateFlag) {
     FailNilPointerInUSmallViews(0xcf2);
   }
 
-  moveControl->SetControlValue((int)selectedOrder->quantity, 0);
+  moveControl->SetControlValue(static_cast<int>(selectedOrder->quantity), 0);
 
   CRect moveBoundsRect;
   RECT moveInvalidRect;

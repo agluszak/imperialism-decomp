@@ -35,13 +35,13 @@ void TRailAmtBar::DoPostCreate(int arg) {
   int summaryTag = this->ownerContext->controlTag;
 
   short recordIndex = 0;
-  if ((unsigned int)summaryTag < kControlTagPopv) {
+  if (static_cast<unsigned int>(summaryTag) < kControlTagPopv) {
     if (summaryTag == kSummaryTagPopu) {
       recordIndex = 0x3c;
     } else if (summaryTag == kSummaryTagFood) {
       recordIndex = 7;
     }
-  } else if ((unsigned int)summaryTag < kControlTagProg) {
+  } else if (static_cast<unsigned int>(summaryTag) < kControlTagProg) {
     if (summaryTag == kSummaryTagProf) {
       recordIndex = 0x18;
     } else if (summaryTag == kSummaryTagPowe) {
@@ -70,15 +70,16 @@ void TRailAmtBar::DoPostCreate(int arg) {
     stepOrCurrentValue = 9999;
   } else {
     short selectedStep = selectedMetricRecord->MaxOrder();
-    stepOrCurrentValue =
-        (short)(((int)selectedStep * this->frameWidth) / (int)productionOrCapValue);
+    stepOrCurrentValue = (short)((static_cast<int>(selectedStep) * this->frameWidth) /
+                                 static_cast<int>(productionOrCapValue));
   }
   auxValueA = productionOrCapValue;
   if (productionOrCapValue == 0) {
     rangeOrMaxValue = 9999;
   } else {
-    rangeOrMaxValue = (short)((this->frameWidth * (int)selectedMetricRecord->quantity) /
-                              (int)productionOrCapValue);
+    rangeOrMaxValue =
+        (short)((this->frameWidth * static_cast<int>(selectedMetricRecord->quantity)) /
+                static_cast<int>(productionOrCapValue));
   }
   auxValueB = 0x3a;
   TView::DoPostCreate(arg);
@@ -105,7 +106,7 @@ void TRailAmtBar::DrawAmt() {
         SetQuickDrawTextOriginWithContextOffset(0, 1);
         g_pViewMgr->SetForeColor(0);
         SetQuickDrawPenSizeAndMarkDirty(1, 4);
-        DrawCenteredGuideLineOnMapDc((short)(styleValueAt60 - 1), 1);
+        DrawCenteredGuideLineOnMapDc(static_cast<short>(styleValueAt60 - 1), 1);
         ResetQuickDrawStrokeState();
       }
 
@@ -114,7 +115,7 @@ void TRailAmtBar::DrawAmt() {
       SetQuickDrawTextOriginWithContextOffset(overlayOffsetX, 0);
       SetQuickDrawFillColor(0);
       ResetQuickDrawStrokeState();
-      DrawCenteredGuideLineOnMapDc(overlayOffsetX, (short)(overlayOffsetY - 2));
+      DrawCenteredGuideLineOnMapDc(overlayOffsetX, static_cast<short>(overlayOffsetY - 2));
 
       SetClip(surface.tempRgn);
       TWindow* owner = control->GetWindow();

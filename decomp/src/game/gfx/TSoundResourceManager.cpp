@@ -117,14 +117,14 @@ int TSoundResourceManager::ReadWaveDataAndFormatViaLoaderWithRetry(WaveLoadDescr
 
   int result = m_channels[slot]->Lock(0, m_channelBufferDesc.dwBufferBytes, &audioPtr1,
                                       &audioBytes1, &audioPtr2, &audioBytes2, 0);
-  if (result == (int)DSERR_BUFFERLOST) {
+  if (result == static_cast<int>(DSERR_BUFFERLOST)) {
     m_channels[slot]->Restore();
     result = m_channels[slot]->Lock(0, m_channelBufferDesc.dwBufferBytes, &audioPtr1, &audioBytes1,
                                     &audioPtr2, &audioBytes2, 0);
   }
   if (result == 0) {
     memcpy(audioPtr1, desc->pbWaveData, desc->cbWaveSize);
-    unsigned int fillIndex = (int)desc->cbWaveSize / 2;
+    unsigned int fillIndex = static_cast<int>(desc->cbWaveSize) / 2;
     while (fillIndex < audioBytes1 / 2) {
       ++fillIndex;
       ((short*)audioPtr1)[fillIndex - 1] = 0;

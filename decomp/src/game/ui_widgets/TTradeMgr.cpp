@@ -365,42 +365,46 @@ void TTradeMgr::CalculateNewItemPrice(short item) {
   short via;
   switch (item) {
   case 8:
-    result = (int)this->categoryRows[0].price + (int)this->categoryRows[1].price;
+    result = static_cast<int>(this->categoryRows[0].price) +
+             static_cast<int>(this->categoryRows[1].price);
     via = this->categoryRows[0xd].price;
-    result = ((int)via / 3 + (result / 2) * 3) / 2;
+    result = (static_cast<int>(via) / 3 + (result / 2) * 3) / 2;
     break;
   case 9:
-    result = ((int)this->categoryRows[0xe].price / 3 + this->categoryRows[2].price * 3) / 2;
+    result =
+        (static_cast<int>(this->categoryRows[0xe].price) / 3 + this->categoryRows[2].price * 3) / 2;
     break;
   case 0xa:
     result = this->categoryRows[2].price * 3;
     break;
   case 0xb:
-    result = (int)this->categoryRows[4].price + (int)this->categoryRows[3].price;
+    result = static_cast<int>(this->categoryRows[4].price) +
+             static_cast<int>(this->categoryRows[3].price);
     via = this->categoryRows[0xf].price;
-    result = ((int)via / 3 + (result / 2) * 3) / 2;
+    result = (static_cast<int>(via) / 3 + (result / 2) * 3) / 2;
     break;
   case 0xc:
     result = this->categoryRows[6].price * 3;
     break;
   case 0x10:
-    result = ((int)this->categoryRows[0xf].price + this->categoryRows[0xb].price * 3) / 2;
+    result =
+        (static_cast<int>(this->categoryRows[0xf].price) + this->categoryRows[0xb].price * 3) / 2;
     break;
   default: {
     double weighted = row->adjustedNumOffers;
-    double diff = (double)(int)row->numRequests - weighted;
-    int pw = (int)row->price;
+    double diff = static_cast<double>(row->numRequests) - weighted;
+    int pw = static_cast<int>(row->price);
     if (diff < 0.0) {
-      int a = (int)((double)pw + diff);
-      int b = (int)((1.0 + diff * 0.01) * (double)pw);
+      int a = static_cast<int>(static_cast<double>(pw) + diff);
+      int b = static_cast<int>((1.0 + diff * 0.01) * static_cast<double>(pw));
       result = (a <= b) ? a : b;
     } else {
-      int a = (int)((double)pw + diff);
-      int b = (int)((1.0 + diff * 0.01) * (double)pw);
+      int a = static_cast<int>(static_cast<double>(pw) + diff);
+      int b = static_cast<int>((1.0 + diff * 0.01) * static_cast<double>(pw));
       result = (b <= a) ? a : b;
     }
-    if ((double)result < (double)(int)row->basePrice * 0.1) {
-      result = (int)((double)(int)row->basePrice * 0.1);
+    if (static_cast<double>(result) < static_cast<double>(row->basePrice) * 0.1) {
+      result = static_cast<int>((double)(int)row->basePrice * 0.1);
     }
     break;
   }
@@ -408,7 +412,7 @@ void TTradeMgr::CalculateNewItemPrice(short item) {
   if (result >= 32000) {
     result = 32000;
   }
-  row->price = (short)result;
+  row->price = static_cast<short>(result);
 }
 
 // FUNCTION: IMPERIALISM 0x005b8d40

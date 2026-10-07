@@ -18,7 +18,7 @@ void TUpDownView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previ
   }
 
   unsigned int ticks = GetTickCountDiv16();
-  if (ticks < (unsigned int)(this->repeatTick + 5)) {
+  if (ticks < static_cast<unsigned int>(this->repeatTick + 5)) {
     return;
   }
 

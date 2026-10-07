@@ -103,7 +103,7 @@ void CMainFrame::ConfigureTopLevelWindowStyleAndPlacement(int width, int height)
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
   cs.hMenu = NULL;
   cs.style = 0x02000000;
-  cs.x = (int)0xFFFFFC18;
+  cs.x = static_cast<int>(0xFFFFFC18);
   return CFrameWnd::PreCreateWindow(cs);
 }
 

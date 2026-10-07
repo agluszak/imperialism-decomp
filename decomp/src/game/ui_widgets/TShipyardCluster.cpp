@@ -92,7 +92,7 @@ void TShipyardCluster::SetMoveAmount(short amount) {
 // FUNCTION: IMPERIALISM 0x0058a940
 void TShipyardCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 10) {
-    if (sourceHandler->controlTag == (int)kControlTagRght) {
+    if (sourceHandler->controlTag == static_cast<int>(kControlTagRght)) {
       TNumberText* moveControl = static_cast<TNumberText*>(this->FindSubView(kControlTagMove));
       if (moveControl == 0) {
         GAME_FAIL_NIL_POINTER();
@@ -101,7 +101,7 @@ void TShipyardCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
       this->SetMoveAmount(static_cast<short>(moveValue + 1));
       return;
     }
-    if (sourceHandler->controlTag != (int)kControlTagLeft) {
+    if (sourceHandler->controlTag != static_cast<int>(kControlTagLeft)) {
       TAmtBarCluster::DoEvent(commandId, sourceHandler, event);
       return;
     }
@@ -110,7 +110,7 @@ void TShipyardCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
       GAME_FAIL_NIL_POINTER();
     }
     int moveValue = moveControl->UpdateControlCachedIntFromWindowText();
-    if ((short)moveValue != 0) {
+    if (static_cast<short>(moveValue) != 0) {
       this->SetMoveAmount(static_cast<short>(moveValue - 1));
       return;
     }

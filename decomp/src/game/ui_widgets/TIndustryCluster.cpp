@@ -43,7 +43,7 @@ void TIndustryCluster::DoPostCreate(int styleSeed) {
 
   int mappedSummaryTag = g_pTradeSummarySelectionMap[0];
   while (mappedSummaryTag != this->controlTag) {
-    tagIndex = (short)(tagIndex + 1);
+    tagIndex = static_cast<short>(tagIndex + 1);
     mappedSummaryTag = g_pTradeSummarySelectionMap[tagIndex];
   }
 
@@ -78,7 +78,7 @@ void TIndustryCluster::SetMoveAmount(short dragValue, bool updateControls) {
     FailNilPointerInUSmallViews(0xb42);
   }
 
-  moveControl->SetControlValue((int)selectedOrder->quantity, 0);
+  moveControl->SetControlValue(static_cast<int>(selectedOrder->quantity), 0);
 
   CRect moveBoundsRect;
   RECT moveInvalidRect;

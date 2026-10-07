@@ -161,7 +161,7 @@ unsigned char TAssetMgr::SaveTheGame(const CString& savePath) {
   CAmbitDocument* document = static_cast<CAmbitDocument*>(frame->GetActiveView()->GetDocument());
   TScopedWaitCursor waitCursor;
   document->SetPathName(path, FALSE);
-  unsigned char saved = (unsigned char)document->DoSave(document->GetPathName(), TRUE);
+  unsigned char saved = static_cast<unsigned char>(document->DoSave(document->GetPathName(), TRUE));
   document->SetPathName(g_szSavedDocumentMarker, FALSE);
   return saved;
 }

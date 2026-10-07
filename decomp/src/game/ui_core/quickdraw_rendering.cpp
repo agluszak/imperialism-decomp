@@ -135,7 +135,7 @@ unsigned char* __cdecl WriteDwordBytesReversedToScratchBuffer(unsigned long valu
   unsigned char b3 = ((unsigned char*)&value)[3];
   *(unsigned long*)p = value;
   unsigned char t = p[2];
-  p[3] = (unsigned char)value;
+  p[3] = static_cast<unsigned char>(value);
   p[2] = p[1];
   p[0] = b3;
   p[1] = t;

@@ -136,7 +136,7 @@ UINT WaveCreateFile(char* pszFileName, HMMIO* phmmioOut, WAVEFORMATEX* pwfxDest,
   UINT result;
   MMCKINFO ckOutFact;
 
-  dwFactChunk = (DWORD)-1;
+  dwFactChunk = static_cast<DWORD>(-1);
   *phmmioOut = mmioOpenA(pszFileName, 0, MMIO_ALLOCBUF | MMIO_READWRITE | MMIO_CREATE);
   if (*phmmioOut != 0) {
     pckOutRIFF->fccType = mmioFOURCC('W', 'A', 'V', 'E');
@@ -285,8 +285,8 @@ int WaveCopyUselessChunk(HMMIO hmmioIn, HMMIO hmmioOut, MMCKINFO* pckIn) {
   ckOut.ckid = pckIn->ckid;
   ckOut.cksize = pckIn->cksize;
   if (mmioCreateChunk(hmmioOut, &ckOut, 0) == 0) {
-    if ((DWORD)mmioRead(hmmioIn, pch, pckIn->cksize) == pckIn->cksize) {
-      if ((DWORD)mmioWrite(hmmioOut, pch, pckIn->cksize) == pckIn->cksize) {
+    if (static_cast<DWORD>(mmioRead(hmmioIn, pch, pckIn->cksize)) == pckIn->cksize) {
+      if (static_cast<DWORD>(mmioWrite(hmmioOut, pch, pckIn->cksize)) == pckIn->cksize) {
         if (mmioAscend(hmmioOut, &ckOut, 0) == 0) {
           GlobalUnlock(GlobalHandle(pch));
           GlobalFree(GlobalHandle(pch));

@@ -548,7 +548,7 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
   int tileOffset = 0;
   do {
     char* tiles = mapTileGrid;
-    int cls = (int)tiles[tileOffset + 4];
+    int cls = static_cast<int>(tiles[tileOffset + 4]);
     if ((cls < kNationSlotCount) && (cls) > -1) {
       if (seedFound[cls] == 0) {
         int row = tileIndex / kStrategicMapColumns;
@@ -556,7 +556,7 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
         char wrapFlag = g_pGlobalMapState->hexNeighborWrapHorizontally;
         bool haveCandidate = false;
         for (short dir = 0; dir < 6; ++dir) {
-          int idx = (int)dir;
+          int idx = static_cast<int>(dir);
           int nCol;
           if ((row & 1U) == 0) {
             nCol = g_hexColOffsetEvenRow[idx];
@@ -575,10 +575,10 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
           short nIdx = -1;
           if ((wrapFlag == '\0' || (nCol >= 0 && nCol < kStrategicMapColumns)) && nRow >= 0 &&
               nRow <= 0x3b) {
-            nIdx = (short)nCol + (short)nRow * kStrategicMapColumns;
+            nIdx = static_cast<short>(nCol) + static_cast<short>(nRow) * kStrategicMapColumns;
           }
           if ((nIdx != -1) &&
-              (idx = (int)nIdx, tiles[idx * kTileStride] == kStrategicTerrainWater)) {
+              (idx = static_cast<int>(nIdx), tiles[idx * kTileStride] == kStrategicTerrainWater)) {
             haveCandidate = true;
             int seedRow = idx / kStrategicMapColumns;
             int seedCol = idx % kStrategicMapColumns;
@@ -614,7 +614,7 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
             if (haveCandidate) {
               if ((seedCandidate[cls] == 0) || (g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1,
                                                 (g_mapGenLcgState >> 0xc & 0x7fff) % 5 == 3)) {
-                seedCandidate[cls] = (int)nIdx;
+                seedCandidate[cls] = static_cast<int>(nIdx);
 #ifdef IMPERIALISM_RUNTIME_TESTS
                 RuntimeTerrainMapOracleRecordSeedCandidate(cls, static_cast<int>(nIdx));
 #endif

@@ -51,7 +51,7 @@ void TTraderAmtBar::DoPostCreate(int arg) {
     if (kScenarioRecordTags[recordIndex] == scenarioTag) {
       break;
     }
-    recordIndex = (short)(recordIndex + 1);
+    recordIndex = static_cast<short>(recordIndex + 1);
   }
 
   short merchantCapacity = nationState != 0 ? nationState->merchantCapacity : 0;
@@ -59,8 +59,10 @@ void TTraderAmtBar::DoPostCreate(int arg) {
     stepOrCurrentValue = 0;
   } else {
     short currentValue = nationState->GetStockpile(recordIndex);
-    stepOrCurrentValue = (short)((((int)merchantCapacity - (int)currentValue) * this->frameWidth) /
-                                 (int)merchantCapacity);
+    stepOrCurrentValue =
+        (short)(((static_cast<int>(merchantCapacity) - static_cast<int>(currentValue)) *
+                 this->frameWidth) /
+                static_cast<int>(merchantCapacity));
   }
 
   short gaugeValue = 0;
@@ -70,7 +72,8 @@ void TTraderAmtBar::DoPostCreate(int arg) {
   if (merchantCapacity == 0) {
     rangeOrMaxValue = 0;
   } else {
-    rangeOrMaxValue = (short)((this->frameHeight * (int)gaugeValue) / (int)merchantCapacity);
+    rangeOrMaxValue = (short)((this->frameHeight * static_cast<int>(gaugeValue)) /
+                              static_cast<int>(merchantCapacity));
   }
 
   auxValueA = merchantCapacity;
@@ -84,7 +87,8 @@ short TTraderAmtBar::AdjustForZero(int baseValue, short requestedValue) {
   if (requestedValue > 0) {
     TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
     short merchantCapacity = nationState->merchantCapacity;
-    if ((int)requestedValue < (static_cast<int>(this->frameWidth) / (int)merchantCapacity)) {
+    if (static_cast<int>(requestedValue) <
+        (static_cast<int>(this->frameWidth) / static_cast<int>(merchantCapacity))) {
       if (this->ownerContext->FindSubView(kControlTagSell) != 0) {
         result = 1;
       }
@@ -115,7 +119,7 @@ void TTraderAmtBar::DrawAmt() {
         SetQuickDrawTextOriginWithContextOffset(0, 0);
         g_pViewMgr->SetForeColor(static_cast<short>(styleValueAt66));
         SetQuickDrawPenSizeAndMarkDirty(1, 5);
-        DrawCenteredGuideLineOnMapDc((short)(styleValueAt60 - 1), 0);
+        DrawCenteredGuideLineOnMapDc(static_cast<short>(styleValueAt60 - 1), 0);
         ResetQuickDrawStrokeState();
       }
 

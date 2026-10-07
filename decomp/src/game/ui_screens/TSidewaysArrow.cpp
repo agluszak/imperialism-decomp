@@ -24,14 +24,14 @@ void TSidewaysArrow::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pr
   }
 
   unsigned int tick = GetTickCountDiv16();
-  if (tick < (unsigned int)(repeatDeadlineTick + 5)) {
+  if (tick < static_cast<unsigned int>(repeatDeadlineTick + 5)) {
     return;
   }
 
   tick = GetTickCountDiv16();
-  repeatDeadlineTick = (int)tick;
+  repeatDeadlineTick = static_cast<int>(tick);
   if (phase == kTrackPhaseBegin) {
-    repeatDeadlineTick = (int)tick + 10;
+    repeatDeadlineTick = static_cast<int>(tick) + 10;
   }
 
   CPoint* point = &currentPoint;

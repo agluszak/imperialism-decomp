@@ -118,7 +118,7 @@ void TNumberedArrowButton::HandleCursorHoverSelectionByChildHitTestAndFallback(C
       TControl::HandleCursorHoverSelectionByChildHitTestAndFallback(cursorPoint, hitArg);
       return;
     }
-    cursorId = (short)0xffff;
+    cursorId = static_cast<short>(0xffff);
   }
   TControl::HandleCursorHoverSelectionByChildHitTestAndFallback(cursorPoint, hitArg);
 }

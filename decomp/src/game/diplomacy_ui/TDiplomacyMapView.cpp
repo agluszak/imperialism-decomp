@@ -1221,7 +1221,7 @@ void TDiplomacyMapView::ShowRelations(int activeNationSlot, const RECT* presentR
   CString str2;
   CString str3;
   CTemporaryRegion surface;
-  frameRegionSelector = (short)activeNationSlot;
+  frameRegionSelector = static_cast<short>(activeNationSlot);
 
   TQuickDrawSurfaceContext* previousSurface = 0;
   CPoint maskOrigin;

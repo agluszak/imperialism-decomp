@@ -62,7 +62,7 @@ void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(TCivUnit* o
   // ORIG_CALLCONV: __thiscall
   CivilianUnitKindStorage civilianClassId;
   if (orderState == 0) {
-    context->selectedCivilianClass = (short)-1;
+    context->selectedCivilianClass = static_cast<short>(-1);
     return;
   }
   civilianClassId = orderState->orderType;
@@ -140,15 +140,16 @@ void TCivDescription::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
                 tileIndex = *provinceTileIndices;
                 TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
                 if ((tile->recruitSearchVisited == 0) &&
-                    ((unsigned short)(unsigned char)tile->gateFlag == (unsigned short)slotIndex)) {
+                    (static_cast<unsigned char>(tile->gateFlag) ==
+                     static_cast<unsigned short>(slotIndex))) {
                   if ((int)(unsigned int)(*currentLegendSelectionCounter) <= candidateOrdinal) {
                     TMapUberPicture* activeMapPicture =
                         static_cast<TMapUberPicture*>(g_pAmbitApplication->edgeScrollTarget);
                     if (activeMapPicture != 0) {
                       activeMapPicture->CenterOn(tileIndex);
                     }
-                    *currentLegendSelectionCounter =
-                        (unsigned short)((unsigned int)(*currentLegendSelectionCounter) + 1);
+                    *currentLegendSelectionCounter = static_cast<unsigned short>(
+                        static_cast<unsigned int>(*currentLegendSelectionCounter) + 1);
                     return;
                   }
                   ++candidateOrdinal;
@@ -162,8 +163,8 @@ void TCivDescription::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
           } while (provinceOrdinal <= provinceCount);
         }
         if (candidateOrdinal > 0) {
-          *currentLegendSelectionCounter =
-              (unsigned short)((unsigned int)(*currentLegendSelectionCounter) % candidateOrdinal);
+          *currentLegendSelectionCounter = static_cast<unsigned short>(
+              static_cast<unsigned int>(*currentLegendSelectionCounter) % candidateOrdinal);
         }
       } while ((candidateOrdinal > 0) &&
                (candidateOrdinal < (int)(unsigned int)(*currentLegendSelectionCounter)));
@@ -243,7 +244,7 @@ void TCivDescription::CountWorkableSpaces(TCivUnit* orderState) {
             if (tileProfileId ==
                 g_anTargetTileProfileByCivilianClassAndSlot[classSlotOrdinal +
                                                             context->selectedCivilianClass * 5]) {
-              *targetCountSlot = (short)(*targetCountSlot + 1);
+              *targetCountSlot = static_cast<short>(*targetCountSlot + 1);
             }
             ++classSlotOrdinal;
             ++targetCountSlot;
@@ -293,7 +294,7 @@ void TCivDescription::Draw(RECT* rectBuffer) {
   }
 
   this->targetTileCountsBySlot[4] = 1;
-  if (selectedClass != (short)-1) {
+  if (selectedClass != static_cast<short>(-1)) {
     stylePrimary = 0;
     styleSecondary = 0;
 

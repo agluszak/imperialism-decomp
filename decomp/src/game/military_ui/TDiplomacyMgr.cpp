@@ -902,8 +902,8 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
               bestOfferNation = gpSlot;
               bestOfferScore = relationVal;
             } else {
-              unsigned int rnd = (unsigned int)relationVal + 0x31 +
-                                 (unsigned int)g_pSimMgr->GetEconomicTurn() + gpSlot;
+              unsigned int rnd = static_cast<unsigned int>(relationVal) + 0x31 +
+                                 static_cast<unsigned int>(g_pSimMgr->GetEconomicTurn()) + gpSlot;
               if (rnd == 0)
                 rnd = randSeed1;
               randSeed1 = rnd * 0x15a4e35 + 1;
@@ -931,8 +931,8 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
             bestRelationScore = score;
           } else {
             short relationVal = relationStandingScores[standingIndex];
-            unsigned int rnd = (unsigned int)relationVal + 0x31 +
-                               (unsigned int)g_pSimMgr->GetEconomicTurn() + gpSlot;
+            unsigned int rnd = static_cast<unsigned int>(relationVal) + 0x31 +
+                               static_cast<unsigned int>(g_pSimMgr->GetEconomicTurn()) + gpSlot;
             if (rnd == 0)
               rnd = randSeed2;
             randSeed2 = rnd * 0x15a4e35 + 1;

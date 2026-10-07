@@ -19,10 +19,10 @@ void T2PictToggleButton::Select(bool isPressed, bool notifyParent) {
   short glyphThreshold = glyphBase;
   int oldField3c = controlValue;
 
-  if ((!isPressed && oldField3c < (int)glyphThreshold) ||
-      (isPressed && (int)glyphThreshold < oldField3c)) {
+  if ((!isPressed && oldField3c < static_cast<int>(glyphThreshold)) ||
+      (isPressed && static_cast<int>(glyphThreshold) < oldField3c)) {
     SetPictureRsrcID(static_cast<short>(oldField3c), false);
-    controlValue = (int)glyphThreshold;
+    controlValue = static_cast<int>(glyphThreshold);
   }
   PrepareForDrawing();
   PaintOrInvalidateControl(0);

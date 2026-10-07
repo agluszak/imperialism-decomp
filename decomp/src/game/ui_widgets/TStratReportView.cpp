@@ -49,10 +49,10 @@ void TStratReportView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextFace(0);
   for (i = 0; i < 30; ++i) {
     if (battleOutcome->winnerCounts[i] != 0) {
-      g_pSimMgr->GetString(0x2717, (short)i, &sideName);
+      g_pSimMgr->GetString(0x2717, static_cast<short>(i), &sideName);
       countText.Format(g_szDecimalFormat, battleOutcome->winnerCounts[i]);
       lineBuffer = countText + " " + sideName;
-      SetQuickDrawTextOriginWithContextOffset(0xc, (short)y);
+      SetQuickDrawTextOriginWithContextOffset(0xc, static_cast<short>(y));
       DrawTextWithCachedQuickDrawStyleState(&lineBuffer);
       y += 0x10;
     }
@@ -62,17 +62,17 @@ void TStratReportView::Draw(RECT* rectBuffer) {
   y += 0x10;
   g_apTerrainTypeDescriptorTable[battleOutcome->loserId]->FormatOverlayTerrainLabelText(&sideName);
   lineBuffer = "Loser: " + sideName;
-  SetQuickDrawTextOriginWithContextOffset(0xc, (short)y);
+  SetQuickDrawTextOriginWithContextOffset(0xc, static_cast<short>(y));
   DrawTextWithCachedQuickDrawStyleState(&lineBuffer);
   y += 0x10;
 
   SetQuickDrawTextFace(0);
   for (i = 0; i < 30; ++i) {
     if (battleOutcome->loserCounts[i] != 0) {
-      g_pSimMgr->GetString(0x2717, (short)i, &sideName);
+      g_pSimMgr->GetString(0x2717, static_cast<short>(i), &sideName);
       countText.Format(g_szDecimalFormat, battleOutcome->loserCounts[i]);
       lineBuffer = countText + " " + sideName;
-      SetQuickDrawTextOriginWithContextOffset(0xc, (short)y);
+      SetQuickDrawTextOriginWithContextOffset(0xc, static_cast<short>(y));
       DrawTextWithCachedQuickDrawStyleState(&lineBuffer);
       y += 0x10;
     }

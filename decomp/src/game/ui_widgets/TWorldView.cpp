@@ -425,18 +425,18 @@ bool TWorldView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoi
   ConvertPoint(point, tileRow, tileCol, regionBand);
   NormalizeWrappedMapCoord108x60(&tileRow, &tileCol);
 
-  int stridedRecord = TileIndexFromColumnRow((int)tileRow, (int)tileCol);
+  int stridedRecord = TileIndexFromColumnRow(static_cast<int>(tileRow), static_cast<int>(tileCol));
   if (event->mouseButton == 1) {
     ShiftClick(stridedRecord, regionBand);
     return true;
   }
 
-  if (((unsigned short)GetAsyncKeyState(0x11) & 0x8000) != 0) {
+  if ((static_cast<unsigned short>(GetAsyncKeyState(0x11)) & 0x8000) != 0) {
     ControlClick(stridedRecord, regionBand);
     return true;
   }
 
-  if (((unsigned short)GetAsyncKeyState(0x10) & 0x8000) != 0) {
+  if ((static_cast<unsigned short>(GetAsyncKeyState(0x10)) & 0x8000) != 0) {
     ShiftClick(stridedRecord, regionBand);
     return true;
   }

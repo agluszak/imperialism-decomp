@@ -105,7 +105,7 @@ void TArmyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
   }
 
   if (controlTag == kControlTagGarr) {
-    unsigned short ctrlState = (unsigned short)GetAsyncKeyState(0x11);
+    unsigned short ctrlState = static_cast<unsigned short>(GetAsyncKeyState(0x11));
     if ((ctrlState & 0x8000) != 0) {
       g_pViewMgr->ShowArmyRosterDialogAndActivateProvinceSelection();
       return;

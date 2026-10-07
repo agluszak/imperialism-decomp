@@ -2750,7 +2750,7 @@ void TSimMgr::SetPlayerCountry(NationSlot nationSlot) {
 unsigned char __cdecl TryGetFileMetadataForPath(CString* path) {
   CFileStatus status;
   // Callers branch on AL: the original returns a Mac-style byte Boolean, not BOOL.
-  return (unsigned char)CFile::GetStatus(*path, status);
+  return static_cast<unsigned char>(CFile::GetStatus(*path, status));
 }
 
 // FUNCTION: IMPERIALISM 0x005d4c40

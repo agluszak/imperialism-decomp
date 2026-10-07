@@ -828,7 +828,8 @@ void TMapMgr::AssignPictToTile(StrategicTileIndex tileIndex) {
     for (int d = 0; d < 6; ++d) {
       if (neighbors[d] != -1 &&
           terrainStateTable[neighbors[d]].gateFlag == terrainStateTable[tileIndex].gateFlag) {
-        terrainStateTable[tileIndex].adjacencyMaskA0a |= (unsigned char)g_hexDirectionBitMasks[d];
+        terrainStateTable[tileIndex].adjacencyMaskA0a |=
+            static_cast<unsigned char>(g_hexDirectionBitMasks[d]);
       }
     }
     if (terrainStateTable[tileIndex].GetTerrainKind() == kStrategicTerrainHills) {
@@ -836,11 +837,11 @@ void TMapMgr::AssignPictToTile(StrategicTileIndex tileIndex) {
         if (neighbors[d] != -1) {
           if (terrainStateTable[neighbors[d]].GetTerrainKind() == kStrategicTerrainMountain) {
             terrainStateTable[tileIndex].adjacencyMaskB0b |=
-                (unsigned char)g_hexDirectionBitMasks[d];
+                static_cast<unsigned char>(g_hexDirectionBitMasks[d]);
           }
           if (terrainStateTable[neighbors[d]].GetTerrainKind() == kStrategicTerrainHills) {
             terrainStateTable[tileIndex].adjacencyMaskA0a |=
-                (unsigned char)g_hexDirectionBitMasks[d];
+                static_cast<unsigned char>(g_hexDirectionBitMasks[d]);
           }
         }
       }
@@ -849,7 +850,8 @@ void TMapMgr::AssignPictToTile(StrategicTileIndex tileIndex) {
       for (int d = 0; d < 6; ++d) {
         if (neighbors[d] != -1 &&
             terrainStateTable[neighbors[d]].GetTerrainKind() == kStrategicTerrainHills) {
-          terrainStateTable[tileIndex].adjacencyMaskB0b |= (unsigned char)g_hexDirectionBitMasks[d];
+          terrainStateTable[tileIndex].adjacencyMaskB0b |=
+              static_cast<unsigned char>(g_hexDirectionBitMasks[d]);
         }
       }
     }
@@ -864,8 +866,8 @@ void TMapMgr::AssignPictToTile(StrategicTileIndex tileIndex) {
         if (terrainStateTable[neighbors[d]].gateFlag != 0xb) {
           continue;
         }
-        short next = (d == 5) ? 0 : (short)(d + 1);
-        short prev = (d != 0) ? (short)(d - 1) : 5;
+        short next = (d == 5) ? 0 : static_cast<short>(d + 1);
+        short prev = (d != 0) ? static_cast<short>(d - 1) : 5;
         bool prevLinked = terrainStateTable[neighbors[prev]].gateFlag == 0xb;
         bool nextLinked = terrainStateTable[neighbors[next]].gateFlag == 0xb;
         if (prevLinked && nextLinked) {
@@ -901,12 +903,13 @@ void TMapMgr::AssignPictToTile(StrategicTileIndex tileIndex) {
     for (int d = 0; d < 6; ++d) {
       if (neighbors[d] != -1 &&
           terrainStateTable[neighbors[d]].GetTerrainKind() != kStrategicTerrainWater) {
-        terrainStateTable[tileIndex].adjacencyMaskB0b |= (unsigned char)g_hexDirectionBitMasks[d];
+        terrainStateTable[tileIndex].adjacencyMaskB0b |=
+            static_cast<unsigned char>(g_hexDirectionBitMasks[d]);
         g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
         lcg = g_mapGenLcgState;
         if ((g_mapGenLcgState >> 0xc & 1) != 0) {
           terrainStateTable[tileIndex].spriteVariantIndex |=
-              (unsigned char)g_hexDirectionBitMasks[d];
+              static_cast<unsigned char>(g_hexDirectionBitMasks[d]);
           lcg = g_mapGenLcgState;
         }
       }
@@ -940,7 +943,7 @@ void TMapMgr::AssignPictToTile(StrategicTileIndex tileIndex) {
       }
       g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
       terrainStateTable[tileIndex].spriteVariantIndex =
-          (unsigned char)((g_mapGenLcgState >> 0xc) & 3) + 1;
+          static_cast<unsigned char>((g_mapGenLcgState >> 0xc) & 3) + 1;
       if (pendingRiverMouthTile != -1) {
         return;
       }
@@ -1005,8 +1008,8 @@ void TMapMgr::InitializeTileNeighborConnectionMaskIfNeeded(int tileIndex) {
 
 // FUNCTION: IMPERIALISM 0x005108d0
 int TMapMgr::ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex) {
-  short sTileIndex = (short)nTileIndex;
-  int iTileIndex = (int)sTileIndex;
+  short sTileIndex = static_cast<short>(nTileIndex);
+  int iTileIndex = static_cast<int>(sTileIndex);
   int result = 0;
   TTerrainStateRecord* tiles = terrainStateTable;
   TTerrainStateRecord* cur = &tiles[iTileIndex];
@@ -1018,12 +1021,12 @@ int TMapMgr::ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex) {
     case 2:
       return 0xc;
     case 3:
-      code = tiles[(short)(sTileIndex - 1)].riverSpriteCode;
+      code = tiles[static_cast<short>(sTileIndex - 1)].riverSpriteCode;
       if (code == 0xf || code == 0x1f || code == 0x11 || code == 0x21 || code == 0x13 ||
           code == 0x23 || code == 0x15 || code == 0x25 || code == 0x2c || code == 0x34) {
         return 0xd;
       }
-      code = tiles[(short)(sTileIndex - 1)].riverSpriteCode;
+      code = tiles[static_cast<short>(sTileIndex - 1)].riverSpriteCode;
       if (code != 0x10 && code != 0x20 && code != 0x12 && code != 0x22 && code != 0x14 &&
           code != 0x24 && code != 0x16 && code != 0x26 && code != 0x2d && code != 0x35) {
         g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
@@ -1033,14 +1036,14 @@ int TMapMgr::ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex) {
     case 4:
       if (iTileIndex % kStrategicMapColumns != 0x6b) {
         g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
-        return 0x10 - (unsigned int)((g_mapGenLcgState >> 0xc & 1) != 0);
+        return 0x10 - static_cast<unsigned int>((g_mapGenLcgState >> 0xc & 1) != 0);
       }
-      code = tiles[(short)(sTileIndex - 0x6b)].riverSpriteCode;
+      code = tiles[static_cast<short>(sTileIndex - 0x6b)].riverSpriteCode;
       if (code == 0xd || code == 0x1d || code == 0x11 || code == 0x21 || code == 0x12 ||
           code == 0x22 || code == 0x17 || code == 0x27 || code == 0x30 || code == 0x38) {
         return 0xf;
       }
-      code = tiles[(short)(sTileIndex - 0x6b)].riverSpriteCode;
+      code = tiles[static_cast<short>(sTileIndex - 0x6b)].riverSpriteCode;
       if (code == 0xe || code == 0x1e || code == 0x13 || code == 0x23 || code == 0x14 ||
           code == 0x24 || code == 0x18 || code == 0x28 || code == 0x31 || code == 0x39) {
         return 0x10;
@@ -1048,14 +1051,14 @@ int TMapMgr::ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex) {
       g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
       return (g_mapGenLcgState >> 0xc & 1) + 0xf;
     case 5:
-      code = tiles[(short)(sTileIndex - 1)].riverSpriteCode;
+      code = tiles[static_cast<short>(sTileIndex - 1)].riverSpriteCode;
       if (code == 0xf || code == 0x1f || code == 0x11 || code == 0x21 || code == 0x13 ||
           code == 0x23 || code == 0x15 || code == 0x25 || code == 0x2c || code == 0x34) {
         if (iTileIndex % kStrategicMapColumns != 0x6b) {
           g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
-          return 0x12 - (unsigned int)((g_mapGenLcgState >> 0xc & 1) != 0);
+          return 0x12 - static_cast<unsigned int>((g_mapGenLcgState >> 0xc & 1) != 0);
         }
-        code = tiles[(short)(sTileIndex - 0x6b)].riverSpriteCode;
+        code = tiles[static_cast<short>(sTileIndex - 0x6b)].riverSpriteCode;
         if (code != 0xd && code != 0x1d && code != 0x11 && code != 0x21 && code != 0x12 &&
             code != 0x22 && code != 0x17 && code != 0x27 && code != 0x30 && code != 0x38) {
           return 0x12;
@@ -1064,9 +1067,9 @@ int TMapMgr::ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex) {
       }
       if (iTileIndex % kStrategicMapColumns != 0x6b) {
         g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
-        return 0x14 - (unsigned int)((g_mapGenLcgState >> 0xc & 1) != 0);
+        return 0x14 - static_cast<unsigned int>((g_mapGenLcgState >> 0xc & 1) != 0);
       }
-      code = tiles[(short)(sTileIndex - 0x6b)].riverSpriteCode;
+      code = tiles[static_cast<short>(sTileIndex - 0x6b)].riverSpriteCode;
       if (code != 0xd && code != 0x1d && code != 0x11 && code != 0x21 && code != 0x12 &&
           code != 0x22 && code != 0x17 && code != 0x27 && code != 0x30 && code != 0x38) {
         return 0x14;
@@ -1075,14 +1078,14 @@ int TMapMgr::ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex) {
     case 6:
       if (iTileIndex % kStrategicMapColumns != 0x6b) {
         g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
-        return 0x16 - (unsigned int)((g_mapGenLcgState >> 0xc & 1) != 0);
+        return 0x16 - static_cast<unsigned int>((g_mapGenLcgState >> 0xc & 1) != 0);
       }
-      code = tiles[(short)(sTileIndex - 0x6b)].riverSpriteCode;
+      code = tiles[static_cast<short>(sTileIndex - 0x6b)].riverSpriteCode;
       if (code == 0xd || code == 0x1d || code == 0x11 || code == 0x21 || code == 0x12 ||
           code == 0x22 || code == 0x17 || code == 0x27 || code == 0x30 || code == 0x38) {
         return 0x15;
       }
-      code = tiles[(short)(sTileIndex - 0x6b)].riverSpriteCode;
+      code = tiles[static_cast<short>(sTileIndex - 0x6b)].riverSpriteCode;
       if (code == 0xe || code == 0x1e || code == 0x13 || code == 0x23 || code == 0x14 ||
           code == 0x24 || code == 0x18 || code == 0x28 || code == 0x31 || code == 0x39) {
         return 0x16;
@@ -1090,7 +1093,7 @@ int TMapMgr::ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex) {
       g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
       return (g_mapGenLcgState >> 0xc & 1) + 0x15;
     case 7:
-      code = tiles[(short)(nTileIndex - 1)].riverSpriteCode;
+      code = tiles[static_cast<short>(nTileIndex - 1)].riverSpriteCode;
       if (code == 0xf || code == 0x1f || code == 0x11 || code == 0x21 || code == 0x13 ||
           code == 0x23 || code == 0x15 || code == 0x25 || code == 0x2c || code == 0x34) {
         return 0x17;
@@ -1109,7 +1112,7 @@ int TMapMgr::ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex) {
     case 0xb:
       if (iTileIndex % kStrategicMapColumns != 0x6b) {
         g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
-        return 0x2d - (unsigned int)((g_mapGenLcgState >> 0xc & 1) != 0);
+        return 0x2d - static_cast<unsigned int>((g_mapGenLcgState >> 0xc & 1) != 0);
       }
       if (!CheckTileVariantCodeMembershipSetC(nTileIndex - 0x6b)) {
         if (!CheckTileVariantCodeMembershipSetD(nTileIndex - 0x6b)) {
@@ -1158,7 +1161,7 @@ int TMapMgr::ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex) {
       case 0x14:
         if (iTileIndex % kStrategicMapColumns != 0x6b) {
           g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
-          return 0x35 - (unsigned int)((g_mapGenLcgState >> 0xc & 1) != 0);
+          return 0x35 - static_cast<unsigned int>((g_mapGenLcgState >> 0xc & 1) != 0);
         }
         if (!CheckTileVariantCodeMembershipSetC(nTileIndex - 0x6b)) {
           if (!CheckTileVariantCodeMembershipSetD(nTileIndex - 0x6b)) {
@@ -2232,7 +2235,7 @@ byte TMapMgr::AreMineralsPresent(StrategicTileIndex nTileIndex) {
         return fHasDiscoveryCandidate;
       }
       cTileResourceCode =
-          terrainStateTable[nTileIndex].resourceTypeByEdge[(short)nResourceSlotIndex];
+          terrainStateTable[nTileIndex].resourceTypeByEdge[static_cast<short>(nResourceSlotIndex)];
       if ((((cTileResourceCode == '\x03') || (cTileResourceCode == '\x04')) ||
            (cTileResourceCode == '\x15')) ||
           ((cTileResourceCode == '\x16') ||

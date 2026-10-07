@@ -479,12 +479,12 @@ void TZone::HandleKeyDown(int key_id) {
   Province** slotTable = secondaryNeighbors.Data();
   unsigned int slotCount = static_cast<unsigned int>(secondaryNeighbors.GetSize());
 
-  if ((nationKeyMask & (1U << ((unsigned char)key_id & 0x1f))) == 0) {
-    nationKeyMask =
-        static_cast<unsigned short>(nationKeyMask | (1U << ((unsigned char)key_id & 0x1f)));
+  if ((nationKeyMask & (1U << (static_cast<unsigned char>(key_id) & 0x1f))) == 0) {
+    nationKeyMask = static_cast<unsigned short>(
+        nationKeyMask | (1U << (static_cast<unsigned char>(key_id) & 0x1f)));
     sVarSlotId = g_pSimMgr->GetPlayerCountry();
 
-    bSlotIsActive = (nationKeyMask & (1U << ((unsigned char)sVarSlotId & 0x1f))) != 0;
+    bSlotIsActive = (nationKeyMask & (1U << (static_cast<unsigned char>(sVarSlotId) & 0x1f))) != 0;
     if (!bSlotIsActive) {
       uSlotCountLocal = slotCount;
       for (uSlotIndex = 0; uSlotIndex < uSlotCountLocal; ++uSlotIndex) {
@@ -501,7 +501,7 @@ void TZone::HandleKeyDown(int key_id) {
         ShowFocusIngot(1);
         key_id = sVarSlotId + 1;
         for (int i = 0; i < 6; ++i) {
-          if ((nationKeyMask & (1U << ((unsigned char)(key_id % 7) & 0x1f))) != 0) {
+          if ((nationKeyMask & (1U << (static_cast<unsigned char>(key_id % 7) & 0x1f))) != 0) {
             sVarSlotId = PickIngotTile();
             g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
                 sVarSlotId, key_id % 7 + kMapTileActionStateNationOrderFirst);
@@ -523,7 +523,7 @@ void TZone::HandleKeyDown(int key_id) {
     sVarActiveSlot = g_pSimMgr->GetPlayerCountry();
   }
 
-  if ((nationKeyMask & (1U << ((unsigned char)sVarActiveSlot & 0x1f))) != 0) {
+  if ((nationKeyMask & (1U << (static_cast<unsigned char>(sVarActiveSlot) & 0x1f))) != 0) {
     for (pvNode = TShip::GetFirst(); pvNode != 0; pvNode = pvNode->next) {
       if (((pvNode->location == this) && (pvNode->nation == sVarActiveSlot)) &&
           (pvNode->taskForce == 0)) {

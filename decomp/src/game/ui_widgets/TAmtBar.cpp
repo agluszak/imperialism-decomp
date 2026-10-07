@@ -71,13 +71,13 @@ void TAmtBar::DrawAmt() {
   CPoint translatedOrigin(g_nOverlayClipCacheParamX, g_nOverlayClipCacheParamY);
   this->TranslatePointToParentChain4E(&translatedOrigin);
 
-  controlWidth = (short)this->frameWidth;
-  controlHeight = (short)this->frameHeight;
+  controlWidth = static_cast<short>(this->frameWidth);
+  controlHeight = static_cast<short>(this->frameHeight);
 
   panelRect.left = translatedOrigin.x;
   panelRect.top = translatedOrigin.y;
-  panelRect.right = translatedOrigin.x + (int)controlWidth;
-  panelRect.bottom = translatedOrigin.y + (int)controlHeight;
+  panelRect.right = translatedOrigin.x + static_cast<int>(controlWidth);
+  panelRect.bottom = translatedOrigin.y + static_cast<int>(controlHeight);
 
   contentRect.left = contentBounds.left;
   contentRect.top = contentBounds.top;
@@ -93,18 +93,18 @@ void TAmtBar::DrawAmt() {
     g_pViewMgr->SetForeColor(static_cast<short>(auxValueB));
     SetQuickDrawPenSizeAndMarkDirty(1, 7);
     guideValue = stepOrCurrentValue < barRange ? stepOrCurrentValue : barRange;
-    DrawCenteredGuideLineOnMapDc((short)(guideValue - 1), 1);
+    DrawCenteredGuideLineOnMapDc(static_cast<short>(guideValue - 1), 1);
     ResetQuickDrawStrokeState();
   }
 
-  fillOrigin = guideValue > 0 ? (short)(guideValue + 1) : 0;
+  fillOrigin = guideValue > 0 ? static_cast<short>(guideValue + 1) : 0;
   SetQuickDrawTextOriginWithContextOffset(fillOrigin, 4);
   SetQuickDrawFillColor(0);
   SetQuickDrawPenSizeAndMarkDirty(1, 1);
   DrawCenteredGuideLineOnMapDc(controlWidth, 4);
   SetQuickDrawTextOriginWithContextOffset(stepOrCurrentValue, 0);
   ResetQuickDrawStrokeState();
-  DrawCenteredGuideLineOnMapDc((short)(stepOrCurrentValue - 1), controlHeight);
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(stepOrCurrentValue - 1), controlHeight);
   SetClip(surface.tempRgn);
 }
 

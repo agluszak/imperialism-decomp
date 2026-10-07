@@ -20,7 +20,7 @@ void TRightLeftView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pr
   }
 
   unsigned int ticks = GetTickCountDiv16();
-  if (ticks < (unsigned int)(this->repeatTick + 5)) {
+  if (ticks < static_cast<unsigned int>(this->repeatTick + 5)) {
     return;
   }
 
