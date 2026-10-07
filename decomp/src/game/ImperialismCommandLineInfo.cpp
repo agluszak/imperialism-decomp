@@ -11,10 +11,10 @@ void ImperialismCommandLineInfo::ParseParam(LPCSTR pszParam, BOOL bFlag, BOOL bL
   CString token(pszParam);
   token.MakeUpper();
   LPCSTR upper = token;
-  if (bFlag && token.Compare(g_szCmdSwitchLangQuit_00694254) == 0) {
+  if (bFlag && token.Compare(g_szCmdSwitchLangQuit) == 0) {
     m_bQuitAfterLanguageScan = 1;
     m_bShowSetupDialog = 1;
-  } else if (bFlag && token.Compare(g_szLiteralL_00694250) == 0) {
+  } else if (bFlag && token.Compare(g_szLiteralL) == 0) {
     m_bShowSetupDialog = 1;
   } else if (bFlag && upper[0] == 'L') {
     *m_pLanguageName = pszParam + 1; // language name keeps its original case

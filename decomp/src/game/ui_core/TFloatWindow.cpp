@@ -15,7 +15,7 @@ TFloatWindow::~TFloatWindow() {}
 // FUNCTION: IMPERIALISM 0x004922d0
 void __stdcall AssertMcAppUiDialogStateAndMarkWindow(int arg1, TWindow* window, int arg3, int arg4,
                                                      int arg5) {
-  TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0x8c9);
+  TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0x8c9);
   window->windowFlags = 0x80;
 }
 

@@ -22,7 +22,7 @@ struct DiplomacyMaskBufferRun {
   bool IsMaskPixelSet(int x, int y) const;
 
   unsigned char* maskBytes;
-  CRect boundsAt04;
+  CRect bounds;
 };
 
 ASSERT_SIZE(DiplomacyMaskBufferRun, 0x14);
@@ -30,13 +30,13 @@ ASSERT_SIZE(DiplomacyMaskBufferRun, 0x14);
 // FUNCTION: IMPERIALISM 0x004d6310
 inline bool DiplomacyMaskBufferRun::IsMaskPixelSet(int x, int y) const {
   CPoint point(x, y);
-  if (PtInRect(&boundsAt04, point) == 0) {
+  if (PtInRect(&bounds, point) == 0) {
     return false;
   }
 
-  int xOffset = x - boundsAt04.left;
-  int rowStride = (boundsAt04.right - boundsAt04.left) >> 3;
-  int byteIndex = (y - boundsAt04.top) * rowStride + (xOffset >> 3);
+  int xOffset = x - bounds.left;
+  int rowStride = (bounds.right - bounds.left) >> 3;
+  int byteIndex = (y - bounds.top) * rowStride + (xOffset >> 3);
   return (maskBytes[byteIndex] & (1 << (xOffset & 7))) != 0;
 }
 
@@ -111,10 +111,10 @@ public:
 protected:
   short selectedTerrainIndex;
   char pad_92[0x02];
-  int interactionModeAt94;
+  int interactionMode;
   short frameRegionSelector;
   char pad_9a[0x02];
-  RgnHandle regionAt9c;
+  RgnHandle region;
   TView* actionButtons[6];
   int stateFlag;
 

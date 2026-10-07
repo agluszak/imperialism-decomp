@@ -70,7 +70,7 @@ void TAttackProvinceMission::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053d950
-char TAttackProvinceMission::SmokeEmIfYouGotEm() {
+bool TAttackProvinceMission::SmokeEmIfYouGotEm() {
   if (flag10 == 0) {
     float vector[5];
     float total = 0.0f;
@@ -82,11 +82,11 @@ char TAttackProvinceMission::SmokeEmIfYouGotEm() {
       total += requiredEquipageByClass[i];
     }
 
-    if (weighted / total > g_AttackProvinceMissionReadinessThreshold_0065A8F0) {
+    if (weighted / total > g_AttackProvinceMissionReadinessThreshold) {
       CIterator eligibilityIter(orderList);
       TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(eligibilityIter.Reset());
       while (eligibilityIter.More()) {
-        if (static_cast<double>(unit->strength) * g_ArmyMissionEligibleUnitStrengthScale_0065AA48 <
+        if (static_cast<double>(unit->strength) * g_ArmyMissionEligibleUnitStrengthScale <
             g_Recompute_Nation_Order_LookupTable_0065AA20) {
           CIterator queueIter(orderList);
           for (unit = static_cast<TMilitaryUnit*>(queueIter.Reset()); queueIter.More();
@@ -95,11 +95,11 @@ char TAttackProvinceMission::SmokeEmIfYouGotEm() {
               RejectConstituent(unit, true);
             }
           }
-          return 1;
+          return true;
         }
         unit = static_cast<TMilitaryUnit*>(eligibilityIter.Advance());
       }
-      return 0;
+      return false;
     }
   }
 
@@ -110,11 +110,11 @@ char TAttackProvinceMission::SmokeEmIfYouGotEm() {
       RejectConstituent(unit, true);
     }
   }
-  return 1;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x0053db60
-char TAttackProvinceMission::TryResolveTargetTerrainClass() {
+bool TAttackProvinceMission::TryResolveTargetTerrainClass() {
   presentLocation = -1;
   float bestScore = 0.0f;
 
@@ -208,7 +208,7 @@ void TAttackProvinceMission::GiveOrders() {
       remainingWeights--;
     } while (remainingWeights != 0);
 
-    if (weighted / total > g_AttackProvinceMissionReadinessThreshold_0065A8F0) {
+    if (weighted / total > g_AttackProvinceMissionReadinessThreshold) {
       if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
               nationId, g_pGlobalMapState->cityScoreTable[targetProvince].ownerNationCode)) {
         for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(targetIter.Reset());
@@ -341,8 +341,7 @@ void TAttackProvinceMission::CalculateNeeds() {
 
   float similarity = 0.0f;
   if (total != 0.0f) {
-    const short* reference =
-        &g_awTacticalCompositionReferenceProfiles_00697870[(fortLevel > 0) ? 15 : 0];
+    const short* reference = &g_awTacticalCompositionReferenceProfiles[(fortLevel > 0) ? 15 : 0];
     float divergence = 0.0f;
     for (int referenceIndex = 0; referenceIndex < 5; ++referenceIndex) {
       float delta =
@@ -360,11 +359,11 @@ void TAttackProvinceMission::CalculateNeeds() {
     similarity = 1.0f;
   }
 
-  float scale = g_AttackProvinceMissionResourceScaleByDifficultyAndFortLevel_0065A968
-                    [g_pSimMgr->difficultyLevel][fortLevel] *
-                similarity;
-  const short* outputProfile =
-      &g_awTacticalCompositionReferenceProfiles_00697870[(fortLevel > 0) ? 10 : 5];
+  float scale =
+      g_AttackProvinceMissionResourceScaleByDifficultyAndFortLevel[g_pSimMgr->difficultyLevel]
+                                                                  [fortLevel] *
+      similarity;
+  const short* outputProfile = &g_awTacticalCompositionReferenceProfiles[(fortLevel > 0) ? 10 : 5];
   for (int outputIndex = 0; outputIndex < 5; ++outputIndex) {
     requiredEquipageByClass[outputIndex] = static_cast<float>(outputProfile[outputIndex]) * scale *
                                            g_Recompute_Nation_Order_LookupTable_0065A9F8;

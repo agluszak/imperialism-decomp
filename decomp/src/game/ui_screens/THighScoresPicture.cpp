@@ -65,7 +65,7 @@ void THighScoresPicture::Draw(RECT* rectBuffer) {
     }
     ++rank;
     lineText.Format(g_szDecimalFormat, rank);
-    lineText += s_szRankDotSeparator_00698ab4;
+    lineText += s_szRankDotSeparator;
     SetQuickDrawColorAndSyncGlobals(0);
     SetQuickDrawTextOriginWithContextOffset(0x97, static_cast<short>(y + 1));
     DrawTextWithCachedQuickDrawStyleState(&lineText);

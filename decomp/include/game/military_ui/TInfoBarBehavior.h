@@ -13,8 +13,8 @@ public:
   DECLARE_DYNCREATE(TInfoBarBehavior)
   virtual ~TInfoBarBehavior() override; // slot 0x01 (scalar deleting destructor)
   virtual void IInfoBarBehavior(CString text, TView* ownerView); // slot 0x0e 0x4b0e20
-  virtual unsigned char DoSetCursor(CPoint* point,
-                                    RgnHandle region); // slot 0x0f 0x4b0f50
+  virtual bool DoSetCursor(CPoint* point,
+                           RgnHandle region); // slot 0x0f 0x4b0f50
   CString text;
 
   TInfoBarBehavior();

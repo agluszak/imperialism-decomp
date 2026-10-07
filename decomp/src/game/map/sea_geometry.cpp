@@ -28,8 +28,8 @@ const double kSeaAngleScale = 11733.857334728455;
 // FUNCTION: IMPERIALISM 0x0052a850
 void LoadRegionBorderLinkTableFromCoordsFile() {
   unsigned int index = 0;
-  if (g_regionBorderLinkTable_006a3900.data != 0) {
-    free(g_regionBorderLinkTable_006a3900.Detach());
+  if (g_regionBorderLinkTable.data != 0) {
+    free(g_regionBorderLinkTable.Detach());
   }
 
   FILE* file = fopen("coords.txt", "r");
@@ -74,10 +74,10 @@ void LoadRegionBorderLinkTableFromCoordsFile() {
     segment.y0 = static_cast<short>(coord0 / 0xd8);
     segment.x1 = static_cast<short>(coord1 % 0xd8);
     segment.y1 = static_cast<short>(coord1 / 0xd8);
-    segment.attr10 = -1;
-    segment.attr12 = -1;
+    segment.attrBySide[0] = -1;
+    segment.attrBySide[1] = -1;
     segment.RecomputeEndpointsAndAngle();
-    g_regionBorderLinkTable_006a3900[index] = segment;
+    g_regionBorderLinkTable[index] = segment;
     index = index + 1;
   }
   fclose(file);
@@ -115,8 +115,8 @@ void SeaSegment::RecomputeEndpointsAndAngle() {
 // FUNCTION: IMPERIALISM 0x0052ac40
 void RebuildRegionBorderLinkLattice() {
   unsigned int index = 0;
-  if (g_regionBorderLinkTable_006a3900.Data() != 0) {
-    free(g_regionBorderLinkTable_006a3900.Detach());
+  if (g_regionBorderLinkTable.Data() != 0) {
+    free(g_regionBorderLinkTable.Detach());
   }
 
   int column = 2;
@@ -171,10 +171,10 @@ void RebuildRegionBorderLinkLattice() {
       cellSegment.y0 = static_cast<short>(coordBehind / 0xd8);
       cellSegment.x1 = static_cast<short>(coordAhead % 0xd8);
       cellSegment.y1 = static_cast<short>(coordAhead / 0xd8);
-      cellSegment.attr10 = -1;
-      cellSegment.attr12 = -1;
+      cellSegment.attrBySide[0] = -1;
+      cellSegment.attrBySide[1] = -1;
       cellSegment.RecomputeEndpointsAndAngle();
-      g_regionBorderLinkTable_006a3900[index] = cellSegment;
+      g_regionBorderLinkTable[index] = cellSegment;
       index = index + 1;
 
       int clampedEdgeRow = rowBehind;
@@ -209,7 +209,7 @@ void RebuildRegionBorderLinkLattice() {
       spanPoint.InitSorted(spanCoord + clampedSpanRow * 0xd8, -1, -1, 1);
       SeaSegment spanSegment;
       spanSegment.InitFromPoints(&spanPoint, &edgePoint);
-      g_regionBorderLinkTable_006a3900[index] = spanSegment;
+      g_regionBorderLinkTable[index] = spanSegment;
       index = index + 1;
 
       int laneColumn = columnStagger + column;
@@ -221,7 +221,7 @@ void RebuildRegionBorderLinkLattice() {
                          2);
       SeaSegment laneSegment;
       laneSegment.InitFromPoints(&laneEnd, &laneStart);
-      g_regionBorderLinkTable_006a3900[index] = laneSegment;
+      g_regionBorderLinkTable[index] = laneSegment;
       index = index + 1;
 
       row = row + 0xc;
@@ -239,7 +239,7 @@ void RebuildRegionBorderLinkLattice() {
                            1);
     SeaSegment topSegment;
     topSegment.InitFromPoints(&topNeighbor, &topPoint);
-    g_regionBorderLinkTable_006a3900[index] = topSegment;
+    g_regionBorderLinkTable[index] = topSegment;
     index = index + 1;
 
     Seapoint bottomPoint;
@@ -249,7 +249,7 @@ void RebuildRegionBorderLinkLattice() {
     bottomNeighbor.InitSorted(OverlayCoordFromTileColumnRowAndSide(edgeColumn, 1000, 1), -1, -1, 1);
     SeaSegment bottomSegment;
     bottomSegment.InitFromPoints(&bottomNeighbor, &bottomPoint);
-    g_regionBorderLinkTable_006a3900[index] = bottomSegment;
+    g_regionBorderLinkTable[index] = bottomSegment;
     index = index + 1;
 
     edgeColumn = edgeColumn + 0xc;
@@ -300,8 +300,8 @@ void SeaSegment::InitFromPoints(const Seapoint* p0, const Seapoint* p1) {
   y0 = static_cast<short>(c0 / 0xd8);
   x1 = static_cast<short>(c1 % 0xd8);
   y1 = static_cast<short>(c1 / 0xd8);
-  attr10 = static_cast<short>(p0->lo04);
-  attr12 = static_cast<short>(p0->hi08);
+  attrBySide[0] = static_cast<short>(p0->lo04);
+  attrBySide[1] = static_cast<short>(p0->hi08);
   if (y1 < y0 || (y0 == y1 && x1 < x0)) {
     short nx0 = x1;
     short ny0 = y1;
@@ -333,8 +333,8 @@ void SeaSegment::InitFromPoints(const Seapoint* p0, const Seapoint* p1) {
 void AssignRegionIdAlongBorderSegmentChain(unsigned int index, char side, short regionId) {
   while (true) {
     int sideIndex = side == '\0';
-    SeaSegment* record = g_regionBorderLinkTable_006a3900.At(index);
-    g_regionBorderLinkTable_006a3900[index];
+    SeaSegment* record = g_regionBorderLinkTable.At(index);
+    g_regionBorderLinkTable[index];
     if (record->AttrBySideIndex(sideIndex) != -1) {
       return;
     }
@@ -346,15 +346,14 @@ void AssignRegionIdAlongBorderSegmentChain(unsigned int index, char side, short 
     short reversedAngle;
     const short* baseAnglePtr;
     if (side != '\0') {
-      baseAnglePtr = &g_regionBorderLinkTable_006a3900.At(index)->angle;
+      baseAnglePtr = &g_regionBorderLinkTable.At(index)->angle;
     } else {
-      reversedAngle =
-          static_cast<short>(g_regionBorderLinkTable_006a3900.At(index)->angle - 0x7001);
+      reversedAngle = static_cast<short>(g_regionBorderLinkTable.At(index)->angle - 0x7001);
       baseAnglePtr = &reversedAngle;
     }
     short baseAngle = *baseAnglePtr;
 
-    SeaSegment* current = g_regionBorderLinkTable_006a3900.At(index);
+    SeaSegment* current = g_regionBorderLinkTable.At(index);
     int endpoint0[2];
     int endpoint1[2];
     int* joint;
@@ -372,17 +371,17 @@ void AssignRegionIdAlongBorderSegmentChain(unsigned int index, char side, short 
     int jointY = joint[1];
 
     unsigned int candidate = 0;
-    if (g_regionBorderLinkTable_006a3900.count != 0) {
+    if (g_regionBorderLinkTable.count != 0) {
       do {
         if (candidate != index) {
-          SeaSegment* other = g_regionBorderLinkTable_006a3900.At(candidate);
+          SeaSegment* other = g_regionBorderLinkTable.At(candidate);
           int otherStart[2];
           otherStart[0] = other->x0;
           otherStart[1] = other->y0;
           int* wrappedStart = WrapExtendedMapXCoordinateInPlace(otherStart);
           if (jointY == wrappedStart[1] && jointX == wrappedStart[0]) {
             unsigned short turn = static_cast<unsigned short>(
-                g_regionBorderLinkTable_006a3900.At(candidate)->angle - baseAngle);
+                g_regionBorderLinkTable.At(candidate)->angle - baseAngle);
             if (turn <= bestTurn) {
               bestTurn = turn;
               bestIndex = candidate;
@@ -390,14 +389,14 @@ void AssignRegionIdAlongBorderSegmentChain(unsigned int index, char side, short 
             }
           }
 
-          SeaSegment* otherAgain = g_regionBorderLinkTable_006a3900.At(candidate);
+          SeaSegment* otherAgain = g_regionBorderLinkTable.At(candidate);
           int otherEnd[2];
           otherEnd[0] = otherAgain->x1;
           otherEnd[1] = otherAgain->y1;
           int* wrappedEnd = WrapExtendedMapXCoordinateInPlace(otherEnd);
           if (jointY == wrappedEnd[1] && jointX == wrappedEnd[0]) {
             unsigned short turn = static_cast<unsigned short>(
-                g_regionBorderLinkTable_006a3900.At(candidate)->angle - baseAngle - 0x7001);
+                g_regionBorderLinkTable.At(candidate)->angle - baseAngle - 0x7001);
             if (turn <= bestTurn) {
               bestTurn = turn;
               bestIndex = candidate;
@@ -406,7 +405,7 @@ void AssignRegionIdAlongBorderSegmentChain(unsigned int index, char side, short 
           }
         }
         candidate = candidate + 1;
-      } while (candidate < static_cast<unsigned int>(g_regionBorderLinkTable_006a3900.count));
+      } while (candidate < static_cast<unsigned int>(g_regionBorderLinkTable.count));
     }
     index = bestIndex;
   }
@@ -449,9 +448,9 @@ void SeaSegment::ExtractWrappedEndpoint(int* out, char side) const {
 // FUNCTION: IMPERIALISM 0x0052c000
 unsigned short SeaSegment::SelectAttrByAngle() const {
   if (static_cast<unsigned short>(angle) < 0x8fff) {
-    return static_cast<unsigned short>(attr12);
+    return static_cast<unsigned short>(attrBySide[1]);
   }
-  return static_cast<unsigned short>(attr10);
+  return static_cast<unsigned short>(attrBySide[0]);
 }
 
 // --- SeapointStretch (0x10-byte elements) ----------------------------------------------
@@ -479,7 +478,7 @@ void EmitOverlaySegmentFromTileEdgeSorted(int tileIndex, char side, int a, int b
   pt.lo04 = lo;
   pt.hi08 = hi;
   pt.f0c = extra;
-  stretch<Seapoint>* table = &g_seapointQuadTable_006a3478;
+  stretch<Seapoint>* table = &g_seapointQuadTable;
   table->Add(pt);
 }
 

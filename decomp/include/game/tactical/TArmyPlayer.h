@@ -52,7 +52,7 @@ public:
   void ApplyAttackerStandoffStanceByActionClass(); // mode 5, 0x59d1a0
   void ApplyUnopposedAdvanceStanceByActionClass(); // mode 6, 0x59d320
   void SetAllUnitAiStateCodesTo13();
-  unsigned char OpponentHasDeployedActiveArtilleryUnit();
+  bool OpponentHasDeployedActiveArtilleryUnit();
 
   void BuildTacticalActionPriorityBucketsWithGridGuard();      // 0x59bcf0
   void DispatchTacticalActionClassSelectionAcrossCursorList(); // 0x59bf20

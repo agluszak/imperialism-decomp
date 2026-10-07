@@ -16,7 +16,7 @@ public:
   virtual void DoPostCreate(int arg) override;            // slot 0x37 0x4f8ff0
   virtual char HandleMouseUp(const CPoint& point, TToolboxEvent* event,
                              CPoint origin) override; // slot 0x48 0x4f9420
-  virtual char PoseOffer(short sourceNation, short targetNation,
+  virtual bool PoseOffer(short sourceNation, short targetNation,
                          short offerType); // slot 0x69 0x4f9450
   char PoseWarOffer(short sourceNationSlot, int minorNationSlot, int enemyNationSlot,
                     int promptCode);

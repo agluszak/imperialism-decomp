@@ -26,7 +26,7 @@ void TMiniArmyLine::InstallViews(TView* panel, int* offsetLayout) {
   armyView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &layoutWidth, 5, 5, 0);
   armyView->militaryUnit = militaryUnit;
   armyView->eventNumber = 0x22;
-  SetControlHoverHelpText(CString(g_pMiniCivSharedText_0064cb18), armyView);
+  SetControlHoverHelpText(CString(g_pMiniCivSharedText), armyView);
 
   if (militaryUnit->CanUpgrade()) {
     int upgradeOffset[2] = {0x73, 0};

@@ -31,7 +31,7 @@ void TCommodityLine::InstallViews(TView* panel, int* offsetLayout) {
   g_pSimMgr->GetCommodityName(commoditySlot, &commodityName);
   short price = g_pTradeMgr->GetPrice(commoditySlot);
   g_pSimMgr->NumToCurrency(price, &priceText);
-  displayText = commodityName + s_szSpaceSeparator_00695794 + priceText;
+  displayText = commodityName + s_szSpaceSeparator + priceText;
 
   int textSize[2] = {layoutWidth - 0x28, layoutHeight};
   int textOffset[2] = {offsetLayout[0] + 0x28, offsetLayout[1]};

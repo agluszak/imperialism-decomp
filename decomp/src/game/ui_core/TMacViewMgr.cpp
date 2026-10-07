@@ -58,7 +58,7 @@ namespace {
 static TTransportPicture* ResolveTaggedPanelOrFail(TView* hostView, unsigned int tag, int line) {
   TTransportPicture* panel = static_cast<TTransportPicture*>(hostView->ResolveControlByTag(tag));
   if (panel == 0) {
-    FailNilPointerWithAssert(s_SourcePathUMacViewMgr_00696D68, line);
+    FailNilPointerWithAssert(s_SourcePathUMacViewMgr, line);
   }
   return panel;
 }
@@ -66,7 +66,7 @@ static TTransportPicture* ResolveTaggedPanelOrFail(TView* hostView, unsigned int
 static TControl* ResolveTaggedChildOrFail(TControl* panel, unsigned int tag, int line) {
   TControl* child = static_cast<TControl*>(panel->ResolveControlByTag(tag));
   if (child == 0) {
-    FailNilPointerWithAssert(s_SourcePathUMacViewMgr_00696D68, line);
+    FailNilPointerWithAssert(s_SourcePathUMacViewMgr, line);
   }
   return child;
 }
@@ -681,7 +681,7 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   unsigned char* smoothingBase = surfaceBase + strideBytes * 2;
   scratchBuffer = new unsigned char[0x6540];
   if (scratchBuffer == 0) {
-    FailNilPointerWithAssert(s_SourcePathUMacViewMgr_00696D68, 0x7e3);
+    FailNilPointerWithAssert(s_SourcePathUMacViewMgr, 0x7e3);
   }
   {
     int copyRow = 0;
@@ -744,8 +744,8 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   SetQuickDrawFillColor(0);
   UnlockPixels(GetGWorldPixMap(atlas670));
   SetGWorld(savedContext, savedFlags);
-  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
-    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  if (g_pActiveRandomMapSetupPicture != 0) {
+    g_pActiveRandomMapSetupPicture->SpinYourGlobe();
   }
   (*GetGWorldPixMap(atlas670))->dib->FlipScanlineOrder();
   g_pGlobalMapState->strategicMapPalettePreviewReady = true;
@@ -839,7 +839,7 @@ void TMacViewMgr::SyncSellTaggedChildControlWithNationState(TView* view, short o
   }
   TNumberText* sellControl = static_cast<TNumberText*>(view->ResolveControlByTag(kControlTagSell));
   if (sellControl == 0) {
-    FailNilPointerWithAssert(s_SourcePathUMacViewMgr_00696D68, 0x8e4);
+    FailNilPointerWithAssert(s_SourcePathUMacViewMgr, 0x8e4);
   }
   if (sellCount < 0) {
     row->SetTradeBidControlBitmap();
@@ -1240,7 +1240,7 @@ TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city, 
   TBuildingView* buildingView =
       static_cast<TBuildingView*>(dialog->ResolveControlByTag(kControlTagDialog));
   if (buildingView == 0) {
-    FailNilPointerWithAssert(s_SourcePathUMacViewMgr_00696D68, 0xb4f);
+    FailNilPointerWithAssert(s_SourcePathUMacViewMgr, 0xb4f);
   }
   buildingView->ApplyCityViewSelectionPayloadAndRefreshControls(city, isEmbeddedPage,
                                                                 productionView, buildingSlot);
@@ -1265,7 +1265,7 @@ TBuildingView* TMacViewMgr::RestoreBuildingWindowAtSavedPosition(
   TBuildingView* buildingView =
       static_cast<TBuildingView*>(dialog->ResolveControlByTag(kControlTagDialog));
   if (buildingView == 0) {
-    FailNilPointerWithAssert(s_SourcePathUMacViewMgr_00696D68, 0xb62);
+    FailNilPointerWithAssert(s_SourcePathUMacViewMgr, 0xb62);
   }
   buildingView->ApplyCityViewSelectionPayloadAndRefreshControls(city, isEmbeddedPage,
                                                                 productionView, buildingSlot);
@@ -1291,7 +1291,7 @@ void TMacViewMgr::OpenConstructionWindow(short buildingSlot, TCity* city,
   TBuildingConstructionView* constructionView =
       static_cast<TBuildingConstructionView*>(dialog->ResolveControlByTag(kControlTagDialog));
   if (constructionView == 0) {
-    FailNilPointerWithAssert(s_SourcePathUMacViewMgr_00696D68, 0xb98);
+    FailNilPointerWithAssert(s_SourcePathUMacViewMgr, 0xb98);
   }
   constructionView->StuffValues(buildingSlot, city, productionView);
   dialog->SetModality(true);
@@ -1378,7 +1378,7 @@ void TMacViewMgr::RefreshActiveGoldControlAndUiRuntimeState() {
   TView* hostView = g_pDisplayMgr->activeDialog;
   TPicture* goldControl = static_cast<TPicture*>(hostView->ResolveControlByTag(kControlTagDialog));
   if (goldControl == 0) {
-    FailNilPointerWithAssert(s_SourcePathUMacViewMgr_00696D68, 0xc27);
+    FailNilPointerWithAssert(s_SourcePathUMacViewMgr, 0xc27);
   }
   goldControl->ResetPictureResourceEntry();
   goldControl->SetPictureRsrcID(0, 0);

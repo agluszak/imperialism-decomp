@@ -60,7 +60,7 @@ void TDealBookPicture::Startup(short startupValue) {
   // 'mark' toggle + label reload.
   TView* markControl = this->ResolveControlByTag(kControlTagMark); // 'mark'
   if (markControl == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUTradeViews_0069AA94, 0x129);
+    FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x129);
   }
   markControl->ViewEnable(1, 0);
   LoadUiStringByGroupAndIndexToControlObject(0x2741, 6, this->ResolveControlByTag(kControlTagMark));
@@ -131,11 +131,11 @@ void TDealBookPicture::ShowPage(int pageIndex, short nationId) {
 
   TView* leftCtrl = this->ResolveControlByTag(kControlTagLcor);
   if (leftCtrl == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUTradeViews_0069AA94, 0x16e);
+    FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x16e);
   }
   TView* rightCtrl = this->ResolveControlByTag(kControlTagRcor);
   if (rightCtrl == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUTradeViews_0069AA94, 0x170);
+    FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x170);
   }
 
   if (this->currentPageIndex != 0) {
@@ -257,7 +257,7 @@ void TDealBookPicture::CalculatePages() {
         line->ITextLine(static_cast<short>(sellRow), 0, lineBounds, -1, 0);
         nationName = g_pSimMgr->LoadNormalizedCredentialName(minorNation);
         g_pSimMgr->NumToCurrency(allocation, &allocationText);
-        nationName += s_szTurnHistorySeparator_00699320 + allocationText;
+        nationName += s_szTurnHistorySeparator + allocationText;
         line->SetCaptionText(&nationName);
         soldTradesView->AddOrderedEntry(line);
       }
@@ -286,7 +286,7 @@ void TDealBookPicture::CalculatePages() {
 void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId >= 0x2af8) {
     short tabIndex = static_cast<short>(commandId - 0x2af8);
-    short categorySlot = g_tradeBookCategoryByTabAndTechState_0066DB58
+    short categorySlot = g_tradeBookCategoryByTabAndTechState
         [g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId]][tabIndex];
     if (categorySlot != -1) {
       sellPageView->SetItem(categorySlot);
@@ -320,7 +320,7 @@ void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         CString yearText;
         yearText.Format(g_szDecimalFormat, 0x717 + g_pSimMgr->economicTurn / 4);
         g_pSimMgr->GetSeason(&seasonName);
-        CString headerText = seasonName + s_szSpaceSeparator_00695794 + yearText;
+        CString headerText = seasonName + s_szSpaceSeparator + yearText;
         rtilControl->SetTextAndMaybeRefresh(&headerText, false);
         rtilControl->Show(1, 1);
       }
@@ -365,7 +365,7 @@ void TDealBookPicture::SwitchPages() {
     CString yearText;
     yearText.Format(g_szDecimalFormat, 0x717 + g_pSimMgr->economicTurn / 4);
     g_pSimMgr->GetSeason(&seasonName);
-    CString headerText = seasonName + s_szSpaceSeparator_00695794 + yearText;
+    CString headerText = seasonName + s_szSpaceSeparator + yearText;
     rtilControl->SetTextAndMaybeRefresh(&headerText, false);
 
     CRect titleBounds;
@@ -386,7 +386,7 @@ void TDealBookPicture::SwitchPages() {
 
     TView* tabsControl = ResolveControlByTag(kControlTagTabs);
     if (tabsControl == nullptr) {
-      FailNilPointerWithAssert(s_SourcePathUTradeViews_0069AA94, 0x2a2);
+      FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x2a2);
     }
 
     TStaticText* titLControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitL));

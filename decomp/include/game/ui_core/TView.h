@@ -89,8 +89,8 @@ public:
   virtual void InvalidateOffsetRegionUsingChildClipRect(RgnHandle region); // 0x30 0x48b4b0
   virtual void ForwardMapViewVirtualC4IfPresent(RgnHandle region);         // 0x31 0x48ab90
   virtual void ValidateControlRectIfWindowActive(RECT* rect);              // 0x32 0x48b690
-  virtual char EvaluateControlInputGate();                                 // 0x33 0x48c000
-  virtual char HasRenderableParentAndContent();                            // 0x34 0x48c050
+  virtual bool EvaluateControlInputGate();                                 // 0x33 0x48c000
+  virtual bool HasRenderableParentAndContent();                            // 0x34 0x48c050
   virtual void
   HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                       RgnHandle hitArg); // 0x35 0x48c080
@@ -102,7 +102,7 @@ public:
   virtual bool IsActionable();                                           // 0x3b 0x48b200
   virtual void Locate(const CPoint& position, bool refresh);             // 0x3c 0x48b250
   virtual void Resize(const CPoint& size, bool refresh);                 // 0x3d 0x48b3f0
-  virtual char PrepareForDrawing();                                      // 0x3e 0x48b770
+  virtual bool PrepareForDrawing();                                      // 0x3e 0x48b770
   virtual void PostRender();                                             // 0x3f
   virtual int BindMapQuickDrawDc(CDC* paintDc);                          // 0x40 0x48b7b0
   virtual void ReleaseMapQuickDrawDc(CDC* paintDc);                      // 0x41 0x48b7e0

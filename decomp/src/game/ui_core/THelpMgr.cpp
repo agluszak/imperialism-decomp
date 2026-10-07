@@ -331,7 +331,7 @@ short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
     }
   }
 
-  CString contextMessageText(g_pszEmptyTextPointer_00656f60);
+  CString contextMessageText(g_pszEmptyTextPointer);
   if (g_apNationStates[activeNationIndex]->BuildGreatPowerMapContextTriggeredNationEventMessages(
           &contextMessageText) != 0) {
     g_pSimMgr->GetString(0x2753, 0x3c, &titleText);
@@ -341,7 +341,7 @@ short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
     g_pViewMgr->ModalMessage(3, titleText, formattedText, g_ptNationComparisonModalMessage, 1, 0);
   }
 
-  contextMessageText = CString(g_pszEmptyTextPointer_00656f60);
+  contextMessageText = CString(g_pszEmptyTextPointer);
   if (g_apNationStates[activeNationIndex]->BuildGreatPowerEligibleNationEventMessagesFromLinkedList(
           &contextMessageText) != 0) {
     g_pSimMgr->GetString(0x2753, 0x42, &titleText);
@@ -378,7 +378,7 @@ void THelpMgr::ShowPeriodicCapabilityReminderIfNeeded() {
 }
 
 // FUNCTION: IMPERIALISM 0x00501be0
-char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
+bool THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
   short activeNation = g_pSimMgr->GetPlayerCountry();
   CString formatText;
   CString templateText;
@@ -648,7 +648,7 @@ bool ShowTurnAlertsForActiveNation() {
   if (IsTurnFlowCooldownActiveAndResetExpiredState()) {
     return false;
   }
-  if (g_lastTurnAlertTick_006a31c0 == currentTick) {
+  if (g_lastTurnAlertTick == currentTick) {
     return false;
   }
   if (currentTick == 1) {
@@ -777,12 +777,12 @@ bool ShowTurnAlertsForActiveNation() {
       anyAlertShown = true;
     }
   }
-  g_lastTurnAlertTick_006a31c0 = currentTick;
+  g_lastTurnAlertTick = currentTick;
   return anyAlertShown;
 }
 
 // FUNCTION: IMPERIALISM 0x005031c0
-char THelpMgr::HandlePendingEventActivationByCode(TurnEventCodeStorage eventCode) {
+bool THelpMgr::HandlePendingEventActivationByCode(TurnEventCodeStorage eventCode) {
   bool activateCandidate = false;
   bool nationAlreadyCurrent = false;
   HelpSetRecord* pendingEntry = 0;
@@ -883,7 +883,7 @@ void THelpMgr::ShowHelpSet(HelpSetRecord* pendingEntry) {
     pendingDialogView8 = static_cast<TWindow*>(
         g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventHelpMessage));
     if (pendingDialogView8 == 0) {
-      FailNilPointerWithAssert(s_SourcePathUHelpMgr_00696C58, 0x5cd);
+      FailNilPointerWithAssert(s_SourcePathUHelpMgr, 0x5cd);
     }
 
     CPoint placement;
@@ -896,7 +896,7 @@ void THelpMgr::ShowHelpSet(HelpSetRecord* pendingEntry) {
       static_cast<THelpPicture*>(pendingDialogView8->ResolveControlByTag(kControlTagDialog));
   helpPicture->currentHelpSet = pendingEntry;
 
-  CString emptyTitle(g_pszEmptyTextPointer_00656f60);
+  CString emptyTitle(g_pszEmptyTextPointer);
   pendingDialogView8->SetTitle(&emptyTitle);
 
   int helpBookIndex = g_pViewMgr->ClassifyTurnStateForOverlayMode();
@@ -913,7 +913,7 @@ void THelpMgr::ShowHelpSet(HelpSetRecord* pendingEntry) {
       static_cast<TPicture*>(pendingDialogView8->ResolveControlByTag(kControlTagCoat));
   coatPicture->AssertValid();
   if (coatPicture == 0) {
-    FailNilPointerWithAssert(s_SourcePathUHelpMgr_00696C58, 0x5f0);
+    FailNilPointerWithAssert(s_SourcePathUHelpMgr, 0x5f0);
   }
 
   if (g_pSimMgr->GetPlayerCountry() >= 0 && g_pSimMgr->GetPlayerCountry() < 7) {
@@ -970,7 +970,7 @@ HelpSetRecord* THelpMgr::FindHelpSetRecordByResourceBase(short helpResourceBaseI
 }
 
 // FUNCTION: IMPERIALISM 0x00503830
-char THelpMgr::IncrementCivilianCompletionCounterAndCheckThreshold(unsigned int index) {
+bool THelpMgr::IncrementCivilianCompletionCounterAndCheckThreshold(unsigned int index) {
   short* counters = &civilianCompletionCounts[0];
   short threshold = -1;
   switch (index) {
@@ -1039,7 +1039,7 @@ void THelpMgr::EnsureMapActionContextViewAndBuildDefaultTileMenu(int mapContextI
     pendingDialogViewC = static_cast<TWindow*>(
         g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTerrainHelp));
     if (pendingDialogViewC == 0) {
-      FailNilPointerWithAssert(s_SourcePathUHelpMgr_00696C58, 0x6c1);
+      FailNilPointerWithAssert(s_SourcePathUHelpMgr, 0x6c1);
     }
 
     CPoint placement;

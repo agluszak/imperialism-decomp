@@ -118,7 +118,7 @@ void TInteriorMinister::SetCityPolicies() {
     if (capRemaining == 0) {
       break;
     }
-    short needIndex = g_aInteriorMinisterNeedPriorityOrder_00696408[i];
+    short needIndex = g_aInteriorMinisterNeedPriorityOrder[i];
     ++i;
     short current = greatPower->needCurrentByType[needIndex];
     short value = (current <= capRemaining) ? current : capRemaining;

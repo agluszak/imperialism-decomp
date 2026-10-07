@@ -26,13 +26,13 @@ public:
   virtual void RunMapGenerationAttempt();
   virtual int SelectGPZone(int cellIndex, int mode, int classIndex, int retryBudget);
   // Merges major-nation region groups; false on an incompatible neighbor group. slot 13 / 0x34
-  virtual char TryMergeRegionGroupWithNeighborsRestrictedToMajors(int cellIndex, int classIndex);
+  virtual bool TryMergeRegionGroupWithNeighborsRestrictedToMajors(int cellIndex, int classIndex);
   // Expands assigned city-region ids into the tile grid. slot 14 / 0x38
   virtual void ExpandRegionGridIntoTilesAndAllocateCityRecords();
   // Places terrain features according to their generation quotas. slot 15 / 0x3c
   virtual void PlaceTerrainFeatureQuotas();
   // Merges region groups for every terrain class. slot 16 / 0x40
-  virtual char TryMergeRegionGroupWithNeighbors(int cellIndex, int classIndex);
+  virtual bool TryMergeRegionGroupWithNeighbors(int cellIndex, int classIndex);
   // Smooths interior city-region tile ownership from neighboring records. slot 17 / 0x44
   virtual void SmoothCityRegionOwnershipByNeighborSampling();
   // Grows a linear mountain-range terrain feature. slot 18 / 0x48
@@ -46,12 +46,12 @@ public:
   virtual int PlantForestCluster(int tileIndex, int retryBudget, bool markerVariant);
   virtual void CreateRivers(); // slot 23 / 0x5c
   // Recursively grows a river segment toward water. slot 24 / 0x60
-  virtual char GrowRiver(long tileIndex, long incomingDirection, long outgoingDirection, long depth,
+  virtual bool GrowRiver(long tileIndex, long incomingDirection, long outgoingDirection, long depth,
                          bool startedOnHills);
   // Finalizes or compacts city-region ids and rebuilds their borders. slot 25 / 0x64
   virtual void AssignOrCompactCityRegionIdsAndRebuildBorders(int mode);
   // Post-attempt validity probe: nonzero means the driver must regenerate. slot 26 / 0x68
-  virtual char ErrorCheck();
+  virtual bool ErrorCheck();
   virtual void TargetValidationSucceeded(); // slot 27 / 0x6c
   virtual void EraseZones(long coarseIndex);
   void ClearRegionClassIndexReferences(int classIndex) {
@@ -94,11 +94,11 @@ public:
   // ORACLE: Mac TMapMaker::CheckProvs(). Composite map-generation rejection predicate:
   // virtual ErrorCheck, empty-column scan, then full terrain-class frontier coverage.
   // 0x00526620.
-  char CheckProvs();
+  bool CheckProvs();
 
-  char ValidateAllColumnsHaveAssignedRegionClass();
+  bool ValidateAllColumnsHaveAssignedRegionClass();
 
-  char ValidateTerrainClassAdjacencyCoverageMask();
+  bool ValidateTerrainClassAdjacencyCoverageMask();
 
   char ValidateSeedCandidateExistsForEachTerrainClass();
 
@@ -150,9 +150,9 @@ public:
 
   int CountSeaTilesInColumn(int column); // 0x00529910
   // ORACLE: IsSeaTile. The tile's terrain kind byte is water. 0x0052a600.
-  unsigned char IsSeaTile(int tileIndex);
+  bool IsSeaTile(int tileIndex);
   // Coordinate overload: the first argument is column and the second is row.
-  unsigned char IsSeaTile(int column, int row); // 0x0052a630
+  bool IsSeaTile(int column, int row); // 0x0052a630
   // ORACLE: SetSeaZoneIndex. Stores the sea-zone ordinal into the tile's owner
   // tag byte (+0x04), biased by 0x17 -- the same bias the map-order context applies
   // when it turns an owner tag back into a context-array index. 0x0052a6b0.

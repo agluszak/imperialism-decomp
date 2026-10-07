@@ -16,8 +16,8 @@ public:
                                                         short nClickMode); // slot 0x0a 0x4d2380
   virtual bool HandleCivilianTileOrderAction(short nTileIndex,
                                              short nInputHint); // slot 0x0b 0x4d26d0
-  virtual void MoveAndRedrawUnit(
-      short nNewTileIndex, class TCivUnit* pCivOrderEntry); // slot 0x0c 0x4d4310
+  virtual void MoveAndRedrawUnit(short nNewTileIndex,
+                                 class TCivUnit* pCivOrderEntry); // slot 0x0c 0x4d4310
   virtual void DispatchSelectedUnitToGlobalMapStateHandler(
       class TCivUnit* pUnitOrderEntry); // slot 0x0d 0x4d2270
   void ApplyCompletedCivWorkOrderToMapState(class TCivUnit* order);
@@ -25,7 +25,7 @@ public:
 
   void SelectUnit(class TCivUnit* entryContext, bool refreshCommandPanel);
 
-  char QueueProspectingOrderAndPlayFeedback(short nTileIndex);
+  bool QueueProspectingOrderAndPlayFeedback(short nTileIndex);
   void ClearCivilianSelectionHighlightsForNation(short nationId);
   class TCivUnit* SelectFirstAvailableCivilianForNation(short nationId);
   void WakeAll(int nationId);

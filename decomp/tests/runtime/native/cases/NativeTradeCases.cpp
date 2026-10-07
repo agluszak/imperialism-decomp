@@ -334,7 +334,7 @@ RuntimeActionResult RunTradePolicyStep(NativeTransition& transition) {
   TGreatPower* nation = ActiveNation();
 
   nation->needLevelByNation[targetNationSlot] = 75;
-  nation->treasuryValue10 = 10001;
+  nation->treasuryValue = 10001;
 
   JsonObject args;
   args.Set("source", static_cast<int>(sourceNationSlot));
@@ -373,7 +373,7 @@ void SeedTradeableStocks(TGreatPower* nation) {
   city->CityStockByType(kResourceFurniture) = 8;
   city->CityStockByType(kResourceHardware) = 8;
   city->CityStockByType(kResourceArms) = 6;
-  nation->treasuryValue10 = 20000;
+  nation->treasuryValue = 20000;
 }
 
 void SeedHumanTradeOrders(TGreatPower* nation, bool buyClothing) {
@@ -399,7 +399,7 @@ void DrainRankedDealsWithHumanAutoAccept() {
   short next = 0;
   do {
     short i = tradeManager->categoryRows[0].dealCategoryOrderIndex;
-    short idx = g_aTradeDealCategoryOrder_0066D810[i];
+    short idx = g_aTradeDealCategoryOrder[i];
     TDealList* list = tradeManager->categoryRankLists[idx];
     if (list->GetSize() != 0) {
       break;
@@ -410,7 +410,7 @@ void DrainRankedDealsWithHumanAutoAccept() {
 
   while (tradeManager->categoryRows[0].dealCategoryOrderIndex <= 0x10) {
     short dispatchIdx =
-        g_aTradeDealCategoryOrder_0066D810[tradeManager->categoryRows[0].dealCategoryOrderIndex];
+        g_aTradeDealCategoryOrder[tradeManager->categoryRows[0].dealCategoryOrderIndex];
     TDealList* list = tradeManager->categoryRankLists[dispatchIdx];
     TradeDealEntry* entry = static_cast<TradeDealEntry*>(
         list->GetPtrListEntryByOneBasedIndex(tradeManager->categoryRows[0].dealEntryOrdinal));
@@ -449,7 +449,7 @@ void DrainRankedDealsWithHumanAutoAccept() {
         }
       } while (
           tradeManager
-              ->categoryRankLists[g_aTradeDealCategoryOrder_0066D810[tradeManager->categoryRows[0]
+              ->categoryRankLists[g_aTradeDealCategoryOrder[tradeManager->categoryRows[0]
                                                                          .dealCategoryOrderIndex]]
               ->GetSize() == 0);
       tradeManager->categoryRows[0].dealEntryOrdinal = 1;
@@ -595,7 +595,7 @@ RuntimeActionResult RunTradeTurnStop(NativeTransition& transition) {
   result.Set("amount", sheet->proposedAmount);
   result.Set("price", sheet->maxAmount);
   result.Set("commodity", sheet->commodityType);
-  short dispatchIdx = g_aTradeDealCategoryOrder_0066D810[0];
+  short dispatchIdx = g_aTradeDealCategoryOrder[0];
   TDealList* deals = g_pTradeMgr->categoryRankLists[dispatchIdx];
   JsonArray dealRows;
   for (int ordinal = 1; ordinal <= deals->GetSize(); ++ordinal) {

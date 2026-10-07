@@ -22,35 +22,35 @@ void TTransportView::StuffValues(TGreatPower* nation) {
 
   TView* supplyPanel = ResolveControlByTag(kControlTagSupp); // 'supp'
   if (supplyPanel == 0) {
-    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x783);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x783);
   }
   for (short currentResourceType = 0; currentResourceType < kResourceKindCount;
        ++currentResourceType) {
     TNumberText* amount = static_cast<TNumberText*>(
         supplyPanel->ResolveControlByTag(g_pTradeSummarySelectionMap[currentResourceType]));
     if (amount == 0) {
-      FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x787);
+      FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x787);
     }
     amount->SetControlValue(nation->needCurrentByType[currentResourceType], 1);
   }
 
   TView* transportPanel = ResolveControlByTag(kControlTagTran); // 'tran'
   if (transportPanel == 0) {
-    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x78d);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x78d);
   }
   for (short targetResourceType = 0; targetResourceType < kResourceKindCount;
        ++targetResourceType) {
     TNumberText* amount = static_cast<TNumberText*>(
         transportPanel->ResolveControlByTag(g_pTradeSummarySelectionMap[targetResourceType]));
     if (amount == 0) {
-      FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x791);
+      FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x791);
     }
     amount->SetControlValue(nation->needTargetByType[targetResourceType], 1);
   }
 
   TNumberText* total = static_cast<TNumberText*>(ResolveControlByTag(kControlTagTota)); // 'tota'
   if (total == 0) {
-    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x797);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x797);
   }
   total->SetControlValue(nation != 0 ? nation->transportCapacity : 0, 1);
 }
@@ -59,14 +59,14 @@ void TTransportView::StuffValues(TGreatPower* nation) {
 void TTransportView::Close() {
   TView* transportPanel = ResolveControlByTag(kControlTagTran); // 'tran'
   if (transportPanel == 0) {
-    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x7a7);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x7a7);
   }
 
   for (int resourceType = 0; resourceType < kResourceKindCount; ++resourceType) {
     TNumberText* amount = static_cast<TNumberText*>(
         transportPanel->ResolveControlByTag(g_pTradeSummarySelectionMap[resourceType]));
     if (amount == 0) {
-      FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x7ab);
+      FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x7ab);
     }
     nation->UpdateNeedTargetAndAccumulateOverCap(
         static_cast<short>(resourceType),

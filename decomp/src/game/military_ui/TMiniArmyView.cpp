@@ -30,7 +30,7 @@ void TMiniArmyView::InitializeForMilitaryUnit(TView* panel, int* offsetLayout, i
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 5, 5, 0);
   militaryUnit = unit;
   eventNumber = 0x22;
-  SetControlHoverHelpText(g_pMiniCivSharedText_0064cb18, this);
+  SetControlHoverHelpText(g_pMiniCivSharedText, this);
 }
 
 // FUNCTION: IMPERIALISM 0x004aaeb0
@@ -81,7 +81,7 @@ void TMiniArmyView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     if (militaryUnit->Upgrade()) {
       TView* sourceView = static_cast<TView*>(sourceHandler);
       sourceView->Show(0, 1);
-      SetControlHoverHelpTextAltEntry(CString(g_pMiniCivSharedText_0064cb18), sourceView);
+      SetControlHoverHelpTextAltEntry(CString(g_pMiniCivSharedText), sourceView);
       TStaticText* tbr1 = static_cast<TStaticText*>(
           g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagTbr1));
       tbr1->AssertValid();

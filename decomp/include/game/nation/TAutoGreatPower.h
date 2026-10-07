@@ -67,7 +67,7 @@ public:
   // slot 0x18 — 0x004ea1c0: also drop the matching mission and map-node flag.
   void LoseProvince(int regionId) override;
   // slot 0x22 — 0x004e79d0: forward to the foreign minister or queue a tracked entry.
-  char ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
+  bool ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                          ResourceKindStorage resourceKind) override;
   // slot 0x38 — 0x004e7590: interior-minister slot 0x54 when city exists.
   void FillInteriorMinisterOrders(void) override;
@@ -83,7 +83,7 @@ public:
   void StopBeingEnemiesWith(int targetNation) override;
   // slot 0xa0 — 0x004e7ec0: war-transition propagation for a nation pair.
   int ConsiderWarOfAlliance(int targetNation, int sourceNation, char swapRoles) override;
-  char UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) override;
+  bool UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) override;
   bool PassesDiplomacyStrengthThresholdForTarget(int targetNation) override;
   void AddColony(int targetNation) override;
   // slots 0xb0/0xb1 — 0x004ea430/0x004ea450: no-op overrides for AI nations.

@@ -69,7 +69,7 @@ void TPortZone::NameThyself(unsigned char* usedCityFlags, const char* overrideNa
   CString expandedHeadline;
   g_pSimMgr->GetString(0x275a, statusCode, &headlineTemplate);
   scanBracketExpressions(g_pSimMgr, &expandedHeadline, static_cast<LPCSTR>(headlineTemplate),
-                         static_cast<LPCSTR>(city->cityNameA4));
+                         static_cast<LPCSTR>(city->cityName));
   displayName = expandedHeadline;
 }
 

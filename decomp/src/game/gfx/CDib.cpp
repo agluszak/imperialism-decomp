@@ -25,7 +25,6 @@ CDib::CDib() : CObject() {
   Release();
 }
 
-
 // FUNCTION: IMPERIALISM 0x00479fe0
 CDib::CDib(int width, int height, int bitDepth) : CObject() {
   m_hBitmap = NULL;
@@ -61,7 +60,7 @@ CDib::CDib(int width, int height, int bitDepth) : CObject() {
   m_infoOwnMode = kDibInfoOwnedByteArray;
   m_pInfoHeader->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
   m_pInfoHeader->bmiHeader.biWidth = width;
-  if (g_nDibOrientationFlag_006A1890 > 0) {
+  if (g_nDibOrientationFlag > 0) {
     height = -height;
   }
   m_pInfoHeader->bmiHeader.biHeight = height;
@@ -599,7 +598,7 @@ HBITMAP CDib::CreateDibBitmapFromStoredInfo(CDC* dc) {
 
 // FUNCTION: IMPERIALISM 0x0047b2d0
 BOOL CDib::Compress(CDC* dc, BOOL compress) {
-  if (g_dibCompressAssertGate_006A1484 == 0) {
+  if (g_dibCompressAssertGate == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\CDib.cpp", 0x31b);
   }
 

@@ -47,11 +47,11 @@ public:
   virtual void SetMinorsTradeBids();                                // 0x1b 0x5b9890
   virtual void TallyMinorsTradeBids();                              // 0x1c 0x5b9b30
   virtual void TallyTradeBids();                                    // 0x1d 0x5b98d0
-  virtual char DidBidOn(int item, int nationSlot);                  // 0x1e 0x5b9f70
-  virtual char DidOffer(int item, int nationSlot);                  // 0x1f 0x5b9fa0
+  virtual bool DidBidOn(int item, int nationSlot);                  // 0x1e 0x5b9f70
+  virtual bool DidOffer(int item, int nationSlot);                  // 0x1f 0x5b9fa0
   virtual TLongintList* GetBidderList(int item, int nationSlot);    // 0x20 0x5b9fd0
   virtual short WhoTradesFirst(short proposalCode, short category); // 0x21 0x5ba090
-  virtual double Power(double base, short exponent); // 0x22 0x5b9f30
+  virtual double Power(double base, short exponent);                // 0x22 0x5b9f30
 
   TTradeMgr();
   // ORACLE: Mac TTradeMgr::ITradeMgr().
@@ -73,15 +73,15 @@ public:
 
 #pragma pack(push, 4)
   struct NationMetricCategoryRow {
-    short dealCategoryOrderIndex; // struct 0x00
-    short dealEntryOrdinal;       // struct 0x02
-    short previousPrice;          // struct 0x04
-    short price;                  // struct 0x06
-    short numRequests;            // struct 0x08
-    short numOffers;              // struct 0x0a
-    double adjustedNumOffers;     // struct 0x0c
-    short amountOffered;          // struct 0x14
-    short basePrice;              // struct 0x16
+    short dealCategoryOrderIndex;             // struct 0x00
+    short dealEntryOrdinal;                   // struct 0x02
+    short previousPrice;                      // struct 0x04
+    short price;                              // struct 0x06
+    short numRequests;                        // struct 0x08
+    short numOffers;                          // struct 0x0a
+    double adjustedNumOffers;                 // struct 0x0c
+    short amountOffered;                      // struct 0x14
+    short basePrice;                          // struct 0x16
     short tradeOfferCells[(0xa0 - 0x18) / 2]; // struct 0x18..0x9f
   };
 #pragma pack(pop)

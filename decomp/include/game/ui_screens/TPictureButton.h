@@ -14,10 +14,10 @@ public:
                            bool refreshNow) override; // slot 0x70 0x570870
   virtual void DrawImmediate();                       // slot 0x73 0x5708c0
   short glyph;
-  short timingWord92;
+  short clickSoundId;
 
   // FUNCTION: IMPERIALISM 0x005707f0
-  TPictureButton() : TPicture(), timingWord92(7000) {}
+  TPictureButton() : TPicture(), clickSoundId(7000) {}
 };
 
 ASSERT_SIZE(TPictureButton, 0x94);

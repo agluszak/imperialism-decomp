@@ -62,7 +62,7 @@ extern CRect g_defaultRect_006A1FD8;
 extern double g_ScaleDefault6A1FE8;
 extern CRect g_defaultRect_006A1FF0;
 extern CPoint g_defaultPoint_006A2000;
-extern short g_scaledDefaultWidth_006A2008;
+extern short g_scaledDefaultWidth;
 extern CPoint g_defaultPoint_006A2020;
 extern CRGBColor g_defaultRgbColor_006A201C;
 extern CRect g_defaultRect_006A2028;
@@ -93,7 +93,7 @@ extern int g_paletteResourceNameAssertGate;
 extern int g_paletteResourceIdAssertGate;
 
 extern "C" {
-extern int g_dibCompressAssertGate_006A1484;
+extern int g_dibCompressAssertGate;
 extern double g_gfxScale6A14E0;
 extern short g_scaledShortConst_6A1528;
 extern double g_gfxScale6A1580;
@@ -278,14 +278,14 @@ extern const int g_nCurrentAmbitSaveFormatVersion;
 
 extern const char g_szUAmbitSourcePath[];
 
-extern int g_colorFillAssertGuard_006a30b4;
+extern int g_colorFillAssertGuard;
 
 // QuickDraw OpenRgn/CloseRgn recording accumulator (QDFrameRect XORs framed rects into it).
 extern HRGN g_hOpenRgnAccumulator;
 
-extern int g_nDibOrientationFlag_006A1890;
+extern int g_nDibOrientationFlag;
 
-extern int g_diplomacyDialogAssertGuard_006A15CC;
+extern int g_diplomacyDialogAssertGuard;
 
 // One-slot CTemporaryRegion reuse cache (see CTemporaryRegion.h).
 extern RgnHandle g_pTemporaryRegionCache;
@@ -293,11 +293,11 @@ extern RgnHandle g_pTemporaryRegionCache;
 // Selects the CDib blit path in TDibPreviewDialog::OnPaint (0x00694c50).
 extern int g_useCompatibleBitmapBlit;
 
-extern "C" const char g_szDiplomacyDialogsSourcePath_00694CC0[];
+extern "C" const char g_szDiplomacyDialogsSourcePath[];
 
-extern char g_szUGameWindowSourcePath_00696bc0[];
+extern char g_szUGameWindowSourcePath[];
 
-extern char g_szTraceLineBreakChars_00695200[];
+extern char g_szTraceLineBreakChars[];
 
 // UDisplayMgr font literals and runtime CString slots (markers in global_data_tables.cpp).
 extern "C" const char g_szUiFontLiteralBelweBdBt[];

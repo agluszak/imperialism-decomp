@@ -140,7 +140,7 @@ void FormatLocalizedCommodityCountLabelByIndex(CString* out, unsigned int commod
   if (count >= 0) {
     CString numberText;
     numberText.Format(g_szDecimalFormat, static_cast<int>(count));
-    *out = numberText + s_szSpaceSeparator_00695794 + *out;
+    *out = numberText + s_szSpaceSeparator + *out;
   }
 }
 
@@ -286,7 +286,7 @@ void TNavyMgr::ReadFromFilterously(TStream* stream, short nationFilter) {
   while (static_cast<short>(pendingCount--) != 0) {
     TShip* shipNode = new TShip();
     if (shipNode == 0) {
-      FailNilPointerWithAssert(s_SourcePathUNavy_006983C8, 0xd11);
+      FailNilPointerWithAssert(s_SourcePathUNavy, 0xd11);
     }
     shipNode->ReadFrom(stream);
     if (nationFilter != -1 && shipNode->nation != nationFilter) {
@@ -298,7 +298,7 @@ void TNavyMgr::ReadFromFilterously(TStream* stream, short nationFilter) {
   while (static_cast<short>(pendingCount--) != 0) {
     TAdmiral* admiralNode = new TAdmiral();
     if (admiralNode == 0) {
-      FailNilPointerWithAssert(s_SourcePathUNavy_006983C8, 0xd24);
+      FailNilPointerWithAssert(s_SourcePathUNavy, 0xd24);
     }
     admiralNode->ReadFrom(stream);
     if (nationFilter != -1 && admiralNode->nationSlot != nationFilter) {
@@ -311,7 +311,7 @@ void TNavyMgr::ReadFromFilterously(TStream* stream, short nationFilter) {
   while (static_cast<short>(pendingCount--) != 0) {
     TTaskForce* orderEntry = new TTaskForce();
     if (orderEntry == 0) {
-      FailNilPointerWithAssert(s_SourcePathUNavy_006983C8, 0xd37);
+      FailNilPointerWithAssert(s_SourcePathUNavy, 0xd37);
     }
     orderEntry->ReadFrom(stream);
     if (nationFilter != -1 && orderEntry->nation != nationFilter) {
@@ -816,7 +816,7 @@ TTaskForce* TNavyMgr::AssignEscorts(short requiredCount, short chancePercent) {
 
 IMPERIALISM_BEGIN_RETAIL_UNINITIALIZED_READ
 // FUNCTION: IMPERIALISM 0x00557f10
-char TNavyMgr::TryMerchantInterception(TMapOrderInteractionSelection* outResult,
+bool TNavyMgr::TryMerchantInterception(TMapOrderInteractionSelection* outResult,
                                        TZone* portZoneContext, short nation, short offerAmount) {
   short portOwnerNation = portZoneContext->GetPortZoneOwnerNationCodeFromMissionField48();
   TGreatPower* nationState = g_apNationStates[nation];
@@ -986,7 +986,7 @@ char TNavyMgr::TryMerchantInterception(TMapOrderInteractionSelection* outResult,
     outResult->directionFlags = flags;
     if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(nation,
                                                                               entry->nation)) {
-      return 1;
+      return true;
     }
     short roll = static_cast<short>(rand() % 100);
     short bias = static_cast<short>(entryChildren + 10);
@@ -997,9 +997,9 @@ char TNavyMgr::TryMerchantInterception(TMapOrderInteractionSelection* outResult,
     } else {
       outResult->directionFlags |= 2;
     }
-    return 1;
+    return true;
   }
-  return 0;
+  return false;
 }
 IMPERIALISM_END_RETAIL_UNINITIALIZED_READ
 
@@ -1124,7 +1124,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
                 continue;
               }
               if (resourceList.Compare(g_szEmptyString) != 0) {
-                resourceList += g_szListSeparator_00695760;
+                resourceList += g_szListSeparator;
               }
               CString resourceLabel;
               FormatLocalizedCommodityCountLabelByIndex(
@@ -1143,8 +1143,8 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
             CString resourceActionText;
             g_pSimMgr->GetString(0x273c, static_cast<short>(2 - ((directionFlags >> 1) & 1)),
                                  &resourceActionText);
-            CString resourceSummary = s_szLineBreak_00695880 + resourceActionText +
-                                      s_szSpaceSeparator_00695794 + resourceList;
+            CString resourceSummary =
+                s_szLineBreak + resourceActionText + s_szSpaceSeparator + resourceList;
             AppendCStringIntoFixedBuffer(snapshot.overlayLabel[1].data, 0xff,
                                          static_cast<LPCSTR>(resourceSummary));
 
@@ -1156,9 +1156,9 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
                 g_pSimMgr->GetCommodityName(slot, &transferredCommodityName);
                 CString transferredActionText;
                 g_pSimMgr->GetString(0x273c, 3, &transferredActionText);
-                CString transferredSummary = s_szLineBreak_00695880 + transferredActionText +
-                                             s_szSpaceSeparator_00695794 + transferredText +
-                                             s_szSpaceSeparator_00695794 + transferredCommodityName;
+                CString transferredSummary = s_szLineBreak + transferredActionText +
+                                             s_szSpaceSeparator + transferredText +
+                                             s_szSpaceSeparator + transferredCommodityName;
                 AppendCStringIntoFixedBuffer(snapshot.overlayLabel[1].data, 0xff,
                                              static_cast<LPCSTR>(transferredSummary));
 

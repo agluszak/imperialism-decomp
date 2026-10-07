@@ -51,7 +51,7 @@ void TAmbitFileBasedDocument::DoRead(ArchiveStreamAdapter* file, unsigned char f
   stream->ReadBytes(&fileMagic, 4);
   stream->ReadBytes(&g_nSaveFormatVersion, 4);
   stream->ReadBytes(&savedSessionSlot, 4);
-  stream->ReadBytes(g_ScenarioSaveNameBuffer_006A2178, 0x20);
+  stream->ReadBytes(g_ScenarioSaveNameBuffer, 0x20);
 
   bool invalidSaveFile = false;
   if (fileMagic != kControlTagAMBI) {
@@ -127,7 +127,7 @@ void TAmbitFileBasedDocument::DoWrite(ArchiveStreamAdapter* file, unsigned char 
   stream->WriteBytes(const_cast<int*>(&g_nCurrentAmbitSaveFormatVersion), 4);
   int savedSessionSlot = g_pGameFlowState->queueSyncDword;
   stream->WriteBytes(&savedSessionSlot, 4);
-  stream->WriteBytes(g_ScenarioSaveNameBuffer_006A2178, 0x20);
+  stream->WriteBytes(g_ScenarioSaveNameBuffer, 0x20);
 
   char* tileOwnerTags = new char[0x1950];
   if (tileOwnerTags == 0) {

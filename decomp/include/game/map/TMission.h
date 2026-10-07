@@ -80,7 +80,7 @@ public:
                                  bool notify);         // 0x22 0x534f30
   virtual void ForgetTaskForce(TTaskForce* taskForce); // 0x24 0x534f50
   virtual void Hold(bool value);                       // 0x25 0x534f70
-  virtual char SmokeEmIfYouGotEm();                    // 0x26 0x534f90
+  virtual bool SmokeEmIfYouGotEm();                    // 0x26 0x534f90
 
   void InitializeMissionWithNationIdAndResetPathMarker(NationSlot nationSlot);
 

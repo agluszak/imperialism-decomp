@@ -159,7 +159,7 @@ void TTedForeignMinister::SetTradeBids() {
   TGreatPower* owner = greatPower;
   short merchantCapacity = owner->merchantCapacity;
   short resourceAmount = owner->GetStockpile(kResourceHardware);
-  if (owner->treasuryValue10 >= 0 && merchantCapacity > resourceAmount && resourceAmount < 10) {
+  if (owner->treasuryValue >= 0 && merchantCapacity > resourceAmount && resourceAmount < 10) {
     owner->SetItemPotentials(kResourceClothing, owner->GetStockpile(kResourceClothing));
     owner->SetItemPotentials(kResourceFurniture, owner->GetStockpile(kResourceFurniture));
   } else {
@@ -315,8 +315,8 @@ void TBillForeignMinister::SetBuyPriorities() {
 void TBillForeignMinister::SetTradeBids() {
   PreparePersonalityTradeBids(this);
   TGreatPower* owner = greatPower;
-  short targetAmount = owner->treasuryValue10 < 0 ? owner->merchantCapacity
-                                                  : static_cast<short>(owner->merchantCapacity / 2);
+  short targetAmount = owner->treasuryValue < 0 ? owner->merchantCapacity
+                                                : static_cast<short>(owner->merchantCapacity / 2);
   TSortByPriceList* prices = new TSortByPriceList();
   prices->recordSize = sizeof(ResourcePriorityEntry);
   AddSortedResourcePrice(prices, 0x0d);
@@ -580,8 +580,8 @@ void TDiplomatForeignMinister::SetBuyPriorities() {
 void TDiplomatForeignMinister::SetTradeBids() {
   PreparePersonalityTradeBids(this);
   TGreatPower* owner = greatPower;
-  short targetAmount = owner->treasuryValue10 < 0 ? owner->merchantCapacity
-                                                  : static_cast<short>(owner->merchantCapacity / 2);
+  short targetAmount = owner->treasuryValue < 0 ? owner->merchantCapacity
+                                                : static_cast<short>(owner->merchantCapacity / 2);
   TSortByPriceList* prices = new TSortByPriceList();
   prices->recordSize = sizeof(ResourcePriorityEntry);
   AddSortedResourcePrice(prices, 0x0d);
@@ -679,14 +679,14 @@ void TTextileForeignMinister::SetTradeBids() {
   short merchantCapacity = greatPower->merchantCapacity;
   PreparePersonalityTradeBids(this);
   TGreatPower* owner = greatPower;
-  if (owner->treasuryValue10 < 0 || owner->GetStockpile(kResourceClothing) >= merchantCapacity ||
+  if (owner->treasuryValue < 0 || owner->GetStockpile(kResourceClothing) >= merchantCapacity ||
       (owner->GetStockpile(kResourceClothing) > 4 && g_pTradeMgr->GetPrice(0x0d) > 1000)) {
     short textileAmount = owner->GetStockpile(kResourceClothing) < merchantCapacity
                               ? owner->GetStockpile(kResourceClothing)
                               : merchantCapacity;
     owner->SetItemPotentials(kResourceClothing, textileAmount);
   }
-  if (owner->treasuryValue10 < 0 || owner->GetTradeOffersFor(kResourceClothing) == 0) {
+  if (owner->treasuryValue < 0 || owner->GetTradeOffersFor(kResourceClothing) == 0) {
     short budget = static_cast<short>(merchantCapacity / 2);
     short firstResource = 0x0e;
     short secondResource = 0x0f;
@@ -792,7 +792,7 @@ void TTraderForeignMinister::SetTradeBids() {
   AddSortedResourcePrice(prices, 0x0d);
   AddSortedResourcePrice(prices, 0x0e);
   AddSortedResourcePrice(prices, 0x0f);
-  short divisor = owner->treasuryValue10 < 0 ? 1 : 4;
+  short divisor = owner->treasuryValue < 0 ? 1 : 4;
   short budget = static_cast<short>(owner->merchantCapacity / divisor);
   int selectedOrdinal = 3;
   short allocated = 0;
@@ -914,7 +914,7 @@ void TArmsForeignMinister::SetTradeBids() {
     --selectedOrdinal;
   }
   prices->ReleasePtrList();
-  if (owner->treasuryValue10 < 0 &&
+  if (owner->treasuryValue < 0 &&
       !g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(owner->nationSlot)) {
     short available = owner->GetStockpile(kResourceArms);
     short amount = static_cast<short>(available / 10);
@@ -942,24 +942,24 @@ void TArmsForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
         resourceCode != kResourceIron) {
       capabilityFlag16 = owner->GetMerchantCapacity();
     } else if (tradePartnerEnabled[resourceCode] != 0) {
-      if (g_nArmsAdvancedResourceOfferSplitCount_006a3a58 == 0) {
+      if (g_nArmsAdvancedResourceOfferSplitCount == 0) {
         capabilityFlag16 = static_cast<short>(owner->GetMerchantCapacity() / 3);
       } else {
         capabilityFlag16 = static_cast<short>(owner->GetMerchantCapacity() / 2);
       }
-      ++g_nArmsAdvancedResourceOfferSplitCount_006a3a58;
+      ++g_nArmsAdvancedResourceOfferSplitCount;
     }
   } else {
     if (resourceCode != kResourceCotton && resourceCode != kResourceWool &&
         resourceCode != kResourceTimber && resourceCode != kResourceCoal) {
       capabilityFlag16 = owner->GetMerchantCapacity();
     } else if (tradePartnerEnabled[resourceCode] != 0) {
-      if (g_nArmsBasicResourceOfferSplitCount_006a3a54 == 0) {
+      if (g_nArmsBasicResourceOfferSplitCount == 0) {
         capabilityFlag16 = static_cast<short>(owner->GetMerchantCapacity() / 3);
-        ++g_nArmsBasicResourceOfferSplitCount_006a3a54;
+        ++g_nArmsBasicResourceOfferSplitCount;
       } else {
         capabilityFlag16 = static_cast<short>(owner->GetMerchantCapacity() / 2);
-        ++g_nArmsBasicResourceOfferSplitCount_006a3a54;
+        ++g_nArmsBasicResourceOfferSplitCount;
       }
     }
   }

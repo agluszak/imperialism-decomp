@@ -126,8 +126,8 @@ LRESULT CMcWindow::OnWindowStateMsg468(WPARAM wParam, LPARAM lParam) {
     delete this;
     break;
   default:
-    if (g_nMcWindowStateMsgAssertGate_006A1C74 == 0) {
-      TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcWindowSourcePath_006950D8, 0xb8);
+    if (g_nMcWindowStateMsgAssertGate == 0) {
+      TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcWindowSourcePath, 0xb8);
     }
     break;
   }

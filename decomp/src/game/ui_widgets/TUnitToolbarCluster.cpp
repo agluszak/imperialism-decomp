@@ -32,7 +32,7 @@ TUnitToolbarCluster::~TUnitToolbarCluster() {}
 void TUnitToolbarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   this->TCluster::DoEvent(commandId, sourceHandler, event);
 
-  if (!(((g_pApplication->screenModeAt24 == 1) && (commandId == 0x68)) || (commandId == 0x67) ||
+  if (!(((g_pApplication->screenMode == 1) && (commandId == 0x68)) || (commandId == 0x67) ||
         (commandId == 10) || (commandId == 0x0c))) {
     return;
   }

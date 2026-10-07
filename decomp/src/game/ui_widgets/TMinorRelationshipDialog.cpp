@@ -26,7 +26,7 @@ void TMinorRelationshipDialog::Close() {
 
     TView* nationPanel = ResolveControlByTag(g_minorTreatyPanelTags[minorIndex]);
     if (nationPanel == 0) {
-      FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x229);
+      FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x229);
     }
 
     for (short majorNation = 0; majorNation < 7; ++majorNation) {
@@ -36,7 +36,7 @@ void TMinorRelationshipDialog::Close() {
       TNumberText* standingControl = static_cast<TNumberText*>(
           nationPanel->ResolveControlByTag(g_majorTreatyCellTags[majorNation]));
       if (standingControl == 0) {
-        FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x22f);
+        FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x22f);
       }
       int standing = standingControl->UpdateControlCachedIntFromWindowText();
       g_pDiplomacyTurnStateManager->SetRelationship(majorNation, minorNation, standing);
@@ -57,7 +57,7 @@ void TMinorRelationshipDialog::StuffValues() {
     }
     TView* minorPanel = ResolveControlByTag(g_minorTreatyPanelTags[minorIndex]);
     if (minorPanel == 0) {
-      FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x252);
+      FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x252);
     }
     for (short majorNation = 0; majorNation < 7; ++majorNation) {
       if (g_apTerrainTypeDescriptorTable[majorNation] == 0) {
@@ -66,7 +66,7 @@ void TMinorRelationshipDialog::StuffValues() {
       TNumberText* cell = static_cast<TNumberText*>(
           minorPanel->ResolveControlByTag(g_majorTreatyCellTags[majorNation]));
       if (cell == 0) {
-        FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x258);
+        FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x258);
       }
       cell->SetControlValue(
           g_pDiplomacyTurnStateManager
@@ -79,11 +79,11 @@ void TMinorRelationshipDialog::StuffValues() {
   // Major-nation name strips.
   TView* majorNames1 = ResolveControlByTag(kControlTagWor1);
   if (majorNames1 == 0) {
-    FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x261);
+    FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x261);
   }
   TView* majorNames2 = ResolveControlByTag(kControlTagWor2);
   if (majorNames2 == 0) {
-    FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x263);
+    FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x263);
   }
   for (short majorNation = 0; majorNation < 7; ++majorNation) {
     if (g_apTerrainTypeDescriptorTable[majorNation] == 0) {
@@ -93,13 +93,13 @@ void TMinorRelationshipDialog::StuffValues() {
     TStaticText* nameControl =
         static_cast<TStaticText*>(majorNames1->ResolveControlByTag(nameTags[majorNation]));
     if (nameControl == 0) {
-      FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x26c);
+      FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x26c);
     }
     nameControl->SetTextAndMaybeRefresh(&label, false);
     nameControl =
         static_cast<TStaticText*>(majorNames2->ResolveControlByTag(nameTags[majorNation]));
     if (nameControl == 0) {
-      FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x26f);
+      FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x26f);
     }
     nameControl->SetTextAndMaybeRefresh(&label, false);
   }
@@ -107,11 +107,11 @@ void TMinorRelationshipDialog::StuffValues() {
   // Minor-nation name columns: 'col1' lists minors 7..14, 'col2' minors 15..22.
   TView* minorNames1 = ResolveControlByTag(kControlTagCol1);
   if (minorNames1 == 0) {
-    FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x274);
+    FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x274);
   }
   TView* minorNames2 = ResolveControlByTag(kControlTagCol2);
   if (minorNames2 == 0) {
-    FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x276);
+    FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x276);
   }
   for (short row = 0; row < 8; ++row) {
     if (g_apTerrainTypeDescriptorTable[row + 7] != 0) {
@@ -119,7 +119,7 @@ void TMinorRelationshipDialog::StuffValues() {
       TStaticText* rowControl =
           static_cast<TStaticText*>(minorNames1->ResolveControlByTag(nameTags[row]));
       if (rowControl == 0) {
-        FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x27f);
+        FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x27f);
       }
       rowControl->SetTextAndMaybeRefresh(&label, false);
     }
@@ -128,7 +128,7 @@ void TMinorRelationshipDialog::StuffValues() {
       TStaticText* rowControl =
           static_cast<TStaticText*>(minorNames2->ResolveControlByTag(nameTags[row]));
       if (rowControl == 0) {
-        FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x287);
+        FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x287);
       }
       rowControl->SetTextAndMaybeRefresh(&label, false);
     }

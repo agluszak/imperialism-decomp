@@ -15,7 +15,7 @@ public:
   void Free() override; // slot 0x07 0x4ad560
   void DoEvent(int commandId, TEventHandler* sourceHandler,
                TEvent* event) override; // slot 0x0f 0x4ad7a0
-  char DoIdle(int action) override;     // slot 0x13 0x4ad5a0
+  bool DoIdle(int action) override;     // slot 0x13 0x4ad5a0
   void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                            RgnHandle hitArg) override; // slot 0x35
   void DoPostCreate(int arg) override;                                                 // slot 0x37
@@ -23,7 +23,7 @@ public:
   void DoMouseCommand(CPoint& point, TToolboxEvent* event,
                       CPoint origin) override; // slot 0x47 0x4adcb0
 
-  char ShouldDisplay(MapContextActionRecord* record) const;
+  bool ShouldDisplay(MapContextActionRecord* record) const;
   MapContextActionRecord* GetBattleAt(const CPoint& point) const;
   void RefreshMapContextSelectionPanelAndInfoLabels(MapContextActionRecord* mapContextRecord);
 

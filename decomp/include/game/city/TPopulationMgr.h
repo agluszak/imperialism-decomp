@@ -29,7 +29,7 @@ public:
   virtual void Eat();                          // slot 0x0e 0x4b5ed0
   virtual void PretendToEat(short& substitutionCount,
                             short& starvationCount); // slot 0x0f 0x4b6260
-  virtual char Strike();                             // slot 0x10 0x4b65b0
+  virtual bool Strike();                             // slot 0x10 0x4b65b0
   virtual void StartProductionPhase();               // slot 0x11 0x4b5e80
   virtual float GrowthRate();                        // slot 0x12 0x4b63e0
   virtual void MakeUnavailable(short skillBand,

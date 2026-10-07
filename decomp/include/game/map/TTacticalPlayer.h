@@ -20,9 +20,8 @@ public:
   virtual void ApplyChanges(unsigned char sideWonFlag); // slot 0x0d 0x59add0
   virtual void RemoveTacticalUnitFromUnitList(class TTacticalUnit* unit); // slot 0x0e 0x59afa0
   virtual void AddTacticalUnitToUnitListHead(class TTacticalUnit* unit);  // slot 0x0f 0x59afe0
-  virtual unsigned char
-  AlwaysTrueTacticalPredicate10(class TTacticalUnit* unit); // slot 0x10 0x59adf0
-  virtual void ProceedAfterBattleIntroAccepted();           // slot 0x11 0x59ae10
+  virtual bool AlwaysTrueTacticalPredicate10(class TTacticalUnit* unit);  // slot 0x10 0x59adf0
+  virtual void ProceedAfterBattleIntroAccepted();                         // slot 0x11 0x59ae10
 
   TList* unitList;               // +0x04 the side's tactical unit records (new TList())
   TList* secondaryList;          // +0x08 reserve list: never-deployed units (0x59b740)

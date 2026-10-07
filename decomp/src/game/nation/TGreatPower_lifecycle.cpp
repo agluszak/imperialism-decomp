@@ -137,7 +137,7 @@ TGreatPower::TGreatPower()
   // TCountry base scalars (identity strings constructed by the TCountry ctor).
   this->nationSlot = 0;
   this->encodedNationSlot = 0;
-  this->treasuryValue10 = 0;
+  this->treasuryValue = 0;
   this->field42 = 0;
   this->militaryUnitList = 0;
   this->homeTileIndex = 0;
@@ -204,7 +204,7 @@ short TGreatPower::GetMerchantCapacity(void) {
 void TGreatPower::IGreatPower(short nationSlotIndex, short humanControlledFlag) {
   this->InitializeNationStateIdentityAndOwnedRegionList(nationSlotIndex);
 
-  this->treasuryValue10 = g_anNationStartingTreasuryByLocale[g_pSimMgr->difficultyLevel];
+  this->treasuryValue = g_anNationStartingTreasuryByLocale[g_pSimMgr->difficultyLevel];
 
   this->diplomacyEligibility = (humanControlledFlag == 1) ? 1 : 0;
 
@@ -896,7 +896,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004dae70
-char TGreatPower::HasDeveloper(void) {
+bool TGreatPower::HasDeveloper(void) {
   bool found = false;
   CIterator orderIter(this->trackedObjectList);
   TUnit* order = static_cast<TUnit*>(orderIter.Reset());
@@ -904,7 +904,7 @@ char TGreatPower::HasDeveloper(void) {
     while (order->orderType != EncodeCivilianUnitKind(kCivilianUnitDeveloper)) {
       order = static_cast<TUnit*>(orderIter.Advance());
       if (!orderIter.More()) {
-        return 0;
+        return false;
       }
     }
     found = true;
@@ -942,7 +942,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
 
   int* nationCursor = nationPriorityOrder;
   while (*nationCursor != -1) {
-    if (interactionScore + this->treasuryValue10 >= 0) {
+    if (interactionScore + this->treasuryValue >= 0) {
       break;
     }
 
@@ -962,12 +962,12 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
                                               g_Compute_Advisory_Handler_LookupTable_00653714);
 
       if (summaryMessageRef != "") {
-        summaryMessageRef += g_szListSeparator_00695760;
+        summaryMessageRef += g_szListSeparator;
       }
 
       CString amountText;
       amountText.Format(g_szDecimalFormat, static_cast<int>(relationDelta));
-      summaryMessageRef += amountText + s_szSpaceSeparator_00695794;
+      summaryMessageRef += amountText + s_szSpaceSeparator;
 
       CString commodityName;
       g_pSimMgr->GetCommodityName(nationSlot, &commodityName);
@@ -991,14 +991,14 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
 }
 
 // FUNCTION: IMPERIALISM 0x004db380
-char TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
+bool TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
   TSimMgr* simMgr = g_pSimMgr;
   int localeIndex = 0;
   if (simMgr != 0) {
     localeIndex = simMgr->difficultyLevel;
   }
 
-  int treasuryValue10 = this->treasuryValue10;
+  int treasuryValue = this->treasuryValue;
   int basePressure = this->SumAidAllocationMatrixAllCells();
   basePressure += static_cast<int>(this->needTargetByType[kResourceGold]) * 200;
   basePressure += static_cast<int>(this->needTargetByType[kResourceGems]) * 500;
@@ -1012,11 +1012,11 @@ char TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
   this->diplomacyBudgetBase = smoothedPressure;
   int pressureBand = smoothedPressure / 100;
 
-  if (treasuryValue10 < 0) {
+  if (treasuryValue < 0) {
     int halfBand = pressureBand / 2;
-    if (-treasuryValue10 <= halfBand) {
+    if (-treasuryValue <= halfBand) {
       this->pressureCounter = 1;
-    } else if (-treasuryValue10 <= pressureBand) {
+    } else if (-treasuryValue <= pressureBand) {
       if (this->pressureCounter > 1) {
         int nextPressureValue =
             this->escalationCounter +
@@ -1049,7 +1049,7 @@ char TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
       if (pressureTier >= g_anGreatPowerPressureHardAlertThresholdByLocale[localeIndex]) {
         g_pSimMgr->GetString(0x274b, 4, &sharedMessageRef);
         g_pViewMgr->ModalMessage(sharedMessageRef, g_ptGreatPowerModalMessage, 2, 0);
-        return 1;
+        return true;
       }
 
       int compileThreshold = g_anGreatPowerCompileThresholdByLocale[localeIndex];
@@ -1079,14 +1079,14 @@ char TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
     }
   }
 
-  treasuryValue10 = this->treasuryValue10;
-  if (treasuryValue10 >= 0) {
+  treasuryValue = this->treasuryValue;
+  if (treasuryValue >= 0) {
     this->pendingCommitmentCost = 0;
-    return 0;
+    return false;
   }
 
-  int drainAmount = (0xC7 - static_cast<int>(this->escalationCounter) * treasuryValue10) / 200;
+  int drainAmount = (0xC7 - static_cast<int>(this->escalationCounter) * treasuryValue) / 200;
   this->pendingCommitmentCost = drainAmount;
-  this->treasuryValue10 = treasuryValue10 - drainAmount;
-  return 0;
+  this->treasuryValue = treasuryValue - drainAmount;
+  return false;
 }

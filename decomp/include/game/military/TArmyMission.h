@@ -46,7 +46,7 @@ public:
                                    bool notify) override; // slot 0x80 0x53c570
   virtual void RejectConstituent(TMilitaryUnit* unit,
                                  bool notify) override; // slot 0x88 0x53c5e0
-  virtual char
+  virtual bool
   SmokeEmIfYouGotEm() override; // slot 0x98 0x53c4f0 -- queue eligible units by movement class
 
   virtual short GetPresentLocation() const; // 0x535750
@@ -55,8 +55,7 @@ public:
 
   float ProjectSatisfaction(short bypassTileFilter) const; // 0x53cac0
 
-  void AccumulateWeightedUnitEquipage(TMilitaryUnit* unit, float* vector,
-                                                              bool scaleMode);
+  void AccumulateWeightedUnitEquipage(TMilitaryUnit* unit, float* vector, bool scaleMode);
 
   void GetWeightedEquipage(float* vector) const; // 0x53cda0
 

@@ -97,7 +97,7 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
   TStaticText* titleControl =
       static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl)); // 'titl'
   if (titleControl == NULL) {
-    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1349);
+    FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1349);
   }
   titleControl->SetTextAndMaybeRefresh(&reportText, true);
 
@@ -108,7 +108,7 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
                                               ? 0x2722
                                               : 0x2721),
                        static_cast<short>(rand() % 6), &scratchText);
-  reportText += scratchText + s_szSpaceSeparator_00695794;
+  reportText += scratchText + s_szSpaceSeparator;
   g_pSimMgr->GetString(0x2720, static_cast<short>(rand() % 6), &scratchText);
   reportText += scratchText;
   reportText += '\n';
@@ -136,21 +136,21 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
                                               ? 0x2722
                                               : 0x2721),
                        static_cast<short>(rand() % 6), &scratchText);
-  reportText += scratchText + s_szSpaceSeparator_00695794;
+  reportText += scratchText + s_szSpaceSeparator;
   g_pSimMgr->GetString(0x2720, static_cast<short>(rand() % 6), &scratchText);
   reportText += scratchText;
 
   TStaticText* reportControl =
       static_cast<TStaticText*>(ResolveControlByTag(kControlTagRepo)); // 'repo'
   if (reportControl == NULL) {
-    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x137c);
+    FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x137c);
   }
   reportControl->SetTextAndMaybeRefresh(&reportText, true);
 
-  reportText = CString(s_szCombatLossesHeading_00699324);
+  reportText = CString(s_szCombatLossesHeading);
   g_apTerrainTypeDescriptorTable[reportContext->nationIdA]->FormatOverlayTerrainLabelText(
       &scratchText);
-  reportText += scratchText + s_szTurnHistorySeparator_00699320;
+  reportText += scratchText + s_szTurnHistorySeparator;
 
   int participantAPercentage = participantAMinimumTotal * 100 / participantAField18Total;
   g_pSimMgr->GetString(0x271f, GetCombatLossDescriptionIndex(participantAPercentage), &scratchText);
@@ -168,7 +168,7 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
   TStaticText* lossControl =
       static_cast<TStaticText*>(ResolveControlByTag(kControlTagLoss)); // 'loss'
   if (lossControl == NULL) {
-    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1394);
+    FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1394);
   }
   lossControl->SetTextAndMaybeRefresh(&reportText, true);
 
@@ -312,12 +312,12 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
         }
         TView* pgUp = ResolveControlByTag(kControlTagPgup);
         if (pgUp == NULL) {
-          FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x145d);
+          FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x145d);
         }
         pgUp->Show(0, 1);
         TView* pgDown = ResolveControlByTag(kControlTagPgdn);
         if (pgDown == NULL) {
-          FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1460);
+          FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1460);
         }
         pgDown->Show(1, 1);
       } else {
@@ -325,7 +325,7 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       }
       TView* pgDown = ResolveControlByTag(kControlTagPgdn);
       if (pgDown == NULL) {
-        FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1460);
+        FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1460);
       }
       pgDown->Show(1, 1);
       RECT rect = {4, 0x9f, 0xe1, 0x149};
@@ -343,12 +343,12 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
         }
         TView* pgUp = ResolveControlByTag(kControlTagPgup);
         if (pgUp == NULL) {
-          FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1470);
+          FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1470);
         }
         pgUp->Show(1, 1);
         TView* pgDown = ResolveControlByTag(kControlTagPgdn);
         if (pgDown == NULL) {
-          FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1477);
+          FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1477);
         }
         pgDown->Show(0, 1);
       } else if (reportValue < totalPages) {
@@ -357,7 +357,7 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       if (reportValue == totalPages) {
         TView* pgDown = ResolveControlByTag(kControlTagPgdn);
         if (pgDown == NULL) {
-          FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1477);
+          FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1477);
         }
         pgDown->Show(0, 1);
       }

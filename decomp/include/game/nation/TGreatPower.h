@@ -69,7 +69,7 @@ public:
   short GetTradeOffersFor(short resourceKind) override; // slot 0x1f
   void PurchaseItem(short resourceKind, short amount, short price) override;
   bool StillBuyingItem(ResourceKindStorage resourceKind) override; // slot 0x21
-  char ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
+  bool ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                          ResourceKindStorage resourceKind) override;
   // ORACLE: Mac names TGreatPower::AddOfferFrom(short, short).
   void AddOfferFrom(NationSlot sourceNationSlot,
@@ -90,7 +90,7 @@ public:
   virtual void NoOpNationQueuedOrderHook(void);
   virtual void ExecuteNationPendingActionStateMachine(void);
   void PlaceCity(short homeTileIndex, char* cityName);
-  virtual char HasDeveloper(void);
+  virtual bool HasDeveloper(void);
   virtual void BuildTransportLinkedInfluenceMap(char** outInfluenceMap);
   virtual void TraceRail(char* regionMap, short regionId);
 
@@ -125,18 +125,18 @@ public:
   virtual short GetNeedTargetByType(short needIndex);                              // slot 0x47
   virtual void TryIncrementNationResourceNeedTargetTowardCurrent(int needType);
   virtual bool IsTransportCapacityExceeded(void);
-  virtual char IncreaseRollingStock(void);   // slot 0x4a
-  virtual char IncreaseMerchantMarine(void); // slot 0x4b
+  virtual bool IncreaseRollingStock(void);   // slot 0x4a
+  virtual bool IncreaseMerchantMarine(void); // slot 0x4b
   // slot 0x4c — body 0x004e0220: invokes [vt+0x2c] on every tracked order.
   virtual void ContinueCivilianOrders(void); // slot 0x4c
   virtual void RebuildNationResourceYieldCountersAndDevelopmentTargets(void);
   virtual void AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void);
-  virtual char AnyNeedCurrentExceedsTargetWhenCapMismatch(void); // slot 0x4f
-  virtual char HasAnyCommodityRecordBelowStepValue(void);
+  virtual bool AnyNeedCurrentExceedsTargetWhenCapMismatch(void); // slot 0x4f
+  virtual bool HasAnyCommodityRecordBelowStepValue(void);
   virtual short ComputeTreasuryStatusPromptCode(void);
-  virtual char IsCapitolThreatened(int mode);
-  virtual char BuildGreatPowerMapContextTriggeredNationEventMessages(CString* outMessageText);
-  virtual char BuildGreatPowerEligibleNationEventMessagesFromLinkedList(CString* outMessageText);
+  virtual bool IsCapitolThreatened(int mode);
+  virtual bool BuildGreatPowerMapContextTriggeredNationEventMessages(CString* outMessageText);
+  virtual bool BuildGreatPowerEligibleNationEventMessagesFromLinkedList(CString* outMessageText);
   virtual void SortTrackedOrdersByTypePriority(void);
   // slot 0x56 — body 0x004e03a0: runs slot 0x4c then the slot 0x55 sort.
   virtual void MoveCivilians(void); // Mac oracle
@@ -161,7 +161,7 @@ public:
   virtual unsigned int ComputeProductionMetricForOrderKind(short orderKind);
   virtual void ConsumeMerchantCapacityForPurchase(int delta);             // slot 0x66
   virtual void SetTradeOffersFor(short resourceKind, short offerContext); // slot 0x19c
-  virtual char AreAdvancedManufacturedTradeOffersExhausted(void);         // slot 0x68
+  virtual bool AreAdvancedManufacturedTradeOffersExhausted(void);         // slot 0x68
   // ORACLE: Mac TGreatPower::SetItemPotentials(short, short).
   virtual void SetItemPotentials(short resourceKind, short value); // slot 0x69
   // ORACLE: Mac names TGreatPower::RememberTradeBids().
@@ -175,7 +175,7 @@ public:
   virtual void AddToDealBook(short kind, NationSlot targetNation, short value, short slotIndex,
                              int payload);
   virtual short GetTrackedSlotEntryCountLow(short targetSlot);     // slot 0x6d
-  virtual char AnyTrackedSlotEntryHasZeroField4(short targetSlot); // slot 0x6e
+  virtual bool AnyTrackedSlotEntryHasZeroField4(short targetSlot); // slot 0x6e
   // slot 0x6f — body 0x004ddeb0: unpacks tracked-slot entry fields (+0/+2/+4/+8).
   virtual void GetDealInfo(short slotIndex, short ordinal, short* outKind, short* outValue,
                            short* outTargetNation, int* outPayload);
@@ -190,16 +190,16 @@ public:
   virtual bool SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2); // index 117
   // ORACLE: Mac names TGreatPower::GiveGrantTo(short).
   virtual void GiveGrantTo(int sourceNation); // index 118
-  virtual char
+  virtual bool
   CanAffordDiplomacyGrantEntryForTarget(NationSlot targetNationSlot,
                                         unsigned short proposedGrantEntry); // index 119
   // ORACLE: Mac names TGreatPower::FinishDiplomacyPhase().
   virtual void FinishDiplomacyPhase();                                // index 120 — body 0x004de7e0
   virtual void DecrementNeedLevelByNationStep(NationSlot nationSlot); // index 121
-  virtual char CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost); // index 122
+  virtual bool CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost); // index 122
   virtual void AcceptOffer(short proposalIndex);                                       // index 123
   virtual void RejectOffer(short proposalQueueIndex);                                  // index 124
-  virtual char IsDiplomacyProposalAllowedForRelationship(DiplomacyProposalCodeStorage proposalCode,
+  virtual bool IsDiplomacyProposalAllowedForRelationship(DiplomacyProposalCodeStorage proposalCode,
                                                          int targetNation);
   virtual void InitializeDiplomacyOffers(void);
   virtual void InitializeDiplomacyNotices(void);
@@ -254,7 +254,7 @@ public:
   virtual float ComputeNavyScoreStandingRatioForNationPair(int nationA, int nationB,
                                                            char swapRoles); // slot 0x9c
   virtual bool PassesDiplomacyStrengthThresholdForTarget(int targetNation); // body 0x004e1c00
-  virtual char EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation);
+  virtual bool EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation);
   virtual int ConsiderWarOfIntervention(int targetNation, int sourceNation); // slot 0x27c
   virtual int ConsiderWarOfAlliance(int targetNation, int sourceNation,
                                     char swapRoles); // slot 0x280
@@ -278,7 +278,7 @@ public:
   virtual int SumCommodityRecordAccumulatedValues(void);
   virtual void RecomputeAiExpansionAndMissionPressureScores(void);
   virtual void RefreshTrackedEntriesAndReplanAiDevelopment(int unused);
-  virtual char UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void);
+  virtual bool UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void);
   // ORACLE: Mac names TGreatPower::AnnounceLater(short, short, short).
   virtual void AnnounceLater(short orderKind, short payload, short flags);
   virtual void BuildGreatPowerTurnMessageSummaryAndDispatch(void);
@@ -291,7 +291,7 @@ public:
   void AddPurchasedItemAmount(short index, short delta);
 
   int ComputeAvailableDiplomacyBudget() const {
-    int availableBudget = treasuryValue10 + diplomacyBudgetBase / 100;
+    int availableBudget = treasuryValue + diplomacyBudgetBase / 100;
     return availableBudget & (static_cast<int>(availableBudget <= 0) - 1);
   }
 

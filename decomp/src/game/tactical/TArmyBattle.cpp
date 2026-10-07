@@ -84,8 +84,8 @@ void TArmyBattle::InitializeBattleSetupAndMaybeShowTacticalView(TArmyStack* ourS
   this->fortLevel = static_cast<char>(fortLevel);
 
   // Show the live tactical-battle view when forced globally or either side is watched.
-  if (g_nForceTacticalBattleViewFlag_006A4758 || enemySideWatchFlag != 0 || ourSideWatchFlag != 0) {
-    g_nTurnCooldownDeferCounter006A43C4 = 0;
+  if (g_nForceTacticalBattleViewFlag || enemySideWatchFlag != 0 || ourSideWatchFlag != 0) {
+    g_nTurnCooldownDeferCounter = 0;
     g_pSfxPlaybackSystem->RequestAudioPresetChangeWithDeferredApply(
         static_cast<int>(rand()) % 3 + 6, false); // battle cue 6..8
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventTacticalView), 0);

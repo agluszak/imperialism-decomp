@@ -24,7 +24,7 @@ public:
   virtual char IsTradeControlAtMinimum() override;
   void SetMoveAmount(short amount) override;
   virtual int GetTradeSellControlValue();
-  virtual unsigned char IsSelectionAllowed();
+  virtual bool IsSelectionAllowed();
   virtual int IsSellOffer();
   virtual void DoControlAction();
   virtual void SetTradeBidControlBitmap();

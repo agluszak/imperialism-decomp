@@ -36,7 +36,7 @@ public:
   virtual void CenterOn(int tileIndex) override;
   virtual void SetMapViewCellCoordinates(int column, int row) override;
   virtual void RefreshMapTile(short tileIndex) override;
-  virtual unsigned char IsTileVisible(short tileIndex) override;
+  virtual bool IsTileVisible(short tileIndex) override;
   void BuildTileViewportRect(short tileIndex, CRect* outRect);       // 0x5686d0
   int ComputeWrappedTileIndexFromViewportPoint(const CPoint* point); // 0x568840
   virtual int ComputeWrappedTileIndexFromObjectOffset7C7E();

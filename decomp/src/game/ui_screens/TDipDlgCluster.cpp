@@ -20,7 +20,7 @@ char TDipDlgCluster::IsTradeControlAtMinimum() {
   TToggleButton* subsidyToggle =
       static_cast<TToggleButton*>(ownerContext->ResolveControlByTag(kManifestTagSubs));
   if (subsidyToggle == 0) {
-    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1cd);
+    FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1cd);
   }
   TToggleButton* sanctionToggle =
       static_cast<TToggleButton*>(ownerContext->ResolveControlByTag(kControlTagSanc));

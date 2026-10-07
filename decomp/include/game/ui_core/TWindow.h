@@ -64,13 +64,13 @@ public:
   short windowStyleType; // 0x60 — window-type code; selects the CreateEx style bits
   unsigned char padding_62_to_63[0x02];
   TEventHandler* activeLinkedWindow;
-  int activeViewTag; // 0x68 — child controlTag installed by tactical views
+  int activeViewTag;   // 0x68 — child controlTag installed by tactical views
   bool resourceFlag6c; // 0x6c
   bool useCaptionedFrameFlag;
   bool resourceFlag6e; // 0x6e
   bool resourceFlag6f; // 0x6f
   bool topmostFlag;    // 0x70 — when set, CMcWindow adds WS_EX_TOPMOST
-  bool resourceFlag71; // 0x71
+  bool resourceFlag;   // 0x71
   unsigned char padding_72_to_73[0x02];
   TDialogBehavior dialogBehavior; // 0x74
   int busyFlag;                   // 0x98

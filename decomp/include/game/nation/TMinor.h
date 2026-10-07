@@ -29,25 +29,22 @@ public:
   short GetTradeOffersFor(short resourceKind) override;
   void PurchaseItem(short resourceKind, short amount, short price) override;
   bool StillBuyingItem(ResourceKindStorage resourceKind) override;
-  char ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
+  bool ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                          ResourceKindStorage resourceKind) override;
   void AddOfferFrom(NationSlot sourceNationSlot,
                     DiplomacyProposalCodeStorage proposalCode) override;
-  char IsInConsortiumWith(short policyCode) override;
+  bool IsInConsortiumWith(short policyCode) override;
   void AddNoticeFrom(short sourceNation, short actionCode) override;
 
   virtual void InitializeTradeStatus(void);
   virtual void SetTradeBids(void); // slot 0x2b 0x4e4bd0
-  virtual char WouldAcceptOffer(NationSlot targetNationSlot,
+  virtual bool WouldAcceptOffer(NationSlot targetNationSlot,
                                 DiplomacyProposalCodeStorage proposalCode); // 0x4e4ff0
   virtual void HandleNetworkPortConstructionOrder(int nationId);            // slot 0x2d 0x4e5730
   virtual void SetBoycottPoliciesToMatch(int targetNationSlot);             // slot 0x2e 0x4e5a40
   virtual void ClearTileActivityOverlayByProvinceId(int provinceId);        // slot 0x2f 0x4e5ac0
   virtual void KillBoycottedForeignCompanies(void);                         // slot 0x30 0x4e5be0
   virtual void KillEnemyCiviliansIn(int provinceId);                        // slot 0x31 0x4e5d90
-  short GetDiplomacyRandomThreshold124() const {
-    return diplomacyRandomThreshold124;
-  }
   short GetCurrentTradeSupply(ResourceKindStorage resourceKind) const {
     ASSERT(resourceKind >= 0 && resourceKind < kResourceKindCount);
     return needCurrentByType[resourceKind];
@@ -61,37 +58,37 @@ public:
     return grantAmountsByResource[resourceKind];
   }
   short GetPrimaryManufacturedPriceThreshold() const {
-    return diplomacyRandomThreshold11e;
+    return primaryManufacturedPriceThreshold;
   }
   short GetSecondaryManufacturedPriceThreshold() const {
-    return diplomacyRandomThreshold120;
+    return secondaryManufacturedPriceThreshold;
   }
   short GetGeneralOfferPriceThreshold() const {
-    return diplomacyRandomThreshold122;
+    return generalOfferPriceThreshold;
   }
   short GetRandomOfferPriceThreshold() const {
-    return diplomacyRandomThreshold124;
+    return randomOfferPriceThreshold;
   }
   short GetCoalOfferPriceThreshold() const {
-    return diplomacyRandomThreshold126;
+    return coalOfferPriceThreshold;
   }
   short GetIronOfferPriceThreshold() const {
-    return diplomacyRandomThreshold128;
+    return ironOfferPriceThreshold;
   }
   short GetOilOfferPriceThreshold() const {
-    return diplomacyRandomThreshold12a;
+    return oilOfferPriceThreshold;
   }
   ResourceKindStorage GetPrimaryManufacturedRequest() const {
-    return diplomacyPolicyPredicateCode12c;
+    return primaryManufacturedRequest;
   }
   ResourceKindStorage GetSecondaryManufacturedRequest() const {
-    return diplomacyPolicyPredicateCode12e;
+    return secondaryManufacturedRequest;
   }
   short GetPrimaryManufacturedRequestFulfilledAmount() const {
-    return diplomacyPolicyGate130;
+    return primaryManufacturedRequestFulfilledAmount;
   }
   short GetSecondaryManufacturedRequestFulfilledAmount() const {
-    return diplomacyPolicyGate132;
+    return secondaryManufacturedRequestFulfilledAmount;
   }
   short GetIndependentResourceCount(ResourceKindStorage resourceKind) const {
     ASSERT(resourceKind >= 0 && resourceKind < kResourceKindCount);
@@ -99,7 +96,7 @@ public:
   }
   NationSlot GetConsortiumMember(int index) const {
     ASSERT(index >= 0 && index < 4);
-    return diplomacySaveFields[index];
+    return consortiumMembers[index];
   }
 
   virtual void DeportCiviliansIn(int provinceId,
@@ -113,19 +110,19 @@ private:
   short needCurrentByType[kResourceKindCount];
   short tradeOffersByResource[kResourceKindCount];
   short grantAmountsByResource[kResourceKindCount];
-  short diplomacyRandomThreshold11e;
-  short diplomacyRandomThreshold120;
-  short diplomacyRandomThreshold122;
-  short diplomacyRandomThreshold124;
-  short diplomacyRandomThreshold126;
-  short diplomacyRandomThreshold128;
-  short diplomacyRandomThreshold12a;
-  short diplomacyPolicyPredicateCode12c;
-  short diplomacyPolicyPredicateCode12e;
-  short diplomacyPolicyGate130;
-  short diplomacyPolicyGate132;
-  // The four persisted consortium nation slots consumed by IsInConsortiumWith.
-  short diplomacySaveFields[4]; // 0x134
+  short primaryManufacturedPriceThreshold;
+  short secondaryManufacturedPriceThreshold;
+  short generalOfferPriceThreshold;
+  short randomOfferPriceThreshold;
+  short coalOfferPriceThreshold;
+  short ironOfferPriceThreshold;
+  short oilOfferPriceThreshold;
+  short primaryManufacturedRequest;
+  short secondaryManufacturedRequest;
+  short primaryManufacturedRequestFulfilledAmount;
+  short secondaryManufacturedRequestFulfilledAmount;
+  short consortiumMembers[4];
+
 public:
   short independentResourceCountByType[kResourceKindCount]; // 0x13c
 private:

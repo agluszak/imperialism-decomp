@@ -50,8 +50,8 @@ static const int kMapNodeCount = 0x180;
 static const int kPortZoneCount = 0x70;
 
 // FUNCTION: IMPERIALISM 0x004e6b10
-char TAutoGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
-  return 0;
+bool TAutoGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
+  return false;
 }
 
 IMPLEMENT_DYNCREATE(TAutoGreatPower, TGreatPower)
@@ -69,7 +69,7 @@ void TAutoGreatPower::IAutoGreatPower(int nationSlot, int nationInitializationMo
                                       short cityMinisterPolicyId, short foreignMinisterPolicyId,
                                       short defenseMinisterPolicyId) {
   IGreatPower(nationSlot, nationInitializationMode);
-  treasuryValue10 = 10000;
+  treasuryValue = 10000;
   memset(actionMetricByQuarter, 0, sizeof(actionMetricByQuarter));
 
   switch (defenseMinisterPolicyId) {
@@ -378,14 +378,14 @@ void TAutoGreatPower::SetTradeBids(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e79d0
-char TAutoGreatPower::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
+bool TAutoGreatPower::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                                         ResourceKindStorage resourceKind) {
   if (this->StillBuyingItem(resourceKind)) {
     this->foreignMinister->ReplyToTradeOffer(targetNationSlot, amount, price, resourceKind);
-    return 0;
+    return false;
   }
   this->AddToDealBook(kTrackedSlotOfferEntry, targetNationSlot, 0, resourceKind, 0);
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004e7a50
@@ -634,12 +634,11 @@ bool TAutoGreatPower::PassesDiplomacyStrengthThresholdForTarget(int targetNation
       g_pDiplomacyTurnStateManager->relationStandingScores[this->nationSlot * kNationSlotCount +
                                                            static_cast<short>(targetNation)];
   float combinedStrength = ownStrengthScore + allyQuarterScore;
-  float combinedScore =
-      static_cast<float>((strongestPeer / combinedStrength +
-                          (static_cast<float>(relationScore) + ownStrengthScore) /
-                              ((static_cast<float>(tickQuarter) + combinedStrength) -
-                               g_Compute_Advisory_Map_Value_00653FD4)) *
-                         g_Evaluate_Advisory_Case11_Value_00653FD8);
+  float combinedScore = static_cast<float>(
+      (strongestPeer / combinedStrength +
+       (static_cast<float>(relationScore) + ownStrengthScore) /
+           ((static_cast<float>(tickQuarter) + combinedStrength) - g_Compute_Advisory_Map_Value)) *
+      g_Evaluate_Advisory_Case11_Value);
   return this->GetAcceptAllianceNumber() <= combinedScore;
 }
 
@@ -1020,7 +1019,7 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissions(void) {
       score = ComputeAdvisoryMapNodeCompositeScoreByMode(region, 2, -1);
       tier = 2;
     } else {
-      score = g_Compute_Advisory_Zero_00653FD0;
+      score = g_Compute_Advisory_Zero;
       provinceStatus[region] = kMissionDesirabilityUnmarked;
     }
     if (score > bestScore) {
@@ -1052,8 +1051,8 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissions(void) {
   int tier = bestTier;
   if (tier != -1) {
     bool acceptMission = false;
-    if (g_afAdvisoryMissionTierThresholdByMinisterSkill_00653F18[defenseMinister->skillIndex]
-                                                                [tier] < bestScore) {
+    if (g_afAdvisoryMissionTierThresholdByMinisterSkill[defenseMinister->skillIndex][tier] <
+        bestScore) {
       acceptMission = true;
     } else if (g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(nationSlot)) {
       CIterator missionIter(missionQueue);
@@ -1335,7 +1334,7 @@ float TAutoGreatPower::GetCachedAiCityActionContextBias(short selector) {
     cacheIndex = 2;
   }
 
-  if (g_cachedAiCityActionTurnTick_006967d8 != g_pSimMgr->GetEconomicTurn()) {
+  if (g_cachedAiCityActionTurnTick != g_pSimMgr->GetEconomicTurn()) {
     int base =
         g_pTradeMgr->GetPrice(0x0d) + g_pTradeMgr->GetPrice(0x0e) + g_pTradeMgr->GetPrice(0x07);
     int middle = g_pTradeMgr->GetPrice(0x0a) + 100;
@@ -1343,8 +1342,8 @@ float TAutoGreatPower::GetCachedAiCityActionContextBias(short selector) {
     g_cachedAiCityActionContextBias[0] = static_cast<float>(base);
     g_cachedAiCityActionContextBias[1] = static_cast<float>(base + middle);
     g_cachedAiCityActionContextBias[2] = static_cast<float>(base + middle + tail);
-    g_cachedAiCityActionNationSlot_006967d4 = nationSlot;
-    g_cachedAiCityActionTurnTick_006967d8 = g_pSimMgr->GetEconomicTurn();
+    g_cachedAiCityActionNationSlot = nationSlot;
+    g_cachedAiCityActionTurnTick = g_pSimMgr->GetEconomicTurn();
   }
 
   return g_cachedAiCityActionContextBias[cacheIndex];
@@ -1410,8 +1409,8 @@ void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
     mission = static_cast<TMission*>(missionIterator.Advance());
   }
 
-  float ownUnitDivergence = g_afNationCombinedUnitDivergence_006a3b50[nationSlot] -
-                            g_afNationMobileUnitDivergence_006a3ae0[nationSlot];
+  float ownUnitDivergence =
+      g_afNationCombinedUnitDivergence[nationSlot] - g_afNationMobileUnitDivergence[nationSlot];
   averageUnitDivergencePerOwnedRegion = ownUnitDivergence / static_cast<float>(totalRegionCount);
 
   float maximumAdjustedMilitaryScore = 0.0f;
@@ -1426,31 +1425,31 @@ void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
       continue;
     }
 
-    float peerCombinedDivergence = g_afNationCombinedUnitDivergence_006a3b50[peerNation];
+    float peerCombinedDivergence = g_afNationCombinedUnitDivergence[peerNation];
     if (peerCombinedDivergence < minimumPeerCombinedDivergence ||
-        minimumPeerCombinedDivergence == g_AiPressureUnsetSentinel_006545c8) {
+        minimumPeerCombinedDivergence == g_AiPressureUnsetSentinel) {
       minimumPeerCombinedDivergence = peerCombinedDivergence;
     }
 
-    float peerOrderQueueDivergence = g_afNationOrderQueueDivergence_006a3a88[peerNation];
+    float peerOrderQueueDivergence = g_afNationOrderQueueDivergence[peerNation];
     if (peerOrderQueueDivergence < minimumPeerOrderQueueDivergence ||
-        minimumPeerOrderQueueDivergence == g_AiPressureUnsetSentinel_006545c8) {
+        minimumPeerOrderQueueDivergence == g_AiPressureUnsetSentinel) {
       minimumPeerOrderQueueDivergence = peerOrderQueueDivergence;
     }
 
     float militaryScore;
     if (g_pGlobalMapState->DoNationTerritoriesShareRegionClass(nationSlot,
                                                                static_cast<short>(peerNation))) {
-      militaryScore = g_afNationMobileUnitScore_006a3b88[peerNation];
+      militaryScore = g_afNationMobileUnitScore[peerNation];
     } else {
-      militaryScore = g_afNationWeightedMilitaryOrderScore_006a3b20[peerNation];
+      militaryScore = g_afNationWeightedMilitaryOrderScore[peerNation];
     }
 
     if (militaryScore > maximumRawMilitaryScore) {
       maximumRawMilitaryScore = militaryScore;
     }
 
-    float missionScore = g_afNationOrderQueueDivergenceMirror_006a3ac0[peerNation];
+    float missionScore = g_afNationOrderQueueDivergenceMirror[peerNation];
     if (g_pDiplomacyTurnStateManager
             ->relationStandingScores[nationSlot * kNationSlotCount + peerNation] >= 100) {
       maximumAdjustedMilitaryScore = static_cast<float>(
@@ -1467,22 +1466,21 @@ void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
     }
   }
 
-  float militaryRatio =
-      maximumRawMilitaryScore /
-      (g_afNationMobileUnitDivergence_006a3ae0[nationSlot] + averageUnitDivergencePerOwnedRegion);
+  float militaryRatio = maximumRawMilitaryScore / (g_afNationMobileUnitDivergence[nationSlot] +
+                                                   averageUnitDivergencePerOwnedRegion);
   if (militaryRatio > g_MissionScoreOneConstant_006545d8) {
-    militaryRatio = g_AiPressureRatioCap_006545e0;
+    militaryRatio = g_AiPressureRatioCap;
   }
 
-  float peerScaledMilitaryScore = (militaryRatio - g_AiPressureUnsetSentinel_006545c8) *
-                                  g_AiPressureMidpointScale_006545e8 *
-                                  g_AiPressurePeerScale_006543e8 * minimumPeerCombinedDivergence;
+  float peerScaledMilitaryScore = (militaryRatio - g_AiPressureUnsetSentinel) *
+                                  g_AiPressureMidpointScale * g_AiPressurePeerScale *
+                                  minimumPeerCombinedDivergence;
   if (peerScaledMilitaryScore > maximumAdjustedMilitaryScore) {
     maximumAdjustedMilitaryScore = peerScaledMilitaryScore;
   }
 
   float expansionPressure = maximumAdjustedMilitaryScore - ownUnitDivergence;
-  if (expansionPressure < g_MissionScoreZeroThreshold_006545f0) {
+  if (expansionPressure < g_MissionScoreZeroThreshold) {
     expansionPressure = g_MissionDefaultScore_006545d0;
   }
   if (compatibleRegionCount != 0) {
@@ -1745,7 +1743,7 @@ void TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unuse
         float nextMissionRatio =
             nextMission->importanceScore / nextMission->IndustrialCostOfNeeds();
         float missionRatio = mission->importanceScore / mission->IndustrialCostOfNeeds();
-        if (missionRatio < nextMissionRatio * g_MissionEligibilityRatioMargin_006545f8) {
+        if (missionRatio < nextMissionRatio * g_MissionEligibilityRatioMargin) {
           eligible = false;
         } else {
           availableClassMask &= ~classMask;
@@ -1798,12 +1796,12 @@ void TAutoGreatPower::AssignUnitsToMissions(int unused) {
         }
         float candidateScore = ComputeMissionRemainingPriorityScore(candidate);
         float bestScore = ComputeMissionRemainingPriorityScore(bestNavy);
-        if (candidateScore > g_MissionScoreZeroThreshold_006545f0 &&
+        if (candidateScore > g_MissionScoreZeroThreshold &&
             static_cast<char>(candidate->state08) < static_cast<char>(bestNavy->state08)) {
           bestNavy = candidate;
           continue;
         }
-        if (bestScore <= g_MissionScoreZeroThreshold_006545f0 ||
+        if (bestScore <= g_MissionScoreZeroThreshold ||
             static_cast<char>(candidate->state08) <= static_cast<char>(bestNavy->state08)) {
           float bestScore2 = ComputeMissionRemainingPriorityScore(bestNavy);
           float candidateScore2 = ComputeMissionRemainingPriorityScore(candidate);
@@ -1853,7 +1851,7 @@ void TAutoGreatPower::AssignUnitsToMissions(int unused) {
           continue;
         }
         float candidateScore = ComputeMissionRemainingPriorityScore(candidate);
-        if (eligibleRunnerUp == nullptr && candidateScore > g_MissionScoreZeroThreshold_006545f0 &&
+        if (eligibleRunnerUp == nullptr && candidateScore > g_MissionScoreZeroThreshold &&
             (candidate->marker11 & 1) != 0) {
           eligibleRunnerUp = candidate;
         }
@@ -1862,12 +1860,12 @@ void TAutoGreatPower::AssignUnitsToMissions(int unused) {
           continue;
         }
         float bestArmyScore = ComputeMissionRemainingPriorityScore(bestArmy);
-        if (candidateScore > g_MissionScoreZeroThreshold_006545f0 &&
+        if (candidateScore > g_MissionScoreZeroThreshold &&
             static_cast<char>(bestArmy->state08) > static_cast<char>(candidate->state08)) {
           bestArmy = candidate;
           continue;
         }
-        if (bestArmyScore > g_MissionScoreZeroThreshold_006545f0 &&
+        if (bestArmyScore > g_MissionScoreZeroThreshold &&
             static_cast<char>(bestArmy->state08) < static_cast<char>(candidate->state08)) {
           continue;
         }

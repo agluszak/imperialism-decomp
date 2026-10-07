@@ -67,7 +67,7 @@ private:
       }
       JsonObject row;
       row.Set("id", id);
-      CString hex = HexRetailText(province.cityNameA4);
+      CString hex = HexRetailText(province.cityName);
       row.Set("name_hex", static_cast<LPCSTR>(hex));
       provinces.Add(row.Release());
     }

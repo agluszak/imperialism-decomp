@@ -10,7 +10,7 @@ void RuntimeTestObserveBuiltUiTree(int eventCode, TView* root);
 // push-widget / attach-to-stack-tail / configure-layout+tags+state / clear-context
 // vocabulary used by the turn-event dialog factory (turn_event_dialog_factory.cpp) and the
 // per-screen builder functions. Operates on the global widget build stack
-// (g_UiWidgetBuildStack006a13e0) and the g_pUiResourceHead/g_pUiResourceContext pair — see
+// (g_UiWidgetBuildStack) and the g_pUiResourceHead/g_pUiResourceContext pair — see
 // include/game/global_data_tables.h. It is a builder, not a pool.
 
 class TUiStyleRef {

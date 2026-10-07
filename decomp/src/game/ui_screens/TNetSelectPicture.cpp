@@ -21,8 +21,8 @@ void TNetSelectPicture::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x005769c0
 void TNetSelectPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  if (g_SetupScreensAssertFlag_006A4264 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szSetupScreensSourcePath_00698AB8, 0x2e6);
+  if (g_SetupScreensAssertFlag == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szSetupScreensSourcePath, 0x2e6);
   }
   if (commandId == 0x14 || commandId == 0xa || commandId == 0x22) {
     if (sourceHandler->controlTag == kControlTagCncl) {

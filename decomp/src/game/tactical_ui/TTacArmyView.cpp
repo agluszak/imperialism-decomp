@@ -53,10 +53,10 @@ enum FortWallEdgeKind {
 // FUNCTION: IMPERIALISM 0x005a9d90
 void TTacArmyView::StuffValues(int compositionClass, TArmyBattle* battle) {
   int savedFlags = 0;
-  tileWidthPx = g_tacticalTileSize_006A5430.cx;
-  tileRowHeightPx = g_tacticalTileSize_006A5430.cy;
-  unitSpriteCellWidth = g_tacticalUnitSpriteCellSize_006A5498.cx;
-  unitSpriteCellHeight = g_tacticalUnitSpriteCellSize_006A5498.cy;
+  tileWidthPx = g_tacticalTileSize.cx;
+  tileRowHeightPx = g_tacticalTileSize.cy;
+  unitSpriteCellWidth = g_tacticalUnitSpriteCellSize.cx;
+  unitSpriteCellHeight = g_tacticalUnitSpriteCellSize.cy;
   tileColumnsPerRow = 0x1d;
   // Release order in the original: +0x64, +0x68, +0xbc, +0x6c, +0x70, +0x74.
   if (battlefieldSurface != 0) {
@@ -83,9 +83,9 @@ void TTacArmyView::StuffValues(int compositionClass, TArmyBattle* battle) {
   RECT bounds;
   RECT overlayBounds;
   bounds.top = 0;
-  bounds.right = g_tacticalBattlefieldSurfaceSize_006A5448.cx;
+  bounds.right = g_tacticalBattlefieldSurfaceSize.cx;
   bounds.left = 0;
-  bounds.bottom = g_tacticalBattlefieldSurfaceSize_006A5448.cy;
+  bounds.bottom = g_tacticalBattlefieldSurfaceSize.cy;
   g_pDisplayMgr->MakeNewGWorld(battlefieldSurface, 8, bounds);
   TBitmapResourceLoader** loaderHandle =
       CreateBitmapResourceLoaderHandle(static_cast<unsigned short>(compositionClass + 0xf0a));
@@ -113,9 +113,9 @@ void TTacArmyView::StuffValues(int compositionClass, TArmyBattle* battle) {
       bounds.top = 0;
       bounds.right = 0x11e;
       bounds.bottom = 0x1c2;
-      overlayBounds.left = g_tacticalBattlefieldSurfaceSize_006A5448.cx - 0x11e;
+      overlayBounds.left = g_tacticalBattlefieldSurfaceSize.cx - 0x11e;
       overlayBounds.top = 0;
-      overlayBounds.right = g_tacticalBattlefieldSurfaceSize_006A5448.cx;
+      overlayBounds.right = g_tacticalBattlefieldSurfaceSize.cx;
       overlayBounds.bottom = 0x1c2;
       ResetQuickDrawStrokeState();
       UpdatePaletteIndexWithDefaultFallback(0x13);
@@ -149,7 +149,7 @@ void TTacArmyView::StuffValues(int compositionClass, TArmyBattle* battle) {
     TTacticalToolbar* toolbar =
         static_cast<TTacticalToolbar*>(ownerContext->ResolveControlByTag(kControlTagTool));
     if (toolbar == 0) {
-      FailNilPointerWithAssert(s_SourcePathUTacViews_00699FF4, 0x497);
+      FailNilPointerWithAssert(s_SourcePathUTacViews, 0x497);
     }
     toolbar->battle = battle;
     toolbar->unitSpriteAtlasSurface = unitSpriteAtlasSurface;
@@ -649,7 +649,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
       flagDst.bottom += 1;
       QDFrameRect(&flagDst);
     }
-    if (g_nForceTacticalBattleViewFlag_006A4758) {
+    if (g_nForceTacticalBattleViewFlag) {
       SetQuickDrawFillColor(0);
       SetQuickDrawTextOriginWithContextOffset(
           static_cast<short>(tileScreenRect.left + tileWidthPx - 8),

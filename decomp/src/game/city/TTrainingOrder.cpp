@@ -40,7 +40,7 @@ short TTrainingOrder::MaxOrder() {
   if (owner->diplomacyEligibility == 0) {
     cashLimit = workforceLimit;
   } else {
-    int availableCash = owner->treasuryValue10 + owner->diplomacyBudgetBase / 100;
+    int availableCash = owner->treasuryValue + owner->diplomacyBudgetBase / 100;
     if (availableCash <= 0) {
       availableCash = 0;
     }
@@ -79,11 +79,11 @@ bool TTrainingOrder::SetQuantity(short quantity) {
   if (resourceTypeIndex == 1) {
     ownerCity->cityStockPaper = static_cast<short>(ownerCity->cityStockPaper - delta);
     ownerCity->VerifyStocks();
-    owner->treasuryValue10 -= static_cast<int>(delta) * 100;
+    owner->treasuryValue -= static_cast<int>(delta) * 100;
   } else {
     ownerCity->cityStockPaper = static_cast<short>(ownerCity->cityStockPaper - delta * 2);
     ownerCity->VerifyStocks();
-    owner->treasuryValue10 -= static_cast<int>(delta) * 1000;
+    owner->treasuryValue -= static_cast<int>(delta) * 1000;
   }
   productionSummary->MakeUnavailable(resourceTypeIndex, delta);
   g_pViewMgr->RefreshCityProductionUi();

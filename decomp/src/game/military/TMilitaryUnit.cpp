@@ -223,14 +223,14 @@ bool TMilitaryUnit::IsWithinXTurnsOf(short turnLimit, short targetTile) const {
 
 // FUNCTION: IMPERIALISM 0x005c3530
 short TMilitaryUnit::GetAttribute(short statIndex) const {
-  return static_cast<short>((g_UnitTypeStatTable_0066EB88[orderType][statIndex] * 100) /
-                            g_UnitTypeStatDivisorTable_0066ED30[statIndex]);
+  return static_cast<short>((g_UnitTypeStatTable[orderType][statIndex] * 100) /
+                            g_UnitTypeStatDivisorTable[statIndex]);
 }
 
 // FUNCTION: IMPERIALISM 0x005c3580
 short TMilitaryUnit::GetTypeAttribute(MilitaryUnitKindStorage unitType, short statIndex) {
-  return static_cast<short>((g_UnitTypeStatTable_0066EB88[unitType][statIndex] * 100) /
-                            g_UnitTypeStatDivisorTable_0066ED30[statIndex]);
+  return static_cast<short>((g_UnitTypeStatTable[unitType][statIndex] * 100) /
+                            g_UnitTypeStatDivisorTable[statIndex]);
 }
 
 // FUNCTION: IMPERIALISM 0x005c35c0
@@ -289,7 +289,7 @@ bool TMilitaryUnit::Upgrade() {
   g_apNationStates[ownerNationSlot]->SetCityStockCounterAndRefresh(
       0xc, static_cast<short>(g_apNationStates[ownerNationSlot]->GetStockpile(kResourceFuel) -
                               secondaryCost));
-  g_apNationStates[ownerNationSlot]->treasuryValue10 -= cashCost;
+  g_apNationStates[ownerNationSlot]->treasuryValue -= cashCost;
   orderType = candidate;
   return true;
 }

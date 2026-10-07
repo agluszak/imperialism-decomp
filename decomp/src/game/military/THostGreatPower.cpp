@@ -33,14 +33,14 @@ void THostGreatPower::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x00541080
-char THostGreatPower::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
+bool THostGreatPower::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                                         ResourceKindStorage resourceKind) {
   if (TGreatPower::ReplyToTradeOffer(targetNationSlot, amount, price, resourceKind) != 0) {
     g_pGameFlowState->SendTradeOffer(this->nationSlot, targetNationSlot, amount, price,
                                      resourceKind);
-    return 1;
+    return true;
   }
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x005410f0

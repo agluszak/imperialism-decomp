@@ -142,14 +142,14 @@ TView* TTurnEventDialogFactoryRegistry::InvokeDialogFactoryFromPacket(int nConte
                                                                       TView* pEventPacket,
                                                                       TurnEventId nEventCode,
                                                                       const CPoint& anchorPoint) {
-  const int savedFlag = g_McAppUiActiveFlag_006950AC;
-  g_McAppUiActiveFlag_006950AC = 0;
+  const int savedFlag = g_McAppUiActiveFlag;
+  g_McAppUiActiveFlag = 0;
   TView* result =
       RunRegisteredDialogFactoriesByEventCode(nContextId, pEventPacket, nEventCode, anchorPoint);
   if (result != nullptr) {
     result->DispatchControlEventToChildrenAndSelf(nContextId);
     result->NoOpUiCallback();
   }
-  g_McAppUiActiveFlag_006950AC = savedFlag;
+  g_McAppUiActiveFlag = savedFlag;
   return result;
 }

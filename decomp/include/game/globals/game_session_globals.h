@@ -4,7 +4,7 @@
 extern "C" {
 
 // Session infrastructure and the active game state.
-extern TNetMgr* g_pNetMgr006a6014;
+extern TNetMgr* g_pNetMgr;
 extern TMapMgr* g_pGlobalMapState;
 extern TCivMgr* g_pSelectedCivilianOrderState;
 extern TSimMgr* g_pSimMgr;

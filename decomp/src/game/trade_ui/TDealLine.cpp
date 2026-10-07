@@ -47,8 +47,8 @@ void TDealLine::InstallViews(TView* panel, int* offsetLayout) {
   short amount = 0;
   short counterpartyNationSlot = 0;
   int unitPriceOrStatus = 0;
-  g_apNationStates[ownerNationSlot]->GetDealInfo(
-      commoditySlot, entryOrdinal, &dealKind, &amount, &counterpartyNationSlot, &unitPriceOrStatus);
+  g_apNationStates[ownerNationSlot]->GetDealInfo(commoditySlot, entryOrdinal, &dealKind, &amount,
+                                                 &counterpartyNationSlot, &unitPriceOrStatus);
 
   counterpartyName = g_pSimMgr->LoadNormalizedCredentialName(counterpartyNationSlot);
   g_pSimMgr->GetCommodityName(commoditySlot, &commodityName);
@@ -90,7 +90,7 @@ void TDealLine::InstallViews(TView* panel, int* offsetLayout) {
     if (statusStringIndex != 0) {
       CString statusText;
       g_pSimMgr->GetString(0x2740, statusStringIndex, &statusText);
-      displayText += s_szSpaceSeparator_00695794 + statusText;
+      displayText += s_szSpaceSeparator + statusText;
     }
   }
 

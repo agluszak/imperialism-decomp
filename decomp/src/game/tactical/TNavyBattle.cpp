@@ -109,11 +109,11 @@ void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
   int hexDistance = (extraColumns > 0) ? rowDelta + extraColumns / 2 : rowDelta;
 
   int range = attackerUnit->GetUnitRange();
-  double ratio = hexDistance / (range * g_dNavyHitChanceRangeScale_00669ef8);
+  double ratio = hexDistance / (range * g_dNavyHitChanceRangeScale);
   double ratioCubed = ratio * ratio * ratio;
-  double denominator = ratioCubed - g_fNavyHitChanceCubeOffset_00669f00;
-  float hitThreshold = static_cast<float>(attackerUnit->qualityLevel * 5 +
-                                          g_fNavyHitChanceNumerator_00669f04 / denominator);
+  double denominator = ratioCubed - g_fNavyHitChanceCubeOffset;
+  float hitThreshold =
+      static_cast<float>(attackerUnit->qualityLevel * 5 + g_fNavyHitChanceNumerator / denominator);
 
   if (battleView != 0) {
     battleView->PlayAni(attackerUnit->tileIndex, attackerUnit->unitType + 0xf5a, 1);

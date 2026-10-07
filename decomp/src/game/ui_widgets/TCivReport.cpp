@@ -46,22 +46,22 @@ void TCivReport::StuffValues(TCivUnit* civilianOrderEntry) {
   switch (civilianOrderEntry->unitOrder) {
   case kUnitOrderLayRail:
     g_pSimMgr->GetString(0x2724, 1, &valueText);
-    reportText += valueText + s_szLineBreak_00695880;
+    reportText += valueText + s_szLineBreak;
     break;
 
   case kUnitOrderBuildDepot:
     g_pSimMgr->GetString(0x2724, 2, &valueText);
-    reportText += valueText + s_szLineBreak_00695880;
+    reportText += valueText + s_szLineBreak;
     break;
 
   case kUnitOrderBuildPort:
     g_pSimMgr->GetString(0x2724, 3, &valueText);
-    reportText += valueText + s_szLineBreak_00695880;
+    reportText += valueText + s_szLineBreak;
     break;
 
   case kUnitOrderProspect:
     g_pSimMgr->GetString(0x2724, 4, &valueText);
-    reportText += valueText + s_szLineBreak_00695880;
+    reportText += valueText + s_szLineBreak;
     break;
 
   case kUnitOrderDevelopResource:
@@ -92,7 +92,7 @@ void TCivReport::StuffValues(TCivUnit* civilianOrderEntry) {
         scanBracketExpressions(g_pSimMgr, &expandedText, static_cast<LPCSTR>(templateText),
                                static_cast<LPCSTR>(valueText));
       }
-      reportText += expandedText + s_szLineBreak_00695880;
+      reportText += expandedText + s_szLineBreak;
       break;
     }
 
@@ -101,13 +101,13 @@ void TCivReport::StuffValues(TCivUnit* civilianOrderEntry) {
       g_pSimMgr->GetString(0x2725, civilianOrderEntry->orderType, &valueText);
       scanBracketExpressions(g_pSimMgr, &expandedText, static_cast<LPCSTR>(templateText),
                              static_cast<LPCSTR>(valueText));
-      reportText += expandedText + s_szLineBreak_00695880;
+      reportText += expandedText + s_szLineBreak;
     } else {
       g_pSimMgr->GetString(0x2724, 7, &templateText);
       g_pSimMgr->GetString(0x2725, civilianOrderEntry->orderType, &valueText);
       scanBracketExpressions(g_pSimMgr, &expandedText, static_cast<LPCSTR>(templateText),
                              static_cast<LPCSTR>(valueText));
-      reportText += expandedText + s_szLineBreak_00695880;
+      reportText += expandedText + s_szLineBreak;
     }
     break;
 

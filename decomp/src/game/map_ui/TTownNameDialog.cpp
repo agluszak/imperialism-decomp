@@ -28,7 +28,7 @@ void TTownNameDialog::DoPostCreate(int arg) {
 
   TEditText* nameControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagName));
   if (nameControl == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUMapDlog_006973D0, 0x4d3);
+    FailNilPointerWithAssert(s_SourcePathUMapDlog, 0x4d3);
   }
 
   // LIBRARY: rand (0x005e83f0)

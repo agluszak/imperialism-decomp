@@ -51,7 +51,7 @@ void TStatusPicture::DoPostCreate(int arg) {
     LoadUiStringByGroupAndIndexToControlObject(0x2757, static_cast<short>(tabIndex + 9),
                                                tabControl);
   }
-  ApplySharedStringToGlobalControlTag(g_pStatusPictureMainSharedText_00668b88, kControlTagMain);
+  ApplySharedStringToGlobalControlTag(g_pStatusPictureMainSharedText, kControlTagMain);
   LoadUiStringByGroupAndIndexToControlObject(0x2730, 0xd, ResolveControlByTag(kControlTagEnd));
   LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, ResolveControlByTag(kControlTagQuer));
 

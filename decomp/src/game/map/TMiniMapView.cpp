@@ -16,7 +16,7 @@ IMPLEMENT_DYNCREATE(TMiniMapView, TControl)
 // FUNCTION: IMPERIALISM 0x0059a380
 TMiniMapView::TMiniMapView()
     : TControl(), ownerPicture(nullptr), scrollTileColumn(0), scrollTileRow(0), markerBoxX(0),
-      markerBoxY(0), markerBoxWidth(g_defaultMarkerBoxWidth_006a460c), markerBoxHeight(8) {}
+      markerBoxY(0), markerBoxWidth(g_defaultMarkerBoxWidth), markerBoxHeight(8) {}
 
 // FUNCTION: IMPERIALISM 0x0059a420
 TMiniMapView::~TMiniMapView() {}
@@ -99,7 +99,7 @@ void TMiniMapView::Draw(RECT* rectBuffer) {
 
   short markerX = static_cast<short>(markerBoxX);
   short markerY = static_cast<short>(markerBoxY);
-  if (g_applyMiniMapVerticalClipOffset_006993e8) {
+  if (g_applyMiniMapVerticalClipOffset) {
     markerY = static_cast<short>(markerY + verticalClipOffset);
   }
   SetQuickDrawFillColor(0xffffff);
@@ -124,16 +124,16 @@ void TMiniMapView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& prev
     if (PointInBoundsAndActionable(&currentPoint) != 0) {
       markerBoxX = currentPoint.x - markerBoxWidth;
       markerBoxY = currentPoint.y - markerBoxHeight;
-      g_applyMiniMapVerticalClipOffset_006993e8 = false;
+      g_applyMiniMapVerticalClipOffset = false;
       RefreshControl();
       ForceRedraw();
-      g_applyMiniMapVerticalClipOffset_006993e8 = true;
+      g_applyMiniMapVerticalClipOffset = true;
     }
     return;
   }
 
   if (phase == kTrackPhaseEnd) {
-    g_applyMiniMapVerticalClipOffset_006993e8 = true;
+    g_applyMiniMapVerticalClipOffset = true;
     int tileColumn = currentPoint.x / 2;
     int tileRow = currentPoint.y / 2;
     tileColumn =

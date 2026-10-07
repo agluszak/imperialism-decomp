@@ -48,7 +48,7 @@ IMPLEMENT_DYNCREATE(TCouncilView, TDiplomacyMapView)
 void TCouncilView::DoPostCreate(int arg) {
   this->TView::DoPostCreate(arg);
 
-  interactionModeAt94 = 5;
+  interactionMode = 5;
   tickerSlots[0] = 0;
   tickerSlots[1] = 0;
   tickerSlots[2] = 0;

@@ -21,7 +21,7 @@ int ComputeBestNationTileDevelopmentScore(NationSlot nationSlot) {
 
   float averageUnitDivergence = nation->averageUnitDivergencePerOwnedRegion;
   if (!(averageUnitDivergence > 0.0)) {
-    averageUnitDivergence = g_MissionPositiveFallback_0065A9B8;
+    averageUnitDivergence = g_MissionPositiveFallback;
   }
 
   int bestRegionId = -1;
@@ -40,7 +40,7 @@ int ComputeBestNationTileDevelopmentScore(NationSlot nationSlot) {
         if (g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(nationSlot)) {
           developmentPressure +=
               TDefendProvinceMission::ComputeCrossNationSupportVectorScore(regionId) *
-              g_DefendProvinceMissionCrossSupportFloorScale_0065A8F8;
+              g_DefendProvinceMissionCrossSupportFloorScale;
         }
       }
 

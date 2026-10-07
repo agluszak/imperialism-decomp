@@ -52,7 +52,7 @@ void TAdorner::DrawLine(signed char, short, short, short) {
 }
 
 // FUNCTION: IMPERIALISM 0x0049da80
-unsigned char TAdorner::DoesAdorn(TView*) {
+bool TAdorner::DoesAdorn(TView*) {
   PulseUiInvalidationFlag();
-  return 0;
+  return false;
 }

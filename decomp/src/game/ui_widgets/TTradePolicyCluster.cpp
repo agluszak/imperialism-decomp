@@ -24,7 +24,7 @@ void TTradePolicyCluster::DoEvent(int commandId, TEventHandler* sourceHandler, T
   SetSelectedChildTagAndRefresh(kControlTagSpSpSpSp);
   TView* clusControl = owner->ResolveControlByTag(kControlTagClus);
   if (clusControl == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x203);
+    FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x203);
   }
   static_cast<TCluster*>(clusControl)->SetSelectedChildTagAndRefresh(kControlTagSpSpSpSp);
 }

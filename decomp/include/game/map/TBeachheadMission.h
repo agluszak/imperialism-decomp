@@ -23,7 +23,7 @@ public:
   virtual bool IsDefensiveSeaZoneMission() const override; // slot 0x18 0x53a3b0
   virtual bool IsHospitalMission() const override;         // slot 0x19 0x53a390
 
-  virtual char SmokeEmIfYouGotEm()
+  virtual bool SmokeEmIfYouGotEm()
       override; // slot 0x26 0x53a940 -- clears blockade-port child order links if ready
 
   virtual void GiveActionOrders(TTaskForce* mapOrderEntry)

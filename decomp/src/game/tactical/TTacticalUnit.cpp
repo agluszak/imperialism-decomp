@@ -16,12 +16,12 @@ int TTacticalUnit::GetUnitRange() {
 
 // FUNCTION: IMPERIALISM 0x005a5d80
 float TTacticalUnit::GetBaseAttackPower() {
-  return g_fTacticalRetreatQualityWeightDefault_00669EC0;
+  return g_fTacticalRetreatQualityWeightDefault;
 }
 
 // FUNCTION: IMPERIALISM 0x005a5da0
 float TTacticalUnit::GetDamageScale() {
-  return g_fTacticalRetreatQualityWeightDefault_00669EC0;
+  return g_fTacticalRetreatQualityWeightDefault;
 }
 
 IMPLEMENT_DYNCREATE(TTacticalUnit, TObject)

@@ -47,7 +47,7 @@ void QDPaintRgn(RgnHandle rgn);
 void IntersectClipRegionWithRectAndUpdateBounds(RgnHandle clipRgn, RECT* rect);
 void SetRectRgn(RgnHandle rgn, short left, short top, short right,
                 short bottom);                               // 0x00498be0
-unsigned char EqualRgn(RgnHandle first, RgnHandle second);   // 0x00498c30
+bool EqualRgn(RgnHandle first, RgnHandle second);            // 0x00498c30
 void CopyRgn(RgnHandle src, RgnHandle dst);                  // 0x00497bb0
 void SectRgn(RgnHandle srcA, RgnHandle srcB, RgnHandle dst); // 0x00498000
 void OpenRgn(void);                                          // 0x00497f60

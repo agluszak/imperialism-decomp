@@ -367,7 +367,7 @@ void TMapEditView::PlaceCountySeat(short tileIndex) {
   nameControl->InitDialogWindowAndSyncTitleIfChanged(&cityName, 0);
   dialog->PoseModally();
   nameControl->GetCurrentText(&cityName);
-  g_pGlobalMapState->cityScoreTable[provinceId].cityNameA4 = cityName;
+  g_pGlobalMapState->cityScoreTable[provinceId].cityName = cityName;
 
   TCluster* typeControl = static_cast<TCluster*>(dialog->ResolveControlByTag(kControlTagType));
   typeControl->AssertValid();

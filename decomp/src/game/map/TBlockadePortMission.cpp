@@ -62,8 +62,8 @@ void TBlockadePortMission::Initialize() {
     TZone** ownerSlot = &zone->primaryNeighbors[0];
     if (*ownerSlot == missionTargetZone) {
       score *= (zone->GetPortZoneOwnerNationCodeFromMissionField48() == nationId)
-                   ? g_PortZoneFriendlyMissionScoreMultiplier_0065AA10
-                   : g_PortZoneForeignMissionScoreMultiplier_0065AA18;
+                   ? g_PortZoneFriendlyMissionScoreMultiplier
+                   : g_PortZoneForeignMissionScoreMultiplier;
     }
   }
 
@@ -101,7 +101,7 @@ void TBlockadePortMission::SetStateByte8To2() {
 void TBlockadePortMission::CalculateNeeds() {
   TControlSeaZoneMission::CalculateNeeds();
 
-  const short* navyDistributionWeights = g_NavyOrderDistributionCategoryWeights_00697978;
+  const short* navyDistributionWeights = g_NavyOrderDistributionCategoryWeights;
 
   float threatScore = g_Recompute_Nation_Order_LookupTable_0065A9E8;
   if (portZoneContext->GetPortZoneOwnerNationCodeFromMissionField48() < 7) {
@@ -145,12 +145,12 @@ void TBlockadePortMission::CalculateNeeds() {
     }
   }
 
-  float threatFloor = threatScore * g_BlockadePortMissionThreatScale_0065A904;
-  if (threatFloor <= g_BlockadePortMissionThreatFloor_0065A900) {
-    threatFloor = g_BlockadePortMissionThreatFloor_0065A900;
+  float threatFloor = threatScore * g_BlockadePortMissionThreatScale;
+  if (threatFloor <= g_BlockadePortMissionThreatFloor) {
+    threatFloor = g_BlockadePortMissionThreatFloor;
   }
 
-  const short* weights = &g_Populate_Beachhead_Mission_LookupTable_00697958[4];
+  const short* weights = &g_Populate_Beachhead_Mission_LookupTable[4];
   for (int i = 0; i < 4; ++i) {
     float raised = static_cast<float>(weights[i] * threatFloor *
                                       g_Recompute_Nation_Order_LookupTable_0065A9F8);

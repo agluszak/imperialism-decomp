@@ -57,7 +57,7 @@ RuntimeActionResult RunGreatPowerPressureHumanDebt(NativeTransition& transition)
   }
 
   g_pSimMgr->difficultyLevel = kDifficultyEasy;
-  nation->treasuryValue10 = -100;
+  nation->treasuryValue = -100;
   nation->diplomacyBudgetBase = 50000;
   nation->escalationCounter = 10;
   nation->pressureCounter = 0;
@@ -91,7 +91,7 @@ RuntimeActionResult RunGreatPowerPressureAiNoop(NativeTransition& transition) {
     return RuntimeActionResult::Failure("the loaded game has no AI great-power slot");
   }
 
-  aiNation->treasuryValue10 = -10000;
+  aiNation->treasuryValue = -10000;
   aiNation->pressureCounter = 4;
 
   JsonObject args;
@@ -150,8 +150,8 @@ RuntimeActionResult RunTurnAlertsLaterTurn(NativeTransition& transition) {
   g_pSimMgr->preferenceValues[8] = 1;
   g_pSimMgr->turnFlowStatusFlags = 0x1010;
   g_pDiplomacyTurnStateManager->lastDiplomaticEffortTurn = 0;
-  g_lastTurnAlertTick_006a31c0 = 0;
-  g_nTurnCooldownDeferCounter006A43C4 = 0;
+  g_lastTurnAlertTick = 0;
+  g_nTurnCooldownDeferCounter = 0;
   ResetTurnAlertObservationForRuntimeTest();
   SetTurnAlertObservationOnlyForRuntimeTest(true);
 

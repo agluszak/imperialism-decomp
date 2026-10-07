@@ -34,12 +34,12 @@ void TTaskList::ProcessTasks() {
 }
 
 // FUNCTION: IMPERIALISM 0x005aed50
-unsigned char TTaskList::ContainsTask(short citySlotIndex) {
+bool TTaskList::ContainsTask(short citySlotIndex) {
   for (short ordinal = 1; ordinal <= GetCount(); ++ordinal) {
     TTask* task = static_cast<TTask*>(GetEntryByOrdinal(ordinal));
     if (task->citySlotIndex == citySlotIndex) {
-      return 1;
+      return true;
     }
   }
-  return 0;
+  return false;
 }

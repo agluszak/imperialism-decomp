@@ -22,7 +22,7 @@ void TInfoBarBehavior::IInfoBarBehavior(CString newText, TView* ownerView) {
 
   if (ownerView->EvaluateControlInputGate() == 0) {
     TView* dummy = new TView();
-    dummy->InitializeUiResourceEntryFrameAndParent(0, ownerView, g_InfoBarDummyOrigin_006A2410,
+    dummy->InitializeUiResourceEntryFrameAndParent(0, ownerView, g_InfoBarDummyOrigin,
                                                    &ownerView->frameWidth, 0, 0, 0);
     dummy->controlTag = kControlTagDumy;
     dummy->ViewEnable(1, 0);
@@ -32,7 +32,7 @@ void TInfoBarBehavior::IInfoBarBehavior(CString newText, TView* ownerView) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b0f50
-unsigned char TInfoBarBehavior::DoSetCursor(CPoint* point, RgnHandle region) {
+bool TInfoBarBehavior::DoSetCursor(CPoint* point, RgnHandle region) {
   (void)point;
   if (g_pCursorControlPanel != 0) {
     g_pCursorControlPanel->SetTextAndLayoutRect(text, &layoutRect);
@@ -41,5 +41,5 @@ unsigned char TInfoBarBehavior::DoSetCursor(CPoint* point, RgnHandle region) {
       SetRectRgn(region, 0, 0, 0x280, 0x1e0);
     }
   }
-  return 0;
+  return false;
 }

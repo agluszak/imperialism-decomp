@@ -154,7 +154,7 @@ void TCitySiteView::FrameCursorArea() {
   }
 
   for (int oldIndex = 0; oldIndex < 6; ++oldIndex) {
-    short oldNeighbor = g_aCitySiteNeighborHighlightTiles_00697320[oldIndex];
+    short oldNeighbor = g_aCitySiteNeighborHighlightTiles[oldIndex];
     if (oldNeighbor == -1) {
       continue;
     }
@@ -185,7 +185,7 @@ void TCitySiteView::FrameCursorArea() {
   }
 
   for (int newIndex = 0; newIndex < 6; ++newIndex) {
-    g_aCitySiteNeighborHighlightTiles_00697320[newIndex] =
+    g_aCitySiteNeighborHighlightTiles[newIndex] =
         updateNeighborHighlights ? neighborTiles[newIndex] : -1;
   }
 }
@@ -203,7 +203,7 @@ void TCitySiteView::NormalClick(short nTileIndex, int nInputFlags) {
     PlayDefaultMessageBeep(1);
     CString message;
     g_pSimMgr->GetString(0x273b, terrainKind == kStrategicTerrainWater ? 3 : 0, &message);
-    g_pDisplayMgr->ModalMessage(message, g_MapInteractionPreviewPoint_006a3370);
+    g_pDisplayMgr->ModalMessage(message, g_MapInteractionPreviewPoint);
     return;
   }
 
@@ -219,7 +219,7 @@ void TCitySiteView::NormalClick(short nTileIndex, int nInputFlags) {
     } else {
       g_pSimMgr->GetString(0x273b, 1, &message);
     }
-    g_pDisplayMgr->ModalMessage(message, g_MapInteractionPreviewPoint_006a3370);
+    g_pDisplayMgr->ModalMessage(message, g_MapInteractionPreviewPoint);
     return;
   }
 

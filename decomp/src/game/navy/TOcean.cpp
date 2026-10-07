@@ -578,7 +578,7 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
     portZone->portTileIndex = nTileIndex;
   }
   if (portZone == 0) {
-    FailNilPointerWithAssert(s_SourcePathUOcean_006984CC, 0x96a);
+    FailNilPointerWithAssert(s_SourcePathUOcean, 0x96a);
   }
 
   portZone->SetMapActionContextTargetTileAndRefreshMarkers(static_cast<int>(nationSeed), -1);

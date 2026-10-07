@@ -30,7 +30,7 @@ void TGPTreatyDialog::StuffValues() {
 
     TView* rowPanel = ResolveControlByTag(g_majorTreatyPanelTags[row]);
     if (rowPanel == 0) {
-      FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x2b3);
+      FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x2b3);
     }
 
     for (short column = 0; column < 7; ++column) {
@@ -41,7 +41,7 @@ void TGPTreatyDialog::StuffValues() {
       TNumberText* relationControl =
           static_cast<TNumberText*>(rowPanel->ResolveControlByTag(g_majorTreatyCellTags[column]));
       if (relationControl == 0) {
-        FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x2b9);
+        FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x2b9);
       }
 
       if (column < row) {
@@ -56,11 +56,11 @@ void TGPTreatyDialog::StuffValues() {
 
   TView* horizontalNames = ResolveControlByTag(kControlTagHori); // 'hori'
   if (horizontalNames == 0) {
-    FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x2c6);
+    FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x2c6);
   }
   TView* verticalNames = ResolveControlByTag(kControlTagVert); // 'vert'
   if (verticalNames == 0) {
-    FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x2c8);
+    FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x2c8);
   }
 
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
@@ -72,14 +72,14 @@ void TGPTreatyDialog::StuffValues() {
     TStaticText* horizontalName =
         static_cast<TStaticText*>(horizontalNames->ResolveControlByTag(nameTags[nationSlot]));
     if (horizontalName == 0) {
-      FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x2d0);
+      FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x2d0);
     }
     horizontalName->SetTextAndMaybeRefresh(&nationName, false);
 
     TStaticText* verticalName =
         static_cast<TStaticText*>(verticalNames->ResolveControlByTag(nameTags[nationSlot]));
     if (verticalName == 0) {
-      FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x2d3);
+      FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x2d3);
     }
     verticalName->SetTextAndMaybeRefresh(&nationName, false);
   }

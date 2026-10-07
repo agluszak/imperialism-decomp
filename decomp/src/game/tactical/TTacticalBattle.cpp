@@ -462,17 +462,17 @@ void TTacticalBattle::GetNeighborList(TacticalTileIndex tileIndex,
 }
 
 // FUNCTION: IMPERIALISM 0x005a0550
-unsigned char TTacticalBattle::AreNeighbors(TacticalTileIndex tileIndex,
-                                            TacticalTileIndex candidateTileIndex) {
+bool TTacticalBattle::AreNeighbors(TacticalTileIndex tileIndex,
+                                   TacticalTileIndex candidateTileIndex) {
   TacticalTileIndex neighbors[6];
   GetNeighborList(tileIndex, neighbors);
   int direction;
   for (direction = 0; direction < 6; ++direction) {
     if (neighbors[direction] == candidateTileIndex) {
-      return 1;
+      return true;
     }
   }
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x005a05a0
@@ -550,7 +550,7 @@ int TTacticalBattle::ComputeTacticalHoverCursorStateIndex(TacticalTileIndex tile
     if (tile->deployMark > 1 && fortStrengthPoints[tileIndex / 58] > 0) {
       short unitCategoryCode = g_awTacticalUnitCategoryCodeBySlot[selectedUnit->unitType];
       if (g_afTacticalDirectFireFlagByCategory[unitCategoryCode] ==
-          g_fTacticalRetreatQualityWeightDefault_00669EC0) {
+          g_fTacticalRetreatQualityWeightDefault) {
         char reachable =
             selectedUnit->selectedFlag == 0
                 ? 0
@@ -615,10 +615,9 @@ short TTacticalBattle::ResolveTacticalHoverCursorResourceId(TacticalTileIndex ti
     TTacticalUnit* occupant = tile->occupant;
     short category = g_awTacticalUnitCategoryCodeBySlot[selectedUnit->unitType];
     bool enemyTarget = occupant != 0 && occupant->side != currentSide;
-    bool intactFortSection = g_afTacticalDirectFireFlagByCategory[category] ==
-                                 g_fTacticalRetreatQualityWeightDefault_00669EC0 &&
-                             tile->deployMark > 1 && fortStrengthPoints[tileIndex / 58] > 0 &&
-                             selectedUnit->side == 0;
+    bool intactFortSection =
+        g_afTacticalDirectFireFlagByCategory[category] == g_fTacticalRetreatQualityWeightDefault &&
+        tile->deployMark > 1 && fortStrengthPoints[tileIndex / 58] > 0 && selectedUnit->side == 0;
     if (enemyTarget || intactFortSection) {
       char directFire = static_cast<char>(g_afTacticalDirectFireFlagByCategory[category]);
       return IsTacticalTargetTileReachableForAction(selectedUnit->tileIndex, tileIndex, directFire,
@@ -841,8 +840,9 @@ void TTacticalBattle::ProcessTacticalUnitState1TurnStep(TTacticalUnit* unit) {
 }
 
 // FUNCTION: IMPERIALISM 0x005a1400
-unsigned char TTacticalBattle::HasEnemyUnitOnTilesFlankingHexDirection(
-    TacticalTileIndex tileIndex, TacticalHexDirection hexDirection, char side) {
+bool TTacticalBattle::HasEnemyUnitOnTilesFlankingHexDirection(TacticalTileIndex tileIndex,
+                                                              TacticalHexDirection hexDirection,
+                                                              char side) {
   TacticalTileIndex neighborTiles[6];
   bool foundEnemy = false;
   GetNeighborList(tileIndex, neighborTiles);
@@ -1056,7 +1056,7 @@ void TTacticalBattle::MoveTacticalUnitBetweenTiles(TTacticalUnit* unit,
 }
 
 // FUNCTION: IMPERIALISM 0x005a1a20
-unsigned char TTacticalBattle::ResolveTacticalReactionChecksForTile(TacticalTileIndex tileIndex) {
+bool TTacticalBattle::ResolveTacticalReactionChecksForTile(TacticalTileIndex tileIndex) {
   bool reactionFired = false;
   TTacticalUnit* occupant = tileGrid[tileIndex].occupant;
   TTacticalPlayer* reactingPlayer = (occupant->side == 0) ? players[1] : players[0];
@@ -1090,7 +1090,7 @@ unsigned char TTacticalBattle::ResolveTacticalReactionChecksForTile(TacticalTile
 }
 
 // FUNCTION: IMPERIALISM 0x005a1b50
-unsigned char TTacticalBattle::HasAdjacentReachableTileForSelectedUnit() {
+bool TTacticalBattle::HasAdjacentReachableTileForSelectedUnit() {
   TacticalTileIndex neighborTiles[6];
   GetNeighborList(selectedUnit->tileIndex, neighborTiles);
   for (int direction = 0; direction < 6; ++direction) {
@@ -1098,11 +1098,11 @@ unsigned char TTacticalBattle::HasAdjacentReachableTileForSelectedUnit() {
     if (neighborTile != -1) {
       short moveCost = tileMoveCostArray[neighborTile];
       if (moveCost != -1 && moveCost <= selectedUnit->actionPoints) {
-        return 1;
+        return true;
       }
     }
   }
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x005a1bd0
@@ -1164,7 +1164,7 @@ void TTacticalBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
 }
 
 // FUNCTION: IMPERIALISM 0x005a1d70
-unsigned char TTacticalBattle::HasValidTacticalFollowupTargetForCurrentAction() {
+bool TTacticalBattle::HasValidTacticalFollowupTargetForCurrentAction() {
   TTacticalUnit* selectedUnit = this->selectedUnit;
   short categoryCode = g_awTacticalUnitCategoryCodeBySlot[selectedUnit->unitType];
   if (categoryCode == 9) {
@@ -1177,14 +1177,14 @@ unsigned char TTacticalBattle::HasValidTacticalFollowupTargetForCurrentAction() 
       if (neighborTile != -1) {
         TTacticalUnit* occupant = tileGrid[neighborTile].occupant;
         if (occupant != 0 && occupant->side == this->selectedUnit->side) {
-          return 1;
+          return true;
         }
       }
     }
-    return 0;
+    return false;
   }
   if (categoryCode == 8) {
-    return 0;
+    return false;
   }
   TTacticalPlayer* opposingPlayer = (selectedUnit->side == 0) ? players[1] : players[0];
   CIterator enemyIter(opposingPlayer->unitList);
@@ -1203,11 +1203,11 @@ unsigned char TTacticalBattle::HasValidTacticalFollowupTargetForCurrentAction() 
         targetReachable = 0;
       }
       if (targetReachable != 0) {
-        return 1;
+        return true;
       }
     }
   }
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x005a1ee0
@@ -1523,7 +1523,7 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
     CString unusedTextA;
     CString casualtyTemplate;
     CString unusedTextB;
-    infoText = CString(g_pszEmptyTextRef_00669db8);
+    infoText = CString(g_pszEmptyTextRef);
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
 
     int destroyedCountBySide[2];
@@ -1576,8 +1576,7 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
                              static_cast<const char*>(side1NationLabel));
     }
 
-    combinedCasualtyText =
-        CString(side0CasualtyLine + s_szDoubleNewline_00699438 + side1CasualtyLine);
+    combinedCasualtyText = CString(side0CasualtyLine + s_szDoubleNewline + side1CasualtyLine);
     infoControl->SetTextStyle(styleDescriptor, false);
     infoControl->UpdateTextEntrySharedStringAndMaybeNotify(&combinedCasualtyText, false);
     infoControl->CenterVertically(false);
@@ -2059,34 +2058,34 @@ void TTacticalBattle::HandleTacticalCommandTag_targ() {
 }
 
 // FUNCTION: IMPERIALISM 0x005a41c0
-unsigned char TTacticalBattle::ApplyGridColumnSelectionGuard(TacticalTileIndex tileIndex) {
+bool TTacticalBattle::ApplyGridColumnSelectionGuard(TacticalTileIndex tileIndex) {
   int column = tileIndex % 29;
   if (tileIndex < 29) {
-    return 0;
+    return false;
   }
   TacticalTileRecord* record = &tileGrid[tileIndex];
   if (record->terrainType == 4) {
-    return 0;
+    return false;
   }
   if (record->occupant != 0) {
-    return 0;
+    return false;
   }
   if (currentSide == 0) {
     if (column < 3) {
-      return 0;
+      return false;
     }
     if (column > 5) {
-      return 0;
+      return false;
     }
-    return 1;
+    return true;
   }
   if (column > battlefieldColumnCount - 3) {
-    return 0;
+    return false;
   }
   if (column < battlefieldColumnCount - 5) {
-    return 0;
+    return false;
   }
-  return 1;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x005a4240
@@ -2123,16 +2122,16 @@ bool TTacticalBattle::HasFortWallGarrison(TacticalTileIndex tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x005a4330
-unsigned char TTacticalBattle::IsTacticalSideCategoryCoverageIncompleteOrFlagOff() {
+bool TTacticalBattle::IsTacticalSideCategoryCoverageIncompleteOrFlagOff() {
   if (fortLevel == 0) {
-    return 1;
+    return true;
   }
   for (int poolIndex = 0; poolIndex < 8; ++poolIndex) {
     if (fortStrengthPoints[poolIndex] <= 0) {
-      return 1;
+      return true;
     }
   }
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x005a4370
@@ -2244,15 +2243,15 @@ void TTacticalBattle::MakeRetreatMap(char ourSideFlag) {
 }
 
 // FUNCTION: IMPERIALISM 0x005a4690
-unsigned char TTacticalBattle::IsTacticalTileAtFortWallSectionSlot(TacticalTileIndex tileIndex) {
+bool TTacticalBattle::IsTacticalTileAtFortWallSectionSlot(TacticalTileIndex tileIndex) {
   int row = tileIndex / 0x1d;
   int doubledColumn = (row & 1) + (tileIndex % 0x1d) * 2;
   if (row == 5 || row == 7 || row == 9) {
     if (doubledColumn / 2 == battlefieldColumnCount - 6) {
-      return 1;
+      return true;
     }
   }
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x005a53e0

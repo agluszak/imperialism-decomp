@@ -20,7 +20,7 @@ IMPLEMENT_DYNCREATE(TNavyTacUnit, TTacticalUnit)
 // FUNCTION: IMPERIALISM 0x005a6290
 void TNavyTacUnit::InitializeFromSourceShip(TShip* sourceShip) {
   tileIndex = -2;
-  unitType = g_anTacticalNavyUnitTypeByShipType_00669D80[sourceShip->type];
+  unitType = g_anTacticalNavyUnitTypeByShipType[sourceShip->type];
   selectedFlag = 0;
   state1c = 0;
   actionPoints = GetBaseActionPoints();
@@ -67,16 +67,14 @@ void TNavyTacUnit::ApplyNavalDamage(float damageAmount, NavyTargeting targeting)
   switch (targeting) {
   case kNavyTargetingHull:
     secondaryCombatStrengthDelta = static_cast<int>(damageAmount);
-    strengthDelta = static_cast<int>(damageAmount * g_dNavyDamageSplitRatioA_00669f10);
+    strengthDelta = static_cast<int>(damageAmount * g_dNavyDamageSplitRatioA);
     break;
   case kNavyTargetingCrew:
-    secondaryCombatStrengthDelta =
-        static_cast<int>(damageAmount * g_dNavyDamageSplitRatioA_00669f10);
-    strengthDelta = static_cast<int>(damageAmount * g_dNavyDamageSplitRatioB_00669f18);
+    secondaryCombatStrengthDelta = static_cast<int>(damageAmount * g_dNavyDamageSplitRatioA);
+    strengthDelta = static_cast<int>(damageAmount * g_dNavyDamageSplitRatioB);
     break;
   case kNavyTargetingSail:
-    secondaryCombatStrengthDelta =
-        static_cast<int>(damageAmount * g_dNavyDamageSplitRatioA_00669f10);
+    secondaryCombatStrengthDelta = static_cast<int>(damageAmount * g_dNavyDamageSplitRatioA);
     strengthDelta = 0;
     if (static_cast<float>(rand() % 10) < damageAmount) {
       actionPointDelta = 10;

@@ -150,7 +150,7 @@ void TViewMgr::LoadTurnEventCursorTable() {
 // FUNCTION: IMPERIALISM 0x005d5140
 HCURSOR LoadTurnEventCursorByResourceIdOffset1000(short cursorResourceId) {
   CString cursorName;
-  cursorName.Format(s_TurnEventCursorNameFormat_0069B6B4, cursorResourceId);
+  cursorName.Format(s_TurnEventCursorNameFormat, cursorResourceId);
   (void)AfxGetModuleState();
   return LoadCursorA(AfxGetResourceHandle(), cursorName);
 }
@@ -364,11 +364,11 @@ void TViewMgr::VerifyEndTurn() {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventConfirmEndTurn));
   if (node == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0x223);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x223);
   }
   node->SetModality(true);
   if (node->ResolveControlByTag(kControlTagDialog) == nullptr) { // 'GOLD'
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0x227);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x227);
   }
   TDialogBehavior* content = node->GetDialogBehavior();
   if (content != nullptr) {
@@ -440,12 +440,12 @@ char TViewMgr::ModalMessage(CString message, const POINT& messagePosition, short
 }
 
 // FUNCTION: IMPERIALISM 0x005d5bc0
-char TViewMgr::ModalMessageGateAssertStub(CString message, int arg2, int arg3, int arg4, int arg5,
+bool TViewMgr::ModalMessageGateAssertStub(CString message, int arg2, int arg3, int arg4, int arg5,
                                           int arg6) {
-  if (g_nViewMgrModalAssertGate_006A5BB0 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x2ac);
+  if (g_nViewMgrModalAssertGate == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr, 0x2ac);
   }
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x005d5c40
@@ -484,7 +484,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
         g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMinisterReward));
   }
   if (dialog == 0) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0x2e9);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x2e9);
   }
   dialog->SetModality(true);
   TDialogBehavior* content = dialog->GetDialogBehavior();
@@ -499,19 +499,19 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   TPicture* gold = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagDialog)); // 'DLOG'
   gold->AssertValid();
   if (gold == 0) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0x2fa);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x2fa);
   }
   int contextTagSx = static_cast<short>(contextTag);
   int goldResource = contextTagSx * 2 + 0x24cd;
-  if (static_cast<short>(contextTag) == 2 && g_nationInfoGoldResourceOverride_006a5bac != 0) {
-    goldResource = g_nationInfoGoldResourceOverride_006a5bac;
+  if (static_cast<short>(contextTag) == 2 && g_nationInfoGoldResourceOverride != 0) {
+    goldResource = g_nationInfoGoldResourceOverride;
   }
   gold->SetPictureRsrcID(static_cast<short>(goldResource), 0);
 
   TPicture* coat = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagCoat)); // 'coat'
   coat->AssertValid();
   if (coat == 0) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0x301);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x301);
   }
   if (g_pSimMgr->GetPlayerCountry() >= 0 && g_pSimMgr->GetPlayerCountry() < 7) {
     coat->SetPictureRsrcID(static_cast<short>(g_pSimMgr->GetPlayerCountry() + 0x251c), 0);
@@ -533,7 +533,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
         static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagTitl)); // 'titl'
     title->AssertValid();
     if (title == 0) {
-      FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0x31a);
+      FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x31a);
     }
     title->InstallTextStyle(styleDescriptor, 0);
     title->SetJustification(1, false);
@@ -594,7 +594,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
     overlaySfxIds[2] = 0xbce;
     overlaySfxIds[3] = 0xbcf;
     overlaySfxIds[4] = 0xbd0;
-    overlaySfxIds[5] = static_cast<short>(g_overlaySfxSeasonWord_0066f0a6 + 0xbb8);
+    overlaySfxIds[5] = static_cast<short>(g_overlaySfxSeasonWord + 0xbb8);
     overlaySfxIds[6] = 0xbd2;
     overlaySfxIds[7] = 0xbd3;
     overlaySfxIds[8] = 0xbd5;
@@ -727,7 +727,7 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
   POINT modalPosition;
   modalPosition.x = -1000;
   modalPosition.y = resourceId;
-  RunNationInfoModalAndReturnNonCancel(overlayMode, CString(g_pNationInfoEmptyText_0066f050),
+  RunNationInfoModalAndReturnNonCancel(overlayMode, CString(g_pNationInfoEmptyText),
                                        static_cast<LPCSTR>(messageText), messageText.GetLength(),
                                        modalPosition, dialogContext, 0);
 }
@@ -816,7 +816,7 @@ void TViewMgr::MakeRelationshipDialog(int dialogContext) {
       static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           static_cast<TurnEventId>(dialogContext), 0));
   if (node == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0x4ff);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x4ff);
   }
   TRelationshipDialog* dialog = static_cast<TRelationshipDialog*>(
       static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'DLOG'
@@ -833,7 +833,7 @@ void TViewMgr::MakeMinorsTradeBidsDialog(int dialogContext) {
       static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           static_cast<TurnEventId>(dialogContext), 0));
   if (node == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0x514);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x514);
   }
   TMinorTradeBidsDialog* dialog = static_cast<TMinorTradeBidsDialog*>(
       static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'DLOG'
@@ -858,7 +858,7 @@ void TViewMgr::MakeMinorRelationshipDialog(int dialogContext) {
       static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           static_cast<TurnEventId>(dialogContext), 0));
   if (node == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0x535);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x535);
   }
   TMinorRelationshipDialog* dialog = static_cast<TMinorRelationshipDialog*>(
       static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'DLOG'
@@ -878,7 +878,7 @@ void TViewMgr::MakeGPTreatyDialog(int dialogContext) {
       static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           static_cast<TurnEventId>(dialogContext), 0));
   if (node == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0x54e);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x54e);
   }
   TGPTreatyDialog* dialog = static_cast<TGPTreatyDialog*>(
       static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'DLOG'
@@ -898,7 +898,7 @@ void TViewMgr::MakeMinorTreatyDialog(int dialogContext) {
       static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           static_cast<TurnEventId>(dialogContext), 0));
   if (node == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0x566);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x566);
   }
   TMinorTreatyDialog* dialog = static_cast<TMinorTreatyDialog*>(
       static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'DLOG'
@@ -913,7 +913,7 @@ void TViewMgr::MakeMinorTreatyDialog(int dialogContext) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d7090
-char TViewMgr::MakeDiplomacyOfferDialog(short sourceNation, short targetNation,
+bool TViewMgr::MakeDiplomacyOfferDialog(short sourceNation, short targetNation,
                                         short proposalCode) {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
   DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDiplomacyMap), sourceNation);
@@ -922,7 +922,7 @@ char TViewMgr::MakeDiplomacyOfferDialog(short sourceNation, short targetNation,
   mainView->AssertValid();
   mainView->PoseOffer(static_cast<short>(sourceNation), static_cast<short>(targetNation),
                       static_cast<short>(proposalCode));
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x005d7100
@@ -1056,7 +1056,7 @@ void TViewMgr::ShowOfferSheet(short respondingNation, short offeringNation, shor
       static_cast<TOfferDeskPicture*>(activeDialog->ResolveControlByTag(kControlTagMain));
   mainControl->AssertValid();
   if (mainControl == 0) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0x5c7);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x5c7);
   }
   mainControl->PoseOfferSheet(respondingNation, offeringNation, proposedAmount, maxAmount,
                               commodityType);
@@ -1592,8 +1592,8 @@ void TViewMgr::ShowAbilityStatusReport(short abilityIndex) {
   g_pCursorControlPanel->AssertValid();
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 
-  short pictureResourceId = static_cast<short>(
-      g_anAbilityStatusPictureIndex_0066F058[static_cast<short>(abilityIndex)] + 0x897);
+  short pictureResourceId =
+      static_cast<short>(g_anAbilityStatusPictureIndex[static_cast<short>(abilityIndex)] + 0x897);
   mainControl->SetPictureRsrcID(pictureResourceId, true);
 
   TDeluxeText* textControl =
@@ -1755,7 +1755,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   TDropShadowNumberText* capacity =
       static_cast<TDropShadowNumberText*>(mainView->ResolveControlByTag(kControlTagMCap));
   if (capacity == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xa52);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xa52);
   }
   ApplyUiNumberTextStyleAndThemeColor(capacity, 0, 0xa, 0x2b6c, 0x2b67);
   capacity->SetJustification(1, false);
@@ -1763,7 +1763,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
 
   TCity* city = g_apNationStates[nationSlot] == 0 ? 0 : g_apNationStates[nationSlot]->city;
   if (city == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xa5a);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xa5a);
   }
   short* citySummary = city->GetUnmetNeeds();
 
@@ -1780,7 +1780,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
 
   TView* food = mainView->ResolveControlByTag(kTagFood);
   if (food == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xa60);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xa60);
   }
   const short foodOnHand = static_cast<short>(
       city->cityStockCannedFood + city->cityStockLivestock + city->cityStockGrain +
@@ -1813,7 +1813,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
     wool->Show(1, 0);
   } else {
     cotton->Show(0, 0);
-    sharedString = CString(g_pNationInfoEmptyText_0066f050);
+    sharedString = CString(g_pNationInfoEmptyText);
     SetControlHoverHelpText(sharedString, cotton);
     wool->Show(0, 0);
   }
@@ -1827,7 +1827,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
     g_pSimMgr->GetString(0x2731, 0x15, &sharedString);
   } else {
     timber->Show(0, 0);
-    sharedString = CString(g_pNationInfoEmptyText_0066f050);
+    sharedString = CString(g_pNationInfoEmptyText);
   }
   SetControlHoverHelpText(sharedString, timber);
 
@@ -1839,7 +1839,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
     g_pSimMgr->GetString(0x2731, 0x16, &sharedString);
   } else {
     coal->Show(0, 0);
-    sharedString = CString(g_pNationInfoEmptyText_0066f050);
+    sharedString = CString(g_pNationInfoEmptyText);
   }
   SetControlHoverHelpText(sharedString, coal);
 
@@ -1851,7 +1851,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
     g_pSimMgr->GetString(0x2731, 0x17, &sharedString);
   } else {
     iron->Show(0, 0);
-    sharedString = CString(g_pNationInfoEmptyText_0066f050);
+    sharedString = CString(g_pNationInfoEmptyText);
   }
   SetControlHoverHelpText(sharedString, iron);
 
@@ -1863,7 +1863,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
     g_pSimMgr->GetString(0x2731, 0x18, &sharedString);
   } else {
     oil->Show(0, 0);
-    sharedString = CString(g_pNationInfoEmptyText_0066f050);
+    sharedString = CString(g_pNationInfoEmptyText);
   }
   SetControlHoverHelpText(sharedString, oil);
 
@@ -1875,7 +1875,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
     g_pSimMgr->GetString(0x2731, 0x19, &sharedString);
   } else {
     fabric->Show(0, 0);
-    sharedString = CString(g_pNationInfoEmptyText_0066f050);
+    sharedString = CString(g_pNationInfoEmptyText);
   }
   SetControlHoverHelpText(sharedString, fabric);
 
@@ -1887,7 +1887,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
     g_pSimMgr->GetString(0x2731, 0x1a, &sharedString);
   } else {
     lumber->Show(0, 0);
-    sharedString = CString(g_pNationInfoEmptyText_0066f050);
+    sharedString = CString(g_pNationInfoEmptyText);
   }
   SetControlHoverHelpText(sharedString, lumber);
 
@@ -1900,7 +1900,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
     SetControlHoverHelpText(sharedString, steel);
   } else {
     steel->Show(0, 0);
-    sharedString = CString(g_pNationInfoEmptyText_0066f050);
+    sharedString = CString(g_pNationInfoEmptyText);
     SetControlHoverHelpText(sharedString, steel);
   }
   SetControlHoverHelpText(sharedString, steel);
@@ -2041,7 +2041,7 @@ void TViewMgr::ShowTerrainMap(short nationSlot) {
       static_cast<TMapUberPicture*>(mainView->ResolveControlByTag(kControlTagMain));
   mapPicture->AssertValid();
   if (mapPicture == 0) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xc5a);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xc5a);
   }
   mapPicture->DisplayMiniMap();
   sharedString = g_szEmptyString;
@@ -2052,7 +2052,7 @@ void TViewMgr::ShowTerrainMap(short nationSlot) {
   if (zoomControl == 0) {
     zoomControl = mainView->ResolveControlByTag(kControlTagZmIn);
     if (zoomControl == 0) {
-      FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xc69);
+      FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xc69);
     }
   }
   g_pSimMgr->GetString(0x2732, 5, &sharedString);
@@ -2062,7 +2062,7 @@ void TViewMgr::ShowTerrainMap(short nationSlot) {
   if (miniMapControl == 0) {
     miniMapControl = mainView->ResolveControlByTag(kControlTagInfo);
     if (miniMapControl == 0) {
-      FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xc70);
+      FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xc70);
     }
   }
   g_pSimMgr->GetString(0x2732, 0xc, &sharedString);
@@ -2070,7 +2070,7 @@ void TViewMgr::ShowTerrainMap(short nationSlot) {
 
   TView* orderControl = mainView->ResolveControlByTag(kControlTagTrad);
   if (orderControl == 0) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xc76);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xc76);
   }
   if (g_pSimMgr->TestTurnFlowStatusFlagMask(0x100)) {
     g_pSimMgr->GetString(0x2730, 0x13, &sharedString);
@@ -2081,7 +2081,7 @@ void TViewMgr::ShowTerrainMap(short nationSlot) {
 
   orderControl = mainView->ResolveControlByTag(kControlTagDipl);
   if (orderControl == 0) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xc7e);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xc7e);
   }
   if (g_pSimMgr->TestTurnFlowStatusFlagMask(1)) {
     g_pSimMgr->GetString(0x2730, 0x14, &sharedString);
@@ -2092,7 +2092,7 @@ void TViewMgr::ShowTerrainMap(short nationSlot) {
 
   orderControl = mainView->ResolveControlByTag(kControlTagCity);
   if (orderControl == 0) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xc86);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xc86);
   }
   if (g_pSimMgr->TestTurnFlowStatusFlagMask(0x10)) {
     g_pSimMgr->GetString(0x2730, 0x15, &sharedString);
@@ -2103,7 +2103,7 @@ void TViewMgr::ShowTerrainMap(short nationSlot) {
 
   orderControl = mainView->ResolveControlByTag(kControlTagTran);
   if (orderControl == 0) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xc8e);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xc8e);
   }
   if (g_pSimMgr->TestTurnFlowStatusFlagMask(0x1000)) {
     g_pSimMgr->GetString(0x2730, 0x16, &sharedString);
@@ -2123,26 +2123,26 @@ void TViewMgr::ShowTerrainMap(short nationSlot) {
     }
     TView* roster = mainView->ResolveControlByTag(rosterTag);
     if (roster == 0) {
-      FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xca0);
+      FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xca0);
     }
     TView* rosterHotspot =
         roster->ResolveControlByTag(rosterIndex < 2 ? kControlTagLatr : kControlTagNext);
     if (rosterHotspot == 0) {
-      FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xca6);
+      FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xca6);
     }
     g_pSimMgr->GetString(0x2732, 0, &sharedString);
     SetControlHoverHelpText(sharedString, rosterHotspot);
 
     rosterHotspot = roster->ResolveControlByTag(kControlTagDfnd);
     if (rosterHotspot == 0) {
-      FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xcab);
+      FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xcab);
     }
     g_pSimMgr->GetString(0x2732, static_cast<short>(rosterIndex + 1), &sharedString);
     SetControlHoverHelpText(sharedString, rosterHotspot);
 
     rosterHotspot = roster->ResolveControlByTag(kControlTagDone);
     if (rosterHotspot == 0) {
-      FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xcb0);
+      FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xcb0);
     }
     g_pSimMgr->GetString(0x2732, 4, &sharedString);
     SetControlHoverHelpText(sharedString, rosterHotspot);
@@ -2150,90 +2150,90 @@ void TViewMgr::ShowTerrainMap(short nationSlot) {
 
   TView* civRoster = mainView->ResolveControlByTag(kControlTagUciv);
   if (civRoster == 0) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xcb7);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xcb7);
   }
   TView* rosterChild = civRoster->ResolveControlByTag(kControlTagUnit);
   if (rosterChild == 0) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xcc2);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xcc2);
   }
   g_pSimMgr->GetString(0x2732, 0xe, &sharedString);
   SetControlHoverHelpText(sharedString, rosterChild);
 
   rosterChild = civRoster->ResolveControlByTag(kControlTagBack);
   if (rosterChild == 0) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xcc8);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xcc8);
   }
   sharedString = g_szEmptyString;
   SetControlHoverHelpText(sharedString, rosterChild);
 
   rosterChild = civRoster->ResolveControlByTag(kControlTagGarr);
   if (rosterChild == 0) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xccd);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xccd);
   }
   g_pSimMgr->GetString(0x2732, 0xf, &sharedString);
   SetControlHoverHelpText(sharedString, rosterChild);
 
   TView* armyRoster = mainView->ResolveControlByTag(kControlTagUarm);
   if (armyRoster == 0) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xcd3);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xcd3);
   }
   for (int placardIndex = 0; placardIndex < 10; placardIndex++) {
     TView* placard = armyRoster->ResolveControlByTag(kControlTagArmyPlacardFirst + placardIndex);
     if (placard == 0) {
-      FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xcd9);
+      FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xcd9);
     }
     g_pSimMgr->GetString(0x2726, static_cast<short>(placardIndex), &sharedString);
     SetControlHoverHelpText(sharedString, placard);
   }
   rosterChild = armyRoster->ResolveControlByTag(kControlTagGarr);
   if (rosterChild == 0) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xcdf);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xcdf);
   }
   g_pSimMgr->GetString(0x2732, 7, &sharedString);
   SetControlHoverHelpText(sharedString, rosterChild);
 
   TView* navyRoster = mainView->ResolveControlByTag(kControlTagUnav);
   if (navyRoster == 0) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xce5);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xce5);
   }
   rosterChild = navyRoster->ResolveControlByTag(kControlTagBack);
   if (rosterChild == 0) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xce9);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xce9);
   }
   sharedString = g_szEmptyString;
   SetControlHoverHelpText(sharedString, rosterChild);
 
   rosterChild = navyRoster->ResolveControlByTag(kControlTagBomb);
   if (rosterChild == 0) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xcfe);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xcfe);
   }
   g_pSimMgr->GetString(0x2732, 8, &sharedString);
   SetControlHoverHelpText(sharedString, rosterChild);
 
   rosterChild = navyRoster->ResolveControlByTag(kControlTagAgr0);
   if (rosterChild == 0) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xd03);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xd03);
   }
   g_pSimMgr->GetString(0x2732, 9, &sharedString);
   SetControlHoverHelpText(sharedString, rosterChild);
 
   rosterChild = navyRoster->ResolveControlByTag(kControlTagAgr1);
   if (rosterChild == 0) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xd08);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xd08);
   }
   g_pSimMgr->GetString(0x2732, 0xa, &sharedString);
   SetControlHoverHelpText(sharedString, rosterChild);
 
   rosterChild = navyRoster->ResolveControlByTag(kControlTagAgr2);
   if (rosterChild == 0) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xd0d);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xd0d);
   }
   g_pSimMgr->GetString(0x2732, 0xb, &sharedString);
   SetControlHoverHelpText(sharedString, rosterChild);
 
   // The dialog root is only asserted; the map picture then re-arms its click selection.
   if (mapPicture->ResolveControlByTag(kControlTagDialog) == 0) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xd17);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xd17);
   }
   mapPicture->CycleMapInteractionSelectionAfterHandledClick();
 }
@@ -2315,7 +2315,7 @@ static void RefreshMainMenuButtonLabel(TView* mainView, unsigned int controlTag,
                                        short stringIndex, int assertLine, CString* label) {
   TControl* control = static_cast<TControl*>(mainView->ResolveControlByTag(controlTag));
   if (control == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, assertLine);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, assertLine);
   }
   g_pSimMgr->GetString(codeGroup, stringIndex, label);
   control->SetHoverHelpText(*label);
@@ -2453,14 +2453,14 @@ void TViewMgr::ShowBuildingExpansionDialog(short buildingSlotId, TCity* city,
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGenericExpander));
   if (node == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xf50);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xf50);
   }
   node->SetModality(true);
   TBuildingExpansionView* expansionView =
       static_cast<TBuildingExpansionView*>(node->ResolveControlByTag(kControlTagDialog)); // 'DLOG'
   expansionView->AssertValid();
   if (expansionView == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xf54);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xf54);
   }
   expansionView->StuffValues(buildingSlotId, city, productionView);
   CPoint placement;
@@ -2538,8 +2538,8 @@ void TViewMgr::ShowUnitHistory(short nationSlot) {
     }
 
     lineText.Format(g_szDecimalFormat, record->turnNumber);
-    lineText = s_szTurnHistoryPrefix_0069b71c + lineText + s_szTurnHistorySeparator_00699320;
-    lineText += countText + s_szSpaceSeparator_00695794 + messageText;
+    lineText = s_szTurnHistoryPrefix + lineText + s_szTurnHistorySeparator;
+    lineText += countText + s_szSpaceSeparator + messageText;
 
     TStaticText* textControl = static_cast<TStaticText*>(
         activeDialog->ResolveControlByTag(kControlTagTxtAt + entryOrdinal));

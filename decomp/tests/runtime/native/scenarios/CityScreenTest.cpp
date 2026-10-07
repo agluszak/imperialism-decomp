@@ -221,7 +221,7 @@ private:
            (order->secondaryInputResourceId < 0 ||
             order->ownerCity->CityStockByType(order->secondaryInputResourceId) ==
                 unitBefore.secondaryStock - order->secondaryInputPerUnit) &&
-           order->ownerCity->ownerNation->treasuryValue10 ==
+           order->ownerCity->ownerNation->treasuryValue ==
                unitBefore.treasury - order->cashCostPerUnit &&
            population->populationCount == unitBefore.populationCount - 1 &&
            population->populationCountFloat == unitBefore.populationFloat - 1.0f &&
@@ -237,7 +237,7 @@ private:
            (order->secondaryInputResourceId < 0 ||
             order->ownerCity->CityStockByType(order->secondaryInputResourceId) ==
                 unitBefore.secondaryStock) &&
-           order->ownerCity->ownerNation->treasuryValue10 == unitBefore.treasury &&
+           order->ownerCity->ownerNation->treasuryValue == unitBefore.treasury &&
            population->strength == unitBefore.strength &&
            population->populationCount == unitBefore.populationCount &&
            population->populationCountFloat == unitBefore.populationFloat &&
@@ -283,7 +283,7 @@ private:
   bool TrainingOrderWasReserved() const {
     return trainingOrder->quantity == trainingBefore.quantity + 1 &&
            trainingOrder->ownerCity->cityStockPaper == trainingBefore.paperStock - 1 &&
-           trainingOrder->ownerCity->ownerNation->treasuryValue10 ==
+           trainingOrder->ownerCity->ownerNation->treasuryValue ==
                trainingBefore.treasury - kTrainingCashCost;
   }
 
@@ -379,7 +379,7 @@ private:
       city->cityStockPaper = 1;
     }
     if (city->ownerNation->ComputeAvailableDiplomacyBudget() < kTrainingCashCost) {
-      city->ownerNation->treasuryValue10 += kTrainingCashCost;
+      city->ownerNation->treasuryValue += kTrainingCashCost;
     }
   }
 

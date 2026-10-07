@@ -142,24 +142,22 @@ void TAssetMgr::GetScenarioFileName(int scenarioIndex, int mode, CString* outPat
 
 // FUNCTION: IMPERIALISM 0x005dfea0
 void __stdcall AssignScoresDatPathToSharedString(CString* out) {
-  *out = CString(s_Data_scores_dat_0069b7fc);
+  *out = CString(s_Data_scores_dat);
 }
 
-extern "C" const char s_MissingFilePrefix_0069B820[];
-extern "C" const char s_MissingFileSuffix_0069B810[];
+extern "C" const char s_MissingFilePrefix[];
+extern "C" const char s_MissingFileSuffix[];
 
 // FUNCTION: IMPERIALISM 0x005dff20
 void TAssetMgr::EnsurePictWvDataGobLoadedBySlot(int languageTag) {
   CString path;
-  path.Format(s_PictWvGobPathFormat_00698BF4, languageTag);
+  path.Format(s_PictWvGobPathFormat, languageTag);
 
   if (g_pResourceMgr->LoadModuleLibrarySlotWithErrorDialog(path, 2)) {
     return;
   }
 
-  AfxMessageBox(
-      static_cast<LPCTSTR>(s_MissingFilePrefix_0069B820 + path + s_MissingFileSuffix_0069B810),
-      MB_OK, 0);
+  AfxMessageBox(static_cast<LPCTSTR>(s_MissingFilePrefix + path + s_MissingFileSuffix), MB_OK, 0);
 }
 
 namespace {} // namespace
@@ -173,18 +171,18 @@ unsigned char TAssetMgr::SaveMainDocumentToPathAndMarkSaved(const CString& saveP
   TScopedWaitCursor waitCursor;
   document->SetPathName(path, FALSE);
   unsigned char saved = (unsigned char)document->DoSave(document->GetPathName(), TRUE);
-  document->SetPathName(g_szSavedDocumentMarker_0069B848, FALSE);
+  document->SetPathName(g_szSavedDocumentMarker, FALSE);
   return saved;
 }
 
 // FUNCTION: IMPERIALISM 0x005e0150
-unsigned char TAssetMgr::OpenMainDocumentFromPathAndMarkLoaded(const CString& loadPath) {
+bool TAssetMgr::OpenMainDocumentFromPathAndMarkLoaded(const CString& loadPath) {
   CDocument* document = g_pImperialismApp->OpenDocumentFile(loadPath);
   if (document == 0) {
-    return 0;
+    return false;
   }
-  document->SetPathName(g_szLoadedDocumentMarker_0069B854, FALSE);
-  return 1;
+  document->SetPathName(g_szLoadedDocumentMarker, FALSE);
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x005e0260
@@ -203,7 +201,7 @@ void TAssetMgr::WriteIntegerSettingByValueAndKey(int value, LPCSTR key) {
 }
 
 // FUNCTION: IMPERIALISM 0x005e02f0
-unsigned char TAssetMgr::HasPendingClientSaveFile() {
+bool TAssetMgr::HasPendingClientSaveFile() {
   _finddata_t fileInfo;
   long findHandle = _findfirst("save/cli_*.imp", &fileInfo);
   _findclose(findHandle);

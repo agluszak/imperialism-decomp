@@ -33,7 +33,7 @@ void TNewTownView::StuffValues(TTown* town) {
 
   TView* owner = GetWindow();
   if (owner == 0) {
-    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x7fa);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x7fa);
   }
   CRect bounds;
   owner->QueryBounds(&bounds);
@@ -46,7 +46,7 @@ void TNewTownView::StuffValues(TTown* town) {
 
   TView* cancel = ResolveControlByTag(kControlTagCncl); // 'cncl'
   if (cancel == 0) {
-    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x806);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x806);
   }
   cancel->QueryBounds(&bounds);
   OffsetRect(&bounds, 0, extraHeight);
@@ -54,7 +54,7 @@ void TNewTownView::StuffValues(TTown* town) {
 
   TView* okay = ResolveControlByTag(kControlTagOkay); // 'okay'
   if (okay == 0) {
-    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x80c);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x80c);
   }
   okay->QueryBounds(&bounds);
   OffsetRect(&bounds, 0, extraHeight);
@@ -76,7 +76,7 @@ void TNewTownView::StuffValues(TTown* town) {
 
   TEditText* name = static_cast<TEditText*>(ResolveControlByTag(kControlTagName)); // 'name'
   if (name == 0) {
-    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x821);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x821);
   }
   name->BecomeTarget();
   name->GetCurrentText(&townName);
@@ -88,7 +88,7 @@ void TNewTownView::Close() {
   CString townName;
   TEditText* nameControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagName)); // 'name'
   if (nameControl == 0) {
-    FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x82e);
+    FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x82e);
   }
   nameControl->GetCurrentText(&townName);
   town->SetName(static_cast<LPCSTR>(townName));

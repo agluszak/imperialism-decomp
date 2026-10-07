@@ -67,7 +67,7 @@ inline void TControlSeaZoneMission::CalculateNeeds() {
     vector[3] += static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(3));
   }
 
-  const short* lookupTable = g_Populate_Beachhead_Mission_LookupTable_00697958;
+  const short* lookupTable = g_Populate_Beachhead_Mission_LookupTable;
   float sum = vector[0] + vector[1] + vector[2] + vector[3];
   float total = 0.0f;
   if (sum != 0.0f) {
@@ -82,9 +82,9 @@ inline void TControlSeaZoneMission::CalculateNeeds() {
     }
     total = sum * (1.0f - delta * 0.5f);
   }
-  total *= g_MissionResourceWeightScale_0065A8FC;
+  total *= g_MissionResourceWeightScale;
   if (total == 0.0f) {
-    total = g_MissionEmptyResourceWeight_0065AA24;
+    total = g_MissionEmptyResourceWeight;
   }
 
   for (int i = 0; i < 4; ++i) {

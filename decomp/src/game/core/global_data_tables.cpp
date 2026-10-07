@@ -73,7 +73,7 @@ TLanguageMgr* g_pLanguageMgr = 0;
 TAnimator* g_pUiAnimator = 0;
 
 // GLOBAL: IMPERIALISM 0x006a15cc
-int g_diplomacyDialogAssertGuard_006A15CC = 0;
+int g_diplomacyDialogAssertGuard = 0;
 
 // ResourceMgr.cpp diagnostic gates used by the palette-resource overloads.
 // GLOBAL: IMPERIALISM 0x006a1e50
@@ -134,21 +134,21 @@ TArmyMgr* g_pMapContextActionManager = 0;
 extern const unsigned char g_MapContextStaticTable_00695428[0x20] = {
     0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0};
 // GLOBAL: IMPERIALISM 0x0064dc30
-char* g_pBattleReportSharedText_0064dc30 = g_szEmptyString;
+char* g_pBattleReportSharedText = g_szEmptyString;
 
 // GLOBAL: IMPERIALISM 0x00662b90
-char* g_pSmallViewsEmptyText_00662B90 = g_szEmptyString;
+char* g_pSmallViewsEmptyText = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x0064cb18
-char* g_pMiniCivSharedText_0064cb18 = g_szEmptyString;
+char* g_pMiniCivSharedText = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x0065c830
-char* g_pShipFractionSharedText_0065c830 = g_szEmptyString;
+char* g_pShipFractionSharedText = g_szEmptyString;
 
 // GLOBAL: IMPERIALISM 0x00654ec8
-char* g_pDiplomacyPanelEmptyText_00654ec8 = g_szEmptyString;
+char* g_pDiplomacyPanelEmptyText = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x0065c160
-char* g_pLoungeLocalPlayerNameSharedText_0065c160 = g_szEmptyString;
+char* g_pLoungeLocalPlayerNameSharedText = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x00668b88
-char* g_pStatusPictureMainSharedText_00668b88 = g_szEmptyString;
+char* g_pStatusPictureMainSharedText = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x00695448
 extern const signed char g_MapContextStaticTable_00695448[0x20] = {
     1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0};
@@ -192,13 +192,13 @@ bool g_bScenarioScriptTerminationRequested = false;
 // GLOBAL: IMPERIALISM 0x006a43b8
 int g_nScenarioScriptInstructionCount = 0;
 // GLOBAL: IMPERIALISM 0x006a3ee0
-int g_UnknownMapOrderExecutionGuard_006a3ee0 = 0;
+int g_UnknownMapOrderExecutionGuard = 0;
 // GLOBAL: IMPERIALISM 0x006a30b4
-int g_colorFillAssertGuard_006a30b4 = 0;
+int g_colorFillAssertGuard = 0;
 // GLOBAL: IMPERIALISM 0x00694250
-char g_szLiteralL_00694250[] = "L";
+char g_szLiteralL[] = "L";
 // GLOBAL: IMPERIALISM 0x00694254
-char g_szCmdSwitchLangQuit_00694254[] = "L!";
+char g_szCmdSwitchLangQuit[] = "L!";
 // The MFC application singleton (&theApp), cached by InitInstance (0x412dc0).
 // GLOBAL: IMPERIALISM 0x006a1348
 class ImperialismApp* g_pImperialismApp = 0;
@@ -208,12 +208,12 @@ int g_nStartupAutoResolutionMode = 0;
 // GLOBAL: IMPERIALISM 0x006a1354
 _PNH g_pfnPreviousNewHandler = 0;
 // GLOBAL: IMPERIALISM 0x006a1358
-void* g_pAmbitDeveloperAssertProbe_006A1358 = 0;
+void* g_pAmbitDeveloperAssertProbe = 0;
 
 // GLOBAL: IMPERIALISM 0x006950ac
-int g_McAppUiActiveFlag_006950AC = 1;
+int g_McAppUiActiveFlag = 1;
 // GLOBAL: IMPERIALISM 0x006a1af8
-int g_McAppUiDrawGate_006A1AF8 = 0;
+int g_McAppUiDrawGate = 0;
 // GLOBAL: IMPERIALISM 0x006a1ae0
 int g_McAppUiFlag_006A1AE0 = 0;
 // GLOBAL: IMPERIALISM 0x006a1ae4
@@ -223,29 +223,29 @@ int g_McAppUiFlag_006A1AFC = 0;
 // GLOBAL: IMPERIALISM 0x006a1b00
 int g_McAppUiFlag_006A1B00 = 0;
 // GLOBAL: IMPERIALISM 0x006a1af0
-int g_McAppUiUpdateWindowRecursionGuard_006A1AF0 = 0;
+int g_McAppUiUpdateWindowRecursionGuard = 0;
 // GLOBAL: IMPERIALISM 0x006a1af4
-TView* g_McAppUiActiveRenderContext_006A1AF4 = 0;
+TView* g_McAppUiActiveRenderContext = 0;
 // GLOBAL: IMPERIALISM 0x006a1a60
-int g_McAppUiDefaultPosX_006A1A60 = 0;
+int g_McAppUiDefaultPosX = 0;
 // GLOBAL: IMPERIALISM 0x006a1a64
-int g_McAppUiDefaultPosY_006A1A64 = 0;
+int g_McAppUiDefaultPosY = 0;
 // GLOBAL: IMPERIALISM 0x006a1a68
 TMouseCaptureState g_McAppMouseCaptureState;
 // GLOBAL: IMPERIALISM 0x006a1adc
-unsigned int g_McAppUiMouseCaptureTimerId_006A1ADC = 0;
+unsigned int g_McAppUiMouseCaptureTimerId = 0;
 // GLOBAL: IMPERIALISM 0x006950b0
-char g_szMcAppUiSourcePath_006950B0[] = "D:\\Ambit\\McAppUI.cpp";
+char g_szMcAppUiSourcePath[] = "D:\\Ambit\\McAppUI.cpp";
 // GLOBAL: IMPERIALISM 0x00695168
-char g_szQuickDrawSourcePath_00695168[] = "D:\\Ambit\\QuickDraw.cpp";
+char g_szQuickDrawSourcePath[] = "D:\\Ambit\\QuickDraw.cpp";
 // GLOBAL: IMPERIALISM 0x00695200
-char g_szTraceLineBreakChars_00695200[] = "\n\r";
+char g_szTraceLineBreakChars[] = "\n\r";
 // GLOBAL: IMPERIALISM 0x00694354
-char g_szUiPlaceholderStaticText_00694354[] = "Static Text";
+char g_szUiPlaceholderStaticText[] = "Static Text";
 // GLOBAL: IMPERIALISM 0x00694378
-char g_szUiPlaceholderZero_00694378[] = "0";
+char g_szUiPlaceholderZero[] = "0";
 // GLOBAL: IMPERIALISM 0x006943b0
-char g_szUiPlaceholderTreasury_006943B0[] = "$55,555";
+char g_szUiPlaceholderTreasury[] = "$55,555";
 // GLOBAL: IMPERIALISM 0x00695160
 char g_szQuickDrawFontFaceSystem[] = "System";
 // GLOBAL: IMPERIALISM 0x00695140
@@ -258,167 +258,165 @@ const char* const g_apszQuickDrawFontFaceNames[5] = {
     g_szQuickDrawFontFaceBookAntiqua, g_szQuickDrawFontFaceSmallFonts};
 
 // GLOBAL: IMPERIALISM 0x006943bc
-char g_szUiPlaceholderSeason_006943BC[] = "Winter, 1888";
+char g_szUiPlaceholderSeason[] = "Winter, 1888";
 // GLOBAL: IMPERIALISM 0x00694a98
-char g_szUiPlaceholderSampleText_00694A98[] = "Sample Text 1\n2\n3\n4\n5\n6\n7\n8";
+char g_szUiPlaceholderSampleText[] = "Sample Text 1\n2\n3\n4\n5\n6\n7\n8";
 // GLOBAL: IMPERIALISM 0x00694c50
 int g_useCompatibleBitmapBlit = 1;
 // GLOBAL: IMPERIALISM 0x006949e0
-char g_szNewGameAllAutoGPs_006949E0[] = "All AutoGP's";
+char g_szNewGameAllAutoGPs[] = "All AutoGP's";
 // GLOBAL: IMPERIALISM 0x006949f0
-char g_szNewGameNamesRandom_006949F0[] = "Random";
+char g_szNewGameNamesRandom[] = "Random";
 // GLOBAL: IMPERIALISM 0x006949f8
-char g_szNewGameNamesHistorical_006949F8[] = "Historical";
+char g_szNewGameNamesHistorical[] = "Historical";
 // GLOBAL: IMPERIALISM 0x00694a08
-char g_szNewGameNamesLabel_00694A08[] = "Names:";
+char g_szNewGameNamesLabel[] = "Names:";
 // GLOBAL: IMPERIALISM 0x00694a10
-char g_szNewGameDifficultySetting_00694A10[] = "Difficulty Setting";
+char g_szNewGameDifficultySetting[] = "Difficulty Setting";
 // GLOBAL: IMPERIALISM 0x00694a28
-char g_szNewGameDifficultyNighOnImpossible_00694A28[] = "Nigh-On Impossible";
+char g_szNewGameDifficultyNighOnImpossible[] = "Nigh-On Impossible";
 // GLOBAL: IMPERIALISM 0x00694a40
-char g_szNewGameDifficultyHard_00694A40[] = "Hard";
+char g_szNewGameDifficultyHard[] = "Hard";
 // GLOBAL: IMPERIALISM 0x00694a48
-char g_szNewGameDifficultyNormal_00694A48[] = "Normal";
+char g_szNewGameDifficultyNormal[] = "Normal";
 // GLOBAL: IMPERIALISM 0x00694a50
-char g_szNewGameDifficultyEasy_00694A50[] = "Easy";
+char g_szNewGameDifficultyEasy[] = "Easy";
 // GLOBAL: IMPERIALISM 0x00694a58
-char g_szNewGameDifficultyIntroductory_00694A58[] = "Introductory";
+char g_szNewGameDifficultyIntroductory[] = "Introductory";
 // GLOBAL: IMPERIALISM 0x00694a68
-char g_szNewGameScenarioPlaceholderTitle_00694A68[] = "Revenge of the Patagonians";
+char g_szNewGameScenarioPlaceholderTitle[] = "Revenge of the Patagonians";
 // GLOBAL: IMPERIALISM 0x00694a88
-char g_szNewGameGameNameLabel_00694A88[] = "Game name:";
+char g_szNewGameGameNameLabel[] = "Game name:";
 // Trade-board screen labels (InitializeTradeScreenBitmapControls, events 0x7d9/0x7da).
 // GLOBAL: IMPERIALISM 0x006948a4
-char g_szUiOrdersLabel_006948A4[] = "Orders";
+char g_szUiOrdersLabel[] = "Orders";
 // GLOBAL: IMPERIALISM 0x00694abc
-char g_szUiPlaceholder185_00694ABC[] = "185";
+char g_szUiPlaceholder185[] = "185";
 // GLOBAL: IMPERIALISM 0x00694ac0
-char g_szUiQuantityToOfferLabel_00694AC0[] = "Quantity to Offer";
+char g_szUiQuantityToOfferLabel[] = "Quantity to Offer";
 // GLOBAL: IMPERIALISM 0x00694ad8
-char g_szUiAvailableLabel_00694AD8[] = "Available";
+char g_szUiAvailableLabel[] = "Available";
 // GLOBAL: IMPERIALISM 0x00694ae4
-char g_szUiPriceLabel_00694AE4[] = "Price";
+char g_szUiPriceLabel[] = "Price";
 // GLOBAL: IMPERIALISM 0x00694aec
-char g_szUiCommodityLabel_00694AEC[] = "Commodity";
+char g_szUiCommodityLabel[] = "Commodity";
 // GLOBAL: IMPERIALISM 0x00694af8
-char g_szUiBoardOfTradeLabel_00694AF8[] = "Board of Trade";
+char g_szUiBoardOfTradeLabel[] = "Board of Trade";
 
 // Default text baked into the event 0x3ba planet-name dialog.
 // GLOBAL: IMPERIALISM 0x00694528
-char g_szUiDefaultPlanetName_00694528[] = "Skyron";
+char g_szUiDefaultPlanetName[] = "Skyron";
 // GLOBAL: IMPERIALISM 0x00694530
-char g_szUiPickAPlanet_00694530[] = "Pick a planet";
+char g_szUiPickAPlanet[] = "Pick a planet";
 // GLOBAL: IMPERIALISM 0x00694540
-char g_szUiAsEstimatedBy_00694540[] = "as estimated by";
+char g_szUiAsEstimatedBy[] = "as estimated by";
 // GLOBAL: IMPERIALISM 0x00694554
-char g_szUiForeignShippingObserved_00694554[] = "Foreign Shipping Observed";
+char g_szUiForeignShippingObserved[] = "Foreign Shipping Observed";
 // GLOBAL: IMPERIALISM 0x00694574
-char g_szUiHalfDozenShips_00694574[] = "\xa5 Half a dozen Ships-of-the-Line\n2\n3\n4";
+char g_szUiHalfDozenShips[] = "\xa5 Half a dozen Ships-of-the-Line\n2\n3\n4";
 // GLOBAL: IMPERIALISM 0x006945a4
-char g_szUiNavalForcesReportOf_006945A4[] = "Report of the naval forces of";
+char g_szUiNavalForcesReportOf[] = "Report of the naval forces of";
 // GLOBAL: IMPERIALISM 0x006945c8
-char g_szUiPlaceholderPont_006945C8[] = "Pont";
+char g_szUiPlaceholderPont[] = "Pont";
 // GLOBAL: IMPERIALISM 0x006945d0
-char g_szUiForeignFleetReport_006945D0[] = "Foreign Fleet Report";
+char g_szUiForeignFleetReport[] = "Foreign Fleet Report";
 // GLOBAL: IMPERIALISM 0x006945ec
-char g_szUiTraderIndiamen_006945EC[] = "1 trader, 6 indiamen";
+char g_szUiTraderIndiamen[] = "1 trader, 6 indiamen";
 // GLOBAL: IMPERIALISM 0x00694608
-char g_szUiStoppedFromTrade_00694608[] = "were stopped from completing their trade";
+char g_szUiStoppedFromTrade[] = "were stopped from completing their trade";
 // GLOBAL: IMPERIALISM 0x0069463c
-char g_szUiPlaceholderPokei_0069463C[] = "Pokei";
+char g_szUiPlaceholderPokei[] = "Pokei";
 // GLOBAL: IMPERIALISM 0x00694644
-char g_szUiToLabel_00694644[] = "to";
+char g_szUiToLabel[] = "to";
 // GLOBAL: IMPERIALISM 0x00694648
-char g_szUiItemLabel_00694648[] = "item";
+char g_szUiItemLabel[] = "item";
 // GLOBAL: IMPERIALISM 0x00694650
-char g_szUiCarryingCargoOf_00694650[] = "carrying a cargo of";
+char g_szUiCarryingCargoOf[] = "carrying a cargo of";
 // GLOBAL: IMPERIALISM 0x00694668
-char g_szUiOwnrTag_00694668[] = "ownr";
+char g_szUiOwnrTag[] = "ownr";
 // GLOBAL: IMPERIALISM 0x00694670
-char g_szUiMerchantsBelongingTo_00694670[] = "Merchants belonging to";
+char g_szUiMerchantsBelongingTo[] = "Merchants belonging to";
 // GLOBAL: IMPERIALISM 0x0069468c
-char g_szUiAndConsistingOf_0069468C[] = "and consisting of";
+char g_szUiAndConsistingOf[] = "and consisting of";
 // GLOBAL: IMPERIALISM 0x006946a4
-char g_szUiByTaskForceCommandedBy_006946A4[] = "by a task force commanded by";
+char g_szUiByTaskForceCommandedBy[] = "by a task force commanded by";
 // GLOBAL: IMPERIALISM 0x006946c8
-char g_szUiAdmiralKirk_006946C8[] = " Adm. James T. Kirk of the USS Enterprise";
+char g_szUiAdmiralKirk[] = " Adm. James T. Kirk of the USS Enterprise";
 // GLOBAL: IMPERIALISM 0x006946fc
-char g_szUiInThe_006946FC[] = "in the";
+char g_szUiInThe[] = "in the";
 // GLOBAL: IMPERIALISM 0x00694704
-char g_szUiSeaOfOblongata_00694704[] = "Sea of Oblongata";
+char g_szUiSeaOfOblongata[] = "Sea of Oblongata";
 // GLOBAL: IMPERIALISM 0x00694718
-char g_szUiThreeVessels_00694718[] = "3 vessels";
+char g_szUiThreeVessels[] = "3 vessels";
 // GLOBAL: IMPERIALISM 0x00694724
-char g_szUiResultOfSuccessful_00694724[] = "A result of a successful";
+char g_szUiResultOfSuccessful[] = "A result of a successful";
 // GLOBAL: IMPERIALISM 0x00694744
-char g_szUiBlockadeLabel_00694744[] = "Blockade";
+char g_szUiBlockadeLabel[] = "Blockade";
 // GLOBAL: IMPERIALISM 0x00694750
-char g_szUiEnemyTradeInterrupted_00694750[] = "Enemy Trade Interrupted";
+char g_szUiEnemyTradeInterrupted[] = "Enemy Trade Interrupted";
 // GLOBAL: IMPERIALISM 0x0069476c
-char g_szUiSeaOfSalamanders_0069476C[] = "Sea of Satanic Salamanders";
+char g_szUiSeaOfSalamanders[] = "Sea of Satanic Salamanders";
 // GLOBAL: IMPERIALISM 0x0069478c
-char g_szUiEngageAllFloating_0069478C[] = "Engage all floating objects";
+char g_szUiEngageAllFloating[] = "Engage all floating objects";
 // GLOBAL: IMPERIALISM 0x006947b0
-char g_szUiForceCurrentlyLocated_006947B0[] = "Force currently located in the";
+char g_szUiForceCurrentlyLocated[] = "Force currently located in the";
 // GLOBAL: IMPERIALISM 0x006947d8
-char g_szUiTaskForceReport_006947D8[] = "Task Force Report";
+char g_szUiTaskForceReport[] = "Task Force Report";
 // GLOBAL: IMPERIALISM 0x006947f0
-char g_szUiRegularsLabel_006947F0[] = "Regulars";
+char g_szUiRegularsLabel[] = "Regulars";
 // GLOBAL: IMPERIALISM 0x006947fc
-char g_szUiSkirmishersLabel_006947FC[] = "Skirmishers";
+char g_szUiSkirmishersLabel[] = "Skirmishers";
 // GLOBAL: IMPERIALISM 0x0069480c
-char g_szUiMinutemanLabel_0069480C[] = "Minuteman";
+char g_szUiMinutemanLabel[] = "Minuteman";
 // GLOBAL: IMPERIALISM 0x00694818
-char g_szUiConstructionOptions_00694818[] = "Construction Options";
+char g_szUiConstructionOptions[] = "Construction Options";
 // GLOBAL: IMPERIALISM 0x00694834
-char g_szUiEditTextLabel_00694834[] = "Edit Text";
+char g_szUiEditTextLabel[] = "Edit Text";
 // GLOBAL: IMPERIALISM 0x00694840
-char g_szUiAdmiralBobMinnow_00694840[] = "Adm. Bob of the SS Minnow commanding";
+char g_szUiAdmiralBobMinnow[] = "Adm. Bob of the SS Minnow commanding";
 // GLOBAL: IMPERIALISM 0x0069486c
-char g_szUiCompositionLabel_0069486C[] = "Composition";
+char g_szUiCompositionLabel[] = "Composition";
 // GLOBAL: IMPERIALISM 0x0069487c
-char g_szUiPatrolTheWaters_0069487C[] = "Patrol the waters\nof whereever";
+char g_szUiPatrolTheWaters[] = "Patrol the waters\nof whereever";
 // GLOBAL: IMPERIALISM 0x006948ac
-char g_szUiOneHenTwoDucks_006948AC[] = "One hen,\ntwo ducks, \nthree quacking geese.";
+char g_szUiOneHenTwoDucks[] = "One hen,\ntwo ducks, \nthree quacking geese.";
 // GLOBAL: IMPERIALISM 0x006948e0
-char g_szUiArmyReportTitle_006948E0[] = "Army Report";
+char g_szUiArmyReportTitle[] = "Army Report";
 // GLOBAL: IMPERIALISM 0x006948f0
-char g_szUiCivilianReportTitle_006948F0[] = "Civilian Report";
+char g_szUiCivilianReportTitle[] = "Civilian Report";
 // GLOBAL: IMPERIALISM 0x00694904
-char g_szUiLossesHaxaco_00694904[] = "Losses\nHaxaco:  light\nOrdune:  heavy";
+char g_szUiLossesHaxaco[] = "Losses\nHaxaco:  light\nOrdune:  heavy";
 // GLOBAL: IMPERIALISM 0x00694930
-char g_szUiOrderOfBattle_00694930[] = "Order of Battle follows";
+char g_szUiOrderOfBattle[] = "Order of Battle follows";
 // GLOBAL: IMPERIALISM 0x0069494c
-char g_szUiHaxacoLegions_0069494C[] =
-    "Haxaco's Powerful Legions\nannhilate\nOrdune's Pathetic Armies";
+char g_szUiHaxacoLegions[] = "Haxaco's Powerful Legions\nannhilate\nOrdune's Pathetic Armies";
 // GLOBAL: IMPERIALISM 0x00694998
-char g_szUiSkirmishReportTitle_00694998[] = "Skirmish Report";
+char g_szUiSkirmishReportTitle[] = "Skirmish Report";
 // GLOBAL: IMPERIALISM 0x006949ac
-char g_szUiPage14of14_006949AC[] = "Page 14 of 14";
+char g_szUiPage14of14[] = "Page 14 of 14";
 
 // University-screen (turn event 0x23fa) placeholder label strings.
 // GLOBAL: IMPERIALISM 0x006943ac
-char g_szUiPlaceholderOne_006943AC[] = "1";
+char g_szUiPlaceholderOne[] = "1";
 // GLOBAL: IMPERIALISM 0x006949c8
-char g_szUiAvailableColon_006949C8[] = "Available:";
+char g_szUiAvailableColon[] = "Available:";
 // GLOBAL: IMPERIALISM 0x006949d8
-char g_szUiCostColon_006949D8[] = "Cost:";
+char g_szUiCostColon[] = "Cost:";
 // GLOBAL: IMPERIALISM 0x00694b20
-char g_szUiUniversityTitle_00694B20[] = "University";
+char g_szUiUniversityTitle[] = "University";
 // GLOBAL: IMPERIALISM 0x00694b30
-char g_szUiThousandDollars_00694B30[] = "$1,000";
+char g_szUiThousandDollars[] = "$1,000";
 // GLOBAL: IMPERIALISM 0x00694b38
-char g_szUiLevel1_00694B38[] = "Level\n1";
+char g_szUiLevel1[] = "Level\n1";
 // GLOBAL: IMPERIALISM 0x006943cc
-char g_szMcAppUiHeaderPath_006943CC[] = "D:\\Ambit\\McAppUI.h";
+char g_szMcAppUiHeaderPath[] = "D:\\Ambit\\McAppUI.h";
 // GLOBAL: IMPERIALISM 0x00696bc0
-char g_szUGameWindowSourcePath_00696bc0[] = "D:\\Ambit\\Cross\\UGameWindow.cpp";
+char g_szUGameWindowSourcePath[] = "D:\\Ambit\\Cross\\UGameWindow.cpp";
 // GLOBAL: IMPERIALISM 0x00696728
-char g_szUCountrySourcePath_00696728[] = "D:\\Ambit\\Cross\\UCountry.cpp";
+char g_szUCountrySourcePath[] = "D:\\Ambit\\Cross\\UCountry.cpp";
 // GLOBAL: IMPERIALISM 0x00696960
-int g_diplomacyActionButtonTagTable_00696960[6] = {kControlTagInfo, kControlTagTrty,
-                                                   kControlTagGran, kControlTagTrad,
-                                                   kControlTagCoun, kControlTagOffr};
+int g_diplomacyActionButtonTagTable[6] = {kControlTagInfo, kControlTagTrty, kControlTagGran,
+                                          kControlTagTrad, kControlTagCoun, kControlTagOffr};
 // GLOBAL: IMPERIALISM 0x00696978
 extern "C" unsigned int g_aDiplomacyActionTopicTabTags[6] = {kControlTagInft, kControlTagTrtt,
                                                              kControlTagGrat, kControlTagTrat,
@@ -427,13 +425,13 @@ extern "C" unsigned int g_aDiplomacyActionTopicTabTags[6] = {kControlTagInft, kC
 short g_aDiplomacyRelationPaletteColorCodes[7] = {0x40, 0x40, 0x41, 0x42, 0x43, 0x40, 0x44};
 // TInfoPanelView::Draw label-column coordinates, in the panel's parent coordinate space.
 // GLOBAL: IMPERIALISM 0x006969b0
-short g_infoPanelLabelXByRow_006969b0[4] = {0x48, 0x48, 0x48, 0x48};
+short g_infoPanelLabelXByRow[4] = {0x48, 0x48, 0x48, 0x48};
 // GLOBAL: IMPERIALISM 0x006969c0
-short g_infoPanelLabelYByRow_006969c0[4] = {0x198, 0x1a9, 0x1ba, 0x1cb};
+short g_infoPanelLabelYByRow[4] = {0x198, 0x1a9, 0x1ba, 0x1cb};
 // GLOBAL: IMPERIALISM 0x006a143c
 int g_McAppUiFlag_006A143C = 0;
 // GLOBAL: IMPERIALISM 0x006a1484
-int g_dibCompressAssertGate_006A1484 = 0;
+int g_dibCompressAssertGate = 0;
 // GLOBAL: IMPERIALISM 0x006a14e0
 double g_gfxScale6A14E0 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a1528
@@ -739,9 +737,9 @@ double g_gfxCoordinateScale_6A6070 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a60b8
 short g_scaledShortConst_6A60B8 = static_cast<short>(g_gfxCoordinateScale_6A6070 * 512.0 - -1.0);
 // GLOBAL: IMPERIALISM 0x00698ab8
-char g_szSetupScreensSourcePath_00698AB8[] = "D:\\Ambit\\Cross\\USetupScreens.cpp";
+char g_szSetupScreensSourcePath[] = "D:\\Ambit\\Cross\\USetupScreens.cpp";
 // GLOBAL: IMPERIALISM 0x006a4264
-int g_SetupScreensAssertFlag_006A4264 = 0;
+int g_SetupScreensAssertFlag = 0;
 // GLOBAL: IMPERIALISM 0x006a1b04
 int g_McAppUiFlag_006A1B04 = 0;
 // GLOBAL: IMPERIALISM 0x006a1b08
@@ -764,9 +762,9 @@ int g_Reset_Quick_Draw_Value_0064B8F0 = 1;
 // GLOBAL: IMPERIALISM 0x0064b8f4
 int g_Reset_Quick_Draw_Value_0064B8F4 = 1;
 // GLOBAL: IMPERIALISM 0x0064b8f8
-extern const short g_Reset_Quick_Draw_WordState_0064B8F8 = 0;
+extern const short g_Reset_Quick_Draw_WordState = 0;
 // GLOBAL: IMPERIALISM 0x006a1d10
-short g_Reset_Quick_Draw_State_006A1D10 = 0;
+short g_Reset_Quick_Draw_State = 0;
 // GLOBAL: IMPERIALISM 0x006a1d08
 int g_nQuickDrawPenHorizontalSize = 0;
 // GLOBAL: IMPERIALISM 0x006a1d0c
@@ -820,16 +818,16 @@ short g_MapTileCacheMissCount6A3454;
 CDib* g_pColorKeyCompositeDib = 0;
 
 // GLOBAL: IMPERIALISM 0x00697310
-short g_aStrategicMapNeighborHighlightTiles_00697310[6] = {-1, -1, -1, -1, -1, -1};
+short g_aStrategicMapNeighborHighlightTiles[6] = {-1, -1, -1, -1, -1, -1};
 // GLOBAL: IMPERIALISM 0x00697320
-short g_aCitySiteNeighborHighlightTiles_00697320[6] = {-1, -1, -1, -1, -1, -1};
+short g_aCitySiteNeighborHighlightTiles[6] = {-1, -1, -1, -1, -1, -1};
 
 // GLOBAL: IMPERIALISM 0x006a3370
-CPoint g_MapInteractionPreviewPoint_006a3370(0, 0);
+CPoint g_MapInteractionPreviewPoint(0, 0);
 // GLOBAL: IMPERIALISM 0x006a33b4
-int g_MapInteractionPreviewRowParity_006a33b4 = 0;
+int g_MapInteractionPreviewRowParity = 0;
 // GLOBAL: IMPERIALISM 0x006a33b8
-int g_MapInteractionPreviewColumnParity_006a33b8 = 0;
+int g_MapInteractionPreviewColumnParity = 0;
 // GLOBAL: IMPERIALISM 0x006a1da0
 CDC* g_pQuickDrawMemoryDc = nullptr;
 // GLOBAL: IMPERIALISM 0x006a1dbc
@@ -848,7 +846,7 @@ int g_QuickDrawGetCursorAssertGate = 0;
 int g_QuickDrawEqualRgnAssertGate = 0;
 // Stroke-state compatibility gate read only by the dead out-of-line copy at 0x495370.
 // GLOBAL: IMPERIALISM 0x006a1db8
-int g_QuickDrawStateAssertGate_006A1DB8 = 0;
+int g_QuickDrawStateAssertGate = 0;
 
 // Overlay clip cache parameters
 // GLOBAL: IMPERIALISM 0x006a4450
@@ -917,7 +915,7 @@ const unsigned int g_majorTreatyCellTags[7] = {kManifestTagRGP0, kManifestTagRGP
 
 // Industry action cost weight tables
 // GLOBAL: IMPERIALISM 0x00650758
-float g_AiDevelopmentResourceBudgetScale_00650758 = 1000.0f;
+float g_AiDevelopmentResourceBudgetScale = 1000.0f;
 // GLOBAL: IMPERIALISM 0x0064f488
 extern const float g_PopulationGrowthRateUnder10 = 1.2f;
 // GLOBAL: IMPERIALISM 0x0064f48c
@@ -973,9 +971,9 @@ AiCityActionCostProfile g_aiCityActionCostProfiles[30] = {
 };
 
 // GLOBAL: IMPERIALISM 0x006967d4
-short g_cachedAiCityActionNationSlot_006967d4 = -1;
+short g_cachedAiCityActionNationSlot = -1;
 // GLOBAL: IMPERIALISM 0x006967d8
-short g_cachedAiCityActionTurnTick_006967d8 = -1;
+short g_cachedAiCityActionTurnTick = -1;
 // GLOBAL: IMPERIALISM 0x006a2ea0
 float g_cachedAiCityActionContextBias[3] = {0.0f, 0.0f, 0.0f};
 
@@ -990,7 +988,7 @@ short g_nCityBuildingSlotYOffsetIndex = 1;
 // GLOBAL: IMPERIALISM 0x006961dc
 short g_nCityBuildingDrawXOffsetIndex = 1;
 // GLOBAL: IMPERIALISM 0x0064faa8
-char* g_pCityBuildingHoverEmptyText_0064faa8 = g_szEmptyString;
+char* g_pCityBuildingHoverEmptyText = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x0064fad0
 short g_awCityBuildingActionResourceIds[72] = {
     12, 0,  0,  12, 14, 0,  11, 0,  0, 12, 0,  0, 12, 12, 0, 12, 12, 0,  24, 24, 0, 24, 24, 0,
@@ -1003,7 +1001,7 @@ short g_nCityBuildingSlotXOffsetIndex = 0;
 short g_nCityBuildingDrawYOffsetIndex = 0;
 
 // GLOBAL: IMPERIALISM 0x006a2980
-CRect g_cityBuildingHoverFallbackRect_006a2980;
+CRect g_cityBuildingHoverFallbackRect;
 // GLOBAL: IMPERIALISM 0x006a2998
 CRect g_aCityBuildingHoverSelectionRects[16] = {
     CRect(g_anCityBuildingSlotCoords[0], g_anCityBuildingSlotCoords[1],
@@ -1117,14 +1115,14 @@ CRect g_aCityBuildingLayoutRects[72] = {CRect(0x110, 0xfc, 0x11f, 0x10a),
 HRGN g_hOpenRgnAccumulator = nullptr;
 
 // GLOBAL: IMPERIALISM 0x006a24d4
-bool g_Sanitize_City_Counter_Value_006A24D4 = false;
+bool g_Sanitize_City_Counter_Value = false;
 // GLOBAL: IMPERIALISM 0x6a134c
 TResourceMgr* g_pResourceMgr = nullptr;
 // GLOBAL: IMPERIALISM 0x00694150
 LPCSTR g_apFontFiles[] = {"data\\WeBeBd__.ttf", "data\\Antqua.ttf", "data\\Antqua.ttf",
                           "data\\AntquaB.ttf", nullptr};
 // GLOBAL: IMPERIALISM 0x006a1890
-int g_nDibOrientationFlag_006A1890 = 0;
+int g_nDibOrientationFlag = 0;
 // GLOBAL: IMPERIALISM 0x0069b89c
 int g_nAuxOutputDeviceIndex = -1;
 // GLOBAL: IMPERIALISM 0x6a1d9c
@@ -1147,65 +1145,65 @@ TView* g_pUiResourceContext = nullptr;
 
 // FUNCTION: IMPERIALISM 0x00489a50
 int SetGlobalUiInvalidationFlagAndReturnPrevious(int newValue) {
-  int previous = g_McAppUiActiveFlag_006950AC;
-  g_McAppUiActiveFlag_006950AC = newValue;
+  int previous = g_McAppUiActiveFlag;
+  g_McAppUiActiveFlag = newValue;
   return previous;
 }
 
 // FUNCTION: IMPERIALISM 0x00489a70
 int GetMcAppUiActiveFlag() {
-  return g_McAppUiActiveFlag_006950AC;
+  return g_McAppUiActiveFlag;
 }
 
 // FUNCTION: IMPERIALISM 0x00489a90
 int ClearGlobalUiInvalidationFlagAndReturnPrevious() {
-  int previous = g_McAppUiActiveFlag_006950AC;
-  g_McAppUiActiveFlag_006950AC = 0;
+  int previous = g_McAppUiActiveFlag;
+  g_McAppUiActiveFlag = 0;
   return previous;
 }
 
 // Source-path string for CMcWindow's McWindow.cpp one-shot debug asserts.
 // GLOBAL: IMPERIALISM 0x006950d8
-char g_szMcWindowSourcePath_006950D8[] = "D:\\Ambit\\McWindow.cpp";
+char g_szMcWindowSourcePath[] = "D:\\Ambit\\McWindow.cpp";
 
 // GLOBAL: IMPERIALISM 0x006a1c74
-int g_nMcWindowStateMsgAssertGate_006A1C74 = 0;
+int g_nMcWindowStateMsgAssertGate = 0;
 
 // Source-path string for the DiplomacyDialogs.cpp resource-A4 dialog assert.
 // GLOBAL: IMPERIALISM 0x00694cc0
-extern "C" const char g_szDiplomacyDialogsSourcePath_00694CC0[] = "D:\\Ambit\\DiplomacyDialogs.cpp";
+extern "C" const char g_szDiplomacyDialogsSourcePath[] = "D:\\Ambit\\DiplomacyDialogs.cpp";
 
 // Source-path string for CIncludeView's IncludeView.cpp one-shot debug asserts.
 // GLOBAL: IMPERIALISM 0x00694d10
-char g_szIncludeViewSourcePath_00694D10[] = "D:\\Ambit\\IncludeView.cpp";
+char g_szIncludeViewSourcePath[] = "D:\\Ambit\\IncludeView.cpp";
 
 // GLOBAL: IMPERIALISM 0x006a17b0
-int g_nIncludeViewAssertGate_006A17B0 = 0;
+int g_nIncludeViewAssertGate = 0;
 
 // GLOBAL: IMPERIALISM 0x006a17b4
-int g_nIncludeViewQueueAssertGate_006A17B4 = 0;
+int g_nIncludeViewQueueAssertGate = 0;
 
 // One-shot assert gate for starting a mouse-capture track without a live UI context.
 // GLOBAL: IMPERIALISM 0x006a17b8
-int g_nIncludeViewCaptureAssertGate_006A17B8 = 0;
+int g_nIncludeViewCaptureAssertGate = 0;
 
 // GLOBAL: IMPERIALISM 0x006a17bc
-int g_nIncludeViewReinitAssertGate_006A17BC = 0;
+int g_nIncludeViewReinitAssertGate = 0;
 
 // GLOBAL: IMPERIALISM 0x006a17c0
-int g_nIncludeViewReinitThreadOnceGate_006A17C0 = 0;
+int g_nIncludeViewReinitThreadOnceGate = 0;
 
 // GLOBAL: IMPERIALISM 0x00694d40
-char g_szAmbitCadreEgoutClassName_00694D40[] = "AmbitCadreEgout";
+char g_szAmbitCadreEgoutClassName[] = "AmbitCadreEgout";
 
 // GLOBAL: IMPERIALISM 0x006a1834
-int g_AmbitCadreEgoutWndClassAtom_006A1834 = 0;
+int g_AmbitCadreEgoutWndClassAtom = 0;
 
 // GLOBAL: IMPERIALISM 0x006a2480
-int g_nMcAppUiAssertGate_006A2480 = 0;
+int g_nMcAppUiAssertGate = 0;
 
 // GLOBAL: IMPERIALISM 0x006a17c4
-int g_nIncludeViewPointerAssertGate_006A17C4 = 0;
+int g_nIncludeViewPointerAssertGate = 0;
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x0065a468
@@ -1215,42 +1213,42 @@ extern const float g_MissionDefaultScore_0065a468 = 0.0f;
 extern const double g_MissionScoreOneConstant_0065a470 = 1.0;
 
 // GLOBAL: IMPERIALISM 0x006548e0
-extern const float g_DefenseMinisterWeightZero_006548E0 = 0.0f;
+extern const float g_DefenseMinisterWeightZero = 0.0f;
 // GLOBAL: IMPERIALISM 0x006548e8
-extern const double g_MinisterWeightHalf_006548E8 = 0.5;
+extern const double g_MinisterWeightHalf = 0.5;
 // GLOBAL: IMPERIALISM 0x006548f0
-extern const double g_MinisterWeightOne_006548F0 = 1.0;
+extern const double g_MinisterWeightOne = 1.0;
 // GLOBAL: IMPERIALISM 0x006548f8
-extern const double g_BismarckWeightHigh_006548F8 = 0.9;
+extern const double g_BismarckWeightHigh = 0.9;
 // GLOBAL: IMPERIALISM 0x00654900
-extern const double g_BismarckWeightLow_00654900 = 0.6;
+extern const double g_BismarckWeightLow = 0.6;
 // GLOBAL: IMPERIALISM 0x00654908
-extern const float g_DefenderMinisterWeight_00654908 = 0.75f;
+extern const float g_DefenderMinisterWeight = 0.75f;
 // GLOBAL: IMPERIALISM 0x00654910
-extern const double g_BullyWeightLow_00654910 = 0.7;
+extern const double g_BullyWeightLow = 0.7;
 // GLOBAL: IMPERIALISM 0x00654918
-extern const double g_BullyWeightHigh_00654918 = 0.8;
+extern const double g_BullyWeightHigh = 0.8;
 
 // GLOBAL: IMPERIALISM 0x006545c8
-extern const double g_AiPressureUnsetSentinel_006545c8 = -1.0;
+extern const double g_AiPressureUnsetSentinel = -1.0;
 // GLOBAL: IMPERIALISM 0x006545d0
 extern const float g_MissionDefaultScore_006545d0 = 0.0f;
 // GLOBAL: IMPERIALISM 0x006545d4
-extern const float g_UnreferencedConstant_006545d4 = -1.0f;
+extern const float g_UnreferencedConstant = -1.0f;
 // GLOBAL: IMPERIALISM 0x006545d8
 extern const double g_MissionScoreOneConstant_006545d8 = 1.0;
 // GLOBAL: IMPERIALISM 0x006545e0
-extern const float g_AiPressureRatioCap_006545e0 = 1.0f;
+extern const float g_AiPressureRatioCap = 1.0f;
 // GLOBAL: IMPERIALISM 0x006545e8
-extern const double g_AiPressureMidpointScale_006545e8 = 0.5;
+extern const double g_AiPressureMidpointScale = 0.5;
 // 0.0 (double) threshold used by the same function's score-positivity checks.
 // GLOBAL: IMPERIALISM 0x006545f0
-extern const double g_MissionScoreZeroThreshold_006545f0 = 0.0;
+extern const double g_MissionScoreZeroThreshold = 0.0;
 // GLOBAL: IMPERIALISM 0x006545f8
-extern const double g_MissionEligibilityRatioMargin_006545f8 = 1.1;
+extern const double g_MissionEligibilityRatioMargin = 1.1;
 
 // GLOBAL: IMPERIALISM 0x006543e8
-extern const float g_AiPressurePeerScale_006543e8 = 1.1f;
+extern const float g_AiPressurePeerScale = 1.1f;
 
 // GLOBAL: IMPERIALISM 0x00658780
 float g_TileHeatmapNeighborDiffusionFactor = 0.2f;
@@ -1262,15 +1260,15 @@ double g_MapPreviewScaleY6A33D0;
 // GLOBAL: IMPERIALISM 0x006a3448
 short g_MapPreviewVerticalOffset6A3448;
 // GLOBAL: IMPERIALISM 0x006a3360
-extern double g_mapCellRowScale_006a3360;
+extern double g_mapCellRowScale;
 // GLOBAL: IMPERIALISM 0x006a3388
-extern double g_mapCellColumnScale_006a3388;
+extern double g_mapCellColumnScale;
 // GLOBAL: IMPERIALISM 0x006a32f8
-extern double g_mapProjectionColumnScale_006a32f8;
+extern double g_mapProjectionColumnScale;
 // GLOBAL: IMPERIALISM 0x006a3320
-extern double g_mapProjectionRowScale_006a3320;
+extern double g_mapProjectionRowScale;
 // GLOBAL: IMPERIALISM 0x006a3348
-extern short g_mapProjectionSeamColumn_006a3348;
+extern short g_mapProjectionSeamColumn;
 
 } // extern "C"
 
@@ -1319,7 +1317,7 @@ double g_ScaleDefault6A1FE8 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a1fc0
 double g_ScaleDefault6A1FC0 = DefaultGfxCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a2008
-short g_scaledDefaultWidth_006A2008 = static_cast<short>(g_ScaleDefault6A1FC0 * 512.0 - -1.0);
+short g_scaledDefaultWidth = static_cast<short>(g_ScaleDefault6A1FC0 * 512.0 - -1.0);
 // GLOBAL: IMPERIALISM 0x006a1fd0
 CPoint g_defaultPoint_006A1FD0(0, 0);
 // GLOBAL: IMPERIALISM 0x006a2000
@@ -1413,11 +1411,11 @@ float g_Classify_Nation_Military_Value_00653708 = 2.0f;
 float g_Classify_Nation_Military_Value_0065370C = 1.0f;
 float g_Classify_Nation_Military_Value_00653710 = -2.0f;
 float g_Compute_Advisory_Handler_LookupTable_00653714 = -0.25f;
-float g_Iterate_Linked_List_Value_00653718 = 0.25f;
-float g_Compute_City_Order_Value_0065371C = 0.5f;
+float g_Iterate_Linked_List_Value = 0.25f;
+float g_Compute_City_Order_Value = 0.5f;
 float g_Compute_Advisory_Handler_LookupTable_00653720 = -90.0f;
-float g_Compute_Advisory_Peer_LookupTable_00653724 = -0.5f;
-float g_ApplyIndexedResourceDeltaScale_00653728 = -1.0f / 255.0f;
+float g_Compute_Advisory_Peer_LookupTable = -0.5f;
+float g_ApplyIndexedResourceDeltaScale = -1.0f / 255.0f;
 
 // Per-unit-type military stat records (0xe-byte records, 7 shorts each), rebased
 // from the earlier 0x695CD4 model: TMilitaryUnit::GetArmsCarried (0x5c3400)
@@ -1425,7 +1423,7 @@ float g_ApplyIndexedResourceDeltaScale_00653728 = -1.0f / 255.0f;
 // power/cost points at +2 (0x695cd4, the short the slot 0x8e-0x9c score family sums).
 
 // GLOBAL: IMPERIALISM 0x0066eb88
-short g_UnitTypeStatTable_0066EB88[30][7] = {
+short g_UnitTypeStatTable[30][7] = {
     {0x0026, 0x0014, 0x0001, 0x0001, 0x000a, 0x0000, 0x003c},
     {0x0032, 0x0019, 0x0001, 0x0001, 0x0023, 0x004b, 0x006e},
     {0x004b, 0x001e, 0x0001, 0x0001, 0x000a, 0x0000, 0x0078},
@@ -1458,7 +1456,7 @@ short g_UnitTypeStatTable_0066EB88[30][7] = {
     {0, 0, 0, 0, 0, 0, 0},
 };
 // GLOBAL: IMPERIALISM 0x0066ed30
-short g_UnitTypeStatDivisorTable_0066ED30[7] = {150, 150, 65, 75, 100, 250, 0};
+short g_UnitTypeStatDivisorTable[7] = {150, 150, 65, 75, 100, 250, 0};
 
 short g_DAT_006966d0_Value_006966D0[12] = {2, 0, 4, 3, 1, 5, 0, 0, 0, 0, 0, 0};
 
@@ -1468,27 +1466,26 @@ short g_civilianTileOrderCursorTokenTable[12] = {0,    1008, 0,    1004, 1003, 1
 
 // Cursor resource ids selected by TArmyMgr's two map cursor state classifiers.
 // GLOBAL: IMPERIALISM 0x00695668
-short g_mapCursorTokenByStateIndex_00695668[12] = {0, 0, 1000, 0, 0, 0, 1011, 1011, 1010, 0, 0, 0};
+short g_mapCursorTokenByStateIndex[12] = {0, 0, 1000, 0, 0, 0, 1011, 1011, 1010, 0, 0, 0};
 // GLOBAL: IMPERIALISM 0x00695680
-short g_civilianMapCursorTokenByStateIndex_00695680[12] = {0,    1008, 1000, 1005, 1006, 1007,
-                                                           1011, 1011, 1010, 0,    0,    0};
+short g_civilianMapCursorTokenByStateIndex[12] = {0,    1008, 1000, 1005, 1006, 1007,
+                                                  1011, 1011, 1010, 0,    0,    0};
 
 } // extern "C"
 
 // GLOBAL: IMPERIALISM 0x006a5430
-CSize g_tacticalTileSize_006A5430(0x32, 0x1e);
+CSize g_tacticalTileSize(0x32, 0x1e);
 // GLOBAL: IMPERIALISM 0x006a5448
-CSize g_tacticalBattlefieldSurfaceSize_006A5448(0x5dc, 0x1c2);
+CSize g_tacticalBattlefieldSurfaceSize(0x5dc, 0x1c2);
 // The first store is at 0x5a6895; the initializer entry is 0x5a6890.
 // GLOBAL: IMPERIALISM 0x006a5498
-CSize g_tacticalUnitSpriteCellSize_006A5498(0x32, 0x32);
+CSize g_tacticalUnitSpriteCellSize(0x32, 0x32);
 
 extern "C" {
 
 // GLOBAL: IMPERIALISM 0x006699e8
-int g_anUnitTypeTacticalRangeByType_006699E8[30] = {5,  5,  5,  5,  3,  3,  9,  11, 8,  8,
-                                                    8,  8,  5,  5,  12, 14, 10, 10, 10, 10,
-                                                    10, 12, 15, 17, 5,  8,  10, 0,  0,  0};
+int g_anUnitTypeTacticalRangeByType[30] = {5,  5,  5,  5,  3,  3,  9,  11, 8,  8, 8, 8,  5, 5, 12,
+                                           14, 10, 10, 10, 10, 10, 12, 15, 17, 5, 8, 10, 0, 0, 0};
 
 // GLOBAL: IMPERIALISM 0x00695528
 ArmyUnitCategoryStorage g_awTacticalUnitCategoryCodeBySlot[32] = {
@@ -1625,21 +1622,21 @@ float g_fMissionScoreNormalizationDivisor = 5000.0f;
 float g_fScatteredShipsMissionDefaultScore = 0.001f;
 
 // GLOBAL: IMPERIALISM 0x006a3a54
-short g_nArmsBasicResourceOfferSplitCount_006a3a54 = 0;
+short g_nArmsBasicResourceOfferSplitCount = 0;
 // GLOBAL: IMPERIALISM 0x006a3a58
-short g_nArmsAdvancedResourceOfferSplitCount_006a3a58 = 0;
+short g_nArmsAdvancedResourceOfferSplitCount = 0;
 // GLOBAL: IMPERIALISM 0x006a3a88
-float g_afNationOrderQueueDivergence_006a3a88[7] = {0};
+float g_afNationOrderQueueDivergence[7] = {0};
 // GLOBAL: IMPERIALISM 0x006a3ac0
-float g_afNationOrderQueueDivergenceMirror_006a3ac0[7] = {0};
+float g_afNationOrderQueueDivergenceMirror[7] = {0};
 // GLOBAL: IMPERIALISM 0x006a3ae0
-float g_afNationMobileUnitDivergence_006a3ae0[7] = {0};
+float g_afNationMobileUnitDivergence[7] = {0};
 // GLOBAL: IMPERIALISM 0x006a3b20
-float g_afNationWeightedMilitaryOrderScore_006a3b20[7] = {0};
+float g_afNationWeightedMilitaryOrderScore[7] = {0};
 // GLOBAL: IMPERIALISM 0x006a3b50
-float g_afNationCombinedUnitDivergence_006a3b50[7] = {0};
+float g_afNationCombinedUnitDivergence[7] = {0};
 // GLOBAL: IMPERIALISM 0x006a3b88
-float g_afNationMobileUnitScore_006a3b88[7] = {0};
+float g_afNationMobileUnitScore[7] = {0};
 
 // GLOBAL: IMPERIALISM 0x00698120
 IndustryCapabilityClassSlotEntry g_aIndustryCapabilityClassSlotTable[14] = {
@@ -1669,7 +1666,7 @@ short g_aNavalIntelligenceAccuracyProfiles[6][6] = {
 bool g_bPerfectNavalIntelligenceCheat = false;
 
 // GLOBAL: IMPERIALISM 0x0066ef30
-MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30[23] = {
+MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable[23] = {
     {0, 0},  {9, 0},  {16, 0}, {14, 0}, {17, 0}, {8, 0},  {2, 0},  {5, 0},
     {12, 0}, {11, 0}, {13, 0}, {6, 0},  {6, 0},  {6, 0},  {6, 0},  {4, 0},
     {7, 0},  {1, 0},  {1, 0},  {10, 0}, {15, 0}, {10, 0}, {10, 0},
@@ -1677,38 +1674,38 @@ MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30
 
 // Defend-province / mission priority-vector normalization (0x53e6e0 / 0x53ea70 family).
 // GLOBAL: IMPERIALISM 0x0065a8f0
-extern const float g_AttackProvinceMissionReadinessThreshold_0065A8F0 = 1.0f;
+extern const float g_AttackProvinceMissionReadinessThreshold = 1.0f;
 // GLOBAL: IMPERIALISM 0x0065a8f8
-extern const float g_DefendProvinceMissionCrossSupportFloorScale_0065A8F8 = 0.8f;
+extern const float g_DefendProvinceMissionCrossSupportFloorScale = 0.8f;
 // GLOBAL: IMPERIALISM 0x0065a8fc
-extern const float g_MissionResourceWeightScale_0065A8FC = 1.1f;
+extern const float g_MissionResourceWeightScale = 1.1f;
 // GLOBAL: IMPERIALISM 0x0065a900
-extern const float g_BlockadePortMissionThreatFloor_0065A900 = 10.0f;
+extern const float g_BlockadePortMissionThreatFloor = 10.0f;
 // GLOBAL: IMPERIALISM 0x0065a904
-extern const float g_BlockadePortMissionThreatScale_0065A904 = 0.5f;
+extern const float g_BlockadePortMissionThreatScale = 0.5f;
 // GLOBAL: IMPERIALISM 0x0065a910
-extern const float g_NavyMissionIndustrialCostWeights_0065A910[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+extern const float g_NavyMissionIndustrialCostWeights[4] = {1.0f, 1.0f, 1.0f, 1.0f};
 // Fourteen-entry signed lookup object following the industrial-cost weights.
 // GLOBAL: IMPERIALISM 0x0065a920
-extern const int g_NavyMissionIndustrialCostTrailingLookup_0065A920[14] = {
+extern const int g_NavyMissionIndustrialCostTrailingLookup[14] = {
     -1, -1, -1, 0, 1, -1, -1, 2, 3, 4, -1, 5, 6, 7,
 };
 // GLOBAL: IMPERIALISM 0x0065a958
-extern const float g_NavyMissionQueuedWeightDeficitScale_0065A958 = 1.0f;
+extern const float g_NavyMissionQueuedWeightDeficitScale = 1.0f;
 // GLOBAL: IMPERIALISM 0x0065a95c
-extern const float g_InvadeMissionSuppressedPriorContributionScale_0065A95C = 0.0f;
+extern const float g_InvadeMissionSuppressedPriorContributionScale = 0.0f;
 // GLOBAL: IMPERIALISM 0x0065a960
-extern const float g_NavyMissionSimilarityExcessBlend_0065A960 = 0.25f;
+extern const float g_NavyMissionSimilarityExcessBlend = 0.25f;
 // GLOBAL: IMPERIALISM 0x0065a968
 // Difficulty-row / fort-level-column resource scaling for attack-province missions.
-extern const float g_AttackProvinceMissionResourceScaleByDifficultyAndFortLevel_0065A968[5][4] = {
+extern const float g_AttackProvinceMissionResourceScaleByDifficultyAndFortLevel[5][4] = {
     {1.9f, 2.3f, 2.5f, 2.7f},
     {1.9f, 2.3f, 2.5f, 2.7f},
     {2.0f, 2.3f, 2.5f, 2.7f},
     {2.1f, 2.3f, 2.5f, 2.7f},
     {2.3f, 2.5f, 2.7f, 2.9f}};
 // GLOBAL: IMPERIALISM 0x0065a9b8
-extern const float g_MissionPositiveFallback_0065A9B8 = 1.0f;
+extern const float g_MissionPositiveFallback = 1.0f;
 // GLOBAL: IMPERIALISM 0x0065a9bc
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9BC = 0.05f;
 // GLOBAL: IMPERIALISM 0x0065a9c4
@@ -1722,56 +1719,56 @@ double g_Recompute_Nation_Order_LookupTable_0065A9F8 = 0.01;
 double g_Recompute_Nation_Order_LookupTable_0065AA00 = 0.5;
 double g_Recompute_Nation_Order_LookupTable_0065AA08 = 1.0;
 // GLOBAL: IMPERIALISM 0x0065aa10
-extern const double g_PortZoneFriendlyMissionScoreMultiplier_0065AA10 = 1.5;
+extern const double g_PortZoneFriendlyMissionScoreMultiplier = 1.5;
 // GLOBAL: IMPERIALISM 0x0065aa18
-extern const double g_PortZoneForeignMissionScoreMultiplier_0065AA18 = 1.25;
+extern const double g_PortZoneForeignMissionScoreMultiplier = 1.25;
 // GLOBAL: IMPERIALISM 0x0065aa20
 extern const float g_Recompute_Nation_Order_LookupTable_0065AA20 = 139069760.0f;
 // GLOBAL: IMPERIALISM 0x0065aa24
-extern const float g_MissionEmptyResourceWeight_0065AA24 = 100.0f;
+extern const float g_MissionEmptyResourceWeight = 100.0f;
 // GLOBAL: IMPERIALISM 0x0065aa48
-extern const double g_ArmyMissionEligibleUnitStrengthScale_0065AA48 = 0.002;
+extern const double g_ArmyMissionEligibleUnitStrengthScale = 0.002;
 // GLOBAL: IMPERIALISM 0x00697870
-short g_awTacticalCompositionReferenceProfiles_00697870[20] = {
-    40, 27, 0, 17, 16, 27, 36, 0, 17, 20, 26, 31, 20, 23, 0, 40, 22, 0, 38, 0};
-short g_Populate_Beachhead_Mission_LookupTable_00697958[0x10] = {40, 40, 20, 0,  40, 30, 30, 0,
-                                                                 35, 35, 0,  30, 0,  20, 80, 0};
-const short g_NavyOrderDistributionCategoryWeights_00697978[4] = {40, 30, 30, 0};
+short g_awTacticalCompositionReferenceProfiles[20] = {40, 27, 0,  17, 16, 27, 36, 0, 17, 20,
+                                                      26, 31, 20, 23, 0,  40, 22, 0, 38, 0};
+short g_Populate_Beachhead_Mission_LookupTable[0x10] = {40, 40, 20, 0,  40, 30, 30, 0,
+                                                        35, 35, 0,  30, 0,  20, 80, 0};
+const short g_NavyOrderDistributionCategoryWeights[4] = {40, 30, 30, 0};
 // GLOBAL: IMPERIALISM 0x006978c8
-extern const float g_MissionOrderDistanceDecayWeightTable_006978c8[6] = {1.0f,   0.8f,    0.64f,
-                                                                         0.512f, 0.4096f, 0.32768f};
+extern const float g_MissionOrderDistanceDecayWeightTable[6] = {1.0f,   0.8f,    0.64f,
+                                                                0.512f, 0.4096f, 0.32768f};
 
 // GLOBAL: IMPERIALISM 0x00697980
-float g_ArmyMissionDotProductWeights_00697980[5] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
+float g_ArmyMissionDotProductWeights[5] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
 // GLOBAL: IMPERIALISM 0x006978f8
-float g_ArmyMissionCandidateScoreTable_006978f8[24] = {
+float g_ArmyMissionCandidateScoreTable[24] = {
     0.0f, 0.01f, 0.02f, 0.03f, 0.04f, 0.05f, 0.0f, 0.01f, 0.02f, 0.03f, 0.04f, 0.05f,
     0.0f, 0.01f, 0.02f, 0.03f, 0.04f, 0.05f, 0.0f, 0.01f, 0.02f, 0.03f, 0.04f, 0.05f};
 
 // GLOBAL: IMPERIALISM 0x0065aa30
-extern const double g_BeachheadMissionPriorityNormalization_0065AA30 = 100.0;
+extern const double g_BeachheadMissionPriorityNormalization = 100.0;
 
 double g_DAT_00653fc0_Value_00653FC0 = 0.00392156862745098;
 double g_DAT_00653fc8_Value_00653FC8 = 32767.0;
 
-float g_afAdvisoryMissionTierThresholdByMinisterSkill_00653F18[5][6] = {
+float g_afAdvisoryMissionTierThresholdByMinisterSkill[5][6] = {
     {1.5f, 1.5f, 2.5f, 0.0f, 2.25f, 2.0f},  {1.75f, 1.75f, 2.5f, 0.0f, 2.25f, 2.25f},
     {2.0f, 2.0f, 2.0f, 0.0f, 1.5f, 1.5f},   {2.0f, 2.0f, 3.0f, 0.0f, 2.0f, 2.0f},
     {1.5f, 1.5f, 2.5f, 0.0f, 1.75f, 1.75f},
 };
 
 // TAutoGreatPower slot 0x9d / 0xa7 scoring constants: -100.0f and 0.5 (double).
-float g_Compute_Advisory_Map_Value_00653FD4 = -100.0f;
-double g_Evaluate_Advisory_Case11_Value_00653FD8 = 0.5;
-extern const float g_Compute_Advisory_Zero_00653FD0 = 0.0f;
-double g_Compute_Advisory_MinusSix_00653FE8 = -6.0;
-double g_Compute_Advisory_MinusHundred_00653FF0 = -100.0;
+float g_Compute_Advisory_Map_Value = -100.0f;
+double g_Evaluate_Advisory_Case11_Value = 0.5;
+extern const float g_Compute_Advisory_Zero = 0.0f;
+double g_Compute_Advisory_MinusSix = -6.0;
+double g_Compute_Advisory_MinusHundred = -100.0;
 // Float twin of the -6.0 double above (metric-4 denominator in 0x004e8750).
-float g_Compute_Advisory_MinusSixFloat_00653FF8 = -6.0f;
-double g_Compute_Advisory_Hundred_00654000 = 100.0;
-double g_Compute_Advisory_OnePointFive_00654008 = 1.5;
+float g_Compute_Advisory_MinusSixFloat = -6.0f;
+double g_Compute_Advisory_Hundred = 100.0;
+double g_Compute_Advisory_OnePointFive = 1.5;
 
-short g_Rebuild_Primary_Nation_Value_00653570[5][0x17] = {
+short g_Rebuild_Primary_Nation_Value[5][0x17] = {
     {20, 20, 40, 30, 30, 10, 0, 20, 20, 20, 20, 20, 0, 10, 10, 10, 10, 10, 5, 0, 5, 0, 0},
     {5, 5, 10, 5, 5, 2, 0, 20, 10, 15, 8, 10, 0, 5, 5, 0, 0, 10, 5, 0, 5, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 20, 10, 24, 8, 19, 0, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -1779,22 +1776,22 @@ short g_Rebuild_Primary_Nation_Value_00653570[5][0x17] = {
     {0, 0, 0, 0, 0, 0, 0, 15, 6, 16, 6, 12, 0, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0}};
 
 // GLOBAL: IMPERIALISM 0x0066f050
-char* g_pNationInfoEmptyText_0066f050 = g_szEmptyString;
+char* g_pNationInfoEmptyText = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x0066f058
-short g_anAbilityStatusPictureIndex_0066F058[29] = {0,  1,  3,  2,  7,  5,  6,  9,  10, 4,
-                                                    8,  16, 12, 19, 22, 11, 17, 13, 14, 21,
-                                                    15, 18, 26, 20, 23, 28, 24, 25, 27};
+short g_anAbilityStatusPictureIndex[29] = {0,  1,  3,  2,  7,  5,  6,  9,  10, 4,
+                                           8,  16, 12, 19, 22, 11, 17, 13, 14, 21,
+                                           15, 18, 26, 20, 23, 28, 24, 25, 27};
 
 // GLOBAL: IMPERIALISM 0x0066f0a6
-short g_overlaySfxSeasonWord_0066f0a6 = 10;
+short g_overlaySfxSeasonWord = 10;
 
 // Advisor-newspaper list-building literals (TNewspaperView cluster).
 // GLOBAL: IMPERIALISM 0x00695760
-char g_szListSeparator_00695760[] = ", ";
+char g_szListSeparator[] = ", ";
 // GLOBAL: IMPERIALISM 0x00698494
-char g_szPlusPrefix_00698494[] = "+";
+char g_szPlusPrefix[] = "+";
 // GLOBAL: IMPERIALISM 0x00698498
-char g_szListConjunction_00698498[] = " and ";
+char g_szListConjunction[] = " and ";
 
 // GLOBAL: IMPERIALISM 0x0066fad0
 double g_dMasterVolumeExponentScale = 0.092;
@@ -1813,7 +1810,7 @@ double g_dMasterVolumeExponentScale = 0.092;
 POINT g_aTacticalUnitFacingOffsetTable[29][7][2];
 
 // GLOBAL: IMPERIALISM 0x00656f60
-extern const char* const g_pszEmptyTextPointer_00656f60 = g_szEmptyString;
+extern const char* const g_pszEmptyTextPointer = g_szEmptyString;
 
 TZone* g_pMapActionContextListHead = 0;
 // GLOBAL: IMPERIALISM 0x006a3fbc
@@ -1866,9 +1863,9 @@ short g_randomAudioCuePollCounter = 0;
 // GLOBAL: IMPERIALISM 0x006a43cc
 TTradeMgr* g_pTradeMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a4220
-CString g_cstrCountryNameSettingValue006A4220;
+CString g_cstrCountryNameSettingValue;
 // GLOBAL: IMPERIALISM 0x006a4268
-TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268 = 0;
+TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture = 0;
 
 extern "C" {
 // Five fort levels occupy 0x65318a..0x653193; the civilian cost table starts at 0x653194.
@@ -1888,18 +1885,17 @@ bool g_bRandomMapDeveloperCheatFlag = false;
 // GLOBAL: IMPERIALISM 0x006a42f0
 POINT g_ptTurnTransitionModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x00698bec
-char g_szConanCheatFileName_00698BEC[] = "Conan";
+char g_szConanCheatFileName[] = "Conan";
 
 // GLOBAL: IMPERIALISM 0x0066d810
-short g_aTradeDealCategoryOrder_0066D810[0x11] = {13, 14, 15, 16, 7, 8, 9, 10, 11,
-                                                  12, 0,  1,  2,  3, 4, 5, 6};
+short g_aTradeDealCategoryOrder[0x11] = {13, 14, 15, 16, 7, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 5, 6};
 // Multiplicative identity used by TTradeMgr::Power.
 // GLOBAL: IMPERIALISM 0x0066d8e0
-extern const double g_TradePowerIdentity_0066D8E0 = 1.0;
+extern const double g_TradePowerIdentity = 1.0;
 
 // Initial price for each of the 17 trade-item categories.
 // GLOBAL: IMPERIALISM 0x0069a910
-extern const short g_aTradeItemBasePriceByCategory_0069A910[0x11] = {
+extern const short g_aTradeItemBasePriceByCategory[0x11] = {
     100, 100, 100, 100, 100, 300, 100, 100, 300, 300, 300, 300, 300, 900, 900, 900, 900};
 
 // GLOBAL: IMPERIALISM 0x0066dad0
@@ -1912,71 +1908,69 @@ const unsigned int g_tradeCommodityRowTagTable[17] = {
 // GLOBAL: IMPERIALISM 0x006a58c8
 COLORREF g_defaultDropShadowTextColor = 0;
 // GLOBAL: IMPERIALISM 0x0066aba4
-short g_anCapabilityPriorityRangeData_0066ABA4[54] = {
-    1,  5,  6,  10, 6,  10, 6,  10, 6,  10, 11, 15, 11, 15, 16, 20, 21, 25,
-    21, 25, 26, 30, 26, 30, 31, 35, 31, 35, 36, 40, 41, 45, 41, 45, 46, 50,
-    51, 55, 56, 60, 56, 60, 56, 60, 61, 65, 61, 65, 66, 70, 66, 70, 0,  0};
+short g_anCapabilityPriorityRangeData[54] = {1,  5,  6,  10, 6,  10, 6,  10, 6,  10, 11, 15, 11, 15,
+                                             16, 20, 21, 25, 21, 25, 26, 30, 26, 30, 31, 35, 31, 35,
+                                             36, 40, 41, 45, 41, 45, 46, 50, 51, 55, 56, 60, 56, 60,
+                                             56, 60, 61, 65, 61, 65, 66, 70, 66, 70, 0,  0};
 // GLOBAL: IMPERIALISM 0x006a601c
 int DAT_006a601c = 0;
 
 // GLOBAL: IMPERIALISM 0x006942a8
-extern "C" const char s_DataDirectoryPath_006942A8[] = "Data/";
+extern "C" const char s_DataDirectoryPath[] = "Data/";
 // GLOBAL: IMPERIALISM 0x006942fc
-extern "C" const char s_IrgGlobPattern_006942FC[] = "*.irg";
+extern "C" const char s_IrgGlobPattern[] = "*.irg";
 // GLOBAL: IMPERIALISM 0x006942b4
-extern "C" const char s_NoLanguageFilesMessage_006942B4[] =
+extern "C" const char s_NoLanguageFilesMessage[] =
     "No language files are present. Unable to start Imperialism.";
 // Out-of-memory new-handler box (ShowOutOfMemoryErrorNewHandler, 0x412d90).
 // GLOBAL: IMPERIALISM 0x006941f0
-extern "C" const char s_OutOfMemoryText_006941F0[] = "Out of Memory!!!";
+extern "C" const char s_OutOfMemoryText[] = "Out of Memory!!!";
 // GLOBAL: IMPERIALISM 0x00694204
-extern "C" const char s_ErrorCaption_00694204[] = "Error!!!!!";
+extern "C" const char s_ErrorCaption[] = "Error!!!!!";
 // GLOBAL: IMPERIALISM 0x00698bf4
-extern "C" const char s_PictWvGobPathFormat_00698BF4[] = "Data/PictWv%d.gob";
+extern "C" const char s_PictWvGobPathFormat[] = "Data/PictWv%d.gob";
 // GLOBAL: IMPERIALISM 0x0069b810
-extern "C" const char s_MissingFileSuffix_0069B810[] = "' is missing.";
+extern "C" const char s_MissingFileSuffix[] = "' is missing.";
 // GLOBAL: IMPERIALISM 0x0069b820
-extern "C" const char s_MissingFilePrefix_0069B820[] = "A file required by the program, '";
+extern "C" const char s_MissingFilePrefix[] = "A file required by the program, '";
 // GLOBAL: IMPERIALISM 0x00695188
-extern "C" const char s_MissingRequiredFileFormat_00695188[] =
+extern "C" const char s_MissingRequiredFileFormat[] =
     "A file required by the program, '%s,' is missing.";
 // GLOBAL: IMPERIALISM 0x006951c4
-extern "C" const char s_BmpResourceNameFormat_006951C4[] = "%d.BMP";
+extern "C" const char s_BmpResourceNameFormat[] = "%d.BMP";
 // GLOBAL: IMPERIALISM 0x0069b6b4
-extern "C" const char s_TurnEventCursorNameFormat_0069B6B4[] = "~C%d";
+extern "C" const char s_TurnEventCursorNameFormat[] = "~C%d";
 // GLOBAL: IMPERIALISM 0x0069b6bc
-extern "C" const char s_SourcePathUViewMgr_0069B6BC[] = "D:\\Ambit\\Cross\\UViewMgr.cpp";
+extern "C" const char s_SourcePathUViewMgr[] = "D:\\Ambit\\Cross\\UViewMgr.cpp";
 // GLOBAL: IMPERIALISM 0x006973d0
-extern "C" const char s_SourcePathUMapDlog_006973D0[] = "D:\\Ambit\\Cross\\UMapDlog.cpp";
+extern "C" const char s_SourcePathUMapDlog[] = "D:\\Ambit\\Cross\\UMapDlog.cpp";
 // GLOBAL: IMPERIALISM 0x00698470
-extern "C" const char s_SourcePathUNewspaper_00698470[] = "D:\\Ambit\\Cross\\UNewspaper.cpp";
+extern "C" const char s_SourcePathUNewspaper[] = "D:\\Ambit\\Cross\\UNewspaper.cpp";
 // GLOBAL: IMPERIALISM 0x00698040
-extern "C" const char s_SourcePathUMultiplayerMgr_00698040[] =
-    "D:\\Ambit\\Cross\\UMultiplayerMgr.cpp";
+extern "C" const char s_SourcePathUMultiplayerMgr[] = "D:\\Ambit\\Cross\\UMultiplayerMgr.cpp";
 // GLOBAL: IMPERIALISM 0x006983c8
-extern "C" const char s_SourcePathUNavy_006983C8[] = "D:\\Ambit\\Cross\\UNavy.cpp";
+extern "C" const char s_SourcePathUNavy[] = "D:\\Ambit\\Cross\\UNavy.cpp";
 // GLOBAL: IMPERIALISM 0x00699ff4
-extern "C" const char s_SourcePathUTacViews_00699FF4[] = "D:\\Ambit\\Cross\\UTacViews.cpp";
+extern "C" const char s_SourcePathUTacViews[] = "D:\\Ambit\\Cross\\UTacViews.cpp";
 // GLOBAL: IMPERIALISM 0x0069b740
-extern "C" const char s_SourcePathUViewMgrMore_0069B740[] = "D:\\Ambit\\Cross\\UViewMgr.more.cpp";
+extern "C" const char s_SourcePathUViewMgrMore[] = "D:\\Ambit\\Cross\\UViewMgr.more.cpp";
 // GLOBAL: IMPERIALISM 0x00696c58
-extern "C" const char s_SourcePathUHelpMgr_00696C58[] = "D:\\Ambit\\Cross\\UHelpMgr.cpp";
+extern "C" const char s_SourcePathUHelpMgr[] = "D:\\Ambit\\Cross\\UHelpMgr.cpp";
 // Signed source-row offsets into the strategic-map unit overlay atlas.
 // GLOBAL: IMPERIALISM 0x00696d20
 extern "C" short g_anStrategicMapOverlaySourceRowByIconId[28] = {
     0,    798,  114,  228, 342, -114, 684, -114, -114, -114, -114, -114, -114, -114,
     -114, -114, -114, 0,   0,   -114, 798, 570,  456,  0,    0,    0,    0,    0};
 // GLOBAL: IMPERIALISM 0x00696860
-extern "C" const char s_SourcePathUDefenseMinister_00696860[] =
-    "D:\\Ambit\\Cross\\UDefenseMinister.cpp";
+extern "C" const char s_SourcePathUDefenseMinister[] = "D:\\Ambit\\Cross\\UDefenseMinister.cpp";
 // GLOBAL: IMPERIALISM 0x0069573c
-extern "C" const char s_SourcePathUArmyMgr_0069573C[] = "D:\\Ambit\\Cross\\UArmyMgr.cpp";
+extern "C" const char s_SourcePathUArmyMgr[] = "D:\\Ambit\\Cross\\UArmyMgr.cpp";
 // GLOBAL: IMPERIALISM 0x006962e8
-extern "C" const char s_SourcePathUCityDialogs_006962E8[] = "D:\\Ambit\\Cross\\UCityDialogs.cpp";
+extern "C" const char s_SourcePathUCityDialogs[] = "D:\\Ambit\\Cross\\UCityDialogs.cpp";
 // GLOBAL: IMPERIALISM 0x00696d68
-extern "C" const char s_SourcePathUMacViewMgr_00696D68[] = "D:\\Ambit\\Cross\\UMacViewMgr.cpp";
+extern "C" const char s_SourcePathUMacViewMgr[] = "D:\\Ambit\\Cross\\UMacViewMgr.cpp";
 // GLOBAL: IMPERIALISM 0x006992f0
-extern "C" const char s_SourcePathUSmallViews_006992F0[] = "D:\\Ambit\\Cross\\USmallViews.cpp";
+extern "C" const char s_SourcePathUSmallViews[] = "D:\\Ambit\\Cross\\USmallViews.cpp";
 // GLOBAL: IMPERIALISM 0x00696310
 extern "C" const char g_szCityProductionUniversityPrefix[] = "University: ";
 // GLOBAL: IMPERIALISM 0x00696320
@@ -1987,73 +1981,68 @@ extern "C" const char g_szCityProductionShipyardPrefix[] = "Shipyard: ";
 // GLOBAL: IMPERIALISM 0x00695798
 extern "C" const char g_szDoubleQuote[] = "\"";
 // GLOBAL: IMPERIALISM 0x0069a7f8
-extern "C" const char s_SourcePathUTestDialogs_0069A7F8[] = "D:\\Ambit\\Cross\\UTestDialogs.cpp";
+extern "C" const char s_SourcePathUTestDialogs[] = "D:\\Ambit\\Cross\\UTestDialogs.cpp";
 // GLOBAL: IMPERIALISM 0x00696508
 short g_shipyardQueueIconLeftBySlot[8] = {4, 4, 3, 2, 4, 4, 3, 2};
-extern "C" const char s_SourcePathUArmyViews_00695858[] = "D:\\Ambit\\Cross\\UArmyViews.cpp";
-extern "C" const char s_SourcePathUOceanViews_00698650[] = "D:\\Ambit\\Cross\\UOceanViews.cpp";
+extern "C" const char s_SourcePathUArmyViews[] = "D:\\Ambit\\Cross\\UArmyViews.cpp";
+extern "C" const char s_SourcePathUOceanViews[] = "D:\\Ambit\\Cross\\UOceanViews.cpp";
 // GLOBAL: IMPERIALISM 0x00696ae0
-extern "C" const char s_SourcePathUDiplomacyViews_00696AE0[] =
-    "D:\\Ambit\\Cross\\UDiplomacyViews.cpp";
+extern "C" const char s_SourcePathUDiplomacyViews[] = "D:\\Ambit\\Cross\\UDiplomacyViews.cpp";
 // GLOBAL: IMPERIALISM 0x006964b0
-extern "C" const char s_SourcePathUCityMinister_006964B0[] = "D:\\Ambit\\Cross\\UCityMinister.cpp";
+extern "C" const char s_SourcePathUCityMinister[] = "D:\\Ambit\\Cross\\UCityMinister.cpp";
 // GLOBAL: IMPERIALISM 0x0069943c
-extern "C" const char s_SourcePathUSuperMap_0069943C[] = "D:\\Ambit\\Cross\\USuperMap.cpp";
+extern "C" const char s_SourcePathUSuperMap[] = "D:\\Ambit\\Cross\\USuperMap.cpp";
 // GLOBAL: IMPERIALISM 0x0069aa94
-extern "C" const char s_SourcePathUTradeViews_0069AA94[] = "D:\\Ambit\\Cross\\UTradeViews.cpp";
+extern "C" const char s_SourcePathUTradeViews[] = "D:\\Ambit\\Cross\\UTradeViews.cpp";
 // GLOBAL: IMPERIALISM 0x006984cc
-extern "C" const char s_SourcePathUOcean_006984CC[] = "D:\\Ambit\\Cross\\UOcean.cpp";
+extern "C" const char s_SourcePathUOcean[] = "D:\\Ambit\\Cross\\UOcean.cpp";
 static inline double DefaultMiniMapViewportCoordinateScale() {
   return 0.015625;
 }
 
 static double s_miniMapViewportCoordinateScale = DefaultMiniMapViewportCoordinateScale();
 // GLOBAL: IMPERIALISM 0x006a460c
-short g_defaultMarkerBoxWidth_006a460c =
-    static_cast<short>(s_miniMapViewportCoordinateScale * 512.0 - -1.0);
+short g_defaultMarkerBoxWidth = static_cast<short>(s_miniMapViewportCoordinateScale * 512.0 - -1.0);
 
 // Profile string keys used by LoadProfileStringAndAssignSharedRef during multiplayer init.
 // GLOBAL: IMPERIALISM 0x00698010
-extern "C" const char s_GameName_00698010[] = "GameName";
+extern "C" const char s_GameName[] = "GameName";
 // GLOBAL: IMPERIALISM 0x0069801c
-extern "C" const char s_PlayerName_0069801c[] = "PlayerName";
+extern "C" const char s_PlayerName[] = "PlayerName";
 
 // InitInstance registry/profile literals (.rdata pointer table @ 0x0063e038).
 // GLOBAL: IMPERIALISM 0x006941a8
-extern "C" const char s_ProfileLiteralIMPERIALISM_006941A8[] = "IMPERIALISM";
+extern "C" const char s_ProfileLiteralIMPERIALISM[] = "IMPERIALISM";
 // GLOBAL: IMPERIALISM 0x006941b8
-extern "C" const char s_ProfileKeyLanguage_006941B8[] = "Language";
+extern "C" const char s_ProfileKeyLanguage[] = "Language";
 // GLOBAL: IMPERIALISM 0x006941c4
-extern "C" const char s_ProfileKeyAutoRes_006941C4[] = "AutoRes";
+extern "C" const char s_ProfileKeyAutoRes[] = "AutoRes";
 // GLOBAL: IMPERIALISM 0x006941d0
-extern "C" const char s_ProfileSectionSettings_006941D0[] = "Settings";
+extern "C" const char s_ProfileSectionSettings[] = "Settings";
 // GLOBAL: IMPERIALISM 0x006941dc
-extern "C" const char s_ProfileAppTitleImperialism_006941DC[] = "Imperialism";
+extern "C" const char s_ProfileAppTitleImperialism[] = "Imperialism";
 // GLOBAL: IMPERIALISM 0x006941ec
-extern "C" const char s_RegistryCompanyNameSSI_006941EC[] = "SSI";
+extern "C" const char s_RegistryCompanyNameSSI[] = "SSI";
 // GLOBAL: IMPERIALISM 0x0063e038
-extern "C" const char* const g_pRegistryCompanyKey_0063E038 = s_RegistryCompanyNameSSI_006941EC;
+extern "C" const char* const g_pRegistryCompanyKey = s_RegistryCompanyNameSSI;
 // GLOBAL: IMPERIALISM 0x0063e03c
-extern "C" const char* const g_pRegistryAppKey_0063E03C = s_ProfileAppTitleImperialism_006941DC;
+extern "C" const char* const g_pRegistryAppKey = s_ProfileAppTitleImperialism;
 // GLOBAL: IMPERIALISM 0x0063e040
-extern "C" const char* const g_pRegistrySettingsSection_0063E040 =
-    s_ProfileSectionSettings_006941D0;
+extern "C" const char* const g_pRegistrySettingsSection = s_ProfileSectionSettings;
 // GLOBAL: IMPERIALISM 0x0063e044
-extern "C" const char* const g_pRegistrySettingsSectionAlt_0063E044 =
-    s_ProfileSectionSettings_006941D0;
+extern "C" const char* const g_pRegistrySettingsSectionAlt = s_ProfileSectionSettings;
 // GLOBAL: IMPERIALISM 0x0063e048
-extern "C" const char* const g_pRegistryAutoResKey_0063E048 = s_ProfileKeyAutoRes_006941C4;
+extern "C" const char* const g_pRegistryAutoResKey = s_ProfileKeyAutoRes;
 // GLOBAL: IMPERIALISM 0x0065ddc8
-char* g_pGamePreferencesSharedText_0065DDC8 = g_szEmptyString;
+char* g_pGamePreferencesSharedText = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x0065ddcc
-extern "C" const char* const g_pGamePreferencesAutoResKey_0065DDCC = s_ProfileKeyAutoRes_006941C4;
+extern "C" const char* const g_pGamePreferencesAutoResKey = s_ProfileKeyAutoRes;
 // GLOBAL: IMPERIALISM 0x0065dde0
 extern const int g_anGamePreferenceIndexByRow[5] = {3, 2, 8, 10, 0};
 // GLOBAL: IMPERIALISM 0x0063e04c
-extern "C" const char* const g_pRegistryLanguageKey_0063E04C = s_ProfileKeyLanguage_006941B8;
+extern "C" const char* const g_pRegistryLanguageKey = s_ProfileKeyLanguage;
 // GLOBAL: IMPERIALISM 0x0063e050
-extern "C" const char* const g_pRegistryProfileAppName_0063E050 =
-    s_ProfileLiteralIMPERIALISM_006941A8;
+extern "C" const char* const g_pRegistryProfileAppName = s_ProfileLiteralIMPERIALISM;
 
 #include "decomp_types.h"
 char g_szEmptyString[1] = {0};
@@ -2082,26 +2071,26 @@ extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[45] = {
     -1, 0, 3,  7,  -1, -1, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, 0,  10, 11, 12, -1, -1};
 
 // GLOBAL: IMPERIALISM 0x006a5a00
-CPoint g_offerDeskSheetPosition_006a5a00(45, 128);
+CPoint g_offerDeskSheetPosition(45, 128);
 // GLOBAL: IMPERIALISM 0x006a5a28
-CPoint g_offerDeskOffscreenPosition_006a5a28(2000, 2000);
+CPoint g_offerDeskOffscreenPosition(2000, 2000);
 // GLOBAL: IMPERIALISM 0x00698ab0
-int g_nRandomMapSelectedNationSlot00698AB0 = -1;
+int g_nRandomMapSelectedNationSlot = -1;
 // Rank separator drawn between the high-score rank number and the player name.
 // GLOBAL: IMPERIALISM 0x00698ab4
-char s_szRankDotSeparator_00698ab4[] = ". ";
+char s_szRankDotSeparator[] = ". ";
 // GLOBAL: IMPERIALISM 0x00698ae0
-char g_szCountryNameProfileKey00698AE0[] = "CountryName";
+char g_szCountryNameProfileKey[] = "CountryName";
 
 // Turn-flow cooldown defer counter and side flag (IsTurnFlowCooldownActiveAndResetExpiredState).
 // GLOBAL: IMPERIALISM 0x006a43c4
-short g_nTurnCooldownDeferCounter006A43C4 = 0;
+short g_nTurnCooldownDeferCounter = 0;
 // GLOBAL: IMPERIALISM 0x006a43c0 — set once scenario/turn-flow bootstrap completes.
 bool g_bTurnFlowBootstrapComplete = false;
 // GLOBAL: IMPERIALISM 0x006a43f0 — nonzero during multiplayer scenario setup.
 bool g_bMultiplayerScenarioSetupActive = false;
 // GLOBAL: IMPERIALISM 0x00698b10
-short g_nTurnCooldownSideFlag00698B10 = 1;
+short g_nTurnCooldownSideFlag = 1;
 
 // GLOBAL: IMPERIALISM 0x00698b18
 extern "C" short g_aDefaultNationSetupPolicyProfiles[7][4] = {
@@ -2109,39 +2098,39 @@ extern "C" short g_aDefaultNationSetupPolicyProfiles[7][4] = {
     {2, 3, 2, 4}, {2, 2, 1, 3}, {2, 0, 4, 0}};
 
 // GLOBAL: IMPERIALISM 0x00698c0c
-extern "C" const char s_Chunk_00698C0C[] = "Chunk";
+extern "C" const char s_Chunk[] = "Chunk";
 
 TextStyle g_UiResourceEntryDefaultTextStyle = {0, 0, 0, 0};
 
 } // extern "C"
 
 // GLOBAL: IMPERIALISM 0x0066db50
-const char* g_cstrTradeTotalsBalanceSubstitution0066DB50 = g_szEmptyString;
+const char* g_cstrTradeTotalsBalanceSubstitution = g_szEmptyString;
 
 #include "game/net/TWNetSessionManager.h"
 
 // GLOBAL: IMPERIALISM 0x006a13e0
-CList<TView*, TView*> g_UiWidgetBuildStack006a13e0;
+CList<TView*, TView*> g_UiWidgetBuildStack;
 
 // GLOBAL: IMPERIALISM 0x006a5ed8
-POINT g_ptNetworkModalMessage006a5ed8 = {0, 0};
+POINT g_ptNetworkModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a5f10
-CArray<WNetSelectionRecord*, WNetSelectionRecord*> g_WNetSerializedPtrArrayA006a5f10;
+CArray<WNetSelectionRecord*, WNetSelectionRecord*> g_WNetSerializedPtrArrayA;
 // GLOBAL: IMPERIALISM 0x006a5f28
-CArray<WNetSelectionRecord*, WNetSelectionRecord*> g_WNetSerializedPtrArrayB006a5f28;
+CArray<WNetSelectionRecord*, WNetSelectionRecord*> g_WNetSerializedPtrArrayB;
 // GLOBAL: IMPERIALISM 0x006a5f40
-CList<void*, void*> g_WNetPendingPacketList006a5f40(10);
+CList<void*, void*> g_WNetPendingPacketList(10);
 
 // Suppresses the WNetMgr.cpp assertion for an unknown DirectPlay system-message code.
 // GLOBAL: IMPERIALISM 0x006a6020
-int g_suppressUnexpectedDirectPlaySystemMessageAssert006a6020;
+int g_suppressUnexpectedDirectPlaySystemMessageAssert;
 
 // Compiler-emitted out-of-line copy of the MFC inline CPoint constructor used by
 // resource-driven UI builders.
 // LIBRARY: IMPERIALISM 0x00427100
 // CPoint::CPoint
 
-// CList<TView*, TView*> emissions for g_UiWidgetBuildStack006a13e0.
+// CList<TView*, TView*> emissions for g_UiWidgetBuildStack.
 
 // DirectPlay session manager object embedded at a fixed address (not a pointer).
 // GLOBAL: IMPERIALISM 0x006a5f60
@@ -2149,17 +2138,17 @@ TWNetSessionManager g_NetworkSessionManager006a5f60;
 
 // DirectPlay application identity written into DPSESSIONDESC2 before host/join enumeration.
 // GLOBAL: IMPERIALISM 0x0066f968
-const GUID g_ImperialismDirectPlayApplicationGuid0066f968 = {
+const GUID g_ImperialismDirectPlayApplicationGuid = {
     0xc55dc2ef, 0xfd3e, 0x11d0, {0xbc, 0x16, 0x44, 0x45, 0x53, 0x54, 0x00, 0x00}};
 
 // GLOBAL: IMPERIALISM 0x006a15e0
-CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecords006a15e0;
+CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecords;
 
 // Compiler-emitted methods for this TU's RuntimeSelectionRecord pointer-array
 // specialization. The source implementation is the retail MFC CArray template.
 
 // GLOBAL: IMPERIALISM 0x006a6014
-TNetMgr* g_pNetMgr006a6014 = 0;
+TNetMgr* g_pNetMgr = 0;
 
 // GLOBAL: IMPERIALISM 0x006a18e0
 TApplication* g_pApplication = 0;
@@ -2172,13 +2161,13 @@ extern "C" void* g_pActiveCityDialogLegendSelectionOwner = 0;
 int g_bCityDialogLegendSelectionInitialized = 0;
 
 // GLOBAL: IMPERIALISM 0x0065c7f8
-const int g_ShipOrderStatusStringIndexByResourceType_0065c7f8[14] = {
+const int g_ShipOrderStatusStringIndexByResourceType[14] = {
     -1, -1, -1, 0, 1, -1, -1, 2, 3, 4, -1, 5, 6, 7,
 };
 
 // Per-type horizontal source offset in TNavyRoster's 0xdba bitmap atlas.
 // GLOBAL: IMPERIALISM 0x006985e8
-const short g_ShipRosterAtlasHorizontalOffsetByResourceType_006985E8[14] = {
+const short g_ShipRosterAtlasHorizontalOffsetByResourceType[14] = {
     0, 0, 0, 0, 160, 0, 0, 320, 480, 640, 0, 800, 960, 1120,
 };
 
@@ -2315,19 +2304,19 @@ POINT g_ptDiplomacyNoticeModalMessage = {0, 0};
 POINT g_ptGameSetupModalMessage = {0, 0};
 
 // GLOBAL: IMPERIALISM 0x006a31c0
-int g_lastTurnAlertTick_006a31c0 = 0;
+int g_lastTurnAlertTick = 0;
 
 // GLOBAL: IMPERIALISM 0x006a4608
-int g_lastClickedMapTileIndex_006a4608 = 0;
+int g_lastClickedMapTileIndex = 0;
 
 // GLOBAL: IMPERIALISM 0x006a5bac
-int g_nationInfoGoldResourceOverride_006a5bac = 0;
+int g_nationInfoGoldResourceOverride = 0;
 
 // GLOBAL: IMPERIALISM 0x006a5bb0
-int g_nViewMgrModalAssertGate_006A5BB0 = 0;
+int g_nViewMgrModalAssertGate = 0;
 
 // GLOBAL: IMPERIALISM 0x006a60f8
-int g_localizationAudioSlotCursor_006a60f8 = 0;
+int g_localizationAudioSlotCursor = 0;
 
 // GLOBAL: IMPERIALISM 0x006a475c
 TTacticalBattle* g_pActiveTacticalBattle;
@@ -2337,14 +2326,14 @@ TTacticalBattle* g_pActiveTacticalBattle;
 int g_nTurnEvent2BNationMaskAccumulator;
 
 // GLOBAL: IMPERIALISM 0x006955f0
-int g_anWeightedNeighborUnitScoreByType_006955F0[32] = {
+int g_anWeightedNeighborUnitScoreByType[32] = {
     70,  137, 135, 164, 165, 211,  193, 300, 95,  243, 230, 265, 230, 275, 323, 549,
     170, 450, 471, 495, 493, 1010, 715, 913, 193, 260, 360, 200, 200, 200, 0,   1000,
 };
 
 // GLOBAL: IMPERIALISM 0x00669858
-short g_anUnitTypeCombatCategoryByType00669858[32] = {
-    0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 3, 2, 2, 4, 4, 4, 4, 4, 4, 0, 0};
+short g_anUnitTypeCombatCategoryByType[32] = {0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 1, 2, 2,
+                                              0, 0, 0, 0, 1, 3, 2, 2, 4, 4, 4, 4, 4, 4, 0, 0};
 
 // GLOBAL: IMPERIALISM 0x00669898
 short g_awUnitTypeBaseActionPointTable[32] = {40, 60,  40, 40, 110, 90, 50, 30, 40, 60,  40,
@@ -2352,7 +2341,7 @@ short g_awUnitTypeBaseActionPointTable[32] = {40, 60,  40, 40, 110, 90, 50, 30, 
                                               80, 30,  40, 40, 50,  90, 90, 90, 0,  0};
 
 // GLOBAL: IMPERIALISM 0x006994c0
-TacticalTileHeuristicScorerFn g_apfnTacticalTileHeuristicScorers_006994C0[15] = {
+TacticalTileHeuristicScorerFn g_apfnTacticalTileHeuristicScorers[15] = {
     &TArmyPlayer::ScoreTacticalTileHoldPositionBonus,                // [0]  0x59d6b0
     &TArmyPlayer::ScoreTacticalTileFireOpportunityAndTargetApproach, // [1]  0x59d6e0
     &TArmyPlayer::ScoreTacticalTileSapperWallApproachColumn,         // [2]  0x59d810
@@ -2372,43 +2361,43 @@ TacticalTileHeuristicScorerFn g_apfnTacticalTileHeuristicScorers_006994C0[15] = 
 
 // Tactical AI cursor-mode ratio thresholds and projection factors (.rdata FP pool).
 // GLOBAL: IMPERIALISM 0x00669508
-double g_dTacticalCursorStrongRatioThreshold_00669508 = 3.0;
+double g_dTacticalCursorStrongRatioThreshold = 3.0;
 // GLOBAL: IMPERIALISM 0x00669510
-double g_dTacticalCursorOverwhelmRatioThreshold_00669510 = 4.0;
+double g_dTacticalCursorOverwhelmRatioThreshold = 4.0;
 // GLOBAL: IMPERIALISM 0x00669518
-double g_dTacticalCursorWeakRatioThreshold_00669518 = 0.25;
+double g_dTacticalCursorWeakRatioThreshold = 0.25;
 // GLOBAL: IMPERIALISM 0x00669520
-double g_dTacticalCursorArtilleryParityThreshold_00669520 = 1.0;
+double g_dTacticalCursorArtilleryParityThreshold = 1.0;
 // GLOBAL: IMPERIALISM 0x00669528
-double g_dTacticalCursorArtillerySuperiorityThreshold_00669528 = 1.8;
+double g_dTacticalCursorArtillerySuperiorityThreshold = 1.8;
 // GLOBAL: IMPERIALISM 0x00669530
-double g_dTacticalCursorAssaultRatioThreshold_00669530 = 2.5;
+double g_dTacticalCursorAssaultRatioThreshold = 2.5;
 // GLOBAL: IMPERIALISM 0x00669538
-double g_dTacticalCursorRetreatRatioThreshold_00669538 = 0.8;
+double g_dTacticalCursorRetreatRatioThreshold = 0.8;
 // GLOBAL: IMPERIALISM 0x00669ec0
-float g_fTacticalRetreatQualityWeightDefault_00669EC0 = 0.0f;
+float g_fTacticalRetreatQualityWeightDefault = 0.0f;
 // GLOBAL: IMPERIALISM 0x00669ec8
-double g_dTacticalQualityFactorStep_00669EC8 = -0.1;
+double g_dTacticalQualityFactorStep = -0.1;
 // GLOBAL: IMPERIALISM 0x00669ed0
-double g_dTacticalQualityFactorBase_00669ED0 = 1.0;
+double g_dTacticalQualityFactorBase = 1.0;
 // GLOBAL: IMPERIALISM 0x00669f0c
-float g_fTacticalStrengthProjectionScale_00669F0C = 0.002f;
+float g_fTacticalStrengthProjectionScale = 0.002f;
 
 // GLOBAL: IMPERIALISM 0x00669390
-float g_afTacticalDirectFireFlagByCategoryCode_00669390[10] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
-                                                               1.0f, 0.0f, 0.0f, 1.0f, 1.0f};
+float g_afTacticalDirectFireFlagByCategoryCode[10] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+                                                      1.0f, 0.0f, 0.0f, 1.0f, 1.0f};
 
 // GLOBAL: IMPERIALISM 0x006693b8
-short g_awTacticalUnitAiClassByUnitType_006693B8[32] = {
-    0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 3, 2, 2, 4, 4, 4, 4, 4, 4, 0, 0};
+short g_awTacticalUnitAiClassByUnitType[32] = {0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 1, 2, 2,
+                                               0, 0, 0, 0, 1, 3, 2, 2, 4, 4, 4, 4, 4, 4, 0, 0};
 
 // GLOBAL: IMPERIALISM 0x006693f8
-short g_awTacticalUnitActionPointCostByType_006693F8[32] = {
-    40, 60, 40, 40, 110, 90, 50, 30, 40, 60, 40, 40, 110, 90, 60, 30,
-    50, 70, 50, 40, 110, 90, 80, 30, 40, 40, 50, 90, 90,  90, 0,  0};
+short g_awTacticalUnitActionPointCostByType[32] = {40, 60,  40, 40, 110, 90, 50, 30, 40, 60,  40,
+                                                   40, 110, 90, 60, 30,  50, 70, 50, 40, 110, 90,
+                                                   80, 30,  40, 40, 50,  90, 90, 90, 0,  0};
 
 // GLOBAL: IMPERIALISM 0x00699500
-int g_anTacticalTileHeuristicWeightsByAiState_00699500[20][15] = {
+int g_anTacticalTileHeuristicWeightsByAiState[20][15] = {
     {1, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 1, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0},
     {0, 100, 0, 200, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -2466,8 +2455,7 @@ float g_afTacticalNavyBaseAttackPowerByUnitType[8] = {3.0f, 3.5f, 4.0f,  4.0f,
 int g_anNavyTacticalMoveCostsByDirection[6] = {15, 10, 20, 40, 20, 10};
 
 // GLOBAL: IMPERIALISM 0x00669d80
-int g_anTacticalNavyUnitTypeByShipType_00669D80[14] = {-1, -1, -1, 0,  1, -1, -1,
-                                                       2,  3,  4,  -1, 5, 6,  7};
+int g_anTacticalNavyUnitTypeByShipType[14] = {-1, -1, -1, 0, 1, -1, -1, 2, 3, 4, -1, 5, 6, 7};
 
 // Attack-power terrain modifier [category * 5 + tile terrainType] (.rdata floats).
 // GLOBAL: IMPERIALISM 0x00669ac8
@@ -2507,14 +2495,14 @@ extern "C" const char g_szBattleSetupTabPathFormat[] = "data/%03d.tab";
 
 // Source-path string for UTacPlayer.cpp asserts.
 // GLOBAL: IMPERIALISM 0x00699d84
-extern "C" const char s_SourcePathUTacPlayer_00699D84[] = "D:\\Ambit\\Cross\\UTacPlayer.cpp";
+extern "C" const char s_SourcePathUTacPlayer[] = "D:\\Ambit\\Cross\\UTacPlayer.cpp";
 
 // GLOBAL: IMPERIALISM 0x00669db8
-const char* g_pszEmptyTextRef_00669db8 = g_szEmptyString;
+const char* g_pszEmptyTextRef = g_szEmptyString;
 
 // Paragraph separator between the two per-side casualty lines of the battle summary.
 // GLOBAL: IMPERIALISM 0x00699438
-extern "C" const char s_szDoubleNewline_00699438[] = "\n\n";
+extern "C" const char s_szDoubleNewline[] = "\n\n";
 
 // GLOBAL: IMPERIALISM 0x00669dc0
 short g_awTacticalFireSfxTokenByUnitType[32] = {
@@ -2523,37 +2511,37 @@ short g_awTacticalFireSfxTokenByUnitType[32] = {
     0x3a9b, 0x3a9b, 0x3a9d, 0x3a9d, 0x3a9d, 0x3a98, 0x3a98, 0x3aa6, 0,      0};
 
 // GLOBAL: IMPERIALISM 0x006a4758
-bool g_nForceTacticalBattleViewFlag_006A4758;
+bool g_nForceTacticalBattleViewFlag;
 
 // Save-game path construction strings.
 // GLOBAL: IMPERIALISM 0x00698708
-char g_szImpSaveExtension_00698708[] = ".imp";
+char g_szImpSaveExtension[] = ".imp";
 // GLOBAL: IMPERIALISM 0x00698710
-char g_szMultiplayerSavePrefix_00698710[] = "mult";
+char g_szMultiplayerSavePrefix[] = "mult";
 // GLOBAL: IMPERIALISM 0x00698718
-char g_szSingleSlotSavePrefix_00698718[] = "slot";
+char g_szSingleSlotSavePrefix[] = "slot";
 // GLOBAL: IMPERIALISM 0x00698720
-char g_szLiteralRb_00698720[] = "rb";
+char g_szLiteralRb[] = "rb";
 // GLOBAL: IMPERIALISM 0x00698724
-char g_szSaveDirectoryPrefix_00698724[] = "Save/";
+char g_szSaveDirectoryPrefix[] = "Save/";
 // GLOBAL: IMPERIALISM 0x0069872c
-char g_szLiteralA_0069872C[] = "A";
+char g_szLiteralA[] = "A";
 // GLOBAL: IMPERIALISM 0x0069b848
-char g_szSavedDocumentMarker_0069B848[] = "__saved";
+char g_szSavedDocumentMarker[] = "__saved";
 // GLOBAL: IMPERIALISM 0x0069b854
-char g_szLoadedDocumentMarker_0069B854[] = "__loaded";
+char g_szLoadedDocumentMarker[] = "__loaded";
 // GLOBAL: IMPERIALISM 0x0065ddd0
-const char* const g_pszSingleSlotSavePrefix_0065DDD0 = g_szSingleSlotSavePrefix_00698718;
+const char* const g_pszSingleSlotSavePrefix = g_szSingleSlotSavePrefix;
 // GLOBAL: IMPERIALISM 0x0065ddd4
-const char* const g_pszMultiplayerSavePrefix_0065DDD4 = g_szMultiplayerSavePrefix_00698710;
+const char* const g_pszMultiplayerSavePrefix = g_szMultiplayerSavePrefix;
 // GLOBAL: IMPERIALISM 0x0065ddd8
-const char* const g_pszImpSaveExtension_0065DDD8 = g_szImpSaveExtension_00698708;
+const char* const g_pszImpSaveExtension = g_szImpSaveExtension;
 // GLOBAL: IMPERIALISM 0x00697cbc
-char g_szClientSavePrefix_00697CBC[] = "cli_";
+char g_szClientSavePrefix[] = "cli_";
 // GLOBAL: IMPERIALISM 0x0065bf5c
-const char* const g_pszClientSavePrefix_0065BF5C = g_szClientSavePrefix_00697CBC;
+const char* const g_pszClientSavePrefix = g_szClientSavePrefix;
 // GLOBAL: IMPERIALISM 0x006a2178
-char g_ScenarioSaveNameBuffer_006A2178[0x30];
+char g_ScenarioSaveNameBuffer[0x30];
 // Modal placement used for invalid/cross-session save-file warnings.
 // GLOBAL: IMPERIALISM 0x006a2128
 POINT g_ptSaveLoadErrorModalMessage = {0, 0};
@@ -2562,11 +2550,11 @@ POINT g_ptSaveLoadErrorModalMessage = {0, 0};
 int g_saveDocumentAssertGuard = 0;
 // Default text returned for a null nation descriptor (points at g_szEmptyString).
 // GLOBAL: IMPERIALISM 0x00653300
-char* g_pszDescriptorDefaultName_00653300 = g_szEmptyString;
+char* g_pszDescriptorDefaultName = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x006973c8
-char g_szUiCloseParen_006973C8[] = ")";
+char g_szUiCloseParen[] = ")";
 // GLOBAL: IMPERIALISM 0x0069806c
-char g_szUiOpenParen_0069806C[] = "(";
+char g_szUiOpenParen[] = "(";
 // GLOBAL: IMPERIALISM 0x006a2d40
 POINT g_ptCivilianOrderModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a2df0
@@ -2585,64 +2573,64 @@ int g_nUiInvalidationAssertFlagLine471 = 0;
 int g_nUiInvalidationAssertFlagLine495 = 0;
 
 // GLOBAL: IMPERIALISM 0x006a3478
-SeapointStretch g_seapointQuadTable_006a3478;
+SeapointStretch g_seapointQuadTable;
 // GLOBAL: IMPERIALISM 0x006a3498
-int g_cityRegionIdRemapTable_006a3498[0x100];
+int g_cityRegionIdRemapTable[0x100];
 // GLOBAL: IMPERIALISM 0x006a3900
-SeaSegmentStretch g_regionBorderLinkTable_006a3900;
+SeaSegmentStretch g_regionBorderLinkTable;
 
-const int g_anTechItemPurchaseCostBySlot_0066aae8[34] = {
+const int g_anTechItemPurchaseCostBySlot[34] = {
     0,     0,      1000,   1000,   1500,   1500,  1500,  1500,  3000,  3000,  3000,  6000,
     7000,  10000,  12000,  12000,  12000,  12000, 12000, 25000, 20000, 40000, 40000, 40000,
     40000, 100000, 120000, 150000, 150000, 0,     -1,    -1,    -1,    0};
 
 // Hex-neighbour offset tables (direction 0..5) for the 108-wide offset-coordinate grid.
-const int g_hexColOffsetEvenRow_00697450[6] = {0, 1, 0, -1, -1, -1};
-const int g_hexRowOffset_00697468[6] = {-1, 0, 1, 1, 0, -1};
-const int g_hexColOffsetOddRow_00697480[6] = {1, 1, 1, 0, -1, 0};
+const int g_hexColOffsetEvenRow[6] = {0, 1, 0, -1, -1, -1};
+const int g_hexRowOffset[6] = {-1, 0, 1, 1, 0, -1};
+const int g_hexColOffsetOddRow[6] = {1, 1, 1, 0, -1, 0};
 
 // GLOBAL: IMPERIALISM 0x00697498
-const int g_coarseHexColOffsetEvenRow_00697498[6] = {1, 1, 1, 0, -1, 0};
+const int g_coarseHexColOffsetEvenRow[6] = {1, 1, 1, 0, -1, 0};
 // GLOBAL: IMPERIALISM 0x006974b0
-const int g_coarseHexRowOffset_006974b0[6] = {-1, 0, 1, 1, 0, -1};
+const int g_coarseHexRowOffset[6] = {-1, 0, 1, 1, 0, -1};
 // GLOBAL: IMPERIALISM 0x006974c8
-const int g_coarseHexColOffsetOddRow_006974c8[6] = {0, 1, 0, -1, -1, -1};
+const int g_coarseHexColOffsetOddRow[6] = {0, 1, 0, -1, -1, -1};
 
 // GLOBAL: IMPERIALISM 0x00697568
-const int g_riverConnectionTypeByDirectionPair_00697568[6][6] = {
-    {0, 0, 1, 2, 3, 0}, {0, 0, 0, 4, 5, 6}, {1, 0, 0, 0, 7, 8},
-    {2, 4, 0, 0, 0, 9}, {3, 5, 7, 0, 0, 0}, {0, 6, 8, 9, 0, 0}};
+const int g_riverConnectionTypeByDirectionPair[6][6] = {{0, 0, 1, 2, 3, 0}, {0, 0, 0, 4, 5, 6},
+                                                        {1, 0, 0, 0, 7, 8}, {2, 4, 0, 0, 0, 9},
+                                                        {3, 5, 7, 0, 0, 0}, {0, 6, 8, 9, 0, 0}};
 
 // GLOBAL: IMPERIALISM 0x00696e40
-const unsigned short g_hexDirectionBitMasks_00696e40[6] = {1, 2, 4, 8, 16, 32};
+const unsigned short g_hexDirectionBitMasks[6] = {1, 2, 4, 8, 16, 32};
 
 // GLOBAL: IMPERIALISM 0x00696ea8
-const unsigned short g_hexDirectionBitMasksAlt_00696ea8[7] = {1, 2, 4, 8, 16, 32, 0};
+const unsigned short g_hexDirectionBitMasksAlt[7] = {1, 2, 4, 8, 16, 32, 0};
 // GLOBAL: IMPERIALISM 0x00696eb8
-const short g_railDirectionAddMasks_00696eb8[6] = {1, 2, 4, 8, 16, 32};
+const short g_railDirectionAddMasks[6] = {1, 2, 4, 8, 16, 32};
 // GLOBAL: IMPERIALISM 0x00696ec8
-const short g_railDirectionSubtractMasks_00696ec8[6] = {1, 2, 4, 8, 16, 32};
+const short g_railDirectionSubtractMasks[6] = {1, 2, 4, 8, 16, 32};
 
 // Map-generation PRNG state + region-seed grid dimensions, runtime-initialized to 0.
 // GLOBAL: IMPERIALISM 0x006a38e8
-unsigned int g_mapGenLcgState_006a38e8 = 0;
+unsigned int g_mapGenLcgState = 0;
 // GLOBAL: IMPERIALISM 0x006a38ec
-int g_regionSeedGridRows_006a38ec = 0;
+int g_regionSeedGridRows = 0;
 // GLOBAL: IMPERIALISM 0x006a38f0
-int g_regionSeedGridCols_006a38f0 = 0;
+int g_regionSeedGridCols = 0;
 // GLOBAL: IMPERIALISM 0x006a38bc
-int g_mapGenDesertQuota_006a38bc = 0;
+int g_mapGenDesertQuota = 0;
 // GLOBAL: IMPERIALISM 0x006a3470
-int g_mapGenMountainQuota_006a3470 = 0;
+int g_mapGenMountainQuota = 0;
 // GLOBAL: IMPERIALISM 0x006a38c0
-int g_mapGenHillsQuota_006a38c0 = 0;
+int g_mapGenHillsQuota = 0;
 // GLOBAL: IMPERIALISM 0x006a38f8
-int g_mapGenForestQuota_006a38f8 = 0;
+int g_mapGenForestQuota = 0;
 // GLOBAL: IMPERIALISM 0x006a38e0
-int g_mapGenSwampQuota_006a38e0 = 0;
+int g_mapGenSwampQuota = 0;
 // Map-gen feature count set alongside the quotas (default 10; tuning 'm' = 20, 'p' = 5).
 // GLOBAL: IMPERIALISM 0x006a38e4
-int g_mapGenRiverCount_006a38e4 = 0;
+int g_mapGenRiverCount = 0;
 
 // One-shot assert-suppression flags for the UMapper overlay passes (0x006a3910/0x006a3914).
 int g_bOverlayScanlineFillAssertSuppressed = 0;
@@ -2654,39 +2642,39 @@ int g_streamLine304AssertGuard = 0;
 int g_streamLine596AssertGuard = 0;
 
 // GLOBAL: IMPERIALISM 0x006a5aec
-unsigned int g_zoneStatusCodePrngSeed_006a5aec = GetTickCountDiv16();
+unsigned int g_zoneStatusCodePrngSeed = GetTickCountDiv16();
 // GLOBAL: IMPERIALISM 0x006a5af0
-extern "C" short g_anProvinceNameOrdinalByNationSlot_006a5af0[23] = {0};
+extern "C" short g_anProvinceNameOrdinalByNationSlot[23] = {0};
 // GLOBAL: IMPERIALISM 0x006984b8 (static init -1 in the original .data section)
 int g_mapActionContextDisplayNameCacheId_006984b8 = -1;
 // GLOBAL: IMPERIALISM 0x006984bc (static init 7 in the original .data section)
-int g_mapActionContextDisplayNameCacheStep_006984bc = 7;
+int g_mapActionContextDisplayNameCacheStep = 7;
 
 // GLOBAL: IMPERIALISM 0x00695794
-char s_szSpaceSeparator_00695794[] = " ";
+char s_szSpaceSeparator[] = " ";
 // GLOBAL: IMPERIALISM 0x0069936c
-char s_szGaugeCountSeparator_0069936C[] = "  /  ";
+char s_szGaugeCountSeparator[] = "  /  ";
 // Six-space indent prefixed to each great-power turn-summary line (0x4e2b70).
 // GLOBAL: IMPERIALISM 0x00696790
-char s_szTurnSummaryIndent_00696790[] = "      ";
+char s_szTurnSummaryIndent[] = "      ";
 // GLOBAL: IMPERIALISM 0x00695844
 extern const char g_szGarrisonSecretNationNameFrog[] = "Frog";
 // GLOBAL: IMPERIALISM 0x0069584c
 extern const char g_szGarrisonSecretUnitNameSnidely[] = "Snidely";
 // GLOBAL: IMPERIALISM 0x00695880
-extern "C" const char s_szLineBreak_00695880[8] = {'\n', 0, 0, 0, 'T', 'B', 'a', 't'};
+extern "C" const char s_szLineBreak[8] = {'\n', 0, 0, 0, 'T', 'B', 'a', 't'};
 // GLOBAL: IMPERIALISM 0x00699320
-char s_szTurnHistorySeparator_00699320[8] = {':', ' ', 0, 0, 'L', 'o', 's', 's'};
+char s_szTurnHistorySeparator[8] = {':', ' ', 0, 0, 'L', 'o', 's', 's'};
 // GLOBAL: IMPERIALISM 0x00699324
-char s_szCombatLossesHeading_00699324[] = "Losses\n";
+char s_szCombatLossesHeading[] = "Losses\n";
 // GLOBAL: IMPERIALISM 0x006993e8
-bool g_applyMiniMapVerticalClipOffset_006993e8 = true;
+bool g_applyMiniMapVerticalClipOffset = true;
 // GLOBAL: IMPERIALISM 0x0069b71c
-char s_szTurnHistoryPrefix_0069b71c[] = "Turn ";
+char s_szTurnHistoryPrefix[] = "Turn ";
 // GLOBAL: IMPERIALISM 0x0069578c
-char s_szAdmiralPrefix_0069578c[] = "Adm. ";
+char s_szAdmiralPrefix[] = "Adm. ";
 // GLOBAL: IMPERIALISM 0x00696b10
-char s_szColonSeparator_00696b10[] = ":";
+char s_szColonSeparator[] = ":";
 // GLOBAL: IMPERIALISM 0x00696674
 char s_mcflavor_00696674[] = "X";
 // GLOBAL: IMPERIALISM 0x00696d10
@@ -2695,29 +2683,29 @@ char s_mcflavor_00696d10[] = "r";
 char s_mcflavor_00697238[] = "w";
 // Script-dump format strings for TMapMgr::DumpAndResetMapScriptState (0x519140).
 // GLOBAL: IMPERIALISM 0x006972f8
-char g_szScriptFileName_006972f8[] = "script";
+char g_szScriptFileName[] = "script";
 // GLOBAL: IMPERIALISM 0x006972e8
-char g_szFmtZone_006972e8[] = "zone %d %s\n";
+char g_szFmtZone[] = "zone %d %s\n";
 // GLOBAL: IMPERIALISM 0x006972d0
-char g_szFmtShip_006972d0[] = "ship %d %d %d %d\n";
+char g_szFmtShip[] = "ship %d %d %d %d\n";
 // GLOBAL: IMPERIALISM 0x006972bc
-char g_szFmtArmy_006972bc[] = "army %d %d %d\n";
+char g_szFmtArmy[] = "army %d %d %d\n";
 // GLOBAL: IMPERIALISM 0x006972ac
-char g_szFmtCivi_006972ac[] = "civi %d %d\n";
+char g_szFmtCivi[] = "civi %d %d\n";
 // GLOBAL: IMPERIALISM 0x006972a0
-char g_szFmtPort_006972a0[12] = "port %d\n";
+char g_szFmtPort[12] = "port %d\n";
 // GLOBAL: IMPERIALISM 0x00697294
-char g_szFmtRail_00697294[12] = "rail %d\n";
+char g_szFmtRail[12] = "rail %d\n";
 // GLOBAL: IMPERIALISM 0x00697280
-char g_szFmtCapa_00697280[] = "capa %d %d %d\n";
+char g_szFmtCapa[] = "capa %d %d %d\n";
 // GLOBAL: IMPERIALISM 0x00697268
-char g_szFmtLabo_00697268[] = "labo %d %d %d %d\n";
+char g_szFmtLabo[] = "labo %d %d %d %d\n";
 // GLOBAL: IMPERIALISM 0x00697254
-char g_szFmtEmba_00697254[] = "emba %d %d %d\n";
+char g_szFmtEmba[] = "emba %d %d %d\n";
 // GLOBAL: IMPERIALISM 0x00697248
-char g_szFmtYear_00697248[12] = "year %d\n";
+char g_szFmtYear[12] = "year %d\n";
 // GLOBAL: IMPERIALISM 0x006976e0
-char g_szLiteralWb_006976E0[] = "wb";
+char g_szLiteralWb[] = "wb";
 // GLOBAL: IMPERIALISM 0x00698b0c
 char g_szLowercaseX[] = "x";
 // GLOBAL: IMPERIALISM 0x0069ab00
@@ -3923,45 +3911,45 @@ char s_mcflavor_0069b638[] = "Shit";
 // GLOBAL: IMPERIALISM 0x0069b640
 char s_mcflavor_0069b640[] = "Fuck";
 // GLOBAL: IMPERIALISM 0x0069b7fc
-char s_Data_scores_dat_0069b7fc[] = "Data/scores.dat";
+char s_Data_scores_dat[] = "Data/scores.dat";
 
 // GLOBAL: IMPERIALISM 0x00658640
-extern const float g_HexHighlightScreenScale_00658640 = -0.3125f;
+extern const float g_HexHighlightScreenScale = -0.3125f;
 
 // GLOBAL: IMPERIALISM 0x006a4084
-short g_creditsPlaybackActive_006a4084 = 0;
+short g_creditsPlaybackActive = 0;
 
 // GLOBAL: IMPERIALISM 0x0066db58
-extern const short g_tradeBookCategoryByTabAndTechState_0066DB58[2][17] = {
+extern const short g_tradeBookCategoryByTabAndTechState[2][17] = {
     {13, 14, 15, 16, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, -1, -1},
     {13, 14, 15, 16, 7, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 5, 6}};
 // GLOBAL: IMPERIALISM 0x006a2fe0
-CPoint g_diplomacyPopupVisiblePosition_006a2fe0(8, 7);
+CPoint g_diplomacyPopupVisiblePosition(8, 7);
 // GLOBAL: IMPERIALISM 0x006a3020
-CPoint g_diplomacyPopupOffscreenPosition_006a3020(2000, 2000);
+CPoint g_diplomacyPopupOffscreenPosition(2000, 2000);
 
 // GLOBAL: IMPERIALISM 0x006a2410
-int g_InfoBarDummyOrigin_006A2410[2] = {0};
+int g_InfoBarDummyOrigin[2] = {0};
 
 // GLOBAL: IMPERIALISM 0x0064c5d8
-short g_MapOrderResourceRollWeightTable_0064c5d8[6][6] = {
+short g_MapOrderResourceRollWeightTable[6][6] = {
     {50, 20, 30, 40, 30, 30}, {50, 20, 30, 50, 30, 20}, {40, 35, 25, 55, 30, 15},
     {30, 50, 20, 65, 20, 15}, {20, 65, 15, 70, 20, 10}, {10, 80, 10, 80, 10, 10},
 };
 
 // GLOBAL: IMPERIALISM 0x00696400
-short g_cityProductionReserveByPolicyBand_00696400[4] = {0, 2, 6, 12};
+short g_cityProductionReserveByPolicyBand[4] = {0, 2, 6, 12};
 
 // GLOBAL: IMPERIALISM 0x00696408
-short g_aInteriorMinisterNeedPriorityOrder_00696408[10] = {17, 18, 20, 19, 2, 3, 4, 0, 1, 5};
+short g_aInteriorMinisterNeedPriorityOrder[10] = {17, 18, 20, 19, 2, 3, 4, 0, 1, 5};
 
 // GLOBAL: IMPERIALISM 0x00696450
-float g_cityProductionUpgradeRatioThreshold_00696450[4] = {2.0f, 2.0f, 2.0f, 0.0f};
+float g_cityProductionUpgradeRatioThreshold[4] = {2.0f, 2.0f, 2.0f, 0.0f};
 
 // Groups city-action capability slots into their upgrade-compatible families.
 // GLOBAL: IMPERIALISM 0x00650670
-short g_cityActionCapabilityGroupBySlot_00650670[32] = {
-    0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 3, 2, 2, 4, 4, 4, 4, 4, 4, 0, 0};
+short g_cityActionCapabilityGroupBySlot[32] = {0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 1, 2, 2,
+                                               0, 0, 0, 0, 1, 3, 2, 2, 4, 4, 4, 4, 4, 4, 0, 0};
 
 // GLOBAL: IMPERIALISM 0x0064fab0
 short g_cityBuildingSoundCueOffsets[16] = {2, 3, 4, 5, 0, 1, 6, 10, 11, 12, 13, 7, 8, 9, 14, 35};
@@ -3974,16 +3962,16 @@ short g_awDiplomacyGrantValueTable[4] = {1000, 3000, 5000, 10000};
 short g_awDiplomacyTradePolicyIconValueTable[7] = {95, 90, 75, 50, 25, 0, 300};
 
 // GLOBAL: IMPERIALISM 0x00669f10
-double g_dNavyDamageSplitRatioA_00669f10 = 0.25;
+double g_dNavyDamageSplitRatioA = 0.25;
 // GLOBAL: IMPERIALISM 0x00669f18
-double g_dNavyDamageSplitRatioB_00669f18 = 0.75;
+double g_dNavyDamageSplitRatioB = 0.75;
 
 // GLOBAL: IMPERIALISM 0x00669ef8
-double g_dNavyHitChanceRangeScale_00669ef8 = 0.5;
+double g_dNavyHitChanceRangeScale = 0.5;
 // GLOBAL: IMPERIALISM 0x00669f00
-float g_fNavyHitChanceCubeOffset_00669f00 = -1.0f;
+float g_fNavyHitChanceCubeOffset = -1.0f;
 // GLOBAL: IMPERIALISM 0x00669f04
-float g_fNavyHitChanceNumerator_00669f04 = 80.0f;
+float g_fNavyHitChanceNumerator = 80.0f;
 
 // GLOBAL: IMPERIALISM 0x0065c168
 extern "C" const int kLoungeStatusGlyphIds[5] = {0x11fe, 0x11ff, 0x1200, 0x1201, 0x1202};

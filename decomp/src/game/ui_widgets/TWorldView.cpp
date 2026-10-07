@@ -475,7 +475,7 @@ char TWorldView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoi
     return 1;
   }
 
-  if (g_pAmbitApplication->screenModeAt24 < 2) {
+  if (g_pAmbitApplication->screenMode < 2) {
     NormalClick(static_cast<short>(stridedRecord), regionBand);
     return 1;
   }
@@ -517,7 +517,7 @@ void TWorldView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int
     mapPicture->RefreshMapOrderEntryPanel(refreshedTaskForce);
   }
 
-  g_lastClickedMapTileIndex_006a4608 = tileIndex;
+  g_lastClickedMapTileIndex = tileIndex;
   event->dispatchMessage = 0x79;
   event->commandNumber = 0x79;
   event->sourceHandler = this;
@@ -620,9 +620,9 @@ void TWorldView::RefreshMapTile(short tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x005966e0
-unsigned char TWorldView::IsTileVisible(short tileIndex) {
+bool TWorldView::IsTileVisible(short tileIndex) {
   (void)tileIndex;
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x00596700

@@ -12,7 +12,7 @@ void TCtlMgr::AssertMcAppUiInvalidationFlagSet(int arg1, int arg2) {
   (void)arg1;
   (void)arg2;
   if (g_McAppUiFlag_006A1B5C == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC, 0x5a7);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath, 0x5a7);
   }
 }
 

@@ -95,7 +95,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   } else {
     planetSeed = g_pGlobalMapState->scenarioTagText;
     wrapHorizontally = g_pGlobalMapState->hexNeighborWrapHorizontally;
-    selectedNationSlot = static_cast<short>(g_nRandomMapSelectedNationSlot00698AB0);
+    selectedNationSlot = static_cast<short>(g_nRandomMapSelectedNationSlot);
     if (selectedNationSlot == -1) {
       // LIBRARY: rand (0x005e83f0)
       selectedNationSlot = static_cast<short>(rand() % 7);
@@ -160,19 +160,19 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   flagView->sourceRect.bottom = flagView->frameHeight;
 
   if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
-    g_cstrCountryNameSettingValue006A4220 =
+    g_cstrCountryNameSettingValue =
         g_pLanguageMgr->StripCodeStr(g_pGameFlowState->playerNameMirror);
   } else {
     g_pSimMgr->useLocalizedNameTables = static_cast<char>(g_pSimMgr->preferenceValues[13]);
-    GenerateMappedFlavorTextByCurrentContextNation(&g_cstrCountryNameSettingValue006A4220);
+    GenerateMappedFlavorTextByCurrentContextNation(&g_cstrCountryNameSettingValue);
     CString profileName;
-    LoadProfileStringAndAssignSharedRef(&profileName, g_szCountryNameProfileKey00698AE0,
-                                        g_cstrCountryNameSettingValue006A4220);
-    g_cstrCountryNameSettingValue006A4220 = g_pLanguageMgr->StripCodeStr(profileName);
+    LoadProfileStringAndAssignSharedRef(&profileName, g_szCountryNameProfileKey,
+                                        g_cstrCountryNameSettingValue);
+    g_cstrCountryNameSettingValue = g_pLanguageMgr->StripCodeStr(profileName);
   }
 
   RefreshActiveControlThenApplyThemeStyleAndCaption(kControlTagCoun, 0, 0xc, 0x2b6b, 1,
-                                                    g_cstrCountryNameSettingValue006A4220);
+                                                    g_cstrCountryNameSettingValue);
 
   TRadioTextCluster* difficultyCluster =
       static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagDiff));
@@ -322,11 +322,10 @@ void TSetupRandomMapPicture::StartGame() {
 
   {
     CString emptyName(g_szEmptyString);
-    g_cstrCountryNameSettingValue006A4220 = emptyName;
+    g_cstrCountryNameSettingValue = emptyName;
   }
-  g_cstrCountryNameSettingValue006A4220 +=
-      g_pLanguageMgr->PickGender(static_cast<LPCSTR>(countryText));
-  g_cstrCountryNameSettingValue006A4220 += countryText;
+  g_cstrCountryNameSettingValue += g_pLanguageMgr->PickGender(static_cast<LPCSTR>(countryText));
+  g_cstrCountryNameSettingValue += countryText;
 
   TRadioTextCluster* difficultyCluster =
       static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagDiff));
@@ -345,20 +344,20 @@ void TSetupRandomMapPicture::StartGame() {
   g_pSimMgr->preferenceValues[13] = static_cast<short>(g_pSimMgr->useLocalizedNameTables);
   g_pSimMgr->UpdatePreferences(true);
 
-  g_nRandomMapSelectedNationSlot00698AB0 = selectedNationSlot;
+  g_nRandomMapSelectedNationSlot = selectedNationSlot;
   if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
     g_pAmbitApplication->PostTurnEventCodeMessage(
         EncodeTurnEventCode(kTurnEventNetworkGameOptions));
-    g_pGameFlowState->playerNameMirror = g_cstrCountryNameSettingValue006A4220;
-    g_pGameFlowState->playerNameString = g_cstrCountryNameSettingValue006A4220;
+    g_pGameFlowState->playerNameMirror = g_cstrCountryNameSettingValue;
+    g_pGameFlowState->playerNameString = g_cstrCountryNameSettingValue;
     g_pGameFlowState->activeNationTagIndex = static_cast<unsigned char>(selectedNationSlot);
     return;
   }
 
   g_pSimMgr->SetPlayerCountry(selectedNationSlot);
   {
-    CString countryName(g_cstrCountryNameSettingValue006A4220);
-    g_pAssetMgr->SetPreferenceString(&countryName, g_szCountryNameProfileKey00698AE0);
+    CString countryName(g_cstrCountryNameSettingValue);
+    g_pAssetMgr->SetPreferenceString(&countryName, g_szCountryNameProfileKey);
   }
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
     g_pSimMgr->nationControlModes[nationSlot] = 2;
@@ -425,12 +424,12 @@ void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
     GetWindow()->ForceRedraw();
   }
 
-  g_pActiveRandomMapSetupPicture006A4268 = this;
+  g_pActiveRandomMapSetupPicture = this;
   lastGlobeTick = GetTickCountDiv16();
   globeFrame = 0;
   SpinYourGlobe();
   g_pSimMgr->CreatePlanet(1, static_cast<LPCSTR>(planetSeed), static_cast<int>(wrapHorizontally));
-  g_pActiveRandomMapSetupPicture006A4268 = 0;
+  g_pActiveRandomMapSetupPicture = 0;
   SpinYourGlobe();
 
   TMapPreviewView* mapPreview = static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagMapP));
@@ -458,7 +457,7 @@ void TSetupRandomMapPicture::SpinYourGlobe() {
       globeFrame = 0;
     }
   }
-  if (g_pActiveRandomMapSetupPicture006A4268 == 0) {
+  if (g_pActiveRandomMapSetupPicture == 0) {
     globeFrame = 0;
   }
 

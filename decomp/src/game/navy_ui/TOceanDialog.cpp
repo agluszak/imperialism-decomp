@@ -1067,7 +1067,7 @@ void TOceanDialog::BuildTileViewportRect(short tileIndex, CRect* outRect) {
 }
 
 // FUNCTION: IMPERIALISM 0x005687b0
-unsigned char TOceanDialog::IsTileVisible(short tileIndex) {
+bool TOceanDialog::IsTileVisible(short tileIndex) {
   short tileRow = static_cast<short>(tileIndex / 0x6c);
   short tileColumn = static_cast<short>(tileIndex % 0x6c);
   if (tileColumn < scrollColOffset) {
@@ -1076,9 +1076,9 @@ unsigned char TOceanDialog::IsTileVisible(short tileIndex) {
 
   if (tileRow < scrollRowOffset || tileRow >= scrollRowOffset + 0x1c ||
       tileColumn < scrollColOffset || tileRow >= scrollRowOffset + 0x20) {
-    return 0;
+    return false;
   }
-  return 1;
+  return true;
 }
 
 // Converts a viewport pixel point to a wrapped map tile index.

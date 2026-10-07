@@ -30,7 +30,7 @@
 
 // FUNCTION: IMPERIALISM 0x004ec0a0
 double TDefenseMinister::GetStategicEscalationMultiplier(bool) {
-  return g_DefenseMinisterWeightZero_006548E0;
+  return g_DefenseMinisterWeightZero;
 }
 
 IMPLEMENT_DYNCREATE(TDefenseMinister, TMinister)
@@ -144,17 +144,17 @@ void TDefenseMinister::DoPeacetimeDeployment() {
 
   TList* bucket1 = new TList();
   if (bucket1 == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUDefenseMinister_00696860, 0x12f);
+    FailNilPointerWithAssert(s_SourcePathUDefenseMinister, 0x12f);
   }
 
   TList* bucket2 = new TList();
   if (bucket2 == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUDefenseMinister_00696860, 0x130);
+    FailNilPointerWithAssert(s_SourcePathUDefenseMinister, 0x130);
   }
 
   TList* bucket3 = new TList();
   if (bucket3 == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUDefenseMinister_00696860, 0x131);
+    FailNilPointerWithAssert(s_SourcePathUDefenseMinister, 0x131);
   }
 
   TSortedList* militaryUnitList = owner->militaryUnitList;
@@ -192,7 +192,7 @@ void TDefenseMinister::DoPeacetimeDeployment() {
   if (n > 0) {
     short* scratchBuf = new short[n];
     if (scratchBuf == nullptr) {
-      FailNilPointerWithAssert(s_SourcePathUDefenseMinister_00696860, 0x15e);
+      FailNilPointerWithAssert(s_SourcePathUDefenseMinister, 0x15e);
     }
 
     for (int fillIdx = 1; fillIdx <= n; ++fillIdx) {
@@ -247,7 +247,7 @@ unsigned char* TDefenseMinister::CreatePeaceDefenseMap(TLongintList* ownedRegion
 
   unsigned char* priorityMap = new unsigned char[0x1950];
   if (priorityMap == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUDefenseMinister_00696860, 0x1a9);
+    FailNilPointerWithAssert(s_SourcePathUDefenseMinister, 0x1a9);
   }
   memset(priorityMap, 0, 0x1950);
 
@@ -369,12 +369,12 @@ int* TDefenseMinister::CreateEnemyPowerMap(unsigned char excludeEnemyTiles) {
 
   int* weightSum = new int[0x1950];
   if (weightSum == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUDefenseMinister_00696860, 0x24a);
+    FailNilPointerWithAssert(s_SourcePathUDefenseMinister, 0x24a);
   }
 
   int* maxWeight = new int[0x1950];
   if (weightSum == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUDefenseMinister_00696860, 0x24e);
+    FailNilPointerWithAssert(s_SourcePathUDefenseMinister, 0x24e);
   }
 
   for (int fillIdx = 0; fillIdx < 0x1950; ++fillIdx) {

@@ -170,7 +170,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
   }
 
   int lookupGroup = (sourceRecord->fortLevel > 0) ? 2 : 1;
-  const short* lookupTable = g_awTacticalCompositionReferenceProfiles_00697870 + lookupGroup * 5;
+  const short* lookupTable = g_awTacticalCompositionReferenceProfiles + lookupGroup * 5;
   return NormalizeFiveComponentPriorityVector(vector, sum, lookupTable);
 }
 
@@ -197,7 +197,7 @@ float TDefendProvinceMission::ComputeLocalSupportVectorScore(int nodeContext) {
   }
 
   return NormalizeFiveComponentPriorityVector(vector, sum,
-                                              g_awTacticalCompositionReferenceProfiles_00697870);
+                                              g_awTacticalCompositionReferenceProfiles);
 }
 
 // Node-key constructor: delegates to TArmyMission(nodeKey) and stamps this class's
@@ -283,7 +283,7 @@ void TDefendProvinceMission::CalculateNeeds() {
   float fStack_c = nationState->averageUnitDivergencePerOwnedRegion;
 
   if (fStack_c <= static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
-    fStack_c = g_MissionPositiveFallback_0065A9B8;
+    fStack_c = g_MissionPositiveFallback;
   }
 
   bool compat = IsMapTileCompatibleWithCurrentTerrainOrActionContext(presentLocation);
@@ -315,7 +315,7 @@ void TDefendProvinceMission::CalculateNeeds() {
 
   if (hasWar) {
     float crossScore = ComputeCrossNationSupportVectorScore(presentLocation);
-    float factor = g_DefendProvinceMissionCrossSupportFloorScale_0065A8F8;
+    float factor = g_DefendProvinceMissionCrossSupportFloorScale;
     if (unaff_EBX < crossScore * factor) {
       unaff_EBX = crossScore * factor;
     }
@@ -323,7 +323,7 @@ void TDefendProvinceMission::CalculateNeeds() {
 
   signed char fortLevel = g_pGlobalMapState->cityScoreTable[presentLocation].fortLevel;
   int offset = (fortLevel < 1) ? 0 : 15;
-  short* psVar5 = g_awTacticalCompositionReferenceProfiles_00697870 + offset;
+  short* psVar5 = g_awTacticalCompositionReferenceProfiles + offset;
 
   for (int j = 0; j < 5; ++j) {
     short val = psVar5[j];

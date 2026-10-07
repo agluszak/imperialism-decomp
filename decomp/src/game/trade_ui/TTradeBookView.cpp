@@ -45,7 +45,7 @@ void TTradeBookView::DoPostCreate(int arg) {
   g_pSimMgr->GetSeason(&quarterText);
 
   CString combined;
-  combined = quarterText + s_szSpaceSeparator_00695794 + formattedText;
+  combined = quarterText + s_szSpaceSeparator + formattedText;
   rtilControl->SetTextAndMaybeRefresh(&combined, false);
   rtilControl->Show(1, 1);
 }

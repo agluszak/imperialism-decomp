@@ -26,8 +26,8 @@ void TCheater::ConstructTCheaterBaseState(TView* panel, int unusedArg) {
 
   TButton* doneButton = new TButton();
   CString doneLabel("Done");
-  if (g_nMcAppUiAssertGate_006A2480 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC, 0x5b7);
+  if (g_nMcAppUiAssertGate == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath, 0x5b7);
   }
   doneButton->eventNumber = 0x22;
   captionStringResourceGroup = 0x80;

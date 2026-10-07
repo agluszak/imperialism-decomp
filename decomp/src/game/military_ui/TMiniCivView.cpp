@@ -30,7 +30,7 @@ void TMiniCivView::InitializeForCivilianUnit(TView* panel, int* offsetLayout, in
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 5, 5, 0);
   this->civUnit = civUnit;
   eventNumber = 0x22;
-  SetControlHoverHelpText(g_pMiniCivSharedText_0064cb18, this);
+  SetControlHoverHelpText(g_pMiniCivSharedText, this);
 
   CString assembled;
   CString textA;
@@ -39,7 +39,7 @@ void TMiniCivView::InitializeForCivilianUnit(TView* panel, int* offsetLayout, in
   CString formatted;
   short tile = civUnit->tileIndex;
   {
-    CString empty(g_pMiniCivSharedText_0064cb18);
+    CString empty(g_pMiniCivSharedText);
     assembled = empty;
   }
 
@@ -126,7 +126,7 @@ void TMiniCivView::Draw(RECT* rectBuffer) {
   g_pGlobalMapState->AssignCityRecordDisplayName(
       g_pGlobalMapState->terrainStateTable[civUnit->tileIndex].cityRecordIndex, &cityName);
   {
-    CString cityLine = cityName + g_szListSeparator_00695760 + nationName;
+    CString cityLine = cityName + g_szListSeparator + nationName;
     lineText = cityLine;
   }
 

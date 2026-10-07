@@ -25,8 +25,8 @@ void TProxyGreatPower::ReplyToDiplomacyOffers() {
 }
 
 // FUNCTION: IMPERIALISM 0x00540920
-char TProxyGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage() {
-  return 0;
+bool TProxyGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage() {
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x00540970
@@ -48,7 +48,7 @@ void TProxyGreatPower::AddToTreasury(int amount) {
   packet.DestinateToGP(this->nationSlot);
   packet.nationSlot = this->nationSlot;
   packet.amount = amount;
-  g_pNetMgr006a6014->Send(&packet, false);
+  g_pNetMgr->Send(&packet, false);
 }
 
 // FUNCTION: IMPERIALISM 0x00540aa0
@@ -69,23 +69,23 @@ void TProxyGreatPower::AddOfferFrom(NationSlot sourceNationSlot,
   packetPayload.proposalCode = proposalCode;
 
   packetPayload.DestinateToGP(static_cast<int>(this->nationSlot));
-  g_pNetMgr006a6014->Send(&packetPayload, false);
+  g_pNetMgr->Send(&packetPayload, false);
 }
 
 // FUNCTION: IMPERIALISM 0x00540b80
 void TProxyGreatPower::FinishCityPhase() {}
 
 // FUNCTION: IMPERIALISM 0x00540ba0
-char TProxyGreatPower::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
+bool TProxyGreatPower::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                                          ResourceKindStorage resourceKind) {
   if (this->StillBuyingItem(resourceKind)) {
     g_pGameFlowState->SendTradeOffer(this->nationSlot, targetNationSlot, amount, price,
                                      resourceKind);
-    return 1;
+    return true;
   }
 
   this->AddToDealBook(1, targetNationSlot, 0, resourceKind, 0);
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x00540c20
@@ -123,7 +123,7 @@ int TProxyGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNati
   packet.actionCode = 'i';
   packet.nationA1D = static_cast<signed char>(targetNation);
   packet.nationB1E = static_cast<signed char>(sourceNation);
-  g_pNetMgr006a6014->Send(&packet, false);
+  g_pNetMgr->Send(&packet, false);
   return 2;
 }
 
@@ -143,6 +143,6 @@ int TProxyGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation, 
   packet.nationA1D = static_cast<signed char>(targetNation);
   packet.nationB1E = static_cast<signed char>(sourceNation);
   packet.mode1F = static_cast<unsigned char>(swapRoles);
-  g_pNetMgr006a6014->Send(&packet, false);
+  g_pNetMgr->Send(&packet, false);
   return 2;
 }

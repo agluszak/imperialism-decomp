@@ -241,7 +241,7 @@ void TArmoryView::UpdateFields() {
   secondaryAvailable->QueryBounds(&invalidRect);
   availabilityPanel->InvalidateCityDialogRectRegion(&invalidRect, 1);
 
-  int treasury = city->ownerNation->treasuryValue10;
+  int treasury = city->ownerNation->treasuryValue;
   g_pSimMgr->NumToCurrency(treasury, &treasuryText);
   TStaticText* treasuryAvailable =
       static_cast<TStaticText*>(ResolveControlByTag(kControlTagAva3)); // 'ava3'
@@ -325,8 +325,7 @@ void TArmoryView::SetUnit(short nBuildingSlotId) {
   CString amountText;
   g_pSimMgr->GetCommodityName(order->primaryInputResourceId, &resourceName);
   amountText.Format(g_szDecimalFormat, static_cast<int>(order->primaryInputPerUnit));
-  unusedDescription =
-      amountText + s_szSpaceSeparator_00695794 + resourceName + s_szLineBreak_00695880;
+  unusedDescription = amountText + s_szSpaceSeparator + resourceName + s_szLineBreak;
 
   TNumberText* cos0 =
       static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'o', 's', '0')));

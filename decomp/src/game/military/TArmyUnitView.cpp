@@ -143,7 +143,7 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     if (militaryUnit->Upgrade()) {
       TView* sourceView = static_cast<TView*>(sourceHandler);
       sourceView->Show(0, 1);
-      SetControlHoverHelpTextAltEntry(CString(g_pMiniCivSharedText_0064cb18), sourceView);
+      SetControlHoverHelpTextAltEntry(CString(g_pMiniCivSharedText), sourceView);
 
       TArmyCheckBox* checkControl =
           static_cast<TArmyCheckBox*>(ResolveControlByTag(kControlTagChec));
@@ -172,7 +172,7 @@ void TArmyUnitView::RenameUnit() {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNameUnit));
   if (node == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUArmyViews_00695858, 0x204);
+    FailNilPointerWithAssert(s_SourcePathUArmyViews, 0x204);
   }
 
   TextStyle style;

@@ -144,8 +144,8 @@ void TMission::Hold(bool value) {
   flag10 = value;
 }
 // FUNCTION: IMPERIALISM 0x00534f90
-char TMission::SmokeEmIfYouGotEm() {
-  return 0;
+bool TMission::SmokeEmIfYouGotEm() {
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x00535020

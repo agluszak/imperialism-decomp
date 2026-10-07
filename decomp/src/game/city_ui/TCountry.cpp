@@ -89,11 +89,10 @@ void TCountry::InitializeNationStateIdentityAndOwnedRegionList(NationSlot nation
     this->needLevelByNation[nationIndex] = 100;
   }
 
-  this->identitySharedString0 = CString(g_pszDescriptorDefaultName_00653300);
-  bool nameIsDefault =
-      _mbscmp(reinterpret_cast<const unsigned char*>(g_pszDescriptorDefaultName_00653300),
-              reinterpret_cast<const unsigned char*>(
-                  static_cast<LPCSTR>(this->identitySharedString0))) == 0;
+  this->identitySharedString0 = CString(g_pszDescriptorDefaultName);
+  bool nameIsDefault = _mbscmp(reinterpret_cast<const unsigned char*>(g_pszDescriptorDefaultName),
+                               reinterpret_cast<const unsigned char*>(
+                                   static_cast<LPCSTR>(this->identitySharedString0))) == 0;
   if (nameIsDefault) {
     CString flavorName;
     SetSharedStringFromMappedFlavorTextWithLengthClamp(&flavorName, this->nationSlot);
@@ -103,7 +102,7 @@ void TCountry::InitializeNationStateIdentityAndOwnedRegionList(NationSlot nation
     }
   }
   this->identitySharedString1 = this->identitySharedString0;
-  this->treasuryValue10 = 5000;
+  this->treasuryValue = 5000;
 
   this->militaryUnitList = new TList();
 
@@ -148,7 +147,7 @@ void TCountry::ReadFrom(TStream* stream) {
   SwapShortArrayBytes(this->unitNameOrdinalByType, 0x1e);
 
   stream->ReadBytes(&this->unitNameCounter, 2);
-  stream->ReadBytes(&this->treasuryValue10, 4);
+  stream->ReadBytes(&this->treasuryValue, 4);
   stream->ReadBytes(&this->homeTileIndex, 4);
   stream->ReadBytes(&this->overlayAnchorTileCache, 4);
   stream->ReadBytes(this->needLevelByNation, 0x2e);
@@ -194,7 +193,7 @@ void TCountry::WriteTo(TStream* stream) {
   stream->WriteBytes(&this->encodedNationSlot, 2);
   WriteShortArrayElems(stream, this->unitNameOrdinalByType, 0x1e);
   stream->WriteBytes(&this->unitNameCounter, 2);
-  stream->WriteBytes(&this->treasuryValue10, 4);
+  stream->WriteBytes(&this->treasuryValue, 4);
   stream->WriteBytes(&this->homeTileIndex, 4);
   stream->WriteBytes(&this->overlayAnchorTileCache, 4);
   WriteShortArrayElemsRev(stream, this->needLevelByNation, 0x17);
@@ -207,7 +206,7 @@ void TCountry::WriteTo(TStream* stream) {
 void TCountry::ReadCoreFieldsFromStream(TStream* stream, int unusedArg) {
   (void)unusedArg;
   stream->ReadBytes(&this->encodedNationSlot, 2);
-  stream->ReadBytes(&this->treasuryValue10, 4);
+  stream->ReadBytes(&this->treasuryValue, 4);
   stream->ReadBytes(&this->homeTileIndex, 4);
   stream->ReadBytes(&this->overlayAnchorTileCache, 4);
 }
@@ -215,7 +214,7 @@ void TCountry::ReadCoreFieldsFromStream(TStream* stream, int unusedArg) {
 // FUNCTION: IMPERIALISM 0x004d70e0
 void TCountry::WriteCoreFieldsToStream(TStream* stream) {
   stream->WriteBytes(&this->encodedNationSlot, 2);
-  stream->WriteBytes(&this->treasuryValue10, 4);
+  stream->WriteBytes(&this->treasuryValue, 4);
   stream->WriteBytes(&this->homeTileIndex, 4);
   stream->WriteBytes(&this->overlayAnchorTileCache, 4);
 }
@@ -334,7 +333,7 @@ void TCountry::AddMilitia(int nodeContext) {
 // FUNCTION: IMPERIALISM 0x004d7860
 void TCountry::FormatOverlayTerrainLabelText(CString* out) {
   if (this == 0) {
-    CString defaultName(g_pszDescriptorDefaultName_00653300);
+    CString defaultName(g_pszDescriptorDefaultName);
     *out = defaultName;
   } else {
     *out = g_pSimMgr->LoadNormalizedCredentialName(nationSlot);
@@ -344,7 +343,7 @@ void TCountry::FormatOverlayTerrainLabelText(CString* out) {
 // FUNCTION: IMPERIALISM 0x004d7930
 void TCountry::AssignSharedStringFromDescriptorNameOrDefault(CString* out) {
   if (this == 0) {
-    CString defaultName(g_pszDescriptorDefaultName_00653300);
+    CString defaultName(g_pszDescriptorDefaultName);
     *out = defaultName;
   } else {
     *out = g_pSimMgr->GetSharedText(this->nationSlot);
@@ -371,17 +370,17 @@ void TCountry::LoadNationDisplayNameRawFromField8(CString* destString) {
 
 // FUNCTION: IMPERIALISM 0x004d7ae0
 void TCountry::AddToTreasury(int amount) {
-  this->treasuryValue10 += amount;
+  this->treasuryValue += amount;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7b00
-char TCountry::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
+bool TCountry::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                                  ResourceKindStorage resourceKind) {
   (void)targetNationSlot;
   (void)amount;
   (void)price;
   (void)resourceKind;
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7b20
@@ -445,12 +444,12 @@ void TCountry::BecomeColonyOf(int targetNationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d7d20
-char TCountry::IsColonyOf(int nationCode) {
+bool TCountry::IsColonyOf(int nationCode) {
   int adjusted = static_cast<short>(this->encodedNationSlot) - 0xc8;
   if (adjusted == nationCode) {
-    return 1;
+    return true;
   }
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7d50
@@ -526,9 +525,9 @@ short TCountry::GetTradeOffersFor(short resourceKind) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d7f60
-char TCountry::IsInConsortiumWith(short policyCode) {
+bool TCountry::IsInConsortiumWith(short policyCode) {
   (void)policyCode;
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7f80

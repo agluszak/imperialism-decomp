@@ -13,7 +13,7 @@
 // Slot 24 (0x60) override — factory hook on this minister variant.
 // FUNCTION: IMPERIALISM 0x004ed490
 double TNapoleonMinister::GetStategicEscalationMultiplier(bool flag) {
-  return flag ? g_MinisterWeightHalf_006548E8 : g_MinisterWeightOne_006548F0;
+  return flag ? g_MinisterWeightHalf : g_MinisterWeightOne;
 }
 
 IMPLEMENT_DYNCREATE(TNapoleonMinister, TDefenseMinister)
@@ -45,7 +45,7 @@ void TNapoleonMinister::MakeNewCity(TCity* city) {
 
 // FUNCTION: IMPERIALISM 0x004ed7c0
 double TBismarckMinister::GetStategicEscalationMultiplier(bool flag) {
-  return flag ? g_BismarckWeightHigh_006548F8 : g_BismarckWeightLow_00654900;
+  return flag ? g_BismarckWeightHigh : g_BismarckWeightLow;
 }
 
 IMPLEMENT_DYNCREATE(TBismarckMinister, TDefenseMinister)
@@ -72,7 +72,7 @@ void TBismarckMinister::MakeNewCity(TCity* city) {
 
 // FUNCTION: IMPERIALISM 0x004edab0
 double TPirateMinister::GetStategicEscalationMultiplier(bool flag) {
-  return flag ? g_MinisterWeightHalf_006548E8 : g_MinisterWeightOne_006548F0;
+  return flag ? g_MinisterWeightHalf : g_MinisterWeightOne;
 }
 
 IMPLEMENT_DYNCREATE(TPirateMinister, TDefenseMinister)
@@ -99,7 +99,7 @@ void TPirateMinister::MakeNewCity(TCity* city) {
 
 // FUNCTION: IMPERIALISM 0x004edda0
 double TDefenderMinister::GetStategicEscalationMultiplier(bool) {
-  return g_DefenderMinisterWeight_00654908;
+  return g_DefenderMinisterWeight;
 }
 
 IMPLEMENT_DYNCREATE(TDefenderMinister, TDefenseMinister)
@@ -126,7 +126,7 @@ void TDefenderMinister::MakeNewCity(TCity* city) {
 
 // FUNCTION: IMPERIALISM 0x004ee080
 double TBullyMinister::GetStategicEscalationMultiplier(bool flag) {
-  return flag ? g_BullyWeightLow_00654910 : g_BullyWeightHigh_00654918;
+  return flag ? g_BullyWeightLow : g_BullyWeightHigh;
 }
 
 IMPLEMENT_DYNCREATE(TBullyMinister, TDefenseMinister)

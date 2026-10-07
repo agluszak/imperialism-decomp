@@ -38,15 +38,15 @@ void TNetMgr::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x005e3490
-unsigned char TNetMgr::DefaultUnhandledTurnEventHookReturnsFalse(TurnEventQueuePacket* packet) {
+bool TNetMgr::DefaultUnhandledTurnEventHookReturnsFalse(TurnEventQueuePacket* packet) {
   (void)packet;
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x005e34d0
-unsigned char TNetMgr::ResetRuntimeSelectionRecordBufferAndReturnTrue() {
+bool TNetMgr::ResetRuntimeSelectionRecordBufferAndReturnTrue() {
   g_NetworkSessionManager006a5f60.ResetRuntimeSelectionRecordBuffer();
-  return 1;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x005e34f0
@@ -180,7 +180,7 @@ void TNetMgr::HandleError(int errorCode) {
   }
   }
 
-  g_pViewMgr->ModalMessage(message, g_ptNetworkModalMessage006a5ed8);
+  g_pViewMgr->ModalMessage(message, g_ptNetworkModalMessage);
   if (DAT_006a601c == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\WNetMgr.cpp", 0x1c3);
   }
@@ -192,21 +192,20 @@ unsigned char TNetMgr::ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TVie
       static_cast<TRadioTextCluster*>(provider->ResolveControlByTag(kControlTagProt)); // 'prot'
   g_NetworkSessionManager006a5f60.activeProtocolControl->AssertValid();
 
-  for (int index = 0; index < g_WNetSerializedPtrArrayA006a5f10.GetSize(); ++index) {
-    delete g_WNetSerializedPtrArrayA006a5f10[index];
+  for (int index = 0; index < g_WNetSerializedPtrArrayA.GetSize(); ++index) {
+    delete g_WNetSerializedPtrArrayA[index];
   }
-  g_WNetSerializedPtrArrayA006a5f10.RemoveAll();
+  g_WNetSerializedPtrArrayA.RemoveAll();
   unsigned char result = g_NetworkSessionManager006a5f60.RebuildRuntimeSelectionSource();
   g_NetworkSessionManager006a5f60.activeProtocolControl = 0;
   return result;
 }
 
 // FUNCTION: IMPERIALISM 0x005e3a60
-unsigned char TNetMgr::OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, int flag,
-                                                                    const char* seed) {
+bool TNetMgr::OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, int flag, const char* seed) {
   (void)flag;
   strncpy(g_NetworkSessionManager006a5f60.runtimeSelectionSeed, seed, 0x20);
-  const GUID* sessionGuid = &g_WNetSerializedPtrArrayA006a5f10[index]->providerGuid;
+  const GUID* sessionGuid = &g_WNetSerializedPtrArrayA[index]->providerGuid;
   bool result =
       g_NetworkSessionManager006a5f60.InitializeDirectPlayForProviderGuidOrEnumerate(sessionGuid);
   if (!result) {
@@ -244,8 +243,8 @@ unsigned char TNetMgr::Host(const char* seedPath, const char* localPlayerName,
 }
 
 // FUNCTION: IMPERIALISM 0x005e3c00
-unsigned char TNetMgr::ReturnTrueRuntimeCredentialFinalizeStub() {
-  return 1;
+bool TNetMgr::ReturnTrueRuntimeCredentialFinalizeStub() {
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x005e3c20
@@ -275,7 +274,7 @@ unsigned char TNetMgr::SelectGame(int selectionTag, CString* outGameName, const 
 }
 
 // FUNCTION: IMPERIALISM 0x005e3d40
-unsigned char TNetMgr::Send(NetMessage* message, bool queueOnly) {
+bool TNetMgr::Send(NetMessage* message, bool queueOnly) {
   unsigned int sizeBytes = static_cast<unsigned int>(message->messageLength);
   message->fromNetworkId = g_NetworkSessionManager006a5f60.localPlayerId;
   int nationId = message->toNetworkId;
@@ -286,17 +285,17 @@ unsigned char TNetMgr::Send(NetMessage* message, bool queueOnly) {
   if (queueOnly || nationId == g_NetworkSessionManager006a5f60.localPlayerId) {
     void* heapCopy = GlobalAlloc(0, static_cast<DWORD>(sizeBytes));
     memcpy(heapCopy, message, sizeBytes);
-    g_WNetPendingPacketList006a5f40.AddTail(heapCopy);
+    g_WNetPendingPacketList.AddTail(heapCopy);
     if (nationId == g_NetworkSessionManager006a5f60.localPlayerId) {
-      return 1;
+      return true;
     }
   }
 
   if (g_NetworkSessionManager006a5f60.TrySendNetworkPacket(nationId, message, sizeBytes)) {
-    return 1;
+    return true;
   }
   HandleError(g_NetworkSessionManager006a5f60.lastErrorCode);
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x005e3ef0
@@ -314,8 +313,8 @@ TurnEventQueuePacket* TNetMgr::PopNextTurnEventPacketOrProcessSpecialQueueRecord
   if (g_NetworkSessionManager006a5f60.directPlayInterface == 0) {
     return 0;
   }
-  if (!g_WNetPendingPacketList006a5f40.IsEmpty()) {
-    return static_cast<TurnEventQueuePacket*>(g_WNetPendingPacketList006a5f40.RemoveHead());
+  if (!g_WNetPendingPacketList.IsEmpty()) {
+    return static_cast<TurnEventQueuePacket*>(g_WNetPendingPacketList.RemoveHead());
   }
 
   for (;;) {
@@ -355,7 +354,7 @@ TurnEventQueuePacket* TNetMgr::PopNextTurnEventPacketOrProcessSpecialQueueRecord
       g_pGameFlowState->HandleActiveNationAwolTransitionOrRecovery();
       break;
     default:
-      if (g_suppressUnexpectedDirectPlaySystemMessageAssert006a6020 == 0) {
+      if (g_suppressUnexpectedDirectPlaySystemMessageAssert == 0) {
         TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\WNetMgr.cpp", 0x2f6);
       }
       break;
@@ -382,15 +381,15 @@ void TNetMgr::NotifyIfNationMatchesSessionActiveNation(int nationId) {
 }
 
 // FUNCTION: IMPERIALISM 0x005e42f0
-unsigned char TNetMgr::CheckConnectivityOrShowLocalizedWarningAndReturnReady() {
+bool TNetMgr::CheckConnectivityOrShowLocalizedWarningAndReturnReady() {
   if (g_pSimMgr->multiplayerSessionRole == kSessionRoleClient &&
       g_NetworkSessionManager006a5f60.OpenCurrentSessionDescriptionForJoin() != 0) {
-    return 1;
+    return true;
   }
   CString message;
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&message, 0x2742, 0x19);
-  g_pViewMgr->ModalMessage(message, g_ptNetworkModalMessage006a5ed8, 0, 0);
-  return 0;
+  g_pViewMgr->ModalMessage(message, g_ptNetworkModalMessage, 0, 0);
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x005e43e0

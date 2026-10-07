@@ -160,9 +160,9 @@ void TEventHandler::HandleIdle(int idlePhase) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048a480
-char TEventHandler::DoIdle(int action) {
+bool TEventHandler::DoIdle(int action) {
   (void)action;
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x0048a4a0
@@ -184,50 +184,50 @@ void TEventHandler::AddBehavior(TBehavior* behavior) {
 
 // True iff this view is the root controller's current target.
 // FUNCTION: IMPERIALISM 0x0048a500
-char TEventHandler::IsTarget() {
+bool TEventHandler::IsTarget() {
   return this == g_pApplication->GetTarget();
 }
 
 // FUNCTION: IMPERIALISM 0x0048a530
-char TEventHandler::WantsToBeTarget() {
-  return 0;
+bool TEventHandler::WantsToBeTarget() {
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x0048a550
-char TEventHandler::WillingToResignTarget() {
-  return 0;
+bool TEventHandler::WillingToResignTarget() {
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x0048a570
-char TEventHandler::BecomeTarget() {
+bool TEventHandler::BecomeTarget() {
   TEventHandler* active = g_pApplication->GetTarget();
   if (this == active) {
-    return 1;
+    return true;
   }
   if (active != 0 && active->ResignTarget() != 0) {
     g_pApplication->SetTarget(this);
-    return 1;
+    return true;
   }
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x0048a5e0
-char TEventHandler::ResignTarget() {
+bool TEventHandler::ResignTarget() {
   if (g_pApplication == 0) {
-    return 0;
+    return false;
   }
   TEventHandler* currentTarget = g_pApplication->GetTarget();
   if (currentTarget == 0) {
-    return 0;
+    return false;
   }
   char gate = currentTarget->WillingToResignTarget();
   if (gate == 0) {
     currentTarget->ResignedTarget();
     g_pApplication->SetTarget(g_pApplication);
-    return 1;
+    return true;
   }
   currentTarget->TargetValidationFailed(gate);
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x0048a650
@@ -277,7 +277,7 @@ void TEventHandler::CopyHandlerFieldsFrom(const TEventHandler* source) {
 // FUNCTION: IMPERIALISM 0x0048a7c0
 TObject* TEventHandler::ShallowClone() {
   if (g_McAppUiFlag_006A1AE4 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0x2ef);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0x2ef);
   }
   TEventHandler* header = new TEventHandler();
   if (header == 0) {

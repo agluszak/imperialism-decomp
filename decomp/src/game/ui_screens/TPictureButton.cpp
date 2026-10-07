@@ -33,6 +33,6 @@ void TPictureButton::DrawImmediate() {
 
 // FUNCTION: IMPERIALISM 0x00570900
 void TPictureButton::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
-  g_pSfxPlaybackSystem->PlaySoundEffect(timingWord92, 0, 1);
+  g_pSfxPlaybackSystem->PlaySoundEffect(clickSoundId, 0, 1);
   TControl::DoMouseCommand(point, event, origin);
 }

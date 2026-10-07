@@ -293,7 +293,7 @@ bool TZone::HasNeighbor(Province* province) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055f440
-char TZone::ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex) {
+bool TZone::ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex) {
   unsigned int entryCount = static_cast<unsigned int>(this->secondaryNeighbors.Count());
   const Province* target = &g_pGlobalMapState->cityScoreTable[cityIndex];
   Province* const* entrySlot = 0;
@@ -307,20 +307,20 @@ char TZone::ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055f4d0
-char TZone::HasSecondaryNeighborWithNationTag(short nationTag) {
+bool TZone::HasSecondaryNeighborWithNationTag(short nationTag) {
   unsigned int entryCount = static_cast<unsigned int>(this->secondaryNeighbors.Count());
   if (entryCount == 0) {
-    return 0;
+    return false;
   }
   for (unsigned int entryIndex = 0; entryIndex < entryCount; ++entryIndex) {
     Province* const* entrySlot =
         (entryIndex < entryCount) ? this->secondaryNeighbors.Data() + entryIndex : 0;
     short entryNationTag = (*entrySlot)->ownerNationCode;
     if (entryNationTag == nationTag) {
-      return 1;
+      return true;
     }
   }
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x0055f540
@@ -379,8 +379,8 @@ void TZone::GenerateZoneStatusCodeIfUnset() {
       category = 3;
     }
   }
-  g_zoneStatusCodePrngSeed_006a5aec = g_zoneStatusCodePrngSeed_006a5aec * 0x15a4e35 + 1;
-  statusCode = static_cast<short>(((g_zoneStatusCodePrngSeed_006a5aec >> 0xc) & 3) + category * 4);
+  g_zoneStatusCodePrngSeed = g_zoneStatusCodePrngSeed * 0x15a4e35 + 1;
+  statusCode = static_cast<short>(((g_zoneStatusCodePrngSeed >> 0xc) & 3) + category * 4);
 }
 
 // FUNCTION: IMPERIALISM 0x0055f780
@@ -391,8 +391,8 @@ void TZone::NameThyself(unsigned char* usedCityFlags, const char* overrideName) 
   } else {
     int chosenCity = -1;
     if (usedCityFlags != 0 && secondaryNeighbors.Count() != 0) {
-      g_zoneStatusCodePrngSeed_006a5aec = g_zoneStatusCodePrngSeed_006a5aec * 0x15a4e35 + 1;
-      unsigned int pick = (g_zoneStatusCodePrngSeed_006a5aec >> 0xc & 0x7fff) %
+      g_zoneStatusCodePrngSeed = g_zoneStatusCodePrngSeed * 0x15a4e35 + 1;
+      unsigned int pick = (g_zoneStatusCodePrngSeed >> 0xc & 0x7fff) %
                           static_cast<unsigned int>(secondaryNeighbors.Count());
       Province* cityRecord = secondaryNeighbors[pick];
       short tile = cityRecord->linkedTileIndices[0];
@@ -408,23 +408,22 @@ void TZone::NameThyself(unsigned char* usedCityFlags, const char* overrideName) 
     } else {
       if (g_pSimMgr->useLocalizedNameTables != 0) {
         if (g_mapActionContextDisplayNameCacheId_006984b8 == -1) {
-          unsigned int randomValue = g_zoneStatusCodePrngSeed_006a5aec * 0x15a4e35U + 1;
+          unsigned int randomValue = g_zoneStatusCodePrngSeed * 0x15a4e35U + 1;
           int nameIndex = static_cast<int>((randomValue >> 0xc) & 0x7fff);
           g_mapActionContextDisplayNameCacheId_006984b8 = nameIndex % 0x25;
           unsigned int nextRandomValue = randomValue * 0x15a4e35U + 1;
-          g_zoneStatusCodePrngSeed_006a5aec = nextRandomValue;
+          g_zoneStatusCodePrngSeed = nextRandomValue;
           int strides[4] = {1, 7, 0xb, 0x17};
           int strideSelector = static_cast<int>((nextRandomValue >> 0xc) & 0x7fff);
           int strideIndex = SignedRemainderByFour(strideSelector);
-          g_mapActionContextDisplayNameCacheStep_006984bc = strides[strideIndex];
+          g_mapActionContextDisplayNameCacheStep = strides[strideIndex];
         }
         CString resourceName;
         g_pSimMgr->GetString(0x275b,
                              static_cast<short>(g_mapActionContextDisplayNameCacheId_006984b8),
                              &resourceName);
         displayName = resourceName;
-        g_mapActionContextDisplayNameCacheId_006984b8 +=
-            g_mapActionContextDisplayNameCacheStep_006984bc;
+        g_mapActionContextDisplayNameCacheId_006984b8 += g_mapActionContextDisplayNameCacheStep;
         if (g_mapActionContextDisplayNameCacheId_006984b8 >= 0x25) {
           g_mapActionContextDisplayNameCacheId_006984b8 -= 0x25;
         }
@@ -833,7 +832,7 @@ void TZone::GetNavalAuthority(CString* out, short nation) {
     CString shipName;
     CString reportTemplate;
     g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0xe);
-    admiralName = s_szAdmiralPrefix_0069578c + selected->admiral->displayName;
+    admiralName = s_szAdmiralPrefix + selected->admiral->displayName;
     shipName = selected->name;
     scanBracketExpressions(g_pSimMgr, out, static_cast<LPCSTR>(reportTemplate),
                            static_cast<LPCSTR>(admiralName), static_cast<LPCSTR>(shipName));
@@ -880,13 +879,13 @@ TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation
 }
 
 // FUNCTION: IMPERIALISM 0x00560b00
-char TZone::CanDisplayMapOrderEntryInCurrentContext(int nation, bool skipField34Check) {
+bool TZone::CanDisplayMapOrderEntryInCurrentContext(int nation, bool skipField34Check) {
   if (nation == -1) {
     nation = g_pSimMgr->GetPlayerCountry();
   }
   unsigned char nationBit = static_cast<unsigned char>(1 << nation);
   if ((nationKeyMask & nationBit) == 0) {
-    return 0;
+    return false;
   }
   for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
     if (ship->location == this && ship->nation == nation) {
@@ -897,11 +896,11 @@ char TZone::CanDisplayMapOrderEntryInCurrentContext(int nation, bool skipField34
         }
       }
       if (ship->taskForce == 0) {
-        return 1;
+        return true;
       }
     }
   }
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x00560ba0
@@ -1193,9 +1192,9 @@ void RegenerateAllMapActionContextStatusCodes(void) {
     seed = (seed >> 0x10) + seed * 2 + static_cast<int>(*tag);
     tag = tag + 1;
   }
-  g_zoneStatusCodePrngSeed_006a5aec = seed;
+  g_zoneStatusCodePrngSeed = seed;
   if (seed == 0) {
-    g_zoneStatusCodePrngSeed_006a5aec = ClockDerivedPrngSeed();
+    g_zoneStatusCodePrngSeed = ClockDerivedPrngSeed();
   }
   g_mapActionContextDisplayNameCacheId_006984b8 = -1;
 
@@ -1207,8 +1206,8 @@ void RegenerateAllMapActionContextStatusCodes(void) {
     node->NameThyself(statusScratch, 0);
   }
 
-  g_zoneStatusCodePrngSeed_006a5aec = 0;
-  g_zoneStatusCodePrngSeed_006a5aec = ClockDerivedPrngSeed();
+  g_zoneStatusCodePrngSeed = 0;
+  g_zoneStatusCodePrngSeed = ClockDerivedPrngSeed();
 }
 
 // FUNCTION: IMPERIALISM 0x00563da0

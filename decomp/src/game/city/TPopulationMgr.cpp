@@ -347,7 +347,7 @@ short* TPopulationMgr::PredictedNeeds() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b65b0
-char TPopulationMgr::Strike() {
+bool TPopulationMgr::Strike() {
   bool shortage = false;
   int skilledPopulation = baselineSlots->mediumSkillCount + baselineSlots->highSkillCount;
   short consumptionByResource[4];

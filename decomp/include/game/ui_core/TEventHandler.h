@@ -52,25 +52,25 @@ public:
                            TEvent* event);       // 0x10 0x48a2e0 DoEvent
   virtual void DoMenuCommand(int command);       // 0x11 0x48a310
   virtual void DoKeyEvent(TToolboxEvent* event); // 0x12 0x48a380
-  virtual char DoIdle(int action);               // 0x13 0x48a480 (MacApp DoIdle)
+  virtual bool DoIdle(int action);               // 0x13 0x48a480 (MacApp DoIdle)
 
   void HandleMenuCommand(int command);              // 0x0048a340 -> slot 0x11
   void HandleKeyEvent(TToolboxEvent* event);        // 0x0048a360 -> slot 0x12
   virtual int GetIdleFreq();                        // 0x14 0x415d50
   virtual void SetIdleFreq(int frequency);          // 0x15 0x415d70
   virtual TWindow* GetWindow();                     // 0x16
-  virtual char WantsToBeTarget();                   // 0x17 0x48a530
-  virtual char WillingToResignTarget();             // 0x18 0x48a550
+  virtual bool WantsToBeTarget();                   // 0x17 0x48a530
+  virtual bool WillingToResignTarget();             // 0x18 0x48a550
   virtual void ResignedTarget();                    // 0x19 0x48a690
   virtual void TargetValidationFailed(int reason);  // 0x1a 0x48a6b0
   virtual void TargetValidationSucceeded();         // 0x1b 0x48a650
   virtual void BecameWindowTarget();                // 0x1c 0x48a6d0
   virtual void ResignedWindowTarget();              // 0x1d 0x48a670
   virtual void BecameTarget();                      // 0x1e 0x48a6f0
-  virtual char BecomeTarget();                      // 0x1f 0x48a570
-  virtual char ResignTarget();                      // 0x20 0x48a5e0
+  virtual bool BecomeTarget();                      // 0x1f 0x48a570
+  virtual bool ResignTarget();                      // 0x20 0x48a5e0
   virtual void SelectOwner(unsigned char select);   // 0x21 0x48a710
-  virtual char IsTarget();                          // 0x22 0x48a500
+  virtual bool IsTarget();                          // 0x22 0x48a500
   virtual void RemoveBehavior(TBehavior* behavior); // 0x23 0x48a4a0
   virtual void AddBehavior(TBehavior* behavior);    // 0x24 0x48a4d0
 };

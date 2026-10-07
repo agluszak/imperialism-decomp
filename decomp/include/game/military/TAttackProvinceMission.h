@@ -42,10 +42,10 @@ public:
   FitnessOf(TMilitaryUnit* candidateUnit,
             float* referenceVector) override; // slot 0x1e 0x53e500 (shared w/ TInvadeMission)
 
-  virtual char SmokeEmIfYouGotEm() override; // slot 0x26 0x53d950
+  virtual bool SmokeEmIfYouGotEm() override; // slot 0x26 0x53d950
 
   // First TAttackProvinceMission-introduced virtual (slot 0x28 / offset 0xa0).
-  virtual char TryResolveTargetTerrainClass(); // 0x53db60
+  virtual bool TryResolveTargetTerrainClass(); // 0x53db60
 };
 
 ASSERT_SIZE(TAttackProvinceMission, 0x34);

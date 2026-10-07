@@ -109,7 +109,7 @@ void TArmyStack::AddUnitByRosterId(short rosterID) {
 void TArmyStack::AddUnitToChainHead(TMilitaryUnit* unit) {
   TArmyStackUnitNode* node = new TArmyStackUnitNode();
   if (node == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUArmyMgr_0069573C, 0xbeb);
+    FailNilPointerWithAssert(s_SourcePathUArmyMgr, 0xbeb);
   }
   node->unit = unit;
   node->next = head14;

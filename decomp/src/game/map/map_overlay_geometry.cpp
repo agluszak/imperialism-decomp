@@ -26,10 +26,10 @@ void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
   ComputeWrappedIsometricScreenOffsetFromTile(tileId, screenXY, 0x10, 0, 0);
   int baseX = static_cast<short>(
       0x31 - static_cast<int>(static_cast<float>(static_cast<short>(screenXY[0])) *
-                              g_HexHighlightScreenScale_00658640));
+                              g_HexHighlightScreenScale));
   int baseY = static_cast<short>(
       0x2d - static_cast<int>(static_cast<float>(static_cast<short>(screenXY[1])) *
-                              g_HexHighlightScreenScale_00658640));
+                              g_HexHighlightScreenScale));
   int rightX = baseX + 5;
   int bottomY = baseY + 5;
 
@@ -126,10 +126,10 @@ void DrawHexNeighborBorderGuidePathForTile(short tileId, int compareValue, short
   } else {
     y0 = static_cast<short>(0x2d -
                             static_cast<int>(static_cast<float>(static_cast<short>(screenXY[1])) *
-                                             g_HexHighlightScreenScale_00658640));
+                                             g_HexHighlightScreenScale));
     x0 = static_cast<short>(0x31 -
                             static_cast<int>(static_cast<float>(static_cast<short>(screenXY[0])) *
-                                             g_HexHighlightScreenScale_00658640));
+                                             g_HexHighlightScreenScale));
     x1 = x0 + 1;
     x2 = x0 + 2;
     x3 = x0 + 4;
@@ -220,12 +220,12 @@ void DrawHexNeighborBorderGuidePathForTile(short tileId, int compareValue, short
 int GetNeighborTileIndexOnMap108x60(int tileIndex, int direction) {
   int col;
   if ((tileIndex / 0x6c & 1U) == 0) {
-    col = g_hexColOffsetEvenRow_00697450[direction];
+    col = g_hexColOffsetEvenRow[direction];
   } else {
-    col = g_hexColOffsetOddRow_00697480[direction];
+    col = g_hexColOffsetOddRow[direction];
   }
   col = tileIndex % 0x6c + col;
-  int row = tileIndex / 0x6c + g_hexRowOffset_00697468[direction];
+  int row = tileIndex / 0x6c + g_hexRowOffset[direction];
   if (g_pGlobalMapState->hexNeighborWrapHorizontally == '\0') {
     if (col < 0) {
       col = col + 0x6c;

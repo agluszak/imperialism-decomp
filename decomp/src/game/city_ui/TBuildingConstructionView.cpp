@@ -188,7 +188,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     // Power-plant slot: eligible if the owner can afford the 5000 cost; show it in 'buck'.
     CString buckCost;
     TGreatPower* owner = city->ownerNation;
-    int availableBudget = owner->treasuryValue10 + owner->diplomacyBudgetBase / 100;
+    int availableBudget = owner->treasuryValue + owner->diplomacyBudgetBase / 100;
     if (availableBudget < 0) {
       availableBudget = 0;
     }
@@ -229,7 +229,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     okButton->ViewEnable(0, 0);
   } else {
     warnCtrl->Show(0, 0);
-    okButton->timingWord92 = 0xbc7;
+    okButton->clickSoundId = 0xbc7;
   }
 }
 

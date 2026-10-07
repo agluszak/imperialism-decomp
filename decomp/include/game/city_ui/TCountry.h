@@ -37,7 +37,7 @@ public:
   virtual void BecomeProtectorateOf(int targetNationSlot);
   virtual void BecomeColonyOf(int targetNationSlot);
   virtual void RegainIndependence(void);
-  virtual char IsColonyOf(int nationCode);
+  virtual bool IsColonyOf(int nationCode);
 
   NationSlot DecodeOwnerNationSlot() const {
     NationSlot ownerNationSlot = encodedNationSlot;
@@ -62,11 +62,11 @@ public:
   virtual short GetTradeOffersFor(short resourceKind);
   virtual void PurchaseItem(short resourceKind, short amount, short price);
   virtual bool StillBuyingItem(ResourceKindStorage resourceKind);
-  virtual char ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
+  virtual bool ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                                  ResourceKindStorage resourceKind);
   // ORACLE: Mac names TCountry::AddOfferFrom(short, short).
   virtual void AddOfferFrom(NationSlot sourceNationSlot, DiplomacyProposalCodeStorage proposalCode);
-  virtual char IsInConsortiumWith(short policyCode);
+  virtual bool IsInConsortiumWith(short policyCode);
   // ORACLE: Mac names TCountry::AddNoticeFrom(short, short).
   virtual void AddNoticeFrom(short sourceNation, short actionCode);
   virtual bool IsClient(void) const;
@@ -97,7 +97,7 @@ public:
   CString identitySharedString1;
   NationSlot nationSlot;
   EncodedNationSlot encodedNationSlot;
-  int treasuryValue10;
+  int treasuryValue;
   short needLevelByNation[0x17];
   short field42;
   TSortedList* militaryUnitList;

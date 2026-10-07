@@ -275,7 +275,7 @@ int TTradeCluster::GetTradeSellControlValue() {
 }
 
 // FUNCTION: IMPERIALISM 0x00587980
-unsigned char TTradeCluster::IsSelectionAllowed() {
+bool TTradeCluster::IsSelectionAllowed() {
   TPicture* bidControl = static_cast<TPicture*>(this->ResolveControlByTag(kControlTagCard));
   if (bidControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineBidActionable);
@@ -283,14 +283,14 @@ unsigned char TTradeCluster::IsSelectionAllowed() {
 
   if (bidControl->glyphBase != kTradeBitmapBidStateA &&
       bidControl->glyphBase != kTradeBitmapBidStateB) {
-    return 0;
+    return false;
   }
 
   bool actionable = bidControl->IsActionable();
   if (!actionable) {
-    return 0;
+    return false;
   }
-  return 1;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00587a10

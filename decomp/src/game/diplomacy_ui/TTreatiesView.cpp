@@ -83,7 +83,7 @@ void TTreatiesView::Draw(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x004f7f10
 void TTreatiesView::Setup() {
   TCluster* scrollCluster = static_cast<TCluster*>(ResolveControlByTag(kControlTagScro)); // 'scro'
-  SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText_00654ec8), scrollCluster);
+  SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText), scrollCluster);
   scrollCluster->SetSelectedChildTagAndRefresh(kControlTagScr5); // 'scr5'
   diplomacyMapView->actionCode = kDipActionBuildConsulate;
 }

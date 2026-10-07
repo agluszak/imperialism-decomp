@@ -14,7 +14,7 @@ public:
   // clang-format off
   virtual ~TFileStream() override; // slot 0x01 (scalar deleting destructor)
   virtual void WriteSharedString(CString* sharedString) override;       // slot 0x2b 0x489390
-  virtual char ReadObject(void* outByte) override;                   // slot 0x2c 0x489300
+  virtual bool ReadObject(void* outByte) override;                   // slot 0x2c 0x489300
   virtual void WriteObject(void* object, int flag) override; // slot 0x2d 0x489330
   // clang-format on
   ArchiveStreamAdapter* backingArchiveOrStream;
@@ -34,6 +34,5 @@ public:
 
   // 0x00489220 / 0x00489290: forward raw byte read/write to the backing
   // CArchive, asserting the backing pointer is non-null first.
-
 };
 ASSERT_SIZE(TFileStream, 0x8);

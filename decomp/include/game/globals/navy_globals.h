@@ -71,11 +71,11 @@ int GetNavyOrderCategoryBaseline(int category);
 extern short g_awMapContextActionLabelTokenByCommand[17];
 
 // Naval combat damage-split and gunnery hit-chance constants.
-extern double g_dNavyDamageSplitRatioA_00669f10;
-extern double g_dNavyDamageSplitRatioB_00669f18;
-extern double g_dNavyHitChanceRangeScale_00669ef8;
-extern float g_fNavyHitChanceCubeOffset_00669f00;
-extern float g_fNavyHitChanceNumerator_00669f04;
+extern double g_dNavyDamageSplitRatioA;
+extern double g_dNavyDamageSplitRatioB;
+extern double g_dNavyHitChanceRangeScale;
+extern float g_fNavyHitChanceCubeOffset;
+extern float g_fNavyHitChanceNumerator;
 extern int g_anNavyTacticalMoveCostsByDirection[6];
 
 extern "C" {
@@ -98,18 +98,18 @@ extern "C" bool g_bPerfectNavalIntelligenceCheat;
 
 extern "C" TAdmiral* g_pNavySecondaryOrderListHead;
 
-extern int g_UnknownMapOrderExecutionGuard_006a3ee0;
+extern int g_UnknownMapOrderExecutionGuard;
 
-extern "C" const char s_SourcePathUNewspaper_00698470[];
+extern "C" const char s_SourcePathUNewspaper[];
 
-extern "C" const char s_SourcePathUNavy_006983C8[];
+extern "C" const char s_SourcePathUNavy[];
 
-extern "C" const char s_SourcePathUOcean_006984CC[];
+extern "C" const char s_SourcePathUOcean[];
 
-extern short g_Populate_Beachhead_Mission_LookupTable_00697958[];
-extern const int g_NavyMissionIndustrialCostTrailingLookup_0065A920[14];
+extern short g_Populate_Beachhead_Mission_LookupTable[];
+extern const int g_NavyMissionIndustrialCostTrailingLookup[14];
 
-extern const short g_NavyOrderDistributionCategoryWeights_00697978[4];
+extern const short g_NavyOrderDistributionCategoryWeights[4];
 
 extern short g_NavyResolveOrderRanking[14];
 
@@ -117,7 +117,7 @@ extern short g_NavyMissionOrderRanking[14];
 
 extern short g_NavyPriorityOrderRanking[14];
 
-extern "C" const char s_szLineBreak_00695880[8];
+extern "C" const char s_szLineBreak[8];
 
 extern float g_fMissionScoreNormalizationDivisor;
 extern float g_fScatteredShipsMissionDefaultScore;

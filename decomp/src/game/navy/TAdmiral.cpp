@@ -171,12 +171,12 @@ void TAdmiral::ReassignThyself() {
 }
 
 // FUNCTION: IMPERIALISM 0x00551990
-unsigned char TAdmiral::IsSeniorTo(const TAdmiral* other) const {
+bool TAdmiral::IsSeniorTo(const TAdmiral* other) const {
   if (this == 0) {
-    return 0;
+    return false;
   }
   if (other == 0) {
-    return 1;
+    return true;
   }
   return experiencePoints > other->experiencePoints;
 }

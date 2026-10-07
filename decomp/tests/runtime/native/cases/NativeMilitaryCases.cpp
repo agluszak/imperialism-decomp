@@ -686,7 +686,7 @@ RuntimeActionResult RunMilitaryMaintenance(NativeTransition& transition) {
   foreignSlot12->IShip(12, g_pMapActionContextListHead, foreignNationSlot,
                        "maintenance-foreign-slot12");
 
-  nation->treasuryValue10 = 10000;
+  nation->treasuryValue = 10000;
   nation->militaryExpenses = 0;
 
   JsonObject args;
@@ -2107,11 +2107,11 @@ RuntimeActionResult RunRecomputeNationOrderPriorityMetrics(NativeTransition& tra
   RecomputeNationOrderPriorityMetrics();
 
   for (nation = 0; nation < 7; ++nation) {
-    queueDivergence.Add(FloatBits(g_afNationOrderQueueDivergence_006a3a88[nation]));
-    mobileScore.Add(FloatBits(g_afNationMobileUnitScore_006a3b88[nation]));
-    mobileDivergence.Add(FloatBits(g_afNationMobileUnitDivergence_006a3ae0[nation]));
-    combinedDivergence.Add(FloatBits(g_afNationCombinedUnitDivergence_006a3b50[nation]));
-    weightedMilitary.Add(FloatBits(g_afNationWeightedMilitaryOrderScore_006a3b20[nation]));
+    queueDivergence.Add(FloatBits(g_afNationOrderQueueDivergence[nation]));
+    mobileScore.Add(FloatBits(g_afNationMobileUnitScore[nation]));
+    mobileDivergence.Add(FloatBits(g_afNationMobileUnitDivergence[nation]));
+    combinedDivergence.Add(FloatBits(g_afNationCombinedUnitDivergence[nation]));
+    weightedMilitary.Add(FloatBits(g_afNationWeightedMilitaryOrderScore[nation]));
     TGreatPower* power = g_apNationStates[nation];
     if (power != 0 && power->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) != 0) {
       TAutoGreatPower* autoPower = static_cast<TAutoGreatPower*>(power);

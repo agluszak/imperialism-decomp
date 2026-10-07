@@ -471,15 +471,15 @@ void SetQuickDrawPenSizeAndMarkDirty(short horizontalSize, short verticalSize) {
 // FUNCTION: IMPERIALISM 0x00495340
 short SetQuickDrawStrokeStateAndMarkDirty(short state) {
   g_bQuickDrawStrokePairDirty = 1;
-  g_Reset_Quick_Draw_State_006A1D10 = state;
+  g_Reset_Quick_Draw_State = state;
   return state;
 }
 
 // FUNCTION: IMPERIALISM 0x00495370
 int QuickDrawStateAssertGuard() {
-  int result = g_QuickDrawStateAssertGate_006A1DB8;
-  if (g_QuickDrawStateAssertGate_006A1DB8 == 0) {
-    result = TemporarilyClearAndRestoreUiInvalidationFlag(g_szQuickDrawSourcePath_00695168, 0x35a);
+  int result = g_QuickDrawStateAssertGate;
+  if (g_QuickDrawStateAssertGate == 0) {
+    result = TemporarilyClearAndRestoreUiInvalidationFlag(g_szQuickDrawSourcePath, 0x35a);
   }
   return result;
 }
@@ -488,7 +488,7 @@ int QuickDrawStateAssertGuard() {
 void ResetQuickDrawStrokeState() {
   g_nQuickDrawPenHorizontalSize = g_Reset_Quick_Draw_Value_0064B8F0;
   g_nQuickDrawPenVerticalSize = g_Reset_Quick_Draw_Value_0064B8F4;
-  g_Reset_Quick_Draw_State_006A1D10 = g_Reset_Quick_Draw_WordState_0064B8F8;
+  g_Reset_Quick_Draw_State = g_Reset_Quick_Draw_WordState;
   g_bQuickDrawStrokePairDirty = 1;
 }
 
@@ -779,7 +779,7 @@ void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect) {
 void __cdecl SetQuickDrawCursor(const QuickDrawCursor* cursor) {
   (void)cursor;
   if (g_QuickDrawSetCursorAssertGate == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szQuickDrawSourcePath_00695168, 0x984);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szQuickDrawSourcePath, 0x984);
   }
 }
 
@@ -787,7 +787,7 @@ void __cdecl SetQuickDrawCursor(const QuickDrawCursor* cursor) {
 QuickDrawCursorHandle __cdecl GetQuickDrawCursor(short cursorId) {
   (void)cursorId;
   if (g_QuickDrawGetCursorAssertGate == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szQuickDrawSourcePath_00695168, 0x988);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szQuickDrawSourcePath, 0x988);
   }
   return 0;
 }

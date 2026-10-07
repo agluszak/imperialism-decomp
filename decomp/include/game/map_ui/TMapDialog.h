@@ -71,7 +71,7 @@ public:
   virtual void DoPostCreate(int arg) override;
 
   void RefreshMapTile(short tileIndex) override;
-  unsigned char IsTileVisible(short tileIndex) override;
+  bool IsTileVisible(short tileIndex) override;
   void SetMapViewTileIndex(int arg1) override;
   void SetMapViewCellCoordinates(int column, int row) override;
   virtual void FrameNeighbors(short* neighborTiles);

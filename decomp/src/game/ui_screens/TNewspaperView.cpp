@@ -53,7 +53,7 @@ void TNewspaperView::StuffValues(int pageNation) {
   dateControl->AssertValid();
   g_pSimMgr->GetSeason(&dateText);
   formatText.Format(g_szDecimalFormat, static_cast<short>(g_pSimMgr->economicTurn / 4) + 0x717);
-  panelText = dateText + g_szListSeparator_00695760 + formatText;
+  panelText = dateText + g_szListSeparator + formatText;
   dateControl->SetTextAndMaybeRefresh(&panelText, true);
   dateControl->InstallTextStyle(titleStyle, 1);
 
@@ -75,7 +75,7 @@ void TNewspaperView::StuffValues(int pageNation) {
       int tradeDelta = g_pTradeMgr->GetMarketChange();
       dateText.Format(g_szDecimalFormat, tradeDelta);
       if (tradeDelta > 0) {
-        dateText = g_szPlusPrefix_00698494 + dateText;
+        dateText = g_szPlusPrefix + dateText;
       }
       g_pSimMgr->GetString(0x275e, 1, &formatText);
       scanBracketExpressions(g_pSimMgr, &panelText, static_cast<LPCSTR>(formatText),
@@ -192,7 +192,7 @@ void TNewspaperView::BuildLocalizedTokenListFromBitmaskWithConjunction(CString* 
     } else if (emitted == setCount - 1) {
       *out += itemText;
     } else {
-      *out += itemText + g_szListSeparator_00695760;
+      *out += itemText + g_szListSeparator;
     }
     emitted++;
   }
@@ -219,11 +219,11 @@ void TNewspaperView::BuildLocalizedNationListFromBitmaskWithConjunction(CString*
     }
     g_pSimMgr->GetString(0x2711, i, &itemText);
     if (emitted == setCount - 2) {
-      *out += itemText + g_szListConjunction_00698498;
+      *out += itemText + g_szListConjunction;
     } else if (emitted == setCount - 1) {
       *out += itemText;
     } else {
-      *out += itemText + g_szListSeparator_00695760;
+      *out += itemText + g_szListSeparator;
     }
     emitted++;
   }

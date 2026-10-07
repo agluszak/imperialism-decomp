@@ -36,8 +36,8 @@ void TOffersPanelView::DoPostCreate(int arg) {
   acceptButton->AssertValid();
   rejectButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagReje));
   rejectButton->AssertValid();
-  acceptButton->timingWord92 = 0x1388;
-  rejectButton->timingWord92 = 0x1388;
+  acceptButton->clickSoundId = 0x1388;
+  rejectButton->clickSoundId = 0x1388;
 
   TextStyle sharedStyle;
   BuildUiTextStyleDescriptor(&sharedStyle, 0, 0, 0x2b68);
@@ -85,14 +85,14 @@ void TOffersPanelView::DoKeyEvent(TToolboxEvent* event) {
     if (button == 0) {
       return;
     }
-    g_pSfxPlaybackSystem->PlaySoundEffect(button->timingWord92, 0, 1);
+    g_pSfxPlaybackSystem->PlaySoundEffect(button->clickSoundId, 0, 1);
     QueueDeferredUiEventPacket(this, 0xa, button);
   } else if (commandCode == kUiKeyEscape) {
     TPictureButton* button = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagReje));
     if (button == 0) {
       return;
     }
-    g_pSfxPlaybackSystem->PlaySoundEffect(button->timingWord92, 0, 1);
+    g_pSfxPlaybackSystem->PlaySoundEffect(button->clickSoundId, 0, 1);
     QueueDeferredUiEventPacket(this, 0xa, button);
   }
 }
@@ -104,7 +104,7 @@ char TOffersPanelView::HandleMouseUp(const CPoint& point, TToolboxEvent* event, 
 }
 
 // FUNCTION: IMPERIALISM 0x004f9450
-char TOffersPanelView::PoseOffer(short sourceNation, short targetNation, short offerType) {
+bool TOffersPanelView::PoseOffer(short sourceNation, short targetNation, short offerType) {
   ResolveControlByTag(kControlTagOffr);
   CString templateText;
   CString proposalText;
@@ -186,13 +186,13 @@ char TOffersPanelView::PoseOffer(short sourceNation, short targetNation, short o
   if (isNotice) {
     message = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagText));
     message->AssertValid();
-    sheet->Locate(g_diplomacyPopupOffscreenPosition_006a3020, true);
-    wait->Locate(g_diplomacyPopupVisiblePosition_006a2fe0, true);
+    sheet->Locate(g_diplomacyPopupOffscreenPosition, true);
+    wait->Locate(g_diplomacyPopupVisiblePosition, true);
   } else {
     message = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagProp));
     message->AssertValid();
-    wait->Locate(g_diplomacyPopupOffscreenPosition_006a3020, true);
-    sheet->Locate(g_diplomacyPopupVisiblePosition_006a2fe0, true);
+    wait->Locate(g_diplomacyPopupOffscreenPosition, true);
+    sheet->Locate(g_diplomacyPopupVisiblePosition, true);
   }
   message->UpdateTextEntrySharedStringAndMaybeNotify(&proposalText, true);
   message->CenterVertically(true);
@@ -205,10 +205,10 @@ char TOffersPanelView::PoseOffer(short sourceNation, short targetNation, short o
       PumpUiMessagesAndBackgroundTasks(1);
     }
     if (lastNegotiationResponseTag == static_cast<int>(kControlTagAcce)) {
-      return 1;
+      return true;
     }
   }
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004f9a60
@@ -221,7 +221,7 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
 
   TDeluxeText* proposalText = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagProp));
   if (proposalText == 0) {
-    FailNilPointerWithAssert(s_SourcePathUDiplomacyViews_00696AE0, 0xca0);
+    FailNilPointerWithAssert(s_SourcePathUDiplomacyViews, 0xca0);
   }
 
   g_apTerrainTypeDescriptorTable[minorNationSlot]->FormatOverlayTerrainLabelText(&minorNationName);
@@ -287,8 +287,8 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
 
   TView* sheet = ResolveControlByTag(kControlTagShee);
   TView* wait = ResolveControlByTag(kControlTagWait);
-  wait->Locate(g_diplomacyPopupOffscreenPosition_006a3020, false);
-  sheet->Locate(g_diplomacyPopupVisiblePosition_006a2fe0, true);
+  wait->Locate(g_diplomacyPopupOffscreenPosition, false);
+  sheet->Locate(g_diplomacyPopupVisiblePosition, true);
   proposalText->UpdateTextEntrySharedStringAndMaybeNotify(&formattedMessage, true);
   proposalText->CenterVertically(true);
   RefreshControl();

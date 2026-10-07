@@ -43,8 +43,7 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
   g_pCursorControlPanel->AssertValid();
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 
-  ApplySharedStringToGlobalControlTag(CString(g_pGamePreferencesSharedText_0065DDC8),
-                                      kControlTagMain);
+  ApplySharedStringToGlobalControlTag(CString(g_pGamePreferencesSharedText), kControlTagMain);
 
   LoadUiStringByGroupAndIndexToControlObject(0x2743, 0x25, ResolveControlByTag(kControlTagOkay));
   LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, ResolveControlByTag(kControlTagQuer));
@@ -148,8 +147,7 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
   autoResCluster->ViewEnable(1, 0);
 
   int autoResEnabled = 0;
-  g_pAssetMgr->LoadSettingValueByKeyIntoOut(&autoResEnabled, g_pGamePreferencesAutoResKey_0065DDCC,
-                                            1);
+  g_pAssetMgr->LoadSettingValueByKeyIntoOut(&autoResEnabled, g_pGamePreferencesAutoResKey, 1);
   autoResCluster->SetSelectedTextOptionByTag(
       autoResEnabled != 0 ? kControlTagYess : kControlTagNooo, false);
 }

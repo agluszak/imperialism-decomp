@@ -71,7 +71,7 @@ public:
                     bool notify) override; // slot 0x8c 0x5367d0 -- detach and clear primary
   virtual void ForgetTaskForce(
       TTaskForce* taskForce) override; // slot 0x90 0x536810 -- clear secondary order if match
-  virtual char SmokeEmIfYouGotEm()
+  virtual bool SmokeEmIfYouGotEm()
       override; // slot 0x98 0x536740 -- clears queued order links/owner pointers, returns true
 
   virtual void GiveActionOrders(TTaskForce* mapOrderEntry); // slot 0x27 0x5354c0

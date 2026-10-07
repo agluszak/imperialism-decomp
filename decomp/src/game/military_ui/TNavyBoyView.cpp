@@ -44,7 +44,7 @@ void TNavyBoyView::Draw(RECT* rectBuffer) {
 
   short kindId = battleDetail->resourceType;
   finalLabel = typeNames[kindId];
-  finalLabel += s_szSpaceSeparator_00695794 + CString(battleDetail->nameBuffer);
+  finalLabel += s_szSpaceSeparator + CString(battleDetail->nameBuffer);
 
   SetQuickDrawTextOriginWithContextOffset(0x50, 0x18);
   DrawTextWithCachedQuickDrawStyleState(&finalLabel);

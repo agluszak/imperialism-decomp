@@ -222,19 +222,18 @@ void TScenarioChooser::StartGame() {
 
   if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
     do {
-      g_cstrCountryNameSettingValue006A4220 =
+      g_cstrCountryNameSettingValue =
           g_pLanguageMgr->StripCodeStr(g_pGameFlowState->playerNameString);
       CString promptText;
       g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&promptText, 0x2742, 3);
-      g_pViewMgr->MakePlanetSeedDialog(promptText, g_cstrCountryNameSettingValue006A4220, 0, 0, 0,
-                                       false);
-    } while (g_cstrCountryNameSettingValue006A4220.Compare(g_szEmptyString) == 0);
+      g_pViewMgr->MakePlanetSeedDialog(promptText, g_cstrCountryNameSettingValue, 0, 0, 0, false);
+    } while (g_cstrCountryNameSettingValue.Compare(g_szEmptyString) == 0);
 
-    CString qualifiedName = g_pLanguageMgr->PickGender(g_cstrCountryNameSettingValue006A4220);
-    qualifiedName += g_cstrCountryNameSettingValue006A4220;
-    g_cstrCountryNameSettingValue006A4220 = qualifiedName;
-    g_pGameFlowState->playerNameMirror = g_cstrCountryNameSettingValue006A4220;
-    g_pGameFlowState->playerNameString = g_cstrCountryNameSettingValue006A4220;
+    CString qualifiedName = g_pLanguageMgr->PickGender(g_cstrCountryNameSettingValue);
+    qualifiedName += g_cstrCountryNameSettingValue;
+    g_cstrCountryNameSettingValue = qualifiedName;
+    g_pGameFlowState->playerNameMirror = g_cstrCountryNameSettingValue;
+    g_pGameFlowState->playerNameString = g_cstrCountryNameSettingValue;
     g_pGameFlowState->activeNationTagIndex = static_cast<unsigned char>(mapControl->selectedNation);
     g_pGameFlowState->scenarioSelectionTag = kControlTagScn0 + selectedScenarioIndex;
     g_pAmbitApplication->PostTurnEventCodeMessage(kTurnEventNetworkGameOptions);

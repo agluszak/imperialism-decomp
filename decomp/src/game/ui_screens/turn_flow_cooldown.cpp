@@ -6,9 +6,9 @@
 
 // FUNCTION: IMPERIALISM 0x0057b900
 bool IsTurnFlowCooldownActiveAndResetExpiredState(void) {
-  if (g_nTurnCooldownDeferCounter006A43C4 < 1) {
-    g_nTurnCooldownDeferCounter006A43C4 = 0;
-    g_nTurnCooldownSideFlag00698B10 = 1;
+  if (g_nTurnCooldownDeferCounter < 1) {
+    g_nTurnCooldownDeferCounter = 0;
+    g_nTurnCooldownSideFlag = 1;
     return false;
   }
   return true;

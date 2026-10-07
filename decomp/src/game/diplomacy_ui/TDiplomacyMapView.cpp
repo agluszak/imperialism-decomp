@@ -96,7 +96,7 @@ bool IsMaskPixelSetAndOnRegionEdge(int x, int y, DiplomacyMaskBufferRun* run, ch
 
 static inline void AssertActionButtonResolved(void* button) {
   if (button == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUDiplomacyViews_00696AE0, 0x3a7);
+    FailNilPointerWithAssert(s_SourcePathUDiplomacyViews, 0x3a7);
   }
 }
 // FUNCTION: IMPERIALISM 0x004f3a50
@@ -129,10 +129,10 @@ IMPLEMENT_DYNCREATE(TDiplomacyMapView, TPicture)
 
 // FUNCTION: IMPERIALISM 0x004f3b80
 TDiplomacyMapView::TDiplomacyMapView() : TPicture() {
-  interactionModeAt94 = 0;
+  interactionMode = 0;
   frameRegionSelector = 0;
   selectedTerrainIndex = 0;
-  regionAt9c = 0;
+  region = 0;
   legendSurfaceMode = 6;
   stateFlag = 0;
   g_pAmbitApplication->cursorRegionInvalid = TRUE;
@@ -175,10 +175,10 @@ void TDiplomacyMapView::Close() {
 
 // FUNCTION: IMPERIALISM 0x004f3e60
 void TDiplomacyMapView::Free() {
-  if (regionAt9c != 0) {
-    DisposeRgn(regionAt9c);
+  if (region != 0) {
+    DisposeRgn(region);
   }
-  regionAt9c = 0;
+  region = 0;
   TView::Free();
 }
 
@@ -191,10 +191,10 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
   memset(labelXs, 0, sizeof(labelXs));
   memset(labelYs, 0, sizeof(labelYs));
 
-  regionAt9c = NewRgn();
+  region = NewRgn();
   for (short terrain = 0; terrain < 0x17; ++terrain) {
     if (g_apTerrainTypeDescriptorTable[terrain] != 0) {
-      UnionRgn(regionAt9c, g_pMacViewMgr->GetCountryRegion(terrain), regionAt9c);
+      UnionRgn(region, g_pMacViewMgr->GetCountryRegion(terrain), region);
     }
   }
 
@@ -209,15 +209,14 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
     DiplomacyMaskBufferRun* run = &maskRuns[nationIndex];
     RgnHandle nationRgn = g_pMacViewMgr->GetCountryRegion(nationIndex);
     (*nationRgn)->RefreshBoundingBox();
-    CopyRect(&run->boundsAt04, &(*nationRgn)->rgnBBox);
-    run->boundsAt04.right =
-        run->boundsAt04.left + (((run->boundsAt04.right - run->boundsAt04.left) + 7) >> 3) * 8;
+    CopyRect(&run->bounds, &(*nationRgn)->rgnBBox);
+    run->bounds.right = run->bounds.left + (((run->bounds.right - run->bounds.left) + 7) >> 3) * 8;
     delete[] run->maskBytes;
-    run->maskBytes = new unsigned char[(run->boundsAt04.right - run->boundsAt04.left) *
-                                       (run->boundsAt04.bottom - run->boundsAt04.top)];
+    run->maskBytes = new unsigned char[(run->bounds.right - run->bounds.left) *
+                                       (run->bounds.bottom - run->bounds.top)];
     unsigned char* mask = run->maskBytes;
-    for (int y = run->boundsAt04.top; y < run->boundsAt04.bottom; ++y) {
-      for (int x = run->boundsAt04.left; x < run->boundsAt04.right;) {
+    for (int y = run->bounds.top; y < run->bounds.bottom; ++y) {
+      for (int x = run->bounds.left; x < run->bounds.right;) {
         *mask = 0;
         for (int bit = 1; bit < 0x100; bit *= 2) {
           CPoint probe;
@@ -347,7 +346,7 @@ void TDiplomacyMapView::InitializeDiplomacyMinisterActionControlsAndLabels() {
   CString text;
 
   for (int buttonIndex = 0; buttonIndex < 6; ++buttonIndex) {
-    TView* button = ResolveControlByTag(g_diplomacyActionButtonTagTable_00696960[buttonIndex]);
+    TView* button = ResolveControlByTag(g_diplomacyActionButtonTagTable[buttonIndex]);
     actionButtons[buttonIndex] = button;
     AssertActionButtonResolved(button);
   }
@@ -375,7 +374,7 @@ void TDiplomacyMapView::InitializeDiplomacyMinisterActionControlsAndLabels() {
   } else {
     TView* offrControl = ResolveControlByTag(g_aDiplomacyActionTopicTabTags[5]);
     SetControlHoverHelpText(CString(g_szEmptyString), offrControl);
-    offrControl->Locate(g_diplomacyPopupOffscreenPosition_006a3020, false);
+    offrControl->Locate(g_diplomacyPopupOffscreenPosition, false);
   }
 }
 
@@ -383,11 +382,11 @@ void TDiplomacyMapView::InitializeDiplomacyMinisterActionControlsAndLabels() {
 void TDiplomacyMapView::Draw(RECT* rectBuffer) {
   CString unusedScratch;
 
-  if (interactionModeAt94 == 1) {
+  if (interactionMode == 1) {
     RebuildDiplomacyLegendPaletteMode1AndBlit(frameRegionSelector, rectBuffer);
-  } else if (interactionModeAt94 == 2) {
+  } else if (interactionMode == 2) {
     RenderDiplomacyLegendSurfaceAndPresent(rectBuffer);
-  } else if (interactionModeAt94 == 4) {
+  } else if (interactionMode == 4) {
     RebuildDiplomacyLegendPaletteMode4AndBlit(frameRegionSelector, rectBuffer);
   } else {
     RenderDiplomacyLegendSurfaceAndPresent(rectBuffer);
@@ -398,7 +397,7 @@ void TDiplomacyMapView::Draw(RECT* rectBuffer) {
   QDFrameRgn(frameRegion);
   SetQuickDrawFillColor(0);
 
-  if (interactionModeAt94 == 5) {
+  if (interactionMode == 5) {
     DrawVoteNuggets();
   }
   DrawIcons(rectBuffer);
@@ -495,7 +494,7 @@ void TDiplomacyMapView::DrawNames(const RECT* presentRect) {
 void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
   const short policyIconColumns[5] = {4, 3, 2, 0, 1};
 
-  if (interactionModeAt94 != 1 && interactionModeAt94 != 4 && interactionModeAt94 != 2) {
+  if (interactionMode != 1 && interactionMode != 4 && interactionMode != 2) {
     return;
   }
 
@@ -528,7 +527,7 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
       UpdatePaletteIndexWithDefaultFallback(0x13);
     }
 
-    if (interactionModeAt94 == 4) {
+    if (interactionMode == 4) {
       if (g_pDiplomacyTurnStateManager->IsGreatPower(frameRegionSelector)) {
         short need = g_apNationStates[frameRegionSelector]->diplomacyPolicyByNation[terrainIndex];
         if (need == 0x133) {
@@ -540,7 +539,7 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
               static_cast<short>(policyIconColumns[need - kDiplomacyProposalJoinEmpire] << 4);
         }
       }
-    } else if (interactionModeAt94 == 2) {
+    } else if (interactionMode == 2) {
       short relation =
           g_apTerrainTypeDescriptorTable[frameRegionSelector]->needLevelByNation[terrainIndex];
       boycottFlag = (frameRegionSelector < 7) &&
@@ -560,7 +559,7 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
           }
         }
       }
-    } else { // interactionModeAt94 == 1
+    } else { // interactionMode == 1
       if (g_pDiplomacyTurnStateManager->IsGreatPower(frameRegionSelector)) {
         short need = g_apNationStates[frameRegionSelector]->diplomacyGrantByNation[terrainIndex];
         if (need == 1000) {
@@ -927,7 +926,7 @@ eDipAction TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPo
   if (PtInRect(&diplomacyHitBounds, *clickPoint) == 0) {
     return kDipActionNone;
   }
-  if (interactionModeAt94 == 5) {
+  if (interactionMode == 5) {
     return kDipActionNone;
   }
 
@@ -1190,27 +1189,27 @@ void DiplomacyMaskBufferRun::BlitMonochromeMaskBytePatternToSurface(TQuickDrawBl
   }
 
   int rowStride = surface->stride;
-  unsigned int row = boundsAt04.top;
+  unsigned int row = bounds.top;
   unsigned char* destCursor;
   int rowAdvance;
   if (!flipVertical) {
-    destCursor = surface->pixelBits + (origin->y + row) * rowStride + origin->x + boundsAt04.left;
-    rowAdvance = boundsAt04.left + (rowStride - boundsAt04.right);
+    destCursor = surface->pixelBits + (origin->y + row) * rowStride + origin->x + bounds.left;
+    rowAdvance = bounds.left + (rowStride - bounds.right);
   } else {
     int surfaceHeight = surface->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
     if (surfaceHeight < 1) {
       surfaceHeight = -surfaceHeight;
     }
     destCursor = surface->pixelBits + (((surfaceHeight - origin->y) - row) - 1) * rowStride +
-                 origin->x + boundsAt04.left;
-    rowAdvance = boundsAt04.left + (-rowStride - boundsAt04.right);
+                 origin->x + bounds.left;
+    rowAdvance = bounds.left + (-rowStride - bounds.right);
   }
 
-  if (static_cast<int>(row) < boundsAt04.bottom) {
+  if (static_cast<int>(row) < bounds.bottom) {
     do {
-      int x = boundsAt04.left;
+      int x = bounds.left;
       unsigned char* rowCursor = destCursor;
-      if (x < boundsAt04.right) {
+      if (x < bounds.right) {
         do {
           if (*maskCursor == 0) {
             x += 8;
@@ -1237,11 +1236,11 @@ void DiplomacyMaskBufferRun::BlitMonochromeMaskBytePatternToSurface(TQuickDrawBl
           }
           maskCursor += 1;
           rowCursor = destCursor;
-        } while (x < boundsAt04.right);
+        } while (x < bounds.right);
       }
       row += 1;
       destCursor += rowAdvance;
-    } while (static_cast<int>(row) < boundsAt04.bottom);
+    } while (static_cast<int>(row) < bounds.bottom);
   }
 }
 
@@ -1339,22 +1338,22 @@ void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskInde
   if (maskCursor != 0) {
     int srcRowWidth = bmpHandle->m_pInfoHeader->bmiHeader.biWidth;
     int srcRowAdvance =
-        (((srcRowWidth + 3) & 0xfffffffc) - maskRun->boundsAt04.right) + maskRun->boundsAt04.left;
+        (((srcRowWidth + 3) & 0xfffffffc) - maskRun->bounds.right) + maskRun->bounds.left;
     int surfaceHeight = surface->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
     if (surfaceHeight < 1) {
       surfaceHeight = -surfaceHeight;
     }
-    int row = maskRun->boundsAt04.top;
+    int row = maskRun->bounds.top;
     int rowStride = surface->blitSurface.stride;
     unsigned char* destCursor = surface->blitSurface.pixelBits +
-                                ((surfaceHeight - row) - 1) * rowStride + maskRun->boundsAt04.left;
-    int destRowAdvance = (maskRun->boundsAt04.left - maskRun->boundsAt04.right) - rowStride;
+                                ((surfaceHeight - row) - 1) * rowStride + maskRun->bounds.left;
+    int destRowAdvance = (maskRun->bounds.left - maskRun->bounds.right) - rowStride;
     unsigned char* srcCursor = static_cast<unsigned char*>(bmpHandle->m_dibBits);
 
-    if (row < maskRun->boundsAt04.bottom) {
+    if (row < maskRun->bounds.bottom) {
       do {
-        int x = maskRun->boundsAt04.left;
-        if (x < maskRun->boundsAt04.right) {
+        int x = maskRun->bounds.left;
+        if (x < maskRun->bounds.right) {
           do {
             if (*maskCursor == 0) {
               x += 8;
@@ -1382,12 +1381,12 @@ void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskInde
               } while (bit < 0x100);
             }
             maskCursor += 1;
-          } while (x < maskRun->boundsAt04.right);
+          } while (x < maskRun->bounds.right);
         }
         row += 1;
         srcCursor += srcRowAdvance;
         destCursor += destRowAdvance;
-      } while (row < maskRun->boundsAt04.bottom);
+      } while (row < maskRun->bounds.bottom);
     }
   }
 
@@ -1446,22 +1445,22 @@ void TDiplomacyMapView::ChangeSelectedActionTopic(int topicIndex) {
 
   switch (newTopic) {
   case 0:
-    interactionModeAt94 = 0;
+    interactionMode = 0;
     break;
   case 1:
-    interactionModeAt94 = 4;
+    interactionMode = 4;
     break;
   case 2:
-    interactionModeAt94 = 1;
+    interactionMode = 1;
     break;
   case 3:
-    interactionModeAt94 = 2;
+    interactionMode = 2;
     break;
   case 4:
-    interactionModeAt94 = 5;
+    interactionMode = 5;
     break;
   case 5:
-    interactionModeAt94 = 0;
+    interactionMode = 0;
     break;
   }
 
@@ -1522,7 +1521,7 @@ void TDiplomacyMapView::DoKeyEvent(TToolboxEvent* event) {
 
 // FUNCTION: IMPERIALISM 0x004f7170
 void TDiplomacyMapView::SetOverlay(int overlay) {
-  interactionModeAt94 = overlay;
+  interactionMode = overlay;
   InvalidateCityDialogRectRegion(&mapViewportRect, 1);
 }
 
@@ -1617,7 +1616,7 @@ char TDiplomacyMapView::CheckEntanglements(int targetNationSlot, eDipAction acti
     scanBracketExpressions(g_pSimMgr, &formattedIntro, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(targetName));
 
-    entangledNations = CString(g_pDiplomacyPanelEmptyText_00654ec8);
+    entangledNations = CString(g_pDiplomacyPanelEmptyText);
     for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
       if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(static_cast<short>(targetNationSlot),
                                                           static_cast<short>(nationSlot))) {
@@ -1652,7 +1651,7 @@ short TDiplomacyMapView::RuntimeActiveNation() const {
 }
 
 short TDiplomacyMapView::RuntimeRelationshipOverlaySourceNation() const {
-  if (interactionModeAt94 != 1) {
+  if (interactionMode != 1) {
     return -1;
   }
   return frameRegionSelector;

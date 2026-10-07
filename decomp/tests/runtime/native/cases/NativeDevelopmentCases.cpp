@@ -221,7 +221,7 @@ RuntimeActionResult RunIssuedRailSection(NativeTransition& transition) {
   TCivUnit* civilian = new TCivUnit();
   civilian->ICivUnit(kCivilianUnitEngineer, sourceTile, nationSlot);
   if (nation->ComputeAvailableDiplomacyBudget() < 400) {
-    nation->treasuryValue10 = 10000;
+    nation->treasuryValue = 10000;
   }
 
   JsonObject args;
@@ -236,7 +236,7 @@ RuntimeActionResult RunIssuedRailSection(NativeTransition& transition) {
   // state mutations it performs for an adjacent rail click.
   const StrategicTerrainKind terrainKind =
       g_pGlobalMapState->terrainStateTable[destinationTile].GetTerrainKind();
-  nation->treasuryValue10 -= g_adwEngineerRailBuildCostByTerrainType[terrainKind];
+  nation->treasuryValue -= g_adwEngineerRailBuildCostByTerrainType[terrainKind];
   g_pGlobalMapState->ApplyRailSectionEndpointDirectionFlags(sourceTile, destinationTile,
                                                             nationSlot);
   civilian->SetOrders(kUnitOrderLayRail, sourceTile);

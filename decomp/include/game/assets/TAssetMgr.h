@@ -17,9 +17,9 @@ public:
   virtual ~TAssetMgr() override; // slot 0x01 (scalar deleting destructor)
   virtual TWindow*
   ResolveTurnEventDialogNodeByMessageContext(TurnEventId messageContext); // slot 0x0a 0x5df3c0
-  virtual void OpenFilesForView(short fileSet); // slot 0x0b 0x5df780
-  virtual void OpenFilesFor(short fileSet);     // slot 0x0c 0x5df3f0
-  virtual void CloseFilesFor(short fileSet);    // slot 0x0d 0x5df410
+  virtual void OpenFilesForView(short fileSet);                           // slot 0x0b 0x5df780
+  virtual void OpenFilesFor(short fileSet);                               // slot 0x0c 0x5df3f0
+  virtual void CloseFilesFor(short fileSet);                              // slot 0x0d 0x5df410
   // The third argument is unused by the Windows body but is part of the retail virtual ABI:
   // the caller pushes it before the movie-view and CString-reference arguments, and the callee
   // returns with RET 0x0c.
@@ -38,17 +38,17 @@ public:
 
   int unusedRegion[7];
   CString sharedTextSlots[0xd]; // +0x20 .. 0x54
-  int deadStore54; // +0x54
+  int deadStore54;              // +0x54
 
   TAssetMgr();
   void EnsurePictWvDataGobLoadedBySlot(int languageTag);
   void ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag);
   unsigned char SaveMainDocumentToPathAndMarkSaved(const CString& savePath);
-  unsigned char OpenMainDocumentFromPathAndMarkLoaded(const CString& loadPath);
+  bool OpenMainDocumentFromPathAndMarkLoaded(const CString& loadPath);
   void SetPreferenceString(CString* value, const char* key);
   void LoadSettingValueByKeyIntoOut(int* out, LPCSTR key, int defaultValue);
   void WriteIntegerSettingByValueAndKey(int value, LPCSTR key); // 0x005e02c0
-  unsigned char HasPendingClientSaveFile();
+  bool HasPendingClientSaveFile();
   int DeleteLegacyCliSaveImpFiles();
   void ScheduleTimerSlotCallbackWithInterval(TimerSlotCallback callback, UINT interval, int slot);
   CString FormatVersionStringFromVersionResource();

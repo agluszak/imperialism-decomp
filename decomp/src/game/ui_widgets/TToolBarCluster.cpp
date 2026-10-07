@@ -51,7 +51,7 @@ void TToolBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
   TCluster::DoEvent(commandId, sourceHandler, event);
 
   bool eligible = g_pApplication->InModalState() == 0;
-  if (g_pApplication->screenModeAt24 > 1) {
+  if (g_pApplication->screenMode > 1) {
     eligible = false;
   }
   if (commandId != 10 || !eligible) {
@@ -126,7 +126,7 @@ void TToolBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
 void TToolBarCluster::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
                                                                           RgnHandle hitArg) {
   if (ResolveControlByTag(kManifestTagCivi) != 0) {
-    CString label(g_pSmallViewsEmptyText_00662B90);
+    CString label(g_pSmallViewsEmptyText);
 
     TView* mainControl = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagMain);
     if (mainControl == 0) {
@@ -255,7 +255,7 @@ void TToolBarCluster::AddInfoBehaviors() {
     CString yearLabel;
     g_pSimMgr->GetString(0x2730, 0x12, &seasonLabel);
     g_pSimMgr->GetString(0x2730, 8, &yearLabel);
-    text = seasonLabel + g_szListSeparator_00695760 + yearLabel;
+    text = seasonLabel + g_szListSeparator + yearLabel;
     SetControlHoverHelpText(text, seasonControl);
     ApplyUiTextStyleAndThemeFlags(seasonControl, 0, 0xc, 0x2b6c, 0x2b67);
     seasonControl->SetJustification(-2, false);
@@ -293,7 +293,7 @@ void TToolBarCluster::AddInfoBehaviors() {
 void TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(short nationId) {
   CString treaText;
   if (g_pSimMgr->ReallyInTheGame(nationId)) {
-    g_pSimMgr->NumToCurrency(g_apNationStates[nationId]->treasuryValue10, &treaText);
+    g_pSimMgr->NumToCurrency(g_apNationStates[nationId]->treasuryValue, &treaText);
   }
   TView* treaControl = this->ResolveControlByTag(kControlTagTrea); // 'trea'
   if (treaControl != nullptr) {
@@ -343,7 +343,7 @@ void DispatchUiRuntimeMessage102CAndRefreshActiveView() {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFlagButton));
   if (node == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xf6c);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xf6c);
   }
   CPoint placement;
   g_pViewMgr->GetTopLeftFor(node, &placement);
@@ -359,7 +359,7 @@ void PoseGamePreferencesDialogModally() {
       static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
           kTurnEventGamePreferences, 0));
   if (node == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgr_0069B6BC, 0xf90);
+    FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xf90);
   }
   node->SetModality(true);
   node->PoseModally();

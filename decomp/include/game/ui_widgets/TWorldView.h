@@ -56,8 +56,7 @@ public:
   virtual void ControlClick(int tileIndex, int dispatchContext);
   virtual void HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int arg2);
   virtual void ShiftClick(int stridedRecord, int dispatchContext);
-  virtual void CommandOptionClick(int stridedRecord,
-                                                               int dispatchContext);
+  virtual void CommandOptionClick(int stridedRecord, int dispatchContext);
   virtual void NormalClick(short nTileIndex, int nInputFlags);
   // ORACLE: Mac names this TWorldView::CenterOn(short). The Windows virtual
   // consumes the promoted stack dword and concrete bodies reuse its upper word.
@@ -66,7 +65,7 @@ public:
   virtual void SetMapViewTileIndex(int arg1);
   virtual void SetMapViewCellCoordinates(int column, int row);
   virtual void RefreshMapTile(short tileIndex);
-  virtual unsigned char IsTileVisible(short tileIndex);
+  virtual bool IsTileVisible(short tileIndex);
   virtual void NoticeTile(int tileIndex);
 };
 ASSERT_SIZE(TWorldView, 0x7c);

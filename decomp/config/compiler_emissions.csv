@@ -401,7 +401,7 @@ address|name|symbol|prototype|type|source_file|provenance
 0049c090|`dynamic initializer for 'g_defaultRgbColor_006A1F70''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 0049c0c0|`dynamic initializer for 'g_ScaleDefault6A1FE8''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 0049c0f0|`dynamic initializer for 'g_ScaleDefault6A1FC0''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
-0049c120|`dynamic initializer for 'g_scaledDefaultWidth_006A2008''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
+0049c120|`dynamic initializer for 'g_scaledDefaultWidth''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 0049c3b0|WaveLoadDescriptor::~WaveLoadDescriptor|||synthetic|src/game/gfx/TSoundResourceManager.cpp|legacy-marker
 0049cac0|`dynamic initializer for 'g_defaultPoint_006A1FD0''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 0049cae0|`dynamic initializer for 'g_defaultPoint_006A2000''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
@@ -944,16 +944,16 @@ address|name|symbol|prototype|type|source_file|provenance
 00525990|TMapMaker::`scalar deleting destructor'|||synthetic|src/game/map_generation/TMapMaker.cpp|legacy-marker
 005259e0|TuningKeywordMatches|||synthetic|src/game/map_generation/TMapMaker.cpp|legacy-marker
 00526fd0|TMapMaker::ClearRegionClassIndexReferences|||synthetic|include/game/map_generation/TMapMaker.h|legacy-marker
-0052a720|`dynamic initializer for 'g_regionBorderLinkTable_006a3900''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
+0052a720|`dynamic initializer for 'g_regionBorderLinkTable''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 0052a760||?Add@?$stretch@USeaSegment@@@@UAEPAUSeaSegment@@U2@@Z||template|src/game/map/sea_geometry.cpp|legacy-marker
-0052a820|`dynamic atexit destructor for 'g_regionBorderLinkTable_006a3900''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
+0052a820|`dynamic atexit destructor for 'g_regionBorderLinkTable''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 0052b3e0||?OverStretch@?$stretch@USeaSegment@@@@QAEXI@Z||template|src/game/map/sea_geometry.cpp|legacy-marker
 0052b460||??A?$stretch@USeaSegment@@@@QAEAAUSeaSegment@@I@Z||template|src/game/map/sea_geometry.cpp|legacy-marker
 0052b500|stretch::Detach|||template|src/game/map/sea_geometry.cpp|legacy-marker
 0052c030|stretch::At|||template|src/game/map/sea_geometry.cpp|legacy-marker
-0052c060|`dynamic initializer for 'g_seapointQuadTable_006a3478''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
+0052c060|`dynamic initializer for 'g_seapointQuadTable''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 0052c0a0||?Add@?$stretch@USeapoint@@@@UAEPAUSeapoint@@U2@@Z||template|src/game/map/sea_geometry.cpp|legacy-marker
-0052c170|`dynamic atexit destructor for 'g_seapointQuadTable_006a3478''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
+0052c170|`dynamic atexit destructor for 'g_seapointQuadTable''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 0052ca00|stretch::Detach|||template|src/game/map/sea_geometry.cpp|legacy-marker
 0052d0d0||?OverStretch@?$stretch@USeapoint@@@@QAEXI@Z||template|src/game/map/sea_geometry.cpp|legacy-marker
 0052d150||??A?$stretch@USeapoint@@@@QAEAAUSeapoint@@I@Z||template|src/game/map/sea_geometry.cpp|legacy-marker
@@ -1706,7 +1706,7 @@ address|name|symbol|prototype|type|source_file|provenance
 005c2ed0|TMilitaryUnit::`scalar deleting destructor'|||synthetic|src/game/military/TMilitaryUnit.cpp|legacy-marker
 005c3aa0|`dynamic initializer for 'g_gfxCoordinateScale_6A5AA0''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 005c3ad0|`dynamic initializer for 'g_scaledShortConst_6A5AE8''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
-005c3b00|`dynamic initializer for 'g_zoneStatusCodePrngSeed_006a5aec''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
+005c3b00|`dynamic initializer for 'g_zoneStatusCodePrngSeed''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 005d4ed0|`dynamic initializer for 'g_gfxCoordinateScale_6A5B48''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 005d4f00|`dynamic initializer for 'g_scaledShortConst_6A5BA8''|||synthetic|src/game/core/global_data_tables.cpp|legacy-marker
 005d4fd0|TViewMgr::CreateObject|||synthetic|src/game/ui_core/TViewMgr.cpp|legacy-marker

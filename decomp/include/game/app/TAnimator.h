@@ -19,7 +19,7 @@ public:
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x4a0e50
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x4a0e10
   virtual void Free() override;                    // slot 0x07 0x4a0dc0
-  virtual char DoIdle(int action) override;        // slot 0x13 0x4a0c30
+  virtual bool DoIdle(int action) override;        // slot 0x13 0x4a0c30
   virtual void Install();                          // slot 0x25 0x4a0c00
   void RemoveUiTransientRegistryObjectByTag(int tag);
   void IAnimator(int idleFrequency);

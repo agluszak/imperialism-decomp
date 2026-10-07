@@ -52,9 +52,8 @@ void TShipView::Draw(RECT* rectBuffer) {
   for (int i = 0; i < 8; ++i) {
     g_pSimMgr->GetString(0x2760, i, &orderStatusStrings[i]);
   }
-  statusLine =
-      orderStatusStrings[g_ShipOrderStatusStringIndexByResourceType_0065c7f8[shipNode->type]];
-  statusLine += s_szSpaceSeparator_00695794 + label;
+  statusLine = orderStatusStrings[g_ShipOrderStatusStringIndexByResourceType[shipNode->type]];
+  statusLine += s_szSpaceSeparator + label;
 
   SetQuickDrawTextOriginWithContextOffset(0x50, 0x18);
   SetQuickDrawFillColor(0);
@@ -63,7 +62,7 @@ void TShipView::Draw(RECT* rectBuffer) {
 
   if (shipNode->admiral != 0) {
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 9, 0x2b6a);
-    CString admiralLine = s_szAdmiralPrefix_0069578c + shipNode->admiral->displayName;
+    CString admiralLine = s_szAdmiralPrefix + shipNode->admiral->displayName;
     label = admiralLine;
     SetQuickDrawTextOriginWithContextOffset(0x50, 0xc);
     DrawTextWithCachedQuickDrawStyleState(&label);
@@ -133,7 +132,7 @@ void TShipView::RenameShip() {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNameUnit));
   if (node == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUOceanViews_00698650, 0x203);
+    FailNilPointerWithAssert(s_SourcePathUOceanViews, 0x203);
   }
 
   TextStyle style;

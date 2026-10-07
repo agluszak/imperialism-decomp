@@ -108,10 +108,9 @@ void TMapUberPicture::Free() {
   TOffLimitsPicture::Free();
 }
 
-static CPoint g_MapUberModeSecondaryLayoutScratch_006a45b8(5, 0x1b);
-static CPoint g_MapUberModeLayoutTable_006a4590[4] = {CPoint(0, 0x8f), CPoint(0, 0x92),
-                                                      CPoint(0, 0x90)};
-static CPoint g_MapUberModeLayoutScratch_006a45e8(-1000, -1000);
+static CPoint g_MapUberModeSecondaryLayoutScratch(5, 0x1b);
+static CPoint g_MapUberModeLayoutTable[4] = {CPoint(0, 0x8f), CPoint(0, 0x92), CPoint(0, 0x90)};
+static CPoint g_MapUberModeLayoutScratch(-1000, -1000);
 
 // FUNCTION: IMPERIALISM 0x00596cb0
 void TMapUberPicture::SetMapInteractionMode(short nMode) {
@@ -135,7 +134,7 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
         CString yearCaption;
         g_pSimMgr->GetString(0x2730, 0x12, &seasonCaption);
         g_pSimMgr->GetString(0x2730, 8, &yearCaption);
-        CString hoverHelp = seasonCaption + g_szListSeparator_00695760 + yearCaption;
+        CString hoverHelp = seasonCaption + g_szListSeparator + yearCaption;
         SetControlHoverHelpTextAltEntry(hoverHelp, caption);
       } else if (nMode == 1) {
         CString hoverHelp;
@@ -155,11 +154,11 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
   }
 
   if (previousMode < 3) {
-    categoryPages[previousMode]->Locate(g_MapUberModeLayoutScratch_006a45e8, true);
+    categoryPages[previousMode]->Locate(g_MapUberModeLayoutScratch, true);
   }
   this->activeUnitCategoryIndex = nMode;
   if (nMode < 3) {
-    categoryPages[nMode]->Locate(g_MapUberModeLayoutTable_006a4590[nMode], true);
+    categoryPages[nMode]->Locate(g_MapUberModeLayoutTable[nMode], true);
   }
 }
 
@@ -186,7 +185,7 @@ void ComposeAndDispatchTurnSummaryLocalizedMessage() {
 
   if (strcmp(g_szEmptyString, static_cast<LPCSTR>(versionText)) != 0) {
     if (strcmp(g_szEmptyString, static_cast<LPCSTR>(summary)) != 0) {
-      summary = summary + s_szDoubleNewline_00699438;
+      summary = summary + s_szDoubleNewline;
     }
     summary += versionText;
   }
@@ -487,7 +486,7 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
   TWindow* dialog = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFriendlyFleetReport));
   if (dialog == 0) {
-    FailNilPointerWithAssert(s_SourcePathUSuperMap_0069943C, 0x728);
+    FailNilPointerWithAssert(s_SourcePathUSuperMap, 0x728);
   }
   dialog->SetModality(true);
 
@@ -720,7 +719,7 @@ void TMapUberPicture::CreateCivilianWorkOrderAndRegisterSelection(int orderConte
 // FUNCTION: IMPERIALISM 0x00598e10
 void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* portZone) {
   if (portZone == 0) {
-    FailNilPointerWithAssert(s_SourcePathUSuperMap_0069943C, 0x8bf);
+    FailNilPointerWithAssert(s_SourcePathUSuperMap, 0x8bf);
   }
 
   RGBQUAD highlightColor = {0xff, 0xff, 0xff, 0};
@@ -729,7 +728,7 @@ void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* po
   TWindow* dialog = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNavyMaker));
   if (dialog == 0) {
-    FailNilPointerWithAssert(s_SourcePathUSuperMap_0069943C, 0x8cc);
+    FailNilPointerWithAssert(s_SourcePathUSuperMap, 0x8cc);
   }
   dialog->SetModality(true);
 
@@ -807,7 +806,7 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
   TWindow* dialog = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventEnemyFleetReport));
   if (dialog == 0) {
-    FailNilPointerWithAssert(s_SourcePathUSuperMap_0069943C, 0x923);
+    FailNilPointerWithAssert(s_SourcePathUSuperMap, 0x923);
   }
   dialog->SetModality(true);
 
@@ -832,7 +831,7 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
     g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0x34);
     scanBracketExpressions(
         g_pSimMgr, &text, static_cast<LPCSTR>(reportTemplate),
-        static_cast<LPCSTR>(static_cast<Province*>(cachedTaskForce->target)->cityNameA4));
+        static_cast<LPCSTR>(static_cast<Province*>(cachedTaskForce->target)->cityName));
   } else {
     zone->GetNavalAuthority(&text, g_pSimMgr->GetPlayerCountry());
   }
@@ -996,12 +995,12 @@ void TMapUberPicture::EnterMapInteractionOverlayMode(TView* controlOverride) {
 
   subview2A8->CenterOn(goodGoldTagControl->ComputeWrappedTileIndexFromObjectOffset7C7E());
 
-  this->goodGoldTagControl->Locate(g_MapUberModeLayoutScratch_006a45e8, false);
-  this->subview2A8->Locate(g_MapUberModeSecondaryLayoutScratch_006a45b8, true);
+  this->goodGoldTagControl->Locate(g_MapUberModeLayoutScratch, false);
+  this->subview2A8->Locate(g_MapUberModeSecondaryLayoutScratch, true);
   this->subview = this->subview2A8;
 
   if (this->miniMapView != nullptr) {
-    this->miniMapView->markerBoxWidth = g_defaultMarkerBoxWidth_006a460c;
+    this->miniMapView->markerBoxWidth = g_defaultMarkerBoxWidth;
     this->miniMapView->markerBoxHeight = 8;
     this->miniMapView->markerBoxX =
         this->miniMapView->frameWidth / 2 - this->miniMapView->markerBoxWidth - 2;
@@ -1023,8 +1022,8 @@ void TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews(TView* controlOve
     }
     invalidationFlag = false;
     goodGoldTagControl->CenterOn(subview2A8->GetCentertile());
-    subview2A8->Locate(g_MapUberModeLayoutScratch_006a45e8, false);
-    goodGoldTagControl->Locate(g_MapUberModeSecondaryLayoutScratch_006a45b8, true);
+    subview2A8->Locate(g_MapUberModeLayoutScratch, false);
+    goodGoldTagControl->Locate(g_MapUberModeSecondaryLayoutScratch, true);
     TMiniMapView* miniMap = miniMapView;
     subview = goodGoldTagControl;
 
@@ -1042,7 +1041,7 @@ void TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews(TView* controlOve
 void TMapUberPicture::DisplayMiniMap() {
   TView* toolControl = this->ResolveControlByTag(kControlTagTool); // "tool"
   if (toolControl == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUSuperMap_0069943C, 0xa56);
+    FailNilPointerWithAssert(s_SourcePathUSuperMap, 0xa56);
   }
 
   const int kToolWindowMargin = 4;
@@ -1092,7 +1091,7 @@ void TMapUberPicture::InvalidateMiniMap() {
 void TMapUberPicture::RemoveMiniMap() {
   TView* toolControl = ResolveControlByTag(kControlTagTool); // 'tool'
   if (toolControl == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUSuperMap_0069943C, 0xa97);
+    FailNilPointerWithAssert(s_SourcePathUSuperMap, 0xa97);
   }
 
   CRect mapBounds;
@@ -1117,7 +1116,7 @@ void TMapUberPicture::RemoveMiniMap() {
   TPicture* miniMapButton =
       static_cast<TPicture*>(toolControl->ResolveControlByTag(kControlTagInfo)); // 'info'
   if (miniMapButton == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUSuperMap_0069943C, 0xab4);
+    FailNilPointerWithAssert(s_SourcePathUSuperMap, 0xab4);
   }
   miniMapButton->SetPictureRsrcID(0x41a, true);
   miniMapButton->controlTag = kControlTagMmap; // 'mmap'
@@ -1128,7 +1127,7 @@ void TMapUberPicture::RemoveMiniMap() {
 void TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState) {
   TView* toolControl = this->ResolveControlByTag(kControlTagTool); // "tool"
   if (toolControl == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUSuperMap_0069943C, 0xac7);
+    FailNilPointerWithAssert(s_SourcePathUSuperMap, 0xac7);
   }
 
   TView* seasControl = toolControl->ResolveControlByTag(kControlTagSeas); // "seas"

@@ -12,7 +12,7 @@ public:
                           CPoint& currentPoint,
                           bool commandFlag) override; // slot 0x68 0x583fb0
 
-  int timingDword84;
+  int repeatTick;
 
   TRightLeftView();
 };

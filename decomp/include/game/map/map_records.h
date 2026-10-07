@@ -111,7 +111,7 @@ struct Province {
   unsigned char exploredByNationMask;
   signed char resourcePresenceMask;
   signed char regionClass;
-  CString cityNameA4;
+  CString cityName;
 };
 ASSERT_SIZE(Province, 0xa8);
 

@@ -46,7 +46,7 @@ void RecomputeNationOrderPriorityMetrics() {
       float diffSum = 0.0f;
       for (int i = 0; i < 4; ++i) {
         float diff = categoryVector[i] / queueSum -
-                     static_cast<float>(g_Populate_Beachhead_Mission_LookupTable_00697958[i]) *
+                     static_cast<float>(g_Populate_Beachhead_Mission_LookupTable[i]) *
                          g_Recompute_Nation_Order_LookupTable_0065A9F8;
         if (diff <= 0.0f) {
           diff = -diff;
@@ -55,8 +55,8 @@ void RecomputeNationOrderPriorityMetrics() {
       }
       queueDivergence = queueSum * (1.0f - diffSum * 0.5f);
     }
-    g_afNationOrderQueueDivergence_006a3a88[nationIdx] = queueDivergence;
-    g_afNationOrderQueueDivergenceMirror_006a3ac0[nationIdx] = queueDivergence;
+    g_afNationOrderQueueDivergence[nationIdx] = queueDivergence;
+    g_afNationOrderQueueDivergenceMirror[nationIdx] = queueDivergence;
 
     float unitVector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
     CIterator mobileIter(nation->militaryUnitList);
@@ -73,7 +73,7 @@ void RecomputeNationOrderPriorityMetrics() {
       float diffSum = 0.0f;
       for (int i = 0; i < 5; ++i) {
         float diff = unitVector[i] / mobileSum -
-                     static_cast<float>(g_awTacticalCompositionReferenceProfiles_00697870[5 + i]) *
+                     static_cast<float>(g_awTacticalCompositionReferenceProfiles[5 + i]) *
                          g_Recompute_Nation_Order_LookupTable_0065A9F8;
         if (diff <= 0.0f) {
           diff = -diff;
@@ -82,7 +82,7 @@ void RecomputeNationOrderPriorityMetrics() {
       }
       mobileUnitScore = mobileSum * (1.0f - diffSum * 0.5f);
     }
-    g_afNationMobileUnitScore_006a3b88[nationIdx] = mobileUnitScore;
+    g_afNationMobileUnitScore[nationIdx] = mobileUnitScore;
 
     float mobileSum2 =
         unitVector[0] + unitVector[1] + unitVector[2] + unitVector[3] + unitVector[4];
@@ -91,7 +91,7 @@ void RecomputeNationOrderPriorityMetrics() {
       float diffSum = 0.0f;
       for (int i = 0; i < 5; ++i) {
         float diff = unitVector[i] / mobileSum2 -
-                     static_cast<float>(g_awTacticalCompositionReferenceProfiles_00697870[i]) *
+                     static_cast<float>(g_awTacticalCompositionReferenceProfiles[i]) *
                          g_Recompute_Nation_Order_LookupTable_0065A9F8;
         if (diff <= 0.0f) {
           diff = -diff;
@@ -100,7 +100,7 @@ void RecomputeNationOrderPriorityMetrics() {
       }
       mobileUnitDivergence = mobileSum2 * (1.0f - diffSum * 0.5f);
     }
-    g_afNationMobileUnitDivergence_006a3ae0[nationIdx] = mobileUnitDivergence;
+    g_afNationMobileUnitDivergence[nationIdx] = mobileUnitDivergence;
 
     CIterator staticIter(nation->militaryUnitList);
     for (TMilitaryUnit* staticUnit = static_cast<TMilitaryUnit*>(staticIter.Reset());
@@ -117,7 +117,7 @@ void RecomputeNationOrderPriorityMetrics() {
       float diffSum = 0.0f;
       for (int i = 0; i < 5; ++i) {
         float diff = unitVector[i] / combinedSum -
-                     static_cast<float>(g_awTacticalCompositionReferenceProfiles_00697870[i]) *
+                     static_cast<float>(g_awTacticalCompositionReferenceProfiles[i]) *
                          g_Recompute_Nation_Order_LookupTable_0065A9F8;
         if (diff <= 0.0f) {
           diff = -diff;
@@ -126,7 +126,7 @@ void RecomputeNationOrderPriorityMetrics() {
       }
       combinedUnitDivergence = combinedSum * (1.0f - diffSum * 0.5f);
     }
-    g_afNationCombinedUnitDivergence_006a3b50[nationIdx] = combinedUnitDivergence;
+    g_afNationCombinedUnitDivergence[nationIdx] = combinedUnitDivergence;
 
     int militaryPower = nation->ComputeSelectedMilitaryPowerScore();
     int navyOrderIndustrySum = nation->GetArmsInNavy();
@@ -134,8 +134,8 @@ void RecomputeNationOrderPriorityMetrics() {
     if (static_cast<float>(navyOrderIndustrySum) < static_cast<float>(militaryPower)) {
       powerRatio = static_cast<float>(navyOrderIndustrySum) / static_cast<float>(militaryPower);
     }
-    g_afNationWeightedMilitaryOrderScore_006a3b20[nationIdx] =
-        g_afNationMobileUnitScore_006a3b88[nationIdx] * powerRatio;
+    g_afNationWeightedMilitaryOrderScore[nationIdx] =
+        g_afNationMobileUnitScore[nationIdx] * powerRatio;
   }
 
   for (short finalNationIdx = 0; finalNationIdx < 7; ++finalNationIdx) {

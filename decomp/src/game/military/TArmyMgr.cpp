@@ -358,7 +358,7 @@ void TArmyMgr::FormStacks() {
         previousOrderTargetIndex = unitOrderTargetIndex;
         previousOwnerNationSlot = unitOwnerNationSlot;
         if (stack == nullptr) {
-          FailNilPointerWithAssert(s_SourcePathUArmyMgr_0069573C, 0x333);
+          FailNilPointerWithAssert(s_SourcePathUArmyMgr, 0x333);
         }
       }
 
@@ -437,7 +437,7 @@ void TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits() {
     }
     TSortedList* unitList = nation->militaryUnitList;
     if (unitList == nullptr) {
-      FailNilPointerWithAssert(s_SourcePathUArmyMgr_0069573C, 0x39b);
+      FailNilPointerWithAssert(s_SourcePathUArmyMgr, 0x39b);
     }
 
     CIterator unitIter(unitList);
@@ -516,7 +516,7 @@ static void BuildArmyActionLabelFromLocalizationAndCounts(CStr255* destination, 
     destinationHasText = currentLabel.Compare(g_szEmptyString) != 0;
   }
   if (destinationHasText) {
-    CString separator(g_szListSeparator_00695760);
+    CString separator(g_szListSeparator);
     AppendTextIntoFixedBuffer(destination->data, 0xff, static_cast<LPCSTR>(separator));
   }
   AppendTextIntoFixedBuffer(destination->data, 0xff, static_cast<LPCSTR>(formattedLabel));
@@ -1164,7 +1164,7 @@ bool TArmyMgr::HandleMapClickByComputedCursorState(short tileIndex, short mode) 
 
 // FUNCTION: IMPERIALISM 0x004a4930
 unsigned short TArmyMgr::LookupMapCursorTokenByStateIndex(short tileIndex, short mode) {
-  return g_mapCursorTokenByStateIndex_00695668[ComputeMapCursorStateIndex(tileIndex, mode)];
+  return g_mapCursorTokenByStateIndex[ComputeMapCursorStateIndex(tileIndex, mode)];
 }
 
 // FUNCTION: IMPERIALISM 0x004a4960
@@ -1202,8 +1202,8 @@ static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode) {
 
 // FUNCTION: IMPERIALISM 0x004a4aa0
 unsigned short TArmyMgr::LookupCivilianMapCursorTokenByStateIndex(short tileIndex, short mode) {
-  return g_civilianMapCursorTokenByStateIndex_00695680[this->ComputeCivilianMapCursorStateIndex(
-      tileIndex, mode)];
+  return g_civilianMapCursorTokenByStateIndex[this->ComputeCivilianMapCursorStateIndex(tileIndex,
+                                                                                       mode)];
 }
 
 // FUNCTION: IMPERIALISM 0x004a4ad0
@@ -1519,7 +1519,7 @@ int TArmyMgr::ComputeWeightedNeighborLinkScoreForNodeIndex(int nodeIndexArg) {
   }
   int sum = 0;
   for (; chain != 0; chain = static_cast<TMilitaryUnit*>(chain->nextAtLocation)) {
-    sum += g_anWeightedNeighborUnitScoreByType_006955F0[chain->orderType];
+    sum += g_anWeightedNeighborUnitScoreByType[chain->orderType];
   }
   return sum;
 }
@@ -1604,8 +1604,7 @@ bool TArmyMgr::GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummar
           bestScore = 0;
           g_pGlobalMapState->AssignCityRecordDisplayName(regionId, &candidateName);
           g_pSimMgr->GetString(0x2744, 1, &outDefenderSummary);
-          outDefenderSummary =
-              CString(outDefenderSummary + s_szSpaceSeparator_00695794 + candidateName);
+          outDefenderSummary = CString(outDefenderSummary + s_szSpaceSeparator + candidateName);
         }
       }
       ++i;
@@ -1626,15 +1625,15 @@ bool TArmyMgr::GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummar
       if (bestScore == -1) {
         selectedName = bestShip->name;
         g_pSimMgr->GetString(0x2744, 3, &outDefenderSummary);
-        outDefenderSummary += s_szSpaceSeparator_00695794 + selectedName;
+        outDefenderSummary += s_szSpaceSeparator + selectedName;
         bestScore = 0;
       }
     } else {
       int admiralScore = static_cast<short>(admiral->experiencePoints / 100) + 1;
       if (bestScore < admiralScore) {
-        selectedName = CString(s_szAdmiralPrefix_0069578c + admiral->displayName);
+        selectedName = CString(s_szAdmiralPrefix + admiral->displayName);
         g_pSimMgr->GetString(0x2744, 2, &outDefenderSummary);
-        outDefenderSummary += s_szSpaceSeparator_00695794 + selectedName;
+        outDefenderSummary += s_szSpaceSeparator + selectedName;
         bestScore = admiralScore;
       }
     }
@@ -1660,8 +1659,8 @@ bool TArmyMgr::GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummar
         static_cast<TMilitaryUnit*>(g_pGlobalMapState->cityScoreTable[citySlot].stationedUnitChain);
   }
   if (unit != nullptr) {
-    const short* pointCostWeights = g_MapOrderResourceRollWeightTable_0064c5d8[bestScore];
-    const short* categoryWeights = g_MapOrderResourceRollWeightTable_0064c5d8[bestScore] + 3;
+    const short* pointCostWeights = g_MapOrderResourceRollWeightTable[bestScore];
+    const short* categoryWeights = g_MapOrderResourceRollWeightTable[bestScore] + 3;
     do {
       seed = seed * 0x15a4e35 + 1;
       short pointCost = static_cast<short>(FindCumulativeWeightBucketIndex(
@@ -1706,12 +1705,12 @@ bool TArmyMgr::GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummar
     int count = *bucketCursor;
     if (count != 0) {
       if (renderedBucketCount != 0) {
-        outGarrisonSummary += g_szListSeparator_00695760;
+        outGarrisonSummary += g_szListSeparator;
       }
       g_pSimMgr->GetString(0x2726, static_cast<short>(count == 1 ? bucket : bucket + 0xb),
                            &resourceTypeName);
       countText.Format(g_szDecimalFormat, count);
-      outGarrisonSummary += countText + s_szSpaceSeparator_00695794 + resourceTypeName;
+      outGarrisonSummary += countText + s_szSpaceSeparator + resourceTypeName;
       ++renderedBucketCount;
     }
     ++bucket;
@@ -1751,7 +1750,7 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventEnemyFleetReport));
   if (node == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUArmyMgr_0069573C, 0xa4d);
+    FailNilPointerWithAssert(s_SourcePathUArmyMgr, 0xa4d);
   }
   node->SetModality(true);
 

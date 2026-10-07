@@ -18,13 +18,13 @@ void TAutomatedPlayDialog::Close() {
   TNumberText* turnCount =
       static_cast<TNumberText*>(ResolveControlByTag(kControlTagNumSp)); // 'num '
   if (turnCount == 0) {
-    FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x34e);
+    FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x34e);
   }
 
-  g_nTurnCooldownDeferCounter006A43C4 =
+  g_nTurnCooldownDeferCounter =
       static_cast<short>(turnCount->UpdateControlCachedIntFromWindowText());
-  g_nTurnCooldownSideFlag00698B10 = static_cast<short>(g_pSimMgr->mode);
-  if (g_nTurnCooldownDeferCounter006A43C4 > 0) {
+  g_nTurnCooldownSideFlag = static_cast<short>(g_pSimMgr->mode);
+  if (g_nTurnCooldownDeferCounter > 0) {
     g_pSimMgr->StartNextPhase();
   }
   TView::Close();

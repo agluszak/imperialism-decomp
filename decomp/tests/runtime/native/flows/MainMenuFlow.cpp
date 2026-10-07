@@ -30,7 +30,7 @@ RuntimeFlowStatus MainMenuFlow::Advance(RuntimeScenario& scenario) {
       return kRuntimeFlowRunning;
     }
     srand(scenario.RunState().Seed());
-    g_zoneStatusCodePrngSeed_006a5aec = scenario.RunState().Seed();
+    g_zoneStatusCodePrngSeed = scenario.RunState().Seed();
     RuntimeActionResult started = MainMenu().StartRandomGame();
     if (!started.Succeeded()) {
       scenario.FailScenario(static_cast<LPCSTR>(started.FailureMessage()));

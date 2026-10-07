@@ -289,8 +289,8 @@ TA4TemplateDialog::TA4TemplateDialog(void* initParam)
 void TA4TemplateDialog::VerifyDialogContext(int unusedA, int unusedB) {
   (void)unusedA;
   (void)unusedB;
-  if (g_diplomacyDialogAssertGuard_006A15CC == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szDiplomacyDialogsSourcePath_00694CC0, 0x3d);
+  if (g_diplomacyDialogAssertGuard == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szDiplomacyDialogsSourcePath, 0x3d);
   }
 }
 
@@ -666,13 +666,13 @@ void TTraceDialog::AppendTraceTextAndFlushCompleteLines(const char* text) {
 
   s_pendingTraceText += text;
 
-  int breakIndex = s_pendingTraceText.FindOneOf(g_szTraceLineBreakChars_00695200);
+  int breakIndex = s_pendingTraceText.FindOneOf(g_szTraceLineBreakChars);
   while (breakIndex > -1) {
     CString line = s_pendingTraceText.Left(breakIndex);
     s_pendingTraceText = s_pendingTraceText.Mid(breakIndex + 1);
     listbox.AddString(line);
     listbox.SetTopIndex(listbox.GetCount() - 1);
-    breakIndex = s_pendingTraceText.FindOneOf(g_szTraceLineBreakChars_00695200);
+    breakIndex = s_pendingTraceText.FindOneOf(g_szTraceLineBreakChars);
   }
 }
 

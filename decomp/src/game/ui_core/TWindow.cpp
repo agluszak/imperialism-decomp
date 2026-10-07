@@ -44,7 +44,7 @@ TWindow::~TWindow() {
 
 // FUNCTION: IMPERIALISM 0x0048d870
 void __stdcall AssertMcAppUiDialogStateAndReturn(int arg1, int arg2, int arg3, int arg4, int arg5) {
-  TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0x8c9);
+  TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0x8c9);
 }
 
 // FUNCTION: IMPERIALISM 0x0048d8a0
@@ -56,7 +56,7 @@ void TWindow::SetDialogItems(unsigned long defaultCommandCode, unsigned long can
 // FUNCTION: IMPERIALISM 0x0048d8d0
 void TWindow::Activate(unsigned char) {
   if (g_McAppUiFlag_006A1B04 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0x936);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0x936);
   }
 }
 
@@ -76,8 +76,7 @@ void TWindow::Show(unsigned char show, bool refresh) {
 
 // FUNCTION: IMPERIALISM 0x0048d980
 bool TWindow::IsActionable() {
-  return busyFlag != 0 && g_McAppUiActiveFlag_006950AC != 0 && nativeWindow != 0 &&
-         viewEnabled != 0;
+  return busyFlag != 0 && g_McAppUiActiveFlag != 0 && nativeWindow != 0 && viewEnabled != 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0048d9c0
@@ -167,7 +166,7 @@ TDialogBehavior* TWindow::GetDialogBehavior() {
 // FUNCTION: IMPERIALISM 0x0048dce0
 void TWindow::AssertMcAppUILine2554() {
   if (g_McAppUiFlag_006A1B08 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0x9fa);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0x9fa);
   }
 }
 
@@ -181,7 +180,7 @@ void TWindow::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
 void TWindow::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x1a) {
     if (g_McAppUiFlag_006A1B0C == 0) {
-      TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0xa1a);
+      TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0xa1a);
     }
     return;
   }
@@ -280,7 +279,7 @@ short TWindow::ContainsMouse(const CPoint& point) {
 void TWindow::GoAwayByUser(const CPoint& point) {
   (void)point;
   if (g_McAppUiFlag_006A1B10 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0xac4);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0xac4);
   }
 }
 
@@ -288,7 +287,7 @@ void TWindow::GoAwayByUser(const CPoint& point) {
 void TWindow::MoveByUser(const CPoint& point) {
   (void)point;
   if (g_McAppUiFlag_006A1B14 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0xad9);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0xad9);
   }
 }
 
@@ -296,7 +295,7 @@ void TWindow::MoveByUser(const CPoint& point) {
 void TWindow::ResizeByUser(const CPoint& point) {
   (void)point;
   if (g_McAppUiFlag_006A1B18 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0xaee);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0xaee);
   }
 }
 
@@ -305,7 +304,7 @@ void TWindow::ZoomByUser(const CPoint& point, short partCode) {
   (void)point;
   (void)partCode;
   if (g_McAppUiFlag_006A1B1C == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0xaff);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0xaff);
   }
 }
 
@@ -389,6 +388,6 @@ void TWindow::WindowToLocal(CPoint* point) {
 
 // FUNCTION: IMPERIALISM 0x00492d80
 TObject* TWindow::ShallowClone() {
-  TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC, 0x51e);
+  TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath, 0x51e);
   return 0;
 }

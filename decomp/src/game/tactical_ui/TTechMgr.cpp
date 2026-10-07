@@ -152,8 +152,8 @@ void TTechMgr::GenerateRandomCapabilityPrioritySlots() {
 
   short* pnOutputSlotCursor = &prioritySlots[3];
   int nSelectedSlotCount = 3;
-  for (short* pnRangePairCursor = &g_anCapabilityPriorityRangeData_0066ABA4[1];
-       pnRangePairCursor < &g_anCapabilityPriorityRangeData_0066ABA4[53]; pnRangePairCursor += 2) {
+  for (short* pnRangePairCursor = &g_anCapabilityPriorityRangeData[1];
+       pnRangePairCursor < &g_anCapabilityPriorityRangeData[53]; pnRangePairCursor += 2) {
     short nRangeStartGroup = pnRangePairCursor[-1];
     short nRangeEndGroup = *pnRangePairCursor;
     int nRangeSpan =
@@ -274,7 +274,7 @@ void TTechMgr::CheckForAdvances() {
       if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot)) &&
           nation->diplomacyEligibility == 0 &&
           orderCapRows277[nationSlot].techStatusByTechId[techId] != 2) {
-        nation->AddToTreasury(-g_anTechItemPurchaseCostBySlot_0066aae8[techId]);
+        nation->AddToTreasury(-g_anTechItemPurchaseCostBySlot[techId]);
         orderCapRows277[nationSlot].techStatusByTechId[techId] = 1;
         capRowsE4a6[nationSlot].completionYearOffsetByTechId[techId] =
             static_cast<short>(g_pSimMgr->economicTurn / 4);
@@ -686,7 +686,7 @@ void TTechMgr::GetPreReqs(int techId, int nationSlot, int* missingPrimaryTechId,
 
 // FUNCTION: IMPERIALISM 0x005b0b30
 void TTechMgr::ApplyTechItemPurchaseCostAndState(int slot, int nationIndex) {
-  g_apNationStates[nationIndex]->AddToTreasury(-g_anTechItemPurchaseCostBySlot_0066aae8[slot]);
+  g_apNationStates[nationIndex]->AddToTreasury(-g_anTechItemPurchaseCostBySlot[slot]);
   orderCapRows277[nationIndex].techStatusByTechId[slot] = 1;
   capRowsE4a6[nationIndex].completionYearOffsetByTechId[slot] =
       static_cast<short>(g_pSimMgr->economicTurn / 4);
@@ -694,7 +694,7 @@ void TTechMgr::ApplyTechItemPurchaseCostAndState(int slot, int nationIndex) {
 
 // FUNCTION: IMPERIALISM 0x005b0bb0
 void TTechMgr::RefundTechItemPurchaseCostAndClearState(int slot, int nationIndex) {
-  g_apNationStates[nationIndex]->AddToTreasury(g_anTechItemPurchaseCostBySlot_0066aae8[slot]);
+  g_apNationStates[nationIndex]->AddToTreasury(g_anTechItemPurchaseCostBySlot[slot]);
   orderCapRows277[nationIndex].techStatusByTechId[slot] = 0;
   capRowsE4a6[nationIndex].completionYearOffsetByTechId[slot] = 0;
 }

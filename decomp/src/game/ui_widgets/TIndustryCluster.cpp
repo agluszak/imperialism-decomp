@@ -125,7 +125,7 @@ void TIndustryCluster::SetMoveAmount(short dragValue, bool updateControls) {
 void TIndustryCluster::UpdateMax() {
   TIndustryAmtBar* barControl = static_cast<TIndustryAmtBar*>(ResolveControlByTag(kControlTagBar));
   if (barControl == 0) {
-    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, kAssertLineRatioB);
+    FailNilPointerWithAssert(s_SourcePathUSmallViews, kAssertLineRatioB);
   }
 
   if (barControl->auxValueA != 0) {

@@ -59,10 +59,10 @@ public:
   virtual void ForgetTaskForce(TTaskForce* taskForce) override; // slot 0x24 0x53f160
   virtual void Hold(bool value) override;                       // slot 0x25 0x53fb90
 
-  virtual char
+  virtual bool
   SmokeEmIfYouGotEm() override; // slot 0x26 0x53f4e0 -- evaluate beachhead + queue eligible units
 
-  virtual char TryResolveTargetTerrainClass() override; // slot 0x28 0x53fdc0
+  virtual bool TryResolveTargetTerrainClass() override; // slot 0x28 0x53fdc0
 };
 
 ASSERT_SIZE(TInvadeMission, 0x38);

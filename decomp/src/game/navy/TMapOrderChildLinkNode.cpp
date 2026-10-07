@@ -95,7 +95,7 @@ TMapOrderChildLinkNode::RemoveLinkedOrderNodeByValueRecursive(TShip* child_node)
 TMapOrderChildLinkNode* TMapOrderChildLinkNode::CreateLinkedOrderNode(TShip* child_node) {
   TMapOrderChildLinkNode* new_node = new TMapOrderChildLinkNode(child_node, this);
   if (new_node == 0) {
-    FailNilPointerWithAssert(s_SourcePathUNavy_006983C8, 0x64e);
+    FailNilPointerWithAssert(s_SourcePathUNavy, 0x64e);
   }
   return new_node;
 }

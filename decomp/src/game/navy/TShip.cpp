@@ -58,9 +58,9 @@ float ComputeNavyOrderDistributionScoreForNation(short nation) {
     return g_Recompute_Nation_Order_LookupTable_0065A9E8;
   }
   float diffSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
-  const short* targetWeight = g_NavyOrderDistributionCategoryWeights_00697978;
+  const short* targetWeight = g_NavyOrderDistributionCategoryWeights;
   component = categoryVector;
-  while (targetWeight < g_NavyOrderDistributionCategoryWeights_00697978 + 4) {
+  while (targetWeight < g_NavyOrderDistributionCategoryWeights + 4) {
     float diff =
         *component / total - static_cast<float>(*targetWeight) *
                                  static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F8);
@@ -406,9 +406,9 @@ int TShip::ComputeValueForMission(int missionType) const {
     default:
       contribution = 0;
     }
-    total += static_cast<short>(
-                 g_Populate_Beachhead_Mission_LookupTable_00697958[missionType * 4 + category]) *
-             static_cast<int>(contribution);
+    total +=
+        static_cast<short>(g_Populate_Beachhead_Mission_LookupTable[missionType * 4 + category]) *
+        static_cast<int>(contribution);
   }
   return total;
 }

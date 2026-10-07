@@ -166,25 +166,25 @@ void TTransportPicture::Refresh() {
 
   TStaticText* text = static_cast<TStaticText*>(ResolveControlByTag(kControlTagText));
   if (text == 0) {
-    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1a59);
+    FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1a59);
   }
   currentText.Format(g_szDecimalFormat, static_cast<int>(splitValue94));
   totalText.Format(g_szDecimalFormat, static_cast<int>(splitValue96));
-  gaugeText = currentText + s_szGaugeCountSeparator_0069936C + totalText;
+  gaugeText = currentText + s_szGaugeCountSeparator + totalText;
   text->SetTextAndMaybeRefresh(&gaugeText, true);
 
   // The two money rows caption their allocation in currency rather than units.
   if (resourceMetricSlot == 0x16) {
     TStaticText* value = static_cast<TStaticText*>(ResolveControlByTag(kControlTagValu));
     if (value == 0) {
-      FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1a63);
+      FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1a63);
     }
     g_pSimMgr->NumToCurrency(static_cast<int>(splitValue94) * 200, &gaugeText);
     value->SetTextAndMaybeRefresh(&gaugeText, true);
   } else if (resourceMetricSlot == 0x15) {
     TStaticText* value = static_cast<TStaticText*>(ResolveControlByTag(kControlTagValu));
     if (value == 0) {
-      FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1a6a);
+      FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1a6a);
     }
     g_pSimMgr->NumToCurrency(static_cast<int>(splitValue94) * 500, &gaugeText);
     value->SetTextAndMaybeRefresh(&gaugeText, true);
@@ -195,7 +195,7 @@ void TTransportPicture::Refresh() {
     TTransportPicture* totalPicture =
         static_cast<TTransportPicture*>(ownerContext->ResolveControlByTag(kControlTagTota));
     if (totalPicture == 0) {
-      FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1a77);
+      FailNilPointerWithAssert(s_SourcePathUSmallViews, 0x1a77);
     }
     totalPicture->splitValue94 =
         static_cast<short>(nation->reservedTransportCapacity - nation->transportCapacity +

@@ -26,14 +26,14 @@ void TControl::AssertCityProductionGlobalStateInitialized(int arg1, int arg2) {
   (void)arg1;
   (void)arg2;
   if (g_McAppUiFlag_006A143C == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC, 0x56f);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath, 0x56f);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004294a0
-char TControl::LogUnhandledDialogMethodAndReturnFalse() {
-  TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC, 0x58f);
-  return 0;
+bool TControl::LogUnhandledDialogMethodAndReturnFalse() {
+  TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath, 0x58f);
+  return false;
 }
 
 // Slot 0x08 override (0x00435760): TControl cannot be cloned. The original asserts via
@@ -41,7 +41,7 @@ char TControl::LogUnhandledDialogMethodAndReturnFalse() {
 
 // FUNCTION: IMPERIALISM 0x00435760
 TObject* TControl::ShallowClone() {
-  TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC, 0x594);
+  TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath, 0x594);
   return 0;
 }
 // IMPLEMENT_DYNCREATE also emits `TControl::CreateObject`; the original copy at
@@ -70,8 +70,8 @@ void TControl::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin
   g_McAppMouseCaptureState.currentPoint.y = startY;
   TrackMouse(kTrackPhaseBegin, g_McAppMouseCaptureState.startPoint,
              g_McAppMouseCaptureState.lastPoint, g_McAppMouseCaptureState.currentPoint, true);
-  if (g_McAppUiMouseCaptureTimerId_006A1ADC == 0) {
-    g_McAppUiMouseCaptureTimerId_006A1ADC =
+  if (g_McAppUiMouseCaptureTimerId == 0) {
+    g_McAppUiMouseCaptureTimerId =
         SetTimer(nativeWindow->m_hWnd, 0xef, 0x11, NotifyGlobalCaptureOwnerState1WithCachedCoords);
   }
 }

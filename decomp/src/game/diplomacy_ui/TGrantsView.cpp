@@ -85,7 +85,7 @@ void TGrantsView::Draw(RECT* rectBuffer) {
   TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
   int grantSum = activeNation->SumDiplomacyGrantEntriesMaskedToValueBits();
   g_pSimMgr->NumToCurrency(grantSum, &sumText);
-  labelText += s_szSpaceSeparator_00695794 + sumText;
+  labelText += s_szSpaceSeparator + sumText;
 
   short totalY = static_cast<short>(kGrantColumnY[3] - ownerLocalY);
   SetQuickDrawColorAndSyncGlobals(styleForeground);
@@ -102,7 +102,7 @@ void TGrantsView::Draw(RECT* rectBuffer) {
 void TGrantsView::Setup() {
   TCluster* documentCluster =
       static_cast<TCluster*>(ResolveControlByTag(kControlTagDocs)); // 'docs'
-  SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText_00654ec8), documentCluster);
+  SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText), documentCluster);
   documentCluster->SetSelectedChildTagAndRefresh(kControlTagDoc0); // 'doc0'
   diplomacyMapView->selectedGrantRow = 0;
   diplomacyMapView->actionCode = kDipActionOneTimeGrant;

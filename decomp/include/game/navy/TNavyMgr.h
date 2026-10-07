@@ -64,10 +64,8 @@ public:
 
   void ClearAllTransientOrders();
 
-  char
-  TryMerchantInterception(TMapOrderInteractionSelection* outResult,
-                                                       TZone* portZoneContext, short nation,
-                                                       short offerAmount);
+  bool TryMerchantInterception(TMapOrderInteractionSelection* outResult, TZone* portZoneContext,
+                               short nation, short offerAmount);
 
   void ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode); // 0x558960
 

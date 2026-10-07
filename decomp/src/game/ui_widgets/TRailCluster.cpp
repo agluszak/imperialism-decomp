@@ -161,7 +161,7 @@ void TRailCluster::SetMoveAmount(short dragValue, bool updateFlag) {
 void TRailCluster::UpdateMax() {
   TRailAmtBar* barControl = static_cast<TRailAmtBar*>(ResolveControlByTag(kControlTagBar));
   if (barControl == 0) {
-    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, kAssertLineRatioA);
+    FailNilPointerWithAssert(s_SourcePathUSmallViews, kAssertLineRatioA);
   }
 
   if (barControl->auxValueA != 0) {

@@ -50,7 +50,7 @@ static const short kPendingProspectorRecruitmentCitySlot = 0x22;
 template <class T> static T* AllocateCityMinisterScratchArray(int count, int assertLine) {
   T* result = new T[count];
   if (result == 0) {
-    FailNilPointerWithAssert(s_SourcePathUCityMinister_006964B0, assertLine);
+    FailNilPointerWithAssert(s_SourcePathUCityMinister, assertLine);
   }
   return result;
 }
@@ -93,7 +93,7 @@ void InsertScoredTileCandidateWithRandomTieBreak(float score, short tileIndex,
 // FUNCTION: IMPERIALISM 0x004be6f0
 float TCityInteriorMinister::GetAiDevelopmentResourceBudgetScale(int* resourcePools) {
   (void)resourcePools;
-  return g_AiDevelopmentResourceBudgetScale_00650758;
+  return g_AiDevelopmentResourceBudgetScale;
 }
 
 // FUNCTION: IMPERIALISM 0x004be7b0
@@ -140,7 +140,7 @@ void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
 
   orderList = new TList();
   if (orderList == 0) {
-    FailNilPointerWithAssert(s_SourcePathUCityMinister_006964B0, 0x288);
+    FailNilPointerWithAssert(s_SourcePathUCityMinister, 0x288);
   }
 
   FillLists();
@@ -906,7 +906,7 @@ void TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackf
 void TCityInteriorMinister::MakeNewCity(TCity* city) {
   (void)city;
   if (greatPower->diplomacyEligibility == 0) {
-    greatPower->treasuryValue10 = 10000;
+    greatPower->treasuryValue = 10000;
     orderMetricTable[53] = 2;
     orderMetricTable[55] = 2;
     orderMetricTable[57] = 2;
@@ -1224,7 +1224,7 @@ void TCityInteriorMinister::DispatchBuilders() {
       short cityTileIndex = cityRecord->cityTileIndex;
       TCivUnit* tileOrder = g_pGlobalMapState->terrainStateTable[cityTileIndex].firstCivilianOrder;
       if ((tileOrder == 0 || tileOrder == builderOrder) &&
-          g_awEngineerFortBuildCostByLevel[cityRecord->fortLevel] <= greatPower->treasuryValue10) {
+          g_awEngineerFortBuildCostByLevel[cityRecord->fortLevel] <= greatPower->treasuryValue) {
         builderOrder->MoveTo(cityTileIndex);
         builderOrder->SetOrders(kUnitOrderBuildFort, cityTileIndex);
       }
@@ -1515,8 +1515,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
       short tileIndex = developerTiles[developerIndex++];
       order->SetOrders(kUnitOrderPurchaseLand, tileIndex);
       order->MoveTo(tileIndex);
-      greatPower->treasuryValue10 -=
-          g_pGlobalMapState->CalculateDeveloperTilePurchaseCost(tileIndex);
+      greatPower->treasuryValue -= g_pGlobalMapState->CalculateDeveloperTilePurchaseCost(tileIndex);
     }
   }
 
@@ -1990,7 +1989,7 @@ void TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection
   if (g_pSimMgr->scenarioMapIndexPlusOne == 0) {
     treasuryThreshold = treasuryThresholdByDifficulty[g_pSimMgr->difficultyLevel];
   }
-  if (greatPower->treasuryValue10 < treasuryThreshold) {
+  if (greatPower->treasuryValue < treasuryThreshold) {
     return;
   }
 
@@ -2202,7 +2201,7 @@ void TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand() {
     } else {
       float upgradeRatio = static_cast<float>(city->GetBuildingType(choice)) /
                            static_cast<float>(city->GetBuildingType(choice + 1));
-      if (upgradeRatio <= g_cityProductionUpgradeRatioThreshold_00696450[choice]) {
+      if (upgradeRatio <= g_cityProductionUpgradeRatioThreshold[choice]) {
         commandSlot = static_cast<short>(choice + 0x35);
       } else {
         commandSlot = static_cast<short>(choice + 0x36);
@@ -2247,8 +2246,8 @@ void TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutput
 
   if (g_pSimMgr->GetEconomicTurn() > 2) {
     int policyBand =
-        cityPolicyFuzzySet->GetCrispOutput(static_cast<float>(greatPower->treasuryValue10));
-    short reserve = g_cityProductionReserveByPolicyBand_00696400[policyBand];
+        cityPolicyFuzzySet->GetCrispOutput(static_cast<float>(greatPower->treasuryValue));
+    short reserve = g_cityProductionReserveByPolicyBand[policyBand];
     short quantity = static_cast<short>((city->cityStockLumber - reserve) / 2);
     if (quantity > 0) {
       short capacity = static_cast<short>(city->GetBuildingType(5) + 1);
@@ -2526,9 +2525,9 @@ short TCityInteriorMinister::RequestResource(short resourceType, short requested
     owner->UpdateNeedTargetAndAccumulateOverCap(
         resourceType, static_cast<short>(currentTarget + availableCapacity));
     if (resourceType == kResourceGold) {
-      owner->treasuryValue10 += availableCapacity * 200;
+      owner->treasuryValue += availableCapacity * 200;
     } else if (resourceType == kResourceGems) {
-      owner->treasuryValue10 += availableCapacity * 500;
+      owner->treasuryValue += availableCapacity * 500;
     } else {
       cityStock[resourceType] = static_cast<short>(cityStock[resourceType] + availableCapacity);
       city->VerifyStocks();
@@ -2538,7 +2537,7 @@ short TCityInteriorMinister::RequestResource(short resourceType, short requested
     owner->UpdateNeedTargetAndAccumulateOverCap(
         resourceType, static_cast<short>(currentTarget + availableSupply));
     if (resourceType == kResourceGold) {
-      owner->treasuryValue10 += availableSupply * 500;
+      owner->treasuryValue += availableSupply * 500;
     } else {
       cityStock[resourceType] = static_cast<short>(cityStock[resourceType] + availableSupply);
       city->VerifyStocks();
@@ -2693,8 +2692,8 @@ bool TCityInteriorMinister::TryApplyCityOrderCapabilitySelectionBySlot(short cap
 
   unit = static_cast<TMilitaryUnit*>(unitCursor.Reset());
   while (unitCursor.More()) {
-    if (g_cityActionCapabilityGroupBySlot_00650670[unit->orderType] ==
-            g_cityActionCapabilityGroupBySlot_00650670[capabilitySlot] &&
+    if (g_cityActionCapabilityGroupBySlot[unit->orderType] ==
+            g_cityActionCapabilityGroupBySlot[capabilitySlot] &&
         unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia) &&
         unit->UpgradeType() != -1) {
       if (unit->Upgrade()) {

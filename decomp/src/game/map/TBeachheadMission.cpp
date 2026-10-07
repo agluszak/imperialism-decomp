@@ -45,7 +45,7 @@ TBeachheadMission::TBeachheadMission(TZone* targetZone, TInvadeMission* parentMi
 void TBeachheadMission::CalculateNeeds() {
   TControlSeaZoneMission::CalculateNeeds();
 
-  float invadePriority = static_cast<float>(g_BeachheadMissionPriorityNormalization_0065AA30 /
+  float invadePriority = static_cast<float>(g_BeachheadMissionPriorityNormalization /
                                             GetNavyOrderCategoryBaseline(3)) *
                          parentMission->CalculatePriority();
   if (requiredShipEquipageByCategory[3] < invadePriority) {
@@ -88,13 +88,13 @@ TMission* TBeachheadMission::GetArmyMission() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053a940
-char TBeachheadMission::SmokeEmIfYouGotEm() {
+bool TBeachheadMission::SmokeEmIfYouGotEm() {
   if (flag10 == 0 && navyState != 0) {
-    return 0;
+    return false;
   }
   while (orderList != 0) {
     orderList->payload->mission = 0;
     orderList = orderList->DeleteMapOrderChildLinkAndReturnNext();
   }
-  return 1;
+  return true;
 }

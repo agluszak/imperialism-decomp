@@ -53,15 +53,15 @@ void TCreditsPicture::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x0056efc0
 void TCreditsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xa && sourceHandler == this) {
-    if (g_creditsPlaybackActive_006a4084 != 0) {
+    if (g_creditsPlaybackActive != 0) {
       g_pSimMgr->StartNextPhase();
-      g_creditsPlaybackActive_006a4084 = 0;
+      g_creditsPlaybackActive = 0;
       g_pSfxPlaybackSystem->ResetDualAudioCuePools();
       g_pSfxPlaybackSystem->AddToPlayList(2);
       g_pSfxPlaybackSystem->AddToPlayList(3);
       g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
     } else {
-      g_creditsPlaybackActive_006a4084 = 1;
+      g_creditsPlaybackActive = 1;
 
       COLORREF cursorTheme;
       ResolveUiThemeColor(0x2b6b, &cursorTheme);
@@ -94,7 +94,7 @@ void TCreditsPicture::Draw(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x0056f1d0
 void __fastcall ReleaseDibOrientationGuard(int* engagedFlag) {
   if (*engagedFlag != 0) {
-    --g_nDibOrientationFlag_006A1890;
+    --g_nDibOrientationFlag;
     *engagedFlag = 0;
   }
 }

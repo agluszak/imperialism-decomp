@@ -36,7 +36,7 @@ void TClientGreatPower::AcceptOffer(short proposalIndex) {
   packet.nationSlot = this->nationSlot;
   packet.acceptedFlag = true;
   packet.proposalIndex = proposalIndex;
-  g_pNetMgr006a6014->Send(&packet, false);
+  g_pNetMgr->Send(&packet, false);
 }
 
 // FUNCTION: IMPERIALISM 0x00541450
@@ -51,7 +51,7 @@ void TClientGreatPower::RejectOffer(short proposalQueueIndex) {
   packet.nationSlot = this->nationSlot;
   packet.acceptedFlag = false;
   packet.proposalIndex = proposalQueueIndex;
-  g_pNetMgr006a6014->Send(&packet, false);
+  g_pNetMgr->Send(&packet, false);
 }
 
 // FUNCTION: IMPERIALISM 0x005414f0
@@ -70,7 +70,7 @@ void TClientGreatPower::ReplyToDiplomacyOffers(void) {
   packet.messageLength = 0x20;
   packet.SetTimeEmitPacketGameFlowTurnId();
   packet.nationSlot = static_cast<short>(g_pSimMgr->GetPlayerCountry());
-  g_pNetMgr006a6014->Send(&packet, false);
+  g_pNetMgr->Send(&packet, false);
 
   g_pViewMgr->MakeDiplomacyOfferDialog(nationSlot, nationSlot, 0x29a);
 }
@@ -101,7 +101,7 @@ int TClientGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation,
   packetPayload.commandCode = 0x61;
   packetPayload.swapRoles = static_cast<unsigned char>(swapRoles);
   packetPayload.acceptedFlag = accepted == 1 ? 1 : 0;
-  g_pNetMgr006a6014->Send(&packetPayload, false);
+  g_pNetMgr->Send(&packetPayload, false);
   return accepted;
 }
 
@@ -129,7 +129,7 @@ int TClientGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNat
   packetPayload.commandCode = 0x69;
   packetPayload.commandArgA = static_cast<unsigned char>(targetNation);
   packetPayload.commandArgB = static_cast<unsigned char>(sourceNation);
-  g_pNetMgr006a6014->Send(&packetPayload, false);
+  g_pNetMgr->Send(&packetPayload, false);
   return accepted;
 }
 

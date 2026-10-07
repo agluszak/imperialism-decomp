@@ -656,7 +656,7 @@ void TTaskForce::Add(TShip* node) {
       newLink->prev->next = newLink;
     }
   } else {
-    FailNilPointerWithAssert(s_SourcePathUNavy_006983C8, 0x80f);
+    FailNilPointerWithAssert(s_SourcePathUNavy, 0x80f);
   }
 
   if (nextLink == shipList) {
@@ -774,7 +774,7 @@ void TTaskForce::FreeAvailables() {
 }
 
 // FUNCTION: IMPERIALISM 0x00553fe0
-char TTaskForce::SinkOrSwimShips() {
+bool TTaskForce::SinkOrSwimShips() {
   TMapOrderChildLinkNode* head = shipList;
   if (head != 0) {
     TShip* headChild = head->payload;
@@ -799,9 +799,9 @@ char TTaskForce::SinkOrSwimShips() {
 
   if (shipList == 0) {
     defeated = 1;
-    return 1;
+    return true;
   }
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x005540b0
@@ -1206,7 +1206,7 @@ void TTaskForce::GetCompositionDescription(CString* out) const {
       CString label;
       FormatLocalizedCommodityCountLabelByIndex(&label, i, static_cast<short>(counts[i]));
       if (*out != g_szEmptyString) {
-        *out += g_szListSeparator_00695760;
+        *out += g_szListSeparator;
       }
       *out += label;
     }
@@ -1258,7 +1258,7 @@ void TTaskForce::GetGeneralDescription(CString* out) const {
   }
 
   contextText.Format(g_szDecimalFormat, childCount);
-  *out += contextText + s_szSpaceSeparator_00695794;
+  *out += contextText + s_szSpaceSeparator;
   contextText = g_szEmptyString;
 
   switch (static_cast<short>(shipOrders)) {
@@ -1271,7 +1271,7 @@ void TTaskForce::GetGeneralDescription(CString* out) const {
     break;
   case 5:
     *out += "invading ";
-    contextText = static_cast<Province*>(target)->cityNameA4;
+    contextText = static_cast<Province*>(target)->cityName;
     break;
   case 6:
     *out += "blockading";
@@ -1353,7 +1353,7 @@ void TTaskForce::GetAuthority(CString* out) const {
   CString authorityTemplate;
   CString shipName = flagship->name;
   if (flagship->admiral != 0) {
-    CString admiralName = CString(s_szAdmiralPrefix_0069578c) + flagship->admiral->displayName;
+    CString admiralName = CString(s_szAdmiralPrefix) + flagship->admiral->displayName;
     g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&authorityTemplate, 0x2762, 0xe);
     scanBracketExpressions(g_pSimMgr, out, static_cast<LPCSTR>(authorityTemplate),
                            static_cast<LPCSTR>(admiralName), static_cast<LPCSTR>(shipName));
@@ -1728,8 +1728,8 @@ void TTaskForce::CarryOutOrders() {
     break;
   }
   default:
-    if (g_UnknownMapOrderExecutionGuard_006a3ee0 == 0) {
-      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUNavy_006983C8, 0xb78);
+    if (g_UnknownMapOrderExecutionGuard == 0) {
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUNavy, 0xb78);
     }
     break;
   }

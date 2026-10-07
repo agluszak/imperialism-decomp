@@ -46,11 +46,11 @@ public:
   // NOOP: verified empty at original inlined allocation site 0x0057c58f
   TNewsMgr() {}
 
-  unsigned char EvaluateFeatureStory(const newsEntry* templateRow, newsStory* story,
-                                     int nationSlot); // 0x0055cf20
+  bool EvaluateFeatureStory(const newsEntry* templateRow, newsStory* story,
+                            int nationSlot); // 0x0055cf20
 
-  unsigned char AlwaysTrueStory(const newsEntry* templateRow, newsStory* story,
-                                int nationSlot); // 0x0055d0c0
+  bool AlwaysTrueStory(const newsEntry* templateRow, newsStory* story,
+                       int nationSlot); // 0x0055d0c0
 
   void ClearStoryParms(newsStory* story); // 0x0055d090
   void INewsMgr();

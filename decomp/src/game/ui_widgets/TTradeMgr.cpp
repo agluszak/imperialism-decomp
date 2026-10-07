@@ -28,7 +28,7 @@ TTradeMgr::~TTradeMgr() {}
 
 // FUNCTION: IMPERIALISM 0x005b7a90
 void TTradeMgr::ITradeMgr() {
-  const short* presetCursor = g_aTradeItemBasePriceByCategory_0069A910;
+  const short* presetCursor = g_aTradeItemBasePriceByCategory;
   TDealList** rankListCursor = this->categoryRankLists;
   NationMetricCategoryRow* row = this->categoryRows;
   int rowCount = 0x11;
@@ -573,7 +573,7 @@ void TTradeMgr::StartDeals() {
   short next = 0;
   do {
     short i = categoryRows[0].dealCategoryOrderIndex;
-    short idx = g_aTradeDealCategoryOrder_0066D810[i];
+    short idx = g_aTradeDealCategoryOrder[i];
     TDealList* list = this->categoryRankLists[idx];
     if (list->GetSize() != 0) {
       break;
@@ -591,7 +591,7 @@ void TTradeMgr::NextTradeDeal() {
     if (categoryRows[0].dealCategoryOrderIndex > 0x10) {
       break;
     }
-    short dispatchIdx = g_aTradeDealCategoryOrder_0066D810[categoryRows[0].dealCategoryOrderIndex];
+    short dispatchIdx = g_aTradeDealCategoryOrder[categoryRows[0].dealCategoryOrderIndex];
     TDealList* list = categoryRankLists[dispatchIdx];
     TradeDealEntry* entry = static_cast<TradeDealEntry*>(
         list->GetPtrListEntryByOneBasedIndex(categoryRows[0].dealEntryOrdinal));
@@ -622,9 +622,8 @@ void TTradeMgr::NextTradeDeal() {
         if (categoryRows[0].dealCategoryOrderIndex > 0x10) {
           break;
         }
-      } while (categoryRankLists
-                   [g_aTradeDealCategoryOrder_0066D810[categoryRows[0].dealCategoryOrderIndex]]
-                       ->GetSize() == 0);
+      } while (categoryRankLists[g_aTradeDealCategoryOrder[categoryRows[0].dealCategoryOrderIndex]]
+                   ->GetSize() == 0);
       categoryRows[0].dealEntryOrdinal = 1;
     }
   } while (!blocked);
@@ -935,8 +934,7 @@ void TTradeMgr::TallyMinorsTradeBids() {
         short sv = static_cast<short>(value);
         row->amountOffered = row->amountOffered + sv;
         double factor;
-        if (this->GetPrice(static_cast<short>(metricRow)) <
-            (*mp)->GetDiplomacyRandomThreshold124()) {
+        if (this->GetPrice(static_cast<short>(metricRow)) < (*mp)->GetRandomOfferPriceThreshold()) {
           factor = 0.0;
         } else if (sv == 1) {
           factor = 1.0;
@@ -1004,7 +1002,7 @@ void TTradeMgr::TallyMinorsTradeBids() {
 
 // FUNCTION: IMPERIALISM 0x005b9f30
 double TTradeMgr::Power(double base, short exponent) {
-  double result = g_TradePowerIdentity_0066D8E0;
+  double result = g_TradePowerIdentity;
   if (exponent > 0) {
     int remaining = exponent;
     do {
@@ -1016,13 +1014,13 @@ double TTradeMgr::Power(double base, short exponent) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b9f70
-char TTradeMgr::DidBidOn(int item, int nationSlot) {
+bool TTradeMgr::DidBidOn(int item, int nationSlot) {
   short* cells = &this->categoryRows[0].tradeOfferCells[0];
   return cells[item * 0x50 + nationSlot] < 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005b9fa0
-char TTradeMgr::DidOffer(int item, int nationSlot) {
+bool TTradeMgr::DidOffer(int item, int nationSlot) {
   short* cells = &this->categoryRows[0].tradeOfferCells[0];
   return 0 < cells[item * 0x50 + nationSlot];
 }
@@ -1049,7 +1047,7 @@ TLongintList* TTradeMgr::GetBidderList(int item, int nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x005ba090
 short TTradeMgr::WhoTradesFirst(short proposalCode, short category) {
-  short* lookupCursor = g_aTradeDealCategoryOrder_0066D810;
+  short* lookupCursor = g_aTradeDealCategoryOrder;
   do {
     short slotValue = *lookupCursor;
     if (slotValue == proposalCode) {
@@ -1059,7 +1057,7 @@ short TTradeMgr::WhoTradesFirst(short proposalCode, short category) {
       return category;
     }
     lookupCursor = lookupCursor + 1;
-  } while (lookupCursor < &g_aTradeDealCategoryOrder_0066D810[0x11]);
+  } while (lookupCursor < &g_aTradeDealCategoryOrder[0x11]);
   return proposalCode;
 }
 

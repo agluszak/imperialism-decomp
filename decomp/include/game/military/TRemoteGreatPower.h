@@ -29,7 +29,7 @@ public:
   void SorryYouLose(void) override;
   void RecomputeAiExpansionAndMissionPressureScores(void) override;
   void RefreshTrackedEntriesAndReplanAiDevelopment(int unused) override;
-  char UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) override;
+  bool UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) override;
   // Remote-only vtable slot 0x2c8; Mac symbol oracle: DoMovePhase().
   virtual void DoMovePhase(void);
 

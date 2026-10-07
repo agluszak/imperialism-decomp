@@ -31,7 +31,7 @@ public:
   ~TApplication() override;
 
   void PostTurnEventCodeMessage(TurnEventCodeStorage eventCode); // 0x414720
-  void PostWmCloseToMainThreadWindow();                              // 0x4146d0
+  void PostWmCloseToMainThreadWindow();                          // 0x4146d0
 
   BOOL InModalState(); // 0x486960
 
@@ -40,10 +40,9 @@ public:
   // vtable index 0x27 (0x004868a0): load the current target pointer.
 
   TEventHandler* currentTarget; // 0x20
-  int screenModeAt24;           // 0x24
-  BOOL cursorRegionInvalid; // 0x28
+  int screenMode;               // 0x24
+  BOOL cursorRegionInvalid;     // 0x28
   CList<void*, void*> cohandlers;
-
 };
 
 ASSERT_SIZE(TApplication, 0x48);

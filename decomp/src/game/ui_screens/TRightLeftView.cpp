@@ -5,7 +5,7 @@
 IMPLEMENT_DYNCREATE(TRightLeftView, TControl)
 
 // FUNCTION: IMPERIALISM 0x00583f30
-TRightLeftView::TRightLeftView() : TControl(), timingDword84(0) {}
+TRightLeftView::TRightLeftView() : TControl(), repeatTick(0) {}
 
 // FUNCTION: IMPERIALISM 0x00583f90
 TRightLeftView::~TRightLeftView() {}
@@ -23,14 +23,14 @@ void TRightLeftView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pr
   }
 
   unsigned int ticks = GetTickCountDiv16();
-  if (ticks < (unsigned int)(this->timingDword84 + 5)) {
+  if (ticks < (unsigned int)(this->repeatTick + 5)) {
     return;
   }
 
   unsigned int now = GetTickCountDiv16();
-  this->timingDword84 = now;
+  this->repeatTick = now;
   if (phase == kTrackPhaseBegin) {
-    this->timingDword84 = now + 10;
+    this->repeatTick = now + 10;
   }
 
   CPoint* point = &currentPoint;

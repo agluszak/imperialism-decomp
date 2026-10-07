@@ -46,8 +46,8 @@ void TControlSeaZoneMission::Initialize() {
     TZone** ownerSlot = &zone->primaryNeighbors[0];
     if (*ownerSlot == missionTargetZone) {
       score *= (zone->GetPortZoneOwnerNationCodeFromMissionField48() == nationId)
-                   ? g_PortZoneFriendlyMissionScoreMultiplier_0065AA10
-                   : g_PortZoneForeignMissionScoreMultiplier_0065AA18;
+                   ? g_PortZoneFriendlyMissionScoreMultiplier
+                   : g_PortZoneForeignMissionScoreMultiplier;
     }
   }
 
@@ -122,9 +122,9 @@ void TControlSeaZoneMission::SetStateByte8To2() {
     if (total != 0.0f) {
       float divergence = 0.0f;
       for (int i = 0; i < 4; ++i) {
-        float delta = vector[i] / total -
-                      static_cast<float>(g_Populate_Beachhead_Mission_LookupTable_00697958[i]) *
-                          g_Recompute_Nation_Order_LookupTable_0065A9F8;
+        float delta =
+            vector[i] / total - static_cast<float>(g_Populate_Beachhead_Mission_LookupTable[i]) *
+                                    g_Recompute_Nation_Order_LookupTable_0065A9F8;
         if (delta <= 0.0f) {
           delta = -delta;
         }
@@ -150,8 +150,8 @@ void TControlSeaZoneMission::CalculateImportance() {
     TZone** ownerSlot = &zone->primaryNeighbors[0];
     if (*ownerSlot == missionTargetZone) {
       score *= (zone->GetPortZoneOwnerNationCodeFromMissionField48() == nationId)
-                   ? g_PortZoneFriendlyMissionScoreMultiplier_0065AA10
-                   : g_PortZoneForeignMissionScoreMultiplier_0065AA18;
+                   ? g_PortZoneFriendlyMissionScoreMultiplier
+                   : g_PortZoneForeignMissionScoreMultiplier;
     }
   }
 

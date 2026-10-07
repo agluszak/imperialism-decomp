@@ -6,7 +6,7 @@ extern TAssetMgr* g_pAssetMgr;
 extern TSoundResourceManager g_soundResourceManager;
 extern short g_randomAudioCuePollCounter;
 extern TSoundPlayer* g_pSfxPlaybackSystem;
-extern int g_localizationAudioSlotCursor_006a60f8;
+extern int g_localizationAudioSlotCursor;
 
 // CD-audio MCI device singleton (see game/TCdAudioDevice.h).
 extern TCdAudioDevice g_cdAudioDevice; // 0x006a60bc
@@ -18,11 +18,11 @@ extern UINT g_timerSlotIds[10]; // 0x006a5c98
 
 extern int g_timerDispatchSuppressAssert; // 0x006a5d24
 
-extern char g_szSavedDocumentMarker_0069B848[];
+extern char g_szSavedDocumentMarker[];
 
-extern char g_szLoadedDocumentMarker_0069B854[];
+extern char g_szLoadedDocumentMarker[];
 
-extern char s_Data_scores_dat_0069b7fc[];
+extern char s_Data_scores_dat[];
 
 extern "C" {
 extern int g_nAuxOutputDeviceIndex;

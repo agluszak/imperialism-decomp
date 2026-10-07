@@ -108,14 +108,14 @@ void TOfferDeskPicture::DoPostCreate(int arg) {
 
   acceptButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagAcce));
   acceptButton->AssertValid();
-  acceptButton->timingWord92 = 0x1388;
+  acceptButton->clickSoundId = 0x1388;
   rejectButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagReje));
   rejectButton->AssertValid();
-  rejectButton->timingWord92 = 0x1388;
+  rejectButton->clickSoundId = 0x1388;
 
   TPictureButton* formatButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagForM));
   formatButton->AssertValid();
-  formatButton->timingWord92 = 0x1b58;
+  formatButton->clickSoundId = 0x1b58;
   LoadUiStringByGroupAndIndexToControlObject(0x2764, 0x12, formatButton);
 }
 
@@ -148,7 +148,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   g_pCursorControlPanel = static_cast<TInfoBarText*>(ResolveControlByTag(kControlTagCurs));
   g_pCursorControlPanel->AssertValid();
   if (g_pCursorControlPanel == 0) {
-    FailNilPointerWithAssert(s_SourcePathUTradeViews_0069AA94, 0x613);
+    FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x613);
   }
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 
@@ -177,8 +177,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
     if (commodityType == kResourceGold) {
       g_pSimMgr->GetString(0x2740, 0xb, &messageTemplate);
       commodityIcon->Show(0, 1);
-      SetControlHoverHelpTextAltEntry(CString(g_cstrTradeTotalsBalanceSubstitution0066DB50),
-                                      commodityIcon);
+      SetControlHoverHelpTextAltEntry(CString(g_cstrTradeTotalsBalanceSubstitution), commodityIcon);
     } else {
       g_pSimMgr->GetString(0x2740, 0xa, &messageTemplate);
       commodityIcon->SetPictureRsrcID(static_cast<short>(commodityType + 0x2bc), 1);
@@ -188,13 +187,13 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
                            static_cast<LPCSTR>(commodityName));
     text->SetTextAndMaybeRefresh(&waitingText, true);
 
-    if (wait->ownerLocalX != g_offerDeskOffscreenPosition_006a5a28.x ||
-        wait->ownerLocalY != g_offerDeskOffscreenPosition_006a5a28.y) {
-      wait->Locate(g_offerDeskOffscreenPosition_006a5a28, true);
+    if (wait->ownerLocalX != g_offerDeskOffscreenPosition.x ||
+        wait->ownerLocalY != g_offerDeskOffscreenPosition.y) {
+      wait->Locate(g_offerDeskOffscreenPosition, true);
     }
-    if (!selectionActive && (sheet->ownerLocalX != g_offerDeskSheetPosition_006a5a00.x ||
-                             sheet->ownerLocalY != g_offerDeskSheetPosition_006a5a00.y)) {
-      sheet->Locate(g_offerDeskSheetPosition_006a5a00, true);
+    if (!selectionActive && (sheet->ownerLocalX != g_offerDeskSheetPosition.x ||
+                             sheet->ownerLocalY != g_offerDeskSheetPosition.y)) {
+      sheet->Locate(g_offerDeskSheetPosition, true);
     }
 
     TView* formatButton = ResolveControlByTag(kControlTagForM);
@@ -205,8 +204,8 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   }
 
   SwitchToBook(0);
-  sheet->Locate(g_offerDeskSheetPosition_006a5a00, false);
-  wait->Locate(g_offerDeskOffscreenPosition_006a5a28, false);
+  sheet->Locate(g_offerDeskSheetPosition, false);
+  wait->Locate(g_offerDeskOffscreenPosition, false);
 
   TView* acceptButton = ResolveControlByTag(kControlTagAcce);
   acceptButton->AssertValid();
@@ -339,7 +338,7 @@ void TOfferDeskPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
   int tag = sourceHandler->controlTag;
   if (commandId >= 0x2af8) {
     short tabIndex = static_cast<short>(commandId - 0x2af8);
-    short selectionIndex = g_tradeBookCategoryByTabAndTechState_0066DB58
+    short selectionIndex = g_tradeBookCategoryByTabAndTechState
         [g_pTechMgr->perTechUnlockFlag[TTechMgr::kProductionOrderTechId]][tabIndex];
     if (!selectionActive) {
       SwitchToBook(1);
@@ -370,14 +369,14 @@ void TOfferDeskPicture::DoKeyEvent(TToolboxEvent* event) {
     if (button == 0) {
       return;
     }
-    g_pSfxPlaybackSystem->PlaySoundEffect(button->timingWord92, 0, 1);
+    g_pSfxPlaybackSystem->PlaySoundEffect(button->clickSoundId, 0, 1);
     QueueDeferredUiEventPacket(this, 0xa, button);
   } else if (commandCode == kUiKeyEscape) {
     TPictureButton* button = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagReje));
     if (button == 0) {
       return;
     }
-    g_pSfxPlaybackSystem->PlaySoundEffect(button->timingWord92, 0, 1);
+    g_pSfxPlaybackSystem->PlaySoundEffect(button->clickSoundId, 0, 1);
     QueueDeferredUiEventPacket(this, 0xa, button);
   }
 }
@@ -545,19 +544,19 @@ void TOfferDeskPicture::ShowAdvice() {
 void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
   TView* clusterControl = ResolveControlByTag(kControlTagClus);
   if (clusterControl == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUTradeViews_0069AA94, 0x83b);
+    FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x83b);
   }
 
   TAmtBarCluster* noMoreControl =
       static_cast<TAmtBarCluster*>(clusterControl->ResolveControlByTag(kControlTagNomo));
   if (noMoreControl == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUTradeViews_0069AA94, 0x83d);
+    FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x83d);
   }
   suppressEventFlag = noMoreControl->IsTradeControlAtMinimum();
 
   TNumberText* purchaseControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagPurc));
   if (purchaseControl == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUTradeViews_0069AA94, 0x842);
+    FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x842);
   }
   proposedAmount = static_cast<short>(purchaseControl->UpdateControlCachedIntFromWindowText());
 
@@ -639,7 +638,7 @@ void TOfferDeskPicture::SwitchToBook(unsigned char activate) {
   if (activate != 0) {
     CPoint bookLayout(0x3a, 0x2d);
     bookControl->Locate(bookLayout, false);
-    sheetControl->Locate(g_offerDeskOffscreenPosition_006a5a28, false);
+    sheetControl->Locate(g_offerDeskOffscreenPosition, false);
     SetPictureRsrcID(0x226f, 1);
     g_pSfxPlaybackSystem->PlaySoundEffect(0x13ee, 0, 1);
     TDealTabControl* tabsControl =
@@ -652,8 +651,8 @@ void TOfferDeskPicture::SwitchToBook(unsigned char activate) {
     listControl->AssertValid();
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 1, listControl);
   } else {
-    bookControl->Locate(g_offerDeskOffscreenPosition_006a5a28, false);
-    sheetControl->Locate(g_offerDeskSheetPosition_006a5a00, false);
+    bookControl->Locate(g_offerDeskOffscreenPosition, false);
+    sheetControl->Locate(g_offerDeskSheetPosition, false);
     SetPictureRsrcID(0x2152, 1);
     g_pSfxPlaybackSystem->PlaySoundEffect(0x13ef, 0, 1);
     static_cast<TTradeBookView*>(bookControl)->SetItem(-1);

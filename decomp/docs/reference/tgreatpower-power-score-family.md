@@ -105,10 +105,10 @@ Defined in `src/game/global_data_tables.cpp` with their `config/symbols.csv` nam
 |---------|--------|-------|
 | 0x653700 | `g_Compute_Advisory_Handler_LookupTable_00653700` | 0.0f |
 | 0x653714 | `g_Compute_Advisory_Handler_LookupTable_00653714` | -0.25f |
-| 0x653718 | `g_Iterate_Linked_List_Value_00653718` | 0.25f |
-| 0x65371c | `g_Compute_City_Order_Value_0065371C` | 0.5f |
+| 0x653718 | `g_Iterate_Linked_List_Value` | 0.25f |
+| 0x65371c | `g_Compute_City_Order_Value` | 0.5f |
 | 0x653720 | `g_Compute_Advisory_Handler_LookupTable_00653720` | -90.0f |
-| 0x653724 | `g_Compute_Advisory_Peer_LookupTable_00653724` | -0.5f |
+| 0x653724 | `g_Compute_Advisory_Peer_LookupTable` | -0.5f |
 | 0x695cd4 | `g_Classify_Nation_Military_LookupTable_00695CD4` | per-unit-type records, **0xe bytes each, power weight short at +0**; indexed by the unit-entry type id short at payload+4 |
 
 Write the arithmetic against the named constants in the original FPU shape

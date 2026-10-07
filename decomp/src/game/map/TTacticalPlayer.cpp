@@ -25,9 +25,9 @@ void TTacticalPlayer::ApplyChanges(unsigned char sideWonFlag) {
 }
 
 // FUNCTION: IMPERIALISM 0x0059adf0
-unsigned char TTacticalPlayer::AlwaysTrueTacticalPredicate10(TTacticalUnit* unit) {
+bool TTacticalPlayer::AlwaysTrueTacticalPredicate10(TTacticalUnit* unit) {
   (void)unit;
-  return 1;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x0059ae10

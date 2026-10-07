@@ -91,15 +91,15 @@ RuntimeActionResult StrategicMapProbe::VerifyHoverCache() {
   memcpy(beforeHover, mapCache->pixelBits, mapCacheBytes);
   short savedStrategicNeighbors[6];
   short savedCitySiteNeighbors[6];
-  memcpy(savedStrategicNeighbors, g_aStrategicMapNeighborHighlightTiles_00697310,
+  memcpy(savedStrategicNeighbors, g_aStrategicMapNeighborHighlightTiles,
          sizeof(savedStrategicNeighbors));
-  memcpy(savedCitySiteNeighbors, g_aCitySiteNeighborHighlightTiles_00697320,
+  memcpy(savedCitySiteNeighbors, g_aCitySiteNeighborHighlightTiles,
          sizeof(savedCitySiteNeighbors));
   for (int neighborIndex = 0; neighborIndex < 6; ++neighborIndex) {
-    g_aStrategicMapNeighborHighlightTiles_00697310[neighborIndex] = -1;
-    g_aCitySiteNeighborHighlightTiles_00697320[neighborIndex] = -1;
+    g_aStrategicMapNeighborHighlightTiles[neighborIndex] = -1;
+    g_aCitySiteNeighborHighlightTiles[neighborIndex] = -1;
   }
-  g_aCitySiteNeighborHighlightTiles_00697320[0] = 0;
+  g_aCitySiteNeighborHighlightTiles[0] = 0;
 
   TQuickDrawSurfaceContext* savedSurface;
   int savedSurfaceFlags;
@@ -110,15 +110,15 @@ RuntimeActionResult StrategicMapProbe::VerifyHoverCache() {
   bool firstHoverKeptCache = memcmp(beforeHover, mapCache->pixelBits, mapCacheBytes) == 0;
   mapDialog->HandleCursorHoverSelectionByChildHitTestAndFallback(&secondHoverPoint, 0);
   bool secondHoverKeptCache = memcmp(beforeHover, mapCache->pixelBits, mapCacheBytes) == 0;
-  bool usedStrategicNeighborCache = g_aCitySiteNeighborHighlightTiles_00697320[0] == 0;
+  bool usedStrategicNeighborCache = g_aCitySiteNeighborHighlightTiles[0] == 0;
   for (int checkedNeighborIndex = 0; checkedNeighborIndex < 6; ++checkedNeighborIndex) {
-    if (g_aStrategicMapNeighborHighlightTiles_00697310[checkedNeighborIndex] != -1) {
+    if (g_aStrategicMapNeighborHighlightTiles[checkedNeighborIndex] != -1) {
       usedStrategicNeighborCache = false;
     }
   }
-  memcpy(g_aStrategicMapNeighborHighlightTiles_00697310, savedStrategicNeighbors,
+  memcpy(g_aStrategicMapNeighborHighlightTiles, savedStrategicNeighbors,
          sizeof(savedStrategicNeighbors));
-  memcpy(g_aCitySiteNeighborHighlightTiles_00697320, savedCitySiteNeighbors,
+  memcpy(g_aCitySiteNeighborHighlightTiles, savedCitySiteNeighbors,
          sizeof(savedCitySiteNeighbors));
   mapView->activeUnitCategoryIndex = savedInteractionMode;
   SetGWorld(savedSurface, savedSurfaceFlags);
@@ -141,7 +141,7 @@ RuntimeActionResult StrategicMapProbe::VerifyScrolling() {
   if (mapDialog == 0) {
     return RuntimeActionResult::Failure("combined map has no scrollable map dialog");
   }
-  g_MapInteractionPreviewPoint_006a3370 =
+  g_MapInteractionPreviewPoint =
       CPoint(0, 0); // RUNTIME_COORDINATE_EXPLAINED: reset production preview geometry
   if (g_pGlobalMapState->hexNeighborWrapHorizontally == 0) {
     mapDialog->SetMapDialogCellCoordinatesAndRefresh(0x6b, 0, 0);

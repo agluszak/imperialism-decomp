@@ -1,12 +1,12 @@
 #pragma once
 #include "game/globals/global_types.h"
 
-extern "C" char* g_pSmallViewsEmptyText_00662B90;
-extern "C" char* g_pStatusPictureMainSharedText_00668b88;
+extern "C" char* g_pSmallViewsEmptyText;
+extern "C" char* g_pStatusPictureMainSharedText;
 
 extern "C" double g_dMasterVolumeExponentScale;
 
-extern char s_szCombatLossesHeading_00699324[];
+extern char s_szCombatLossesHeading[];
 
 extern "C" {
 
@@ -31,8 +31,8 @@ extern short g_nCityBuildingDrawXOffsetIndex;
 extern short g_nCityBuildingSlotXOffsetIndex;
 extern short g_nCityBuildingDrawYOffsetIndex;
 extern short g_awCityBuildingActionResourceIds[72];
-extern char* g_pCityBuildingHoverEmptyText_0064faa8;
-extern CRect g_cityBuildingHoverFallbackRect_006a2980;
+extern char* g_pCityBuildingHoverEmptyText;
+extern CRect g_cityBuildingHoverFallbackRect;
 
 extern CRect g_aCityBuildingHoverSelectionRects[16];
 
@@ -40,15 +40,15 @@ extern CRect g_aCityBuildingLayoutRects[72];
 
 extern "C" const unsigned int g_tradeCommodityRowTagTable[17];
 
-extern "C" const char s_SourcePathUTestDialogs_0069A7F8[];
+extern "C" const char s_SourcePathUTestDialogs[];
 
 // Assert source-path string for the USmallViews TU (TTransportPicture and friends).
-extern "C" const char s_SourcePathUSmallViews_006992F0[];
+extern "C" const char s_SourcePathUSmallViews[];
 
 // TSimMgr_AdvanceGlobalTurnStateMachine.cpp / turn_flow_cooldown.cpp — turn-cooldown state.
-extern short g_nTurnCooldownDeferCounter006A43C4;
+extern short g_nTurnCooldownDeferCounter;
 
-extern short g_nTurnCooldownSideFlag00698B10;
+extern short g_nTurnCooldownSideFlag;
 
 // TStatusButton.cpp / TCivDescription.cpp — city-dialog legend selection state.
 extern void* g_pActiveCityDialogLegendSelectionOwner;

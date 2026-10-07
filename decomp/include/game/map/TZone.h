@@ -65,10 +65,10 @@ public:
   TZone* GetSafestNearbyZoneFor(short nationSlot) const;
   void PropagateMapActionContextDistanceLevelsRecursive(short level); // 0x560f80
   short GetCachedMapActionContextDistanceOrRecompute(TZone* other);   // 0x5610b0
-  char HasSecondaryNeighborWithNationTag(short nationTag);
+  bool HasSecondaryNeighborWithNationTag(short nationTag);
   int IsZoneMaskOrArrayEntryPresentForKey(short key);
-  char ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex);
-  char CanDisplayMapOrderEntryInCurrentContext(int nation, bool skipField34Check);
+  bool ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex);
+  bool CanDisplayMapOrderEntryInCurrentContext(int nation, bool skipField34Check);
   void ExpandTaskForceTraversalDepthAndMarkDeferredNodes(int remainingDepth,
                                                          bool markAdjacentCities); // 0x560ba0
   TAdmiral* FindReportingAdmiralForNation(int nation);

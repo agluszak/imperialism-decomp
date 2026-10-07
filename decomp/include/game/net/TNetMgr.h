@@ -21,12 +21,12 @@ public:
 
   void StartMultiplayerSupport(); // 0x5e3450
 
-  unsigned char Send(NetMessage* message, bool queueOnly);
+  bool Send(NetMessage* message, bool queueOnly);
 
-  unsigned char DefaultUnhandledTurnEventHookReturnsFalse(TurnEventQueuePacket* packet);
+  bool DefaultUnhandledTurnEventHookReturnsFalse(TurnEventQueuePacket* packet);
   void FreeTurnEventPacketBuffer(TurnEventQueuePacket* packet);
   TurnEventQueuePacket* PopNextTurnEventPacketOrProcessSpecialQueueRecords();
-  unsigned char CheckConnectivityOrShowLocalizedWarningAndReturnReady();
+  bool CheckConnectivityOrShowLocalizedWarningAndReturnReady();
   int GetSessionActiveNationId(); // 0x5e4280
 
   void NoOpDialogModeTagChangedHook(int arg); // 0x5e42a0 (empty)
@@ -34,20 +34,18 @@ public:
 
   int ProbeNationReachabilityAndMarkAwolBitmask();
 
-  void ResetTurnEventQueueRuntimeRecordBuffer(); // 0x5e3ef0
-  unsigned char ResetRuntimeSelectionRecordBufferAndReturnTrue(); // 0x5e34d0
-  unsigned char ReturnTrueRuntimeCredentialFinalizeStub(); // 0x5e3c00
+  void ResetTurnEventQueueRuntimeRecordBuffer();         // 0x5e3ef0
+  bool ResetRuntimeSelectionRecordBufferAndReturnTrue(); // 0x5e34d0
+  bool ReturnTrueRuntimeCredentialFinalizeStub();        // 0x5e3c00
 
-  unsigned char OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, int flag,
-                                                             const char* seed); // 0x5e3a60
+  bool OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, int flag,
+                                                    const char* seed); // 0x5e3a60
 
-  unsigned char
-  Host(const char* seedPath,
-                                                      const char* localPlayerName,
-                                                      const char* emptyOrSeed); // 0x5e3ad0
+  unsigned char Host(const char* seedPath, const char* localPlayerName,
+                     const char* emptyOrSeed); // 0x5e3ad0
 
   unsigned char SelectGame(int selectionTag, CString* outGameName,
-                                                            const char* seed); // 0x5e3c20
+                           const char* seed); // 0x5e3c20
 
   unsigned char ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TView* provider); // 0x5e39a0
 

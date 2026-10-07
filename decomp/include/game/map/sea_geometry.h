@@ -30,14 +30,14 @@ struct Seapoint {
 };
 
 struct SeaSegment {
-  short x0;            // +0x00 overlay col of endpoint 0 (coord0 % 0xd8)
-  short y0;            // +0x02 overlay row of endpoint 0 (coord0 / 0xd8)
-  short x1;            // +0x04 overlay col of endpoint 1
-  short y1;            // +0x06 overlay row of endpoint 1
-  int coord0;          // +0x08 linear overlay index of endpoint 0 (x0 + y0*0xd8)
-  int coord1;          // +0x0c linear overlay index of endpoint 1
-  short attr10;        // +0x10 carried attribute (from endpoint 0's lo04)
-  short attr12;        // +0x12 carried attribute (from endpoint 0's hi08)
+  short x0;   // +0x00 overlay col of endpoint 0 (coord0 % 0xd8)
+  short y0;   // +0x02 overlay row of endpoint 0 (coord0 / 0xd8)
+  short x1;   // +0x04 overlay col of endpoint 1
+  short y1;   // +0x06 overlay row of endpoint 1
+  int coord0; // +0x08 linear overlay index of endpoint 0 (x0 + y0*0xd8)
+  int coord1; // +0x0c linear overlay index of endpoint 1
+  // +0x10: carried attributes from endpoint 0's lo04/hi08; border links store the two regions.
+  short attrBySide[2];
   short angle;         // +0x14 heading angle (atan2 of the endpoint delta)
   unsigned char wrap;  // +0x16 set when the segment spans the horizontal wrap (|dx| > 0x6c)
   unsigned char pad17; // +0x17
@@ -61,10 +61,10 @@ struct SeaSegment {
     return coord1;
   }
   short& BorderRegionA() {
-    return attr10;
+    return attrBySide[0];
   }
   short& BorderRegionB() {
-    return attr12;
+    return attrBySide[1];
   }
   short BorderX0() const {
     return x0;
@@ -79,20 +79,20 @@ struct SeaSegment {
     return y1;
   }
   short BorderRegionA() const {
-    return attr10;
+    return attrBySide[0];
   }
   short BorderRegionB() const {
-    return attr12;
+    return attrBySide[1];
   }
 
   short& AttrBySideIndex(int sideIndex) {
-    return (&attr10)[sideIndex];
+    return attrBySide[sideIndex];
   }
 
   void InitFromPoints(const Seapoint* p0, const Seapoint* p1);
   // Re-normalize endpoint order (topmost/leftmost first) and recompute the angle. 0x0052ab00.
   void RecomputeEndpointsAndAngle();
-  // Pick attr12 or attr10 depending on the heading angle. 0x0052c000.
+  // Pick attrBySide[1] or attrBySide[0] depending on the heading angle. 0x0052c000.
   unsigned short SelectAttrByAngle() const;
   void ExtractWrappedEndpoint(int* out, char side) const;
 };

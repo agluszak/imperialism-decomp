@@ -89,7 +89,7 @@ RuntimeActionResult RunCheckTechnologyAdvancesAiPurchase(NativeTransition& trans
   g_pTechMgr->perTechUnlockFlag[3] = 1;
   g_pTechMgr->orderCapRows277[aiNationSlot].techStatusByTechId[3] = 0;
   aiNation->diplomacyEligibility = 0;
-  aiNation->treasuryValue10 = 50000;
+  aiNation->treasuryValue = 50000;
 
   RuntimeActionResult started = transition.Begin(JsonNullValue());
   if (!started.Succeeded()) {

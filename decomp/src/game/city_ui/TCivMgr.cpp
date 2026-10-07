@@ -526,7 +526,7 @@ void TCivMgr::HandleCivilianReportDecision(TCivUnit* pCivilianOrderEntry) {
     break;
   }
 
-  ownerNationState->treasuryValue10 += refundAmount;
+  ownerNationState->treasuryValue += refundAmount;
   g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(PointerAddressLong32(pCivilianOrderEntry));
 
   pCivilianOrderEntry->SetOrders(kUnitOrderIdle, subtypeOrTargetProvince);
@@ -566,7 +566,7 @@ void TCivMgr::HandleCivilianReportDecision(TCivUnit* pCivilianOrderEntry) {
 // FUNCTION: IMPERIALISM 0x004d3310
 bool TCivMgr::QueueCivilianWorkOrderWithCostCheck(short nTileIndex) {
   TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
-  int budget = activeNation->diplomacyBudgetBase / 10 + activeNation->treasuryValue10;
+  int budget = activeNation->diplomacyBudgetBase / 10 + activeNation->treasuryValue;
   if (budget < 0) {
     budget = 0;
   }
@@ -622,7 +622,7 @@ bool TCivMgr::QueueCivilianWorkOrderWithCostCheck(short nTileIndex) {
 // FUNCTION: IMPERIALISM 0x004d3610
 bool TCivMgr::PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex) {
   TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
-  int availableCash = activeNation->diplomacyBudgetBase / 100 + activeNation->treasuryValue10;
+  int availableCash = activeNation->diplomacyBudgetBase / 100 + activeNation->treasuryValue;
   if (availableCash < 0) {
     availableCash = 0;
   }
@@ -672,7 +672,7 @@ bool TCivMgr::PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d39d0
-char TCivMgr::QueueProspectingOrderAndPlayFeedback(short nTileIndex) {
+bool TCivMgr::QueueProspectingOrderAndPlayFeedback(short nTileIndex) {
   selectedEntry->SetOrders(static_cast<UnitOrder>(8), selectedEntry->tileIndex);
   MoveAndRedrawUnit(nTileIndex, selectedEntry);
   g_pSfxPlaybackSystem->PlaySoundEffect(0x232e, 0, 1);
@@ -682,10 +682,10 @@ char TCivMgr::QueueProspectingOrderAndPlayFeedback(short nTileIndex) {
     PumpUiMessagesAndBackgroundTasks(1);
     nowTick = GetTickCountDiv16();
     if (nowTick < startTick) {
-      return 1;
+      return true;
     }
   } while (nowTick - startTick < 0x1e);
-  return 1;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x004d3a60
@@ -707,7 +707,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
 
       short nationId = g_pSimMgr->GetPlayerCountry();
       int cash = g_apNationStates[nationId]->diplomacyBudgetBase / 100 +
-                 g_apNationStates[nationId]->treasuryValue10;
+                 g_apNationStates[nationId]->treasuryValue;
       int availableCash = (cash < 0) ? 0 : cash;
 
       if (availableCash < cost) {
@@ -723,7 +723,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         g_pViewMgr->ModalMessage(pszFormattedText, g_ptCivilianOrderModalMessage, 2, 0);
       } else {
         short nationId = g_pSimMgr->GetPlayerCountry();
-        g_apNationStates[nationId]->treasuryValue10 -= cost;
+        g_apNationStates[nationId]->treasuryValue -= cost;
         pCiv->SetOrders(kUnitOrderBuildDepot, pCiv->tileIndex);
         g_pSfxPlaybackSystem->PlaySoundEffect(0x232c, 0, 1);
         actionFinalized = true;
@@ -731,7 +731,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
     } else if (choice == kControlTagPort) { // 'port'
       short nationId = g_pSimMgr->GetPlayerCountry();
       int cash = g_apNationStates[nationId]->diplomacyBudgetBase / 100 +
-                 g_apNationStates[nationId]->treasuryValue10;
+                 g_apNationStates[nationId]->treasuryValue;
       int availableCash = (cash < 0) ? 0 : cash;
 
       if (availableCash < 3000) {
@@ -747,7 +747,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         g_pViewMgr->ModalMessage(pszFormattedText, g_ptCivilianOrderModalMessage, 2, 0);
       } else {
         short nationId = g_pSimMgr->GetPlayerCountry();
-        g_apNationStates[nationId]->treasuryValue10 -= 3000;
+        g_apNationStates[nationId]->treasuryValue -= 3000;
         pCiv->SetOrders(kUnitOrderBuildPort, pCiv->tileIndex);
         if (g_pViewMgr->mapUberPicture != nullptr) {
           g_pViewMgr->mapUberPicture->InvalidateTile(nTileIndex);
@@ -758,7 +758,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
     } else if (choice == kSummaryTagRail) { // 'rail'
       short nationId = g_pSimMgr->GetPlayerCountry();
       int cash = g_apNationStates[nationId]->diplomacyBudgetBase / 100 +
-                 g_apNationStates[nationId]->treasuryValue10;
+                 g_apNationStates[nationId]->treasuryValue;
       int availableCash = (cash < 0) ? 0 : cash;
 
       if (availableCash < 2000) {
@@ -774,7 +774,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         g_pViewMgr->ModalMessage(pszFormattedText, g_ptCivilianOrderModalMessage, 2, 0);
       } else {
         short nationId = g_pSimMgr->GetPlayerCountry();
-        g_apNationStates[nationId]->treasuryValue10 -= 2000;
+        g_apNationStates[nationId]->treasuryValue -= 2000;
         pCiv->SetOrders(kUnitOrderBuildFort, pCiv->tileIndex);
         if (g_pViewMgr->mapUberPicture != nullptr) {
           g_pViewMgr->mapUberPicture->InvalidateTile(nTileIndex);
@@ -790,7 +790,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
 
     short nationId = g_pSimMgr->GetPlayerCountry();
     int cash = g_apNationStates[nationId]->diplomacyBudgetBase / 100 +
-               g_apNationStates[nationId]->treasuryValue10;
+               g_apNationStates[nationId]->treasuryValue;
     int availableCash = (cash < 0) ? 0 : cash;
 
     if (availableCash < cost) {
@@ -806,7 +806,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
       g_pViewMgr->ModalMessage(pszFormattedText, g_ptCivilianOrderModalMessage, 2, 0);
     } else {
       short nationId = g_pSimMgr->GetPlayerCountry();
-      g_apNationStates[nationId]->treasuryValue10 -= cost;
+      g_apNationStates[nationId]->treasuryValue -= cost;
       g_pGlobalMapState->ApplyRailSectionEndpointDirectionFlags(pCiv->tileIndex, nTileIndex,
                                                                 pCiv->ownerNationSlot);
       pCiv->SetOrders(kUnitOrderLayRail, pCiv->tileIndex);
@@ -990,7 +990,7 @@ void TCivMgr::ResolveCivilianDisputes() {
 
       short losingNationSlot = losingOrder->ownerNationSlot;
       losingOrder->SetOrders(kUnitOrderIdle, -1);
-      g_apNationStates[losingNationSlot]->treasuryValue10 +=
+      g_apNationStates[losingNationSlot]->treasuryValue +=
           g_pGlobalMapState->CalculateDeveloperTilePurchaseCost(static_cast<short>(tileIndex));
 
       if (g_apNationStates[losingNationSlot]->diplomacyEligibility != 0) {

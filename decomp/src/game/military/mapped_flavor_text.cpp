@@ -268,7 +268,7 @@ void SetSharedStringFromMappedFlavorTextWithLengthClamp(CString* dest, short tab
     return;
   }
 
-  short variantIndex = g_MappedFlavorTextNationVariantTable_0066EF30[tableSlot].variantIndex;
+  short variantIndex = g_MappedFlavorTextNationVariantTable[tableSlot].variantIndex;
   GenerateMappedFlavorTextUntilValidationPasses(dest, variantIndex);
   if (g_bMultiplayerScenarioSetupActive == '\0') {
     while (dest->GetLength() > 0xc) {
@@ -280,34 +280,34 @@ void SetSharedStringFromMappedFlavorTextWithLengthClamp(CString* dest, short tab
 // FUNCTION: IMPERIALISM 0x005d4550
 void __cdecl AssignNextProvinceNameForNationSlot(CString* dest, short nationSlot) {
   if (nationSlot == -1) {
-    memset(g_anProvinceNameOrdinalByNationSlot_006a5af0, 0,
-           sizeof(g_anProvinceNameOrdinalByNationSlot_006a5af0));
+    memset(g_anProvinceNameOrdinalByNationSlot, 0, sizeof(g_anProvinceNameOrdinalByNationSlot));
     return;
   }
 
   if (g_pSimMgr->useLocalizedNameTables != '\0') {
     CString provinceName;
-    short ordinal = ++g_anProvinceNameOrdinalByNationSlot_006a5af0[nationSlot];
+    short ordinal = ++g_anProvinceNameOrdinalByNationSlot[nationSlot];
     g_pSimMgr->GetString(static_cast<short>(nationSlot + 8000), ordinal, &provinceName);
     *dest = CString(provinceName);
     return;
   }
 
   GenerateMappedFlavorTextUntilValidationPasses(
-      dest, g_MappedFlavorTextNationVariantTable_0066EF30[nationSlot].variantIndex);
+      dest, g_MappedFlavorTextNationVariantTable[nationSlot].variantIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x005d46b0
 void GenerateMappedFlavorTextByTableSlot(CString* dest, short tableSlot) {
   GenerateMappedFlavorTextUntilValidationPasses(
-      dest, g_MappedFlavorTextNationVariantTable_0066EF30[tableSlot].variantIndex);
+      dest, g_MappedFlavorTextNationVariantTable[tableSlot].variantIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x005d46e0
 void GenerateMappedFlavorTextByCurrentContextNation(CString* dest) {
-  short nationIndex = (g_pLanguageMgr == 0) ? 2 : static_cast<short>(g_pLanguageMgr->flavorTextNationIndex);
+  short nationIndex =
+      (g_pLanguageMgr == 0) ? 2 : static_cast<short>(g_pLanguageMgr->flavorTextNationIndex);
   GenerateMappedFlavorTextUntilValidationPasses(
-      dest, g_MappedFlavorTextNationVariantTable_0066EF30[nationIndex].variantIndex);
+      dest, g_MappedFlavorTextNationVariantTable[nationIndex].variantIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x005d4720

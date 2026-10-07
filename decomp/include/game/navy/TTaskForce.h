@@ -35,8 +35,8 @@ public:
   int shipOrders;
   void* target;
   TMapOrderChildLinkNode* shipList; // +0x10
-  TShip* flagship; // +0x14
-  TZone* location; // +0x18
+  TShip* flagship;                  // +0x14
+  TZone* location;                  // +0x18
   s16 nation;
   short shipCountsByToolbarSlot[4];
   char defeated;
@@ -64,14 +64,14 @@ public:
   short CountSelectedShips() const;
   void DemocraticallyDetermineAggressionLevel();
   void MaxOut(unsigned char mode);
-  char SinkOrSwimShips();
+  bool SinkOrSwimShips();
   void Victory(int experienceGain); // 0x553e70
 
   void SetAggression(int value); // 0x552f60
   void CommitToOrders();
 
   // Null-safe (returns true on null `this`). Sums shipCountsByToolbarSlot.
-  bool IsEmpty() const; // 0x553b10
+  bool IsEmpty() const;     // 0x553b10
   bool NoSelection() const; // 0x553b50
   bool AllShipsSelected() const;
   char MouseCodeForTarget(Province* province) const;
@@ -82,22 +82,22 @@ public:
   bool IsValidTarget(TZone* candidate);
   int IsPassingThroughPort(TZone* port) const;
   int MouseCodeForTarget(TZone* candidate) const;
-  int GetNationalIndex() const; // 0x5563d0
+  int GetNationalIndex() const;      // 0x5563d0
   short CountForcesFromHere() const; // 0x5562f0, includes this node
   TTaskForce* GetNth(short index);   // 0x556340
   static TTaskForce* GetNationalNth(short nth, short nation);
   // Clears this order's map marker tile if one is set (ingotTileIndex != -1).
   void DestroyIngot(); // 0x5564f0
-  void CreateIngot(); // 0x556410
-  void RechargeAll(); // 0x557870
+  void CreateIngot();  // 0x556410
+  void RechargeAll();  // 0x557870
 
   void GetSnooperDescription(CString* out) const; // 0x554c90
 
   void GetCompositionDescription(CString* out) const; // 0x554b20
-  void GetGeneralDescription(CString* out) const; // 0x554e70
-  TAdmiral* GetSeniorOfficer() const;                // 0x5551a0
-  void GetAuthority(CString* out) const;             // 0x5551d0
-  void CancelOrders(unsigned char cancellationMode); // 0x5547d0
+  void GetGeneralDescription(CString* out) const;     // 0x554e70
+  TAdmiral* GetSeniorOfficer() const;                 // 0x5551a0
+  void GetAuthority(CString* out) const;              // 0x5551d0
+  void CancelOrders(unsigned char cancellationMode);  // 0x5547d0
 
   TTaskForce* RemoveStragglers();
 

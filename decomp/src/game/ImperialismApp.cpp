@@ -202,7 +202,7 @@ ImperialismApp theApp;
 // FUNCTION: IMPERIALISM 0x00412d90
 int __cdecl ShowOutOfMemoryErrorNewHandler(size_t allocationSize) {
   (void)allocationSize;
-  MessageBoxA(NULL, s_OutOfMemoryText_006941F0, s_ErrorCaption_00694204, MB_ICONEXCLAMATION);
+  MessageBoxA(NULL, s_OutOfMemoryText, s_ErrorCaption, MB_ICONEXCLAMATION);
   return 0;
 }
 
@@ -210,7 +210,7 @@ int __cdecl ShowOutOfMemoryErrorNewHandler(size_t allocationSize) {
 BOOL ImperialismApp::InitInstance() {
   g_pfnPreviousNewHandler = _set_new_handler(ShowOutOfMemoryErrorNewHandler);
 
-  SetRegistryKey(g_pRegistryCompanyKey_0063E038);
+  SetRegistryKey(g_pRegistryCompanyKey);
 
   CString languageOverride;
   ImperialismCommandLineInfo cmdInfo(&languageOverride);
@@ -290,12 +290,10 @@ BOOL ImperialismApp::InitInstance() {
   HKEY hKeySoftware = NULL;
   if (RegOpenKeyExA(HKEY_CURRENT_USER, "Software", 0, KEY_ALL_ACCESS, &hKeySoftware) == 0) {
     HKEY hKeyCompany = NULL;
-    if (RegOpenKeyExA(hKeySoftware, g_pRegistryCompanyKey_0063E038, 0, KEY_ALL_ACCESS,
-                      &hKeyCompany) == 0) {
+    if (RegOpenKeyExA(hKeySoftware, g_pRegistryCompanyKey, 0, KEY_ALL_ACCESS, &hKeyCompany) == 0) {
       HKEY hKeyApp = NULL;
-      if (RegOpenKeyExA(hKeyCompany, g_pRegistryAppKey_0063E03C, 0, KEY_ALL_ACCESS, &hKeyApp) ==
-          0) {
-        RegDeleteKeyA(hKeyApp, g_pRegistrySettingsSection_0063E040);
+      if (RegOpenKeyExA(hKeyCompany, g_pRegistryAppKey, 0, KEY_ALL_ACCESS, &hKeyApp) == 0) {
+        RegDeleteKeyA(hKeyApp, g_pRegistrySettingsSection);
         RegCloseKey(hKeyApp);
       }
       RegCloseKey(hKeyCompany);
@@ -412,11 +410,11 @@ void ImperialismApp::OnSwitchGreatPower() {
 void ImperialismApp::OnRunOffTurns() {
   TRunOffTurnsDialog dialog(0);
   dialog.PrepareAndCreateModalFromTemplate();
-  short savedCooldown = g_nTurnCooldownDeferCounter006A43C4;
+  short savedCooldown = g_nTurnCooldownDeferCounter;
 
   if (dialog.DoModal() == IDOK) {
-    g_nTurnCooldownDeferCounter006A43C4 = savedCooldown;
-    g_nTurnCooldownSideFlag00698B10 = static_cast<short>(g_pSimMgr->mode);
+    g_nTurnCooldownDeferCounter = savedCooldown;
+    g_nTurnCooldownSideFlag = static_cast<short>(g_pSimMgr->mode);
     PostMessageA(m_pMainWnd->m_hWnd, WM_COMMAND, 100, 0);
   }
 }
@@ -497,7 +495,7 @@ BOOL ImperialismApp::OnIdle(LONG lCount) {
 
 // FUNCTION: IMPERIALISM 0x00414640
 void ImperialismApp::OnHuman() {
-  if (g_pAmbitDeveloperAssertProbe_006A1358 == 0) {
+  if (g_pAmbitDeveloperAssertProbe == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Ambit.cpp", 0x3b6);
   }
 }
@@ -531,7 +529,7 @@ void ImperialismApp::OnPeekAtGWorld() {}
 
 // FUNCTION: IMPERIALISM 0x00414850
 const char* GetDataDirectoryPathLiteral() {
-  return s_DataDirectoryPath_006942A8;
+  return s_DataDirectoryPath;
 }
 
 // FUNCTION: IMPERIALISM 0x00414870
@@ -543,7 +541,7 @@ LPCTSTR ImperialismApp::DetectImperialismInstallDriveAndSetPathPrefix() {
         CString volumeName;
         DWORD serial = 0;
         if (QueryVolumeInformationForDriveIndex(driveIndex, &volumeName, &serial) &&
-            strcmp(static_cast<LPCTSTR>(volumeName), g_pRegistryProfileAppName_0063E050) == 0) {
+            strcmp(static_cast<LPCTSTR>(volumeName), g_pRegistryProfileAppName) == 0) {
           char prefix[4];
           prefix[0] = static_cast<char>('A' + driveIndex);
           prefix[1] = ':';
@@ -561,18 +559,17 @@ LPCTSTR ImperialismApp::DetectImperialismInstallDriveAndSetPathPrefix() {
 
 // FUNCTION: IMPERIALISM 0x004149a0
 BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
-  CString savedLanguage =
-      GetProfileString(g_pRegistrySettingsSection_0063E040, g_pRegistryLanguageKey_0063E04C, 0);
+  CString savedLanguage = GetProfileString(g_pRegistrySettingsSection, g_pRegistryLanguageKey, 0);
 
   ImperialismCommandLineInfo cmdInfo(&savedLanguage);
   ParseCommandLine(cmdInfo);
 
   long findHandle = -1;
   BOOL haveAnyIrgFile = FALSE;
-  CString dataDir(s_DataDirectoryPath_006942A8);
+  CString dataDir(s_DataDirectoryPath);
   _finddata_t findData;
   {
-    CString searchPattern = dataDir + s_IrgGlobPattern_006942FC;
+    CString searchPattern = dataDir + s_IrgGlobPattern;
     CloseCrtFindHandleIfOpen(findHandle);
     findHandle = _findfirst(searchPattern, &findData);
   }
@@ -589,7 +586,7 @@ BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
   }
 
   if (!haveAnyIrgFile) {
-    AfxMessageBox(s_NoLanguageFilesMessage_006942B4, 0, 0);
+    AfxMessageBox(s_NoLanguageFilesMessage, 0, 0);
     CloseCrtFindHandleIfOpen(findHandle);
     return FALSE;
   }
@@ -597,7 +594,7 @@ BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
   // Labels are compared upper-cased (case-insensitive language match).
   savedLanguage.MakeUpper();
   {
-    CString searchPattern = dataDir + s_IrgGlobPattern_006942FC;
+    CString searchPattern = dataDir + s_IrgGlobPattern;
     CloseCrtFindHandleIfOpen(findHandle);
     findHandle = _findfirst(searchPattern, &findData);
   }
@@ -611,8 +608,7 @@ BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
     languageLabel.MakeUpper();
 
     if (savedLanguage.Compare(languageLabel) == 0) {
-      WriteProfileString(g_pRegistrySettingsSection_0063E040, g_pRegistryLanguageKey_0063E04C,
-                         savedLanguage);
+      WriteProfileString(g_pRegistrySettingsSection, g_pRegistryLanguageKey, savedLanguage);
 
       LoadStringA(irgModule, 0x1e36, this->languageLabel.GetBufferSetLength(0x21), 0x20);
       this->languageLabel.ReleaseBuffer(-1);
@@ -650,8 +646,8 @@ BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
 
 // FUNCTION: IMPERIALISM 0x00415090
 int ImperialismApp::ShowAutoResolutionDialogIfNeeded() {
-  int autoResMode = GetProfileInt(g_pRegistrySettingsSection_0063E040,
-                                  g_pRegistryAutoResKey_0063E048, kAutoResPromptSentinel);
+  int autoResMode =
+      GetProfileInt(g_pRegistrySettingsSection, g_pRegistryAutoResKey, kAutoResPromptSentinel);
 
   CString languageOverride;
   ImperialismCommandLineInfo cmdInfo(&languageOverride);
@@ -673,23 +669,23 @@ int ImperialismApp::ShowAutoResolutionDialogIfNeeded() {
     autoResMode = dialog.autoResolutionCheckState;
   }
 
-  WriteProfileInt(g_pRegistrySettingsSection_0063E040, g_pRegistryAutoResKey_0063E048, autoResMode);
+  WriteProfileInt(g_pRegistrySettingsSection, g_pRegistryAutoResKey, autoResMode);
   return autoResMode;
 }
 
 // FUNCTION: IMPERIALISM 0x004154e0
 UINT ImperialismApp::GetSettingValueFromSettingsSection(LPCTSTR key, int defaultValue) {
-  return GetProfileInt(g_pRegistrySettingsSectionAlt_0063E044, key, defaultValue);
+  return GetProfileInt(g_pRegistrySettingsSectionAlt, key, defaultValue);
 }
 
 // FUNCTION: IMPERIALISM 0x00415510
 BOOL ImperialismApp::WriteSettingValueToSettingsSection(LPCTSTR key, int value) {
-  return WriteProfileInt(g_pRegistrySettingsSectionAlt_0063E044, key, value);
+  return WriteProfileInt(g_pRegistrySettingsSectionAlt, key, value);
 }
 
 // FUNCTION: IMPERIALISM 0x00415580
 BOOL ImperialismApp::SetSettingValueInSettingsSection(LPCTSTR key, LPCTSTR value) {
-  return WriteProfileString(g_pRegistrySettingsSectionAlt_0063E044, key, value);
+  return WriteProfileString(g_pRegistrySettingsSectionAlt, key, value);
 }
 
 // FUNCTION: IMPERIALISM 0x004155b0
@@ -726,8 +722,7 @@ BOOL ImperialismApp::ApplyAutoResolutionModeAndPersist(int mode) {
     }
 
     if (appliedAutoResMode == mode) {
-      WriteProfileInt(g_pRegistrySettingsSection_0063E040, g_pRegistryAutoResKey_0063E048,
-                      appliedAutoResMode);
+      WriteProfileInt(g_pRegistrySettingsSection, g_pRegistryAutoResKey, appliedAutoResMode);
       return TRUE;
     }
     return FALSE;
@@ -810,7 +805,7 @@ void ImperialismApp::OnMissionSnooper() {
   TWindow* window =
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(static_cast<TurnEventId>(0x3a99));
   if (window == nullptr) {
-    FailNilPointerWithAssert(s_SourcePathUViewMgrMore_0069B740, 0x327);
+    FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x327);
   }
 
   TextStyle style;

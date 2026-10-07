@@ -20,10 +20,10 @@ extern POINT g_ptUiPromptModalMessage; // @ 0x6a5be0
 
 extern POINT g_ptCitySiteSelectionDialogPlacement; // @ 0x6a5b58
 
-extern int g_nationInfoGoldResourceOverride_006a5bac;
-extern int g_nViewMgrModalAssertGate_006A5BB0; // @ 0x6a5bb0
+extern int g_nationInfoGoldResourceOverride;
+extern int g_nViewMgrModalAssertGate; // @ 0x6a5bb0
 
-extern int g_lastTurnAlertTick_006a31c0;
+extern int g_lastTurnAlertTick;
 
 extern CPoint g_turnEventDialogAnchorPoint;
 
@@ -38,12 +38,12 @@ extern TInfoBarText* g_pCursorControlPanel;
 extern TLanguageMgr* g_pLanguageMgr;
 extern TApplication* g_pApplication;
 extern TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry;
-extern CList<TView*, TView*> g_UiWidgetBuildStack006a13e0;
+extern CList<TView*, TView*> g_UiWidgetBuildStack;
 
 extern "C" void* g_pScopedMapQuickDrawViewContext;
 extern "C" CDC* g_pScopedMapQuickDrawDcHandleObject;
 
-extern char s_szTurnHistoryPrefix_0069b71c[];
+extern char s_szTurnHistoryPrefix[];
 
 extern "C" {
 extern const unsigned int g_strategicMapStatusIconTagTable[18];
@@ -52,9 +52,9 @@ extern int g_Reset_Quick_Draw_Value_0064B8F0;
 
 extern int g_Reset_Quick_Draw_Value_0064B8F4;
 
-extern const short g_Reset_Quick_Draw_WordState_0064B8F8;
+extern const short g_Reset_Quick_Draw_WordState;
 
-extern short g_Reset_Quick_Draw_State_006A1D10;
+extern short g_Reset_Quick_Draw_State;
 
 extern int g_nQuickDrawPenHorizontalSize;
 
@@ -94,17 +94,17 @@ extern int g_QuickDrawGetCursorAssertGate;
 
 extern int g_QuickDrawEqualRgnAssertGate;
 
-extern int g_QuickDrawStateAssertGate_006A1DB8;
+extern int g_QuickDrawStateAssertGate;
 
-extern char* g_pNationInfoEmptyText_0066f050;
+extern char* g_pNationInfoEmptyText;
 
-extern short g_anAbilityStatusPictureIndex_0066F058[29];
+extern short g_anAbilityStatusPictureIndex[29];
 
-extern short g_overlaySfxSeasonWord_0066f0a6;
+extern short g_overlaySfxSeasonWord;
 
-extern int g_McAppUiActiveFlag_006950AC;
+extern int g_McAppUiActiveFlag;
 
-extern int g_McAppUiDrawGate_006A1AF8;
+extern int g_McAppUiDrawGate;
 
 // Gate checked before the invalidation-flag assert/log call in the child-detach path.
 extern int g_McAppUiFlag_006A1AE0;
@@ -135,61 +135,61 @@ extern int g_McAppUiFlag_006A1B5C;
 extern int g_McAppUiFlag_006A1B0C;
 
 // Reentrancy guard for the root UpdateWindow pass driven by TView slot 0x4f.
-extern int g_McAppUiUpdateWindowRecursionGuard_006A1AF0;
+extern int g_McAppUiUpdateWindowRecursionGuard;
 
 // Active QuickDraw origin/render context view for slot 0x3e.
-extern class TView* g_McAppUiActiveRenderContext_006A1AF4;
+extern class TView* g_McAppUiActiveRenderContext;
 
-extern int g_McAppUiDefaultPosX_006A1A60;
+extern int g_McAppUiDefaultPosX;
 
-extern int g_McAppUiDefaultPosY_006A1A64;
+extern int g_McAppUiDefaultPosY;
 
 // Mouse-capture drag/repeat state used by TControl's input slots.
 extern TMouseCaptureState g_McAppMouseCaptureState; // 0x6a1a68
 
-extern unsigned int g_McAppUiMouseCaptureTimerId_006A1ADC; // 0x6a1adc
+extern unsigned int g_McAppUiMouseCaptureTimerId; // 0x6a1adc
 
-extern char g_szMcAppUiSourcePath_006950B0[];
+extern char g_szMcAppUiSourcePath[];
 
-extern char g_szQuickDrawSourcePath_00695168[];
+extern char g_szQuickDrawSourcePath[];
 
-extern char g_szMcWindowSourcePath_006950D8[];
+extern char g_szMcWindowSourcePath[];
 
-extern int g_nMcWindowStateMsgAssertGate_006A1C74;
+extern int g_nMcWindowStateMsgAssertGate;
 
-extern char g_szIncludeViewSourcePath_00694D10[];
+extern char g_szIncludeViewSourcePath[];
 
-extern char g_szAmbitCadreEgoutClassName_00694D40[];
-extern int g_AmbitCadreEgoutWndClassAtom_006A1834;
+extern char g_szAmbitCadreEgoutClassName[];
+extern int g_AmbitCadreEgoutWndClassAtom;
 
-extern int g_nIncludeViewAssertGate_006A17B0;
-extern int g_nIncludeViewQueueAssertGate_006A17B4;
-extern int g_nIncludeViewCaptureAssertGate_006A17B8;
+extern int g_nIncludeViewAssertGate;
+extern int g_nIncludeViewQueueAssertGate;
+extern int g_nIncludeViewCaptureAssertGate;
 
 // One-shot assert / init gates used by CIncludeView's main-pane reinitialise path.
-extern int g_nIncludeViewReinitAssertGate_006A17BC;
-extern int g_nIncludeViewReinitThreadOnceGate_006A17C0;
-extern int g_nMcAppUiAssertGate_006A2480;
+extern int g_nIncludeViewReinitAssertGate;
+extern int g_nIncludeViewReinitThreadOnceGate;
+extern int g_nMcAppUiAssertGate;
 
-extern int g_nIncludeViewPointerAssertGate_006A17C4;
+extern int g_nIncludeViewPointerAssertGate;
 
-extern char g_szMcAppUiHeaderPath_006943CC[];
+extern char g_szMcAppUiHeaderPath[];
 
 extern int g_McAppUiFlag_006A143C;
 
-extern "C" const char s_SourcePathUViewMgr_0069B6BC[];
+extern "C" const char s_SourcePathUViewMgr[];
 
-extern "C" const char s_SourcePathUViewMgrMore_0069B740[];
+extern "C" const char s_SourcePathUViewMgrMore[];
 
-extern "C" const char s_SourcePathUHelpMgr_00696C58[];
+extern "C" const char s_SourcePathUHelpMgr[];
 
-extern "C" const char s_SourcePathUMacViewMgr_00696D68[];
+extern "C" const char s_SourcePathUMacViewMgr[];
 
-extern const char* const g_pszEmptyTextPointer_00656f60; // = g_szEmptyString @ 0x656f60
+extern const char* const g_pszEmptyTextPointer; // = g_szEmptyString @ 0x656f60
 
 extern TextStyle g_UiResourceEntryDefaultTextStyle;
 
-extern "C" const char s_TurnEventCursorNameFormat_0069B6B4[];
+extern "C" const char s_TurnEventCursorNameFormat[];
 
 extern "C" short g_anStrategicMapOverlaySourceRowByIconId[28];
 

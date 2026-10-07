@@ -25,12 +25,12 @@ void TCivUnit::ICivUnit(CivilianUnitKind unitKind, int anchorIndex, int nOrderOw
 }
 
 // FUNCTION: IMPERIALISM 0x005c2980
-char TCivUnit::IsInIdleSelectionState() {
+bool TCivUnit::IsInIdleSelectionState() {
   if (this->unitOrder != kUnitOrderIdle && (this->unitOrder < static_cast<UnitOrder>(2) ||
                                             this->unitOrder > static_cast<UnitOrder>(3))) {
-    return 0;
+    return false;
   }
-  return 1;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x005c29b0

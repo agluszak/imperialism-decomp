@@ -60,9 +60,9 @@ BOOL TDirectPlaySessionManagerBase::OnEnumerateServiceProvider(LPGUID providerGu
   RuntimeSelectionRecord* record = new RuntimeSelectionRecord;
   record->providerGuid = *providerGuid;
   record->label = providerName;
-  int index = g_RuntimeSelectionRecords006a15e0.GetSize();
-  g_RuntimeSelectionRecords006a15e0.SetSize(index + 1, -1);
-  g_RuntimeSelectionRecords006a15e0[index] = record;
+  int index = g_RuntimeSelectionRecords.GetSize();
+  g_RuntimeSelectionRecords.SetSize(index + 1, -1);
+  g_RuntimeSelectionRecords[index] = record;
   return TRUE;
 }
 
@@ -122,7 +122,7 @@ BOOL TDirectPlaySessionManagerBase::ConnectDirectPlayFromLobbySettingsAndStoreRe
 }
 
 // FUNCTION: IMPERIALISM 0x0047fcb0
-char TWNetSessionManager::CreatePlayerAndStoreResult(LPDPID idOut, LPSTR shortName) {
+bool TWNetSessionManager::CreatePlayerAndStoreResult(LPDPID idOut, LPSTR shortName) {
   DPNAME name;
   memset(&name, 0, sizeof(name));
   name.lpszShortNameA = shortName;
@@ -133,7 +133,7 @@ char TWNetSessionManager::CreatePlayerAndStoreResult(LPDPID idOut, LPSTR shortNa
 }
 
 // FUNCTION: IMPERIALISM 0x0047fd30
-unsigned char TWNetSessionManager::DestroyPlayerAndStoreResult(DWORD idPlayer) {
+bool TWNetSessionManager::DestroyPlayerAndStoreResult(DWORD idPlayer) {
   long destroyResult = this->directPlayInterface->DestroyPlayer(idPlayer);
   this->lastErrorCode = destroyResult;
   return destroyResult >= 0;
@@ -147,10 +147,10 @@ BOOL TDirectPlaySessionManagerBase::GetRuntimeSelectionAuxStatus(void* value) {
 
 // FUNCTION: IMPERIALISM 0x0047fd90
 BOOL TWNetSessionManager::RebuildRuntimeSelectionSource() {
-  for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
-    delete g_RuntimeSelectionRecords006a15e0[index];
+  for (int index = 0; index < g_RuntimeSelectionRecords.GetSize(); ++index) {
+    delete g_RuntimeSelectionRecords[index];
   }
-  g_RuntimeSelectionRecords006a15e0.RemoveAll();
+  g_RuntimeSelectionRecords.RemoveAll();
   lastErrorCode = DirectPlayEnumerate(ForwardEnumSessionToCallbackTable, this);
   return lastErrorCode == 0;
 }
@@ -174,11 +174,11 @@ bool TWNetSessionManager::InitializeDirectPlayForProviderGuidOrEnumerate(const G
     selectedProviderGuid = *providerGuid;
     lastErrorCode = DirectPlayCreate(&selectedProviderGuid, &createdInterface, 0);
   } else {
-    for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
-      delete g_RuntimeSelectionRecords006a15e0[index];
+    for (int index = 0; index < g_RuntimeSelectionRecords.GetSize(); ++index) {
+      delete g_RuntimeSelectionRecords[index];
     }
-    g_RuntimeSelectionRecords006a15e0.RemoveAll();
-    g_RuntimeSelectionRecords006a15e0.SetSize(0, -1);
+    g_RuntimeSelectionRecords.RemoveAll();
+    g_RuntimeSelectionRecords.SetSize(0, -1);
     lastErrorCode = DirectPlayEnumerate(ForwardEnumSessionToCallbackTable, this);
     if (lastErrorCode >= 0 && SelectRuntimeProvider(&selectedProviderGuid)) {
       lastErrorCode = DirectPlayCreate(&selectedProviderGuid, &createdInterface, 0);
@@ -195,10 +195,10 @@ bool TWNetSessionManager::InitializeDirectPlayForProviderGuidOrEnumerate(const G
     createdInterface->Release();
   }
 
-  for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
-    delete g_RuntimeSelectionRecords006a15e0[index];
+  for (int index = 0; index < g_RuntimeSelectionRecords.GetSize(); ++index) {
+    delete g_RuntimeSelectionRecords[index];
   }
-  g_RuntimeSelectionRecords006a15e0.RemoveAll();
+  g_RuntimeSelectionRecords.RemoveAll();
   return lastErrorCode >= 0;
 }
 
@@ -211,10 +211,10 @@ BOOL TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext() {
   InitializeSessionDescription();
   lastErrorCode = directPlayInterface->Open(&sessionDescription, DPOPEN_CREATE);
   if (lastErrorCode < 0) {
-    for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
-      delete g_RuntimeSelectionRecords006a15e0[index];
+    for (int index = 0; index < g_RuntimeSelectionRecords.GetSize(); ++index) {
+      delete g_RuntimeSelectionRecords[index];
     }
-    g_RuntimeSelectionRecords006a15e0.RemoveAll();
+    g_RuntimeSelectionRecords.RemoveAll();
 
     if (directPlayInterface != 0) {
       directPlayInterface->Close();
@@ -259,10 +259,10 @@ BOOL TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice() {
     }
   }
 
-  for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
-    delete g_RuntimeSelectionRecords006a15e0[index];
+  for (int index = 0; index < g_RuntimeSelectionRecords.GetSize(); ++index) {
+    delete g_RuntimeSelectionRecords[index];
   }
-  g_RuntimeSelectionRecords006a15e0.SetSize(0, -1);
+  g_RuntimeSelectionRecords.SetSize(0, -1);
 
   if (directPlayInterface != 0) {
     directPlayInterface->Close();
@@ -277,7 +277,7 @@ BOOL TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice() {
 }
 
 // FUNCTION: IMPERIALISM 0x004803d0
-unsigned char TWNetSessionManager::OpenCurrentSessionDescriptionForJoin() {
+bool TWNetSessionManager::OpenCurrentSessionDescriptionForJoin() {
   long result = directPlayInterface->Open(&sessionDescription, DPOPEN_JOIN);
   lastErrorCode = result;
   return result >= 0;
@@ -285,10 +285,10 @@ unsigned char TWNetSessionManager::OpenCurrentSessionDescriptionForJoin() {
 
 // FUNCTION: IMPERIALISM 0x00480400
 void TDirectPlaySessionManagerBase::ResetRuntimeSelectionRecordBuffer() {
-  for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
-    delete g_RuntimeSelectionRecords006a15e0[index];
+  for (int index = 0; index < g_RuntimeSelectionRecords.GetSize(); ++index) {
+    delete g_RuntimeSelectionRecords[index];
   }
-  g_RuntimeSelectionRecords006a15e0.RemoveAll();
+  g_RuntimeSelectionRecords.RemoveAll();
 
   if (directPlayInterface != 0) {
     directPlayInterface->Close();
@@ -313,8 +313,8 @@ BOOL TDirectPlaySessionManagerBase::ExtendEnumSessionsTimeoutWhileCtrlHeld(DWORD
 // FUNCTION: IMPERIALISM 0x00480500
 BOOL TDirectPlaySessionManagerBase::SelectRuntimeProvider(GUID* providerGuid) {
   TPickGameDialog dialog(0);
-  for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
-    RuntimeSelectionRecord* record = g_RuntimeSelectionRecords006a15e0[index];
+  for (int index = 0; index < g_RuntimeSelectionRecords.GetSize(); ++index) {
+    RuntimeSelectionRecord* record = g_RuntimeSelectionRecords[index];
     int row = dialog.listbox.AddString(record->label);
     dialog.listbox.SetItemDataPtr(row, record);
   }
@@ -401,7 +401,7 @@ static BOOL FAR PASCAL RecordHostPlayerIdDuringEnumeration(DPID dpId, DWORD dwPl
   DWORD playerRole = 0;
   DWORD playerRoleSize = sizeof(playerRole);
   if (session->GetPlayerData(dpId, &playerRole, &playerRoleSize) == 0) {
-    g_pNetMgr006a6014->HandleError(session->lastErrorCode);
+    g_pNetMgr->HandleError(session->lastErrorCode);
     return FALSE;
   }
   if (playerRole == 1) {
@@ -421,14 +421,14 @@ BOOL TDirectPlaySessionManagerBase::FindHostPlayerIdByEnumeration() {
 
 // FUNCTION: IMPERIALISM 0x005e2a20
 TWNetSessionManager::~TWNetSessionManager() {
-  for (int i = 0; i < g_WNetSerializedPtrArrayB006a5f28.GetSize(); ++i) {
-    delete g_WNetSerializedPtrArrayB006a5f28[i];
+  for (int i = 0; i < g_WNetSerializedPtrArrayB.GetSize(); ++i) {
+    delete g_WNetSerializedPtrArrayB[i];
   }
-  g_WNetSerializedPtrArrayB006a5f28.RemoveAll();
-  for (int j = 0; j < g_WNetSerializedPtrArrayA006a5f10.GetSize(); ++j) {
-    delete g_WNetSerializedPtrArrayA006a5f10[j];
+  g_WNetSerializedPtrArrayB.RemoveAll();
+  for (int j = 0; j < g_WNetSerializedPtrArrayA.GetSize(); ++j) {
+    delete g_WNetSerializedPtrArrayA[j];
   }
-  g_WNetSerializedPtrArrayA006a5f10.RemoveAll();
+  g_WNetSerializedPtrArrayA.RemoveAll();
 }
 
 // FUNCTION: IMPERIALISM 0x005e2b50
@@ -445,18 +445,18 @@ TDirectPlaySessionManagerBase::~TDirectPlaySessionManagerBase() {
 // FUNCTION: IMPERIALISM 0x005e2bb0
 void TWNetSessionManager::ResetSessionDescription() {
   joinGamePlayerDataTag = 0;
-  sessionDescription.guidApplication = g_ImperialismDirectPlayApplicationGuid0066f968;
+  sessionDescription.guidApplication = g_ImperialismDirectPlayApplicationGuid;
   sessionDescription.lpszPasswordA = joinGameSeed;
-  for (int index = 0; index < g_WNetSerializedPtrArrayB006a5f28.GetSize(); ++index) {
-    delete g_WNetSerializedPtrArrayB006a5f28[index];
+  for (int index = 0; index < g_WNetSerializedPtrArrayB.GetSize(); ++index) {
+    delete g_WNetSerializedPtrArrayB[index];
   }
-  g_WNetSerializedPtrArrayB006a5f28.RemoveAll();
+  g_WNetSerializedPtrArrayB.RemoveAll();
 }
 
 // FUNCTION: IMPERIALISM 0x005e2c80
 void TWNetSessionManager::InitializeSessionDescription() {
   joinGamePlayerDataTag = 1;
-  sessionDescription.guidApplication = g_ImperialismDirectPlayApplicationGuid0066f968;
+  sessionDescription.guidApplication = g_ImperialismDirectPlayApplicationGuid;
   sessionDescription.dwMaxPlayers = 7;
   sessionDescription.lpszSessionNameA = runtimeSelectionSeed;
 }
@@ -469,9 +469,9 @@ BOOL TWNetSessionManager::OnEnumerateJoinableSession(const DPSESSIONDESC2* sessi
   WNetSelectionRecord* record = new WNetSelectionRecord;
   record->providerGuid = sessionDescription->guidInstance;
   record->label = sessionDescription->lpszSessionNameA;
-  int index = g_WNetSerializedPtrArrayB006a5f28.GetSize();
-  g_WNetSerializedPtrArrayB006a5f28.SetSize(index + 1, -1);
-  g_WNetSerializedPtrArrayB006a5f28[index] = record;
+  int index = g_WNetSerializedPtrArrayB.GetSize();
+  g_WNetSerializedPtrArrayB.SetSize(index + 1, -1);
+  g_WNetSerializedPtrArrayB[index] = record;
   return TRUE;
 }
 
@@ -487,9 +487,9 @@ BOOL TWNetSessionManager::OnEnumerateServiceProvider(LPGUID providerGuid, LPSTR 
     record->providerGuid = *providerGuid;
     record->label = providerName;
 
-    int index = g_WNetSerializedPtrArrayA006a5f10.GetSize();
-    g_WNetSerializedPtrArrayA006a5f10.SetSize(index + 1, -1);
-    g_WNetSerializedPtrArrayA006a5f10[index] = record;
+    int index = g_WNetSerializedPtrArrayA.GetSize();
+    g_WNetSerializedPtrArrayA.SetSize(index + 1, -1);
+    g_WNetSerializedPtrArrayA[index] = record;
 
     TRadioText* item =
         activeProtocolControl->AddItem(kControlTagPro0 + index, index, record->label, 0xf, -1);
@@ -500,9 +500,9 @@ BOOL TWNetSessionManager::OnEnumerateServiceProvider(LPGUID providerGuid, LPSTR 
 
 // FUNCTION: IMPERIALISM 0x005e30c0
 BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* selectedSessionGuid) {
-  if (g_WNetSerializedPtrArrayB006a5f28.GetSize() < 1) {
+  if (g_WNetSerializedPtrArrayB.GetSize() < 1) {
     CString message("No games found to join.");
-    g_pViewMgr->ModalMessage(message, g_ptNetworkModalMessage006a5ed8, 0, 0);
+    g_pViewMgr->ModalMessage(message, g_ptNetworkModalMessage, 0, 0);
     return FALSE;
   }
 
@@ -521,8 +521,8 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
   TJoinSelectorDialog* selector =
       static_cast<TJoinSelectorDialog*>(dialog->ResolveControlByTag(kControlTagDialog)); // 'GOLD'
   selector->AssertValid();
-  for (int index = 0; index < g_WNetSerializedPtrArrayB006a5f28.GetSize(); ++index) {
-    WNetSelectionRecord* record = g_WNetSerializedPtrArrayB006a5f28[index];
+  for (int index = 0; index < g_WNetSerializedPtrArrayB.GetSize(); ++index) {
+    WNetSelectionRecord* record = g_WNetSerializedPtrArrayB[index];
     selector->AddJoinableGameOptionEntry(record->label, record);
   }
 
@@ -538,11 +538,10 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
     nameControl->GetCurrentText(&joinGamePlayerName);
   }
 
-  for (int cleanupIndex = 0; cleanupIndex < g_WNetSerializedPtrArrayB006a5f28.GetSize();
-       ++cleanupIndex) {
-    delete g_WNetSerializedPtrArrayB006a5f28[cleanupIndex];
+  for (int cleanupIndex = 0; cleanupIndex < g_WNetSerializedPtrArrayB.GetSize(); ++cleanupIndex) {
+    delete g_WNetSerializedPtrArrayB[cleanupIndex];
   }
-  g_WNetSerializedPtrArrayB006a5f28.RemoveAll();
+  g_WNetSerializedPtrArrayB.RemoveAll();
   dialog->Close();
   dialog->Free();
   return command == kControlTagOkay;

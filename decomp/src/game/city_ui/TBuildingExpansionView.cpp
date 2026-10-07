@@ -138,7 +138,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
       static_cast<TPictureButton*>(ResolveControlByTag(IMPERIALISM_FOURCC('o', 'k', 'a', 'y')));
   okButton->AssertValid();
   okButton->eventNumber = 0x22;
-  okButton->timingWord92 = 0xbc7;
+  okButton->clickSoundId = 0xbc7;
 }
 
 // FUNCTION: IMPERIALISM 0x004cebb0

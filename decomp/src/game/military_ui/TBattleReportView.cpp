@@ -227,7 +227,7 @@ void TBattleReportView::DoPostCreate(int arg) {
   g_pCursorControlPanel->SetJustification(1, true);
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b67, 0x2b6c);
 
-  SetControlHoverHelpText(g_pBattleReportSharedText_0064dc30,
+  SetControlHoverHelpText(g_pBattleReportSharedText,
                           ResolveControlByTag(kControlTagMain)); // 'main'
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x16, ResolveControlByTag(kControlTagFadm));
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x16, ResolveControlByTag(kControlTagFshp));
@@ -257,7 +257,7 @@ void TBattleReportView::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x004ad5a0
-char TBattleReportView::DoIdle(int action) {
+bool TBattleReportView::DoIdle(int action) {
   if (action == 1) {
     ++g_nBattleReportMarkerBlinkTicks;
     if (g_nBattleReportMarkerBlinkTicks >= 15) {
@@ -300,7 +300,7 @@ char TBattleReportView::DoIdle(int action) {
       PostRender();
     }
   }
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004ad7a0
@@ -378,7 +378,7 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
         rightNation->SetTextAndMaybeRefresh(&rightName, false);
       }
 
-      SetControlHoverHelpText(CString(g_pBattleReportSharedText_0064dc30), dialog);
+      SetControlHoverHelpText(CString(g_pBattleReportSharedText), dialog);
       LoadUiStringByGroupAndIndexToControlObject(0x2730, 0x22,
                                                  book->ResolveControlByTag(kControlTagOkay));
       CPoint placement;
@@ -437,8 +437,8 @@ void TBattleReportView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
 }
 
 // FUNCTION: IMPERIALISM 0x004add50
-char TBattleReportView::ShouldDisplay(MapContextActionRecord*) const {
-  return 1;
+bool TBattleReportView::ShouldDisplay(MapContextActionRecord*) const {
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x004add70

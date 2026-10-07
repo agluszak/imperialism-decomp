@@ -15,7 +15,7 @@ public:
 
   void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override;
-  char ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
+  bool ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                          ResourceKindStorage resourceKind) override;
   bool IsHost(void) const override;
   void ReplyToDiplomacyOffers(void) override;

@@ -41,6 +41,6 @@ Province& Province::operator=(const Province& source) {
   exploredByNationMask = source.exploredByNationMask;
   resourcePresenceMask = source.resourcePresenceMask;
   regionClass = source.regionClass;
-  cityNameA4 = source.cityNameA4;
+  cityName = source.cityName;
   return *this;
 }

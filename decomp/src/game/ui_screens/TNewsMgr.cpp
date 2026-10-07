@@ -103,7 +103,7 @@ void TNewsMgr::LoadNewsTable() {
   storyTemplateCount = static_cast<unsigned int>(byteCount) / sizeof(newsEntry);
   storyTemplateTable = new newsEntry[storyTemplateCount];
   if (storyTemplateTable == 0) {
-    FailNilPointerWithAssert(s_SourcePathUNewspaper_00698470, 0x106);
+    FailNilPointerWithAssert(s_SourcePathUNewspaper, 0x106);
   }
   g_pAssetMgr->ReadResourceStreamIntoBufferAndAdvance(stream, storyTemplateTable, &byteCount);
   g_pAssetMgr->ReleaseResourceStreamIfNotNull(stream);
@@ -718,14 +718,14 @@ void TNewsMgr::ConcatenateTreaty(InterNationEventKind eventKind, int nationA, in
   }
 }
 // FUNCTION: IMPERIALISM 0x0055cf20
-unsigned char TNewsMgr::EvaluateFeatureStory(const newsEntry* templateRow, newsStory* story,
-                                             int nationSlot) {
+bool TNewsMgr::EvaluateFeatureStory(const newsEntry* templateRow, newsStory* story,
+                                    int nationSlot) {
   int kind = templateRow->storyId;
   short otherNation;
   if (kind > 9 && kind % 10 == 0) {
     short period = static_cast<short>(g_pSimMgr->economicTurn / 4);
     if (period < kind - 10 || period >= kind) {
-      return 0;
+      return false;
     }
     story->parmKind[0] = 0;
     story->parmKind[1] = 0;
@@ -751,11 +751,11 @@ unsigned char TNewsMgr::EvaluateFeatureStory(const newsEntry* templateRow, newsS
       otherNation = static_cast<short>(rand() % 7);
     } while (otherNation == nationSlot || g_apTerrainTypeDescriptorTable[otherNation] == 0);
   } else {
-    return 0;
+    return false;
   }
   story->parmKind[1] = 1;
   story->parmValue[1] = 1 << otherNation;
-  return 1;
+  return true;
 }
 
 // Mac oracle: ClearStoryParms.
@@ -768,8 +768,7 @@ void TNewsMgr::ClearStoryParms(newsStory* story) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055d0c0
-unsigned char TNewsMgr::AlwaysTrueStory(const newsEntry* templateRow, newsStory* story,
-                                        int nationSlot) {
+bool TNewsMgr::AlwaysTrueStory(const newsEntry* templateRow, newsStory* story, int nationSlot) {
   story->parmKind[0] = 0;
   story->parmKind[1] = 0;
   story->parmKind[2] = 0;
@@ -787,5 +786,5 @@ unsigned char TNewsMgr::AlwaysTrueStory(const newsEntry* templateRow, newsStory*
 
   story->parmKind[1] = 1;
   story->parmValue[1] = 1 << otherNation;
-  return 1;
+  return true;
 }

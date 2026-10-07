@@ -95,7 +95,7 @@ CWnd* TEditText::Open() {
   if (editWindow == 0 && viewEnabled != 0 && enabled != 0 && nativeWindow != 0) {
     editWindow = new CMcEditWindow;
     if (editWindow == 0) {
-      FailNilPointerWithAssert(g_szMcAppUiSourcePath_006950B0, 0xdee);
+      FailNilPointerWithAssert(g_szMcAppUiSourcePath, 0xdee);
     }
 
     // ES_LEFT / ES_CENTER / ES_RIGHT follow the static text's own alignment code.
@@ -141,11 +141,11 @@ void TEditText::SetEditSelectionAndScrollCaret(short selStart, short selEnd, int
 }
 
 // FUNCTION: IMPERIALISM 0x00490aa0
-char TEditText::BecomeTarget() {
+bool TEditText::BecomeTarget() {
   if (editWindow != nullptr) {
     editWindow->SetFocus();
   }
-  return 1;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00490ad0

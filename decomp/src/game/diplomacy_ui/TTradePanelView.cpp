@@ -36,7 +36,7 @@ void TTradePanelView::DoPostCreate(int arg) {
   TView* linkControl = ResolveControlByTag(kControlTagLink);
   g_pSimMgr->GetString(0x2733, 0x4d, &text);
   SetControlHoverHelpText(text, linkControl);
-  text += s_szSpaceSeparator_00695794;
+  text += s_szSpaceSeparator;
   SetControlHoverHelpText(text, this);
 }
 
@@ -101,7 +101,7 @@ void TTradePanelView::Draw(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x004f8d50
 void TTradePanelView::Setup() {
   TCluster* tradeCluster = static_cast<TCluster*>(ResolveControlByTag(kControlTagClus)); // 'clus'
-  SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText_00654ec8), tradeCluster);
+  SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText), tradeCluster);
   tradeCluster->SetSelectedChildTagAndRefresh(kControlTagTraa); // 'traa'
   diplomacyMapView->selectedGrantRow = 0;
   diplomacyMapView->actionCode = kDipActionTradeSubsidy;

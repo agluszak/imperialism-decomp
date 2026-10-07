@@ -34,7 +34,7 @@ public:
   virtual void GoodsMatchShipping();
   virtual void SetEmpirePolicies();
   // slot 0x1c (body 0x005308b0) — difficulty-indexed army/navy score-threshold predicate.
-  virtual char DeservesToBeEnemy(int nationCode);
+  virtual bool DeservesToBeEnemy(int nationCode);
   virtual void DoSelectEnemy();
   // slot 0x1e (0x00530200) — proposes treaty/policy actions from ranked relationships.
   virtual void DoProposeTreaties();

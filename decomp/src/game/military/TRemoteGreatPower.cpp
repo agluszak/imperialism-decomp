@@ -11,8 +11,8 @@ bool TRemoteGreatPower::IsRemote(void) const {
 }
 
 // FUNCTION: IMPERIALISM 0x00541860
-char TRemoteGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
-  return 0;
+bool TRemoteGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x00541880

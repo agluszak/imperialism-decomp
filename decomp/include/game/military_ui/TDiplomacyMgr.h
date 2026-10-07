@@ -30,10 +30,10 @@ public:
                                        NationSlot sourceNation);    // 11 (0x2c)
   virtual void ApplyDiplomacyInterNationStatesForTurn();            // 12 (0x30)
   virtual void SelectPriorityNationIndicesForMinorCapabilityRows(); // 13 (0x34)
-  virtual void ConveneCouncil(char forceOrMode); // 14 (0x38)
-  virtual void InitializeDiplomacyStandingBaselineRandom();                    // 15 (0x3c)
+  virtual void ConveneCouncil(char forceOrMode);                    // 14 (0x38)
+  virtual void InitializeDiplomacyStandingBaselineRandom();         // 15 (0x3c)
   virtual void ChooseCandidates(int* topNationSlot,
-                                                        int* secondNationSlot);     // 16 (0x40)
+                                int* secondNationSlot);                             // 16 (0x40)
   virtual bool IsNationPairAtWar(NationSlot sourceNation, NationSlot targetNation); // 17 (0x44)
   virtual bool IsNationPairRelationTurnStampOutOfDate(NationSlot sourceNation,
                                                       NationSlot targetNation);       // 18 (0x48)
@@ -53,9 +53,8 @@ public:
                                          NationSlot targetNation); // 25 (0x64)
   virtual DiplomacyRelationshipNotch GetRelationshipNotch(NationSlot sourceNation,
                                                           NationSlot targetNation); // 26 (0x68)
-  virtual void GetTreatyStatusText(NationSlot sourceNationSlot,
-                                                        NationSlot targetNationSlot,
-                                                        CString* treatyName); // 27 (0x6c)
+  virtual void GetTreatyStatusText(NationSlot sourceNationSlot, NationSlot targetNationSlot,
+                                   CString* treatyName); // 27 (0x6c)
   virtual DiplomacyRelationshipStorage
   GetNationPairDiplomacyRelationCode(NationSlot sourceNation,
                                      NationSlot targetNation); // 28 (0x70)
@@ -66,10 +65,8 @@ public:
   SetNationPairDiplomacyRelationCodeFinal(NationSlot sourceNation, NationSlot targetNation,
                                           DiplomacyRelationshipStorage relationship); // 30
   // (0x78)
-  virtual void
-  TerminateAlliance(NationSlot sourceNation,
-                                                       NationSlot targetNation,
-                                                       unsigned char updateMode); // 31 (0x7c)
+  virtual void TerminateAlliance(NationSlot sourceNation, NationSlot targetNation,
+                                 unsigned char updateMode); // 31 (0x7c)
   // ORACLE: Mac names TDiplomacyMgr::InflictWarPenalty(short, short, unsigned char).
   virtual void InflictWarPenalty(NationSlot sourceNation, NationSlot targetNation,
                                  unsigned char updateMode); // 32 (0x80)
@@ -95,7 +92,7 @@ public:
   // ORACLE: Mac names TDiplomacyMgr::GetFavoriteTradePartner(long).
   virtual int GetFavoriteTradePartner(int minorNationSlot); // 39 (0x9c)
 
-  char BuildEmbassy(DiplomaticMissionLevelStorage missionLevel, int sourceNation, int targetNation);
+  bool BuildEmbassy(DiplomaticMissionLevelStorage missionLevel, int sourceNation, int targetNation);
 
   short relationCodeMatrix[kDiplomacyPairMatrixEntries];
   signed char pendingPolicyCodeMatrix[kDiplomacyPairMatrixEntries];

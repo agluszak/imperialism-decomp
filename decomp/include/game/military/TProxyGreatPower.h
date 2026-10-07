@@ -13,22 +13,21 @@ public:
   virtual void AddToTreasury(int amount) override; // slot 0x0e 0x540a00
   void SetTradePolicyTo(NationSlot nationSlot,
                         short tradePolicy) override; // slot 0x12 0x540c20
-  char ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
+  bool ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                          ResourceKindStorage resourceKind) override; // slot 0x22 0x540ba0
   void AddOfferFrom(NationSlot sourceNationSlot,
-                    DiplomacyProposalCodeStorage proposalCode) override; // slot 0x23 0x540ac0
-  virtual bool IsClient() const override;                                // slot 0x26 0x5408c0
-  bool IsRemote(void) const override;                                    // slot 0x28 0x5408e0
-  void AddTurnStartEvent(TTurnStartEvent* event) override;               // slot 0x2f 0x540c70
-  virtual void
-  FinishCityPhase() override;           // slot 0x36 0x540b80
-  virtual void ShowNewspaperForRecordNation() override;           // slot 0x80 0x540aa0
-  virtual void ReplyToDiplomacyOffers() override;                              // slot 0x81 0x540900
+                    DiplomacyProposalCodeStorage proposalCode) override;      // slot 0x23 0x540ac0
+  virtual bool IsClient() const override;                                     // slot 0x26 0x5408c0
+  bool IsRemote(void) const override;                                         // slot 0x28 0x5408e0
+  void AddTurnStartEvent(TTurnStartEvent* event) override;                    // slot 0x2f 0x540c70
+  virtual void FinishCityPhase() override;                                    // slot 0x36 0x540b80
+  virtual void ShowNewspaperForRecordNation() override;                       // slot 0x80 0x540aa0
+  virtual void ReplyToDiplomacyOffers() override;                             // slot 0x81 0x540900
   int ConsiderWarOfIntervention(int targetNation, int sourceNation) override; // slot 0x9f 0x540cf0
   int ConsiderWarOfAlliance(int targetNation, int sourceNation,
-                                             char swapRoles) override; // slot 0xa0 0x540dc0
-  virtual void SorryYouLose() override;                                // slot 0xab 0x540cb0
-  virtual char
+                            char swapRoles) override; // slot 0xa0 0x540dc0
+  virtual void SorryYouLose() override;               // slot 0xab 0x540cb0
+  virtual bool
   UpdateGreatPowerPressureStateAndDispatchEscalationMessage() override; // slot 0xaf 0x540920
 
   TProxyGreatPower() : TGreatPower() {}

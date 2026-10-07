@@ -43,7 +43,7 @@ void TAnimator::Install() {
 }
 
 // FUNCTION: IMPERIALISM 0x004a0c30
-char TAnimator::DoIdle(int action) {
+bool TAnimator::DoIdle(int action) {
   if (action == 1) {
     if (mapUberPicture != 0 && mapUberPicture->HasActiveMapInteractionSelection()) {
       ++overlayPhaseTickCount;
@@ -63,7 +63,7 @@ char TAnimator::DoIdle(int action) {
       animation = static_cast<TAnimation*>(cursor.Advance());
     }
   }
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004a0d10

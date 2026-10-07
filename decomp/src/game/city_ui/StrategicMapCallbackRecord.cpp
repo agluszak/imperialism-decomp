@@ -306,10 +306,10 @@ void StrategicMapCallbackRecord::BuildDiplomacyOverlayHitMaskOpcodeStream(
   AppendOpcodeByte(0xcd);
 
   int generatedBaseOffset = 0;
-  int destinationRow = surfaceHeight - run->boundsAt04.bottom;
-  for (int y = run->boundsAt04.bottom - 1; y >= run->boundsAt04.top; --y, ++destinationRow) {
-    int x = run->boundsAt04.left;
-    while (x < run->boundsAt04.right) {
+  int destinationRow = surfaceHeight - run->bounds.bottom;
+  for (int y = run->bounds.bottom - 1; y >= run->bounds.top; --y, ++destinationRow) {
+    int x = run->bounds.left;
+    while (x < run->bounds.right) {
       bool emitPixel = run->IsMaskPixelSet(x, y);
       if (emitPixel && outlineOnly != 0 && run->IsMaskPixelSet(x + 1, y) &&
           run->IsMaskPixelSet(x - 1, y) && run->IsMaskPixelSet(x, y + 1) &&

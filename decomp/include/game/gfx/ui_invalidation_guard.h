@@ -12,5 +12,4 @@ int TemporarilyClearAndRestoreUiInvalidationFlag(...);
     TemporarilyClearAndRestoreUiInvalidationFlag(sourcePath, line);                                \
   } while (0)
 
-#define FailNilPointerInUSmallViews(line)                                                          \
-  FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, line)
+#define FailNilPointerInUSmallViews(line) FailNilPointerWithAssert(s_SourcePathUSmallViews, line)

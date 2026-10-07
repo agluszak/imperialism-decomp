@@ -118,7 +118,7 @@ CString& __stdcall GetProfileStringFromSettingsSection(CString* result, LPCTSTR 
 
 // FUNCTION: IMPERIALISM 0x00549240
 int __cdecl TouchSessionActiveNationId(void) {
-  return g_pNetMgr006a6014->GetSessionActiveNationId();
+  return g_pNetMgr->GetSessionActiveNationId();
 }
 
 // FUNCTION: IMPERIALISM 0x005621b0
@@ -177,7 +177,7 @@ void TSimMgr::ISimMgr() {
   memset(&councilByDecade[1], 0x01, sizeof(councilByDecade) - 1);
   councilByDecade[10] = 2;
   CFileStatus conanFileStatus;
-  CFile::GetStatus(g_szConanCheatFileName_00698BEC, conanFileStatus);
+  CFile::GetStatus(g_szConanCheatFileName, conanFileStatus);
   g_bRandomMapDeveloperCheatFlag = false;
   ReinitializeRandomSeed();
   difficultyLevel = kDifficultyIntroductory;
@@ -200,7 +200,7 @@ void TSimMgr::ResetTurnFlowStateAndRandomSeed() {
   councilByDecade[10] = 2;
 
   CFileStatus conanFileStatus;
-  CFile::GetStatus(g_szConanCheatFileName_00698BEC, conanFileStatus);
+  CFile::GetStatus(g_szConanCheatFileName, conanFileStatus);
   g_bRandomMapDeveloperCheatFlag = false;
   ReinitializeRandomSeed();
 }
@@ -627,7 +627,7 @@ void TSimMgr::CreateCountries(int activate) {
     const char* tagText = g_pGlobalMapState->scenarioTagText;
     if (tagText[0] == '.') {
       CString path;
-      path.Format(s_PictWvGobPathFormat_00698BF4, tagText[1] - '0');
+      path.Format(s_PictWvGobPathFormat, tagText[1] - '0');
       if (TryGetFileMetadataForPath(&path)) {
         g_pAssetMgr->EnsurePictWvDataGobLoadedBySlot(tagText[1] - '0');
       }
@@ -760,12 +760,12 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
       }
     } else {
       {
-        CString nationName(g_cstrCountryNameSettingValue006A4220);
+        CString nationName(g_cstrCountryNameSettingValue);
         g_apTerrainTypeDescriptorTable[nationIndex]->SetNationDisplayNameAndLocalizationSlotRef(
             nationName);
       }
       {
-        CString nationName(g_cstrCountryNameSettingValue006A4220);
+        CString nationName(g_cstrCountryNameSettingValue);
         g_apTerrainTypeDescriptorTable[nationIndex]->identitySharedString1 = nationName;
       }
     }
@@ -928,8 +928,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   // Source evidence: retail constructs this CString before the defer check.
   CString emptyString;
 
-  if (turnStateCode == kGamePhaseAdvanceSeason && g_nTurnCooldownDeferCounter006A43C4 > 0) {
-    --g_nTurnCooldownDeferCounter006A43C4;
+  if (turnStateCode == kGamePhaseAdvanceSeason && g_nTurnCooldownDeferCounter > 0) {
+    --g_nTurnCooldownDeferCounter;
   }
   mode = turnStateCode;
 
@@ -979,7 +979,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     turnStateCode = kGamePhaseStartGame;
     if (reloadPoliticalMapState) {
       g_pSimMgr->CreateSimObjects(true);
-      g_pSimMgr->CreatePlanet(1, s_Chunk_00698C0C, 1);
+      g_pSimMgr->CreatePlanet(1, s_Chunk, 1);
     }
     if (g_bMultiplayerScenarioSetupActive) {
       break;
@@ -1192,9 +1192,9 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       g_apNationStates[nationSlot]->MarkAllPendingStatusFlagsHandled();
     }
     bool saveTurn = false;
-    if (g_nTurnCooldownDeferCounter006A43C4 < 1) {
-      g_nTurnCooldownDeferCounter006A43C4 = 0;
-      g_nTurnCooldownSideFlag00698B10 = 1;
+    if (g_nTurnCooldownDeferCounter < 1) {
+      g_nTurnCooldownDeferCounter = 0;
+      g_nTurnCooldownSideFlag = 1;
       saveTurn = true;
     } else {
       const int phaseFlags = GetEconomicTurn();
@@ -1235,9 +1235,9 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       turnFlowStatusFlags |= 0x40;
     }
     for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
-      if (g_pSimMgr->activeNationSlot == nationSlot && g_nTurnCooldownDeferCounter006A43C4 < 1) {
-        g_nTurnCooldownDeferCounter006A43C4 = 0;
-        g_nTurnCooldownSideFlag00698B10 = 1;
+      if (g_pSimMgr->activeNationSlot == nationSlot && g_nTurnCooldownDeferCounter < 1) {
+        g_nTurnCooldownDeferCounter = 0;
+        g_nTurnCooldownSideFlag = 1;
         if (IsNationEligibleForOptionalPhase(activeNationSlot)) {
           short unlockSlot = g_pTechMgr->GetNextNewAdvance(static_cast<short>(nationSlot));
           if (unlockSlot != -1) {
@@ -1932,7 +1932,7 @@ void TSimMgr::AddHighScore() {
   GetString(0x2737, 0xd, &ownNationName);
 
   AssignScoresDatPathToSharedString(&path);
-  FILE* file = fopen(path, g_szLiteralRb_00698720);
+  FILE* file = fopen(path, g_szLiteralRb);
 
   int scoreValues[10];
   char scoreRecords[10][0x20];
@@ -1967,7 +1967,7 @@ void TSimMgr::AddHighScore() {
     g_apNationStates[activeNationSlot]->FormatOverlayTerrainLabelText(&recordName);
     strcpy(scoreRecords[insertIndex], recordName);
 
-    FILE* writeFile = fopen(path, g_szLiteralWb_006976E0);
+    FILE* writeFile = fopen(path, g_szLiteralWb);
     for (int i = 0; i < 10; ++i) {
       fwrite(&scoreValues[i], 4, 1, writeFile);
       fwrite(scoreRecords[i], 0x20, 1, writeFile);
@@ -1999,7 +1999,7 @@ void ReinitializeGameFlowAndPostTurnEventCode(TurnEventId eventCode) {
     memset(&simMgr->councilByDecade[1], 0x01, sizeof(simMgr->councilByDecade) - 1);
     simMgr->councilByDecade[10] = 2;
     CFileStatus conanFileStatus;
-    CFile::GetStatus(g_szConanCheatFileName_00698BEC, conanFileStatus);
+    CFile::GetStatus(g_szConanCheatFileName, conanFileStatus);
     g_bRandomMapDeveloperCheatFlag = false;
     simMgr->ReinitializeRandomSeed();
     g_pSimMgr->turnStateCode = kGamePhaseSetUpMap;
@@ -2366,7 +2366,7 @@ void TSimMgr::ScAddRailhead(STurnInstructionCursor* instruction) {
   int nationTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag;
   g_pGlobalMapState->QueueDepotConstructionOrder(tileIndex, static_cast<short>(nationTag));
   if (g_apNationStates[nationTag]->diplomacyEligibility == 0) {
-    g_apNationStates[nationTag]->treasuryValue10 += 2000;
+    g_apNationStates[nationTag]->treasuryValue += 2000;
   }
 }
 
@@ -2381,7 +2381,7 @@ void TSimMgr::ScAddPort(STurnInstructionCursor* instruction) {
   int nationTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag;
   g_pGlobalMapState->QueuePortConstructionOrder(tileIndex, static_cast<short>(nationTag));
   if (g_apNationStates[nationTag]->diplomacyEligibility == 0) {
-    g_apNationStates[nationTag]->treasuryValue10 += 3000;
+    g_apNationStates[nationTag]->treasuryValue += 3000;
   }
 }
 
@@ -2635,7 +2635,7 @@ void TSimMgr::ScSetTreasury(STurnInstructionCursor* instruction) {
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_DWORD_TOKEN(cashToken);
 
-  g_apNationStates[static_cast<int>(nationToken)]->treasuryValue10 = static_cast<int>(cashToken);
+  g_apNationStates[static_cast<int>(nationToken)]->treasuryValue = static_cast<int>(cashToken);
 }
 
 // FUNCTION: IMPERIALISM 0x00583400

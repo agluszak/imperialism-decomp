@@ -137,8 +137,8 @@ LRESULT CIncludeView::OnDialogTreeHostMsg4EF(WPARAM wParam, LPARAM lParam) {
   (void)lParam;
   switch (wParam & 0xff) {
   case 0:
-    if (g_nIncludeViewAssertGate_006A17B0 == 0) {
-      TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath_00694D10, 0x77);
+    if (g_nIncludeViewAssertGate == 0) {
+      TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath, 0x77);
     }
     m_activeDialogContext = 0;
     m_pMainPaneDib = 0;
@@ -148,7 +148,7 @@ LRESULT CIncludeView::OnDialogTreeHostMsg4EF(WPARAM wParam, LPARAM lParam) {
     m_activeDialogContext->ResolveControlByTag(kControlTagMain); // 'main'
     break;
   default:
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath_00694D10, 0x84);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath, 0x84);
     break;
   }
   return 0;
@@ -302,15 +302,15 @@ CPoint IncludeViewOverlayRectRecord::ComputeSpan() const {
 
 // FUNCTION: IMPERIALISM 0x00483250
 void CIncludeView::AssertOverlayQueueGate() {
-  if (g_nIncludeViewQueueAssertGate_006A17B4 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath_00694D10, 0x166);
+  if (g_nIncludeViewQueueAssertGate == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath, 0x166);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00483280
 void CIncludeView::BeginTracking(CPoint* startPoint, TControl* tracker) {
-  if (g_nIncludeViewCaptureAssertGate_006A17B8 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath_00694D10, 0x16e);
+  if (g_nIncludeViewCaptureAssertGate == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath, 0x16e);
   }
   m_capturedControl = tracker;
   CWnd::FromHandle(::SetCapture(m_hWnd));
@@ -351,8 +351,8 @@ TView* CIncludeView::ReinitializeIncludeViewMainPaneAndRedrawWindow(int unusedAr
     m_activeDialogContext = 0;
     SetGlobalUiInvalidationFlagAndReturnPrevious(previousFlag);
   }
-  if (g_nIncludeViewReinitAssertGate_006A17BC == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath_00694D10, 0x1d2);
+  if (g_nIncludeViewReinitAssertGate == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath, 0x1d2);
   }
 
   TPicture* mainPane =
@@ -376,8 +376,8 @@ TView* CIncludeView::ReinitializeIncludeViewMainPaneAndRedrawWindow(int unusedAr
   ::InvalidateRect(m_hWnd, 0, TRUE);
   ::RedrawWindow(m_hWnd, 0, 0, RDW_INVALIDATE);
 
-  if (g_nIncludeViewReinitThreadOnceGate_006A17C0 == 0) {
-    g_nIncludeViewReinitThreadOnceGate_006A17C0 = 1;
+  if (g_nIncludeViewReinitThreadOnceGate == 0) {
+    g_nIncludeViewReinitThreadOnceGate = 1;
   }
   return m_activeDialogContext;
 }
@@ -470,8 +470,8 @@ void CIncludeView::OnMouseMove(UINT nFlags, CPoint point) {
   }
   g_McAppMouseCaptureState.NotifyCaptureOwnerState1AndMaybeUpdateCoords(nFlags, point.x, point.y);
   if (m_capturedControl != 0) {
-    if (g_nIncludeViewPointerAssertGate_006A17C4 == 0) {
-      TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath_00694D10, 0x2b7);
+    if (g_nIncludeViewPointerAssertGate == 0) {
+      TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath, 0x2b7);
     }
     CPoint controlRelativePoint(point);
     m_capturedControl->WindowToLocal(&controlRelativePoint);
@@ -732,21 +732,21 @@ void CIncludeView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
 // FUNCTION: IMPERIALISM 0x00484ea0
 LPCSTR RegisterAmbitCadreEgoutWindowClass() {
-  if (g_AmbitCadreEgoutWndClassAtom_006A1834 == 0) {
+  if (g_AmbitCadreEgoutWndClassAtom == 0) {
     WNDCLASS wndClass;
     memset(&wndClass, 0, sizeof(wndClass));
     wndClass.lpfnWndProc = ::DefWindowProc;
     wndClass.hInstance = AfxGetInstanceHandle();
     wndClass.hCursor = ::LoadCursor(NULL, IDC_ARROW);
     wndClass.style = 0x2000200;
-    wndClass.lpszClassName = g_szAmbitCadreEgoutClassName_00694D40;
+    wndClass.lpszClassName = g_szAmbitCadreEgoutClassName;
     wndClass.hIcon = ::LoadIcon(AfxGetResourceHandle(), MAKEINTRESOURCE(0x7a01));
     if (wndClass.hIcon == NULL) {
       wndClass.hIcon = ::LoadIcon(NULL, IDI_APPLICATION);
     }
-    g_AmbitCadreEgoutWndClassAtom_006A1834 = AfxRegisterClass(&wndClass);
+    g_AmbitCadreEgoutWndClassAtom = AfxRegisterClass(&wndClass);
   }
-  return g_AmbitCadreEgoutWndClassAtom_006A1834 != 0 ? g_szAmbitCadreEgoutClassName_00694D40 : NULL;
+  return g_AmbitCadreEgoutWndClassAtom != 0 ? g_szAmbitCadreEgoutClassName : NULL;
 }
 
 // Native host view (TView::nativeWindow) of the top window on the modal stack.

@@ -78,8 +78,8 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b68);
   g_pSimMgr->GetString(0x2733, 1, &text); // "Provinces:"
-  short labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[0] - ownerY);
-  short labelX = static_cast<short>(g_infoPanelLabelXByRow_006969b0[0] - ownerX);
+  short labelY = static_cast<short>(g_infoPanelLabelYByRow[0] - ownerY);
+  short labelX = static_cast<short>(g_infoPanelLabelXByRow[0] - ownerX);
   SetQuickDrawColorAndSyncGlobals(foregroundColor);
   SetQuickDrawTextOriginWithContextOffset(labelX + 1, labelY + 1);
   DrawTextWithCachedQuickDrawStyleState(&text);
@@ -90,8 +90,8 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
   if (selectedNation < 7) {
     for (int row = 1; row < 3; ++row) {
       g_pSimMgr->GetString(0x2733, static_cast<short>(row + 1), &text);
-      labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[row] - ownerY);
-      labelX = static_cast<short>(g_infoPanelLabelXByRow_006969b0[row] - ownerX);
+      labelY = static_cast<short>(g_infoPanelLabelYByRow[row] - ownerY);
+      labelX = static_cast<short>(g_infoPanelLabelXByRow[row] - ownerX);
       SetQuickDrawColorAndSyncGlobals(foregroundColor);
       SetQuickDrawTextOriginWithContextOffset(labelX + 1, labelY + 1);
       DrawTextWithCachedQuickDrawStyleState(&text);
@@ -104,8 +104,8 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
     if (selectedCountry == 0 || selectedCountry->encodedNationSlot < 100 ||
         selectedCountry->encodedNationSlot >= 200) {
       g_pSimMgr->GetString(0x2733, 0x61, &text); // "Most Favored"
-      labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[1] - ownerY);
-      labelX = static_cast<short>(g_infoPanelLabelXByRow_006969b0[1] - ownerX);
+      labelY = static_cast<short>(g_infoPanelLabelYByRow[1] - ownerY);
+      labelX = static_cast<short>(g_infoPanelLabelXByRow[1] - ownerX);
       SetQuickDrawColorAndSyncGlobals(foregroundColor);
       SetQuickDrawTextOriginWithContextOffset(labelX + 1, labelY + 1);
       DrawTextWithCachedQuickDrawStyleState(&text);
@@ -114,8 +114,8 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
       DrawTextWithCachedQuickDrawStyleState(&text);
 
       g_pSimMgr->GetString(0x2733, 0x62, &text); // "Trading Nation:"
-      labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[2] - ownerY);
-      labelX = static_cast<short>(g_infoPanelLabelXByRow_006969b0[2] - ownerX);
+      labelY = static_cast<short>(g_infoPanelLabelYByRow[2] - ownerY);
+      labelX = static_cast<short>(g_infoPanelLabelXByRow[2] - ownerX);
       SetQuickDrawColorAndSyncGlobals(foregroundColor);
       SetQuickDrawTextOriginWithContextOffset(labelX + 1, labelY + 1);
       DrawTextWithCachedQuickDrawStyleState(&text);
@@ -143,7 +143,7 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
     g_pSimMgr->GetString(0x2733, 0x16, &templateText); // "Colony of [1:Zimm]"
     scanBracketExpressions(g_pSimMgr, &text, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(ownerName));
-    labelX = static_cast<short>(g_infoPanelLabelXByRow_006969b0[1] - ownerX);
+    labelX = static_cast<short>(g_infoPanelLabelXByRow[1] - ownerX);
     SetQuickDrawColorAndSyncGlobals(foregroundColor);
     SetQuickDrawTextOriginWithContextOffset(labelX + 1, 0x25);
     DrawTextWithCachedQuickDrawStyleState(&text);
@@ -166,7 +166,7 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
   }
 
   text.Format(g_szDecimalFormat, selectedCountry->ownedRegionList->GetSize());
-  labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[0] - ownerY);
+  labelY = static_cast<short>(g_infoPanelLabelYByRow[0] - ownerY);
   SetQuickDrawColorAndSyncGlobals(foregroundColor);
   SetQuickDrawTextOriginWithContextOffset(valueX + 1, labelY + 1);
   DrawTextWithCachedQuickDrawStyleState(&text);
@@ -178,7 +178,7 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
     int militaryTier = static_cast<TGreatPower*>(selectedCountry)
                            ->ClassifyNationMilitaryPowerBandAgainstGlobalMean();
     g_pSimMgr->GetString(0x2733, static_cast<short>(militaryTier + 0x19), &text);
-    labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[1] - ownerY);
+    labelY = static_cast<short>(g_infoPanelLabelYByRow[1] - ownerY);
     SetQuickDrawColorAndSyncGlobals(foregroundColor);
     SetQuickDrawTextOriginWithContextOffset(valueX + 1, labelY + 1);
     DrawTextWithCachedQuickDrawStyleState(&text);
@@ -192,7 +192,7 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
         selectedCountry->encodedNationSlot >= 200) {
       int productionTier = g_apNationStates[selectedNation]->ClassifyNationProductionTierVsPeers();
       g_pSimMgr->GetString(0x2733, static_cast<short>(productionTier + 0x19), &text);
-      labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[2] - ownerY);
+      labelY = static_cast<short>(g_infoPanelLabelYByRow[2] - ownerY);
       SetQuickDrawColorAndSyncGlobals(foregroundColor);
       SetQuickDrawTextOriginWithContextOffset(valueX + 1, labelY + 1);
       DrawTextWithCachedQuickDrawStyleState(&text);
@@ -209,7 +209,7 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
     } else {
       g_apTerrainTypeDescriptorTable[favoredNation]->FormatOverlayTerrainLabelText(&text);
     }
-    labelY = static_cast<short>(g_infoPanelLabelYByRow_006969c0[2] - ownerY);
+    labelY = static_cast<short>(g_infoPanelLabelYByRow[2] - ownerY);
     SetQuickDrawColorAndSyncGlobals(foregroundColor);
     SetQuickDrawTextOriginWithContextOffset(valueX + 1, labelY + 1);
     DrawTextWithCachedQuickDrawStyleState(&text);
@@ -223,7 +223,7 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
 void TInfoPanelView::Setup() {
   TCluster* overlayCluster = static_cast<TCluster*>(ResolveControlByTag(kControlTagClus)); // 'clus'
   overlayCluster->AssertValid();
-  SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText_00654ec8), overlayCluster);
+  SetControlHoverHelpText(CString(g_pDiplomacyPanelEmptyText), overlayCluster);
   overlayCluster->SetSelectedChildTagAndRefresh(kControlTagOvr0); // 'ovr0'
 
   diplomacyMapView->actionCode = kDipActionInspectNation;
@@ -238,7 +238,7 @@ void TInfoPanelView::Setup() {
 void TInfoPanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
     short selectedOverlayMode = (short)sourceHandler->controlTag - 0x7230;
-    diplomacyMapView->interactionModeAt94 = selectedOverlayMode;
+    diplomacyMapView->interactionMode = selectedOverlayMode;
     diplomacyMapView->InvalidateCityDialogRectRegion(&diplomacyMapView->mapViewportRect, 1);
     this->selectedOverlayMode = selectedOverlayMode;
     TControl* mkey = static_cast<TControl*>(ResolveControlByTag(kControlTagMkey));

@@ -15,7 +15,7 @@ public:
   virtual void Free() override;      // slot 0x07 0x54d6f0
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
                        TEvent* event) override; // slot 0x0f 0x0054e1f0
-  virtual char DoIdle(int action) override;     // slot 0x13 0x54db40
+  virtual bool DoIdle(int action) override;     // slot 0x13 0x54db40
   virtual void DoPostCreate(int arg) override;  // slot 0x37 0x54d730
 
   // NOOP: verified empty in original 0x0054d686 (no standalone TLoungeDialog::TLoungeDialog body exists: CreateObject 0x0054d650 inlines this default ctor, calling the TNoHilitePicture base ctor directly at that site)

@@ -61,8 +61,8 @@ void TEscortMission::CalculateImportance() {
     if (*zoneOwnerSlot == cachedOwner) {
       short ownerNationCode = zone->GetPortZoneOwnerNationCodeFromMissionField48();
       score *= (ownerNationCode == nationId)
-                   ? static_cast<float>(g_PortZoneFriendlyMissionScoreMultiplier_0065AA10)
-                   : static_cast<float>(g_PortZoneForeignMissionScoreMultiplier_0065AA18);
+                   ? static_cast<float>(g_PortZoneFriendlyMissionScoreMultiplier)
+                   : static_cast<float>(g_PortZoneForeignMissionScoreMultiplier);
     }
   }
 
@@ -133,7 +133,7 @@ void TEscortMission::CalculateNeeds() {
       result = 0.0f;
     } else {
       float delta = 0.0f;
-      const short* weights = &g_Populate_Beachhead_Mission_LookupTable_00697958[4];
+      const short* weights = &g_Populate_Beachhead_Mission_LookupTable[4];
       for (int c = 0; c < 4; ++c) {
         float diff = vector[c] / sum - static_cast<float>(static_cast<short>(weights[c])) *
                                            g_Recompute_Nation_Order_LookupTable_0065A9F8;
@@ -149,7 +149,7 @@ void TEscortMission::CalculateNeeds() {
 
   for (int c = 0; c < 4; ++c) {
     requiredShipEquipageByCategory[c] =
-        static_cast<float>(g_NavyOrderDistributionCategoryWeights_00697978[c]) * total *
+        static_cast<float>(g_NavyOrderDistributionCategoryWeights[c]) * total *
         g_Recompute_Nation_Order_LookupTable_0065A9F8;
   }
 }

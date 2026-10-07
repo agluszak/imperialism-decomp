@@ -129,7 +129,7 @@ void TForeignMinister::InitializeTradeStatus() {
   memset(this->tradePartnerEnabled, 1, 7);
   TGreatPower* ownerGP = this->greatPower;
   this->capabilityFlag16 = 0;
-  if (ownerGP->treasuryValue10 < 0) {
+  if (ownerGP->treasuryValue < 0) {
     this->capabilityFlag14 = 1;
   }
 }
@@ -419,7 +419,7 @@ void TForeignMinister::GoodsMatchShipping() {
 // FUNCTION: IMPERIALISM 0x0052fe90
 void TForeignMinister::DoDevelopmentGrants() {
   TGreatPower* owner = greatPower;
-  int availableBudget = static_cast<int>((owner->treasuryValue10 - 10000) * 0.5);
+  int availableBudget = static_cast<int>((owner->treasuryValue - 10000) * 0.5);
   if (availableBudget <= 1000) {
     return;
   }
@@ -630,7 +630,7 @@ void TForeignMinister::DoProposeTreaties() {
 }
 
 // FUNCTION: IMPERIALISM 0x005308b0
-char TForeignMinister::DeservesToBeEnemy(int nationCode) {
+bool TForeignMinister::DeservesToBeEnemy(int nationCode) {
   // Two difficulty-indexed threshold rows (A = [difficulty], B = [difficulty + 5]).
   int thresholds[10] = {0x15, 0x12, 0xf, 0xd, 0xb, 0x1b, 0x17, 0x13, 0x10, 0xe};
   int difficulty = g_pSimMgr->difficultyLevel; // [g_pSimMgr + 0x40] scenario/difficulty index
@@ -661,7 +661,7 @@ char TForeignMinister::DeservesToBeEnemy(int nationCode) {
       float average = static_cast<float>(static_cast<int>(
           static_cast<float>(campaignProgress) * static_cast<float>((scoreA + scoreB) / 2)));
       if (ownerGP->GetWarNumber() <= average) {
-        return 1;
+        return true;
       }
     }
   }
@@ -755,7 +755,7 @@ void TForeignMinister::SetEmpirePolicies() {
     }
   }
 
-  if (owner->treasuryValue10 < 0) {
+  if (owner->treasuryValue < 0) {
     for (short minorNation = 7; minorNation < 0x17; ++minorNation) {
       if (owner->needLevelByNation[minorNation] < 0x4b) {
         owner->SetTradePolicyTo(static_cast<NationSlot>(minorNation), 0x4b);

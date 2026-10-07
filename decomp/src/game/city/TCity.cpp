@@ -646,7 +646,7 @@ void TCity::VerifyStocks() {
     if (*needCursor < 0) {
       bool dispatchGate = this->ownerNation->IsRemote();
       if ((!dispatchGate || g_pSimMgr->multiplayerSessionRole != kSessionRoleClient) &&
-          !g_Sanitize_City_Counter_Value_006A24D4) {
+          !g_Sanitize_City_Counter_Value) {
         TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCity.cpp", 0x47f);
       }
       *needCursor = 0;
@@ -775,7 +775,7 @@ void TCity::MakeTown(short selectedResourceType) {
   town->ITown("Altown", 0, false, ownerNation->nationSlot);
   town->Free();
   ownerNation->RebuildNationResourceYieldCountersAndDevelopmentTargets();
-  ownerNation->treasuryValue10 = ownerNation->treasuryValue10;
+  ownerNation->treasuryValue = ownerNation->treasuryValue;
 }
 
 // FUNCTION: IMPERIALISM 0x004b46c0

@@ -48,7 +48,7 @@ public:
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x50e620
   virtual void Free() override;                    // slot 0x07 0x50e510
   virtual void AllocateAndResetTerrainAndCityScoreTables(); // slot 0x0a 0x50e8b0
-  virtual char BuildOrLoadGlobalMapStateForSession(const char* mapStreamName,
+  virtual bool BuildOrLoadGlobalMapStateForSession(const char* mapStreamName,
                                                    char* tuningOverride);   // slot 0x0b 0x50ec90
   virtual void LoadPoliticalMapRegionSubtypeTableFromResourceStream();      // slot 0x0c 0x50f200
   virtual void AssignPictToTile(StrategicTileIndex tileIndex);              // slot 0x0d 0x510210
@@ -107,7 +107,7 @@ public:
   void FloodRegionClass(int recordIndex, int classCode);
   void AssignSequentialClassesToPopulatedRegions();
   void RebuildTileOwnerNeighborCachesAndFallbackAssignments();
-  char LoadScenarioMapStateFromTableResource(int scenarioIndex);
+  bool LoadScenarioMapStateFromTableResource(int scenarioIndex);
 
   virtual void SetRegionTileSubtypeAndRefreshNeighborFlags(ProvinceIndex cityRecordIndex,
                                                            int newTileIndex); // slot 0x2c 0x515f80
@@ -227,15 +227,15 @@ public:
 
   short ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlot, bool wrapBias);
 
-  char AreNationsBorderLinked(int nationA, int nationB);
+  bool AreNationsBorderLinked(int nationA, int nationB);
   bool HasDirectOrFallbackLinkedNodeType(ProvinceIndex cityRecordIndex, int nationCode,
                                          bool allowFallback);
   int CollectSecondDegreeLinksWithMinorNationFallback(ProvinceIndex cityRecordIndex, int nationTag,
                                                       int* nodeBuffer, bool allowFallback);
-  char IsProvinceAdjacentTo(int sourceProvinceIndex, int candidateProvinceIndex);
+  bool IsProvinceAdjacentTo(int sourceProvinceIndex, int candidateProvinceIndex);
   // ORACLE: Mac TMapMgr::HasPortInProvince(int). Returns true on the first linked tile
   // whose terrainStateTable activeFlags has the port bit (0x04) set.
-  char HasPortInProvince(int provinceIndex);
+  bool HasPortInProvince(int provinceIndex);
   void SetRegionDevelopmentStageByte(short regionId, unsigned char stage);
   void SetTileTransportFlags(StrategicTileIndex nTileIndex, unsigned short wTileTransportFlags);
   void ApplyRailSectionEndpointDirectionFlags(StrategicTileIndex sourceTile,
@@ -264,9 +264,9 @@ public:
   bool CheckTileVariantCodeMembershipSetD(StrategicTileIndex tileIndex);
 
   byte CheckTileProspectingDiscoveryCandidate(StrategicTileIndex nTileIndex);
-  char CanBuildPortAtTile(StrategicTileIndex tileIndex);
-  char HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(StrategicTileIndex tileIndex);
-  char HasActiveLinkedTileWithReachableSea(int regionIndex);
+  bool CanBuildPortAtTile(StrategicTileIndex tileIndex);
+  bool HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(StrategicTileIndex tileIndex);
+  bool HasActiveLinkedTileWithReachableSea(int regionIndex);
 
   short ResolveRegionTileSubtypeCodeForTileIndex(StrategicTileIndex tileIndex);
 

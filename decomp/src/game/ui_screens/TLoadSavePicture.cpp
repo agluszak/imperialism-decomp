@@ -60,12 +60,12 @@ void TLoadSavePicture::DoPostCreate(int arg) {
         static_cast<TStaticText*>(ResolveControlByTag(kControlTagSlt0 + slot)); // 'slt0'
     slotControl->AssertValid();
     const char* savePrefix = (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone)
-                                 ? g_pszMultiplayerSavePrefix_0065DDD4
-                                 : g_pszSingleSlotSavePrefix_0065DDD0;
+                                 ? g_pszMultiplayerSavePrefix
+                                 : g_pszSingleSlotSavePrefix;
     CString slotNumberText;
     slotNumberText.Format(g_szDecimalFormat, slot);
-    slotPath = CString(g_szSaveDirectoryPrefix_00698724) + savePrefix + slotNumberText +
-               g_pszImpSaveExtension_0065DDD8;
+    slotPath =
+        CString(g_szSaveDirectoryPrefix) + savePrefix + slotNumberText + g_pszImpSaveExtension;
 
     if (TryGetFileMetadataForPath(&slotPath) == 0) {
       // Empty slot: the save picture offers it, the load picture greys it out.
@@ -77,7 +77,7 @@ void TLoadSavePicture::DoPostCreate(int arg) {
       }
     } else {
       char saveHeader[0x2c];
-      FILE* slotFile = fopen(slotPath, g_szLiteralRb_00698720);
+      FILE* slotFile = fopen(slotPath, g_szLiteralRb);
       fread(saveHeader, 1, sizeof(saveHeader), slotFile);
       fclose(slotFile);
       slotCaption = saveHeader + 0xc;
@@ -139,7 +139,7 @@ void TLoadSavePicture::RefreshSlotPreviewFromSaveFile(short slotMode) {
   }
 
   char* tileOwnerTagTable = new char[0x1950];
-  FILE* file = fopen(path, g_szLiteralRb_00698720);
+  FILE* file = fopen(path, g_szLiteralRb);
   char headerSkip[0xc];
   fread(headerSkip, 1, 0xc, file);
   unsigned char slotMetadata[0x20];
@@ -231,7 +231,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         g_pViewMgr->SetBackColor(0x10);
       }
     }
-    if (g_pApplication->screenModeAt24 > 1) {
+    if (g_pApplication->screenMode > 1) {
       TView* okayControl = ResolveControlByTag(kControlTagOkay);
       if (okayControl != nullptr) {
         QueueDeferredUiEventPacket(this, 0xa, okayControl);
@@ -281,7 +281,7 @@ void TLoadSavePicture::DoKeyEvent(TToolboxEvent* event) {
   if (commandCode == kUiKeyEnter || commandCode == kUiKeyReturn) {
     TPictureButton* okayButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagOkay));
     if (okayButton != 0) {
-      g_pSfxPlaybackSystem->PlaySoundEffect(okayButton->timingWord92, 0, 1);
+      g_pSfxPlaybackSystem->PlaySoundEffect(okayButton->clickSoundId, 0, 1);
       QueueDeferredUiEventPacket(this, 0xa, okayButton);
     }
   } else if (commandCode == kUiKeyEscape && ResolveControlByTag(kControlTagCncl) != 0) {
@@ -314,9 +314,9 @@ void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
     if (g_pSimMgr->mode == kGamePhaseStartup ||
         g_pViewMgr->DispatchGameStateEventIfLocalizedPromptAccepted(kControlTagLoad) != 0) {
       GetWindow()->ForceRedraw();
-      char* prefix = (char*)g_pszMultiplayerSavePrefix_0065DDD4;
+      char* prefix = (char*)g_pszMultiplayerSavePrefix;
       if (!IsMultiplayerFlowActive()) {
-        prefix = (char*)g_pszSingleSlotSavePrefix_0065DDD0;
+        prefix = (char*)g_pszSingleSlotSavePrefix;
       }
       short slot = selectedSlot;
       CString path;
@@ -335,11 +335,11 @@ void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
       slotNameControl->InitDialogWindowAndSyncTitleIfChanged(&enteredName, 1);
       slotNameControl->ForceRedraw();
     }
-    strcpy(g_ScenarioSaveNameBuffer_006A2178, enteredName);
+    strcpy(g_ScenarioSaveNameBuffer, enteredName);
     if (IsMultiplayerFlowActive()) {
-      g_pGameFlowState->AttemptSave(selectedSlot, (char*)g_pszMultiplayerSavePrefix_0065DDD4, true);
+      g_pGameFlowState->AttemptSave(selectedSlot, (char*)g_pszMultiplayerSavePrefix, true);
     } else {
-      SaveGameWithModeAndOptionalLabel(selectedSlot, (char*)g_pszSingleSlotSavePrefix_0065DDD0);
+      SaveGameWithModeAndOptionalLabel(selectedSlot, (char*)g_pszSingleSlotSavePrefix);
     }
     g_pSimMgr->StartNextPhase();
   }
@@ -353,32 +353,32 @@ void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
 void __cdecl BuildSavePathStringForMode(CString* out, int saveMode, char* label) {
   const char* prefix = label;
   if (label == 0) {
-    prefix = g_pszMultiplayerSavePrefix_0065DDD4;
+    prefix = g_pszMultiplayerSavePrefix;
     if (!IsMultiplayerFlowActive()) {
-      prefix = g_pszSingleSlotSavePrefix_0065DDD0;
+      prefix = g_pszSingleSlotSavePrefix;
     }
   }
   CString slotText;
   if (saveMode == 0xa1) {
-    CString autosaveLabel(g_szLiteralA_0069872C);
+    CString autosaveLabel(g_szLiteralA);
     slotText = autosaveLabel;
   } else {
     slotText.Format(g_szDecimalFormat, saveMode);
   }
   {
-    CString directoryPrefix(g_szSaveDirectoryPrefix_00698724);
+    CString directoryPrefix(g_szSaveDirectoryPrefix);
     *out = directoryPrefix;
   }
   *out += prefix;
   *out += slotText;
-  *out += g_pszImpSaveExtension_0065DDD8;
+  *out += g_pszImpSaveExtension;
 }
 
 // FUNCTION: IMPERIALISM 0x0056d7d0
 int __cdecl ReadScenarioIndexFromSaveHeader(const char* path) {
   SaveFileHeader header;
   int result = -3;
-  FILE* file = fopen(path, g_szLiteralRb_00698720);
+  FILE* file = fopen(path, g_szLiteralRb);
   if (fread(&header, 1, 0xc, file) == 0xc) {
     result = header.scenarioIndex;
   }
@@ -391,16 +391,16 @@ void LoadAndFormatMappedFlavorTextRecordsFromStream(int* outSlot, int targetGame
   CString scratch;
   for (int slot = 0; slot < 8; ++slot) {
     const char* prefix = (g_pSimMgr->multiplayerSessionRole == kSessionRoleStandalone)
-                             ? g_szSingleSlotSavePrefix_00698718
-                             : g_szMultiplayerSavePrefix_00698710;
+                             ? g_szSingleSlotSavePrefix
+                             : g_szMultiplayerSavePrefix;
     CString slotStr;
     slotStr.Format(g_szDecimalFormat, slot);
-    CString path(g_szSaveDirectoryPrefix_00698724);
+    CString path(g_szSaveDirectoryPrefix);
     path += prefix;
     path += slotStr;
-    path += g_szImpSaveExtension_00698708;
+    path += g_szImpSaveExtension;
     if (TryGetFileMetadataForPath(&path)) {
-      FILE* file = fopen(static_cast<const char*>(path), g_szLiteralRb_00698720);
+      FILE* file = fopen(static_cast<const char*>(path), g_szLiteralRb);
       int header[3];
       int gameId = -3;
       if (fread(header, 1, 0xc, file) == 0xc) {
@@ -437,31 +437,31 @@ void __cdecl SaveGameWithModeAndOptionalLabel(int mode, char* label) {
   if (mode == 0xa1) {
     CString scenarioName;
     g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&scenarioName, 0x2758, 9);
-    strcpy(g_ScenarioSaveNameBuffer_006A2178, scenarioName);
+    strcpy(g_ScenarioSaveNameBuffer, scenarioName);
   }
 
   CString savePath;
   if (label == 0) {
-    label = (char*)g_pszMultiplayerSavePrefix_0065DDD4;
+    label = (char*)g_pszMultiplayerSavePrefix;
     if (!IsMultiplayerFlowActive()) {
-      label = (char*)g_pszSingleSlotSavePrefix_0065DDD0;
+      label = (char*)g_pszSingleSlotSavePrefix;
     }
   }
   {
     CString slotText;
     if (mode == 0xa1) {
-      CString autosaveLabel(g_szLiteralA_0069872C);
+      CString autosaveLabel(g_szLiteralA);
       slotText = autosaveLabel;
     } else {
       slotText.Format(g_szDecimalFormat, mode);
     }
     {
-      CString directoryPrefix(g_szSaveDirectoryPrefix_00698724);
+      CString directoryPrefix(g_szSaveDirectoryPrefix);
       savePath = directoryPrefix;
     }
     savePath += label;
     savePath += slotText;
-    savePath += g_pszImpSaveExtension_0065DDD8;
+    savePath += g_pszImpSaveExtension;
   }
 
   if (g_pAssetMgr->SaveMainDocumentToPathAndMarkSaved(savePath)) {
@@ -470,28 +470,28 @@ void __cdecl SaveGameWithModeAndOptionalLabel(int mode, char* label) {
       g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagSave, markSaved, -2);
     }
     if (IsMultiplayerFlowHosting() && mode != 0xa1) {
-      const char* autosavePrefix = g_pszMultiplayerSavePrefix_0065DDD4;
+      const char* autosavePrefix = g_pszMultiplayerSavePrefix;
       if (!IsMultiplayerFlowActive()) {
-        autosavePrefix = g_pszSingleSlotSavePrefix_0065DDD0;
+        autosavePrefix = g_pszSingleSlotSavePrefix;
       }
       {
         CString autosaveSlotText;
         {
-          CString autosaveLabel(g_szLiteralA_0069872C);
+          CString autosaveLabel(g_szLiteralA);
           autosaveSlotText = autosaveLabel;
         }
         {
-          CString directoryPrefix(g_szSaveDirectoryPrefix_00698724);
+          CString directoryPrefix(g_szSaveDirectoryPrefix);
           savePath = directoryPrefix;
         }
         savePath += autosavePrefix;
         savePath += autosaveSlotText;
-        savePath += g_pszImpSaveExtension_0065DDD8;
+        savePath += g_pszImpSaveExtension;
       }
       if (TryGetFileMetadataForPath(&savePath)) {
         SaveFileHeader header;
         int scenarioIndex = -3;
-        FILE* file = fopen(savePath, g_szLiteralRb_00698720);
+        FILE* file = fopen(savePath, g_szLiteralRb);
         if (fread(&header, 1, 0xc, file) == 0xc) {
           scenarioIndex = header.scenarioIndex;
         }
@@ -513,26 +513,26 @@ unsigned char __cdecl BuildSaveSlotPathAndProbeMetadata(int slot, const char* la
   CString path;
   const char* prefix = label;
   if (label == 0) {
-    prefix = g_pszMultiplayerSavePrefix_0065DDD4;
+    prefix = g_pszMultiplayerSavePrefix;
     if (!IsMultiplayerFlowActive()) {
-      prefix = g_pszSingleSlotSavePrefix_0065DDD0;
+      prefix = g_pszSingleSlotSavePrefix;
     }
   }
   {
     CString slotText;
     if (slot == 0xa1) {
-      CString autosaveLabel(g_szLiteralA_0069872C);
+      CString autosaveLabel(g_szLiteralA);
       slotText = autosaveLabel;
     } else {
       slotText.Format(g_szDecimalFormat, slot);
     }
     {
-      CString directoryPrefix(g_szSaveDirectoryPrefix_00698724);
+      CString directoryPrefix(g_szSaveDirectoryPrefix);
       path = directoryPrefix;
     }
     path += prefix;
     path += slotText;
-    path += g_pszImpSaveExtension_0065DDD8;
+    path += g_pszImpSaveExtension;
   }
   if (TryGetFileMetadataForPath(&path) == 0) {
     return 0;

@@ -68,7 +68,7 @@ void TCouncilPanelView::Draw(RECT* rectBuffer) {
   g_apTerrainTypeDescriptorTable[g_pDiplomacyTurnStateManager->congressLeadership
                                      .chairmanNationSlot]
       ->FormatOverlayTerrainLabelText(&rowText);
-  rowText += s_szColonSeparator_00696b10;
+  rowText += s_szColonSeparator;
   short rowAWidth = MeasureTextExtentWithCachedQuickDrawStyle(&rowText);
   short rowALabelX = static_cast<short>(centerX - rowAWidth);
   SetQuickDrawColorAndSyncGlobals(styleForeground);
@@ -91,7 +91,7 @@ void TCouncilPanelView::Draw(RECT* rectBuffer) {
   g_apTerrainTypeDescriptorTable[g_pDiplomacyTurnStateManager->congressLeadership
                                      .counterpartNationSlot]
       ->FormatOverlayTerrainLabelText(&rowText);
-  rowText += s_szColonSeparator_00696b10;
+  rowText += s_szColonSeparator;
   short rowBWidth = MeasureTextExtentWithCachedQuickDrawStyle(&rowText);
   short rowBLabelX = static_cast<short>(centerX - rowBWidth);
   SetQuickDrawColorAndSyncGlobals(styleForeground);

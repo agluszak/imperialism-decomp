@@ -17,17 +17,17 @@ extern POINT g_aTacticalUnitFacingOffsetTable[29][7][2];
 // Per-tech prerequisite pair (tech ids; 0 = none), indexed by tech id. 0x66ac10.
 extern TechPrerequisitePair g_aTechItemPrerequisitePairs[34];
 
-extern const int g_anTechItemPurchaseCostBySlot_0066aae8[34];
+extern const int g_anTechItemPurchaseCostBySlot[34];
 
 extern "C" {
-extern bool g_nForceTacticalBattleViewFlag_006A4758;
+extern bool g_nForceTacticalBattleViewFlag;
 
-extern short g_anCapabilityPriorityRangeData_0066ABA4[54];
+extern short g_anCapabilityPriorityRangeData[54];
 
-extern "C" const char s_SourcePathUTacViews_00699FF4[];
+extern "C" const char s_SourcePathUTacViews[];
 
 } // extern "C"
 
-extern CSize g_tacticalTileSize_006A5430;
-extern CSize g_tacticalBattlefieldSurfaceSize_006A5448;
-extern CSize g_tacticalUnitSpriteCellSize_006A5498;
+extern CSize g_tacticalTileSize;
+extern CSize g_tacticalBattlefieldSurfaceSize;
+extern CSize g_tacticalUnitSpriteCellSize;

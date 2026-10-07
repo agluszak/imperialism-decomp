@@ -63,7 +63,7 @@ public:
   virtual void ShowTransportScreen(short nationSlot);          // 0x84; Mac oracle
   virtual void ShowAbilityStatusReport(short abilityIndex);    // 0x88 0x5d8980 (ret 4)
   virtual void NoOpTurnEventStateVtableSlot8C(int arg);        // 0x8c
-  virtual char MakeDiplomacyOfferDialog(short sourceNation, short targetNation,
+  virtual bool MakeDiplomacyOfferDialog(short sourceNation, short targetNation,
                                         short proposalCode); // 0x90
   virtual char PoseWarOfferIfTurnFlowReady(int sourceNation, int arg1, int arg2,
                                            int promptCode); // 0x94
@@ -76,7 +76,7 @@ public:
   virtual void ShowCityProductionView(short nationSlot);               // 0xa8; Mac oracle
   virtual void RefreshCityProductionUi();                              // 0xac 0x5d7f70
   virtual void CloseBuilding(short buildingSlot);                      // 0xb0 0x5d7f90
-  virtual char ShowNewCityDialog(TTown* town);                         // 0xb4 0x5dcdf0
+  virtual bool ShowNewCityDialog(TTown* town);                         // 0xb4 0x5dcdf0
   virtual void ShowBuildingExpansionDialog(short buildingSlotId, class TCity* city,
                                            class TCityProductionView* productionView); // 0xb8
   virtual void ShowTerrainMap(short nationSlot);                            // 0xbc; Mac oracle
@@ -114,7 +114,7 @@ public:
   void ModalMessage(CString message, const POINT& messagePosition);
   char ModalMessage(CString message, const POINT& messagePosition, short overlayMode,
                     unsigned char showCancel);
-  char ModalMessageGateAssertStub(CString message, int arg2, int arg3, int arg4, int arg5,
+  bool ModalMessageGateAssertStub(CString message, int arg2, int arg3, int arg4, int arg5,
                                   int arg6);
   char ShowLocalizedUiPromptByGroupAndIndex(int uiStringGroup, int uiStringIndex, int overlayMode,
                                             int arg4);

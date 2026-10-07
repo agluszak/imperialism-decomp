@@ -78,8 +78,7 @@ void TLoungeDialog::DoPostCreate(int arg) {
       g_pGameFlowState->SetDialogModeTagInitAndInvokeNoOpHook();
       YouHaveNewGameData();
       g_pGameFlowState->DispatchTurnEventCode9WithTwoTextTokens(
-          -0xd, 0, g_pLoungeLocalPlayerNameSharedText_0065c160,
-          g_pLoungeLocalPlayerNameSharedText_0065c160);
+          -0xd, 0, g_pLoungeLocalPlayerNameSharedText, g_pLoungeLocalPlayerNameSharedText);
       g_pGameFlowState->EmitTurnEventEAnd9SessionContextPackets(nullptr);
     }
   } else {
@@ -119,7 +118,7 @@ void TLoungeDialog::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0054db40
-char TLoungeDialog::DoIdle(int action) {
+bool TLoungeDialog::DoIdle(int action) {
   (void)action;
   bool anyLocalSeat = false;
   for (int nationSlot = 0; nationSlot < TMultiplayerMgr::kMajorNationSessionSlotCount;
@@ -212,7 +211,7 @@ char TLoungeDialog::DoIdle(int action) {
   TStaticText* messageControl = static_cast<TStaticText*>(ResolveControlByTag(kSessionTagMess));
   messageControl->AssertValid();
   messageControl->SetTextAndMaybeRefresh(&messageText, true);
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x0054dfc0

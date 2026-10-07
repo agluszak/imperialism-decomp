@@ -41,9 +41,9 @@ public:
                           TacticalTileIndex tileIndex); // slot 0x0c 0x59f710
   virtual void MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
       TTacticalUnit* unit, TacticalTileIndex targetTileIndex); // slot 0x0d 0x5a1bd0
-  virtual unsigned char HasEnemyUnitOnTilesFlankingHexDirection(TacticalTileIndex tileIndex,
-                                                                TacticalHexDirection hexDirection,
-                                                                char side); // slot 0x0e 0x5a1400
+  virtual bool HasEnemyUnitOnTilesFlankingHexDirection(TacticalTileIndex tileIndex,
+                                                       TacticalHexDirection hexDirection,
+                                                       char side); // slot 0x0e 0x5a1400
   virtual void ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
       TTacticalUnit* unit, TacticalTileIndex targetTileIndex); // slot 0x0f 0x5a1ca0
   virtual void EvaluateAndResolveTacticalActionAgainstTileOccupant(
@@ -130,10 +130,10 @@ public:
   // Mac identities: GetNeighborList(long, long*) and AreNeighbors(long, long).
   void GetNeighborList(TacticalTileIndex tileIndex,
                        TacticalTileIndex* outNeighborTiles6); // 0x5a0420
-  unsigned char HasAdjacentReachableTileForSelectedUnit();    // 0x5a1b50
+  bool HasAdjacentReachableTileForSelectedUnit();             // 0x5a1b50
   void StartTacticalPlayersThatAreNotReady();                 // 0x59fcd0
-  unsigned char AreNeighbors(TacticalTileIndex tileIndex,
-                             TacticalTileIndex candidateTileIndex); // 0x5a0550
+  bool AreNeighbors(TacticalTileIndex tileIndex,
+                    TacticalTileIndex candidateTileIndex); // 0x5a0550
   void ConsumeFortStrengthPointsAndInvalidateIfDepleted(TacticalTileIndex tileIndex,
                                                         int consumeAmount); // 0x5a3c20
   void EvaluateTacticalSideStateAndShowBattleSummaryDialog();               // 0x5a2750
@@ -141,13 +141,13 @@ public:
   void AdvanceToNextTacticalUnitTurnStep();
   // Paths the unit toward the target tile. 0x5a1520, __thiscall.
   void MoveTacticalUnitTowardTile(TTacticalUnit* unit, TacticalTileIndex targetTileIndex);
-  unsigned char HasValidTacticalFollowupTargetForCurrentAction();
+  bool HasValidTacticalFollowupTargetForCurrentAction();
   TacticalTileIndex FindFortWallTileCrossedByFiringLine(TacticalTileIndex targetTileIndex,
                                                         TacticalTileIndex attackerTileIndex);
   int SeekPath(TacticalTileIndex walkTileIndex, int pathDepth, TacticalTileIndex goalTileIndex,
                TacticalTileIndex* outPathTiles);
   // Reaction checks fired when a unit enters a tile; nonzero stops the walk. 0x5a1a20.
-  unsigned char ResolveTacticalReactionChecksForTile(TacticalTileIndex tileIndex);
+  bool ResolveTacticalReactionChecksForTile(TacticalTileIndex tileIndex);
   unsigned char IsTacticalTargetTileReachableForAction(TacticalTileIndex attackerTileIndex,
                                                        TacticalTileIndex targetTileIndex,
                                                        char directFireFlag, int range);
@@ -156,12 +156,12 @@ public:
   int ComputeTacticalHoverCursorStateIndex(TacticalTileIndex tileIndex);
   short ResolveTacticalHoverCursorResourceId(TacticalTileIndex tileIndex); // 0x005a0a90
   void MakeRetreatMap(char ourSideFlag);
-  unsigned char IsTacticalTileAtFortWallSectionSlot(TacticalTileIndex tileIndex);
+  bool IsTacticalTileAtFortWallSectionSlot(TacticalTileIndex tileIndex);
   // Deployment-zone queries. 0x5a4240 / 0x5a41c0 / 0x5a4330.
   int CountFreeDeploymentZoneTilesForCurrentSide();
-  unsigned char ApplyGridColumnSelectionGuard(TacticalTileIndex tileIndex);
+  bool ApplyGridColumnSelectionGuard(TacticalTileIndex tileIndex);
   // True when there is no fort or a wall section is breached (curated name kept).
-  unsigned char IsTacticalSideCategoryCoverageIncompleteOrFlagOff();
+  bool IsTacticalSideCategoryCoverageIncompleteOrFlagOff();
   bool HasFortWallGarrison(TacticalTileIndex tileIndex);
 };
 

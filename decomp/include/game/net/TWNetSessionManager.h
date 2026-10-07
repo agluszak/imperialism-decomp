@@ -82,11 +82,11 @@ public:
   // Returns nonzero on success (original callers test the full EAX).
   int TrySendNetworkPacket(int nationId, void* packet, unsigned int byteCount);
   int TryReceiveNetworkPacketIntoResizableBuffer(DWORD* fromId, DWORD* toId, void** bufferHandle);
-  unsigned char OpenCurrentSessionDescriptionForJoin(); // 0x4803d0
-  unsigned char DestroyPlayerAndStoreResult(DWORD idPlayer);
+  bool OpenCurrentSessionDescriptionForJoin(); // 0x4803d0
+  bool DestroyPlayerAndStoreResult(DWORD idPlayer);
   bool InitializeDirectPlayForProviderGuidOrEnumerate(const GUID* providerGuid); // 0x47fe50
   BOOL OpenRuntimeSelectionSourceFromCurrentContext();                           // 0x480030
-  char CreatePlayerAndStoreResult(LPDPID idOut, LPSTR shortName);                // 0x47fcb0
+  bool CreatePlayerAndStoreResult(LPDPID idOut, LPSTR shortName);                // 0x47fcb0
   BOOL SetLocalPlayerDataAndStoreResult(LPVOID data, DWORD size);                // 0x480990
   BOOL OpenRuntimeSelectionSourceWithUserChoice();                               // 0x480150
   BOOL RebuildRuntimeSelectionSource();                                          // 0x47fd90

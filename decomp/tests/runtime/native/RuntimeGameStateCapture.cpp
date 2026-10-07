@@ -1136,7 +1136,7 @@ JSON_Value* CaptureTurn(const RuntimeRun& run) {
   object.Set("difficulty", DifficultyName(g_pSimMgr->difficultyLevel));
   object.Set("active_nation", g_pSimMgr->activeNationSlot);
   object.Set("selected_nation", run.SelectedNationSlot());
-  object.Set("last_turn_alert_tick", g_lastTurnAlertTick_006a31c0);
+  object.Set("last_turn_alert_tick", g_lastTurnAlertTick);
   return object.Release();
 }
 
@@ -1319,8 +1319,8 @@ JSON_Value* CaptureNews() {
 JSON_Value* CaptureRng() {
   JsonObject object;
   object.Set("crt_rand", RuntimeCrtRandState());
-  object.Set("map_generation", g_mapGenLcgState_006a38e8);
-  object.Set("zone_status", g_zoneStatusCodePrngSeed_006a5aec);
+  object.Set("map_generation", g_mapGenLcgState);
+  object.Set("zone_status", g_zoneStatusCodePrngSeed);
   return object.Release();
 }
 
@@ -1503,7 +1503,7 @@ JSON_Value* CaptureProvinces() {
     object.Set("city_score", province.cityScoreValue);
     object.Set("navy_order_reachable", province.navyOrderReachable != 0);
     object.Set("resource_presence_mask", static_cast<int>(province.resourcePresenceMask));
-    object.Set("name", static_cast<LPCSTR>(province.cityNameA4));
+    object.Set("name", static_cast<LPCSTR>(province.cityName));
     provinces.Add(object.Release());
   }
   return provinces.Release();
@@ -1837,7 +1837,7 @@ JSON_Value* CaptureNationCommon(TCountry* country) {
     ownedRegions.Add(static_cast<int>(province));
   }
   common.Set("owned_regions", ownedRegions.Release());
-  common.Set("treasury", country->treasuryValue10);
+  common.Set("treasury", country->treasuryValue);
   common.SetOptional("home_tile", country->homeTileIndex);
   common.Set("trade_policy_by_nation",
              CaptureShortArray(country->needLevelByNation, kNationSlotCount));
@@ -3141,7 +3141,7 @@ JSON_Value* CaptureDiplomacyEphemeral() {
       continue;
     }
     JsonObject entry;
-    entry.Set("treasury", nation->treasuryValue10);
+    entry.Set("treasury", nation->treasuryValue);
     entry.Set("encoded_slot", static_cast<int>(nation->encodedNationSlot));
     {
       TCountry* terrain = g_apTerrainTypeDescriptorTable[slot];
@@ -3207,7 +3207,7 @@ JSON_Value* CaptureTradeEphemeral() {
       continue;
     }
     JsonObject entry;
-    entry.Set("treasury", nation->treasuryValue10);
+    entry.Set("treasury", nation->treasuryValue);
     entry.Set("available_merchant",
               static_cast<int>(nation->availableMerchantCapacity));
     entry.Set("merchant_capacity", static_cast<int>(nation->merchantCapacity));
@@ -3286,7 +3286,7 @@ JSON_Value* CaptureCityTransportEphemeral() {
       continue;
     }
     JsonObject entry;
-    entry.Set("treasury", nation->treasuryValue10);
+    entry.Set("treasury", nation->treasuryValue);
     JsonArray pending;
     for (int index = 0; index < 0x0d; ++index) {
       pending.Add(static_cast<int>(nation->pendingActionStatus.byAction[index]));
@@ -3401,7 +3401,7 @@ JSON_Value* CaptureCiviliansEphemeral() {
       continue;
     }
     JsonObject entry;
-    entry.Set("treasury", nation->treasuryValue10);
+    entry.Set("treasury", nation->treasuryValue);
     entry.Set("town_count",
               nation->townMarkerList != 0 ? nation->townMarkerList->GetCount()
                                         : -1);
@@ -3456,7 +3456,7 @@ JSON_Value* CaptureMilitaryEphemeral() {
       continue;
     }
     JsonObject entry;
-    entry.Set("treasury", nation->treasuryValue10);
+    entry.Set("treasury", nation->treasuryValue);
     entry.Set("military_expenses", nation->militaryExpenses);
     JsonArray units;
     if (nation->militaryUnitList != 0) {
@@ -3610,11 +3610,11 @@ JSON_Value* CaptureMilitaryCleanupEphemeral() {
   JsonArray unitDivergence;
   JsonArray missionPressure;
   for (int nation = 0; nation < 7; ++nation) {
-    queueDivergence.Add(FloatBits(g_afNationOrderQueueDivergence_006a3a88[nation]));
-    mobileScore.Add(FloatBits(g_afNationMobileUnitScore_006a3b88[nation]));
-    mobileDivergence.Add(FloatBits(g_afNationMobileUnitDivergence_006a3ae0[nation]));
-    combinedDivergence.Add(FloatBits(g_afNationCombinedUnitDivergence_006a3b50[nation]));
-    weightedMilitary.Add(FloatBits(g_afNationWeightedMilitaryOrderScore_006a3b20[nation]));
+    queueDivergence.Add(FloatBits(g_afNationOrderQueueDivergence[nation]));
+    mobileScore.Add(FloatBits(g_afNationMobileUnitScore[nation]));
+    mobileDivergence.Add(FloatBits(g_afNationMobileUnitDivergence[nation]));
+    combinedDivergence.Add(FloatBits(g_afNationCombinedUnitDivergence[nation]));
+    weightedMilitary.Add(FloatBits(g_afNationWeightedMilitaryOrderScore[nation]));
     TGreatPower* power = g_apNationStates[nation];
     if (power != 0 && power->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) != 0) {
       TAutoGreatPower* autoPower = static_cast<TAutoGreatPower*>(power);
@@ -3706,7 +3706,7 @@ JSON_Value* CaptureTechnologyEphemeral() {
     }
     JsonObject record;
     record.Set("nation", nationSlot);
-    record.Set("treasury", nation->treasuryValue10);
+    record.Set("treasury", nation->treasuryValue);
     JsonArray status;
     JsonArray years;
     for (int techIndex = 0; techIndex < 0x1d; ++techIndex) {

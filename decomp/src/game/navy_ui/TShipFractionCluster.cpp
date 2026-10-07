@@ -40,7 +40,7 @@ void TShipFractionCluster::DoPostCreate(int arg) {
     Show(1, 1);
   } else {
     Show(0, 1);
-    SetControlHoverHelpText(CString(g_pShipFractionSharedText_0065c830), this);
+    SetControlHoverHelpText(CString(g_pShipFractionSharedText), this);
   }
 
   shipCountButton = static_cast<TNumberedArrowButton*>(ResolveControlByTag(kControlTagArro));
@@ -85,7 +85,7 @@ void TShipFractionCluster::Set(int availableCount, int selectedCount) {
   } else if (availableShipCount != 0) {
     shipControl->Show(0, 1);
     shipCountButton->Show(0, 1);
-    SetControlHoverHelpTextAltEntry(CString(g_pShipFractionSharedText_0065c830), this);
+    SetControlHoverHelpTextAltEntry(CString(g_pShipFractionSharedText), this);
   }
 
   RefreshControl();

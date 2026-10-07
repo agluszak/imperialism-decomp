@@ -25,7 +25,7 @@ void TRelationshipDialog::Close() {
 
     TView* nationPanel = ResolveControlByTag(g_majorTreatyPanelTags[targetNation]);
     if (nationPanel == 0) {
-      FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x1bc);
+      FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x1bc);
     }
 
     for (short sourceNation = 0; sourceNation < 7; ++sourceNation) {
@@ -35,7 +35,7 @@ void TRelationshipDialog::Close() {
       TNumberText* standingControl = static_cast<TNumberText*>(
           nationPanel->ResolveControlByTag(g_majorTreatyCellTags[sourceNation]));
       if (standingControl == 0) {
-        FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x1c5);
+        FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x1c5);
       }
       int standing = standingControl->UpdateControlCachedIntFromWindowText();
       g_pDiplomacyTurnStateManager->SetRelationship(sourceNation, targetNation, standing);
@@ -56,7 +56,7 @@ void TRelationshipDialog::StuffValues() {
     }
     TView* nationPanel = ResolveControlByTag(g_majorTreatyPanelTags[targetNation]);
     if (nationPanel == 0) {
-      FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x1e8);
+      FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x1e8);
     }
     for (short sourceNation = 0; sourceNation < 7; ++sourceNation) {
       if (g_apTerrainTypeDescriptorTable[sourceNation] == 0) {
@@ -65,7 +65,7 @@ void TRelationshipDialog::StuffValues() {
       TNumberText* cell = static_cast<TNumberText*>(
           nationPanel->ResolveControlByTag(g_majorTreatyCellTags[sourceNation]));
       if (cell == 0) {
-        FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x1ef);
+        FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x1ef);
       }
       if (sourceNation < targetNation) {
         cell->SetControlValue(
@@ -81,11 +81,11 @@ void TRelationshipDialog::StuffValues() {
 
   TView* horizontalNames = ResolveControlByTag(kControlTagHori);
   if (horizontalNames == 0) {
-    FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x1fc);
+    FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x1fc);
   }
   TView* verticalNames = ResolveControlByTag(kControlTagVert);
   if (verticalNames == 0) {
-    FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x1fe);
+    FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x1fe);
   }
   for (short nation = 0; nation < 7; ++nation) {
     if (g_apTerrainTypeDescriptorTable[nation] == 0) {
@@ -95,13 +95,13 @@ void TRelationshipDialog::StuffValues() {
     TStaticText* horizontalLabel =
         static_cast<TStaticText*>(horizontalNames->ResolveControlByTag(nameTags[nation]));
     if (horizontalLabel == 0) {
-      FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x207);
+      FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x207);
     }
     horizontalLabel->SetTextAndMaybeRefresh(&label, false);
     TStaticText* verticalLabel =
         static_cast<TStaticText*>(verticalNames->ResolveControlByTag(nameTags[nation]));
     if (verticalLabel == 0) {
-      FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x20a);
+      FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x20a);
     }
     verticalLabel->SetTextAndMaybeRefresh(&label, false);
   }

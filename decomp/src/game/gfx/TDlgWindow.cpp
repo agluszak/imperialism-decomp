@@ -16,8 +16,8 @@ TDlgWindow::~TDlgWindow() {}
 // FUNCTION: IMPERIALISM 0x005003a0
 void TDlgWindow::Activate(unsigned char active) {
   TWindow::Activate(active);
-  TemporarilyClearAndRestoreUiInvalidationFlag(g_szUGameWindowSourcePath_00696bc0, 0x27a);
+  TemporarilyClearAndRestoreUiInvalidationFlag(g_szUGameWindowSourcePath, 0x27a);
   if (g_pDisplayMgr->dialogActiveFlag != 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szUGameWindowSourcePath_00696bc0, 0x27f);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szUGameWindowSourcePath, 0x27f);
   }
 }

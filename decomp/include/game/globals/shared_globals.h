@@ -23,19 +23,19 @@
 #include "game/ui_tags_common.h"
 
 // Map-context flavor-text string pool (see global_data_tables.cpp).
-extern char s_szSpaceSeparator_00695794[];
-extern char s_szGaugeCountSeparator_0069936C[];
-extern "C" char s_szRankDotSeparator_00698ab4
+extern char s_szSpaceSeparator[];
+extern char s_szGaugeCountSeparator[];
+extern "C" char s_szRankDotSeparator
     []; // ". " between high-score rank and name (defined in the extern "C" table block)
-extern char s_szTurnSummaryIndent_00696790[]; // "      " @ 0x696790
+extern char s_szTurnSummaryIndent[]; // "      " @ 0x696790
 
-extern char s_szTurnHistorySeparator_00699320[];
+extern char s_szTurnHistorySeparator[];
 
-extern char s_szAdmiralPrefix_0069578c[];
+extern char s_szAdmiralPrefix[];
 
-extern char s_szColonSeparator_00696b10[];
+extern char s_szColonSeparator[];
 
-extern char g_szLiteralWb_006976E0[];
+extern char g_szLiteralWb[];
 
 extern char g_szLowercaseX[];
 
@@ -45,45 +45,45 @@ extern const char g_szGarrisonSecretNationNameFrog[];
 
 extern const char g_szGarrisonSecretUnitNameSnidely[];
 
-extern const char* g_pszEmptyTextRef_00669db8;
+extern const char* g_pszEmptyTextRef;
 
-extern const char s_DataDirectoryPath_006942A8[];
+extern const char s_DataDirectoryPath[];
 
-extern const char s_IrgGlobPattern_006942FC[];
+extern const char s_IrgGlobPattern[];
 
-extern const char s_NoLanguageFilesMessage_006942B4[];
+extern const char s_NoLanguageFilesMessage[];
 
-extern const char s_OutOfMemoryText_006941F0[];
+extern const char s_OutOfMemoryText[];
 
-extern const char s_ErrorCaption_00694204[];
+extern const char s_ErrorCaption[];
 
 extern int g_lastEdgeAutoScrollTick16;
 
-extern char g_szLiteralL_00694250[];
+extern char g_szLiteralL[];
 
-extern char g_szCmdSwitchLangQuit_00694254[];
+extern char g_szCmdSwitchLangQuit[];
 
 extern _PNH g_pfnPreviousNewHandler;
 
-extern void* g_pAmbitDeveloperAssertProbe_006A1358;
+extern void* g_pAmbitDeveloperAssertProbe;
 
-extern char g_szListSeparator_00695760[];
+extern char g_szListSeparator[];
 
-extern char g_szPlusPrefix_00698494[];
+extern char g_szPlusPrefix[];
 
-extern char g_szListConjunction_00698498[];
+extern char g_szListConjunction[];
 
 extern LPCSTR g_apFontFiles[];
 
-extern char g_szCountryNameProfileKey00698AE0[];
+extern char g_szCountryNameProfileKey[];
 
-extern "C" const double g_TradePowerIdentity_0066D8E0;
+extern "C" const double g_TradePowerIdentity;
 
-extern "C" const short g_aTradeItemBasePriceByCategory_0069A910[0x11];
+extern "C" const short g_aTradeItemBasePriceByCategory[0x11];
 
-extern "C" short g_infoPanelLabelXByRow_006969b0[4];
+extern "C" short g_infoPanelLabelXByRow[4];
 
-extern "C" short g_infoPanelLabelYByRow_006969c0[4];
+extern "C" short g_infoPanelLabelYByRow[4];
 
 extern "C" COLORREF g_defaultDropShadowTextColor;
 
@@ -92,14 +92,14 @@ extern char g_szEmptyString[];
 extern int g_adwEngineerRailBuildCostByTerrainType[kStrategicTerrainCount];
 
 // TControlSeaZoneMission.cpp / TDefendProvinceMission.cpp / TNavyMission.cpp —
-extern const float g_UnreferencedConstant_006545d4;
+extern const float g_UnreferencedConstant;
 
 extern "C" bool g_bMultiplayerScenarioSetupActive;
 
-extern "C" const char s_PictWvGobPathFormat_00698BF4[];
+extern "C" const char s_PictWvGobPathFormat[];
 
 extern bool g_bRandomMapDeveloperCheatFlag;
 
-extern "C" MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30[23];
+extern "C" MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable[23];
 
 } // extern "C"

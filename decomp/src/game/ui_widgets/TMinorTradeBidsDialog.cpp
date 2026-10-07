@@ -19,7 +19,7 @@ IMPLEMENT_DYNCREATE(TMinorTradeBidsDialog, TDialogView)
 void TMinorTradeBidsDialog::StuffValues() {
   TView* costPanel = ResolveControlByTag(kControlTagCost); // 'Cost'
   if (costPanel == 0) {
-    FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x179);
+    FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x179);
   }
 
   short nationSlot;
@@ -39,7 +39,7 @@ void TMinorTradeBidsDialog::StuffValues() {
     if (g_apTerrainTypeDescriptorTable[7 + minorIndex] != 0) {
       TView* minorPanel = ResolveControlByTag(g_minorTreatyPanelTags[minorIndex]);
       if (minorPanel == 0) {
-        FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x189);
+        FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x189);
       }
 
       for (short metricSlot = 0; metricSlot < 0x17; ++metricSlot) {

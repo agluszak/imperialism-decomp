@@ -160,12 +160,11 @@ static inline void Blit64x64StrategicMapAtlasTile(TQuickDrawSurfaceContext* atla
   UpdatePaletteIndexWithDefaultFallback(0x13);
 }
 
-double g_mapCellRowScale_006a3360 = DefaultMapCellScale();
-double g_mapCellColumnScale_006a3388 = DefaultMapCellScale();
-double g_mapProjectionColumnScale_006a32f8 = DefaultMapCellScale();
-double g_mapProjectionRowScale_006a3320 = DefaultMapCellScale();
-short g_mapProjectionSeamColumn_006a3348 =
-    static_cast<short>(g_mapProjectionColumnScale_006a32f8 * 512.0 - -1.0);
+double g_mapCellRowScale = DefaultMapCellScale();
+double g_mapCellColumnScale = DefaultMapCellScale();
+double g_mapProjectionColumnScale = DefaultMapCellScale();
+double g_mapProjectionRowScale = DefaultMapCellScale();
+short g_mapProjectionSeamColumn = static_cast<short>(g_mapProjectionColumnScale * 512.0 - -1.0);
 
 // FUNCTION: IMPERIALISM 0x00512440
 void ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, const CPoint* viewportOrigin,
@@ -195,14 +194,14 @@ void ProjectMapPointToScaledScreenOffset(const CPoint* sourcePoint, const CPoint
   const CPoint* reference = rowReference;
   const CPoint* source = sourcePoint;
   int referenceY = reference->y;
-  int projectedY = static_cast<int>(source->y * g_mapProjectionRowScale_006a3320);
+  int projectedY = static_cast<int>(source->y * g_mapProjectionRowScale);
   *outY = static_cast<short>(projectedY);
   int referenceRow = (referenceY + (referenceY >> 31 & 0x3f)) >> 6;
   if (((referenceRow + projectedY) & 1) != 0) {
-    *outX = static_cast<short>((sourcePoint->x + 0x20) * g_mapProjectionColumnScale_006a32f8 - 1.0);
+    *outX = static_cast<short>((sourcePoint->x + 0x20) * g_mapProjectionColumnScale - 1.0);
     return;
   }
-  *outX = static_cast<short>(sourcePoint->x * g_mapProjectionColumnScale_006a32f8);
+  *outX = static_cast<short>(sourcePoint->x * g_mapProjectionColumnScale);
 }
 
 // Projects explicit map column/row coordinates relative to the scaled viewport origin.
@@ -221,13 +220,12 @@ void ProjectMapCoordinatesToScaledViewport(short row, short column, short* outRo
   } else if (*outRow >= 0x3c) {
     *outRow = 0x3b;
   }
-  if (viewportOrigin->x > (0x6c - g_mapProjectionSeamColumn_006a3348) * 0x40 &&
-      *outColumn < g_mapProjectionSeamColumn_006a3348) {
+  if (viewportOrigin->x > (0x6c - g_mapProjectionSeamColumn) * 0x40 &&
+      *outColumn < g_mapProjectionSeamColumn) {
     *outColumn = static_cast<short>(*outColumn + 0x6c);
   }
-  *outRow = static_cast<short>(*outRow - viewportOrigin->y * g_mapProjectionRowScale_006a3320);
-  *outColumn =
-      static_cast<short>(*outColumn - viewportOrigin->x * g_mapProjectionColumnScale_006a32f8);
+  *outRow = static_cast<short>(*outRow - viewportOrigin->y * g_mapProjectionRowScale);
+  *outColumn = static_cast<short>(*outColumn - viewportOrigin->x * g_mapProjectionColumnScale);
 }
 
 // Projects a tile index through the same scaled-viewport transform.
@@ -247,13 +245,12 @@ void ProjectTileIndexToScaledViewport(short tileIndex, short* outRow, short* out
   } else if (*outRow >= 0x3c) {
     *outRow = 0x3b;
   }
-  if (viewportOrigin->x > (0x6c - g_mapProjectionSeamColumn_006a3348) * 0x40 &&
-      *outColumn < g_mapProjectionSeamColumn_006a3348) {
+  if (viewportOrigin->x > (0x6c - g_mapProjectionSeamColumn) * 0x40 &&
+      *outColumn < g_mapProjectionSeamColumn) {
     *outColumn = static_cast<short>(*outColumn + 0x6c);
   }
-  *outRow = static_cast<short>(*outRow - viewportOrigin->y * g_mapProjectionRowScale_006a3320);
-  *outColumn =
-      static_cast<short>(*outColumn - viewportOrigin->x * g_mapProjectionColumnScale_006a32f8);
+  *outRow = static_cast<short>(*outRow - viewportOrigin->y * g_mapProjectionRowScale);
+  *outColumn = static_cast<short>(*outColumn - viewportOrigin->x * g_mapProjectionColumnScale);
 }
 
 // Returns the column delta for a hex direction after wrapping it into [0, 6).
@@ -275,18 +272,18 @@ void NormalizeProjectionColumnForRowParity(short* column, short* row) {
   } else if (*row < 0) {
     *row = 0;
   }
-  if (*column > g_mapProjectionSeamColumn_006a3348) {
+  if (*column > g_mapProjectionSeamColumn) {
     if ((*row & 1) != 0) {
-      *column = static_cast<short>((*column + 1) % g_mapProjectionSeamColumn_006a3348 - 1);
+      *column = static_cast<short>((*column + 1) % g_mapProjectionSeamColumn - 1);
       return;
     }
-    *column = static_cast<short>((*column + 1) % g_mapProjectionSeamColumn_006a3348);
+    *column = static_cast<short>((*column + 1) % g_mapProjectionSeamColumn);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00519970
 void InitializeMapDialogViewportTileSpan() {
-  short viewportTileSpan = static_cast<short>(g_mapCellRowScale_006a3360 * 512.0 - -1.0);
+  short viewportTileSpan = static_cast<short>(g_mapCellRowScale * 512.0 - -1.0);
   memcpy(&g_wMapDialogViewportTileSpan, &viewportTileSpan, sizeof(viewportTileSpan));
 }
 
@@ -403,7 +400,7 @@ void TMapDialog::FrameCursorArea() {
   }
 
   for (int i = 0; i < 6; ++i) {
-    short oldNeighbor = g_aStrategicMapNeighborHighlightTiles_00697310[i];
+    short oldNeighbor = g_aStrategicMapNeighborHighlightTiles[i];
     if (oldNeighbor == -1) {
       continue;
     }
@@ -440,7 +437,7 @@ void TMapDialog::FrameCursorArea() {
   }
 
   for (int cacheIndex = 0; cacheIndex < 6; ++cacheIndex) {
-    g_aStrategicMapNeighborHighlightTiles_00697310[cacheIndex] =
+    g_aStrategicMapNeighborHighlightTiles[cacheIndex] =
         updateNeighborHighlights ? neighborTiles[cacheIndex] : -1;
   }
 }
@@ -557,16 +554,16 @@ void TMapDialog::InvalidateTile(short tileIndex) {
 
 // FUNCTION: IMPERIALISM 0x0051a990
 void TMapDialog::ConvertPoint(const CPoint& point, short& outRow, short& outCol, short& outBand) {
-  outCol = static_cast<short>(
-      static_cast<int>((viewportOrigin.y + point.y) * g_mapCellColumnScale_006a3388));
+  outCol =
+      static_cast<short>(static_cast<int>((viewportOrigin.y + point.y) * g_mapCellColumnScale));
   short rowValue;
   if ((outCol & 1) != 0) {
     rowValue = static_cast<short>(
-        static_cast<int>((point.x + viewportOrigin.x + 0x20) * g_mapCellRowScale_006a3360));
+        static_cast<int>((point.x + viewportOrigin.x + 0x20) * g_mapCellRowScale));
     --rowValue;
   } else {
-    rowValue = static_cast<short>(
-        static_cast<int>((point.x + viewportOrigin.x) * g_mapCellRowScale_006a3360));
+    rowValue =
+        static_cast<short>(static_cast<int>((point.x + viewportOrigin.x) * g_mapCellRowScale));
   }
   outRow = rowValue;
   NormalizeWrappedMapCoord108x60(&outRow, &outCol);
@@ -605,7 +602,7 @@ void TMapDialog::RefreshMapTile(short tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x0051ab60
-unsigned char TMapDialog::IsTileVisible(short tileIndex) {
+bool TMapDialog::IsTileVisible(short tileIndex) {
   short projectedY;
   short projectedX;
   ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin, &projectedY, &projectedX,
@@ -710,7 +707,7 @@ void TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites(int 
   short col;
   short row;
   short regionBand;
-  ConvertPoint(g_MapInteractionPreviewPoint_006a3370, col, row, regionBand);
+  ConvertPoint(g_MapInteractionPreviewPoint, col, row, regionBand);
 
   if ((row & 1) != 0) {
     ++col;
@@ -723,8 +720,8 @@ void TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites(int 
   int adjustedRow = row;
   int adjustedCol = col;
   if (useHalfCellCoordinates) {
-    adjustedRow = g_MapInteractionPreviewRowParity_006a33b4 + row * 2;
-    adjustedCol = g_MapInteractionPreviewColumnParity_006a33b8 + col * 2;
+    adjustedRow = g_MapInteractionPreviewRowParity + row * 2;
+    adjustedCol = g_MapInteractionPreviewColumnParity + col * 2;
   }
 
   if ((edgeMask & 1) != 0) {
@@ -739,13 +736,13 @@ void TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites(int 
   }
 
   if (useHalfCellCoordinates) {
-    g_MapInteractionPreviewRowParity_006a33b4 = adjustedRow & 1;
-    g_MapInteractionPreviewColumnParity_006a33b8 = adjustedCol & 1;
+    g_MapInteractionPreviewRowParity = adjustedRow & 1;
+    g_MapInteractionPreviewColumnParity = adjustedCol & 1;
     adjustedRow >>= 1;
     adjustedCol >>= 1;
   } else {
-    g_MapInteractionPreviewRowParity_006a33b4 = 0;
-    g_MapInteractionPreviewColumnParity_006a33b8 = 0;
+    g_MapInteractionPreviewRowParity = 0;
+    g_MapInteractionPreviewColumnParity = 0;
   }
 
   SetMapDialogCellCoordinatesAndRefresh(adjustedCol, adjustedRow, 1);
@@ -762,17 +759,17 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
 
   TView* titleControl = ResolveControlByTag(kControlTagTitl); // 'titl'
   if (titleControl == 0) {
-    FailNilPointerWithAssert(s_SourcePathUMapDlog_006973D0, 0x459);
+    FailNilPointerWithAssert(s_SourcePathUMapDlog, 0x459);
   }
   g_pSimMgr->GetString(0x1cb7, g_pGlobalMapState->terrainStateTable[tileIndex].GetTerrainKind(),
                        &mainText);
   numberText.Format(g_szDecimalFormat, tileIndex);
-  mainText += " (#" + numberText + g_szUiCloseParen_006973C8;
+  mainText += " (#" + numberText + g_szUiCloseParen;
   static_cast<TStaticText*>(titleControl)->SetTextAndMaybeRefresh(&mainText, true);
 
   TView* infoControl = ResolveControlByTag(kControlTagInfo); // 'info'
   if (infoControl == 0) {
-    FailNilPointerWithAssert(s_SourcePathUMapDlog_006973D0, 0x463);
+    FailNilPointerWithAssert(s_SourcePathUMapDlog, 0x463);
   }
   mainText = CString(g_szEmptyString);
 
@@ -833,11 +830,11 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
         nameText.Format(g_szDecimalFormat, formerOwner);
         nameText = "#" + nameText;
       }
-      mainText = mainText + " (formerly of " + nameText + g_szUiCloseParen_006973C8;
+      mainText = mainText + " (formerly of " + nameText + g_szUiCloseParen;
     }
     locationControl = ResolveControlByTag(kControlTagLoca); // 'loca'
     if (locationControl == 0) {
-      FailNilPointerWithAssert(s_SourcePathUMapDlog_006973D0, 0x4a3);
+      FailNilPointerWithAssert(s_SourcePathUMapDlog, 0x4a3);
     }
   } else {
     TZone* zone = g_pActiveMapOrderContext->GetMapActionContextEntryByNationCodeOffset17(
@@ -845,7 +842,7 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
     zone->AssignZoneDisplayNameToOutputRef(&mainText);
     locationControl = ResolveControlByTag(kControlTagLoca); // 'loca'
     if (locationControl == 0) {
-      FailNilPointerWithAssert(s_SourcePathUMapDlog_006973D0, 0x4ab);
+      FailNilPointerWithAssert(s_SourcePathUMapDlog, 0x4ab);
     }
   }
   static_cast<TStaticText*>(locationControl)->SetTextAndMaybeRefresh(&mainText, true);
@@ -1036,8 +1033,8 @@ void TMapDialog::Draw(RECT* rectBuffer) {
     SetClip(savedClip.tempRgn);
   }
 
-  OffsetRect(&cacheRect, g_MapInteractionPreviewColumnParity_006a33b8 << 5,
-             g_MapInteractionPreviewRowParity_006a33b4 << 5);
+  OffsetRect(&cacheRect, g_MapInteractionPreviewColumnParity << 5,
+             g_MapInteractionPreviewRowParity << 5);
   BlitRectWithOptionalTransparency(g_pCitySiteCachedPrimaryRenderSurfaceContext->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &cacheRect,
                                    &dirtyRect, 0, 0);

@@ -564,7 +564,7 @@ bool TDiplomacyMgr::ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
       proposalArrayMode = 2;
       return isValid;
     }
-    if (g_apNationStates[sourceNationSlot]->treasuryValue10 < 500) {
+    if (g_apNationStates[sourceNationSlot]->treasuryValue < 500) {
       proposalArrayMode = 0x16;
       return isValid;
     }
@@ -582,7 +582,7 @@ bool TDiplomacyMgr::ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
       proposalArrayMode = 2;
       return isValid;
     }
-    if (g_apNationStates[sourceNationSlot]->treasuryValue10 < 5000) {
+    if (g_apNationStates[sourceNationSlot]->treasuryValue < 5000) {
       proposalArrayMode = 0x15;
       return isValid;
     }
@@ -1747,7 +1747,7 @@ void TDiplomacyMgr::HandleDiplomaticStandingsMsg(TurnEvent2SyncPacket* packet) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f2820
-char TDiplomacyMgr::BuildEmbassy(DiplomaticMissionLevelStorage missionLevel, int sourceNation,
+bool TDiplomacyMgr::BuildEmbassy(DiplomaticMissionLevelStorage missionLevel, int sourceNation,
                                  int targetNation) {
   relationSideEffectMatrix[sourceNation * kNationSlotCount + targetNation] = missionLevel;
   relationSideEffectMatrix[targetNation * kNationSlotCount + sourceNation] = missionLevel;
@@ -1755,7 +1755,7 @@ char TDiplomacyMgr::BuildEmbassy(DiplomaticMissionLevelStorage missionLevel, int
                                        ? kInterNationEventEmbassyEstablished
                                        : kInterNationEventTradeConsulateEstablished;
   g_pNewsMgr->AddTreatyEvent(eventKind, sourceNation, targetNation, false);
-  return 1;
+  return true;
 }
 
 // ByteSwapShortInPlace (0x004f2970) and ReadByteSwappedShortArrayFromStream (0x004f2a60)

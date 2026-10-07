@@ -21,7 +21,7 @@ void UnitOrderSnapshot::CaptureFrom(TUnitOrder* order) {
   secondaryStock = order->secondaryInputResourceId < 0
                        ? 0
                        : order->ownerCity->CityStockByType(order->secondaryInputResourceId);
-  treasury = order->ownerCity->ownerNation->treasuryValue10;
+  treasury = order->ownerCity->ownerNation->treasuryValue;
   TPopulationMgr* population = order->productionSummary;
   strength = population->strength;
   populationCount = population->populationCount;
@@ -52,7 +52,7 @@ TrainingOrderSnapshot::TrainingOrderSnapshot()
 void TrainingOrderSnapshot::CaptureFrom(TTrainingOrder* order) {
   quantity = order->quantity;
   paperStock = order->ownerCity->cityStockPaper;
-  treasury = order->ownerCity->ownerNation->treasuryValue10;
+  treasury = order->ownerCity->ownerNation->treasuryValue;
   baselineLow = order->productionSummary->baselineSlots->lowSkillCount;
   baselineMedium = order->productionSummary->baselineSlots->mediumSkillCount;
 }

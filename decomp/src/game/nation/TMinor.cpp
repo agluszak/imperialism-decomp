@@ -36,10 +36,10 @@ void TMinor::IMinor(NationSlot nationSlot) {
   CString unusedText;
   InitializeNationStateIdentityAndOwnedRegionList(nationSlot);
 
-  diplomacyPolicyGate130 = 0;
-  diplomacyPolicyPredicateCode12c = -10;
-  diplomacyPolicyPredicateCode12e = -10;
-  diplomacyPolicyGate132 = 0;
+  primaryManufacturedRequestFulfilledAmount = 0;
+  primaryManufacturedRequest = -10;
+  secondaryManufacturedRequest = -10;
+  secondaryManufacturedRequestFulfilledAmount = 0;
   int i;
   for (i = 0; i < kResourceKindCount; ++i) {
     tradeOffersByResource[i] = 0;
@@ -107,212 +107,212 @@ void TMinor::IMinor(NationSlot nationSlot) {
   needCurrentByType[7] = 5;
   switch (nationSlot) {
   case 7:
-    diplomacyRandomThreshold11e = 0x44c;
-    diplomacyRandomThreshold120 = 0x23a;
-    diplomacyRandomThreshold122 = 0xc3;
-    diplomacyRandomThreshold124 = 0x5a;
-    diplomacyRandomThreshold126 = 0x69;
-    diplomacyRandomThreshold128 = 0x8a;
-    diplomacyRandomThreshold12a = 0x90;
-    diplomacySaveFields[0] = 7;
-    diplomacySaveFields[1] = 8;
-    diplomacySaveFields[2] = 9;
-    diplomacySaveFields[3] = 0xa;
+    primaryManufacturedPriceThreshold = 0x44c;
+    secondaryManufacturedPriceThreshold = 0x23a;
+    generalOfferPriceThreshold = 0xc3;
+    randomOfferPriceThreshold = 0x5a;
+    coalOfferPriceThreshold = 0x69;
+    ironOfferPriceThreshold = 0x8a;
+    oilOfferPriceThreshold = 0x90;
+    consortiumMembers[0] = 7;
+    consortiumMembers[1] = 8;
+    consortiumMembers[2] = 9;
+    consortiumMembers[3] = 0xa;
     break;
   case 8:
-    diplomacyRandomThreshold11e = 0x47e;
-    diplomacyRandomThreshold120 = 0x249;
-    diplomacyRandomThreshold122 = 0xaf;
-    diplomacyRandomThreshold124 = 0x52;
-    diplomacyRandomThreshold126 = 0x75;
-    diplomacyRandomThreshold128 = 0x72;
-    diplomacyRandomThreshold12a = 0x84;
-    diplomacySaveFields[0] = 7;
-    diplomacySaveFields[1] = 8;
-    diplomacySaveFields[2] = 9;
-    diplomacySaveFields[3] = 0xa;
+    primaryManufacturedPriceThreshold = 0x47e;
+    secondaryManufacturedPriceThreshold = 0x249;
+    generalOfferPriceThreshold = 0xaf;
+    randomOfferPriceThreshold = 0x52;
+    coalOfferPriceThreshold = 0x75;
+    ironOfferPriceThreshold = 0x72;
+    oilOfferPriceThreshold = 0x84;
+    consortiumMembers[0] = 7;
+    consortiumMembers[1] = 8;
+    consortiumMembers[2] = 9;
+    consortiumMembers[3] = 0xa;
     break;
   case 9:
-    diplomacyRandomThreshold11e = 0x4b0;
-    diplomacyRandomThreshold120 = 0x258;
-    diplomacyRandomThreshold122 = 0x9b;
-    diplomacyRandomThreshold124 = 0x4a;
-    diplomacyRandomThreshold126 = 0x81;
-    diplomacyRandomThreshold128 = 0x7e;
-    diplomacyRandomThreshold12a = 0x78;
-    diplomacySaveFields[0] = 7;
-    diplomacySaveFields[1] = 8;
-    diplomacySaveFields[2] = 9;
-    diplomacySaveFields[3] = 0xa;
+    primaryManufacturedPriceThreshold = 0x4b0;
+    secondaryManufacturedPriceThreshold = 0x258;
+    generalOfferPriceThreshold = 0x9b;
+    randomOfferPriceThreshold = 0x4a;
+    coalOfferPriceThreshold = 0x81;
+    ironOfferPriceThreshold = 0x7e;
+    oilOfferPriceThreshold = 0x78;
+    consortiumMembers[0] = 7;
+    consortiumMembers[1] = 8;
+    consortiumMembers[2] = 9;
+    consortiumMembers[3] = 0xa;
     break;
   case 10:
-    diplomacyRandomThreshold11e = 0x4e2;
-    diplomacyRandomThreshold120 = 0x267;
-    diplomacyRandomThreshold122 = 0x87;
-    diplomacyRandomThreshold124 = 0x42;
-    diplomacyRandomThreshold126 = 0x8d;
-    diplomacyRandomThreshold128 = 0x90;
-    diplomacyRandomThreshold12a = 0x6f;
-    diplomacySaveFields[0] = 7;
-    diplomacySaveFields[1] = 8;
-    diplomacySaveFields[2] = 9;
-    diplomacySaveFields[3] = 0xa;
+    primaryManufacturedPriceThreshold = 0x4e2;
+    secondaryManufacturedPriceThreshold = 0x267;
+    generalOfferPriceThreshold = 0x87;
+    randomOfferPriceThreshold = 0x42;
+    coalOfferPriceThreshold = 0x8d;
+    ironOfferPriceThreshold = 0x90;
+    oilOfferPriceThreshold = 0x6f;
+    consortiumMembers[0] = 7;
+    consortiumMembers[1] = 8;
+    consortiumMembers[2] = 9;
+    consortiumMembers[3] = 0xa;
     break;
   case 11:
-    diplomacyRandomThreshold11e = 0x514;
-    diplomacyRandomThreshold120 = 0x276;
-    diplomacyRandomThreshold122 = 0xbe;
-    diplomacyRandomThreshold124 = 0x58;
-    diplomacyRandomThreshold126 = 0x6c;
-    diplomacyRandomThreshold128 = 0x8d;
-    diplomacyRandomThreshold12a = 0x93;
-    diplomacySaveFields[0] = 0xb;
-    diplomacySaveFields[1] = 0xc;
-    diplomacySaveFields[2] = 0xd;
-    diplomacySaveFields[3] = 0xe;
+    primaryManufacturedPriceThreshold = 0x514;
+    secondaryManufacturedPriceThreshold = 0x276;
+    generalOfferPriceThreshold = 0xbe;
+    randomOfferPriceThreshold = 0x58;
+    coalOfferPriceThreshold = 0x6c;
+    ironOfferPriceThreshold = 0x8d;
+    oilOfferPriceThreshold = 0x93;
+    consortiumMembers[0] = 0xb;
+    consortiumMembers[1] = 0xc;
+    consortiumMembers[2] = 0xd;
+    consortiumMembers[3] = 0xe;
     break;
   case 12:
-    diplomacyRandomThreshold11e = 0x546;
-    diplomacyRandomThreshold120 = 0x285;
-    diplomacyRandomThreshold122 = 0xaa;
-    diplomacyRandomThreshold124 = 0x50;
-    diplomacyRandomThreshold126 = 0x78;
-    diplomacyRandomThreshold128 = 0x69;
-    diplomacyRandomThreshold12a = 0x87;
-    diplomacySaveFields[0] = 0xb;
-    diplomacySaveFields[1] = 0xc;
-    diplomacySaveFields[2] = 0xd;
-    diplomacySaveFields[3] = 0xe;
+    primaryManufacturedPriceThreshold = 0x546;
+    secondaryManufacturedPriceThreshold = 0x285;
+    generalOfferPriceThreshold = 0xaa;
+    randomOfferPriceThreshold = 0x50;
+    coalOfferPriceThreshold = 0x78;
+    ironOfferPriceThreshold = 0x69;
+    oilOfferPriceThreshold = 0x87;
+    consortiumMembers[0] = 0xb;
+    consortiumMembers[1] = 0xc;
+    consortiumMembers[2] = 0xd;
+    consortiumMembers[3] = 0xe;
     break;
   case 13:
-    diplomacyRandomThreshold11e = 0x578;
-    diplomacyRandomThreshold120 = 0x294;
-    diplomacyRandomThreshold122 = 0x96;
-    diplomacyRandomThreshold124 = 0x48;
-    diplomacyRandomThreshold126 = 0x84;
-    diplomacyRandomThreshold128 = 0x7b;
-    diplomacyRandomThreshold12a = 0x75;
-    diplomacySaveFields[0] = 0xb;
-    diplomacySaveFields[1] = 0xc;
-    diplomacySaveFields[2] = 0xd;
-    diplomacySaveFields[3] = 0xe;
+    primaryManufacturedPriceThreshold = 0x578;
+    secondaryManufacturedPriceThreshold = 0x294;
+    generalOfferPriceThreshold = 0x96;
+    randomOfferPriceThreshold = 0x48;
+    coalOfferPriceThreshold = 0x84;
+    ironOfferPriceThreshold = 0x7b;
+    oilOfferPriceThreshold = 0x75;
+    consortiumMembers[0] = 0xb;
+    consortiumMembers[1] = 0xc;
+    consortiumMembers[2] = 0xd;
+    consortiumMembers[3] = 0xe;
     break;
   case 14:
-    diplomacyRandomThreshold11e = 0x5aa;
-    diplomacyRandomThreshold120 = 0x2a3;
-    diplomacyRandomThreshold122 = 0x82;
-    diplomacyRandomThreshold124 = 0x40;
-    diplomacyRandomThreshold126 = 0x90;
-    diplomacyRandomThreshold128 = 0x81;
-    diplomacyRandomThreshold12a = 0x72;
-    diplomacySaveFields[0] = 0xb;
-    diplomacySaveFields[1] = 0xc;
-    diplomacySaveFields[2] = 0xd;
-    diplomacySaveFields[3] = 0xe;
+    primaryManufacturedPriceThreshold = 0x5aa;
+    secondaryManufacturedPriceThreshold = 0x2a3;
+    generalOfferPriceThreshold = 0x82;
+    randomOfferPriceThreshold = 0x40;
+    coalOfferPriceThreshold = 0x90;
+    ironOfferPriceThreshold = 0x81;
+    oilOfferPriceThreshold = 0x72;
+    consortiumMembers[0] = 0xb;
+    consortiumMembers[1] = 0xc;
+    consortiumMembers[2] = 0xd;
+    consortiumMembers[3] = 0xe;
     break;
   case 15:
-    diplomacyRandomThreshold11e = 0x5dc;
-    diplomacyRandomThreshold120 = 0x2b2;
-    diplomacyRandomThreshold122 = 0xb9;
-    diplomacyRandomThreshold124 = 0x56;
-    diplomacyRandomThreshold126 = 0x6f;
-    diplomacyRandomThreshold128 = 0x93;
-    diplomacyRandomThreshold12a = 0x96;
-    diplomacySaveFields[0] = 0xf;
-    diplomacySaveFields[1] = 0x10;
-    diplomacySaveFields[2] = 0x11;
-    diplomacySaveFields[3] = 0x12;
+    primaryManufacturedPriceThreshold = 0x5dc;
+    secondaryManufacturedPriceThreshold = 0x2b2;
+    generalOfferPriceThreshold = 0xb9;
+    randomOfferPriceThreshold = 0x56;
+    coalOfferPriceThreshold = 0x6f;
+    ironOfferPriceThreshold = 0x93;
+    oilOfferPriceThreshold = 0x96;
+    consortiumMembers[0] = 0xf;
+    consortiumMembers[1] = 0x10;
+    consortiumMembers[2] = 0x11;
+    consortiumMembers[3] = 0x12;
     break;
   case 16:
-    diplomacyRandomThreshold11e = 0x60e;
-    diplomacyRandomThreshold120 = 0x2c1;
-    diplomacyRandomThreshold122 = 0xa5;
-    diplomacyRandomThreshold124 = 0x4e;
-    diplomacyRandomThreshold126 = 0x7b;
-    diplomacyRandomThreshold128 = 0x6c;
-    diplomacyRandomThreshold12a = 0x8a;
-    diplomacySaveFields[0] = 0xf;
-    diplomacySaveFields[1] = 0x10;
-    diplomacySaveFields[2] = 0x11;
-    diplomacySaveFields[3] = 0x12;
+    primaryManufacturedPriceThreshold = 0x60e;
+    secondaryManufacturedPriceThreshold = 0x2c1;
+    generalOfferPriceThreshold = 0xa5;
+    randomOfferPriceThreshold = 0x4e;
+    coalOfferPriceThreshold = 0x7b;
+    ironOfferPriceThreshold = 0x6c;
+    oilOfferPriceThreshold = 0x8a;
+    consortiumMembers[0] = 0xf;
+    consortiumMembers[1] = 0x10;
+    consortiumMembers[2] = 0x11;
+    consortiumMembers[3] = 0x12;
     break;
   case 17:
-    diplomacyRandomThreshold11e = 0x640;
-    diplomacyRandomThreshold120 = 0x2d0;
-    diplomacyRandomThreshold122 = 0x91;
-    diplomacyRandomThreshold124 = 0x46;
-    diplomacyRandomThreshold126 = 0x87;
-    diplomacyRandomThreshold128 = 0x78;
-    diplomacyRandomThreshold12a = 0x7e;
-    diplomacySaveFields[0] = 0xf;
-    diplomacySaveFields[1] = 0x10;
-    diplomacySaveFields[2] = 0x11;
-    diplomacySaveFields[3] = 0x12;
+    primaryManufacturedPriceThreshold = 0x640;
+    secondaryManufacturedPriceThreshold = 0x2d0;
+    generalOfferPriceThreshold = 0x91;
+    randomOfferPriceThreshold = 0x46;
+    coalOfferPriceThreshold = 0x87;
+    ironOfferPriceThreshold = 0x78;
+    oilOfferPriceThreshold = 0x7e;
+    consortiumMembers[0] = 0xf;
+    consortiumMembers[1] = 0x10;
+    consortiumMembers[2] = 0x11;
+    consortiumMembers[3] = 0x12;
     break;
   case 18:
-    diplomacyRandomThreshold11e = 0x672;
-    diplomacyRandomThreshold120 = 0x2df;
-    diplomacyRandomThreshold122 = 0x7d;
-    diplomacyRandomThreshold124 = 0x3e;
-    diplomacyRandomThreshold126 = 0x93;
-    diplomacyRandomThreshold128 = 0x84;
-    diplomacyRandomThreshold12a = 0x69;
-    diplomacySaveFields[0] = 0xf;
-    diplomacySaveFields[1] = 0x10;
-    diplomacySaveFields[2] = 0x11;
-    diplomacySaveFields[3] = 0x12;
+    primaryManufacturedPriceThreshold = 0x672;
+    secondaryManufacturedPriceThreshold = 0x2df;
+    generalOfferPriceThreshold = 0x7d;
+    randomOfferPriceThreshold = 0x3e;
+    coalOfferPriceThreshold = 0x93;
+    ironOfferPriceThreshold = 0x84;
+    oilOfferPriceThreshold = 0x69;
+    consortiumMembers[0] = 0xf;
+    consortiumMembers[1] = 0x10;
+    consortiumMembers[2] = 0x11;
+    consortiumMembers[3] = 0x12;
     break;
   case 19:
-    diplomacyRandomThreshold11e = 0x6a4;
-    diplomacyRandomThreshold120 = 0x2ee;
-    diplomacyRandomThreshold122 = 0xb4;
-    diplomacyRandomThreshold124 = 0x54;
-    diplomacyRandomThreshold126 = 0x72;
-    diplomacyRandomThreshold128 = 0x96;
-    diplomacyRandomThreshold12a = 0x8d;
-    diplomacySaveFields[0] = 0x13;
-    diplomacySaveFields[1] = 0x14;
-    diplomacySaveFields[2] = 0x15;
-    diplomacySaveFields[3] = 0x16;
+    primaryManufacturedPriceThreshold = 0x6a4;
+    secondaryManufacturedPriceThreshold = 0x2ee;
+    generalOfferPriceThreshold = 0xb4;
+    randomOfferPriceThreshold = 0x54;
+    coalOfferPriceThreshold = 0x72;
+    ironOfferPriceThreshold = 0x96;
+    oilOfferPriceThreshold = 0x8d;
+    consortiumMembers[0] = 0x13;
+    consortiumMembers[1] = 0x14;
+    consortiumMembers[2] = 0x15;
+    consortiumMembers[3] = 0x16;
     break;
   case 20:
-    diplomacyRandomThreshold11e = 0x6d6;
-    diplomacyRandomThreshold120 = 0x2fd;
-    diplomacyRandomThreshold122 = 0xa0;
-    diplomacyRandomThreshold124 = 0x4c;
-    diplomacyRandomThreshold126 = 0x7e;
-    diplomacyRandomThreshold128 = 0x6f;
-    diplomacyRandomThreshold12a = 0x81;
-    diplomacySaveFields[0] = 0x13;
-    diplomacySaveFields[1] = 0x14;
-    diplomacySaveFields[2] = 0x15;
-    diplomacySaveFields[3] = 0x16;
+    primaryManufacturedPriceThreshold = 0x6d6;
+    secondaryManufacturedPriceThreshold = 0x2fd;
+    generalOfferPriceThreshold = 0xa0;
+    randomOfferPriceThreshold = 0x4c;
+    coalOfferPriceThreshold = 0x7e;
+    ironOfferPriceThreshold = 0x6f;
+    oilOfferPriceThreshold = 0x81;
+    consortiumMembers[0] = 0x13;
+    consortiumMembers[1] = 0x14;
+    consortiumMembers[2] = 0x15;
+    consortiumMembers[3] = 0x16;
     break;
   case 21:
-    diplomacyRandomThreshold11e = 0x708;
-    diplomacyRandomThreshold120 = 0x302;
-    diplomacyRandomThreshold122 = 0x8c;
-    diplomacyRandomThreshold124 = 0x44;
-    diplomacyRandomThreshold126 = 0x8a;
-    diplomacyRandomThreshold128 = 0x7b;
-    diplomacyRandomThreshold12a = 0x75;
-    diplomacySaveFields[0] = 0x13;
-    diplomacySaveFields[1] = 0x14;
-    diplomacySaveFields[2] = 0x15;
-    diplomacySaveFields[3] = 0x16;
+    primaryManufacturedPriceThreshold = 0x708;
+    secondaryManufacturedPriceThreshold = 0x302;
+    generalOfferPriceThreshold = 0x8c;
+    randomOfferPriceThreshold = 0x44;
+    coalOfferPriceThreshold = 0x8a;
+    ironOfferPriceThreshold = 0x7b;
+    oilOfferPriceThreshold = 0x75;
+    consortiumMembers[0] = 0x13;
+    consortiumMembers[1] = 0x14;
+    consortiumMembers[2] = 0x15;
+    consortiumMembers[3] = 0x16;
     break;
   case 22:
-    diplomacyRandomThreshold11e = 0x73a;
-    diplomacyRandomThreshold120 = 0x311;
-    diplomacyRandomThreshold122 = 0x78;
-    diplomacyRandomThreshold124 = 0x3c;
-    diplomacyRandomThreshold126 = 0x96;
-    diplomacyRandomThreshold128 = 0x87;
-    diplomacyRandomThreshold12a = 0x6c;
-    diplomacySaveFields[0] = 0x13;
-    diplomacySaveFields[1] = 0x14;
-    diplomacySaveFields[2] = 0x15;
-    diplomacySaveFields[3] = 0x16;
+    primaryManufacturedPriceThreshold = 0x73a;
+    secondaryManufacturedPriceThreshold = 0x311;
+    generalOfferPriceThreshold = 0x78;
+    randomOfferPriceThreshold = 0x3c;
+    coalOfferPriceThreshold = 0x96;
+    ironOfferPriceThreshold = 0x87;
+    oilOfferPriceThreshold = 0x6c;
+    consortiumMembers[0] = 0x13;
+    consortiumMembers[1] = 0x14;
+    consortiumMembers[2] = 0x15;
+    consortiumMembers[3] = 0x16;
     break;
   }
 }
@@ -326,19 +326,19 @@ void TMinor::ReadFrom(TStream* stream) {
   SwapShortArrayBytes(this->tradeOffersByResource, 0x17);
   stream->ReadBytes(this->grantAmountsByResource, sizeof(this->grantAmountsByResource));
   SwapShortArrayBytes(this->grantAmountsByResource, 0x17);
-  stream->ReadBytes(&this->diplomacyRandomThreshold11e, 2);
-  stream->ReadBytes(&this->diplomacyRandomThreshold120, 2);
-  stream->ReadBytes(&this->diplomacyRandomThreshold122, 2);
-  stream->ReadBytes(&this->diplomacyRandomThreshold124, 2);
-  stream->ReadBytes(&this->diplomacyRandomThreshold126, 2);
-  stream->ReadBytes(&this->diplomacyRandomThreshold128, 2);
-  stream->ReadBytes(&this->diplomacyRandomThreshold12a, 2);
-  stream->ReadBytes(&this->diplomacyPolicyPredicateCode12c, 2);
-  stream->ReadBytes(&this->diplomacyPolicyPredicateCode12e, 2);
-  stream->ReadBytes(&this->diplomacyPolicyGate130, 2);
-  stream->ReadBytes(&this->diplomacyPolicyGate132, 2);
-  stream->ReadBytes(diplomacySaveFields, 8);
-  SwapShortArrayBytes(diplomacySaveFields, 4);
+  stream->ReadBytes(&this->primaryManufacturedPriceThreshold, 2);
+  stream->ReadBytes(&this->secondaryManufacturedPriceThreshold, 2);
+  stream->ReadBytes(&this->generalOfferPriceThreshold, 2);
+  stream->ReadBytes(&this->randomOfferPriceThreshold, 2);
+  stream->ReadBytes(&this->coalOfferPriceThreshold, 2);
+  stream->ReadBytes(&this->ironOfferPriceThreshold, 2);
+  stream->ReadBytes(&this->oilOfferPriceThreshold, 2);
+  stream->ReadBytes(&this->primaryManufacturedRequest, 2);
+  stream->ReadBytes(&this->secondaryManufacturedRequest, 2);
+  stream->ReadBytes(&this->primaryManufacturedRequestFulfilledAmount, 2);
+  stream->ReadBytes(&this->secondaryManufacturedRequestFulfilledAmount, 2);
+  stream->ReadBytes(consortiumMembers, 8);
+  SwapShortArrayBytes(consortiumMembers, 4);
   if (g_nSaveFormatVersion >= 0x3a) {
     stream->ReadBytes(independentResourceCountByType, 0x2e);
     SwapShortArrayBytes(independentResourceCountByType, 0x17);
@@ -351,27 +351,27 @@ void TMinor::WriteTo(TStream* stream) {
   WriteShortArrayElems(stream, this->needCurrentByType, 0x17);
   WriteShortArrayElems(stream, this->tradeOffersByResource, 0x17);
   WriteShortArrayElems(stream, this->grantAmountsByResource, 0x17);
-  stream->WriteBytes(&this->diplomacyRandomThreshold11e, 2);
-  stream->WriteBytes(&this->diplomacyRandomThreshold120, 2);
-  stream->WriteBytes(&this->diplomacyRandomThreshold122, 2);
-  stream->WriteBytes(&this->diplomacyRandomThreshold124, 2);
-  stream->WriteBytes(&this->diplomacyRandomThreshold126, 2);
-  stream->WriteBytes(&this->diplomacyRandomThreshold128, 2);
-  stream->WriteBytes(&this->diplomacyRandomThreshold12a, 2);
-  stream->WriteBytes(&this->diplomacyPolicyPredicateCode12c, 2);
-  stream->WriteBytes(&this->diplomacyPolicyPredicateCode12e, 2);
-  stream->WriteBytes(&this->diplomacyPolicyGate130, 2);
-  stream->WriteBytes(&this->diplomacyPolicyGate132, 2);
-  WriteShortArrayElems(stream, diplomacySaveFields, 4);
+  stream->WriteBytes(&this->primaryManufacturedPriceThreshold, 2);
+  stream->WriteBytes(&this->secondaryManufacturedPriceThreshold, 2);
+  stream->WriteBytes(&this->generalOfferPriceThreshold, 2);
+  stream->WriteBytes(&this->randomOfferPriceThreshold, 2);
+  stream->WriteBytes(&this->coalOfferPriceThreshold, 2);
+  stream->WriteBytes(&this->ironOfferPriceThreshold, 2);
+  stream->WriteBytes(&this->oilOfferPriceThreshold, 2);
+  stream->WriteBytes(&this->primaryManufacturedRequest, 2);
+  stream->WriteBytes(&this->secondaryManufacturedRequest, 2);
+  stream->WriteBytes(&this->primaryManufacturedRequestFulfilledAmount, 2);
+  stream->WriteBytes(&this->secondaryManufacturedRequestFulfilledAmount, 2);
+  WriteShortArrayElems(stream, consortiumMembers, 4);
   WriteShortArrayElems(stream, independentResourceCountByType, 0x17);
 }
 
 // True when `policyCode` matches one of the four saved diplomacy nation slots.
 // FUNCTION: IMPERIALISM 0x004e45f0
-char TMinor::IsInConsortiumWith(short policyCode) {
+bool TMinor::IsInConsortiumWith(short policyCode) {
   bool result = false;
-  if (policyCode == diplomacySaveFields[0] || policyCode == diplomacySaveFields[1] ||
-      policyCode == diplomacySaveFields[2] || policyCode == diplomacySaveFields[3]) {
+  if (policyCode == consortiumMembers[0] || policyCode == consortiumMembers[1] ||
+      policyCode == consortiumMembers[2] || policyCode == consortiumMembers[3]) {
     result = true;
   }
   return result;
@@ -399,9 +399,9 @@ short TMinor::GetTradeOffersFor(short resourceKind) {
 
 // FUNCTION: IMPERIALISM 0x004e46a0
 void TMinor::InitializeTradeStatus(void) {
-  diplomacyPolicyPredicateCode12e = -10;
-  diplomacyPolicyGate130 = 0;
-  diplomacyPolicyGate132 = 0;
+  secondaryManufacturedRequest = -10;
+  primaryManufacturedRequestFulfilledAmount = 0;
+  secondaryManufacturedRequestFulfilledAmount = 0;
   int i;
   for (i = 0; i < kResourceKindCount; ++i) {
     tradeOffersByResource[i] = 0;
@@ -488,10 +488,10 @@ void TMinor::PurchaseItem(short resourceKind, short amount, short price) {
   short deltaShort = amount;
 
   if (deltaShort >= 1 && resourceSlot >= 0xd && resourceSlot <= 0x10) {
-    if (resourceSlot == this->diplomacyPolicyPredicateCode12c) {
-      this->diplomacyPolicyGate130 = deltaShort;
-    } else if (resourceSlot == this->diplomacyPolicyPredicateCode12e) {
-      this->diplomacyPolicyGate132 = deltaShort;
+    if (resourceSlot == this->primaryManufacturedRequest) {
+      this->primaryManufacturedRequestFulfilledAmount = deltaShort;
+    } else if (resourceSlot == this->secondaryManufacturedRequest) {
+      this->secondaryManufacturedRequestFulfilledAmount = deltaShort;
     }
   } else if (resourceSlot < 0 || resourceSlot > 6) {
     if (resourceSlot == 7) {
@@ -526,7 +526,7 @@ void TMinor::PurchaseItem(short resourceKind, short amount, short price) {
         floatAmount = floatAmount * static_cast<float>(standing);
         floatAmount = floatAmount * static_cast<float>(price);
         floatAmount = floatAmount * static_cast<float>(deltaShort);
-        floatAmount = floatAmount * g_ApplyIndexedResourceDeltaScale_00653728;
+        floatAmount = floatAmount * g_ApplyIndexedResourceDeltaScale;
         float integerAmount =
             static_cast<float>(intFactor * static_cast<int>(standing) * price / 255);
         int integerGrantAmount = static_cast<int>(integerAmount);
@@ -543,7 +543,7 @@ void TMinor::PurchaseItem(short resourceKind, short amount, short price) {
 
 // FUNCTION: IMPERIALISM 0x004e4bd0
 void TMinor::SetTradeBids(void) {
-  short savedPredicate = this->diplomacyPolicyPredicateCode12c;
+  short savedPredicate = this->primaryManufacturedRequest;
   short proposalWeight = 0;
   if (this == 0 || this->encodedNationSlot <= 99 || this->encodedNationSlot >= 200) {
     int randomBucket = static_cast<int>(rand()) % 100;
@@ -557,33 +557,33 @@ void TMinor::SetTradeBids(void) {
     }
 
     proposalWeight = g_pTradeMgr->GetPrice(resourceType);
-    if (this->diplomacyRandomThreshold124 < proposalWeight) {
+    if (this->randomOfferPriceThreshold < proposalWeight) {
       this->tradeOffersByResource[resourceType] = this->needCurrentByType[resourceType];
     }
 
     for (int policySlot = 0; policySlot < 8; ++policySlot) {
       proposalWeight = g_pTradeMgr->GetPrice(policySlot);
-      if (this->diplomacyRandomThreshold122 < proposalWeight) {
+      if (this->generalOfferPriceThreshold < proposalWeight) {
         this->tradeOffersByResource[policySlot] = this->needCurrentByType[policySlot];
       }
     }
 
     proposalWeight = g_pTradeMgr->GetPrice(3);
-    if (this->diplomacyRandomThreshold126 < proposalWeight) {
+    if (this->coalOfferPriceThreshold < proposalWeight) {
       this->tradeOffersByResource[3] = this->needCurrentByType[3];
     } else if (this->foreignControlledResourceYieldByType[3] != 0) {
       this->tradeOffersByResource[3] = this->foreignControlledResourceYieldByType[3];
     }
 
     proposalWeight = g_pTradeMgr->GetPrice(4);
-    if (this->diplomacyRandomThreshold128 < proposalWeight) {
+    if (this->ironOfferPriceThreshold < proposalWeight) {
       this->tradeOffersByResource[4] = this->needCurrentByType[4];
     } else if (this->foreignControlledResourceYieldByType[4] != 0) {
       this->tradeOffersByResource[4] = this->foreignControlledResourceYieldByType[4];
     }
 
     proposalWeight = g_pTradeMgr->GetPrice(6);
-    if (this->diplomacyRandomThreshold12a < proposalWeight) {
+    if (this->oilOfferPriceThreshold < proposalWeight) {
       this->tradeOffersByResource[6] = this->needCurrentByType[6];
     } else if (this->foreignControlledResourceYieldByType[6] != 0) {
       this->tradeOffersByResource[6] = this->foreignControlledResourceYieldByType[6];
@@ -600,8 +600,8 @@ void TMinor::SetTradeBids(void) {
     }
   }
 
-  if (savedPredicate == this->diplomacyPolicyPredicateCode12c) {
-    short rolledPredicate = this->diplomacyPolicyPredicateCode12c;
+  if (savedPredicate == this->primaryManufacturedRequest) {
+    short rolledPredicate = this->primaryManufacturedRequest;
     do {
       int roll = static_cast<int>(rand()) % 100;
       if (roll < 0x1e) {
@@ -611,58 +611,58 @@ void TMinor::SetTradeBids(void) {
       } else {
         rolledPredicate = static_cast<short>((0x59 < roll) + 0xf);
       }
-    } while (rolledPredicate == this->diplomacyPolicyPredicateCode12c);
+    } while (rolledPredicate == this->primaryManufacturedRequest);
     proposalWeight = g_pTradeMgr->GetPrice(rolledPredicate);
-    if (this->diplomacyRandomThreshold11e < proposalWeight) {
-      this->diplomacyPolicyPredicateCode12c = -10;
+    if (this->primaryManufacturedPriceThreshold < proposalWeight) {
+      this->primaryManufacturedRequest = -10;
     } else {
-      this->diplomacyPolicyPredicateCode12c = rolledPredicate;
+      this->primaryManufacturedRequest = rolledPredicate;
     }
   }
 
-  this->diplomacyPolicyPredicateCode12e = -10;
+  this->secondaryManufacturedRequest = -10;
   int candidatePredicate = 0xd;
   do {
     proposalWeight = g_pTradeMgr->GetPrice(candidatePredicate);
-    if (proposalWeight < this->diplomacyRandomThreshold120 &&
-        candidatePredicate != this->diplomacyPolicyPredicateCode12c) {
-      this->diplomacyPolicyPredicateCode12e = static_cast<short>(candidatePredicate);
+    if (proposalWeight < this->secondaryManufacturedPriceThreshold &&
+        candidatePredicate != this->primaryManufacturedRequest) {
+      this->secondaryManufacturedRequest = static_cast<short>(candidatePredicate);
       candidatePredicate = 0x11;
     }
     candidatePredicate = candidatePredicate + 1;
   } while (candidatePredicate < 0x11);
 
-  if (this->diplomacyPolicyPredicateCode12c != -10) {
-    this->tradeOffersByResource[this->diplomacyPolicyPredicateCode12c] = -1;
+  if (this->primaryManufacturedRequest != -10) {
+    this->tradeOffersByResource[this->primaryManufacturedRequest] = -1;
   }
-  if (this->diplomacyPolicyPredicateCode12e != -10) {
-    this->tradeOffersByResource[this->diplomacyPolicyPredicateCode12e] = -1;
+  if (this->secondaryManufacturedRequest != -10) {
+    this->tradeOffersByResource[this->secondaryManufacturedRequest] = -1;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e4ee0
 bool TMinor::StillBuyingItem(ResourceKindStorage resourceKind) {
   if (resourceKind > kResourceFuel && resourceKind < kResourceGrain) {
-    if (resourceKind == this->diplomacyPolicyPredicateCode12c) {
-      return this->diplomacyPolicyGate130 == 0;
+    if (resourceKind == this->primaryManufacturedRequest) {
+      return this->primaryManufacturedRequestFulfilledAmount == 0;
     }
-    if (resourceKind == this->diplomacyPolicyPredicateCode12e) {
-      return this->diplomacyPolicyGate132 == 0;
+    if (resourceKind == this->secondaryManufacturedRequest) {
+      return this->secondaryManufacturedRequestFulfilledAmount == 0;
     }
   }
   return true;
 }
 
 // FUNCTION: IMPERIALISM 0x004e4f50
-char TMinor::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
+bool TMinor::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                                ResourceKindStorage resourceKind) {
   if (!this->StillBuyingItem(resourceKind)) {
-    return 0;
+    return false;
   }
 
   g_pTradeMgr->SetDealResults(this->nationSlot, targetNationSlot, amount, price, resourceKind, 1,
                               false);
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004e4fa0
@@ -680,17 +680,17 @@ void TMinor::SetTradePolicyTo(NationSlot nationSlot, short tradePolicy) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e4ff0
-char TMinor::WouldAcceptOffer(NationSlot targetNationSlot,
+bool TMinor::WouldAcceptOffer(NationSlot targetNationSlot,
                               DiplomacyProposalCodeStorage proposalCode) {
   if (proposalCode != kDiplomacyProposalJoinEmpire || this->encodedNationSlot != -1) {
-    return 0;
+    return false;
   }
 
   const int source = this->nationSlot;
   short standing = g_pDiplomacyTurnStateManager
                        ->relationStandingScores[source * kNationSlotCount + targetNationSlot];
   if (standing <= 0xf9) {
-    return 0;
+    return false;
   }
 
   bool canPropose = true;

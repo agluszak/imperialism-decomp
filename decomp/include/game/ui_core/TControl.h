@@ -38,7 +38,7 @@ public:
                                 char refreshNow); // slot 0x6d 0x48e7d0
   virtual void SetTextColorAndMaybeRefresh(const COLORREF* textColor,
                                            bool refreshNow); // slot 0x6e 0x48e7a0
-  virtual char LogUnhandledDialogMethodAndReturnFalse();     // slot 0x6f 0x4294a0
+  virtual bool LogUnhandledDialogMethodAndReturnFalse();     // slot 0x6f 0x4294a0
   virtual void HiliteState(unsigned char enabledState,
                            bool refreshNow); // slot 0x70 0x48e810
   void SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNation);

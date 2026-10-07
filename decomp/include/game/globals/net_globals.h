@@ -1,30 +1,30 @@
 #pragma once
 #include "game/globals/global_types.h"
 
-extern "C" char* g_pLoungeLocalPlayerNameSharedText_0065c160;
+extern "C" char* g_pLoungeLocalPlayerNameSharedText;
 #include "game/net/TWNetSessionManager.h"
 
 #include <afxtempl.h>
 
 extern TWNetSessionManager g_NetworkSessionManager006a5f60;
 
-extern const GUID g_ImperialismDirectPlayApplicationGuid0066f968;
+extern const GUID g_ImperialismDirectPlayApplicationGuid;
 
-extern CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecords006a15e0;
+extern CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecords;
 
-extern CArray<WNetSelectionRecord*, WNetSelectionRecord*> g_WNetSerializedPtrArrayA006a5f10;
+extern CArray<WNetSelectionRecord*, WNetSelectionRecord*> g_WNetSerializedPtrArrayA;
 
-extern CArray<WNetSelectionRecord*, WNetSelectionRecord*> g_WNetSerializedPtrArrayB006a5f28;
+extern CArray<WNetSelectionRecord*, WNetSelectionRecord*> g_WNetSerializedPtrArrayB;
 
-extern CList<void*, void*> g_WNetPendingPacketList006a5f40;
+extern CList<void*, void*> g_WNetPendingPacketList;
 
-extern POINT g_ptNetworkModalMessage006a5ed8;
+extern POINT g_ptNetworkModalMessage;
 
 extern POINT g_ptNationAwolModalMessage; // @ 0x6a3d08
 
-extern const char* const g_pszClientSavePrefix_0065BF5C; // "cli_" @ 0x65bf5c
+extern const char* const g_pszClientSavePrefix; // "cli_" @ 0x65bf5c
 
-extern char g_szUiOpenParen_0069806C[];
+extern char g_szUiOpenParen[];
 
 extern "C" {
 
@@ -36,12 +36,12 @@ extern int g_nTurnEvent2BNationMaskAccumulator;
 
 extern int DAT_006a601c;
 
-extern int g_suppressUnexpectedDirectPlaySystemMessageAssert006a6020;
+extern int g_suppressUnexpectedDirectPlaySystemMessageAssert;
 
-extern "C" const char s_SourcePathUMultiplayerMgr_00698040[];
+extern "C" const char s_SourcePathUMultiplayerMgr[];
 
-extern "C" const char s_GameName_00698010[];
+extern "C" const char s_GameName[];
 
-extern "C" const char s_PlayerName_0069801c[];
+extern "C" const char s_PlayerName[];
 
 } // extern "C"

@@ -11,8 +11,8 @@ class TTask;
 class TTaskList : public TList {
 public:
   DECLARE_DYNCREATE(TTaskList)
-  virtual ~TTaskList() override;                           // slot 0x01 (scalar deleting destructor)
-  virtual unsigned char ContainsTask(short citySlotIndex); // slot 0x1f byte 0x7c 0x5aed50
+  virtual ~TTaskList() override;                  // slot 0x01 (scalar deleting destructor)
+  virtual bool ContainsTask(short citySlotIndex); // slot 0x1f byte 0x7c 0x5aed50
 
   TTaskList();
   void ITaskList();

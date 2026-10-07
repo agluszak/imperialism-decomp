@@ -8,8 +8,8 @@
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
-extern "C" const char s_BmpResourceNameFormat_006951C4[];
-extern "C" const char s_MissingRequiredFileFormat_00695188[];
+extern "C" const char s_BmpResourceNameFormat[];
+extern "C" const char s_MissingRequiredFileFormat[];
 
 struct LockedPaletteResourceHeader {
   WORD version;
@@ -68,7 +68,7 @@ BOOL TResourceMgr::LoadModuleLibrarySlotWithErrorDialog(LPCSTR path, int slot) {
   m_slots[slot] = LoadLibraryExA(path, NULL, LOAD_LIBRARY_AS_DATAFILE);
   if (m_slots[slot] == NULL) {
     CString message;
-    message.Format(s_MissingRequiredFileFormat_00695188, static_cast<LPCTSTR>(path));
+    message.Format(s_MissingRequiredFileFormat, static_cast<LPCTSTR>(path));
     AfxMessageBox(static_cast<LPCTSTR>(message), MB_OK, 0);
   }
   return m_slots[slot] != NULL;
@@ -79,7 +79,7 @@ BOOL TResourceMgr::LoadPrimaryDataLibraryWithErrorDialog(const CString& path) {
   m_primaryModule = LoadLibraryExA(path, NULL, LOAD_LIBRARY_AS_DATAFILE);
   if (m_primaryModule == NULL) {
     CString message;
-    message.Format(s_MissingRequiredFileFormat_00695188, static_cast<LPCTSTR>(path));
+    message.Format(s_MissingRequiredFileFormat, static_cast<LPCTSTR>(path));
     AfxMessageBox(static_cast<LPCTSTR>(message), MB_OK, 0);
   }
   return m_primaryModule != NULL;
@@ -139,7 +139,7 @@ CDib* TResourceMgr::LoadBmpResourceByIdCached(short bmpId) {
   }
 
   CString resourceName;
-  resourceName.Format(s_BmpResourceNameFormat_006951C4, bmpId);
+  resourceName.Format(s_BmpResourceNameFormat, bmpId);
   CDib* dib = new CDib();
   if (dib == NULL) {
     return NULL;

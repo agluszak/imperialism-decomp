@@ -71,7 +71,7 @@ RuntimeActionResult RunPowerPlantUpgrade(NativeTransition& transition) {
   TGreatPower* nation = ActiveNation();
   TCity* city = nation->city;
   city->powerPlantUpgradeQueuedFlag = 0;
-  nation->treasuryValue10 = 10000;
+  nation->treasuryValue = 10000;
 
   JsonObject args;
   args.Set("nation", static_cast<int>(ActiveNationSlot()));

@@ -24,8 +24,8 @@ public:
                                 unsigned char redraw); // slot 0x0d 0x49d9f0
   virtual void InvalidateAdorner(TView* view);         // slot 0x0e 0x49da20
   virtual void DrawLine(signed char colorIndex, short x1, short y1,
-                        short length);          // slot 0x0f 0x49da50
-  virtual unsigned char DoesAdorn(TView* view); // slot 0x10 0x49da80
+                        short length); // slot 0x0f 0x49da50
+  virtual bool DoesAdorn(TView* view); // slot 0x10 0x49da80
 
   TAdorner() {
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0x69);

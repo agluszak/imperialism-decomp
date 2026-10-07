@@ -49,13 +49,13 @@ public:
 
   void CheckUnitAdvice(TCivUnit* civilianOrderEntry);
 
-  char ShowPeriodicNationComparisonAdvisoryIfNeeded();
-  char HandlePendingEventActivationByCode(TurnEventCodeStorage eventCode);
+  bool ShowPeriodicNationComparisonAdvisoryIfNeeded();
+  bool HandlePendingEventActivationByCode(TurnEventCodeStorage eventCode);
   void HandlePostPendingEventActivationNoOp(TurnEventCodeStorage eventCode);
   void ShowHelpSet(HelpSetRecord* pendingEntry);
   HelpSetRecord* FindHelpSetRecordByResourceBase(short helpResourceBaseId);
   char GetHelpSetRecordFlagByResourceBase(short helpResourceBaseId);
-  char IncrementCivilianCompletionCounterAndCheckThreshold(unsigned int index);
+  bool IncrementCivilianCompletionCounterAndCheckThreshold(unsigned int index);
   void SelectAndActivatePendingEventForCurrentView();
   void SelectAndActivatePendingEventTypeOffsetFrom1A0B(int idx);
   void SelectAndActivatePendingEventType1A0A();

@@ -72,7 +72,7 @@ public:
     consumed += requestedCount;
   }
 
-  char ReadObject(void* outObject) override {
+  bool ReadObject(void* outObject) override {
     ++objectReads;
     return TFileStream::ReadObject(outObject);
   }

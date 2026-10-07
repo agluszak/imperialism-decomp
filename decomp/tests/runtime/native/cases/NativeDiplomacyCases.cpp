@@ -390,7 +390,7 @@ RunPlayerDiplomacyPolicyCannotAffordCommittedConsulate(NativeTransition& transit
   TGreatPower* nation = ActiveNation();
   SetMissionLevel(source, target, 0);
   SetRelationshipAndStamp(source, target, kDiplomacyRelationshipPeace, -1);
-  nation->treasuryValue10 = 500;
+  nation->treasuryValue = 500;
   nation->diplomacyBudgetBase = 0;
   nation->grantTotalCost = 1;
   return RunConfiguredPlayerPolicy(transition, target, kDiplomacyProposalBuildConsulate,

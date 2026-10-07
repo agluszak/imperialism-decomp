@@ -24,7 +24,7 @@ public:
   char IsEnabled() override;
   void SetEnable(char enabled) override;
   void TargetValidationSucceeded() override;
-  char BecomeTarget() override;
+  bool BecomeTarget() override;
   void SelectOwner(unsigned char select) override;
   CWnd* Open() override;
   void Close() override;

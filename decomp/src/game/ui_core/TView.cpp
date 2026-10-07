@@ -120,7 +120,7 @@ void TViewChildList::RemoveByTag(unsigned int tag) {
     }
   }
   if (g_McAppUiFlag_006A1AE0 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0x152);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0x152);
   }
 }
 
@@ -237,7 +237,7 @@ void TView::DetachChildFromOwnerList(class TView* child) {
   }
 
   if (found == 0 && g_McAppUiFlag_006A1AE0 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0x152);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0x152);
   }
 
   if (list->IsEmpty()) {
@@ -344,8 +344,8 @@ void TView::Show(int show, int refreshNow) {
 }
 // FUNCTION: IMPERIALISM 0x0048b200
 bool TView::IsActionable() {
-  return g_McAppUiActiveFlag_006950AC != 0 && nativeWindow != 0 && viewEnabled != 0 &&
-         ownerContext != 0 && ownerContext->IsActionable();
+  return g_McAppUiActiveFlag != 0 && nativeWindow != 0 && viewEnabled != 0 && ownerContext != 0 &&
+         ownerContext->IsActionable();
 }
 // FUNCTION: IMPERIALISM 0x0048b250
 void TView::Locate(const CPoint& position, bool refresh) {
@@ -365,8 +365,8 @@ void TView::UpdateCoordinates() {
   TView* owner = ownerContext;
   int oldX = absoluteX;
   int oldY = absoluteY;
-  int newX = g_McAppUiDefaultPosX_006A1A60;
-  int newY = g_McAppUiDefaultPosY_006A1A64;
+  int newX = g_McAppUiDefaultPosX;
+  int newY = g_McAppUiDefaultPosY;
   if (owner != 0) {
     newX = owner->absoluteX + ownerLocalX;
     newY = owner->absoluteY + ownerLocalY;
@@ -394,7 +394,7 @@ void TView::Resize(const CPoint& size, bool refresh) {
     CRect newRect;
     GetDrawableQDRect(&newRect);
     UnionRect(&newRect, &newRect, &oldRect);
-    if (g_McAppUiActiveFlag_006950AC != 0) {
+    if (g_McAppUiActiveFlag != 0) {
       InvalidateRect(nativeWindow->m_hWnd, &newRect, 0);
     }
   } else {
@@ -425,7 +425,7 @@ void TView::InvalidateOffsetRegionUsingChildClipRect(RgnHandle region) {
   GetAbsolutePosition(&cachedPos);
   OffsetRgn(destRegion, -cachedPos.x, -cachedPos.y);
 
-  if (g_McAppUiActiveFlag_006950AC != 0) {
+  if (g_McAppUiActiveFlag != 0) {
     InvalidateRgn(nativeWindow->m_hWnd, destRegion, 0);
 #ifdef IMPERIALISM_RUNTIME_TESTS
     RuntimeTestDriver::ObserveDeferred(kObserveInvalidationRequested);
@@ -448,7 +448,7 @@ void TView::InvalidateCityDialogRectRegion(RECT* rect, int flag) {
     CopyRect(&localRect, rect);
     TranslateRectToWindow(&localRect);
   }
-  if (g_McAppUiActiveFlag_006950AC != 0) {
+  if (g_McAppUiActiveFlag != 0) {
     InvalidateRect(nativeWindow->m_hWnd, &localRect, 0);
 #ifdef IMPERIALISM_RUNTIME_TESTS
     RuntimeTestDriver::ObserveDeferred(kObserveInvalidationRequested);
@@ -458,13 +458,13 @@ void TView::InvalidateCityDialogRectRegion(RECT* rect, int flag) {
 
 // FUNCTION: IMPERIALISM 0x0048b690
 void TView::ValidateControlRectIfWindowActive(RECT* rect) {
-  if (nativeWindow != 0 && g_McAppUiActiveFlag_006950AC != 0) {
+  if (nativeWindow != 0 && g_McAppUiActiveFlag != 0) {
     ValidateRect(nativeWindow->m_hWnd, rect);
   }
 }
 // FUNCTION: IMPERIALISM 0x0048b6d0
 void TView::RefreshControl() {
-  if (g_McAppUiActiveFlag_006950AC != 0 && nativeWindow != 0) {
+  if (g_McAppUiActiveFlag != 0 && nativeWindow != 0) {
     InvalidateCityDialogRectRegion(0, 1);
   }
 }
@@ -475,21 +475,21 @@ void TView::ForceRedraw() {
     ownerContext->ForceRedraw();
     return;
   }
-  if (g_McAppUiUpdateWindowRecursionGuard_006A1AF0 == 0) {
-    g_McAppUiUpdateWindowRecursionGuard_006A1AF0 = 1;
-    if (nativeWindow != 0 && g_McAppUiActiveFlag_006950AC != 0) {
+  if (g_McAppUiUpdateWindowRecursionGuard == 0) {
+    g_McAppUiUpdateWindowRecursionGuard = 1;
+    if (nativeWindow != 0 && g_McAppUiActiveFlag != 0) {
       UpdateWindow(nativeWindow->m_hWnd);
     }
-    g_McAppUiUpdateWindowRecursionGuard_006A1AF0 = 0;
+    g_McAppUiUpdateWindowRecursionGuard = 0;
   }
 }
 // FUNCTION: IMPERIALISM 0x0048b770
-char TView::PrepareForDrawing() {
-  if (this != g_McAppUiActiveRenderContext_006A1AF4) {
+bool TView::PrepareForDrawing() {
+  if (this != g_McAppUiActiveRenderContext) {
     SetGlobalQuickDrawOrigin(static_cast<short>(absoluteX), static_cast<short>(absoluteY));
-    g_McAppUiActiveRenderContext_006A1AF4 = this;
+    g_McAppUiActiveRenderContext = this;
   }
-  return 1;
+  return true;
 }
 // FUNCTION: IMPERIALISM 0x0048b7b0
 int TView::BindMapQuickDrawDc(CDC* paintDc) {
@@ -520,7 +520,7 @@ void TView::PaintOrInvalidateControl(CDC* paintDc) {
 
 // FUNCTION: IMPERIALISM 0x0048b8d0
 void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintDc) {
-  if (g_McAppUiActiveFlag_006950AC == 0 || !IsActionable() || PrepareForDrawing() == 0) {
+  if (g_McAppUiActiveFlag == 0 || !IsActionable() || PrepareForDrawing() == 0) {
     return;
   }
 
@@ -698,24 +698,24 @@ TObject* TView::ShallowClone() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048c000
-char TView::EvaluateControlInputGate() {
+bool TView::EvaluateControlInputGate() {
   if (hoverHelpEnabled == 0) {
     if ((char)inputGateFlag != 0 && IsEnabled() != 0) {
-      return 1;
+      return true;
     }
     if (HasRenderableParentAndContent() == 0) {
-      return 0;
+      return false;
     }
   }
-  return 1;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x0048c050
-char TView::HasRenderableParentAndContent() {
+bool TView::HasRenderableParentAndContent() {
   if (childHitTestFlag && childList != 0 && !childList->IsEmpty()) {
-    return 1;
+    return true;
   }
-  return 0;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x0048c080
@@ -869,8 +869,8 @@ char TView::PointInBoundsAndActionable(CPoint* point) {
 }
 // FUNCTION: IMPERIALISM 0x0048c750
 void TView::DrawRectangleInCurrentUiContext(const RECT* rect) {
-  if (g_McAppUiDrawGate_006A1AF8 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0x772);
+  if (g_McAppUiDrawGate == 0) {
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0x772);
   }
   CDC* context = GetActiveQuickDrawDc();
   Rectangle(context->m_hDC, rect->left, rect->top, rect->right, rect->bottom);
@@ -879,14 +879,14 @@ void TView::DrawRectangleInCurrentUiContext(const RECT* rect) {
 void TView::AssertMcAppUiLine1914(int unusedArg) {
   (void)unusedArg;
   if (g_McAppUiFlag_006A1AFC == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0x77a);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0x77a);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0048c7d0
 void TView::AssertMcAppUiLine1922() {
   if (g_McAppUiFlag_006A1B00 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0x782);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath, 0x782);
   }
   CRect rectStorage;
   GetDrawableQDRect(&rectStorage);

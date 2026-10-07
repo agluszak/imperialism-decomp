@@ -73,7 +73,7 @@ void TGPCheater::DisplayGP(int nationSlot) {
   if (treasury == nullptr) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCheaters.cpp", 0xf2);
   }
-  treasury->SetControlValue(nation->treasuryValue10, 1);
+  treasury->SetControlValue(nation->treasuryValue, 1);
 
   TNumberText* mercenaries =
       static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('m', 'e', 'r', 'c')));

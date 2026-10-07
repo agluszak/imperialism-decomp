@@ -24,13 +24,13 @@ void __cdecl RegisterUiResourceEntry(unsigned int nameTag, unsigned int controlT
   TView* parent;
   g_pUiResourceContext = widget;
   if (g_pUiResourceHead != 0) {
-    const CList<TView*, TView*>& buildStack = g_UiWidgetBuildStack006a13e0;
+    const CList<TView*, TView*>& buildStack = g_UiWidgetBuildStack;
     parent = buildStack.GetTail();
   } else {
     g_pUiResourceHead = widget;
     parent = 0;
   }
-  g_UiWidgetBuildStack006a13e0.AddTail(widget);
+  g_UiWidgetBuildStack.AddTail(widget);
 
   int offsetLayout[2];
   int sizeLayout[2];
@@ -123,13 +123,13 @@ void __cdecl ClearUiResourceContext() {
 // FUNCTION: IMPERIALISM 0x0041b610
 void __cdecl PopUiResourcePoolNode(unsigned int nameTag) {
   (void)nameTag;
-  g_UiWidgetBuildStack006a13e0.RemoveTail();
+  g_UiWidgetBuildStack.RemoveTail();
 }
 
 // 0x479a80 / 0x479b00 ("Pop/PushUiResourcePoolNode") are the out-of-line template COMDATs
-// of CList<TView*,TView*>::RemoveTail / ::AddTail operating on g_UiWidgetBuildStack006a13e0
+// of CList<TView*,TView*>::RemoveTail / ::AddTail operating on g_UiWidgetBuildStack
 // - see global_data_tables.h. The builders call them directly
-// (g_UiWidgetBuildStack006a13e0.RemoveTail()/.AddTail(node)); claimed here as templates.
+// (g_UiWidgetBuildStack.RemoveTail()/.AddTail(node)); claimed here as templates.
 
 // The early builders also call the const GetTail specialization to recover the current
 // TView* from the stack's tail node.
@@ -149,7 +149,7 @@ void __cdecl SetUiResourceContextFlagsAndMetrics(short nField9C, short nStyleTyp
   window->resourceFlag6e = f6e;
   window->useCaptionedFrameFlag = f6d;
   window->resourceFlag6c = f6c;
-  window->resourceFlag71 = f71;
+  window->resourceFlag = f71;
   window->windowFlags = static_cast<unsigned short>(nField9C);
   window->windowStyleType = nStyleType;
 }

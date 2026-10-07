@@ -37,7 +37,7 @@ void TCityBarCluster::StuffValues(TCity* city) {
 
   TNumberText* areaControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagTrea));
   if (areaControl != 0) {
-    areaControl->SetControlValue(nation->treasuryValue10, 1);
+    areaControl->SetControlValue(nation->treasuryValue, 1);
     areaControl->Show(0, 1);
   }
 

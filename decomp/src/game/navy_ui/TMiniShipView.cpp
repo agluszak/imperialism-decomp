@@ -39,9 +39,9 @@ void TMiniShipView::Draw(RECT* rectBuffer) {
   CString label;
   label = shipNode->name;
 
-  g_pSimMgr->GetString(0x2760, g_ShipOrderStatusStringIndexByResourceType_0065c7f8[shipNode->type],
+  g_pSimMgr->GetString(0x2760, g_ShipOrderStatusStringIndexByResourceType[shipNode->type],
                        &statusLine);
-  statusLine += s_szSpaceSeparator_00695794 + label;
+  statusLine += s_szSpaceSeparator + label;
 
   TruncateTextToFitWidthWithEllipsis(&statusLine, 0x5a);
   SetQuickDrawTextOriginWithContextOffset(0xa, 0xc);

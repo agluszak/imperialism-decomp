@@ -10,7 +10,7 @@ IMPLEMENT_DYNCREATE(THotspotBehavior, TBehavior)
 THotspotBehavior::THotspotBehavior() : TBehavior() {}
 
 // FUNCTION: IMPERIALISM 0x004b0c00
-unsigned char THotspotBehavior::DoSetCursor(CPoint* point, RgnHandle region) {
+bool THotspotBehavior::DoSetCursor(CPoint* point, RgnHandle region) {
   (void)point;
   (void)region;
   TView* target = static_cast<TView*>(owner);
@@ -24,5 +24,5 @@ unsigned char THotspotBehavior::DoSetCursor(CPoint* point, RgnHandle region) {
   event->sourceHandler = owner;
   event->targetHandler = target;
   target->DispatchQueuedUiCommandAndRelease(event);
-  return 0;
+  return false;
 }

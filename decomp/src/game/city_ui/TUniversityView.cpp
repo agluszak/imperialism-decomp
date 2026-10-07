@@ -293,7 +293,7 @@ void TUniversityView::UpdateFields() {
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
   CString treasuryText;
-  int treasury = city->ownerNation->treasuryValue10;
+  int treasury = city->ownerNation->treasuryValue;
   g_pSimMgr->NumToCurrency(treasury, &treasuryText);
 
   TStaticText* treasuryAvailable =

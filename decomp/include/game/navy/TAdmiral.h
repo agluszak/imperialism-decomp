@@ -34,12 +34,12 @@ public:
   virtual ~TAdmiral() override;
 
   void AssignToShip(TShip* primaryOrderNode); // 0x552250
-  void ReassignThyself(); // 0x551850
-  void ReassignToZone(TZone* zone); // 0x552310
+  void ReassignThyself();                     // 0x551850
+  void ReassignToZone(TZone* zone);           // 0x552310
 
   void Victory(short experienceGain); // 0x551820
 
-  unsigned char IsSeniorTo(const TAdmiral* other) const; // 0x551990
+  bool IsSeniorTo(const TAdmiral* other) const; // 0x551990
 
   int EstimateStrengthRating(const TTaskForce* force, int unusedArg) const;
 

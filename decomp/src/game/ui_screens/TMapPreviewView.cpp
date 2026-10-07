@@ -34,7 +34,7 @@ void TMapPreviewView::DoPostCreate(int arg) {
   QueryContentBounds(&contentBounds);
   RECT surfaceBounds = contentBounds;
 
-  ++g_nDibOrientationFlag_006A1890;
+  ++g_nDibOrientationFlag;
   g_pDisplayMgr->MakeNewGWorld(previewSurface, 8, surfaceBounds);
 
   TBitmapSurfaceNode** surfaceObject = GetGWorldPixMap(previewSurface);
@@ -42,7 +42,7 @@ void TMapPreviewView::DoPostCreate(int arg) {
   int stride = static_cast<unsigned short>((*GetGWorldPixMap(previewSurface))->stride) & 0x3fff;
   int height = surfaceBounds.bottom - surfaceBounds.top;
   memset(pixels, 0x10, height * stride);
-  --g_nDibOrientationFlag_006A1890;
+  --g_nDibOrientationFlag;
 }
 
 // FUNCTION: IMPERIALISM 0x005789b0

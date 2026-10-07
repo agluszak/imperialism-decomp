@@ -68,7 +68,7 @@ void TArmyMission::AccumulateOrderPriorityVector(float* vector) const {
       weightIndex = 5;
     }
     AccumulateUnitOrderPriorityVectorContribution(
-        unit, vector, g_MissionOrderDistanceDecayWeightTable_006978c8[weightIndex],
+        unit, vector, g_MissionOrderDistanceDecayWeightTable[weightIndex],
         static_cast<float>(g_pGlobalMapState->GetProvinceUnitOrderWeight(GetPresentLocation())));
   }
 }
@@ -133,7 +133,7 @@ void TArmyMission::ReadFrom(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x0053c4f0
-char TArmyMission::SmokeEmIfYouGotEm() {
+bool TArmyMission::SmokeEmIfYouGotEm() {
   if (orderList != nullptr) {
     CIterator iter(orderList);
     void* item = iter.Reset();
@@ -146,7 +146,7 @@ char TArmyMission::SmokeEmIfYouGotEm() {
       item = iter.Advance();
     }
   }
-  return 1;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x0053c570
@@ -186,7 +186,7 @@ int TArmyMission::AccumulateLack(int* accumulatedLack, bool includeExistingLack)
     if (weightIndex > 5) {
       weightIndex = 5;
     }
-    float distanceWeight = g_MissionOrderDistanceDecayWeightTable_006978c8[weightIndex];
+    float distanceWeight = g_MissionOrderDistanceDecayWeightTable[weightIndex];
     AccumulateUnitOrderPriorityVectorContribution(
         unit, vector, distanceWeight,
         static_cast<float>(g_pGlobalMapState->GetProvinceUnitOrderWeight(GetPresentLocation())));
@@ -197,7 +197,7 @@ int TArmyMission::AccumulateLack(int* accumulatedLack, bool includeExistingLack)
     float value;
     if (includeExistingLack && requiredEquipageByClass[i] <= vector[i]) {
       float difference = requiredEquipageByClass[i] - vector[i];
-      value = difference * g_InvadeMissionSuppressedPriorContributionScale_0065A95C +
+      value = difference * g_InvadeMissionSuppressedPriorContributionScale +
               static_cast<float>(accumulatedLack[i]);
     } else {
       value = requiredEquipageByClass[i] - vector[i] + static_cast<float>(accumulatedLack[i]);
@@ -305,7 +305,7 @@ void TArmyMission::AccumulateWeightedUnitEquipage(TMilitaryUnit* unit, float* ve
   }
   float sign = scaleMode ? static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08)
                          : static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9E0);
-  float scale = g_MissionOrderDistanceDecayWeightTable_006978c8[weightIndex] * sign;
+  float scale = g_MissionOrderDistanceDecayWeightTable[weightIndex] * sign;
   float weight =
       static_cast<float>(g_pGlobalMapState->GetProvinceUnitOrderWeight(GetPresentLocation()));
   AccumulateUnitOrderPriorityVectorContribution(unit, vector, scale, weight);
@@ -343,7 +343,7 @@ void TArmyMission::GetWeightedEquipage(float* vector) const {
       weightIndex = 5;
     }
     AccumulateUnitOrderPriorityVectorContribution(
-        unit, vector, g_MissionOrderDistanceDecayWeightTable_006978c8[weightIndex],
+        unit, vector, g_MissionOrderDistanceDecayWeightTable[weightIndex],
         static_cast<float>(g_pGlobalMapState->GetProvinceUnitOrderWeight(GetPresentLocation())));
   }
 }
@@ -377,7 +377,7 @@ float TArmyMission::ComputeArmyMissionScoreDeltaWithCandidateUnit(TMilitaryUnit*
     weightIndex = 5;
   }
   AccumulateUnitOrderPriorityVectorContribution(
-      candidateUnit, vector, g_MissionOrderDistanceDecayWeightTable_006978c8[weightIndex],
+      candidateUnit, vector, g_MissionOrderDistanceDecayWeightTable[weightIndex],
       static_cast<float>(g_pGlobalMapState->GetProvinceUnitOrderWeight(GetPresentLocation())));
 
   double numerator = 0.0;
@@ -405,7 +405,7 @@ float TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(
     weightIndex = 5;
   }
   AccumulateUnitOrderPriorityVectorContribution(
-      candidateUnit, vector, g_MissionOrderDistanceDecayWeightTable_006978c8[weightIndex] * -1.0f,
+      candidateUnit, vector, g_MissionOrderDistanceDecayWeightTable[weightIndex] * -1.0f,
       static_cast<float>(g_pGlobalMapState->GetProvinceUnitOrderWeight(GetPresentLocation())));
 
   double numerator = 0.0;
@@ -426,7 +426,7 @@ float TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(
 float TArmyMission::IndustrialCostOfNeeds() {
   float total = g_Recompute_Nation_Order_LookupTable_0065A9E8;
   for (int i = 0; i < 5; ++i) {
-    total += requiredEquipageByClass[i] * g_ArmyMissionDotProductWeights_00697980[i];
+    total += requiredEquipageByClass[i] * g_ArmyMissionDotProductWeights[i];
   }
   return total;
 }
@@ -448,7 +448,7 @@ float TArmyMission::ValueOf(TMilitaryUnit* candidateUnit) {
 // FUNCTION: IMPERIALISM 0x0053d4a0
 float TArmyMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVector) {
   float scaledStrength = static_cast<float>(static_cast<double>(candidateUnit->strength) *
-                                            g_ArmyMissionEligibleUnitStrengthScale_0065AA48);
+                                            g_ArmyMissionEligibleUnitStrengthScale);
   if (scaledStrength < g_Recompute_Nation_Order_LookupTable_0065AA20) {
     if (!IsANoBrainer()) {
       return -1000.0f;
@@ -459,7 +459,7 @@ float TArmyMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVect
   if (weightIndex > 5) {
     weightIndex = 5;
   }
-  float baseline = g_ArmyMissionCandidateScoreTable_006978f8[weightIndex + state08 * 6];
+  float baseline = g_ArmyMissionCandidateScoreTable[weightIndex + state08 * 6];
 
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
   AccumulateUnitOrderPriorityVectorContribution(

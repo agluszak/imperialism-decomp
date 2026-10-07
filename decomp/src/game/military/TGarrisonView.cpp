@@ -94,7 +94,7 @@ void TGarrisonView::Close() {
                 activeNation = g_pSimMgr->GetPlayerCountry();
                 if (g_apTerrainTypeDescriptorTable[activeNation]->GetCapitolProvince() ==
                     selectedTileIndex) {
-                  g_nationInfoGoldResourceOverride_006a5bac = 0x24d0;
+                  g_nationInfoGoldResourceOverride = 0x24d0;
                 }
               }
             }

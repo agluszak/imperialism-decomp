@@ -52,7 +52,7 @@ void TInvadeMission::RejectConstituent(TShip* ship, bool notify) {
 float TInvadeMission::IndustrialCostOfNeeds() {
   float armyCost = 0.0f;
   for (int i = 0; i < 5; ++i) {
-    armyCost += requiredEquipageByClass[i] * g_ArmyMissionDotProductWeights_00697980[i];
+    armyCost += requiredEquipageByClass[i] * g_ArmyMissionDotProductWeights[i];
   }
   return armyCost + beachhead->IndustrialCostOfNeeds();
 }
@@ -100,9 +100,9 @@ void TInvadeMission::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053f4e0
-char TInvadeMission::SmokeEmIfYouGotEm() {
+bool TInvadeMission::SmokeEmIfYouGotEm() {
   if (!beachhead->SmokeEmIfYouGotEm()) {
-    return 0;
+    return false;
   }
   CIterator iter(orderList);
   TArmyMission* armyMission = this;
@@ -112,7 +112,7 @@ char TInvadeMission::SmokeEmIfYouGotEm() {
       armyMission->RejectConstituent(unit, true);
     }
   }
-  return 1;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x0053f580
@@ -200,7 +200,7 @@ float TInvadeMission::CalculatePriority() {
     if (weightIndex > 5) {
       weightIndex = 5;
     }
-    float distanceWeight = g_MissionOrderDistanceDecayWeightTable_006978c8[weightIndex];
+    float distanceWeight = g_MissionOrderDistanceDecayWeightTable[weightIndex];
     AccumulateUnitOrderPriorityVectorContribution(
         selectedUnit, committedResources, distanceWeight,
         static_cast<float>(g_pGlobalMapState->GetProvinceUnitOrderWeight(GetPresentLocation())));
@@ -289,7 +289,7 @@ int TInvadeMission::AccumulateLack(int* accumulatedLack, bool includeExistingLac
     float value;
     if (includeExistingLack && requiredEquipageByClass[i] <= vector[i]) {
       float difference = requiredEquipageByClass[i] - vector[i];
-      value = difference * g_InvadeMissionSuppressedPriorContributionScale_0065A95C +
+      value = difference * g_InvadeMissionSuppressedPriorContributionScale +
               static_cast<float>(accumulatedLack[i]);
     } else {
       value = requiredEquipageByClass[i] - vector[i] + static_cast<float>(accumulatedLack[i]);
@@ -303,15 +303,15 @@ int TInvadeMission::AccumulateLack(int* accumulatedLack, bool includeExistingLac
 }
 
 // FUNCTION: IMPERIALISM 0x0053fdc0
-char TInvadeMission::TryResolveTargetTerrainClass() {
+bool TInvadeMission::TryResolveTargetTerrainClass() {
   presentLocation = -1;
   if (TAttackProvinceMission::TryResolveTargetTerrainClass() != 0) {
     presentLocation = -1;
-    return 0;
+    return false;
   }
   presentLocation =
       static_cast<short>(g_apTerrainTypeDescriptorTable[nationId]->GetCapitolProvince());
-  return 1;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x0053fe10
