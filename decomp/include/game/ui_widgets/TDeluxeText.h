@@ -12,7 +12,7 @@ public:
   virtual ~TDeluxeText() override;               // slot 0x01 (scalar deleting destructor)
   virtual void DoPostCreate(int arg) override;   // slot 0x37 0x5b6060
   virtual void Draw(RECT* rectBuffer) override;  // slot 0x44 0x5b6170
-  virtual void EnableEditing(char enable);       // slot 0x76 0x5b60a0
+  virtual void EnableEditing(bool enable);       // slot 0x76 0x5b60a0
   virtual void LoadTextResource(short stringId); // slot 0x77 0x5b60d0
   virtual void SetTextStyle(const TextStyle& style,
                             bool refreshNow); // slot 0x79 0x5b62a0

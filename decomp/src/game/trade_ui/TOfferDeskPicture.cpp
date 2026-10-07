@@ -426,7 +426,7 @@ void TOfferDeskPicture::ShowAdvice() {
     info->SetJustification(1, false);
   } else if (g_pHelpMgr->tradeAdviceDetailLevel == 1) {
     if (compat >= 1 &&
-        g_apTerrainTypeDescriptorTable[offeringNationSlot]->IsColonyOf(respondingNationSlot) == 0) {
+        !g_apTerrainTypeDescriptorTable[offeringNationSlot]->IsColonyOf(respondingNationSlot)) {
       notAligned = true;
     }
     if (commodityType != kResourceCotton && commodityType != kResourceWool) {

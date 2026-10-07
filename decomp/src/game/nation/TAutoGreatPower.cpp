@@ -483,7 +483,7 @@ int TAutoGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNatio
     if (g_pSimMgr->ReallyInTheGame(nation) && nation != this->nationSlot) {
       if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, nation) &&
           g_pDiplomacyTurnStateManager->IsNationPairAtWar(targetNation, nation)) {
-        char borderLinked =
+        bool borderLinked =
             g_pGlobalMapState->AreNationsBorderLinked(targetNation, this->nationSlot);
         float combinedScore;
         if (borderLinked != 0) {
@@ -543,7 +543,7 @@ int TAutoGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation, c
     }
   }
   if (!hasPolicy) {
-    char borderLinked = g_pGlobalMapState->AreNationsBorderLinked(sourceNation, this->nationSlot);
+    bool borderLinked = g_pGlobalMapState->AreNationsBorderLinked(sourceNation, this->nationSlot);
     float ratioScore;
     float standingScore;
     if (borderLinked != 0) {

@@ -423,7 +423,7 @@ void TCivMgr::DisbandSelected() {
   }
   g_pSimMgr->GetString(0x274d, confirmStringOffset, &confirmText);
 
-  char confirmed =
+  bool confirmed =
       g_pViewMgr->ModalMessage(4, titleText, confirmText, g_ptCivilianOrderModalMessage, 2, 1);
   if (confirmed == 0) {
     return;
@@ -646,7 +646,7 @@ bool TCivMgr::PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex) {
     scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(cityName), static_cast<LPCSTR>(costText));
     if (g_pViewMgr->ModalMessage(4, titleText, formattedText, g_ptCivilianOrderModalMessage, 0,
-                                 1) != 0) {
+                                 1)) {
       selectedEntry->SetOrders(kUnitOrderPurchaseLand, selectedEntry->tileIndex);
       this->MoveAndRedrawUnit(nTileIndex, g_pSelectedCivilianOrderState->selectedEntry);
       g_pSfxPlaybackSystem->PlaySoundEffect(0x2335, 0, 1);

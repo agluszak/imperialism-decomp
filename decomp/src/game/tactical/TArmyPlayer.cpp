@@ -848,7 +848,7 @@ void TArmyPlayer::ApplyAttackerSiegeStanceByActionClass() {
     opponent = static_cast<TArmyPlayer*>(battle->players[0]);
   }
   short opponentMaxNonArtilleryRange = opponent->maxNonArtilleryUnitRange;
-  unsigned char enemyHasDeployedArtillery = OpponentHasDeployedActiveArtilleryUnit();
+  bool enemyHasDeployedArtillery = OpponentHasDeployedActiveArtilleryUnit();
 
   CIterator applyIter(unitList);
   for (TTacticalUnit* record = static_cast<TTacticalUnit*>(applyIter.Reset()); applyIter.More();
@@ -898,7 +898,7 @@ void TArmyPlayer::ApplyAttackerAssaultStanceByActionClass() {
     opponent = static_cast<TArmyPlayer*>(battle->players[0]);
   }
   short opponentMaxNonArtilleryRange = opponent->maxNonArtilleryUnitRange;
-  unsigned char enemyHasDeployedArtillery = OpponentHasDeployedActiveArtilleryUnit();
+  bool enemyHasDeployedArtillery = OpponentHasDeployedActiveArtilleryUnit();
 
   CIterator applyIter(unitList);
   for (TTacticalUnit* record = static_cast<TTacticalUnit*>(applyIter.Reset()); applyIter.More();
@@ -944,7 +944,7 @@ void TArmyPlayer::ApplyAttackerStandoffStanceByActionClass() {
     opponent = static_cast<TArmyPlayer*>(battle->players[0]);
   }
   short opponentMaxNonArtilleryRange = opponent->maxNonArtilleryUnitRange;
-  unsigned char enemyHasDeployedArtillery = OpponentHasDeployedActiveArtilleryUnit();
+  bool enemyHasDeployedArtillery = OpponentHasDeployedActiveArtilleryUnit();
 
   CIterator applyIter(unitList);
   for (TTacticalUnit* record = static_cast<TTacticalUnit*>(applyIter.Reset()); applyIter.More();

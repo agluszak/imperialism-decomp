@@ -698,7 +698,7 @@ bool TMinor::WouldAcceptOffer(NationSlot targetNationSlot,
 void TMinor::AddOfferFrom(NationSlot sourceNationSlot, DiplomacyProposalCodeStorage proposalCode) {
   NationSlot targetNation = sourceNationSlot;
   if (proposalCode == kDiplomacyProposalJoinEmpire) {
-    char canPropose = 0;
+    bool canPropose = 0;
     if (this->encodedNationSlot == -1) {
       canPropose = this->WouldAcceptOffer(targetNation, proposalCode);
     }

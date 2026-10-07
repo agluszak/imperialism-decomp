@@ -1080,8 +1080,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
     queueSyncDword = sessionInit->saveSlotDword5C;
     sessionPhaseTag = kSessionTagInit; // 'init'
     if (scenarioSelectionTag == kControlTagLoad) {
-      unsigned char probed =
-          BuildSaveSlotPathAndProbeMetadata(queueSyncDword, g_pszClientSavePrefix);
+      bool probed = BuildSaveSlotPathAndProbeMetadata(queueSyncDword, g_pszClientSavePrefix);
       if (probed == 0) {
         CString messageTextE;
         g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&messageTextE, 0x2742, 0x14);

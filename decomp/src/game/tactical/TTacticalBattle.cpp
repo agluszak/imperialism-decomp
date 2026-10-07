@@ -889,7 +889,7 @@ void TTacticalBattle::MoveTacticalUnitTowardTile(TTacticalUnit* unit,
   }
 
   // pathTiles[stepCount] is the unit's own tile; walk down to pathTiles[0] = target.
-  unsigned char stopped = 0;
+  bool stopped = 0;
   if (stepCount != 0) {
     int* pathCursor = &pathTiles[stepCount];
     do {
@@ -917,7 +917,7 @@ void TTacticalBattle::MoveTacticalUnitTowardTile(TTacticalUnit* unit,
   int exitColumn = (((arrivedTile / 29) & 1) + 2 * (arrivedTile % 29)) / 2;
   int side = unit->side;
   if ((side == 1 && exitColumn >= battlefieldColumnCount - 1) || (side == 0 && exitColumn == 0)) {
-    unsigned char unitMayLeave;
+    bool unitMayLeave;
     if (unit->state1c == 1) {
       unitMayLeave = 1;
     } else if (battleView != 0) {

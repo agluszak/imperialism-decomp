@@ -17,15 +17,15 @@ void TRadioPictureButton::DoEvent(int commandId, TEventHandler* sourceHandler, T
   switch (commandId) {
   case 0xc:
     if (controlState == 0) {
-      SetState(true, 0);
+      SetState(true, false);
     }
     TControl::DoEvent(commandId, sourceHandler, event);
     return;
   case kControlCommandHiliteOn:
-    SetState(true, 0);
+    SetState(true, false);
     return;
   case kControlCommandHiliteOff:
-    SetState(false, 0);
+    SetState(false, false);
     return;
   default:
     TControl::DoEvent(commandId, sourceHandler, event);

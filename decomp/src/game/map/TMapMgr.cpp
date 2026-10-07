@@ -3362,12 +3362,12 @@ short TMapMgr::GetUnitOffset(TCivUnit* unit) {
   if (unit->militaryRegistrationFlag) {
     return GetUnitOffset(unit->orderType, true, 0);
   }
-  char idle = unit->IsInIdleSelectionState();
+  bool idle = unit->IsInIdleSelectionState();
   return GetUnitOffset(unit->orderType, false, idle);
 }
 
 // FUNCTION: IMPERIALISM 0x00517780
-short TMapMgr::GetUnitOffset(short orderType, bool military, char idle) {
+short TMapMgr::GetUnitOffset(short orderType, bool military, bool idle) {
   short offset;
   if (!military) {
     offset = g_anMapImprovementSpriteClassByOrderType[orderType] << 6;

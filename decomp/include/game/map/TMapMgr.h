@@ -157,7 +157,7 @@ public:
   virtual short GetFortFlagOffset(short nation);                         // slot 0x44 0x5176e0
   // ABI: MSVC emits overloaded virtuals in reverse declaration order.
   virtual short GetUnitOffset(class TCivUnit* unit); // slot 0x46 0x517710, Mac oracle
-  virtual short GetUnitOffset(short orderType, bool military, char idle); // slot 0x45 0x517780
+  virtual short GetUnitOffset(short orderType, bool military, bool idle); // slot 0x45 0x517780
   virtual int GetTinyIngotOffset(char ingotKind, int unused);             // slot 0x47 0x5177d0
   virtual short
   GetMapImprovementTileSpriteOffset(StrategicTileIndex tileIndex); // slot 0x48 0x5177f0

@@ -181,7 +181,7 @@ void TMapMaker::GenerateNewMap(char* tileGrid, Province* cityTable, CString* tun
 #ifdef IMPERIALISM_RUNTIME_TESTS
     RuntimeCoarseMapOracleBeginGenerationAttempt(g_mapGenLcgState);
 #endif
-    char retryAttempt;
+    bool retryAttempt;
     do {
       if (g_pActiveRandomMapSetupPicture != 0) {
         g_pActiveRandomMapSetupPicture->SpinYourGlobe();

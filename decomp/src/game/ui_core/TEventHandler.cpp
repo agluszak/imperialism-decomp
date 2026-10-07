@@ -214,7 +214,7 @@ bool TEventHandler::ResignTarget() {
   if (currentTarget == 0) {
     return false;
   }
-  char gate = currentTarget->WillingToResignTarget();
+  bool gate = currentTarget->WillingToResignTarget();
   if (gate == 0) {
     currentTarget->ResignedTarget();
     g_pApplication->SetTarget(g_pApplication);

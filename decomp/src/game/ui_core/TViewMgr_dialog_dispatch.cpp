@@ -666,7 +666,7 @@ char TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag) {
       g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x2b);
     }
   }
-  char accepted = g_pViewMgr->ModalMessage(message, g_ptUiPromptModalMessage, 0, 1);
+  bool accepted = g_pViewMgr->ModalMessage(message, g_ptUiPromptModalMessage, 0, 1);
   if (accepted != 0) {
     bool isClientSession = g_pSimMgr->multiplayerSessionRole == kSessionRoleClient;
     if (isClientSession) {

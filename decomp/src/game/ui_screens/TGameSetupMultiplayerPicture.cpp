@@ -96,7 +96,7 @@ void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceH
 
       bool isNotJoin = (tag != kControlTagJoin);
       int protocolValue = selectedProtocolControl->controlValue;
-      unsigned char accepted =
+      bool accepted =
           g_pGameFlowState->ValidateGameFlowNameAndSelectionContext(protocolValue, isNotJoin);
       if (!accepted) {
         CString errorMsg;

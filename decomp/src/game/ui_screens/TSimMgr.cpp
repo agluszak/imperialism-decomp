@@ -1012,7 +1012,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     while (multiplayerSessionRole != kSessionRoleClient && ReturnTrueStub() == 0) {
       CString message;
       g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&message, 0x2745, 10);
-      if (g_pViewMgr->ModalMessage(message, g_ptTurnTransitionModalMessage, 1, 1) == 0) {
+      if (!g_pViewMgr->ModalMessage(message, g_ptTurnTransitionModalMessage, 1, 1)) {
         continueTurn = false;
         break;
       }

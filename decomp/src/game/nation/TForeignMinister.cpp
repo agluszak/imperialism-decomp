@@ -639,7 +639,7 @@ bool TForeignMinister::DeservesToBeEnemy(int nationCode) {
   bool result = false;
 
   TGreatPower* ownerGP = this->greatPower;
-  char linked = g_pGlobalMapState->AreNationsBorderLinked(ownerGP->nationSlot, nationCode);
+  bool linked = g_pGlobalMapState->AreNationsBorderLinked(ownerGP->nationSlot, nationCode);
   if (linked == 0) {
     if (thresholdB < ownerGP->GetArmsInNavy()) {
       int scoreA = static_cast<int>(ownerGP->ComputeNavyScoreRatioVsNation(nationCode));
@@ -771,7 +771,7 @@ void TForeignMinister::ReplyToDiplomacyOffers(short queueIndex) {
   };
 
   TGreatPower* gp = this->greatPower;
-  char valid = 0;
+  bool valid = 0;
   DiplomacyProposalRecord* record = static_cast<DiplomacyProposalRecord*>(
       gp->proposalQueue->GetPtrListEntryByOneBasedIndex(queueIndex));
   NationSlot targetNation = record->targetNation;

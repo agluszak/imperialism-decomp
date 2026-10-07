@@ -837,7 +837,7 @@ void TGreatPower::SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(
 
   for (int secondarySlot = kMajorNationCount; secondarySlot < kNationSlotCount; ++secondarySlot) {
     TMinor* secondaryState = g_apSecondaryNationStateSlots[secondarySlot];
-    char hasNationFlag = secondaryState->IsColonyOf(this->nationSlot);
+    bool hasNationFlag = secondaryState->IsColonyOf(this->nationSlot);
     if (hasNationFlag != 0) {
       secondaryState->SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot),
                                        static_cast<short>(policyValue));
@@ -2048,7 +2048,7 @@ void TGreatPower::ReplyToDiplomacyOffers(void) {
       short* proposalEntry = static_cast<short*>(queue->GetPtrListEntryByOneBasedIndex(queueIndex));
       DiplomacyProposalCodeStorage proposalCode = proposalEntry[0];
       short targetNation = proposalEntry[1];
-      char shouldApplyProposal;
+      bool shouldApplyProposal;
 
       if (!IsTurnFlowCooldownActiveAndResetExpiredState()) {
         if (this->diplomacyPolicyByNation[targetNation] == proposalCode) {
@@ -2577,7 +2577,7 @@ float TGreatPower::ComputeArmyScoreRatioVsNationWithSecondary(int targetNation, 
   int secondaryPower = SumMilitaryUnitPowerWeightsForScore(
       g_apSecondaryNationStateSlots[secondarySlot]->militaryUnitList);
   float combinedScore = static_cast<float>(secondaryPower) + selfScore;
-  char borderLinked = g_pGlobalMapState->AreNationsBorderLinked(targetNation, secondarySlot);
+  bool borderLinked = g_pGlobalMapState->AreNationsBorderLinked(targetNation, secondarySlot);
   float targetScore;
   if (borderLinked != 0) {
     targetScore = g_apNationStates[targetNation]->GetMilitaryPower();
@@ -2595,7 +2595,7 @@ float TGreatPower::ComputeArmyScoreRatioVsNationWithSecondary(int targetNation, 
 // FUNCTION: IMPERIALISM 0x004e1170
 float TGreatPower::ComputeArmyScoreStandingRatioVsNationPair(int targetNation, int partnerNation) {
   float selfScore = this->GetMilitaryPower();
-  char borderLinked = g_pGlobalMapState->AreNationsBorderLinked(targetNation, partnerNation);
+  bool borderLinked = g_pGlobalMapState->AreNationsBorderLinked(targetNation, partnerNation);
   float targetScore;
   if (borderLinked != 0) {
     targetScore = g_apNationStates[targetNation]->GetMilitaryPower();
@@ -2620,7 +2620,7 @@ float TGreatPower::ComputeNavyScoreRatioVsNationWithSecondary(int targetNation, 
   int secondaryPower = SumMilitaryUnitPowerWeightsForScore(
       g_apSecondaryNationStateSlots[secondarySlot]->militaryUnitList);
   float combinedScore = static_cast<float>(secondaryPower) + selfScore;
-  char borderLinked = g_pGlobalMapState->AreNationsBorderLinked(targetNation, secondarySlot);
+  bool borderLinked = g_pGlobalMapState->AreNationsBorderLinked(targetNation, secondarySlot);
   float targetScore;
   if (borderLinked != 0) {
     targetScore = g_apNationStates[targetNation]->GetMilitaryPower();
@@ -2638,7 +2638,7 @@ float TGreatPower::ComputeNavyScoreRatioVsNationWithSecondary(int targetNation, 
 // FUNCTION: IMPERIALISM 0x004e1490
 float TGreatPower::ComputeNavyScoreStandingRatioVsNationPair(int targetNation, int partnerNation) {
   float selfScore = this->GetTotalNavalForce();
-  char borderLinked = g_pGlobalMapState->AreNationsBorderLinked(targetNation, partnerNation);
+  bool borderLinked = g_pGlobalMapState->AreNationsBorderLinked(targetNation, partnerNation);
   float targetScore;
   if (borderLinked != 0) {
     targetScore = g_apNationStates[targetNation]->GetMilitaryPower();
@@ -2896,7 +2896,7 @@ float TGreatPower::GetPeaceThreat(int targetNation) {
     ++nationIndex;
   }
 
-  char borderLinked =
+  bool borderLinked =
       g_pGlobalMapState->AreNationsBorderLinked(targetNation, static_cast<int>(this->nationSlot));
 
   TGreatPower* targetState = g_apNationStates[targetNation];

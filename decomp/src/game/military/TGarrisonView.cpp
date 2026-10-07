@@ -56,7 +56,7 @@ void TGarrisonView::Close() {
 
   short tileIndex = selectedTileIndex;
   if (tileIndex != -1) {
-    unsigned char hasDismissibleOrder = 0;
+    bool hasDismissibleOrder = 0;
     TMilitaryUnit* unit = 0;
     if (tileIndex >= 0 && tileIndex < kProvinceCount) {
       unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain;
