@@ -17,8 +17,8 @@ public:
   char pad22[74];
   TLongintList* audioCuePool;
   TLongintList* remainingRandomAudioCues;
-  unsigned short activeAudioCueId;
-  unsigned short pendingAudioCueId;
+  short activeAudioCueId;
+  short pendingAudioCueId;
   bool cdAudioPlaybackActive;
   unsigned char unused79; // ctor-only write; field-xrefs show no reader
   unsigned char unused7A; // ctor-only write; field-xrefs show no reader

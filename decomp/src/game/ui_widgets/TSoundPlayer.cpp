@@ -43,7 +43,7 @@ bool UpdateDeferredCdAudioFade() {
         remaining = 0;
         keepTimer = false;
         soundPlayer->fadeStartTick = 0;
-        if (static_cast<short>(soundPlayer->pendingAudioCueId) == static_cast<short>(remaining)) {
+        if (soundPlayer->pendingAudioCueId == static_cast<short>(remaining)) {
           g_cdAudioDevice.StopPlayback();
         }
       }
@@ -119,7 +119,7 @@ bool TSoundPlayer::FadeCD() {
       remaining = 0;
       keepTimer = false;
       fadeStartTick = 0;
-      if (static_cast<short>(pendingAudioCueId) == static_cast<short>(remaining)) {
+      if (pendingAudioCueId == static_cast<short>(remaining)) {
         g_cdAudioDevice.StopPlayback();
       }
     }
@@ -154,7 +154,7 @@ void TSoundPlayer::CheckMusicStatus() {
           pendingAudioCueId = 0;
           return;
         }
-        if (pending != static_cast<short>(activeAudioCueId)) {
+        if (pending != activeAudioCueId) {
           activeAudioCueId = pending;
           g_cdAudioDevice.ApplyMciPlaybackRangeFromAudioManager(pending);
           g_cdAudioDevice.ApplyAuxOutputVolumeFromScalar(
@@ -221,14 +221,14 @@ void TSoundPlayer::PlayRandomTrack() {
     return;
   }
 
-  if (chosen == static_cast<short>(activeAudioCueId)) {
+  if (chosen == activeAudioCueId) {
     return;
   }
-  if (static_cast<short>(activeAudioCueId) > 0) {
-    pendingAudioCueId = static_cast<unsigned short>(chosen);
+  if (activeAudioCueId > 0) {
+    pendingAudioCueId = chosen;
     StartDeferredAudioFadeTimerIfIdle();
   } else {
-    activeAudioCueId = static_cast<unsigned short>(chosen);
+    activeAudioCueId = chosen;
     g_cdAudioDevice.ApplyMciPlaybackRangeFromAudioManager(chosen);
     g_cdAudioDevice.ApplyAuxOutputVolumeFromScalar(
         static_cast<int>(g_pSimMgr->preferenceValues[kCdAudioVolumePreference]) << 8);
@@ -248,13 +248,13 @@ void TSoundPlayer::RequestMusicChange(int presetId, bool flag) {
     g_pSimMgr->preferenceValues[kCdAudioVolumePreference] = 0;
     return;
   }
-  if (presetId == static_cast<short>(activeAudioCueId)) {
+  if (presetId == activeAudioCueId) {
     return;
   }
 
-  if (flag && static_cast<short>(activeAudioCueId) > 0) {
+  if (flag && activeAudioCueId > 0) {
     // Deferred apply: stash the preset and arm the one-shot timer callback.
-    pendingAudioCueId = static_cast<unsigned short>(presetId);
+    pendingAudioCueId = presetId;
     if (fadeStartTick != 0) {
       return;
     }
@@ -265,7 +265,7 @@ void TSoundPlayer::RequestMusicChange(int presetId, bool flag) {
   }
 
   // Immediate apply: start the CD track and set the aux volume from the preference.
-  activeAudioCueId = static_cast<unsigned short>(presetId);
+  activeAudioCueId = presetId;
   g_cdAudioDevice.ApplyMciPlaybackRangeFromAudioManager(static_cast<short>(presetId));
   g_cdAudioDevice.ApplyAuxOutputVolumeFromScalar(
       static_cast<int>(g_pSimMgr->preferenceValues[kCdAudioVolumePreference]) << 8);
@@ -274,7 +274,7 @@ void TSoundPlayer::RequestMusicChange(int presetId, bool flag) {
 
 // FUNCTION: IMPERIALISM 0x00593a10
 void TSoundPlayer::SetActiveAudioCueAndResetQueue(int cueId, bool flag) {
-  if (cueId == static_cast<short>(activeAudioCueId)) {
+  if (cueId == activeAudioCueId) {
     return;
   }
 
@@ -319,12 +319,12 @@ void TSoundPlayer::SetActiveAudioCueAndResetQueue(int cueId, bool flag) {
     g_pSimMgr->preferenceValues[kCdAudioVolumePreference] = 0;
     return;
   }
-  if (cueId == static_cast<short>(activeAudioCueId)) {
+  if (cueId == activeAudioCueId) {
     return;
   }
 
-  if (flag && static_cast<short>(activeAudioCueId) > 0) {
-    pendingAudioCueId = static_cast<unsigned short>(cueId);
+  if (flag && activeAudioCueId > 0) {
+    pendingAudioCueId = cueId;
     if (fadeStartTick != 0) {
       return;
     }
@@ -334,7 +334,7 @@ void TSoundPlayer::SetActiveAudioCueAndResetQueue(int cueId, bool flag) {
     return;
   }
 
-  activeAudioCueId = static_cast<unsigned short>(cueId);
+  activeAudioCueId = cueId;
   g_cdAudioDevice.ApplyMciPlaybackRangeFromAudioManager(static_cast<short>(cueId));
   g_cdAudioDevice.ApplyAuxOutputVolumeFromScalar(
       static_cast<int>(g_pSimMgr->preferenceValues[kCdAudioVolumePreference]) << 8);

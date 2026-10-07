@@ -151,7 +151,7 @@ bool TMission::SmokeEmIfYouGotEm() {
 }
 
 // FUNCTION: IMPERIALISM 0x00535020
-TMission::TMission() : priority(2), importanceScore(0.0f), requiredForces(0xff) {}
+TMission::TMission() : priority(2), importanceScore(0.0f), requiredForces(-1) {}
 
 // FUNCTION: IMPERIALISM 0x005350a0
 void TMission::IMission(NationSlot nationSlot) {
@@ -258,10 +258,10 @@ short __cdecl CompareByMovementThenEfficiency(void* a, void* b, void* reverseOrd
 
   short greaterResult = (reverseOrder != NULL) ? 1 : -1;
   short lesserResult = (reverseOrder != NULL) ? -1 : 1;
-  if (static_cast<char>(missionB->priority) < static_cast<char>(missionA->priority)) {
+  if (missionB->priority < missionA->priority) {
     return greaterResult;
   }
-  if (static_cast<char>(missionA->priority) < static_cast<char>(missionB->priority)) {
+  if (missionA->priority < missionB->priority) {
     return lesserResult;
   }
 

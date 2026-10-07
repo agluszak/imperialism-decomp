@@ -1665,7 +1665,7 @@ void TAutoGreatPower::UpdateMissionEligibility(int unused) {
     CIterator candidateIter(missionQueue);
     for (TMission* mission = static_cast<TMission*>(candidateIter.Reset()); candidateIter.More();
          mission = static_cast<TMission*>(candidateIter.Advance())) {
-      int classMask = static_cast<char>(mission->requiredForces);
+      int classMask = mission->requiredForces;
       if (mission->onHold == 0 && classMask != 0) {
         nextByClass[classMask] = mission;
       }
@@ -1675,7 +1675,7 @@ void TAutoGreatPower::UpdateMissionEligibility(int unused) {
   CIterator missionIter(missionQueue);
   for (TMission* mission = static_cast<TMission*>(missionIter.Reset()); missionIter.More();
        mission = static_cast<TMission*>(missionIter.Advance())) {
-    int classMask = static_cast<char>(mission->requiredForces);
+    int classMask = mission->requiredForces;
     if (nextByClass[classMask] == mission) {
       nextByClass[classMask] = NULL;
     }
@@ -1743,12 +1743,11 @@ void TAutoGreatPower::AssignUnitsToMissions(int unused) {
         float candidateScore = ComputeMissionRemainingPriorityScore(candidate);
         float bestScore = ComputeMissionRemainingPriorityScore(bestNavy);
         if (candidateScore > g_MissionScoreZeroThreshold &&
-            static_cast<char>(candidate->priority) < static_cast<char>(bestNavy->priority)) {
+            candidate->priority < bestNavy->priority) {
           bestNavy = candidate;
           continue;
         }
-        if (bestScore <= g_MissionScoreZeroThreshold ||
-            static_cast<char>(candidate->priority) <= static_cast<char>(bestNavy->priority)) {
+        if (bestScore <= g_MissionScoreZeroThreshold || candidate->priority <= bestNavy->priority) {
           float bestScore2 = ComputeMissionRemainingPriorityScore(bestNavy);
           float candidateScore2 = ComputeMissionRemainingPriorityScore(candidate);
           if (bestScore2 < candidateScore2) {
@@ -1807,12 +1806,12 @@ void TAutoGreatPower::AssignUnitsToMissions(int unused) {
         }
         float bestArmyScore = ComputeMissionRemainingPriorityScore(bestArmy);
         if (candidateScore > g_MissionScoreZeroThreshold &&
-            static_cast<char>(bestArmy->priority) > static_cast<char>(candidate->priority)) {
+            bestArmy->priority > candidate->priority) {
           bestArmy = candidate;
           continue;
         }
         if (bestArmyScore > g_MissionScoreZeroThreshold &&
-            static_cast<char>(bestArmy->priority) < static_cast<char>(candidate->priority)) {
+            bestArmy->priority < candidate->priority) {
           continue;
         }
         if (bestArmyScore < candidateScore) {
@@ -1824,8 +1823,7 @@ void TAutoGreatPower::AssignUnitsToMissions(int unused) {
     if (bestArmy == NULL) {
       return;
     }
-    if (eligibleRunnerUp != NULL &&
-        static_cast<char>(eligibleRunnerUp->priority) <= static_cast<char>(bestArmy->priority) &&
+    if (eligibleRunnerUp != NULL && eligibleRunnerUp->priority <= bestArmy->priority &&
         (bestArmy->requiredForces & 1) == 0) {
       float bestArmyRatio = bestArmy->importanceScore / bestArmy->IndustrialCostOfNeeds();
       float runnerUpRatio =

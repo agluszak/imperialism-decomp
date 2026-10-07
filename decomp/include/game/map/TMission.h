@@ -25,12 +25,12 @@ enum eMissionType {
 // VTABLE: IMPERIALISM 0x0065a4e8
 class TMission : public TObject {
 public:
-  NationSlot nationId;    // source-nation id (InitializeMission...)
-  short pathMarker;       // path/dispatch marker
-  unsigned char priority; // lower is more urgent
-  float importanceScore;  // cached score/value (ctor = 0.0f)
+  NationSlot nationId;   // source-nation id (InitializeMission...)
+  short pathMarker;      // path/dispatch marker
+  char priority;         // lower is more urgent
+  float importanceScore; // cached score/value (ctor = 0.0f)
   unsigned char onHold;
-  unsigned char requiredForces; // bit 0 army, bit 1 navy
+  char requiredForces; // bit 0 army, bit 1 navy
   unsigned char padding12[2];
 
   TMission();
