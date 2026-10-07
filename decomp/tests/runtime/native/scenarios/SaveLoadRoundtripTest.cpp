@@ -242,7 +242,7 @@ private:
   }
 
   RuntimeActionResult ReopenSavedGame() {
-    if (g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(savedPath) == 0) {
+    if (!g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(savedPath)) {
       return RuntimeActionResult::Failure(
           "the just-written save would not open through the real load path");
     }

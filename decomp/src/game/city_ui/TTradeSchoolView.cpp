@@ -101,11 +101,11 @@ void TTradeSchoolView::UpdateFields() {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", assertLine);                      \
   }                                                                                                \
   if (enableCondition) {                                                                           \
-    if (control->IsActionable() == 0) {                                                            \
+    if (!control->IsActionable()) {                                                                \
       control->Show(1, 1);                                                                         \
     }                                                                                              \
   } else {                                                                                         \
-    if (control->IsActionable() != 0) {                                                            \
+    if (control->IsActionable()) {                                                                 \
       control->Show(0, 1);                                                                         \
     }                                                                                              \
   }

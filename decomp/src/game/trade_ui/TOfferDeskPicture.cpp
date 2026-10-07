@@ -448,8 +448,7 @@ void TOfferDeskPicture::ShowAdvice() {
     }
 
     if (!notAligned && !hasSurplus) {
-      if (g_apTerrainTypeDescriptorTable[offeringNationSlot]->IsColonyOf(respondingNationSlot) !=
-          0) {
+      if (g_apTerrainTypeDescriptorTable[offeringNationSlot]->IsColonyOf(respondingNationSlot)) {
         g_pSimMgr->GetString(0x2764, 0x10, &strTemplate);
       } else {
         g_pSimMgr->GetString(0x2764, 5, &strPrefix);
@@ -512,7 +511,7 @@ void TOfferDeskPicture::ShowAdvice() {
     short verdictIndex;
     if (compat == 2) {
       verdictIndex =
-          g_apTerrainTypeDescriptorTable[offeringNationSlot]->IsColonyOf(respondingNationSlot) != 0
+          g_apTerrainTypeDescriptorTable[offeringNationSlot]->IsColonyOf(respondingNationSlot)
               ? 0xf
               : 0xa;
     } else {

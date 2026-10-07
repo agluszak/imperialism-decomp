@@ -105,7 +105,7 @@ short TradeScreen::BuyCardBitmap(short resource) const {
 
 bool TradeScreen::BuyCardIsActionable(short resource) const {
   TTradeOrderPicture* card = BuyCard(resource);
-  return card != 0 && card->IsActionable() != 0;
+  return card != 0 && card->IsActionable();
 }
 
 bool TradeScreen::BuyCardIsInactive(short resource) const {
@@ -127,7 +127,7 @@ bool TradeScreen::BidSelected(short resource) const {
   // it.
   TTradeCluster* row = Row(resource);
   return row != 0 && IsSelectedBuyBitmap(resource, BuyCardBitmap(resource)) &&
-         row->IsSelectionAllowed() != 0;
+         row->IsSelectionAllowed();
 }
 
 bool TradeScreen::OfferCardIsInactive(short resource) const {
@@ -138,7 +138,7 @@ bool TradeScreen::OfferCardIsInactive(short resource) const {
 
 bool TradeScreen::SelectionAllowed(short resource) const {
   TTradeCluster* row = Row(resource);
-  return row != 0 && row->IsSelectionAllowed() != 0;
+  return row != 0 && row->IsSelectionAllowed();
 }
 
 RuntimeActionResult TradeScreen::SelectBid(short resource) {
@@ -151,7 +151,7 @@ RuntimeActionResult TradeScreen::SelectBid(short resource) {
     detail.Format("commodity %d has no buy card", static_cast<int>(resource));
     return ScreenFailure("select a trade bid", detail);
   }
-  if (card->IsActionable() == 0) {
+  if (!card->IsActionable()) {
     CString detail;
     detail.Format("commodity %d's buy card is not actionable (bitmap 0x%03x)",
                   static_cast<int>(resource), static_cast<unsigned int>(card->glyphBase));
@@ -173,7 +173,7 @@ RuntimeActionResult TradeScreen::SelectOffer(short resource) {
     detail.Format("commodity %d has no offer card", static_cast<int>(resource));
     return ScreenFailure("select a trade offer", detail);
   }
-  if (card->IsActionable() == 0) {
+  if (!card->IsActionable()) {
     CString detail;
     detail.Format("commodity %d's offer card is not actionable (bitmap 0x%03x)",
                   static_cast<int>(resource), static_cast<unsigned int>(card->glyphBase));
@@ -223,7 +223,7 @@ short TradeScreen::FirstSellableCommodityOtherThan(short excludedResource) const
     }
     TTradeOrderPicture* card = OfferCard(resource);
     // More than one in stock, so the quantity can be stepped down and back afterwards.
-    if (card != 0 && card->IsActionable() != 0 && OfferCardIsInactive(resource) &&
+    if (card != 0 && card->IsActionable() && OfferCardIsInactive(resource) &&
         AvailableStock(resource) > 1) {
       return resource;
     }

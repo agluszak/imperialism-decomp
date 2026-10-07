@@ -88,7 +88,7 @@ RuntimeActionResult RunRollingStockSuccess(NativeTransition& transition) {
     return started;
   }
 
-  const bool increased = nation->IncreaseRollingStock() != 0;
+  const bool increased = nation->IncreaseRollingStock();
   return transition.Finish(increased);
 }
 
@@ -106,7 +106,7 @@ RuntimeActionResult RunRollingStockInsufficient(NativeTransition& transition) {
     return started;
   }
 
-  const bool increased = nation->IncreaseRollingStock() != 0;
+  const bool increased = nation->IncreaseRollingStock();
   return transition.Finish(increased);
 }
 
@@ -124,6 +124,6 @@ RuntimeActionResult RunMerchantMarine(NativeTransition& transition) {
     return started;
   }
 
-  const bool increased = nation->IncreaseMerchantMarine() != 0;
+  const bool increased = nation->IncreaseMerchantMarine();
   return transition.Finish(increased);
 }

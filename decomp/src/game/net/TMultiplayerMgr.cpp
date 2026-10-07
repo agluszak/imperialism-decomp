@@ -3027,7 +3027,7 @@ void TMultiplayerMgr::DiscardPlayer(int nationId) {
 bool TMultiplayerMgr::HandleActiveNationAwolTransitionOrRecovery() {
   int activeNation = g_pSimMgr->GetPlayerCountry();
   nationSessionIds[activeNation] = -2;
-  if (g_pNetMgr->CheckConnectivityOrShowLocalizedWarningAndReturnReady() != 0) {
+  if (g_pNetMgr->CheckConnectivityOrShowLocalizedWarningAndReturnReady()) {
     int sessionNation = g_pNetMgr->GetSessionActiveNationId();
     activeNation = g_pSimMgr->GetPlayerCountry();
     nationSessionIds[activeNation] = sessionNation;

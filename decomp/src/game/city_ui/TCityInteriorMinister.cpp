@@ -534,7 +534,7 @@ void TCityInteriorMinister::OverstockCheck(TCity* city, TTaskList* commandQueue)
     amount = static_cast<short>(
         (greatPower->needCurrentByType[1] + greatPower->needCurrentByType[0]) / 2 -
         city->GetBuildingType(0));
-    if (amount > 0 && commandQueue->ContainsTask(0x35) == 0) {
+    if (amount > 0 && !commandQueue->ContainsTask(0x35)) {
       task = new TCityTask();
       task->ICityTask(0x35, city, amount);
       commandQueue->AddTask(task);
@@ -543,7 +543,7 @@ void TCityInteriorMinister::OverstockCheck(TCity* city, TTaskList* commandQueue)
 
   if (city->cityStockCoal > 14 && city->cityStockIron > 14) {
     amount = static_cast<short>(greatPower->needCurrentByType[3] - city->GetBuildingType(2));
-    if (amount > 0 && commandQueue->ContainsTask(0x37) == 0) {
+    if (amount > 0 && !commandQueue->ContainsTask(0x37)) {
       task = new TCityTask();
       task->ICityTask(0x37, city, amount);
       commandQueue->AddTask(task);
@@ -552,7 +552,7 @@ void TCityInteriorMinister::OverstockCheck(TCity* city, TTaskList* commandQueue)
 
   if (city->cityStockTimber > 14) {
     amount = static_cast<short>(greatPower->needCurrentByType[2] / 2 - city->GetBuildingType(4));
-    if (amount > 0 && commandQueue->ContainsTask(0x39) == 0) {
+    if (amount > 0 && !commandQueue->ContainsTask(0x39)) {
       task = new TCityTask();
       task->ICityTask(0x39, city, amount);
       commandQueue->AddTask(task);
@@ -561,7 +561,7 @@ void TCityInteriorMinister::OverstockCheck(TCity* city, TTaskList* commandQueue)
 
   if (city->cityStockFabric > 14) {
     amount = static_cast<short>(city->GetBuildingType(0) / 2 - city->GetBuildingType(1));
-    if (amount > 0 && commandQueue->ContainsTask(0x36) == 0) {
+    if (amount > 0 && !commandQueue->ContainsTask(0x36)) {
       task = new TCityTask();
       task->ICityTask(0x36, city, amount);
       commandQueue->AddTask(task);
@@ -570,7 +570,7 @@ void TCityInteriorMinister::OverstockCheck(TCity* city, TTaskList* commandQueue)
 
   if (city->cityStockSteel > 14) {
     amount = static_cast<short>(city->GetBuildingType(2) / 2 - city->GetBuildingType(3));
-    if (amount > 0 && commandQueue->ContainsTask(0x38) == 0) {
+    if (amount > 0 && !commandQueue->ContainsTask(0x38)) {
       task = new TCityTask();
       task->ICityTask(0x38, city, amount);
       commandQueue->AddTask(task);
@@ -579,7 +579,7 @@ void TCityInteriorMinister::OverstockCheck(TCity* city, TTaskList* commandQueue)
 
   if (city->cityStockLumber > 14) {
     amount = static_cast<short>(city->GetBuildingType(4) / 2 - city->GetBuildingType(5));
-    if (amount > 0 && commandQueue->ContainsTask(0x3a) == 0) {
+    if (amount > 0 && !commandQueue->ContainsTask(0x3a)) {
       task = new TCityTask();
       task->ICityTask(0x3a, city, amount);
       commandQueue->AddTask(task);
@@ -593,7 +593,7 @@ void TCityInteriorMinister::NoOpProductionCommandHook24(int, int) {}
 // FUNCTION: IMPERIALISM 0x004bff80
 void TCityInteriorMinister::IncreaseRailCapacityMode(TCity* city, TTaskList* commandQueue) {
   short needCap = greatPower != 0 ? greatPower->transportCapacity : 0;
-  if (commandQueue->ContainsTask(0x33) != 0) {
+  if (commandQueue->ContainsTask(0x33)) {
     return;
   }
 

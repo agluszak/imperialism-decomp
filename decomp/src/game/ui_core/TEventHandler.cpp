@@ -204,7 +204,7 @@ bool TEventHandler::BecomeTarget() {
   if (this == active) {
     return true;
   }
-  if (active != 0 && active->ResignTarget() != 0) {
+  if (active != 0 && active->ResignTarget()) {
     g_pApplication->SetTarget(this);
     return true;
   }

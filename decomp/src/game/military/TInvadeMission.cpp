@@ -305,7 +305,7 @@ int TInvadeMission::AccumulateLack(int* accumulatedLack, bool includeExistingLac
 // FUNCTION: IMPERIALISM 0x0053fdc0
 bool TInvadeMission::TryResolveTargetTerrainClass() {
   presentLocation = -1;
-  if (TAttackProvinceMission::TryResolveTargetTerrainClass() != 0) {
+  if (TAttackProvinceMission::TryResolveTargetTerrainClass()) {
     presentLocation = -1;
     return false;
   }

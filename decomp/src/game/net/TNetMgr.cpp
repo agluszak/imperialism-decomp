@@ -383,7 +383,7 @@ void TNetMgr::NotifyIfNationMatchesSessionActiveNation(int nationId) {
 // FUNCTION: IMPERIALISM 0x005e42f0
 bool TNetMgr::CheckConnectivityOrShowLocalizedWarningAndReturnReady() {
   if (g_pSimMgr->multiplayerSessionRole == kSessionRoleClient &&
-      g_NetworkSessionManager006a5f60.OpenCurrentSessionDescriptionForJoin() != 0) {
+      g_NetworkSessionManager006a5f60.OpenCurrentSessionDescriptionForJoin()) {
     return true;
   }
   CString message;

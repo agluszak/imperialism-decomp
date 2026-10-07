@@ -263,7 +263,7 @@ bool TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
       g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventMapEditor), 0);
     } else {
       // Scenario path: load the fixed map; bail out entirely when that fails.
-      if (LoadScenarioMapStateFromTableResource(g_pSimMgr->scenarioMapIndexPlusOne - 1) == 0) {
+      if (!LoadScenarioMapStateFromTableResource(g_pSimMgr->scenarioMapIndexPlusOne - 1)) {
         if (mapMaker != 0) {
           mapMaker->Free();
         }
@@ -3694,7 +3694,7 @@ int TMapMgr::CollectSecondDegreeLinksWithMinorNationFallback(ProvinceIndex cityR
     int minorIndex;
     for (minorIndex = 0; minorIndex < 16; ++minorIndex) {
       if (g_apTerrainTypeDescriptorTable[7 + minorIndex] != 0 &&
-          g_apSecondaryNationStateSlots[7 + minorIndex]->IsColonyOf(nationTag) != 0) {
+          g_apSecondaryNationStateSlots[7 + minorIndex]->IsColonyOf(nationTag)) {
         resultCount =
             CollectSecondDegreeLinksMatchingNodeType(cityRecordIndex, 7 + minorIndex, nodeBuffer);
         if (resultCount > 0) {
@@ -3984,7 +3984,7 @@ bool TMapMgr::HasActiveLinkedTileWithReachableSea(int regionIndex) {
     unsigned char flags = terrainStateTable[tileIndex].activeFlags;
     flags >>= 2;
     flags &= 1;
-    if (flags != 0 && HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(tileIndex) != 0) {
+    if (flags != 0 && HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(tileIndex)) {
       return true;
     }
   }

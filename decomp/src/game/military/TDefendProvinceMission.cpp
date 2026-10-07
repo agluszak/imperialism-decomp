@@ -130,7 +130,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
       int candidateNationIndex = static_cast<int>(candidateNation);
       if (candidateNationIndex != sourceNation &&
           g_pDiplomacyTurnStateManager->IsNationPairAtWar(candidateNation, sourceNation)) {
-        if (g_pGlobalMapState->IsProvinceAdjacentTo(nodeContext, regionIndex) != 0) {
+        if (g_pGlobalMapState->IsProvinceAdjacentTo(nodeContext, regionIndex)) {
           short checkedRegion = static_cast<short>(regionIndex);
           TMilitaryUnit* unit = 0;
           if (checkedRegion >= 0 && checkedRegion < 0x180) {
@@ -142,7 +142,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
             }
           }
         } else if (remainingBudgetByNation[candidateNationIndex] > 0 &&
-                   g_pGlobalMapState->HasPortInProvince(regionIndex) != 0) {
+                   g_pGlobalMapState->HasPortInProvince(regionIndex)) {
           short checkedRegion = static_cast<short>(regionIndex);
           TMilitaryUnit* unit = 0;
           if (checkedRegion >= 0 && checkedRegion < 0x180) {

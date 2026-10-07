@@ -301,7 +301,7 @@ RuntimeActionResult RunNavySelectionCycling(NativeTransition& transition) {
   }
   next = 0;
   for (TZone* candidate = zone->prev18; candidate != 0; candidate = candidate->prev18) {
-    if (candidate->CanDisplayMapOrderEntryInCurrentContext(ActiveNationSlot(), 0) != 0) {
+    if (candidate->CanDisplayMapOrderEntryInCurrentContext(ActiveNationSlot(), 0)) {
       next = candidate;
       break;
     }

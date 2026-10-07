@@ -2041,7 +2041,7 @@ RuntimeActionResult RunReassessControlSeaMissions(NativeTransition& transition) 
     CIterator iter(autoNation->missionQueue);
     for (TMission* mission = static_cast<TMission*>(iter.Reset()); iter.More();
          mission = static_cast<TMission*>(iter.Advance())) {
-      if (mission->IsNavyMission() != 0 && mission->IsHospitalMission() != 0) {
+      if (mission->IsNavyMission() && mission->IsHospitalMission()) {
         mission->Reassess();
       }
     }
@@ -2077,7 +2077,7 @@ RuntimeActionResult RunReassessControlSeaMissionsDamagedShip(NativeTransition& t
     CIterator iter(autoNation->missionQueue);
     for (TMission* mission = static_cast<TMission*>(iter.Reset()); iter.More();
          mission = static_cast<TMission*>(iter.Advance())) {
-      if (mission->IsNavyMission() != 0 && mission->IsHospitalMission() != 0) {
+      if (mission->IsNavyMission() && mission->IsHospitalMission()) {
         mission->Reassess();
       }
     }

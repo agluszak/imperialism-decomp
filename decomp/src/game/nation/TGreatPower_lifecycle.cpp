@@ -525,7 +525,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
     stream->ReadBytes(&eventCount, 4);
     for (int eventOrdinal = 1; eventOrdinal <= eventCount; ++eventOrdinal) {
       TTurnStartEvent* event = 0;
-      if (stream->ReadObject(&event) != 0) {
+      if (stream->ReadObject(&event)) {
         this->turnStartEvents->AddTail(event);
       }
     }

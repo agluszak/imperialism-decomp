@@ -14,7 +14,7 @@ void TCloseParentButton::DoEvent(int commandId, TEventHandler* sourceHandler, TE
   (void)sourceHandler;
   (void)event;
   if (commandId == GetEventNumber()) {
-    if (IsEnabled() != 0 && LogUnhandledDialogMethodAndReturnFalse() == 0) {
+    if (IsEnabled() != 0 && !LogUnhandledDialogMethodAndReturnFalse()) {
       GetWindow()->Close();
     }
   }

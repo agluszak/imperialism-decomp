@@ -845,7 +845,7 @@ void TArmyMgr::DoOwnershipChanges() {
     if (currentOwner == -1 || cachedOwner == currentOwner) {
       continue;
     }
-    if (g_apTerrainTypeDescriptorTable[currentOwner]->IsColonyOf(cachedOwner) != 0) {
+    if (g_apTerrainTypeDescriptorTable[currentOwner]->IsColonyOf(cachedOwner)) {
       continue;
     }
 
@@ -1193,7 +1193,7 @@ static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode) {
   if (ownerTag != activeNationId) {
     TCountry* owner = g_apTerrainTypeDescriptorTable[ownerTag];
     activeNationId = g_pSimMgr->GetPlayerCountry();
-    if (owner->IsColonyOf(activeNationId) == 0) {
+    if (!owner->IsColonyOf(activeNationId)) {
       return 8;
     }
   }
@@ -1285,7 +1285,7 @@ int TArmyMgr::ComputeCivilianMapCursorStateIndex(short tileIndex, short mode) {
   bool sameOwner = pendingSlot == citySlot;
   if (!sameOwner) {
     TCountry* cityOwnerCountry = g_apTerrainTypeDescriptorTable[citySlot];
-    sameOwner = cityOwnerCountry->IsColonyOf(pendingSlot) != 0;
+    sameOwner = cityOwnerCountry->IsColonyOf(pendingSlot);
   }
 
   if (sameOwner) {
@@ -1974,7 +1974,7 @@ void TArmyMgr::ReassessLanding(int nationSlot, int zone) {
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset()); cursor.More();
        unit = static_cast<TMilitaryUnit*>(cursor.Advance())) {
     if (unit->orderTargetIndex == zone) {
-      if (g_pGlobalMapState->IsProvinceAdjacentTo(unit->tileIndex, zone) == 0) {
+      if (!g_pGlobalMapState->IsProvinceAdjacentTo(unit->tileIndex, zone)) {
         totalArms += unit->GetArmsCarried();
       }
     }
@@ -1990,7 +1990,7 @@ void TArmyMgr::ReassessLanding(int nationSlot, int zone) {
     for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(reassessCursor.Reset());
          reassessCursor.More(); unit = static_cast<TMilitaryUnit*>(reassessCursor.Advance())) {
       if (unit->orderTargetIndex == zone &&
-          g_pGlobalMapState->IsProvinceAdjacentTo(unit->tileIndex, zone) == 0) {
+          !g_pGlobalMapState->IsProvinceAdjacentTo(unit->tileIndex, zone)) {
         unit->SetOrders(kUnitOrderIdle, -1);
       }
     }

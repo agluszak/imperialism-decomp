@@ -348,7 +348,7 @@ void TArmyPlayer::BuildTacticalActionPriorityBucketsWithGridGuard() {
     int bestScore = 0;
     TacticalTileIndex bestTileIndex = -1;
     for (TacticalTileIndex tileIndex = 0; tileIndex < battle->tacticalTileCount; ++tileIndex) {
-      if (battle->ApplyGridColumnSelectionGuard(tileIndex) != 0) {
+      if (battle->ApplyGridColumnSelectionGuard(tileIndex)) {
         int row = tileIndex / 29;
         int column = tileIndex % 29;
         int aiClass = g_awTacticalUnitAiClassByUnitType[unit->unitType];
@@ -394,7 +394,7 @@ int TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantA() {
   int bestScore = 0;
   TacticalTileIndex bestTileIndex = -1;
   for (TacticalTileIndex tileIndex = 0; tileIndex < battle->tacticalTileCount; ++tileIndex) {
-    if (battle->ApplyGridColumnSelectionGuard(tileIndex) != 0) {
+    if (battle->ApplyGridColumnSelectionGuard(tileIndex)) {
       int row = tileIndex / 29;
       int column = tileIndex % 29;
       int zoneCell = (row & 1) + 2 * (column - battle->battlefieldColumnCount) + 10;
@@ -437,7 +437,7 @@ int TArmyPlayer::SelectTacticalTileByActionClassAdjacencyPriority() {
   int bestScore = 0;
   TacticalTileIndex bestTileIndex = -1;
   for (TacticalTileIndex tileIndex = 0; tileIndex < battle->tacticalTileCount; ++tileIndex) {
-    if (battle->ApplyGridColumnSelectionGuard(tileIndex) != 0) {
+    if (battle->ApplyGridColumnSelectionGuard(tileIndex)) {
       int row = tileIndex / 29;
       int column = tileIndex % 29;
       int score = (2 * (battle->battlefieldColumnCount - column) - (row & 1) - 3) * 10;
@@ -477,7 +477,7 @@ int TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantB() {
   int bestScore = 0;
   TacticalTileIndex bestTileIndex = -1;
   for (TacticalTileIndex tileIndex = 0; tileIndex < battle->tacticalTileCount; ++tileIndex) {
-    if (battle->ApplyGridColumnSelectionGuard(tileIndex) != 0) {
+    if (battle->ApplyGridColumnSelectionGuard(tileIndex)) {
       int row = tileIndex / 29;
       int score = (battle->battlefieldColumnCount - 5) * 20;
       if (row > 7) {
@@ -572,10 +572,10 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
     if (!enemyHasActiveUnit) {
       cursorMode = 6;
     } else if (!opponent->hasArtilleryOrSappers &&
-               battle->IsTacticalSideCategoryCoverageIncompleteOrFlagOff() == 0) {
+               !battle->IsTacticalSideCategoryCoverageIncompleteOrFlagOff()) {
       cursorMode = 7;
     } else if (projectionMetrics[1] / opponentMetrics[1] > g_dTacticalCursorStrongRatioThreshold) {
-      if (battle->IsTacticalSideCategoryCoverageIncompleteOrFlagOff() != 0) {
+      if (battle->IsTacticalSideCategoryCoverageIncompleteOrFlagOff()) {
         cursorMode = 2;
       } else if (projectionMetrics[1] / opponentMetrics[1] >
                  g_dTacticalCursorOverwhelmRatioThreshold) {
@@ -605,7 +605,7 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
         haveActiveArtillery = true;
       }
     }
-    if (battle->IsTacticalSideCategoryCoverageIncompleteOrFlagOff() == 0) {
+    if (!battle->IsTacticalSideCategoryCoverageIncompleteOrFlagOff()) {
       // Fort wall still intact.
       if (haveActiveSapper) {
         cursorMode = 3;
@@ -1446,14 +1446,14 @@ int TArmyPlayer::SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* u
   if (bestTargetTileIndex == -1 && unit->side == 0 &&
       g_afTacticalDirectFireFlagByCategoryCode
               [g_awTacticalUnitCategoryCodeBySlot[unit->unitType]] == 0.0f &&
-      battle->IsTacticalSideCategoryCoverageIncompleteOrFlagOff() == 0) {
+      !battle->IsTacticalSideCategoryCoverageIncompleteOrFlagOff()) {
     if (cachedFortBombardmentTargetTile == -1) {
       TacticalTileIndex rolledTileIndex;
       do {
         rolledTileIndex =
             (static_cast<int>(rand()) % 0xd) * 29 + battle->battlefieldColumnCount + 0x17;
         cachedFortBombardmentTargetTile = rolledTileIndex;
-      } while (battle->IsTacticalTileAtFortWallSectionSlot(rolledTileIndex) != 0);
+      } while (battle->IsTacticalTileAtFortWallSectionSlot(rolledTileIndex));
     }
     bestTargetTileIndex = cachedFortBombardmentTargetTile;
   }
@@ -1504,7 +1504,7 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
   // Phase 1: choose the destination tile.
   TacticalTileIndex targetTileIndex;
   if (categoryCode == 8 && unit->aiStateCode != 0xc) {
-    if (battle->IsTacticalSideCategoryCoverageIncompleteOrFlagOff() != 0) {
+    if (battle->IsTacticalSideCategoryCoverageIncompleteOrFlagOff()) {
       targetTileIndex = FindBestMove(unit, g_anTacticalTileHeuristicWeightsByAiState[12]);
     } else if (battle->tileGrid[homeTileIndex].trenchMask != 0) {
       targetTileIndex = homeTileIndex;
@@ -1630,7 +1630,7 @@ TArmyPlayer::BuildTacticalActionClassAndPositionFlags(TacticalTileIndex referenc
     break;
   }
 
-  if (battle->AreNeighbors(tileIndex, referenceTileIndex) != 0) {
+  if (battle->AreNeighbors(tileIndex, referenceTileIndex)) {
     flags |= 0x10;
   }
   if (g_awTacticalUnitAiClassByUnitType[unit->unitType] == 0 &&

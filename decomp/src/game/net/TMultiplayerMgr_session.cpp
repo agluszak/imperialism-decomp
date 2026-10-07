@@ -712,7 +712,7 @@ void TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue() {
     while (primaryTurnEventQueueHead != 0) {
       TurnEventQueuePacket* packet = primaryTurnEventQueueHead;
       primaryTurnEventQueueHead = packet->nextQueuePacket;
-      if (ProcessDiplomacyTurnStateEventStateMachine(packet) == 0) {
+      if (!ProcessDiplomacyTurnStateEventStateMachine(packet)) {
         g_pNetMgr->DefaultUnhandledTurnEventHookReturnsFalse(packet);
       }
       g_pNetMgr->FreeTurnEventPacketBuffer(packet);
@@ -723,7 +723,7 @@ void TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue() {
     while (secondaryTurnEventQueueHead != 0) {
       TurnEventQueuePacket* packet = secondaryTurnEventQueueHead;
       secondaryTurnEventQueueHead = packet->nextQueuePacket;
-      if (ProcessDiplomacyTurnStateEventStateMachine(packet) == 0) {
+      if (!ProcessDiplomacyTurnStateEventStateMachine(packet)) {
         g_pNetMgr->DefaultUnhandledTurnEventHookReturnsFalse(packet);
       }
       g_pNetMgr->FreeTurnEventPacketBuffer(packet);
@@ -767,7 +767,7 @@ void TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue() {
       }
       *tail = packet;
     } else {
-      if (ProcessDiplomacyTurnStateEventStateMachine(packet) == 0) {
+      if (!ProcessDiplomacyTurnStateEventStateMachine(packet)) {
         g_pNetMgr->DefaultUnhandledTurnEventHookReturnsFalse(packet);
       }
       g_pNetMgr->FreeTurnEventPacketBuffer(packet);

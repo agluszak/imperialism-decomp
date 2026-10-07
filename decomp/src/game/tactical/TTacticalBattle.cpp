@@ -1114,7 +1114,7 @@ void TTacticalBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarg
   }
   if (unit->state1c == 0 && battleOutcome == kTacticalBattleInProgress) {
     if (unit->selectedFlag != 0) {
-      if (HasValidTacticalFollowupTargetForCurrentAction() != 0) {
+      if (HasValidTacticalFollowupTargetForCurrentAction()) {
         return;
       }
     }

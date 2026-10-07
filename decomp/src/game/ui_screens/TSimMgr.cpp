@@ -1125,7 +1125,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       if (nation == nullptr) {
         continue;
       }
-      if (nation->UpdateGreatPowerPressureStateAndDispatchEscalationMessage() == 0) {
+      if (!nation->UpdateGreatPowerPressureStateAndDispatchEscalationMessage()) {
         continue;
       }
       TGreatPower* activeNation = g_apNationStates[activeNationSlot];

@@ -266,8 +266,7 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
   }
 
   // Port up/down button plus the accumulated port-availability TIconBar rows.
-  if (railAllowed && g_pGlobalMapState->CanBuildPortAtTile(nBuildingSlotId) != 0 &&
-      productionAllowed) {
+  if (railAllowed && g_pGlobalMapState->CanBuildPortAtTile(nBuildingSlotId) && productionAllowed) {
     TUpDownPictureButton* portBtn = new TUpDownPictureButton();
     int portOff[2] = {0x11, layoutY + 1};
     portBtn->IPicture(this, portOff, optionButtonSize, 5, 5, 0x1c2e);

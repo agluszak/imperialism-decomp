@@ -20,7 +20,7 @@ void TInfoBarBehavior::IInfoBarBehavior(CString newText, TView* ownerView) {
   ownerView->QueryBounds(&layoutRect);
   text = newText;
 
-  if (ownerView->EvaluateControlInputGate() == 0) {
+  if (!ownerView->EvaluateControlInputGate()) {
     TView* dummy = new TView();
     dummy->InitializeUiResourceEntryFrameAndParent(0, ownerView, g_InfoBarDummyOrigin,
                                                    &ownerView->frameWidth, 0, 0, 0);

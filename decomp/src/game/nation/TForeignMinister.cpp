@@ -392,7 +392,7 @@ void TForeignMinister::GoodsMatchShipping() {
     if (terrainSlot >= 0x17) {
       break;
     }
-    if (g_apTerrainTypeDescriptorTable[terrainSlot]->IsColonyOf(owner->nationSlot) != 0) {
+    if (g_apTerrainTypeDescriptorTable[terrainSlot]->IsColonyOf(owner->nationSlot)) {
       matched = true;
     }
     ++terrainSlot;
@@ -490,7 +490,7 @@ void TForeignMinister::DoProposeTreaties() {
         g_pDiplomacyTurnStateManager->GetEmbassyStatus(greatPower->nationSlot, minorNation) != 2) {
       continue;
     }
-    if (minor->WouldAcceptOffer(greatPower->nationSlot, kDiplomacyProposalJoinEmpire) != 0) {
+    if (minor->WouldAcceptOffer(greatPower->nationSlot, kDiplomacyProposalJoinEmpire)) {
       if (!g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(minorNation,
                                                                        greatPower->nationSlot)) {
         greatPower->ApplyDiplomacyPolicyStateForTargetWithCostChecks(minorNation,
@@ -543,7 +543,7 @@ void TForeignMinister::DoProposeTreaties() {
       continue;
     }
 
-    if (g_pGlobalMapState->AreNationsBorderLinked(greatPower->nationSlot, targetNation) != 0) {
+    if (g_pGlobalMapState->AreNationsBorderLinked(greatPower->nationSlot, targetNation)) {
       targetStrengthRatio[targetNation] = g_apNationStates[targetNation]->GetMilitaryPower() /
                                           (armyStrength + alliedArmyStrength * 0.25f);
     } else {
@@ -595,7 +595,7 @@ void TForeignMinister::DoProposeTreaties() {
           static_cast<short>(policyTargetNation), kDiplomacyProposalPeaceTreaty);
       continue;
     }
-    if (g_pSimMgr->economicTurn / 4 >= 0x46 || DeservesToBeEnemy(policyTargetNation) != 0) {
+    if (g_pSimMgr->economicTurn / 4 >= 0x46 || DeservesToBeEnemy(policyTargetNation)) {
       continue;
     }
 
@@ -675,7 +675,7 @@ void TForeignMinister::DoSelectEnemy() {
       return;
     }
     if (nationSlot != this->greatPower->nationSlot && g_pSimMgr->ReallyInTheGame(nationSlot) &&
-        this->DeservesToBeEnemy(nationSlot) != 0) {
+        this->DeservesToBeEnemy(nationSlot)) {
       this->greatPower->SetEnemy(nationSlot);
     }
   }
@@ -686,7 +686,7 @@ void TForeignMinister::SetEmpirePolicies() {
   TGreatPower* owner = greatPower;
 
   if (abs(g_pSimMgr->economicTurn) % 4 == 0 &&
-      owner->AreAdvancedManufacturedTradeOffersExhausted() == 0) {
+      !owner->AreAdvancedManufacturedTradeOffersExhausted()) {
     bool keepSearching = true;
     TSortedByRelationshipList* relationshipList = new TSortedByRelationshipList();
     relationshipList->ISortedByRelationshipList();

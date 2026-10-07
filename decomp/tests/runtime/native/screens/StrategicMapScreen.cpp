@@ -380,7 +380,7 @@ short StrategicMapScreen::FirstActionableArmyCategory() const {
   // Category 0 is skipped: it is the aggregate placard, not a selectable garrison category.
   for (short category = 1; category < kArmyCategoryCount; ++category) {
     TNumberedArrowButton* arrow = ArmyRatioArrow(category);
-    if (arrow != 0 && arrow->IsActionable() != 0 && arrow->value84 > 0) {
+    if (arrow != 0 && arrow->IsActionable() && arrow->value84 > 0) {
       return category;
     }
   }

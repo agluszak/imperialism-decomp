@@ -269,7 +269,7 @@ TMission* TAttackProvinceMission::GetReplacement() {
     if (tileOwnerNationCode == pathMarker) {
       retarget = true;
     } else {
-      retarget = (TryResolveTargetTerrainClass() != 0);
+      retarget = (TryResolveTargetTerrainClass());
     }
   }
 

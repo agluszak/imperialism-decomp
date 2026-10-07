@@ -107,7 +107,7 @@ void TDealTabControl::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& p
 
 #ifdef IMPERIALISM_RUNTIME_TESTS
 bool TDealTabControl::ActivateRow(short row) {
-  if (row < 0 || row >= tabCount || IsActionable() == 0 || ownerContext == 0) {
+  if (row < 0 || row >= tabCount || !IsActionable() || ownerContext == 0) {
     return false;
   }
   selectedRow = row;

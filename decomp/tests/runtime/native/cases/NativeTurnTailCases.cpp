@@ -73,7 +73,7 @@ RuntimeActionResult RunGreatPowerPressureHumanDebt(NativeTransition& transition)
     if (slotNation == 0) {
       continue;
     }
-    if (slotNation->UpdateGreatPowerPressureStateAndDispatchEscalationMessage() != 0) {
+    if (slotNation->UpdateGreatPowerPressureStateAndDispatchEscalationMessage()) {
       lost = 1;
     }
   }
@@ -432,7 +432,7 @@ RuntimeActionResult RunOpeningHomeCitySetup(NativeTransition& transition) {
 
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
     TGreatPower* nation = g_apNationStates[nationSlot];
-    if (nation == 0 || nation->IsRemote() != 0 || g_bMultiplayerScenarioSetupActive != 0) {
+    if (nation == 0 || nation->IsRemote() || g_bMultiplayerScenarioSetupActive != 0) {
       continue;
     }
     nation->PlaceCity(-1, 0);

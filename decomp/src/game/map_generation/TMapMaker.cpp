@@ -206,10 +206,10 @@ void TMapMaker::GenerateNewMap(char* tileGrid, Province* cityTable, CString* tun
       retryAttempt = ErrorCheck();
       if (retryAttempt != 0) {
         retryAttempt = 1;
-      } else if (ValidateAllColumnsHaveAssignedRegionClass() == 0) {
+      } else if (!ValidateAllColumnsHaveAssignedRegionClass()) {
         retryAttempt = 1;
       } else {
-        retryAttempt = (ValidateTerrainClassAdjacencyCoverageMask() == 0);
+        retryAttempt = (!ValidateTerrainClassAdjacencyCoverageMask());
       }
 #endif
     } while (retryAttempt != 0);
@@ -455,7 +455,7 @@ void TMapMaker::GenerateNewMap(char* tileGrid, Province* cityTable, CString* tun
 
 // FUNCTION: IMPERIALISM 0x00526620
 bool TMapMaker::CheckProvs() {
-  if (ErrorCheck() != 0) {
+  if (ErrorCheck()) {
     return true;
   }
 

@@ -627,7 +627,7 @@ bool TWorldView::IsTileVisible(short tileIndex) {
 
 // FUNCTION: IMPERIALISM 0x00596700
 void TWorldView::NoticeTile(int tileIndex) {
-  if (IsTileVisible(static_cast<short>(tileIndex)) == 0) {
+  if (!IsTileVisible(static_cast<short>(tileIndex))) {
     CenterOn(tileIndex);
   }
   static_cast<TWorldView*>(ownerContext)->CenterOn(tileIndex);

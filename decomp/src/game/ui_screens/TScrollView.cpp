@@ -147,7 +147,7 @@ void TScrollView::Reset() {
 
 // FUNCTION: IMPERIALISM 0x005742b0
 void TScrollView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintDc) {
-  if (GetMcAppUiActiveFlag() == 0 || !IsActionable() || PrepareForDrawing() == 0) {
+  if (GetMcAppUiActiveFlag() == 0 || !IsActionable() || !PrepareForDrawing()) {
     return;
   }
   CRect bounds;

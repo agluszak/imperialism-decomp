@@ -24,7 +24,6 @@ short TAmtBar::ApplyMoveClamp(int baseValue, short requestedValue) {
 
 IMPLEMENT_DYNCREATE(TAmtBar, TView)
 
-
 // FUNCTION: IMPERIALISM 0x005885f0
 TAmtBar::~TAmtBar() {}
 
@@ -62,7 +61,7 @@ void TAmtBar::DrawAmt() {
 
   GetClip(surface.tempRgn);
 
-  if (!this->IsActionable() || this->PrepareForDrawing() == 0) {
+  if (!this->IsActionable() || !this->PrepareForDrawing()) {
     return;
   }
 

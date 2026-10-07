@@ -175,7 +175,7 @@ unsigned short TCivMgr::ResolveCivilianTileSelectionOrReportActionCode(short nTi
       g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, g_pSimMgr->GetPlayerCountry());
   if (entry != nullptr) {
     entry = g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, g_pSimMgr->GetPlayerCountry());
-    if (entry->IsInIdleSelectionState() == 0) {
+    if (!entry->IsInIdleSelectionState()) {
       actionCode = kCivilianTileActionShowOrderReport;
     } else if (nClickMode == 2 ||
                (g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags >> 5 & 1) == 0) {
@@ -196,7 +196,7 @@ CivilianTileActionCodeStorage TCivMgr::GetTileAction(short tileIndex, short mode
     // The original looks the unit up a second time rather than reusing the first result.
     TCivUnit* unit =
         g_pGlobalMapState->GetTileUnitEntryByOwner(tileIndex, g_pSimMgr->GetPlayerCountry());
-    if (unit->IsInIdleSelectionState() == 0) {
+    if (!unit->IsInIdleSelectionState()) {
       actionCode = kCivilianTileActionShowOrderReport;
     } else if (mode == 2 ||
                ((g_pGlobalMapState->terrainStateTable[tileIndex].activeFlags >> 5) & 1) == 0) {

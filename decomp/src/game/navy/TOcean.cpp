@@ -394,7 +394,7 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
     unsigned char activeNationBit = static_cast<unsigned char>(1 << activeNationId);
     for (TZone* ctxZone = g_pMapActionContextListHead; ctxZone != 0; ctxZone = ctxZone->prev18) {
       bool nationFlagged = (ctxZone->nationKeyMask & activeNationBit) != 0 ||
-                           ctxZone->HasSecondaryNeighborWithNationTag(activeNationId) != 0;
+                           ctxZone->HasSecondaryNeighborWithNationTag(activeNationId);
       if (nationFlagged) {
         ctxZone->ShowFocusIngot(
             ctxZone->CanDisplayMapOrderEntryInCurrentContext(g_pSimMgr->GetPlayerCountry(), true));

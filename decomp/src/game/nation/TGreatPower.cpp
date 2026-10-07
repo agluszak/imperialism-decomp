@@ -566,7 +566,7 @@ bool TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages(CString*
     while (contextEntry != 0) {
       contextEntry->GetContextOrdinalOrInvalid();
       found = false;
-      if (contextEntry->HasSecondaryNeighborWithNationTag(this->nationSlot) != 0) {
+      if (contextEntry->HasSecondaryNeighborWithNationTag(this->nationSlot)) {
         short candidate;
         for (candidate = 0; candidate < 7; ++candidate) {
           if (candidate != this->nationSlot &&
@@ -1414,7 +1414,7 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetC
   }
 
   case 5:
-    if (this->CanAffordAdditionalDiplomacyCostAfterCommitments(500) != 0) {
+    if (this->CanAffordAdditionalDiplomacyCostAfterCommitments(500)) {
       this->AddToTreasury(0xFFFFFE0C);
     } else {
       shouldApply = false;
@@ -1422,7 +1422,7 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetC
     break;
 
   case 6:
-    if (this->CanAffordAdditionalDiplomacyCostAfterCommitments(5000) != 0) {
+    if (this->CanAffordAdditionalDiplomacyCostAfterCommitments(5000)) {
       this->AddToTreasury(0xFFFFEC78);
     } else {
       shouldApply = false;
@@ -1482,7 +1482,7 @@ bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
 
   if (newGrantRaw != oldGrantRaw) {
     if (newGrantRaw != kGrantClear &&
-        this->CanAffordDiplomacyGrantEntryForTarget(targetNation, newGrantRaw) == 0) {
+        !this->CanAffordDiplomacyGrantEntryForTarget(targetNation, newGrantRaw)) {
       accepted = false;
     } else {
       if (oldGrantRaw != kGrantClear) {
@@ -2806,7 +2806,7 @@ bool TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation) {
   g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, targetNation);
   bool joinsWar = false;
   TGreatPower* targetState = g_apNationStates[targetNation];
-  if (targetState->IsCapitolThreatened(0) == 0 && targetState->IsCapitolThreatened(1) == 0) {
+  if (!targetState->IsCapitolThreatened(0) && !targetState->IsCapitolThreatened(1)) {
     float warThreshold = this->GetPeaceThreat(targetNation);
     if (this->GetAcceptPeaceNumber() < warThreshold) {
       joinsWar = true;
@@ -3075,7 +3075,7 @@ void TGreatPower::DeclareWarOnTargetForAlignedMinors(int targetNationSlot) {
   while (tableIndex < 16) {
     if (g_apTerrainTypeDescriptorTable[7 + tableIndex] != 0) {
       TMinor* auxRuntimeState = g_apNationAuxRuntimeStateSlots[tableIndex];
-      if (auxRuntimeState->IsColonyOf(this->nationSlot) != 0 &&
+      if (auxRuntimeState->IsColonyOf(this->nationSlot) &&
           !g_pDiplomacyTurnStateManager->IsNationPairAtWar(minorNationSlot, targetNationSlot)) {
         g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCode(
             minorNationSlot, targetNationSlot, kDiplomacyRelationshipWar, 0);
@@ -3101,7 +3101,7 @@ void TGreatPower::MakePeaceWithTargetForAlignedMinors(int targetNationSlot) {
   while (tableIndex < 16) {
     if (g_apTerrainTypeDescriptorTable[7 + tableIndex] != 0) {
       TMinor* auxRuntimeState = g_apNationAuxRuntimeStateSlots[tableIndex];
-      if (auxRuntimeState->IsColonyOf(this->nationSlot) != 0) {
+      if (auxRuntimeState->IsColonyOf(this->nationSlot)) {
         g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
             minorNationSlot, targetNationSlot, kDiplomacyRelationshipPeace);
         if (this->colonyBoycottFlags[targetNationSlot] == 0) {

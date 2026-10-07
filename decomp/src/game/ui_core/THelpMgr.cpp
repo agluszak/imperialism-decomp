@@ -244,7 +244,7 @@ void THelpMgr::HandlePostDispatchTurnStateEventUpdates() {
   if (phase != kGamePhaseNews) {
     if (phase == kGamePhaseOptionalCityScreen && g_pSimMgr->preferenceValues[8] != 0) {
       if (g_nTurnFlowNationComparisonAdvisoryTick < g_pSimMgr->GetEconomicTurn()) {
-        if (ShowPeriodicNationComparisonAdvisoryIfNeeded() != 0) {
+        if (ShowPeriodicNationComparisonAdvisoryIfNeeded()) {
           g_nTurnFlowNationComparisonAdvisoryTick = g_pSimMgr->GetEconomicTurn();
         }
       }
@@ -333,7 +333,7 @@ short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
 
   CString contextMessageText(g_pszEmptyTextPointer);
   if (g_apNationStates[activeNationIndex]->BuildGreatPowerMapContextTriggeredNationEventMessages(
-          &contextMessageText) != 0) {
+          &contextMessageText)) {
     g_pSimMgr->GetString(0x2753, 0x3c, &titleText);
     g_pSimMgr->GetString(0x2753, 0x3d, &templateText);
     CString combinedText = templateText + contextMessageText;
@@ -343,7 +343,7 @@ short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
 
   contextMessageText = CString(g_pszEmptyTextPointer);
   if (g_apNationStates[activeNationIndex]->BuildGreatPowerEligibleNationEventMessagesFromLinkedList(
-          &contextMessageText) != 0) {
+          &contextMessageText)) {
     g_pSimMgr->GetString(0x2753, 0x42, &titleText);
     g_pSimMgr->GetString(0x2753, 0x43, &templateText);
     templateText += contextMessageText;
@@ -659,7 +659,7 @@ bool ShowTurnAlertsForActiveNation() {
   bool nationAtWar = false;
   for (int otherNation = 0; otherNation < 7; ++otherNation) {
     if (otherNation != nationId &&
-        g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, otherNation) != 0) {
+        g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, otherNation)) {
       nationAtWar = true;
     }
   }
@@ -670,7 +670,7 @@ bool ShowTurnAlertsForActiveNation() {
   g_runtimeCapitolDangerDisplayedMask = 0;
   if (landCapitolThreat != 0) {
 #else
-  if (g_apNationStates[nationId]->IsCapitolThreatened(0) != 0) {
+  if (g_apNationStates[nationId]->IsCapitolThreatened(0)) {
 #endif
 #ifdef IMPERIALISM_RUNTIME_TESTS
     g_runtimeCapitolDangerDisplayedMask |= 1;
@@ -693,7 +693,7 @@ bool ShowTurnAlertsForActiveNation() {
   if (navalCapitolThreat != 0) {
     g_runtimeCapitolDangerThreatMask |= 2;
 #else
-  if (g_apNationStates[nationId]->IsCapitolThreatened(1) != 0) {
+  if (g_apNationStates[nationId]->IsCapitolThreatened(1)) {
 #endif
 #ifdef IMPERIALISM_RUNTIME_TESTS
     g_runtimeCapitolDangerDisplayedMask |= 2;
@@ -730,7 +730,7 @@ bool ShowTurnAlertsForActiveNation() {
       }
     }
     if (!g_pSimMgr->TestTurnFlowStatusFlagMask(0x10)) {
-      if (g_apNationStates[nationId]->HasAnyCommodityRecordBelowStepValue() != 0) {
+      if (g_apNationStates[nationId]->HasAnyCommodityRecordBelowStepValue()) {
         g_pSimMgr->GetString(0x2753, 0x46, &titleText);
         g_pSimMgr->GetString(0x2753, 0x47, &bodyText);
 #ifdef IMPERIALISM_RUNTIME_TESTS
@@ -746,7 +746,7 @@ bool ShowTurnAlertsForActiveNation() {
       }
     }
     if (!g_pSimMgr->TestTurnFlowStatusFlagMask(0x1000)) {
-      if (g_apNationStates[nationId]->AnyNeedCurrentExceedsTargetWhenCapMismatch() != 0) {
+      if (g_apNationStates[nationId]->AnyNeedCurrentExceedsTargetWhenCapMismatch()) {
         g_pSimMgr->GetString(0x2753, 0x22, &titleText);
         g_pSimMgr->GetString(0x2753, 0x23, &bodyText);
 #ifdef IMPERIALISM_RUNTIME_TESTS

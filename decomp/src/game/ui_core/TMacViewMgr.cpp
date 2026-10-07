@@ -812,7 +812,7 @@ void TMacViewMgr::RegenerateCountryRegions() {
 // FUNCTION: IMPERIALISM 0x0050bbc0
 void TMacViewMgr::ApplySellOrderRowToNationState(TTradeCluster* orderSource, int orderSlot,
                                                  short nationSlot) {
-  if (orderSource->IsSelectionAllowed() != 0) {
+  if (orderSource->IsSelectionAllowed()) {
     g_apNationStates[nationSlot]->SetItemPotentials(static_cast<short>(orderSlot), -1);
     return;
   }

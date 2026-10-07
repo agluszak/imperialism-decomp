@@ -70,7 +70,7 @@ int TDiplomacyMgr::GetFavoriteTradePartner(int minorNationSlot) {
       selectedNation = majorNation;
       bestScore = score;
     } else if (score == bestScore) {
-      if (g_apTerrainTypeDescriptorTable[minorNationSlot]->IsColonyOf(majorNation) != 0) {
+      if (g_apTerrainTypeDescriptorTable[minorNationSlot]->IsColonyOf(majorNation)) {
         selectedNation = majorNation;
         bestScore = score;
       } else {
@@ -185,7 +185,7 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
       if (g_pSimMgr->ReallyInTheGame(static_cast<short>(sourceNation)) &&
           g_pSimMgr->ReallyInTheGame(static_cast<short>(targetNation))) {
         standingScore =
-            sourceMinor->IsInConsortiumWith(static_cast<short>(targetNation)) != 0 ? 0x96 : 0x6e;
+            sourceMinor->IsInConsortiumWith(static_cast<short>(targetNation)) ? 0x96 : 0x6e;
       }
       relationStandingScores[pairIndex] = standingScore;
       relationPropagationMatrix[pairIndex] = kDiplomacyRelationshipPeace;
@@ -649,7 +649,7 @@ void TDiplomacyMgr::SetRelationship(NationSlot sourceNationSlot, NationSlot targ
     TCountry** terrainCursor = &g_apTerrainTypeDescriptorTable[7];
     do {
       TMinor* terrain = static_cast<TMinor*>(*terrainCursor);
-      if (terrain != 0 && terrain->IsColonyOf(sourceNationSlot) != 0) {
+      if (terrain != 0 && terrain->IsColonyOf(sourceNationSlot)) {
         SetRelationshipsToMatch(minorNationSlot, sourceNationSlot);
       }
       terrainCursor++;
@@ -662,7 +662,7 @@ void TDiplomacyMgr::SetRelationship(NationSlot sourceNationSlot, NationSlot targ
     TCountry** terrainCursor = &g_apTerrainTypeDescriptorTable[7];
     do {
       TMinor* terrain = static_cast<TMinor*>(*terrainCursor);
-      if (terrain != 0 && terrain->IsColonyOf(targetNationSlot) != 0) {
+      if (terrain != 0 && terrain->IsColonyOf(targetNationSlot)) {
         SetRelationshipsToMatch(minorNationSlot, targetNationSlot);
       }
       terrainCursor++;
@@ -738,7 +738,7 @@ void TDiplomacyMgr::InflictWarPenalty(NationSlot sourceNationSlot, NationSlot ta
       int divisorTier;
       if (!IsGreatPower(targetNationSlot)) {
         if (!IsGreatPower(candidateNationSlot)) {
-          divisorTier = candidateTerrain->IsInConsortiumWith(sourceNationSlot) != 0 ? 2 : 4;
+          divisorTier = candidateTerrain->IsInConsortiumWith(sourceNationSlot) ? 2 : 4;
         } else {
           divisorTier = 8;
         }

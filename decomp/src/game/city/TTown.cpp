@@ -287,7 +287,7 @@ void TTown::SetName(const char* townName) {
 int TTown::IsUnblockedPort(void) const {
   if (this->enabledFlag != 0) {
     if (g_pGlobalMapState->HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(
-            this->tileIndex) != 0) {
+            this->tileIndex)) {
       return 1;
     }
   }

@@ -216,7 +216,7 @@ void TAutoGreatPower::ReadFrom(TStream* stream) {
   stream->ReadBytes(&missionCount, 4);
   for (int queueIndex = 1; queueIndex <= missionCount; ++queueIndex) {
     void* mission = 0;
-    if (stream->ReadObject(&mission) != 0) {
+    if (stream->ReadObject(&mission)) {
       this->missionQueue->AddTail(mission);
     }
   }
@@ -817,7 +817,7 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
         int minorIndex;
         for (minorIndex = 0; minorIndex < 9; ++minorIndex) {
           TCountry* minorDescriptor = g_apTerrainTypeDescriptorTable[7 + minorIndex];
-          if (minorDescriptor->IsColonyOf(slot) != 0) {
+          if (minorDescriptor->IsColonyOf(slot)) {
             int m;
             for (m = 1; m <= minorDescriptor->ownedRegionList->GetSize(); ++m) {
               int minorRegion = minorDescriptor->ownedRegionList->At(m);
@@ -1103,7 +1103,7 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissions(void) {
     for (zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
       short contextOrdinal = zone->GetContextOrdinalOrInvalid();
       if (zoneStatus[contextOrdinal] != kMissionDesirabilityQueued &&
-          zone->HasSecondaryNeighborWithNationTag(nationSlot) != 0) {
+          zone->HasSecondaryNeighborWithNationTag(nationSlot)) {
         for (n = 0; n < 7; ++n) {
           if (n != nationSlot &&
               g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, static_cast<short>(n)) &&

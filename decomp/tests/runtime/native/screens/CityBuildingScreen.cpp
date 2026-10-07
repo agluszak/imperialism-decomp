@@ -431,7 +431,7 @@ RuntimeActionResult CityBuildingScreen::VerifyArmoryState() const {
     }
     TView* row = Row(category);
     TView* raise = row != 0 ? row->ResolveControlByTag(kControlTagPlus) : 0;
-    if (raise != 0 && raise->IsActionable() != 0 && order->MaxOrder() > order->quantity) {
+    if (raise != 0 && raise->IsActionable() && order->MaxOrder() > order->quantity) {
       foundRaisableOrder = true;
     }
   }
@@ -635,7 +635,7 @@ short CityBuildingScreen::FirstRaisableRow() const {
     }
     TView* rowView = Row(row);
     TView* raise = rowView != 0 ? rowView->ResolveControlByTag(kControlTagPlus) : 0;
-    if (raise != 0 && raise->IsActionable() != 0 && raise->IsEnabled() != 0) {
+    if (raise != 0 && raise->IsActionable() && raise->IsEnabled() != 0) {
       return row;
     }
   }
@@ -682,7 +682,7 @@ RuntimeActionResult SendArrowCommand(CityBuildingKind kind, TView* cluster, TVie
     message.Format("cannot %s: the cluster or its arrow is not present", what);
     return RuntimeActionResult::Failure(message);
   }
-  if (arrow->IsActionable() == 0) {
+  if (!arrow->IsActionable()) {
     CString message;
     message.Format("cannot %s: the arrow is not actionable", what);
     return RuntimeActionResult::Failure(message);

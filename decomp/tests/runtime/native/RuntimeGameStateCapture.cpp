@@ -3566,7 +3566,7 @@ JSON_Value* CaptureMissionsEphemeral() {
       object.Set("importance_bits", FloatBits(mission->importanceScore));
       object.Set("flag10", static_cast<unsigned int>(mission->flag10));
       object.Set("marker", static_cast<unsigned int>(mission->marker11));
-      if (mission->IsNavyMission() != 0) {
+      if (mission->IsNavyMission()) {
         TNavyMission* navy = static_cast<TNavyMission*>(mission);
         object.Set("target_zone", RuntimeZoneIndex(navy->missionTargetZone));
         object.Set("resolved_port_zone",

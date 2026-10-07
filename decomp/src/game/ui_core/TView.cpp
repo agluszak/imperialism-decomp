@@ -520,7 +520,7 @@ void TView::PaintOrInvalidateControl(CDC* paintDc) {
 
 // FUNCTION: IMPERIALISM 0x0048b8d0
 void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintDc) {
-  if (g_McAppUiActiveFlag == 0 || !IsActionable() || PrepareForDrawing() == 0) {
+  if (g_McAppUiActiveFlag == 0 || !IsActionable() || !PrepareForDrawing()) {
     return;
   }
 
@@ -703,7 +703,7 @@ bool TView::EvaluateControlInputGate() {
     if ((char)inputGateFlag != 0 && IsEnabled() != 0) {
       return true;
     }
-    if (HasRenderableParentAndContent() == 0) {
+    if (!HasRenderableParentAndContent()) {
       return false;
     }
   }
@@ -720,7 +720,7 @@ bool TView::HasRenderableParentAndContent() {
 
 // FUNCTION: IMPERIALISM 0x0048c080
 void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, RgnHandle hitArg) {
-  if (HasRenderableParentAndContent() != 0) {
+  if (HasRenderableParentAndContent()) {
     if (childList != 0) {
       POSITION pos = childList->GetHeadPosition();
       while (pos != NULL) {
@@ -729,7 +729,7 @@ void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, R
         CPoint childPoint = *point;
         child->SuperToLocal(&childPoint);
         if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
-            child->EvaluateControlInputGate() != 0) {
+            child->EvaluateControlInputGate()) {
           child->HandleCursorHoverSelectionByChildHitTestAndFallback(&childPoint, hitArg);
           return;
         }
@@ -737,7 +737,7 @@ void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, R
     }
   }
 
-  if (EmptyRgn(hitArg) != 0 && PrepareForDrawing() != 0) {
+  if (EmptyRgn(hitArg) != 0 && PrepareForDrawing()) {
     DoSetCursor(point, hitArg);
   }
 }
@@ -819,7 +819,7 @@ char TView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint or
     }
   }
 
-  if (PrepareForDrawing() != 0 && IsEnabled() != 0) {
+  if (PrepareForDrawing() && IsEnabled() != 0) {
     CPoint localPoint = point;
     DoMouseCommand(localPoint, event, origin);
     return 1;
@@ -843,7 +843,7 @@ char TView::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint orig
     }
   }
 
-  if (PrepareForDrawing() != 0) {
+  if (PrepareForDrawing()) {
     CPoint localPoint = point;
     if (IsEnabled() != 0) {
       HandleMouseCommandToSelf(localPoint, event, origin);
