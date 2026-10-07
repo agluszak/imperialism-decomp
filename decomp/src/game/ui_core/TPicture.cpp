@@ -51,7 +51,7 @@ void TPicture::CopyPictureStateFromSource(TPicture* source) {
 
 // FUNCTION: IMPERIALISM 0x0048f250
 TPicture::~TPicture() {
-  ReleasePicture();
+  TPicture::ReleasePicture();
 }
 
 // FUNCTION: IMPERIALISM 0x0048f330

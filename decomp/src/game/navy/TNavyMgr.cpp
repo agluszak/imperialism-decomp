@@ -793,7 +793,11 @@ TTaskForce* TNavyMgr::AssignEscorts(short requiredCount, short chancePercent) {
       bool active;
       bool isUnderStrength =
           child->strength < g_NavyOrderResourceDescriptorTable[child->type].HullPoints();
-      active = !(isUnderStrength || chancePercent <= rand() % 100);
+      if (isUnderStrength || chancePercent <= rand() % 100) {
+        active = false;
+      } else {
+        active = true;
+      }
       node->active = active;
     }
   }
@@ -828,8 +832,12 @@ bool TNavyMgr::TryMerchantInterception(TMapOrderInteractionSelection* outResult,
     for (TMapOrderChildLinkNode* node = nationEntry->shipList; node != NULL; node = node->next) {
       TShip* child = node->payload;
       bool active;
-      active = !(child->strength < g_NavyOrderResourceDescriptorTable[child->type].HullPoints() ||
-                 selectionChance <= rand() % 100);
+      if (child->strength < g_NavyOrderResourceDescriptorTable[child->type].HullPoints() ||
+          selectionChance <= rand() % 100) {
+        active = false;
+      } else {
+        active = true;
+      }
       node->active = active;
     }
   }

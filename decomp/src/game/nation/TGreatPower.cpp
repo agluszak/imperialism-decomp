@@ -177,8 +177,12 @@ void TGreatPower::TraceSupplyRoutes(char** outInfluenceMap) {
   }
   marker = static_cast<TTown*>(markerCursor.Reset());
   while (markerCursor.More() != 0) {
-    marker->transportLinked = !((influenceMap[marker->tileIndex] == 0 || !marker->activeFlag) &&
-                                (marker->IsUnblockedPort() == 0 || homeLinked == 0));
+    if ((influenceMap[marker->tileIndex] == 0 || !marker->activeFlag) &&
+        (marker->IsUnblockedPort() == 0 || homeLinked == 0)) {
+      marker->transportLinked = false;
+    } else {
+      marker->transportLinked = true;
+    }
     marker = static_cast<TTown*>(markerCursor.Advance());
   }
   if (outInfluenceMap != 0) {
@@ -706,11 +710,11 @@ void TGreatPower::AddPurchasedItems(void) {
 void TGreatPower::AddCreatedItems(void) {
   AddToTreasury(static_cast<int>(needTargetByType[kResourceGems]) * 500);
 
-  SetStockpile(kResourceGems, 0);
+  TGreatPower::SetStockpile(kResourceGems, 0);
 
   AddToTreasury(static_cast<int>(needTargetByType[kResourceGold]) * 200);
 
-  SetStockpile(kResourceGold, 0);
+  TGreatPower::SetStockpile(kResourceGold, 0);
 
   for (short resource = 0; resource < kResourceKindCount; ++resource) {
     AddToStockpile(resource, needTargetByType[resource]);
@@ -838,7 +842,7 @@ void TGreatPower::InitializeTradeStatus(void) {
   budgetPoolDelta = 0;
   budgetPoolBase = 0;
 
-  RecallTradeBids();
+  TGreatPower::RecallTradeBids();
 }
 
 // FUNCTION: IMPERIALISM 0x004dd270

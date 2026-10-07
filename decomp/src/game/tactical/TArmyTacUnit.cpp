@@ -18,7 +18,11 @@ void TArmyTacUnit::IArmyTacUnit(TMilitaryUnit* source) {
   sapTargetTileIndex = -1;
   sourceUnit = source;
   bool deployedCategory0Flag;
-  deployedCategory0Flag = source->unitOrder == 2 && g_anUnitTypeCombatCategoryByType[unitType] == 0;
+  if (source->unitOrder == 2 && g_anUnitTypeCombatCategoryByType[unitType] == 0) {
+    deployedCategory0Flag = true;
+  } else {
+    deployedCategory0Flag = false;
+  }
   flag3c = deployedCategory0Flag;
 }
 

@@ -895,7 +895,11 @@ bool TMultiplayerMgr::ReadMessage(NetMessage* packet) {
             }
           }
           bool canStart;
-          canStart = !(liveCount < 2 || !localPresent);
+          if (liveCount < 2 || !localPresent) {
+            canStart = false;
+          } else {
+            canStart = true;
+          }
           TTextPictureButton* okayButton =
               (TTextPictureButton*)lounge->FindSubView(kControlTagOkay);
           okayButton->AssertValid();
@@ -2368,7 +2372,11 @@ void TMultiplayerMgr::WriteArmyUnitsTo(TStream* stream, int terrainSlot) {
 void TMultiplayerMgr::WriteCiviliansTo(TStream* stream, int nationFilter) {
   for (int slot = 0; slot < 7; ++slot) {
     bool matches;
-    matches = nationFilter == -1 || nationFilter == slot;
+    if (nationFilter == -1 || nationFilter == slot) {
+      matches = true;
+    } else {
+      matches = false;
+    }
     TGreatPower* nation = g_apNationStates[slot];
     if (nation == 0 || !matches) {
       stream->WriteInteger(0);
@@ -3008,7 +3016,11 @@ void TMultiplayerMgr::EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet
     }
     sessionInit.scenarioTag = scenarioSelectionTag;
     bool resumingSavedGame;
-    resumingSavedGame = sessionPhaseTag == kSessionTagGoin && g_pSimMgr->GetPlayerCountry() != -1;
+    if (sessionPhaseTag == kSessionTagGoin && g_pSimMgr->GetPlayerCountry() != -1) {
+      resumingSavedGame = true;
+    } else {
+      resumingSavedGame = false;
+    }
     if (resumingSavedGame) {
       sessionInit.scenarioTag = kControlTagLoad; // 'load'
     }
@@ -3075,8 +3087,12 @@ void TMultiplayerMgr::RecalcPlayerName(int nationSlot) {
     nationStatusTags[nationSlot] = kSessionTagDead; // 'dead'
   } else {
     bool wrapInParens;
-    wrapInParens = g_apNationStates[nationSlot]->diplomacyEligibility == 0 ||
-                   !g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot));
+    if (g_apNationStates[nationSlot]->diplomacyEligibility == 0 ||
+        !g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot))) {
+      wrapInParens = true;
+    } else {
+      wrapInParens = false;
+    }
     CString nationName;
     g_apNationStates[nationSlot]->FormatOverlayTerrainLabelText(&nationName);
     const char* prefix = g_szUiOpenParen;

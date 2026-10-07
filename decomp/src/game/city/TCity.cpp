@@ -72,7 +72,7 @@ void TCity::ICity(TGreatPower* ownerNation) {
     productionAccum[productionSlot] =
         static_cast<short>(productionAccum[productionSlot] - productionOrderTable[productionSlot]);
     productionOrderTable[productionSlot] = 0;
-    SetBuildingWindowState(productionSlot, 0, 0, 0);
+    TCity::SetBuildingWindowState(productionSlot, 0, 0, 0);
   }
 
   int regionCount = ownerNation->ownedRegionList->GetSize();
@@ -464,7 +464,11 @@ void TCity::EndCityPhase() {
 
 // FUNCTION: IMPERIALISM 0x004b3de0
 void TCity::PredictedNeeds() {
-  lowStockFlag = productionSummary->strength >= 2;
+  if (productionSummary->strength < 2) {
+    lowStockFlag = false;
+  } else {
+    lowStockFlag = true;
+  }
   short shortageCount = 3;
   if (productionAccum[4] > 0) {
     shortageCount = 2;
@@ -475,7 +479,11 @@ void TCity::PredictedNeeds() {
   if (productionAccum[0] > 0) {
     --shortageCount;
   }
-  lowProductionFlag = shortageCount < 2;
+  if (shortageCount < 2) {
+    lowProductionFlag = true;
+  } else {
+    lowProductionFlag = false;
+  }
   ownerNation->UpdateCountryStockpile(stockByType);
 }
 

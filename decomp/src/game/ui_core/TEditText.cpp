@@ -149,7 +149,7 @@ bool TEditText::BecomeTarget() {
 
 // FUNCTION: IMPERIALISM 0x00490ad0
 void TEditText::Free() {
-  Close();
+  TEditText::Close();
   TView::Free();
 }
 

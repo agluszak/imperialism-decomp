@@ -1196,8 +1196,12 @@ void TTacticalBattle::FireOn(TTacticalUnit* attackerUnit, TacticalTileIndex targ
   }
 
   bool fortWallTargeted;
-  fortWallTargeted = tileGrid[targetTileIndex].deployMark > 1 &&
-                     fortStrengthPoints[targetTileIndex / 29 / 2] > 0 && defenderUnit == 0;
+  if (tileGrid[targetTileIndex].deployMark > 1 &&
+      fortStrengthPoints[targetTileIndex / 29 / 2] > 0 && defenderUnit == 0) {
+    fortWallTargeted = true;
+  } else {
+    fortWallTargeted = false;
+  }
 
   int fortWallTileOnLine =
       FindFortWallTileCrossedByFiringLine(targetTileIndex, attackerUnit->tileIndex);
@@ -1306,10 +1310,13 @@ void TTacticalBattle::FireOn(TTacticalUnit* attackerUnit, TacticalTileIndex targ
 
   bool captureEffectCode;
   short overrunDefenderCategory = g_awTacticalUnitCategoryCodeBySlot[defenderUnit->unitType];
-  captureEffectCode = meleeAdjacent &&
-                      (overrunDefenderCategory == 6 || overrunDefenderCategory == 7) &&
-                      g_awTacticalUnitCategoryCodeBySlot[attackerUnit->unitType] < 4 &&
-                      static_cast<TArmyTacUnit*>(defenderUnit)->morale < moraleDamage;
+  if (meleeAdjacent && (overrunDefenderCategory == 6 || overrunDefenderCategory == 7) &&
+      g_awTacticalUnitCategoryCodeBySlot[attackerUnit->unitType] < 4 &&
+      static_cast<TArmyTacUnit*>(defenderUnit)->morale < moraleDamage) {
+    captureEffectCode = true;
+  } else {
+    captureEffectCode = false;
+  }
 
   attackerUnit->AssertValid();
   LaFireOn(attackerUnit, defenderUnit, targetTileIndex, static_cast<int>(damage),
@@ -1424,8 +1431,12 @@ void TTacticalBattle::CheckForVictory() {
 
   bool localIsSide0Player = players[0]->IsPlayer();
   bool localSideWon;
-  localSideWon = (battleOutcome == kTacticalBattleSide0Victory && players[0]->IsPlayer()) ||
-                 (battleOutcome == kTacticalBattleSide1Victory && players[1]->IsPlayer());
+  if ((battleOutcome == kTacticalBattleSide0Victory && players[0]->IsPlayer()) ||
+      (battleOutcome == kTacticalBattleSide1Victory && players[1]->IsPlayer())) {
+    localSideWon = true;
+  } else {
+    localSideWon = false;
+  }
 
   g_pSfxPlaybackSystem->RequestMusicChange(localSideWon ? 9 : 10, false);
 

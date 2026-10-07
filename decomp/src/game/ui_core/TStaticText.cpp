@@ -91,7 +91,7 @@ void TStaticText::IStaticText(TView* panel, int* offsetLayout, int* sizeLayout, 
   stringResourceGroupId = stringResourceGroup;
   this->stringResourceIndex = stringResourceIndex;
   if (stringResourceGroup != -1) {
-    SetTextWithStrListID(stringResourceGroup, stringResourceIndex, false);
+    TStaticText::SetTextWithStrListID(stringResourceGroup, stringResourceIndex, false);
   }
   DoSetCursor(0, 0);
 }

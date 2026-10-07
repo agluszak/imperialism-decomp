@@ -110,7 +110,7 @@ void TTacticalPlayer::RemoveReserves() {
   for (ordinal = unitList->GetCount(); ordinal > 0; --ordinal) {
     TTacticalUnit* unit = static_cast<TTacticalUnit*>(unitList->GetEntryByOrdinal(ordinal));
     if (unit->tileIndex == -2) {
-      RemoveCapturedUnit(unit);
+      TTacticalPlayer::RemoveCapturedUnit(unit);
       secondaryList->listState.AddHead(unit);
     }
   }

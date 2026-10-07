@@ -25,8 +25,11 @@ void TCivUnit::ICivUnit(CivilianUnitKind unitKind, int anchorIndex, short nOrder
 
 // FUNCTION: IMPERIALISM 0x005c2980
 bool TCivUnit::CanBeOrdered() {
-  return !(unitOrder != kUnitOrderIdle &&
-           (unitOrder < static_cast<UnitOrder>(2) || unitOrder > static_cast<UnitOrder>(3)));
+  if (unitOrder != kUnitOrderIdle &&
+      (unitOrder < static_cast<UnitOrder>(2) || unitOrder > static_cast<UnitOrder>(3))) {
+    return false;
+  }
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x005c29b0

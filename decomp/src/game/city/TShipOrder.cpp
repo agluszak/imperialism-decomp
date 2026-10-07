@@ -32,18 +32,21 @@ IMPLEMENT_DYNCREATE(TShipOrder, TProductionOrder)
 bool TShipOrder::AutoCanMakeProduct() {
   TCity* city = ownerCity;
 
-  return ReadWeight(g_industryActionCostWeightResCode09, resourceTypeIndex) <=
-             city->stockByType[kResourceLumber] &&
-         ReadWeight(g_industryActionCostWeightResCode08, resourceTypeIndex) <=
-             city->stockByType[kResourceFabric] &&
-         ReadWeight(g_industryActionCostWeightResCode10, resourceTypeIndex) <=
-             city->stockByType[kResourceArms] &&
-         ReadWeight(g_industryActionCostWeightResCode0B, resourceTypeIndex) <=
-             city->stockByType[kResourceSteel] &&
-         ReadWeight(g_industryActionCostWeightResCode03, resourceTypeIndex) <=
-             city->stockByType[kResourceCoal] &&
-         ReadWeight(g_industryActionCostWeightResCode0C, resourceTypeIndex) <=
-             city->stockByType[kResourceFuel];
+  if (ReadWeight(g_industryActionCostWeightResCode09, resourceTypeIndex) <=
+          city->stockByType[kResourceLumber] &&
+      ReadWeight(g_industryActionCostWeightResCode08, resourceTypeIndex) <=
+          city->stockByType[kResourceFabric] &&
+      ReadWeight(g_industryActionCostWeightResCode10, resourceTypeIndex) <=
+          city->stockByType[kResourceArms] &&
+      ReadWeight(g_industryActionCostWeightResCode0B, resourceTypeIndex) <=
+          city->stockByType[kResourceSteel] &&
+      ReadWeight(g_industryActionCostWeightResCode03, resourceTypeIndex) <=
+          city->stockByType[kResourceCoal] &&
+      ReadWeight(g_industryActionCostWeightResCode0C, resourceTypeIndex) <=
+          city->stockByType[kResourceFuel]) {
+    return true;
+  }
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004b8630
@@ -56,18 +59,21 @@ bool TShipOrder::CanMakeProduct() {
   const short weight03 = ReadWeight(g_industryActionCostWeightResCode03, weightIndex);
   const short weight0C = ReadWeight(g_industryActionCostWeightResCode0C, weightIndex);
 
-  return static_cast<int>(weight09) <=
-             static_cast<int>(trackingSlots[kResourceWeightIndex09] + weight09) &&
-         static_cast<int>(weight08) <=
-             static_cast<int>(trackingSlots[kResourceWeightIndex08] + weight08) &&
-         static_cast<int>(weight10) <=
-             static_cast<int>(trackingSlots[kResourceWeightIndex10] + weight10) &&
-         static_cast<int>(weight0B) <=
-             static_cast<int>(trackingSlots[kResourceWeightIndex0B] + weight0B) &&
-         static_cast<int>(weight03) <=
-             static_cast<int>(trackingSlots[kResourceWeightIndex03] + weight03) &&
-         static_cast<int>(weight0C) <=
-             static_cast<int>(trackingSlots[kResourceWeightIndex0C] + weight0C);
+  if (static_cast<int>(weight09) <=
+          static_cast<int>(trackingSlots[kResourceWeightIndex09] + weight09) &&
+      static_cast<int>(weight08) <=
+          static_cast<int>(trackingSlots[kResourceWeightIndex08] + weight08) &&
+      static_cast<int>(weight10) <=
+          static_cast<int>(trackingSlots[kResourceWeightIndex10] + weight10) &&
+      static_cast<int>(weight0B) <=
+          static_cast<int>(trackingSlots[kResourceWeightIndex0B] + weight0B) &&
+      static_cast<int>(weight03) <=
+          static_cast<int>(trackingSlots[kResourceWeightIndex03] + weight03) &&
+      static_cast<int>(weight0C) <=
+          static_cast<int>(trackingSlots[kResourceWeightIndex0C] + weight0C)) {
+    return true;
+  }
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004b86d0

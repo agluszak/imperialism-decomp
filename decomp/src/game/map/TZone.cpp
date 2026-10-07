@@ -672,7 +672,11 @@ short TZone::PickInvasionIngotTile(Province* contextProvince) {
     short spiralTile = TileIndexFromRowCol(spiral.row, spiral.col);
 
     bool tileInBounds;
-    tileInBounds = !((spiralTile < 0) || (spiralTile) > 0x194f);
+    if ((spiralTile < 0) || (spiralTile) > 0x194f) {
+      tileInBounds = false;
+    } else {
+      tileInBounds = true;
+    }
 
     if (tileInBounds) {
       int spiralTileIndex = TileIndexFromRowCol(spiral.row, spiral.col);
