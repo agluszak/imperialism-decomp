@@ -25,8 +25,7 @@ IMPLEMENT_DYNCREATE(TGrantsView, TPanelView)
 // FUNCTION: IMPERIALISM 0x004f8080
 void TGrantsView::DoPostCreate(int arg) {
   CString hoverText;
-  TView::DoPostCreate(arg);
-  diplomacyMapView = static_cast<TDiplomacyMapView*>(ownerContext);
+  TPanelView::DoPostCreate(arg);
 
   for (int grantSlot = 0; grantSlot < 8; ++grantSlot) {
     TView* grantControl = FindSubView(kControlTagDoc0 + grantSlot); // 'doc0'..

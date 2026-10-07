@@ -79,10 +79,7 @@ void TControl::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* even
     HiliteState(controlState == 0, true);
     return;
   }
-  TEventHandler* child = GetNextHandler();
-  if (child != 0) {
-    child->HandleEvent(commandId, sourceHandler, event);
-  }
+  TEventHandler::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x0048e7a0

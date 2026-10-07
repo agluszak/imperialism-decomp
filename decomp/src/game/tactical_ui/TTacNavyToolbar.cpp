@@ -43,22 +43,5 @@ void TTacNavyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
       break;
     }
   }
-  if (commandId == 0xa) {
-    unsigned int tag = sourceHandler->controlTag;
-    switch (tag) {
-    case kControlTagDone:
-    case kControlTagAuto:
-    case kControlTagRetr:
-    case kControlTagTarg:
-      battle->HandleTacticalBattleCommandTag(tag);
-      break;
-    case kControlTagHelp:
-      g_pHelpMgr->ShowLatestHelp();
-      break;
-    default:
-      break;
-    }
-  }
-  TCluster::DoEvent(commandId, sourceHandler, event);
-  g_pAmbitApplication->SetTarget(ownerContext);
+  TTacticalToolbar::DoEvent(commandId, sourceHandler, event);
 }

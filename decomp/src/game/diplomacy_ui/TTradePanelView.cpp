@@ -25,8 +25,7 @@ IMPLEMENT_DYNCREATE(TTradePanelView, TPanelView)
 // FUNCTION: IMPERIALISM 0x004f8780
 void TTradePanelView::DoPostCreate(int arg) {
   CString text;
-  TView::DoPostCreate(arg);
-  diplomacyMapView = static_cast<TDiplomacyMapView*>(ownerContext);
+  TPanelView::DoPostCreate(arg);
   TView* cluster = FindSubView(kControlTagClus);
   for (int row = 0; row < 7; ++row) {
     TView* rowControl = cluster->FindSubView(kControlTagTraa + row);

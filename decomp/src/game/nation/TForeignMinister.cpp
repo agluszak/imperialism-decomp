@@ -72,8 +72,7 @@ void TForeignMinister::IForeignMinister(TGreatPower* owner) {
 
 // FUNCTION: IMPERIALISM 0x0052f180
 void TForeignMinister::ReadFrom(TStream* stream) {
-  TObject::ReadFrom(stream);
-  stream->ReadBytes(&skillIndex, 2);
+  TMinister::ReadFrom(stream);
   stream->ReadBytes(&interiorBidResource, 2);
   stream->ReadBytes(&interiorBidAmount, 2);
   stream->ReadBytes(&priceCheckPending, 2);

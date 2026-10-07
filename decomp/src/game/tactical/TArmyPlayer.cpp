@@ -135,8 +135,7 @@ void TArmyPlayer::RemoveCapturedUnit(TTacticalUnit* unit) {
 
 // FUNCTION: IMPERIALISM 0x0059b540
 void TArmyPlayer::AddCapturedUnit(TTacticalUnit* unit) {
-  unitList->listState.AddHead(unit);
-  unit->FlipUnitSideAffiliation();
+  TTacticalPlayer::AddCapturedUnit(unit);
   TMilitaryUnit* sourceUnit = static_cast<TArmyTacUnit*>(unit)->sourceUnit;
   sourceUnit->ownerNationSlot = static_cast<short>(nationIndex);
   sourceUnit->MoveTo(battle->battleSiteIndex);

@@ -247,9 +247,7 @@ void TCityTask::IncompleteGoods(TTaskList* taskList) {
 // FUNCTION: IMPERIALISM 0x005ae570
 void TCityTask::WriteTo(TStream* stream) {
   stream->WriteBytes(&serializedTaskKind, 1);
-  TObject::WriteTo(stream);
-  stream->WriteBytes(&citySlotIndex, 2);
-  stream->WriteBytes(&remainingAttempts, 2);
+  TTask::WriteTo(stream);
   stream->WriteBytes(&requestedAmount, 2);
   stream->WriteBytes(&alreadyQueuedFlag, 2);
 }

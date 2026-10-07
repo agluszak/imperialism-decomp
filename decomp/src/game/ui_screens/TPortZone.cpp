@@ -43,13 +43,7 @@ void TPortZone::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x00561820
 void TPortZone::WriteTo(TStream* stream) {
-  TObject::WriteTo(stream);
-  stream->WriteSharedString(&displayName);
-  stream->WriteBytes(&statusCode, 2);
-  stream->WriteBytes(&tileOrTerrainId, 4);
-  stream->WriteBytes(&seedNationId, 2);
-  stream->WriteBytes(&activeTileIndex, 2);
-  stream->WriteBytes(&contextOrdinal, 2);
+  TZone::WriteTo(stream);
   stream->WriteBytes(&portTileIndex, 2);
 }
 
@@ -76,18 +70,7 @@ void TPortZone::Free() {
                                                               -1);
     }
   }
-  if (g_pMapActionContextListHead == this) {
-    g_pMapActionContextListHead = prevZone;
-  }
-  if (prevZone != 0) {
-    prevZone->nextZone = nextZone;
-  }
-  if (nextZone != 0) {
-    nextZone->prevZone = prevZone;
-  }
-  nextZone = 0;
-  prevZone = 0;
-  delete this;
+  TZone::Free();
 }
 
 // FUNCTION: IMPERIALISM 0x00561b10

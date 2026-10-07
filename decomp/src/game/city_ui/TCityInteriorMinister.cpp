@@ -251,12 +251,7 @@ void TCityInteriorMinister::PleaseBuildLandUnit(short unitType) {
 
 // FUNCTION: IMPERIALISM 0x004bef60
 void TCityInteriorMinister::WriteTo(TStream* stream) {
-  TMinister::WriteTo(stream);
-  stream->WriteBytes(&needTargetCursor, 2);
-  stream->WriteBytes(&field12, 2);
-  stream->WriteBytes(&capabilityFlag14, 2);
-  stream->WriteBytes(&capabilityFlag16, 2);
-  WriteShortArrayElems(stream, persistedReservedTable, 7);
+  TInteriorMinister::WriteTo(stream);
   stream->WriteBytes(&nextProductionBuildingOrdinal, 2);
   stream->WriteBytes(&pendingShipType, 2);
   stream->WriteBytes(&field34, 2);

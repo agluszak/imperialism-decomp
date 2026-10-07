@@ -312,15 +312,7 @@ void TGreatPower::Free(void) {
     turnStartEvents->FreeList();
   }
   turnStartEvents = 0;
-  if (militaryUnitList != 0) {
-    militaryUnitList->FreeList();
-  }
-  militaryUnitList = 0;
-  if (ownedRegionList != 0) {
-    ownedRegionList->Free();
-    ownedRegionList = 0;
-  }
-  delete this;
+  TCountry::Free();
 }
 
 // FUNCTION: IMPERIALISM 0x004d92e0

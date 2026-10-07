@@ -211,9 +211,7 @@ void TNavyMission::Reassess() {
   float numerator = 0.0f;
   float denominator = 0.0f;
 
-  ResetPriority();
-  CalculateImportance();
-  CalculateNeeds();
+  TMission::Reassess();
 
   missionTargetZone->IsVisibleToCountry(nationId);
 

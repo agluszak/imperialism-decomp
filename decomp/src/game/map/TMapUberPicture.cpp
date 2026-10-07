@@ -52,9 +52,7 @@ TMapUberPicture::~TMapUberPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00596a80
 void TMapUberPicture::DoPostCreate(int arg) {
-  TOffLimitsPicture::DoPostCreate(arg);
-
-  g_pAmbitApplication->edgeScrollTarget = this;
+  TMapUberUberPicture::DoPostCreate(arg);
 
   mapDialog = static_cast<TMapDialog*>(FindSubView(kControlTagDialog));
   mapDialog->AssertValid();
@@ -103,9 +101,7 @@ void TMapUberPicture::Free() {
   if (g_pUiAnimator != 0) {
     g_pUiAnimator->mapUberPicture = 0;
   }
-  g_pAmbitApplication->edgeScrollTarget = 0;
-  g_pAmbitApplication->cursorRegionInvalid = FALSE;
-  TOffLimitsPicture::Free();
+  TMapUberUberPicture::Free();
 }
 
 static CPoint g_MapUberModeSecondaryLayoutScratch(5, 0x1b);

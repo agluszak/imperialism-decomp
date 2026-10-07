@@ -116,11 +116,7 @@ bool TInvadeMission::SmokeEmIfYouGotEm() {
 // FUNCTION: IMPERIALISM 0x0053f580
 void TInvadeMission::Initialize() {
   beachhead->IMission(nationId);
-  requiredForces = 1;
-  if (targetProvince != -1) {
-    pathMarker =
-        static_cast<short>(g_pGlobalMapState->cityScoreTable[targetProvince].ownerNationCode);
-  }
+  TAttackProvinceMission::Initialize();
   requiredForces = 3;
 }
 

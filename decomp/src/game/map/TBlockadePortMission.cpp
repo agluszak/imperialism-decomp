@@ -47,18 +47,7 @@ void TBlockadePortMission::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x0053ace0
 void TBlockadePortMission::Initialize() {
-  float score = static_cast<float>(missionTargetZone->GetStrategicValue());
-
-  for (TZone* zone = TZone::GetFirstPort(); zone != NULL; zone = zone->GetNextPort()) {
-    TZone** ownerSlot = &zone->primaryNeighbors[0];
-    if (*ownerSlot == missionTargetZone) {
-      score *= (zone->GetPortOwnerNation() == nationId) ? g_PortZoneFriendlyMissionScoreMultiplier
-                                                        : g_PortZoneForeignMissionScoreMultiplier;
-    }
-  }
-
-  requiredForces = 0;
-  importanceScore = score / g_fMissionScoreNormalizationDivisor;
+  TControlSeaZoneMission::Initialize();
 }
 
 // FUNCTION: IMPERIALISM 0x0053adf0

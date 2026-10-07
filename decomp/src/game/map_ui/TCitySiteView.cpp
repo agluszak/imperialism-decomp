@@ -27,19 +27,7 @@ TCitySiteView::~TCitySiteView() {}
 
 // FUNCTION: IMPERIALISM 0x0051bff0
 void TCitySiteView::DoPostCreate(int arg) {
-  TWorldView::DoPostCreate(arg);
-
-  projectionScale = 1;
-  previewSquareRadius = 0x40;
-
-  RECT surfaceBounds = {0, 0, 0x1680, 0x40};
-  g_pDisplayMgr->MakeNewGWorld(quickDrawSurface, 8, surfaceBounds);
-
-  FlushCache();
-
-  g_pCitySiteCachedPrimaryRenderSurfaceContext = g_pPrimaryRenderSurfaceContext;
-  ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
-  ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagDialog);
+  TMapDialog::DoPostCreate(arg);
 
   static_cast<TMapUberPicture*>(ownerContext)->SetMapInteractionMode(4);
 

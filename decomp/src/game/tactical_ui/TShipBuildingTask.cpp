@@ -123,11 +123,7 @@ void TShipBuildingTask::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x005aea70
 void TShipBuildingTask::ReadFrom(TStream* stream) {
-  TObject::ReadFrom(stream);
-  stream->ReadBytes(&citySlotIndex, 2);
-  stream->ReadBytes(&remainingAttempts, 2);
-  stream->ReadBytes(&requestedAmount, 2);
-  stream->ReadBytes(&alreadyQueuedFlag, 2);
+  TCityTask::ReadFrom(stream);
   stream->ReadBytes(&requestedShipType, 2);
   stream->ReadBytes(&waitingForShipOrderAdvance, 2);
 }

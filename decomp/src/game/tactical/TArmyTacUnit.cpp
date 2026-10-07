@@ -73,11 +73,7 @@ void TArmyTacUnit::ApplyDamage(int damageA, int damageB) {
     morale = 0;
     status = 1;
   }
-  strength -= damageA;
-  if (strength <= 0) {
-    strength = 0;
-    status = 3;
-  }
+  TTacticalUnit::ApplyDamage(damageA, damageB);
 }
 
 // FUNCTION: IMPERIALISM 0x005a6210

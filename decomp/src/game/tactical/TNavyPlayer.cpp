@@ -51,11 +51,7 @@ void TNavyPlayer::ApplyChanges(unsigned char sideWonFlag) {
 
 // FUNCTION: IMPERIALISM 0x0059ee60
 void TNavyPlayer::RemoveCapturedUnit(TTacticalUnit* unit) {
-  CPtrList* entries = &unitList->listState;
-  POSITION pos = entries->Find(unit, 0);
-  if (pos != 0) {
-    entries->RemoveAt(pos);
-  }
+  TTacticalPlayer::RemoveCapturedUnit(unit);
 }
 
 // FUNCTION: IMPERIALISM 0x0059eea0

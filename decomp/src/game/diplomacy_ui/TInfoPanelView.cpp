@@ -31,8 +31,7 @@ IMPLEMENT_DYNCREATE(TInfoPanelView, TPanelView)
 
 // FUNCTION: IMPERIALISM 0x004fa010
 void TInfoPanelView::DoPostCreate(int arg) {
-  TView::DoPostCreate(arg);
-  diplomacyMapView = static_cast<TDiplomacyMapView*>(ownerContext);
+  TPanelView::DoPostCreate(arg);
 
   const short kOvrTagOffsets[4] = {0, 4, 1, 2};
   for (int i = 0; i < 4; i++) {
