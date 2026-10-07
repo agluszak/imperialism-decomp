@@ -32,9 +32,9 @@ public:
   static float ComputeCrossNationSupportVectorScore(int nodeContext);
   float AssessImmediateThreat();
 
-  void PropagateTargetTileToLinkedUnitsIfDifferent(short newTile);
+  void SetTargetTileForStack(short newTile);
 };
 
-bool IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex);
+bool IsTileCompatible(int tileIndex);
 
 ASSERT_SIZE(TDefendProvinceMission, 0x30);

@@ -26,7 +26,7 @@ TMilitaryPageView::~TMilitaryPageView() {}
 void TMilitaryPageView::DoPostCreate(int arg) {
   TPageView::DoPostCreate(arg);
   TView* okControl = ownerContext->FindSubView(kControlTagOkay);
-  LoadUiStringByGroupAndIndexToControlObject(0x2730, 0x22, okControl);
+  SetControlString(0x2730, 0x22, okControl);
   CString empty(g_szEmptyString);
   SetControlHoverHelpText(empty, this);
 }
@@ -65,7 +65,7 @@ void TMilitaryPageView::PrepareUnitCache(int bitmapResourceId, int width, int he
   TBitmapResourceLoader* loader = *loaderHandle;
   if (loader != 0) {
     unsigned char previousLoaderFlags = loader->flags;
-    loader->EnsureBitmapResourceLoadedAndCopyRectSize();
+    loader->LoadBitmapBounds();
     loader->flags |= 1;
     ResetQuickDrawStrokeState();
     BlitBitmapResourceLoaderToActiveDc(loaderHandle, &destination);

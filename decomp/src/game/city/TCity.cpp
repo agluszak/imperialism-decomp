@@ -692,7 +692,7 @@ void TCity::MakeTown(short selectedResourceType) {
   }
   town->ITown("Altown", 0, false, ownerNation->nationSlot);
   town->Free();
-  ownerNation->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+  ownerNation->CountResourceYields();
   ownerNation->treasuryValue = ownerNation->treasuryValue;
 }
 

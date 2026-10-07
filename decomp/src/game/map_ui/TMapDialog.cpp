@@ -177,8 +177,8 @@ double g_mapProjectionRowScale = DefaultMapCellScale();
 short g_mapProjectionSeamColumn = static_cast<short>(g_mapProjectionColumnScale * 512.0 + 1.0);
 
 // FUNCTION: IMPERIALISM 0x00512440
-void ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, const CPoint* viewportOrigin,
-                                                  short* outY, short* outX, short scale) {
+void ProjectTile(short tileIndex, const CPoint* viewportOrigin, short* outY, short* outX,
+                 short scale) {
   unsigned int row = tileIndex / kStrategicMapColumns;
   *outY = static_cast<short>(row) * 64 - static_cast<short>(viewportOrigin->y);
   short projectedX = static_cast<short>((tileIndex % kStrategicMapColumns) << 6) -
@@ -400,8 +400,7 @@ void TMapDialog::FrameCursorArea() {
   if (paintedMarker != -1 && tileMarkers[paintedMarker].flag) {
     short projectedY;
     short projectedX;
-    ProjectTileIndexToWrappedScreenOffsetByScale(paintedTile, &viewportOrigin, &projectedY,
-                                                 &projectedX, 1);
+    ProjectTile(paintedTile, &viewportOrigin, &projectedY, &projectedX, 1);
     CRect sourceRect(projectedX + 0x40, projectedY + 0x40, projectedX + 0x80, projectedY + 0x80);
     CRect destinationRect(projectedX, projectedY, projectedX + 0x40, projectedY + 0x40);
     BlitRectWithOptionalTransparency(g_pCitySiteCachedPrimaryRenderSurfaceContext->GetBlitSurface(),
@@ -421,8 +420,7 @@ void TMapDialog::FrameCursorArea() {
 
     short projectedY;
     short projectedX;
-    ProjectTileIndexToWrappedScreenOffsetByScale(oldNeighbor, &viewportOrigin, &projectedY,
-                                                 &projectedX, 1);
+    ProjectTile(oldNeighbor, &viewportOrigin, &projectedY, &projectedX, 1);
     CRect sourceRect(projectedX + 0x40, projectedY + 0x40, projectedX + 0x80, projectedY + 0x80);
     CRect destinationRect(projectedX, projectedY, projectedX + 0x40, projectedY + 0x40);
     BlitRectWithOptionalTransparency(g_pCitySiteCachedPrimaryRenderSurfaceContext->GetBlitSurface(),
@@ -435,8 +433,7 @@ void TMapDialog::FrameCursorArea() {
       activeUnitCategory == 5) {
     short projectedY;
     short projectedX;
-    ProjectTileIndexToWrappedScreenOffsetByScale(hoveredTile, &viewportOrigin, &projectedY,
-                                                 &projectedX, 1);
+    ProjectTile(hoveredTile, &viewportOrigin, &projectedY, &projectedX, 1);
     CRect hoveredRect(projectedX, projectedY, projectedX + 0x40, projectedY + 0x40);
     g_pViewMgr->SetForeColor(0x3f);
     QDFrameRect(&hoveredRect);
@@ -461,7 +458,7 @@ void TMapDialog::FrameNeighbors(short* neighborTiles) {
   g_pViewMgr->SetForeColor(0x3f);
 
   if (neighborTiles[0] != -1) {
-    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[0], viewOrigin, &outY, &outX, 1);
+    ProjectTile(neighborTiles[0], viewOrigin, &outY, &outX, 1);
     SetQuickDrawTextOriginWithContextOffset(outX, outY);
     DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY);
     DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY + 0x3f);
@@ -475,7 +472,7 @@ void TMapDialog::FrameNeighbors(short* neighborTiles) {
     }
   }
   if (neighborTiles[1] != -1) {
-    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[1], viewOrigin, &outY, &outX, 1);
+    ProjectTile(neighborTiles[1], viewOrigin, &outY, &outX, 1);
     SetQuickDrawTextOriginWithContextOffset(outX + 0x20, outY);
     DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY);
     DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY + 0x3f);
@@ -490,7 +487,7 @@ void TMapDialog::FrameNeighbors(short* neighborTiles) {
     }
   }
   if (neighborTiles[2] != -1) {
-    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[2], viewOrigin, &outY, &outX, 1);
+    ProjectTile(neighborTiles[2], viewOrigin, &outY, &outX, 1);
     SetQuickDrawTextOriginWithContextOffset(outX, outY + 0x3f);
     DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY + 0x3f);
     DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY);
@@ -504,7 +501,7 @@ void TMapDialog::FrameNeighbors(short* neighborTiles) {
     }
   }
   if (neighborTiles[3] != -1) {
-    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[3], viewOrigin, &outY, &outX, 1);
+    ProjectTile(neighborTiles[3], viewOrigin, &outY, &outX, 1);
     SetQuickDrawTextOriginWithContextOffset(outX + 0x3f, outY + 0x3f);
     DrawCenteredGuideLineOnMapDc(outX, outY + 0x3f);
     DrawCenteredGuideLineOnMapDc(outX, outY);
@@ -518,7 +515,7 @@ void TMapDialog::FrameNeighbors(short* neighborTiles) {
     }
   }
   if (neighborTiles[4] != -1) {
-    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[4], viewOrigin, &outY, &outX, 1);
+    ProjectTile(neighborTiles[4], viewOrigin, &outY, &outX, 1);
     SetQuickDrawTextOriginWithContextOffset(outX + 0x20, outY);
     DrawCenteredGuideLineOnMapDc(outX, outY);
     DrawCenteredGuideLineOnMapDc(outX, outY + 0x3f);
@@ -533,7 +530,7 @@ void TMapDialog::FrameNeighbors(short* neighborTiles) {
     }
   }
   if (neighborTiles[5] != -1) {
-    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[5], viewOrigin, &outY, &outX, 1);
+    ProjectTile(neighborTiles[5], viewOrigin, &outY, &outX, 1);
     SetQuickDrawTextOriginWithContextOffset(outX, outY + 0x3f);
     DrawCenteredGuideLineOnMapDc(outX, outY);
     DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY);
@@ -553,8 +550,7 @@ void TMapDialog::FrameNeighbors(short* neighborTiles) {
 void TMapDialog::InvalidateTile(short tileIndex) {
   int originalTileIndex = tileIndex;
   short projectedY;
-  ProjectTileIndexToWrappedScreenOffsetByScale(static_cast<short>(originalTileIndex),
-                                               &viewportOrigin, &projectedY, &tileIndex, 1);
+  ProjectTile(static_cast<short>(originalTileIndex), &viewportOrigin, &projectedY, &tileIndex, 1);
 
   CRect invalidateRect(tileIndex, projectedY, tileIndex + 0x40, projectedY + 0x40);
   DeCache(static_cast<short>(originalTileIndex));
@@ -603,8 +599,7 @@ void TMapDialog::ImmediateDrawTile(short tileIndex) {
 
   short projectedY;
   short projectedX;
-  ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin, &projectedY, &projectedX,
-                                               1);
+  ProjectTile(tileIndex, &viewportOrigin, &projectedY, &projectedX, 1);
   if (projectedY > -0x40 && projectedX > -0x40 && projectedX < 0x200 && projectedY < 0x1c0) {
     InvalidateTile(tileIndex);
   }
@@ -614,8 +609,7 @@ void TMapDialog::ImmediateDrawTile(short tileIndex) {
 bool TMapDialog::IsTileVisible(short tileIndex) {
   short projectedY;
   short projectedX;
-  ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin, &projectedY, &projectedX,
-                                               1);
+  ProjectTile(tileIndex, &viewportOrigin, &projectedY, &projectedX, 1);
   SetGlobalQuickDrawOrigin(static_cast<short>(absoluteX), static_cast<short>(absoluteY));
 
   CRect tileRect(projectedX, projectedY, projectedX + 0x40, projectedY + 0x40);
@@ -710,7 +704,7 @@ void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mod
 }
 
 // FUNCTION: IMPERIALISM 0x0051af60
-void TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites(int edgeMask) {
+void TMapDialog::ScrollMapPreview(int edgeMask) {
   short col;
   short row;
   short regionBand;
@@ -757,7 +751,7 @@ void TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites(int 
 }
 
 // FUNCTION: IMPERIALISM 0x0051b1c0
-void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileIndex, int unusedArg) {
+void TMapDialog::FillInfoPanel(short tileIndex, int unusedArg) {
   CString mainText;
   CString numberText;
   CString nameText;
@@ -853,17 +847,17 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
 }
 
 // FUNCTION: IMPERIALISM 0x0051e0b0
-void InitializeMapInteractionPreviewScaleXDefault() {
+void DefaultPreviewScaleX() {
   g_MapPreviewScaleX6A3410 = 0.015625;
 }
 
 // FUNCTION: IMPERIALISM 0x0051e0e0
-void InitializeMapInteractionPreviewScaleYDefault() {
+void DefaultPreviewScaleY() {
   g_MapPreviewScaleY6A33D0 = 0.015625;
 }
 
 // FUNCTION: IMPERIALISM 0x0051e110
-void RecomputeMapInteractionPreviewVerticalOffsetFromScale() {
+void ComputePreviewOffset() {
   g_MapPreviewVerticalOffset6A3448 = static_cast<short>(g_MapPreviewScaleY6A33D0 * 512.0 + 1.0);
 }
 
@@ -950,8 +944,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
         short tileIndex = TileIndexFromColumnRow(static_cast<int>(col), row);
         short projectedY;
         short projectedX;
-        ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin, &projectedY,
-                                                     &projectedX, 1);
+        ProjectTile(tileIndex, &viewportOrigin, &projectedY, &projectedX, 1);
         if (projectedX >= rectBuffer->right) {
           continue;
         }
@@ -983,8 +976,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
               g_pUiAnimator->FindAni(animationTag) == 0) {
             short animationY;
             short animationX;
-            ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin, &animationY,
-                                                         &animationX, 1);
+            ProjectTile(tileIndex, &viewportOrigin, &animationY, &animationX, 1);
             RECT animationRect = {animationX, animationY, animationX + 0x40, animationY + 0x40};
             TCivAnimation2* animation =
                 new TCivAnimation2(this, &animationRect, unit->orderType, animationTag);
@@ -1029,7 +1021,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
     overlayClip.right += 0x80;
     overlayClip.bottom += 0x80;
     ClipRect(&overlayClip);
-    DrawGeneratedMapRouteSegmentsAndResetFillColor();
+    DrawRatLines();
     ResetQuickDrawStrokeState();
     SetGWorld(savedSurface, savedSurfaceFlags);
     SetClip(savedClip.tempRgn);
@@ -1073,9 +1065,9 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   if (!usedWrappedSeamTile) {
     short sourceOffset;
     if (isOcean) {
-      sourceOffset = g_pGlobalMapState->LookupTileSpriteVariantOffsetByAdjacencyMaskB(tileIndex);
+      sourceOffset = g_pGlobalMapState->GetAdjacencySpriteOffset(tileIndex);
     } else {
-      sourceOffset = g_pGlobalMapState->LookupTileSpriteVariantOffsetByTerrainAndGate(tileIndex);
+      sourceOffset = g_pGlobalMapState->GetTerrainSpriteOffset(tileIndex);
     }
 
     NewCopy64(sourcePixels + sourceOffset, destinationPixels, sourceStride, destinationStride);
@@ -1085,14 +1077,10 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
         int directionBit = 1 << direction;
         unsigned char* transitionSource = 0;
         if ((terrain.adjacencyMaskA0a & directionBit) != 0) {
-          transitionSource =
-              sourcePixels +
-              g_pGlobalMapState->LookupTileSpriteVariantOffsetByGateAndVariant(tileIndex);
+          transitionSource = sourcePixels + g_pGlobalMapState->GetGateSpriteOffset(tileIndex);
         } else if ((terrain.adjacencyMaskB0b & directionBit) != 0 &&
                    terrain.GetTerrainKind() != kStrategicTerrainDesert) {
-          transitionSource =
-              sourcePixels +
-              g_pGlobalMapState->LookupTileSpriteVariantOffsetByGateAndVariantAlt(tileIndex);
+          transitionSource = sourcePixels + g_pGlobalMapState->GetAltGateSpriteOffset(tileIndex);
         }
 
         if (transitionSource != 0) {
@@ -1248,8 +1236,8 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   const bool cityOverlayVisible = mapOwner->activeUnitCategoryIndex != 4;
 
   if ((activeFlags & 3) != 0 && terrain.gateFlag != 0 && cityOverlayVisible) {
-    int improvementOffset = g_pGlobalMapState->GetMapImprovementOffsetByActiveFlagsAndCityStage(
-        tileIndex, terrain.formerOwnerNationTag);
+    int improvementOffset =
+        g_pGlobalMapState->GetImprovementOffset(tileIndex, terrain.formerOwnerNationTag);
     Blit64x64StrategicMapAtlasTile(g_pMacViewMgr->improvementTileWorld, quickDrawSurface,
                                    improvementOffset, tileRect);
   }
@@ -1267,7 +1255,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
     if (terrain.cityRecordIndex >= 0 && terrain.cityRecordIndex < kProvinceCount) {
       int fortLevel = g_pGlobalMapState->cityScoreTable[terrain.cityRecordIndex].fortLevel;
       if (fortLevel != 0) {
-        int fortOffset = g_pGlobalMapState->GetMapImprovementBitmapRowOffsetForIndex(fortLevel - 1);
+        int fortOffset = g_pGlobalMapState->GetImprovementRowOffset(fortLevel - 1);
         Blit64x64StrategicMapAtlasTile(g_pMacViewMgr->improvementTileWorld, quickDrawSurface,
                                        fortOffset, tileRect);
       }
@@ -1374,9 +1362,9 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
 
     if (!g_pDiplomacyTurnStateManager->IsGreatPower(terrain.ownerNationTag) &&
         terrain.secondaryOwnerNationTag != -1) {
-      g_pMacViewMgr->BlitStrategicMapUnitActivityOverlayFrame(
-          destinationSurfaceObject, terrain.secondaryOwnerNationTag,
-          static_cast<short>(screenX + 0x1e), static_cast<short>(screenY + 0x14));
+      g_pMacViewMgr->BlitActivityFrame(destinationSurfaceObject, terrain.secondaryOwnerNationTag,
+                                       static_cast<short>(screenX + 0x1e),
+                                       static_cast<short>(screenY + 0x14));
     }
   }
 
@@ -1396,7 +1384,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
         SetQuickDrawTextFont(4);
         SetQuickDrawTextSize(9);
         SetQuickDrawTextFace(0);
-        int labelX = screenX - MeasureTextExtentWithCachedQuickDrawStyle(&cityName) / 2;
+        int labelX = screenX - MeasureText(&cityName) / 2;
         if ((neighbor.activeFlags & 1) == 0) {
           labelX -= 10;
         }
@@ -1426,7 +1414,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
         SetQuickDrawTextFont(4);
         SetQuickDrawTextSize(9);
         SetQuickDrawTextFace(0);
-        int labelX = screenX + 0x40 - MeasureTextExtentWithCachedQuickDrawStyle(&cityName) / 2;
+        int labelX = screenX + 0x40 - MeasureText(&cityName) / 2;
         if ((neighbor.activeFlags & 1) == 0) {
           labelX -= 10;
         }
@@ -1449,7 +1437,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   } else if (tileIndex == g_pGlobalMapState->pendingRiverMouthTile && isOcean) {
     g_pViewMgr->SetForeColor(3);
     CRect selectionRect(screenX + 0x20, screenY + 0x20, screenX + 0x21, screenY + 0x21);
-    FillRectWithQuickDrawBrushAndContextOffset(&selectionRect);
+    FillContextRect(&selectionRect);
   }
 
   if (isOcean) {
@@ -2277,7 +2265,7 @@ void TMapDialog::DrawHexNeighborConnectionMask(unsigned char connectionMask, int
 }
 
 // FUNCTION: IMPERIALISM 0x00523060
-void TMapDialog::DrawGeneratedMapRouteSegmentsAndResetFillColor() {
+void TMapDialog::DrawRatLines() {
   g_pViewMgr->SetForeColor(0x3c);
 
   int viewportRowPixels = viewportOrigin.y;
@@ -2381,8 +2369,7 @@ void TMapDialog::DrawUnit(TCivUnit* orderEntry, int projectedX, int projectedY, 
     if (g_pUiAnimator->FindAni(animationTag) == 0) {
       short animationY;
       short animationX;
-      ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin, &animationY,
-                                                   &animationX, 1);
+      ProjectTile(tileIndex, &viewportOrigin, &animationY, &animationX, 1);
       CRect animationRect(animationX, animationY, animationX + 0x40, animationY + 0x40);
       TCivAnimation2* animation =
           new TCivAnimation2(this, &animationRect, orderEntry->orderType, animationTag);
@@ -2525,8 +2512,7 @@ void TMapDialog::DrawGarrison(short tileIndex, CRect* dstRect, int flag) {
 }
 
 // FUNCTION: IMPERIALISM 0x00523ff0
-void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
-                                                               bool altOverlay) {
+void TMapDialog::DrawFleet(short tileIndex, CRect* dstRect, bool altOverlay) {
   MapTileActionStateStorage tileActionClass =
       g_pGlobalMapState->terrainStateTable[tileIndex].tileActionState;
   if (tileActionClass < 0 || tileActionClass >= kMapTileActionStateOceanAtlasFrameCount) {
@@ -2735,9 +2721,8 @@ void TMapDialog::NewCopy64(unsigned char* src, unsigned char* dest, short srcStr
 void TMapDialog::TileID2TileTopLeft(int tileIndex, const CPoint* viewportOrigin,
                                     short* outVerticalOffset, short* outHorizontalOffset,
                                     int projectionScale) {
-  ProjectTileIndexToWrappedScreenOffsetByScale(static_cast<short>(tileIndex), viewportOrigin,
-                                               outVerticalOffset, outHorizontalOffset,
-                                               static_cast<short>(projectionScale));
+  ProjectTile(static_cast<short>(tileIndex), viewportOrigin, outVerticalOffset, outHorizontalOffset,
+              static_cast<short>(projectionScale));
 }
 
 // Projects a tile index into a staggered grid point relative to a reference tile.

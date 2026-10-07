@@ -261,12 +261,11 @@ private:
     const short resourceType = shipOrder->resourceTypeIndex;
     TGreatPower* owner = shipOrder->ownerCity->ownerNation;
     shipOrder->Produce();
-    owner->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
+    owner->ComputeAidBudget();
     const short expectedCapacity = static_cast<short>(
         shipBefore.merchantCapacity + TShip::GetTypeCargoHold(resourceType) * completedQuantity);
     const int expectedArms =
-        shipBefore.armsInNavy +
-        GetIndustryActionCostWeightByResourceType(resourceType) * completedQuantity;
+        shipBefore.armsInNavy + GetIndustryCostWeight(resourceType) * completedQuantity;
     return shipOrder->quantity == 0 &&
            shipOrder->ownerCity->orderCountByType[resourceType] ==
                shipBefore.shipCount + completedQuantity &&
@@ -413,7 +412,7 @@ private:
             }
           }
         }
-        if (zone->CountDiplomaticallyRelatedNationsInKeyMask(nation) != expected) {
+        if (zone->CountEnemiesPresent(nation) != expected) {
           return false;
         }
       }

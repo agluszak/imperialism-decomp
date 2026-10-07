@@ -4,9 +4,8 @@
 #include "game/globals/global_types.h"
 
 // FUNCTION: IMPERIALISM 0x005d48c0
-void FormatAndAssignTurnStateSharedTextFromTemplate(int codeA, int codeB, char* sourceTag,
-                                                    char* context, int lineNumber,
-                                                    char* compileDate, char* compileTime) {
+void FormatTurnText(int codeA, int codeB, char* sourceTag, char* context, int lineNumber,
+                    char* compileDate, char* compileTime) {
   CString codeAText;
   CString codeBText;
   CString lineText;

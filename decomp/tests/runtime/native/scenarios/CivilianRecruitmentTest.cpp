@@ -273,8 +273,7 @@ private:
     }
 
     const unsigned short classifiedToken =
-        g_pSelectedCivilianOrderState->LookupCivilianTileOrderCursorTokenByActionIndex(targetTile,
-                                                                                       band);
+        g_pSelectedCivilianOrderState->GetCivilianTileCursor(targetTile, band);
     if (classifiedToken != expectedToken) {
       CString detail;
       detail.Format("the cursor classifier chose %d for tile %d, not the expected %d",
@@ -535,8 +534,7 @@ private:
     TAnimation* animation = RenderAndResolveOrderedProspectorAnimation();
     TCivUnit* tileCivilian = g_pGlobalMapState->GetMyFirstUnit(targetHillTile, ActiveNation());
     const unsigned short reportCursor =
-        g_pSelectedCivilianOrderState->ResolveCivilianTileSelectionOrReportActionCode(
-            targetHillTile, 0);
+        g_pSelectedCivilianOrderState->GetCivilianTileAction(targetHillTile, 0);
     const bool animationAdvanced =
         animation != 0 && (animation->frameIndex != initialAnimationFrame ||
                            animation->ticksSinceFrameChange != initialAnimationTick);
@@ -679,8 +677,8 @@ private:
     CPoint targetPoint;
     short targetBand;
     if (!FindVisiblePointForTile(mapDialog, targetSurveyMissTile, &targetPoint, &targetBand) ||
-        g_pSelectedCivilianOrderState->LookupCivilianTileOrderCursorTokenByActionIndex(
-            targetSurveyMissTile, targetBand) != kProspectableCursor) {
+        g_pSelectedCivilianOrderState->GetCivilianTileCursor(targetSurveyMissTile, targetBand) !=
+            kProspectableCursor) {
       return RuntimeActionResult::Failure(
           "the unsuccessful prospecting tile lost its retail cursor route");
     }
@@ -809,8 +807,8 @@ private:
     }
 
     if (g_pSelectedCivilianOrderState->ResolveCivilianTileOrderActionCode(workableTile, 0) != 9 ||
-        g_pSelectedCivilianOrderState->LookupCivilianTileOrderCursorTokenByActionIndex(
-            workableTile, 0) != g_civilianTileOrderCursorTokenTable[9]) {
+        g_pSelectedCivilianOrderState->GetCivilianTileCursor(workableTile, 0) !=
+            g_civilianTileOrderCursorTokenTable[9]) {
       return RuntimeActionResult::Failure(
           "the workable tile did not retain the retail action and cursor route");
     }
@@ -831,8 +829,8 @@ private:
     CPoint targetPoint;
     short targetBand;
     if (!FindVisiblePointForTile(mapDialog, targetFarmerTile, &targetPoint, &targetBand) ||
-        g_pSelectedCivilianOrderState->LookupCivilianTileOrderCursorTokenByActionIndex(
-            targetFarmerTile, targetBand) != g_civilianTileOrderCursorTokenTable[9]) {
+        g_pSelectedCivilianOrderState->GetCivilianTileCursor(targetFarmerTile, targetBand) !=
+            g_civilianTileOrderCursorTokenTable[9]) {
       return RuntimeActionResult::Failure("the improvement tile lost its retail cursor route");
     }
     mapDialog->NormalClick(targetFarmerTile, targetBand);

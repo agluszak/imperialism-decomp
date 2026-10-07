@@ -24,13 +24,11 @@ public:
 
   void AllocateRecordList();
 
-  void InitializeBattleSetupAndMaybeShowTacticalView(class TArmyStack* ourStack,
-                                                     class TArmyStack* enemyStack,
-                                                     int compositionClass, int fortLevel,
-                                                     int battleSiteIndex);
+  void SetUpBattle(class TArmyStack* ourStack, class TArmyStack* enemyStack, int compositionClass,
+                   int fortLevel, int battleSiteIndex);
 
   void LoadMap(int compositionClass, int fortLevel);
 
-  void ComputeBattlefieldColumnCountFromUnitRanges();
+  void GetBattlefieldColumns();
 };
 ASSERT_SIZE(TArmyBattle, 0x78);

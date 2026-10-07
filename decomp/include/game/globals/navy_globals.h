@@ -62,8 +62,7 @@ struct TNavyOrderResourceDescriptor {
 ASSERT_SIZE(TNavyOrderResourceDescriptor, 0x24);
 
 void RecomputeGlobalCapabilityAverages(void);
-void FormatLocalizedCommodityCountLabelByIndex(CString* out, unsigned int commodityCode,
-                                               short count);
+void FormatCommodityCount(CString* out, unsigned int commodityCode, short count);
 int GetNavyOrderCategoryBaseline(int category);
 
 extern short g_awMapContextActionLabelTokenByCommand[17];

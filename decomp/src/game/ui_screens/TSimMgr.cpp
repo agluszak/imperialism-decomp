@@ -507,7 +507,7 @@ void TSimMgr::CreatePlanet(int rebuild, const char* mapName, int wrapHorizontall
   if (!g_bMultiplayerScenarioSetupActive) {
     CString flavorName;
     for (i = 0; i < 23; ++i) {
-      SetSharedStringFromMappedFlavorTextWithLengthClamp(&flavorName, i);
+      SetFlavorTextClamped(&flavorName, i);
       sharedTextSlots[i] = flavorName;
     }
   }
@@ -611,11 +611,11 @@ void TSimMgr::CreateCountries(int activate) {
   }
 
   if (!g_bMultiplayerScenarioSetupActive) {
-    g_pDiplomacyTurnStateManager->RebuildCivilianOrderCompatibilityMatrices();
+    g_pDiplomacyTurnStateManager->RebuildRelationMatrices();
     g_pViewMgr->GenerateRegions();
     g_pTechMgr->GenerateTables();
     g_pGlobalMapState->GenerateProvinceNames();
-    RegenerateAllMapActionContextStatusCodes();
+    RegenerateZoneCodes();
     g_pNewsMgr->AddMiscEvent(999, 1, true);
     g_pNewsMgr->AddMiscEvent(999, 2, true);
 
@@ -661,7 +661,7 @@ void TSimMgr::CreateGreatPower(int slotIndex, char activate) {
     g_apTerrainTypeDescriptorTable[nationIndex] = g_apNationStates[nationIndex];
     if (!g_bMultiplayerScenarioSetupActive) {
       activeNationSlot = nationSlot;
-      g_pMacViewMgr->RefreshCityCapabilityUiHandlesForActiveNation();
+      g_pMacViewMgr->ReloadCityArt();
     }
     if (!g_bMultiplayerScenarioSetupActive) {
       bool suspendPrimaryEventQueue = multiplayerSessionRole != kSessionRoleStandalone;
@@ -671,7 +671,7 @@ void TSimMgr::CreateGreatPower(int slotIndex, char activate) {
       if (activate != 0) {
         TGreatPower* nationState = g_apNationStates[nationIndex];
         TCity* city = nationState != NULL ? nationState->city : NULL;
-        nationState->ApplyScenarioRelationPresetAndSpawnFrogCity(city);
+        nationState->PlaceScenarioCapital(city);
       }
       bool resumePrimaryEventQueue = multiplayerSessionRole != kSessionRoleStandalone;
       if (resumePrimaryEventQueue) {
@@ -686,8 +686,7 @@ void TSimMgr::CreateGreatPower(int slotIndex, char activate) {
 
     {
       CString nationName(g_pGameFlowState->nationDisplayNameSlots[nationIndex]);
-      g_apTerrainTypeDescriptorTable[nationIndex]->SetNationDisplayNameAndLocalizationSlotRef(
-          nationName);
+      g_apTerrainTypeDescriptorTable[nationIndex]->SetDisplayName(nationName);
     }
     {
       CString nationName(g_pGameFlowState->nationDisplayNameSlots[nationIndex]);
@@ -696,7 +695,7 @@ void TSimMgr::CreateGreatPower(int slotIndex, char activate) {
 
     if (activate != 0 && scenarioMapIndexPlusOne != 0) {
       TCity* city = pTVar5 != NULL ? pTVar5->city : NULL;
-      pTVar5->ApplyScenarioRelationPresetAndSpawnFrogCity(city);
+      pTVar5->PlaceScenarioCapital(city);
     }
   } else if (setupMode == 3) {
     TGreatPower* pTVar5 = (TGreatPower*)new TProxyGreatPower();
@@ -707,14 +706,13 @@ void TSimMgr::CreateGreatPower(int slotIndex, char activate) {
     if (!g_bMultiplayerScenarioSetupActive) {
       if (activate != 0) {
         TCity* city = pTVar5 != NULL ? pTVar5->city : NULL;
-        pTVar5->ApplyScenarioRelationPresetAndSpawnFrogCity(city);
+        pTVar5->PlaceScenarioCapital(city);
       }
       g_pDiplomacyTurnStateManager->SetRelationship(slotIndex, slotIndex, 0x100);
     }
     {
       CString nationName(g_pGameFlowState->nationDisplayNameSlots[nationIndex]);
-      g_apTerrainTypeDescriptorTable[nationIndex]->SetNationDisplayNameAndLocalizationSlotRef(
-          nationName);
+      g_apTerrainTypeDescriptorTable[nationIndex]->SetDisplayName(nationName);
     }
     {
       CString nationName(g_pGameFlowState->nationDisplayNameSlots[nationIndex]);
@@ -731,7 +729,7 @@ void TSimMgr::CreateGreatPower(int slotIndex, char activate) {
     if (!g_bMultiplayerScenarioSetupActive) {
       if (activate != 0) {
         TCity* city = pTVar5 != NULL ? pTVar5->city : NULL;
-        pTVar5->ApplyScenarioRelationPresetAndSpawnFrogCity(city);
+        pTVar5->PlaceScenarioCapital(city);
       }
       pTVar5->CreateInitialMissions();
       pTVar5->NameUnits();
@@ -746,8 +744,7 @@ void TSimMgr::CreateGreatPower(int slotIndex, char activate) {
     if (useSessionDisplayName) {
       {
         CString nationName(g_pGameFlowState->nationDisplayNameSlots[nationIndex]);
-        g_apTerrainTypeDescriptorTable[nationIndex]->SetNationDisplayNameAndLocalizationSlotRef(
-            nationName);
+        g_apTerrainTypeDescriptorTable[nationIndex]->SetDisplayName(nationName);
       }
       {
         CString nationName(g_pGameFlowState->nationDisplayNameSlots[nationIndex]);
@@ -756,8 +753,7 @@ void TSimMgr::CreateGreatPower(int slotIndex, char activate) {
     } else {
       {
         CString nationName(g_cstrCountryNameSettingValue);
-        g_apTerrainTypeDescriptorTable[nationIndex]->SetNationDisplayNameAndLocalizationSlotRef(
-            nationName);
+        g_apTerrainTypeDescriptorTable[nationIndex]->SetDisplayName(nationName);
       }
       {
         CString nationName(g_cstrCountryNameSettingValue);
@@ -1066,7 +1062,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case kGamePhaseTrade: {
     turnStateCode = kGamePhaseCivilians;
-    g_pDiplomacyTurnStateManager->SelectPriorityNationIndicesForMinorCapabilityRows();
+    g_pDiplomacyTurnStateManager->PickMinorPriorities();
     if (multiplayerSessionRole != kSessionRoleStandalone) {
       g_pGameFlowState->SetSyncPhases(mode, turnStateCode);
       g_pSfxPlaybackSystem->SetActiveAudioCueAndResetQueue(4, true);
@@ -1118,7 +1114,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       if (nation == NULL) {
         continue;
       }
-      if (!nation->UpdateGreatPowerPressureStateAndDispatchEscalationMessage()) {
+      if (!nation->CheckBankruptcy()) {
         continue;
       }
       TGreatPower* activeNation = g_apNationStates[activeNationSlot];
@@ -1256,7 +1252,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     turnStateCode = kGamePhaseEndTurn;
     g_pAssetMgr->OpenFilesFor(0x13);
     g_pGlobalMapState->ShowMap();
-    g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
+    g_pViewMgr->RefreshNationIndicator();
     for (short nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
       TGreatPower* nation = g_apNationStates[nationSlot];
       if (nation == NULL || nationSlot == -1) {
@@ -1444,7 +1440,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case kGamePhaseOptionalTransport:
     turnStateCode = kGamePhaseShowMap;
-    g_apNationStates[activeNationSlot]->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+    g_apNationStates[activeNationSlot]->CountResourceYields();
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventTransport), activeNationSlot);
     break;
 
@@ -1513,7 +1509,7 @@ void TSimMgr::DoCityAndTransport() {
       (*nation)->CalculatePotentials();
       (*nation)->ExecuteNationPendingActionStateMachine();
       (*nation)->FinishCityPhase();
-      (*nation)->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
+      (*nation)->ComputeAidBudget();
     }
     --nation;
     --nationSlot;
@@ -1571,7 +1567,7 @@ void TSimMgr::DoTrade() {
     }
   }
 
-  g_pTradeMgr->ResetNationMetricRowsAndClearCategoryRankLists();
+  g_pTradeMgr->ResetTradeRows();
   g_pTradeMgr->StartTradePhase();
   g_pTradeMgr->SetMinorsTradeBids();
   g_pTradeMgr->TallyTradeBids();
@@ -1971,7 +1967,7 @@ void TSimMgr::AddHighScore() {
 
 // Random-game setup resets the existing manager; other events replace it.
 // FUNCTION: IMPERIALISM 0x00581870
-void ReinitializeGameFlowAndPostTurnEventCode(TurnEventId eventCode) {
+void RestartGameFlow(TurnEventId eventCode) {
   if (g_pHelpMgr != 0) {
     g_pHelpMgr->CheckHelp(kTurnEventMainMenu);
   }
@@ -2099,7 +2095,7 @@ void TSimMgr::ProcessScenarioScript() {
   for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     TGreatPower* nation = g_apNationStates[nationSlot];
     nation->NameUnits();
-    nation->MarkStatusFlag5HandledIfCapabilityActive();
+    nation->MarkStatus5Handled();
   }
 
   newsEventsSuppressed = false;
@@ -2134,7 +2130,7 @@ void TSimMgr::ScSetLabor(STurnInstructionCursor* instruction) {
   city->productionSummary->SetPopulation(static_cast<int>(tierAToken), static_cast<int>(tierBToken),
                                          static_cast<int>(tierCToken));
 
-  g_apNationStates[ownerToken]->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+  g_apNationStates[ownerToken]->CountResourceYields();
 
   if (g_apNationStates[ownerToken]->interiorMinister != NULL) {
     g_apNationStates[ownerToken]->interiorMinister->SetCityPolicies();
@@ -2294,7 +2290,7 @@ void TSimMgr::ScAddShip(STurnInstructionCursor* instruction) {
 
   int remaining = countToken;
   while (remaining != 0) {
-    CreateNavyPrimaryOrderNodeAndAssignDisplayName(orderType, context, nationSlot, 0);
+    CreateAdmiral(orderType, context, nationSlot, 0);
     --remaining;
   }
 }
@@ -2568,8 +2564,7 @@ void TSimMgr::ScSetCountryName(STurnInstructionCursor* instruction) {
   CString unusedNamePartC;
 
   int countryIndex = countryToken;
-  g_apTerrainTypeDescriptorTable[countryIndex]->SetNationDisplayNameAndLocalizationSlotRef(
-      countryName);
+  g_apTerrainTypeDescriptorTable[countryIndex]->SetDisplayName(countryName);
   g_apTerrainTypeDescriptorTable[countryIndex]->identitySharedString1 = countryName;
 }
 
@@ -2680,7 +2675,7 @@ void TSimMgr::ScSetTransportBar(STurnInstructionCursor* instruction) {
   int value = valueToken;
 
   if (g_apNationStates[ownerToken]->needCurrentByType[needIndex] < value) {
-    g_apNationStates[ownerToken]->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+    g_apNationStates[ownerToken]->CountResourceYields();
   }
 
   if (typeToken == 0 || typeToken == 0x14) {
@@ -2706,7 +2701,7 @@ void TSimMgr::ScClearTransport(STurnInstructionCursor* instruction) {
   DECODE_SCENARIO_DWORD_TOKEN(nationToken);
   int nation = nationToken;
 
-  g_apNationStates[nation]->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+  g_apNationStates[nation]->CountResourceYields();
   for (int needIndex = 0; needIndex < 23; ++needIndex) {
     g_apNationStates[nation]->UpdateNeedTargetAndAccumulateOverCap(static_cast<short>(needIndex),
                                                                    0);
@@ -2742,7 +2737,7 @@ void TSimMgr::ScSetCouncilMeeting(STurnInstructionCursor* instruction) {
 // FUNCTION: IMPERIALISM 0x005837c0
 void TSimMgr::SetPlayerCountry(NationSlot nationSlot) {
   activeNationSlot = nationSlot;
-  g_pMacViewMgr->RefreshCityCapabilityUiHandlesForActiveNation();
+  g_pMacViewMgr->ReloadCityArt();
 }
 
 // FUNCTION: IMPERIALISM 0x005d4c10

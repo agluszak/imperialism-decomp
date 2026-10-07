@@ -30,7 +30,7 @@ public:
 
   void IScrollBarView(class TScrollView* panel, int* offsetLayout, int* sizeLayout);
 
-  void RefreshCityDialogScrollableViewportWithQuickDrawContext();
+  void RefreshCityViewport();
   void SetThumb(int percent, unsigned char refresh);
 };
 ASSERT_SIZE(TScrollBarView, 0x94);

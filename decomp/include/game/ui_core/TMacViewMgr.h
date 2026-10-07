@@ -53,9 +53,9 @@ public:
                                       TCityProductionView* productionView);
   virtual void UpdateCityScreen();
   virtual void CloseBuilding(short buildingSlot);
-  virtual void ClearActiveCityProductionViewAndDiscardRegion();
+  virtual void CloseCityView();
   virtual void CreateMapArtStorage();
-  virtual void RefreshActiveGoldControlAndUiRuntimeState();
+  virtual void RefreshGoldControl();
   virtual void GenerateMiniMap();
   virtual void GenerateRegions();
   virtual void RegenerateCountryRegions();
@@ -95,11 +95,10 @@ public:
 
   TMacViewMgr();
   void IMacViewMgr();
-  void BlitStrategicMapUnitActivityOverlayFrame(TBitmapSurfaceNode** destinationSurface,
-                                                short overlayFrameIndex, short destinationX,
-                                                short destinationYFromBottom);
-  void BuildStrategicMapGaugeAtlasFrom1422And1423();
-  void RefreshCityCapabilityUiHandlesForActiveNation();
+  void BlitActivityFrame(TBitmapSurfaceNode** destinationSurface, short overlayFrameIndex,
+                         short destinationX, short destinationYFromBottom);
+  void CreateIngotsGWorlds();
+  void ReloadCityArt();
   void CreateIndexedGWorlds();
   void ReloadMapArtAtlases();
 };

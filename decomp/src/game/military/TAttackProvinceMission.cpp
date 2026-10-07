@@ -316,8 +316,7 @@ void TAttackProvinceMission::CalculateNeeds() {
   if (targetProvince >= 0 && targetProvince <= 0x17f) {
     for (TMilitaryUnit* unit = g_pGlobalMapState->cityScoreTable[targetProvince].stationedUnitChain;
          unit != NULL; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
-      AccumulateUnitOrderPriorityVectorContribution(unit, vector, 1.0f,
-                                                    static_cast<float>(unitOrderWeight));
+      AddUnitToPriorityVector(unit, vector, 1.0f, static_cast<float>(unitOrderWeight));
     }
   }
 

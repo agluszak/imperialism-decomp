@@ -9,8 +9,7 @@
 #include "game/mfc.h"
 
 // FUNCTION: IMPERIALISM 0x004b1710
-void TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel(int* offsetLayout, int fieldIndex,
-                                                              short value, int fieldTag) {
+void TGPCheater::BuildNumberDialog(int* offsetLayout, int fieldIndex, short value, int fieldTag) {
   int valueFieldSize[2] = {0x20, 0x16};
   TNumberText* valueField = new TNumberText();
   valueField->INumberText(this, offsetLayout, valueFieldSize, value, 0xffff8ad0, 3000);
@@ -39,20 +38,15 @@ void TGPCheater::IGPCheater(TView* panel) {
   int rowLayout[2];
   rowLayout[0] = 0;
   rowLayout[1] = 0x40;
-  ConstructNumericEntryDialogCoreAndValueLabel(rowLayout, 0, 0,
-                                               IMPERIALISM_FOURCC('t', 'r', 'e', 'a'));
+  BuildNumberDialog(rowLayout, 0, 0, IMPERIALISM_FOURCC('t', 'r', 'e', 'a'));
   rowLayout[1] = 0x58;
-  ConstructNumericEntryDialogCoreAndValueLabel(rowLayout, 3, 0,
-                                               IMPERIALISM_FOURCC('m', 'e', 'r', 'c'));
+  BuildNumberDialog(rowLayout, 3, 0, IMPERIALISM_FOURCC('m', 'e', 'r', 'c'));
   rowLayout[1] = 0x70;
-  ConstructNumericEntryDialogCoreAndValueLabel(rowLayout, 4, 0,
-                                               IMPERIALISM_FOURCC('t', 'c', 'a', 'p'));
+  BuildNumberDialog(rowLayout, 4, 0, IMPERIALISM_FOURCC('t', 'c', 'a', 'p'));
   rowLayout[1] = 0x88;
-  ConstructNumericEntryDialogCoreAndValueLabel(rowLayout, 5, 0,
-                                               IMPERIALISM_FOURCC('s', 'a', 'l', 'e'));
+  BuildNumberDialog(rowLayout, 5, 0, IMPERIALISM_FOURCC('s', 'a', 'l', 'e'));
   rowLayout[1] = 0x9e;
-  ConstructNumericEntryDialogCoreAndValueLabel(rowLayout, 6, 0,
-                                               IMPERIALISM_FOURCC('p', 'u', 'r', 'c'));
+  BuildNumberDialog(rowLayout, 6, 0, IMPERIALISM_FOURCC('p', 'u', 'r', 'c'));
 }
 
 // FUNCTION: IMPERIALISM 0x004b1cb0

@@ -30,7 +30,7 @@ public:
   char pad0a[2];
   TTaskForce* pendingOrderEntry;
 
-  void RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short nationSlot);
+  void FreeShipsOfNation(short nationSlot);
   void PrepareToCarryOutAllOrders(short phaseId);
   void MakeSureAllShipsHaveOrders();
 
@@ -67,7 +67,7 @@ public:
   bool TryMerchantInterception(TMapOrderInteractionSelection* outResult, TZone* portZoneContext,
                                short nation, short offerAmount);
 
-  void ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode);
+  void ResolveNavalInteractions(short mode);
 
   void CarryOutOrders();
 

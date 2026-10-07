@@ -31,7 +31,7 @@ void TimelyNetMessagePrefix::SetTimeEmitPacketGameFlowTurnId() {
 }
 
 // FUNCTION: IMPERIALISM 0x005438e0
-TimelyMessageHeader* TimelyMessageHeader::InitializeEmitEventHeaderWithActiveNation() {
+TimelyMessageHeader* TimelyMessageHeader::InitializeTimelyHeader() {
   messageTag = kControlTagTime; // 'time'
   activeNationId = static_cast<unsigned char>(g_pSimMgr->GetPlayerCountry());
   return this;

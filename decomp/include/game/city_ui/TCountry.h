@@ -74,15 +74,15 @@ public:
   int GetTotalLandForce(void);
   int GetLandForceIn(int nodeIndex);
 
-  void InitializeNationStateIdentityAndOwnedRegionList(NationSlot nationSlot);
+  void InitializeIdentity(NationSlot nationSlot);
   void GenerateEthnicName(CString* out) const;
   void FormatOverlayTerrainLabelText(CString* out);
   void GetName(CString* destString);
   void GetNameWithCode(CString* destString);
   int GetArmsInArmy();
-  void AssignSharedStringFromDescriptorNameOrDefault(CString* out);
+  void GetDisplayNameWithCode(CString* out);
 
-  void SetNationDisplayNameAndLocalizationSlotRef(const CString& name);
+  void SetDisplayName(const CString& name);
 
   void SetCenterTile(int value);
 

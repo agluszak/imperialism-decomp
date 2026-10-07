@@ -5,8 +5,8 @@
 
 struct TQuickDrawSurfaceContext;
 
-void ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, const CPoint* viewportOrigin,
-                                                  short* outY, short* outX, short scale);
+void ProjectTile(short tileIndex, const CPoint* viewportOrigin, short* outY, short* outX,
+                 short scale);
 void ProjectMapCoordinatesToScaledViewport(short row, short column, short* outRow, short* outColumn,
                                            const CPoint* viewportOrigin);
 void ProjectTileIndexToScaledViewport(short tileIndex, short* outRow, short* outColumn,
@@ -50,8 +50,7 @@ public:
   virtual void DrawUnit(TCivUnit* orderEntry, int projectedX, int projectedY, int flag,
                         short tileIndex) override;
   virtual void DrawGarrison(short tileIndex, CRect* dstRect, int flag) override;
-  virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
-                                                             bool altOverlay) override;
+  virtual void DrawFleet(short tileIndex, CRect* dstRect, bool altOverlay) override;
   virtual void FrameCursorArea() override;
   virtual void TileID2TileTopLeft(int tileIndex, const CPoint* viewportOrigin,
                                   short* outVerticalOffset, short* outHorizontalOffset,
@@ -60,7 +59,7 @@ public:
                             short& outBand) override;
   virtual void CenterOn(int tileIndex) override;
 
-  void PopulateMapContextInfoPanelStringsByTileSelection(short tileIndex, int unusedArg);
+  void FillInfoPanel(short tileIndex, int unusedArg);
 
   virtual void DoPostCreate(int arg) override;
 
@@ -94,7 +93,7 @@ public:
   virtual void DrawRatLine(short col1, int row1, short col2, int row2);
   virtual void DrawHexNeighborConnectionMask(unsigned char connectionMask, int screenX, int screenY,
                                              short tileIndex);
-  virtual void DrawGeneratedMapRouteSegmentsAndResetFillColor();
+  virtual void DrawRatLines();
   virtual void DrawTile(short tileIndex, short screenX, short screenY);
   // Exact 64x64 pixel wedges used to blend a neighboring terrain sprite into the base tile.
   virtual void QuickWedgeSE(unsigned char* src, unsigned char* dest, short srcStride,
@@ -126,7 +125,7 @@ public:
                          short destStride);
   virtual int GetCenterTile() const;
   virtual void SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mode);
-  virtual void UpdateMapInteractionPreviewParityAndRenderTransientSprites(int edgeMask);
+  virtual void ScrollMapPreview(int edgeMask);
 };
 
 ASSERT_SIZE(TMapDialog, 0x364);

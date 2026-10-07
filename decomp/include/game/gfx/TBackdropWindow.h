@@ -12,7 +12,7 @@ public:
 
   virtual ~TBackdropWindow() override;
 
-  void InitializeDefaultBackdropWindowFromBmp3B6(CWnd* parent);
+  void InitializeBackdrop(CWnd* parent);
   void DestroyAndRefreshMainWindow();
   virtual void PostNcDestroy() override;
 

@@ -81,7 +81,7 @@ void TArmyToolbar::SetProvince(short provinceIndex) {
   TPicture* upgradePicture = static_cast<TPicture*>(FindSubView(kControlTagGarr));
   upgradePicture->AssertValid();
   upgradePicture->SetPictureRsrcID(upgradePictureId, true);
-  g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
+  g_pViewMgr->RefreshNationIndicator();
 }
 
 // FUNCTION: IMPERIALISM 0x0058e1c0
@@ -100,14 +100,14 @@ void TArmyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
           g_pMapContextActionManager->SelectUnitType(categoryId, selectedProvinceIndex);
     }
     static_cast<TNumberedArrowButton*>(sourceHandler)->SetValue(selectedRatioOrMode, true);
-    g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
+    g_pViewMgr->RefreshNationIndicator();
     return;
   }
 
   if (controlTag == kControlTagGarr) {
     unsigned short ctrlState = GetAsyncKeyState(0x11);
     if ((ctrlState & 0x8000) != 0) {
-      g_pViewMgr->ShowArmyRosterDialogAndActivateProvinceSelection();
+      g_pViewMgr->ShowArmyRoster();
       return;
     }
 
@@ -120,18 +120,18 @@ void TArmyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
 
   if (controlTag == kControlTagDfnd) {
     g_pMapContextActionManager->OrderSelectedArmies(2);
-    g_pViewMgr->mapUberPicture->CycleMapInteractionSelectionAfterHandledClick();
+    g_pViewMgr->mapUberPicture->CycleSelection();
     return;
   }
 
   if (controlTag == kControlTagLatr) {
     g_pMapContextActionManager->OrderSelectedArmies(3);
-    g_pViewMgr->mapUberPicture->CycleMapInteractionSelectionAfterHandledClick();
+    g_pViewMgr->mapUberPicture->CycleSelection();
     return;
   }
 
   if (controlTag == kControlTagDone) {
     g_pMapContextActionManager->OrderSelectedArmies(4);
-    g_pViewMgr->mapUberPicture->CycleMapInteractionSelectionAfterHandledClick();
+    g_pViewMgr->mapUberPicture->CycleSelection();
   }
 }

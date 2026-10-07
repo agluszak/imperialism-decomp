@@ -38,7 +38,7 @@ void TNumberedItem::Draw(RECT* rectBuffer) {
                                    &dstRect, 0x24, 0);
 
   UpdatePaletteIndexWithDefaultFallback(0x13);
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 9, 0x2b67);
+  ApplyTextStyle(0, 9, 0x2b67);
   short x;
   short y = static_cast<short>(frameHeight) - 5;
   if (badgeCount < 10) {

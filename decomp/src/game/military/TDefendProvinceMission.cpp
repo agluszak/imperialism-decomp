@@ -20,7 +20,7 @@ IMPLEMENT_SERIAL(TDefendProvinceMission, TArmyMission, 1)
 
 // FUNCTION: IMPERIALISM 0x00535770
 void TDefendProvinceMission::GiveOrders() {
-  PropagateTargetTileToLinkedUnitsIfDifferent(presentLocation);
+  SetTargetTileForStack(presentLocation);
 }
 
 // FUNCTION: IMPERIALISM 0x00535790
@@ -38,7 +38,7 @@ bool TDefendProvinceMission::IsANoBrainer() const {
 TDefendProvinceMission::~TDefendProvinceMission() {}
 
 // FUNCTION: IMPERIALISM 0x005359e0
-bool IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
+bool IsTileCompatible(int tileIndex) {
   Province& record = g_pGlobalMapState->cityScoreTable[tileIndex];
   signed char primaryOwner = record.ownerNationCode;
   if (g_apTerrainTypeDescriptorTable[primaryOwner]->GetCapitolProvince() == tileIndex) {
@@ -58,8 +58,7 @@ bool IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
     return false;
   }
   unsigned char excludeOwnerMask = (1 << (primaryOwner & 0x1f)) ^ 0x7f;
-  while ((zone->nationKeyMask & excludeOwnerMask) == 0 ||
-         !zone->ContainsCityStatePointerInZoneArrayByCityIndex(tileIndex)) {
+  while ((zone->nationKeyMask & excludeOwnerMask) == 0 || !zone->ContainsProvince(tileIndex)) {
     zone = zone->prev18;
     if (zone == NULL) {
       return false;
@@ -69,7 +68,7 @@ bool IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x0053c950
-void TDefendProvinceMission::PropagateTargetTileToLinkedUnitsIfDifferent(short newTile) {
+void TDefendProvinceMission::SetTargetTileForStack(short newTile) {
   CIterator iter(orderList);
   for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
@@ -134,7 +133,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
           }
           for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
             if (unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
-              AccumulateUnitOrderPriorityVectorContribution(unit, vector, 1.0f, unitOrderWeight);
+              AddUnitToPriorityVector(unit, vector, 1.0f, unitOrderWeight);
             }
           }
         } else if (remainingBudgetByNation[candidateNationIndex] > 0 &&
@@ -149,7 +148,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
             if (unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
               int remainingBudget = remainingBudgetByNation[candidateNationIndex];
               if (costPoints < remainingBudget) {
-                AccumulateUnitOrderPriorityVectorContribution(unit, vector, 1.0f, unitOrderWeight);
+                AddUnitToPriorityVector(unit, vector, 1.0f, unitOrderWeight);
                 remainingBudgetByNation[candidateNationIndex] = remainingBudget - costPoints;
               }
             }
@@ -182,8 +181,7 @@ float TDefendProvinceMission::ComputeLocalSupportVectorScore(int nodeContext) {
     unit = g_pGlobalMapState->cityScoreTable[regionIndex].stationedUnitChain;
   }
   for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
-    AccumulateUnitOrderPriorityVectorContribution(unit, vector, 1.0f,
-                                                  static_cast<float>(unitOrderWeight));
+    AddUnitToPriorityVector(unit, vector, 1.0f, static_cast<float>(unitOrderWeight));
   }
 
   float sum = 0.0f;
@@ -278,7 +276,7 @@ void TDefendProvinceMission::CalculateNeeds() {
     pressure = g_MissionPositiveFallback;
   }
 
-  bool compat = IsMapTileCompatibleWithCurrentTerrainOrActionContext(presentLocation);
+  bool compat = IsTileCompatible(presentLocation);
 
   if (!compat) {
     unsigned char unitTier;

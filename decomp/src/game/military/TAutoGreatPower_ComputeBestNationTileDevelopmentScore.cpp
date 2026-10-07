@@ -35,7 +35,7 @@ int ComputeBestNationTileDevelopmentScore(NationSlot nationSlot) {
 
     if (region->fortLevel < g_pTechMgr->GetBestFort(nationSlot)) {
       float developmentPressure = averageUnitDivergence;
-      if (IsMapTileCompatibleWithCurrentTerrainOrActionContext(regionId)) {
+      if (IsTileCompatible(regionId)) {
         developmentPressure = nation->expansionPressurePerCompatibleRegion + averageUnitDivergence;
         if (g_pDiplomacyTurnStateManager->IsAtWarWithAnybody(nationSlot)) {
           developmentPressure +=

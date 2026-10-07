@@ -42,7 +42,7 @@ TQuickDrawClipStateInitializer::TQuickDrawClipStateInitializer() {
 static TQuickDrawClipStateInitializer g_quickDrawClipStateInitializer;
 
 // FUNCTION: IMPERIALISM 0x00494130
-CFont* __cdecl CreateFontFromPresetAndAttachRegionHandle(TextStyle* preset) {
+CFont* __cdecl CreatePresetFont(TextStyle* preset) {
   int heightBySizeIndex[25];
   heightBySizeIndex[0] = 0;
   heightBySizeIndex[1] = 1;
@@ -102,7 +102,7 @@ CFont* __cdecl CreateFontFromPresetAndAttachRegionHandle(TextStyle* preset) {
 }
 
 // FUNCTION: IMPERIALISM 0x004944e0
-CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TextStyle* style) {
+CFont* __cdecl UpdateFontPreset(TextStyle* style) {
   if (g_QuickDrawCachedFontPreset.fontFamily != style->fontFamily) {
     g_bQuickDrawCachedFontDirty = true;
     g_QuickDrawCachedFontPreset.fontFamily = style->fontFamily;
@@ -119,8 +119,7 @@ CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TextStyle* styl
 
     delete g_pQuickDrawCachedUiFont;
 
-    g_pQuickDrawCachedUiFont =
-        CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawCachedFontPreset);
+    g_pQuickDrawCachedUiFont = CreatePresetFont(&g_QuickDrawCachedFontPreset);
     g_bQuickDrawCachedFontDirty = false;
   }
   return g_pQuickDrawCachedUiFont;
@@ -148,8 +147,7 @@ void RenderTacticalBattleSelectionAndUnitOverlayPass(char glyph) {
 
     delete g_pQuickDrawCachedMeasureFont;
 
-    g_pQuickDrawCachedMeasureFont =
-        CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
+    g_pQuickDrawCachedMeasureFont = CreatePresetFont(&g_QuickDrawMeasureFontPreset);
     g_bQuickDrawMeasureFontDirty = false;
   }
   CDC* dc = g_pQuickDrawMemoryDc;
@@ -196,8 +194,7 @@ void __cdecl DrawTextWithCachedQuickDrawStyleState(const CString* text) {
 
     delete g_pQuickDrawCachedMeasureFont;
 
-    g_pQuickDrawCachedMeasureFont =
-        CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
+    g_pQuickDrawCachedMeasureFont = CreatePresetFont(&g_QuickDrawMeasureFontPreset);
     g_bQuickDrawMeasureFontDirty = false;
   }
 
@@ -262,8 +259,7 @@ void __cdecl RenderTradeScreenCommoditySummaryRows(CString* text, RECT* rect, sh
 
     delete g_pQuickDrawCachedMeasureFont;
 
-    g_pQuickDrawCachedMeasureFont =
-        CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
+    g_pQuickDrawCachedMeasureFont = CreatePresetFont(&g_QuickDrawMeasureFontPreset);
     g_bQuickDrawMeasureFontDirty = false;
   }
 
@@ -299,14 +295,12 @@ void __cdecl RenderTradeScreenCommoditySummaryRows(CString* text, RECT* rect, sh
 }
 
 // FUNCTION: IMPERIALISM 0x00494d20
-short __cdecl MeasureTextRangeWithCachedQuickDrawStyle(const char* text, short offset,
-                                                       short length) {
+short __cdecl MeasureTextRange(const char* text, short offset, short length) {
   if (g_bQuickDrawMeasureFontDirty || g_pQuickDrawCachedMeasureFont == 0) {
 
     delete g_pQuickDrawCachedMeasureFont;
 
-    g_pQuickDrawCachedMeasureFont =
-        CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
+    g_pQuickDrawCachedMeasureFont = CreatePresetFont(&g_QuickDrawMeasureFontPreset);
     g_bQuickDrawMeasureFontDirty = false;
   }
   CDC* dc = g_pQuickDrawMemoryDc;
@@ -325,7 +319,7 @@ short __cdecl MeasureTextRangeWithCachedQuickDrawStyle(const char* text, short o
 }
 
 // FUNCTION: IMPERIALISM 0x00494e00
-short __cdecl MeasureTextExtentWithCachedQuickDrawStyle(const CString* text) {
+short __cdecl MeasureText(const CString* text) {
   CDC* activeDc = g_pQuickDrawMemoryDc;
   if (activeDc == NULL) {
     activeDc = g_pScopedMapQuickDrawDcHandleObject;
@@ -335,8 +329,7 @@ short __cdecl MeasureTextExtentWithCachedQuickDrawStyle(const CString* text) {
 
       delete g_pQuickDrawCachedMeasureFont;
 
-      g_pQuickDrawCachedMeasureFont =
-          CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
+      g_pQuickDrawCachedMeasureFont = CreatePresetFont(&g_QuickDrawMeasureFontPreset);
       g_bQuickDrawMeasureFontDirty = false;
     }
     CFont* oldFont = activeDc->SelectObject(g_pQuickDrawCachedMeasureFont);
@@ -351,8 +344,7 @@ short __cdecl MeasureTextExtentWithCachedQuickDrawStyle(const CString* text) {
 
     delete g_pQuickDrawCachedMeasureFont;
 
-    g_pQuickDrawCachedMeasureFont =
-        CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
+    g_pQuickDrawCachedMeasureFont = CreatePresetFont(&g_QuickDrawMeasureFontPreset);
     g_bQuickDrawMeasureFontDirty = false;
   }
   CFont* oldFont = localDc.SelectObject(g_pQuickDrawCachedMeasureFont);
@@ -499,8 +491,8 @@ void SetGlobalQuickDrawOrigin(short originX, short originY) {
 }
 
 // FUNCTION: IMPERIALISM 0x00496450
-void TransparentBlitBitmapUsingMaskedRasterOps(HDC destDc, HBITMAP sourceBitmap, short destX,
-                                               short destY, COLORREF colorKey) {
+void TransparentBlit(HDC destDc, HBITMAP sourceBitmap, short destX, short destY,
+                     COLORREF colorKey) {
   HDC hdcSrc = CreateCompatibleDC(destDc);
   SelectObject(hdcSrc, sourceBitmap);
   BITMAP bm;
@@ -552,9 +544,8 @@ void TransparentBlitBitmapUsingMaskedRasterOps(HDC destDc, HBITMAP sourceBitmap,
 }
 
 // FUNCTION: IMPERIALISM 0x004967e0
-void TransparentBlitBitmapRegionUsingMaskedRasterOps(HDC destDc, HBITMAP sourceBitmap, short destX,
-                                                     short destY, COLORREF colorKey, short srcX,
-                                                     short srcY, short width, short height) {
+void TransparentBlitRegion(HDC destDc, HBITMAP sourceBitmap, short destX, short destY,
+                           COLORREF colorKey, short srcX, short srcY, short width, short height) {
   HDC hdcSrc = CreateCompatibleDC(destDc);
   SelectObject(hdcSrc, sourceBitmap);
   BITMAP bm;
@@ -752,7 +743,7 @@ void DrawCenteredGuideLineOnMapDc(short x, short y) {
 }
 
 // FUNCTION: IMPERIALISM 0x00498980
-void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect) {
+void FillContextRect(RECT* rect) {
   CBrush brush(g_QuickDrawForegroundColor);
   TScopedQuickDrawBrush brushBounds(rect);
 
@@ -802,14 +793,13 @@ void __cdecl ConfigureWhiteQuickDrawPen(unsigned char widePen) {
 
 // FUNCTION: IMPERIALISM 0x005d4c60
 void TruncateTextToFitWidthWithEllipsis(CString* text, short maxWidth) {
-  if (MeasureTextExtentWithCachedQuickDrawStyle(text) > maxWidth) {
+  if (MeasureText(text) > maxWidth) {
     CString truncated;
     do {
       truncated = text->Mid(0, text->GetLength() - 1);
       *text = truncated;
       truncated += "...";
-    } while (MeasureTextExtentWithCachedQuickDrawStyle(&truncated) > maxWidth &&
-             text->GetLength() > 4);
+    } while (MeasureText(&truncated) > maxWidth && text->GetLength() > 4);
     if (text->GetLength() < 5) {
       *text = g_szEmptyString;
     }

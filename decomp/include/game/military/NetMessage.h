@@ -24,7 +24,7 @@ struct TimelyMessageHeader : NetMessage {
   int messageTag; // 'time'
   unsigned char activeNationId;
 
-  TimelyMessageHeader* InitializeEmitEventHeaderWithActiveNation();
+  TimelyMessageHeader* InitializeTimelyHeader();
 };
 
 struct TimelyNetMessagePrefix : TimelyMessageHeader {
@@ -106,10 +106,9 @@ struct TurnEvent2SyncPacket : NetMessage {
 
   void Free();
 };
-TurnEvent2SyncPacket* __cdecl
-BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned int shortCount, short* current, short* baseline);
+TurnEvent2SyncPacket* __cdecl BuildArraySyncPacket(unsigned int shortCount, short* current,
+                                                   short* baseline);
 TurnEvent2SyncPacket* __cdecl
 BuildTurnEvent2ByteArraySyncPacketDeltaOrFull(unsigned int byteCount, unsigned char* current,
                                               unsigned char* baseline);
-TurnEvent2SyncPacket* __cdecl
-BuildTurnEvent2IntArraySyncPacketDeltaOrFull(int intCount, int* current, int* baseline);
+TurnEvent2SyncPacket* __cdecl BuildIntArraySyncPacket(int intCount, int* current, int* baseline);

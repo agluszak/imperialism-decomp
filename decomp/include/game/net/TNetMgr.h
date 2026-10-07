@@ -21,19 +21,19 @@ public:
 
   bool Send(NetMessage* message, bool queueOnly);
 
-  bool DefaultUnhandledTurnEventHookReturnsFalse(TurnEventQueuePacket* packet);
+  bool HandleUnknownMessage(TurnEventQueuePacket* packet);
   void ReleaseMessage(TurnEventQueuePacket* packet);
   TurnEventQueuePacket* GetMessage();
-  bool CheckConnectivityOrShowLocalizedWarningAndReturnReady();
+  bool CheckConnection();
   int GetPlayerID();
 
   void NoOpDialogModeTagChangedHook(int arg); // 0x5e42a0 (empty)
-  void NotifyIfNationMatchesSessionActiveNation(int nationId);
+  void DestroyPlayerIfLocal(int nationId);
 
   int Ping();
 
   void ResetTurnEventQueueRuntimeRecordBuffer();
-  bool ResetRuntimeSelectionRecordBufferAndReturnTrue();
+  bool ResetSelection();
   bool ReturnTrueRuntimeCredentialFinalizeStub();
 
   bool SelectProtocol(int index, int flag, const char* seed);
@@ -42,7 +42,7 @@ public:
 
   unsigned char SelectGame(int selectionTag, CString* outGameName, const char* seed);
 
-  unsigned char ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TView* provider);
+  unsigned char RebuildProtocolList(TView* provider);
 
   void HandleError(int errorCode);
 };

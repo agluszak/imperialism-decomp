@@ -71,7 +71,7 @@
 #include <cstring>
 
 // FUNCTION: IMPERIALISM 0x00542170
-int FindNationSlotIndexBySessionIdInGameFlowList(int sessionId) {
+int FindSessionNation(int sessionId) {
   int slot = 0;
   while (slot < TMultiplayerMgr::kMajorNationSessionSlotCount) {
     if (g_pGameFlowState->nationSessionIds[slot] == sessionId) {
@@ -224,13 +224,13 @@ void TMultiplayerMgr::IMultiplayerMgr(int idleFrequency) {
   syncPhase = kGamePhaseNone;
   g_pNetMgr->ResetTurnEventQueueRuntimeRecordBuffer();
 
-  GenerateMappedFlavorTextByCurrentContextNation(&playerNameString);
+  GenerateFlavorTextForNation(&playerNameString);
   LoadProfileStringAndAssignSharedRef(&loadedString, s_PlayerName,
                                       static_cast<LPCSTR>(playerNameString));
   playerNameString = loadedString;
   playerNameMirror = playerNameString;
 
-  GenerateMappedFlavorTextByCurrentContextNation(&gameNameString);
+  GenerateFlavorTextForNation(&gameNameString);
   LoadProfileStringAndAssignSharedRef(&loadedString, s_GameName,
                                       static_cast<LPCSTR>(gameNameString));
   gameNameString = loadedString;
@@ -397,7 +397,7 @@ void TMultiplayerMgr::SetSyncPhases(eGamePhaseNewStyle completedPhase,
 struct TurnEvent3Mode18Packet : TimelyMessageHeader {};
 
 // FUNCTION: IMPERIALISM 0x005431a0
-void TMultiplayerMgr::ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(int nationSlot) {
+void TMultiplayerMgr::CheckInPlayer(int nationSlot) {
   pendingNationBitmask &= ~(1 << nationSlot);
   bool hosting = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
   if (hosting) {
@@ -420,7 +420,7 @@ void TMultiplayerMgr::ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(int 
 }
 
 // FUNCTION: IMPERIALISM 0x00544540
-void TMultiplayerMgr::EnsureGameFlowStateAndShowMultiplayerSetup() {
+void TMultiplayerMgr::ShowMultiplayerSetup() {
   TMultiplayerMgr* self = this;
   if (self == 0) {
     self = new TMultiplayerMgr();
@@ -442,11 +442,11 @@ void TMultiplayerMgr::EnsureGameFlowStateAndShowMultiplayerSetup() {
 }
 
 // FUNCTION: IMPERIALISM 0x00544630
-void TMultiplayerMgr::ResetDiplomacyRuntimeSelectionAndSetModeNada() {
+void TMultiplayerMgr::CancelProtocolSelect() {
   g_pAmbitApplication->InstallCohandler(g_pGameFlowState, false);
   g_pSimMgr->multiplayerSessionRole = kSessionRoleStandalone;
   if (g_pNetMgr != 0) {
-    g_pNetMgr->ResetRuntimeSelectionRecordBufferAndReturnTrue();
+    g_pNetMgr->ResetSelection();
   }
   sessionPhaseTag = kControlTagNada; // 'nada'
   lobbyDialogView = 0;
@@ -506,16 +506,16 @@ bool TMultiplayerMgr::DoIdle(int action) {
   if (diplomacyQueueContext != 0) {
     diplomacyQueueContext->DoIdle(action);
   }
-  RouteAndProcessDiplomacyTurnStateEventQueue();
+  DoHandleMessages();
   return false;
 }
 
 // Turn-event emitters: each builds a 'time' packet on the stack and sends it; `this` is unused.
 
 // FUNCTION: IMPERIALISM 0x00544e70
-bool TMultiplayerMgr::InitializeProtocolOptionControlFromProvider(TView* provider) {
+bool TMultiplayerMgr::InitializeProtocolList(TView* provider) {
   lobbyDialogView = provider;
-  if (g_pNetMgr->ResetRuntimeProtocolOptionsAndRebuildSelectionSource(provider)) {
+  if (g_pNetMgr->RebuildProtocolList(provider)) {
     int defaultProtocolTag;
     g_pAssetMgr->GetPreferenceInt(&defaultProtocolTag, "DefaultProtocol", kControlTagPro0);
     TRadioTextCluster* protControl =
@@ -538,7 +538,7 @@ bool TMultiplayerMgr::ResetGameFlowStateAndShowMainMenu() {
   g_pAmbitApplication->InstallCohandler(g_pGameFlowState, false);
   g_pSimMgr->multiplayerSessionRole = kSessionRoleStandalone;
   if (g_pNetMgr != 0) {
-    g_pNetMgr->ResetRuntimeSelectionRecordBufferAndReturnTrue();
+    g_pNetMgr->ResetSelection();
   }
   sessionPhaseTag = kControlTagNada; // 'nada'
   lobbyDialogView = 0;
@@ -552,7 +552,7 @@ bool TMultiplayerMgr::ValidateGameFlowNameAndSelectionContext(int protocolValue,
 }
 
 // FUNCTION: IMPERIALISM 0x00544ff0
-bool TMultiplayerMgr::ValidateAndPrepareGameFlowNameForDispatch() {
+bool TMultiplayerMgr::PrepareGameName() {
   CString gameName;
   gameName = gameNameString;
   g_pAssetMgr->SetPreferenceString(&gameName, s_GameName);
@@ -574,8 +574,7 @@ bool TMultiplayerMgr::ValidateAndPrepareGameFlowNameForDispatch() {
 }
 
 // FUNCTION: IMPERIALISM 0x00545110
-unsigned char
-TMultiplayerMgr::InitializeRuntimeSelectionCredentialsFromProviderAndConnect(TView* provider) {
+unsigned char TMultiplayerMgr::ConnectToSession(TView* provider) {
   ReturnTrueRuntimeCredentialInitStub();
   lobbyDialogView = provider;
 
@@ -598,7 +597,7 @@ bool TMultiplayerMgr::ResetSessionAndShowMainMenu() {
   g_pAmbitApplication->InstallCohandler(g_pGameFlowState, false);
   g_pSimMgr->multiplayerSessionRole = kSessionRoleStandalone;
   if (g_pNetMgr != 0) {
-    g_pNetMgr->ResetRuntimeSelectionRecordBufferAndReturnTrue();
+    g_pNetMgr->ResetSelection();
   }
   sessionPhaseTag = kControlTagNada; // 'nada'
   lobbyDialogView = 0;
@@ -607,7 +606,7 @@ bool TMultiplayerMgr::ResetSessionAndShowMainMenu() {
 }
 
 // FUNCTION: IMPERIALISM 0x00545320
-bool TMultiplayerMgr::ApplyJoinGameSelectionAndShowNetworkGameOptions(int selectionTag) {
+bool TMultiplayerMgr::SelectGameAndShowOptions(int selectionTag) {
   CString defaultGameName("Frog");
   unsigned char joined = g_pNetMgr->SelectGame(selectionTag, &playerNameString, defaultGameName);
   if (joined) {
@@ -630,7 +629,7 @@ unsigned char TMultiplayerMgr::Host() {
 }
 
 // FUNCTION: IMPERIALISM 0x005454b0
-bool TMultiplayerMgr::ResetNationStatusSlotsAndInitializeNameControls(TView* panel) {
+bool TMultiplayerMgr::ResetLobbySlots(TView* panel) {
   lobbyDialogView = panel;
   CString loadedString;
   for (int i = 0; i < kMajorNationSessionSlotCount; ++i) {
@@ -664,9 +663,9 @@ bool TMultiplayerMgr::ResetNationStatusSlotsAndInitializeNameControls(TView* pan
 }
 
 // FUNCTION: IMPERIALISM 0x00545660
-bool TMultiplayerMgr::ResetLocalUiStateAndShowMultiplayerSetup() {
+bool TMultiplayerMgr::ResetAndShowMultiplayerSetup() {
   lobbyDialogView = 0;
-  ResetNationStatusArraysAndTurnEventContext();
+  ResetNationStatus();
   g_pAmbitApplication->PostTurnEventCodeMessage(
       EncodeTurnEventCode(kTurnEventMultiplayerGameSetup));
   queueSyncDword = 0;
@@ -692,7 +691,7 @@ bool TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3() {
 }
 
 // FUNCTION: IMPERIALISM 0x00545730
-void TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue() {
+void TMultiplayerMgr::DoHandleMessages() {
   if (processPrimaryEventQueue == 0) {
     return;
   }
@@ -701,8 +700,8 @@ void TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue() {
     while (primaryTurnEventQueueHead != 0) {
       TurnEventQueuePacket* packet = primaryTurnEventQueueHead;
       primaryTurnEventQueueHead = packet->nextQueuePacket;
-      if (!ProcessDiplomacyTurnStateEventStateMachine(packet)) {
-        g_pNetMgr->DefaultUnhandledTurnEventHookReturnsFalse(packet);
+      if (!ReadMessage(packet)) {
+        g_pNetMgr->HandleUnknownMessage(packet);
       }
       g_pNetMgr->ReleaseMessage(packet);
     }
@@ -712,8 +711,8 @@ void TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue() {
     while (secondaryTurnEventQueueHead != 0) {
       TurnEventQueuePacket* packet = secondaryTurnEventQueueHead;
       secondaryTurnEventQueueHead = packet->nextQueuePacket;
-      if (!ProcessDiplomacyTurnStateEventStateMachine(packet)) {
-        g_pNetMgr->DefaultUnhandledTurnEventHookReturnsFalse(packet);
+      if (!ReadMessage(packet)) {
+        g_pNetMgr->HandleUnknownMessage(packet);
       }
       g_pNetMgr->ReleaseMessage(packet);
     }
@@ -756,8 +755,8 @@ void TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue() {
       }
       *tail = packet;
     } else {
-      if (!ProcessDiplomacyTurnStateEventStateMachine(packet)) {
-        g_pNetMgr->DefaultUnhandledTurnEventHookReturnsFalse(packet);
+      if (!ReadMessage(packet)) {
+        g_pNetMgr->HandleUnknownMessage(packet);
       }
       g_pNetMgr->ReleaseMessage(packet);
     }

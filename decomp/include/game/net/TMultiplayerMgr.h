@@ -80,7 +80,7 @@ public:
   void InstallCohandler(TEventHandler* nContext, bool fEnable);
   void SendGpSelection(int reasonCode, int field1CValue, const char* senderText,
                        const char* messageText);
-  bool ResetNationStatusSlotsAndInitializeNameControls(TView* panel);
+  bool ResetLobbySlots(TView* panel);
   enum TurnEvent11MapOffsetBase { kTurnEvent11TerrainStateBase = 0, kTurnEvent11CityScoreBase = 1 };
   void DoGameDataHunk(TurnEvent2SyncPacket* packet);
   bool UpdatePendingNationMaskIfChanged(int* cachedMask);
@@ -107,17 +107,17 @@ public:
   void SendVerbalMessage(CString* text, unsigned char firstFlag, unsigned char secondFlag);
   void DispatchCityRedrawInvalidateEvent(short cityId);
   void SendChangeMaster(int sourceNation, int targetNation, int mode);
-  bool ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet);
-  bool ResetLocalUiStateAndShowMultiplayerSetup();
+  bool ReadMessage(NetMessage* packet);
+  bool ResetAndShowMultiplayerSetup();
   bool ResetGameFlowStateAndShowMainMenu();
   bool ValidateGameFlowNameAndSelectionContext(int protocolValue, int flag);
-  bool ValidateAndPrepareGameFlowNameForDispatch();
-  unsigned char InitializeRuntimeSelectionCredentialsFromProviderAndConnect(TView* provider);
+  bool PrepareGameName();
+  unsigned char ConnectToSession(TView* provider);
   bool ResetSessionAndShowMainMenu();
   unsigned char Host();
-  bool ApplyJoinGameSelectionAndShowNetworkGameOptions(int selectionTag);
-  void ResetDiplomacyRuntimeSelectionAndSetModeNada();
-  bool InitializeProtocolOptionControlFromProvider(TView* provider);
+  bool SelectGameAndShowOptions(int selectionTag);
+  void CancelProtocolSelect();
+  bool InitializeProtocolList(TView* provider);
   void SetDialogModeTagInitAndInvokeNoOpHook();
   void NoOpCallbackRet4(void* param);
   void SendTacLa(int commandTag, TTacticalUnit* unit, int arg3, int arg4);
@@ -126,19 +126,19 @@ public:
                    int damageA, int damageB, int effectCode);
   void DiscardPlayer(int nationId);
   bool WaitForClients();
-  void ResetNationStatusArraysAndTurnEventContext();
-  bool HandleActiveNationAwolTransitionOrRecovery();
+  void ResetNationStatus();
+  bool HandleAwolPlayer();
   void CreateAndQueueTurnEventPacketTagPOGC();
   void SendMinorStateMessage(short nationSlot, int destinationSlot);
-  void RouteAndProcessDiplomacyTurnStateEventQueue();
+  void DoHandleMessages();
 
-  void EnsureGameFlowStateAndShowMultiplayerSetup();
+  void ShowMultiplayerSetup();
 
   bool IsEverybodyConnected() const;
   void SetSyncPhases(eGamePhaseNewStyle completedPhase, eGamePhaseNewStyle nextPhase);
 
   void HandleDiplomacyTurnEventPacketByCode();
-  void ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(int nationSlot);
+  void CheckInPlayer(int nationSlot);
   void HandleTurnResumeStateTelemetry();
   void EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet);
   void ReadMessageFrom(TStream* stream);
@@ -168,7 +168,7 @@ public:
   void PoseMessageDialog(int unused);
 };
 
-int FindNationSlotIndexBySessionIdInGameFlowList(int sessionId);
+int FindSessionNation(int sessionId);
 int FindActiveNationSlotIndexInGameFlowList();
 // Always-true networking credential-init stub.
 bool ReturnTrueRuntimeCredentialInitStub();

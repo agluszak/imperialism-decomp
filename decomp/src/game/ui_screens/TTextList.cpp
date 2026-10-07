@@ -40,7 +40,7 @@ void TTextList::Draw(RECT* rectBuffer) {
   ResolveUiThemeColor(0x2b6c, &styleFlags1);
   ResolveUiThemeColor(0x2b6a, &styleFlags2);
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b6c);
+  ApplyTextStyle(0, 0xe, 0x2b6c);
 
   short currentY = 0;
   if (itemHeight + currentY < frameHeight) {
@@ -60,10 +60,10 @@ void TTextList::Draw(RECT* rectBuffer) {
         rect.right = frameWidth;
         rect.bottom = currentY + itemHeight;
 
-        FillRectWithQuickDrawBrushAndContextOffset(&rect);
+        FillContextRect(&rect);
       }
 
-      short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&tempString);
+      short textWidth = MeasureText(&tempString);
       short textX = static_cast<short>(frameWidth / 2) - static_cast<short>(textWidth / 2);
 
       SetQuickDrawColorAndSyncGlobals(styleFlags2);

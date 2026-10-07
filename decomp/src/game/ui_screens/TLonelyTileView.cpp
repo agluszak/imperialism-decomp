@@ -42,7 +42,7 @@ void TLonelyTileView::Draw(RECT* rectBuffer) {
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                      &destRect, 0, 0);
   } else if (controlTag == kControlTagTil2 && mapUberPicture->invalidationFlag) {
-    short variant = g_pGlobalMapState->LookupTileSpriteVariantOffsetByTerrainAndGate(tileIndex);
+    short variant = g_pGlobalMapState->GetTerrainSpriteOffset(tileIndex);
     srcRect.left = variant;
     srcRect.top = 0;
     srcRect.right = variant + 0x40;
@@ -52,7 +52,7 @@ void TLonelyTileView::Draw(RECT* rectBuffer) {
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                      &destRect, 0, 0);
   } else {
-    short variant = g_pGlobalMapState->LookupTileSpriteVariantOffsetByTerrainAndGate(tileIndex);
+    short variant = g_pGlobalMapState->GetTerrainSpriteOffset(tileIndex);
     srcRect.left = variant;
     srcRect.top = 0;
     srcRect.right = variant + 0x40;

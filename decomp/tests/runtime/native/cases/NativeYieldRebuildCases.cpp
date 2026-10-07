@@ -38,7 +38,7 @@ RuntimeActionResult RunNationResourceYieldRebuild(NativeTransition& transition) 
     return started;
   }
 
-  nation->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+  nation->CountResourceYields();
   return transition.Finish();
 }
 
@@ -83,7 +83,7 @@ RuntimeActionResult RunAiNationResourceYieldRebuildClampsTargets(NativeTransitio
     return started;
   }
 
-  nation->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+  nation->CountResourceYields();
   if (nation->needCurrentByType[kResourceCotton] != 4 ||
       nation->needCurrentByType[kResourceFish] != 0 ||
       nation->needCurrentByType[kResourceLivestock] != 4 ||
@@ -137,7 +137,7 @@ RuntimeActionResult RunNationResourceYieldRebuildMultipleTowns(NativeTransition&
     return started;
   }
 
-  nation->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+  nation->CountResourceYields();
   if (nation->townMarkerList->GetCount() != 2 ||
       nation->townMarkerList->GetEntryByOrdinal(1) != homeTown ||
       nation->townMarkerList->GetEntryByOrdinal(2) != outpost || !homeTown->transportLinked ||

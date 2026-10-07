@@ -45,7 +45,7 @@ void TGrantsView::Draw(RECT* rectBuffer) {
   short baseX = 0x48 - ownerLocalX;
   short baseY = 0x16f - ownerLocalY;
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b68);
+  ApplyTextStyle(0, 0xe, 0x2b68);
 
   COLORREF styleShadow = 0;
   COLORREF styleForeground = 0;
@@ -60,7 +60,7 @@ void TGrantsView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(baseX, baseY);
   DrawTextWithCachedQuickDrawStyleState(&labelText);
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b68);
+  ApplyTextStyle(0, 0xc, 0x2b68);
 
   static const short kGrantColumnY[8] = {0x16f, 0x180, 0x180, 0x187, 0x1d5, 0x1d5, 0x1d5, 0x1d5};
   static const short kGrantColumnX[8] = {0xe7, 0x14d, 0x1f1, 0x48, 0x5e, 0xe8, 0x173, 0x1f7};
@@ -82,7 +82,7 @@ void TGrantsView::Draw(RECT* rectBuffer) {
 
   g_pSimMgr->GetString(0x2733, 0x25, &labelText);
   TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetPlayerCountry()];
-  int grantSum = activeNation->SumDiplomacyGrantEntriesMaskedToValueBits();
+  int grantSum = activeNation->GetTotalGrants();
   g_pSimMgr->NumToCurrency(grantSum, &sumText);
   labelText += s_szSpaceSeparator + sumText;
 

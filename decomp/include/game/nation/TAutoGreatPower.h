@@ -25,7 +25,7 @@ public:
   void AddOfferFrom(NationSlot sourceNationSlot,
                     DiplomacyProposalCodeStorage proposalCode) override;
   void AddNoticeFrom(short sourceNation, short actionCode) override;
-  void RebuildNationResourceYieldCountersAndDevelopmentTargets(void) override;
+  void CountResourceYields(void) override;
   void MoveCivilians(void) override;
   void MoveArmy(void) override;
   void InitializeTradeStatus(void) override;
@@ -35,7 +35,7 @@ public:
   void DeclareWarOn(int targetNationSlot, int transitionMode, int sourceNationSlot) override;
   void SelectAndQueueAdvisoryMapMissions(void) override;
   void ReplaceObsoleteMissions(void) override;
-  void RecomputeAiExpansionAndMissionPressureScores(void) override;
+  void AssessExpansion(void) override;
   void ReassessMissions(int unused) override;
   void FinishCityPhase(void) override;
   void SetTradeOffersFor(short resourceKind, short offerContext) override;
@@ -51,15 +51,15 @@ public:
   void SetEnemy(int targetNation) override;
   void StopBeingEnemiesWith(int targetNation) override;
   int ConsiderWarOfAlliance(int targetNation, int sourceNation, char swapRoles) override;
-  bool UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) override;
-  bool PassesDiplomacyStrengthThresholdForTarget(int targetNation) override;
+  bool CheckBankruptcy(void) override;
+  bool IsStrongEnoughFor(int targetNation) override;
   void AddColony(int targetNation) override;
   void AnnounceLater(short orderKind, short payload, short flags) override;
-  void BuildGreatPowerTurnMessageSummaryAndDispatch(void) override;
+  void ShowTurnMessages(void) override;
 
-  void DispatchGreatPowerQuarterlyStatusMessageLevel2(CString* message) override;
-  void DispatchGreatPowerQuarterlyStatusMessageLevel1(CString* message) override;
-  void DispatchGreatPowerQuarterlyStatusMessageLevel0(CString* message) override;
+  void ShowStatusMessage2(CString* message) override;
+  void ShowStatusMessage1(CString* message) override;
+  void ShowStatusMessage0(CString* message) override;
   void RememberTradeBids(void) override;
   void ShowNewspaperForRecordNation() override;
   virtual void RaiseNeedPlanningMetrics(int needSlot);
@@ -67,10 +67,10 @@ public:
 
   void AssignUnitsToMissions(int unused);
 
-  void UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unused);
+  void UpdateMissionEligibility(int unused);
 
   // Chooses and applies city/industry development actions while resource pools remain.
-  void PlanAiDevelopmentActionsFromResourcePools(int unused);
+  void PlanDevelopment(int unused);
   float ComputeAiIndustryActionCostFromSlot(short industrySlot);
   float ComputeAiCityActionCostFromSlotAndMode(short actionSlot, bool skipContextBias);
   float GetCachedAiCityActionContextBias(short selector);
@@ -98,10 +98,8 @@ public:
 };
 ASSERT_SIZE(TAutoGreatPower, 0xb70);
 
-bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePools,
-                                                TMilitaryUnit** bestUnitByType,
-                                                char* selectedIsIndustry, char* selectedIsUpgrade,
-                                                int* selectedSlot, int unused,
-                                                float* selectedWeightedCost);
+bool PickBestDevelopment(int nationSlot, int* resourcePools, TMilitaryUnit** bestUnitByType,
+                         char* selectedIsIndustry, char* selectedIsUpgrade, int* selectedSlot,
+                         int unused, float* selectedWeightedCost);
 
 int ComputeBestNationTileDevelopmentScore(NationSlot nationSlot);

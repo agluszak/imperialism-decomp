@@ -2,4 +2,4 @@
 
 #include "decomp_types.h"
 
-bool IsTurnFlowCooldownActiveAndResetExpiredState(void);
+bool IsCooldownActive(void);

@@ -148,13 +148,13 @@ void TMapEditView::ShiftClick(int tileIndex, int dispatchContext) {
     }
 
     tile.ownerBorderMask = 0;
-    g_pGlobalMapState->UpdateTileNeighborBorderInfluenceCounters(static_cast<short>(index), 2);
+    g_pGlobalMapState->UpdateBorderInfluence(static_cast<short>(index), 2);
     InvalidateTile(static_cast<short>(index));
     for (int direction = 0; direction < 6; ++direction) {
       short neighbor =
           TMapMgr::GetNeighborTileID(static_cast<short>(index), static_cast<short>(direction));
       g_pGlobalMapState->terrainStateTable[neighbor].ownerBorderMask = 0;
-      g_pGlobalMapState->UpdateTileNeighborBorderInfluenceCounters(neighbor, 2);
+      g_pGlobalMapState->UpdateBorderInfluence(neighbor, 2);
       InvalidateTile(neighbor);
     }
   }
@@ -162,8 +162,7 @@ void TMapEditView::ShiftClick(int tileIndex, int dispatchContext) {
 }
 
 // FUNCTION: IMPERIALISM 0x0051d210
-void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int tileIndexArg,
-                                                                     int inputFlags) {
+void TMapEditView::NavalTileClick(int tileIndexArg, int inputFlags) {
 
   int index;
   for (index = 0; index < kStrategicTileCount; ++index) {
@@ -283,7 +282,7 @@ void TMapEditView::PlaceProvince(short tileIndex) {
   tile.cityBorderMask = 0;
   tile.waterAdjacencyMask = 0;
   g_pSfxPlaybackSystem->PlaySoundEffect(4000);
-  g_pGlobalMapState->UpdateTileNeighborBorderInfluenceCounters(tileIndex, 0);
+  g_pGlobalMapState->UpdateBorderInfluence(tileIndex, 0);
   InvalidateTile(tileIndex);
   InvalidateTile(tileIndex);
 
@@ -294,7 +293,7 @@ void TMapEditView::PlaceProvince(short tileIndex) {
       neighbor.ownerBorderMask = 0;
       neighbor.cityBorderMask = 0;
       neighbor.waterAdjacencyMask = 0;
-      g_pGlobalMapState->UpdateTileNeighborBorderInfluenceCounters(neighborIndex, 0);
+      g_pGlobalMapState->UpdateBorderInfluence(neighborIndex, 0);
       InvalidateTile(neighborIndex);
     }
   }
@@ -329,9 +328,8 @@ void TMapEditView::PlaceRail(short tileIndex) {
 // FUNCTION: IMPERIALISM 0x0051dba0
 void TMapEditView::PlaceRiver(short tileIndex) {
   TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
-  short variant =
-      ResolveRiverSpriteVariantForConnectionMask(static_cast<unsigned char>(editorActionValue),
-                                                 tile.GetTerrainKind() == kStrategicTerrainWater);
+  short variant = GetRiverSprite(static_cast<unsigned char>(editorActionValue),
+                                 tile.GetTerrainKind() == kStrategicTerrainWater);
   if (variant == -1) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5a);
     return;
@@ -352,10 +350,9 @@ void TMapEditView::PlaceCountySeat(short tileIndex) {
   TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
   short provinceId = tile.cityRecordIndex;
   short previousCountySeat = g_pGlobalMapState->cityScoreTable[provinceId].cityTileIndex;
-  g_pGlobalMapState->SetRegionTileSubtypeAndRefreshNeighborFlags(provinceId, tileIndex);
+  g_pGlobalMapState->SetTileSubtype(provinceId, tileIndex);
 
-  TWindow* dialog =
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventProvinceEditor);
+  TWindow* dialog = g_pAssetMgr->GetDialog(kTurnEventProvinceEditor);
   TEditText* nameControl = static_cast<TEditText*>(dialog->FindSubView(kControlTagName));
   nameControl->AssertValid();
   nameControl->InitDialogWindowAndSyncTitleIfChanged(&cityName, 0);

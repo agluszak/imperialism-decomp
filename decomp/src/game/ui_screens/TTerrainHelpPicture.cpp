@@ -204,11 +204,11 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
     }
   }
   titlePane->SetTextAndMaybeRefresh(&strInfoText, true);
-  HighlightSelectedMenuItemAndRefreshDetailText(0);
+  HighlightMenuItem(0);
 }
 
 // FUNCTION: IMPERIALISM 0x005057a0
-void TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText(int selectedIndex) {
+void TTerrainHelpPicture::HighlightMenuItem(int selectedIndex) {
   GetWindow();
   TextStyle normalStyle;
   TextStyle highlightStyle;
@@ -234,7 +234,7 @@ void TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText(int sele
 
   CString detailText;
   g_pSimMgr->GetString(0x2756, static_cast<short>(menuItemIds[selectedIndex] - 1), &detailText);
-  infoTextPane->UpdateTextEntrySharedStringAndMaybeNotify(&detailText, true);
+  infoTextPane->SetEntryText(&detailText, true);
   infoTextPane->Show(1, 1);
 }
 
@@ -246,7 +246,7 @@ void TTerrainHelpPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
     if (tag >= kControlTagI00a && tag < kControlTagI00m) {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
       short index = static_cast<short>(sourceHandler->controlTag) - 0x3061;
-      HighlightSelectedMenuItemAndRefreshDetailText(index);
+      HighlightMenuItem(index);
     }
   }
 }

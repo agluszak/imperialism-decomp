@@ -83,7 +83,7 @@ RuntimeActionResult RunOwnedRegionDevelopment(NativeTransition& transition) {
     return started;
   }
 
-  nation->AdvanceOwnedRegionDevelopmentCountersAndHandleEvents();
+  nation->AdvanceRegionDevelopment();
   const Province& record = g_pGlobalMapState->cityScoreTable[regionId];
   JsonObject province;
   province.Set("province", static_cast<int>(regionId));

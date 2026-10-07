@@ -262,7 +262,7 @@ void TArmyMgr::WriteTo(TStream* stream) {
 void TArmyMgr::DoCombatMoves() {
   bool isNetworkClient = (g_pSimMgr->multiplayerSessionRole == kSessionRoleClient);
   if (isNetworkClient) {
-    ClearPendingStacksAndFinalizeMilitaryUnits();
+    FinishArmyMoves();
     g_pSimMgr->StartNextPhase();
   } else {
     FormStacks();
@@ -286,7 +286,7 @@ void TArmyMgr::EndBattlePhase() {
   }
   activeBattleView = NULL;
 
-  ClearPendingStacksAndFinalizeMilitaryUnits();
+  FinishArmyMoves();
   DoOwnershipChanges();
 
   if (needsTerrainRefreshFlag) {
@@ -423,7 +423,7 @@ void TArmyMgr::ResolveNextMove() {
 }
 
 // FUNCTION: IMPERIALISM 0x004a2500
-void TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits() {
+void TArmyMgr::FinishArmyMoves() {
   pendingUnitPool->FreePayloads();
   g_pGlobalMapState->DimmingOff();
 
@@ -480,8 +480,8 @@ static inline void AppendTextIntoFixedBuffer(char* destination, int capacity, co
 
 // Add one localized army-unit count fragment to a fixed-capacity context label.
 // FUNCTION: IMPERIALISM 0x004a2610
-static void BuildArmyActionLabelFromLocalizationAndCounts(CStr255* destination, int count,
-                                                          int activeCount, int unitTypeIndex) {
+static void BuildArmyActionLabel(CStr255* destination, int count, int activeCount,
+                                 int unitTypeIndex) {
   if (count == 0) {
     return;
   }
@@ -520,10 +520,8 @@ static void BuildArmyActionLabelFromLocalizationAndCounts(CStr255* destination, 
 }
 
 // FUNCTION: IMPERIALISM 0x004a2900
-static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
-                                                          TArmyStack* enemyStack,
-                                                          unsigned char sideWonFlag,
-                                                          int ownerNationCodeInt, int unused) {
+static void RecordArmyBattle(TArmyStack* ourStack, TArmyStack* enemyStack,
+                             unsigned char sideWonFlag, int ownerNationCodeInt, int unused) {
 
   MapContextActionRecord record;
   record.childCount[1] = 0;
@@ -639,11 +637,10 @@ static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
   record.reportParticipantIndex = sideWonFlag == 0;
 
   for (int unitTypeIndex = 0; unitTypeIndex < kUnitTypeSlotCount; ++unitTypeIndex) {
-    BuildArmyActionLabelFromLocalizationAndCounts(&record.overlayLabel[0], ourCount[unitTypeIndex],
-                                                  ourActiveCount[unitTypeIndex], unitTypeIndex);
-    BuildArmyActionLabelFromLocalizationAndCounts(&record.overlayLabel[1],
-                                                  enemyCount[unitTypeIndex],
-                                                  enemyActiveCount[unitTypeIndex], unitTypeIndex);
+    BuildArmyActionLabel(&record.overlayLabel[0], ourCount[unitTypeIndex],
+                         ourActiveCount[unitTypeIndex], unitTypeIndex);
+    BuildArmyActionLabel(&record.overlayLabel[1], enemyCount[unitTypeIndex],
+                         enemyActiveCount[unitTypeIndex], unitTypeIndex);
   }
 
   g_pMapContextActionManager->mapContextActionRecordList->AppendCopiedRecordToPtrList(&record);
@@ -694,13 +691,13 @@ bool TArmyMgr::ResolveConflict(TArmyStack* stack, short ownerNationCode) {
 
     if (!g_pDiplomacyTurnStateManager->AreInEstablishedWar(ourStack->categoryFlag,
                                                            cachedOwnerAtTile)) {
-      BuildArmyContextActionRecordsAndDispatchLabel(ourStack, enemyStack, 0, ownerNationCodeInt, 0);
+      RecordArmyBattle(ourStack, enemyStack, 0, ownerNationCodeInt, 0);
       RetreatAttacker(ourStack);
     } else if (enemyStack->unitCount != 0) {
       tacticalViewCreated = true;
-      CreateTacticalBattleViewAndInitializeBattleSetup(ourStack, enemyStack, ownerNationCodeInt);
+      StartTacticalBattle(ourStack, enemyStack, ownerNationCodeInt);
     } else {
-      BuildArmyContextActionRecordsAndDispatchLabel(ourStack, enemyStack, 1, ownerNationCodeInt, 0);
+      RecordArmyBattle(ourStack, enemyStack, 1, ownerNationCodeInt, 0);
       ourStack->MoveAll();
       perTileOwnerNationCodeCache[ownerNationCodeInt] = ourStack->categoryFlag;
     }
@@ -1195,7 +1192,7 @@ static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a4aa0
-unsigned short TArmyMgr::LookupCivilianMapCursorTokenByStateIndex(short tileIndex, short mode) {
+unsigned short TArmyMgr::GetCivilianCursor(short tileIndex, short mode) {
   return g_civilianMapCursorTokenByStateIndex[GetTileSelection(tileIndex, mode)];
 }
 
@@ -1211,7 +1208,7 @@ bool TArmyMgr::HandleMapClickByCivilianCursorState(short tileIndex, short mode) 
   case 4:
     break;
   case 5:
-    return ValidateOrderPlacementPrerequisitesForSelectedTile(cityRecordIndex);
+    return CanOrderToTile(cityRecordIndex);
   case 6:
     MarchSelectedArmies(tileIndex);
     return false;
@@ -1334,7 +1331,7 @@ void TArmyMgr::DispatchMapActionForRegionByAdjacency(int contextArg) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a5080
-bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityRecordIndex) {
+bool TArmyMgr::CanOrderToTile(short cityRecordIndex) {
   TMilitaryUnit* unit = g_pGlobalMapState->GetMilitaryMaster(pendingMapActionIndex);
   int totalCost = 0;
   for (; unit != NULL; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
@@ -1514,9 +1511,8 @@ int TArmyMgr::GetLandForceIn(int nodeIndexArg) {
 }
 
 // FUNCTION: IMPERIALISM 0x004a5b10
-void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourStack,
-                                                                TArmyStack* enemyStack,
-                                                                int ownerNationCodeInt) {
+void TArmyMgr::StartTacticalBattle(TArmyStack* ourStack, TArmyStack* enemyStack,
+                                   int ownerNationCodeInt) {
   int compositionClass = g_pGlobalMapState->ClassifyCityGateTerrainComposition(ownerNationCodeInt);
   short provinceIndex = ownerNationCodeInt;
   int fortLevel = g_pGlobalMapState->cityScoreTable[provinceIndex].fortLevel;
@@ -1526,8 +1522,7 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
 
   TArmyBattle* newBattle = new TArmyBattle();
   newBattle->AllocateRecordList();
-  newBattle->InitializeBattleSetupAndMaybeShowTacticalView(ourStack, enemyStack, compositionClass,
-                                                           fortLevel, ownerNationCodeInt);
+  newBattle->SetUpBattle(ourStack, enemyStack, compositionClass, fortLevel, ownerNationCodeInt);
 
   ourStackBattle = ourStack;
   enemyStackBattle = enemyStack;
@@ -1544,8 +1539,7 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
 // FUNCTION: IMPERIALISM 0x004a5ca0
 void TArmyMgr::EndTacticalBattle(TArmyStack* ourStack, TArmyStack* enemyStack,
                                  unsigned char sideWonFlag, int battleSiteIndex) {
-  BuildArmyContextActionRecordsAndDispatchLabel(ourStack, enemyStack, sideWonFlag, battleSiteIndex,
-                                                1);
+  RecordArmyBattle(ourStack, enemyStack, sideWonFlag, battleSiteIndex, 1);
 
   if (sideWonFlag != 0) {
     RetreatDefender(enemyStack, static_cast<short>(battleSiteIndex));
@@ -1601,7 +1595,7 @@ bool TArmyMgr::GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummar
   TShip* bestShip = NULL;
   for (TShip* ship = TShip::GetFirst(); ship != NULL; ship = ship->next) {
     if (ship->nation == g_pSimMgr->GetPlayerCountry() &&
-        ship->location->ContainsCityStatePointerInZoneArrayByCityIndex(cityRecordIndex)) {
+        ship->location->ContainsProvince(cityRecordIndex)) {
       bestShip = ship->Finest(bestShip, false);
     }
   }
@@ -1731,8 +1725,7 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
     return;
   }
 
-  TWindow* node =
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventEnemyFleetReport);
+  TWindow* node = g_pAssetMgr->GetDialog(kTurnEventEnemyFleetReport);
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUArmyMgr, 0xa4d);
   }
@@ -1997,6 +1990,6 @@ void TArmyMgr::WakeAll(int nationId) {
 
   TMapUberPicture* mapView = g_pViewMgr->mapUberPicture;
   if (mapView != 0 && !mapView->IsAUnitSelected()) {
-    mapView->CycleMapInteractionSelectionAfterHandledClick();
+    mapView->CycleSelection();
   }
 }

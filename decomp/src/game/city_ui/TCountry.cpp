@@ -68,7 +68,7 @@ IMPLEMENT_DYNCREATE(TCountry, TObject)
 TCountry::TCountry() {}
 
 // FUNCTION: IMPERIALISM 0x004d68f0
-void TCountry::InitializeNationStateIdentityAndOwnedRegionList(NationSlot nationSlot) {
+void TCountry::InitializeIdentity(NationSlot nationSlot) {
   this->nationSlot = nationSlot;
   homeTileIndex = -1;
   overlayAnchorTileCache = -1;
@@ -85,7 +85,7 @@ void TCountry::InitializeNationStateIdentityAndOwnedRegionList(NationSlot nation
       0;
   if (nameIsDefault) {
     CString flavorName;
-    SetSharedStringFromMappedFlavorTextWithLengthClamp(&flavorName, this->nationSlot);
+    SetFlavorTextClamped(&flavorName, this->nationSlot);
     identitySharedString0 = CString(flavorName);
     if (g_pSimMgr != 0) {
       g_pSimMgr->sharedTextSlots[this->nationSlot] = flavorName;
@@ -214,8 +214,7 @@ void TCountry::SetCenterTile(int value) {
 // FUNCTION: IMPERIALISM 0x004d7170
 short TCountry::GeopoliticalCenter() {
   if (overlayAnchorTileCache == -1) {
-    overlayAnchorTileCache =
-        g_pGlobalMapState->ComputeRepresentativeTileIndexForNationWithWrapBias(nationSlot, true);
+    overlayAnchorTileCache = g_pGlobalMapState->GetNationCenterTile(nationSlot, true);
   }
   return overlayAnchorTileCache;
 }
@@ -265,7 +264,7 @@ void TCountry::InitialMilitia(void) {
           TGreatPower* nation = g_apNationStates[nationSlot];
           TCity* cityForPort = (nation != 0) ? nation->city : 0;
           TZone* portZone = g_pActiveMapOrderContext->FindPortZoneBySelectedTile(cityForPort);
-          CreateNavyPrimaryOrderNodeAndAssignDisplayName(3, portZone, nationSlot, 0);
+          CreateAdmiral(3, portZone, nationSlot, 0);
         }
         if (nationSlot < kMajorNationCount) {
           TGreatPower* nation = g_apNationStates[nationSlot];
@@ -273,8 +272,7 @@ void TCountry::InitialMilitia(void) {
               g_pSimMgr->difficultyLevel == kDifficultyIntroductory) {
             TCity* cityForPort = (nation != 0) ? nation->city : 0;
             TZone* portZone = g_pActiveMapOrderContext->FindPortZoneBySelectedTile(cityForPort);
-            CreateNavyPrimaryOrderNodeAndAssignDisplayName(3, portZone->primaryNeighbors[0],
-                                                           nationSlot, 0);
+            CreateAdmiral(3, portZone->primaryNeighbors[0], nationSlot, 0);
           }
         }
       }
@@ -327,7 +325,7 @@ void TCountry::FormatOverlayTerrainLabelText(CString* out) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d7930
-void TCountry::AssignSharedStringFromDescriptorNameOrDefault(CString* out) {
+void TCountry::GetDisplayNameWithCode(CString* out) {
   if (this == 0) {
     CString defaultName(g_pszDescriptorDefaultName);
     *out = defaultName;
@@ -337,7 +335,7 @@ void TCountry::AssignSharedStringFromDescriptorNameOrDefault(CString* out) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d7a00
-void TCountry::SetNationDisplayNameAndLocalizationSlotRef(const CString& name) {
+void TCountry::SetDisplayName(const CString& name) {
   identitySharedString0 = name;
   if (g_pSimMgr != 0) {
     g_pSimMgr->sharedTextSlots[nationSlot] = name;
@@ -403,7 +401,7 @@ void TCountry::BecomeProtectorateOf(int targetNationSlot) {
       terrain->NewStatusFor(this->nationSlot, 100);
     }
   }
-  g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(this->nationSlot);
+  g_pDiplomacyTurnStateManager->ResetRelationsOf(this->nationSlot);
 }
 
 // FUNCTION: IMPERIALISM 0x004d7c90
@@ -420,7 +418,7 @@ void TCountry::BecomeColonyOf(int targetNationSlot) {
     }
   }
 
-  g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(this->nationSlot);
+  g_pDiplomacyTurnStateManager->ResetRelationsOf(this->nationSlot);
 }
 
 // FUNCTION: IMPERIALISM 0x004d7d20

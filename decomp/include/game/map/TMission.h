@@ -74,7 +74,7 @@ public:
   virtual void Hold(bool value);
   virtual bool SmokeEmIfYouGotEm();
 
-  void InitializeMissionWithNationIdAndResetPathMarker(NationSlot nationSlot);
+  void IMission(NationSlot nationSlot);
 
   static TMission* CreateMission(NationSlot sourceNation, eMissionType missionKind, int nodeKey,
                                  TZone* zoneContext, int relatedNodeKey);
@@ -85,5 +85,4 @@ public:
 
 ASSERT_SIZE(TMission, 0x14);
 
-short __cdecl CompareMissionOrderEntriesByMovementClassThenEfficiency(void* a, void* b,
-                                                                      void* reverseOrder);
+short __cdecl CompareByMovementThenEfficiency(void* a, void* b, void* reverseOrder);

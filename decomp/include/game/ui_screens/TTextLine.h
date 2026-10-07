@@ -12,7 +12,7 @@ public:
   virtual void InstallViews(TView* panel, int* offsetLayout) override;
 
   CString captionText;
-  // Font/theme preset consumed by CreateFontFromPresetAndAttachRegionHandle et al.
+  // Font/theme preset consumed by CreatePresetFont et al.
   TextStyle styleDescriptor;
   // Passed directly to TStaticText::SetJustification.
   short textAlignmentCode;

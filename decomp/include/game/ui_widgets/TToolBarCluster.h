@@ -13,8 +13,7 @@ public:
   DECLARE_DYNCREATE(TToolBarCluster)
   virtual ~TToolBarCluster() override;
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
-  virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                                   RgnHandle hitArg) override;
+  virtual void AdjustCursor(CPoint* point, RgnHandle hitArg) override;
   virtual void AddInfoBehaviors();
   virtual void SetReadouts(short nationId);
   virtual void UpdateGrantDisplay(int grantTotal);

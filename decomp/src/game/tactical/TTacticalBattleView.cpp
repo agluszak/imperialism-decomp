@@ -1133,8 +1133,7 @@ void TTacticalBattleView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005a8d40
-void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                                              RgnHandle hitArg) {
+void TTacticalBattleView::AdjustCursor(CPoint* point, RgnHandle hitArg) {
   int gridRow = 0;
   int gridCol = 0;
   ConvertPoint(point, &gridRow, &gridCol);
@@ -1497,8 +1496,7 @@ void TTacticalBattleView::KillSelectionBlink() {
 }
 
 // FUNCTION: IMPERIALISM 0x005aa670
-short TTacticalBattleView::ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(
-    TacticalTileIndex tileIndex) {
+short TTacticalBattleView::GetUnitFacing(TacticalTileIndex tileIndex) {
   int orientationTable[8] = {6, 3, 5, 1, 6, 0, 2, 4};
   TacticalTileIndex neighbors[6];
   tacticalBattle->GetNeighborList(tileIndex, neighbors);
@@ -1524,8 +1522,7 @@ short TTacticalBattleView::ComputeTacticalUnitSpriteOrientationIndexByAdjacentTy
 }
 
 // FUNCTION: IMPERIALISM 0x005aa7d0
-void TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(TTacticalUnit* unit,
-                                                                                RECT* rectOut) {
+void TTacticalBattleView::GetUnitSpriteRect(TTacticalUnit* unit, RECT* rectOut) {
   TacticalTileIndex tileIndex = unit->tileIndex;
   int row = tileIndex / tileColumnsPerRow;
   int x = (tileIndex % tileColumnsPerRow) * tileWidthPx - viewOriginX;
@@ -1542,7 +1539,7 @@ void TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(
   TacticalTileRecord* tile = &tacticalBattle->tileGrid[tileIndex];
   if (tile->deployMark == 1) {
     int unitType = unit->unitType;
-    short orient = ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(tileIndex);
+    short orient = GetUnitFacing(tileIndex);
     POINT* delta = &g_aTacticalUnitFacingOffsetTable[unitType][orient][unit->side];
     ::OffsetRect(rectOut, delta->x, delta->y);
     return;

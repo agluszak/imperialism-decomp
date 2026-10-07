@@ -45,7 +45,7 @@ void TTradeOfferNationView::Draw(RECT* rectBuffer) {
                            static_cast<LPCSTR>(offerNationName), static_cast<LPCSTR>(valueText));
   }
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b6a);
+  ApplyTextStyle(0, 0xc, 0x2b6a);
   SetQuickDrawTextOriginWithContextOffset(0, 8);
   DrawTextWithCachedQuickDrawStyleState(&finalText);
 

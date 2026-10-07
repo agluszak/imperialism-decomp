@@ -94,7 +94,7 @@ void TTacArmyView::StuffValues(int compositionClass, TArmyBattle* battle) {
   QDLoadResource(loaderHandle);
   TBitmapResourceLoader* loader = *loaderHandle;
   if (loader != 0) {
-    loader->EnsureBitmapResourceLoadedAndCopyRectSize();
+    loader->LoadBitmapBounds();
     loader->flags |= 1;
     ResetQuickDrawStrokeState();
     BlitBitmapResourceLoaderToActiveDc(loaderHandle, &bounds);
@@ -107,8 +107,7 @@ void TTacArmyView::StuffValues(int compositionClass, TArmyBattle* battle) {
     SetGWorld(savedContext, savedFlags);
 
     if (battle->fortLevel != 0) {
-      TQuickDrawSurfaceContext* fortStripSurface =
-          LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xf0e);
+      TQuickDrawSurfaceContext* fortStripSurface = LoadBitmapSurface(0xf0e);
       bounds.left = 0;
       bounds.top = 0;
       bounds.right = 0x11e;
@@ -126,11 +125,11 @@ void TTacArmyView::StuffValues(int compositionClass, TArmyBattle* battle) {
       g_pDisplayMgr->RemoveGWorld(fortStripSurface);
     }
 
-    unitSpriteAtlasSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xee2);
+    unitSpriteAtlasSurface = LoadBitmapSurface(0xee2);
     short fortLevel = battle->fortLevel;
-    fortLevelAtlasSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(
-        static_cast<unsigned short>(fortLevel != 0 ? fortLevel + 0xee6 : 0xee7));
-    effectAtlasSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xeeb);
+    fortLevelAtlasSurface =
+        LoadBitmapSurface(static_cast<unsigned short>(fortLevel != 0 ? fortLevel + 0xee6 : 0xee7));
+    effectAtlasSurface = LoadBitmapSurface(0xeeb);
 
     bounds.right = tileWidthPx;
     bounds.bottom = tileRowHeightPx;
@@ -153,7 +152,7 @@ void TTacArmyView::StuffValues(int compositionClass, TArmyBattle* battle) {
     }
     toolbar->battle = battle;
     toolbar->unitSpriteAtlasSurface = unitSpriteAtlasSurface;
-    toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(tacticalBattle->selectedUnit);
+    toolbar->ShowCurrentUnit(tacticalBattle->selectedUnit);
     toolbar->SetActionMode(0);
     this->toolbar = toolbar;
 
@@ -417,7 +416,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
   short fortCell = 0;
 
   if (grid[tileIndex].deployMark == 1) {
-    fortCell = ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(tileIndex);
+    fortCell = GetUnitFacing(tileIndex);
     short fortSpriteCell = fortCell * 3;
     short fortSpriteX = fortSpriteCell * static_cast<short>(unitSpriteCellWidth);
     RECT fortSrc = {fortSpriteX, 0, fortSpriteX + unitSpriteCellWidth, tileRowHeightPx};
@@ -449,7 +448,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
       RECT edgeSrc = {edgeSpriteX, edgeSpriteY, edgeSpriteX + unitSpriteCellWidth,
                       edgeSpriteY + unitSpriteCellHeight};
       RECT edgeDst;
-      ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(edgeUnit, &edgeDst);
+      GetUnitSpriteRect(edgeUnit, &edgeDst);
       ResetQuickDrawStrokeState();
       UpdatePaletteIndexWithDefaultFallback(0x10);
       if (ClipSrcRectToBoundsAndOffsetDstRect(corners, &edgeDst, &edgeSrc)) {
@@ -556,7 +555,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     RECT unitSrc = {spriteX, spriteY, spriteX + unitSpriteCellWidth,
                     spriteY + unitSpriteCellHeight};
     RECT unitDst;
-    ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(occupant, &unitDst);
+    GetUnitSpriteRect(occupant, &unitDst);
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0x10);
     if (ClipSrcRectToBoundsAndOffsetDstRect(corners, &unitDst, &unitSrc)) {
@@ -611,19 +610,19 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     barRect.top = y - 4;
     barRect.bottom = y - 1;
     SetQuickDrawFillColor(0);
-    FillRectWithQuickDrawBrushAndContextOffset(&barRect);
+    FillContextRect(&barRect);
     g_pViewMgr->SetForeColor(0x33);
     barRect.left -= 1;
     barRect.right -= 1;
     barRect.top -= 1;
     barRect.bottom -= 1;
-    FillRectWithQuickDrawBrushAndContextOffset(&barRect);
+    FillContextRect(&barRect);
     g_pViewMgr->SetForeColor(6);
     barRect.right = barRect.left + (occupant->strength + 0x18) / 25;
-    FillRectWithQuickDrawBrushAndContextOffset(&barRect);
+    FillContextRect(&barRect);
     g_pViewMgr->SetForeColor(0x34);
     barRect.right = barRect.left + (static_cast<TArmyTacUnit*>(occupant)->morale + 0x18) / 25;
-    FillRectWithQuickDrawBrushAndContextOffset(&barRect);
+    FillContextRect(&barRect);
 
     short tierOffset = g_pGlobalMapState->GetFortFlagOffset(0);
     RECT flagSrc = {0, tierOffset, 6, tierOffset + 9};
@@ -682,7 +681,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     RECT nSrc = {nSpriteX, nSpriteY, nSpriteX + unitSpriteCellWidth,
                  nSpriteY + unitSpriteCellHeight};
     RECT nDst;
-    ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(neighborUnit, &nDst);
+    GetUnitSpriteRect(neighborUnit, &nDst);
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0x10);
     if (ClipSrcRectToBoundsAndOffsetDstRect(corners, &nDst, &nSrc)) {

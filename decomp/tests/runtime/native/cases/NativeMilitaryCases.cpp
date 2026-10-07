@@ -1872,7 +1872,7 @@ static TAutoGreatPower* ConfigureAiNavalDevelopmentPressure(short* nationSlotOut
     mission->flag10 = 1;
   }
   TControlSeaZoneMission* navyMission = new TControlSeaZoneMission(g_pMapActionContextListHead);
-  navyMission->InitializeMissionWithNationIdAndResetPathMarker(nationSlot);
+  navyMission->IMission(nationSlot);
   navyMission->navyState = 2;
   navyMission->requiredShipEquipageByCategory[0] = 0.0f;
   navyMission->requiredShipEquipageByCategory[1] = 0.0f;
@@ -1906,7 +1906,7 @@ RuntimeActionResult RunAiNavalIndustryDevelopment(NativeTransition& transition) 
     return started;
   }
 
-  autoNation->PlanAiDevelopmentActionsFromResourcePools(0);
+  autoNation->PlanDevelopment(0);
   return transition.Finish();
 }
 
@@ -1974,7 +1974,7 @@ static bool ConfigureDamagedHostileSeaMission(short* nationSlotOut) {
       missionNation = static_cast<short>(slot);
       targetZone = g_pMapActionContextListHead;
       TControlSeaZoneMission* mission = new TControlSeaZoneMission(targetZone);
-      mission->InitializeMissionWithNationIdAndResetPathMarker(missionNation);
+      mission->IMission(missionNation);
       static_cast<TAutoGreatPower*>(nation)->missionQueue->AddTail(mission);
       break;
     }

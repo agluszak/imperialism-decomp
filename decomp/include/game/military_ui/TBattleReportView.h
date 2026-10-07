@@ -15,8 +15,7 @@ public:
   void Free() override;
   void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   bool DoIdle(int action) override;
-  void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                           RgnHandle hitArg) override;
+  void AdjustCursor(CPoint* point, RgnHandle hitArg) override;
   void DoPostCreate(int arg) override;
   void Draw(RECT* rectBuffer) override;
   void DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) override;

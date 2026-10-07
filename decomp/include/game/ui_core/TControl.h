@@ -12,7 +12,7 @@ enum ControlHiliteCommand {
 
 #pragma pack(push, 2)
 struct TextStyle {
-  short fontFamily;     // font-family index (CreateFontFromPresetAndAttachRegionHandle);
+  short fontFamily;     // font-family index (CreatePresetFont);
                         // 3 when fontSize < 12, else 1
   short fontStyleFlags; // bold/italic/underline bits
   short fontSize;       // font size or size index
@@ -28,14 +28,14 @@ public:
   virtual void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint,
                           CPoint& currentPoint, bool commandFlag);
   virtual void BuildInsetContentRect(CRect* boundsBuffer);
-  virtual void AssertCityProductionGlobalStateInitialized(int arg1, int arg2);
+  virtual void AssertCityState(int arg1, int arg2);
   virtual void NoOpUiViewSlotHandler(int arg1, int arg2);
   virtual void NoOpControlAction(int unusedArg);
   virtual void InstallTextStyle(const TextStyle& style, char refreshNow);
   virtual void SetTextColorAndMaybeRefresh(const COLORREF* textColor, bool refreshNow);
   virtual bool LogUnhandledDialogMethodAndReturnFalse();
   virtual void HiliteState(unsigned char enabledState, bool refreshNow);
-  void SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNation);
+  void SetNationFilter(short selectedNation);
 
   int eventNumber;
   unsigned char controlState;

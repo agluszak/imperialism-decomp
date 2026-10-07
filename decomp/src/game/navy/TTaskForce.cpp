@@ -772,9 +772,9 @@ bool TTaskForce::SinkOrSwimShips() {
       head->payload->Free();
 
       head = head->DeleteMapOrderChildLinkAndReturnNext();
-      head = head->PruneDefeatedMapOrderChildrenAndReturnHead();
+      head = head->PruneDefeatedShips();
     } else {
-      head->next->PruneDefeatedMapOrderChildrenAndReturnHead();
+      head->next->PruneDefeatedShips();
     }
   }
 
@@ -1181,7 +1181,7 @@ void TTaskForce::GetCompositionDescription(CString* out) const {
   for (i = 0; i < 14; ++i) {
     if (counts[i] > 0) {
       CString label;
-      FormatLocalizedCommodityCountLabelByIndex(&label, i, static_cast<short>(counts[i]));
+      FormatCommodityCount(&label, i, static_cast<short>(counts[i]));
       if (*out != g_szEmptyString) {
         *out += g_szListSeparator;
       }

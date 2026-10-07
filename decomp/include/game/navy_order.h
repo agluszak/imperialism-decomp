@@ -6,14 +6,13 @@
 class TShip;
 class TZone;
 int FindCumulativeWeightBucketIndex(short* weightTable, short roll);
-short GetIndustryActionCostWeightByResourceType(short resourceType);
+short GetIndustryCostWeight(short resourceType);
 
-float ComputeNavyOrderDistributionScoreForNation(short nation);
+float ScoreNavyDistribution(short nation);
 
-void __cdecl AccumulateNavyOrderCategoryVectorWithScale(TShip* orderNode, float* vector,
-                                                        float scale);
+void __cdecl AddShipToCategoryVector(TShip* orderNode, float* vector, float scale);
 
-int GetNormalizedIndustryActionResourceCostPercent(int nCategory, short nResourceType);
+int GetIndustryCostPercent(int nCategory, short nResourceType);
 
-TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short resourceType, TZone* portZoneContext,
-                                                      int nationSlot, char* displayNameOverride);
+TShip* CreateAdmiral(short resourceType, TZone* portZoneContext, int nationSlot,
+                     char* displayNameOverride);

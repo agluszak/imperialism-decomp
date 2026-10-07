@@ -43,7 +43,7 @@ public:
 
   int GetAverageSeaZoneValue();
 
-  void InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg);
+  void CreateZones(int nationCountArg);
 
   void UpdateOccupants();
 
@@ -64,8 +64,8 @@ public:
 ASSERT_SIZE(TOcean, 0x18);
 
 // Map-action-context maintenance passes (bodies in TZone.cpp).
-void PopulatePortZoneAdjacencyToNearbyCityContexts();
-void RefreshPortZoneNeighborContextLinksAndFallbacks();
-void RegenerateAllMapActionContextStatusCodes();
+void LinkPortZones();
+void RefreshPortLinks();
+void RegenerateZoneCodes();
 
 TTaskForce* GetActiveMapOrderEntry();

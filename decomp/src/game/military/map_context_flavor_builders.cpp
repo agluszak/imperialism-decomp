@@ -1086,7 +1086,7 @@ void GenerateMappedFlavorTextVariantE(CString* out) {
 }
 
 // FUNCTION: IMPERIALISM 0x005ce110
-CString GenerateMappedFlavorTextVariantEToSharedString() {
+CString GenerateFlavorTextE() {
   CString temp;
   GenerateMappedFlavorTextVariantE(&temp);
   return temp;
@@ -1184,7 +1184,7 @@ CString AssignRandomMapContextStatusBaseString() {
 }
 
 // FUNCTION: IMPERIALISM 0x005cefc0
-void AppendRandomMapContextStatusSuffixWithProbability(CString* dest) {
+void MaybeAppendStatusSuffix(CString* dest) {
   BuildRandomMapContextStatusBaseString(dest);
   if (dest->GetLength() < 9) {
     g_zoneStatusCodePrngSeed = g_zoneStatusCodePrngSeed * 0x15a4e35 + 1;
@@ -1196,7 +1196,7 @@ void AppendRandomMapContextStatusSuffixWithProbability(CString* dest) {
 }
 
 // FUNCTION: IMPERIALISM 0x005cf090
-CString BuildMapContextStatusStringWithRandomSuffix() {
+CString BuildStatusString() {
   CString local;
   BuildRandomMapContextStatusBaseString(&local);
   if (local.GetLength() < 9) {
@@ -1278,7 +1278,7 @@ void GenerateMappedFlavorTextVariantC(CString* out) {
 }
 
 // FUNCTION: IMPERIALISM 0x005cfba0
-CString GenerateMappedFlavorTextVariantCToSharedString() {
+CString GenerateFlavorTextC() {
   CString temp;
   GenerateMappedFlavorTextVariantC(&temp);
   return temp;
@@ -1400,7 +1400,7 @@ void GenerateMappedFlavorTextVariantB(CString* out) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d1330
-CString GenerateMappedFlavorTextVariantBToSharedString() {
+CString GenerateFlavorTextB() {
   CString temp;
   GenerateMappedFlavorTextVariantB(&temp);
   return temp;
@@ -1552,7 +1552,7 @@ void GenerateMappedFlavorTextVariantA(CString* out) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d3300
-CString GenerateMappedFlavorTextVariantAToSharedString() {
+CString GenerateFlavorTextA() {
   CString temp;
   GenerateMappedFlavorTextVariantA(&temp);
   return temp;
@@ -1648,7 +1648,7 @@ void GenerateMappedFlavorTextVariantD(CString* out) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d41a0
-CString GenerateMappedFlavorTextVariantDToSharedString() {
+CString GenerateFlavorTextD() {
   CString temp;
   GenerateMappedFlavorTextVariantD(&temp);
   return temp;

@@ -113,17 +113,10 @@ void TEscortMission::CalculateNeeds() {
       }
       short normalizationBase = node->GetMaxStrength();
       float scale = static_cast<float>(node->strength / normalizationBase);
-      vector[0] +=
-          static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
-          scale;
-      vector[1] +=
-          static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(1)) *
-          scale;
-      vector[2] +=
-          static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(2)) *
-          scale;
-      vector[3] +=
-          static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(3));
+      vector[0] += static_cast<float>(node->GetCategoryPercent(0)) * scale;
+      vector[1] += static_cast<float>(node->GetCategoryPercent(1)) * scale;
+      vector[2] += static_cast<float>(node->GetCategoryPercent(2)) * scale;
+      vector[3] += static_cast<float>(node->GetCategoryPercent(3));
     }
 
     float sum = vector[0] + vector[1] + vector[2] + vector[3];

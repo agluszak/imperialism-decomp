@@ -31,7 +31,7 @@ void TTransFocusAnimation::ITransFocusAnimation(TView* target, RECT* bounds, sho
 
   RECT surfaceBounds = {0, 0, bounds->right - bounds->left, bounds->bottom - bounds->top};
   g_pDisplayMgr->MakeNewGWorld(transientSurfaceContext, 8, surfaceBounds);
-  insetBitmapSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(frameResourceBaseIdArg);
+  insetBitmapSurface = LoadBitmapSurface(frameResourceBaseIdArg);
 }
 
 // FUNCTION: IMPERIALISM 0x004a0570

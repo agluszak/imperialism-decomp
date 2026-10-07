@@ -128,7 +128,7 @@ void TCivReport::StuffValues(TCivUnit* civilianOrderEntry) {
 
   TDeluxeText* infoControl = static_cast<TDeluxeText*>(FindSubView(kControlTagInfo));
   infoControl->AssertValid();
-  infoControl->UpdateTextEntrySharedStringAndMaybeNotify(&reportText, false);
+  infoControl->SetEntryText(&reportText, false);
   infoControl->SetTextStyle(0, 12, 0x2b6a);
   infoControl->SetJustification(1, false);
   infoControl->CenterVertically(true);

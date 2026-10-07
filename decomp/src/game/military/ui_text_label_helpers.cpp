@@ -87,9 +87,8 @@ void InitializeUiTextStyleDescriptor(TextStyle* styleDescriptor, short face, sho
 }
 
 // FUNCTION: IMPERIALISM 0x005c4020
-TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int unused2,
-                                                      int pointSize, int themeCode, int themeCode2,
-                                                      const char* caption) {
+TStaticText* ApplyControlTheme(TStaticText* control, int unused2, int pointSize, int themeCode,
+                               int themeCode2, const char* caption) {
   control->AssertValid();
   TextStyle styleDescriptor;
   styleDescriptor.fontFamily = 0;
@@ -107,11 +106,9 @@ TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int 
 }
 
 // FUNCTION: IMPERIALISM 0x005c4180
-TStaticText* ConfigureUiControlStyleValueAndCaptionFromStringResource(TStaticText* control,
-                                                                      int unused2, int pointSize,
-                                                                      int themeCode, int themeCode2,
-                                                                      int stringResourceGroup,
-                                                                      short stringResourceIndex) {
+TStaticText* ConfigureControlFromStrings(TStaticText* control, int unused2, int pointSize,
+                                         int themeCode, int themeCode2, int stringResourceGroup,
+                                         short stringResourceIndex) {
   CString caption;
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&caption, stringResourceGroup,
                                                       stringResourceIndex);
@@ -131,15 +128,12 @@ TStaticText* ConfigureUiControlStyleValueAndCaptionFromStringResource(TStaticTex
 }
 
 // FUNCTION: IMPERIALISM 0x005c4310
-TStaticText* __cdecl RefreshActiveControlThenApplyThemeStyleAndCaption(unsigned int controlTag,
-                                                                       int unused2, int pointSize,
-                                                                       int themeCode,
-                                                                       int themeCode2,
-                                                                       const char* caption) {
+TStaticText* __cdecl RefreshAndTheme(unsigned int controlTag, int unused2, int pointSize,
+                                     int themeCode, int themeCode2, const char* caption) {
   TView* control = g_pDisplayMgr->activeDialog->FindSubView(controlTag);
   control->AssertValid();
-  return ApplyControlThemeStyleAndOptionalCaption(static_cast<TStaticText*>(control), unused2,
-                                                  pointSize, themeCode, themeCode2, caption);
+  return ApplyControlTheme(static_cast<TStaticText*>(control), unused2, pointSize, themeCode,
+                           themeCode2, caption);
 }
 
 // Dead helper (no live callers): the bare tag-resolve form the siblings above wrap.
@@ -165,7 +159,7 @@ void __cdecl DispatchToSelectableTextOptionEntries(TView* view, TextStyle* state
 }
 
 // FUNCTION: IMPERIALISM 0x005c4470
-void ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(int unused, int styleWidth, int themeCode) {
+void ApplyTextStyle(int unused, int styleWidth, int themeCode) {
   TextStyle styleDescriptor;
   styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, unused, styleWidth, themeCode);
@@ -176,8 +170,7 @@ void ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(int unused, int styleWidt
 }
 
 // FUNCTION: IMPERIALISM 0x005c4500
-void InitializeUiTextStyleDescriptorAndApplyQuickDraw(short face, short pointSize, int themeCode,
-                                                      short font) {
+void SetTextStyleAndApply(short face, short pointSize, int themeCode, short font) {
   TextStyle styleDescriptor;
   styleDescriptor.textColor = 0;
   InitializeUiTextStyleDescriptor(&styleDescriptor, face, pointSize, themeCode, font);
@@ -209,8 +202,7 @@ void __cdecl ApplyUiNumberTextStyleAndThemeColor(TDropShadowNumberText* control,
 }
 
 // FUNCTION: IMPERIALISM 0x005c46b0
-void LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(short group, short index,
-                                                           unsigned int controlTag) {
+void SetTaggedStringAndApply(short group, short index, unsigned int controlTag) {
   CString text;
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&text, group, index);
   TView* control = g_pDisplayMgr->activeDialog->FindSubView(controlTag);
@@ -218,8 +210,7 @@ void LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(short group, short in
 }
 
 // FUNCTION: IMPERIALISM 0x005c4780
-void LoadUiStringByGroupAndIndexToGlobalControlTag(short group, short index,
-                                                   unsigned int controlTag) {
+void SetTaggedString(short group, short index, unsigned int controlTag) {
   CString text;
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&text, group, index);
   TView* control = g_pDisplayMgr->activeDialog->FindSubView(controlTag);
@@ -227,14 +218,14 @@ void LoadUiStringByGroupAndIndexToGlobalControlTag(short group, short index,
 }
 
 // FUNCTION: IMPERIALISM 0x005c4850
-void LoadUiStringByGroupAndIndexToControlObject(short group, short index, TView* control) {
+void SetControlString(short group, short index, TView* control) {
   CString text;
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&text, group, index);
   SetControlHoverHelpText(text, control);
 }
 
 // FUNCTION: IMPERIALISM 0x005c4910
-void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control) {
+void SendStringCommand(short group, short index, TView* control) {
   CString text;
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&text, group, index);
   SetControlHoverHelpTextAltEntry(text, control);
@@ -259,8 +250,7 @@ TView* __cdecl ApplySharedStringToGlobalControlTag(CString sharedString, unsigne
 }
 
 // FUNCTION: IMPERIALISM 0x005c4b70
-TView* __cdecl AssignSharedStringToTaggedControlAndProcessState(const char* text,
-                                                                unsigned int controlTag) {
+TView* __cdecl SetTaggedControlText(const char* text, unsigned int controlTag) {
   CString sharedString(text);
   TView* control = g_pDisplayMgr->activeDialog->FindSubView(controlTag);
   control->AssertValid();

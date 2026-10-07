@@ -50,7 +50,7 @@ public:
 
   void GetWeightedEquipage(float* vector) const;
 
-  float ComputeArmyMissionScoreDeltaWithCandidateUnit(TMilitaryUnit* candidateUnit);
+  float GetWeightedSatifactionWith(TMilitaryUnit* candidateUnit);
   float GetWeightedSatifactionWithout(TMilitaryUnit* candidateUnit);
 
 protected:
@@ -62,5 +62,4 @@ private:
 
 ASSERT_SIZE(TArmyMission, 0x30);
 
-void AccumulateUnitOrderPriorityVectorContribution(TMilitaryUnit* unit, float* vector, float scale,
-                                                   float weight);
+void AddUnitToPriorityVector(TMilitaryUnit* unit, float* vector, float scale, float weight);

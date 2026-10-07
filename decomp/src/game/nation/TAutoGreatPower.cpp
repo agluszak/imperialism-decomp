@@ -50,7 +50,7 @@ static const int kAidAllocationColumnCount = 0x17;
 static const int kPortZoneCount = 0x70;
 
 // FUNCTION: IMPERIALISM 0x004e6b10
-bool TAutoGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
+bool TAutoGreatPower::CheckBankruptcy(void) {
   return false;
 }
 
@@ -253,8 +253,8 @@ void TAutoGreatPower::SorryYouLose(void) {
 // FUNCTION: IMPERIALISM 0x004e7550
 void TAutoGreatPower::FinishCityPhase(void) {
   if (city != 0) {
-    RebuildNationResourceYieldCountersAndDevelopmentTargets();
-    AdvanceOwnedRegionDevelopmentCountersAndHandleEvents();
+    CountResourceYields();
+    AdvanceRegionDevelopment();
   }
 }
 
@@ -354,13 +354,13 @@ void TAutoGreatPower::MoveArmy(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e7910
-void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2(CString* message) {}
+void TAutoGreatPower::ShowStatusMessage2(CString* message) {}
 
 // FUNCTION: IMPERIALISM 0x004e7930
-void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel1(CString* message) {}
+void TAutoGreatPower::ShowStatusMessage1(CString* message) {}
 
 // FUNCTION: IMPERIALISM 0x004e7950
-void TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0(CString* message) {}
+void TAutoGreatPower::ShowStatusMessage0(CString* message) {}
 
 // FUNCTION: IMPERIALISM 0x004e7970
 void TAutoGreatPower::RememberTradeBids(void) {}
@@ -485,13 +485,11 @@ int TAutoGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNatio
         bool borderLinked = g_pGlobalMapState->AreNationsBorderLinked(targetNation, nationSlot);
         float combinedScore;
         if (borderLinked != 0) {
-          combinedScore = ComputeArmyScoreRatioVsNationWithSecondary(sourceNation, targetNation);
-          combinedScore =
-              ComputeArmyScoreStandingRatioVsNationPair(sourceNation, targetNation) + combinedScore;
+          combinedScore = GetArmyRatioWithAlly(sourceNation, targetNation);
+          combinedScore = GetArmyStandingRatioVsPair(sourceNation, targetNation) + combinedScore;
         } else {
-          combinedScore = ComputeNavyScoreRatioVsNationWithSecondary(sourceNation, targetNation);
-          combinedScore =
-              ComputeNavyScoreStandingRatioVsNationPair(sourceNation, targetNation) + combinedScore;
+          combinedScore = GetNavyRatioWithAlly(sourceNation, targetNation);
+          combinedScore = GetNavyStandingRatioVsPair(sourceNation, targetNation) + combinedScore;
         }
         if (GetWarNumber() > combinedScore) {
           allBeatable = false;
@@ -542,12 +540,10 @@ int TAutoGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation, c
     float standingScore;
     if (borderLinked != 0) {
       ratioScore = ComputeArmyScoreRatioForNationPair(sourceNation, targetNation, swapRoles);
-      standingScore =
-          ComputeArmyScoreStandingRatioForNationPair(sourceNation, targetNation, swapRoles);
+      standingScore = GetArmyStandingRatioForPair(sourceNation, targetNation, swapRoles);
     } else {
       ratioScore = ComputeNavyScoreRatioForNationPair(sourceNation, targetNation, swapRoles);
-      standingScore =
-          ComputeNavyScoreStandingRatioForNationPair(sourceNation, targetNation, swapRoles);
+      standingScore = GetNavyStandingRatioForPair(sourceNation, targetNation, swapRoles);
     }
     float combinedScore = standingScore + ratioScore;
     if (GetWarNumber() <= combinedScore) {
@@ -568,7 +564,7 @@ int TAutoGreatPower::ConsiderWarOfAlliance(int targetNation, int sourceNation, c
 }
 
 // FUNCTION: IMPERIALISM 0x004e8040
-bool TAutoGreatPower::PassesDiplomacyStrengthThresholdForTarget(int targetNation) {
+bool TAutoGreatPower::IsStrongEnoughFor(int targetNation) {
   if (g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(targetNation, nationSlot)) {
     return false;
   }
@@ -659,8 +655,7 @@ void TAutoGreatPower::CreateInitialMissions() {
   TLongintList* regionList = ownedRegionList;
   for (int i = 1; i <= regionList->GetSize(); i++) {
     int regionId = regionList->At(i);
-    bool unavailable = g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
-        regionId, nationSlot);
+    bool unavailable = g_pGlobalMapState->IsProvinceIsolated(regionId, nationSlot);
     provinceStatus[regionId] =
         unavailable ? kMissionDesirabilityUnmarked : kMissionDesirabilityCandidate;
     CreateMission(kMissionTypeDefendProvince, regionId, 0, -1);
@@ -743,8 +738,7 @@ void TAutoGreatPower::RemoveMission(eMissionType missionType, int key, TZone* zo
 // FUNCTION: IMPERIALISM 0x004e8b50
 void TAutoGreatPower::SetProvinceStatus(int provinceIndex, eMissionDesirability value) {
   if (value == kMissionDesirabilityCandidate &&
-      g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(provinceIndex,
-                                                                              nationSlot)) {
+      g_pGlobalMapState->IsProvinceIsolated(provinceIndex, nationSlot)) {
     value = kMissionDesirabilityUnmarked;
   }
   provinceStatus[provinceIndex] = static_cast<unsigned char>(value);
@@ -754,8 +748,7 @@ void TAutoGreatPower::SetProvinceStatus(int provinceIndex, eMissionDesirability 
 void TAutoGreatPower::SetProvinceStatus(int provinceIndex, eMissionDesirability status,
                                         unsigned char bypassGate) {
   if (status == kMissionDesirabilityCandidate && bypassGate == 0 &&
-      g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(provinceIndex,
-                                                                              nationSlot)) {
+      g_pGlobalMapState->IsProvinceIsolated(provinceIndex, nationSlot)) {
     status = kMissionDesirabilityUnmarked;
   }
   provinceStatus[provinceIndex] = static_cast<unsigned char>(status);
@@ -790,8 +783,7 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
         int region = g_apNationStates[slot]->ownedRegionList->At(j);
         if (provinceStatus[region] == kMissionDesirabilityUnmarked) {
           eMissionDesirability markValue = kMissionDesirabilityCandidate;
-          if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(region,
-                                                                                      nationSlot)) {
+          if (g_pGlobalMapState->IsProvinceIsolated(region, nationSlot)) {
             markValue = kMissionDesirabilityUnmarked;
           }
           provinceStatus[region] = markValue;
@@ -807,8 +799,7 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
               int minorRegion = minorDescriptor->ownedRegionList->At(m);
               if (provinceStatus[minorRegion] == kMissionDesirabilityUnmarked) {
                 eMissionDesirability markValue = kMissionDesirabilityCandidate;
-                if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
-                        minorRegion, nationSlot)) {
+                if (g_pGlobalMapState->IsProvinceIsolated(minorRegion, nationSlot)) {
                   markValue = kMissionDesirabilityUnmarked;
                 }
                 provinceStatus[minorRegion] = markValue;
@@ -830,8 +821,7 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
         int region = g_apSecondaryNationStateSlots[7 + minorSlot]->ownedRegionList->At(j);
         if (provinceStatus[region] == kMissionDesirabilityUnmarked) {
           eMissionDesirability markValue = kMissionDesirabilityCandidate;
-          if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(region,
-                                                                                      nationSlot)) {
+          if (g_pGlobalMapState->IsProvinceIsolated(region, nationSlot)) {
             markValue = kMissionDesirabilityUnmarked;
           }
           provinceStatus[region] = markValue;
@@ -893,8 +883,8 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
         int nodeBuffer[12];
         if (g_pGlobalMapState->HasDirectOrFallbackLinkedNodeType(rec, nationSlot, true)) {
           linkBonus = 0;
-        } else if (g_pGlobalMapState->CollectSecondDegreeLinksWithMinorNationFallback(
-                       rec, nationSlot, nodeBuffer, true) != 0) {
+        } else if (g_pGlobalMapState->CollectLinksWithMinors(rec, nationSlot, nodeBuffer, true) !=
+                   0) {
           linkBonus = 0x14;
         } else if (g_pActiveMapOrderContext->GetSeaZoneAdjacentTo(rec) != 0) {
           linkBonus = 0x28;
@@ -921,8 +911,7 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
         int topRegion = topRecord[0];
         if (provinceStatus[topRegion] == kMissionDesirabilityUnmarked) {
           eMissionDesirability markValue = kMissionDesirabilityCandidate;
-          if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(topRegion,
-                                                                                      nationSlot)) {
+          if (g_pGlobalMapState->IsProvinceIsolated(topRegion, nationSlot)) {
             markValue = kMissionDesirabilityUnmarked;
           }
           provinceStatus[topRegion] = markValue;
@@ -932,8 +921,7 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
           int secondRegion = secondRecord[0];
           if (provinceStatus[secondRegion] == kMissionDesirabilityUnmarked) {
             eMissionDesirability markValue = kMissionDesirabilityCandidate;
-            if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
-                    secondRegion, nationSlot)) {
+            if (g_pGlobalMapState->IsProvinceIsolated(secondRegion, nationSlot)) {
               markValue = kMissionDesirabilityUnmarked;
             }
             provinceStatus[secondRegion] = markValue;
@@ -989,17 +977,17 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissions(void) {
     int tier;
     int nodeBuffer[12];
     if (g_pGlobalMapState->HasDirectOrFallbackLinkedNodeType(region, nationSlot, true)) {
-      score = ComputeAdvisoryMapNodeCompositeScoreByMode(region, 0, -1);
+      score = ScoreProvinceByMode(region, 0, -1);
       bestDirectScore = score;
       tier = 0;
       directRegion = region;
-    } else if (g_pGlobalMapState->CollectSecondDegreeLinksWithMinorNationFallback(
-                   region, nationSlot, nodeBuffer, true) != 0) {
+    } else if (g_pGlobalMapState->CollectLinksWithMinors(region, nationSlot, nodeBuffer, true) !=
+               0) {
       linkRegion = nodeBuffer[0];
-      score = ComputeAdvisoryMapNodeCompositeScoreByMode(region, 1, linkRegion);
+      score = ScoreProvinceByMode(region, 1, linkRegion);
       tier = 1;
     } else if (g_pActiveMapOrderContext->GetSeaZoneAdjacentTo(region) != 0) {
-      score = ComputeAdvisoryMapNodeCompositeScoreByMode(region, 2, -1);
+      score = ScoreProvinceByMode(region, 2, -1);
       tier = 2;
     } else {
       score = g_Compute_Advisory_Zero;
@@ -1021,7 +1009,7 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissions(void) {
   TZone* zone;
   for (zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
     if (zoneStatus[zone->GetContextOrdinalOrInvalid()] == kMissionDesirabilityCandidate) {
-      float zoneScore = ComputeMapActionContextCompositeScoreForNation(zone);
+      float zoneScore = ScoreZone(zone);
       if (zoneScore > bestScore) {
         bestPortZone = zone;
         zone->GetContextOrdinalOrInvalid(); // dead call kept from the original
@@ -1218,10 +1206,9 @@ void TAutoGreatPower::LoseProvince(int regionId) {
 // FUNCTION: IMPERIALISM 0x004ea290
 void TAutoGreatPower::AddProvince(int regionId) {
   TGreatPower::AddProvince(regionId);
-  provinceStatus[regionId] =
-      g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(regionId, nationSlot)
-          ? kMissionDesirabilityUnmarked
-          : kMissionDesirabilityCandidate;
+  provinceStatus[regionId] = g_pGlobalMapState->IsProvinceIsolated(regionId, nationSlot)
+                                 ? kMissionDesirabilityUnmarked
+                                 : kMissionDesirabilityCandidate;
   CreateMission(kMissionTypeDefendProvince, regionId, 0, -1);
 }
 
@@ -1249,11 +1236,11 @@ void TAutoGreatPower::AddColony(int targetNation) {
 void TAutoGreatPower::AnnounceLater(short orderKind, short payload, short flags) {}
 
 // FUNCTION: IMPERIALISM 0x004ea450
-void TAutoGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {}
+void TAutoGreatPower::ShowTurnMessages(void) {}
 
 // FUNCTION: IMPERIALISM 0x004ea470
-void TAutoGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) {
-  TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets();
+void TAutoGreatPower::CountResourceYields(void) {
+  TGreatPower::CountResourceYields();
   short carryValue = needCurrentByType[kResourceFish];
   needCurrentByType[kResourceFish] = 0;
   needCurrentByType[kResourceLivestock] =
@@ -1341,7 +1328,7 @@ void TAutoGreatPower::KillMissions() {
 }
 
 // FUNCTION: IMPERIALISM 0x004eaa20
-void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
+void TAutoGreatPower::AssessExpansion(void) {
   int totalRegionCount = 0;
   int compatibleRegionCount = 0;
   int activeMissionCount = 0;
@@ -1349,7 +1336,7 @@ void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
   int regionOrdinal;
   for (regionOrdinal = 1; regionOrdinal <= ownedRegionList->GetSize(); ++regionOrdinal) {
     int regionId = ownedRegionList->At(regionOrdinal);
-    if (IsMapTileCompatibleWithCurrentTerrainOrActionContext(regionId)) {
+    if (IsTileCompatible(regionId)) {
       ++compatibleRegionCount;
     }
     ++totalRegionCount;
@@ -1361,7 +1348,7 @@ void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
       for (regionOrdinal = 1; regionOrdinal <= (*minorCursor)->ownedRegionList->GetSize();
            ++regionOrdinal) {
         int regionId = (*minorCursor)->ownedRegionList->At(regionOrdinal);
-        if (IsMapTileCompatibleWithCurrentTerrainOrActionContext(regionId)) {
+        if (IsTileCompatible(regionId)) {
           ++compatibleRegionCount;
         }
         ++totalRegionCount;
@@ -1490,9 +1477,9 @@ void TAutoGreatPower::ReassessMissions(int unused) {
   }
 
   TAutoGreatPower::ReplaceObsoleteMissions();
-  UpdateTrackedEntryEligibilityByClassMaskAndRatio(0);
+  UpdateMissionEligibility(0);
   AssignUnitsToMissions(0);
-  PlanAiDevelopmentActionsFromResourcePools(0);
+  PlanDevelopment(0);
 }
 
 // FUNCTION: IMPERIALISM 0x004eafa0
@@ -1547,7 +1534,7 @@ void TAutoGreatPower::ReplaceObsoleteMissions(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004eb190
-void TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools(int unused) {
+void TAutoGreatPower::PlanDevelopment(int unused) {
   if (this == 0) {
     return;
   }
@@ -1593,9 +1580,8 @@ void TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools(int unused) {
     char selectedIsIndustry;
     char selectedIsUpgrade;
     float selectedWeightedCost;
-    if (!SelectBestCityDevelopmentFromResourcePools(nationSlot, resourcePools, bestUnitByType,
-                                                    &selectedIsIndustry, &selectedIsUpgrade,
-                                                    &selectedSlot, 0, &selectedWeightedCost)) {
+    if (!PickBestDevelopment(nationSlot, resourcePools, bestUnitByType, &selectedIsIndustry,
+                             &selectedIsUpgrade, &selectedSlot, 0, &selectedWeightedCost)) {
       return;
     }
 
@@ -1624,8 +1610,8 @@ void TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools(int unused) {
       developmentBudget -= static_cast<float>(actionCost);
 
       for (int resourceIndex = 0; resourceIndex < 4; ++resourceIndex) {
-        resourcePools[5 + resourceIndex] -= GetNormalizedIndustryActionResourceCostPercent(
-            resourceIndex, static_cast<short>(selectedSlot));
+        resourcePools[5 + resourceIndex] -=
+            GetIndustryCostPercent(resourceIndex, static_cast<short>(selectedSlot));
       }
     } else {
       if (applyAction) {
@@ -1675,8 +1661,8 @@ short CompareMissionsByWeightedShortfall(TMission* left, TMission* right) {
 }
 
 // FUNCTION: IMPERIALISM 0x004eb6b0
-void TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unused) {
-  missionQueue->SortBy(&CompareMissionOrderEntriesByMovementClassThenEfficiency, this);
+void TAutoGreatPower::UpdateMissionEligibility(int unused) {
+  missionQueue->SortBy(&CompareByMovementThenEfficiency, this);
 
   TMission* nextByClass[4] = {NULL, NULL, NULL, NULL};
   int availableClassMask = 3;
@@ -1897,11 +1883,9 @@ void TAutoGreatPower::AssignUnitsToMissions(int unused) {
 }
 
 // FUNCTION: IMPERIALISM 0x00535b00
-bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePools,
-                                                TMilitaryUnit** bestUnitByType,
-                                                char* selectedIsIndustry, char* selectedIsUpgrade,
-                                                int* selectedSlot, int unused,
-                                                float* selectedWeightedCost) {
+bool PickBestDevelopment(int nationSlot, int* resourcePools, TMilitaryUnit** bestUnitByType,
+                         char* selectedIsIndustry, char* selectedIsUpgrade, int* selectedSlot,
+                         int unused, float* selectedWeightedCost) {
   *selectedSlot = -1;
   int resourceIndex = 0;
   while (resourceIndex < 9 && resourcePools[resourceIndex] <= 0) {
@@ -1985,9 +1969,8 @@ bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePoo
     float weightedCost = 0.0f;
     for (int poolIndex = 0; poolIndex < 4; ++poolIndex) {
       if (resourcePools[5 + poolIndex] > 0) {
-        weightedCost += static_cast<float>(
-            GetNormalizedIndustryActionResourceCostPercent(poolIndex, industrySlot) *
-            resourcePools[5 + poolIndex]);
+        weightedCost += static_cast<float>(GetIndustryCostPercent(poolIndex, industrySlot) *
+                                           resourcePools[5 + poolIndex]);
       }
     }
     float score = weightedCost / static_cast<TAutoGreatPower*>(g_apNationStates[nationSlot])
@@ -2009,8 +1992,8 @@ bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePoo
 
   if (*selectedIsIndustry != 0) {
     for (int poolIndex = 0; poolIndex < 4; ++poolIndex) {
-      resourcePools[5 + poolIndex] -= GetNormalizedIndustryActionResourceCostPercent(
-          poolIndex, static_cast<short>(*selectedSlot));
+      resourcePools[5 + poolIndex] -=
+          GetIndustryCostPercent(poolIndex, static_cast<short>(*selectedSlot));
     }
   } else {
     for (short poolIndex = 0; poolIndex < 5; ++poolIndex) {

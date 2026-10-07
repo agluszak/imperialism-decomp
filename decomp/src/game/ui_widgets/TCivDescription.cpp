@@ -57,7 +57,7 @@ IMPLEMENT_DYNCREATE(TCivDescription, TView)
 /* Caches civilian class changes and refreshes target tile counts for supported civilian classes. */
 
 // FUNCTION: IMPERIALISM 0x0058f110
-void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(TCivUnit* orderState) {
+void TCivDescription::SetCivilianClass(TCivUnit* orderState) {
   TCivDescription* context = this;
   // ORIG_CALLCONV: __thiscall
   CivilianUnitKindStorage civilianClassId;
@@ -297,12 +297,12 @@ void TCivDescription::Draw(RECT* rectBuffer) {
     stylePrimary = 0;
     styleSecondary = 0;
 
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b68);
+    ApplyTextStyle(0, 0xc, 0x2b68);
     ResolveUiThemeColor(0x2b6c, &stylePrimary);
     ResolveUiThemeColor(0x2b67, &styleSecondary);
     g_pSimMgr->GetString(0x2718, selectedClass, &localizedTextRef);
 
-    textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&localizedTextRef);
+    textWidth = MeasureText(&localizedTextRef);
     textOriginX = static_cast<short>((frameWidth / 2) - (textWidth / 2));
 
     SetQuickDrawColorAndSyncGlobals(styleSecondary);
@@ -330,7 +330,7 @@ void TCivDescription::DrawEngineer(RECT* boundsBuffer) {
   cannotBuildTerrain[3] =
       g_pTechMgr->orderCapRows277[g_pSimMgr->GetPlayerCountry()].techStatusByTechId[23] != 2;
 
-  InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 10, 0x2b6c, 3);
+  SetTextStyleAndApply(0, 10, 0x2b6c, 3);
 
   g_pSimMgr->GetString(0x272d, 6, &labelText); // Can Build
   SetQuickDrawTextOriginWithContextOffset(12, 96);
@@ -358,7 +358,7 @@ void TCivDescription::DrawEngineer(RECT* boundsBuffer) {
   DrawTextWithCachedQuickDrawStyleState(&costText);
 
   g_pSimMgr->GetString(0x272d, 10, &labelText); // Cannot Build In
-  short titleWidth = MeasureTextExtentWithCachedQuickDrawStyle(&labelText);
+  short titleWidth = MeasureText(&labelText);
   SetQuickDrawTextOriginWithContextOffset(static_cast<short>(frameWidth / 2 - titleWidth / 2), 212);
   DrawTextWithCachedQuickDrawStyleState(&labelText);
 
@@ -426,7 +426,7 @@ void TCivDescription::DrawProspector(RECT* bounds) {
       {3, 4, -1, -1}, {3, 4, 0x16, 0x15}, {6, -1, -1, -1}, {6, -1, -1, -1}, {6, -1, -1, -1}};
 
   ResolveUiThemeColor(0x2b6c, &themeColor);
-  InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 10, 0x2b6c, 3);
+  SetTextStyleAndApply(0, 10, 0x2b6c, 3);
 
   g_pSimMgr->GetString(0x272d, 5, &text); // Can Find
   SetQuickDrawTextOriginWithContextOffset(5, 96);
@@ -517,9 +517,9 @@ void TCivDescription::DrawDeveloper(RECT* bounds) {
   short civilianClass = selectedCivilianClass;
   if (g_anDevelopmentIconStripBaseXByCivilianClass[civilianClass] >= 0) {
     // Centered "Development" title.
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b6c);
+    ApplyTextStyle(0, 10, 0x2b6c);
     g_pSimMgr->GetString(0x272d, 1, &text);
-    short titleWidth = MeasureTextExtentWithCachedQuickDrawStyle(&text);
+    short titleWidth = MeasureText(&text);
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(frameWidth / 2 - titleWidth / 2),
                                             0x6a);
     DrawTextWithCachedQuickDrawStyleState(&text);
@@ -551,13 +551,13 @@ void TCivDescription::DrawDeveloper(RECT* bounds) {
     SetQuickDrawStrokeColor(0xffffff);
 
     // Centered "Output" title.
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b6c);
+    ApplyTextStyle(0, 10, 0x2b6c);
     g_pSimMgr->GetString(0x272d, 2, &text);
-    titleWidth = MeasureTextExtentWithCachedQuickDrawStyle(&text);
+    titleWidth = MeasureText(&text);
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(frameWidth / 2 - titleWidth / 2),
                                             0xa2);
     DrawTextWithCachedQuickDrawStyleState(&text);
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b6c);
+    ApplyTextStyle(0, 10, 0x2b6c);
 
     for (int yieldSlot = 0; yieldSlot < 4; ++yieldSlot) {
       short resourceType =
@@ -624,7 +624,7 @@ void TCivDescription::DrawDeveloper(RECT* bounds) {
           legendRects[terrainIcon] = destinationRect;
           enabled = 1;
         }
-        ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b6c);
+        ApplyTextStyle(0, 10, 0x2b6c);
         SetQuickDrawTextOriginWithContextOffset(static_cast<short>(originX + iconX + 0x18), 0x100);
         text.Format(g_szDecimalFormat, *countPtr);
         DrawTextWithCachedQuickDrawStyleState(&text);

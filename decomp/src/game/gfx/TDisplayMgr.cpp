@@ -34,7 +34,7 @@ void PlayDefaultMessageBeep(...) {
 }
 
 // FUNCTION: IMPERIALISM 0x00497230
-GlobalViewportRectDefaultsRecord** InitializeGlobalRectDefaultsIfUninitialized() {
+GlobalViewportRectDefaultsRecord** InitializeDefaultRects() {
   if (g_pGlobalViewportRectDefaultsRecord == NULL) {
     register int viewportHeight = 0x1e0;
     register int zero = 0;
@@ -50,7 +50,7 @@ GlobalViewportRectDefaultsRecord** InitializeGlobalRectDefaultsIfUninitialized()
 }
 
 // FUNCTION: IMPERIALISM 0x004972a0
-int InitializeTurnOrderNavigationDialogByViewportSize(int arg) {
+int InitializeTurnOrderDialog(int arg) {
   return 0;
 }
 
@@ -92,8 +92,7 @@ void TDisplayMgr::IDisplayMgr() {
   fontName = g_szUiFontLiteralPalatino;
   g_cstrUiFontPalatino = fontName;
 
-  GlobalViewportRectDefaultsRecord** rectDefaultsHandle =
-      InitializeGlobalRectDefaultsIfUninitialized();
+  GlobalViewportRectDefaultsRecord** rectDefaultsHandle = InitializeDefaultRects();
   GlobalViewportRectDefaultsRecord* rectRecord = *rectDefaultsHandle;
   RECT viewportRect;
   CopyRect(&viewportRect, &rectRecord->viewportBounds);
@@ -107,13 +106,12 @@ void TDisplayMgr::IDisplayMgr() {
 
   SetMenuHeight(0);
 
-  TView* dialogRoot =
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(DecodeTurnEventCode(eventCode));
+  TView* dialogRoot = g_pAssetMgr->GetDialog(DecodeTurnEventCode(eventCode));
   if (dialogRoot == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0xb0);
   }
   activeDialog = dialogRoot;
-  gworldFlags = InitializeTurnOrderNavigationDialogByViewportSize(0x80);
+  gworldFlags = InitializeTurnOrderDialog(0x80);
   ExamineGWorld();
 }
 

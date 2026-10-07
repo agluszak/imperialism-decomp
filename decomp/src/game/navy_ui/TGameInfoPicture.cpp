@@ -23,14 +23,14 @@ void TGameInfoPicture::DoPostCreate(int arg) {
   CString text;
   for (int i = 0; i < 5; ++i) {
     g_pSimMgr->GetString(0x2757, static_cast<short>(i + 0xf), &text);
-    RefreshActiveControlThenApplyThemeStyleAndCaption(kControlTagHdr0 + i, 0, 0xc, 0x2b67, 1, text);
+    RefreshAndTheme(kControlTagHdr0 + i, 0, 0xc, 0x2b67, 1, text);
   }
 
   for (int j = 0; j < 14; ++j) {
     TView* control = FindSubView(kControlTagTxta + j);
     control->AssertValid();
     g_pSimMgr->GetString(0x2757, static_cast<short>(j), &text);
-    RefreshActiveControlThenApplyThemeStyleAndCaption(kControlTagTxta + j, 0, 0xa, 0x2b67, 1, text);
+    RefreshAndTheme(kControlTagTxta + j, 0, 0xa, 0x2b67, 1, text);
   }
 }
 

@@ -85,7 +85,7 @@ BOOL TDirectPlaySessionManagerBase::CreateDirectPlayLobbyAndStoreResult() {
 }
 
 // FUNCTION: IMPERIALISM 0x0047fbc0
-BOOL TDirectPlaySessionManagerBase::ConnectDirectPlayFromLobbySettingsAndStoreResult() {
+BOOL TDirectPlaySessionManagerBase::ConnectFromLobby() {
   DWORD settingsSize = 0;
   lastErrorCode = directPlayLobby->GetConnectionSettings(0, 0, &settingsSize);
   if (lastErrorCode != DPERR_BUFFERTOOSMALL) {
@@ -146,7 +146,7 @@ BOOL TWNetSessionManager::RebuildRuntimeSelectionSource() {
 }
 
 // FUNCTION: IMPERIALISM 0x0047fe50
-bool TWNetSessionManager::InitializeDirectPlayForProviderGuidOrEnumerate(const GUID* providerGuid) {
+bool TWNetSessionManager::InitializeDirectPlay(const GUID* providerGuid) {
   if (providerGuid != 0) {
     if (directPlayInterface != 0) {
       directPlayInterface->Close();
@@ -193,8 +193,8 @@ bool TWNetSessionManager::InitializeDirectPlayForProviderGuidOrEnumerate(const G
 }
 
 // FUNCTION: IMPERIALISM 0x00480030
-BOOL TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext() {
-  InitializeDirectPlayForProviderGuidOrEnumerate(0);
+BOOL TWNetSessionManager::OpenCurrentSession() {
+  InitializeDirectPlay(0);
   memset(&sessionDescription, 0, sizeof(sessionDescription));
   sessionDescription.dwSize = sizeof(sessionDescription);
   sessionDescription.dwFlags = 0x40;
@@ -220,8 +220,8 @@ BOOL TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext() {
 }
 
 // FUNCTION: IMPERIALISM 0x00480150
-BOOL TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice() {
-  InitializeDirectPlayForProviderGuidOrEnumerate(0);
+BOOL TWNetSessionManager::OpenChosenSession() {
+  InitializeDirectPlay(0);
 
   memset(&sessionDescription, 0, sizeof(sessionDescription));
   sessionDescription.dwSize = sizeof(DPSESSIONDESC2);
@@ -238,7 +238,7 @@ BOOL TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice() {
 
   if (lastErrorCode >= 0) {
     GUID selectedSessionGuid;
-    if (ShowJoinGameSelectionDialogAndCaptureChoice(&selectedSessionGuid) != 0) {
+    if (ChooseGameToJoin(&selectedSessionGuid) != 0) {
       memset(&sessionDescription, 0, sizeof(sessionDescription));
       sessionDescription.dwSize = sizeof(DPSESSIONDESC2);
       sessionDescription.guidInstance = selectedSessionGuid;
@@ -318,8 +318,7 @@ BOOL TDirectPlaySessionManagerBase::SelectRuntimeProvider(GUID* providerGuid) {
 }
 
 // FUNCTION: IMPERIALISM 0x00480820
-BOOL TDirectPlaySessionManagerBase::ShowJoinGameSelectionDialogAndCaptureChoice(
-    GUID* selectedSessionGuid) {
+BOOL TDirectPlaySessionManagerBase::ChooseGameToJoin(GUID* selectedSessionGuid) {
   ReportAssertionFailure("D:\\Ambit\\DirectPlay.cpp", 0x1b3);
   return FALSE;
 }
@@ -336,8 +335,7 @@ int TWNetSessionManager::TrySendNetworkPacket(int nationId, void* packet, unsign
 }
 
 // FUNCTION: IMPERIALISM 0x004808a0
-int TWNetSessionManager::TryReceiveNetworkPacketIntoResizableBuffer(DWORD* fromId, DWORD* toId,
-                                                                    void** bufferHandle) {
+int TWNetSessionManager::ReceivePacket(DWORD* fromId, DWORD* toId, void** bufferHandle) {
   if (directPlayInterface == 0) {
     return 1;
   }
@@ -481,15 +479,14 @@ BOOL TWNetSessionManager::OnEnumerateServiceProvider(LPGUID providerGuid, LPSTR 
 }
 
 // FUNCTION: IMPERIALISM 0x005e30c0
-BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* selectedSessionGuid) {
+BOOL TWNetSessionManager::ChooseGameToJoin(GUID* selectedSessionGuid) {
   if (g_WNetSerializedPtrArrayB.GetSize() < 1) {
     CString message("No games found to join.");
     g_pViewMgr->ModalMessage(message, g_ptNetworkModalMessage, 0, 0);
     return FALSE;
   }
 
-  TWindow* dialog =
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMultiplayerPickGame);
+  TWindow* dialog = g_pAssetMgr->GetDialog(kTurnEventMultiplayerPickGame);
   dialog->SetModality(true);
   TDialogBehavior* behavior = dialog->GetDialogBehavior();
   if (behavior != 0) {

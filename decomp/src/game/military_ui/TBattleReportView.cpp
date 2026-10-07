@@ -229,19 +229,19 @@ void TBattleReportView::DoPostCreate(int arg) {
 
   SetControlHoverHelpText(g_pBattleReportSharedText,
                           FindSubView(kControlTagMain)); // 'main'
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x16, FindSubView(kControlTagFadm));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x16, FindSubView(kControlTagFshp));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x16, FindSubView(kControlTagFflg));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x17, FindSubView(kControlTagEadm));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x17, FindSubView(kControlTagEshp));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x17, FindSubView(kControlTagEflg));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x18, FindSubView(kControlTagLoca));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x19, FindSubView(kControlTagResu));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1a, FindSubView(kControlTagPrev));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1b, FindSubView(kControlTagNext));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1c, FindSubView(kControlTagInfo));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1d, FindSubView(kControlTagOkay));
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x1e, FindSubView(kControlTagQuer));
+  SetControlString(0x273d, 0x16, FindSubView(kControlTagFadm));
+  SetControlString(0x273d, 0x16, FindSubView(kControlTagFshp));
+  SetControlString(0x273d, 0x16, FindSubView(kControlTagFflg));
+  SetControlString(0x273d, 0x17, FindSubView(kControlTagEadm));
+  SetControlString(0x273d, 0x17, FindSubView(kControlTagEshp));
+  SetControlString(0x273d, 0x17, FindSubView(kControlTagEflg));
+  SetControlString(0x273d, 0x18, FindSubView(kControlTagLoca));
+  SetControlString(0x273d, 0x19, FindSubView(kControlTagResu));
+  SetControlString(0x273d, 0x1a, FindSubView(kControlTagPrev));
+  SetControlString(0x273d, 0x1b, FindSubView(kControlTagNext));
+  SetControlString(0x273d, 0x1c, FindSubView(kControlTagInfo));
+  SetControlString(0x273d, 0x1d, FindSubView(kControlTagOkay));
+  SetControlString(0x273d, 0x1e, FindSubView(kControlTagQuer));
 
   g_pSfxPlaybackSystem->ResetPlayList();
   g_pSfxPlaybackSystem->AddToPlayList(5);
@@ -317,8 +317,7 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       return;
     }
     if (tag == IMPERIALISM_FOURCC('i', 'n', 'f', 'o')) {
-      TWindow* dialog =
-          g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventDetailedBattleReport);
+      TWindow* dialog = g_pAssetMgr->GetDialog(kTurnEventDetailedBattleReport);
       if (dialog == 0) {
         GAME_FAIL_NIL_POINTER();
         ReportAssertionFailure("D:\\Ambit\\Cross\\UBattleReportViews.cpp", 0x1ef);
@@ -378,7 +377,7 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       }
 
       SetControlHoverHelpText(CString(g_pBattleReportSharedText), dialog);
-      LoadUiStringByGroupAndIndexToControlObject(0x2730, 0x22, book->FindSubView(kControlTagOkay));
+      SetControlString(0x2730, 0x22, book->FindSubView(kControlTagOkay));
       CPoint placement;
       g_pViewMgr->GetTopLeftFor(dialog, &placement);
       dialog->Locate(placement, false);
@@ -408,9 +407,8 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
 }
 
 // FUNCTION: IMPERIALISM 0x004adc80
-void TBattleReportView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                                            RgnHandle hitArg) {
-  TView::HandleCursorHoverSelectionByChildHitTestAndFallback(point, hitArg);
+void TBattleReportView::AdjustCursor(CPoint* point, RgnHandle hitArg) {
+  TView::AdjustCursor(point, hitArg);
 }
 
 // FUNCTION: IMPERIALISM 0x004adcb0

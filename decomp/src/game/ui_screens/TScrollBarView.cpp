@@ -17,7 +17,7 @@
 TScrollBarView::~TScrollBarView() {}
 
 // FUNCTION: IMPERIALISM 0x005740a0
-void TScrollBarView::RefreshCityDialogScrollableViewportWithQuickDrawContext() {
+void TScrollBarView::RefreshCityViewport() {
   ScopedMapQuickDrawContext quickDrawContext(this);
   PrepareForDrawing();
   RECT rect = {0, minValue, frameWidth, static_cast<int>(maxValue) + 0x12};
@@ -218,7 +218,7 @@ void TScrollBarView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pr
   }
   if (target != currentValue) {
     currentValue = target;
-    RefreshCityDialogScrollableViewportWithQuickDrawContext();
+    RefreshCityViewport();
   }
 
   if (phase != kTrackPhaseEnd) {
@@ -253,6 +253,6 @@ void TScrollBarView::SetThumb(int percent, unsigned char refresh) {
     currentValue = maxValue;
   }
   if (refresh != 0) {
-    RefreshCityDialogScrollableViewportWithQuickDrawContext();
+    RefreshCityViewport();
   }
 }

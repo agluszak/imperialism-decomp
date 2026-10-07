@@ -10,7 +10,7 @@ the lookup contract when extending the family or porting its callers.
 
 | Slot | Body | Method | Score | Shape |
 |------|------------|--------|-------|-------|
-| 0x86 | 0x004e0500 | `SumNavyOrderPriorityForNationSlot86()` | 100% | walk navy primary-order list (head `0x005505c0`, node `next` at +0x24), filter `node->shortAt(0x14) == nationSlot`, sum `GetIndustryActionCostWeightByResourceType(node->shortAt(4))` (`0x00550970`, `__cdecl(short)`) |
+| 0x86 | 0x004e0500 | `SumNavyOrderPriorityForNationSlot86()` | 100% | walk navy primary-order list (head `0x005505c0`, node `next` at +0x24), filter `node->shortAt(0x14) == nationSlot`, sum `GetIndustryCostWeight(node->shortAt(4))` (`0x00550970`, `__cdecl(short)`) |
 | 0x8e | 0x004e07b0 | `ComputeArmyCommitBudgetSlot8E()` | 85% | `min(scenario cap, production slots, metric 0x10, armyPower/2)`; scenario cap = `GetCityState()->scenarioTradeDescriptor->valueAt1C`, production = `->productionSlots->valueAt4` |
 | 0x8f | 0x004e0890 | `GetScoreFactorSlot23C()` — **army strength score** | 81% | `armyPower + commitBudget + min((int)(float)prod(3), (int)(armyPower * 0.25f))` |
 | 0x90 | 0x004e09a0 | `GetScoreFactorSlot240()` — **navy strength score** | 71% | ship production (capability bytes 0x1a8/0x1a5 pick slot-8D arg 2 / avg(4,2) / 4) + navy priority (slot 0x86) + fleet power, each term min-clamped |
@@ -18,15 +18,15 @@ the lookup contract when extending the family or porting its callers.
 | 0x92 | 0x004e0c10 | `ComputeArmyScoreStandingRatioVsNation(target)` | 74% | `(yearTerm + self23C + 90) / (standing[my][target] + 0.25*allySum + target23C)` |
 | 0x93 | 0x004e0d80 | `ComputeNavyScoreRatioVsNation(target)` | 83% | 0x91 with slot 0x240 |
 | 0x94 | 0x004e0e70 | `ComputeNavyScoreStandingRatioVsNation(target)` | 74% | 0x92 with slot 0x240 |
-| 0x95 | 0x004e0fe0 | `ComputeArmyScoreRatioVsNationWithSecondary(target, secondary)` | 73% | numerator adds `g_apSecondaryNationStateSlots[secondary]` army power; target score picks 23C vs 240 by border link |
-| 0x96 | 0x004e1170 | `ComputeArmyScoreStandingRatioVsNationPair(target, partner)` | 77% | `(standing[my][partner] + self23C) / (standing[my][target] + 0.25*allySum + targetScoreMixed)` |
-| 0x97 | 0x004e1300 | `ComputeNavyScoreRatioVsNationWithSecondary(...)` | 73% | 0x95 with 240 self/allies (target choice still 23C-if-linked) |
-| 0x98 | 0x004e1490 | `ComputeNavyScoreStandingRatioVsNationPair(...)` | 77% | 0x96 with 240 |
+| 0x95 | 0x004e0fe0 | `GetArmyRatioWithAlly(target, secondary)` | 73% | numerator adds `g_apSecondaryNationStateSlots[secondary]` army power; target score picks 23C vs 240 by border link |
+| 0x96 | 0x004e1170 | `GetArmyStandingRatioVsPair(target, partner)` | 77% | `(standing[my][partner] + self23C) / (standing[my][target] + 0.25*allySum + targetScoreMixed)` |
+| 0x97 | 0x004e1300 | `GetNavyRatioWithAlly(...)` | 73% | 0x95 with 240 self/allies (target choice still 23C-if-linked) |
+| 0x98 | 0x004e1490 | `GetNavyStandingRatioVsPair(...)` | 77% | 0x96 with 240 |
 | 0x99 | 0x004e1620 | `ComputeArmyScoreRatioForNationPair(a, b, swapRoles)` | 90% | `swapRoles==0`: opponent=a, partner=b, partner weight **+0.5**; else opponent=b, partner=a, weight **+0.25** |
-| 0x9a | 0x004e1750 | `ComputeArmyScoreStandingRatioForNationPair(a, b, swapRoles)` | 63% | 0x99 plus standing terms on both numerator and denominator |
+| 0x9a | 0x004e1750 | `GetArmyStandingRatioForPair(a, b, swapRoles)` | 63% | 0x99 plus standing terms on both numerator and denominator |
 | 0x9b | 0x004e1910 | `ComputeNavyScoreRatioForNationPair(...)` | 90% | 0x99 with 240 |
-| 0x9c | 0x004e1a40 | `ComputeNavyScoreStandingRatioForNationPair(...)` | 63% | 0x9a with 240 |
-| 0x9e | 0x004e1c20 | `EvaluateJoinWarAgainstNationAndQueueEvent(target)` | 51% | join-war check, see below |
+| 0x9c | 0x004e1a40 | `GetNavyStandingRatioForPair(...)` | 63% | 0x9a with 240 |
+| 0x9e | 0x004e1c20 | `ConsiderJoiningWar(target)` | 51% | join-war check, see below |
 
 Common conventions in every ratio body:
 

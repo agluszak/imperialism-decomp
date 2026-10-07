@@ -7,8 +7,8 @@
 IMPLEMENT_DYNCREATE(TAdorner, TObject)
 
 static void PulseUiInvalidationFlag() {
-  int previous = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  SetGlobalUiInvalidationFlagAndReturnPrevious(previous);
+  int previous = SetInvalidationFlag(0);
+  SetInvalidationFlag(previous);
 }
 
 // FUNCTION: IMPERIALISM 0x0049d900

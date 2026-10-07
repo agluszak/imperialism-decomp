@@ -45,27 +45,26 @@ public:
   void AssignDefendJobs(); // mode 0
   // Assigns state 7 to category-0 units and state 12 to every other unit.
   void AssignJobsByZeroCategory();
-  void AssignBombardJobs();                        // mode 2
-  void ApplyAttackerSiegeStanceByActionClass();    // mode 3
-  void AssignFrontalAssaultJobs();                 // mode 4
-  void ApplyAttackerStandoffStanceByActionClass(); // mode 5
-  void AssignCleanUpJobs();                        // mode 6
+  void AssignBombardJobs();                     // mode 2
+  void ApplyAttackerSiegeStanceByActionClass(); // mode 3
+  void AssignFrontalAssaultJobs();              // mode 4
+  void ApplyStandoffStance();                   // mode 5
+  void AssignCleanUpJobs();                     // mode 6
   void AssignRetreatJobs();
   bool EnemyArtillery();
 
-  void BuildTacticalActionPriorityBucketsWithGridGuard();
-  void DispatchTacticalActionClassSelectionAcrossCursorList();
+  void BucketTacticalActions();
+  void AssignTacticalTargets();
   // Prunes unitList down to the free-tile capacity.
   void SelectBestUnits(int maxUnitCount);
   // Per-class deployment tile selectors.
-  int SelectTacticalTileByActionClassAdjacencyPriority();
-  int SelectTacticalTileIndexByColumnPriorityVariantA();
-  int SelectTacticalTileIndexByColumnPriorityVariantB();
+  int PickAdjacentTile();
+  int PickColumnTileA();
+  int PickColumnTileB();
   // Weighted tile-heuristic selectors for the auto-turn controller.
   int FindBestMove(TTacticalUnit* unit, int* heuristicWeights15);
   int SelectTarget(TTacticalUnit* unit, int flag);
-  unsigned int BuildTacticalActionClassAndPositionFlags(TacticalTileIndex referenceTileIndex,
-                                                        TTacticalUnit* unit);
+  unsigned int ClassifyTacticalUnits(TacticalTileIndex referenceTileIndex, TTacticalUnit* unit);
   // Minimum GetBaseActionPoints among active units in AI states 2 or 4; 1000 if none.
   int GetMinimumActiveUnitRangeForStates2Or4();
 
@@ -78,12 +77,12 @@ public:
   int FactorRoughTerrain(TTacticalUnit* unit, TacticalTileIndex tileIndex);
   int FactorNearCowards(TTacticalUnit* unit, TacticalTileIndex tileIndex);
   int ScoreTacticalTileDistanceFieldAdvance(TTacticalUnit* unit, TacticalTileIndex tileIndex);
-  int ScoreTacticalTileFriendlyArtillerySpacing(TTacticalUnit* unit, TacticalTileIndex tileIndex);
-  int ScoreTacticalTileArtilleryFiringLaneColumn(TTacticalUnit* unit, TacticalTileIndex tileIndex);
+  int FactorArtillerySpacing(TTacticalUnit* unit, TacticalTileIndex tileIndex);
+  int FactorFiringLane(TTacticalUnit* unit, TacticalTileIndex tileIndex);
   int FactorHitByArty(TTacticalUnit* unit, TacticalTileIndex tileIndex);
   int FactorTargetMaxRange(TTacticalUnit* unit, TacticalTileIndex tileIndex);
   int FactorHitEnemyArtillery(TTacticalUnit* unit, TacticalTileIndex tileIndex);
-  int ScoreTacticalTileEnemyEdgeColumnZoneBonus(TTacticalUnit* unit, TacticalTileIndex tileIndex);
+  int FactorEnemyEdge(TTacticalUnit* unit, TacticalTileIndex tileIndex);
 
   void IArmyPlayer(TArmyStack* stack, bool isOurSide, unsigned char watchFlag, int nationIndex);
 };
@@ -95,5 +94,4 @@ ASSERT_OFFSET(TArmyPlayer, hasArtilleryOrSappers, 0x51);
 typedef int (TArmyPlayer::*TacticalTileHeuristicScorerFn)(TTacticalUnit* unit,
                                                           TacticalTileIndex tileIndex);
 
-float __cdecl ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
-    float* vector, const short* referenceProfile, int count);
+float __cdecl ScoreProfileMatch(float* vector, const short* referenceProfile, int count);

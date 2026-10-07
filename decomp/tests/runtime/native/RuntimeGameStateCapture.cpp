@@ -2487,7 +2487,7 @@ int RailDirection(short origin, short destination) {
     FailSemanticCapture("rail order references a negative tile");
   }
   for (int direction = 0; direction < kStrategicHexDirectionCount; ++direction) {
-    if (TMapMgr::StepHexTileIndexByDirectionWithWrapRules(origin, direction) == destination) {
+    if (TMapMgr::StepTile(origin, direction) == destination) {
       return direction;
     }
   }

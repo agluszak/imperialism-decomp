@@ -251,11 +251,10 @@ char TLanguageMgr::PickGender(const char* name) const {
     return delimiter;
   }
 
-  TWindow* dialog =
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventVerbFormDialog);
+  TWindow* dialog = g_pAssetMgr->GetDialog(kTurnEventVerbFormDialog);
   g_pSimMgr->GetString(0x2737, 0x34, &questionText);
   TStaticText* question = static_cast<TStaticText*>(dialog->FindSubView(kControlTagQues));
-  ApplyControlThemeStyleAndOptionalCaption(question, 0, 0xc, 0x2b6b, 1, questionText);
+  ApplyControlTheme(question, 0, 0xc, 0x2b6b, 1, questionText);
 
   TRadioTextCluster* form = static_cast<TRadioTextCluster*>(dialog->FindSubView(kControlTagForm));
   form->AssertValid();

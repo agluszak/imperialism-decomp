@@ -42,7 +42,7 @@ void TMegaPicture::Draw(RECT* rectBuffer) {
   } else {
     if ((modeFlags & 1) == 0) {
       SetQuickDrawFillColor(0xffffff);
-      FillRectWithQuickDrawBrushAndContextOffset(&screenRect);
+      FillContextRect(&screenRect);
     }
     srcRect = contentSubRect;
     screenRect = ViewToQDRect(&contentSubRect);
@@ -91,7 +91,7 @@ void TMegaPicture::SetPictureRsrcID(short nPictureId, unsigned char fRefreshNow)
   QDLoadResource(loaderHandle);
   loader = *loaderHandle;
   if (loader != 0) {
-    loader->EnsureBitmapResourceLoadedAndCopyRectSize();
+    loader->LoadBitmapBounds();
     loader->flags |= 1;
     ResetQuickDrawStrokeState();
     BlitBitmapResourceLoaderToActiveDc(loaderHandle, &resourceBounds);

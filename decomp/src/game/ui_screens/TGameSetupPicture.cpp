@@ -48,7 +48,7 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
     postEventCode = EncodeTurnEventCode(kTurnEventLoadSave);
   } else if (controlTag == kControlTagMult) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
-    g_pGameFlowState->EnsureGameFlowStateAndShowMultiplayerSetup();
+    g_pGameFlowState->ShowMultiplayerSetup();
   } else if (controlTag == kControlTagQuit) {
     g_pAmbitApplication->PostWmCloseToMainThreadWindow();
     // no PostTurnEventCodeMessage on this path (matches the original).
@@ -74,10 +74,10 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       }
       g_pSimMgr->CreateSimObjects(true);
       g_pGlobalMapState->InitializeMap();
-      g_pGlobalMapState->LoadPoliticalMapRegionSubtypeTableFromResourceStream();
+      g_pGlobalMapState->LoadRegionSubtypes();
       for (short tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex) {
         g_pGlobalMapState->AssignPictToTile(tileIndex);
-        g_pGlobalMapState->UpdateTileNeighborBorderInfluenceCounters(tileIndex, 0);
+        g_pGlobalMapState->UpdateBorderInfluence(tileIndex, 0);
       }
       postEventCode = EncodeTurnEventCode(kTurnEventMapEditor);
     } else {

@@ -113,7 +113,7 @@ public:
 
   int UpdateLocalizationAudioSlot(int slot);
   int LoadWaveFileByPathAndBuildBuffer(char* filePath, int slot);
-  int LoadWaveResourceByNumericIdAndBuildBuffer(unsigned int waveId, int slot);
+  int LoadWave(unsigned int waveId, int slot);
   int ReadWaveDataAndFormatViaLoaderWithRetry(WaveLoadDescriptor* desc, int slot);
   int SetChannelVolumesUntilAccepted(int volume);
   int SetChannelVolume(int volume, int slot);

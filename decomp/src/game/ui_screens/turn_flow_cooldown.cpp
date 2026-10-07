@@ -5,7 +5,7 @@
 #include "game/globals/ui_widgets_globals.h"
 
 // FUNCTION: IMPERIALISM 0x0057b900
-bool IsTurnFlowCooldownActiveAndResetExpiredState(void) {
+bool IsCooldownActive(void) {
   if (g_nTurnCooldownDeferCounter < 1) {
     g_nTurnCooldownDeferCounter = 0;
     g_nTurnCooldownSideFlag = 1;

@@ -73,7 +73,7 @@ RuntimeActionResult RunGreatPowerPressureHumanDebt(NativeTransition& transition)
     if (slotNation == 0) {
       continue;
     }
-    if (slotNation->UpdateGreatPowerPressureStateAndDispatchEscalationMessage()) {
+    if (slotNation->CheckBankruptcy()) {
       lost = 1;
     }
   }
@@ -101,7 +101,7 @@ RuntimeActionResult RunGreatPowerPressureAiNoop(NativeTransition& transition) {
     return started;
   }
 
-  const char lost = aiNation->UpdateGreatPowerPressureStateAndDispatchEscalationMessage();
+  const char lost = aiNation->CheckBankruptcy();
   return transition.Finish(lost != 0);
 }
 
@@ -207,8 +207,7 @@ RuntimeActionResult RunQuarterGateOffDecade(NativeTransition& transition) {
   }
 
   const short tick = g_pSimMgr->GetEconomicTurn();
-  const bool decadeCinematic =
-      (tick % 0x28) == 0 && g_pSimMgr->councilByDecade[tick / 0x28] != 0;
+  const bool decadeCinematic = (tick % 0x28) == 0 && g_pSimMgr->councilByDecade[tick / 0x28] != 0;
   return transition.Finish(decadeCinematic);
 }
 
@@ -355,13 +354,11 @@ RuntimeActionResult RunOpeningCivilianGrant(NativeTransition& transition) {
   }
 
   TCity* city = nation->city;
-  short result1 =
-      g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(nation->homeTileIndex, 0);
+  short result1 = g_pGlobalMapState->FindRecruitTile(nation->homeTileIndex, 0);
   TCivUnit* civ1 = new TCivUnit();
   civ1->ICivUnit(kCivilianUnitProspector, result1, nation->nationSlot);
 
-  short result2 =
-      g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(nation->homeTileIndex, 1);
+  short result2 = g_pGlobalMapState->FindRecruitTile(nation->homeTileIndex, 1);
   TCivUnit* civ2 = new TCivUnit();
   civ2->ICivUnit(kCivilianUnitEngineer, result2, nation->nationSlot);
 
@@ -370,18 +367,15 @@ RuntimeActionResult RunOpeningCivilianGrant(NativeTransition& transition) {
   if (g_pSimMgr->difficultyLevel == kDifficultyIntroductory && nation->diplomacyEligibility) {
     city->orderCountByType[1] += 6;
 
-    short result3 =
-        g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(nation->homeTileIndex, 0);
+    short result3 = g_pGlobalMapState->FindRecruitTile(nation->homeTileIndex, 0);
     TCivUnit* civ3 = new TCivUnit();
     civ3->ICivUnit(kCivilianUnitProspector, result3, nation->nationSlot);
 
-    short result4 =
-        g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(nation->homeTileIndex, 0);
+    short result4 = g_pGlobalMapState->FindRecruitTile(nation->homeTileIndex, 0);
     TCivUnit* civ4 = new TCivUnit();
     civ4->ICivUnit(kCivilianUnitMiner, result4, nation->nationSlot);
 
-    short result5 =
-        g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(nation->homeTileIndex, 0);
+    short result5 = g_pGlobalMapState->FindRecruitTile(nation->homeTileIndex, 0);
     TCivUnit* civ5 = new TCivUnit();
     civ5->ICivUnit(kCivilianUnitFarmer, result5, nation->nationSlot);
   }

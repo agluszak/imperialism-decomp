@@ -16,8 +16,7 @@ TSuperNavyRoster::~TSuperNavyRoster() {}
 IMPLEMENT_DYNCREATE(TSuperNavyRoster, TPageView)
 
 // FUNCTION: IMPERIALISM 0x005698e0
-void TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext(TView* panel, int* offsetLayout,
-                                                                int* sizeLayout) {
+void TSuperNavyRoster::FillNavyPages(TView* panel, int* offsetLayout, int* sizeLayout) {
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 5, 5, 0);
   controlTag = kControlTagPage; // 'page'
   TPageView::DoPostCreate(0);

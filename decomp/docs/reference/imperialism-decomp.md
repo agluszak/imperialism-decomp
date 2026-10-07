@@ -798,7 +798,7 @@ Interpretation update:
 
 New renames/documentation applied in Ghidra:
 
-- `CycleMapInteractionSelectionAfterHandledClick @ 0x00597A80`
+- `CycleSelection @ 0x00597A80`
   - Former: `FUN_00597a80`
   - Called from `HandleMapClickByInteractionMode` after a click branch reports handled.
   - Cycles interaction submodes and reselects valid target/state:
@@ -880,7 +880,7 @@ Additional helper renames in the map click mode-cycler branch:
 - `SetActiveProvinceSelection @ 0x004A45E0`
 
 Interpretation:
-- `CycleMapInteractionSelectionAfterHandledClick` mode `0` path is civilian-centric and uses the `0x004D20E0/0x004D2160/0x004D2C60` chain.
+- `CycleSelection` mode `0` path is civilian-centric and uses the `0x004D20E0/0x004D2160/0x004D2C60` chain.
 - Mode `1` path is province-centric and uses the `0x004A46D0/0x004A4760/0x004A45E0` chain.
 - This cleanly separates civilian selection vs province selection before mode `2` map-order-entry traversal.
 
@@ -915,7 +915,7 @@ Interpretation:
 
 ### Newly Renamed Functions
 
-- `SmoothCityRegionOwnershipByNeighborSampling @ 0x00528E50`
+- `SmoothProvinces @ 0x00528E50`
   - Neighbor-sampling smoothing pass for city-region ownership classes.
 - `BuildCityRegionBorderOverlaySegments @ 0x0052C1A0`
   - Emits overlay border segments where adjacent city-region IDs differ.
@@ -1175,9 +1175,9 @@ Renamed and documented:
   - Switches interaction into overlay-oriented UI state and syncs linked view/cursor widgets.
 
 - `0x00560B00` -> `HasFreeShipsOfPlayer`
-  - Eligibility predicate used by mode-2 traversal in `CycleMapInteractionSelectionAfterHandledClick`.
+  - Eligibility predicate used by mode-2 traversal in `CycleSelection`.
 
-Result: `CycleMapInteractionSelectionAfterHandledClick` now decompiles with substantially more readable intent in mode-switch and panel-refresh branches.
+Result: `CycleSelection` now decompiles with substantially more readable intent in mode-switch and panel-refresh branches.
 
 ### University/City entry spec table structure confirmed
 

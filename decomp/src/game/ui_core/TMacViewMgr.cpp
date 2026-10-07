@@ -100,11 +100,11 @@ static void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
 }
 IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 
-static void ResolveAndBlitBitmapResourceToActiveAtlas(int resourceId, RECT* dstRect) {
+static void BlitToAtlas(int resourceId, RECT* dstRect) {
   TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(resourceId);
   TBitmapResourceLoader* loader = loaderHandle != 0 ? *loaderHandle : 0;
   if (loader != 0) {
-    loader->EnsureBitmapResourceLoadedAndCopyRectSize();
+    loader->LoadBitmapBounds();
     loader->flags |= 1;
     BlitBitmapResourceLoaderToActiveDc(loaderHandle, dstRect);
     loader->ReleaseBitmapResource();
@@ -167,8 +167,8 @@ void TMacViewMgr::IMacViewMgr() {
   LoadStrategicMapUnitIconAtlas750();
   LoadStrategicMapUnitOverlayAtlas751();
   CreateMiniFlagsGWorld();
-  BuildStrategicMapGaugeAtlasFrom1422And1423();
-  RefreshCityCapabilityUiHandlesForActiveNation();
+  CreateIngotsGWorlds();
+  ReloadCityArt();
   CreateIndexedGWorlds();
 }
 
@@ -218,7 +218,7 @@ void TMacViewMgr::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   GenerateRegions();
   GenerateMiniMap();
-  RefreshCityCapabilityUiHandlesForActiveNation();
+  ReloadCityArt();
 }
 
 // FUNCTION: IMPERIALISM 0x0050a180
@@ -257,7 +257,7 @@ void TMacViewMgr::CreateCommodityIconsGWorld() {
     TBitmapResourceLoader** loaderHandle = CreateBitmapResourceLoaderHandle(commodityIndex + 700);
     if (loaderHandle != NULL && *loaderHandle != 0) {
       TBitmapResourceLoader* loader = *loaderHandle;
-      loader->EnsureBitmapResourceLoadedAndCopyRectSize();
+      loader->LoadBitmapBounds();
       loader->flags |= 1;
       dstCursor += 0x20;
       FastDrawPicture(loaderHandle, dstCursor, static_cast<short>(stridePixels));
@@ -273,28 +273,28 @@ void TMacViewMgr::CreateCommodityIconsGWorld() {
 
 // FUNCTION: IMPERIALISM 0x0050a3b0
 void TMacViewMgr::LoadStrategicMapUnitIconAtlas750() {
-  unitIconAtlas = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x2ee);
+  unitIconAtlas = LoadBitmapSurface(0x2ee);
 }
 
 // FUNCTION: IMPERIALISM 0x0050a3e0
 void TMacViewMgr::LoadStrategicMapUnitOverlayAtlas751() {
-  unitOverlayAtlas = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x2ef);
+  unitOverlayAtlas = LoadBitmapSurface(0x2ef);
 }
 
 // FUNCTION: IMPERIALISM 0x0050a410
 void TMacViewMgr::CreateMiniFlagsGWorld() {
-  flagWorld = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x21fb);
+  flagWorld = LoadBitmapSurface(0x21fb);
 }
 
 // FUNCTION: IMPERIALISM 0x0050a440
 void TMacViewMgr::LoadStrategicMapMarkerAtlas1372() {
-  markerWorld = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x55c);
+  markerWorld = LoadBitmapSurface(0x55c);
 }
 
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 
 // FUNCTION: IMPERIALISM 0x0050a470
-void TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423() {
+void TMacViewMgr::CreateIngotsGWorlds() {
   RECT atlasBounds;
   RECT blitRect;
   TQuickDrawSurfaceContext* savedContext;
@@ -312,7 +312,7 @@ void TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423() {
   TBitmapResourceLoader** firstLoaderHandle = CreateBitmapResourceLoaderHandle(0x58e);
   TBitmapResourceLoader* firstLoader = *firstLoaderHandle;
   if (firstLoader != 0) {
-    firstLoader->EnsureBitmapResourceLoadedAndCopyRectSize();
+    firstLoader->LoadBitmapBounds();
     firstLoader->flags |= 1;
     CopyRect(&blitRect, &firstLoader->bitmapRect);
     BlitBitmapResourceLoaderToActiveDc(firstLoaderHandle, &blitRect);
@@ -325,7 +325,7 @@ void TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423() {
   TBitmapResourceLoader** secondLoaderHandle = CreateBitmapResourceLoaderHandle(0x58f);
   TBitmapResourceLoader* secondLoader = *secondLoaderHandle;
   if (secondLoader != 0) {
-    secondLoader->EnsureBitmapResourceLoadedAndCopyRectSize();
+    secondLoader->LoadBitmapBounds();
     secondLoader->flags |= 1;
     CopyRect(&blitRect, &secondLoader->bitmapRect);
     OffsetRect(&blitRect, 0x400, 0);
@@ -342,10 +342,10 @@ void TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423() {
 IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 
 // FUNCTION: IMPERIALISM 0x0050a6a0
-void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
+void TMacViewMgr::ReloadCityArt() {
   short nationId;
   unsigned int variant;
-  if (IsTurnFlowCooldownActiveAndResetExpiredState()) {
+  if (IsCooldownActive()) {
     return;
   }
   if (this == 0 || g_pTechMgr == 0) {
@@ -369,11 +369,9 @@ void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
     variant = 2;
   }
   nationId = g_pSimMgr->GetPlayerCountry();
-  nationFleetWorld =
-      LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(nationId + 0x579 + variant * 7);
+  nationFleetWorld = LoadBitmapSurface(nationId + 0x579 + variant * 7);
   nationId = g_pSimMgr->GetPlayerCountry();
-  nationUnitWorld =
-      LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(nationId + 0x564 + variant * 7);
+  nationUnitWorld = LoadBitmapSurface(nationId + 0x564 + variant * 7);
 }
 
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
@@ -399,7 +397,7 @@ void TMacViewMgr::CreateIndexedGWorlds() {
     QDLoadResource(loaderHandle);
     if (*loaderHandle != 0) {
       loader = *loaderHandle;
-      loader->EnsureBitmapResourceLoadedAndCopyRectSize();
+      loader->LoadBitmapBounds();
       loader->flags |= 1;
       ResetQuickDrawStrokeState();
       BlitBitmapResourceLoaderToActiveDc(loaderHandle, &resourceBounds);
@@ -444,7 +442,7 @@ void TMacViewMgr::CreateMapArtStorage() {
     blitRect.top = 0;
     blitRect.right = dstX + 0x40;
     blitRect.bottom = 0x40;
-    ResolveAndBlitBitmapResourceToActiveAtlas(10000 + index, &blitRect);
+    BlitToAtlas(10000 + index, &blitRect);
     dstX += 0x40;
     ++index;
   }
@@ -455,7 +453,7 @@ void TMacViewMgr::CreateMapArtStorage() {
     blitRect.top = 0;
     blitRect.right = dstX + 0x40;
     blitRect.bottom = 0x40;
-    ResolveAndBlitBitmapResourceToActiveAtlas(0x276e + index, &blitRect);
+    BlitToAtlas(0x276e + index, &blitRect);
     dstX += 0x40;
     ++index;
   }
@@ -466,7 +464,7 @@ void TMacViewMgr::CreateMapArtStorage() {
     blitRect.top = 0;
     blitRect.right = dstX + 0x40;
     blitRect.bottom = 0x40;
-    ResolveAndBlitBitmapResourceToActiveAtlas(0x2774 + index, &blitRect);
+    BlitToAtlas(0x2774 + index, &blitRect);
     dstX += 0x40;
     ++index;
   }
@@ -476,7 +474,7 @@ void TMacViewMgr::CreateMapArtStorage() {
     blitRect.top = 0;
     blitRect.right = dstX + 0x40;
     blitRect.bottom = 0x40;
-    ResolveAndBlitBitmapResourceToActiveAtlas(0x277e, &blitRect);
+    BlitToAtlas(0x277e, &blitRect);
   }
   UnlockPixels(GetGWorldPixMap(terrainTileWorld));
   SetGWorld(savedContext, savedFlags);
@@ -496,7 +494,7 @@ void TMacViewMgr::CreateMapArtStorage() {
       blitRect.top = 0;
       blitRect.right = dstX + 0x40;
       blitRect.bottom = 0x40;
-      ResolveAndBlitBitmapResourceToActiveAtlas(resourceId, &blitRect);
+      BlitToAtlas(resourceId, &blitRect);
     }
     dstX += 0x40;
     ++resourceId;
@@ -508,7 +506,7 @@ void TMacViewMgr::CreateMapArtStorage() {
     blitRect.top = 0;
     blitRect.right = dstX + 0x40;
     blitRect.bottom = 0x40;
-    ResolveAndBlitBitmapResourceToActiveAtlas(resourceId, &blitRect);
+    BlitToAtlas(resourceId, &blitRect);
     dstX += 0x40;
     ++resourceId;
   }
@@ -519,7 +517,7 @@ void TMacViewMgr::CreateMapArtStorage() {
     blitRect.top = 0;
     blitRect.right = dstX + 0x40;
     blitRect.bottom = 0x40;
-    ResolveAndBlitBitmapResourceToActiveAtlas(resourceId, &blitRect);
+    BlitToAtlas(resourceId, &blitRect);
     dstX += 0x40;
     ++resourceId;
   }
@@ -530,7 +528,7 @@ void TMacViewMgr::CreateMapArtStorage() {
     blitRect.top = 0;
     blitRect.right = dstX + 0x40;
     blitRect.bottom = 0x40;
-    ResolveAndBlitBitmapResourceToActiveAtlas(0x2778 + index, &blitRect);
+    BlitToAtlas(0x2778 + index, &blitRect);
     dstX += 0x40;
     ++index;
   }
@@ -541,7 +539,7 @@ void TMacViewMgr::CreateMapArtStorage() {
     blitRect.top = 0;
     blitRect.right = dstX + 0x40;
     blitRect.bottom = 0x40;
-    ResolveAndBlitBitmapResourceToActiveAtlas(0x242 + index, &blitRect);
+    BlitToAtlas(0x242 + index, &blitRect);
     dstX += 0x40;
     ++index;
   }
@@ -566,7 +564,7 @@ void TMacViewMgr::CreateMapArtStorage() {
     blitRect.top = 0;
     blitRect.right = dstX + 0x12;
     blitRect.bottom = 0x26;
-    ResolveAndBlitBitmapResourceToActiveAtlas(resourceId, &blitRect);
+    BlitToAtlas(resourceId, &blitRect);
     dstX += 0x12;
     ++resourceId;
   }
@@ -585,28 +583,26 @@ void TMacViewMgr::CreateMapArtStorage() {
   SetGWorld(mapArtWorld, savedFlags);
   LockPixels(GetGWorldPixMap(mapArtWorld));
   ResetQuickDrawStrokeState();
-  ResolveAndBlitBitmapResourceToActiveAtlas(0x244, &atlasBounds);
+  BlitToAtlas(0x244, &atlasBounds);
   UnlockPixels(GetGWorldPixMap(mapArtWorld));
   SetGWorld(savedContext, savedFlags);
 
   index = 0;
   while (index < 0x10) {
-    strategicTileMasks[index].BuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2740, 0x40,
-                                                                          0x40, 0x1680, 0x10);
+    strategicTileMasks[index].BuildMaskOpcodes(index + 0x2740, 0x40, 0x40, 0x1680, 0x10);
     ++index;
   }
   resourceId = 0x2760;
   while (resourceId < 0x2766) {
-    strategicTileMasks[0x18 + resourceId - 0x2760].BuildBitmapMaskOpcodeBufferFromResourceRows(
-        resourceId - 0x26, 0x40, 0x40, 0x1680, 0x10);
-    strategicTileMasks[0x1e + resourceId - 0x2760].BuildBitmapMaskOpcodeBufferFromResourceRows(
-        resourceId, 0x40, 0x40, 0x1680, 0x10);
+    strategicTileMasks[0x18 + resourceId - 0x2760].BuildMaskOpcodes(resourceId - 0x26, 0x40, 0x40,
+                                                                    0x1680, 0x10);
+    strategicTileMasks[0x1e + resourceId - 0x2760].BuildMaskOpcodes(resourceId, 0x40, 0x40, 0x1680,
+                                                                    0x10);
     ++resourceId;
   }
   index = 0x10;
   while (index < 0x18) {
-    strategicTileMasks[index].BuildBitmapMaskOpcodeBufferFromResourceRows(index + 0x2756, 0x40,
-                                                                          0x40, 0x1680, 0x10);
+    strategicTileMasks[index].BuildMaskOpcodes(index + 0x2756, 0x40, 0x40, 0x1680, 0x10);
     ++index;
   }
 }
@@ -617,7 +613,7 @@ void TMacViewMgr::ReloadMapArtAtlases() {
   if (mapArtWorld != 0) {
     g_pDisplayMgr->RemoveGWorld(mapArtWorld);
   }
-  mapArtWorld = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x244);
+  mapArtWorld = LoadBitmapSurface(0x244);
   if (gaugeWorld != 0) {
     g_pDisplayMgr->RemoveGWorld(gaugeWorld);
   }
@@ -650,7 +646,7 @@ void TMacViewMgr::GenerateMiniMap() {
   strideBytes = static_cast<ushort>((*surfaceObject)->stride) & 0x3fff;
   SetQuickDrawStrokeColor(0xffffff);
   g_pViewMgr->SetForeColor(0x32);
-  FillRectWithQuickDrawBrushAndContextOffset(&fillRect);
+  FillContextRect(&fillRect);
   colOffset = 0;
   tileIndex = 0;
   while (tileIndex < kStrategicTileCount) {
@@ -1230,14 +1226,13 @@ void TMacViewMgr::SelectCitySite(int unusedArg1, int unusedArg2) {
 TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city, bool closeAfterOpen,
                                                bool isEmbeddedPage,
                                                TCityProductionView* productionView) {
-  TWindow* dialog = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(
-      static_cast<TurnEventId>(buildingSlot + kTurnEventTextileMill));
+  TWindow* dialog =
+      g_pAssetMgr->GetDialog(static_cast<TurnEventId>(buildingSlot + kTurnEventTextileMill));
   TBuildingView* buildingView = static_cast<TBuildingView*>(dialog->FindSubView(kControlTagDialog));
   if (buildingView == 0) {
     FailNilPointerWithAssert(s_SourcePathUMacViewMgr, 0xb4f);
   }
-  buildingView->ApplyCityViewSelectionPayloadAndRefreshControls(city, isEmbeddedPage,
-                                                                productionView, buildingSlot);
+  buildingView->SetCitySelection(city, isEmbeddedPage, productionView, buildingSlot);
   dialog->controlValue = 0x65;
   if (closeAfterOpen) {
     dialog->SetModality(true);
@@ -1254,14 +1249,13 @@ TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city, 
 TBuildingView* TMacViewMgr::RestoreBuildingWindowAtSavedPosition(
     short buildingSlot, TCity* city, bool closeAfterOpen, bool isEmbeddedPage,
     TCityProductionView* productionView, short savedX, short savedY) {
-  TWindow* dialog = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(
-      static_cast<TurnEventId>(buildingSlot + kTurnEventTextileMill));
+  TWindow* dialog =
+      g_pAssetMgr->GetDialog(static_cast<TurnEventId>(buildingSlot + kTurnEventTextileMill));
   TBuildingView* buildingView = static_cast<TBuildingView*>(dialog->FindSubView(kControlTagDialog));
   if (buildingView == 0) {
     FailNilPointerWithAssert(s_SourcePathUMacViewMgr, 0xb62);
   }
-  buildingView->ApplyCityViewSelectionPayloadAndRefreshControls(city, isEmbeddedPage,
-                                                                productionView, buildingSlot);
+  buildingView->SetCitySelection(city, isEmbeddedPage, productionView, buildingSlot);
   dialog->controlValue = 0x65;
   CPoint placement(savedX, savedY);
   dialog->Locate(placement, false);
@@ -1279,8 +1273,7 @@ TBuildingView* TMacViewMgr::RestoreBuildingWindowAtSavedPosition(
 // FUNCTION: IMPERIALISM 0x0050d5b0
 void TMacViewMgr::OpenConstructionWindow(short buildingSlot, TCity* city,
                                          TCityProductionView* productionView) {
-  TWindow* dialog =
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGenericCreator);
+  TWindow* dialog = g_pAssetMgr->GetDialog(kTurnEventGenericCreator);
   TBuildingConstructionView* constructionView =
       static_cast<TBuildingConstructionView*>(dialog->FindSubView(kControlTagDialog));
   if (constructionView == 0) {
@@ -1326,7 +1319,7 @@ void TMacViewMgr::MakeCountryRegion(int country) {
   QDLoadResource(loaderHandle);
   TBitmapResourceLoader* loader = *loaderHandle;
   if (loader != 0) {
-    loader->EnsureBitmapResourceLoadedAndCopyRectSize();
+    loader->LoadBitmapBounds();
     loader->flags |= 1;
     ResetQuickDrawStrokeState();
     BlitBitmapResourceLoaderToActiveDc(loaderHandle, &resourceBounds);
@@ -1358,7 +1351,7 @@ void TMacViewMgr::CloseBuilding(short buildingSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x0050d920
-void TMacViewMgr::ClearActiveCityProductionViewAndDiscardRegion() {
+void TMacViewMgr::CloseCityView() {
   if (activeCityProductionView != 0) {
     activeCityProductionView->CloseAndSaveWindows();
   }
@@ -1366,7 +1359,7 @@ void TMacViewMgr::ClearActiveCityProductionViewAndDiscardRegion() {
 }
 
 // FUNCTION: IMPERIALISM 0x0050d950
-void TMacViewMgr::RefreshActiveGoldControlAndUiRuntimeState() {
+void TMacViewMgr::RefreshGoldControl() {
   TView* hostView = g_pDisplayMgr->activeDialog;
   TPicture* goldControl = static_cast<TPicture*>(hostView->FindSubView(kControlTagDialog));
   if (goldControl == 0) {
@@ -1586,10 +1579,9 @@ void TMacViewMgr::CopyDevelopmentIcon(TBitmapSurfaceNode** pDstSurface, ushort w
 }
 
 // FUNCTION: IMPERIALISM 0x0050e070
-void TMacViewMgr::BlitStrategicMapUnitActivityOverlayFrame(TBitmapSurfaceNode** destinationSurface,
-                                                           short overlayFrameIndex,
-                                                           short destinationX,
-                                                           short destinationYFromBottom) {
+void TMacViewMgr::BlitActivityFrame(TBitmapSurfaceNode** destinationSurface,
+                                    short overlayFrameIndex, short destinationX,
+                                    short destinationYFromBottom) {
   TBitmapSurfaceNode** atlasSurface = GetGWorldPixMap(unitOverlayAtlas);
   unsigned short destinationStride =
       static_cast<unsigned short>((*destinationSurface)->stride) & 0x3fff;

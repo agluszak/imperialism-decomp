@@ -22,8 +22,7 @@ public:
   virtual void DrawUnit(TCivUnit* orderEntry, int projectedX, int projectedY, int flag,
                         short tileIndex) override;
   virtual void DrawGarrison(short tileIndex, CRect* dstRect, int flag) override;
-  virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
-                                                             bool altOverlay) override;
+  virtual void DrawFleet(short tileIndex, CRect* dstRect, bool altOverlay) override;
   virtual void FrameCursorArea() override;
   virtual void TileID2TileTopLeft(int tileIndex, const CPoint* viewportOrigin,
                                   short* outVerticalOffset, short* outHorizontalOffset,
@@ -35,7 +34,7 @@ public:
   virtual void ImmediateDrawTile(short tileIndex) override;
   virtual bool IsTileVisible(short tileIndex) override;
   void BuildTileViewportRect(short tileIndex, CRect* outRect);
-  int ComputeWrappedTileIndexFromViewportPoint(const CPoint* point);
+  int TileAtPoint(const CPoint* point);
   virtual int GetCenterTile();
   void InvalidateTile(short tileIndex);
   void InvalidateZone(TZone* zone);

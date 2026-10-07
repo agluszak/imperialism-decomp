@@ -76,7 +76,7 @@ void RefreshBackdropOnInputMessages(MSG* msg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0049ce90
-void TBackdropWindow::InitializeDefaultBackdropWindowFromBmp3B6(CWnd* parent) {
+void TBackdropWindow::InitializeBackdrop(CWnd* parent) {
   m_backdropBmp = g_pResourceMgr->LoadBmpResourceByIdCached(0x3b6);
   if (m_backdropBmp == NULL) {
     return;
@@ -109,7 +109,7 @@ void TBackdropWindow::PostNcDestroy() {
   delete this;
   g_pActiveBackdropWindow = NULL;
 
-  static_cast<CMainFrame*>(AfxGetMainWnd())->ConfigureTopLevelWindowStyleAndPlacement(0x280, 0x1e0);
+  static_cast<CMainFrame*>(AfxGetMainWnd())->ConfigureFrameWindow(0x280, 0x1e0);
   AfxGetMainWnd()->SetWindowPos(NULL, 0, 0, 0, 0, 5);
 
   delete g_pBackdropWaitCursor;

@@ -169,7 +169,7 @@ bool TInteriorMinister::DoIncreasedTransport() {
 
 // FUNCTION: IMPERIALISM 0x004be690
 void TInteriorMinister::AdvanceNeedTargetRoundRobin() {
-  greatPower->TryIncrementNationResourceNeedTargetTowardCurrent(needTargetCursor);
+  greatPower->RaiseNeedTarget(needTargetCursor);
   ++needTargetCursor;
   if (needTargetCursor > 4) {
     needTargetCursor = 0;

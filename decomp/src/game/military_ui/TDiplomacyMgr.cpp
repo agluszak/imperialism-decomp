@@ -150,7 +150,7 @@ void TDiplomacyMgr::IDiplomacyMgr() {
 }
 
 // FUNCTION: IMPERIALISM 0x004ee8c0
-void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
+void TDiplomacyMgr::RebuildRelationMatrices() {
   int sourceNation;
   int targetNation;
 
@@ -285,7 +285,7 @@ void TDiplomacyMgr::RemoveNationSlotAndNotifyPeers(NationSlot nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004eef50
-void TDiplomacyMgr::ResetTerrainAdjacencyMatrixRowAndSymmetricLink(NationSlot nationSlot) {
+void TDiplomacyMgr::ResetRelationsOf(NationSlot nationSlot) {
   int row = nationSlot;
   int remaining = kNationSlotCount;
   short* rowCursor = &relationSideEffectMatrix[row * kNationSlotCount];
@@ -432,14 +432,12 @@ bool TDiplomacyMgr::IsInEstablishedWarWithAnybody(NationSlot sourceNationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ef6a0
-bool TDiplomacyMgr::IsSpecialRelationSourceForMinorNationSlot(NationSlot nationSlot,
-                                                              NationSlot minorNationSlot) {
+bool TDiplomacyMgr::IsMinorSource(NationSlot nationSlot, NationSlot minorNationSlot) {
   return specialRelationSourceSlots[minorNationSlot - 7] == nationSlot;
 }
 
 // FUNCTION: IMPERIALISM 0x004ef6d0
-bool TDiplomacyMgr::IsSpecialRelationTargetForMinorNationSlot(NationSlot nationSlot,
-                                                              NationSlot minorNationSlot) {
+bool TDiplomacyMgr::IsMinorTarget(NationSlot nationSlot, NationSlot minorNationSlot) {
   return specialRelationTargetSlots[minorNationSlot - 7] == nationSlot;
 }
 
@@ -855,7 +853,7 @@ void TDiplomacyMgr::SetLastDiploEffort() {
 }
 
 // FUNCTION: IMPERIALISM 0x004f05c0
-void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
+void TDiplomacyMgr::PickMinorPriorities() {
   TGreatPower** nationSlot = g_apNationStates;
   for (int remaining = 7; remaining != 0; --remaining, ++nationSlot) {
     if (*nationSlot != NULL) {
@@ -982,7 +980,7 @@ void TDiplomacyMgr::IssueDeclarationsOfWar() {
     WarTransitionPair* pair = static_cast<WarTransitionPair*>(pendingWarTransitionQueue->First());
     int targetNationSlot = pair->targetNationSlot;
     int sourceNationSlot = pair->sourceNationSlot;
-    pendingWarTransitionQueue->RemovePtrListEntryByOneBasedIndexAndFree(1);
+    pendingWarTransitionQueue->DeleteAt(1);
 
     if (!AreAtWar(sourceNationSlot, targetNationSlot)) {
       SetTreatyStatus(sourceNationSlot, targetNationSlot, kDiplomacyRelationshipWar, 0);
@@ -1061,7 +1059,7 @@ void TDiplomacyMgr::ConveneCouncil(char forceOrMode) {
 
   bool forceFullClear = (forceOrMode == 2);
   if (relationCodeMatrix[0] == 0) {
-    InitializeDiplomacyStandingBaselineRandom();
+    RandomizeStandings();
   }
   if (forceFullClear) {
     memset(relationCodeMatrix, 0, sizeof(relationCodeMatrix));
@@ -1222,7 +1220,7 @@ void TDiplomacyMgr::ConveneCouncil(char forceOrMode) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f1570
-void TDiplomacyMgr::InitializeDiplomacyStandingBaselineRandom() {
+void TDiplomacyMgr::RandomizeStandings() {
   for (int cityIndex = 0; cityIndex < kDiplomacyPairMatrixEntries; ++cityIndex) {
     signed char formerOwner = g_pGlobalMapState->cityScoreTable[cityIndex].formerOwnerNationCode;
     if (formerOwner == -1) {
@@ -1300,7 +1298,7 @@ void TDiplomacyMgr::CalculateRatings() {
     if (!g_pSimMgr->ReallyInTheGame(i)) {
       continue;
     }
-    int army = g_apNationStates[i]->ComputeNationNavyOrderWeightedMovementScore() + 0x1f4;
+    int army = g_apNationStates[i]->GetNavalMobility() + 0x1f4;
     comparativePowerRows[i][0] = army;
     if (army > maxArmy) {
       maxArmy = army;
@@ -1645,7 +1643,7 @@ void TDiplomacyMgr::UpdateTables(int nationCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f24a0
-void TDiplomacyMgr::RebuildMinorNationDispositionLookupTables(NationSlot nationCode) {
+void TDiplomacyMgr::RebuildMinorDispositions(NationSlot nationCode) {
   TMinor** auxSlot = g_apNationAuxRuntimeStateSlots;
   short minorSlot = 7;
   for (int auxIndex = 0; auxIndex < kMinorNationCount; ++auxIndex, ++auxSlot, ++minorSlot) {
@@ -1704,10 +1702,9 @@ void TDiplomacyMgr::RebuildMinorNationDispositionLookupTables(NationSlot nationC
 }
 
 // FUNCTION: IMPERIALISM 0x004f2760
-TurnEvent2SyncPacket*
-TDiplomacyMgr::BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy() {
-  TurnEvent2SyncPacket* packet = BuildTurnEvent2ArraySyncPacketDeltaOrFull(
-      0x89c, relationStandingScores, relationMatrixBaselineCopy);
+TurnEvent2SyncPacket* TDiplomacyMgr::BuildRelationSyncPacket() {
+  TurnEvent2SyncPacket* packet =
+      BuildArraySyncPacket(0x89c, relationStandingScores, relationMatrixBaselineCopy);
   packet->flag20 = false;
   if (relationMatrixBaselineCopy == 0) {
     relationMatrixBaselineSize = 0x1138;
@@ -1802,9 +1799,8 @@ BuildTurnEvent2ByteArraySyncPacketDeltaOrFull(unsigned int byteCount, unsigned c
 }
 
 // FUNCTION: IMPERIALISM 0x005449b0
-TurnEvent2SyncPacket* __cdecl BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned int shortCount,
-                                                                        short* current,
-                                                                        short* baseline) {
+TurnEvent2SyncPacket* __cdecl BuildArraySyncPacket(unsigned int shortCount, short* current,
+                                                   short* baseline) {
   bool sendFull = true;
   int differing = 0;
   if (baseline != 0) {
@@ -1869,8 +1865,7 @@ TurnEvent2SyncPacket* __cdecl BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned
 }
 
 // FUNCTION: IMPERIALISM 0x00544b30
-TurnEvent2SyncPacket* __cdecl
-BuildTurnEvent2IntArraySyncPacketDeltaOrFull(int intCount, int* current, int* baseline) {
+TurnEvent2SyncPacket* __cdecl BuildIntArraySyncPacket(int intCount, int* current, int* baseline) {
   bool sendFull = true;
   int differing = 0;
   if (baseline != 0) {

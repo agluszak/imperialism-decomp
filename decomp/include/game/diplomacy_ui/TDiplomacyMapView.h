@@ -57,8 +57,7 @@ public:
   void DoKeyEvent(TToolboxEvent* event) override;
   void Close() override;
   void DoSetCursor(CPoint* point, RgnHandle hitArg) override;
-  void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                           RgnHandle dispatchArg) override;
+  void AdjustCursor(CPoint* point, RgnHandle dispatchArg) override;
   void DoPostCreate(int arg) override;
   void Draw(RECT* rectBuffer) override;
   void DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) override;

@@ -91,7 +91,7 @@ bool TSoundPlayer::DoIdle(int action) {
   }
 
   if (pendingAudioCueId != 0 && fadeStartTick == 0) {
-    RequestAudioPresetChangeWithDeferredApply(pendingAudioCueId, false);
+    RequestMusicChange(pendingAudioCueId, false);
     pendingAudioCueId = 0;
     return false;
   }
@@ -150,7 +150,7 @@ void TSoundPlayer::CheckMusicStatus() {
   short pending = pendingAudioCueId;
   if (pending != 0 && fadeStartTick == 0) {
     if (g_pSimMgr->preferenceValues[kCdAudioVolumePreference] != 0) {
-      if (!IsTurnFlowCooldownActiveAndResetExpiredState()) {
+      if (!IsCooldownActive()) {
         if (ReturnTrueStub() == 0) {
           g_pSimMgr->preferenceValues[kCdAudioVolumePreference] = 0;
           pendingAudioCueId = 0;
@@ -195,8 +195,7 @@ void TSoundPlayer::AddToPlayList(int cueId) {
 
 // FUNCTION: IMPERIALISM 0x00593790
 void TSoundPlayer::PlayRandomTrack() {
-  if (g_pSimMgr->preferenceValues[kCdAudioVolumePreference] == 0 ||
-      IsTurnFlowCooldownActiveAndResetExpiredState()) {
+  if (g_pSimMgr->preferenceValues[kCdAudioVolumePreference] == 0 || IsCooldownActive()) {
     return;
   }
 
@@ -216,8 +215,7 @@ void TSoundPlayer::PlayRandomTrack() {
   int chosen = remainingRandomAudioCues->At(pick);
   remainingRandomAudioCues->AtDelete(pick);
 
-  if (g_pSimMgr->preferenceValues[kCdAudioVolumePreference] == 0 ||
-      IsTurnFlowCooldownActiveAndResetExpiredState()) {
+  if (g_pSimMgr->preferenceValues[kCdAudioVolumePreference] == 0 || IsCooldownActive()) {
     return;
   }
   if (ReturnTrueStub() == 0) {
@@ -245,11 +243,11 @@ void TSoundPlayer::PlayRandomTrack() {
 }
 
 // FUNCTION: IMPERIALISM 0x00593920
-void TSoundPlayer::RequestAudioPresetChangeWithDeferredApply(int presetId, bool flag) {
+void TSoundPlayer::RequestMusicChange(int presetId, bool flag) {
   if (g_pSimMgr->preferenceValues[kCdAudioVolumePreference] == 0) {
     return;
   }
-  if (IsTurnFlowCooldownActiveAndResetExpiredState()) {
+  if (IsCooldownActive()) {
     return;
   }
   if (ReturnTrueStub() == 0) {
@@ -298,7 +296,7 @@ void TSoundPlayer::SetActiveAudioCueAndResetQueue(int cueId, bool flag) {
     }
     clearCuePoolsAfterFade = false;
   } else if (pendingAudioCueId != 0 && fadeStartTick == 0) {
-    RequestAudioPresetChangeWithDeferredApply(pendingAudioCueId, false);
+    RequestMusicChange(pendingAudioCueId, false);
     pendingAudioCueId = 0;
   } else {
     int rotating = audioCuePool->GetSize();
@@ -321,7 +319,7 @@ void TSoundPlayer::SetActiveAudioCueAndResetQueue(int cueId, bool flag) {
   if (g_pSimMgr->preferenceValues[kCdAudioVolumePreference] == 0) {
     return;
   }
-  if (IsTurnFlowCooldownActiveAndResetExpiredState()) {
+  if (IsCooldownActive()) {
     return;
   }
   if (ReturnTrueStub() == 0) {
@@ -396,7 +394,7 @@ void TSoundPlayer::ISoundPlayer(int idleFrequency) {
   char ok = g_soundResourceManager.InitializeDirectSoundDeviceAndChannels();
   directSoundInitOk = static_cast<unsigned char>(ok);
   if (ok == 0) {
-    ClearDirectSoundInitPendingAndResetState();
+    CancelSoundInit();
   } else {
     RequestDirectSoundInitIfAllowed();
   }
@@ -430,7 +428,7 @@ bool TSoundPlayer::DefaultSoundCompatibilityPredicate(int unusedArg1, int unused
 }
 
 // FUNCTION: IMPERIALISM 0x005e4fd0
-void TSoundPlayer::ClearDirectSoundInitPendingAndResetState() {
+void TSoundPlayer::CancelSoundInit() {
   directSoundInitPending = false;
   g_soundResourceManager.ReleaseDirectSoundDeviceAndChannels();
 }
@@ -461,10 +459,8 @@ void TSoundPlayer::SetMasterVolumeFromPercent(short percent) {
 void TSoundPlayer::PriorityOverride(short currentPriority, short requestedPriority) {}
 
 // FUNCTION: IMPERIALISM 0x005e50c0
-int TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(short sfxToken,
-                                                                       int unusedArg2,
-                                                                       int unusedArg3,
-                                                                       int unusedArg4) {
+int TSoundPlayer::PlayLocalizedSound(short sfxToken, int unusedArg2, int unusedArg3,
+                                     int unusedArg4) {
   if (g_pSimMgr->preferenceValues[kSoundEffectsVolumePreference] == 0) {
     return 0;
   }
@@ -472,7 +468,7 @@ int TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(short sfx
   if (++g_localizationAudioSlotCursor >= kDirectSoundChannelCount) {
     g_localizationAudioSlotCursor = 0;
   }
-  if (g_soundResourceManager.LoadWaveResourceByNumericIdAndBuildBuffer(sfxToken, slot) != 0) {
+  if (g_soundResourceManager.LoadWave(sfxToken, slot) != 0) {
     g_soundResourceManager.UpdateLocalizationAudioSlot(slot);
   }
   return 0;
@@ -480,7 +476,7 @@ int TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(short sfx
 
 // FUNCTION: IMPERIALISM 0x005e5140
 int TSoundPlayer::PlaySoundEffect(short sfxToken, int forwardedArg2, int forwardedArg3) {
-  UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(sfxToken, forwardedArg2, forwardedArg3, 1);
+  PlayLocalizedSound(sfxToken, forwardedArg2, forwardedArg3, 1);
   return 0;
 }
 

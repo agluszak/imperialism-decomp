@@ -122,7 +122,7 @@ struct TurnEvent23TileStatePacket : TimelyNetMessagePrefix {
 struct NationStatusEvent25Packet : TimelyMessageHeader {
   int statusTags[7]; // four-cc per-nation status ('unkn' default)
 
-  void InitializeNationStatusEvent25PayloadDefaults();
+  void SetDefaults();
 };
 
 struct TurnEvent2BPresenceMaskPacket : TimelyMessageHeader {

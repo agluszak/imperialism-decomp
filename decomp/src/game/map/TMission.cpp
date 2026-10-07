@@ -154,7 +154,7 @@ bool TMission::SmokeEmIfYouGotEm() {
 TMission::TMission() : state08(2), importanceScore(0.0f), marker11(0xff) {}
 
 // FUNCTION: IMPERIALISM 0x005350a0
-void TMission::InitializeMissionWithNationIdAndResetPathMarker(NationSlot nationSlot) {
+void TMission::IMission(NationSlot nationSlot) {
   nationId = nationSlot;
   pathMarker = -1;
   Initialize();
@@ -250,8 +250,7 @@ TMission* TMission::Find(TSortedList* missions, eMissionType missionType, short 
 }
 
 // FUNCTION: IMPERIALISM 0x00535f80
-short __cdecl CompareMissionOrderEntriesByMovementClassThenEfficiency(void* a, void* b,
-                                                                      void* reverseOrder) {
+short __cdecl CompareByMovementThenEfficiency(void* a, void* b, void* reverseOrder) {
   TMission* missionA = static_cast<TMission*>(a);
   TMission* missionB = static_cast<TMission*>(b);
   missionA->AssertValid();
@@ -278,7 +277,7 @@ short __cdecl CompareMissionOrderEntriesByMovementClassThenEfficiency(void* a, v
 }
 
 // FUNCTION: IMPERIALISM 0x00536090
-short __cdecl CompareMissionOrderEntriesByPriorityScore(TMission* a, TMission* b) {
+short __cdecl CompareByPriority(TMission* a, TMission* b) {
   a->AssertValid();
   b->AssertValid();
 

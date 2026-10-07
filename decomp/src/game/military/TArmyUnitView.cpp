@@ -47,13 +47,13 @@ void TArmyUnitView::Draw(RECT* rectBuffer) {
   CString unitTypeName;
   CString descriptor;
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0);
+  ApplyTextStyle(0, 0xc, 0);
   SetQuickDrawColorAndSyncGlobals(0x1c474b);
   unitTypeName = militaryUnit->name;
   SetQuickDrawTextOriginWithContextOffset(0x40, 0x10);
   DrawTextWithCachedQuickDrawStyleState(&unitTypeName);
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(2, 9, 0);
+  ApplyTextStyle(2, 9, 0);
   SetQuickDrawColorAndSyncGlobals(0x1c474b);
   int unitTypeCode = militaryUnit->unitOrder;
   if (unitTypeCode == 0xe) {
@@ -138,7 +138,7 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       TNumberedArrowButton* arrow =
           static_cast<TNumberedArrowButton*>(activeToolbar->FindSubView(arrowTag));
       arrow->SetValue(static_cast<short>(arrow->number + availableCountDelta), true);
-      g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
+      g_pViewMgr->RefreshNationIndicator();
     }
   } else if (sourceHandler->controlTag == kControlTagUpgr) {
     if (militaryUnit->Upgrade()) {
@@ -169,7 +169,7 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 
 // FUNCTION: IMPERIALISM 0x004a9ca0
 void TArmyUnitView::RenameUnit() {
-  TWindow* node = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNameUnit);
+  TWindow* node = g_pAssetMgr->GetDialog(kTurnEventNameUnit);
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUArmyViews, 0x204);
   }

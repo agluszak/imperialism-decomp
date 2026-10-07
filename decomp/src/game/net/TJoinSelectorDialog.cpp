@@ -34,13 +34,11 @@ void TJoinSelectorDialog::DoPostCreate(int arg) {
   TStaticText* gameControl = static_cast<TStaticText*>(FindSubView(kControlTagGame));
   gameControl->AssertValid();
 
-  ConfigureUiControlStyleValueAndCaptionFromStringResource(tnamControl, 0, 0xc, 0x2b6b, -2, 0x2742,
-                                                           4);
-  ConfigureUiControlStyleValueAndCaptionFromStringResource(tgamControl, 0, 0xc, 0x2b6b, -2, 0x2742,
-                                                           5);
+  ConfigureControlFromStrings(tnamControl, 0, 0xc, 0x2b6b, -2, 0x2742, 4);
+  ConfigureControlFromStrings(tgamControl, 0, 0xc, 0x2b6b, -2, 0x2742, 5);
 
   CString normalizedPlayerName = g_pLanguageMgr->StripCodeStr(g_pGameFlowState->playerNameString);
-  ApplyControlThemeStyleAndOptionalCaption(nameControl, 0, 0xc, 0x2b6b, 1, normalizedPlayerName);
+  ApplyControlTheme(nameControl, 0, 0xc, 0x2b6b, 1, normalizedPlayerName);
   nameControl->maxCharacterCount = 0xc;
   if (nameControl->editWindow != NULL) {
     nameControl->editWindow->SendMessage(0xc5, nameControl->maxCharacterCount, 0);

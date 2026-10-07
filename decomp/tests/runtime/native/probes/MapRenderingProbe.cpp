@@ -332,8 +332,7 @@ bool MapRenderingProbe::HoverMovementRestoresPreviousTiles(TMapDialog* mapDialog
 
   short projectedY;
   short projectedX;
-  ProjectTileIndexToWrappedScreenOffsetByScale(secondTile, &mapDialog->viewportOrigin, &projectedY,
-                                               &projectedX, 1);
+  ProjectTile(secondTile, &mapDialog->viewportOrigin, &projectedY, &projectedX, 1);
   const CRect currentHoverRect(projectedX - 1, projectedY - 1, projectedX + 0x42,
                                projectedY + 0x42);
   return baseline.MatchesOutside(afterMovement, currentHoverRect);

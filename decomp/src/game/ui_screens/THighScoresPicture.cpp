@@ -53,7 +53,7 @@ void THighScoresPicture::Draw(RECT* rectBuffer) {
   ResolveUiThemeColor(0x2b68, &foregroundColor);
   COLORREF secondaryColor = 0;
   ResolveUiThemeColor(0x2b67, &secondaryColor);
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0x18, 0x2b68);
+  ApplyTextStyle(0, 0x18, 0x2b68);
 
   int rank = 0;
   int y = 100;

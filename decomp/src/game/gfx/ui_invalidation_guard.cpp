@@ -7,7 +7,7 @@
 
 // FUNCTION: IMPERIALISM 0x0049d620
 int ReportAssertionFailure(...) {
-  int previous = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  SetGlobalUiInvalidationFlagAndReturnPrevious(previous);
+  int previous = SetInvalidationFlag(0);
+  SetInvalidationFlag(previous);
   return 0;
 }

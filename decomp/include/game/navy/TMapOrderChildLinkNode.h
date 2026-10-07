@@ -39,7 +39,7 @@ public:
   TMapOrderChildLinkNode* RemoveLinkedOrderNodeByValueRecursive(TShip* child);
   // Allocate a new head before this link (which may be null).
   TMapOrderChildLinkNode* CreateLinkedOrderNode(TShip* child);
-  TMapOrderChildLinkNode* PruneDefeatedMapOrderChildrenAndReturnHead();
+  TMapOrderChildLinkNode* PruneDefeatedShips();
 };
 
 ASSERT_SIZE(TMapOrderChildLinkNode, 0x10);

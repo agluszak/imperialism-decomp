@@ -11,7 +11,7 @@ bool TRemoteGreatPower::IsRemote(void) const {
 }
 
 // FUNCTION: IMPERIALISM 0x00541860
-bool TRemoteGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
+bool TRemoteGreatPower::CheckBankruptcy(void) {
   return false;
 }
 
@@ -60,7 +60,7 @@ void TRemoteGreatPower::SetEnemy(int targetNation) {}
 void TRemoteGreatPower::TellColoniesAboutNewEnemy(int targetNation) {}
 
 // FUNCTION: IMPERIALISM 0x00541a40
-void TRemoteGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {}
+void TRemoteGreatPower::AssessExpansion(void) {}
 
 // FUNCTION: IMPERIALISM 0x00541a60
 void TRemoteGreatPower::ReassessMissions(int unused) {}

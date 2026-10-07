@@ -34,8 +34,7 @@ void TShipFractionCluster::DoPostCreate(int arg) {
   short slot = GetEnabledIndustryCapabilitySlotByClass(static_cast<short>(controlTag - 0x7330));
   if (slot != 0) {
     shipControl->SetPictureRsrcID(static_cast<short>(slot + 0x5e6), 0);
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2716, static_cast<short>(slot + 1),
-                                                          controlTag);
+    SetTaggedStringAndApply(0x2716, static_cast<short>(slot + 1), controlTag);
     Show(1, 1);
   } else {
     Show(0, 1);
@@ -78,8 +77,7 @@ void TShipFractionCluster::Set(int availableCount, int selectedCount) {
       short slot = GetEnabledIndustryCapabilitySlotByClass(static_cast<short>(controlTag - 0x7330));
       shipControl->Show(1, 1);
       shipCountButton->Show(1, 1);
-      LoadUiStringByGroupAndIndexToGlobalControlTag(0x2716, static_cast<short>(slot + 1),
-                                                    controlTag);
+      SetTaggedString(0x2716, static_cast<short>(slot + 1), controlTag);
     }
   } else if (availableShipCount != 0) {
     shipControl->Show(0, 1);

@@ -27,17 +27,10 @@ void RecomputeNationOrderPriorityMetrics() {
     for (TShip* ship = TShip::GetFirst(); ship != NULL; ship = ship->next) {
       if (ship->nation == nationIdx) {
         int strengthRatio = ship->strength / ship->GetMaxStrength();
-        categoryVector[0] +=
-            strengthRatio *
-            static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0));
-        categoryVector[1] +=
-            strengthRatio *
-            static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1));
-        categoryVector[2] +=
-            strengthRatio *
-            static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2));
-        categoryVector[3] +=
-            static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3));
+        categoryVector[0] += strengthRatio * static_cast<float>(ship->GetCategoryPercent(0));
+        categoryVector[1] += strengthRatio * static_cast<float>(ship->GetCategoryPercent(1));
+        categoryVector[2] += strengthRatio * static_cast<float>(ship->GetCategoryPercent(2));
+        categoryVector[3] += static_cast<float>(ship->GetCategoryPercent(3));
       }
     }
     float queueSum = categoryVector[0] + categoryVector[1] + categoryVector[2] + categoryVector[3];
@@ -62,7 +55,7 @@ void RecomputeNationOrderPriorityMetrics() {
     for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(mobileIter.Reset()); mobileIter.More();
          unit = static_cast<TMilitaryUnit*>(mobileIter.Advance())) {
       if (unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
-        AccumulateUnitOrderPriorityVectorContribution(unit, unitVector, 1.0f, 0.33f);
+        AddUnitToPriorityVector(unit, unitVector, 1.0f, 0.33f);
       }
     }
 
@@ -103,7 +96,7 @@ void RecomputeNationOrderPriorityMetrics() {
     for (TMilitaryUnit* staticUnit = static_cast<TMilitaryUnit*>(staticIter.Reset());
          staticIter.More(); staticUnit = static_cast<TMilitaryUnit*>(staticIter.Advance())) {
       if (staticUnit->GetCategory() == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
-        AccumulateUnitOrderPriorityVectorContribution(staticUnit, unitVector, 1.0f, 0.33f);
+        AddUnitToPriorityVector(staticUnit, unitVector, 1.0f, 0.33f);
       }
     }
 
@@ -136,7 +129,7 @@ void RecomputeNationOrderPriorityMetrics() {
 
   for (short finalNationIdx = 0; finalNationIdx < kMajorNationCount; ++finalNationIdx) {
     if (g_pSimMgr->ReallyInTheGame(finalNationIdx)) {
-      g_apNationStates[finalNationIdx]->RecomputeAiExpansionAndMissionPressureScores();
+      g_apNationStates[finalNationIdx]->AssessExpansion();
     }
   }
 }

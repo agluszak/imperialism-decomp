@@ -24,7 +24,7 @@ void TScoreGraph::DoPostCreate(int arg) {
   for (int i = 0; i < 7; ++i) {
     TView* tabControl = ownerContext->FindSubView(kControlTagTab0 + i);
     tabControl->AssertValid();
-    LoadUiStringByGroupAndIndexToControlObject(0x2757, static_cast<short>(i + 9), tabControl);
+    SetControlString(0x2757, static_cast<short>(i + 9), tabControl);
   }
 
   SetControlHoverHelpText(CString(g_szEmptyString), ownerContext);
@@ -37,7 +37,7 @@ void TScoreGraph::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x004fe390
 void TScoreGraph::Draw(RECT* rectBuffer) {
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b67);
+  ApplyTextStyle(0, 0xc, 0x2b67);
 
   int rowY = 0;
   for (int nationIndex = 0; nationIndex < kMajorNationCount; ++nationIndex) {
@@ -56,7 +56,7 @@ void TScoreGraph::Draw(RECT* rectBuffer) {
     bgRect.right = static_cast<short>(total) + 2;
     bgRect.bottom = rowY + 0x26;
     bgRect.left = 2;
-    FillRectWithQuickDrawBrushAndContextOffset(&bgRect);
+    FillContextRect(&bgRect);
 
     int segX = 0;
     RECT segRect;
@@ -67,7 +67,7 @@ void TScoreGraph::Draw(RECT* rectBuffer) {
       segRect.bottom = rowY + 0x24;
       segRect.top = rowY;
       g_pViewMgr->SetForeColor(static_cast<short>(segComponent + 3));
-      FillRectWithQuickDrawBrushAndContextOffset(&segRect);
+      FillContextRect(&segRect);
       segX += segValue;
     }
 

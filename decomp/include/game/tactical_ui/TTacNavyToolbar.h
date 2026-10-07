@@ -14,7 +14,7 @@ public:
   virtual ~TTacNavyToolbar() override;
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   virtual void DoPostCreate(int arg) override;
-  virtual void UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalUnit* unit) override;
+  virtual void ShowCurrentUnit(TTacticalUnit* unit) override;
   virtual void UpdateTacticalOtherSideUnitControl(TArmyTacUnit* unit) override;
 
   // NOOP: verified empty in original 0x005ad067

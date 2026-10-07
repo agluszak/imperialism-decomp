@@ -36,7 +36,7 @@ TMinor::TMinor() {}
 // FUNCTION: IMPERIALISM 0x004e3830
 void TMinor::IMinor(NationSlot nationSlot) {
   CString unusedText;
-  InitializeNationStateIdentityAndOwnedRegionList(nationSlot);
+  InitializeIdentity(nationSlot);
 
   primaryManufacturedRequestFulfilledAmount = 0;
   primaryManufacturedRequest = -10;
@@ -774,7 +774,7 @@ void TMinor::BecomeProtectorateOf(int targetNationSlot) {
         terrain->NewStatusFor(nationSlot, 100);
       }
     }
-    g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(nationSlot);
+    g_pDiplomacyTurnStateManager->ResetRelationsOf(nationSlot);
 
     for (int majorNationSlot = 0; majorNationSlot < kMajorNationCount; ++majorNationSlot) {
       if (g_pSimMgr->ReallyInTheGame(static_cast<short>(majorNationSlot))) {
@@ -839,7 +839,7 @@ void TMinor::BecomeProtectorateOf(int targetNationSlot) {
         terrain->NewStatusFor(nationSlot, 100);
       }
     }
-    g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(nationSlot);
+    g_pDiplomacyTurnStateManager->ResetRelationsOf(nationSlot);
   }
 
   for (int standingNationSlot = 0; standingNationSlot < kMajorNationCount; ++standingNationSlot) {
@@ -892,7 +892,7 @@ void TMinor::BecomeColonyOf(int targetNationSlot) {
     }
   }
 
-  g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(this->nationSlot);
+  g_pDiplomacyTurnStateManager->ResetRelationsOf(this->nationSlot);
 
   TGreatPower* targetNation = g_apNationStates[targetNationSlot];
   targetNation->AddColony(this->nationSlot);
@@ -1170,7 +1170,7 @@ void TMinor::DeportCiviliansIn(int provinceId, bool includeAllPolicyTargets) {
           int orderOwnerNationSlot = orderNode->ownerNationSlot;
           if (relationMaskByNation[orderOwnerNationSlot] != 0) {
             TGreatPower* ownerNation = g_apNationStates[orderOwnerNationSlot];
-            short spawnTile = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
+            short spawnTile = g_pGlobalMapState->FindRecruitTile(
                 static_cast<short>(ownerNation->homeTileIndex), false);
             if (spawnTile == -1) {
               orderNode->Vaporize();
@@ -1203,7 +1203,7 @@ void TMinor::DeportCiviliansIn(int provinceId, bool includeAllPolicyTargets) {
           int orderOwnerNationSlot = orderNode->ownerNationSlot;
           if (relationMaskByNation[orderOwnerNationSlot] != 0) {
             TGreatPower* ownerNation = g_apNationStates[orderOwnerNationSlot];
-            short spawnTile = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
+            short spawnTile = g_pGlobalMapState->FindRecruitTile(
                 static_cast<short>(ownerNation->homeTileIndex), false);
             if (spawnTile == -1) {
               orderNode->Vaporize();

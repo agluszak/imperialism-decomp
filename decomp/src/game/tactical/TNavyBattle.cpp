@@ -75,7 +75,7 @@ void TNavyBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
     TTacticalToolbar* toolbar =
         static_cast<TTacticalToolbar*>(battleView->ownerContext->FindSubView(kControlTagTool));
     toolbar->AssertValid();
-    toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(selectedUnit);
+    toolbar->ShowCurrentUnit(selectedUnit);
     toolbar->ForceRedraw();
   }
 

@@ -33,7 +33,7 @@ void TRadioText::Draw(RECT* rectBuffer) {
     g_pViewMgr->SetColor(colorCode, true);
 
     RECT fillRect = {0, 0, frameWidth, frameHeight};
-    FillRectWithQuickDrawBrushAndContextOffset(&fillRect);
+    FillContextRect(&fillRect);
     SetQuickDrawColorAndSyncGlobals(savedColor);
   }
   TDropShadowText::Draw(rectBuffer);

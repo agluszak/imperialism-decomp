@@ -103,30 +103,30 @@ void TLoadSavePicture::DoPostCreate(int arg) {
     preview->EnhancePhoto();
   }
 
-  RefreshActiveControlThenApplyThemeStyleAndCaption(kControlTagInfo, 0, 0xc, 0x2b6a, 0, 0);
+  RefreshAndTheme(kControlTagInfo, 0, 0xc, 0x2b6a, 0, 0);
 
   // Hover-help strings differ between the load and the save picture.
   if (loadModeFlag) {
-    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0xc, this);
-    LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x11, FindSubView(kControlTagOtto));
-    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x14, FindSubView(kControlTagCncl));
-    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x16, FindSubView(kControlTagMapP));
-    LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x14, FindSubView(kControlTagOkay));
+    SetControlString(0x2737, 0xc, this);
+    SetControlString(0x2758, 0x11, FindSubView(kControlTagOtto));
+    SetControlString(0x2737, 0x14, FindSubView(kControlTagCncl));
+    SetControlString(0x2737, 0x16, FindSubView(kControlTagMapP));
+    SetControlString(0x2758, 0x14, FindSubView(kControlTagOkay));
     for (int slot = 0; slot < 8; ++slot) {
       TView* slotControl = FindSubView(kControlTagSlt0 + slot);
       slotControl->AssertValid();
-      LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x12, slotControl);
+      SetControlString(0x2758, 0x12, slotControl);
     }
   } else {
-    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0xb, this);
-    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0xb, FindSubView(kControlTagOtto));
-    LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x15, FindSubView(kControlTagCncl));
-    LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x16, FindSubView(kControlTagMapP));
-    LoadUiStringByGroupAndIndexToControlObject(0x2743, 2, FindSubView(kControlTagOkay));
+    SetControlString(0x2737, 0xb, this);
+    SetControlString(0x2737, 0xb, FindSubView(kControlTagOtto));
+    SetControlString(0x2758, 0x15, FindSubView(kControlTagCncl));
+    SetControlString(0x2737, 0x16, FindSubView(kControlTagMapP));
+    SetControlString(0x2743, 2, FindSubView(kControlTagOkay));
     for (int slot = 0; slot < 8; ++slot) {
       TView* slotControl = FindSubView(kControlTagSlt0 + slot);
       slotControl->AssertValid();
-      LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x16, slotControl);
+      SetControlString(0x2758, 0x16, slotControl);
     }
   }
 }
@@ -258,7 +258,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
       LoadHeader(0xa1);
     }
   } else if (commandId == 0xa && sourceHandler->controlTag == kControlTagOkay) {
-    HandleSaveGameSlotSelectionAndPromptFlow();
+    SaveSelectedSlot();
   }
 }
 
@@ -269,7 +269,7 @@ void TLoadSavePicture::HandleTurnFlowStateTickOrShowMainMenu() {
     return;
   }
   if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
-    g_pGameFlowState->ResetLocalUiStateAndShowMultiplayerSetup();
+    g_pGameFlowState->ResetAndShowMultiplayerSetup();
     return;
   }
   g_pAmbitApplication->PostTurnEventCodeMessage(kTurnEventMainMenu);
@@ -302,7 +302,7 @@ static bool IsMultiplayerFlowActive() {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0056d2a0
-void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
+void TLoadSavePicture::SaveSelectedSlot() {
   if (selectedSlot == -1) {
     if (!loadModeFlag) {
       g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x2758, 0x17, 1, 0);
@@ -312,7 +312,7 @@ void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
   }
   if (loadModeFlag) {
     if (g_pSimMgr->mode == kGamePhaseStartup ||
-        g_pViewMgr->DispatchGameStateEventIfLocalizedPromptAccepted(kControlTagLoad) != 0) {
+        g_pViewMgr->ConfirmGameControl(kControlTagLoad) != 0) {
       GetWindow()->ForceRedraw();
       char* prefix = (char*)g_pszMultiplayerSavePrefix;
       if (!IsMultiplayerFlowActive()) {
@@ -331,7 +331,7 @@ void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
     slotNameControl->AssertValid();
     slotNameControl->GetCurrentText(&enteredName);
     if (enteredName.Compare(g_szEmptyString) == 0) {
-      enteredName = BuildSharedStringFromMappedFlavorTextIndex(0xd);
+      enteredName = GetFlavorText(0xd);
       slotNameControl->InitDialogWindowAndSyncTitleIfChanged(&enteredName, 1);
       slotNameControl->ForceRedraw();
     }
@@ -387,7 +387,7 @@ int __cdecl ReadScenarioIndexFromSaveHeader(const char* path) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056d840
-void LoadAndFormatMappedFlavorTextRecordsFromStream(int* outSlot, int targetGameId) {
+void LoadFlavorText(int* outSlot, int targetGameId) {
   CString scratch;
   for (int slot = 0; slot < 8; ++slot) {
     const char* prefix = (g_pSimMgr->multiplayerSessionRole == kSessionRoleStandalone)

@@ -48,15 +48,15 @@ void TArmyPlacard::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);
 
   if (glyph != 0) {
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b67);
+    ApplyTextStyle(0, 10, 0x2b67);
     countText.Format(g_szDecimalFormat, static_cast<int>(glyph));
 
-    short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&countText);
+    short textWidth = MeasureText(&countText);
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(frameWidth - textWidth),
                                             static_cast<short>(frameHeight - 2));
     DrawTextWithCachedQuickDrawStyleState(&countText);
 
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b6c);
+    ApplyTextStyle(0, 10, 0x2b6c);
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(frameWidth - textWidth - 1),
                                             static_cast<short>(frameHeight - 3));
     DrawTextWithCachedQuickDrawStyleState(&countText);

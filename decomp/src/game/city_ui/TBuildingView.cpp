@@ -13,9 +13,8 @@ IMPLEMENT_DYNCREATE(TBuildingView, TNoHilitePicture)
 TBuildingView::~TBuildingView() {}
 
 // FUNCTION: IMPERIALISM 0x004c6f30
-void TBuildingView::ApplyCityViewSelectionPayloadAndRefreshControls(
-    TCity* city, bool isEmbeddedPage, TCityProductionView* productionView,
-    short embeddedPageIndex) {
+void TBuildingView::SetCitySelection(TCity* city, bool isEmbeddedPage,
+                                     TCityProductionView* productionView, short embeddedPageIndex) {
   this->city = city;
   this->isEmbeddedPage = isEmbeddedPage;
   this->productionView = productionView;

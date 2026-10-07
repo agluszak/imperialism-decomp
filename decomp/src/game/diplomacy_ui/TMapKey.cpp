@@ -55,7 +55,7 @@ void TMapKey::DoPostCreate(int arg) {
     CRect zeroRect(&emptyRect);
     int offsetXY[2] = {legendX[i] - baseX, static_cast<short>(legendY[i] - baseY - 0xf)};
     legendText->IDeluxeText(this, offsetXY, sizeXY, &zeroRect, &style, -2);
-    legendText->UpdateTextEntrySharedStringAndMaybeNotify(&label, false);
+    legendText->SetEntryText(&label, false);
     legendText->Show(0, 0);
     legendText->controlTag = kControlTagNam0 + i; // 'nam0'-'nam6'
     legendText->CenterVertically(false);
@@ -94,7 +94,7 @@ void TMapKey::RenderMapHintOverlayMode0() {
   COLORREF shadowStyle = 0;
   COLORREF mainStyle = 0;
 
-  InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xa, 0x2b68, 3);
+  SetTextStyleAndApply(0, 0xa, 0x2b68, 3);
   ResolveUiThemeColor(0x2b6b, &mainStyle);
   ResolveUiThemeColor(0x2b68, &shadowStyle);
 
@@ -136,7 +136,7 @@ void TMapKey::DrawTreatyPanel() {
   COLORREF shadowStyle = 0;
   COLORREF mainStyle = 0;
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b68);
+  ApplyTextStyle(0, 0xc, 0x2b68);
   ResolveUiThemeColor(0x2b6b, &mainStyle);
   ResolveUiThemeColor(0x2b68, &shadowStyle);
 
@@ -157,7 +157,7 @@ void TMapKey::DrawTreatyPanel() {
   scanBracketExpressions(g_pSimMgr, &expanded, static_cast<const char*>(label),
                          static_cast<const char*>(terrainName));
   short cy = 0x172 - baseY;
-  short width = MeasureTextExtentWithCachedQuickDrawStyle(&expanded);
+  short width = MeasureText(&expanded);
   short cx = 0x1bd - width / 2 - baseX;
   SetQuickDrawColorAndSyncGlobals(shadowStyle);
   SetQuickDrawTextOriginWithContextOffset(cx + 1, cy + 1);
@@ -184,7 +184,7 @@ void TMapKey::RenderMapHintOverlayMode1() {
   COLORREF shadowStyle = 0;
   COLORREF mainStyle = 0;
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b68);
+  ApplyTextStyle(0, 0xc, 0x2b68);
   ResolveUiThemeColor(0x2b6b, &mainStyle);
   ResolveUiThemeColor(0x2b68, &shadowStyle);
 
@@ -205,7 +205,7 @@ void TMapKey::RenderMapHintOverlayMode1() {
   scanBracketExpressions(g_pSimMgr, &expanded, static_cast<const char*>(label),
                          static_cast<const char*>(terrainName));
   short cy = 0x172 - baseY;
-  short width = MeasureTextExtentWithCachedQuickDrawStyle(&expanded);
+  short width = MeasureText(&expanded);
   short cx = 0x1bd - width / 2 - baseX;
   SetQuickDrawColorAndSyncGlobals(shadowStyle);
   SetQuickDrawTextOriginWithContextOffset(cx + 1, cy + 1);
@@ -231,7 +231,7 @@ void TMapKey::RenderMapHintOverlayMode2() {
   COLORREF shadowStyle = 0;
   COLORREF mainStyle = 0;
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b68);
+  ApplyTextStyle(0, 0xc, 0x2b68);
   ResolveUiThemeColor(0x2b6b, &mainStyle);
   ResolveUiThemeColor(0x2b68, &shadowStyle);
 
@@ -270,7 +270,7 @@ void TMapKey::RenderMapHintOverlayMode2() {
   scanBracketExpressions(g_pSimMgr, &expanded, static_cast<const char*>(label),
                          static_cast<const char*>(terrainName));
   short cy = 0x172 - baseY;
-  short width = MeasureTextExtentWithCachedQuickDrawStyle(&expanded);
+  short width = MeasureText(&expanded);
   short cx = 0x1bd - width / 2 - baseX;
   SetQuickDrawColorAndSyncGlobals(shadowStyle);
   SetQuickDrawTextOriginWithContextOffset(cx + 1, cy + 1);

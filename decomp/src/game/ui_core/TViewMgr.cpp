@@ -111,7 +111,7 @@ namespace {
 const unsigned int kAddrClassDescTViewMgr = 0x0066f0b8;
 } // namespace
 
-HCURSOR LoadTurnEventCursorByResourceIdOffset1000(short cursorResourceId);
+HCURSOR LoadTurnEventCursor(short cursorResourceId);
 
 IMPLEMENT_DYNCREATE(TViewMgr, TObject)
 
@@ -131,12 +131,12 @@ TViewMgr::~TViewMgr() {}
 // FUNCTION: IMPERIALISM 0x005d5100
 void TViewMgr::LoadTurnEventCursorTable() {
   for (int i = 0; i < 54; i++) {
-    turnEventCursors[i] = LoadTurnEventCursorByResourceIdOffset1000(i + 1000);
+    turnEventCursors[i] = LoadTurnEventCursor(i + 1000);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005d5140
-HCURSOR LoadTurnEventCursorByResourceIdOffset1000(short cursorResourceId) {
+HCURSOR LoadTurnEventCursor(short cursorResourceId) {
   CString cursorName;
   cursorName.Format(s_TurnEventCursorNameFormat, cursorResourceId);
   (void)AfxGetModuleState();
@@ -342,10 +342,10 @@ void TViewMgr::SetBackColor(short colorCode) {
 
 // FUNCTION: IMPERIALISM 0x005d57b0
 void TViewMgr::VerifyEndTurn() {
-  if (IsTurnFlowCooldownActiveAndResetExpiredState()) {
+  if (IsCooldownActive()) {
     return;
   }
-  TWindow* node = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventConfirmEndTurn);
+  TWindow* node = g_pAssetMgr->GetDialog(kTurnEventConfirmEndTurn);
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x223);
   }
@@ -459,10 +459,10 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
 
   TWindow* dialog;
   if (static_cast<short>(payloadResource) == 0) {
-    dialog = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMinisterMessage);
+    dialog = g_pAssetMgr->GetDialog(kTurnEventMinisterMessage);
   } else {
     g_pAssetMgr->OpenFilesFor(0xb);
-    dialog = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMinisterReward);
+    dialog = g_pAssetMgr->GetDialog(kTurnEventMinisterReward);
   }
   if (dialog == 0) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x2e9);
@@ -595,7 +595,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   return true;
 }
 
-static void InitializeGameSetupFromDefaultNationPolicies(GameSetup* setup) {
+static void SetDefaultGameSetup(GameSetup* setup) {
   short* destination = setup->cityMinisterPolicyIds;
   for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     destination[-7] = g_aDefaultNationSetupPolicyProfiles[nationSlot][0];
@@ -743,7 +743,7 @@ void TViewMgr::GetTopLeftFor(TView* dialogView, POINT* outPlacement) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d6b70
-void TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent() {
+void TViewMgr::RefreshNationIndicator() {
   TView* mainView = g_pDisplayMgr->activeDialog;
   if (mainView == NULL) {
     return;
@@ -772,7 +772,7 @@ short TViewMgr::GetPendingTurnOverlayCode() {
 }
 
 // FUNCTION: IMPERIALISM 0x005d6c30
-void TViewMgr::RefreshStrategicMapStatusIconsForActiveNation() {
+void TViewMgr::RefreshStatusIcons() {
   TView* mainView = g_pDisplayMgr->activeDialog;
   for (short iconIndex = 0; iconIndex <= 17; ++iconIndex) {
     TView* control = mainView->FindSubView(g_strategicMapStatusIconTagTable[iconIndex]);
@@ -900,7 +900,7 @@ bool TViewMgr::MakeDiplomacyOfferDialog(short sourceNation, short targetNation,
 // FUNCTION: IMPERIALISM 0x005d7100
 char TViewMgr::MakeWarOfferDialog(int sourceNation, int minorNationSlot, int enemyNationSlot,
                                   int promptCode) {
-  if (IsTurnFlowCooldownActiveAndResetExpiredState()) {
+  if (IsCooldownActive()) {
     return 1;
   }
   TView* activeDialog = g_pDisplayMgr->activeDialog;
@@ -923,12 +923,12 @@ static void ClearMainViewChildWindowStyle(TView* mainView) {
 
 namespace turn_event_ui_refresh {
 
-inline void BindCursorPanelAndStampDiplomacyMapTerrain(TView* mainView, short terrainIndex);
+inline void StampDiplomacyMapTerrain(TView* mainView, short terrainIndex);
 
 } // namespace turn_event_ui_refresh
 
 static void DispatchPostTurnStateUpdatesTail(TurnEventCodeStorage eventCode) {
-  if (g_pHelpMgr != NULL && !IsTurnFlowCooldownActiveAndResetExpiredState()) {
+  if (g_pHelpMgr != NULL && !IsCooldownActive()) {
     g_pHelpMgr->HandlePostDispatchTurnStateEventUpdates();
     g_pHelpMgr->CheckHelp(eventCode);
     g_pHelpMgr->HandlePostPendingEventActivationNoOp(eventCode);
@@ -986,10 +986,10 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
       switch (curCode) {
       case kTurnEventTradeOverview:
       case kTurnEventIndustryOverview:
-        RefreshStrategicMapStatusIconsForActiveNation();
+        RefreshStatusIcons();
         break;
       case kTurnEventCityProduction:
-        g_pMacViewMgr->ClearActiveCityProductionViewAndDiscardRegion();
+        g_pMacViewMgr->CloseCityView();
         break;
       case kTurnEventStrategicMap:
         mapUberPicture = 0;
@@ -1026,7 +1026,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
       QueueDeferredUiEventPacket(mainView, 0x29a, mainView);
     } else if (newCode == kTurnEventBattleReport) {
       mainView->RefreshControl();
-      turn_event_ui_refresh::BindCursorPanelAndStampDiplomacyMapTerrain(mainView, secondary);
+      turn_event_ui_refresh::StampDiplomacyMapTerrain(mainView, secondary);
     } else if (newCode == kTurnEventTechnologyStore) {
       mainView->RefreshControl();
       RefreshTechnologyStorePageAndHudText(payload);
@@ -1094,7 +1094,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
       if (newCode == kTurnEventMainMenu) {
         SetUpMainMenuScreen();
       } else if (newCode == kTurnEventBattleReport) {
-        turn_event_ui_refresh::BindCursorPanelAndStampDiplomacyMapTerrain(mainView, secondary);
+        turn_event_ui_refresh::StampDiplomacyMapTerrain(mainView, secondary);
         g_pAmbitApplication->dispatchBusyFlag = true;
         clearDispatchBusyFlag = false;
       }
@@ -1170,7 +1170,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
   } else if (newCode == kTurnEventMapEditor) {
     ConfigureMapEditorGoldValueGrid();
   } else if (newCode == kTurnEventCitySiteSelector) {
-    InitializeCitySiteSelectionScreenForNation(payload);
+    ShowCitySiteMap(payload);
   }
   if (clearDispatchBusyFlag) {
     g_pAmbitApplication->dispatchBusyFlag = false;
@@ -1307,7 +1307,7 @@ void TViewMgr::ShowDiplomacyScreen(short nationSlot) {
   SetControlHoverHelpText(CString(g_szEmptyString), diplomacyMap);
 
   if (topBar != NULL) {
-    int grantSum = g_apNationStates[nationSlot]->SumDiplomacyGrantEntriesMaskedToValueBits();
+    int grantSum = g_apNationStates[nationSlot]->GetTotalGrants();
     topBar->UpdateGrantDisplay(grantSum);
   }
 
@@ -1317,8 +1317,7 @@ void TViewMgr::ShowDiplomacyScreen(short nationSlot) {
   }
 }
 
-inline void turn_event_ui_refresh::BindCursorPanelAndStampDiplomacyMapTerrain(TView* mainView,
-                                                                              short terrainIndex) {
+inline void turn_event_ui_refresh::StampDiplomacyMapTerrain(TView* mainView, short terrainIndex) {
   TControl* cursor = static_cast<TControl*>(mainView->FindSubView(kControlTagCurs));
   g_pCursorControlPanel = static_cast<TInfoBarText*>(cursor);
   cursor->AssertValid();
@@ -1433,8 +1432,8 @@ void TViewMgr::RefreshTechnologyStorePageAndHudText(int nationSlot) {
 
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagPage);
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2730, 0xd, kControlTagEnd);
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2730, 3, kControlTagQuer);
+  SetTaggedStringAndApply(0x2730, 0xd, kControlTagEnd);
+  SetTaggedStringAndApply(0x2730, 3, kControlTagQuer);
 }
 
 // FUNCTION: IMPERIALISM 0x005d8980
@@ -1824,7 +1823,7 @@ void TViewMgr::ShowDealBookScreen(short nationSlot) {
   SetControlHoverHelpText(sharedString, mainControl);
 
   TView* queryControl = mainControl->FindSubView(kControlTagQuer);
-  LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, queryControl);
+  SetControlString(0x2730, 3, queryControl);
 
   TDropShadowText* titleControl =
       static_cast<TDropShadowText*>(mainControl->FindSubView(kControlTagTitL)); // 'titL'
@@ -2096,7 +2095,7 @@ void TViewMgr::ShowTerrainMap(short nationSlot) {
   if (mapPicture->FindSubView(kControlTagDialog) == 0) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xd17);
   }
-  mapPicture->CycleMapInteractionSelectionAfterHandledClick();
+  mapPicture->CycleSelection();
 }
 
 // FUNCTION: IMPERIALISM 0x005db3b0
@@ -2142,7 +2141,7 @@ void TViewMgr::StartPhaseMovie() {
 }
 
 // FUNCTION: IMPERIALISM 0x005db620
-void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) {
+void TViewMgr::ExitTurnState(short followupState) {
   pendingFollowupState = followupState;
   if (followupState != 0) {
     return;
@@ -2167,7 +2166,7 @@ void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) 
       return;
     }
   default:
-    ReinitializeGameFlowAndPostTurnEventCode(kTurnEventRebuildRegisteredWindows);
+    RestartGameFlow(kTurnEventRebuildRegisteredWindows);
   }
 }
 
@@ -2248,8 +2247,8 @@ void TViewMgr::ShowHighScoreScreen() {
 }
 
 // FUNCTION: IMPERIALISM 0x005dc160
-void TViewMgr::RefreshActiveGoldControlAndUiRuntimeState() {
-  g_pMacViewMgr->RefreshActiveGoldControlAndUiRuntimeState();
+void TViewMgr::RefreshGoldControl() {
+  g_pMacViewMgr->RefreshGoldControl();
 }
 
 // FUNCTION: IMPERIALISM 0x005dc180
@@ -2268,7 +2267,7 @@ void TViewMgr::GenerateMiniMap() {
 }
 
 // FUNCTION: IMPERIALISM 0x005dc1e0
-void TViewMgr::InitializeCitySiteSelectionScreenForNation(int nationSlot) {
+void TViewMgr::ShowCitySiteMap(int nationSlot) {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
 
   TToolBarCluster* toolbar =
@@ -2309,8 +2308,7 @@ void TViewMgr::ConfigureMapEditorGoldValueGrid() {
 // FUNCTION: IMPERIALISM 0x005dc430
 void TViewMgr::ShowBuildingExpansionDialog(short buildingSlotId, TCity* city,
                                            TCityProductionView* productionView) {
-  TWindow* node =
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGenericExpander);
+  TWindow* node = g_pAssetMgr->GetDialog(kTurnEventGenericExpander);
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xf50);
   }
@@ -2417,7 +2415,7 @@ void TViewMgr::MakeGameSetupDialog() {
 
   GameSetup* setup = new GameSetup;
   if (setup != 0) {
-    InitializeGameSetupFromDefaultNationPolicies(setup);
+    SetDefaultGameSetup(setup);
     dialog.SetGameSetupValues(setup);
 
     int modalResult = dialog.DoModal();
@@ -2431,8 +2429,7 @@ void TViewMgr::MakeGameSetupDialog() {
 // ORACLE: Mac MakeCheaterDialog. Reads nothing from `this`.
 // FUNCTION: IMPERIALISM 0x005de6c0
 void TViewMgr::MakeCheaterDialog(int which) {
-  TWindow* panel =
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(static_cast<TurnEventId>(15000));
+  TWindow* panel = g_pAssetMgr->GetDialog(static_cast<TurnEventId>(15000));
   if (panel == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UViewMgr.more.cpp", 0x303);
   }

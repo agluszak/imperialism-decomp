@@ -10,9 +10,7 @@ UINT g_timerSlotIds[10];
 int g_timerDispatchSuppressAssert;
 
 // FUNCTION: IMPERIALISM 0x005e0460
-void CALLBACK DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot(HWND hwnd, UINT msg,
-                                                                        UINT idEvent,
-                                                                        DWORD dwTime) {
+void CALLBACK TimerSlotProc(HWND hwnd, UINT msg, UINT idEvent, DWORD dwTime) {
   int slot = static_cast<int>(idEvent) - 0xa000;
   if (slot < 0 || slot >= 10 || g_timerSlotCallbacks[slot] == NULL) {
     if (g_timerDispatchSuppressAssert == 0) {

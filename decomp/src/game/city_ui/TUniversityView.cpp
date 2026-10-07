@@ -333,7 +333,7 @@ void TUniversityView::Draw(RECT* rectBuffer) {
 
   RECT gridRegion = {0, 0xff, 0xc8, 0x186};
   if (SectRect(&gridRegion, rectBuffer, &scratchClip)) {
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b6b);
+    ApplyTextStyle(0, 0xa, 0x2b6b);
     int row = 0;
     for (int rowBottomY = 0x12e; rowBottomY < 402; rowBottomY += 0x19, ++row) {
       CString text;

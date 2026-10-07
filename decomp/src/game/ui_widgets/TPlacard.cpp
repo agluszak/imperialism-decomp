@@ -56,7 +56,7 @@ void TPlacard::Draw(RECT* rectBuffer) {
   COLORREF textColor = 0;
   COLORREF shadowColor = 0;
   TPicture::Draw(rectBuffer);
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b6c);
+  ApplyTextStyle(0, 10, 0x2b6c);
 
   valueText.Format(g_szDecimalFormat, glyph);
 

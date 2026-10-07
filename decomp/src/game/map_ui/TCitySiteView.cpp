@@ -79,8 +79,8 @@ void TCitySiteView::DoPostCreate(int arg) {
   g_pCursorControlPanel->AssertValid();
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x273f, 9, kControlTagCanc);
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2730, 3, kControlTagQuer);
+  SetTaggedStringAndApply(0x273f, 9, kControlTagCanc);
+  SetTaggedStringAndApply(0x2730, 3, kControlTagQuer);
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagDialog);
 }
@@ -145,8 +145,7 @@ void TCitySiteView::FrameCursorArea() {
   if (previousMarker != -1 && tileMarkers[previousMarker].flag) {
     short projectedY;
     short projectedX;
-    ProjectTileIndexToWrappedScreenOffsetByScale(previousTile, &viewportOrigin, &projectedY,
-                                                 &projectedX, 1);
+    ProjectTile(previousTile, &viewportOrigin, &projectedY, &projectedX, 1);
     RECT sourceRect = {projectedX + 0x40, projectedY + 0x40, projectedX + 0x80, projectedY + 0x80};
     RECT destinationRect = {projectedX, projectedY, projectedX + 0x40, projectedY + 0x40};
     BlitRectWithOptionalTransparency(g_pCitySiteCachedPrimaryRenderSurfaceContext->GetBlitSurface(),
@@ -166,8 +165,7 @@ void TCitySiteView::FrameCursorArea() {
 
     short projectedY;
     short projectedX;
-    ProjectTileIndexToWrappedScreenOffsetByScale(oldNeighbor, &viewportOrigin, &projectedY,
-                                                 &projectedX, 1);
+    ProjectTile(oldNeighbor, &viewportOrigin, &projectedY, &projectedX, 1);
     RECT sourceRect = {projectedX + 0x40, projectedY + 0x40, projectedX + 0x80, projectedY + 0x80};
     RECT destinationRect = {projectedX, projectedY, projectedX + 0x40, projectedY + 0x40};
     BlitRectWithOptionalTransparency(g_pCitySiteCachedPrimaryRenderSurfaceContext->GetBlitSurface(),
@@ -178,8 +176,7 @@ void TCitySiteView::FrameCursorArea() {
   if (updateNeighborHighlights) {
     short projectedY;
     short projectedX;
-    ProjectTileIndexToWrappedScreenOffsetByScale(currentTile, &viewportOrigin, &projectedY,
-                                                 &projectedX, 1);
+    ProjectTile(currentTile, &viewportOrigin, &projectedY, &projectedX, 1);
     RECT currentTileRect = {projectedX, projectedY, projectedX + 0x40, projectedY + 0x40};
     QDFrameRect(&currentTileRect);
     FrameNeighbors(neighborTiles);

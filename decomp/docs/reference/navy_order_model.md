@@ -23,7 +23,7 @@ the old field names:
   argument into `orderList24`; `RejectConstituent` removes the same pointer.
   Mission serialization stores roster indices for those ships, and reads them
   back through `TShip::GetNth`.
-- `TMapOrderChildLinkNode::PruneDefeatedMapOrderChildrenAndReturnHead`
+- `TMapOrderChildLinkNode::PruneDefeatedShips`
   (`0x5526e0`) checks its payload's strength short at `TShip+0x1c`, clears the
   ship's task-force backlink, calls the ship's virtual `Free`, and then deletes
   the link. The `TShip::Sink` caller (`0x5509c0`) reaches the same chain.

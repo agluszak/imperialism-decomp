@@ -14,7 +14,7 @@ public:
   DECLARE_DYNCREATE(TScrollView)
   virtual ~TScrollView() override;
   virtual void DoPostCreate(int arg) override;
-  virtual void PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintDc) override;
+  virtual void PaintChildren(RECT* clipRect, CDC* paintDc) override;
 
   TView* contentView;        // the scrolled content view
   TScrollBarView* scrollBar; // companion scrollbar control

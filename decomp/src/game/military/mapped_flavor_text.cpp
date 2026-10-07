@@ -11,9 +11,9 @@
 #include <string.h>
 
 // FUNCTION: IMPERIALISM 0x0056d5c0
-CString BuildSharedStringFromMappedFlavorTextIndex(short variantIndex) {
+CString GetFlavorText(short variantIndex) {
   CString result;
-  GenerateMappedFlavorTextUntilValidationPasses(&result, variantIndex);
+  GenerateValidFlavorText(&result, variantIndex);
   return result;
 }
 
@@ -252,7 +252,7 @@ bool ShouldRetryMappedFlavorTextGeneration(CString* dest) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d4410
-void SetSharedStringFromMappedFlavorTextWithLengthClamp(CString* dest, short tableSlot) {
+void SetFlavorTextClamped(CString* dest, short tableSlot) {
   if (g_pSimMgr->useLocalizedNameTables != '\0') {
     CString localizedName;
     g_pSimMgr->GetString(0x2715, tableSlot, &localizedName);
@@ -261,10 +261,10 @@ void SetSharedStringFromMappedFlavorTextWithLengthClamp(CString* dest, short tab
   }
 
   short variantIndex = g_MappedFlavorTextNationVariantTable[tableSlot].variantIndex;
-  GenerateMappedFlavorTextUntilValidationPasses(dest, variantIndex);
+  GenerateValidFlavorText(dest, variantIndex);
   if (g_bMultiplayerScenarioSetupActive == '\0') {
     while (dest->GetLength() > 0xc) {
-      GenerateMappedFlavorTextUntilValidationPasses(dest, variantIndex);
+      GenerateValidFlavorText(dest, variantIndex);
     }
   }
 }
@@ -284,31 +284,28 @@ void __cdecl AssignNextProvinceNameForNationSlot(CString* dest, short nationSlot
     return;
   }
 
-  GenerateMappedFlavorTextUntilValidationPasses(
-      dest, g_MappedFlavorTextNationVariantTable[nationSlot].variantIndex);
+  GenerateValidFlavorText(dest, g_MappedFlavorTextNationVariantTable[nationSlot].variantIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x005d46b0
 void GenerateMappedFlavorTextByTableSlot(CString* dest, short tableSlot) {
-  GenerateMappedFlavorTextUntilValidationPasses(
-      dest, g_MappedFlavorTextNationVariantTable[tableSlot].variantIndex);
+  GenerateValidFlavorText(dest, g_MappedFlavorTextNationVariantTable[tableSlot].variantIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x005d46e0
-void GenerateMappedFlavorTextByCurrentContextNation(CString* dest) {
+void GenerateFlavorTextForNation(CString* dest) {
   short nationIndex =
       (g_pLanguageMgr == 0) ? 2 : static_cast<short>(g_pLanguageMgr->flavorTextNationIndex);
-  GenerateMappedFlavorTextUntilValidationPasses(
-      dest, g_MappedFlavorTextNationVariantTable[nationIndex].variantIndex);
+  GenerateValidFlavorText(dest, g_MappedFlavorTextNationVariantTable[nationIndex].variantIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x005d4720
-void GenerateMappedFlavorTextUntilValidationPasses(CString* dest, short variantIndex) {
+void GenerateValidFlavorText(CString* dest, short variantIndex) {
   bool retry;
   do {
     switch (static_cast<int>(variantIndex) % 18) {
     case 0:
-      AppendRandomMapContextStatusSuffixWithProbability(dest);
+      MaybeAppendStatusSuffix(dest);
       break;
     case 1:
       GenerateMappedFlavorTextVariantC(dest);

@@ -38,7 +38,7 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-void ComposeAndDispatchTurnSummaryLocalizedMessage();
+void ShowTurnSummary();
 
 IMPLEMENT_DYNCREATE(TMapUberPicture, TMapUberUberPicture)
 
@@ -91,7 +91,7 @@ void TMapUberPicture::DoPostCreate(int arg) {
     sendControl->AssertValid();
     sendControl->ViewEnable(1, 0);
     sendControl->Show(1, 0);
-    LoadUiStringByGroupAndIndexToControlObject(0x2742, 0xe, sendControl);
+    SetControlString(0x2742, 0xe, sendControl);
   }
 }
 
@@ -163,7 +163,7 @@ void TMapUberPicture::SetMapInteractionMode(short nMode) {
 }
 
 // FUNCTION: IMPERIALISM 0x00597020
-void ComposeAndDispatchTurnSummaryLocalizedMessage() {
+void ShowTurnSummary() {
   CString summary;
   CString tempMsg;
 
@@ -201,11 +201,11 @@ void TMapUberPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
     bool ctrlHeld = (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0;
     unsigned int tag = sourceHandler->controlTag;
     if (ctrlHeld && (tag == kControlTagZmIn || tag == kControlTagZmOt)) {
-      ComposeAndDispatchTurnSummaryLocalizedMessage();
+      ShowTurnSummary();
       return;
     }
     if (tag == kControlTagZmOt) {
-      CommitPendingUiModeChangeAndRefreshViews(static_cast<TView*>(sourceHandler));
+      CommitModeChange(static_cast<TView*>(sourceHandler));
       return;
     } else if (tag == kControlTagZmIn) {
       EnterMapInteractionOverlayMode(static_cast<TView*>(sourceHandler));
@@ -216,7 +216,7 @@ void TMapUberPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
         g_pSimMgr->GetString(0x2742, 0x25, &msg);
         g_pViewMgr->ModalMessage(msg, g_ptMapModeModalMessage, 0, 0);
       } else {
-        ReinitializeGameFlowAndPostTurnEventCode(kTurnEventRandomGameSetup);
+        RestartGameFlow(kTurnEventRandomGameSetup);
       }
       return;
     } else if (tag == kControlTagSend) {
@@ -285,7 +285,7 @@ void TMapUberPicture::DoKeyEvent(TToolboxEvent* event) {
 // FUNCTION: IMPERIALISM 0x005977a0
 void TMapUberPicture::Scroll(MapScrollEdgeMaskStorage edgeMask) {
   if (invalidationFlag) {
-    subview2A8->UpdateMapInteractionPreviewParityAndRenderTransientSprites(edgeMask);
+    subview2A8->ScrollMapPreview(edgeMask);
   } else {
     goodGoldTagControl->ApplyDirectionalNudgeAndRefreshDisplay(
         static_cast<unsigned char>(edgeMask));
@@ -298,7 +298,7 @@ void TMapUberPicture::Scroll(MapScrollEdgeMaskStorage edgeMask) {
 // FUNCTION: IMPERIALISM 0x00597810
 void TMapUberPicture::FocusOnForce(TTaskForce* pMapOrderEntry) {
   SetMapInteractionMode(2);
-  ResetMapActionContextActivityAndNationFlags();
+  ResetZoneActivity();
 
   if (pMapOrderEntry == NULL) {
     for (int i = 0; i < 4; ++i) {
@@ -356,7 +356,7 @@ bool TMapUberPicture::IsAUnitSelected() {
 }
 
 // FUNCTION: IMPERIALISM 0x00597a80
-void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
+void TMapUberPicture::CycleSelection() {
   unsigned char modeCursor = static_cast<unsigned char>(activeUnitCategoryIndex);
   unsigned char visitedModes = 0;
   bool selectionResolved = false;
@@ -476,8 +476,7 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
   InitializeUiTextStyleDescriptor(&attributionStyle, 2, 10, 0x2b67, 3);
 
   // ORACLE: Mac MapView.rsrc:9474, event 0x2502, "Friendly Fleet Report".
-  TWindow* dialog =
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFriendlyFleetReport);
+  TWindow* dialog = g_pAssetMgr->GetDialog(kTurnEventFriendlyFleetReport);
   if (dialog == 0) {
     FailNilPointerWithAssert(s_SourcePathUSuperMap, 0x728);
   }
@@ -662,8 +661,7 @@ void TMapUberPicture::ArmyCheatClick(short provinceIndex) {
   hiliteColor.rgbReserved = 0;
   g_pDisplayMgr->SetHiliteColor(&hiliteColor);
 
-  TWindow* dialog =
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(static_cast<TurnEventId>(0x24f4));
+  TWindow* dialog = g_pAssetMgr->GetDialog(static_cast<TurnEventId>(0x24f4));
   if (dialog == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\USuperMap.cpp", 0x846);
   }
@@ -706,7 +704,7 @@ void TMapUberPicture::CivilianCheatClick(int orderContext) {
 }
 
 // FUNCTION: IMPERIALISM 0x00598e10
-void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* portZone) {
+void TMapUberPicture::NavyCheatClick(TZone* portZone) {
   if (portZone == 0) {
     FailNilPointerWithAssert(s_SourcePathUSuperMap, 0x8bf);
   }
@@ -714,7 +712,7 @@ void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* po
   RGBQUAD highlightColor = {0xff, 0xff, 0xff, 0};
   g_pDisplayMgr->SetHiliteColor(&highlightColor);
 
-  TWindow* dialog = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNavyMaker);
+  TWindow* dialog = g_pAssetMgr->GetDialog(kTurnEventNavyMaker);
   if (dialog == 0) {
     FailNilPointerWithAssert(s_SourcePathUSuperMap, 0x8cc);
   }
@@ -744,7 +742,7 @@ void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* po
       short count = countControl->UpdateControlCachedIntFromWindowText();
       if (count != 0) {
         while (count > 0) {
-          CreateNavyPrimaryOrderNodeAndAssignDisplayName(index, portZone, ownerNation, 0);
+          CreateAdmiral(index, portZone, ownerNation, 0);
           --count;
         }
         createdOrders = true;
@@ -789,8 +787,7 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
   InitializeUiTextStyleDescriptor(&attributionStyle, 2, 10, 0x2b67, 3);
 
   // ORACLE: Mac MapView.rsrc:9475, event 0x2503, "Enemy Fleet Report".
-  TWindow* dialog =
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventEnemyFleetReport);
+  TWindow* dialog = g_pAssetMgr->GetDialog(kTurnEventEnemyFleetReport);
   if (dialog == 0) {
     FailNilPointerWithAssert(s_SourcePathUSuperMap, 0x923);
   }
@@ -991,7 +988,7 @@ void TMapUberPicture::EnterMapInteractionOverlayMode(TView* controlOverride) {
 }
 
 // FUNCTION: IMPERIALISM 0x00599b90
-void TMapUberPicture::CommitPendingUiModeChangeAndRefreshViews(TView* controlOverride) {
+void TMapUberPicture::CommitModeChange(TView* controlOverride) {
   if (invalidationFlag) {
     g_pUiAnimator->FreeAllAnis();
     TView* zoomControl = (controlOverride != NULL) ? controlOverride : FindSubView(kControlTagZmOt);
@@ -1054,7 +1051,7 @@ void TMapUberPicture::DisplayMiniMap() {
     miniMapView->RefreshControl();
   }
 
-  SetTradeToolSubcontrolEnabledStateByFlag(false);
+  EnableTradeTools(false);
 }
 
 // FUNCTION: IMPERIALISM 0x00599fa0
@@ -1097,11 +1094,11 @@ void TMapUberPicture::RemoveMiniMap() {
   }
   miniMapButton->SetPictureRsrcID(0x41a, true);
   miniMapButton->controlTag = kControlTagMmap; // 'mmap'
-  SetTradeToolSubcontrolEnabledStateByFlag(true);
+  EnableTradeTools(true);
 }
 
 // FUNCTION: IMPERIALISM 0x0059a180
-void TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState) {
+void TMapUberPicture::EnableTradeTools(bool enabledState) {
   TView* toolControl = FindSubView(kControlTagTool); // "tool"
   if (toolControl == NULL) {
     FailNilPointerWithAssert(s_SourcePathUSuperMap, 0xac7);

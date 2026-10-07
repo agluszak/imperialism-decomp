@@ -16,8 +16,7 @@ public:
 
   TNumberedArrowButton();
   DECLARE_DYNCREATE(TNumberedArrowButton)
-  void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* cursorPoint,
-                                                           RgnHandle hitArg) override;
+  void AdjustCursor(CPoint* cursorPoint, RgnHandle hitArg) override;
   void Draw(RECT* rectBuffer) override;
   void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint, CPoint& currentPoint,
                   bool commandFlag) override;

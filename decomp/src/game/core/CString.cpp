@@ -140,7 +140,7 @@
 // CString::Format (LPCTSTR, ...) — AFX_CDECL member; va_start + FormatV
 
 // FUNCTION: IMPERIALISM 0x0057fa30
-void __stdcall FormatNonnegativeFloatToLocalizedSharedString(float value, CString* outResult) {
+void __stdcall FormatFloat(float value, CString* outResult) {
   CString thousandsSep(",");
   CString decimalPoint(".");
 

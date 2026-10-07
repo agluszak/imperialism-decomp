@@ -26,15 +26,13 @@ struct StrategicMapCallbackRecord {
   void AppendPackedColorDword(unsigned char* destinationPixels, int packedColor);
   void StreamOverlayHitMaskToSurfaceDib(DiplomacyMaskBufferRun* run,
                                         TQuickDrawSurfaceContext* surface, int outlineOnly);
-  void BuildDiplomacyOverlayHitMaskOpcodeStream(DiplomacyMaskBufferRun* run,
-                                                int destinationRowStride, int outlineOnly,
-                                                int surfaceHeight);
+  void BuildOverlayHitMask(DiplomacyMaskBufferRun* run, int destinationRowStride, int outlineOnly,
+                           int surfaceHeight);
   StrategicMapCallbackRecord* AppendOpcodeByte(int value); // returns this (original mov eax,esi)
   void AppendOpcodeBytePair(int value);
   void FinalizeOpcodeBufferAlignment();
-  void BuildBitmapMaskOpcodeBufferFromResourceRows(int resourceId, short width, short height,
-                                                   int destinationRowStride,
-                                                   unsigned char transparentPixel);
+  void BuildMaskOpcodes(int resourceId, short width, short height, int destinationRowStride,
+                        unsigned char transparentPixel);
   void ApplyBitmapMaskToPixelBuffer(unsigned char* destinationPixels);
   void SetDestinationHeightNoOp(int unusedHeight);
 

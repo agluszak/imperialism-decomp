@@ -28,7 +28,7 @@ public:
   BOOL LoadLanguageResourcesFromIrgFiles();
   void HandleStartupCommand100();
   void PostStartupCommand100();
-  LPCTSTR DetectImperialismInstallDriveAndSetPathPrefix();
+  LPCTSTR FindInstallDrive();
   void RestoreWaitCursorIfStartupBusy();
 
   // Developer UI commands recovered from the ImperialismApp message map.
@@ -66,8 +66,8 @@ int __cdecl ShowOutOfMemoryErrorNewHandler(size_t allocationSize);
 
 HKEY OpenOrCreateCompanyProductRegistryKey(LPCSTR company, LPCSTR product);
 
-CString ReadOrCreateRegistryStringValueWithFallback(LPCSTR company, LPCSTR product, LPCSTR section,
-                                                    LPCSTR valueName, LPCSTR defaultValue);
+CString ReadRegistryString(LPCSTR company, LPCSTR product, LPCSTR section, LPCSTR valueName,
+                           LPCSTR defaultValue);
 
 CIncludeView* GetMainViewHostFromActiveThread();
 

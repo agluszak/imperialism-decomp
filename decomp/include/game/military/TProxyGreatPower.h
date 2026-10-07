@@ -25,7 +25,7 @@ public:
   int ConsiderWarOfIntervention(int targetNation, int sourceNation) override;
   int ConsiderWarOfAlliance(int targetNation, int sourceNation, char swapRoles) override;
   virtual void SorryYouLose() override;
-  virtual bool UpdateGreatPowerPressureStateAndDispatchEscalationMessage() override;
+  virtual bool CheckBankruptcy() override;
 
   TProxyGreatPower() : TGreatPower() {}
 };

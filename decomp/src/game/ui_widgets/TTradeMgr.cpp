@@ -132,7 +132,7 @@ void TTradeMgr::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b7fc0
-void TTradeMgr::ResetNationMetricRowsAndClearCategoryRankLists() {
+void TTradeMgr::ResetTradeRows() {
   int i;
   for (i = 0; i < 17; ++i) {
     NationMetricCategoryRow* row = &categoryRows[i];
@@ -777,7 +777,7 @@ void TTradeMgr::TallyTradeBids() {
   TGreatPower** np = g_apNationStates;
   do {
     if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nation))) {
-      (*np)->AssignFallbackNationsToUnfilledDiplomacyNeedSlots();
+      (*np)->FillTradePartners();
     }
     ++nation;
     ++np;

@@ -41,7 +41,7 @@ void FillClipRegionWithForegroundBrush(RgnHandle rgn);
 // Fill the region's interior with the current QuickDraw foreground color
 void QDPaintRgn(RgnHandle rgn);
 // Intersect the clip region with `rect` (RGN_AND) and refresh its bounding box
-void IntersectClipRegionWithRectAndUpdateBounds(RgnHandle clipRgn, RECT* rect);
+void ClipRegionToRect(RgnHandle clipRgn, RECT* rect);
 void SetRectRgn(RgnHandle rgn, short left, short top, short right, short bottom);
 bool EqualRgn(RgnHandle first, RgnHandle second);
 void CopyRgn(RgnHandle src, RgnHandle dst);

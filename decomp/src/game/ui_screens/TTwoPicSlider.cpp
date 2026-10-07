@@ -28,8 +28,8 @@ TTwoPicSlider::~TTwoPicSlider() {}
 
 // FUNCTION: IMPERIALISM 0x0056e200
 void TTwoPicSlider::SetPicture(int baseBitmapId) {
-  lowerSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(baseBitmapId + 1);
-  upperSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(baseBitmapId);
+  lowerSurface = LoadBitmapSurface(baseBitmapId + 1);
+  upperSurface = LoadBitmapSurface(baseBitmapId);
   RECT bounds = {0, 0, frameWidth, frameHeight};
   g_pDisplayMgr->MakeNewGWorld(compositeSurface, 8, bounds);
 }
@@ -116,12 +116,12 @@ void TTwoPicSlider::Draw(RECT* rectBuffer) {
       COLORREF textMainColor = 0;
 
       g_pSimMgr->GetString(0x2743, 0x3b, &statusText);
-      ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b6c);
+      ApplyTextStyle(0, 0xe, 0x2b6c);
       ResolveUiThemeColor(0x2b6c, &textShadowColor);
       ResolveUiThemeColor(0x2b67, &textMainColor);
 
       short textCenterY = slider->frameHeight / 2;
-      short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&statusText);
+      short textWidth = MeasureText(&statusText);
       short textLeft = (slider->frameWidth / 2) - (textWidth / 2);
 
       SetQuickDrawColorAndSyncGlobals(textMainColor);

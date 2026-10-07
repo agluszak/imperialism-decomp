@@ -22,8 +22,8 @@ public:
   CPoint currentPoint;       // 0x10 latest tracked point
   TControl* capturedControl; // 0x18 the control owning the capture; null when inactive
 
-  void BeginMouseCaptureForControlAndStartRepeatTimer(CPoint* point, TControl* control);
-  void NotifyCaptureOwnerState1AndMaybeUpdateCoords(unsigned int nFlags, int x, int y);
+  void BeginTracking(CPoint* point, TControl* control);
+  void NotifyTracking(unsigned int nFlags, int x, int y);
   void EndMouseCaptureAndStopRepeatTimer(unsigned int nFlags, int x, int y);
 
   void CopyCurrentPointTo(CPoint* out);
@@ -31,5 +31,4 @@ public:
 
 ASSERT_SIZE(TMouseCaptureState, 0x1c);
 
-VOID CALLBACK NotifyGlobalCaptureOwnerState1WithCachedCoords(HWND hwnd, UINT message, UINT timerId,
-                                                             DWORD tickCount);
+VOID CALLBACK NotifyCaptureOwner(HWND hwnd, UINT message, UINT timerId, DWORD tickCount);

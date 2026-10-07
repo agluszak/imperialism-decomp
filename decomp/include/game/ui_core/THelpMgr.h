@@ -43,13 +43,13 @@ public:
 
   void HandlePostDispatchTurnStateEventUpdates();
 
-  short DispatchTurnStateSpecialAdvisoriesAndReturnCount();
+  short CheckOtherTurnStartWarnings();
 
   void ShowPeriodicCapabilityReminderIfNeeded();
 
   void CheckUnitAdvice(TCivUnit* civilianOrderEntry);
 
-  bool ShowPeriodicNationComparisonAdvisoryIfNeeded();
+  bool CheckDireTurnStartWarnings();
   bool CheckHelp(TurnEventCodeStorage eventCode);
   void HandlePostPendingEventActivationNoOp(TurnEventCodeStorage eventCode);
   void ShowHelpSet(HelpSetRecord* pendingEntry);
@@ -57,7 +57,7 @@ public:
   char GetHelpSetRecordFlagByResourceBase(short helpResourceBaseId);
   bool NeedAdvice(unsigned int index);
   void ShowLatestHelp();
-  void SelectAndActivatePendingEventTypeOffsetFrom1A0B(int idx);
+  void ShowPendingHelpFrom(int idx);
   void SelectAndActivatePendingEventType1A0A();
   void OpenTerrainHelpWindow(int mapContextIndex);
 

@@ -178,8 +178,7 @@ void TShipOrder::LaunchShip() {
   while (quantity != 0) {
     const int nationSlot = city->ownerNation->nationSlot;
     TZone* portZone = g_pActiveMapOrderContext->FindPortZoneBySelectedTile(city);
-    CreateNavyPrimaryOrderNodeAndAssignDisplayName(this->resourceTypeIndex, portZone, nationSlot,
-                                                   0);
+    CreateAdmiral(this->resourceTypeIndex, portZone, nationSlot, 0);
     quantity = this->quantity;
     this->quantity = static_cast<short>(quantity - 1);
   }

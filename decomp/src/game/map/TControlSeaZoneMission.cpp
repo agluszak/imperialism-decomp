@@ -89,17 +89,10 @@ void TControlSeaZoneMission::SetStateByte8To2() {
 
       short normalizationBase = ship->GetMaxStrength();
       float scale = static_cast<float>(ship->strength / normalizationBase);
-      vector[0] +=
-          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
-          scale;
-      vector[1] +=
-          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1)) *
-          scale;
-      vector[2] +=
-          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2)) *
-          scale;
-      vector[3] +=
-          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3));
+      vector[0] += static_cast<float>(ship->GetCategoryPercent(0)) * scale;
+      vector[1] += static_cast<float>(ship->GetCategoryPercent(1)) * scale;
+      vector[2] += static_cast<float>(ship->GetCategoryPercent(2)) * scale;
+      vector[3] += static_cast<float>(ship->GetCategoryPercent(3));
     }
 
     float total = vector[0] + vector[1] + vector[2] + vector[3];

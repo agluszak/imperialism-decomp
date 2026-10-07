@@ -509,14 +509,14 @@ void TView::PaintOrInvalidateControl(CDC* paintDc) {
   if (paintDc != 0) {
     CRect rect;
     GetExtent(&rect);
-    PaintVisibleChildrenIntersectingClipRect(&rect, paintDc);
+    PaintChildren(&rect, paintDc);
     return;
   }
   InvalidateCityDialogRectRegion(0, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0048b8d0
-void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintDc) {
+void TView::PaintChildren(RECT* clipRect, CDC* paintDc) {
   if (g_McAppUiActiveFlag == 0 || !IsActionable() || !PrepareForDrawing()) {
     return;
   }
@@ -544,7 +544,7 @@ void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintD
       OffsetRect(&childClip, -child->ownerLocalX, -child->ownerLocalY);
       RECT childPaintRect;
       CopyRect(&childPaintRect, &childClip);
-      child->PaintVisibleChildrenIntersectingClipRect(&childPaintRect, paintDc);
+      child->PaintChildren(&childPaintRect, paintDc);
     }
   }
 }
@@ -715,7 +715,7 @@ bool TView::HasRenderableParentAndContent() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048c080
-void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, RgnHandle hitArg) {
+void TView::AdjustCursor(CPoint* point, RgnHandle hitArg) {
   if (HasRenderableParentAndContent()) {
     if (childList != 0) {
       POSITION pos = childList->GetHeadPosition();
@@ -726,7 +726,7 @@ void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, R
         child->SuperToLocal(&childPoint);
         if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
             child->EvaluateControlInputGate()) {
-          child->HandleCursorHoverSelectionByChildHitTestAndFallback(&childPoint, hitArg);
+          child->AdjustCursor(&childPoint, hitArg);
           return;
         }
       }

@@ -50,10 +50,10 @@ void TTradeSchoolView::DoStartup() {
     }
   }
 
-  LoadUiStringByGroupAndIndexToControlObject(0x2738, 0x1f,
-                                             FindSubView(kControlTagEqu4)); // 'equ4'
-  LoadUiStringByGroupAndIndexToControlObject(0x2738, 0x20,
-                                             FindSubView(kControlTagEqu5)); // 'equ5'
+  SetControlString(0x2738, 0x1f,
+                   FindSubView(kControlTagEqu4)); // 'equ4'
+  SetControlString(0x2738, 0x20,
+                   FindSubView(kControlTagEqu5)); // 'equ5'
 
   TextStyle valueStyle;
   BuildUiTextStyleDescriptor(&valueStyle, 0, 9, 0x2b69);

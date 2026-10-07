@@ -21,7 +21,7 @@ void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
   TMapMgr::GetNeighborTileIDArray(tileId, neighborTiles,
                                   g_pGlobalMapState->hexNeighborWrapHorizontally);
   int screenXY[2];
-  ComputeWrappedIsometricScreenOffsetFromTile(tileId, screenXY, 0x10, 0, 0);
+  GetTileScreenOffset(tileId, screenXY, 0x10, 0, 0);
   int baseX = static_cast<short>(
       0x31 - static_cast<int>(static_cast<float>(static_cast<short>(screenXY[0])) *
                               g_HexHighlightScreenScale));
@@ -94,7 +94,7 @@ void DrawHexNeighborBorderGuidePathForTile(short tileId, int compareValue, short
   TMapMgr::GetNeighborTileIDArray(tileId, neighborTiles,
                                   g_pGlobalMapState->hexNeighborWrapHorizontally);
   int screenXY[2];
-  ComputeWrappedIsometricScreenOffsetFromTile(tileId, screenXY, 0x10, 0, 0);
+  GetTileScreenOffset(tileId, screenXY, 0x10, 0, 0);
 
   int x0;
   int y0;
@@ -386,8 +386,8 @@ int __stdcall GetActiveMapOrderEntryActionCode(short nTileIndex, int dwInputFlag
 }
 
 // FUNCTION: IMPERIALISM 0x00565d20
-void ComputeWrappedIsometricScreenOffsetFromTile(int tileIndex, int* outScreenXY, int tileScale,
-                                                 short originCol, short originRow) {
+void GetTileScreenOffset(int tileIndex, int* outScreenXY, int tileScale, short originCol,
+                         short originRow) {
   int row = tileIndex / kStrategicMapColumns;
   outScreenXY[1] = row;
   int halfTileXOffset = (row & 1) == 0 ? tileScale / 2 : 0;

@@ -12,7 +12,7 @@ class TCivMgr : public TObject {
 public:
   DECLARE_DYNCREATE(TCivMgr)
   virtual ~TCivMgr() override;
-  virtual bool HandleCivilianTileSelectionOrReportClick(short nTileIndex, short nClickMode);
+  virtual bool CivilianTileClick(short nTileIndex, short nClickMode);
   virtual bool HandleCivilianTileOrderAction(short nTileIndex, short nInputHint);
   virtual void MoveAndRedrawUnit(short nNewTileIndex, class TCivUnit* pCivOrderEntry);
   virtual void SetDimming(class TCivUnit* pUnitOrderEntry);
@@ -40,10 +40,9 @@ public:
   CivilianTileActionCodeStorage ResolveCivilianTileOrderActionCode(short nTileIndex,
                                                                    short nInputHint);
 
-  unsigned short LookupCivilianTileOrderCursorTokenByActionIndex(short nTileIndex,
-                                                                 short nInputHint);
+  unsigned short GetCivilianTileCursor(short nTileIndex, short nInputHint);
 
-  unsigned short ResolveCivilianTileSelectionOrReportActionCode(short nTileIndex, short nClickMode);
+  unsigned short GetCivilianTileAction(short nTileIndex, short nClickMode);
   CivilianTileActionCodeStorage GetTileAction(short tileIndex, short mode);
 
   bool TryQueueCivilianMoveOrderToTile(short nTileIndex);

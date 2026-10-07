@@ -54,7 +54,7 @@ public:
   virtual void FormStacks();
   // Moves or fights each pending stack from nextStackOrdinal until a battle view opens.
   virtual void ResolveNextMove();
-  virtual void ClearPendingStacksAndFinalizeMilitaryUnits();
+  virtual void FinishArmyMoves();
   // Splits the stack into our and enemy units; relocates peacefully or opens a battle.
   virtual bool ResolveConflict(TArmyStack* stack, short ownerNationCode);
   // Retreats the stack's movable units to a random adjacent friendly region.
@@ -127,15 +127,13 @@ public:
 
   // ABI: thiscall on the singleton; the bodies ignore `this`.
   unsigned short LookupMapCursorTokenByStateIndex(short tileIndex, short mode);
-  unsigned short LookupCivilianMapCursorTokenByStateIndex(short tileIndex, short mode);
+  unsigned short GetCivilianCursor(short tileIndex, short mode);
 
   // Civilian counterpart of ComputeMapCursorStateIndex.
   int GetTileSelection(short tileIndex, short mode);
-  bool ValidateOrderPlacementPrerequisitesForSelectedTile(short cityRecordIndex);
+  bool CanOrderToTile(short cityRecordIndex);
   void MarchSelectedArmies(short tileIndex);
-  void CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourStack,
-                                                        TArmyStack* enemyStack,
-                                                        int ownerNationCodeInt);
+  void StartTacticalBattle(TArmyStack* ourStack, TArmyStack* enemyStack, int ownerNationCodeInt);
   void ShowSpyReport(int cityRecordIndex);
 
   bool GenerateSpyReport(int cityRecordIndex, CString& outDefenderSummary,

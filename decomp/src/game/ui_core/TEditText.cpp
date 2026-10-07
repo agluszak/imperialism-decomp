@@ -117,7 +117,7 @@ CWnd* TEditText::Open() {
     editWindow->CWnd::Create("EDIT", 0, editStyle, *GetQDExtent(&editBounds), nativeWindow,
                              static_cast<UINT>(controlTag));
 
-    editFont = CreateFontFromPresetAndAttachRegionHandle(&textStyle);
+    editFont = CreatePresetFont(&textStyle);
     ::SendMessageA(editWindow->m_hWnd, WM_SETFONT,
                    reinterpret_cast<DWORD>(editFont != 0 ? editFont->m_hObject : 0), 0);
     if (text != 0 && text->GetLength() != 0) {

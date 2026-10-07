@@ -19,7 +19,7 @@ void TArmyBoyView::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws
   short level = battleDetail->stockOrRequired;
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0);
+  ApplyTextStyle(0, 0xc, 0);
   SetQuickDrawColorAndSyncGlobals(0x1c474b);
   SetQuickDrawTextOriginWithContextOffset(0x40, 0x17);
   CString nameString(battleDetail->nameBuffer);
@@ -36,10 +36,10 @@ void TArmyBoyView::Draw(RECT* rectBuffer) {
   RECT dstRect = {0x43, 0x1f, barLength * 4 + 0x42, 0x26};
 
   if (level < 1) {
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(1, 0xc, 0x2b67);
+    ApplyTextStyle(1, 0xc, 0x2b67);
     CString trainingText;
     g_pSimMgr->GetString(0x273c, (level == -86) ? 0x20 : 0x1f, &trainingText);
-    short trainingWidth = MeasureTextExtentWithCachedQuickDrawStyle(&trainingText);
+    short trainingWidth = MeasureText(&trainingText);
     SetQuickDrawTextOriginWithContextOffset(0x6a - trainingWidth / 2, 0x26);
     DrawTextWithCachedQuickDrawStyleState(&trainingText);
   } else {

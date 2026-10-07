@@ -303,7 +303,7 @@ void TResourceMgr::ReleaseRecordByHandle(void* handle) {
 }
 
 // FUNCTION: IMPERIALISM 0x0049a590
-CString TResourceMgr::LoadLocalizedStringByPackedGroupAndIndex(unsigned int packedGroupAndIndex) {
+CString TResourceMgr::LoadPackedString(unsigned int packedGroupAndIndex) {
   CString result;
   char* buffer = result.GetBuffer(0x100);
   int group = packedGroupAndIndex >> 8;
@@ -334,7 +334,7 @@ CString TResourceMgr::LoadLocalizedStringByGroupAndIndex(int group, int index) {
 CString* renderTemplateOrExpandTokens(TResourceMgr* cache, CString* out, unsigned int templateId,
                                       ...) {
   CString result;
-  CString templateText = cache->LoadLocalizedStringByPackedGroupAndIndex(templateId);
+  CString templateText = cache->LoadPackedString(templateId);
   char* t = (char*)(LPCSTR)templateText;
   int i = 0;
   char c;
@@ -346,7 +346,7 @@ CString* renderTemplateOrExpandTokens(TResourceMgr* cache, CString* out, unsigne
           int d = t[i + 1];
           i++;
           if (isdigit(d)) {
-            result += cache->LoadLocalizedStringByPackedGroupAndIndex((&templateId)[t[i] - '0']);
+            result += cache->LoadPackedString((&templateId)[t[i] - '0']);
             break;
           }
           c = t[i];

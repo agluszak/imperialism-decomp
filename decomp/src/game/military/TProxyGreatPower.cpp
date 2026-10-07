@@ -25,7 +25,7 @@ void TProxyGreatPower::ReplyToDiplomacyOffers() {
 }
 
 // FUNCTION: IMPERIALISM 0x00540920
-bool TProxyGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage() {
+bool TProxyGreatPower::CheckBankruptcy() {
   return false;
 }
 

@@ -61,7 +61,7 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
   COLORREF foregroundColor = 0;
   selectedNation = diplomacyMapView->frameRegionSelector;
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b68);
+  ApplyTextStyle(0, 0xe, 0x2b68);
   ResolveUiThemeColor(0x2b6b, &shadowColor);
   ResolveUiThemeColor(0x2b68, &foregroundColor);
 
@@ -75,7 +75,7 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(baseX, baseY);
   DrawTextWithCachedQuickDrawStyleState(&text);
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b68);
+  ApplyTextStyle(0, 0xc, 0x2b68);
   g_pSimMgr->GetString(0x2733, 1, &text); // "Provinces:"
   short labelY = g_infoPanelLabelYByRow[0] - ownerY;
   short labelX = g_infoPanelLabelXByRow[0] - ownerX;
@@ -124,7 +124,7 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
     }
   }
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b68);
+  ApplyTextStyle(0, 0xe, 0x2b68);
   TCountry* selectedCountry = g_apTerrainTypeDescriptorTable[selectedNation];
   selectedCountry->GetName(&text);
   short valueX = 0xa7 - ownerX;
@@ -135,7 +135,7 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(valueX, baseY);
   DrawTextWithCachedQuickDrawStyleState(&text);
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b68);
+  ApplyTextStyle(0, 0xc, 0x2b68);
   if (selectedCountry->encodedNationSlot >= 200) {
     short ownerNation = selectedCountry->DecodeOwnerNationSlot();
     g_apTerrainTypeDescriptorTable[ownerNation]->FormatOverlayTerrainLabelText(&ownerName);
@@ -174,8 +174,7 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
   DrawTextWithCachedQuickDrawStyleState(&text);
 
   if (selectedNation < kMajorNationCount) {
-    int militaryTier = static_cast<TGreatPower*>(selectedCountry)
-                           ->ClassifyNationMilitaryPowerBandAgainstGlobalMean();
+    int militaryTier = static_cast<TGreatPower*>(selectedCountry)->GetMilitaryRank();
     g_pSimMgr->GetString(0x2733, static_cast<short>(militaryTier + 0x19), &text);
     labelY = static_cast<short>(g_infoPanelLabelYByRow[1] - ownerY);
     SetQuickDrawColorAndSyncGlobals(foregroundColor);
@@ -230,7 +229,7 @@ void TInfoPanelView::Setup() {
 
   TControl* mapKey = static_cast<TControl*>(FindSubView(kControlTagMkey)); // 'mkey'
   mapKey->AssertValid();
-  mapKey->SetDiplomacyNationSelectionFilterAndRefreshRows(0);
+  mapKey->SetNationFilter(0);
 }
 
 // FUNCTION: IMPERIALISM 0x004fad60
@@ -242,7 +241,7 @@ void TInfoPanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
     this->selectedOverlayMode = selectedOverlayMode;
     TControl* mkey = static_cast<TControl*>(FindSubView(kControlTagMkey));
     mkey->AssertValid();
-    mkey->SetDiplomacyNationSelectionFilterAndRefreshRows(selectedOverlayMode);
+    mkey->SetNationFilter(selectedOverlayMode);
   }
   TEventHandler::DoEvent(commandId, sourceHandler, event);
 }

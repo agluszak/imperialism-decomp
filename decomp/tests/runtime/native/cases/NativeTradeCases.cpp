@@ -207,7 +207,7 @@ RuntimeActionResult RunTradeCapacityRefresh(NativeTransition& transition) {
     return started;
   }
 
-  nation->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
+  nation->ComputeAidBudget();
   return transition.Finish();
 }
 
@@ -491,7 +491,7 @@ void ExecuteDoTradeWithoutPhaseAdvance() {
     }
   }
 
-  g_pTradeMgr->ResetNationMetricRowsAndClearCategoryRankLists();
+  g_pTradeMgr->ResetTradeRows();
   g_pTradeMgr->StartTradePhase();
   g_pTradeMgr->SetMinorsTradeBids();
   g_pTradeMgr->TallyTradeBids();

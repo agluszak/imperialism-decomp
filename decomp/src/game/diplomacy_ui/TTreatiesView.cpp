@@ -40,7 +40,7 @@ void TTreatiesView::Draw(RECT* rectBuffer) {
   CString labelText;
   CString unusedScratch;
 
-  InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xe, 0x2b68, 1);
+  SetTextStyleAndApply(0, 0xe, 0x2b68, 1);
 
   COLORREF styleShadow = 0;
   COLORREF styleForeground = 0;
@@ -58,7 +58,7 @@ void TTreatiesView::Draw(RECT* rectBuffer) {
   DrawTextWithCachedQuickDrawStyleState(&labelText);
 
   // Smaller point size (0xa vs the header's 0xe) for the per-row nation labels.
-  InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xa, 0x2b68, 1);
+  SetTextStyleAndApply(0, 0xa, 0x2b68, 1);
 
   static const short kTreatyRowY[7] = {0x1a1, 0x1d4, 0x1a1, 0x1d4, 0x1d4, 0x1d4, 0x1a1};
   static const short kTreatyRowCenterX[7] = {0x83, 0x83, 0x144, 0x113, 0x17e, 0x1eb, 0x1bb};
@@ -66,7 +66,7 @@ void TTreatiesView::Draw(RECT* rectBuffer) {
   for (int i = 0; i < 7; ++i) {
     g_pSimMgr->GetString(0x2733, static_cast<short>(i + 6), &labelText);
     short y = kTreatyRowY[i] - ownerLocalY;
-    short width = MeasureTextExtentWithCachedQuickDrawStyle(&labelText);
+    short width = MeasureText(&labelText);
     short x = kTreatyRowCenterX[i] - width / 2 - ownerLocalX;
     SetQuickDrawColorAndSyncGlobals(styleForeground);
     SetQuickDrawTextOriginWithContextOffset(x + 1, y + 1);

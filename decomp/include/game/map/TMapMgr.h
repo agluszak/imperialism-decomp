@@ -21,8 +21,7 @@ void SplitTileIndexToHexRasterColumnX2AndRow(StrategicTileIndex tileIndex, short
 void SplitTileIndexToRowAndColumn(StrategicTileIndex tileIndex, short* outRow, short* outCol);
 int ComputeStrategicHexTileDistance(StrategicTileIndex tileA, StrategicTileIndex tileB);
 
-short __stdcall ResolveRiverSpriteVariantForConnectionMask(unsigned char connectionMask,
-                                                           bool waterTerrain);
+short __stdcall GetRiverSprite(unsigned char connectionMask, bool waterTerrain);
 int TileIndexFromColumnRow(int recordBase, int recordIndex);
 StrategicTileIndex TraceTerrainFlowToNearestSeaTile(StrategicTileIndex tileIndex);
 
@@ -47,10 +46,10 @@ public:
   virtual void Free() override;
   virtual void InitializeMap();
   virtual bool GenerateMap(const char* mapStreamName, char* tuningOverride);
-  virtual void LoadPoliticalMapRegionSubtypeTableFromResourceStream();
+  virtual void LoadRegionSubtypes();
   virtual void AssignPictToTile(StrategicTileIndex tileIndex);
-  virtual void InitializeTileNeighborConnectionMaskIfNeeded(int tileIndex);
-  virtual void UpdateTileNeighborBorderInfluenceCounters(StrategicTileIndex tileIndex, short mode);
+  virtual void InitializeTileLinks(int tileIndex);
+  virtual void UpdateBorderInfluence(StrategicTileIndex tileIndex, short mode);
   virtual short UpdateStrategicMapTileIconVariantState(StrategicTileIndex tileIndex);
   virtual void GuaranteeResources();
 
@@ -62,20 +61,18 @@ public:
   virtual bool IsSameContinent(short nationA, short nationB);
   void MarkOwnedRegionClasses(TLongintList* regionList, bool* regionClassSeen);
   bool AnyOwnedRegionClassSeen(TLongintList* regionList, const bool* regionClassSeen);
-  virtual bool IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(ProvinceIndex cityRecordIndex,
-                                                                    short nationTag);
+  virtual bool IsProvinceIsolated(ProvinceIndex cityRecordIndex, short nationTag);
   virtual int IsShiftKeyDown();
   virtual int IsAltKeyDown();
   virtual short ComputeRepresentativeTileIndexForNation(int nationSlot);
-  virtual void SetHexAdjacencyDirectionFlagsForTilePair(StrategicTileIndex sourceTile,
-                                                        StrategicTileIndex destTile,
-                                                        int unusedParam3);
+  virtual void RemoveGhostRail(StrategicTileIndex sourceTile, StrategicTileIndex destTile,
+                               int unusedParam3);
   // Both lookup helpers take signed-word discriminants at the listing-proven stack boundary.
   virtual bool IsUnitPresent(StrategicTileIndex tileIndex, CivilianUnitKindStorage unitKind);
   virtual bool IsUnitPresentWithOrders(StrategicTileIndex tileIndex,
                                        CivilianUnitKindStorage unitKind, UnitOrderStorage order);
   virtual void DimByOwner(short ownerNationTag);
-  virtual void SeedRecruitSearchVisitedStateFromSelectedCivilianOrder(class TCivUnit* unusedOrder);
+  virtual void DimByCivilian(class TCivUnit* unusedOrder);
   virtual void DimByValidCitySite(short nationTag);
   // Resets recruitSearchVisited to 0 across all tiles and clears field9 back to idle.
   virtual void ResetRecruitSearchVisitedState();
@@ -88,20 +85,19 @@ public:
   virtual void DimByCompany(class TCivUnit* pCivilianOrderEntry);
   virtual void DimByTrackLaying(class TCivUnit* pCivilianOrderEntry);
   virtual void DimByEngineering(class TCivUnit* pCivilianOrderEntry);
-  virtual void UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(ProvinceIndex cityRecordIndex);
+  virtual void UpdateTileLinks(ProvinceIndex cityRecordIndex);
   virtual void ApplyUnitMovementClassForTileIfValid(int tileIndex);
   void FloodContinent(int recordIndex, int classCode);
   void AssignContinents();
-  void RebuildTileOwnerNeighborCachesAndFallbackAssignments();
+  void RebuildTileOwnerLinks();
   bool LoadScenarioMapStateFromTableResource(int scenarioIndex);
 
-  virtual void SetRegionTileSubtypeAndRefreshNeighborFlags(ProvinceIndex cityRecordIndex,
-                                                           int newTileIndex);
+  virtual void SetTileSubtype(ProvinceIndex cityRecordIndex, int newTileIndex);
   virtual void NoOpVirtualSlot2D(int, int, int);
   virtual void ChangeProvinceOwner(ProvinceIndexStorage cityRecordIndex, short newNationTag);
   virtual StrategicTileIndex FindLinkedTileForAdjacentProvince(ProvinceIndex cityRecordIndex,
                                                                ProvinceIndex regionId);
-  virtual void SetCapitalCityDevelopmentStageIfValidNationSlot(int nationSlotParam, int unused);
+  virtual void SetCapitalStage(int nationSlotParam, int unused);
   virtual byte GetResourceAmtAt(StrategicTileIndex tileIndex, short edgeIndex);
   virtual char GetDevelopmentLevel(StrategicTileIndex nTileIndex, bool fUseHighNibble);
   virtual void SetDevelopmentLevel(StrategicTileIndex tileIndex, bool selectHighNibble, byte value,
@@ -111,18 +107,17 @@ public:
   virtual byte GetAmountOf(StrategicTileIndex tileIndex, char resourceType);
   virtual class TTown* GetTown(StrategicTileIndex tileIndex);
   virtual void SetOwner(short regionId, short newNationTag);
-  virtual short LookupTileSpriteVariantOffsetByTerrainAndGate(StrategicTileIndex nTileIndex);
-  virtual short LookupTileSpriteVariantOffsetByAdjacencyMaskB(StrategicTileIndex nTileIndex);
-  virtual short LookupTileSpriteVariantOffsetByGateAndVariant(StrategicTileIndex nTileIndex);
-  virtual short LookupTileSpriteVariantOffsetByGateAndVariantAlt(StrategicTileIndex nTileIndex);
+  virtual short GetTerrainSpriteOffset(StrategicTileIndex nTileIndex);
+  virtual short GetAdjacencySpriteOffset(StrategicTileIndex nTileIndex);
+  virtual short GetGateSpriteOffset(StrategicTileIndex nTileIndex);
+  virtual short GetAltGateSpriteOffset(StrategicTileIndex nTileIndex);
   virtual short GetCoastTileNumber(char bitmaskIndex, char direction);
   virtual short GetCoastTileOffset(char bitmaskIndex, char direction, char useAltOffset);
   virtual short GetDeltaTileOffset(char bitmaskIndex, char direction, short terrainPict);
   virtual short GetWrapSeamOffset();
-  virtual int GetMapImprovementOffsetByActiveFlagsAndCityStage(StrategicTileIndex tileIndex,
-                                                               short categoryCode);
+  virtual int GetImprovementOffset(StrategicTileIndex tileIndex, short categoryCode);
   virtual short GetTownOffset(StrategicTileIndex tileIndex, int unused);
-  virtual int GetMapImprovementBitmapRowOffsetForIndex(int index);
+  virtual int GetImprovementRowOffset(int index);
   virtual int ComputeTerrainRecordByteOffsetForIndex(int index);
   virtual short GetFortFlagOffset(short nation);
   // ABI: MSVC emits overloaded virtuals in reverse declaration order.
@@ -172,48 +167,41 @@ public:
   }
   static StrategicHexDirectionStorage GetDirectionFrom(StrategicTileIndex sourceTile,
                                                        StrategicTileIndex destTile);
-  static StrategicTileIndex
-  StepHexTileIndexByDirectionWithWrapRules(StrategicTileIndex tileIndex,
-                                           StrategicHexDirectionStorage direction);
-  static StrategicTileIndex
-  StepHexTileIndexByDirectionWithWrapRules(StrategicTileIndex tileIndex,
-                                           StrategicHexDirection direction) {
-    return StepHexTileIndexByDirectionWithWrapRules(tileIndex,
-                                                    EncodeStrategicHexDirection(direction));
+  static StrategicTileIndex StepTile(StrategicTileIndex tileIndex,
+                                     StrategicHexDirectionStorage direction);
+  static StrategicTileIndex StepTile(StrategicTileIndex tileIndex,
+                                     StrategicHexDirection direction) {
+    return StepTile(tileIndex, EncodeStrategicHexDirection(direction));
   }
   static bool StepHexRowColByDirectionWithWrapRules(int* row, int* col, int direction);
-  static void AdvanceSpiralSearchStateAndStepHexCoordinates(struct HexSpiralSearchState* state);
+  static void StepSpiral(struct HexSpiralSearchState* state);
 
-  short ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlot, bool wrapBias);
+  short GetNationCenterTile(short nationSlot, bool wrapBias);
 
   bool AreNationsBorderLinked(int nationA, int nationB);
   bool HasDirectOrFallbackLinkedNodeType(ProvinceIndex cityRecordIndex, int nationCode,
                                          bool allowFallback);
-  int CollectSecondDegreeLinksWithMinorNationFallback(ProvinceIndex cityRecordIndex, int nationTag,
-                                                      int* nodeBuffer, bool allowFallback);
+  int CollectLinksWithMinors(ProvinceIndex cityRecordIndex, int nationTag, int* nodeBuffer,
+                             bool allowFallback);
   bool IsProvinceAdjacentTo(int sourceProvinceIndex, int candidateProvinceIndex);
   bool HasPortInProvince(int provinceIndex);
   void SetTownSize(short regionId, unsigned char stage);
   void SetTileTransportFlags(StrategicTileIndex nTileIndex, unsigned short wTileTransportFlags);
   void AddRailSegment(StrategicTileIndex sourceTile, StrategicTileIndex destTile,
                       short ownerNation);
-  void ApplyEngineerRailCostDeltaForConnectedTiles(StrategicTileIndex tileA,
-                                                   StrategicTileIndex tileB, short ownerNation);
-  StrategicTileIndex
-  FindReachableRecruitSpawnTileWithVisitedReset(StrategicTileIndex startTileIndex,
-                                                bool allowActiveFlag2);
+  void AddGhostRail(StrategicTileIndex tileA, StrategicTileIndex tileB, short ownerNation);
+  StrategicTileIndex FindRecruitTile(StrategicTileIndex startTileIndex, bool allowActiveFlag2);
   StrategicTileIndex SearchOpenTile(StrategicTileIndex tileIndex, short ownerNationTag,
                                     bool allowActiveFlag2);
   void GetProvinceName(int provinceIndex, CString* outName);
   void SetProvinceName(ProvinceIndex cityRecordIndex, CString* name);
   int LandPrice(StrategicTileIndex nTileIndex);
 
-  int CollectSecondDegreeLinksMatchingNodeType(ProvinceIndex cityRecordIndex, int nationTag,
-                                               int* nodeBuffer);
+  int CollectSecondaryLinks(ProvinceIndex cityRecordIndex, int nationTag, int* nodeBuffer);
 
   void ConfirmArrows();
 
-  int ResolveMapTileVariantSpriteFromAdjacencyState(int nTileIndex);
+  int GetTileSprite(int nTileIndex);
 
   bool CheckTileVariantCodeMembershipSetA(StrategicTileIndex tileIndex);
   bool CheckTileVariantCodeMembershipSetB(StrategicTileIndex tileIndex);
@@ -222,10 +210,10 @@ public:
 
   byte AreMineralsPresent(StrategicTileIndex nTileIndex);
   bool CanBuildPortAtTile(StrategicTileIndex tileIndex);
-  bool HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(StrategicTileIndex tileIndex);
+  bool HasFreeSeaAccess(StrategicTileIndex tileIndex);
   bool HasActiveLinkedTileWithReachableSea(int regionIndex);
 
-  short ResolveRegionTileSubtypeCodeForTileIndex(StrategicTileIndex tileIndex);
+  short GetTileSubtype(StrategicTileIndex tileIndex);
 
   TCivUnit* GetFirstCivilianOrderOnTile(StrategicTileIndex tileIndex) {
     return terrainStateTable[tileIndex].firstCivilianOrder;
@@ -240,7 +228,7 @@ public:
   void AssignCityRecordDisplayName(ProvinceIndex cityRecordIndex, CString* dest);
   void DumpAndResetMapScriptState();
 
-  void ApplyJoinEmpireMode0GlobalDiplomacyReset(int nationSlot);
+  void ResetDiplomacyOnJoin(int nationSlot);
 
   void ActivateMarchingArrow(int tileIndex, int contextArg, bool flag);
 

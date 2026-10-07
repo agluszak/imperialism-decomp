@@ -9,7 +9,7 @@
 #include "game/globals/shared_globals.h"
 
 // FUNCTION: IMPERIALISM 0x005ad0d0
-void TTacNavyToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalUnit* unit) {}
+void TTacNavyToolbar::ShowCurrentUnit(TTacticalUnit* unit) {}
 
 // FUNCTION: IMPERIALISM 0x005ad0f0
 void TTacNavyToolbar::UpdateTacticalOtherSideUnitControl(TArmyTacUnit* unit) {}

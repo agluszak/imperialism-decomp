@@ -321,7 +321,7 @@ void SectRgn(RgnHandle srcA, RgnHandle srcB, RgnHandle dst) {
 }
 
 // FUNCTION: IMPERIALISM 0x00498070
-void IntersectClipRegionWithRectAndUpdateBounds(RgnHandle clipRgn, RECT* rect) {
+void ClipRegionToRect(RgnHandle clipRgn, RECT* rect) {
   CRgn rectRegion;
   rectRegion.Attach(::CreateRectRgn(rect->left, rect->top, rect->right, rect->bottom));
   ::CombineRgn(static_cast<HRGN>((*clipRgn)->rgn.m_hObject),

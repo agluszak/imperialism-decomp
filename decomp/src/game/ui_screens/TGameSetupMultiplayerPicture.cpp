@@ -37,7 +37,7 @@ void TGameSetupMultiplayerPicture::DoPostCreate(int arg) {
   protControl->selectedColorCode = 0x4c;
   protControl->unselectedColorCode = 0x4d;
 
-  if (g_pGameFlowState->InitializeProtocolOptionControlFromProvider(this)) {
+  if (g_pGameFlowState->InitializeProtocolList(this)) {
     CSubViewIterator iter(protControl);
     TView* child = iter.FirstSubView();
     if (iter.MoreSubViews()) {
@@ -48,7 +48,7 @@ void TGameSetupMultiplayerPicture::DoPostCreate(int arg) {
       } while (iter.MoreSubViews());
     }
   } else {
-    g_pGameFlowState->ResetDiplomacyRuntimeSelectionAndSetModeNada();
+    g_pGameFlowState->CancelProtocolSelect();
   }
 
   TInfoBarText* cursControl = static_cast<TInfoBarText*>(FindSubView(kControlTagCurs));
@@ -64,18 +64,18 @@ void TGameSetupMultiplayerPicture::DoPostCreate(int arg) {
   cursControl->SetJustification(1, false);
 
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x1f, kControlTagRand);
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x20, kControlTagScen);
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x21, kControlTagLoad);
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x22, kControlTagMult);
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x23, kControlTagJoin);
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x24, kControlTagProt);
+  SetTaggedStringAndApply(0x2737, 0x1f, kControlTagRand);
+  SetTaggedStringAndApply(0x2737, 0x20, kControlTagScen);
+  SetTaggedStringAndApply(0x2737, 0x21, kControlTagLoad);
+  SetTaggedStringAndApply(0x2737, 0x22, kControlTagMult);
+  SetTaggedStringAndApply(0x2737, 0x23, kControlTagJoin);
+  SetTaggedStringAndApply(0x2737, 0x24, kControlTagProt);
 
   if (g_pAssetMgr->AreThereStrayClientSaves()) {
     TControl* spitControl = static_cast<TControl*>(FindSubView(kControlTagSpit));
     spitControl->AssertValid();
     spitControl->ViewEnable(1, 0);
-    LoadUiStringByGroupAndIndexToControlObject(0x2759, 7, spitControl);
+    SetControlString(0x2759, 7, spitControl);
   }
 }
 
@@ -113,7 +113,7 @@ void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceH
     unsigned int actionTag = sourceHandler->controlTag;
     if (actionTag == kControlTagLoad) {
       g_pGameFlowState->scenarioSelectionTag = kControlTagLoad;
-      if (g_pGameFlowState->ValidateAndPrepareGameFlowNameForDispatch()) {
+      if (g_pGameFlowState->PrepareGameName()) {
         g_pSimMgr->multiplayerSessionRole = kSessionRoleHost;
         g_nSaveFormatVersion = -2;
         g_pAmbitApplication->PostTurnEventCodeMessage(EncodeTurnEventCode(kTurnEventLoadSave));
@@ -121,10 +121,10 @@ void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceH
     } else if (actionTag == kControlTagJoin) {
       g_bMultiplayerScenarioSetupActive = false;
       g_pSimMgr->multiplayerSessionRole = kSessionRoleClient;
-      g_pGameFlowState->ApplyJoinGameSelectionAndShowNetworkGameOptions(0);
+      g_pGameFlowState->SelectGameAndShowOptions(0);
     } else if (actionTag == kControlTagRand) {
       g_pGameFlowState->scenarioSelectionTag = kControlTagRand;
-      if (g_pGameFlowState->ValidateAndPrepareGameFlowNameForDispatch()) {
+      if (g_pGameFlowState->PrepareGameName()) {
         g_pSimMgr->multiplayerSessionRole = kSessionRoleHost;
         g_pAmbitApplication->PostTurnEventCodeMessage(
             EncodeTurnEventCode(kTurnEventRandomGameSetup));
@@ -133,7 +133,7 @@ void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceH
       g_pGameFlowState->ResetGameFlowStateAndShowMainMenu();
     } else if (actionTag == kControlTagScen) {
       g_pGameFlowState->scenarioSelectionTag = kControlTagScn0; // 'scn0'
-      if (g_pGameFlowState->ValidateAndPrepareGameFlowNameForDispatch()) {
+      if (g_pGameFlowState->PrepareGameName()) {
         g_pSimMgr->multiplayerSessionRole = kSessionRoleHost;
         g_pAmbitApplication->PostTurnEventCodeMessage(
             EncodeTurnEventCode(kTurnEventScenarioGameSetup));

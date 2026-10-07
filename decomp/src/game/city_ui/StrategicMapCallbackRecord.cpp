@@ -86,9 +86,9 @@ void StrategicMapCallbackRecord::ApplyBitmapMaskToPixelBuffer(unsigned char* des
 }
 
 // FUNCTION: IMPERIALISM 0x004d5090
-void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(
-    int resourceId, short width, short height, int destinationRowStride,
-    unsigned char transparentPixel) {
+void StrategicMapCallbackRecord::BuildMaskOpcodes(int resourceId, short width, short height,
+                                                  int destinationRowStride,
+                                                  unsigned char transparentPixel) {
   this->destinationRowStride = destinationRowStride;
 
   CDib* dib = g_pResourceMgr->LoadBmpResourceByIdCached(static_cast<unsigned short>(resourceId));
@@ -286,13 +286,14 @@ void StrategicMapCallbackRecord::StreamOverlayHitMaskToSurfaceDib(DiplomacyMaskB
   if (height <= 0) {
     height = -height;
   }
-  BuildDiplomacyOverlayHitMaskOpcodeStream(
-      run, surface->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biWidth, outlineOnly, height);
+  BuildOverlayHitMask(run, surface->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biWidth,
+                      outlineOnly, height);
 }
 
 // FUNCTION: IMPERIALISM 0x004d5d30
-void StrategicMapCallbackRecord::BuildDiplomacyOverlayHitMaskOpcodeStream(
-    DiplomacyMaskBufferRun* run, int destinationRowStride, int outlineOnly, int surfaceHeight) {
+void StrategicMapCallbackRecord::BuildOverlayHitMask(DiplomacyMaskBufferRun* run,
+                                                     int destinationRowStride, int outlineOnly,
+                                                     int surfaceHeight) {
   opcodeBytes.SetCapacity(0x400);
   this->destinationRowStride = destinationRowStride;
 

@@ -35,14 +35,14 @@ void TTradeBidNationView::Draw(RECT* rectBuffer) {
   SetQuickDrawStrokeColor(0xffffff);
 
   CString label = g_pSimMgr->GetCountryName(nationSlot);
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b6a);
+  ApplyTextStyle(0, 0xc, 0x2b6a);
   SetQuickDrawTextOriginWithContextOffset(0x28, 0xc);
   DrawTextWithCachedQuickDrawStyleState(&label);
 
   if (nationSlot < 7 && g_pSimMgr->mode == kGamePhaseTrade) {
     short counter = g_apNationStates[nationSlot]->GetMerchantCapacity();
     label.Format(g_szDecimalFormat, static_cast<int>(counter));
-    short measuredWidth = MeasureTextExtentWithCachedQuickDrawStyle(&label);
+    short measuredWidth = MeasureText(&label);
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(frameWidth - measuredWidth - 4),
                                             0xc);
     DrawTextWithCachedQuickDrawStyleState(&label);

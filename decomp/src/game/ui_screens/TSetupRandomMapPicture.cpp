@@ -90,7 +90,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   if (g_pGlobalMapState == 0) {
     // LIBRARY: rand (0x005e83f0)
     selectedNationSlot = static_cast<short>(rand() % 7);
-    GenerateMappedFlavorTextByCurrentContextNation(&planetSeed);
+    GenerateFlavorTextForNation(&planetSeed);
     wrapHorizontally = 0;
   } else {
     planetSeed = g_pGlobalMapState->scenarioTagText;
@@ -105,8 +105,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
     mapPreview->pendingNation = selectedNationSlot;
   }
 
-  RefreshActiveControlThenApplyThemeStyleAndCaption(kControlTagCoun, 0, 0xc, 0x2b6b, 1,
-                                                    g_szEmptyString);
+  RefreshAndTheme(kControlTagCoun, 0, 0xc, 0x2b6b, 1, g_szEmptyString);
   TEditText* countryControl = static_cast<TEditText*>(FindSubView(kControlTagCoun));
   countryControl->AssertValid();
   countryControl->maxCharacterCount = 0xc;
@@ -124,18 +123,18 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagKeyP);
   ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagStuf);
 
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2758, 0x1e, kControlTagName);
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x13, kControlTagGlob);
+  SetTaggedStringAndApply(0x2758, 0x1e, kControlTagName);
+  SetTaggedStringAndApply(0x2737, 0x13, kControlTagGlob);
   short cancelStringIndex =
       g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone ? 0x2e : 0x14;
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, cancelStringIndex, kControlTagCanc);
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, cancelStringIndex, kControlTagCncl);
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x15, kControlTagOkay);
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2758, 0x13, kControlTagMapP);
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x17, kControlTagDiff);
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x1a, kControlTagCoun);
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x1b, kControlTagFlag);
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x1c, kControlTagCoat);
+  SetTaggedStringAndApply(0x2737, cancelStringIndex, kControlTagCanc);
+  SetTaggedStringAndApply(0x2737, cancelStringIndex, kControlTagCncl);
+  SetTaggedStringAndApply(0x2737, 0x15, kControlTagOkay);
+  SetTaggedStringAndApply(0x2758, 0x13, kControlTagMapP);
+  SetTaggedStringAndApply(0x2737, 0x17, kControlTagDiff);
+  SetTaggedStringAndApply(0x2737, 0x1a, kControlTagCoun);
+  SetTaggedStringAndApply(0x2737, 0x1b, kControlTagFlag);
+  SetTaggedStringAndApply(0x2737, 0x1c, kControlTagCoat);
 
   TDropShadowText* countryTitle = static_cast<TDropShadowText*>(FindSubView(kControlTagTcou));
   countryTitle->AssertValid();
@@ -162,15 +161,14 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
         g_pLanguageMgr->StripCodeStr(g_pGameFlowState->playerNameMirror);
   } else {
     g_pSimMgr->useLocalizedNameTables = static_cast<char>(g_pSimMgr->preferenceValues[13]);
-    GenerateMappedFlavorTextByCurrentContextNation(&g_cstrCountryNameSettingValue);
+    GenerateFlavorTextForNation(&g_cstrCountryNameSettingValue);
     CString profileName;
     LoadProfileStringAndAssignSharedRef(&profileName, g_szCountryNameProfileKey,
                                         g_cstrCountryNameSettingValue);
     g_cstrCountryNameSettingValue = g_pLanguageMgr->StripCodeStr(profileName);
   }
 
-  RefreshActiveControlThenApplyThemeStyleAndCaption(kControlTagCoun, 0, 0xc, 0x2b6b, 1,
-                                                    g_cstrCountryNameSettingValue);
+  RefreshAndTheme(kControlTagCoun, 0, 0xc, 0x2b6b, 1, g_cstrCountryNameSettingValue);
 
   TRadioTextCluster* difficultyCluster =
       static_cast<TRadioTextCluster*>(FindSubView(kControlTagDiff));
@@ -266,7 +264,7 @@ void TSetupRandomMapPicture::DoEvent(int commandId, TEventHandler* sourceHandler
     if (controlTag == kControlTagCanc || controlTag == kControlTagCncl) {
       ExitScreen();
     } else if (controlTag == kControlTagGlob) {
-      GenerateMappedFlavorTextByCurrentContextNation(&this->planetSeed);
+      GenerateFlavorTextForNation(&this->planetSeed);
       MajorTomToGroundControl(1);
     } else if (controlTag == kControlTagKeyP || controlTag == kControlTagPlan) {
       CString planetSeed(this->planetSeed);
@@ -364,7 +362,7 @@ void TSetupRandomMapPicture::StartGame() {
 void TSetupRandomMapPicture::ExitScreen() {
   bool multiplayerSessionActive = g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone;
   if (multiplayerSessionActive) {
-    g_pGameFlowState->ResetLocalUiStateAndShowMultiplayerSetup();
+    g_pGameFlowState->ResetAndShowMultiplayerSetup();
     return;
   }
   g_pAmbitApplication->PostTurnEventCodeMessage(EncodeTurnEventCode(kTurnEventMainMenu));
@@ -396,7 +394,7 @@ void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
   infoBar->AssertValid();
   CString generatingText;
   g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&generatingText, 0x2758, 7);
-  infoBar->UpdateTextEntrySharedStringAndMaybeNotify(&generatingText, true);
+  infoBar->SetEntryText(&generatingText, true);
   infoBar->CenterVertically(true);
 
   TEditText* countryControl = static_cast<TEditText*>(FindSubView(kControlTagCoun));
@@ -437,7 +435,7 @@ void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
   coatView->SetPictureRsrcID(static_cast<short>(selectedNationSlot + 0x11c6), true);
 
   CString emptyText(g_szEmptyString);
-  infoBar->UpdateTextEntrySharedStringAndMaybeNotify(&emptyText, true);
+  infoBar->SetEntryText(&emptyText, true);
   RecheckCountryName();
 }
 

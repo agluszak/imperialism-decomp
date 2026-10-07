@@ -20,9 +20,9 @@ IMPLEMENT_DYNCREATE(TBook, TPicture)
 void TBook::DoPostCreate(int arg) {
   TPicture::DoPostCreate(arg);
   previousPageButton = FindSubView(kControlTagLcor);
-  LoadUiStringByGroupAndIndexToControlObject(0x2730, 0xc, previousPageButton);
+  SetControlString(0x2730, 0xc, previousPageButton);
   nextPageButton = FindSubView(kControlTagRcor);
-  LoadUiStringByGroupAndIndexToControlObject(0x2730, 0xb, nextPageButton);
+  SetControlString(0x2730, 0xb, nextPageButton);
 }
 
 // FUNCTION: IMPERIALISM 0x0056f5e0

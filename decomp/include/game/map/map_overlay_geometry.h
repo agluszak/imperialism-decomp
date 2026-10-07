@@ -24,8 +24,8 @@ int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags);
 
 int __stdcall GetActiveMapOrderEntryActionCode(short nTileIndex, int dwInputFlags);
 
-void ComputeWrappedIsometricScreenOffsetFromTile(int tileIndex, int* outScreenXY, int tileScale,
-                                                 short originCol, short originRow);
+void GetTileScreenOffset(int tileIndex, int* outScreenXY, int tileScale, short originCol,
+                         short originRow);
 
 void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue);
 

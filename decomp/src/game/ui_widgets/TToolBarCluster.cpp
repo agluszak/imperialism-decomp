@@ -62,7 +62,7 @@ void TToolBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
     MakeFlagButtonDialog();
     break;
   case kControlTagRestartCaps:
-    ReinitializeGameFlowAndPostTurnEventCode(kTurnEventRebuildRegisteredWindows);
+    RestartGameFlow(kTurnEventRebuildRegisteredWindows);
     break;
   case kControlTagScoreCaps:
     g_pAmbitApplication->PostTurnEventCodeMessage(EncodeTurnEventCode(kTurnEventGameScore));
@@ -118,8 +118,7 @@ void TToolBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
 }
 
 // FUNCTION: IMPERIALISM 0x005851c0
-void TToolBarCluster::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                                          RgnHandle hitArg) {
+void TToolBarCluster::AdjustCursor(CPoint* point, RgnHandle hitArg) {
   if (FindSubView(kManifestTagCivi) != 0) {
     CString label(g_pSmallViewsEmptyText);
 
@@ -155,7 +154,7 @@ void TToolBarCluster::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint
     }
     static_cast<TStaticText*>(cursControl)->SetTextAndMaybeRefresh(&label, true);
   }
-  TView::HandleCursorHoverSelectionByChildHitTestAndFallback(point, hitArg);
+  TView::AdjustCursor(point, hitArg);
 }
 
 // FUNCTION: IMPERIALISM 0x005853f0
@@ -332,7 +331,7 @@ void TToolBarCluster::UpdateGrantDisplay(int grantTotal) {
 
 // FUNCTION: IMPERIALISM 0x005dc560
 void MakeFlagButtonDialog() {
-  TWindow* node = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFlagButton);
+  TWindow* node = g_pAssetMgr->GetDialog(kTurnEventFlagButton);
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0xf6c);
   }

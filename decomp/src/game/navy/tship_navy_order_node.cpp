@@ -12,8 +12,8 @@
 #include "game/core/CString.h"
 
 // FUNCTION: IMPERIALISM 0x0054f8e0
-TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short resourceType, TZone* portZoneContext,
-                                                      int nationSlot, char* displayNameOverride) {
+TShip* CreateAdmiral(short resourceType, TZone* portZoneContext, int nationSlot,
+                     char* displayNameOverride) {
   if (g_NavyOrderResourceDescriptorTable[resourceType].ToolbarSlotDword() < 0) {
     return 0;
   }

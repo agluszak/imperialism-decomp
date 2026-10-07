@@ -15,9 +15,8 @@ public:
   DECLARE_DYNCREATE(TBuildingView)
   virtual ~TBuildingView() override;
   virtual void Close() override;
-  virtual void ApplyCityViewSelectionPayloadAndRefreshControls(TCity* city, bool isEmbeddedPage,
-                                                               TCityProductionView* productionView,
-                                                               short embeddedPageIndex);
+  virtual void SetCitySelection(TCity* city, bool isEmbeddedPage,
+                                TCityProductionView* productionView, short embeddedPageIndex);
   virtual void DoStartup();
   virtual void UpdateFields();
   // Both push the label's own GetFrame rect through CopyRect and invalidate it.

@@ -85,7 +85,7 @@ public:
   virtual void ValidateVRect(RECT* rect);
   virtual bool EvaluateControlInputGate();
   virtual bool HasRenderableParentAndContent();
-  virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, RgnHandle hitArg);
+  virtual void AdjustCursor(CPoint* point, RgnHandle hitArg);
   virtual void DispatchControlEventToChildrenAndSelf(int eventArg);
   virtual void DoPostCreate(int arg);
   virtual void NoOpUiCallback();
@@ -99,7 +99,7 @@ public:
   virtual int BindMapQuickDrawDc(CDC* paintDc);
   virtual void ReleaseMapQuickDrawDc(CDC* paintDc);
   virtual void EnsureStylePayload();
-  virtual void PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintDc);
+  virtual void PaintChildren(RECT* clipRect, CDC* paintDc);
   virtual void Draw(RECT* clipRect);
   virtual void PaintOrInvalidateControl(CDC* paintDc = 0);
   virtual bool HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin);

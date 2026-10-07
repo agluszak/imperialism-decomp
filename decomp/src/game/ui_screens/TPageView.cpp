@@ -43,7 +43,7 @@ POSITION TPageView::AddOptionEntry(TLineData* item) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056fbf0
-void TPageView::ResetSelectableOptionEntriesExceptColorAndOkay() {
+void TPageView::ResetOptionEntries() {
   // Skip "rocl"/"rocr" (color) and "yako" (okay) option-entry tags, plus "tond" resource IDs.
   static const unsigned int kColorTagA = kControlTagLcor; // "rocl"
   static const unsigned int kColorTagB = kControlTagRcor; // "rocr"
@@ -104,7 +104,7 @@ void TPageView::ShowPage(short pageNumber) {
     return;
   }
 
-  ResetSelectableOptionEntriesExceptColorAndOkay();
+  ResetOptionEntries();
 
   short previousHeader = 0;
   for (int column = pageNumber; column < pageNumber + visibleColumnCount; ++column) {
@@ -143,7 +143,7 @@ void TPageView::ShowPage(short pageNumber) {
 
 // FUNCTION: IMPERIALISM 0x0056ff90
 void TPageView::Clear() {
-  ResetSelectableOptionEntriesExceptColorAndOkay();
+  ResetOptionEntries();
   optionEntries->RemoveAll();
   orderedEntries->RemoveAll();
   pageStartIndices->RemoveAll();

@@ -23,27 +23,19 @@ static short SignedDiv10(int value) {
 }
 
 // FUNCTION: IMPERIALISM 0x0053b800
-float ComputeNavyOrderDistributionScoreForNation(short nation) {
+float ScoreNavyDistribution(short nation) {
   float categoryVector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (TShip* ship = TShip::GetFirst(); ship != NULL; ship = ship->next) {
     if (ship->nation == nation && ship->IsInHomePort() &&
         ship->GetMaxStrength() <= ship->strength) {
       float stockRatio = static_cast<float>(ship->strength / ship->GetMaxStrength());
       categoryVector[0] =
-          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
-              stockRatio +
-          categoryVector[0];
+          static_cast<float>(ship->GetCategoryPercent(0)) * stockRatio + categoryVector[0];
       categoryVector[1] =
-          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1)) *
-              stockRatio +
-          categoryVector[1];
+          static_cast<float>(ship->GetCategoryPercent(1)) * stockRatio + categoryVector[1];
       categoryVector[2] =
-          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2)) *
-              stockRatio +
-          categoryVector[2];
-      categoryVector[3] =
-          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3)) +
-          categoryVector[3];
+          static_cast<float>(ship->GetCategoryPercent(2)) * stockRatio + categoryVector[2];
+      categoryVector[3] = static_cast<float>(ship->GetCategoryPercent(3)) + categoryVector[3];
     }
   }
   float total = 0.0f;
@@ -298,7 +290,7 @@ int GetNavyOrderCategoryBaseline(int category) {
 // Also called on a TTaskForce, which shares these three field offsets.
 
 // FUNCTION: IMPERIALISM 0x0054ff00
-short TShip::ComputeNavyOrderPriorityContributionPercentByCategory(int category) {
+short TShip::GetCategoryPercent(int category) {
   int divisor = g_aCategoryMetricBaselineAverage[category];
 
   switch (category) {
@@ -329,7 +321,7 @@ short TShip::ComputeNavyOrderPriorityContributionPercentByCategory(int category)
 // Per-category normalized cost percent for a resource type, used by the AI development choices.
 
 // FUNCTION: IMPERIALISM 0x00550090
-int GetNormalizedIndustryActionResourceCostPercent(int nCategory, short nResourceType) {
+int GetIndustryCostPercent(int nCategory, short nResourceType) {
   int divisor = g_aCategoryMetricBaselineAverage[nCategory];
   const TNavyOrderResourceDescriptor& desc = g_NavyOrderResourceDescriptorTable[nResourceType];
   switch (nCategory) {
@@ -606,7 +598,7 @@ float TShip::ModByExp(float value) const {
 }
 
 // FUNCTION: IMPERIALISM 0x00550970
-short GetIndustryActionCostWeightByResourceType(short resourceType) {
+short GetIndustryCostWeight(short resourceType) {
   return g_industryActionCostWeightResCode10[resourceType];
 }
 
@@ -632,9 +624,9 @@ void TShip::Sink() {
         head->payload->Free();
 
         head = head->DeleteMapOrderChildLinkAndReturnNext();
-        head = head->PruneDefeatedMapOrderChildrenAndReturnHead();
+        head = head->PruneDefeatedShips();
       } else {
-        head->next->PruneDefeatedMapOrderChildrenAndReturnHead();
+        head->next->PruneDefeatedShips();
       }
     }
 

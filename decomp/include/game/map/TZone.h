@@ -65,7 +65,7 @@ public:
   short GetDistanceTo(TZone* other);
   bool IsAdjacentToCountry(short nationTag);
   int IsVisibleToCountry(short key);
-  bool ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex);
+  bool ContainsProvince(short cityIndex);
   bool HasFreeShipsOfPlayer(int nation, bool skipField34Check);
   void LightUp(int remainingDepth, bool markAdjacentCities);
   TAdmiral* GetSeniorOfficerOf(int nation);
@@ -89,10 +89,9 @@ public:
   short distanceLevel;
 
   TZone();
-  void SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int tileIndex);
+  void SetIngotTile(int nationSeedId, int tileIndex);
 
-  static int ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* contextZone,
-                                                            Province* contextProvince);
+  static int ScoreCoastalTile(int tileIndex, TZone* contextZone, Province* contextProvince);
 
   void OccupyBy(int nation);
 
@@ -101,10 +100,10 @@ public:
   static TZone* FindPortZoneByTile(short nTileIndex);
 
   unsigned int GetPatrolMask();
-  unsigned int BuildNationBitmaskForActiveType3Or4OrdersIncludingNation(unsigned char nation);
-  unsigned int HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(int nation);
+  unsigned int GetPatrolMaskWith(unsigned char nation);
+  unsigned int HasEnemyPatrol(int nation);
 
-  int CountDiplomaticallyRelatedNationsInKeyMask(int nation);
+  int CountEnemiesPresent(int nation);
 
   short GetPortOwnerNation();
 
@@ -120,4 +119,4 @@ ASSERT_SIZE(TZone, 0x48);
 TZone* GetLastMapActionContext();
 TZone* FindMapActionContextByNodeId(short nodeId);
 
-void ResetMapActionContextActivityAndNationFlags();
+void ResetZoneActivity();

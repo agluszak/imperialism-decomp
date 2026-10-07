@@ -167,8 +167,7 @@ void TGameWindow::UpdateTurnOrderNavigationWindowLayout() {
   if (g_pDisplayMgr->eventCode == kTurnEventSphereWindow) {
     CRect boundsRect;
     GetFrame(&boundsRect);
-    GlobalViewportRectDefaultsRecord** rectDefaultsHandle =
-        InitializeGlobalRectDefaultsIfUninitialized();
+    GlobalViewportRectDefaultsRecord** rectDefaultsHandle = InitializeDefaultRects();
     GlobalViewportRectDefaultsRecord* rectRecord = *rectDefaultsHandle;
     RECT globalRect;
     CopyRect(&globalRect, &rectRecord->viewportBounds);

@@ -199,11 +199,11 @@ void TMapMaker::GenerateNewMap(char* tileGrid, Province* cityTable, CString* tun
       if (retryAttempt != 0) {
         retryAttempt = 1;
       } else {
-        hasContinuousOceanColumn = ValidateAllColumnsHaveAssignedRegionClass();
+        hasContinuousOceanColumn = AllColumnsAssigned();
         if (hasContinuousOceanColumn == 0) {
           retryAttempt = 1;
         } else {
-          frontierMaskComplete = ValidateTerrainClassAdjacencyCoverageMask();
+          frontierMaskComplete = AllTerrainAdjacent();
           retryAttempt = (frontierMaskComplete == 0);
         }
       }
@@ -214,10 +214,10 @@ void TMapMaker::GenerateNewMap(char* tileGrid, Province* cityTable, CString* tun
       retryAttempt = ErrorCheck();
       if (retryAttempt != 0) {
         retryAttempt = 1;
-      } else if (!ValidateAllColumnsHaveAssignedRegionClass()) {
+      } else if (!AllColumnsAssigned()) {
         retryAttempt = 1;
       } else {
-        retryAttempt = (!ValidateTerrainClassAdjacencyCoverageMask());
+        retryAttempt = (!AllTerrainAdjacent());
       }
 #endif
     } while (retryAttempt != 0);
@@ -235,7 +235,7 @@ void TMapMaker::GenerateNewMap(char* tileGrid, Province* cityTable, CString* tun
     if (g_pActiveRandomMapSetupPicture != 0) {
       g_pActiveRandomMapSetupPicture->SpinYourGlobe();
     }
-    ExpandRegionGridIntoTilesAndAllocateCityRecords();
+    ExpandRegionGrid();
 #ifdef IMPERIALISM_RUNTIME_TESTS
     RuntimeCoarseMapOracleCaptureExpansion(this, g_mapGenLcgState);
     RuntimeTerrainMapOracleBeginAttempt(this, g_mapGenLcgState);
@@ -246,7 +246,7 @@ void TMapMaker::GenerateNewMap(char* tileGrid, Province* cityTable, CString* tun
     if (g_pActiveRandomMapSetupPicture != 0) {
       g_pActiveRandomMapSetupPicture->SpinYourGlobe();
     }
-    RandomizeRegionTemplatesAndSmoothOwnership();
+    RandomizeTemplates();
 #ifdef IMPERIALISM_RUNTIME_TESTS
     RuntimeTerrainMapOracleCaptureStage("after_templates", this, g_mapGenLcgState);
 #endif
@@ -267,7 +267,7 @@ void TMapMaker::GenerateNewMap(char* tileGrid, Province* cityTable, CString* tun
     if (g_pActiveRandomMapSetupPicture != 0) {
       g_pActiveRandomMapSetupPicture->SpinYourGlobe();
     }
-    AssignOrCompactCityRegionIdsAndRebuildBorders(0);
+    NumberProvincesAndBuildBorders(0);
 
     const char* text = static_cast<LPCSTR>(*tuningString);
     if (TuningKeywordMatches("Dune", text)) {
@@ -420,11 +420,11 @@ void TMapMaker::GenerateNewMap(char* tileGrid, Province* cityTable, CString* tun
     }
 #ifdef IMPERIALISM_RUNTIME_TESTS
     RuntimeTerrainMapOracleCaptureKeywordStage(this, g_mapGenLcgState);
-    int seedCandidatesAccepted = ValidateSeedCandidateExistsForEachTerrainClass();
+    int seedCandidatesAccepted = AllTerrainSeeded();
     RuntimeTerrainMapOracleFinishAttempt(seedCandidatesAccepted, g_mapGenLcgState);
     if (seedCandidatesAccepted != 0) {
 #else
-    if (ValidateSeedCandidateExistsForEachTerrainClass() != 0) {
+    if (AllTerrainSeeded() != 0) {
 #endif
       break;
     }
@@ -489,7 +489,7 @@ bool TMapMaker::CheckProvs() {
 }
 
 // FUNCTION: IMPERIALISM 0x00526710
-bool TMapMaker::ValidateAllColumnsHaveAssignedRegionClass() {
+bool TMapMaker::AllColumnsAssigned() {
   bool foundEmptyColumn = false;
   for (int col = 0; col < 27; ++col) {
     if (foundEmptyColumn) {
@@ -510,7 +510,7 @@ bool TMapMaker::ValidateAllColumnsHaveAssignedRegionClass() {
 }
 
 // FUNCTION: IMPERIALISM 0x00526760
-bool TMapMaker::ValidateTerrainClassAdjacencyCoverageMask() {
+bool TMapMaker::AllTerrainAdjacent() {
   int classMask = 0;
   int cell;
   // Flat scan over the 15x27 region-class grid, skipping row 0.
@@ -529,7 +529,7 @@ bool TMapMaker::ValidateTerrainClassAdjacencyCoverageMask() {
 }
 
 // FUNCTION: IMPERIALISM 0x005267f0
-char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
+char TMapMaker::AllTerrainSeeded() {
   int seedFound[23];
   int seedCandidate[23];
   int i;
@@ -750,7 +750,7 @@ int TMapMaker::SelectGPZone(int cellIndex, int mode, int classIndex, int retryBu
     return 0;
   }
   if (classIndex < 7) {
-    if (!TryMergeRegionGroupWithNeighborsRestrictedToMajors(cellIndex, classIndex)) {
+    if (!MergeMajorRegion(cellIndex, classIndex)) {
       return 0;
     }
   } else if (!TryMergeRegionGroupWithNeighbors(cellIndex, classIndex)) {
@@ -832,7 +832,7 @@ void TMapMaker::TranslateZones() {
 }
 
 // FUNCTION: IMPERIALISM 0x00527300
-bool TMapMaker::TryMergeRegionGroupWithNeighborsRestrictedToMajors(int cellIndex, int classIndex) {
+bool TMapMaker::MergeMajorRegion(int cellIndex, int classIndex) {
   for (int dir = 0; dir < 6; ++dir) {
     int neighborCell = AdjacentZone(cellIndex, dir);
     int neighborClass =
@@ -904,7 +904,7 @@ bool TMapMaker::TryMergeRegionGroupWithNeighbors(int cellIndex, int classIndex) 
 }
 
 // FUNCTION: IMPERIALISM 0x005275a0
-void TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords() {
+void TMapMaker::ExpandRegionGrid() {
   int cityRecordIndex = 0;
   int coarseIndex;
   for (coarseIndex = 0; coarseIndex < 405; ++coarseIndex) {
@@ -1427,7 +1427,7 @@ void TMapMaker::WriteTileGridToFile(const char* path) {
 }
 
 // FUNCTION: IMPERIALISM 0x00528e50
-void TMapMaker::SmoothCityRegionOwnershipByNeighborSampling() {
+void TMapMaker::SmoothProvinces() {
   short owner;
   for (int tileIndex = 0x6c; tileIndex < kStrategicTileCount - 0x6c; ++tileIndex) {
     int sameOwnerCount = 0;
@@ -1492,7 +1492,7 @@ void TMapMaker::SmoothCityRegionOwnershipByNeighborSampling() {
 }
 
 // FUNCTION: IMPERIALISM 0x005292f0
-void TMapMaker::RandomizeRegionTemplatesAndSmoothOwnership() {
+void TMapMaker::RandomizeTemplates() {
   int coarseIndex;
   for (coarseIndex = 0; coarseIndex < 378; ++coarseIndex) {
     unsigned short baseClass = static_cast<unsigned short>(regionClassGrid[0][coarseIndex]);
@@ -1508,23 +1508,22 @@ void TMapMaker::RandomizeRegionTemplatesAndSmoothOwnership() {
     unsigned short class3 = static_cast<unsigned short>(regionClassGrid[0][neighbor]);
     AdjacentZone(coarseIndex, 4);
 
-    RandomizeRegionTemplateBanksForMismatchedNeighborClasses(coarseIndex, baseClass, class1, class3,
-                                                             class2);
+    RandomizeTemplateBanks(coarseIndex, baseClass, class1, class3, class2);
   }
 
   if (g_pActiveRandomMapSetupPicture != 0) {
     g_pActiveRandomMapSetupPicture->SpinYourGlobe();
   }
-  SmoothCityRegionOwnershipByNeighborSampling();
+  SmoothProvinces();
 }
 
 // FUNCTION: IMPERIALISM 0x005293d0
-unsigned int TMapMaker::RandomizeRegionTemplateBanksForMismatchedNeighborClasses(
-    int coarseIndex, unsigned short baseClass, unsigned short class3, unsigned short class4,
-    unsigned short class5) {
+unsigned int TMapMaker::RandomizeTemplateBanks(int coarseIndex, unsigned short baseClass,
+                                               unsigned short class3, unsigned short class4,
+                                               unsigned short class5) {
   unsigned int result = class3;
   if (class3 != baseClass) {
-    MapGeneratorTileRecord* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
+    MapGeneratorTileRecord* cell = GetFineCell(coarseIndex);
     g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
     MapGeneratorTileRecord* dst = NULL;
     MapGeneratorTileRecord* src = NULL;
@@ -1570,7 +1569,7 @@ unsigned int TMapMaker::RandomizeRegionTemplateBanksForMismatchedNeighborClasses
   }
 
   if (class4 != baseClass) {
-    MapGeneratorTileRecord* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
+    MapGeneratorTileRecord* cell = GetFineCell(coarseIndex);
     MapGeneratorTileRecord* dst = &cell[324];
     unsigned int r = g_mapGenLcgState * 0x15a4e35 + 1;
     if ((r >> 0xc & 1) != 0) {
@@ -1604,7 +1603,7 @@ unsigned int TMapMaker::RandomizeRegionTemplateBanksForMismatchedNeighborClasses
   }
 
   if (class5 != baseClass) {
-    MapGeneratorTileRecord* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
+    MapGeneratorTileRecord* cell = GetFineCell(coarseIndex);
     MapGeneratorTileRecord* dst = &cell[326];
     unsigned int r = g_mapGenLcgState * 0x15a4e35 + 1;
     if ((r >> 0xc & 1) != 0) {
@@ -1648,7 +1647,7 @@ bool LinkIsEmpty(const SeaSegment* rec) {
 void TMapMaker::CopyRegionTemplateBankWithRandomVariant(int coarseIndex, short regionClass,
                                                         short unusedClass, short northClass,
                                                         short southClass) {
-  MapGeneratorTileRecord* cell = GetFineGridCellBasePointerFromCoarseIndex(coarseIndex);
+  MapGeneratorTileRecord* cell = GetFineCell(coarseIndex);
 
   if (northClass == regionClass) {
     g_mapGenLcgState = g_mapGenLcgState * 0x15a4e35 + 1;
@@ -1687,7 +1686,7 @@ void TMapMaker::CopyRegionTemplateBankToNeighborCell(int coarseIndex, short regi
                                                      short unusedClass, short northClass,
                                                      short unusedClass2) {
   int neighbor = AdjacentZone(coarseIndex, 2);
-  MapGeneratorTileRecord* cell = GetFineGridCellBasePointerFromCoarseIndex(neighbor);
+  MapGeneratorTileRecord* cell = GetFineCell(neighbor);
   MapGeneratorTileRecord* source = cell - 108;
 
   if (northClass == regionClass) {
@@ -1703,7 +1702,7 @@ void TMapMaker::CopyRegionTemplateBankToNeighborCell(int coarseIndex, short regi
 }
 
 // FUNCTION: IMPERIALISM 0x005298a0
-MapGeneratorTileRecord* TMapMaker::GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex) {
+MapGeneratorTileRecord* TMapMaker::GetFineCell(int coarseIndex) {
   char* cell = (static_cast<short>(coarseIndex % 27) +
                 static_cast<short>(coarseIndex / 27) * kStrategicMapColumns) *
                    0x90 +
@@ -1961,7 +1960,7 @@ int TMapMaker::ComputeOwnedTerritoryCentroidTile(int nationCode, char useWrapOff
 }
 
 // FUNCTION: IMPERIALISM 0x00529f60
-void TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders(int mode) {
+void TMapMaker::NumberProvincesAndBuildBorders(int mode) {
   if (static_cast<unsigned char>(mode) != 0) {
     int i;
     cityRegionCount = 0;
@@ -1984,7 +1983,7 @@ void TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders(int mode) {
       }
     }
   } else {
-    GenerateWaterRegionIdsBySeedAndNeighborPropagation();
+    FloodWaterRegions();
   }
 
   if (g_pActiveRandomMapSetupPicture != 0) {
@@ -1994,7 +1993,7 @@ void TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders(int mode) {
   if (g_pActiveRandomMapSetupPicture != 0) {
     g_pActiveRandomMapSetupPicture->SpinYourGlobe();
   }
-  BuildOverlaySpanRecordsFromQuadBorderLinks();
+  BuildBorderSpans();
   if (g_pActiveRandomMapSetupPicture != 0) {
     g_pActiveRandomMapSetupPicture->SpinYourGlobe();
   }
@@ -2033,7 +2032,7 @@ void TMapMaker::CompactCityRegionIds() {
 }
 
 // FUNCTION: IMPERIALISM 0x0052a160
-void TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation() {
+void TMapMaker::FloodWaterRegions() {
   short* labels = new short[kStrategicTileCount];
 
   // Phase 1: seed a label per tile: -1 for water tiles, -2 otherwise.
@@ -2197,7 +2196,7 @@ void AppendBorderQuad(int tileIndex, int regionA, int regionB, int sideCode) {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0052b820
-void TMapMaker::AssignRegionIdsToUnclaimedBorderSegmentSides() {
+void TMapMaker::AssignBorderRegions() {
   cityRegionCount = 0;
 
   unsigned int index = 0;
@@ -2230,7 +2229,7 @@ void TMapMaker::AssignRegionIdsToUnclaimedBorderSegmentSides() {
 }
 
 // FUNCTION: IMPERIALISM 0x0052b9b0
-void TMapMaker::AssignWaterRegionIdsFromOverlayScanlineIntersections() {
+void TMapMaker::AssignWaterRegions() {
   SeaSegmentStretch& segments = g_regionBorderLinkTable;
 
   int cellX = 0;
@@ -2471,7 +2470,7 @@ int TileRegionId(char* grid, int off) {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0052cae0
-void TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks() {
+void TMapMaker::BuildBorderSpans() {
   SeaSegmentStretch& seg = g_regionBorderLinkTable;
   SeapointStretch& quad = g_seapointQuadTable;
 
@@ -2698,7 +2697,7 @@ int TMapMaker::RepairOrphanedTileValuesFromNeighbors(short* tileValues) {
 }
 
 // FUNCTION: IMPERIALISM 0x0052d6b0
-int TMapMaker::AssignSequentialValuesToRegionPlaceholders(short* tileValues, int* nextValue) {
+int TMapMaker::NumberPlaceholders(short* tileValues, int* nextValue) {
   int regionOrdinal = 0;
   int assignedCount = 0;
 
@@ -2915,7 +2914,7 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
 }
 
 // FUNCTION: IMPERIALISM 0x0052e350
-void TMapMaker::RebuildUMapperRouteRecordsAndActiveMapRects() {
+void TMapMaker::BuildRoutes() {
   SeaSegmentStretch& links = g_regionBorderLinkTable;
 
   // --- Pass 1: collapse degenerate links, count the live ones ---
@@ -2958,8 +2957,7 @@ void TMapMaker::RebuildUMapperRouteRecordsAndActiveMapRects() {
     }
   }
 
-  g_pActiveMapOrderContext->InitializeMapActionContextsForNationCountUsingCostField(
-      cityRegionCount);
+  g_pActiveMapOrderContext->CreateZones(cityRegionCount);
 
   // --- Pass 3: wire mutual primary-neighbour adjacency between each link's two contexts ---
   int k = 0;
@@ -2978,8 +2976,8 @@ void TMapMaker::RebuildUMapperRouteRecordsAndActiveMapRects() {
     backHi->AddNeighbor(backLo);
   }
 
-  PopulatePortZoneAdjacencyToNearbyCityContexts();
-  RegenerateAllMapActionContextStatusCodes();
+  LinkPortZones();
+  RegenerateZoneCodes();
 }
 
 // FUNCTION: IMPERIALISM 0x0052e840

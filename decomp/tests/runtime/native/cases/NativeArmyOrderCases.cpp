@@ -317,7 +317,7 @@ RuntimeActionResult RunArmyClickHostile(NativeTransition& transition) {
     return started;
   }
   short mapViewOrigin = g_pGlobalMapState->mapViewOriginTile;
-  g_pMapContextActionManager->ValidateOrderPlacementPrerequisitesForSelectedTile(dest);
+  g_pMapContextActionManager->CanOrderToTile(dest);
   // NoticeTile recenters the retail view after a successful order. Camera position is
   // presentation state; keep the differential focused on the validated order transition.
   g_pGlobalMapState->mapViewOriginTile = mapViewOrigin;

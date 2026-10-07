@@ -4,7 +4,7 @@
 
 // FUNCTION: IMPERIALISM 0x0049ddb0
 void TNewGameCommand::DoIt() {
-  ReinitializeGameFlowAndPostTurnEventCode(kTurnEventRebuildRegisteredWindows);
+  RestartGameFlow(kTurnEventRebuildRegisteredWindows);
 }
 
 // FUNCTION: IMPERIALISM 0x0049de00

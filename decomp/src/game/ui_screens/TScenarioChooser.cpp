@@ -26,7 +26,7 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_screens_globals.h"
 
-void ReadLineFromBufferedStreamUntilTerminator(char* destination, int maxLength, FILE* stream);
+void ReadLine(char* destination, int maxLength, FILE* stream);
 
 // FUNCTION: IMPERIALISM 0x0045ae60
 TScenarioChooser::TScenarioChooser() {}
@@ -59,7 +59,7 @@ void TScenarioChooser::DoPostCreate(int arg) {
     }
     FILE* metadataStream = fopen(scenarioPath, "r");
     char titleLine[64];
-    ReadLineFromBufferedStreamUntilTerminator(titleLine, 0x40, metadataStream);
+    ReadLine(titleLine, 0x40, metadataStream);
     fclose(metadataStream);
 
     if (scenarioList->totalItems < 0x40) {
@@ -123,12 +123,12 @@ void TScenarioChooser::DoPostCreate(int arg) {
   cursorPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
   cursorPanel->SetJustification(1, true);
 
-  LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x18, this);
-  LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x14, FindSubView(kControlTagExit));
-  LoadUiStringByGroupAndIndexToControlObject(0x2737, 0x16, FindSubView(kControlTagPreviewMap));
-  LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x19, FindSubView(kControlTagStar));
-  LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x1a, FindSubView(kControlTagList));
-  LoadUiStringByGroupAndIndexToControlObject(0x2758, 0x1c, FindSubView(kControlTagMore));
+  SetControlString(0x2758, 0x18, this);
+  SetControlString(0x2737, 0x14, FindSubView(kControlTagExit));
+  SetControlString(0x2737, 0x16, FindSubView(kControlTagPreviewMap));
+  SetControlString(0x2758, 0x19, FindSubView(kControlTagStar));
+  SetControlString(0x2758, 0x1a, FindSubView(kControlTagList));
+  SetControlString(0x2758, 0x1c, FindSubView(kControlTagMore));
 }
 
 // FUNCTION: IMPERIALISM 0x0057a050
@@ -181,7 +181,7 @@ void TScenarioChooser::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
 // FUNCTION: IMPERIALISM 0x0057a2d0
 void TScenarioChooser::ExitScreen() {
   if (g_pSimMgr->multiplayerSessionRole != kSessionRoleStandalone) {
-    g_pGameFlowState->ResetLocalUiStateAndShowMultiplayerSetup();
+    g_pGameFlowState->ResetAndShowMultiplayerSetup();
   } else {
     g_pAmbitApplication->PostTurnEventCodeMessage(EncodeTurnEventCode(kTurnEventMainMenu));
   }
@@ -370,7 +370,7 @@ void TScenarioChooser::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x005d4ba0
-void ReadLineFromBufferedStreamUntilTerminator(char* destination, int maxLength, FILE* stream) {
+void ReadLine(char* destination, int maxLength, FILE* stream) {
   int count = 0;
   if (maxLength <= 0) {
     return;

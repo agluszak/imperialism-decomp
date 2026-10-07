@@ -15,7 +15,7 @@ class TAssetMgr : public TObject {
 public:
   DECLARE_DYNCREATE(TAssetMgr)
   virtual ~TAssetMgr() override;
-  virtual TWindow* ResolveTurnEventDialogNodeByMessageContext(TurnEventId messageContext);
+  virtual TWindow* GetDialog(TurnEventId messageContext);
   virtual void OpenFilesForView(short fileSet);
   virtual void OpenFilesFor(short fileSet);
   virtual void CloseFilesFor(short fileSet);

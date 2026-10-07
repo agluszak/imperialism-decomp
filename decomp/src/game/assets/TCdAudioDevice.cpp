@@ -38,7 +38,7 @@ void TCdAudioDevice::CloseDeviceAndClearHandle() {
 
 // FUNCTION: IMPERIALISM 0x0047cd60
 void TCdAudioDevice::ApplyMciPlaybackRangeFromAudioManager(int trackIndex) {
-  SetMciPlaybackRangeByTrackIndexAndDevice(trackIndex, m_deviceId);
+  SetTrackRange(trackIndex, m_deviceId);
 }
 
 // FUNCTION: IMPERIALISM 0x0047cd80
@@ -49,7 +49,7 @@ void TCdAudioDevice::StopPlayback() {
 // FUNCTION: IMPERIALISM 0x0047cda0
 int TCdAudioDevice::GetAuxOutputVolume() {
   unsigned int volume;
-  GetAuxOutputVolumeFromFirstCompatibleDevice(&volume);
+  GetAuxVolume(&volume);
   return volume;
 }
 
@@ -113,7 +113,7 @@ int __stdcall GetAuxOutputVolumeRaw(DWORD* outVolume) {
 }
 
 // FUNCTION: IMPERIALISM 0x005e1590
-bool __stdcall SetAuxOutputVolumeAcrossCompatibleDevices(int level) {
+bool __stdcall SetAuxVolume(int level) {
   MMRESULT result = 0;
   UINT numDevs = auxGetNumDevs();
   UINT deviceId = 0;
@@ -132,7 +132,7 @@ bool __stdcall SetAuxOutputVolumeAcrossCompatibleDevices(int level) {
 }
 
 // FUNCTION: IMPERIALISM 0x005e1620
-int __stdcall GetAuxOutputVolumeFromFirstCompatibleDevice(unsigned int* outVolume) {
+int __stdcall GetAuxVolume(unsigned int* outVolume) {
   tagAUXCAPSA caps;
   DWORD volume;
   UINT deviceId = 0;
@@ -191,7 +191,7 @@ unsigned int GetCdTrackCount(MCIDEVICEID device) {
 }
 
 // FUNCTION: IMPERIALISM 0x005e1850
-void __stdcall SetMciPlaybackRangeByTrackIndexAndDevice(int trackIndex, MCIDEVICEID device) {
+void __stdcall SetTrackRange(int trackIndex, MCIDEVICEID device) {
   MCI_SET_PARMS setParms;
   MCI_PLAY_PARMS playParms;
 

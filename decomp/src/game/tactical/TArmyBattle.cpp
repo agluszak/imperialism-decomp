@@ -38,7 +38,7 @@ void TArmyBattle::AllocateRecordList() {
 }
 
 // FUNCTION: IMPERIALISM 0x0059fc40
-void TArmyBattle::ComputeBattlefieldColumnCountFromUnitRanges() {
+void TArmyBattle::GetBattlefieldColumns() {
   int maxRange = 0;
   CIterator rangeIter(recordList);
   for (TArmyTacUnit* record = static_cast<TArmyTacUnit*>(rangeIter.Reset()); rangeIter.More();
@@ -51,10 +51,8 @@ void TArmyBattle::ComputeBattlefieldColumnCountFromUnitRanges() {
 }
 
 // FUNCTION: IMPERIALISM 0x005a4790
-void TArmyBattle::InitializeBattleSetupAndMaybeShowTacticalView(TArmyStack* ourStack,
-                                                                TArmyStack* enemyStack,
-                                                                int compositionClass, int fortLevel,
-                                                                int battleSiteIndex) {
+void TArmyBattle::SetUpBattle(TArmyStack* ourStack, TArmyStack* enemyStack, int compositionClass,
+                              int fortLevel, int battleSiteIndex) {
   // Fixed tactical battle grid: 435 tiles (0x1b3), stride 29 (0x1d).
   tacticalTileCount = 0x1b3;
   tacticalTileStride = 0x1d;
@@ -86,8 +84,8 @@ void TArmyBattle::InitializeBattleSetupAndMaybeShowTacticalView(TArmyStack* ourS
   // Show the live tactical-battle view when forced globally or either side is watched.
   if (g_nForceTacticalBattleViewFlag || enemySideWatchFlag != 0 || ourSideWatchFlag != 0) {
     g_nTurnCooldownDeferCounter = 0;
-    g_pSfxPlaybackSystem->RequestAudioPresetChangeWithDeferredApply(rand() % 3 + 6,
-                                                                    false); // battle cue 6..8
+    g_pSfxPlaybackSystem->RequestMusicChange(rand() % 3 + 6,
+                                             false); // battle cue 6..8
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventTacticalView), 0);
     TTacArmyView* battleView =
         static_cast<TTacArmyView*>(g_pDisplayMgr->activeDialog->FindSubView(kControlTagDialog));
@@ -170,8 +168,7 @@ void TArmyBattle::ReadFrom(TStream* stream) {
     targetStack->AddUnit(deployRecord->sourceUnit);
   }
 
-  InitializeBattleSetupAndMaybeShowTacticalView(ourBattleStack, enemyBattleStack, compositionClass,
-                                                fortLevel, battleSiteIndex);
+  SetUpBattle(ourBattleStack, enemyBattleStack, compositionClass, fortLevel, battleSiteIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x005a4da0
@@ -312,7 +309,7 @@ void TArmyBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
     TTacticalToolbar* toolbar =
         static_cast<TTacticalToolbar*>(battleView->ownerContext->FindSubView(kControlTagTool));
     toolbar->AssertValid();
-    toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(selectedUnit);
+    toolbar->ShowCurrentUnit(selectedUnit);
   }
 }
 
@@ -328,7 +325,7 @@ void TArmyBattle::EndBattle(unsigned char sideWonFlag) {
         static_cast<TTacticalToolbar*>(battleView->ownerContext->FindSubView(kControlTagTool));
     toolbar->AssertValid();
     toolbar->UpdateTacticalOtherSideUnitControl(0);
-    toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(0);
+    toolbar->ShowCurrentUnit(0);
   }
 
   g_pMapContextActionManager->EndTacticalBattle(static_cast<TArmyPlayer*>(players[0])->armyStack,

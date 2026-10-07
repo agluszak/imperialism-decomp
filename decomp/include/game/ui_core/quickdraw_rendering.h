@@ -12,7 +12,7 @@ void SetGlobalBlitTransparentColorRaw(COLORREF transparentColor);
 void SetGlobalQuickDrawOrigin(short originX, short originY);
 void SetQuickDrawPenSizeAndMarkDirty(short horizontalSize, short verticalSize);
 void ResetQuickDrawStrokeState();
-void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect);
+void FillContextRect(RECT* rect);
 
 struct QuickDrawCursor;
 typedef QuickDrawCursor** QuickDrawCursorHandle;
@@ -25,15 +25,14 @@ void DrawCenteredGuideLineOnMapDc(short x, short y);
 
 struct TextStyle;
 
-CFont* __cdecl CreateFontFromPresetAndAttachRegionHandle(TextStyle* preset);
+CFont* __cdecl CreatePresetFont(TextStyle* preset);
 
-CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TextStyle* style);
+CFont* __cdecl UpdateFontPreset(TextStyle* style);
 
 void UpdatePaletteIndexWithDefaultFallback(QuickDrawPaletteIndex paletteIndex);
 
-short __cdecl MeasureTextExtentWithCachedQuickDrawStyle(const CString* text);
-short __cdecl MeasureTextRangeWithCachedQuickDrawStyle(const char* text, short offset,
-                                                       short length);
+short __cdecl MeasureText(const CString* text);
+short __cdecl MeasureTextRange(const char* text, short offset, short length);
 
 void TruncateTextToFitWidthWithEllipsis(CString* text, short maxWidth);
 
@@ -53,9 +52,7 @@ void HiliteColor(const RGBQUAD* color);
 
 void RenderTacticalBattleSelectionAndUnitOverlayPass(char glyph);
 
-void TransparentBlitBitmapUsingMaskedRasterOps(HDC destDc, HBITMAP sourceBitmap, short destX,
-                                               short destY, COLORREF colorKey);
+void TransparentBlit(HDC destDc, HBITMAP sourceBitmap, short destX, short destY, COLORREF colorKey);
 
-void TransparentBlitBitmapRegionUsingMaskedRasterOps(HDC destDc, HBITMAP sourceBitmap, short destX,
-                                                     short destY, COLORREF colorKey, short srcX,
-                                                     short srcY, short width, short height);
+void TransparentBlitRegion(HDC destDc, HBITMAP sourceBitmap, short destX, short destY,
+                           COLORREF colorKey, short srcX, short srcY, short width, short height);

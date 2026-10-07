@@ -64,7 +64,7 @@ void TShipyardView::DoStartup() {
 
   productionView = g_pMacViewMgr->activeCityProductionView;
   unresolvedZero = 0;
-  iconSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f);
+  iconSurface = LoadBitmapSurface(0x264f);
 
   for (int slotIndex = 0; slotIndex < 8; ++slotIndex) {
     TControl* slotButton =
@@ -173,7 +173,7 @@ void TShipyardView::DoStartup() {
 
 // FUNCTION: IMPERIALISM 0x004c8a20
 void TShipyardView::LoadShipGWorld() {
-  iconSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f);
+  iconSurface = LoadBitmapSurface(0x264f);
 }
 
 // FUNCTION: IMPERIALISM 0x004c8a50
@@ -317,7 +317,7 @@ void TShipyardView::Draw(RECT* rectBuffer) {
   drawRect.right = 0xe5;
   drawRect.bottom = 0xc4;
   if (SectRect(&drawRect, &paintRect, &intersectionRect)) {
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b6b);
+    ApplyTextStyle(0, 0xa, 0x2b6b);
     int x = 0x3a;
     for (int slot = 0; slot < 4; ++slot) {
       short spriteId = commoditySpriteIds[slot];
@@ -346,12 +346,12 @@ void TShipyardView::Draw(RECT* rectBuffer) {
         short haveAmount = city->stockByType[spriteId];
         text.Format(g_szDecimalFormat, static_cast<int>(haveAmount));
         if (haveAmount < commodityRequiredAmounts[slot]) {
-          ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b69);
+          ApplyTextStyle(0, 0xa, 0x2b69);
           SetQuickDrawTextOriginWithContextOffset(static_cast<short>(x), 0xe6);
           DrawTextWithCachedQuickDrawStyleState(&text);
-          ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b6b);
+          ApplyTextStyle(0, 0xa, 0x2b6b);
         } else {
-          ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b6b);
+          ApplyTextStyle(0, 0xa, 0x2b6b);
           SetQuickDrawTextOriginWithContextOffset(static_cast<short>(x), 0xe6);
           DrawTextWithCachedQuickDrawStyleState(&text);
         }
@@ -366,7 +366,7 @@ void TShipyardView::Draw(RECT* rectBuffer) {
   drawRect.bottom = 0x80;
   if (SectRect(&drawRect, &paintRect, &intersectionRect)) {
     short nCommoditySpriteId = buildQueueSlotValues[selectedRequirementRow];
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b6b);
+    ApplyTextStyle(0, 0xa, 0x2b6b);
 
     for (int column = 0; column < 6; ++column) {
       g_pSimMgr->GetString(0x2736, static_cast<short>(column + 0x10), &text);

@@ -92,10 +92,10 @@ void TCouncilView::DoPostCreate(int arg) {
     ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
 
     TView* endControl = FindSubView(kControlTagEnd);
-    LoadUiStringByGroupAndIndexToControlObject(0x2746, 6, endControl);
+    SetControlString(0x2746, 6, endControl);
 
     TView* querControl = FindSubView(kControlTagQuer);
-    LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, querControl);
+    SetControlString(0x2730, 3, querControl);
   }
 }
 
@@ -360,9 +360,8 @@ void TCouncilView::NextTick() {
 }
 
 // FUNCTION: IMPERIALISM 0x004fc950
-void TCouncilView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                                       RgnHandle hitArg) {
-  TView::HandleCursorHoverSelectionByChildHitTestAndFallback(point, hitArg);
+void TCouncilView::AdjustCursor(CPoint* point, RgnHandle hitArg) {
+  TView::AdjustCursor(point, hitArg);
   if (static_cast<int>(visibleVoteTier) < councilNationCount + 2) {
     SetCursor(g_pViewMgr->turnEventCursors[26]);
   }

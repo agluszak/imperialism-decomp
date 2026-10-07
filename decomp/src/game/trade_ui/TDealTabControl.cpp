@@ -20,8 +20,8 @@ void TDealTabControl::Setup(short bitmapResourceId, unsigned char useAlternatePa
   } else {
     tabCount = 15;
   }
-  filledRowStrip = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(bitmapResourceId);
-  emptyRowStrip = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(bitmapResourceId + 4);
+  filledRowStrip = LoadBitmapSurface(bitmapResourceId);
+  emptyRowStrip = LoadBitmapSurface(bitmapResourceId + 4);
   rowHeightPixels = 25;
 }
 

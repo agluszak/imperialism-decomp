@@ -17,32 +17,25 @@ void BuildUiTextStyleDescriptor(TextStyle* styleDescriptor, int unused, int font
 void InitializeUiTextStyleDescriptor(TextStyle* styleDescriptor, short face, short pointSize,
                                      int themeCode, short font);
 
-TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int unused2,
-                                                      int pointSize, int themeCode, int themeCode2,
-                                                      const char* caption);
+TStaticText* ApplyControlTheme(TStaticText* control, int unused2, int pointSize, int themeCode,
+                               int themeCode2, const char* caption);
 
-TStaticText* ConfigureUiControlStyleValueAndCaptionFromStringResource(TStaticText* control,
-                                                                      int unused2, int pointSize,
-                                                                      int themeCode, int themeCode2,
-                                                                      int stringResourceGroup,
-                                                                      short stringResourceIndex);
+TStaticText* ConfigureControlFromStrings(TStaticText* control, int unused2, int pointSize,
+                                         int themeCode, int themeCode2, int stringResourceGroup,
+                                         short stringResourceIndex);
 
-void ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(int unused, int styleWidth, int themeCode);
-void InitializeUiTextStyleDescriptorAndApplyQuickDraw(short face, short pointSize, int themeCode,
-                                                      short font);
+void ApplyTextStyle(int unused, int styleWidth, int themeCode);
+void SetTextStyleAndApply(short face, short pointSize, int themeCode, short font);
 
 void SetControlHoverHelpText(CString sharedString, TView* control);
 void SetControlHoverHelpTextAltEntry(CString sharedString, TView* control);
 
-void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
+void SendStringCommand(short group, short index, TView* control);
 
 void __cdecl DispatchToSelectableTextOptionEntries(TView* view, TextStyle* state, int flag);
 
-TStaticText* __cdecl RefreshActiveControlThenApplyThemeStyleAndCaption(unsigned int controlTag,
-                                                                       int unused2, int pointSize,
-                                                                       int themeCode,
-                                                                       int themeCode2,
-                                                                       const char* caption);
+TStaticText* __cdecl RefreshAndTheme(unsigned int controlTag, int unused2, int pointSize,
+                                     int themeCode, int themeCode2, const char* caption);
 
 void __cdecl ApplyUiTextStyleAndThemeFlags(TDropShadowText* control, int unused, int pointSize,
                                            int shadowThemeCode, int textThemeCode);
@@ -51,17 +44,14 @@ void __cdecl ApplyUiNumberTextStyleAndThemeColor(TDropShadowNumberText* control,
                                                  int pointSize, int shadowThemeCode,
                                                  int textThemeCode);
 
-void LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(short group, short index,
-                                                           unsigned int controlTag);
+void SetTaggedStringAndApply(short group, short index, unsigned int controlTag);
 
-void LoadUiStringByGroupAndIndexToGlobalControlTag(short group, short index,
-                                                   unsigned int controlTag);
+void SetTaggedString(short group, short index, unsigned int controlTag);
 
 class TView;
 
 TView* __cdecl ApplySharedStringToGlobalControlTag(CString sharedString, unsigned int controlTag);
 
-void LoadUiStringByGroupAndIndexToControlObject(short group, short index, TView* control);
+void SetControlString(short group, short index, TView* control);
 
-TView* __cdecl AssignSharedStringToTaggedControlAndProcessState(const char* text,
-                                                                unsigned int controlTag);
+TView* __cdecl SetTaggedControlText(const char* text, unsigned int controlTag);

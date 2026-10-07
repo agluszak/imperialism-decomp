@@ -12,7 +12,7 @@ public:
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   virtual void DoKeyEvent(TToolboxEvent* event) override;
   virtual void DoPostCreate(int arg) override;
-  virtual void HandleSaveGameSlotSelectionAndPromptFlow();
+  virtual void SaveSelectedSlot();
   virtual void HandleTurnFlowStateTickOrShowMainMenu();
 
   void LoadHeader(short slotMode);

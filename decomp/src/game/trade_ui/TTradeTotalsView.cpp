@@ -34,7 +34,7 @@ void TTradeTotalsView::Draw(RECT* rectBuffer) {
   TGreatPower* nation = g_apNationStates[nationSlot];
 
   g_pSimMgr->GetString(0x2740, 0x17, &strA);
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b6b);
+  ApplyTextStyle(0, 0xe, 0x2b6b);
   COLORREF style1;
   COLORREF style2;
   ResolveUiThemeColor(0x2b6b, &style1);
@@ -46,7 +46,7 @@ void TTradeTotalsView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(9, 17);
   DrawTextWithCachedQuickDrawStyleState(&strA);
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b6a);
+  ApplyTextStyle(0, 0xc, 0x2b6a);
 
   g_pSimMgr->GetString(0x2740, 0x18, &strA);
   SetQuickDrawTextOriginWithContextOffset(8, 0x1e);
@@ -106,7 +106,7 @@ void TTradeTotalsView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(remainingX, y);
   DrawTextWithCachedQuickDrawStyleState(&strA);
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b6a);
+  ApplyTextStyle(0, 0xc, 0x2b6a);
   g_pSimMgr->GetString(0x2740, 0x1b, &strB);
   g_pSimMgr->NumToCurrency(nation->diplomacyBudgetBase / 100, &strC);
   scanBracketExpressions(g_pSimMgr, &strA, static_cast<LPCSTR>(strB),

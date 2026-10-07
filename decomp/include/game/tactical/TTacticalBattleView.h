@@ -19,8 +19,7 @@ public:
   virtual void Free() override;
   virtual void DoKeyEvent(TToolboxEvent* event) override;
   virtual void DoSetCursor(CPoint* point, RgnHandle hitArg) override;
-  virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                                   RgnHandle hitArg) override;
+  virtual void AdjustCursor(CPoint* point, RgnHandle hitArg) override;
   virtual void DoPostCreate(int arg) override;
   virtual void DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) override;
   virtual void UpdateTile(TacticalTileIndex tileIndex);
@@ -73,9 +72,8 @@ public:
   void KillSelectionBlink();
   // Writes the on-screen RECT of a bare hex tile (no unit growth).
   void Tile2Rect(RECT* rectOut, TacticalTileIndex tileIndex);
-  void ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(TTacticalUnit* unit, RECT* rectOut);
-  short
-  ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(TacticalTileIndex tileIndex);
+  void GetUnitSpriteRect(TTacticalUnit* unit, RECT* rectOut);
+  short GetUnitFacing(TacticalTileIndex tileIndex);
 
   short battlefieldOriginOffsetX;
 };

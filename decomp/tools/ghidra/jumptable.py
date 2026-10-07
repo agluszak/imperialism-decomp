@@ -16,7 +16,7 @@ capstone (so it works in Ghidra gaps), extracts TABLE from the operand, walks th
 dword entries while they look like code addresses, detects a trailing index-byte
 table (MSVC emits it directly after the target table), and prints each case with
 the containing function of its target. Worked example: `jumptable 0x5db695`
-decodes TViewMgr::HandleTurnStateExitAndPostFollowupEventCode's followup-event
+decodes TViewMgr::ExitTurnState's followup-event
 poster (targets at 0x5db6fc, index bytes at 0x5db710).
 
 Bytes are read one at a time via Memory.getByte — do NOT bulk-read with

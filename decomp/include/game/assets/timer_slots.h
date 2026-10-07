@@ -6,5 +6,4 @@
 
 typedef bool(__cdecl* TimerSlotCallback)();
 
-void CALLBACK DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot(HWND hwnd, UINT msg,
-                                                                        UINT idEvent, DWORD dwTime);
+void CALLBACK TimerSlotProc(HWND hwnd, UINT msg, UINT idEvent, DWORD dwTime);

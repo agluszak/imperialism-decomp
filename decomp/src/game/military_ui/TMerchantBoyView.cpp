@@ -17,13 +17,13 @@ IMPLEMENT_DYNCREATE(TMerchantBoyView, TView)
 void TMerchantBoyView::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b6a);
+  ApplyTextStyle(0, 0xa, 0x2b6a);
   CString label;
   CString unusedLabel;
-  InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xc, 0x2b6a, 3);
+  SetTextStyleAndApply(0, 0xc, 0x2b6a, 3);
 
   short commodityCode = battleDetail->resourceType;
-  FormatLocalizedCommodityCountLabelByIndex(&label, commodityCode, -1);
+  FormatCommodityCount(&label, commodityCode, -1);
 
   SetQuickDrawTextOriginWithContextOffset(0x50, 0x18);
   DrawTextWithCachedQuickDrawStyleState(&label);
@@ -37,8 +37,8 @@ void TMerchantBoyView::Draw(RECT* rectBuffer) {
     g_pSimMgr->GetString(0x273c, 0x1b, &label);
     themeCode = 0x2b67;
   }
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(1, 0xc, themeCode);
-  MeasureTextExtentWithCachedQuickDrawStyle(&label); // result unused; primes the cached font
+  ApplyTextStyle(1, 0xc, themeCode);
+  MeasureText(&label); // result unused; primes the cached font
   SetQuickDrawTextOriginWithContextOffset(0x50, 0x26);
   DrawTextWithCachedQuickDrawStyleState(&label);
 

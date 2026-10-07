@@ -12,7 +12,7 @@ short QuickDrawCompatibilityStatus() {
 void QuickDrawCompatibilityNoOp() {}
 
 // FUNCTION: IMPERIALISM 0x0049dd00
-int QuickDrawCompatibilityReturnSecondArgument(int unused, int value) {
+int ReturnSecondArgument(int unused, int value) {
   return value;
 }
 

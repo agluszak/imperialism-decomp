@@ -30,7 +30,7 @@ void TAssetMgr::ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag) {
 }
 
 // FUNCTION: IMPERIALISM 0x005df3c0
-TWindow* TAssetMgr::ResolveTurnEventDialogNodeByMessageContext(TurnEventId messageContext) {
+TWindow* TAssetMgr::GetDialog(TurnEventId messageContext) {
   return static_cast<TWindow*>(
       g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(messageContext, 0));
 }
@@ -96,19 +96,18 @@ void TAssetMgr::OpenMovie(const CString& movieName, TMovieView* movieView, int u
   CString moviePath = CString("Movies/") + movieName;
   moviePath = moviePath + ".avi";
 
-  CString prefixedPath =
-      CString(g_pImperialismApp->DetectImperialismInstallDriveAndSetPathPrefix()) + moviePath;
+  CString prefixedPath = CString(g_pImperialismApp->FindInstallDrive()) + moviePath;
 
   g_pViewMgr->activeMovieView = movieView;
   if (!movieView->OpenMoviePathAndDetachOnSuccess(static_cast<LPCTSTR>(prefixedPath))) {
     if (!movieView->OpenMoviePathAndDetachOnSuccess(static_cast<LPCTSTR>(moviePath))) {
-      g_pViewMgr->HandleTurnStateExitAndPostFollowupEventCode(0);
+      g_pViewMgr->ExitTurnState(0);
       return;
     }
   }
 
-  g_pSfxPlaybackSystem->ClearDirectSoundInitPendingAndResetState();
-  g_pViewMgr->HandleTurnStateExitAndPostFollowupEventCode(2);
+  g_pSfxPlaybackSystem->CancelSoundInit();
+  g_pViewMgr->ExitTurnState(2);
   movieView->PlayTheMovie();
 }
 
@@ -225,8 +224,7 @@ void TAssetMgr::ScheduleTimerSlotCallbackWithInterval(TimerSlotCallback callback
   } else {
     mainWnd = AfxGetThread()->GetMainWnd();
   }
-  g_timerSlotIds[slot] = ::SetTimer(mainWnd->m_hWnd, slot + 0xa000, interval,
-                                    &DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot);
+  g_timerSlotIds[slot] = ::SetTimer(mainWnd->m_hWnd, slot + 0xa000, interval, &TimerSlotProc);
 }
 
 namespace {

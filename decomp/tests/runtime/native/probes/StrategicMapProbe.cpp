@@ -22,8 +22,7 @@ bool FindVisibleTileCenters(TMapDialog* mapDialog, CPoint* first, CPoint* second
   for (short tile = 0; tile < kStrategicTileCount; ++tile) {
     short projectedY;
     short projectedX;
-    ProjectTileIndexToWrappedScreenOffsetByScale(tile, &mapDialog->viewportOrigin, &projectedY,
-                                                 &projectedX, 1);
+    ProjectTile(tile, &mapDialog->viewportOrigin, &projectedY, &projectedX, 1);
     CPoint center(projectedX + 0x20, projectedY + 0x20);
     if (center.x < 1 || center.y < 1 || center.x >= mapDialog->frameWidth - 1 ||
         center.y >= mapDialog->frameHeight - 1) {
@@ -93,8 +92,7 @@ RuntimeActionResult StrategicMapProbe::VerifyHoverCache() {
   short savedCitySiteNeighbors[6];
   memcpy(savedStrategicNeighbors, g_aStrategicMapNeighborHighlightTiles,
          sizeof(savedStrategicNeighbors));
-  memcpy(savedCitySiteNeighbors, g_aCitySiteNeighborHighlightTiles,
-         sizeof(savedCitySiteNeighbors));
+  memcpy(savedCitySiteNeighbors, g_aCitySiteNeighborHighlightTiles, sizeof(savedCitySiteNeighbors));
   for (int neighborIndex = 0; neighborIndex < 6; ++neighborIndex) {
     g_aStrategicMapNeighborHighlightTiles[neighborIndex] = -1;
     g_aCitySiteNeighborHighlightTiles[neighborIndex] = -1;
@@ -106,9 +104,9 @@ RuntimeActionResult StrategicMapProbe::VerifyHoverCache() {
   GetGWorld(&savedSurface, &savedSurfaceFlags);
   short savedInteractionMode = mapView->activeUnitCategoryIndex;
   mapView->activeUnitCategoryIndex = 5;
-  mapDialog->HandleCursorHoverSelectionByChildHitTestAndFallback(&firstHoverPoint, 0);
+  mapDialog->AdjustCursor(&firstHoverPoint, 0);
   bool firstHoverKeptCache = memcmp(beforeHover, mapCache->pixelBits, mapCacheBytes) == 0;
-  mapDialog->HandleCursorHoverSelectionByChildHitTestAndFallback(&secondHoverPoint, 0);
+  mapDialog->AdjustCursor(&secondHoverPoint, 0);
   bool secondHoverKeptCache = memcmp(beforeHover, mapCache->pixelBits, mapCacheBytes) == 0;
   bool usedStrategicNeighborCache = g_aCitySiteNeighborHighlightTiles[0] == 0;
   for (int checkedNeighborIndex = 0; checkedNeighborIndex < 6; ++checkedNeighborIndex) {
@@ -118,8 +116,7 @@ RuntimeActionResult StrategicMapProbe::VerifyHoverCache() {
   }
   memcpy(g_aStrategicMapNeighborHighlightTiles, savedStrategicNeighbors,
          sizeof(savedStrategicNeighbors));
-  memcpy(g_aCitySiteNeighborHighlightTiles, savedCitySiteNeighbors,
-         sizeof(savedCitySiteNeighbors));
+  memcpy(g_aCitySiteNeighborHighlightTiles, savedCitySiteNeighbors, sizeof(savedCitySiteNeighbors));
   mapView->activeUnitCategoryIndex = savedInteractionMode;
   SetGWorld(savedSurface, savedSurfaceFlags);
   delete[] beforeHover;

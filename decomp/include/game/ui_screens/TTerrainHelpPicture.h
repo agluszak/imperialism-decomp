@@ -13,7 +13,7 @@ public:
   DECLARE_DYNCREATE(TTerrainHelpPicture)
   virtual ~TTerrainHelpPicture() override;
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
-  virtual void HighlightSelectedMenuItemAndRefreshDetailText(int selectedIndex);
+  virtual void HighlightMenuItem(int selectedIndex);
 
   TDeluxeText* infoTextPane;
   short menuItemIds[12];

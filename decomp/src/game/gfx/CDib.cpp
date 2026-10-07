@@ -1317,10 +1317,9 @@ void CDib::ForwardBlitSurfaceRectSkippingTransparentColor(CDib* destDib, POINT* 
 }
 
 // FUNCTION: IMPERIALISM 0x00496b80
-void BlitBitmapResourceToTemporaryCompatibleDcAndPresent(CDC* destDc, CDib* sourceDib, short srcX,
-                                                         short srcY, short transparentColor,
-                                                         short surfaceSrcX, short surfaceSrcY,
-                                                         short width, short height) {
+void BlitBitmapResource(CDC* destDc, CDib* sourceDib, short srcX, short srcY,
+                        short transparentColor, short surfaceSrcX, short surfaceSrcY, short width,
+                        short height) {
   CDib* surface = new CDib(width, height, sourceDib->m_pInfoHeader->bmiHeader.biBitCount);
   surface->EnsureDibSectionCreated(destDc);
   surface->CopyRgbQuadTableFrom(g_pResourceMgr->ResolveDefaultLogPalette());

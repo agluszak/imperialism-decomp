@@ -158,7 +158,7 @@ void TWorldView::DoKeyEvent(TToolboxEvent* event) {
   case 'z': {
     TMapUberPicture* mapView = static_cast<TMapUberPicture*>(ownerContext);
     if (mapView->invalidationFlag) {
-      mapView->CommitPendingUiModeChangeAndRefreshViews(0);
+      mapView->CommitModeChange(0);
     } else {
       mapView->EnterMapInteractionOverlayMode(0);
     }
@@ -179,7 +179,7 @@ void TWorldView::DoKeyEvent(TToolboxEvent* event) {
     g_pViewMgr->ShowCivilianLedgerDialogAndSelectUnit();
     break;
   case 'u':
-    g_pViewMgr->ShowArmyRosterDialogAndActivateProvinceSelection();
+    g_pViewMgr->ShowArmyRoster();
     break;
   case 'v':
     g_pViewMgr->ShowNavyRosterDialogAndApplySelection();
@@ -201,8 +201,7 @@ void TWorldView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005958b0
-void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                                     RgnHandle hitArg) {
+void TWorldView::AdjustCursor(CPoint* point, RgnHandle hitArg) {
 
   short cursorToken = -1;
   short tileRow = 0;
@@ -230,8 +229,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
     }
     if (cursorToken == 0) {
       cursorToken = static_cast<short>(
-          g_pSelectedCivilianOrderState->LookupCivilianTileOrderCursorTokenByActionIndex(
-              tileIndex, *hoverBand));
+          g_pSelectedCivilianOrderState->GetCivilianTileCursor(tileIndex, *hoverBand));
     }
     break;
 
@@ -240,16 +238,14 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
         g_pMapContextActionManager->LookupMapCursorTokenByStateIndex(tileIndex, *hoverBand));
     if (cursorToken == 0) {
       cursorToken = static_cast<short>(
-          g_pSelectedCivilianOrderState->ResolveCivilianTileSelectionOrReportActionCode(
-              tileIndex, *hoverBand));
+          g_pSelectedCivilianOrderState->GetCivilianTileAction(tileIndex, *hoverBand));
     }
     if (cursorToken == 0) {
       cursorToken = static_cast<short>(g_pNavyOrderManager->ActionCursor(tileIndex, *hoverBand));
     }
     if (cursorToken == 0) {
       cursorToken =
-          static_cast<short>(g_pMapContextActionManager->LookupCivilianMapCursorTokenByStateIndex(
-              tileIndex, *hoverBand));
+          static_cast<short>(g_pMapContextActionManager->GetCivilianCursor(tileIndex, *hoverBand));
     }
     break;
 
@@ -258,8 +254,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
         g_pMapContextActionManager->LookupMapCursorTokenByStateIndex(tileIndex, *hoverBand));
     if (cursorToken == 0) {
       cursorToken = static_cast<short>(
-          g_pSelectedCivilianOrderState->ResolveCivilianTileSelectionOrReportActionCode(
-              tileIndex, *hoverBand));
+          g_pSelectedCivilianOrderState->GetCivilianTileAction(tileIndex, *hoverBand));
     }
     if (cursorToken == 0) {
       cursorToken = static_cast<short>(g_pNavyOrderManager->SelectionCursor(tileIndex, *hoverBand));
@@ -277,8 +272,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
         g_pMapContextActionManager->LookupMapCursorTokenByStateIndex(tileIndex, *hoverBand));
     if (cursorToken == 0) {
       cursorToken = static_cast<short>(
-          g_pSelectedCivilianOrderState->ResolveCivilianTileSelectionOrReportActionCode(
-              tileIndex, *hoverBand));
+          g_pSelectedCivilianOrderState->GetCivilianTileAction(tileIndex, *hoverBand));
     }
     if (cursorToken == 0) {
       cursorToken = static_cast<short>(g_pNavyOrderManager->ActionCursor(tileIndex, *hoverBand));
@@ -314,11 +308,11 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
 // FUNCTION: IMPERIALISM 0x00595c40
 void TWorldView::SetMapOverlayModeAndRenderPreview(bool alternateOverlay) {
   alternateOverlayEnabled = alternateOverlay;
-  RenderMapContextOverlayWithScopedClipAndSurface();
+  DrawOverlay();
 }
 
 // FUNCTION: IMPERIALISM 0x00595c70
-void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
+void TWorldView::DrawOverlay() {
   CTemporaryRegion reusableSurfaceA;
   CTemporaryRegion reusableSurfaceB;
 
@@ -380,7 +374,7 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
       DrawGarrison(previewTile, &badgeRect, 1);
     } else if (interactionMode == 2) {
       badgeRect.SetRect(outY, outX, outY + previewSquareRadius, outX + previewSquareRadius);
-      RenderMapDialogTerrainOverlayFrameByTileOwner(previewTile, &badgeRect, true);
+      DrawFleet(previewTile, &badgeRect, true);
     }
   }
 
@@ -395,8 +389,7 @@ void TWorldView::DrawUnit(TCivUnit* orderEntry, int projectedX, int projectedY, 
 void TWorldView::DrawGarrison(short tileIndex, CRect* dstRect, int flag) {}
 
 // FUNCTION: IMPERIALISM 0x00596060
-void TWorldView::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
-                                                               bool altOverlay) {}
+void TWorldView::DrawFleet(short tileIndex, CRect* dstRect, bool altOverlay) {}
 
 // FUNCTION: IMPERIALISM 0x00596080
 void TWorldView::FrameCursorArea() {}
@@ -458,8 +451,7 @@ void TWorldView::ControlClick(int tileIndex, int dispatchContext) {
 }
 
 // FUNCTION: IMPERIALISM 0x005962a0
-void TWorldView::HandleMapTileClickSetOrderContextAndHandleEvent79(int tileIndexArg,
-                                                                   int inputFlags) {
+void TWorldView::NavalTileClick(int tileIndexArg, int inputFlags) {
   TEvent* event = new TEvent();
 
   int tileIndex = static_cast<short>(tileIndexArg);
@@ -528,8 +520,7 @@ void TWorldView::NormalClick(short nTileIndex, int nInputFlags) {
     break;
   case 1:
     if (g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) ||
-        g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(nTileIndex,
-                                                                                nInputFlags) ||
+        g_pSelectedCivilianOrderState->CivilianTileClick(nTileIndex, nInputFlags) ||
         g_pNavyOrderManager->SelectionClick(nTileIndex, nInputFlags)) {
       refresh = true;
     } else {
@@ -539,8 +530,7 @@ void TWorldView::NormalClick(short nTileIndex, int nInputFlags) {
     break;
   case 2:
     if (g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) ||
-        g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(nTileIndex,
-                                                                                nInputFlags)) {
+        g_pSelectedCivilianOrderState->CivilianTileClick(nTileIndex, nInputFlags)) {
       refresh = true;
     } else {
       handled = g_pNavyOrderManager->DoTileClick(nTileIndex, nInputFlags) != 0;
@@ -548,8 +538,7 @@ void TWorldView::NormalClick(short nTileIndex, int nInputFlags) {
     break;
   case 3:
     if (!g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) &&
-        !g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(nTileIndex,
-                                                                                 nInputFlags)) {
+        !g_pSelectedCivilianOrderState->CivilianTileClick(nTileIndex, nInputFlags)) {
       g_pNavyOrderManager->SelectionClick(nTileIndex, nInputFlags);
     }
     break;
@@ -559,7 +548,7 @@ void TWorldView::NormalClick(short nTileIndex, int nInputFlags) {
   if (refresh) {
     RefreshControl();
   } else if (handled) {
-    mapPicture->CycleMapInteractionSelectionAfterHandledClick();
+    mapPicture->CycleSelection();
   }
   ++activeRegionBand;
   if (activeRegionBand > 4) {

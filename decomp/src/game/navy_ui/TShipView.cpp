@@ -40,12 +40,12 @@ void TShipView::IShipView(TView* panel, int* offsetLayout, int* sizeLayout, int 
 void TShipView::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b6a);
+  ApplyTextStyle(0, 0xa, 0x2b6a);
 
   CString statusLine;
   CString label;
 
-  InitializeUiTextStyleDescriptorAndApplyQuickDraw(2, 0xc, 0x2b6a, 3);
+  SetTextStyleAndApply(2, 0xc, 0x2b6a, 3);
   label = shipNode->name;
 
   CString orderStatusStrings[8];
@@ -61,7 +61,7 @@ void TShipView::Draw(RECT* rectBuffer) {
   DrawTextWithCachedQuickDrawStyleState(&statusLine);
 
   if (shipNode->admiral != 0) {
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 9, 0x2b6a);
+    ApplyTextStyle(0, 9, 0x2b6a);
     CString admiralLine = s_szAdmiralPrefix + shipNode->admiral->displayName;
     label = admiralLine;
     SetQuickDrawTextOriginWithContextOffset(0x50, 0xc);
@@ -130,7 +130,7 @@ void TShipView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
 
 // FUNCTION: IMPERIALISM 0x00565a40
 void TShipView::RenameShip() {
-  TWindow* node = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNameUnit);
+  TWindow* node = g_pAssetMgr->GetDialog(kTurnEventNameUnit);
   if (node == NULL) {
     FailNilPointerWithAssert(s_SourcePathUOceanViews, 0x203);
   }

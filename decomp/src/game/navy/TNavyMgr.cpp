@@ -64,8 +64,8 @@ static inline void AppendCStringIntoFixedBuffer(char* dest, int destSize, const 
 }
 
 static inline int CountMapOrderChildren(TMapOrderChildLinkNode* head);
-static inline int CalculateActiveChildAverageDescriptorWeightX10(TMapOrderChildLinkNode* head);
-static inline int CalculateMapOrderInteractionShipStrength(TShip* ship);
+static inline int GetAverageShipWeight(TMapOrderChildLinkNode* head);
+static inline int GetForceStrength(TShip* ship);
 
 } // namespace
 
@@ -131,8 +131,7 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
 }
 
 // FUNCTION: IMPERIALISM 0x00550c20
-void FormatLocalizedCommodityCountLabelByIndex(CString* out, unsigned int commodityCode,
-                                               short count) {
+void FormatCommodityCount(CString* out, unsigned int commodityCode, short count) {
   short codeGroup = (count < 2) ? 0x2716 : 0x271a;
   g_pSimMgr->GetString(codeGroup, static_cast<short>(commodityCode), out);
   if (count >= 0) {
@@ -276,7 +275,7 @@ void TNavyMgr::ReadFromFilterously(TStream* stream, short nationFilter) {
       orderQueueHead->Free();
     }
   } else {
-    RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(nationFilter);
+    FreeShipsOfNation(nationFilter);
   }
 
   int pendingCount;
@@ -467,7 +466,7 @@ short TNavyMgr::GetInvasionCapacity(short nationSlot, Province* provinceTarget,
 }
 
 // FUNCTION: IMPERIALISM 0x00557210
-void TNavyMgr::RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short nationSlot) {
+void TNavyMgr::FreeShipsOfNation(short nationSlot) {
   if (g_pNavyPrimaryOrderListHead != 0) {
     TShip* node = g_pNavyPrimaryOrderListHead;
     for (;;) {
@@ -762,8 +761,8 @@ void TNavyMgr::CarryOutOrders() {
     }
   }
 
-  ProcessNationMapOrderInteractionsAndApplyOutcomes(1);
-  ProcessNationMapOrderInteractionsAndApplyOutcomes(2);
+  ResolveNavalInteractions(1);
+  ResolveNavalInteractions(2);
   orderQueueHead = orderQueueHead->RemoveStragglers();
 
   for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != NULL; ship = ship->next) {
@@ -862,8 +861,7 @@ bool TNavyMgr::TryMerchantInterception(TMapOrderInteractionSelection* outResult,
     }
 
     int thresholdBase = shipOrders == 6 ? 0x32 : 0x14;
-    short activeChildRating =
-        static_cast<short>(CalculateActiveChildAverageDescriptorWeightX10(entry->shipList));
+    short activeChildRating = static_cast<short>(GetAverageShipWeight(entry->shipList));
     TCity* nationCity = nationState != NULL ? nationState->city : NULL;
     short cityWeight1 = nationCity->GetMerchantMarineDeciSpeed();
     short cityWeight0 = nationCity->GetMerchantMarineAverageCargoHold();
@@ -945,13 +943,12 @@ bool TNavyMgr::TryMerchantInterception(TMapOrderInteractionSelection* outResult,
       int nationStrength = 0;
       for (TMapOrderChildLinkNode* nationStrengthNode = nationEntry->shipList;
            nationStrengthNode != NULL; nationStrengthNode = nationStrengthNode->next) {
-        nationStrength += CalculateMapOrderInteractionShipStrength(nationStrengthNode->payload);
+        nationStrength += GetForceStrength(nationStrengthNode->payload);
       }
       int candidateStrength = 0;
       for (TMapOrderChildLinkNode* candidateStrengthNode = entry->shipList;
            candidateStrengthNode != NULL; candidateStrengthNode = candidateStrengthNode->next) {
-        candidateStrength +=
-            CalculateMapOrderInteractionShipStrength(candidateStrengthNode->payload);
+        candidateStrength += GetForceStrength(candidateStrengthNode->payload);
       }
       eligible = nationStrength * 3 < candidateStrength;
     }
@@ -983,7 +980,7 @@ bool TNavyMgr::TryMerchantInterception(TMapOrderInteractionSelection* outResult,
 IMPERIALISM_END_RETAIL_UNINITIALIZED_READ
 
 // FUNCTION: IMPERIALISM 0x00558960
-void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
+void TNavyMgr::ResolveNavalInteractions(short mode) {
   for (short nation = 0; nation <= 6; ++nation) {
     if (g_apTerrainTypeDescriptorTable[nation] == NULL) {
       continue;
@@ -1105,8 +1102,8 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
                 resourceList += g_szListSeparator;
               }
               CString resourceLabel;
-              FormatLocalizedCommodityCountLabelByIndex(
-                  &resourceLabel, static_cast<unsigned int>(resourceType), resourceCount);
+              FormatCommodityCount(&resourceLabel, static_cast<unsigned int>(resourceType),
+                                   resourceCount);
               resourceList += resourceLabel;
 
               for (int unit = 0; unit < resourceCount; ++unit) {
@@ -1540,7 +1537,7 @@ static inline int CountMapOrderChildren(TMapOrderChildLinkNode* head) {
   return count;
 }
 
-static inline int CalculateActiveChildAverageDescriptorWeightX10(TMapOrderChildLinkNode* head) {
+static inline int GetAverageShipWeight(TMapOrderChildLinkNode* head) {
   int sum = 0;
   int count = 0;
   for (TMapOrderChildLinkNode* node = head; node != 0; node = node->next) {
@@ -1555,7 +1552,7 @@ static inline int CalculateActiveChildAverageDescriptorWeightX10(TMapOrderChildL
   return (sum * 10) / count;
 }
 
-static inline int CalculateMapOrderInteractionShipStrength(TShip* ship) {
+static inline int GetForceStrength(TShip* ship) {
   const TNavyOrderResourceDescriptor& descriptor = g_NavyOrderResourceDescriptorTable[ship->type];
   short strengthBucket = ship->experience / 100;
   short navyPriorityBucket =
@@ -1599,9 +1596,9 @@ PruneMapOrderConflictHeadAndTail(TMapOrderChildLinkNode* head) {
     child->SetTaskForce(NULL);
     child->Free();
     head = head->DeleteMapOrderChildLinkAndReturnNext();
-    head = head->PruneDefeatedMapOrderChildrenAndReturnHead();
+    head = head->PruneDefeatedShips();
   } else {
-    head->next->PruneDefeatedMapOrderChildrenAndReturnHead();
+    head->next->PruneDefeatedShips();
   }
   return head;
 }
@@ -1695,10 +1692,8 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
       rightTierAdjust = 1;
     }
 
-    int leftWeight =
-        (leftBucket + 10) * CalculateActiveChildAverageDescriptorWeightX10(leftEntry->shipList);
-    int rightWeight =
-        (rightBucket + 10) * CalculateActiveChildAverageDescriptorWeightX10(rightEntry->shipList);
+    int leftWeight = (leftBucket + 10) * GetAverageShipWeight(leftEntry->shipList);
+    int rightWeight = (rightBucket + 10) * GetAverageShipWeight(rightEntry->shipList);
     int totalWeight = leftWeight + rightWeight;
 
     if (rand() % totalWeight < leftWeight) {

@@ -11,8 +11,7 @@ class TSuperNavyRoster : public TPageView {
 public:
   DECLARE_DYNCREATE(TSuperNavyRoster)
   virtual ~TSuperNavyRoster() override;
-  virtual void PopulateNavyOrderPageEntriesByMapContext(TView* panel, int* offsetLayout,
-                                                        int* sizeLayout);
+  virtual void FillNavyPages(TView* panel, int* offsetLayout, int* sizeLayout);
 
   TZone* selectedZone;
   TTaskForce* selectedTaskForce;

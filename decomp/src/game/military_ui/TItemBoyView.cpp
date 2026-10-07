@@ -39,7 +39,7 @@ void TItemBoyView::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x004afb60
 void TItemBoyView::ActuallyDraw(CString* header) {
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b6a);
+  ApplyTextStyle(0, 0xa, 0x2b6a);
   SetQuickDrawTextOriginWithContextOffset(0x1a, 0x14);
   DrawTextWithCachedQuickDrawStyleState(header);
 

@@ -21,7 +21,7 @@ public:
   void ReadFrom(TStream* stream) override;
   void Free() override;
 
-  virtual void ResetNationMetricRowsAndClearCategoryRankLists();
+  virtual void ResetTradeRows();
   virtual void CalculateDealOrder();
   virtual void CalculateNewWorldPrices();
   virtual void CalculateNewItemPrice(short item);

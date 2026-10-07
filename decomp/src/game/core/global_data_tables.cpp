@@ -1520,7 +1520,7 @@ TView* g_pUiResourceHead = NULL;
 TView* g_pUiResourceContext = NULL;
 
 // FUNCTION: IMPERIALISM 0x00489a50
-int SetGlobalUiInvalidationFlagAndReturnPrevious(int newValue) {
+int SetInvalidationFlag(int newValue) {
   int previous = g_McAppUiActiveFlag;
   g_McAppUiActiveFlag = newValue;
   return previous;
@@ -1532,7 +1532,7 @@ int GetMcAppUiActiveFlag() {
 }
 
 // FUNCTION: IMPERIALISM 0x00489a90
-int ClearGlobalUiInvalidationFlagAndReturnPrevious() {
+int ClearInvalidationFlag() {
   int previous = g_McAppUiActiveFlag;
   g_McAppUiActiveFlag = 0;
   return previous;
@@ -2584,7 +2584,7 @@ char s_szRankDotSeparator[] = ". ";
 // GLOBAL: IMPERIALISM 0x00698ae0
 char g_szCountryNameProfileKey[] = "CountryName";
 
-// Turn-flow cooldown defer counter and side flag (IsTurnFlowCooldownActiveAndResetExpiredState).
+// Turn-flow cooldown defer counter and side flag (IsCooldownActive).
 // GLOBAL: IMPERIALISM 0x006a43c4
 short g_nTurnCooldownDeferCounter = 0;
 
@@ -2877,12 +2877,12 @@ TacticalTileHeuristicScorerFn g_apfnTacticalTileHeuristicScorers[15] = {
     &TArmyPlayer::FactorRoughTerrain,
     &TArmyPlayer::FactorNearCowards,
     &TArmyPlayer::ScoreTacticalTileDistanceFieldAdvance,
-    &TArmyPlayer::ScoreTacticalTileFriendlyArtillerySpacing,
-    &TArmyPlayer::ScoreTacticalTileArtilleryFiringLaneColumn,
+    &TArmyPlayer::FactorArtillerySpacing,
+    &TArmyPlayer::FactorFiringLane,
     &TArmyPlayer::FactorHitByArty,
     &TArmyPlayer::FactorTargetMaxRange,
     &TArmyPlayer::FactorHitEnemyArtillery,
-    &TArmyPlayer::ScoreTacticalTileEnemyEdgeColumnZoneBonus,
+    &TArmyPlayer::FactorEnemyEdge,
 };
 
 // Tactical AI cursor-mode ratio thresholds and projection factors (.rdata FP pool).

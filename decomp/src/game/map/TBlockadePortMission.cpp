@@ -100,11 +100,10 @@ void TBlockadePortMission::CalculateNeeds() {
     for (TShip* node = TShip::GetFirst(); node != NULL; node = node->next) {
       if (node->nation == targetNationCode && node->IsInHomePort() &&
           node->GetMaxStrength() <= node->strength) {
-        AccumulateNavyOrderCategoryVectorWithScale(node, vector, 1.0f);
+        AddShipToCategoryVector(node, vector, 1.0f);
       }
     }
-    threatScore = ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
-        vector, navyDistributionWeights, 4);
+    threatScore = ScoreProfileMatch(vector, navyDistributionWeights, 4);
   } else {
     for (int nation = 0; nation < kMajorNationCount; ++nation) {
       if (g_apNationStates[nation] == NULL) {
@@ -118,11 +117,10 @@ void TBlockadePortMission::CalculateNeeds() {
       for (TShip* node = TShip::GetFirst(); node != NULL; node = node->next) {
         if (node->nation == targetNationCode && node->IsInHomePort() &&
             node->GetMaxStrength() <= node->strength) {
-          AccumulateNavyOrderCategoryVectorWithScale(node, vector, 1.0f);
+          AddShipToCategoryVector(node, vector, 1.0f);
         }
       }
-      float score = ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
-          vector, navyDistributionWeights, 4);
+      float score = ScoreProfileMatch(vector, navyDistributionWeights, 4);
       if (threatScore < score) {
         threatScore = score;
       }

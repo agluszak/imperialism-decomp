@@ -27,9 +27,9 @@ public:
   void SetEnemy(int targetNation) override;
   void TellColoniesAboutNewEnemy(int targetNation) override;
   void SorryYouLose(void) override;
-  void RecomputeAiExpansionAndMissionPressureScores(void) override;
+  void AssessExpansion(void) override;
   void ReassessMissions(int unused) override;
-  bool UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) override;
+  bool CheckBankruptcy(void) override;
   // Remote-only vtable slot 0x2c8; Mac symbol oracle: DoMovePhase().
   virtual void DoMovePhase(void);
 

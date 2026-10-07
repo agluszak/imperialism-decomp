@@ -40,13 +40,13 @@ public:
   virtual void BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg);
   virtual void VerifyEndTurn();
   virtual void GetTopLeftFor(TView* dialogView, POINT* outPlacement);
-  virtual void RefreshMainViewNationIndicatorForCurrentTurnEvent();
+  virtual void RefreshNationIndicator();
 
   // Extended UI-runtime virtuals (same object as g_pViewMgr @ 0x006A21BC).
   virtual void DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload);
   virtual void SetCursorRangeAndRefreshMainPanel(int payload);
   virtual short GetPendingTurnOverlayCode();
-  virtual void RefreshStrategicMapStatusIconsForActiveNation();
+  virtual void RefreshStatusIcons();
   virtual void RefreshTradeAndIndustryOverviewScreen(int nationIndex);
   virtual void RefreshMainDialogAndCursorHelp(int eventCode);
   virtual void ShowDealBookScreen(short nationSlot);
@@ -80,8 +80,8 @@ public:
   virtual void CreateMapArtStorage();
   virtual void GenerateMiniMap();
   virtual void GenerateRegions();
-  virtual void RefreshActiveGoldControlAndUiRuntimeState();
-  virtual void InitializeCitySiteSelectionScreenForNation(int nationSlot);
+  virtual void RefreshGoldControl();
+  virtual void ShowCitySiteMap(int nationSlot);
   virtual void NoOpTurnEventStateVtableSlotD4(int arg);
   virtual void MakeCombatReport(TCombatReportContext* reportContext);
   virtual int MakeEngineeringDialog(int dialogValue = 0);
@@ -104,7 +104,7 @@ public:
   void SetColor(short colorCode, bool foreground);
 
   void ShowCivilianLedgerDialogAndSelectUnit();
-  void ShowArmyRosterDialogAndActivateProvinceSelection();
+  void ShowArmyRoster();
   void ShowNavyRosterDialogAndApplySelection();
 
   void PostModalMessage(CString* message, int payload);
@@ -116,7 +116,7 @@ public:
   bool ShowLocalizedUiPromptByGroupAndIndex(int uiStringGroup, int uiStringIndex, int overlayMode,
                                             int arg4);
   void ShowQueryWindow();
-  char DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag);
+  char ConfirmGameControl(int actionTag);
   bool ModalMessage(long templateKind, CString titleSuffix, CString message,
                     const POINT& messagePosition, short overlayMode, unsigned char showCancel);
 
@@ -147,7 +147,7 @@ public:
 
   TViewMgr();
 
-  void HandleTurnStateExitAndPostFollowupEventCode(short followupState);
+  void ExitTurnState(short followupState);
 };
 
 ASSERT_SIZE(TViewMgr, 0xfc);

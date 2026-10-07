@@ -149,7 +149,7 @@ public:
   unsigned int turnFlowStatusFlags;
   // Saved as one byte.
   eDifficulty difficultyLevel;
-  // ReinitializeGameFlowAndPostTurnEventCode recreates g_pGameFlowState for any session.
+  // RestartGameFlow recreates g_pGameFlowState for any session.
   MultiplayerSessionRole multiplayerSessionRole;
   short preferenceValues[14];
   int lastPersistentUnitId;
@@ -180,7 +180,7 @@ void __cdecl ResetPortZoneGlobalContextCounters(void);
 unsigned char __cdecl TryGetFileMetadataForPath(CString* path);
 void __cdecl DeleteFileWithErrorReporting(CString* path);
 
-void ReinitializeGameFlowAndPostTurnEventCode(TurnEventId eventCode);
+void RestartGameFlow(TurnEventId eventCode);
 
 void __stdcall LoadProfileStringAndAssignSharedRef(CString* outString, LPCTSTR key,
                                                    LPCTSTR defaultValue);

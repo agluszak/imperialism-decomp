@@ -46,7 +46,7 @@ BUFFER_RELEASE = re.compile(
 # first string ellipsis argument.
 STACK_STRING_VARARGS = {
     "scanBracketExpressions": 3,
-    "FilterStringByCharacterTypeFlag4AndAppend": 3,
+    "AppendDigits": 3,
 }
 
 CSTRING_DECL = re.compile(

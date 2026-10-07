@@ -20,8 +20,7 @@ IMPLEMENT_DYNCREATE(TTransportPicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x00591e70
 TTransportPicture::TTransportPicture()
-    : gaugeMetricId(0x3a), splitValue94(0), splitValue96(0),
-      splitLimit(-1) {}
+    : gaugeMetricId(0x3a), splitValue94(0), splitValue96(0), splitLimit(-1) {}
 
 // FUNCTION: IMPERIALISM 0x00591ef0
 TTransportPicture::~TTransportPicture() {}
@@ -137,7 +136,7 @@ void TTransportPicture::Refresh() {
   emptyRect.bottom = 0x11;
   ClipRect(&emptyRect);
   g_pViewMgr->SetForeColor(0x3b);
-  FillRectWithQuickDrawBrushAndContextOffset(&emptyRect);
+  FillContextRect(&emptyRect);
 
   RECT fillRect;
   fillRect.left = trackLeft;
@@ -151,7 +150,7 @@ void TTransportPicture::Refresh() {
     g_pViewMgr->SetForeColor(gaugeMetricId);
   }
   ClipRect(&fillRect);
-  FillRectWithQuickDrawBrushAndContextOffset(&fillRect);
+  FillContextRect(&fillRect);
   SetClip(savedClip.tempRgn);
   SetQuickDrawFillColor(0);
 
@@ -163,7 +162,7 @@ void TTransportPicture::Refresh() {
     limitRect.bottom = 0x14;
     g_pViewMgr->SetForeColor(splitValue94 < splitLimit ? 0x33 : 0x34);
     ClipRect(&limitRect);
-    FillRectWithQuickDrawBrushAndContextOffset(&limitRect);
+    FillContextRect(&limitRect);
     SetClip(savedClip.tempRgn);
     SetQuickDrawFillColor(0);
   }

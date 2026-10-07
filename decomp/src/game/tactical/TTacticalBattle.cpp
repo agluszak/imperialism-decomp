@@ -213,7 +213,7 @@ void TTacticalBattle::HandleRetreatCommand() {
     TTacticalToolbar* toolbar =
         static_cast<TTacticalToolbar*>(battleView->ownerContext->FindSubView(kControlTagTool));
     toolbar->AssertValid();
-    toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(selectedUnit);
+    toolbar->ShowCurrentUnit(selectedUnit);
     toolbar->ForceRedraw();
   }
   TTacticalPlayer* incomingPlayer = players[currentSide];
@@ -249,7 +249,7 @@ void TTacticalBattle::ApplyTacticalDoneSelectionAndRefreshUi(TTacticalUnit* unit
     TTacticalToolbar* toolbar =
         static_cast<TTacticalToolbar*>(battleView->ownerContext->FindSubView(kControlTagTool));
     toolbar->AssertValid();
-    toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(selectedUnit);
+    toolbar->ShowCurrentUnit(selectedUnit);
     TacticalTileIndex tileIndex = unit->tileIndex;
     int row = tileIndex / 29;
     int column = ((row & 1) + tileIndex % 29 * 2) / 2;
@@ -1427,12 +1427,11 @@ void TTacticalBattle::CheckForVictory() {
   localSideWon = (battleOutcome == kTacticalBattleSide0Victory && players[0]->IsPlayer()) ||
                  (battleOutcome == kTacticalBattleSide1Victory && players[1]->IsPlayer());
 
-  g_pSfxPlaybackSystem->RequestAudioPresetChangeWithDeferredApply(localSideWon ? 9 : 10, false);
+  g_pSfxPlaybackSystem->RequestMusicChange(localSideWon ? 9 : 10, false);
 
   TextStyle styleDescriptor;
   styleDescriptor.textColor = 0;
-  TWindow* dialog =
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTacticalBattleResult);
+  TWindow* dialog = g_pAssetMgr->GetDialog(kTurnEventTacticalBattleResult);
 
   TPicture* headerPicture = static_cast<TPicture*>(dialog->FindSubView(kControlTagDialog));
   headerPicture->AssertValid();
@@ -1539,7 +1538,7 @@ void TTacticalBattle::CheckForVictory() {
 
     combinedCasualtyText = CString(side0CasualtyLine + s_szDoubleNewline + side1CasualtyLine);
     infoControl->SetTextStyle(styleDescriptor, false);
-    infoControl->UpdateTextEntrySharedStringAndMaybeNotify(&combinedCasualtyText, false);
+    infoControl->SetEntryText(&combinedCasualtyText, false);
     infoControl->CenterVertically(false);
   }
 
@@ -2071,7 +2070,7 @@ bool TTacticalBattle::HasFortWallGarrison(TacticalTileIndex tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x005a4330
-bool TTacticalBattle::IsTacticalSideCategoryCoverageIncompleteOrFlagOff() {
+bool TTacticalBattle::IsFortBreachedOrMissing() {
   if (fortLevel == 0) {
     return true;
   }

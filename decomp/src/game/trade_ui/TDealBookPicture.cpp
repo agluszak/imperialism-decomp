@@ -55,10 +55,10 @@ void TDealBookPicture::Startup(short startupValue) {
     FailNilPointerWithAssert(s_SourcePathUTradeViews, 0x129);
   }
   markControl->ViewEnable(1, 0);
-  LoadUiStringByGroupAndIndexToControlObject(0x2741, 6, FindSubView(kControlTagMark));
+  SetControlString(0x2741, 6, FindSubView(kControlTagMark));
   markControl->ViewEnable(0, 0);
   TView* tabsControl = FindSubView(kControlTagTabs);
-  LoadUiStringByGroupAndIndexToControlObject(0x2741, 7, tabsControl);
+  SetControlString(0x2741, 7, tabsControl);
 
   alternatePageMode = false;
   ShowPage(0, startupValue);
@@ -87,8 +87,8 @@ void TDealBookPicture::Startup(short startupValue) {
   ApplyUiTextStyleAndThemeFlags(rtilControl, 0, 0x12, 0x2b6b, 0x2b6c);
 
   // 'rocl'/'rocr' resource buttons.
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2730, 0xc, kControlTagLcor); // 'rocl'
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2730, 0xb, kControlTagRcor); // 'rocr'
+  SetTaggedStringAndApply(0x2730, 0xc, kControlTagLcor); // 'rocl'
+  SetTaggedStringAndApply(0x2730, 0xb, kControlTagRcor); // 'rocr'
 }
 
 // FUNCTION: IMPERIALISM 0x005baf70
@@ -360,7 +360,7 @@ void TDealBookPicture::SwitchPages() {
     InvalidateCityDialogRectRegion(&titleBounds, 1);
 
     TView* tabsControl = FindSubView(kControlTagTabs);
-    LoadUiStringAndDispatchSharedMessageCommand(0x2740, 4, tabsControl);
+    SendStringCommand(0x2740, 4, tabsControl);
 
     hiddenPage1 = soldTradesView;
     hiddenPage2 = boughtTradesView;
@@ -395,7 +395,7 @@ void TDealBookPicture::SwitchPages() {
     markControl->ViewEnable(0, 0);
 
     TView* tabsControl2 = FindSubView(kControlTagTabs);
-    LoadUiStringAndDispatchSharedMessageCommand(0x2740, 4, tabsControl2);
+    SendStringCommand(0x2740, 4, tabsControl2);
 
     hiddenPage1 = buyPageView;
     hiddenPage2 = sellPageView;

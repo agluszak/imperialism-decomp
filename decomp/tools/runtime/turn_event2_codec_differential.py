@@ -42,8 +42,8 @@ RETAIL_GAME_FLOW_POINTER = 0x006A43C8
 
 BUILDER_SYMBOLS = {
     1: "?BuildTurnEvent2ByteArraySyncPacketDeltaOrFull@@YAPAUTurnEvent2SyncPacket@@IPAE0@Z",
-    2: "?BuildTurnEvent2ArraySyncPacketDeltaOrFull@@YAPAUTurnEvent2SyncPacket@@IPAF0@Z",
-    4: "?BuildTurnEvent2IntArraySyncPacketDeltaOrFull@@YAPAUTurnEvent2SyncPacket@@HPAH0@Z",
+    2: "?BuildArraySyncPacket@@YAPAUTurnEvent2SyncPacket@@IPAF0@Z",
+    4: "?BuildIntArraySyncPacket@@YAPAUTurnEvent2SyncPacket@@HPAH0@Z",
 }
 DECODER_SYMBOL = "?ApplyEncodedDeltaPayloadToBufferByMode@TurnEvent2SyncPacket@@QAEXPAX@Z"
 READY_PROBE_SYMBOL = "?DispatchTurnEvent@TViewMgr@@UAEXFH@Z"

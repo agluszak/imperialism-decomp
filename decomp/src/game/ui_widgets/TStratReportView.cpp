@@ -22,7 +22,7 @@ TStratReportView::~TStratReportView() {}
 // FUNCTION: IMPERIALISM 0x0058e460
 void TStratReportView::Draw(RECT* rectBuffer) {
   SetQuickDrawFillColor(0xffffff);
-  FillRectWithQuickDrawBrushAndContextOffset(rectBuffer);
+  FillContextRect(rectBuffer);
 
   CString lineBuffer;
   CString countText;

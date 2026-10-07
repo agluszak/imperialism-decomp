@@ -392,7 +392,7 @@ void TTechMgr::GeneralActivation(int techId, int nationSlot) {
   case 0xf:
     ActivateShip(8, nationSlot);
     if (g_pSimMgr->GetPlayerCountry() == nationSlot) {
-      g_pMacViewMgr->RefreshCityCapabilityUiHandlesForActiveNation();
+      g_pMacViewMgr->ReloadCityArt();
     }
     break;
   case 0xc:
@@ -458,7 +458,7 @@ void TTechMgr::GeneralActivation(int techId, int nationSlot) {
     ActivateShip(0xb, nationSlot);
     ActivateShip(0xa, nationSlot);
     if (g_pSimMgr->GetPlayerCountry() == nationSlot) {
-      g_pMacViewMgr->RefreshCityCapabilityUiHandlesForActiveNation();
+      g_pMacViewMgr->ReloadCityArt();
     }
     break;
   case 0x1a:

@@ -142,8 +142,7 @@ int QDLoadResource(TBitmapResourceLoader** handle) {
 }
 
 // FUNCTION: IMPERIALISM 0x005c3b70
-TQuickDrawSurfaceContext*
-LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId) {
+TQuickDrawSurfaceContext* LoadBitmapSurface(unsigned short resourceId) {
   TQuickDrawSurfaceContext* savedContext = 0;
   int savedFlags = 0;
   GetGWorld(&savedContext, &savedFlags);
@@ -172,7 +171,7 @@ LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId) {
 
   QDLoadResource(loaderHandle);
   loader = *loaderHandle;
-  loader->EnsureBitmapResourceLoadedAndCopyRectSize();
+  loader->LoadBitmapBounds();
   loader->flags |= 1;
   ResetQuickDrawStrokeState();
   BlitBitmapResourceLoaderToActiveDc(loaderHandle, &bitmapRect);

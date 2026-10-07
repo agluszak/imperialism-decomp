@@ -48,7 +48,7 @@ void* TSortedPtrList::GetPtrListEntryByOneBasedIndex(int oneBasedIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x00488190
-void TSortedPtrList::RemovePtrListEntryByOneBasedIndexAndFree(int oneBasedIndex) {
+void TSortedPtrList::DeleteAt(int oneBasedIndex) {
   void* record = GetPtrListEntryByOneBasedIndex(oneBasedIndex);
   RemoveAt(oneBasedIndex - 1, 1);
   delete[] static_cast<unsigned char*>(record);

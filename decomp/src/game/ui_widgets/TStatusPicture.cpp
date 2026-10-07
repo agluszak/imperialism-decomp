@@ -48,12 +48,11 @@ void TStatusPicture::DoPostCreate(int arg) {
 
   for (unsigned int tabIndex = 0; tabIndex < 10; ++tabIndex) {
     TView* tabControl = FindSubView(kControlTagTab0 + tabIndex); // 'tab0'-'tab9'
-    LoadUiStringByGroupAndIndexToControlObject(0x2757, static_cast<short>(tabIndex + 9),
-                                               tabControl);
+    SetControlString(0x2757, static_cast<short>(tabIndex + 9), tabControl);
   }
   ApplySharedStringToGlobalControlTag(g_pStatusPictureMainSharedText, kControlTagMain);
-  LoadUiStringByGroupAndIndexToControlObject(0x2730, 0xd, FindSubView(kControlTagEnd));
-  LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, FindSubView(kControlTagQuer));
+  SetControlString(0x2730, 0xd, FindSubView(kControlTagEnd));
+  SetControlString(0x2730, 3, FindSubView(kControlTagQuer));
 
   comparisonMode = 0;
   RefreshControl();
@@ -109,7 +108,7 @@ void TStatusPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
           idx = -1;
         }
         if (idx != -1) {
-          g_pHelpMgr->SelectAndActivatePendingEventTypeOffsetFrom1A0B(idx);
+          g_pHelpMgr->ShowPendingHelpFrom(idx);
         }
       }
     }
@@ -123,8 +122,8 @@ void TStatusPicture::Draw(RECT* rectBuffer) {
 
   CString title;
   g_pSimMgr->GetString(0x2757, static_cast<short>(comparisonMode) + 8, &title);
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b6a);
-  short titleWidth = MeasureTextExtentWithCachedQuickDrawStyle(&title);
+  ApplyTextStyle(0, 0xe, 0x2b6a);
+  short titleWidth = MeasureText(&title);
   SetQuickDrawTextOriginWithContextOffset(0x140 - titleWidth / 2, 0x3c);
   DrawTextWithCachedQuickDrawStyleState(&title);
 
@@ -135,16 +134,16 @@ void TStatusPicture::Draw(RECT* rectBuffer) {
     }
     CString label;
     g_apNationStates[pictureIds[i]]->FormatOverlayTerrainLabelText(&label);
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b6a);
+    ApplyTextStyle(0, 0xc, 0x2b6a);
     SetQuickDrawTextOriginWithContextOffset(0x9a, rowY - 8);
     DrawTextWithCachedQuickDrawStyleState(&label);
 
     RECT swatch = {0x98, rowY + 1, static_cast<short>(values[i]) + 0x98, rowY + 13};
     SetQuickDrawFillColor(0);
-    FillRectWithQuickDrawBrushAndContextOffset(&swatch);
+    FillContextRect(&swatch);
     OffsetRect(&swatch, -1, -1);
     g_pViewMgr->SetForeColor(pictureIds[i]);
-    FillRectWithQuickDrawBrushAndContextOffset(&swatch);
+    FillContextRect(&swatch);
   }
 }
 
@@ -152,10 +151,10 @@ void TStatusPicture::Draw(RECT* rectBuffer) {
 void TStatusPicture::DrawBar(short rowY, short width, short nationSlot) {
   RECT swatch = {0x98, rowY + 1, width + 0x98, rowY + 13};
   SetQuickDrawFillColor(0);
-  FillRectWithQuickDrawBrushAndContextOffset(&swatch);
+  FillContextRect(&swatch);
   OffsetRect(&swatch, -1, -1);
   g_pViewMgr->SetForeColor(nationSlot);
-  FillRectWithQuickDrawBrushAndContextOffset(&swatch);
+  FillContextRect(&swatch);
 }
 
 // FUNCTION: IMPERIALISM 0x00594900

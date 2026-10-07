@@ -135,7 +135,7 @@ public:
   int CountDeploymentTiles();
   bool ApplyGridColumnSelectionGuard(TacticalTileIndex tileIndex);
   // True when there is no fort or a wall section is breached.
-  bool IsTacticalSideCategoryCoverageIncompleteOrFlagOff();
+  bool IsFortBreachedOrMissing();
   bool HasFortWallGarrison(TacticalTileIndex tileIndex);
 };
 

@@ -86,7 +86,7 @@ void TAnimation::LoadFrameIntoBuffer() {
     TBitmapSurfaceNode** pixMap = GetGWorldPixMap(frameBuffer);
     LockPixels(pixMap);
 
-    loader->EnsureBitmapResourceLoadedAndCopyRectSize();
+    loader->LoadBitmapBounds();
     loader->flags |= 1;
     RECT resourceBounds = loader->bitmapRect;
     ResetQuickDrawStrokeState();

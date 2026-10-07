@@ -35,7 +35,7 @@ public:
   void IncrementRecordRefCountById(short id);
 
   int LoadUiStringResourceByGroupAndIndex(CString* out, int group, int index);
-  CString LoadLocalizedStringByPackedGroupAndIndex(unsigned int packedGroupAndIndex);
+  CString LoadPackedString(unsigned int packedGroupAndIndex);
   CString LoadLocalizedStringByGroupAndIndex(int group, int index);
 
   int LoadUiStringResourceById(CString* out, unsigned int stringId);

@@ -292,7 +292,7 @@ bool TZone::HasNeighbor(Province* province) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055f440
-bool TZone::ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex) {
+bool TZone::ContainsProvince(short cityIndex) {
   unsigned int entryCount = secondaryNeighbors.Count();
   const Province* target = &g_pGlobalMapState->cityScoreTable[cityIndex];
   Province* const* entrySlot = 0;
@@ -426,7 +426,7 @@ void TZone::NameThyself(unsigned char* usedCityFlags, const char* overrideName) 
           g_mapActionContextDisplayNameCacheId -= 0x25;
         }
       } else {
-        GenerateMappedFlavorTextByCurrentContextNation(&displayName);
+        GenerateFlavorTextForNation(&displayName);
       }
     }
   }
@@ -439,13 +439,12 @@ void TZone::NameThyself(unsigned char* usedCityFlags, const char* overrideName) 
 }
 
 // FUNCTION: IMPERIALISM 0x0055fb60
-void TZone::SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int tileIndex) {
+void TZone::SetIngotTile(int nationSeedId, int tileIndex) {
   seedNationId = static_cast<short>(nationSeedId);
   unsigned short resolvedTile = tileIndex;
   if (resolvedTile == 0xffff) {
     resolvedTile = static_cast<unsigned short>(
-        g_pGlobalMapState->ComputeRepresentativeTileIndexForNationWithWrapBias(
-            static_cast<short>(nationSeedId), false));
+        g_pGlobalMapState->GetNationCenterTile(static_cast<short>(nationSeedId), false));
   }
   tileOrTerrainId = static_cast<short>(resolvedTile);
   activeTileIndex = static_cast<short>(tileOrTerrainId);
@@ -456,12 +455,10 @@ void TZone::SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int
   }
   g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
       activeTileIndex, -kMapTileActionStateZoneCenterMarkerFrame);
-  activeTileIndex = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
-      activeTileIndex, kStrategicHexDirectionNorthWest);
+  activeTileIndex = TMapMgr::StepTile(activeTileIndex, kStrategicHexDirectionNorthWest);
   g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
       activeTileIndex, -kMapTileActionStateZoneNorthWestMarkerFrame);
-  activeTileIndex = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
-      activeTileIndex, kStrategicHexDirectionNorthEast);
+  activeTileIndex = TMapMgr::StepTile(activeTileIndex, kStrategicHexDirectionNorthEast);
   g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
       activeTileIndex, -kMapTileActionStateZoneNorthEastMarkerFrame);
 }
@@ -564,8 +561,7 @@ short TZone::PickIngotTile() {
 }
 
 // FUNCTION: IMPERIALISM 0x0055ff70
-int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* contextZone,
-                                                          Province* contextProvince) {
+int TZone::ScoreCoastalTile(int tileIndex, TZone* contextZone, Province* contextProvince) {
   TTerrainStateRecord& tileRecord =
       g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)];
   if (tileRecord.GetTerrainKind() != kStrategicTerrainWater) {
@@ -584,8 +580,8 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* 
 
   int score = 0x1388;
   for (int neighborDir = 0; neighborDir < 6; ++neighborDir) {
-    short neighborTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
-        static_cast<short>(tileIndex), static_cast<short>(neighborDir));
+    short neighborTile =
+        TMapMgr::StepTile(static_cast<short>(tileIndex), static_cast<short>(neighborDir));
     if (neighborTile != -1) {
       TTerrainStateRecord& neighborRecord = g_pGlobalMapState->terrainStateTable[neighborTile];
       if (neighborRecord.GetTerrainKind() == kStrategicTerrainWater) {
@@ -640,8 +636,7 @@ short TZone::PickInvasionIngotTile(Province* contextProvince) {
       if (zoneForTile == this) {
         int neighborDir;
         for (neighborDir = 0; neighborDir < 6; ++neighborDir) {
-          short neighborTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
-              tileCandidate, static_cast<short>(neighborDir));
+          short neighborTile = TMapMgr::StepTile(tileCandidate, static_cast<short>(neighborDir));
           if (neighborTile != -1) {
             TTerrainStateRecord& neighborRecord =
                 g_pGlobalMapState->terrainStateTable[neighborTile];
@@ -675,8 +670,7 @@ short TZone::PickInvasionIngotTile(Province* contextProvince) {
 
   short bestTile = tileCandidate;
   int bestTileIndex = bestTile;
-  int bestScore =
-      ScoreCoastalTileForContextAndCityStateAffinity(bestTileIndex, this, contextProvince);
+  int bestScore = ScoreCoastalTile(bestTileIndex, this, contextProvince);
 
   HexSpiralSearchState spiral;
   spiral.row = bestTileIndex / kStrategicMapColumns;
@@ -684,7 +678,7 @@ short TZone::PickInvasionIngotTile(Province* contextProvince) {
   spiral.ring = 0;
   spiral.direction = 5;
   spiral.stepInRing = 1;
-  TMapMgr::AdvanceSpiralSearchStateAndStepHexCoordinates(&spiral);
+  TMapMgr::StepSpiral(&spiral);
 
   while (spiral.ring < 0xc) {
     short spiralTile = TileIndexFromRowCol(spiral.row, spiral.col);
@@ -694,8 +688,7 @@ short TZone::PickInvasionIngotTile(Province* contextProvince) {
 
     if (tileInBounds) {
       int spiralTileIndex = TileIndexFromRowCol(spiral.row, spiral.col);
-      int candidateScore =
-          ScoreCoastalTileForContextAndCityStateAffinity(spiralTileIndex, this, contextProvince);
+      int candidateScore = ScoreCoastalTile(spiralTileIndex, this, contextProvince);
       if (bestScore < candidateScore) {
         bestScore = candidateScore;
         tileCandidate = TileIndexFromRowCol(spiral.row, spiral.col);
@@ -757,13 +750,11 @@ void TZone::ShowFocusIngot(unsigned char flag) {
     g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
         centerTile, magnitude * kMapTileActionStateZoneCenterMarkerFrame);
     g_pViewMgr->mapUberPicture->InvalidateTile(centerTile);
-    short northWestTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
-        centerTile, kStrategicHexDirectionNorthWest);
+    short northWestTile = TMapMgr::StepTile(centerTile, kStrategicHexDirectionNorthWest);
     g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
         northWestTile, magnitude * kMapTileActionStateZoneNorthWestMarkerFrame);
     g_pViewMgr->mapUberPicture->InvalidateTile(northWestTile);
-    short northEastTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
-        centerTile, kStrategicHexDirectionNorthEast);
+    short northEastTile = TMapMgr::StepTile(centerTile, kStrategicHexDirectionNorthEast);
     g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
         northEastTile, magnitude * kMapTileActionStateZoneNorthEastMarkerFrame);
     g_pViewMgr->mapUberPicture->InvalidateTile(northEastTile);
@@ -886,7 +877,7 @@ void TZone::LightUp(int remainingDepth, bool markAdjacentCities) {
 }
 
 // FUNCTION: IMPERIALISM 0x00560e20
-void ResetMapActionContextActivityAndNationFlags() {
+void ResetZoneActivity() {
   for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
     zone->distanceLevel = 0;
   }
@@ -989,7 +980,7 @@ short TZone::GetDistanceTo(TZone* other) {
 }
 
 // FUNCTION: IMPERIALISM 0x00561380
-int TZone::CountDiplomaticallyRelatedNationsInKeyMask(int nation) {
+int TZone::CountEnemiesPresent(int nation) {
   int count = 0;
   for (int slot = 0; slot < 7; ++slot) {
     if (g_apTerrainTypeDescriptorTable[slot] != 0) {
@@ -1004,7 +995,7 @@ int TZone::CountDiplomaticallyRelatedNationsInKeyMask(int nation) {
 }
 
 // FUNCTION: IMPERIALISM 0x00561400
-unsigned int TZone::BuildNationBitmaskForActiveType3Or4OrdersIncludingNation(unsigned char nation) {
+unsigned int TZone::GetPatrolMaskWith(unsigned char nation) {
   unsigned int mask = 0;
   for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
     if (ship->location == this) {
@@ -1034,7 +1025,7 @@ unsigned int TZone::GetPatrolMask() {
 }
 
 // FUNCTION: IMPERIALISM 0x00561510
-unsigned int TZone::HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(int nation) {
+unsigned int TZone::HasEnemyPatrol(int nation) {
   unsigned int mask = 0;
   for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
     if (ship->location == this) {
@@ -1132,7 +1123,7 @@ TZone::~TZone() {
 }
 
 // FUNCTION: IMPERIALISM 0x00563220
-void RegenerateAllMapActionContextStatusCodes(void) {
+void RegenerateZoneCodes(void) {
   const char* tag = g_pGlobalMapState->scenarioTagText;
   int seed = kControlTagNada;
   while (*tag != '\0') {
@@ -1158,7 +1149,7 @@ void RegenerateAllMapActionContextStatusCodes(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00563da0
-void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
+void LinkPortZones(void) {
   int tileIndex = 0;
   do {
     TZone* context;
@@ -1186,8 +1177,8 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
 
     if (context != 0) {
       for (int direction = 0; direction < 6; ++direction) {
-        short neighborTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
-            static_cast<short>(tileIndex), static_cast<short>(direction));
+        short neighborTile =
+            TMapMgr::StepTile(static_cast<short>(tileIndex), static_cast<short>(direction));
         if (neighborTile != -1) {
           short cityIdx = g_pGlobalMapState->terrainStateTable[neighborTile].cityRecordIndex;
           Province* cityRecord;
@@ -1225,7 +1216,7 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00563f50
-void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
+void RefreshPortLinks(void) {
   for (int tileIndex = 0; static_cast<short>(tileIndex) < kStrategicTileCount; ++tileIndex) {
     TTerrainStateRecord& tileRecord = g_pGlobalMapState->terrainStateTable[tileIndex];
     TZone* zone;
@@ -1248,8 +1239,8 @@ void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
       }
     } else if (zone != 0) {
       for (int direction = 0; direction < 6; ++direction) {
-        short neighborTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
-            static_cast<short>(tileIndex), static_cast<short>(direction));
+        short neighborTile =
+            TMapMgr::StepTile(static_cast<short>(tileIndex), static_cast<short>(direction));
         if (neighborTile == -1) {
           continue;
         }

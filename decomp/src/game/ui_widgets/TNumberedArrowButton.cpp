@@ -57,7 +57,7 @@ void TNumberedArrowButton::Draw(RECT* rectBuffer) {
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                    &dstRect, 0x24);
   UpdatePaletteIndexWithDefaultFallback(0x13);
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b67);
+  ApplyTextStyle(0, 10, 0x2b67);
   SetQuickDrawTextOriginWithContextOffset(7, 0);
   RefreshControl();
 }
@@ -110,15 +110,14 @@ void TNumberedArrowButton::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoi
 }
 
 // FUNCTION: IMPERIALISM 0x0058c7c0
-void TNumberedArrowButton::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* cursorPoint,
-                                                                               RgnHandle hitArg) {
+void TNumberedArrowButton::AdjustCursor(CPoint* cursorPoint, RgnHandle hitArg) {
   if (IsActionable() != '\0') {
     if (cursorPoint->y < frameHeight / 2) {
       cursorId = 0x100;
-      TControl::HandleCursorHoverSelectionByChildHitTestAndFallback(cursorPoint, hitArg);
+      TControl::AdjustCursor(cursorPoint, hitArg);
       return;
     }
     cursorId = -1;
   }
-  TControl::HandleCursorHoverSelectionByChildHitTestAndFallback(cursorPoint, hitArg);
+  TControl::AdjustCursor(cursorPoint, hitArg);
 }

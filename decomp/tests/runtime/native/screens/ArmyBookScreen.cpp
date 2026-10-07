@@ -17,8 +17,7 @@ RuntimeActionResult ArmyBookScreen::Open() {
   if (g_pAssetMgr == 0) {
     return RuntimeActionResult::Failure("cannot open the army book: no asset manager");
   }
-  book = static_cast<TWindow*>(
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGarrison));
+  book = static_cast<TWindow*>(g_pAssetMgr->GetDialog(kTurnEventGarrison));
   if (book == 0) {
     return RuntimeActionResult::Failure(
         "cannot open the army book: the garrison turn event resolved no dialog node");

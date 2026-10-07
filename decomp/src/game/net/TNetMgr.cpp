@@ -38,12 +38,12 @@ void TNetMgr::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x005e3490
-bool TNetMgr::DefaultUnhandledTurnEventHookReturnsFalse(TurnEventQueuePacket* packet) {
+bool TNetMgr::HandleUnknownMessage(TurnEventQueuePacket* packet) {
   return false;
 }
 
 // FUNCTION: IMPERIALISM 0x005e34d0
-bool TNetMgr::ResetRuntimeSelectionRecordBufferAndReturnTrue() {
+bool TNetMgr::ResetSelection() {
   g_NetworkSessionManager006a5f60.ResetRuntimeSelectionRecordBuffer();
   return true;
 }
@@ -186,7 +186,7 @@ void TNetMgr::HandleError(int errorCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x005e39a0
-unsigned char TNetMgr::ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TView* provider) {
+unsigned char TNetMgr::RebuildProtocolList(TView* provider) {
   g_NetworkSessionManager006a5f60.activeProtocolControl =
       static_cast<TRadioTextCluster*>(provider->FindSubView(kControlTagProt)); // 'prot'
   g_NetworkSessionManager006a5f60.activeProtocolControl->AssertValid();
@@ -204,8 +204,7 @@ unsigned char TNetMgr::ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TVie
 bool TNetMgr::SelectProtocol(int index, int flag, const char* seed) {
   strncpy(g_NetworkSessionManager006a5f60.runtimeSelectionSeed, seed, 32);
   const GUID* sessionGuid = &g_WNetSerializedPtrArrayA[index]->providerGuid;
-  bool result =
-      g_NetworkSessionManager006a5f60.InitializeDirectPlayForProviderGuidOrEnumerate(sessionGuid);
+  bool result = g_NetworkSessionManager006a5f60.InitializeDirectPlay(sessionGuid);
   if (!result) {
     HandleError(g_NetworkSessionManager006a5f60.lastErrorCode);
   }
@@ -218,7 +217,7 @@ unsigned char TNetMgr::Host(const char* seedPath, const char* localPlayerName,
   strncpy(g_NetworkSessionManager006a5f60.joinGameSeed, emptyOrSeed, 32);
   strncpy(g_NetworkSessionManager006a5f60.runtimeSelectionSeed, seedPath, 32);
 
-  int result = g_NetworkSessionManager006a5f60.OpenRuntimeSelectionSourceFromCurrentContext();
+  int result = g_NetworkSessionManager006a5f60.OpenCurrentSession();
   if (result) {
     DPID nationId;
     {
@@ -250,7 +249,7 @@ unsigned char TNetMgr::SelectGame(int selectionTag, CString* outGameName, const 
   strncpy(g_NetworkSessionManager006a5f60.joinGameSeed, seed, 32);
   g_NetworkSessionManager006a5f60.joinGamePlayerName = *outGameName;
 
-  int result = g_NetworkSessionManager006a5f60.OpenRuntimeSelectionSourceWithUserChoice();
+  int result = g_NetworkSessionManager006a5f60.OpenChosenSession();
   if (result) {
     *outGameName = g_NetworkSessionManager006a5f60.joinGamePlayerName;
 
@@ -319,8 +318,7 @@ TurnEventQueuePacket* TNetMgr::GetMessage() {
     DWORD fromId = 0;
     DWORD toId;
     void* packetBuffer = 0;
-    int received = g_NetworkSessionManager006a5f60.TryReceiveNetworkPacketIntoResizableBuffer(
-        &fromId, &toId, &packetBuffer);
+    int received = g_NetworkSessionManager006a5f60.ReceivePacket(&fromId, &toId, &packetBuffer);
     TurnEventQueuePacket* packet = static_cast<TurnEventQueuePacket*>(packetBuffer);
     if (received == 0 && g_NetworkSessionManager006a5f60.lastErrorCode != DPERR_NOMESSAGES) {
       HandleError(g_NetworkSessionManager006a5f60.lastErrorCode);
@@ -349,7 +347,7 @@ TurnEventQueuePacket* TNetMgr::GetMessage() {
     case 0x31:
     case 0x101:
       g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x2759, 6, 0, 0);
-      g_pGameFlowState->HandleActiveNationAwolTransitionOrRecovery();
+      g_pGameFlowState->HandleAwolPlayer();
       break;
     default:
       if (g_suppressUnexpectedDirectPlaySystemMessageAssert == 0) {
@@ -370,14 +368,14 @@ int TNetMgr::GetPlayerID() {
 void TNetMgr::NoOpDialogModeTagChangedHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x005e42c0
-void TNetMgr::NotifyIfNationMatchesSessionActiveNation(int nationId) {
+void TNetMgr::DestroyPlayerIfLocal(int nationId) {
   if (nationId == g_NetworkSessionManager006a5f60.localPlayerId) {
     g_NetworkSessionManager006a5f60.DestroyPlayerAndStoreResult(nationId);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005e42f0
-bool TNetMgr::CheckConnectivityOrShowLocalizedWarningAndReturnReady() {
+bool TNetMgr::CheckConnection() {
   if (g_pSimMgr->multiplayerSessionRole == kSessionRoleClient &&
       g_NetworkSessionManager006a5f60.OpenCurrentSessionDescriptionForJoin()) {
     return true;

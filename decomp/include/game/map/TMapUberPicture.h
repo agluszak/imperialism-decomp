@@ -37,7 +37,7 @@ public:
   virtual void DisplayInfo(bool showInfo);
   virtual void DisplayMiniMap();
   virtual void RemoveMiniMap();
-  virtual void SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState);
+  virtual void EnableTradeTools(bool enabledState);
 
   bool invalidationFlag;
   // 0=civilian, 1=army, 2=navy, 3=none (default) -- selects categoryPages[] below.
@@ -57,7 +57,7 @@ public:
   void GrandCycle();
   void InvalidateMiniMap();
   void FocusOnForce(TTaskForce* pMapOrderEntry);
-  void CommitPendingUiModeChangeAndRefreshViews(TView* controlOverride);
+  void CommitModeChange(TView* controlOverride);
   void FocusOnZone(TZone* pMapOrderContextZone);
   void InvalidateMapRegionForEntryIfUiPassive(TZone* zone);
   bool TrySelectNextValidMapOrderEntry(bool includeCurrent);
@@ -70,9 +70,9 @@ public:
 
   void ArmyCheatClick(short provinceIndex);
   void UpdateRoster();
-  void CycleMapInteractionSelectionAfterHandledClick();
+  void CycleSelection();
   void NavalIntelligenceDialog(TZone* zone, short nation, TTaskForce* cachedTaskForce);
   void InspectTaskForceDialog(TTaskForce* taskForce);
-  void RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* portZone);
+  void NavyCheatClick(TZone* portZone);
 };
 ASSERT_SIZE(TMapUberPicture, 0xc4);

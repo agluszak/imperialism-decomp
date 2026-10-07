@@ -26,18 +26,16 @@ public:
   virtual void SetRelationship(NationSlot sourceNation, NationSlot targetNation, short score);
   virtual void SetRelationshipsToMatch(NationSlot destinationNation, NationSlot sourceNation);
   virtual void ApplyDiplomacyInterNationStatesForTurn();
-  virtual void SelectPriorityNationIndicesForMinorCapabilityRows();
+  virtual void PickMinorPriorities();
   virtual void ConveneCouncil(char forceOrMode);
-  virtual void InitializeDiplomacyStandingBaselineRandom();
+  virtual void RandomizeStandings();
   virtual void ChooseCandidates(int* topNationSlot, int* secondNationSlot);
   virtual bool AreAtWar(NationSlot sourceNation, NationSlot targetNation);
   virtual bool AreInEstablishedWar(NationSlot sourceNation, NationSlot targetNation);
   virtual bool IsAtWarWithAnybody(NationSlot sourceNation);
   virtual bool IsInEstablishedWarWithAnybody(NationSlot sourceNation);
-  virtual bool IsSpecialRelationSourceForMinorNationSlot(NationSlot nationSlot,
-                                                         NationSlot minorNationSlot);
-  virtual bool IsSpecialRelationTargetForMinorNationSlot(NationSlot nationSlot,
-                                                         NationSlot minorNationSlot);
+  virtual bool IsMinorSource(NationSlot nationSlot, NationSlot minorNationSlot);
+  virtual bool IsMinorTarget(NationSlot nationSlot, NationSlot minorNationSlot);
   virtual bool IsActionAllowed(NationSlot sourceNation, NationSlot targetNation, eDipAction action);
   virtual bool HasAllianceGuardForNationPair(NationSlot nationSlot, NationSlot guardedNationSlot);
   virtual bool IsBoycott(NationSlot sourceNation, NationSlot targetNation);
@@ -74,7 +72,7 @@ public:
   signed char pendingPolicyCodeMatrix[kDiplomacyPairMatrixEntries];
   short pendingPolicyTierMatrix[kDiplomacyPairMatrixEntries];
   CongressLeadership congressLeadership;
-  struct TurnEvent2SyncPacket* BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy();
+  struct TurnEvent2SyncPacket* BuildRelationSyncPacket();
   void HandleDiplomaticStandingsMsg(TurnEvent2SyncPacket* packet);
 
   CongressSupportTally congressSupport;
@@ -96,16 +94,16 @@ public:
 
   TDiplomacyMgr();
   void IDiplomacyMgr();
-  void RebuildCivilianOrderCompatibilityMatrices();
+  void RebuildRelationMatrices();
   void AddDeclarationOfWar(NationSlot sourceNationSlot, NationSlot targetNationSlot);
   short GetEmbassyStatus(int sourceNationSlot, int targetNationSlot);
   void IssueDeclarationsOfWar();
-  void ResetTerrainAdjacencyMatrixRowAndSymmetricLink(NationSlot nationSlot);
+  void ResetRelationsOf(NationSlot nationSlot);
   void RemoveNationSlotAndNotifyPeers(NationSlot nationSlot);
   // Records the current turn.
   void SetLastDiploEffort();
 
   void UpdateTables(int nationCode);
-  void RebuildMinorNationDispositionLookupTables(NationSlot nationCode);
+  void RebuildMinorDispositions(NationSlot nationCode);
 };
 ASSERT_SIZE(TDiplomacyMgr, 0x18dc);

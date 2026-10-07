@@ -70,13 +70,13 @@ CIncludeView::~CIncludeView() {
   }
   m_pMainPaneDib = 0;
   if (m_activeDialogContext != 0) {
-    int previousUiActive = ClearGlobalUiInvalidationFlagAndReturnPrevious();
+    int previousUiActive = ClearInvalidationFlag();
     m_activeDialogContext->nativeWindow = 0;
     if (m_activeDialogContext != 0) {
       m_activeDialogContext->Free();
     }
     m_activeDialogContext = 0;
-    SetGlobalUiInvalidationFlagAndReturnPrevious(previousUiActive);
+    SetInvalidationFlag(previousUiActive);
   }
 
   delete m_pOffscreenDib;
@@ -147,7 +147,7 @@ void CIncludeView::OnDraw(CDC* pDC) {
     if (GetMcAppUiActiveFlag() != 0) {
       RECT paintRect;
       CopyRect(&paintRect, &clipBox);
-      m_activeDialogContext->PaintVisibleChildrenIntersectingClipRect(&paintRect, pDC);
+      m_activeDialogContext->PaintChildren(&paintRect, pDC);
     }
   }
 #ifdef IMPERIALISM_RUNTIME_TESTS
@@ -255,7 +255,7 @@ void CIncludeView::UpdateAndRenderMapTileHintOverlayQueue(CDC* dc, RECT* clipRec
       rec.processedFlag = 1;
       RECT paintRect;
       CopyRect(&paintRect, &rec.rect);
-      m_activeDialogContext->PaintVisibleChildrenIntersectingClipRect(&paintRect, 0);
+      m_activeDialogContext->PaintChildren(&paintRect, 0);
     }
   }
   // Pass 3: flush every finished (flag 2) rect to the screen DC and remove it.
@@ -323,16 +323,16 @@ void CIncludeView::RefreshActiveDialogHost(int unusedArg) {
 }
 
 // FUNCTION: IMPERIALISM 0x004833b0
-TView* CIncludeView::ReinitializeIncludeViewMainPaneAndRedrawWindow(int unusedArg) {
+TView* CIncludeView::ResetMainPane(int unusedArg) {
   m_pMainPaneDib = 0;
   if (m_activeDialogContext != 0) {
-    int previousFlag = ClearGlobalUiInvalidationFlagAndReturnPrevious();
+    int previousFlag = ClearInvalidationFlag();
     m_activeDialogContext->nativeWindow = 0;
     if (m_activeDialogContext != 0) {
       m_activeDialogContext->Free();
     }
     m_activeDialogContext = 0;
-    SetGlobalUiInvalidationFlagAndReturnPrevious(previousFlag);
+    SetInvalidationFlag(previousFlag);
   }
   if (g_nIncludeViewReinitAssertGate == 0) {
     ReportAssertionFailure(g_szIncludeViewSourcePath, 0x1d2);
@@ -368,13 +368,13 @@ TView* CIncludeView::ReinitializeIncludeViewMainPaneAndRedrawWindow(int unusedAr
 void CIncludeView::TearDownActiveDialogContext() {
   m_pMainPaneDib = 0;
   if (m_activeDialogContext != 0) {
-    int previousFlag = ClearGlobalUiInvalidationFlagAndReturnPrevious();
+    int previousFlag = ClearInvalidationFlag();
     m_activeDialogContext->nativeWindow = 0;
     if (m_activeDialogContext != 0) {
       m_activeDialogContext->Free();
     }
     m_activeDialogContext = 0;
-    SetGlobalUiInvalidationFlagAndReturnPrevious(previousFlag);
+    SetInvalidationFlag(previousFlag);
   }
 }
 
@@ -450,7 +450,7 @@ void CIncludeView::OnMouseMove(UINT nFlags, CPoint point) {
   if (m_uiInteractiveFlag == 0) {
     return;
   }
-  g_McAppMouseCaptureState.NotifyCaptureOwnerState1AndMaybeUpdateCoords(nFlags, point.x, point.y);
+  g_McAppMouseCaptureState.NotifyTracking(nFlags, point.x, point.y);
   if (m_capturedControl != 0) {
     if (g_nIncludeViewPointerAssertGate == 0) {
       ReportAssertionFailure(g_szIncludeViewSourcePath, 0x2b7);
@@ -465,7 +465,7 @@ void CIncludeView::OnMouseMove(UINT nFlags, CPoint point) {
   g_pAmbitApplication->HandleCursor(point.x, point.y, 0);
   if (m_activeDialogContext != 0 && GetMcAppUiActiveFlag() != 0) {
     CPoint pt(point);
-    m_activeDialogContext->HandleCursorHoverSelectionByChildHitTestAndFallback(&pt, 0);
+    m_activeDialogContext->AdjustCursor(&pt, 0);
   }
 }
 
@@ -663,7 +663,7 @@ void CIncludeView::OnParentNotify(UINT message, LPARAM lParam) {
 // FUNCTION: IMPERIALISM 0x00484230
 LRESULT CIncludeView::OnMciNotifyMode(WPARAM wParam, LPARAM mciMode) {
   if (mciMode == MCI_MODE_STOP) {
-    g_pViewMgr->HandleTurnStateExitAndPostFollowupEventCode(0);
+    g_pViewMgr->ExitTurnState(0);
   }
   return 0;
 }

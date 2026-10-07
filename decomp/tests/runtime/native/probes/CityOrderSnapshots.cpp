@@ -41,7 +41,7 @@ void ShipOrderSnapshot::CaptureFrom(TShipOrder* order) {
   quantity = order->quantity;
   shipCount = order->ownerCity->orderCountByType[order->resourceTypeIndex];
   // The capacity is derived, so it has to be recomputed before it can be read as a baseline.
-  order->ownerCity->ownerNation->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
+  order->ownerCity->ownerNation->ComputeAidBudget();
   merchantCapacity = order->ownerCity->ownerNation->merchantCapacity;
   armsInNavy = order->ownerCity->ownerNation->GetArmsInNavy();
 }

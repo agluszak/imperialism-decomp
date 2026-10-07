@@ -23,11 +23,11 @@ void TShipPlacard::Draw(RECT* rectBuffer) {
   if (quantity > 0) {
     CString countText;
     countText.Format(g_szDecimalFormat, static_cast<int>(quantity));
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b67);
-    short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&countText);
+    ApplyTextStyle(0, 10, 0x2b67);
+    short textWidth = MeasureText(&countText);
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(0x51 - textWidth / 2), 0x2f);
     DrawTextWithCachedQuickDrawStyleState(&countText);
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b6c);
+    ApplyTextStyle(0, 10, 0x2b6c);
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(0x50 - textWidth / 2), 0x2e);
     DrawTextWithCachedQuickDrawStyleState(&countText);
   }

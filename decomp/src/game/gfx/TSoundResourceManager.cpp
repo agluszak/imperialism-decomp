@@ -66,8 +66,7 @@ int TSoundResourceManager::LoadWaveFileByPathAndBuildBuffer(char* filePath, int 
 }
 
 // FUNCTION: IMPERIALISM 0x0049c430
-int TSoundResourceManager::LoadWaveResourceByNumericIdAndBuildBuffer(unsigned int waveId,
-                                                                     int slot) {
+int TSoundResourceManager::LoadWave(unsigned int waveId, int slot) {
   WaveLoadDescriptor desc;
   int failed;
   {

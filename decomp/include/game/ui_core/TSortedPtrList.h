@@ -29,7 +29,7 @@ public:
   virtual void FreeList();
   virtual void SelfDelete();
   virtual void* GetPtrListEntryByOneBasedIndex(int oneBasedIndex);
-  virtual void RemovePtrListEntryByOneBasedIndexAndFree(int oneBasedIndex);
+  virtual void DeleteAt(int oneBasedIndex);
   virtual void* First();
   virtual void Insert(void* record);
   virtual void AppendCopiedRecordToPtrList(void* record);

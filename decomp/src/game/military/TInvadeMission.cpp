@@ -115,7 +115,7 @@ bool TInvadeMission::SmokeEmIfYouGotEm() {
 
 // FUNCTION: IMPERIALISM 0x0053f580
 void TInvadeMission::Initialize() {
-  beachhead->InitializeMissionWithNationIdAndResetPathMarker(nationId);
+  beachhead->IMission(nationId);
   marker11 = 1;
   if (targetProvince != -1) {
     pathMarker =
@@ -199,7 +199,7 @@ float TInvadeMission::CalculatePriority() {
       weightIndex = 5;
     }
     float distanceWeight = g_MissionOrderDistanceDecayWeightTable[weightIndex];
-    AccumulateUnitOrderPriorityVectorContribution(
+    AddUnitToPriorityVector(
         selectedUnit, committedResources, distanceWeight,
         static_cast<float>(g_pGlobalMapState->GetProvinceUnitOrderWeight(GetPresentLocation())));
   }
@@ -219,9 +219,8 @@ float TInvadeMission::CalculatePriority() {
   char selectedIsUpgrade;
   int selectedSlot;
   float cityActionCost = 0.0f;
-  while (SelectBestCityDevelopmentFromResourcePools(nationId, resourcePools, bestUnitByType,
-                                                    &selectedIsIndustry, &selectedIsUpgrade,
-                                                    &selectedSlot, 0, 0)) {
+  while (PickBestDevelopment(nationId, resourcePools, bestUnitByType, &selectedIsIndustry,
+                             &selectedIsUpgrade, &selectedSlot, 0, 0)) {
     cityActionCost += static_cast<float>(TMilitaryUnit::GetTypeArmsCarried(selectedSlot));
   }
 
@@ -244,8 +243,7 @@ float TInvadeMission::ValueOf(TMilitaryUnit* candidateUnit) {
   } else if (candidateUnit->ownerMission == this) {
     delta = GetWeightedSatisfaction() - GetWeightedSatifactionWithout(candidateUnit);
   } else {
-    delta =
-        ComputeArmyMissionScoreDeltaWithCandidateUnit(candidateUnit) - GetWeightedSatisfaction();
+    delta = GetWeightedSatifactionWith(candidateUnit) - GetWeightedSatisfaction();
   }
 
   if (!IsArmyMission()) {

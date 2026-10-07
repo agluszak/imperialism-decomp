@@ -99,14 +99,14 @@ void TScrollView::ScrollRelative(short horizontalDelta, short verticalDelta) {
       static_cast<short>(scrollBar->minValue - origin.y * 1024 / heightDiff * trackRange / 1024);
   if (newValue < scrollBar->minValue) {
     scrollBar->currentValue = scrollBar->minValue;
-    scrollBar->RefreshCityDialogScrollableViewportWithQuickDrawContext();
+    scrollBar->RefreshCityViewport();
     return;
   }
   if (newValue > scrollBar->maxValue) {
     newValue = scrollBar->maxValue;
   }
   scrollBar->currentValue = newValue;
-  scrollBar->RefreshCityDialogScrollableViewportWithQuickDrawContext();
+  scrollBar->RefreshCityViewport();
 }
 
 // FUNCTION: IMPERIALISM 0x00574160
@@ -146,7 +146,7 @@ void TScrollView::Reset() {
 }
 
 // FUNCTION: IMPERIALISM 0x005742b0
-void TScrollView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintDc) {
+void TScrollView::PaintChildren(RECT* clipRect, CDC* paintDc) {
   if (GetMcAppUiActiveFlag() == 0 || !IsActionable() || !PrepareForDrawing()) {
     return;
   }
@@ -158,6 +158,6 @@ void TScrollView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* 
     paintDc->SelectClipRgn(&clipRgn);
     clipRgn.DeleteObject();
   }
-  TView::PaintVisibleChildrenIntersectingClipRect(clipRect, paintDc);
+  TView::PaintChildren(clipRect, paintDc);
   paintDc->SelectClipRgn(0);
 }

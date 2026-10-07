@@ -48,7 +48,7 @@ void TTownNameDialog::Draw(RECT* rectBuffer) {
     CRect bounds;
     nameControl->GetFrame(&bounds);
     g_pViewMgr->SetForeColor(0xf);
-    FillRectWithQuickDrawBrushAndContextOffset(&bounds);
+    FillContextRect(&bounds);
   }
   UpdatePaletteIndexWithDefaultFallback(0x50);
 }

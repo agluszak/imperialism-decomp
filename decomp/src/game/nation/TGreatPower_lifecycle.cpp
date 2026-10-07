@@ -62,7 +62,7 @@
 static const int kDiplomacyTrackedSlotCount = 0x11;
 
 // FUNCTION: IMPERIALISM 0x004d84b0
-int TGreatPower::ClassifyNationMilitaryPowerBandAgainstGlobalMean() {
+int TGreatPower::GetMilitaryRank() {
   float count = 0.0f;
   float sumPower = 0.0f;
   float sumPowerSq = 0.0f;
@@ -177,7 +177,7 @@ TGreatPower::TGreatPower()
 }
 
 // FUNCTION: IMPERIALISM 0x004d8bc0
-void TGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {}
+void TGreatPower::AssessExpansion(void) {}
 
 // FUNCTION: IMPERIALISM 0x004d8be0
 void TGreatPower::ReassessMissions(int unused) {}
@@ -189,7 +189,7 @@ short TGreatPower::GetMerchantCapacity(void) {
 
 // FUNCTION: IMPERIALISM 0x004d8cc0
 void TGreatPower::IGreatPower(short nationSlotIndex, short humanControlledFlag) {
-  InitializeNationStateIdentityAndOwnedRegionList(nationSlotIndex);
+  InitializeIdentity(nationSlotIndex);
 
   treasuryValue = g_anNationStartingTreasuryByLocale[g_pSimMgr->difficultyLevel];
 
@@ -719,7 +719,7 @@ void TGreatPower::DispatchPendingStatusPrompts(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004da860
-void TGreatPower::MarkStatusFlag5HandledIfCapabilityActive(void) {
+void TGreatPower::MarkStatus5Handled(void) {
   if (g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[15] == 2) {
     pendingActionStatus.byAction[5] = 0x33;
   }
@@ -821,8 +821,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   if (pendingActionStatus.byAction[0] == 0x32) {
     short zoneIndex = g_pTechMgr->activeZoneIndex;
     TZone* portZone = g_pActiveMapOrderContext->GetPortZone(nationSlot);
-    TShip* primaryOrder =
-        CreateNavyPrimaryOrderNodeAndAssignDisplayName(zoneIndex, portZone, nationSlot, 0);
+    TShip* primaryOrder = CreateAdmiral(zoneIndex, portZone, nationSlot, 0);
 
     ++cityPtr->orderCountByType[g_pTechMgr->activeZoneIndex];
 
@@ -858,10 +857,8 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
 
     if (needsCivOrder) {
       TCivUnit* civOrder = new TCivUnit();
-      civOrder->ICivUnit(
-          kCivilianUnitDeveloper,
-          g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(homeTileIndex, false),
-          nationSlot);
+      civOrder->ICivUnit(kCivilianUnitDeveloper,
+                         g_pGlobalMapState->FindRecruitTile(homeTileIndex, false), nationSlot);
       SetNationPendingActionStateAndPayload(2, -1);
     }
   }
@@ -969,7 +966,7 @@ void TGreatPower::SellStockToCoverDebt(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004db380
-bool TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
+bool TGreatPower::CheckBankruptcy(void) {
   TSimMgr* simMgr = g_pSimMgr;
   int localeIndex = 0;
   if (simMgr != 0) {

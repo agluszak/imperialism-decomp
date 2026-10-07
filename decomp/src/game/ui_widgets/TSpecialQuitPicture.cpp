@@ -37,15 +37,13 @@ void TSpecialQuitPicture::DoPostCreate(int arg) {
   shotControl->AssertValid();
   CString shotCaption;
   g_pSimMgr->GetString(0x274c, 0x18, &shotCaption);
-  ApplyControlThemeStyleAndOptionalCaption(shotControl, 0, 0xc, 0x2b6c, 1,
-                                           static_cast<const char*>(shotCaption));
+  ApplyControlTheme(shotControl, 0, 0xc, 0x2b6c, 1, static_cast<const char*>(shotCaption));
 
   TDeluxeText* equiControl = static_cast<TDeluxeText*>(FindSubView(kControlTagTqui));
   equiControl->AssertValid();
   CString equiCaption;
   g_pSimMgr->GetString(0x2737, 9, &equiCaption);
-  ApplyControlThemeStyleAndOptionalCaption(equiControl, 0, 0xc, 0x2b6c, 1,
-                                           static_cast<const char*>(equiCaption));
+  ApplyControlTheme(equiControl, 0, 0xc, 0x2b6c, 1, static_cast<const char*>(equiCaption));
 
   TDeluxeText* titlControl = static_cast<TDeluxeText*>(FindSubView(kControlTagTitl));
   titlControl->AssertValid();

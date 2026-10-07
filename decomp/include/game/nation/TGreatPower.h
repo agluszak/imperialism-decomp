@@ -72,7 +72,7 @@ public:
   void AddNoticeFrom(short sourceNation, short actionCode) override;
   virtual void NoOpNationPendingActionHook(void);
 
-  virtual void MarkStatusFlag5HandledIfCapabilityActive(void);
+  virtual void MarkStatus5Handled(void);
   virtual void MarkAllPendingStatusFlagsHandled(void);
   virtual void DispatchPendingStatusPrompts(void);
   virtual void SetNationPendingActionStateAndPayload(int index, short payload);
@@ -91,12 +91,12 @@ public:
   virtual void FinishCityPhase(void);
   virtual void CalculatePotentials(void);
   virtual void FillInteriorMinisterOrders(void);
-  virtual void ApplyScenarioRelationPresetAndSpawnFrogCity(class TCity* mgr);
+  virtual void PlaceScenarioCapital(class TCity* mgr);
   virtual void CreateFrogCityTownMarkerAndAttach(void* receiver);
   virtual void CreateFrogCityAtHomeRegionAndAttach(void* receiver);
-  virtual void DispatchGreatPowerQuarterlyStatusMessageLevel2(CString* message);
-  virtual void DispatchGreatPowerQuarterlyStatusMessageLevel1(CString* message);
-  virtual void DispatchGreatPowerQuarterlyStatusMessageLevel0(CString* message);
+  virtual void ShowStatusMessage2(CString* message);
+  virtual void ShowStatusMessage1(CString* message);
+  virtual void ShowStatusMessage0(CString* message);
   // ORACLE: Mac TGreatPower::UpdateCountryStockpile(short*); the base body is empty.
   virtual void UpdateCountryStockpile(short* needVector);
   virtual unsigned int GetUnreservedMerchantCapacity(int proposalCode);
@@ -108,24 +108,24 @@ public:
   virtual void UpdateNeedTargetAndAccumulateOverCap(short needIndex, short value);
   virtual bool IsNeedTargetEqualCurrent(short needIndex);
   virtual short GetNeedTargetByType(short needIndex);
-  virtual void TryIncrementNationResourceNeedTargetTowardCurrent(int needType);
+  virtual void RaiseNeedTarget(int needType);
   virtual bool IsTransportCapacityExceeded(void);
   virtual bool IncreaseRollingStock(void);
   virtual bool IncreaseMerchantMarine(void);
   virtual void ContinueCivilianOrders(void);
-  virtual void RebuildNationResourceYieldCountersAndDevelopmentTargets(void);
-  virtual void AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void);
-  virtual bool AnyNeedCurrentExceedsTargetWhenCapMismatch(void);
+  virtual void CountResourceYields(void);
+  virtual void AdvanceRegionDevelopment(void);
+  virtual bool HasExcessNeeds(void);
   virtual bool HasAnyCommodityRecordBelowStepValue(void);
   virtual short ComputeTreasuryStatusPromptCode(void);
   virtual bool IsCapitolThreatened(int mode);
-  virtual bool BuildGreatPowerMapContextTriggeredNationEventMessages(CString* outMessageText);
-  virtual bool BuildGreatPowerEligibleNationEventMessagesFromLinkedList(CString* outMessageText);
+  virtual bool BuildZoneEventMessages(CString* outMessageText);
+  virtual bool BuildCityEventMessages(CString* outMessageText);
   virtual void SortTrackedOrdersByTypePriority(void);
   virtual void MoveCivilians(void);
   virtual void MoveArmy(void);
   virtual void TellColoniesToBoycott(int targetNationSlot, int isBoycottEnabled);
-  virtual void RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void);
+  virtual void ComputeAidBudget(void);
   virtual void InitializeTradeStatus(void);
   virtual void RecallTradeBids(void);
   virtual void InitializeDealBook(void);
@@ -134,7 +134,7 @@ public:
   virtual int GetTotalOverseasProfits(void);
   virtual int ComputeRemainingDiplomacyAidBudget(void);
   virtual void SetTradeBids(void);
-  virtual void AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void);
+  virtual void FillTradePartners(void);
   virtual void SetStockpile(short targetSlot, short value);
   virtual void AddToStockpile(short targetSlot, short value);
   virtual unsigned int ComputeProductionMetricForOrderKind(short orderKind);
@@ -163,8 +163,7 @@ public:
   virtual bool CanAfford(short additionalCost);
   virtual void AcceptOffer(short proposalIndex);
   virtual void RejectOffer(short proposalQueueIndex);
-  virtual bool IsDiplomacyProposalAllowedForRelationship(DiplomacyProposalCodeStorage proposalCode,
-                                                         int targetNation);
+  virtual bool IsProposalAllowed(DiplomacyProposalCodeStorage proposalCode, int targetNation);
   virtual void InitializeDiplomacyOffers(void);
   virtual void InitializeDiplomacyNotices(void);
   virtual void ShowNewspaperForRecordNation(void);
@@ -190,18 +189,16 @@ public:
   virtual float ComputeArmyScoreStandingRatioVsNation(int targetNation);
   virtual float ComputeNavyScoreRatioVsNation(int targetNation);
   virtual float ComputeNavyScoreStandingRatioVsNation(int targetNation);
-  virtual float ComputeArmyScoreRatioVsNationWithSecondary(int targetNation, int secondarySlot);
-  virtual float ComputeArmyScoreStandingRatioVsNationPair(int targetNation, int partnerNation);
-  virtual float ComputeNavyScoreRatioVsNationWithSecondary(int targetNation, int secondarySlot);
-  virtual float ComputeNavyScoreStandingRatioVsNationPair(int targetNation, int partnerNation);
+  virtual float GetArmyRatioWithAlly(int targetNation, int secondarySlot);
+  virtual float GetArmyStandingRatioVsPair(int targetNation, int partnerNation);
+  virtual float GetNavyRatioWithAlly(int targetNation, int secondarySlot);
+  virtual float GetNavyStandingRatioVsPair(int targetNation, int partnerNation);
   virtual float ComputeArmyScoreRatioForNationPair(int nationA, int nationB, char swapRoles);
-  virtual float ComputeArmyScoreStandingRatioForNationPair(int nationA, int nationB,
-                                                           char swapRoles);
+  virtual float GetArmyStandingRatioForPair(int nationA, int nationB, char swapRoles);
   virtual float ComputeNavyScoreRatioForNationPair(int nationA, int nationB, char swapRoles);
-  virtual float ComputeNavyScoreStandingRatioForNationPair(int nationA, int nationB,
-                                                           char swapRoles);
-  virtual bool PassesDiplomacyStrengthThresholdForTarget(int targetNation);
-  virtual bool EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation);
+  virtual float GetNavyStandingRatioForPair(int nationA, int nationB, char swapRoles);
+  virtual bool IsStrongEnoughFor(int targetNation);
+  virtual bool ConsiderJoiningWar(int targetNation);
   virtual int ConsiderWarOfIntervention(int targetNation, int sourceNation);
   virtual int ConsiderWarOfAlliance(int targetNation, int sourceNation, char swapRoles);
   virtual void DeclareWarOn(int targetNationSlot, int transitionMode, int sourceNationSlot);
@@ -216,13 +213,13 @@ public:
   virtual void TellColoniesAboutNewTreaty(int targetNationSlot, DiplomacyRelationship relationship);
   virtual void SorryYouLose(void);
   virtual int SumCommodityRecordAccumulatedValues(void);
-  virtual void RecomputeAiExpansionAndMissionPressureScores(void);
+  virtual void AssessExpansion(void);
   virtual void ReassessMissions(int unused);
-  virtual bool UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void);
+  virtual bool CheckBankruptcy(void);
   virtual void AnnounceLater(short orderKind, short payload, short flags);
-  virtual void BuildGreatPowerTurnMessageSummaryAndDispatch(void);
+  virtual void ShowTurnMessages(void);
 
-  int ComputeNationNavyOrderWeightedMovementScore();
+  int GetNavalMobility();
   int GetDiplomacyScore();
 
   void AddPurchasedItemAmount(short index, short delta);
@@ -305,17 +302,15 @@ public:
 
   short ComputeNationRuntimeAdvisoryMetricCase6();
 
-  int ClassifyNationMilitaryPowerBandAgainstGlobalMean();
+  int GetMilitaryRank();
 
   TGreatPower();
 
   void SellStockToCoverDebt(void);
-  int SumDiplomacyGrantEntriesMaskedToValueBits();
-  float ComputeMapActionContextCompositeScoreForNation(TZone* zone);
-  float ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase, int cityIndex, TZone* zone,
-                                                      int selectedNationSlot);
-  float ComputeAdvisoryMapNodeCompositeScoreByMode(int cityRecordIndex, int mode,
-                                                   int linkCityRecordIndex);
+  int GetTotalGrants();
+  float ScoreZone(TZone* zone);
+  float ScoreProvinceFactor(int metricCase, int cityIndex, TZone* zone, int selectedNationSlot);
+  float ScoreProvinceByMode(int cityRecordIndex, int mode, int linkCityRecordIndex);
   float ComputeAdvisoryMapNodeCompositeScore(int cityRecordIndex, int mode);
   int GetNavalForceIn(TZone* zone);
   int SumNavyOrderPriorityForNation();

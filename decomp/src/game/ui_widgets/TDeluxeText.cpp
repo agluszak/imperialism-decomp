@@ -40,7 +40,7 @@ void TDeluxeText::EnableEditing(bool enable) {
 void TDeluxeText::LoadTextResource(short stringId) {
   CString text;
   g_pResourceMgr->LoadUiStringResourceById(&text, stringId);
-  UpdateTextEntrySharedStringAndMaybeNotify(&text, true);
+  SetEntryText(&text, true);
 }
 
 // FUNCTION: IMPERIALISM 0x005b6170
@@ -109,7 +109,7 @@ void TDeluxeText::UpdateTextEntrySharedString(CString* text) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b64a0
-void TDeluxeText::UpdateTextEntrySharedStringAndMaybeNotify(CString* text, bool notifyFlag) {
+void TDeluxeText::SetEntryText(CString* text, bool notifyFlag) {
   TStaticText::SetText(text);
   if (notifyFlag) {
     RefreshControl();

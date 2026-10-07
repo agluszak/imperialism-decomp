@@ -32,28 +32,28 @@ void TRailheadDialog::StuffValues(TCity* city) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x73a);
     }
     coal->ViewEnable(0, 1);
-    coal->AssertCityProductionGlobalStateInitialized(1, 1);
+    coal->AssertCityState(1, 1);
 
     TControl* iron = static_cast<TControl*>(FindSubView(g_pTradeSummarySelectionMap[4]));
     if (iron == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x73f);
     }
     iron->ViewEnable(0, 1);
-    iron->AssertCityProductionGlobalStateInitialized(1, 1);
+    iron->AssertCityState(1, 1);
 
     TControl* gold = static_cast<TControl*>(FindSubView(g_pTradeSummarySelectionMap[22]));
     if (gold == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x744);
     }
     gold->ViewEnable(0, 1);
-    gold->AssertCityProductionGlobalStateInitialized(1, 1);
+    gold->AssertCityState(1, 1);
 
     TControl* oil = static_cast<TControl*>(FindSubView(g_pTradeSummarySelectionMap[6]));
     if (oil == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs, 0x749);
     }
     oil->ViewEnable(0, 1);
-    oil->AssertCityProductionGlobalStateInitialized(1, 1);
+    oil->AssertCityState(1, 1);
   }
 }
 

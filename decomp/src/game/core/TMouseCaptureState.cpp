@@ -6,8 +6,7 @@
 #include "game/globals/ui_core_globals.h"
 
 // FUNCTION: IMPERIALISM 0x00489b60
-VOID CALLBACK NotifyGlobalCaptureOwnerState1WithCachedCoords(HWND hwnd, UINT message, UINT timerId,
-                                                             DWORD tickCount) {
+VOID CALLBACK NotifyCaptureOwner(HWND hwnd, UINT message, UINT timerId, DWORD tickCount) {
   TControl* captured = g_McAppMouseCaptureState.capturedControl;
   if (captured != 0) {
     CPoint scratchPoint(0, 0);
@@ -20,8 +19,7 @@ VOID CALLBACK NotifyGlobalCaptureOwnerState1WithCachedCoords(HWND hwnd, UINT mes
 }
 
 // FUNCTION: IMPERIALISM 0x00489bf0
-void TMouseCaptureState::BeginMouseCaptureForControlAndStartRepeatTimer(CPoint* point,
-                                                                        TControl* control) {
+void TMouseCaptureState::BeginTracking(CPoint* point, TControl* control) {
   capturedControl = control;
   CWnd::FromHandle(::SetCapture(control->nativeWindow->m_hWnd));
   startPoint = *point;
@@ -29,14 +27,13 @@ void TMouseCaptureState::BeginMouseCaptureForControlAndStartRepeatTimer(CPoint* 
   currentPoint = *point;
   control->TrackMouse(kTrackPhaseBegin, startPoint, lastPoint, currentPoint, true);
   if (g_McAppUiMouseCaptureTimerId == 0) {
-    g_McAppUiMouseCaptureTimerId = ::SetTimer(control->nativeWindow->m_hWnd, 0xef, 0x11,
-                                              NotifyGlobalCaptureOwnerState1WithCachedCoords);
+    g_McAppUiMouseCaptureTimerId =
+        ::SetTimer(control->nativeWindow->m_hWnd, 0xef, 0x11, NotifyCaptureOwner);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00489cb0
-void TMouseCaptureState::NotifyCaptureOwnerState1AndMaybeUpdateCoords(unsigned int nFlags, int x,
-                                                                      int y) {
+void TMouseCaptureState::NotifyTracking(unsigned int nFlags, int x, int y) {
   if (capturedControl == 0) {
     return;
   }

@@ -784,14 +784,14 @@ void TForeignMinister::ReplyToDiplomacyOffers(short queueIndex) {
           kDiplomacyRelationshipPeace) {
         valid = 0;
       } else {
-        valid = gp->PassesDiplomacyStrengthThresholdForTarget(targetNation);
+        valid = gp->IsStrongEnoughFor(targetNation);
       }
       break;
     case kDiplomacyProposalNonAggressionPact:
       valid = 1;
       break;
     case kDiplomacyProposalPeaceTreaty:
-      valid = gp->EvaluateJoinWarAgainstNationAndQueueEvent(targetNation);
+      valid = gp->ConsiderJoiningWar(targetNation);
       if (valid == 0) {
         break;
       }

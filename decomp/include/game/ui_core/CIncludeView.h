@@ -82,7 +82,7 @@ public:
   void BlitMainPaneBitmapToOffscreenClipped(RECT* clipRect);
   void QueueOrMergeOverlayDirtyRect(RECT* rect, int processedFlag, int field14);
 
-  TView* ReinitializeIncludeViewMainPaneAndRedrawWindow(int unusedArg);
+  TView* ResetMainPane(int unusedArg);
 
   TView* m_activeDialogContext; // g_pDisplayMgr->activeDialog tree hosted here
   CDib* m_pMainPaneDib;

@@ -7,8 +7,8 @@ IMPLEMENT_DYNCREATE(TDialogView, TView)
 
 // FUNCTION: IMPERIALISM 0x0049d880
 void TDialogView::EnsureStylePayload() {
-  int previous = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-  SetGlobalUiInvalidationFlagAndReturnPrevious(previous);
+  int previous = SetInvalidationFlag(0);
+  SetInvalidationFlag(previous);
 }
 
 // FUNCTION: IMPERIALISM 0x0049d8e0

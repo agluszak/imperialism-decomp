@@ -170,14 +170,10 @@ int TNavyMission::AccumulateLack(int* accumulatedLack, bool includeExistingLack)
     }
     float scale = g_MissionOrderDistanceDecayWeightTable[distance] *
                   static_cast<float>(ship->strength / ship->GetMaxStrength());
-    vector[0] +=
-        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0)) * scale;
-    vector[1] +=
-        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1)) * scale;
-    vector[2] +=
-        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2)) * scale;
-    vector[3] +=
-        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3)) * scale;
+    vector[0] += static_cast<float>(ship->GetCategoryPercent(0)) * scale;
+    vector[1] += static_cast<float>(ship->GetCategoryPercent(1)) * scale;
+    vector[2] += static_cast<float>(ship->GetCategoryPercent(2)) * scale;
+    vector[3] += static_cast<float>(ship->GetCategoryPercent(3)) * scale;
   }
 
   int total = 0;
@@ -454,8 +450,7 @@ float TNavyMission::ValueOf(TShip* candidate) {
       if (bucket > 5) {
         bucket = 5;
       }
-      AccumulateNavyOrderCategoryVectorWithScale(entry, profile,
-                                                 g_MissionOrderDistanceDecayWeightTable[bucket]);
+      AddShipToCategoryVector(entry, profile, g_MissionOrderDistanceDecayWeightTable[bucket]);
     }
     short bucket;
     if (GetActiveTargetZone() != 0) {
@@ -469,22 +464,10 @@ float TNavyMission::ValueOf(TShip* candidate) {
     float weight = static_cast<float>(g_MissionOrderDistanceDecayWeightTable[bucket] * (-1.0));
     float scaledRatio =
         weight * static_cast<float>(orderNode->strength / orderNode->GetMaxStrength());
-    profile[0] =
-        static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
-            scaledRatio +
-        profile[0];
-    profile[1] =
-        static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(1)) *
-            scaledRatio +
-        profile[1];
-    profile[2] =
-        static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(2)) *
-            scaledRatio +
-        profile[2];
-    profile[3] =
-        static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(3)) *
-            weight +
-        profile[3];
+    profile[0] = static_cast<float>(orderNode->GetCategoryPercent(0)) * scaledRatio + profile[0];
+    profile[1] = static_cast<float>(orderNode->GetCategoryPercent(1)) * scaledRatio + profile[1];
+    profile[2] = static_cast<float>(orderNode->GetCategoryPercent(2)) * scaledRatio + profile[2];
+    profile[3] = static_cast<float>(orderNode->GetCategoryPercent(3)) * weight + profile[3];
     float sqrtSum = 0.0f;
     float weightSum = 0.0f;
     for (int componentIndex = 0; componentIndex < 4; ++componentIndex) {
@@ -509,8 +492,7 @@ float TNavyMission::ValueOf(TShip* candidate) {
     if (bucket > 5) {
       bucket = 5;
     }
-    AccumulateNavyOrderCategoryVectorWithScale(entry, profile,
-                                               g_MissionOrderDistanceDecayWeightTable[bucket]);
+    AddShipToCategoryVector(entry, profile, g_MissionOrderDistanceDecayWeightTable[bucket]);
   }
   short bucket;
   if (GetActiveTargetZone() != 0) {
@@ -521,8 +503,7 @@ float TNavyMission::ValueOf(TShip* candidate) {
   if (bucket > 5) {
     bucket = 5;
   }
-  AccumulateNavyOrderCategoryVectorWithScale(orderNode, profile,
-                                             g_MissionOrderDistanceDecayWeightTable[bucket]);
+  AddShipToCategoryVector(orderNode, profile, g_MissionOrderDistanceDecayWeightTable[bucket]);
   float sqrtSum = 0.0f;
   float weightSum = 0.0f;
   for (int componentIndex = 0; componentIndex < 4; ++componentIndex) {
@@ -551,21 +532,10 @@ float TNavyMission::FitnessOf(TShip* candidate, float* targetProfile) {
   float bucketWeight =
       g_ArmyMissionCandidateScoreTable[static_cast<char>(state08) * 6 + clampedBucket];
   float scale = static_cast<float>(orderNode->strength / orderNode->GetMaxStrength());
-  profile[0] =
-      static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
-          scale +
-      profile[0];
-  profile[1] =
-      static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(1)) *
-          scale +
-      profile[1];
-  profile[2] =
-      static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(2)) *
-          scale +
-      profile[2];
-  profile[3] =
-      static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(3)) +
-      profile[3];
+  profile[0] = static_cast<float>(orderNode->GetCategoryPercent(0)) * scale + profile[0];
+  profile[1] = static_cast<float>(orderNode->GetCategoryPercent(1)) * scale + profile[1];
+  profile[2] = static_cast<float>(orderNode->GetCategoryPercent(2)) * scale + profile[2];
+  profile[3] = static_cast<float>(orderNode->GetCategoryPercent(3)) + profile[3];
   float sum = 0.0f;
   float sumSquares = 0.0f;
   int componentIndex;
@@ -612,9 +582,9 @@ void TNavyMission::ProjectEquipage(float* vector, TZone* nearZone, short distanc
   for (TMapOrderChildLinkNode* node = orderList; node != NULL; node = node->next) {
     TShip* ship = node->payload;
     if (nearZone == NULL || ship->GetTurnDistanceTo(nearZone) <= distanceThreshold) {
-      AccumulateNavyOrderCategoryVectorWithScale(ship, vector, 1.0f);
+      AddShipToCategoryVector(ship, vector, 1.0f);
     } else if (farZone != NULL && ship->GetTurnDistanceTo(farZone) <= distanceThreshold) {
-      AccumulateNavyOrderCategoryVectorWithScale(ship, vector, 1.0f);
+      AddShipToCategoryVector(ship, vector, 1.0f);
     }
   }
 }
@@ -631,41 +601,20 @@ void TNavyMission::AccumulateShipEquipage(TShip* ship, float* vector, char posit
   float weight = static_cast<float>((positive != 0 ? 1.0 : (-1.0)) *
                                     g_MissionOrderDistanceDecayWeightTable[distanceIndex]);
   float ratio = static_cast<float>(ship->strength / ship->GetMaxStrength()) * weight;
-  vector[0] =
-      static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0)) * ratio +
-      vector[0];
-  vector[1] =
-      static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1)) * ratio +
-      vector[1];
-  vector[2] =
-      static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2)) * ratio +
-      vector[2];
-  vector[3] =
-      static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3)) * weight +
-      vector[3];
+  vector[0] = static_cast<float>(ship->GetCategoryPercent(0)) * ratio + vector[0];
+  vector[1] = static_cast<float>(ship->GetCategoryPercent(1)) * ratio + vector[1];
+  vector[2] = static_cast<float>(ship->GetCategoryPercent(2)) * ratio + vector[2];
+  vector[3] = static_cast<float>(ship->GetCategoryPercent(3)) * weight + vector[3];
 }
 
 // 0-2 scaled by (stock/normalization base)*scale and category 3 by scale alone.
 // FUNCTION: IMPERIALISM 0x00537c60
-void __cdecl AccumulateNavyOrderCategoryVectorWithScale(TShip* orderNode, float* vector,
-                                                        float scale) {
+void __cdecl AddShipToCategoryVector(TShip* orderNode, float* vector, float scale) {
   float ratio = static_cast<float>(orderNode->strength / orderNode->GetMaxStrength()) * scale;
-  vector[0] =
-      static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
-          ratio +
-      vector[0];
-  vector[1] =
-      static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(1)) *
-          ratio +
-      vector[1];
-  vector[2] =
-      static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(2)) *
-          ratio +
-      vector[2];
-  vector[3] =
-      static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(3)) *
-          scale +
-      vector[3];
+  vector[0] = static_cast<float>(orderNode->GetCategoryPercent(0)) * ratio + vector[0];
+  vector[1] = static_cast<float>(orderNode->GetCategoryPercent(1)) * ratio + vector[1];
+  vector[2] = static_cast<float>(orderNode->GetCategoryPercent(2)) * ratio + vector[2];
+  vector[3] = static_cast<float>(orderNode->GetCategoryPercent(3)) * scale + vector[3];
 }
 
 // FUNCTION: IMPERIALISM 0x00537d40
@@ -685,7 +634,7 @@ void TNavyMission::BuildMissionQueuedOrderCategoryVector(float* vector) {
       distanceIndex = 5;
     }
     float weight = g_MissionOrderDistanceDecayWeightTable[distanceIndex];
-    AccumulateNavyOrderCategoryVectorWithScale(ship, vector, weight);
+    AddShipToCategoryVector(ship, vector, weight);
   }
 }
 
@@ -716,14 +665,10 @@ float TNavyMission::GetWeightedSatisfaction() {
     }
     float scale = g_MissionOrderDistanceDecayWeightTable[distance] *
                   static_cast<float>(ship->strength / ship->GetMaxStrength());
-    vector[0] +=
-        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0)) * scale;
-    vector[1] +=
-        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1)) * scale;
-    vector[2] +=
-        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2)) * scale;
-    vector[3] +=
-        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3)) * scale;
+    vector[0] += static_cast<float>(ship->GetCategoryPercent(0)) * scale;
+    vector[1] += static_cast<float>(ship->GetCategoryPercent(1)) * scale;
+    vector[2] += static_cast<float>(ship->GetCategoryPercent(2)) * scale;
+    vector[3] += static_cast<float>(ship->GetCategoryPercent(3)) * scale;
   }
 
   float numerator = 0.0f;
@@ -755,14 +700,10 @@ float TNavyMission::GetWeightedSatifactionWith(TShip* candidateOrder) {
     }
     float scale = g_MissionOrderDistanceDecayWeightTable[distanceIndex] *
                   static_cast<float>(ship->strength / ship->GetMaxStrength());
-    vector[0] +=
-        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0)) * scale;
-    vector[1] +=
-        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1)) * scale;
-    vector[2] +=
-        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2)) * scale;
-    vector[3] +=
-        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3)) * scale;
+    vector[0] += static_cast<float>(ship->GetCategoryPercent(0)) * scale;
+    vector[1] += static_cast<float>(ship->GetCategoryPercent(1)) * scale;
+    vector[2] += static_cast<float>(ship->GetCategoryPercent(2)) * scale;
+    vector[3] += static_cast<float>(ship->GetCategoryPercent(3)) * scale;
   }
 
   TZone* targetZone = GetActiveTargetZone();
@@ -775,18 +716,10 @@ float TNavyMission::GetWeightedSatifactionWith(TShip* candidateOrder) {
   }
   float scale = g_MissionOrderDistanceDecayWeightTable[distanceIndex] *
                 static_cast<float>(candidateOrder->strength / candidateOrder->GetMaxStrength());
-  vector[0] +=
-      static_cast<float>(candidateOrder->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
-      scale;
-  vector[1] +=
-      static_cast<float>(candidateOrder->ComputeNavyOrderPriorityContributionPercentByCategory(1)) *
-      scale;
-  vector[2] +=
-      static_cast<float>(candidateOrder->ComputeNavyOrderPriorityContributionPercentByCategory(2)) *
-      scale;
-  vector[3] +=
-      static_cast<float>(candidateOrder->ComputeNavyOrderPriorityContributionPercentByCategory(3)) *
-      scale;
+  vector[0] += static_cast<float>(candidateOrder->GetCategoryPercent(0)) * scale;
+  vector[1] += static_cast<float>(candidateOrder->GetCategoryPercent(1)) * scale;
+  vector[2] += static_cast<float>(candidateOrder->GetCategoryPercent(2)) * scale;
+  vector[3] += static_cast<float>(candidateOrder->GetCategoryPercent(3)) * scale;
 
   float sumWeights = 0.0f;
   float coefficient = 0.0f;
@@ -812,14 +745,10 @@ float TNavyMission::GetWeightedSatifactionWithout(TShip* candidateOrder) {
     }
     float scale = g_MissionOrderDistanceDecayWeightTable[distanceIndex] *
                   static_cast<float>(ship->strength / ship->GetMaxStrength());
-    vector[0] +=
-        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0)) * scale;
-    vector[1] +=
-        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1)) * scale;
-    vector[2] +=
-        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2)) * scale;
-    vector[3] +=
-        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3)) * scale;
+    vector[0] += static_cast<float>(ship->GetCategoryPercent(0)) * scale;
+    vector[1] += static_cast<float>(ship->GetCategoryPercent(1)) * scale;
+    vector[2] += static_cast<float>(ship->GetCategoryPercent(2)) * scale;
+    vector[3] += static_cast<float>(ship->GetCategoryPercent(3)) * scale;
   }
 
   TZone* targetZone = GetActiveTargetZone();
@@ -832,18 +761,10 @@ float TNavyMission::GetWeightedSatifactionWithout(TShip* candidateOrder) {
   }
   float scale = g_MissionOrderDistanceDecayWeightTable[distanceIndex] * static_cast<float>((-1.0)) *
                 static_cast<float>(candidateOrder->strength / candidateOrder->GetMaxStrength());
-  vector[0] +=
-      static_cast<float>(candidateOrder->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
-      scale;
-  vector[1] +=
-      static_cast<float>(candidateOrder->ComputeNavyOrderPriorityContributionPercentByCategory(1)) *
-      scale;
-  vector[2] +=
-      static_cast<float>(candidateOrder->ComputeNavyOrderPriorityContributionPercentByCategory(2)) *
-      scale;
-  vector[3] +=
-      static_cast<float>(candidateOrder->ComputeNavyOrderPriorityContributionPercentByCategory(3)) *
-      scale;
+  vector[0] += static_cast<float>(candidateOrder->GetCategoryPercent(0)) * scale;
+  vector[1] += static_cast<float>(candidateOrder->GetCategoryPercent(1)) * scale;
+  vector[2] += static_cast<float>(candidateOrder->GetCategoryPercent(2)) * scale;
+  vector[3] += static_cast<float>(candidateOrder->GetCategoryPercent(3)) * scale;
 
   float sumWeights = 0.0f;
   float coefficient = 0.0f;
@@ -855,8 +776,7 @@ float TNavyMission::GetWeightedSatifactionWithout(TShip* candidateOrder) {
 }
 
 // FUNCTION: IMPERIALISM 0x005389f0
-float TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(int sourceNation,
-                                                                               TZone* nodeContext) {
+float TNavyMission::ScoreEnemyMatch(int sourceNation, TZone* nodeContext) {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (TShip* orderNode = TShip::GetFirst(); orderNode != 0; orderNode = orderNode->next) {
     if (orderNode->location == nodeContext &&
@@ -867,17 +787,16 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(i
         float scale =
             static_cast<float>(orderNode->strength) / static_cast<float>(normalizationBase);
         int category = orderNode->strength % normalizationBase;
-        int contribution =
-            orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(category);
+        int contribution = orderNode->GetCategoryPercent(category);
         vector[0] += static_cast<float>(contribution) * scale;
         category = contribution;
-        contribution = orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(category);
+        contribution = orderNode->GetCategoryPercent(category);
         vector[1] += static_cast<float>(contribution) * scale;
         category = contribution;
-        contribution = orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(category);
+        contribution = orderNode->GetCategoryPercent(category);
         vector[2] += static_cast<float>(contribution) * scale;
         category = contribution;
-        contribution = orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(category);
+        contribution = orderNode->GetCategoryPercent(category);
         vector[3] += static_cast<float>(contribution);
       }
     }
@@ -903,8 +822,7 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(i
 }
 
 // FUNCTION: IMPERIALISM 0x00538bf0
-float TNavyMission::ComputeOrderDistributionSimilarityScoreForExactSourceNation(
-    int sourceNation, TZone* nodeContext) {
+float TNavyMission::ScoreNationMatch(int sourceNation, TZone* nodeContext) {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (TShip* orderNode = TShip::GetFirst(); orderNode != 0; orderNode = orderNode->next) {
     if (orderNode->location == nodeContext &&
@@ -914,17 +832,16 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForExactSourceNation(
         float scale =
             static_cast<float>(orderNode->strength) / static_cast<float>(normalizationBase);
         int category = orderNode->strength % normalizationBase;
-        int contribution =
-            orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(category);
+        int contribution = orderNode->GetCategoryPercent(category);
         vector[0] += static_cast<float>(contribution) * scale;
         category = contribution;
-        contribution = orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(category);
+        contribution = orderNode->GetCategoryPercent(category);
         vector[1] += static_cast<float>(contribution) * scale;
         category = contribution;
-        contribution = orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(category);
+        contribution = orderNode->GetCategoryPercent(category);
         vector[2] += static_cast<float>(contribution) * scale;
         category = contribution;
-        contribution = orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(category);
+        contribution = orderNode->GetCategoryPercent(category);
         vector[3] += static_cast<float>(contribution);
       }
     }
@@ -951,25 +868,17 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForExactSourceNation(
 
 // Scores the accumulated order distribution against target profile [0..3].
 // FUNCTION: IMPERIALISM 0x00538dd0
-float TNavyMission::ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfile(
-    TZone* nodeContext) {
+float TNavyMission::ScoreZoneBaseMatch(TZone* nodeContext) {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (TShip* orderNode = TShip::GetFirst(); orderNode != 0; orderNode = orderNode->next) {
     if (orderNode->location == nodeContext &&
         g_pDiplomacyTurnStateManager->AreAtWar(nationId, orderNode->nation)) {
       float scale = static_cast<float>(orderNode->strength / orderNode->GetMaxStrength()) *
                     static_cast<float>(1.0);
-      vector[0] +=
-          static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
-          scale;
-      vector[1] +=
-          static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(1)) *
-          scale;
-      vector[2] +=
-          static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(2)) *
-          scale;
-      vector[3] +=
-          static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(3));
+      vector[0] += static_cast<float>(orderNode->GetCategoryPercent(0)) * scale;
+      vector[1] += static_cast<float>(orderNode->GetCategoryPercent(1)) * scale;
+      vector[2] += static_cast<float>(orderNode->GetCategoryPercent(2)) * scale;
+      vector[3] += static_cast<float>(orderNode->GetCategoryPercent(3));
     }
   }
   float total = vector[0] + vector[1] + vector[2] + vector[3];
@@ -990,24 +899,17 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfil
 }
 
 // FUNCTION: IMPERIALISM 0x00539a90
-float TNavyMission::ComputeOrderDistributionSimilarityScoreForZone(TZone* nodeContext) {
+float TNavyMission::ScoreZoneMatch(TZone* nodeContext) {
   float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
   for (TShip* orderNode = TShip::GetFirst(); orderNode != 0; orderNode = orderNode->next) {
     if (orderNode->location == nodeContext &&
         g_pDiplomacyTurnStateManager->AreAtWar(nationId, orderNode->nation)) {
       float scale = static_cast<float>(orderNode->strength / orderNode->GetMaxStrength()) *
                     static_cast<float>(1.0);
-      vector[0] +=
-          static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
-          scale;
-      vector[1] +=
-          static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(1)) *
-          scale;
-      vector[2] +=
-          static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(2)) *
-          scale;
-      vector[3] +=
-          static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(3));
+      vector[0] += static_cast<float>(orderNode->GetCategoryPercent(0)) * scale;
+      vector[1] += static_cast<float>(orderNode->GetCategoryPercent(1)) * scale;
+      vector[2] += static_cast<float>(orderNode->GetCategoryPercent(2)) * scale;
+      vector[3] += static_cast<float>(orderNode->GetCategoryPercent(3));
     }
   }
   float total = vector[0] + vector[1] + vector[2] + vector[3];
@@ -1028,7 +930,7 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForZone(TZone* nodeCo
 }
 
 // FUNCTION: IMPERIALISM 0x0053b350
-float TNavyMission::ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies(TZone* portZone) {
+float TNavyMission::ScorePortDefense(TZone* portZone) {
   float best = 0.0f;
   short ownerNation = portZone->GetPortOwnerNation();
   if (ownerNation < kMajorNationCount) {
@@ -1038,21 +940,10 @@ float TNavyMission::ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies
       if (ship->nation == scoreNation && ship->IsInHomePort() &&
           ship->GetMaxStrength() <= ship->strength) {
         float stockRatio = static_cast<float>(ship->strength / ship->GetMaxStrength());
-        vector[0] =
-            static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
-                stockRatio +
-            vector[0];
-        vector[1] =
-            static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1)) *
-                stockRatio +
-            vector[1];
-        vector[2] =
-            static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2)) *
-                stockRatio +
-            vector[2];
-        vector[3] =
-            static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3)) +
-            vector[3];
+        vector[0] = static_cast<float>(ship->GetCategoryPercent(0)) * stockRatio + vector[0];
+        vector[1] = static_cast<float>(ship->GetCategoryPercent(1)) * stockRatio + vector[1];
+        vector[2] = static_cast<float>(ship->GetCategoryPercent(2)) * stockRatio + vector[2];
+        vector[3] = static_cast<float>(ship->GetCategoryPercent(3)) + vector[3];
       }
     }
     float total = 0.0f;
@@ -1088,21 +979,10 @@ float TNavyMission::ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies
         if (ship->nation == scoreNation && ship->IsInHomePort() &&
             ship->GetMaxStrength() <= ship->strength) {
           float stockRatio = static_cast<float>(ship->strength / ship->GetMaxStrength());
-          vector[0] =
-              static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
-                  stockRatio +
-              vector[0];
-          vector[1] =
-              static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1)) *
-                  stockRatio +
-              vector[1];
-          vector[2] =
-              static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2)) *
-                  stockRatio +
-              vector[2];
-          vector[3] =
-              static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3)) +
-              vector[3];
+          vector[0] = static_cast<float>(ship->GetCategoryPercent(0)) * stockRatio + vector[0];
+          vector[1] = static_cast<float>(ship->GetCategoryPercent(1)) * stockRatio + vector[1];
+          vector[2] = static_cast<float>(ship->GetCategoryPercent(2)) * stockRatio + vector[2];
+          vector[3] = static_cast<float>(ship->GetCategoryPercent(3)) + vector[3];
         }
       }
       float total = 0.0f;

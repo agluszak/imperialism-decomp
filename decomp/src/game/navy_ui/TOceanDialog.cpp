@@ -325,7 +325,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
   clippedRect.top = rectBuffer->top;
   clippedRect.right = rectBuffer->right;
   clippedRect.bottom = rectBuffer->bottom;
-  FillRectWithQuickDrawBrushAndContextOffset(&clippedRect);
+  FillContextRect(&clippedRect);
 
   int row;
   CRect tileRect;
@@ -348,12 +348,12 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
         tileIndex -= 0x6c;
         if (blankWrappedRightEdge) {
           g_pViewMgr->SetForeColor(0);
-          FillRectWithQuickDrawBrushAndContextOffset(&tileRect);
+          FillContextRect(&tileRect);
           continue;
         }
       } else if (blankWrappedLeftEdge && unwrappedColumn > 0x3c) {
         g_pViewMgr->SetForeColor(0);
-        FillRectWithQuickDrawBrushAndContextOffset(&tileRect);
+        FillContextRect(&tileRect);
         continue;
       }
 
@@ -368,7 +368,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
                      kStrategicTerrainWater;
       if (!isWater) {
         SetQuickDrawFillColorFromPaletteIndex(g_aOceanMapOwnerPaletteIndexByNationTag[ownerTag]);
-        FillRectWithQuickDrawBrushAndContextOffset(&tileRect);
+        FillContextRect(&tileRect);
       }
 
       if (screenX >= 0) {
@@ -781,7 +781,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
   }
 
   if (g_bDrawOceanZoneLabels) {
-    InitializeUiTextStyleDescriptorAndApplyQuickDraw(2, 0xc, 0x2b68, 3);
+    SetTextStyleAndApply(2, 0xc, 0x2b68, 3);
     for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
       int tileIndex = zone->tileOrTerrainId;
       if (tileIndex == -1) {
@@ -803,16 +803,15 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
       CString label;
       zone->AssignZoneDisplayNameToOutputRef(&label);
       SetQuickDrawTextOriginWithContextOffset(
-          static_cast<short>(labelX - MeasureTextRangeWithCachedQuickDrawStyle(
-                                          static_cast<LPCSTR>(label), 0, label.GetLength()) /
-                                          2),
+          static_cast<short>(
+              labelX - MeasureTextRange(static_cast<LPCSTR>(label), 0, label.GetLength()) / 2),
           static_cast<short>(labelY + 0x10));
       DrawTextWithCachedQuickDrawStyleState(&label);
     }
   }
 
   if (g_bDrawOceanNationLabels) {
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0x41, 0xc, 0x2b68);
+    ApplyTextStyle(0x41, 0xc, 0x2b68);
     SetQuickDrawTextFace(0x41);
     TCountry** descriptorSlot = g_apTerrainTypeDescriptorTable;
     do {
@@ -833,7 +832,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
             labelY >= rectBuffer->top && labelY <= rectBuffer->bottom) {
           CString label;
           descriptor->FormatOverlayTerrainLabelText(&label);
-          short labelWidth = MeasureTextExtentWithCachedQuickDrawStyle(&label);
+          short labelWidth = MeasureText(&label);
           labelX -= labelWidth / 2;
           SetQuickDrawFillColorFromPaletteIndex(0x13);
           SetQuickDrawTextOriginWithContextOffset(static_cast<short>(labelX + 1),
@@ -895,7 +894,7 @@ void TOceanDialog::DrawUnit(TCivUnit* orderEntry, int projectedX, int projectedY
     }
     ScopedOceanMapPaletteSelection paletteSelection;
     SetQuickDrawFillColorFromPaletteIndex(g_aOceanMapOwnerPaletteIndexByNationTag[ownerNation]);
-    FillRectWithQuickDrawBrushAndContextOffset(&destinationRect);
+    FillContextRect(&destinationRect);
   }
 
   CRect sourceRect(spriteStripOffset, 0, spriteStripOffset + 0x10, 0x10);
@@ -929,7 +928,7 @@ void TOceanDialog::DrawGarrison(short tileIndex, CRect* dstRect, int flag) {
     }
     ScopedOceanMapPaletteSelection paletteSelection;
     SetQuickDrawFillColorFromPaletteIndex(g_aOceanMapOwnerPaletteIndexByNationTag[ownerNation]);
-    FillRectWithQuickDrawBrushAndContextOffset(dstRect);
+    FillContextRect(dstRect);
   }
 
   CRect sourceRect(spriteStripOffset, 0, spriteStripOffset + 0x10, 0x10);
@@ -941,8 +940,7 @@ void TOceanDialog::DrawGarrison(short tileIndex, CRect* dstRect, int flag) {
 }
 
 // FUNCTION: IMPERIALISM 0x005682d0
-void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
-                                                                 bool altOverlay) {
+void TOceanDialog::DrawFleet(short tileIndex, CRect* dstRect, bool altOverlay) {
 
   signed char tileActionClass = g_pGlobalMapState->terrainStateTable[tileIndex].tileActionState;
   if (tileActionClass < 0 || tileActionClass >= kMapTileActionStateOceanAtlasFrameCount) {
@@ -953,7 +951,7 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
   if (!alternateOverlayEnabled) {
     ScopedOceanMapPaletteSelection paletteSelection;
     g_pViewMgr->SetForeColor(0x32);
-    FillRectWithQuickDrawBrushAndContextOffset(dstRect);
+    FillContextRect(dstRect);
   } else {
     spriteX += 0x10;
   }
@@ -974,7 +972,7 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
   if (!alternateOverlayEnabled) {
     ScopedOceanMapPaletteSelection paletteSelection;
     g_pViewMgr->SetForeColor(0x32);
-    FillRectWithQuickDrawBrushAndContextOffset(&leftSatelliteRect);
+    FillContextRect(&leftSatelliteRect);
   }
   spriteX += 0x20;
   sourceRect.SetRect(spriteX, 0, spriteX + 0x10, 0x10);
@@ -990,7 +988,7 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
   if (!alternateOverlayEnabled) {
     ScopedOceanMapPaletteSelection paletteSelection;
     g_pViewMgr->SetForeColor(0x32);
-    FillRectWithQuickDrawBrushAndContextOffset(&rightSatelliteRect);
+    FillContextRect(&rightSatelliteRect);
   }
   spriteX += 0x20;
   sourceRect.SetRect(spriteX, 0, spriteX + 0x10, 0x10);
@@ -1054,7 +1052,7 @@ bool TOceanDialog::IsTileVisible(short tileIndex) {
 
 // Converts a viewport pixel point to a wrapped map tile index.
 // FUNCTION: IMPERIALISM 0x00568840
-int TOceanDialog::ComputeWrappedTileIndexFromViewportPoint(const CPoint* point) {
+int TOceanDialog::TileAtPoint(const CPoint* point) {
   int y = point->y;
   int yQuotient = (y + (y >> 31 & 0xf)) >> 4;
   short row = scrollRowOffset + yQuotient;

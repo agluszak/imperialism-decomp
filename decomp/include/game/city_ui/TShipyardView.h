@@ -30,7 +30,7 @@ public:
   short selectedStatsRow;
   short buildQueueSlotValues[8];         // AKA requirementResourceTypeByRow
   int unresolvedZero;                    // only DoStartup's zero write is confirmed
-  TQuickDrawSurfaceContext* iconSurface; // LoadBitmapResourceSurfaceAndRestoreQuickDrawContext
+  TQuickDrawSurfaceContext* iconSurface; // LoadBitmapSurface
   short commoditySpriteIds[4];
   short commodityRequiredAmounts[4];
 };

@@ -22,15 +22,15 @@ void TBattleUnitsView::StuffValues(BattleRecord& battleRecord, int participantIn
   case kMapContextReportLandBattle:
   case kMapContextReportPreemptedLandBattle:
   case kMapContextReportUncontestedTakeover:
-    primaryUnitAtlas = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdb8);
+    primaryUnitAtlas = LoadBitmapSurface(0xdb8);
     break;
   case kMapContextReportSeaBattle:
-    primaryUnitAtlas = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdb8);
-    secondaryUnitAtlas = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdba);
+    primaryUnitAtlas = LoadBitmapSurface(0xdb8);
+    secondaryUnitAtlas = LoadBitmapSurface(0xdba);
     break;
   case kMapContextReportMerchantInterception:
-    primaryUnitAtlas = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdbb);
-    secondaryUnitAtlas = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdba);
+    primaryUnitAtlas = LoadBitmapSurface(0xdbb);
+    secondaryUnitAtlas = LoadBitmapSurface(0xdba);
     break;
   }
 

@@ -8,8 +8,8 @@ class TMacViewMgr;
 class TView;
 class TViewMgr;
 
-int SetGlobalUiInvalidationFlagAndReturnPrevious(int newValue);
-int ClearGlobalUiInvalidationFlagAndReturnPrevious();
+int SetInvalidationFlag(int newValue);
+int ClearInvalidationFlag();
 int GetMcAppUiActiveFlag();
 
 extern TView* g_pUiResourceContext;

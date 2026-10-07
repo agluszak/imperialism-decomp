@@ -59,7 +59,7 @@ void TTradeScreenPicture::Draw(RECT* rectBuffer) {
 #endif
 
   TPicture::Draw(rectBuffer);
-  InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xe, 0x2b68, 2);
+  SetTextStyleAndApply(0, 0xe, 0x2b68, 2);
 
   int i = 0;
   const unsigned int* tagPtr = g_tradeCommodityRowTagTable;

@@ -17,7 +17,7 @@ public:
   virtual void SetTextStyle(const TextStyle& style, bool refreshNow);
   virtual void SetTextStyle(int fontStyleFlags, int pointSize, int themeCode);
   virtual void BuildCityViewProductionControls_Impl(short codeGroup, short stringIndex);
-  virtual void UpdateTextEntrySharedStringAndMaybeNotify(CString* text, bool notifyFlag);
+  virtual void SetEntryText(CString* text, bool notifyFlag);
   virtual void UpdateTextEntrySharedString(CString* text);
   virtual void StuffBuffer(const char* textChars, int textLength);
   virtual short CenterVertically(bool refreshNow);

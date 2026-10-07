@@ -14,7 +14,7 @@ void scanBracketExpressions(TSimMgr* ctx, CString* out, const char* input, ...);
 
 void __cdecl BuildUiMessageTextFromBracketTemplate(TSimMgr* sim, CString* out, int groupA,
                                                    int indexA, int groupB, int indexB);
-void GenerateMappedFlavorTextByCurrentContextNation(CString* dest);
+void GenerateFlavorTextForNation(CString* dest);
 void GenerateMappedFlavorTextVariantC(CString* out);
 void GenerateMappedFlavorTextVariantE(CString* out);
 void GenerateMappedFlavorTextVariantB(CString* out);
@@ -22,7 +22,7 @@ void GenerateMappedFlavorTextVariantA(CString* out);
 void GenerateMappedFlavorTextVariantD(CString* out);
 void BuildRandomMapContextStatusBaseString(CString* out);
 CString AssignRandomMapContextStatusBaseString();
-void AppendRandomMapContextStatusSuffixWithProbability(CString* dest);
+void MaybeAppendStatusSuffix(CString* dest);
 void BuildMapContextStatusStringVariantA(CString* out);
 void BuildMapContextStatusStringVariantB(CString* out);
 void BuildMapContextStatusStringVariantC(CString* out);
@@ -36,10 +36,10 @@ void BuildMapContextStatusStringVariantJ(CString* out);
 void BuildMapContextStatusStringVariantK(CString* out);
 void BuildMapContextStatusStringVariantL(CString* out);
 void GenerateMappedFlavorTextByTableSlot(CString* dest, short tableSlot);
-CString BuildSharedStringFromMappedFlavorTextIndex(short variantIndex);
+CString GetFlavorText(short variantIndex);
 bool ShouldRetryMappedFlavorTextGeneration(CString* dest);
-void GenerateMappedFlavorTextUntilValidationPasses(CString* dest, short variantIndex);
-void SetSharedStringFromMappedFlavorTextWithLengthClamp(CString* dest, short tableSlot);
+void GenerateValidFlavorText(CString* dest, short variantIndex);
+void SetFlavorTextClamped(CString* dest, short tableSlot);
 // nationSlot == -1 resets the per-nation localized province-name ordinals.
 void __cdecl AssignNextProvinceNameForNationSlot(CString* dest, short nationSlot);
 

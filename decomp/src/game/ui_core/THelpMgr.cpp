@@ -244,7 +244,7 @@ void THelpMgr::HandlePostDispatchTurnStateEventUpdates() {
   if (phase != kGamePhaseNews) {
     if (phase == kGamePhaseOptionalCityScreen && g_pSimMgr->preferenceValues[8] != 0) {
       if (g_nTurnFlowNationComparisonAdvisoryTick < g_pSimMgr->GetEconomicTurn()) {
-        if (ShowPeriodicNationComparisonAdvisoryIfNeeded()) {
+        if (CheckDireTurnStartWarnings()) {
           g_nTurnFlowNationComparisonAdvisoryTick = g_pSimMgr->GetEconomicTurn();
         }
       }
@@ -253,16 +253,16 @@ void THelpMgr::HandlePostDispatchTurnStateEventUpdates() {
   }
   // No null check in the original: the news phase guarantees the active nation slot.
   g_apNationStates[nationId]->DispatchPendingStatusPrompts();
-  g_apNationStates[nationId]->BuildGreatPowerTurnMessageSummaryAndDispatch();
+  g_apNationStates[nationId]->ShowTurnMessages();
   if (g_pSimMgr->preferenceValues[8] != 0) {
-    if (DispatchTurnStateSpecialAdvisoriesAndReturnCount() < 2) {
+    if (CheckOtherTurnStartWarnings() < 2) {
       ShowPeriodicCapabilityReminderIfNeeded();
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00501270
-short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
+short THelpMgr::CheckOtherTurnStartWarnings() {
   g_pSimMgr->GetEconomicTurn();
   short activeNation = g_pSimMgr->GetPlayerCountry();
   CString titleText;
@@ -332,8 +332,7 @@ short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
   }
 
   CString contextMessageText(g_pszEmptyTextPointer);
-  if (g_apNationStates[activeNationIndex]->BuildGreatPowerMapContextTriggeredNationEventMessages(
-          &contextMessageText)) {
+  if (g_apNationStates[activeNationIndex]->BuildZoneEventMessages(&contextMessageText)) {
     g_pSimMgr->GetString(0x2753, 0x3c, &titleText);
     g_pSimMgr->GetString(0x2753, 0x3d, &templateText);
     CString combinedText = templateText + contextMessageText;
@@ -342,8 +341,7 @@ short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
   }
 
   contextMessageText = CString(g_pszEmptyTextPointer);
-  if (g_apNationStates[activeNationIndex]->BuildGreatPowerEligibleNationEventMessagesFromLinkedList(
-          &contextMessageText)) {
+  if (g_apNationStates[activeNationIndex]->BuildCityEventMessages(&contextMessageText)) {
     g_pSimMgr->GetString(0x2753, 0x42, &titleText);
     g_pSimMgr->GetString(0x2753, 0x43, &templateText);
     templateText += contextMessageText;
@@ -378,7 +376,7 @@ void THelpMgr::ShowPeriodicCapabilityReminderIfNeeded() {
 }
 
 // FUNCTION: IMPERIALISM 0x00501be0
-bool THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
+bool THelpMgr::CheckDireTurnStartWarnings() {
   short activeNation = g_pSimMgr->GetPlayerCountry();
   CString formatText;
   CString templateText;
@@ -645,7 +643,7 @@ bool ShowTurnAlertsForActiveNation() {
   if (g_pSimMgr->preferenceValues[8] == 0) {
     return false;
   }
-  if (IsTurnFlowCooldownActiveAndResetExpiredState()) {
+  if (IsCooldownActive()) {
     return false;
   }
   if (g_lastTurnAlertTick == currentTick) {
@@ -745,7 +743,7 @@ bool ShowTurnAlertsForActiveNation() {
       }
     }
     if (!g_pSimMgr->TestTurnFlowStatusFlagMask(0x1000)) {
-      if (g_apNationStates[nationId]->AnyNeedCurrentExceedsTargetWhenCapMismatch()) {
+      if (g_apNationStates[nationId]->HasExcessNeeds()) {
         g_pSimMgr->GetString(0x2753, 0x22, &titleText);
         g_pSimMgr->GetString(0x2753, 0x23, &bodyText);
 #ifdef IMPERIALISM_RUNTIME_TESTS
@@ -844,7 +842,7 @@ void THelpMgr::SelectAndActivatePendingEventType1A0A() {
 }
 
 // FUNCTION: IMPERIALISM 0x00503370
-void THelpMgr::SelectAndActivatePendingEventTypeOffsetFrom1A0B(int idx) {
+void THelpMgr::ShowPendingHelpFrom(int idx) {
   short targetContextId = idx + 0x1a0b;
   for (int index = 1; index <= indexList->GetSize(); ++index) {
     HelpSetRecord* record =
@@ -872,8 +870,7 @@ void THelpMgr::ShowHelpSet(HelpSetRecord* pendingEntry) {
   InitializeUiTextStyleDescriptor(&titleStyle, 0, 12, 0x2b67, 1);
 
   if (pendingDialogView8 == 0) {
-    pendingDialogView8 =
-        g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventHelpMessage);
+    pendingDialogView8 = g_pAssetMgr->GetDialog(kTurnEventHelpMessage);
     if (pendingDialogView8 == 0) {
       FailNilPointerWithAssert(s_SourcePathUHelpMgr, 0x5cd);
     }
@@ -1027,8 +1024,7 @@ void THelpMgr::CheckUnitAdvice(TCivUnit* civilianOrderEntry) {
 // FUNCTION: IMPERIALISM 0x00503ac0
 void THelpMgr::OpenTerrainHelpWindow(int mapContextIndex) {
   if (pendingDialogViewC == 0) {
-    pendingDialogViewC =
-        g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTerrainHelp);
+    pendingDialogViewC = g_pAssetMgr->GetDialog(kTurnEventTerrainHelp);
     if (pendingDialogViewC == 0) {
       FailNilPointerWithAssert(s_SourcePathUHelpMgr, 0x6c1);
     }

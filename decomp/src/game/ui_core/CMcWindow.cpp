@@ -139,7 +139,7 @@ void CMcWindow::OnPaint() {
   if (m_pOwnerWindow != NULL) {
     RECT paintRect;
     CopyRect(&paintRect, &clipBox);
-    m_pOwnerWindow->PaintVisibleChildrenIntersectingClipRect(&paintRect, &dc);
+    m_pOwnerWindow->PaintChildren(&paintRect, &dc);
   }
 }
 
@@ -162,11 +162,11 @@ void CMcWindow::OnLButtonUp(UINT nFlags, CPoint point) {
 // FUNCTION: IMPERIALISM 0x00493a70
 void CMcWindow::OnMouseMove(UINT nFlags, CPoint point) {
   Default();
-  g_McAppMouseCaptureState.NotifyCaptureOwnerState1AndMaybeUpdateCoords(nFlags, point.x, point.y);
+  g_McAppMouseCaptureState.NotifyTracking(nFlags, point.x, point.y);
   g_pAmbitApplication->HandleCursor(point.x, point.y, 0);
   if (m_pOwnerWindow != NULL && GetMcAppUiActiveFlag() != 0) {
     CPoint pt(point);
-    m_pOwnerWindow->HandleCursorHoverSelectionByChildHitTestAndFallback(&pt, 0);
+    m_pOwnerWindow->AdjustCursor(&pt, 0);
   }
 }
 

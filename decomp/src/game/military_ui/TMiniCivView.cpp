@@ -111,7 +111,7 @@ void TMiniCivView::InitializeForCivilianUnit(TView* panel, int* offsetLayout, in
 void TMiniCivView::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter, like the other Draws
 
-  InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xc, 0x2b67, 3);
+  SetTextStyleAndApply(0, 0xc, 0x2b67, 3);
 
   CString lineText;
   CString nationName;
@@ -130,7 +130,7 @@ void TMiniCivView::Draw(RECT* rectBuffer) {
     lineText = cityLine;
   }
 
-  InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xc, 0x2b6a, 3);
+  SetTextStyleAndApply(0, 0xc, 0x2b6a, 3);
   SetQuickDrawTextOriginWithContextOffset(0x40, 0x26);
   DrawTextWithCachedQuickDrawStyleState(&lineText);
 

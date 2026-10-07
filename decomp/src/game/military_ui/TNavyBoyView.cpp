@@ -20,10 +20,10 @@ IMPLEMENT_DYNCREATE(TNavyBoyView, TView)
 void TNavyBoyView::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b6a);
+  ApplyTextStyle(0, 0xa, 0x2b6a);
   CString finalLabel;
   CString unusedLabel;
-  InitializeUiTextStyleDescriptorAndApplyQuickDraw(2, 0xc, 0x2b6a, 3);
+  SetTextStyleAndApply(2, 0xc, 0x2b6a, 3);
 
   CString typeNames[14];
   CString* blankCursor = typeNames;
@@ -69,10 +69,10 @@ void TNavyBoyView::Draw(RECT* rectBuffer) {
                                      &dstRect, 0x24, 0);
   } else {
     // Untrained unit: draw the localized "in training" string centered.
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(1, 0xc, 0x2b67);
+    ApplyTextStyle(1, 0xc, 0x2b67);
     CString trainingText;
     g_pSimMgr->GetString(0x273c, 0x1b, &trainingText);
-    short trainingWidth = MeasureTextExtentWithCachedQuickDrawStyle(&trainingText);
+    short trainingWidth = MeasureText(&trainingText);
     SetQuickDrawTextOriginWithContextOffset(0x88 - trainingWidth / 2, 0x25);
     DrawTextWithCachedQuickDrawStyleState(&trainingText);
   }

@@ -24,16 +24,16 @@ class TBitmapResourceLoader : public TBitmapResourceLoaderState {
 public:
   explicit TBitmapResourceLoader(unsigned short resourceId)
       : TBitmapResourceLoaderState(resourceId) {
-    EnsureBitmapResourceLoadedAndCopyRectSize();
+    LoadBitmapBounds();
   }
 
   ~TBitmapResourceLoader() {
     ReleaseBitmapResource();
   }
 
-  virtual void EnsureBitmapResourceLoadedAndCopyRectSize();
+  virtual void LoadBitmapBounds();
   virtual void ReleaseBitmapResource();
-  virtual int ReportUnimplementedResourceVirtualSlot02();
+  virtual int ReportUnimplemented();
   unsigned char GetLoaderFlags() const;
   void SetLoaderFlags(unsigned char newFlags);
 };

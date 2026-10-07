@@ -202,7 +202,7 @@ void TDiplomacyMapView::CreateDrawGeometries() {
   mapViewportRect.right = 0x24d;
   mapViewportRect.bottom = 0x159;
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b68);
+  ApplyTextStyle(0, 10, 0x2b68);
 
   for (short nationIndex = 0; nationIndex < kNationSlotCount; ++nationIndex) {
     DiplomacyMaskBufferRun* run = &maskRuns[nationIndex];
@@ -240,7 +240,7 @@ void TDiplomacyMapView::CreateDrawGeometries() {
         int labelCenterX = (anchorTile % kStrategicMapColumns) * 5 + 0x31;
         int labelY = (anchorTile / kStrategicMapColumns + 9) * 5;
         nation->GetName(&nationName);
-        short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&nationName);
+        short textWidth = MeasureText(&nationName);
         labelY -= 6;
         labelWidths[nationIndex] = textWidth;
         short labelX = static_cast<short>(labelCenterX) - textWidth / 2;
@@ -407,7 +407,7 @@ void TDiplomacyMapView::DrawNames(const RECT* presentRect) {
   (void)presentRect; // ignored stack arg threaded through by the caller
   COLORREF styleForeground = 0;
   COLORREF styleShadow = 0;
-  InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 10, 0x2b68, 1);
+  SetTextStyleAndApply(0, 10, 0x2b68, 1);
   ResolveUiThemeColor(0x2b68, &styleForeground);
   ResolveUiThemeColor(0x2b6b, &styleShadow);
 
@@ -936,8 +936,7 @@ eDipAction TDiplomacyMapView::GetAction(CPoint* clickPoint) {
 void TDiplomacyMapView::DoSetCursor(CPoint* point, RgnHandle hitArg) {}
 
 // FUNCTION: IMPERIALISM 0x004f5fb0
-void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* clickPoint,
-                                                                            RgnHandle dispatchArg) {
+void TDiplomacyMapView::AdjustCursor(CPoint* clickPoint, RgnHandle dispatchArg) {
   CPoint localPoint;
   localPoint.x = clickPoint->x;
   localPoint.y = clickPoint->y;
@@ -1003,7 +1002,7 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
     SetCursor(hCursor);
   }
 
-  TControl::HandleCursorHoverSelectionByChildHitTestAndFallback(clickPoint, dispatchArg);
+  TControl::AdjustCursor(clickPoint, dispatchArg);
 }
 
 // FUNCTION: IMPERIALISM 0x004f6170

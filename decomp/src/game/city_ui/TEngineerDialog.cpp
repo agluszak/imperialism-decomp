@@ -115,15 +115,15 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
   if (bodyTileSurface != 0) {
     g_pDisplayMgr->RemoveGWorld(bodyTileSurface);
   }
-  headerSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x1c30);
+  headerSurface = LoadBitmapSurface(0x1c30);
   if (headerSurface == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xcef);
   }
-  footerSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x1c31);
+  footerSurface = LoadBitmapSurface(0x1c31);
   if (footerSurface == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xcf0);
   }
-  bodyTileSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x1c32);
+  bodyTileSurface = LoadBitmapSurface(0x1c32);
   if (bodyTileSurface == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xcf1);
   }
@@ -133,7 +133,7 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
   BuildUiTextStyleDescriptor(&titleStyle, 0, 0xa, 0x2b6a);
   TStaticText* title = static_cast<TStaticText*>(FindSubView(kControlTagTitl));
   title->AssertValid();
-  ConfigureUiControlStyleValueAndCaptionFromStringResource(title, 0, 0xe, 0x2b6a, 1, 0x1c20, 6);
+  ConfigureControlFromStrings(title, 0, 0xe, 0x2b6a, 1, 0x1c20, 6);
 
   // Active nation, its city influence map, and the anchor tile's six hex neighbours.
   short activeNation = g_pSimMgr->GetPlayerCountry();

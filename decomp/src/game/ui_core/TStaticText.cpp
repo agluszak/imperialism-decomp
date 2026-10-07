@@ -133,7 +133,7 @@ void TStaticText::Draw(RECT* rectBuffer) {
   CRect bounds;
   GetQDExtent(&bounds);
   bounds.DeflateRect(&contentInsets);
-  CFont* font = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&textStyle);
+  CFont* font = UpdateFontPreset(&textStyle);
   CFont* oldFont = dc->SelectObject(font);
   COLORREF textColor;
   if (stylePayload == 0) {
@@ -159,7 +159,7 @@ void TStaticText::ImageText(const char* textChars, int textLength, RECT* rect,
                             short alignmentCode) {
   CDC* dc = GetActiveQuickDrawDc();
   dc->SetBkMode(TRANSPARENT);
-  CFont* font = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&textStyle);
+  CFont* font = UpdateFontPreset(&textStyle);
   CFont* oldFont = dc->SelectObject(font);
   dc->SetTextColor(g_QuickDrawForegroundColor);
   UINT format = 0x910;

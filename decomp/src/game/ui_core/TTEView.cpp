@@ -27,7 +27,7 @@ void TTEView::ITEView(TDocument* document, TView* panel, int* offsetLayout, int*
 int TTEView::MeasureCurrentTextHeightInLayoutRect() {
   CDC dc;
   dc.Attach(CreateCompatibleDC(static_cast<HDC>(0)));
-  CFont* font = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&textStyle);
+  CFont* font = UpdateFontPreset(&textStyle);
   CFont* oldFont = dc.SelectObject(font);
   CRect bounds;
   GetQDExtent(&bounds);

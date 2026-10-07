@@ -187,7 +187,7 @@ void TOcean::ReadFrom(TStream* stream) {
       }
     }
   }
-  RefreshPortZoneNeighborContextLinksAndFallbacks();
+  RefreshPortLinks();
 }
 
 // FUNCTION: IMPERIALISM 0x005628f0
@@ -254,8 +254,8 @@ int RelaxMapTileCostFieldByNeighborTerrain(MapTileCostField* costField) {
   do {
     if (*pCost == 0) {
       for (int direction = 0; direction < 6; direction++) {
-        short neighbor = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
-            static_cast<short>(tileIndex), static_cast<short>(direction));
+        short neighbor =
+            TMapMgr::StepTile(static_cast<short>(tileIndex), static_cast<short>(direction));
         short cur = *pCost;
         TTerrainStateRecord* tiles = g_pGlobalMapState->terrainStateTable;
         if (cur == 0 &&
@@ -287,7 +287,7 @@ int RelaxMapTileCostFieldByNeighborTerrain(MapTileCostField* costField) {
 }
 
 // FUNCTION: IMPERIALISM 0x00562c00
-int SelectBestSeedTileForNationFromCostField(MapTileCostField* costField, short nationTag) {
+int PickSeedTile(MapTileCostField* costField, short nationTag) {
   int bestTile = -1;
   int bestScore = -1;
   short equalBestCount = 0;
@@ -300,7 +300,7 @@ int SelectBestSeedTileForNationFromCostField(MapTileCostField* costField, short 
 
     int score = costField->tileCosts[tileIndex] * 12;
     for (int direction = 0; direction < 6; ++direction) {
-      short neighbor = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(tileIndex, direction);
+      short neighbor = TMapMgr::StepTile(tileIndex, direction);
       if (neighbor != -1 &&
           g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag == tile->ownerNationTag) {
         score += costField->tileCosts[neighbor] * 2;
@@ -330,7 +330,7 @@ int SelectBestSeedTileForNationFromCostField(MapTileCostField* costField, short 
 }
 
 // FUNCTION: IMPERIALISM 0x00562d90
-void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg) {
+void TOcean::CreateZones(int nationCountArg) {
   TZone* contextBase;
   MapTileCostField* costField;
   int relaxPassCount;
@@ -352,10 +352,8 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
   nationIndex = 0;
   if (static_cast<short>(nationCountArg) > 0) {
     do {
-      int seedTile = SelectBestSeedTileForNationFromCostField(
-          costField, static_cast<short>(nationIndex + kNationSlotCount));
-      contextArray[nationIndex].SetMapActionContextTargetTileAndRefreshMarkers(
-          nationIndex + kNationSlotCount, seedTile);
+      int seedTile = PickSeedTile(costField, static_cast<short>(nationIndex + kNationSlotCount));
+      contextArray[nationIndex].SetIngotTile(nationIndex + kNationSlotCount, seedTile);
       ++nationIndex;
     } while (nationIndex < static_cast<short>(nationCountArg));
   }
@@ -580,7 +578,7 @@ void TOcean::BuildPort(short nTileIndex) {
     FailNilPointerWithAssert(s_SourcePathUOcean, 0x96a);
   }
 
-  portZone->SetMapActionContextTargetTileAndRefreshMarkers(static_cast<int>(nationSeed), -1);
+  portZone->SetIngotTile(static_cast<int>(nationSeed), -1);
   portZone->tileOrTerrainId = tileIndex;
   portZone->GenerateZoneStatusCodeIfUnset();
   portZone->NameThyself(0, 0);
@@ -588,7 +586,7 @@ void TOcean::BuildPort(short nTileIndex) {
   short bestSeaTile = -1;
   for (int i = 0; i < 6; ++i) {
     short direction = (tileIndex + i) % 6;
-    short candidateTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(nTileIndex, direction);
+    short candidateTile = TMapMgr::StepTile(nTileIndex, direction);
     if (candidateTile == -1) {
       continue;
     }

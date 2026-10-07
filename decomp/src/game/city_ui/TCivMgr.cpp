@@ -117,7 +117,7 @@ void TCivMgr::SetDimming(TCivUnit* pUnitOrderEntry) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d2380
-bool TCivMgr::HandleCivilianTileSelectionOrReportClick(short nTileIndex, short nClickMode) {
+bool TCivMgr::CivilianTileClick(short nTileIndex, short nClickMode) {
   int actionCode = 0;
   short nationId = g_pSimMgr->GetPlayerCountry();
   TCivUnit* clickedEntry = g_pGlobalMapState->GetMyFirstUnit(nTileIndex, nationId);
@@ -166,8 +166,7 @@ bool TCivMgr::HandleCivilianTileSelectionOrReportClick(short nTileIndex, short n
 }
 
 // FUNCTION: IMPERIALISM 0x004d2540
-unsigned short TCivMgr::ResolveCivilianTileSelectionOrReportActionCode(short nTileIndex,
-                                                                       short nClickMode) {
+unsigned short TCivMgr::GetCivilianTileAction(short nTileIndex, short nClickMode) {
   CivilianTileActionCodeStorage actionCode = kCivilianTileActionNone;
   TCivUnit* entry = g_pGlobalMapState->GetMyFirstUnit(nTileIndex, g_pSimMgr->GetPlayerCountry());
   if (entry != NULL) {
@@ -269,8 +268,7 @@ bool TCivMgr::HandleCivilianTileOrderAction(short nTileIndex, short nInputHint) 
 }
 
 // FUNCTION: IMPERIALISM 0x004d2930
-unsigned short TCivMgr::LookupCivilianTileOrderCursorTokenByActionIndex(short nTileIndex,
-                                                                        short nInputHint) {
+unsigned short TCivMgr::GetCivilianTileCursor(short nTileIndex, short nInputHint) {
   CivilianTileActionCodeStorage actionCode =
       ResolveCivilianTileOrderActionCode(nTileIndex, nInputHint);
   return g_civilianTileOrderCursorTokenTable[actionCode];
@@ -391,7 +389,7 @@ void TCivMgr::OrderAndCycle(UnitOrder order) {
 
   TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPicture;
   if (mapUberPicture != NULL) {
-    mapUberPicture->CycleMapInteractionSelectionAfterHandledClick();
+    mapUberPicture->CycleSelection();
   }
 }
 
@@ -429,7 +427,7 @@ void TCivMgr::DisbandSelected() {
   }
   mapUberPicture = g_pViewMgr->mapUberPicture;
   if (mapUberPicture != NULL) {
-    mapUberPicture->CycleMapInteractionSelectionAfterHandledClick();
+    mapUberPicture->CycleSelection();
   }
 }
 
@@ -488,8 +486,8 @@ void TCivMgr::InfoBox(TCivUnit* pCivilianOrderEntry) {
     StrategicTerrainKind terrainKind =
         g_pGlobalMapState->terrainStateTable[targetTileIndex].GetTerrainKind();
     refundAmount = g_adwEngineerRailBuildCostByTerrainType[terrainKind];
-    g_pGlobalMapState->ApplyEngineerRailCostDeltaForConnectedTiles(
-        targetTileIndex, subtypeOrTargetProvince, pCivilianOrderEntry->ownerNationSlot);
+    g_pGlobalMapState->AddGhostRail(targetTileIndex, subtypeOrTargetProvince,
+                                    pCivilianOrderEntry->ownerNationSlot);
     break;
   }
   case kUnitOrderBuildDepot:
@@ -528,7 +526,7 @@ void TCivMgr::InfoBox(TCivUnit* pCivilianOrderEntry) {
   if (mapUberPicture != NULL) {
     mapUberPicture->SetMapInteractionMode(0);
   }
-  g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
+  g_pViewMgr->RefreshNationIndicator();
 
   selectedEntry = pCivilianOrderEntry;
   SetDimming(pCivilianOrderEntry);
@@ -604,7 +602,7 @@ bool TCivMgr::ImprovementClick(short nTileIndex) {
 
   selectedEntry->completionMarker = sfxCode;
   g_apNationStates[g_pSimMgr->GetPlayerCountry()]->AddToTreasury(-cost);
-  g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
+  g_pViewMgr->RefreshNationIndicator();
   return true;
 }
 
@@ -638,7 +636,7 @@ bool TCivMgr::PurchaseClick(short nTileIndex) {
       MoveAndRedrawUnit(nTileIndex, g_pSelectedCivilianOrderState->selectedEntry);
       g_pSfxPlaybackSystem->PlaySoundEffect(0x2335, 0, 1);
       g_apNationStates[g_pSimMgr->GetPlayerCountry()]->AddToTreasury(-purchaseCost);
-      g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
+      g_pViewMgr->RefreshNationIndicator();
 
       unsigned int feedbackStartTick = GetTickCountDiv16();
       while (true) {
@@ -821,7 +819,7 @@ bool TCivMgr::EngineerClick(short nTileIndex) {
   }
 
   if (refreshPanel) {
-    g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
+    g_pViewMgr->RefreshNationIndicator();
   }
 
   return actionFinalized;
@@ -874,8 +872,8 @@ void TCivMgr::CompletedOrders(TCivUnit* order) {
     order->completionMarker = 0x232b;
     break;
   case 0:
-    g_pGlobalMapState->SetHexAdjacencyDirectionFlagsForTilePair(
-        order->orderTargetIndex, order->tileIndex, order->ownerNationSlot);
+    g_pGlobalMapState->RemoveGhostRail(order->orderTargetIndex, order->tileIndex,
+                                       order->ownerNationSlot);
     order->completionMarker = 0x2329;
     break;
   case 7:
@@ -1005,6 +1003,6 @@ void TCivMgr::WakeAll(int nationId) {
 
   TMapUberPicture* mapView = g_pViewMgr->mapUberPicture;
   if (mapView != 0 && !mapView->IsAUnitSelected()) {
-    mapView->CycleMapInteractionSelectionAfterHandledClick();
+    mapView->CycleSelection();
   }
 }

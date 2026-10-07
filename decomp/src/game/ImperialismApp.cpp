@@ -109,8 +109,8 @@ HKEY OpenOrCreateProfileSectionKey(LPCSTR company, LPCSTR product, LPCSTR sectio
 }
 
 // FUNCTION: IMPERIALISM 0x00412840
-CString ReadOrCreateRegistryStringValueWithFallback(LPCSTR company, LPCSTR product, LPCSTR section,
-                                                    LPCSTR valueName, LPCSTR defaultValue) {
+CString ReadRegistryString(LPCSTR company, LPCSTR product, LPCSTR section, LPCSTR valueName,
+                           LPCSTR defaultValue) {
   HKEY hSoftware = NULL;
   HKEY hCompany = NULL;
   HKEY hProduct = NULL;
@@ -396,8 +396,7 @@ void ImperialismApp::OnSwitchGreatPower() {
     short nationSlot = dialog.slider.GetPos();
     g_pSimMgr->SetPlayerCountry(nationSlot);
     if (g_pSimMgr->mode == kGamePhaseTechnology) {
-      g_apNationStates[g_pSimMgr->GetPlayerCountry()]
-          ->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+      g_apNationStates[g_pSimMgr->GetPlayerCountry()]->CountResourceYields();
     }
     g_pViewMgr->DispatchTurnEvent(g_pViewMgr->currentTurnEventCode, g_pSimMgr->GetPlayerCountry());
   }
@@ -526,7 +525,7 @@ const char* GetDataDirectoryPathLiteral() {
 }
 
 // FUNCTION: IMPERIALISM 0x00414870
-LPCTSTR ImperialismApp::DetectImperialismInstallDriveAndSetPathPrefix() {
+LPCTSTR ImperialismApp::FindInstallDrive() {
   if (installDrivePrefix.IsEmpty()) {
     char driveIndex = 2;
     while (driveIndex < 0x1a) {
@@ -795,8 +794,7 @@ BOOL WarnLowDiskSpaceAndConfirmContinue() {
 
 // FUNCTION: IMPERIALISM 0x005de830
 void ImperialismApp::OnMissionSnooper() {
-  TWindow* window =
-      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(static_cast<TurnEventId>(0x3a99));
+  TWindow* window = g_pAssetMgr->GetDialog(static_cast<TurnEventId>(0x3a99));
   if (window == NULL) {
     FailNilPointerWithAssert(s_SourcePathUViewMgrMore, 0x327);
   }

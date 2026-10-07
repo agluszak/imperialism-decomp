@@ -39,14 +39,14 @@ void TMiniArmyView::Draw(RECT* rectBuffer) {
   CString name = militaryUnit->name;
   CString displayName = name;
 
-  InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xc, 0x2b6a, 3);
-  if (MeasureTextExtentWithCachedQuickDrawStyle(&displayName) > 100) {
+  SetTextStyleAndApply(0, 0xc, 0x2b6a, 3);
+  if (MeasureText(&displayName) > 100) {
     CString truncated;
     do {
       truncated = displayName.Mid(0, displayName.GetLength() - 1);
       displayName = truncated;
       truncated += "...";
-    } while (MeasureTextExtentWithCachedQuickDrawStyle(&truncated) > 100);
+    } while (MeasureText(&truncated) > 100);
     displayName = truncated;
   }
   SetQuickDrawTextOriginWithContextOffset(0xa, 0xc);

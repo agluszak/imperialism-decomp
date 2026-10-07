@@ -19,7 +19,7 @@ int TControl::GetEventNumber() {
 }
 
 // FUNCTION: IMPERIALISM 0x00429470
-void TControl::AssertCityProductionGlobalStateInitialized(int arg1, int arg2) {
+void TControl::AssertCityState(int arg1, int arg2) {
   if (g_McAppUiFlag_006A143C == 0) {
     ReportAssertionFailure(g_szMcAppUiHeaderPath, 0x56f);
   }
@@ -61,8 +61,7 @@ void TControl::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin
   TrackMouse(kTrackPhaseBegin, g_McAppMouseCaptureState.startPoint,
              g_McAppMouseCaptureState.lastPoint, g_McAppMouseCaptureState.currentPoint, true);
   if (g_McAppUiMouseCaptureTimerId == 0) {
-    g_McAppUiMouseCaptureTimerId =
-        SetTimer(nativeWindow->m_hWnd, 0xef, 0x11, NotifyGlobalCaptureOwnerState1WithCachedCoords);
+    g_McAppUiMouseCaptureTimerId = SetTimer(nativeWindow->m_hWnd, 0xef, 0x11, NotifyCaptureOwner);
   }
 }
 
@@ -165,7 +164,7 @@ void TControl::NoOpControlAction(int) {}
 TControl::~TControl() {}
 
 // FUNCTION: IMPERIALISM 0x004fcea0
-void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNation) {
+void TControl::SetNationFilter(short selectedNation) {
   short table[5] = {0, 2, 3, 0, 1};
 
   TMapKey& mapKey = *static_cast<TMapKey*>(this);

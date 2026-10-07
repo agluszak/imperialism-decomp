@@ -267,7 +267,7 @@ bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
   unsigned char actual[0x1000];
   TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[coastTile];
   TTerrainStateRecord savedTerrain = terrain;
-  short sourceOffset = g_pGlobalMapState->LookupTileSpriteVariantOffsetByAdjacencyMaskB(coastTile);
+  short sourceOffset = g_pGlobalMapState->GetAdjacencySpriteOffset(coastTile);
   CopySurfaceTile(expected, sourceSurface->pixelBits + sourceOffset, sourceStride);
 
   for (int corner = 0; corner < 6; ++corner) {

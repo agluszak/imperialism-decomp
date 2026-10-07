@@ -152,7 +152,7 @@ short TPortZone::PickPennantIngotTile() {
   spiral.ring = 0;
   spiral.direction = 5;
   spiral.stepInRing = 1;
-  TMapMgr::AdvanceSpiralSearchStateAndStepHexCoordinates(&spiral);
+  TMapMgr::StepSpiral(&spiral);
 
   while (spiral.ring < 10) {
     short candidateTile = -1;
@@ -184,7 +184,7 @@ short TPortZone::PickPennantIngotTile() {
       }
     }
 
-    TMapMgr::AdvanceSpiralSearchStateAndStepHexCoordinates(&spiral);
+    TMapMgr::StepSpiral(&spiral);
   }
 
   return -1;

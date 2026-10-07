@@ -71,7 +71,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 }
 
 // FUNCTION: IMPERIALISM 0x00484d70
-void CMainFrame::ConfigureTopLevelWindowStyleAndPlacement(int width, int height) {
+void CMainFrame::ConfigureFrameWindow(int width, int height) {
   field_CC = 0;
   ModifyStyle(0x00C00000, 0, 0);
   ModifyStyleEx(0x200, 0, 0);

@@ -37,18 +37,18 @@ public:
   virtual void IncreaseCapacityMode(TCity* city, TTaskList* commandQueue);
   virtual void LandUnitMode(TCity* city, TTaskList* commandQueue);
   virtual void BuildMerchantShipMode(TCity* city, TTaskList* commandQueue);
-  virtual void QueuePendingRecruitmentProductionCommand(TCity* city, TTaskList* commandQueue);
+  virtual void QueueRecruitment(TCity* city, TTaskList* commandQueue);
   virtual void QueuePendingUnitProductionCommand(TCity* city, TTaskList* commandQueue);
   virtual void IncreaseRailCapacityMode(TCity* city, TTaskList* commandQueue);
-  virtual void DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits(TCity* city);
+  virtual void DistributeProduction(TCity* city);
   virtual void PleaseBuildCivilian(short commandIndex);
   virtual short AttemptTransport(short resourceType, short requestedAmount, short allocationLimit);
   virtual short DoTransport(TCity* city, TTaskList* commandQueue);
   virtual int SelectCitySite();
-  virtual void RebuildMapTileNeighborBucketsForInteriorMinister();
+  virtual void BucketWorkTiles();
   virtual void ShopForCivilians();
   virtual void ProspectAndDevelop();
-  virtual void AutoAssignProspectingOrdersFromSeedTileNeighbors();
+  virtual void AssignProspectors();
   virtual void ProcessUnitOrders();
   virtual void SeekLostTowns(char* primaryDistanceMap, char* secondaryDistanceMap);
   virtual void ContinueRailheadProject(TUnit* order, char* primaryDistanceMap,
@@ -59,16 +59,16 @@ public:
   virtual int ScoreResource(int amount, int unusedResourceType,
                             int scorePerUnit); // Mac oracle name
   virtual char* CreateSeaDistanceMap(TShortintList* ownedTiles);
-  virtual char* BuildFrogCityDistanceMapFromReachableSeaCandidates(TShortintList* ownedTiles);
+  virtual char* CreateHarborDistanceMap(TShortintList* ownedTiles);
   virtual void RebalanceCityOrderAllocationTargets(TCity* city);
-  virtual void ProcessCityOrderStateTickAndApplyCapabilitySelection();
+  virtual void ProcessCityOrders();
   virtual void RebalanceCitySupportAndLaborAllocations();
   virtual void ChooseAndMarkNextCityProductionCommand();
-  virtual void ComputeCityProductionCommandLimitsFromBuildingOutputs();
-  virtual void RebuildCityOrderCommandAvailabilityAndPriorityCycle();
-  virtual void UpdateMinisterProductionMetricsForResourceIndex(short orderSlot);
+  virtual void ComputeProductionLimits();
+  virtual void RebuildOrderCycle();
+  virtual void UpdateProductionMetrics(short orderSlot);
   virtual short RequestLabor(short targetLabor);
-  virtual void FillRemainingNeedCapacityAndReducePowerPlantOrder();
+  virtual void FillRemainingCapacity();
   virtual short RequestResource(short resourceType, short requestedAmount, short flags);
   virtual void SeekResources(TShortintList* ownedTiles, char* primaryDistanceMap);
   void DispatchBuilders();

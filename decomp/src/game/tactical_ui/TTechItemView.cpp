@@ -46,7 +46,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
     descButton->IPicture(this, picOffset, picSize, 5, 5, static_cast<short>(techId * 2 + 0x8ff));
     descButton->ViewEnable(1, 0);
     descButton->controlTag = kControlTagDesc; // 'desc'
-    LoadUiStringByGroupAndIndexToControlObject(0x274f, 8, descButton);
+    SetControlString(0x274f, 8, descButton);
   }
 
   COLORREF titleStyleFlags = 0;
@@ -119,7 +119,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
     buyButton->ITextPictureButton(this, buyOffset, buySize, 0x8ff, &labelText, 0xc, 0x2b6a, 0x2b68);
     buyButton->ViewEnable(1, 0);
     buyButton->controlTag = kControlTagPurc; // 'purc'
-    LoadUiStringByGroupAndIndexToControlObject(0x274f, labelIndex, buyButton);
+    SetControlString(0x274f, labelIndex, buyButton);
   } else {
     int missing1;
     int missing2;
@@ -168,7 +168,7 @@ void TTechItemView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
           techMgr->PurchaseTech(techId, nationSlot);
           purchaseButton->buttonText = label;
           purchaseButton->RefreshControl();
-          LoadUiStringAndDispatchSharedMessageCommand(0x274f, 0xa, purchaseButton);
+          SendStringCommand(0x274f, 0xa, purchaseButton);
         }
       } else {
         techMgr->CancelPurchase(techId, nationSlot);
@@ -176,11 +176,10 @@ void TTechItemView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
         g_pSimMgr->NumToCurrency(g_anTechItemResearchCostByTechId[techId], &label);
         purchaseButton->buttonText = label;
         purchaseButton->RefreshControl();
-        LoadUiStringAndDispatchSharedMessageCommand(0x274f, 9, purchaseButton);
+        SendStringCommand(0x274f, 9, purchaseButton);
       }
     } else if (sourceHandler->controlTag == kControlTagDesc) {
-      TWindow* node =
-          g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTechnologyHistory);
+      TWindow* node = g_pAssetMgr->GetDialog(kTurnEventTechnologyHistory);
       TTechHistoryView* historyView =
           static_cast<TTechHistoryView*>(node->FindSubView(kControlTagDialog));
       historyView->AssertValid();

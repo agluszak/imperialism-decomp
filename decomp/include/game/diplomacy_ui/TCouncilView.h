@@ -12,8 +12,7 @@ public:
   virtual ~TCouncilView() override;
 
   void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
-  void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                           RgnHandle hitArg) override;
+  void AdjustCursor(CPoint* point, RgnHandle hitArg) override;
   void DoPostCreate(int arg) override;
 
   void DisplayStats();

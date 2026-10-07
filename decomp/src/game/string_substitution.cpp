@@ -5,7 +5,7 @@
 #undef isdigit
 
 // FUNCTION: IMPERIALISM 0x0049a7f0
-CString* FilterStringByCharacterTypeFlag4AndAppend(int, CString* out, char* fmt, ...) {
+CString* AppendDigits(int, CString* out, char* fmt, ...) {
   CString result;
   int i = 0;
   char c;

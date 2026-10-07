@@ -79,15 +79,13 @@ public:
 
   void AccumulateShipEquipage(TShip* ship, float* vector, char positive);
 
-  static float ComputeOrderDistributionSimilarityScoreForExactSourceNation(int sourceNation,
-                                                                           TZone* nodeContext);
-  static float ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(int sourceNation,
-                                                                          TZone* nodeContext);
-  float ComputeOrderDistributionSimilarityScoreForZone(TZone* nodeContext);
-  float ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfile(TZone* nodeContext);
+  static float ScoreNationMatch(int sourceNation, TZone* nodeContext);
+  static float ScoreEnemyMatch(int sourceNation, TZone* nodeContext);
+  float ScoreZoneMatch(TZone* nodeContext);
+  float ScoreZoneBaseMatch(TZone* nodeContext);
   float GetWeightedSatifactionWith(TShip* candidateOrder);
   float GetWeightedSatifactionWithout(TShip* candidateOrder);
-  float ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies(TZone* portZone);
+  float ScorePortDefense(TZone* portZone);
   void ProjectEquipage(float* vector, TZone* nearZone, short distanceThreshold, TZone* farZone);
   void BuildMissionQueuedOrderCategoryVector(float* vector);
   float ProjectSatisfaction(short distanceThreshold);

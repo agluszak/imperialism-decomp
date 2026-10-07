@@ -43,7 +43,7 @@ public:
   afx_msg BOOL OnEraseBkgnd(CDC* pDC);
   afx_msg LRESULT OnMsg0BC0(WPARAM wParam, LPARAM lParam);
 
-  void ConfigureTopLevelWindowStyleAndPlacement(int width, int height);
+  void ConfigureFrameWindow(int width, int height);
   // Returns the previous colour; repaints only on an actual change.
   COLORREF SetBackgroundColorAndInvalidate(COLORREF color);
 

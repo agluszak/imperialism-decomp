@@ -16,7 +16,7 @@ IMPLEMENT_DYNCREATE(TNetGameSelectPicture, TNoHilitePicture)
 // FUNCTION: IMPERIALISM 0x00576b90
 void TNetGameSelectPicture::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
-  g_pGameFlowState->InitializeRuntimeSelectionCredentialsFromProviderAndConnect(this);
+  g_pGameFlowState->ConnectToSession(this);
 }
 
 // FUNCTION: IMPERIALISM 0x00576bc0
@@ -31,8 +31,7 @@ void TNetGameSelectPicture::DoEvent(int commandId, TEventHandler* sourceHandler,
       gameControl->AssertValid();
       int selectedGameTag = gameControl->GetCurrentChoice();
       TView* selectedGameOption = FindSubView(selectedGameTag);
-      g_pGameFlowState->ApplyJoinGameSelectionAndShowNetworkGameOptions(
-          selectedGameOption->controlValue);
+      g_pGameFlowState->SelectGameAndShowOptions(selectedGameOption->controlValue);
     }
   }
   TControl::DoEvent(commandId, sourceHandler, event);

@@ -55,25 +55,24 @@ void TLoungeDialog::DoPostCreate(int arg) {
   lablControl->SetJustification(1, false);
 
   for (int i = 0; i < 7; ++i) {
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 6,
-                                                          kSessionTagRad0 + i); // 'rad0'-'rad6'
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 7,
-                                                          kSessionTagPik0 + i); // 'pik0'-'pik6'
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 8,
-                                                          kControlTagNam0 + i); // 'nam0'-'nam6'
-    TStaticText* nameControl = RefreshActiveControlThenApplyThemeStyleAndCaption(
-        kControlTagNam0 + i, 0, 0xe, 0x2b6b, -2, "");
+    SetTaggedStringAndApply(0x2742, 6,
+                            kSessionTagRad0 + i); // 'rad0'-'rad6'
+    SetTaggedStringAndApply(0x2742, 7,
+                            kSessionTagPik0 + i); // 'pik0'-'pik6'
+    SetTaggedStringAndApply(0x2742, 8,
+                            kControlTagNam0 + i); // 'nam0'-'nam6'
+    TStaticText* nameControl = RefreshAndTheme(kControlTagNam0 + i, 0, 0xe, 0x2b6b, -2, "");
     nameControl->AssertValid();
     ApplyUiTextStyleAndThemeFlags((TDropShadowText*)nameControl, 0, 0xe, 0x2b6b, 0x2b6c);
   }
 
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 0xb, kControlTagMapP); // 'map '
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 0xd, kControlTagTnam); // 'tnam'
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 0xe, kControlTagSend); // 'send'
+  SetTaggedStringAndApply(0x2742, 0xb, kControlTagMapP); // 'map '
+  SetTaggedStringAndApply(0x2742, 0xd, kControlTagTnam); // 'tnam'
+  SetTaggedStringAndApply(0x2742, 0xe, kControlTagSend); // 'send'
 
   if (!g_pGameFlowState->IsSpecialNationDialogModeActive()) {
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 9, kControlTagCncl); // 'clnc'
-    g_pGameFlowState->ResetNationStatusSlotsAndInitializeNameControls(this);
+    SetTaggedStringAndApply(0x2742, 9, kControlTagCncl); // 'clnc'
+    g_pGameFlowState->ResetLobbySlots(this);
     if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
       g_pGameFlowState->SetDialogModeTagInitAndInvokeNoOpHook();
       YouHaveNewGameData();
@@ -83,10 +82,10 @@ void TLoungeDialog::DoPostCreate(int arg) {
     }
   } else {
     g_pGameFlowState->RecalcPlayerName(-1);
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(
-        0x2742, g_pGameFlowState->GetPlayerStatus(-1) == kSessionTagBusy ? 0x12 : 0x11,
-        kControlTagCncl);
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2742, 0xc, kSessionTagMess);
+    SetTaggedStringAndApply(0x2742,
+                            g_pGameFlowState->GetPlayerStatus(-1) == kSessionTagBusy ? 0x12 : 0x11,
+                            kControlTagCncl);
+    SetTaggedStringAndApply(0x2742, 0xc, kSessionTagMess);
 
     TPicture* coatControl = static_cast<TPicture*>(FindSubView(kControlTagCoat)); // 'coat'
     coatControl->AssertValid();
@@ -107,9 +106,8 @@ void TLoungeDialog::DoPostCreate(int arg) {
   } else {
     messageStringIndex = static_cast<short>(g_pSimMgr->mode == kGamePhaseStartup ? 0x10 : 0x18);
   }
-  ConfigureUiControlStyleValueAndCaptionFromStringResource(
-      static_cast<TStaticText*>(FindSubView(kSessionTagMess)), 0, 0xe, 0x2b6c, 1, 0x2742,
-      messageStringIndex);
+  ConfigureControlFromStrings(static_cast<TStaticText*>(FindSubView(kSessionTagMess)), 0, 0xe,
+                              0x2b6c, 1, 0x2742, messageStringIndex);
   TNoHilitePicture::DoPostCreate(arg);
 }
 
@@ -260,9 +258,8 @@ void TLoungeDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     if (controlTag == kControlTagCncl || controlTag == kControlTagCanc) { // 'cncl' / 'canc'
       if (g_pGameFlowState->IsSpecialNationDialogModeActive()) {
         if (g_pGameFlowState->GetPlayerStatus(-1) == kSessionTagBusy) {
-          g_pSimMgr->StartNextPhase(); // 'busy'
-        } else if (g_pViewMgr->DispatchGameStateEventIfLocalizedPromptAccepted(
-                       kControlTagNewg)) { // 'gwen'
+          g_pSimMgr->StartNextPhase();                                // 'busy'
+        } else if (g_pViewMgr->ConfirmGameControl(kControlTagNewg)) { // 'gwen'
           g_pAmbitApplication->CreateAndQueueTurnEventPacketTagGWEN();
         }
       } else {
@@ -274,12 +271,11 @@ void TLoungeDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
           }
         }
         if (g_pSimMgr->multiplayerSessionRole != kSessionRoleHost || !hasOtherSession ||
-            g_pViewMgr->DispatchGameStateEventIfLocalizedPromptAccepted(
-                kControlTagCgam)) { // 'magc'
+            g_pViewMgr->ConfirmGameControl(kControlTagCgam)) { // 'magc'
           if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {
             g_pGameFlowState->SendGameControl(kControlTagCgam, -1, -2);
           }
-          g_pGameFlowState->ResetLocalUiStateAndShowMultiplayerSetup();
+          g_pGameFlowState->ResetAndShowMultiplayerSetup();
         }
       }
     } else if (controlTag >= kSessionTagRad0 && controlTag <= kSessionTagRad6) { // 'rad0'..'rad6'
@@ -305,9 +301,9 @@ namespace {} // namespace
 // FUNCTION: IMPERIALISM 0x0054e4c0
 void TLoungeDialog::YouHaveNewGameData() {
   TScopedWaitCursor waitCursor;
-  TStaticText* nameControl = RefreshActiveControlThenApplyThemeStyleAndCaption(
-      kControlTagTnam, 0, 0xe, 0x2b6b, 1,
-      static_cast<const char*>(g_pGameFlowState->gameNameString));
+  TStaticText* nameControl =
+      RefreshAndTheme(kControlTagTnam, 0, 0xe, 0x2b6b, 1,
+                      static_cast<const char*>(g_pGameFlowState->gameNameString));
   nameControl->AssertValid();
   ApplyUiTextStyleAndThemeFlags((TDropShadowText*)nameControl, 0, 0xc, 0x2b6b, 0x2b6c);
   TMapPreviewView* mapControl = static_cast<TMapPreviewView*>(FindSubView(kControlTagMapP));

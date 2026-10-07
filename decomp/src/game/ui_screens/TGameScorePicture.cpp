@@ -70,8 +70,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
       int difficultyPercent = g_apNationStates[g_pSimMgr->GetPlayerCountry()]
                                   ->gameScoreRows[TGreatPower::kGameScoreDifficultyPercent];
       if (difficultyPercent % 10 > 0) {
-        FormatNonnegativeFloatToLocalizedSharedString(static_cast<float>(difficultyPercent) * 0.1f,
-                                                      &displayText);
+        FormatFloat(static_cast<float>(difficultyPercent) * 0.1f, &displayText);
       } else {
         displayText.Format(g_szDecimalFormat, difficultyPercent / 10);
       }
@@ -108,6 +107,6 @@ void TGameScorePicture::DoPostCreate(int arg) {
 void TGameScorePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   TControl::DoEvent(commandId, sourceHandler, event);
   if (commandId == 0xa && sourceHandler->controlTag == kControlTagDone) {
-    ReinitializeGameFlowAndPostTurnEventCode(kTurnEventHighScores);
+    RestartGameFlow(kTurnEventHighScores);
   }
 }

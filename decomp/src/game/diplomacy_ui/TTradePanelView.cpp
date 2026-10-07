@@ -52,7 +52,7 @@ void TTradePanelView::Draw(RECT* rectBuffer) {
   CString strA;
   CString strB; // constructed/destroyed only in the original; never otherwise touched.
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b68);
+  ApplyTextStyle(0, 0xe, 0x2b68);
   COLORREF shadowStyle;
   COLORREF foregroundStyle;
   ResolveUiThemeColor(0x2b6b, &shadowStyle);
@@ -68,7 +68,7 @@ void TTradePanelView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(baseX, baseY);
   DrawTextWithCachedQuickDrawStyleState(&strA);
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b68);
+  ApplyTextStyle(0, 0xc, 0x2b68);
 
   for (int i = 0; i < 6; ++i) {
     g_pSimMgr->GetString(0x2733, i + 0x2b, &strA);
@@ -84,7 +84,7 @@ void TTradePanelView::Draw(RECT* rectBuffer) {
 
   for (int j = 0; j < 3; ++j) {
     g_pSimMgr->GetString(0x2733, j + 0x31, &strA);
-    short measuredWidth = MeasureTextExtentWithCachedQuickDrawStyle(&strA);
+    short measuredWidth = MeasureText(&strA);
     short colY = kTradePanelColumnY[j] - ownerLocalY;
     short colX = kTradePanelColumnX[j] - measuredWidth / 2 - ownerLocalX;
     SetQuickDrawColorAndSyncGlobals(foregroundStyle);

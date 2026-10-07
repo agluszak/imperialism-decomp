@@ -40,10 +40,10 @@ public:
   virtual void InitializeSessionDescription();
   virtual void ResetSessionDescription();
   virtual BOOL GetRuntimeSelectionAuxStatus(void* value);
-  BOOL ConnectDirectPlayFromLobbySettingsAndStoreResult();
+  BOOL ConnectFromLobby();
   virtual BOOL ExtendEnumSessionsTimeoutWhileCtrlHeld(DWORD* timeoutMs);
   virtual BOOL SelectRuntimeProvider(GUID* providerGuid);
-  virtual BOOL ShowJoinGameSelectionDialogAndCaptureChoice(GUID* selectedSessionGuid);
+  virtual BOOL ChooseGameToJoin(GUID* selectedSessionGuid);
 
   BOOL GetPlayerData(DPID playerId, void* buffer, DWORD* sizeInOut);
   BOOL CreateDirectPlayLobbyAndStoreResult();
@@ -77,18 +77,18 @@ public:
                                           DWORD flags) override;
   virtual void InitializeSessionDescription() override;
   virtual void ResetSessionDescription() override;
-  virtual BOOL ShowJoinGameSelectionDialogAndCaptureChoice(GUID* selectedSessionGuid) override;
+  virtual BOOL ChooseGameToJoin(GUID* selectedSessionGuid) override;
 
   // Returns nonzero on success (original callers test the full EAX).
   int TrySendNetworkPacket(int nationId, void* packet, unsigned int byteCount);
-  int TryReceiveNetworkPacketIntoResizableBuffer(DWORD* fromId, DWORD* toId, void** bufferHandle);
+  int ReceivePacket(DWORD* fromId, DWORD* toId, void** bufferHandle);
   bool OpenCurrentSessionDescriptionForJoin();
   bool DestroyPlayerAndStoreResult(DWORD idPlayer);
-  bool InitializeDirectPlayForProviderGuidOrEnumerate(const GUID* providerGuid);
-  BOOL OpenRuntimeSelectionSourceFromCurrentContext();
+  bool InitializeDirectPlay(const GUID* providerGuid);
+  BOOL OpenCurrentSession();
   bool CreatePlayerAndStoreResult(LPDPID idOut, LPSTR shortName);
   BOOL SetLocalPlayerDataAndStoreResult(LPVOID data, DWORD size);
-  BOOL OpenRuntimeSelectionSourceWithUserChoice();
+  BOOL OpenChosenSession();
   BOOL RebuildRuntimeSelectionSource();
 };
 ASSERT_SIZE(TWNetSessionManager, 0xb4);

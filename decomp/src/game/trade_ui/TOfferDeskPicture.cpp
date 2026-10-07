@@ -61,7 +61,7 @@ void TOfferDeskPicture::DoPostCreate(int arg) {
       static_cast<TDropShadowNumberText*>(FindSubView(kControlTagMCap));
   maximum->AssertValid();
   ApplyUiNumberTextStyleAndThemeColor(maximum, 0, 0xc, 0x2b6c, 0x2b6b);
-  LoadUiStringByGroupAndIndexToControlObject(0x2740, 1, maximum);
+  SetControlString(0x2740, 1, maximum);
   maximum->SetJustification(0, true);
 
   TDealTabControl* tabs = static_cast<TDealTabControl*>(FindSubView(kControlTagTabs));
@@ -82,10 +82,10 @@ void TOfferDeskPicture::DoPostCreate(int arg) {
   offerCluster->ViewEnable(0, 1);
   SetControlHoverHelpText(CString(g_szEmptyString), this);
 
-  LoadUiStringByGroupAndIndexToControlObject(0x2740, 2, maximum);
-  LoadUiStringByGroupAndIndexToControlObject(0x2740, 5, FindSubView(kControlTagDone));
-  LoadUiStringByGroupAndIndexToControlObject(0x2740, 6, FindSubView(kControlTagReje));
-  LoadUiStringByGroupAndIndexToControlObject(0x2740, 7, FindSubView(kControlTagAcce));
+  SetControlString(0x2740, 2, maximum);
+  SetControlString(0x2740, 5, FindSubView(kControlTagDone));
+  SetControlString(0x2740, 6, FindSubView(kControlTagReje));
+  SetControlString(0x2740, 7, FindSubView(kControlTagAcce));
 
   TView* sheet = FindSubView(kControlTagShee);
   SetControlHoverHelpText(CString(g_szEmptyString), sheet);
@@ -93,9 +93,9 @@ void TOfferDeskPicture::DoPostCreate(int arg) {
   SetControlHoverHelpText(CString(g_szEmptyString), wait);
   TTradeBookView* book = static_cast<TTradeBookView*>(FindSubView(kControlTagBook));
   SetControlHoverHelpText(CString(g_szEmptyString), book);
-  LoadUiStringByGroupAndIndexToControlObject(0x2740, 1, miniPicture);
+  SetControlString(0x2740, 1, miniPicture);
   SetControlHoverHelpText(CString(g_szEmptyString), book->FindSubView(kControlTagList));
-  LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, FindSubView(kControlTagQuer));
+  SetControlString(0x2730, 3, FindSubView(kControlTagQuer));
 
   TStaticText* waitText = static_cast<TStaticText*>(wait->FindSubView(kControlTagText));
   waitText->AssertValid();
@@ -115,7 +115,7 @@ void TOfferDeskPicture::DoPostCreate(int arg) {
   TPictureButton* formatButton = static_cast<TPictureButton*>(FindSubView(kControlTagForM));
   formatButton->AssertValid();
   formatButton->clickSoundId = 0x1b58;
-  LoadUiStringByGroupAndIndexToControlObject(0x2764, 0x12, formatButton);
+  SetControlString(0x2764, 0x12, formatButton);
 }
 
 // FUNCTION: IMPERIALISM 0x005bea00
@@ -327,7 +327,7 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
 
   selectionActive = false;
   ShowAdvice();
-  g_pSfxPlaybackSystem->RequestAudioPresetChangeWithDeferredApply(4, true);
+  g_pSfxPlaybackSystem->RequestMusicChange(4, true);
 }
 
 // FUNCTION: IMPERIALISM 0x005bf740
@@ -642,10 +642,10 @@ void TOfferDeskPicture::SwitchToBook(bool activate) {
     tabsControl->AssertValid();
     tabsControl->Setup(0x2266, g_pTechMgr->perTechUnlockFlag[19]);
     tabsControl->RefreshControl();
-    LoadUiStringAndDispatchSharedMessageCommand(0x2740, 4, tabsControl);
+    SendStringCommand(0x2740, 4, tabsControl);
     TView* listControl = FindSubView(kControlTagList);
     listControl->AssertValid();
-    LoadUiStringAndDispatchSharedMessageCommand(0x2740, 1, listControl);
+    SendStringCommand(0x2740, 1, listControl);
   } else {
     bookControl->Locate(g_offerDeskOffscreenPosition, false);
     sheetControl->Locate(g_offerDeskSheetPosition, false);
@@ -657,7 +657,7 @@ void TOfferDeskPicture::SwitchToBook(bool activate) {
     tabsControl->Setup(0x2264, g_pTechMgr->perTechUnlockFlag[19]);
     tabsControl->selectedRow = -1;
     tabsControl->RefreshControl();
-    LoadUiStringAndDispatchSharedMessageCommand(0x2740, 2, tabsControl);
+    SendStringCommand(0x2740, 2, tabsControl);
     TView* listControl = FindSubView(kControlTagList);
     listControl->AssertValid();
     SetControlHoverHelpTextAltEntry(CString(g_szEmptyString), listControl);

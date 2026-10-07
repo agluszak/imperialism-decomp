@@ -33,7 +33,7 @@ void TMiniShipView::IMiniShipView(TView* panel, int* offsetLayout, int* sizeLayo
 void TMiniShipView::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws
 
-  InitializeUiTextStyleDescriptorAndApplyQuickDraw(2, 0xc, 0x2b6a, 3);
+  SetTextStyleAndApply(2, 0xc, 0x2b6a, 3);
 
   CString statusLine;
   CString label;

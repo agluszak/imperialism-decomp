@@ -37,7 +37,7 @@ void TFlagOptionsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
       owner->Dismiss(kControlTagOkay, false);
       g_pSimMgr->EnterOptionalPhase(kGamePhaseOptionalCredits);
     } else if (tag == kControlTagNewg || tag == kControlTagQuit) {
-      if (g_pViewMgr->DispatchGameStateEventIfLocalizedPromptAccepted(tag)) {
+      if (g_pViewMgr->ConfirmGameControl(tag)) {
         TWindow* owner = GetWindow();
         owner->Dismiss(tag, false);
         if (g_pSimMgr->multiplayerSessionRole == kSessionRoleHost) {

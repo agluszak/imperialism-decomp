@@ -61,7 +61,7 @@ public:
   static short GetTypeSlot(short shipType);
   static int GetTypeAttribute(int attribute, short shipType);
 
-  short ComputeNavyOrderPriorityContributionPercentByCategory(int category);
+  short GetCategoryPercent(int category);
   short GetMaxStrength() const;
   int GetStudliness() const;
   bool IsInHomePort() const;

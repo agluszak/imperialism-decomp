@@ -27,15 +27,15 @@ void TTacticalToolbar::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
 
   TView* helpControl = FindSubView(kControlTagHelp);
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x20, helpControl);
+  SetControlString(0x273d, 0x20, helpControl);
   TView* targControl = FindSubView(kControlTagTarg);
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x21, targControl);
+  SetControlString(0x273d, 0x21, targControl);
   TView* doneControl = FindSubView(kControlTagDone);
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x22, doneControl);
+  SetControlString(0x273d, 0x22, doneControl);
   TView* retrControl = FindSubView(kControlTagRetr);
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x23, retrControl);
+  SetControlString(0x273d, 0x23, retrControl);
   TView* autoControl = FindSubView(kControlTagAuto);
-  LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x24, autoControl);
+  SetControlString(0x273d, 0x24, autoControl);
 
   CString empty1(g_szEmptyString);
   SetControlHoverHelpText(empty1, ownerContext);
@@ -87,7 +87,7 @@ void TTacticalToolbar::Draw(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x005acb50
-void TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalUnit* unit) {
+void TTacticalToolbar::ShowCurrentUnit(TTacticalUnit* unit) {
   currentUnit = unit;
   TPicture* currControl = static_cast<TPicture*>(FindSubView(kControlTagCurr));
   currControl->AssertValid();
@@ -108,8 +108,7 @@ void TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalU
     unit->AssertValid();
     unitName = static_cast<TArmyTacUnit*>(unit)->sourceUnit->name;
   }
-  AssignSharedStringToTaggedControlAndProcessState(static_cast<const char*>(unitName),
-                                                   kControlTagDialog);
+  SetTaggedControlText(static_cast<const char*>(unitName), kControlTagDialog);
 }
 
 // FUNCTION: IMPERIALISM 0x005acc90
@@ -148,8 +147,8 @@ void TTacticalToolbar::SetActionMode(int mode) {
     autoControl->AssertValid();
     autoControl->Show(0, 1);
     autoControl->ViewEnable(0, 1);
-    LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x2e, FindSubView(kControlTagDone));
-    LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x2f, FindSubView(kControlTagRetr));
+    SendStringCommand(0x273d, 0x2e, FindSubView(kControlTagDone));
+    SendStringCommand(0x273d, 0x2f, FindSubView(kControlTagRetr));
   } else {
     TView* targControl = FindSubView(kControlTagTarg);
     targControl->AssertValid();
@@ -165,8 +164,8 @@ void TTacticalToolbar::SetActionMode(int mode) {
     autoControl->AssertValid();
     autoControl->Show(1, 1);
     autoControl->ViewEnable(1, 1);
-    LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x22, FindSubView(kControlTagDone));
-    LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x23, FindSubView(kControlTagRetr));
+    SendStringCommand(0x273d, 0x22, FindSubView(kControlTagDone));
+    SendStringCommand(0x273d, 0x23, FindSubView(kControlTagRetr));
   }
 }
 

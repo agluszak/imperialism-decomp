@@ -101,7 +101,7 @@ TMapOrderChildLinkNode* TMapOrderChildLinkNode::CreateLinkedOrderNode(TShip* chi
 }
 
 // FUNCTION: IMPERIALISM 0x005526e0
-TMapOrderChildLinkNode* TMapOrderChildLinkNode::PruneDefeatedMapOrderChildrenAndReturnHead() {
+TMapOrderChildLinkNode* TMapOrderChildLinkNode::PruneDefeatedShips() {
   TMapOrderChildLinkNode* head = this;
   while (head != 0) {
     TShip* child_node = head->payload;
@@ -111,7 +111,7 @@ TMapOrderChildLinkNode* TMapOrderChildLinkNode::PruneDefeatedMapOrderChildrenAnd
       head->payload->Free();
       head = head->DeleteMapOrderChildLinkAndReturnNext();
     } else {
-      head->next->PruneDefeatedMapOrderChildrenAndReturnHead();
+      head->next->PruneDefeatedShips();
       return head;
     }
   }

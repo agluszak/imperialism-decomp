@@ -264,7 +264,7 @@ void TCityProductionView::DrawToGWorld(RECT* destRect, TQuickDrawSurfaceContext*
       CreateBitmapResourceLoaderHandle(static_cast<unsigned short>(resourceId));
   TBitmapResourceLoader* loader = *loaderHandle;
   if (loader != NULL) {
-    loader->EnsureBitmapResourceLoadedAndCopyRectSize();
+    loader->LoadBitmapBounds();
     loader->flags |= 1;
     ResetQuickDrawStrokeState();
     BlitBitmapResourceLoaderToActiveDc(loaderHandle, destRect);
@@ -344,8 +344,7 @@ void TCityProductionView::DrawTopLevel() {
 }
 
 // FUNCTION: IMPERIALISM 0x004bafa0
-void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                                              RgnHandle hitArg) {
+void TCityProductionView::AdjustCursor(CPoint* point, RgnHandle hitArg) {
   CTemporaryRegion scopedRegion;
   CPoint hitPoint = *point;
   CString firstQuantityText;
@@ -353,7 +352,7 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
 
   // Outside the city-backdrop hit area: fall back to the base child hit-test.
   if (point->y < 0x24 || point->y > 0x1e2 || point->x < 0x33 || point->x > 0x24d) {
-    TView::HandleCursorHoverSelectionByChildHitTestAndFallback(point, hitArg);
+    TView::AdjustCursor(point, hitArg);
     return;
   }
 
@@ -585,7 +584,7 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
 
 // FUNCTION: IMPERIALISM 0x004bc0b0
 void TCityProductionView::UpdateUnits() {
-  g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
+  g_pViewMgr->RefreshNationIndicator();
   TPopulationMgr* population = city->productionSummary;
 
   TPlacard* placard = static_cast<TPlacard*>(FindSubView(kControlTagUntr)); // 'rtnu'

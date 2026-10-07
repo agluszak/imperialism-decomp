@@ -3311,7 +3311,7 @@ def _drive_reassess_missions_damaged(
 # interior-minister order table, pin mission flag10, append a navyState=2
 # TControlSeaZoneMission with 1000 equipment demand in slot 3, optionally
 # reinforce it with a max-strength transport at a neighboring zone, then call
-# TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools.
+# TAutoGreatPower::PlanDevelopment.
 
 _PLAN_AI_DEVELOPMENT = 0x004EB190
 _TSHIP_GET_MAX_STRENGTH = 0x005505A0
@@ -4901,7 +4901,7 @@ def _drive_player_diplomacy_policy(
 # virtual through the retail vtable, "vtai" on the first TAutoGreatPower.
 
 _VT_PURCHASE_ITEM = 0x20 * 4              # TCountry::PurchaseItem index 0x20
-_VT_RECOMPUTE_AID_BUDGET = 0x59 * 4       # RecomputeDiplomacyAidBudgetScoreFromResourceWeights
+_VT_RECOMPUTE_AID_BUDGET = 0x59 * 4       # ComputeAidBudget
 _VT_RESET_NEED_SCORES = 0x5A * 4          # ResetDiplomacyNeedScoresAndClearAidAllocationMatrix
 _VT_RECALL_TRADE_BIDS = 0x5B * 4          # RecallTradeBids
 _VT_ADD_AID_CELL = 0x5D * 4               # AddOverseasProfitFrom
@@ -6306,8 +6306,8 @@ def _drive_completed_resource_development(
 
 # --- nation yield-rebuild retail drives ----------------------------------------
 # Mirror RunNationResourceYieldRebuild* and RunOwnedRegionDevelopment: the real
-# RebuildNationResourceYieldCountersAndDevelopmentTargets /
-# AdvanceOwnedRegionDevelopmentCountersAndHandleEvents virtuals.
+# CountResourceYields /
+# AdvanceRegionDevelopment virtuals.
 
 _VT_REBUILD_YIELD = 0x4D * 4
 _VT_ADVANCE_REGION_DEV = 0x4E * 4
@@ -6961,7 +6961,7 @@ def _drive_turn_alerts_later(
 
 # --- great_power_pressure_* retail drives --------------------------------------
 # Mirrors RunGreatPowerPressureHumanDebt / RunGreatPowerPressureAiNoop:
-# UpdateGreatPowerPressureStateAndDispatchEscalationMessage is vtable slot 0xaf
+# CheckBankruptcy is vtable slot 0xaf
 # (byte offset 0x2bc); TAutoGreatPower's override is a hard-coded 0.
 
 _PRESSURE_UPDATE_VTABLE = 0x2BC

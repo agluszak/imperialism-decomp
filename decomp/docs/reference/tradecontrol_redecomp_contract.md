@@ -85,13 +85,13 @@
 | `0x0048b770` | `bool __thiscall SetGlobalUiSelectionIfChangedAndNotify(TControl * this)` |
 | `0x0048b7b0` | `bool __thiscall WrapperFor_GetOrCreateHandleMapObjectByHandle_At0048b7b0(TControl * this, void * pExistingHandleMap)` |
 | `0x0048b810` | `void __thiscall WrapperFor_AllocateWithFallbackHandler_At0048b810(TControl * this)` |
-| `0x0048b8d0` | `void __thiscall PaintVisibleChildrenIntersectingClipRect(TControl * this)` |
+| `0x0048b8d0` | `void __thiscall PaintChildren(TControl * this)` |
 | `0x0048ba40` | `void __thiscall OffsetRectByControlPositionAndDispatchVslot138_Impl(TControl * this)` |
 | `0x0048ba80` | `void __thiscall OffsetRectByControlPositionAndDispatchVslot138_EcxBridge_Impl(TControl * this, int * pRect)` |
 | `0x0048bb00` | `void __thiscall OffsetRectByControlPosition_Impl(TControl * this, int * pRect)` |
 | `0x0048c000` | `bool __thiscall EvaluateControlInputGate(TControl * this)` |
 | `0x0048c050` | `bool __thiscall HasRenderableParentAndContent(TControl * this)` |
-| `0x0048c080` | `void __thiscall HandleCursorHoverSelectionByChildHitTestAndFallback(TControl * this, int arg1, int arg2)` |
+| `0x0048c080` | `void __thiscall AdjustCursor(TControl * this, int arg1, int arg2)` |
 | `0x0048c1e0` | `void __thiscall RefreshCityProductionViewStateFromContext(TControl * this)` |
 | `0x0048c380` | `void __thiscall UpdateRectCacheIfChangedAndInvalidateCityDialog(TControl * this, int arg1, int arg2)` |
 | `0x0048c450` | `void __thiscall DispatchUiMouseMoveToChildren(TControl * this, int arg1, int arg2, int arg3, int arg4)` |
@@ -122,7 +122,7 @@
 | `0x00415d50` | `int __fastcall GetCityDialogValueDword10(CityDialogController * pDialog)` |
 | `0x00427240` | `void __cdecl NoOpControlCallback_Impl(void)` |
 | `0x00429450` | `void __cdecl GetCityProductionControllerField60(void)` |
-| `0x00429470` | `void __cdecl AssertCityProductionGlobalStateInitialized(void)` |
+| `0x00429470` | `void __cdecl AssertCityState(void)` |
 | `0x004294a0` | `bool __cdecl LogUnhandledDialogMethodAndReturnFalse(void)` |
 | `0x00485f70` | `void __cdecl HandleCityDialogNoOpSlot14(void)` |
 | `0x00485f90` | `void __cdecl HandleCityDialogNoOpSlot18(void)` |

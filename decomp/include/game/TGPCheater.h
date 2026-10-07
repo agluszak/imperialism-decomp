@@ -14,8 +14,7 @@ public:
   // NOOP: verified empty in original 0x004b19e3
   TGPCheater() {}
 
-  void ConstructNumericEntryDialogCoreAndValueLabel(int* offsetLayout, int fieldIndex, short value,
-                                                    int fieldTag);
+  void BuildNumberDialog(int* offsetLayout, int fieldIndex, short value, int fieldTag);
 
   void IGPCheater(TView* panel);
 

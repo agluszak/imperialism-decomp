@@ -25,15 +25,15 @@ public:
   virtual void RunMapGenerationAttempt();
   virtual int SelectGPZone(int cellIndex, int mode, int classIndex, int retryBudget);
   // Merges major-nation region groups; false on an incompatible neighbor group. slot 13 / 0x34
-  virtual bool TryMergeRegionGroupWithNeighborsRestrictedToMajors(int cellIndex, int classIndex);
+  virtual bool MergeMajorRegion(int cellIndex, int classIndex);
   // Expands assigned city-region ids into the tile grid. slot 14 / 0x38
-  virtual void ExpandRegionGridIntoTilesAndAllocateCityRecords();
+  virtual void ExpandRegionGrid();
   // Places terrain features according to their generation quotas. slot 15 / 0x3c
   virtual void PlaceTerrainFeatureQuotas();
   // Merges region groups for every terrain class. slot 16 / 0x40
   virtual bool TryMergeRegionGroupWithNeighbors(int cellIndex, int classIndex);
   // Smooths interior city-region tile ownership from neighboring records. slot 17 / 0x44
-  virtual void SmoothCityRegionOwnershipByNeighborSampling();
+  virtual void SmoothProvinces();
   virtual int SeedMountainRange(int tileIndex, int retryBudget, int direction);
   virtual void CreateDeserts();
   virtual int TundraBand(int row, int percentChance);
@@ -45,7 +45,7 @@ public:
   virtual bool GrowRiver(long tileIndex, long incomingDirection, long outgoingDirection, long depth,
                          bool startedOnHills);
   // Finalizes or compacts city-region ids and rebuilds their borders. slot 25 / 0x64
-  virtual void AssignOrCompactCityRegionIdsAndRebuildBorders(int mode);
+  virtual void NumberProvincesAndBuildBorders(int mode);
   // Post-attempt validity probe: nonzero means the driver must regenerate. slot 26 / 0x68
   virtual bool ErrorCheck();
   virtual void TargetValidationSucceeded();
@@ -68,7 +68,7 @@ public:
   // Resolves the region-grid cell adjacent to cell in hex direction 0..5. slot 29 / 0x74
   virtual int AdjacentZone(int cell, int direction);
   // Runs between region-grid expansion and terrain-feature placement. slot 30 / 0x78
-  virtual void RandomizeRegionTemplatesAndSmoothOwnership();
+  virtual void RandomizeTemplates();
   // Copies a region-template bank using a random source variant. slot 31 / 0x7c
   virtual void CopyRegionTemplateBankWithRandomVariant(int coarseIndex, short regionClass,
                                                        short unusedClass, short northClass,
@@ -77,7 +77,7 @@ public:
   virtual void CopyRegionTemplateBankToNeighborCell(int coarseIndex, short regionClass,
                                                     short unusedClass, short northClass,
                                                     short unusedClass2);
-  virtual MapGeneratorTileRecord* GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex);
+  virtual MapGeneratorTileRecord* GetFineCell(int coarseIndex);
 
   // LAYOUT: the vtable ends at slot 0x21; slots 0x22..0x28 are null.
 
@@ -87,36 +87,34 @@ public:
 
   bool CheckProvs();
 
-  bool ValidateAllColumnsHaveAssignedRegionClass();
+  bool AllColumnsAssigned();
 
-  bool ValidateTerrainClassAdjacencyCoverageMask();
+  bool AllTerrainAdjacent();
 
-  char ValidateSeedCandidateExistsForEachTerrainClass();
+  char AllTerrainSeeded();
 
   void BuildCityRegionBorderOverlaySegments();
 
-  void BuildOverlaySpanRecordsFromQuadBorderLinks();
+  void BuildBorderSpans();
 
-  void AssignRegionIdsToUnclaimedBorderSegmentSides();
+  void AssignBorderRegions();
 
   void ReindexContiguousCityRegionIds();
 
-  void GenerateWaterRegionIdsBySeedAndNeighborPropagation();
+  void FloodWaterRegions();
 
   // Rotates the map columns so the peak city-tile-density band is recentred.
   void RepositionDateline();
 
-  unsigned int RandomizeRegionTemplateBanksForMismatchedNeighborClasses(int coarseIndex,
-                                                                        unsigned short baseClass,
-                                                                        unsigned short class3,
-                                                                        unsigned short class4,
-                                                                        unsigned short class5);
+  unsigned int RandomizeTemplateBanks(int coarseIndex, unsigned short baseClass,
+                                      unsigned short class3, unsigned short class4,
+                                      unsigned short class5);
 
-  void AssignWaterRegionIdsFromOverlayScanlineIntersections();
+  void AssignWaterRegions();
 
   void MergeSmallCityRegionsAndCompactIds();
 
-  void RebuildUMapperRouteRecordsAndActiveMapRects();
+  void BuildRoutes();
 
   void WriteTileGridToFile(const char* path);
 
@@ -126,7 +124,7 @@ public:
   char pad_04[0x08 - 0x04];
   void CompactCityRegionIds();
 
-  int AssignSequentialValuesToRegionPlaceholders(short* tileValues, int* nextValue);
+  int NumberPlaceholders(short* tileValues, int* nextValue);
 
   int ZoneCorner(long nationCode);
 

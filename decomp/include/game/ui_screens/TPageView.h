@@ -18,7 +18,7 @@ public:
   virtual void DoPostCreate(int arg) override;
   virtual POSITION AddOrderedEntry(TLineData* item);
   virtual POSITION AddOptionEntry(TLineData* item);
-  virtual void ResetSelectableOptionEntriesExceptColorAndOkay();
+  virtual void ResetOptionEntries();
   virtual void CalculatePageStarts();
   virtual void ShowPage(short pageNumber);
   virtual void Clear();

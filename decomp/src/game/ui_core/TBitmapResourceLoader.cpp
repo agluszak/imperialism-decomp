@@ -38,7 +38,7 @@ void TBitmapResourceLoader::SetLoaderFlags(unsigned char newFlags) {
 }
 
 // FUNCTION: IMPERIALISM 0x00495b70
-void TBitmapResourceLoader::EnsureBitmapResourceLoadedAndCopyRectSize() {
+void TBitmapResourceLoader::LoadBitmapBounds() {
   if (bitmapResource == NULL) {
     bitmapResource = g_pResourceMgr->LoadBmpResourceByIdCached(bitmapResourceId);
     if (bitmapResource == NULL) {
@@ -64,7 +64,7 @@ void TBitmapResourceLoader::ReleaseBitmapResource() {
 
 // Base slot-0x02 stub: reports an assert (D:\Ambit\QuickDraw.h:417) and returns 0.
 // FUNCTION: IMPERIALISM 0x004a1100
-int TBitmapResourceLoader::ReportUnimplementedResourceVirtualSlot02() {
+int TBitmapResourceLoader::ReportUnimplemented() {
   ReportAssertionFailure("D:\\Ambit\\QuickDraw.h", 0x1a1);
   return 0;
 }

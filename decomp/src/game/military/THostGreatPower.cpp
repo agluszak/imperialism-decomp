@@ -49,7 +49,7 @@ void THostGreatPower::ReplyToDiplomacyOffers(void) {
   for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     TGreatPower* nation = g_apNationStates[nationSlot];
     if (nation != 0 && !nation->IsRemote()) {
-      g_pGameFlowState->ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(nationSlot);
+      g_pGameFlowState->CheckInPlayer(nationSlot);
     }
   }
 

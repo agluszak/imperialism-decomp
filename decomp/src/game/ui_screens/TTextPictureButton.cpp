@@ -28,12 +28,12 @@ void TTextPictureButton::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);
   int pressedOffset = (controlState != 0) ? 1 : 0;
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, pointSize, themeCode9C);
+  ApplyTextStyle(0, pointSize, themeCode9C);
   COLORREF shadowColor;
   ResolveUiThemeColor(themeCode9C, &shadowColor);
   SetQuickDrawColorAndSyncGlobals(shadowColor);
 
-  short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&buttonText);
+  short textWidth = MeasureText(&buttonText);
   int halfTextWidth = textWidth / 2;
 
   CDC* activeDc = GetActiveQuickDrawDc();

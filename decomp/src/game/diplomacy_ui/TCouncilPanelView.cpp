@@ -27,7 +27,7 @@ void TCouncilPanelView::Draw(RECT* rectBuffer) {
 
   short centerX = frameWidth / 2;
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0x12, 0x2b68);
+  ApplyTextStyle(0, 0x12, 0x2b68);
 
   COLORREF styleShadow = 0;
   COLORREF styleForeground = 0;
@@ -36,7 +36,7 @@ void TCouncilPanelView::Draw(RECT* rectBuffer) {
 
   if (g_pDiplomacyTurnStateManager->congressLeadership.chairmanNationSlot == -1) {
     g_pSimMgr->GetString(0x2733, 0x34, &rowText);
-    short width = MeasureTextExtentWithCachedQuickDrawStyle(&rowText);
+    short width = MeasureText(&rowText);
     short x = centerX - width / 2;
     SetQuickDrawColorAndSyncGlobals(styleForeground);
     SetQuickDrawTextOriginWithContextOffset(x + 1, 0x25);
@@ -52,7 +52,7 @@ void TCouncilPanelView::Draw(RECT* rectBuffer) {
   scratchText.Format(g_szDecimalFormat, decadeYear);
   scanBracketExpressions(g_pSimMgr, &rowText, static_cast<LPCSTR>(titleTemplate),
                          static_cast<LPCSTR>(scratchText));
-  short titleWidth = MeasureTextExtentWithCachedQuickDrawStyle(&rowText);
+  short titleWidth = MeasureText(&rowText);
   short titleX = centerX - titleWidth / 2;
   SetQuickDrawColorAndSyncGlobals(styleForeground);
   SetQuickDrawTextOriginWithContextOffset(titleX + 1, 0x25);
@@ -61,14 +61,14 @@ void TCouncilPanelView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(titleX, 0x24);
   DrawTextWithCachedQuickDrawStyleState(&rowText);
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b68);
+  ApplyTextStyle(0, 0xe, 0x2b68);
 
   // Row A: the chairman nation and its support count.
   g_apTerrainTypeDescriptorTable[g_pDiplomacyTurnStateManager->congressLeadership
                                      .chairmanNationSlot]
       ->FormatOverlayTerrainLabelText(&rowText);
   rowText += s_szColonSeparator;
-  short rowAWidth = MeasureTextExtentWithCachedQuickDrawStyle(&rowText);
+  short rowAWidth = MeasureText(&rowText);
   short rowALabelX = centerX - rowAWidth;
   SetQuickDrawColorAndSyncGlobals(styleForeground);
   SetQuickDrawTextOriginWithContextOffset(rowALabelX + 1, 0x3d);
@@ -91,7 +91,7 @@ void TCouncilPanelView::Draw(RECT* rectBuffer) {
                                      .counterpartNationSlot]
       ->FormatOverlayTerrainLabelText(&rowText);
   rowText += s_szColonSeparator;
-  short rowBWidth = MeasureTextExtentWithCachedQuickDrawStyle(&rowText);
+  short rowBWidth = MeasureText(&rowText);
   short rowBLabelX = centerX - rowBWidth;
   SetQuickDrawColorAndSyncGlobals(styleForeground);
   SetQuickDrawTextOriginWithContextOffset(rowBLabelX + 1, 0x4d);
@@ -111,7 +111,7 @@ void TCouncilPanelView::Draw(RECT* rectBuffer) {
 
   // Row C: a generic label (GetString 0x2733/0x36) and the neutral count.
   g_pSimMgr->GetString(0x2733, 0x36, &rowText);
-  short rowCWidth = MeasureTextExtentWithCachedQuickDrawStyle(&rowText);
+  short rowCWidth = MeasureText(&rowText);
   short rowCLabelX = centerX - rowCWidth;
   SetQuickDrawColorAndSyncGlobals(styleForeground);
   SetQuickDrawTextOriginWithContextOffset(rowCLabelX + 1, 0x5d);

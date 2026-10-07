@@ -19,5 +19,4 @@ bool LockPixels(TBitmapSurfaceNode** pixMap);
 void UnlockPixels(TBitmapSurfaceNode** pixMap);
 void BlitBitmapResourceLoaderToActiveDc(TBitmapResourceLoader** handle, RECT* bounds);
 int QDLoadResource(TBitmapResourceLoader** handle);
-TQuickDrawSurfaceContext*
-LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId);
+TQuickDrawSurfaceContext* LoadBitmapSurface(unsigned short resourceId);

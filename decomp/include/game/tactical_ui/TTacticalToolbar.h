@@ -18,7 +18,7 @@ public:
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   virtual void DoPostCreate(int arg) override;
   virtual void Draw(RECT* rectBuffer) override;
-  virtual void UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalUnit* unit);
+  virtual void ShowCurrentUnit(TTacticalUnit* unit);
   virtual void UpdateTacticalOtherSideUnitControl(TArmyTacUnit* unit);
   class TTacticalBattle* battle;
   class TTacticalUnit* currentUnit; // +0x8c current-unit control source

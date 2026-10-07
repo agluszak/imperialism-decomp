@@ -31,10 +31,10 @@ struct TCdAudioDevice {
 int __stdcall SetAuxOutputVolumeFromScalar(int scalar);
 int __stdcall SetAuxOutputVolumeByChannel(int leftVolume, int rightVolume);
 int __stdcall GetAuxOutputVolumeRaw(DWORD* outVolume);
-bool __stdcall SetAuxOutputVolumeAcrossCompatibleDevices(int level);
-int __stdcall GetAuxOutputVolumeFromFirstCompatibleDevice(unsigned int* outVolume);
+bool __stdcall SetAuxVolume(int level);
+int __stdcall GetAuxVolume(unsigned int* outVolume);
 
-void __stdcall SetMciPlaybackRangeByTrackIndexAndDevice(int trackIndex, MCIDEVICEID device);
+void __stdcall SetTrackRange(int trackIndex, MCIDEVICEID device);
 
 WORD OpenCdAudioAndProbeAuxOutputDevice(void);
 

@@ -194,7 +194,7 @@ bool TOffersPanelView::PoseOffer(short sourceNation, short targetNation, short o
     wait->Locate(g_diplomacyPopupOffscreenPosition, true);
     sheet->Locate(g_diplomacyPopupVisiblePosition, true);
   }
-  message->UpdateTextEntrySharedStringAndMaybeNotify(&proposalText, true);
+  message->SetEntryText(&proposalText, true);
   message->CenterVertically(true);
   RefreshControl();
   ForceRedraw();
@@ -289,7 +289,7 @@ char TOffersPanelView::PoseWarOffer(short sourceNationSlot, int minorNationSlot,
   TView* wait = FindSubView(kControlTagWait);
   wait->Locate(g_diplomacyPopupOffscreenPosition, false);
   sheet->Locate(g_diplomacyPopupVisiblePosition, true);
-  proposalText->UpdateTextEntrySharedStringAndMaybeNotify(&formattedMessage, true);
+  proposalText->SetEntryText(&formattedMessage, true);
   proposalText->CenterVertically(true);
   RefreshControl();
   ForceRedraw();

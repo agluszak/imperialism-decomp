@@ -52,6 +52,6 @@ ASSERT_SIZE(TDisplayMgr, 0x24);
 
 struct GlobalViewportRectDefaultsRecord;
 
-GlobalViewportRectDefaultsRecord** InitializeGlobalRectDefaultsIfUninitialized();
+GlobalViewportRectDefaultsRecord** InitializeDefaultRects();
 
 void PlayDefaultMessageBeep(...);
