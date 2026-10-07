@@ -35,7 +35,7 @@ public:
   virtual void SetUpperLeft(int tileX, int tileY);                          // slot 0x79 0x5989d0
   virtual void NoticeTile(int tileIndex);                                   // slot 0x7a 0x598a20
   virtual bool IsAUnitSelected();                                           // slot 0x7b 0x597a10
-  virtual void DisplayInfo(unsigned char overlayMode);                      // slot 0x7c 0x598910
+  virtual void DisplayInfo(bool showInfo);                                  // slot 0x7c 0x598910
   virtual void DisplayMiniMap();                                            // slot 0x7d 0x599cf0
   virtual void RemoveMiniMap();                                             // slot 0x7e 0x599fd0
   virtual void SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState); // slot 0x7f 0x59a180

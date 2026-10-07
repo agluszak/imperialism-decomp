@@ -979,7 +979,7 @@ short TZone::GetDistanceTo(TZone* other) {
     int cellCount = g_nMapActionContextCount * g_nMapActionContextCount;
     char* newCache = new char[cellCount];
     for (int i = 0; i < cellCount; ++i) {
-      newCache[i] = static_cast<char>(0xff);
+      newCache[i] = -1;
     }
     g_pMapActionContextDistanceCache = newCache;
   }

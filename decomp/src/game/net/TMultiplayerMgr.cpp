@@ -850,8 +850,7 @@ bool TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* pac
         } else {
           sessionBusy = 0;
         }
-        nationStatusTags[slot9] =
-            (-(unsigned int)sessionBusy & 0xf0100f00) + kSessionTagRedy; // 'busy' : 'redy'
+        nationStatusTags[slot9] = sessionBusy ? kSessionTagBusy : kSessionTagRedy;
       }
       nationDisplayNameSlots[slot9] = statusText;
       defaultNationTextSlots[slot9] = nationDisplayNameSlots[slot9];

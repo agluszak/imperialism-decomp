@@ -526,7 +526,7 @@ void TCity::ProduceUnits() {
       short pendingCount = (*shipCursor)->quantity;
       short tileId = (*shipCursor)->resourceTypeIndex;
       if (pendingCount != 0) {
-        if (!static_cast<bool>(TShip::GetTypeFirepower(tileId))) {
+        if (TShip::GetTypeFirepower(tileId) == 0) {
           this->ownerNation->AnnounceLater(1, tileId, pendingCount);
         } else {
           this->ownerNation->AnnounceLater(0, tileId, pendingCount);

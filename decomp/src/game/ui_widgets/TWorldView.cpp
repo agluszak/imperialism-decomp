@@ -311,8 +311,8 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
 }
 
 // FUNCTION: IMPERIALISM 0x00595c40
-void TWorldView::SetMapOverlayModeAndRenderPreview(unsigned char overlayMode) {
-  alternateOverlayEnabled = overlayMode;
+void TWorldView::SetMapOverlayModeAndRenderPreview(bool alternateOverlay) {
+  alternateOverlayEnabled = alternateOverlay;
   RenderMapContextOverlayWithScopedClipAndSurface();
 }
 

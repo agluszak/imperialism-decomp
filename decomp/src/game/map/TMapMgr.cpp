@@ -4244,7 +4244,7 @@ void __stdcall UnusedMapManagerLeaf(StrategicTileIndex nTileIndex) {
   lookup[14] = 0xffff;
   TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[nTileIndex];
   tile.resourceTypeByEdge[0] = static_cast<signed char>(lookup[tile.gateFlag]);
-  tile.resourceTypeByEdge[1] = static_cast<signed char>(0xff);
+  tile.resourceTypeByEdge[1] = static_cast<signed char>(-1);
 }
 
 // FUNCTION: IMPERIALISM 0x0055e360
@@ -4460,7 +4460,7 @@ char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(StrategicTileIndex ti
     short flowType = static_cast<short>(terrainTable[tileIndex].riverSpriteCode);
     bool crossedBoundary = false;
     if (flowType == kRiverSpriteCodeNone) {
-      return static_cast<char>(0xff);
+      return static_cast<char>(-1);
     }
     if (flowType > kRiverSpriteCodeFlowLast &&
         flowType < kRiverSpriteCodeLandSingleDirectionFirst) {
@@ -4470,7 +4470,7 @@ char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(StrategicTileIndex ti
       flowType = g_anTerrainFlowTypeByRiverSpriteCode[flowType - kRiverSpriteCodeFlowFirst];
     } else if (flowType >= kRiverSpriteCodeLandSingleDirectionFirst &&
                flowType <= kRiverSpriteCodeWaterSingleDirectionLast) {
-      return static_cast<char>(0xff);
+      return static_cast<char>(-1);
     }
 
     short stepDirection = g_anTerrainFlowDirections[flowType][attempt];
@@ -4519,5 +4519,5 @@ char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(StrategicTileIndex ti
       }
     }
   }
-  return static_cast<char>(0xff);
+  return static_cast<char>(-1);
 }

@@ -615,9 +615,9 @@ void TMapUberPicture::RedrawTile(short tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x00598910
-void TMapUberPicture::DisplayInfo(unsigned char overlayMode) {
+void TMapUberPicture::DisplayInfo(bool showInfo) {
   this->PrepareForDrawing();
-  subview->SetMapOverlayModeAndRenderPreview(overlayMode);
+  subview->SetMapOverlayModeAndRenderPreview(showInfo);
 }
 
 // FUNCTION: IMPERIALISM 0x00598950

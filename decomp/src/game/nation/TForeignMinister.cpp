@@ -23,7 +23,7 @@
 
 #include <stdlib.h>
 
-static const short kNoInteriorBidResource = static_cast<short>(0xfff6);
+static const short kNoInteriorBidResource = -10;
 
 namespace {
 

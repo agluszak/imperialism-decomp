@@ -197,7 +197,7 @@ void TMission::ReadFrom(TStream* stream) {
   stream->ReadBytes(&importanceScore, 4);
   stream->ReadBytes(&flag10, 1);
   if (g_nSaveFormatVersion < 0x10) {
-    pathMarker = static_cast<short>(0xffff);
+    pathMarker = -1;
   } else {
     stream->ReadBytes(&pathMarker, 2);
   }

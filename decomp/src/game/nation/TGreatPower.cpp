@@ -980,7 +980,7 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
   }
 
   if (hasUnfilledNeedSlot) {
-    short selectedNation = static_cast<short>(-1);
+    short selectedNation = -1;
     TSortedByRelationshipList* relationshipList = new TSortedByRelationshipList;
     relationshipList->ISortedByRelationshipList();
     diplomacyManager->BuildRelationshipList(this->nationSlot, 1, relationshipList);
@@ -996,7 +996,7 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
             --listIndex;
             TGreatPower* candidateState = g_apNationStates[selectedNation];
             if (candidateState->diplomacyEligibility != 0) {
-              selectedNation = static_cast<short>(-1);
+              selectedNation = -1;
             }
             if (selectedNation >= 0) {
               break;
@@ -1647,8 +1647,8 @@ void TGreatPower::BecomeProtectorateOf(int targetNationSlot) {
 
   int idx;
   for (idx = 0; idx < kNationSlotCount; ++idx) {
-    this->diplomacyPolicyByNation[idx] = static_cast<short>(-1);
-    this->diplomacyGrantByNation[idx] = static_cast<short>(-1);
+    this->diplomacyPolicyByNation[idx] = -1;
+    this->diplomacyGrantByNation[idx] = -1;
     enemyFlags[idx] = 0;
     needLevelByNation[idx] = 100;
   }

@@ -38,7 +38,7 @@ public:
   TUnit() {
     previousAtLocation = 0;
     nextAtLocation = 0;
-    tileIndex = static_cast<short>(0xffff);
+    tileIndex = -1;
     militaryRegistrationFlag = false;
   }
 

@@ -309,7 +309,7 @@ void TBillForeignMinister::SetBuyPriorities() {
     preferredResourceSlots[2] = 4;
   }
   preferredResourceSlots[1] = 2;
-  preferredResourceSlots[3] = static_cast<short>(0xfff6);
+  preferredResourceSlots[3] = -10;
   TForeignMinister::SetBuyPriorities();
 }
 

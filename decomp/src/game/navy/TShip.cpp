@@ -76,9 +76,9 @@ IMPLEMENT_DYNCREATE(TShip, TObject)
 
 // FUNCTION: IMPERIALISM 0x0054f500
 TShip::TShip()
-    : TObject(), type(0), pad06(0), location(0), taskForce(0), aggression(1),
-      nation(static_cast<short>(-1)), name(), strength(0), pad1e(0), admiral(0),
-      next(g_pNavyPrimaryOrderListHead), previous(0), mission(0), experience(0), selection(0) {
+    : TObject(), type(0), pad06(0), location(0), taskForce(0), aggression(1), nation(-1), name(),
+      strength(0), pad1e(0), admiral(0), next(g_pNavyPrimaryOrderListHead), previous(0), mission(0),
+      experience(0), selection(0) {
   g_pNavyPrimaryOrderListHead = this;
   if (next != 0) {
     next->previous = this;

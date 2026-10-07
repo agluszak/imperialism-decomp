@@ -33,8 +33,7 @@ static void SetIndustryControlEnabledIfChanged(TView* control, bool enabled) {
 IMPLEMENT_DYNCREATE(TIndustryView, TBuildingView)
 
 // FUNCTION: IMPERIALISM 0x004cc790
-TIndustryView::TIndustryView()
-    : TBuildingView(), unresolvedZero(0), selectedIndustryUnitType(static_cast<short>(0xffff)) {}
+TIndustryView::TIndustryView() : TBuildingView(), unresolvedZero(0), selectedIndustryUnitType(-1) {}
 
 // FUNCTION: IMPERIALISM 0x004cc800
 TIndustryView::~TIndustryView() {}

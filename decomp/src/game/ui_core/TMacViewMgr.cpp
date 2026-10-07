@@ -893,7 +893,7 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
     short needCap = nation != 0 ? nation->transportCapacity : 0;
     panel->splitValue94 = nation != 0 ? nation->reservedTransportCapacity : 0;
     panel->splitValue96 = needCap;
-    panel->splitLimit = static_cast<short>(-1);
+    panel->splitLimit = -1;
     return;
   }
 
@@ -1144,7 +1144,7 @@ void TMacViewMgr::ShowTransportEntry(short resourceSlot, short nationIndex, TVie
   }
 
   if (showArrowWidgets == 0) {
-    panel->splitLimit = static_cast<short>(-1);
+    panel->splitLimit = -1;
   } else if (deficitCount < 1) {
     panel->splitLimit = 0;
   } else {

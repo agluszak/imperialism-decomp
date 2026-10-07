@@ -1905,7 +1905,7 @@ void TArmyMgr::CheckForDrownedUnits(char nationId, int cityIndex,
       }
       budget -= evicted->GetArmsCarried();
       ++evictedCount;
-      evicted->strength = static_cast<short>(0xffaa);
+      evicted->strength = -86;
     } while (budget > 0);
 
     int oldCount = snapshot->childCount[side];
@@ -1926,12 +1926,12 @@ void TArmyMgr::CheckForDrownedUnits(char nationId, int cityIndex,
         CIterator evictedIter(nation->militaryUnitList);
         for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(evictedIter.Reset());
              evictedIter.More(); unit = static_cast<TMilitaryUnit*>(evictedIter.Advance())) {
-          if (unit->strength == static_cast<short>(0xffaa)) {
+          if (unit->strength == static_cast<short>(-86)) {
             unit->strength = 0;
             MapOrderBattleSideChildRecord& rec = newRecords[recordIndex];
             ++recordIndex;
             rec.resourceType = unit->orderType;
-            rec.stockOrRequired = static_cast<short>(0xffaa);
+            rec.stockOrRequired = -86;
             rec.nameBuffer[0] = 0;
             CString unitName = unit->name;
             LPCSTR unitNameChars = static_cast<LPCSTR>(unitName);

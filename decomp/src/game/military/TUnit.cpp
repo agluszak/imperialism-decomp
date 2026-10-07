@@ -41,7 +41,7 @@ void TUnit::IUnit(short nOrderType, int anchorIndex, short nOrderOwnerNationId, 
 
   this->ownerNationSlot = nOrderOwnerNationId;
   this->unitRosterId = arg3;
-  this->orderTargetIndex = static_cast<short>(-1);
+  this->orderTargetIndex = -1;
 
   TSimMgr* simMgr = g_pSimMgr;
   ++simMgr->lastPersistentUnitId;

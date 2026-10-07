@@ -122,8 +122,8 @@ void TDiplomacyMgr::IDiplomacyMgr() {
     --pairCount;
   } while (pairCount != 0);
 
-  congressLeadership.chairmanNationSlot = static_cast<short>(-1);
-  congressLeadership.counterpartNationSlot = static_cast<short>(-1);
+  congressLeadership.chairmanNationSlot = -1;
+  congressLeadership.counterpartNationSlot = -1;
   congressSupport.chairmanSupportCount = static_cast<short>(zero);
   congressSupport.counterpartSupportCount = static_cast<short>(zero);
   congressSupport.neutralCount = static_cast<short>(zero);
@@ -138,8 +138,8 @@ void TDiplomacyMgr::IDiplomacyMgr() {
     int columnCount = kNationSlotCount;
 
     do {
-      *linearTurnStamp = static_cast<short>(-1);
-      *transposeTurnStamp = static_cast<short>(-1);
+      *linearTurnStamp = -1;
+      *transposeTurnStamp = -1;
 
       ++linearTurnStamp;
       transposeTurnStamp += kNationSlotCount;

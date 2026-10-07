@@ -36,7 +36,7 @@ public:
   virtual void DoPostCreate(int arg) override;
   virtual bool HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
 
-  virtual void SetMapOverlayModeAndRenderPreview(unsigned char overlayMode);
+  virtual void SetMapOverlayModeAndRenderPreview(bool alternateOverlay);
   virtual void RenderMapContextOverlayWithScopedClipAndSurface();
   virtual void DrawUnit(TCivUnit* orderEntry, int projectedX, int projectedY, int flag,
                         short tileIndex);
