@@ -42,7 +42,7 @@ public:
 
   class TTacticalUnit* GetNextUnit();
 
-  void HandleTacticalCommandTag_skip();
+  void HandleSkipCommand();
 
   void RemoveReserves();
 

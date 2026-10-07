@@ -74,7 +74,7 @@ public:
   TMultiplayerMgr();
 
   void EmitTurnEvent3Mode18WithActiveNation(); // 0x5446a0
-  void EmitTurnEvent10ForFlaggedNationSlots(); // 0x544720
+  void SendGoAheadMessage();                   // 0x544720
   bool CloseLobbyDialogAndEmitTurnEvent3();
   void EmitTurnEvent26DiplomacyMatrixSnapshot();
   TurnEventQueuePacket* PopTimelyMessage();

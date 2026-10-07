@@ -89,7 +89,7 @@ public:
 
   void SetCenterTile(int value);
 
-  bool IsNationProfileInMinorRange100To199();
+  bool IsProtectorate();
 
   short GeopoliticalCenter();
 

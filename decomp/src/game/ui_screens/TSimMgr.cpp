@@ -1308,8 +1308,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         if (nationSlot == -1 || g_apTerrainTypeDescriptorTable[nationSlot] == NULL) {
           continue;
         }
-        if (nationSlot < 7 &&
-            g_apTerrainTypeDescriptorTable[nationSlot]->IsNationProfileInMinorRange100To199()) {
+        if (nationSlot < 7 && g_apTerrainTypeDescriptorTable[nationSlot]->IsProtectorate()) {
           continue;
         }
         TGreatPower* nation = g_apNationStates[nationSlot];

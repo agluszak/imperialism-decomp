@@ -1009,7 +1009,7 @@ void TArmyPlayer::AssignCleanUpJobs() {
 }
 
 // FUNCTION: IMPERIALISM 0x0059d400
-void TArmyPlayer::SetAllUnitAiStateCodesTo13() {
+void TArmyPlayer::AssignRetreatJobs() {
   CIterator iter(unitList);
   for (TTacticalUnit* record = static_cast<TTacticalUnit*>(iter.Reset()); iter.More();
        record = static_cast<TTacticalUnit*>(iter.Advance())) {

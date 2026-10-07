@@ -113,7 +113,7 @@ public:
                bool remoteFlag); // 0x5a38e0
   void LaDeploy(TArmyTacUnit* unit, TacticalTileIndex tileIndex,
                 bool remoteFlag); // 0x5a4370
-  void HandleTacticalCommandTag_retr();
+  void HandleRetreatCommand();
   void FinishedDeploying();
 
   void HandleTacticalBattleCommandTag(int commandTag);

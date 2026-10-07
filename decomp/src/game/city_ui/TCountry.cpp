@@ -646,7 +646,7 @@ void TCountry::SetTradePolicyTo(NationSlot nationSlot, short tradePolicy) {
 }
 
 // FUNCTION: IMPERIALISM 0x0057f0e0
-bool TCountry::IsNationProfileInMinorRange100To199() {
+bool TCountry::IsProtectorate() {
   if (this != NULL) {
     if (encodedNationSlot >= 100 && encodedNationSlot < 200) {
       return true;

@@ -51,7 +51,7 @@ public:
   void AssignFrontalAssaultJobs();                 // mode 4, 0x59d020
   void ApplyAttackerStandoffStanceByActionClass(); // mode 5, 0x59d1a0
   void AssignCleanUpJobs();                        // mode 6, 0x59d320
-  void SetAllUnitAiStateCodesTo13();
+  void AssignRetreatJobs();
   bool EnemyArtillery();
 
   void BuildTacticalActionPriorityBucketsWithGridGuard();      // 0x59bcf0

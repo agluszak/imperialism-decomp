@@ -212,7 +212,7 @@ void TTacticalBattle::BeginFighting() {
 }
 
 // FUNCTION: IMPERIALISM 0x0059fd10
-void TTacticalBattle::HandleTacticalCommandTag_retr() {
+void TTacticalBattle::HandleRetreatCommand() {
   currentSide = (currentSide == 0);
   selectedUnit = players[currentSide]->GetNextUnit();
   if (battleView != 0) {
@@ -644,7 +644,7 @@ void TTacticalBattle::HandleTacticalBattleCommandTag(int commandTag) {
     return;
   case kControlTagRetr: // 'retr'
     if (battleLive == 0) {
-      HandleTacticalCommandTag_retr();
+      HandleRetreatCommand();
       return;
     }
     if (g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x273d, 0x32, 1, 1)) {
@@ -654,7 +654,7 @@ void TTacticalBattle::HandleTacticalBattleCommandTag(int commandTag) {
     }
     return;
   case kControlTagSkip: // 'skip'
-    player->HandleTacticalCommandTag_skip();
+    player->HandleSkipCommand();
     return;
   case kControlTagTarg: // 'targ'
     CycleTarget();

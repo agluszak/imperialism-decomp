@@ -471,7 +471,7 @@ void TMultiplayerMgr::EmitTurnEvent3Mode18WithActiveNation() {
 }
 
 // FUNCTION: IMPERIALISM 0x00544720
-void TMultiplayerMgr::EmitTurnEvent10ForFlaggedNationSlots() {
+void TMultiplayerMgr::SendGoAheadMessage() {
   for (int slot = 0; slot < kMajorNationSessionSlotCount; ++slot) {
     if (nationSessionIds[slot] != 0 && (pendingNationBitmask & (1 << slot)) != 0) {
       TurnEvent3Mode18Packet packet;

@@ -305,7 +305,7 @@ void TArmyBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
   }
   TTacticalPlayer* readyPlayer = (currentSide == 0) ? players[0] : players[1];
   if (readyPlayer->sideReadyFlag) {
-    HandleTacticalCommandTag_retr(); // side fully deployed -> hand the round over
+    HandleRetreatCommand(); // side fully deployed -> hand the round over
     return;
   }
   if (battleView != 0) {

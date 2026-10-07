@@ -293,7 +293,7 @@ void TLoungeDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     } else if (controlTag == kControlTagOkay) { // 'okay'
       g_pGameFlowState->CloseLobbyDialogAndEmitTurnEvent3();
     } else if (controlTag == kSessionTagJedi) { // 'jedi'
-      g_pGameFlowState->EmitTurnEvent10ForFlaggedNationSlots();
+      g_pGameFlowState->SendGoAheadMessage();
     }
   }
 
