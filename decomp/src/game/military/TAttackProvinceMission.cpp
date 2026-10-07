@@ -87,7 +87,7 @@ bool TAttackProvinceMission::SmokeEmIfYouGotEm() {
       TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(eligibilityIter.Reset());
       while (eligibilityIter.More()) {
         if (static_cast<double>(unit->strength) * g_ArmyMissionEligibleUnitStrengthScale <
-            g_Recompute_Nation_Order_LookupTable_0065AA20) {
+            139069760.0f) {
           CIterator queueIter(orderList);
           for (unit = static_cast<TMilitaryUnit*>(queueIter.Reset()); queueIter.More();
                unit = static_cast<TMilitaryUnit*>(queueIter.Advance())) {
@@ -145,7 +145,7 @@ bool TAttackProvinceMission::TryResolveTargetTerrainClass() {
         if (candidateRecord.adjacentRegionCount > 0) {
           candidateScore = (static_cast<float>(matchCount) /
                                 static_cast<float>(candidateRecord.adjacentRegionCount) -
-                            g_Recompute_Nation_Order_LookupTable_0065A9E0) *
+                            (-1.0)) *
                            candidateScore;
         }
         candidateScore = candidateScore / g_fMissionScoreNormalizationDivisor;
@@ -174,7 +174,7 @@ bool TAttackProvinceMission::TryResolveTargetTerrainClass() {
       if (candidateRecord.adjacentRegionCount > 0) {
         candidateScore = (static_cast<float>(matchCount) /
                               static_cast<float>(candidateRecord.adjacentRegionCount) -
-                          g_Recompute_Nation_Order_LookupTable_0065A9E0) *
+                          (-1.0)) *
                          candidateScore;
       }
       bestScore = candidateScore / g_fMissionScoreNormalizationDivisor;
@@ -313,7 +313,7 @@ void TAttackProvinceMission::CalculateImportance() {
 
   if (targetRecord.adjacentRegionCount > 0) {
     score = (static_cast<float>(matchCount) / static_cast<float>(targetRecord.adjacentRegionCount) -
-             g_Recompute_Nation_Order_LookupTable_0065A9E0) *
+             (-1.0)) *
             score;
   }
   importanceScore = score / g_fMissionScoreNormalizationDivisor;
@@ -345,15 +345,13 @@ void TAttackProvinceMission::CalculateNeeds() {
     float divergence = 0.0f;
     for (int referenceIndex = 0; referenceIndex < 5; ++referenceIndex) {
       float delta =
-          vector[referenceIndex] / total - static_cast<float>(reference[referenceIndex]) *
-                                               g_Recompute_Nation_Order_LookupTable_0065A9F8;
+          vector[referenceIndex] / total - static_cast<float>(reference[referenceIndex]) * 0.01;
       if (delta <= 0.0f) {
         delta = -delta;
       }
       divergence += delta;
     }
-    similarity = total * (g_Recompute_Nation_Order_LookupTable_0065AA08 -
-                          divergence * g_Recompute_Nation_Order_LookupTable_0065AA00);
+    similarity = total * (1.0 - divergence * 0.5);
   }
   if (similarity == 0.0f) {
     similarity = 1.0f;
@@ -365,8 +363,8 @@ void TAttackProvinceMission::CalculateNeeds() {
       similarity;
   const short* outputProfile = &g_awTacticalCompositionReferenceProfiles[(fortLevel > 0) ? 10 : 5];
   for (int outputIndex = 0; outputIndex < 5; ++outputIndex) {
-    requiredEquipageByClass[outputIndex] = static_cast<float>(outputProfile[outputIndex]) * scale *
-                                           g_Recompute_Nation_Order_LookupTable_0065A9F8;
+    requiredEquipageByClass[outputIndex] =
+        static_cast<float>(outputProfile[outputIndex]) * scale * 0.01;
   }
 }
 

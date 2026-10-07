@@ -69,9 +69,8 @@ void TScatteredShipsMission::CalculateNeeds() {
 
   const short* lookupTable = g_Populate_Beachhead_Mission_LookupTable;
   for (int i = 0; i < 4; ++i) {
-    requiredShipEquipageByCategory[i] = static_cast<float>(static_cast<short>(lookupTable[i])) *
-                                        pressureScale *
-                                        g_Recompute_Nation_Order_LookupTable_0065A9F8;
+    requiredShipEquipageByCategory[i] =
+        static_cast<float>(static_cast<short>(lookupTable[i])) * pressureScale * 0.01;
   }
 }
 

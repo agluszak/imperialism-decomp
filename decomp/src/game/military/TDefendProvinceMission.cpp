@@ -85,22 +85,21 @@ namespace {
 
 inline float NormalizeFiveComponentPriorityVector(const float* vector, float sum,
                                                   const short* lookupTable) {
-  if (sum == g_Recompute_Nation_Order_LookupTable_0065A9F0) {
-    return g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  if (sum == 0.0) {
+    return 0.0f;
   }
 
-  float accum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  float accum = 0.0f;
   for (int componentIndex = 0; componentIndex < 5; ++componentIndex) {
-    float diff = vector[componentIndex] / sum - static_cast<short>(lookupTable[componentIndex]) *
-                                                    g_Recompute_Nation_Order_LookupTable_0065A9F8;
-    if (diff <= g_Recompute_Nation_Order_LookupTable_0065A9F0) {
+    float diff =
+        vector[componentIndex] / sum - static_cast<short>(lookupTable[componentIndex]) * 0.01;
+    if (diff <= 0.0) {
       diff = -diff;
     }
     accum += diff;
   }
 
-  return sum * (g_Recompute_Nation_Order_LookupTable_0065AA08 -
-                accum * g_Recompute_Nation_Order_LookupTable_0065AA00);
+  return sum * (1.0 - accum * 0.5);
 }
 
 } // namespace
@@ -164,7 +163,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
     ++regionIndex;
   } while (regionIndex < 0x180);
 
-  float sum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  float sum = 0.0f;
   for (int componentIndex = 0; componentIndex < 5; ++componentIndex) {
     sum += vector[componentIndex];
   }
@@ -191,7 +190,7 @@ float TDefendProvinceMission::ComputeLocalSupportVectorScore(int nodeContext) {
                                                   static_cast<float>(unitOrderWeight));
   }
 
-  float sum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  float sum = 0.0f;
   for (int componentIndex = 0; componentIndex < 5; ++componentIndex) {
     sum += vector[componentIndex];
   }
@@ -267,7 +266,7 @@ void TDefendProvinceMission::CalculateImportance() {
     }
 
     score = (static_cast<float>(ownedNeighborCount) / static_cast<float>(adjacentCount) -
-             static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9E0)) *
+             static_cast<float>((-1.0))) *
             score;
   }
 
@@ -282,7 +281,7 @@ void TDefendProvinceMission::CalculateNeeds() {
 
   float pressure = nationState->averageUnitDivergencePerOwnedRegion;
 
-  if (pressure <= static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
+  if (pressure <= static_cast<float>(0.0)) {
     pressure = g_MissionPositiveFallback;
   }
 
@@ -327,8 +326,8 @@ void TDefendProvinceMission::CalculateNeeds() {
 
   for (int j = 0; j < 5; ++j) {
     short val = referenceProfile[j];
-    requiredEquipageByClass[j] = static_cast<float>(val) * requiredStrength *
-                                 static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F8);
+    requiredEquipageByClass[j] =
+        static_cast<float>(val) * requiredStrength * static_cast<float>(0.01);
   }
 }
 

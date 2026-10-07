@@ -486,8 +486,8 @@ int QuickDrawStateAssertGuard() {
 
 // FUNCTION: IMPERIALISM 0x004953a0
 void ResetQuickDrawStrokeState() {
-  g_nQuickDrawPenHorizontalSize = g_Reset_Quick_Draw_Value_0064B8F0;
-  g_nQuickDrawPenVerticalSize = g_Reset_Quick_Draw_Value_0064B8F4;
+  g_nQuickDrawPenHorizontalSize = g_defaultPenWidth;
+  g_nQuickDrawPenVerticalSize = g_defaultPenHeight;
   g_Reset_Quick_Draw_State = g_Reset_Quick_Draw_WordState;
   g_bQuickDrawStrokePairDirty = 1;
 }

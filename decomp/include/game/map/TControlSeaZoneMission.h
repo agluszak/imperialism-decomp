@@ -73,8 +73,7 @@ inline void TControlSeaZoneMission::CalculateNeeds() {
   if (sum != 0.0f) {
     float delta = 0.0f;
     for (int i = 0; i < 4; ++i) {
-      float diff = vector[i] / sum - static_cast<float>(static_cast<short>(lookupTable[i])) *
-                                         g_Recompute_Nation_Order_LookupTable_0065A9F8;
+      float diff = vector[i] / sum - static_cast<float>(static_cast<short>(lookupTable[i])) * 0.01;
       if (diff <= 0.0f) {
         diff = -diff;
       }
@@ -88,7 +87,7 @@ inline void TControlSeaZoneMission::CalculateNeeds() {
   }
 
   for (int i = 0; i < 4; ++i) {
-    requiredShipEquipageByCategory[i] = static_cast<float>(static_cast<short>(lookupTable[i])) *
-                                        total * g_Recompute_Nation_Order_LookupTable_0065A9F8;
+    requiredShipEquipageByCategory[i] =
+        static_cast<float>(static_cast<short>(lookupTable[i])) * total * 0.01;
   }
 }

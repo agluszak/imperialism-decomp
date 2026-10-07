@@ -66,7 +66,6 @@ extern float g_ArmyMissionCandidateScoreTable[24];
 
 extern const float g_InvadeMissionSuppressedPriorContributionScale;
 
-extern const double g_Recompute_Nation_Order_LookupTable_0065A9E0;
 extern short g_nArmsBasicResourceOfferSplitCount;
 extern short g_nArmsAdvancedResourceOfferSplitCount;
 extern IndustryCapabilityClassSlotEntry g_aIndustryCapabilityClassSlotTable[14];
@@ -76,17 +75,9 @@ extern const float g_NavyMissionIndustrialCostWeights[4];
 extern const float g_NavyMissionQueuedWeightDeficitScale;
 extern const float g_NavyMissionSimilarityExcessBlend;
 extern const float g_AttackProvinceMissionResourceScaleByDifficultyAndFortLevel[5][4];
-extern const float g_Recompute_Nation_Order_LookupTable_0065A9BC;
-extern const float g_Recompute_Nation_Order_LookupTable_0065A9C4;
-extern const float g_Recompute_Nation_Order_LookupTable_0065A9E8;
 extern const float g_MissionPositiveFallback;
-extern const double g_Recompute_Nation_Order_LookupTable_0065A9F0;
-extern double g_Recompute_Nation_Order_LookupTable_0065A9F8;
-extern double g_Recompute_Nation_Order_LookupTable_0065AA00;
-extern double g_Recompute_Nation_Order_LookupTable_0065AA08;
 extern const double g_PortZoneFriendlyMissionScoreMultiplier;
 extern const double g_PortZoneForeignMissionScoreMultiplier;
-extern const float g_Recompute_Nation_Order_LookupTable_0065AA20;
 extern const double g_ArmyMissionEligibleUnitStrengthScale;
 extern const float g_MissionResourceWeightScale;
 extern const float g_BlockadePortMissionThreatFloor;

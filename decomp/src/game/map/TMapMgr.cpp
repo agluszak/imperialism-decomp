@@ -1660,12 +1660,12 @@ int CopyOffsetAndHalve(short a, short b, short* outHalf, short* outCopy) {
 // FUNCTION: IMPERIALISM 0x005128f0
 short LookupHexNeighborRowDeltaByDirection(short direction) {
   if (direction < 0) {
-    return g_Build_Hex_Area_LookupTable_00696E80[static_cast<short>(direction + 6)];
+    return g_hexRowStepByDirection[static_cast<short>(direction + 6)];
   }
   if (direction > 5) {
     direction = static_cast<short>(direction - 6);
   }
-  return g_Build_Hex_Area_LookupTable_00696E80[direction];
+  return g_hexRowStepByDirection[direction];
 }
 
 // FUNCTION: IMPERIALISM 0x00512930
@@ -1688,7 +1688,7 @@ extern "C" StrategicTileIndex* __cdecl BuildHexAreaTileIndexList(StrategicTileIn
     } else if (dir > 5) {
       dir -= 6;
     }
-    int colAccum = g_Build_Hex_Area_LookupTable_00696E70[dir] * radius + rowParity + colBase;
+    int colAccum = g_hexColumnStepByDirection[dir] * radius + rowParity + colBase;
 
     dir = static_cast<int>(direction);
     if (dir < 0) {
@@ -1696,7 +1696,7 @@ extern "C" StrategicTileIndex* __cdecl BuildHexAreaTileIndexList(StrategicTileIn
     } else if (dir > 5) {
       dir -= 6;
     }
-    int rowAccum = g_Build_Hex_Area_LookupTable_00696E80[dir] * radius + row;
+    int rowAccum = g_hexRowStepByDirection[dir] * radius + row;
 
     *out = static_cast<short>(colAccum / 2 + rowAccum * kStrategicMapColumns);
     ++out;
@@ -1706,8 +1706,8 @@ extern "C" StrategicTileIndex* __cdecl BuildHexAreaTileIndexList(StrategicTileIn
       innerDir -= 6;
     }
     for (short step = 0; step < radius - 1; ++step) {
-      colAccum += g_Build_Hex_Area_LookupTable_00696E70[innerDir];
-      rowAccum += g_Build_Hex_Area_LookupTable_00696E80[innerDir];
+      colAccum += g_hexColumnStepByDirection[innerDir];
+      rowAccum += g_hexRowStepByDirection[innerDir];
       *out = static_cast<short>(colAccum / 2 + rowAccum * kStrategicMapColumns);
       ++out;
     }
@@ -1791,7 +1791,7 @@ StrategicTileIndex TMapMgr::GetNeighborTileID(StrategicTileIndex tileIndex,
     dir -= 6;
   }
 
-  scaledCol += static_cast<int>(g_Build_Hex_Area_LookupTable_00696E70[dir]);
+  scaledCol += static_cast<int>(g_hexColumnStepByDirection[dir]);
 
   if (static_cast<short>(direction) < 0) {
     dir = static_cast<short>(direction) + 6;
@@ -1800,7 +1800,7 @@ StrategicTileIndex TMapMgr::GetNeighborTileID(StrategicTileIndex tileIndex,
   }
 
   short wrappedRow = static_cast<short>(row);
-  wrappedRow = static_cast<short>(wrappedRow + g_Build_Hex_Area_LookupTable_00696E80[dir]);
+  wrappedRow = static_cast<short>(wrappedRow + g_hexRowStepByDirection[dir]);
 
   if (scaledCol > 0xd7) {
     scaledCol -= 0xd9;
@@ -2059,8 +2059,8 @@ bool TMapMgr::CanBuildPortAtTile(StrategicTileIndex tileIndex) {
     int row = tileIndex / kStrategicMapColumns;
     int col = tileIndex % kStrategicMapColumns;
     for (short direction = 0; direction < 6; ++direction) {
-      int scaledCol = row % 2 + col * 2 + g_Build_Hex_Area_LookupTable_00696E70[direction];
-      int neighborRow = row + g_Build_Hex_Area_LookupTable_00696E80[direction];
+      int scaledCol = row % 2 + col * 2 + g_hexColumnStepByDirection[direction];
+      int neighborRow = row + g_hexRowStepByDirection[direction];
       if (scaledCol < 0) {
         scaledCol += 0xd8;
       } else if (scaledCol >= 0xd8) {
@@ -2106,8 +2106,7 @@ bool TMapMgr::IsValidSecondaryNationHomeTileCandidate(StrategicTileIndex tileInd
       } else if (wrappedDir > 5) {
         wrappedDir = static_cast<short>(wrappedDir - 6);
       }
-      short candColX2 =
-          static_cast<short>(colX2 + g_Build_Hex_Area_LookupTable_00696E70[wrappedDir]);
+      short candColX2 = static_cast<short>(colX2 + g_hexColumnStepByDirection[wrappedDir]);
       short candRow = static_cast<short>(row + LookupHexNeighborRowDeltaByDirection(direction));
       NormalizeWrappedMapCoord217x60(&candColX2, &candRow);
       StrategicTileIndex candidateTile =
@@ -2130,8 +2129,7 @@ bool TMapMgr::IsValidSecondaryNationHomeTileCandidate(StrategicTileIndex tileInd
           } else if (innerWrappedDir > 5) {
             innerWrappedDir = static_cast<short>(innerWrappedDir - 6);
           }
-          short nColX2 =
-              static_cast<short>(seaColX2 + g_Build_Hex_Area_LookupTable_00696E70[innerWrappedDir]);
+          short nColX2 = static_cast<short>(seaColX2 + g_hexColumnStepByDirection[innerWrappedDir]);
           short nRow = static_cast<short>(seaRow + LookupHexNeighborRowDeltaByDirection(innerDir));
           NormalizeWrappedMapCoord217x60(&nColX2, &nRow);
           StrategicTileIndex neighborTile =
@@ -2179,14 +2177,14 @@ bool TMapMgr::HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(StrategicTi
     } else if (colDir > 5) {
       colDir = static_cast<short>(colDir - 6);
     }
-    short candColX2 = static_cast<short>(colX2 + g_Build_Hex_Area_LookupTable_00696E70[colDir]);
+    short candColX2 = static_cast<short>(colX2 + g_hexColumnStepByDirection[colDir]);
     short rowDir = direction;
     if (rowDir < 0) {
       rowDir = static_cast<short>(rowDir + 6);
     } else if (rowDir > 5) {
       rowDir = static_cast<short>(rowDir - 6);
     }
-    short candRow = static_cast<short>(row + g_Build_Hex_Area_LookupTable_00696E80[rowDir]);
+    short candRow = static_cast<short>(row + g_hexRowStepByDirection[rowDir]);
 
     if (candColX2 > 0xd7) {
       candColX2 = static_cast<short>(candColX2 - 0xd9);
@@ -2530,9 +2528,9 @@ void TMapMgr::PlaceCity(StrategicTileIndex nTileIndex, short nOwnerNationId) {
       neighborTile = nTileIndex;
     } else {
       int row = nTileIndex / kStrategicMapColumns;
-      int scaledColumn = row % 2 + (nTileIndex % kStrategicMapColumns) * 2 +
-                         g_Build_Hex_Area_LookupTable_00696E70[direction];
-      int neighborRow = row + g_Build_Hex_Area_LookupTable_00696E80[direction];
+      int scaledColumn =
+          row % 2 + (nTileIndex % kStrategicMapColumns) * 2 + g_hexColumnStepByDirection[direction];
+      int neighborRow = row + g_hexRowStepByDirection[direction];
       if (scaledColumn < 0) {
         scaledColumn += 0xd8;
       } else if (scaledColumn >= 0xd8) {
@@ -2779,8 +2777,8 @@ void TMapMgr::DimByMarching(TMilitaryUnit* const candidates[6], short orderTarge
   for (short direction = 0; direction < 6; ++direction) {
     int row = targetTileIndex / kStrategicMapColumns;
     int scaledColumn = row % 2 + (targetTileIndex % kStrategicMapColumns) * 2 +
-                       g_Build_Hex_Area_LookupTable_00696E70[direction];
-    int neighborRow = row + g_Build_Hex_Area_LookupTable_00696E80[direction];
+                       g_hexColumnStepByDirection[direction];
+    int neighborRow = row + g_hexRowStepByDirection[direction];
     if (scaledColumn < 0) {
       scaledColumn += 0xd8;
     } else if (scaledColumn >= 0xd8) {
@@ -3959,17 +3957,15 @@ void TMapMgr::ActivateMarchingArrow(int tileIndex, int contextArg, bool flag) {
   int row = anchorTile / kStrategicMapColumns;
   int col = anchorTile % kStrategicMapColumns;
 
-  short hexAreaX =
-      static_cast<short>(row % 2 + col * 2 +
-                         g_Build_Hex_Area_LookupTable_00696E70[direction < 0    ? direction + 6
-                                                               : direction <= 5 ? direction
-                                                                                : direction - 6]);
+  short hexAreaX = static_cast<short>(row % 2 + col * 2 +
+                                      g_hexColumnStepByDirection[direction < 0    ? direction + 6
+                                                                 : direction <= 5 ? direction
+                                                                                  : direction - 6]);
 
-  short hexAreaY =
-      static_cast<short>(g_Build_Hex_Area_LookupTable_00696E80[direction < 0    ? direction + 6
-                                                               : direction <= 5 ? direction
-                                                                                : direction - 6] +
-                         row);
+  short hexAreaY = static_cast<short>(g_hexRowStepByDirection[direction < 0    ? direction + 6
+                                                              : direction <= 5 ? direction
+                                                                               : direction - 6] +
+                                      row);
 
   if (hexAreaX > 0xd7) {
     hexAreaX -= 0xd9;

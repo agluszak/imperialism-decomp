@@ -47,35 +47,29 @@ extern "C" float g_afNationCombinedUnitDivergence[7];
 
 extern "C" float g_afNationMobileUnitScore[7];
 
-extern float g_DAT_Value_00653308[8];
+extern float g_afWarNumberByForeignMinister[8];
 
-extern float g_DAT_Value_00653328[6];
+extern float g_afWarNumberByDefenseMinister[6];
 
-extern float g_DAT_Value_00653340[8];
+extern float g_afSeekAllianceByForeignMinister[8];
 
-extern float g_DAT_Value_00653360[6];
+extern float g_afSeekAllianceByDefenseMinister[6];
 
-extern float g_DAT_Value_00653378[8];
+extern float g_afAcceptAllianceByForeignMinister[8];
 
-extern float g_DAT_Value_00653398[6];
+extern float g_afAcceptAllianceByDefenseMinister[6];
 
-extern float g_DAT_006533b0_Value_006533B0[8];
+extern float g_afSeekPeaceByForeignMinister[8];
 
-extern float g_DAT_006533d0_Value_006533D0[6];
+extern float g_afSeekPeaceByDefenseMinister[6];
 
-extern float g_DAT_006533e8_Value_006533E8[8];
+extern float g_afAcceptPeaceByForeignMinister[8];
 
-extern float g_DAT_Value_00653408[6];
-
-extern const float g_Compute_Advisory_Handler_LookupTable_00653700; // 0.0f
-
-extern float g_Compute_Advisory_Handler_LookupTable_00653714; // -0.25f
+extern float g_afAcceptPeaceByDefenseMinister[6];
 
 extern float g_Iterate_Linked_List_Value; // 0.25f
 
 extern float g_Compute_City_Order_Value; // 0.5f
-
-extern float g_Compute_Advisory_Handler_LookupTable_00653720; // -90.0f
 
 extern float g_Compute_Advisory_Peer_LookupTable; // -0.5f
 
@@ -95,16 +89,8 @@ extern double g_Compute_Advisory_Hundred;
 
 extern double g_Compute_Advisory_OnePointFive;
 
-extern float g_Classify_Nation_Military_Value_00653704;
-
-extern float g_Classify_Nation_Military_Value_00653708;
-
-extern float g_Classify_Nation_Military_Value_0065370C;
-
-extern float g_Classify_Nation_Military_Value_00653710;
-
 // Per-order-type sort priority table (slot 0x55 selection sort).
-extern short g_DAT_006966d0_Value_006966D0[12];
+extern short g_anTrackedOrderSortPriorityByType[12];
 
 extern short g_Rebuild_Primary_Nation_Value[5][0x17];
 
@@ -146,17 +132,10 @@ extern "C" const int g_anGreatPowerPressureHardAlertThresholdByLocale[6];
 extern "C" const int g_anNationStartingTreasuryByLocale[6];
 
 // TAutoGreatPower.cpp — SetTradeOffersFor scaling constants.
-extern double g_DAT_00653fc0_Value_00653FC0; // 1/255
-
-extern double g_DAT_00653fc8_Value_00653FC8; // 32767.0
 
 extern double g_Evaluate_Advisory_Case11_Value; // 0.5
 
-extern const float g_MissionDefaultScore_006545d0;
-
 extern const double g_AiPressureUnsetSentinel;
-
-extern const double g_MissionScoreOneConstant_006545d8;
 
 extern const float g_AiPressureRatioCap;
 
@@ -168,8 +147,6 @@ extern const double g_MissionScoreZeroThreshold;
 
 extern const double g_MissionEligibilityRatioMargin;
 extern float g_ApplyIndexedResourceDeltaScale;
-extern const float g_MissionDefaultScore_0065a468;
-extern const double g_MissionScoreOneConstant_0065a470;
 extern const double g_MinisterWeightHalf;
 extern const double g_MinisterWeightOne;
 extern const double g_BismarckWeightHigh;

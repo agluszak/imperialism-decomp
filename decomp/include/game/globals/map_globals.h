@@ -59,9 +59,9 @@ extern unsigned char g_abResourceTypeUsesHighNibbleFlag[24];
 extern char g_abResourceTypeCapabilityCategory[24];
 
 // TMapMgr.cpp — hex-area neighbor lookup tables.
-extern short g_Build_Hex_Area_LookupTable_00696E70[6];
+extern short g_hexColumnStepByDirection[6];
 
-extern short g_Build_Hex_Area_LookupTable_00696E80[6];
+extern short g_hexRowStepByDirection[6];
 
 extern unsigned char g_abStrategicTerrainSeedGateProfileA[kStrategicTerrainCount];
 

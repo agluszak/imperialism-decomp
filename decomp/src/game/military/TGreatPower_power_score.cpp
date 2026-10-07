@@ -46,8 +46,7 @@ void RecomputeNationOrderPriorityMetrics() {
       float diffSum = 0.0f;
       for (int i = 0; i < 4; ++i) {
         float diff = categoryVector[i] / queueSum -
-                     static_cast<float>(g_Populate_Beachhead_Mission_LookupTable[i]) *
-                         g_Recompute_Nation_Order_LookupTable_0065A9F8;
+                     static_cast<float>(g_Populate_Beachhead_Mission_LookupTable[i]) * 0.01;
         if (diff <= 0.0f) {
           diff = -diff;
         }
@@ -73,8 +72,7 @@ void RecomputeNationOrderPriorityMetrics() {
       float diffSum = 0.0f;
       for (int i = 0; i < 5; ++i) {
         float diff = unitVector[i] / mobileSum -
-                     static_cast<float>(g_awTacticalCompositionReferenceProfiles[5 + i]) *
-                         g_Recompute_Nation_Order_LookupTable_0065A9F8;
+                     static_cast<float>(g_awTacticalCompositionReferenceProfiles[5 + i]) * 0.01;
         if (diff <= 0.0f) {
           diff = -diff;
         }
@@ -91,8 +89,7 @@ void RecomputeNationOrderPriorityMetrics() {
       float diffSum = 0.0f;
       for (int i = 0; i < 5; ++i) {
         float diff = unitVector[i] / mobileSum2 -
-                     static_cast<float>(g_awTacticalCompositionReferenceProfiles[i]) *
-                         g_Recompute_Nation_Order_LookupTable_0065A9F8;
+                     static_cast<float>(g_awTacticalCompositionReferenceProfiles[i]) * 0.01;
         if (diff <= 0.0f) {
           diff = -diff;
         }
@@ -117,8 +114,7 @@ void RecomputeNationOrderPriorityMetrics() {
       float diffSum = 0.0f;
       for (int i = 0; i < 5; ++i) {
         float diff = unitVector[i] / combinedSum -
-                     static_cast<float>(g_awTacticalCompositionReferenceProfiles[i]) *
-                         g_Recompute_Nation_Order_LookupTable_0065A9F8;
+                     static_cast<float>(g_awTacticalCompositionReferenceProfiles[i]) * 0.01;
         if (diff <= 0.0f) {
           diff = -diff;
         }

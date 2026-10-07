@@ -260,7 +260,7 @@ float TInvadeMission::ValueOf(TMilitaryUnit* candidateUnit) {
 // FUNCTION: IMPERIALISM 0x0053fb60
 float TInvadeMission::ValueOf(TShip* candidate) {
   if (flag10 != 0) {
-    return g_Recompute_Nation_Order_LookupTable_0065A9E8;
+    return 0.0f;
   }
   return beachhead->ValueOf(candidate);
 }

@@ -25,26 +25,24 @@
 // FUNCTION: IMPERIALISM 0x005362c0
 float __cdecl ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
     float* vector, const short* referenceProfile, int count) {
-  double vectorSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  double vectorSum = 0.0f;
   int i;
   double difference;
   for (i = 0; i < count; ++i) {
     vectorSum += vector[i];
   }
-  if (vectorSum == g_Recompute_Nation_Order_LookupTable_0065A9F0) {
-    return g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  if (vectorSum == 0.0) {
+    return 0.0f;
   }
-  double absoluteDifferenceSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  double absoluteDifferenceSum = 0.0f;
   for (i = 0; i < count; ++i) {
-    difference =
-        vector[i] / vectorSum - referenceProfile[i] * g_Recompute_Nation_Order_LookupTable_0065A9F8;
-    if (difference <= g_Recompute_Nation_Order_LookupTable_0065A9F0) {
+    difference = vector[i] / vectorSum - referenceProfile[i] * 0.01;
+    if (difference <= 0.0) {
       difference = -difference;
     }
     absoluteDifferenceSum += difference;
   }
-  return vectorSum * (g_Recompute_Nation_Order_LookupTable_0065AA08 -
-                      absoluteDifferenceSum * g_Recompute_Nation_Order_LookupTable_0065AA00);
+  return vectorSum * (1.0 - absoluteDifferenceSum * 0.5);
 }
 
 // FUNCTION: IMPERIALISM 0x0059b070

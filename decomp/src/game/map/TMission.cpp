@@ -87,33 +87,33 @@ bool TMission::IsHospitalMission() const {
 }
 // FUNCTION: IMPERIALISM 0x00534e10
 float TMission::GetWeightedSatisfaction() {
-  return g_MissionDefaultScore_0065a468;
+  return 0.0f;
 }
 // FUNCTION: IMPERIALISM 0x00534e30
 float TMission::IndustrialCostOfNeeds() {
-  return g_MissionDefaultScore_0065a468;
+  return 0.0f;
 }
 // FUNCTION: IMPERIALISM 0x00534e50
 float TMission::ValueOf(TShip* candidate) {
   (void)candidate;
-  return g_MissionDefaultScore_0065a468;
+  return 0.0f;
 }
 // FUNCTION: IMPERIALISM 0x00534e70
 float TMission::ValueOf(TMilitaryUnit* candidateUnit) {
   (void)candidateUnit;
-  return g_MissionDefaultScore_0065a468;
+  return 0.0f;
 }
 // FUNCTION: IMPERIALISM 0x00534e90
 float TMission::FitnessOf(TShip* candidate, float* targetProfile) {
   (void)candidate;
   (void)targetProfile;
-  return g_MissionDefaultScore_0065a468;
+  return 0.0f;
 }
 // FUNCTION: IMPERIALISM 0x00534eb0
 float TMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVector) {
   (void)candidateUnit;
   (void)referenceVector;
-  return g_MissionDefaultScore_0065a468;
+  return 0.0f;
 }
 // FUNCTION: IMPERIALISM 0x00534ed0
 void TMission::AcceptReenforcement(TShip* ship, bool notify) {
@@ -282,15 +282,11 @@ short __cdecl CompareMissionOrderEntriesByPriorityScore(TMission* a, TMission* b
   a->AssertValid();
   b->AssertValid();
 
-  float diffA =
-      static_cast<float>(g_MissionScoreOneConstant_0065a470) - a->GetWeightedSatisfaction();
-  float weightedA = (diffA >= g_MissionDefaultScore_0065a468) ? diffA * a->importanceScore
-                                                              : diffA / a->importanceScore;
+  float diffA = static_cast<float>(1.0) - a->GetWeightedSatisfaction();
+  float weightedA = (diffA >= 0.0f) ? diffA * a->importanceScore : diffA / a->importanceScore;
 
-  float diffB =
-      static_cast<float>(g_MissionScoreOneConstant_0065a470) - b->GetWeightedSatisfaction();
-  float weightedB = (diffB >= g_MissionDefaultScore_0065a468) ? diffB * b->importanceScore
-                                                              : diffB / b->importanceScore;
+  float diffB = static_cast<float>(1.0) - b->GetWeightedSatisfaction();
+  float weightedB = (diffB >= 0.0f) ? diffB * b->importanceScore : diffB / b->importanceScore;
 
   if (weightedB < weightedA) {
     return -1;

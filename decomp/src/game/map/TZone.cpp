@@ -407,10 +407,10 @@ void TZone::NameThyself(unsigned char* usedCityFlags, const char* overrideName) 
       g_pGlobalMapState->AssignCityRecordDisplayName(chosenCity, &displayName);
     } else {
       if (g_pSimMgr->useLocalizedNameTables != 0) {
-        if (g_mapActionContextDisplayNameCacheId_006984b8 == -1) {
+        if (g_mapActionContextDisplayNameCacheId == -1) {
           unsigned int randomValue = g_zoneStatusCodePrngSeed * 0x15a4e35U + 1;
           int nameIndex = static_cast<int>((randomValue >> 0xc) & 0x7fff);
-          g_mapActionContextDisplayNameCacheId_006984b8 = nameIndex % 0x25;
+          g_mapActionContextDisplayNameCacheId = nameIndex % 0x25;
           unsigned int nextRandomValue = randomValue * 0x15a4e35U + 1;
           g_zoneStatusCodePrngSeed = nextRandomValue;
           int strides[4] = {1, 7, 0xb, 0x17};
@@ -419,13 +419,12 @@ void TZone::NameThyself(unsigned char* usedCityFlags, const char* overrideName) 
           g_mapActionContextDisplayNameCacheStep = strides[strideIndex];
         }
         CString resourceName;
-        g_pSimMgr->GetString(0x275b,
-                             static_cast<short>(g_mapActionContextDisplayNameCacheId_006984b8),
+        g_pSimMgr->GetString(0x275b, static_cast<short>(g_mapActionContextDisplayNameCacheId),
                              &resourceName);
         displayName = resourceName;
-        g_mapActionContextDisplayNameCacheId_006984b8 += g_mapActionContextDisplayNameCacheStep;
-        if (g_mapActionContextDisplayNameCacheId_006984b8 >= 0x25) {
-          g_mapActionContextDisplayNameCacheId_006984b8 -= 0x25;
+        g_mapActionContextDisplayNameCacheId += g_mapActionContextDisplayNameCacheStep;
+        if (g_mapActionContextDisplayNameCacheId >= 0x25) {
+          g_mapActionContextDisplayNameCacheId -= 0x25;
         }
       } else {
         GenerateMappedFlavorTextByCurrentContextNation(&displayName);
@@ -1186,7 +1185,7 @@ void RegenerateAllMapActionContextStatusCodes(void) {
   if (seed == 0) {
     g_zoneStatusCodePrngSeed = ClockDerivedPrngSeed();
   }
-  g_mapActionContextDisplayNameCacheId_006984b8 = -1;
+  g_mapActionContextDisplayNameCacheId = -1;
 
   unsigned char statusScratch[0x180];
   memset(statusScratch, 0, sizeof(statusScratch));

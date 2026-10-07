@@ -48,9 +48,9 @@ extern char s_szTurnHistoryPrefix[];
 extern "C" {
 extern const unsigned int g_strategicMapStatusIconTagTable[18];
 
-extern int g_Reset_Quick_Draw_Value_0064B8F0;
+extern int g_defaultPenWidth;
 
-extern int g_Reset_Quick_Draw_Value_0064B8F4;
+extern int g_defaultPenHeight;
 
 extern const short g_Reset_Quick_Draw_WordState;
 

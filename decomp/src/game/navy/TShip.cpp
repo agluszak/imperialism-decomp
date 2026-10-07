@@ -49,30 +49,27 @@ float ComputeNavyOrderDistributionScoreForNation(short nation) {
           categoryVector[3];
     }
   }
-  float total = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  float total = 0.0f;
   float* component = categoryVector;
   for (int remaining = 4; remaining != 0; --remaining) {
     total += *component++;
   }
-  if (total == static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
-    return g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  if (total == static_cast<float>(0.0)) {
+    return 0.0f;
   }
-  float diffSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  float diffSum = 0.0f;
   const short* targetWeight = g_NavyOrderDistributionCategoryWeights;
   component = categoryVector;
   while (targetWeight < g_NavyOrderDistributionCategoryWeights + 4) {
-    float diff =
-        *component / total - static_cast<float>(*targetWeight) *
-                                 static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F8);
-    if (diff <= static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
+    float diff = *component / total - static_cast<float>(*targetWeight) * static_cast<float>(0.01);
+    if (diff <= static_cast<float>(0.0)) {
       diff = -diff;
     }
     diffSum += diff;
     ++targetWeight;
     ++component;
   }
-  return total * (static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08) -
-                  diffSum * static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA00));
+  return total * (static_cast<float>(1.0) - diffSum * static_cast<float>(0.5));
 }
 
 IMPLEMENT_DYNCREATE(TShip, TObject)

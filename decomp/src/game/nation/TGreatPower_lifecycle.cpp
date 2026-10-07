@@ -951,8 +951,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
 
       int price = g_pTradeMgr->GetPrice(nationSlot);
       interactionScore = static_cast<int>(static_cast<float>(interactionScore) -
-                                          static_cast<float>(price * relationDelta) *
-                                              g_Compute_Advisory_Handler_LookupTable_00653714);
+                                          static_cast<float>(price * relationDelta) * (-0.25f));
 
       if (summaryMessageRef != "") {
         summaryMessageRef += g_szListSeparator;

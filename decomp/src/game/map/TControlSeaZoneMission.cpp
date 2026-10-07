@@ -109,16 +109,14 @@ void TControlSeaZoneMission::SetStateByte8To2() {
     if (total != 0.0f) {
       float divergence = 0.0f;
       for (int i = 0; i < 4; ++i) {
-        float delta =
-            vector[i] / total - static_cast<float>(g_Populate_Beachhead_Mission_LookupTable[i]) *
-                                    g_Recompute_Nation_Order_LookupTable_0065A9F8;
+        float delta = vector[i] / total -
+                      static_cast<float>(g_Populate_Beachhead_Mission_LookupTable[i]) * 0.01;
         if (delta <= 0.0f) {
           delta = -delta;
         }
         divergence += delta;
       }
-      similarity = total * (g_Recompute_Nation_Order_LookupTable_0065AA08 -
-                            divergence * g_Recompute_Nation_Order_LookupTable_0065AA00);
+      similarity = total * (1.0 - divergence * 0.5);
     }
     if (similarity > 0.0f) {
       state08 = 1;

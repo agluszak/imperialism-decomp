@@ -303,8 +303,7 @@ void TArmyMission::AccumulateWeightedUnitEquipage(TMilitaryUnit* unit, float* ve
   if (weightIndex > 5) {
     weightIndex = 5;
   }
-  float sign = scaleMode ? static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08)
-                         : static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9E0);
+  float sign = scaleMode ? static_cast<float>(1.0) : static_cast<float>((-1.0));
   float scale = g_MissionOrderDistanceDecayWeightTable[weightIndex] * sign;
   float weight =
       static_cast<float>(g_pGlobalMapState->GetProvinceUnitOrderWeight(GetPresentLocation()));
@@ -424,7 +423,7 @@ float TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(
 
 // FUNCTION: IMPERIALISM 0x0053d3e0
 float TArmyMission::IndustrialCostOfNeeds() {
-  float total = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  float total = 0.0f;
   for (int i = 0; i < 5; ++i) {
     total += requiredEquipageByClass[i] * g_ArmyMissionDotProductWeights[i];
   }
@@ -434,7 +433,7 @@ float TArmyMission::IndustrialCostOfNeeds() {
 // FUNCTION: IMPERIALISM 0x0053d420
 float TArmyMission::ValueOf(TMilitaryUnit* candidateUnit) {
   if (flag10 != 0) {
-    return g_Recompute_Nation_Order_LookupTable_0065A9E8;
+    return 0.0f;
   }
 
   if (candidateUnit->ownerMission == this) {
@@ -449,7 +448,7 @@ float TArmyMission::ValueOf(TMilitaryUnit* candidateUnit) {
 float TArmyMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVector) {
   float scaledStrength = static_cast<float>(static_cast<double>(candidateUnit->strength) *
                                             g_ArmyMissionEligibleUnitStrengthScale);
-  if (scaledStrength < g_Recompute_Nation_Order_LookupTable_0065AA20) {
+  if (scaledStrength < 139069760.0f) {
     if (!IsANoBrainer()) {
       return -1000.0f;
     }

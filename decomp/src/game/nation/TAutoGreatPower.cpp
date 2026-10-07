@@ -291,9 +291,9 @@ void TAutoGreatPower::SetTradeOffersFor(short resourceKind, short offerContext) 
       short relationScore =
           g_pDiplomacyTurnStateManager->relationStandingScores[this->nationSlot * kNationSlotCount +
                                                                static_cast<short>(offerContext)];
-      double scaledScore = static_cast<double>(relationScore) * g_DAT_00653fc0_Value_00653FC0;
+      double scaledScore = static_cast<double>(relationScore) * 0.00392156862745098;
       int roll = rand();
-      if (static_cast<double>(roll) > scaledScore * g_DAT_00653fc8_Value_00653FC8) {
+      if (static_cast<double>(roll) > scaledScore * 32767.0) {
         this->RaiseNeedPlanningMetrics(resourceKind);
       }
       return;
@@ -1468,7 +1468,7 @@ void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
 
   float militaryRatio = maximumRawMilitaryScore / (g_afNationMobileUnitDivergence[nationSlot] +
                                                    averageUnitDivergencePerOwnedRegion);
-  if (militaryRatio > g_MissionScoreOneConstant_006545d8) {
+  if (militaryRatio > 1.0) {
     militaryRatio = g_AiPressureRatioCap;
   }
 
@@ -1481,7 +1481,7 @@ void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
 
   float expansionPressure = maximumAdjustedMilitaryScore - ownUnitDivergence;
   if (expansionPressure < g_MissionScoreZeroThreshold) {
-    expansionPressure = g_MissionDefaultScore_006545d0;
+    expansionPressure = 0.0f;
   }
   if (compatibleRegionCount != 0) {
     expansionPressure /= static_cast<float>(compatibleRegionCount);
@@ -1759,9 +1759,8 @@ void TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unuse
 namespace {
 
 inline float ComputeMissionRemainingPriorityScore(TMission* mission) {
-  float diff = g_MissionScoreOneConstant_006545d8 - mission->GetWeightedSatisfaction();
-  return (diff >= g_MissionDefaultScore_006545d0) ? diff * mission->importanceScore
-                                                  : diff / mission->importanceScore;
+  float diff = 1.0 - mission->GetWeightedSatisfaction();
+  return (diff >= 0.0f) ? diff * mission->importanceScore : diff / mission->importanceScore;
 }
 
 } // namespace

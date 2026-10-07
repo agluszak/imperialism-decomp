@@ -93,13 +93,10 @@ void TBlockadePortMission::CalculateNeeds() {
 
   const short* navyDistributionWeights = g_NavyOrderDistributionCategoryWeights;
 
-  float threatScore = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  float threatScore = 0.0f;
   if (portZoneContext->GetPortOwnerNation() < 7) {
     short targetNationCode = portZoneContext->GetPortOwnerNation();
-    float vector[4] = {g_Recompute_Nation_Order_LookupTable_0065A9E8,
-                       g_Recompute_Nation_Order_LookupTable_0065A9E8,
-                       g_Recompute_Nation_Order_LookupTable_0065A9E8,
-                       g_Recompute_Nation_Order_LookupTable_0065A9E8};
+    float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
     for (TShip* node = TShip::GetFirst(); node != nullptr; node = node->next) {
       if (node->nation == targetNationCode && node->IsInHomePort() &&
           node->GetMaxStrength() <= node->strength) {
@@ -117,10 +114,7 @@ void TBlockadePortMission::CalculateNeeds() {
         continue;
       }
       short targetNationCode = portZoneContext->GetPortOwnerNation();
-      float vector[4] = {g_Recompute_Nation_Order_LookupTable_0065A9E8,
-                         g_Recompute_Nation_Order_LookupTable_0065A9E8,
-                         g_Recompute_Nation_Order_LookupTable_0065A9E8,
-                         g_Recompute_Nation_Order_LookupTable_0065A9E8};
+      float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
       for (TShip* node = TShip::GetFirst(); node != nullptr; node = node->next) {
         if (node->nation == targetNationCode && node->IsInHomePort() &&
             node->GetMaxStrength() <= node->strength) {
@@ -142,8 +136,7 @@ void TBlockadePortMission::CalculateNeeds() {
 
   const short* weights = &g_Populate_Beachhead_Mission_LookupTable[4];
   for (int i = 0; i < 4; ++i) {
-    float raised = static_cast<float>(weights[i] * threatFloor *
-                                      g_Recompute_Nation_Order_LookupTable_0065A9F8);
+    float raised = static_cast<float>(weights[i] * threatFloor * 0.01);
     if (requiredShipEquipageByCategory[i] < raised) {
       requiredShipEquipageByCategory[i] = raised;
     }

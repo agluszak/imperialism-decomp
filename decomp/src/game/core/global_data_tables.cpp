@@ -753,9 +753,9 @@ int g_McAppUiFlag_006A1B0C = 0;
 int g_McAppUiFlag_006A1B5C = 0;
 
 // GLOBAL: IMPERIALISM 0x0064b8f0
-int g_Reset_Quick_Draw_Value_0064B8F0 = 1;
+int g_defaultPenWidth = 1;
 // GLOBAL: IMPERIALISM 0x0064b8f4
-int g_Reset_Quick_Draw_Value_0064B8F4 = 1;
+int g_defaultPenHeight = 1;
 // GLOBAL: IMPERIALISM 0x0064b8f8
 extern const short g_Reset_Quick_Draw_WordState = 0;
 // GLOBAL: IMPERIALISM 0x006a1d10
@@ -1201,11 +1201,6 @@ int g_nMcAppUiAssertGate = 0;
 int g_nIncludeViewPointerAssertGate = 0;
 
 extern "C" {
-// GLOBAL: IMPERIALISM 0x0065a468
-extern const float g_MissionDefaultScore_0065a468 = 0.0f;
-
-// GLOBAL: IMPERIALISM 0x0065a470
-extern const double g_MissionScoreOneConstant_0065a470 = 1.0;
 
 // GLOBAL: IMPERIALISM 0x006548e0
 extern const float g_DefenseMinisterWeightZero = 0.0f;
@@ -1226,12 +1221,8 @@ extern const double g_BullyWeightHigh = 0.8;
 
 // GLOBAL: IMPERIALISM 0x006545c8
 extern const double g_AiPressureUnsetSentinel = -1.0;
-// GLOBAL: IMPERIALISM 0x006545d0
-extern const float g_MissionDefaultScore_006545d0 = 0.0f;
 // GLOBAL: IMPERIALISM 0x006545d4
 extern const float g_UnreferencedConstant = -1.0f;
-// GLOBAL: IMPERIALISM 0x006545d8
-extern const double g_MissionScoreOneConstant_006545d8 = 1.0;
 // GLOBAL: IMPERIALISM 0x006545e0
 extern const float g_AiPressureRatioCap = 1.0f;
 // GLOBAL: IMPERIALISM 0x006545e8
@@ -1389,26 +1380,19 @@ short g_NavyMissionOrderRanking[14];
 // GLOBAL: IMPERIALISM 0x006a3e90
 short g_NavyPriorityOrderRanking[14];
 
-float g_DAT_Value_00653308[8] = {0.7f, 1.1f, 1.2f, 1.5f, 1.0f, 0.9f, 0.7f, 0.0f};
-float g_DAT_Value_00653328[6] = {1.0f, 1.0f, 1.3f, 1.3f, 1.3f, 0.0f};
-float g_DAT_Value_00653340[8] = {0.6f, 0.7f, 0.7f, 0.7f, 0.8f, 0.6f, 0.6f, 0.0f};
-float g_DAT_Value_00653360[6] = {0.7f, 1.1f, 1.3f, 0.9f, 1.0f, 0.0f};
-float g_DAT_Value_00653378[8] = {0.5f, 0.6f, 0.6f, 0.6f, 0.7f, 0.5f, 0.5f, 0.0f};
-float g_DAT_Value_00653398[6] = {1.0f, 1.0f, 1.2f, 0.8f, 0.9f, 0.0f};
-float g_DAT_006533b0_Value_006533B0[8] = {0.4f, 0.5f, 0.5f, 0.5f, 0.6f, 0.4f, 0.4f, 0.0f};
-float g_DAT_006533d0_Value_006533D0[6] = {1.1f, 1.0f, 1.3f, 0.7f, 1.1f, 0.0f};
-float g_DAT_006533e8_Value_006533E8[8] = {0.4f, 0.5f, 0.5f, 0.5f, 0.6f, 0.4f, 0.4f, 0.0f};
-float g_DAT_Value_00653408[6] = {0.9f, 0.8f, 1.1f, 0.5f, 0.9f, 0.0f};
+float g_afWarNumberByForeignMinister[8] = {0.7f, 1.1f, 1.2f, 1.5f, 1.0f, 0.9f, 0.7f, 0.0f};
+float g_afWarNumberByDefenseMinister[6] = {1.0f, 1.0f, 1.3f, 1.3f, 1.3f, 0.0f};
+float g_afSeekAllianceByForeignMinister[8] = {0.6f, 0.7f, 0.7f, 0.7f, 0.8f, 0.6f, 0.6f, 0.0f};
+float g_afSeekAllianceByDefenseMinister[6] = {0.7f, 1.1f, 1.3f, 0.9f, 1.0f, 0.0f};
+float g_afAcceptAllianceByForeignMinister[8] = {0.5f, 0.6f, 0.6f, 0.6f, 0.7f, 0.5f, 0.5f, 0.0f};
+float g_afAcceptAllianceByDefenseMinister[6] = {1.0f, 1.0f, 1.2f, 0.8f, 0.9f, 0.0f};
+float g_afSeekPeaceByForeignMinister[8] = {0.4f, 0.5f, 0.5f, 0.5f, 0.6f, 0.4f, 0.4f, 0.0f};
+float g_afSeekPeaceByDefenseMinister[6] = {1.1f, 1.0f, 1.3f, 0.7f, 1.1f, 0.0f};
+float g_afAcceptPeaceByForeignMinister[8] = {0.4f, 0.5f, 0.5f, 0.5f, 0.6f, 0.4f, 0.4f, 0.0f};
+float g_afAcceptPeaceByDefenseMinister[6] = {0.9f, 0.8f, 1.1f, 0.5f, 0.9f, 0.0f};
 
-extern const float g_Compute_Advisory_Handler_LookupTable_00653700 = 0.0f;
-float g_Classify_Nation_Military_Value_00653704 = -1.0f;
-float g_Classify_Nation_Military_Value_00653708 = 2.0f;
-float g_Classify_Nation_Military_Value_0065370C = 1.0f;
-float g_Classify_Nation_Military_Value_00653710 = -2.0f;
-float g_Compute_Advisory_Handler_LookupTable_00653714 = -0.25f;
 float g_Iterate_Linked_List_Value = 0.25f;
 float g_Compute_City_Order_Value = 0.5f;
-float g_Compute_Advisory_Handler_LookupTable_00653720 = -90.0f;
 float g_Compute_Advisory_Peer_LookupTable = -0.5f;
 float g_ApplyIndexedResourceDeltaScale = -1.0f / 255.0f;
 
@@ -1453,7 +1437,7 @@ short g_UnitTypeStatTable[30][7] = {
 // GLOBAL: IMPERIALISM 0x0066ed30
 short g_UnitTypeStatDivisorTable[7] = {150, 150, 65, 75, 100, 250, 0};
 
-short g_DAT_006966d0_Value_006966D0[12] = {2, 0, 4, 3, 1, 5, 0, 0, 0, 0, 0, 0};
+short g_anTrackedOrderSortPriorityByType[12] = {2, 0, 4, 3, 1, 5, 0, 0, 0, 0, 0, 0};
 
 // GLOBAL: IMPERIALISM 0x00696678
 short g_civilianTileOrderCursorTokenTable[12] = {0,    1008, 0,    1004, 1003, 1002,
@@ -1571,8 +1555,8 @@ unsigned char g_abResourceTypeAlwaysQualifies[24] = {1, 1, 1, 1, 1, 0, 1, 0, 0, 
 unsigned char g_abGateFlagQualifies[24] = {
     0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
-short g_Build_Hex_Area_LookupTable_00696E70[6] = {1, 2, 1, -1, -2, -1};
-short g_Build_Hex_Area_LookupTable_00696E80[6] = {-1, 0, 1, 1, 0, -1};
+short g_hexColumnStepByDirection[6] = {1, 2, 1, -1, -2, -1};
+short g_hexRowStepByDirection[6] = {-1, 0, 1, 1, 0, -1};
 
 unsigned char g_abStrategicTerrainSeedGateProfileA[kStrategicTerrainCount] = {1, 1, 0, 0,
                                                                               0, 0, 1, 1};
@@ -1701,24 +1685,10 @@ extern const float g_AttackProvinceMissionResourceScaleByDifficultyAndFortLevel[
     {2.3f, 2.5f, 2.7f, 2.9f}};
 // GLOBAL: IMPERIALISM 0x0065a9b8
 extern const float g_MissionPositiveFallback = 1.0f;
-// GLOBAL: IMPERIALISM 0x0065a9bc
-extern const float g_Recompute_Nation_Order_LookupTable_0065A9BC = 0.05f;
-// GLOBAL: IMPERIALISM 0x0065a9c4
-extern const float g_Recompute_Nation_Order_LookupTable_0065A9C4 = -1000.0f;
-// GLOBAL: IMPERIALISM 0x0065a9e8
-extern const float g_Recompute_Nation_Order_LookupTable_0065A9E8 = 0.0f;
-// GLOBAL: IMPERIALISM 0x0065a9e0
-extern const double g_Recompute_Nation_Order_LookupTable_0065A9E0 = -1.0;
-extern const double g_Recompute_Nation_Order_LookupTable_0065A9F0 = 0.0;
-double g_Recompute_Nation_Order_LookupTable_0065A9F8 = 0.01;
-double g_Recompute_Nation_Order_LookupTable_0065AA00 = 0.5;
-double g_Recompute_Nation_Order_LookupTable_0065AA08 = 1.0;
 // GLOBAL: IMPERIALISM 0x0065aa10
 extern const double g_PortZoneFriendlyMissionScoreMultiplier = 1.5;
 // GLOBAL: IMPERIALISM 0x0065aa18
 extern const double g_PortZoneForeignMissionScoreMultiplier = 1.25;
-// GLOBAL: IMPERIALISM 0x0065aa20
-extern const float g_Recompute_Nation_Order_LookupTable_0065AA20 = 139069760.0f;
 // GLOBAL: IMPERIALISM 0x0065aa24
 extern const float g_MissionEmptyResourceWeight = 100.0f;
 // GLOBAL: IMPERIALISM 0x0065aa48
@@ -1742,9 +1712,6 @@ float g_ArmyMissionCandidateScoreTable[24] = {
 
 // GLOBAL: IMPERIALISM 0x0065aa30
 extern const double g_BeachheadMissionPriorityNormalization = 100.0;
-
-double g_DAT_00653fc0_Value_00653FC0 = 0.00392156862745098;
-double g_DAT_00653fc8_Value_00653FC8 = 32767.0;
 
 float g_afAdvisoryMissionTierThresholdByMinisterSkill[5][6] = {
     {1.5f, 1.5f, 2.5f, 0.0f, 2.25f, 2.0f},  {1.75f, 1.75f, 2.5f, 0.0f, 2.25f, 2.25f},
@@ -2641,7 +2608,7 @@ unsigned int g_zoneStatusCodePrngSeed = GetTickCountDiv16();
 // GLOBAL: IMPERIALISM 0x006a5af0
 extern "C" short g_anProvinceNameOrdinalByNationSlot[23] = {0};
 // GLOBAL: IMPERIALISM 0x006984b8 (static init -1 in the original .data section)
-int g_mapActionContextDisplayNameCacheId_006984b8 = -1;
+int g_mapActionContextDisplayNameCacheId = -1;
 // GLOBAL: IMPERIALISM 0x006984bc (static init 7 in the original .data section)
 int g_mapActionContextDisplayNameCacheStep = 7;
 

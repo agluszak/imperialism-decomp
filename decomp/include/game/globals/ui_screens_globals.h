@@ -27,7 +27,7 @@ extern const char* const g_pszMultiplayerSavePrefix; // "mult" @ 0x65ddd4
 
 extern const char* const g_pszImpSaveExtension; // ".imp" @ 0x65ddd8
 
-extern int g_mapActionContextDisplayNameCacheId_006984b8;
+extern int g_mapActionContextDisplayNameCacheId;
 
 extern int g_mapActionContextDisplayNameCacheStep;
 

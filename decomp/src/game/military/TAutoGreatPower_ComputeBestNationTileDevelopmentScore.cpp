@@ -58,7 +58,7 @@ int ComputeBestNationTileDevelopmentScore(NationSlot nationSlot) {
 
         cityScore *= static_cast<float>(sameOwnerAdjacentRegionCount) /
                          static_cast<float>(region->adjacentRegionCount) -
-                     static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9E0);
+                     static_cast<float>((-1.0));
       }
 
       float score = cityScore / g_fMissionScoreNormalizationDivisor * developmentPressure;

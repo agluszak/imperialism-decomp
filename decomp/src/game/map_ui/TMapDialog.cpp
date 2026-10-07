@@ -261,7 +261,7 @@ short GetWrappedHexDirectionColumnDelta(short direction) {
   } else if (direction > 5) {
     direction = static_cast<short>(direction - 6);
   }
-  return g_Build_Hex_Area_LookupTable_00696E70[direction];
+  return g_hexColumnStepByDirection[direction];
 }
 
 // Normalizes a projection row and wraps the column across the seam using row parity.
