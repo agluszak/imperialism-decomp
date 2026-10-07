@@ -84,7 +84,7 @@ CIncludeView::~CIncludeView() {
   m_pMainPaneDib = 0;
   if (m_activeDialogContext != 0) {
     int previousUiActive = ClearGlobalUiInvalidationFlagAndReturnPrevious();
-    m_activeDialogContext->nativeWindow50 = 0;
+    m_activeDialogContext->nativeWindow = 0;
     if (m_activeDialogContext != 0) {
       m_activeDialogContext->Free();
     }
@@ -344,7 +344,7 @@ TView* CIncludeView::ReinitializeIncludeViewMainPaneAndRedrawWindow(int unusedAr
   m_pMainPaneDib = 0;
   if (m_activeDialogContext != 0) {
     int previousFlag = ClearGlobalUiInvalidationFlagAndReturnPrevious();
-    m_activeDialogContext->nativeWindow50 = 0;
+    m_activeDialogContext->nativeWindow = 0;
     if (m_activeDialogContext != 0) {
       m_activeDialogContext->Free();
     }
@@ -387,7 +387,7 @@ void CIncludeView::TearDownActiveDialogContext() {
   m_pMainPaneDib = 0;
   if (m_activeDialogContext != 0) {
     int previousFlag = ClearGlobalUiInvalidationFlagAndReturnPrevious();
-    m_activeDialogContext->nativeWindow50 = 0;
+    m_activeDialogContext->nativeWindow = 0;
     if (m_activeDialogContext != 0) {
       m_activeDialogContext->Free();
     }
@@ -430,7 +430,7 @@ HBRUSH CIncludeView::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) {
       unsigned int packedTextColor =
           control->stylePayload != NULL
               ? static_cast<unsigned int>(control->stylePayload->styleWord)
-              : static_cast<unsigned int>(control->textStyle78.textColor);
+              : static_cast<unsigned int>(control->textStyle.textColor);
       pDC->SetTextColor(g_pResourceMgr->ResolvePaletteIndexColor(packedTextColor));
     }
   }
@@ -749,14 +749,14 @@ LPCSTR RegisterAmbitCadreEgoutWindowClass() {
   return g_AmbitCadreEgoutWndClassAtom_006A1834 != 0 ? g_szAmbitCadreEgoutClassName_00694D40 : NULL;
 }
 
-// Native host view (TView::nativeWindow50) of the top window on the modal stack.
+// Native host view (TView::nativeWindow) of the top window on the modal stack.
 // FUNCTION: IMPERIALISM 0x0048d290
 static CWnd* GetModalStackTopHostView() {
   if (g_ModalViewStack.GetHeadPosition() != NULL) {
     TView* window = g_ModalViewStack.GetHead();
     window->AssertValid();
-    if (window->nativeWindow50 != 0) {
-      return window->nativeWindow50;
+    if (window->nativeWindow != 0) {
+      return window->nativeWindow;
     }
   }
   return 0;
@@ -768,8 +768,8 @@ static CWnd* GetLiveRegistryHeadHostView() {
   if (g_LiveViewRegistry.GetHeadPosition() != NULL) {
     TView* window = g_LiveViewRegistry.GetHead();
     window->AssertValid();
-    if (window->nativeWindow50 != 0) {
-      return window->nativeWindow50;
+    if (window->nativeWindow != 0) {
+      return window->nativeWindow;
     }
   }
   return 0;

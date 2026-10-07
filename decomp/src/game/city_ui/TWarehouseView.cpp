@@ -206,10 +206,10 @@ void TWarehouseView::UpdateFields() {
   for (short commodity = 0; commodity < 23; ++commodity) {
     TPictureNumberText* valueControl = commodityValueControls[commodity];
     if (valueControl != 0) {
-      short amount = city94->CityStockByType(commodity);
+      short amount = city->CityStockByType(commodity);
       if (valueControl->UpdateControlCachedIntFromWindowText() != amount) {
         if (commodity == 20) {
-          amount = static_cast<short>(city94->cityStockFish + city94->cityStockLivestock);
+          amount = static_cast<short>(city->cityStockFish + city->cityStockLivestock);
           valueControl = commodityValueControls[commodity];
         }
         valueControl->SetControlValue(amount, 1);
@@ -218,14 +218,14 @@ void TWarehouseView::UpdateFields() {
   }
 
   if (laborValueControl != 0) {
-    short labor = city94->productionSummary->strength;
+    short labor = city->productionSummary->strength;
     if (laborValueControl->UpdateControlCachedIntFromWindowText() != labor) {
       laborValueControl->SetControlValue(labor, 1);
     }
   }
 
   if (powerValueControl != 0) {
-    short power = city94->powerAvailable;
+    short power = city->powerAvailable;
     if (powerValueControl->UpdateControlCachedIntFromWindowText() != power) {
       powerValueControl->SetControlValue(power, 1);
     }

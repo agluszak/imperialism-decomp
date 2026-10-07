@@ -11,15 +11,15 @@ IMPLEMENT_DYNCREATE(TTextLine, TLineData)
 
 // FUNCTION: IMPERIALISM 0x00570290
 TTextLine::TTextLine() : TLineData() {
-  styleDescriptor14.textColor = 0;
+  styleDescriptor.textColor = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00570340
 TTextLine::~TTextLine() {}
 
 // FUNCTION: IMPERIALISM 0x00570390
-void TTextLine::ITextLine(short rowArg, short colArg, int* bounds,
-                                             short styleGroupCode, short styleIndex) {
+void TTextLine::ITextLine(short rowArg, short colArg, int* bounds, short styleGroupCode,
+                          short styleIndex) {
   column = colArg;
   layoutWidth = bounds[0];
   layoutHeight = bounds[1];
@@ -27,7 +27,7 @@ void TTextLine::ITextLine(short rowArg, short colArg, int* bounds,
   if (styleGroupCode != -1) {
     g_pSimMgr->GetString(styleGroupCode, static_cast<short>(styleIndex - 1), &captionText);
   }
-  BuildUiTextStyleDescriptor(&styleDescriptor14, 0, 0xc, 0x2b67);
+  BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, 0x2b67);
   textAlignmentCode = -2;
 }
 
@@ -38,17 +38,17 @@ void TTextLine::SetCaptionText(CString* caption) {
 
 // FUNCTION: IMPERIALISM 0x00570440
 void TTextLine::SetTextLineStyleDescriptor(const TextStyle* descriptor) {
-  styleDescriptor14 = *descriptor;
+  styleDescriptor = *descriptor;
 }
 
 // FUNCTION: IMPERIALISM 0x00570470
 void TTextLine::SetTextLineStyleComponents(short fontCode, short styleCode, short sizeCode,
                                            unsigned char red, unsigned char green,
                                            unsigned char blue) {
-  styleDescriptor14.fontFamily = fontCode;
-  styleDescriptor14.fontStyleFlags = styleCode;
-  styleDescriptor14.fontSize = sizeCode;
-  styleDescriptor14.textColor = RGB(red, green, blue);
+  styleDescriptor.fontFamily = fontCode;
+  styleDescriptor.fontStyleFlags = styleCode;
+  styleDescriptor.fontSize = sizeCode;
+  styleDescriptor.textColor = RGB(red, green, blue);
 }
 
 // FUNCTION: IMPERIALISM 0x005704e0
@@ -61,7 +61,7 @@ void TTextLine::InstallViews(TView* panel, int* offsetLayout) {
   TStaticText* text = new TStaticText();
   text->IStaticText(panel, offsetLayout, &layoutWidth, 5, 5, -1, 0);
   text->SetTextAndMaybeRefresh(&captionText, false);
-  text->InstallTextStyle(styleDescriptor14, 0);
+  text->InstallTextStyle(styleDescriptor, 0);
   text->SetJustification(textAlignmentCode, false);
   text->RefreshControl();
 }

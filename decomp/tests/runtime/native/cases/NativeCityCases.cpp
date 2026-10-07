@@ -14,7 +14,7 @@ TItemOrder* ClothingOrder(TGreatPower* nation) {
 
 void SeedClothingInputs(TCity* city) {
   city->CityStockByType(kResourceFabric) = 2;
-  city->productionOrderTable1dc[1] = 1;
+  city->productionOrderTable[1] = 1;
   city->productionAccum[1] = 1;
 }
 

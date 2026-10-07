@@ -29,7 +29,7 @@ void TCheater::ConstructTCheaterBaseState(TView* panel, int unusedArg) {
   if (g_nMcAppUiAssertGate_006A2480 == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC, 0x5b7);
   }
-  doneButton->eventNumber60 = 0x22;
+  doneButton->eventNumber = 0x22;
   captionStringResourceGroup = 0x80;
 }
 

@@ -35,8 +35,8 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
 
   InitializeUiResourceEntryFrameAndParent(panel->resourceContext, panel, offsetLayout, sizeLayout,
                                           5, 5, 0);
-  nationSlot60 = nationSlot;
-  techId64 = techId;
+  this->nationSlot = nationSlot;
+  this->techId = techId;
 
   // 'desc' picture button showing the tech illustration.
   {
@@ -155,25 +155,25 @@ void TTechItemView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     if (sourceHandler->controlTag == kControlTagPurc) {
       TTextPictureButton* purchaseButton = static_cast<TTextPictureButton*>(sourceHandler);
       TTechMgr* techMgr = g_pTechMgr;
-      if (techMgr->orderCapRows277[nationSlot60].techStatusByTechId[techId64] == 0) {
+      if (techMgr->orderCapRows277[nationSlot].techStatusByTechId[techId] == 0) {
         short activeNationId = g_pSimMgr->GetPlayerCountry();
         int availableBudget = g_apNationStates[activeNationId]->ComputeAvailableDiplomacyBudget();
-        if (g_anTechItemResearchCostByTechId[techId64] > availableBudget) {
+        if (g_anTechItemResearchCostByTechId[techId] > availableBudget) {
           CString msg;
           g_pSimMgr->GetString(0x2745, 3, &msg);
           g_pViewMgr->ModalMessage(msg, g_ptTechItemModalMessage, 2, 0);
         } else {
           CString label;
           g_pSimMgr->GetString(0x274f, 3, &label);
-          techMgr->ApplyTechItemPurchaseCostAndState(techId64, nationSlot60);
+          techMgr->ApplyTechItemPurchaseCostAndState(techId, nationSlot);
           purchaseButton->buttonText = label;
           purchaseButton->RefreshControl();
           LoadUiStringAndDispatchSharedMessageCommand(0x274f, 0xa, purchaseButton);
         }
       } else {
-        techMgr->RefundTechItemPurchaseCostAndClearState(techId64, nationSlot60);
+        techMgr->RefundTechItemPurchaseCostAndClearState(techId, nationSlot);
         CString label;
-        g_pSimMgr->NumToCurrency(g_anTechItemResearchCostByTechId[techId64], &label);
+        g_pSimMgr->NumToCurrency(g_anTechItemResearchCostByTechId[techId], &label);
         purchaseButton->buttonText = label;
         purchaseButton->RefreshControl();
         LoadUiStringAndDispatchSharedMessageCommand(0x274f, 9, purchaseButton);
@@ -184,7 +184,7 @@ void TTechItemView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       TTechHistoryView* historyView =
           static_cast<TTechHistoryView*>(node->ResolveControlByTag(kControlTagDialog));
       historyView->AssertValid();
-      historyView->StuffValues(static_cast<short>(techId64));
+      historyView->StuffValues(static_cast<short>(techId));
 
       CPoint placement;
       g_pViewMgr->GetTopLeftFor(node, &placement);

@@ -29,7 +29,7 @@ void TIconBar::SetPictureRsrcID(short nPictureId, unsigned char fRefreshNow) {
 
 // FUNCTION: IMPERIALISM 0x005060f0
 void TIconBar::SetNumIcons(short numIcons) {
-  numIcons96 = numIcons;
+  this->numIcons = numIcons;
 }
 
 // FUNCTION: IMPERIALISM 0x00506110
@@ -46,7 +46,7 @@ void TIconBar::Draw(RECT* rectBuffer) {
   CRect contentRect;
   BuildInsetContentRect(&contentRect);
 
-  short slotWidth = static_cast<short>(contentRect.right - contentRect.left) / (numIcons96 + 1);
+  short slotWidth = static_cast<short>(contentRect.right - contentRect.left) / (numIcons + 1);
   if (slotWidth > 0x20) {
     slotWidth = 0x20;
   }
@@ -58,7 +58,7 @@ void TIconBar::Draw(RECT* rectBuffer) {
 
   ResetQuickDrawStrokeState();
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  for (short i = 0; i < numIcons96; ++i) {
+  for (short i = 0; i < numIcons; ++i) {
     BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas674->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                      &dstRect, 0x24, 0);

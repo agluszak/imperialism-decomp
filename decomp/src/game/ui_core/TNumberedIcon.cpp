@@ -5,7 +5,7 @@
 IMPLEMENT_DYNCREATE(TNumberedIcon, TMegaPicture)
 
 // FUNCTION: IMPERIALISM 0x005073a0
-TNumberedIcon::TNumberedIcon() : TMegaPicture(), numberTextAc(0) {}
+TNumberedIcon::TNumberedIcon() : TMegaPicture(), numberText(0) {}
 
 // FUNCTION: IMPERIALISM 0x00507400
 TNumberedIcon::~TNumberedIcon() {}
@@ -18,14 +18,14 @@ void TNumberedIcon::INumberedIcon(TView* panel, int* offsetLayout, int* sizeLayo
   InstallNumberText();
   SetValue(value, true);
 
-  if (numberTextAc != 0) {
+  if (numberText != 0) {
     // A 16x16 box hung off the icon's bottom-right corner.
     CRect numberBounds;
     numberBounds.right = frameWidth;
     numberBounds.bottom = frameHeight;
     numberBounds.left = numberBounds.right - 0x10;
     numberBounds.top = numberBounds.bottom - 0x10;
-    numberTextAc->ApplyBounds(&numberBounds, true);
+    numberText->ApplyBounds(&numberBounds, true);
   }
 }
 
@@ -34,17 +34,17 @@ void TNumberedIcon::DoPostCreate(int arg) {
   TMegaPicture::DoPostCreate(arg);
   SetMode(5, true);
   InstallNumberText();
-  if (numberTextAc != 0) {
+  if (numberText != 0) {
     int iconWidth = frameWidth;
     int iconHeight = frameHeight;
     CRect numberBounds(iconWidth - 0x10, iconHeight - 0x10, iconWidth, iconHeight);
-    numberTextAc->ApplyBounds(&numberBounds, true);
+    numberText->ApplyBounds(&numberBounds, true);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00507570
 void TNumberedIcon::InstallNumberText() {
-  if (numberTextAc != 0) {
+  if (this->numberText != 0) {
     return;
   }
 
@@ -60,12 +60,12 @@ void TNumberedIcon::InstallNumberText() {
   style.fontSize = 9;
   numberText->InstallTextStyle(style, 0);
   numberText->Show(1, 0);
-  numberTextAc = numberText;
+  this->numberText = numberText;
 }
 
 // FUNCTION: IMPERIALISM 0x005076d0
 void TNumberedIcon::SetValue(short value, bool refresh) {
-  if (numberTextAc != 0) {
-    numberTextAc->SetControlValue(value, refresh);
+  if (numberText != 0) {
+    numberText->SetControlValue(value, refresh);
   }
 }

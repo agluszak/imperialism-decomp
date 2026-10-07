@@ -38,7 +38,7 @@ RuntimeActionResult StartingCiviliansProbe::VerifyForNation(short nationSlot) {
       return RuntimeActionResult::Failure(detail);
     }
     ++civilianCount;
-    if (static_cast<TCivUnit*>(entry)->tileIndex06 < 0) {
+    if (static_cast<TCivUnit*>(entry)->tileIndex < 0) {
       CString detail;
       detail.Format("starting civilian %d has no map tile", ordinal);
       return RuntimeActionResult::Failure(detail);

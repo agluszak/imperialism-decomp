@@ -211,7 +211,7 @@ HBRUSH CMcWindow::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) {
       unsigned int packedTextColor =
           control->stylePayload != NULL
               ? static_cast<unsigned int>(control->stylePayload->styleWord)
-              : static_cast<unsigned int>(control->textStyle78.textColor);
+              : static_cast<unsigned int>(control->textStyle.textColor);
       pDC->SetTextColor(g_pResourceMgr->ResolvePaletteIndexColor(packedTextColor));
     }
   }

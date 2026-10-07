@@ -36,7 +36,7 @@ void TStaticText::SetText(CString* text) {
 TStaticText::TStaticText()
     : TControl(), text(new CString()), stringResourceGroupId(-1), stringResourceIndex(0),
       textAlignmentCode(0), textOptionFlags(0) {
-  eventNumber60 = 13;
+  eventNumber = 13;
 }
 
 // FUNCTION: IMPERIALISM 0x0048f9d0
@@ -62,10 +62,10 @@ TStaticText::~TStaticText() {
 void TStaticText::CopyViewStateFromSource(TView* source) {
   TView::CopyViewStateFromSource(source);
   TStaticText* src = static_cast<TStaticText*>(source);
-  this->eventNumber60 = src->eventNumber60;
+  this->eventNumber = src->eventNumber;
   this->controlState = src->controlState;
   this->contentInsets = src->contentInsets;
-  this->textStyle78 = src->textStyle78;
+  this->textStyle = src->textStyle;
   this->text = new CString();
   *this->text = *src->text;
 }
@@ -86,7 +86,7 @@ void TStaticText::IStaticText(TView* panel, int* offsetLayout, int* sizeLayout, 
   (void)layoutParam6;
   (void)layoutParam7;
   if (panel != 0) {
-    nativeWindow50 = panel->nativeWindow50;
+    nativeWindow = panel->nativeWindow;
   }
   controlTag = kControlTagSpSpSpSp;
   enabled = 1;
@@ -147,11 +147,11 @@ void TStaticText::Draw(RECT* rectBuffer) {
   CRect bounds;
   GetQDExtent(&bounds);
   bounds.DeflateRect(&contentInsets);
-  CFont* font = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&textStyle78);
+  CFont* font = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&textStyle);
   CFont* oldFont = dc->SelectObject(font);
   COLORREF textColor;
   if (stylePayload == 0) {
-    textColor = textStyle78.textColor;
+    textColor = textStyle.textColor;
   } else {
     textColor = stylePayload->styleWord;
   }
@@ -174,7 +174,7 @@ void TStaticText::ImageText(const char* textChars, int textLength, RECT* rect,
   (void)textLength;
   CDC* dc = GetActiveQuickDrawDc();
   dc->SetBkMode(TRANSPARENT);
-  CFont* font = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&textStyle78);
+  CFont* font = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&textStyle);
   CFont* oldFont = dc->SelectObject(font);
   dc->SetTextColor(g_QuickDrawForegroundColor);
   UINT format = 0x910;

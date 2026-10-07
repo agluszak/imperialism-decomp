@@ -35,8 +35,8 @@ TWindow::~TWindow() {
     if (!g_ModalViewStack.IsEmpty()) {
       TWindow* modalTop = g_ModalViewStack.GetHead();
       modalTop->AssertValid();
-      if (modalTop->nativeWindow50 != 0) {
-        modalTop->nativeWindow50->EnableWindow(1);
+      if (modalTop->nativeWindow != 0) {
+        modalTop->nativeWindow->EnableWindow(1);
       }
     }
   }
@@ -62,9 +62,9 @@ void TWindow::Activate(unsigned char) {
 
 // FUNCTION: IMPERIALISM 0x0048d900
 void TWindow::Show(unsigned char show, bool refresh) {
-  if (nativeWindow50 != 0 && nativeWindow50->m_hWnd != 0) {
+  if (nativeWindow != 0 && nativeWindow->m_hWnd != 0) {
     WPARAM wParam = show == 0 ? 3 : 2;
-    SendMessageA(nativeWindow50->m_hWnd, 0x468, wParam, controlTag);
+    SendMessageA(nativeWindow->m_hWnd, 0x468, wParam, controlTag);
   }
   if ((int)show != viewEnabled) {
     viewEnabled = (int)show;
@@ -76,18 +76,18 @@ void TWindow::Show(unsigned char show, bool refresh) {
 
 // FUNCTION: IMPERIALISM 0x0048d980
 bool TWindow::IsActionable() {
-  return busyFlag != 0 && g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0 &&
+  return busyFlag != 0 && g_McAppUiActiveFlag_006950AC != 0 && nativeWindow != 0 &&
          viewEnabled != 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0048d9c0
 void TWindow::SetTitle(const CString* title) {
-  nativeWindow50->SetWindowText(*title);
+  nativeWindow->SetWindowText(*title);
 }
 
 // FUNCTION: IMPERIALISM 0x0048d9f0
 void TWindow::GetTitle(CString* title) {
-  nativeWindow50->GetWindowText(*title);
+  nativeWindow->GetWindowText(*title);
 }
 
 // FUNCTION: IMPERIALISM 0x0048da10
@@ -114,8 +114,8 @@ int TWindow::PoseModally() {
   if (!g_ModalViewStack.IsEmpty()) {
     TWindow* top = g_ModalViewStack.GetHead();
     top->AssertValid();
-    if (top->nativeWindow50 != 0) {
-      top->nativeWindow50->EnableWindow(0);
+    if (top->nativeWindow != 0) {
+      top->nativeWindow->EnableWindow(0);
     }
   }
   g_ModalViewStack.AddHead(this);
@@ -130,8 +130,8 @@ int TWindow::PoseModally() {
     if (!g_ModalViewStack.IsEmpty()) {
       TWindow* top = g_ModalViewStack.GetHead();
       top->AssertValid();
-      if (top->nativeWindow50 != 0) {
-        top->nativeWindow50->EnableWindow(1);
+      if (top->nativeWindow != 0) {
+        top->nativeWindow->EnableWindow(1);
       }
     }
   }
@@ -205,17 +205,17 @@ void TWindow::SetWindowTarget(TEventHandler* target) {
 
 // FUNCTION: IMPERIALISM 0x0048de00
 CWnd* TWindow::Open() {
-  if (nativeWindow50 == 0) {
-    nativeWindow50 = new CMcWindow(this);
+  if (nativeWindow == 0) {
+    nativeWindow = new CMcWindow(this);
     if (childList != 0) {
       POSITION pos = childList->GetHeadPosition();
       while (pos != NULL) {
         TView* child = static_cast<TView*>(childList->GetNext(pos));
-        child->PropagateUiResourceContextRecursive(nativeWindow50);
+        child->PropagateUiResourceContextRecursive(nativeWindow);
       }
     }
   }
-  ::SendMessageA(nativeWindow50->m_hWnd, 0x468, 0, controlTag);
+  ::SendMessageA(nativeWindow->m_hWnd, 0x468, 0, controlTag);
   if (!IsActionable()) {
     busyFlag = 1;
     if (activeLinkedWindow != 0) {
@@ -236,8 +236,8 @@ CWnd* TWindow::Open() {
 // FUNCTION: IMPERIALISM 0x0048e060
 void TWindow::Close() {
   busyFlag = 0;
-  if (nativeWindow50 != 0 && nativeWindow50->m_hWnd != 0) {
-    SendMessageA(nativeWindow50->m_hWnd, 0x468, 1, controlTag);
+  if (nativeWindow != 0 && nativeWindow->m_hWnd != 0) {
+    SendMessageA(nativeWindow->m_hWnd, 0x468, 1, controlTag);
   }
   if (childList != 0) {
     POSITION pos = childList->GetHeadPosition();
@@ -258,8 +258,8 @@ void TWindow::CloseAndFree() {
 // FUNCTION: IMPERIALISM 0x0048e150
 void TWindow::Center(bool centerX, bool centerY, bool unused) {
   (void)unused;
-  if (nativeWindow50 != 0) {
-    nativeWindow50->CenterWindow(0);
+  if (nativeWindow != 0) {
+    nativeWindow->CenterWindow(0);
     return;
   }
   if (centerX) {
@@ -311,21 +311,21 @@ void TWindow::ZoomByUser(const CPoint& point, short partCode) {
 
 // FUNCTION: IMPERIALISM 0x0048e2a0
 void TWindow::Free() {
-  CWnd* window = nativeWindow50;
+  CWnd* window = nativeWindow;
   if (window != 0) {
     if (window->m_hWnd != 0) {
       ::SendMessageA(window->m_hWnd, 0x4ef, 0, controlTag);
-      ::SendMessageA(nativeWindow50->m_hWnd, 0x468, 4, controlTag);
+      ::SendMessageA(nativeWindow->m_hWnd, 0x468, 4, controlTag);
     } else {
       if (window->IsKindOf(RUNTIME_CLASS(CMcWindow))) {
-        CMcWindow* mcWindow = static_cast<CMcWindow*>(nativeWindow50);
+        CMcWindow* mcWindow = static_cast<CMcWindow*>(nativeWindow);
         mcWindow->AssertValid();
         mcWindow->m_pOwnerWindow = 0;
         delete mcWindow;
       } else {
-        delete nativeWindow50;
+        delete nativeWindow;
       }
-      nativeWindow50 = 0;
+      nativeWindow = 0;
     }
   }
   while (childList != 0) {

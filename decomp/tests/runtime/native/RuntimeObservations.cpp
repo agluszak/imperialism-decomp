@@ -210,7 +210,7 @@ bool AppendCityProduction(JSON_Array* entries, TCity* city, bool flags) {
   for (int slot = 0; slot < 0x10; ++slot) {
     int entry = -1;
     if (city != 0) {
-      entry = flags ? city->productionFlags[slot] : city->productionOrderTable1dc[slot];
+      entry = flags ? city->productionFlags[slot] : city->productionOrderTable[slot];
     }
     if (json_array_append_number(entries, entry) != JSONSuccess) {
       return false;
@@ -321,8 +321,8 @@ bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
   terrain.resourceTypeByEdge[1] = -1;
   terrain.secondaryOwnerNationTag = -1;
   terrain.perTileVisitedFlag = 0;
-  terrain.tileActionState16 = static_cast<MapTileActionStateStorage>(-1);
-  TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
+  terrain.tileActionState = static_cast<MapTileActionStateStorage>(-1);
+  TMapUberPicture* mapView = g_pViewMgr->mapUberPicture;
   short savedCategory = mapView->activeUnitCategoryIndex;
   short savedRiverMouth = g_pGlobalMapState->pendingRiverMouthTile;
   mapView->activeUnitCategoryIndex = 4;

@@ -155,11 +155,11 @@ RuntimeActionResult RunPlayerTradePhaseReset(NativeTransition& transition) {
   TGreatPower* nation = ActiveNation();
   TCity* city = nation->city;
   for (int slot = 0; slot < kIndustryActionSlotCount; ++slot) {
-    city->orderCountByType5c[slot] = 0;
+    city->orderCountByType[slot] = 0;
   }
-  city->orderCountByType5c[1] = 2;
-  city->orderCountByType5c[5] = 1;
-  city->orderCountByType5c[10] = 1;
+  city->orderCountByType[1] = 2;
+  city->orderCountByType[5] = 1;
+  city->orderCountByType[10] = 1;
 
   for (int resource = 0; resource < kResourceKindCount; ++resource) {
     nation->rememberedTradeOffersByResource[resource] = 0;
@@ -194,11 +194,11 @@ RuntimeActionResult RunTradeCapacityRefresh(NativeTransition& transition) {
   TGreatPower* nation = ActiveNation();
   TCity* city = nation->city;
   for (int slot = 0; slot < kIndustryActionSlotCount; ++slot) {
-    city->orderCountByType5c[slot] = 0;
+    city->orderCountByType[slot] = 0;
   }
-  city->orderCountByType5c[1] = 2;
-  city->orderCountByType5c[5] = 1;
-  city->orderCountByType5c[10] = 1;
+  city->orderCountByType[1] = 2;
+  city->orderCountByType[5] = 1;
+  city->orderCountByType[10] = 1;
 
   JsonObject args;
   args.Set("nation", static_cast<int>(ActiveNationSlot()));
@@ -352,11 +352,11 @@ namespace {
 
 void SeedMerchantCapacity(TCity* city) {
   for (int slot = 0; slot < kIndustryActionSlotCount; ++slot) {
-    city->orderCountByType5c[slot] = 0;
+    city->orderCountByType[slot] = 0;
   }
-  city->orderCountByType5c[1] = 2;
-  city->orderCountByType5c[5] = 1;
-  city->orderCountByType5c[10] = 1;
+  city->orderCountByType[1] = 2;
+  city->orderCountByType[5] = 1;
+  city->orderCountByType[10] = 1;
 }
 
 void SeedTradeableStocks(TGreatPower* nation) {

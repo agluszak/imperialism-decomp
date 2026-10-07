@@ -37,10 +37,10 @@ TPicture::TPicture(const TPicture& source)
 void TPicture::CopyPictureStateFromSource(TPicture* source) {
   // Takes a pointer, matching TView::CopyViewStateFromSource which it forwards to.
   CopyViewStateFromSource(source);
-  eventNumber60 = source->eventNumber60;
+  eventNumber = source->eventNumber;
   controlState = source->controlState;
   contentInsets = source->contentInsets;
-  textStyle78 = source->textStyle78;
+  textStyle = source->textStyle;
   glyphBase = source->glyphBase;
   bitmapId = source->bitmapId;
   resourceNamespaceId = source->resourceNamespaceId;
@@ -67,7 +67,7 @@ void TPicture::IPicture(TView* panel, int* offsetLayout, int* sizeLayout, int la
   (void)layoutParam4;
   (void)layoutParam5;
   if (panel != 0) {
-    nativeWindow50 = panel->nativeWindow50;
+    nativeWindow = panel->nativeWindow;
   }
   controlTag = kControlTagSpSpSpSp; // '    '
   enabled = 1;
@@ -165,10 +165,10 @@ void PictureFallbackSizeScratch::Set(int newWidth, int newHeight) {
 TObject* TPicture::ShallowClone() {
   TPicture* clone = static_cast<TPicture*>(ShallowFree());
   clone->CopyViewStateFromSource(this);
-  clone->eventNumber60 = eventNumber60;
+  clone->eventNumber = eventNumber;
   clone->controlState = controlState;
   clone->contentInsets = contentInsets;
-  clone->textStyle78 = textStyle78;
+  clone->textStyle = textStyle;
   clone->glyphBase = glyphBase;
   clone->bitmapId = bitmapId;
   clone->resourceNamespaceId = resourceNamespaceId;

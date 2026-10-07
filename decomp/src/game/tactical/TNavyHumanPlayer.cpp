@@ -18,7 +18,7 @@ void TNavyHumanPlayer::DeploymentClick(TacticalTileIndex tileIndex) {
   while (true) {
     unit = static_cast<TTacticalUnit*>(unitList->GetEntryByOrdinal(ordinal));
     ++ordinal;
-    if (unit->tileIndex8 == -2) {
+    if (unit->tileIndex == -2) {
       break;
     }
     if (ordinal > unitList->GetCount()) {
@@ -29,6 +29,6 @@ void TNavyHumanPlayer::DeploymentClick(TacticalTileIndex tileIndex) {
   if (ordinal > unitList->GetCount()) {
     sideReadyFlag = true;
   } else {
-    battle14->DeployUnit(unit, tileIndex);
+    battle->DeployUnit(unit, tileIndex);
   }
 }

@@ -288,7 +288,7 @@ unsigned int MapEdgePoint::Equals(const MapEdgePoint* other) const {
 int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags) {
   (void)dwInputFlags;
   TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[nTileIndex];
-  short actionClass = tile.tileActionState16;
+  short actionClass = tile.tileActionState;
   if (actionClass == kMapTileActionStateNone) {
     return 0;
   }
@@ -319,8 +319,8 @@ int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags) {
   if (actionClass >= kMapTileActionStateLinkedZoneFirst &&
       actionClass <= kMapTileActionStateLinkedZoneLast) {
     TZone* activeOrderContext = 0;
-    if (g_pViewMgr->mapUberPictureF0->activeUnitCategoryIndex == 2) {
-      activeOrderContext = g_pViewMgr->mapUberPictureF0->orderEntryContext;
+    if (g_pViewMgr->mapUberPicture->activeUnitCategoryIndex == 2) {
+      activeOrderContext = g_pViewMgr->mapUberPicture->orderEntryContext;
     }
     TZone* resolvedZone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
     return resolvedZone == activeOrderContext ? 10 : 9;
@@ -381,7 +381,7 @@ int __stdcall GetActiveMapOrderEntryActionCode(short nTileIndex, int dwInputFlag
     }
     if (eligible != 0) {
       return g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
-                 entry->nation, province->ownerNationCode00)
+                 entry->nation, province->ownerNationCode)
                  ? 0x10
                  : 1;
     }

@@ -3,7 +3,7 @@
 IMPLEMENT_DYNCREATE(TCzechBox, TUpDownPictureButton)
 
 // FUNCTION: IMPERIALISM 0x00571c20
-TCzechBox::TCzechBox() : isOn94(0) {}
+TCzechBox::TCzechBox() : isOn(0) {}
 
 // FUNCTION: IMPERIALISM 0x00571c90
 TCzechBox::~TCzechBox() {}
@@ -19,7 +19,7 @@ void TCzechBox::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
 // FUNCTION: IMPERIALISM 0x00571cf0
 void TCzechBox::DoPostCreate(int arg) {
   (void)arg;
-  eventNumber60 = 4;
+  eventNumber = 4;
 }
 
 // FUNCTION: IMPERIALISM 0x00571d10
@@ -32,7 +32,7 @@ void TCzechBox::HiliteState(unsigned char fEnabledState, bool fRefreshNow) {
 
 // FUNCTION: IMPERIALISM 0x00571d40
 void TCzechBox::CheckTheLook(unsigned char refreshNow) {
-  bool useOddPicture = isOn94 != 0 || controlState != 0;
+  bool useOddPicture = isOn != 0 || controlState != 0;
   if (!useOddPicture && (glyphBase & 1) != 0) {
     SetPictureRsrcID(static_cast<short>(glyphBase & ~1), refreshNow);
     if (refreshNow) {
@@ -48,13 +48,13 @@ void TCzechBox::CheckTheLook(unsigned char refreshNow) {
 
 // FUNCTION: IMPERIALISM 0x00571de0
 unsigned char TCzechBox::IsOn() {
-  return isOn94;
+  return isOn;
 }
 
 // FUNCTION: IMPERIALISM 0x00571e00
 void TCzechBox::SetState(unsigned char isOn, unsigned char refreshNow) {
-  if (isOn94 != isOn) {
-    isOn94 = isOn;
+  if (this->isOn != isOn) {
+    this->isOn = isOn;
     CheckTheLook(refreshNow);
   }
 }

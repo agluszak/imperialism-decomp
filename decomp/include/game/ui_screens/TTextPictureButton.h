@@ -10,7 +10,7 @@ public:
   virtual ~TTextPictureButton() override;       // slot 0x01 (scalar deleting destructor)
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x572790
   CString buttonText;                           // 0x94
-  short pointSize98;                            // 0x98
+  short pointSize;                              // 0x98
   short themeCode9A;                            // 0x9A
   short themeCode9C;                            // 0x9C
 

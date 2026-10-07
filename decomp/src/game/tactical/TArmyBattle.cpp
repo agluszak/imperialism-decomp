@@ -78,10 +78,10 @@ void TArmyBattle::InitializeBattleSetupAndMaybeShowTacticalView(TArmyStack* ourS
   enemyPlayer->IArmyPlayer(enemyStack, false, enemySideWatchFlag, enemyStack->categoryFlag);
   InitTacticalBattle(ourPlayer, enemyPlayer);
 
-  battleSiteIndex38 = battleSiteIndex;
+  this->battleSiteIndex = battleSiteIndex;
   LoadMap(compositionClass, fortLevel);
-  compositionClass50 = compositionClass;
-  fortLevel49 = static_cast<char>(fortLevel);
+  this->compositionClass = compositionClass;
+  this->fortLevel = static_cast<char>(fortLevel);
 
   // Show the live tactical-battle view when forced globally or either side is watched.
   if (g_nForceTacticalBattleViewFlag_006A4758 || enemySideWatchFlag != 0 || ourSideWatchFlag != 0) {
@@ -92,7 +92,7 @@ void TArmyBattle::InitializeBattleSetupAndMaybeShowTacticalView(TArmyStack* ourS
     TTacArmyView* battleView = static_cast<TTacArmyView*>(
         g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDialog));
     battleView->AssertValid();
-    battleView8 = battleView;
+    this->battleView = battleView;
     battleView->StuffValues(compositionClass, this);
   }
 }
@@ -142,13 +142,13 @@ void TArmyBattle::ReadFrom(TStream* stream) {
       }
     }
   }
-  selectedUnit1c = linkedRecord;
+  selectedUnit = linkedRecord;
 
-  stream->ReadBytes(&battleSiteIndex38, 4);
+  stream->ReadBytes(&battleSiteIndex, 4);
   stream->ReadBytes(&battleOutcome, 4);
-  stream->ReadBytes(&fortLevel49, 1);
+  stream->ReadBytes(&fortLevel, 1);
   stream->ReadBytes(&currentTacticalActionCode, 4);
-  stream->ReadBytes(&compositionClass50, 4);
+  stream->ReadBytes(&compositionClass, 4);
 
   // Rebuild the two combatant stacks and re-add every source unit to its side.
   TArmyStack* ourBattleStack = new TArmyStack();
@@ -170,8 +170,8 @@ void TArmyBattle::ReadFrom(TStream* stream) {
     targetStack->AddUnitToChainHead(deployRecord->sourceUnit);
   }
 
-  InitializeBattleSetupAndMaybeShowTacticalView(ourBattleStack, enemyBattleStack,
-                                                compositionClass50, fortLevel49, battleSiteIndex38);
+  InitializeBattleSetupAndMaybeShowTacticalView(ourBattleStack, enemyBattleStack, compositionClass,
+                                                fortLevel, battleSiteIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x005a4da0
@@ -183,18 +183,18 @@ void TArmyBattle::WriteTo(TStream* stream) {
   ourPlayer->AssertValid();
   int ourNationIndex = ourPlayer->armyStack->categoryFlag;
   stream->WriteBytes(&ourNationIndex, 4);
-  int ourNationCode = ourPlayer->armyStack->ownerNationCodeE;
+  int ourNationCode = ourPlayer->armyStack->ownerNationCode;
   stream->WriteBytes(&ourNationCode, 4);
-  int ourTileIndex = ourPlayer->armyStack->tileIndex10;
+  int ourTileIndex = ourPlayer->armyStack->tileIndex;
   stream->WriteBytes(&ourTileIndex, 4);
 
   TArmyPlayer* enemyPlayer = static_cast<TArmyPlayer*>(players[1]);
   enemyPlayer->AssertValid();
   int enemyNationIndex = enemyPlayer->armyStack->categoryFlag;
   stream->WriteBytes(&enemyNationIndex, 4);
-  int enemyNationCode = enemyPlayer->armyStack->ownerNationCodeE;
+  int enemyNationCode = enemyPlayer->armyStack->ownerNationCode;
   stream->WriteBytes(&enemyNationCode, 4);
-  int enemyTileIndex = enemyPlayer->armyStack->tileIndex10;
+  int enemyTileIndex = enemyPlayer->armyStack->tileIndex;
   stream->WriteBytes(&enemyTileIndex, 4);
 
   unsigned short unitRecordCount = static_cast<unsigned short>(recordList->GetCount());
@@ -208,15 +208,15 @@ void TArmyBattle::WriteTo(TStream* stream) {
     stream->WriteBytes(&record->field24, 2);
   }
 
-  TArmyTacUnit* linked = static_cast<TArmyTacUnit*>(selectedUnit1c);
+  TArmyTacUnit* linked = static_cast<TArmyTacUnit*>(selectedUnit);
   int linkedUnitId = linked != 0 ? linked->GetUID() : 0;
   stream->WriteBytes(&linkedUnitId, 4);
 
-  stream->WriteBytes(&battleSiteIndex38, 4);
+  stream->WriteBytes(&battleSiteIndex, 4);
   stream->WriteBytes(&battleOutcome, 4);
-  stream->WriteBytes(&fortLevel49, 1);
+  stream->WriteBytes(&fortLevel, 1);
   stream->WriteBytes(&currentTacticalActionCode, 4);
-  stream->WriteBytes(&compositionClass50, 4);
+  stream->WriteBytes(&compositionClass, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x005a4fc0
@@ -308,11 +308,11 @@ void TArmyBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
     HandleTacticalCommandTag_retr(); // side fully deployed -> hand the round over
     return;
   }
-  if (battleView8 != 0) {
+  if (battleView != 0) {
     TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(
-        battleView8->ownerContext->ResolveControlByTag(kControlTagTool));
+        battleView->ownerContext->ResolveControlByTag(kControlTagTool));
     toolbar->AssertValid();
-    toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(selectedUnit1c);
+    toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(selectedUnit);
   }
 }
 
@@ -323,9 +323,9 @@ void TArmyBattle::EndBattle(unsigned char sideWonFlag) {
   players[1]->AssertValid();
   g_pSfxPlaybackSystem->StopMusic(false);
 
-  if (battleView8 != 0) {
+  if (battleView != 0) {
     TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(
-        battleView8->ownerContext->ResolveControlByTag(kControlTagTool));
+        battleView->ownerContext->ResolveControlByTag(kControlTagTool));
     toolbar->AssertValid();
     toolbar->UpdateTacticalOtherSideUnitControl(0);
     toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(0);
@@ -333,5 +333,5 @@ void TArmyBattle::EndBattle(unsigned char sideWonFlag) {
 
   g_pMapContextActionManager->EndTacticalBattle(static_cast<TArmyPlayer*>(players[0])->armyStack,
                                                 static_cast<TArmyPlayer*>(players[1])->armyStack,
-                                                sideWonFlag, battleSiteIndex38);
+                                                sideWonFlag, battleSiteIndex);
 }

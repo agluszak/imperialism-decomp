@@ -9,8 +9,8 @@ IMPLEMENT_DYNCREATE(TArmyTacUnit, TTacticalUnit)
 
 // FUNCTION: IMPERIALISM 0x005a5f20
 void TArmyTacUnit::IArmyTacUnit(TMilitaryUnit* source) {
-  unitTypeC = source->orderType;
-  tileIndex8 = -2;
+  unitType = source->orderType;
+  tileIndex = -2;
   selectedFlag = 0;
   state1c = 0;
   actionPoints = GetBaseActionPoints();
@@ -23,7 +23,7 @@ void TArmyTacUnit::IArmyTacUnit(TMilitaryUnit* source) {
   sapTargetTileIndex = -1;
   sourceUnit = source;
   bool deployedCategory0Flag;
-  if (source->unitOrder == 2 && g_anUnitTypeCombatCategoryByType00669858[unitTypeC] == 0) {
+  if (source->unitOrder == 2 && g_anUnitTypeCombatCategoryByType00669858[unitType] == 0) {
     deployedCategory0Flag = true;
   } else {
     deployedCategory0Flag = false;
@@ -48,13 +48,13 @@ void TArmyTacUnit::ComputeTacticalProjectionScoreVector() {
 
 // FUNCTION: IMPERIALISM 0x005a6120
 int TArmyTacUnit::GetBaseActionPoints() {
-  return g_awUnitTypeBaseActionPointTable[unitTypeC];
+  return g_awUnitTypeBaseActionPointTable[unitType];
 }
 
 // FUNCTION: IMPERIALISM 0x005a6140
 int TArmyTacUnit::GetUnitRange() {
-  int range = g_anUnitTypeTacticalRangeByType_006699E8[unitTypeC];
-  if (side == 1 && g_anUnitTypeCombatCategoryByType00669858[unitTypeC] == 2) {
+  int range = g_anUnitTypeTacticalRangeByType_006699E8[unitType];
+  if (side == 1 && g_anUnitTypeCombatCategoryByType00669858[unitType] == 2) {
     ++range;
   }
   return range;
@@ -62,12 +62,12 @@ int TArmyTacUnit::GetUnitRange() {
 
 // FUNCTION: IMPERIALISM 0x005a6180
 float TArmyTacUnit::GetBaseAttackPower() {
-  return g_afTacticalBaseAttackPowerByUnitType[unitTypeC];
+  return g_afTacticalBaseAttackPowerByUnitType[unitType];
 }
 
 // FUNCTION: IMPERIALISM 0x005a61a0
 float TArmyTacUnit::GetDamageScale() {
-  return g_afTacticalDamageScaleByUnitType[unitTypeC];
+  return g_afTacticalDamageScaleByUnitType[unitType];
 }
 
 // FUNCTION: IMPERIALISM 0x005a61c0

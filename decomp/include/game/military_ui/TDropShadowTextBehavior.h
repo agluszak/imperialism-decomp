@@ -13,7 +13,7 @@ public:
   virtual ~TDropShadowTextBehavior() override {} // slot 0x01 (scalar deleting destructor)
   void Draw(RECT* bounds) override;              // slot 0x0d byte 0x34 0x4b1150
   // Draw passes the complete +0x10 dword to SetQuickDrawColorAndPropagateIfChanged.
-  COLORREF shadowColor10;
+  COLORREF shadowColor;
 
   TDropShadowTextBehavior();
 

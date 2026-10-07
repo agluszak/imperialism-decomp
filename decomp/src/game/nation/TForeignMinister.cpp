@@ -63,7 +63,7 @@ void TForeignMinister::IForeignMinister(TGreatPower* owner) {
   interiorBidAmount = 0;
   capabilityFlag14 = 0;
   diplomacyPhaseCounter = 0;
-  memset(purchasePriorityByResource1e, 0, sizeof(purchasePriorityByResource1e));
+  memset(purchasePriorityByResource, 0, sizeof(purchasePriorityByResource));
   for (int i = 0; i < 4; ++i) {
     preferredResourceSlots[i] = kNoInteriorBidResource;
   }
@@ -80,8 +80,8 @@ void TForeignMinister::ReadFrom(TStream* stream) {
   stream->ReadBytes(&diplomacyPhaseCounter, 2);
   stream->ReadBytes(&tradeBidRefreshInterval, 2);
   stream->ReadBytes(&interiorOrderKind, 2);
-  stream->ReadBytes(purchasePriorityByResource1e, sizeof(purchasePriorityByResource1e));
-  SwapShortArrayBytes(purchasePriorityByResource1e, 0x11);
+  stream->ReadBytes(purchasePriorityByResource, sizeof(purchasePriorityByResource));
+  SwapShortArrayBytes(purchasePriorityByResource, 0x11);
   stream->ReadBytes(preferredResourceSlots, sizeof(preferredResourceSlots));
   SwapShortArrayBytes(preferredResourceSlots, 4);
   stream->ReadBytes(&field48, 1);
@@ -103,7 +103,7 @@ void TForeignMinister::WriteTo(TStream* stream) {
   stream->WriteBytes(&diplomacyPhaseCounter, 2);
   stream->WriteBytes(&tradeBidRefreshInterval, 2);
   stream->WriteBytes(&interiorOrderKind, 2);
-  WriteShortArrayElems(stream, purchasePriorityByResource1e, 0x11);
+  WriteShortArrayElems(stream, purchasePriorityByResource, 0x11);
   WriteShortArrayElems(stream, preferredResourceSlots, 4);
   stream->WriteBytes(&field48, 1);
   stream->WriteBytes(tradePartnerEnabled, sizeof(tradePartnerEnabled));
@@ -136,8 +136,7 @@ void TForeignMinister::InitializeTradeStatus() {
 
 // FUNCTION: IMPERIALISM 0x0052f4f0
 void TForeignMinister::PleaseBuy(short index, short delta) {
-  purchasePriorityByResource1e[index] =
-      static_cast<short>(purchasePriorityByResource1e[index] + delta);
+  purchasePriorityByResource[index] = static_cast<short>(purchasePriorityByResource[index] + delta);
 }
 
 // FUNCTION: IMPERIALISM 0x0052f520
@@ -157,10 +156,10 @@ void TForeignMinister::SetBuyPriorities() {
   priorities->recordSize = sizeof(MinisterPriorityEntry);
 
   for (short resourceCode = 0; resourceCode < kResourceManufacturedEnd; ++resourceCode) {
-    if (purchasePriorityByResource1e[resourceCode] != 0) {
+    if (purchasePriorityByResource[resourceCode] != 0) {
       MinisterPriorityEntry entry;
       entry.resourceCode = resourceCode;
-      entry.priority = static_cast<short>(purchasePriorityByResource1e[resourceCode] + 1);
+      entry.priority = static_cast<short>(purchasePriorityByResource[resourceCode] + 1);
       priorities->InsertCopiedRecordSortedByComparator(&entry);
     }
   }
@@ -226,7 +225,7 @@ void TForeignMinister::ArrangeMaterialsOffers() {
     }
   }
 
-  if (purchasePriorityByResource1e[5] > 0) {
+  if (purchasePriorityByResource[5] > 0) {
     bool foundFallbackNation = false;
     int trialIndex = 1;
     int fallbackNationSlot = 0;
@@ -266,7 +265,7 @@ void TForeignMinister::SetTradeBids() {
   this->SetBuyPriorities();
   if (interiorBidResource != kNoInteriorBidResource) {
     short idx = interiorBidResource;
-    purchasePriorityByResource1e[idx] = interiorBidAmount;
+    purchasePriorityByResource[idx] = interiorBidAmount;
     owner->SetItemPotentials(idx, static_cast<short>(-1));
   }
 }
@@ -334,8 +333,8 @@ void TForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3, sho
     }
   } else {
     unsigned short ledgerAmount =
-        static_cast<unsigned short>(purchasePriorityByResource1e[resourceCode]);
-    short* ledgerEntry = &purchasePriorityByResource1e[resourceCode];
+        static_cast<unsigned short>(purchasePriorityByResource[resourceCode]);
+    short* ledgerEntry = &purchasePriorityByResource[resourceCode];
     if (static_cast<short>(ledgerAmount) < 1) {
       dispatchAmount = 0;
     } else if (static_cast<short>(ledgerAmount) < static_cast<short>(dispatchAmount)) {
@@ -361,7 +360,7 @@ void TForeignMinister::EndTradePhase() {
   if (owner->GetMerchantCapacity() == 0) {
     diplomacyPhaseCounter = static_cast<short>(diplomacyPhaseCounter + 1);
   }
-  memset(purchasePriorityByResource1e, 0, sizeof(purchasePriorityByResource1e));
+  memset(purchasePriorityByResource, 0, sizeof(purchasePriorityByResource));
 }
 
 // FUNCTION: IMPERIALISM 0x0052fd10

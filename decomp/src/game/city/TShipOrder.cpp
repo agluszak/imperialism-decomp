@@ -175,13 +175,13 @@ void TShipOrder::LaunchShip() {
   short resourceTypeIndex = this->resourceTypeIndex;
   TCity* city = this->ownerCity;
 
-  city->orderCountByType5c[resourceTypeIndex] =
-      static_cast<short>(city->orderCountByType5c[resourceTypeIndex] + this->quantity);
+  city->orderCountByType[resourceTypeIndex] =
+      static_cast<short>(city->orderCountByType[resourceTypeIndex] + this->quantity);
   short quantity = this->quantity;
   this->quantity = static_cast<short>(quantity - 1);
 
   while (quantity != 0) {
-    const int nationSlot = static_cast<int>(city->ownerNationAc->nationSlot);
+    const int nationSlot = static_cast<int>(city->ownerNation->nationSlot);
     TZone* portZone = g_pActiveMapOrderContext->FindPortZoneBySelectedTile(city);
     CreateNavyPrimaryOrderNodeAndAssignDisplayName(this->resourceTypeIndex, portZone, nationSlot,
                                                    0);
@@ -194,7 +194,7 @@ void TShipOrder::LaunchShip() {
   }
   this->quantity = 0;
 
-  TGreatPower* owner = city->ownerNationAc;
+  TGreatPower* owner = city->ownerNation;
   if (owner->pendingActionStatus.byAction[0] == '2') {
     return;
   }

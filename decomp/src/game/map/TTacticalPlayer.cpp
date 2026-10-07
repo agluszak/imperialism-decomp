@@ -40,11 +40,11 @@ IMPLEMENT_DYNCREATE(TTacticalPlayer, TObject)
 void TTacticalPlayer::ITacticalPlayer(unsigned char isOurSide, unsigned char watch,
                                       int nationIndex) {
   isOurSideFlag = isOurSide;
-  watchFlagD = watch;
+  watchFlag = watch;
   retreatOrdered = false;
   sideReadyFlag = false;
   cursorIndex = 0;
-  nationIndex1C = nationIndex;
+  this->nationIndex = nationIndex;
   field20 = false;
 }
 
@@ -72,9 +72,9 @@ TTacticalUnit* TTacticalPlayer::SelectNextTacticalUnitForDoneCommand() {
     if (cursorIndex == startCursor) {
       break; // wrapped all the way around
     }
-  } while (unit->tileIndex8 != -2);
-  // The loop STOPS at tileIndex8 == -2: it seeks the next NOT-YET-PLACED unit.
-  if (unit->tileIndex8 != -2) {
+  } while (unit->tileIndex != -2);
+  // The loop STOPS at tileIndex == -2: it seeks the next NOT-YET-PLACED unit.
+  if (unit->tileIndex != -2) {
     sideReadyFlag = true; // no undeployed unit left -> side ready
   }
   // The original re-fetches the entry; keep the second virtual call.
@@ -98,14 +98,14 @@ void TTacticalPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
 
 // FUNCTION: IMPERIALISM 0x0059b010
 bool TTacticalPlayer::IsTacticalControllerOwnedByActiveNation() {
-  return nationIndex1C == g_pSimMgr->GetPlayerCountry();
+  return nationIndex == g_pSimMgr->GetPlayerCountry();
 }
 
 // FUNCTION: IMPERIALISM 0x0059b040
 void TTacticalPlayer::HandleTacticalCommandTag_skip() {
-  if (g_awTacticalUnitCategoryCodeBySlot[battle14->selectedUnit1c->unitTypeC] != 8) {
+  if (g_awTacticalUnitCategoryCodeBySlot[battle->selectedUnit->unitType] != 8) {
     field20 = true;
-    battle14->FinishTacticalActionAndPostNextMoveCommand();
+    battle->FinishTacticalActionAndPostNextMoveCommand();
   }
 }
 
@@ -114,7 +114,7 @@ void TTacticalPlayer::RetireUndeployedUnitsToReserveList() {
   int ordinal;
   for (ordinal = unitList->GetCount(); ordinal > 0; --ordinal) {
     TTacticalUnit* unit = static_cast<TTacticalUnit*>(unitList->GetEntryByOrdinal(ordinal));
-    if (unit->tileIndex8 == -2) {
+    if (unit->tileIndex == -2) {
       CPtrList* entries = &unitList->listState;
       POSITION pos = entries->Find(unit, 0);
       if (pos != 0) {
@@ -126,7 +126,7 @@ void TTacticalPlayer::RetireUndeployedUnitsToReserveList() {
   CIterator reserveIter(secondaryList);
   for (TTacticalUnit* retired = static_cast<TTacticalUnit*>(reserveIter.Reset());
        reserveIter.More(); retired = static_cast<TTacticalUnit*>(reserveIter.Advance())) {
-    CPtrList* recordEntries = &battle14->recordList->listState;
+    CPtrList* recordEntries = &battle->recordList->listState;
     POSITION recordPos = recordEntries->Find(retired, 0);
     if (recordPos != 0) {
       recordEntries->RemoveAt(recordPos);

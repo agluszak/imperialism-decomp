@@ -8,7 +8,7 @@
 
 // FUNCTION: IMPERIALISM 0x00495cc0
 TBitmapSurfaceNode::TBitmapSurfaceNode()
-    : pixelBits(0), stride(0), bounds(0, 0, 0, 0), bitDepth18(0), dib(0) {}
+    : pixelBits(0), stride(0), bounds(0, 0, 0, 0), bitDepth(0), dib(0) {}
 
 // FUNCTION: IMPERIALISM 0x00495d00
 TBitmapSurfaceNode::TBitmapSurfaceNode(int width, int height, int bitDepth) {
@@ -21,7 +21,7 @@ TBitmapSurfaceNode::TBitmapSurfaceNode(int width, int height, int bitDepth) {
   CPoint dims;
   CPoint* d = dib->CopyBitmapDimensionsToPoint(&dims);
   bounds.left = 0;
-  bitDepth18 = static_cast<short>(bitDepth);
+  this->bitDepth = static_cast<short>(bitDepth);
   bounds.top = 0;
   bounds.right = d->x;
   bounds.bottom = d->y;

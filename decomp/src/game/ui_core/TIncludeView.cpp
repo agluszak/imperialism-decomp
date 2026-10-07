@@ -16,11 +16,11 @@ IMPLEMENT_DYNCREATE(TIncludeView, TView)
 
 // FUNCTION: IMPERIALISM 0x0048cd70
 TIncludeView::TIncludeView()
-    : TView(), turnEventCode(-1), padding62(0), labelText6c(), completionFlag(1), padding72(0) {
-  anchorPoint64.x = 0;
-  anchorPoint64.y = 0;
+    : TView(), turnEventCode(-1), padding62(0), labelText(), completionFlag(1), padding72(0) {
+  anchorPoint.x = 0;
+  anchorPoint.y = 0;
   CString empty(g_szEmptyString);
-  labelText6c = empty;
+  labelText = empty;
   enabled = 0;
 }
 
@@ -32,7 +32,7 @@ void TIncludeView::BuildTurnEventFactoryPacket(TView* resourceContext, TView* ma
                                                short eventCode, const CPoint& anchorPoint,
                                                CString* labelText, int flag) {
   if (mainView != nullptr) {
-    nativeWindow50 = mainView->nativeWindow50;
+    nativeWindow = mainView->nativeWindow;
   }
   controlTag = kControlTagSpSpSpSp;
   enabled = 1;
@@ -47,9 +47,9 @@ void TIncludeView::BuildTurnEventFactoryPacket(TView* resourceContext, TView* ma
   }
   this->resourceContext = resourceContext;
   turnEventCode = eventCode;
-  anchorPoint64.x = anchorPoint.x;
-  anchorPoint64.y = anchorPoint.y;
-  labelText6c = *labelText;
+  this->anchorPoint.x = anchorPoint.x;
+  this->anchorPoint.y = anchorPoint.y;
+  this->labelText = *labelText;
   completionFlag = static_cast<short>(flag);
 }
 
@@ -70,7 +70,7 @@ void TIncludeView::DoPostCreate(int arg) {
       TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0x846);
     }
   }
-  if (nativeWindow50 != nullptr && nativeWindow50->m_hWnd != nullptr) {
-    SendMessageA(nativeWindow50->m_hWnd, 0x4ef, 1, 0);
+  if (nativeWindow != nullptr && nativeWindow->m_hWnd != nullptr) {
+    SendMessageA(nativeWindow->m_hWnd, 0x4ef, 1, 0);
   }
 }

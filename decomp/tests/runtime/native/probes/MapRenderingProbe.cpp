@@ -49,7 +49,7 @@ bool CapturedPixels::CaptureFrom(TView* view) {
   width = 0;
   height = 0;
 
-  if (view == 0 || view->nativeWindow50 == 0 || view->nativeWindow50->m_hWnd == 0 ||
+  if (view == 0 || view->nativeWindow == 0 || view->nativeWindow->m_hWnd == 0 ||
       view->frameWidth <= 0 || view->frameHeight <= 0) {
     return false;
   }
@@ -63,7 +63,7 @@ bool CapturedPixels::CaptureFrom(TView* view) {
   bitmapInfo.bmiHeader.biBitCount = 32;
   bitmapInfo.bmiHeader.biCompression = BI_RGB;
 
-  HDC windowDc = GetDC(view->nativeWindow50->m_hWnd);
+  HDC windowDc = GetDC(view->nativeWindow->m_hWnd);
   void* capturedStorage = 0;
   HBITMAP bitmap = CreateDIBSection(windowDc, &bitmapInfo, DIB_RGB_COLORS, &capturedStorage, 0, 0);
   HDC memoryDc = CreateCompatibleDC(windowDc);
@@ -83,7 +83,7 @@ bool CapturedPixels::CaptureFrom(TView* view) {
   SelectObject(memoryDc, previousBitmap);
   DeleteDC(memoryDc);
   DeleteObject(bitmap);
-  ReleaseDC(view->nativeWindow50->m_hWnd, windowDc);
+  ReleaseDC(view->nativeWindow->m_hWnd, windowDc);
   return pixels != 0;
 }
 
@@ -278,10 +278,10 @@ bool MapRenderingProbe::TransportConnectivityChangesTilePixels(TMapDialog* mapDi
 
 bool MapRenderingProbe::HoverMovementRestoresPreviousTiles(TMapDialog* mapDialog,
                                                            short excludedTile) {
-  if (mapDialog == 0 || mapDialog->nativeWindow50 == 0) {
+  if (mapDialog == 0 || mapDialog->nativeWindow == 0) {
     return false;
   }
-  RedrawWindow(mapDialog->nativeWindow50->m_hWnd, 0, 0, RDW_INVALIDATE | RDW_UPDATENOW);
+  RedrawWindow(mapDialog->nativeWindow->m_hWnd, 0, 0, RDW_INVALIDATE | RDW_UPDATENOW);
 
   CapturedPixels baseline;
   if (!baseline.CaptureFrom(mapDialog)) {

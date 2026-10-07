@@ -205,11 +205,11 @@ bool TWNetSessionManager::InitializeDirectPlayForProviderGuidOrEnumerate(const G
 // FUNCTION: IMPERIALISM 0x00480030
 BOOL TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext() {
   InitializeDirectPlayForProviderGuidOrEnumerate(0);
-  memset(&sessionDescription10, 0, sizeof(sessionDescription10));
-  sessionDescription10.dwSize = sizeof(sessionDescription10);
-  sessionDescription10.dwFlags = 0x40;
+  memset(&sessionDescription, 0, sizeof(sessionDescription));
+  sessionDescription.dwSize = sizeof(sessionDescription);
+  sessionDescription.dwFlags = 0x40;
   InitializeSessionDescription();
-  lastErrorCode = directPlayInterface->Open(&sessionDescription10, DPOPEN_CREATE);
+  lastErrorCode = directPlayInterface->Open(&sessionDescription, DPOPEN_CREATE);
   if (lastErrorCode < 0) {
     for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
       delete g_RuntimeSelectionRecords006a15e0[index];
@@ -233,15 +233,15 @@ BOOL TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext() {
 BOOL TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice() {
   InitializeDirectPlayForProviderGuidOrEnumerate(0);
 
-  memset(&sessionDescription10, 0, sizeof(sessionDescription10));
-  sessionDescription10.dwSize = sizeof(DPSESSIONDESC2);
+  memset(&sessionDescription, 0, sizeof(sessionDescription));
+  sessionDescription.dwSize = sizeof(DPSESSIONDESC2);
   ResetSessionDescription();
 
   {
     TScopedWaitCursor waitCursor;
     // Holding Ctrl during discovery stretches the enumeration window from 1s to 5s.
     DWORD enumerationTimeout = (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0 ? 5000 : 1000;
-    lastErrorCode = directPlayInterface->EnumSessions(&sessionDescription10, enumerationTimeout,
+    lastErrorCode = directPlayInterface->EnumSessions(&sessionDescription, enumerationTimeout,
                                                       ForwardEnumSessionsToSessionManager, this,
                                                       DPENUMSESSIONS_AVAILABLE);
   }
@@ -249,10 +249,10 @@ BOOL TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice() {
   if (lastErrorCode >= 0) {
     GUID selectedSessionGuid;
     if (ShowJoinGameSelectionDialogAndCaptureChoice(&selectedSessionGuid) != 0) {
-      memset(&sessionDescription10, 0, sizeof(sessionDescription10));
-      sessionDescription10.dwSize = sizeof(DPSESSIONDESC2);
-      sessionDescription10.guidInstance = selectedSessionGuid;
-      lastErrorCode = directPlayInterface->Open(&sessionDescription10, DPOPEN_JOIN);
+      memset(&sessionDescription, 0, sizeof(sessionDescription));
+      sessionDescription.dwSize = sizeof(DPSESSIONDESC2);
+      sessionDescription.guidInstance = selectedSessionGuid;
+      lastErrorCode = directPlayInterface->Open(&sessionDescription, DPOPEN_JOIN);
       if (lastErrorCode >= 0) {
         return 1;
       }
@@ -278,7 +278,7 @@ BOOL TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice() {
 
 // FUNCTION: IMPERIALISM 0x004803d0
 unsigned char TWNetSessionManager::OpenCurrentSessionDescriptionForJoin() {
-  long result = directPlayInterface->Open(&sessionDescription10, DPOPEN_JOIN);
+  long result = directPlayInterface->Open(&sessionDescription, DPOPEN_JOIN);
   lastErrorCode = result;
   return result >= 0;
 }
@@ -445,8 +445,8 @@ TDirectPlaySessionManagerBase::~TDirectPlaySessionManagerBase() {
 // FUNCTION: IMPERIALISM 0x005e2bb0
 void TWNetSessionManager::ResetSessionDescription() {
   joinGamePlayerDataTag = 0;
-  sessionDescription10.guidApplication = g_ImperialismDirectPlayApplicationGuid0066f968;
-  sessionDescription10.lpszPasswordA = joinGameSeed68;
+  sessionDescription.guidApplication = g_ImperialismDirectPlayApplicationGuid0066f968;
+  sessionDescription.lpszPasswordA = joinGameSeed;
   for (int index = 0; index < g_WNetSerializedPtrArrayB006a5f28.GetSize(); ++index) {
     delete g_WNetSerializedPtrArrayB006a5f28[index];
   }
@@ -456,9 +456,9 @@ void TWNetSessionManager::ResetSessionDescription() {
 // FUNCTION: IMPERIALISM 0x005e2c80
 void TWNetSessionManager::InitializeSessionDescription() {
   joinGamePlayerDataTag = 1;
-  sessionDescription10.guidApplication = g_ImperialismDirectPlayApplicationGuid0066f968;
-  sessionDescription10.dwMaxPlayers = 7;
-  sessionDescription10.lpszSessionNameA = runtimeSelectionSeed88;
+  sessionDescription.guidApplication = g_ImperialismDirectPlayApplicationGuid0066f968;
+  sessionDescription.dwMaxPlayers = 7;
+  sessionDescription.lpszSessionNameA = runtimeSelectionSeed;
 }
 
 // FUNCTION: IMPERIALISM 0x005e2cf0
@@ -529,13 +529,13 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
   TEditText* nameControl =
       static_cast<TEditText*>(selector->ResolveControlByTag(kControlTagName)); // 'name'
   nameControl->AssertValid();
-  nameControl->InitDialogWindowAndSyncTitleIfChanged(&joinGamePlayerNameA8, 0);
+  nameControl->InitDialogWindowAndSyncTitleIfChanged(&joinGamePlayerName, 0);
 
   int command = dialog->PoseModally();
   WNetSelectionRecord* selected = selector->GetSelectedJoinableGame();
   if (command == kControlTagOkay) {
     *selectedSessionGuid = selected->providerGuid;
-    nameControl->GetCurrentText(&joinGamePlayerNameA8);
+    nameControl->GetCurrentText(&joinGamePlayerName);
   }
 
   for (int cleanupIndex = 0; cleanupIndex < g_WNetSerializedPtrArrayB006a5f28.GetSize();

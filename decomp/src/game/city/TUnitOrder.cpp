@@ -63,7 +63,7 @@ short TUnitOrder::MaxOrder() {
                                         secondaryInputPerUnit);
   }
 
-  TGreatPower* owner = ownerCity->ownerNationAc;
+  TGreatPower* owner = ownerCity->ownerNation;
   short cashLimit = primaryLimit;
   if (cashCostPerUnit != 0 && owner->diplomacyEligibility != 0) {
     int availableCash = owner->treasuryValue10 + owner->diplomacyBudgetBase / 100;
@@ -112,7 +112,7 @@ bool TUnitOrder::SetQuantity(short quantity) {
   if (workforceMode) {
     productionSummary->RemovePopulation(workforceMode, delta);
   }
-  ownerCity->ownerNationAc->treasuryValue10 -=
+  ownerCity->ownerNation->treasuryValue10 -=
       static_cast<int>(cashCostPerUnit) * static_cast<int>(delta);
   g_pViewMgr->RefreshCityProductionUi();
   return true;
@@ -158,7 +158,7 @@ void TUnitOrder::Produce() {
     simMgr->GetString(0x2717, entryId, &sharedRefB);
   }
 
-  TGreatPower* ownerNation = cityContext->ownerNationAc;
+  TGreatPower* ownerNation = cityContext->ownerNation;
   short ownerNationSlot = ownerNation->nationSlot;
 
   if (specialist == 0) {

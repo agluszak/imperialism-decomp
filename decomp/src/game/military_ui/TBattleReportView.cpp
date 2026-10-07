@@ -572,8 +572,8 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     CString strTerrain;
     g_pGlobalMapState->AssignCityRecordDisplayName(reinterpret_cast<int>(record->location),
                                                    &strLocation);
-    int ownerNation = g_pGlobalMapState->cityScoreTable[reinterpret_cast<int>(record->location)]
-                          .ownerNationCode00;
+    int ownerNation =
+        g_pGlobalMapState->cityScoreTable[reinterpret_cast<int>(record->location)].ownerNationCode;
     g_apTerrainTypeDescriptorTable[ownerNation]->FormatOverlayTerrainLabelText(&strTerrain);
     CString locationTemplate;
     g_pSimMgr->GetString(0x273d, 7, &locationTemplate);

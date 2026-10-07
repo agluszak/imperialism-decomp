@@ -28,8 +28,8 @@ IMPLEMENT_DYNCREATE(TMiniCivView, TControl)
 void TMiniCivView::InitializeForCivilianUnit(TView* panel, int* offsetLayout, int* sizeLayout,
                                              TCivUnit* civUnit) {
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 5, 5, 0);
-  civUnit84 = civUnit;
-  eventNumber60 = 0x22;
+  this->civUnit = civUnit;
+  eventNumber = 0x22;
   SetControlHoverHelpText(g_pMiniCivSharedText_0064cb18, this);
 
   CString assembled;
@@ -37,7 +37,7 @@ void TMiniCivView::InitializeForCivilianUnit(TView* panel, int* offsetLayout, in
   CString textB;
   CString templateText;
   CString formatted;
-  short tile = civUnit->tileIndex06;
+  short tile = civUnit->tileIndex;
   {
     CString empty(g_pMiniCivSharedText_0064cb18);
     assembled = empty;
@@ -104,7 +104,7 @@ void TMiniCivView::InitializeForCivilianUnit(TView* panel, int* offsetLayout, in
     break;
   }
 
-  unitText88 = assembled;
+  unitText = assembled;
 }
 
 // FUNCTION: IMPERIALISM 0x004ac000
@@ -115,16 +115,16 @@ void TMiniCivView::Draw(RECT* rectBuffer) {
 
   CString lineText;
   CString nationName;
-  g_pSimMgr->GetString(0x2718, civUnit84->orderType, &lineText);
+  g_pSimMgr->GetString(0x2718, civUnit->orderType, &lineText);
   SetQuickDrawTextOriginWithContextOffset(0x40, 0x18);
   DrawTextWithCachedQuickDrawStyleState(&lineText);
 
   CString cityName;
-  g_apTerrainTypeDescriptorTable[g_pGlobalMapState->terrainStateTable[civUnit84->tileIndex06]
+  g_apTerrainTypeDescriptorTable[g_pGlobalMapState->terrainStateTable[civUnit->tileIndex]
                                      .ownerNationTag]
       ->FormatOverlayTerrainLabelText(&nationName);
   g_pGlobalMapState->AssignCityRecordDisplayName(
-      g_pGlobalMapState->terrainStateTable[civUnit84->tileIndex06].cityRecordIndex, &cityName);
+      g_pGlobalMapState->terrainStateTable[civUnit->tileIndex].cityRecordIndex, &cityName);
   {
     CString cityLine = cityName + g_szListSeparator_00695760 + nationName;
     lineText = cityLine;
@@ -135,9 +135,9 @@ void TMiniCivView::Draw(RECT* rectBuffer) {
   DrawTextWithCachedQuickDrawStyleState(&lineText);
 
   SetQuickDrawTextOriginWithContextOffset(0x40, 0x34);
-  DrawTextWithCachedQuickDrawStyleState(&unitText88);
+  DrawTextWithCachedQuickDrawStyleState(&unitText);
 
-  short iconColumn = g_pGlobalMapState->GetUnitOffset(civUnit84);
+  short iconColumn = g_pGlobalMapState->GetUnitOffset(civUnit);
   TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas66c->GetBlitSurface();
   RECT srcRect = {iconColumn, 0, iconColumn + 0x40, 0x40};
   RECT dstRect = {0, 0, 0x40, 0x40};
@@ -153,7 +153,7 @@ void TMiniCivView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
   if (sourceHandler == this) {
     TSuperCivRoster* roster = static_cast<TSuperCivRoster*>(ownerContext);
     roster->AssertValid();
-    roster->selectedTileIndex = civUnit84->tileIndex06;
+    roster->selectedTileIndex = civUnit->tileIndex;
   }
   TControl::DoEvent(commandId, sourceHandler, event);
 }

@@ -18,7 +18,7 @@ StrategicMapCallbackRecord::~StrategicMapCallbackRecord() {}
 // FUNCTION: IMPERIALISM 0x004d4b90
 StrategicMapCallbackRecord::StrategicMapCallbackRecord()
     : opcodeAppendCursor(0), opcodeAlignmentOffset(0), hadTrailingPadding(0),
-      destinationRowStride2c(0) {}
+      destinationRowStride(0) {}
 
 // FUNCTION: IMPERIALISM 0x004d4bd0
 void StrategicMapCallbackRecord::SetDestinationHeightNoOp(int unusedHeight) {
@@ -91,7 +91,7 @@ void StrategicMapCallbackRecord::ApplyBitmapMaskToPixelBuffer(unsigned char* des
 void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(
     int resourceId, short width, short height, int destinationRowStride,
     unsigned char transparentPixel) {
-  destinationRowStride2c = destinationRowStride;
+  this->destinationRowStride = destinationRowStride;
 
   CDib* dib = g_pResourceMgr->LoadBmpResourceByIdCached(static_cast<unsigned short>(resourceId));
   unsigned char* row = static_cast<unsigned char*>(dib->m_dibBits);
@@ -296,7 +296,7 @@ void StrategicMapCallbackRecord::StreamOverlayHitMaskToSurfaceDib(DiplomacyMaskB
 void StrategicMapCallbackRecord::BuildDiplomacyOverlayHitMaskOpcodeStream(
     DiplomacyMaskBufferRun* run, int destinationRowStride, int outlineOnly, int surfaceHeight) {
   opcodeBytes.SetCapacity(0x400);
-  destinationRowStride2c = destinationRowStride;
+  this->destinationRowStride = destinationRowStride;
 
   AppendOpcodeByte(0xb9);
   packedColorCursor.Add(opcodeAppendCursor);

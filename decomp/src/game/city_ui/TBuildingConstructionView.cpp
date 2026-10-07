@@ -19,8 +19,7 @@
 IMPLEMENT_DYNCREATE(TBuildingConstructionView, TPicture)
 
 // FUNCTION: IMPERIALISM 0x004c9e30
-TBuildingConstructionView::TBuildingConstructionView()
-    : TPicture(), city90(0), productionView98(0) {}
+TBuildingConstructionView::TBuildingConstructionView() : TPicture(), city(0), productionView(0) {}
 
 // No own destructor: the original's 0x004c9e90 is an ILT thunk to the base's
 // ~TPicture (0x0048f250), so this class inherits it. The scalar deleting destructor above is what
@@ -43,9 +42,9 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   CString capTemplate;
   CString scratch;
 
-  this->city90 = city;
+  this->city = city;
   this->buildingSlotId = buildingSlotId;
-  this->productionView98 = productionView;
+  this->productionView = productionView;
 
   city->GetMaxBuildingCapacity(buildingSlotId);
   this->SetPictureRsrcID(static_cast<short>((buildingSlotId + 0x73a) * 5), 1);
@@ -94,7 +93,8 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   }
   tex2->InstallTextStyle(style.desc, 0);
   tex2->SetJustification(-2, false);
-  tex2->SetTextWithStrListID(static_cast<short>(reinterpret_cast<int>(productionView98)), 2, true);
+  tex2->SetTextWithStrListID(static_cast<short>(reinterpret_cast<int>(this->productionView)), 2,
+                             true);
   if (buildingSlotId == 0xb) {
     CRect tex2Bounds;
     tex2->QueryBounds(&tex2Bounds);
@@ -187,7 +187,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   if (slot == 0xb) {
     // Power-plant slot: eligible if the owner can afford the 5000 cost; show it in 'buck'.
     CString buckCost;
-    TGreatPower* owner = city->ownerNationAc;
+    TGreatPower* owner = city->ownerNation;
     int availableBudget = owner->treasuryValue10 + owner->diplomacyBudgetBase / 100;
     if (availableBudget < 0) {
       availableBudget = 0;
@@ -236,23 +236,23 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
 // FUNCTION: IMPERIALISM 0x004ca8f0
 void TBuildingConstructionView::DoClosingAction(unsigned long dialogActionTag) {
   if (buildingSlotId != 0xb) {
-    TProductionOrder* order = city90->trailingOrderSlots[buildingSlotId + 2];
+    TProductionOrder* order = city->trailingOrderSlots[buildingSlotId + 2];
     if (order == 0) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x519);
     }
     if (dialogActionTag == kControlTagOkay) { // 'okay'
-      short previousBuildingType = static_cast<short>(city90->GetBuildingType(buildingSlotId));
-      order->SetQuantity(static_cast<short>(city90->GetMaxBuildingCapacity(buildingSlotId) -
-                                            previousBuildingType));
+      short previousBuildingType = static_cast<short>(city->GetBuildingType(buildingSlotId));
+      order->SetQuantity(
+          static_cast<short>(city->GetMaxBuildingCapacity(buildingSlotId) - previousBuildingType));
     } else if (order->quantity > 0) {
       order->SetQuantity(0);
     }
   } else if (dialogActionTag == kControlTagOkay) { // 'okay'
-    city90->BuildPowerPlant(true);
+    city->BuildPowerPlant(true);
   }
 
-  productionView98->SetBuildingPicture(buildingSlotId,
-                                       static_cast<short>(city90->GetBuildingType(buildingSlotId)));
-  productionView98->UpdateToolbar();
-  productionView98->RefreshControl();
+  productionView->SetBuildingPicture(buildingSlotId,
+                                     static_cast<short>(city->GetBuildingType(buildingSlotId)));
+  productionView->UpdateToolbar();
+  productionView->RefreshControl();
 }

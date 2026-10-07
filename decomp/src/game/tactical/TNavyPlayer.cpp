@@ -12,8 +12,8 @@ IMPLEMENT_DYNCREATE(TNavyPlayer, TTacticalPlayer)
 void TNavyPlayer::INavyPlayer(TTaskForce* force, char isOurSide, bool watchFlag, int nationIndex) {
   isOurSideFlag = isOurSide;
   sideReadyFlag = false;
-  watchFlagD = watchFlag;
-  nationIndex1C = nationIndex;
+  this->watchFlag = watchFlag;
+  this->nationIndex = nationIndex;
   cursorIndex = 0;
   retreatOrdered = false;
   field20 = false;
@@ -62,5 +62,5 @@ void TNavyPlayer::RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) {
 void TNavyPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
   unitList->listState.AddHead(unit);
   unit->FlipUnitSideAffiliation();
-  static_cast<TNavyTacUnit*>(unit)->GetSourceShip()->Capture(static_cast<short>(nationIndex1C));
+  static_cast<TNavyTacUnit*>(unit)->GetSourceShip()->Capture(static_cast<short>(nationIndex));
 }

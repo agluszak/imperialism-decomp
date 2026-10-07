@@ -53,7 +53,7 @@ public:
   bool inputGateFlag;
   bool childHitTestFlag;
   unsigned short cursorId;
-  CWnd* nativeWindow50; // 0x50 — host window (MFC CWnd; HWND via m_hWnd)
+  CWnd* nativeWindow; // 0x50 — host window (MFC CWnd; HWND via m_hWnd)
   unsigned short helpState;
   unsigned char padding_56_to_57[0x02];
   CString hoverHelpText;

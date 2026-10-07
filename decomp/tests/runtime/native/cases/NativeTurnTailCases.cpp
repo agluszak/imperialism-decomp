@@ -365,10 +365,10 @@ RuntimeActionResult RunOpeningCivilianGrant(NativeTransition& transition) {
   TCivUnit* civ2 = new TCivUnit();
   civ2->ICivUnit(kCivilianUnitEngineer, result2, nation->nationSlot);
 
-  city->orderCountByType5c[1] += 2;
+  city->orderCountByType[1] += 2;
 
   if (g_pSimMgr->difficultyLevel == kDifficultyIntroductory && nation->diplomacyEligibility) {
-    city->orderCountByType5c[1] += 6;
+    city->orderCountByType[1] += 6;
 
     short result3 =
         g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(nation->homeTileIndex, 0);

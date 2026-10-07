@@ -17,16 +17,15 @@ IMPLEMENT_DYNCREATE(TCivilianButton, TRadioPictureButton)
 
 // FUNCTION: IMPERIALISM 0x0058b3e0
 TCivilianButton::TCivilianButton() : TRadioPictureButton() {
-  this->eventNumber60 = 0xc;
+  this->eventNumber = 0xc;
 }
-
 
 // FUNCTION: IMPERIALISM 0x0058b440
 TCivilianButton::~TCivilianButton() {}
 
 // FUNCTION: IMPERIALISM 0x0058b460
 void TCivilianButton::SetButton(TCivUnit* selectedOrder) {
-  this->eventNumber60 = 0xc;
+  this->eventNumber = 0xc;
   this->selectedCivilianOrder = selectedOrder;
   if (selectedOrder != 0) {
     Show(1, 0);

@@ -173,7 +173,7 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, i
 
   int index;
   for (index = 0; index < kMapTileCount; ++index) {
-    g_pGlobalMapState->terrainStateTable[index].tileActionState16 = kMapTileActionStateNone;
+    g_pGlobalMapState->terrainStateTable[index].tileActionState = kMapTileActionStateNone;
   }
 
   for (index = 0; index < kCityRecordCount; ++index) {
@@ -183,7 +183,7 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, i
     city.linkedRegionCount = 0;
     int entry;
     for (entry = 0; entry < 0x20; ++entry) {
-      city.linkedTileIndices42[entry] = -1;
+      city.linkedTileIndices[entry] = -1;
     }
     for (entry = 0; entry < 0x0c; ++entry) {
       city.adjacentRegionIds[entry] = -1;

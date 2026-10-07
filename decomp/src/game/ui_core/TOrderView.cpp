@@ -13,15 +13,15 @@
 IMPLEMENT_DYNCREATE(TOrderView, TView)
 
 // FUNCTION: IMPERIALISM 0x00506a80
-TOrderView::TOrderView() : TView(), city60(0) {}
+TOrderView::TOrderView() : TView(), city(0) {}
 
 // FUNCTION: IMPERIALISM 0x00506ae0
 TOrderView::~TOrderView() {}
 
 // FUNCTION: IMPERIALISM 0x00506b00
 void TOrderView::StuffValues(TGreatPower* power, short orderSlot) {
-  city60 = power != 0 ? power->city : 0;
-  order = static_cast<TItemOrder*>(city60->orderSlots[orderSlot]);
+  city = power != 0 ? power->city : 0;
+  order = static_cast<TItemOrder*>(city->orderSlots[orderSlot]);
   if (order == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x210);
   }
@@ -30,7 +30,7 @@ void TOrderView::StuffValues(TGreatPower* power, short orderSlot) {
   if (slider == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x213);
   }
-  slider->SetNumIcons(static_cast<short>(city60->GetBuildingType(order->productionSlot)));
+  slider->SetNumIcons(static_cast<short>(city->GetBuildingType(order->productionSlot)));
   slider->SetPictureRsrcID(static_cast<short>(orderSlot + 700), true);
   slider->value = order->quantity;
   slider->SetMax(order->MaxOrder());
@@ -39,7 +39,7 @@ void TOrderView::StuffValues(TGreatPower* power, short orderSlot) {
   if (supplyPrimary == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x21c);
   }
-  supplyPrimary->SetNumIcons(city60->CityStockByType(order->primaryInputResourceId));
+  supplyPrimary->SetNumIcons(city->CityStockByType(order->primaryInputResourceId));
   supplyPrimary->SetPictureRsrcID(static_cast<short>(order->primaryInputResourceId + 700), true);
 
   TIconBar* supplySecondary = static_cast<TIconBar*>(ResolveControlByTag(kControlTagSup2));
@@ -47,7 +47,7 @@ void TOrderView::StuffValues(TGreatPower* power, short orderSlot) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x221);
   }
   if (order->secondaryInputResourceId != -1) {
-    supplySecondary->SetNumIcons(city60->CityStockByType(order->secondaryInputResourceId));
+    supplySecondary->SetNumIcons(city->CityStockByType(order->secondaryInputResourceId));
     supplySecondary->SetPictureRsrcID(static_cast<short>(order->secondaryInputResourceId + 700),
                                       true);
   }
@@ -56,7 +56,7 @@ void TOrderView::StuffValues(TGreatPower* power, short orderSlot) {
   if (supplyLabor == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x229);
   }
-  supplyLabor->SetNumIcons(city60->productionSummary->strength);
+  supplyLabor->SetNumIcons(city->productionSummary->strength);
   supplyLabor->SetPictureRsrcID(0x148, true);
 
   TIconBar* usePrimary = static_cast<TIconBar*>(ResolveControlByTag(kControlTagUse1));
@@ -96,7 +96,7 @@ void TOrderView::UpdateFields() {
   if (supplyPrimary == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x255);
   }
-  supplyPrimary->SetNumIcons(city60->CityStockByType(order->primaryInputResourceId));
+  supplyPrimary->SetNumIcons(city->CityStockByType(order->primaryInputResourceId));
   supplyPrimary->RefreshControl();
 
   TIconBar* supplySecondary = static_cast<TIconBar*>(ResolveControlByTag(kControlTagSup2));
@@ -104,7 +104,7 @@ void TOrderView::UpdateFields() {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x25a);
   }
   if (order->secondaryInputResourceId != -1) {
-    supplySecondary->SetNumIcons(city60->CityStockByType(order->secondaryInputResourceId));
+    supplySecondary->SetNumIcons(city->CityStockByType(order->secondaryInputResourceId));
     supplySecondary->RefreshControl();
   }
 
@@ -112,7 +112,7 @@ void TOrderView::UpdateFields() {
   if (supplyLabor == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x262);
   }
-  supplyLabor->SetNumIcons(city60->productionSummary->strength);
+  supplyLabor->SetNumIcons(city->productionSummary->strength);
   supplyLabor->RefreshControl();
 
   TIconBar* usePrimary = static_cast<TIconBar*>(ResolveControlByTag(kControlTagUse1));

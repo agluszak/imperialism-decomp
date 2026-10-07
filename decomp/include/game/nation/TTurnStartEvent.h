@@ -14,9 +14,9 @@ public:
   virtual void Execute();                // slot 0x0a 0x4e6610
 
   // Concrete event initializers replace the uninitialized 'erra' tag.
-  int eventTag04; // +0x04
+  int eventTag; // +0x04
 
-  TTurnStartEvent() : eventTag04(kControlTagErra) {}
+  TTurnStartEvent() : eventTag(kControlTagErra) {}
 };
 
 ASSERT_SIZE(TTurnStartEvent, 0x8);

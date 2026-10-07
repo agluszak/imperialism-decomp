@@ -7,11 +7,11 @@
 IMPLEMENT_DYNCREATE(TDropShadowTextBehavior, TBehavior)
 
 // FUNCTION: IMPERIALISM 0x004b10a0
-TDropShadowTextBehavior::TDropShadowTextBehavior() : TBehavior(), shadowColor10(0) {}
+TDropShadowTextBehavior::TDropShadowTextBehavior() : TBehavior(), shadowColor(0) {}
 
 // FUNCTION: IMPERIALISM 0x004b1120
 void TDropShadowTextBehavior::IDropShadowTextBehavior(COLORREF shadowColor) {
-  shadowColor10 = shadowColor;
+  this->shadowColor = shadowColor;
   SetBehaviorTag(IMPERIALISM_FOURCC('d', 'r', 'o', 'p'));
 }
 
@@ -19,7 +19,7 @@ void TDropShadowTextBehavior::IDropShadowTextBehavior(COLORREF shadowColor) {
 void TDropShadowTextBehavior::Draw(RECT* bounds) {
   (void)bounds;
   TStaticText* textOwner = static_cast<TStaticText*>(owner);
-  SetQuickDrawColorAndPropagateIfChanged(shadowColor10);
+  SetQuickDrawColorAndPropagateIfChanged(shadowColor);
 
   CString text;
   textOwner->CopyTextTo(&text);
@@ -31,5 +31,5 @@ void TDropShadowTextBehavior::Draw(RECT* bounds) {
   shadowBounds.left--;
   shadowBounds.right--;
   textOwner->ImageText(static_cast<LPCSTR>(text), text.GetLength(), &shadowBounds,
-                             textOwner->textAlignmentCode);
+                       textOwner->textAlignmentCode);
 }

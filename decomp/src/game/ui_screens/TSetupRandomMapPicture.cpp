@@ -40,7 +40,7 @@ IMPLEMENT_DYNCREATE(TSetupRandomMapPicture, TNoHilitePicture)
 
 // FUNCTION: IMPERIALISM 0x00576d80
 TSetupRandomMapPicture::TSetupRandomMapPicture()
-    : TNoHilitePicture(), planetSeed94(), wrapHorizontally(0), countryControlReady(0) {}
+    : TNoHilitePicture(), planetSeed(), wrapHorizontally(0), countryControlReady(0) {}
 
 TSetupRandomMapPicture::~TSetupRandomMapPicture() {}
 
@@ -90,10 +90,10 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
   if (g_pGlobalMapState == 0) {
     // LIBRARY: rand (0x005e83f0)
     selectedNationSlot = static_cast<short>(rand() % 7);
-    GenerateMappedFlavorTextByCurrentContextNation(&planetSeed94);
+    GenerateMappedFlavorTextByCurrentContextNation(&planetSeed);
     wrapHorizontally = 0;
   } else {
-    planetSeed94 = g_pGlobalMapState->scenarioTagText;
+    planetSeed = g_pGlobalMapState->scenarioTagText;
     wrapHorizontally = g_pGlobalMapState->hexNeighborWrapHorizontally;
     selectedNationSlot = static_cast<short>(g_nRandomMapSelectedNationSlot00698AB0);
     if (selectedNationSlot == -1) {
@@ -271,10 +271,10 @@ void TSetupRandomMapPicture::DoEvent(int commandId, TEventHandler* sourceHandler
     if (controlTag == kControlTagCanc || controlTag == kControlTagCncl) {
       ExitScreen();
     } else if (controlTag == kControlTagGlob) {
-      GenerateMappedFlavorTextByCurrentContextNation(&planetSeed94);
+      GenerateMappedFlavorTextByCurrentContextNation(&this->planetSeed);
       MajorTomToGroundControl(1);
     } else if (controlTag == kControlTagKeyP || controlTag == kControlTagPlan) {
-      CString planetSeed(planetSeed94);
+      CString planetSeed(this->planetSeed);
       CString instruction;
       CString unusedOptionText;
       CString unusedCancelText;
@@ -285,8 +285,8 @@ void TSetupRandomMapPicture::DoEvent(int commandId, TEventHandler* sourceHandler
                                                        0, 0, 0, false);
       wrapHorizontally = resultTag == kControlTagOne1;
 
-      if (planetSeed.Compare(g_szEmptyString) != 0 && planetSeed.Compare(planetSeed94) != 0) {
-        planetSeed94 = planetSeed;
+      if (planetSeed.Compare(g_szEmptyString) != 0 && planetSeed.Compare(this->planetSeed) != 0) {
+        this->planetSeed = planetSeed;
         MajorTomToGroundControl(1);
       } else {
         g_pGlobalMapState->hexNeighborWrapHorizontally = wrapHorizontally;
@@ -429,7 +429,7 @@ void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
   lastGlobeTick = GetTickCountDiv16();
   globeFrame = 0;
   SpinYourGlobe();
-  g_pSimMgr->CreatePlanet(1, static_cast<LPCSTR>(planetSeed94), static_cast<int>(wrapHorizontally));
+  g_pSimMgr->CreatePlanet(1, static_cast<LPCSTR>(planetSeed), static_cast<int>(wrapHorizontally));
   g_pActiveRandomMapSetupPicture006A4268 = 0;
   SpinYourGlobe();
 

@@ -205,7 +205,7 @@ unsigned char TNetMgr::ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TVie
 unsigned char TNetMgr::OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, int flag,
                                                                     const char* seed) {
   (void)flag;
-  strncpy(g_NetworkSessionManager006a5f60.runtimeSelectionSeed88, seed, 0x20);
+  strncpy(g_NetworkSessionManager006a5f60.runtimeSelectionSeed, seed, 0x20);
   const GUID* sessionGuid = &g_WNetSerializedPtrArrayA006a5f10[index]->providerGuid;
   bool result =
       g_NetworkSessionManager006a5f60.InitializeDirectPlayForProviderGuidOrEnumerate(sessionGuid);
@@ -218,8 +218,8 @@ unsigned char TNetMgr::OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, i
 // FUNCTION: IMPERIALISM 0x005e3ad0
 unsigned char TNetMgr::Host(const char* seedPath, const char* localPlayerName,
                             const char* emptyOrSeed) {
-  strncpy(g_NetworkSessionManager006a5f60.joinGameSeed68, emptyOrSeed, 0x20);
-  strncpy(g_NetworkSessionManager006a5f60.runtimeSelectionSeed88, seedPath, 0x20);
+  strncpy(g_NetworkSessionManager006a5f60.joinGameSeed, emptyOrSeed, 0x20);
+  strncpy(g_NetworkSessionManager006a5f60.runtimeSelectionSeed, seedPath, 0x20);
 
   int result = g_NetworkSessionManager006a5f60.OpenRuntimeSelectionSourceFromCurrentContext();
   if (result) {
@@ -250,17 +250,17 @@ unsigned char TNetMgr::ReturnTrueRuntimeCredentialFinalizeStub() {
 
 // FUNCTION: IMPERIALISM 0x005e3c20
 unsigned char TNetMgr::SelectGame(int selectionTag, CString* outGameName, const char* seed) {
-  strncpy(g_NetworkSessionManager006a5f60.joinGameSeed68, seed, 0x20);
-  g_NetworkSessionManager006a5f60.joinGamePlayerNameA8 = *outGameName;
+  strncpy(g_NetworkSessionManager006a5f60.joinGameSeed, seed, 0x20);
+  g_NetworkSessionManager006a5f60.joinGamePlayerName = *outGameName;
 
   int result = g_NetworkSessionManager006a5f60.OpenRuntimeSelectionSourceWithUserChoice();
   if (result) {
-    *outGameName = g_NetworkSessionManager006a5f60.joinGamePlayerNameA8;
+    *outGameName = g_NetworkSessionManager006a5f60.joinGamePlayerName;
 
-    LPSTR shortName = g_NetworkSessionManager006a5f60.joinGamePlayerNameA8.GetBuffer(1);
+    LPSTR shortName = g_NetworkSessionManager006a5f60.joinGamePlayerName.GetBuffer(1);
     DPID localPlayerId;
     result = g_NetworkSessionManager006a5f60.CreatePlayerAndStoreResult(&localPlayerId, shortName);
-    g_NetworkSessionManager006a5f60.joinGamePlayerNameA8.ReleaseBuffer(-1);
+    g_NetworkSessionManager006a5f60.joinGamePlayerName.ReleaseBuffer(-1);
     if (result) {
       g_NetworkSessionManager006a5f60.localPlayerId = localPlayerId;
       result = g_NetworkSessionManager006a5f60.SetLocalPlayerDataAndStoreResult(

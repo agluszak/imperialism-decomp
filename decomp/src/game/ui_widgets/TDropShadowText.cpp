@@ -6,7 +6,7 @@
 IMPLEMENT_DYNCREATE(TDropShadowText, TPictureText)
 
 // FUNCTION: IMPERIALISM 0x005b5590
-TDropShadowText::TDropShadowText() : TPictureText(), shadowColor94(0) {}
+TDropShadowText::TDropShadowText() : TPictureText(), shadowColor(0) {}
 
 // FUNCTION: IMPERIALISM 0x005b5630
 TDropShadowText::~TDropShadowText() {}
@@ -28,7 +28,7 @@ void TDropShadowText::Draw(RECT* rectBuffer) {
 
   TStaticText::Draw(rectBuffer);
 
-  SetQuickDrawColorAndSyncGlobals(shadowColor94);
+  SetQuickDrawColorAndSyncGlobals(shadowColor);
   CString textBuffer;
   CopyTextTo(&textBuffer);
   CRect shadowRect;

@@ -19,7 +19,7 @@
 // FUNCTION: IMPERIALISM 0x00535470
 TNavyMission::TNavyMission(TZone* targetZone)
     : TMission(), missionTargetZone(targetZone), resolvedPortZone(nullptr), selectedOrder(nullptr),
-      taskForce20(nullptr), orderList(nullptr), navyState(0) {
+      taskForce(nullptr), orderList(nullptr), navyState(0) {
   for (int i = 0; i < 4; ++i) {
     requiredShipEquipageByCategory[i] = 0.0f;
   }
@@ -54,10 +54,10 @@ IMPLEMENT_SERIAL(TNavyMission, TMission, 1)
 
 // FUNCTION: IMPERIALISM 0x005364c0
 void TNavyMission::Free() {
-  if (taskForce20 != nullptr) {
-    taskForce20->Free();
+  if (taskForce != nullptr) {
+    taskForce->Free();
   }
-  taskForce20 = nullptr;
+  taskForce = nullptr;
 
   while (orderList != nullptr) {
     orderList->payload->mission = nullptr;
@@ -117,10 +117,10 @@ void TNavyMission::ReadFrom(TStream* stream) {
 
   stream->ReadBytes(&navyState, 4);
   selectedOrder = nullptr;
-  if (taskForce20 != nullptr) {
-    taskForce20->Free();
+  if (taskForce != nullptr) {
+    taskForce->Free();
   }
-  taskForce20 = nullptr;
+  taskForce = nullptr;
 }
 
 // FUNCTION: IMPERIALISM 0x00536740
@@ -157,8 +157,8 @@ void TNavyMission::RejectConstituent(TShip* item, bool notify) {
 
 // FUNCTION: IMPERIALISM 0x00536810
 void TNavyMission::ForgetTaskForce(TTaskForce* taskForce) {
-  if (taskForce20 == taskForce) {
-    taskForce20 = nullptr;
+  if (this->taskForce == taskForce) {
+    this->taskForce = nullptr;
   }
 }
 // FUNCTION: IMPERIALISM 0x00536840
@@ -297,18 +297,18 @@ void TNavyMission::GiveOrders() {
 
   if (navyState == 2) {
     ConsolidateMissionOrderEntriesByTargetAndQueue(missionTargetZone);
-    CombineForce(missionTargetZone, taskForce20);
-    if (taskForce20 != nullptr) {
-      GiveActionOrders(taskForce20);
+    CombineForce(missionTargetZone, taskForce);
+    if (taskForce != nullptr) {
+      GiveActionOrders(taskForce);
     }
     return;
   }
 
   if (navyState == 1) {
     ConsolidateMissionOrderEntriesByTargetAndQueue(missionTargetZone);
-    CombineForce(missionTargetZone, taskForce20);
-    if (taskForce20 != nullptr) {
-      taskForce20->OrderEvade();
+    CombineForce(missionTargetZone, taskForce);
+    if (taskForce != nullptr) {
+      taskForce->OrderEvade();
     }
     return;
   }
@@ -319,10 +319,10 @@ void TNavyMission::GiveOrders() {
     }
     GiveReconOrders(missionTargetZone, &selectedOrder);
     ConsolidateMissionOrderEntriesByTargetAndQueue(resolvedPortZone);
-    CombineForce(resolvedPortZone, taskForce20);
-    if (taskForce20 != nullptr) {
-      taskForce20->SetAggression(0);
-      taskForce20->OrderPatrol(false);
+    CombineForce(resolvedPortZone, taskForce);
+    if (taskForce != nullptr) {
+      taskForce->SetAggression(0);
+      taskForce->OrderPatrol(false);
     }
   }
 }

@@ -22,7 +22,7 @@ public:
   virtual void
   UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalUnit* unit); // slot 0x73 0x5acb50
   virtual void UpdateTacticalOtherSideUnitControl(TArmyTacUnit* unit); // slot 0x74 0x5acc90
-  class TTacticalBattle* battle88;                                     // +0x88
+  class TTacticalBattle* battle;                                       // +0x88
   class TTacticalUnit* currentUnit;                        // +0x8c current-unit control source
   class TArmyTacUnit* otherSideCurrentUnit;                // +0x90
   struct TQuickDrawSurfaceContext* unitSpriteAtlasSurface; // +0x94 the 0xee2 atlas

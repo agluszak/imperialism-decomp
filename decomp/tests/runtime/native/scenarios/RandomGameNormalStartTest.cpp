@@ -62,7 +62,7 @@ private:
     JsonArray provinces;
     for (int id = 0; id < 0x180; ++id) {
       Province& province = g_pGlobalMapState->cityScoreTable[id];
-      if (province.linkedTileIndices42[0] == -1) {
+      if (province.linkedTileIndices[0] == -1) {
         continue;
       }
       JsonObject row;

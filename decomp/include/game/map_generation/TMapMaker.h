@@ -20,7 +20,7 @@ public:
   TMapMaker();
   virtual ~TMapMaker() override;
 
-  // Picks a random cell of regionClassGrid10[15][27] using two LCG values.
+  // Picks a random cell of regionClassGrid[15][27] using two LCG values.
   // ABI: two pointer arguments, void return. slot 10 / 0x28
   virtual void PickRandomRegionGridCell(unsigned int* outColumn, unsigned int* outRow);
   virtual void RunMapGenerationAttempt();
@@ -55,7 +55,7 @@ public:
   virtual void TargetValidationSucceeded(); // slot 27 / 0x6c
   virtual void EraseZones(long coarseIndex);
   void ClearRegionClassIndexReferences(int classIndex) {
-    signed char* regionClassGridFlat = &regionClassGrid10[0][0];
+    signed char* regionClassGridFlat = &regionClassGrid[0][0];
     for (int cell = 0; cell < 15 * 27; ++cell) {
       if (regionClassGridFlat[cell] == classIndex) {
         regionClassGridFlat[cell] = -1;
@@ -159,7 +159,7 @@ public:
   void SetSeaZoneIndex(int tileIndex, char zoneIndex);
   Province* cityScoreTable;
   // +0x10 region-class grid: 15 rows x 27 columns of region-class bytes (-1 = unassigned).
-  signed char regionClassGrid10[15][27];
+  signed char regionClassGrid[15][27];
   char pad_1a5[0x1a8 - 0x1a5]; // +0x1a5
   int groupMemberLists[7][3];
   int cityRegionNextId;

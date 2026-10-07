@@ -173,12 +173,12 @@ private:
     if (!produced.Succeeded()) {
       return produced;
     }
-    if (spawnedCivilian->tileIndex06 < 0 || spawnedCivilian->tileIndex06 >= kGlobalMapTileCount) {
+    if (spawnedCivilian->tileIndex < 0 || spawnedCivilian->tileIndex >= kGlobalMapTileCount) {
       return RuntimeActionResult::Failure(
           "the newly allocated civilian has an invalid strategic-map tile");
     }
     const signed char ownerTag =
-        g_pGlobalMapState->terrainStateTable[spawnedCivilian->tileIndex06].ownerNationTag;
+        g_pGlobalMapState->terrainStateTable[spawnedCivilian->tileIndex].ownerNationTag;
     if (ownerTag < 0 || ownerTag >= kTerrainTypeDescriptorTableCount ||
         g_apTerrainTypeDescriptorTable[ownerTag] == 0) {
       return RuntimeActionResult::Failure(
@@ -209,7 +209,7 @@ private:
     for (short tile = 0; tile < kGlobalMapTileCount; ++tile) {
       const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tile];
       if (terrain.GetTerrainKind() != terrainKind || terrain.firstCivilianOrder != 0 ||
-          tile == spawnedCivilian->tileIndex06 || tile % 0x6c == 0 || tile % 0x6c == 0x6b) {
+          tile == spawnedCivilian->tileIndex || tile % 0x6c == 0 || tile % 0x6c == 0x6b) {
         continue;
       }
       if ((terrain.recruitSearchVisited == 0) != mustBeEligible) {
@@ -336,7 +336,7 @@ private:
     for (int provinceOrdinal = 1; provinceOrdinal <= provinces->GetSize(); ++provinceOrdinal) {
       Province* province = &g_pGlobalMapState->cityScoreTable[provinces->At(provinceOrdinal)];
       for (int tileOrdinal = 0; tileOrdinal < province->linkedRegionCount; ++tileOrdinal) {
-        short tileIndex = province->linkedTileIndices42[tileOrdinal];
+        short tileIndex = province->linkedTileIndices[tileOrdinal];
         TTerrainStateRecord* terrain = &g_pGlobalMapState->terrainStateTable[tileIndex];
         if (terrain->recruitSearchVisited != 0 ||
             static_cast<unsigned char>(terrain->gateFlag) != profile) {
@@ -459,7 +459,7 @@ private:
     if (mapDialog == 0) {
       return RuntimeActionResult::Failure("the strategic map has no map dialog");
     }
-    if (mapDialog->nativeWindow50 == 0 || mapDialog->nativeWindow50->m_hWnd == 0) {
+    if (mapDialog->nativeWindow == 0 || mapDialog->nativeWindow->m_hWnd == 0) {
       return RuntimeActionResult::Failure("the strategic map has no native mouse-routing host");
     }
 
@@ -484,10 +484,10 @@ private:
     }
 
     if (spawnedCivilian->unitOrder != kUnitOrderIdle ||
-        spawnedCivilian->tileIndex06 == targetHillTile) {
+        spawnedCivilian->tileIndex == targetHillTile) {
       CString detail;
       detail.Format("the prospector was not idle before the click: order=%d tile=%d target=%d",
-                    spawnedCivilian->unitOrder, spawnedCivilian->tileIndex06, targetHillTile);
+                    spawnedCivilian->unitOrder, spawnedCivilian->tileIndex, targetHillTile);
       return RuntimeActionResult::Failure(detail);
     }
     short hillBand = 0;
@@ -498,10 +498,10 @@ private:
     mapDialog->NormalClick(targetHillTile, hillBand);
 
     if (spawnedCivilian->unitOrder != kUnitOrderProspect ||
-        spawnedCivilian->tileIndex06 != targetHillTile) {
+        spawnedCivilian->tileIndex != targetHillTile) {
       CString detail;
       detail.Format("the prospector click did not order the survey: order=%d tile=%d target=%d",
-                    spawnedCivilian->unitOrder, spawnedCivilian->tileIndex06, targetHillTile);
+                    spawnedCivilian->unitOrder, spawnedCivilian->tileIndex, targetHillTile);
       return RuntimeActionResult::Failure(detail);
     }
 
@@ -637,7 +637,7 @@ private:
     int orderableCount = 0;
     for (short tile = 0; tile < kGlobalMapTileCount; ++tile) {
       const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tile];
-      if (tile == spawnedCivilian->tileIndex06 || tile % 0x6c == 0 || tile % 0x6c == 0x6b ||
+      if (tile == spawnedCivilian->tileIndex || tile % 0x6c == 0 || tile % 0x6c == 0x6b ||
           terrain.firstCivilianOrder != 0 || terrain.recruitSearchVisited != 0 ||
           (terrain.pendingDevelopmentFlag & (1 << activeNation)) != 0) {
         continue;
@@ -685,7 +685,7 @@ private:
     }
     mapDialog->NormalClick(targetSurveyMissTile, targetBand);
     if (spawnedCivilian->unitOrder != kUnitOrderProspect ||
-        spawnedCivilian->tileIndex06 != targetSurveyMissTile) {
+        spawnedCivilian->tileIndex != targetSurveyMissTile) {
       return RuntimeActionResult::Failure(
           "the non-mineral tile did not receive the retail prospecting order");
     }
@@ -797,7 +797,7 @@ private:
     }
 
     const int occupiedAction = g_pSelectedCivilianOrderState->ResolveCivilianTileOrderActionCode(
-        spawnedCivilian->tileIndex06, 0);
+        spawnedCivilian->tileIndex, 0);
     if (predicateMismatches != 0 || workableTile == -1 || moveTile == -1 || prohibitedTile == -1 ||
         occupiedAction != 2) {
       CString detail;
@@ -835,7 +835,7 @@ private:
       return RuntimeActionResult::Failure("the improvement tile lost its retail cursor route");
     }
     mapDialog->NormalClick(targetFarmerTile, targetBand);
-    if (farmer->unitOrder != kUnitOrderDevelopResource || farmer->tileIndex06 != targetFarmerTile) {
+    if (farmer->unitOrder != kUnitOrderDevelopResource || farmer->tileIndex != targetFarmerTile) {
       return RuntimeActionResult::Failure(
           "the farmer click did not queue the retail resource improvement order");
     }
@@ -931,7 +931,7 @@ private:
   }
 
   RuntimeActionResult VerifyDepotAndMilitaryChain() {
-    const short depotTile = engineer->tileIndex06;
+    const short depotTile = engineer->tileIndex;
     const short ownerNation = engineer->ownerNationSlot;
     TGreatPower* nation = g_apNationStates[ownerNation];
     const int oldTownCount = nation->townMarkerList->GetCount();

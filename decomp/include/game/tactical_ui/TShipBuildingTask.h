@@ -22,7 +22,7 @@ public:
   void IShipBuildingTask(short citySlotType, TCity* owner,
                          short requestedShipType); // 0x005ae710
 
-  short requestedShipType14;
+  short requestedShipType;
   short waitingForShipOrderAdvance;
 };
 ASSERT_SIZE(TShipBuildingTask, 0x18);

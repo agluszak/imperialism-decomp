@@ -24,20 +24,20 @@ public:
   AlwaysTrueTacticalPredicate10(class TTacticalUnit* unit); // slot 0x10 0x59adf0
   virtual void ProceedAfterBattleIntroAccepted();           // slot 0x11 0x59ae10
 
-  TList* unitList;                 // +0x04 the side's tactical unit records (new TList())
-  TList* secondaryList;            // +0x08 reserve list: never-deployed units (0x59b740)
-  char isOurSideFlag;              // +0x0c
-  char watchFlagD;                 // +0x0d human-watch flag for this side
-  bool notWatchedFlag;             // +0x0e = (watchFlagD == 0)
-  bool retreatOrdered;             // +0x0f
-  bool sideReadyFlag;              // +0x10 side ready (no undeployed unit remains)
-  unsigned char pad11[3];          // +0x11
-  class TTacticalBattle* battle14; // +0x14 back-pointer, set by battle setup (0x59f890)
-  int cursorIndex;                 // +0x18 round-robin cursor over unitList
-  int nationIndex1C;               // +0x1c owner nation index (+ 0xea6 = 'coat' bitmap id)
-  bool field20;                    // +0x20
-  unsigned char pad21[3];          // +0x21
-  int field24;                     // +0x24
+  TList* unitList;               // +0x04 the side's tactical unit records (new TList())
+  TList* secondaryList;          // +0x08 reserve list: never-deployed units (0x59b740)
+  char isOurSideFlag;            // +0x0c
+  char watchFlag;                // +0x0d human-watch flag for this side
+  bool notWatchedFlag;           // +0x0e = (watchFlag == 0)
+  bool retreatOrdered;           // +0x0f
+  bool sideReadyFlag;            // +0x10 side ready (no undeployed unit remains)
+  unsigned char pad11[3];        // +0x11
+  class TTacticalBattle* battle; // +0x14 back-pointer, set by battle setup (0x59f890)
+  int cursorIndex;               // +0x18 round-robin cursor over unitList
+  int nationIndex;               // +0x1c owner nation index (+ 0xea6 = 'coat' bitmap id)
+  bool field20;                  // +0x20
+  unsigned char pad21[3];        // +0x21
+  int field24;                   // +0x24
 
   void ITacticalPlayer(unsigned char isOurSide, unsigned char watch, int nationIndex);
 

@@ -227,7 +227,7 @@ void TInfoPanelView::Setup() {
   overlayCluster->SetSelectedChildTagAndRefresh(kControlTagOvr0); // 'ovr0'
 
   diplomacyMapView->actionCode = kDipActionInspectNation;
-  selectedOverlayMode6C = 0;
+  selectedOverlayMode = 0;
 
   TControl* mapKey = static_cast<TControl*>(ResolveControlByTag(kControlTagMkey)); // 'mkey'
   mapKey->AssertValid();
@@ -240,7 +240,7 @@ void TInfoPanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
     short selectedOverlayMode = (short)sourceHandler->controlTag - 0x7230;
     diplomacyMapView->interactionModeAt94 = selectedOverlayMode;
     diplomacyMapView->InvalidateCityDialogRectRegion(&diplomacyMapView->mapViewportRect, 1);
-    selectedOverlayMode6C = selectedOverlayMode;
+    this->selectedOverlayMode = selectedOverlayMode;
     TControl* mkey = static_cast<TControl*>(ResolveControlByTag(kControlTagMkey));
     mkey->AssertValid();
     mkey->SetDiplomacyNationSelectionFilterAndRefreshRows(selectedOverlayMode);

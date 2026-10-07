@@ -12,7 +12,7 @@ class TMilitaryUnit : public TUnit {
 public:
   DECLARE_DYNCREATE(TMilitaryUnit)
 
-  CString name24; // 0x24 display name (naming pass in TCountry.cpp)
+  CString name; // 0x24 display name (naming pass in TCountry.cpp)
 
   short orderTargetTiles[3];       // 0x28, 0x2a, 0x2c
   short orderTargetTilesMirror[3]; // 0x2e, 0x30, 0x32

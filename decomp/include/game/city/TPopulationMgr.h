@@ -30,18 +30,18 @@ public:
   virtual void PretendToEat(short& substitutionCount,
                             short& starvationCount); // slot 0x0f 0x4b6260
   virtual char Strike();                             // slot 0x10 0x4b65b0
-  virtual void StartProductionPhase(); // slot 0x11 0x4b5e80
-  virtual float GrowthRate();          // slot 0x12 0x4b63e0
+  virtual void StartProductionPhase();               // slot 0x11 0x4b5e80
+  virtual float GrowthRate();                        // slot 0x12 0x4b63e0
   virtual void MakeUnavailable(short skillBand,
                                short amount); // slot 0x13 0x4b67e0
-  virtual short* PredictedNeeds(); // slot 0x14 0x4b64c0
+  virtual short* PredictedNeeds();            // slot 0x14 0x4b64c0
 
   void IPopulationMgr(TCity* city);
   void AddUntrained(short count);
   // Mac CodeWarrior oracle: AddExpert(short) -- 0x004b6a30.
   void AddExpert(short count);
 
-  TCity* city04;
+  TCity* city;
   short populationCount; // +0x08 — total workers across the three skill bands
   unsigned char pad0a[2];
   float populationCountFloat;
@@ -52,7 +52,7 @@ public:
   short extraAt1e;               // +0x1e
   short fieldAt20;               // +0x20 — snapshotted by the turn-event-0x2c packet
 
-  short predictedNeedByResource22[kResourceKindCount];
+  short predictedNeedByResource[kResourceKindCount];
 
   TPopulationMgr() {}
 };

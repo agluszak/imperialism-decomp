@@ -374,8 +374,8 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
   }
 
   for (short overlayTile = 0; overlayTile < 0x1950; ++overlayTile) {
-    short overlayState = static_cast<signed char>(
-        g_pGlobalMapState->terrainStateTable[overlayTile].tileActionState16);
+    short overlayState =
+        static_cast<signed char>(g_pGlobalMapState->terrainStateTable[overlayTile].tileActionState);
     bool isNationOverlay = (overlayState >= kMapTileActionStateNationOrderFirst &&
                             overlayState <= kMapTileActionStateNationOrderLast);
     if (isNationOverlay) {
@@ -425,7 +425,7 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
       continue;
     }
     int cityIndex = static_cast<Province*>(rankEntry->target)->GetIndex();
-    if (static_cast<short>(g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode00) !=
+    if (static_cast<short>(g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode) !=
         g_pSimMgr->GetPlayerCountry()) {
       continue;
     }
@@ -454,7 +454,7 @@ TZone* TOcean::GetMapActionContextEntryByIndex(short index) {
 // FUNCTION: IMPERIALISM 0x005633b0
 TZone* TOcean::GetLinkedZoneForSeaTile(short seaTileIndex) {
   TTerrainStateRecord& terrainRecord = g_pGlobalMapState->terrainStateTable[seaTileIndex];
-  signed char terrainClass = static_cast<signed char>(terrainRecord.tileActionState16);
+  signed char terrainClass = static_cast<signed char>(terrainRecord.tileActionState);
   if (terrainClass == kMapTileActionStateAnchor || terrainClass == kMapTileActionStateDockedFleet) {
     TZone* zone = g_pMapActionContextListHead;
     while (zone != 0 && zone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
@@ -618,7 +618,7 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
   }
 
   TZone* linkedContext;
-  signed char seaTileClass = terrainTable[bestSeaTile].tileActionState16;
+  signed char seaTileClass = terrainTable[bestSeaTile].tileActionState;
   if (seaTileClass == kMapTileActionStateAnchor || seaTileClass == kMapTileActionStateDockedFleet) {
     linkedContext = TZone::GetFirstPortZone();
     while (linkedContext != 0 &&
@@ -705,8 +705,8 @@ void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
   zone->ShowFocusIngot(hasPendingNode);
 
   short tileNotifyIndex = entry->ingotTileIndex;
-  if (tileNotifyIndex != -1 && g_pViewMgr->mapUberPictureF0 != nullptr) {
-    g_pViewMgr->mapUberPictureF0->NoticeTile(tileNotifyIndex);
+  if (tileNotifyIndex != -1 && g_pViewMgr->mapUberPicture != nullptr) {
+    g_pViewMgr->mapUberPicture->NoticeTile(tileNotifyIndex);
   }
 
   if (selectedTaskForce == entry) {

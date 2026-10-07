@@ -25,7 +25,7 @@ IMPLEMENT_DYNCREATE(TMiniShipView, TControl)
 // FUNCTION: IMPERIALISM 0x00569e60
 void TMiniShipView::IMiniShipView(TView* panel, int* offsetLayout, int* sizeLayout, TShip* ship) {
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 5, 5, 0);
-  eventNumber60 = 0x22;
+  eventNumber = 0x22;
   shipNode = ship;
 }
 

@@ -19,7 +19,7 @@ public:
   void SetPictureLineRowBoundsAndResource(short rowArg, short colArg, int* bounds,
                                           short pictureResourceId); // 0x5700f0
 
-  short pictureResourceId10;
+  short pictureResourceId;
   short reserved12;
 };
 ASSERT_SIZE(TPictureLine, 0x14);

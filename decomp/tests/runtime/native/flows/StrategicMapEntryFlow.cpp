@@ -181,7 +181,7 @@ RuntimeFlowStatus StrategicMapEntryFlow::Advance(RuntimeScenario& scenario) {
     TView* dialog = modal->ResolveControlByTag(kControlTagDialog);
     TControl* okay = static_cast<TControl*>(modal->ResolveControlByTag(kControlTagOkay));
     if (dialog == 0 || okay == 0 || modal->IsActionable() == 0 || okay->IsActionable() == 0 ||
-        modal->nativeWindow50 == 0 || okay->nativeWindow50 != modal->nativeWindow50) {
+        modal->nativeWindow == 0 || okay->nativeWindow != modal->nativeWindow) {
       scenario.FailScenario("capital-site confirmation tree is incomplete or detached");
       return kRuntimeFlowRunning;
     }

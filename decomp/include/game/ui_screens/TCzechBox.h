@@ -14,7 +14,7 @@ public:
                        TEvent* event) override; // slot 0x0f 0x00571cb0
   virtual void DoPostCreate(int arg) override;  // slot 0x37 0x571cf0
   virtual void HiliteState(unsigned char fEnabledState,
-                           bool fRefreshNow) override; // slot 0x70 0x571d10
+                           bool fRefreshNow) override;                 // slot 0x70 0x571d10
   virtual unsigned char IsOn();                                        // slot 0x74 0x571de0
   virtual void SetState(unsigned char isOn, unsigned char refreshNow); // slot 0x75 0x571e00
   virtual void CheckTheLook(unsigned char refreshNow);                 // slot 0x76 0x571d40
@@ -24,7 +24,7 @@ public:
 
   TCzechBox();
 
-  unsigned char isOn94;
+  unsigned char isOn;
   unsigned char padding95[3];
 };
 ASSERT_SIZE(TCzechBox, 0x98);

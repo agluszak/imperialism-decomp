@@ -47,7 +47,7 @@ TCity::TCity() {
   trackedOrderList = 0;
   eventQueue = 0;
   for (int productionSlot = 0; productionSlot < 0x10; ++productionSlot) {
-    productionOrderTable1dc[productionSlot] = 0;
+    productionOrderTable[productionSlot] = 0;
     productionAccum[productionSlot] = 0;
     productionFlags[productionSlot] = 0;
   }
@@ -61,17 +61,17 @@ TCity::~TCity() {}
 
 // FUNCTION: IMPERIALISM 0x004b2570
 void TCity::ICity(TGreatPower* ownerNation) {
-  ownerNationAc = ownerNation;
+  this->ownerNation = ownerNation;
   powerPlantUpgradeQueuedFlag = 0;
-  memset(reservedByType7e, 0, sizeof(reservedByType7e));
+  memset(reservedByType, 0, sizeof(reservedByType));
   memset(&cityStockCotton, 0, sizeof(short) * 0x17);
   memset(unmetResourceRetryCount, 0,
-         sizeof(unmetResourceRetryCount) + sizeof(consumedProductionInputByType2a6));
+         sizeof(unmetResourceRetryCount) + sizeof(consumedProductionInputByType));
 
   for (int productionSlot = 0; productionSlot < 0x10; ++productionSlot) {
-    productionAccum[productionSlot] = static_cast<short>(productionAccum[productionSlot] -
-                                                         productionOrderTable1dc[productionSlot]);
-    productionOrderTable1dc[productionSlot] = 0;
+    productionAccum[productionSlot] =
+        static_cast<short>(productionAccum[productionSlot] - productionOrderTable[productionSlot]);
+    productionOrderTable[productionSlot] = 0;
     productionFlags[productionSlot] = 0;
     production22c[productionSlot] = 0;
     production24c[productionSlot] = 0;
@@ -88,8 +88,8 @@ void TCity::ICity(TGreatPower* ownerNation) {
       short initialProduction = kInitialProductionBySlot[productionSlot];
       productionAccum[productionSlot] =
           static_cast<short>(productionAccum[productionSlot] +
-                             (initialProduction - productionOrderTable1dc[productionSlot]));
-      productionOrderTable1dc[productionSlot] = initialProduction;
+                             (initialProduction - productionOrderTable[productionSlot]));
+      productionOrderTable[productionSlot] = initialProduction;
     }
   }
 
@@ -207,7 +207,7 @@ void TCity::ICity(TGreatPower* ownerNation) {
   cityPhaseCounter = 0;
   memset(militaryRecruitCountByKind, 0, sizeof(militaryRecruitCountByKind));
   memset(civilianRecruitCountByKind, 0, sizeof(civilianRecruitCountByKind));
-  memset(orderCountByType5c, 0, sizeof(orderCountByType5c));
+  memset(orderCountByType, 0, sizeof(orderCountByType));
   rollingItemProductionScore = 0;
 }
 
@@ -234,24 +234,24 @@ void TCity::ReadFrom(TStream* stream) {
   SwapShortArrayBytes(militaryRecruitCountByKind, kMilitaryUnitKindCount);
   stream->ReadBytes(civilianRecruitCountByKind, sizeof(civilianRecruitCountByKind));
   SwapShortArrayBytes(civilianRecruitCountByKind, kCivilianUnitKindCount);
-  stream->ReadBytes(orderCountByType5c, sizeof(orderCountByType5c));
-  SwapShortArrayBytes(orderCountByType5c, 0x0e);
+  stream->ReadBytes(orderCountByType, sizeof(orderCountByType));
+  SwapShortArrayBytes(orderCountByType, 0x0e);
   stream->ReadBytes(&cityStockCotton, sizeof(short) * 0x17);
   SwapShortArrayBytes(&cityStockCotton, 0x17);
-  stream->ReadBytes(productionOrderTable1dc, productionSlotCount * 2);
-  SwapShortArrayBytes(productionOrderTable1dc, productionSlotCount);
+  stream->ReadBytes(productionOrderTable, productionSlotCount * 2);
+  SwapShortArrayBytes(productionOrderTable, productionSlotCount);
   stream->ReadBytes(productionAccum, productionSlotCount * 2);
   SwapShortArrayBytes(productionAccum, productionSlotCount);
   stream->ReadBytes(unmetResourceRetryCount, sizeof(unmetResourceRetryCount));
   SwapShortArrayBytes(unmetResourceRetryCount, 0x17);
-  stream->ReadBytes(reservedByType7e, sizeof(reservedByType7e));
-  SwapShortArrayBytes(reservedByType7e, 0x17);
+  stream->ReadBytes(reservedByType, sizeof(reservedByType));
+  SwapShortArrayBytes(reservedByType, 0x17);
   stream->ReadBytes(production22c, productionSlotCount * 2);
   SwapShortArrayBytes(production22c, productionSlotCount);
   stream->ReadBytes(production24c, productionSlotCount * 2);
   SwapShortArrayBytes(production24c, productionSlotCount);
-  stream->ReadBytes(consumedProductionInputByType2a6, sizeof(consumedProductionInputByType2a6));
-  SwapShortArrayBytes(consumedProductionInputByType2a6, 0x17);
+  stream->ReadBytes(consumedProductionInputByType, sizeof(consumedProductionInputByType));
+  SwapShortArrayBytes(consumedProductionInputByType, 0x17);
 
   if (g_nSaveFormatVersion > 0x27) {
     stream->ReadBytes(&rollingItemProductionScore, 4);
@@ -313,12 +313,12 @@ void TCity::WriteTo(TStream* stream) {
   stream->WriteBytes(&powerAvailable, 2);
   WriteShortArrayElems(stream, militaryRecruitCountByKind, kMilitaryUnitKindCount);
   WriteShortArrayElems(stream, civilianRecruitCountByKind, kCivilianUnitKindCount);
-  WriteShortArrayElems(stream, orderCountByType5c, 0x0e);
+  WriteShortArrayElems(stream, orderCountByType, 0x0e);
   WriteShortArrayElems(stream, &cityStockCotton, 0x17);
-  WriteShortArrayElems(stream, productionOrderTable1dc, 0x10);
+  WriteShortArrayElems(stream, productionOrderTable, 0x10);
   WriteShortArrayElems(stream, productionAccum, 0x10);
   WriteShortArrayElems(stream, unmetResourceRetryCount, 0x17);
-  WriteShortArrayElems(stream, reservedByType7e, 0x17);
+  WriteShortArrayElems(stream, reservedByType, 0x17);
 
   for (int productionSlot = 0; productionSlot < 0x10; ++productionSlot) {
     short value = production22c[productionSlot];
@@ -331,7 +331,7 @@ void TCity::WriteTo(TStream* stream) {
     SwapFirstTwoBytesInBuffer(&value);
     stream->WriteBytes(&value, 2);
   }
-  WriteByteSwappedShortArrayToStream(stream, consumedProductionInputByType2a6, 0x17);
+  WriteByteSwappedShortArrayToStream(stream, consumedProductionInputByType, 0x17);
 
   stream->WriteBytes(&rollingItemProductionScore, 4);
   productionSummary->WriteTo(stream);
@@ -390,7 +390,7 @@ void TCity::EndCityPhase() {
   ++cityPhaseCounter;
   VerifyStocks();
 
-  if (ownerNationAc->diplomacyEligibility == 0) {
+  if (ownerNation->diplomacyEligibility == 0) {
     short* stock = &cityStockCotton;
     int remaining = 0x17;
     do {
@@ -401,7 +401,7 @@ void TCity::EndCityPhase() {
   }
   VerifyStocks();
 
-  short* consumedInput = consumedProductionInputByType2a6;
+  short* consumedInput = consumedProductionInputByType;
   int remaining = 0x17;
   do {
     consumedInput[-0xf8] = static_cast<short>(consumedInput[-0xf8] + *consumedInput);
@@ -446,8 +446,8 @@ void TCity::EndCityPhase() {
   if (powerPlantUpgradeQueuedFlag != 0) {
     powerPlantUpgradeQueuedFlag = 0;
     productionAccum[0x0b] =
-        static_cast<short>(productionAccum[0x0b] + (999 - productionOrderTable1dc[0x0b]));
-    productionOrderTable1dc[0x0b] = 999;
+        static_cast<short>(productionAccum[0x0b] + (999 - productionOrderTable[0x0b]));
+    productionOrderTable[0x0b] = 999;
   }
 
   short* stock = &cityStockCotton;
@@ -473,23 +473,23 @@ void TCity::EndCityPhase() {
   } while (remaining != 0);
 
   short capacity;
-  if (ownerNationAc->pendingActionStatus.byAction[9] >= '3') {
-    int regionCapacity = ownerNationAc->ownedRegionList->GetSize() / 3;
+  if (ownerNation->pendingActionStatus.byAction[9] >= '3') {
+    int regionCapacity = ownerNation->ownedRegionList->GetSize() / 3;
     if (regionCapacity > 1) {
-      capacity = static_cast<short>(ownerNationAc->ownedRegionList->GetSize() / 3);
+      capacity = static_cast<short>(ownerNation->ownedRegionList->GetSize() / 3);
     } else {
       capacity = 1;
     }
   } else {
-    int regionCapacity = ownerNationAc->ownedRegionList->GetSize() / 4;
+    int regionCapacity = ownerNation->ownedRegionList->GetSize() / 4;
     if (regionCapacity > 1) {
-      capacity = static_cast<short>(ownerNationAc->ownedRegionList->GetSize() / 4);
+      capacity = static_cast<short>(ownerNation->ownedRegionList->GetSize() / 4);
     } else {
       capacity = 1;
     }
   }
   productionAccum[0x0f] = capacity;
-  productionAccum[0x0e] = productionOrderTable1dc[0x0e];
+  productionAccum[0x0e] = productionOrderTable[0x0e];
   g_pViewMgr->RefreshCityProductionUi();
 }
 
@@ -515,7 +515,7 @@ void TCity::PredictedNeeds() {
   } else {
     this->lowProductionFlag = 0;
   }
-  this->ownerNationAc->UpdateCountryStockpile(&this->cityStockCotton);
+  this->ownerNation->UpdateCountryStockpile(&this->cityStockCotton);
 }
 
 // FUNCTION: IMPERIALISM 0x004b3e70
@@ -529,9 +529,9 @@ void TCity::ProduceUnits() {
       short tileId = (*shipCursor)->resourceTypeIndex;
       if (pendingCount != 0) {
         if (!static_cast<bool>(TShip::GetTypeFirepower(tileId))) {
-          this->ownerNationAc->AnnounceLater(1, tileId, pendingCount);
+          this->ownerNation->AnnounceLater(1, tileId, pendingCount);
         } else {
-          this->ownerNationAc->AnnounceLater(0, tileId, pendingCount);
+          this->ownerNation->AnnounceLater(0, tileId, pendingCount);
         }
       }
     }
@@ -610,7 +610,7 @@ void TCity::AddTransportedItems(short* amounts) {
 void TCity::AddTransportedItems() {
   int count = 0x17;
   short* needCursor = &this->cityStockCotton;
-  short* targetCursor = this->ownerNationAc->needTargetByType;
+  short* targetCursor = this->ownerNation->needTargetByType;
   do {
     *needCursor = static_cast<short>(*needCursor + *targetCursor);
     --count;
@@ -623,7 +623,7 @@ void TCity::AddTransportedItems() {
 
 // FUNCTION: IMPERIALISM 0x004b40e0
 short TCity::DirectTransport(short needIndex, short amount) {
-  TGreatPower* owner = this->ownerNationAc;
+  TGreatPower* owner = this->ownerNation;
   short surplus =
       static_cast<short>(owner->needCurrentByType[needIndex] - owner->needTargetByType[needIndex]);
   if (surplus < amount) {
@@ -633,7 +633,7 @@ short TCity::DirectTransport(short needIndex, short amount) {
     amount = static_cast<short>(owner->transportCapacity - owner->reservedTransportCapacity);
   }
   this->CityStockByType(needIndex) = static_cast<short>(this->CityStockByType(needIndex) + amount);
-  this->ownerNationAc->UpdateNeedTargetAndAccumulateOverCap(
+  this->ownerNation->UpdateNeedTargetAndAccumulateOverCap(
       needIndex, static_cast<short>(owner->needTargetByType[needIndex] + amount));
   return amount;
 }
@@ -644,7 +644,7 @@ void TCity::VerifyStocks() {
   short* needCursor = &this->cityStockCotton;
   do {
     if (*needCursor < 0) {
-      bool dispatchGate = this->ownerNationAc->IsRemote();
+      bool dispatchGate = this->ownerNation->IsRemote();
       if ((!dispatchGate || g_pSimMgr->multiplayerSessionRole != kSessionRoleClient) &&
           !g_Sanitize_City_Counter_Value_006A24D4) {
         TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCity.cpp", 0x47f);
@@ -661,15 +661,15 @@ void TCity::MouseTrap() {}
 
 // FUNCTION: IMPERIALISM 0x004b4230
 int TCity::GetOwnerNeedCapA6() {
-  if (this->ownerNationAc != 0) {
-    return this->ownerNationAc->transportCapacity;
+  if (this->ownerNation != 0) {
+    return this->ownerNation->transportCapacity;
   }
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b4260
 void TCity::SetOwnerNeedCapA6(short value) {
-  this->ownerNationAc->transportCapacity = value;
+  this->ownerNation->transportCapacity = value;
 }
 
 // FUNCTION: IMPERIALISM 0x004b4290
@@ -677,7 +677,7 @@ int TCity::ComputeAverageWeightWord1TimesTenFromResourceCounts() {
   int weightedSum = 0;
   int totalCount = 0;
   for (int type = 0; type < 0xe; ++type) {
-    short count = orderCountByType5c[type];
+    short count = orderCountByType[type];
     weightedSum += TShip::GetTypeSailingSpeed(type) * count;
     totalCount += count;
   }
@@ -692,7 +692,7 @@ int TCity::ComputeAverageWeightWord0TimesTenFromResourceCounts() {
   int weightedSum = 0;
   int totalCount = 0;
   for (int type = 0; type < 0xe; ++type) {
-    short count = orderCountByType5c[type];
+    short count = orderCountByType[type];
     weightedSum += TShip::GetTypeCargoHold(type) * count;
     totalCount += count;
   }
@@ -708,7 +708,7 @@ int TCity::AllocateRandomResourceCountsWithinWeightBudget(short maxWeight, short
   short remaining = 0;
   for (int type = 0; type < 0xe; ++type) {
     if (TShip::GetTypeFirepower(static_cast<short>(type)) == 0) {
-      remaining = static_cast<short>(remaining + orderCountByType5c[type]);
+      remaining = static_cast<short>(remaining + orderCountByType[type]);
     }
   }
   while (remaining > 0 && static_cast<short>(allocatedWeight) < maxWeight) {
@@ -716,7 +716,7 @@ int TCity::AllocateRandomResourceCountsWithinWeightBudget(short maxWeight, short
     int type = 0;
     for (;;) {
       if (TShip::GetTypeFirepower(static_cast<short>(type)) == 0) {
-        roll -= orderCountByType5c[type];
+        roll -= orderCountByType[type];
         if (roll < 1) {
           break;
         }
@@ -729,7 +729,7 @@ int TCity::AllocateRandomResourceCountsWithinWeightBudget(short maxWeight, short
       break;
     }
     outCounts[type] = static_cast<short>(outCounts[type] + 1);
-    orderCountByType5c[type] = static_cast<short>(orderCountByType5c[type] - 1);
+    orderCountByType[type] = static_cast<short>(orderCountByType[type] - 1);
     allocatedWeight += TShip::GetTypeCargoHold(static_cast<short>(type));
     remaining = static_cast<short>(remaining - 1);
   }
@@ -742,10 +742,10 @@ short* TCity::GetUnmetNeeds() {
   for (short resourceType = 0; resourceType < kResourceKindCount; ++resourceType) {
     short remaining = summary[resourceType];
     if (remaining != 0) {
-      remaining = static_cast<short>(remaining - this->reservedByType7e[resourceType]);
+      remaining = static_cast<short>(remaining - this->reservedByType[resourceType]);
       summary[resourceType] = remaining;
       if (resourceType == kResourceLivestock) {
-        summary[0x14] = static_cast<short>(remaining - this->reservedByType7e[0x13]);
+        summary[0x14] = static_cast<short>(remaining - this->reservedByType[0x13]);
       }
       if (summary[resourceType] < 0) {
         summary[resourceType] = 0;
@@ -764,7 +764,7 @@ void TCity::AddTransportRequest(short low, short high) {
 // FUNCTION: IMPERIALISM 0x004b4580
 void TCity::MakeTown(short selectedResourceType) {
   (void)selectedResourceType;
-  if (ownerNationAc->townMarkerList == 0) {
+  if (ownerNation->townMarkerList == 0) {
     FailNilPointerWithAssert(kUCityCppPath, 0x53a);
   }
 
@@ -772,10 +772,10 @@ void TCity::MakeTown(short selectedResourceType) {
   if (town == 0) {
     FailNilPointerWithAssert(kUCityCppPath, 0x53c);
   }
-  town->ITown("Altown", 0, false, ownerNationAc->nationSlot);
+  town->ITown("Altown", 0, false, ownerNation->nationSlot);
   town->Free();
-  ownerNationAc->RebuildNationResourceYieldCountersAndDevelopmentTargets();
-  ownerNationAc->treasuryValue10 = ownerNationAc->treasuryValue10;
+  ownerNation->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+  ownerNation->treasuryValue10 = ownerNation->treasuryValue10;
 }
 
 // FUNCTION: IMPERIALISM 0x004b46c0
@@ -786,7 +786,7 @@ void TCity::TransferTransportRequests() {
 // FUNCTION: IMPERIALISM 0x004b46e0
 short TCity::GetMaxBuildingCapacity(int buildingSlot) {
   if (buildingSlot == 0xf) {
-    TGreatPower* owner = this->ownerNationAc;
+    TGreatPower* owner = this->ownerNation;
     if (owner->pendingActionStatus.byAction[9] < 0x33) {
       if (owner->ownedRegionList->GetSize() / 4 > 1) {
         return static_cast<short>(owner->ownedRegionList->GetSize() / 4);
@@ -796,7 +796,7 @@ short TCity::GetMaxBuildingCapacity(int buildingSlot) {
     }
     return 1;
   }
-  short capacity = this->productionOrderTable1dc[buildingSlot];
+  short capacity = this->productionOrderTable[buildingSlot];
   switch (buildingSlot) {
   case 0:
   case 2:
@@ -857,24 +857,24 @@ short TCity::GetNextBuildingType(short buildingSlot) {
   short result = 0;
   short buildingType;
   if (buildingSlot == 0x0f) {
-    bool usesThreeRegionsPerLevel = ownerNationAc->pendingActionStatus.byAction[9] >= '3';
+    bool usesThreeRegionsPerLevel = ownerNation->pendingActionStatus.byAction[9] >= '3';
     if (usesThreeRegionsPerLevel) {
-      int regionCapacity = ownerNationAc->ownedRegionList->GetSize() / 3;
+      int regionCapacity = ownerNation->ownedRegionList->GetSize() / 3;
       if (regionCapacity > 1) {
-        buildingType = static_cast<short>(ownerNationAc->ownedRegionList->GetSize() / 3);
+        buildingType = static_cast<short>(ownerNation->ownedRegionList->GetSize() / 3);
       } else {
         buildingType = 1;
       }
     } else {
-      int regionCapacity = ownerNationAc->ownedRegionList->GetSize() / 4;
+      int regionCapacity = ownerNation->ownedRegionList->GetSize() / 4;
       if (regionCapacity > 1) {
-        buildingType = static_cast<short>(ownerNationAc->ownedRegionList->GetSize() / 4);
+        buildingType = static_cast<short>(ownerNation->ownedRegionList->GetSize() / 4);
       } else {
         buildingType = 1;
       }
     }
   } else {
-    buildingType = productionOrderTable1dc[buildingSlot];
+    buildingType = productionOrderTable[buildingSlot];
   }
 
   switch (buildingSlot) {
@@ -917,15 +917,15 @@ short TCity::GetNextBuildingType(short buildingSlot) {
   }
 
   case 8:
-    if (ownerNationAc->pendingActionStatus.byAction[12] == '3') {
+    if (ownerNation->pendingActionStatus.byAction[12] == '3') {
       result = 3;
       return result;
     }
-    result = static_cast<short>((ownerNationAc->pendingActionStatus.byAction[6] == '3') + 1);
+    result = static_cast<short>((ownerNation->pendingActionStatus.byAction[6] == '3') + 1);
     return result;
 
   case 10: {
-    signed char status = ownerNationAc->pendingActionStatus.byAction[7];
+    signed char status = ownerNation->pendingActionStatus.byAction[7];
     if (status < '3') {
       result = 1;
       return result;
@@ -935,13 +935,13 @@ short TCity::GetNextBuildingType(short buildingSlot) {
   }
 
   case 0x0e: {
-    bool thresholdReached = ownerNationAc->pendingActionStatus.byAction[8] >= '3';
+    bool thresholdReached = ownerNation->pendingActionStatus.byAction[8] >= '3';
     result = static_cast<short>(thresholdReached + 1);
     return result;
   }
 
   case 0x0f: {
-    bool thresholdReached = ownerNationAc->pendingActionStatus.byAction[9] >= '3';
+    bool thresholdReached = ownerNation->pendingActionStatus.byAction[9] >= '3';
     result = static_cast<short>(thresholdReached + 1);
     return result;
   }
@@ -978,13 +978,13 @@ short TCity::IsCapacityCenter(short resourceSlot) {
 // FUNCTION: IMPERIALISM 0x004b4d50
 void TCity::BuildPowerPlant(bool enableUpgrade) {
   if (enableUpgrade && this->powerPlantUpgradeQueuedFlag == 0) {
-    this->ownerNationAc->AddToTreasury(-5000);
+    this->ownerNation->AddToTreasury(-5000);
     this->powerPlantUpgradeQueuedFlag = 1;
     return;
   }
 
   if (this->powerPlantUpgradeQueuedFlag != 0 && !enableUpgrade) {
-    this->ownerNationAc->AddToTreasury(5000);
+    this->ownerNation->AddToTreasury(5000);
     this->powerPlantUpgradeQueuedFlag = 0;
   }
 }
@@ -992,16 +992,16 @@ void TCity::BuildPowerPlant(bool enableUpgrade) {
 // FUNCTION: IMPERIALISM 0x004b4dc0
 int TCity::GetBuildingType(short buildingSlot) {
   if (buildingSlot != 0xf) {
-    return this->productionOrderTable1dc[buildingSlot];
+    return this->productionOrderTable[buildingSlot];
   }
-  TGreatPower* owner = this->ownerNationAc;
+  TGreatPower* owner = this->ownerNation;
   if (owner->pendingActionStatus.byAction[9] < 0x33) {
     if (owner->ownedRegionList->GetSize() / 4 > 1) {
-      return this->ownerNationAc->ownedRegionList->GetSize() / 4;
+      return this->ownerNation->ownedRegionList->GetSize() / 4;
     }
   } else {
     if (owner->ownedRegionList->GetSize() / 3 > 1) {
-      return this->ownerNationAc->ownedRegionList->GetSize() / 3;
+      return this->ownerNation->ownedRegionList->GetSize() / 3;
     }
   }
   return 1;

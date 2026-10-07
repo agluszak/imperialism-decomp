@@ -2180,8 +2180,8 @@ void TSimMgr::ScSetCapacity(STurnInstructionCursor* instruction) {
   int index = static_cast<short>(indexToken);
   short value = static_cast<short>(valueToken);
   short* accum = &city->productionAccum[index];
-  *accum = static_cast<short>(*accum + (value - city->productionOrderTable1dc[index]));
-  city->productionOrderTable1dc[index] = value;
+  *accum = static_cast<short>(*accum + (value - city->productionOrderTable[index]));
+  city->productionOrderTable[index] = value;
 }
 
 // FUNCTION: IMPERIALISM 0x005823e0
@@ -2236,7 +2236,7 @@ void TSimMgr::ScAddArmy(STurnInstructionCursor* instruction) {
 
   int remaining = static_cast<int>(countToken);
   int ownerNationCode =
-      g_pGlobalMapState->cityScoreTable[static_cast<int>(regionToken)].ownerNationCode00;
+      g_pGlobalMapState->cityScoreTable[static_cast<int>(regionToken)].ownerNationCode;
   while (remaining > 0) {
     TMilitaryUnit* order = new TMilitaryUnit();
     order->IMilitaryUnit(static_cast<short>(orderTypeToken), static_cast<int>(regionToken),
@@ -2297,8 +2297,8 @@ void TSimMgr::ScAddShip(STurnInstructionCursor* instruction) {
   } else {
     city = g_apNationStates[nationSlot]->city;
   }
-  city->orderCountByType5c[orderType] =
-      static_cast<short>(city->orderCountByType5c[orderType] + static_cast<short>(countToken));
+  city->orderCountByType[orderType] =
+      static_cast<short>(city->orderCountByType[orderType] + static_cast<short>(countToken));
 
   int remaining = static_cast<int>(countToken);
   while (remaining != 0) {

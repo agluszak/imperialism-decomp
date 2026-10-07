@@ -26,22 +26,22 @@ bool TAttackProvinceMission::IsHospitalMission() const {
 // FUNCTION: IMPERIALISM 0x0053d780
 TAttackProvinceMission::TAttackProvinceMission(short targetProvince, short amassingProvince)
     : TArmyMission(-1) {
-  targetProvince30 = targetProvince;
-  amassingProvince32 = amassingProvince;
+  this->targetProvince = targetProvince;
+  this->amassingProvince = amassingProvince;
 }
 
 // FUNCTION: IMPERIALISM 0x0053d810
 void TAttackProvinceMission::WriteTo(TStream* stream) {
   TArmyMission::WriteTo(stream);
-  stream->WriteBytes(&targetProvince30, 2);
-  stream->WriteBytes(&amassingProvince32, 2);
+  stream->WriteBytes(&targetProvince, 2);
+  stream->WriteBytes(&amassingProvince, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x0053d850
 void TAttackProvinceMission::ReadFrom(TStream* stream) {
   TArmyMission::ReadFrom(stream);
-  stream->ReadBytes(&targetProvince30, 2);
-  stream->ReadBytes(&amassingProvince32, 2);
+  stream->ReadBytes(&targetProvince, 2);
+  stream->ReadBytes(&amassingProvince, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x0053d890
@@ -49,7 +49,7 @@ void TAttackProvinceMission::Free() {
   TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId]);
   nationState->AssertValid();
 
-  nationState->SetProvinceStatus(targetProvince30, kMissionDesirabilityUnmarked);
+  nationState->SetProvinceStatus(targetProvince, kMissionDesirabilityUnmarked);
 
   CIterator iter(orderList);
   void* current = iter.Reset();
@@ -118,7 +118,7 @@ char TAttackProvinceMission::TryResolveTargetTerrainClass() {
   presentLocation = -1;
   float bestScore = 0.0f;
 
-  const Province& targetRecord = g_pGlobalMapState->cityScoreTable[targetProvince30];
+  const Province& targetRecord = g_pGlobalMapState->cityScoreTable[targetProvince];
 
   int candidateIndex = 0;
   const short* candidateCursor = targetRecord.adjacentRegionIds;
@@ -210,18 +210,17 @@ void TAttackProvinceMission::GiveOrders() {
 
     if (weighted / total > g_AttackProvinceMissionReadinessThreshold_0065A8F0) {
       if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
-              nationId, g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00)) {
+              nationId, g_pGlobalMapState->cityScoreTable[targetProvince].ownerNationCode)) {
         for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(targetIter.Reset());
              targetIter.More(); unit = static_cast<TMilitaryUnit*>(targetIter.Advance())) {
-          if (unit->tileIndex06 == presentLocation) {
-            unit->SetOrders(kUnitOrderRedeploy, targetProvince30);
+          if (unit->tileIndex == presentLocation) {
+            unit->SetOrders(kUnitOrderRedeploy, targetProvince);
           }
         }
       } else if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(
-                     nationId,
-                     g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00)) {
+                     nationId, g_pGlobalMapState->cityScoreTable[targetProvince].ownerNationCode)) {
         signed char targetOwnerNation =
-            g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00;
+            g_pGlobalMapState->cityScoreTable[targetProvince].ownerNationCode;
         if (g_apNationStates[nationId]->diplomacyPolicyByNation[targetOwnerNation] !=
             kDiplomacyProposalDeclareWar) {
           g_apNationStates[nationId]->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
@@ -235,7 +234,7 @@ void TAttackProvinceMission::GiveOrders() {
   CIterator retargetIter(orderList);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(retargetIter.Reset()); retargetIter.More();
        unit = static_cast<TMilitaryUnit*>(retargetIter.Advance())) {
-    if (unit->tileIndex06 != resolvedTarget) {
+    if (unit->tileIndex != resolvedTarget) {
       unit->SetOrders(kUnitOrderRedeploy, resolvedTarget);
     }
   }
@@ -250,16 +249,16 @@ TMission* TAttackProvinceMission::GetReplacement() {
     return nullptr;
   }
 
-  short targetOwnerNation = g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00;
+  short targetOwnerNation = g_pGlobalMapState->cityScoreTable[targetProvince].ownerNationCode;
   bool retarget = false;
 
   if (targetOwnerNation == pathMarker) {
-    if (amassingProvince32 != -1) {
+    if (amassingProvince != -1) {
       short amassingOwnerNation =
-          g_pGlobalMapState->cityScoreTable[amassingProvince32].ownerNationCode00;
+          g_pGlobalMapState->cityScoreTable[amassingProvince].ownerNationCode;
       if (nationId == amassingOwnerNation) {
-        targetProvince30 = amassingProvince32;
-        amassingProvince32 = -1;
+        targetProvince = amassingProvince;
+        amassingProvince = -1;
         retarget = true;
         TryResolveTargetTerrainClass();
       }
@@ -292,7 +291,7 @@ void TAttackProvinceMission::SetStateByte8To2() {
 
 // FUNCTION: IMPERIALISM 0x0053e1a0
 void TAttackProvinceMission::CalculateImportance() {
-  short targetProvince = targetProvince30;
+  short targetProvince = this->targetProvince;
   short missionNation = nationId;
   int matchCount = 0;
   int adjacentIndex = 0;
@@ -323,19 +322,18 @@ void TAttackProvinceMission::CalculateImportance() {
 // Shared with TInvadeMission (COMDAT-folded body).
 // FUNCTION: IMPERIALISM 0x0053e290
 void TAttackProvinceMission::CalculateNeeds() {
-  short unitOrderWeight = g_pGlobalMapState->GetProvinceUnitOrderWeight(targetProvince30);
+  short unitOrderWeight = g_pGlobalMapState->GetProvinceUnitOrderWeight(targetProvince);
 
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
-  if (targetProvince30 >= 0 && targetProvince30 <= 0x17f) {
-    for (TMilitaryUnit* unit =
-             g_pGlobalMapState->cityScoreTable[targetProvince30].stationedUnitChain;
+  if (targetProvince >= 0 && targetProvince <= 0x17f) {
+    for (TMilitaryUnit* unit = g_pGlobalMapState->cityScoreTable[targetProvince].stationedUnitChain;
          unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
       AccumulateUnitOrderPriorityVectorContribution(unit, vector, 1.0f,
                                                     static_cast<float>(unitOrderWeight));
     }
   }
 
-  signed char fortLevel = g_pGlobalMapState->cityScoreTable[targetProvince30].fortLevel03;
+  signed char fortLevel = g_pGlobalMapState->cityScoreTable[targetProvince].fortLevel;
   float total = 0.0f;
   for (int i = 0; i < 5; ++i) {
     total += vector[i];
@@ -387,9 +385,9 @@ float TAttackProvinceMission::FitnessOf(TMilitaryUnit* candidateUnit, float* ref
 // FUNCTION: IMPERIALISM 0x0053e570
 void TAttackProvinceMission::Initialize() {
   marker11 = 1;
-  if (targetProvince30 != -1) {
+  if (targetProvince != -1) {
     pathMarker =
-        static_cast<short>(g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00);
+        static_cast<short>(g_pGlobalMapState->cityScoreTable[targetProvince].ownerNationCode);
   }
 }
 
@@ -397,5 +395,5 @@ void TAttackProvinceMission::Initialize() {
 bool TAttackProvinceMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
   (void)zoneContext;
   return (missionType == kMissionTypeAttackProvince || missionType == kMissionTypeAmassProvince) &&
-         key == static_cast<int>(targetProvince30);
+         key == static_cast<int>(targetProvince);
 }

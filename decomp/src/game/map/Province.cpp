@@ -11,10 +11,10 @@ Province::Province() {}
 
 // FUNCTION: IMPERIALISM 0x0054ae90
 Province& Province::operator=(const Province& source) {
-  ownerNationCode00 = source.ownerNationCode00;
+  ownerNationCode = source.ownerNationCode;
   formerOwnerNationCode = source.formerOwnerNationCode;
   developmentStage = source.developmentStage;
-  fortLevel03 = source.fortLevel03;
+  fortLevel = source.fortLevel;
   cityTileIndex = source.cityTileIndex;
   lastTurnTick = source.lastTurnTick;
   adjacentRegionCount = source.adjacentRegionCount;
@@ -30,7 +30,7 @@ Province& Province::operator=(const Province& source) {
   secondaryNeighborTileIndex = source.secondaryNeighborTileIndex;
   primaryNeighborTileIndex = source.primaryNeighborTileIndex;
   for (int c = 0; c < 0x20; ++c) {
-    linkedTileIndices42[c] = source.linkedTileIndices42[c];
+    linkedTileIndices[c] = source.linkedTileIndices[c];
   }
   for (int d = 0; d < 10; ++d) {
     resourceDevelopmentCounts[d] = source.resourceDevelopmentCounts[d];
@@ -40,7 +40,7 @@ Province& Province::operator=(const Province& source) {
   navyOrderReachable = source.navyOrderReachable;
   exploredByNationMask = source.exploredByNationMask;
   resourcePresenceMask = source.resourcePresenceMask;
-  regionClassA3 = source.regionClassA3;
+  regionClass = source.regionClass;
   cityNameA4 = source.cityNameA4;
   return *this;
 }

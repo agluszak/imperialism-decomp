@@ -61,7 +61,7 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
     participantAField1cTotal += reportContext->unitsA[participantAUnitCount].fieldAt1c;
     participantAUnitCount++;
   }
-  participantAUnitCount98 = participantAUnitCount;
+  this->participantAUnitCount = participantAUnitCount;
   participantBFirstPage = static_cast<short>((participantAUnitCount + 3) / 4 + 1);
   int participantAMinimumTotal = participantAField1cTotal;
   if (participantAField18Total < participantAMinimumTotal) {
@@ -76,7 +76,7 @@ void TCombatReportView::StuffValues(TCombatReportContext* reportContext) {
     participantBField1cTotal += reportContext->unitsB[participantBUnitCount].fieldAt1c;
     participantBUnitCount++;
   }
-  participantBUnitCount9A = participantBUnitCount;
+  this->participantBUnitCount = participantBUnitCount;
   totalPages = static_cast<short>((participantBUnitCount + 2) / 4 + participantBFirstPage);
   int participantBMinimumTotal = participantBField1cTotal;
   if (participantBField18Total < participantBMinimumTotal) {
@@ -203,12 +203,12 @@ void TCombatReportView::Draw(RECT* rectBuffer) {
     if (reportValue < participantBFirstPage) {
       g_apTerrainTypeDescriptorTable[m_reportContext->nationIdA]->FormatOverlayTerrainLabelText(
           &scratch);
-      upperBound = participantAUnitCount98;
+      upperBound = participantAUnitCount;
       rowIndex = reportValue * 4 - 4;
     } else {
       g_apTerrainTypeDescriptorTable[m_reportContext->nationIdB]->FormatOverlayTerrainLabelText(
           &scratch);
-      upperBound = participantBUnitCount9A;
+      upperBound = participantBUnitCount;
       rowIndex = (reportValue - participantBFirstPage) * 4;
     }
 

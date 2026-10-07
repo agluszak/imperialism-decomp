@@ -41,8 +41,8 @@ TIndustryView::~TIndustryView() {}
 // FUNCTION: IMPERIALISM 0x004cc820
 void TIndustryView::DoStartup() {
   static const short industryUnitTypesByPage[7] = {8, 13, 11, 15, 9, 14, 12};
-  if (embeddedPageIndex9E >= 0 && embeddedPageIndex9E < 7) {
-    selectedIndustryUnitType = industryUnitTypesByPage[embeddedPageIndex9E];
+  if (embeddedPageIndex >= 0 && embeddedPageIndex < 7) {
+    selectedIndustryUnitType = industryUnitTypesByPage[embeddedPageIndex];
   }
 
   TextStyle headingStyle;
@@ -51,7 +51,7 @@ void TIndustryView::DoStartup() {
   CString displayText;
   TStaticText* nameText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagName)); // 'name'
   if (nameText != 0) {
-    g_pSimMgr->GetString(0x2719, embeddedPageIndex9E, &displayText);
+    g_pSimMgr->GetString(0x2719, embeddedPageIndex, &displayText);
     nameText->InstallTextStyle(headingStyle, 0);
     nameText->SetJustification(-2, false);
     nameText->SetTextAndMaybeRefresh(&displayText, false);
@@ -62,7 +62,7 @@ void TIndustryView::DoStartup() {
   if (capacityText != 0) {
     CString numberText;
     CString templateText;
-    numberText.Format(g_szDecimalFormat, city94->GetBuildingType(embeddedPageIndex9E));
+    numberText.Format(g_szDecimalFormat, city->GetBuildingType(embeddedPageIndex));
     g_pSimMgr->GetString(0x2738, 0x10, &templateText);
     scanBracketExpressions(g_pSimMgr, &displayText, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(numberText));
@@ -76,7 +76,7 @@ void TIndustryView::DoStartup() {
   if (provinceText != 0) {
     CString numberText;
     CString templateText;
-    numberText.Format(g_szDecimalFormat, city94->ownerNationAc->ownedRegionList->GetSize());
+    numberText.Format(g_szDecimalFormat, city->ownerNation->ownedRegionList->GetSize());
     g_pSimMgr->GetString(0x2738, 0x1d, &templateText);
     scanBracketExpressions(g_pSimMgr, &displayText, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(numberText));
@@ -114,7 +114,7 @@ void TIndustryView::DoStartup() {
 
   TView* equationControl = ResolveControlByTag(kControlTagEqua); // 'equa'
   if (equationControl != 0) {
-    g_pSimMgr->GetString(0x2738, embeddedPageIndex9E, &displayText);
+    g_pSimMgr->GetString(0x2738, embeddedPageIndex, &displayText);
     SetControlHoverHelpText(displayText, equationControl);
   }
 
@@ -151,25 +151,25 @@ void TIndustryView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
   if (commandId == 0xa && sourceHandler->controlTag == kControlTagExpa) {
     TView* owner = GetWindow();
     TWindow* ownerWindow = static_cast<TWindow*>(owner);
-    bool wasDisabled = ownerWindow->nativeWindow50->EnableWindow(0) == 0;
+    bool wasDisabled = ownerWindow->nativeWindow->EnableWindow(0) == 0;
 
     TView* mainControl = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagMain);
     if (mainControl == nullptr) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x84c);
     }
 
-    g_pViewMgr->ShowBuildingExpansionDialog(embeddedPageIndex9E, city94,
+    g_pViewMgr->ShowBuildingExpansionDialog(embeddedPageIndex, city,
                                             static_cast<TCityProductionView*>(mainControl));
 
     TView* owner2 = GetWindow();
-    static_cast<TWindow*>(owner2)->nativeWindow50->EnableWindow(wasDisabled);
+    static_cast<TWindow*>(owner2)->nativeWindow->EnableWindow(wasDisabled);
   }
   TControl::DoEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x004cd040
 void TIndustryView::UpdateFields() {
-  if (city94 == 0) {
+  if (city == 0) {
     return;
   }
 
@@ -179,22 +179,22 @@ void TIndustryView::UpdateFields() {
   bool secondaryMissing = false;
 
   if (selectedIndustryUnitType > 0) {
-    TItemOrder* order = static_cast<TItemOrder*>(city94->orderSlots[selectedIndustryUnitType]);
+    TItemOrder* order = static_cast<TItemOrder*>(city->orderSlots[selectedIndustryUnitType]);
     if (order != 0) {
       primaryResource = order->primaryInputResourceId;
       secondaryResource = order->secondaryInputResourceId;
       if (secondaryResource < 0) {
-        primaryMissing = city94->CityStockByType(primaryResource) < 2;
+        primaryMissing = city->CityStockByType(primaryResource) < 2;
       } else {
-        primaryMissing = city94->CityStockByType(primaryResource) < 1;
-        secondaryMissing = city94->CityStockByType(secondaryResource) < 1;
+        primaryMissing = city->CityStockByType(primaryResource) < 1;
+        secondaryMissing = city->CityStockByType(secondaryResource) < 1;
       }
     }
-  } else if (embeddedPageIndex9E == 0xe) {
+  } else if (embeddedPageIndex == 0xe) {
     primaryResource = 9;    // lumber
     secondaryResource = 11; // steel
-    primaryMissing = city94->cityStockLumber < 1;
-    secondaryMissing = city94->cityStockSteel < 1;
+    primaryMissing = city->cityStockLumber < 1;
+    secondaryMissing = city->cityStockSteel < 1;
   }
 
   CSubViewIterator iterator(this);
@@ -214,39 +214,38 @@ void TIndustryView::UpdateFields() {
 
     if (child->controlTag == kControlTagFlag) { // 'flag'
       TProductionOrder* flagOrder = static_cast<TProductionOrder*>(
-          city94->trailingOrderSlots[static_cast<short>(embeddedPageIndex9E + 2)]);
+          city->trailingOrderSlots[static_cast<short>(embeddedPageIndex + 2)]);
       SetIndustryControlEnabledIfChanged(child, flagOrder->quantity != 0);
     }
 
     if (child->controlTag == kControlTagLabV) { // 'Vbal'
-      SetIndustryControlEnabledIfChanged(child, city94->productionSummary->strength >= 2);
+      SetIndustryControlEnabledIfChanged(child, city->productionSummary->strength >= 2);
     }
 
     child = iterator.NextSubView();
   }
 
-  if (embeddedPageIndex9E == 0xc) {
+  if (embeddedPageIndex == 0xc) {
     TView* grainControl = ResolveControlByTag(kControlTagGrai); // 'grai'
     grainControl->AssertValid();
-    SetIndustryControlEnabledIfChanged(grainControl, city94->cityStockGrain >= 2);
+    SetIndustryControlEnabledIfChanged(grainControl, city->cityStockGrain >= 2);
 
     TView* fruitControl = ResolveControlByTag(kControlTagProd); // 'prod'
     fruitControl->AssertValid();
-    SetIndustryControlEnabledIfChanged(fruitControl, city94->cityStockFruit >= 1);
+    SetIndustryControlEnabledIfChanged(fruitControl, city->cityStockFruit >= 1);
 
     TView* fishControl = ResolveControlByTag(kControlTagFish); // 'fish'
     fishControl->AssertValid();
     SetIndustryControlEnabledIfChanged(
-        fishControl, static_cast<int>(city94->cityStockFish) + city94->cityStockLivestock >= 1);
-  } else if (embeddedPageIndex9E == 0xf) {
+        fishControl, static_cast<int>(city->cityStockFish) + city->cityStockLivestock >= 1);
+  } else if (embeddedPageIndex == 0xf) {
     const unsigned int controlTags[3] = {kSummaryTagFood, kControlTagFurn,
                                          kControlTagClot}; // 'food', 'furn', 'clot'
     const short resourceSlots[3] = {7, 14, 13};
     for (int index = 0; index < 3; ++index) {
       TView* control = ResolveControlByTag(controlTags[index]);
       control->AssertValid();
-      SetIndustryControlEnabledIfChanged(control,
-                                         city94->CityStockByType(resourceSlots[index]) >= 1);
+      SetIndustryControlEnabledIfChanged(control, city->CityStockByType(resourceSlots[index]) >= 1);
     }
   }
 

@@ -105,33 +105,33 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].perTileVisitedFlag > 0) {
     menuItemIds[count++] = 0x2a;
   }
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState ==
       kMapTileActionStateBlockadingFleet) {
     menuItemIds[count++] = 0x2b;
   }
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState ==
       kMapTileActionStateAnchor) {
     menuItemIds[count++] = 0x2c;
   }
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState ==
       kMapTileActionStateMovingFleet) {
     menuItemIds[count++] = 0x2d;
   }
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState ==
       kMapTileActionStatePatrollingFleet) {
     menuItemIds[count++] = 0x2e;
   }
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState ==
       kMapTileActionStateInvadingFleet) {
     menuItemIds[count++] = 0x2f;
   }
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState ==
       kMapTileActionStateDockedFleet) {
     menuItemIds[count++] = 0x30;
   }
-  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState ==
           kMapTileActionStateFleetFrameFirst ||
-      g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState16 ==
+      g_pGlobalMapState->terrainStateTable[nTileIndex].tileActionState ==
           kMapTileActionStateFleetFrameLast) {
     menuItemIds[count++] = 0x31;
   }
@@ -156,11 +156,11 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   // Refresh the two lonely-tile preview panes.
   TLonelyTileView* tilePane = static_cast<TLonelyTileView*>(ResolveControlByTag(kControlTagTile));
   tilePane->AssertValid();
-  tilePane->tileIndex60 = nTileIndex;
+  tilePane->tileIndex = nTileIndex;
   tilePane->RefreshControl();
   TLonelyTileView* tile2Pane = static_cast<TLonelyTileView*>(ResolveControlByTag(kControlTagTil2));
   tile2Pane->AssertValid();
-  tile2Pane->tileIndex60 = nTileIndex;
+  tile2Pane->tileIndex = nTileIndex;
   tile2Pane->RefreshControl();
 
   // Style the 'info' pane.
@@ -188,7 +188,7 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   } else {
     short cityIndex = g_pGlobalMapState->terrainStateTable[nTileIndex].cityRecordIndex;
     g_pGlobalMapState->AssignCityRecordDisplayName(cityIndex, &strCityName);
-    int ownerNation = g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode00;
+    int ownerNation = g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode;
     g_apTerrainTypeDescriptorTable[ownerNation]->FormatOverlayTerrainLabelText(&strOwnerLabel);
     g_pSimMgr->GetString(0x2755, (ownerNation < 7) ? 0x1d : 0x1e, &strTemplate);
     scanBracketExpressions(g_pSimMgr, &strInfoText, static_cast<LPCSTR>(strTemplate),

@@ -39,7 +39,7 @@ void TArmyUnitLine::InstallViews(TView* panel, int* offsetLayout) {
   checkbox->controlTag = kControlTagChec; // 'chec'
   if (militaryUnit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
     static_cast<TView*>(checkbox)->ViewEnable(1, 0);
-    checkbox->eventNumber60 = 4;
+    checkbox->eventNumber = 4;
     if (militaryUnit->unitOrder == 0) {
       checkbox->SetState(1, 0);
     }

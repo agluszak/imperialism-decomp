@@ -11,8 +11,8 @@ static int BindScopedMapQuickDrawDcHandleInline(TView* view, CDC* existingDc) {
   g_pScopedMapQuickDrawViewContext = view;
   CDC* dcHandleObject = existingDc;
   if (existingDc == 0) {
-    if (view->nativeWindow50 != 0) {
-      HDC hdc = GetDC(view->nativeWindow50->m_hWnd);
+    if (view->nativeWindow != 0) {
+      HDC hdc = GetDC(view->nativeWindow->m_hWnd);
       // LIBRARY: CDC::FromHandle (0x00612736)
       CDC* cdc = CDC::FromHandle(hdc);
       g_pScopedMapQuickDrawDcHandleObject = cdc;
@@ -26,7 +26,7 @@ static int BindScopedMapQuickDrawDcHandleInline(TView* view, CDC* existingDc) {
 
 static void ReleaseScopedMapQuickDrawDcHandleInline(TView* view, CDC* existingDc) {
   if (existingDc == 0) {
-    ReleaseDC(view->nativeWindow50->m_hWnd, g_pScopedMapQuickDrawDcHandleObject->m_hDC);
+    ReleaseDC(view->nativeWindow->m_hWnd, g_pScopedMapQuickDrawDcHandleObject->m_hDC);
   }
   g_pScopedMapQuickDrawDcHandleObject = 0;
   g_pScopedMapQuickDrawViewContext = 0;
@@ -36,8 +36,8 @@ static void BindScopedMapQuickDrawClientDcInline(TView* view, CDC* clientDc) {
   g_pScopedMapQuickDrawViewContext = view;
   if (clientDc != 0) {
     g_pScopedMapQuickDrawDcHandleObject = clientDc;
-  } else if (view->nativeWindow50 != 0) {
-    g_pScopedMapQuickDrawDcHandleObject = CDC::FromHandle(GetDC(view->nativeWindow50->m_hWnd));
+  } else if (view->nativeWindow != 0) {
+    g_pScopedMapQuickDrawDcHandleObject = CDC::FromHandle(GetDC(view->nativeWindow->m_hWnd));
   } else {
     g_pScopedMapQuickDrawDcHandleObject = 0;
   }
@@ -75,7 +75,7 @@ void ReleaseScopedMapQuickDrawDcHandle(TView* view, CDC* existingDc) {
 
 // FUNCTION: IMPERIALISM 0x00494700
 ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(TView* renderTargetArg)
-    : clientDc(renderTargetArg->nativeWindow50), renderTarget(renderTargetArg) {
+    : clientDc(renderTargetArg->nativeWindow), renderTarget(renderTargetArg) {
   renderTarget->PrepareForDrawing();
   CRect clipRect;
   clientDc.IntersectClipRect(renderTarget->GetQDExtent(&clipRect));
@@ -84,7 +84,7 @@ ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(TView* renderTargetArg)
 
 // FUNCTION: IMPERIALISM 0x004947e0
 ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(TView* renderTargetArg, RECT* clipRect)
-    : clientDc(renderTargetArg->nativeWindow50), renderTarget(renderTargetArg) {
+    : clientDc(renderTargetArg->nativeWindow), renderTarget(renderTargetArg) {
   renderTarget->PrepareForDrawing();
   clientDc.IntersectClipRect(clipRect);
   BindScopedMapQuickDrawClientDcInline(renderTarget, &clientDc);

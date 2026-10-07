@@ -44,7 +44,7 @@ void TIconSlider::SetMax(short maxValue) {
 
 // FUNCTION: IMPERIALISM 0x00506590
 void TIconSlider::SetNumIcons(short numIcons) {
-  numIcons96 = numIcons;
+  this->numIcons = numIcons;
 }
 
 // FUNCTION: IMPERIALISM 0x005065b0

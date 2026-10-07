@@ -15,7 +15,7 @@ public:
   TZone* missionTargetZone;          // +0x14
   TZone* resolvedPortZone;           // +0x18
   TShip* selectedOrder;              // +0x1c selected primary navy-order node
-  TTaskForce* taskForce20;           // +0x20 combined task-force/map-order entry
+  TTaskForce* taskForce;             // +0x20 combined task-force/map-order entry
   TMapOrderChildLinkNode* orderList; // +0x24 -- head of child order-node chain
 
   TShip* PickBestShipForMissionType(int missionType) const;
@@ -28,7 +28,7 @@ public:
     missionTargetZone = nullptr;
     resolvedPortZone = nullptr;
     selectedOrder = nullptr;
-    taskForce20 = nullptr;
+    this->taskForce = nullptr;
     orderList = nullptr;
     navyState = 0;
     for (int i = 0; i < 4; ++i) {

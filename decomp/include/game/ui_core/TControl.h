@@ -43,16 +43,16 @@ public:
                            bool refreshNow); // slot 0x70 0x48e810
   void SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNation);
 
-  int eventNumber60;
+  int eventNumber;
   unsigned char controlState;
-  CRect contentInsets;   // 0x68-0x77 -- left/top/right/bottom content insets
-                         // (BuildInsetContentRect, TStaticText/TTEView::Draw)
-  TextStyle textStyle78; // 0x78-0x81
+  CRect contentInsets; // 0x68-0x77 -- left/top/right/bottom content insets
+                       // (BuildInsetContentRect, TStaticText/TTEView::Draw)
+  TextStyle textStyle; // 0x78-0x81
 
   TControl();
   TControl(const TControl& source)
-      : TView(source), eventNumber60(source.eventNumber60), controlState(source.controlState),
-        contentInsets(source.contentInsets), textStyle78(source.textStyle78) {}
+      : TView(source), eventNumber(source.eventNumber), controlState(source.controlState),
+        contentInsets(source.contentInsets), textStyle(source.textStyle) {}
   DECLARE_DYNCREATE(TControl)
   TObject* ShallowClone() override;
   void SetEventNumber(int value);

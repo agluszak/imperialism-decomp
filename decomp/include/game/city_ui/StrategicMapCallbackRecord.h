@@ -43,7 +43,7 @@ struct StrategicMapCallbackRecord {
   int opcodeAlignmentOffset;
   int hadTrailingPadding;
   StrategicMapCursorStretch packedColorCursor;
-  int destinationRowStride2c;
+  int destinationRowStride;
 };
 
 ASSERT_SIZE(StrategicMapCallbackRecord, 0x30);

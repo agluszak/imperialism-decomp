@@ -143,12 +143,12 @@ public:
   bool field10;           // +0x10
   unsigned char pad11[3]; // +0x11
   HCURSOR turnEventCursors[0x36];
-  short pendingTurnOverlayCode;            // +0xec
-  short padEe;                             // +0xee
-  class TMapUberPicture* mapUberPictureF0; // +0xf0
-  TMovieView* activeMovieView;             // +0xf4
-  short pendingFollowupState;              // +0xf8
-  short padFa;                             // +0xfa
+  short pendingTurnOverlayCode;          // +0xec
+  short padEe;                           // +0xee
+  class TMapUberPicture* mapUberPicture; // +0xf0
+  TMovieView* activeMovieView;           // +0xf4
+  short pendingFollowupState;            // +0xf8
+  short padFa;                           // +0xfa
 
   TViewMgr();
 

@@ -179,7 +179,7 @@ void TNewsMgr::CreateNewspaper(int nation) {
       story->parmKind[3] = 0;
       story->entry = *tmpl;
       story->parmKind[0] = 1;
-      story->feature38 = true;
+      story->feature = true;
       story->parmValue[0] = 1 << nation;
       short other;
       do {
@@ -196,7 +196,7 @@ void TNewsMgr::CreateNewspaper(int nation) {
       story->parmKind[3] = 0;
       story->entry = *tmpl;
       story->parmKind[0] = 1;
-      story->feature38 = true;
+      story->feature = true;
       story->parmValue[0] = 1 << nation;
       short other;
       do {
@@ -245,7 +245,7 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
         code++;
       } else {
         newsStory* story = &stories[nation][*minorCursor][*majorCursor];
-        story->feature38 = false;
+        story->feature = false;
         story->parmKind[0] = 1;
         story->parmValue[0] = 1 << rec->payload.subjectNationOrAll;
         story->parmValue[1] = rec->payload.nationMaskOrStoryCode;
@@ -312,7 +312,7 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
       code++;
     } else {
       newsStory* story = &stories[nation][*minorCursor][*majorCursor];
-      story->feature38 = false;
+      story->feature = false;
       story->parmKind[0] = 1;
       story->parmValue[0] = 1 << rec->payload.subjectNationOrAll;
       story->parmValue[1] = rec->payload.nationMaskOrStoryCode;
@@ -361,7 +361,7 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
       break;
     }
     newsStory* story = &stories[nation][*minorCursor][*majorCursor];
-    story->feature38 = false;
+    story->feature = false;
     story->parmValue[0] = 1 << rec->payload.relatedNation;
     story->parmKind[0] = 2;
     story->parmValue[1] = rec->payload.nationMaskOrStoryCode;
@@ -426,7 +426,7 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
         story->parmKind[0] = 4;
         wantId = -0x1b - (record->reportKind != kMapContextReportSeaBattle);
       }
-      story->feature38 = true;
+      story->feature = true;
       story->parmKind[1] = 1;
       story->parmValue[1] = 1 << record->nationIds[0];
       story->parmKind[2] = 1;
@@ -476,7 +476,7 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
         break;
       }
       newsStory* story = &stories[nation][*minorCursor][*majorCursor];
-      story->feature38 = false;
+      story->feature = false;
       if (rec->payload.subjectNationOrAll == -1) {
         story->parmValue[0] = 0;
         story->parmKind[0] = 0;
@@ -733,7 +733,7 @@ unsigned char TNewsMgr::EvaluateFeatureStory(const newsEntry* templateRow, newsS
     story->parmKind[3] = 0;
     story->entry = *templateRow;
     story->parmKind[0] = 1;
-    story->feature38 = true;
+    story->feature = true;
     story->parmValue[0] = 1 << nationSlot;
     do {
       otherNation = static_cast<short>(rand() % 7);
@@ -745,7 +745,7 @@ unsigned char TNewsMgr::EvaluateFeatureStory(const newsEntry* templateRow, newsS
     story->parmKind[3] = 0;
     story->entry = *templateRow;
     story->parmKind[0] = 1;
-    story->feature38 = true;
+    story->feature = true;
     story->parmValue[0] = 1 << nationSlot;
     do {
       otherNation = static_cast<short>(rand() % 7);
@@ -777,7 +777,7 @@ unsigned char TNewsMgr::AlwaysTrueStory(const newsEntry* templateRow, newsStory*
   story->entry = *templateRow;
 
   story->parmKind[0] = 1;
-  story->feature38 = true;
+  story->feature = true;
   story->parmValue[0] = 1 << nationSlot;
 
   short otherNation;

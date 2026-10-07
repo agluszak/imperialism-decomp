@@ -1172,9 +1172,9 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
                    ++resourceType2) {
                 if (drawnCounts[resourceType2] != 0) {
                   g_apNationStates[selection.offerNationCode]
-                      ->city->orderCountByType5c[resourceType2] =
+                      ->city->orderCountByType[resourceType2] =
                       static_cast<short>(g_apNationStates[selection.offerNationCode]
-                                             ->city->orderCountByType5c[resourceType2] +
+                                             ->city->orderCountByType[resourceType2] +
                                          drawnCounts[resourceType2]);
                 }
               }
@@ -1348,7 +1348,7 @@ unsigned short TNavyMgr::SelectionCursor(short nTileIndex, int nInputFlags) {
     }
     if (canResolve) {
       bool relationOutOfDate = g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
-          entry->nation, province->ownerNationCode00);
+          entry->nation, province->ownerNationCode);
       return g_awMapContextActionLabelTokenByCommand[relationOutOfDate ? 16 : 1];
     }
   }
@@ -1362,7 +1362,7 @@ bool TNavyMgr::SelectionClick(short nTileIndex, int nInputFlags) {
   if (actionCode == 0) {
     return false;
   }
-  TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPictureF0;
+  TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPicture;
   switch (actionCode) {
   case 9: {
     TZone* zone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);

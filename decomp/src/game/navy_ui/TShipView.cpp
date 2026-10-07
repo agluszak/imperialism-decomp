@@ -104,7 +104,7 @@ void TShipView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
       delta = -1;
     }
 
-    TMapUberPicture* mapUber = g_pViewMgr->mapUberPictureF0;
+    TMapUberPicture* mapUber = g_pViewMgr->mapUberPicture;
     TView* categoryControl = mapUber->categoryPages[mapUber->activeUnitCategoryIndex];
     if (categoryControl != nullptr) {
       short resourceType = shipNode->GetToolbarSlot();
@@ -142,14 +142,14 @@ void TShipView::RenameShip() {
   TStaticText* titleControl = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagTitl));
   titleControl->AssertValid();
   titleControl->SetTextWithStrListID(0x2746, 5, true);
-  titleControl->textStyle78 = style;
+  titleControl->textStyle = style;
 
   TEditText* nameControl = static_cast<TEditText*>(node->ResolveControlByTag(kControlTagName));
   nameControl->AssertValid();
   CString editedName;
   editedName = shipNode->name;
   nameControl->InitDialogWindowAndSyncTitleIfChanged(&editedName, 1);
-  nameControl->textStyle78 = style;
+  nameControl->textStyle = style;
 
   int modalResult = node->PoseModally();
   nameControl->GetCurrentText(&editedName);

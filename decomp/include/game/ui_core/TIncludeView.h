@@ -11,8 +11,8 @@ public:
   virtual void DoPostCreate(int arg) override; // slot 0x37 0x48cfd0
   short turnEventCode;
   short padding62;
-  CPoint anchorPoint64;
-  CString labelText6c;
+  CPoint anchorPoint;
+  CString labelText;
   short completionFlag;
   short padding72;
 

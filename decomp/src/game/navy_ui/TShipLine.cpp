@@ -20,9 +20,9 @@ IMPLEMENT_DYNCREATE(TShipLine, TLineData)
 void TShipLine::IShipLine(short rowArg, short colArg, int* bounds,
                           TMapOrderChildLinkNode* childLink, TTaskForce* force) {
   ILineData(rowArg, colArg, bounds);
-  childLink14 = childLink;
+  this->childLink = childLink;
   TShip* ship = childLink->payload;
-  taskForce18 = force;
+  taskForce = force;
   shipNode = ship;
 }
 
@@ -31,7 +31,7 @@ void TShipLine::InstallViews(TView* panel, int* offsetLayout) {
   TShipView* shipView = new TShipView();
   shipView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &layoutWidth, 5, 5, 0);
   shipView->shipNode = shipNode;
-  shipView->taskForce = taskForce18;
+  shipView->taskForce = taskForce;
 
   int checkboxOffset[2] = {0, 0};
   int checkboxSize[2] = {0x50, 0x2d};
@@ -40,8 +40,8 @@ void TShipLine::InstallViews(TView* panel, int* offsetLayout) {
       new TArmyCheckBox(shipView, checkboxOffset, checkboxSize, 5, 5,
                         static_cast<TMilitaryPageView*>(panel)->primaryUnitAtlas, atlasOffset);
   checkbox->controlTag = kControlTagChec; // 'chec'
-  checkbox->eventNumber60 = 4;
-  checkbox->SetState(childLink14->active, static_cast<unsigned char>(0));
+  checkbox->eventNumber = 4;
+  checkbox->SetState(childLink->active, static_cast<unsigned char>(0));
 
   int nameOffset[2] = {0x40, 0};
   int nameSize[2] = {0x80, 0x18};

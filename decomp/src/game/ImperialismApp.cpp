@@ -190,9 +190,9 @@ END_MESSAGE_MAP()
 
 // FUNCTION: IMPERIALISM 0x00412ac0
 ImperialismApp::ImperialismApp()
-    : CWinApp(), waitCursorAnchorC0(0), installDrivePrefix(), appliedAutoResMode(0),
-      languageLabelCC(), localizedPictGobNameD0(), field_D4(), primaryDataLibNameD8(), field_DC(),
-      languageCodeString(), languagePackId(0) {}
+    : CWinApp(), waitCursorAnchor(0), installDrivePrefix(), appliedAutoResMode(0), languageLabel(),
+      localizedPictGobName(), field_D4(), primaryDataLibName(), field_DC(), languageCodeString(),
+      languagePackId(0) {}
 
 // FUNCTION: IMPERIALISM 0x00412c60
 ImperialismApp::~ImperialismApp() {}
@@ -224,14 +224,14 @@ BOOL ImperialismApp::InitInstance() {
       return FALSE;
     }
 
-    if (!g_pResourceMgr->LoadPrimaryDataLibraryWithErrorDialog(primaryDataLibNameD8)) {
+    if (!g_pResourceMgr->LoadPrimaryDataLibraryWithErrorDialog(primaryDataLibName)) {
       return FALSE;
     }
 
     g_nStartupAutoResolutionMode = ShowAutoResolutionDialogIfNeeded();
     ApplyAutoResolutionModeAndPersist(g_nStartupAutoResolutionMode);
 
-    if (!g_pResourceMgr->LoadModuleLibrarySlotWithErrorDialog(localizedPictGobNameD0, 0)) {
+    if (!g_pResourceMgr->LoadModuleLibrarySlotWithErrorDialog(localizedPictGobName, 0)) {
       return FALSE;
     }
     if (!g_pResourceMgr->LoadModuleLibrarySlotWithErrorDialog("Data/PictPaid.gob", 1)) {
@@ -276,10 +276,10 @@ BOOL ImperialismApp::InitInstance() {
     CIncludeView* mainView = GetMainViewHostFromActiveThread();
     mainView->SetUiRuntimeContextAndActivateMain(g_pDisplayMgr->activeDialog);
 
-    if (cmdInfo.m_strMainWindowTitle38.Compare(g_szEmptyString) != 0) {
+    if (cmdInfo.m_strMainWindowTitle.Compare(g_szEmptyString) != 0) {
       CIncludeView* uiWindow = GetMainViewHostFromActiveThread();
       if (uiWindow != nullptr) {
-        uiWindow->SetWindowText(static_cast<LPCSTR>(cmdInfo.m_strMainWindowTitle38));
+        uiWindow->SetWindowText(static_cast<LPCSTR>(cmdInfo.m_strMainWindowTitle));
       }
     }
 
@@ -359,17 +359,17 @@ void ImperialismApp::PostStartupCommand100() {
 void ImperialismApp::HandleStartupCommand100() {
   int waitCursorAnchor;
   AfxGetApp()->BeginWaitCursor();
-  waitCursorAnchorC0 = &waitCursorAnchor;
+  this->waitCursorAnchor = &waitCursorAnchor;
   if (g_pSimMgr != nullptr) {
     g_pSimMgr->AdvanceGlobalTurnStateMachine();
   }
-  waitCursorAnchorC0 = 0;
+  this->waitCursorAnchor = 0;
   AfxGetApp()->EndWaitCursor();
 }
 
 // FUNCTION: IMPERIALISM 0x004139f0
 void ImperialismApp::RestoreWaitCursorIfStartupBusy() {
-  if (waitCursorAnchorC0 != 0) {
+  if (waitCursorAnchor != 0) {
     AfxGetApp()->RestoreWaitCursor();
   }
 }
@@ -614,14 +614,14 @@ BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
       WriteProfileString(g_pRegistrySettingsSection_0063E040, g_pRegistryLanguageKey_0063E04C,
                          savedLanguage);
 
-      LoadStringA(irgModule, 0x1e36, languageLabelCC.GetBufferSetLength(0x21), 0x20);
-      languageLabelCC.ReleaseBuffer(-1);
-      LoadStringA(irgModule, 0x2c6, localizedPictGobNameD0.GetBufferSetLength(0x21), 0x20);
-      localizedPictGobNameD0.ReleaseBuffer(-1);
+      LoadStringA(irgModule, 0x1e36, this->languageLabel.GetBufferSetLength(0x21), 0x20);
+      this->languageLabel.ReleaseBuffer(-1);
+      LoadStringA(irgModule, 0x2c6, localizedPictGobName.GetBufferSetLength(0x21), 0x20);
+      localizedPictGobName.ReleaseBuffer(-1);
       LoadStringA(irgModule, 0x840, field_D4.GetBufferSetLength(0x21), 0x20);
       field_D4.ReleaseBuffer(-1);
-      LoadStringA(irgModule, 0x297, primaryDataLibNameD8.GetBufferSetLength(0x21), 0x20);
-      primaryDataLibNameD8.ReleaseBuffer(-1);
+      LoadStringA(irgModule, 0x297, primaryDataLibName.GetBufferSetLength(0x21), 0x20);
+      primaryDataLibName.ReleaseBuffer(-1);
       LoadStringA(irgModule, 0x80, field_DC.GetBufferSetLength(0x21), 0x20);
       field_DC.ReleaseBuffer(-1);
       LoadStringA(irgModule, 0x323, languageCodeString.GetBufferSetLength(0x21), 0x20);

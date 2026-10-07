@@ -86,13 +86,13 @@ public:
   short cityPhaseCounter;
   short militaryRecruitCountByKind[kMilitaryUnitKindCount];
   short civilianRecruitCountByKind[kCivilianUnitKindCount];
-  short orderCountByType5c[kIndustryActionSlotCount];
+  short orderCountByType[kIndustryActionSlotCount];
   int rollingItemProductionScore;
   unsigned char lowProductionFlag; // +0x7c — PredictedNeeds
   unsigned char lowStockFlag;      // +0x7d — PredictedNeeds
-  short reservedByType7e[kResourceKindCount];
-  class TGreatPower* ownerNationAc; // 0xAC — owning nation state (0x004b4dc0)
-  TTown* homeTownMarker;            // +0xb0
+  short reservedByType[kResourceKindCount];
+  class TGreatPower* ownerNation; // 0xAC — owning nation state (0x004b4dc0)
+  TTown* homeTownMarker;          // +0xb0
   short powerAvailable;
   short cityStockCotton;
   short cityStockWool;
@@ -123,7 +123,7 @@ public:
   TProductionOrder* trailingOrderSlots[0x0a]; // +0x1b0..+0x1d7
   TPopulationMgr*
       productionSummary; // 0x1D8 — city population / summary (TPopulationMgr vtbl 0x64f9b0)
-  short productionOrderTable1dc[0x10];
+  short productionOrderTable[0x10];
   short productionAccum[0x10];         // 0x1FC — ctor-cleared
   unsigned char productionFlags[0x10]; // 0x21C — ctor-cleared
   short production22c[0x10];           // 0x22C — GetBuildingWindowState outCurrent
@@ -133,7 +133,7 @@ public:
   TTaskList* trackedOrderList; // 0x270 — released via FreePayloadsAndDestroy
   class TPtrList* eventQueue;
   short unmetResourceRetryCount[kResourceKindCount];
-  short consumedProductionInputByType2a6[kResourceKindCount];
+  short consumedProductionInputByType[kResourceKindCount];
 
   TCity(); // 0x004b24b0 ("InitializeCityModel")
 

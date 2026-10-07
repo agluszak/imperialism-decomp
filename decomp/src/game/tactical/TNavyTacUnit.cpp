@@ -12,15 +12,15 @@
 
 // FUNCTION: IMPERIALISM 0x0059ed60
 TShip* TNavyTacUnit::GetSourceShip() {
-  return sourceShip34;
+  return sourceShip;
 }
 
 IMPLEMENT_DYNCREATE(TNavyTacUnit, TTacticalUnit)
 
 // FUNCTION: IMPERIALISM 0x005a6290
 void TNavyTacUnit::InitializeFromSourceShip(TShip* sourceShip) {
-  tileIndex8 = -2;
-  unitTypeC = g_anTacticalNavyUnitTypeByShipType_00669D80[sourceShip->type];
+  tileIndex = -2;
+  unitType = g_anTacticalNavyUnitTypeByShipType_00669D80[sourceShip->type];
   selectedFlag = 0;
   state1c = 0;
   actionPoints = GetBaseActionPoints();
@@ -29,7 +29,7 @@ void TNavyTacUnit::InitializeFromSourceShip(TShip* sourceShip) {
   strength = sourceShip->strength;
   secondaryCombatStrength = sourceShip->strength;
   int speed = sourceShip->GetSpeed();
-  sourceShip34 = sourceShip;
+  this->sourceShip = sourceShip;
   baseActionPoints = speed * 10;
 }
 
@@ -40,22 +40,22 @@ int TNavyTacUnit::GetBaseActionPoints() {
 
 // FUNCTION: IMPERIALISM 0x005a6330
 int TNavyTacUnit::GetUnitRange() {
-  return sourceShip34->GetRange();
+  return sourceShip->GetRange();
 }
 
 // FUNCTION: IMPERIALISM 0x005a6350
 float TNavyTacUnit::GetBaseAttackPower() {
-  return g_afTacticalNavyBaseAttackPowerByUnitType[unitTypeC];
+  return g_afTacticalNavyBaseAttackPowerByUnitType[unitType];
 }
 
 // FUNCTION: IMPERIALISM 0x005a6370
 float TNavyTacUnit::GetDamageScale() {
-  return g_afTacticalNavyDamageScaleByUnitType[unitTypeC];
+  return g_afTacticalNavyDamageScaleByUnitType[unitType];
 }
 
 // FUNCTION: IMPERIALISM 0x005a6390
 short TNavyTacUnit::GetSourceShipTypeDescriptorWord() {
-  return TShip::GetTypeHullPoints(sourceShip34->type);
+  return TShip::GetTypeHullPoints(sourceShip->type);
 }
 
 // FUNCTION: IMPERIALISM 0x005a63c0

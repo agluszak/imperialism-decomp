@@ -39,18 +39,17 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
   CString capacityValue;
   CString capacityTemplate;
 
-  this->buildingSlotId90 = buildingSlotId;
-  this->city94 = city;
-  this->productionView98 = productionView;
+  this->buildingSlotId = buildingSlotId;
+  this->city = city;
+  this->productionView = productionView;
 
   // Current capacity, formatted below into the 'capT' label.
   short currentCapacity = city->GetMaxBuildingCapacity(buildingSlotId);
 
   // Building picture = next-level tier + per-slot picture base, refreshed immediately.
-  this->SetPictureRsrcID(
-      static_cast<short>(city94->GetNextBuildingLevel(buildingSlotId) +
-                         (buildingSlotId + 0x73a) * 5),
-      1);
+  this->SetPictureRsrcID(static_cast<short>(this->city->GetNextBuildingLevel(buildingSlotId) +
+                                            (buildingSlotId + 0x73a) * 5),
+                         1);
 
   // 'name' localized building title (string group 0x2719, indexed by slot).
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b67);
@@ -93,16 +92,16 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa95);
   }
 
-  TProductionOrder* order = city94->trailingOrderSlots[buildingSlotId90 + 2];
+  TProductionOrder* order = this->city->trailingOrderSlots[this->buildingSlotId + 2];
   if (order == nullptr) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa97);
   }
 
   // Probe whether the full upgrade quantity is achievable, then restore the order.
   short originalQuantity = order->quantity;
-  short buildingType = static_cast<short>(city94->GetBuildingType(buildingSlotId90));
+  short buildingType = static_cast<short>(this->city->GetBuildingType(this->buildingSlotId));
   short needed =
-      static_cast<short>(city94->GetMaxBuildingCapacity(buildingSlotId90) - buildingType);
+      static_cast<short>(this->city->GetMaxBuildingCapacity(this->buildingSlotId) - buildingType);
   bool upgradeQueued = order->SetQuantity(needed);
   order->SetQuantity(originalQuantity);
 
@@ -133,31 +132,31 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
   if (cnclCtrl == nullptr) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xab7);
   }
-  cnclCtrl->eventNumber60 = 0x22;
+  cnclCtrl->eventNumber = 0x22;
 
   TPictureButton* okButton =
       static_cast<TPictureButton*>(ResolveControlByTag(IMPERIALISM_FOURCC('o', 'k', 'a', 'y')));
   okButton->AssertValid();
-  okButton->eventNumber60 = 0x22;
+  okButton->eventNumber = 0x22;
   okButton->timingWord92 = 0xbc7;
 }
 
 // FUNCTION: IMPERIALISM 0x004cebb0
 void TBuildingExpansionView::DoClosingAction(unsigned long dialogActionTag) {
-  TProductionOrder* order = city94->trailingOrderSlots[buildingSlotId90 + 2];
+  TProductionOrder* order = city->trailingOrderSlots[buildingSlotId + 2];
   if (order == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xac6);
   }
   if (dialogActionTag == kControlTagOkay) { // 'okay'
-    short previousBuildingType = static_cast<short>(city94->GetBuildingType(buildingSlotId90));
-    order->SetQuantity(static_cast<short>(city94->GetMaxBuildingCapacity(buildingSlotId90) -
-                                          previousBuildingType));
+    short previousBuildingType = static_cast<short>(city->GetBuildingType(buildingSlotId));
+    order->SetQuantity(
+        static_cast<short>(city->GetMaxBuildingCapacity(buildingSlotId) - previousBuildingType));
   } else if (order->quantity > 0) {
     order->SetQuantity(0);
   }
 
-  productionView98->SetBuildingPicture(
-      buildingSlotId90, static_cast<short>(city94->GetBuildingType(buildingSlotId90)));
-  productionView98->UpdateToolbar();
-  productionView98->RefreshControl();
+  productionView->SetBuildingPicture(buildingSlotId,
+                                     static_cast<short>(city->GetBuildingType(buildingSlotId)));
+  productionView->UpdateToolbar();
+  productionView->RefreshControl();
 }

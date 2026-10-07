@@ -57,25 +57,25 @@ void TNavyBattle::DeployUnit(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
     return;
   }
 
-  unit->tileIndex8 = tileIndex;
+  unit->tileIndex = tileIndex;
   tileGrid[tileIndex].occupant = unit;
-  if (battleView8 != 0) {
-    battleView8->InvalidateUnit(unit);
+  if (battleView != 0) {
+    battleView->InvalidateUnit(unit);
   }
 
-  selectedUnit1c = players[currentSide]->SelectNextTacticalUnitForDoneCommand();
+  selectedUnit = players[currentSide]->SelectNextTacticalUnitForDoneCommand();
   if (!players[currentSide]->sideReadyFlag) {
     return;
   }
 
   currentSide = (currentSide == 0);
-  selectedUnit1c = players[currentSide]->SelectNextTacticalUnitForDoneCommand();
+  selectedUnit = players[currentSide]->SelectNextTacticalUnitForDoneCommand();
 
-  if (battleView8 != 0) {
+  if (battleView != 0) {
     TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(
-        battleView8->ownerContext->ResolveControlByTag(kControlTagTool));
+        battleView->ownerContext->ResolveControlByTag(kControlTagTool));
     toolbar->AssertValid();
-    toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(selectedUnit1c);
+    toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(selectedUnit);
     toolbar->ForceRedraw();
   }
 
@@ -92,8 +92,8 @@ void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
   TNavyTacUnit* defenderUnit = static_cast<TNavyTacUnit*>(tileGrid[targetTileIndex].occupant);
   defenderUnit->AssertValid();
 
-  int attackerRow = attackerUnit->tileIndex8 / 29;
-  int attackerX = (attackerRow & 1) + attackerUnit->tileIndex8 % 29 * 2;
+  int attackerRow = attackerUnit->tileIndex / 29;
+  int attackerX = (attackerRow & 1) + attackerUnit->tileIndex % 29 * 2;
   unsigned int targetRow;
   int targetX;
   ConvertHexTileIndexToRowAndDoubleColumn(targetTileIndex, &targetRow, &targetX);
@@ -115,8 +115,8 @@ void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
   float hitThreshold = static_cast<float>(attackerUnit->qualityLevel * 5 +
                                           g_fNavyHitChanceNumerator_00669f04 / denominator);
 
-  if (battleView8 != 0) {
-    battleView8->PlayAni(attackerUnit->tileIndex8, attackerUnit->unitTypeC + 0xf5a, 1);
+  if (battleView != 0) {
+    battleView->PlayAni(attackerUnit->tileIndex, attackerUnit->unitType + 0xf5a, 1);
   }
 
   if (static_cast<float>(rand() % 100) < hitThreshold) {
@@ -128,19 +128,19 @@ void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
     float damageScale = defenderUnit->GetDamageScale();
     float damageAmount = damageScale * scaledStrength;
     defenderUnit->ApplyNavalDamage(damageAmount, targeting);
-    if (battleView8 != 0) {
-      battleView8->InvalidateUnit(defenderUnit);
+    if (battleView != 0) {
+      battleView->InvalidateUnit(defenderUnit);
     }
     if (defenderUnit->state1c == 3) {
-      tileGrid[defenderUnit->tileIndex8].occupant = 0;
-      defenderUnit->tileIndex8 = -1;
-      if (battleView8 != 0) {
-        battleView8->PlayAni(targetTileIndex, 0xf42, 12);
+      tileGrid[defenderUnit->tileIndex].occupant = 0;
+      defenderUnit->tileIndex = -1;
+      if (battleView != 0) {
+        battleView->PlayAni(targetTileIndex, 0xf42, 12);
       }
     }
   } else {
-    if (battleView8 != 0) {
-      battleView8->PlayAni(targetTileIndex, 0xf3c, 6);
+    if (battleView != 0) {
+      battleView->PlayAni(targetTileIndex, 0xf3c, 6);
     }
   }
 
@@ -163,7 +163,7 @@ void TNavyBattle::CalculateMoveMap(TTacticalUnit* unit) {
   for (tileIndex = 0; tileIndex < tacticalTileCount; ++tileIndex) {
     moveCosts[tileIndex] = -1;
   }
-  moveCosts[unit->tileIndex8] = 0;
+  moveCosts[unit->tileIndex] = 0;
 
   int costBand;
   for (costBand = 0; costBand <= actionPoints; costBand += 10) {
@@ -183,7 +183,7 @@ void TNavyBattle::CalculateMoveMap(TTacticalUnit* unit) {
         }
 
         short nextCost;
-        if (unit->unitTypeC < 2) {
+        if (unit->unitType < 2) {
           nextCost = static_cast<short>(*moveCost + neighborMoveCostByDirection[direction]);
         } else {
           nextCost = static_cast<short>(*moveCost + 10);
@@ -213,13 +213,13 @@ void TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
   EvaluateAndResolveTacticalActionAgainstTileOccupant(unit, targetTileIndex);
   if (battleOutcome == kTacticalBattleInProgress) {
     TacticalTileIndex neighborTiles[6];
-    GetNeighborList(selectedUnit1c->tileIndex8, neighborTiles);
+    GetNeighborList(selectedUnit->tileIndex, neighborTiles);
     int direction;
     for (direction = 0; direction < 6; ++direction) {
       TacticalTileIndex neighborTile = neighborTiles[direction];
       if (neighborTile != -1) {
         short moveCost = tileMoveCostArray[neighborTile];
-        if (moveCost != -1 && moveCost <= selectedUnit1c->actionPoints) {
+        if (moveCost != -1 && moveCost <= selectedUnit->actionPoints) {
           return;
         }
       }
@@ -234,13 +234,13 @@ void TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
   MoveTacticalUnitTowardTile(unit, targetTileIndex);
   if (unit->selectedFlag == 0) {
     TacticalTileIndex neighborTiles[6];
-    GetNeighborList(selectedUnit1c->tileIndex8, neighborTiles);
+    GetNeighborList(selectedUnit->tileIndex, neighborTiles);
     int direction;
     for (direction = 0; direction < 6; ++direction) {
       TacticalTileIndex neighborTile = neighborTiles[direction];
       if (neighborTile != -1) {
         short moveCost = tileMoveCostArray[neighborTile];
-        if (moveCost != -1 && moveCost <= selectedUnit1c->actionPoints) {
+        if (moveCost != -1 && moveCost <= selectedUnit->actionPoints) {
           break;
         }
       }

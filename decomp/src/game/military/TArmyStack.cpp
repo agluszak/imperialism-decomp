@@ -48,9 +48,9 @@ void TArmyStack::IArmyStack(char ownerNationIndex, short ownerNationCode, short 
   sortKey = 0;
   compositionClass = 0;
   fieldC = 0;
-  ownerNationCodeE = ownerNationCode;
+  this->ownerNationCode = ownerNationCode;
   categoryFlag = ownerNationIndex;
-  tileIndex10 = tileIndex;
+  this->tileIndex = tileIndex;
 }
 
 // FUNCTION: IMPERIALISM 0x004a77b0
@@ -62,8 +62,8 @@ void TArmyStack::ReadFrom(TStream* stream) {
   short unitCount;
   stream->ReadBytes(&unitCount, 2);
   stream->ReadBytes(&fieldC, 1);
-  stream->ReadBytes(&ownerNationCodeE, 2);
-  stream->ReadBytes(&tileIndex10, 2);
+  stream->ReadBytes(&ownerNationCode, 2);
+  stream->ReadBytes(&tileIndex, 2);
 
   for (int i = 0; i < unitCount; ++i) {
     short rosterID;
@@ -81,8 +81,8 @@ void TArmyStack::WriteTo(TStream* stream) {
   stream->WriteBytes(&fortLevelAttackerPenaltyCache, 1);
   stream->WriteBytes(&unitCount, 2);
   stream->WriteBytes(&fieldC, 1);
-  stream->WriteBytes(&ownerNationCodeE, 2);
-  stream->WriteBytes(&tileIndex10, 2);
+  stream->WriteBytes(&ownerNationCode, 2);
+  stream->WriteBytes(&tileIndex, 2);
 
   for (TMilitaryUnit* unit = ResetCursorAndGetHeadUnit(); unit != 0;
        unit = AdvanceCursorAndGetUnit()) {
@@ -187,8 +187,8 @@ void TArmyStack::InitializeStrategicBattle(unsigned char boosted) {
   }
 
   fortLevelAttackerPenaltyCache = static_cast<unsigned char>(
-      g_anFortLevelAttackerPenaltyPercentByLevel
-          [g_pGlobalMapState->cityScoreTable[unit->tileIndex06].fortLevel03]);
+      g_anFortLevelAttackerPenaltyPercentByLevel[g_pGlobalMapState->cityScoreTable[unit->tileIndex]
+                                                     .fortLevel]);
 
   for (; unit != 0; unit = AdvanceCursorAndGetUnit()) {
     unit->strengthSnapshot = unit->strength;

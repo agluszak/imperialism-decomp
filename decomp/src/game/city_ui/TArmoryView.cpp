@@ -27,8 +27,8 @@ IMPLEMENT_DYNCREATE(TArmoryView, TBuildingView)
 
 // FUNCTION: IMPERIALISM 0x004ceda0
 TArmoryView::TArmoryView() {
-  city94 = 0;
-  productionView98 = 0;
+  city = 0;
+  productionView = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004cee00
@@ -36,7 +36,7 @@ TArmoryView::~TArmoryView() {}
 
 // FUNCTION: IMPERIALISM 0x004cee20
 void TArmoryView::DoStartup() {
-  productionView98 = g_pMacViewMgr->activeCityProductionView;
+  productionView = g_pMacViewMgr->activeCityProductionView;
 
   struct {
     TextStyle desc;
@@ -50,7 +50,7 @@ void TArmoryView::DoStartup() {
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
 
   for (short row = 0; row < 8; ++row) {
-    TUnitOrder* order = city94->buildOrderSlots[row];
+    TUnitOrder* order = city->buildOrderSlots[row];
     short resourceType = order->resourceTypeIndex;
     short pictureVariant;
     if (g_awTacticalUnitCategoryCodeBySlot[resourceType] == 8) {
@@ -217,7 +217,7 @@ void TArmoryView::UpdateFields() {
   primaryAvailable->AssertValid();
   short primaryResource = selectedUnitOrder->primaryInputResourceId;
   if (primaryResource != -1) {
-    short available = city94->CityStockByType(primaryResource);
+    short available = city->CityStockByType(primaryResource);
     primaryAvailable->SetControlValue(available, 0);
     primaryAvailable->SetTextColorAndMaybeRefresh(
         available < selectedUnitOrder->primaryInputPerUnit ? &warningTextColor : &normalTextColor,
@@ -232,7 +232,7 @@ void TArmoryView::UpdateFields() {
   secondaryAvailable->AssertValid();
   short secondaryResource = selectedUnitOrder->secondaryInputResourceId;
   if (secondaryResource != -1) {
-    short available = city94->CityStockByType(secondaryResource);
+    short available = city->CityStockByType(secondaryResource);
     secondaryAvailable->SetControlValue(available, 0);
     secondaryAvailable->SetTextColorAndMaybeRefresh(
         available < selectedUnitOrder->primaryInputPerUnit ? &warningTextColor : &normalTextColor,
@@ -241,7 +241,7 @@ void TArmoryView::UpdateFields() {
   secondaryAvailable->QueryBounds(&invalidRect);
   availabilityPanel->InvalidateCityDialogRectRegion(&invalidRect, 1);
 
-  int treasury = city94->ownerNationAc->treasuryValue10;
+  int treasury = city->ownerNation->treasuryValue10;
   g_pSimMgr->NumToCurrency(treasury, &treasuryText);
   TStaticText* treasuryAvailable =
       static_cast<TStaticText*>(ResolveControlByTag(kControlTagAva3)); // 'ava3'
@@ -252,7 +252,7 @@ void TArmoryView::UpdateFields() {
   treasuryAvailable->QueryBounds(&invalidRect);
   availabilityPanel->InvalidateCityDialogRectRegion(&invalidRect, 1);
 
-  TPopulationMgr* population = city94->productionSummary;
+  TPopulationMgr* population = city->productionSummary;
   short workforceAvailable;
   if (selectedUnitOrder->workforceMode == kLowSkillWorkforceMode) {
     workforceAvailable = population->strength;
@@ -280,7 +280,7 @@ void TArmoryView::UpdateFields() {
   workforceControl->QueryBounds(&invalidRect);
   availabilityPanel->InvalidateCityDialogRectRegion(&invalidRect, 1);
 
-  productionView98->UpdateUnits();
+  productionView->UpdateUnits();
 }
 
 // FUNCTION: IMPERIALISM 0x004cfbd0
@@ -289,7 +289,7 @@ void TArmoryView::SetUnit(short nBuildingSlotId) {
   CString currencyText;
   CString resourceName;
 
-  TUnitOrder* order = city94->buildOrderSlots[nBuildingSlotId];
+  TUnitOrder* order = city->buildOrderSlots[nBuildingSlotId];
   if (selectedUnitOrder == order) {
     return;
   }

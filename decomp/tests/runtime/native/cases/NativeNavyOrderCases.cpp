@@ -267,7 +267,7 @@ RuntimeActionResult RunNavyProvinceTarget(NativeTransition& transition) {
   }
   province = 0;
   for (province = 0; province < 0x180; ++province) {
-    if (g_pGlobalMapState->cityScoreTable[province].ownerNationCode00 >= 0) {
+    if (g_pGlobalMapState->cityScoreTable[province].ownerNationCode >= 0) {
       break;
     }
   }

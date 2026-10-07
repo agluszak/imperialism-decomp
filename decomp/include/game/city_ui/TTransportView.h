@@ -18,6 +18,6 @@ public:
   // NOOP: verified empty in original 0x004bd333 (no standalone TTransportView::TTransportView body exists: CreateObject 0x004bd300 inlines this default ctor, calling the TView base ctor directly at that site)
   TTransportView() {}
 
-  TGreatPower* nation60;
+  TGreatPower* nation;
 };
 ASSERT_SIZE(TTransportView, 0x64);

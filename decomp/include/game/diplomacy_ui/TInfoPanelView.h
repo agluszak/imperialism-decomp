@@ -15,7 +15,7 @@ public:
   virtual void Setup() override;                // slot 0x68 0x4facc0
   virtual void SetInfoCountry(short countryId); // slot 0x69 0x4fae00
   short countryInfoCategoryIndices[4];          // 0x64
-  int selectedOverlayMode6C;                    // 0x6c
+  int selectedOverlayMode;                      // 0x6c
 
   TInfoPanelView();
 };

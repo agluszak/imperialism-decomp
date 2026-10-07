@@ -51,7 +51,7 @@ void TMovieView::DoPostCreate(int arg) {
   TPicture::DoPostCreate(arg);
 
   TView* owner = GetWindow();
-  CWnd* nativeWindow = owner->nativeWindow50;
+  CWnd* nativeWindow = owner->nativeWindow;
   HWND parentHwnd = 0;
   if (nativeWindow != 0) {
     parentHwnd = nativeWindow->m_hWnd;

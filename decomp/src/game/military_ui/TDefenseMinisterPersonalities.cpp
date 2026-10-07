@@ -24,7 +24,7 @@ TNapoleonMinister::TNapoleonMinister() : TDefenseMinister() {}
 // FUNCTION: IMPERIALISM 0x004ed620
 void TNapoleonMinister::MakeNewCity(TCity* city) {
   city->productionSummary->SetPopulation(10, 4, 0);
-  city->orderCountByType5c[3] = 1;
+  city->orderCountByType[3] = 1;
 
   int infantryOrdersRemaining = 3;
   do {
@@ -56,7 +56,7 @@ TBismarckMinister::TBismarckMinister() : TDefenseMinister() {}
 // FUNCTION: IMPERIALISM 0x004ed950
 void TBismarckMinister::MakeNewCity(TCity* city) {
   city->productionSummary->SetPopulation(9, 4, 1);
-  city->orderCountByType5c[3] = 1;
+  city->orderCountByType[3] = 1;
 
   int recruitOrdersRemaining = 2;
   do {
@@ -83,7 +83,7 @@ TPirateMinister::TPirateMinister() : TDefenseMinister() {}
 // FUNCTION: IMPERIALISM 0x004edc40
 void TPirateMinister::MakeNewCity(TCity* city) {
   city->productionSummary->SetPopulation(8, 4, 1);
-  city->orderCountByType5c[3] = 2;
+  city->orderCountByType[3] = 2;
 
   int recruitOrdersRemaining = 3;
   do {
@@ -110,7 +110,7 @@ TDefenderMinister::TDefenderMinister() : TDefenseMinister() {}
 // FUNCTION: IMPERIALISM 0x004edf20
 void TDefenderMinister::MakeNewCity(TCity* city) {
   city->productionSummary->SetPopulation(8, 4, 1);
-  city->orderCountByType5c[4] = 1;
+  city->orderCountByType[4] = 1;
 
   int recruitOrdersRemaining = 3;
   do {
@@ -137,7 +137,7 @@ TBullyMinister::TBullyMinister() : TDefenseMinister() {}
 // FUNCTION: IMPERIALISM 0x004ee210
 void TBullyMinister::MakeNewCity(TCity* city) {
   city->productionSummary->SetPopulation(10, 4, 0);
-  city->orderCountByType5c[4] = 2;
+  city->orderCountByType[4] = 2;
 
   int infantryOrdersRemaining = 2;
   do {

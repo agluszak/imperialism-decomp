@@ -19,7 +19,7 @@ IMPLEMENT_DYNCREATE(TNewTownView, TView)
 // FUNCTION: IMPERIALISM 0x004bd880
 void TNewTownView::StuffValues(TTown* town) {
   CString townName;
-  town60 = town;
+  this->town = town;
   town->CalculateRawResources();
 
   int visibleResourceCount = 0;
@@ -91,6 +91,6 @@ void TNewTownView::Close() {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x82e);
   }
   nameControl->GetCurrentText(&townName);
-  town60->SetName(static_cast<LPCSTR>(townName));
+  town->SetName(static_cast<LPCSTR>(townName));
   TView::Close();
 }

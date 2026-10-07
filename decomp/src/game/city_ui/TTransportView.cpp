@@ -18,7 +18,7 @@ IMPLEMENT_DYNCREATE(TTransportView, TView)
 // FUNCTION: IMPERIALISM 0x004bd3e0
 void TTransportView::StuffValues(TGreatPower* nation) {
   CString scratch;
-  nation60 = nation;
+  this->nation = nation;
 
   TView* supplyPanel = ResolveControlByTag(kControlTagSupp); // 'supp'
   if (supplyPanel == 0) {
@@ -68,7 +68,7 @@ void TTransportView::Close() {
     if (amount == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x7ab);
     }
-    nation60->UpdateNeedTargetAndAccumulateOverCap(
+    nation->UpdateNeedTargetAndAccumulateOverCap(
         static_cast<short>(resourceType),
         static_cast<short>(amount->UpdateControlCachedIntFromWindowText()));
   }

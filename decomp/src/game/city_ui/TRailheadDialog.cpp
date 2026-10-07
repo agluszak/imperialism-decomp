@@ -18,7 +18,7 @@ IMPLEMENT_DYNCREATE(TRailheadDialog, TDialogView)
 
 // FUNCTION: IMPERIALISM 0x004bd040
 void TRailheadDialog::StuffValues(TCity* city) {
-  city60 = city;
+  this->city = city;
 
   TCluster* choice = static_cast<TCluster*>(ResolveControlByTag(kControlTagChoi)); // 'choi'
   if (choice == 0) {
@@ -71,6 +71,6 @@ void TRailheadDialog::DoClosingAction(unsigned long dialogActionTag) {
            g_pTradeSummarySelectionMap[selectedResourceType] != selectedTag) {
       ++selectedResourceType;
     }
-    city60->MakeTown(selectedResourceType);
+    city->MakeTown(selectedResourceType);
   }
 }

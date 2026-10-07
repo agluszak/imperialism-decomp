@@ -1510,7 +1510,7 @@ short g_anUnitStrengthWeightPercentBySlot[32] = {
 short g_anMapImprovementSpriteClassByOrderType[kCivilianUnitKindCount] = {2, 3, 1, 6, 0,
                                                                           7, 5, 4, 8};
 
-// Per-fort-level attacker penalty percent; indexed by Province::fortLevel03.
+// Per-fort-level attacker penalty percent; indexed by Province::fortLevel.
 // GLOBAL: IMPERIALISM 0x00695568
 int g_anFortLevelAttackerPenaltyPercentByLevel[4] = {100, 85, 75, 65};
 // GLOBAL: IMPERIALISM 0x0064c808

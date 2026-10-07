@@ -7,8 +7,8 @@ TInfoBarPictureText::~TInfoBarPictureText() {}
 
 // FUNCTION: IMPERIALISM 0x005b5cb0
 void TInfoBarPictureText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {
-  if (EqualRect(layoutRect, &layoutRectA4) == 0) {
-    CopyRect(&layoutRectA4, layoutRect);
+  if (EqualRect(layoutRect, &this->layoutRect) == 0) {
+    CopyRect(&this->layoutRect, layoutRect);
     CRect clipRect;
     GetDrawableQDRect(&clipRect);
     InvalidateCityDialogRectRegion(&clipRect, 1);
@@ -19,10 +19,10 @@ void TInfoBarPictureText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {
 
 // FUNCTION: IMPERIALISM 0x005b5dd0
 void TInfoBarPictureText::ClearTextAndLayoutRect(int) {
-  layoutRectA4.left = 0;
-  layoutRectA4.top = 0;
-  layoutRectA4.right = 0;
-  layoutRectA4.bottom = 0;
+  layoutRect.left = 0;
+  layoutRect.top = 0;
+  layoutRect.right = 0;
+  layoutRect.bottom = 0;
 
   CRect bounds;
   QueryBounds(&bounds);

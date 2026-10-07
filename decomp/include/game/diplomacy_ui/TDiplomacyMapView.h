@@ -123,7 +123,7 @@ public:
   short selectedGrantRow;
 
 protected:
-  short activeNationC2;
+  short activeNation;
   CRect nationTextHitRects[23]; // 0x0c4..0x234
   CRect nationLabelRects[23];   // 0x234..0x3a4
   CRect nationAnchorRects[23];  // 0x3a4..0x514

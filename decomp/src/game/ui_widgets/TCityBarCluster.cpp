@@ -32,7 +32,7 @@ TCityBarCluster::~TCityBarCluster() {}
 
 // FUNCTION: IMPERIALISM 0x005866b0
 void TCityBarCluster::StuffValues(TCity* city) {
-  TGreatPower* nation = city->ownerNationAc;
+  TGreatPower* nation = city->ownerNation;
   TPopulationMgr* population = city->productionSummary;
 
   TNumberText* areaControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagTrea));

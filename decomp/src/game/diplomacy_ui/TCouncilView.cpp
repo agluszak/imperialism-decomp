@@ -143,7 +143,7 @@ void TCouncilView::DisplayStats() {
     if (g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix[record] == -1) {
       continue;
     }
-    short ownerCode = g_pGlobalMapState->cityScoreTable[record].ownerNationCode00;
+    short ownerCode = g_pGlobalMapState->cityScoreTable[record].ownerNationCode;
     int category;
     if (ownerCode >= 7) {
       TCountry* country = g_apTerrainTypeDescriptorTable[ownerCode];
@@ -205,7 +205,7 @@ void TCouncilView::DisplayStats() {
                    g_pDiplomacyTurnStateManager->congressSupport.chairmanSupportCount);
   sourceScore->SetTextAndMaybeRefresh(&scoreText, true);
   sourceScore->InstallTextStyle(style, 0);
-  sourceScore->shadowColor94 = scoreShadowColor;
+  sourceScore->shadowColor = scoreShadowColor;
   sourceScore->Show(1, 1);
 
   TDropShadowText* targetScore =
@@ -215,7 +215,7 @@ void TCouncilView::DisplayStats() {
                    g_pDiplomacyTurnStateManager->congressSupport.counterpartSupportCount);
   targetScore->SetTextAndMaybeRefresh(&scoreText, true);
   targetScore->InstallTextStyle(style, 0);
-  targetScore->shadowColor94 = scoreShadowColor;
+  targetScore->shadowColor = scoreShadowColor;
   targetScore->Show(1, 1);
 }
 
@@ -259,7 +259,7 @@ void TCouncilView::StartVoting() {
   const short phase = static_cast<short>(g_pSimMgr->mode);
   if (phase == kGamePhaseCouncilVictory || phase == kGamePhaseCouncilDefeat) {
     for (int provinceIndex = 0; provinceIndex < 0x180; ++provinceIndex) {
-      if (g_pGlobalMapState->cityScoreTable[provinceIndex].ownerNationCode00 != -1) {
+      if (g_pGlobalMapState->cityScoreTable[provinceIndex].ownerNationCode != -1) {
         tileHasOwnerFlags[provinceIndex] = true;
       }
     }

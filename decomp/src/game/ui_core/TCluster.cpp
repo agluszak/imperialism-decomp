@@ -21,7 +21,7 @@ IMPLEMENT_DYNCREATE(TCluster, TControl)
 
 // FUNCTION: IMPERIALISM 0x00491400
 TCluster::TCluster() {
-  this->eventNumber60 = 5;
+  this->eventNumber = 5;
   this->selectedChildTag = kControlTagSpSpSpSp;
 }
 
@@ -42,7 +42,7 @@ void TCluster::InitializeClusterFrameAndAttachToParent(TView* parent, POINT* off
   (void)layoutParam6;
   (void)layoutParam7;
   if (parent != nullptr) {
-    nativeWindow50 = parent->nativeWindow50;
+    nativeWindow = parent->nativeWindow;
   }
   controlTag = kControlTagSpSpSpSp;
   enabled = 1;

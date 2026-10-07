@@ -26,13 +26,13 @@ IMPLEMENT_DYNCREATE(TMilitaryUnit, TObject)
 
 // FUNCTION: IMPERIALISM 0x005c2df0
 TMilitaryUnit::TMilitaryUnit()
-    : name24(), experiencePercent(0), battleStateFlags(0), strengthSnapshot(0),
+    : name(), experiencePercent(0), battleStateFlags(0), strengthSnapshot(0),
       ownerMission(nullptr) {
   militaryRegistrationFlag = 1;
   strength = 0x1f4;
   eraIndex = 0;
   CString empty(g_szEmptyString); // temp -> 0x00605950, ~ -> 0x006058e2
-  name24 = empty;                 // -> 0x00605a29 CString::operator=
+  name = empty;                   // -> 0x00605a29 CString::operator=
 }
 
 // FUNCTION: IMPERIALISM 0x005c2f00
@@ -42,12 +42,12 @@ TMilitaryUnit::~TMilitaryUnit() {}
 void TMilitaryUnit::IMilitaryUnit(MilitaryUnitKindStorage unitKind, int nodeContext,
                                   short nationSlot, short registerArg3) {
   militaryRegistrationFlag = 1;
-  tileIndex06 = static_cast<short>(-1);
+  tileIndex = static_cast<short>(-1);
   RegisterUnitOrderWithOwnerManager(unitKind, nodeContext, nationSlot, registerArg3);
   eraIndex = static_cast<short>(
       (static_cast<int>(unitKind) + (static_cast<int>(unitKind) >> 31 & 7)) >> 3);
   if (unitKind >= EncodeMilitaryUnitKind(kMilitaryUnitGeneralEra1)) {
-    g_apTerrainTypeDescriptorTable[nationSlot]->GenerateEthnicName(&name24);
+    g_apTerrainTypeDescriptorTable[nationSlot]->GenerateEthnicName(&name);
   }
   ClearPath();
 }
@@ -55,7 +55,7 @@ void TMilitaryUnit::IMilitaryUnit(MilitaryUnitKindStorage unitKind, int nodeCont
 // FUNCTION: IMPERIALISM 0x005c2fd0
 void TMilitaryUnit::ReadFrom(TStream* stream) {
   TUnit::ReadFrom(stream);
-  stream->ReadSharedString(&name24, 0x20);
+  stream->ReadSharedString(&name, 0x20);
   stream->ReadBytes(orderTargetTiles, 6);
   SwapShortArrayBytes(orderTargetTiles, 3);
   stream->ReadBytes(orderTargetTilesMirror, 6);
@@ -69,7 +69,7 @@ void TMilitaryUnit::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x005c30a0
 void TMilitaryUnit::WriteTo(TStream* stream) {
   TUnit::WriteTo(stream);
-  stream->WriteSharedString(&name24);
+  stream->WriteSharedString(&name);
   WriteShortArrayElems(stream, orderTargetTiles, 3);
   WriteShortArrayElemsRev(stream, orderTargetTilesMirror, 3);
   stream->WriteBytes(&strength, 2);
@@ -81,8 +81,8 @@ void TMilitaryUnit::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x005c3190
 void TMilitaryUnit::ClearPath() {
   for (int i = 0; i < 3; ++i) {
-    orderTargetTiles[i] = tileIndex06;
-    orderTargetTilesMirror[i] = tileIndex06;
+    orderTargetTiles[i] = tileIndex;
+    orderTargetTilesMirror[i] = tileIndex;
   }
 }
 
@@ -97,10 +97,10 @@ void TMilitaryUnit::Vaporize() {
 
 // FUNCTION: IMPERIALISM 0x005c3200
 void TMilitaryUnit::MoveTo(short anchorIndex) {
-  if (tileIndex06 != -1) {
+  if (tileIndex != -1) {
     if (previousAtLocation == 0) {
-      if (tileIndex06 >= 0 && tileIndex06 < 0x180) {
-        g_pGlobalMapState->cityScoreTable[tileIndex06].stationedUnitChain =
+      if (tileIndex >= 0 && tileIndex < 0x180) {
+        g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain =
             static_cast<TMilitaryUnit*>(nextAtLocation);
       }
     } else {
@@ -109,7 +109,7 @@ void TMilitaryUnit::MoveTo(short anchorIndex) {
     if (nextAtLocation != 0) {
       nextAtLocation->previousAtLocation = previousAtLocation;
     }
-    tileIndex06 = -1;
+    tileIndex = -1;
     previousAtLocation = 0;
     nextAtLocation = 0;
   }
@@ -118,7 +118,7 @@ void TMilitaryUnit::MoveTo(short anchorIndex) {
   if (newTileIndex == -1) {
     previousAtLocation = 0;
     nextAtLocation = 0;
-    tileIndex06 = newTileIndex;
+    tileIndex = newTileIndex;
     orderTargetIndex = -1;
     return;
   }
@@ -134,7 +134,7 @@ void TMilitaryUnit::MoveTo(short anchorIndex) {
     }
     previousAtLocation = 0;
     nextAtLocation = 0;
-    tileIndex06 = newTileIndex;
+    tileIndex = newTileIndex;
     orderTargetIndex = -1;
     return;
   }
@@ -172,7 +172,7 @@ void TMilitaryUnit::MoveTo(short anchorIndex) {
     nextAtLocation = head;
   }
 
-  tileIndex06 = newTileIndex;
+  tileIndex = newTileIndex;
   orderTargetIndex = -1;
 }
 
@@ -210,13 +210,13 @@ ArmyUnitCategoryStorage TMilitaryUnit::GetTypeCategory(MilitaryUnitKindStorage s
 
 // FUNCTION: IMPERIALISM 0x005c34d0
 short TMilitaryUnit::GetTurnDistanceTo(short provinceId) const {
-  return tileIndex06 != provinceId;
+  return tileIndex != provinceId;
 }
 
 // FUNCTION: IMPERIALISM 0x005c3500
 bool TMilitaryUnit::IsWithinXTurnsOf(short turnLimit, short targetTile) const {
   if (turnLimit == 0) {
-    return tileIndex06 == targetTile;
+    return tileIndex == targetTile;
   }
   return true;
 }

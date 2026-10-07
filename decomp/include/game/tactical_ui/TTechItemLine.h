@@ -11,8 +11,8 @@ public:
   virtual ~TTechItemLine() override {} // slot 0x01 (scalar deleting destructor)
   virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x5b1160
 
-  int nationSlot10; // +0x10 — forwarded to ITechItemView
-  int techId14;     // +0x14 — forwarded to ITechItemView
+  int nationSlot; // +0x10 — forwarded to ITechItemView
+  int techId;     // +0x14 — forwarded to ITechItemView
 
   // NOOP: verified empty in original 0x005b10c3 (no standalone TTechItemLine::TTechItemLine body exists: CreateObject 0x005b1090 inlines this default ctor, calling the TLineData base ctor directly at that site)
   TTechItemLine() {}

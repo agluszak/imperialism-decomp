@@ -34,8 +34,8 @@ public:
   TCombatReportContext* m_reportContext;        // 0x90
   short reportValue;                            // 0x94
   short totalPages;                             // 0x96
-  short participantAUnitCount98;                // 0x98
-  short participantBUnitCount9A;                // 0x9a
+  short participantAUnitCount;                  // 0x98
+  short participantBUnitCount;                  // 0x9a
   short participantBFirstPage;                  // 0x9c
 
   TCombatReportView();

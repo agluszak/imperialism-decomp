@@ -62,8 +62,8 @@ bool RuntimeScriptScenario::HoldScriptAtScreen(const char* screenName) {
   // The run is about to end with the screen still up, so it has to be painted: a scenario that
   // only ever activated controls may never have let one frame reach the window.
   TView* view = CurrentMainView();
-  if (view != 0 && view->nativeWindow50 != 0 && view->nativeWindow50->m_hWnd != 0) {
-    RedrawWindow(view->nativeWindow50->m_hWnd, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
+  if (view != 0 && view->nativeWindow != 0 && view->nativeWindow->m_hWnd != 0) {
+    RedrawWindow(view->nativeWindow->m_hWnd, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
   }
   PassScript();
   return true;

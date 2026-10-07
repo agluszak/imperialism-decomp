@@ -53,18 +53,18 @@ public:
   IDirectPlay2* directPlayInterface;
   IDirectPlayLobbyA* directPlayLobby;
   int lastErrorCode;
-  DPSESSIONDESC2 sessionDescription10;
+  DPSESSIONDESC2 sessionDescription;
   int localPlayerId;
   int broadcastPlayerId;
-  char joinGameSeed68[0x20];
-  char runtimeSelectionSeed88[0x20];
+  char joinGameSeed[0x20];
+  char runtimeSelectionSeed[0x20];
 };
 ASSERT_SIZE(TDirectPlaySessionManagerBase, 0xa8);
 
 // VTABLE: IMPERIALISM 0x0066f9f0
 class TWNetSessionManager : public TDirectPlaySessionManagerBase {
 public:
-  CString joinGamePlayerNameA8;
+  CString joinGamePlayerName;
   int joinGamePlayerDataTag;
   TRadioTextCluster* activeProtocolControl;
 

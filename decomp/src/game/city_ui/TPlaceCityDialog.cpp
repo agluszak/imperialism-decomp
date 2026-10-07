@@ -27,7 +27,7 @@ TPlaceCityDialog::~TPlaceCityDialog() {}
 
 // FUNCTION: IMPERIALISM 0x004d1880
 void TPlaceCityDialog::StuffValues(TTown* town) {
-  town90 = town;
+  this->town = town;
   town->CalculateCityResources();
 
   short visibleResourceCount = 0;

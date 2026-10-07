@@ -27,7 +27,7 @@ IMPLEMENT_DYNCREATE(TUniversityView, TBuildingView)
 
 // FUNCTION: IMPERIALISM 0x004cac60
 TUniversityView::TUniversityView() {
-  productionView98 = 0;
+  productionView = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004cacc0
@@ -35,7 +35,7 @@ TUniversityView::~TUniversityView() {}
 
 // FUNCTION: IMPERIALISM 0x004cace0
 void TUniversityView::DoStartup() {
-  productionView98 = g_pMacViewMgr->activeCityProductionView;
+  productionView = g_pMacViewMgr->activeCityProductionView;
 
   struct {
     TextStyle desc;
@@ -73,7 +73,7 @@ void TUniversityView::DoStartup() {
       minus->AssertValid();
       minus->ViewEnable(0, 0);
     } else {
-      TUnitOrder* order = city94->buildOrderSlots[9 + category];
+      TUnitOrder* order = city->buildOrderSlots[9 + category];
       TNumberText* quantity =
           static_cast<TNumberText*>(row->ResolveControlByTag(kControlTagNumb)); // 'numb'
       quantity->AssertValid();
@@ -140,7 +140,7 @@ void TUniversityView::DoStartup() {
 void TUniversityView::SetUnit(short recruitmentCategory) {
   CString currencyText;
   CString unusedText;
-  TUnitOrder* order = city94->buildOrderSlots[9 + recruitmentCategory];
+  TUnitOrder* order = city->buildOrderSlots[9 + recruitmentCategory];
   if (order == selectedRecruitmentOrder) {
     return;
   }
@@ -229,7 +229,7 @@ void TUniversityView::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
       sele->AssertValid();
       sele->SetSelectedChildTagAndRefresh(kControlTagCiv0 + index); // 'civ0'+index
 
-      TUnitOrder* order = city94->buildOrderSlots[9 + index];
+      TUnitOrder* order = city->buildOrderSlots[9 + index];
       short quantity = order->quantity;
       if (sourceHandler->controlTag == kControlTagPlus) { // 'plus'
         ++quantity;
@@ -268,16 +268,16 @@ void TUniversityView::UpdateFields() {
   TNumberText* paperAvailable =
       static_cast<TNumberText*>(ResolveControlByTag(kControlTagApap)); // 'apap'
   paperAvailable->AssertValid();
-  paperAvailable->SetControlValue(city94->cityStockPaper, 0);
+  paperAvailable->SetControlValue(city->cityStockPaper, 0);
   paperAvailable->SetTextColorAndMaybeRefresh(
-      city94->cityStockPaper < selectedRecruitmentOrder->primaryInputPerUnit ? &warningTextColor
-                                                                             : &normalTextColor,
+      city->cityStockPaper < selectedRecruitmentOrder->primaryInputPerUnit ? &warningTextColor
+                                                                           : &normalTextColor,
       true);
   CRect invalidRect;
   paperAvailable->QueryBounds(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
-  TPopulationMgr* population = city94->productionSummary;
+  TPopulationMgr* population = city->productionSummary;
   short recruitmentCapacity = static_cast<short>(population->strength / 4);
   if (population->productionSlots->highSkillCount < recruitmentCapacity) {
     recruitmentCapacity = population->productionSlots->highSkillCount;
@@ -293,7 +293,7 @@ void TUniversityView::UpdateFields() {
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
   CString treasuryText;
-  int treasury = city94->ownerNationAc->treasuryValue10;
+  int treasury = city->ownerNation->treasuryValue10;
   g_pSimMgr->NumToCurrency(treasury, &treasuryText);
 
   TStaticText* treasuryAvailable =
@@ -306,7 +306,7 @@ void TUniversityView::UpdateFields() {
   treasuryAvailable->QueryBounds(&invalidRect);
   InvalidateCityDialogRectRegion(&invalidRect, 1);
 
-  productionView98->UpdateUnits();
+  productionView->UpdateUnits();
 }
 
 // FUNCTION: IMPERIALISM 0x004cbf30

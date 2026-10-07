@@ -18,7 +18,7 @@ public:
 
   TNavyRoster();
 
-  TTaskForce* taskForce88;
+  TTaskForce* taskForce;
   int unresolvedZero; // constructor-only zero dword
   TView* classControls[4];
   unsigned char paddingA0[0xd0 - 0xa0];

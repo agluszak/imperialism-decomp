@@ -65,7 +65,7 @@ void CaptureRandomGameSetup(RuntimeRun& run, TSetupRandomMapPicture* setup) {
                         "could not allocate the random-game setup capture", true);
     return;
   }
-  json_object_set_string(object, "planet_seed", static_cast<LPCSTR>(setup->planetSeed94));
+  json_object_set_string(object, "planet_seed", static_cast<LPCSTR>(setup->planetSeed));
   json_object_set_number(object, "topology", static_cast<unsigned int>(setup->wrapHorizontally));
   json_object_set_number(object, "nation", static_cast<int>(setup->selectedNationSlot));
   json_object_set_string(object, "country_name", static_cast<LPCSTR>(countryName));

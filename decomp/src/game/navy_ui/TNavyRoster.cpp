@@ -19,7 +19,7 @@ IMPLEMENT_DYNCREATE(TNavyRoster, TMilitaryPageView)
 // FUNCTION: IMPERIALISM 0x00564d20
 TNavyRoster::TNavyRoster() {
   primaryUnitAtlas = 0;
-  taskForce88 = 0;
+  taskForce = 0;
   unresolvedZero = 0;
   classControls[0] = 0;
   classControls[1] = 0;
@@ -33,7 +33,7 @@ TNavyRoster::~TNavyRoster() {}
 // FUNCTION: IMPERIALISM 0x00564dc0
 void TNavyRoster::StuffValues(TTaskForce* taskForce) {
   PrepareUnitCache(0xdba, 0x500, 0x2d);
-  taskForce88 = taskForce;
+  this->taskForce = taskForce;
 
   unsigned int classTag = kControlTagCls0; // 'cls0'
   for (int i = 0; i < 4; ++i, ++classTag) {
@@ -49,8 +49,8 @@ void TNavyRoster::StuffValues(TTaskForce* taskForce) {
     int lineBounds[2] = {0xec, 0x31};
     line->ILineData(0, 0, lineBounds);
     line->shipNode = link->payload;
-    line->childLink14 = link;
-    line->taskForce18 = taskForce;
+    line->childLink = link;
+    line->taskForce = taskForce;
     AddOrderedEntry(line);
   }
 
@@ -61,7 +61,7 @@ void TNavyRoster::StuffValues(TTaskForce* taskForce) {
 void TNavyRoster::Close() {
   TView::Close();
 
-  TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPictureF0;
+  TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPicture;
   TMapDialog* mapDialog = mapUberPicture->subview2A8;
   mapDialog->suppressMarkerOverlay = false;
   mapDialog->ResetAllTileMarkersToSentinel();

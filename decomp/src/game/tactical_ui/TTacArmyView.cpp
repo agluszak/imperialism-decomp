@@ -106,7 +106,7 @@ void TTacArmyView::StuffValues(int compositionClass, TArmyBattle* battle) {
     UnlockPixels(GetGWorldPixMap(battlefieldSurface));
     SetGWorld(savedContext, savedFlags);
 
-    if (battle->fortLevel49 != 0) {
+    if (battle->fortLevel != 0) {
       TQuickDrawSurfaceContext* fortStripSurface =
           LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xf0e);
       bounds.left = 0;
@@ -127,7 +127,7 @@ void TTacArmyView::StuffValues(int compositionClass, TArmyBattle* battle) {
     }
 
     unitSpriteAtlasSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xee2);
-    short fortLevel = battle->fortLevel49;
+    short fortLevel = battle->fortLevel;
     fortLevelAtlasSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(
         static_cast<unsigned short>(fortLevel != 0 ? fortLevel + 0xee6 : 0xee7));
     effectAtlasSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xeeb);
@@ -151,17 +151,17 @@ void TTacArmyView::StuffValues(int compositionClass, TArmyBattle* battle) {
     if (toolbar == 0) {
       FailNilPointerWithAssert(s_SourcePathUTacViews_00699FF4, 0x497);
     }
-    toolbar->battle88 = battle;
+    toolbar->battle = battle;
     toolbar->unitSpriteAtlasSurface = unitSpriteAtlasSurface;
-    toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(tacticalBattle->selectedUnit1c);
+    toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(tacticalBattle->selectedUnit);
     toolbar->SetActionMode(0);
-    toolbarD0 = toolbar;
+    this->toolbar = toolbar;
 
     TPicture* coatControl =
         static_cast<TPicture*>(ownerContext->ResolveControlByTag(kControlTagCoat));
     coatControl->AssertValid();
     coatControl->SetPictureRsrcID(
-        static_cast<short>(tacticalBattle->players[tacticalBattle->currentSide]->nationIndex1C +
+        static_cast<short>(tacticalBattle->players[tacticalBattle->currentSide]->nationIndex +
                            0xea6),
         1);
 
@@ -442,7 +442,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     }
     if (edgeUnit != 0) {
       short edgeSpriteX =
-          static_cast<short>(edgeUnit->unitTypeC) * static_cast<short>(unitSpriteCellWidth);
+          static_cast<short>(edgeUnit->unitType) * static_cast<short>(unitSpriteCellWidth);
       if (rowParity != 0) {
         edgeSpriteX += static_cast<short>(unitSpriteCellWidth / 2);
       }
@@ -539,7 +539,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
   // Occupant unit sprite (with hex selection outline for the active unit).
   TTacticalUnit* occupant = grid[tileIndex].occupant;
   if (occupant != 0) {
-    if (occupant == tacticalBattle->selectedUnit1c) {
+    if (occupant == tacticalBattle->selectedUnit) {
       short selectionPalette[2] = {0x13, 0};
       TAnimation* blink = g_pUiAnimator->FindRegisteredAnimationByTag(0x2711);
       RECT selectionRect = tileScreenRect;
@@ -553,7 +553,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     }
     short spriteY = occupant->side == 0 ? 0 : static_cast<short>(unitSpriteCellHeight);
     short spriteX =
-        static_cast<short>(occupant->unitTypeC) * static_cast<short>(unitSpriteCellWidth);
+        static_cast<short>(occupant->unitType) * static_cast<short>(unitSpriteCellWidth);
     RECT unitSrc = {spriteX, spriteY, spriteX + unitSpriteCellWidth,
                     spriteY + unitSpriteCellHeight};
     RECT unitDst;
@@ -679,7 +679,7 @@ void TTacArmyView::DrawTile(TacticalTileIndex tileIndex, RECT* clipRect) {
     }
     short nSpriteY = neighborUnit->side == 0 ? 0 : static_cast<short>(unitSpriteCellHeight);
     short nSpriteX =
-        static_cast<short>(neighborUnit->unitTypeC) * static_cast<short>(unitSpriteCellWidth);
+        static_cast<short>(neighborUnit->unitType) * static_cast<short>(unitSpriteCellWidth);
     RECT nSrc = {nSpriteX, nSpriteY, nSpriteX + unitSpriteCellWidth,
                  nSpriteY + unitSpriteCellHeight};
     RECT nDst;

@@ -59,7 +59,7 @@ bool CityScreen::SicknessPlacardsAreCleared() const {
 namespace {
 
 HWND CityHostWindow(TView* view) {
-  return view != 0 && view->nativeWindow50 != 0 ? view->nativeWindow50->m_hWnd : 0;
+  return view != 0 && view->nativeWindow != 0 ? view->nativeWindow->m_hWnd : 0;
 }
 
 } // namespace

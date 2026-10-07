@@ -10,11 +10,11 @@ void TPictureLine::SetPictureLineRowBoundsAndResource(short rowArg, short colArg
   layoutWidth = bounds[0];
   layoutHeight = bounds[1];
   row = rowArg;
-  pictureResourceId10 = pictureResourceId;
+  this->pictureResourceId = pictureResourceId;
 }
 
 // FUNCTION: IMPERIALISM 0x00570130
 void TPictureLine::InstallViews(TView* panel, int* offsetLayout) {
   TPicture* picture = new TPicture();
-  picture->IPicture(panel, offsetLayout, &layoutWidth, 5, 5, pictureResourceId10);
+  picture->IPicture(panel, offsetLayout, &layoutWidth, 5, 5, pictureResourceId);
 }

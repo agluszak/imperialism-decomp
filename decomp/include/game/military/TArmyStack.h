@@ -30,8 +30,8 @@ public:
   short unitCount;      // +0x0a -- linked unit count, serialized as a signed word
   unsigned char fieldC; // +0x0c -- initialized by IArmyStack
   unsigned char padD;
-  short ownerNationCodeE; // +0x0e -- region/owner-nation code
-  short tileIndex10;      // +0x10 -- originating tile index / order-target province
+  short ownerNationCode; // +0x0e -- region/owner-nation code
+  short tileIndex;       // +0x10 -- originating tile index / order-target province
   unsigned char pad12[2];
   TArmyStackUnitNode* head14; // +0x14 -- head of the owned node chain
   TArmyStackUnitNode* cursor; // +0x18 -- traversal cursor over the chain

@@ -13,7 +13,7 @@ IMPLEMENT_DYNCREATE(TEditText, TStaticText)
 
 // FUNCTION: IMPERIALISM 0x004903a0
 TEditText::TEditText() : TStaticText() {
-  this->eventNumber60 = 13;
+  this->eventNumber = 13;
   this->editWindow = nullptr;
   this->editFont = nullptr;
   this->maxCharacterCount = 0xff;
@@ -92,7 +92,7 @@ void TEditText::Show(int enabledState, int refreshFlag) {
 
 // FUNCTION: IMPERIALISM 0x004907a0
 CWnd* TEditText::Open() {
-  if (editWindow == 0 && viewEnabled != 0 && enabled != 0 && nativeWindow50 != 0) {
+  if (editWindow == 0 && viewEnabled != 0 && enabled != 0 && nativeWindow != 0) {
     editWindow = new CMcEditWindow;
     if (editWindow == 0) {
       FailNilPointerWithAssert(g_szMcAppUiSourcePath_006950B0, 0xdee);
@@ -114,17 +114,17 @@ CWnd* TEditText::Open() {
     }
 
     CRect editBounds;
-    editWindow->CWnd::Create("EDIT", 0, editStyle, *GetQDExtent(&editBounds), nativeWindow50,
+    editWindow->CWnd::Create("EDIT", 0, editStyle, *GetQDExtent(&editBounds), nativeWindow,
                              static_cast<UINT>(controlTag));
 
-    editFont = CreateFontFromPresetAndAttachRegionHandle(&textStyle78);
+    editFont = CreateFontFromPresetAndAttachRegionHandle(&textStyle);
     ::SendMessageA(editWindow->m_hWnd, WM_SETFONT,
                    reinterpret_cast<DWORD>(editFont != 0 ? editFont->m_hObject : 0), 0);
     if (text != 0 && text->GetLength() != 0) {
       editWindow->SetWindowText(*text);
     }
     editWindow->ModifyStyleEx(0, WS_EX_CLIENTEDGE, 0);
-    nativeWindow50->ModifyStyle(WS_CLIPCHILDREN, 0, 0);
+    nativeWindow->ModifyStyle(WS_CLIPCHILDREN, 0, 0);
     ::SetWindowLongA(editWindow->m_hWnd, GWL_USERDATA, PointerAddressLong32(this));
     ::SendMessageA(editWindow->m_hWnd, EM_LIMITTEXT, maxCharacterCount, 0);
   }
@@ -166,7 +166,7 @@ char TEditText::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoin
   if (TView::HandleMouseDown(point, event, origin) == 0) {
     return 0;
   }
-  HandleEvent(eventNumber60, this, 0);
+  HandleEvent(eventNumber, this, 0);
   return 1;
 }
 

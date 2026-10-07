@@ -29,8 +29,8 @@ void TTechStorePage::StuffValues(int nationSlot) {
       TTechItemLine* line = new TTechItemLine();
       int lineBounds[2] = {0x232, 0x3f};
       line->ILineData(0, 0, lineBounds);
-      line->nationSlot10 = nationSlot;
-      line->techId14 = techId;
+      line->nationSlot = nationSlot;
+      line->techId = techId;
       AddOrderedEntry(line);
     }
   }

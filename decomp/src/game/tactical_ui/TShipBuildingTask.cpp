@@ -26,7 +26,7 @@ void TShipBuildingTask::IShipBuildingTask(short citySlotType, TCity* owner,
   if (citySlotType == 5) {
     remainingAttempts = 3;
   }
-  requestedShipType14 = requestedShipType;
+  this->requestedShipType = requestedShipType;
   waitingForShipOrderAdvance = 0;
   remainingAttempts += 2;
   serializedTaskKind = 2;
@@ -48,17 +48,17 @@ bool TShipBuildingTask::Execute(TTaskList* taskList) {
 
     short deficits[0x17];
     memset(deficits, 0, sizeof(deficits));
-    deficits[8] = static_cast<short>(g_industryActionCostWeightResCode08[requestedShipType14] -
+    deficits[8] = static_cast<short>(g_industryActionCostWeightResCode08[requestedShipType] -
                                      shipOrder->trackingSlots[8]);
-    deficits[9] = static_cast<short>(g_industryActionCostWeightResCode09[requestedShipType14] -
+    deficits[9] = static_cast<short>(g_industryActionCostWeightResCode09[requestedShipType] -
                                      shipOrder->trackingSlots[9]);
-    deficits[0xb] = static_cast<short>(g_industryActionCostWeightResCode0B[requestedShipType14] -
+    deficits[0xb] = static_cast<short>(g_industryActionCostWeightResCode0B[requestedShipType] -
                                        shipOrder->trackingSlots[0xb]);
-    deficits[0x10] = static_cast<short>(g_industryActionCostWeightResCode10[requestedShipType14] -
+    deficits[0x10] = static_cast<short>(g_industryActionCostWeightResCode10[requestedShipType] -
                                         shipOrder->trackingSlots[0x10]);
-    deficits[0xc] = static_cast<short>(g_industryActionCostWeightResCode0C[requestedShipType14] -
+    deficits[0xc] = static_cast<short>(g_industryActionCostWeightResCode0C[requestedShipType] -
                                        shipOrder->trackingSlots[0xc]);
-    deficits[3] = static_cast<short>(g_industryActionCostWeightResCode03[requestedShipType14] -
+    deficits[3] = static_cast<short>(g_industryActionCostWeightResCode03[requestedShipType] -
                                      shipOrder->trackingSlots[3]);
 
     for (short resource = 0; resource < 0x17; ++resource) {
@@ -100,7 +100,7 @@ bool TShipBuildingTask::Execute(TTaskList* taskList) {
       alreadyQueuedFlag = 1;
       return false;
     }
-  } else if (shipOrder->resourceTypeIndex != requestedShipType14) {
+  } else if (shipOrder->resourceTypeIndex != requestedShipType) {
     return true;
   }
 
@@ -116,7 +116,7 @@ void TShipBuildingTask::WriteTo(TStream* stream) {
   stream->WriteBytes(&remainingAttempts, 2);
   stream->WriteBytes(&requestedAmount, 2);
   stream->WriteBytes(&alreadyQueuedFlag, 2);
-  stream->WriteBytes(&requestedShipType14, 2);
+  stream->WriteBytes(&requestedShipType, 2);
   stream->WriteBytes(&waitingForShipOrderAdvance, 2);
 }
 
@@ -127,6 +127,6 @@ void TShipBuildingTask::ReadFrom(TStream* stream) {
   stream->ReadBytes(&remainingAttempts, 2);
   stream->ReadBytes(&requestedAmount, 2);
   stream->ReadBytes(&alreadyQueuedFlag, 2);
-  stream->ReadBytes(&requestedShipType14, 2);
+  stream->ReadBytes(&requestedShipType, 2);
   stream->ReadBytes(&waitingForShipOrderAdvance, 2);
 }

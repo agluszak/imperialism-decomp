@@ -51,7 +51,7 @@ private:
   friend class TShipyardView;
   friend class TMacViewMgr;
 
-  TCity* city94;
+  TCity* city;
   TView* dialogRoot;
   unsigned char padding9C[8];
   short selectedBuildingSlot;

@@ -72,7 +72,7 @@ void TPopGrowthOrder::Produce() {
   population->populationCount += quantity;
 
   TCity* city = ownerCity;
-  TGreatPower* owner = city->ownerNationAc;
+  TGreatPower* owner = city->ownerNation;
   if (owner->pendingActionStatus.byAction[9] >= '3') {
     int regionCount = owner->ownedRegionList->GetSize();
     if (regionCount / 3 > 1) {

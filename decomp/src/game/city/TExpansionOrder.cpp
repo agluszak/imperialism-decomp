@@ -26,32 +26,32 @@ void TExpansionOrder::Produce() {
   TCity* city = ownerCity;
   short newValue;
   if (resourceTypeIndex == 0x0f) {
-    TGreatPower* owner = city->ownerNationAc;
+    TGreatPower* owner = city->ownerNation;
     signed char usesThreeRegionsPerLevel = owner->pendingActionStatus.byAction[9] >= '3';
     if (usesThreeRegionsPerLevel != zero) {
       int regionCount = owner->ownedRegionList->GetSize();
       if (regionCount / 3 > 1) {
-        newValue = static_cast<short>(city->ownerNationAc->ownedRegionList->GetSize() / 3);
+        newValue = static_cast<short>(city->ownerNation->ownedRegionList->GetSize() / 3);
       } else {
         newValue = 1;
       }
     } else {
       int regionCount = owner->ownedRegionList->GetSize();
       if (regionCount / 4 > 1) {
-        newValue = static_cast<short>(city->ownerNationAc->ownedRegionList->GetSize() / 4);
+        newValue = static_cast<short>(city->ownerNation->ownedRegionList->GetSize() / 4);
       } else {
         newValue = 1;
       }
     }
   } else {
-    newValue = city->productionOrderTable1dc[resourceTypeIndex];
+    newValue = city->productionOrderTable[resourceTypeIndex];
   }
 
   newValue = static_cast<short>(newValue + quantity);
-  short delta = static_cast<short>(newValue - city->productionOrderTable1dc[resourceTypeIndex]);
+  short delta = static_cast<short>(newValue - city->productionOrderTable[resourceTypeIndex]);
   city->productionAccum[resourceTypeIndex] =
       static_cast<short>(city->productionAccum[resourceTypeIndex] + delta);
-  city->productionOrderTable1dc[resourceTypeIndex] = newValue;
+  city->productionOrderTable[resourceTypeIndex] = newValue;
   requestedQuantity = zero;
   quantity = zero;
   trackingSlots[primaryInputResourceId] = zero;

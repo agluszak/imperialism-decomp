@@ -21,8 +21,8 @@ public:
   void IShipLine(short rowArg, short colArg, int* bounds, TMapOrderChildLinkNode* childLink,
                  TTaskForce* force);
   TShip* shipNode;
-  TMapOrderChildLinkNode* childLink14;
-  TTaskForce* taskForce18;
+  TMapOrderChildLinkNode* childLink;
+  TTaskForce* taskForce;
 };
 
 ASSERT_SIZE(TShipLine, 0x1c);

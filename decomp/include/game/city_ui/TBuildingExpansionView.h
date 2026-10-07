@@ -20,9 +20,9 @@ public:
   TBuildingExpansionView();
 
   // Windows StuffValues stores the first argument as a word, then the two typed pointers.
-  short buildingSlotId90;
+  short buildingSlotId;
   unsigned char padding92[2];
-  TCity* city94;
-  TCityProductionView* productionView98;
+  TCity* city;
+  TCityProductionView* productionView;
 };
 ASSERT_SIZE(TBuildingExpansionView, 0x9c);

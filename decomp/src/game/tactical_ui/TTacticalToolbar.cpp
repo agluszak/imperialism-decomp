@@ -93,7 +93,7 @@ void TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalU
   TPicture* currControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagCurr));
   currControl->AssertValid();
   if (unit != 0) {
-    currControl->SetPictureRsrcID(static_cast<short>(unit->unitTypeC * 2 + 0xf1e + unit->side), 1);
+    currControl->SetPictureRsrcID(static_cast<short>(unit->unitType * 2 + 0xf1e + unit->side), 1);
     currControl->Show(1, 1);
   } else {
     currControl->Show(0, 1);
@@ -107,7 +107,7 @@ void TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalU
   CString unitName;
   if (unit != 0) {
     unit->AssertValid();
-    unitName = static_cast<TArmyTacUnit*>(unit)->sourceUnit->name24;
+    unitName = static_cast<TArmyTacUnit*>(unit)->sourceUnit->name;
   }
   AssignSharedStringToTaggedControlAndProcessState(static_cast<const char*>(unitName),
                                                    kControlTagDialog);
@@ -119,7 +119,7 @@ void TTacticalToolbar::UpdateTacticalOtherSideUnitControl(TArmyTacUnit* unit) {
   TPicture* tpicControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagTpic));
   tpicControl->AssertValid();
   if (unit != 0) {
-    tpicControl->SetPictureRsrcID(static_cast<short>(unit->unitTypeC * 2 + 0xf1e + unit->side), 1);
+    tpicControl->SetPictureRsrcID(static_cast<short>(unit->unitType * 2 + 0xf1e + unit->side), 1);
     tpicControl->Show(1, 1);
   } else {
     tpicControl->Show(0, 1);
@@ -180,7 +180,7 @@ void TTacticalToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     case kControlTagAuto:
     case kControlTagRetr:
     case kControlTagTarg:
-      battle88->HandleTacticalBattleCommandTag(tag);
+      battle->HandleTacticalBattleCommandTag(tag);
       break;
     case kControlTagHelp:
       g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();

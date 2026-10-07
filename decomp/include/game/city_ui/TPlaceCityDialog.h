@@ -18,6 +18,6 @@ public:
 
   TPlaceCityDialog();
 
-  TTown* town90;
+  TTown* town;
 };
 ASSERT_SIZE(TPlaceCityDialog, 0x94);

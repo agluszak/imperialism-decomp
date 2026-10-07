@@ -37,9 +37,9 @@ struct StreamMessagePayload32 {
 };
 
 struct TurnEvent8NameAnnouncePacket : TimelyMessageHeader {
-  char nationSlot;          // +0x18
-  char senderName19[0x21];  // +0x19
-  char messageText3a[0x2a]; // +0x3a, total 0x64
+  char nationSlot;        // +0x18
+  char senderName[0x21];  // +0x19
+  char messageText[0x2a]; // +0x3a, total 0x64
 };
 
 // Event-9 lobby chat/seat-state packet.
@@ -53,7 +53,7 @@ struct LobbyChatEvent9Packet : TimelyMessageHeader {
 
 struct LobbyTextPairEvent8Packet : TimelyMessageHeader {
   unsigned char sourceNationSlot;
-  char playerName19[0x21];
+  char playerName[0x21];
   char playerNameMirror[0x22];
 };
 
@@ -61,7 +61,7 @@ struct LobbyTextPairEvent8Packet : TimelyMessageHeader {
 struct TurnEventESessionInitPacket : TimelyMessageHeader {
   char mapSeedText[0x21];       // +0x18 - passed to CreatePlanet
   unsigned char mapParamByte39; // +0x39 - third Rebuild arg
-  char hostGameName3A[0x22];    // +0x3a
+  char hostGameName[0x22];      // +0x3a
   int saveSlotDword5C;          // +0x5c -> queueSyncDword
   int scenarioTag;              // +0x60 -> scenarioSelectionTag
   signed char difficultyLevel;  // +0x64
@@ -94,10 +94,10 @@ struct TurnEvent1PendingMaskPacket : TimelyMessageHeader {
 
 // Turn-event-0xA payload: the resuming nation announces its home region and city name.
 struct TurnEventACityAnnouncePacket : TimelyNetMessagePrefix {
-  unsigned char nationId1C; // +0x1c
+  unsigned char nationId; // +0x1c
   unsigned char pad1d;
-  short homeTile;        // +0x1e
-  char cityName20[0x24]; // +0x20 (strncpy'd 0x21), total 0x44
+  short homeTile;      // +0x1e
+  char cityName[0x24]; // +0x20 (strncpy'd 0x21), total 0x44
 };
 
 struct TurnEventBNationDirectoryPacket : TimelyNetMessagePrefix {
@@ -165,7 +165,7 @@ ASSERT_SIZE(NationStatusEvent25Packet, 0x34);
 ASSERT_SIZE(TurnEvent2BPresenceMaskPacket, 0x1c);
 ASSERT_SIZE(TurnEvent2DMinorNeedPacket, 0x4c);
 ASSERT_OFFSET(TurnEvent8NameAnnouncePacket, nationSlot, 0x18);
-ASSERT_OFFSET(TurnEvent8NameAnnouncePacket, messageText3a, 0x3a);
+ASSERT_OFFSET(TurnEvent8NameAnnouncePacket, messageText, 0x3a);
 ASSERT_OFFSET(TurnEvent26DiplomacyMatrixPacket, congressLeadership, 0x798);
 ASSERT_OFFSET(TurnEventBNationDirectoryPacket, homeTileBySlot, 0x1c);
 ASSERT_OFFSET(TurnEventBNationDirectoryPacket, portZoneOrdinalBySlot, 0x638);

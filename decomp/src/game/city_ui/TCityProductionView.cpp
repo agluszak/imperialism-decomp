@@ -106,7 +106,7 @@ void TCityProductionView::DoPostCreate(int arg) {
   }
 
   TWindow* window = GetWindow();
-  window->nativeWindow50->ModifyStyle(0, 0x02000000, 0);
+  window->nativeWindow->ModifyStyle(0, 0x02000000, 0);
 
   // Build eight groups of three action-focus animations from the layout/resource tables.
   int tableOffset = 0;
@@ -228,11 +228,11 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
     RuntimeTestDriver::Pulse();
 #endif
 
-    if (slot == 0xf && city->ownerNationAc->pendingActionStatus.byAction[10] > '2') {
+    if (slot == 0xf && city->ownerNation->pendingActionStatus.byAction[10] > '2') {
       SetGWorld(scratchContext, savedFlags);
       BlitBitmapResourceRectWithScreenOffsetAndPalette(&scratchBounds, scratchContext, 0xa6, 0x3c,
                                                        0x1b9e, savedContext, savedFlags);
-    } else if (slot == 0xe && city->ownerNationAc->pendingActionStatus.byAction[11] >= '3') {
+    } else if (slot == 0xe && city->ownerNation->pendingActionStatus.byAction[11] >= '3') {
       SetGWorld(scratchContext, savedFlags);
       BlitBitmapResourceRectWithScreenOffsetAndPalette(&scratchBounds, scratchContext, 0x6d, 0x143,
                                                        0x1b9f, savedContext, savedFlags);
@@ -482,7 +482,7 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
   int starvationPopulationLoss = city->starvationPopulationLoss;
   int foodSubstitutionCount = city->foodSubstitutionCount;
 
-  this->city94 = city;
+  this->city = city;
   this->dialogRoot = dialogRoot;
   UpdateToolbar();
 
@@ -597,7 +597,7 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
 // FUNCTION: IMPERIALISM 0x004bc0b0
 void TCityProductionView::UpdateUnits() {
   g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
-  TPopulationMgr* population = city94->productionSummary;
+  TPopulationMgr* population = city->productionSummary;
 
   TPlacard* placard = static_cast<TPlacard*>(ResolveControlByTag(kControlTagUntr)); // 'rtnu'
   if (placard == 0) {
@@ -621,7 +621,7 @@ void TCityProductionView::UpdateUnits() {
   if (placard == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x4c2);
   }
-  placard->SetValue(city94->powerAvailable, true);
+  placard->SetValue(city->powerAvailable, true);
 
   short* predictedNeeds = population->PredictedNeeds();
   const unsigned int tags[6] = {kControlTagGrai, kControlTagProd, kControlTagMeat,
@@ -658,12 +658,11 @@ void TCityProductionView::UpdateToolbar() {
     short buildingSlot = static_cast<short>(group < 7 ? group : 11);
     bool enabled;
     if (buildingSlot == 11) {
-      enabled =
-          city94->powerPlantUpgradeQueuedFlag == 0 && city94->trailingOrderSlots[1]->quantity > 0;
-    } else if (city94->trailingOrderSlots[buildingSlot + 2]->quantity > 0) {
+      enabled = city->powerPlantUpgradeQueuedFlag == 0 && city->trailingOrderSlots[1]->quantity > 0;
+    } else if (city->trailingOrderSlots[buildingSlot + 2]->quantity > 0) {
       enabled = false;
     } else {
-      enabled = city94->productionAccum[buildingSlot] < city94->GetBuildingType(buildingSlot);
+      enabled = city->productionAccum[buildingSlot] < city->GetBuildingType(buildingSlot);
     }
     for (int animation = 0; animation < 3; ++animation) {
       if (buildingActionAnimations[group][animation] != 0) {
@@ -676,7 +675,7 @@ void TCityProductionView::UpdateToolbar() {
 // FUNCTION: IMPERIALISM 0x004bc610
 void TCityProductionView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId >= 10000) {
-    g_pMacViewMgr->OpenConstructionWindow(static_cast<short>(commandId - 10000), city94, this);
+    g_pMacViewMgr->OpenConstructionWindow(static_cast<short>(commandId - 10000), city, this);
     return;
   }
   TControl::DoEvent(commandId, sourceHandler, event);
@@ -741,13 +740,13 @@ void TCityProductionView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CP
 
   if (buildingSlot == 15 && buildingViews[15] == 0) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0xbdb, 0, 1);
-    buildingViews[15] = g_pMacViewMgr->OpenBuildingWindow(15, city94, false, false, 0);
+    buildingViews[15] = g_pMacViewMgr->OpenBuildingWindow(15, city, false, false, 0);
     UpdateToolbar();
     return;
   }
 
   if (buildingViews[buildingSlot] == 0) {
-    if (city94->GetBuildingType(buildingSlot) == 0 && city94->IsCapacityCenter(buildingSlot)) {
+    if (city->GetBuildingType(buildingSlot) == 0 && city->IsCapacityCenter(buildingSlot)) {
       bool available = true;
       if (buildingSlot == 6 || buildingSlot == 11) {
         short nationId = g_pSimMgr->GetPlayerCountry();
@@ -763,7 +762,7 @@ void TCityProductionView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CP
       g_pSfxPlaybackSystem->PlaySoundEffect(
           static_cast<short>(g_cityBuildingSoundCueOffsets[buildingSlot] + 3000), 0, 1);
       buildingViews[buildingSlot] =
-          g_pMacViewMgr->OpenBuildingWindow(buildingSlot, city94, false, false, 0);
+          g_pMacViewMgr->OpenBuildingWindow(buildingSlot, city, false, false, 0);
     }
   }
   UpdateToolbar();
@@ -795,13 +794,13 @@ void TCityProductionView::CloseAndSaveWindows() {
     TBuildingView* buildingView = buildingViews[buildingSlot];
     if (buildingView != 0) {
       TWindow* window = buildingView->GetWindow();
-      city94->SetBuildingWindowState(buildingSlot, true, static_cast<short>(window->ownerLocalX),
-                                     static_cast<short>(window->ownerLocalY));
+      city->SetBuildingWindowState(buildingSlot, true, static_cast<short>(window->ownerLocalX),
+                                   static_cast<short>(window->ownerLocalY));
       window->Close();
       window->Free();
       buildingViews[buildingSlot] = 0;
     } else {
-      city94->SetBuildingWindowState(buildingSlot, false, 0, 0);
+      city->SetBuildingWindowState(buildingSlot, false, 0, 0);
     }
   }
 }
@@ -845,7 +844,7 @@ void TCityProductionView::UpdateFields() {
 
   short total = 0;
   for (i = 0; i < 14; ++i) {
-    total = static_cast<short>(total + city94->orderCountByType5c[i]);
+    total = static_cast<short>(total + city->orderCountByType[i]);
   }
   numberText.Format(g_szDecimalFormat, total);
   summaryText = g_szCityProductionShipyardPrefix + numberText;
@@ -858,7 +857,7 @@ void TCityProductionView::UpdateFields() {
 
   total = 0;
   for (i = 25; i < 29; ++i) {
-    TProductionOrder* order = static_cast<TProductionOrder*>(city94->orderSlots[i]);
+    TProductionOrder* order = static_cast<TProductionOrder*>(city->orderSlots[i]);
     if (order == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x5f2);
     }
@@ -874,7 +873,7 @@ void TCityProductionView::UpdateFields() {
 
   total = 0;
   for (i = 34; i < 39; ++i) {
-    TProductionOrder* order = static_cast<TProductionOrder*>(city94->orderSlots[i]);
+    TProductionOrder* order = static_cast<TProductionOrder*>(city->orderSlots[i]);
     if (order == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x600);
     }

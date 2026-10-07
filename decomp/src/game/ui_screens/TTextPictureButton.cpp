@@ -8,7 +8,7 @@ IMPLEMENT_DYNCREATE(TTextPictureButton, TUpDownPictureButton)
 
 // FUNCTION: IMPERIALISM 0x005725d0
 TTextPictureButton::TTextPictureButton()
-    : TUpDownPictureButton(), pointSize98(0), themeCode9A(0), themeCode9C(0) {}
+    : TUpDownPictureButton(), pointSize(0), themeCode9A(0), themeCode9C(0) {}
 
 // FUNCTION: IMPERIALISM 0x005726a0
 TTextPictureButton::~TTextPictureButton() {}
@@ -19,7 +19,7 @@ void TTextPictureButton::ITextPictureButton(TView* panel, int* offsetLayout, int
                                             short themeCodeA, short themeCodeC) {
   IPicture(panel, offsetLayout, sizeLayout, 5, 5, pictureId);
   buttonText = *text;
-  pointSize98 = pointSize;
+  this->pointSize = pointSize;
   themeCode9A = themeCodeA;
   themeCode9C = themeCodeC;
 }
@@ -29,7 +29,7 @@ void TTextPictureButton::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);
   int pressedOffset = (controlState != 0) ? 1 : 0;
 
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, pointSize98, themeCode9C);
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, pointSize, themeCode9C);
   COLORREF shadowColor;
   ResolveUiThemeColor(themeCode9C, &shadowColor);
   SetQuickDrawColorAndSyncGlobals(shadowColor);

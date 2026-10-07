@@ -844,7 +844,7 @@ void TMinor::BecomeProtectorateOf(int targetNationSlot) {
       if (regionId == -1) {
         continue;
       }
-      short regionOwner = g_pMapContextActionManager->perTileOwnerNationCodeCache1c[regionId];
+      short regionOwner = g_pMapContextActionManager->perTileOwnerNationCodeCache[regionId];
       if (regionOwner == this->nationSlot || regionOwner == decodedNationSlot) {
         g_pGlobalMapState->ChangeProvinceOwner(static_cast<short>(regionId), decodedNationSlot);
       }
@@ -977,7 +977,7 @@ void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
       if (regionRecord->linkedRegionCount > 0) {
         int linkedIndex = 0;
         while (linkedIndex < regionRecord->linkedRegionCount) {
-          short tileId = regionRecord->linkedTileIndices42[linkedIndex];
+          short tileId = regionRecord->linkedTileIndices[linkedIndex];
           terrainTiles[tileId].secondaryOwnerNationTag = -1;
           linkedIndex++;
         }
@@ -992,7 +992,7 @@ void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
   if (regionRecord->linkedRegionCount > 0) {
     int linkedIndex = 0;
     while (linkedIndex < regionRecord->linkedRegionCount) {
-      short tileId = regionRecord->linkedTileIndices42[linkedIndex];
+      short tileId = regionRecord->linkedTileIndices[linkedIndex];
       terrainTiles[tileId].secondaryOwnerNationTag = -1;
       linkedIndex++;
     }
@@ -1018,7 +1018,7 @@ void TMinor::KillBoycottedForeignCompanies(void) {
     if (regionRecord->linkedRegionCount > 0) {
       int linkedIndex = 0;
       while (linkedIndex < regionRecord->linkedRegionCount) {
-        short tileId = regionRecord->linkedTileIndices42[linkedIndex];
+        short tileId = regionRecord->linkedTileIndices[linkedIndex];
         int tileNation = terrainTiles[tileId].secondaryOwnerNationTag;
         if (tileNation != -1 && needLevel300ByMajorSlot[tileNation] != 0) {
           notifyMajorSlots[tileNation] = 1;
@@ -1044,7 +1044,7 @@ void TMinor::KillBoycottedForeignCompanies(void) {
 void TMinor::KillEnemyCiviliansIn(int provinceId) {
   NationSlot ownerNationSlot;
   if (provinceId != -1) {
-    ownerNationSlot = g_pGlobalMapState->cityScoreTable[provinceId].ownerNationCode00;
+    ownerNationSlot = g_pGlobalMapState->cityScoreTable[provinceId].ownerNationCode;
   } else if (this->encodedNationSlot >= 200) {
     ownerNationSlot = this->encodedNationSlot - 200;
   } else if (this->encodedNationSlot >= 100) {
@@ -1068,7 +1068,7 @@ void TMinor::KillEnemyCiviliansIn(int provinceId) {
     if (regionRecord->linkedRegionCount > 0) {
       int linkedIndex = 0;
       while (linkedIndex < regionRecord->linkedRegionCount) {
-        short tileId = regionRecord->linkedTileIndices42[linkedIndex];
+        short tileId = regionRecord->linkedTileIndices[linkedIndex];
         TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder;
         while (orderNode != 0) {
           TUnit* nextNode = orderNode->nextAtLocation;
@@ -1098,7 +1098,7 @@ void TMinor::KillEnemyCiviliansIn(int provinceId) {
     if (regionRecord->linkedRegionCount > 0) {
       int linkedIndex = 0;
       while (linkedIndex < regionRecord->linkedRegionCount) {
-        short tileId = regionRecord->linkedTileIndices42[linkedIndex];
+        short tileId = regionRecord->linkedTileIndices[linkedIndex];
         TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder;
         while (orderNode != 0) {
           TUnit* nextNode = orderNode->nextAtLocation;
@@ -1166,7 +1166,7 @@ void TMinor::DeportCiviliansIn(int provinceId, bool includeAllPolicyTargets) {
       ownerNationSlot = this->nationSlot;
     }
   } else {
-    ownerNationSlot = g_pGlobalMapState->cityScoreTable[provinceId].ownerNationCode00;
+    ownerNationSlot = g_pGlobalMapState->cityScoreTable[provinceId].ownerNationCode;
   }
 
   char relationMaskByNation[kMajorNationCount];
@@ -1185,7 +1185,7 @@ void TMinor::DeportCiviliansIn(int provinceId, bool includeAllPolicyTargets) {
     if (regionRecord->linkedRegionCount > 0) {
       int linkedIndex = 0;
       while (linkedIndex < regionRecord->linkedRegionCount) {
-        short tileId = regionRecord->linkedTileIndices42[linkedIndex];
+        short tileId = regionRecord->linkedTileIndices[linkedIndex];
         TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder;
         while (orderNode != 0) {
           TUnit* nextNode = orderNode->nextAtLocation;
@@ -1218,7 +1218,7 @@ void TMinor::DeportCiviliansIn(int provinceId, bool includeAllPolicyTargets) {
     if (regionRecord->linkedRegionCount > 0) {
       int linkedIndex = 0;
       while (linkedIndex < regionRecord->linkedRegionCount) {
-        short tileId = regionRecord->linkedTileIndices42[linkedIndex];
+        short tileId = regionRecord->linkedTileIndices[linkedIndex];
         TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder;
         while (orderNode != 0) {
           TUnit* nextNode = orderNode->nextAtLocation;

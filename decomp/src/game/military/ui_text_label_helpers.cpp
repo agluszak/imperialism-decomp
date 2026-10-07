@@ -199,7 +199,7 @@ void __cdecl ApplyUiTextStyleAndThemeFlags(TDropShadowText* control, int unused,
   styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, unused, pointSize, textThemeCode);
   control->InstallTextStyle(styleDescriptor, 0);
-  ResolveUiThemeColor(static_cast<short>(shadowThemeCode), &control->shadowColor94);
+  ResolveUiThemeColor(static_cast<short>(shadowThemeCode), &control->shadowColor);
 }
 
 // FUNCTION: IMPERIALISM 0x005c4620

@@ -87,7 +87,7 @@ private:
 
   void CaptureOwnership() {
     for (int index = 0; index < kCityRecordCount; ++index) {
-      ownerBefore[index] = g_pGlobalMapState->cityScoreTable[index].ownerNationCode00;
+      ownerBefore[index] = g_pGlobalMapState->cityScoreTable[index].ownerNationCode;
     }
   }
 
@@ -97,7 +97,7 @@ private:
     // MSVC500 predates per-loop `for` scope, so a second `int index` in this function would be a
     // redefinition; this loop names its own counter.
     for (int verified = 0; verified < kCityRecordCount; ++verified) {
-      if (g_pGlobalMapState->cityScoreTable[verified].ownerNationCode00 != ownerBefore[verified]) {
+      if (g_pGlobalMapState->cityScoreTable[verified].ownerNationCode != ownerBefore[verified]) {
         return false;
       }
     }

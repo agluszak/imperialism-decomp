@@ -109,7 +109,7 @@ bool OfferScreen::OfferTextNamesNation(short nationSlot) const {
 bool OfferScreen::SeasonLabelIsWhite() const {
   TView* season = offerDesk != 0 ? offerDesk->ResolveControlByTag(kControlTagSeas) : 0;
   return season != 0 && season->IsKindOf(RUNTIME_CLASS(TDropShadowText)) != 0 &&
-         static_cast<TDropShadowText*>(season)->textStyle78.textColor == kSeasonLabelColor;
+         static_cast<TDropShadowText*>(season)->textStyle.textColor == kSeasonLabelColor;
 }
 
 bool OfferScreen::PurchaseDefaultsTo(int amount) const {

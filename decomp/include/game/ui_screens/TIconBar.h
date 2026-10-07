@@ -19,7 +19,7 @@ public:
                 short pictureId, int numIcons);
 
   short iconAtlasFrame;
-  short numIcons96;
+  short numIcons;
   short iconSpacing;
   unsigned char pad9a[2];
 

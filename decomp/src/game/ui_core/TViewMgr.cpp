@@ -133,7 +133,7 @@ TViewMgr::TViewMgr() : TObject() {
   this->currentTurnEventCode = 0;
   this->dialogPlacement = g_ptCitySiteSelectionDialogPlacement;
   this->field10 = false;
-  this->mapUberPictureF0 = 0;
+  this->mapUberPicture = 0;
   this->activeMovieView = 0;
   this->pendingFollowupState = 0;
 }
@@ -167,7 +167,7 @@ void TViewMgr::ReadFrom(TStream* stream) {
   this->currentTurnEventCode = 0;
   this->dialogPlacement = g_ptCitySiteSelectionDialogPlacement;
   this->field10 = false;
-  this->mapUberPictureF0 = 0;
+  this->mapUberPicture = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005d5250
@@ -944,8 +944,8 @@ void TViewMgr::NoOpTurnEventStateVtableSlotD4(int arg) {
 }
 
 static void ClearMainViewChildWindowStyle(TView* mainView) {
-  if (mainView->nativeWindow50 != nullptr) {
-    mainView->nativeWindow50->ModifyStyle(0, 0x02000000);
+  if (mainView->nativeWindow != nullptr) {
+    mainView->nativeWindow->ModifyStyle(0, 0x02000000);
   }
 }
 
@@ -1105,7 +1105,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
         g_pMacViewMgr->ClearActiveCityProductionViewAndDiscardRegion();
         break;
       case kTurnEventStrategicMap:
-        this->mapUberPictureF0 = 0;
+        this->mapUberPicture = 0;
         break;
       }
     }
@@ -2046,7 +2046,7 @@ void TViewMgr::ShowTerrainMap(short nationSlot) {
   mapPicture->DisplayMiniMap();
   sharedString = g_szEmptyString;
   SetControlHoverHelpText(sharedString, mapPicture);
-  this->mapUberPictureF0 = mapPicture;
+  this->mapUberPicture = mapPicture;
 
   TView* zoomControl = mainView->ResolveControlByTag(kControlTagZmOt);
   if (zoomControl == 0) {

@@ -13,13 +13,12 @@ public:
 
   CString captionText; // 0x10
   // Font/theme preset consumed by CreateFontFromPresetAndAttachRegionHandle et al.
-  TextStyle styleDescriptor14; // 0x14
+  TextStyle styleDescriptor; // 0x14
   // Passed directly to TStaticText::SetJustification.
   short textAlignmentCode; // 0x1e
 
   TTextLine();
-  void ITextLine(short rowArg, short colArg, int* bounds, short styleGroupCode,
-                                    short styleIndex);
+  void ITextLine(short rowArg, short colArg, int* bounds, short styleGroupCode, short styleIndex);
   void SetTextLineStyleDescriptor(const TextStyle* descriptor);
   void SetTextLineStyleComponents(short fontCode, short styleCode, short sizeCode,
                                   unsigned char red, unsigned char green,

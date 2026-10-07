@@ -13,7 +13,7 @@ void TScroller::InitializeScrollerPlacement(TView* owner, int* offsetLayout, int
   if (owner != 0) {
     inheritedResourceContext = owner->resourceContext;
     if (owner != 0) {
-      nativeWindow50 = owner->nativeWindow50;
+      nativeWindow = owner->nativeWindow;
     }
   }
   controlTag = kControlTagSpSpSpSp; // '    '

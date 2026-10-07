@@ -13,7 +13,7 @@ public:
   virtual void DoPostCreate(int arg) override;      // slot 0x37 0x5074e0
   virtual void SetValue(short value, bool refresh); // slot 0x76 0x5076d0
   virtual void InstallNumberText();                 // slot 0x77 0x507570
-  class TNumberText* numberTextAc; // +0xac
+  class TNumberText* numberText;                    // +0xac
 
   TNumberedIcon();
 

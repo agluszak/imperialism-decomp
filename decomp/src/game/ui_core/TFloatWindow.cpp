@@ -27,8 +27,8 @@ int TFloatWindow::GetWindowTypeTag() {
 // FUNCTION: IMPERIALISM 0x00492330
 void TFloatWindow::Close() {
   busyFlag = 0;
-  if (nativeWindow50 != 0 && nativeWindow50->m_hWnd != 0) {
-    SendMessageA(nativeWindow50->m_hWnd, 0x468, 1, controlTag);
+  if (nativeWindow != 0 && nativeWindow->m_hWnd != 0) {
+    SendMessageA(nativeWindow->m_hWnd, 0x468, 1, controlTag);
   }
   if (childList != 0) {
     POSITION pos = childList->GetHeadPosition();

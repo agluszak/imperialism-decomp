@@ -100,7 +100,7 @@ TBuildingView* CityBuildingScreen::View() const {
 }
 
 TCity* CityBuildingScreen::City() const {
-  return buildingView != 0 ? buildingView->city94 : 0;
+  return buildingView != 0 ? buildingView->city : 0;
 }
 
 RuntimeActionResult CityBuildingScreen::MissingPage(const char* what) const {
@@ -122,15 +122,15 @@ RuntimeActionResult CityBuildingScreen::VerifyIdentity() const {
     return MissingPage("verify the building page");
   }
   TGreatPower* player = ActiveNationState();
-  if (player == 0 || buildingView->city94 != player->city) {
+  if (player == 0 || buildingView->city != player->city) {
     return PageFailure("verify the building page",
                        CString("the page is not showing the player's own city"));
   }
-  if (buildingView->isEmbeddedPage9C || buildingView->embeddedPageIndex9E != slot) {
+  if (buildingView->isEmbeddedPage || buildingView->embeddedPageIndex != slot) {
     CString detail;
     detail.Format("the page is embedded=%d for slot %d, not the standalone page for slot %d",
-                  static_cast<int>(buildingView->isEmbeddedPage9C),
-                  static_cast<int>(buildingView->embeddedPageIndex9E), static_cast<int>(slot));
+                  static_cast<int>(buildingView->isEmbeddedPage),
+                  static_cast<int>(buildingView->embeddedPageIndex), static_cast<int>(slot));
     return PageFailure("verify the building page", detail);
   }
   return RuntimeActionResult::Success();
@@ -141,7 +141,7 @@ RuntimeActionResult CityBuildingScreen::VerifyRetailFloatingFrame() const {
     return MissingPage("verify the building window frame");
   }
   TWindow* window = buildingView->GetWindow();
-  HWND frame = window != 0 && window->nativeWindow50 != 0 ? window->nativeWindow50->m_hWnd : 0;
+  HWND frame = window != 0 && window->nativeWindow != 0 ? window->nativeWindow->m_hWnd : 0;
   if (frame == 0) {
     return PageFailure("verify the building window frame",
                        CString("the page has no native window"));
@@ -183,7 +183,7 @@ RuntimeActionResult CityBuildingScreen::VerifyRetailFloatingFrame() const {
     CString detail;
     detail.Format("the frame does not expose a movable caption: frame=%p cmc=%p hit=0x%lx rect=(%ld,%ld,%ld,%ld) "
                   "clientOrigin=(%ld,%ld) point=(%ld,%ld)",
-                  (void*)frame, (void*)window->nativeWindow50,
+                  (void*)frame, (void*)window->nativeWindow,
                   static_cast<long>(hitResult), static_cast<long>(windowRect.left),
                   static_cast<long>(windowRect.top), static_cast<long>(windowRect.right),
                   static_cast<long>(windowRect.bottom), static_cast<long>(clientOrigin.x),
@@ -294,9 +294,9 @@ bool CityBuildingScreen::CountIsPresentedCorrectly(TNumberText* count,
   // size. A count that fails any of these was rebuilt wrongly by the refresh, whatever its
   // digits say.
   return count != 0 && count->enabled == 0 && count->viewEnabled != 0 &&
-         count->stylePayload == 0 && count->textStyle78.fontFamily == 3 &&
-         count->textStyle78.fontStyleFlags == 0 && count->textStyle78.fontSize == kCountFontSize &&
-         count->textStyle78.textColor == textColor && count->ownerContext != 0 &&
+         count->stylePayload == 0 && count->textStyle.fontFamily == 3 &&
+         count->textStyle.fontStyleFlags == 0 && count->textStyle.fontSize == kCountFontSize &&
+         count->textStyle.textColor == textColor && count->ownerContext != 0 &&
          count->absoluteX == count->ownerContext->absoluteX + count->ownerLocalX &&
          count->absoluteY == count->ownerContext->absoluteY + count->ownerLocalY &&
          count->frameWidth > 0 && count->frameHeight > 0;
@@ -317,7 +317,7 @@ RuntimeActionResult CityBuildingScreen::CountMatchesOrder(TNumberText* count, sh
     CString detail;
     detail.Format("text=%s expected=%s value=%d order=%d font=%d color=%lu enabled=%d",
                   static_cast<LPCSTR>(shown), static_cast<LPCSTR>(expected), count->value, quantity,
-                  count->textStyle78.fontSize, count->textStyle78.textColor, count->enabled);
+                  count->textStyle.fontSize, count->textStyle.textColor, count->enabled);
     return PageFailure(what, detail);
   }
   return RuntimeActionResult::Success();
@@ -339,7 +339,7 @@ RuntimeActionResult CityBuildingScreen::VerifyUniversityCounts() const {
                          CString("a recruitment count control is missing"));
     }
     // A count drawn in any other colour is a category the page is not recruiting for.
-    if (count->textStyle78.textColor != kRecruitmentCountColor) {
+    if (count->textStyle.textColor != kRecruitmentCountColor) {
       continue;
     }
     foundLiveCount = true;
@@ -449,7 +449,7 @@ RuntimeActionResult CityBuildingScreen::VerifyArmoryState() const {
                   firstRaise == 0 ? -1 : firstRaise->IsActionable(), firstOrder->quantity,
                   firstOrder->MaxOrder(),
                   City()->CityStockByType(firstOrder->primaryInputResourceId),
-                  City()->ownerNationAc->treasuryValue10);
+                  City()->ownerNation->treasuryValue10);
     return PageFailure("verify the armory's state", detail);
   }
   if (armory->selectedUnitOrder == 0) {
@@ -719,7 +719,7 @@ RuntimeActionResult CityBuildingScreen::CloseNatively() {
     return MissingPage("close the building window");
   }
   TWindow* window = buildingView->GetWindow();
-  HWND frame = window != 0 && window->nativeWindow50 != 0 ? window->nativeWindow50->m_hWnd : 0;
+  HWND frame = window != 0 && window->nativeWindow != 0 ? window->nativeWindow->m_hWnd : 0;
   if (frame == 0) {
     return PageFailure("close the building window", CString("the page has no native window"));
   }

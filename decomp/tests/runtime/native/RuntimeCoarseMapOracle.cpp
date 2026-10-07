@@ -224,7 +224,7 @@ void ReplaceJson(JSON_Value*& destination, JSON_Value* value) {
 void FillGrid(CoarseMapGridDto& grid, const TMapMaker* mapMaker) {
   for (int row = 0; row < kCoarseHeight; ++row) {
     for (int column = 0; column < kCoarseWidth; ++column) {
-      grid.cells[row][column] = mapMaker->regionClassGrid10[row][column];
+      grid.cells[row][column] = mapMaker->regionClassGrid[row][column];
     }
   }
 }
@@ -247,7 +247,7 @@ int ExpandedProvinceCount(const TMapMaker* mapMaker) {
   int count = 0;
   for (int row = 0; row < kCoarseHeight; ++row) {
     for (int column = 0; column < kCoarseWidth; ++column) {
-      signed char value = mapMaker->regionClassGrid10[row][column];
+      signed char value = mapMaker->regionClassGrid[row][column];
       if (value != -1 && value != 100) {
         ++count;
       }
@@ -269,8 +269,8 @@ void FillExpandedTiles(ExpandedTileDto* tiles, const TMapMaker* mapMaker) {
 void FillExpandedProvinces(ExpandedProvinceDto* provinces, int count, const TMapMaker* mapMaker) {
   for (int index = 0; index < count; ++index) {
     const Province& province = mapMaker->cityScoreTable[index];
-    provinces[index].owner_nation = province.ownerNationCode00;
-    provinces[index].region_class = province.regionClassA3;
+    provinces[index].owner_nation = province.ownerNationCode;
+    provinces[index].region_class = province.regionClass;
   }
 }
 

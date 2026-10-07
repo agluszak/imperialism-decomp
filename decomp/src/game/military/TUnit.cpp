@@ -89,16 +89,16 @@ void TUnit::Free() {
 void TUnit::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   stream->ReadBytes(&orderType, 2);
-  stream->ReadBytes(&tileIndex06, 2);
+  stream->ReadBytes(&tileIndex, 2);
   stream->ReadBytes(&orderTargetIndex, 2);
   stream->ReadBytes(&ownerNationSlot, 2);
   stream->ReadBytes(&unitRosterId, 2);
   stream->ReadBytes(&militaryRegistrationFlag, 1);
   stream->ReadBytes(&unitOrder, 4);
-  short savedTileIndex = tileIndex06;
+  short savedTileIndex = tileIndex;
   if (savedTileIndex != -1) {
     short savedOrderTargetIndex = orderTargetIndex;
-    tileIndex06 = -1;
+    tileIndex = -1;
     this->MoveTo(savedTileIndex);
     orderTargetIndex = savedOrderTargetIndex;
   }
@@ -111,7 +111,7 @@ void TUnit::ReadFrom(TStream* stream) {
 void TUnit::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
   stream->WriteBytes(&orderType, 2);
-  stream->WriteBytes(&tileIndex06, 2);
+  stream->WriteBytes(&tileIndex, 2);
   stream->WriteBytes(&orderTargetIndex, 2);
   stream->WriteBytes(&ownerNationSlot, 2);
   stream->WriteBytes(&unitRosterId, 2);

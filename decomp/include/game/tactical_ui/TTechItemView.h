@@ -13,8 +13,8 @@ public:
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
                        TEvent* event) override; // slot 0x0f 0x005b1e20
 
-  int nationSlot60; // +0x60 — TTechMgr capability-matrix row (hedged name)
-  int techId64;     // +0x64 — read as short for string offsets, as int for the cost table
+  int nationSlot; // +0x60 — TTechMgr capability-matrix row (hedged name)
+  int techId;     // +0x64 — read as short for string offsets, as int for the cost table
 
   // NOOP: verified empty in original 0x005b1283
   TTechItemView() {}

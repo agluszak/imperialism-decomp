@@ -67,7 +67,7 @@ struct TTerrainStateRecord {
   signed char gateFlag;
   ProvinceIndexStorage cityRecordIndex;
   // Fleet/zone marker state; -1 is the reset sentinel.
-  MapTileActionStateStorage tileActionState16;
+  MapTileActionStateStorage tileActionState;
   unsigned char railFlags;
   signed char secondaryOwnerNationTag;
   unsigned char pad19;
@@ -84,11 +84,11 @@ struct Province {
   Province& operator=(const Province& source);
   ProvinceIndex GetIndex() const;
 
-  signed char ownerNationCode00;
+  signed char ownerNationCode;
   // Founding owner for the context panel's "formerly of" label.
   signed char formerOwnerNationCode;
   signed char developmentStage;
-  signed char fortLevel03;
+  signed char fortLevel;
   StrategicTileIndex cityTileIndex; // -1 when unanchored
   short lastTurnTick;
   signed char adjacentRegionCount;
@@ -102,7 +102,7 @@ struct Province {
   unsigned char pad3D;
   StrategicTileIndex secondaryNeighborTileIndex;
   StrategicTileIndex primaryNeighborTileIndex;
-  StrategicTileIndex linkedTileIndices42[0x20];
+  StrategicTileIndex linkedTileIndices[0x20];
   short resourceDevelopmentCounts[10]; // resource types 7..0x10
   unsigned char pad96[2];
   TMilitaryUnit* stationedUnitChain;
@@ -110,7 +110,7 @@ struct Province {
   unsigned char navyOrderReachable; // transient navy-order eligibility
   unsigned char exploredByNationMask;
   signed char resourcePresenceMask;
-  signed char regionClassA3;
+  signed char regionClass;
   CString cityNameA4;
 };
 ASSERT_SIZE(Province, 0xa8);

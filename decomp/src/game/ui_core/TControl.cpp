@@ -18,7 +18,7 @@
 
 // FUNCTION: IMPERIALISM 0x00429450
 int TControl::GetEventNumber() {
-  return eventNumber60;
+  return eventNumber;
 }
 
 // FUNCTION: IMPERIALISM 0x00429470
@@ -51,8 +51,8 @@ IMPLEMENT_DYNCREATE(TControl, TView)
 
 // FUNCTION: IMPERIALISM 0x0048e520
 TControl::TControl()
-    : TView(), eventNumber60(1), controlState(0), contentInsets(0, 0, 0, 0),
-      textStyle78(g_UiResourceEntryDefaultTextStyle) {}
+    : TView(), eventNumber(1), controlState(0), contentInsets(0, 0, 0, 0),
+      textStyle(g_UiResourceEntryDefaultTextStyle) {}
 
 // FUNCTION: IMPERIALISM 0x0048e640
 void TControl::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
@@ -61,7 +61,7 @@ void TControl::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin
   int startX = point.x;
   int startY = point.y;
   g_McAppMouseCaptureState.capturedControl = this;
-  CWnd::FromHandle(::SetCapture(nativeWindow50->m_hWnd));
+  CWnd::FromHandle(::SetCapture(nativeWindow->m_hWnd));
   g_McAppMouseCaptureState.startPoint.x = startX;
   g_McAppMouseCaptureState.startPoint.y = startY;
   g_McAppMouseCaptureState.lastPoint.x = startX;
@@ -71,8 +71,8 @@ void TControl::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin
   TrackMouse(kTrackPhaseBegin, g_McAppMouseCaptureState.startPoint,
              g_McAppMouseCaptureState.lastPoint, g_McAppMouseCaptureState.currentPoint, true);
   if (g_McAppUiMouseCaptureTimerId_006A1ADC == 0) {
-    g_McAppUiMouseCaptureTimerId_006A1ADC = SetTimer(
-        nativeWindow50->m_hWnd, 0xef, 0x11, NotifyGlobalCaptureOwnerState1WithCachedCoords);
+    g_McAppUiMouseCaptureTimerId_006A1ADC =
+        SetTimer(nativeWindow->m_hWnd, 0xef, 0x11, NotifyGlobalCaptureOwnerState1WithCachedCoords);
   }
 }
 
@@ -98,7 +98,7 @@ void TControl::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* even
 
 // FUNCTION: IMPERIALISM 0x0048e7a0
 void TControl::SetTextColorAndMaybeRefresh(const COLORREF* textColor, bool refreshNow) {
-  textStyle78.textColor = *textColor;
+  textStyle.textColor = *textColor;
   if (refreshNow) {
     PaintOrInvalidateControl(0);
   }
@@ -106,7 +106,7 @@ void TControl::SetTextColorAndMaybeRefresh(const COLORREF* textColor, bool refre
 
 // FUNCTION: IMPERIALISM 0x0048e7d0
 void TControl::InstallTextStyle(const TextStyle& style, char refreshNow) {
-  textStyle78 = style;
+  textStyle = style;
   if (refreshNow != 0) {
     PaintOrInvalidateControl(0);
   }
@@ -137,18 +137,18 @@ void TControl::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previous
     return;
   }
   if (phase == kTrackPhaseEnd && PointInBoundsAndActionable(&currentPoint) != 0) {
-    if (eventNumber60 == 4) {
+    if (eventNumber == 4) {
       HandleEvent(kControlCommandHiliteToggle, this, 0);
-      HandleEvent(eventNumber60, this, 0);
+      HandleEvent(eventNumber, this, 0);
       return;
     }
-    if (eventNumber60 != 0xc) {
+    if (eventNumber != 0xc) {
       HandleEvent(kControlCommandHiliteOff, this, 0);
-      HandleEvent(eventNumber60, this, 0);
+      HandleEvent(eventNumber, this, 0);
       return;
     }
     HandleEvent(kControlCommandHiliteOn, this, 0);
-    HandleEvent(eventNumber60, this, 0);
+    HandleEvent(eventNumber, this, 0);
   }
 }
 
@@ -208,5 +208,5 @@ void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNat
 
 // FUNCTION: IMPERIALISM 0x0058e440
 void TControl::SetEventNumber(int value) {
-  eventNumber60 = value;
+  eventNumber = value;
 }

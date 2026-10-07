@@ -42,8 +42,8 @@ struct TBitmapSurfaceNode {
   unsigned char* pixelBits;
   short stride;
   short pad06;
-  CRect bounds; // +0x08
-  short bitDepth18;                                        // +0x18
+  CRect bounds;                                            // +0x08
+  short bitDepth;                                          // +0x18
   short pad1a;                                             // +0x1a alignment filler before `dib`
   CDib* dib;                                               // +0x1c
   TBitmapSurfaceNode();                                    // 0x00495cc0

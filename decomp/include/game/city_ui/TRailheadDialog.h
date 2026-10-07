@@ -18,6 +18,6 @@ public:
   // NOOP: verified empty in original 0x004bcf73 (no standalone TRailheadDialog::TRailheadDialog body exists: CreateObject 0x004bcf40 inlines this default ctor, calling the TView base ctor directly at that site)
   TRailheadDialog() {}
 
-  TCity* city60;
+  TCity* city;
 };
 ASSERT_SIZE(TRailheadDialog, 0x64);

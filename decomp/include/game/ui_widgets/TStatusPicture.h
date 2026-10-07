@@ -16,8 +16,8 @@ public:
                        TEvent* event) override; // slot 0x0f 0x005942f0
   virtual void DoPostCreate(int arg) override;  // slot 0x37 0x593f20
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x594540
-  int comparisonMode90;    // +0x90 -- selects which per-nation metric fills values94
-  int values94[7];         // +0x94 per-entry sort key (score)
+  int comparisonMode;      // +0x90 -- selects which per-nation metric fills values
+  int values[7];           // +0x94 per-entry sort key (score)
   short pictureIds[7];     // +0xb0 per-entry picture id (-1 = empty slot)
   char padBE[0xc0 - 0xbe]; // +0xbe
 
@@ -39,7 +39,7 @@ public:
           ++metric;
           --metricCount;
         } while (metricCount != 0);
-        values94[i] = static_cast<short>(sum) * 400 / 400;
+        values[i] = static_cast<short>(sum) * 400 / 400;
         pictureIds[i] = static_cast<short>(i);
       } else {
         pictureIds[i] = -1;
@@ -49,12 +49,12 @@ public:
   }
   // Retained VC5 copy of a method inlined at its only live callsite.
   void NormalizeAsNeeded() {
-    int maxValue = values94[0];
+    int maxValue = values[0];
     if (maxValue > 400) {
-      values94[0] = 400;
+      values[0] = 400;
       for (int index = 1; index < 7; ++index) {
         if (pictureIds[index] != -1) {
-          values94[index] = values94[index] * 400 / maxValue;
+          values[index] = values[index] * 400 / maxValue;
         }
       }
     }

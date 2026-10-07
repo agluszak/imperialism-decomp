@@ -79,7 +79,7 @@ void TInvadeMission::Free() {
 
   TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId]);
   nationState->AssertValid();
-  nationState->SetProvinceStatus(targetProvince30, kMissionDesirabilityUnmarked);
+  nationState->SetProvinceStatus(targetProvince, kMissionDesirabilityUnmarked);
 
   CIterator iter(orderList);
   TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(iter.Reset());
@@ -119,9 +119,9 @@ char TInvadeMission::SmokeEmIfYouGotEm() {
 void TInvadeMission::Initialize() {
   beachhead->InitializeMissionWithNationIdAndResetPathMarker(nationId);
   marker11 = 1;
-  if (targetProvince30 != -1) {
+  if (targetProvince != -1) {
     pathMarker =
-        static_cast<short>(g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00);
+        static_cast<short>(g_pGlobalMapState->cityScoreTable[targetProvince].ownerNationCode);
   }
   marker11 = 3;
 }
@@ -142,16 +142,16 @@ void TInvadeMission::CalculateNeeds() {
 // FUNCTION: IMPERIALISM 0x0053f640
 void TInvadeMission::WriteTo(TStream* stream) {
   TArmyMission::WriteTo(stream);
-  stream->WriteBytes(&targetProvince30, 2);
-  stream->WriteBytes(&amassingProvince32, 2);
+  stream->WriteBytes(&targetProvince, 2);
+  stream->WriteBytes(&amassingProvince, 2);
   beachhead->WriteTo(stream);
 }
 
 // FUNCTION: IMPERIALISM 0x0053f690
 void TInvadeMission::ReadFrom(TStream* stream) {
   TArmyMission::ReadFrom(stream);
-  stream->ReadBytes(&targetProvince30, 2);
-  stream->ReadBytes(&amassingProvince32, 2);
+  stream->ReadBytes(&targetProvince, 2);
+  stream->ReadBytes(&amassingProvince, 2);
   if (beachhead != nullptr) {
     beachhead->Free();
   }
@@ -166,7 +166,7 @@ void TInvadeMission::GiveOrders() {
     beachhead->GiveOrders();
   }
   // Per-region, per-nation dispatch-dirty bitmask gate.
-  if (g_pGlobalMapState->cityScoreTable[targetProvince30].exploredByNationMask &
+  if (g_pGlobalMapState->cityScoreTable[targetProvince].exploredByNationMask &
       (1 << (nationId & 0x1f))) {
     TAttackProvinceMission::GiveOrders();
   }
@@ -275,7 +275,7 @@ void TInvadeMission::Hold(bool value) {
 
 // FUNCTION: IMPERIALISM 0x0053fbc0
 bool TInvadeMission::Matches(eMissionType missionType, int key, TZone* zoneContext) const {
-  return missionType == kMissionTypeInvadeProvince && key == targetProvince30 &&
+  return missionType == kMissionTypeInvadeProvince && key == targetProvince &&
          beachhead != nullptr && beachhead->Matches(kMissionTypeInvadeProvince, key, zoneContext);
 }
 

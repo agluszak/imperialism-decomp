@@ -56,13 +56,13 @@ short SeedNonCapitalOwnedRegionDevelopment(TGreatPower* nation) {
   chosen.developmentStage = 0;
   memset(chosen.resourceDevelopmentCounts, 0, sizeof(chosen.resourceDevelopmentCounts));
 
-  const StrategicTileIndex linked = chosen.linkedTileIndices42[0];
+  const StrategicTileIndex linked = chosen.linkedTileIndices[0];
   TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[linked];
   tile.resourceTypeByEdge[0] = static_cast<signed char>(kResourceCotton);
   tile.resourceTypeByEdge[1] = static_cast<signed char>(kResourceKindNone);
   tile.developmentClassNibbles = 3;
 
-  nation->city->productionOrderTable1dc[1] = 4;
+  nation->city->productionOrderTable[1] = 4;
   return chosenId;
 }
 
@@ -87,7 +87,7 @@ RuntimeActionResult RunOwnedRegionDevelopment(NativeTransition& transition) {
   const Province& record = g_pGlobalMapState->cityScoreTable[regionId];
   JsonObject province;
   province.Set("province", static_cast<int>(regionId));
-  province.Set("owner", static_cast<int>(record.ownerNationCode00));
+  province.Set("owner", static_cast<int>(record.ownerNationCode));
   province.Set("dev_stage", static_cast<int>(record.developmentStage));
   province.Set("last_turn", static_cast<int>(record.lastTurnTick));
   JsonArray devCounts;

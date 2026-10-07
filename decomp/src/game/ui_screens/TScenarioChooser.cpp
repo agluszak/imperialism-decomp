@@ -96,7 +96,7 @@ void TScenarioChooser::DoPostCreate(int arg) {
   g_pSimMgr->GetString(0x2758, 0x20, &headingText);
   moreLabel->SetTextAndMaybeRefresh(&headingText, false);
   moreLabel->InstallTextStyle(headingStyle, 1);
-  moreLabel->shadowColor94 = shadowColor;
+  moreLabel->shadowColor = shadowColor;
   moreLabel->ViewEnable(1, 0);
 
   TextStyle bodyStyle;

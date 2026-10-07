@@ -256,7 +256,7 @@ JSON_Value* CaptureArmyBattleSnapshot(TArmyBattle* battle) {
     JsonObject record;
     record.Set("source", unit->sourceUnit->persistentUnitId);
     record.Set("side", unit->side);
-    record.Set("tile", unit->tileIndex8);
+    record.Set("tile", unit->tileIndex);
     record.Set("action_points", unit->actionPoints);
     record.Set("strength", unit->strength);
     record.Set("morale", unit->morale);
@@ -265,8 +265,8 @@ JSON_Value* CaptureArmyBattleSnapshot(TArmyBattle* battle) {
   }
   snapshot.SetOptional(
       "selected",
-      battle->selectedUnit1c != 0
-          ? static_cast<TArmyTacUnit*>(battle->selectedUnit1c)->sourceUnit->persistentUnitId
+      battle->selectedUnit != 0
+          ? static_cast<TArmyTacUnit*>(battle->selectedUnit)->sourceUnit->persistentUnitId
           : -1);
   snapshot.Set("current_side", battle->currentSide);
   snapshot.Set("round", battle->roundCounter);
@@ -283,8 +283,8 @@ JSON_Value* CaptureArmyBattleSnapshot(TArmyBattle* battle) {
 void StopActiveNationArmyPlayerForInput(TArmyBattle* battle) {
   TArmyPlayer* ourPlayer = static_cast<TArmyPlayer*>(battle->players[0]);
   TArmyPlayer* enemyPlayer = static_cast<TArmyPlayer*>(battle->players[1]);
-  ourPlayer->notWatchedFlag = (ourPlayer->nationIndex1C == ActiveNationSlot()) ? 0 : 1;
-  enemyPlayer->notWatchedFlag = (enemyPlayer->nationIndex1C == ActiveNationSlot()) ? 0 : 1;
+  ourPlayer->notWatchedFlag = (ourPlayer->nationIndex == ActiveNationSlot()) ? 0 : 1;
+  enemyPlayer->notWatchedFlag = (enemyPlayer->nationIndex == ActiveNationSlot()) ? 0 : 1;
 }
 
 bool PumpArmyBattleToActiveNationInput(TArmyBattle* battle) {
@@ -292,7 +292,7 @@ bool PumpArmyBattleToActiveNationInput(TArmyBattle* battle) {
   while (battle->battleOutcome == kTacticalBattleInProgress) {
     TArmyPlayer* player = static_cast<TArmyPlayer*>(battle->currentSide == 0 ? battle->players[0]
                                                                               : battle->players[1]);
-    if (battle->pendingEndOfActionFlag != 0 && player->nationIndex1C == ActiveNationSlot() &&
+    if (battle->pendingEndOfActionFlag != 0 && player->nationIndex == ActiveNationSlot() &&
         player->notWatchedFlag == 0) {
       return true;
     }
@@ -363,7 +363,7 @@ JSON_Value* CaptureActiveBattleJson() {
   }
   CollectStackUnitIds(ours, &attackerUnits);
   CollectStackUnitIds(enemy, &defenderUnits);
-  result.Set("province", static_cast<int>(enemy->tileIndex10));
+  result.Set("province", static_cast<int>(enemy->tileIndex));
   result.Set("attacker_nation", static_cast<int>(ours->categoryFlag));
   result.Set("defender_nation", static_cast<int>(enemy->categoryFlag));
   result.Set("attacker_units", attackerUnits.Release());
@@ -386,7 +386,7 @@ JSON_Value* CaptureMilitaryUnitPositions() {
     while (cursor.More() != 0) {
       JsonObject entry;
       entry.Set("id", unit->persistentUnitId);
-      entry.Set("tile", static_cast<int>(unit->tileIndex06));
+      entry.Set("tile", static_cast<int>(unit->tileIndex));
       units.Add(entry.Release());
       unit = static_cast<TMilitaryUnit*>(cursor.Advance());
     }
@@ -406,7 +406,7 @@ bool IssueUncontestedRedeploys(TMilitaryUnit* skip, int* issued) {
     }
     unit = static_cast<TMilitaryUnit*>(cursor.Reset());
     while (cursor.More() != 0) {
-      const short source = unit->tileIndex06;
+      const short source = unit->tileIndex;
       Province* record;
       int adj;
       if (unit != skip && source >= 0 && source < 0x180) {
@@ -414,8 +414,8 @@ bool IssueUncontestedRedeploys(TMilitaryUnit* skip, int* issued) {
         for (adj = 0; adj < record->adjacentRegionCount; ++adj) {
           const short dest = record->adjacentRegionIds[adj];
           if (dest >= 0 && dest < 0x180 &&
-              g_pGlobalMapState->cityScoreTable[dest].ownerNationCode00 ==
-                  record->ownerNationCode00) {
+              g_pGlobalMapState->cityScoreTable[dest].ownerNationCode ==
+                  record->ownerNationCode) {
             unit->SetOrders(kUnitOrderRedeploy, dest);
             *issued += 1;
             break;
@@ -439,7 +439,7 @@ bool FindUncontestedRedeploy(TMilitaryUnit** outUnit, short* outDest, TMilitaryU
     }
     unit = static_cast<TMilitaryUnit*>(cursor.Reset());
     while (cursor.More() != 0) {
-      const short source = unit->tileIndex06;
+      const short source = unit->tileIndex;
       Province* record;
       int adj;
       if (unit != skip && source >= 0 && source < 0x180) {
@@ -447,8 +447,8 @@ bool FindUncontestedRedeploy(TMilitaryUnit** outUnit, short* outDest, TMilitaryU
         for (adj = 0; adj < record->adjacentRegionCount; ++adj) {
           const short dest = record->adjacentRegionIds[adj];
           if (dest >= 0 && dest < 0x180 &&
-              g_pGlobalMapState->cityScoreTable[dest].ownerNationCode00 ==
-                  record->ownerNationCode00) {
+              g_pGlobalMapState->cityScoreTable[dest].ownerNationCode ==
+                  record->ownerNationCode) {
             *outUnit = unit;
             *outDest = dest;
             return true;
@@ -473,7 +473,7 @@ bool FindHostileRedeployExcluding(TMilitaryUnit* skipUnit, short skipDest, TMili
     }
     unit = static_cast<TMilitaryUnit*>(cursor.Reset());
     while (cursor.More() != 0) {
-      const short source = unit->tileIndex06;
+      const short source = unit->tileIndex;
       Province* record;
       int adj;
       if (unit != skipUnit && source >= 0 && source < 0x180) {
@@ -484,8 +484,8 @@ bool FindHostileRedeployExcluding(TMilitaryUnit* skipUnit, short skipDest, TMili
           if (dest < 0 || dest >= 0x180 || dest == skipDest) {
             continue;
           }
-          if (g_pGlobalMapState->cityScoreTable[dest].ownerNationCode00 ==
-                  record->ownerNationCode00 ||
+          if (g_pGlobalMapState->cityScoreTable[dest].ownerNationCode ==
+                  record->ownerNationCode ||
               g_pGlobalMapState->cityScoreTable[dest].stationedUnitChain == 0) {
             continue;
           }
@@ -563,22 +563,22 @@ void ProbeNavyDeployTiles(TNavyBattle* battle, TTacticalUnit* unit, JsonArray* t
     return;
   }
   player = battle->players[unit->side];
-  savedTile = unit->tileIndex8;
+  savedTile = unit->tileIndex;
   savedReady = player->sideReadyFlag;
   savedCursor = player->cursorIndex;
-  savedSelected = battle->selectedUnit1c;
+  savedSelected = battle->selectedUnit;
   savedSide = battle->currentSide;
   savedLive = battle->battleLive;
   for (tile = 0; tile < battle->tacticalTileCount; ++tile) {
     occupant = battle->tileGrid[tile].occupant;
     battle->DeployUnit(unit, tile);
-    if (unit->tileIndex8 == tile) {
+    if (unit->tileIndex == tile) {
       tiles->Add(tile);
-      unit->tileIndex8 = savedTile;
+      unit->tileIndex = savedTile;
       battle->tileGrid[tile].occupant = occupant;
       player->sideReadyFlag = savedReady;
       player->cursorIndex = savedCursor;
-      battle->selectedUnit1c = savedSelected;
+      battle->selectedUnit = savedSelected;
       battle->currentSide = savedSide;
       battle->battleLive = savedLive;
     }
@@ -612,8 +612,8 @@ JSON_Value* CaptureNavyTacticalInit(TTaskForce* ourForce, TTaskForce* enemyForce
 
   snapshot.Set("column_count", battle->battlefieldColumnCount);
   snapshot.Set("current_side", battle->currentSide);
-  snapshot.Set("side0_nation", ourPlayer->nationIndex1C);
-  snapshot.Set("side1_nation", enemyPlayer->nationIndex1C);
+  snapshot.Set("side0_nation", ourPlayer->nationIndex);
+  snapshot.Set("side1_nation", enemyPlayer->nationIndex);
   snapshot.Set("side0_selected", side0Unit != 0 ? static_cast<int>(side0Unit->selectedFlag) : 0);
   snapshot.Set("side1_selected", side1Unit != 0 ? static_cast<int>(side1Unit->selectedFlag) : 0);
   snapshot.Set("side0_tiles", side0Tiles.Release());
@@ -871,7 +871,7 @@ JSON_Value* CaptureProductionNavalSide(TTaskForce* force, TShip* ship, TAdmiral*
 
 JSON_Value* CaptureProductionNavalReportSide(const MapContextActionRecord* report, int sideIndex) {
   JsonArray ships;
-  for (int index = 0; index < report->childCount24a[sideIndex]; ++index) {
+  for (int index = 0; index < report->childCount[sideIndex]; ++index) {
     const MapOrderBattleSideChildRecord& child = report->sideChildRecords[sideIndex][index];
     JsonObject ship;
     ship.Set("type", static_cast<int>(child.resourceType));
@@ -1485,7 +1485,7 @@ RuntimeActionResult RunInteractiveArmyBattleMove(NativeTransition& transition) {
          inputGuard-- > 0) {
     int target = -1;
     int bestDistance = 9999;
-    TTacticalUnit* moving = battle->selectedUnit1c;
+    TTacticalUnit* moving = battle->selectedUnit;
     for (tile = 0; tile < battle->tacticalTileCount; ++tile) {
       int enemyTile;
       int distance;
@@ -1513,8 +1513,8 @@ RuntimeActionResult RunInteractiveArmyBattleMove(NativeTransition& transition) {
     }
     battle->MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(moving, target);
     targets.Add(target);
-    actuals.Add(moving->tileIndex8);
-    reactionStopped = moving->tileIndex8 != target;
+    actuals.Add(moving->tileIndex);
+    reactionStopped = moving->tileIndex != target;
     if (!PumpArmyBattleToActiveNationInput(battle)) {
       return RuntimeActionResult::Failure("Move did not reach the next active-nation input");
     }
@@ -1596,7 +1596,7 @@ RuntimeActionResult RunInteractiveArmyBattleAttack(NativeTransition& transition,
       actuals.Add(-1);
     } else {
       int bestDistance = 9999;
-      TTacticalUnit* moving = battle->selectedUnit1c;
+      TTacticalUnit* moving = battle->selectedUnit;
       for (tile = 0; tile < battle->tacticalTileCount; ++tile) {
         int enemyTile;
         int distance = 9999;
@@ -1625,7 +1625,7 @@ RuntimeActionResult RunInteractiveArmyBattleAttack(NativeTransition& transition,
         battle->MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(moving, target);
         kinds.Add(1);
         targets.Add(target);
-        actuals.Add(moving->tileIndex8);
+        actuals.Add(moving->tileIndex);
       }
     }
     if (!PumpArmyBattleToActiveNationInput(battle)) {

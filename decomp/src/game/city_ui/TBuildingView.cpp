@@ -16,10 +16,10 @@ TBuildingView::~TBuildingView() {}
 void TBuildingView::ApplyCityViewSelectionPayloadAndRefreshControls(
     TCity* city, bool isEmbeddedPage, TCityProductionView* productionView,
     short embeddedPageIndex) {
-  city94 = city;
-  isEmbeddedPage9C = isEmbeddedPage;
-  productionView98 = productionView;
-  embeddedPageIndex9E = embeddedPageIndex;
+  this->city = city;
+  this->isEmbeddedPage = isEmbeddedPage;
+  this->productionView = productionView;
+  this->embeddedPageIndex = embeddedPageIndex;
   GetWindow()->controlValue = 0x65;
   DoStartup();
   UpdateFields();
@@ -53,10 +53,10 @@ void TBuildingView::SetTextBox(TStaticText* label, short stringGroup, short stri
 
 // FUNCTION: IMPERIALISM 0x004c7180
 void TBuildingView::Close() {
-  if (isEmbeddedPage9C) {
-    productionView98->buildingViews[embeddedPageIndex9E] = 0;
+  if (isEmbeddedPage) {
+    productionView->buildingViews[embeddedPageIndex] = 0;
   } else {
-    g_pViewMgr->CloseBuilding(embeddedPageIndex9E);
+    g_pViewMgr->CloseBuilding(embeddedPageIndex);
   }
   TView::Close();
 }

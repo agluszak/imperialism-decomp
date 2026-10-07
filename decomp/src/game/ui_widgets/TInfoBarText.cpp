@@ -17,11 +17,11 @@ IMPLEMENT_DYNCREATE(TInfoBarText, TDeluxeText)
 
 // FUNCTION: IMPERIALISM 0x005b66b0
 void TInfoBarText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {
-  if (EqualRect(layoutRect, &layoutRectA4) == 0) {
-    layoutRectA4.left = layoutRect->left;
-    layoutRectA4.top = layoutRect->top;
-    layoutRectA4.right = layoutRect->right;
-    layoutRectA4.bottom = layoutRect->bottom;
+  if (EqualRect(layoutRect, &this->layoutRect) == 0) {
+    this->layoutRect.left = layoutRect->left;
+    this->layoutRect.top = layoutRect->top;
+    this->layoutRect.right = layoutRect->right;
+    this->layoutRect.bottom = layoutRect->bottom;
     UpdateTextEntrySharedString(&text);
     CenterVertically(true);
   }
@@ -31,10 +31,10 @@ void TInfoBarText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {
 // FUNCTION: IMPERIALISM 0x005b6770
 void TInfoBarText::ClearTextAndLayoutRect(int) {
   CString text;
-  layoutRectA4.left = 0;
-  layoutRectA4.top = 0;
-  layoutRectA4.right = 0;
-  layoutRectA4.bottom = 0;
+  layoutRect.left = 0;
+  layoutRect.top = 0;
+  layoutRect.right = 0;
+  layoutRect.bottom = 0;
   UpdateTextEntrySharedString(&text);
   CenterVertically(true);
 }
@@ -50,10 +50,10 @@ void TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary, int
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, styleSecondary);
   SetTextStyle(styleDescriptor, false);
   SetJustification(static_cast<short>(-1), false);
-  layoutRectA4.left = 0;
-  layoutRectA4.top = 0;
-  layoutRectA4.right = 0;
-  layoutRectA4.bottom = 0;
+  layoutRect.left = 0;
+  layoutRect.top = 0;
+  layoutRect.right = 0;
+  layoutRect.bottom = 0;
   COLORREF mappedFlags = 0;
   ResolveUiThemeColor(static_cast<short>(stylePrimary), &mappedFlags);
   textColor = mappedFlags;

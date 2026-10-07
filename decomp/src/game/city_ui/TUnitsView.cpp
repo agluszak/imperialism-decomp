@@ -25,7 +25,7 @@ void TUnitsView::DoStartup() {
 
   short y = 0;
   for (short unitType = 0; unitType < 14; ++unitType) {
-    short unitCount = city94->orderCountByType5c[unitType];
+    short unitCount = city->orderCountByType[unitType];
     for (short unit = 0; unit < unitCount; ++unit) {
       TColorKeyPicture* icon = new TColorKeyPicture;
       int offsetLayout[2] = {0x20, y};

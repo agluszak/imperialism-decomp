@@ -177,7 +177,7 @@ void TMapMgr::AllocateAndResetTerrainAndCityScoreTables() {
     tile->resourceTypeByEdge[1] = -1;
     tile->gateFlag = -1;
     tile->cityRecordIndex = -1;
-    tile->tileActionState16 = kMapTileActionStateNone;
+    tile->tileActionState = kMapTileActionStateNone;
     tile->railFlags = 0;
     tile->secondaryOwnerNationTag = -1;
     tile->tileActionOrdinal = -1;
@@ -194,10 +194,10 @@ void TMapMgr::AllocateAndResetTerrainAndCityScoreTables() {
   int j;
   for (i = 0; i < 0x180; ++i) {
     Province* record = &cityScoreTable[i];
-    record->ownerNationCode00 = -1;
+    record->ownerNationCode = -1;
     record->formerOwnerNationCode = -1;
     record->developmentStage = 0;
-    record->fortLevel03 = 0;
+    record->fortLevel = 0;
     record->cityTileIndex = -1;
     record->lastTurnTick = 999;
     record->adjacentRegionCount = 0;
@@ -213,7 +213,7 @@ void TMapMgr::AllocateAndResetTerrainAndCityScoreTables() {
     record->secondaryNeighborTileIndex = -1;
     record->primaryNeighborTileIndex = -1;
     for (j = 0; j < 0x20; ++j) {
-      record->linkedTileIndices42[j] = -1;
+      record->linkedTileIndices[j] = -1;
     }
     record->resourceDevelopmentCounts[0] = 0;
     record->resourceDevelopmentCounts[1] = 0;
@@ -227,7 +227,7 @@ void TMapMgr::AllocateAndResetTerrainAndCityScoreTables() {
     record->resourceDevelopmentCounts[9] = 0;
     record->stationedUnitChain = 0;
     record->resourcePresenceMask = 0;
-    record->regionClassA3 = -1;
+    record->regionClass = -1;
     record->cityNameA4 = g_szEmptyString;
   }
 }
@@ -309,11 +309,11 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
     int rec;
     for (rec = 0; rec < 0x180; ++rec) {
       Province* record = cityScoreTable + rec;
-      if (record->linkedTileIndices42[0] != -1 && record->regionClassA3 == -1) {
+      if (record->linkedTileIndices[0] != -1 && record->regionClass == -1) {
         int classCode = nextClassCode;
         ++nextClassCode;
-        if (cityScoreTable[rec].regionClassA3 != classCode) {
-          record->regionClassA3 = static_cast<char>(classCode);
+        if (cityScoreTable[rec].regionClass != classCode) {
+          record->regionClass = static_cast<char>(classCode);
           int i;
           for (i = 0; i < cityScoreTable[rec].adjacentRegionCount; ++i) {
             FloodRegionClass(cityScoreTable[rec].adjacentRegionIds[i], classCode);
@@ -492,10 +492,10 @@ void TMapMgr::AssignSequentialClassesToPopulatedRegions() {
   int classCode = 0;
   for (int recordIndex = 0; recordIndex < 0x180; ++recordIndex) {
     Province& record = cityScoreTable[recordIndex];
-    if (record.linkedTileIndices42[0] != -1 && record.regionClassA3 == -1) {
+    if (record.linkedTileIndices[0] != -1 && record.regionClass == -1) {
       int assignedClass = classCode++;
-      if (record.regionClassA3 != assignedClass) {
-        record.regionClassA3 = static_cast<char>(assignedClass);
+      if (record.regionClass != assignedClass) {
+        record.regionClass = static_cast<char>(assignedClass);
         for (int child = 0; child < record.adjacentRegionCount; ++child) {
           FloodRegionClass(record.adjacentRegionIds[child], assignedClass);
         }
@@ -506,8 +506,8 @@ void TMapMgr::AssignSequentialClassesToPopulatedRegions() {
 
 // FUNCTION: IMPERIALISM 0x0050f6b0
 void TMapMgr::FloodRegionClass(int recordIndex, int classCode) {
-  if (cityScoreTable[recordIndex].regionClassA3 != classCode) {
-    cityScoreTable[recordIndex].regionClassA3 = static_cast<char>(classCode);
+  if (cityScoreTable[recordIndex].regionClass != classCode) {
+    cityScoreTable[recordIndex].regionClass = static_cast<char>(classCode);
     int i;
     for (i = 0; i < cityScoreTable[recordIndex].adjacentRegionCount; ++i) {
       FloodRegionClass(cityScoreTable[recordIndex].adjacentRegionIds[i], classCode);
@@ -534,8 +534,8 @@ void TMapMgr::GenerateProvinceNames() {
 
   for (int i = 0; i < 0x180; i++) {
     Province* record = &cityScoreTable[i];
-    if (record->linkedTileIndices42[0] != -1) {
-      AssignNextProvinceNameForNationSlot(&record->cityNameA4, record->ownerNationCode00);
+    if (record->linkedTileIndices[0] != -1) {
+      AssignNextProvinceNameForNationSlot(&record->cityNameA4, record->ownerNationCode);
     }
   }
 
@@ -550,7 +550,7 @@ void TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments() {
     if (terrainStateTable[tile].GetTerrainKind() != kStrategicTerrainWater) {
       StrategicTileIndex tileIndex = tile;
       short cityRec = g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex;
-      cityScoreTable[cityRec].linkedTileIndices42[cityScoreTable[cityRec].linkedRegionCount] =
+      cityScoreTable[cityRec].linkedTileIndices[cityScoreTable[cityRec].linkedRegionCount] =
           tileIndex;
       ++cityScoreTable[cityRec].linkedRegionCount;
     }
@@ -559,17 +559,17 @@ void TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments() {
   int recIndex;
   for (recIndex = 0; recIndex < 0x180; ++recIndex) {
     Province* record = &cityScoreTable[recIndex];
-    if (record->linkedTileIndices42[0] != -1) {
+    if (record->linkedTileIndices[0] != -1) {
       signed char owner =
-          g_pGlobalMapState->terrainStateTable[record->linkedTileIndices42[0]].ownerNationTag;
+          g_pGlobalMapState->terrainStateTable[record->linkedTileIndices[0]].ownerNationTag;
       record->formerOwnerNationCode = owner;
-      record->ownerNationCode00 = owner;
+      record->ownerNationCode = owner;
 
       short interiorTiles[0x20];
       short interiorCount = 0;
       if (record->linkedRegionCount > 0) {
         int i = 0;
-        const StrategicTileIndex* linkedTile = record->linkedTileIndices42;
+        const StrategicTileIndex* linkedTile = record->linkedTileIndices;
         for (i = 0; i < record->linkedRegionCount; ++i) {
           bool hasForeignNeighbor = false;
           short neighbors[6];
@@ -627,8 +627,7 @@ void TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments() {
         if (interiorCount == 0) {
           g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
           chosenTile =
-              record
-                  ->linkedTileIndices42[static_cast<int>(g_mapGenLcgState_006a38e8 >> 12 & 0x7fff) %
+              record->linkedTileIndices[static_cast<int>(g_mapGenLcgState_006a38e8 >> 12 & 0x7fff) %
                                         record->linkedRegionCount];
         } else {
           // Prefer plains and farmland among the interior tiles.
@@ -1425,7 +1424,7 @@ void TMapMgr::GuaranteeResources() {
     int i;
     int linkedRegionTotal = 0;
     for (i = 0; i < 0x180; ++i) {
-      if (cityScoreTable[i].ownerNationCode00 == nationTag) {
+      if (cityScoreTable[i].ownerNationCode == nationTag) {
         linkedRegionTotal += cityScoreTable[i].linkedRegionCount;
       }
     }
@@ -1433,9 +1432,9 @@ void TMapMgr::GuaranteeResources() {
     StrategicTileIndex* linkedTileIndices = new StrategicTileIndex[linkedRegionTotal];
     short* cursor = linkedTileIndices;
     for (i = 0; i < 0x180; ++i) {
-      if (cityScoreTable[i].ownerNationCode00 == nationTag) {
+      if (cityScoreTable[i].ownerNationCode == nationTag) {
         for (int j = 0; j < cityScoreTable[i].linkedRegionCount; ++j) {
-          *cursor = cityScoreTable[i].linkedTileIndices42[j];
+          *cursor = cityScoreTable[i].linkedTileIndices[j];
           ++cursor;
         }
       }
@@ -1558,7 +1557,7 @@ inline void TMapMgr::MarkOwnedRegionClasses(TLongintList* regionList, bool* regi
   int count = regionList->GetSize();
   while (ordinal <= count) {
     int regionId = regionList->At(ordinal);
-    regionClassSeen[cityScoreTable[regionId].regionClassA3] = true;
+    regionClassSeen[cityScoreTable[regionId].regionClass] = true;
     ++ordinal;
     count = regionList->GetSize();
   }
@@ -1570,7 +1569,7 @@ inline bool TMapMgr::AnyOwnedRegionClassSeen(TLongintList* regionList,
   int count = regionList->GetSize();
   while (ordinal <= count) {
     int regionId = regionList->At(ordinal);
-    if (regionClassSeen[cityScoreTable[regionId].regionClassA3]) {
+    if (regionClassSeen[cityScoreTable[regionId].regionClass]) {
       return true;
     }
     ++ordinal;
@@ -1619,7 +1618,7 @@ bool TMapMgr::IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(ProvinceIndex
   bool linkFound = false;
   for (int i = 0; i < cityScoreTable[cityRecordIndex].adjacentRegionCount; ++i) {
     short adjacentRegion = cityScoreTable[cityRecordIndex].adjacentRegionIds[i];
-    if (cityScoreTable[adjacentRegion].ownerNationCode00 == nationTag) {
+    if (cityScoreTable[adjacentRegion].ownerNationCode == nationTag) {
       linkFound = true;
       break;
     }
@@ -1981,16 +1980,16 @@ const int kGlobalMapTileCount = 0x1950;
 // FUNCTION: IMPERIALISM 0x00513290
 void TMapMgr::ChangeProvinceOwner(ProvinceIndexStorage cityRecordIndex, short newNationTag) {
   Province* city = &cityScoreTable[cityRecordIndex];
-  signed char oldNationCode = city->ownerNationCode00;
+  signed char oldNationCode = city->ownerNationCode;
 
   for (int i = 0; i < city->linkedRegionCount; ++i) {
-    SetOwner(city->linkedTileIndices42[i], newNationTag);
+    SetOwner(city->linkedTileIndices[i], newNationTag);
   }
 
-  city->ownerNationCode00 = static_cast<signed char>(newNationTag);
+  city->ownerNationCode = static_cast<signed char>(newNationTag);
   g_apTerrainTypeDescriptorTable[oldNationCode]->LoseProvince(cityRecordIndex);
   g_apTerrainTypeDescriptorTable[newNationTag]->AddProvince(cityRecordIndex);
-  g_pMapContextActionManager->perTileOwnerNationCodeCache1c[cityRecordIndex] =
+  g_pMapContextActionManager->perTileOwnerNationCodeCache[cityRecordIndex] =
       static_cast<short>(newNationTag);
 
   bool isPrimary = g_pDiplomacyTurnStateManager->IsGreatPower(newNationTag);
@@ -2212,7 +2211,7 @@ bool TMapMgr::IsValidSecondaryNationHomeTileCandidate(StrategicTileIndex tileInd
           }
         }
 
-        if (terrainStateTable[candidateTile].tileActionState16 != kMapTileActionStateNone) {
+        if (terrainStateTable[candidateTile].tileActionState != kMapTileActionStateNone) {
           isValid = false;
         }
         if (isValid) {
@@ -2411,7 +2410,7 @@ TCivUnit* TMapMgr::GetTileUnitEntryByOwner(StrategicTileIndex tileIndex, short n
 
 // FUNCTION: IMPERIALISM 0x00514290
 short TMapMgr::ResolveTileOwnerNationCodeNormalized(int tileIndex) {
-  short ownerCode = cityScoreTable[tileIndex].ownerNationCode00;
+  short ownerCode = cityScoreTable[tileIndex].ownerNationCode;
   if (ownerCode == -1) {
     return ownerCode;
   }
@@ -2574,7 +2573,7 @@ void TMapMgr::QueuePortConstructionOrder(StrategicTileIndex nTileIndex, short nN
 void TMapMgr::SetProvinceCapitalTileFlagBit08(ProvinceIndexStorage nProvinceId) {
   short capitalTileIndex = cityScoreTable[nProvinceId].cityTileIndex;
   terrainStateTable[capitalTileIndex].activeFlags |= 8;
-  ++cityScoreTable[nProvinceId].fortLevel03;
+  ++cityScoreTable[nProvinceId].fortLevel;
 }
 
 // FUNCTION: IMPERIALISM 0x00514a20
@@ -2729,7 +2728,7 @@ void TMapMgr::SeedRecruitSearchVisitedStateFromSelectedCivilianOrder(TCivUnit* u
     if (selectedEntry == nullptr) {
       continue;
     }
-    if (selectedEntry->tileIndex06 == tileIndex) {
+    if (selectedEntry->tileIndex == tileIndex) {
       tile->recruitSearchVisited = (terrainStateTable[tileIndex].activeFlags >> 4) & 1;
     } else {
       tile->recruitSearchVisited = 1;
@@ -2748,7 +2747,7 @@ void TMapMgr::ResetRecruitSearchVisitedState() {
 
 // FUNCTION: IMPERIALISM 0x00514f20
 void TMapMgr::SeedRecruitSearchVisitedStateAndClearAlliedTerritory(TCivUnit* pCivilianOrderEntry) {
-  short refTileIndex = pCivilianOrderEntry->tileIndex06;
+  short refTileIndex = pCivilianOrderEntry->tileIndex;
   signed char refOwner = terrainStateTable[refTileIndex].ownerNationTag;
   this->recruitSearchActive = 1;
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
@@ -2819,7 +2818,7 @@ void TMapMgr::DimByMarching(TMilitaryUnit* const candidates[6], short orderTarge
   for (tileScanIndex = 0; tileScanIndex < 0x1950; ++tileScanIndex) {
     terrainStateTable[tileScanIndex].recruitSearchVisited = 1;
   }
-  terrainStateTable[unit->tileIndex06].recruitSearchVisited = 0;
+  terrainStateTable[unit->tileIndex].recruitSearchVisited = 0;
 
   short minCombatClass = 3;
   for (i = 0; i < 6; ++i) {
@@ -2836,7 +2835,7 @@ void TMapMgr::DimByMarching(TMilitaryUnit* const candidates[6], short orderTarge
   if (orderTargetSlot != 0) {
     targetTileIndex = unit->orderTargetTiles[orderTargetSlot - 1];
   } else {
-    targetTileIndex = unit->tileIndex06;
+    targetTileIndex = unit->tileIndex;
   }
 
   for (short direction = 0; direction < 6; ++direction) {
@@ -3086,7 +3085,7 @@ void TMapMgr::DimByTrackLaying(TCivUnit* pCivilianOrderEntry) {
   }
 
   short nationTag = pCivilianOrderEntry->ownerNationSlot;
-  StrategicTileIndex tileIndex = pCivilianOrderEntry->tileIndex06;
+  StrategicTileIndex tileIndex = pCivilianOrderEntry->tileIndex;
 
   if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[0x06] == 2) {
     g_abStrategicTerrainSeedGateProfileA[kStrategicTerrainSwamp] = 1;
@@ -3116,7 +3115,7 @@ void TMapMgr::DimByTrackLaying(TCivUnit* pCivilianOrderEntry) {
 
 // FUNCTION: IMPERIALISM 0x00515b10
 void TMapMgr::DimByEngineering(TCivUnit* pCivilianOrderEntry) {
-  StrategicTileIndex tileIndex = pCivilianOrderEntry->tileIndex06;
+  StrategicTileIndex tileIndex = pCivilianOrderEntry->tileIndex;
   short nationTag = pCivilianOrderEntry->ownerNationSlot;
 
   unsigned char terrainKindGate[kStrategicTerrainCount] = {1, 1, 0, 0, 0, 0, 1, 1};
@@ -3143,7 +3142,7 @@ void TMapMgr::DimByEngineering(TCivUnit* pCivilianOrderEntry) {
 
   TTerrainStateRecord* tile = &terrainStateTable[tileIndex];
   if (terrainKindGate[tile->GetTerrainKind()] != 0) {
-    if (tile->regionSubtypeTag == -1 || cityScoreTable[tile->cityRecordIndex].fortLevel03 < 3) {
+    if (tile->regionSubtypeTag == -1 || cityScoreTable[tile->cityRecordIndex].fortLevel < 3) {
       tile->recruitSearchVisited = 0;
     }
 
@@ -3181,10 +3180,9 @@ void TMapMgr::NoOpVirtualSlot2D(int, int, int) {}
 
 // FUNCTION: IMPERIALISM 0x00515e00
 void TMapMgr::SetMapTileStateByteAndNotifyObserver(StrategicTileIndex tileIndex, int stateByte) {
-  terrainStateTable[tileIndex].tileActionState16 =
-      static_cast<MapTileActionStateStorage>(stateByte);
-  if (g_pViewMgr->mapUberPictureF0 != 0) {
-    g_pViewMgr->mapUberPictureF0->InvalidateTile(tileIndex);
+  terrainStateTable[tileIndex].tileActionState = static_cast<MapTileActionStateStorage>(stateByte);
+  if (g_pViewMgr->mapUberPicture != 0) {
+    g_pViewMgr->mapUberPicture->InvalidateTile(tileIndex);
   }
 }
 
@@ -3236,7 +3234,7 @@ void TMapMgr::SetRegionTileSubtypeAndRefreshNeighborFlags(ProvinceIndex cityReco
       static_cast<signed char>(ResolveRegionTileSubtypeCodeForTileIndex(newTileIndex));
 
   for (int i = 0; i < city->linkedRegionCount; ++i) {
-    TTerrainStateRecord* linkedTile = &terrainStateTable[city->linkedTileIndices42[i]];
+    TTerrainStateRecord* linkedTile = &terrainStateTable[city->linkedTileIndices[i]];
     if (linkedTile->activeFlags & 0x20) {
       linkedTile->activeFlags &= ~0x20;
     }
@@ -3511,9 +3509,9 @@ short TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias(short nationS
       short nationHomeTile =
           static_cast<short>(g_apTerrainTypeDescriptorTable[nationSlot]->homeTileIndex);
       ProvinceIndexStorage tileCityLink = tileTable[tileIndex].cityRecordIndex;
-      signed char tileCityByte = cityTable[tileCityLink].regionClassA3;
+      signed char tileCityByte = cityTable[tileCityLink].regionClass;
       ProvinceIndexStorage nationTileCityLink = tileTable[nationHomeTile].cityRecordIndex;
-      signed char nationCityByte = cityTable[nationTileCityLink].regionClassA3;
+      signed char nationCityByte = cityTable[nationTileCityLink].regionClass;
       if (tileCityByte != nationCityByte) {
         includeTile = false;
       }
@@ -3594,7 +3592,7 @@ char TMapMgr::AreNationsBorderLinked(int nationA, int nationB) {
     if (neighborCount > 0) {
       for (int neighborIndex = 0; neighborIndex < neighborCount; ++neighborIndex) {
         short neighborRegionId = record->adjacentRegionIds[neighborIndex];
-        if (cityScoreTable[neighborRegionId].ownerNationCode00 == nationB) {
+        if (cityScoreTable[neighborRegionId].ownerNationCode == nationB) {
           found = true;
           break;
         }
@@ -3620,7 +3618,7 @@ bool TMapMgr::HasAdjacentProvinceOwnedByNation(int provinceIndex, int ownerNatio
   int index = 0;
   ProvinceIndexStorage* neighbourId = province->adjacentRegionIds;
   do {
-    if (table[*neighbourId].ownerNationCode00 == ownerNationCode) {
+    if (table[*neighbourId].ownerNationCode == ownerNationCode) {
       return true;
     }
     index = index + 1;
@@ -3639,7 +3637,7 @@ bool TMapMgr::HasDirectOrFallbackLinkedNodeType(ProvinceIndex cityRecordIndex, i
   if (!allowFallback || nationCode > 6) {
     for (int neighborIndex = 0; neighborIndex < neighborCount; ++neighborIndex) {
       short neighborRegionId = record->adjacentRegionIds[neighborIndex];
-      if (cityScoreTable[neighborRegionId].ownerNationCode00 == nationCode) {
+      if (cityScoreTable[neighborRegionId].ownerNationCode == nationCode) {
         return true;
       }
     }
@@ -3648,7 +3646,7 @@ bool TMapMgr::HasDirectOrFallbackLinkedNodeType(ProvinceIndex cityRecordIndex, i
 
   for (int neighborIndex = 0; neighborIndex < neighborCount; ++neighborIndex) {
     short neighborRegionId = record->adjacentRegionIds[neighborIndex];
-    if (cityScoreTable[neighborRegionId].ownerNationCode00 == nationCode) {
+    if (cityScoreTable[neighborRegionId].ownerNationCode == nationCode) {
       return true;
     }
   }
@@ -3658,7 +3656,7 @@ bool TMapMgr::HasDirectOrFallbackLinkedNodeType(ProvinceIndex cityRecordIndex, i
         g_apSecondaryNationStateSlots[minorSlot]->IsColonyOf(nationCode)) {
       for (int neighborIndex = 0; neighborIndex < neighborCount; ++neighborIndex) {
         short neighborRegionId = record->adjacentRegionIds[neighborIndex];
-        if (cityScoreTable[neighborRegionId].ownerNationCode00 == minorSlot) {
+        if (cityScoreTable[neighborRegionId].ownerNationCode == minorSlot) {
           return true;
         }
       }
@@ -3682,7 +3680,7 @@ int TMapMgr::CollectSecondDegreeLinksMatchingNodeType(ProvinceIndex cityRecordIn
         if (matched) {
           break;
         }
-        if (cityScoreTable[cityRecordIndex].ownerNationCode00 == nationTag) {
+        if (cityScoreTable[cityRecordIndex].ownerNationCode == nationTag) {
           nodeBuffer[resultCount] = adjacentRegion;
           ++resultCount;
           matched = true;
@@ -3752,7 +3750,7 @@ void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
     int score = 200;
     int linkedCount = region->linkedRegionCount;
     if (linkedCount > 0) {
-      StrategicTileIndex* linkedTile = region->linkedTileIndices42;
+      StrategicTileIndex* linkedTile = region->linkedTileIndices;
       do {
         TTerrainStateRecord* tile = &terrainStateTable[*linkedTile];
         for (edge = 0; edge < 2; ++edge) {
@@ -3936,7 +3934,7 @@ void ByteSwapCityScoreTableShortFields(Province* table) {
     SwapShortBytes(&record->secondaryNeighborTileIndex);
     SwapShortBytes(&record->primaryNeighborTileIndex);
     k = 0x20;
-    StrategicTileIndex* linkedSlot = record->linkedTileIndices42;
+    StrategicTileIndex* linkedSlot = record->linkedTileIndices;
     do {
       SwapShortBytes(linkedSlot);
       ++linkedSlot;
@@ -3977,7 +3975,7 @@ void TMapMgr::ResetTileToBaseTransportFlag(StrategicTileIndex tileIndex) {
 char TMapMgr::HasPortInProvince(int provinceIndex) {
   const Province& record = cityScoreTable[provinceIndex];
   for (int i = 0; i < record.linkedRegionCount; ++i) {
-    unsigned char flags = terrainStateTable[record.linkedTileIndices42[i]].activeFlags;
+    unsigned char flags = terrainStateTable[record.linkedTileIndices[i]].activeFlags;
     if ((flags >> 2) & 1) {
       return 1;
     }
@@ -3989,7 +3987,7 @@ char TMapMgr::HasPortInProvince(int provinceIndex) {
 char TMapMgr::HasActiveLinkedTileWithReachableSea(int regionIndex) {
   Province& record = cityScoreTable[regionIndex];
   for (int i = 0; i < record.linkedRegionCount; ++i) {
-    StrategicTileIndex tileIndex = record.linkedTileIndices42[i];
+    StrategicTileIndex tileIndex = record.linkedTileIndices[i];
     unsigned char flags = terrainStateTable[tileIndex].activeFlags;
     flags >>= 2;
     flags &= 1;
@@ -4063,8 +4061,8 @@ void TMapMgr::ActivateMarchingArrow(int tileIndex, int contextArg, bool flag) {
       directionCode += 6;
     }
     g_pGlobalMapState->terrainStateTable[finalTileIndex].perTileVisitedFlag = directionCode;
-    if (g_pViewMgr->mapUberPictureF0 != nullptr) {
-      g_pViewMgr->mapUberPictureF0->InvalidateTile(finalTileIndex);
+    if (g_pViewMgr->mapUberPicture != nullptr) {
+      g_pViewMgr->mapUberPicture->InvalidateTile(finalTileIndex);
     }
   }
 }
@@ -4083,8 +4081,8 @@ void TMapMgr::MarkDirectionalMapOverlayFlagsForNationOrders() {
   while (cursor.More()) {
     if (unit->orderTargetIndex != -1) {
       bool atWar = g_pDiplomacyTurnStateManager->IsNationPairAtWar(
-          activeNationId, cityScoreTable[unit->orderTargetIndex].ownerNationCode00);
-      ActivateMarchingArrow(unit->tileIndex06, unit->orderTargetIndex, atWar);
+          activeNationId, cityScoreTable[unit->orderTargetIndex].ownerNationCode);
+      ActivateMarchingArrow(unit->tileIndex, unit->orderTargetIndex, atWar);
     }
     unit = static_cast<TMilitaryUnit*>(cursor.Advance());
   }
@@ -4101,7 +4099,7 @@ int TMapMgr::ClassifyCityGateTerrainComposition(int cityIndex) {
   int tallyB = 0;
   int tallyC = 0;
   for (int i = 0; i < city.linkedRegionCount; ++i) {
-    short gateFlag = terrainStateTable[city.linkedTileIndices42[i]].gateFlag;
+    short gateFlag = terrainStateTable[city.linkedTileIndices[i]].gateFlag;
     if (gateFlag < 1 || gateFlag > 15) {
       continue;
     }
@@ -4165,7 +4163,7 @@ void TMapMgr::DumpAndResetMapScriptState() {
     }
     record.linkedRegionCount = 0;
     for (i = 0; i < 32; ++i) {
-      record.linkedTileIndices42[i] = -1;
+      record.linkedTileIndices[i] = -1;
     }
     TMilitaryUnit* unit = record.stationedUnitChain;
     if (unit != 0) {
@@ -4184,7 +4182,7 @@ void TMapMgr::DumpAndResetMapScriptState() {
       }
     }
     record.stationedUnitChain = 0;
-    record.regionClassA3 = -1;
+    record.regionClass = -1;
     recordIndex++;
   } while (recordIndex < 0x180);
 
@@ -4211,7 +4209,7 @@ void TMapMgr::DumpAndResetMapScriptState() {
       tile.activeFlags &= 0xffef;
     }
     tile.regionSubtypeTag = -1;
-    tile.tileActionState16 = -1;
+    tile.tileActionState = -1;
     tileIndex++;
   } while (tileIndex < 0x1950);
 
@@ -4262,8 +4260,8 @@ void TMapMgr::ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot) {
 
   Province* record = cityScoreTable;
   for (recordsLeft = 0x180; recordsLeft != 0; --recordsLeft) {
-    if (record->ownerNationCode00 != -1) {
-      nationRegionClass[record->ownerNationCode00] = record->regionClassA3;
+    if (record->ownerNationCode != -1) {
+      nationRegionClass[record->ownerNationCode] = record->regionClass;
     }
     ++record;
   }

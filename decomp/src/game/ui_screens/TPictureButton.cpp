@@ -27,7 +27,7 @@ void TPictureButton::HiliteState(unsigned char enabledState, bool refreshNow) {
 void TPictureButton::DrawImmediate() {
   CRect rect;
   CRect* redrawRect = this->GetQDExtent(&rect);
-  CWnd* nativeWindow = this->nativeWindow50;
+  CWnd* nativeWindow = this->nativeWindow;
   RedrawWindow(nativeWindow->m_hWnd, redrawRect, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
 }
 

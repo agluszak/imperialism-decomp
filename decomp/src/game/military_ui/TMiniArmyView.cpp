@@ -29,14 +29,14 @@ void TMiniArmyView::InitializeForMilitaryUnit(TView* panel, int* offsetLayout, i
                                               TMilitaryUnit* unit) {
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 5, 5, 0);
   militaryUnit = unit;
-  eventNumber60 = 0x22;
+  eventNumber = 0x22;
   SetControlHoverHelpText(g_pMiniCivSharedText_0064cb18, this);
 }
 
 // FUNCTION: IMPERIALISM 0x004aaeb0
 void TMiniArmyView::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws
-  CString name = militaryUnit->name24;
+  CString name = militaryUnit->name;
   CString displayName = name;
 
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xc, 0x2b6a, 3);
@@ -94,7 +94,7 @@ void TMiniArmyView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
   } else if (sourceHandler == this) {
     TSuperArmyRoster* roster = static_cast<TSuperArmyRoster*>(ownerContext);
     roster->AssertValid();
-    roster->selectedCityRecordIndex = militaryUnit->tileIndex06;
+    roster->selectedCityRecordIndex = militaryUnit->tileIndex;
   }
   TControl::DoEvent(commandId, sourceHandler, event);
 }

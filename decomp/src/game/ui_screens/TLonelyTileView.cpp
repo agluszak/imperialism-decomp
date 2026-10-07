@@ -26,13 +26,13 @@ void TLonelyTileView::Draw(RECT* rectBuffer) {
   CRect destRect;
   QueryContentBounds(&destRect);
 
-  TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPictureF0;
+  TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPicture;
   RECT srcRect;
   if (controlTag == kControlTagTile && mapUberPicture->invalidationFlag) {
     TQuickDrawSurfaceContext* tileAtlasCtx = mapUberPicture->subview2A8->quickDrawSurface;
     // The tile's transient marker-slot index selects a 64-pixel atlas column.
-    int spriteX =
-        static_cast<int>(g_pGlobalMapState->terrainStateTable[tileIndex60].markerSlotIndex) << 6;
+    int spriteX = static_cast<int>(g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex)
+                  << 6;
     srcRect.left = spriteX;
     srcRect.top = 0;
     srcRect.right = spriteX + 0x40;
@@ -42,7 +42,7 @@ void TLonelyTileView::Draw(RECT* rectBuffer) {
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                      &destRect, 0, 0);
   } else if (controlTag == kControlTagTil2 && mapUberPicture->invalidationFlag) {
-    short variant = g_pGlobalMapState->LookupTileSpriteVariantOffsetByTerrainAndGate(tileIndex60);
+    short variant = g_pGlobalMapState->LookupTileSpriteVariantOffsetByTerrainAndGate(tileIndex);
     srcRect.left = variant;
     srcRect.top = 0;
     srcRect.right = variant + 0x40;
@@ -52,7 +52,7 @@ void TLonelyTileView::Draw(RECT* rectBuffer) {
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                      &destRect, 0, 0);
   } else {
-    short variant = g_pGlobalMapState->LookupTileSpriteVariantOffsetByTerrainAndGate(tileIndex60);
+    short variant = g_pGlobalMapState->LookupTileSpriteVariantOffsetByTerrainAndGate(tileIndex);
     srcRect.left = variant;
     srcRect.top = 0;
     srcRect.right = variant + 0x40;
@@ -67,6 +67,6 @@ void TLonelyTileView::Draw(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x00505dc0
 void TLonelyTileView::SetTile(short tileIndex) {
-  tileIndex60 = tileIndex;
+  this->tileIndex = tileIndex;
   RefreshControl();
 }

@@ -138,7 +138,7 @@ IMPLEMENT_DYNCREATE(TView, TEventHandler)
 // FUNCTION: IMPERIALISM 0x0048a8e0
 TView::TView()
     : TEventHandler(), ownerContext(0), absoluteX(0), absoluteY(0), controlValue(0), childList(0),
-      stylePayload(0), inputGateFlag(1), childHitTestFlag(1), cursorId(0xffff), nativeWindow50(0),
+      stylePayload(0), inputGateFlag(1), childHitTestFlag(1), cursorId(0xffff), nativeWindow(0),
       helpState(1), hoverHelpText(), hoverHelpEnabled(0) {}
 
 // FUNCTION: IMPERIALISM 0x0048a9d0
@@ -155,7 +155,7 @@ void TView::InitializeUiResourceEntryFrameAndParent(TView* resourceContext, TVie
   (void)layoutParam6;
   (void)layoutParam7;
   if (panel != 0) {
-    nativeWindow50 = panel->nativeWindow50;
+    nativeWindow = panel->nativeWindow;
   }
   controlTag = kControlTagSpSpSpSp;
   enabled = 1;
@@ -344,7 +344,7 @@ void TView::Show(int show, int refreshNow) {
 }
 // FUNCTION: IMPERIALISM 0x0048b200
 bool TView::IsActionable() {
-  return g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0 && viewEnabled != 0 &&
+  return g_McAppUiActiveFlag_006950AC != 0 && nativeWindow != 0 && viewEnabled != 0 &&
          ownerContext != 0 && ownerContext->IsActionable();
 }
 // FUNCTION: IMPERIALISM 0x0048b250
@@ -395,7 +395,7 @@ void TView::Resize(const CPoint& size, bool refresh) {
     GetDrawableQDRect(&newRect);
     UnionRect(&newRect, &newRect, &oldRect);
     if (g_McAppUiActiveFlag_006950AC != 0) {
-      InvalidateRect(nativeWindow50->m_hWnd, &newRect, 0);
+      InvalidateRect(nativeWindow->m_hWnd, &newRect, 0);
     }
   } else {
     frameWidth = size.x;
@@ -405,7 +405,7 @@ void TView::Resize(const CPoint& size, bool refresh) {
 
 // FUNCTION: IMPERIALISM 0x0048b4b0
 void TView::InvalidateOffsetRegionUsingChildClipRect(RgnHandle region) {
-  if (nativeWindow50 == 0) {
+  if (nativeWindow == 0) {
     return;
   }
 
@@ -426,7 +426,7 @@ void TView::InvalidateOffsetRegionUsingChildClipRect(RgnHandle region) {
   OffsetRgn(destRegion, -cachedPos.x, -cachedPos.y);
 
   if (g_McAppUiActiveFlag_006950AC != 0) {
-    InvalidateRgn(nativeWindow50->m_hWnd, destRegion, 0);
+    InvalidateRgn(nativeWindow->m_hWnd, destRegion, 0);
 #ifdef IMPERIALISM_RUNTIME_TESTS
     RuntimeTestDriver::ObserveDeferred(kObserveInvalidationRequested);
 #endif
@@ -438,7 +438,7 @@ void TView::InvalidateOffsetRegionUsingChildClipRect(RgnHandle region) {
 // FUNCTION: IMPERIALISM 0x0048b5f0
 void TView::InvalidateCityDialogRectRegion(RECT* rect, int flag) {
   (void)flag;
-  if (nativeWindow50 == 0 || nativeWindow50->m_hWnd == 0) {
+  if (nativeWindow == 0 || nativeWindow->m_hWnd == 0) {
     return;
   }
   CRect localRect;
@@ -449,7 +449,7 @@ void TView::InvalidateCityDialogRectRegion(RECT* rect, int flag) {
     TranslateRectToWindow(&localRect);
   }
   if (g_McAppUiActiveFlag_006950AC != 0) {
-    InvalidateRect(nativeWindow50->m_hWnd, &localRect, 0);
+    InvalidateRect(nativeWindow->m_hWnd, &localRect, 0);
 #ifdef IMPERIALISM_RUNTIME_TESTS
     RuntimeTestDriver::ObserveDeferred(kObserveInvalidationRequested);
 #endif
@@ -458,13 +458,13 @@ void TView::InvalidateCityDialogRectRegion(RECT* rect, int flag) {
 
 // FUNCTION: IMPERIALISM 0x0048b690
 void TView::ValidateControlRectIfWindowActive(RECT* rect) {
-  if (nativeWindow50 != 0 && g_McAppUiActiveFlag_006950AC != 0) {
-    ValidateRect(nativeWindow50->m_hWnd, rect);
+  if (nativeWindow != 0 && g_McAppUiActiveFlag_006950AC != 0) {
+    ValidateRect(nativeWindow->m_hWnd, rect);
   }
 }
 // FUNCTION: IMPERIALISM 0x0048b6d0
 void TView::RefreshControl() {
-  if (g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0) {
+  if (g_McAppUiActiveFlag_006950AC != 0 && nativeWindow != 0) {
     InvalidateCityDialogRectRegion(0, 1);
   }
 }
@@ -477,8 +477,8 @@ void TView::ForceRedraw() {
   }
   if (g_McAppUiUpdateWindowRecursionGuard_006A1AF0 == 0) {
     g_McAppUiUpdateWindowRecursionGuard_006A1AF0 = 1;
-    if (nativeWindow50 != 0 && g_McAppUiActiveFlag_006950AC != 0) {
-      UpdateWindow(nativeWindow50->m_hWnd);
+    if (nativeWindow != 0 && g_McAppUiActiveFlag_006950AC != 0) {
+      UpdateWindow(nativeWindow->m_hWnd);
     }
     g_McAppUiUpdateWindowRecursionGuard_006A1AF0 = 0;
   }
@@ -650,7 +650,7 @@ TView::TView(const TView& source)
       frameWidth(source.frameWidth), frameHeight(source.frameHeight),
       controlValue(source.controlValue), childList(0), stylePayload(0),
       inputGateFlag(source.inputGateFlag), childHitTestFlag(source.childHitTestFlag),
-      nativeWindow50(source.nativeWindow50), helpState(source.helpState), hoverHelpText(),
+      nativeWindow(source.nativeWindow), helpState(source.helpState), hoverHelpText(),
       hoverHelpEnabled(0) {
   if (source.childList != 0) {
     POSITION position = source.childList->GetHeadPosition();
@@ -667,7 +667,7 @@ void TView::CopyViewStateFromSource(TView* source) {
   controlTag = source->controlTag;
   nextHandler = source->nextHandler;
   ownerContext = 0;
-  nativeWindow50 = source->nativeWindow50;
+  nativeWindow = source->nativeWindow;
   childList = 0;
   stylePayload = 0;
   controlValue = source->controlValue;
@@ -916,7 +916,7 @@ void TView::Close() {
 
 // FUNCTION: IMPERIALISM 0x0048c900
 void TView::PropagateUiResourceContextRecursive(CWnd* nativeWindow) {
-  nativeWindow50 = nativeWindow;
+  this->nativeWindow = nativeWindow;
   if (childList != 0) {
     POSITION pos = childList->GetHeadPosition();
     while (pos != NULL) {

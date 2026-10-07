@@ -174,8 +174,8 @@ short TPortZone::FindNearestActiveSeaContextTileFromOffset216() {
     if (candidateTile >= 0 && candidateTile < 0x1950) {
       TTerrainStateRecord& candidateRecord = g_pGlobalMapState->terrainStateTable[candidateTile];
       TZone* candidateContext = 0;
-      if (candidateRecord.tileActionState16 == kMapTileActionStateAnchor ||
-          candidateRecord.tileActionState16 == kMapTileActionStateDockedFleet) {
+      if (candidateRecord.tileActionState == kMapTileActionStateAnchor ||
+          candidateRecord.tileActionState == kMapTileActionStateDockedFleet) {
         candidateContext = TZone::GetFirstPortZone();
         while (candidateContext != 0 &&
                static_cast<short>(candidateContext->tileOrTerrainId) != candidateTile &&
@@ -191,7 +191,7 @@ short TPortZone::FindNearestActiveSeaContextTileFromOffset216() {
       }
 
       TZone* expectedContext = primaryNeighbors[0];
-      if (candidateContext == expectedContext && candidateRecord.tileActionState16 == -1) {
+      if (candidateContext == expectedContext && candidateRecord.tileActionState == -1) {
         return candidateTile;
       }
     }

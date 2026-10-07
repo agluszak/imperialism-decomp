@@ -20,7 +20,7 @@ struct newsStory {
   int parmValue[4]; // +0x00..0x0F — substitution-token payloads
   int parmKind[4];
   newsEntry entry; // +0x20..0x37 — copy of the matched template row
-  bool feature38;  // +0x38 — 1 for ranking/random filler stories, 0 for events
+  bool feature;    // +0x38 — 1 for ranking/random filler stories, 0 for events
   unsigned char pad39[3];
 };
 

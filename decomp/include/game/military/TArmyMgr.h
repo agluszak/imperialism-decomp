@@ -22,7 +22,7 @@ struct MapContextActionRecord {
   // LAYOUT: +0x0c..+0x257 match the per-side tail of MapOrderBattleSnapshot.
   CStr32 nameBuffer[2];    // +0x0c/+0x2c
   CStr255 overlayLabel[2]; // +0x4c/+0x14b
-  short childCount24a[2];  // +0x24a/+0x24c
+  short childCount[2];     // +0x24a/+0x24c
   unsigned char pad24e[2]; // +0x24e (alignment pad before the pointer array)
   // Owned per-side arrays, released by CleanUpStacks.
   MapOrderBattleSideChildRecord* sideChildRecords[2]; // +0x250/+0x254
@@ -98,14 +98,14 @@ public:
   const void* staticTable14;
   const void* staticTable18;
   // Province owner codes FormStacks caches before moving stacks.
-  short perTileOwnerNationCodeCache1c[0x180];
+  short perTileOwnerNationCodeCache[0x180];
   void DispatchMapActionForRegionByAdjacency(int contextArg);
 
   short pendingMapActionIndex; // selected province, -1 when none
   // Per-side summary DoTacticalCombat builds for the battle UI.
-  signed char tacticalCombatNationCode31e[2];
+  signed char tacticalCombatNationCode[2];
   short tacticalCombatContext;
-  short tacticalCombatUnitCountByType322[2][30];
+  short tacticalCombatUnitCountByType[2][30];
   // Consumed by EndBattlePhase.
   bool needsTerrainRefreshFlag;
   unsigned char pad39b;

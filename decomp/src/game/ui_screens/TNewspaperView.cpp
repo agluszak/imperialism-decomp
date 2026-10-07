@@ -113,7 +113,7 @@ void TNewspaperView::StuffValues(int pageNation) {
         continue;
       }
       CreateVariables(story, tokens);
-      if (story->feature38) {
+      if (story->feature) {
         y += AppendInterNationEventSummaryTextEntry(col, y, story->entry.headlineTextOffset,
                                                     story->entry.headlineTextLength, &plainStyle, 1,
                                                     tokens);
@@ -131,8 +131,7 @@ void TNewspaperView::StuffValues(int pageNation) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055d910
-void TNewspaperView::CreateVariables(newsStory* story,
-                                                                    CString* tokens) {
+void TNewspaperView::CreateVariables(newsStory* story, CString* tokens) {
   for (int k = 0; k < 4; k++) {
     int kind = story->parmKind[k];
     switch (kind) {

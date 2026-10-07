@@ -326,7 +326,7 @@ void TAutoGreatPower::SetTradeOffersFor(short resourceKind, short offerContext) 
 void TAutoGreatPower::InitializeTradeStatus(void) {
   int total = 0;
   for (int resourceType = 0; static_cast<short>(resourceType) < 0x0E; ++resourceType) {
-    total += TShip::GetTypeCargoHold(resourceType) * this->city->orderCountByType5c[resourceType];
+    total += TShip::GetTypeCargoHold(resourceType) * this->city->orderCountByType[resourceType];
   }
 
   this->merchantCapacity = static_cast<short>(total);
@@ -881,7 +881,7 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
 
       int rec;
       for (rec = 0; rec < 0x180; ++rec) {
-        short owner = g_pGlobalMapState->cityScoreTable[rec].ownerNationCode00;
+        short owner = g_pGlobalMapState->cityScoreTable[rec].ownerNationCode;
         if (owner == -1) {
           continue;
         }
@@ -1511,7 +1511,7 @@ void TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
     if (unit->ownerMission == nullptr &&
         unit->GetCategory() == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
       TMission* mission =
-          TMission::Find(missionQueue, kMissionTypeDefendProvince, unit->tileIndex06, nullptr);
+          TMission::Find(missionQueue, kMissionTypeDefendProvince, unit->tileIndex, nullptr);
       mission->AcceptReenforcement(unit, true);
     }
   }
@@ -1536,7 +1536,7 @@ void TAutoGreatPower::AssignMilitiaToDefendMissions() {
     if (unit->ownerMission == nullptr &&
         unit->GetCategory() == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
       TMission* handler =
-          TMission::Find(missionQueue, kMissionTypeDefendProvince, unit->tileIndex06, nullptr);
+          TMission::Find(missionQueue, kMissionTypeDefendProvince, unit->tileIndex, nullptr);
       handler->AcceptReenforcement(unit, true);
     }
   }

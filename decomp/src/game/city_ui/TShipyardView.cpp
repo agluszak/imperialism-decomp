@@ -35,8 +35,8 @@ IMPLEMENT_DYNCREATE(TShipyardView, TBuildingView)
 
 // FUNCTION: IMPERIALISM 0x004c82c0
 TShipyardView::TShipyardView() {
-  city94 = 0;
-  productionView98 = 0;
+  city = 0;
+  productionView = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c8320
@@ -62,7 +62,7 @@ void TShipyardView::DoStartup() {
   style.tail[2] = 0;
   style.tail[3] = 0;
 
-  productionView98 = g_pMacViewMgr->activeCityProductionView;
+  productionView = g_pMacViewMgr->activeCityProductionView;
   unresolvedZero = 0;
   iconSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f);
 
@@ -91,7 +91,7 @@ void TShipyardView::DoStartup() {
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
   for (short queueIndex = 0; queueIndex < 8; ++queueIndex) {
-    TShipOrder* order = city94->shipOrderSlots[queueIndex];
+    TShipOrder* order = city->shipOrderSlots[queueIndex];
     if (order->resourceTypeIndex != 0) {
       TOverlayRadioButton* slotButton = static_cast<TOverlayRadioButton*>(
           ResolveControlByTag(kControlTagBut0 + queueIndex)); // 'but0'-'but7'
@@ -178,7 +178,7 @@ void TShipyardView::LoadShipGWorld() {
 
 // FUNCTION: IMPERIALISM 0x004c8a50
 void TShipyardView::UpdateFields() {
-  productionView98->UpdateUnits();
+  productionView->UpdateUnits();
   RECT refreshRect = {0x16, 0xb4, 0x124, 0xf0};
   InvalidateCityDialogRectRegion(&refreshRect, 1);
 }
@@ -202,7 +202,7 @@ void TShipyardView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       selection->AssertValid();
       selection->SetSelectedChildTagAndRefresh(kControlTagBut0 + index); // 'but0'+index
 
-      TShipOrder* order = city94->shipOrderSlots[index];
+      TShipOrder* order = city->shipOrderSlots[index];
       short quantity = order->quantity;
       if (sourceHandler->controlTag == kControlTagPlus) { // 'plus'
         ++quantity;
@@ -344,7 +344,7 @@ void TShipyardView::Draw(RECT* rectBuffer) {
         text.Format(g_szDecimalFormat, static_cast<int>(commodityRequiredAmounts[slot]));
         DrawTextWithCachedQuickDrawStyleState(&text);
 
-        short haveAmount = city94->CityStockByType(spriteId);
+        short haveAmount = city->CityStockByType(spriteId);
         text.Format(g_szDecimalFormat, static_cast<int>(haveAmount));
         if (haveAmount < commodityRequiredAmounts[slot]) {
           ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xa, 0x2b69);

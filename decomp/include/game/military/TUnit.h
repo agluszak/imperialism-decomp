@@ -23,7 +23,7 @@ public:
   virtual void SetOrders(UnitOrder order, int payload); // slot 0x34
 
   short orderType; // 0x04
-  short tileIndex06;
+  short tileIndex;
   UnitOrder unitOrder;                    // 0x08
   short orderTargetIndex;                 // 0x0c
   short pad0E;                            // 0x0e
@@ -38,7 +38,7 @@ public:
   TUnit() {
     previousAtLocation = 0;
     nextAtLocation = 0;
-    tileIndex06 = static_cast<short>(0xffff);
+    tileIndex = static_cast<short>(0xffff);
     militaryRegistrationFlag = 0;
   }
 

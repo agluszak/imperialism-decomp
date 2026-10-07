@@ -19,7 +19,7 @@
 
 // FUNCTION: IMPERIALISM 0x0043d840
 TStatusPicture::TStatusPicture() {
-  comparisonMode90 = -1;
+  comparisonMode = -1;
 }
 
 // FUNCTION: IMPERIALISM 0x0043d8a0
@@ -55,7 +55,7 @@ void TStatusPicture::DoPostCreate(int arg) {
   LoadUiStringByGroupAndIndexToControlObject(0x2730, 0xd, ResolveControlByTag(kControlTagEnd));
   LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, ResolveControlByTag(kControlTagQuer));
 
-  comparisonMode90 = 0;
+  comparisonMode = 0;
   RefreshControl();
   CalcStandardGraph();
 
@@ -67,7 +67,7 @@ void TStatusPicture::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x005941e0
 void TStatusPicture::SwitchStatusMode(int comparisonMode) {
-  comparisonMode90 = comparisonMode;
+  this->comparisonMode = comparisonMode;
   RefreshControl();
   if (comparisonMode == 0) {
     CalcStandardGraph();
@@ -82,14 +82,14 @@ void TStatusPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
     unsigned int tag = sourceHandler->controlTag;
     if (tag >= kControlTagTab0 && tag <= kControlTagTab9) {
       int newIndex = static_cast<int>(tag - kControlTagTab0);
-      if (newIndex != comparisonMode90) {
+      if (newIndex != comparisonMode) {
         TView* newTab = ResolveControlByTag(kControlTagTab0 + newIndex);
         newTab->AssertValid();
         newTab->Show(0, 1);
         static_cast<TView*>(sourceHandler)->AssertValid();
         static_cast<TView*>(sourceHandler)->Show(1, 1);
         g_pSfxPlaybackSystem->PlaySoundEffect(0x13f0, 0, 1);
-        comparisonMode90 = newIndex;
+        comparisonMode = newIndex;
         if (newIndex == 0) {
           CalcStandardGraph();
         } else {
@@ -122,7 +122,7 @@ void TStatusPicture::Draw(RECT* rectBuffer) {
   TPicture::Draw(rectBuffer);
 
   CString title;
-  g_pSimMgr->GetString(0x2757, static_cast<short>(comparisonMode90) + 8, &title);
+  g_pSimMgr->GetString(0x2757, static_cast<short>(comparisonMode) + 8, &title);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b6a);
   short titleWidth = MeasureTextExtentWithCachedQuickDrawStyle(&title);
   SetQuickDrawTextOriginWithContextOffset(0x140 - titleWidth / 2, 0x3c);
@@ -139,7 +139,7 @@ void TStatusPicture::Draw(RECT* rectBuffer) {
     SetQuickDrawTextOriginWithContextOffset(0x9a, rowY - 8);
     DrawTextWithCachedQuickDrawStyleState(&label);
 
-    RECT swatch = {0x98, rowY + 1, static_cast<short>(values94[i]) + 0x98, rowY + 13};
+    RECT swatch = {0x98, rowY + 1, static_cast<short>(values[i]) + 0x98, rowY + 13};
     SetQuickDrawFillColor(0);
     FillRectWithQuickDrawBrushAndContextOffset(&swatch);
     OffsetRect(&swatch, -1, -1);
@@ -163,41 +163,41 @@ void TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale() {
   for (int i = 0; i < 7; ++i) {
     if (g_pSimMgr->ReallyInTheGame(static_cast<short>(i))) {
       TGreatPower* nation = g_apNationStates[i];
-      switch (comparisonMode90) {
+      switch (comparisonMode) {
       case 1:
-        values94[i] = g_pDiplomacyTurnStateManager->comparativePowerRows[i][3] * 3;
+        values[i] = g_pDiplomacyTurnStateManager->comparativePowerRows[i][3] * 3;
         break;
       case 2:
-        values94[i] = g_pDiplomacyTurnStateManager->comparativePowerRows[i][1] * 3;
+        values[i] = g_pDiplomacyTurnStateManager->comparativePowerRows[i][1] * 3;
         break;
       case 3:
-        values94[i] = g_pDiplomacyTurnStateManager->comparativePowerRows[i][0] * 3;
+        values[i] = g_pDiplomacyTurnStateManager->comparativePowerRows[i][0] * 3;
         break;
       case 4:
-        values94[i] = static_cast<int>(nation->merchantCapacity) << 2;
+        values[i] = static_cast<int>(nation->merchantCapacity) << 2;
         break;
       case 5:
-        values94[i] = nation->specialResourceTradeBalance << 2;
+        values[i] = nation->specialResourceTradeBalance << 2;
         break;
       case 6: {
         TCity* city = (nation == nullptr) ? nullptr : nation->city;
-        values94[i] = city->rollingItemProductionScore;
+        values[i] = city->rollingItemProductionScore;
         break;
       }
       case 7: {
         TCity* city = (nation == nullptr) ? nullptr : nation->city;
         TPopulationMgr* stats = city->productionSummary;
         TLaborPool* units = stats->productionSlots;
-        values94[i] = static_cast<short>((units->highSkillCount * 2 + units->mediumSkillCount) * 2 +
-                                         stats->extraAt1e + units->lowSkillCount)
-                      << 2;
+        values[i] = static_cast<short>((units->highSkillCount * 2 + units->mediumSkillCount) * 2 +
+                                       stats->extraAt1e + units->lowSkillCount)
+                    << 2;
         break;
       }
       case 8:
-        values94[i] = nation->aidAllocationTotal / 10;
+        values[i] = nation->aidAllocationTotal / 10;
         break;
       case 9:
-        values94[i] = (nation == nullptr) ? 0 : static_cast<int>(nation->transportCapacity) << 1;
+        values[i] = (nation == nullptr) ? 0 : static_cast<int>(nation->transportCapacity) << 1;
         break;
       default:
         break;
@@ -215,7 +215,7 @@ void TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale() {
 
 // FUNCTION: IMPERIALISM 0x00594c00
 void TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets() {
-  int* valOuter = values94;
+  int* valOuter = values;
   short* idOuter = pictureIds;
   int outer = 1;
   do {

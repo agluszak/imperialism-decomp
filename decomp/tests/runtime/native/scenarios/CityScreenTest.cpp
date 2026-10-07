@@ -221,7 +221,7 @@ private:
            (order->secondaryInputResourceId < 0 ||
             order->ownerCity->CityStockByType(order->secondaryInputResourceId) ==
                 unitBefore.secondaryStock - order->secondaryInputPerUnit) &&
-           order->ownerCity->ownerNationAc->treasuryValue10 ==
+           order->ownerCity->ownerNation->treasuryValue10 ==
                unitBefore.treasury - order->cashCostPerUnit &&
            population->populationCount == unitBefore.populationCount - 1 &&
            population->populationCountFloat == unitBefore.populationFloat - 1.0f &&
@@ -237,7 +237,7 @@ private:
            (order->secondaryInputResourceId < 0 ||
             order->ownerCity->CityStockByType(order->secondaryInputResourceId) ==
                 unitBefore.secondaryStock) &&
-           order->ownerCity->ownerNationAc->treasuryValue10 == unitBefore.treasury &&
+           order->ownerCity->ownerNation->treasuryValue10 == unitBefore.treasury &&
            population->strength == unitBefore.strength &&
            population->populationCount == unitBefore.populationCount &&
            population->populationCountFloat == unitBefore.populationFloat &&
@@ -260,7 +260,7 @@ private:
   bool CompletedShipOrderUpdatedTheFleet() {
     const short completedQuantity = shipOrder->quantity;
     const short resourceType = shipOrder->resourceTypeIndex;
-    TGreatPower* owner = shipOrder->ownerCity->ownerNationAc;
+    TGreatPower* owner = shipOrder->ownerCity->ownerNation;
     shipOrder->Produce();
     owner->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
     const short expectedCapacity = static_cast<short>(
@@ -270,7 +270,7 @@ private:
         shipBefore.armsInNavy +
         GetIndustryActionCostWeightByResourceType(resourceType) * completedQuantity;
     return shipOrder->quantity == 0 &&
-           shipOrder->ownerCity->orderCountByType5c[resourceType] ==
+           shipOrder->ownerCity->orderCountByType[resourceType] ==
                shipBefore.shipCount + completedQuantity &&
            owner->merchantCapacity == expectedCapacity && owner->GetArmsInNavy() == expectedArms;
   }
@@ -283,7 +283,7 @@ private:
   bool TrainingOrderWasReserved() const {
     return trainingOrder->quantity == trainingBefore.quantity + 1 &&
            trainingOrder->ownerCity->cityStockPaper == trainingBefore.paperStock - 1 &&
-           trainingOrder->ownerCity->ownerNationAc->treasuryValue10 ==
+           trainingOrder->ownerCity->ownerNation->treasuryValue10 ==
                trainingBefore.treasury - kTrainingCashCost;
   }
 
@@ -378,8 +378,8 @@ private:
     if (city->cityStockPaper < 1) {
       city->cityStockPaper = 1;
     }
-    if (city->ownerNationAc->ComputeAvailableDiplomacyBudget() < kTrainingCashCost) {
-      city->ownerNationAc->treasuryValue10 += kTrainingCashCost;
+    if (city->ownerNation->ComputeAvailableDiplomacyBudget() < kTrainingCashCost) {
+      city->ownerNation->treasuryValue10 += kTrainingCashCost;
     }
   }
 

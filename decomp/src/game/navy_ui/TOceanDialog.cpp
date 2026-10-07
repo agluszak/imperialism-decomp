@@ -730,7 +730,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
       }
 
       bool hasImprovementSprite =
-          g_pGlobalMapState->terrainStateTable[tileIndex].tileActionState16 > -1 ||
+          g_pGlobalMapState->terrainStateTable[tileIndex].tileActionState > -1 ||
           g_pGlobalMapState->terrainStateTable[tileIndex].perTileVisitedFlag > 0 ||
           (((g_pGlobalMapState->terrainStateTable[tileIndex].activeFlags & 3) != 0) &&
            g_pGlobalMapState->terrainStateTable[tileIndex].gateFlag != 0) ||
@@ -741,10 +741,10 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
 
       TQuickDrawSurfaceContext* spriteAtlas;
       short spriteX;
-      if (g_pGlobalMapState->terrainStateTable[tileIndex].tileActionState16 >= 2) {
+      if (g_pGlobalMapState->terrainStateTable[tileIndex].tileActionState >= 2) {
         spriteAtlas = g_pMacViewMgr->atlas68c;
-        spriteX = static_cast<short>(
-            g_pGlobalMapState->terrainStateTable[tileIndex].tileActionState16 << 4);
+        spriteX = static_cast<short>(g_pGlobalMapState->terrainStateTable[tileIndex].tileActionState
+                                     << 4);
       } else if (g_pGlobalMapState->terrainStateTable[tileIndex].perTileVisitedFlag > 0) {
         spriteAtlas = g_pMacViewMgr->atlas694[7];
         spriteX = static_cast<short>(
@@ -912,7 +912,7 @@ void TOceanDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int proj
     spriteStripOffset = 0xf0;
   } else {
     int ownerNation = static_cast<int>(
-        g_pGlobalMapState->terrainStateTable[orderEntry->tileIndex06].ownerNationTag);
+        g_pGlobalMapState->terrainStateTable[orderEntry->tileIndex].ownerNationTag);
     if (ownerNation > 0x17) {
       ownerNation = 0x17;
     }
@@ -970,7 +970,7 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
                                                                  bool altOverlay) {
   (void)altOverlay;
 
-  signed char tileActionClass = g_pGlobalMapState->terrainStateTable[tileIndex].tileActionState16;
+  signed char tileActionClass = g_pGlobalMapState->terrainStateTable[tileIndex].tileActionState;
   if (tileActionClass < 0 || tileActionClass >= kMapTileActionStateOceanAtlasFrameCount) {
     return;
   }

@@ -23,7 +23,7 @@ public:
   void MajorTomToGroundControl(unsigned char mode); // 0x578330
   void SpinYourGlobe();                             // 0x578680
 
-  CString planetSeed94;           // 0x94 — random-map seed text
+  CString planetSeed;             // 0x94 — random-map seed text
   unsigned char wrapHorizontally; // 0x98 — copied to TMapMgr+0x20
   unsigned char pad99;            // 0x99
   short selectedNationSlot;       // 0x9a — selected great-power slot

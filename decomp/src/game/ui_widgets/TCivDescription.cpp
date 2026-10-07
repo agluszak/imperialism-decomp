@@ -143,7 +143,7 @@ void TCivDescription::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
             Province* province = &g_pGlobalMapState->cityScoreTable[provinceId];
             provinceTileCount = province->linkedRegionCount;
             if (0 < provinceTileCount) {
-              short* provinceTileIndices = province->linkedTileIndices42;
+              short* provinceTileIndices = province->linkedTileIndices;
               provinceTileOrdinal = 0;
               while (provinceTileOrdinal < provinceTileCount) {
                 tileIndex = *provinceTileIndices;
@@ -223,7 +223,7 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit
 
   provinceOrdinal = 1;
   ownerNationId = static_cast<NationSlot>(
-      g_pGlobalMapState->terrainStateTable[orderState->tileIndex06].ownerNationTag);
+      g_pGlobalMapState->terrainStateTable[orderState->tileIndex].ownerNationTag);
   context->ownerNationId = ownerNationId;
   ownerNationProvinceCollection = g_apTerrainTypeDescriptorTable[ownerNationId]->ownedRegionList;
   context->targetTileCountsBySlot[4] = 0;
@@ -240,7 +240,7 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit
     provinceTileOrdinal = 0;
     provinceRecord = &g_pGlobalMapState->cityScoreTable[provinceRecordId];
     if (0 < provinceRecord->linkedRegionCount) {
-      provinceTileIndices = provinceRecord->linkedTileIndices42;
+      provinceTileIndices = provinceRecord->linkedTileIndices;
       do {
         provinceTileIndex = (short)*provinceTileIndices;
         tileRecord = &g_pGlobalMapState->terrainStateTable[static_cast<short>(provinceTileIndex)];

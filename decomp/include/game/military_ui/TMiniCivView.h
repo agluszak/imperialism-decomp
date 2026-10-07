@@ -17,9 +17,9 @@ public:
   virtual void Hilite();                        // slot 0x71 0x4ab800
 
   // The civilian unit this row describes (stored by the second-phase init).
-  TCivUnit* civUnit84;
+  TCivUnit* civUnit;
   // Assembled multi-line status text ("<order line>\n...").
-  CString unitText88;
+  CString unitText;
 
   // NOOP: verified empty in original 0x004ab8f6
   TMiniCivView() {}

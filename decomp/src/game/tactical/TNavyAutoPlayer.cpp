@@ -17,34 +17,34 @@ void TNavyAutoPlayer::INavyAutoPlayer(TTaskForce* force, char isOurSide, int nat
 void TNavyAutoPlayer::StartBattle() {
   int deployTileIndex;
   if (isOurSideFlag != 0) {
-    deployTileIndex = battle14->battlefieldColumnCount * 6 - 25;
+    deployTileIndex = battle->battlefieldColumnCount * 6 - 25;
   } else {
     deployTileIndex = 0x29;
   }
   while (!sideReadyFlag) {
-    battle14->DeployUnit(battle14->selectedUnit1c, deployTileIndex);
+    battle->DeployUnit(battle->selectedUnit, deployTileIndex);
     --deployTileIndex;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0059f160
 void TNavyAutoPlayer::NextMove() {
-  TTacticalUnit* unit = battle14->selectedUnit1c;
+  TTacticalUnit* unit = battle->selectedUnit;
   TList* enemyList;
   if (isOurSideFlag != 0) {
-    enemyList = battle14->players[1]->unitList;
+    enemyList = battle->players[1]->unitList;
   } else {
-    enemyList = battle14->players[0]->unitList;
+    enemyList = battle->players[0]->unitList;
   }
 
   int* distances = new int[enemyList->GetCount()];
-  int currentTileIndex = battle14->selectedUnit1c->tileIndex8;
+  int currentTileIndex = battle->selectedUnit->tileIndex;
 
   CIterator enemyIter(enemyList);
   int* distanceCursor = distances;
   for (TTacticalUnit* record = static_cast<TTacticalUnit*>(enemyIter.Reset()); enemyIter.More();
        record = static_cast<TTacticalUnit*>(enemyIter.Advance())) {
-    *distanceCursor++ = ComputeHexTileDistanceFromIndices(currentTileIndex, record->tileIndex8);
+    *distanceCursor++ = ComputeHexTileDistanceFromIndices(currentTileIndex, record->tileIndex);
   }
 
   // Closest enemy ordinal (999 sentinel).
@@ -63,14 +63,14 @@ void TNavyAutoPlayer::NextMove() {
   // GetEntryByOrdinal is 1-based here (bestOrdinal + 1), matching the original.
   TTacticalUnit* targetUnit =
       static_cast<TTacticalUnit*>(enemyList->GetEntryByOrdinal(bestOrdinal + 1));
-  int targetTileIndex = targetUnit->tileIndex8;
+  int targetTileIndex = targetUnit->tileIndex;
   int bestApproachDistance = ComputeHexTileDistanceFromIndices(currentTileIndex, targetTileIndex);
 
   // Reachable tile minimizing distance to the target (start: stay put).
   int destinationTileIndex = currentTileIndex;
   int tileIndex;
-  for (tileIndex = 0; tileIndex < battle14->tacticalTileCount; ++tileIndex) {
-    if (battle14->tileMoveCostArray[tileIndex] != -1) {
+  for (tileIndex = 0; tileIndex < battle->tacticalTileCount; ++tileIndex) {
+    if (battle->tileMoveCostArray[tileIndex] != -1) {
       int approachDistance = ComputeHexTileDistanceFromIndices(tileIndex, targetTileIndex);
       if (approachDistance < bestApproachDistance) {
         destinationTileIndex = tileIndex;
@@ -80,11 +80,11 @@ void TNavyAutoPlayer::NextMove() {
   }
 
   // March there one echoed step at a time while this ship stays selected.
-  if (destinationTileIndex != currentTileIndex && battle14->selectedUnit1c == unit) {
-    while (unit->tileIndex8 != destinationTileIndex) {
-      battle14->MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(unit,
-                                                                             destinationTileIndex);
-      if (battle14->selectedUnit1c != unit) {
+  if (destinationTileIndex != currentTileIndex && battle->selectedUnit == unit) {
+    while (unit->tileIndex != destinationTileIndex) {
+      battle->MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(unit,
+                                                                           destinationTileIndex);
+      if (battle->selectedUnit != unit) {
         break;
       }
     }
@@ -92,13 +92,13 @@ void TNavyAutoPlayer::NextMove() {
 
   // Fire if the target ended up within range.
   int unitRange = unit->GetUnitRange();
-  if (bestApproachDistance <= unitRange && battle14->selectedUnit1c == unit) {
-    battle14->EvaluateAndResolveTacticalActionAgainstTileOccupant(unit, targetTileIndex);
+  if (bestApproachDistance <= unitRange && battle->selectedUnit == unit) {
+    battle->EvaluateAndResolveTacticalActionAgainstTileOccupant(unit, targetTileIndex);
   }
 
   delete[] distances;
 
-  if (battle14->selectedUnit1c == unit) {
-    battle14->FinishTacticalActionAndPostNextMoveCommand();
+  if (battle->selectedUnit == unit) {
+    battle->FinishTacticalActionAndPostNextMoveCommand();
   }
 }

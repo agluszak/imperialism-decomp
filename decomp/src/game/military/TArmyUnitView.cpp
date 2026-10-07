@@ -49,7 +49,7 @@ void TArmyUnitView::Draw(RECT* rectBuffer) {
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0);
   SetQuickDrawColorAndSyncGlobals(0x1c474b);
-  unitTypeName = militaryUnit->name24;
+  unitTypeName = militaryUnit->name;
   SetQuickDrawTextOriginWithContextOffset(0x40, 0x10);
   DrawTextWithCachedQuickDrawStyleState(&unitTypeName);
 
@@ -129,7 +129,7 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     RECT invalidateRect = {0x40, 0x18, 0x108, 0x24};
     InvalidateCityDialogRectRegion(&invalidateRect, 1);
 
-    TMapUberPicture* mapPicture = g_pViewMgr->mapUberPictureF0;
+    TMapUberPicture* mapPicture = g_pViewMgr->mapUberPicture;
     TView* activeToolbar = mapPicture->categoryPages[mapPicture->activeUnitCategoryIndex];
     if (activeToolbar != nullptr) {
       unsigned int arrowTag =
@@ -181,15 +181,15 @@ void TArmyUnitView::RenameUnit() {
   TStaticText* titleControl = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagTitl));
   titleControl->AssertValid();
   titleControl->SetTextWithStrListID(0x2746, 1, true);
-  titleControl->textStyle78 = style;
+  titleControl->textStyle = style;
 
   TEditText* nameControl = static_cast<TEditText*>(node->ResolveControlByTag(kControlTagName));
   nameControl->AssertValid();
   nameControl->maxCharacterCount = 0x18;
   CString editedName;
-  editedName = militaryUnit->name24;
+  editedName = militaryUnit->name;
   nameControl->InitDialogWindowAndSyncTitleIfChanged(&editedName, 1);
-  nameControl->textStyle78 = style;
+  nameControl->textStyle = style;
 
   node->SetModality(true);
   TDialogBehavior* behavior = node->GetDialogBehavior();
@@ -199,7 +199,7 @@ void TArmyUnitView::RenameUnit() {
   int modalResult = node->PoseModally();
   nameControl->GetCurrentText(&editedName);
   if (modalResult != kControlTagCncl) {
-    militaryUnit->name24 = editedName;
+    militaryUnit->name = editedName;
   }
   RefreshControl();
 }

@@ -42,11 +42,11 @@ void TNavyToolbarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, T
       if (order != nullptr) {
         order->DropShips(tag == kControlTagDone);
       }
-      g_pViewMgr->mapUberPictureF0->CycleMapInteractionSelectionAfterHandledClick();
+      g_pViewMgr->mapUberPicture->CycleMapInteractionSelectionAfterHandledClick();
       break;
     }
     case kControlTagNext:
-      g_pViewMgr->mapUberPictureF0->CycleMapInteractionSelectionAfterHandledClick();
+      g_pViewMgr->mapUberPicture->CycleMapInteractionSelectionAfterHandledClick();
       break;
     case kControlTagBomb:
       if ((GetAsyncKeyState(0x11) & 0x8000) == 0) {

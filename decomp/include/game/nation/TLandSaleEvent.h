@@ -13,8 +13,8 @@ public:
   virtual ~TLandSaleEvent() override {} // slot 0x01 (scalar deleting destructor)
   virtual void Execute() override;      // slot 0x0a 0x4e6740
 
-  short tileIndex08;  // +0x08 — first ILandSaleEvent argument
-  short nationCode0a; // +0x0a — second ILandSaleEvent argument
+  short tileIndex;  // +0x08 — first ILandSaleEvent argument
+  short nationCode; // +0x0a — second ILandSaleEvent argument
 
   void ILandSaleEvent(short tileIndex, short nationCode);
 };

@@ -1128,7 +1128,7 @@ void TDiplomacyMgr::ConveneCouncil(char forceOrMode) {
   for (int tileIndex = 0; tileIndex < kDiplomacyPairMatrixEntries; ++tileIndex) {
     pendingPolicyTierMatrix[tileIndex] = -1;
     Province* cityRecord = &g_pGlobalMapState->cityScoreTable[tileIndex];
-    int ownerNationCode = cityRecord->ownerNationCode00;
+    int ownerNationCode = cityRecord->ownerNationCode;
     if (ownerNationCode == -1) {
       continue;
     }
@@ -1146,7 +1146,7 @@ void TDiplomacyMgr::ConveneCouncil(char forceOrMode) {
       secondScore = secondSideScore[ownerNationCode];
       if (ownerNationCode > 6 && cityRecord->linkedRegionCount > 0) {
         for (int i = 0; i < cityRecord->linkedRegionCount; ++i) {
-          short linkedTile = cityRecord->linkedTileIndices42[i];
+          short linkedTile = cityRecord->linkedTileIndices[i];
           int secondaryOwner =
               g_pGlobalMapState->terrainStateTable[linkedTile].secondaryOwnerNationTag;
           if (secondaryOwner == topNationSlot) {

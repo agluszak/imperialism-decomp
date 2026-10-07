@@ -43,7 +43,7 @@ bool FindVisibleTileCenters(TMapDialog* mapDialog, CPoint* first, CPoint* second
 // The map this probe inspects. Resolved here rather than passed in: every caller is already on the
 // map, and threading the view through the boundary is what these probes exist to avoid.
 TMapUberPicture* MapView() {
-  return g_pViewMgr != 0 ? g_pViewMgr->mapUberPictureF0 : 0;
+  return g_pViewMgr != 0 ? g_pViewMgr->mapUberPicture : 0;
 }
 
 } // namespace

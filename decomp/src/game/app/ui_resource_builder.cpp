@@ -73,7 +73,7 @@ TUiStyleBytes* TUiStyleBytes::Reset() {
 void __cdecl SetUiResourceEventNumberAndInsets(int eventNumber, int rectLeft, int rectTop,
                                                int rectRight, int rectBottom) {
   TControl* context = static_cast<TControl*>(g_pUiResourceContext);
-  context->eventNumber60 = eventNumber;
+  context->eventNumber = eventNumber;
   CRect contentInsets(rectLeft, rectTop, rectRight, rectBottom);
   context->contentInsets = contentInsets;
 }

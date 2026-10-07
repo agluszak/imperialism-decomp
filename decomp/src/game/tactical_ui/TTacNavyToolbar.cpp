@@ -35,13 +35,13 @@ void TTacNavyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
     unsigned int tag = sourceHandler->controlTag;
     switch (tag) {
     case kControlTagCrew:
-      static_cast<TNavyBattle*>(battle88)->SetTargeting(kNavyTargetingCrew);
+      static_cast<TNavyBattle*>(battle)->SetTargeting(kNavyTargetingCrew);
       break;
     case kControlTagHull:
-      static_cast<TNavyBattle*>(battle88)->SetTargeting(kNavyTargetingHull);
+      static_cast<TNavyBattle*>(battle)->SetTargeting(kNavyTargetingHull);
       break;
     case kControlTagSail:
-      static_cast<TNavyBattle*>(battle88)->SetTargeting(kNavyTargetingSail);
+      static_cast<TNavyBattle*>(battle)->SetTargeting(kNavyTargetingSail);
       break;
     default:
       break;
@@ -54,7 +54,7 @@ void TTacNavyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
     case kControlTagAuto:
     case kControlTagRetr:
     case kControlTagTarg:
-      battle88->HandleTacticalBattleCommandTag(tag);
+      battle->HandleTacticalBattleCommandTag(tag);
       break;
     case kControlTagHelp:
       g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();

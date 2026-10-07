@@ -87,9 +87,9 @@ void TCivUnit::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x005c2b70
 void TCivUnit::MoveTo(short newTileIndex) {
 
-  if (tileIndex06 != -1) {
+  if (tileIndex != -1) {
     if (previousAtLocation == 0) {
-      g_pGlobalMapState->terrainStateTable[tileIndex06].firstCivilianOrder =
+      g_pGlobalMapState->terrainStateTable[tileIndex].firstCivilianOrder =
           static_cast<TCivUnit*>(nextAtLocation);
     } else {
       previousAtLocation->nextAtLocation = nextAtLocation;
@@ -112,7 +112,7 @@ void TCivUnit::MoveTo(short newTileIndex) {
     nextAtLocation = 0;
   }
 
-  tileIndex06 = newTileIndex;
+  tileIndex = newTileIndex;
 }
 
 // FUNCTION: IMPERIALISM 0x005c2c40

@@ -107,7 +107,7 @@ void TCityTask::IncompleteTraining(TTaskList* taskList) {
     alreadyQueuedFlag = 1;
   }
   if (order->limitingConstraint == kProductionOrderLimitTreasury) {
-    ownerCity->ownerNationAc->foreignMinister->PriceCheck();
+    ownerCity->ownerNation->foreignMinister->PriceCheck();
   }
 }
 
@@ -208,7 +208,7 @@ void TCityTask::IncompleteLandUnit(TTaskList* taskList) {
 // FUNCTION: IMPERIALISM 0x005ae420
 void TCityTask::IncompleteMaterials() {
   TProductionOrder* order = static_cast<TProductionOrder*>(ownerCity->orderSlots[citySlotIndex]);
-  TForeignMinister* foreignMinister = ownerCity->ownerNationAc->foreignMinister;
+  TForeignMinister* foreignMinister = ownerCity->ownerNation->foreignMinister;
 
   OrderSheet sheet;
   order->FillOrderSheet(&sheet, requestedAmount);

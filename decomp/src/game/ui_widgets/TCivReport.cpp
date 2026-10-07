@@ -20,7 +20,6 @@ IMPLEMENT_DYNCREATE(TCivReport, TPicture)
 // FUNCTION: IMPERIALISM 0x00590c30
 TCivReport::TCivReport() : TPicture() {}
 
-
 // FUNCTION: IMPERIALISM 0x00590c90
 TCivReport::~TCivReport() {}
 
@@ -37,7 +36,7 @@ void TCivReport::StuffValues(TCivUnit* civilianOrderEntry) {
   bool appendTurnCount = true;
   g_pSimMgr->GetString(0x2724, 0, &templateText);
   g_pSimMgr->GetString(0x2718, civilianOrderEntry->orderType, &valueText);
-  short tileIndex = civilianOrderEntry->tileIndex06;
+  short tileIndex = civilianOrderEntry->tileIndex;
   g_pGlobalMapState->AssignCityRecordDisplayName(
       g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex, &cityName);
   scanBracketExpressions(g_pSimMgr, &reportText, static_cast<LPCSTR>(templateText),

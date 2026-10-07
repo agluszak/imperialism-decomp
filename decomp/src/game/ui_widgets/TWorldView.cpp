@@ -332,7 +332,7 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
   if (interactionMode == 0) {
     selectedOrder = g_pSelectedCivilianOrderState->selectedEntry;
     if (selectedOrder != 0) {
-      previewTile = selectedOrder->tileIndex06;
+      previewTile = selectedOrder->tileIndex;
     }
   } else if (interactionMode == 1) {
     short actionIndex = g_pMapContextActionManager->pendingMapActionIndex;

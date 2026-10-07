@@ -22,5 +22,5 @@ void TDisappearingButton::HiliteState(unsigned char fEnabledState, bool fRefresh
 // FUNCTION: IMPERIALISM 0x00568c90
 void TDisappearingButton::DrawImmediate() {
   CRect bounds;
-  RedrawWindow(nativeWindow50->m_hWnd, GetQDExtent(&bounds), NULL, RDW_INVALIDATE | RDW_UPDATENOW);
+  RedrawWindow(nativeWindow->m_hWnd, GetQDExtent(&bounds), NULL, RDW_INVALIDATE | RDW_UPDATENOW);
 }

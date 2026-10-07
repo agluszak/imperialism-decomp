@@ -885,7 +885,7 @@ TTacticalBattleView::TTacticalBattleView() : TView() {
   tacticalBattle = 0;
   battlefieldSurface = 0;
   viewOriginX = 0;
-  toolbarD0 = 0;
+  toolbar = 0;
   unitSpriteAtlasSurface = 0;
   fortLevelAtlasSurface = 0;
   tileScratchSurface = 0;
@@ -1050,7 +1050,7 @@ void TTacticalBattleView::UpdateTile(TacticalTileIndex tileIndex) {
 // FUNCTION: IMPERIALISM 0x005a89a0
 void TTacticalBattleView::InvalidateUnit(TTacticalUnit* unit) {
   RECT unitRect;
-  if (unit->tileIndex8 != -1) {
+  if (unit->tileIndex != -1) {
     UnitRect(unit, &unitRect);
     InvalidateCityDialogRectRegion(&unitRect, 1);
   }
@@ -1058,7 +1058,7 @@ void TTacticalBattleView::InvalidateUnit(TTacticalUnit* unit) {
 
 // FUNCTION: IMPERIALISM 0x005a89f0
 void TTacticalBattleView::UnitRect(TTacticalUnit* unit, RECT* rectOut) {
-  TacticalTileIndex tileIndex = unit->tileIndex8;
+  TacticalTileIndex tileIndex = unit->tileIndex;
   if (tileIndex == -1) {
     rectOut->left = 0;
     rectOut->top = 0;
@@ -1206,8 +1206,8 @@ void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
     DrawTile(static_cast<short>(tileIndex), &tileRect);
   }
   SetClip(savedClip.tempRgn);
-  if (toolbarD0 != 0 && tacticalBattle->battleOutcome == kTacticalBattleInProgress) {
-    toolbarD0->UpdateTacticalOtherSideUnitControl(
+  if (toolbar != 0 && tacticalBattle->battleOutcome == kTacticalBattleInProgress) {
+    toolbar->UpdateTacticalOtherSideUnitControl(
         static_cast<TArmyTacUnit*>(tacticalBattle->tileGrid[tileIndex].occupant));
   }
 }
@@ -1301,7 +1301,7 @@ void TTacticalBattleView::GlideUnit(TTacticalUnit* unit, TacticalTileIndex fromT
   moveAnimStepY = (toY - fromY) / 3;
   moveAnimUnitOffsetX = fromX - animRect.left;
 
-  int spriteLeft = unit->unitTypeC * unitSpriteCellWidth;
+  int spriteLeft = unit->unitType * unitSpriteCellWidth;
   int fromHalfColumn = (fromTileIndex % 0x1d) * 2 + ((fromTileIndex / 0x1d) & 1);
   int toHalfColumn = (toTileIndex % 0x1d) * 2 + ((toTileIndex / 0x1d) & 1);
   int spriteTop = (fromHalfColumn < toHalfColumn) ? 0 : unitSpriteCellHeight;
@@ -1477,17 +1477,17 @@ void TTacticalBattleView::SetCurrentPlayer(unsigned char side) {
   coatControl->AssertValid();
   TTacticalBattle* battle = tacticalBattle;
   TTacticalPlayer* currentPlayer = battle->players[battle->currentSide];
-  coatControl->SetPictureRsrcID(static_cast<short>(currentPlayer->nationIndex1C + 0xea6), 1);
+  coatControl->SetPictureRsrcID(static_cast<short>(currentPlayer->nationIndex + 0xea6), 1);
 }
 
 // FUNCTION: IMPERIALISM 0x005a9bb0
 void TTacticalBattleView::UpdateSelectionBlink() {
   g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(0x2711);
-  TTacticalUnit* selectedUnit = tacticalBattle->selectedUnit1c;
+  TTacticalUnit* selectedUnit = tacticalBattle->selectedUnit;
   if (selectedUnit == 0) {
     return;
   }
-  TacticalTileIndex tileIndex = selectedUnit->tileIndex8;
+  TacticalTileIndex tileIndex = selectedUnit->tileIndex;
   if (tileIndex < 0) {
     return;
   }
@@ -1545,7 +1545,7 @@ short TTacticalBattleView::ComputeTacticalUnitSpriteOrientationIndexByAdjacentTy
 // FUNCTION: IMPERIALISM 0x005aa7d0
 void TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(TTacticalUnit* unit,
                                                                                 RECT* rectOut) {
-  TacticalTileIndex tileIndex = unit->tileIndex8;
+  TacticalTileIndex tileIndex = unit->tileIndex;
   int row = tileIndex / tileColumnsPerRow;
   int x = (tileIndex % tileColumnsPerRow) * tileWidthPx - viewOriginX;
   rectOut->left = x;
@@ -1560,13 +1560,13 @@ void TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(
 
   TacticalTileRecord* tile = &tacticalBattle->tileGrid[tileIndex];
   if (tile->deployMark == 1) {
-    int unitType = unit->unitTypeC;
+    int unitType = unit->unitType;
     short orient = ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(tileIndex);
     POINT* delta = &g_aTacticalUnitFacingOffsetTable[unitType][orient][unit->side];
     ::OffsetRect(rectOut, delta->x, delta->y);
     return;
   }
-  if (tile->trenchMask != 0 && g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC] ==
+  if (tile->trenchMask != 0 && g_awTacticalUnitCategoryCodeBySlot[unit->unitType] ==
                                    EncodeArmyUnitCategory(kArmyUnitCategoryDemolitionist)) {
     rectOut->right = -200;
   }

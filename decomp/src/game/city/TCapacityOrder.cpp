@@ -35,7 +35,7 @@ void TCapacityOrder::Produce() {
     city->SetOwnerNeedCapA6(static_cast<short>(currentCap + this->quantity));
   } else {
     if (slotIndex == 0xf) {
-      TGreatPower* owner = city->ownerNationAc;
+      TGreatPower* owner = city->ownerNation;
       if (owner->pendingActionStatus.byAction[9] < '3') {
         int laborPool = owner->ownedRegionList->GetSize();
         if ((laborPool + ((laborPool < 0) ? 3 : 0)) >> 2 < 2) {
@@ -54,14 +54,14 @@ void TCapacityOrder::Produce() {
         }
       }
     } else {
-      newValue = city->productionOrderTable1dc[slotIndex];
+      newValue = city->productionOrderTable[slotIndex];
     }
 
     newValue = static_cast<short>(newValue + this->quantity);
-    deltaToAccum = static_cast<short>(newValue - city->productionOrderTable1dc[slotIndex]);
+    deltaToAccum = static_cast<short>(newValue - city->productionOrderTable[slotIndex]);
     city->productionAccum[slotIndex] =
         static_cast<short>(city->productionAccum[slotIndex] + deltaToAccum);
-    city->productionOrderTable1dc[slotIndex] = newValue;
+    city->productionOrderTable[slotIndex] = newValue;
   }
 
   this->requestedQuantity = 0;

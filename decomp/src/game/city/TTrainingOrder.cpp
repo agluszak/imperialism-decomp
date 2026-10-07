@@ -35,7 +35,7 @@ short TTrainingOrder::MaxOrder() {
     }
   }
 
-  TGreatPower* owner = ownerCity->ownerNationAc;
+  TGreatPower* owner = ownerCity->ownerNation;
   short cashLimit;
   if (owner->diplomacyEligibility == 0) {
     cashLimit = workforceLimit;
@@ -75,7 +75,7 @@ bool TTrainingOrder::SetQuantity(short quantity) {
     return false;
   }
 
-  TGreatPower* owner = ownerCity->ownerNationAc;
+  TGreatPower* owner = ownerCity->ownerNation;
   if (resourceTypeIndex == 1) {
     ownerCity->cityStockPaper = static_cast<short>(ownerCity->cityStockPaper - delta);
     ownerCity->VerifyStocks();
@@ -117,7 +117,7 @@ void TTrainingOrder::Produce() {
   }
 
   int newLevel = static_cast<int>(population->highSkillCount) + quantity;
-  TGreatPower* owner = ownerCity->ownerNationAc;
+  TGreatPower* owner = ownerCity->ownerNation;
   if (newLevel >= 10 && owner->pendingActionStatus.byAction[7] < '2') {
     owner->SetNationPendingActionStateAndPayload(7, 2);
   } else if (newLevel >= 30 && owner->pendingActionStatus.byAction[7] <= '3') {

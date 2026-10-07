@@ -27,15 +27,14 @@ VOID CALLBACK NotifyGlobalCaptureOwnerState1WithCachedCoords(HWND hwnd, UINT mes
 void TMouseCaptureState::BeginMouseCaptureForControlAndStartRepeatTimer(CPoint* point,
                                                                         TControl* control) {
   capturedControl = control;
-  CWnd::FromHandle(::SetCapture(control->nativeWindow50->m_hWnd));
+  CWnd::FromHandle(::SetCapture(control->nativeWindow->m_hWnd));
   startPoint = *point;
   lastPoint = *point;
   currentPoint = *point;
   control->TrackMouse(kTrackPhaseBegin, startPoint, lastPoint, currentPoint, true);
   if (g_McAppUiMouseCaptureTimerId_006A1ADC == 0) {
-    g_McAppUiMouseCaptureTimerId_006A1ADC =
-        ::SetTimer(control->nativeWindow50->m_hWnd, 0xef, 0x11,
-                   NotifyGlobalCaptureOwnerState1WithCachedCoords);
+    g_McAppUiMouseCaptureTimerId_006A1ADC = ::SetTimer(
+        control->nativeWindow->m_hWnd, 0xef, 0x11, NotifyGlobalCaptureOwnerState1WithCachedCoords);
   }
 }
 
@@ -61,7 +60,7 @@ void TMouseCaptureState::EndMouseCaptureAndStopRepeatTimer(unsigned int nFlags, 
     return;
   }
   if (g_McAppUiMouseCaptureTimerId_006A1ADC != 0) {
-    ::KillTimer(capturedControl->nativeWindow50->m_hWnd, g_McAppUiMouseCaptureTimerId_006A1ADC);
+    ::KillTimer(capturedControl->nativeWindow->m_hWnd, g_McAppUiMouseCaptureTimerId_006A1ADC);
     g_McAppUiMouseCaptureTimerId_006A1ADC = 0;
   }
   ::ReleaseCapture();

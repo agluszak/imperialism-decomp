@@ -232,7 +232,7 @@ void TTaskForce::ReadFrom(TStream* stream) {
   }
 
   bool tileActionClassNonNegative =
-      g_pGlobalMapState->terrainStateTable[ingotTileIndex].tileActionState16 >= 0;
+      g_pGlobalMapState->terrainStateTable[ingotTileIndex].tileActionState >= 0;
   if (!isActiveNation) {
     ingotTileIndex = -1;
     return;
@@ -928,7 +928,7 @@ int TTaskForce::MouseCodeForTarget(TZone* candidate) const {
 // FUNCTION: IMPERIALISM 0x00554460
 char TTaskForce::MouseCodeForTarget(Province* province) const {
   bool stale = g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
-      nation, province->ownerNationCode00);
+      nation, province->ownerNationCode);
   return stale ? 0x10 : 1;
 }
 
@@ -1077,7 +1077,7 @@ void TTaskForce::CancelOrders(unsigned char cancellationMode) {
   if (cancelsBeachhead) {
     g_pMapContextActionManager->ReassessLanding(g_pSimMgr->GetPlayerCountry(), cityIndex);
   }
-  g_pViewMgr->mapUberPictureF0->SetActiveMapOrderEntry(previousContext);
+  g_pViewMgr->mapUberPicture->SetActiveMapOrderEntry(previousContext);
 }
 
 // FUNCTION: IMPERIALISM 0x005548e0
@@ -1315,7 +1315,7 @@ TTaskForce* TTaskForce::RemoveStragglers() {
   }
   case 5: {
     int cityIndex = static_cast<Province*>(target)->GetIndex();
-    char ownerNation = g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode00;
+    char ownerNation = g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode;
     if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(nation,
                                                                               ownerNation)) {
       TTaskForce* result = nextForce->RemoveStragglers();

@@ -18,7 +18,7 @@ public:
   // Applies the default map-hint style pair (0x2b6c/0x2b67) through slot 0x81.
   virtual void Reset(); // slot 0x82 0x5b6810
 
-  RECT layoutRectA4; // +0xa4
+  RECT layoutRect; // +0xa4
 
   TInfoBarText();
 };

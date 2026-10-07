@@ -82,7 +82,7 @@ RuntimeActionResult RandomSetupScreen::RegeneratePlanet(const char* planetSeed) 
   if (!opened.Succeeded()) {
     return opened;
   }
-  if (setupView->planetSeed94 != planetSeed) {
+  if (setupView->planetSeed != planetSeed) {
     return ScreenFailure("regenerate the planet from its seed text",
                          CString("the setup screen did not retain the requested planet seed"));
   }

@@ -236,7 +236,7 @@ ASSERT_SIZE(TurnEvent1CDealResultPacket, 0x28);
 
 // Event-0x1E diplomacy relation action.
 struct TurnEvent1EDiplomacyActionPacket : TimelyNetMessagePrefix {
-  signed char nation1C;   // +0x1c
+  signed char nation;     // +0x1c
   signed char nationA1D;  // +0x1d
   signed char nationB1E;  // +0x1e
   char actionCode;        // +0x1f - 'a' or 'i'
@@ -319,11 +319,11 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
       packet.messageLength = 0x44;
       packet.syncPhase = static_cast<GamePhaseStorage>(g_pGameFlowState->syncPhase);
       int nationId = static_cast<char>(g_pSimMgr->GetPlayerCountry());
-      packet.nationId1C = nationId;
+      packet.nationId = nationId;
       packet.homeTile = (short)g_apTerrainTypeDescriptorTable[nationId]->homeTileIndex;
       int cityRecordIndex = g_apTerrainTypeDescriptorTable[nationId]->GetCapitolProvince();
       g_pGlobalMapState->AssignCityRecordDisplayName(cityRecordIndex, &cityName);
-      strncpy(packet.cityName20, cityName, 0x21);
+      strncpy(packet.cityName, cityName, 0x21);
       g_pNetMgr006a6014->Send(&packet, false);
       break;
     }
@@ -675,11 +675,11 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // A resuming nation announces its home region and city name.
     TurnEventACityAnnouncePacket* announce = static_cast<TurnEventACityAnnouncePacket*>(packet);
     if (g_pSimMgr->scenarioMapIndexPlusOne == 0) {
-      int announcedNation = static_cast<char>(announce->nationId1C);
+      int announcedNation = static_cast<char>(announce->nationId);
       g_pGlobalMapState->PlaceCity(announce->homeTile, (char)announcedNation);
-      g_apNationStates[announcedNation]->PlaceCity(announce->homeTile, announce->cityName20);
+      g_apNationStates[announcedNation]->PlaceCity(announce->homeTile, announce->cityName);
     }
-    pendingNationBitmask &= ~(1 << (char)announce->nationId1C);
+    pendingNationBitmask &= ~(1 << (char)announce->nationId);
     bool hostingA = g_pSimMgr->multiplayerSessionRole == kSessionRoleHost;
     if (!hostingA) {
       return 1;
@@ -749,8 +749,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         echo.messageLength = 0x64;
         echo.eventCode = 9;
         echo.nationSlot = (unsigned char)announceSlot;
-        strcpy(echo.senderName, announce8->senderName19);
-        strcpy(echo.messageText, announce8->messageText3a);
+        strcpy(echo.senderName, announce8->senderName);
+        strcpy(echo.messageText, announce8->messageText);
         g_pNetMgr006a6014->Send(&echo, true);
         return 1;
       } else {
@@ -808,8 +808,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       claim.toNetworkId = 0;
       claim.messageLength = 0x64;
       claim.nationSlot = (unsigned char)announceSlot;
-      strcpy(claim.senderName, announce8->senderName19);
-      strcpy(claim.messageText, announce8->messageText3a);
+      strcpy(claim.senderName, announce8->senderName);
+      strcpy(claim.messageText, announce8->messageText);
       g_pNetMgr006a6014->Send(&claim, true);
       return 1;
     }
@@ -922,7 +922,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
           okayButton->Show(canStart, 1);
           okayButton->themeCode9A = 0x2b6c;
           okayButton->themeCode9C = 0x2b6b;
-          okayButton->pointSize98 = 0xc;
+          okayButton->pointSize = 0xc;
           TView* messControl = lounge->ResolveControlByTag(kSessionTagMess);
           messControl->AssertValid();
           messControl->Show(!canStart, 1);
@@ -1069,7 +1069,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     g_pSimMgr->SetDifficultyLevel(static_cast<eDifficulty>(sessionInit->difficultyLevel));
     g_pSimMgr->useLocalizedNameTables = sessionInit->nameTableFlag;
     {
-      CString hostGameName(sessionInit->hostGameName3A);
+      CString hostGameName(sessionInit->hostGameName);
       gameNameString = hostGameName;
     }
     scenarioSelectionTag = sessionInit->scenarioTag;
@@ -1274,7 +1274,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         static_cast<TurnEvent1EDiplomacyActionPacket*>(packet);
     if (action->actionCode == 'a') {
       if (action->flag21 != 0) {
-        TGreatPower* nation1E = g_apNationStates[action->nation1C];
+        TGreatPower* nation1E = g_apNationStates[action->nation];
         if (action->flag20 == 0) {
           nation1E->QueueWarTransitionAndNotifyThirdPartyIfNeeded(action->nationB1E, 2,
                                                                   action->nationA1D);
@@ -1292,17 +1292,16 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
           targetNation = action->nationB1E;
           relationMode = false;
         }
-        g_pDiplomacyTurnStateManager->TerminateAlliance(action->nation1C, targetNation,
-                                                        relationMode);
+        g_pDiplomacyTurnStateManager->TerminateAlliance(action->nation, targetNation, relationMode);
       }
     } else if (action->actionCode == 'i' && action->flag21 != 0) {
-      if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(action->nation1C, action->nationB1E)) {
-        g_apNationStates[action->nation1C]->QueueWarTransitionAndNotifyThirdPartyIfNeeded(
+      if (!g_pDiplomacyTurnStateManager->IsNationPairAtWar(action->nation, action->nationB1E)) {
+        g_apNationStates[action->nation]->QueueWarTransitionAndNotifyThirdPartyIfNeeded(
             action->nationB1E, 1, action->nationA1D);
       } else {
         TMinor* minor1E = g_apSecondaryNationStateSlots[action->nationA1D];
-        if (minor1E->DecodeOwnerNationSlot() != static_cast<short>(action->nation1C)) {
-          minor1E->ChangeMaster(action->nation1C, 1);
+        if (minor1E->DecodeOwnerNationSlot() != static_cast<short>(action->nation)) {
+          minor1E->ChangeMaster(action->nation, 1);
         }
       }
     }
@@ -1401,7 +1400,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     nation19->transportCapacity = stateArrays->transportCapacity;
     for (int industryActionSlot19 = 0; industryActionSlot19 < kIndustryActionSlotCount;
          ++industryActionSlot19) {
-      nation19->city->orderCountByType5c[industryActionSlot19] =
+      nation19->city->orderCountByType[industryActionSlot19] =
           stateArrays->orderCountByType[industryActionSlot19];
     }
     nation19->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
@@ -1448,7 +1447,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     }
     for (int industryActionSlot2C = 0; industryActionSlot2C < kIndustryActionSlotCount;
          ++industryActionSlot2C) {
-      city2C->orderCountByType5c[industryActionSlot2C] =
+      city2C->orderCountByType[industryActionSlot2C] =
           composite->orderCountByType[industryActionSlot2C];
     }
     g_apNationStates[nationSlot2C]->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
@@ -1459,7 +1458,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       stock2C[stockType] = composite->cityStock[stockType];
     }
     for (int orderSlot2C = 0; orderSlot2C < 0x10; ++orderSlot2C) {
-      city2C->productionOrderTable1dc[orderSlot2C] = composite->productionOrderTable[orderSlot2C];
+      city2C->productionOrderTable[orderSlot2C] = composite->productionOrderTable[orderSlot2C];
     }
     for (int accumSlot = 0; accumSlot < 0x10; ++accumSlot) {
       city2C->productionAccum[accumSlot] = composite->productionAccum[accumSlot];
@@ -1776,9 +1775,9 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   case 0x24: { // patch selected fields of one city-score record
     TurnEvent24CityRecordPacket* cityRecord = static_cast<TurnEvent24CityRecordPacket*>(packet);
     Province* city24 = &g_pGlobalMapState->cityScoreTable[cityRecord->cityRecordIndex];
-    city24->ownerNationCode00 = cityRecord->record.ownerNationCode00;
+    city24->ownerNationCode = cityRecord->record.ownerNationCode;
     city24->developmentStage = cityRecord->record.developmentStage;
-    city24->fortLevel03 = cityRecord->record.fortLevel03;
+    city24->fortLevel = cityRecord->record.fortLevel;
     city24->lastTurnTick = cityRecord->record.lastTurnTick;
     {
       // 10-short copy 0x82..0x95 (explicit word loop in the original, not rep movs).
@@ -1900,7 +1899,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     if (fireCommand->commandTag != kControlTagFire) {
       return 1;
     }
-    fireBattle->LaFireOn(attacker, target, target->tileIndex8, fireCommand->arg24,
+    fireBattle->LaFireOn(attacker, target, target->tileIndex, fireCommand->arg24,
                          fireCommand->arg28, static_cast<char>(fireCommand->arg2C), true);
     break;
   }
@@ -2230,12 +2229,12 @@ void TMultiplayerMgr::WriteMessageTo(TStream* stream, short eventTag, short dest
     }
     TTurnStartEvent* event = static_cast<TTurnStartEvent*>(record->object);
     event->AssertValid();
-    stream->WriteLong(event->eventTag04);
-    if (event->eventTag04 == kControlTagLand) { // 'land'
+    stream->WriteLong(event->eventTag);
+    if (event->eventTag == kControlTagLand) { // 'land'
       TLandSaleEvent* landSale = static_cast<TLandSaleEvent*>(event);
       landSale->AssertValid();
-      stream->WriteInteger(landSale->tileIndex08);
-      stream->WriteInteger(landSale->nationCode0a);
+      stream->WriteInteger(landSale->tileIndex);
+      stream->WriteInteger(landSale->nationCode);
       return;
     }
   } break;
@@ -2372,7 +2371,7 @@ void TMultiplayerMgr::DispatchLobbyTextPairEvent8(unsigned char sourceNationSlot
   packet.messageLength = 0x5c;
   packet.toNetworkId = -1;
   packet.sourceNationSlot = sourceNationSlot;
-  strcpy(packet.playerName19, static_cast<LPCSTR>(playerNameString));
+  strcpy(packet.playerName, static_cast<LPCSTR>(playerNameString));
   strcpy(packet.playerNameMirror, static_cast<LPCSTR>(playerNameMirror));
   g_pNetMgr006a6014->Send(&packet, false);
 }
@@ -2857,7 +2856,7 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
       oldNation->city = newNation->city;
       newNation->city = city;
       if (city != 0) {
-        city->ownerNationAc = newNation;
+        city->ownerNation = newNation;
       }
       TSortedList* townMarkers = newNation->townMarkerList;
       newNation->townMarkerList = oldNation->townMarkerList;
@@ -3077,7 +3076,7 @@ void TMultiplayerMgr::EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet
     if (resumingSavedGame) {
       sessionInit.scenarioTag = kControlTagLoad; // 'load'
     }
-    strcpy(sessionInit.hostGameName3A, gameNameString);
+    strcpy(sessionInit.hostGameName, gameNameString);
     strcpy(sessionInit.mapSeedText, g_pGlobalMapState->scenarioTagText);
     sessionInit.mapParamByte39 = g_pGlobalMapState->hexNeighborWrapHorizontally;
     sessionInit.saveSlotDword5C = queueSyncDword;
@@ -3210,7 +3209,7 @@ void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
     }
     for (int industryActionSlot = 0; industryActionSlot < kIndustryActionSlotCount;
          ++industryActionSlot) {
-      packet.orderCountByType[industryActionSlot] = city->orderCountByType5c[industryActionSlot];
+      packet.orderCountByType[industryActionSlot] = city->orderCountByType[industryActionSlot];
     }
     packet.cityRollingItemProductionScore = city->rollingItemProductionScore;
     packet.cityFieldB4 = city->powerAvailable;
@@ -3219,7 +3218,7 @@ void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
       packet.cityStock[stockType] = stock[stockType];
     }
     for (int slot = 0; slot < 0x10; ++slot) {
-      packet.productionOrderTable[slot] = city->productionOrderTable1dc[slot];
+      packet.productionOrderTable[slot] = city->productionOrderTable[slot];
     }
     for (int slot2 = 0; slot2 < 0x10; ++slot2) {
       packet.productionAccum[slot2] = city->productionAccum[slot2];
@@ -3280,7 +3279,7 @@ void TMultiplayerMgr::EmitTurnEvent19NationStateArraysForSlot(short nationSlot,
   for (int industryActionSlot = 0; industryActionSlot < kIndustryActionSlotCount;
        ++industryActionSlot) {
     packet.orderCountByType[industryActionSlot] =
-        nation->city->orderCountByType5c[industryActionSlot];
+        nation->city->orderCountByType[industryActionSlot];
   }
   for (int i = 0; i < 0x17; ++i) {
     packet.externalStateByTarget[i] = nation->GetStockpile(static_cast<short>(i));

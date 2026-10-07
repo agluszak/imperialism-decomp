@@ -135,7 +135,9 @@ ASSERT_OFFSET(TGreatPower, diplomacyPolicyByNation, 0xb2);
 ASSERT_OFFSET(TGreatPower, aidAllocationMatrix, 0x280);
 ASSERT_OFFSET(TGreatPower, city, 0x894);
 ASSERT_OFFSET(TGreatPower, gameScoreRows, 0x930);
-ASSERT_OFFSET(TGreatPower, gameScoreRows[TGreatPower::kGameScoreTotal], 0x95c);
+static_assert(offsetof(TGreatPower, gameScoreRows) + TGreatPower::kGameScoreTotal * sizeof(int) ==
+                  0x95c,
+              "TGreatPower game score total has wrong offset");
 ASSERT_SIZE(TGreatPower, 0x964);
 
 // FUNCTION: IMPERIALISM 0x004db7d0
@@ -355,7 +357,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
         int linkedCount = cityRecord->linkedRegionCount;
         int linkedIndex = 0;
         while (linkedIndex < linkedCount) {
-          short linkedRegion = cityRecord->linkedTileIndices42[linkedIndex];
+          short linkedRegion = cityRecord->linkedTileIndices[linkedIndex];
           int edge = 0;
           while (edge < 2) {
             signed char resourceType = terrainTable[linkedRegion].resourceTypeByEdge[edge];
@@ -653,7 +655,7 @@ void TGreatPower::UpdateCountryStockpile(short* needVector) {
 
 // FUNCTION: IMPERIALISM 0x004dcaa0
 unsigned int TGreatPower::GetMerchantCapacityForProposal(int proposalCode) {
-  if (this->foreignMinister->purchasePriorityByResource1e[4] != 0) {
+  if (this->foreignMinister->purchasePriorityByResource[4] != 0) {
     if (g_pTradeMgr->GetAmtOffered(4) != 0) {
       if (static_cast<short>(proposalCode) == 4) {
         return static_cast<unsigned short>(this->availableMerchantCapacity);
@@ -666,7 +668,7 @@ unsigned int TGreatPower::GetMerchantCapacityForProposal(int proposalCode) {
       return static_cast<unsigned short>(this->availableMerchantCapacity);
     }
   }
-  if (this->foreignMinister->purchasePriorityByResource1e[5] != 0) {
+  if (this->foreignMinister->purchasePriorityByResource[5] != 0) {
     if (g_pTradeMgr->GetAmtOffered(5) != 0) {
       if (static_cast<short>(proposalCode) == 5) {
         return static_cast<unsigned short>(this->availableMerchantCapacity);
@@ -679,7 +681,7 @@ unsigned int TGreatPower::GetMerchantCapacityForProposal(int proposalCode) {
       return static_cast<unsigned short>(this->availableMerchantCapacity);
     }
   }
-  if (this->foreignMinister->purchasePriorityByResource1e[3] != 0 &&
+  if (this->foreignMinister->purchasePriorityByResource[3] != 0 &&
       g_pTradeMgr->GetAmtOffered(3) != 0) {
     if (static_cast<short>(proposalCode) != 3) {
       short resolvedCode = g_pTradeMgr->WhoTradesFirst(proposalCode, 3);
@@ -691,7 +693,7 @@ unsigned int TGreatPower::GetMerchantCapacityForProposal(int proposalCode) {
         return static_cast<unsigned short>(this->availableMerchantCapacity);
       }
     }
-    if (this->foreignMinister->purchasePriorityByResource1e[4] != 0) {
+    if (this->foreignMinister->purchasePriorityByResource[4] != 0) {
       int reducedCounter = static_cast<int>(this->availableMerchantCapacity) - 1;
       return reducedCounter & (static_cast<int>(reducedCounter < 1) - 1);
     }
@@ -855,7 +857,7 @@ void TGreatPower::SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(
 void TGreatPower::RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void) {
   int total = 0;
   for (int resourceType = 0; resourceType < kIndustryActionSlotCount; ++resourceType) {
-    total += TShip::GetTypeCargoHold(resourceType) * this->city->orderCountByType5c[resourceType];
+    total += TShip::GetTypeCargoHold(resourceType) * this->city->orderCountByType[resourceType];
   }
 
   this->merchantCapacity = static_cast<short>(total);
@@ -2121,18 +2123,18 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
     (&mgr->cityStockCotton)[static_cast<short>(needIndex)] = presetRow[needIndex];
     mgr->VerifyStocks();
   }
-  mgr->productionAccum[8] += 999 - mgr->productionOrderTable1dc[8];
-  mgr->productionOrderTable1dc[8] = 999;
-  mgr->productionAccum[10] += 999 - mgr->productionOrderTable1dc[10];
-  mgr->productionOrderTable1dc[10] = 999;
-  mgr->productionAccum[9] += 999 - mgr->productionOrderTable1dc[9];
-  mgr->productionOrderTable1dc[9] = 999;
-  mgr->productionAccum[7] += 999 - mgr->productionOrderTable1dc[7];
-  mgr->productionOrderTable1dc[7] = 999;
-  mgr->productionAccum[14] += 999 - mgr->productionOrderTable1dc[14];
-  mgr->productionOrderTable1dc[14] = 999;
-  mgr->productionAccum[13] += 999 - mgr->productionOrderTable1dc[13];
-  mgr->productionOrderTable1dc[13] = 999;
+  mgr->productionAccum[8] += 999 - mgr->productionOrderTable[8];
+  mgr->productionOrderTable[8] = 999;
+  mgr->productionAccum[10] += 999 - mgr->productionOrderTable[10];
+  mgr->productionOrderTable[10] = 999;
+  mgr->productionAccum[9] += 999 - mgr->productionOrderTable[9];
+  mgr->productionOrderTable[9] = 999;
+  mgr->productionAccum[7] += 999 - mgr->productionOrderTable[7];
+  mgr->productionOrderTable[7] = 999;
+  mgr->productionAccum[14] += 999 - mgr->productionOrderTable[14];
+  mgr->productionOrderTable[14] = 999;
+  mgr->productionAccum[13] += 999 - mgr->productionOrderTable[13];
+  mgr->productionOrderTable[13] = 999;
   if (presetLevel == 0) {
     notifySink->SetPopulation(2, 3, 2);
   } else {
@@ -2239,10 +2241,10 @@ void TGreatPower::PlaceCity(short homeTileIndex, char* cityName) {
     TCivUnit* civ2 = new TCivUnit();
     civ2->ICivUnit(kCivilianUnitEngineer, result2, this->nationSlot);
 
-    city->orderCountByType5c[1] += 2;
+    city->orderCountByType[1] += 2;
 
     if (g_pSimMgr->difficultyLevel == kDifficultyIntroductory && this->diplomacyEligibility) {
-      city->orderCountByType5c[1] += 6;
+      city->orderCountByType[1] += 6;
 
       short result3 = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
           this->homeTileIndex, false);
@@ -3041,7 +3043,7 @@ void TGreatPower::KillUnitsIn(int ownerClass) {
   TSortedList* trackedList = this->trackedObjectList;
   for (int index = trackedList->GetCount(); index != 0; --index) {
     TUnit* order = static_cast<TUnit*>(trackedList->GetEntryByOrdinal(index));
-    short orderCityRecord = globalMapState->terrainStateTable[order->tileIndex06].cityRecordIndex;
+    short orderCityRecord = globalMapState->terrainStateTable[order->tileIndex].cityRecordIndex;
     if (orderCityRecord == ownerClass) {
       order->Vaporize();
       order->Free();
@@ -3051,7 +3053,7 @@ void TGreatPower::KillUnitsIn(int ownerClass) {
   TSortedList* unitList = this->militaryUnitList;
   for (int unitIndex = unitList->GetCount(); unitIndex != 0; --unitIndex) {
     TUnit* unit = static_cast<TUnit*>(unitList->GetEntryByOrdinal(unitIndex));
-    if (unit->tileIndex06 == -1) {
+    if (unit->tileIndex == -1) {
       unit->Free();
     }
   }
@@ -3539,7 +3541,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
     short claimantTag =
         g_pGlobalMapState->cityScoreTable[static_cast<short>(cityIndex)].formerOwnerNationCode;
     if (claimantTag == nationSlot) {
-      short ownerTag = record->ownerNationCode00;
+      short ownerTag = record->ownerNationCode;
       if (ownerTag != nationSlot &&
           g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, ownerTag)) {
         return result * g_Compute_Advisory_OnePointFive_00654008;
@@ -3561,7 +3563,7 @@ float TGreatPower::ComputeAdvisoryMapNodeCompositeScore(int cityRecordIndex, int
 // FUNCTION: IMPERIALISM 0x004e8c50
 float TGreatPower::ComputeAdvisoryMapNodeCompositeScoreByMode(int cityRecordIndex, int mode,
                                                               int linkCityRecordIndex) {
-  int ownerTag = g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationCode00;
+  int ownerTag = g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationCode;
   if (g_pDiplomacyTurnStateManager->IsGreatPower(ownerTag)) {
     if (mode == 0) {
       float f1 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(1, cityRecordIndex, 0, ownerTag);
@@ -3572,7 +3574,7 @@ float TGreatPower::ComputeAdvisoryMapNodeCompositeScoreByMode(int cityRecordInde
       return score * score;
     }
     if (mode == 1) {
-      int linkOwnerTag = g_pGlobalMapState->cityScoreTable[linkCityRecordIndex].ownerNationCode00;
+      int linkOwnerTag = g_pGlobalMapState->cityScoreTable[linkCityRecordIndex].ownerNationCode;
       if (linkOwnerTag != ownerTag) {
         return g_Compute_Advisory_Zero_00653FD0;
       }
@@ -3602,7 +3604,7 @@ float TGreatPower::ComputeAdvisoryMapNodeCompositeScoreByMode(int cityRecordInde
     return ComputeAdvisoryMapNodeScoreFactorByCaseMetric(6, cityRecordIndex, 0, ownerTag) * f5 * f3;
   }
   if (mode == 1) {
-    int linkOwnerTag = g_pGlobalMapState->cityScoreTable[linkCityRecordIndex].ownerNationCode00;
+    int linkOwnerTag = g_pGlobalMapState->cityScoreTable[linkCityRecordIndex].ownerNationCode;
     if (linkOwnerTag != ownerTag) {
       return g_Compute_Advisory_Zero_00653FD0;
     }

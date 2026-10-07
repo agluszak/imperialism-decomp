@@ -6,10 +6,10 @@
 namespace {
 
 HWND MapHost(TMapDialog* mapDialog) {
-  if (mapDialog == 0 || mapDialog->nativeWindow50 == 0) {
+  if (mapDialog == 0 || mapDialog->nativeWindow == 0) {
     return 0;
   }
-  return mapDialog->nativeWindow50->m_hWnd;
+  return mapDialog->nativeWindow->m_hWnd;
 }
 
 CPoint ToHostPoint(TMapDialog* mapDialog, const CPoint& localPoint) {

@@ -311,14 +311,14 @@ void TViewMgr::ShowNavyRosterDialogAndApplySelection() {
 
   if (selectedTaskForce != 0) {
     if (static_cast<short>(selectedTaskForce->shipOrders) == 0) {
-      mapUberPictureF0->SetActiveMapOrderEntry(selectedTaskForce->location);
+      mapUberPicture->SetActiveMapOrderEntry(selectedTaskForce->location);
     } else {
-      mapUberPictureF0->RefreshMapOrderEntryPanel(0);
-      mapUberPictureF0->SetMapInteractionMode(3);
-      mapUberPictureF0->NoticeTile(selectedTaskForce->ingotTileIndex);
+      mapUberPicture->RefreshMapOrderEntryPanel(0);
+      mapUberPicture->SetMapInteractionMode(3);
+      mapUberPicture->NoticeTile(selectedTaskForce->ingotTileIndex);
     }
   } else if (selectedZone != 0) {
-    mapUberPictureF0->SetActiveMapOrderEntry(selectedZone);
+    mapUberPicture->SetActiveMapOrderEntry(selectedZone);
   }
 }
 
@@ -377,7 +377,7 @@ void TViewMgr::MakeGarrisonWindow(int tileIndex) {
   node->Close();
   node->Free();
 
-  TMapUberPicture* mapView = mapUberPictureF0;
+  TMapUberPicture* mapView = mapUberPicture;
   static_cast<TArmyToolbar*>(mapView->categoryPages[mapView->activeUnitCategoryIndex])
       ->SetProvince(static_cast<short>(tileIndex));
 }
@@ -419,9 +419,9 @@ void TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection() {
   node->Free();
 
   if (selectedIndex != -1) {
-    mapUberPictureF0->SetMapInteractionMode(1);
+    mapUberPicture->SetMapInteractionMode(1);
     g_pMapContextActionManager->SetSelectedProvince(selectedIndex);
-    mapUberPictureF0->NoticeTile(g_pGlobalMapState->cityScoreTable[selectedIndex].cityTileIndex);
+    mapUberPicture->NoticeTile(g_pGlobalMapState->cityScoreTable[selectedIndex].cityTileIndex);
   }
 }
 
@@ -462,7 +462,7 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
   node->Free();
 
   if (selectedIndex != -1) {
-    this->mapUberPictureF0->NoticeTile(selectedIndex);
+    this->mapUberPicture->NoticeTile(selectedIndex);
     UnitOrder orderState =
         g_pGlobalMapState->terrainStateTable[selectedIndex].firstCivilianOrder->unitOrder;
     if (orderState == kUnitOrderIdle || orderState == static_cast<UnitOrder>(3) ||

@@ -21,7 +21,7 @@ void TTEView::ITEView(TDocument* document, TView* panel, int* offsetLayout, int*
   contentInsets.top = insetRect->top;
   contentInsets.right = insetRect->right;
   contentInsets.bottom = insetRect->bottom;
-  textStyle78 = *style;
+  textStyle = *style;
   textAlignmentCode = styleWord90;
 }
 
@@ -29,7 +29,7 @@ void TTEView::ITEView(TDocument* document, TView* panel, int* offsetLayout, int*
 int TTEView::MeasureCurrentTextHeightInLayoutRect() {
   CDC dc;
   dc.Attach(CreateCompatibleDC(static_cast<HDC>(0)));
-  CFont* font = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&textStyle78);
+  CFont* font = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&textStyle);
   CFont* oldFont = dc.SelectObject(font);
   CRect bounds;
   GetQDExtent(&bounds);

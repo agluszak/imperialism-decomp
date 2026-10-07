@@ -101,32 +101,32 @@ public:
   void ReadFrom(TStream* stream) override; // slot 0x18
   void Free() override;                    // slot 0x1c
 
-  TLongintList* list28;                           // +0x28  (new TLongintList, vtable 0x650a08)
-  TLongintList* list2c;                           // +0x2c  (new TLongintList)
-  short nextProductionBuildingOrdinal;            // +0x30  1-based cursor into list2c
-  short pendingShipType;                          // +0x32  ship type queued at city slot 0x2b
-  short field34;                                  // +0x34
-  short pendingRecruitmentCommandIndex;           // +0x36  maps to city order slot 0x22 + value
-  short pendingUnitCommandIndex;                  // +0x38  maps to city order slot 0x19 + value
-  short resource15ProductionPercent;              // +0x3a  init 50
-  short railheadTargetTile;                       // +0x3c  init -1
-  short accumulatedUnmetNeed;                     // +0x3e  queued via command 0x33
-  short orderMetricTable40[61];                   // +0x40..0xba  (zeroed on init)
-  short orderShortTableBA[16];                    // +0xba..0xda
-  short deferredLaborShortfall;                   // +0xda
-  short orderShortTableDC[16];                    // +0xdc..0xfc
-  short orderTypeTableFC[23];                     // +0xfc..0x12a
-  short orderTypeTable12A[23];                    // +0x12a..0x158 (exterior need by order type)
-  short orderTypeTable158[23];                    // +0x158..0x186 (historical need by order type)
-  short temporarilyReservedShipArms;              // +0x186
-  TFuzzySet* cityPolicyFuzzySet;                  // +0x188 (new TFuzzySet, 4 policy curves)
-  TList* orderList;                               // +0x18c (new TList; ctor 0x4be840 nulls it)
-  TLongintList* list190;                          // +0x190 (new TLongintList)
-  short civilianOrderDemandByResourceType194[23]; // +0x194
-  short temporaryFurnitureSubstituteLumber;       // +0x1c2
+  TLongintList* list28;                        // +0x28  (new TLongintList, vtable 0x650a08)
+  TLongintList* list2c;                        // +0x2c  (new TLongintList)
+  short nextProductionBuildingOrdinal;         // +0x30  1-based cursor into list2c
+  short pendingShipType;                       // +0x32  ship type queued at city slot 0x2b
+  short field34;                               // +0x34
+  short pendingRecruitmentCommandIndex;        // +0x36  maps to city order slot 0x22 + value
+  short pendingUnitCommandIndex;               // +0x38  maps to city order slot 0x19 + value
+  short resource15ProductionPercent;           // +0x3a  init 50
+  short railheadTargetTile;                    // +0x3c  init -1
+  short accumulatedUnmetNeed;                  // +0x3e  queued via command 0x33
+  short orderMetricTable[61];                  // +0x40..0xba  (zeroed on init)
+  short orderShortTableBA[16];                 // +0xba..0xda
+  short deferredLaborShortfall;                // +0xda
+  short orderShortTableDC[16];                 // +0xdc..0xfc
+  short orderTypeTableFC[23];                  // +0xfc..0x12a
+  short orderTypeTable12A[23];                 // +0x12a..0x158 (exterior need by order type)
+  short orderTypeTable158[23];                 // +0x158..0x186 (historical need by order type)
+  short temporarilyReservedShipArms;           // +0x186
+  TFuzzySet* cityPolicyFuzzySet;               // +0x188 (new TFuzzySet, 4 policy curves)
+  TList* orderList;                            // +0x18c (new TList; ctor 0x4be840 nulls it)
+  TLongintList* list190;                       // +0x190 (new TLongintList)
+  short civilianOrderDemandByResourceType[23]; // +0x194
+  short temporaryFurnitureSubstituteLumber;    // +0x1c2
 
   short& LowSkillLaborShortfall() {
-    return orderMetricTable40[60];
+    return orderMetricTable[60];
   }
 };
 ASSERT_SIZE(TCityInteriorMinister, 0x1c4);

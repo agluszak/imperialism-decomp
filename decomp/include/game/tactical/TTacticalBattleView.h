@@ -63,7 +63,7 @@ public:
   RECT moveAnimSpriteSrcRect;   // +0xac sprite-sheet source rect
   struct TQuickDrawSurfaceContext* unitSpriteScratchSurface; // +0xbc 2x3-cell scratch
   RECT moveAnimScreenRect;                                   // +0xc0 on-screen animation rect
-  TTacticalToolbar* toolbarD0;
+  TTacticalToolbar* toolbar;
 
   TTacticalBattleView();
 

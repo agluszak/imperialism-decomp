@@ -23,7 +23,7 @@ void ImperialismCommandLineInfo::ParseParam(LPCSTR pszParam, BOOL bFlag, BOOL bL
   } else if (bFlag && upper[0] == 'S') {
     m_bForceAutoResOff = 1;
   } else if (bFlag && upper[0] == 'T') {
-    m_strMainWindowTitle38 = upper + 1;
+    m_strMainWindowTitle = upper + 1;
   } else if (bFlag && upper[0] == 'C') {
     m_bClearRegistrySettings = 1;
   }

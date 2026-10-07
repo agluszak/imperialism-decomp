@@ -15,14 +15,14 @@ TPopulationMgr::~TPopulationMgr() {}
 
 // FUNCTION: IMPERIALISM 0x004b5c00
 void TPopulationMgr::IPopulationMgr(TCity* city) {
-  city04 = city;
+  this->city = city;
   baselineSlots = new TLaborPool();
   productionSlots = new TLaborPool();
   pendingDeltaSlots = new TLaborPool();
   populationCount = 0;
   populationCountFloat = 0.0f;
   extraAt1e = 0;
-  memset(predictedNeedByResource22, 0, sizeof(predictedNeedByResource22));
+  memset(predictedNeedByResource, 0, sizeof(predictedNeedByResource));
 }
 
 // FUNCTION: IMPERIALISM 0x004b5d10
@@ -91,10 +91,9 @@ void TPopulationMgr::Eat() {
       static_cast<short>(productionSlots->highSkillCount + pendingDeltaSlots->highSkillCount);
 
   int population = populationCount;
-  short grainRemaining = city04->cityStockGrain;
-  short fruitRemaining = city04->cityStockFruit;
-  short animalFoodRemaining =
-      static_cast<short>(city04->cityStockFish + city04->cityStockLivestock);
+  short grainRemaining = city->cityStockGrain;
+  short fruitRemaining = city->cityStockFruit;
+  short animalFoodRemaining = static_cast<short>(city->cityStockFish + city->cityStockLivestock);
   short unmetFoodNeed = 0;
 
   short grainNeed = static_cast<short>((population + 1) / 2);
@@ -122,14 +121,14 @@ void TPopulationMgr::Eat() {
   }
 
   if (unmetFoodNeed != 0) {
-    if (unmetFoodNeed < city04->cityStockCannedFood) {
-      city04->cityStockCannedFood = static_cast<short>(city04->cityStockCannedFood - unmetFoodNeed);
-      city04->VerifyStocks();
+    if (unmetFoodNeed < city->cityStockCannedFood) {
+      city->cityStockCannedFood = static_cast<short>(city->cityStockCannedFood - unmetFoodNeed);
+      city->VerifyStocks();
       unmetFoodNeed = 0;
     } else {
-      unmetFoodNeed = static_cast<short>(unmetFoodNeed - city04->cityStockCannedFood);
-      city04->cityStockCannedFood = 0;
-      city04->VerifyStocks();
+      unmetFoodNeed = static_cast<short>(unmetFoodNeed - city->cityStockCannedFood);
+      city->cityStockCannedFood = 0;
+      city->VerifyStocks();
     }
 
     if (unmetFoodNeed != 0) {
@@ -159,10 +158,10 @@ void TPopulationMgr::Eat() {
     }
   }
 
-  city04->cityStockGrain = grainRemaining;
-  city04->VerifyStocks();
-  city04->cityStockFruit = fruitRemaining;
-  city04->VerifyStocks();
+  city->cityStockGrain = grainRemaining;
+  city->VerifyStocks();
+  city->cityStockFruit = fruitRemaining;
+  city->VerifyStocks();
 
   if (animalFoodRemaining != 0) {
     short livestockRemaining;
@@ -175,24 +174,24 @@ void TPopulationMgr::Eat() {
       fishRemaining = livestockRemaining;
     }
 
-    if (city04->cityStockLivestock < livestockRemaining) {
-      short shift = static_cast<short>(livestockRemaining - city04->cityStockLivestock);
+    if (city->cityStockLivestock < livestockRemaining) {
+      short shift = static_cast<short>(livestockRemaining - city->cityStockLivestock);
       livestockRemaining = static_cast<short>(livestockRemaining - shift);
       fishRemaining = static_cast<short>(fishRemaining + shift);
-    } else if (city04->cityStockFish < fishRemaining) {
-      short shift = static_cast<short>(fishRemaining - city04->cityStockFish);
+    } else if (city->cityStockFish < fishRemaining) {
+      short shift = static_cast<short>(fishRemaining - city->cityStockFish);
       fishRemaining = static_cast<short>(fishRemaining - shift);
       livestockRemaining = static_cast<short>(livestockRemaining + shift);
     }
-    city04->cityStockLivestock = livestockRemaining;
-    city04->VerifyStocks();
-    city04->cityStockFish = fishRemaining;
-    city04->VerifyStocks();
+    city->cityStockLivestock = livestockRemaining;
+    city->VerifyStocks();
+    city->cityStockFish = fishRemaining;
+    city->VerifyStocks();
   } else {
-    city04->cityStockLivestock = 0;
-    city04->VerifyStocks();
-    city04->cityStockFish = 0;
-    city04->VerifyStocks();
+    city->cityStockLivestock = 0;
+    city->VerifyStocks();
+    city->cityStockFish = 0;
+    city->VerifyStocks();
   }
 
   if (unmetFoodNeed != 0) {
@@ -212,8 +211,8 @@ void TPopulationMgr::Eat() {
     productionSlots->TransferToLowSkillFirst(pendingDeltaSlots,
                                              static_cast<short>(substitutedFoodCount));
   }
-  city04->foodSubstitutionCount = static_cast<short>(substitutedFoodCount);
-  city04->starvationPopulationLoss = static_cast<short>(starvationLoss);
+  city->foodSubstitutionCount = static_cast<short>(substitutedFoodCount);
+  city->starvationPopulationLoss = static_cast<short>(starvationLoss);
 }
 
 // FUNCTION: IMPERIALISM 0x004b6260
@@ -222,7 +221,7 @@ void TPopulationMgr::PretendToEat(short& substitutionCount, short& starvationCou
   substitutionCount = 0;
   starvationCount = 0;
 
-  TGreatPower* owner = city04->ownerNationAc;
+  TGreatPower* owner = city->ownerNation;
   short grainRemaining = owner->needTargetByType[0x11];
   short fruitRemaining = owner->needTargetByType[0x12];
   short animalFoodRemaining =
@@ -254,10 +253,10 @@ void TPopulationMgr::PretendToEat(short& substitutionCount, short& starvationCou
   }
 
   if (unmetFoodNeed != 0) {
-    if (unmetFoodNeed < city04->cityStockCannedFood) {
+    if (unmetFoodNeed < city->cityStockCannedFood) {
       unmetFoodNeed = 0;
     } else {
-      unmetFoodNeed = static_cast<short>(unmetFoodNeed - city04->cityStockCannedFood);
+      unmetFoodNeed = static_cast<short>(unmetFoodNeed - city->cityStockCannedFood);
     }
 
     if (unmetFoodNeed != 0) {
@@ -312,8 +311,8 @@ float TPopulationMgr::GrowthRate() {
     return g_PopulationGrowthRateAtOrAbove400;
   }
 
-  if (city04->populationGrowthPenaltyTicks < 20) {
-    return static_cast<float>(rate - city04->populationGrowthPenaltyTicks *
+  if (city->populationGrowthPenaltyTicks < 20) {
+    return static_cast<float>(rate - city->populationGrowthPenaltyTicks *
                                          g_PopulationGrowthPenaltyPerRetry);
   }
   return static_cast<float>(rate - g_PopulationGrowthMaximumRetryPenalty);
@@ -336,15 +335,15 @@ short* TPopulationMgr::PredictedNeeds() {
   }
 
   for (int i = 0; i < 3; ++i) {
-    predictedNeedByResource22[g_cityPredictedNeedResetResourceIds[i]] = 0;
+    predictedNeedByResource[g_cityPredictedNeedResetResourceIds[i]] = 0;
   }
 
   short supportedPopulation =
-      static_cast<short>(populationCount + city04->trailingOrderSlots[9]->quantity);
-  predictedNeedByResource22[17] = static_cast<short>((supportedPopulation + 1) / 2);
-  predictedNeedByResource22[18] = static_cast<short>((supportedPopulation + 2) / 4);
-  predictedNeedByResource22[20] = static_cast<short>(supportedPopulation / 4);
-  return predictedNeedByResource22;
+      static_cast<short>(populationCount + city->trailingOrderSlots[9]->quantity);
+  predictedNeedByResource[17] = static_cast<short>((supportedPopulation + 1) / 2);
+  predictedNeedByResource[18] = static_cast<short>((supportedPopulation + 2) / 4);
+  predictedNeedByResource[20] = static_cast<short>(supportedPopulation / 4);
+  return predictedNeedByResource;
 }
 
 // FUNCTION: IMPERIALISM 0x004b65b0
@@ -367,14 +366,14 @@ char TPopulationMgr::Strike() {
   for (resourceIndex = 0; resourceIndex < 3; ++resourceIndex) {
     short resourceType = g_cityPredictedNeedResetResourceIds[resourceIndex];
     short amount = consumptionByResource[resourceIndex];
-    if (city04->CityStockByType(resourceType) < amount) {
-      city04->CityStockByType(resourceType) = 0;
-      city04->VerifyStocks();
+    if (city->CityStockByType(resourceType) < amount) {
+      city->CityStockByType(resourceType) = 0;
+      city->VerifyStocks();
       shortage = true;
     } else {
-      city04->CityStockByType(resourceType) =
-          static_cast<short>(city04->CityStockByType(resourceType) - amount);
-      city04->VerifyStocks();
+      city->CityStockByType(resourceType) =
+          static_cast<short>(city->CityStockByType(resourceType) - amount);
+      city->VerifyStocks();
     }
   }
   return shortage;
@@ -465,7 +464,7 @@ void TPopulationMgr::WriteTo(TStream* stream) {
   stream->WriteBytes(&strength, 2);
   stream->WriteBytes(&extraAt1e, 2);
   stream->WriteBytes(&fieldAt20, 2);
-  stream->WriteBytes(predictedNeedByResource22, sizeof(predictedNeedByResource22));
+  stream->WriteBytes(predictedNeedByResource, sizeof(predictedNeedByResource));
   stream->WriteBytes(&populationCountFloat, 4);
   baselineSlots->WriteTo(stream);
   productionSlots->WriteTo(stream);
@@ -479,7 +478,7 @@ void TPopulationMgr::ReadFrom(TStream* stream) {
   stream->ReadBytes(&strength, 2);
   stream->ReadBytes(&extraAt1e, 2);
   stream->ReadBytes(&fieldAt20, 2);
-  stream->ReadBytes(predictedNeedByResource22, sizeof(predictedNeedByResource22));
+  stream->ReadBytes(predictedNeedByResource, sizeof(predictedNeedByResource));
   stream->ReadBytes(&populationCountFloat, 4);
   baselineSlots->ReadFrom(stream);
   productionSlots->ReadFrom(stream);

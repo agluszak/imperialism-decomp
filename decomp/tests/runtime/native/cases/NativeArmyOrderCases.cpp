@@ -43,7 +43,7 @@ short AdjacentOwnedProvince(short province) {
   for (adj = 0; adj < record.adjacentRegionCount; ++adj) {
     const short dest = record.adjacentRegionIds[adj];
     if (dest >= 0 && dest < 0x180 &&
-        g_pGlobalMapState->cityScoreTable[dest].ownerNationCode00 == record.ownerNationCode00) {
+        g_pGlobalMapState->cityScoreTable[dest].ownerNationCode == record.ownerNationCode) {
       return dest;
     }
   }
@@ -56,8 +56,8 @@ short AdjacentForeignProvince(short province) {
   for (adj = 0; adj < record.adjacentRegionCount; ++adj) {
     const short dest = record.adjacentRegionIds[adj];
     if (dest >= 0 && dest < 0x180 &&
-        g_pGlobalMapState->cityScoreTable[dest].ownerNationCode00 != record.ownerNationCode00 &&
-        g_pGlobalMapState->cityScoreTable[dest].ownerNationCode00 != -1) {
+        g_pGlobalMapState->cityScoreTable[dest].ownerNationCode != record.ownerNationCode &&
+        g_pGlobalMapState->cityScoreTable[dest].ownerNationCode != -1) {
       return dest;
     }
   }
@@ -67,7 +67,7 @@ short AdjacentForeignProvince(short province) {
 bool FindOwnedForeignProvincePair(short* source, short* target) {
   short province;
   for (province = 0; province < 0x180; ++province) {
-    if (g_pGlobalMapState->cityScoreTable[province].ownerNationCode00 != ActiveNationSlot()) {
+    if (g_pGlobalMapState->cityScoreTable[province].ownerNationCode != ActiveNationSlot()) {
       continue;
     }
     short adjacent = AdjacentForeignProvince(province);
@@ -230,7 +230,7 @@ RuntimeActionResult RunArmySelectProvince(NativeTransition& transition) {
   latr->SetOrders(static_cast<UnitOrder>(3), -1);
   done->SetOrders(static_cast<UnitOrder>(4), -1);
   militia->SetOrders(static_cast<UnitOrder>(4), -1);
-  g_pViewMgr->mapUberPictureF0->SetMapInteractionMode(1);
+  g_pViewMgr->mapUberPicture->SetMapInteractionMode(1);
 
   args.Set("province", static_cast<int>(province));
   RuntimeActionResult started = transition.Begin(args.Release());
@@ -306,9 +306,9 @@ RuntimeActionResult RunArmyClickHostile(NativeTransition& transition) {
   g_pMapContextActionManager->pendingMapActionIndex = province;
   g_pDiplomacyTurnStateManager->relationPropagationMatrix
       [ActiveNationSlot() * kNationSlotCount +
-       g_pGlobalMapState->cityScoreTable[dest].ownerNationCode00] = kDiplomacyRelationshipWar;
+       g_pGlobalMapState->cityScoreTable[dest].ownerNationCode] = kDiplomacyRelationshipWar;
   g_pDiplomacyTurnStateManager->relationPropagationMatrix
-      [g_pGlobalMapState->cityScoreTable[dest].ownerNationCode00 * kNationSlotCount +
+      [g_pGlobalMapState->cityScoreTable[dest].ownerNationCode * kNationSlotCount +
        ActiveNationSlot()] = kDiplomacyRelationshipWar;
 
   args.Set("province", static_cast<int>(province));

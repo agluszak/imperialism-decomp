@@ -114,7 +114,7 @@ void TCountry::InitializeNationStateIdentityAndOwnedRegionList(NationSlot nation
 
   TLongintList* ownedRegions = new TLongintList();
   for (int cityIndex = 0; cityIndex < 0x180; ++cityIndex) {
-    if (static_cast<short>(g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode00) ==
+    if (static_cast<short>(g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode) ==
         nationSlot) {
       ownedRegions->InsertLast(cityIndex);
     }
@@ -579,7 +579,7 @@ void TCountry::NameUnits(void) {
         CString withSeparator = ordinalText + CString(" ");
         CString fullName = withSeparator + typeName;
         composedName = fullName;
-        unit->name24 = composedName;
+        unit->name = composedName;
         unit->unitRosterId = this->unitNameCounter;
         ++this->unitNameCounter;
         ++*nameOrdinalCounter;
@@ -593,7 +593,7 @@ void TCountry::NameUnits(void) {
         CString withSeparator = flavorBase + CString(" ");
         CString fullName = withSeparator + flavorName;
         flavorName = fullName;
-        unit->name24 = flavorName;
+        unit->name = flavorName;
         unit->unitRosterId = this->unitNameCounter;
         ++this->unitNameCounter;
       }

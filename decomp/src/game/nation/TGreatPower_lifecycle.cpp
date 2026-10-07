@@ -846,7 +846,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
     TShip* primaryOrder =
         CreateNavyPrimaryOrderNodeAndAssignDisplayName(zoneIndex, portZone, nationSlot, 0);
 
-    ++cityPtr->orderCountByType5c[g_pTechMgr->activeZoneIndex];
+    ++cityPtr->orderCountByType[g_pTechMgr->activeZoneIndex];
 
     TAdmiral* secondaryNode = new TAdmiral(nationSlot);
     secondaryNode->AssignToShip(primaryOrder);
@@ -889,7 +889,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
 
   // Final pending-action flush (pending status 0x0a == '2').
   if (this->pendingActionStatus.byAction[10] == 0x32) {
-    this->city->orderCountByType5c[6] += 2; // navy secondary-order counter
+    this->city->orderCountByType[6] += 2; // navy secondary-order counter
     this->AnnounceLater(1, 6, 2);
   }
   this->NameUnits();

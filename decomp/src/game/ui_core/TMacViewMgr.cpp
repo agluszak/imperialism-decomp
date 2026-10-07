@@ -757,7 +757,7 @@ void TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
   RgnHandle* tileSlot = tileStateSlots;
   while (cityRecordIndex < 0x180) {
     Province& cityRecord = g_pGlobalMapState->cityScoreTable[cityRecordIndex];
-    if (cityRecord.ownerNationCode00 != -1) {
+    if (cityRecord.ownerNationCode != -1) {
       if (*tileSlot != 0) {
         DisposeRgn(*tileSlot);
         *tileSlot = 0;
@@ -767,7 +767,7 @@ void TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
       char neighborCount = cityRecord.linkedRegionCount;
       int neighborIndex = 0;
       if (neighborCount > 0) {
-        StrategicTileIndex* neighborCursor = cityRecord.linkedTileIndices42;
+        StrategicTileIndex* neighborCursor = cityRecord.linkedTileIndices;
         while (neighborIndex < neighborCount) {
           InvokeBuildHexNeighborHighlightPolygonForTile(neighborCursor[0], cityRecordIndex);
           neighborIndex = neighborIndex + 1;
@@ -795,7 +795,7 @@ void TMacViewMgr::RegenerateCountryRegions() {
       int cityRecordIndex = 0;
       RgnHandle* tileSlot = tileStateSlots;
       while (cityRecordIndex < 0x180) {
-        if (g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationCode00 == nationIndex) {
+        if (g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationCode == nationIndex) {
           UnionRgn(regionWrapper, *tileSlot, regionWrapper);
         }
         cityRecordIndex = cityRecordIndex + 1;

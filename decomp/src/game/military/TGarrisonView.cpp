@@ -82,7 +82,7 @@ void TGarrisonView::Close() {
           if (unit->unitOrder == static_cast<UnitOrder>(kDismissOnCloseOrderState)) {
             TMilitaryUnit* nextUnit = static_cast<TMilitaryUnit*>(unit->nextAtLocation);
             CString unitName;
-            unitName = unit->name24;
+            unitName = unit->name;
             bool isSecretUnit = unitName.Compare(g_szGarrisonSecretUnitNameSnidely) == 0;
             if (isSecretUnit) {
               CString activeNationName;

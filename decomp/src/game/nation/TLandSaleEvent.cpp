@@ -16,9 +16,9 @@ IMPLEMENT_DYNCREATE(TLandSaleEvent, TTurnStartEvent)
 
 // FUNCTION: IMPERIALISM 0x004e6710
 void TLandSaleEvent::ILandSaleEvent(short tileIndex, short nationCode) {
-  tileIndex08 = tileIndex;
-  nationCode0a = nationCode;
-  eventTag04 = kControlTagLand; // 'land'
+  this->tileIndex = tileIndex;
+  this->nationCode = nationCode;
+  eventTag = kControlTagLand; // 'land'
 }
 
 // FUNCTION: IMPERIALISM 0x004e6740
@@ -28,8 +28,8 @@ void TLandSaleEvent::Execute() {
   CString messageTemplate;
   CString message;
 
-  short sellerNationTag = g_pGlobalMapState->terrainStateTable[tileIndex08].ownerNationTag;
-  TCountry* buyer = g_apTerrainTypeDescriptorTable[nationCode0a];
+  short sellerNationTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag;
+  TCountry* buyer = g_apTerrainTypeDescriptorTable[nationCode];
   if (buyer == 0) {
     buyerName = g_szEmptyString;
   } else {
@@ -43,7 +43,7 @@ void TLandSaleEvent::Execute() {
   }
 
   if (g_pAmbitApplication->edgeScrollTarget != 0) {
-    static_cast<TMapUberPicture*>(g_pAmbitApplication->edgeScrollTarget)->CenterOn(tileIndex08);
+    static_cast<TMapUberPicture*>(g_pAmbitApplication->edgeScrollTarget)->CenterOn(tileIndex);
   }
 
   g_pSimMgr->GetString(0x274d, 6, &messageTemplate);

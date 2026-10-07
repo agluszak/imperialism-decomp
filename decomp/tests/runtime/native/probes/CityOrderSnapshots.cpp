@@ -21,7 +21,7 @@ void UnitOrderSnapshot::CaptureFrom(TUnitOrder* order) {
   secondaryStock = order->secondaryInputResourceId < 0
                        ? 0
                        : order->ownerCity->CityStockByType(order->secondaryInputResourceId);
-  treasury = order->ownerCity->ownerNationAc->treasuryValue10;
+  treasury = order->ownerCity->ownerNation->treasuryValue10;
   TPopulationMgr* population = order->productionSummary;
   strength = population->strength;
   populationCount = population->populationCount;
@@ -39,11 +39,11 @@ ShipOrderSnapshot::ShipOrderSnapshot()
 
 void ShipOrderSnapshot::CaptureFrom(TShipOrder* order) {
   quantity = order->quantity;
-  shipCount = order->ownerCity->orderCountByType5c[order->resourceTypeIndex];
+  shipCount = order->ownerCity->orderCountByType[order->resourceTypeIndex];
   // The capacity is derived, so it has to be recomputed before it can be read as a baseline.
-  order->ownerCity->ownerNationAc->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
-  merchantCapacity = order->ownerCity->ownerNationAc->merchantCapacity;
-  armsInNavy = order->ownerCity->ownerNationAc->GetArmsInNavy();
+  order->ownerCity->ownerNation->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
+  merchantCapacity = order->ownerCity->ownerNation->merchantCapacity;
+  armsInNavy = order->ownerCity->ownerNation->GetArmsInNavy();
 }
 
 TrainingOrderSnapshot::TrainingOrderSnapshot()
@@ -52,7 +52,7 @@ TrainingOrderSnapshot::TrainingOrderSnapshot()
 void TrainingOrderSnapshot::CaptureFrom(TTrainingOrder* order) {
   quantity = order->quantity;
   paperStock = order->ownerCity->cityStockPaper;
-  treasury = order->ownerCity->ownerNationAc->treasuryValue10;
+  treasury = order->ownerCity->ownerNation->treasuryValue10;
   baselineLow = order->productionSummary->baselineSlots->lowSkillCount;
   baselineMedium = order->productionSummary->baselineSlots->mediumSkillCount;
 }

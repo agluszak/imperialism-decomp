@@ -22,7 +22,7 @@ IMPLEMENT_DYNCREATE(TProductionCluster, TUberCluster)
 
 // FUNCTION: IMPERIALISM 0x00586920
 TProductionCluster::TProductionCluster()
-    : TUberCluster(), field88(0), laborRate8c(0), stockpileRate8e(0), currentStockpile(0),
+    : TUberCluster(), field88(0), laborRate(0), stockpileRate(0), currentStockpile(0),
       maximumStockpile(0) {}
 
 // FUNCTION: IMPERIALISM 0x005869a0
@@ -42,7 +42,7 @@ void TProductionCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TE
 
 // FUNCTION: IMPERIALISM 0x00586a60
 void TProductionCluster::SetLaborRate(short laborRate) {
-  laborRate8c = laborRate;
+  this->laborRate = laborRate;
 }
 
 // FUNCTION: IMPERIALISM 0x00586a80
@@ -53,5 +53,5 @@ void TProductionCluster::SetStockpiles(short* current, short* maximum) {
 
 // FUNCTION: IMPERIALISM 0x00586ab0
 void TProductionCluster::SetStockpileRate(short stockpileRate) {
-  stockpileRate8e = stockpileRate;
+  this->stockpileRate = stockpileRate;
 }

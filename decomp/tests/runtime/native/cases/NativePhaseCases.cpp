@@ -67,7 +67,7 @@ RuntimeActionResult RunProvinceLossWithStationedUnit(NativeTransition& transitio
 
   const NationSlot nationSlot = ActiveNationSlot();
   const StrategicTileIndex tile =
-      g_pGlobalMapState->cityScoreTable[province].linkedTileIndices42[0];
+      g_pGlobalMapState->cityScoreTable[province].linkedTileIndices[0];
   TCivUnit* civilian = new TCivUnit();
   civilian->ICivUnit(kCivilianUnitMiner, tile, nationSlot);
 

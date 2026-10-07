@@ -1281,7 +1281,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   if ((activeFlags & 3) != 0 && terrain.gateFlag != 0) {
     RenderTacticalStackCountIndicatorAndUnitBadge(tileIndex, &tileRect, 0);
     if (terrain.cityRecordIndex >= 0 && terrain.cityRecordIndex < 0x180) {
-      int fortLevel = g_pGlobalMapState->cityScoreTable[terrain.cityRecordIndex].fortLevel03;
+      int fortLevel = g_pGlobalMapState->cityScoreTable[terrain.cityRecordIndex].fortLevel;
       if (fortLevel != 0) {
         int fortOffset = g_pGlobalMapState->GetMapImprovementBitmapRowOffsetForIndex(fortLevel - 1);
         Blit64x64StrategicMapAtlasTile(g_pMacViewMgr->atlas66c, quickDrawSurface, fortOffset,
@@ -1471,9 +1471,9 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   }
 
   if (isOcean) {
-    if (terrain.tileActionState16 >= 0 &&
-        terrain.tileActionState16 < kMapTileActionStateStrategicAtlasFrameCount) {
-      int actionOffset = terrain.tileActionState16 << 6;
+    if (terrain.tileActionState >= 0 &&
+        terrain.tileActionState < kMapTileActionStateStrategicAtlasFrameCount) {
+      int actionOffset = terrain.tileActionState << 6;
       Blit64x64StrategicMapAtlasTile(g_pMacViewMgr->atlas690, quickDrawSurface, actionOffset,
                                      tileRect);
     }
@@ -2423,7 +2423,7 @@ void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projec
 
   if (flag != 0 && !alternateOverlayEnabled) {
     signed char markerIndex =
-        g_pGlobalMapState->terrainStateTable[orderEntry->tileIndex06].markerSlotIndex;
+        g_pGlobalMapState->terrainStateTable[orderEntry->tileIndex].markerSlotIndex;
     if (markerIndex != -1) {
       CRect sourceRect(markerIndex << 6, 0, (markerIndex + 1) << 6, 0x40);
       BlitRectWithOptionalTransparency(quickDrawSurface->GetBlitSurface(),
@@ -2555,7 +2555,7 @@ void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, 
 void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, CRect* dstRect,
                                                                bool altOverlay) {
   MapTileActionStateStorage tileActionClass =
-      g_pGlobalMapState->terrainStateTable[tileIndex].tileActionState16;
+      g_pGlobalMapState->terrainStateTable[tileIndex].tileActionState;
   if (tileActionClass < 0 || tileActionClass >= kMapTileActionStateOceanAtlasFrameCount) {
     return;
   }

@@ -40,7 +40,7 @@ void TDialogBehavior::Dismiss(unsigned long commandCode, bool accepted) {
   if (owner != 0) {
     dismissPending = true;
     armedCommandCode = commandCode;
-    static_cast<TView*>(owner)->nativeWindow50->EndModalLoop(commandCode);
+    static_cast<TView*>(owner)->nativeWindow->EndModalLoop(commandCode);
   }
 }
 
@@ -107,7 +107,7 @@ void TDialogBehavior::PoseModally() {
   TView* ownerPanel = owner->GetWindow();
   ownerPanel->Open();
   ownerPanel = owner->GetWindow();
-  CWnd* nativeWindow = ownerPanel->nativeWindow50;
+  CWnd* nativeWindow = ownerPanel->nativeWindow;
   dismissPending = false;
   armedCommandCode = kControlTagSpSpSpSp;
   nativeWindow->EnableWindow(1);

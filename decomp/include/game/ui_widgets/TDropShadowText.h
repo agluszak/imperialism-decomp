@@ -12,6 +12,6 @@ public:
 
   TDropShadowText();
 
-  COLORREF shadowColor94; // +0x94 -- resolved QuickDraw shadow color
+  COLORREF shadowColor; // +0x94 -- resolved QuickDraw shadow color
 };
 ASSERT_SIZE(TDropShadowText, 0x98);

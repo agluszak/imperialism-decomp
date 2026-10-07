@@ -48,7 +48,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
       BuildUiTextStyleDescriptor(&scoreStyle, 0, 18, 0x2b68);
     }
     label->InstallTextStyle(scoreStyle, 1);
-    label->shadowColor94 = shadowColor;
+    label->shadowColor = shadowColor;
 
     g_pSimMgr->GetString(0x2761, static_cast<short>(row + 2), &displayText);
     if (row == 10) {
@@ -64,7 +64,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
         static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagNuma + row)); // 'numa'..
     value->AssertValid();
     value->InstallTextStyle(scoreStyle, 1);
-    value->shadowColor94 = shadowColor;
+    value->shadowColor = shadowColor;
 
     if (row == 10) {
       int difficultyPercent = g_apNationStates[g_pSimMgr->GetPlayerCountry()]
@@ -93,7 +93,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
   victory->SetTextAndMaybeRefresh(&displayText, true);
   InitializeUiTextStyleDescriptor(&scoreStyle, 0, 24, 0x2b68, 1);
   victory->InstallTextStyle(scoreStyle, 1);
-  victory->shadowColor94 = shadowColor;
+  victory->shadowColor = shadowColor;
 
   TDropShadowText* pointsFor =
       static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagPtfr)); // 'ptfr'
@@ -102,7 +102,7 @@ void TGameScorePicture::DoPostCreate(int arg) {
   pointsFor->SetTextAndMaybeRefresh(&displayText, true);
   BuildUiTextStyleDescriptor(&scoreStyle, 0, 14, 0x2b68);
   pointsFor->InstallTextStyle(scoreStyle, 1);
-  pointsFor->shadowColor94 = shadowColor;
+  pointsFor->shadowColor = shadowColor;
 }
 
 // FUNCTION: IMPERIALISM 0x0057b620

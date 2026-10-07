@@ -43,7 +43,7 @@ static inline void PreparePersonalityTradeBids(TForeignMinister* minister) {
   if (minister->interiorBidResource != -10) {
     short resourceCode = minister->interiorBidResource;
     owner->SetItemPotentials(resourceCode, -1);
-    minister->purchasePriorityByResource1e[resourceCode] = minister->interiorBidAmount;
+    minister->purchasePriorityByResource[resourceCode] = minister->interiorBidAmount;
   }
   for (int index = 0; index < 4; ++index) {
     owner->SetItemPotentials(minister->preferredResourceSlots[index], -1);
@@ -176,7 +176,7 @@ void TTedForeignMinister::SetTradeBids() {
 // FUNCTION: IMPERIALISM 0x00531770
 void TTedForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
                                             short resourceCode) {
-  if (purchasePriorityByResource1e[resourceCode] != 0) {
+  if (purchasePriorityByResource[resourceCode] != 0) {
     TForeignMinister::ReplyToTradeOffer(arg1, arg2, arg3, resourceCode);
     return;
   }
@@ -255,7 +255,7 @@ void TTedForeignMinister::DoSecondTurnDiplomacy() {}
 
 // FUNCTION: IMPERIALISM 0x00531b10
 void TTedForeignMinister::MakeNewCity(TCity* city) {
-  city->orderCountByType5c[2] = 3;
+  city->orderCountByType[2] = 3;
 }
 
 // ===================== TBillForeignMinister (0x659e30) =====================
@@ -347,7 +347,7 @@ void TBillForeignMinister::SetTradeBids() {
 // FUNCTION: IMPERIALISM 0x00532190
 void TBillForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
                                              short resourceCode) {
-  if (purchasePriorityByResource1e[resourceCode] != 0) {
+  if (purchasePriorityByResource[resourceCode] != 0) {
     TForeignMinister::ReplyToTradeOffer(arg1, arg2, arg3, resourceCode);
     return;
   }
@@ -452,15 +452,15 @@ void TBillForeignMinister::DoSecondTurnDiplomacy() {
 
 // FUNCTION: IMPERIALISM 0x00532650
 void TBillForeignMinister::MakeNewCity(TCity* city) {
-  city->orderCountByType5c[1] = 3;
+  city->orderCountByType[1] = 3;
   short nextLevel = static_cast<short>(city->GetBuildingType(2) + 2);
   city->productionAccum[2] =
-      static_cast<short>(city->productionAccum[2] + nextLevel - city->productionOrderTable1dc[2]);
-  city->productionOrderTable1dc[2] = nextLevel;
+      static_cast<short>(city->productionAccum[2] + nextLevel - city->productionOrderTable[2]);
+  city->productionOrderTable[2] = nextLevel;
   nextLevel = static_cast<short>(city->GetBuildingType(4) + 2);
   city->productionAccum[4] =
-      static_cast<short>(city->productionAccum[4] + nextLevel - city->productionOrderTable1dc[4]);
-  city->productionOrderTable1dc[4] = nextLevel;
+      static_cast<short>(city->productionAccum[4] + nextLevel - city->productionOrderTable[4]);
+  city->productionOrderTable[4] = nextLevel;
   city->SetOwnerNeedCapA6(static_cast<short>(city->GetOwnerNeedCapA6() + 2));
 }
 
@@ -615,7 +615,7 @@ void TDiplomatForeignMinister::SetTradeBids() {
 // FUNCTION: IMPERIALISM 0x00532f70
 void TDiplomatForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
                                                  short resourceCode) {
-  if (purchasePriorityByResource1e[resourceCode] != 0) {
+  if (purchasePriorityByResource[resourceCode] != 0) {
     TForeignMinister::ReplyToTradeOffer(arg1, arg2, arg3, resourceCode);
     return;
   }
@@ -630,7 +630,7 @@ void TDiplomatForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short a
 
 // FUNCTION: IMPERIALISM 0x00533050
 void TDiplomatForeignMinister::MakeNewCity(TCity* city) {
-  city->orderCountByType5c[1] += 5;
+  city->orderCountByType[1] += 5;
 }
 
 // ===================== TTextileForeignMinister (0x65a008) =====================
@@ -709,7 +709,7 @@ void TTextileForeignMinister::SetTradeBids() {
 // FUNCTION: IMPERIALISM 0x00533670
 void TTextileForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
                                                 short resourceCode) {
-  if (purchasePriorityByResource1e[resourceCode] != 0) {
+  if (purchasePriorityByResource[resourceCode] != 0) {
     TForeignMinister::ReplyToTradeOffer(arg1, arg2, arg3, resourceCode);
     return;
   }
@@ -733,16 +733,16 @@ accept_requested_amount:
 
 // FUNCTION: IMPERIALISM 0x00533780
 void TTextileForeignMinister::MakeNewCity(TCity* city) {
-  city->orderCountByType5c[2] += 2;
-  city->orderCountByType5c[1] += 1;
+  city->orderCountByType[2] += 2;
+  city->orderCountByType[1] += 1;
   short nextLevel = static_cast<short>(city->GetBuildingType(2) + 2);
   city->productionAccum[2] =
-      static_cast<short>(city->productionAccum[2] + nextLevel - city->productionOrderTable1dc[2]);
-  city->productionOrderTable1dc[2] = nextLevel;
+      static_cast<short>(city->productionAccum[2] + nextLevel - city->productionOrderTable[2]);
+  city->productionOrderTable[2] = nextLevel;
   nextLevel = static_cast<short>(city->GetBuildingType(1) + 1);
   city->productionAccum[1] =
-      static_cast<short>(city->productionAccum[1] + nextLevel - city->productionOrderTable1dc[1]);
-  city->productionOrderTable1dc[1] = nextLevel;
+      static_cast<short>(city->productionAccum[1] + nextLevel - city->productionOrderTable[1]);
+  city->productionOrderTable[1] = nextLevel;
 }
 
 // ===================== TTraderForeignMinister (0x65a0c8) =====================
@@ -813,7 +813,7 @@ void TTraderForeignMinister::SetTradeBids() {
 // FUNCTION: IMPERIALISM 0x00533db0
 void TTraderForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
                                                short resourceCode) {
-  if (purchasePriorityByResource1e[resourceCode] != 0) {
+  if (purchasePriorityByResource[resourceCode] != 0) {
     TForeignMinister::ReplyToTradeOffer(arg1, arg2, arg3, resourceCode);
     return;
   }
@@ -856,7 +856,7 @@ void TTraderForeignMinister::DoFirstTurnDiplomacy() {
 
 // FUNCTION: IMPERIALISM 0x00533f50
 void TTraderForeignMinister::MakeNewCity(TCity* city) {
-  city->orderCountByType5c[2] += 3;
+  city->orderCountByType[2] += 3;
 }
 
 // ===================== TArmsForeignMinister (0x65a188) =====================
@@ -932,7 +932,7 @@ void TArmsForeignMinister::SetTradeBids() {
 // FUNCTION: IMPERIALISM 0x00534450
 void TArmsForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
                                              short resourceCode) {
-  if (purchasePriorityByResource1e[resourceCode] != 0) {
+  if (purchasePriorityByResource[resourceCode] != 0) {
     TForeignMinister::ReplyToTradeOffer(arg1, arg2, arg3, resourceCode);
     return;
   }
@@ -976,5 +976,5 @@ void TArmsForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
 
 // FUNCTION: IMPERIALISM 0x00534660
 void TArmsForeignMinister::MakeNewCity(TCity* city) {
-  city->orderCountByType5c[1] += 5;
+  city->orderCountByType[1] += 5;
 }

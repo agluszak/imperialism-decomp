@@ -20,7 +20,7 @@ void THQButton::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
   selectionState = 0;
   normalBitmapId = glyph;
-  eventNumber60 = 0xc;
+  eventNumber = 0xc;
   highlightedBitmapId = static_cast<short>(glyph + 1);
   selectedBitmapId = static_cast<short>(glyph + 2);
   unavailableBitmapId = static_cast<short>(glyph + 3);

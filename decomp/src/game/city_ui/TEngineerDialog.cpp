@@ -217,20 +217,20 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
   short homeProvIndex = mapState->terrainStateTable[nBuildingSlotId].cityRecordIndex;
   Province* homeProv = &mapState->cityScoreTable[homeProvIndex];
   short fortCap = g_pTechMgr->GetNationFortLevelCap(g_pSimMgr->GetPlayerCountry());
-  if (homeProv->fortLevel03 < fortCap && homeProv->cityTileIndex == nBuildingSlotId) {
+  if (homeProv->fortLevel < fortCap && homeProv->cityTileIndex == nBuildingSlotId) {
     TUpDownPictureButton* fortBtn = new TUpDownPictureButton();
     int fortOff[2] = {0x11, 0x29};
     fortBtn->IPicture(this, fortOff, optionButtonSize, 5, 5, 0x1c2a);
     fortBtn->controlTag = IMPERIALISM_FOURCC('f', 'o', 'r', 't');
     fortBtn->ViewEnable(1, 0);
-    fortBtn->eventNumber60 = 0x22;
+    fortBtn->eventNumber = 0x22;
 
     TDeluxeText* fortLabel = new TDeluxeText();
     int fortLabelOff[2] = {0x54, 0x28};
     RECT fortLabelInset = {0, 0, 0, 0};
     fortLabel->IDeluxeText(this, fortLabelOff, optionLabelSize, &fortLabelInset, &titleStyle, -2);
     fortLabel->BuildCityViewProductionControls_Impl(0x1c20,
-                                                    static_cast<short>(homeProv->fortLevel03 + 3));
+                                                    static_cast<short>(homeProv->fortLevel + 3));
     fortLabel->CenterVertically(false);
     layoutY = 0x52;
   }
@@ -242,7 +242,7 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
     railBtn->IPicture(this, railOff, optionButtonSize, 5, 5, 0x1c2c);
     railBtn->controlTag = IMPERIALISM_FOURCC('r', 'a', 'i', 'l');
     railBtn->ViewEnable(1, 0);
-    railBtn->eventNumber60 = 0x22;
+    railBtn->eventNumber = 0x22;
 
     TDeluxeText* railLabel = new TDeluxeText();
     int railLabelOff[2] = {0x54, layoutY};
@@ -273,7 +273,7 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
     portBtn->IPicture(this, portOff, optionButtonSize, 5, 5, 0x1c2e);
     portBtn->controlTag = IMPERIALISM_FOURCC('p', 'o', 'r', 't');
     portBtn->ViewEnable(1, 0);
-    portBtn->eventNumber60 = 0x22;
+    portBtn->eventNumber = 0x22;
 
     TDeluxeText* portLabel = new TDeluxeText();
     int portLabelOff[2] = {0x54, layoutY};
@@ -302,7 +302,7 @@ void TEngineerDialog::StuffValues(short nBuildingSlotId) {
   int cancelSize[2] = {0x3d, 0x18};
   cancelBtn->IPicture(this, cancelOff, cancelSize, 5, 5, 0x24c4);
   cancelBtn->controlTag = IMPERIALISM_FOURCC('c', 'n', 'c', 'l');
-  cancelBtn->eventNumber60 = 0x22;
+  cancelBtn->eventNumber = 0x22;
   cancelBtn->ViewEnable(1, 0);
 
   layoutY = static_cast<short>(layoutY + 0x1e);

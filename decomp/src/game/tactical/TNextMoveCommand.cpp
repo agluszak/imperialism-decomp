@@ -16,12 +16,12 @@ TNextMoveCommand::~TNextMoveCommand() {}
 // FUNCTION: IMPERIALISM 0x005a65e0
 void TNextMoveCommand::INextMoveCommand(TTacticalBattle* battle) {
   ICommand(0x232a, static_cast<TCommandHandler*>(g_pAmbitApplication), 0, 0, 0);
-  battle18 = battle;
+  this->battle = battle;
 }
 
 // FUNCTION: IMPERIALISM 0x005a6620
 void TNextMoveCommand::DoIt() {
-  TTacticalBattle* battle = battle18;
+  TTacticalBattle* battle = this->battle;
   if (battle != g_pMapContextActionManager->activeBattleView) {
     return;
   }

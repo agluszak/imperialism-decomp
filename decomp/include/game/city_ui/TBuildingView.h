@@ -23,18 +23,18 @@ public:
   virtual void UpdateFields();                                              // slot 0x76 0x4c6fb0
   // Both push the label's own QueryBounds rect through CopyRect and invalidate it.
   virtual void SetTextBox(TStaticText* label, short stringGroup,
-                                                          short stringIndex); // slot 0x77 0x4c70e0
+                          short stringIndex); // slot 0x77 0x4c70e0
   virtual void SetUniversityDialogTextAndRefresh(TStaticText* label,
                                                  CString text); // slot 0x78 0x4c6ff0
-  TCity* city94;
-  TCityProductionView* productionView98;
-  bool isEmbeddedPage9C;
+  TCity* city;
+  TCityProductionView* productionView;
+  bool isEmbeddedPage;
   unsigned char padding9D;
-  short embeddedPageIndex9E;
+  short embeddedPageIndex;
 
   // Source evidence: unreferenced retained COMDAT in retail.
   TBuildingView() : TNoHilitePicture() {
-    city94 = 0;
+    this->city = 0;
   }
 };
 

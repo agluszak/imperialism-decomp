@@ -18,8 +18,8 @@ public:
   virtual void SetStockpileRate(short stockpileRate);         // slot 0x75 0x586ab0
   virtual void SetStockpiles(short* current, short* maximum); // slot 0x76 0x586a80
   int field88;
-  short laborRate8c;
-  short stockpileRate8e;
+  short laborRate;
+  short stockpileRate;
   short* currentStockpile;
   short* maximumStockpile;
 

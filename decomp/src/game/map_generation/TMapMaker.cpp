@@ -463,7 +463,7 @@ char TMapMaker::CheckProvs() {
 
   bool foundEmptyColumn = false;
   int column = 0;
-  signed char* columnBase = &regionClassGrid10[0][0];
+  signed char* columnBase = &regionClassGrid[0][0];
   do {
     if (foundEmptyColumn) {
       break;
@@ -491,12 +491,12 @@ char TMapMaker::CheckProvs() {
   int classMask = 0;
   int cellIndex = 0x1b;
   do {
-    signed char regionClass = regionClassGrid10[0][cellIndex];
+    signed char regionClass = regionClassGrid[0][cellIndex];
     if (regionClass != -1) {
       int direction = 0;
       do {
         int neighbor = GetAdjacentRegionGridCell(cellIndex, direction);
-        if (regionClassGrid10[0][neighbor] == -1) {
+        if (regionClassGrid[0][neighbor] == -1) {
           classMask |= 1 << regionClass;
           break;
         }
@@ -518,7 +518,7 @@ char TMapMaker::ValidateAllColumnsHaveAssignedRegionClass() {
     }
     int row = 0;
     while (row < 0xf) {
-      if (regionClassGrid10[row][col] != -1) {
+      if (regionClassGrid[row][col] != -1) {
         break;
       }
       ++row;
@@ -536,11 +536,11 @@ char TMapMaker::ValidateTerrainClassAdjacencyCoverageMask() {
   int cell;
   // Flat scan over the 15x27 region-class grid, skipping row 0.
   for (cell = 0x1b; cell < 0x17a; ++cell) {
-    if (regionClassGrid10[0][cell] != -1) {
+    if (regionClassGrid[0][cell] != -1) {
       int dir;
       for (dir = 0; dir < 6; ++dir) {
-        if (regionClassGrid10[0][GetAdjacentRegionGridCell(cell, dir)] == -1) {
-          classMask |= 1 << regionClassGrid10[0][cell];
+        if (regionClassGrid[0][GetAdjacentRegionGridCell(cell, dir)] == -1) {
+          classMask |= 1 << regionClassGrid[0][cell];
           break;
         }
       }
@@ -694,13 +694,13 @@ void TMapMaker::PickRandomRegionGridCell(unsigned int* outColumn, unsigned int* 
 
 // FUNCTION: IMPERIALISM 0x00526c20
 void TMapMaker::RunMapGenerationAttempt() {
-  memset(regionClassGrid10, -1, sizeof(regionClassGrid10));
+  memset(regionClassGrid, -1, sizeof(regionClassGrid));
   memset(groupMemberLists, -1, sizeof(groupMemberLists));
   cityRegionNextId = -1;
   memset(cityRegionIds, -1, sizeof(cityRegionIds));
   lastMinorSeedCandidate = -1;
 
-  signed char* regionClassGridFlat = &regionClassGrid10[0][0];
+  signed char* regionClassGridFlat = &regionClassGrid[0][0];
 
   for (int classIndex = 0; classIndex < 7; ++classIndex) {
     if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
@@ -783,7 +783,7 @@ void TMapMaker::RunMapGenerationAttempt() {
 // FUNCTION: IMPERIALISM 0x00527040
 int TMapMaker::SelectGPZone(int cellIndex, int mode, int classIndex, int retryBudget) {
   if (mode == 0 || cellIndex / 27 <= 0 || cellIndex / 27 >= 14 ||
-      regionClassGrid10[cellIndex / 27][cellIndex % 27] != -1) {
+      regionClassGrid[cellIndex / 27][cellIndex % 27] != -1) {
     return 0;
   }
   if (classIndex < 7) {
@@ -795,7 +795,7 @@ int TMapMaker::SelectGPZone(int cellIndex, int mode, int classIndex, int retryBu
   }
 
   int remaining = mode - 1;
-  regionClassGrid10[cellIndex / 27][cellIndex % 27] = static_cast<signed char>(classIndex);
+  regionClassGrid[cellIndex / 27][cellIndex % 27] = static_cast<signed char>(classIndex);
 
   bool excluded[6];
   int availableCount = 6;
@@ -822,7 +822,7 @@ int TMapMaker::SelectGPZone(int cellIndex, int mode, int classIndex, int retryBu
         for (int dir2 = 0; dir2 < 6; ++dir2) {
           int neighborOfNeighbor = GetAdjacentRegionGridCell(neighborCell, dir2);
           if (neighborOfNeighbor != -1 &&
-              regionClassGrid10[neighborOfNeighbor / 27][neighborOfNeighbor % 27] == classIndex) {
+              regionClassGrid[neighborOfNeighbor / 27][neighborOfNeighbor % 27] == classIndex) {
             weight += 10;
           }
         }
@@ -875,7 +875,7 @@ char TMapMaker::TryMergeRegionGroupWithNeighborsRestrictedToMajors(int cellIndex
   for (int dir = 0; dir < 6; ++dir) {
     int neighborCell = GetAdjacentRegionGridCell(cellIndex, dir);
     int neighborClass =
-        (neighborCell != -1) ? regionClassGrid10[neighborCell / 27][neighborCell % 27] : -1;
+        (neighborCell != -1) ? regionClassGrid[neighborCell / 27][neighborCell % 27] : -1;
     if (neighborClass == -1 || neighborClass == classIndex) {
       continue;
     }
@@ -921,7 +921,7 @@ char TMapMaker::TryMergeRegionGroupWithNeighbors(int cellIndex, int classIndex) 
   for (int dir = 0; dir < 6; ++dir) {
     int neighborCell = GetAdjacentRegionGridCell(cellIndex, dir);
     int neighborClass =
-        (neighborCell != -1) ? regionClassGrid10[neighborCell / 27][neighborCell % 27] : -1;
+        (neighborCell != -1) ? regionClassGrid[neighborCell / 27][neighborCell % 27] : -1;
     if (neighborClass == -1 || neighborClass == classIndex) {
       continue;
     }
@@ -947,7 +947,7 @@ void TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords() {
   int cityRecordIndex = 0;
   int coarseIndex;
   for (coarseIndex = 0; coarseIndex < 0x195; ++coarseIndex) {
-    signed char regionClass = regionClassGrid10[coarseIndex / 0x1b][coarseIndex % 0x1b];
+    signed char regionClass = regionClassGrid[coarseIndex / 0x1b][coarseIndex % 0x1b];
     signed char ownerNation;
     StrategicTerrainKind terrainKind;
     short linkedCityRecord;
@@ -961,8 +961,8 @@ void TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords() {
       terrainKind = kStrategicTerrainPlains;
       linkedCityRecord = static_cast<short>(cityRecordIndex);
       ++cityRecordIndex;
-      cityScoreTable[linkedCityRecord].ownerNationCode00 = ownerNation;
-      cityScoreTable[linkedCityRecord].regionClassA3 =
+      cityScoreTable[linkedCityRecord].ownerNationCode = ownerNation;
+      cityScoreTable[linkedCityRecord].regionClass =
           static_cast<signed char>(cityRegionIds[static_cast<short>(ownerNation)]);
     }
 
@@ -1538,20 +1538,20 @@ void TMapMaker::RandomizeRegionTemplatesAndSmoothOwnership() {
   int coarseIndex;
   for (coarseIndex = 0; coarseIndex < 0x17a; ++coarseIndex) {
     unsigned short baseClass =
-        static_cast<unsigned short>(static_cast<signed char>(regionClassGrid10[0][coarseIndex]));
+        static_cast<unsigned short>(static_cast<signed char>(regionClassGrid[0][coarseIndex]));
 
     GetAdjacentRegionGridCell(coarseIndex, 0);
     GetAdjacentRegionGridCell(coarseIndex, 5);
 
     int neighbor = GetAdjacentRegionGridCell(coarseIndex, 1);
     unsigned short class1 =
-        static_cast<unsigned short>(static_cast<signed char>(regionClassGrid10[0][neighbor]));
+        static_cast<unsigned short>(static_cast<signed char>(regionClassGrid[0][neighbor]));
     neighbor = GetAdjacentRegionGridCell(coarseIndex, 2);
     unsigned short class2 =
-        static_cast<unsigned short>(static_cast<signed char>(regionClassGrid10[0][neighbor]));
+        static_cast<unsigned short>(static_cast<signed char>(regionClassGrid[0][neighbor]));
     neighbor = GetAdjacentRegionGridCell(coarseIndex, 3);
     unsigned short class3 =
-        static_cast<unsigned short>(static_cast<signed char>(regionClassGrid10[0][neighbor]));
+        static_cast<unsigned short>(static_cast<signed char>(regionClassGrid[0][neighbor]));
     GetAdjacentRegionGridCell(coarseIndex, 4);
 
     RandomizeRegionTemplateBanksForMismatchedNeighborClasses(coarseIndex, baseClass, class1, class3,
@@ -3048,7 +3048,7 @@ void TMapMaker::RebuildUMapperRouteRecordsAndActiveMapRects() {
 char TMapMaker::ErrorCheck() {
   EraseZones(0);
   bool failed = false;
-  signed char* cell = &regionClassGrid10[0][0];
+  signed char* cell = &regionClassGrid[0][0];
   int remaining = 0x195;
   do {
     if (*cell == -1) {
@@ -3065,11 +3065,11 @@ char TMapMaker::ErrorCheck() {
 
 // FUNCTION: IMPERIALISM 0x0052e890
 void TMapMaker::EraseZones(long coarseIndex) {
-  regionClassGrid10[0][coarseIndex] = -9;
+  regionClassGrid[0][coarseIndex] = -9;
   int direction;
   for (direction = 0; direction < 6; ++direction) {
     int neighbor = GetAdjacentRegionGridCell(coarseIndex, direction);
-    if (neighbor != -1 && regionClassGrid10[0][neighbor] == -1) {
+    if (neighbor != -1 && regionClassGrid[0][neighbor] == -1) {
       EraseZones(neighbor);
     }
   }
@@ -3077,7 +3077,7 @@ void TMapMaker::EraseZones(long coarseIndex) {
 
 // FUNCTION: IMPERIALISM 0x0052e900
 void TMapMaker::TargetValidationSucceeded() {
-  signed char* grid = &regionClassGrid10[0][0];
+  signed char* grid = &regionClassGrid[0][0];
   for (int cell = 0; cell < 0x195; ++cell) {
     if (grid[cell] == 0x64) {
       int cur = cell;

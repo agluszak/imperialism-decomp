@@ -57,16 +57,16 @@ public:
   afx_msg void OnUpdateTraceEnabled(CCmdUI* commandUi);       // 0x00414810
   afx_msg void OnPeekAtGWorld();                              // 0x00414830
 
-  int* waitCursorAnchorC0; // 0xC0
+  int* waitCursorAnchor; // 0xC0
   CString installDrivePrefix;
-  int appliedAutoResMode;         // 0xC8 — auto-resolution mode currently applied to the display
-  CString languageLabelCC;        // 0xCC — string 0x1e36, the language display label
-  CString localizedPictGobNameD0; // 0xD0 — string 0x2c6, localized Pict .gob path (lib slot 0)
-  CString field_D4;               // 0xD4 — string 0x840
-  CString primaryDataLibNameD8;   // 0xD8 — string 0x297, primary data library path
-  CString field_DC;               // 0xDC — string 0x80
-  CString languageCodeString;     // 0xE0 — string 0x323, three-letter language code
-  int languagePackId;             // 0xE4 — languageCodeString packed little-endian
+  int appliedAutoResMode;       // 0xC8 — auto-resolution mode currently applied to the display
+  CString languageLabel;        // 0xCC — string 0x1e36, the language display label
+  CString localizedPictGobName; // 0xD0 — string 0x2c6, localized Pict .gob path (lib slot 0)
+  CString field_D4;             // 0xD4 — string 0x840
+  CString primaryDataLibName;   // 0xD8 — string 0x297, primary data library path
+  CString field_DC;             // 0xDC — string 0x80
+  CString languageCodeString;   // 0xE0 — string 0x323, three-letter language code
+  int languagePackId;           // 0xE4 — languageCodeString packed little-endian
 
   DECLARE_MESSAGE_MAP()
 };

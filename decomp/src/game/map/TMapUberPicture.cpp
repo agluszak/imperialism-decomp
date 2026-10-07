@@ -80,7 +80,7 @@ void TMapUberPicture::DoPostCreate(int arg) {
   ForwardCopyRgn(mapRegion);
   DisposeRgn(mapRegion);
 
-  g_pViewMgr->mapUberPictureF0 = this;
+  g_pViewMgr->mapUberPicture = this;
   g_pUiAnimator->mapUberPicture = this;
   g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(nullptr);
   g_pActiveMapOrderContext->RefreshMapActionContextNationOverlaysAndOrderRanks();
@@ -98,7 +98,7 @@ void TMapUberPicture::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x00596c60
 void TMapUberPicture::Free() {
   if (g_pViewMgr != 0) {
-    g_pViewMgr->mapUberPictureF0 = 0;
+    g_pViewMgr->mapUberPicture = 0;
   }
   if (g_pUiAnimator != 0) {
     g_pUiAnimator->mapUberPicture = 0;
@@ -252,7 +252,7 @@ void TMapUberPicture::DoMenuCommand(int command) {
   switch (activeUnitCategoryIndex) {
   case 0:
     if (g_pSelectedCivilianOrderState->selectedEntry != 0) {
-      CenterOn(g_pSelectedCivilianOrderState->selectedEntry->tileIndex06);
+      CenterOn(g_pSelectedCivilianOrderState->selectedEntry->tileIndex);
     }
     return;
 
@@ -389,7 +389,7 @@ void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {
           SetMapInteractionMode(0);
         }
         g_pSelectedCivilianOrderState->SelectUnit(civilian, true);
-        CenterOn(civilian->tileIndex06);
+        CenterOn(civilian->tileIndex);
         ForceRedraw();
       } else {
         modeCursor = 1;
@@ -681,7 +681,7 @@ void TMapUberPicture::PromptAndQueueMilitaryProvincePurgeOrders(short provinceIn
   }
   dialog->SetModality(true);
 
-  short ownerNation = g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationCode00;
+  short ownerNation = g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationCode;
 
   // Label the 30 army-name slots from the localized army-name string group.
   for (int slot = 0; slot < 0x1e; ++slot) {
