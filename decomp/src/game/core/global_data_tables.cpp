@@ -104,7 +104,7 @@ const unsigned int g_strategicMapStatusIconTagTable[18] = {
 // GLOBAL: IMPERIALISM 0x006a4280
 TMinor* g_apSecondaryNationStateSlots[36] = {0};
 // GLOBAL: IMPERIALISM 0x006a4370
-TGreatPower* g_apNationStates[7] = {0};
+TGreatPower* g_apNationStates[kMajorNationCount] = {0};
 // GLOBAL: IMPERIALISM 0x006a20f8
 TSimMgr* g_pSimMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a21b8
@@ -161,7 +161,8 @@ extern const int g_nCurrentAmbitSaveFormatVersion = 0x3e;
 extern const char g_szUAmbitSourcePath[] = "D:\\Ambit\\Cross\\UAmbit.cpp";
 // Per-great-power quarter phase used to stagger the diplomacy planning pass.
 // GLOBAL: IMPERIALISM 0x00697818
-extern const short g_aDiplomacyPlanningQuarterPhaseByNation[7] = {0, 3, 1, 2, 1, 2, 0};
+extern const short g_aDiplomacyPlanningQuarterPhaseByNation[kMajorNationCount] = {0, 3, 1, 2,
+                                                                                  1, 2, 0};
 // GLOBAL: IMPERIALISM 0x00662978
 extern const unsigned int g_anScenarioScriptInstructionTags[27] = {
     kManifestTagLabo, kManifestTagCapa, kManifestTagWare, kControlTagArmy,  kManifestTagCivi,
@@ -895,19 +896,19 @@ const int g_tradeBidNationMetricControlTags[24] = {kControlTagRs0Sp,
 
 // Treaty-dialog panel and cell tags, stored as packed four-character control IDs.
 // GLOBAL: IMPERIALISM 0x0066b100
-const unsigned int g_majorTreatyPanelTags[7] = {
+const unsigned int g_majorTreatyPanelTags[kMajorNationCount] = {
     kManifestTagGP0Sp, kManifestTagGP1Sp, kManifestTagGP2Sp, kManifestTagGP3Sp,
     kManifestTagGP4Sp, kManifestTagGP5Sp, kManifestTagGP6Sp};
 // GLOBAL: IMPERIALISM 0x0066b13c
-const unsigned int g_minorTreatyPanelTags[16] = {
+const unsigned int g_minorTreatyPanelTags[kMinorNationCount] = {
     kManifestTagM7SpSp, kManifestTagM8SpSp, kManifestTagM9SpSp, kManifestTagM10Sp,
     kManifestTagM11Sp,  kManifestTagM12Sp,  kManifestTagM13Sp,  kManifestTagM14Sp,
     kManifestTagM15Sp,  kManifestTagM16Sp,  kManifestTagM17Sp,  kManifestTagM18Sp,
     kManifestTagM19Sp,  kManifestTagM20Sp,  kManifestTagM21Sp,  kManifestTagM22Sp};
 // GLOBAL: IMPERIALISM 0x0066b180
-const unsigned int g_majorTreatyCellTags[7] = {kManifestTagRGP0, kManifestTagRGP1, kManifestTagRGP2,
-                                               kManifestTagRGP3, kManifestTagRGP4, kManifestTagRGP5,
-                                               kManifestTagRGP6};
+const unsigned int g_majorTreatyCellTags[kMajorNationCount] = {
+    kManifestTagRGP0, kManifestTagRGP1, kManifestTagRGP2, kManifestTagRGP3,
+    kManifestTagRGP4, kManifestTagRGP5, kManifestTagRGP6};
 
 // Industry action cost weight tables
 // GLOBAL: IMPERIALISM 0x00650758
@@ -1610,13 +1611,13 @@ float g_afNationOrderQueueDivergence[7] = {0};
 // GLOBAL: IMPERIALISM 0x006a3ac0
 float g_afNationOrderQueueDivergenceMirror[7] = {0};
 // GLOBAL: IMPERIALISM 0x006a3ae0
-float g_afNationMobileUnitDivergence[7] = {0};
+float g_afNationMobileUnitDivergence[kMajorNationCount] = {0};
 // GLOBAL: IMPERIALISM 0x006a3b20
 float g_afNationWeightedMilitaryOrderScore[7] = {0};
 // GLOBAL: IMPERIALISM 0x006a3b50
-float g_afNationCombinedUnitDivergence[7] = {0};
+float g_afNationCombinedUnitDivergence[kMajorNationCount] = {0};
 // GLOBAL: IMPERIALISM 0x006a3b88
-float g_afNationMobileUnitScore[7] = {0};
+float g_afNationMobileUnitScore[kMajorNationCount] = {0};
 
 // GLOBAL: IMPERIALISM 0x00698120
 IndustryCapabilityClassSlotEntry g_aIndustryCapabilityClassSlotTable[14] = {
@@ -2056,7 +2057,7 @@ bool g_bMultiplayerScenarioSetupActive = false;
 short g_nTurnCooldownSideFlag = 1;
 
 // GLOBAL: IMPERIALISM 0x00698b18
-extern "C" short g_aDefaultNationSetupPolicyProfiles[7][4] = {
+extern "C" short g_aDefaultNationSetupPolicyProfiles[kMajorNationCount][4] = {
     {1, 2, 3, 3}, {2, 2, 5, 2}, {2, 1, 4, 1}, {2, 3, 3, 3},
     {2, 3, 2, 4}, {2, 2, 1, 3}, {2, 0, 4, 0}};
 

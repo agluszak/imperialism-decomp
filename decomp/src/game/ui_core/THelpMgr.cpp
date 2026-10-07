@@ -657,7 +657,7 @@ bool ShowTurnAlertsForActiveNation() {
 
 #ifdef IMPERIALISM_RUNTIME_TESTS
   bool nationAtWar = false;
-  for (int otherNation = 0; otherNation < 7; ++otherNation) {
+  for (int otherNation = 0; otherNation < kMajorNationCount; ++otherNation) {
     if (otherNation != nationId &&
         g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, otherNation)) {
       nationAtWar = true;
@@ -910,7 +910,7 @@ void THelpMgr::ShowHelpSet(HelpSetRecord* pendingEntry) {
     FailNilPointerWithAssert(s_SourcePathUHelpMgr, 0x5f0);
   }
 
-  if (g_pSimMgr->GetPlayerCountry() >= 0 && g_pSimMgr->GetPlayerCountry() < 7) {
+  if (g_pSimMgr->GetPlayerCountry() >= 0 && g_pSimMgr->GetPlayerCountry() < kMajorNationCount) {
     coatPicture->SetPictureRsrcID(static_cast<short>(g_pSimMgr->GetPlayerCountry() + 0x251c), 0);
   } else {
     coatPicture->Show(0, 0);

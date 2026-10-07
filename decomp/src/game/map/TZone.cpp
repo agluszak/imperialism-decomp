@@ -922,7 +922,7 @@ void ResetMapActionContextActivityAndNationFlags() {
   for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
     zone->distanceLevel = 0;
   }
-  for (int cityIndex = 0; cityIndex < 0x180; ++cityIndex) {
+  for (int cityIndex = 0; cityIndex < kProvinceCount; ++cityIndex) {
     g_pGlobalMapState->cityScoreTable[cityIndex].navyOrderReachable = 0;
   }
 }
@@ -935,7 +935,7 @@ TZone* TZone::GetSafestNearbyZoneFor(short nationSlot) const {
     TZone* neighbor = primaryNeighbors.GetAt(neighborIndex);
     if (!neighbor->QueryPortZoneCapability() || neighbor->QueryZoneCapabilityFlagD(nationSlot)) {
       int warCount = 0;
-      for (int otherNation = 0; otherNation < 7; ++otherNation) {
+      for (int otherNation = 0; otherNation < kMajorNationCount; ++otherNation) {
         if (g_apTerrainTypeDescriptorTable[otherNation] != 0 &&
             (neighbor->nationKeyMask & (1 << otherNation)) != 0 &&
             g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, otherNation)) {
@@ -1186,7 +1186,7 @@ void RegenerateAllMapActionContextStatusCodes(void) {
   }
   g_mapActionContextDisplayNameCacheId = -1;
 
-  unsigned char statusScratch[0x180];
+  unsigned char statusScratch[kProvinceCount];
   memset(statusScratch, 0, sizeof(statusScratch));
 
   for (TZone* node = g_pMapActionContextListHead; node != 0; node = node->prev18) {

@@ -154,7 +154,7 @@ void TControlSeaZoneMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
 
   int nationBitmask = 0;
   TZone* firstMatchContext = NULL;
-  for (int nation = 0; nation < 7; ++nation) {
+  for (int nation = 0; nation < kMajorNationCount; ++nation) {
     if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(nation, nationId)) {
       nationBitmask |= 1 << nation;
       TZone* portZone =

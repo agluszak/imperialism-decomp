@@ -107,7 +107,7 @@ inline float NormalizeFiveComponentPriorityVector(const float* vector, float sum
 // FUNCTION: IMPERIALISM 0x0053e6e0
 float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeContext) {
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
-  int remainingBudgetByNation[7];
+  int remainingBudgetByNation[kMajorNationCount];
 
   float unitOrderWeight = static_cast<float>(
       g_pGlobalMapState->GetProvinceUnitOrderWeight(static_cast<short>(nodeContext)));
@@ -115,7 +115,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
   Province* sourceRecord = &g_pGlobalMapState->cityScoreTable[nodeContext];
   int sourceNation = static_cast<int>(sourceRecord->ownerNationCode);
 
-  for (int nationIndex = 0; nationIndex < 7; ++nationIndex) {
+  for (int nationIndex = 0; nationIndex < kMajorNationCount; ++nationIndex) {
     short navyBudget =
         g_pNavyOrderManager->GetInvasionCapacity(static_cast<short>(nationIndex), sourceRecord, 0);
     remainingBudgetByNation[nationIndex] = static_cast<int>(navyBudget);
@@ -125,14 +125,14 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
   do {
     short candidateNation =
         static_cast<short>(g_pGlobalMapState->cityScoreTable[regionIndex].ownerNationCode);
-    if (candidateNation < 7) {
+    if (candidateNation < kMajorNationCount) {
       int candidateNationIndex = static_cast<int>(candidateNation);
       if (candidateNationIndex != sourceNation &&
           g_pDiplomacyTurnStateManager->IsNationPairAtWar(candidateNation, sourceNation)) {
         if (g_pGlobalMapState->IsProvinceAdjacentTo(nodeContext, regionIndex)) {
           short checkedRegion = static_cast<short>(regionIndex);
           TMilitaryUnit* unit = 0;
-          if (checkedRegion >= 0 && checkedRegion < 0x180) {
+          if (checkedRegion >= 0 && checkedRegion < kProvinceCount) {
             unit = g_pGlobalMapState->cityScoreTable[checkedRegion].stationedUnitChain;
           }
           for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
@@ -144,7 +144,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
                    g_pGlobalMapState->HasPortInProvince(regionIndex)) {
           short checkedRegion = static_cast<short>(regionIndex);
           TMilitaryUnit* unit = 0;
-          if (checkedRegion >= 0 && checkedRegion < 0x180) {
+          if (checkedRegion >= 0 && checkedRegion < kProvinceCount) {
             unit = g_pGlobalMapState->cityScoreTable[checkedRegion].stationedUnitChain;
           }
           for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {
@@ -161,7 +161,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
       }
     }
     ++regionIndex;
-  } while (regionIndex < 0x180);
+  } while (regionIndex < kProvinceCount);
 
   float sum = 0.0f;
   for (int componentIndex = 0; componentIndex < 5; ++componentIndex) {
@@ -182,7 +182,7 @@ float TDefendProvinceMission::ComputeLocalSupportVectorScore(int nodeContext) {
 
   short regionIndex = static_cast<short>(nodeContext);
   TMilitaryUnit* unit = 0;
-  if (regionIndex >= 0 && regionIndex < 0x180) {
+  if (regionIndex >= 0 && regionIndex < kProvinceCount) {
     unit = g_pGlobalMapState->cityScoreTable[regionIndex].stationedUnitChain;
   }
   for (; unit != 0; unit = static_cast<TMilitaryUnit*>(unit->nextAtLocation)) {

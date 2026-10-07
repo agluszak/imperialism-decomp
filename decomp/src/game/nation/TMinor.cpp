@@ -489,7 +489,7 @@ void TMinor::PurchaseItem(short resourceKind, short amount, short price) {
     this->grantAmountsByResource[resourceSlot] =
         static_cast<short>(this->grantAmountsByResource[resourceSlot] + deltaShort);
     if (this->foreignControlledResourceYieldByType[resourceSlot] != 0) {
-      for (int majorNationSlot = 0; majorNationSlot < 7; ++majorNationSlot) {
+      for (int majorNationSlot = 0; majorNationSlot < kMajorNationCount; ++majorNationSlot) {
         if (g_apTerrainTypeDescriptorTable[majorNationSlot] == 0) {
           continue;
         }
@@ -781,7 +781,7 @@ void TMinor::BecomeProtectorateOf(int targetNationSlot) {
     }
     g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(this->nationSlot);
 
-    for (int majorNationSlot = 0; majorNationSlot < 7; ++majorNationSlot) {
+    for (int majorNationSlot = 0; majorNationSlot < kMajorNationCount; ++majorNationSlot) {
       if (g_pSimMgr->ReallyInTheGame(static_cast<short>(majorNationSlot))) {
         TGreatPower* majorNation = g_apNationStates[majorNationSlot];
         if (majorNation->diplomacyEligibility == 0) {
@@ -847,7 +847,7 @@ void TMinor::BecomeProtectorateOf(int targetNationSlot) {
     g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(this->nationSlot);
   }
 
-  for (int standingNationSlot = 0; standingNationSlot < 7; ++standingNationSlot) {
+  for (int standingNationSlot = 0; standingNationSlot < kMajorNationCount; ++standingNationSlot) {
     if (g_pSimMgr->ReallyInTheGame(static_cast<short>(standingNationSlot))) {
       if (standingNationSlot == targetNationSlot) {
         this->SetTradePolicyTo(static_cast<NationSlot>(standingNationSlot), 100);
@@ -988,12 +988,12 @@ void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
 // FUNCTION: IMPERIALISM 0x004e5be0
 void TMinor::KillBoycottedForeignCompanies(void) {
   int majorSlot;
-  char needLevel300ByMajorSlot[7];
-  for (majorSlot = 0; majorSlot < 7; ++majorSlot) {
+  char needLevel300ByMajorSlot[kMajorNationCount];
+  for (majorSlot = 0; majorSlot < kMajorNationCount; ++majorSlot) {
     needLevel300ByMajorSlot[majorSlot] = (this->needLevelByNation[majorSlot] == 300) ? 1 : 0;
   }
 
-  char notifyMajorSlots[7] = {0};
+  char notifyMajorSlots[kMajorNationCount] = {0};
   TTerrainStateRecord* terrainTiles = g_pGlobalMapState->terrainStateTable;
 
   int ownedCount = this->ownedRegionList->GetSize();
@@ -1017,7 +1017,7 @@ void TMinor::KillBoycottedForeignCompanies(void) {
     ownedCount = this->ownedRegionList->GetSize();
   }
 
-  for (majorSlot = 0; majorSlot < 7; ++majorSlot) {
+  for (majorSlot = 0; majorSlot < kMajorNationCount; ++majorSlot) {
     if (g_apNationStates[majorSlot] != 0 && notifyMajorSlots[majorSlot] != 0) {
       g_apNationStates[majorSlot]->AddNoticeFrom(this->nationSlot, 0x137);
       g_pNewsMgr->AddTreatyEvent(kInterNationEventMinorTerritoryRelationshipAffected, majorSlot,
@@ -1112,7 +1112,7 @@ void TMinor::AssimilateTroopsOf(int priorOwnerNationSlot) {
   int oneBasedIndex = 1;
   while (oneBasedIndex <= ownedCount) {
     short regionId = static_cast<short>(this->ownedRegionList->At(oneBasedIndex));
-    if (regionId < 0 || regionId >= 0x180) {
+    if (regionId < 0 || regionId >= kProvinceCount) {
       oneBasedIndex++;
       continue;
     }

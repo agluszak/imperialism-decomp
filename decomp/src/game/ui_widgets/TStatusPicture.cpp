@@ -33,7 +33,7 @@ void TStatusPicture::DoPostCreate(int arg) {
 
   unsigned int pictureTag = kControlTagArmyPlacardFirst; // 'pic0'
   int rowY = 0x50;
-  for (unsigned int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+  for (unsigned int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot))) {
       TPicture* picture = new TPicture();
       int offsetLayout[2] = {0x71, rowY};

@@ -21,12 +21,7 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-namespace {
-
-const int kMapTileCount = kStrategicTileCount;
-const int kCityRecordCount = 0x180;
-
-} // namespace
+namespace {} // namespace
 
 // FUNCTION: IMPERIALISM 0x0051cc20
 TMapEditView::~TMapEditView() {}
@@ -55,7 +50,7 @@ void TMapEditView::DoPostCreate(int arg) {
 
   const short defaultResourceByProfile[15] = {-1, -1, 0,  20, 5,  17, 18, 1,
                                               -1, -1, -1, -1, -1, 2,  -1};
-  for (int tileIndex = 0; tileIndex < kMapTileCount; ++tileIndex) {
+  for (int tileIndex = 0; tileIndex < kStrategicTileCount; ++tileIndex) {
     TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
     if (tile.GetTerrainKind() != kStrategicTerrainWater) {
       tile.resourceTypeByEdge[0] = defaultResourceByProfile[tile.gateFlag];
@@ -137,7 +132,7 @@ void TMapEditView::ShiftClick(int tileIndex, int dispatchContext) {
   }
 
   int index;
-  for (index = 0; index < kMapTileCount; ++index) {
+  for (index = 0; index < kStrategicTileCount; ++index) {
     TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[index];
     if (tile.cityRecordIndex == provinceId) {
       tile.formerOwnerNationTag = static_cast<signed char>(nationTag);
@@ -145,7 +140,7 @@ void TMapEditView::ShiftClick(int tileIndex, int dispatchContext) {
     }
   }
 
-  for (index = 0; index < kMapTileCount; ++index) {
+  for (index = 0; index < kStrategicTileCount; ++index) {
     TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[index];
     if (tile.cityRecordIndex != provinceId) {
       continue;
@@ -170,11 +165,11 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int tileInd
                                                                      int inputFlags) {
 
   int index;
-  for (index = 0; index < kMapTileCount; ++index) {
+  for (index = 0; index < kStrategicTileCount; ++index) {
     g_pGlobalMapState->terrainStateTable[index].tileActionState = kMapTileActionStateNone;
   }
 
-  for (index = 0; index < kCityRecordCount; ++index) {
+  for (index = 0; index < kProvinceCount; ++index) {
     Province& city = g_pGlobalMapState->cityScoreTable[index];
     city.adjacentRegionCount = 0;
     city.stationedUnitChain = 0;
@@ -189,7 +184,7 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int tileInd
     }
   }
 
-  for (index = 0; index < kMapTileCount; ++index) {
+  for (index = 0; index < kStrategicTileCount; ++index) {
     TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[index];
     if (tile.GetTerrainKind() != kStrategicTerrainWater || tile.ownerNationTag >= 0x17) {
       continue;

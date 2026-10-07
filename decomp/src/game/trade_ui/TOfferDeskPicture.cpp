@@ -488,7 +488,7 @@ void TOfferDeskPicture::ShowAdvice() {
     strNeedTarget.Format(g_szDecimalFormat, static_cast<int>(needTgt));
     strRelDelta.Format(g_szDecimalFormat, static_cast<int>(relDelta));
     strAvail.Format(g_szDecimalFormat, static_cast<int>(avail));
-    if (offeringNationSlot < 7) {
+    if (offeringNationSlot < kMajorNationCount) {
       g_pSimMgr->GetString(0x2764, 8, &strTemplate);
       scanBracketExpressions(g_pSimMgr, &strStatsIntro, static_cast<LPCSTR>(strTemplate),
                              static_cast<LPCSTR>(strTargetNation));

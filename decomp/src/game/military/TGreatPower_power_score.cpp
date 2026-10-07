@@ -17,7 +17,7 @@
 
 // FUNCTION: IMPERIALISM 0x0053fe30
 void RecomputeNationOrderPriorityMetrics() {
-  for (short nationIdx = 0; nationIdx < 7; ++nationIdx) {
+  for (short nationIdx = 0; nationIdx < kMajorNationCount; ++nationIdx) {
     if (!g_pSimMgr->ReallyInTheGame(nationIdx)) {
       continue;
     }
@@ -134,7 +134,7 @@ void RecomputeNationOrderPriorityMetrics() {
         g_afNationMobileUnitScore[nationIdx] * powerRatio;
   }
 
-  for (short finalNationIdx = 0; finalNationIdx < 7; ++finalNationIdx) {
+  for (short finalNationIdx = 0; finalNationIdx < kMajorNationCount; ++finalNationIdx) {
     if (g_pSimMgr->ReallyInTheGame(finalNationIdx)) {
       g_apNationStates[finalNationIdx]->RecomputeAiExpansionAndMissionPressureScores();
     }

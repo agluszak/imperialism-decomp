@@ -139,7 +139,7 @@ void TCouncilView::DisplayStats() {
   for (int i = 0; i < 8; ++i) {
     categoryCounts[i] = 0;
   }
-  for (int record = 0; record < 0x180; ++record) {
+  for (int record = 0; record < kProvinceCount; ++record) {
     if (g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix[record] == -1) {
       continue;
     }
@@ -258,7 +258,7 @@ void TCouncilView::StartVoting() {
 
   const short phase = static_cast<short>(g_pSimMgr->mode);
   if (phase == kGamePhaseCouncilVictory || phase == kGamePhaseCouncilDefeat) {
-    for (int provinceIndex = 0; provinceIndex < 0x180; ++provinceIndex) {
+    for (int provinceIndex = 0; provinceIndex < kProvinceCount; ++provinceIndex) {
       if (g_pGlobalMapState->cityScoreTable[provinceIndex].ownerNationCode != -1) {
         tileHasOwnerFlags[provinceIndex] = true;
       }

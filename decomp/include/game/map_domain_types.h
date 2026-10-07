@@ -10,7 +10,8 @@ typedef short ProvinceIndexStorage;
 enum {
   kStrategicMapColumns = 108,
   kStrategicMapRows = 60,
-  kStrategicTileCount = kStrategicMapColumns * kStrategicMapRows
+  kStrategicTileCount = kStrategicMapColumns * kStrategicMapRows,
+  kProvinceCount = 0x180
 };
 
 enum StrategicHexDirection {

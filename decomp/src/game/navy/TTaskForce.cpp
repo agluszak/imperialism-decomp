@@ -123,7 +123,7 @@ void TTaskForce::WriteTo(TStream* stream) {
   if (shipOrders == 5) {
     short index = 0;
     while (&g_pGlobalMapState->cityScoreTable[index] != static_cast<Province*>(target) &&
-           index < 0x180) {
+           index < kProvinceCount) {
       ++index;
     }
     ownerOrdinal = index;

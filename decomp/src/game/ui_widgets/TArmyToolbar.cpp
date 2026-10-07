@@ -39,7 +39,7 @@ void TArmyToolbar::SetProvince(short provinceIndex) {
   memset(totalUnitCounts, 0, sizeof(totalUnitCounts));
   if (provinceIndex != -1) {
     TMilitaryUnit* unit;
-    if (provinceIndex >= 0 && provinceIndex < 0x180) {
+    if (provinceIndex >= 0 && provinceIndex < kProvinceCount) {
       unit = g_pGlobalMapState->cityScoreTable[provinceIndex].stationedUnitChain;
     } else {
       unit = 0;

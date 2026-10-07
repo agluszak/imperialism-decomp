@@ -2104,7 +2104,7 @@ void TMultiplayerMgr::SendTradeOffer(short respondingNation, short offeringNatio
   packet.proposedAmount = proposedAmount;
   packet.maxAmount = maxAmount;
   packet.commodityType = commodityType;
-  for (int nationIndex = 0; nationIndex < 7; ++nationIndex) {
+  for (int nationIndex = 0; nationIndex < kMajorNationCount; ++nationIndex) {
     TGreatPower* nationState = g_apNationStates[nationIndex];
     if (nationState != 0) {
       packet.counterA2BySlot[nationIndex] = nationState->GetMerchantCapacity();
@@ -2445,7 +2445,7 @@ void TMultiplayerMgr::CreateMilitaryRecruitOrdersForSelectedTerrain(TStream* str
 // FUNCTION: IMPERIALISM 0x0054a840
 void TMultiplayerMgr::CreateCivilianWorkOrdersForSelectedNations(TStream* stream,
                                                                  short nationSlot) {
-  for (int nationIdx = 0; nationIdx < 7; ++nationIdx) {
+  for (int nationIdx = 0; nationIdx < kMajorNationCount; ++nationIdx) {
     const bool nationSelected = nationSlot == -1 || nationSlot == nationIdx;
     if (g_apNationStates[nationIdx] != 0 && nationSelected) {
       CIterator workOrderIter(g_apNationStates[nationIdx]->trackedObjectList);

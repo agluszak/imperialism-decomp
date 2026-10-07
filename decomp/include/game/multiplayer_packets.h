@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/map_domain_types.h"
 // Shared multiplayer turn-event wire layouts.
 //
 // These packet shapes are read and written from more than one translation unit
@@ -78,13 +79,13 @@ struct TurnEvent13NewsPacket : TimelyMessageHeader {
 
 // Event-0x26 full diplomacy-matrix snapshot.
 struct TurnEvent26DiplomacyMatrixPacket : TimelyMessageHeader {
-  short relationCodeMatrix[0x180];              // +0x018
-  unsigned char pendingPolicyCodeMatrix[0x180]; // +0x318
-  short pendingPolicyTierMatrix[0x180];         // +0x498
-  CongressLeadership congressLeadership;        // +0x798
-  CongressSupportTally congressSupport;         // +0x79c..+0x7a1
-  unsigned char pad7a2[2];                      // +0x7a2
-  unsigned char relationTailBlock[0x70];        // +0x7a4, total 0x814
+  short relationCodeMatrix[kProvinceCount];              // +0x018
+  unsigned char pendingPolicyCodeMatrix[kProvinceCount]; // +0x318
+  short pendingPolicyTierMatrix[kProvinceCount];         // +0x498
+  CongressLeadership congressLeadership;                 // +0x798
+  CongressSupportTally congressSupport;                  // +0x79c..+0x7a1
+  unsigned char pad7a2[2];                               // +0x7a2
+  unsigned char relationTailBlock[0x70];                 // +0x7a4, total 0x814
 };
 
 // Turn-event-1 payload: the remaining turn-resume pending-nation bitmask.
@@ -111,10 +112,10 @@ struct TurnEventBNationDirectoryPacket : TimelyNetMessagePrefix {
 };
 
 struct TurnEvent18DiplomacyArraysPacket : TimelyNetMessagePrefix {
-  short diplomacyPolicyByNation[7][kNationSlotCount]; // +0x1c
-  short diplomacyGrantByNation[7][kNationSlotCount];  // +0x15e
-  short needLevelByNation[7][kNationSlotCount];       // +0x2a0
-  unsigned char pad3e2[2];                            // total 0x3e4
+  short diplomacyPolicyByNation[kMajorNationCount][kNationSlotCount]; // +0x1c
+  short diplomacyGrantByNation[kMajorNationCount][kNationSlotCount];  // +0x15e
+  short needLevelByNation[kMajorNationCount][kNationSlotCount];       // +0x2a0
+  unsigned char pad3e2[2];                                            // total 0x3e4
 };
 
 struct TurnEvent1FStatusPacket : TimelyMessageHeader {

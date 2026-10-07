@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/map_domain_types.h"
 #include "compat.h"
 
 #include "game/nation/TGreatPower.h"
@@ -125,7 +126,7 @@ public:
 
   short actionMetricByQuarter[6];
   // eMissionDesirability bytes.
-  unsigned char provinceStatus[0x180];
+  unsigned char provinceStatus[kProvinceCount];
   unsigned char zoneStatus[0x70];
   TSortedList* missionQueue;
   float expansionPressurePerCompatibleRegion;

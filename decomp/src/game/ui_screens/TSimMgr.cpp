@@ -89,7 +89,7 @@ static bool IsNationEligibleForOptionalPhase(short nationSlot) {
   if (country == NULL) {
     return false;
   }
-  if (nationSlot >= 7) {
+  if (nationSlot >= kMajorNationCount) {
     return true;
   }
   const short profileCode = country->encodedNationSlot;
@@ -772,7 +772,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
 // FUNCTION: IMPERIALISM 0x0057d520
 void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
   short nationSlot = static_cast<short>(slotIndex);
-  if (nationSlot < 7) {
+  if (nationSlot < kMajorNationCount) {
     g_apSecondaryNationStateSlots[nationSlot] = NULL;
     return;
   }
@@ -842,7 +842,7 @@ void TSimMgr::DoPerTurnMissionAIStuff(int replanMode) {
     }
     ++nation;
     ++nationSlot;
-  } while (nation < &g_apNationStates[7]);
+  } while (nation < &g_apNationStates[kMajorNationCount]);
 }
 
 // FUNCTION: IMPERIALISM 0x0057d830
@@ -940,7 +940,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case kGamePhaseStartGame: {
     turnStateCode = kGamePhaseAdvanceSeason;
-    for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
       TGreatPower* nation = g_apNationStates[nationSlot];
       nation->AssertValid();
       if (!nation->IsRemote() && !g_bMultiplayerScenarioSetupActive) {
@@ -1038,7 +1038,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       g_pDiplomacyTurnStateManager->ApplyDiplomacyInterNationStatesForTurn();
     }
     if (multiplayerSessionRole == kSessionRoleStandalone) {
-      for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+      for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
         TGreatPower* nation = g_apNationStates[nationSlot];
         if (nation != NULL && nation->diplomacyEligibility != 0 &&
             nation->proposalQueue->GetSize() > 0) {
@@ -1051,7 +1051,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     } else if (IsNationEligibleForOptionalPhase(activeNationSlot)) {
       g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDiplomacyMap), activeNationSlot);
     }
-    for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
       TGreatPower* nation = g_apNationStates[nationSlot];
       if (nation != NULL) {
         nation->ReplyToDiplomacyOffers();
@@ -1180,7 +1180,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     g_pAssetMgr->OpenFilesFor(0xa);
     g_pNewsMgr->StartNewsPhase();
     g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventNewspaperStatus), activeNationSlot);
-    for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    for (short nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
       if (!IsNationEligibleForOptionalPhase(nationSlot)) {
         continue;
       }
@@ -1229,7 +1229,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     if (capabilityBefore == (g_pTechMgr != NULL ? g_pTechMgr->marker262 : 0)) {
       turnFlowStatusFlags |= 0x40;
     }
-    for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
       if (g_pSimMgr->activeNationSlot == nationSlot && g_nTurnCooldownDeferCounter < 1) {
         g_nTurnCooldownDeferCounter = 0;
         g_nTurnCooldownSideFlag = 1;
@@ -1259,7 +1259,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     g_pAssetMgr->OpenFilesFor(0x13);
     g_pGlobalMapState->ShowStrategicMapForPlayer();
     g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
-    for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    for (short nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
       TGreatPower* nation = g_apNationStates[nationSlot];
       if (nation == NULL || nationSlot == -1) {
         continue;
@@ -1304,7 +1304,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     if (multiplayerSessionRole != kSessionRoleClient) {
       g_pGlobalMapState->RecomputeTileStrategicScoreHeatmap();
       RecomputeNationOrderPriorityMetrics();
-      for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
+      for (short nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
         if (nationSlot == -1 || g_apTerrainTypeDescriptorTable[nationSlot] == NULL) {
           continue;
         }
@@ -1318,7 +1318,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         }
       }
     }
-    for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    for (short nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
       if (!IsNationEligibleForOptionalPhase(nationSlot)) {
         continue;
       }
@@ -1357,7 +1357,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         }
       }
     }
-    for (int removeNationSlot = 0; removeNationSlot < 7; ++removeNationSlot) {
+    for (int removeNationSlot = 0; removeNationSlot < kMajorNationCount; ++removeNationSlot) {
       if (g_apTerrainTypeDescriptorTable[removeNationSlot] == NULL ||
           g_apNationStates[removeNationSlot] == NULL) {
         continue;
@@ -1369,7 +1369,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     for (int secondaryIndex = 7; secondaryIndex < 0x17; ++secondaryIndex) {
       TMinor* secondaryNation = g_apSecondaryNationStateSlots[secondaryIndex];
       if (secondaryNation != NULL && secondaryNation->ownedRegionList->GetSize() == 0) {
-        for (short percentNationSlot = 0; percentNationSlot < 7; ++percentNationSlot) {
+        for (short percentNationSlot = 0; percentNationSlot < kMajorNationCount;
+             ++percentNationSlot) {
           if (!IsNationEligibleForOptionalPhase(percentNationSlot)) {
             continue;
           }
@@ -1381,7 +1382,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       break;
     }
     int eligibleMinorCount = 0;
-    for (int countNationSlot = 0; countNationSlot < 7; ++countNationSlot) {
+    for (int countNationSlot = 0; countNationSlot < kMajorNationCount; ++countNationSlot) {
       if (IsNationEligibleForOptionalPhase(static_cast<short>(countNationSlot))) {
         ++eligibleMinorCount;
       }
@@ -1525,7 +1526,7 @@ void TSimMgr::DoCityAndTransport() {
 // FUNCTION: IMPERIALISM 0x0057f200
 void TSimMgr::DoCivilians() {
   g_pSelectedCivilianOrderState->ResolveCivilianDisputes();
-  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     if (IsNationEligibleForOptionalPhase(static_cast<short>(nationSlot))) {
       g_apNationStates[nationSlot]->MoveCivilians();
     }
@@ -1545,7 +1546,7 @@ void TSimMgr::DoMilitary() {
     }
   }
 
-  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     if (!IsNationEligibleForOptionalPhase(static_cast<short>(nationSlot))) {
       continue;
     }
@@ -1616,7 +1617,7 @@ bool TSimMgr::AllHumansFinished() {
 
 // FUNCTION: IMPERIALISM 0x0057f530
 void TSimMgr::ResetTurnFlags() {
-  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     TGreatPower* nation = g_apNationStates[nationSlot];
     if (nation->diplomacyEligibility != 0) {
       nation->turnFinished = 0;
@@ -1837,7 +1838,7 @@ bool TSimMgr::ReallyInTheGame(NationSlot nationSlot) {
     return false;
   }
 
-  if (nationSlot < 7) {
+  if (nationSlot < kMajorNationCount) {
     if (terrainDescriptor != 0) {
       short profileType = terrainDescriptor->encodedNationSlot;
       bool inReservedProfileBand = profileType >= 100 && profileType < 200;
@@ -2099,7 +2100,7 @@ void TSimMgr::ProcessScenarioScript() {
     g_pAmbitApplication->PostWmCloseToMainThreadWindow();
   }
 
-  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     TGreatPower* nation = g_apNationStates[nationSlot];
     nation->NameUnits();
     nation->MarkStatusFlag5HandledIfCapabilityActive();

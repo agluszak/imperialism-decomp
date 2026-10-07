@@ -16,11 +16,11 @@ class TStream;
 struct GameSetup {
   unsigned char multiplayerGameActive; // +0x00
   unsigned char pad01;
-  short nationControlModes[7];           // +0x02
-  short cityMinisterPolicyIds[7];        // +0x10
-  short foreignMinisterPolicyIds[7];     // +0x1e
-  short defenseMinisterPolicyIds[7];     // +0x2c
-  unsigned char reloadPoliticalMapState; // +0x3a
+  short nationControlModes[kMajorNationCount]; // +0x02
+  short cityMinisterPolicyIds[7];              // +0x10
+  short foreignMinisterPolicyIds[7];           // +0x1e
+  short defenseMinisterPolicyIds[7];           // +0x2c
+  unsigned char reloadPoliticalMapState;       // +0x3a
   unsigned char pad3b[3];
 };
 
@@ -169,7 +169,7 @@ public:
   unsigned char multiplayerGameActive;
   unsigned char padD9;
   // Contiguous GameSetup policy rows; no inter-row padding.
-  short nationControlModes[7];
+  short nationControlModes[kMajorNationCount];
   short cityMinisterPolicyIds[7];
   short foreignMinisterPolicyIds[7];
   short defenseMinisterPolicyIds[7];

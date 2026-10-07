@@ -10,7 +10,12 @@ enum eMissionDesirability {
   kMissionDesirabilityCandidate = 1,
   kMissionDesirabilityQueued = 2
 };
-enum { kMajorNationCount = 7, kNationSlotCount = 23, kMinorNationFirstSlot = kMajorNationCount };
+enum {
+  kMajorNationCount = 7,
+  kNationSlotCount = 23,
+  kMinorNationFirstSlot = kMajorNationCount,
+  kMinorNationCount = kNationSlotCount - kMajorNationCount
+};
 typedef short EncodedNationSlot;
 typedef short GrantEntry;
 typedef short NeedType;

@@ -22,7 +22,7 @@ void TSuperArmyRoster::PopulateArmyOrderPageEntries(TView* panel, int* offsetLay
   TPageView::DoPostCreate(0);
 
   short activeNation = g_pSimMgr->GetPlayerCountry();
-  for (int tileIndex = 0; tileIndex < 0x180; ++tileIndex) {
+  for (int tileIndex = 0; tileIndex < kProvinceCount; ++tileIndex) {
     if (g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(tileIndex) != activeNation) {
       continue;
     }

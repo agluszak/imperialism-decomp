@@ -94,7 +94,7 @@ void TBlockadePortMission::CalculateNeeds() {
   const short* navyDistributionWeights = g_NavyOrderDistributionCategoryWeights;
 
   float threatScore = 0.0f;
-  if (portZoneContext->GetPortOwnerNation() < 7) {
+  if (portZoneContext->GetPortOwnerNation() < kMajorNationCount) {
     short targetNationCode = portZoneContext->GetPortOwnerNation();
     float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
     for (TShip* node = TShip::GetFirst(); node != NULL; node = node->next) {
@@ -106,7 +106,7 @@ void TBlockadePortMission::CalculateNeeds() {
     threatScore = ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
         vector, navyDistributionWeights, 4);
   } else {
-    for (int nation = 0; nation < 7; ++nation) {
+    for (int nation = 0; nation < kMajorNationCount; ++nation) {
       if (g_apNationStates[nation] == NULL) {
         continue;
       }

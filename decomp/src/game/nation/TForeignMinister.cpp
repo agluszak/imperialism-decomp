@@ -415,7 +415,7 @@ void TForeignMinister::GoodsMatchShipping() {
       }
     }
     ++nation;
-  } while (static_cast<short>(nation) < 7);
+  } while (static_cast<short>(nation) < kMajorNationCount);
 }
 
 // FUNCTION: IMPERIALISM 0x0052fe90
@@ -538,7 +538,7 @@ void TForeignMinister::DoProposeTreaties() {
 
   bool strongerTargetExists = false;
   float targetStrengthRatio[7];
-  for (int targetNation = 0; targetNation < 7; ++targetNation) {
+  for (int targetNation = 0; targetNation < kMajorNationCount; ++targetNation) {
     targetStrengthRatio[targetNation] = 0.0f;
     if (targetNation == greatPower->nationSlot ||
         !g_pSimMgr->ReallyInTheGame(static_cast<short>(targetNation))) {
@@ -583,7 +583,7 @@ void TForeignMinister::DoProposeTreaties() {
     relationshipList->ReleasePtrList();
   }
 
-  for (int policyTargetNation = 0; policyTargetNation < 7; ++policyTargetNation) {
+  for (int policyTargetNation = 0; policyTargetNation < kMajorNationCount; ++policyTargetNation) {
     if (policyTargetNation == greatPower->nationSlot ||
         !g_pSimMgr->ReallyInTheGame(static_cast<short>(policyTargetNation)) ||
         !g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
@@ -672,7 +672,7 @@ bool TForeignMinister::DeservesToBeEnemy(int nationCode) {
 
 // FUNCTION: IMPERIALISM 0x00530b30
 void TForeignMinister::DoSelectEnemy() {
-  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     if (this->greatPower->HasEnemy()) {
       return;
     }

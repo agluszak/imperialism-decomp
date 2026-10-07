@@ -102,7 +102,7 @@ void TCountry::InitializeNationStateIdentityAndOwnedRegionList(NationSlot nation
   this->unitNameCounter = 1;
 
   TLongintList* ownedRegions = new TLongintList();
-  for (int cityIndex = 0; cityIndex < 0x180; ++cityIndex) {
+  for (int cityIndex = 0; cityIndex < kProvinceCount; ++cityIndex) {
     if (static_cast<short>(g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode) ==
         nationSlot) {
       ownedRegions->InsertLast(cityIndex);
@@ -270,7 +270,7 @@ void TCountry::InitialMilitia(void) {
           TZone* portZone = g_pActiveMapOrderContext->FindPortZoneBySelectedTile(cityForPort);
           CreateNavyPrimaryOrderNodeAndAssignDisplayName(3, portZone, this->nationSlot, 0);
         }
-        if (this->nationSlot < 7) {
+        if (this->nationSlot < kMajorNationCount) {
           TGreatPower* nation = g_apNationStates[this->nationSlot];
           if (nation->diplomacyEligibility != 0 &&
               g_pSimMgr->difficultyLevel == kDifficultyIntroductory) {
@@ -286,7 +286,7 @@ void TCountry::InitialMilitia(void) {
       this->AddMilitia(regionId);
       if (g_pSimMgr->difficultyLevel > kDifficultyNormal) {
         this->AddMilitia(regionId);
-        if (this->nationSlot >= 7) {
+        if (this->nationSlot >= kMajorNationCount) {
           TMilitaryUnit* lateOrder = new TMilitaryUnit();
           lateOrder->IMilitaryUnit(7, regionId, this->nationSlot);
         }
@@ -305,7 +305,7 @@ void TCountry::InitialMilitia(void) {
 // FUNCTION: IMPERIALISM 0x004d7770
 void TCountry::AddMilitia(int nodeContext) {
   int capabilityBonus = 0;
-  if (static_cast<unsigned short>(this->nationSlot) < 7) {
+  if (static_cast<unsigned short>(this->nationSlot) < kMajorNationCount) {
     const TTechMgr::MilitaryCapRow& capabilityRow = g_pTechMgr->abilityActiveRows[this->nationSlot];
     if (capabilityRow.abilityActiveById[0x10] != 0) {
       capabilityBonus = 0x10;
@@ -382,7 +382,7 @@ void TCountry::ChangeMaster(int targetNationSlot, int mode) {
         targetNationSlot, this->nationSlot, kDiplomacyRelationshipJoinedEmpire);
   }
 
-  if (this->nationSlot < 7) {
+  if (this->nationSlot < kMajorNationCount) {
     g_pSimMgr->ReduceNumGPs();
   }
 
@@ -609,7 +609,7 @@ void TCountry::GrowMilitia(void) {
   }
 
   int garrisonThreshold = 3;
-  if (static_cast<unsigned short>(this->nationSlot) < 7) {
+  if (static_cast<unsigned short>(this->nationSlot) < kMajorNationCount) {
     garrisonThreshold = 4;
   }
 

@@ -222,8 +222,8 @@ void CMainFrame::OnConductDiplomacy() {
 
     int nationIndex = 0;
     TCountry** country;
-    for (country = g_apTerrainTypeDescriptorTable; country < &g_apTerrainTypeDescriptorTable[7];
-         ++country) {
+    for (country = g_apTerrainTypeDescriptorTable;
+         country < &g_apTerrainTypeDescriptorTable[kMajorNationCount]; ++country) {
       CString label;
       CString name;
       (*country)->FormatOverlayTerrainLabelText(&name);

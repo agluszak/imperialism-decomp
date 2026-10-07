@@ -517,7 +517,7 @@ void TNavyMgr::MakeSureAllShipsHaveOrders() {
     return;
   }
   do {
-    for (short nation = 0; nation < 7; ++nation) {
+    for (short nation = 0; nation < kMajorNationCount; ++nation) {
       if (g_apTerrainTypeDescriptorTable[nation] == 0) {
         continue;
       }
@@ -590,7 +590,7 @@ void TNavyMgr::MakeSureAllShipsHaveOrders() {
 
 // FUNCTION: IMPERIALISM 0x005577b0
 void TNavyMgr::PrepareToCarryOutAllOrders(short phaseId) {
-  for (int provinceIndex = 0; provinceIndex < 0x180; ++provinceIndex) {
+  for (int provinceIndex = 0; provinceIndex < kProvinceCount; ++provinceIndex) {
     Province* record = &g_pGlobalMapState->cityScoreTable[provinceIndex];
     if (record->exploredByNationMask != 0) {
       record->exploredByNationMask = 0;
@@ -1101,7 +1101,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
             strengthDelta = static_cast<int>(transferredWeight) * 3 + entryValue;
 
             if (passMismatch) {
-              if (offerNation < 7) {
+              if (offerNation < kMajorNationCount) {
                 g_apNationStates[offerNation]->AddPurchasedItemAmount(
                     slot, static_cast<short>(-transferredWeight));
               }
@@ -1247,26 +1247,26 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
           int treasuryDelta = static_cast<int>(entryValue) * entryPayload;
           g_apTerrainTypeDescriptorTable[acceptNation]->AddToTreasury(-treasuryDelta);
           g_apTerrainTypeDescriptorTable[offerNation]->AddToTreasury(treasuryDelta);
-          if (offerNation < 7) {
+          if (offerNation < kMajorNationCount) {
             g_apNationStates[offerNation]->budgetPoolDelta -= treasuryDelta;
           }
-          if (acceptNation < 7) {
+          if (acceptNation < kMajorNationCount) {
             g_apNationStates[acceptNation]->budgetPoolBase -= treasuryDelta;
           }
         }
 
-        if (matchesOfferPass && acceptNation < 7) {
+        if (matchesOfferPass && acceptNation < kMajorNationCount) {
           g_apNationStates[acceptNation]->AddPurchasedItemAmount(slot, entryValue);
         }
 
-        if (acceptNation < 7) {
+        if (acceptNation < kMajorNationCount) {
           if (movedTrackedCounter) {
             g_apNationStates[acceptNation]->SetDealPayloadForTarget(slot, offerNation, -123456);
           } else if (matchesOfferPass) {
             g_apNationStates[acceptNation]->SetDealPayloadForTarget(slot, offerNation, -123457);
           }
         }
-        if (offerNation < 7) {
+        if (offerNation < kMajorNationCount) {
           if (movedTrackedCounter) {
             g_apNationStates[offerNation]->SetDealPayloadForTarget(slot, acceptNation, -123456);
           } else if (matchesOfferPass) {

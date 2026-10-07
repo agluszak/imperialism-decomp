@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/nation_domain_types.h"
 #include "game/app/TObject.h"
 #include "game/ui_core/TPtrList.h"
 #include "game/mfc.h"
@@ -38,10 +39,10 @@ public:
   // Per-nation newspaper page: 3x3 story slots (entry.storyId == 0 = empty).
   newsStory stories[7][3][3]; // +0x00c..0xecf
   // Transient "news.tex" resource stream held open across the CreateNewspaper calls.
-  CFile* newsTexStream;                 // +0xed0
-  TPtrList* perNationEventBuckets[7];   // +0xed4
-  TPtrList* sharedEventRecordQueue;     // +0xef0
-  short* perNationStoryLastUsedTick[7]; // +0xef4
+  CFile* newsTexStream;                                 // +0xed0
+  TPtrList* perNationEventBuckets[kMajorNationCount];   // +0xed4
+  TPtrList* sharedEventRecordQueue;                     // +0xef0
+  short* perNationStoryLastUsedTick[kMajorNationCount]; // +0xef4
 
   // NOOP: verified empty at original inlined allocation site 0x0057c58f
   TNewsMgr() {}

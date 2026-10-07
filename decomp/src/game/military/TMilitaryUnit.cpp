@@ -98,7 +98,7 @@ void TMilitaryUnit::Vaporize() {
 void TMilitaryUnit::MoveTo(short anchorIndex) {
   if (tileIndex != -1) {
     if (previousAtLocation == 0) {
-      if (tileIndex >= 0 && tileIndex < 0x180) {
+      if (tileIndex >= 0 && tileIndex < kProvinceCount) {
         g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain =
             static_cast<TMilitaryUnit*>(nextAtLocation);
       }
@@ -123,12 +123,12 @@ void TMilitaryUnit::MoveTo(short anchorIndex) {
   }
 
   TMilitaryUnit* head = 0;
-  if (newTileIndex >= 0 && newTileIndex < 0x180) {
+  if (newTileIndex >= 0 && newTileIndex < kProvinceCount) {
     head = g_pGlobalMapState->cityScoreTable[newTileIndex].stationedUnitChain;
   }
 
   if (head == 0) {
-    if (newTileIndex >= 0 && newTileIndex < 0x180) {
+    if (newTileIndex >= 0 && newTileIndex < kProvinceCount) {
       g_pGlobalMapState->cityScoreTable[newTileIndex].stationedUnitChain = this;
     }
     previousAtLocation = 0;

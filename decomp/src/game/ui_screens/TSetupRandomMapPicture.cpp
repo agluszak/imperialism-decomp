@@ -360,7 +360,7 @@ void TSetupRandomMapPicture::StartGame() {
     CString countryName(g_cstrCountryNameSettingValue);
     g_pAssetMgr->SetPreferenceString(&countryName, g_szCountryNameProfileKey);
   }
-  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     g_pSimMgr->nationControlModes[nationSlot] = 2;
   }
   g_pSimMgr->nationControlModes[selectedNationSlot] = 1;

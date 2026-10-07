@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/nation_domain_types.h"
 #include "compat.h"
 
 #include "game/app/TObject.h"
@@ -31,7 +32,7 @@ public:
   struct NationCapRow {
     short slots[10];
   };
-  NationCapRow nationCapRows1e8[7];
+  NationCapRow nationCapRows1e8[kMajorNationCount];
   short marker262;
   TechPrerequisitePair activePrerequisitePair;
   struct OrderCapRow {
@@ -49,7 +50,7 @@ public:
   struct UniversityRecruitmentAvailabilityRow {
     unsigned char availableByCategory[9];
   };
-  UniversityRecruitmentAvailabilityRow universityRecruitmentAvailabilityByNation[7];
+  UniversityRecruitmentAvailabilityRow universityRecruitmentAvailabilityByNation[kMajorNationCount];
   struct CapRowE {
     short completionYearOffsetByTechId[0x1d];
   };

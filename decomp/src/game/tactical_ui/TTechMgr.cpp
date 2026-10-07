@@ -98,7 +98,7 @@ void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
     universityRecruitmentAvailabilityByNation[n].availableByCategory[1] = 1;
     universityRecruitmentAvailabilityByNation[n].availableByCategory[4] = 1;
     universityRecruitmentAvailabilityByNation[n].availableByCategory[2] = 1;
-    universityRecruitmentAvailabilityByNation[n].availableByCategory[7] = 1;
+    universityRecruitmentAvailabilityByNation[n].availableByCategory[kMajorNationCount] = 1;
   }
   for (n = 0; n < 7; ++n) {
     // capabilityValueByNationAndResource: clear the row, set the default-unlocked columns.
@@ -116,7 +116,7 @@ void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
     universityRecruitmentAvailabilityByNation[n].availableByCategory[1] = 1;
     universityRecruitmentAvailabilityByNation[n].availableByCategory[4] = 1;
     universityRecruitmentAvailabilityByNation[n].availableByCategory[2] = 1;
-    universityRecruitmentAvailabilityByNation[n].availableByCategory[7] = 1;
+    universityRecruitmentAvailabilityByNation[n].availableByCategory[kMajorNationCount] = 1;
 
     memset(abilityActiveRows[n].abilityActiveById, 1, 8);
     abilityActiveRows[n].abilityActiveById[0x18] = 1;
@@ -270,7 +270,7 @@ void TTechMgr::CheckForAdvances() {
       continue;
     }
 
-    for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
       TGreatPower* nation = g_apNationStates[nationSlot];
       if (g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot)) &&
           nation->diplomacyEligibility == 0 &&
@@ -287,7 +287,7 @@ void TTechMgr::CheckForAdvances() {
 // FUNCTION: IMPERIALISM 0x005afb10
 void TTechMgr::ApplyTechUnlockAndQueueNationAbilityNotices(int techId, int forcedNationSlot) {
   this->ApplyCityOrderCapabilityUnlockByTechId(techId);
-  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     TGreatPower* nation = g_apNationStates[nationSlot];
     if (nation->diplomacyEligibility == 0 || nationSlot == forcedNationSlot) {
       this->capRowsE4a6[nationSlot].completionYearOffsetByTechId[techId] =

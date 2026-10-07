@@ -32,7 +32,7 @@ void TGarrisonView::StuffValues(short tileIndex) {
   selectedTileIndex = tileIndex;
 
   TMilitaryUnit* unit = 0;
-  if (tileIndex >= 0 && tileIndex < 0x180) {
+  if (tileIndex >= 0 && tileIndex < kProvinceCount) {
     unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain;
   }
 
@@ -58,7 +58,7 @@ void TGarrisonView::Close() {
   if (tileIndex != -1) {
     unsigned char hasDismissibleOrder = 0;
     TMilitaryUnit* unit = 0;
-    if (tileIndex >= 0 && tileIndex < 0x180) {
+    if (tileIndex >= 0 && tileIndex < kProvinceCount) {
       unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain;
     }
     while (unit != 0 && hasDismissibleOrder == 0) {
@@ -75,7 +75,7 @@ void TGarrisonView::Close() {
       if (hasDismissibleOrder != 0) {
         tileIndex = selectedTileIndex;
         unit = 0;
-        if (tileIndex >= 0 && tileIndex < 0x180) {
+        if (tileIndex >= 0 && tileIndex < kProvinceCount) {
           unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain;
         }
         while (unit != 0) {

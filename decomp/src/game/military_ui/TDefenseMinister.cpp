@@ -389,7 +389,7 @@ int* TDefenseMinister::CreateEnemyPowerMap(unsigned char excludeEnemyTiles) {
     short ownerTag = record->ownerNationTag;
     if ((atWarWithNation[ownerTag] && excludeEnemyTiles == 0) || ownerTag == ownNationSlot) {
       TMilitaryUnit* unit;
-      if (tile >= 0 && tile < 0x180) {
+      if (tile >= 0 && tile < kProvinceCount) {
         unit =
             static_cast<TMilitaryUnit*>(g_pGlobalMapState->cityScoreTable[tile].stationedUnitChain);
       } else {

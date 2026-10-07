@@ -19,7 +19,7 @@ IMPLEMENT_DYNCREATE(TRelationshipDialog, TDialogView)
 
 // FUNCTION: IMPERIALISM 0x005b2da0
 void TRelationshipDialog::Close() {
-  for (short targetNation = 0; targetNation < 7; ++targetNation) {
+  for (short targetNation = 0; targetNation < kMajorNationCount; ++targetNation) {
     if (g_apTerrainTypeDescriptorTable[targetNation] == 0) {
       continue;
     }
@@ -29,7 +29,7 @@ void TRelationshipDialog::Close() {
       FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x1bc);
     }
 
-    for (short sourceNation = 0; sourceNation < 7; ++sourceNation) {
+    for (short sourceNation = 0; sourceNation < kMajorNationCount; ++sourceNation) {
       if (g_apTerrainTypeDescriptorTable[sourceNation] == 0 || sourceNation >= targetNation) {
         continue;
       }
@@ -51,7 +51,7 @@ void TRelationshipDialog::StuffValues() {
   int nameTags[7] = {kControlTagNam0, kControlTagNam1, kControlTagNam2, kControlTagNam3,
                      kControlTagNam4, kControlTagNam5, kControlTagNam6};
 
-  for (short targetNation = 0; targetNation < 7; ++targetNation) {
+  for (short targetNation = 0; targetNation < kMajorNationCount; ++targetNation) {
     if (g_apTerrainTypeDescriptorTable[targetNation] == 0) {
       continue;
     }
@@ -59,7 +59,7 @@ void TRelationshipDialog::StuffValues() {
     if (nationPanel == 0) {
       FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x1e8);
     }
-    for (short sourceNation = 0; sourceNation < 7; ++sourceNation) {
+    for (short sourceNation = 0; sourceNation < kMajorNationCount; ++sourceNation) {
       if (g_apTerrainTypeDescriptorTable[sourceNation] == 0) {
         continue;
       }
@@ -88,7 +88,7 @@ void TRelationshipDialog::StuffValues() {
   if (verticalNames == 0) {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x1fe);
   }
-  for (short nation = 0; nation < 7; ++nation) {
+  for (short nation = 0; nation < kMajorNationCount; ++nation) {
     if (g_apTerrainTypeDescriptorTable[nation] == 0) {
       continue;
     }

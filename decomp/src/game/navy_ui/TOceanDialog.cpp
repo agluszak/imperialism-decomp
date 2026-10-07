@@ -159,7 +159,7 @@ void TOceanDialog::ConvertPoint(const CPoint& point, short& outColumn, short& ou
     TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
     if ((tile.activeFlags & 1) != 0) {
       short ownerNation = static_cast<short>(tile.ownerNationTag);
-      if (ownerNation == g_pSimMgr->GetPlayerCountry() || ownerNation >= 7) {
+      if (ownerNation == g_pSimMgr->GetPlayerCountry() || ownerNation >= kMajorNationCount) {
         outRegionBand = 1;
       }
     }
@@ -920,7 +920,7 @@ void TOceanDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex
 
   short cityRecordIndex = g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex;
   TMilitaryUnit* stationedUnit = 0;
-  if (cityRecordIndex >= 0 && cityRecordIndex < 0x180) {
+  if (cityRecordIndex >= 0 && cityRecordIndex < kProvinceCount) {
     stationedUnit = g_pGlobalMapState->cityScoreTable[cityRecordIndex].stationedUnitChain;
   }
   if (stationedUnit == 0) {

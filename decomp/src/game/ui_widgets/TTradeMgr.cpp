@@ -618,7 +618,7 @@ void TTradeMgr::NextTradeDeal() {
 
 // FUNCTION: IMPERIALISM 0x005b9370
 void TTradeMgr::EndTradeOffers() {
-  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     TGreatPower* nation = g_apNationStates[nationSlot];
     if (nation != 0) {
       nation->ClearTradeOffers();
@@ -816,7 +816,7 @@ void TTradeMgr::TallyTradeBids() {
     }
     ++nation;
     ++np;
-  } while (static_cast<short>(nation) < 7);
+  } while (static_cast<short>(nation) < kMajorNationCount);
 
   int metricRow = 0;
   NationMetricCategoryRow* row = categoryRows;
@@ -918,7 +918,7 @@ void TTradeMgr::TallyMinorsTradeBids() {
   } while (static_cast<short>(metricRow) < 7);
 
   TMinor** mp = g_apNationAuxRuntimeStateSlots;
-  NationMetricCategoryRow* aggregateRow = &categoryRows[7];
+  NationMetricCategoryRow* aggregateRow = &categoryRows[kMajorNationCount];
   short* aggCursor = &aggregateRow->tradeOfferCells[7];
   for (int count = 0; count < 0x10; ++count) {
     short metric = (*mp)->GetTradeOffersFor(kResourceFood);

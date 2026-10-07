@@ -25,14 +25,14 @@ extern int g_anTechItemResearchCostByTechId[29];
 extern TCountry* g_apTerrainTypeDescriptorTable[23];
 extern char* g_pszDescriptorDefaultName;
 
-extern "C" const short g_aDiplomacyPlanningQuarterPhaseByNation[7];
+extern "C" const short g_aDiplomacyPlanningQuarterPhaseByNation[kMajorNationCount];
 
 extern "C" {
 extern TMinor* g_apSecondaryNationStateSlots[36];
 
 #define g_apNationAuxRuntimeStateSlots (g_apSecondaryNationStateSlots + 7)
 
-extern TGreatPower* g_apNationStates[7];
+extern TGreatPower* g_apNationStates[kMajorNationCount];
 } // extern "C"
 
 extern "C" {
@@ -41,13 +41,13 @@ extern "C" float g_afNationOrderQueueDivergence[7];
 
 extern "C" float g_afNationOrderQueueDivergenceMirror[7];
 
-extern "C" float g_afNationMobileUnitDivergence[7];
+extern "C" float g_afNationMobileUnitDivergence[kMajorNationCount];
 
 extern "C" float g_afNationWeightedMilitaryOrderScore[7];
 
-extern "C" float g_afNationCombinedUnitDivergence[7];
+extern "C" float g_afNationCombinedUnitDivergence[kMajorNationCount];
 
-extern "C" float g_afNationMobileUnitScore[7];
+extern "C" float g_afNationMobileUnitScore[kMajorNationCount];
 
 extern float g_afWarNumberByForeignMinister[8];
 

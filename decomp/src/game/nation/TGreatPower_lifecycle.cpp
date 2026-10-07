@@ -68,7 +68,7 @@ int TGreatPower::ClassifyNationMilitaryPowerBandAgainstGlobalMean() {
   float sumPower = 0.0f;
   float sumPowerSq = 0.0f;
 
-  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     if (!g_pSimMgr->ReallyInTheGame(static_cast<short>(nationSlot))) {
       continue;
     }
@@ -850,7 +850,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   // Civil work order (pending status 2 < '3').
   if (this->pendingActionStatus.byAction[2] < 0x33) {
     bool needsCivOrder = false;
-    TCountry** minorEntry = &g_apTerrainTypeDescriptorTable[7];
+    TCountry** minorEntry = &g_apTerrainTypeDescriptorTable[kMajorNationCount];
     short zoneCursor = 7;
     do {
       if (g_pDiplomacyTurnStateManager

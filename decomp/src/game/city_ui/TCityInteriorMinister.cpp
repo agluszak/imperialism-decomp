@@ -1355,7 +1355,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
   for (short minorNation = 7; minorNation < 23; ++minorNation) {
     if (!g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(minorNation)) {
       float strongestStanding = 0.1f;
-      for (short majorNation = 0; majorNation < 7; ++majorNation) {
+      for (short majorNation = 0; majorNation < kMajorNationCount; ++majorNation) {
         if (majorNation != nationSlot &&
             g_pDiplomacyTurnStateManager->relationStandingScores[majorNation * kNationSlotCount +
                                                                  minorNation] > strongestStanding) {
@@ -2168,7 +2168,8 @@ void TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand() {
   }
   for (short destination = 0; destination < 6; ++destination) {
     short best = destination;
-    for (short candidate = static_cast<short>(destination + 1); candidate < 7; ++candidate) {
+    for (short candidate = static_cast<short>(destination + 1); candidate < kMajorNationCount;
+         ++candidate) {
       short candidateScore = orderShortTableDC[priorityOrder[candidate]];
       short bestScore = orderShortTableDC[priorityOrder[best]];
       if (candidateScore > bestScore || (candidateScore == bestScore && (rand() & 1) != 0)) {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/map_domain_types.h"
 #include "compat.h"
 
 #include "game/app/TObject.h"
@@ -98,7 +99,7 @@ public:
   const void* staticTable14;
   const void* staticTable18;
   // Province owner codes FormStacks caches before moving stacks.
-  short perTileOwnerNationCodeCache[0x180];
+  short perTileOwnerNationCodeCache[kProvinceCount];
   void DispatchMapActionForRegionByAdjacency(int contextArg);
 
   short pendingMapActionIndex; // selected province, -1 when none

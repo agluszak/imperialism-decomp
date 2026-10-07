@@ -87,7 +87,7 @@ void TWorldView::DoKeyEvent(TToolboxEvent* event) {
     g_pSimMgr->GetString(0x2758, 0xb, &prompt);
     g_pViewMgr->MakePlanetSeedDialog(static_cast<LPCSTR>(prompt), searchText, 0, 0, 0, false);
 
-    for (int cityIndex = 0; cityIndex < 0x180; ++cityIndex) {
+    for (int cityIndex = 0; cityIndex < kProvinceCount; ++cityIndex) {
       CString cityName;
       g_pGlobalMapState->AssignCityRecordDisplayName(cityIndex, &cityName);
       if (searchText.Compare(cityName) == 0) {

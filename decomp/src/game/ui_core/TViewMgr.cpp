@@ -509,7 +509,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   if (coat == 0) {
     FailNilPointerWithAssert(s_SourcePathUViewMgr, 0x301);
   }
-  if (g_pSimMgr->GetPlayerCountry() >= 0 && g_pSimMgr->GetPlayerCountry() < 7) {
+  if (g_pSimMgr->GetPlayerCountry() >= 0 && g_pSimMgr->GetPlayerCountry() < kMajorNationCount) {
     coat->SetPictureRsrcID(static_cast<short>(g_pSimMgr->GetPlayerCountry() + 0x251c), 0);
   } else {
     coat->Show(0, 0);
@@ -616,10 +616,10 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
 
 static void InitializeGameSetupFromDefaultNationPolicies(GameSetup* setup) {
   short* destination = setup->cityMinisterPolicyIds;
-  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     destination[-7] = g_aDefaultNationSetupPolicyProfiles[nationSlot][0];
     destination[0] = g_aDefaultNationSetupPolicyProfiles[nationSlot][1];
-    destination[7] = g_aDefaultNationSetupPolicyProfiles[nationSlot][2];
+    destination[kMajorNationCount] = g_aDefaultNationSetupPolicyProfiles[nationSlot][2];
     destination[0xe] = g_aDefaultNationSetupPolicyProfiles[nationSlot][3];
     ++destination;
   }

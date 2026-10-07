@@ -30,7 +30,7 @@ void TMinorRelationshipDialog::Close() {
       FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x229);
     }
 
-    for (short majorNation = 0; majorNation < 7; ++majorNation) {
+    for (short majorNation = 0; majorNation < kMajorNationCount; ++majorNation) {
       if (g_apTerrainTypeDescriptorTable[majorNation] == 0) {
         continue;
       }
@@ -52,7 +52,7 @@ void TMinorRelationshipDialog::StuffValues() {
   int nameTags[8] = {kControlTagNam0, kControlTagNam1, kControlTagNam2, kControlTagNam3,
                      kControlTagNam4, kControlTagNam5, kControlTagNam6, kControlTagNam7};
 
-  for (short minorIndex = 0; minorIndex < 16; ++minorIndex) {
+  for (short minorIndex = 0; minorIndex < kMinorNationCount; ++minorIndex) {
     if (g_apTerrainTypeDescriptorTable[minorIndex + 7] == 0) {
       continue;
     }
@@ -60,7 +60,7 @@ void TMinorRelationshipDialog::StuffValues() {
     if (minorPanel == 0) {
       FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x252);
     }
-    for (short majorNation = 0; majorNation < 7; ++majorNation) {
+    for (short majorNation = 0; majorNation < kMajorNationCount; ++majorNation) {
       if (g_apTerrainTypeDescriptorTable[majorNation] == 0) {
         continue;
       }
@@ -86,7 +86,7 @@ void TMinorRelationshipDialog::StuffValues() {
   if (majorNames2 == 0) {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x263);
   }
-  for (short majorNation = 0; majorNation < 7; ++majorNation) {
+  for (short majorNation = 0; majorNation < kMajorNationCount; ++majorNation) {
     if (g_apTerrainTypeDescriptorTable[majorNation] == 0) {
       continue;
     }

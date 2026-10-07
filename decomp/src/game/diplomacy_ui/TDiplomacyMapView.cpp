@@ -323,7 +323,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
     hitRect->bottom = 0;
   }
 
-  for (int tile = 0; tile < 0x180; ++tile) {
+  for (int tile = 0; tile < kProvinceCount; ++tile) {
     tileHasOwnerFlags[tile] = g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix[tile] != -1;
     short colX2;
     unsigned short row;
@@ -789,7 +789,7 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
       break;
     }
 
-    if ((GetAsyncKeyState(VK_CONTROL) & 0x8000) == 0 || activeNation < 7) {
+    if ((GetAsyncKeyState(VK_CONTROL) & 0x8000) == 0 || activeNation < kMajorNationCount) {
       short policyValue = g_awDiplomacyTradePolicyIconValueTable[selectedGrantRow];
       if (g_apNationStates[selectedTerrainIndex]->needLevelByNation[activeNation] == policyValue) {
         g_apNationStates[selectedTerrainIndex]->SetTradePolicyTo(activeNation, 100);
@@ -1574,7 +1574,7 @@ void TDiplomacyMapView::DrawVoteNuggets() {
                                    static_cast<short>(destRect.bottom));
     }
     policyIndex += 1;
-  } while (policyIndex < 0x180);
+  } while (policyIndex < kProvinceCount);
 
   UpdatePaletteIndexWithDefaultFallback(0x13);
 }
@@ -1608,7 +1608,7 @@ char TDiplomacyMapView::CheckEntanglements(int targetNationSlot, eDipAction acti
                            static_cast<LPCSTR>(targetName));
 
     entangledNations = CString(g_pDiplomacyPanelEmptyText);
-    for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
       if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(static_cast<short>(targetNationSlot),
                                                           static_cast<short>(nationSlot))) {
         CString nationName;

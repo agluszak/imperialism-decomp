@@ -47,7 +47,7 @@ bool THostGreatPower::ReplyToTradeOffer(NationSlot targetNationSlot, short amoun
 void THostGreatPower::ReplyToDiplomacyOffers(void) {
   TGreatPower::ReplyToDiplomacyOffers();
 
-  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     TGreatPower* nation = g_apNationStates[nationSlot];
     if (nation != 0 && !nation->IsRemote()) {
       g_pGameFlowState->ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(nationSlot);
@@ -67,7 +67,7 @@ void THostGreatPower::SorryYouLose(void) {
   }
 
   short eligibleOtherNationCount = 0;
-  for (int nationIndex = 0; nationIndex < 7; ++nationIndex) {
+  for (int nationIndex = 0; nationIndex < kMajorNationCount; ++nationIndex) {
     TGreatPower* nation = g_apNationStates[nationIndex];
     if (nationIndex != nationSlot && g_pSimMgr->ReallyInTheGame(static_cast<short>(nationIndex)) &&
         nation->diplomacyEligibility != 0) {

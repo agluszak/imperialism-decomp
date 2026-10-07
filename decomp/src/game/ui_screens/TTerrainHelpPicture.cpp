@@ -190,7 +190,7 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
     g_pGlobalMapState->AssignCityRecordDisplayName(cityIndex, &strCityName);
     int ownerNation = g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode;
     g_apTerrainTypeDescriptorTable[ownerNation]->FormatOverlayTerrainLabelText(&strOwnerLabel);
-    g_pSimMgr->GetString(0x2755, (ownerNation < 7) ? 0x1d : 0x1e, &strTemplate);
+    g_pSimMgr->GetString(0x2755, (ownerNation < kMajorNationCount) ? 0x1d : 0x1e, &strTemplate);
     scanBracketExpressions(g_pSimMgr, &strInfoText, static_cast<LPCSTR>(strTemplate),
                            static_cast<LPCSTR>(strCityName), static_cast<LPCSTR>(strOwnerLabel));
     if (g_pGlobalMapState->cityScoreTable[cityIndex].formerOwnerNationCode != ownerNation) {

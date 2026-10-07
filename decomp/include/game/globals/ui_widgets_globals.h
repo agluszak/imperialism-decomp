@@ -1,4 +1,6 @@
 #pragma once
+
+#include "game/nation_domain_types.h"
 #include "game/globals/global_types.h"
 
 extern "C" char* g_pSmallViewsEmptyText;
@@ -18,11 +20,11 @@ extern const int kTradeSellPropagationTags[17];
 
 extern const int g_tradeBidNationMetricControlTags[24];
 
-extern const unsigned int g_majorTreatyPanelTags[7];
+extern const unsigned int g_majorTreatyPanelTags[kMajorNationCount];
 
-extern const unsigned int g_minorTreatyPanelTags[16];
+extern const unsigned int g_minorTreatyPanelTags[kMinorNationCount];
 
-extern const unsigned int g_majorTreatyCellTags[7];
+extern const unsigned int g_majorTreatyCellTags[kMajorNationCount];
 
 extern short g_anCityBuildingSlotOrder[16];
 extern short g_anCityBuildingSlotCoords[32];

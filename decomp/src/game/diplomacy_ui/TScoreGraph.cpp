@@ -39,7 +39,7 @@ void TScoreGraph::Draw(RECT* rectBuffer) {
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b67);
 
   int rowY = 0;
-  for (int nationIndex = 0; nationIndex < 7; ++nationIndex) {
+  for (int nationIndex = 0; nationIndex < kMajorNationCount; ++nationIndex) {
     if (g_apTerrainTypeDescriptorTable[nationIndex] == NULL) {
       continue;
     }

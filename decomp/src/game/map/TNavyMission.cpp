@@ -1036,7 +1036,7 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForZone(TZone* nodeCo
 float TNavyMission::ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies(TZone* portZone) {
   float best = 0.0f;
   short ownerNation = portZone->GetPortOwnerNation();
-  if (ownerNation < 7) {
+  if (ownerNation < kMajorNationCount) {
     short scoreNation = portZone->GetPortOwnerNation();
     float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
     for (TShip* ship = TShip::GetFirst(); ship != NULL; ship = ship->next) {

@@ -35,7 +35,7 @@ void TMinorTreatyDialog::StuffValues() {
       FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x2fe);
     }
 
-    for (short majorNationSlot = 0; majorNationSlot < 7; ++majorNationSlot) {
+    for (short majorNationSlot = 0; majorNationSlot < kMajorNationCount; ++majorNationSlot) {
       if (g_apTerrainTypeDescriptorTable[majorNationSlot] == 0) {
         continue;
       }
@@ -62,7 +62,7 @@ void TMinorTreatyDialog::StuffValues() {
     FailNilPointerWithAssert(s_SourcePathUTestDialogs, 0x30e);
   }
 
-  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     if (g_apTerrainTypeDescriptorTable[nationSlot] == 0) {
       continue;
     }

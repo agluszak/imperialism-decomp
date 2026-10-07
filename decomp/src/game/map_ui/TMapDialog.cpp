@@ -1273,7 +1273,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
 
   if ((activeFlags & 3) != 0 && terrain.gateFlag != 0) {
     RenderTacticalStackCountIndicatorAndUnitBadge(tileIndex, &tileRect, 0);
-    if (terrain.cityRecordIndex >= 0 && terrain.cityRecordIndex < 0x180) {
+    if (terrain.cityRecordIndex >= 0 && terrain.cityRecordIndex < kProvinceCount) {
       int fortLevel = g_pGlobalMapState->cityScoreTable[terrain.cityRecordIndex].fortLevel;
       if (fortLevel != 0) {
         int fortOffset = g_pGlobalMapState->GetMapImprovementBitmapRowOffsetForIndex(fortLevel - 1);
@@ -2472,7 +2472,7 @@ void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, 
   TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
   short cityRecordIndex = tile.cityRecordIndex;
   TMilitaryUnit* unit = 0;
-  if (cityRecordIndex >= 0 && cityRecordIndex < 0x180) {
+  if (cityRecordIndex >= 0 && cityRecordIndex < kProvinceCount) {
     unit = g_pGlobalMapState->cityScoreTable[cityRecordIndex].stationedUnitChain;
   }
   if (unit == 0) {

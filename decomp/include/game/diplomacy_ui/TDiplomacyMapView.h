@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/map_domain_types.h"
 #include "compat.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_diplomacy.h"
@@ -132,8 +133,8 @@ protected:
   int legendSurfaceMode;
   short visibleVoteTier;
   short currentCursorResourceId;
-  bool tileHasOwnerFlags[0x180];
-  CRect tileMarkerRects[0x180]; // 0x6ac..0x1eac
+  bool tileHasOwnerFlags[kProvinceCount];
+  CRect tileMarkerRects[kProvinceCount]; // 0x6ac..0x1eac
   DiplomacyMaskBufferRun maskRuns[0x17];
   StrategicMapCallbackRecord packedColorRuns[0x17];
 };

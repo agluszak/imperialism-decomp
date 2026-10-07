@@ -63,7 +63,7 @@ void TMinister::FigureOutRanking() {
     }
     ++nationSlot;
     ++tableCursor;
-  } while (nationSlot < 7);
+  } while (nationSlot < kMajorNationCount);
 
   int entryIndex = 1;
   short rank = 1;

@@ -1,4 +1,6 @@
 #pragma once
+
+#include "game/nation_domain_types.h"
 #include "game/globals/global_types.h"
 
 extern CString g_cstrCountryNameSettingValue;
@@ -42,7 +44,7 @@ extern char g_szSetupScreensSourcePath[];
 
 extern int g_SetupScreensAssertFlag;
 
-extern short g_aDefaultNationSetupPolicyProfiles[7][4];
+extern short g_aDefaultNationSetupPolicyProfiles[kMajorNationCount][4];
 
 extern "C" bool g_bTurnFlowBootstrapComplete;
 

@@ -67,7 +67,6 @@
 
 char __stdcall IsSpecialNationInteractionResource(short resourceIndex);
 
-static const int kMapNodeCount = 0x180;
 static const int kAidAllocationRowCount = 0x10;
 static const int kAidAllocationColumnCount = kNationSlotCount;
 static const int kDiplomacyTrackedSlotCount = 0x11;
@@ -547,7 +546,7 @@ bool TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages(CString*
   bool anyMessage = false;
   bool found = false;
   int nationSlot;
-  for (nationSlot = 0; nationSlot < 7; ++nationSlot) {
+  for (nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, this->nationSlot) &&
         g_pSimMgr->ReallyInTheGame(nationSlot)) {
       found = true;
@@ -595,7 +594,7 @@ bool TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(
   bool found = false;
   bool anyMessage = false;
   int nationSlot;
-  for (nationSlot = 0; nationSlot < 7; ++nationSlot) {
+  for (nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, this->nationSlot) &&
         g_pSimMgr->ReallyInTheGame(nationSlot)) {
       found = true;
@@ -1497,7 +1496,7 @@ bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int targetNat
     if (accepted && newGrantRaw != kGrantClear && targetNation > 6) {
       bool shouldDispatchAlert = false;
       int majorNation = 0;
-      while (majorNation < 7) {
+      while (majorNation < kMajorNationCount) {
         if (majorNation != this->nationSlot) {
           short relationValue =
               g_pDiplomacyTurnStateManager
@@ -2794,7 +2793,7 @@ bool TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation) {
     float warThreshold = this->GetPeaceThreat(targetNation);
     if (this->GetAcceptPeaceNumber() < warThreshold) {
       joinsWar = true;
-      for (int otherNation = 0; otherNation < 7; ++otherNation) {
+      for (int otherNation = 0; otherNation < kMajorNationCount; ++otherNation) {
         if (g_pSimMgr->ReallyInTheGame(otherNation) &&
             g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
                 this->nationSlot, otherNation) == kDiplomacyRelationshipAlliance &&
@@ -3366,7 +3365,7 @@ void TGreatPower::GenerateGameScore() {
   }
 
   gameScoreRows[kGameScoreProvinces] = ownedRegionList->GetSize();
-  for (int minorSlot = 0; minorSlot < 16; ++minorSlot) {
+  for (int minorSlot = 0; minorSlot < kMinorNationCount; ++minorSlot) {
     TMinor* candidate = g_apNationAuxRuntimeStateSlots[minorSlot];
     if (candidate->IsColonyOf(nationSlot)) {
       gameScoreRows[kGameScoreProvinces] += candidate->ownedRegionList->GetSize();
@@ -3500,7 +3499,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
            (result - g_Compute_Advisory_Map_Value);
   }
   case 4: {
-    if (selectedNationSlot >= 7) {
+    if (selectedNationSlot >= kMajorNationCount) {
       return g_Compute_Advisory_Zero;
     }
     TGreatPower* nation = g_apNationStates[selectedNationSlot];

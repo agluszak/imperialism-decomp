@@ -60,7 +60,7 @@ void TMapPreviewView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
   int stride = static_cast<unsigned short>((*GetGWorldPixMap(previewSurface))->stride) & 0x3fff;
   unsigned short clickedPalette = pixels[point.y * stride + point.x];
 
-  for (int nation = 0; nation < 7; ++nation) {
+  for (int nation = 0; nation < kMajorNationCount; ++nation) {
     unsigned short nationPalette =
         static_cast<unsigned short>(g_pViewMgr->GetColor(static_cast<short>(nation)));
     if (nationPalette == clickedPalette) {

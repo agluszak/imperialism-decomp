@@ -86,7 +86,7 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(labelX, labelY);
   DrawTextWithCachedQuickDrawStyleState(&text);
 
-  if (selectedNation < 7) {
+  if (selectedNation < kMajorNationCount) {
     for (int row = 1; row < 3; ++row) {
       g_pSimMgr->GetString(0x2733, static_cast<short>(row + 1), &text);
       labelY = static_cast<short>(g_infoPanelLabelYByRow[row] - ownerY);
@@ -173,7 +173,7 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(valueX, labelY);
   DrawTextWithCachedQuickDrawStyleState(&text);
 
-  if (selectedNation < 7) {
+  if (selectedNation < kMajorNationCount) {
     int militaryTier = static_cast<TGreatPower*>(selectedCountry)
                            ->ClassifyNationMilitaryPowerBandAgainstGlobalMean();
     g_pSimMgr->GetString(0x2733, static_cast<short>(militaryTier + 0x19), &text);
@@ -186,7 +186,7 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
     DrawTextWithCachedQuickDrawStyleState(&text);
   }
 
-  if (selectedNation < 7) {
+  if (selectedNation < kMajorNationCount) {
     if (selectedCountry == 0 || selectedCountry->encodedNationSlot < 100 ||
         selectedCountry->encodedNationSlot >= 200) {
       int productionTier = g_apNationStates[selectedNation]->ClassifyNationProductionTierVsPeers();
@@ -251,7 +251,7 @@ void TInfoPanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
 void TInfoPanelView::SetInfoCountry(short countryId) {
   memset(countryInfoCategoryIndices, 0xff, sizeof(countryInfoCategoryIndices));
 
-  if (countryId < 7) {
+  if (countryId < kMajorNationCount) {
     short categoryIndex = 13;
     short categoryCount = 0;
     do {

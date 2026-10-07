@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include "game/map_domain_types.h"
 #include "game/nation_domain_types.h"
 #include "compat.h"
 
@@ -82,7 +83,7 @@ public:
 
   TCityProductionView* activeCityProductionView;
   RgnHandle countryRegions[kNationSlotCount];
-  RgnHandle tileStateSlots[0x180];
+  RgnHandle tileStateSlots[kProvinceCount];
   int padding664;
   TQuickDrawSurfaceContext* terrainTileWorld;
   TQuickDrawSurfaceContext* improvementTileWorld;

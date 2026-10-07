@@ -47,7 +47,6 @@
 // kNationSlotCount (0x17) comes from TDiplomacyMgr.h.
 static const int kAidAllocationRowCount = 0x10;
 static const int kAidAllocationColumnCount = 0x17;
-static const int kMapNodeCount = 0x180;
 static const int kPortZoneCount = 0x70;
 
 // FUNCTION: IMPERIALISM 0x004e6b10
@@ -205,7 +204,7 @@ void TAutoGreatPower::ReadFrom(TStream* stream) {
   stream->ReadBytes(this->actionMetricByQuarter, 0x0C);
   SwapShortArrayBytes(this->actionMetricByQuarter, 6);
 
-  stream->ReadBytes(this->provinceStatus, 0x180);
+  stream->ReadBytes(this->provinceStatus, sizeof(this->provinceStatus));
   stream->ReadBytes(this->zoneStatus, 0x70);
 
   if (this->missionQueue->GetCount() != 0) {
@@ -233,7 +232,7 @@ void TAutoGreatPower::WriteTo(TStream* stream) {
 
   WriteShortArrayElems(stream, this->actionMetricByQuarter, 6);
 
-  stream->WriteBytes(this->provinceStatus, 0x180);
+  stream->WriteBytes(this->provinceStatus, sizeof(this->provinceStatus));
   stream->WriteBytes(this->zoneStatus, 0x70);
 
   this->missionQueue->WriteTo(stream);
@@ -476,10 +475,10 @@ void TAutoGreatPower::ShowNewspaperForRecordNation() {}
 // FUNCTION: IMPERIALISM 0x004e7cc0
 int TAutoGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNation) {
   bool allBeatable = true;
-  bool beatableByNation[7] = {false, false, false, false, false, false, false};
+  bool beatableByNation[kMajorNationCount] = {false, false, false, false, false, false, false};
   int nation = 0;
   while (allBeatable) {
-    if (nation >= 7) {
+    if (nation >= kMajorNationCount) {
       break;
     }
     if (g_pSimMgr->ReallyInTheGame(nation) && nation != this->nationSlot) {
@@ -511,7 +510,7 @@ int TAutoGreatPower::ConsiderWarOfIntervention(int targetNation, int sourceNatio
     ++nation;
   }
   if (allBeatable) {
-    for (int helperNation = 0; helperNation < 7; ++helperNation) {
+    for (int helperNation = 0; helperNation < kMajorNationCount; ++helperNation) {
       if (beatableByNation[helperNation]) {
         this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(helperNation, 1, targetNation);
       }
@@ -787,7 +786,7 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
 
   // Reset the transient (value 1) candidate flags; sticky values survive.
   int i;
-  for (i = 0; i < 0x180; ++i) {
+  for (i = 0; i < kProvinceCount; ++i) {
     if (provinceStatus[i] == kMissionDesirabilityCandidate) {
       provinceStatus[i] = kMissionDesirabilityUnmarked;
     }
@@ -833,7 +832,7 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
 
   // Same marking for every flagged minor's own regions.
   int minorSlot;
-  for (minorSlot = 0; minorSlot < 16; ++minorSlot) {
+  for (minorSlot = 0; minorSlot < kMinorNationCount; ++minorSlot) {
     if (enemyFlags[7 + minorSlot] != 0) {
       int j;
       for (j = 1; j <= g_apSecondaryNationStateSlots[7 + minorSlot]->ownedRegionList->GetSize();
@@ -874,7 +873,7 @@ void TAutoGreatPower::MarkEnemyProvinceCandidates() {
       candidates->IProvinceDesirabilityList();
 
       int rec;
-      for (rec = 0; rec < 0x180; ++rec) {
+      for (rec = 0; rec < kProvinceCount; ++rec) {
         short owner = g_pGlobalMapState->cityScoreTable[rec].ownerNationCode;
         if (owner == -1) {
           continue;
@@ -991,7 +990,7 @@ void TAutoGreatPower::SelectAndQueueAdvisoryMapMissions(void) {
   MarkEnemyProvinceCandidates();
 
   int region;
-  for (region = 0; region < 0x180; ++region) {
+  for (region = 0; region < kProvinceCount; ++region) {
     unsigned char nodeFlag = provinceStatus[region];
     int linkRegion = -1;
     if (nodeFlag != kMissionDesirabilityCandidate) {
@@ -1205,7 +1204,7 @@ void TAutoGreatPower::BecomeProtectorateOf(int targetNationSlot) {
   for (i = 0; i < 6; ++i) {
     this->actionMetricByQuarter[i] = 0;
   }
-  for (i = 0; i < kMapNodeCount; ++i) {
+  for (i = 0; i < kProvinceCount; ++i) {
     this->provinceStatus[i] = kMissionDesirabilityUnmarked;
   }
   for (i = 0; i < kPortZoneCount; ++i) {
@@ -1411,7 +1410,7 @@ void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
   float minimumPeerOrderQueueDivergence = -1.0f;
 
   int peerNation;
-  for (peerNation = 0; peerNation < 7; ++peerNation) {
+  for (peerNation = 0; peerNation < kMajorNationCount; ++peerNation) {
     if (peerNation == nationSlot || g_apNationStates[peerNation] == 0) {
       continue;
     }

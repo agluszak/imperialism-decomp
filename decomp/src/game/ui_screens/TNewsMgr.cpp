@@ -602,7 +602,7 @@ void TNewsMgr::AddTreatyEvent(InterNationEventKind eventKind, int nationA, int n
     record = static_cast<InterNationNewsRecord*>(iterator.NextPtr());
   }
 
-  if (nationA < 7) {
+  if (nationA < kMajorNationCount) {
     InterNationNewsRecord recordA;
     recordA.eventKind = eventKind;
     recordA.payload.subjectNationOrAll = nationA;
@@ -676,8 +676,8 @@ void TNewsMgr::AddMiscEvent(int nationSlotOrAll, int storyCode, bool isReplayByp
 
 // FUNCTION: IMPERIALISM 0x0055cda0
 void TNewsMgr::ConcatenateTreaty(InterNationEventKind eventKind, int nationA, int nationB) {
-  bool nationAHandled = nationA >= 7;
-  bool nationBHandled = nationB >= 7;
+  bool nationAHandled = nationA >= kMajorNationCount;
+  bool nationBHandled = nationB >= kMajorNationCount;
   if ((eventKind >= kInterNationEventPeaceTreatyRejected &&
        eventKind <= kInterNationEventNonAggressionPactRejected) ||
       eventKind == kInterNationEventTradeConsulateEstablished ||

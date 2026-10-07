@@ -135,7 +135,7 @@ TMacViewMgr::TMacViewMgr() : TObject() {
     ++index;
   }
   index = 0;
-  while (index < 0x180) {
+  while (index < kProvinceCount) {
     tileStateSlots[index] = 0;
     ++index;
   }
@@ -192,7 +192,7 @@ void TMacViewMgr::Free() {
     ++index;
   }
   index = 0;
-  while (index < 0x180) {
+  while (index < kProvinceCount) {
     if (tileStateSlots[index] != 0) {
       DisposeRgn(tileStateSlots[index]);
       tileStateSlots[index] = 0;
@@ -760,7 +760,7 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
 void TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
   int cityRecordIndex = 0;
   RgnHandle* tileSlot = tileStateSlots;
-  while (cityRecordIndex < 0x180) {
+  while (cityRecordIndex < kProvinceCount) {
     Province& cityRecord = g_pGlobalMapState->cityScoreTable[cityRecordIndex];
     if (cityRecord.ownerNationCode != -1) {
       if (*tileSlot != 0) {
@@ -799,7 +799,7 @@ void TMacViewMgr::RegenerateCountryRegions() {
       SetEmptyRgn(regionWrapper);
       int cityRecordIndex = 0;
       RgnHandle* tileSlot = tileStateSlots;
-      while (cityRecordIndex < 0x180) {
+      while (cityRecordIndex < kProvinceCount) {
         if (g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationCode == nationIndex) {
           UnionRgn(regionWrapper, *tileSlot, regionWrapper);
         }

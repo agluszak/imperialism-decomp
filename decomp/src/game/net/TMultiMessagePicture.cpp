@@ -41,7 +41,7 @@ void TMultiMessagePicture::DoEvent(int commandId, TEventHandler* sourceHandler, 
     messageControl->GetCurrentText(&message);
 
     unsigned int recipientMask = 0;
-    for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
       TCzechBox* nationBox =
           static_cast<TCzechBox*>(ResolveControlByTag(kSessionTagBox0 + nationSlot)); // 'box0'..
       nationBox->AssertValid();
