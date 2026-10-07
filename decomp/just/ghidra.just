@@ -84,21 +84,6 @@ ui-codegen-explain *args:
 ui-codegen-triage function:
   uv run python -m tools.ui_cpp_codegen --gen-dir "{{build_dir}}/generated/ui" --triage-map "{{function}}"
 
-# Classify functions as ecx_this (likely __thiscall) / no_ecx (likely cdecl) / empty (thunk).
-# Pass addresses, or pipe addresses to --stdin (e.g. from config/original_entities.csv __cdecl rows).
-# One-shot (NOT daemon-routed): --stdin addresses can't reach the daemon process. Running it
-# evicts a warm daemon; re-warm with `just ghidra-daemon` afterwards.
-[private]
-[doc('Classify functions: ecx_this (thiscall) / no_ecx (cdecl) / empty (thunk)')]
-[group('ghidra-inspect')]
-scan-cdecl-thiscall *args: _require-ghidra-install
-  uv run python -m tools.ghidra.scan_cdecl_thiscall {{args}}
-
-[private]
-[group('ghidra-inspect')]
-class-owner-probe address *args: _require-ghidra-install
-  uv run python -m tools.ghidra.class_owner_probe "{{address}}" {{args}}
-
 # Walk every MFC CRuntimeClass descriptor in the binary: true class names, object
 # sizes, base-class edges, resolved CreateObject addresses. Ground truth for class
 # recovery — refresh config/rtti_class_oracle.csv with `--csv`.
