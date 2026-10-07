@@ -72,9 +72,7 @@ void TCity::ICity(TGreatPower* ownerNation) {
     productionAccum[productionSlot] =
         static_cast<short>(productionAccum[productionSlot] - productionOrderTable[productionSlot]);
     productionOrderTable[productionSlot] = 0;
-    productionFlags[productionSlot] = 0;
-    buildingWindowX[productionSlot] = 0;
-    buildingWindowY[productionSlot] = 0;
+    SetBuildingWindowState(productionSlot, 0, 0, 0);
   }
 
   int regionCount = ownerNation->ownedRegionList->GetSize();

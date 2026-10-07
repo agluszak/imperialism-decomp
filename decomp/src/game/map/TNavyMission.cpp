@@ -598,11 +598,7 @@ void TNavyMission::AccumulateShipEquipage(TShip* ship, float* vector, char posit
   }
   float weight = static_cast<float>((positive != 0 ? 1.0 : (-1.0)) *
                                     g_MissionOrderDistanceDecayWeightTable[distanceIndex]);
-  float ratio = static_cast<float>(ship->strength / ship->GetMaxStrength()) * weight;
-  vector[0] = static_cast<float>(ship->GetCategoryPercent(0)) * ratio + vector[0];
-  vector[1] = static_cast<float>(ship->GetCategoryPercent(1)) * ratio + vector[1];
-  vector[2] = static_cast<float>(ship->GetCategoryPercent(2)) * ratio + vector[2];
-  vector[3] = static_cast<float>(ship->GetCategoryPercent(3)) * weight + vector[3];
+  AddShipToCategoryVector(ship, vector, weight);
 }
 
 // 0-2 scaled by (stock/normalization base)*scale and category 3 by scale alone.

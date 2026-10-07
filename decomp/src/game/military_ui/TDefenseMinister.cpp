@@ -439,22 +439,12 @@ int* TDefenseMinister::CreateEnemyPowerMap(unsigned char excludeEnemyTiles) {
   return weightSum;
 }
 
-// Personality initialisers: each inlines IDefenseMinister's zeroing prefix, then seeds its own
+// Personality initialisers: IDefenseMinister, then the personality's own
 // thresholds and order weights.
 
 // FUNCTION: IMPERIALISM 0x004ed560
 void TNapoleonMinister::INapoleonMinister(TGreatPower* owner) {
-  IMinister(owner);
-  field10 = 0;
-  field12 = 0;
-  thresholdA = 0;
-  thresholdB = 0;
-  thresholdC = 0;
-  thresholdD = 0;
-  for (int i = 0; i < 30; ++i) {
-    orderWeightTableB[i] = 0;
-    recruitOrderCountByType[i] = 0;
-  }
+  IDefenseMinister(owner);
   thresholdC = 10;
   thresholdA = 0x32;
   thresholdB = 0;
@@ -466,17 +456,7 @@ void TNapoleonMinister::INapoleonMinister(TGreatPower* owner) {
 
 // FUNCTION: IMPERIALISM 0x004ed890
 void TBismarckMinister::IBismarckMinister(TGreatPower* owner) {
-  IMinister(owner);
-  field10 = 0;
-  field12 = 0;
-  thresholdA = 0;
-  thresholdB = 0;
-  thresholdC = 0;
-  thresholdD = 0;
-  for (int i = 0; i < 30; ++i) {
-    orderWeightTableB[i] = 0;
-    recruitOrderCountByType[i] = 0;
-  }
+  IDefenseMinister(owner);
   orderWeightTableB[2] = 0x23;
   thresholdA = 10;
   thresholdB = 10;
@@ -488,17 +468,7 @@ void TBismarckMinister::IBismarckMinister(TGreatPower* owner) {
 
 // FUNCTION: IMPERIALISM 0x004edb80
 void TPirateMinister::IPirateMinister(TGreatPower* owner) {
-  IMinister(owner);
-  field10 = 0;
-  field12 = 0;
-  thresholdA = 0;
-  thresholdB = 0;
-  thresholdC = 0;
-  thresholdD = 0;
-  for (int i = 0; i < 30; ++i) {
-    orderWeightTableB[i] = 0;
-    recruitOrderCountByType[i] = 0;
-  }
+  IDefenseMinister(owner);
   thresholdA = 0xf;
   thresholdB = 0x14;
   thresholdC = 0x32;
@@ -510,17 +480,7 @@ void TPirateMinister::IPirateMinister(TGreatPower* owner) {
 
 // FUNCTION: IMPERIALISM 0x004ede60
 void TDefenderMinister::IDefenderMinister(TGreatPower* owner) {
-  IMinister(owner);
-  field10 = 0;
-  field12 = 0;
-  thresholdA = 0;
-  thresholdB = 0;
-  thresholdC = 0;
-  thresholdD = 0;
-  for (int i = 0; i < 30; ++i) {
-    orderWeightTableB[i] = 0;
-    recruitOrderCountByType[i] = 0;
-  }
+  IDefenseMinister(owner);
   thresholdA = 0x14;
   thresholdB = 10;
   thresholdC = 10;
@@ -532,17 +492,7 @@ void TDefenderMinister::IDefenderMinister(TGreatPower* owner) {
 
 // FUNCTION: IMPERIALISM 0x004ee150
 void TBullyMinister::IBullyMinister(TGreatPower* owner) {
-  IMinister(owner);
-  field10 = 0;
-  field12 = 0;
-  thresholdA = 0;
-  thresholdB = 0;
-  thresholdC = 0;
-  thresholdD = 0;
-  for (int i = 0; i < 30; ++i) {
-    orderWeightTableB[i] = 0;
-    recruitOrderCountByType[i] = 0;
-  }
+  IDefenseMinister(owner);
   thresholdA = 0x19;
   thresholdB = 10;
   thresholdC = 0x14;

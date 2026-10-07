@@ -2620,9 +2620,7 @@ void TSimMgr::ScSetFlags(STurnInstructionCursor* instruction) {
   instruction->tokenCursor = cursor + 1;
   DECODE_SCENARIO_SHORT_TOKEN(token);
   short index = token;
-  mapArtSet = index;
-  g_pAssetMgr->EnsurePictWvDataGobLoadedBySlot(index);
-  g_pMacViewMgr->ReloadMapArtAtlases();
+  SelectMapArtSet(index);
 }
 
 // FUNCTION: IMPERIALISM 0x00583470

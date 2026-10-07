@@ -173,10 +173,7 @@ void TNewsMgr::CreateNewspaper(int nation) {
       if (year < id - 10 || year >= id) {
         continue;
       }
-      story->parmKind[0] = 0;
-      story->parmKind[1] = 0;
-      story->parmKind[2] = 0;
-      story->parmKind[3] = 0;
+      ClearStoryParms(story);
       story->entry = *tmpl;
       story->parmKind[0] = 1;
       story->feature = true;
@@ -728,10 +725,7 @@ bool TNewsMgr::EvaluateFeatureStory(const newsEntry* templateRow, newsStory* sto
     if (period < kind - 10 || period >= kind) {
       return false;
     }
-    story->parmKind[0] = 0;
-    story->parmKind[1] = 0;
-    story->parmKind[2] = 0;
-    story->parmKind[3] = 0;
+    ClearStoryParms(story);
     story->entry = *templateRow;
     story->parmKind[0] = 1;
     story->feature = true;
@@ -769,10 +763,7 @@ void TNewsMgr::ClearStoryParms(newsStory* story) {
 
 // FUNCTION: IMPERIALISM 0x0055d0c0
 bool TNewsMgr::AlwaysTrueStory(const newsEntry* templateRow, newsStory* story, int nationSlot) {
-  story->parmKind[0] = 0;
-  story->parmKind[1] = 0;
-  story->parmKind[2] = 0;
-  story->parmKind[3] = 0;
+  ClearStoryParms(story);
   story->entry = *templateRow;
 
   story->parmKind[0] = 1;

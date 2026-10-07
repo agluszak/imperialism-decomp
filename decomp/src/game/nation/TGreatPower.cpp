@@ -706,17 +706,14 @@ void TGreatPower::AddPurchasedItems(void) {
 void TGreatPower::AddCreatedItems(void) {
   AddToTreasury(static_cast<int>(needTargetByType[kResourceGems]) * 500);
 
-  TCity* cityPtr = city;
-  cityPtr->stockByType[kResourceGems] = 0;
-  cityPtr->VerifyStocks();
+  SetStockpile(kResourceGems, 0);
 
   AddToTreasury(static_cast<int>(needTargetByType[kResourceGold]) * 200);
 
-  cityPtr->stockByType[kResourceGold] = 0;
-  cityPtr->VerifyStocks();
+  SetStockpile(kResourceGold, 0);
 
-  for (int needIndex = 0; static_cast<short>(needIndex) < kNationSlotCount; ++needIndex) {
-    AddToStockpile(static_cast<short>(needIndex), needTargetByType[needIndex]);
+  for (short resource = 0; resource < kResourceKindCount; ++resource) {
+    AddToStockpile(resource, needTargetByType[resource]);
   }
 }
 

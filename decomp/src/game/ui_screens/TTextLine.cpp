@@ -20,10 +20,7 @@ TTextLine::~TTextLine() {}
 // FUNCTION: IMPERIALISM 0x00570390
 void TTextLine::ITextLine(short rowArg, short colArg, int* bounds, short styleGroupCode,
                           short styleIndex) {
-  column = colArg;
-  layoutWidth = bounds[0];
-  layoutHeight = bounds[1];
-  row = rowArg;
+  ILineData(rowArg, colArg, bounds);
   if (styleGroupCode != -1) {
     g_pSimMgr->GetString(styleGroupCode, static_cast<short>(styleIndex - 1), &captionText);
   }

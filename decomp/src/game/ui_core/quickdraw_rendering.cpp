@@ -366,9 +366,7 @@ void SetQuickDrawFillColor(COLORREF fillColor) {
 // FUNCTION: IMPERIALISM 0x00495030
 void SetQuickDrawColorAndPropagateIfChanged(COLORREF newColor) {
   if (g_QuickDrawForegroundColor != newColor) {
-    g_QuickDrawForegroundColor = newColor;
-    g_pActiveQuickDrawSurfaceContext->blitSurface.foregroundColor = newColor;
-    g_QuickDrawMeasureFontPreset.textColor = newColor;
+    SetQuickDrawColorAndSyncGlobals(newColor);
   }
 }
 

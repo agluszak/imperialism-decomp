@@ -661,10 +661,7 @@ TView::TView(const TView& source)
 
 // FUNCTION: IMPERIALISM 0x0048bef0
 void TView::CopyViewStateFromSource(TView* source) {
-  enabled = source->enabled;
-  viewEnabled = source->viewEnabled;
-  controlTag = source->controlTag;
-  nextHandler = source->nextHandler;
+  CopyHandlerFieldsFrom(source);
   ownerContext = 0;
   nativeWindow = source->nativeWindow;
   childList = 0;

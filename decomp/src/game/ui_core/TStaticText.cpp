@@ -91,10 +91,7 @@ void TStaticText::IStaticText(TView* panel, int* offsetLayout, int* sizeLayout, 
   stringResourceGroupId = stringResourceGroup;
   this->stringResourceIndex = stringResourceIndex;
   if (stringResourceGroup != -1) {
-    CString loadedString;
-    g_pResourceMgr->LoadUiStringResourceByGroupAndIndex(&loadedString, stringResourceGroup,
-                                                        stringResourceIndex);
-    SetTextAndMaybeRefresh(&loadedString, false);
+    SetTextWithStrListID(stringResourceGroup, stringResourceIndex, false);
   }
   DoSetCursor(0, 0);
 }

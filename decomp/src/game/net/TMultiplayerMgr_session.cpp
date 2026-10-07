@@ -736,12 +736,7 @@ void TMultiplayerMgr::DoHandleMessages() {
       }
       *tail = packet;
     } else if (!processSecondaryEventQueue && packet->eventCode == 0xc) {
-      packet->nextQueuePacket = 0;
-      TurnEventQueuePacket** tail = &secondaryTurnEventQueueHead;
-      while (*tail != 0) {
-        tail = &(*tail)->nextQueuePacket;
-      }
-      *tail = packet;
+      QueueVerbalMessage(packet);
     } else {
       if (!ReadMessage(packet)) {
         g_pNetMgr->HandleUnknownMessage(packet);

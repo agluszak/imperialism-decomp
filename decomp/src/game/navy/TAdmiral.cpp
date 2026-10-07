@@ -156,15 +156,7 @@ void TAdmiral::ReassignThyself() {
     }
   }
 
-  if (assignedShip != 0) {
-    assignedShip->admiral = 0;
-    RecomputeMapOrderOwnerActiveSelection(assignedShip->taskForce);
-  }
-  assignedShip = best;
-  if (best != 0) {
-    best->admiral = this;
-    RecomputeMapOrderOwnerActiveSelection(assignedShip->taskForce);
-  }
+  AssignToShip(best);
   if (best == 0) {
     Free();
   }
@@ -344,15 +336,7 @@ void TAdmiral::ReassignToZone(TZone* zone) {
     }
   }
 
-  if (assignedShip != 0) {
-    assignedShip->admiral = 0;
-    RecomputeMapOrderOwnerActiveSelection(assignedShip->taskForce);
-  }
-  assignedShip = best;
-  if (best != 0) {
-    best->admiral = this;
-    RecomputeMapOrderOwnerActiveSelection(assignedShip->taskForce);
-  }
+  AssignToShip(best);
 }
 
 // FUNCTION: IMPERIALISM 0x00552450

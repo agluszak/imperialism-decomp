@@ -641,13 +641,7 @@ void CIncludeView::OnParentNotify(UINT message, LPARAM lParam) {
   CPoint point(static_cast<short>(LOWORD(lParam)), static_cast<short>(HIWORD(lParam)));
   if (static_cast<unsigned short>(message) == WM_LBUTTONDOWN) {
     OnLButtonDown(0, point);
-    if (m_uiInteractiveFlag != 0) {
-      if (m_activeDialogContext != 0) {
-        CPoint pt(point);
-        m_activeDialogContext->HandleMouseUp(pt, 0, CPoint(0, 0));
-      }
-      g_McAppMouseCaptureState.EndMouseCaptureAndStopRepeatTimer(0, point.x, point.y);
-    }
+    OnLButtonUp(0, point);
   }
 }
 

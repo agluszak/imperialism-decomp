@@ -12,9 +12,7 @@ IMPLEMENT_DYNCREATE(TNumberText, TEditText)
 // FUNCTION: IMPERIALISM 0x00491060
 void TNumberText::INumberText(TView* panel, int* offsetLayout, int* sizeLayout, int value,
                               int minimumValue, int maximumValue) {
-  IStaticText(panel, offsetLayout, sizeLayout, 5, 5, -1, 0);
-  maxCharacterCount = 0xff;
-  SetEnable(1);
+  IEditText(panel, offsetLayout, sizeLayout, 0xff);
   this->maximumValue = maximumValue;
   this->minimumValue = minimumValue;
   SetControlValue(value, 0);

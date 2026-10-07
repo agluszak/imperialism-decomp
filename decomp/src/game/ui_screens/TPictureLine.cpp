@@ -6,10 +6,7 @@ IMPLEMENT_DYNCREATE(TPictureLine, TLineData)
 // FUNCTION: IMPERIALISM 0x005700f0
 void TPictureLine::SetPictureLineRowBoundsAndResource(short rowArg, short colArg, int* bounds,
                                                       short pictureResourceId) {
-  column = colArg;
-  layoutWidth = bounds[0];
-  layoutHeight = bounds[1];
-  row = rowArg;
+  ILineData(rowArg, colArg, bounds);
   this->pictureResourceId = pictureResourceId;
 }
 
