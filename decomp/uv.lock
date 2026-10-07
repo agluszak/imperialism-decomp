@@ -79,12 +79,12 @@ wheels = [
 [[package]]
 name = "ghidriff"
 version = "1.0.0"
-source = { url = "https://github.com/agluszak/ghidriff/archive/a1ddd07630bfb4ac9b56057a24808e92acc6ab97.tar.gz" }
+source = { url = "https://github.com/agluszak/ghidriff/archive/f30885eaf4cd734c0de588c0ef0aadf32c67a234.tar.gz" }
 dependencies = [
     { name = "mdutils" },
     { name = "pyghidra" },
 ]
-sdist = { hash = "sha256:90ddaf1f1fa31b8a1eb1c06373991b6f60c7be1d45b71574ea99eebe12d69e75" }
+sdist = { hash = "sha256:2aae96ef66ff87dec50c04474471ad30f1a5f32865979204da40be2b29a88602" }
 
 [package.metadata]
 requires-dist = [
@@ -128,7 +128,7 @@ requires-dist = [
     { name = "pyghidra", url = "https://github.com/agluszak/ghidra/releases/download/wizardry-739398dee314ba97c20bbaf715f62cdb9a82b2e1/pyghidra-3.3.0-py3-none-any.whl" },
     { name = "python-xlib", specifier = ">=0.33" },
     { name = "pyyaml", specifier = ">=6.0.3" },
-    { name = "reccmp", git = "https://github.com/agluszak/reccmp.git?rev=6f51001f6ac80d7ad4b165887305be3af4d0dcb1" },
+    { name = "reccmp", git = "https://github.com/agluszak/reccmp.git?rev=0e1b932288f138ddd075a281597825708292146e" },
     { name = "tree-sitter", specifier = ">=0.26.0" },
     { name = "tree-sitter-cpp", specifier = ">=0.23.4" },
 ]
@@ -509,7 +509,7 @@ wheels = [
 [[package]]
 name = "reccmp"
 version = "0.1.7"
-source = { git = "https://github.com/agluszak/reccmp.git?rev=6f51001f6ac80d7ad4b165887305be3af4d0dcb1#6f51001f6ac80d7ad4b165887305be3af4d0dcb1" }
+source = { git = "https://github.com/agluszak/reccmp.git?rev=0e1b932288f138ddd075a281597825708292146e#0e1b932288f138ddd075a281597825708292146e" }
 dependencies = [
     { name = "capstone" },
     { name = "colorama" },

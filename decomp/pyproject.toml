@@ -6,7 +6,7 @@ requires-python = ">=3.11"
 dependencies = [
     "pyghidra @ https://github.com/agluszak/ghidra/releases/download/wizardry-739398dee314ba97c20bbaf715f62cdb9a82b2e1/pyghidra-3.3.0-py3-none-any.whl",
     "clang-format==21.1.8",
-    "reccmp @ git+https://github.com/agluszak/reccmp.git@6f51001f6ac80d7ad4b165887305be3af4d0dcb1",
+    "reccmp @ git+https://github.com/agluszak/reccmp.git@0e1b932288f138ddd075a281597825708292146e",
     "ghidra-stubs @ https://github.com/agluszak/ghidra/releases/download/wizardry-739398dee314ba97c20bbaf715f62cdb9a82b2e1/ghidra_stubs-12.3-py3-none-any.whl",
     "pyyaml>=6.0.3",
     "capstone>=5.0.7",
