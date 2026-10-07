@@ -149,14 +149,7 @@ bool TEditText::BecomeTarget() {
 
 // FUNCTION: IMPERIALISM 0x00490ad0
 void TEditText::Free() {
-  if (editWindow != NULL) {
-    delete editWindow;
-    editWindow = NULL;
-
-    delete editFont;
-
-    editFont = NULL;
-  }
+  Close();
   TView::Free();
 }
 

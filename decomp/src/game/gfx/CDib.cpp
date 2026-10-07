@@ -850,12 +850,7 @@ void CDib::ComputeMetrics() {
 
 // FUNCTION: IMPERIALISM 0x0047bca0
 void CDib::Release() {
-  if (m_hFileMapping != NULL) {
-    UnmapViewOfFile(m_mappedView);
-    CloseHandle(m_hFile);
-    CloseHandle(m_hFileMapping);
-    m_hFileMapping = NULL;
-  }
+  ReleaseMappedFileView();
   if (m_infoOwnMode == kDibInfoOwnedByteArray) {
     delete[] static_cast<unsigned char*>(static_cast<void*>(m_pInfoHeader));
   } else if (m_infoOwnMode == kDibInfoOwnedGlobalHandle) {

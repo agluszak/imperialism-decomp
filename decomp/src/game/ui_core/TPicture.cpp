@@ -51,13 +51,7 @@ void TPicture::CopyPictureStateFromSource(TPicture* source) {
 
 // FUNCTION: IMPERIALISM 0x0048f250
 TPicture::~TPicture() {
-  if (glyphBase != -1) {
-    g_pResourceMgr->ReleaseRecordById(glyphBase);
-  }
-  glyphBase = -1;
-  bitmapId = 0;
-  resourceNamespaceId = 0;
-  cachedBitmap = 0;
+  ReleasePicture();
 }
 
 // FUNCTION: IMPERIALISM 0x0048f330

@@ -61,13 +61,7 @@ void TSetupRandomMapPicture::PickCountry(short nationSlot) {
   coatView->AssertValid();
   coatView->SetPictureRsrcID(static_cast<short>(selectedNationSlot + 0x11c6), true);
 
-  if (!countryControlReady) {
-    bool sessionInactive = g_pSimMgr->multiplayerSessionRole == kSessionRoleStandalone;
-    if (sessionInactive) {
-      TEditText* countryControl = static_cast<TEditText*>(FindSubView(kControlTagCoun));
-      countryControl->AssertValid();
-    }
-  }
+  RecheckCountryName();
 }
 
 // FUNCTION: IMPERIALISM 0x00576fe0

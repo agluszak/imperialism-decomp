@@ -161,21 +161,7 @@ void TArmyMgr::Free() {
   }
   pendingUnitPool = 0;
 
-  if (mapContextActionRecordList != 0) {
-    int ordinal = g_pMapContextActionManager->mapContextActionRecordList->GetSize();
-    while (ordinal > 0) {
-      MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
-          g_pMapContextActionManager->mapContextActionRecordList->GetPtrListEntryByOneBasedIndex(
-              ordinal));
-      delete[] record->sideChildRecords[0];
-      delete[] record->sideChildRecords[1];
-      record->sideChildRecords[1] = 0;
-      record->sideChildRecords[0] = 0;
-      --ordinal;
-    }
-    mapContextActionRecordList->DeleteAll();
-  }
-  battlesToReport = false;
+  CleanUpStacks();
 
   if (mapContextActionRecordList != 0) {
     int ordinal = g_pMapContextActionManager->mapContextActionRecordList->GetSize();
@@ -210,21 +196,7 @@ void TArmyMgr::Free() {
 // FUNCTION: IMPERIALISM 0x004a1b80
 void TArmyMgr::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
-  if (mapContextActionRecordList != 0) {
-    int ordinal = g_pMapContextActionManager->mapContextActionRecordList->GetSize();
-    while (ordinal > 0) {
-      MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
-          g_pMapContextActionManager->mapContextActionRecordList->GetPtrListEntryByOneBasedIndex(
-              ordinal));
-      delete[] record->sideChildRecords[0];
-      delete[] record->sideChildRecords[1];
-      record->sideChildRecords[1] = 0;
-      record->sideChildRecords[0] = 0;
-      --ordinal;
-    }
-    mapContextActionRecordList->DeleteAll();
-  }
-  battlesToReport = false;
+  CleanUpStacks();
   if (g_nSaveFormatVersion >= 0x25) {
     int count = stream->ReadInteger();
     while (count-- != 0) {

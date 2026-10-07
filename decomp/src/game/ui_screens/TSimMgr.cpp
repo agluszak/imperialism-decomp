@@ -166,19 +166,7 @@ TSimMgr::~TSimMgr() {}
 
 // FUNCTION: IMPERIALISM 0x0057bbf0
 void TSimMgr::ISimMgr() {
-  economicTurn = 0;
-  activeNationSlot = -1;
-  field14 = 0;
-  turnStateCode = kGamePhaseStartup;
-  turnFlowStatusFlags = 0;
-  lastPersistentUnitId = 0;
-  councilByDecade[0] = 0;
-  memset(&councilByDecade[1], 0x01, sizeof(councilByDecade) - 1);
-  councilByDecade[10] = 2;
-  CFileStatus conanFileStatus;
-  CFile::GetStatus(g_szConanCheatFileName, conanFileStatus);
-  g_bRandomMapDeveloperCheatFlag = false;
-  ReinitializeRandomSeed();
+  ResetTurnFlowStateAndRandomSeed();
   difficultyLevel = kDifficultyIntroductory;
   UpdatePreferences(false);
   mapArtSet = 0;

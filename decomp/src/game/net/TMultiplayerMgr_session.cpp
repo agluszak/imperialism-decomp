@@ -535,13 +535,7 @@ bool TMultiplayerMgr::InitializeProtocolList(TView* provider) {
 // FUNCTION: IMPERIALISM 0x00544f30
 bool TMultiplayerMgr::ResetGameFlowStateAndShowMainMenu() {
   lobbyDialogView = 0;
-  g_pAmbitApplication->InstallCohandler(g_pGameFlowState, false);
-  g_pSimMgr->multiplayerSessionRole = kSessionRoleStandalone;
-  if (g_pNetMgr != 0) {
-    g_pNetMgr->ResetSelection();
-  }
-  sessionPhaseTag = kControlTagNada; // 'nada'
-  lobbyDialogView = 0;
+  CancelProtocolSelect();
   g_pAmbitApplication->PostTurnEventCodeMessage(EncodeTurnEventCode(kTurnEventMainMenu));
   return true;
 }
@@ -594,13 +588,7 @@ unsigned char TMultiplayerMgr::ConnectToSession(TView* provider) {
 // FUNCTION: IMPERIALISM 0x00545290
 bool TMultiplayerMgr::ResetSessionAndShowMainMenu() {
   lobbyDialogView = 0;
-  g_pAmbitApplication->InstallCohandler(g_pGameFlowState, false);
-  g_pSimMgr->multiplayerSessionRole = kSessionRoleStandalone;
-  if (g_pNetMgr != 0) {
-    g_pNetMgr->ResetSelection();
-  }
-  sessionPhaseTag = kControlTagNada; // 'nada'
-  lobbyDialogView = 0;
+  CancelProtocolSelect();
   g_pAmbitApplication->PostTurnEventCodeMessage(EncodeTurnEventCode(kTurnEventMainMenu));
   return true;
 }

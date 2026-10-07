@@ -324,16 +324,7 @@ void CIncludeView::RefreshActiveDialogHost(int unusedArg) {
 
 // FUNCTION: IMPERIALISM 0x004833b0
 TView* CIncludeView::ResetMainPane(int unusedArg) {
-  m_pMainPaneDib = 0;
-  if (m_activeDialogContext != 0) {
-    int previousFlag = ClearInvalidationFlag();
-    m_activeDialogContext->nativeWindow = 0;
-    if (m_activeDialogContext != 0) {
-      m_activeDialogContext->Free();
-    }
-    m_activeDialogContext = 0;
-    SetInvalidationFlag(previousFlag);
-  }
+  TearDownActiveDialogContext();
   if (g_nIncludeViewReinitAssertGate == 0) {
     ReportAssertionFailure(g_szIncludeViewSourcePath, 0x1d2);
   }

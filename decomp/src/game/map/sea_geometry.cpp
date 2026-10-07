@@ -294,31 +294,7 @@ void SeaSegment::InitFromPoints(const Seapoint* p0, const Seapoint* p1) {
   y1 = static_cast<short>(c1 / 216);
   attrBySide[0] = static_cast<short>(p0->lo);
   attrBySide[1] = static_cast<short>(p0->hi);
-  if (y1 < y0 || (y0 == y1 && x1 < x0)) {
-    short nx0 = x1;
-    short ny0 = y1;
-    short nx1 = x0;
-    short ny1 = y0;
-    x0 = nx0;
-    y0 = ny0;
-    x1 = nx1;
-    y1 = ny1;
-    coord0 = x0 + y0 * 216;
-    coord1 = x1 + y1 * 216;
-  }
-  int adx = x0 - x1;
-  wrap = (adx < 0 ? -adx : adx) > 0x6c;
-  int dx;
-  int dy;
-  if (wrap && x0 < x1) {
-    dx = (x1 - x0) - 0xd8;
-    dy = y1 - y0;
-  } else {
-    dx = x1 - x0;
-    dy = y1 - y0;
-  }
-  angle = static_cast<short>(
-      static_cast<int>(atan2(static_cast<double>(dy), static_cast<double>(dx)) * kSeaAngleScale));
+  RecomputeEndpointsAndAngle();
 }
 
 // FUNCTION: IMPERIALISM 0x0052b520

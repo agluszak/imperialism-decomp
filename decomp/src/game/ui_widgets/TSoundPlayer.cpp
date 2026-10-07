@@ -78,8 +78,7 @@ bool TSoundPlayer::DoIdle(int action) {
   if (clearCuePoolsAfterFade && fadeStartTick == 0) {
     int n = audioCuePool->GetSize();
     if (n > 0) {
-      audioCuePool->RemoveAll();
-      remainingRandomAudioCues->RemoveAll();
+      ResetPlayList();
     }
     if (cdAudioPlaybackActive) {
       g_cdAudioDevice.StopPlayback();
@@ -135,8 +134,7 @@ void TSoundPlayer::CheckMusicStatus() {
   if (clearCuePoolsAfterFade && fadeStartTick == 0) {
     int n = audioCuePool->GetSize();
     if (n > 0) {
-      audioCuePool->RemoveAll();
-      remainingRandomAudioCues->RemoveAll();
+      ResetPlayList();
     }
     if (cdAudioPlaybackActive) {
       g_cdAudioDevice.StopPlayback();
@@ -228,11 +226,7 @@ void TSoundPlayer::PlayRandomTrack() {
   }
   if (static_cast<short>(activeAudioCueId) > 0) {
     pendingAudioCueId = static_cast<unsigned short>(chosen);
-    if (fadeStartTick == 0) {
-      fadeStartTick = GetTickCountDiv16();
-      g_pAssetMgr->ScheduleTimerSlotCallbackWithInterval(&UpdateDeferredCdAudioFade,
-                                                         kCdAudioFadeTimerInterval, 0);
-    }
+    StartDeferredAudioFadeTimerIfIdle();
   } else {
     activeAudioCueId = static_cast<unsigned short>(chosen);
     g_cdAudioDevice.ApplyMciPlaybackRangeFromAudioManager(chosen);
@@ -311,8 +305,7 @@ void TSoundPlayer::SetActiveAudioCueAndResetQueue(int cueId, bool flag) {
     }
   }
 
-  audioCuePool->RemoveAll();
-  remainingRandomAudioCues->RemoveAll();
+  ResetPlayList();
   audioCuePool->InsertLast(cueId);
   remainingRandomAudioCues->InsertLast(cueId);
 
@@ -352,19 +345,14 @@ void TSoundPlayer::SetActiveAudioCueAndResetQueue(int cueId, bool flag) {
 void TSoundPlayer::StopMusic(bool fadeOut) {
   int pendingCount = audioCuePool->GetSize();
   if (pendingCount > 0) {
-    audioCuePool->RemoveAll();
-    remainingRandomAudioCues->RemoveAll();
+    ResetPlayList();
   }
 
   if (!cdAudioPlaybackActive) {
     return;
   }
   if (fadeOut) {
-    if (fadeStartTick == 0) {
-      fadeStartTick = GetTickCountDiv16();
-      g_pAssetMgr->ScheduleTimerSlotCallbackWithInterval(&UpdateDeferredCdAudioFade,
-                                                         kCdAudioFadeTimerInterval, 0);
-    }
+    StartDeferredAudioFadeTimerIfIdle();
     clearCuePoolsAfterFade = true;
     return;
   }

@@ -841,22 +841,7 @@ void TGreatPower::InitializeTradeStatus(void) {
   budgetPoolDelta = 0;
   budgetPoolBase = 0;
 
-  for (int nationIndex = 0; nationIndex < kNationSlotCount; ++nationIndex) {
-    short snapshotValue = rememberedTradeOffersByResource[nationIndex];
-    if (snapshotValue == -1) {
-      ++unfilledTradeOfferCount;
-    }
-    itemPotentials[nationIndex] = snapshotValue;
-
-    short needScore = GetStockpile(nationIndex);
-    if (needScore < itemPotentials[nationIndex]) {
-      itemPotentials[nationIndex] = GetStockpile(nationIndex);
-    }
-
-    for (int rowIndex = 0; rowIndex < kAidAllocationRowCount; ++rowIndex) {
-      aidAllocationMatrix[rowIndex * kAidAllocationColumnCount + nationIndex] = 0;
-    }
-  }
+  RecallTradeBids();
 }
 
 // FUNCTION: IMPERIALISM 0x004dd270

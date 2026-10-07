@@ -118,17 +118,7 @@ Province** TZoneSecondaryNeighborStretch::Add(Province* entry) {
 
 // FUNCTION: IMPERIALISM 0x0055ec60
 void TZone::Free() {
-  if (g_pMapActionContextListHead == this) {
-    g_pMapActionContextListHead = prevZone;
-  }
-  if (prevZone != 0) {
-    prevZone->nextZone = nextZone;
-  }
-  if (nextZone != 0) {
-    nextZone->prevZone = prevZone;
-  }
-  nextZone = 0;
-  prevZone = 0;
+  Vanish();
   delete this;
 }
 
@@ -1107,17 +1097,7 @@ TZone* TZone::GetNextPort() {
 
 // FUNCTION: IMPERIALISM 0x005627a0
 TZone::~TZone() {
-  if (g_pMapActionContextListHead == this) {
-    g_pMapActionContextListHead = prevZone;
-  }
-  if (prevZone != 0) {
-    prevZone->nextZone = nextZone;
-  }
-  if (nextZone != 0) {
-    nextZone->prevZone = prevZone;
-  }
-  nextZone = 0;
-  prevZone = 0;
+  Vanish();
 }
 
 // FUNCTION: IMPERIALISM 0x00563220

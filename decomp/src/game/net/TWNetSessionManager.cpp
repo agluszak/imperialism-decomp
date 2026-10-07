@@ -201,20 +201,7 @@ BOOL TWNetSessionManager::OpenCurrentSession() {
   InitializeSessionDescription();
   lastErrorCode = directPlayInterface->Open(&sessionDescription, DPOPEN_CREATE);
   if (lastErrorCode < 0) {
-    for (int index = 0; index < g_RuntimeSelectionRecords.GetSize(); ++index) {
-      delete g_RuntimeSelectionRecords[index];
-    }
-    g_RuntimeSelectionRecords.RemoveAll();
-
-    if (directPlayInterface != 0) {
-      directPlayInterface->Close();
-      directPlayInterface->Release();
-      directPlayInterface = 0;
-    }
-    if (directPlayLobby != 0) {
-      directPlayLobby->Release();
-      directPlayLobby = 0;
-    }
+    ResetRuntimeSelectionRecordBuffer();
   }
   return lastErrorCode >= 0;
 }

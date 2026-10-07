@@ -10,12 +10,7 @@ IMPLEMENT_DYNCREATE(TArmyTacUnit, TTacticalUnit)
 // FUNCTION: IMPERIALISM 0x005a5f20
 void TArmyTacUnit::IArmyTacUnit(TMilitaryUnit* source) {
   unitType = source->orderType;
-  tileIndex = -2;
-  selectedFlag = false;
-  status = 0;
-  actionPoints = GetBaseActionPoints();
-  aiStateCode = 0;
-  attackTarget = NULL;
+  ITacticalUnit();
   strength = source->strength;
   morale = source->strength;
   qualityLevel = static_cast<short>(source->experiencePercent / 100);
